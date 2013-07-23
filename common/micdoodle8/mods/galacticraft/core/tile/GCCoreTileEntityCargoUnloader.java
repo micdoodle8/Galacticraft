@@ -20,7 +20,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 public class GCCoreTileEntityCargoUnloader extends GCCoreTileEntityElectric implements IInventory, ISidedInventory, ICargoEntity
 {
     private ItemStack[] containingItems = new ItemStack[15];
-    public static final double WATTS_PER_TICK = 150;
+    public static final float WATTS_PER_TICK = 0.15F;
     public boolean targetEmpty;
     public boolean targetNoInventory;
     public boolean noTarget;
@@ -29,7 +29,7 @@ public class GCCoreTileEntityCargoUnloader extends GCCoreTileEntityElectric impl
 
     public GCCoreTileEntityCargoUnloader()
     {
-        super((float) GCCoreTileEntityCargoUnloader.WATTS_PER_TICK, 50000);
+        super(GCCoreTileEntityCargoUnloader.WATTS_PER_TICK, 50);
     }
 
     @Override

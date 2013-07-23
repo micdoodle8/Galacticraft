@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.tile.IWrenchable;
+import java.util.EnumSet;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.core.GCCoreCompatibilityManager;
 import net.minecraft.block.Block;
@@ -25,6 +26,7 @@ import com.google.common.io.ByteArrayDataInput;
 public abstract class GCCoreTileEntityElectric extends TileEntityUniversalElectrical implements IWrenchable, IPacketReceiver, IDisableableMachine
 {
     public float ueWattsPerTick;
+    private final float ueMaxEnergy;
 
     public boolean addedToEnergyNet = false;
 
@@ -45,7 +47,7 @@ public abstract class GCCoreTileEntityElectric extends TileEntityUniversalElectr
 
     public GCCoreTileEntityElectric(float ueWattsPerTick, float maxEnergy)
     {
-        super(maxEnergy);
+        this.ueMaxEnergy = maxEnergy;
         this.ueWattsPerTick = ueWattsPerTick;
 
         /*
@@ -53,6 +55,12 @@ public abstract class GCCoreTileEntityElectric extends TileEntityUniversalElectr
          * new GCCoreLinkedPowerProvider(this);
          * this.bcPowerProvider.configure(20, 1, 10, 10, 1000); }
          */
+    }
+
+    @Override
+    public float getMaxEnergyStored()
+    {
+        return this.ueMaxEnergy;
     }
 
     public int getScaledElecticalLevel(int i)
@@ -84,7 +92,7 @@ public abstract class GCCoreTileEntityElectric extends TileEntityUniversalElectr
     {
         if (this.shouldPullEnergy() && this.getEnergyStored() < this.getMaxEnergyStored())
         {
-            this.receiveElectricity(this.getInputDirection(), ElectricityPack.getFromWatts(ElectricItemHelper.dischargeItem(this.getBatteryInSlot(), this.getRequest(ForgeDirection.UNKNOWN)), this.getVoltage()), true);
+            this.receiveElectricity(this.getElectricInputDirection(), ElectricityPack.getFromWatts(ElectricItemHelper.dischargeItem(this.getBatteryInSlot(), this.getRequest(ForgeDirection.UNKNOWN)), this.getVoltage()), true);
         }
 
         if (!this.worldObj.isRemote && this.shouldUseEnergy())
@@ -219,14 +227,8 @@ public abstract class GCCoreTileEntityElectric extends TileEntityUniversalElectr
     }
 
     @Override
-    public ForgeDirection getInputDirection()
+    public EnumSet<ForgeDirection> getInputDirections()
     {
-        return this.getElectricInputDirection();
-    }
-    
-    @Override
-    public ForgeDirection getOutputDirection()
-    {
-        return null;
+        return EnumSet.of(this.getElectricInputDirection());
     }
 }

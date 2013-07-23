@@ -27,7 +27,7 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
     public boolean sealed;
     public boolean lastSealed = false;
 
-    public static final double WATTS_PER_TICK = 200;
+    public static final float WATTS_PER_TICK = 0.2F;
     public boolean lastDisabled = false;
 
     public boolean active;
@@ -35,7 +35,7 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 
     public GCCoreTileEntityOxygenSealer()
     {
-        super((float) GCCoreTileEntityOxygenSealer.WATTS_PER_TICK, 50000, 10000, 12);
+        super(GCCoreTileEntityOxygenSealer.WATTS_PER_TICK, 50, 10000, 12);
     }
 
     @Override

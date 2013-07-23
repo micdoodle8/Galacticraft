@@ -33,13 +33,13 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
     public FluidTank fuelTank = new FluidTank(this.tankCapacity);
 
     private ItemStack[] containingItems = new ItemStack[2];
-    public static final int WATTS_PER_TICK = 250;
+    public static final float WATTS_PER_TICK = 0.25F;
 
     public IFuelable attachedFuelable;
 
     public GCCoreTileEntityFuelLoader()
     {
-        super((float) GCCoreTileEntityFuelLoader.WATTS_PER_TICK, 50000);
+        super(GCCoreTileEntityFuelLoader.WATTS_PER_TICK, 50);
     }
 
     public int getScaledFuelLevel(int i)

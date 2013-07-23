@@ -31,7 +31,7 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
     public FluidTank oilTank = new FluidTank(this.tankCapacity);
     public FluidTank fuelTank = new FluidTank(this.tankCapacity);
 
-    public static final double WATTS_PER_TICK = 400;
+    public static final float WATTS_PER_TICK = 0.4F;
     public static final int PROCESS_TIME_REQUIRED = 2;
     public static final int OUTPUT_PER_SECOND = 1;
     public int processTicks = 0;
@@ -39,13 +39,7 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
 
     public GCCoreTileEntityRefinery()
     {
-        super((float) GCCoreTileEntityRefinery.WATTS_PER_TICK, 50000);
-
-        /*
-         * if (PowerFramework.currentFramework != null) { this.bcPowerProvider =
-         * new GCCoreLinkedPowerProvider(this);
-         * this.bcPowerProvider.configure(20, 15, 100, 25, 1000); }
-         */
+        super(GCCoreTileEntityRefinery.WATTS_PER_TICK, 50);
     }
 
     @Override

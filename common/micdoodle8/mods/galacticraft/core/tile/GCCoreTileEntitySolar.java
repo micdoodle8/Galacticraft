@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import java.util.EnumSet;
 import java.util.HashSet;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
@@ -41,9 +42,9 @@ public class GCCoreTileEntitySolar extends TileEntityUniversalElectrical impleme
     public boolean disabled = true;
     public int disableCooldown = 0;
     private ItemStack[] containingItems = new ItemStack[1];
-    public static final int MAX_GENERATE_WATTS = 15000;
-    public static final int MIN_GENERATE_WATTS = 0;
+    public static final float MAX_GENERATE_WATTS = 15.0F;
     public float generateWatts = 0;
+    private float ueMaxEnergy;
 
     public GCCoreTileEntitySolar()
     {
@@ -52,7 +53,7 @@ public class GCCoreTileEntitySolar extends TileEntityUniversalElectrical impleme
 
     public GCCoreTileEntitySolar(float maxEnergy)
     {
-        super(maxEnergy);
+        this.ueMaxEnergy = maxEnergy;
     }
 
     public void setMainBlock(Vector3 mainBlock)
@@ -188,9 +189,9 @@ public class GCCoreTileEntitySolar extends TileEntityUniversalElectrical impleme
 
         if (!this.worldObj.isRemote)
         {
-            if (this.getGenerate() > GCCoreTileEntitySolar.MIN_GENERATE_WATTS)
+            if (this.getGenerate() > 0.0F)
             {
-                this.generateWatts = Math.min(Math.max(this.getGenerate(), GCCoreTileEntitySolar.MIN_GENERATE_WATTS), GCCoreTileEntitySolar.MAX_GENERATE_WATTS) / 20.0F;
+                this.generateWatts = Math.min(Math.max(this.getGenerate(), 0), GCCoreTileEntitySolar.MAX_GENERATE_WATTS) / 20.0F;
             }
             else
             {
@@ -218,7 +219,7 @@ public class GCCoreTileEntitySolar extends TileEntityUniversalElectrical impleme
         
         float difference = (180.0F - Math.abs(((this.currentAngle % 180) - (celestialAngle)))) / 180.0F;
         
-        return difference * difference * (this.solarStrength * (Math.abs(difference) * 500.0F)) * this.getSolarBoost();
+        return (1 / 1000.0F) * difference * difference * (this.solarStrength * (Math.abs(difference) * 500.0F)) * this.getSolarBoost();
     }
 
     public float getSolarBoost()
@@ -329,7 +330,13 @@ public class GCCoreTileEntitySolar extends TileEntityUniversalElectrical impleme
     {
         super.readFromNBT(nbt);
         this.mainBlockPosition = Vector3.readFromNBT(nbt.getCompoundTag("mainBlockPosition"));
-        this.maxEnergyStored = nbt.getFloat("maxEnergy");
+        this.ueMaxEnergy = nbt.getFloat("maxEnergy");
+        
+        if (this.ueMaxEnergy > 1000.0F)
+        {
+            this.ueMaxEnergy /= 1000.0F;
+        }
+        
         this.currentAngle = nbt.getFloat("currentAngle");
         this.targetAngle = nbt.getFloat("targetAngle");
         this.setDisabled(nbt.getBoolean("disabled"));
@@ -391,17 +398,17 @@ public class GCCoreTileEntitySolar extends TileEntityUniversalElectrical impleme
     @Override
     public float getProvide(ForgeDirection direction)
     {
-        return direction.equals(this.getOutputDirection()) ? Math.min(Math.max(this.getEnergyStored(), 0), 1300) : 0;
+        return this.getOutputDirections().contains(direction) ? Math.min(Math.max(this.getEnergyStored(), 0), 1300) : 0;
     }
 
     @Override
-    public ForgeDirection getInputDirection()
+    public EnumSet<ForgeDirection> getInputDirections()
     {
-        return null;
+        return EnumSet.noneOf(ForgeDirection.class);
     }
 
     @Override
-    public ForgeDirection getOutputDirection()
+    public EnumSet<ForgeDirection> getOutputDirections()
     {
         int metadata = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
 
@@ -410,7 +417,7 @@ public class GCCoreTileEntitySolar extends TileEntityUniversalElectrical impleme
             metadata -= GCCoreBlockSolar.ADVANCED_METADATA;
         }
 
-        return ForgeDirection.getOrientation(metadata + 2).getOpposite();
+        return EnumSet.of(ForgeDirection.getOrientation(metadata + 2).getOpposite());
     }
 
     @Override
@@ -566,5 +573,11 @@ public class GCCoreTileEntitySolar extends TileEntityUniversalElectrical impleme
     public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
     {
         return slotID == 0 ? itemstack.getItem() instanceof IItemElectric : false;
+    }
+
+    @Override
+    public float getMaxEnergyStored()
+    {
+        return this.ueMaxEnergy;
     }
 }

@@ -32,7 +32,7 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric im
 {
     public boolean active;
 
-    public static final int WATTS_PER_TICK = 200;
+    public static final float WATTS_PER_TICK = 0.2F;
 
     public double power;
 
@@ -44,7 +44,7 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric im
 
     public GCCoreTileEntityOxygenCollector()
     {
-        super((float) GCCoreTileEntityOxygenCollector.WATTS_PER_TICK, 50000);
+        super(GCCoreTileEntityOxygenCollector.WATTS_PER_TICK, 50);
     }
 
     public int getCappedScaledOxygenLevel(int scale)

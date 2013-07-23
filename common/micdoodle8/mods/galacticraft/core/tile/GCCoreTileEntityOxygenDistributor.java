@@ -29,7 +29,7 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen im
     public boolean active;
     public boolean lastActive;
 
-    public static final double WATTS_PER_TICK = 200;
+    public static final float WATTS_PER_TICK = 0.2F;
 
     private ItemStack[] containingItems = new ItemStack[1];
 
@@ -37,7 +37,7 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen im
 
     public GCCoreTileEntityOxygenDistributor()
     {
-        super((float) GCCoreTileEntityOxygenDistributor.WATTS_PER_TICK, 50000, 6000, 12);
+        super(GCCoreTileEntityOxygenDistributor.WATTS_PER_TICK, 50, 6000, 12);
     }
 
     @Override

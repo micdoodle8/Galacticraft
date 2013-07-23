@@ -274,11 +274,11 @@ public class GCCoreBlockSolar extends BlockTile
     {
         if (metadata >= GCCoreBlockSolar.ADVANCED_METADATA)
         {
-            return new GCCoreTileEntitySolar(100000);
+            return new GCCoreTileEntitySolar(100);
         }
         else
         {
-            return new GCCoreTileEntitySolar(50000);
+            return new GCCoreTileEntitySolar(50);
         }
     }
 

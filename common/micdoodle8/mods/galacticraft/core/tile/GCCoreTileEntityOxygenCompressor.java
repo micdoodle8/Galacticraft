@@ -25,11 +25,11 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen imp
 {
     private ItemStack[] containingItems = new ItemStack[2];
 
-    public static final double WATTS_PER_TICK = 200;
+    public static final float WATTS_PER_TICK = 0.2F;
 
     public GCCoreTileEntityOxygenCompressor()
     {
-        super((float) GCCoreTileEntityOxygenCompressor.WATTS_PER_TICK, 50000, 1200, 12);
+        super(GCCoreTileEntityOxygenCompressor.WATTS_PER_TICK, 50, 1200, 12);
     }
 
     @Override
