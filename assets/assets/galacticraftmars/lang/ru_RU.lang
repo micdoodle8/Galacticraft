@@ -1,11 +1,11 @@
 # Galacticraft Mars Language File = Russia Russian
 
 # GENERAL ITEMS
-item.reinfocedBucket.name=Закаленное ведро
-item.reinfocedBucketMilk.name=Закаленное ведро молока
-item.reinfocedBucketWater.name=Закаленное ведро воды
-item.reinfocedBucketLava.name=Закаленное ведро лавы
-item.reinfocedBucketSludge.name=Закаленное ведро с бактериальным осадком
+item.reinfocedBucket.name=Закалённое ведро
+item.reinfocedBucketMilk.name=Закалённое ведро с молоком
+item.reinfocedBucketWater.name=Закалённое ведро с водой
+item.reinfocedBucketLava.name=Закалённое ведро с лавой
+item.reinfocedBucketSludge.name=Закалённое ведро с бактериальным осадком
 item.rawDesh.name=Необработанный деш
 item.deshStick.name=Палка из деш
 item.ingotDesh.name=Слиток деш
@@ -28,14 +28,18 @@ item.deshBoots.name=Ботинки из деш
 tile.mars.deshmars.name=Руда деш
 tile.mars.coppermars.name=Медная руда
 tile.mars.tinmars.name=Оловянная руда
+tile.mars.ironmars.name=Железная руда
 tile.mars.marscobblestone.name=Марсианский булыжник
 tile.mars.marsstone.name=Марсианский камень
 tile.mars.marsdirt.name=Марсианский грунт
-tile.mars.marsgrass.name=Марсианский дерн
+tile.mars.marsgrass.name=Марсианский дёрн
 tile.mars.marsdeco.name=Декорационный блок деш
 tile.mars.marsdungeon.name=Стена подземелья
+tile.treasureT2.name=Tier 2 сундук с сокровищами
 
 # GUI
 gui.choosePlanet.desc.mars=Обитаем#Кислород отсутствует#Гравитация: 38%
 
 itemGroup.GalacticraftMars=Марс Galacticraft
+
+dimension.Mars.name=Марс
