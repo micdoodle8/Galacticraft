@@ -5,8 +5,11 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreTileEntityAdvancedCraftingTable extends TileEntityMulti implements IMultiBlock
 {
@@ -93,5 +96,12 @@ public class GCCoreTileEntityAdvancedCraftingTable extends TileEntityMulti imple
                 }
             }
         }
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getRenderBoundingBox()
+    {
+        return TileEntity.INFINITE_EXTENT_AABB;
     }
 }
