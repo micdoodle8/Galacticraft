@@ -149,9 +149,6 @@ public class GalacticraftCore
     public static final String CONFIG_FILE = "Galacticraft/core.conf";
     private static final String[] LANGUAGES_SUPPORTED = new String[] { "cz_CZE", "de_DE", "en_GB", "en_US", "es_ES", "fi_FI", "fr_CA", "fr_FR", "nl_NL", "pl_PL", "ru_RU", "zh_CN", "ja_JP" };
 
-    public static double toBuildcraftEnergyScalar = 0.04D;
-    public static double fromBuildcraftEnergyScalar = 25.0D;
-
     public static String TEXTURE_DOMAIN = "galacticraftcore";
     public static String TEXTURE_PREFIX = GalacticraftCore.TEXTURE_DOMAIN + ":";
     public static String TEXTURE_SUFFIX;
