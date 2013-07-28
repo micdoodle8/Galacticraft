@@ -40,7 +40,6 @@ import net.minecraft.world.WorldProviderSurface;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.common.TickType;
@@ -73,10 +72,10 @@ public class GCCoreTickHandlerClient implements ITickHandler
                 {
                     ClientProxyCore.addTabsToInventory((GuiContainer) minecraft.currentScreen);
                 }
-                
+
                 ClientProxyCore.addTabsNextTick = false;
             }
-            
+
             if (minecraft.currentScreen != null && minecraft.currentScreen instanceof GuiMainMenu)
             {
                 GalacticraftCore.playersServer.clear();
@@ -245,13 +244,13 @@ public class GCCoreTickHandlerClient implements ITickHandler
         if (type.equals(EnumSet.of(TickType.CLIENT)))
         {
             boolean invKeyPressed = Keyboard.isKeyDown(minecraft.gameSettings.keyBindInventory.keyCode);
-            
-            if (!lastInvKeyPressed && invKeyPressed && minecraft.currentScreen != null && minecraft.currentScreen.getClass() == GuiInventory.class)
+
+            if (!GCCoreTickHandlerClient.lastInvKeyPressed && invKeyPressed && minecraft.currentScreen != null && minecraft.currentScreen.getClass() == GuiInventory.class)
             {
                 ClientProxyCore.addTabsToInventory((GuiContainer) minecraft.currentScreen);
             }
-            
-            lastInvKeyPressed = invKeyPressed;
+
+            GCCoreTickHandlerClient.lastInvKeyPressed = invKeyPressed;
         }
         else if (type.equals(EnumSet.of(TickType.RENDER)))
         {

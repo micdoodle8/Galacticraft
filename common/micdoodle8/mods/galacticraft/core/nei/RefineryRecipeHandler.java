@@ -39,7 +39,7 @@ public class RefineryRecipeHandler extends TemplateRecipeHandler
     public void drawBackground(int i)
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GuiDraw.changeTexture(refineryGuiTexture);
+        GuiDraw.changeTexture(RefineryRecipeHandler.refineryGuiTexture);
         GuiDraw.drawTexturedModalRect(-2, 0, 3, 4, 168, 64);
         if (this.ticksPassed % 144 < 124 && this.ticksPassed % 144 > 10)
         {
@@ -174,4 +174,4 @@ public class RefineryRecipeHandler extends TemplateRecipeHandler
     {
         return "/mods/galacticraftcore/textures/gui/refinery.png";
     }
- }
+}

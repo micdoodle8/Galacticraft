@@ -62,14 +62,14 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
     private int ticksSinceSync;
 
     public boolean locked = true;
-    
+
     public int tier = 1;
-    
+
     public GCCoreTileEntityTreasureChest()
     {
         this(1);
     }
-    
+
     public GCCoreTileEntityTreasureChest(int tier)
     {
         this.tier = tier;

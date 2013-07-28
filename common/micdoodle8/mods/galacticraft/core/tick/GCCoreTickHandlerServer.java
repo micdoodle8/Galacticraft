@@ -16,11 +16,11 @@ public class GCCoreTickHandlerServer implements ITickHandler
         if (type.equals(EnumSet.of(TickType.WORLD)))
         {
             final WorldServer world = (WorldServer) tickData[0];
-            
+
             if (world.provider instanceof IOrbitDimension)
             {
                 final Object[] entityList = world.loadedEntityList.toArray();
-                
+
                 for (final Object o : entityList)
                 {
                     if (o instanceof Entity)

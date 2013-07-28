@@ -35,7 +35,8 @@ public abstract class GCCoreInventoryTab extends GuiButton
         this.renderStack = renderStack;
     }
 
-    public void drawButton (Minecraft mc, int mouseX, int mouseY)
+    @Override
+    public void drawButton(Minecraft mc, int mouseX, int mouseY)
     {
         if (this.drawButton)
         {
@@ -45,15 +46,15 @@ public abstract class GCCoreInventoryTab extends GuiButton
             int yTexPos = this.enabled ? 0 : 32;
             int ySize = this.enabled ? 28 : 32;
 
-            this.drawTexturedModalRect(this.xPosition, this.yPosition, xOffset * 28, yTexPos, 28, ySize);
+            this.drawTexturedModalRect(this.xPosition, this.yPosition, this.xOffset * 28, yTexPos, 28, ySize);
 
             RenderHelper.enableGUIStandardItemLighting();
             this.zLevel = 100.0F;
             this.itemRenderer.zLevel = 100.0F;
             GL11.glEnable(GL11.GL_LIGHTING);
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-            this.itemRenderer.renderItemAndEffectIntoGUI(mc.fontRenderer, mc.renderEngine, renderStack, xPosition + 6, yPosition + 8);
-            this.itemRenderer.renderItemOverlayIntoGUI(mc.fontRenderer, mc.renderEngine, renderStack, xPosition + 6, yPosition + 8);
+            this.itemRenderer.renderItemAndEffectIntoGUI(mc.fontRenderer, mc.renderEngine, this.renderStack, this.xPosition + 6, this.yPosition + 8);
+            this.itemRenderer.renderItemOverlayIntoGUI(mc.fontRenderer, mc.renderEngine, this.renderStack, this.xPosition + 6, this.yPosition + 8);
             GL11.glDisable(GL11.GL_LIGHTING);
             this.itemRenderer.zLevel = 0.0F;
             this.zLevel = 0.0F;
@@ -61,20 +62,21 @@ public abstract class GCCoreInventoryTab extends GuiButton
         }
     }
 
-    public boolean mousePressed (Minecraft mc, int mouseX, int mouseY)
+    @Override
+    public boolean mousePressed(Minecraft mc, int mouseX, int mouseY)
     {
         boolean inWindow = this.enabled && this.drawButton && mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height;
-        
+
         if (inWindow)
         {
             this.onTabClicked();
         }
-        
+
         return inWindow;
     }
-    
+
     public abstract void onTabClicked();
-    
+
     public static class GCCoreInventoryTabPlayer extends GCCoreInventoryTab
     {
         public GCCoreInventoryTabPlayer(int id, int posX, int posY, int xOffset)
@@ -89,7 +91,7 @@ public abstract class GCCoreInventoryTab extends GuiButton
             ClientProxyCore.addTabsToInventory((GuiContainer) FMLClientHandler.instance().getClient().currentScreen);
         }
     }
-    
+
     public static class GCCoreInventoryTabExtended extends GCCoreInventoryTab
     {
         public GCCoreInventoryTabExtended(int id, int posX, int posY, int xOffset)
@@ -100,7 +102,7 @@ public abstract class GCCoreInventoryTab extends GuiButton
         @Override
         public void onTabClicked()
         {
-            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 23, new Object[] { }));
+            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 23, new Object[] {}));
         }
     }
 }

@@ -84,7 +84,7 @@ public class GCCoreTileEntitySolar extends TileEntityUniversalElectrical impleme
             {
                 this.solarStrength = 0;
 
-                if (this.worldObj.isDaytime() && (this.worldObj.provider instanceof IGalacticraftWorldProvider || (!this.worldObj.isRaining() && !this.worldObj.isThundering())))
+                if (this.worldObj.isDaytime() && (this.worldObj.provider instanceof IGalacticraftWorldProvider || !this.worldObj.isRaining() && !this.worldObj.isThundering()))
                 {
                     double distance = 100.0D;
                     double sinA = -Math.sin((this.currentAngle - 77.5D) * Math.PI / 180.0D);
@@ -211,15 +211,15 @@ public class GCCoreTileEntitySolar extends TileEntityUniversalElectrical impleme
         {
             return 0.0F;
         }
-        
-        float angle = (this.worldObj.getCelestialAngle(1.0F) - 0.784690560F) < 0 ? 1.0F - 0.784690560F : -0.784690560F;
-        float celestialAngle = ((this.worldObj.getCelestialAngle(1.0F) + angle) * 360.0F);
-        
+
+        float angle = this.worldObj.getCelestialAngle(1.0F) - 0.784690560F < 0 ? 1.0F - 0.784690560F : -0.784690560F;
+        float celestialAngle = (this.worldObj.getCelestialAngle(1.0F) + angle) * 360.0F;
+
         celestialAngle %= 360;
-        
-        float difference = (180.0F - Math.abs(((this.currentAngle % 180) - (celestialAngle)))) / 180.0F;
-        
-        return (1 / 1000.0F) * difference * difference * (this.solarStrength * (Math.abs(difference) * 500.0F)) * this.getSolarBoost();
+
+        float difference = (180.0F - Math.abs(this.currentAngle % 180 - celestialAngle)) / 180.0F;
+
+        return 1 / 1000.0F * difference * difference * (this.solarStrength * (Math.abs(difference) * 500.0F)) * this.getSolarBoost();
     }
 
     public float getSolarBoost()
@@ -331,12 +331,12 @@ public class GCCoreTileEntitySolar extends TileEntityUniversalElectrical impleme
         super.readFromNBT(nbt);
         this.mainBlockPosition = Vector3.readFromNBT(nbt.getCompoundTag("mainBlockPosition"));
         this.ueMaxEnergy = nbt.getFloat("maxEnergy");
-        
+
         if (this.ueMaxEnergy > 1000.0F)
         {
             this.ueMaxEnergy /= 1000.0F;
         }
-        
+
         this.currentAngle = nbt.getFloat("currentAngle");
         this.targetAngle = nbt.getFloat("targetAngle");
         this.setDisabled(nbt.getBoolean("disabled"));

@@ -16,7 +16,7 @@ import codechicken.nei.recipe.TemplateRecipeHandler;
 public class BuggyRecipeHandler extends TemplateRecipeHandler
 {
     private static final ResourceLocation buggyGuiTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/buggybench.png");
-    
+
     public String getRecipeId()
     {
         return "galacticraft.buggy";
@@ -37,7 +37,7 @@ public class BuggyRecipeHandler extends TemplateRecipeHandler
     public void drawBackground(int i)
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GuiDraw.changeTexture(buggyGuiTexture);
+        GuiDraw.changeTexture(BuggyRecipeHandler.buggyGuiTexture);
         GuiDraw.drawTexturedModalRect(0, 0, 3, 4, 168, 130);
     }
 
@@ -137,4 +137,4 @@ public class BuggyRecipeHandler extends TemplateRecipeHandler
     {
         return "/mods/galacticraftcore/textures/gui/buggybench.png";
     }
- }
+}

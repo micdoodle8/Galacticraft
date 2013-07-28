@@ -62,7 +62,7 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
     private final MapGenMineshaft mineshaftGenerator = new MapGenMineshaft();
 
     private final GCCoreMapGenDungeon dungeonGenerator = new GCCoreMapGenDungeon(GCMoonBlocks.blockMoon.blockID, 14, 8, 16, 3);
-    
+
     static
     {
         GCCoreDungeonRoom.rooms.add(new GCMoonRoomEmpty(null, 0, 0, 0, 0));

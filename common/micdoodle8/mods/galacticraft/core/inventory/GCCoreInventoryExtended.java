@@ -10,7 +10,7 @@ import net.minecraft.nbt.NBTTagList;
 public class GCCoreInventoryExtended implements IInventory
 {
     public ItemStack[] inventoryStacks = new ItemStack[5];
-    
+
     @Override
     public int getSizeInventory()
     {
@@ -92,7 +92,7 @@ public class GCCoreInventoryExtended implements IInventory
     @Override
     public void onInventoryChanged()
     {
-        
+
     }
 
     @Override
@@ -118,22 +118,22 @@ public class GCCoreInventoryExtended implements IInventory
     {
         return false;
     }
-    
+
     public void dropExtendedItems(EntityPlayer player)
     {
         for (int i = 0; i < this.inventoryStacks.length; i++)
         {
             ItemStack stack = this.inventoryStacks[i];
-            
+
             if (stack != null)
             {
                 player.dropPlayerItemWithRandomChoice(stack, true);
             }
-            
+
             this.inventoryStacks[i] = null;
         }
     }
-    
+
     // Backwards compatibility for old inventory
     public void readFromNBTOld(NBTTagList par1NBTTagList)
     {
@@ -181,7 +181,7 @@ public class GCCoreInventoryExtended implements IInventory
             if (this.inventoryStacks[i] != null)
             {
                 nbttagcompound = new NBTTagCompound();
-                nbttagcompound.setByte("Slot", (byte) (i));
+                nbttagcompound.setByte("Slot", (byte) i);
                 this.inventoryStacks[i].writeToNBT(nbttagcompound);
                 tagList.appendTag(nbttagcompound);
             }
@@ -189,7 +189,7 @@ public class GCCoreInventoryExtended implements IInventory
 
         return tagList;
     }
-    
+
     public void copyInventory(InventoryPlayer par1InventoryPlayer)
     {
         for (int i = 0; i < this.inventoryStacks.length; ++i)

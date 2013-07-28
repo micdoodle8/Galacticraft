@@ -409,4 +409,4 @@ public class NEIGalacticraftConfig implements IConfigureNEI
         input1.add(new PositionedStack(new ItemStack(GCCoreItems.buggyMaterial, 1, 2), 90 + 2 * 26, -15 + changey));
         this.registerBuggyBenchRecipe(input1, new PositionedStack(new ItemStack(GCCoreItems.buggy, 1, 3), 139, 78 + changey));
     }
- }
+}

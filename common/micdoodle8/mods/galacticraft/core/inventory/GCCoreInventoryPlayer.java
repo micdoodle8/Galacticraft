@@ -377,4 +377,4 @@
 //
 //        this.currentItem = par1InventoryPlayer.currentItem;
 //    }
-//}
+// }

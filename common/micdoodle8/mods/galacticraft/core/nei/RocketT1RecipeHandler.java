@@ -37,7 +37,7 @@ public class RocketT1RecipeHandler extends TemplateRecipeHandler
     public void drawBackground(int i)
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GuiDraw.changeTexture(rocketGuiTexture);
+        GuiDraw.changeTexture(RocketT1RecipeHandler.rocketGuiTexture);
         GuiDraw.drawTexturedModalRect(0, 0, 3, 4, 168, 130);
     }
 
@@ -142,4 +142,4 @@ public class RocketT1RecipeHandler extends TemplateRecipeHandler
     {
         return "/mods/galacticraftcore/textures/gui/rocketbench.png";
     }
- }
+}

@@ -24,16 +24,10 @@ public class GCCoreGuiExtendedInventory extends InventoryEffectRenderer
 
     private float xSize_lo_2;
     private float ySize_lo_2;
-    private float rotation;
-    
-    private EntityPlayer player;
-    private GCCoreInventoryExtended inventory;
 
     public GCCoreGuiExtendedInventory(EntityPlayer entityPlayer, GCCoreInventoryExtended inventory)
     {
         super(new GCCoreContainerExtendedInventory(entityPlayer, inventory));
-        this.player = entityPlayer;
-        this.inventory = inventory;
     }
 
     @Override
@@ -45,13 +39,11 @@ public class GCCoreGuiExtendedInventory extends InventoryEffectRenderer
     public void initGui()
     {
         super.initGui();
-        this.rotation = 0;
-        
         boolean tConstructLoaded = Loader.isModLoaded("TConstruct");
 
         int cornerX = this.guiLeft;
         int cornerY = (this.height - this.ySize) / 2;
-        
+
         if (!tConstructLoaded)
         {
             GCCoreInventoryTab tab = new GCCoreInventoryTabPlayer(4, cornerX + this.buttonList.size() * 28, cornerY - 28, 0);
@@ -61,23 +53,25 @@ public class GCCoreGuiExtendedInventory extends InventoryEffectRenderer
         GCCoreInventoryTab tab = new GCCoreInventoryTabExtended(5, cornerX + this.buttonList.size() * 28, cornerY - 28, 1);
         tab.enabled = false;
         this.buttonList.add(tab);
-        
-//        this.buttonList.add(new GuiButton(0, (this.width - this.xSize) / 2 + 36, (this.height - this.ySize) / 2 + 71, 7, 7, ""));
-//        this.buttonList.add(new GuiButton(1, (this.width - this.xSize) / 2 + 60, (this.height - this.ySize) / 2 + 71, 7, 7, ""));
+
+        // this.buttonList.add(new GuiButton(0, (this.width - this.xSize) / 2 +
+        // 36, (this.height - this.ySize) / 2 + 71, 7, 7, ""));
+        // this.buttonList.add(new GuiButton(1, (this.width - this.xSize) / 2 +
+        // 60, (this.height - this.ySize) / 2 + 71, 7, 7, ""));
     }
 
     @Override
     protected void actionPerformed(GuiButton par1GuiButton)
     {
-//        switch (par1GuiButton.id)
-//        {
-//        case 0:
-//            this.rotation -= 10;
-//            break;
-//        case 1:
-//            this.rotation += 10;
-//            break;
-//        }
+        // switch (par1GuiButton.id)
+        // {
+        // case 0:
+        // this.rotation -= 10;
+        // break;
+        // case 1:
+        // this.rotation += 10;
+        // break;
+        // }
     }
 
     @Override
@@ -88,7 +82,8 @@ public class GCCoreGuiExtendedInventory extends InventoryEffectRenderer
         final int k = this.guiLeft;
         final int l = this.guiTop;
         this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
-//        this.drawPlayerOnGui2(this.mc, k + 51, l + 75 + 1, 34, k + 51 - this.xSize_lo_2, l + 75 - 50 - this.ySize_lo_2);
+        // this.drawPlayerOnGui2(this.mc, k + 51, l + 75 + 1, 34, k + 51 -
+        // this.xSize_lo_2, l + 75 - 50 - this.ySize_lo_2);
         GCCoreGuiExtendedInventory.drawPlayerOnGui(this.mc, k + 33, l + 75, 34, k + 51 - this.xSize_lo_2, l + 75 - 50 - this.ySize_lo_2);
     }
 
@@ -104,8 +99,8 @@ public class GCCoreGuiExtendedInventory extends InventoryEffectRenderer
     {
         GL11.glEnable(GL11.GL_COLOR_MATERIAL);
         GL11.glPushMatrix();
-        GL11.glTranslatef((float) par1, (float) par2, 50.0F);
-        GL11.glScalef((float) (-par3), (float) par3, (float) par3);
+        GL11.glTranslatef(par1, par2, 50.0F);
+        GL11.glScalef(-par3, par3, par3);
         GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
         float f2 = par0Minecraft.thePlayer.renderYawOffset;
         float f3 = par0Minecraft.thePlayer.rotationYaw;
@@ -114,10 +109,10 @@ public class GCCoreGuiExtendedInventory extends InventoryEffectRenderer
         GL11.glRotatef(135.0F, 0.0F, 1.0F, 0.0F);
         RenderHelper.enableStandardItemLighting();
         GL11.glRotatef(-135.0F, 0.0F, 1.0F, 0.0F);
-        GL11.glRotatef(-((float) Math.atan((double) (par5 / 40.0F))) * 20.0F, 1.0F, 0.0F, 0.0F);
-        par0Minecraft.thePlayer.renderYawOffset = (float) Math.atan((double) (par4 / 40.0F)) * 20.0F;
-        par0Minecraft.thePlayer.rotationYaw = (float) Math.atan((double) (par4 / 40.0F)) * 40.0F;
-        par0Minecraft.thePlayer.rotationPitch = -((float) Math.atan((double) (par5 / 40.0F))) * 20.0F;
+        GL11.glRotatef(-((float) Math.atan(par5 / 40.0F)) * 20.0F, 1.0F, 0.0F, 0.0F);
+        par0Minecraft.thePlayer.renderYawOffset = (float) Math.atan(par4 / 40.0F) * 20.0F;
+        par0Minecraft.thePlayer.rotationYaw = (float) Math.atan(par4 / 40.0F) * 40.0F;
+        par0Minecraft.thePlayer.rotationPitch = -((float) Math.atan(par5 / 40.0F)) * 20.0F;
         par0Minecraft.thePlayer.rotationYawHead = par0Minecraft.thePlayer.rotationYaw;
         GL11.glTranslatef(0.0F, par0Minecraft.thePlayer.yOffset, 0.0F);
         RenderManager.instance.playerViewY = 180.0F;

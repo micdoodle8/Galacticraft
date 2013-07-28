@@ -220,7 +220,7 @@ public class GCCoreEvents
     {
         final boolean doGen = TerrainGen.populate(event.chunkProvider, event.world, event.rand, event.chunkX, event.chunkX, event.hasVillageGenerated, PopulateChunkEvent.Populate.EventType.CUSTOM);
 
-        if (!doGen || (GCCoreConfigManager.disableOilGen && event.world.provider.dimensionId == 0) || (!(event.world.provider instanceof IGalacticraftWorldProvider) && !Arrays.asList(GCCoreConfigManager.externalOilGen).contains(event.world.provider.dimensionId)))
+        if (!doGen || GCCoreConfigManager.disableOilGen && event.world.provider.dimensionId == 0 || !(event.world.provider instanceof IGalacticraftWorldProvider) && !Arrays.asList(GCCoreConfigManager.externalOilGen).contains(event.world.provider.dimensionId))
         {
             return;
         }

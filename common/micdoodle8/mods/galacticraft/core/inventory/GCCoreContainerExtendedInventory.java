@@ -45,13 +45,13 @@ public class GCCoreContainerExtendedInventory extends Container
     }
 
     @Override
-    public boolean canInteractWith (EntityPlayer var1)
+    public boolean canInteractWith(EntityPlayer var1)
     {
         return true;
     }
 
     @Override
-    public ItemStack transferStackInSlot (EntityPlayer player, int slotID)
+    public ItemStack transferStackInSlot(EntityPlayer player, int slotID)
     {
         return null;
     }

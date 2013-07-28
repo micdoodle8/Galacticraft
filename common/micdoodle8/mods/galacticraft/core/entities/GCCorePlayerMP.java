@@ -42,11 +42,9 @@ import cpw.mods.fml.relauncher.Side;
 public class GCCorePlayerMP extends EntityPlayerMP
 {
     private GCCoreInventoryExtended extendedInventory = new GCCoreInventoryExtended();
-    
+
     private int airRemaining;
     private int airRemaining2;
-
-    private boolean hasTank;
 
     private long tick;
 
@@ -138,7 +136,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
             {
                 this.getExtendedInventory().copyInventory(par1EntityPlayer.inventory);
             }
-            
+
             this.setSpaceStationDimensionID(((GCCorePlayerMP) par1EntityPlayer).getSpaceStationDimensionID());
         }
     }
@@ -181,9 +179,9 @@ public class GCCorePlayerMP extends EntityPlayerMP
         {
             this.fallDistance = 0.0F;
         }
-        
+
         this.checkCurrentItem();
-        
+
         if (!this.hasOpenedPlanetSelectionGui && this.openPlanetSelectionGuiCooldown == 1)
         {
             this.sendPlanetList();
@@ -211,9 +209,9 @@ public class GCCorePlayerMP extends EntityPlayerMP
             this.sendParachuteRemovalPacket();
             this.setUsingParachute(false);
         }
-        
+
         this.checkGear();
-        
+
         if (this.getChestSpawnCooldown() > 0)
         {
             this.setChestSpawnCooldown(this.getChestSpawnCooldown() - 1);
@@ -269,7 +267,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
             this.fallDistance = 0.0F;
         }
 
-        this.checkOxygen();        
+        this.checkOxygen();
 
         if (this.worldObj.provider instanceof IGalacticraftWorldProvider && (this.oxygenSetupValid != this.lastOxygenSetupValid || this.tick % 100 == 0))
         {
@@ -285,7 +283,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
         }
 
         this.throwMeteors();
-        
+
         if (this.worldObj.provider instanceof IGalacticraftWorldProvider || this.usingPlanetSelectionGui)
         {
             this.playerNetServerHandler.ticksForFloatKick = 0;
@@ -298,7 +296,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
         this.lastOnGround = this.onGround;
     }
-    
+
     private void updateStep()
     {
         if (this.worldObj != null && this.worldObj.provider instanceof GCMoonWorldProvider && !this.isAirBorne && this.ridingEntity == null)
@@ -398,7 +396,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
             }
         }
     }
-    
+
     private void checkCurrentItem()
     {
         if (this.worldObj.provider instanceof IGalacticraftWorldProvider && this.inventory.getCurrentItem() != null)
@@ -508,7 +506,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
             }
         }
     }
-    
+
     private void sendPlanetList()
     {
         HashMap<String, Integer> map = WorldUtil.getArrayOfPossibleDimensions(WorldUtil.getPossibleDimensionsForSpaceshipTier(this.getSpaceshipTier()), this);
@@ -524,7 +522,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
         this.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 2, new Object[] { this.username, temp }));
     }
-    
+
     private void checkGear()
     {
         this.maskInSlot = this.getExtendedInventory().getStackInSlot(0);
@@ -532,7 +530,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
         this.tankInSlot1 = this.getExtendedInventory().getStackInSlot(2);
         this.tankInSlot2 = this.getExtendedInventory().getStackInSlot(3);
         this.parachuteInSlot = this.getExtendedInventory().getStackInSlot(4);
-        
+
         if (this.maskInSlot != null && this.lastMaskInSlot == null && this.maskInSlot.getItem().itemID == GCCoreItems.oxygenMask.itemID)
         {
             this.sendGearUpdatePacket(EnumModelPacket.ADDMASK.getIndex());
@@ -554,9 +552,9 @@ public class GCCorePlayerMP extends EntityPlayerMP
         {
             this.sendGearUpdatePacket(EnumModelPacket.REMOVEGEAR.getIndex());
         }
-        
+
         //
-        
+
         if (this.tankInSlot1 != null && this.lastTankInSlot1 == null)
         {
             if (this.tankInSlot1.getItem().itemID == GCCoreItems.lightOxygenTank.itemID)
@@ -721,7 +719,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
         this.lastTankInSlot2 = this.getExtendedInventory().getStackInSlot(3);
         this.lastParachuteInSlot = this.getExtendedInventory().getStackInSlot(4);
     }
-    
+
     private void checkOxygen()
     {
         final ItemStack tankInSlot = this.getExtendedInventory().getStackInSlot(2);
@@ -832,7 +830,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
             this.oxygenSetupValid = true;
         }
     }
-    
+
     private void throwMeteors()
     {
         if (this.worldObj.provider instanceof IGalacticraftWorldProvider && FMLCommonHandler.instance().getEffectiveSide() != Side.CLIENT)
@@ -889,7 +887,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
             }
         }
     }
-    
+
     private void updateSchematics()
     {
         SchematicRegistry.addUnlockedPage(this, SchematicRegistry.getMatchingRecipeForID(0));
@@ -927,12 +925,12 @@ public class GCCorePlayerMP extends EntityPlayerMP
         {
             this.getExtendedInventory().readFromNBT(nbt.getTagList("ExtendedInventoryGC"));
         }
-        
+
         if (nbt.hasKey("SpaceshipTier"))
         {
             this.setSpaceshipTier(nbt.getInteger("SpaceshipTier"));
         }
-        
+
         this.setUsingParachute(nbt.getBoolean("usingParachute2"));
         this.usingPlanetSelectionGui = nbt.getBoolean("usingPlanetSelectionGui");
         this.setTeleportCooldown(nbt.getInteger("teleportCooldown"));
@@ -1106,12 +1104,12 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
     public double getCoordsTeleportedFromX()
     {
-        return coordsTeleportedFromX;
+        return this.coordsTeleportedFromX;
     }
 
     public double getCoordsTeleportedFromZ()
     {
-        return coordsTeleportedFromZ;
+        return this.coordsTeleportedFromZ;
     }
 
     public void setCoordsTeleportedFromX(double coords)
@@ -1126,12 +1124,12 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
     public ArrayList<ISchematicPage> getUnlockedSchematics()
     {
-        return unlockedSchematics;
+        return this.unlockedSchematics;
     }
 
     public int getSpaceStationDimensionID()
     {
-        return spaceStationDimensionID;
+        return this.spaceStationDimensionID;
     }
 
     public void setSpaceStationDimensionID(int spaceStationDimensionID)
@@ -1141,7 +1139,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
     public int getTeleportCooldown()
     {
-        return teleportCooldown;
+        return this.teleportCooldown;
     }
 
     public void setTeleportCooldown(int teleportCooldown)
@@ -1151,7 +1149,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
     public ItemStack[] getRocketStacks()
     {
-        return rocketStacks;
+        return this.rocketStacks;
     }
 
     public void setRocketStacks(ItemStack[] rocketStacks)
@@ -1161,7 +1159,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
     public boolean isTouchedGround()
     {
-        return touchedGround;
+        return this.touchedGround;
     }
 
     public void setTouchedGround(boolean touchedGround)
@@ -1171,7 +1169,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
     public int getRocketType()
     {
-        return rocketType;
+        return this.rocketType;
     }
 
     public void setRocketType(int rocketType)
@@ -1181,7 +1179,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
     public int getFuelDamage()
     {
-        return fuelDamage;
+        return this.fuelDamage;
     }
 
     public void setFuelDamage(int fuelDamage)
@@ -1191,7 +1189,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
     public int getChestSpawnCooldown()
     {
-        return chestSpawnCooldown;
+        return this.chestSpawnCooldown;
     }
 
     public void setChestSpawnCooldown(int chestSpawnCooldown)
@@ -1201,7 +1199,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
     public micdoodle8.mods.galacticraft.api.vector.Vector.Vector3 getChestSpawnVector()
     {
-        return chestSpawnVector;
+        return this.chestSpawnVector;
     }
 
     public void setChestSpawnVector(micdoodle8.mods.galacticraft.api.vector.Vector.Vector3 chestSpawnVector)
@@ -1211,7 +1209,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
     public GCCoreInventoryExtended getExtendedInventory()
     {
-        return extendedInventory;
+        return this.extendedInventory;
     }
 
     public void setExtendedInventory(GCCoreInventoryExtended extendedInventory)
@@ -1221,7 +1219,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
     public int getLaunchAttempts()
     {
-        return launchAttempts;
+        return this.launchAttempts;
     }
 
     public void setLaunchAttempts(int launchAttempts)
@@ -1231,7 +1229,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
     public int getChatCooldown()
     {
-        return chatCooldown;
+        return this.chatCooldown;
     }
 
     public void setChatCooldown(int chatCooldown)
@@ -1241,7 +1239,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
     public int getSpaceshipTier()
     {
-        return spaceshipTier;
+        return this.spaceshipTier;
     }
 
     public void setSpaceshipTier(int spaceshipTier)

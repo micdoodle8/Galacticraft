@@ -137,7 +137,6 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -199,7 +198,7 @@ public class ClientProxyCore extends CommonProxyCore
     public static EnumRarity galacticraftItem = EnumHelperClient.addRarity("GCRarity", 9, "Space");
 
     public static Map<String, String> capeMap = new HashMap<String, String>();
-    
+
     public static GCCoreInventoryExtended dummyInventory = new GCCoreInventoryExtended();
 
     @Override
@@ -776,7 +775,7 @@ public class ClientProxyCore extends CommonProxyCore
         }
         else if (ID == GCCoreConfigManager.idGuiExtendedInventory)
         {
-            return new GCCoreGuiExtendedInventory(player, dummyInventory);
+            return new GCCoreGuiExtendedInventory(player, ClientProxyCore.dummyInventory);
         }
         else
         {
@@ -845,22 +844,22 @@ public class ClientProxyCore extends CommonProxyCore
     }
 
     public static boolean addTabsNextTick = false;
-    
-    public static void addTabsToInventory (GuiContainer gui)
+
+    public static void addTabsToInventory(GuiContainer gui)
     {
         boolean tConstructLoaded = Loader.isModLoaded("TConstruct");
-        
+
         if (!ClientProxyCore.addTabsNextTick && tConstructLoaded)
         {
             ClientProxyCore.addTabsNextTick = true;
             return;
         }
-        
+
         if (gui.getClass() == GuiInventory.class)
         {
             int cornerX = gui.guiLeft;
             int cornerY = (gui.height - gui.ySize) / 2;
-            
+
             if (!tConstructLoaded)
             {
                 GCCoreInventoryTab tab = new GCCoreInventoryTabPlayer(4, cornerX + gui.buttonList.size() * 28, cornerY - 28, 0);
