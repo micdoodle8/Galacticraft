@@ -103,7 +103,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
     private ArrayList<ISchematicPage> unlockedSchematics = new ArrayList<ISchematicPage>();
     private ArrayList<ISchematicPage> lastUnlockedSchematics = new ArrayList<ISchematicPage>();
 
-    private GCCorePlayerMP(MinecraftServer server, World world, String username, ItemInWorldManager itemInWorldManager)
+    public GCCorePlayerMP(MinecraftServer server, World world, String username, ItemInWorldManager itemInWorldManager)
     {
         super(server, world, username, itemInWorldManager);
 
