@@ -61,7 +61,7 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
     {
         this(player.worldObj, player.posX, player.posY, player.posZ);
         this.playerSpawnedIn = player;
-        this.chestContents = player.rocketStacks;
+        this.chestContents = player.getRocketStacks();
     }
 
     @Override

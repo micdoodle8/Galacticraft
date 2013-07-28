@@ -323,8 +323,8 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
             {
                 if (!(this.worldObj.provider instanceof IOrbitDimension) && this.riddenByEntity != null && this.riddenByEntity instanceof GCCorePlayerMP)
                 {
-                    ((GCCorePlayerMP) this.riddenByEntity).coordsTeleportedFromX = this.riddenByEntity.posX;
-                    ((GCCorePlayerMP) this.riddenByEntity).coordsTeleportedFromZ = this.riddenByEntity.posZ;
+                    ((GCCorePlayerMP) this.riddenByEntity).setCoordsTeleportedFromX(this.riddenByEntity.posX);
+                    ((GCCorePlayerMP) this.riddenByEntity).setCoordsTeleportedFromZ(this.riddenByEntity.posZ);
                 }
 
                 int amountRemoved = 0;
@@ -554,7 +554,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
                 ((EntityPlayerMP) this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 13, toSend));
                 final Object[] toSend2 = { 0 };
                 ((EntityPlayerMP) par1EntityPlayer).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
-                ((GCCorePlayerMP) par1EntityPlayer).chatCooldown = 0;
+                ((GCCorePlayerMP) par1EntityPlayer).setChatCooldown(0);
                 par1EntityPlayer.mountEntity(null);
             }
 
@@ -568,7 +568,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
                 ((EntityPlayerMP) par1EntityPlayer).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 8, toSend));
                 final Object[] toSend2 = { 1 };
                 ((EntityPlayerMP) par1EntityPlayer).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
-                ((GCCorePlayerMP) par1EntityPlayer).chatCooldown = 0;
+                ((GCCorePlayerMP) par1EntityPlayer).setChatCooldown(0);
                 par1EntityPlayer.mountEntity(this);
             }
 
@@ -614,7 +614,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
                 }
 
                 player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 2, new Object[] { player.username, temp }));
-                player.spaceshipTier = this.getRocketTier();
+                player.setSpaceshipTier(this.getRocketTier());
                 player.setUsingPlanetGui();
 
                 this.onTeleport(player);

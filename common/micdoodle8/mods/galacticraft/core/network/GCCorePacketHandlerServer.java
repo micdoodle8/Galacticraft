@@ -104,7 +104,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
                         }
                     }
 
-                    playerBase.teleportCooldown = 300;
+                    playerBase.setTeleportCooldown(300);
                     final Object[] toSend = { player.username };
                     player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 12, toSend));
                 }
@@ -127,25 +127,25 @@ public class GCCorePacketHandlerServer implements IPacketHandler
 
                     if (playerBase != null)
                     {
-                        stack2 = playerBase.extendedInventory.getStackInSlot(4);
+                        stack2 = playerBase.getExtendedInventory().getStackInSlot(4);
                     }
 
-                    if (stack2 != null && stack2.getItem() instanceof GCCoreItemParachute || playerBase != null && playerBase.launchAttempts > 0)
+                    if (stack2 != null && stack2.getItem() instanceof GCCoreItemParachute || playerBase != null && playerBase.getLaunchAttempts() > 0)
                     {
                         ship.ignite();
-                        playerBase.launchAttempts = 0;
+                        playerBase.setLaunchAttempts(0);
                     }
-                    else if (playerBase.chatCooldown == 0 && playerBase.launchAttempts == 0)
+                    else if (playerBase.getChatCooldown() == 0 && playerBase.getLaunchAttempts() == 0)
                     {
                         player.sendChatToPlayer(ChatMessageComponent.func_111066_d("I don't have a parachute! If I press launch again, there's no going back!"));
-                        playerBase.chatCooldown = 250;
-                        playerBase.launchAttempts = 1;
+                        playerBase.setChatCooldown(250);
+                        playerBase.setLaunchAttempts(1);
                     }
                 }
-                else if (playerBase.chatCooldown == 0)
+                else if (playerBase.getChatCooldown() == 0)
                 {
                     player.sendChatToPlayer(ChatMessageComponent.func_111066_d("I'll need to load in some rocket fuel first!"));
-                    playerBase.chatCooldown = 250;
+                    playerBase.setChatCooldown(250);
                 }
             }
         }
@@ -273,7 +273,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
             final Class[] decodeAs = { Integer.class };
             final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
 
-            if (playerBase.spaceStationDimensionID == -1 || playerBase.spaceStationDimensionID == 0)
+            if (playerBase.getSpaceStationDimensionID() == -1 || playerBase.getSpaceStationDimensionID() == 0)
             {
                 WorldUtil.bindSpaceStationToNewDimension(playerBase.worldObj, playerBase);
 
@@ -355,10 +355,10 @@ public class GCCorePacketHandlerServer implements IPacketHandler
             final Class[] decodeAs = { Integer.class };
             final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
 
-            if (playerBase.chatCooldown == 0)
+            if (playerBase.getChatCooldown() == 0)
             {
                 player.sendChatToPlayer(ChatMessageComponent.func_111066_d("I'll probably need a Tier " + packetReadout[0] + " Dungeon key to unlock this!"));
-                playerBase.chatCooldown = 100;
+                playerBase.setChatCooldown(100);
             }
         }
         else if (packetType == 19)

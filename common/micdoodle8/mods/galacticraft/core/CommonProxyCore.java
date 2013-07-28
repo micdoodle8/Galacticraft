@@ -187,11 +187,11 @@ public class CommonProxyCore extends BCGuiHandler implements IGuiHandler
         }
         else if (ID == GCCoreConfigManager.idGuiExtendedInventory)
         {
-            return new GCCoreContainerExtendedInventory(player, playerBase.extendedInventory);
+            return new GCCoreContainerExtendedInventory(player, playerBase.getExtendedInventory());
         }
         else
         {
-            for (final ISchematicPage page : playerBase.unlockedSchematics)
+            for (final ISchematicPage page : playerBase.getUnlockedSchematics())
             {
                 if (ID == page.getGuiID())
                 {

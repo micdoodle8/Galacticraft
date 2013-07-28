@@ -22,7 +22,7 @@ public class GCCoreOverworldTeleportType implements ITeleportType
     {
         if (player instanceof GCCorePlayerMP)
         {
-            return new Vector3(((GCCorePlayerMP) player).coordsTeleportedFromX, 250.0, ((GCCorePlayerMP) player).coordsTeleportedFromZ);
+            return new Vector3(((GCCorePlayerMP) player).getCoordsTeleportedFromX(), 250.0, ((GCCorePlayerMP) player).getCoordsTeleportedFromZ());
         }
 
         return null;

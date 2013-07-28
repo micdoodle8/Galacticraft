@@ -26,7 +26,7 @@ public class GCMoonTeleportType implements ITeleportType
     {
         if (player instanceof GCCorePlayerMP)
         {
-            return new Vector3(((GCCorePlayerMP) player).coordsTeleportedFromX, GCCoreConfigManager.disableLander ? 250.0 : 900.0, ((GCCorePlayerMP) player).coordsTeleportedFromZ);
+            return new Vector3(((GCCorePlayerMP) player).getCoordsTeleportedFromX(), GCCoreConfigManager.disableLander ? 250.0 : 900.0, ((GCCorePlayerMP) player).getCoordsTeleportedFromZ());
         }
 
         return null;
@@ -54,7 +54,7 @@ public class GCMoonTeleportType implements ITeleportType
     @Override
     public void onSpaceDimensionChanged(World newWorld, EntityPlayerMP player)
     {
-        if (!GCCoreConfigManager.disableLander && player instanceof GCCorePlayerMP && ((GCCorePlayerMP) player).teleportCooldown <= 0)
+        if (!GCCoreConfigManager.disableLander && player instanceof GCCorePlayerMP && ((GCCorePlayerMP) player).getTeleportCooldown() <= 0)
         {
             final GCCorePlayerMP gcPlayer = (GCCorePlayerMP) player;
 
@@ -74,7 +74,7 @@ public class GCMoonTeleportType implements ITeleportType
             final Object[] toSend2 = { 1 };
             gcPlayer.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
 
-            gcPlayer.teleportCooldown = 10;
+            gcPlayer.setTeleportCooldown(10);
         }
     }
 }

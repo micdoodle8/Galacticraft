@@ -276,14 +276,14 @@ public class GCCoreEvents
     {
         GCCorePlayerMP player = (GCCorePlayerMP) event.player;
 
-        if (!player.unlockedSchematics.contains(event.page))
+        if (!player.getUnlockedSchematics().contains(event.page))
         {
-            player.unlockedSchematics.add(event.page);
-            Collections.sort(player.unlockedSchematics);
+            player.getUnlockedSchematics().add(event.page);
+            Collections.sort(player.getUnlockedSchematics());
 
             if (player != null && player.playerNetServerHandler != null)
             {
-                player.playerNetServerHandler.sendPacketToPlayer(GCCorePacketSchematicList.buildSchematicListPacket(player.unlockedSchematics));
+                player.playerNetServerHandler.sendPacketToPlayer(GCCorePacketSchematicList.buildSchematicListPacket(player.getUnlockedSchematics()));
             }
         }
     }

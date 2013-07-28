@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -187,5 +188,13 @@ public class GCCoreInventoryExtended implements IInventory
         }
 
         return tagList;
+    }
+    
+    public void copyInventory(InventoryPlayer par1InventoryPlayer)
+    {
+        for (int i = 0; i < this.inventoryStacks.length; ++i)
+        {
+            this.inventoryStacks[i] = ItemStack.copyItemStack(par1InventoryPlayer.mainInventory[i]);
+        }
     }
 }

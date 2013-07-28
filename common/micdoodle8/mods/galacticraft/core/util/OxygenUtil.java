@@ -134,7 +134,7 @@ public class OxygenUtil
     {
         boolean missingComponent = false;
 
-        if (player.extendedInventory.getStackInSlot(0) == null || !OxygenUtil.isItemValidForPlayerTankInv(0, player.extendedInventory.getStackInSlot(0)))
+        if (player.getExtendedInventory().getStackInSlot(0) == null || !OxygenUtil.isItemValidForPlayerTankInv(0, player.getExtendedInventory().getStackInSlot(0)))
         {
             boolean handled = false;
 
@@ -160,7 +160,7 @@ public class OxygenUtil
             }
         }
 
-        if (player.extendedInventory.getStackInSlot(1) == null || !OxygenUtil.isItemValidForPlayerTankInv(1, player.extendedInventory.getStackInSlot(1)))
+        if (player.getExtendedInventory().getStackInSlot(1) == null || !OxygenUtil.isItemValidForPlayerTankInv(1, player.getExtendedInventory().getStackInSlot(1)))
         {
             boolean handled = false;
 
@@ -186,7 +186,7 @@ public class OxygenUtil
             }
         }
 
-        if ((player.extendedInventory.getStackInSlot(2) == null || !OxygenUtil.isItemValidForPlayerTankInv(2, player.extendedInventory.getStackInSlot(2))) && (player.extendedInventory.getStackInSlot(3) == null || !OxygenUtil.isItemValidForPlayerTankInv(3, player.extendedInventory.getStackInSlot(3))))
+        if ((player.getExtendedInventory().getStackInSlot(2) == null || !OxygenUtil.isItemValidForPlayerTankInv(2, player.getExtendedInventory().getStackInSlot(2))) && (player.getExtendedInventory().getStackInSlot(3) == null || !OxygenUtil.isItemValidForPlayerTankInv(3, player.getExtendedInventory().getStackInSlot(3))))
         {
             boolean handled = false;
 

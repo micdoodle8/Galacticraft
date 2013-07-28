@@ -93,7 +93,7 @@ public class WorldUtil
                 }
                 else if (eLiving instanceof GCCorePlayerMP)
                 {
-                    return ((GCCorePlayerMP) eLiving).touchedGround ? 0.08D - customProvider.getGravity() : 0.08D;
+                    return ((GCCorePlayerMP) eLiving).isTouchedGround() ? 0.08D - customProvider.getGravity() : 0.08D;
                 }
                 else
                 {
@@ -591,7 +591,7 @@ public class WorldUtil
     {
         final int newID = DimensionManager.getNextFreeDimId();
         final GCCoreSpaceStationData data = WorldUtil.createSpaceStation(var0, newID, player);
-        player.spaceStationDimensionID = newID;
+        player.setSpaceStationDimensionID(newID);
         player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 18, new Object[] { newID }));
         return data;
     }
@@ -779,7 +779,7 @@ public class WorldUtil
 
             if (type.useParachute())
             {
-                var8.setParachute(true);
+                var8.setUsingParachute(true);
             }
         }
 
@@ -813,39 +813,39 @@ public class WorldUtil
         {
             var8 = (GCCorePlayerMP) var1;
 
-            if (var8.rocketStacks != null && var8.rocketStacks.length > 0)
+            if (var8.getRocketStacks() != null && var8.getRocketStacks().length > 0)
             {
-                for (int i = 0; i < var8.rocketStacks.length; i++)
+                for (int i = 0; i < var8.getRocketStacks().length; i++)
                 {
                     if (transferInv)
                     {
-                        if (var8.rocketStacks[i] == null)
+                        if (var8.getRocketStacks()[i] == null)
                         {
-                            if (i == var8.rocketStacks.length - 1)
+                            if (i == var8.getRocketStacks().length - 1)
                             {
-                                var8.rocketStacks[i] = new ItemStack(GCCoreItems.spaceship, 1, var8.rocketType);
+                                var8.getRocketStacks()[i] = new ItemStack(GCCoreItems.spaceship, 1, var8.getRocketType());
                             }
-                            else if (i == var8.rocketStacks.length - 2)
+                            else if (i == var8.getRocketStacks().length - 2)
                             {
-                                var8.rocketStacks[i] = new ItemStack(GCCoreBlocks.landingPad, 9, 0);
+                                var8.getRocketStacks()[i] = new ItemStack(GCCoreBlocks.landingPad, 9, 0);
                             }
-                            else if (i == var8.rocketStacks.length - 3)
+                            else if (i == var8.getRocketStacks().length - 3)
                             {
-                                var8.rocketStacks[i] = new ItemStack(GCCoreItems.fuelCanister, 1, var8.fuelDamage);
+                                var8.getRocketStacks()[i] = new ItemStack(GCCoreItems.fuelCanister, 1, var8.getFuelDamage());
                             }
                         }
                     }
                     else
                     {
-                        var8.rocketStacks[i] = null;
+                        var8.getRocketStacks()[i] = null;
                     }
                 }
             }
 
-            if (transferInv && var8.chestSpawnCooldown == 0)
+            if (transferInv && var8.getChestSpawnCooldown() == 0)
             {
-                var8.chestSpawnVector = type.getParaChestSpawnLocation((WorldServer) var1.worldObj, var8, new Random());
-                var8.chestSpawnCooldown = 200;
+                var8.setChestSpawnVector(type.getParaChestSpawnLocation((WorldServer) var1.worldObj, var8, new Random()));
+                var8.setChestSpawnCooldown(200);
             }
         }
 
