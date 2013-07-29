@@ -47,11 +47,14 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
+import net.minecraft.world.WorldProviderSurface;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 import universalelectricity.core.vector.Vector3;
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -173,6 +176,36 @@ public class WorldUtil
     public static float getColorBlue(World world)
     {
         return (float) WorldUtil.getWorldColor(world).z;
+    }
+    
+    public static Vec3 getFogColorHook(World world)
+    {
+        if (world.provider instanceof WorldProviderSurface && FMLClientHandler.instance().getClient().thePlayer.posY >= 200)
+        {
+            float var20 = (float) (FMLClientHandler.instance().getClient().thePlayer.posY - 200.0F) / 1000.0F;
+            final float var21 = Math.max(1.0F - var20 * 4.0F, 0.0F);
+            
+            Vec3 vec = world.getFogColor(1.0F);
+            
+            return Vec3.createVectorHelper(vec.xCoord * var21, vec.yCoord * var21, vec.zCoord * var21);
+        }
+        
+        return world.getFogColor(1.0F);
+    }
+    
+    public static Vec3 getSkyColorHook(World world)
+    {
+        if (world.provider instanceof WorldProviderSurface && FMLClientHandler.instance().getClient().thePlayer.posY >= 200)
+        {
+            float var20 = (float) (FMLClientHandler.instance().getClient().thePlayer.posY - 200.0F) / 1000.0F;
+            final float var21 = Math.max(1.0F - var20 * 2.0F, 0.0F);
+            
+            Vec3 vec = world.getSkyColor(FMLClientHandler.instance().getClient().renderViewEntity, 1.0F);
+            
+            return Vec3.createVectorHelper(vec.xCoord * var21, vec.yCoord * var21, vec.zCoord * var21);
+        }
+        
+        return world.getSkyColor(FMLClientHandler.instance().getClient().renderViewEntity, 1.0F);
     }
 
     public static boolean generateChestContents(World var1, Random var2, int var3, int var4, int var5)
