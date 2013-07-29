@@ -5,8 +5,8 @@ item.oxygenTankLightFull.name=Kleiner Sauerstofftank
 item.oxygenTankLightEmpty.name=Leerer kleiner Sauerstofftank
 item.oxygenTankMedFull.name=Mittlerer Sauerstofftank
 item.oxygenTankMedEmpty.name=Leerer mittlerer Sauerstofftank
-item.oxygenTankHeavyFull.name=Groﬂer Sauerstofftank
-item.oxygenTankHeavyEmpty.name=Leerer groﬂer Sauerstofftank
+item.oxygenTankHeavyFull.name=Grosser Sauerstofftank
+item.oxygenTankHeavyEmpty.name=Leerer grosser Sauerstofftank
 item.oxygenMask.name=Sauerstoffmaske
 item.spaceship.name=Rakete
 item.sensorGlasses.name=Sensorbrille
@@ -65,12 +65,12 @@ item.fuelCanisterPartial.name=Teils voller Treibstoffkanister
 item.oilCanister.name=Voller Oelkanister
 item.fuelCanister.name=Voller Oelkanister
 item.oilExtractor.name=Tragbarer Oelextraktor
-item.schematic.name=NASA Workbench Schematic
-item.fuel.name=Rocket Fuel
-item.key.T1.name=Tier 1 Dungeon Key
-item.buggymat.wheel.name=Buggy Wheel
-item.buggymat.seat.name=Buggy Seat
-item.buggymat.storage.name=Buggy Storage Box
+item.schematic.name=NASA-Werkbank-Schema
+item.fuel.name=Raketentreibstoff
+item.key.T1.name=Stufe-1-Dungeonschl√ºssel
+item.buggymat.wheel.name=Buggy-Rad
+item.buggymat.seat.name=Buggy-Sitz
+item.buggymat.storage.name=Buggy-Lagerbox
 
 # TOOLS
 item.steel_pickaxe.name=Stahlspitzhacke
@@ -104,38 +104,38 @@ tile.crudeOilMoving.name=Rohoel
 tile.refinery.name=Raffinerie
 tile.fuelLoader.name=Treibstofflader
 tile.oxygenCompressor.name=Sauerstoffkompressor
-tile.sapling2.oak.name=Eichenschoessling
-tile.sapling2.spruce.name=Fichtenschoessling
-tile.sapling2.birch.name=Birkenschoessling
-tile.sapling2.jungle.name=Tropenbaumschoessling
-tile.sealer.name=Oxygen Sealer
-tile.enclosed.copperWire.name=Sealable Copper Wire
-tile.enclosed.oxygenPipe.name=Sealable Oxygen Pipe
-tile.oxygenDetector.name=Oxygen Detector
-tile.cargo.loader.name=Cargo Loader
-tile.cargo.unloader.name=Cargo Unloader
-tile.landingPad.buggyFueler.name=Buggy Fueling Pad
-tile.landingPad.cargoPad.name=Cargo Rocket Pad
+tile.sapling2.oak.name=Eichensetzling
+tile.sapling2.spruce.name=Fichtensetzling
+tile.sapling2.birch.name=Birkensetzling
+tile.sapling2.jungle.name=Tropenbaumsetzling
+tile.sealer.name=Sauerstoff-Versiegeler
+tile.enclosed.copperWire.name=Versiegelbares Kupferkabel
+tile.enclosed.oxygenPipe.name=Versiegelbares Sauerstoffrohr
+tile.oxygenDetector.name=Sauerstoff-Detektor
+tile.cargo.loader.name=Carg-Lader
+tile.cargo.unloader.name=Cargo-Entlader
+tile.landingPad.buggyFueler.name=Buggy-Betankungsplatz
+tile.landingPad.cargoPad.name=Cargo-Raketenplatz
 
 # ENTITIES
-entity.GalacticraftCore.EvolvedSpider.name=Evolved Spider
-entity.GalacticraftCore.EvolvedZombie.name=Evolved Zombie
-entity.GalacticraftCore.EvolvedCreeper.name=Evolved Creeper
-entity.GalacticraftCore.EvolvedSkeleton.name=Evolved Skeleton
-entity.GalacticraftCore.EvolvedSkeletonBoss.name=Evolved Skeleton Boss
-entity.GalacticraftCore.AlienVillager.name=Alien Villager
+entity.GalacticraftCore.EvolvedSpider.name=Entwickelte Spinne
+entity.GalacticraftCore.EvolvedZombie.name=Entwickelter Zombie
+entity.GalacticraftCore.EvolvedCreeper.name=Entwickelter Creeper
+entity.GalacticraftCore.EvolvedSkeleton.name=Entwickeltes Skelett
+entity.GalacticraftCore.EvolvedSkeletonBoss.name=Entwickelter Skelett-Boss
+entity.GalacticraftCore.AlienVillager.name=Alien-Dorfbewohner
 entity.GalacticraftCore.Spaceship.name=Raumschiff
-entity.GalacticraftCore.GravityArrow.name=Arrow
+entity.GalacticraftCore.GravityArrow.name=Pfeil
 entity.GalacticraftCore.Meteor.name=Meteor
 entity.GalacticraftCore.Buggy.name=Buggy
-entity.GalacticraftCore.Flag.name=Flag
-entity.GalacticraftCore.ParaChest.name=Parachest
-entity.GalacticraftCore.OxygenBubble.name=Oxygen Bubble
-entity.GalacticraftCore.Lander.name=Space Lander
+entity.GalacticraftCore.Flag.name=Flagge
+entity.GalacticraftCore.ParaChest.name=Parakiste
+entity.GalacticraftCore.OxygenBubble.name=Sauerstoffblase
+entity.GalacticraftCore.Lander.name=Weltraum-Lander
 
 # Schematics
-schematic.moonbuggy.name=Moon Buggy
-schematic.rocketT2.name=Tier 2 Rocket
+schematic.moonbuggy.name=Mond-Buggy
+schematic.rocketT2.name=Stufe-2-Rakete
 
 # DEATH MESSAGES
 death.attack.spaceshipExplosion=%1$ss Rakete hat nicht richtig funktioniert!
@@ -153,12 +153,12 @@ message.button2.name=Load Basic Components
 message.button3.name=Ignore
 message.button4.name=Do not show again
 newversion.message1.name=\u00a77New \u00a73Galacticraft \u00a77version available! v
-newversion.message2.name=New Galacticraft version available! v
+newversion.message2.name=Eine neue Version von Galacticraft ist verf√ºgbar! v
 newversion.failed.name=Galacticraft update check failed! Trying again in 15 seconds
 newversion.success.name=Galacticraft remote version found:
 
 # KEYBINDINGS
-keybind.map.name=[GC] Galaxy Map
+keybind.map.name=[GC] Galaxie-Karte
 keybind.spaceshipinv.name=[GC] Open Spaceship Inventory
 keybind.sensortoggle.name=[GC] Toggle Sensor Goggles Mode
 keybind.vehicleforward.name=[GC] Vehicle Forward Key
@@ -172,30 +172,30 @@ keybind.vehicledown.name=[GC] Vehicle Down Key
 itemGroup.GalacticraftCore=Galacticraft
 
 # GUI
-container.cargoloader.name=Cargo Loader
-container.cargounloader.name=Cargo Unloader
-container.fuelloader.name=Fuel Loader
-container.oxygencollector.name=Oxygen Collector
-container.oxygencompressor.name=Oxygen Compressor
-container.oxygendistributor.name=Oxygen Distributor
-container.oxygensealer.name=Oxygen Sealer
-container.parachest.name=Para-chest
-container.refinery.name=Refinery
-container.treasurechest.name=Treasure Chest
-container.lander.name=Space Lander
-container.spaceship.name=Tier 1 Rocket
+container.cargoloader.name=Cargo-Lader
+container.cargounloader.name=Cargo-Entlader
+container.fuelloader.name=Treibstofflader
+container.oxygencollector.name=Sauerstoffsammler
+container.oxygencompressor.name=Sauerstoffkompressor
+container.oxygendistributor.name=Sauerstoffverteiler
+container.oxygensealer.name=Sauerstoff-Versiegeler
+container.parachest.name=Parakiste
+container.refinery.name=Raffinerie
+container.treasurechest.name=Schatztruhe
+container.lander.name=Weltraum-Lander
+container.spaceship.name=Stufe-1-Rakete
 
 gui.message.out.name=Out
 gui.message.in.name=In
 gui.message.status.name=Status
-gui.message.oxoutput.name=Oxygen Output
-gui.message.oxinput.name=Oxygen Input
-gui.message.fuel.name=Fuel
-gui.message.full.name=full
-gui.message.page.name=Page
+gui.message.oxoutput.name=Sauerstoff-Output
+gui.message.oxinput.name=-Sauerstoff-Input
+gui.message.fuel.name=Treibstoff
+gui.message.full.name=voll
+gui.message.page.name=Seite
 gui.message.addnewsch.name=Add New Schematic
 
-gui.status.active.name=Active
+gui.status.active.name=Aktiv
 gui.status.missingleaves.name=Not Enough Leaf Blocks
 gui.status.missingpower.name=Not Enough Power
 gui.status.missingoxygen.name=Not Enough Oxygen
@@ -253,12 +253,12 @@ gui.galaxymap.select.name=Mouse 1 - Select Planet
 gui.galaxymap.exit.name=Esc - Exit Map
 
 gui.buggy.turn.name=Turn left-right
-gui.buggy.accel.name=Accelerate
-gui.buggy.decel.name=Decelerate
-gui.buggy.inv.name=Inventory / Fuel
+gui.buggy.accel.name=Beschleunigen
+gui.buggy.decel.name=Verlangsamen
+gui.buggy.inv.name=Inventar / Treibstoff
 
 # DIMENSIONS
 dimension.Overworld.name=Overworld
-dimension.Sun.name=Sun
+dimension.Sun.name=Sonne
 
 # </file>
