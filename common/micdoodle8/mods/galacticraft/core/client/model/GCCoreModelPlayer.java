@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.model;
 
+import java.lang.reflect.Method;
 import java.util.List;
 import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
@@ -20,6 +21,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.Loader;
 
 public class GCCoreModelPlayer extends ModelBiped
 {
@@ -43,6 +45,13 @@ public class GCCoreModelPlayer extends ModelBiped
     boolean wearingRightTankRed = false;
     boolean wearingRightTankOrange = false;
     boolean wearingRightTankGreen = false;
+    
+    private static boolean crossbowModLoaded = false;
+    
+    static
+    {
+        crossbowModLoaded = Loader.isModLoaded("CrossbowMod2");
+    }
 
     public GCCoreModelPlayer(float var1)
     {
@@ -775,16 +784,23 @@ public class GCCoreModelPlayer extends ModelBiped
                 }
             }
         }
+        
+        if (crossbowModLoaded)
+        {
+            try
+            {
+                Class<?> c = Class.forName("micdoodle8.mods.crossbowmod.client.ClientProxy");
+                
+                Method m = c.getMethod("bipedRotationHook", ModelBiped.class, Entity.class, float.class);
+                
+                m.invoke(null, this, par7Entity, par3);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
     }
-
-    // @Override
-    // public void setRotationAngles(float var1, float var2, float var3, float
-    // var4, float var5, float var6, Entity var7)
-    // {
-
-    //
-    // super.afterSetRotationAngles(var1, var2, var3, var4, var5, var6, var7);
-    // }
 
     @Override
     public void renderCloak(float var1)
