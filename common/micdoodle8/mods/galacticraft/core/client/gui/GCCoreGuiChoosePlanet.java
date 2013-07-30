@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import micdoodle8.mods.galacticraft.api.event.client.GCCoreEventChoosePlanetGui.Init;
 import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
 import micdoodle8.mods.galacticraft.core.GCLog;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -27,6 +28,7 @@ import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldProvider;
+import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -159,6 +161,10 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
             this.renameSpaceStationButton = new GuiSmallButton(3, this.width - 200, this.height - 26, 80, 20, LanguageRegistry.instance().getStringLocalization("gui.button.rename.name"));
             this.buttonList.add(this.renameSpaceStationButton);
         }
+
+        Init event = new Init(new ArrayList<GuiButton>());
+        MinecraftForge.EVENT_BUS.post(event);
+        this.buttonList.addAll(event.buttonList);
 
         this.planetSlots.registerScrollButtons(2, 3);
     }

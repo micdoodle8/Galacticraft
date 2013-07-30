@@ -1,10 +1,14 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
+import java.util.ArrayList;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
+import micdoodle8.mods.galacticraft.api.event.client.GCCoreEventChoosePlanetGui.SlotClicked;
 import micdoodle8.mods.galacticraft.api.world.ICelestialBody;
 import micdoodle8.mods.galacticraft.api.world.ICelestialBodyRenderer;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiSlot;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.registry.LanguageRegistry;
@@ -34,11 +38,20 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
         return GCCoreGuiChoosePlanet.getDestinations(this.choosePlanetGui).length;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     protected void elementClicked(int par1, boolean par2)
     {
         if (par1 < GCCoreGuiChoosePlanet.getDestinations(this.choosePlanetGui).length)
         {
+            if (par1 != this.choosePlanetGui.selectedSlot)
+            {
+                SlotClicked event = new SlotClicked(new ArrayList<GuiButton>(), this);
+                MinecraftForge.EVENT_BUS.post(event);
+                
+                this.choosePlanetGui.buttonList.addAll(event.buttonList);
+            }
+            
             GCCoreGuiChoosePlanet.setSelectedDimension(this.choosePlanetGui, par1);
         }
 
