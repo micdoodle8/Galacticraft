@@ -3,6 +3,8 @@ package micdoodle8.mods.galacticraft.moon.wgen.dungeon;
 import java.util.ArrayList;
 import java.util.Random;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.wgen.dungeon.GCCoreDungeonBoundingBox;
 import micdoodle8.mods.galacticraft.core.wgen.dungeon.GCCoreDungeonRoom;
 import micdoodle8.mods.galacticraft.core.wgen.dungeon.GCCoreMapGenDungeon;
@@ -11,6 +13,8 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.WeightedRandomChestContent;
+import net.minecraftforge.common.ChestGenHooks;
 
 public class GCMoonRoomTreasure extends GCCoreDungeonRoom
 {
@@ -86,20 +90,27 @@ public class GCMoonRoomTreasure extends GCCoreDungeonRoom
         for (final ChunkCoordinates chestCoords : this.chests)
         {
             final TileEntity chest = this.worldObj.getBlockTileEntity(chestCoords.posX, chestCoords.posY, chestCoords.posZ);
-            if (chest != null && chest instanceof IInventory)
+            if (chest != null && chest instanceof GCCoreTileEntityTreasureChest)
             {
-                final int amountOfGoodies = rand.nextInt(5) + 2;
-                for (int i = 0; i < amountOfGoodies; i++)
-                {
-                    ((IInventory) chest).setInventorySlotContents(rand.nextInt(((IInventory) chest).getSizeInventory()), this.getLoot(rand));
-                }
+                ChestGenHooks info = ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST);
+                
+                WeightedRandomChestContent.generateChestContents(rand, info.getItems(rand), (GCCoreTileEntityTreasureChest) chest, info.getCount(rand));
+                
+                ((GCCoreTileEntityTreasureChest) chest).setInventorySlotContents(rand.nextInt(((GCCoreTileEntityTreasureChest) chest).getSizeInventory()), this.getGuaranteedLoot(rand));
             }
         }
     }
 
-    private ItemStack getLoot(Random rand)
+    public ItemStack getGuaranteedLoot(Random rand)
     {
+        switch (rand.nextInt(2))
+        {
+        case 0:
+            return new ItemStack(GCCoreItems.schematic, 1, 0);
+        case 1:
+            return new ItemStack(GCCoreItems.schematic, 1, 1);
+        }
+
         return null;
     }
-
 }

@@ -5,12 +5,11 @@ import java.util.Random;
 import micdoodle8.mods.galacticraft.core.wgen.dungeon.GCCoreDungeonBoundingBox;
 import micdoodle8.mods.galacticraft.core.wgen.dungeon.GCCoreDungeonRoom;
 import micdoodle8.mods.galacticraft.core.wgen.dungeon.GCCoreMapGenDungeon;
-import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
 import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.WeightedRandomChestContent;
+import net.minecraftforge.common.ChestGenHooks;
 
 public class GCMoonRoomChests extends GCCoreDungeonRoom
 {
@@ -79,38 +78,12 @@ public class GCMoonRoomChests extends GCCoreDungeonRoom
         for (final ChunkCoordinates chestCoords : this.chests)
         {
             final TileEntityChest chest = (TileEntityChest) this.worldObj.getBlockTileEntity(chestCoords.posX, chestCoords.posY, chestCoords.posZ);
+            
             if (chest != null)
             {
-                final int amountOfGoodies = rand.nextInt(5) + 2;
-                for (int i = 0; i < amountOfGoodies; i++)
-                {
-                    chest.setInventorySlotContents(rand.nextInt(chest.getSizeInventory()), this.getLoot(rand));
-                }
+                ChestGenHooks info = ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST);
+                WeightedRandomChestContent.generateChestContents(rand, info.getItems(rand), chest, info.getCount(rand));
             }
         }
-    }
-
-    private ItemStack getLoot(Random rand)
-    {
-        if (rand.nextInt(27) < 5)
-        {
-            int r = rand.nextInt(5);
-
-            switch (r)
-            {
-            case 0:
-                return new ItemStack(Item.appleRed, 1, 0);
-            case 1:
-                return new ItemStack(Item.ingotIron, rand.nextInt(8) + 2, 0);
-            case 2:
-                return new ItemStack(Item.arrow, rand.nextInt(14) + 2, 0);
-            case 3:
-                return new ItemStack(GCMoonItems.meteoricIronRaw, 1 + rand.nextInt(2), 0);
-            case 4:
-                return new ItemStack(Item.bucketWater, rand.nextInt(2) + 1, 0);
-            }
-        }
-
-        return null;
     }
 }

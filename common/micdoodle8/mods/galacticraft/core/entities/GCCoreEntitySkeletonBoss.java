@@ -22,14 +22,12 @@ import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -39,7 +37,9 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ChestGenHooks;
 import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
@@ -55,7 +55,7 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
 {
     protected long ticks = 0;
     private static final ItemStack defaultHeldItem = new ItemStack(Item.bow, 1);
-    private static final AttributeModifier skeleBossEnrage = new AttributeModifier("Drinking speed penalty", 0.15D, 0).func_111168_a(false);
+//    private static final AttributeModifier skeleBossEnrage = new AttributeModifier("Drinking speed penalty", 0.15D, 0).func_111168_a(false);
     private GCCoreTileEntityDungeonSpawner spawner;
 
     public int throwTimer;
@@ -103,15 +103,6 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
         this.roomCoords = coords;
         this.roomSize = size;
     }
-
-    // @Override
-    // public boolean attackEntityFrom(DamageSource par1DamageSource, float
-    // par2)
-    // {
-    // // PacketManager.sendPacketToClients(this.getDescriptionPacket(),
-    // this.worldObj, new Vector3(this), 100);
-    // return super.attackEntityFrom(par1DamageSource, par2);
-    // }
 
     @Override
     public void updateRiderPosition()
@@ -180,6 +171,7 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
         return "";
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     protected void onDeathUpdate()
     {
@@ -226,7 +218,7 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
 
         if (this.deathTicks == 200 && !this.worldObj.isRemote)
         {
-            i = 80;
+            i = 20;
 
             while (i > 0)
             {
@@ -244,39 +236,18 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
                     final double d5 = tile.zCoord + 0.5D - this.posZ;
                     final double dSq = d3 * d3 + d4 * d4 + d5 * d5;
 
-                    if (dSq < Math.pow(75.0D, 2))
+                    if (dSq < Math.pow(100.0D, 2))
                     {
-                        final int amountOfGoodies = 3;
-
                         if (!((GCCoreTileEntityTreasureChest) tile).locked)
                         {
                             ((GCCoreTileEntityTreasureChest) tile).locked = true;
                         }
-
-                        for (int gg = 0; gg < amountOfGoodies; gg++)
-                        {
-                            int attempts = 0;
-                            for (int r = this.rand.nextInt(((IInventory) tile).getSizeInventory()); attempts < 200; this.rand.nextInt(((IInventory) tile).getSizeInventory()))
-                            {
-                                if (((IInventory) tile).getStackInSlot(r) == null)
-                                {
-                                    if (this.getGuaranteedLoot(gg, this.rand) != null)
-                                    {
-                                        ((IInventory) tile).setInventorySlotContents(r, this.getGuaranteedLoot(gg, this.rand));
-                                        r = this.rand.nextInt(((IInventory) tile).getSizeInventory());
-                                    }
-                                    else
-                                    {
-                                        ((IInventory) tile).setInventorySlotContents(r, this.getLoot(this.rand));
-                                        r = this.rand.nextInt(((IInventory) tile).getSizeInventory());
-                                    }
-
-                                    break;
-                                }
-
-                                attempts++;
-                            }
-                        }
+                        
+                        ChestGenHooks info = ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST);
+                        
+                        WeightedRandomChestContent.generateChestContents(rand, info.getItems(rand), (GCCoreTileEntityTreasureChest) tile, info.getCount(rand));
+                        
+                        ((GCCoreTileEntityTreasureChest) tile).setInventorySlotContents(rand.nextInt(((GCCoreTileEntityTreasureChest) tile).getSizeInventory()), this.getGuaranteedLoot(rand));
 
                         break;
                     }
@@ -345,39 +316,26 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
             {
                 this.getNavigator().getPathToEntityLiving(player);
                 this.targetEntity = player;
-                // this.getNavigator().setPath(pathentity, this.health >= 75.0 ?
-                // 0.2F : 0.35F);
-                // this.moveSpeed = 0.3F + (this.health >= this.getMaxHealth() /
-                // 2 ? 0.1F : 1.0F);
             }
         }
         else
         {
             this.targetEntity = null;
-            // this.moveSpeed = 0.0F;
         }
 
-        // if (this.targetEntity != null)
-        // {
-        // this.getNavigator().tryMoveToEntityLiving(this.targetEntity, 0.3F +
-        // (this.func_110143_aJ() <= (150.0F *
-        // GCCoreConfigManager.dungeonBossHealthMod) / 2 ? 0.1F : 1.0F));
-        // }
-
-        final Vector3 thisVec = new Vector3(this);
-        final List l = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getBoundingBox(thisVec.x - 10, thisVec.y - 10, thisVec.z - 10, thisVec.x + 10, thisVec.y + 10, thisVec.z + 10));
-
-        for (final Entity e : (List<Entity>) l)
-        {
-            if (e instanceof GCCoreEntitySkeletonBoss)
-            {
-                // if (((GCCoreEntitySkeletonBoss) e).getHealth() >=
-                // this.health)
-                // {
-                // ((GCCoreEntitySkeletonBoss) e).setDead();
-                // }
-            }
-        }
+//        final Vector3 thisVec = new Vector3(this);
+//        final List l = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getBoundingBox(thisVec.x - 10, thisVec.y - 10, thisVec.z - 10, thisVec.x + 10, thisVec.y + 10, thisVec.z + 10));
+//
+//        for (final Entity e : (List<Entity>) l)
+//        {
+//            if (e instanceof GCCoreEntitySkeletonBoss)
+//            {
+//                 if (((GCCoreEntitySkeletonBoss) e).getHealth() >= this.health)
+//                 {
+//                     ((GCCoreEntitySkeletonBoss) e).setDead();
+//                 }
+//            }
+//        }
 
         if (this.throwTimer > 0)
         {
@@ -393,12 +351,14 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
 
         if (this.roomCoords != null && this.roomSize != null)
         {
+            @SuppressWarnings("unchecked")
             List<Entity> entitiesWithin = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getAABBPool().getAABB(this.roomCoords.intX() - 1, this.roomCoords.intY() - 1, this.roomCoords.intZ() - 1, this.roomCoords.intX() + this.roomSize.intX(), this.roomCoords.intY() + this.roomSize.intY(), this.roomCoords.intZ() + this.roomSize.intZ()));
 
             this.entitiesWithin = entitiesWithin.size();
 
             if (this.entitiesWithin == 0 && this.entitiesWithinLast != 0)
             {
+                @SuppressWarnings("unchecked")
                 List<EntityPlayer> entitiesWithin2 = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getAABBPool().getAABB(this.roomCoords.intX() - 11, this.roomCoords.intY() - 11, this.roomCoords.intZ() - 11, this.roomCoords.intX() + this.roomSize.intX() + 10, this.roomCoords.intY() + this.roomSize.intY() + 10, this.roomCoords.intZ() + this.roomSize.intZ() + 10));
 
                 for (EntityPlayer p : entitiesWithin2)
@@ -576,35 +536,17 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
         this.spawner = spawner;
     }
 
-    public ItemStack getGuaranteedLoot(int loop, Random rand)
+    public ItemStack getGuaranteedLoot(Random rand)
     {
-        if (loop == 0)
+        switch (rand.nextInt(2))
         {
-            switch (rand.nextInt(2))
-            {
-            case 0:
-                return new ItemStack(GCCoreItems.schematic, 1, 0);
-            case 1:
-                return new ItemStack(GCCoreItems.schematic, 1, 1);
-            }
+        case 0:
+            return new ItemStack(GCCoreItems.schematic, 1, 0);
+        case 1:
+            return new ItemStack(GCCoreItems.schematic, 1, 1);
         }
 
         return null;
-    }
-
-    public ItemStack getLoot(Random rand)
-    {
-        final int r = rand.nextInt(3);
-
-        switch (r)
-        {
-        case 0:
-            return new ItemStack(GCCoreItems.lightOxygenTank, 1, GCCoreItems.lightOxygenTank.getMaxDamage() - rand.nextInt(GCCoreItems.lightOxygenTank.getMaxDamage() / 2) + 1);
-        case 1:
-            return new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.oilCanister.getMaxDamage() - rand.nextInt(GCCoreItems.oilCanister.getMaxDamage() / 2) + 1);
-        default:
-            return new ItemStack(GCCoreItems.oilCanister, 1, 61);
-        }
     }
 
     @Override
