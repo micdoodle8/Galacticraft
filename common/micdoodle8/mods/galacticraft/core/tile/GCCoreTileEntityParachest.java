@@ -5,19 +5,33 @@ import java.util.List;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockParachest;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerParachest;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.INetworkManager;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import universalelectricity.core.vector.Vector3;
+import universalelectricity.prefab.network.IPacketReceiver;
+import universalelectricity.prefab.network.PacketManager;
+import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-public class GCCoreTileEntityParachest extends TileEntity implements IInventory
+public class GCCoreTileEntityParachest extends TileEntity implements IInventory, IPacketReceiver
 {
+    private final int tankCapacity = 5000;
+    public FluidTank fuelTank = new FluidTank(this.tankCapacity);
+    
     public ItemStack[] chestContents = new ItemStack[3];
 
     public boolean adjacentChestChecked = false;
@@ -39,6 +53,13 @@ public class GCCoreTileEntityParachest extends TileEntity implements IInventory
         {
             PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, new Object[] { this.xCoord, this.yCoord, this.zCoord }));
         }
+    }
+
+    public int getScaledFuelLevel(int i)
+    {
+        final double fuelLevel = this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluid().amount;
+
+        return (int) (fuelLevel * i / tankCapacity);
     }
 
     @Override
@@ -131,7 +152,8 @@ public class GCCoreTileEntityParachest extends TileEntity implements IInventory
     {
         super.readFromNBT(nbt);
         NBTTagList nbttaglist = nbt.getTagList("Items");
-        this.chestContents = new ItemStack[nbt.getInteger("chestContentLength")];
+        
+        this.chestContents = new ItemStack[nbt.getInteger("rocketStacksLength")];
 
         for (int i = 0; i < nbttaglist.tagCount(); ++i)
         {
@@ -142,6 +164,11 @@ public class GCCoreTileEntityParachest extends TileEntity implements IInventory
             {
                 this.chestContents[j] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
             }
+        }
+
+        if (nbt.hasKey("fuelTank"))
+        {
+            this.fuelTank.readFromNBT(nbt.getCompoundTag("fuelTank"));
         }
     }
 
@@ -166,6 +193,11 @@ public class GCCoreTileEntityParachest extends TileEntity implements IInventory
         }
 
         nbt.setTag("Items", nbttaglist);
+
+        if (this.fuelTank.getFluid() != null)
+        {
+            nbt.setTag("fuelTank", this.fuelTank.writeToNBT(new NBTTagCompound()));
+        }
     }
 
     @Override
@@ -256,6 +288,51 @@ public class GCCoreTileEntityParachest extends TileEntity implements IInventory
             {
                 this.lidAngle = 0.0F;
             }
+        }
+
+        if (!this.worldObj.isRemote)
+        {
+            final FluidStack liquid = this.fuelTank.getFluid();
+
+            if (liquid != null && this.fuelTank.getFluid() != null && this.fuelTank.getFluid().getFluid().getName().equalsIgnoreCase("Fuel"))
+            {
+                if (FluidContainerRegistry.isEmptyContainer(this.chestContents[this.chestContents.length - 1]))
+                {
+                    boolean isCanister = this.chestContents[this.chestContents.length - 1].isItemEqual(new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.oilCanister.getMaxDamage()));
+                    final int amountToFill = Math.min(liquid.amount, isCanister ? GCCoreItems.fuelCanister.getMaxDamage() - 1 : FluidContainerRegistry.BUCKET_VOLUME);
+
+                    if (isCanister)
+                    {
+                        this.chestContents[this.chestContents.length - 1] = new ItemStack(GCCoreItems.fuelCanister, 1, GCCoreItems.fuelCanister.getMaxDamage() - amountToFill);
+                    }
+                    else
+                    {
+                        this.chestContents[this.chestContents.length - 1] = FluidContainerRegistry.fillFluidContainer(liquid, this.chestContents[this.chestContents.length - 1]);
+                    }
+
+                    this.fuelTank.drain(amountToFill, true);
+                }
+            }
+            
+            if (this.ticksSinceSync % 3 == 0)
+            {
+                PacketManager.sendPacketToClients(this.getPacket(), this.worldObj, new Vector3(this), 12);
+            }
+        }
+    }
+
+    public Packet getPacket()
+    {
+        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluidAmount());
+    }
+
+    @Override
+    public void handlePacketData(INetworkManager network, int packetType, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput data)
+    {
+        if (this.worldObj.isRemote)
+        {
+            int fuel = data.readInt();
+            this.fuelTank.setFluid(new FluidStack(GalacticraftCore.FUEL, fuel));
         }
     }
 

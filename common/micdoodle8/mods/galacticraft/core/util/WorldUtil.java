@@ -862,10 +862,6 @@ public class WorldUtil
                             {
                                 var8.getRocketStacks()[i] = new ItemStack(GCCoreBlocks.landingPad, 9, 0);
                             }
-                            else if (i == var8.getRocketStacks().length - 3)
-                            {
-                                var8.getRocketStacks()[i] = new ItemStack(GCCoreItems.fuelCanister, 1, var8.getFuelDamage());
-                            }
                         }
                     }
                     else

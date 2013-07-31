@@ -54,7 +54,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
     private int spaceshipTier = 1;
     private ItemStack[] rocketStacks = new ItemStack[9];
     private int rocketType;
-    private int fuelDamage;
+    private int fuelLevel;
 
     private boolean usingParachute;
 
@@ -221,7 +221,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
         {
             if (this.getChestSpawnVector() != null)
             {
-                GCCoreEntityParaChest chest = new GCCoreEntityParaChest(this.worldObj, this.getRocketStacks());
+                GCCoreEntityParaChest chest = new GCCoreEntityParaChest(this.worldObj, this.getRocketStacks(), this.getFuelLevel());
 
                 chest.setPosition(this.getChestSpawnVector().x, this.getChestSpawnVector().y, this.getChestSpawnVector().z);
 
@@ -944,7 +944,17 @@ public class GCCorePlayerMP extends EntityPlayerMP
         }
 
         final NBTTagList var23 = nbt.getTagList("RocketItems");
-        this.setRocketStacks(new ItemStack[nbt.getInteger("rocketStacksLength")]);
+        int length = nbt.getInteger("rocketStacksLength");
+        boolean oldInventory = false;
+        
+        // Backwards Compatibility:
+        if (length % 9 == 3)
+        {
+            oldInventory = true;
+            length -= 1;
+        }
+        
+        this.setRocketStacks(new ItemStack[length]);
 
         for (int var3 = 0; var3 < var23.tagCount(); ++var3)
         {
@@ -954,6 +964,19 @@ public class GCCorePlayerMP extends EntityPlayerMP
             if (var5 >= 0 && var5 < this.getRocketStacks().length)
             {
                 this.getRocketStacks()[var5] = ItemStack.loadItemStackFromNBT(var4);
+            }
+            
+            if (oldInventory)
+            {
+                if (var5 == this.getRocketStacks().length - 1)
+                {
+                    this.rocketStacks[var5] = null;
+                }
+                
+                if (var5 == this.getRocketStacks().length)
+                {
+                    this.rocketStacks[var5 - 1] = ItemStack.loadItemStackFromNBT(var4);
+                } 
             }
         }
 
@@ -1177,14 +1200,14 @@ public class GCCorePlayerMP extends EntityPlayerMP
         this.rocketType = rocketType;
     }
 
-    public int getFuelDamage()
+    public int getFuelLevel()
     {
-        return this.fuelDamage;
+        return this.fuelLevel;
     }
 
-    public void setFuelDamage(int fuelDamage)
+    public void setFuelLevel(int fuelDamage)
     {
-        this.fuelDamage = fuelDamage;
+        this.fuelLevel = fuelDamage;
     }
 
     public int getChestSpawnCooldown()

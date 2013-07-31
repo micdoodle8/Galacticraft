@@ -47,7 +47,7 @@ public class GCCoreGuiRocketRefill extends GCCoreGuiContainer
         List<String> oxygenDesc = new ArrayList<String>();
         oxygenDesc.add("Rocket fuel tank. Requires");
         oxygenDesc.add("fuel loader to fill");
-        this.infoRegions.add(new GCCoreInfoRegion((this.width - this.xSize) / 2 + (((EntitySpaceshipBase) this.mc.thePlayer.ridingEntity).rocketType.getInventorySpace() == 3 ? 70 : 71), (this.height - this.ySize) / 2 + 6, 36, 40, oxygenDesc, this.width, this.height));
+        this.infoRegions.add(new GCCoreInfoRegion((this.width - this.xSize) / 2 + (((EntitySpaceshipBase) this.mc.thePlayer.ridingEntity).rocketType.getInventorySpace() == 2 ? 70 : 71), (this.height - this.ySize) / 2 + 6, 36, 40, oxygenDesc, this.width, this.height));
     }
 
     @Override
@@ -70,7 +70,7 @@ public class GCCoreGuiRocketRefill extends GCCoreGuiContainer
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
-        this.mc.func_110434_K().func_110577_a(GCCoreGuiRocketRefill.rocketTextures[(this.rocketType.getInventorySpace() - 3) / 18]);
+        this.mc.func_110434_K().func_110577_a(GCCoreGuiRocketRefill.rocketTextures[(this.rocketType.getInventorySpace() - 2) / 18]);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         final int var5 = (this.width - this.xSize) / 2;
@@ -81,7 +81,7 @@ public class GCCoreGuiRocketRefill extends GCCoreGuiContainer
         {
             final int fuelLevel = ((EntitySpaceshipBase) this.mc.thePlayer.ridingEntity).getScaledFuelLevel(38);
 
-            this.drawTexturedModalRect((this.width - this.xSize) / 2 + (((EntitySpaceshipBase) this.mc.thePlayer.ridingEntity).rocketType.getInventorySpace() == 3 ? 71 : 72), (this.height - this.ySize) / 2 + 45 - fuelLevel, 176, 38 - fuelLevel, 42, fuelLevel);
+            this.drawTexturedModalRect((this.width - this.xSize) / 2 + (((EntitySpaceshipBase) this.mc.thePlayer.ridingEntity).rocketType.getInventorySpace() == 2 ? 71 : 72), (this.height - this.ySize) / 2 + 45 - fuelLevel, 176, 38 - fuelLevel, 42, fuelLevel);
         }
     }
 }

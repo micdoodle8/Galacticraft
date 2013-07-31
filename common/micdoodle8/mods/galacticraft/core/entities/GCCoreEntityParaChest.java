@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityParachest;
 import net.minecraft.entity.Entity;
@@ -10,18 +11,22 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidRegistry;
 
 public class GCCoreEntityParaChest extends Entity
 {
     public ItemStack[] cargo;
+    
+    public int fuelLevel;
 
     private boolean placedChest;
 
-    public GCCoreEntityParaChest(World world, ItemStack[] cargo)
+    public GCCoreEntityParaChest(World world, ItemStack[] cargo, int fuelLevel)
     {
         this(world);
         this.cargo = cargo;
         this.placedChest = false;
+        this.fuelLevel = fuelLevel;
     }
 
     public GCCoreEntityParaChest(World world)
@@ -35,9 +40,9 @@ public class GCCoreEntityParaChest extends Entity
     }
 
     @Override
-    protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
+    protected void readEntityFromNBT(NBTTagCompound nbt)
     {
-        final NBTTagList var2 = par1NBTTagCompound.getTagList("Items");
+        final NBTTagList var2 = nbt.getTagList("Items");
         this.cargo = new ItemStack[27];
 
         for (int var3 = 0; var3 < var2.tagCount(); ++var3)
@@ -51,11 +56,12 @@ public class GCCoreEntityParaChest extends Entity
             }
         }
 
-        this.placedChest = par1NBTTagCompound.getBoolean("placedChest");
+        this.placedChest = nbt.getBoolean("placedChest");
+        this.fuelLevel = nbt.getInteger("FuelLevel");
     }
 
     @Override
-    protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
+    protected void writeEntityToNBT(NBTTagCompound nbt)
     {
         final NBTTagList var2 = new NBTTagList();
 
@@ -70,8 +76,9 @@ public class GCCoreEntityParaChest extends Entity
             }
         }
 
-        par1NBTTagCompound.setTag("Items", var2);
-        par1NBTTagCompound.setBoolean("placedChest", this.placedChest);
+        nbt.setTag("Items", var2);
+        nbt.setBoolean("placedChest", this.placedChest);
+        nbt.setInteger("FuelLevel", this.fuelLevel);
     }
 
     @Override
@@ -136,8 +143,14 @@ public class GCCoreEntityParaChest extends Entity
         {
             final GCCoreTileEntityParachest chest = (GCCoreTileEntityParachest) te;
 
-            chest.chestContents = new ItemStack[this.cargo.length];
-            chest.chestContents = this.cargo;
+            chest.chestContents = new ItemStack[this.cargo.length + 1];
+            
+            for (int i = 0; i < this.cargo.length; i++)
+            {
+                chest.chestContents[i] = this.cargo[i];
+            }
+
+            chest.fuelTank.fill(FluidRegistry.getFluidStack(GalacticraftCore.FUEL.getName().toLowerCase(), this.fuelLevel), true);
 
             return true;
         }

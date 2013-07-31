@@ -20,7 +20,7 @@ public class GCCoreContainerRocketRefill extends Container
         this.rocketType = rocketType;
         par2IInventory.openChest();
 
-        switch (rocketType.getInventorySpace() - 3)
+        switch (rocketType.getInventorySpace() - 2)
         {
         case 0:
             this.addSlotsNoInventory();
@@ -61,7 +61,7 @@ public class GCCoreContainerRocketRefill extends Container
         int var4;
         int var5;
         int lastRow = slotCount / 9;
-        int ySize = 145 + (this.rocketType.getInventorySpace() - 3) * 2;
+        int ySize = 145 + (this.rocketType.getInventorySpace() - 2) * 2;
 
         for (var4 = 0; var4 < lastRow; ++var4)
         {

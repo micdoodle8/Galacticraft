@@ -40,7 +40,7 @@ import cpw.mods.fml.relauncher.Side;
  */
 public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInventory, IMissileLockable
 {
-    private final int tankCapacity = 2000;
+    private final int tankCapacity = 1000;
     public FluidTank spaceshipFuelTank = new FluidTank(this.tankCapacity);
 
     protected ItemStack[] cargoItems;
@@ -59,7 +59,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
     {
         final double fuelLevel = this.spaceshipFuelTank.getFluid() == null ? 0 : this.spaceshipFuelTank.getFluid().amount;
 
-        return (int) (fuelLevel * i / 2000);
+        return (int) (fuelLevel * i / tankCapacity);
     }
 
     public GCCoreEntityRocketT1(World par1World, double par2, double par4, double par6, EnumRocketType rocketType)
@@ -213,8 +213,8 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
             }
 
             playerBase.setRocketType(this.rocketType.getIndex());
-            int liquid = (int) Math.floor((this.spaceshipFuelTank.getFluid() == null ? 0 : this.spaceshipFuelTank.getFluid().amount) / 2.0D);
-            playerBase.setFuelDamage(Math.max(Math.min(GCCoreItems.fuelCanister.getMaxDamage() - liquid, GCCoreItems.fuelCanister.getMaxDamage()), 1));
+            int liquid = this.spaceshipFuelTank.getFluid() == null ? 0 : this.spaceshipFuelTank.getFluid().amount;
+            playerBase.setFuelLevel(liquid);
         }
     }
 
@@ -299,6 +299,11 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
                 if (var5 >= 0 && var5 < this.cargoItems.length)
                 {
                     this.cargoItems[var5] = ItemStack.loadItemStackFromNBT(var4);
+                }
+                // Backwards compatibility:
+                else if (var5 == this.cargoItems.length)
+                {
+                    this.cargoItems[var5 - 1] = ItemStack.loadItemStackFromNBT(var4);
                 }
             }
         }
@@ -487,7 +492,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
 
         int count = 0;
 
-        for (count = 0; count < this.cargoItems.length - 3; count++)
+        for (count = 0; count < this.cargoItems.length - 2; count++)
         {
             ItemStack stackAt = this.cargoItems[count];
 
@@ -523,7 +528,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
     @Override
     public RemovalResult removeCargo(boolean doRemove)
     {
-        for (int i = 0; i < this.cargoItems.length - 3; i++)
+        for (int i = 0; i < this.cargoItems.length - 2; i++)
         {
             ItemStack stackAt = this.cargoItems[i];
 
