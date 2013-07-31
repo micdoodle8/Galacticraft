@@ -153,7 +153,7 @@ public class GCCoreTileEntityParachest extends TileEntity implements IInventory,
         super.readFromNBT(nbt);
         NBTTagList nbttaglist = nbt.getTagList("Items");
         
-        this.chestContents = new ItemStack[nbt.getInteger("rocketStacksLength")];
+        this.chestContents = new ItemStack[nbt.getInteger("chestContentLength")];
 
         for (int i = 0; i < nbttaglist.tagCount(); ++i)
         {
