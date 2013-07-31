@@ -66,7 +66,7 @@ public class GCCoreContainerParachest extends Container
 
             if (par2 < this.lowerChestInventory.getSizeInventory())
             {
-                if (!this.mergeItemStack(itemstack1, this.numRows * 9, this.inventorySlots.size(), true))
+                if (!this.mergeItemStack(itemstack1, this.numRows * 9 + 3, this.inventorySlots.size(), true))
                 {
                     return null;
                 }
