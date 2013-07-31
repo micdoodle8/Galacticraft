@@ -36,13 +36,13 @@ public class GCCoreContainerParachest extends Container
         {
             for (k = 0; k < 9; ++k)
             {
-                this.addSlotToContainer(new Slot(par1IInventory, k + j * 9 + 9, 8 + k * 18, (this.numRows == 0 ? 115 : 118) + j * 18 + i));
+                this.addSlotToContainer(new Slot(par1IInventory, k + j * 9 + 9, 8 + k * 18, (this.numRows == 0 ? 116 : 118) + j * 18 + i));
             }
         }
 
         for (j = 0; j < 9; ++j)
         {
-            this.addSlotToContainer(new Slot(par1IInventory, j, 8 + j * 18, (this.numRows == 0 ? 173 : 176) + i));
+            this.addSlotToContainer(new Slot(par1IInventory, j, 8 + j * 18, (this.numRows == 0 ? 174 : 176) + i));
         }
     }
 
