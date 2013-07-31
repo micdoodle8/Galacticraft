@@ -10,7 +10,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.multiplayer.NetClientHandler;
+import net.minecraft.client.renderer.IImageBuffer;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
+import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
@@ -66,8 +68,23 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
         if (GCCoreConfigManager.overrideCapes)
         {
             this.galacticraftCape = AbstractClientPlayer.func_110299_g(this.username);
-            this.galacticraftCapeImageData = AbstractClientPlayer.func_110307_b(this.galacticraftCape, this.username);
+            this.galacticraftCapeImageData = GCCorePlayerSP.getImageData(this.galacticraftCape, GCCorePlayerSP.getCapeURL(this.username), null, null);
         }
+    }
+
+    public static String getCapeURL(String par0Str)
+    {
+        return ClientProxyCore.capeMap.get(par0Str);
+    }
+
+    private static ThreadDownloadImageData getImageData(ResourceLocation par0ResourceLocation, String par1Str, ResourceLocation par2ResourceLocation, IImageBuffer par3IImageBuffer)
+    {
+        TextureManager texturemanager = Minecraft.getMinecraft().func_110434_K();
+        
+        ThreadDownloadImageData object = new ThreadDownloadImageData(par1Str, par2ResourceLocation, par3IImageBuffer);
+        texturemanager.func_110579_a(par0ResourceLocation, object);
+        
+        return object;
     }
 
     @Override
