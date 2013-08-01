@@ -188,10 +188,10 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         final int startY = this.height - 26;
         final int width = this.width - 210 - startX;
         final int height = 20;
-        Gui.drawRect(startX, startY, startX + width, startY + height, 0xffA0A0A0);
 
         if (px >= startX && px < startX + width && py >= startY && py < startY + height)
         {
+            Gui.drawRect(startX, startY, startX + width, startY + height, 0xffA0A0A0);
             this.isTextFocused = true;
         }
         else
