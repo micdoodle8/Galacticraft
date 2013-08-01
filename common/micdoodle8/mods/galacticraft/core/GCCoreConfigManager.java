@@ -162,7 +162,6 @@ public class GCCoreConfigManager
     public static boolean wasdMapMovement;
     public static boolean disableOreGenTin;
     public static boolean disableOreGenCopper;
-    public static boolean disableOilGen;
     public static String[] sealableIDs;
     public static boolean disableSpaceshipParticles;
     public static boolean disableSpaceshipGrief;
@@ -318,7 +317,6 @@ public class GCCoreConfigManager
             GCCoreConfigManager.transparentBreathableAir = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Transparent Breathable Air", true, "If you have FPS problems and wish to have solid blue breathable air blocks, set this to false").getBoolean(true);
             GCCoreConfigManager.moreStars = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "More Stars", true, "Setting this to false will revert night skies back to default minecraft star count").getBoolean(true);
             GCCoreConfigManager.wasdMapMovement = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "WASD Map Movement", true, "If you prefer to move the Galaxy map with your mouse, set to false").getBoolean(true);
-            GCCoreConfigManager.disableOilGen = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable oil Gen on Overworld", false, "Set to true if you do not wish for Galacticraft oil to generate.").getBoolean(false);
             GCCoreConfigManager.oilGenFactor = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Oil Generation Factor", 1.8, "Increasing this will increase amount of oil that will generate in each chunk.").getDouble(1.8);
             GCCoreConfigManager.disableSpaceshipParticles = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Spaceship Particles", false, "If you have FPS problems, setting this to true will help if spaceship particles are in your sights").getBoolean(false);
             GCCoreConfigManager.disableSpaceshipGrief = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Spaceship Explosion", false, "Spaceships will not explode on contact if set to true").getBoolean(false);

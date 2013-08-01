@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -219,8 +218,18 @@ public class GCCoreEvents
     public void populate(PopulateChunkEvent.Post event)
     {
         final boolean doGen = TerrainGen.populate(event.chunkProvider, event.world, event.rand, event.chunkX, event.chunkX, event.hasVillageGenerated, PopulateChunkEvent.Populate.EventType.CUSTOM);
-
-        if (!doGen || GCCoreConfigManager.disableOilGen && event.world.provider.dimensionId == 0 || !(event.world.provider instanceof IGalacticraftWorldProvider) && !Arrays.asList(GCCoreConfigManager.externalOilGen).contains(event.world.provider.dimensionId))
+        boolean doGen2 = false;
+        
+        for (Integer dim : GCCoreConfigManager.externalOilGen)
+        {
+            if (dim == event.world.provider.dimensionId)
+            {
+                doGen2 = true;
+                break;
+            }
+        }
+        
+        if (!doGen || (!(event.world.provider instanceof IGalacticraftWorldProvider) && !doGen2))
         {
             return;
         }
