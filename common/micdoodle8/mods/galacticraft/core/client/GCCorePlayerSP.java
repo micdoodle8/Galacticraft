@@ -90,12 +90,22 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
     @Override
     public ResourceLocation func_110303_q()
     {
+        if (!GCCoreConfigManager.overrideCapes || !func_110310_o().func_110557_a())
+        {
+            return super.func_110303_q();
+        }
+        
         return this.galacticraftCape;
     }
 
     @Override
     public ThreadDownloadImageData func_110310_o()
     {
+        if (!GCCoreConfigManager.overrideCapes || !this.galacticraftCapeImageData.func_110557_a())
+        {
+            return super.func_110310_o();
+        }
+        
         return this.galacticraftCapeImageData;
     }
 
