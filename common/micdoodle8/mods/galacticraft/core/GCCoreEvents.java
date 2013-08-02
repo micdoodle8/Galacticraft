@@ -33,6 +33,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.event.Event.Result;
 import net.minecraftforge.event.ForgeSubscribe;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.player.BonemealEvent;
@@ -386,5 +387,26 @@ public class GCCoreEvents
         }
 
         return null;
+    }
+    
+    @ForgeSubscribe
+    public void onPlayerDeath(LivingDeathEvent event)
+    {
+        if (event.entityLiving instanceof GCCorePlayerMP)
+        {
+            if (!event.entityLiving.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory"))
+            {
+                for (int i = 0; i < ((GCCorePlayerMP) event.entityLiving).getExtendedInventory().getSizeInventory(); i++)
+                {
+                    ItemStack stack = ((GCCorePlayerMP) event.entityLiving).getExtendedInventory().getStackInSlot(i);
+                    
+                    if (stack != null)
+                    {
+                        ((GCCorePlayerMP) event.entityLiving).dropPlayerItemWithRandomChoice(stack, true);
+                        ((GCCorePlayerMP) event.entityLiving).getExtendedInventory().setInventorySlotContents(i, null);
+                    }
+                }
+            }
+        }
     }
 }
