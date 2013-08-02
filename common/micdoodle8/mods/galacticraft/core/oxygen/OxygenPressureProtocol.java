@@ -148,7 +148,7 @@ public class OxygenPressureProtocol
 
         if (this.airtight)
         {
-            Iterator var6 = this.checked.iterator();
+            Iterator<Vector3> var6 = this.checked.iterator();
             Vector3 var7;
 
             while (var6.hasNext())
@@ -198,8 +198,8 @@ public class OxygenPressureProtocol
             }
         }
 
-        this.checked = new LinkedList();
-        this.oxygenReliantBlocks = new LinkedList();
+        this.checked = new LinkedList<Vector3>();
+        this.oxygenReliantBlocks = new LinkedList<Vector3>();
         return this.airtight;
     }
 
@@ -214,7 +214,7 @@ public class OxygenPressureProtocol
 
         if (this.airtight)
         {
-            final Iterator var6 = this.checked.iterator();
+            final Iterator<Vector3> var6 = this.checked.iterator();
 
             while (var6.hasNext())
             {
@@ -227,14 +227,14 @@ public class OxygenPressureProtocol
             }
         }
 
-        this.checked = new LinkedList();
+        this.checked = new LinkedList<Vector3>();
         return this.airtight;
     }
 
     public void unSeal(World var1, int var2, int var3, int var4)
     {
         this.nextVecD(var1, var2, var3, var4);
-        Iterator var5 = this.checked.iterator();
+        Iterator<Vector3> var5 = this.checked.iterator();
         Vector3 var6;
 
         while (var5.hasNext())
@@ -288,8 +288,8 @@ public class OxygenPressureProtocol
             }
         }
 
-        this.oxygenReliantBlocks = new LinkedList();
-        this.checked = new LinkedList();
+        this.oxygenReliantBlocks = new LinkedList<Vector3>();
+        this.checked = new LinkedList<Vector3>();
     }
 
     public boolean canBlockPass(World var0, Vector3 vec)

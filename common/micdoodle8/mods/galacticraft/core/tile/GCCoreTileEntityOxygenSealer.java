@@ -47,7 +47,7 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
         {
             if (this.ticks % 10 == 0)
             {
-                this.sealed = this.checkSeal(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+                this.sealed = this.checkSeal(this.worldObj, this.xCoord, this.yCoord + 1, this.zCoord);
             }
 
             if (this.storedOxygen >= 1 && this.getEnergyStored() > 0 && !this.disabled)
@@ -63,11 +63,11 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
             {
                 if (this.active)
                 {
-                    this.sealArea(this.worldObj, this.xCoord, this.yCoord, this.zCoord, (int) (this.storedOxygen / 10.0D));
+                    this.sealArea(this.worldObj, this.xCoord, this.yCoord + 1, this.zCoord, (int) (this.storedOxygen / 10.0D));
                 }
                 else
                 {
-                    this.unSealArea(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+                    this.unSealArea(this.worldObj, this.xCoord, this.yCoord + 1, this.zCoord);
                 }
             }
 

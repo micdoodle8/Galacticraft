@@ -240,6 +240,7 @@ gui.status.raining.name=Raining
 gui.status.blockedpartial.name=Sun Partially Visible
 gui.status.blockedfully.name=Sun is Not Visible
 gui.status.collectingenergy.name=Collecting Energy
+gui.status.sealerblocked.name=Output Vent Blocked!
 
 gui.button.enableseal.name=Enable Seal
 gui.button.disableseal.name=Disable Seal

@@ -26,7 +26,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreBlockOxygenSealer extends GCCoreBlockAdvanced
 {
     private Icon iconMachineSide;
-    private Icon iconDistributor;
+    private Icon iconSealer;
     private Icon iconInput;
     private Icon iconOutput;
 
@@ -46,7 +46,7 @@ public class GCCoreBlockOxygenSealer extends GCCoreBlockAdvanced
     public void registerIcons(IconRegister par1IconRegister)
     {
         this.iconMachineSide = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_blank");
-        this.iconDistributor = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_sealer");
+        this.iconSealer = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_sealer");
         this.iconInput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_oxygen_input");
         this.iconOutput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_power_input");
     }
@@ -90,9 +90,9 @@ public class GCCoreBlockOxygenSealer extends GCCoreBlockAdvanced
     @Override
     public Icon getIcon(int side, int metadata)
     {
-        if (side == 0 || side == 1)
+        if (side == 1)
         {
-            return this.iconMachineSide;
+            return this.iconSealer;
         }
         else if (side == metadata + 2)
         {
@@ -104,7 +104,7 @@ public class GCCoreBlockOxygenSealer extends GCCoreBlockAdvanced
         }
         else
         {
-            return this.iconDistributor;
+            return this.iconMachineSide;
         }
     }
 
