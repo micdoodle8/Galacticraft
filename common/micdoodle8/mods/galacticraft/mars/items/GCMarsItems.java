@@ -28,7 +28,7 @@ public class GCMarsItems
     public static Item spaceship;
 
     public static EnumArmorMaterial ARMORDESH = EnumHelper.addArmorMaterial("DESH", 42, new int[] { 4, 9, 7, 4 }, 12);
-    public static EnumToolMaterial TOOLDESH = EnumHelper.addToolMaterial("DESH", 0, 0, 0F, 0, 0);
+    public static EnumToolMaterial TOOLDESH = EnumHelper.addToolMaterial("DESH", 3, 50, 5.0F, 2, 8);
 
     public static void initItems()
     {

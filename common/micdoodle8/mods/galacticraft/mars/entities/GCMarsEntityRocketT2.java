@@ -217,16 +217,16 @@ public class GCMarsEntityRocketT2 extends EntitySpaceshipBase implements IInvent
         {
             if (this.cargoItems == null || this.cargoItems.length == 0)
             {
-                playerBase.rocketStacks = new ItemStack[3];
+                playerBase.setRocketStacks(new ItemStack[3]);
             }
             else
             {
-                playerBase.rocketStacks = this.cargoItems;
+                playerBase.setRocketStacks(this.cargoItems);
             }
 
-            playerBase.rocketType = this.rocketType.getIndex();
+            playerBase.setRocketType(this.rocketType.getIndex());
             final int liquid = this.spaceshipFuelTank.getFluid() == null ? 0 : this.spaceshipFuelTank.getFluid().amount / MathHelper.floor_double(this.canisterToFluidStackRatio == 0 ? 1 : this.canisterToFluidStackRatio);
-            playerBase.fuelDamage = Math.max(Math.min(GCCoreItems.fuelCanister.getMaxDamage() - liquid, GCCoreItems.fuelCanister.getMaxDamage()), 1);
+            playerBase.setFuelLevel(liquid);
         }
     }
 

@@ -10,6 +10,7 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.ai.EntityAITargetNonTamed;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
@@ -27,6 +28,7 @@ public class GCMarsEntitySludgeling extends EntityMob implements IEntityBreathab
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, GCCoreEntitySkeleton.class, 0, false, true));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, GCCoreEntitySpider.class, 0, false, true));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, GCCoreEntityCreeper.class, 0, false, true));
+        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, GCMarsEntitySlimeling.class, 200, false));
     }
 
     @Override

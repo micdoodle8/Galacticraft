@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.mars.items;
 
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
-import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlockRock;
+import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlockSlimelingEgg;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
@@ -36,7 +36,7 @@ public class GCMarsItemBlockRock extends ItemBlock
     @Override
     public String getUnlocalizedName(ItemStack itemstack)
     {
-        String name = GCMarsBlockRock.names[itemstack.getItemDamage() < GCMarsBlockRock.names.length ? itemstack.getItemDamage() : 0];
+        String name = GCMarsBlockSlimelingEgg.names[itemstack.getItemDamage() % 3];
 
         return Block.blocksList[this.getBlockID()].getUnlocalizedName() + "." + name;
     }

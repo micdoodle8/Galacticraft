@@ -1,0 +1,97 @@
+package micdoodle8.mods.galacticraft.mars.network;
+
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
+import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
+import micdoodle8.mods.galacticraft.core.util.PacketUtil;
+import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
+import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySlimeling;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.network.INetworkManager;
+import net.minecraft.network.packet.Packet250CustomPayload;
+import net.minecraft.pathfinding.PathEntity;
+import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.network.IPacketHandler;
+import cpw.mods.fml.common.network.Player;
+
+public class GCMarsPacketHandlerServer implements IPacketHandler
+{
+    @Override
+    public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player p)
+    {
+        if (packet == null)
+        {
+            FMLLog.severe("Packet received as null!");
+            return;
+        }
+
+        if (packet.data == null)
+        {
+            FMLLog.severe("Packet data received as null! ID " + packet.getPacketId());
+            return;
+        }
+
+        final DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
+
+        final int packetType = PacketUtil.readPacketID(data);
+
+        final EntityPlayerMP player = (EntityPlayerMP) p;
+
+        final GCCorePlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player);
+
+        if (packetType == 0)
+        {
+            Class[] decodeAs = { Integer.class, Integer.class, String.class };
+            Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
+
+            Entity entity = player.worldObj.getEntityByID((Integer) packetReadout[0]);
+            
+            if (entity instanceof GCMarsEntitySlimeling)
+            {
+                GCMarsEntitySlimeling slimeling = (GCMarsEntitySlimeling) entity;
+
+                int subType = (Integer) packetReadout[1];
+                
+                switch (subType)
+                {
+                case 0:
+                    if (player.getCommandSenderName().equalsIgnoreCase(slimeling.getOwnerName()) && !slimeling.worldObj.isRemote)
+                    {
+                        slimeling.getAiSit().setSitting(!slimeling.isSitting());
+                        slimeling.setJumping(false);
+                        slimeling.setPathToEntity((PathEntity)null);
+                        slimeling.setTarget((Entity)null);
+                        slimeling.setAttackTarget((EntityLivingBase)null);
+                    }
+                    break;
+                case 1:
+                    if (player.getCommandSenderName().equalsIgnoreCase(slimeling.getOwnerName()) && !slimeling.worldObj.isRemote)
+                    {
+                        slimeling.slimelingName = (String) packetReadout[2];
+                    }
+                    break;
+                case 2:
+                    if (player.getCommandSenderName().equalsIgnoreCase(slimeling.getOwnerName()) && !slimeling.worldObj.isRemote)
+                    {
+                        slimeling.age += 5000;
+                    }
+                    break;
+                case 3:
+                    if (player.getCommandSenderName().equalsIgnoreCase(slimeling.getOwnerName()) && !slimeling.worldObj.isRemote)
+                    {
+                        slimeling.func_110196_bT();
+                    }
+                    break;
+                case 4:
+                    if (player.getCommandSenderName().equalsIgnoreCase(slimeling.getOwnerName()) && !slimeling.worldObj.isRemote)
+                    {
+                        slimeling.attackDamage += 0.1F;
+                    }
+                    break;
+                }
+            }
+        }
+    }
+}

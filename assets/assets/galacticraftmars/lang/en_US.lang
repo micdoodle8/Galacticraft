@@ -36,9 +36,13 @@ tile.mars.marsgrass.name=Grass
 tile.mars.marsdeco.name=Desh Decoration Block
 tile.mars.marsdungeon.name=Dungeon Wall
 tile.treasureT2.name=Tier 2 Treasure Chest
+tile.slimelingEgg.redEgg.name=Red Slimeling Egg
+tile.slimelingEgg.blueEgg.name=Blue Slimeling Egg
+tile.slimelingEgg.yellowEgg.name=Yellow Slimeling Egg
 
 # GUI
 gui.choosePlanet.desc.mars=Habitable#No Oxygen#Gravity: 38%
+item.deshPickSlime.description.name=Can harvest Slimeling eggs
 
 itemGroup.GalacticraftMars=Galacticraft Mars
 

@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.mars;
 
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
 import java.io.File;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.core.GCCoreCreativeTab;
@@ -10,17 +8,17 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.GCCoreConnectionHandler;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
 import micdoodle8.mods.galacticraft.mars.dimension.GCMarsWorldProvider;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityRocketT2;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySlimeling;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySludgeling;
 import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
+import micdoodle8.mods.galacticraft.mars.network.GCMarsPacketHandlerServer;
+import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntitySlimelingEgg;
+import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonTeleportType;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -32,13 +30,11 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.common.registry.EntityRegistry;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 
@@ -144,11 +140,13 @@ public class GalacticraftMars
     @EventHandler
     public void serverStarting(FMLServerStartingEvent event)
     {
+        NetworkRegistry.instance().registerChannel(new GCMarsPacketHandlerServer(), GalacticraftMars.CHANNEL, Side.SERVER);
     }
 
     public void registerTileEntities()
     {
-
+        GameRegistry.registerTileEntity(GCMarsTileEntitySlimelingEgg.class, "Slimeling Egg");
+        GameRegistry.registerTileEntity(GCMarsTileEntityTreasureChest.class, "Tier 2 Treasure Chest");
     }
 
     public void registerCreatures()
@@ -170,12 +168,6 @@ public class GalacticraftMars
         GCMarsUtil.addCraftingRecipes();
     }
 
-    @EventHandler
-    public void serverInit(FMLServerStartedEvent event)
-    {
-        NetworkRegistry.instance().registerChannel(new ServerPacketHandler(), "GalacticraftMars", Side.SERVER);
-    }
-
     public void registerGalacticraftCreature(Class var0, String var1, int id, int back, int fore)
     {
         EntityRegistry.registerGlobalEntityID(var0, var1, id, back, fore);
@@ -186,19 +178,5 @@ public class GalacticraftMars
     public void registerGalacticraftNonMobEntity(Class var0, String var1, int id, int trackingDistance, int updateFreq, boolean sendVel)
     {
         EntityRegistry.registerModEntity(var0, var1, id, this, trackingDistance, updateFreq, sendVel);
-    }
-
-    public class ServerPacketHandler implements IPacketHandler
-    {
-        @Override
-        public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player p)
-        {
-            final DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
-            final int packetType = PacketUtil.readPacketID(data);
-            if (packetType == 0)
-            {
-
-            }
-        }
     }
 }
