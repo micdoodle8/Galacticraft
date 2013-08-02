@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
@@ -17,6 +18,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreItemBow extends Item
 {
+    public static final String[] bowPullIconNameArray = new String[] {"pulling_0", "pulling_1", "pulling_2"};
+    @SideOnly(Side.CLIENT)
+    private Icon[] iconArray;
+    
     public GCCoreItemBow(int par1)
     {
         super(par1);
@@ -134,11 +139,7 @@ public class GCCoreItemBow extends Item
 
         return par1ItemStack;
     }
-
-    /**
-     * Return the enchantability factor of the item, most of the time is based
-     * on material.
-     */
+    
     @Override
     public int getItemEnchantability()
     {
@@ -149,6 +150,6 @@ public class GCCoreItemBow extends Item
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
-        super.registerIcons(par1IconRegister);
+        this.itemIcon = par1IconRegister.registerIcon("bow_standby");
     }
 }

@@ -1,13 +1,24 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
+import static net.minecraftforge.client.IItemRenderer.ItemRenderType.EQUIPPED;
+import static net.minecraftforge.client.IItemRenderer.ItemRendererHelper.BLOCK_3D;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelPlayer;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItemBow;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import net.minecraft.block.Block;
+import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.entity.RenderPlayer;
+import net.minecraft.client.renderer.tileentity.TileEntitySkullRenderer;
+import net.minecraft.item.EnumAction;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.client.event.RenderLivingEvent.Specials.Post;
+import net.minecraft.util.MathHelper;
+import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.ForgeSubscribe;
 import org.lwjgl.opengl.GL11;
 
 public class GCCoreRenderPlayer extends RenderPlayer
@@ -19,311 +30,245 @@ public class GCCoreRenderPlayer extends RenderPlayer
         this.modelBipedMain = (GCCoreModelPlayer) this.mainModel;
         this.modelArmorChestplate = new GCCoreModelPlayer(1.0F);
         this.modelArmor = new GCCoreModelPlayer(0.5F);
-        MinecraftForge.EVENT_BUS.register(this);
     }
 
     public ModelBiped getModel()
     {
         return this.modelBipedMain;
     }
-
-    @ForgeSubscribe
-    public void renderEquipped(Post event)
+    
+    @Override
+    protected void renderSpecials(AbstractClientPlayer par1AbstractClientPlayer, float par2)
     {
-        ItemStack itemstack = event.entity.getHeldItem();
-        float f2;
+        RenderPlayerEvent.Specials.Pre event = new RenderPlayerEvent.Specials.Pre(par1AbstractClientPlayer, this, par2);
+        if (MinecraftForge.EVENT_BUS.post(event))
+        {
+            return;
+        }
 
-        if (itemstack != null && itemstack.getItem() instanceof GCCoreItemBow)
+        float f1 = 1.0F;
+        GL11.glColor3f(f1, f1, f1);
+        super.renderArrowsStuckInEntity(par1AbstractClientPlayer, par2);
+        ItemStack itemstack = par1AbstractClientPlayer.inventory.armorItemInSlot(3);
+
+        if (itemstack != null && event.renderHelmet)
         {
             GL11.glPushMatrix();
+            this.modelBipedMain.bipedHead.postRender(0.0625F);
+            float f2;
 
-            if (this.mainModel.isChild)
+            if (itemstack != null && itemstack.getItem() instanceof ItemBlock)
             {
-                f2 = 0.5F;
-                GL11.glTranslatef(0.0F, 0.625F, 0.0F);
-                GL11.glRotatef(-20.0F, -1.0F, 0.0F, 0.0F);
-                GL11.glScalef(f2, f2, f2);
+                IItemRenderer customRenderer = MinecraftForgeClient.getItemRenderer(itemstack, EQUIPPED);
+                boolean is3D = (customRenderer != null && customRenderer.shouldUseRenderHelper(EQUIPPED, itemstack, BLOCK_3D));
+
+                if (is3D || RenderBlocks.renderItemIn3d(Block.blocksList[itemstack.itemID].getRenderType()))
+                {
+                    f2 = 0.625F;
+                    GL11.glTranslatef(0.0F, -0.25F, 0.0F);
+                    GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
+                    GL11.glScalef(f2, -f2, -f2);
+                }
+
+                this.renderManager.itemRenderer.renderItem(par1AbstractClientPlayer, itemstack, 0);
             }
+            else if (itemstack.getItem().itemID == Item.skull.itemID)
+            {
+                f2 = 1.0625F;
+                GL11.glScalef(f2, -f2, -f2);
+                String s = "";
 
-            this.modelBipedMain.bipedRightArm.postRender(0.0625F);
-            GL11.glTranslatef(-0.0625F, 0.4375F, 0.0625F);
+                if (itemstack.hasTagCompound() && itemstack.getTagCompound().hasKey("SkullOwner"))
+                {
+                    s = itemstack.getTagCompound().getString("SkullOwner");
+                }
 
-            f2 = 0.625F;
-            GL11.glTranslatef(0.0F, 0.125F, 0.3125F);
-            GL11.glRotatef(-20.0F, 0.0F, 1.0F, 0.0F);
-            GL11.glScalef(f2, -f2, f2);
-            GL11.glRotatef(-100.0F, 1.0F, 0.0F, 0.0F);
-            GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
-
-            this.renderManager.itemRenderer.renderItem(event.entity, itemstack, 0);
+                TileEntitySkullRenderer.skullRenderer.func_82393_a(-0.5F, 0.0F, -0.5F, 1, 180.0F, itemstack.getItemDamage(), s);
+            }
 
             GL11.glPopMatrix();
         }
+
+        if (par1AbstractClientPlayer.getCommandSenderName().equals("deadmau5") && par1AbstractClientPlayer.func_110309_l().func_110557_a())
+        {
+            this.func_110776_a(par1AbstractClientPlayer.func_110306_p());
+
+            for (int i = 0; i < 2; ++i)
+            {
+                float f3 = par1AbstractClientPlayer.prevRotationYaw + (par1AbstractClientPlayer.rotationYaw - par1AbstractClientPlayer.prevRotationYaw) * par2 - (par1AbstractClientPlayer.prevRenderYawOffset + (par1AbstractClientPlayer.renderYawOffset - par1AbstractClientPlayer.prevRenderYawOffset) * par2);
+                float f4 = par1AbstractClientPlayer.prevRotationPitch + (par1AbstractClientPlayer.rotationPitch - par1AbstractClientPlayer.prevRotationPitch) * par2;
+                GL11.glPushMatrix();
+                GL11.glRotatef(f3, 0.0F, 1.0F, 0.0F);
+                GL11.glRotatef(f4, 1.0F, 0.0F, 0.0F);
+                GL11.glTranslatef(0.375F * (float)(i * 2 - 1), 0.0F, 0.0F);
+                GL11.glTranslatef(0.0F, -0.375F, 0.0F);
+                GL11.glRotatef(-f4, 1.0F, 0.0F, 0.0F);
+                GL11.glRotatef(-f3, 0.0F, 1.0F, 0.0F);
+                float f5 = 1.3333334F;
+                GL11.glScalef(f5, f5, f5);
+                this.modelBipedMain.renderEars(0.0625F);
+                GL11.glPopMatrix();
+            }
+        }
+
+        boolean flag = par1AbstractClientPlayer.func_110310_o().func_110557_a();
+        boolean flag1 = !par1AbstractClientPlayer.isInvisible();
+        boolean flag2 = !par1AbstractClientPlayer.getHideCape();
+        flag = event.renderCape && flag;
+        float f6;
+
+        if (flag && flag1 && flag2)
+        {
+            this.func_110776_a(par1AbstractClientPlayer.func_110303_q());
+            GL11.glPushMatrix();
+            GL11.glTranslatef(0.0F, 0.0F, 0.125F);
+            double d0 = par1AbstractClientPlayer.field_71091_bM + (par1AbstractClientPlayer.field_71094_bP - par1AbstractClientPlayer.field_71091_bM) * (double)par2 - (par1AbstractClientPlayer.prevPosX + (par1AbstractClientPlayer.posX - par1AbstractClientPlayer.prevPosX) * (double)par2);
+            double d1 = par1AbstractClientPlayer.field_71096_bN + (par1AbstractClientPlayer.field_71095_bQ - par1AbstractClientPlayer.field_71096_bN) * (double)par2 - (par1AbstractClientPlayer.prevPosY + (par1AbstractClientPlayer.posY - par1AbstractClientPlayer.prevPosY) * (double)par2);
+            double d2 = par1AbstractClientPlayer.field_71097_bO + (par1AbstractClientPlayer.field_71085_bR - par1AbstractClientPlayer.field_71097_bO) * (double)par2 - (par1AbstractClientPlayer.prevPosZ + (par1AbstractClientPlayer.posZ - par1AbstractClientPlayer.prevPosZ) * (double)par2);
+            f6 = par1AbstractClientPlayer.prevRenderYawOffset + (par1AbstractClientPlayer.renderYawOffset - par1AbstractClientPlayer.prevRenderYawOffset) * par2;
+            double d3 = (double)MathHelper.sin(f6 * (float)Math.PI / 180.0F);
+            double d4 = (double)(-MathHelper.cos(f6 * (float)Math.PI / 180.0F));
+            float f7 = (float)d1 * 10.0F;
+
+            if (f7 < -6.0F)
+            {
+                f7 = -6.0F;
+            }
+
+            if (f7 > 32.0F)
+            {
+                f7 = 32.0F;
+            }
+
+            float f8 = (float)(d0 * d3 + d2 * d4) * 100.0F;
+            float f9 = (float)(d0 * d4 - d2 * d3) * 100.0F;
+
+            if (f8 < 0.0F)
+            {
+                f8 = 0.0F;
+            }
+
+            float f10 = par1AbstractClientPlayer.prevCameraYaw + (par1AbstractClientPlayer.cameraYaw - par1AbstractClientPlayer.prevCameraYaw) * par2;
+            f7 += MathHelper.sin((par1AbstractClientPlayer.prevDistanceWalkedModified + (par1AbstractClientPlayer.distanceWalkedModified - par1AbstractClientPlayer.prevDistanceWalkedModified) * par2) * 6.0F) * 32.0F * f10;
+
+            if (par1AbstractClientPlayer.isSneaking())
+            {
+                f7 += 25.0F;
+            }
+
+            GL11.glRotatef(6.0F + f8 / 2.0F + f7, 1.0F, 0.0F, 0.0F);
+            GL11.glRotatef(f9 / 2.0F, 0.0F, 0.0F, 1.0F);
+            GL11.glRotatef(-f9 / 2.0F, 0.0F, 1.0F, 0.0F);
+            GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
+            this.modelBipedMain.renderCloak(0.0625F);
+            GL11.glPopMatrix();
+        }
+
+        ItemStack itemstack1 = par1AbstractClientPlayer.inventory.getCurrentItem();
+
+        if (itemstack1 != null && event.renderItem)
+        {
+            GL11.glPushMatrix();
+            this.modelBipedMain.bipedRightArm.postRender(0.0625F);
+            GL11.glTranslatef(-0.0625F, 0.4375F, 0.0625F);
+
+            if (par1AbstractClientPlayer.fishEntity != null)
+            {
+                itemstack1 = new ItemStack(Item.stick);
+            }
+
+            EnumAction enumaction = null;
+
+            if (par1AbstractClientPlayer.getItemInUseCount() > 0)
+            {
+                enumaction = itemstack1.getItemUseAction();
+            }
+
+            float f11;
+
+            IItemRenderer customRenderer = MinecraftForgeClient.getItemRenderer(itemstack1, EQUIPPED);
+            boolean is3D = (customRenderer != null && customRenderer.shouldUseRenderHelper(EQUIPPED, itemstack1, BLOCK_3D));
+            boolean isBlock = itemstack1.itemID < Block.blocksList.length && itemstack1.getItemSpriteNumber() == 0;
+
+            if (is3D || (isBlock && RenderBlocks.renderItemIn3d(Block.blocksList[itemstack1.itemID].getRenderType())))
+            {
+                f11 = 0.5F;
+                GL11.glTranslatef(0.0F, 0.1875F, -0.3125F);
+                f11 *= 0.75F;
+                GL11.glRotatef(20.0F, 1.0F, 0.0F, 0.0F);
+                GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
+                GL11.glScalef(-f11, -f11, f11);
+            }
+            else if (itemstack1.itemID == Item.bow.itemID || itemstack1.itemID == GCCoreItems.gravityBow.itemID)
+            {
+                f11 = 0.625F;
+                GL11.glTranslatef(0.0F, 0.125F, 0.3125F);
+                GL11.glRotatef(-20.0F, 0.0F, 1.0F, 0.0F);
+                GL11.glScalef(f11, -f11, f11);
+                GL11.glRotatef(-100.0F, 1.0F, 0.0F, 0.0F);
+                GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
+            }
+            else if (Item.itemsList[itemstack1.itemID].isFull3D())
+            {
+                f11 = 0.625F;
+
+                if (Item.itemsList[itemstack1.itemID].shouldRotateAroundWhenRendering())
+                {
+                    GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
+                    GL11.glTranslatef(0.0F, -0.125F, 0.0F);
+                }
+
+                if (par1AbstractClientPlayer.getItemInUseCount() > 0 && enumaction == EnumAction.block)
+                {
+                    GL11.glTranslatef(0.05F, 0.0F, -0.1F);
+                    GL11.glRotatef(-50.0F, 0.0F, 1.0F, 0.0F);
+                    GL11.glRotatef(-10.0F, 1.0F, 0.0F, 0.0F);
+                    GL11.glRotatef(-60.0F, 0.0F, 0.0F, 1.0F);
+                }
+
+                GL11.glTranslatef(0.0F, 0.1875F, 0.0F);
+                GL11.glScalef(f11, -f11, f11);
+                GL11.glRotatef(-100.0F, 1.0F, 0.0F, 0.0F);
+                GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
+            }
+            else
+            {
+                f11 = 0.375F;
+                GL11.glTranslatef(0.25F, 0.1875F, -0.1875F);
+                GL11.glScalef(f11, f11, f11);
+                GL11.glRotatef(60.0F, 0.0F, 0.0F, 1.0F);
+                GL11.glRotatef(-90.0F, 1.0F, 0.0F, 0.0F);
+                GL11.glRotatef(20.0F, 0.0F, 0.0F, 1.0F);
+            }
+
+            float f12;
+            float f13;
+            int j;
+
+            if (itemstack1.getItem().requiresMultipleRenderPasses())
+            {
+                for (j = 0; j < itemstack1.getItem().getRenderPasses(itemstack1.getItemDamage()); ++j)
+                {
+                    int k = itemstack1.getItem().getColorFromItemStack(itemstack1, j);
+                    f13 = (float)(k >> 16 & 255) / 255.0F;
+                    f12 = (float)(k >> 8 & 255) / 255.0F;
+                    f6 = (float)(k & 255) / 255.0F;
+                    GL11.glColor4f(f13, f12, f6, 1.0F);
+                    this.renderManager.itemRenderer.renderItem(par1AbstractClientPlayer, itemstack1, j);
+                }
+            }
+            else
+            {
+                j = itemstack1.getItem().getColorFromItemStack(itemstack1, 0);
+                float f14 = (float)(j >> 16 & 255) / 255.0F;
+                f13 = (float)(j >> 8 & 255) / 255.0F;
+                f12 = (float)(j & 255) / 255.0F;
+                GL11.glColor4f(f14, f13, f12, 1.0F);
+                this.renderManager.itemRenderer.renderItem(par1AbstractClientPlayer, itemstack1, 0);
+            }
+
+            GL11.glPopMatrix();
+        }
+        MinecraftForge.EVENT_BUS.post(new RenderPlayerEvent.Specials.Post(par1AbstractClientPlayer, this, par2));
     }
-
-    // @Override
-    // public void renderPlayer(EntityPlayer par1EntityPlayer, double par2,
-    // double par4, double par6, float par8, float par9)
-    // {
-    // final float f2 = 1.0F;
-    // GL11.glColor3f(f2, f2, f2);
-    // final ItemStack itemstack = par1EntityPlayer.inventory.getCurrentItem();
-    // this.modelArmorChestplate.heldItemRight = this.modelArmor.heldItemRight =
-    // this.modelBipedMain.heldItemRight = itemstack != null ? 1 : 0;
-    //
-    // if (itemstack != null && par1EntityPlayer.getItemInUseCount() > 0)
-    // {
-    // final EnumAction enumaction = itemstack.getItemUseAction();
-    //
-    // if (enumaction == EnumAction.block)
-    // {
-    // this.modelArmorChestplate.heldItemRight = this.modelArmor.heldItemRight =
-    // this.modelBipedMain.heldItemRight = 3;
-    // }
-    // else if (enumaction == EnumAction.bow)
-    // {
-    // this.modelArmorChestplate.aimedBow = this.modelArmor.aimedBow =
-    // this.modelBipedMain.aimedBow = true;
-    // }
-    // }
-    //
-    // this.modelArmorChestplate.isSneak = this.modelArmor.isSneak =
-    // this.modelBipedMain.isSneak = par1EntityPlayer.isSneaking();
-    // double d3 = par4 - par1EntityPlayer.yOffset;
-    //
-    // if (par1EntityPlayer.isSneaking() && !(par1EntityPlayer instanceof
-    // EntityPlayerSP))
-    // {
-    // d3 -= 0.125D;
-    // }
-    //
-    // this.doRenderLiving(par1EntityPlayer, par2, d3, par6, par8, par9);
-    // this.modelArmorChestplate.aimedBow = this.modelArmor.aimedBow =
-    // this.modelBipedMain.aimedBow = false;
-    // this.modelArmorChestplate.isSneak = this.modelArmor.isSneak =
-    // this.modelBipedMain.isSneak = false;
-    // this.modelArmorChestplate.heldItemRight = this.modelArmor.heldItemRight =
-    // this.modelBipedMain.heldItemRight = 0;
-    // }
-
-    // private float interpolateRotation(float par1, float par2, float par3)
-    // {
-    // float f3;
-    //
-    // for (f3 = par2 - par1; f3 < -180.0F; f3 += 360.0F)
-    // {
-    // ;
-    // }
-    //
-    // while (f3 >= 180.0F)
-    // {
-    // f3 -= 360.0F;
-    // }
-    //
-    // return par1 + par3 * f3;
-    // }
-
-    // @Override
-    // public void doRenderLiving(EntityLiving par1EntityLiving, double par2,
-    // double par4, double par6, float par8, float par9)
-    // {
-    // GL11.glPushMatrix();
-    // GL11.glDisable(GL11.GL_CULL_FACE);
-    // this.mainModel.onGround = this.renderSwingProgress(par1EntityLiving,
-    // par9);
-    //
-    // if (this.renderPassModel != null)
-    // {
-    // this.renderPassModel.onGround = this.mainModel.onGround;
-    // }
-    //
-    // this.mainModel.isRiding = par1EntityLiving.isRiding();
-    //
-    // if (this.renderPassModel != null)
-    // {
-    // this.renderPassModel.isRiding = this.mainModel.isRiding;
-    // }
-    //
-    // this.mainModel.isChild = par1EntityLiving.isChild();
-    //
-    // if (this.renderPassModel != null)
-    // {
-    // this.renderPassModel.isChild = this.mainModel.isChild;
-    // }
-    //
-    // try
-    // {
-    // final float f2 =
-    // this.interpolateRotation(par1EntityLiving.prevRenderYawOffset,
-    // par1EntityLiving.renderYawOffset, par9);
-    // final float f3 =
-    // this.interpolateRotation(par1EntityLiving.prevRotationYawHead,
-    // par1EntityLiving.rotationYawHead, par9);
-    // final float f4 = par1EntityLiving.prevRotationPitch +
-    // (par1EntityLiving.rotationPitch - par1EntityLiving.prevRotationPitch) *
-    // par9;
-    // this.renderLivingAt(par1EntityLiving, par2, par4, par6);
-    // final float f5 = this.handleRotationFloat(par1EntityLiving, par9);
-    // this.rotateCorpse(par1EntityLiving, f5, f2, par9);
-    // final float f6 = 0.0625F;
-    // GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-    // GL11.glScalef(-1.0F, -1.0F, 1.0F);
-    // this.preRenderCallback(par1EntityLiving, par9);
-    // GL11.glTranslatef(0.0F, -24.0F * f6 - 0.0078125F, 0.0F);
-    // float f7 = par1EntityLiving.prevLimbYaw + (par1EntityLiving.limbYaw -
-    // par1EntityLiving.prevLimbYaw) * par9;
-    // float f8 = par1EntityLiving.limbSwing - par1EntityLiving.limbYaw * (1.0F
-    // - par9);
-    //
-    // if (par1EntityLiving.isChild())
-    // {
-    // f8 *= 3.0F;
-    // }
-    //
-    // if (f7 > 1.0F)
-    // {
-    // f7 = 1.0F;
-    // }
-    //
-    // GL11.glEnable(GL11.GL_ALPHA_TEST);
-    // this.mainModel.setLivingAnimations(par1EntityLiving, f8, f7, par9);
-    // this.renderModel(par1EntityLiving, f8, f7, f5, f3 - f2, f4, f6);
-    // float f9;
-    // int i;
-    // float f10;
-    // float f11;
-    //
-    // for (int j = 0; j < 4; ++j)
-    // {
-    // i = this.shouldRenderPass(par1EntityLiving, j, par9);
-    //
-    // if (i > 0)
-    // {
-    // this.renderPassModel.setLivingAnimations(par1EntityLiving, f8, f7, par9);
-    // this.renderPassModel.render(par1EntityLiving, f8, f7, f5, f3 - f2, f4,
-    // f6);
-    //
-    // if ((i & 240) == 16)
-    // {
-    // this.func_82408_c(par1EntityLiving, j, par9);
-    // this.renderPassModel.render(par1EntityLiving, f8, f7, f5, f3 - f2, f4,
-    // f6);
-    // }
-    //
-    // if ((i & 15) == 15)
-    // {
-    // f9 = par1EntityLiving.ticksExisted + par9;
-    // this.loadTexture("%blur%/misc/glint.png");
-    // GL11.glEnable(GL11.GL_BLEND);
-    // f10 = 0.5F;
-    // GL11.glColor4f(f10, f10, f10, 1.0F);
-    // GL11.glDepthFunc(GL11.GL_EQUAL);
-    // GL11.glDepthMask(false);
-    //
-    // for (int k = 0; k < 2; ++k)
-    // {
-    // GL11.glDisable(GL11.GL_LIGHTING);
-    // f11 = 0.76F;
-    // GL11.glColor4f(0.5F * f11, 0.25F * f11, 0.8F * f11, 1.0F);
-    // GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE);
-    // GL11.glMatrixMode(GL11.GL_TEXTURE);
-    // GL11.glLoadIdentity();
-    // final float f12 = f9 * (0.001F + k * 0.003F) * 20.0F;
-    // final float f13 = 0.33333334F;
-    // GL11.glScalef(f13, f13, f13);
-    // GL11.glRotatef(30.0F - k * 60.0F, 0.0F, 0.0F, 1.0F);
-    // GL11.glTranslatef(0.0F, f12, 0.0F);
-    // GL11.glMatrixMode(GL11.GL_MODELVIEW);
-    // this.renderPassModel.render(par1EntityLiving, f8, f7, f5, f3 - f2, f4,
-    // f6);
-    // }
-    //
-    // GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    // GL11.glMatrixMode(GL11.GL_TEXTURE);
-    // GL11.glDepthMask(true);
-    // GL11.glLoadIdentity();
-    // GL11.glMatrixMode(GL11.GL_MODELVIEW);
-    // GL11.glEnable(GL11.GL_LIGHTING);
-    // GL11.glDisable(GL11.GL_BLEND);
-    // GL11.glDepthFunc(GL11.GL_LEQUAL);
-    // }
-    //
-    // GL11.glDisable(GL11.GL_BLEND);
-    // GL11.glEnable(GL11.GL_ALPHA_TEST);
-    // }
-    // }
-    //
-    // GL11.glDepthMask(true);
-    // this.renderEquippedItems(par1EntityLiving, par9);
-    // final float f14 = par1EntityLiving.getBrightness(par9);
-    // i = this.getColorMultiplier(par1EntityLiving, f14, par9);
-    // OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
-    // GL11.glDisable(GL11.GL_TEXTURE_2D);
-    // OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
-    //
-    // if ((i >> 24 & 255) > 0 || par1EntityLiving.hurtTime > 0 ||
-    // par1EntityLiving.deathTime > 0)
-    // {
-    // GL11.glDisable(GL11.GL_TEXTURE_2D);
-    // GL11.glDisable(GL11.GL_ALPHA_TEST);
-    // GL11.glEnable(GL11.GL_BLEND);
-    // GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-    // GL11.glDepthFunc(GL11.GL_EQUAL);
-    //
-    // if (par1EntityLiving.hurtTime > 0 || par1EntityLiving.deathTime > 0)
-    // {
-    // GL11.glColor4f(f14, 0.0F, 0.0F, 0.4F);
-    // this.mainModel.render(par1EntityLiving, f8, f7, f5, f3 - f2, f4, f6);
-    //
-    // for (int l = 0; l < 4; ++l)
-    // {
-    // if (this.inheritRenderPass(par1EntityLiving, l, par9) >= 0)
-    // {
-    // GL11.glColor4f(f14, 0.0F, 0.0F, 0.4F);
-    // this.renderPassModel.render(par1EntityLiving, f8, f7, f5, f3 - f2, f4,
-    // f6);
-    // }
-    // }
-    // }
-    //
-    // if ((i >> 24 & 255) > 0)
-    // {
-    // f9 = (i >> 16 & 255) / 255.0F;
-    // f10 = (i >> 8 & 255) / 255.0F;
-    // final float f15 = (i & 255) / 255.0F;
-    // f11 = (i >> 24 & 255) / 255.0F;
-    // GL11.glColor4f(f9, f10, f15, f11);
-    // this.mainModel.render(par1EntityLiving, f8, f7, f5, f3 - f2, f4, f6);
-    //
-    // for (int i1 = 0; i1 < 4; ++i1)
-    // {
-    // if (this.inheritRenderPass(par1EntityLiving, i1, par9) >= 0)
-    // {
-    // GL11.glColor4f(f9, f10, f15, f11);
-    // this.renderPassModel.render(par1EntityLiving, f8, f7, f5, f3 - f2, f4,
-    // f6);
-    // }
-    // }
-    // }
-    //
-    // GL11.glDepthFunc(GL11.GL_LEQUAL);
-    // GL11.glDisable(GL11.GL_BLEND);
-    // GL11.glEnable(GL11.GL_ALPHA_TEST);
-    // GL11.glEnable(GL11.GL_TEXTURE_2D);
-    // }
-    //
-    // GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-    // }
-    // catch (final Exception exception)
-    // {
-    // exception.printStackTrace();
-    // }
-    //
-    // OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
-    // GL11.glEnable(GL11.GL_TEXTURE_2D);
-    // OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
-    // GL11.glEnable(GL11.GL_CULL_FACE);
-    // GL11.glPopMatrix();
-    // this.passSpecialRender(par1EntityLiving, par2, par4, par6);
-    // }
 }
