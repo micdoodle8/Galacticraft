@@ -36,7 +36,6 @@ public class GCCoreGuiParachest extends GCCoreGuiContainer
         this.lowerChestInventory = par2IInventory;
         this.allowUserInput = false;
         short short1 = 222;
-        int i = short1 - 108;
         this.inventorySlots = par2IInventory.getSizeInventory();
         this.ySize = 146 + this.inventorySlots * 2;
     }
@@ -56,7 +55,7 @@ public class GCCoreGuiParachest extends GCCoreGuiContainer
         int k = (this.width - this.xSize) / 2;
         int l = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
-        
+
         if (this.lowerChestInventory instanceof GCCoreTileEntityParachest)
         {
             int fuelLevel = ((GCCoreTileEntityParachest) this.lowerChestInventory).getScaledFuelLevel(28);

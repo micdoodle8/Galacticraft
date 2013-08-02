@@ -31,7 +31,7 @@ public class GCCoreTileEntityParachest extends TileEntity implements IInventory,
 {
     private final int tankCapacity = 5000;
     public FluidTank fuelTank = new FluidTank(this.tankCapacity);
-    
+
     public ItemStack[] chestContents = new ItemStack[3];
 
     public boolean adjacentChestChecked = false;
@@ -59,7 +59,7 @@ public class GCCoreTileEntityParachest extends TileEntity implements IInventory,
     {
         final double fuelLevel = this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluid().amount;
 
-        return (int) (fuelLevel * i / tankCapacity);
+        return (int) (fuelLevel * i / this.tankCapacity);
     }
 
     @Override
@@ -152,7 +152,7 @@ public class GCCoreTileEntityParachest extends TileEntity implements IInventory,
     {
         super.readFromNBT(nbt);
         NBTTagList nbttaglist = nbt.getTagList("Items");
-        
+
         this.chestContents = new ItemStack[nbt.getInteger("chestContentLength")];
 
         for (int i = 0; i < nbttaglist.tagCount(); ++i)
@@ -313,7 +313,7 @@ public class GCCoreTileEntityParachest extends TileEntity implements IInventory,
                     this.fuelTank.drain(amountToFill, true);
                 }
             }
-            
+
             if (this.ticksSinceSync % 3 == 0)
             {
                 PacketManager.sendPacketToClients(this.getPacket(), this.worldObj, new Vector3(this), 12);

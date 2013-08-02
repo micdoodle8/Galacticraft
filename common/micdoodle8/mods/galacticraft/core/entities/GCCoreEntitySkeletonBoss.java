@@ -55,7 +55,9 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
 {
     protected long ticks = 0;
     private static final ItemStack defaultHeldItem = new ItemStack(Item.bow, 1);
-//    private static final AttributeModifier skeleBossEnrage = new AttributeModifier("Drinking speed penalty", 0.15D, 0).func_111168_a(false);
+    // private static final AttributeModifier skeleBossEnrage = new
+    // AttributeModifier("Drinking speed penalty", 0.15D,
+    // 0).func_111168_a(false);
     private GCCoreTileEntityDungeonSpawner spawner;
 
     public int throwTimer;
@@ -242,12 +244,12 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
                         {
                             ((GCCoreTileEntityTreasureChest) tile).locked = true;
                         }
-                        
+
                         ChestGenHooks info = ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST);
-                        
-                        WeightedRandomChestContent.generateChestContents(rand, info.getItems(rand), (GCCoreTileEntityTreasureChest) tile, info.getCount(rand));
-                        
-                        ((GCCoreTileEntityTreasureChest) tile).setInventorySlotContents(rand.nextInt(((GCCoreTileEntityTreasureChest) tile).getSizeInventory()), this.getGuaranteedLoot(rand));
+
+                        WeightedRandomChestContent.generateChestContents(this.rand, info.getItems(this.rand), (GCCoreTileEntityTreasureChest) tile, info.getCount(this.rand));
+
+                        ((GCCoreTileEntityTreasureChest) tile).setInventorySlotContents(this.rand.nextInt(((GCCoreTileEntityTreasureChest) tile).getSizeInventory()), this.getGuaranteedLoot(this.rand));
 
                         break;
                     }
@@ -323,19 +325,22 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
             this.targetEntity = null;
         }
 
-//        final Vector3 thisVec = new Vector3(this);
-//        final List l = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getBoundingBox(thisVec.x - 10, thisVec.y - 10, thisVec.z - 10, thisVec.x + 10, thisVec.y + 10, thisVec.z + 10));
-//
-//        for (final Entity e : (List<Entity>) l)
-//        {
-//            if (e instanceof GCCoreEntitySkeletonBoss)
-//            {
-//                 if (((GCCoreEntitySkeletonBoss) e).getHealth() >= this.health)
-//                 {
-//                     ((GCCoreEntitySkeletonBoss) e).setDead();
-//                 }
-//            }
-//        }
+        // final Vector3 thisVec = new Vector3(this);
+        // final List l =
+        // this.worldObj.getEntitiesWithinAABBExcludingEntity(this,
+        // AxisAlignedBB.getBoundingBox(thisVec.x - 10, thisVec.y - 10,
+        // thisVec.z - 10, thisVec.x + 10, thisVec.y + 10, thisVec.z + 10));
+        //
+        // for (final Entity e : (List<Entity>) l)
+        // {
+        // if (e instanceof GCCoreEntitySkeletonBoss)
+        // {
+        // if (((GCCoreEntitySkeletonBoss) e).getHealth() >= this.health)
+        // {
+        // ((GCCoreEntitySkeletonBoss) e).setDead();
+        // }
+        // }
+        // }
 
         if (this.throwTimer > 0)
         {

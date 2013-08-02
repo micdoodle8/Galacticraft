@@ -220,7 +220,7 @@ public class GCCoreEvents
     {
         final boolean doGen = TerrainGen.populate(event.chunkProvider, event.world, event.rand, event.chunkX, event.chunkX, event.hasVillageGenerated, PopulateChunkEvent.Populate.EventType.CUSTOM);
         boolean doGen2 = false;
-        
+
         for (Integer dim : GCCoreConfigManager.externalOilGen)
         {
             if (dim == event.world.provider.dimensionId)
@@ -229,8 +229,8 @@ public class GCCoreEvents
                 break;
             }
         }
-        
-        if (!doGen || (!(event.world.provider instanceof IGalacticraftWorldProvider) && !doGen2))
+
+        if (!doGen || !(event.world.provider instanceof IGalacticraftWorldProvider) && !doGen2)
         {
             return;
         }
@@ -388,7 +388,7 @@ public class GCCoreEvents
 
         return null;
     }
-    
+
     @ForgeSubscribe
     public void onPlayerDeath(LivingDeathEvent event)
     {
@@ -399,7 +399,7 @@ public class GCCoreEvents
                 for (int i = 0; i < ((GCCorePlayerMP) event.entityLiving).getExtendedInventory().getSizeInventory(); i++)
                 {
                     ItemStack stack = ((GCCorePlayerMP) event.entityLiving).getExtendedInventory().getStackInSlot(i);
-                    
+
                     if (stack != null)
                     {
                         ((GCCorePlayerMP) event.entityLiving).dropPlayerItemWithRandomChoice(stack, true);

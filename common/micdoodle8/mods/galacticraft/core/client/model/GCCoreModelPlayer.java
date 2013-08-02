@@ -45,12 +45,12 @@ public class GCCoreModelPlayer extends ModelBiped
     boolean wearingRightTankRed = false;
     boolean wearingRightTankOrange = false;
     boolean wearingRightTankGreen = false;
-    
+
     private static boolean crossbowModLoaded = false;
-    
+
     static
     {
-        crossbowModLoaded = Loader.isModLoaded("CrossbowMod2");
+        GCCoreModelPlayer.crossbowModLoaded = Loader.isModLoaded("CrossbowMod2");
     }
 
     public GCCoreModelPlayer(float var1)
@@ -784,15 +784,15 @@ public class GCCoreModelPlayer extends ModelBiped
                 }
             }
         }
-        
-        if (crossbowModLoaded)
+
+        if (GCCoreModelPlayer.crossbowModLoaded)
         {
             try
             {
                 Class<?> c = Class.forName("micdoodle8.mods.crossbowmod.client.ClientProxy");
-                
+
                 Method m = c.getMethod("bipedRotationHook", ModelBiped.class, Entity.class, float.class);
-                
+
                 m.invoke(null, this, par7Entity, par3);
             }
             catch (Exception e)

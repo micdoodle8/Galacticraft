@@ -76,7 +76,7 @@ public class GCCoreTileEntitySolar extends TileEntityUniversalElectrical impleme
         if (!this.worldObj.isRemote)
         {
             this.recharge(this.containingItems[0]);
-            
+
             if (this.disableCooldown > 0)
             {
                 this.disableCooldown--;

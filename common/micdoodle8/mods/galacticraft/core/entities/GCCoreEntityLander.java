@@ -25,7 +25,6 @@ import net.minecraftforge.fluids.FluidTank;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.IPacketReceiver;
 import com.google.common.io.ByteArrayDataInput;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -35,7 +34,7 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
 {
     private final int tankCapacity = 5000;
     public FluidTank fuelTank = new FluidTank(this.tankCapacity);
-    
+
     public double ySpeed;
     public double startingYSpeed;
     float maxSpeed = 0.05F;
@@ -63,7 +62,7 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
     {
         final double fuelLevel = this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluid().amount;
 
-        return (int) (fuelLevel * i / tankCapacity);
+        return (int) (fuelLevel * i / this.tankCapacity);
     }
 
     public GCCoreEntityLander(World var1, double var2, double var4, double var6)
@@ -76,10 +75,10 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
     {
         this(player.worldObj, player.posX, player.posY, player.posZ);
         this.playerSpawnedIn = player;
-        
+
         this.chestContents = new ItemStack[player.getRocketStacks().length + 1];
         this.fuelTank.setFluid(new FluidStack(GalacticraftCore.FUEL, player.getFuelLevel()));
-        
+
         for (int i = 0; i < player.getRocketStacks().length; i++)
         {
             this.chestContents[i] = player.getRocketStacks()[i];
@@ -130,7 +129,7 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
         if (!this.worldObj.isRemote)
         {
             final FluidStack liquid = this.fuelTank.getFluid();
-            
+
             if (liquid != null && this.fuelTank.getFluid() != null && this.fuelTank.getFluid().getFluid().getName().equalsIgnoreCase("Fuel"))
             {
                 if (FluidContainerRegistry.isEmptyContainer(this.chestContents[this.chestContents.length - 1]))
@@ -159,7 +158,7 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
     protected void readEntityFromNBT(NBTTagCompound nbt)
     {
         final NBTTagList var2 = nbt.getTagList("Items");
-        
+
         this.chestContents = new ItemStack[nbt.getInteger("rocketStacksLength")];
 
         for (int var3 = 0; var3 < var2.tagCount(); ++var3)
@@ -563,7 +562,7 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
             this.chestContents = new ItemStack[cargoLength];
             PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 21, new Object[] { this.entityId }));
         }
-        
+
         this.fuelTank.setFluid(new FluidStack(GalacticraftCore.FUEL, dataStream.readInt()));
     }
 

@@ -78,7 +78,7 @@ public class GCMoonRoomChests extends GCCoreDungeonRoom
         for (final ChunkCoordinates chestCoords : this.chests)
         {
             final TileEntityChest chest = (TileEntityChest) this.worldObj.getBlockTileEntity(chestCoords.posX, chestCoords.posY, chestCoords.posZ);
-            
+
             if (chest != null)
             {
                 ChestGenHooks info = ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST);

@@ -9,7 +9,6 @@ import micdoodle8.mods.galacticraft.core.wgen.dungeon.GCCoreDungeonBoundingBox;
 import micdoodle8.mods.galacticraft.core.wgen.dungeon.GCCoreDungeonRoom;
 import micdoodle8.mods.galacticraft.core.wgen.dungeon.GCCoreMapGenDungeon;
 import net.minecraft.block.Block;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
@@ -93,9 +92,9 @@ public class GCMoonRoomTreasure extends GCCoreDungeonRoom
             if (chest != null && chest instanceof GCCoreTileEntityTreasureChest)
             {
                 ChestGenHooks info = ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST);
-                
+
                 WeightedRandomChestContent.generateChestContents(rand, info.getItems(rand), (GCCoreTileEntityTreasureChest) chest, info.getCount(rand));
-                
+
                 ((GCCoreTileEntityTreasureChest) chest).setInventorySlotContents(rand.nextInt(((GCCoreTileEntityTreasureChest) chest).getSizeInventory()), this.getGuaranteedLoot(rand));
             }
         }

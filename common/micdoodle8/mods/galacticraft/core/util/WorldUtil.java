@@ -177,34 +177,34 @@ public class WorldUtil
     {
         return (float) WorldUtil.getWorldColor(world).z;
     }
-    
+
     public static Vec3 getFogColorHook(World world)
     {
         if (world.provider instanceof WorldProviderSurface && FMLClientHandler.instance().getClient().thePlayer.posY >= 200)
         {
             float var20 = (float) (FMLClientHandler.instance().getClient().thePlayer.posY - 200.0F) / 1000.0F;
             final float var21 = Math.max(1.0F - var20 * 4.0F, 0.0F);
-            
+
             Vec3 vec = world.getFogColor(1.0F);
-            
+
             return Vec3.createVectorHelper(vec.xCoord * var21, vec.yCoord * var21, vec.zCoord * var21);
         }
-        
+
         return world.getFogColor(1.0F);
     }
-    
+
     public static Vec3 getSkyColorHook(World world)
     {
         if (world.provider instanceof WorldProviderSurface && FMLClientHandler.instance().getClient().thePlayer.posY >= 200)
         {
             float var20 = (float) (FMLClientHandler.instance().getClient().thePlayer.posY - 200.0F) / 1000.0F;
             final float var21 = Math.max(1.0F - var20 * 2.0F, 0.0F);
-            
+
             Vec3 vec = world.getSkyColor(FMLClientHandler.instance().getClient().renderViewEntity, 1.0F);
-            
+
             return Vec3.createVectorHelper(vec.xCoord * var21, vec.yCoord * var21, vec.zCoord * var21);
         }
-        
+
         return world.getSkyColor(FMLClientHandler.instance().getClient().renderViewEntity, 1.0F);
     }
 

@@ -105,7 +105,7 @@ public class GCCoreGuiAirSealer extends GCCoreGuiContainer
         {
             return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.sealerblocked.name");
         }
-        
+
         if (this.sealer.disabled)
         {
             return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.disabled.name");

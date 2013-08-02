@@ -59,7 +59,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
     {
         final double fuelLevel = this.spaceshipFuelTank.getFluid() == null ? 0 : this.spaceshipFuelTank.getFluid().amount;
 
-        return (int) (fuelLevel * i / tankCapacity);
+        return (int) (fuelLevel * i / this.tankCapacity);
     }
 
     public GCCoreEntityRocketT1(World par1World, double par2, double par4, double par6, EnumRocketType rocketType)

@@ -39,7 +39,7 @@ public class GCCoreConnectionHandler implements IConnectionHandler
     @Override
     public void connectionOpened(NetHandler netClientHandler, String server, int port, INetworkManager manager)
     {
-        clientConnected = true;
+        GCCoreConnectionHandler.clientConnected = true;
     }
 
     @Override
@@ -50,9 +50,9 @@ public class GCCoreConnectionHandler implements IConnectionHandler
     @Override
     public void connectionClosed(INetworkManager manager)
     {
-        if (clientConnected)
+        if (GCCoreConnectionHandler.clientConnected)
         {
-            clientConnected = false;
+            GCCoreConnectionHandler.clientConnected = false;
             WorldUtil.unregisterPlanets();
             WorldUtil.unregisterSpaceStations();
         }

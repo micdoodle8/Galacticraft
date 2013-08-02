@@ -16,7 +16,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 public class GCCoreEntityParaChest extends Entity
 {
     public ItemStack[] cargo;
-    
+
     public int fuelLevel;
 
     private boolean placedChest;
@@ -144,7 +144,7 @@ public class GCCoreEntityParaChest extends Entity
             final GCCoreTileEntityParachest chest = (GCCoreTileEntityParachest) te;
 
             chest.chestContents = new ItemStack[this.cargo.length + 1];
-            
+
             for (int i = 0; i < this.cargo.length; i++)
             {
                 chest.chestContents[i] = this.cargo[i];

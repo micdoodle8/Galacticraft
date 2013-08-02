@@ -153,7 +153,7 @@ public class OxygenPressureProtocol
 
             while (var6.hasNext())
             {
-                var7 = (Vector3) var6.next();
+                var7 = var6.next();
 
                 if (!this.getIsSealed(var1, var7.intX(), var7.intY(), var7.intZ()))
                 {
@@ -165,7 +165,7 @@ public class OxygenPressureProtocol
 
             while (var6.hasNext())
             {
-                var7 = (Vector3) var6.next();
+                var7 = var6.next();
 
                 final Block block = Block.blocksList[var7.getBlockID(var1)];
 
@@ -179,7 +179,7 @@ public class OxygenPressureProtocol
 
             while (var6.hasNext())
             {
-                var7 = (Vector3) var6.next();
+                var7 = var6.next();
 
                 if (var7.getBlockID(var1) == 0)
                 {
@@ -218,7 +218,7 @@ public class OxygenPressureProtocol
 
             while (var6.hasNext())
             {
-                final Vector3 var7 = (Vector3) var6.next();
+                final Vector3 var7 = var6.next();
 
                 if (!this.getIsSealed(var1, var7.intX(), var7.intY(), var7.intZ()))
                 {
@@ -239,7 +239,7 @@ public class OxygenPressureProtocol
 
         while (var5.hasNext())
         {
-            var6 = (Vector3) var5.next();
+            var6 = var5.next();
 
             if (this.canBlockPass(var1, var6))
             {
@@ -254,7 +254,7 @@ public class OxygenPressureProtocol
 
         while (var5.hasNext())
         {
-            var6 = (Vector3) var5.next();
+            var6 = var5.next();
 
             if (var1.getBlockId(var6.intX(), var6.intY(), var6.intZ()) == GCCoreBlocks.breatheableAir.blockID)
             {
@@ -266,7 +266,7 @@ public class OxygenPressureProtocol
 
         while (var5.hasNext())
         {
-            var6 = (Vector3) var5.next();
+            var6 = var5.next();
 
             final int idAt = var6.getBlockID(var1);
 
@@ -280,7 +280,7 @@ public class OxygenPressureProtocol
 
         while (var5.hasNext())
         {
-            var6 = (Vector3) var5.next();
+            var6 = var5.next();
 
             if (var6.getBlockID(var1) == 0)
             {

@@ -11,7 +11,7 @@ import net.minecraftforge.event.Event;
 public class GCCoreEventChoosePlanetGui extends Event
 {
     public List<GuiButton> buttonList;
-    
+
     public GCCoreEventChoosePlanetGui(List<GuiButton> buttonList)
     {
         this.buttonList = buttonList;
@@ -34,7 +34,7 @@ public class GCCoreEventChoosePlanetGui extends Event
     public static class SlotClicked extends GCCoreEventChoosePlanetGui
     {
         public GuiSlot slotClicked;
-        
+
         public SlotClicked(List<GuiButton> buttonList, GuiSlot slotClicked)
         {
             super(buttonList);

@@ -48,10 +48,10 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
             {
                 SlotClicked event = new SlotClicked(new ArrayList<GuiButton>(), this);
                 MinecraftForge.EVENT_BUS.post(event);
-                
+
                 this.choosePlanetGui.buttonList.addAll(event.buttonList);
             }
-            
+
             GCCoreGuiChoosePlanet.setSelectedDimension(this.choosePlanetGui, par1);
         }
 

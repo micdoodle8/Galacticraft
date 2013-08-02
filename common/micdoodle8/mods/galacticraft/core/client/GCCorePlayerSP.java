@@ -80,21 +80,21 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
     private static ThreadDownloadImageData getImageData(ResourceLocation par0ResourceLocation, String par1Str, ResourceLocation par2ResourceLocation, IImageBuffer par3IImageBuffer)
     {
         TextureManager texturemanager = Minecraft.getMinecraft().func_110434_K();
-        
+
         ThreadDownloadImageData object = new ThreadDownloadImageData(par1Str, par2ResourceLocation, par3IImageBuffer);
         texturemanager.func_110579_a(par0ResourceLocation, object);
-        
+
         return object;
     }
 
     @Override
     public ResourceLocation func_110303_q()
     {
-        if (!GCCoreConfigManager.overrideCapes || !func_110310_o().func_110557_a())
+        if (!GCCoreConfigManager.overrideCapes || !this.func_110310_o().func_110557_a())
         {
             return super.func_110303_q();
         }
-        
+
         return this.galacticraftCape;
     }
 
@@ -105,7 +105,7 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
         {
             return super.func_110310_o();
         }
-        
+
         return this.galacticraftCapeImageData;
     }
 

@@ -139,7 +139,7 @@ public class GCCoreSkyProviderOverworld extends IRenderHandler
             }
 
             var23.startDrawing(6);
-            
+
             var23.setColorRGBA_F(var8 * var21, var9 * var21, var10 * var21, var24[3] * var21);
             var23.addVertex(0.0D, 100.0D, 0.0D);
             final byte var26 = 16;
@@ -209,11 +209,11 @@ public class GCCoreSkyProviderOverworld extends IRenderHandler
         GL11.glColor3f(0.0F, 0.0F, 0.0F);
 
         double var25 = this.minecraft.thePlayer.posY - 64;
-        
+
         var20 *= 400.0F;
 
         final float var22 = Math.max(Math.min(var20 / 100.0F - 0.2F, 1.0F), 0.0F);
-        
+
         GL11.glPushMatrix();
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glTranslatef(0.0F, -var20 / 10 - 5, 0.0F);
@@ -239,7 +239,7 @@ public class GCCoreSkyProviderOverworld extends IRenderHandler
         var23.draw();
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glPopMatrix();
-        
+
         GL11.glColor3f(0.0f, 0.0f, 0.0f);
 
         GL11.glPushMatrix();

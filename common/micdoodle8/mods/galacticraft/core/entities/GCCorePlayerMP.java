@@ -946,14 +946,14 @@ public class GCCorePlayerMP extends EntityPlayerMP
         final NBTTagList var23 = nbt.getTagList("RocketItems");
         int length = nbt.getInteger("rocketStacksLength");
         boolean oldInventory = false;
-        
+
         // Backwards Compatibility:
         if (length % 9 == 3)
         {
             oldInventory = true;
             length -= 1;
         }
-        
+
         this.setRocketStacks(new ItemStack[length]);
 
         for (int var3 = 0; var3 < var23.tagCount(); ++var3)
@@ -965,18 +965,18 @@ public class GCCorePlayerMP extends EntityPlayerMP
             {
                 this.getRocketStacks()[var5] = ItemStack.loadItemStackFromNBT(var4);
             }
-            
+
             if (oldInventory)
             {
                 if (var5 == this.getRocketStacks().length - 1)
                 {
                     this.rocketStacks[var5] = null;
                 }
-                
+
                 if (var5 == this.getRocketStacks().length)
                 {
                     this.rocketStacks[var5 - 1] = ItemStack.loadItemStackFromNBT(var4);
-                } 
+                }
             }
         }
 

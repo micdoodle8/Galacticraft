@@ -36,7 +36,7 @@ public class GCCoreRenderPlayer extends RenderPlayer
     {
         return this.modelBipedMain;
     }
-    
+
     @Override
     protected void renderSpecials(AbstractClientPlayer par1AbstractClientPlayer, float par2)
     {
@@ -60,7 +60,7 @@ public class GCCoreRenderPlayer extends RenderPlayer
             if (itemstack != null && itemstack.getItem() instanceof ItemBlock)
             {
                 IItemRenderer customRenderer = MinecraftForgeClient.getItemRenderer(itemstack, EQUIPPED);
-                boolean is3D = (customRenderer != null && customRenderer.shouldUseRenderHelper(EQUIPPED, itemstack, BLOCK_3D));
+                boolean is3D = customRenderer != null && customRenderer.shouldUseRenderHelper(EQUIPPED, itemstack, BLOCK_3D);
 
                 if (is3D || RenderBlocks.renderItemIn3d(Block.blocksList[itemstack.itemID].getRenderType()))
                 {
@@ -100,7 +100,7 @@ public class GCCoreRenderPlayer extends RenderPlayer
                 GL11.glPushMatrix();
                 GL11.glRotatef(f3, 0.0F, 1.0F, 0.0F);
                 GL11.glRotatef(f4, 1.0F, 0.0F, 0.0F);
-                GL11.glTranslatef(0.375F * (float)(i * 2 - 1), 0.0F, 0.0F);
+                GL11.glTranslatef(0.375F * (i * 2 - 1), 0.0F, 0.0F);
                 GL11.glTranslatef(0.0F, -0.375F, 0.0F);
                 GL11.glRotatef(-f4, 1.0F, 0.0F, 0.0F);
                 GL11.glRotatef(-f3, 0.0F, 1.0F, 0.0F);
@@ -122,13 +122,13 @@ public class GCCoreRenderPlayer extends RenderPlayer
             this.func_110776_a(par1AbstractClientPlayer.func_110303_q());
             GL11.glPushMatrix();
             GL11.glTranslatef(0.0F, 0.0F, 0.125F);
-            double d0 = par1AbstractClientPlayer.field_71091_bM + (par1AbstractClientPlayer.field_71094_bP - par1AbstractClientPlayer.field_71091_bM) * (double)par2 - (par1AbstractClientPlayer.prevPosX + (par1AbstractClientPlayer.posX - par1AbstractClientPlayer.prevPosX) * (double)par2);
-            double d1 = par1AbstractClientPlayer.field_71096_bN + (par1AbstractClientPlayer.field_71095_bQ - par1AbstractClientPlayer.field_71096_bN) * (double)par2 - (par1AbstractClientPlayer.prevPosY + (par1AbstractClientPlayer.posY - par1AbstractClientPlayer.prevPosY) * (double)par2);
-            double d2 = par1AbstractClientPlayer.field_71097_bO + (par1AbstractClientPlayer.field_71085_bR - par1AbstractClientPlayer.field_71097_bO) * (double)par2 - (par1AbstractClientPlayer.prevPosZ + (par1AbstractClientPlayer.posZ - par1AbstractClientPlayer.prevPosZ) * (double)par2);
+            double d0 = par1AbstractClientPlayer.field_71091_bM + (par1AbstractClientPlayer.field_71094_bP - par1AbstractClientPlayer.field_71091_bM) * par2 - (par1AbstractClientPlayer.prevPosX + (par1AbstractClientPlayer.posX - par1AbstractClientPlayer.prevPosX) * par2);
+            double d1 = par1AbstractClientPlayer.field_71096_bN + (par1AbstractClientPlayer.field_71095_bQ - par1AbstractClientPlayer.field_71096_bN) * par2 - (par1AbstractClientPlayer.prevPosY + (par1AbstractClientPlayer.posY - par1AbstractClientPlayer.prevPosY) * par2);
+            double d2 = par1AbstractClientPlayer.field_71097_bO + (par1AbstractClientPlayer.field_71085_bR - par1AbstractClientPlayer.field_71097_bO) * par2 - (par1AbstractClientPlayer.prevPosZ + (par1AbstractClientPlayer.posZ - par1AbstractClientPlayer.prevPosZ) * par2);
             f6 = par1AbstractClientPlayer.prevRenderYawOffset + (par1AbstractClientPlayer.renderYawOffset - par1AbstractClientPlayer.prevRenderYawOffset) * par2;
-            double d3 = (double)MathHelper.sin(f6 * (float)Math.PI / 180.0F);
-            double d4 = (double)(-MathHelper.cos(f6 * (float)Math.PI / 180.0F));
-            float f7 = (float)d1 * 10.0F;
+            double d3 = MathHelper.sin(f6 * (float) Math.PI / 180.0F);
+            double d4 = -MathHelper.cos(f6 * (float) Math.PI / 180.0F);
+            float f7 = (float) d1 * 10.0F;
 
             if (f7 < -6.0F)
             {
@@ -140,8 +140,8 @@ public class GCCoreRenderPlayer extends RenderPlayer
                 f7 = 32.0F;
             }
 
-            float f8 = (float)(d0 * d3 + d2 * d4) * 100.0F;
-            float f9 = (float)(d0 * d4 - d2 * d3) * 100.0F;
+            float f8 = (float) (d0 * d3 + d2 * d4) * 100.0F;
+            float f9 = (float) (d0 * d4 - d2 * d3) * 100.0F;
 
             if (f8 < 0.0F)
             {
@@ -187,10 +187,10 @@ public class GCCoreRenderPlayer extends RenderPlayer
             float f11;
 
             IItemRenderer customRenderer = MinecraftForgeClient.getItemRenderer(itemstack1, EQUIPPED);
-            boolean is3D = (customRenderer != null && customRenderer.shouldUseRenderHelper(EQUIPPED, itemstack1, BLOCK_3D));
+            boolean is3D = customRenderer != null && customRenderer.shouldUseRenderHelper(EQUIPPED, itemstack1, BLOCK_3D);
             boolean isBlock = itemstack1.itemID < Block.blocksList.length && itemstack1.getItemSpriteNumber() == 0;
 
-            if (is3D || (isBlock && RenderBlocks.renderItemIn3d(Block.blocksList[itemstack1.itemID].getRenderType())))
+            if (is3D || isBlock && RenderBlocks.renderItemIn3d(Block.blocksList[itemstack1.itemID].getRenderType()))
             {
                 f11 = 0.5F;
                 GL11.glTranslatef(0.0F, 0.1875F, -0.3125F);
@@ -250,9 +250,9 @@ public class GCCoreRenderPlayer extends RenderPlayer
                 for (j = 0; j < itemstack1.getItem().getRenderPasses(itemstack1.getItemDamage()); ++j)
                 {
                     int k = itemstack1.getItem().getColorFromItemStack(itemstack1, j);
-                    f13 = (float)(k >> 16 & 255) / 255.0F;
-                    f12 = (float)(k >> 8 & 255) / 255.0F;
-                    f6 = (float)(k & 255) / 255.0F;
+                    f13 = (k >> 16 & 255) / 255.0F;
+                    f12 = (k >> 8 & 255) / 255.0F;
+                    f6 = (k & 255) / 255.0F;
                     GL11.glColor4f(f13, f12, f6, 1.0F);
                     this.renderManager.itemRenderer.renderItem(par1AbstractClientPlayer, itemstack1, j);
                 }
@@ -260,9 +260,9 @@ public class GCCoreRenderPlayer extends RenderPlayer
             else
             {
                 j = itemstack1.getItem().getColorFromItemStack(itemstack1, 0);
-                float f14 = (float)(j >> 16 & 255) / 255.0F;
-                f13 = (float)(j >> 8 & 255) / 255.0F;
-                f12 = (float)(j & 255) / 255.0F;
+                float f14 = (j >> 16 & 255) / 255.0F;
+                f13 = (j >> 8 & 255) / 255.0F;
+                f12 = (j & 255) / 255.0F;
                 GL11.glColor4f(f14, f13, f12, 1.0F);
                 this.renderManager.itemRenderer.renderItem(par1AbstractClientPlayer, itemstack1, 0);
             }
