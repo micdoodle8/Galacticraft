@@ -33,6 +33,7 @@ public class GCCoreItemFuelCanister extends Item
         super(par1);
         this.setMaxDamage(FluidContainerRegistry.BUCKET_VOLUME + 1);
         this.setMaxStackSize(1);
+        this.setNoRepair();
     }
 
     @Override
