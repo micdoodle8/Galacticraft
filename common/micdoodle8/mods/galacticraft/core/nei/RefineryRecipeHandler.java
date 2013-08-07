@@ -116,7 +116,7 @@ public class RefineryRecipeHandler extends TemplateRecipeHandler
         }
         else
         {
-            return this.arecipes.get(recipe).getIngredients();
+            return (ArrayList<PositionedStack>) this.arecipes.get(recipe).getIngredients();
         }
     }
 
