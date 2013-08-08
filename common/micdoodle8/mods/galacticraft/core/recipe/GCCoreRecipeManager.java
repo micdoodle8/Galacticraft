@@ -322,15 +322,15 @@ public class GCCoreRecipeManager
 
             Object pipeItemsStone = clazz.getField("pipeItemsStone").get(null);
             Object pipeItemsCobblestone = clazz.getField("pipeItemsCobblestone").get(null);
-            Object pipeLiquidsCobblestone = clazz.getField("pipeLiquidsCobblestone").get(null);
-            Object pipeLiquidsStone = clazz.getField("pipeLiquidsStone").get(null);
+            Object pipeFluidsCobblestone = clazz.getField("pipeFluidsCobblestone").get(null);
+            Object pipeFluidsStone = clazz.getField("pipeFluidsStone").get(null);
             Object pipePowerStone = clazz.getField("pipePowerStone").get(null);
             Object pipePowerGold = clazz.getField("pipePowerGold").get(null);
 
             RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.enclosedWire, 1, EnumEnclosedBlock.BC_ITEM_COBBLESTONEPIPE.getMetadata()), new Object[] { "XYX", 'Y', pipeItemsCobblestone, 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4) });
             RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.enclosedWire, 1, EnumEnclosedBlock.BC_ITEM_STONEPIPE.getMetadata()), new Object[] { "XYX", 'Y', pipeItemsStone, 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4) });
-            RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.enclosedWire, 1, EnumEnclosedBlock.BC_LIQUID_COBBLESTONEPIPE.getMetadata()), new Object[] { "XYX", 'Y', pipeLiquidsCobblestone, 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4) });
-            RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.enclosedWire, 1, EnumEnclosedBlock.BC_LIQUID_STONEPIPE.getMetadata()), new Object[] { "XYX", 'Y', pipeLiquidsStone, 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4) });
+            RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.enclosedWire, 1, EnumEnclosedBlock.BC_LIQUID_COBBLESTONEPIPE.getMetadata()), new Object[] { "XYX", 'Y', pipeFluidsCobblestone, 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4) });
+            RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.enclosedWire, 1, EnumEnclosedBlock.BC_LIQUID_STONEPIPE.getMetadata()), new Object[] { "XYX", 'Y', pipeFluidsStone, 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4) });
             RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.enclosedWire, 1, EnumEnclosedBlock.BC_POWER_STONEPIPE.getMetadata()), new Object[] { "XYX", 'Y', pipePowerStone, 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4) });
             RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.enclosedWire, 1, EnumEnclosedBlock.BC_POWER_GOLDPIPE.getMetadata()), new Object[] { "XYX", 'Y', pipePowerGold, 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4) });
 
