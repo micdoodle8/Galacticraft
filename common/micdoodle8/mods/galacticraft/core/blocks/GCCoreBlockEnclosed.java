@@ -29,7 +29,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
 
     public enum EnumEnclosedBlock
     {
-        COPPERWIRE(0, -1, null, "enclosed_copper_wire"), OXYGENPIPE(1, -1, null, "enclosed_oxygen_pipe"), IC2_COPPER_CABLE(2, 0, null, "enclosed_copper_cable"), IC2_GOLD_CABLE(3, 3, null, "enclosed_gold_cable"), IC2_HV_CABLE(4, 6, null, "enclosed_hv_cable"), IC2_GLASS_FIBRE_CABLE(5, 9, null, "enclosed_glassfibre_cable"), IC2_LV_CABLE(6, 10, null, "enclosed_lv_cable"), BC_ITEM_STONEPIPE(7, -1, "PipeItemsStone", "enclosed_itempipe_stone"), BC_ITEM_COBBLESTONEPIPE(8, -1, "PipeItemsCobblestone", "enclosed_itempipe_cobblestone"), BC_LIQUID_STONEPIPE(9, -1, "PipeLiquidsStone", "enclosed_liquidpipe_stone"), BC_LIQUID_COBBLESTONEPIPE(10, -1, "PipeLiquidsCobblestone", "enclosed_liquidpipe_cobblestone"), BC_POWER_STONEPIPE(11, -1, "PipePowerStone", "enclosed_powerpipe_stone"), BC_POWER_GOLDPIPE(12, -1, "PipePowerGold", "enclosed_powerpipe_gold");
+        COPPERWIRE(0, -1, null, "enclosed_copper_wire"), OXYGENPIPE(1, -1, null, "enclosed_oxygen_pipe"), IC2_COPPER_CABLE(2, 0, null, "enclosed_copper_cable"), IC2_GOLD_CABLE(3, 3, null, "enclosed_gold_cable"), IC2_HV_CABLE(4, 6, null, "enclosed_hv_cable"), IC2_GLASS_FIBRE_CABLE(5, 9, null, "enclosed_glassfibre_cable"), IC2_LV_CABLE(6, 10, null, "enclosed_lv_cable"), BC_ITEM_STONEPIPE(7, -1, "PipeItemsStone", "enclosed_itempipe_stone"), BC_ITEM_COBBLESTONEPIPE(8, -1, "PipeItemsCobblestone", "enclosed_itempipe_cobblestone"), BC_FLUIDS_STONEPIPE(9, -1, "PipeFluidsStone", "enclosed_Fluidspipe_stone"), BC_FLUIDS__COBBLESTONEPIPE(10, -1, "PipeFluidsCobblestone", "enclosed_Fluidspipe_cobblestone"), BC_POWER_STONEPIPE(11, -1, "PipePowerStone", "enclosed_powerpipe_stone"), BC_POWER_GOLDPIPE(12, -1, "PipePowerGold", "enclosed_powerpipe_gold");
 
         int metadata;
         int ic2CableMeta;
@@ -110,8 +110,8 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
         {
             par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.BC_ITEM_COBBLESTONEPIPE.getMetadata()));
             par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.BC_ITEM_STONEPIPE.getMetadata()));
-            par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.BC_LIQUID_COBBLESTONEPIPE.getMetadata()));
-            par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.BC_LIQUID_STONEPIPE.getMetadata()));
+            par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.BC_FLUIDS_COBBLESTONEPIPE.getMetadata()));
+            par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.BC_FLUIDS_STONEPIPE.getMetadata()));
             par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.BC_POWER_STONEPIPE.getMetadata()));
             par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.BC_POWER_GOLDPIPE.getMetadata()));
         }
