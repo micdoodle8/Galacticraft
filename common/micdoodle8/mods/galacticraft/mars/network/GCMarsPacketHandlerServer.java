@@ -79,7 +79,7 @@ public class GCMarsPacketHandlerServer implements IPacketHandler
                     }
                     break;
                 case 3:
-                    if (player.getCommandSenderName().equalsIgnoreCase(slimeling.getOwnerName()) && !slimeling.worldObj.isRemote)
+                    if (slimeling.inLove <= 0 && player.getCommandSenderName().equalsIgnoreCase(slimeling.getOwnerName()) && !slimeling.worldObj.isRemote)
                     {
                         slimeling.func_110196_bT();
                     }
@@ -87,7 +87,13 @@ public class GCMarsPacketHandlerServer implements IPacketHandler
                 case 4:
                     if (player.getCommandSenderName().equalsIgnoreCase(slimeling.getOwnerName()) && !slimeling.worldObj.isRemote)
                     {
-                        slimeling.attackDamage += 0.1F;
+                        slimeling.attackDamage = Math.min(slimeling.attackDamage + 0.1F, 1.0F);
+                    }
+                    break;
+                case 5:
+                    if (player.getCommandSenderName().equalsIgnoreCase(slimeling.getOwnerName()) && !slimeling.worldObj.isRemote)
+                    {
+                        slimeling.setEntityHealth(slimeling.func_110143_aJ() + 5.0F);
                     }
                     break;
                 }

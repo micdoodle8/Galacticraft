@@ -1,8 +1,10 @@
 package micdoodle8.mods.galacticraft.mars.client.render.entity;
 
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
+import micdoodle8.mods.galacticraft.mars.client.gui.GCMarsGuiSlimeling;
 import micdoodle8.mods.galacticraft.mars.client.model.GCMarsModelSlimeling;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySlimeling;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderLiving;
@@ -10,6 +12,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -81,22 +84,27 @@ public class GCMarsRenderSlimeling extends RenderLiving
     @Override
     protected void passSpecialRender(EntityLivingBase par1EntityLivingBase, double par2, double par4, double par6)
     {
-        this.renderLivingLabel(par1EntityLivingBase, ((GCMarsEntitySlimeling) par1EntityLivingBase).getName(), par2, par4 + 0.28, par6, 64);
-        int health = Math.round(((GCMarsEntitySlimeling) par1EntityLivingBase).func_110143_aJ());
-        int maxHealth = Math.round(((GCMarsEntitySlimeling) par1EntityLivingBase).func_110138_aP());
-        int difference = maxHealth - health;
+        Minecraft mc = FMLClientHandler.instance().getClient();
         
-        if (difference < 7)
+        if (mc.currentScreen == null || !(mc.currentScreen instanceof GCMarsGuiSlimeling && GCMarsGuiSlimeling.renderingOnGui))
         {
-            this.renderLivingLabelWithColor(par1EntityLivingBase, "" + health + " / " + maxHealth, par2, par4, par6, 64, 0, 1, 0);
-        }
-        else if (difference < 13)
-        {
-            this.renderLivingLabelWithColor(par1EntityLivingBase, "" + health + " / " + maxHealth, par2, par4, par6, 64, 1, 1, 0);
-        }
-        else
-        {
-            this.renderLivingLabelWithColor(par1EntityLivingBase, "" + health + " / " + maxHealth, par2, par4, par6, 64, 1, 0, 0);
+            this.renderLivingLabel(par1EntityLivingBase, ((GCMarsEntitySlimeling) par1EntityLivingBase).getName(), par2, par4 + 0.33, par6, 64);
+            double health = Math.floor(((GCMarsEntitySlimeling) par1EntityLivingBase).func_110143_aJ());
+            double maxHealth = Math.floor(((GCMarsEntitySlimeling) par1EntityLivingBase).func_110138_aP());
+            double difference = health / maxHealth;
+            
+            if (difference < 0.33333)
+            {
+                this.renderLivingLabelWithColor(par1EntityLivingBase, "" + (int)Math.floor(health) + " / " + (int)Math.floor(maxHealth), par2, par4, par6, 64, 1, 0, 0);
+            }
+            else if (difference < 0.66666)
+            {
+                this.renderLivingLabelWithColor(par1EntityLivingBase, "" + (int)Math.floor(health) + " / " + (int)Math.floor(maxHealth), par2, par4, par6, 64, 1, 1, 0);
+            }
+            else
+            {
+                this.renderLivingLabelWithColor(par1EntityLivingBase, "" + (int)Math.floor(health) + " / " + (int)Math.floor(maxHealth), par2, par4, par6, 64, 0, 1, 0);
+            }
         }
         
         super.passSpecialRender(par1EntityLivingBase, par2, par4, par6);
@@ -112,7 +120,7 @@ public class GCMarsRenderSlimeling extends RenderLiving
             float f = 1.6F;
             float f1 = 0.016666668F * f;
             GL11.glPushMatrix();
-            GL11.glTranslatef((float)par3 + 0.0F, (float)par5 + par1EntityLivingBase.height + 0.5F, (float)par7);
+            GL11.glTranslatef((float)par3 + 0.0F, (float)par5 + par1EntityLivingBase.height + 0.55F, (float)par7);
             GL11.glNormal3f(0.0F, 1.0F, 0.0F);
             GL11.glRotatef(-this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
             GL11.glRotatef(this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);

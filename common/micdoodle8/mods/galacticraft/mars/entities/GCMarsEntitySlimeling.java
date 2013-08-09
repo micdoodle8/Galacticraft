@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.mars.entities;
 
+import java.util.UUID;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
+import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.mars.client.gui.GCMarsGuiSlimeling;
 import micdoodle8.mods.galacticraft.mars.client.gui.GCMarsGuiSlimelingFeed;
 import net.minecraft.entity.Entity;
@@ -20,6 +22,7 @@ import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAITargetNonTamed;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.passive.EntityAnimal;
@@ -32,7 +35,9 @@ import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.pathfinding.PathEntity;
+import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntityDamageSource;
 import net.minecraft.world.World;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -40,15 +45,18 @@ import cpw.mods.fml.relauncher.Side;
 
 public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBreathable
 {
+    private static final AttributeModifier field_110185_bq = (new AttributeModifier(UUID.randomUUID(), "Slimeling Health Boost", -0.25D, 0));
+    
     public float colorRed;
     public float colorGreen;
     public float colorBlue;
     public long ticksAlive;
     public int age = 0;
     public final int MAX_AGE = 100000;
-    public String slimelingName = "";
+    public String slimelingName = "Unnamed";
     public int favFoodID = 1;
     public float attackDamage = 0.05F;
+    public int kills;
 
     public GCMarsEntitySlimeling(World par1World)
     {
@@ -168,6 +176,7 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
         this.dataWatcher.addObject(23, "");
         this.dataWatcher.addObject(24, new Integer(this.favFoodID));
         this.dataWatcher.addObject(25, new Float(this.attackDamage));
+        this.dataWatcher.addObject(26, new Integer(this.kills));
         this.setName("Unnamed");
     }
 
@@ -181,6 +190,7 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
         nbt.setString("SlimelingName", this.slimelingName);
         nbt.setInteger("FavFoodID", this.favFoodID);
         nbt.setFloat("SlimelingDamage", this.attackDamage);
+        nbt.setInteger("SlimelingKills", this.kills);
     }
 
     public void readEntityFromNBT(NBTTagCompound nbt)
@@ -193,11 +203,13 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
         this.slimelingName = nbt.getString("SlimelingName");
         this.favFoodID = nbt.getInteger("FavFoodID");
         this.attackDamage = nbt.getFloat("SlimelingDamage");
+        this.kills = nbt.getInteger("SlimelingKills");
         this.setColorRed(this.colorRed);
         this.setColorGreen(this.colorGreen);
         this.setColorBlue(this.colorBlue);
         this.setAge(this.age);
         this.setName(this.slimelingName);
+        this.setKillCount(this.kills);
     }
 
     protected String getLivingSound()
@@ -245,14 +257,20 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
                 this.ticksAlive = 0;
             }
             
-            if (this.age < this.MAX_AGE && this.ticksAlive % 2 == 0)
+            if (this.ticksAlive % 2 == 0)
             {
-                this.age++;
-                this.setAge(this.age);
+                if (this.age < this.MAX_AGE)
+                {
+                    this.age++;
+                }
+                
+                this.setAge(Math.min(this.age, this.MAX_AGE));
             }
             
             this.setFavoriteFood(this.favFoodID);
             this.setAttackDamage(this.attackDamage);
+            this.setKillCount(this.kills);
+
         }
         
         this.height = this.getScale();
@@ -261,6 +279,11 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
         this.boundingBox.maxX = this.boundingBox.minX + (double)this.width;
         this.boundingBox.maxZ = this.boundingBox.minZ + (double)this.width;
         this.boundingBox.maxY = this.boundingBox.minY + (double)this.height;
+
+        if (!this.worldObj.isRemote)
+        {
+            this.func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(20 + (30.0 * ((double)this.age / (double)this.MAX_AGE)));
+        }
     }
 
     public float getEyeHeight()
@@ -290,7 +313,7 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
 
     public boolean attackEntityAsMob(Entity par1Entity)
     {
-        return par1Entity.attackEntityFrom(DamageSource.causeMobDamage(this), this.getDamage());
+        return par1Entity.attackEntityFrom(new EntityDamageSource("slimeling", this), this.getDamage());
     }
     
     public float getDamage()
@@ -323,21 +346,35 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
             {
                 if (itemstack.itemID == this.getFavoriteFood())
                 {
-                    --itemstack.stackSize;
+                    if (par1EntityPlayer.username.equals(this.getOwnerName()))
+                    {
+                        --itemstack.stackSize;
 
-                    if (itemstack.stackSize <= 0)
-                    {
-                        par1EntityPlayer.inventory.setInventorySlotContents(par1EntityPlayer.inventory.currentItem, (ItemStack)null);
+                        if (itemstack.stackSize <= 0)
+                        {
+                            par1EntityPlayer.inventory.setInventorySlotContents(par1EntityPlayer.inventory.currentItem, (ItemStack)null);
+                        }
+                        
+                        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+                        {
+                            FMLClientHandler.instance().getClient().displayGuiScreen(new GCMarsGuiSlimelingFeed(this));
+                        }
+                        
+                        if (this.rand.nextInt(2) == 0)
+                        {
+                            this.setRandomFavFood();
+                        }
                     }
-                    
-                    if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+                    else
                     {
-                        FMLClientHandler.instance().getClient().displayGuiScreen(new GCMarsGuiSlimelingFeed(this));
-                    }
-                    
-                    if (this.rand.nextInt(2) == 0)
-                    {
-                        this.setRandomFavFood();
+                        if (par1EntityPlayer instanceof GCCorePlayerMP)
+                        {
+                            if (((GCCorePlayerMP) par1EntityPlayer).getChatCooldown() == 0)
+                            {
+                                par1EntityPlayer.sendChatToPlayer(ChatMessageComponent.func_111066_d("This isn't my Slimeling!"));
+                                ((GCCorePlayerMP) par1EntityPlayer).setChatCooldown(100);
+                            }
+                        }
                     }
                 }
                 else
@@ -537,6 +574,16 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
     public void setAttackDamage(float damage)
     {
         this.dataWatcher.updateObject(25, damage);
+    }
+    
+    public int getKillCount()
+    {
+        return this.dataWatcher.getWatchableObjectInt(26);
+    }
+    
+    public void setKillCount(int damage)
+    {
+        this.dataWatcher.updateObject(26, damage);
     }
 
     @Override
