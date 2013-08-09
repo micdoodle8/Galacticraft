@@ -751,9 +751,22 @@ public class GCCoreRecipeManager
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.enclosedWire, 1, EnumEnclosedBlock.IC2_GLASS_FIBRE_CABLE.getMetadata()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("glassFiberCableItem"), 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4) });
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.enclosedWire, 1, EnumEnclosedBlock.IC2_LV_CABLE.getMetadata()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("tinCableItem"), 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4) });
-        
-//        ic2.api.recipe.Recipes.macerator.addRecipe(new ItemStack(GCMoonBlocks.blockMoon.blockID, 1, 0), new ItemStack(ic2.core.Ic2Items.copperDust.itemID, 2, 1));
-//        
-//        ic2.api.recipe.Recipes.macerator.addRecipe(new ItemStack(GCMoonBlocks.blockMoon.blockID, 1, 1), new ItemStack(ic2.core.Ic2Items.tinDust.itemID, 2, 1));
+
+        try
+        {
+            Class<?> clazz = Class.forName("ic2.core.Ic2Items");
+            
+            Object copperDustObject = clazz.getField("copperDust").get(null);
+            ItemStack copperDustItemStack = (ItemStack) copperDustObject;
+            ic2.api.recipe.Recipes.macerator.addRecipe(new ItemStack(GCMoonBlocks.blockMoon.blockID, 1, 0), new ItemStack(copperDustItemStack.getItem(), 2, 1));
+
+            Object tinDustObject = clazz.getField("tinDust").get(null);
+            ItemStack tinDustItemStack = (ItemStack) tinDustObject;
+            ic2.api.recipe.Recipes.macerator.addRecipe(new ItemStack(GCMoonBlocks.blockMoon.blockID, 1, 1), new ItemStack(tinDustItemStack.getItem(), 2, 1));
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 }
