@@ -26,9 +26,11 @@ public class GCMarsItems
     public static Item deshLeggings;
     public static Item deshBoots;
     public static Item spaceship;
+    public static Item trowelAndHandbroom;
 
     public static EnumArmorMaterial ARMORDESH = EnumHelper.addArmorMaterial("DESH", 42, new int[] { 4, 9, 7, 4 }, 12);
     public static EnumToolMaterial TOOLDESH = EnumHelper.addToolMaterial("DESH", 3, 50, 5.0F, 2, 8);
+    public static EnumToolMaterial TOOLTROWEL = EnumHelper.addToolMaterial("TROWEL", 1, 5, 5.0F, 2, 1);
 
     public static void initItems()
     {
@@ -43,6 +45,7 @@ public class GCMarsItems
         GCMarsItems.deshLeggings = new GCMarsItemArmor(GCMarsConfigManager.idArmorDeshLeggings, GCMarsItems.ARMORDESH, 7, 2, false).setUnlocalizedName("deshLeggings");
         GCMarsItems.deshBoots = new GCMarsItemArmor(GCMarsConfigManager.idArmorDeshBoots, GCMarsItems.ARMORDESH, 7, 3, false).setUnlocalizedName("deshBoots");
         GCMarsItems.spaceship = new GCMarsItemSpaceshipTier2(GCMarsConfigManager.idItemSpaceshipTier2).setUnlocalizedName("spaceshipTier2");
+        GCMarsItems.trowelAndHandbroom = new GCMarsItemTrowel(GCMarsConfigManager.idItemTrowelAndHandbroom, TOOLTROWEL).setUnlocalizedName("trowelAndHandbroom");
     }
 
     public static void registerHarvestLevels()

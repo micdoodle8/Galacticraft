@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.mars.blocks;
 import java.util.List;
 import java.util.Random;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
-import micdoodle8.mods.galacticraft.mars.items.GCMarsItemPickaxe;
+import micdoodle8.mods.galacticraft.mars.items.GCMarsItemTrowel;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntitySlimelingEgg;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -53,28 +53,6 @@ public class GCMarsBlockSlimelingEgg extends Block implements ITileEntityProvide
         
         if (stack != null && stack.itemID == Item.slimeBall.itemID && world.getBlockMetadata(x, y, z) < 3)
         {
-            int l = world.getBlockMetadata(x, y, z) + 3;
-            world.setBlockMetadataWithNotify(x, y, z, l, 2);
-            
-            if (!player.capabilities.isCreativeMode)
-            {
-                stack.stackSize--;
-            }
-            
-            if (stack.stackSize <= 0)
-            {
-                player.setCurrentItemOrArmor(0, null);
-            }
-            
-            TileEntity tile = world.getBlockTileEntity(x, y, z);
-            
-            if (tile instanceof GCMarsTileEntitySlimelingEgg)
-            {
-                ((GCMarsTileEntitySlimelingEgg) tile).timeToHatch = world.rand.nextInt(500) + 1000;
-                ((GCMarsTileEntitySlimelingEgg) tile).lastTouchedPlayer = player.username;
-            }
-            
-            return true;
         }
         else if (world.getBlockMetadata(x, y, z) >= 3)
         {
@@ -111,31 +89,41 @@ public class GCMarsBlockSlimelingEgg extends Block implements ITileEntityProvide
     }
 
     @Override
-    public void harvestBlock(World par1World, EntityPlayer par2EntityPlayer, int par3, int par4, int par5, int par6)
+    public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z)
     {
-        par2EntityPlayer.addStat(StatList.mineBlockStatArray[this.blockID], 1);
-        par2EntityPlayer.addExhaustion(0.025F);
-        
-        ItemStack currentStack = par2EntityPlayer.getCurrentEquippedItem();
-        
-        if (currentStack == null || !(currentStack.getItem() instanceof GCMarsItemPickaxe) || currentStack.getItemDamage() < currentStack.getMaxDamage() / 2)
-        {
-            return;
-        }
+        ItemStack currentStack = player.getCurrentEquippedItem();
 
-        if (this.canSilkHarvest(par1World, par2EntityPlayer, par3, par4, par5, par6) && EnchantmentHelper.getSilkTouchModifier(par2EntityPlayer))
+        if (currentStack != null && currentStack.getItem() instanceof GCMarsItemTrowel)
         {
-            ItemStack itemstack = this.createStackedBlock(par6);
-
-            if (itemstack != null)
-            {
-                this.dropBlockAsItem_do(par1World, par3, par4, par5, itemstack);
-            }
+            return world.setBlockToAir(x, y, z);
         }
         else
         {
-            int i1 = EnchantmentHelper.getFortuneModifier(par2EntityPlayer);
-            this.dropBlockAsItem(par1World, par3, par4, par5, par6, i1);
+            int l = world.getBlockMetadata(x, y, z) + 3;
+            world.setBlockMetadataWithNotify(x, y, z, l, 2);
+            
+            TileEntity tile = world.getBlockTileEntity(x, y, z);
+            
+            if (tile instanceof GCMarsTileEntitySlimelingEgg)
+            {
+                ((GCMarsTileEntitySlimelingEgg) tile).timeToHatch = world.rand.nextInt(500) + 100;
+                ((GCMarsTileEntitySlimelingEgg) tile).lastTouchedPlayer = player.username;
+            }
+            
+            return false;
+        }
+    }
+
+    @Override
+    public void harvestBlock(World world, EntityPlayer par2EntityPlayer, int x, int y, int z, int par6)
+    {
+        ItemStack currentStack = par2EntityPlayer.getCurrentEquippedItem();
+        
+        if (currentStack != null && currentStack.getItem() instanceof GCMarsItemTrowel)
+        {
+            par2EntityPlayer.addStat(StatList.mineBlockStatArray[this.blockID], 1);
+            par2EntityPlayer.addExhaustion(0.025F);
+            this.dropBlockAsItem(world, x, y, z, par6, 0);
         }
     }
 
