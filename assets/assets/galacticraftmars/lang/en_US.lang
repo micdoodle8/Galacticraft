@@ -39,6 +39,7 @@ tile.treasureT2.name=Tier 2 Treasure Chest
 tile.slimelingEgg.redEgg.name=Red Slimeling Egg
 tile.slimelingEgg.blueEgg.name=Blue Slimeling Egg
 tile.slimelingEgg.yellowEgg.name=Yellow Slimeling Egg
+tile.basiccomponents.marsMachine.0.name=Coal Generator
 
 # GUI
 gui.choosePlanet.desc.mars=Habitable#No Oxygen#Gravity: 38%

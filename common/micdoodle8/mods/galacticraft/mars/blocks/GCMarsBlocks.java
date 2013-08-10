@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.mars.blocks;
 import micdoodle8.mods.galacticraft.mars.GCMarsConfigManager;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import micdoodle8.mods.galacticraft.mars.items.GCMarsItemBlock;
+import micdoodle8.mods.galacticraft.mars.items.GCMarsItemBlockMachine;
 import micdoodle8.mods.galacticraft.mars.items.GCMarsItemBlockRock;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
@@ -25,6 +26,7 @@ public class GCMarsBlocks
     public static Block vine;
     public static Block rock;
     public static Block tier2TreasureChest;
+    public static Block machine;
 
     public static Material bacterialSludge = new MaterialLiquid(MapColor.foliageColor);
 
@@ -35,6 +37,7 @@ public class GCMarsBlocks
         GCMarsBlocks.vine = new GCMarsBlockVine(GCMarsConfigManager.idBlockVine).setHardness(0.1F).setUnlocalizedName("vine");
         GCMarsBlocks.rock = new GCMarsBlockSlimelingEgg(GCMarsConfigManager.idBlockRock).setHardness(5.1F).setUnlocalizedName("slimelingEgg");
         GCMarsBlocks.tier2TreasureChest = new GCMarsBlockT2TreasureChest(GCMarsConfigManager.idBlockTreasureChestT2).setHardness(2.5F).setUnlocalizedName("treasureT2");
+        GCMarsBlocks.machine = new GCMarsBlockMachine(GCMarsConfigManager.idBlockMachine).setHardness(1.8F).setUnlocalizedName("marsMachine");
     }
 
     public static void setHarvestLevels()
@@ -50,5 +53,6 @@ public class GCMarsBlocks
         GameRegistry.registerBlock(GCMarsBlocks.vine, ItemBlock.class, GCMarsBlocks.vine.getUnlocalizedName(), GalacticraftMars.MODID);
         GameRegistry.registerBlock(GCMarsBlocks.rock, GCMarsItemBlockRock.class, GCMarsBlocks.rock.getUnlocalizedName(), GalacticraftMars.MODID);
         GameRegistry.registerBlock(GCMarsBlocks.tier2TreasureChest, ItemBlock.class, GCMarsBlocks.tier2TreasureChest.getUnlocalizedName(), GalacticraftMars.MODID);
+        GameRegistry.registerBlock(GCMarsBlocks.machine, GCMarsItemBlockMachine.class, GCMarsBlocks.machine.getUnlocalizedName(), GalacticraftMars.MODID);
     }
 }
