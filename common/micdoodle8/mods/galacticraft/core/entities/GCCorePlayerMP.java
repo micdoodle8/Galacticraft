@@ -130,11 +130,11 @@ public class GCCorePlayerMP extends EntityPlayerMP
         {
             if (keepInv)
             {
-                this.getExtendedInventory().copyInventory(par1EntityPlayer.inventory);
+                this.getExtendedInventory().copyInventory(((GCCorePlayerMP) par1EntityPlayer).extendedInventory);
             }
             else if (this.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory"))
             {
-                this.getExtendedInventory().copyInventory(par1EntityPlayer.inventory);
+                this.getExtendedInventory().copyInventory(((GCCorePlayerMP) par1EntityPlayer).extendedInventory);
             }
 
             this.setSpaceStationDimensionID(((GCCorePlayerMP) par1EntityPlayer).getSpaceStationDimensionID());
