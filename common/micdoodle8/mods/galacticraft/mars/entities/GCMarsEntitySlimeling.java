@@ -286,6 +286,11 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
         }
     }
 
+    public void func_98054_a(boolean par1)
+    {
+        this.func_98055_j(0.5F);
+    }
+
     public float getEyeHeight()
     {
         return this.height * 0.8F;

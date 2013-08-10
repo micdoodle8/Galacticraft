@@ -101,6 +101,6 @@ public class GCMarsGuiSlimelingFeed extends GuiScreen
         this.buttonHealSlimeling.enabled = this.slimeling.func_110143_aJ() < Math.floor(this.slimeling.func_110138_aP());
         this.buttonGrowSlimeling.enabled = this.slimeling.getScale() < 1.0F;
         this.buttonStrengthenSlimeling.enabled = this.slimeling.getAttackDamage() < 1.0;
-        this.buttonBreedSlimeling.enabled = this.slimeling.inLove <= 0;
+        this.buttonBreedSlimeling.enabled = this.slimeling.inLove <= 0 && this.slimeling.getGrowingAge() == 0;
     }
 }
