@@ -24,7 +24,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCCoreGuiChoosePlanetSlot extends GuiSlot
 {
-    final GCCoreGuiChoosePlanet choosePlanetGui;
+    private final GCCoreGuiChoosePlanet choosePlanetGui;
 
     public GCCoreGuiChoosePlanetSlot(GCCoreGuiChoosePlanet par1GCGuiChoosePlanet)
     {
@@ -208,5 +208,10 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
     {
         this.choosePlanetGui.drawBlackBackground();
         this.choosePlanetGui.renderSkybox(1);
+    }
+    
+    public GCCoreGuiChoosePlanet getParentGui()
+    {
+        return this.choosePlanetGui;
     }
 }
