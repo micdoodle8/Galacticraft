@@ -29,6 +29,12 @@ public class GCCoreBlockLandingPadFull extends GCCoreBlockAdvanced
     {
         super(i, Material.rock);
     }
+    
+    @Override
+    public int damageDropped(int meta)
+    {
+        return meta;
+    }
 
     @Override
     public int quantityDropped(Random par1Random)
