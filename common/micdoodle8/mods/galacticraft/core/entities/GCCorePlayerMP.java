@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map.Entry;
+import micdoodle8.mods.galacticraft.api.event.oxygen.GCCoreOxygenSuffocationEvent;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
@@ -35,6 +36,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
@@ -806,7 +808,17 @@ public class GCCorePlayerMP extends EntityPlayerMP
                     if (this.damageCounter == 0)
                     {
                         this.damageCounter = GCCoreConfigManager.suffocationCooldown;
-                        this.attackEntityFrom(GCCoreDamageSource.oxygenSuffocation, GCCoreConfigManager.suffocationDamage);
+
+                        GCCoreOxygenSuffocationEvent suffocationEvent = new GCCoreOxygenSuffocationEvent.Pre(this);
+                        MinecraftForge.EVENT_BUS.post(suffocationEvent);
+                        
+                        if (!suffocationEvent.isCanceled())
+                        {
+                            this.attackEntityFrom(GCCoreDamageSource.oxygenSuffocation, GCCoreConfigManager.suffocationDamage);
+
+                            GCCoreOxygenSuffocationEvent suffocationEventPost = new GCCoreOxygenSuffocationEvent.Post(this);
+                            MinecraftForge.EVENT_BUS.post(suffocationEventPost);
+                        }
                     }
                 }
             }

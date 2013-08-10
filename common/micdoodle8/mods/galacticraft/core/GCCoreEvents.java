@@ -8,6 +8,7 @@ import java.util.Random;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
+import micdoodle8.mods.galacticraft.api.event.oxygen.GCCoreOxygenSuffocationEvent;
 import micdoodle8.mods.galacticraft.api.item.IKeyItem;
 import micdoodle8.mods.galacticraft.api.item.IKeyable;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
@@ -31,6 +32,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.Event.Result;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -142,7 +144,18 @@ public class GCCoreEvents
         {
             if ((!(event.entityLiving instanceof IEntityBreathable) || event.entityLiving instanceof IEntityBreathable && !((IEntityBreathable) event.entityLiving).canBreath()) && event.entityLiving.ticksExisted % 100 == 0)
             {
+                GCCoreOxygenSuffocationEvent suffocationEvent = new GCCoreOxygenSuffocationEvent.Pre(event.entityLiving);
+                MinecraftForge.EVENT_BUS.post(suffocationEvent);
+                
+                if (suffocationEvent.isCanceled())
+                {
+                    return;
+                }
+                
                 event.entityLiving.attackEntityFrom(GCCoreDamageSource.oxygenSuffocation, 1);
+
+                GCCoreOxygenSuffocationEvent suffocationEventPost = new GCCoreOxygenSuffocationEvent.Post(event.entityLiving);
+                MinecraftForge.EVENT_BUS.post(suffocationEventPost);
             }
         }
     }
