@@ -19,6 +19,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 
 public class OxygenUtil
 {
@@ -49,10 +50,11 @@ public class OxygenUtil
 
     public static boolean isAABBInBreathableAirBlock(Entity entity)
     {
-        return OxygenUtil.isAABBInBreathableAirBlock(entity.worldObj, new Vector3(entity.boundingBox.minX, entity.boundingBox.minY, entity.boundingBox.minZ), new Vector3(entity.boundingBox.maxX + 1, entity.boundingBox.maxY + 1, entity.boundingBox.maxZ + 1), false);
+        return OxygenUtil.isAABBInBreathableAirBlock(entity.worldObj, new Vector3(entity.boundingBox.minX, entity.boundingBox.minY, entity.boundingBox.minZ), new Vector3(entity.boundingBox.maxX + 1, entity.boundingBox.maxY + 1, entity.boundingBox.maxZ + 1));
     }
 
-    public static boolean isAABBInBreathableAirBlock(World world, Vector3 minVec, Vector3 maxVec, boolean testAllPoints)
+    @SuppressWarnings("rawtypes")
+    public static boolean isAABBInBreathableAirBlock(World world, Vector3 minVec, Vector3 maxVec)
     {
         final double avgX = (minVec.x + maxVec.x) / 2.0D;
         final double avgY = (minVec.y + maxVec.y) / 2.0D;
@@ -69,7 +71,7 @@ public class OxygenUtil
                 if (!distributor.worldObj.isRemote)
                 {
                     final double dist = distributor.getDistanceFromServer(avgX, avgY, avgZ);
-
+                    
                     if (dist < distributor.storedOxygen / 600.0D * (distributor.storedOxygen / 600.0D))
                     {
                         return true;

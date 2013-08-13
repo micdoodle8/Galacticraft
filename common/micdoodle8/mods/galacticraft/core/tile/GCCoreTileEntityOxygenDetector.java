@@ -18,7 +18,7 @@ public class GCCoreTileEntityOxygenDetector extends TileEntityAdvanced
 
             if (this.blockType != null && this.blockType instanceof GCCoreBlockOxygenDetector)
             {
-                ((GCCoreBlockOxygenDetector) this.blockType).updateOxygenState(this.worldObj, this.xCoord, this.yCoord, this.zCoord, OxygenUtil.isAABBInBreathableAirBlock(this.worldObj, new Vector3(this).add(new Vector3(-1, -1, -1)), new Vector3(this).add(new Vector3(2, 2, 2)), true));
+                ((GCCoreBlockOxygenDetector) this.blockType).updateOxygenState(this.worldObj, this.xCoord, this.yCoord, this.zCoord, OxygenUtil.isAABBInBreathableAirBlock(this.worldObj, new Vector3(this).add(new Vector3(-1, -1, -1)), new Vector3(this).add(new Vector3(2, 2, 2))));
             }
         }
     }
