@@ -17,8 +17,9 @@ public class GalacticraftRegistry
     private static List<SpaceStationType> spaceStations = new ArrayList<SpaceStationType>();
     private static List<ICelestialBody> celestialBodies = new ArrayList<ICelestialBody>();
     private static List<IGalaxy> galaxies = new ArrayList<IGalaxy>();
-    private static List<INasaWorkbenchRecipe> rocketBenchRecipes = new ArrayList<INasaWorkbenchRecipe>();
+    private static List<INasaWorkbenchRecipe> rocketBenchT1Recipes = new ArrayList<INasaWorkbenchRecipe>();
     private static List<INasaWorkbenchRecipe> buggyBenchRecipes = new ArrayList<INasaWorkbenchRecipe>();
+    private static List<INasaWorkbenchRecipe> rocketBenchT2Recipes = new ArrayList<INasaWorkbenchRecipe>();
 
     /**
      * Register a new Teleport type for the world provider passed
@@ -69,7 +70,12 @@ public class GalacticraftRegistry
 
     public static void addT1RocketRecipe(INasaWorkbenchRecipe recipe)
     {
-        GalacticraftRegistry.rocketBenchRecipes.add(recipe);
+        GalacticraftRegistry.rocketBenchT1Recipes.add(recipe);
+    }
+
+    public static void addT2RocketRecipe(INasaWorkbenchRecipe recipe)
+    {
+        GalacticraftRegistry.rocketBenchT2Recipes.add(recipe);
     }
 
     public static void addMoonBuggyRecipe(INasaWorkbenchRecipe recipe)
@@ -109,7 +115,12 @@ public class GalacticraftRegistry
 
     public static List<INasaWorkbenchRecipe> getRocketT1Recipes()
     {
-        return GalacticraftRegistry.rocketBenchRecipes;
+        return GalacticraftRegistry.rocketBenchT1Recipes;
+    }
+
+    public static List<INasaWorkbenchRecipe> getRocketT2Recipes()
+    {
+        return GalacticraftRegistry.rocketBenchT2Recipes;
     }
 
     public static List<INasaWorkbenchRecipe> getBuggyBenchRecipes()
