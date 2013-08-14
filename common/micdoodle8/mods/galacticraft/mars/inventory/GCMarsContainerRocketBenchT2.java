@@ -86,7 +86,7 @@ public class GCMarsContainerRocketBenchT2 extends Container
 
         if (!this.worldObj.isRemote)
         {
-            for (int var2 = 1; var2 < 18; ++var2)
+            for (int var2 = 1; var2 < this.craftMatrix.getSizeInventory(); ++var2)
             {
                 final ItemStack var3 = this.craftMatrix.getStackInSlotOnClosing(var2);
 

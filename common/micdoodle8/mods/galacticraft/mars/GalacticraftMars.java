@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.mars;
 
 import java.io.File;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
+import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.GCCoreCreativeTab;
 import micdoodle8.mods.galacticraft.core.GCLog;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -15,6 +16,7 @@ import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySlimeling;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySludgeling;
 import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
 import micdoodle8.mods.galacticraft.mars.network.GCMarsPacketHandlerServer;
+import micdoodle8.mods.galacticraft.mars.schematic.GCMarsSchematicRocketT2;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntitySlimelingEgg;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityTerraformer;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityTreasureChest;
@@ -126,6 +128,8 @@ public class GalacticraftMars
         }
 
         GCLog.info("Galacticraft Mars Loaded: " + languages + " Languages.");
+        
+        SchematicRegistry.registerSchematicRecipe(new GCMarsSchematicRocketT2());
 
         GalacticraftMars.galacticraftMarsTab = new GCCoreCreativeTab(CreativeTabs.getNextID(), GalacticraftMars.MODID, GCMarsItems.spaceship.itemID, 5);
         MinecraftForge.EVENT_BUS.register(new GCMarsEvents());
