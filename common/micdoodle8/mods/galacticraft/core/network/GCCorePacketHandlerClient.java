@@ -131,6 +131,7 @@ public class GCCorePacketHandlerClient implements IPacketHandler
         {
             final Class[] decodeAs = { String.class, String.class };
             final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
+            
 
             ClientProxyCore.parachuteTextures.put((String) packetReadout[0], new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/parachute/" + (String) packetReadout[1] + ".png"));
         }

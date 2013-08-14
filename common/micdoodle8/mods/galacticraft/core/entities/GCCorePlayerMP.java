@@ -236,29 +236,6 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
         //
 
-        if (this.getParachute() && this.parachuteInSlot == null && this.lastParachuteInSlot != null)
-        {
-            this.sendParachuteRemovalPacket();
-        }
-
-        if (this.getParachute() && this.parachuteInSlot != null && this.lastParachuteInSlot == null)
-        {
-            this.sendParachuteAddPacket();
-        }
-
-        if (this.parachuteInSlot != null && this.lastParachuteInSlot == null)
-        {
-            this.sendPlayerParachuteTexturePacket();
-        }
-
-        if (this.parachuteInSlot != null && this.lastParachuteInSlot != null)
-        {
-            if (this.parachuteInSlot.getItemDamage() != this.lastParachuteInSlot.getItemDamage())
-            {
-                this.sendPlayerParachuteTexturePacket();
-            }
-        }
-
         if (this.getLaunchAttempts() > 0 && this.ridingEntity == null)
         {
             this.setLaunchAttempts(0);
@@ -712,6 +689,29 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
                     this.sendGearUpdatePacket(EnumModelPacket.ADDRIGHTREDTANK.getIndex());
                 }
+            }
+        }
+
+        if (this.getParachute() && this.parachuteInSlot == null && this.lastParachuteInSlot != null)
+        {
+            this.sendParachuteRemovalPacket();
+        }
+
+        if (this.getParachute() && this.parachuteInSlot != null && this.lastParachuteInSlot == null)
+        {
+            this.sendParachuteAddPacket();
+        }
+
+        if (this.parachuteInSlot != null && this.lastParachuteInSlot == null)
+        {
+            this.sendPlayerParachuteTexturePacket();
+        }
+
+        if (this.parachuteInSlot != null && this.lastParachuteInSlot != null)
+        {
+            if (this.parachuteInSlot.getItemDamage() != this.lastParachuteInSlot.getItemDamage())
+            {
+                this.sendPlayerParachuteTexturePacket();
             }
         }
 
