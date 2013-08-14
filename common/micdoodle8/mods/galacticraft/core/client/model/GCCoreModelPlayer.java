@@ -9,7 +9,7 @@ import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderPlayer;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
-import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.Render;
@@ -192,8 +192,8 @@ public class GCCoreModelPlayer extends ModelBiped
         final ModelBiped modelBipedMain = ((GCCoreRenderPlayer) render).getModel();
 
         this.setRotationAngles(var2, var3, var4, var5, var6, var7, var1);
-
-        if (var1 instanceof EntityClientPlayerMP && this.equals(modelBipedMain))
+        
+        if (var1 instanceof AbstractClientPlayer && this.equals(modelBipedMain))
         {
             final EntityPlayer player = (EntityPlayer) var1;
             boolean changed = false;
@@ -426,7 +426,7 @@ public class GCCoreModelPlayer extends ModelBiped
                 this.parachuteStrings[3].render(var7);
             }
 
-            FMLClientHandler.instance().getClient().renderEngine.func_110577_a(((EntityClientPlayerMP) player).func_110306_p());
+            FMLClientHandler.instance().getClient().renderEngine.func_110577_a(((AbstractClientPlayer) player).func_110306_p());
         }
 
         super.render(var1, var2, var3, var4, var5, var6, var7);
