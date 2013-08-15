@@ -1,0 +1,50 @@
+# Galacticraft Mars Language File = GERMAN
+
+# GENERAL ITEMS
+item.reinfocedBucket.name=Verstärkter Eimer
+item.reinfocedBucketMilk.name=Verstärkter Eimer mit Milch
+item.reinfocedBucketWater.name=Verstärkter Eimer mit Wasser
+item.reinfocedBucketLava.name=Verstärkter Eimer mit Lava
+item.reinfocedBucketSludge.name=Verstärkter Eimer mit Bakteriellem Schlamm
+item.rawDesh.name=Unraffiniertes Desh
+item.deshStick.name=Desh-Stock
+item.ingotDesh.name=Desh-Barren
+item.spaceshipTier2.name=Stufe-2-Rakete
+
+# TOOLS
+item.deshPick.name=Desh-Spitzhacke
+item.deshAxe.name=Desh-Axt
+item.deshHoe.name=Desh-Hacke
+item.deshSpade.name=Desh-Schaufel
+item.deshSword.name=Desh-Schwert
+
+# ARMOR
+item.deshHelmet.name=Desh-Helm
+item.deshChestplate.name=Desh-Brustpanzer
+item.deshLeggings.name=Desh-Hose
+item.deshBoots.name=Desh-Stiefel
+
+# BLOCKS
+tile.mars.deshmars.name=Desh-Erz
+tile.mars.coppermars.name=Kupfererz
+tile.mars.tinmars.name=Zinnerz
+tile.mars.ironmars.name=Eisenerz
+tile.mars.marscobblestone.name=Pflasterstein
+tile.mars.marsstone.name=Stein
+tile.mars.marsdirt.name=Erde
+tile.mars.marsgrass.name=Gras
+tile.mars.marsdeco.name=Desh-Dekorationsblock
+tile.mars.marsdungeon.name=Dungeonwand
+tile.treasureT2.name=Stufe-2-Schatzkiste
+tile.slimelingEgg.redEgg.name=Rotes Schleimling-Ei
+tile.slimelingEgg.blueEgg.name=Blaues Schleimling-Ei
+tile.slimelingEgg.yellowEgg.name=Gelbes Schleimling-Ei
+tile.basiccomponents.marsMachine.0.name=Kohle-Generator
+
+# GUI
+gui.choosePlanet.desc.mars=Bewohnbar#Kein SauerstoffSchwerkraft: 38%
+item.deshPickSlime.description.name=Kann Schleimling-Eier ernten
+
+itemGroup.GalacticraftMars=Galacticraft Mars
+
+dimension.Mars.name=Mars
