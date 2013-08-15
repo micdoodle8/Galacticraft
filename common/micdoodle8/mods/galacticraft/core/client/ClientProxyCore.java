@@ -281,6 +281,7 @@ public class ClientProxyCore extends CommonProxyCore
         ClientProxyCore.capeMap.put("X_angelz_X", capeString);
         ClientProxyCore.capeMap.put("Yangjo123", capeString);
         ClientProxyCore.capeMap.put("Made_This_Name", capeString);
+        ClientProxyCore.capeMap.put("spamenigma", capeString);
 
         // Add to CoFH cape registry as well
         for (Entry<String, String> e : ClientProxyCore.capeMap.entrySet())
