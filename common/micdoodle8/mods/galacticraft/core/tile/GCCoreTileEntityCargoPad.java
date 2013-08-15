@@ -15,6 +15,8 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.fluids.FluidStack;
 import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreTileEntityCargoPad extends TileEntityMulti implements IMultiBlock, IFuelable, IFuelDock, ICargoEntity
 {
@@ -201,5 +203,12 @@ public class GCCoreTileEntityCargoPad extends TileEntityMulti implements IMultiB
     public HashSet<TileEntity> getConnectedTiles()
     {
         return this.connectedTiles;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getRenderBoundingBox()
+    {
+        return TileEntity.INFINITE_EXTENT_AABB;
     }
 }
