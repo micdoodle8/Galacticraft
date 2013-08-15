@@ -36,6 +36,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiParachest;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRefinery;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRocketRefill;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiSolar;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreInventoryTabGalacticraft;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelSpaceship;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererBreathableAir;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererCraftingTable;
@@ -86,9 +87,6 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeletonBoss;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpider;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityZombie;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryExtended;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryTab;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryTab.GCCoreInventoryTabExtended;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryTab.GCCoreInventoryTabPlayer;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient;
 import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerClient;
@@ -114,7 +112,6 @@ import net.minecraft.client.audio.SoundPoolEntry;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.particle.EntitySmokeFX;
 import net.minecraft.client.renderer.Tessellator;
@@ -131,6 +128,8 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
+import tconstruct.client.tabs.InventoryTabVanilla;
+import tconstruct.client.tabs.TabRegistry;
 import cofh.api.core.RegistryAccess;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
@@ -294,6 +293,13 @@ public class ClientProxyCore extends CommonProxyCore
     public void postInit(FMLPostInitializationEvent event)
     {
         ClientProxyCore.moon.postInit(event);
+        
+        if (!Loader.isModLoaded("TConstruct") || TabRegistry.getTabList().size() < 3)
+        {
+            TabRegistry.registerTab(new InventoryTabVanilla());
+        }
+        
+        TabRegistry.registerTab(new GCCoreInventoryTabGalacticraft());
 
         for (ICelestialBody celestialObject : GalacticraftRegistry.getCelestialBodies())
         {
@@ -851,26 +857,15 @@ public class ClientProxyCore extends CommonProxyCore
     {
         boolean tConstructLoaded = Loader.isModLoaded("TConstruct");
 
-        if (!ClientProxyCore.addTabsNextTick && tConstructLoaded)
+        if (!tConstructLoaded)
         {
-            ClientProxyCore.addTabsNextTick = true;
-            return;
-        }
-
-        if (gui.getClass() == GuiInventory.class)
-        {
-            int cornerX = gui.guiLeft;
-            int cornerY = (gui.height - gui.ySize) / 2;
-
-            if (!tConstructLoaded)
+            if (!ClientProxyCore.addTabsNextTick)
             {
-                GCCoreInventoryTab tab = new GCCoreInventoryTabPlayer(4, cornerX + gui.buttonList.size() * 28, cornerY - 28, 0);
-                tab.enabled = false;
-                gui.buttonList.add(tab);
+                ClientProxyCore.addTabsNextTick = true;
+                return;
             }
-
-            GCCoreInventoryTab tab = new GCCoreInventoryTabExtended(5, cornerX + gui.buttonList.size() * 28, cornerY - 28, 0);
-            gui.buttonList.add(tab);
+            
+            TabRegistry.addTabsToInventory(gui);
         }
     }
 }

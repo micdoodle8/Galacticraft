@@ -3,9 +3,6 @@ package micdoodle8.mods.galacticraft.core.client.gui;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerExtendedInventory;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryExtended;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryTab;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryTab.GCCoreInventoryTabExtended;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryTab.GCCoreInventoryTabPlayer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.InventoryEffectRenderer;
@@ -16,7 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-import cpw.mods.fml.common.Loader;
+import tconstruct.client.tabs.TabRegistry;
 
 public class GCCoreGuiExtendedInventory extends InventoryEffectRenderer
 {
@@ -39,20 +36,12 @@ public class GCCoreGuiExtendedInventory extends InventoryEffectRenderer
     public void initGui()
     {
         super.initGui();
-        boolean tConstructLoaded = Loader.isModLoaded("TConstruct");
 
         int cornerX = this.guiLeft;
         int cornerY = (this.height - this.ySize) / 2;
-
-        if (!tConstructLoaded)
-        {
-            GCCoreInventoryTab tab = new GCCoreInventoryTabPlayer(4, cornerX + this.buttonList.size() * 28, cornerY - 28, 0);
-            this.buttonList.add(tab);
-        }
-
-        GCCoreInventoryTab tab = new GCCoreInventoryTabExtended(5, cornerX + this.buttonList.size() * 28, cornerY - 28, 1);
-        tab.enabled = false;
-        this.buttonList.add(tab);
+        
+        TabRegistry.updateTabValues(cornerX, cornerY, GCCoreInventoryTabGalacticraft.class);
+        TabRegistry.addTabsToList(this.buttonList);
 
         // this.buttonList.add(new GuiButton(0, (this.width - this.xSize) / 2 +
         // 36, (this.height - this.ySize) / 2 + 71, 7, 7, ""));
