@@ -6,6 +6,8 @@ import java.util.Random;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
+import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreMapGenDungeon
 {
@@ -54,10 +56,11 @@ public class GCCoreMapGenDungeon
 
         final int length = rand.nextInt(4) + 5;
 
-        GCCoreDungeonRoom currentRoom = GCCoreDungeonRoom.makeRoom(this, rand, x, y, z, 4);
+        GCCoreDungeonRoom currentRoom = GCCoreDungeonRoom.makeRoom(this, rand, x, y, z, ForgeDirection.DOWN);
         currentRoom.generate(blocks, metas, chunkX, chunkZ);
         this.rooms.add(currentRoom);
         final GCCoreDungeonBoundingBox cbb = currentRoom.getBoundingBox();
+        boundingBoxes.add(cbb);
         this.generateEntranceCrater(blocks, metas, x + (cbb.maxX - cbb.minX) / 2, y, z + (cbb.maxZ - cbb.minZ) / 2, chunkX, chunkZ);
 
         for (int i = 0; i <= length; i++)
@@ -67,71 +70,71 @@ public class GCCoreMapGenDungeon
             {
                 int offsetX = 0;
                 int offsetZ = 0;
-                final int dir = this.randDir(rand, currentRoom.entranceDir);
-                int entranceDir = dir;
+                final ForgeDirection dir = this.randDir(rand);
+                ForgeDirection entranceDir = dir;
                 switch (dir)
                 // East = 0, North = 1, South = 2, West = 3
                 {
-                case 0: // East z++
+                case EAST: // East z++
                     offsetZ = this.HALLWAY_LENGTH + rand.nextInt(15);
                     if (rand.nextBoolean())
                     {
                         if (rand.nextBoolean())
                         {
-                            entranceDir = 1;
+                            entranceDir = ForgeDirection.NORTH;
                             offsetX = this.HALLWAY_LENGTH + rand.nextInt(15);
                         }
                         else
                         {
-                            entranceDir = 2;
+                            entranceDir = ForgeDirection.SOUTH;
                             offsetX = -this.HALLWAY_LENGTH - rand.nextInt(15);
                         }
                     }
                     break;
-                case 1: // North x++
+                case NORTH: // North x++
                     offsetX = this.HALLWAY_LENGTH + rand.nextInt(15);
                     if (rand.nextBoolean())
                     {
                         if (rand.nextBoolean())
                         {
-                            entranceDir = 0;
+                            entranceDir = ForgeDirection.EAST;
                             offsetZ = this.HALLWAY_LENGTH + rand.nextInt(15);
                         }
                         else
                         {
-                            entranceDir = 3;
+                            entranceDir = ForgeDirection.WEST;
                             offsetZ = -this.HALLWAY_LENGTH - rand.nextInt(15);
                         }
                     }
                     break;
-                case 2: // South x--
+                case SOUTH: // South x--
                     offsetX = -this.HALLWAY_LENGTH - rand.nextInt(15);
                     if (rand.nextBoolean())
                     {
                         if (rand.nextBoolean())
                         {
-                            entranceDir = 0;
+                            entranceDir = ForgeDirection.EAST;
                             offsetZ = this.HALLWAY_LENGTH + rand.nextInt(15);
                         }
                         else
                         {
-                            entranceDir = 3;
+                            entranceDir = ForgeDirection.WEST;
                             offsetZ = -this.HALLWAY_LENGTH - rand.nextInt(15);
                         }
                     }
                     break;
-                case 3: // West z--
+                case WEST: // West z--
                     offsetZ = -this.HALLWAY_LENGTH - rand.nextInt(15);
                     if (rand.nextBoolean())
                     {
                         if (rand.nextBoolean())
                         {
-                            entranceDir = 1;
+                            entranceDir = ForgeDirection.NORTH;
                             offsetX = this.HALLWAY_LENGTH + rand.nextInt(15);
                         }
                         else
                         {
-                            entranceDir = 2;
+                            entranceDir = ForgeDirection.SOUTH;
                             offsetX = -this.HALLWAY_LENGTH - rand.nextInt(15);
                         }
                     }
@@ -140,14 +143,14 @@ public class GCCoreMapGenDungeon
                     break;
                 }
 
-                GCCoreDungeonRoom possibleRoom = GCCoreDungeonRoom.makeRoom(this, rand, currentRoom.posX + offsetX, y, currentRoom.posZ + offsetZ, this.getOppositeDir(entranceDir));
+                GCCoreDungeonRoom possibleRoom = GCCoreDungeonRoom.makeRoom(this, rand, currentRoom.posX + offsetX, y, currentRoom.posZ + offsetZ, entranceDir.getOpposite());//this.getOppositeDir(entranceDir));
                 if (i == length - 1)
                 {
-                    possibleRoom = GCCoreDungeonRoom.makeBossRoom(this, rand, currentRoom.posX + offsetX, y, currentRoom.posZ + offsetZ, this.getOppositeDir(entranceDir));
+                    possibleRoom = GCCoreDungeonRoom.makeBossRoom(this, rand, currentRoom.posX + offsetX, y, currentRoom.posZ + offsetZ, entranceDir.getOpposite()); //this.getOppositeDir(entranceDir));
                 }
                 if (i == length)
                 {
-                    possibleRoom = GCCoreDungeonRoom.makeTreasureRoom(this, rand, currentRoom.posX + offsetX, y, currentRoom.posZ + offsetZ, this.getOppositeDir(entranceDir));
+                    possibleRoom = GCCoreDungeonRoom.makeTreasureRoom(this, rand, currentRoom.posX + offsetX, y, currentRoom.posZ + offsetZ, entranceDir.getOpposite()); //this.getOppositeDir(entranceDir));
                 }
                 final GCCoreDungeonBoundingBox possibleRoomBb = possibleRoom.getBoundingBox();
                 final GCCoreDungeonBoundingBox currentRoomBb = currentRoom.getBoundingBox();
@@ -165,16 +168,16 @@ public class GCCoreMapGenDungeon
                         switch (dir)
                         // East = 0, North = 1, South = 2, West = 3
                         {
-                        case 0: // East z++
+                        case EAST: // East z++
                             corridor1 = new GCCoreDungeonBoundingBox(ax - 1, currentRoomBb.maxZ, ax, possibleRoomBb.minZ - 1);
                             break;
-                        case 1: // North x++
+                        case NORTH: // North x++
                             corridor1 = new GCCoreDungeonBoundingBox(currentRoomBb.maxX, az - 1, possibleRoomBb.minX - 1, az);
                             break;
-                        case 2: // South x--
+                        case SOUTH: // South x--
                             corridor1 = new GCCoreDungeonBoundingBox(possibleRoomBb.maxX, az - 1, currentRoomBb.minX - 1, az);
                             break;
-                        case 3: // West z--
+                        case WEST: // West z--
                             corridor1 = new GCCoreDungeonBoundingBox(ax - 1, possibleRoomBb.maxZ, ax, currentRoomBb.minZ - 1);
                             break;
                         default:
@@ -203,7 +206,7 @@ public class GCCoreMapGenDungeon
                     {
                         GCCoreDungeonBoundingBox corridor1 = null;
                         GCCoreDungeonBoundingBox corridor2 = null;
-                        int dir2 = 0;
+                        ForgeDirection dir2 = ForgeDirection.EAST;
                         int extraLength = 0;
                         if (rand.nextInt(6) == 0)
                         {
@@ -212,60 +215,60 @@ public class GCCoreMapGenDungeon
                         switch (dir)
                         // East = 0, North = 1, South = 2, West = 3
                         {
-                        case 0: // East z++
+                        case EAST: // East z++
                             corridor1 = new GCCoreDungeonBoundingBox(cx - 1, currentRoomBb.maxZ, cx + 1, pz - 1);
                             if (offsetX > 0) // x++
                             {
                                 corridor2 = new GCCoreDungeonBoundingBox(corridor1.minX - extraLength, corridor1.maxZ + 1, possibleRoomBb.minX, corridor1.maxZ + 3);
-                                dir2 = 1;
+                                dir2 = ForgeDirection.NORTH;
                             }
                             else
                             // x--
                             {
                                 corridor2 = new GCCoreDungeonBoundingBox(possibleRoomBb.maxX, corridor1.maxZ + 1, corridor1.maxX + extraLength, corridor1.maxZ + 3);
-                                dir2 = 2;
+                                dir2 = ForgeDirection.SOUTH;
                             }
                             break;
-                        case 1: // North x++
+                        case NORTH: // North x++
                             corridor1 = new GCCoreDungeonBoundingBox(currentRoomBb.maxX, cz - 1, px - 1, cz + 1);
                             if (offsetZ > 0) // z++
                             {
                                 corridor2 = new GCCoreDungeonBoundingBox(corridor1.maxX + 1, corridor1.minZ - extraLength, corridor1.maxX + 4, possibleRoomBb.minZ);
-                                dir2 = 0;
+                                dir2 = ForgeDirection.EAST;
                             }
                             else
                             // z--
                             {
                                 corridor2 = new GCCoreDungeonBoundingBox(corridor1.maxX + 1, possibleRoomBb.maxZ, corridor1.maxX + 4, corridor1.maxZ + extraLength);
-                                dir2 = 3;
+                                dir2 = ForgeDirection.WEST;
                             }
                             break;
-                        case 2: // South x--
+                        case SOUTH: // South x--
                             corridor1 = new GCCoreDungeonBoundingBox(px + 1, cz - 1, currentRoomBb.minX - 1, cz + 1);
                             if (offsetZ > 0) // z++
                             {
                                 corridor2 = new GCCoreDungeonBoundingBox(corridor1.minX - 3, corridor1.minZ - extraLength, corridor1.minX - 1, possibleRoomBb.minZ);
-                                dir2 = 0;
+                                dir2 = ForgeDirection.EAST;
                             }
                             else
                             // z--
                             {
                                 corridor2 = new GCCoreDungeonBoundingBox(corridor1.minX - 3, possibleRoomBb.maxZ, corridor1.minX - 1, corridor1.maxZ + extraLength);
-                                dir2 = 3;
+                                dir2 = ForgeDirection.WEST;
                             }
                             break;
-                        case 3: // West z--
+                        case WEST: // West z--
                             corridor1 = new GCCoreDungeonBoundingBox(cx - 1, pz + 1, cx + 1, currentRoomBb.minZ - 1);
                             if (offsetX > 0) // x++
                             {
                                 corridor2 = new GCCoreDungeonBoundingBox(corridor1.minX - extraLength, corridor1.minZ - 3, possibleRoomBb.minX, corridor1.minZ - 1);
-                                dir2 = 1;
+                                dir2 = ForgeDirection.NORTH;
                             }
                             else
                             // x--
                             {
                                 corridor2 = new GCCoreDungeonBoundingBox(possibleRoomBb.maxX, corridor1.minZ - 3, corridor1.maxX + extraLength, corridor1.minZ - 1);
-                                dir2 = 2;
+                                dir2 = ForgeDirection.SOUTH;
                             }
                             break;
                         default:
@@ -300,7 +303,7 @@ public class GCCoreMapGenDungeon
         }
     }
 
-    private void genCorridor(GCCoreDungeonBoundingBox corridor, Random rand, int y, int cx, int cz, int dir, short[] blocks, byte[] metas, boolean doubleCorridor)
+    private void genCorridor(GCCoreDungeonBoundingBox corridor, Random rand, int y, int cx, int cz, ForgeDirection dir, short[] blocks, byte[] metas, boolean doubleCorridor)
     {
         for (int i = corridor.minX - 1; i <= corridor.maxX + 1; i++)
         {
@@ -311,9 +314,10 @@ public class GCCoreMapGenDungeon
                 {
                     boolean flag = false;
                     int flag2 = -1;
+                    
                     switch (dir)
                     {
-                    case 0:
+                    case EAST:
                         if (k == corridor.minZ - 1 && !doubleCorridor || k == corridor.maxZ + 1)
                         {
                             break loopj;
@@ -331,7 +335,7 @@ public class GCCoreMapGenDungeon
                             flag2 = i == corridor.minX ? 2 : 1;
                         }
                         break;
-                    case 3:
+                    case WEST:
                         if (k == corridor.minZ - 1 || k == corridor.maxZ + 1 && !doubleCorridor)
                         {
                             break loopj;
@@ -349,7 +353,7 @@ public class GCCoreMapGenDungeon
                             flag2 = i == corridor.minX ? 2 : 1;
                         }
                         break;
-                    case 1:
+                    case NORTH:
                         if (i == corridor.minX - 1 && !doubleCorridor || i == corridor.maxX + 1)
                         {
                             break loopj;
@@ -367,7 +371,7 @@ public class GCCoreMapGenDungeon
                             flag2 = k == corridor.minZ ? 4 : 3;
                         }
                         break;
-                    case 2:
+                    case SOUTH:
                         if (i == corridor.minX - 1 || i == corridor.maxX + 1 && !doubleCorridor)
                         {
                             break loopj;
@@ -376,7 +380,7 @@ public class GCCoreMapGenDungeon
                         {
                             flag = true;
                         }
-                        if (k == corridor.minZ - 1 || k == corridor.maxZ + 1 || j == y - 1 || j == y + this.HALLWAY_HEIGHT)
+                        if (k == corridor.minZ - 1 || k == corridor.maxZ + 2 || j == y - 1 || j == y + this.HALLWAY_HEIGHT)
                         {
                             flag = true;
                         }
@@ -420,8 +424,8 @@ public class GCCoreMapGenDungeon
 
     protected boolean canGenDungeonAtCoords(long worldSeed, int i, int j)
     {
-        final byte numChunks = 32;
-        final byte offsetChunks = 8;
+        final byte numChunks = 44;
+        final byte offsetChunks = 0;
         final int oldi = i;
         final int oldj = j;
 
@@ -482,7 +486,7 @@ public class GCCoreMapGenDungeon
 
     public ChunkCoordinates getDungeonNear(long worldSeed, int i, int j)
     {
-        final int range = 8;
+        final int range = 16;
         for (int x = i - range; x <= i + range; x++)
         {
             for (int z = j - range; z <= j + range; z++)
@@ -561,19 +565,9 @@ public class GCCoreMapGenDungeon
         return y << 8 | z << 4 | x;
     }
 
-    private int randDir(Random rand, int dir)
+    private ForgeDirection randDir(Random rand)
     {
-        final int[] dirHelper = new int[dir < 4 ? 3 : 4];
-        int k = 0;
-        for (int i = 0; i < 4; i++)
-        {
-            if (i != dir)
-            {
-                dirHelper[k] = i;
-                k++;
-            }
-        }
-        return dirHelper[rand.nextInt(dirHelper.length)];
+        return ForgeDirection.values() [rand.nextInt(ForgeDirection.VALID_DIRECTIONS.length)];
     }
 
     private boolean isIntersecting(GCCoreDungeonBoundingBox bb, List<GCCoreDungeonBoundingBox> dungeonBbs)

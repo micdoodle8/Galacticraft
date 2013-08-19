@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.vector.Vector3;
 
 public class GCMoonRoomBoss extends GCCoreDungeonRoom
@@ -20,7 +21,7 @@ public class GCMoonRoomBoss extends GCCoreDungeonRoom
     Random rand;
     ChunkCoordinates spawnerCoords;
 
-    public GCMoonRoomBoss(GCCoreMapGenDungeon dungeon, int posX, int posY, int posZ, int entranceDir)
+    public GCMoonRoomBoss(GCCoreMapGenDungeon dungeon, int posX, int posY, int posZ, ForgeDirection entranceDir)
     {
         super(dungeon, posX, posY, posZ, entranceDir);
         if (this.worldObj != null)
@@ -77,7 +78,7 @@ public class GCMoonRoomBoss extends GCCoreDungeonRoom
     }
 
     @Override
-    protected GCCoreDungeonRoom makeRoom(GCCoreMapGenDungeon dungeon, int x, int y, int z, int dir)
+    protected GCCoreDungeonRoom makeRoom(GCCoreMapGenDungeon dungeon, int x, int y, int z, ForgeDirection dir)
     {
         return new GCMoonRoomBoss(dungeon, x, y, z, dir);
     }

@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.core.wgen.dungeon.GCCoreMapGenDungeon;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraftforge.common.ForgeDirection;
 
 public class GCMoonRoomSpawner extends GCCoreDungeonRoom
 {
@@ -18,7 +19,7 @@ public class GCMoonRoomSpawner extends GCCoreDungeonRoom
 
     private final ArrayList<ChunkCoordinates> spawners = new ArrayList<ChunkCoordinates>();
 
-    public GCMoonRoomSpawner(GCCoreMapGenDungeon dungeon, int posX, int posY, int posZ, int entranceDir)
+    public GCMoonRoomSpawner(GCCoreMapGenDungeon dungeon, int posX, int posY, int posZ, ForgeDirection entranceDir)
     {
         super(dungeon, posX, posY, posZ, entranceDir);
         if (this.worldObj != null)
@@ -71,7 +72,7 @@ public class GCMoonRoomSpawner extends GCCoreDungeonRoom
     }
 
     @Override
-    protected GCCoreDungeonRoom makeRoom(GCCoreMapGenDungeon dungeon, int x, int y, int z, int dir)
+    protected GCCoreDungeonRoom makeRoom(GCCoreMapGenDungeon dungeon, int x, int y, int z, ForgeDirection dir)
     {
         return new GCMoonRoomSpawner(dungeon, x, y, z, dir);
     }

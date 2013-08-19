@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.wgen.dungeon;
 import java.util.ArrayList;
 import java.util.Random;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 
 public abstract class GCCoreDungeonRoom
 {
@@ -16,13 +17,13 @@ public abstract class GCCoreDungeonRoom
 
     // East = 0, North = 1, South = 2, West = 3, Up = 4, Down = 5.
     // North is z++, East is x++.
-    public int entranceDir;
+    public ForgeDirection entranceDir;
 
     public static ArrayList<GCCoreDungeonRoom> rooms = new ArrayList<GCCoreDungeonRoom>();
     public static ArrayList<GCCoreDungeonRoom> bossRooms = new ArrayList<GCCoreDungeonRoom>();
     public static ArrayList<GCCoreDungeonRoom> treasureRooms = new ArrayList<GCCoreDungeonRoom>();
 
-    public GCCoreDungeonRoom(GCCoreMapGenDungeon dungeon, int posX, int posY, int posZ, int entranceDir)
+    public GCCoreDungeonRoom(GCCoreMapGenDungeon dungeon, int posX, int posY, int posZ, ForgeDirection entranceDir)
     {
         this.dungeonInstance = dungeon;
         this.worldObj = dungeon != null ? dungeon.worldObj : null;
@@ -36,21 +37,21 @@ public abstract class GCCoreDungeonRoom
 
     public abstract GCCoreDungeonBoundingBox getBoundingBox();
 
-    protected abstract GCCoreDungeonRoom makeRoom(GCCoreMapGenDungeon dungeon, int x, int y, int z, int dir);
+    protected abstract GCCoreDungeonRoom makeRoom(GCCoreMapGenDungeon dungeon, int x, int y, int z, ForgeDirection dir);
 
     protected abstract void handleTileEntities(Random rand);
 
-    public static GCCoreDungeonRoom makeRoom(GCCoreMapGenDungeon dungeon, Random rand, int x, int y, int z, int dir)
+    public static GCCoreDungeonRoom makeRoom(GCCoreMapGenDungeon dungeon, Random rand, int x, int y, int z, ForgeDirection dir)
     {
         return GCCoreDungeonRoom.rooms.get(rand.nextInt(GCCoreDungeonRoom.rooms.size())).makeRoom(dungeon, x, y, z, dir);
     }
 
-    public static GCCoreDungeonRoom makeBossRoom(GCCoreMapGenDungeon dungeon, Random rand, int x, int y, int z, int dir)
+    public static GCCoreDungeonRoom makeBossRoom(GCCoreMapGenDungeon dungeon, Random rand, int x, int y, int z, ForgeDirection dir)
     {
         return GCCoreDungeonRoom.bossRooms.get(rand.nextInt(GCCoreDungeonRoom.bossRooms.size())).makeRoom(dungeon, x, y, z, dir);
     }
 
-    public static GCCoreDungeonRoom makeTreasureRoom(GCCoreMapGenDungeon dungeon, Random rand, int x, int y, int z, int dir)
+    public static GCCoreDungeonRoom makeTreasureRoom(GCCoreMapGenDungeon dungeon, Random rand, int x, int y, int z, ForgeDirection dir)
     {
         return GCCoreDungeonRoom.treasureRooms.get(rand.nextInt(GCCoreDungeonRoom.treasureRooms.size())).makeRoom(dungeon, x, y, z, dir);
     }

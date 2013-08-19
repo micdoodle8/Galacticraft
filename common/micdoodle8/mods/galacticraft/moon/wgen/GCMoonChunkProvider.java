@@ -31,6 +31,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderGenerate;
 import net.minecraft.world.gen.structure.MapGenMineshaft;
+import net.minecraftforge.common.ForgeDirection;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -65,19 +66,19 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 
     static
     {
-        GCCoreDungeonRoom.rooms.add(new GCMoonRoomEmpty(null, 0, 0, 0, 0));
-        GCCoreDungeonRoom.rooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, 0));
-        GCCoreDungeonRoom.rooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, 0));
-        GCCoreDungeonRoom.rooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, 0));
-        GCCoreDungeonRoom.rooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, 0));
-        GCCoreDungeonRoom.rooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, 0));
-        GCCoreDungeonRoom.rooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, 0));
-        GCCoreDungeonRoom.rooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, 0));
-        GCCoreDungeonRoom.rooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, 0));
-        GCCoreDungeonRoom.rooms.add(new GCMoonRoomChests(null, 0, 0, 0, 0));
-        GCCoreDungeonRoom.rooms.add(new GCMoonRoomChests(null, 0, 0, 0, 0));
-        GCCoreDungeonRoom.bossRooms.add(new GCMoonRoomBoss(null, 0, 0, 0, 0));
-        GCCoreDungeonRoom.treasureRooms.add(new GCMoonRoomTreasure(null, 0, 0, 0, 0));
+        GCCoreDungeonRoom.rooms.add(new GCMoonRoomEmpty(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        GCCoreDungeonRoom.rooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        GCCoreDungeonRoom.rooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        GCCoreDungeonRoom.rooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        GCCoreDungeonRoom.rooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        GCCoreDungeonRoom.rooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        GCCoreDungeonRoom.rooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        GCCoreDungeonRoom.rooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        GCCoreDungeonRoom.rooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        GCCoreDungeonRoom.rooms.add(new GCMoonRoomChests(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        GCCoreDungeonRoom.rooms.add(new GCMoonRoomChests(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        GCCoreDungeonRoom.bossRooms.add(new GCMoonRoomBoss(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        GCCoreDungeonRoom.treasureRooms.add(new GCMoonRoomTreasure(null, 0, 0, 0, ForgeDirection.UNKNOWN));
     }
 
     private BiomeGenBase[] biomesForGeneration = { GCMoonBiomeGenBase.moonFlat };
@@ -227,8 +228,8 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
     public Chunk provideChunk(int par1, int par2)
     {
         this.rand.setSeed(par1 * 341873128712L + par2 * 132897987541L);
-        final short[] ids = new short[32768];
-        final byte[] meta = new byte[32768];
+        final short[] ids = new short[32768 * 2];
+        final byte[] meta = new byte[32768 * 2];
         this.generateTerrain(par1, par2, ids, meta);
         this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, par1 * 16, par2 * 16, 16, 16);
         this.createCraters(par1, par2, ids, meta);

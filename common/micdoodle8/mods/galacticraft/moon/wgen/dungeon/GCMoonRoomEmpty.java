@@ -4,6 +4,7 @@ import java.util.Random;
 import micdoodle8.mods.galacticraft.core.wgen.dungeon.GCCoreDungeonBoundingBox;
 import micdoodle8.mods.galacticraft.core.wgen.dungeon.GCCoreDungeonRoom;
 import micdoodle8.mods.galacticraft.core.wgen.dungeon.GCCoreMapGenDungeon;
+import net.minecraftforge.common.ForgeDirection;
 
 public class GCMoonRoomEmpty extends GCCoreDungeonRoom
 {
@@ -12,7 +13,7 @@ public class GCMoonRoomEmpty extends GCCoreDungeonRoom
     int sizeY;
     int sizeZ;
 
-    public GCMoonRoomEmpty(GCCoreMapGenDungeon dungeon, int posX, int posY, int posZ, int entranceDir)
+    public GCMoonRoomEmpty(GCCoreMapGenDungeon dungeon, int posX, int posY, int posZ, ForgeDirection entranceDir)
     {
         super(dungeon, posX, posY, posZ, entranceDir);
         if (this.worldObj != null)
@@ -53,7 +54,7 @@ public class GCMoonRoomEmpty extends GCCoreDungeonRoom
     }
 
     @Override
-    protected GCCoreDungeonRoom makeRoom(GCCoreMapGenDungeon dungeon, int x, int y, int z, int dir)
+    protected GCCoreDungeonRoom makeRoom(GCCoreMapGenDungeon dungeon, int x, int y, int z, ForgeDirection dir)
     {
         return new GCMoonRoomEmpty(dungeon, x, y, z, dir);
     }

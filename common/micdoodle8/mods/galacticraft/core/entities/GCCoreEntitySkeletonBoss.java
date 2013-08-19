@@ -51,7 +51,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * All rights reserved.
  * 
  */
-public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreathable, IBossDisplayData, IRangedAttackMob
+public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreathable, IBossDisplayData, IRangedAttackMob, IBoss
 {
     protected long ticks = 0;
     private static final ItemStack defaultHeldItem = new ItemStack(Item.bow, 1);
@@ -98,12 +98,6 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
     {
         this(world);
         this.setPosition(vec.x, vec.y, vec.z);
-    }
-
-    public void setRoom(Vector3 coords, Vector3 size)
-    {
-        this.roomCoords = coords;
-        this.roomSize = size;
     }
 
     @Override
@@ -536,11 +530,6 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
         return 40.0D;
     }
 
-    public void onBossSpawned(GCCoreTileEntityDungeonSpawner spawner)
-    {
-        this.spawner = spawner;
-    }
-
     public ItemStack getGuaranteedLoot(Random rand)
     {
         switch (rand.nextInt(2))
@@ -605,5 +594,18 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
 
         this.worldObj.playSoundAtEntity(this, "random.bow", 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
         this.worldObj.spawnEntityInWorld(var1);
+    }
+
+    @Override
+    public void setRoom(Vector3 roomCoords, Vector3 roomSize)
+    {
+        this.roomCoords = roomCoords;
+        this.roomSize = roomSize;
+    }
+
+    @Override
+    public void onBossSpawned(GCCoreTileEntityDungeonSpawner spawner)
+    {
+        this.spawner = spawner;
     }
 }
