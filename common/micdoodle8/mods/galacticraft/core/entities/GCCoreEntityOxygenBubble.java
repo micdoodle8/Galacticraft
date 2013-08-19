@@ -20,10 +20,9 @@ import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class GCCoreEntityOxygenBubble extends Entity implements IPacketReceiver
+public class GCCoreEntityOxygenBubble extends Entity implements IPacketReceiver, ISizeable
 {
-    private double size;
-
+    private float size;
     protected long ticks = 0;
 
     public GCCoreTileEntityOxygenDistributor distributor;
@@ -123,7 +122,7 @@ public class GCCoreEntityOxygenBubble extends Entity implements IPacketReceiver
 
         if (!this.worldObj.isRemote && this.distributor != null)
         {
-            this.size = this.distributor.storedOxygen / 600.0D;
+            this.size = this.distributor.storedOxygen / 600.0F;
         }
 
         if (this.distributor != null)
@@ -154,7 +153,7 @@ public class GCCoreEntityOxygenBubble extends Entity implements IPacketReceiver
         {
             if (this.worldObj.isRemote)
             {
-                this.size = dataStream.readDouble();
+                this.size = dataStream.readFloat();
             }
         }
         catch (final Exception e)
@@ -169,12 +168,12 @@ public class GCCoreEntityOxygenBubble extends Entity implements IPacketReceiver
         return false;
     }
 
-    public void setSize(double bubbleSize)
+    public void setSize(float bubbleSize)
     {
         this.size = bubbleSize;
     }
 
-    public double getSize()
+    public float getSize()
     {
         return this.size;
     }
@@ -185,14 +184,21 @@ public class GCCoreEntityOxygenBubble extends Entity implements IPacketReceiver
     }
 
     @Override
-    protected void readEntityFromNBT(NBTTagCompound nbttagcompound)
+    protected void readEntityFromNBT(NBTTagCompound nbt)
     {
-        this.size = nbttagcompound.getDouble("bubbleSize");
+        if (nbt.getTags().contains("bubbleSize"))
+        {
+            this.size = (float)nbt.getDouble("bubbleSize");
+        }
+        else
+        {
+            this.size = nbt.getFloat("bubbleSizeF");
+        }
     }
 
     @Override
     protected void writeEntityToNBT(NBTTagCompound nbttagcompound)
     {
-        nbttagcompound.setDouble("bubbleSize", this.size);
+        nbttagcompound.setFloat("bubbleSizeF", this.size);
     }
 }
