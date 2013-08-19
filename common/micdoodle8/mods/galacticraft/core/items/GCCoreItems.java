@@ -57,6 +57,8 @@ public class GCCoreItems
     public static Item buggyMaterial;
     public static Item knowledgeBook;
     public static Item itemBasic;
+    public static Item battery;
+    public static Item infiniteBatery;
 
     public static EnumArmorMaterial SENSORGLASSES = EnumHelper.addArmorMaterial("SENSORGLASSES", 200, new int[] { 0, 0, 0, 0 }, 0);
     public static EnumArmorMaterial steelARMOR = EnumHelper.addArmorMaterial("steel", 30, new int[] { 3, 8, 6, 3 }, 12);
@@ -106,6 +108,8 @@ public class GCCoreItems
         GCCoreItems.buggyMaterial = new GCCoreItemBuggyMaterial(GCCoreConfigManager.idItemBuggyMaterial).setUnlocalizedName("buggymat");
         GCCoreItems.knowledgeBook = new GCCoreItemKnowledgeBook(GCCoreConfigManager.idItemKnowledgeBook).setUnlocalizedName("knowledgeBook");
         GCCoreItems.itemBasic = new GCCoreItemBasic(GCCoreConfigManager.idItemBasic).setUnlocalizedName("basicItem");
+        GCCoreItems.battery = new GCCoreItemBattery(GCCoreConfigManager.idItemBattery).setUnlocalizedName("battery");
+        GCCoreItems.infiniteBatery = new GCCoreItemInfiniteBattery(GCCoreConfigManager.idItemInfiniteBattery).setUnlocalizedName("infiniteBattery");
 
         GCCoreItems.hiddenItems.add(GCCoreItems.gravityBow.itemID);
         GCCoreItems.hiddenItems.add(GCCoreItems.knowledgeBook.itemID);

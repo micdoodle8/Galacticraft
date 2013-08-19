@@ -73,6 +73,8 @@ item.buggymat.storage.name=Buggy Storage Box
 item.basicItem.solar_module_0.name=Single Solar Module
 item.basicItem.solar_module_1.name=Full Solar Panel
 item.tier1.desc=Tier 1
+item.battery.name=Battery
+item.infiniteBattery.name=Infinite Battery
 
 # TOOLS
 item.steel_pickaxe.name=Heavy Duty Pickaxe
