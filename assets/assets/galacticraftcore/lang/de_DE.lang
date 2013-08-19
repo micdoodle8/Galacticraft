@@ -74,6 +74,9 @@ item.buggymat.seat.name=Buggy-Sitz
 item.buggymat.storage.name=Buggy-Lagerbox
 item.basicItem.solar_module_0.name=Einzelnes Solarmodul
 item.basicItem.solar_module_1.name=Komplettes Solarmodul
+item.tier1.desc=Stufe 1
+item.battery.name=Batterie
+item.infiniteBattery.name=Unendliche Batterie
 
 # TOOLS
 item.steel_pickaxe.name=Stahlspitzhacke
@@ -133,6 +136,12 @@ tile.enclosed.PipePowerGold.name=Versiegelbare Gold-Energieleitung
 tile.solar.basic.name=Basis-Solarmodul
 tile.solar.advanced.name=Fortgeschrittenes Solarmodul
 tile.parachest.name=Paratruhe
+tile.oreCopper.name=Kupfererz
+tile.oreTin.name=Zinnerz
+tile.copperWire.name=Kupferkabel
+tile.machine.0.name=Kohle-Generator
+tile.machine.1.name=Batteriebox
+tile.machine.2.name=Electrischer Ofen
 
 # ENTITIES
 entity.GalacticraftCore.EvolvedSpider.name=Entwickelte Spinne
