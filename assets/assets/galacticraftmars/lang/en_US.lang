@@ -10,6 +10,8 @@ item.rawDesh.name=Unrefined Desh
 item.deshStick.name=Desh Stick
 item.ingotDesh.name=Desh Ingot
 item.spaceshipTier2.name=Tier 2 Rocket
+item.reinforcedPlateT2.name=Heavy-Duty Plate
+item.tier2.desc=Tier 2
 
 # TOOLS
 item.deshPick.name=Desh Pickaxe
@@ -44,6 +46,8 @@ tile.basiccomponents.marsMachine.0.name=Coal Generator
 # GUI
 gui.choosePlanet.desc.mars=Habitable#No Oxygen#Gravity: 38%
 item.deshPickSlime.description.name=Can harvest Slimeling eggs
+
+gui.desc.reinforcedPlateT2.name=Tier 2
 
 itemGroup.GalacticraftMars=Galacticraft Mars
 
