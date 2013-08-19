@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.mars.client.render.entity;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelOxygenBubble;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityOxygenBubble;
+import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityTerraformBubble;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
@@ -20,19 +20,14 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCMarsRenderTerraformBubble extends Render
 {
-    private static final ResourceLocation oxygenBubbleTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/bubble.png");
+    private static final ResourceLocation bubbleTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/bubble.png");
 
-    private final GCCoreModelOxygenBubble oxygenBubbleModel = new GCCoreModelOxygenBubble();
-
-    protected ResourceLocation func_110779_a(Entity par1EntityArrow)
-    {
-        return GCMarsRenderTerraformBubble.oxygenBubbleTexture;
-    }
+    private final GCCoreModelOxygenBubble bubbleModel = new GCCoreModelOxygenBubble();
 
     @Override
     protected ResourceLocation func_110775_a(Entity par1Entity)
     {
-        return this.func_110779_a(par1Entity);
+        return GCMarsRenderTerraformBubble.bubbleTexture;
     }
 
     @Override
@@ -46,18 +41,16 @@ public class GCMarsRenderTerraformBubble extends Render
         this.func_110777_b(entity);
 
         GL11.glEnable(GL11.GL_BLEND);
-        final float f10 = 0.1F;
-        GL11.glColor4f(f10, f10 * 5, f10, 1.0F);
 
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glColor4f(1, 1, 1, 0.75F);
+        GL11.glColor4f(0.1F, 1, 0.1F, 1.0F);
         GL11.glMatrixMode(GL11.GL_TEXTURE);
         GL11.glLoadIdentity();
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glDepthMask(false);
-        GL11.glScaled(((GCCoreEntityOxygenBubble) entity).getSize(), ((GCCoreEntityOxygenBubble) entity).getSize(), ((GCCoreEntityOxygenBubble) entity).getSize());
+        GL11.glScaled(((GCMarsEntityTerraformBubble) entity).getSize(), ((GCMarsEntityTerraformBubble) entity).getSize(), ((GCMarsEntityTerraformBubble) entity).getSize());
 
-        this.oxygenBubbleModel.render(entity, (float) d0, (float) d1, (float) d2, 0, 0, 1.0F);
+        this.bubbleModel.render(entity, (float) d0, (float) d1, (float) d2, 0, 0, 1.0F);
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glMatrixMode(GL11.GL_TEXTURE);

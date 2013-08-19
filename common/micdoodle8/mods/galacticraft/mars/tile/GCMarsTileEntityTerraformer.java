@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.mars.tile;
 
-import micdoodle8.mods.galacticraft.api.block.IOxygenReliantBlock;
+import java.util.ArrayList;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectric;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygen;
@@ -20,6 +20,7 @@ import universalelectricity.core.item.IItemElectric;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /**
@@ -32,12 +33,10 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectric implem
 {
     public boolean active;
     public boolean lastActive;
-
     public static final float WATTS_PER_TICK = 0.2F;
-
     private ItemStack[] containingItems = new ItemStack[1];
-
     public GCMarsEntityTerraformBubble terraformBubble;
+    private ArrayList<Vector3> terraformableBlocksList = new ArrayList<Vector3>();
 
     public GCMarsTileEntityTerraformer()
     {
@@ -90,9 +89,10 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectric implem
         if (this.terraformBubble == null)
         {
             this.terraformBubble = new GCMarsEntityTerraformBubble(this.worldObj, new Vector3(this), this);
-
+            
             if (!this.worldObj.isRemote)
             {
+                this.terraformBubble.setPosition(this.xCoord, this.yCoord, this.zCoord);
                 this.worldObj.spawnEntityInWorld(this.terraformBubble);
             }
         }
@@ -111,33 +111,41 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectric implem
 
         if (!this.worldObj.isRemote && (this.active != this.lastActive || this.ticks % 20 == 0))
         {
-            if (this.active)
+            this.terraformableBlocksList.clear();
+//            if (this.active)
             {
-                for (int x = (int) Math.floor(this.xCoord - this.terraformBubble.getSize() - 4); x < Math.ceil(this.xCoord + this.terraformBubble.getSize() + 4); x++)
+                for (int x = (int) Math.floor(this.xCoord - this.terraformBubble.getSize()); x < Math.ceil(this.xCoord + this.terraformBubble.getSize()); x++)
                 {
-                    for (int y = (int) Math.floor(this.yCoord - this.terraformBubble.getSize() - 4); y < Math.ceil(this.yCoord + this.terraformBubble.getSize() + 4); y++)
+                    for (int y = (int) Math.floor(this.yCoord - this.terraformBubble.getSize()); y < Math.ceil(this.yCoord + this.terraformBubble.getSize()); y++)
                     {
-                        for (int z = (int) Math.floor(this.zCoord - this.terraformBubble.getSize() - 4); z < Math.ceil(this.zCoord + this.terraformBubble.getSize() + 4); z++)
+                        for (int z = (int) Math.floor(this.zCoord - this.terraformBubble.getSize()); z < Math.ceil(this.zCoord + this.terraformBubble.getSize()); z++)
                         {
                             int blockID = this.worldObj.getBlockId(x, y, z);
 
-                            if (blockID > 0)
+                            if (blockID > 0 && Math.sqrt(this.getDistanceFromServer(x, y, z)) < this.terraformBubble.getSize())
                             {
                                 Block block = Block.blocksList[blockID];
                                 
-                                if (block instanceof BlockGrass)
+                                if (block.blockID == GCMarsBlocks.marsBlock.blockID && this.worldObj.getBlockMetadata(x, y, z) == 5)
                                 {
-                                    this.worldObj.setBlock(x, y, z, GCMarsBlocks.marsBlock.blockID, 5, 3);
-                                }
-                                else if (block.blockID == GCMarsBlocks.marsBlock.blockID && this.worldObj.getBlockMetadata(x, y, z) == 5)
-                                {
-                                    this.worldObj.setBlock(x, y, z, Block.grass.blockID);
+                                    this.terraformableBlocksList.add(new Vector3(x, y, z));
                                 }
                             }
                         }
                     }
                 }
             }
+        }
+        
+        if (!this.worldObj.isRemote && this.terraformableBlocksList.size() > 0 && this.worldObj.rand.nextInt(5) == 0)
+        {
+            ArrayList<Vector3> terraformableBlocks2 = new ArrayList<Vector3>(this.terraformableBlocksList);
+            
+            int randomIndex = this.worldObj.rand.nextInt(this.terraformableBlocksList.size());
+            Vector3 vec = terraformableBlocks2.get(randomIndex);
+            this.worldObj.setBlock(vec.intX(), vec.intY(), vec.intZ(), Block.grass.blockID);
+            
+            terraformableBlocksList.remove(randomIndex);
         }
 
         this.lastActive = this.active;

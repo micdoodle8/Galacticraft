@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.mars.entities;
 
+import java.util.ArrayList;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.entities.ISizeable;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityTerraformer;
 import net.minecraft.entity.Entity;
@@ -15,15 +17,13 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.IPacketReceiver;
-import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class GCMarsEntityTerraformBubble extends Entity implements IPacketReceiver
+public class GCMarsEntityTerraformBubble extends Entity implements IPacketReceiver, ISizeable
 {
-    private double size;
-
+    private float size;
     protected long ticks = 0;
 
     public GCMarsTileEntityTerraformer terraformer;
@@ -80,7 +80,7 @@ public class GCMarsEntityTerraformBubble extends Entity implements IPacketReceiv
     }
 
     @Override
-    public void onEntityUpdate()
+    public void onUpdate()
     {
         if (this.ticks >= Long.MAX_VALUE)
         {
@@ -98,7 +98,7 @@ public class GCMarsEntityTerraformBubble extends Entity implements IPacketReceiv
             this.posZ = vec.z + 0.5D;
         }
 
-        super.onEntityUpdate();
+        super.onUpdate();
 
         final TileEntity tileAt = this.worldObj.getBlockTileEntity(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1.0), MathHelper.floor_double(this.posZ));
 
@@ -123,9 +123,9 @@ public class GCMarsEntityTerraformBubble extends Entity implements IPacketReceiv
             this.setDead();
         }
 
-        if (!this.worldObj.isRemote && this.terraformer != null)
+        if (this.terraformer != null)
         {
-            this.size = Math.min(Math.max(0, this.size + 5F), this.MAX_SIZE);
+            this.size = (float) Math.min(Math.max(0, this.size + 0.1F), this.MAX_SIZE);
         }
 
         if (this.terraformer != null)
@@ -136,17 +136,11 @@ public class GCMarsEntityTerraformBubble extends Entity implements IPacketReceiv
             this.posY = vec.y + 1.0D;
             this.posZ = vec.z + 0.5D;
         }
-
-        if (!this.worldObj.isRemote && this.ticks % 5 == 0)
-        {
-            PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 50);
-        }
     }
 
     public Packet getDescriptionPacket()
     {
-        final Packet p = GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.size);
-        return p;
+        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getNetworkedData(new ArrayList<Object>()));
     }
 
     @Override
@@ -156,7 +150,7 @@ public class GCMarsEntityTerraformBubble extends Entity implements IPacketReceiv
         {
             if (this.worldObj.isRemote)
             {
-                this.size = dataStream.readDouble();
+                this.readNetworkedData(dataStream);
             }
         }
         catch (final Exception e)
@@ -165,18 +159,29 @@ public class GCMarsEntityTerraformBubble extends Entity implements IPacketReceiv
         }
     }
 
+    public void readNetworkedData(ByteArrayDataInput dataStream)
+    {
+        this.size = dataStream.readFloat();
+    }
+
+    public ArrayList<Object> getNetworkedData(ArrayList<Object> list)
+    {
+        list.add(this.size);
+        return list;
+    }
+
     @Override
     public boolean canBeCollidedWith()
     {
         return false;
     }
 
-    public void setSize(double bubbleSize)
+    public void setSize(float bubbleSize)
     {
         this.size = bubbleSize;
     }
 
-    public double getSize()
+    public float getSize()
     {
         return this.size;
     }
@@ -189,12 +194,12 @@ public class GCMarsEntityTerraformBubble extends Entity implements IPacketReceiv
     @Override
     protected void readEntityFromNBT(NBTTagCompound nbttagcompound)
     {
-        this.size = nbttagcompound.getDouble("bubbleSize");
+        this.size = nbttagcompound.getFloat("bubbleSizeF");
     }
 
     @Override
     protected void writeEntityToNBT(NBTTagCompound nbttagcompound)
     {
-        nbttagcompound.setDouble("bubbleSize", this.size);
+        nbttagcompound.setDouble("bubbleSizeF", this.size);
     }
 }
