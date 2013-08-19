@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCopperWire;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import universalelectricity.prefab.block.BlockConductor;
@@ -25,6 +26,12 @@ public class GCCoreBlockCopperWire extends BlockConductor
 		this.setBlockBounds(0.3F, 0.3F, 0.3F, 0.7F, 0.7F, 0.7F);
 		Block.setBurnProperties(this.blockID, 30, 60);
 	}
+
+    @Override
+    public CreativeTabs getCreativeTabToDisplayOn()
+    {
+        return GalacticraftCore.galacticraftTab;
+    }
 
 	@Override
 	public void registerIcons(IconRegister par1IconRegister)
