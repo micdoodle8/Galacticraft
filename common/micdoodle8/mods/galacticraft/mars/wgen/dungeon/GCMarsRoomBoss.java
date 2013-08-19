@@ -5,12 +5,12 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityDungeonSpawner;
 import micdoodle8.mods.galacticraft.core.wgen.dungeon.GCCoreDungeonBoundingBox;
 import micdoodle8.mods.galacticraft.core.wgen.dungeon.GCCoreDungeonRoom;
 import micdoodle8.mods.galacticraft.core.wgen.dungeon.GCCoreMapGenDungeon;
-import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
-import micdoodle8.mods.galacticraft.moon.wgen.dungeon.GCMoonRoomBoss;
+import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
+import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityCreeperBoss;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.vector.Vector3;
 
 public class GCMarsRoomBoss extends GCCoreDungeonRoom
@@ -22,7 +22,7 @@ public class GCMarsRoomBoss extends GCCoreDungeonRoom
     Random rand;
     ChunkCoordinates spawnerCoords;
 
-    public GCMarsRoomBoss(GCCoreMapGenDungeon dungeon, int posX, int posY, int posZ, int entranceDir)
+    public GCMarsRoomBoss(GCCoreMapGenDungeon dungeon, int posX, int posY, int posZ, ForgeDirection entranceDir)
     {
         super(dungeon, posX, posY, posZ, entranceDir);
         if (worldObj != null)
@@ -79,7 +79,7 @@ public class GCMarsRoomBoss extends GCCoreDungeonRoom
     }
 
     @Override
-    protected GCCoreDungeonRoom makeRoom(GCCoreMapGenDungeon dungeon, int x, int y, int z, int dir)
+    protected GCCoreDungeonRoom makeRoom(GCCoreMapGenDungeon dungeon, int x, int y, int z, ForgeDirection dir)
     {
         return new GCMarsRoomBoss(dungeon, x, y, z, dir);
     }
@@ -92,13 +92,13 @@ public class GCMarsRoomBoss extends GCCoreDungeonRoom
             return;
         }
 
-        this.worldObj.setBlock(this.spawnerCoords.posX, this.spawnerCoords.posY, this.spawnerCoords.posZ, GCMoonBlocks.blockMoon.blockID, 15, 3);
+        this.worldObj.setBlock(this.spawnerCoords.posX, this.spawnerCoords.posY, this.spawnerCoords.posZ, GCMarsBlocks.marsBlock.blockID, 10, 3);
 
         final TileEntity tile = this.worldObj.getBlockTileEntity(this.spawnerCoords.posX, this.spawnerCoords.posY, this.spawnerCoords.posZ);
 
         if (tile == null || !(tile instanceof GCCoreTileEntityDungeonSpawner))
         {
-            GCCoreTileEntityDungeonSpawner spawner = new GCCoreTileEntityDungeonSpawner();
+            GCCoreTileEntityDungeonSpawner spawner = new GCCoreTileEntityDungeonSpawner(GCMarsEntityCreeperBoss.class);
             spawner.setRoom(new Vector3(this.posX, this.posY, this.posZ), new Vector3(this.sizeX, this.sizeY, this.sizeZ));
             this.worldObj.setBlockTileEntity(this.spawnerCoords.posX, this.spawnerCoords.posY, this.spawnerCoords.posZ, spawner);
         }

@@ -27,6 +27,7 @@ import net.minecraft.world.biome.SpawnListEntry;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderGenerate;
+import net.minecraftforge.common.ForgeDirection;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -63,19 +64,19 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
     
     static
     {
-        GCCoreDungeonRoom.rooms.add(new GCMarsRoomEmpty(null, 0, 0, 0, 0));
-        GCCoreDungeonRoom.rooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, 0));
-        GCCoreDungeonRoom.rooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, 0));
-        GCCoreDungeonRoom.rooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, 0));
-        GCCoreDungeonRoom.rooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, 0));
-        GCCoreDungeonRoom.rooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, 0));
-        GCCoreDungeonRoom.rooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, 0));
-        GCCoreDungeonRoom.rooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, 0));
-        GCCoreDungeonRoom.rooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, 0));
-        GCCoreDungeonRoom.rooms.add(new GCMarsRoomChests(null, 0, 0, 0, 0));
-        GCCoreDungeonRoom.rooms.add(new GCMarsRoomChests(null, 0, 0, 0, 0));
-        GCCoreDungeonRoom.bossRooms.add(new GCMarsRoomBoss(null, 0, 0, 0, 0));
-        GCCoreDungeonRoom.treasureRooms.add(new GCMarsRoomTreasure(null, 0, 0, 0, 0));
+        GCCoreDungeonRoom.rooms.add(new GCMarsRoomEmpty(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        GCCoreDungeonRoom.rooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        GCCoreDungeonRoom.rooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        GCCoreDungeonRoom.rooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        GCCoreDungeonRoom.rooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        GCCoreDungeonRoom.rooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        GCCoreDungeonRoom.rooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        GCCoreDungeonRoom.rooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        GCCoreDungeonRoom.rooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        GCCoreDungeonRoom.rooms.add(new GCMarsRoomChests(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        GCCoreDungeonRoom.rooms.add(new GCMarsRoomChests(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        GCCoreDungeonRoom.bossRooms.add(new GCMarsRoomBoss(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        GCCoreDungeonRoom.treasureRooms.add(new GCMarsRoomTreasure(null, 0, 0, 0, ForgeDirection.UNKNOWN));
     }
 
     private BiomeGenBase[] biomesForGeneration = { GCMarsBiomeGenBase.marsFlat };
@@ -297,15 +298,15 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
     public Chunk provideChunk(int par1, int par2)
     {
         this.rand.setSeed(par1 * 341873128712L + par2 * 132897987541L);
-        final short[] ids = new short[32768];
-        final byte[] meta = new byte[32768];
+        final short[] ids = new short[32768 * 2];
+        final byte[] meta = new byte[32768 * 2];
         this.generateTerrain(par1, par2, ids, meta);
         this.createCraters(par1, par2, ids, meta);
         this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, par1 * 16, par2 * 16, 16, 16);
         this.replaceBlocksForBiome(par1, par2, ids, meta, this.biomesForGeneration);
         this.caveGenerator.generate(this, this.worldObj, par1, par2, ids, meta);
         this.caveGenerator2.generate(this, this.worldObj, par1, par2, ids, meta);
-        this.dungeonGenerator.generateUsingArrays(this.worldObj, this.worldObj.getSeed(), par1 * 16, 25, par2 * 16, par1, par2, ids, meta);
+        this.dungeonGenerator.generateUsingArrays(this.worldObj, this.worldObj.getSeed(), par1 * 16, 120, par2 * 16, par1, par2, ids, meta);
 
         final Chunk var4 = new Chunk(this.worldObj, ids, meta, par1, par2);
         final byte[] var5 = var4.getBiomeArray();

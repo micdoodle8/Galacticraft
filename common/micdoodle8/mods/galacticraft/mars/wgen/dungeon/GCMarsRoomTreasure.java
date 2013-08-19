@@ -6,13 +6,12 @@ import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.wgen.dungeon.GCCoreDungeonBoundingBox;
 import micdoodle8.mods.galacticraft.core.wgen.dungeon.GCCoreDungeonRoom;
 import micdoodle8.mods.galacticraft.core.wgen.dungeon.GCCoreMapGenDungeon;
-import micdoodle8.mods.galacticraft.moon.wgen.dungeon.GCMoonRoomTreasure;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 
 public class GCMarsRoomTreasure extends GCCoreDungeonRoom
 {
@@ -23,7 +22,7 @@ public class GCMarsRoomTreasure extends GCCoreDungeonRoom
 
     private final ArrayList<ChunkCoordinates> chests = new ArrayList<ChunkCoordinates>();
 
-    public GCMarsRoomTreasure(GCCoreMapGenDungeon dungeon, int posX, int posY, int posZ, int entranceDir)
+    public GCMarsRoomTreasure(GCCoreMapGenDungeon dungeon, int posX, int posY, int posZ, ForgeDirection entranceDir)
     {
         super(dungeon, posX, posY, posZ, entranceDir);
         if (worldObj != null)
@@ -77,7 +76,7 @@ public class GCMarsRoomTreasure extends GCCoreDungeonRoom
     }
 
     @Override
-    protected GCCoreDungeonRoom makeRoom(GCCoreMapGenDungeon dungeon, int x, int y, int z, int dir)
+    protected GCCoreDungeonRoom makeRoom(GCCoreMapGenDungeon dungeon, int x, int y, int z, ForgeDirection dir)
     {
         return new GCMarsRoomTreasure(dungeon, x, y, z, dir);
     }

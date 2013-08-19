@@ -5,11 +5,10 @@ import java.util.Random;
 import micdoodle8.mods.galacticraft.core.wgen.dungeon.GCCoreDungeonBoundingBox;
 import micdoodle8.mods.galacticraft.core.wgen.dungeon.GCCoreDungeonRoom;
 import micdoodle8.mods.galacticraft.core.wgen.dungeon.GCCoreMapGenDungeon;
-import micdoodle8.mods.galacticraft.moon.wgen.dungeon.GCMoonRoomSpawner;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 
 public class GCMarsRoomSpawner extends GCCoreDungeonRoom
 {
@@ -20,7 +19,7 @@ public class GCMarsRoomSpawner extends GCCoreDungeonRoom
 
     private final ArrayList<ChunkCoordinates> spawners = new ArrayList<ChunkCoordinates>();
 
-    public GCMarsRoomSpawner(GCCoreMapGenDungeon dungeon, int posX, int posY, int posZ, int entranceDir)
+    public GCMarsRoomSpawner(GCCoreMapGenDungeon dungeon, int posX, int posY, int posZ, ForgeDirection entranceDir)
     {
         super(dungeon, posX, posY, posZ, entranceDir);
         if (worldObj != null)
@@ -73,7 +72,7 @@ public class GCMarsRoomSpawner extends GCCoreDungeonRoom
     }
 
     @Override
-    protected GCCoreDungeonRoom makeRoom(GCCoreMapGenDungeon dungeon, int x, int y, int z, int dir)
+    protected GCCoreDungeonRoom makeRoom(GCCoreMapGenDungeon dungeon, int x, int y, int z, ForgeDirection dir)
     {
         return new GCMarsRoomSpawner(dungeon, x, y, z, dir);
     }
