@@ -5,16 +5,22 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiDownloadingSounds;
+import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerClient;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundPoolEntry;
+import net.minecraft.client.gui.GuiMainMenu;
+import net.minecraft.client.gui.GuiScreen;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -24,6 +30,10 @@ public class GCCoreThreadDownloadSound extends Thread
     public File resourcesFolder;
     private final Minecraft mc;
     private boolean closing = false;
+    private GCCoreGuiDownloadingSounds gui;
+    private GuiScreen previousGui;
+    private int downloadCount = 0;
+    private int byteCount = 0;
 
     public GCCoreThreadDownloadSound(File par1File, Minecraft par2Minecraft)
     {
@@ -54,6 +64,8 @@ public class GCCoreThreadDownloadSound extends Thread
             con.setReadTimeout(60000);
             final Document document = documentbuilder.parse(con.getInputStream());
             final NodeList nodelist = document.getElementsByTagName("Contents");
+            this.gui = new GCCoreGuiDownloadingSounds(this);
+            this.previousGui = FMLClientHandler.instance().getClient().currentScreen;
 
             for (int i = 0; i < 2; ++i)
             {
@@ -85,6 +97,8 @@ public class GCCoreThreadDownloadSound extends Thread
             this.loadResource(this.resourcesFolder, "");
             exception.printStackTrace();
         }
+        
+        GCCoreTickHandlerClient.lastOpenGui = this.previousGui;
     }
 
     public void reloadResources()
@@ -141,7 +155,12 @@ public class GCCoreThreadDownloadSound extends Thread
             {
                 file1.getParentFile().mkdirs();
                 final String s2 = par2Str.replaceAll(" ", "%20");
+                FMLClientHandler.instance().getClient().displayGuiScreen(this.gui);
                 this.downloadResource(new URL(par1URL, s2), file1, par3);
+                this.downloadCount++;
+                int roundedDataSize = (int) Math.floor(((10 * byteCount) / (1024.0F * 1024.0F)));
+                this.gui.displayStatus = "Downloaded " + this.downloadCount + " sounds#" + (roundedDataSize / 10.0F) + " MB";
+                this.gui.displayStatusColor = 0x11FF11;
 
                 if (this.closing)
                 {
@@ -158,8 +177,24 @@ public class GCCoreThreadDownloadSound extends Thread
                 ClientProxyCore.newMusic.add(new SoundPoolEntry(par2Str, file1.toURI().toURL()));
             }
         }
+        catch (MalformedURLException exception)
+        {
+            this.gui.displayStatus = "Download Failed!#MalformedURLException 1";
+            this.gui.displayStatusColor = 0xFF1111;
+            this.loadResource(this.resourcesFolder, "");
+            exception.printStackTrace();
+        }
+        catch (IOException exception)
+        {
+            this.gui.displayStatus = "Download Failed!#IOException, unable to open connection to URL.";
+            this.gui.displayStatusColor = 0xFF1111;
+            this.loadResource(this.resourcesFolder, "");
+            exception.printStackTrace();
+        }
         catch (final Exception exception)
         {
+            this.gui.displayStatus = "Download Failed!#General Exception";
+            this.gui.displayStatusColor = 0xFF1111;
             exception.printStackTrace();
         }
     }
@@ -187,6 +222,7 @@ public class GCCoreThreadDownloadSound extends Thread
             }
 
             dataoutputstream.write(abyte, 0, j);
+            byteCount += j;
         }
         while (!this.closing);
     }

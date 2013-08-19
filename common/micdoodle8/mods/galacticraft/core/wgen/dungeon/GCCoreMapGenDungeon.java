@@ -7,7 +7,6 @@ import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreMapGenDungeon
 {
@@ -389,6 +388,8 @@ public class GCCoreMapGenDungeon
                             flag2 = k == corridor.minZ ? 4 : 3;
                         }
                         break;
+                    default:
+                        break;
                     }
 
                     if (!flag)
@@ -540,23 +541,6 @@ public class GCCoreMapGenDungeon
         else
         {
             return this.worldObj.getBlockId(x, y, z);
-        }
-    }
-
-    private int getOppositeDir(int dir)
-    {
-        switch (dir)
-        {
-        case 0:
-            return 3;
-        case 1:
-            return 2;
-        case 2:
-            return 1;
-        case 3:
-            return 0;
-        default:
-            return 5;
         }
     }
 

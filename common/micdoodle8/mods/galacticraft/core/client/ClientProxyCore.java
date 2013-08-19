@@ -29,6 +29,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirDistributor;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirSealer;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiCargoLoader;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiCargoUnloader;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiDownloadingSounds;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiExtendedInventory;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiFuelLoader;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiGalaxyMap;
@@ -171,6 +172,8 @@ public class ClientProxyCore extends CommonProxyCore
     public static List<ICelestialBodyRenderer> slotRenderers = new ArrayList<ICelestialBodyRenderer>();
     public static List<int[]> valueableBlocks = new ArrayList<int[]>();
 
+    private static GCCoreThreadDownloadSound downloadResourcesThread;
+    
     public static Set<String> playersUsingParachutes = new HashSet<String>();
     public static HashMap<String, ResourceLocation> parachuteTextures = new HashMap<String, ResourceLocation>();
     public static Set<String> playersWithOxygenMask = new HashSet<String>();
@@ -189,8 +192,6 @@ public class ClientProxyCore extends CommonProxyCore
     public static float playerRotationPitch;
 
     public static int clientSpaceStationID = 0;
-
-    private GCCoreThreadDownloadSound downloadResourcesThread;
 
     public static ArrayList<SoundPoolEntry> newMusic = new ArrayList<SoundPoolEntry>();
 
@@ -216,17 +217,6 @@ public class ClientProxyCore extends CommonProxyCore
     public void init(FMLInitializationEvent event)
     {
         ClientProxyCore.moon.init(event);
-
-        try
-        {
-            FMLClientHandler.instance().getClient();
-            this.downloadResourcesThread = new GCCoreThreadDownloadSound(FMLClientHandler.instance().getClient().mcDataDir, FMLClientHandler.instance().getClient());
-            this.downloadResourcesThread.start();
-        }
-        catch (final Exception exception)
-        {
-            ;
-        }
 
         TickRegistry.registerTickHandler(new GCCoreTickHandlerClient(), Side.CLIENT);
         TickRegistry.registerScheduledTickHandler(new GCCoreTickHandlerSlowClient(), Side.CLIENT);
@@ -866,6 +856,22 @@ public class ClientProxyCore extends CommonProxyCore
             }
             
             TabRegistry.addTabsToInventory(gui);
+        }
+    }
+    
+    public static void onMinecraftLoaded()
+    {
+        try
+        {
+            if (downloadResourcesThread == null)
+            {
+                downloadResourcesThread = new GCCoreThreadDownloadSound(FMLClientHandler.instance().getClient().mcDataDir, FMLClientHandler.instance().getClient());
+                downloadResourcesThread.start();
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
         }
     }
 }

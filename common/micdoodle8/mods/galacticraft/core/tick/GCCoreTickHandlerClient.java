@@ -29,6 +29,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiMainMenu;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
@@ -52,6 +53,8 @@ public class GCCoreTickHandlerClient implements ITickHandler
     public static int airRemaining2;
     public static boolean checkedVersion = true;
     private static boolean lastInvKeyPressed;
+    public static GuiScreen lastOpenGui;
+    private static GuiScreen prevLastOpenGui;
 
     @Override
     public void tickStart(EnumSet<TickType> type, Object... tickData)
@@ -66,6 +69,13 @@ public class GCCoreTickHandlerClient implements ITickHandler
 
         if (type.equals(EnumSet.of(TickType.CLIENT)))
         {
+            if (prevLastOpenGui == null && lastOpenGui != null)
+            {
+                FMLClientHandler.instance().getClient().displayGuiScreen(lastOpenGui);
+            }
+            
+            prevLastOpenGui = lastOpenGui;
+            
             if (ClientProxyCore.addTabsNextTick)
             {
                 if (minecraft.currentScreen.getClass().equals(GuiInventory.class))
