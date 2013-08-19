@@ -36,8 +36,8 @@ public class CommonProxyMars
     {
         return -1;
     }
-    
-    public int getRockRenderID()
+
+    public int getEggRenderID()
     {
         return -1;
     }

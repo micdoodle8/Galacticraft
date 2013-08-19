@@ -37,35 +37,36 @@ public class GCMarsRenderCreeperBoss extends RenderLiving
     @Override
     protected ResourceLocation func_110775_a(Entity entity)
     {
-        return creeperTexture;
+        return GCMarsRenderCreeperBoss.creeperTexture;
     }
 
-//    protected int updateCreeperColorMultiplier(GCMarsEntityCreeperBoss par1EntityCreeper, float par2, float par3)
-//    {
-//        if ((int) (var5 * 10.0F) % 2 == 0)
-//        {
-//            return 0;
-//        }
-//        else
-//        {
-//            int var6 = (int) (var5 * 0.2F * 255.0F);
-//
-//            if (var6 < 0)
-//            {
-//                var6 = 0;
-//            }
-//
-//            if (var6 > 255)
-//            {
-//                var6 = 255;
-//            }
-//
-//            final short var7 = 255;
-//            final short var8 = 255;
-//            final short var9 = 255;
-//            return var6 << 24 | var7 << 16 | var8 << 8 | var9;
-//        }
-//    }
+    // protected int updateCreeperColorMultiplier(GCMarsEntityCreeperBoss
+    // par1EntityCreeper, float par2, float par3)
+    // {
+    // if ((int) (var5 * 10.0F) % 2 == 0)
+    // {
+    // return 0;
+    // }
+    // else
+    // {
+    // int var6 = (int) (var5 * 0.2F * 255.0F);
+    //
+    // if (var6 < 0)
+    // {
+    // var6 = 0;
+    // }
+    //
+    // if (var6 > 255)
+    // {
+    // var6 = 255;
+    // }
+    //
+    // final short var7 = 255;
+    // final short var8 = 255;
+    // final short var9 = 255;
+    // return var6 << 24 | var7 << 16 | var8 << 8 | var9;
+    // }
+    // }
 
     protected int func_27006_a(GCMarsEntityCreeperBoss par1EntityCreeper, int par2, float par3)
     {
@@ -74,7 +75,7 @@ public class GCMarsRenderCreeperBoss extends RenderLiving
             if (par2 == 1)
             {
                 final float var4 = par1EntityCreeper.ticksExisted + par3;
-                this.func_110776_a(powerTexture);
+                this.func_110776_a(GCMarsRenderCreeperBoss.powerTexture);
                 GL11.glMatrixMode(GL11.GL_TEXTURE);
                 GL11.glLoadIdentity();
                 final float var5 = var4 * 0.01F;
@@ -113,7 +114,8 @@ public class GCMarsRenderCreeperBoss extends RenderLiving
     protected int getColorMultiplier(EntityLivingBase par1EntityLivingBase, float par2, float par3)
     {
         return super.getColorMultiplier(par1EntityLivingBase, par2, par3);
-//        return this.updateCreeperColorMultiplier((GCMarsEntityCreeperBoss) par1EntityLiving, par2, par3);
+        // return this.updateCreeperColorMultiplier((GCMarsEntityCreeperBoss)
+        // par1EntityLiving, par2, par3);
     }
 
     @Override
@@ -127,4 +129,4 @@ public class GCMarsRenderCreeperBoss extends RenderLiving
     {
         return -1;
     }
- }
+}

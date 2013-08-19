@@ -1,4 +1,5 @@
 package micdoodle8.mods.galacticraft.mars.client.render.entity;
+
 //package micdoodle8.mods.galacticraft.mars.client;
 //
 //import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityProjectileTNT;

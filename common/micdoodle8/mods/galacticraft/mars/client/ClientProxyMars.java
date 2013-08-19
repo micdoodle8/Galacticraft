@@ -105,7 +105,7 @@ public class ClientProxyMars extends CommonProxyMars
     {
         return ClientProxyMars.vineRenderID;
     }
-    
+
     @Override
     public int getEggRenderID()
     {
@@ -196,7 +196,7 @@ public class ClientProxyMars extends CommonProxyMars
                         {
                             world.provider.setSkyRenderer(new GCMarsSkyProvider());
                         }
-                        
+
                         if (world.provider.getCloudRenderer() == null)
                         {
                             world.provider.setCloudRenderer(new GCCoreCloudRenderer());

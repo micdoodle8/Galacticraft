@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.mars.items;
 
 import java.util.List;
-import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -91,7 +90,7 @@ public class GCMarsItem extends Item
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) 
+    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
     {
         if (par1ItemStack != null && par1ItemStack.getItemDamage() == 3)
         {

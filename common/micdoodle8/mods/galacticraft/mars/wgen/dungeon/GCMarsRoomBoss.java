@@ -25,9 +25,9 @@ public class GCMarsRoomBoss extends GCCoreDungeonRoom
     public GCMarsRoomBoss(GCCoreMapGenDungeon dungeon, int posX, int posY, int posZ, ForgeDirection entranceDir)
     {
         super(dungeon, posX, posY, posZ, entranceDir);
-        if (worldObj != null)
+        if (this.worldObj != null)
         {
-            this.rand = new Random(worldObj.getSeed() * posX * posY * 57 * posZ);
+            this.rand = new Random(this.worldObj.getSeed() * posX * posY * 57 * posZ);
             this.sizeX = this.rand.nextInt(6) + 20;
             this.sizeY = this.rand.nextInt(2) + 11;
             this.sizeZ = this.rand.nextInt(6) + 20;

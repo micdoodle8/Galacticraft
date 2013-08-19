@@ -25,9 +25,9 @@ public class GCMarsRoomChests extends GCCoreDungeonRoom
     public GCMarsRoomChests(GCCoreMapGenDungeon dungeon, int posX, int posY, int posZ, ForgeDirection entranceDir)
     {
         super(dungeon, posX, posY, posZ, entranceDir);
-        if (worldObj != null)
+        if (this.worldObj != null)
         {
-            final Random rand = new Random(worldObj.getSeed() * posX * posY * 57 * posZ);
+            final Random rand = new Random(this.worldObj.getSeed() * posX * posY * 57 * posZ);
             this.sizeX = rand.nextInt(5) + 6;
             this.sizeY = rand.nextInt(2) + 7;
             this.sizeZ = rand.nextInt(5) + 6;

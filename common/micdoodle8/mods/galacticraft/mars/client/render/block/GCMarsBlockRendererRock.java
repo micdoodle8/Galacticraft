@@ -1,10 +1,8 @@
 package micdoodle8.mods.galacticraft.mars.client.render.block;
 
-import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
@@ -107,11 +105,11 @@ public class GCMarsBlockRendererRock implements ISimpleBlockRenderingHandler
     {
         GCMarsBlockRendererRock.renderInvNormalBlock(renderer, block, metadata);
     }
-    
+
     public void renderBlockMeteor(RenderBlocks renderBlocks, Block par1Block, IBlockAccess var1, int par2, int par3, int par4)
     {
-        final int var5 = var1.getBlockMetadata(par2, par3, par4);
-        
+        var1.getBlockMetadata(par2, par3, par4);
+
         renderBlocks.setRenderBounds(0.2F, 0.0F, 0.2F, 0.8F, 0.5F, 0.8F);
         renderBlocks.renderStandardBlock(par1Block, par2, par3, par4);
 

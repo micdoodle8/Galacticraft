@@ -1,13 +1,13 @@
 package micdoodle8.mods.galacticraft.mars.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import net.minecraft.block.Block;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import basiccomponents.common.block.BlockBasicMachine;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCMarsItemBlockMachine extends ItemBlock
 {

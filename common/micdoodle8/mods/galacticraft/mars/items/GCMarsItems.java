@@ -45,7 +45,7 @@ public class GCMarsItems
         GCMarsItems.deshLeggings = new GCMarsItemArmor(GCMarsConfigManager.idArmorDeshLeggings, GCMarsItems.ARMORDESH, 7, 2, false).setUnlocalizedName("deshLeggings");
         GCMarsItems.deshBoots = new GCMarsItemArmor(GCMarsConfigManager.idArmorDeshBoots, GCMarsItems.ARMORDESH, 7, 3, false).setUnlocalizedName("deshBoots");
         GCMarsItems.spaceship = new GCMarsItemSpaceshipTier2(GCMarsConfigManager.idItemSpaceshipTier2).setUnlocalizedName("spaceshipTier2");
-        GCMarsItems.trowelAndHandbroom = new GCMarsItemTrowel(GCMarsConfigManager.idItemTrowelAndHandbroom, TOOLTROWEL).setUnlocalizedName("trowelAndHandbroom");
+        GCMarsItems.trowelAndHandbroom = new GCMarsItemTrowel(GCMarsConfigManager.idItemTrowelAndHandbroom, GCMarsItems.TOOLTROWEL).setUnlocalizedName("trowelAndHandbroom");
     }
 
     public static void registerHarvestLevels()

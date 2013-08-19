@@ -10,7 +10,6 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -26,7 +25,7 @@ public class GCMarsBlockSlimelingEgg extends Block implements ITileEntityProvide
 {
     private Icon[] icons;
     public static String[] names = { "redEgg", "blueEgg", "yellowEgg" };
-    
+
     public GCMarsBlockSlimelingEgg(int i)
     {
         super(i, Material.rock);
@@ -50,7 +49,7 @@ public class GCMarsBlockSlimelingEgg extends Block implements ITileEntityProvide
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9)
     {
         ItemStack stack = player.getCurrentEquippedItem();
-        
+
         if (stack != null && stack.itemID == Item.slimeBall.itemID && world.getBlockMetadata(x, y, z) < 3)
         {
         }
@@ -58,33 +57,33 @@ public class GCMarsBlockSlimelingEgg extends Block implements ITileEntityProvide
         {
             int l = world.getBlockMetadata(x, y, z) - 3;
             world.setBlockMetadataWithNotify(x, y, z, l, 2);
-            
+
             if (!world.isRemote)
             {
                 float f = world.rand.nextFloat() * 0.8F + 0.1F;
                 float f1 = world.rand.nextFloat() * 0.8F + 0.1F;
                 float f2 = world.rand.nextFloat() * 0.8F + 0.1F;
                 EntityItem entityitem;
-                
-                entityitem = new EntityItem(world, (double)((float)x + f), (double)((float)y + f1), (double)((float)z + f2), new ItemStack(Item.slimeBall));
-                entityitem.motionX = (double)((float)world.rand.nextGaussian() * 0.05F);
-                entityitem.motionY = (double)((float)world.rand.nextGaussian() * 0.05F + 0.2F);
-                entityitem.motionZ = (double)((float)world.rand.nextGaussian() * 0.05F);
+
+                entityitem = new EntityItem(world, x + f, y + f1, z + f2, new ItemStack(Item.slimeBall));
+                entityitem.motionX = (float) world.rand.nextGaussian() * 0.05F;
+                entityitem.motionY = (float) world.rand.nextGaussian() * 0.05F + 0.2F;
+                entityitem.motionZ = (float) world.rand.nextGaussian() * 0.05F;
 
                 world.spawnEntityInWorld(entityitem);
-                
+
                 TileEntity tile = world.getBlockTileEntity(x, y, z);
-                
+
                 if (tile instanceof GCMarsTileEntitySlimelingEgg)
                 {
                     ((GCMarsTileEntitySlimelingEgg) tile).timeToHatch = -1;
                     ((GCMarsTileEntitySlimelingEgg) tile).lastTouchedPlayer = "NoPlayer";
                 }
             }
-            
+
             return true;
         }
-        
+
         return false;
     }
 
@@ -101,15 +100,15 @@ public class GCMarsBlockSlimelingEgg extends Block implements ITileEntityProvide
         {
             int l = world.getBlockMetadata(x, y, z) + 3;
             world.setBlockMetadataWithNotify(x, y, z, l, 2);
-            
+
             TileEntity tile = world.getBlockTileEntity(x, y, z);
-            
+
             if (tile instanceof GCMarsTileEntitySlimelingEgg)
             {
                 ((GCMarsTileEntitySlimelingEgg) tile).timeToHatch = world.rand.nextInt(500) + 100;
                 ((GCMarsTileEntitySlimelingEgg) tile).lastTouchedPlayer = player.username;
             }
-            
+
             return false;
         }
     }
@@ -118,7 +117,7 @@ public class GCMarsBlockSlimelingEgg extends Block implements ITileEntityProvide
     public void harvestBlock(World world, EntityPlayer par2EntityPlayer, int x, int y, int z, int par6)
     {
         ItemStack currentStack = par2EntityPlayer.getCurrentEquippedItem();
-        
+
         if (currentStack != null && currentStack.getItem() instanceof GCMarsItemTrowel)
         {
             par2EntityPlayer.addStat(StatList.mineBlockStatArray[this.blockID], 1);
@@ -127,6 +126,7 @@ public class GCMarsBlockSlimelingEgg extends Block implements ITileEntityProvide
         }
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public Icon getIcon(int side, int metadata)
     {
@@ -136,7 +136,7 @@ public class GCMarsBlockSlimelingEgg extends Block implements ITileEntityProvide
     @Override
     public int getRenderType()
     {
-        return GalacticraftMars.proxy.getRockRenderID();
+        return GalacticraftMars.proxy.getEggRenderID();
     }
 
     @Override

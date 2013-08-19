@@ -61,7 +61,7 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
     private final GCMarsCaveGen caveGenerator2 = new GCMarsCaveGen();
 
     private final GCCoreMapGenDungeon dungeonGenerator = new GCCoreMapGenDungeon(GCMarsBlocks.marsBlock.blockID, 7, 8, 16, 6);
-    
+
     static
     {
         GCCoreDungeonRoom.rooms.add(new GCMarsRoomEmpty(null, 0, 0, 0, ForgeDirection.UNKNOWN));

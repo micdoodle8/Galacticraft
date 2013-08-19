@@ -4,15 +4,22 @@ import java.util.List;
 import java.util.Random;
 import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
 import micdoodle8.mods.galacticraft.api.block.IPlantableBlock;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityDungeonSpawner;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
+import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityCreeperBoss;
 import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFlower;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
@@ -26,10 +33,8 @@ import cpw.mods.fml.relauncher.SideOnly;
  * All rights reserved.
  * 
  */
-public class GCMarsBlock extends Block implements IDetectableResource, IPlantableBlock
+public class GCMarsBlock extends Block implements IDetectableResource, IPlantableBlock, ITileEntityProvider
 {
-    // Copper Ore Mars, Tin Ore Mars, Desh Ore, Stone, Cobblestone, Grass, Dirt,
-    // Dungeon Wall, Decoration Block
     @SideOnly(Side.CLIENT)
     private Icon[] marsBlockIcons;
 
@@ -39,10 +44,44 @@ public class GCMarsBlock extends Block implements IDetectableResource, IPlantabl
     }
 
     @Override
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
+    {
+        if (world.getBlockMetadata(x, y, z) == 10)
+        {
+            return null;
+        }
+
+        return super.getCollisionBoundingBoxFromPool(world, x, y, z);
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z)
+    {
+        if (world.getBlockMetadata(x, y, z) == 10)
+        {
+            return AxisAlignedBB.getAABBPool().getAABB(x + 0.0D, y + 0.0D, z + 0.0D, x + 0.0D, y + 0.0D, z + 0.0D);
+        }
+
+        return super.getSelectedBoundingBoxFromPool(world, x, y, z);
+    }
+
+    @Override
+    public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ)
+    {
+        if (world.getBlockMetadata(x, y, z) == 10)
+        {
+            return 10000.0F;
+        }
+
+        return super.getExplosionResistance(par1Entity, world, x, y, z, explosionX, explosionY, explosionZ);
+    }
+
+    @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.marsBlockIcons = new Icon[10];
+        this.marsBlockIcons = new Icon[11];
         this.marsBlockIcons[0] = par1IconRegister.registerIcon(GalacticraftMars.TEXTURE_PREFIX + "cobblestone");
         this.marsBlockIcons[1] = par1IconRegister.registerIcon(GalacticraftMars.TEXTURE_PREFIX + "decoration_desh");
         this.marsBlockIcons[2] = par1IconRegister.registerIcon(GalacticraftMars.TEXTURE_PREFIX + "middle");
@@ -53,6 +92,7 @@ public class GCMarsBlock extends Block implements IDetectableResource, IPlantabl
         this.marsBlockIcons[7] = par1IconRegister.registerIcon(GalacticraftMars.TEXTURE_PREFIX + "tin");
         this.marsBlockIcons[8] = par1IconRegister.registerIcon(GalacticraftMars.TEXTURE_PREFIX + "bottom");
         this.marsBlockIcons[9] = par1IconRegister.registerIcon(GalacticraftMars.TEXTURE_PREFIX + "iron");
+        this.marsBlockIcons[10] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "blank");
     }
 
     @Override
@@ -70,8 +110,29 @@ public class GCMarsBlock extends Block implements IDetectableResource, IPlantabl
         {
             return 0.1F;
         }
+        else if (meta == 10)
+        {
+            return -1.0F;
+        }
 
         return this.blockHardness;
+    }
+
+    @Override
+    public TileEntity createTileEntity(World world, int metadata)
+    {
+        if (metadata == 10)
+        {
+            return new GCCoreTileEntityDungeonSpawner(GCMarsEntityCreeperBoss.class);
+        }
+
+        return null;
+    }
+
+    @Override
+    public TileEntity createNewTileEntity(World world)
+    {
+        return null;
     }
 
     @Override
@@ -80,6 +141,10 @@ public class GCMarsBlock extends Block implements IDetectableResource, IPlantabl
         if (meta == 9 || meta == 5)
         {
             return true;
+        }
+        else if (meta == 10)
+        {
+            return false;
         }
 
         return super.canHarvestBlock(player, meta);
@@ -110,6 +175,8 @@ public class GCMarsBlock extends Block implements IDetectableResource, IPlantabl
             return this.marsBlockIcons[1];
         case 9:
             return this.marsBlockIcons[8];
+        case 10:
+            return this.marsBlockIcons[10];
         }
 
         return this.marsBlockIcons[1];
@@ -121,6 +188,10 @@ public class GCMarsBlock extends Block implements IDetectableResource, IPlantabl
         if (meta == 2)
         {
             return GCMarsItems.marsItemBasic.itemID;
+        }
+        else if (meta == 10)
+        {
+            return 0;
         }
 
         return this.blockID;
@@ -150,6 +221,10 @@ public class GCMarsBlock extends Block implements IDetectableResource, IPlantabl
         {
             return random.nextInt(3) + 1;
         }
+        else if (meta == 10)
+        {
+            return 0;
+        }
 
         return 1;
     }
@@ -160,7 +235,7 @@ public class GCMarsBlock extends Block implements IDetectableResource, IPlantabl
     {
         int var4;
 
-        for (var4 = 0; var4 < 10; ++var4)
+        for (var4 = 0; var4 < 11; ++var4)
         {
             par3List.add(new ItemStack(par1, 1, var4));
         }

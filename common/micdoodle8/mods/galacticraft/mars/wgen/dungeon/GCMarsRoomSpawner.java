@@ -22,9 +22,9 @@ public class GCMarsRoomSpawner extends GCCoreDungeonRoom
     public GCMarsRoomSpawner(GCCoreMapGenDungeon dungeon, int posX, int posY, int posZ, ForgeDirection entranceDir)
     {
         super(dungeon, posX, posY, posZ, entranceDir);
-        if (worldObj != null)
+        if (this.worldObj != null)
         {
-            this.rand = new Random(worldObj.getSeed() * posX * posY * 57 * posZ);
+            this.rand = new Random(this.worldObj.getSeed() * posX * posY * 57 * posZ);
             this.sizeX = this.rand.nextInt(5) + 6;
             this.sizeY = this.rand.nextInt(2) + 7;
             this.sizeZ = this.rand.nextInt(5) + 6;

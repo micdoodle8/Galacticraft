@@ -30,7 +30,7 @@ public class GCMarsRenderSlimeling extends RenderLiving
     public GCMarsRenderSlimeling()
     {
         super(new GCMarsModelSlimeling(16), 0.5F);
-        
+
         this.renderPassModel = new GCMarsModelSlimeling(0.0F);
     }
 
@@ -49,10 +49,10 @@ public class GCMarsRenderSlimeling extends RenderLiving
     protected void preRenderCallback(EntityLivingBase par1EntityLivingBase, float par2)
     {
         super.preRenderCallback(par1EntityLivingBase, par2);
-        
+
         GL11.glRotatef(180.0F, 0, 1, 0);
         GCMarsEntitySlimeling slimeling = (GCMarsEntitySlimeling) par1EntityLivingBase;
-        
+
         GL11.glColor3f(slimeling.getColorRed(), slimeling.getColorGreen(), slimeling.getColorBlue());
         GL11.glScalef(slimeling.getScale(), slimeling.getScale(), slimeling.getScale());
         GL11.glTranslatef(0.0F, 1.10F, 0.0F);
@@ -85,42 +85,42 @@ public class GCMarsRenderSlimeling extends RenderLiving
     protected void passSpecialRender(EntityLivingBase par1EntityLivingBase, double par2, double par4, double par6)
     {
         Minecraft mc = FMLClientHandler.instance().getClient();
-        
+
         if (mc.currentScreen == null || !(mc.currentScreen instanceof GCMarsGuiSlimeling && GCMarsGuiSlimeling.renderingOnGui))
         {
             this.renderLivingLabel(par1EntityLivingBase, ((GCMarsEntitySlimeling) par1EntityLivingBase).getName(), par2, par4 + 0.33, par6, 64);
             double health = Math.floor(((GCMarsEntitySlimeling) par1EntityLivingBase).func_110143_aJ());
             double maxHealth = Math.floor(((GCMarsEntitySlimeling) par1EntityLivingBase).func_110138_aP());
             double difference = health / maxHealth;
-            
+
             if (difference < 0.33333)
             {
-                this.renderLivingLabelWithColor(par1EntityLivingBase, "" + (int)Math.floor(health) + " / " + (int)Math.floor(maxHealth), par2, par4, par6, 64, 1, 0, 0);
+                this.renderLivingLabelWithColor(par1EntityLivingBase, "" + (int) Math.floor(health) + " / " + (int) Math.floor(maxHealth), par2, par4, par6, 64, 1, 0, 0);
             }
             else if (difference < 0.66666)
             {
-                this.renderLivingLabelWithColor(par1EntityLivingBase, "" + (int)Math.floor(health) + " / " + (int)Math.floor(maxHealth), par2, par4, par6, 64, 1, 1, 0);
+                this.renderLivingLabelWithColor(par1EntityLivingBase, "" + (int) Math.floor(health) + " / " + (int) Math.floor(maxHealth), par2, par4, par6, 64, 1, 1, 0);
             }
             else
             {
-                this.renderLivingLabelWithColor(par1EntityLivingBase, "" + (int)Math.floor(health) + " / " + (int)Math.floor(maxHealth), par2, par4, par6, 64, 0, 1, 0);
+                this.renderLivingLabelWithColor(par1EntityLivingBase, "" + (int) Math.floor(health) + " / " + (int) Math.floor(maxHealth), par2, par4, par6, 64, 0, 1, 0);
             }
         }
-        
+
         super.passSpecialRender(par1EntityLivingBase, par2, par4, par6);
     }
-    
+
     protected void renderLivingLabelWithColor(EntityLivingBase par1EntityLivingBase, String par2Str, double par3, double par5, double par7, int par9, float cR, float cG, float cB)
     {
         double d3 = par1EntityLivingBase.getDistanceSqToEntity(this.renderManager.livingPlayer);
 
-        if (d3 <= (double)(par9 * par9))
+        if (d3 <= par9 * par9)
         {
             FontRenderer fontrenderer = this.getFontRendererFromRenderManager();
             float f = 1.6F;
             float f1 = 0.016666668F * f;
             GL11.glPushMatrix();
-            GL11.glTranslatef((float)par3 + 0.0F, (float)par5 + par1EntityLivingBase.height + 0.55F, (float)par7);
+            GL11.glTranslatef((float) par3 + 0.0F, (float) par5 + par1EntityLivingBase.height + 0.55F, (float) par7);
             GL11.glNormal3f(0.0F, 1.0F, 0.0F);
             GL11.glRotatef(-this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
             GL11.glRotatef(this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
@@ -142,10 +142,10 @@ public class GCMarsRenderSlimeling extends RenderLiving
             tessellator.startDrawingQuads();
             int j = fontrenderer.getStringWidth(par2Str) / 2;
             tessellator.setColorRGBA_F(cR, cG, cB, 0.25F);
-            tessellator.addVertex((double)(-j - 1), (double)(-1 + b0), 0.0D);
-            tessellator.addVertex((double)(-j - 1), (double)(8 + b0), 0.0D);
-            tessellator.addVertex((double)(j + 1), (double)(8 + b0), 0.0D);
-            tessellator.addVertex((double)(j + 1), (double)(-1 + b0), 0.0D);
+            tessellator.addVertex(-j - 1, -1 + b0, 0.0D);
+            tessellator.addVertex(-j - 1, 8 + b0, 0.0D);
+            tessellator.addVertex(j + 1, 8 + b0, 0.0D);
+            tessellator.addVertex(j + 1, -1 + b0, 0.0D);
             tessellator.draw();
             GL11.glEnable(GL11.GL_TEXTURE_2D);
             fontrenderer.drawString(par2Str, -fontrenderer.getStringWidth(par2Str) / 2, b0, 553648127);

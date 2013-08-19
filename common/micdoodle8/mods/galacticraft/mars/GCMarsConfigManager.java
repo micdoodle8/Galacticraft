@@ -87,7 +87,7 @@ public class GCMarsConfigManager
             GCMarsConfigManager.idItemMarsBasic = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemMarsBasic", 9905).getInt(9905);
             GCMarsConfigManager.idItemSpaceshipTier2 = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemSpaceshipTier2", 9906).getInt(9906);
             GCMarsConfigManager.idItemTrowelAndHandbroom = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemTrowelAndHandbroom", 9916).getInt(9916);
-            
+
             GCMarsConfigManager.idToolDeshSword = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idToolDeshSword", 9907).getInt(9907);
             GCMarsConfigManager.idToolDeshPickaxe = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idToolDeshPickaxe", 9908).getInt(9908);
             GCMarsConfigManager.idToolDeshSpade = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idToolDeshSpade", 9909).getInt(9909);
@@ -105,7 +105,7 @@ public class GCMarsConfigManager
             GCMarsConfigManager.idEntitySludgeling = GCMarsConfigManager.configuration.get("Entities", "idEntitySludgeling", 174).getInt(174);
             GCMarsConfigManager.idEntitySlimeling = GCMarsConfigManager.configuration.get("Entities", "idEntitySlimeling", 175).getInt(175);
             GCMarsConfigManager.idEntityTerraformBubble = GCMarsConfigManager.configuration.get("Entities", "idEntityTerraformBubble", 176).getInt(176);
-            
+
             GCMarsConfigManager.idGuiRocketCraftingBenchT2 = GCMarsConfigManager.configuration.get("GUI", "idGuiRocketCraftingBenchT2", 143).getInt(143);
 
             GCMarsConfigManager.idSchematicRocketT2 = GCMarsConfigManager.configuration.get("Schematic", "idSchematicRocketT2", 2).getInt(2);

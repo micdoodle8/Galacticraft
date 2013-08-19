@@ -16,7 +16,7 @@ public class GCMarsEvents
         if (event.source.damageType.equals("slimeling") && event.source instanceof EntityDamageSource)
         {
             EntityDamageSource source = (EntityDamageSource) event.source;
-            
+
             if (source.getEntity() instanceof GCMarsEntitySlimeling && !source.getEntity().worldObj.isRemote)
             {
                 ((GCMarsEntitySlimeling) source.getEntity()).kills++;
@@ -30,10 +30,10 @@ public class GCMarsEvents
         if (!event.entity.isEntityInvulnerable() && !event.entity.worldObj.isRemote && event.entityLiving.func_110143_aJ() <= 0.0F && !(event.source.isFireDamage() && event.entityLiving.isPotionActive(Potion.fireResistance)))
         {
             Entity entity = event.source.getEntity();
-            
+
             if (entity instanceof GCMarsEntitySlimeling)
             {
-                GCMarsEntitySlimeling entitywolf = (GCMarsEntitySlimeling)entity;
+                GCMarsEntitySlimeling entitywolf = (GCMarsEntitySlimeling) entity;
 
                 if (entitywolf.isTamed())
                 {

@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.mars.network;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
-import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySlimeling;
@@ -39,7 +38,7 @@ public class GCMarsPacketHandlerServer implements IPacketHandler
 
         final EntityPlayerMP player = (EntityPlayerMP) p;
 
-        final GCCorePlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player);
+        PlayerUtil.getPlayerBaseServerFromPlayer(player);
 
         if (packetType == 0)
         {
@@ -47,13 +46,13 @@ public class GCMarsPacketHandlerServer implements IPacketHandler
             Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
 
             Entity entity = player.worldObj.getEntityByID((Integer) packetReadout[0]);
-            
+
             if (entity instanceof GCMarsEntitySlimeling)
             {
                 GCMarsEntitySlimeling slimeling = (GCMarsEntitySlimeling) entity;
 
                 int subType = (Integer) packetReadout[1];
-                
+
                 switch (subType)
                 {
                 case 0:
@@ -61,9 +60,9 @@ public class GCMarsPacketHandlerServer implements IPacketHandler
                     {
                         slimeling.getAiSit().setSitting(!slimeling.isSitting());
                         slimeling.setJumping(false);
-                        slimeling.setPathToEntity((PathEntity)null);
-                        slimeling.setTarget((Entity)null);
-                        slimeling.setAttackTarget((EntityLivingBase)null);
+                        slimeling.setPathToEntity((PathEntity) null);
+                        slimeling.setTarget((Entity) null);
+                        slimeling.setAttackTarget((EntityLivingBase) null);
                     }
                     break;
                 case 1:

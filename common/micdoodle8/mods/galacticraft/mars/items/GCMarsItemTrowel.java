@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.mars.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
@@ -11,6 +9,8 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.EnumToolMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCMarsItemTrowel extends ItemTool
 {
@@ -18,7 +18,7 @@ public class GCMarsItemTrowel extends ItemTool
 
     public GCMarsItemTrowel(int id, EnumToolMaterial toolMaterial)
     {
-        super(id, 1.0F, toolMaterial, blocksEffectiveAgainst);
+        super(id, 1.0F, toolMaterial, GCMarsItemTrowel.blocksEffectiveAgainst);
     }
 
     @Override
@@ -33,12 +33,14 @@ public class GCMarsItemTrowel extends ItemTool
     {
         return GalacticraftMars.galacticraftMarsTab;
     }
-    
+
+    @Override
     public boolean canHarvestBlock(Block par1Block)
     {
         return par1Block != null && par1Block.blockID == GCMarsBlocks.rock.blockID;
     }
-    
+
+    @Override
     public float getStrVsBlock(ItemStack par1ItemStack, Block par2Block)
     {
         return par2Block != null && this.canHarvestBlock(par2Block) ? this.efficiencyOnProperMaterial : super.getStrVsBlock(par1ItemStack, par2Block);

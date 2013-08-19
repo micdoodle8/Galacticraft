@@ -130,7 +130,7 @@ public class GalacticraftMars
         }
 
         GCLog.info("Galacticraft Mars Loaded: " + languages + " Languages.");
-        
+
         SchematicRegistry.registerSchematicRecipe(new GCMarsSchematicRocketT2());
 
         GalacticraftMars.galacticraftMarsTab = new GCCoreCreativeTab(CreativeTabs.getNextID(), GalacticraftMars.MODID, GCMarsItems.spaceship.itemID, 5);

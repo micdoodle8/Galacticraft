@@ -4,7 +4,6 @@ import java.util.HashMap;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.recipe.GCCoreNasaWorkbenchRecipe;
-import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
 import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
 import net.minecraft.block.Block;
@@ -86,7 +85,7 @@ public class GCMarsUtil
         input2.put(20, new ItemStack(Block.chest));
         input2.put(21, new ItemStack(Block.chest));
         GCMarsUtil.addRocketBenchT2Recipe(new ItemStack(GCMarsItems.spaceship, 1, 3), input2);
-        
+
         // CraftingManager.getInstance().addRecipe(new
         // ItemStack(GCMarsItems.reinforcedBucketEmpty, 1), new Object[] {
         // " Y ",

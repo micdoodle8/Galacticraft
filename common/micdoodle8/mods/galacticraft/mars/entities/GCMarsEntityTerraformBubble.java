@@ -27,7 +27,7 @@ public class GCMarsEntityTerraformBubble extends Entity implements IPacketReceiv
     protected long ticks = 0;
 
     public GCMarsTileEntityTerraformer terraformer;
-    
+
     public final double MAX_SIZE = 15.0D;
 
     public GCMarsEntityTerraformBubble(World world, Vector3 mainBlockVec, GCMarsTileEntityTerraformer terraformer)
@@ -181,6 +181,7 @@ public class GCMarsEntityTerraformBubble extends Entity implements IPacketReceiv
         this.size = bubbleSize;
     }
 
+    @Override
     public float getSize()
     {
         return this.size;

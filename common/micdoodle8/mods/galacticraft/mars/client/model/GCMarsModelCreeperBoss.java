@@ -150,4 +150,4 @@ public class GCMarsModelCreeperBoss extends ModelBase
         this.leftLeg.rotateAngleX = MathHelper.cos(f * 0.6662F + (float) Math.PI) * 2F * f1;
         this.rightLeg.rotateAngleX = MathHelper.cos(f * 0.6662F) * 2F * f1;
     }
- }
+}

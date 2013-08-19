@@ -53,10 +53,10 @@ public class GCMarsBlockVine extends Block implements IShearable
                 world.setBlockToAir(x, y2, z);
                 y2--;
             }
-            
+
             return true;
         }
-        
+
         return false;
     }
 
@@ -144,7 +144,7 @@ public class GCMarsBlockVine extends Block implements IShearable
     @Override
     public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int side)
     {
-        return ForgeDirection.getOrientation(side) == ForgeDirection.DOWN && Block.blocksList[blockID].isBlockSolid(world, x, y + 1, z, side);
+        return ForgeDirection.getOrientation(side) == ForgeDirection.DOWN && Block.blocksList[this.blockID].isBlockSolid(world, x, y + 1, z, side);
     }
 
     public int getVineLength(IBlockAccess world, int x, int y, int z)

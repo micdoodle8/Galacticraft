@@ -20,7 +20,6 @@ import universalelectricity.core.item.IItemElectric;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /**
@@ -59,7 +58,7 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectric implem
                         if (blockID > 0)
                         {
                             Block block = Block.blocksList[blockID];
-                            
+
                             if (block instanceof BlockGrass)
                             {
                                 this.worldObj.setBlock(x, y, z, GCMarsBlocks.marsBlock.blockID, 5, 3);
@@ -89,7 +88,7 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectric implem
         if (this.terraformBubble == null)
         {
             this.terraformBubble = new GCMarsEntityTerraformBubble(this.worldObj, new Vector3(this), this);
-            
+
             if (!this.worldObj.isRemote)
             {
                 this.terraformBubble.setPosition(this.xCoord, this.yCoord, this.zCoord);
@@ -112,7 +111,7 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectric implem
         if (!this.worldObj.isRemote && (this.active != this.lastActive || this.ticks % 20 == 0))
         {
             this.terraformableBlocksList.clear();
-//            if (this.active)
+            // if (this.active)
             {
                 for (int x = (int) Math.floor(this.xCoord - this.terraformBubble.getSize()); x < Math.ceil(this.xCoord + this.terraformBubble.getSize()); x++)
                 {
@@ -125,7 +124,7 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectric implem
                             if (blockID > 0 && Math.sqrt(this.getDistanceFromServer(x, y, z)) < this.terraformBubble.getSize())
                             {
                                 Block block = Block.blocksList[blockID];
-                                
+
                                 if (block.blockID == GCMarsBlocks.marsBlock.blockID && this.worldObj.getBlockMetadata(x, y, z) == 5)
                                 {
                                     this.terraformableBlocksList.add(new Vector3(x, y, z));
@@ -136,16 +135,16 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectric implem
                 }
             }
         }
-        
+
         if (!this.worldObj.isRemote && this.terraformableBlocksList.size() > 0 && this.worldObj.rand.nextInt(5) == 0)
         {
             ArrayList<Vector3> terraformableBlocks2 = new ArrayList<Vector3>(this.terraformableBlocksList);
-            
+
             int randomIndex = this.worldObj.rand.nextInt(this.terraformableBlocksList.size());
             Vector3 vec = terraformableBlocks2.get(randomIndex);
             this.worldObj.setBlock(vec.intX(), vec.intY(), vec.intZ(), Block.grass.blockID);
-            
-            terraformableBlocksList.remove(randomIndex);
+
+            this.terraformableBlocksList.remove(randomIndex);
         }
 
         this.lastActive = this.active;

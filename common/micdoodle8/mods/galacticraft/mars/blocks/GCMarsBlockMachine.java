@@ -63,9 +63,9 @@ public class GCMarsBlockMachine extends BlockTile
             return this.blockIcon;
         }
 
-        if (metadata >= UNUSED_MACHINE_1)
+        if (metadata >= GCMarsBlockMachine.UNUSED_MACHINE_1)
         {
-            metadata -= UNUSED_MACHINE_1;
+            metadata -= GCMarsBlockMachine.UNUSED_MACHINE_1;
 
             // If it is the front side
             if (side == metadata + 2)
@@ -78,9 +78,9 @@ public class GCMarsBlockMachine extends BlockTile
                 return this.unusedIcon1;
             }
         }
-        else if (metadata >= UNUSED_MACHINE_0)
+        else if (metadata >= GCMarsBlockMachine.UNUSED_MACHINE_0)
         {
-            metadata -= UNUSED_MACHINE_0;
+            metadata -= GCMarsBlockMachine.UNUSED_MACHINE_0;
 
             // If it is the front side
             if (side == metadata + 2)
@@ -122,52 +122,52 @@ public class GCMarsBlockMachine extends BlockTile
     {
         int metadata = world.getBlockMetadata(x, y, z);
 
-        int angle = MathHelper.floor_double((entityLiving.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+        int angle = MathHelper.floor_double(entityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
         int change = 0;
 
         switch (angle)
         {
-            case 0:
-                change = 1;
-                break;
-            case 1:
-                change = 2;
-                break;
-            case 2:
-                change = 0;
-                break;
-            case 3:
-                change = 3;
-                break;
+        case 0:
+            change = 1;
+            break;
+        case 1:
+            change = 2;
+            break;
+        case 2:
+            change = 0;
+            break;
+        case 3:
+            change = 3;
+            break;
         }
 
-        if (metadata >= UNUSED_MACHINE_1)
+        if (metadata >= GCMarsBlockMachine.UNUSED_MACHINE_1)
         {
-            world.setBlockMetadataWithNotify(x, y, z, UNUSED_MACHINE_1 + change, 3);
+            world.setBlockMetadataWithNotify(x, y, z, GCMarsBlockMachine.UNUSED_MACHINE_1 + change, 3);
         }
-        else if (metadata >= UNUSED_MACHINE_0)
+        else if (metadata >= GCMarsBlockMachine.UNUSED_MACHINE_0)
         {
             switch (angle)
             {
-                case 0:
-                    change = 3;
-                    break;
-                case 1:
-                    change = 1;
-                    break;
-                case 2:
-                    change = 2;
-                    break;
-                case 3:
-                    change = 0;
-                    break;
+            case 0:
+                change = 3;
+                break;
+            case 1:
+                change = 1;
+                break;
+            case 2:
+                change = 2;
+                break;
+            case 3:
+                change = 0;
+                break;
             }
 
-            world.setBlockMetadataWithNotify(x, y, z, UNUSED_MACHINE_0 + change, 3);
+            world.setBlockMetadataWithNotify(x, y, z, GCMarsBlockMachine.UNUSED_MACHINE_0 + change, 3);
         }
         else
         {
-            world.setBlockMetadataWithNotify(x, y, z, COAL_GENERATOR_METADATA + change, 3);
+            world.setBlockMetadataWithNotify(x, y, z, GCMarsBlockMachine.COAL_GENERATOR_METADATA + change, 3);
         }
     }
 
@@ -179,39 +179,39 @@ public class GCMarsBlockMachine extends BlockTile
 
         int change = 0;
 
-        if (metadata >= UNUSED_MACHINE_1)
+        if (metadata >= GCMarsBlockMachine.UNUSED_MACHINE_1)
         {
-            original -= UNUSED_MACHINE_1;
+            original -= GCMarsBlockMachine.UNUSED_MACHINE_1;
         }
-        else if (metadata >= UNUSED_MACHINE_0)
+        else if (metadata >= GCMarsBlockMachine.UNUSED_MACHINE_0)
         {
-            original -= UNUSED_MACHINE_0;
+            original -= GCMarsBlockMachine.UNUSED_MACHINE_0;
         }
 
         // Re-orient the block
         switch (original)
         {
-            case 0:
-                change = 3;
-                break;
-            case 3:
-                change = 1;
-                break;
-            case 1:
-                change = 2;
-                break;
-            case 2:
-                change = 0;
-                break;
+        case 0:
+            change = 3;
+            break;
+        case 3:
+            change = 1;
+            break;
+        case 1:
+            change = 2;
+            break;
+        case 2:
+            change = 0;
+            break;
         }
 
-        if (metadata >= UNUSED_MACHINE_1)
+        if (metadata >= GCMarsBlockMachine.UNUSED_MACHINE_1)
         {
-            change += UNUSED_MACHINE_1;
+            change += GCMarsBlockMachine.UNUSED_MACHINE_1;
         }
-        else if (metadata >= UNUSED_MACHINE_0)
+        else if (metadata >= GCMarsBlockMachine.UNUSED_MACHINE_0)
         {
-            change += UNUSED_MACHINE_0;
+            change += GCMarsBlockMachine.UNUSED_MACHINE_0;
         }
 
         par1World.setBlockMetadataWithNotify(x, y, z, change, 3);
@@ -228,12 +228,12 @@ public class GCMarsBlockMachine extends BlockTile
 
         if (!par1World.isRemote)
         {
-            if (metadata >= UNUSED_MACHINE_1)
+            if (metadata >= GCMarsBlockMachine.UNUSED_MACHINE_1)
             {
                 par5EntityPlayer.openGui(BasicComponents.getFirstDependant(), -1, par1World, x, y, z);
                 return true;
             }
-            else if (metadata >= UNUSED_MACHINE_0)
+            else if (metadata >= GCMarsBlockMachine.UNUSED_MACHINE_0)
             {
                 par5EntityPlayer.openGui(BasicComponents.getFirstDependant(), -1, par1World, x, y, z);
                 return true;
@@ -263,11 +263,11 @@ public class GCMarsBlockMachine extends BlockTile
     @Override
     public TileEntity createTileEntity(World world, int metadata)
     {
-        if (metadata >= UNUSED_MACHINE_1)
+        if (metadata >= GCMarsBlockMachine.UNUSED_MACHINE_1)
         {
             return null;
         }
-        else if (metadata >= UNUSED_MACHINE_0)
+        else if (metadata >= GCMarsBlockMachine.UNUSED_MACHINE_0)
         {
             return null;
         }
@@ -279,7 +279,7 @@ public class GCMarsBlockMachine extends BlockTile
 
     public ItemStack getTerraformer()
     {
-        return new ItemStack(this.blockID, 1, COAL_GENERATOR_METADATA);
+        return new ItemStack(this.blockID, 1, GCMarsBlockMachine.COAL_GENERATOR_METADATA);
     }
 
     @Override
@@ -291,24 +291,24 @@ public class GCMarsBlockMachine extends BlockTile
     @Override
     public int damageDropped(int metadata)
     {
-        if (metadata >= UNUSED_MACHINE_1)
+        if (metadata >= GCMarsBlockMachine.UNUSED_MACHINE_1)
         {
-            return UNUSED_MACHINE_1;
+            return GCMarsBlockMachine.UNUSED_MACHINE_1;
         }
-        else if (metadata >= UNUSED_MACHINE_0)
+        else if (metadata >= GCMarsBlockMachine.UNUSED_MACHINE_0)
         {
-            return UNUSED_MACHINE_0;
+            return GCMarsBlockMachine.UNUSED_MACHINE_0;
         }
         else
         {
-            return COAL_GENERATOR_METADATA;
+            return GCMarsBlockMachine.COAL_GENERATOR_METADATA;
         }
     }
 
     @Override
     public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
     {
-        int id = idPicked(world, x, y, z);
+        int id = this.idPicked(world, x, y, z);
 
         if (id == 0)
         {
@@ -322,7 +322,7 @@ public class GCMarsBlockMachine extends BlockTile
             return null;
         }
 
-        int metadata = getDamageValue(world, x, y, z);
+        int metadata = this.getDamageValue(world, x, y, z);
 
         return new ItemStack(id, 1, metadata);
     }

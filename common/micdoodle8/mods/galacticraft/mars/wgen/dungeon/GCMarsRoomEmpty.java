@@ -16,9 +16,9 @@ public class GCMarsRoomEmpty extends GCCoreDungeonRoom
     public GCMarsRoomEmpty(GCCoreMapGenDungeon dungeon, int posX, int posY, int posZ, ForgeDirection entranceDir)
     {
         super(dungeon, posX, posY, posZ, entranceDir);
-        if (worldObj != null)
+        if (this.worldObj != null)
         {
-            final Random rand = new Random(worldObj.getSeed() * posX * posY * 57 * posZ);
+            final Random rand = new Random(this.worldObj.getSeed() * posX * posY * 57 * posZ);
             this.sizeX = rand.nextInt(4) + 5;
             this.sizeY = rand.nextInt(2) + 7;
             this.sizeZ = rand.nextInt(4) + 5;

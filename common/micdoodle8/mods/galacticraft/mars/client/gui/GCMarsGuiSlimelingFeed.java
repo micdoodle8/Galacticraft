@@ -18,30 +18,29 @@ public class GCMarsGuiSlimelingFeed extends GuiScreen
     private final GCMarsEntitySlimeling slimeling;
 
     public static RenderItem drawItems = new RenderItem();
-    
+
     public long timeBackspacePressed;
     public int cursorPulse;
     public int backspacePressed;
     public boolean isTextFocused = false;
-    
+
     public GuiButton buttonGrowSlimeling;
     public GuiButton buttonBreedSlimeling;
     public GuiButton buttonStrengthenSlimeling;
     public GuiButton buttonHealSlimeling;
-    
+
     public GCMarsGuiSlimelingFeed(GCMarsEntitySlimeling slimeling)
     {
         this.slimeling = slimeling;
         this.xSize = 138;
         this.ySize = 51;
     }
-    
+
     @Override
     public void initGui()
     {
         super.initGui();
         this.buttonList.clear();
-        final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
         this.buttonGrowSlimeling = new GuiButton(0, this.width / 2 - 65, var6 - 15, 64, 20, "Grow");
         this.buttonList.add(this.buttonGrowSlimeling);
@@ -83,7 +82,7 @@ public class GCMarsGuiSlimelingFeed extends GuiScreen
                 PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftMars.CHANNEL, 0, new Object[] { this.slimeling.entityId, 5, "" }));
                 break;
             }
-            
+
             FMLClientHandler.instance().getClient().displayGuiScreen(null);
         }
     }
@@ -91,13 +90,13 @@ public class GCMarsGuiSlimelingFeed extends GuiScreen
     @Override
     public void drawScreen(int par1, int par2, float par3)
     {
-        this.mc.renderEngine.func_110577_a(slimelingPanelGui);
+        this.mc.renderEngine.func_110577_a(GCMarsGuiSlimelingFeed.slimelingPanelGui);
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(var5, var6 - 20, 0, 0, this.xSize, this.ySize);
 
         super.drawScreen(par1, par2, par3);
-        
+
         this.buttonHealSlimeling.enabled = this.slimeling.func_110143_aJ() < Math.floor(this.slimeling.func_110138_aP());
         this.buttonGrowSlimeling.enabled = this.slimeling.getScale() < 1.0F;
         this.buttonStrengthenSlimeling.enabled = this.slimeling.getAttackDamage() < 1.0;
