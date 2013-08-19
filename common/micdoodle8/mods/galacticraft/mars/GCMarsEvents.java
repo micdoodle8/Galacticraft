@@ -7,22 +7,18 @@ import net.minecraft.util.EntityDamageSource;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCMarsEvents
 {
     @ForgeSubscribe
     public void onLivingDeath(LivingDeathEvent event)
     {
-        FMLLog.info("Done1");
         if (event.source.damageType.equals("slimeling") && event.source instanceof EntityDamageSource)
         {
-            FMLLog.info("Done2");
             EntityDamageSource source = (EntityDamageSource) event.source;
             
             if (source.getEntity() instanceof GCMarsEntitySlimeling && !source.getEntity().worldObj.isRemote)
             {
-                FMLLog.info("Done3");
                 ((GCMarsEntitySlimeling) source.getEntity()).kills++;
             }
         }
