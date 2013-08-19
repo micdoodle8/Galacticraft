@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -19,7 +20,6 @@ import universalelectricity.core.block.IElectrical;
 import universalelectricity.core.electricity.ElectricityPack;
 import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
-import basiccomponents.BasicComponents;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
@@ -30,7 +30,7 @@ public class GCCoreTileEntityCoalGenerator extends TileEntityUniversalElectrical
 	/**
 	 * Maximum amount of energy needed to generate electricity
 	 */
-	public static final float MAX_GENERATE_WATTS = 0.8f;
+	public static final float MAX_GENERATE_WATTS = 0.5f;
 
 	/**
 	 * Amount of heat the coal generator needs before generating electricity.
@@ -88,11 +88,13 @@ public class GCCoreTileEntityCoalGenerator extends TileEntityUniversalElectrical
 					}
 				}
 			}
+			
+			this.produce();
 
-			if (this.getEnergyStored() >= this.getMaxEnergyStored() || this.itemCookTime <= 0)
-			{
-				this.generateWatts = Math.max(this.generateWatts - 8, 0);
-			}
+            if (this.getEnergyStored() >= this.getMaxEnergyStored() || this.itemCookTime <= 0)
+            {
+                this.generateWatts = Math.max(this.generateWatts - 0.008F, 0);
+            }
 
 			if (this.ticks % 3 == 0)
 			{
@@ -112,7 +114,7 @@ public class GCCoreTileEntityCoalGenerator extends TileEntityUniversalElectrical
 	@Override
 	public Packet getDescriptionPacket()
 	{
-		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.generateWatts, this.itemCookTime);
+		return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.generateWatts, this.itemCookTime, this.getEnergyStored());
 	}
 
 	@Override
@@ -124,6 +126,7 @@ public class GCCoreTileEntityCoalGenerator extends TileEntityUniversalElectrical
 			{
 				this.generateWatts = dataStream.readFloat();
 				this.itemCookTime = dataStream.readInt();
+				this.setEnergyStored(dataStream.readFloat());
 			}
 		}
 		catch (Exception e)

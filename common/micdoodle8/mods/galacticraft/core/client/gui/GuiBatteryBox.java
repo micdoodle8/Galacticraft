@@ -35,14 +35,15 @@ public class GuiBatteryBox extends GuiContainer
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
 	{
-		this.fontRenderer.drawString(this.tileEntity.getInvName(), 65, 6, 4210752);
-		String displayJoules = ElectricityDisplay.getDisplayShort(tileEntity.getEnergyStored(), ElectricUnit.JOULES);
-		String displayMaxJoules = ElectricityDisplay.getDisplay(tileEntity.getMaxEnergyStored(), ElectricUnit.JOULES);
-
-		this.fontRenderer.drawString(displayJoules + " of", 98 - displayJoules.length(), 30, 4210752);
-		this.fontRenderer.drawString(displayMaxJoules, 78, 40, 4210752);
-		this.fontRenderer.drawString("Voltage: " + (int) this.tileEntity.getVoltage(), 90, 60, 4210752);
-		this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
+        this.fontRenderer.drawString(this.tileEntity.getInvName(), 65, 6, 4210752);
+        String displayJoules = ElectricityDisplay.getDisplayShort(tileEntity.getEnergyStored(), ElectricUnit.JOULES) + " of";
+        String displayMaxJoules = ElectricityDisplay.getDisplay(tileEntity.getMaxEnergyStored(), ElectricUnit.JOULES);
+        String displayVoltage = "Voltage: " + (int) (this.tileEntity.getVoltage());
+        
+        this.fontRenderer.drawString(displayJoules, 122 - this.fontRenderer.getStringWidth(displayJoules) / 2, 30, 4210752);
+        this.fontRenderer.drawString(displayMaxJoules, 122 - this.fontRenderer.getStringWidth(displayMaxJoules) / 2, 40, 4210752);
+        this.fontRenderer.drawString(displayVoltage, 122 - this.fontRenderer.getStringWidth(displayVoltage) / 2, 60, 4210752);
+        this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 
 	/**

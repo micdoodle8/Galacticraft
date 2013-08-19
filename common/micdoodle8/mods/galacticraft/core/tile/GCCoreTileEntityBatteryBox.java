@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockBasicMachine;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
@@ -17,7 +18,6 @@ import universalelectricity.compatibility.TileEntityUniversalElectrical;
 import universalelectricity.core.item.IItemElectric;
 import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
-import basiccomponents.BasicComponents;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
@@ -60,7 +60,7 @@ public class GCCoreTileEntityBatteryBox extends TileEntityUniversalElectrical im
 	@Override
 	public Packet getDescriptionPacket()
 	{
-		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.getEnergyStored());
+		return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getEnergyStored());
 	}
 
 	@Override
@@ -282,19 +282,19 @@ public class GCCoreTileEntityBatteryBox extends TileEntityUniversalElectrical im
 	@Override
 	public float getProvide(ForgeDirection direction)
 	{
-		return getInputDirections().contains(direction) ? 1300 : 0;
+		return getInputDirections().contains(direction) ? Math.min(1.3F, this.getEnergyStored()) : 0;
 	}
 
 	@Override
 	public EnumSet<ForgeDirection> getInputDirections()
 	{
-		return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() - GCCoreBlockBasicMachine.BATTERY_BOX_METADATA + 2));
+		return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() - GCCoreBlockBasicMachine.BATTERY_BOX_METADATA + 2).getOpposite(), ForgeDirection.UNKNOWN);
 	}
 
 	@Override
 	public EnumSet<ForgeDirection> getOutputDirections()
 	{
-		return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() - GCCoreBlockBasicMachine.BATTERY_BOX_METADATA + 2).getOpposite());
+		return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() - GCCoreBlockBasicMachine.BATTERY_BOX_METADATA + 2));
 	}
 
 	@Override

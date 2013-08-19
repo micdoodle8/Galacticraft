@@ -84,6 +84,7 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import universalelectricity.compatibility.Compatibility;
 import universalelectricity.prefab.ore.OreGenerator;
 import basiccomponents.BasicComponents;
 import basiccomponents.api.BasicRegistry;
@@ -296,7 +297,8 @@ public class GalacticraftCore
         SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicRocketT1());
         SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicMoonBuggy());
         SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicAdd());
-
+               
+        Compatibility.initiate();
         GasTransmission.register();
 
         this.registerCreatures();

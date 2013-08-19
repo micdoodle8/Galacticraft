@@ -200,6 +200,8 @@ public class GCCoreTileEntitySolar extends TileEntityUniversalElectrical impleme
                 this.generateWatts = 0.0F;
             }
         }
+        
+        this.produce();
 
         if (this.ticks % 3 == 0)
         {

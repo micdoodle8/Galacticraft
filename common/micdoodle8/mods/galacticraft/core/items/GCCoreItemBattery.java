@@ -46,6 +46,6 @@ public class GCCoreItemBattery extends ItemElectric
 	@Override
 	public float getVoltage(ItemStack itemStack)
 	{
-		return 25;
+		return 120;
 	}
 }

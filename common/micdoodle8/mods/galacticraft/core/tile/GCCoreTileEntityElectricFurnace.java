@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import java.util.HashSet;
 import java.util.Set;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -18,8 +19,8 @@ import universalelectricity.core.block.IElectrical;
 import universalelectricity.core.item.IItemElectric;
 import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
-import basiccomponents.BasicComponents;
 import com.google.common.io.ByteArrayDataInput;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.common.registry.LanguageRegistry;
@@ -29,7 +30,7 @@ public class GCCoreTileEntityElectricFurnace extends TileEntityUniversalElectric
 	/**
 	 * The amount of watts required every TICK.
 	 */
-	public static final float WATTS_PER_TICK = 0.8f;
+	public static final float WATTS_PER_TICK = 0.2f;
 
 	/**
 	 * The amount of processing time required.
@@ -127,7 +128,7 @@ public class GCCoreTileEntityElectricFurnace extends TileEntityUniversalElectric
 	@Override
 	public Packet getDescriptionPacket()
 	{
-		return PacketManager.getPacket(BasicComponents.CHANNEL, this, this.processTicks);
+		return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.processTicks);
 	}
 
 	@Override
