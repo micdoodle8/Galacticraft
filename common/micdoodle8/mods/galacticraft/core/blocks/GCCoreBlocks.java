@@ -5,7 +5,9 @@ import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlock;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockBase;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockBasicMachine;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockCargoLoader;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockCopperWire;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockEnclosedBlock;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockLandingPad;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockSolar;
@@ -54,6 +56,8 @@ public class GCCoreBlocks
     public static Block cargoLoader;
     public static Block parachest;
     public static Block solarPanel;
+    public static Block blockMachineBase;
+    public static Block blockCopperWire;
 
     public static Icon[] blockIcons;
 
@@ -89,6 +93,8 @@ public class GCCoreBlocks
         GCCoreBlocks.cargoLoader = new GCCoreBlockCargoLoader(GCCoreConfigManager.idBlockCargoLoader).setHardness(3.0F).setStepSound(Block.soundMetalFootstep).setUnlocalizedName("cargo");
         GCCoreBlocks.parachest = new GCCoreBlockParachest(GCCoreConfigManager.idBlockParachest).setHardness(3.0F).setStepSound(Block.soundWoodFootstep).setUnlocalizedName("parachest");
         GCCoreBlocks.solarPanel = new GCCoreBlockSolar(GCCoreConfigManager.idBlockSolarPanel).setHardness(3.0F).setStepSound(Block.soundMetalFootstep).setUnlocalizedName("solar");
+        GCCoreBlocks.blockMachineBase = new GCCoreBlockBasicMachine(GCCoreConfigManager.idBlockBasicMachine).setHardness(2.0F).setStepSound(Block.soundMetalFootstep).setUnlocalizedName("machine");
+        GCCoreBlocks.blockCopperWire = new GCCoreBlockCopperWire(GCCoreConfigManager.idBlockCopperWire).setHardness(0.1F).setStepSound(Block.soundClothFootstep).setUnlocalizedName("copperWire");
 
         // Hide certain items from NEI
         GCCoreBlocks.hiddenBlocks.add(GCCoreBlocks.airLockSeal.blockID);
@@ -127,10 +133,6 @@ public class GCCoreBlocks
         GameRegistry.registerBlock(GCCoreBlocks.airLockFrame, GCCoreItemBlock.class, GCCoreBlocks.airLockFrame.getUnlocalizedName(), GalacticraftCore.MODID);
         GameRegistry.registerBlock(GCCoreBlocks.airLockSeal, GCCoreItemBlock.class, GCCoreBlocks.airLockSeal.getUnlocalizedName(), GalacticraftCore.MODID);
         GameRegistry.registerBlock(GCCoreBlocks.crudeOilStill, GCCoreItemBlock.class, GCCoreBlocks.crudeOilStill.getUnlocalizedName(), GalacticraftCore.MODID);
-        // GameRegistry.registerBlock(GCCoreBlocks.crudeOilMoving,
-        // GCCoreItemBlock.class,
-        // GCCoreBlocks.crudeOilMoving.getUnlocalizedName(),
-        // GalacticraftCore.MODID);
         GameRegistry.registerBlock(GCCoreBlocks.refinery, GCCoreItemBlock.class, GCCoreBlocks.refinery.getUnlocalizedName(), GalacticraftCore.MODID);
         GameRegistry.registerBlock(GCCoreBlocks.compressor, GCCoreItemBlock.class, GCCoreBlocks.compressor.getUnlocalizedName(), GalacticraftCore.MODID);
         GameRegistry.registerBlock(GCCoreBlocks.decorationBlocks, GCCoreItemBlockBase.class, GCCoreBlocks.decorationBlocks.getUnlocalizedName(), GalacticraftCore.MODID);
@@ -144,5 +146,7 @@ public class GCCoreBlocks
         GameRegistry.registerBlock(GCCoreBlocks.cargoLoader, GCCoreItemBlockCargoLoader.class, GCCoreBlocks.cargoLoader.getUnlocalizedName(), GalacticraftCore.MODID);
         GameRegistry.registerBlock(GCCoreBlocks.parachest, GCCoreItemBlock.class, GCCoreBlocks.parachest.getUnlocalizedName(), GalacticraftCore.MODID);
         GameRegistry.registerBlock(GCCoreBlocks.solarPanel, GCCoreItemBlockSolar.class, GCCoreBlocks.solarPanel.getUnlocalizedName(), GalacticraftCore.MODID);
+        GameRegistry.registerBlock(GCCoreBlocks.blockMachineBase, GCCoreItemBlockBasicMachine.class, GCCoreBlocks.blockMachineBase.getUnlocalizedName(), GalacticraftCore.MODID);
+        GameRegistry.registerBlock(GCCoreBlocks.blockCopperWire, GCCoreItemBlockCopperWire.class, GCCoreBlocks.blockCopperWire.getUnlocalizedName(), GalacticraftCore.MODID);
     }
 }

@@ -5,6 +5,9 @@ import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.world.ICelestialBodyRenderer;
 import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerBatteryBox;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerCoalGenerator;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerElectricFurnace;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerAirCollector;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerAirCompressor;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerAirDistributor;
@@ -23,13 +26,16 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenSealer;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityRefinery;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntitySolar;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBatteryBox;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCoalGenerator;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectricFurnace;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.stats.StatBase;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import basiccomponents.common.BCGuiHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -41,7 +47,7 @@ import cpw.mods.fml.common.network.IGuiHandler;
  * All rights reserved.
  * 
  */
-public class CommonProxyCore extends BCGuiHandler implements IGuiHandler
+public class CommonProxyCore implements IGuiHandler
 {
     public void preInit(FMLPreInitializationEvent event)
     {
@@ -143,6 +149,7 @@ public class CommonProxyCore extends BCGuiHandler implements IGuiHandler
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
     {
+        TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
         final GCCorePlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player);
 
         if (ID == GCCoreConfigManager.idGuiSpaceshipInventory && player.ridingEntity != null && player.ridingEntity instanceof EntitySpaceshipBase && player.ridingEntity instanceof IRocketType)
@@ -201,7 +208,29 @@ public class CommonProxyCore extends BCGuiHandler implements IGuiHandler
                 }
             }
         }
+        
+        if (tileEntity != null)
+        {
+            if (tileEntity instanceof GCCoreTileEntityBatteryBox)
+            {
+                return new ContainerBatteryBox(player.inventory, ((GCCoreTileEntityBatteryBox) tileEntity));
+            }
+            else if (tileEntity instanceof GCCoreTileEntityCoalGenerator)
+            {
+                return new ContainerCoalGenerator(player.inventory, ((GCCoreTileEntityCoalGenerator) tileEntity));
+            }
+            else if (tileEntity instanceof GCCoreTileEntityElectricFurnace)
+            {
+                return new ContainerElectricFurnace(player.inventory, ((GCCoreTileEntityElectricFurnace) tileEntity));
+            }
+        }
+        
+        return null;
+    }
 
-        return super.getServerGuiElement(ID, playerBase, world, x, y, z);
+    @Override
+    public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
+    {
+        return null;
     }
 }

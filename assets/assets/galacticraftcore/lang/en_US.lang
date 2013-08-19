@@ -15,7 +15,7 @@ item.canister.copper.name=Copper Canister
 item.airVent.name=Oxygen Vent
 item.airFan.name=Oxygen Fan
 item.oxygenConcentrator.name=Oxygen Concentrator
-item.heavyPlating.name=Heavy-Duty Plating
+item.heavyPlating.name=Heavy-Duty Plate
 item.engine.tier1engine.name=Tier 1 Rocket Engine
 item.engine.tier1booster.name=Tier 1 Booster
 item.rocketFins.name=Rocket Fins
@@ -72,6 +72,7 @@ item.buggymat.seat.name=Buggy Seat
 item.buggymat.storage.name=Buggy Storage Box
 item.basicItem.solar_module_0.name=Single Solar Module
 item.basicItem.solar_module_1.name=Full Solar Panel
+item.tier1.desc=Tier 1
 
 # TOOLS
 item.steel_pickaxe.name=Heavy Duty Pickaxe
@@ -131,6 +132,12 @@ tile.enclosed.PipePowerGold.name=Sealable Golden Conductive Pipe
 tile.solar.basic.name=Basic Solar Panel
 tile.solar.advanced.name=Advanced Solar Panel
 tile.parachest.name=Parachest
+tile.oreCopper.name=Copper Ore
+tile.oreTin.name=Tin Ore
+tile.copperWire.name=Copper Wire
+tile.machine.0.name=Coal Generator
+tile.machine.1.name=Battery Box
+tile.machine.2.name=Electric Furnace
 
 # ENTITIES
 entity.GalacticraftCore.EvolvedSpider.name=Evolved Spider

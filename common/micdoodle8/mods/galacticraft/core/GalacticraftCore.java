@@ -45,13 +45,17 @@ import micdoodle8.mods.galacticraft.core.schematic.GCCoreSchematicRocketT1;
 import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerServer;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAdvancedCraftingTable;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAirLock;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBatteryBox;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBuggyFueler;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBuggyFuelerSingle;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoLoader;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoPad;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoPadSingle;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoUnloader;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCoalGenerator;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCopperWire;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityDungeonSpawner;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectricFurnace;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPadSingle;
@@ -81,7 +85,8 @@ import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import universalelectricity.prefab.ore.OreGenerator;
-import basiccomponents.common.BasicComponents;
+import basiccomponents.BasicComponents;
+import basiccomponents.api.BasicRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
@@ -191,33 +196,27 @@ public class GalacticraftCore
 
         if (GCCoreConfigManager.loadBC.getBoolean(true))
         {
-            BasicComponents.registerTileEntities();
+            BasicRegistry.register("itemIngotCopper");
+            BasicRegistry.register("itemIngotTin");
+            BasicRegistry.register("itemIngotSteel");
+            BasicRegistry.register("itemDustSteel");
+            BasicRegistry.register("itemIngotBronze");
+            BasicRegistry.register("itemDustBronze");
+            BasicRegistry.register("itemPlateBronze");
+            BasicRegistry.register("itemPlateCopper");
+            BasicRegistry.register("itemPlateTin");
+            BasicRegistry.register("itemPlateIron");
+            BasicRegistry.register("itemPlateGold");
+            BasicRegistry.register("itemCircuitBasic");
+            BasicRegistry.register("itemCircuitAdvanced");
+            BasicRegistry.register("itemCircuitElite");
+            BasicRegistry.register("itemMotor");
+            BasicRegistry.register("itemWrench");
+            BasicRegistry.register("itemBattery");
+            BasicRegistry.register("itemInfiniteBattery");
 
-            BasicComponents.requestItem("ingotCopper", 0);
-            BasicComponents.requestItem("ingotTin", 0);
-            BasicComponents.requestBlock("oreCopper", 0);
-            BasicComponents.requestBlock("oreTin", 0);
-            BasicComponents.requestItem("ingotSteel", 0);
-            BasicComponents.requestItem("dustSteel", 0);
-            BasicComponents.requestItem("ingotBronze", 0);
-            BasicComponents.requestItem("dustBronze", 0);
-            BasicComponents.requestItem("plateBronze", 0);
-            BasicComponents.requestItem("plateCopper", 0);
-            BasicComponents.requestItem("plateTin", 0);
-            BasicComponents.requestItem("plateIron", 0);
-            BasicComponents.requestItem("plateGold", 0);
-            BasicComponents.requestBlock("copperWire", 0);
-            BasicComponents.requestItem("circuitBasic", 0);
-            BasicComponents.requestItem("circuitAdvanced", 0);
-            BasicComponents.requestItem("circuitElite", 0);
-            BasicComponents.requestItem("motor", 0);
-            BasicComponents.requestItem("wrench", 0);
-            BasicComponents.requestItem("battery", 0);
-            BasicComponents.requestItem("infiniteBattery", 0);
-            BasicComponents.requireMachines(GalacticraftCore.instance, 0);
-            BasicComponents.registerTileEntities();
-
-            BasicComponents.register(GalacticraftCore.CHANNELENTITIES);
+            BasicRegistry.register("blockOreCopper");
+            BasicRegistry.register("blockOreTin");
 
             if (GCCoreConfigManager.disableOreGenTin && BasicComponents.generationOreTin != null)
             {
@@ -329,7 +328,7 @@ public class GalacticraftCore
         // to recipe list first, allowing it to be crafted.
         if (GCCoreConfigManager.loadBC.getBoolean(true))
         {
-            BasicComponents.requestItem("plateSteel", 0);
+            BasicRegistry.register("plateSteel");
         }
 
         NetworkRegistry.instance().registerGuiHandler(this, GalacticraftCore.proxy);
@@ -400,6 +399,10 @@ public class GalacticraftCore
         GameRegistry.registerTileEntity(GCCoreTileEntityCargoUnloader.class, "Cargo Unloader");
         GameRegistry.registerTileEntity(GCCoreTileEntityParachest.class, "Parachest Tile");
         GameRegistry.registerTileEntity(GCCoreTileEntitySolar.class, "Galacticraft Solar Panel");
+        GameRegistry.registerTileEntity(GCCoreTileEntityBatteryBox.class, "UEBatteryBox");
+        GameRegistry.registerTileEntity(GCCoreTileEntityCoalGenerator.class, "UECoalGenerator");
+        GameRegistry.registerTileEntity(GCCoreTileEntityElectricFurnace.class, "UEElectricFurnace");
+        GameRegistry.registerTileEntity(GCCoreTileEntityCopperWire.class, "copperWire");
     }
 
     public void registerCreatures()

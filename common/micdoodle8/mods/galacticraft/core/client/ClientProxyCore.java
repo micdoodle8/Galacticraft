@@ -29,7 +29,6 @@ import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirDistributor;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirSealer;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiCargoLoader;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiCargoUnloader;
-import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiDownloadingSounds;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiExtendedInventory;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiFuelLoader;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiGalaxyMap;
@@ -38,6 +37,9 @@ import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRefinery;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRocketRefill;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiSolar;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreInventoryTabGalacticraft;
+import micdoodle8.mods.galacticraft.core.client.gui.GuiBatteryBox;
+import micdoodle8.mods.galacticraft.core.client.gui.GuiCoalGenerator;
+import micdoodle8.mods.galacticraft.core.client.gui.GuiElectricFurnace;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelSpaceship;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererBreathableAir;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererCraftingTable;
@@ -70,6 +72,7 @@ import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityAdva
 import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityParachestRenderer;
 import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntitySolarPanelRenderer;
 import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityTreasureChestRenderer;
+import micdoodle8.mods.galacticraft.core.client.render.tile.RenderCopperWire;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCCoreSounds;
 import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityAlienVillager;
@@ -104,6 +107,10 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityParachest;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityRefinery;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntitySolar;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBatteryBox;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCoalGenerator;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCopperWire;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectricFurnace;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.moon.client.ClientProxyMoon;
@@ -222,6 +229,7 @@ public class ClientProxyCore extends CommonProxyCore
         TickRegistry.registerScheduledTickHandler(new GCCoreTickHandlerSlowClient(), Side.CLIENT);
         NetworkRegistry.instance().registerChannel(new GCCorePacketHandlerClient(), GalacticraftCore.CHANNEL, Side.CLIENT);
 
+        ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityCopperWire.class, new RenderCopperWire());
         ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityTreasureChest.class, new GCCoreTileEntityTreasureChestRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityParachest.class, new GCCoreTileEntityParachestRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityAdvancedCraftingTable.class, new GCCoreTileEntityAdvancedCraftingTableRenderer());
@@ -798,7 +806,23 @@ public class ClientProxyCore extends CommonProxyCore
             }
         }
 
-        return super.getClientGuiElement(ID, player, world, x, y, z);
+        if (tile != null)
+        {
+            if (tile instanceof GCCoreTileEntityBatteryBox)
+            {
+                return new GuiBatteryBox(player.inventory, ((GCCoreTileEntityBatteryBox) tile));
+            }
+            else if (tile instanceof GCCoreTileEntityCoalGenerator)
+            {
+                return new GuiCoalGenerator(player.inventory, ((GCCoreTileEntityCoalGenerator) tile));
+            }
+            else if (tile instanceof GCCoreTileEntityElectricFurnace)
+            {
+                return new GuiElectricFurnace(player.inventory, ((GCCoreTileEntityElectricFurnace) tile));
+            }
+        }
+        
+        return null;
     }
 
     private static final ResourceLocation underOilTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/misc/underoil.png");
