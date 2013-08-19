@@ -674,33 +674,33 @@ public class GCCoreRecipeManager
             CraftingManager.getInstance().addShapelessRecipe(new ItemStack(GCCoreItems.flag, 1, GCCoreItemFlag.getFlagDamageValueFromDye(var2)), new Object[] { new ItemStack(Item.dyePowder, 1, var2), new ItemStack(GCCoreItems.flag, 1, 16) });
         }
 
-        RecipeUtil.addRecipe(new ItemStack(GCCoreItems.heavyPlating, 2), new Object[] { "X", "X", 'X', "carbonPlate" });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreItems.heavyPlating, 2), new Object[] { "X", "X", 'X', RecipeUtil.getIndustrialCraftItem("carbonPlate") });
 
-        RecipeUtil.addRecipe(new ItemStack(GCCoreItems.rocketFins, 1), new Object[] { " Y ", "XYX", "X X", 'X', GCCoreItems.heavyPlating, 'Y', "carbonPlate" });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreItems.rocketFins, 1), new Object[] { " Y ", "XYX", "X X", 'X', GCCoreItems.heavyPlating, 'Y', RecipeUtil.getIndustrialCraftItem("carbonPlate") });
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.landingPad, 9, 0), new Object[] { "YYY", "XXX", 'X', Block.blockIron, 'Y', "ingotRefinedIron" });
 
-        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.landingPad, 9, 1), new Object[] { "YYY", "XXX", 'X', Block.blockIron, 'Y', "carbonPlate" });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.landingPad, 9, 1), new Object[] { "YYY", "XXX", 'X', Block.blockIron, 'Y', RecipeUtil.getIndustrialCraftItem("carbonPlate") });
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreItems.buggyMaterial, 1, 0), new Object[] { "WWW", "WXW", "WWW", 'W', Item.leather, 'X', "ingotRefinedIron" });
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreItems.buggyMaterial, 1, 1), new Object[] { "  X", " YX", "XXX", 'X', "ingotRefinedIron", 'Y', Item.ingotIron });
 
-        RecipeUtil.addRecipe(new ItemStack(GCCoreItems.buggyMaterial, 1, 2), new Object[] { "XXX", "YZY", "XXX", 'X', "ingotRefinedIron", 'Y', "carbonPlate", 'Z', Block.chest });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreItems.buggyMaterial, 1, 2), new Object[] { "XXX", "YZY", "XXX", 'X', "ingotRefinedIron", 'Y', RecipeUtil.getIndustrialCraftItem("carbonPlate"), 'Z', Block.chest });
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.oxygenDetector, 1), new Object[] { "WWW", "YWY", "WXW", 'W', "ingotRefinedIron", 'X', Item.redstone, 'Y', GCCoreItems.airVent });
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.airDistributor, 1), new Object[] { "WXW", "YWY", "WXW", 'W', "ingotRefinedIron", 'X', GCCoreItems.airFan, 'Y', GCCoreItems.airVent });
 
-        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.blockAirCollector, 1), new Object[] { "WWW", "YXZ", "WVW", 'V', GCCoreItems.oxygenConcentrator, 'W', "refinedIronIngot", 'X', new ItemStack(GCCoreItems.canister, 1, 0), 'Y', GCCoreItems.airFan, 'Z', GCCoreItems.airVent });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.blockAirCollector, 1), new Object[] { "WWW", "YXZ", "WVW", 'V', GCCoreItems.oxygenConcentrator, 'W', "ingotRefinedIron", 'X', new ItemStack(GCCoreItems.canister, 1, 0), 'Y', GCCoreItems.airFan, 'Z', GCCoreItems.airVent });
 
-        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.rocketBench, 1), new Object[] { "XXX", "YZY", "YWY", 'X', "refinedIronIngot", 'Y', "refinedIronIngot", 'Z', Block.workbench, 'W', "advancedCircuit" });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.rocketBench, 1), new Object[] { "XXX", "YZY", "YWY", 'X', "ingotRefinedIron", 'Y', "ingotRefinedIron", 'Z', Block.workbench, 'W', RecipeUtil.getIndustrialCraftItem("advancedCircuit") });
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreItems.heavyOxygenTank, 1, GCCoreItems.heavyOxygenTank.getMaxDamage()), new Object[] { "ZZZ", "XXX", "YYY", 'X', new ItemStack(GCCoreItems.canister, 1, 0), 'Y', "ingotRefinedIron", 'Z', new ItemStack(Block.cloth, 1, 14) });
 
-        RecipeUtil.addRecipe(new ItemStack(GCCoreItems.airFan, 1), new Object[] { "Z Z", " Y ", "ZXZ", 'X', Item.redstone, 'Y', "electronicCircuit", 'Z', "ingotRefinedIron" });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreItems.airFan, 1), new Object[] { "Z Z", " Y ", "ZXZ", 'X', Item.redstone, 'Y', RecipeUtil.getIndustrialCraftItem("electronicCircuit"), 'Z', "ingotRefinedIron" });
 
-        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.fuelLoader), new Object[] { "XXX", "X X", "XYX", 'X', "ingotRefinedIron", 'Y', "electronicCircuit" });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.fuelLoader), new Object[] { "XXX", "X X", "XYX", 'X', "ingotRefinedIron", 'Y', RecipeUtil.getIndustrialCraftItem("electronicCircuit") });
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.compressor), new Object[] { "XXX", "XZX", "XYX", 'X', "ingotRefinedIron", 'Y', "ingotBronze", 'Z', GCCoreItems.oxygenConcentrator });
 
@@ -740,7 +740,7 @@ public class GCCoreRecipeManager
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreItems.flagPole, 2, 0), new Object[] { "X", "X", "X", 'X', "ingotRefinedIron" });
 
-        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealer, 1), new Object[] { "WZW", "YXY", "WZW", 'V', RecipeUtil.getIndustrialCraftItem("insulatedCopperCableItem"), 'W', "refinedIronIngot", 'X', GCCoreItems.airFan, 'Y', GCCoreItems.airVent, 'Z', "carbonPlate" });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealer, 1), new Object[] { "WZW", "YXY", "WZW", 'V', RecipeUtil.getIndustrialCraftItem("insulatedCopperCableItem"), 'W', "ingotRefinedIron", 'X', GCCoreItems.airFan, 'Y', GCCoreItems.airVent, 'Z', RecipeUtil.getIndustrialCraftItem("carbonPlate") });
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.enclosedWire, 1, 2), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("insulatedCopperCableItem"), 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4) });
 
