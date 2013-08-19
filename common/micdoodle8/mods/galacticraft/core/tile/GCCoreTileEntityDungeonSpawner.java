@@ -1,22 +1,27 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import java.lang.reflect.Constructor;
 import java.util.List;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityCreeper;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeleton;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeletonBoss;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpider;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityZombie;
+import micdoodle8.mods.galacticraft.core.entities.IBoss;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.World;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.tile.TileEntityAdvanced;
 
 public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced
 {
-    public GCCoreEntitySkeletonBoss boss;
+    public Class<? extends IBoss> bossClass;
+    public IBoss boss;
     public boolean spawned;
     public boolean isBossDefeated;
     public boolean playerInRange;
@@ -24,6 +29,16 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced
     public boolean playerCheated;
     private Vector3 roomCoords;
     private Vector3 roomSize;
+    
+    public GCCoreTileEntityDungeonSpawner()
+    {
+        this(GCCoreEntitySkeletonBoss.class);
+    }
+    
+    public GCCoreTileEntityDungeonSpawner(Class<? extends IBoss> bossClass)
+    {
+        this.bossClass = bossClass;
+    }
 
     @Override
     public void updateEntity()
@@ -33,20 +48,17 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced
         if (!this.worldObj.isRemote)
         {
             final Vector3 thisVec = new Vector3(this);
-            final List<Entity> l = this.worldObj.getEntitiesWithinAABB(GCCoreEntitySkeletonBoss.class, AxisAlignedBB.getBoundingBox(thisVec.x - 15, thisVec.y - 15, thisVec.z - 15, thisVec.x + 15, thisVec.y + 15, thisVec.z + 15));
+            final List<Entity> l = this.worldObj.getEntitiesWithinAABB(bossClass, AxisAlignedBB.getBoundingBox(thisVec.x - 15, thisVec.y - 15, thisVec.z - 15, thisVec.x + 15, thisVec.y + 15, thisVec.z + 15));
 
             for (final Entity e : l)
             {
-                if (e instanceof GCCoreEntitySkeletonBoss)
-                {
                     if (!e.isDead)
                     {
-                        this.boss = (GCCoreEntitySkeletonBoss) e;
+                        this.boss = (IBoss) e;
                         this.boss.setRoom(this.roomCoords, this.roomSize);
                         this.spawned = true;
                         this.isBossDefeated = false;
                     }
-                }
             }
 
             List<Entity> entitiesWithin = this.worldObj.getEntitiesWithinAABB(EntityMob.class, AxisAlignedBB.getAABBPool().getAABB(this.roomCoords.intX() - 4, this.roomCoords.intY() - 4, this.roomCoords.intZ() - 4, this.roomCoords.intX() + this.roomSize.intX() + 3, this.roomCoords.intY() + this.roomSize.intY() + 3, this.roomCoords.intZ() + this.roomSize.intZ() + 3));
@@ -61,8 +73,17 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced
 
             if (this.boss == null && !this.isBossDefeated)
             {
-                this.boss = new GCCoreEntitySkeletonBoss(this.worldObj, new Vector3(this).add(new Vector3(0.0D, 1.0D, 0.0D)));
-                this.boss.setRoom(this.roomCoords, this.roomSize);
+                try
+                {
+                    Constructor c = bossClass.getConstructor(new Class[] {World.class});
+                    this.boss = (IBoss) c.newInstance(new Object[] {this.worldObj});
+                    ((Entity) this.boss).setPosition(this.xCoord + 0.5, this.yCoord + 1.0, this.zCoord + 0.5);
+                    this.boss.setRoom(this.roomCoords, this.roomSize);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
             }
 
             entitiesWithin = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getAABBPool().getAABB(this.roomCoords.intX() - 1, this.roomCoords.intY() - 1, this.roomCoords.intZ() - 1, this.roomCoords.intX() + this.roomSize.intX(), this.roomCoords.intY() + this.roomSize.intY(), this.roomCoords.intZ() + this.roomSize.intZ()));
@@ -86,7 +107,7 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced
                 {
                     if (this.boss instanceof Entity)
                     {
-                        this.worldObj.spawnEntityInWorld(this.boss);
+                        this.worldObj.spawnEntityInWorld((EntityLiving)this.boss);
                         this.spawned = true;
                         this.boss.onBossSpawned(this);
                         this.boss.setRoom(this.roomCoords, this.roomSize);
