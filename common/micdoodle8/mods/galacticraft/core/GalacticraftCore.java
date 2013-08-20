@@ -85,8 +85,10 @@ import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import universalelectricity.compatibility.Compatibility;
+import universalelectricity.core.UniversalElectricity;
+import universalelectricity.prefab.ConductorChunkInitiate;
+import universalelectricity.prefab.ore.OreGenBase;
 import universalelectricity.prefab.ore.OreGenerator;
-import basiccomponents.BasicComponents;
 import basiccomponents.api.BasicRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
@@ -197,36 +199,27 @@ public class GalacticraftCore
 
         if (GCCoreConfigManager.loadBC.getBoolean(true))
         {
-            BasicRegistry.register("itemIngotCopper");
-            BasicRegistry.register("itemIngotTin");
-            BasicRegistry.register("itemIngotSteel");
-            BasicRegistry.register("itemDustSteel");
-            BasicRegistry.register("itemIngotBronze");
-            BasicRegistry.register("itemDustBronze");
-            BasicRegistry.register("itemPlateBronze");
-            BasicRegistry.register("itemPlateCopper");
-            BasicRegistry.register("itemPlateTin");
-            BasicRegistry.register("itemPlateIron");
-            BasicRegistry.register("itemPlateGold");
-            BasicRegistry.register("itemCircuitBasic");
-            BasicRegistry.register("itemCircuitAdvanced");
-            BasicRegistry.register("itemCircuitElite");
-            BasicRegistry.register("itemMotor");
-            BasicRegistry.register("itemWrench");
-            BasicRegistry.register("itemBattery");
-            BasicRegistry.register("itemInfiniteBattery");
+            BasicRegistry.requestAll();
 
-            BasicRegistry.register("blockOreCopper");
-            BasicRegistry.register("blockOreTin");
-
-            if (GCCoreConfigManager.disableOreGenTin && BasicComponents.generationOreTin != null)
+            try
             {
-                OreGenerator.removeOre(BasicComponents.generationOreTin);
+                Class<?> basicComp = Class.forName("basiccomponents.BasicComponents");
+                Object generationOreTin = basicComp.getDeclaredField("generationOreTin").get(null);
+                Object generationOreCopper = basicComp.getDeclaredField("generationOreCopper").get(null);
+
+                if (GCCoreConfigManager.disableOreGenTin && generationOreTin != null)
+                {
+                    OreGenerator.removeOre((OreGenBase) generationOreTin);
+                }
+    
+                if (GCCoreConfigManager.disableOreGenCopper && generationOreCopper != null)
+                {
+                    OreGenerator.removeOre((OreGenBase) generationOreCopper);
+                }
             }
-
-            if (GCCoreConfigManager.disableOreGenCopper && BasicComponents.generationOreCopper != null)
+            catch (Exception e)
             {
-                OreGenerator.removeOre(BasicComponents.generationOreCopper);
+                e.printStackTrace();
             }
         }
     }
@@ -298,8 +291,10 @@ public class GalacticraftCore
         SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicMoonBuggy());
         SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicAdd());
                
+        ConductorChunkInitiate.register();
         Compatibility.initiate();
         GasTransmission.register();
+        UniversalElectricity.isNetworkActive = true;
 
         this.registerCreatures();
         this.registerOtherEntities();

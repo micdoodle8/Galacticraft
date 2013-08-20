@@ -18,6 +18,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialLiquid;
 import net.minecraft.util.Icon;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
@@ -105,6 +106,8 @@ public class GCCoreBlocks
         GCCoreBlocks.hiddenBlocks.add(GCCoreBlocks.landingPadFull.blockID);
         GCCoreBlocks.hiddenBlocks.add(GCCoreBlocks.dummyBlock.blockID);
         GCCoreBlocks.hiddenBlocks.add(GCCoreBlocks.spaceStationBase.blockID);
+        
+        OreDictionary.registerOre("copperWire", GCCoreBlocks.blockCopperWire);
     }
 
     public static void setHarvestLevels()

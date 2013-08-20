@@ -20,7 +20,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.UniversalElectricity;
 import universalelectricity.prefab.block.BlockTile;
-import basiccomponents.BasicComponents;
 
 public class GCCoreBlockBasicMachine extends BlockTile
 {

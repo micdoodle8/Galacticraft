@@ -490,6 +490,10 @@ public class GCCoreRecipeManager
             GalacticraftRegistry.registerSpaceStation(new SpaceStationType(GCCoreConfigManager.idDimensionOverworldOrbit, 0, new SpaceStationRecipe(inputMap)));
             GalacticraftCore.setSpaceStationRecipe = true;
         }
+        
+        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.blockCopperWire, 6), new Object[] { "WWW", "CCC", "WWW", 'W', Block.cloth, 'C', "ingotCopper" });
+        
+        RecipeUtil.addRecipe(new ItemStack(GCCoreItems.battery), new Object[] {" T ", "TRT", "TCT", 'T', "ingotTin", 'R', Item.redstone, 'C', Item.coal });
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreItems.rocketEngine, 1), new Object[] { " YV", "XWX", "XZX", 'V', Block.stoneButton, 'W', new ItemStack(GCCoreItems.canister, 1, 0), 'X', GCCoreItems.heavyPlating, 'Y', Item.flintAndSteel, 'Z', GCCoreItems.airVent });
 
