@@ -20,9 +20,9 @@ public class GCCoreSounds
     {
         final Minecraft mc = FMLClientHandler.instance().getClient();
 
-        if (mc.thePlayer.worldObj.provider instanceof IGalacticraftWorldProvider)
+        if (mc.thePlayer != null && mc.thePlayer.worldObj != null && mc.thePlayer.worldObj.provider instanceof IGalacticraftWorldProvider)
         {
-            final int randInt = FMLClientHandler.instance().getClient().thePlayer.worldObj.rand.nextInt(6);
+            final int randInt = FMLClientHandler.instance().getClient().thePlayer.worldObj.rand.nextInt(ClientProxyCore.newMusic.size() + 2);
 
             if (randInt < ClientProxyCore.newMusic.size())
             {
