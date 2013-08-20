@@ -139,6 +139,8 @@ public class GalacticraftCore
 
     public static GalacticraftMoon moon = new GalacticraftMoon();
 
+    private static GCCoreThreadRequirementMissing missingRequirementThread;
+
     public static Map<String, GCCorePlayerSP> playersClient = new HashMap<String, GCCorePlayerSP>();
     public static Map<String, GCCorePlayerMP> playersServer = new HashMap<String, GCCorePlayerMP>();
 
@@ -332,14 +334,18 @@ public class GalacticraftCore
 
         GalacticraftCore.proxy.postInit(event);
         GalacticraftCore.proxy.registerRenderInformation();
-
-        GCCoreThreadRequirementMissing.startCheck(FMLCommonHandler.instance().getEffectiveSide());
     }
 
     @EventHandler
     public void serverInit(FMLServerStartedEvent event)
     {
         GalacticraftCore.moon.serverInit(event);
+        
+        if (missingRequirementThread == null)
+        {
+            missingRequirementThread = new GCCoreThreadRequirementMissing(FMLCommonHandler.instance().getEffectiveSide());
+            missingRequirementThread.start();
+        }
 
         GCCoreUtil.checkVersion(Side.SERVER);
         TickRegistry.registerTickHandler(new GCCoreTickHandlerServer(), Side.SERVER);

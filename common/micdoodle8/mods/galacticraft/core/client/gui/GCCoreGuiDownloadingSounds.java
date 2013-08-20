@@ -1,10 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
-import micdoodle8.mods.galacticraft.core.client.GCCoreThreadDownloadSound;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.resources.I18n;
-import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -12,19 +9,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreGuiDownloadingSounds extends GuiScreen
 {
     private int displayCount = 0;
-    private GCCoreThreadDownloadSound downloadResourcesThread;
     public String displayStatus = "";
     public int displayStatusColor = 0xFFFFFF;
-    
-    public GCCoreGuiDownloadingSounds(GCCoreThreadDownloadSound thread)
-    {
-        this.downloadResourcesThread = thread;
-    }
-    
-    public void initGui()
-    {
-        super.initGui();
-    }
 
     public void drawScreen(int par1, int par2, float par3)
     {
@@ -77,13 +63,5 @@ public class GCCoreGuiDownloadingSounds extends GuiScreen
 
     protected void keyTyped(char par1, int par2) {}
 
-    public void actionPerformed()
-    {
-        this.actionPerformed(null);
-    }
-
-    protected void actionPerformed(GuiButton par1GuiButton)
-    {
-        FMLClientHandler.instance().getClient().displayGuiScreen((GuiScreen)null);
-    }
+    protected void actionPerformed(GuiButton par1GuiButton) {}
 }

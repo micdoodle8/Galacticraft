@@ -64,7 +64,7 @@ public class GCCoreThreadDownloadSound extends Thread
             con.setReadTimeout(60000);
             final Document document = documentbuilder.parse(con.getInputStream());
             final NodeList nodelist = document.getElementsByTagName("Contents");
-            this.gui = new GCCoreGuiDownloadingSounds(this);
+            this.gui = new GCCoreGuiDownloadingSounds();
             this.previousGui = FMLClientHandler.instance().getClient().currentScreen;
 
             for (int i = 0; i < 2; ++i)

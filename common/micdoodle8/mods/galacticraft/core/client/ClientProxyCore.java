@@ -18,6 +18,7 @@ import micdoodle8.mods.galacticraft.api.world.IMoon;
 import micdoodle8.mods.galacticraft.api.world.IPlanet;
 import micdoodle8.mods.galacticraft.core.CommonProxyCore;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
+import micdoodle8.mods.galacticraft.core.GCCoreThreadRequirementMissing;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchFlameFX;
@@ -96,8 +97,12 @@ import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient;
 import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerClient;
 import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerSlowClient;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAdvancedCraftingTable;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBatteryBox;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoLoader;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoUnloader;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCoalGenerator;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCopperWire;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectricFurnace;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCollector;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCompressor;
@@ -107,10 +112,6 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityParachest;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityRefinery;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntitySolar;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBatteryBox;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCoalGenerator;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCopperWire;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectricFurnace;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.moon.client.ClientProxyMoon;
@@ -144,6 +145,7 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -886,7 +888,7 @@ public class ClientProxyCore extends CommonProxyCore
     public static void onMinecraftLoaded()
     {
         try
-        {
+        {            
             if (downloadResourcesThread == null)
             {
                 downloadResourcesThread = new GCCoreThreadDownloadSound(FMLClientHandler.instance().getClient().mcDataDir, FMLClientHandler.instance().getClient());

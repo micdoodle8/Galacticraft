@@ -3,32 +3,23 @@ package micdoodle8.mods.galacticraft.core;
 import javax.swing.JDialog;
 import javax.swing.JEditorPane;
 import javax.swing.JOptionPane;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiMissingCore;
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreThreadRequirementMissing extends Thread
 {
-    public static GCCoreThreadRequirementMissing instance = new GCCoreThreadRequirementMissing();
     private static Side threadSide;
 
-    public GCCoreThreadRequirementMissing()
+    public GCCoreThreadRequirementMissing(Side threadSide)
     {
         super("Galacticraft Requirement Check Thread");
-    }
-
-    public static void startCheck(Side side)
-    {
-        Thread thread = new Thread(GCCoreThreadRequirementMissing.instance);
-        GCCoreThreadRequirementMissing.threadSide = side;
-        thread.start();
-    }
-
-    @Override
-    public void start()
-    {
-
+        this.setDaemon(true);
+        GCCoreThreadRequirementMissing.threadSide = threadSide;
     }
 
     @Override
@@ -47,23 +38,7 @@ public class GCCoreThreadRequirementMissing extends Thread
             }
             else
             {
-                final String err = "<strong><p>MicdoodleCore not found in mods folder. Galacticraft will not load.</p></strong>";
-                System.out.println(err);
-                ep = new JEditorPane("text/html", "<html>" + err + "</html>");
-
-                ep.setEditable(false);
-                ep.setOpaque(false);
-
-                pane = new JOptionPane(ep, JOptionPane.ERROR_MESSAGE, JOptionPane.YES_NO_OPTION, null, new Object[] { LanguageRegistry.instance().getStringLocalization("message.button3.name") }, null);
-                final JDialog dialog = pane.createDialog(null, "Missing Dependancy");
-                dialog.setVisible(true);
-                dialog.requestFocusInWindow();
-                final Object selectedValue = pane.getValue();
-
-                if (selectedValue != null)
-                {
-                    System.exit(-1);
-                }
+                GCCoreThreadRequirementMissing.openGuiClient();
             }
         }
         else if (!GCCoreConfigManager.forceLoadGC.getBoolean(false) && !GCCoreConfigManager.loadBC.getBoolean(true) && !GCCoreCompatibilityManager.isIc2Loaded() && !GCCoreCompatibilityManager.isTELoaded())
@@ -108,5 +83,11 @@ public class GCCoreThreadRequirementMissing extends Thread
                 }
             }
         }
+    }
+    
+    @SideOnly(Side.CLIENT)
+    private static void openGuiClient()
+    {
+        FMLClientHandler.instance().getClient().displayGuiScreen(new GCCoreGuiMissingCore());
     }
 }
