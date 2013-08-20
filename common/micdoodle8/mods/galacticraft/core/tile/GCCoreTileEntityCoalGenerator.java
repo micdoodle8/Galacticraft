@@ -338,7 +338,7 @@ public class GCCoreTileEntityCoalGenerator extends TileEntityUniversalElectrical
 	@Override
 	public EnumSet<ForgeDirection> getOutputDirections()
 	{
-		return EnumSet.allOf(ForgeDirection.class);
+        return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() + 2));
 	}
 
 	@Override

@@ -1,8 +1,10 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockBasicMachine;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -383,6 +385,18 @@ public class GCCoreTileEntityElectricFurnace extends TileEntityUniversalElectric
 	{
 		return slotID == 2;
 	}
+
+    @Override
+    public EnumSet<ForgeDirection> getInputDirections()
+    {
+        return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() - GCCoreBlockBasicMachine.ELECTRIC_FURNACE_METADATA + 2));
+    }
+
+    @Override
+    public EnumSet<ForgeDirection> getOutputDirections()
+    {
+        return EnumSet.noneOf(ForgeDirection.class);
+    }
 
 	@Override
 	public float getProvide(ForgeDirection direction)

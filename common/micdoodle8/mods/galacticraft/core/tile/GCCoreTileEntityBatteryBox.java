@@ -47,6 +47,8 @@ public class GCCoreTileEntityBatteryBox extends TileEntityUniversalElectrical im
 
 		if (!this.worldObj.isRemote)
 		{
+            this.produce();
+            
 			if (this.ticks % 3 == 0)
 			{
 				for (EntityPlayer player : this.playersUsing)
@@ -282,7 +284,7 @@ public class GCCoreTileEntityBatteryBox extends TileEntityUniversalElectrical im
 	@Override
 	public float getProvide(ForgeDirection direction)
 	{
-		return getInputDirections().contains(direction) ? Math.min(1.3F, this.getEnergyStored()) : 0;
+		return getOutputDirections().contains(direction) ? Math.min(1.3F, this.getEnergyStored()) : 0;
 	}
 
 	@Override
