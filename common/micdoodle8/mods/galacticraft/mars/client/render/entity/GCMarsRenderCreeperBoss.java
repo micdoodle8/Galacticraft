@@ -5,7 +5,6 @@ import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import micdoodle8.mods.galacticraft.mars.client.model.GCMarsModelCreeperBoss;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityCreeperBoss;
 import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelCreeper;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -22,7 +21,7 @@ public class GCMarsRenderCreeperBoss extends RenderLiving
 {
     private static final ResourceLocation creeperTexture = new ResourceLocation(GalacticraftMars.TEXTURE_DOMAIN, "textures/model/creeper.png");
     private static final ResourceLocation powerTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/power.png");
-    private final ModelBase creeperModel = new ModelCreeper(2.0F);
+    private final ModelBase creeperModel = new GCMarsModelCreeperBoss(2.0F);
 
     public GCMarsRenderCreeperBoss()
     {
@@ -39,34 +38,6 @@ public class GCMarsRenderCreeperBoss extends RenderLiving
     {
         return GCMarsRenderCreeperBoss.creeperTexture;
     }
-
-    // protected int updateCreeperColorMultiplier(GCMarsEntityCreeperBoss
-    // par1EntityCreeper, float par2, float par3)
-    // {
-    // if ((int) (var5 * 10.0F) % 2 == 0)
-    // {
-    // return 0;
-    // }
-    // else
-    // {
-    // int var6 = (int) (var5 * 0.2F * 255.0F);
-    //
-    // if (var6 < 0)
-    // {
-    // var6 = 0;
-    // }
-    //
-    // if (var6 > 255)
-    // {
-    // var6 = 255;
-    // }
-    //
-    // final short var7 = 255;
-    // final short var8 = 255;
-    // final short var9 = 255;
-    // return var6 << 24 | var7 << 16 | var8 << 8 | var9;
-    // }
-    // }
 
     protected int func_27006_a(GCMarsEntityCreeperBoss par1EntityCreeper, int par2, float par3)
     {
@@ -114,8 +85,6 @@ public class GCMarsRenderCreeperBoss extends RenderLiving
     protected int getColorMultiplier(EntityLivingBase par1EntityLivingBase, float par2, float par3)
     {
         return super.getColorMultiplier(par1EntityLivingBase, par2, par3);
-        // return this.updateCreeperColorMultiplier((GCMarsEntityCreeperBoss)
-        // par1EntityLiving, par2, par3);
     }
 
     @Override

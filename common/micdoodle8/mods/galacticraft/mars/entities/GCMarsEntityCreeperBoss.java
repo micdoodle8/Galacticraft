@@ -3,11 +3,9 @@ package micdoodle8.mods.galacticraft.mars.entities;
 import java.util.List;
 import java.util.Random;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityAIArrowAttack;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityArrow;
 import micdoodle8.mods.galacticraft.core.entities.IBoss;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityDungeonSpawner;
@@ -30,6 +28,7 @@ import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.entity.projectile.EntityWitherSkull;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -43,6 +42,7 @@ import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ChestGenHooks;
 import universalelectricity.core.vector.Vector3;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 
 /**
@@ -75,7 +75,7 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
         this.setSize(1.5F, 4.0F);
         this.isImmuneToFire = true;
         this.tasks.addTask(1, new EntityAISwimming(this));
-        this.tasks.addTask(2, new GCCoreEntityAIArrowAttack(this, 1.0D, 25, 10.0F));
+        this.tasks.addTask(2, new GCCoreEntityAIArrowAttack(this, 1.0D, 25, 20.0F));
         this.tasks.addTask(2, new EntityAIWander(this, 1.0D));
         this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(3, new EntityAILookIdle(this));
@@ -169,6 +169,8 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
     protected void onDeathUpdate()
     {
         ++this.deathTicks;
+        
+        this.headsRemaining = 0;
 
         if (this.deathTicks >= 180 && this.deathTicks <= 200)
         {
@@ -283,9 +285,17 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
 
         this.ticks++;
 
-        if (!this.worldObj.isRemote && this.func_110143_aJ() <= 150.0F * GCCoreConfigManager.dungeonBossHealthMod / 2)
+        if (this.func_110143_aJ() <= 0)
         {
-            this.func_110148_a(SharedMonsterAttributes.field_111263_d);
+            this.headsRemaining = 0;
+        }
+        else if (this.func_110143_aJ() <= this.func_110138_aP() / 3.0)
+        {
+            this.headsRemaining = 1;
+        }
+        else if (this.func_110143_aJ() <= 2 * (this.func_110138_aP() / 3.0))
+        {
+            this.headsRemaining = 2;
         }
 
         final EntityPlayer player = this.worldObj.getClosestPlayer(this.posX, this.posY, this.posZ, 20.0);
@@ -510,27 +520,70 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
         this.roomSize.z = nbt.getDouble("roomSizeZ");
     }
 
-    @Override
-    public void attackEntityWithRangedAttack(EntityLivingBase entitylivingbase, float f)
+    private void func_82216_a(int par1, EntityLivingBase par2EntityLivingBase)
     {
-        if (this.riddenByEntity != null)
+        this.func_82209_a(par1, par2EntityLivingBase.posX, par2EntityLivingBase.posY + (double)par2EntityLivingBase.getEyeHeight() * 0.5D, par2EntityLivingBase.posZ, par1 == 0 && this.rand.nextFloat() < 0.001F);
+    }
+
+    private void func_82209_a(int par1, double par2, double par4, double par6, boolean par8)
+    {
+        this.worldObj.playAuxSFXAtEntity((EntityPlayer)null, 1014, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
+        double d3 = this.func_82214_u(par1);
+        double d4 = this.func_82208_v(par1);
+        double d5 = this.func_82213_w(par1);
+        double d6 = par2 - d3;
+        double d7 = par4 - d4;
+        double d8 = par6 - d5;
+        EntityWitherSkull entitywitherskull = new EntityWitherSkull(this.worldObj, this, d6, d7, d8);
+
+        if (par8)
         {
-            return;
+            entitywitherskull.setInvulnerable(true);
         }
 
-        Entity var1;
+        entitywitherskull.posY = d4;
+        entitywitherskull.posX = d3;
+        entitywitherskull.posZ = d5;
+        this.worldObj.spawnEntityInWorld(entitywitherskull);
+    }
 
-        if (this.worldObj.provider instanceof IGalacticraftWorldProvider)
+    private double func_82214_u(int par1)
+    {
+        if (par1 <= 0)
         {
-            var1 = new GCCoreEntityArrow(this.worldObj, this, entitylivingbase, 0.3F, 12.0F);
+            return this.posX;
         }
         else
         {
-            var1 = new EntityArrow(this.worldObj, this, entitylivingbase, 1.6F, 12.0F);
+            float f = (this.renderYawOffset + (float)(180 * (par1 - 1))) / 180.0F * (float)Math.PI;
+            float f1 = MathHelper.cos(f);
+            return this.posX + (double)f1 * 1.3D;
         }
+    }
 
-        this.worldObj.playSoundAtEntity(this, "random.bow", 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-        this.worldObj.spawnEntityInWorld(var1);
+    private double func_82208_v(int par1)
+    {
+        return par1 <= 0 ? this.posY + 3.0D : this.posY + 2.2D;
+    }
+
+    private double func_82213_w(int par1)
+    {
+        if (par1 <= 0)
+        {
+            return this.posZ;
+        }
+        else
+        {
+            float f = (this.renderYawOffset + (float)(180 * (par1 - 1))) / 180.0F * (float)Math.PI;
+            float f1 = MathHelper.sin(f);
+            return this.posZ + (double)f1 * 1.3D;
+        }
+    }
+
+    @Override
+    public void attackEntityWithRangedAttack(EntityLivingBase entitylivingbase, float f)
+    {
+        this.func_82216_a(0, entitylivingbase);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.mars.entities;
 
-import java.util.UUID;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.mars.client.gui.GCMarsGuiSlimeling;
@@ -22,7 +21,6 @@ import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAITargetNonTamed;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.passive.EntityAnimal;
@@ -45,8 +43,6 @@ import cpw.mods.fml.relauncher.Side;
 
 public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBreathable
 {
-    private static final AttributeModifier field_110185_bq = new AttributeModifier(UUID.randomUUID(), "Slimeling Health Boost", -0.25D, 0);
-
     public float colorRed;
     public float colorGreen;
     public float colorBlue;

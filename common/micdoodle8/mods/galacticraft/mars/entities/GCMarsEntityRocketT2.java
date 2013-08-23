@@ -43,7 +43,7 @@ import cpw.mods.fml.relauncher.Side;
  */
 public class GCMarsEntityRocketT2 extends EntitySpaceshipBase implements IInventory, IMissileLockable, IRocketType
 {
-    public final int tankCapacity = 4000;
+    public final int tankCapacity = 2000;
     public FluidTank spaceshipFuelTank = new FluidTank(this.tankCapacity);
 
     protected ItemStack[] cargoItems;
@@ -65,7 +65,7 @@ public class GCMarsEntityRocketT2 extends EntitySpaceshipBase implements IInvent
     {
         final double fuelLevel = this.spaceshipFuelTank.getFluid() == null ? 0 : this.spaceshipFuelTank.getFluid().amount;
 
-        return (int) (fuelLevel * i / 2000);
+        return (int) (fuelLevel * i / this.tankCapacity);
     }
 
     public GCMarsEntityRocketT2(World par1World, double par2, double par4, double par6, EnumRocketType rocketType)
@@ -160,7 +160,7 @@ public class GCMarsEntityRocketT2 extends EntitySpaceshipBase implements IInvent
                 }
             }
 
-            if (this.timeSinceLaunch % MathHelper.floor_double(3 * (1 / multiplier)) == 0)
+            if (this.timeSinceLaunch % MathHelper.floor_double(2 * (1 / multiplier)) == 0)
             {
                 this.removeFuel(1);
             }

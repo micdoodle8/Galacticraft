@@ -1,11 +1,12 @@
 package micdoodle8.mods.galacticraft.mars.items;
 
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockBasicMachine;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
+import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlockMachine;
 import net.minecraft.block.Block;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import basiccomponents.common.block.BlockBasicMachine;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -29,11 +30,11 @@ public class GCMarsItemBlockMachine extends ItemBlock
     {
         int metadata = 0;
 
-        if (itemstack.getItemDamage() >= BlockBasicMachine.ELECTRIC_FURNACE_METADATA)
+        if (itemstack.getItemDamage() >= GCMarsBlockMachine.UNUSED_MACHINE_0)
         {
             metadata = 2;
         }
-        else if (itemstack.getItemDamage() >= BlockBasicMachine.BATTERY_BOX_METADATA)
+        else if (itemstack.getItemDamage() >= GCMarsBlockMachine.UNUSED_MACHINE_1)
         {
             metadata = 1;
         }

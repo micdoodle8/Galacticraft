@@ -18,7 +18,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.UniversalElectricity;
 import universalelectricity.prefab.block.BlockTile;
-import basiccomponents.common.BasicComponents;
 
 public class GCMarsBlockMachine extends BlockTile
 {
@@ -230,17 +229,17 @@ public class GCMarsBlockMachine extends BlockTile
         {
             if (metadata >= GCMarsBlockMachine.UNUSED_MACHINE_1)
             {
-                par5EntityPlayer.openGui(BasicComponents.getFirstDependant(), -1, par1World, x, y, z);
+                par5EntityPlayer.openGui(GalacticraftMars.instance, -1, par1World, x, y, z);
                 return true;
             }
             else if (metadata >= GCMarsBlockMachine.UNUSED_MACHINE_0)
             {
-                par5EntityPlayer.openGui(BasicComponents.getFirstDependant(), -1, par1World, x, y, z);
+                par5EntityPlayer.openGui(GalacticraftMars.instance, -1, par1World, x, y, z);
                 return true;
             }
             else
             {
-                par5EntityPlayer.openGui(BasicComponents.getFirstDependant(), -1, par1World, x, y, z);
+                par5EntityPlayer.openGui(GalacticraftMars.instance, -1, par1World, x, y, z);
                 return true;
             }
         }
