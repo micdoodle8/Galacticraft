@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.compatibility.TileEntityUniversalConductor;
 
 public class GCCoreTileEntityCopperWire extends TileEntityUniversalConductor
