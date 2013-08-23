@@ -35,7 +35,6 @@ public class GCCoreGuiParachest extends GCCoreGuiContainer
         this.upperChestInventory = par1IInventory;
         this.lowerChestInventory = par2IInventory;
         this.allowUserInput = false;
-        short short1 = 222;
         this.inventorySlots = par2IInventory.getSizeInventory();
         this.ySize = 146 + this.inventorySlots * 2;
     }
@@ -59,12 +58,12 @@ public class GCCoreGuiParachest extends GCCoreGuiContainer
         if (this.lowerChestInventory instanceof GCCoreTileEntityParachest)
         {
             int fuelLevel = ((GCCoreTileEntityParachest) this.lowerChestInventory).getScaledFuelLevel(28);
-            this.drawTexturedModalRect(k + 17, l + (this.inventorySlots == 0 ? 46 : 42) - fuelLevel + this.inventorySlots * 2, 176, 28 - fuelLevel, 34, fuelLevel);
+            this.drawTexturedModalRect(k + 17, l + (this.inventorySlots == 3 ? 40 : 42) - fuelLevel + this.inventorySlots * 2, 176, 28 - fuelLevel, 34, fuelLevel);
         }
         else if (this.lowerChestInventory instanceof GCCoreEntityLander)
         {
             int fuelLevel = ((GCCoreEntityLander) this.lowerChestInventory).getScaledFuelLevel(28);
-            this.drawTexturedModalRect(k + 17, l + (this.inventorySlots == 0 ? 46 : 42) - fuelLevel + this.inventorySlots * 2, 176, 28 - fuelLevel, 34, fuelLevel);
+            this.drawTexturedModalRect(k + 17, l + (this.inventorySlots == 3 ? 40 : 42) - fuelLevel + this.inventorySlots * 2, 176, 28 - fuelLevel, 34, fuelLevel);
         }
     }
 }
