@@ -37,7 +37,7 @@ public class GCCoreTileEntityCoalGenerator extends TileEntityUniversalElectrical
 	 */
 	public static final float MIN_GENERATE_WATTS = 0.1f;
 
-	private static final float BASE_ACCELERATION = 0.3f;
+	private static final float BASE_ACCELERATION = 0.0003f;
 
 	/**
 	 * Per second
@@ -73,11 +73,11 @@ public class GCCoreTileEntityCoalGenerator extends TileEntityUniversalElectrical
 
 				if (this.getEnergyStored() < this.getMaxEnergyStored())
 				{
-					this.generateWatts = Math.min(this.generateWatts + Math.min((this.generateWatts * 0.005F + BASE_ACCELERATION), 5), GCCoreTileEntityCoalGenerator.MAX_GENERATE_WATTS);
+					this.generateWatts = Math.min(this.generateWatts + Math.min((this.generateWatts * 0.000005F + BASE_ACCELERATION), 0.005F), GCCoreTileEntityCoalGenerator.MAX_GENERATE_WATTS);
 				}
 			}
 
-			if (this.containingItems[0] != null && this.getEnergyStored() < this.getMaxEnergyStored())
+			if (this.containingItems[0] != null)
 			{
 				if (this.containingItems[0].getItem().itemID == Item.coal.itemID)
 				{
@@ -91,10 +91,12 @@ public class GCCoreTileEntityCoalGenerator extends TileEntityUniversalElectrical
 			
 			this.produce();
 
-            if (this.getEnergyStored() >= this.getMaxEnergyStored() || this.itemCookTime <= 0)
+            if (this.itemCookTime <= 0)
             {
                 this.generateWatts = Math.max(this.generateWatts - 0.008F, 0);
             }
+            
+            this.generateWatts = Math.min(Math.max(this.generateWatts, 0.0F), this.getMaxEnergyStored());
 
 			if (this.ticks % 3 == 0)
 			{
