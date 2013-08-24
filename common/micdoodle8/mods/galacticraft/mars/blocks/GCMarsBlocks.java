@@ -35,7 +35,7 @@ public class GCMarsBlocks
         GCMarsBlocks.marsBlock = new GCMarsBlock(GCMarsConfigManager.idBlockMars).setHardness(2.2F).setUnlocalizedName("mars");
         GCMarsBlocks.blockSludge = new GCMarsBlockSludge(GalacticraftMars.SLUDGE.getBlockID(), GCMarsBlocks.bacterialSludge).setUnlocalizedName("sludge");
         GCMarsBlocks.vine = new GCMarsBlockVine(GCMarsConfigManager.idBlockVine).setHardness(0.1F).setUnlocalizedName("vine");
-        GCMarsBlocks.rock = new GCMarsBlockSlimelingEgg(GCMarsConfigManager.idBlockRock).setHardness(5.1F).setUnlocalizedName("slimelingEgg");
+        GCMarsBlocks.rock = new GCMarsBlockSlimelingEgg(GCMarsConfigManager.idBlockRock).setHardness(0.75F).setUnlocalizedName("slimelingEgg");
         GCMarsBlocks.tier2TreasureChest = new GCMarsBlockT2TreasureChest(GCMarsConfigManager.idBlockTreasureChestT2).setHardness(2.5F).setUnlocalizedName("treasureT2");
         GCMarsBlocks.machine = new GCMarsBlockMachine(GCMarsConfigManager.idBlockMachine).setHardness(1.8F).setUnlocalizedName("marsMachine");
     }

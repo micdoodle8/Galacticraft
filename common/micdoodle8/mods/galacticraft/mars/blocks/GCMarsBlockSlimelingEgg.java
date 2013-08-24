@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.mars.blocks;
 import java.util.List;
 import java.util.Random;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
-import micdoodle8.mods.galacticraft.mars.items.GCMarsItemTrowel;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntitySlimelingEgg;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -13,6 +12,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
@@ -92,7 +92,7 @@ public class GCMarsBlockSlimelingEgg extends Block implements ITileEntityProvide
     {
         ItemStack currentStack = player.getCurrentEquippedItem();
 
-        if (currentStack != null && currentStack.getItem() instanceof GCMarsItemTrowel)
+        if (currentStack != null && currentStack.getItem() instanceof ItemPickaxe)
         {
             return world.setBlockToAir(x, y, z);
         }
@@ -118,11 +118,11 @@ public class GCMarsBlockSlimelingEgg extends Block implements ITileEntityProvide
     {
         ItemStack currentStack = par2EntityPlayer.getCurrentEquippedItem();
 
-        if (currentStack != null && currentStack.getItem() instanceof GCMarsItemTrowel)
+        if (currentStack != null && currentStack.getItem() instanceof ItemPickaxe)
         {
             par2EntityPlayer.addStat(StatList.mineBlockStatArray[this.blockID], 1);
             par2EntityPlayer.addExhaustion(0.025F);
-            this.dropBlockAsItem(world, x, y, z, par6, 0);
+            this.dropBlockAsItem(world, x, y, z, par6 % 3, 0);
         }
     }
 
