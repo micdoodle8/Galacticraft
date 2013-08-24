@@ -4,7 +4,10 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
+import micdoodle8.mods.galacticraft.mars.GCMarsConfigManager;
+import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySlimeling;
+import micdoodle8.mods.galacticraft.mars.util.GCMarsUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -93,6 +96,12 @@ public class GCMarsPacketHandlerServer implements IPacketHandler
                     if (player.getCommandSenderName().equalsIgnoreCase(slimeling.getOwnerName()) && !slimeling.worldObj.isRemote)
                     {
                         slimeling.setEntityHealth(slimeling.func_110143_aJ() + 5.0F);
+                    }
+                    break;
+                case 6:
+                    if (player.getCommandSenderName().equalsIgnoreCase(slimeling.getOwnerName()) && !slimeling.worldObj.isRemote)
+                    {
+                        GCMarsUtil.openSlimelingInventory(player, slimeling);
                     }
                     break;
                 }

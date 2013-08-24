@@ -12,6 +12,7 @@ import micdoodle8.mods.galacticraft.mars.CommonProxyMars;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
 import micdoodle8.mods.galacticraft.mars.client.fx.GCMarsEntityDropParticleFX;
+import micdoodle8.mods.galacticraft.mars.client.gui.GCMarsGuiSlimelingInventory;
 import micdoodle8.mods.galacticraft.mars.client.model.GCMarsModelSpaceshipTier2;
 import micdoodle8.mods.galacticraft.mars.client.render.block.GCMarsBlockRendererRock;
 import micdoodle8.mods.galacticraft.mars.client.render.block.GCMarsBlockRendererVine;
@@ -76,7 +77,7 @@ public class ClientProxyMars extends CommonProxyMars
     {
         TickRegistry.registerTickHandler(new TickHandlerClient(), Side.CLIENT);
         ClientRegistry.bindTileEntitySpecialRenderer(GCMarsTileEntityTreasureChest.class, new GCMarsTileEntityTreasureChestRenderer());
-        NetworkRegistry.instance().registerChannel(new ClientPacketHandler(), "GalacticraftMars", Side.CLIENT);
+        NetworkRegistry.instance().registerChannel(new ClientPacketHandler(), GalacticraftMars.CHANNEL, Side.CLIENT);
         ClientProxyMars.vineRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new GCMarsBlockRendererVine(ClientProxyMars.vineRenderID));
         ClientProxyMars.eggRenderID = RenderingRegistry.getNextAvailableRenderId();
@@ -150,9 +151,27 @@ public class ClientProxyMars extends CommonProxyMars
         {
             final DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
             final int packetType = PacketUtil.readPacketID(data);
+            EntityPlayer player = (EntityPlayer) p;
+            
             if (packetType == 0)
             {
+                final Class<?>[] decodeAs = { Integer.class, Integer.class, Integer.class };
+                final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
 
+                switch ((Integer)packetReadout[1])
+                {
+                case 0:
+                    int entityID = (Integer) packetReadout[2];
+                    Entity entity = player.worldObj.getEntityByID(entityID);
+
+                    if (entity != null && entity instanceof GCMarsEntitySlimeling)
+                    {
+                        FMLClientHandler.instance().getClient().displayGuiScreen(new GCMarsGuiSlimelingInventory(player, (GCMarsEntitySlimeling) entity));
+                    }
+
+                    player.openContainer.windowId = (Integer) packetReadout[0];
+                    break;
+                }
             }
         }
     }

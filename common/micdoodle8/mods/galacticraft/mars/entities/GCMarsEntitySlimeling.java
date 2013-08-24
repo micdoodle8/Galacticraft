@@ -4,10 +4,13 @@ import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.mars.client.gui.GCMarsGuiSlimeling;
 import micdoodle8.mods.galacticraft.mars.client.gui.GCMarsGuiSlimelingFeed;
+import micdoodle8.mods.galacticraft.mars.inventory.GCMarsInventorySlimeling;
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.WatchableObject;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIFollowOwner;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
@@ -32,6 +35,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.util.DamageSource;
@@ -43,6 +47,8 @@ import cpw.mods.fml.relauncher.Side;
 
 public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBreathable
 {
+    public GCMarsInventorySlimeling slimelingInventory = new GCMarsInventorySlimeling(this);
+    
     public float colorRed;
     public float colorGreen;
     public float colorBlue;
@@ -177,6 +183,7 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
         this.dataWatcher.addObject(24, new Integer(this.favFoodID));
         this.dataWatcher.addObject(25, new Float(this.attackDamage));
         this.dataWatcher.addObject(26, new Integer(this.kills));
+        this.dataWatcher.addObject(27, new ItemStack(Block.stone));
         this.setName("Unnamed");
     }
 
@@ -184,6 +191,7 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
     public void writeEntityToNBT(NBTTagCompound nbt)
     {
         super.writeEntityToNBT(nbt);
+        nbt.setTag("SlimelingInventory", this.slimelingInventory.writeToNBT(new NBTTagList()));
         nbt.setFloat("SlimeRed", this.colorRed);
         nbt.setFloat("SlimeGreen", this.colorGreen);
         nbt.setFloat("SlimeBlue", this.colorBlue);
@@ -198,6 +206,7 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
     public void readEntityFromNBT(NBTTagCompound nbt)
     {
         super.readEntityFromNBT(nbt);
+        this.slimelingInventory.readFromNBT(nbt.getTagList("SlimelingInventory"));
         this.colorRed = nbt.getFloat("SlimeRed");
         this.colorGreen = nbt.getFloat("SlimeGreen");
         this.colorBlue = nbt.getFloat("SlimeBlue");
@@ -248,7 +257,7 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
     public void onLivingUpdate()
     {
         super.onLivingUpdate();
-
+        
         if (!this.worldObj.isRemote)
         {
             if (this.ticksAlive <= 0)
@@ -278,7 +287,7 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
             this.setFavoriteFood(this.favFoodID);
             this.setAttackDamage(this.attackDamage);
             this.setKillCount(this.kills);
-
+            this.setCargoSlot(this.slimelingInventory.getStackInSlot(1));
         }
 
         this.height = this.getScale();
@@ -624,5 +633,21 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
     public EntityAISit getAiSit()
     {
         return this.aiSit;
+    }
+    
+    public ItemStack getCargoSlot()
+    {
+        return this.dataWatcher.getWatchableObjectItemStack(27);
+    }
+    
+    public void setCargoSlot(ItemStack stack)
+    {
+        WatchableObject obj = this.dataWatcher.getWatchedObject(27);
+        
+        if (stack != obj.getObject())
+        {
+            obj.setObject(stack);
+            this.dataWatcher.setObjectWatched(27);
+        }
     }
 }
