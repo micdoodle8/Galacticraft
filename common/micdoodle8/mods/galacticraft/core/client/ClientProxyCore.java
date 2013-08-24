@@ -38,9 +38,9 @@ import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRefinery;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRocketRefill;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiSolar;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreInventoryTabGalacticraft;
-import micdoodle8.mods.galacticraft.core.client.gui.GuiBatteryBox;
-import micdoodle8.mods.galacticraft.core.client.gui.GuiCoalGenerator;
-import micdoodle8.mods.galacticraft.core.client.gui.GuiElectricFurnace;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiBatteryBox;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiCoalGenerator;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiElectricFurnace;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelSpaceship;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererBreathableAir;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererCraftingTable;
@@ -812,15 +812,15 @@ public class ClientProxyCore extends CommonProxyCore
         {
             if (tile instanceof GCCoreTileEntityBatteryBox)
             {
-                return new GuiBatteryBox(player.inventory, ((GCCoreTileEntityBatteryBox) tile));
+                return new GCCoreGuiBatteryBox(player.inventory, ((GCCoreTileEntityBatteryBox) tile));
             }
             else if (tile instanceof GCCoreTileEntityCoalGenerator)
             {
-                return new GuiCoalGenerator(player.inventory, ((GCCoreTileEntityCoalGenerator) tile));
+                return new GCCoreGuiCoalGenerator(player.inventory, ((GCCoreTileEntityCoalGenerator) tile));
             }
             else if (tile instanceof GCCoreTileEntityElectricFurnace)
             {
-                return new GuiElectricFurnace(player.inventory, ((GCCoreTileEntityElectricFurnace) tile));
+                return new GCCoreGuiElectricFurnace(player.inventory, ((GCCoreTileEntityElectricFurnace) tile));
             }
         }
         

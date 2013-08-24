@@ -14,7 +14,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class GuiBatteryBox extends GuiContainer
+public class GCCoreGuiBatteryBox extends GuiContainer
 {
 	private static final ResourceLocation batteryBoxTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/battery_box.png");
 
@@ -23,7 +23,7 @@ public class GuiBatteryBox extends GuiContainer
 	private int containerWidth;
 	private int containerHeight;
 
-	public GuiBatteryBox(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityBatteryBox batteryBox)
+	public GCCoreGuiBatteryBox(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityBatteryBox batteryBox)
 	{
 		super(new ContainerBatteryBox(par1InventoryPlayer, batteryBox));
 		this.tileEntity = batteryBox;
@@ -38,7 +38,7 @@ public class GuiBatteryBox extends GuiContainer
         this.fontRenderer.drawString(this.tileEntity.getInvName(), 65, 6, 4210752);
         String displayJoules = ElectricityDisplay.getDisplayShort(tileEntity.getEnergyStored(), ElectricUnit.JOULES) + " of";
         String displayMaxJoules = ElectricityDisplay.getDisplay(tileEntity.getMaxEnergyStored(), ElectricUnit.JOULES);
-        String displayVoltage = "Voltage: " + (int) (this.tileEntity.getVoltage());
+        String displayVoltage = "Voltage: " + (int) (this.tileEntity.getVoltage() * 1000.0F);
         
         this.fontRenderer.drawString(displayJoules, 122 - this.fontRenderer.getStringWidth(displayJoules) / 2, 30, 4210752);
         this.fontRenderer.drawString(displayMaxJoules, 122 - this.fontRenderer.getStringWidth(displayMaxJoules) / 2, 40, 4210752);

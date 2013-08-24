@@ -14,7 +14,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class GuiElectricFurnace extends GuiContainer
+public class GCCoreGuiElectricFurnace extends GuiContainer
 {
 	private static final ResourceLocation electricFurnaceTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/electric_furnace.png");
 
@@ -23,7 +23,7 @@ public class GuiElectricFurnace extends GuiContainer
 	private int containerWidth;
 	private int containerHeight;
 
-	public GuiElectricFurnace(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityElectricFurnace tileEntity)
+	public GCCoreGuiElectricFurnace(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityElectricFurnace tileEntity)
 	{
 		super(new ContainerElectricFurnace(par1InventoryPlayer, tileEntity));
 		this.tileEntity = tileEntity;
@@ -51,7 +51,7 @@ public class GuiElectricFurnace extends GuiContainer
 
 		this.fontRenderer.drawString("Status: " + displayText, 82, 45, 4210752);
 		this.fontRenderer.drawString(ElectricityDisplay.getDisplay(GCCoreTileEntityElectricFurnace.WATTS_PER_TICK * 20, ElectricUnit.WATT), 82, 56, 4210752);
-		this.fontRenderer.drawString("Voltage: " + (int) (this.tileEntity.getVoltage()), 82, 68, 4210752);
+		this.fontRenderer.drawString("Voltage: " + (int) (this.tileEntity.getVoltage() * 1000.0F), 82, 68, 4210752);
 		this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 

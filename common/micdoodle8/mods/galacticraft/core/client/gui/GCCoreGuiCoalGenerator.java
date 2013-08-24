@@ -14,7 +14,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class GuiCoalGenerator extends GuiContainer
+public class GCCoreGuiCoalGenerator extends GuiContainer
 {
 	private static final ResourceLocation coalGeneratorTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/coal_generator.png");
 
@@ -23,7 +23,7 @@ public class GuiCoalGenerator extends GuiContainer
 	private int containerWidth;
 	private int containerHeight;
 
-	public GuiCoalGenerator(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityCoalGenerator tileEntity)
+	public GCCoreGuiCoalGenerator(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityCoalGenerator tileEntity)
 	{
 		super(new ContainerCoalGenerator(par1InventoryPlayer, tileEntity));
 		this.tileEntity = tileEntity;
@@ -53,7 +53,7 @@ public class GuiCoalGenerator extends GuiContainer
         }
 
         this.fontRenderer.drawString(displayText, 122 - this.fontRenderer.getStringWidth(displayText) / 2, 45, 4210752);
-        displayText = "Voltage: " + (int) (this.tileEntity.getVoltage());
+        displayText = "Voltage: " + (int) (this.tileEntity.getVoltage() * 1000.0F);
         this.fontRenderer.drawString(displayText, 122 - this.fontRenderer.getStringWidth(displayText) / 2, 60, 4210752);
         this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
