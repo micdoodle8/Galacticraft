@@ -73,7 +73,7 @@ import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityAdva
 import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityParachestRenderer;
 import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntitySolarPanelRenderer;
 import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityTreasureChestRenderer;
-import micdoodle8.mods.galacticraft.core.client.render.tile.RenderCopperWire;
+import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreRenderCopperWire;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCCoreSounds;
 import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityAlienVillager;
@@ -231,7 +231,7 @@ public class ClientProxyCore extends CommonProxyCore
         TickRegistry.registerScheduledTickHandler(new GCCoreTickHandlerSlowClient(), Side.CLIENT);
         NetworkRegistry.instance().registerChannel(new GCCorePacketHandlerClient(), GalacticraftCore.CHANNEL, Side.CLIENT);
 
-        ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityCopperWire.class, new RenderCopperWire());
+        ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityCopperWire.class, new GCCoreRenderCopperWire());
         ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityTreasureChest.class, new GCCoreTileEntityTreasureChestRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityParachest.class, new GCCoreTileEntityParachestRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityAdvancedCraftingTable.class, new GCCoreTileEntityAdvancedCraftingTableRenderer());

@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.client.render.tile;
 
-import ic2.api.Direction;
 import ic2.api.energy.tile.IEnergyAcceptor;
 import ic2.api.energy.tile.IEnergyTile;
 import java.util.ArrayList;
@@ -23,7 +22,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class RenderCopperWire extends TileEntitySpecialRenderer
+public class GCCoreRenderCopperWire extends TileEntitySpecialRenderer
 {
 	private static final ResourceLocation copperWireTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/copperWire.png");
 
@@ -59,7 +58,7 @@ public class RenderCopperWire extends TileEntitySpecialRenderer
 			{
 				if (adjacentTile instanceof IEnergyAcceptor)
 				{
-					if (((IEnergyAcceptor) adjacentTile).acceptsEnergyFrom(tileEntity, Direction.values()[(i + 2) % 6].getInverse()))
+					if (((IEnergyAcceptor) adjacentTile).acceptsEnergyFrom(tileEntity, side.getOpposite()))
 					{
 						adjecentConnections.add(adjacentTile);
 					}
