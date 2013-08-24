@@ -43,7 +43,7 @@ import cpw.mods.fml.relauncher.Side;
  */
 public class GCMarsEntityRocketT2 extends EntitySpaceshipBase implements IInventory, IMissileLockable, IRocketType
 {
-    public final int tankCapacity = 2000;
+    public final int tankCapacity = 1500;
     public FluidTank spaceshipFuelTank = new FluidTank(this.tankCapacity);
 
     protected ItemStack[] cargoItems;
