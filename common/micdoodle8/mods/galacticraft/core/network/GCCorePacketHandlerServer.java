@@ -338,7 +338,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
         }
         else if (packetType == 17)
         {
-            final Class[] decodeAs = { Integer.class, Integer.class, Integer.class };
+            final Class[] decodeAs = { Integer.class, Integer.class, Integer.class, Integer.class };
             final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
 
             final TileEntity tileAt = player.worldObj.getBlockTileEntity((Integer) packetReadout[0], (Integer) packetReadout[1], (Integer) packetReadout[2]);
@@ -347,7 +347,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
             {
                 final IDisableableMachine machine = (IDisableableMachine) tileAt;
 
-                machine.setDisabled(!machine.getDisabled());
+                machine.setDisabled((Integer) packetReadout[3], !machine.getDisabled((Integer) packetReadout[3]));
             }
         }
         else if (packetType == 18)

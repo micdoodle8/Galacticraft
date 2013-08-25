@@ -131,7 +131,7 @@ public abstract class GCCoreTileEntityElectric extends TileEntityUniversalElectr
     {
         super.writeToNBT(nbt);
 
-        nbt.setBoolean("isDisabled", this.getDisabled());
+        nbt.setBoolean("isDisabled", this.getDisabled(0));
     }
 
     @Override
@@ -139,7 +139,7 @@ public abstract class GCCoreTileEntityElectric extends TileEntityUniversalElectr
     {
         super.readFromNBT(nbt);
 
-        this.setDisabled(nbt.getBoolean("isDisabled"));
+        this.setDisabled(0, nbt.getBoolean("isDisabled"));
     }
 
     @Override
@@ -156,7 +156,7 @@ public abstract class GCCoreTileEntityElectric extends TileEntityUniversalElectr
     }
 
     @Override
-    public void setDisabled(boolean disabled)
+    public void setDisabled(int index, boolean disabled)
     {
         if (this.disableCooldown == 0)
         {
@@ -166,7 +166,7 @@ public abstract class GCCoreTileEntityElectric extends TileEntityUniversalElectr
     }
 
     @Override
-    public boolean getDisabled()
+    public boolean getDisabled(int index)
     {
         return this.disabled;
     }

@@ -51,10 +51,7 @@ public class GCCoreTileEntityBatteryBox extends TileEntityUniversalElectrical im
             
 			if (this.ticks % 3 == 0)
 			{
-				for (EntityPlayer player : this.playersUsing)
-				{
-					PacketDispatcher.sendPacketToPlayer(getDescriptionPacket(), (Player) player);
-				}
+			    PacketDispatcher.sendPacketToAllAround(this.xCoord, this.yCoord, this.zCoord, 40, this.worldObj.provider.dimensionId, this.getDescriptionPacket());
 			}
 		}
 	}
@@ -296,7 +293,7 @@ public class GCCoreTileEntityBatteryBox extends TileEntityUniversalElectrical im
 	@Override
 	public EnumSet<ForgeDirection> getOutputDirections()
 	{
-		return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() - GCCoreBlockBasicMachine.BATTERY_BOX_METADATA + 2));
+		return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() - GCCoreBlockBasicMachine.BATTERY_BOX_METADATA + 2), ForgeDirection.UNKNOWN);
 	}
 
 	@Override

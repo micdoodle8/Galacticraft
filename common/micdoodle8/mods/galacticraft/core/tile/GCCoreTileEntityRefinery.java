@@ -165,7 +165,7 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
             return false;
         }
 
-        if (this.getDisabled())
+        if (this.getDisabled(0))
         {
             return false;
         }

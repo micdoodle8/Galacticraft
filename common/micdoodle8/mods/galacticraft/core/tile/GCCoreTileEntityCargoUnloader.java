@@ -313,7 +313,7 @@ public class GCCoreTileEntityCargoUnloader extends GCCoreTileEntityElectric impl
     @Override
     public boolean shouldUseEnergy()
     {
-        return !this.getDisabled();
+        return !this.getDisabled(0);
     }
 
     @Override

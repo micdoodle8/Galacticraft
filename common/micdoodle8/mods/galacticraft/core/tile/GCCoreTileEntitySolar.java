@@ -82,7 +82,7 @@ public class GCCoreTileEntitySolar extends TileEntityUniversalElectrical impleme
                 this.disableCooldown--;
             }
 
-            if (!this.getDisabled() && this.ticks % 20 == 0)
+            if (!this.getDisabled(0) && this.ticks % 20 == 0)
             {
                 this.solarStrength = 0;
 
@@ -211,7 +211,7 @@ public class GCCoreTileEntitySolar extends TileEntityUniversalElectrical impleme
 
     public float getGenerate()
     {
-        if (this.getDisabled())
+        if (this.getDisabled(0))
         {
             return 0.0F;
         }
@@ -343,7 +343,7 @@ public class GCCoreTileEntitySolar extends TileEntityUniversalElectrical impleme
 
         this.currentAngle = nbt.getFloat("currentAngle");
         this.targetAngle = nbt.getFloat("targetAngle");
-        this.setDisabled(nbt.getBoolean("disabled"));
+        this.setDisabled(0, nbt.getBoolean("disabled"));
         this.disableCooldown = nbt.getInteger("disabledCooldown");
 
         final NBTTagList var2 = nbt.getTagList("Items");
@@ -375,7 +375,7 @@ public class GCCoreTileEntitySolar extends TileEntityUniversalElectrical impleme
         nbt.setFloat("currentAngle", this.currentAngle);
         nbt.setFloat("targetAngle", this.targetAngle);
         nbt.setInteger("disabledCooldown", this.disableCooldown);
-        nbt.setBoolean("disabled", this.getDisabled());
+        nbt.setBoolean("disabled", this.getDisabled(0));
 
         final NBTTagList list = new NBTTagList();
 
@@ -444,7 +444,7 @@ public class GCCoreTileEntitySolar extends TileEntityUniversalElectrical impleme
     }
 
     @Override
-    public void setDisabled(boolean disabled)
+    public void setDisabled(int index, boolean disabled)
     {
         if (this.disableCooldown == 0)
         {
@@ -454,7 +454,7 @@ public class GCCoreTileEntitySolar extends TileEntityUniversalElectrical impleme
     }
 
     @Override
-    public boolean getDisabled()
+    public boolean getDisabled(int index)
     {
         return this.disabled;
     }

@@ -46,7 +46,7 @@ public class GCCoreGuiSolar extends GCCoreGuiContainer
         switch (par1GuiButton.id)
         {
         case 0:
-            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 17, new Object[] { this.solarPanel.xCoord, this.solarPanel.yCoord, this.solarPanel.zCoord }));
+            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 17, new Object[] { this.solarPanel.xCoord, this.solarPanel.yCoord, this.solarPanel.zCoord, 0 }));
             break;
         }
     }
@@ -80,7 +80,7 @@ public class GCCoreGuiSolar extends GCCoreGuiContainer
     {
         int offsetY = 35;
         this.buttonEnableSolar.enabled = this.solarPanel.disableCooldown == 0;
-        this.buttonEnableSolar.displayString = !this.solarPanel.getDisabled() ? LanguageRegistry.instance().getStringLocalization("gui.button.disable.name") : LanguageRegistry.instance().getStringLocalization("gui.button.enable.name");
+        this.buttonEnableSolar.displayString = !this.solarPanel.getDisabled(0) ? LanguageRegistry.instance().getStringLocalization("gui.button.disable.name") : LanguageRegistry.instance().getStringLocalization("gui.button.enable.name");
         String displayString = this.solarPanel.getInvName();
         this.fontRenderer.drawString(displayString, this.xSize / 2 - this.fontRenderer.getStringWidth(displayString) / 2, 7, 4210752);
         displayString = LanguageRegistry.instance().getStringLocalization("gui.message.status.name") + ": " + this.getStatus();
@@ -97,7 +97,7 @@ public class GCCoreGuiSolar extends GCCoreGuiContainer
 
     private String getStatus()
     {
-        if (this.solarPanel.getDisabled())
+        if (this.solarPanel.getDisabled(0))
         {
             return EnumColor.ORANGE + LanguageRegistry.instance().getStringLocalization("gui.status.disabled.name");
         }

@@ -273,7 +273,7 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
     @Override
     public boolean shouldUseEnergy()
     {
-        return GCCoreTileEntityOxygen.timeSinceOxygenRequest > 0 && !this.getDisabled();
+        return GCCoreTileEntityOxygen.timeSinceOxygenRequest > 0 && !this.getDisabled(0);
     }
 
     @Override

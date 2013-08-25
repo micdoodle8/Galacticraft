@@ -46,7 +46,7 @@ public class GCCoreGuiCargoUnloader extends GCCoreGuiContainer
         switch (par1GuiButton.id)
         {
         case 0:
-            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 17, new Object[] { this.fuelLoader.xCoord, this.fuelLoader.yCoord, this.fuelLoader.zCoord }));
+            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 17, new Object[] { this.fuelLoader.xCoord, this.fuelLoader.yCoord, this.fuelLoader.zCoord, 0 }));
             break;
         }
     }
@@ -78,7 +78,7 @@ public class GCCoreGuiCargoUnloader extends GCCoreGuiContainer
         int offsetY = 45;
         this.fontRenderer.drawString(this.fuelLoader.getInvName(), 60, 12, 4210752);
         this.buttonLoadItems.enabled = this.fuelLoader.disableCooldown == 0;
-        this.buttonLoadItems.displayString = !this.fuelLoader.getDisabled() ? LanguageRegistry.instance().getStringLocalization("gui.button.stopunloading.name") : LanguageRegistry.instance().getStringLocalization("gui.button.unloaditems.name");
+        this.buttonLoadItems.displayString = !this.fuelLoader.getDisabled(0) ? LanguageRegistry.instance().getStringLocalization("gui.button.stopunloading.name") : LanguageRegistry.instance().getStringLocalization("gui.button.unloaditems.name");
         this.fontRenderer.drawString(LanguageRegistry.instance().getStringLocalization("gui.message.status.name") + ": " + this.getStatus(), 28 + offsetX, 45 + 23 - 46 + offsetY, 4210752);
         this.fontRenderer.drawString(ElectricityDisplay.getDisplay(GCCoreTileEntityFuelLoader.WATTS_PER_TICK * 20, ElectricUnit.WATT), 28 + offsetX, 56 + 23 - 46 + offsetY, 4210752);
         this.fontRenderer.drawString(ElectricityDisplay.getDisplay(this.fuelLoader.getVoltage(), ElectricUnit.VOLTAGE), 28 + offsetX, 68 + 23 - 46 + offsetY, 4210752);
@@ -107,7 +107,7 @@ public class GCCoreGuiCargoUnloader extends GCCoreGuiContainer
             return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.missingpower.name");
         }
 
-        if (this.fuelLoader.getDisabled())
+        if (this.fuelLoader.getDisabled(0))
         {
             return EnumColor.ORANGE + LanguageRegistry.instance().getStringLocalization("gui.status.ready.name");
         }

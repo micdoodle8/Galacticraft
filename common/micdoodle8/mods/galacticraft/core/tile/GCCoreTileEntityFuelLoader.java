@@ -379,7 +379,7 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
     @Override
     public boolean shouldUseEnergy()
     {
-        return this.fuelTank.getFluid() != null && this.fuelTank.getFluid().amount > 0 && !this.getDisabled();
+        return this.fuelTank.getFluid() != null && this.fuelTank.getFluid().amount > 0 && !this.getDisabled(0);
     }
 
     @Override
