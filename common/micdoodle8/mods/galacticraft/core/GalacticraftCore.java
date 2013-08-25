@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import mekanism.api.GasTransmission;
+import mekanism.api.TransmitterNetworkRegistry;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.world.ICelestialBody;
@@ -295,7 +295,7 @@ public class GalacticraftCore
                
         ConductorChunkInitiate.register();
         Compatibility.initiate();
-        GasTransmission.register();
+        TransmitterNetworkRegistry.initiate();
         UniversalElectricity.isNetworkActive = true;
 
         this.registerCreatures();

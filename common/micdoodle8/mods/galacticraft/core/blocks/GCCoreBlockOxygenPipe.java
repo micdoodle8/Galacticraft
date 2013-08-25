@@ -1,8 +1,9 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.Arrays;
+import mekanism.api.GasNetwork;
 import mekanism.api.GasTransmission;
-import mekanism.api.IPressurizedTube;
+import mekanism.api.ITransmitter;
 import mekanism.api.ITubeConnection;
 import micdoodle8.mods.galacticraft.api.tile.IColorable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -69,9 +70,9 @@ public class GCCoreBlockOxygenPipe extends BlockContainer implements ITileEntity
     {
         TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
 
-        if (!world.isRemote && tileEntity instanceof IPressurizedTube)
+        if (!world.isRemote && tileEntity instanceof ITransmitter<?>)
         {
-            ((IPressurizedTube) tileEntity).refreshNetwork();
+            ((ITransmitter<?>) tileEntity).refreshNetwork();
         }
     }
 
@@ -80,9 +81,9 @@ public class GCCoreBlockOxygenPipe extends BlockContainer implements ITileEntity
     {
         TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
 
-        if (!world.isRemote && tileEntity instanceof IPressurizedTube)
+        if (!world.isRemote && tileEntity instanceof ITransmitter<?>)
         {
-            ((IPressurizedTube) tileEntity).refreshNetwork();
+            ((ITransmitter<?>) tileEntity).refreshNetwork();
         }
     }
 
@@ -152,9 +153,9 @@ public class GCCoreBlockOxygenPipe extends BlockContainer implements ITileEntity
                             ((IColorable) tileAt).onAdjacentColorChanged(dir);
                         }
 
-                        if (!par1World.isRemote && tileAt instanceof IPressurizedTube)
+                        if (!par1World.isRemote && tileAt instanceof ITransmitter<?>)
                         {
-                            ((IPressurizedTube) tileAt).refreshNetwork();
+                            ((ITransmitter<?>) tileAt).refreshNetwork();
                         }
                     }
 

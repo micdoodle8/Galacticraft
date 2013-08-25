@@ -1,10 +1,14 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import mekanism.api.EnumGas;
+import java.util.HashSet;
 import mekanism.api.GasNetwork;
-import mekanism.api.IPressurizedTube;
+import mekanism.api.GasTransmission;
+import mekanism.api.IGasTransmitter;
+import mekanism.api.ITransmitter;
 import mekanism.api.ITubeConnection;
 import mekanism.api.Object3D;
+import mekanism.api.TransmissionType;
+import mekanism.api.TransmitterNetworkRegistry;
 import micdoodle8.mods.galacticraft.api.tile.IColorable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,26 +16,23 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
-public class GCCoreTileEntityOxygenPipe extends TileEntity implements ITubeConnection, IPressurizedTube, IColorable, IPacketReceiver
+public class GCCoreTileEntityOxygenPipe extends TileEntity implements ITubeConnection, IGasTransmitter, IColorable, IPacketReceiver
 {
     private byte pipeColor = 15;
     private byte preLoadColor;
     private byte preColorCooldown;
     private boolean setColor = false;
 
-    public GasNetwork gasNetwork;
-
-    @Override
-    public boolean canTransferGas()
-    {
-        return true;
-    }
+    public GasNetwork theNetwork;
 
     @Override
     public boolean canTransferGasToTube(TileEntity tile)
@@ -48,75 +49,49 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity implements ITubeConne
             }
         }
 
-        return true;
+        return tile instanceof IGasTransmitter;
+    }
+    
+    @Override
+    public void onChunkUnload() 
+    {
+        invalidate();
+        TransmitterNetworkRegistry.getInstance().pruneEmptyNetworks();
+    }
+    
+    @Override
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getRenderBoundingBox()
+    {
+        return INFINITE_EXTENT_AABB;
+    }
+    
+    @Override
+    public boolean areNetworksEqual(TileEntity tileEntity)
+    {
+        return tileEntity instanceof ITransmitter && getTransmissionType() == ((ITransmitter)tileEntity).getTransmissionType();
+    }
+    
+    @Override
+    public GasNetwork getNetwork()
+    {
+        return getNetwork(true);
+    }
+    
+    @Override
+    public void setNetwork(GasNetwork network)
+    {
+        if(network != theNetwork)
+        {
+            removeFromNetwork();
+            theNetwork = network;
+        }
     }
 
     @Override
     public boolean canUpdate()
     {
         return !this.setColor;
-    }
-
-    @Override
-    public GasNetwork getNetwork()
-    {
-        if (this.gasNetwork == null)
-        {
-            this.gasNetwork = new GasNetwork(this);
-        }
-
-        return this.gasNetwork;
-    }
-
-    @Override
-    public void invalidate()
-    {
-        if (!this.worldObj.isRemote)
-        {
-            this.getNetwork().split(this);
-        }
-
-        super.invalidate();
-    }
-
-    @Override
-    public void setNetwork(GasNetwork network)
-    {
-        this.gasNetwork = network;
-    }
-
-    @Override
-    public void refreshNetwork()
-    {
-        if (!this.worldObj.isRemote)
-        {
-            if (this.canTransferGas())
-            {
-                for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS)
-                {
-                    TileEntity tileEntity = Object3D.get(this).getFromSide(side).getTileEntity(this.worldObj);
-
-                    if (tileEntity instanceof IPressurizedTube)
-                    {
-                        if (((IPressurizedTube) tileEntity).canTransferGasToTube(this) && this.canTransferGasToTube(tileEntity))
-                        {
-                            this.getNetwork().merge(((IPressurizedTube) tileEntity).getNetwork());
-                        }
-                        else
-                        {
-                            ((IPressurizedTube) tileEntity).getNetwork().split(this);
-                            this.getNetwork().split((IPressurizedTube) tileEntity);
-                        }
-                    }
-                }
-
-                this.getNetwork().refresh();
-            }
-            else
-            {
-                this.getNetwork().split(this);
-            }
-        }
     }
 
     @Override
@@ -238,9 +213,116 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity implements ITubeConne
         }
     }
 
+    
     @Override
-    public void onTransfer(EnumGas type)
+    public TransmissionType getTransmissionType()
     {
-        ;
+        return TransmissionType.GAS;
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Override
+    public GasNetwork getNetwork(boolean createIfNull)
+    {
+        if (theNetwork == null && createIfNull)
+        {
+            TileEntity[] adjacentTubes = GasTransmission.getConnectedTubes(this);
+            HashSet<GasNetwork> connectedNets = new HashSet<GasNetwork>();
+            
+            for (TileEntity tube : adjacentTubes)
+            {
+                if (TransmissionType.checkTransmissionType(tube, TransmissionType.GAS, this) && ((ITransmitter<GasNetwork>) tube).getNetwork(false) != null)
+                {
+                    connectedNets.add(((ITransmitter<GasNetwork>)tube).getNetwork());
+                }
+            }
+            
+            if(connectedNets.size() == 0 || worldObj.isRemote)
+            {
+                theNetwork = new GasNetwork(this);
+            }
+            else if(connectedNets.size() == 1)
+            {
+                theNetwork = (GasNetwork)connectedNets.iterator().next();
+                theNetwork.transmitters.add(this);
+            }
+            else 
+            {
+                theNetwork = new GasNetwork(connectedNets);
+                theNetwork.transmitters.add(this);
+            }
+        }
+        
+        return theNetwork;
+    }
+
+    @Override
+    public void fixNetwork()
+    {
+        getNetwork().fixMessedUpNetwork(this);
+    }
+
+    @Override
+    public void invalidate()
+    {
+        if(!worldObj.isRemote)
+        {
+            getNetwork().split(this);
+        }
+        
+        super.invalidate();
+    }
+    
+    @Override
+    public void removeFromNetwork()
+    {
+        if(theNetwork != null)
+        {
+            theNetwork.removeTransmitter(this);
+        }
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Override
+    public void refreshNetwork() 
+    {
+        if (!worldObj.isRemote)
+        {
+            for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS)
+            {
+                TileEntity tileEntity = Object3D.get(this).getFromSide(side).getTileEntity(worldObj);
+                
+                if (TransmissionType.checkTransmissionType(tileEntity, TransmissionType.GAS, this))
+                {
+                    getNetwork().merge(((ITransmitter<GasNetwork>)tileEntity).getNetwork());
+                }
+            }
+            
+            getNetwork().refresh();
+        }
+    }
+    
+    @Override
+    public int getNetworkSize()
+    {
+        return getNetwork().getSize();
+    }
+
+    @Override
+    public int getNetworkAcceptorSize()
+    {
+        return getNetwork().getAcceptorSize();
+    }
+
+    @Override
+    public String getNetworkNeeded()
+    {
+        return getNetwork().getNeeded();
+    }
+
+    @Override
+    public String getNetworkFlow()
+    {
+        return getNetwork().getFlow();
     }
 }
