@@ -947,7 +947,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
         this.usingPlanetSelectionGui = nbt.getBoolean("usingPlanetSelectionGui");
         this.setTeleportCooldown(nbt.getInteger("teleportCooldown"));
         this.coordsTeleportedFromX = nbt.getDouble("coordsTeleportedFromX");
-        this.coordsTeleportedFromZ = nbt.getDouble("coordsTeleportedFromX");
+        this.coordsTeleportedFromZ = nbt.getDouble("coordsTeleportedFromZ");
         this.setSpaceStationDimensionID(nbt.getInteger("spaceStationDimensionID"));
 
         if (nbt.getBoolean("usingPlanetSelectionGui"))
