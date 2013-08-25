@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.mars.tile;
 
 import java.util.ArrayList;
+import java.util.Random;
+import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectric;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygen;
@@ -15,7 +17,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet;
+import net.minecraft.world.World;
+import net.minecraft.world.gen.feature.WorldGenBigTree;
+import net.minecraft.world.gen.feature.WorldGenForest;
+import net.minecraft.world.gen.feature.WorldGenHugeTrees;
+import net.minecraft.world.gen.feature.WorldGenTaiga2;
+import net.minecraft.world.gen.feature.WorldGenTrees;
+import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.event.terraingen.TerrainGen;
 import universalelectricity.core.item.IItemElectric;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.PacketManager;
@@ -28,14 +38,18 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
  * All rights reserved.
  * 
  */
-public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectric implements IInventory, ISidedInventory
+public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectric implements IInventory, ISidedInventory, IDisableableMachine
 {
     public boolean active;
     public boolean lastActive;
     public static final float WATTS_PER_TICK = 0.2F;
-    private ItemStack[] containingItems = new ItemStack[1];
+    private ItemStack[] containingItems = new ItemStack[14];
     public GCMarsEntityTerraformBubble terraformBubble;
     private ArrayList<Vector3> terraformableBlocksList = new ArrayList<Vector3>();
+    private ArrayList<Vector3> grassBlockList = new ArrayList<Vector3>();
+    public int terraformableBlocksListSize = 0; // used for server->client ease
+    public boolean treesDisabled;
+    public boolean grassDisabled;
 
     public GCMarsTileEntityTerraformer()
     {
@@ -87,10 +101,9 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectric implem
 
         if (this.terraformBubble == null)
         {
-            this.terraformBubble = new GCMarsEntityTerraformBubble(this.worldObj, new Vector3(this), this);
-
             if (!this.worldObj.isRemote)
             {
+                this.terraformBubble = new GCMarsEntityTerraformBubble(this.worldObj, new Vector3(this), this);
                 this.terraformBubble.setPosition(this.xCoord, this.yCoord, this.zCoord);
                 this.worldObj.spawnEntityInWorld(this.terraformBubble);
             }
@@ -98,7 +111,7 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectric implem
 
         if (!this.worldObj.isRemote)
         {
-            if (this.terraformBubble.getSize() >= 1 && this.getEnergyStored() > 0)
+            if (this.terraformBubble.getSize() == this.terraformBubble.MAX_SIZE && this.getEnergyStored() > 0)
             {
                 this.active = true;
             }
@@ -111,7 +124,7 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectric implem
         if (!this.worldObj.isRemote && (this.active != this.lastActive || this.ticks % 20 == 0))
         {
             this.terraformableBlocksList.clear();
-            // if (this.active)
+            if (this.active)
             {
                 for (int x = (int) Math.floor(this.xCoord - this.terraformBubble.getSize()); x < Math.ceil(this.xCoord + this.terraformBubble.getSize()); x++)
                 {
@@ -129,6 +142,10 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectric implem
                                 {
                                     this.terraformableBlocksList.add(new Vector3(x, y, z));
                                 }
+                                else if (block.blockID == Block.grass.blockID)
+                                {
+                                    this.grassBlockList.add(new Vector3(x, y, z));
+                                }
                             }
                         }
                     }
@@ -136,19 +153,132 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectric implem
             }
         }
 
-        if (!this.worldObj.isRemote && this.terraformableBlocksList.size() > 0 && this.worldObj.rand.nextInt(5) == 0)
+        if (!this.worldObj.isRemote && this.terraformableBlocksList.size() > 0 && this.ticks % 5 == 0)
         {
             ArrayList<Vector3> terraformableBlocks2 = new ArrayList<Vector3>(this.terraformableBlocksList);
 
             int randomIndex = this.worldObj.rand.nextInt(this.terraformableBlocksList.size());
             Vector3 vec = terraformableBlocks2.get(randomIndex);
-            this.worldObj.setBlock(vec.intX(), vec.intY(), vec.intZ(), Block.grass.blockID);
+            
+            int ID = 0;
+            
+//            if ()
+            
+            switch (this.worldObj.rand.nextInt(30))
+            {
+            case 0:
+                ID = Block.waterMoving.blockID;
+                break;
+            default:
+                ID = Block.grass.blockID;
+                break;
+            }
+            
+            this.worldObj.setBlock(vec.intX(), vec.intY(), vec.intZ(), ID);
 
             this.terraformableBlocksList.remove(randomIndex);
         }
 
+        if (!this.worldObj.isRemote && !this.treesDisabled && this.terraformableBlocksList.size() > 0 && this.ticks % 100 == 0)
+        {
+            ArrayList<Vector3> grassBlocks2 = new ArrayList<Vector3>(this.grassBlockList);
+
+            int randomIndex = this.worldObj.rand.nextInt(this.grassBlockList.size());
+            Vector3 vec = grassBlocks2.get(randomIndex);
+            
+//            BlockSapling.gro
+
+            this.grassBlockList.remove(randomIndex);
+        }
+        
+        if (!this.worldObj.isRemote)
+        {
+            this.terraformableBlocksListSize = this.terraformableBlocksList.size();
+        }
+
         this.lastActive = this.active;
     }
+
+//    public void growTree(World par1World, int par2, int par3, int par4, Random par5Random)
+//    {
+//        int l = par1World.getBlockMetadata(par2, par3, par4) & 3;
+//        Object object = null;
+//        int i1 = 0;
+//        int j1 = 0;
+//        boolean flag = false;
+//
+//        if (l == 1)
+//        {
+//            object = new WorldGenTaiga2(true);
+//        }
+//        else if (l == 2)
+//        {
+//            object = new WorldGenForest(true);
+//        }
+//        else if (l == 3)
+//        {
+//            for (i1 = 0; i1 >= -1; --i1)
+//            {
+//                for (j1 = 0; j1 >= -1; --j1)
+//                {
+//                    if (this.isSameSapling(par1World, par2 + i1, par3, par4 + j1, 3) && this.isSameSapling(par1World, par2 + i1 + 1, par3, par4 + j1, 3) && this.isSameSapling(par1World, par2 + i1, par3, par4 + j1 + 1, 3) && this.isSameSapling(par1World, par2 + i1 + 1, par3, par4 + j1 + 1, 3))
+//                    {
+//                        object = new WorldGenHugeTrees(true, 10 + par5Random.nextInt(20), 3, 3);
+//                        flag = true;
+//                        break;
+//                    }
+//                }
+//
+//                if (object != null)
+//                {
+//                    break;
+//                }
+//            }
+//
+//            if (object == null)
+//            {
+//                j1 = 0;
+//                i1 = 0;
+//                object = new WorldGenTrees(true, 4 + par5Random.nextInt(7), 3, 3, false);
+//            }
+//        }
+//        else
+//        {
+//            object = new WorldGenTrees(true);
+//
+//            if (par5Random.nextInt(10) == 0)
+//            {
+//                object = new WorldGenBigTree(true);
+//            }
+//        }
+//
+//        if (flag)
+//        {
+//            par1World.setBlock(par2 + i1, par3, par4 + j1, 0, 0, 4);
+//            par1World.setBlock(par2 + i1 + 1, par3, par4 + j1, 0, 0, 4);
+//            par1World.setBlock(par2 + i1, par3, par4 + j1 + 1, 0, 0, 4);
+//            par1World.setBlock(par2 + i1 + 1, par3, par4 + j1 + 1, 0, 0, 4);
+//        }
+//        else
+//        {
+//            par1World.setBlock(par2, par3, par4, 0, 0, 4);
+//        }
+//
+//        if (!((WorldGenerator)object).generate(par1World, par5Random, par2 + i1, par3, par4 + j1))
+//        {
+//            if (flag)
+//            {
+//                par1World.setBlock(par2 + i1, par3, par4 + j1, this.blockID, l, 4);
+//                par1World.setBlock(par2 + i1 + 1, par3, par4 + j1, this.blockID, l, 4);
+//                par1World.setBlock(par2 + i1, par3, par4 + j1 + 1, this.blockID, l, 4);
+//                par1World.setBlock(par2 + i1 + 1, par3, par4 + j1 + 1, this.blockID, l, 4);
+//            }
+//            else
+//            {
+//                par1World.setBlock(par2, par3, par4, this.blockID, l, 4);
+//            }
+//        }
+//    }
 
     @Override
     public void readFromNBT(NBTTagCompound par1NBTTagCompound)
@@ -283,7 +413,7 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectric implem
     @Override
     public int[] getAccessibleSlotsFromSide(int side)
     {
-        return new int[] { 0 };
+        return new int[] { 1 };
     }
 
     @Override
@@ -295,7 +425,7 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectric implem
     @Override
     public boolean canExtractItem(int slotID, ItemStack itemstack, int side)
     {
-        return slotID == 0;
+        return slotID == 1;
     }
 
     @Override
@@ -307,7 +437,7 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectric implem
     @Override
     public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
     {
-        return slotID == 0 ? itemstack.getItem() instanceof IItemElectric : false;
+        return slotID == 1 ? itemstack.getItem() instanceof IItemElectric : false;
     }
 
     @Override
@@ -331,7 +461,7 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectric implem
     @Override
     public boolean shouldUseEnergy()
     {
-        return GCCoreTileEntityOxygen.timeSinceOxygenRequest > 0;
+        return this.grassDisabled || this.treesDisabled;
     }
 
     @Override
@@ -340,14 +470,19 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectric implem
         if (this.worldObj.isRemote)
         {
             this.setEnergyStored(data.readFloat());
-            this.disabled = data.readBoolean();
+            this.treesDisabled = data.readBoolean();
+            this.grassDisabled = data.readBoolean();
+            this.disableCooldown = data.readInt();
+            int terraformBubbleEntityID = data.readInt();
+            this.terraformBubble = (GCMarsEntityTerraformBubble) (terraformBubbleEntityID == -1 ? null : this.worldObj.getEntityByID(terraformBubbleEntityID));
+            this.terraformableBlocksListSize = data.readInt();
         }
     }
 
     @Override
     public Packet getPacket()
     {
-        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getEnergyStored(), this.disabled);
+        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getEnergyStored(), this.treesDisabled, this.grassDisabled, this.disableCooldown, this.terraformBubble != null ? this.terraformBubble.entityId : -1, this.terraformableBlocksListSize);
     }
 
     @Override
@@ -359,6 +494,37 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectric implem
     @Override
     public ItemStack getBatteryInSlot()
     {
-        return this.getStackInSlot(0);
+        return this.getStackInSlot(1);
+    }
+
+    public void setDisabled(int index, boolean disabled)
+    {
+        if (this.disableCooldown <= 0)
+        {
+            switch (index)
+            {
+            case 0:
+                this.treesDisabled = !this.treesDisabled;
+                break;
+            case 1:
+                this.grassDisabled = !this.grassDisabled;
+                break;
+            }
+            
+            this.disableCooldown = 10;
+        }
+    }
+    
+    public boolean getDisabled(int index)
+    {
+        switch (index)
+        {
+        case 0:
+            return this.treesDisabled;
+        case 1:
+            return this.grassDisabled;
+        }
+        
+        return false;
     }
 }

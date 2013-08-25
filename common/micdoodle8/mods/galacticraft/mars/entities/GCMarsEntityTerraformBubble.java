@@ -17,7 +17,9 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.IPacketReceiver;
+import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -125,7 +127,14 @@ public class GCMarsEntityTerraformBubble extends Entity implements IPacketReceiv
 
         if (this.terraformer != null)
         {
-            this.size = (float) Math.min(Math.max(0, this.size + 0.1F), this.MAX_SIZE);
+            if (this.terraformer.getEnergyStored() > 0.0F && (!this.terraformer.grassDisabled || !this.terraformer.treesDisabled))
+            {
+                this.size = (float) Math.min(Math.max(0, this.size + 0.1F), this.MAX_SIZE);
+            }
+            else
+            {
+                this.size = (float) Math.min(Math.max(0, this.size - 0.1F), this.MAX_SIZE);
+            }
         }
 
         if (this.terraformer != null)
@@ -135,6 +144,11 @@ public class GCMarsEntityTerraformBubble extends Entity implements IPacketReceiv
             this.posX = vec.x + 0.5D;
             this.posY = vec.y + 1.0D;
             this.posZ = vec.z + 0.5D;
+        }
+
+        if (!this.worldObj.isRemote && this.ticks % 5 == 0)
+        {
+            PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 50);
         }
     }
 
@@ -201,6 +215,6 @@ public class GCMarsEntityTerraformBubble extends Entity implements IPacketReceiv
     @Override
     protected void writeEntityToNBT(NBTTagCompound nbttagcompound)
     {
-        nbttagcompound.setDouble("bubbleSizeF", this.size);
+        nbttagcompound.setFloat("bubbleSizeF", this.size);
     }
 }

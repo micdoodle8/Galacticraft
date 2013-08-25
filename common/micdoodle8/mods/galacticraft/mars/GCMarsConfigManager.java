@@ -64,6 +64,7 @@ public class GCMarsConfigManager
 
     // GUI
     public static int idGuiRocketCraftingBenchT2;
+    public static int idGuiMachine;
 
     // SCHEMATIC
     public static int idSchematicRocketT2;
@@ -105,6 +106,7 @@ public class GCMarsConfigManager
             GCMarsConfigManager.idEntityTerraformBubble = GCMarsConfigManager.configuration.get("Entities", "idEntityTerraformBubble", 176).getInt(176);
 
             GCMarsConfigManager.idGuiRocketCraftingBenchT2 = GCMarsConfigManager.configuration.get("GUI", "idGuiRocketCraftingBenchT2", 143).getInt(143);
+            GCMarsConfigManager.idGuiMachine = GCMarsConfigManager.configuration.get("GUI", "idGuiMachine", 146).getInt(146);
 
             GCMarsConfigManager.idSchematicRocketT2 = GCMarsConfigManager.configuration.get("Schematic", "idSchematicRocketT2", 2).getInt(2);
         }

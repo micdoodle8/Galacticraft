@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.mars.blocks;
 
 import java.util.List;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.mars.GCMarsConfigManager;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityTerraformer;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -225,26 +226,21 @@ public class GCMarsBlockMachine extends BlockTile
     {
         int metadata = par1World.getBlockMetadata(x, y, z);
 
-        if (!par1World.isRemote)
+        if (metadata >= GCMarsBlockMachine.UNUSED_MACHINE_1)
         {
-            if (metadata >= GCMarsBlockMachine.UNUSED_MACHINE_1)
-            {
-                par5EntityPlayer.openGui(GalacticraftMars.instance, -1, par1World, x, y, z);
-                return true;
-            }
-            else if (metadata >= GCMarsBlockMachine.UNUSED_MACHINE_0)
-            {
-                par5EntityPlayer.openGui(GalacticraftMars.instance, -1, par1World, x, y, z);
-                return true;
-            }
-            else
-            {
-                par5EntityPlayer.openGui(GalacticraftMars.instance, -1, par1World, x, y, z);
-                return true;
-            }
+            par5EntityPlayer.openGui(GalacticraftMars.instance, -1, par1World, x, y, z);
+            return true;
         }
-
-        return true;
+        else if (metadata >= GCMarsBlockMachine.UNUSED_MACHINE_0)
+        {
+            par5EntityPlayer.openGui(GalacticraftMars.instance, -1, par1World, x, y, z);
+            return true;
+        }
+        else
+        {
+            par5EntityPlayer.openGui(GalacticraftMars.instance, GCMarsConfigManager.idGuiMachine, par1World, x, y, z);
+            return true;
+        }
     }
 
     @Override

@@ -138,6 +138,7 @@ public class GalacticraftMars
         GalacticraftRegistry.registerTeleportType(GCMarsWorldProvider.class, new GCMoonTeleportType());
         GCMarsUtil.addSmeltingRecipes();
         GalacticraftRegistry.registerCelestialBody(new GCMarsPlanet());
+        NetworkRegistry.instance().registerGuiHandler(GalacticraftMars.instance, GalacticraftMars.proxy);
         this.registerTileEntities();
         this.registerCreatures();
         this.registerOtherEntities();
