@@ -1154,7 +1154,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
     public void setCoordsTeleportedFromZ(double coords)
     {
-        this.coordsTeleportedFromX = coords;
+        this.coordsTeleportedFromZ = coords;
     }
 
     public ArrayList<ISchematicPage> getUnlockedSchematics()
