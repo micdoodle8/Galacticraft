@@ -101,6 +101,18 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
     }
 
     @Override
+    public boolean isInWater()
+    {
+        return false;
+    }
+
+    @Override
+    public boolean handleWaterMovement()
+    {
+        return false;
+    }
+
+    @Override
     public void updateRiderPosition()
     {
         if (this.riddenByEntity != null)
