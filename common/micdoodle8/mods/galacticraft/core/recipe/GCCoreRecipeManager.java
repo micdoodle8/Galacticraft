@@ -763,9 +763,9 @@ public class GCCoreRecipeManager
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreItems.itemBasic, 1, 1), new Object[] { "XXX", "YYY", "XXX", 'X', new ItemStack(GCCoreItems.itemBasic, 1, 0), 'Y', RecipeUtil.getIndustrialCraftItem("insulatedCopperCableItem") });
 
-        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.solarPanel, 1, 0), new Object[] { "XYX", "XZX", "VWV", 'V', "copperWire", 'W', RecipeUtil.getIndustrialCraftItem("electronicCircuit"), 'X', "ingotRefinedIron", 'Y', new ItemStack(GCCoreItems.itemBasic, 1, 1), 'Z', GCCoreItems.flagPole });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.solarPanel, 1, 0), new Object[] { "XYX", "XZX", "VWV", 'V', RecipeUtil.getIndustrialCraftItem("insulatedCopperCableItem"), 'W', RecipeUtil.getIndustrialCraftItem("electronicCircuit"), 'X', "ingotRefinedIron", 'Y', new ItemStack(GCCoreItems.itemBasic, 1, 1), 'Z', GCCoreItems.flagPole });
 
-        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.solarPanel, 1, 4), new Object[] { "XYX", "XZX", "VWV", 'V', "copperWire", 'W', RecipeUtil.getIndustrialCraftItem("advancedCircuit"), 'X', "ingotRefinedIron", 'Y', new ItemStack(GCCoreItems.itemBasic, 1, 1), 'Z', GCCoreItems.flagPole });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.solarPanel, 1, 4), new Object[] { "XYX", "XZX", "VWV", 'V', RecipeUtil.getIndustrialCraftItem("insulatedCopperCableItem"), 'W', RecipeUtil.getIndustrialCraftItem("advancedCircuit"), 'X', "ingotRefinedIron", 'Y', new ItemStack(GCCoreItems.itemBasic, 1, 1), 'Z', GCCoreItems.flagPole });
 
         try
         {
