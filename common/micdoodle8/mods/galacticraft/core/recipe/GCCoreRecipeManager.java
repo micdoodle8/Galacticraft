@@ -770,7 +770,7 @@ public class GCCoreRecipeManager
             ItemStack tinDustItemStack = (ItemStack) tinDustObject;
             ic2.api.recipe.Recipes.macerator.addRecipe(new ItemStack(GCMoonBlocks.blockMoon.blockID, 1, 1), null, new ItemStack(tinDustItemStack.getItem(), 2, 1));
         }
-        catch (Exception e)
+        catch (Throwable e)
         {
             e.printStackTrace();
         }
