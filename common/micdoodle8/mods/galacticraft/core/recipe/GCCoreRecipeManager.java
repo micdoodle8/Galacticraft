@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.recipe;
 
 import ic2.api.item.Items;
+import ic2.api.recipe.RecipeInputItemStack;
 import java.util.HashMap;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
@@ -764,11 +765,11 @@ public class GCCoreRecipeManager
             
             Object copperDustObject = clazz.getField("copperDust").get(null);
             ItemStack copperDustItemStack = (ItemStack) copperDustObject;
-            ic2.api.recipe.Recipes.macerator.addRecipe(new ItemStack(GCMoonBlocks.blockMoon.blockID, 1, 0), null, new ItemStack(copperDustItemStack.getItem(), 2, 1));
+            ic2.api.recipe.Recipes.macerator.addRecipe(new RecipeInputItemStack(new ItemStack(GCMoonBlocks.blockMoon.blockID, 1, 0)), null, new ItemStack(copperDustItemStack.getItem(), 2, 1));
 
             Object tinDustObject = clazz.getField("tinDust").get(null);
             ItemStack tinDustItemStack = (ItemStack) tinDustObject;
-            ic2.api.recipe.Recipes.macerator.addRecipe(new ItemStack(GCMoonBlocks.blockMoon.blockID, 1, 1), null, new ItemStack(tinDustItemStack.getItem(), 2, 1));
+            ic2.api.recipe.Recipes.macerator.addRecipe(new RecipeInputItemStack(new ItemStack(GCMoonBlocks.blockMoon.blockID, 1, 1)), null, new ItemStack(tinDustItemStack.getItem(), 2, 1));
         }
         catch (Throwable e)
         {
