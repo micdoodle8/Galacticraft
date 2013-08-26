@@ -13,6 +13,7 @@ item.spaceshipTier2.name=Tier 2 Rocket
 item.reinforcedPlateT2.name=Heavy-Duty Plate
 item.tier2.desc=Tier 2
 item.slimelingCargo.name=Slimeling Inventory Bag
+item.key.T2.name=Tier 2 Dungeon Key
 
 # TOOLS
 item.deshPick.name=Desh Pickaxe
@@ -33,16 +34,17 @@ tile.mars.coppermars.name=Copper Ore
 tile.mars.tinmars.name=Tin Ore
 tile.mars.ironmars.name=Iron Ore
 tile.mars.marscobblestone.name=Cobblestone
-tile.mars.marsstone.name=Stone
-tile.mars.marsdirt.name=Dirt
-tile.mars.marsgrass.name=Grass
+tile.mars.marsstone.name=Mars Stone
+tile.mars.marsdirt.name=Mars Sub-Surface Rock
+tile.mars.marsgrass.name=Mars Surface Rock
 tile.mars.marsdeco.name=Desh Decoration Block
 tile.mars.marsdungeon.name=Dungeon Wall
 tile.treasureT2.name=Tier 2 Treasure Chest
 tile.slimelingEgg.redEgg.name=Red Slimeling Egg
 tile.slimelingEgg.blueEgg.name=Blue Slimeling Egg
 tile.slimelingEgg.yellowEgg.name=Yellow Slimeling Egg
-tile.basiccomponents.marsMachine.0.name=Coal Generator
+tile.marsMachine.0.name=Terraformer
+tile.sludge.name=Bacterial Sludge
 
 # GUI
 gui.choosePlanet.desc.mars=Habitable#No Oxygen#Gravity: 38%
@@ -53,3 +55,6 @@ gui.desc.reinforcedPlateT2.name=Tier 2
 itemGroup.GalacticraftMars=Galacticraft Mars
 
 dimension.Mars.name=Mars
+
+# Schematics
+schematic.rocketT3.name=Tier 3 Rocket

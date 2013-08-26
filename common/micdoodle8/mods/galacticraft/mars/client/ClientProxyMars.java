@@ -6,6 +6,7 @@ import java.util.EnumSet;
 import micdoodle8.mods.galacticraft.core.client.GCCoreCloudRenderer;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderOxygenBubble;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderSpaceship;
+import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererKey;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCCoreSoundUpdaterSpaceship;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.mars.CommonProxyMars;
@@ -17,6 +18,7 @@ import micdoodle8.mods.galacticraft.mars.client.gui.GCMarsGuiSlimelingInventory;
 import micdoodle8.mods.galacticraft.mars.client.gui.GCMarsGuiTerraformer;
 import micdoodle8.mods.galacticraft.mars.client.model.GCMarsModelSpaceshipTier2;
 import micdoodle8.mods.galacticraft.mars.client.render.block.GCMarsBlockRendererRock;
+import micdoodle8.mods.galacticraft.mars.client.render.block.GCMarsBlockRendererTreasureChest;
 import micdoodle8.mods.galacticraft.mars.client.render.block.GCMarsBlockRendererVine;
 import micdoodle8.mods.galacticraft.mars.client.render.entity.GCMarsRenderCreeperBoss;
 import micdoodle8.mods.galacticraft.mars.client.render.entity.GCMarsRenderSlimeling;
@@ -70,6 +72,7 @@ public class ClientProxyMars extends CommonProxyMars
 {
     private static int vineRenderID;
     private static int eggRenderID;
+    private static int treasureRenderID;
 
     @Override
     public void preInit(FMLPreInitializationEvent event)
@@ -87,6 +90,8 @@ public class ClientProxyMars extends CommonProxyMars
         RenderingRegistry.registerBlockHandler(new GCMarsBlockRendererVine(ClientProxyMars.vineRenderID));
         ClientProxyMars.eggRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new GCMarsBlockRendererRock(ClientProxyMars.eggRenderID));
+        ClientProxyMars.treasureRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new GCMarsBlockRendererTreasureChest(ClientProxyMars.treasureRenderID));
     }
 
     @Override
@@ -104,6 +109,7 @@ public class ClientProxyMars extends CommonProxyMars
         RenderingRegistry.registerEntityRenderingHandler(GCMarsEntityTerraformBubble.class, new GCCoreRenderOxygenBubble(0.25F, 1.0F, 0.25F));
         RenderingRegistry.addNewArmourRendererPrefix("desh");
         MinecraftForgeClient.registerItemRenderer(GCMarsItems.spaceship.itemID, new GCMarsItemRendererSpaceshipT2(new GCMarsEntityRocketT2(FMLClientHandler.instance().getClient().theWorld), new GCMarsModelSpaceshipTier2(), new ResourceLocation(GalacticraftMars.TEXTURE_DOMAIN, "textures/model/rocketT2.png")));
+        MinecraftForgeClient.registerItemRenderer(GCMarsItems.key.itemID, new GCCoreItemRendererKey(new ResourceLocation(GalacticraftMars.TEXTURE_DOMAIN, "textures/model/treasure.png")));
     }
 
     @Override
@@ -116,6 +122,12 @@ public class ClientProxyMars extends CommonProxyMars
     public int getEggRenderID()
     {
         return ClientProxyMars.eggRenderID;
+    }
+
+    @Override
+    public int getTreasureRenderID()
+    {
+        return ClientProxyMars.treasureRenderID;
     }
 
     @Override

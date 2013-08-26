@@ -106,11 +106,7 @@ public class GCMarsBlock extends Block implements IDetectableResource, IPlantabl
     {
         final int meta = par1World.getBlockMetadata(par2, par3, par4);
 
-        if (meta == 9 || meta == 5)
-        {
-            return 0.1F;
-        }
-        else if (meta == 10)
+        if (meta == 10)
         {
             return -1.0F;
         }
@@ -138,11 +134,7 @@ public class GCMarsBlock extends Block implements IDetectableResource, IPlantabl
     @Override
     public boolean canHarvestBlock(EntityPlayer player, int meta)
     {
-        if (meta == 9 || meta == 5)
-        {
-            return true;
-        }
-        else if (meta == 10)
+        if (meta == 10)
         {
             return false;
         }
@@ -217,11 +209,7 @@ public class GCMarsBlock extends Block implements IDetectableResource, IPlantabl
     @Override
     public int quantityDropped(int meta, int fortune, Random random)
     {
-        if (meta == 2)
-        {
-            return random.nextInt(3) + 1;
-        }
-        else if (meta == 10)
+        if (meta == 10)
         {
             return 0;
         }
@@ -237,7 +225,10 @@ public class GCMarsBlock extends Block implements IDetectableResource, IPlantabl
 
         for (var4 = 0; var4 < 11; ++var4)
         {
-            par3List.add(new ItemStack(par1, 1, var4));
+            if (var4 != 10)
+            {
+                par3List.add(new ItemStack(par1, 1, var4));
+            }
         }
     }
 
@@ -262,20 +253,6 @@ public class GCMarsBlock extends Block implements IDetectableResource, IPlantabl
     @Override
     public boolean canSustainPlant(World world, int x, int y, int z, ForgeDirection direction, IPlantable plant)
     {
-        final int metadata = world.getBlockMetadata(x, y, z);
-
-        if (metadata != 5 && metadata != 6)
-        {
-            return false;
-        }
-
-        plant.getPlantID(world, x, y + 1, z);
-
-        if (plant instanceof BlockFlower)
-        {
-            return true;
-        }
-
         return false;
     }
 
@@ -288,11 +265,6 @@ public class GCMarsBlock extends Block implements IDetectableResource, IPlantabl
     @Override
     public boolean isPlantable(int metadata)
     {
-        if (metadata != 5 && metadata != 6)
-        {
-            return false;
-        }
-
-        return true;
+        return false;
     }
 }

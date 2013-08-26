@@ -11,6 +11,8 @@ import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityDungeonSpawner;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
+import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
+import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityTreasureChest;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -27,22 +29,17 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.entity.projectile.EntityWitherSkull;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.stats.AchievementList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatMessageComponent;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ChestGenHooks;
 import universalelectricity.core.vector.Vector3;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 
 /**
@@ -57,9 +54,6 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
     private GCCoreTileEntityDungeonSpawner spawner;
 
     public int headsRemaining = 3;
-    public int throwTimer;
-    public int postThrowDelay = 20;
-    public Entity thrownEntity;
     public Entity targetEntity;
     public int deathTicks = 0;
 
@@ -98,39 +92,9 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
     }
 
     @Override
-    public void updateRiderPosition()
-    {
-        if (this.riddenByEntity != null)
-        {
-            final double offsetX = Math.sin(this.rotationYaw * Math.PI / 180.0D);
-            final double offsetZ = Math.cos(this.rotationYaw * Math.PI / 180.0D);
-            final double offsetY = 2 * Math.cos((this.throwTimer + this.postThrowDelay) * 0.05F);
-
-            this.riddenByEntity.setPosition(this.posX + offsetX, this.posY + this.getMountedYOffset() + this.riddenByEntity.getYOffset() + offsetY, this.posZ + offsetZ);
-        }
-    }
-
-    @Override
     public void knockBack(Entity par1Entity, float par2, double par3, double par5)
     {
         ;
-    }
-
-    @Override
-    public void onCollideWithPlayer(EntityPlayer par1EntityPlayer)
-    {
-        if (this.riddenByEntity == null && this.postThrowDelay == 0 && this.throwTimer == 0 && par1EntityPlayer.equals(this.targetEntity) && this.deathTicks == 0)
-        {
-            if (!this.worldObj.isRemote)
-            {
-                PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 40.0, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, 25, new Object[] { 0 }));
-                par1EntityPlayer.mountEntity(this);
-            }
-
-            this.throwTimer = 40;
-        }
-
-        super.onCollideWithPlayer(par1EntityPlayer);
     }
 
     @Override
@@ -224,7 +188,7 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
 
             for (final TileEntity tile : (List<TileEntity>) this.worldObj.loadedTileEntityList)
             {
-                if (tile instanceof GCCoreTileEntityTreasureChest)
+                if (tile instanceof GCMarsTileEntityTreasureChest)
                 {
                     final double d3 = tile.xCoord + 0.5D - this.posX;
                     final double d4 = tile.yCoord + 0.5D - this.posY;
@@ -242,14 +206,14 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
 
                         WeightedRandomChestContent.generateChestContents(this.rand, info.getItems(this.rand), (GCCoreTileEntityTreasureChest) tile, info.getCount(this.rand));
 
-                        ((GCCoreTileEntityTreasureChest) tile).setInventorySlotContents(this.rand.nextInt(((GCCoreTileEntityTreasureChest) tile).getSizeInventory()), this.getGuaranteedLoot(this.rand));
+                        ((GCMarsTileEntityTreasureChest) tile).setInventorySlotContents(this.rand.nextInt(((GCMarsTileEntityTreasureChest) tile).getSizeInventory()), this.getGuaranteedLoot(this.rand));
 
                         break;
                     }
                 }
             }
 
-            this.entityDropItem(new ItemStack(GCCoreItems.key.itemID, 1, 0), 0.5F);
+            this.entityDropItem(new ItemStack(GCMarsItems.key.itemID, 1, 0), 0.5F);
 
             super.setDead();
 
@@ -313,16 +277,6 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
             this.targetEntity = null;
         }
 
-        if (this.throwTimer > 0)
-        {
-            this.throwTimer--;
-        }
-
-        if (this.postThrowDelay > 0)
-        {
-            this.postThrowDelay--;
-        }
-
         new Vector3(this);
 
         if (this.roomCoords != null && this.roomSize != null)
@@ -355,67 +309,7 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
             this.entitiesWithinLast = this.entitiesWithin;
         }
 
-        if (this.riddenByEntity != null && this.throwTimer == 0)
-        {
-            this.postThrowDelay = 20;
-
-            this.thrownEntity = this.riddenByEntity;
-
-            if (!this.worldObj.isRemote)
-            {
-                this.riddenByEntity.mountEntity(null);
-            }
-        }
-
-        if (this.thrownEntity != null && this.postThrowDelay == 18)
-        {
-            double d0 = this.posX - this.thrownEntity.posX;
-            double d1;
-
-            for (d1 = this.posZ - this.thrownEntity.posZ; d0 * d0 + d1 * d1 < 1.0E-4D; d1 = (Math.random() - Math.random()) * 0.01D)
-            {
-                d0 = (Math.random() - Math.random()) * 0.01D;
-            }
-
-            PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 40.0, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, 26, new Object[] { 0 }));
-
-            ((EntityPlayer) this.thrownEntity).attackedAtYaw = (float) (Math.atan2(d1, d0) * 180.0D / Math.PI) - this.rotationYaw;
-
-            this.thrownEntity.isAirBorne = true;
-            final float f = MathHelper.sqrt_double(d0 * d0 + d1 * d1);
-            final float f1 = 2.4F;
-            this.thrownEntity.motionX /= 2.0D;
-            this.thrownEntity.motionY /= 2.0D;
-            this.thrownEntity.motionZ /= 2.0D;
-            this.thrownEntity.motionX -= d0 / f * f1;
-            this.thrownEntity.motionY += (double) f1 / 5;
-            this.thrownEntity.motionZ -= d1 / f * f1;
-
-            if (this.thrownEntity.motionY > 0.4000000059604645D)
-            {
-                this.thrownEntity.motionY = 0.4000000059604645D;
-            }
-        }
-
         super.onLivingUpdate();
-    }
-
-    @Override
-    public void onDeath(DamageSource par1DamageSource)
-    {
-        super.onDeath(par1DamageSource);
-
-        if (par1DamageSource.getSourceOfDamage() instanceof EntityArrow && par1DamageSource.getEntity() instanceof EntityPlayer)
-        {
-            final EntityPlayer var2 = (EntityPlayer) par1DamageSource.getEntity();
-            final double var3 = var2.posX - this.posX;
-            final double var5 = var2.posZ - this.posZ;
-
-            if (var3 * var3 + var5 * var5 >= 2500.0D)
-            {
-                var2.triggerAchievement(AchievementList.snipeSkeleton);
-            }
-        }
     }
 
     @Override
@@ -467,16 +361,6 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
         return true;
     }
 
-    public float getExperienceToSpawn()
-    {
-        return 50.0F;
-    }
-
-    public double getDistanceToSpawn()
-    {
-        return 40.0D;
-    }
-
     public ItemStack getGuaranteedLoot(Random rand)
     {
         switch (rand.nextInt(2))
@@ -522,10 +406,10 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
 
     private void func_82216_a(int par1, EntityLivingBase par2EntityLivingBase)
     {
-        this.func_82209_a(par1, par2EntityLivingBase.posX, par2EntityLivingBase.posY + (double)par2EntityLivingBase.getEyeHeight() * 0.5D, par2EntityLivingBase.posZ, par1 == 0 && this.rand.nextFloat() < 0.001F);
+        this.func_82209_a(par1, par2EntityLivingBase.posX, par2EntityLivingBase.posY + (double)par2EntityLivingBase.getEyeHeight() * 0.5D, par2EntityLivingBase.posZ);
     }
 
-    private void func_82209_a(int par1, double par2, double par4, double par6, boolean par8)
+    private void func_82209_a(int par1, double par2, double par4, double par6)
     {
         this.worldObj.playAuxSFXAtEntity((EntityPlayer)null, 1014, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
         double d3 = this.func_82214_u(par1);
@@ -534,12 +418,7 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
         double d6 = par2 - d3;
         double d7 = par4 - d4;
         double d8 = par6 - d5;
-        EntityWitherSkull entitywitherskull = new EntityWitherSkull(this.worldObj, this, d6, d7, d8);
-
-        if (par8)
-        {
-            entitywitherskull.setInvulnerable(true);
-        }
+        GCMarsEntityProjectileTNT entitywitherskull = new GCMarsEntityProjectileTNT(this.worldObj, this, d6, d7, d8);
 
         entitywitherskull.posY = d4;
         entitywitherskull.posX = d3;
