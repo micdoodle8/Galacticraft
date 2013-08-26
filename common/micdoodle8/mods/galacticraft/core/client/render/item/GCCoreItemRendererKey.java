@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.client.render.item;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelKey;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.item.EntityItem;
@@ -20,9 +19,14 @@ import cpw.mods.fml.client.FMLClientHandler;
  */
 public class GCCoreItemRendererKey implements IItemRenderer
 {
-    private static final ResourceLocation treasureChestTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/treasure.png");
+    private final ResourceLocation treasureChestTexture;
 
     GCCoreModelKey keyModel = new GCCoreModelKey();
+    
+    public GCCoreItemRendererKey(ResourceLocation resourceLocation)
+    {
+        this.treasureChestTexture = resourceLocation;
+    }
 
     private void renderKey(ItemRenderType type, RenderBlocks render, ItemStack item, float translateX, float translateY, float translateZ, Object... data)
     {
@@ -64,7 +68,7 @@ public class GCCoreItemRendererKey implements IItemRenderer
             GL11.glRotatef((float) (Math.sin((entityItem.age + 1) / 100.0F) * 180.0F), 0, 1, 0);
         }
 
-        FMLClientHandler.instance().getClient().renderEngine.func_110577_a(GCCoreItemRendererKey.treasureChestTexture);
+        FMLClientHandler.instance().getClient().renderEngine.func_110577_a(this.treasureChestTexture);
 
         this.keyModel.renderAll();
         GL11.glPopMatrix();

@@ -86,6 +86,6 @@ public class GCCoreItemKey extends Item implements IKeyItem
     @Override
     public int getTier(ItemStack keyStack)
     {
-        return keyStack.getItemDamage() + 1;
+        return 1;
     }
 }
