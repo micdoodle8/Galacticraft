@@ -418,7 +418,7 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
         double d6 = par2 - d3;
         double d7 = par4 - d4;
         double d8 = par6 - d5;
-        GCMarsEntityProjectileTNT entitywitherskull = new GCMarsEntityProjectileTNT(this.worldObj, this, d6, d7, d8);
+        GCMarsEntityProjectileTNT entitywitherskull = new GCMarsEntityProjectileTNT(this.worldObj, this, d6 * 0.5D, d7 * 0.5D, d8 * 0.5D);
 
         entitywitherskull.posY = d4;
         entitywitherskull.posX = d3;
@@ -442,7 +442,7 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
 
     private double func_82208_v(int par1)
     {
-        return par1 <= 0 ? this.posY + 3.0D : this.posY + 2.2D;
+        return par1 <= 0 ? this.posY + 6.0D : this.posY + 4.2D;
     }
 
     private double func_82213_w(int par1)
