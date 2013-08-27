@@ -10,7 +10,6 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import universalelectricity.core.item.IItemElectric;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -46,7 +45,6 @@ public class GCCoreItemInfiniteBattery extends Item implements IItemElectric
     @Override
     public void registerIcons(IconRegister iconRegister)
     {
-        FMLLog.info(GalacticraftCore.TEXTURE_PREFIX + this.getUnlocalizedName().replace("item.", ""));
         this.itemIcon = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + this.getUnlocalizedName().replace("item.", ""));
     }
 
