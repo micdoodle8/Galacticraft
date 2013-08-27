@@ -9,14 +9,15 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreBlockOre extends Block
 {
-	public GCCoreBlockOre(int id, String name)
-	{
-		super(id, Material.rock);
-		this.setUnlocalizedName(name);
+    public GCCoreBlockOre(int id, String name)
+    {
+        super(id, Material.rock);
+        this.setUnlocalizedName(name);
         this.func_111022_d(GalacticraftCore.TEXTURE_PREFIX + name);
-		this.setHardness(2.0F);
-	}
+        this.setHardness(2.0F);
+    }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public CreativeTabs getCreativeTabToDisplayOn()
     {

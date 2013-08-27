@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBatteryBox;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCoalGenerator;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectricFurnace;
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -39,7 +40,7 @@ public class GCCoreBlockBasicMachine extends BlockTile
     {
         super(id, UniversalElectricity.machine);
         this.setUnlocalizedName("basicMachine");
-        this.setStepSound(soundMetalFootstep);
+        this.setStepSound(Block.soundMetalFootstep);
     }
 
     @Override
@@ -110,9 +111,9 @@ public class GCCoreBlockBasicMachine extends BlockTile
             return this.blockIcon;
         }
 
-        if (metadata >= ELECTRIC_FURNACE_METADATA)
+        if (metadata >= GCCoreBlockBasicMachine.ELECTRIC_FURNACE_METADATA)
         {
-            metadata -= ELECTRIC_FURNACE_METADATA;
+            metadata -= GCCoreBlockBasicMachine.ELECTRIC_FURNACE_METADATA;
 
             // If it is the front side
             if (side == metadata + 2)
@@ -125,9 +126,9 @@ public class GCCoreBlockBasicMachine extends BlockTile
                 return this.iconElectricFurnace;
             }
         }
-        else if (metadata >= BATTERY_BOX_METADATA)
+        else if (metadata >= GCCoreBlockBasicMachine.BATTERY_BOX_METADATA)
         {
-            metadata -= BATTERY_BOX_METADATA;
+            metadata -= GCCoreBlockBasicMachine.BATTERY_BOX_METADATA;
 
             // If it is the front side
             if (side == metadata + 2)
@@ -167,52 +168,52 @@ public class GCCoreBlockBasicMachine extends BlockTile
     {
         int metadata = world.getBlockMetadata(x, y, z);
 
-        int angle = MathHelper.floor_double((entityLiving.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+        int angle = MathHelper.floor_double(entityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
         int change = 0;
 
         switch (angle)
         {
-            case 0:
-                change = 1;
-                break;
-            case 1:
-                change = 2;
-                break;
-            case 2:
-                change = 0;
-                break;
-            case 3:
-                change = 3;
-                break;
+        case 0:
+            change = 1;
+            break;
+        case 1:
+            change = 2;
+            break;
+        case 2:
+            change = 0;
+            break;
+        case 3:
+            change = 3;
+            break;
         }
 
-        if (metadata >= ELECTRIC_FURNACE_METADATA)
+        if (metadata >= GCCoreBlockBasicMachine.ELECTRIC_FURNACE_METADATA)
         {
-            world.setBlockMetadataWithNotify(x, y, z, ELECTRIC_FURNACE_METADATA + change, 3);
+            world.setBlockMetadataWithNotify(x, y, z, GCCoreBlockBasicMachine.ELECTRIC_FURNACE_METADATA + change, 3);
         }
-        else if (metadata >= BATTERY_BOX_METADATA)
+        else if (metadata >= GCCoreBlockBasicMachine.BATTERY_BOX_METADATA)
         {
             switch (angle)
             {
-                case 0:
-                    change = 3;
-                    break;
-                case 1:
-                    change = 1;
-                    break;
-                case 2:
-                    change = 2;
-                    break;
-                case 3:
-                    change = 0;
-                    break;
+            case 0:
+                change = 3;
+                break;
+            case 1:
+                change = 1;
+                break;
+            case 2:
+                change = 2;
+                break;
+            case 3:
+                change = 0;
+                break;
             }
 
-            world.setBlockMetadataWithNotify(x, y, z, BATTERY_BOX_METADATA + change, 3);
+            world.setBlockMetadataWithNotify(x, y, z, GCCoreBlockBasicMachine.BATTERY_BOX_METADATA + change, 3);
         }
         else
         {
-            world.setBlockMetadataWithNotify(x, y, z, COAL_GENERATOR_METADATA + change, 3);
+            world.setBlockMetadataWithNotify(x, y, z, GCCoreBlockBasicMachine.COAL_GENERATOR_METADATA + change, 3);
         }
     }
 
@@ -224,39 +225,39 @@ public class GCCoreBlockBasicMachine extends BlockTile
 
         int change = 0;
 
-        if (metadata >= ELECTRIC_FURNACE_METADATA)
+        if (metadata >= GCCoreBlockBasicMachine.ELECTRIC_FURNACE_METADATA)
         {
-            original -= ELECTRIC_FURNACE_METADATA;
+            original -= GCCoreBlockBasicMachine.ELECTRIC_FURNACE_METADATA;
         }
-        else if (metadata >= BATTERY_BOX_METADATA)
+        else if (metadata >= GCCoreBlockBasicMachine.BATTERY_BOX_METADATA)
         {
-            original -= BATTERY_BOX_METADATA;
+            original -= GCCoreBlockBasicMachine.BATTERY_BOX_METADATA;
         }
 
         // Re-orient the block
         switch (original)
         {
-            case 0:
-                change = 3;
-                break;
-            case 3:
-                change = 1;
-                break;
-            case 1:
-                change = 2;
-                break;
-            case 2:
-                change = 0;
-                break;
+        case 0:
+            change = 3;
+            break;
+        case 3:
+            change = 1;
+            break;
+        case 1:
+            change = 2;
+            break;
+        case 2:
+            change = 0;
+            break;
         }
 
-        if (metadata >= ELECTRIC_FURNACE_METADATA)
+        if (metadata >= GCCoreBlockBasicMachine.ELECTRIC_FURNACE_METADATA)
         {
-            change += ELECTRIC_FURNACE_METADATA;
+            change += GCCoreBlockBasicMachine.ELECTRIC_FURNACE_METADATA;
         }
-        else if (metadata >= BATTERY_BOX_METADATA)
+        else if (metadata >= GCCoreBlockBasicMachine.BATTERY_BOX_METADATA)
         {
-            change += BATTERY_BOX_METADATA;
+            change += GCCoreBlockBasicMachine.BATTERY_BOX_METADATA;
         }
 
         par1World.setBlockMetadataWithNotify(x, y, z, change, 3);
@@ -273,12 +274,12 @@ public class GCCoreBlockBasicMachine extends BlockTile
 
         if (!par1World.isRemote)
         {
-            if (metadata >= ELECTRIC_FURNACE_METADATA)
+            if (metadata >= GCCoreBlockBasicMachine.ELECTRIC_FURNACE_METADATA)
             {
                 par5EntityPlayer.openGui(GalacticraftCore.instance, -1, par1World, x, y, z);
                 return true;
             }
-            else if (metadata >= BATTERY_BOX_METADATA)
+            else if (metadata >= GCCoreBlockBasicMachine.BATTERY_BOX_METADATA)
             {
                 par5EntityPlayer.openGui(GalacticraftCore.instance, -1, par1World, x, y, z);
                 return true;
@@ -308,11 +309,11 @@ public class GCCoreBlockBasicMachine extends BlockTile
     @Override
     public TileEntity createTileEntity(World world, int metadata)
     {
-        if (metadata >= ELECTRIC_FURNACE_METADATA)
+        if (metadata >= GCCoreBlockBasicMachine.ELECTRIC_FURNACE_METADATA)
         {
             return new GCCoreTileEntityElectricFurnace();
         }
-        else if (metadata >= BATTERY_BOX_METADATA)
+        else if (metadata >= GCCoreBlockBasicMachine.BATTERY_BOX_METADATA)
         {
             return new GCCoreTileEntityBatteryBox();
         }
@@ -325,17 +326,17 @@ public class GCCoreBlockBasicMachine extends BlockTile
 
     public ItemStack getCoalGenerator()
     {
-        return new ItemStack(this.blockID, 1, COAL_GENERATOR_METADATA);
+        return new ItemStack(this.blockID, 1, GCCoreBlockBasicMachine.COAL_GENERATOR_METADATA);
     }
 
     public ItemStack getBatteryBox()
     {
-        return new ItemStack(this.blockID, 1, BATTERY_BOX_METADATA);
+        return new ItemStack(this.blockID, 1, GCCoreBlockBasicMachine.BATTERY_BOX_METADATA);
     }
 
     public ItemStack getElectricFurnace()
     {
-        return new ItemStack(this.blockID, 1, ELECTRIC_FURNACE_METADATA);
+        return new ItemStack(this.blockID, 1, GCCoreBlockBasicMachine.ELECTRIC_FURNACE_METADATA);
     }
 
     @Override
@@ -349,24 +350,24 @@ public class GCCoreBlockBasicMachine extends BlockTile
     @Override
     public int damageDropped(int metadata)
     {
-        if (metadata >= ELECTRIC_FURNACE_METADATA)
+        if (metadata >= GCCoreBlockBasicMachine.ELECTRIC_FURNACE_METADATA)
         {
-            return ELECTRIC_FURNACE_METADATA;
+            return GCCoreBlockBasicMachine.ELECTRIC_FURNACE_METADATA;
         }
-        else if (metadata >= BATTERY_BOX_METADATA)
+        else if (metadata >= GCCoreBlockBasicMachine.BATTERY_BOX_METADATA)
         {
-            return BATTERY_BOX_METADATA;
+            return GCCoreBlockBasicMachine.BATTERY_BOX_METADATA;
         }
         else
         {
-            return COAL_GENERATOR_METADATA;
+            return GCCoreBlockBasicMachine.COAL_GENERATOR_METADATA;
         }
     }
 
     @Override
     public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
     {
-        int id = idPicked(world, x, y, z);
+        int id = this.idPicked(world, x, y, z);
 
         if (id == 0)
         {
@@ -380,7 +381,7 @@ public class GCCoreBlockBasicMachine extends BlockTile
             return null;
         }
 
-        int metadata = getDamageValue(world, x, y, z);
+        int metadata = this.getDamageValue(world, x, y, z);
 
         return new ItemStack(id, 1, metadata);
     }

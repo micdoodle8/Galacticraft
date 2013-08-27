@@ -16,25 +16,26 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCCoreGuiCoalGenerator extends GuiContainer
 {
-	private static final ResourceLocation coalGeneratorTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/coal_generator.png");
+    private static final ResourceLocation coalGeneratorTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/coal_generator.png");
 
-	private GCCoreTileEntityCoalGenerator tileEntity;
+    private GCCoreTileEntityCoalGenerator tileEntity;
 
-	private int containerWidth;
-	private int containerHeight;
+    private int containerWidth;
+    private int containerHeight;
 
-	public GCCoreGuiCoalGenerator(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityCoalGenerator tileEntity)
-	{
-		super(new ContainerCoalGenerator(par1InventoryPlayer, tileEntity));
-		this.tileEntity = tileEntity;
-	}
+    public GCCoreGuiCoalGenerator(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityCoalGenerator tileEntity)
+    {
+        super(new ContainerCoalGenerator(par1InventoryPlayer, tileEntity));
+        this.tileEntity = tileEntity;
+    }
 
-	/**
-	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
-	 */
-	@Override
-	protected void drawGuiContainerForegroundLayer(int par1, int par2)
-	{
+    /**
+     * Draw the foreground layer for the GuiContainer (everything in front of
+     * the items)
+     */
+    @Override
+    protected void drawGuiContainerForegroundLayer(int par1, int par2)
+    {
         this.fontRenderer.drawString(this.tileEntity.getInvName(), 55, 6, 4210752);
         String displayText = "Generating";
         this.fontRenderer.drawString(displayText, 122 - this.fontRenderer.getStringWidth(displayText) / 2, 33, 4210752);
@@ -49,26 +50,27 @@ public class GCCoreGuiCoalGenerator extends GuiContainer
         }
         else
         {
-            displayText = ElectricityDisplay.getDisplay(tileEntity.generateWatts * 20, ElectricUnit.WATT);
+            displayText = ElectricityDisplay.getDisplay(this.tileEntity.generateWatts * 20, ElectricUnit.WATT);
         }
 
         this.fontRenderer.drawString(displayText, 122 - this.fontRenderer.getStringWidth(displayText) / 2, 45, 4210752);
         displayText = "Voltage: " + (int) (this.tileEntity.getVoltage() * 1000.0F);
         this.fontRenderer.drawString(displayText, 122 - this.fontRenderer.getStringWidth(displayText) / 2, 60, 4210752);
         this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
-	}
+    }
 
-	/**
-	 * Draw the background layer for the GuiContainer (everything behind the items)
-	 */
-	@Override
-	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
-	{
-		this.mc.renderEngine.func_110577_a(coalGeneratorTexture);
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    /**
+     * Draw the background layer for the GuiContainer (everything behind the
+     * items)
+     */
+    @Override
+    protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
+    {
+        this.mc.renderEngine.func_110577_a(GCCoreGuiCoalGenerator.coalGeneratorTexture);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-		containerWidth = (this.width - this.xSize) / 2;
-		containerHeight = (this.height - this.ySize) / 2;
-		this.drawTexturedModalRect(containerWidth, containerHeight, 0, 0, this.xSize, this.ySize);
-	}
+        this.containerWidth = (this.width - this.xSize) / 2;
+        this.containerHeight = (this.height - this.ySize) / 2;
+        this.drawTexturedModalRect(this.containerWidth, this.containerHeight, 0, 0, this.xSize, this.ySize);
+    }
 }

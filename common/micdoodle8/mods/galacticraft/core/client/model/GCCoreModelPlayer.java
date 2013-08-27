@@ -192,7 +192,7 @@ public class GCCoreModelPlayer extends ModelBiped
         final ModelBiped modelBipedMain = ((GCCoreRenderPlayer) render).getModel();
 
         this.setRotationAngles(var2, var3, var4, var5, var6, var7, var1);
-        
+
         if (var1 instanceof AbstractClientPlayer && this.equals(modelBipedMain))
         {
             final EntityPlayer player = (EntityPlayer) var1;

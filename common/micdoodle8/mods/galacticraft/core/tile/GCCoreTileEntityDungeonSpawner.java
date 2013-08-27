@@ -29,12 +29,12 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced
     public boolean playerCheated;
     private Vector3 roomCoords;
     private Vector3 roomSize;
-    
+
     public GCCoreTileEntityDungeonSpawner()
     {
         this(GCCoreEntitySkeletonBoss.class);
     }
-    
+
     public GCCoreTileEntityDungeonSpawner(Class<? extends IBoss> bossClass)
     {
         this.bossClass = bossClass;
@@ -48,17 +48,17 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced
         if (!this.worldObj.isRemote)
         {
             final Vector3 thisVec = new Vector3(this);
-            final List<Entity> l = this.worldObj.getEntitiesWithinAABB(bossClass, AxisAlignedBB.getBoundingBox(thisVec.x - 15, thisVec.y - 15, thisVec.z - 15, thisVec.x + 15, thisVec.y + 15, thisVec.z + 15));
+            final List<Entity> l = this.worldObj.getEntitiesWithinAABB(this.bossClass, AxisAlignedBB.getBoundingBox(thisVec.x - 15, thisVec.y - 15, thisVec.z - 15, thisVec.x + 15, thisVec.y + 15, thisVec.z + 15));
 
             for (final Entity e : l)
             {
-                    if (!e.isDead)
-                    {
-                        this.boss = (IBoss) e;
-                        this.boss.setRoom(this.roomCoords, this.roomSize);
-                        this.spawned = true;
-                        this.isBossDefeated = false;
-                    }
+                if (!e.isDead)
+                {
+                    this.boss = (IBoss) e;
+                    this.boss.setRoom(this.roomCoords, this.roomSize);
+                    this.spawned = true;
+                    this.isBossDefeated = false;
+                }
             }
 
             List<Entity> entitiesWithin = this.worldObj.getEntitiesWithinAABB(EntityMob.class, AxisAlignedBB.getAABBPool().getAABB(this.roomCoords.intX() - 4, this.roomCoords.intY() - 4, this.roomCoords.intZ() - 4, this.roomCoords.intX() + this.roomSize.intX() + 3, this.roomCoords.intY() + this.roomSize.intY() + 3, this.roomCoords.intZ() + this.roomSize.intZ() + 3));
@@ -75,8 +75,8 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced
             {
                 try
                 {
-                    Constructor c = bossClass.getConstructor(new Class[] {World.class});
-                    this.boss = (IBoss) c.newInstance(new Object[] {this.worldObj});
+                    Constructor c = this.bossClass.getConstructor(new Class[] { World.class });
+                    this.boss = (IBoss) c.newInstance(new Object[] { this.worldObj });
                     ((Entity) this.boss).setPosition(this.xCoord + 0.5, this.yCoord + 1.0, this.zCoord + 0.5);
                     this.boss.setRoom(this.roomCoords, this.roomSize);
                 }
@@ -107,7 +107,7 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced
                 {
                     if (this.boss instanceof Entity)
                     {
-                        this.worldObj.spawnEntityInWorld((EntityLiving)this.boss);
+                        this.worldObj.spawnEntityInWorld((EntityLiving) this.boss);
                         this.spawned = true;
                         this.boss.onBossSpawned(this);
                         this.boss.setRoom(this.roomCoords, this.roomSize);

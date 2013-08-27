@@ -22,7 +22,7 @@ public class GCCoreItemRendererKey implements IItemRenderer
     private final ResourceLocation treasureChestTexture;
 
     GCCoreModelKey keyModel = new GCCoreModelKey();
-    
+
     public GCCoreItemRendererKey(ResourceLocation resourceLocation)
     {
         this.treasureChestTexture = resourceLocation;

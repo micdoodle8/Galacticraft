@@ -209,7 +209,7 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
         this.choosePlanetGui.drawBlackBackground();
         this.choosePlanetGui.renderSkybox(1);
     }
-    
+
     public GCCoreGuiChoosePlanet getParentGui()
     {
         return this.choosePlanetGui;

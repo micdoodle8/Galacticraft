@@ -24,280 +24,280 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class GCCoreTileEntityBatteryBox extends TileEntityUniversalElectrical implements IPacketReceiver, ISidedInventory
 {
-	private ItemStack[] containingItems = new ItemStack[2];
+    private ItemStack[] containingItems = new ItemStack[2];
 
-	public final Set<EntityPlayer> playersUsing = new HashSet<EntityPlayer>();
+    public final Set<EntityPlayer> playersUsing = new HashSet<EntityPlayer>();
 
-	@Override
-	public void updateEntity()
-	{
-		super.updateEntity();
+    @Override
+    public void updateEntity()
+    {
+        super.updateEntity();
 
-		if (!this.worldObj.isRemote)
-		{
-			this.recharge(this.containingItems[0]);
-			this.discharge(this.containingItems[1]);
-		}
+        if (!this.worldObj.isRemote)
+        {
+            this.recharge(this.containingItems[0]);
+            this.discharge(this.containingItems[1]);
+        }
 
-		/**
-		 * Gradually lose energy.
-		 */
-		this.setEnergyStored(this.getEnergyStored() - 0.00005f);
+        /**
+         * Gradually lose energy.
+         */
+        this.setEnergyStored(this.getEnergyStored() - 0.00005f);
 
-		if (!this.worldObj.isRemote)
-		{
+        if (!this.worldObj.isRemote)
+        {
             this.produce();
-            
-			if (this.ticks % 3 == 0)
-			{
-			    PacketDispatcher.sendPacketToAllAround(this.xCoord, this.yCoord, this.zCoord, 40, this.worldObj.provider.dimensionId, this.getDescriptionPacket());
-			}
-		}
-	}
 
-	@Override
-	public Packet getDescriptionPacket()
-	{
-		return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getEnergyStored());
-	}
+            if (this.ticks % 3 == 0)
+            {
+                PacketDispatcher.sendPacketToAllAround(this.xCoord, this.yCoord, this.zCoord, 40, this.worldObj.provider.dimensionId, this.getDescriptionPacket());
+            }
+        }
+    }
 
-	@Override
-	public void handlePacketData(INetworkManager network, int type, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream)
-	{
-		try
-		{
-			this.setEnergyStored(dataStream.readFloat());
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
+    @Override
+    public Packet getDescriptionPacket()
+    {
+        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getEnergyStored());
+    }
 
-	@Override
-	public void openChest()
-	{
-	}
+    @Override
+    public void handlePacketData(INetworkManager network, int type, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream)
+    {
+        try
+        {
+            this.setEnergyStored(dataStream.readFloat());
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
 
-	@Override
-	public void closeChest()
-	{
-	}
+    @Override
+    public void openChest()
+    {
+    }
 
-	/**
-	 * Reads a tile entity from NBT.
-	 */
-	@Override
-	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
-	{
-		super.readFromNBT(par1NBTTagCompound);
+    @Override
+    public void closeChest()
+    {
+    }
 
-		NBTTagList var2 = par1NBTTagCompound.getTagList("Items");
-		this.containingItems = new ItemStack[this.getSizeInventory()];
+    /**
+     * Reads a tile entity from NBT.
+     */
+    @Override
+    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+    {
+        super.readFromNBT(par1NBTTagCompound);
 
-		for (int var3 = 0; var3 < var2.tagCount(); ++var3)
-		{
-			NBTTagCompound var4 = (NBTTagCompound) var2.tagAt(var3);
-			byte var5 = var4.getByte("Slot");
+        NBTTagList var2 = par1NBTTagCompound.getTagList("Items");
+        this.containingItems = new ItemStack[this.getSizeInventory()];
 
-			if (var5 >= 0 && var5 < this.containingItems.length)
-			{
-				this.containingItems[var5] = ItemStack.loadItemStackFromNBT(var4);
-			}
-		}
-	}
+        for (int var3 = 0; var3 < var2.tagCount(); ++var3)
+        {
+            NBTTagCompound var4 = (NBTTagCompound) var2.tagAt(var3);
+            byte var5 = var4.getByte("Slot");
 
-	/**
-	 * Writes a tile entity to NBT.
-	 */
-	@Override
-	public void writeToNBT(NBTTagCompound par1NBTTagCompound)
-	{
-		super.writeToNBT(par1NBTTagCompound);
-		NBTTagList var2 = new NBTTagList();
+            if (var5 >= 0 && var5 < this.containingItems.length)
+            {
+                this.containingItems[var5] = ItemStack.loadItemStackFromNBT(var4);
+            }
+        }
+    }
 
-		for (int var3 = 0; var3 < this.containingItems.length; ++var3)
-		{
-			if (this.containingItems[var3] != null)
-			{
-				NBTTagCompound var4 = new NBTTagCompound();
-				var4.setByte("Slot", (byte) var3);
-				this.containingItems[var3].writeToNBT(var4);
-				var2.appendTag(var4);
-			}
-		}
+    /**
+     * Writes a tile entity to NBT.
+     */
+    @Override
+    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+    {
+        super.writeToNBT(par1NBTTagCompound);
+        NBTTagList var2 = new NBTTagList();
 
-		par1NBTTagCompound.setTag("Items", var2);
-	}
+        for (int var3 = 0; var3 < this.containingItems.length; ++var3)
+        {
+            if (this.containingItems[var3] != null)
+            {
+                NBTTagCompound var4 = new NBTTagCompound();
+                var4.setByte("Slot", (byte) var3);
+                this.containingItems[var3].writeToNBT(var4);
+                var2.appendTag(var4);
+            }
+        }
 
-	@Override
-	public int getSizeInventory()
-	{
-		return this.containingItems.length;
-	}
+        par1NBTTagCompound.setTag("Items", var2);
+    }
 
-	@Override
-	public ItemStack getStackInSlot(int par1)
-	{
-		return this.containingItems[par1];
-	}
+    @Override
+    public int getSizeInventory()
+    {
+        return this.containingItems.length;
+    }
 
-	@Override
-	public ItemStack decrStackSize(int par1, int par2)
-	{
-		if (this.containingItems[par1] != null)
-		{
-			ItemStack var3;
+    @Override
+    public ItemStack getStackInSlot(int par1)
+    {
+        return this.containingItems[par1];
+    }
 
-			if (this.containingItems[par1].stackSize <= par2)
-			{
-				var3 = this.containingItems[par1];
-				this.containingItems[par1] = null;
-				return var3;
-			}
-			else
-			{
-				var3 = this.containingItems[par1].splitStack(par2);
+    @Override
+    public ItemStack decrStackSize(int par1, int par2)
+    {
+        if (this.containingItems[par1] != null)
+        {
+            ItemStack var3;
 
-				if (this.containingItems[par1].stackSize == 0)
-				{
-					this.containingItems[par1] = null;
-				}
+            if (this.containingItems[par1].stackSize <= par2)
+            {
+                var3 = this.containingItems[par1];
+                this.containingItems[par1] = null;
+                return var3;
+            }
+            else
+            {
+                var3 = this.containingItems[par1].splitStack(par2);
 
-				return var3;
-			}
-		}
-		else
-		{
-			return null;
-		}
-	}
+                if (this.containingItems[par1].stackSize == 0)
+                {
+                    this.containingItems[par1] = null;
+                }
 
-	@Override
-	public ItemStack getStackInSlotOnClosing(int par1)
-	{
-		if (this.containingItems[par1] != null)
-		{
-			ItemStack var2 = this.containingItems[par1];
-			this.containingItems[par1] = null;
-			return var2;
-		}
-		else
-		{
-			return null;
-		}
-	}
+                return var3;
+            }
+        }
+        else
+        {
+            return null;
+        }
+    }
 
-	@Override
-	public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
-	{
-		this.containingItems[par1] = par2ItemStack;
+    @Override
+    public ItemStack getStackInSlotOnClosing(int par1)
+    {
+        if (this.containingItems[par1] != null)
+        {
+            ItemStack var2 = this.containingItems[par1];
+            this.containingItems[par1] = null;
+            return var2;
+        }
+        else
+        {
+            return null;
+        }
+    }
 
-		if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())
-		{
-			par2ItemStack.stackSize = this.getInventoryStackLimit();
-		}
-	}
+    @Override
+    public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
+    {
+        this.containingItems[par1] = par2ItemStack;
 
-	@Override
-	public String getInvName()
-	{
-		return LanguageRegistry.instance().getStringLocalization("tile.machine.1.name");
-	}
+        if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())
+        {
+            par2ItemStack.stackSize = this.getInventoryStackLimit();
+        }
+    }
 
-	@Override
-	public int getInventoryStackLimit()
-	{
-		return 1;
-	}
+    @Override
+    public String getInvName()
+    {
+        return LanguageRegistry.instance().getStringLocalization("tile.machine.1.name");
+    }
 
-	@Override
-	public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
-	{
-		return this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
-	}
+    @Override
+    public int getInventoryStackLimit()
+    {
+        return 1;
+    }
 
-	@Override
-	public boolean isInvNameLocalized()
-	{
-		return true;
-	}
+    @Override
+    public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
+    {
+        return this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
+    }
 
-	@Override
-	public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
-	{
-		return itemstack.getItem() instanceof IItemElectric;
-	}
+    @Override
+    public boolean isInvNameLocalized()
+    {
+        return true;
+    }
 
-	@Override
-	public int[] getAccessibleSlotsFromSide(int slotID)
-	{
-		return new int[] { 0, 1 };
-	}
+    @Override
+    public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
+    {
+        return itemstack.getItem() instanceof IItemElectric;
+    }
 
-	@Override
-	public boolean canInsertItem(int slotID, ItemStack itemstack, int side)
-	{
-		if (this.isItemValidForSlot(slotID, itemstack))
-		{
-			if (slotID == 0)
-			{
-				return ((IItemElectric) itemstack.getItem()).getTransfer(itemstack) > 0;
-			}
-			else if (slotID == 1)
-			{
-				return ((IItemElectric) itemstack.getItem()).getElectricityStored(itemstack) > 0;
-			}
-		}
-		return false;
-	}
+    @Override
+    public int[] getAccessibleSlotsFromSide(int slotID)
+    {
+        return new int[] { 0, 1 };
+    }
 
-	@Override
-	public boolean canExtractItem(int slotID, ItemStack itemstack, int side)
-	{
-		if (this.isItemValidForSlot(slotID, itemstack))
-		{
-			if (slotID == 0)
-			{
-				return ((IItemElectric) itemstack.getItem()).getTransfer(itemstack) <= 0;
-			}
-			else if (slotID == 1)
-			{
-				return ((IItemElectric) itemstack.getItem()).getElectricityStored(itemstack) <= 0 || this.getEnergyStored() >= this.getMaxEnergyStored();
-			}
-		}
+    @Override
+    public boolean canInsertItem(int slotID, ItemStack itemstack, int side)
+    {
+        if (this.isItemValidForSlot(slotID, itemstack))
+        {
+            if (slotID == 0)
+            {
+                return ((IItemElectric) itemstack.getItem()).getTransfer(itemstack) > 0;
+            }
+            else if (slotID == 1)
+            {
+                return ((IItemElectric) itemstack.getItem()).getElectricityStored(itemstack) > 0;
+            }
+        }
+        return false;
+    }
 
-		return false;
+    @Override
+    public boolean canExtractItem(int slotID, ItemStack itemstack, int side)
+    {
+        if (this.isItemValidForSlot(slotID, itemstack))
+        {
+            if (slotID == 0)
+            {
+                return ((IItemElectric) itemstack.getItem()).getTransfer(itemstack) <= 0;
+            }
+            else if (slotID == 1)
+            {
+                return ((IItemElectric) itemstack.getItem()).getElectricityStored(itemstack) <= 0 || this.getEnergyStored() >= this.getMaxEnergyStored();
+            }
+        }
 
-	}
+        return false;
 
-	@Override
-	public float getRequest(ForgeDirection direction)
-	{
-		return getInputDirections().contains(direction) ? this.getMaxEnergyStored() - this.getEnergyStored() : 0;
-	}
+    }
 
-	@Override
-	public float getProvide(ForgeDirection direction)
-	{
-		return getOutputDirections().contains(direction) ? Math.min(1.3F, this.getEnergyStored()) : 0;
-	}
+    @Override
+    public float getRequest(ForgeDirection direction)
+    {
+        return this.getInputDirections().contains(direction) ? this.getMaxEnergyStored() - this.getEnergyStored() : 0;
+    }
 
-	@Override
-	public EnumSet<ForgeDirection> getInputDirections()
-	{
-		return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() - GCCoreBlockBasicMachine.BATTERY_BOX_METADATA + 2).getOpposite(), ForgeDirection.UNKNOWN);
-	}
+    @Override
+    public float getProvide(ForgeDirection direction)
+    {
+        return this.getOutputDirections().contains(direction) ? Math.min(1.3F, this.getEnergyStored()) : 0;
+    }
 
-	@Override
-	public EnumSet<ForgeDirection> getOutputDirections()
-	{
-		return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() - GCCoreBlockBasicMachine.BATTERY_BOX_METADATA + 2), ForgeDirection.UNKNOWN);
-	}
+    @Override
+    public EnumSet<ForgeDirection> getInputDirections()
+    {
+        return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() - GCCoreBlockBasicMachine.BATTERY_BOX_METADATA + 2).getOpposite(), ForgeDirection.UNKNOWN);
+    }
 
-	@Override
-	public float getMaxEnergyStored()
-	{
-		return 2500;
-	}
+    @Override
+    public EnumSet<ForgeDirection> getOutputDirections()
+    {
+        return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() - GCCoreBlockBasicMachine.BATTERY_BOX_METADATA + 2), ForgeDirection.UNKNOWN);
+    }
+
+    @Override
+    public float getMaxEnergyStored()
+    {
+        return 2500;
+    }
 }

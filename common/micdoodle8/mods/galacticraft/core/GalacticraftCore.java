@@ -213,7 +213,7 @@ public class GalacticraftCore
                 {
                     OreGenerator.removeOre((OreGenBase) generationOreTin);
                 }
-    
+
                 if (GCCoreConfigManager.disableOreGenCopper && generationOreCopper != null)
                 {
                     OreGenerator.removeOre((OreGenBase) generationOreCopper);
@@ -292,7 +292,7 @@ public class GalacticraftCore
         SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicRocketT1());
         SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicMoonBuggy());
         SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicAdd());
-               
+
         ConductorChunkInitiate.register();
         Compatibility.initiate();
         TransmitterNetworkRegistry.initiate();
@@ -340,11 +340,11 @@ public class GalacticraftCore
     public void serverInit(FMLServerStartedEvent event)
     {
         GalacticraftCore.moon.serverInit(event);
-        
-        if (missingRequirementThread == null)
+
+        if (GalacticraftCore.missingRequirementThread == null)
         {
-            missingRequirementThread = new GCCoreThreadRequirementMissing(FMLCommonHandler.instance().getEffectiveSide());
-            missingRequirementThread.start();
+            GalacticraftCore.missingRequirementThread = new GCCoreThreadRequirementMissing(FMLCommonHandler.instance().getEffectiveSide());
+            GalacticraftCore.missingRequirementThread.start();
         }
 
         GCCoreUtil.checkVersion(Side.SERVER);

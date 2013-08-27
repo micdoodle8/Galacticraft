@@ -51,40 +51,40 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity implements ITubeConne
 
         return tile instanceof IGasTransmitter;
     }
-    
+
     @Override
-    public void onChunkUnload() 
+    public void onChunkUnload()
     {
-        invalidate();
+        this.invalidate();
         TransmitterNetworkRegistry.getInstance().pruneEmptyNetworks();
     }
-    
+
     @Override
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
-        return INFINITE_EXTENT_AABB;
+        return TileEntity.INFINITE_EXTENT_AABB;
     }
-    
+
     @Override
     public boolean areTransmitterNetworksEqual(TileEntity tileEntity)
     {
-        return tileEntity instanceof ITransmitter && getTransmissionType() == ((ITransmitter)tileEntity).getTransmissionType();
+        return tileEntity instanceof ITransmitter && this.getTransmissionType() == ((ITransmitter) tileEntity).getTransmissionType();
     }
-    
+
     @Override
     public GasNetwork getTransmitterNetwork()
     {
-        return getTransmitterNetwork(true);
+        return this.getTransmitterNetwork(true);
     }
-    
+
     @Override
     public void setTransmitterNetwork(GasNetwork network)
     {
-        if(network != theNetwork)
+        if (network != this.theNetwork)
         {
-            removeFromTransmitterNetwork();
-            theNetwork = network;
+            this.removeFromTransmitterNetwork();
+            this.theNetwork = network;
         }
     }
 
@@ -213,116 +213,115 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity implements ITubeConne
         }
     }
 
-    
     @Override
     public TransmissionType getTransmissionType()
     {
         return TransmissionType.GAS;
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public GasNetwork getTransmitterNetwork(boolean createIfNull)
     {
-        if (theNetwork == null && createIfNull)
+        if (this.theNetwork == null && createIfNull)
         {
             TileEntity[] adjacentTubes = GasTransmission.getConnectedTubes(this);
             HashSet<GasNetwork> connectedNets = new HashSet<GasNetwork>();
-            
+
             for (TileEntity tube : adjacentTubes)
             {
                 if (TransmissionType.checkTransmissionType(tube, TransmissionType.GAS, this) && ((ITransmitter<GasNetwork>) tube).getTransmitterNetwork(false) != null)
                 {
-                    connectedNets.add(((ITransmitter<GasNetwork>)tube).getTransmitterNetwork());
+                    connectedNets.add(((ITransmitter<GasNetwork>) tube).getTransmitterNetwork());
                 }
             }
-            
-            if(connectedNets.size() == 0 || worldObj.isRemote)
+
+            if (connectedNets.size() == 0 || this.worldObj.isRemote)
             {
-                theNetwork = new GasNetwork(this);
+                this.theNetwork = new GasNetwork(this);
             }
-            else if(connectedNets.size() == 1)
+            else if (connectedNets.size() == 1)
             {
-                theNetwork = (GasNetwork)connectedNets.iterator().next();
-                theNetwork.transmitters.add(this);
+                this.theNetwork = connectedNets.iterator().next();
+                this.theNetwork.transmitters.add(this);
             }
-            else 
+            else
             {
-                theNetwork = new GasNetwork(connectedNets);
-                theNetwork.transmitters.add(this);
+                this.theNetwork = new GasNetwork(connectedNets);
+                this.theNetwork.transmitters.add(this);
             }
         }
-        
-        return theNetwork;
+
+        return this.theNetwork;
     }
 
     @Override
     public void fixTransmitterNetwork()
     {
-        getTransmitterNetwork().fixMessedUpNetwork(this);
+        this.getTransmitterNetwork().fixMessedUpNetwork(this);
     }
 
     @Override
     public void invalidate()
     {
-        if(!worldObj.isRemote)
+        if (!this.worldObj.isRemote)
         {
-            getTransmitterNetwork().split(this);
+            this.getTransmitterNetwork().split(this);
         }
-        
+
         super.invalidate();
     }
-    
+
     @Override
     public void removeFromTransmitterNetwork()
     {
-        if(theNetwork != null)
+        if (this.theNetwork != null)
         {
-            theNetwork.removeTransmitter(this);
+            this.theNetwork.removeTransmitter(this);
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
-    public void refreshTransmitterNetwork() 
+    public void refreshTransmitterNetwork()
     {
-        if (!worldObj.isRemote)
+        if (!this.worldObj.isRemote)
         {
             for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS)
             {
-                TileEntity tileEntity = Object3D.get(this).getFromSide(side).getTileEntity(worldObj);
-                
+                TileEntity tileEntity = Object3D.get(this).getFromSide(side).getTileEntity(this.worldObj);
+
                 if (TransmissionType.checkTransmissionType(tileEntity, TransmissionType.GAS, this))
                 {
-                    getTransmitterNetwork().merge(((ITransmitter<GasNetwork>)tileEntity).getTransmitterNetwork());
+                    this.getTransmitterNetwork().merge(((ITransmitter<GasNetwork>) tileEntity).getTransmitterNetwork());
                 }
             }
-            
-            getTransmitterNetwork().refresh();
+
+            this.getTransmitterNetwork().refresh();
         }
     }
-    
+
     @Override
     public int getTransmitterNetworkSize()
     {
-        return getTransmitterNetwork().getSize();
+        return this.getTransmitterNetwork().getSize();
     }
 
     @Override
     public int getTransmitterNetworkAcceptorSize()
     {
-        return getTransmitterNetwork().getAcceptorSize();
+        return this.getTransmitterNetwork().getAcceptorSize();
     }
 
     @Override
     public String getTransmitterNetworkNeeded()
     {
-        return getTransmitterNetwork().getNeeded();
+        return this.getTransmitterNetwork().getNeeded();
     }
 
     @Override
     public String getTransmitterNetworkFlow()
     {
-        return getTransmitterNetwork().getFlow();
+        return this.getTransmitterNetwork().getFlow();
     }
 }

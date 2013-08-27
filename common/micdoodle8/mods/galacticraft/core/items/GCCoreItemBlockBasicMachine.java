@@ -11,18 +11,18 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreItemBlockBasicMachine extends ItemBlock
 {
-	public GCCoreItemBlockBasicMachine(int id)
-	{
-		super(id);
-		this.setMaxDamage(0);
-		this.setHasSubtypes(true);
-	}
+    public GCCoreItemBlockBasicMachine(int id)
+    {
+        super(id);
+        this.setMaxDamage(0);
+        this.setHasSubtypes(true);
+    }
 
-	@Override
-	public int getMetadata(int damage)
-	{
-		return damage;
-	}
+    @Override
+    public int getMetadata(int damage)
+    {
+        return damage;
+    }
 
     @Override
     @SideOnly(Side.CLIENT)
@@ -31,26 +31,26 @@ public class GCCoreItemBlockBasicMachine extends ItemBlock
         return ClientProxyCore.galacticraftItem;
     }
 
-	@Override
-	public String getUnlocalizedName(ItemStack itemstack)
-	{
-		int metadata = 0;
+    @Override
+    public String getUnlocalizedName(ItemStack itemstack)
+    {
+        int metadata = 0;
 
-		if (itemstack.getItemDamage() >= GCCoreBlockBasicMachine.ELECTRIC_FURNACE_METADATA)
-		{
-			metadata = 2;
-		}
-		else if (itemstack.getItemDamage() >= GCCoreBlockBasicMachine.BATTERY_BOX_METADATA)
-		{
-			metadata = 1;
-		}
+        if (itemstack.getItemDamage() >= GCCoreBlockBasicMachine.ELECTRIC_FURNACE_METADATA)
+        {
+            metadata = 2;
+        }
+        else if (itemstack.getItemDamage() >= GCCoreBlockBasicMachine.BATTERY_BOX_METADATA)
+        {
+            metadata = 1;
+        }
 
-		return Block.blocksList[this.getBlockID()].getUnlocalizedName() + "." + metadata;
-	}
+        return Block.blocksList[this.getBlockID()].getUnlocalizedName() + "." + metadata;
+    }
 
-	@Override
-	public String getUnlocalizedName()
-	{
-		return Block.blocksList[this.getBlockID()].getUnlocalizedName() + ".0";
-	}
+    @Override
+    public String getUnlocalizedName()
+    {
+        return Block.blocksList[this.getBlockID()].getUnlocalizedName() + ".0";
+    }
 }

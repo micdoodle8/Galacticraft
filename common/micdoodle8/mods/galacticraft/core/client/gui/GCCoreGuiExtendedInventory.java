@@ -39,7 +39,7 @@ public class GCCoreGuiExtendedInventory extends InventoryEffectRenderer
 
         int cornerX = this.guiLeft;
         int cornerY = (this.height - this.ySize) / 2;
-        
+
         TabRegistry.updateTabValues(cornerX, cornerY, GCCoreInventoryTabGalacticraft.class);
         TabRegistry.addTabsToList(this.buttonList);
 

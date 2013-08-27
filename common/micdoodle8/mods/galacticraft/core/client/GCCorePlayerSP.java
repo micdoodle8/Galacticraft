@@ -63,17 +63,17 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
             GalacticraftCore.playersClient.put(this.username, this);
         }
     }
-    
+
     @Override
     public void wakeUpPlayer(boolean par1, boolean par2, boolean par3)
-    {        
+    {
         ChunkCoordinates c = this.playerLocation;
-        
+
         if (c != null)
         {
             PlayerWakeUpEvent event = new PlayerWakeUpEvent(this, c.posX, c.posY, c.posZ, par1, par2, par3);
             MinecraftForge.EVENT_BUS.post(event);
-            
+
             if (event.result == null || event.result == EnumStatus.OK)
             {
                 super.wakeUpPlayer(par1, par2, par3);

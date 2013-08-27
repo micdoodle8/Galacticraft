@@ -73,13 +73,13 @@ public class GCCoreTickHandlerClient implements ITickHandler
 
         if (type.equals(EnumSet.of(TickType.CLIENT)))
         {
-            if (prevLastOpenGui == null && lastOpenGui != null)
+            if (GCCoreTickHandlerClient.prevLastOpenGui == null && GCCoreTickHandlerClient.lastOpenGui != null)
             {
-                FMLClientHandler.instance().getClient().displayGuiScreen(lastOpenGui);
+                FMLClientHandler.instance().getClient().displayGuiScreen(GCCoreTickHandlerClient.lastOpenGui);
             }
-            
-            prevLastOpenGui = lastOpenGui;
-            
+
+            GCCoreTickHandlerClient.prevLastOpenGui = GCCoreTickHandlerClient.lastOpenGui;
+
             if (ClientProxyCore.addTabsNextTick)
             {
                 if (minecraft.currentScreen.getClass().equals(GuiInventory.class))
@@ -103,11 +103,11 @@ public class GCCoreTickHandlerClient implements ITickHandler
                 ClientProxyCore.playersWithOxygenTankRightGreen.clear();
                 ClientProxyCore.playersWithOxygenTankRightOrange.clear();
                 ClientProxyCore.playersWithOxygenTankRightRed.clear();
-                
-                if (missingRequirementThread == null)
+
+                if (GCCoreTickHandlerClient.missingRequirementThread == null)
                 {
-                    missingRequirementThread = new GCCoreThreadRequirementMissing(FMLCommonHandler.instance().getEffectiveSide());
-                    missingRequirementThread.start();
+                    GCCoreTickHandlerClient.missingRequirementThread = new GCCoreThreadRequirementMissing(FMLCommonHandler.instance().getEffectiveSide());
+                    GCCoreTickHandlerClient.missingRequirementThread.start();
                 }
             }
 

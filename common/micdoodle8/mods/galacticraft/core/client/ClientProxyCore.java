@@ -180,7 +180,7 @@ public class ClientProxyCore extends CommonProxyCore
     public static List<int[]> valueableBlocks = new ArrayList<int[]>();
 
     private static GCCoreThreadDownloadSound downloadResourcesThread;
-    
+
     public static Set<String> playersUsingParachutes = new HashSet<String>();
     public static HashMap<String, ResourceLocation> parachuteTextures = new HashMap<String, ResourceLocation>();
     public static Set<String> playersWithOxygenMask = new HashSet<String>();
@@ -291,12 +291,12 @@ public class ClientProxyCore extends CommonProxyCore
     public void postInit(FMLPostInitializationEvent event)
     {
         ClientProxyCore.moon.postInit(event);
-        
+
         if (!Loader.isModLoaded("TConstruct") || TabRegistry.getTabList().size() < 3)
         {
             TabRegistry.registerTab(new InventoryTabVanilla());
         }
-        
+
         TabRegistry.registerTab(new GCCoreInventoryTabGalacticraft());
 
         for (ICelestialBody celestialObject : GalacticraftRegistry.getCelestialBodies())
@@ -810,18 +810,18 @@ public class ClientProxyCore extends CommonProxyCore
         {
             if (tile instanceof GCCoreTileEntityBatteryBox)
             {
-                return new GCCoreGuiBatteryBox(player.inventory, ((GCCoreTileEntityBatteryBox) tile));
+                return new GCCoreGuiBatteryBox(player.inventory, (GCCoreTileEntityBatteryBox) tile);
             }
             else if (tile instanceof GCCoreTileEntityCoalGenerator)
             {
-                return new GCCoreGuiCoalGenerator(player.inventory, ((GCCoreTileEntityCoalGenerator) tile));
+                return new GCCoreGuiCoalGenerator(player.inventory, (GCCoreTileEntityCoalGenerator) tile);
             }
             else if (tile instanceof GCCoreTileEntityElectricFurnace)
             {
-                return new GCCoreGuiElectricFurnace(player.inventory, ((GCCoreTileEntityElectricFurnace) tile));
+                return new GCCoreGuiElectricFurnace(player.inventory, (GCCoreTileEntityElectricFurnace) tile);
             }
         }
-        
+
         return null;
     }
 
@@ -878,19 +878,19 @@ public class ClientProxyCore extends CommonProxyCore
                 ClientProxyCore.addTabsNextTick = true;
                 return;
             }
-            
+
             TabRegistry.addTabsToInventory(gui);
         }
     }
-    
+
     public static void onMinecraftLoaded()
     {
         try
-        {            
-            if (downloadResourcesThread == null)
+        {
+            if (ClientProxyCore.downloadResourcesThread == null)
             {
-                downloadResourcesThread = new GCCoreThreadDownloadSound(FMLClientHandler.instance().getClient().mcDataDir, FMLClientHandler.instance().getClient());
-                downloadResourcesThread.start();
+                ClientProxyCore.downloadResourcesThread = new GCCoreThreadDownloadSound(FMLClientHandler.instance().getClient().mcDataDir, FMLClientHandler.instance().getClient());
+                ClientProxyCore.downloadResourcesThread.start();
             }
         }
         catch (Exception e)

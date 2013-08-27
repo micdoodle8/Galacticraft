@@ -142,14 +142,14 @@ public class GCCoreMapGenDungeon
                     break;
                 }
 
-                GCCoreDungeonRoom possibleRoom = GCCoreDungeonRoom.makeRoom(this, rand, currentRoom.posX + offsetX, y, currentRoom.posZ + offsetZ, entranceDir.getOpposite());//this.getOppositeDir(entranceDir));
+                GCCoreDungeonRoom possibleRoom = GCCoreDungeonRoom.makeRoom(this, rand, currentRoom.posX + offsetX, y, currentRoom.posZ + offsetZ, entranceDir.getOpposite());// this.getOppositeDir(entranceDir));
                 if (i == length - 1)
                 {
-                    possibleRoom = GCCoreDungeonRoom.makeBossRoom(this, rand, currentRoom.posX + offsetX, y, currentRoom.posZ + offsetZ, entranceDir.getOpposite()); //this.getOppositeDir(entranceDir));
+                    possibleRoom = GCCoreDungeonRoom.makeBossRoom(this, rand, currentRoom.posX + offsetX, y, currentRoom.posZ + offsetZ, entranceDir.getOpposite()); // this.getOppositeDir(entranceDir));
                 }
                 if (i == length)
                 {
-                    possibleRoom = GCCoreDungeonRoom.makeTreasureRoom(this, rand, currentRoom.posX + offsetX, y, currentRoom.posZ + offsetZ, entranceDir.getOpposite()); //this.getOppositeDir(entranceDir));
+                    possibleRoom = GCCoreDungeonRoom.makeTreasureRoom(this, rand, currentRoom.posX + offsetX, y, currentRoom.posZ + offsetZ, entranceDir.getOpposite()); // this.getOppositeDir(entranceDir));
                 }
                 final GCCoreDungeonBoundingBox possibleRoomBb = possibleRoom.getBoundingBox();
                 final GCCoreDungeonBoundingBox currentRoomBb = currentRoom.getBoundingBox();
@@ -313,7 +313,7 @@ public class GCCoreMapGenDungeon
                 {
                     boolean flag = false;
                     int flag2 = -1;
-                    
+
                     switch (dir)
                     {
                     case EAST:
@@ -551,7 +551,7 @@ public class GCCoreMapGenDungeon
 
     private ForgeDirection randDir(Random rand)
     {
-        return ForgeDirection.values() [rand.nextInt(ForgeDirection.VALID_DIRECTIONS.length)];
+        return ForgeDirection.values()[rand.nextInt(ForgeDirection.VALID_DIRECTIONS.length)];
     }
 
     private boolean isIntersecting(GCCoreDungeonBoundingBox bb, List<GCCoreDungeonBoundingBox> dungeonBbs)

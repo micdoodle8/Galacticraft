@@ -11,21 +11,22 @@ import net.minecraft.world.World;
 import universalelectricity.prefab.block.BlockConductor;
 
 /**
- * A copper wire block that can change its collision bounds based on the connection.
+ * A copper wire block that can change its collision bounds based on the
+ * connection.
  * 
  * @author Calclavia, Aidancbrady
  */
 public class GCCoreBlockCopperWire extends BlockConductor
 {
-	public GCCoreBlockCopperWire(int id)
-	{
-		super(id, Material.cloth);
-		this.setStepSound(soundClothFootstep);
-		this.setResistance(0.2F);
-		this.setHardness(0.1F);
-		this.setBlockBounds(0.3F, 0.3F, 0.3F, 0.7F, 0.7F, 0.7F);
-		Block.setBurnProperties(this.blockID, 30, 60);
-	}
+    public GCCoreBlockCopperWire(int id)
+    {
+        super(id, Material.cloth);
+        this.setStepSound(Block.soundClothFootstep);
+        this.setResistance(0.2F);
+        this.setHardness(0.1F);
+        this.setBlockBounds(0.3F, 0.3F, 0.3F, 0.7F, 0.7F, 0.7F);
+        Block.setBurnProperties(this.blockID, 30, 60);
+    }
 
     @Override
     public CreativeTabs getCreativeTabToDisplayOn()
@@ -33,33 +34,33 @@ public class GCCoreBlockCopperWire extends BlockConductor
         return GalacticraftCore.galacticraftTab;
     }
 
-	@Override
-	public void registerIcons(IconRegister par1IconRegister)
-	{
-		this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + this.getUnlocalizedName().replace("tile.", ""));
-	}
-	
-	@Override
-	public boolean isOpaqueCube()
-	{
-		return false;
-	}
+    @Override
+    public void registerIcons(IconRegister par1IconRegister)
+    {
+        this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + this.getUnlocalizedName().replace("tile.", ""));
+    }
 
-	@Override
-	public boolean renderAsNormalBlock()
-	{
-		return false;
-	}
+    @Override
+    public boolean isOpaqueCube()
+    {
+        return false;
+    }
 
-	@Override
-	public int getRenderType()
-	{
-		return -1;
-	}
+    @Override
+    public boolean renderAsNormalBlock()
+    {
+        return false;
+    }
 
-	@Override
-	public TileEntity createNewTileEntity(World var1)
-	{
-		return new GCCoreTileEntityCopperWire();
-	}
+    @Override
+    public int getRenderType()
+    {
+        return -1;
+    }
+
+    @Override
+    public TileEntity createNewTileEntity(World var1)
+    {
+        return new GCCoreTileEntityCopperWire();
+    }
 }

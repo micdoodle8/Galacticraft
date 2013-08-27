@@ -815,7 +815,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
                         GCCoreOxygenSuffocationEvent suffocationEvent = new GCCoreOxygenSuffocationEvent.Pre(this);
                         MinecraftForge.EVENT_BUS.post(suffocationEvent);
-                        
+
                         if (!suffocationEvent.isCanceled())
                         {
                             this.attackEntityFrom(GCCoreDamageSource.oxygenSuffocation, GCCoreConfigManager.suffocationDamage);
@@ -1121,17 +1121,17 @@ public class GCCorePlayerMP extends EntityPlayerMP
             PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 50, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, 6, toSend));
         }
     }
-    
+
     @Override
     public void wakeUpPlayer(boolean par1, boolean par2, boolean par3)
-    {        
-        ChunkCoordinates c = playerLocation;
-        
+    {
+        ChunkCoordinates c = this.playerLocation;
+
         if (c != null)
         {
             PlayerWakeUpEvent event = new PlayerWakeUpEvent(this, c.posX, c.posY, c.posZ, par1, par2, par3);
             MinecraftForge.EVENT_BUS.post(event);
-            
+
             if (event.result == null || event.result == EnumStatus.OK)
             {
                 super.wakeUpPlayer(par1, par2, par3);
@@ -1319,7 +1319,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
             return this.index;
         }
     }
-    
+
     @Cancelable
     public static class PlayerWakeUpEvent extends PlayerEvent
     {
@@ -1330,7 +1330,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
         public final boolean flag1;
         public final boolean flag2;
         public final boolean flag3;
-        
+
         public PlayerWakeUpEvent(EntityPlayer player, int x, int y, int z, boolean flag1, boolean flag2, boolean flag3)
         {
             super(player);

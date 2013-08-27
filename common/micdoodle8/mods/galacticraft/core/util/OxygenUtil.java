@@ -70,7 +70,7 @@ public class OxygenUtil
                 if (!distributor.worldObj.isRemote)
                 {
                     final double dist = distributor.getDistanceFromServer(avgX, avgY, avgZ);
-                    
+
                     if (dist < distributor.storedOxygen / 600.0D * (distributor.storedOxygen / 600.0D))
                     {
                         return true;

@@ -84,7 +84,7 @@ public class GCCoreThreadRequirementMissing extends Thread
             }
         }
     }
-    
+
     @SideOnly(Side.CLIENT)
     private static void openGuiClient()
     {

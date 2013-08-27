@@ -12,6 +12,7 @@ public class GCCoreGuiDownloadingSounds extends GuiScreen
     public String displayStatus = "";
     public int displayStatusColor = 0xFFFFFF;
 
+    @Override
     public void drawScreen(int par1, int par2, float par3)
     {
         this.drawDefaultBackground();
@@ -22,46 +23,52 @@ public class GCCoreGuiDownloadingSounds extends GuiScreen
         offset += 20;
         this.drawCenteredString(this.fontRenderer, "Ensure you have an internet connection available", this.width / 2, offset, 0xFFFFFF);
         offset += 20;
-        
+
         if (this.displayStatusColor != 0xFF1111)
         {
             this.drawCenteredString(this.fontRenderer, this.getEllipsis(), this.width / 2, offset, 0xFFFFFF);
         }
-        
+
         offset += 18;
         String str = this.displayStatus;
         String[] strSplit = str.split("#");
-        
+
         if (strSplit.length > 1)
         {
             if (strSplit.length == 2)
             {
-                this.drawCenteredString(this.fontRenderer, strSplit[0], this.width / 2, offset, displayStatusColor);
+                this.drawCenteredString(this.fontRenderer, strSplit[0], this.width / 2, offset, this.displayStatusColor);
                 offset += 14;
-                this.drawCenteredString(this.fontRenderer, strSplit[1], this.width / 2, offset, displayStatusColor);
+                this.drawCenteredString(this.fontRenderer, strSplit[1], this.width / 2, offset, this.displayStatusColor);
             }
         }
         else
         {
-            this.drawCenteredString(this.fontRenderer, this.displayStatus, this.width / 2, offset, displayStatusColor);
+            this.drawCenteredString(this.fontRenderer, this.displayStatus, this.width / 2, offset, this.displayStatusColor);
         }
-        
-        displayCount++;
+
+        this.displayCount++;
     }
-    
+
     private String getEllipsis()
     {
         String ellipsis = "";
-        
-        for (int i = 0; i < Math.floor(displayCount / 40.0) % 5; i++)
+
+        for (int i = 0; i < Math.floor(this.displayCount / 40.0) % 5; i++)
         {
             ellipsis += ".";
         }
-        
+
         return ellipsis;
     }
 
-    protected void keyTyped(char par1, int par2) {}
+    @Override
+    protected void keyTyped(char par1, int par2)
+    {
+    }
 
-    protected void actionPerformed(GuiButton par1GuiButton) {}
+    @Override
+    protected void actionPerformed(GuiButton par1GuiButton)
+    {
+    }
 }

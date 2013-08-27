@@ -12,10 +12,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreItemBattery extends ItemElectric
 {
-	public GCCoreItemBattery(int id)
-	{
-		super(id);
-	}
+    public GCCoreItemBattery(int id)
+    {
+        super(id);
+    }
 
     @Override
     public CreativeTabs getCreativeTab()
@@ -30,22 +30,22 @@ public class GCCoreItemBattery extends ItemElectric
         return ClientProxyCore.galacticraftItem;
     }
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void registerIcons(IconRegister iconRegister)
-	{
-		this.itemIcon = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + this.getUnlocalizedName().replace("item.", ""));
-	}
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void registerIcons(IconRegister iconRegister)
+    {
+        this.itemIcon = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + this.getUnlocalizedName().replace("item.", ""));
+    }
 
-	@Override
-	public float getMaxElectricityStored(ItemStack itemStack)
-	{
-		return 5000;
-	}
+    @Override
+    public float getMaxElectricityStored(ItemStack itemStack)
+    {
+        return 5000;
+    }
 
-	@Override
-	public float getVoltage(ItemStack itemStack)
-	{
-		return 120;
-	}
+    @Override
+    public float getVoltage(ItemStack itemStack)
+    {
+        return 120;
+    }
 }

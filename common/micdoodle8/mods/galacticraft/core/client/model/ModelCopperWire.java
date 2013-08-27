@@ -9,122 +9,122 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ModelCopperWire extends ModelBase
 {
-	// fields
-	ModelRenderer Middle;
-	ModelRenderer Right;
-	ModelRenderer Left;
-	ModelRenderer Back;
-	ModelRenderer Front;
-	ModelRenderer Top;
-	ModelRenderer Bottom;
+    // fields
+    ModelRenderer Middle;
+    ModelRenderer Right;
+    ModelRenderer Left;
+    ModelRenderer Back;
+    ModelRenderer Front;
+    ModelRenderer Top;
+    ModelRenderer Bottom;
 
-	public ModelCopperWire()
-	{
-		textureWidth = 64;
-		textureHeight = 32;
-		Middle = new ModelRenderer(this, 0, 0);
-		Middle.addBox(-1F, -1F, -1F, 4, 4, 4);
-		Middle.setRotationPoint(-1F, 15F, -1F);
-		Middle.setTextureSize(64, 32);
-		Middle.mirror = true;
-		setRotation(Middle, 0F, 0F, 0F);
-		Right = new ModelRenderer(this, 21, 0);
-		Right.addBox(0F, 0F, 0F, 6, 4, 4);
-		Right.setRotationPoint(2F, 14F, -2F);
-		Right.setTextureSize(64, 32);
-		Right.mirror = true;
-		setRotation(Right, 0F, 0F, 0F);
-		Left = new ModelRenderer(this, 21, 0);
-		Left.addBox(0F, 0F, 0F, 6, 4, 4);
-		Left.setRotationPoint(-8F, 14F, -2F);
-		Left.setTextureSize(64, 32);
-		Left.mirror = true;
-		setRotation(Left, 0F, 0F, 0F);
-		Back = new ModelRenderer(this, 0, 11);
-		Back.addBox(0F, 0F, 0F, 4, 4, 6);
-		Back.setRotationPoint(-2F, 14F, 2F);
-		Back.setTextureSize(64, 32);
-		Back.mirror = true;
-		setRotation(Back, 0F, 0F, 0F);
-		Front = new ModelRenderer(this, 0, 11);
-		Front.addBox(0F, 0F, 0F, 4, 4, 6);
-		Front.setRotationPoint(-2F, 14F, -8F);
-		Front.setTextureSize(64, 32);
-		Front.mirror = true;
-		setRotation(Front, 0F, 0F, 0F);
-		Top = new ModelRenderer(this, 21, 11);
-		Top.addBox(0F, 0F, 0F, 4, 6, 4);
-		Top.setRotationPoint(-2F, 8F, -2F);
-		Top.setTextureSize(64, 32);
-		Top.mirror = true;
-		setRotation(Top, 0F, 0F, 0F);
-		Bottom = new ModelRenderer(this, 21, 11);
-		Bottom.addBox(0F, 0F, 0F, 4, 6, 4);
-		Bottom.setRotationPoint(-2F, 18F, -2F);
-		Bottom.setTextureSize(64, 32);
-		Bottom.mirror = true;
-		setRotation(Bottom, 0F, 0F, 0F);
-	}
+    public ModelCopperWire()
+    {
+        this.textureWidth = 64;
+        this.textureHeight = 32;
+        this.Middle = new ModelRenderer(this, 0, 0);
+        this.Middle.addBox(-1F, -1F, -1F, 4, 4, 4);
+        this.Middle.setRotationPoint(-1F, 15F, -1F);
+        this.Middle.setTextureSize(64, 32);
+        this.Middle.mirror = true;
+        this.setRotation(this.Middle, 0F, 0F, 0F);
+        this.Right = new ModelRenderer(this, 21, 0);
+        this.Right.addBox(0F, 0F, 0F, 6, 4, 4);
+        this.Right.setRotationPoint(2F, 14F, -2F);
+        this.Right.setTextureSize(64, 32);
+        this.Right.mirror = true;
+        this.setRotation(this.Right, 0F, 0F, 0F);
+        this.Left = new ModelRenderer(this, 21, 0);
+        this.Left.addBox(0F, 0F, 0F, 6, 4, 4);
+        this.Left.setRotationPoint(-8F, 14F, -2F);
+        this.Left.setTextureSize(64, 32);
+        this.Left.mirror = true;
+        this.setRotation(this.Left, 0F, 0F, 0F);
+        this.Back = new ModelRenderer(this, 0, 11);
+        this.Back.addBox(0F, 0F, 0F, 4, 4, 6);
+        this.Back.setRotationPoint(-2F, 14F, 2F);
+        this.Back.setTextureSize(64, 32);
+        this.Back.mirror = true;
+        this.setRotation(this.Back, 0F, 0F, 0F);
+        this.Front = new ModelRenderer(this, 0, 11);
+        this.Front.addBox(0F, 0F, 0F, 4, 4, 6);
+        this.Front.setRotationPoint(-2F, 14F, -8F);
+        this.Front.setTextureSize(64, 32);
+        this.Front.mirror = true;
+        this.setRotation(this.Front, 0F, 0F, 0F);
+        this.Top = new ModelRenderer(this, 21, 11);
+        this.Top.addBox(0F, 0F, 0F, 4, 6, 4);
+        this.Top.setRotationPoint(-2F, 8F, -2F);
+        this.Top.setTextureSize(64, 32);
+        this.Top.mirror = true;
+        this.setRotation(this.Top, 0F, 0F, 0F);
+        this.Bottom = new ModelRenderer(this, 21, 11);
+        this.Bottom.addBox(0F, 0F, 0F, 4, 6, 4);
+        this.Bottom.setRotationPoint(-2F, 18F, -2F);
+        this.Bottom.setTextureSize(64, 32);
+        this.Bottom.mirror = true;
+        this.setRotation(this.Bottom, 0F, 0F, 0F);
+    }
 
-	@Override
-	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
-	{
-		super.render(entity, f, f1, f2, f3, f4, f5);
-		this.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-		this.renderMiddle();
-		this.renderBottom();
-		this.renderTop();
-		this.renderLeft();
-		this.renderRight();
-		this.renderBack();
-		this.renderFront();
-	}
+    @Override
+    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
+    {
+        super.render(entity, f, f1, f2, f3, f4, f5);
+        this.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+        this.renderMiddle();
+        this.renderBottom();
+        this.renderTop();
+        this.renderLeft();
+        this.renderRight();
+        this.renderBack();
+        this.renderFront();
+    }
 
-	public void renderMiddle()
-	{
-		Middle.render(0.0625F);
-	}
+    public void renderMiddle()
+    {
+        this.Middle.render(0.0625F);
+    }
 
-	public void renderBottom()
-	{
-		Bottom.render(0.0625F);
-	}
+    public void renderBottom()
+    {
+        this.Bottom.render(0.0625F);
+    }
 
-	public void renderTop()
-	{
-		Top.render(0.0625F);
-	}
+    public void renderTop()
+    {
+        this.Top.render(0.0625F);
+    }
 
-	public void renderLeft()
-	{
-		Left.render(0.0625F);
-	}
+    public void renderLeft()
+    {
+        this.Left.render(0.0625F);
+    }
 
-	public void renderRight()
-	{
-		Right.render(0.0625F);
-	}
+    public void renderRight()
+    {
+        this.Right.render(0.0625F);
+    }
 
-	public void renderBack()
-	{
-		Back.render(0.0625F);
-	}
+    public void renderBack()
+    {
+        this.Back.render(0.0625F);
+    }
 
-	public void renderFront()
-	{
-		Front.render(0.0625F);
-	}
+    public void renderFront()
+    {
+        this.Front.render(0.0625F);
+    }
 
-	private void setRotation(ModelRenderer model, float x, float y, float z)
-	{
-		model.rotateAngleX = x;
-		model.rotateAngleY = y;
-		model.rotateAngleZ = z;
-	}
+    private void setRotation(ModelRenderer model, float x, float y, float z)
+    {
+        model.rotateAngleX = x;
+        model.rotateAngleY = y;
+        model.rotateAngleZ = z;
+    }
 
-	@Override
-	public void setRotationAngles(float x, float y, float z, float f3, float f4, float f5, Entity entity)
-	{
-		super.setRotationAngles(x, y, z, f3, f4, f5, entity);
-	}
+    @Override
+    public void setRotationAngles(float x, float y, float z, float f3, float f4, float f5, Entity entity)
+    {
+        super.setRotationAngles(x, y, z, f3, f4, f5, entity);
+    }
 }

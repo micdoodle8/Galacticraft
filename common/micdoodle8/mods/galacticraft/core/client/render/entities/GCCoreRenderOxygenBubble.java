@@ -23,11 +23,11 @@ public class GCCoreRenderOxygenBubble extends Render
     private static final ResourceLocation oxygenBubbleTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/bubble.png");
 
     private final GCCoreModelOxygenBubble oxygenBubbleModel = new GCCoreModelOxygenBubble();
-    
+
     private final float colorRed;
     private final float colorGreen;
     private final float colorBlue;
-    
+
     public GCCoreRenderOxygenBubble(float red, float green, float blue)
     {
         this.colorRed = red;
@@ -53,7 +53,7 @@ public class GCCoreRenderOxygenBubble extends Render
         GL11.glEnable(GL11.GL_BLEND);
 
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glColor4f(colorRed, colorGreen, colorBlue, 1.0F);
+        GL11.glColor4f(this.colorRed, this.colorGreen, this.colorBlue, 1.0F);
         GL11.glMatrixMode(GL11.GL_TEXTURE);
         GL11.glLoadIdentity();
         GL11.glMatrixMode(GL11.GL_MODELVIEW);

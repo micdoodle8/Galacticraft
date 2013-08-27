@@ -173,6 +173,7 @@ public class GCCoreEntityOxygenBubble extends Entity implements IPacketReceiver,
         this.size = bubbleSize;
     }
 
+    @Override
     public float getSize()
     {
         return this.size;
@@ -188,7 +189,7 @@ public class GCCoreEntityOxygenBubble extends Entity implements IPacketReceiver,
     {
         if (nbt.getTags().contains("bubbleSize"))
         {
-            this.size = (float)nbt.getDouble("bubbleSize");
+            this.size = (float) nbt.getDouble("bubbleSize");
         }
         else
         {

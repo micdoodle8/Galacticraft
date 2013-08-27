@@ -96,7 +96,7 @@ public class GCCoreThreadDownloadSound extends Thread
             this.loadResource(this.resourcesFolder, "");
             exception.printStackTrace();
         }
-        
+
         GCCoreTickHandlerClient.lastOpenGui = this.previousGui;
     }
 
@@ -157,8 +157,8 @@ public class GCCoreThreadDownloadSound extends Thread
                 FMLClientHandler.instance().getClient().displayGuiScreen(this.gui);
                 this.downloadResource(new URL(par1URL, s2), file1, par3);
                 this.downloadCount++;
-                int roundedDataSize = (int) Math.floor(((10 * byteCount) / (1024.0F * 1024.0F)));
-                this.gui.displayStatus = "Downloaded " + this.downloadCount + " sounds#" + (roundedDataSize / 10.0F) + " MB";
+                int roundedDataSize = (int) Math.floor(10 * this.byteCount / (1024.0F * 1024.0F));
+                this.gui.displayStatus = "Downloaded " + this.downloadCount + " sounds#" + roundedDataSize / 10.0F + " MB";
                 this.gui.displayStatusColor = 0x11FF11;
 
                 if (this.closing)
@@ -221,7 +221,7 @@ public class GCCoreThreadDownloadSound extends Thread
             }
 
             dataoutputstream.write(abyte, 0, j);
-            byteCount += j;
+            this.byteCount += j;
         }
         while (!this.closing);
     }

@@ -150,12 +150,12 @@ public class GCCoreEvents
             {
                 GCCoreOxygenSuffocationEvent suffocationEvent = new GCCoreOxygenSuffocationEvent.Pre(event.entityLiving);
                 MinecraftForge.EVENT_BUS.post(suffocationEvent);
-                
+
                 if (suffocationEvent.isCanceled())
                 {
                     return;
                 }
-                
+
                 event.entityLiving.attackEntityFrom(GCCoreDamageSource.oxygenSuffocation, 1);
 
                 GCCoreOxygenSuffocationEvent suffocationEventPost = new GCCoreOxygenSuffocationEvent.Post(event.entityLiving);

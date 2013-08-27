@@ -208,23 +208,23 @@ public class CommonProxyCore implements IGuiHandler
                 }
             }
         }
-        
+
         if (tileEntity != null)
         {
             if (tileEntity instanceof GCCoreTileEntityBatteryBox)
             {
-                return new ContainerBatteryBox(player.inventory, ((GCCoreTileEntityBatteryBox) tileEntity));
+                return new ContainerBatteryBox(player.inventory, (GCCoreTileEntityBatteryBox) tileEntity);
             }
             else if (tileEntity instanceof GCCoreTileEntityCoalGenerator)
             {
-                return new ContainerCoalGenerator(player.inventory, ((GCCoreTileEntityCoalGenerator) tileEntity));
+                return new ContainerCoalGenerator(player.inventory, (GCCoreTileEntityCoalGenerator) tileEntity);
             }
             else if (tileEntity instanceof GCCoreTileEntityElectricFurnace)
             {
-                return new ContainerElectricFurnace(player.inventory, ((GCCoreTileEntityElectricFurnace) tileEntity));
+                return new ContainerElectricFurnace(player.inventory, (GCCoreTileEntityElectricFurnace) tileEntity);
             }
         }
-        
+
         return null;
     }
 

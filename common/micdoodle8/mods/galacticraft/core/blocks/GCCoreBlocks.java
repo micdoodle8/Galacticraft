@@ -106,7 +106,7 @@ public class GCCoreBlocks
         GCCoreBlocks.hiddenBlocks.add(GCCoreBlocks.landingPadFull.blockID);
         GCCoreBlocks.hiddenBlocks.add(GCCoreBlocks.dummyBlock.blockID);
         GCCoreBlocks.hiddenBlocks.add(GCCoreBlocks.spaceStationBase.blockID);
-        
+
         OreDictionary.registerOre("copperWire", GCCoreBlocks.blockCopperWire);
     }
 
