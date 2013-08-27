@@ -5,6 +5,7 @@ import java.util.Random;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP.PlayerWakeUpEvent;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -13,14 +14,17 @@ import net.minecraft.client.multiplayer.NetClientHandler;
 import net.minecraft.client.renderer.IImageBuffer;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
 import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.entity.player.EnumStatus;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Icon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Session;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -57,6 +61,23 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
         if (!GalacticraftCore.playersClient.containsKey(this.username))
         {
             GalacticraftCore.playersClient.put(this.username, this);
+        }
+    }
+    
+    @Override
+    public void wakeUpPlayer(boolean par1, boolean par2, boolean par3)
+    {        
+        ChunkCoordinates c = this.playerLocation;
+        
+        if (c != null)
+        {
+            PlayerWakeUpEvent event = new PlayerWakeUpEvent(this, c.posX, c.posY, c.posZ, par1, par2, par3);
+            MinecraftForge.EVENT_BUS.post(event);
+            
+            if (event.result == null || event.result == EnumStatus.OK)
+            {
+                super.wakeUpPlayer(par1, par2, par3);
+            }
         }
     }
 
