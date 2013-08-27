@@ -6,7 +6,6 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.EnumChatFormatting;
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

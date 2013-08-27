@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core.client.render.block;
 
 import java.util.Arrays;
-import mekanism.api.GasTransmission;
-import mekanism.api.ITubeConnection;
+import mekanism.api.gas.GasTransmission;
+import mekanism.api.gas.ITubeConnection;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;

@@ -1,10 +1,9 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.Arrays;
-import mekanism.api.GasNetwork;
-import mekanism.api.GasTransmission;
-import mekanism.api.ITransmitter;
-import mekanism.api.ITubeConnection;
+import mekanism.api.gas.GasTransmission;
+import mekanism.api.gas.ITubeConnection;
+import mekanism.api.transmitters.ITransmitter;
 import micdoodle8.mods.galacticraft.api.tile.IColorable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenPipe;
@@ -72,7 +71,7 @@ public class GCCoreBlockOxygenPipe extends BlockContainer implements ITileEntity
 
         if (!world.isRemote && tileEntity instanceof ITransmitter<?>)
         {
-            ((ITransmitter<?>) tileEntity).refreshNetwork();
+            ((ITransmitter<?>) tileEntity).refreshTransmitterNetwork();
         }
     }
 
@@ -83,7 +82,7 @@ public class GCCoreBlockOxygenPipe extends BlockContainer implements ITileEntity
 
         if (!world.isRemote && tileEntity instanceof ITransmitter<?>)
         {
-            ((ITransmitter<?>) tileEntity).refreshNetwork();
+            ((ITransmitter<?>) tileEntity).refreshTransmitterNetwork();
         }
     }
 
@@ -155,7 +154,7 @@ public class GCCoreBlockOxygenPipe extends BlockContainer implements ITileEntity
 
                         if (!par1World.isRemote && tileAt instanceof ITransmitter<?>)
                         {
-                            ((ITransmitter<?>) tileAt).refreshNetwork();
+                            ((ITransmitter<?>) tileAt).refreshTransmitterNetwork();
                         }
                     }
 

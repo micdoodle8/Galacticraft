@@ -5,7 +5,6 @@ import java.util.EnumSet;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.world.IMoon;
 import micdoodle8.mods.galacticraft.core.GCCoreCreativeTab;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonTeleportType;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;

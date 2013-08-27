@@ -14,7 +14,6 @@ import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiDownloadingSounds;
 import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerClient;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundPoolEntry;
-import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

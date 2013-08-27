@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import mekanism.api.EnumGas;
-import mekanism.api.GasTransmission;
-import mekanism.api.IGasAcceptor;
-import mekanism.api.ITubeConnection;
+import mekanism.api.gas.EnumGas;
+import mekanism.api.gas.GasTransmission;
+import mekanism.api.gas.IGasAcceptor;
+import mekanism.api.gas.ITubeConnection;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;

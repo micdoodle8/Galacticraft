@@ -20,7 +20,6 @@ import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class GCCoreTileEntityBatteryBox extends TileEntityUniversalElectrical implements IPacketReceiver, ISidedInventory

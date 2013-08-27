@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import mekanism.api.EnumGas;
-import mekanism.api.IGasAcceptor;
-import mekanism.api.ITubeConnection;
+import mekanism.api.gas.EnumGas;
+import mekanism.api.gas.IGasAcceptor;
+import mekanism.api.gas.ITubeConnection;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.ForgeDirection;
 
