@@ -20,6 +20,7 @@ import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityTerraformBubble;
 import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
 import micdoodle8.mods.galacticraft.mars.network.GCMarsPacketHandlerServer;
 import micdoodle8.mods.galacticraft.mars.schematic.GCMarsSchematicRocketT2;
+import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityCryogenicChamber;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntitySlimelingEgg;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityTerraformer;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityTreasureChest;
@@ -157,6 +158,7 @@ public class GalacticraftMars
         GameRegistry.registerTileEntity(GCMarsTileEntitySlimelingEgg.class, "Slimeling Egg");
         GameRegistry.registerTileEntity(GCMarsTileEntityTreasureChest.class, "Tier 2 Treasure Chest");
         GameRegistry.registerTileEntity(GCMarsTileEntityTerraformer.class, "Planet Terraformer");
+        GameRegistry.registerTileEntity(GCMarsTileEntityCryogenicChamber.class, "Cryogenic Chamber");
     }
 
     public void registerCreatures()
@@ -186,7 +188,6 @@ public class GalacticraftMars
     {
         EntityRegistry.registerGlobalEntityID(var0, var1, id, back, fore);
         EntityRegistry.registerModEntity(var0, var1, id, GalacticraftMars.instance, 80, 3, true);
-        LanguageRegistry.instance().addStringLocalization("entity." + var1 + ".name", "en_US", var1);
     }
 
     public void registerGalacticraftNonMobEntity(Class var0, String var1, int id, int trackingDistance, int updateFreq, boolean sendVel)

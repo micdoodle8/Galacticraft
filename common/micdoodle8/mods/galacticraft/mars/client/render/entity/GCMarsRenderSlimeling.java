@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.mars.client.render.entity;
 
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
+import micdoodle8.mods.galacticraft.mars.client.ClientProxyMars;
 import micdoodle8.mods.galacticraft.mars.client.gui.GCMarsGuiSlimeling;
 import micdoodle8.mods.galacticraft.mars.client.gui.GCMarsGuiSlimelingInventory;
 import micdoodle8.mods.galacticraft.mars.client.model.GCMarsModelSlimeling;
@@ -113,6 +114,7 @@ public class GCMarsRenderSlimeling extends RenderLiving
 
     protected void renderLivingLabelWithColor(EntityLivingBase par1EntityLivingBase, String par2Str, double par3, double par5, double par7, int par9, float cR, float cG, float cB)
     {
+        
         double d3 = par1EntityLivingBase.getDistanceSqToEntity(this.renderManager.livingPlayer);
 
         if (d3 <= par9 * par9)

@@ -2,8 +2,10 @@ package micdoodle8.mods.galacticraft.mars.blocks;
 
 import java.util.List;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.mars.GCMarsConfigManager;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
+import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityCryogenicChamber;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityTerraformer;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -12,18 +14,20 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.UniversalElectricity;
+import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.block.BlockTile;
 
 public class GCMarsBlockMachine extends BlockTile
 {
-    public static final int COAL_GENERATOR_METADATA = 0;
-    public static final int UNUSED_MACHINE_0 = 4;
+    public static final int TERRAFORMER_METADATA = 0;
+    public static final int CRYOGENIC_CHAMBER_METADATA = 4;
     public static final int UNUSED_MACHINE_1 = 8;
 
     private Icon iconMachineSide;
@@ -47,6 +51,19 @@ public class GCMarsBlockMachine extends BlockTile
 
         this.iconMachineSide = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_blank");
         this.iconTerraformer = par1IconRegister.registerIcon(GalacticraftMars.TEXTURE_PREFIX + "terraformer_0");
+    }
+
+    @Override
+    public void breakBlock(World var1, int var2, int var3, int var4, int var5, int var6)
+    {
+        final TileEntity var9 = var1.getBlockTileEntity(var2, var3, var4);
+
+        if (var9 instanceof IMultiBlock)
+        {
+            ((IMultiBlock) var9).onDestroy(var9);
+        }
+
+        super.breakBlock(var1, var2, var3, var4, var5, var6);
     }
 
     @Override
@@ -77,23 +94,6 @@ public class GCMarsBlockMachine extends BlockTile
             {
                 return this.unusedIcon1;
             }
-        }
-        else if (metadata >= GCMarsBlockMachine.UNUSED_MACHINE_0)
-        {
-            metadata -= GCMarsBlockMachine.UNUSED_MACHINE_0;
-
-            // If it is the front side
-            if (side == metadata + 2)
-            {
-                return this.unusedIcon2;
-            }
-            // If it is the back side
-            else if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal())
-            {
-                return this.iconInput;
-            }
-
-            return this.unusedIcon0;
         }
         else
         {
@@ -145,7 +145,7 @@ public class GCMarsBlockMachine extends BlockTile
         {
             world.setBlockMetadataWithNotify(x, y, z, GCMarsBlockMachine.UNUSED_MACHINE_1 + change, 3);
         }
-        else if (metadata >= GCMarsBlockMachine.UNUSED_MACHINE_0)
+        else if (metadata >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA)
         {
             switch (angle)
             {
@@ -163,11 +163,18 @@ public class GCMarsBlockMachine extends BlockTile
                 break;
             }
 
-            world.setBlockMetadataWithNotify(x, y, z, GCMarsBlockMachine.UNUSED_MACHINE_0 + change, 3);
+            world.setBlockMetadataWithNotify(x, y, z, GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA + change, 3);
         }
         else
         {
-            world.setBlockMetadataWithNotify(x, y, z, GCMarsBlockMachine.COAL_GENERATOR_METADATA + change, 3);
+            world.setBlockMetadataWithNotify(x, y, z, GCMarsBlockMachine.TERRAFORMER_METADATA + change, 3);
+        }
+
+        TileEntity var8 = world.getBlockTileEntity(x, y, z);
+
+        if (var8 instanceof IMultiBlock)
+        {
+            ((IMultiBlock) var8).onCreate(new Vector3(x, y, z));
         }
     }
 
@@ -183,9 +190,9 @@ public class GCMarsBlockMachine extends BlockTile
         {
             original -= GCMarsBlockMachine.UNUSED_MACHINE_1;
         }
-        else if (metadata >= GCMarsBlockMachine.UNUSED_MACHINE_0)
+        else if (metadata >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA)
         {
-            original -= GCMarsBlockMachine.UNUSED_MACHINE_0;
+            return false;
         }
 
         // Re-orient the block
@@ -209,10 +216,6 @@ public class GCMarsBlockMachine extends BlockTile
         {
             change += GCMarsBlockMachine.UNUSED_MACHINE_1;
         }
-        else if (metadata >= GCMarsBlockMachine.UNUSED_MACHINE_0)
-        {
-            change += GCMarsBlockMachine.UNUSED_MACHINE_0;
-        }
 
         par1World.setBlockMetadataWithNotify(x, y, z, change, 3);
         return true;
@@ -231,7 +234,7 @@ public class GCMarsBlockMachine extends BlockTile
             par5EntityPlayer.openGui(GalacticraftMars.instance, -1, par1World, x, y, z);
             return true;
         }
-        else if (metadata >= GCMarsBlockMachine.UNUSED_MACHINE_0)
+        else if (metadata >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA)
         {
             par5EntityPlayer.openGui(GalacticraftMars.instance, -1, par1World, x, y, z);
             return true;
@@ -262,9 +265,9 @@ public class GCMarsBlockMachine extends BlockTile
         {
             return null;
         }
-        else if (metadata >= GCMarsBlockMachine.UNUSED_MACHINE_0)
+        else if (metadata >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA)
         {
-            return null;
+            return new GCMarsTileEntityCryogenicChamber();
         }
         else
         {
@@ -274,13 +277,19 @@ public class GCMarsBlockMachine extends BlockTile
 
     public ItemStack getTerraformer()
     {
-        return new ItemStack(this.blockID, 1, GCMarsBlockMachine.COAL_GENERATOR_METADATA);
+        return new ItemStack(this.blockID, 1, GCMarsBlockMachine.TERRAFORMER_METADATA);
+    }
+
+    public ItemStack getChamber()
+    {
+        return new ItemStack(this.blockID, 1, GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA);
     }
 
     @Override
     public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
         par3List.add(this.getTerraformer());
+        par3List.add(this.getChamber());
     }
 
     @Override
@@ -290,13 +299,13 @@ public class GCMarsBlockMachine extends BlockTile
         {
             return GCMarsBlockMachine.UNUSED_MACHINE_1;
         }
-        else if (metadata >= GCMarsBlockMachine.UNUSED_MACHINE_0)
+        else if (metadata >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA)
         {
-            return GCMarsBlockMachine.UNUSED_MACHINE_0;
+            return GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA;
         }
         else
         {
-            return GCMarsBlockMachine.COAL_GENERATOR_METADATA;
+            return GCMarsBlockMachine.TERRAFORMER_METADATA;
         }
     }
 
@@ -320,5 +329,60 @@ public class GCMarsBlockMachine extends BlockTile
         int metadata = this.getDamageValue(world, x, y, z);
 
         return new ItemStack(id, 1, metadata);
+    }
+
+    @Override
+    public int getRenderType()
+    {
+        return GalacticraftMars.proxy.getMachineRenderID();
+    }
+
+    public boolean isBed(World world, int x, int y, int z, EntityLivingBase player)
+    {
+        return world.getBlockMetadata(x, y, z) >= CRYOGENIC_CHAMBER_METADATA;
+    }
+
+    public ChunkCoordinates getBedSpawnPosition(World world, int x, int y, int z, EntityPlayer player)
+    {
+        return getNearestEmptyChunkCoordinates(world, x, y, z, 0);
+    }
+
+    public void setBedOccupied(World world, int x, int y, int z, EntityPlayer player, boolean occupied)
+    {
+        TileEntity tile = world.getBlockTileEntity(x, y, z);
+        
+        if (tile instanceof GCMarsTileEntityCryogenicChamber)
+        {
+            ((GCMarsTileEntityCryogenicChamber) tile).isOccupied = true;
+        }
+    }
+
+    public static ChunkCoordinates getNearestEmptyChunkCoordinates(World par0World, int par1, int par2, int par3, int par4)
+    {
+        for (int k1 = 0; k1 <= 1; ++k1)
+        {
+            int l1 = par1 - 1;
+            int i2 = par3 - 1;
+            int j2 = l1 + 2;
+            int k2 = i2 + 2;
+
+            for (int l2 = l1; l2 <= j2; ++l2)
+            {
+                for (int i3 = i2; i3 <= k2; ++i3)
+                {
+                    if (par0World.doesBlockHaveSolidTopSurface(l2, par2 - 1, i3) && !par0World.getBlockMaterial(l2, par2, i3).isOpaque() && !par0World.getBlockMaterial(l2, par2 + 1, i3).isOpaque())
+                    {
+                        if (par4 <= 0)
+                        {
+                            return new ChunkCoordinates(l2, par2, i3);
+                        }
+
+                        --par4;
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 }

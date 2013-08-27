@@ -17,22 +17,28 @@ import micdoodle8.mods.galacticraft.mars.client.fx.GCMarsEntityDropParticleFX;
 import micdoodle8.mods.galacticraft.mars.client.gui.GCMarsGuiSlimelingInventory;
 import micdoodle8.mods.galacticraft.mars.client.gui.GCMarsGuiTerraformer;
 import micdoodle8.mods.galacticraft.mars.client.model.GCMarsModelSpaceshipTier2;
+import micdoodle8.mods.galacticraft.mars.client.render.block.GCMarsBlockRendererMachine;
 import micdoodle8.mods.galacticraft.mars.client.render.block.GCMarsBlockRendererRock;
 import micdoodle8.mods.galacticraft.mars.client.render.block.GCMarsBlockRendererTreasureChest;
 import micdoodle8.mods.galacticraft.mars.client.render.block.GCMarsBlockRendererVine;
 import micdoodle8.mods.galacticraft.mars.client.render.entity.GCMarsRenderCreeperBoss;
+import micdoodle8.mods.galacticraft.mars.client.render.entity.GCMarsRenderProjectileTNT;
 import micdoodle8.mods.galacticraft.mars.client.render.entity.GCMarsRenderSlimeling;
 import micdoodle8.mods.galacticraft.mars.client.render.entity.GCMarsRenderSludgeling;
+import micdoodle8.mods.galacticraft.mars.client.render.item.GCMarsItemRendererMachine;
 import micdoodle8.mods.galacticraft.mars.client.render.item.GCMarsItemRendererSpaceshipT2;
+import micdoodle8.mods.galacticraft.mars.client.render.tile.GCMarsTileEntityCryogenicChamberRenderer;
 import micdoodle8.mods.galacticraft.mars.client.render.tile.GCMarsTileEntityTreasureChestRenderer;
 import micdoodle8.mods.galacticraft.mars.client.sounds.GCMarsSounds;
 import micdoodle8.mods.galacticraft.mars.dimension.GCMarsWorldProvider;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityCreeperBoss;
+import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityProjectileTNT;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityRocketT2;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySlimeling;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySludgeling;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityTerraformBubble;
 import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
+import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityCryogenicChamber;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityTerraformer;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityTreasureChest;
 import net.minecraft.block.material.Material;
@@ -47,6 +53,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.client.model.AdvancedModelLoader;
+import net.minecraftforge.client.model.IModelCustom;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
@@ -73,6 +81,7 @@ public class ClientProxyMars extends CommonProxyMars
     private static int vineRenderID;
     private static int eggRenderID;
     private static int treasureRenderID;
+    private static int machineRenderID;
 
     @Override
     public void preInit(FMLPreInitializationEvent event)
@@ -84,7 +93,6 @@ public class ClientProxyMars extends CommonProxyMars
     public void init(FMLInitializationEvent event)
     {
         TickRegistry.registerTickHandler(new TickHandlerClient(), Side.CLIENT);
-        ClientRegistry.bindTileEntitySpecialRenderer(GCMarsTileEntityTreasureChest.class, new GCMarsTileEntityTreasureChestRenderer());
         NetworkRegistry.instance().registerChannel(new ClientPacketHandler(), GalacticraftMars.CHANNEL, Side.CLIENT);
         ClientProxyMars.vineRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new GCMarsBlockRendererVine(ClientProxyMars.vineRenderID));
@@ -92,6 +100,8 @@ public class ClientProxyMars extends CommonProxyMars
         RenderingRegistry.registerBlockHandler(new GCMarsBlockRendererRock(ClientProxyMars.eggRenderID));
         ClientProxyMars.treasureRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new GCMarsBlockRendererTreasureChest(ClientProxyMars.treasureRenderID));
+        ClientProxyMars.machineRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new GCMarsBlockRendererMachine(ClientProxyMars.machineRenderID));
     }
 
     @Override
@@ -102,14 +112,19 @@ public class ClientProxyMars extends CommonProxyMars
     @Override
     public void registerRenderInformation()
     {
+        IModelCustom model = AdvancedModelLoader.loadModel("/assets/galacticraftmars/models/chamber.obj");
+        ClientRegistry.bindTileEntitySpecialRenderer(GCMarsTileEntityTreasureChest.class, new GCMarsTileEntityTreasureChestRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(GCMarsTileEntityCryogenicChamber.class, new GCMarsTileEntityCryogenicChamberRenderer(model));
         RenderingRegistry.registerEntityRenderingHandler(GCMarsEntitySludgeling.class, new GCMarsRenderSludgeling());
         RenderingRegistry.registerEntityRenderingHandler(GCMarsEntitySlimeling.class, new GCMarsRenderSlimeling());
         RenderingRegistry.registerEntityRenderingHandler(GCMarsEntityCreeperBoss.class, new GCMarsRenderCreeperBoss());
         RenderingRegistry.registerEntityRenderingHandler(GCMarsEntityRocketT2.class, new GCCoreRenderSpaceship(new GCMarsModelSpaceshipTier2(), GalacticraftMars.TEXTURE_DOMAIN, "rocketT2"));
         RenderingRegistry.registerEntityRenderingHandler(GCMarsEntityTerraformBubble.class, new GCCoreRenderOxygenBubble(0.25F, 1.0F, 0.25F));
+        RenderingRegistry.registerEntityRenderingHandler(GCMarsEntityProjectileTNT.class, new GCMarsRenderProjectileTNT());
         RenderingRegistry.addNewArmourRendererPrefix("desh");
         MinecraftForgeClient.registerItemRenderer(GCMarsItems.spaceship.itemID, new GCMarsItemRendererSpaceshipT2(new GCMarsEntityRocketT2(FMLClientHandler.instance().getClient().theWorld), new GCMarsModelSpaceshipTier2(), new ResourceLocation(GalacticraftMars.TEXTURE_DOMAIN, "textures/model/rocketT2.png")));
         MinecraftForgeClient.registerItemRenderer(GCMarsItems.key.itemID, new GCCoreItemRendererKey(new ResourceLocation(GalacticraftMars.TEXTURE_DOMAIN, "textures/model/treasure.png")));
+        MinecraftForgeClient.registerItemRenderer(GCMarsBlocks.machine.blockID, new GCMarsItemRendererMachine(model));
     }
 
     @Override
@@ -128,6 +143,12 @@ public class ClientProxyMars extends CommonProxyMars
     public int getTreasureRenderID()
     {
         return ClientProxyMars.treasureRenderID;
+    }
+    
+    @Override
+    public int getMachineRenderID()
+    {
+        return ClientProxyMars.machineRenderID;
     }
 
     @Override
