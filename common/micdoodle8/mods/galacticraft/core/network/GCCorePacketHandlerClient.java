@@ -21,6 +21,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiParachest;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreSpaceStationData;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
+import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
 import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerClient;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
@@ -456,9 +457,9 @@ public class GCCorePacketHandlerClient implements IPacketHandler
                 int entityID = (Integer) packetReadout[2];
                 Entity entity = player.worldObj.getEntityByID(entityID);
 
-                if (entity != null && entity instanceof GCCoreEntityLander)
+                if (entity != null && entity instanceof IInventorySettable)
                 {
-                    FMLClientHandler.instance().getClient().displayGuiScreen(new GCCoreGuiParachest(player.inventory, (GCCoreEntityLander) entity));
+                    FMLClientHandler.instance().getClient().displayGuiScreen(new GCCoreGuiParachest(player.inventory, (IInventorySettable) entity));
                 }
 
                 player.openContainer.windowId = (Integer) packetReadout[0];

@@ -46,7 +46,7 @@ public abstract class GCCoreEntityAdvanced extends GCCoreEntityControllable impl
     public double advancedPitch;
     public int posRotIncrements;
 
-    private boolean lastOnGround;
+    protected boolean lastOnGround;
 
     public GCCoreEntityAdvanced(World world, double initialSpeed, float yOffset)
     {
@@ -133,10 +133,7 @@ public abstract class GCCoreEntityAdvanced extends GCCoreEntityControllable impl
             this.motionX = motX;
             this.motionY = motY;
             this.motionZ = motZ;
-            if (onGround)
-            {
-                this.onGround = onGround;
-            }
+            this.onGround = onGround;
         }
     }
 
@@ -367,12 +364,9 @@ public abstract class GCCoreEntityAdvanced extends GCCoreEntityControllable impl
             this.moveEntity(this.motionX, this.motionY, this.motionZ);
         }
 
-        if (!this.worldObj.isRemote)
+        if (this.onGround && !this.lastOnGround)
         {
-            if (this.onGround && !this.lastOnGround)
-            {
-                this.onGroundHit();
-            }
+            this.onGroundHit();
         }
 
         if (this.worldObj.isRemote)

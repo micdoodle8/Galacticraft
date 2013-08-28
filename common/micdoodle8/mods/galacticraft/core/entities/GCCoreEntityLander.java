@@ -7,13 +7,13 @@ import java.util.Map;
 import java.util.Random;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLanderFlameFX;
+import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -30,7 +30,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInventory, IPacketReceiver
+public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInventorySettable, IPacketReceiver
 {
     private final int tankCapacity = 5000;
     public FluidTank fuelTank = new FluidTank(this.tankCapacity);
@@ -504,22 +504,25 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
     @Override
     public void onGroundHit()
     {
-        if (Math.abs(this.lastMotionY) > 2.0D)
+        if (!this.worldObj.isRemote)
         {
-            if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayerMP)
+            if (Math.abs(this.lastMotionY) > 2.0D)
             {
-                final Object[] toSend2 = { 0 };
-                ((EntityPlayerMP) this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
+                if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayerMP)
+                {
+                    final Object[] toSend2 = { 0 };
+                    ((EntityPlayerMP) this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
 
-                this.riddenByEntity.mountEntity(this);
+                    this.riddenByEntity.mountEntity(this);
+                }
+
+                this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 12, true);
+
+                this.setDead();
             }
 
-            this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 12, true);
-
-            this.setDead();
+            this.landed = true;
         }
-
-        this.landed = true;
     }
 
     @Override
@@ -583,5 +586,11 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
         }
 
         return items;
+    }
+
+    @Override
+    public void setSizeInventory(int size)
+    {
+        this.chestContents = new ItemStack[size];
     }
 }

@@ -4,9 +4,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
+import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
@@ -16,8 +17,13 @@ public class GCCorePacketLanderUpdate implements IGalacticraftAdvancedPacket
 {
     public static final int packetID = 29;
 
-    public static Packet buildKeyPacket(GCCoreEntityLander lander)
+    public static Packet buildKeyPacket(Entity lander)
     {
+        if (!(lander instanceof IInventory))
+        {
+            return null;
+        }
+        
         final Packet250CustomPayload packet = new Packet250CustomPayload();
         packet.channel = GalacticraftCore.CHANNEL;
 
@@ -28,11 +34,11 @@ public class GCCorePacketLanderUpdate implements IGalacticraftAdvancedPacket
         {
             data.writeInt(GCCorePacketLanderUpdate.packetID);
             data.writeInt(lander.entityId);
-            data.writeInt(lander.getSizeInventory());
+            data.writeInt(((IInventory) lander).getSizeInventory());
 
-            for (int i = 0; i < lander.getSizeInventory(); i++)
+            for (int i = 0; i < ((IInventory) lander).getSizeInventory(); i++)
             {
-                ItemStack stackAt = lander.getStackInSlot(i);
+                ItemStack stackAt = ((IInventory) lander).getStackInSlot(i);
                 Packet.writeItemStack(stackAt, data);
             }
 
@@ -67,15 +73,14 @@ public class GCCorePacketLanderUpdate implements IGalacticraftAdvancedPacket
             Entity e = player.worldObj.getEntityByID(entityID);
             int length = stream.readInt();
 
-            if (e != null && e instanceof GCCoreEntityLander)
+            if (e != null && e instanceof IInventorySettable)
             {
-                GCCoreEntityLander lander = (GCCoreEntityLander) e;
-                lander.chestContents = new ItemStack[length];
+                ((IInventorySettable) e).setSizeInventory(length);
 
                 for (int i = 0; i < length; i++)
                 {
                     ItemStack stack = Packet.readItemStack(stream);
-                    lander.setInventorySlotContents(i, stack);
+                    ((IInventory) e).setInventorySlotContents(i, stack);
                 }
             }
 

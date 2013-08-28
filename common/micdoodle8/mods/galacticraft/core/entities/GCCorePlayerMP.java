@@ -61,6 +61,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
     private ItemStack[] rocketStacks = new ItemStack[9];
     private int rocketType;
     private int fuelLevel;
+    private Item rocketItem;
 
     private boolean usingParachute;
 
@@ -1306,6 +1307,16 @@ public class GCCorePlayerMP extends EntityPlayerMP
     public void setSpaceshipTier(int spaceshipTier)
     {
         this.spaceshipTier = spaceshipTier;
+    }
+
+    public Item getRocketItem()
+    {
+        return rocketItem;
+    }
+
+    public void setRocketItem(Item rocketItem)
+    {
+        this.rocketItem = rocketItem;
     }
 
     private static enum EnumModelPacket

@@ -213,6 +213,7 @@ public class GCCoreEntityRocketT1 extends EntitySpaceshipBase implements IInvent
             }
 
             playerBase.setRocketType(this.rocketType.getIndex());
+            playerBase.setRocketItem(GCCoreItems.spaceship);
             int liquid = this.spaceshipFuelTank.getFluid() == null ? 0 : this.spaceshipFuelTank.getFluid().amount;
             playerBase.setFuelLevel(liquid);
         }

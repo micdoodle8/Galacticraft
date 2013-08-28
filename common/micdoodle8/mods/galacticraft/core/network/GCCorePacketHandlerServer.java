@@ -12,9 +12,9 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreSpaceStationData;
 import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerSchematic;
+import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityParachest;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -383,14 +383,13 @@ public class GCCorePacketHandlerServer implements IPacketHandler
         }
         else if (packetType == 21)
         {
-            final Class[] decodeAs = { Integer.class };
+            final Class<?>[] decodeAs = { Integer.class };
             final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
             Entity e = player.worldObj.getEntityByID((Integer) packetReadout[0]);
 
-            if (e != null && e instanceof GCCoreEntityLander)
+            if (e != null && e instanceof IInventorySettable)
             {
-                new GCCorePacketLanderUpdate();
-                player.playerNetServerHandler.sendPacketToPlayer(GCCorePacketLanderUpdate.buildKeyPacket((GCCoreEntityLander) e));
+                player.playerNetServerHandler.sendPacketToPlayer(GCCorePacketLanderUpdate.buildKeyPacket(e));
             }
         }
         else if (packetType == 22)
