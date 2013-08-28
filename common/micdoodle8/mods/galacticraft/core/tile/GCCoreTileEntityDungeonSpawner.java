@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import java.lang.reflect.Constructor;
+import java.util.ArrayList;
 import java.util.List;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityCreeper;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeleton;
@@ -44,7 +45,7 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced
     public void updateEntity()
     {
         super.updateEntity();
-
+        
         if (!this.worldObj.isRemote)
         {
             final Vector3 thisVec = new Vector3(this);
@@ -65,7 +66,7 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced
 
             for (Entity mob : entitiesWithin)
             {
-                if (mob instanceof GCCoreEntitySkeleton || mob instanceof GCCoreEntityZombie || mob instanceof GCCoreEntitySpider || mob instanceof GCCoreEntityCreeper)
+                if (this.getDisabledCreatures().contains(mob.getClass()))
                 {
                     mob.setDead();
                 }
@@ -118,6 +119,16 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced
             this.lastPlayerInRange = this.playerInRange;
         }
     }
+    
+    public List<Class<? extends EntityLiving>> getDisabledCreatures()
+    {
+        List<Class<? extends EntityLiving>> list = new ArrayList<Class<? extends EntityLiving>>();
+        list.add(GCCoreEntitySkeleton.class);
+        list.add(GCCoreEntityCreeper.class);
+        list.add(GCCoreEntityZombie.class);
+        list.add(GCCoreEntitySpider.class);
+        return list;
+    }
 
     public void setRoom(Vector3 coords, Vector3 size)
     {
@@ -125,6 +136,7 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced
         this.roomSize = size;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void readFromNBT(NBTTagCompound nbt)
     {
@@ -134,6 +146,16 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced
         this.playerInRange = this.lastPlayerInRange = nbt.getBoolean("playerInRange");
         this.isBossDefeated = nbt.getBoolean("defeated");
         this.playerCheated = nbt.getBoolean("playerCheated");
+        
+        try
+        {
+            this.bossClass = (Class<? extends IBoss>) Class.forName(nbt.getString("bossClass"));
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        
         this.roomCoords = new Vector3();
         this.roomCoords.x = nbt.getDouble("roomCoordsX");
         this.roomCoords.y = nbt.getDouble("roomCoordsY");
@@ -153,6 +175,7 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced
         nbt.setBoolean("playerInRange", this.playerInRange);
         nbt.setBoolean("defeated", this.isBossDefeated);
         nbt.setBoolean("playerCheated", this.playerCheated);
+        nbt.setString("bossClass", this.bossClass.getCanonicalName());
 
         if (this.roomCoords != null)
         {
