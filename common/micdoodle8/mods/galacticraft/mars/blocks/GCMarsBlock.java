@@ -69,7 +69,9 @@ public class GCMarsBlock extends Block implements IDetectableResource, IPlantabl
     @Override
     public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ)
     {
-        if (world.getBlockMetadata(x, y, z) == 10)
+        int metadata = world.getBlockMetadata(x, y, z);
+        
+        if (metadata == 10 || metadata == 7)
         {
             return 10000.0F;
         }
@@ -134,7 +136,7 @@ public class GCMarsBlock extends Block implements IDetectableResource, IPlantabl
     @Override
     public boolean canHarvestBlock(EntityPlayer player, int meta)
     {
-        if (meta == 10)
+        if (meta == 10 || meta == 7)
         {
             return false;
         }
@@ -181,7 +183,7 @@ public class GCMarsBlock extends Block implements IDetectableResource, IPlantabl
         {
             return GCMarsItems.marsItemBasic.itemID;
         }
-        else if (meta == 10)
+        else if (meta == 10 || meta == 7)
         {
             return 0;
         }
@@ -209,7 +211,7 @@ public class GCMarsBlock extends Block implements IDetectableResource, IPlantabl
     @Override
     public int quantityDropped(int meta, int fortune, Random random)
     {
-        if (meta == 10)
+        if (meta == 10 || meta == 7)
         {
             return 0;
         }

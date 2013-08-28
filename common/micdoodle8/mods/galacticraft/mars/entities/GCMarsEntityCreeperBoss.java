@@ -82,7 +82,7 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
     {
         super.func_110147_ax();
         this.func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(150.0F * GCCoreConfigManager.dungeonBossHealthMod);
-        this.func_110148_a(SharedMonsterAttributes.field_111263_d).func_111128_a(0.25F);
+        this.func_110148_a(SharedMonsterAttributes.field_111263_d).func_111128_a(0.05F);
     }
 
     public GCMarsEntityCreeperBoss(World world, Vector3 vec)

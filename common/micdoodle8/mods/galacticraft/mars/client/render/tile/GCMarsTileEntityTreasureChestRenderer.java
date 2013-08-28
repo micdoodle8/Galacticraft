@@ -1,10 +1,10 @@
 package micdoodle8.mods.galacticraft.mars.client.render.tile;
 
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockT1TreasureChest;
 import micdoodle8.mods.galacticraft.core.client.model.block.GCCoreModelTreasureChest;
 import micdoodle8.mods.galacticraft.core.client.model.block.GCCoreModelTreasureChestLarge;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
+import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlockT2TreasureChest;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
@@ -26,15 +26,9 @@ public class GCMarsTileEntityTreasureChestRenderer extends TileEntitySpecialRend
     private static final ResourceLocation treasureChestTexture = new ResourceLocation(GalacticraftMars.TEXTURE_DOMAIN, "textures/model/treasure.png");
     private static final ResourceLocation treasureLargeChestTexture = new ResourceLocation(GalacticraftMars.TEXTURE_DOMAIN, "textures/model/treasurelarge.png");
 
-    /** The normal small chest model. */
     private final GCCoreModelTreasureChest chestModel = new GCCoreModelTreasureChest();
-
-    /** The large double chest model. */
     private final GCCoreModelTreasureChestLarge largeChestModel = new GCCoreModelTreasureChestLarge();
 
-    /**
-     * Renders the TileEntity for the chest at a position.
-     */
     public void renderGCTileEntityTreasureChestAt(GCCoreTileEntityTreasureChest par1GCTileEntityTreasureChest, double par2, double par4, double par6, float par8)
     {
         int var9;
@@ -50,7 +44,7 @@ public class GCMarsTileEntityTreasureChestRenderer extends TileEntitySpecialRend
 
             if (var10 != null && var9 == 0)
             {
-                ((GCCoreBlockT1TreasureChest) var10).unifyAdjacentChests(par1GCTileEntityTreasureChest.getWorldObj(), par1GCTileEntityTreasureChest.xCoord, par1GCTileEntityTreasureChest.yCoord, par1GCTileEntityTreasureChest.zCoord);
+                ((GCMarsBlockT2TreasureChest) var10).unifyAdjacentChests(par1GCTileEntityTreasureChest.getWorldObj(), par1GCTileEntityTreasureChest.xCoord, par1GCTileEntityTreasureChest.yCoord, par1GCTileEntityTreasureChest.zCoord);
                 var9 = par1GCTileEntityTreasureChest.getBlockMetadata();
             }
 

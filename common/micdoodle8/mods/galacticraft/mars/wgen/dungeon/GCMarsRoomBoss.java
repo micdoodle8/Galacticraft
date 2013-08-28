@@ -28,9 +28,9 @@ public class GCMarsRoomBoss extends GCCoreDungeonRoom
         if (this.worldObj != null)
         {
             this.rand = new Random(this.worldObj.getSeed() * posX * posY * 57 * posZ);
-            this.sizeX = this.rand.nextInt(6) + 20;
-            this.sizeY = this.rand.nextInt(2) + 11;
-            this.sizeZ = this.rand.nextInt(6) + 20;
+            this.sizeX = 24;
+            this.sizeY = 11;
+            this.sizeZ = 24;
         }
     }
 
@@ -45,19 +45,18 @@ public class GCMarsRoomBoss extends GCCoreDungeonRoom
                 {
                     if (i == this.posX - 1 || i == this.posX + this.sizeX || j == this.posY - 1 || j == this.posY + this.sizeY || k == this.posZ - 1 || k == this.posZ + this.sizeZ)
                     {
-                        this.placeBlock(chunk, meta, i, j, k, cx, cz, this.dungeonInstance.DUNGEON_WALL_ID, this.dungeonInstance.DUNGEON_WALL_META);
+                        if (j == posY - 1 && (i <= this.posX + 1 || i >=  this.posX + this.sizeX - 2 || k == this.posZ + 1 || k == this.posZ + this.sizeZ - 2) && this.rand.nextInt(4) == 0)
+                        {
+                            this.placeBlock(chunk, meta, i, j, k, cx, cz, Block.glowStone.blockID, 0);
+                        }
+                        else
+                        {
+                            this.placeBlock(chunk, meta, i, j, k, cx, cz, this.dungeonInstance.DUNGEON_WALL_ID, this.dungeonInstance.DUNGEON_WALL_META);
+                        }
                     }
-                    else if (i == this.posX && k == this.posZ || i == this.posX + this.sizeX - 1 && k == this.posZ || i == this.posX && k == this.posZ + this.sizeZ - 1 || i == this.posX + this.sizeX - 1 && k == this.posZ + this.sizeZ - 1)
+                    else if (j == posY && (i <= this.posX + 1 || i >=  this.posX + this.sizeX - 2 || k == this.posZ + 1 || k == this.posZ + this.sizeZ - 2) && this.rand.nextInt(6) == 0)
                     {
-                        this.placeBlock(chunk, meta, i, j, k, cx, cz, Block.lavaMoving.blockID, 0);
-                    }
-                    else if (j % 3 == 0 && j >= this.posY + 2 && (i == this.posX || i == this.posX + this.sizeX - 1 || k == this.posZ || k == this.posZ + this.sizeZ - 1) || i == this.posX + 1 && k == this.posZ || i == this.posX && k == this.posZ + 1 || i == this.posX + this.sizeX - 2 && k == this.posZ || i == this.posX + this.sizeX - 1 && k == this.posZ + 1 || i == this.posX + 1 && k == this.posZ + this.sizeZ - 1 || i == this.posX && k == this.posZ + this.sizeZ - 2 || i == this.posX + this.sizeX - 2 && k == this.posZ + this.sizeZ - 1 || i == this.posX + this.sizeX - 1 && k == this.posZ + this.sizeZ - 2)
-                    {
-                        this.placeBlock(chunk, meta, i, j, k, cx, cz, Block.fenceIron.blockID, 0);
-                    }
-                    else if ((i == this.posX + 1 && k == this.posZ + 1 || i == this.posX + this.sizeX - 2 && k == this.posZ + 1 || i == this.posX + 1 && k == this.posZ + this.sizeZ - 2 || i == this.posX + this.sizeX - 2 && k == this.posZ + this.sizeZ - 2) && j % 3 == 0)
-                    {
-                        this.placeBlock(chunk, meta, i, j, k, cx, cz, Block.fenceIron.blockID, 0);
+                        this.placeBlock(chunk, meta, i, j, k, cx, cz, GCMarsBlocks.creeperEgg.blockID, 0);
                     }
                     else
                     {

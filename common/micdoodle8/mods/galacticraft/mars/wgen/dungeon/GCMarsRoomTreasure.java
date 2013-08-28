@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.wgen.dungeon.GCCoreDungeonBoundingBox;
 import micdoodle8.mods.galacticraft.core.wgen.dungeon.GCCoreDungeonRoom;
 import micdoodle8.mods.galacticraft.core.wgen.dungeon.GCCoreMapGenDungeon;
+import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -63,7 +64,7 @@ public class GCMarsRoomTreasure extends GCCoreDungeonRoom
         }
         final int hx = (this.posX + this.posX + this.sizeX) / 2;
         final int hz = (this.posZ + this.posZ + this.sizeZ) / 2;
-        if (this.placeBlock(chunk, meta, hx, this.posY, hz, cx, cz, GCCoreBlocks.treasureChest.blockID, 0))
+        if (this.placeBlock(chunk, meta, hx, this.posY, hz, cx, cz, GCMarsBlocks.tier2TreasureChest.blockID, 0))
         {
             this.chests.add(new ChunkCoordinates(hx, this.posY, hz));
         }
