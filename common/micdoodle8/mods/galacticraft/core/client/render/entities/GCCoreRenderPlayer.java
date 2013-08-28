@@ -19,6 +19,7 @@ import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import org.lwjgl.opengl.GL11;
 
 public class GCCoreRenderPlayer extends RenderPlayer
@@ -269,6 +270,36 @@ public class GCCoreRenderPlayer extends RenderPlayer
 
             GL11.glPopMatrix();
         }
+        
         MinecraftForge.EVENT_BUS.post(new RenderPlayerEvent.Specials.Post(par1AbstractClientPlayer, this, par2));
+    }
+    
+    @Override
+    protected void rotatePlayer(AbstractClientPlayer par1AbstractClientPlayer, float par2, float par3, float par4)
+    {
+        if (par1AbstractClientPlayer.isEntityAlive() && par1AbstractClientPlayer.isPlayerSleeping())
+        {
+            RotatePlayerEvent event = new RotatePlayerEvent(par1AbstractClientPlayer);
+            MinecraftForge.EVENT_BUS.post(event);
+            
+            if (event.shouldRotate == null || event.shouldRotate == true)
+            {
+                super.rotatePlayer(par1AbstractClientPlayer, par2, par3, par4);
+            }
+        }
+        else
+        {
+            super.rotatePlayer(par1AbstractClientPlayer, par2, par3, par4);
+        }
+    }
+    
+    public static class RotatePlayerEvent extends PlayerEvent
+    {
+        public Boolean shouldRotate = null;
+        
+        public RotatePlayerEvent(AbstractClientPlayer player)
+        {
+            super(player);
+        }
     }
 }

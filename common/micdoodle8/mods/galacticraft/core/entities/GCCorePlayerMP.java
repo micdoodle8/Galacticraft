@@ -42,6 +42,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.Cancelable;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 
@@ -1125,14 +1126,19 @@ public class GCCorePlayerMP extends EntityPlayerMP
     @Override
     public void wakeUpPlayer(boolean par1, boolean par2, boolean par3)
     {
+        this.wakeUpPlayer(par1, par2, par3, false);
+    }
+
+    public void wakeUpPlayer(boolean par1, boolean par2, boolean par3, boolean bypass)
+    {
         ChunkCoordinates c = this.playerLocation;
 
         if (c != null)
         {
-            PlayerWakeUpEvent event = new PlayerWakeUpEvent(this, c.posX, c.posY, c.posZ, par1, par2, par3);
+            PlayerWakeUpEvent event = new PlayerWakeUpEvent(this, c.posX, c.posY, c.posZ, par1, par2, par3, bypass);
             MinecraftForge.EVENT_BUS.post(event);
 
-            if (event.result == null || event.result == EnumStatus.OK)
+            if (bypass || event.result == null || event.result == EnumStatus.OK)
             {
                 super.wakeUpPlayer(par1, par2, par3);
             }
@@ -1330,8 +1336,9 @@ public class GCCorePlayerMP extends EntityPlayerMP
         public final boolean flag1;
         public final boolean flag2;
         public final boolean flag3;
+        public final boolean bypassed;
 
-        public PlayerWakeUpEvent(EntityPlayer player, int x, int y, int z, boolean flag1, boolean flag2, boolean flag3)
+        public PlayerWakeUpEvent(EntityPlayer player, int x, int y, int z, boolean flag1, boolean flag2, boolean flag3, boolean bypassed)
         {
             super(player);
             this.x = x;
@@ -1340,6 +1347,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
             this.flag1 = flag1;
             this.flag2 = flag2;
             this.flag3 = flag3;
+            this.bypassed = bypassed;
         }
     }
 }

@@ -114,6 +114,7 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.moon.client.ClientProxyMoon;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundPoolEntry;
@@ -129,11 +130,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.EnumHelperClient;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.Event;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import tconstruct.client.tabs.InventoryTabVanilla;
@@ -898,4 +901,12 @@ public class ClientProxyCore extends CommonProxyCore
             e.printStackTrace();
         }
     }
+    
+    public static void orientCamera()
+    {
+        OrientCameraEvent event = new OrientCameraEvent();
+        MinecraftForge.EVENT_BUS.post(event);
+    }
+    
+    public static class OrientCameraEvent extends Event {}
 }

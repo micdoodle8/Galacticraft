@@ -12,6 +12,8 @@ import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
+import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.network.PacketDispatcher;
 
 /**
  * This is a multiblock to be used for blocks that are bigger than one block.
@@ -24,6 +26,7 @@ public class TileEntityMulti extends TileEntity implements IPacketReceiver
     // The the position of the main block
     public Vector3 mainBlockPosition;
     public String channel;
+    private long ticks;
 
     public TileEntityMulti()
     {
@@ -33,6 +36,27 @@ public class TileEntityMulti extends TileEntity implements IPacketReceiver
     public TileEntityMulti(String channel)
     {
         this.channel = channel;
+    }
+
+    @Override
+    public void updateEntity()
+    {
+        super.updateEntity();
+        
+        if (!this.worldObj.isRemote && this.mainBlockPosition != null)
+        {
+            if (this.ticks >= Long.MAX_VALUE)
+            {
+                this.ticks = 0;
+            }
+            
+            if (this.ticks % 50 == 0)
+            {
+                PacketDispatcher.sendPacketToAllAround(this.xCoord, this.yCoord, this.zCoord, 30, this.worldObj.provider.dimensionId, this.getDescriptionPacket());
+            }
+            
+            this.ticks++;
+        }
     }
 
     public void setMainBlock(Vector3 mainBlock)
@@ -120,17 +144,6 @@ public class TileEntityMulti extends TileEntity implements IPacketReceiver
         {
             nbt.setCompoundTag("mainBlockPosition", this.mainBlockPosition.writeToNBT(new NBTTagCompound()));
         }
-    }
-
-    /**
-     * Determines if this TileEntity requires update calls.
-     * 
-     * @return True if you want updateEntity() to be called, false if not
-     */
-    @Override
-    public boolean canUpdate()
-    {
-        return false;
     }
 
     @Override

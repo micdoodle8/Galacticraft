@@ -26,6 +26,7 @@ import net.minecraft.util.Session;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -67,14 +68,19 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
     @Override
     public void wakeUpPlayer(boolean par1, boolean par2, boolean par3)
     {
+        this.wakeUpPlayer(par1, par2, par3, false);
+    }
+
+    public void wakeUpPlayer(boolean par1, boolean par2, boolean par3, boolean bypass)
+    {
         ChunkCoordinates c = this.playerLocation;
 
         if (c != null)
         {
-            PlayerWakeUpEvent event = new PlayerWakeUpEvent(this, c.posX, c.posY, c.posZ, par1, par2, par3);
+            PlayerWakeUpEvent event = new PlayerWakeUpEvent(this, c.posX, c.posY, c.posZ, par1, par2, par3, bypass);
             MinecraftForge.EVENT_BUS.post(event);
 
-            if (event.result == null || event.result == EnumStatus.OK)
+            if (bypass || event.result == null || event.result == EnumStatus.OK)
             {
                 super.wakeUpPlayer(par1, par2, par3);
             }
