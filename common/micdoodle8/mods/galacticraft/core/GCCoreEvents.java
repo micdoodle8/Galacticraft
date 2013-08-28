@@ -16,7 +16,11 @@ import micdoodle8.mods.galacticraft.api.recipe.SchematicEvent.FlipPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicEvent.Unlock;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore.MinecraftLoadedEvent;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore.SleepCancelledEvent;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
+import micdoodle8.mods.galacticraft.core.client.GCCoreThreadDownloadSound;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketSchematicList;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
@@ -51,6 +55,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreEvents
 {
+    private static GCCoreThreadDownloadSound downloadResourcesThread;
+    
     @ForgeSubscribe
     public void onEntityFall(LivingFallEvent event)
     {
@@ -424,6 +430,34 @@ public class GCCoreEvents
                     }
                 }
             }
+        }
+    }
+
+    @ForgeSubscribe
+    public void onMinecraftLoaded(MinecraftLoadedEvent event)
+    {
+        try
+        {
+            if (downloadResourcesThread == null)
+            {
+                downloadResourcesThread = new GCCoreThreadDownloadSound(FMLClientHandler.instance().getClient().mcDataDir, FMLClientHandler.instance().getClient());
+                downloadResourcesThread.start();
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
+    @ForgeSubscribe
+    public void onLeaveBedButtonClicked(SleepCancelledEvent event)
+    {
+        EntityPlayer player = FMLClientHandler.instance().getClient().thePlayer;
+        
+        if (player instanceof GCCorePlayerSP)
+        {
+            ((GCCorePlayerSP) player).wakeUpPlayer(false, true, true, true);
         }
     }
 }

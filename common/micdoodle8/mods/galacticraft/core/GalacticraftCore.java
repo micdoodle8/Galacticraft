@@ -79,6 +79,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.WorldProviderSurface;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.Event;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
@@ -174,6 +175,7 @@ public class GalacticraftCore
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
+        MinecraftForge.EVENT_BUS.register(new GCCoreEvents());
         GalacticraftCore.moon.preLoad(event);
         GalacticraftCore.proxy.preInit(event);
 
@@ -240,7 +242,7 @@ public class GalacticraftCore
         DimensionManager.registerProviderType(GCCoreConfigManager.idDimensionOverworldOrbit, GCCoreWorldProviderSpaceStation.class, false);
 
         GalacticraftCore.proxy.init(event);
-
+        
         GalacticraftRegistry.registerTeleportType(WorldProviderSurface.class, new GCCoreOverworldTeleportType());
         GalacticraftRegistry.registerTeleportType(GCCoreWorldProviderSpaceStation.class, new GCCoreOrbitTeleportType());
 
@@ -300,7 +302,6 @@ public class GalacticraftCore
 
         this.registerCreatures();
         this.registerOtherEntities();
-        MinecraftForge.EVENT_BUS.register(new GCCoreEvents());
         NetworkRegistry.instance().registerChannel(new GCCorePacketManager(), GalacticraftCore.CHANNELENTITIES, Side.CLIENT);
     }
 
@@ -429,4 +430,10 @@ public class GalacticraftCore
         GCCoreUtil.registerGalacticraftNonMobEntity(GCCoreEntityOxygenBubble.class, "OxygenBubble", GCCoreConfigManager.idEntityOxygenBubble, 150, 20, false);
         GCCoreUtil.registerGalacticraftNonMobEntity(GCCoreEntityLander.class, "Lander", GCCoreConfigManager.idEntityLander, 150, 5, true);
     }
+    
+    public static class MinecraftLoadedEvent extends Event {}
+    
+    public static class SleepCancelledEvent extends Event {}
+    
+    public static class OrientCameraEvent extends Event {}
 }
