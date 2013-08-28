@@ -8,12 +8,10 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 public class GCMarsWorldGenEggs extends WorldGenerator
 {
     private int eggBlockID;
-    private int metadata;
 
-    public GCMarsWorldGenEggs(int eggID, int metadata)
+    public GCMarsWorldGenEggs(int eggID)
     {
         this.eggBlockID = eggID;
-        this.metadata = metadata;
     }
 
     public boolean generate(World par1World, Random par2Random, int x, int y, int z)
@@ -24,7 +22,7 @@ public class GCMarsWorldGenEggs extends WorldGenerator
 
         if (par1World.isAirBlock(i1, j1, k1) && (!par1World.provider.hasNoSky || j1 < 127) && Block.blocksList[this.eggBlockID].canBlockStay(par1World, i1, j1, k1))
         {
-            par1World.setBlock(i1, j1, k1, this.eggBlockID, this.metadata, 2);
+            par1World.setBlock(i1, j1, k1, this.eggBlockID, par2Random.nextInt(3), 2);
         }
 
         return true;

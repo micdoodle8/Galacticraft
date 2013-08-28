@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.mars;
 
 import micdoodle8.mods.galacticraft.api.event.wgen.GCCoreEventPopulate;
-import micdoodle8.mods.galacticraft.core.client.ClientProxyCore.OrientCameraEvent;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore.OrientCameraEvent;
 import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderPlayer.RotatePlayerEvent;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP.PlayerWakeUpEvent;
@@ -27,7 +27,6 @@ import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import org.lwjgl.opengl.GL11;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 
 public class GCMarsEvents
@@ -96,6 +95,33 @@ public class GCMarsEvents
             event.shouldRotate = false;
         }
     }
+
+    public WorldGenerator eggGenerator;
+    
+    @ForgeSubscribe
+    public void onPlanetDecorated(GCCoreEventPopulate.Post event)
+    {
+        if (eggGenerator == null)
+        {
+            eggGenerator = new GCMarsWorldGenEggs(GCMarsBlocks.rock.blockID);
+        }
+        
+        if (event.worldObj.provider instanceof GCMarsWorldProvider)
+        {
+            int eggsPerChunk = 3;
+            int x;
+            int y;
+            int z;
+
+            for (int eggCount = 0; eggCount < eggsPerChunk; ++eggCount)
+            {
+                x = event.chunkX + event.rand.nextInt(16) + 8;
+                y = event.rand.nextInt(128);
+                z = event.chunkZ + event.rand.nextInt(16) + 8;
+                this.eggGenerator.generate(event.worldObj, event.rand, x, y, z);
+            }
+        }
+    }
     
     @ForgeSubscribe
     public void orientCamera(OrientCameraEvent event)
@@ -136,46 +162,6 @@ public class GCMarsEvents
                 GL11.glRotatef(rotation, 0.0F, 1.0F, 0.0F);
 
                 GL11.glTranslatef(0, -1, 0);
-            }
-        }
-    }
-    
-    public WorldGenerator redEggGen = new GCMarsWorldGenEggs(GCMarsBlocks.rock.blockID, 0);
-    public WorldGenerator yellowEggGen = new GCMarsWorldGenEggs(GCMarsBlocks.rock.blockID, 1);
-    public WorldGenerator blueEggGen = new GCMarsWorldGenEggs(GCMarsBlocks.rock.blockID, 2);
-    
-    @ForgeSubscribe
-    public void onPlanetDecorated(GCCoreEventPopulate.Post event)
-    {
-        if (event.worldObj.provider instanceof GCMarsWorldProvider)
-        {
-            int eggsPerChunk = 1;
-            int x;
-            int y;
-            int z;
-
-            for (int eggCount = 0; eggCount < eggsPerChunk; ++eggCount)
-            {
-                x = event.chunkX + event.rand.nextInt(16) + 8;
-                y = event.rand.nextInt(128);
-                z = event.chunkZ + event.rand.nextInt(16) + 8;
-                this.redEggGen.generate(event.worldObj, event.rand, x, y, z);
-            }
-
-            for (int eggCount = 0; eggCount < eggsPerChunk; ++eggCount)
-            {
-                x = event.chunkX + event.rand.nextInt(16) + 8;
-                y = event.rand.nextInt(128);
-                z = event.chunkZ + event.rand.nextInt(16) + 8;
-                this.yellowEggGen.generate(event.worldObj, event.rand, x, y, z);
-            }
-
-            for (int eggCount = 0; eggCount < eggsPerChunk; ++eggCount)
-            {
-                x = event.chunkX + event.rand.nextInt(16) + 8;
-                y = event.rand.nextInt(128);
-                z = event.chunkZ + event.rand.nextInt(16) + 8;
-                this.blueEggGen.generate(event.worldObj, event.rand, x, y, z);
             }
         }
     }

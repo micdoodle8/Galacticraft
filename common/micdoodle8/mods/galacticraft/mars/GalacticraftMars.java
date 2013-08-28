@@ -80,6 +80,7 @@ public class GalacticraftMars
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
+        MinecraftForge.EVENT_BUS.register(new GCMarsEvents());
         new GCMarsConfigManager(new File(event.getModConfigurationDirectory(), "Galacticraft/mars.conf"));
 
         GalacticraftMars.SLUDGE = new Fluid("bacterialsludge").setBlockID(GCMarsConfigManager.idBlockBacterialSludge).setViscosity(3000);
@@ -137,7 +138,6 @@ public class GalacticraftMars
         SchematicRegistry.registerSchematicRecipe(new GCMarsSchematicRocketT2());
 
         GalacticraftMars.galacticraftMarsTab = new GCCoreCreativeTab(CreativeTabs.getNextID(), GalacticraftMars.MODID, GCMarsItems.spaceship.itemID, 5);
-        MinecraftForge.EVENT_BUS.register(new GCMarsEvents());
         GalacticraftRegistry.registerTeleportType(GCMarsWorldProvider.class, new GCMoonTeleportType());
         GCMarsUtil.addSmeltingRecipes();
         GalacticraftRegistry.registerCelestialBody(new GCMarsPlanet());
