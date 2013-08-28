@@ -97,7 +97,7 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
     private static final int CRATER_PROB = 2000;
 
     // DO NOT CHANGE
-    private static final int MID_HEIGHT = 63;
+    private static final int MID_HEIGHT = 93;
     private static final int CHUNK_SIZE_X = 16;
     private static final int CHUNK_SIZE_Y = 128;
     private static final int CHUNK_SIZE_Z = 16;
