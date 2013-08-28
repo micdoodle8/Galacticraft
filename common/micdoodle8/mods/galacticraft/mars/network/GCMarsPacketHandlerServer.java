@@ -2,10 +2,9 @@ package micdoodle8.mods.galacticraft.mars.network;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
+import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
-import micdoodle8.mods.galacticraft.mars.GCMarsConfigManager;
-import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySlimeling;
 import micdoodle8.mods.galacticraft.mars.util.GCMarsUtil;
 import net.minecraft.entity.Entity;
@@ -41,11 +40,11 @@ public class GCMarsPacketHandlerServer implements IPacketHandler
 
         final EntityPlayerMP player = (EntityPlayerMP) p;
 
-        PlayerUtil.getPlayerBaseServerFromPlayer(player);
+        GCCorePlayerMP gcPlayer = PlayerUtil.getPlayerBaseServerFromPlayer(player);
 
         if (packetType == 0)
         {
-            Class[] decodeAs = { Integer.class, Integer.class, String.class };
+            Class<?>[] decodeAs = { Integer.class, Integer.class, String.class };
             Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
 
             Entity entity = player.worldObj.getEntityByID((Integer) packetReadout[0]);
@@ -106,6 +105,18 @@ public class GCMarsPacketHandlerServer implements IPacketHandler
                     break;
                 }
             }
+        }
+        else if (packetType == 1)
+        {
+            FMLLog.severe("Galacticraft Mars: Received bad packet!");
+        }
+        else if (packetType == 2)
+        {
+            FMLLog.severe("Galacticraft Mars: Received bad packet!");
+        }
+        else if (packetType == 3)
+        {
+            gcPlayer.wakeUpPlayer(false, true, true, true);
         }
     }
 }

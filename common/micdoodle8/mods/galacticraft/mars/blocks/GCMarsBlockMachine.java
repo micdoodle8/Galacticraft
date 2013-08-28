@@ -54,6 +54,19 @@ public class GCMarsBlockMachine extends BlockTile
     }
 
     @Override
+    public boolean onBlockActivated(World par1World, int x, int y, int z, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
+    {
+        final TileEntity var9 = par1World.getBlockTileEntity(x, y, z);
+
+        if (var9 instanceof IMultiBlock)
+        {
+            ((IMultiBlock) var9).onActivated(par5EntityPlayer);
+        }
+
+        return false;
+    }
+
+    @Override
     public void breakBlock(World var1, int var2, int var3, int var4, int var5, int var6)
     {
         final TileEntity var9 = var1.getBlockTileEntity(var2, var3, var4);
@@ -344,7 +357,7 @@ public class GCMarsBlockMachine extends BlockTile
 
     public ChunkCoordinates getBedSpawnPosition(World world, int x, int y, int z, EntityPlayer player)
     {
-        return getNearestEmptyChunkCoordinates(world, x, y, z, 0);
+        return new ChunkCoordinates(x, y + 1, z);
     }
 
     public void setBedOccupied(World world, int x, int y, int z, EntityPlayer player, boolean occupied)

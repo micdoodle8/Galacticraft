@@ -1,24 +1,24 @@
 package micdoodle8.mods.galacticraft.mars.tile;
 
-import java.util.List;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlockMachine;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockBed;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.EnumStatus;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.packet.Packet17Sleep;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.world.WorldServer;
 import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -41,9 +41,17 @@ public class GCMarsTileEntityCryogenicChamber extends TileEntityMulti implements
     public boolean onActivated(EntityPlayer entityPlayer)
     {
         EnumStatus enumstatus = sleepInBedAt(entityPlayer, this.xCoord, this.yCoord, this.zCoord);
-        
+
         if (enumstatus == EnumStatus.OK)
         {
+            if (this.worldObj instanceof WorldServer && entityPlayer instanceof EntityPlayerMP)
+            {
+                Packet17Sleep packet17sleep = new Packet17Sleep(entityPlayer, 0, this.xCoord, this.yCoord, this.zCoord);
+                ((WorldServer) this.worldObj).getEntityTracker().sendPacketToAllPlayersTrackingEntity(entityPlayer, packet17sleep);
+                ((EntityPlayerMP) entityPlayer).playerNetServerHandler.setPlayerLocation(entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ, entityPlayer.rotationYaw, entityPlayer.rotationPitch);
+                ((EntityPlayerMP) entityPlayer).playerNetServerHandler.sendPacketToPlayer(packet17sleep);
+            }
+            
             return true;
         }
         else
@@ -70,16 +78,6 @@ public class GCMarsTileEntityCryogenicChamber extends TileEntityMulti implements
             {
                 return EnumStatus.TOO_FAR_AWAY;
             }
-
-            double d0 = 8.0D;
-            double d1 = 5.0D;
-            @SuppressWarnings("unchecked")
-            List<EntityMob> list = this.worldObj.getEntitiesWithinAABB(EntityMob.class, AxisAlignedBB.getAABBPool().getAABB((double)par1 - d0, (double)par2 - d1, (double)par3 - d0, (double)par1 + d0, (double)par2 + d1, (double)par3 + d0));
-
-            if (!list.isEmpty())
-            {
-                return EnumStatus.NOT_SAFE;
-            }
         }
 
         if (entityPlayer.isRiding())
@@ -87,40 +85,8 @@ public class GCMarsTileEntityCryogenicChamber extends TileEntityMulti implements
             entityPlayer.mountEntity((Entity)null);
         }
 
-        if (this.worldObj.blockExists(par1, par2, par3))
-        {
-            int l = this.worldObj.getBlockMetadata(par1, par2, par3);
-            int i1 = BlockBed.getDirection(l);
-            Block block = Block.blocksList[worldObj.getBlockId(par1, par2, par3)];
-            if (block != null)
-            {
-                i1 = block.getBedDirection(worldObj, par1, par2, par3);
-            }
-            float f = 0.5F;
-            float f1 = 0.5F;
-
-            switch (i1)
-            {
-                case 0:
-                    f1 = 0.9F;
-                    break;
-                case 1:
-                    f = 0.1F;
-                    break;
-                case 2:
-                    f1 = 0.1F;
-                    break;
-                case 3:
-                    f = 0.9F;
-            }
-
-            entityPlayer.setPosition((double)((float)par1 + f), (double)((float)par2 + 0.9375F), (double)((float)par3 + f1));
-        }
-        else
-        {
-            entityPlayer.setPosition((double)((float)par1 + 0.5F), (double)((float)par2 + 0.9375F), (double)((float)par3 + 0.5F));
-        }
-
+        entityPlayer.setPosition((double)((float)this.xCoord + 0.5F), (double)((float)this.yCoord + 0.5F), (double)((float)this.zCoord + 0.5F));
+        
         entityPlayer.sleeping = true;
         entityPlayer.sleepTimer = 0;
         entityPlayer.playerLocation = new ChunkCoordinates(par1, par2, par3);
@@ -132,6 +98,18 @@ public class GCMarsTileEntityCryogenicChamber extends TileEntityMulti implements
         }
 
         return EnumStatus.OK;
+    }
+
+    @Override
+    public boolean canUpdate()
+    {
+        return true;
+    }
+
+    @Override
+    public void updateEntity()
+    {
+        super.updateEntity();
     }
 
     @Override
