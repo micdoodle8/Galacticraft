@@ -18,6 +18,7 @@ import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -43,6 +44,19 @@ public class GCMarsBlockSlimelingEgg extends Block implements ITileEntityProvide
         this.icons[4] = iconRegister.registerIcon(GalacticraftMars.TEXTURE_PREFIX + "blueEgg_1");
         this.icons[5] = iconRegister.registerIcon(GalacticraftMars.TEXTURE_PREFIX + "yellowEgg_1");
         this.blockIcon = this.icons[0];
+    }
+
+    @Override
+    public boolean canBlockStay(World par1World, int par2, int par3, int par4)
+    {
+        int blockID = par1World.getBlockId(par2, par3 - 1, par4);
+        
+        if (blockID > 0)
+        {
+            return Block.blocksList[blockID].isBlockSolidOnSide(par1World, par2, par3, par4, ForgeDirection.UP);
+        }
+        
+        return false;
     }
 
     @Override

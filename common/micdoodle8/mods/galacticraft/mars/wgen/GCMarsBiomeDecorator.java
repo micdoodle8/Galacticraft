@@ -1,10 +1,12 @@
 package micdoodle8.mods.galacticraft.mars.wgen;
 
 import java.util.Random;
+import micdoodle8.mods.galacticraft.api.event.wgen.GCCoreEventPopulate;
 import micdoodle8.mods.galacticraft.core.wgen.GCCoreWorldGenMinableMeta;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
+import net.minecraftforge.common.MinecraftForge;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -47,7 +49,7 @@ public class GCMarsBiomeDecorator
             this.rand = random;
             this.chunkX = chunkX;
             this.chunkZ = chunkZ;
-            this.generateOres();
+            this.generateMars();
             this.currentWorld = null;
             this.rand = null;
         }
@@ -64,12 +66,14 @@ public class GCMarsBiomeDecorator
         }
     }
 
-    protected void generateOres()
+    protected void generateMars()
     {
+        MinecraftForge.EVENT_BUS.post(new GCCoreEventPopulate.Pre(this.currentWorld, this.rand, this.chunkX, this.chunkZ));
         this.generateOre(20, this.dirtGen, 0, 200);
         this.generateOre(15, this.deshGen, 0, 128);
         this.generateOre(26, this.copperGen, 0, 60);
         this.generateOre(23, this.tinGen, 0, 60);
         this.generateOre(20, this.ironGen, 0, 64);
+        MinecraftForge.EVENT_BUS.post(new GCCoreEventPopulate.Post(this.currentWorld, this.rand, this.chunkX, this.chunkZ));
     }
 }
