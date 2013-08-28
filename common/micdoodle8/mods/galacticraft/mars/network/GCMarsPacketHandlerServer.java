@@ -2,7 +2,9 @@ package micdoodle8.mods.galacticraft.mars.network;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketLanderUpdate;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySlimeling;
@@ -117,6 +119,17 @@ public class GCMarsPacketHandlerServer implements IPacketHandler
         else if (packetType == 3)
         {
             gcPlayer.wakeUpPlayer(false, true, true, true);
+        }
+        else if (packetType == 4)
+        {
+            final Class[] decodeAs = { Integer.class };
+            final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
+            Entity e = player.worldObj.getEntityByID((Integer) packetReadout[0]);
+
+            if (e != null && e instanceof GCCoreEntityLander)
+            {
+                player.playerNetServerHandler.sendPacketToPlayer(GCCorePacketLanderUpdate.buildKeyPacket((GCCoreEntityLander) e));
+            }
         }
     }
 }

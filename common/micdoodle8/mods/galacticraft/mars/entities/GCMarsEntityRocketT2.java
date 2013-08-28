@@ -16,6 +16,7 @@ import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
+import micdoodle8.mods.galacticraft.mars.items.GCMarsItem;
 import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -225,6 +226,7 @@ public class GCMarsEntityRocketT2 extends EntitySpaceshipBase implements IInvent
             }
 
             playerBase.setRocketType(this.rocketType.getIndex());
+            playerBase.setRocketItem(GCMarsItems.spaceship);
             final int liquid = this.spaceshipFuelTank.getFluid() == null ? 0 : this.spaceshipFuelTank.getFluid().amount / MathHelper.floor_double(this.canisterToFluidStackRatio == 0 ? 1 : this.canisterToFluidStackRatio);
             playerBase.setFuelLevel(liquid);
         }

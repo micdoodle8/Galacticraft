@@ -96,7 +96,7 @@ public class GCMarsEvents
         }
     }
 
-    public WorldGenerator eggGenerator;
+    private WorldGenerator eggGenerator;
     
     @ForgeSubscribe
     public void onPlanetDecorated(GCCoreEventPopulate.Post event)
