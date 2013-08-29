@@ -211,7 +211,6 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectric implem
             }
             else if (ID == Block.waterMoving.blockID)
             {
-                FMLLog.info("" + vec.intX() + " " + vec.intY() + " " + vec.intZ());
                 this.checkUsage(2);
             }
 

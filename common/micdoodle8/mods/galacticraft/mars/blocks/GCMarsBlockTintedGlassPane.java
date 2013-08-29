@@ -32,7 +32,6 @@ public class GCMarsBlockTintedGlassPane extends BlockPane
     {
         for (int i = 0; i < this.iconArray.length; i++)
         {
-            FMLLog.info("" + (this.func_111023_E() + "_" + ItemDye.field_94595_b[BlockColored.getDyeFromBlock(i)]));
             par3List.add(new ItemStack(par1, 1, i));
         }
     }
