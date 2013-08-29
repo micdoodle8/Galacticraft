@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityCreeper;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import net.minecraft.block.BlockDragonEgg;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
@@ -34,6 +35,12 @@ public class GCMarsBlockCreeperEgg extends BlockDragonEgg
     public boolean isOpaqueCube()
     {
         return false;
+    }
+
+    @Override
+    public CreativeTabs getCreativeTabToDisplayOn()
+    {
+        return GalacticraftMars.galacticraftMarsTab;
     }
 
     @Override
