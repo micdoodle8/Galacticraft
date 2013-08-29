@@ -20,8 +20,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCMarsTileEntityCryogenicChamberRenderer extends TileEntitySpecialRenderer
 {
-    private static final ResourceLocation chamberTexture0 = new ResourceLocation(GalacticraftMars.TEXTURE_DOMAIN, "textures/model/chamber.png");
-    private static final ResourceLocation chamberTexture1 = new ResourceLocation(GalacticraftMars.TEXTURE_DOMAIN, "textures/model/chamber2.png");
+    private static final ResourceLocation chamberTexture0 = new ResourceLocation(GalacticraftMars.TEXTURE_DOMAIN, "textures/model/chamber_dark.png");
+    private static final ResourceLocation chamberTexture1 = new ResourceLocation(GalacticraftMars.TEXTURE_DOMAIN, "textures/model/chamber2_dark.png");
 
     private final IModelCustom model;
     
