@@ -99,7 +99,7 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
     // DO NOT CHANGE
     private static final int MID_HEIGHT = 93;
     private static final int CHUNK_SIZE_X = 16;
-    private static final int CHUNK_SIZE_Y = 128;
+    private static final int CHUNK_SIZE_Y = 256;
     private static final int CHUNK_SIZE_Z = 16;
     private static final double MAIN_FEATURE_FILTER_MOD = 4;
     private static final double LARGE_FEATURE_FILTER_MOD = 8;
@@ -226,7 +226,7 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
                 short var15 = this.fillBlockID;
                 byte var15m = this.fillBlockMeta;
 
-                for (int var16 = 127; var16 >= 0; --var16)
+                for (int var16 = GCMarsChunkProvider.CHUNK_SIZE_Y - 1; var16 >= 0; --var16)
                 {
                     final int index = this.getIndex(var8, var16, var9);
 
