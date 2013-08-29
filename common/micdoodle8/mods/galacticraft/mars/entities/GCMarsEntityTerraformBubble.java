@@ -1,36 +1,22 @@
 package micdoodle8.mods.galacticraft.mars.entities;
 
-import java.util.ArrayList;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.ISizeable;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityTerraformer;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import universalelectricity.core.vector.Vector3;
-import universalelectricity.prefab.network.IPacketReceiver;
-import universalelectricity.prefab.network.PacketManager;
-import com.google.common.io.ByteArrayDataInput;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class GCMarsEntityTerraformBubble extends Entity implements IPacketReceiver, ISizeable
+public class GCMarsEntityTerraformBubble extends Entity implements ISizeable
 {
-    private float size;
     protected long ticks = 0;
 
     public GCMarsTileEntityTerraformer terraformer;
-
-    public final double MAX_SIZE = 15.0D;
 
     public GCMarsEntityTerraformBubble(World world, Vector3 mainBlockVec, GCMarsTileEntityTerraformer terraformer)
     {
@@ -47,6 +33,7 @@ public class GCMarsEntityTerraformBubble extends Entity implements IPacketReceiv
         this.noClip = true;
         this.isImmuneToFire = true;
         this.ignoreFrustumCheck = true;
+        this.renderDistanceWeight = 5.0D;
     }
 
     @Override
@@ -106,9 +93,7 @@ public class GCMarsEntityTerraformBubble extends Entity implements IPacketReceiv
 
         if (tileAt instanceof GCMarsTileEntityTerraformer)
         {
-            final GCMarsTileEntityTerraformer terraformer = (GCMarsTileEntityTerraformer) tileAt;
-
-            this.terraformer = terraformer;
+            this.terraformer = (GCMarsTileEntityTerraformer) tileAt;
         }
 
         if (this.terraformer != null && (this.terraformer.terraformBubble == null || this.terraformer.terraformBubble.equals(this)) && !this.worldObj.isRemote)
@@ -127,61 +112,12 @@ public class GCMarsEntityTerraformBubble extends Entity implements IPacketReceiv
 
         if (this.terraformer != null)
         {
-            if (this.terraformer.getEnergyStored() > 0.0F && (!this.terraformer.grassDisabled || !this.terraformer.treesDisabled))
-            {
-                this.size = (float) Math.min(Math.max(0, this.size + 0.1F), this.MAX_SIZE);
-            }
-            else
-            {
-                this.size = (float) Math.min(Math.max(0, this.size - 0.1F), this.MAX_SIZE);
-            }
-        }
-
-        if (this.terraformer != null)
-        {
             final Vector3 vec = new Vector3(this.terraformer);
 
             this.posX = vec.x + 0.5D;
             this.posY = vec.y + 1.0D;
             this.posZ = vec.z + 0.5D;
         }
-
-        if (!this.worldObj.isRemote && this.ticks % 5 == 0)
-        {
-            PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 50);
-        }
-    }
-
-    public Packet getDescriptionPacket()
-    {
-        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getNetworkedData(new ArrayList<Object>()));
-    }
-
-    @Override
-    public void handlePacketData(INetworkManager network, int packetType, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream)
-    {
-        try
-        {
-            if (this.worldObj.isRemote)
-            {
-                this.readNetworkedData(dataStream);
-            }
-        }
-        catch (final Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-    public void readNetworkedData(ByteArrayDataInput dataStream)
-    {
-        this.size = dataStream.readFloat();
-    }
-
-    public ArrayList<Object> getNetworkedData(ArrayList<Object> list)
-    {
-        list.add(this.size);
-        return list;
     }
 
     @Override
@@ -192,13 +128,23 @@ public class GCMarsEntityTerraformBubble extends Entity implements IPacketReceiv
 
     public void setSize(float bubbleSize)
     {
-        this.size = bubbleSize;
+        if (this.terraformer == null)
+        {
+            return;
+        }
+        
+        this.terraformer.size = bubbleSize;
     }
 
     @Override
     public float getSize()
     {
-        return this.size;
+        if (this.terraformer == null)
+        {
+            return 0.0F;
+        }
+        
+        return this.terraformer.size;
     }
 
     @Override
@@ -209,12 +155,10 @@ public class GCMarsEntityTerraformBubble extends Entity implements IPacketReceiv
     @Override
     protected void readEntityFromNBT(NBTTagCompound nbttagcompound)
     {
-        this.size = nbttagcompound.getFloat("bubbleSizeF");
     }
 
     @Override
     protected void writeEntityToNBT(NBTTagCompound nbttagcompound)
     {
-        nbttagcompound.setFloat("bubbleSizeF", this.size);
     }
 }

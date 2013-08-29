@@ -105,13 +105,37 @@ public class GCMarsGuiTerraformer extends GuiContainer
         {
             return EnumColor.ORANGE + "Disabled";
         }
+        
+        if (this.terraformer.waterTank.getFluid() == null || this.terraformer.waterTank.getFluid().amount <= 0)
+        {
+            return EnumColor.RED + "Not Enough Water";
+        }
+        
+        if (this.terraformer.getFirstBonemealStack() == null)
+        {
+            return EnumColor.RED + "Not Enough Bonemeal";
+        }
+        
+        if (!this.terraformer.grassDisabled && this.terraformer.getFirstSeedStack() == null)
+        {
+            return EnumColor.RED + "Not Enough Seeds";
+        }
+        
+        if (!this.terraformer.treesDisabled && this.terraformer.getFirstSaplingStack() == null)
+        {
+            return EnumColor.RED + "Not Enough Saplings";
+        }
 
-        if (this.terraformer.terraformBubble.getSize() < this.terraformer.terraformBubble.MAX_SIZE)
+        if (this.terraformer.terraformBubble.getSize() < this.terraformer.MAX_SIZE)
         {
             return EnumColor.YELLOW + "Bubble Expanding";
         }
-
-        if (this.terraformer.terraformableBlocksListSize <= 0)
+        
+        if (!this.terraformer.treesDisabled && this.terraformer.grassBlocksListSize <= 0)
+        {
+            return EnumColor.RED + "No Valid Blocks in Bubble";
+        }
+        else if (!this.terraformer.grassDisabled && this.terraformer.terraformableBlocksListSize <= 0)
         {
             return EnumColor.RED + "No Valid Blocks in Bubble";
         }
@@ -127,5 +151,12 @@ public class GCMarsGuiTerraformer extends GuiContainer
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);
+
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        int scale = this.terraformer.getScaledElecticalLevel(54);
+        this.drawTexturedModalRect(var5 + 45, var6 + 48, 176, 26, Math.min(scale, 54), 7);
+
+        int fuelLevel = this.terraformer.getScaledWaterLevel(26);
+        this.drawTexturedModalRect((this.width - this.xSize) / 2 + 56, (this.height - this.ySize) / 2 + 17 + 27 - fuelLevel, 176, 26 - fuelLevel, 39, fuelLevel);
     }
 }
