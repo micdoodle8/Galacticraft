@@ -288,7 +288,7 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectric implem
             }
             break;
         case 1:
-            if (this.useCount[0] % 2 == 0)
+            if (this.useCount[0] % 4 == 0)
             {
                 stack = this.getFirstSeedStack();
                 
@@ -304,7 +304,6 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectric implem
             }
             break;
         case 2:
-            FMLLog.info("deon 2");
             this.waterTank.drain(50, true);
             break;
         }
