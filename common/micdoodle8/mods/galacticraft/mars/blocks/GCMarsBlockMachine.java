@@ -54,19 +54,6 @@ public class GCMarsBlockMachine extends BlockTile
     }
 
     @Override
-    public boolean onBlockActivated(World par1World, int x, int y, int z, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
-    {
-        final TileEntity var9 = par1World.getBlockTileEntity(x, y, z);
-
-        if (var9 instanceof IMultiBlock)
-        {
-            ((IMultiBlock) var9).onActivated(par5EntityPlayer);
-        }
-
-        return false;
-    }
-
-    @Override
     public void breakBlock(World var1, int var2, int var3, int var4, int var5, int var6)
     {
         final TileEntity var9 = var1.getBlockTileEntity(var2, var3, var4);
@@ -238,23 +225,23 @@ public class GCMarsBlockMachine extends BlockTile
      * Called when the block is right clicked by the player
      */
     @Override
-    public boolean onMachineActivated(World par1World, int x, int y, int z, EntityPlayer par5EntityPlayer, int side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World world, int x, int y, int z, EntityPlayer par5EntityPlayer, int side, float hitX, float hitY, float hitZ)
     {
-        int metadata = par1World.getBlockMetadata(x, y, z);
+        int metadata = world.getBlockMetadata(x, y, z);
 
         if (metadata >= GCMarsBlockMachine.UNUSED_MACHINE_1)
         {
-            par5EntityPlayer.openGui(GalacticraftMars.instance, -1, par1World, x, y, z);
+            par5EntityPlayer.openGui(GalacticraftMars.instance, -1, world, x, y, z);
             return true;
         }
         else if (metadata >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA)
         {
-            par5EntityPlayer.openGui(GalacticraftMars.instance, -1, par1World, x, y, z);
+            ((IMultiBlock) world.getBlockTileEntity(x, y, z)).onActivated(par5EntityPlayer);
             return true;
         }
         else
         {
-            par5EntityPlayer.openGui(GalacticraftMars.instance, GCMarsConfigManager.idGuiMachine, par1World, x, y, z);
+            par5EntityPlayer.openGui(GalacticraftMars.instance, GCMarsConfigManager.idGuiMachine, world, x, y, z);
             return true;
         }
     }
@@ -298,6 +285,7 @@ public class GCMarsBlockMachine extends BlockTile
         return new ItemStack(this.blockID, 1, GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA);
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
