@@ -31,15 +31,15 @@ public class GCMarsItemArmor extends ItemArmor
         {
             if (stack.getItem().itemID == GCMarsItems.deshHelmet.itemID)
             {
-                return "/micdoodle8/mods/galacticraft/mars/client/armor/desh_1.png";
+                return "textures/model/armor/desh_1.png";
             }
             else if (stack.getItem().itemID == GCMarsItems.deshChestplate.itemID || stack.getItem().itemID == GCMarsItems.deshBoots.itemID)
             {
-                return "/micdoodle8/mods/galacticraft/mars/client/armor/desh_2.png";
+                return "textures/model/armor/desh_2.png";
             }
             else if (stack.getItem().itemID == GCMarsItems.deshLeggings.itemID)
             {
-                return "/micdoodle8/mods/galacticraft/mars/client/armor/desh_3.png";
+                return "textures/model/armor/desh_3.png";
             }
         }
 
