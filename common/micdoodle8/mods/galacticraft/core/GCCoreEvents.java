@@ -449,7 +449,8 @@ public class GCCoreEvents
             e.printStackTrace();
         }
     }
-    
+
+    @SideOnly(Side.CLIENT)
     @ForgeSubscribe
     public void onLeaveBedButtonClicked(SleepCancelledEvent event)
     {
