@@ -7,7 +7,6 @@ import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityAIArrowAttack;
 import micdoodle8.mods.galacticraft.core.entities.IBoss;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityDungeonSpawner;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
@@ -35,6 +34,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatMessageComponent;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
@@ -66,7 +66,7 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
     public GCMarsEntityCreeperBoss(World par1World)
     {
         super(par1World);
-        this.setSize(1.5F, 4.0F);
+        this.setSize(1.5F, 7.0F);
         this.isImmuneToFire = true;
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(2, new GCCoreEntityAIArrowAttack(this, 1.0D, 25, 20.0F));
@@ -78,10 +78,46 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
     }
 
     @Override
+    public boolean attackEntityFrom(DamageSource damageSource, float damage)
+    {
+        if (damageSource.getDamageType().equals("fireball"))
+        {
+            if (this.isEntityInvulnerable())
+            {
+                return false;
+            }
+            else if (super.attackEntityFrom(damageSource, damage))
+            {
+                Entity entity = damageSource.getEntity();
+
+                if (this.riddenByEntity != entity && this.ridingEntity != entity)
+                {
+                    if (entity != this)
+                    {
+                        this.entityToAttack = entity;
+                    }
+
+                    return true;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+        
+        return false;
+    }
+
+    @Override
     protected void func_110147_ax()
     {
         super.func_110147_ax();
-        this.func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(150.0F * GCCoreConfigManager.dungeonBossHealthMod);
+        this.func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(200.0F * GCCoreConfigManager.dungeonBossHealthMod);
         this.func_110148_a(SharedMonsterAttributes.field_111263_d).func_111128_a(0.05F);
     }
 
@@ -366,9 +402,9 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
         switch (rand.nextInt(2))
         {
         case 0:
-            return new ItemStack(GCCoreItems.schematic, 1, 0);
+            return new ItemStack(GCMarsItems.schematic, 1, 0);
         case 1:
-            return new ItemStack(GCCoreItems.schematic, 1, 1);
+            return new ItemStack(GCMarsItems.schematic, 1, 0);
         }
 
         return null;
