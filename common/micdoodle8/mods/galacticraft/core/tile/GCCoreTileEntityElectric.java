@@ -121,9 +121,14 @@ public abstract class GCCoreTileEntityElectric extends TileEntityUniversalElectr
 
             if (this.ticks % 3 == 0)
             {
-                PacketManager.sendPacketToClients(this.getPacket(), this.worldObj, new Vector3(this), 12);
+                PacketManager.sendPacketToClients(this.getPacket(), this.worldObj, new Vector3(this), this.getPacketRange());
             }
         }
+    }
+    
+    protected double getPacketRange()
+    {
+        return 12.0D;
     }
 
     @Override
