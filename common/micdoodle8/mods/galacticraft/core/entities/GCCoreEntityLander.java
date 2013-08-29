@@ -363,6 +363,12 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
     }
 
     @Override
+    protected boolean forceGroundUpdate()
+    {
+        return false;
+    }
+
+    @Override
     public boolean pressKey(int key)
     {
         switch (key)
