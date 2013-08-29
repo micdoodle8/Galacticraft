@@ -267,4 +267,18 @@ public class GCMarsBlock extends Block implements IDetectableResource, IPlantabl
     {
         return false;
     }
+
+    @Override
+    public void randomDisplayTick(World world, int x, int y, int z, Random rand) 
+    {
+        if (rand.nextInt(10) == 0)
+        {
+            int metadata = world.getBlockMetadata(x, y, z);
+            
+            if (metadata == 7)
+            {
+                GalacticraftMars.proxy.spawnParticle("sludgeDrip", x + rand.nextDouble(), y, z + rand.nextDouble());
+            }
+        }
+    }
 }

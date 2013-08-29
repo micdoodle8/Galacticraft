@@ -46,6 +46,7 @@ tile.slimelingEgg.yellowEgg.name=Yellow Slimeling Egg
 tile.marsMachine.0.name=Terraformer
 tile.marsMachine.1.name=Cryogenic Chamber
 tile.sludge.name=Bacterial Sludge
+tile.creeperEgg.name=Creeper Egg
 
 # GUI
 gui.choosePlanet.desc.mars=Habitable#No Oxygen#Gravity: 38%
