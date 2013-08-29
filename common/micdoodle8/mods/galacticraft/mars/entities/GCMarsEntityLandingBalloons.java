@@ -27,9 +27,7 @@ import net.minecraftforge.fluids.FluidTank;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.IPacketReceiver;
 import com.google.common.io.ByteArrayDataInput;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -140,6 +138,11 @@ public class GCMarsEntityLandingBalloons extends GCCoreEntityAdvanced implements
                 }
             }
         }
+        
+        if (this.groundHitCount >= 14)
+        {
+            this.yOffset = 2.0F;
+        }
 
         this.rotationPitch += this.rotationPitchSpeed;
         this.rotationYaw += this.rotationYawSpeed;
@@ -169,6 +172,8 @@ public class GCMarsEntityLandingBalloons extends GCCoreEntityAdvanced implements
         {
             this.fuelTank.readFromNBT(nbt.getCompoundTag("fuelTank"));
         }
+        
+        this.groundHitCount = nbt.getInteger("GroundHitCount");
     }
 
     @Override
@@ -195,6 +200,8 @@ public class GCMarsEntityLandingBalloons extends GCCoreEntityAdvanced implements
         {
             nbt.setTag("fuelTank", this.fuelTank.writeToNBT(new NBTTagCompound()));
         }
+        
+        nbt.setInteger("GroundHitCount", this.groundHitCount);
     }
 
     @Override
@@ -454,12 +461,12 @@ public class GCMarsEntityLandingBalloons extends GCCoreEntityAdvanced implements
         if (this.groundHitCount < 14)
         {
             double mag = (1.0D / this.groundHitCount) * 4.0D;
-            this.motionX = Math.cos(Math.toRadians(this.rotationYaw)) * Math.sin(Math.toRadians(this.rotationPitch));
-            this.motionY = Math.cos(Math.toRadians(this.rotationPitch));
-            this.motionZ = Math.sin(Math.toRadians(this.rotationYaw)) * Math.sin(Math.toRadians(this.rotationPitch));
-            this.motionX *= mag;
+            this.motionX = this.rand.nextDouble() * 0.5 - 0.5;
+            this.motionY = 1.0;
+            this.motionZ = this.rand.nextDouble() * 0.5 - 0.5;
+            this.motionX *= mag / 3.0D;
             this.motionY *= mag;
-            this.motionZ *= mag;
+            this.motionZ *= mag / 3.0D;
         }
         else
         {
