@@ -27,7 +27,10 @@ import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import org.lwjgl.opengl.GL11;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCMarsEvents
 {
@@ -76,13 +79,14 @@ public class GCMarsEvents
         {
             event.result = EnumStatus.NOT_POSSIBLE_HERE;
             
-            if (event.bypassed && event.entityPlayer instanceof GCCorePlayerSP)
+            if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT && event.bypassed && event.entityPlayer instanceof GCCorePlayerSP)
             {
                 PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftMars.CHANNEL, 3, new Object[] { }));
             }
         }
     }
-    
+
+    @SideOnly(Side.CLIENT)
     @ForgeSubscribe
     public void onPlayerRotate(RotatePlayerEvent event)
     {
@@ -122,7 +126,8 @@ public class GCMarsEvents
             }
         }
     }
-    
+
+    @SideOnly(Side.CLIENT)
     @ForgeSubscribe
     public void orientCamera(OrientCameraEvent event)
     {
