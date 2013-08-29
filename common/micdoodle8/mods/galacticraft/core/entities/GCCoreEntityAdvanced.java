@@ -133,7 +133,10 @@ public abstract class GCCoreEntityAdvanced extends GCCoreEntityControllable impl
             this.motionX = motX;
             this.motionY = motY;
             this.motionZ = motZ;
-            this.onGround = onGround;
+            if (onGround)
+            {
+                this.onGround = onGround;
+            }
         }
     }
 
