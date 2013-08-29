@@ -22,7 +22,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCMarsItem extends Item
 {
-    public static String[] names = { "rawDesh", "deshStick", "ingotDesh", "reinforcedPlateT2", "slimelingCargo" };
+    public static String[] names = { "rawDesh", "deshStick", "ingotDesh", "reinforcedPlateT2", "slimelingCargo", "deshPlate" };
     protected Icon[] icons = new Icon[GCMarsItem.names.length];
 
     public GCMarsItem(int par1)
