@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.mars.client;
 import java.util.Random;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import micdoodle8.mods.galacticraft.mars.dimension.GCMarsWorldProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -25,6 +26,7 @@ import cpw.mods.fml.client.FMLClientHandler;
 public class GCMarsSkyProvider extends IRenderHandler
 {
     private static final ResourceLocation overworldTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/planets/overworld.png");
+    private static final ResourceLocation galaxyTexture = new ResourceLocation(GalacticraftMars.TEXTURE_DOMAIN, "textures/gui/planets/galaxy.png");
     private static final ResourceLocation sunTexture = new ResourceLocation("textures/environment/sun.png");
 
     public int starGLCallList = GLAllocation.generateDisplayLists(3);
@@ -88,6 +90,11 @@ public class GCMarsSkyProvider extends IRenderHandler
         {
             gcProvider = (GCMarsWorldProvider) world.provider;
         }
+        
+        float var10;
+        float var11;
+        float var12;
+        final Tessellator var23 = Tessellator.instance;
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         final Vec3 var2 = this.getCustomSkyColor();
@@ -107,7 +114,6 @@ public class GCMarsSkyProvider extends IRenderHandler
         }
 
         GL11.glColor3f(1, 1, 1);
-        final Tessellator var23 = Tessellator.instance;
         GL11.glDepthMask(false);
         GL11.glEnable(GL11.GL_FOG);
         GL11.glColor3f(0, 0, 0);
@@ -117,9 +123,6 @@ public class GCMarsSkyProvider extends IRenderHandler
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         RenderHelper.disableStandardItemLighting();
-        float var10;
-        float var11;
-        float var12;
 
         float var20 = 0;
 
@@ -128,22 +131,45 @@ public class GCMarsSkyProvider extends IRenderHandler
             var20 = gcProvider.getStarBrightness(partialTicks);
         }
 
-        if (var20 > 0.0F)
-        {
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, var20);
-            GL11.glCallList(this.starGLCallList);
-        }
-
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
         GL11.glPushMatrix();
 
+        GL11.glDisable(GL11.GL_BLEND);
+
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        
+        // HOME:
+        var12 = 10.5F;
+        GL11.glRotatef(0.0F, 0.0F, 0.0F, 1.0F);
+        GL11.glRotatef(150F, 1.0F, 0.0F, 0.0F);
+        FMLClientHandler.instance().getClient().renderEngine.func_110577_a(GCMarsSkyProvider.galaxyTexture);
+        GL11.glColor4f(0.4F, 0.4F, 0.4F, 1.0F);
+        var23.startDrawingQuads();
+        var23.addVertexWithUV(-var12, -100.0D, var12, 0, 1);
+        var23.addVertexWithUV(var12, -100.0D, var12, 1, 1);
+        var23.addVertexWithUV(var12, -100.0D, -var12, 1, 0);
+        var23.addVertexWithUV(-var12, -100.0D, -var12, 0, 0);
+        var23.draw();
+
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glEnable(GL11.GL_ALPHA_TEST);
+        GL11.glEnable(GL11.GL_FOG);
         GL11.glPopMatrix();
+        
+        if (var20 > 0.0F)
+        {
+            GL11.glDisable(GL11.GL_TEXTURE_2D);
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, var20);
+            GL11.glCallList(this.starGLCallList);
+            GL11.glEnable(GL11.GL_TEXTURE_2D);
+        }
+        
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 
         GL11.glPushMatrix();
 
         GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 5F);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glRotatef(world.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
         var12 = 30.0F;
         FMLClientHandler.instance().getClient().renderEngine.func_110577_a(GCMarsSkyProvider.sunTexture);
@@ -161,14 +187,12 @@ public class GCMarsSkyProvider extends IRenderHandler
         GL11.glDisable(GL11.GL_BLEND);
 
         // HOME:
-        var12 = 10.0F;
-        final float earthRotation = (float) (world.getSpawnPoint().posZ - mc.thePlayer.posZ) * 0.01F;
+        var12 = 0.5F;
         GL11.glScalef(0.6F, 0.6F, 0.6F);
-        GL11.glRotatef(earthRotation, 1.0F, 0.0F, 0.0F);
+        GL11.glRotatef(40.0F, 0.0F, 0.0F, 1.0F);
         GL11.glRotatef(200F, 1.0F, 0.0F, 0.0F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1F);
         FMLClientHandler.instance().getClient().renderEngine.func_110577_a(GCMarsSkyProvider.overworldTexture);
-        world.getMoonPhase();
         var23.startDrawingQuads();
         var23.addVertexWithUV(-var12, -100.0D, var12, 0, 1);
         var23.addVertexWithUV(var12, -100.0D, var12, 1, 1);
@@ -181,6 +205,7 @@ public class GCMarsSkyProvider extends IRenderHandler
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glEnable(GL11.GL_FOG);
         GL11.glPopMatrix();
+        
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glColor3f(0.0F, 0.0F, 0.0F);
         final double var25 = mc.thePlayer.getPosition(partialTicks).yCoord - world.getHorizon();
@@ -235,7 +260,7 @@ public class GCMarsSkyProvider extends IRenderHandler
         final Tessellator var2 = Tessellator.instance;
         var2.startDrawingQuads();
 
-        for (int var3 = 0; var3 < (GCCoreConfigManager.moreStars ? 20000 : 6000); ++var3)
+        for (int var3 = 0; var3 < (GCCoreConfigManager.moreStars ? 35000 : 6000); ++var3)
         {
             double var4 = var1.nextFloat() * 2.0F - 1.0F;
             double var6 = var1.nextFloat() * 2.0F - 1.0F;
@@ -249,9 +274,9 @@ public class GCMarsSkyProvider extends IRenderHandler
                 var4 *= var12;
                 var6 *= var12;
                 var8 *= var12;
-                final double var14 = var4 * (GCCoreConfigManager.moreStars ? var1.nextDouble() * 100D + 150D : 100.0D);
-                final double var16 = var6 * (GCCoreConfigManager.moreStars ? var1.nextDouble() * 100D + 150D : 100.0D);
-                final double var18 = var8 * (GCCoreConfigManager.moreStars ? var1.nextDouble() * 100D + 150D : 100.0D);
+                final double var14 = var4 * (GCCoreConfigManager.moreStars ? var1.nextDouble() * 150D + 130D : 100.0D);
+                final double var16 = var6 * (GCCoreConfigManager.moreStars ? var1.nextDouble() * 150D + 130D : 100.0D);
+                final double var18 = var8 * (GCCoreConfigManager.moreStars ? var1.nextDouble() * 150D + 130D : 100.0D);
                 final double var20 = Math.atan2(var4, var8);
                 final double var22 = Math.sin(var20);
                 final double var24 = Math.cos(var20);
