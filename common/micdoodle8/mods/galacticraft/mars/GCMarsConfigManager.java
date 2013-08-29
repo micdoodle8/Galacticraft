@@ -37,6 +37,7 @@ public class GCMarsConfigManager
     public static int idBlockTreasureChestT2;
     public static int idBlockMachine;
     public static int idBlockCreeperEgg;
+    public static int idBlockTintedGlassPane;
 
     // ITEMS
     public static int idItemMarsBasic;
@@ -88,6 +89,7 @@ public class GCMarsConfigManager
             GCMarsConfigManager.idBlockTreasureChestT2 = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockTreasureChestT2", 3394).getInt(3394);
             GCMarsConfigManager.idBlockMachine = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockMachine", 3395).getInt(3395);
             GCMarsConfigManager.idBlockCreeperEgg = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockCreeperEgg", 3396).getInt(3396);
+            GCMarsConfigManager.idBlockTintedGlassPane = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockTintedGlassPane", 3397).getInt(3397);
 
             GCMarsConfigManager.idItemMarsBasic = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemMarsBasic", 9905).getInt(9905);
             GCMarsConfigManager.idItemSpaceshipTier2 = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemSpaceshipTier2", 9906).getInt(9906);

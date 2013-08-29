@@ -19,6 +19,7 @@ import micdoodle8.mods.galacticraft.mars.client.gui.GCMarsGuiTerraformer;
 import micdoodle8.mods.galacticraft.mars.client.model.GCMarsModelSpaceshipTier2;
 import micdoodle8.mods.galacticraft.mars.client.render.block.GCMarsBlockRendererMachine;
 import micdoodle8.mods.galacticraft.mars.client.render.block.GCMarsBlockRendererRock;
+import micdoodle8.mods.galacticraft.mars.client.render.block.GCMarsBlockRendererTintedGlassPane;
 import micdoodle8.mods.galacticraft.mars.client.render.block.GCMarsBlockRendererTreasureChest;
 import micdoodle8.mods.galacticraft.mars.client.render.block.GCMarsBlockRendererVine;
 import micdoodle8.mods.galacticraft.mars.client.render.entity.GCMarsRenderCreeperBoss;
@@ -84,6 +85,7 @@ public class ClientProxyMars extends CommonProxyMars
     private static int eggRenderID;
     private static int treasureRenderID;
     private static int machineRenderID;
+    private static int tintedGlassRenderID;
 
     @Override
     public void preInit(FMLPreInitializationEvent event)
@@ -104,6 +106,8 @@ public class ClientProxyMars extends CommonProxyMars
         RenderingRegistry.registerBlockHandler(new GCMarsBlockRendererTreasureChest(ClientProxyMars.treasureRenderID));
         ClientProxyMars.machineRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new GCMarsBlockRendererMachine(ClientProxyMars.machineRenderID));
+        ClientProxyMars.tintedGlassRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new GCMarsBlockRendererTintedGlassPane(ClientProxyMars.tintedGlassRenderID));
     }
 
     @Override
@@ -152,6 +156,12 @@ public class ClientProxyMars extends CommonProxyMars
     public int getMachineRenderID()
     {
         return ClientProxyMars.machineRenderID;
+    }
+    
+    @Override
+    public int getTintedGlassPaneRenderID()
+    {
+        return ClientProxyMars.tintedGlassRenderID;
     }
 
     @Override

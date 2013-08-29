@@ -1,11 +1,6 @@
 # Galacticraft Mars Language File = UNITED STATES ENGLISH
 
 # GENERAL ITEMS
-item.reinfocedBucket.name=Reinforced Bucket
-item.reinfocedBucketMilk.name=Reinforced Milk Bucket
-item.reinfocedBucketWater.name=Reinforced Water Bucket
-item.reinfocedBucketLava.name=Reinforced Lava Bucket
-item.reinfocedBucketSludge.name=Reinforced Bacterial Sludge Bucket
 item.rawDesh.name=Unrefined Desh
 item.deshStick.name=Desh Stick
 item.ingotDesh.name=Desh Ingot
@@ -47,6 +42,23 @@ tile.marsMachine.0.name=Terraformer
 tile.marsMachine.1.name=Cryogenic Chamber
 tile.sludge.name=Bacterial Sludge
 tile.creeperEgg.name=Creeper Egg
+tile.cavernVines.name=Cavernous Vines
+tile.tintedGlassPane.white.name=White Tinted Glass Pane
+tile.tintedGlassPane.orange.name=Orange Tinted Glass Pane
+tile.tintedGlassPane.magenta.name=Magenta Tinted Glass Pane
+tile.tintedGlassPane.light_blue.name=Light Blue Tinted Glass Pane
+tile.tintedGlassPane.yellow.name=Yellow Tinted Glass Pane
+tile.tintedGlassPane.lime.name=Lime Tinted Glass Pane
+tile.tintedGlassPane.pink.name=Pink Tinted Glass Pane
+tile.tintedGlassPane.gray.name=Gray Tinted Glass Pane
+tile.tintedGlassPane.silver.name=Silver Tinted Glass Pane
+tile.tintedGlassPane.cyan.name=Cyan Tinted Glass Pane
+tile.tintedGlassPane.purple.name=Purple Tinted Glass Pane
+tile.tintedGlassPane.blue.name=Blue Tinted Glass Pane
+tile.tintedGlassPane.brown.name=Brown Tinted Glass Pane
+tile.tintedGlassPane.green.name=Green Tinted Glass Pane
+tile.tintedGlassPane.red.name=Red Tinted Glass Pane
+tile.tintedGlassPane.black.name=Black Tinted Glass Pane
 
 # GUI
 gui.choosePlanet.desc.mars=Habitable#No Oxygen#Gravity: 38%

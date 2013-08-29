@@ -57,6 +57,11 @@ public class CommonProxyMars implements IGuiHandler
     {
         return -1;
     }
+    
+    public int getTintedGlassPaneRenderID()
+    {
+        return -1;
+    }
 
     public void spawnParticle(String var1, double var2, double var4, double var6)
     {
