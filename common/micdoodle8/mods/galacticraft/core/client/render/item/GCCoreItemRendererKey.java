@@ -53,6 +53,13 @@ public class GCCoreItemRendererKey implements IItemRenderer
         }
         else if (type == ItemRenderType.EQUIPPED)
         {
+            GL11.glRotatef(100.0F, 0, 1, 0);
+            GL11.glRotatef(60.0F, 0, 0, 1);
+            GL11.glRotatef(-10.0F, 1, 0, 0);
+            GL11.glTranslatef(0.4F, 0.1F, 0.5F);
+        }
+        else if (type == ItemRenderType.EQUIPPED_FIRST_PERSON)
+        {
             GL11.glRotatef(-4.0F, 0, 1, 0);
             GL11.glRotatef(2.0F, 1, 0, 0);
             GL11.glTranslatef(3.0F, 2.0F, -0.6F);
@@ -85,6 +92,8 @@ public class GCCoreItemRendererKey implements IItemRenderer
             return true;
         case EQUIPPED:
             return true;
+        case EQUIPPED_FIRST_PERSON:
+            return true;
         case INVENTORY:
             return true;
         default:
@@ -104,6 +113,9 @@ public class GCCoreItemRendererKey implements IItemRenderer
         switch (type)
         {
         case EQUIPPED:
+            this.renderKey(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f, data);
+            break;
+        case EQUIPPED_FIRST_PERSON:
             this.renderKey(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f, data);
             break;
         case INVENTORY:
