@@ -108,8 +108,7 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectric implem
 
                         if (FluidContainerRegistry.isBucket(this.containingItems[0]) && FluidContainerRegistry.isFilledContainer(this.containingItems[0]))
                         {
-                            final int amount = this.containingItems[1].stackSize;
-                            this.containingItems[0] = new ItemStack(Item.bucketEmpty, amount);
+                            this.containingItems[0] = new ItemStack(Item.bucketEmpty, this.containingItems[0].stackSize);
                         }
                         else
                         {
