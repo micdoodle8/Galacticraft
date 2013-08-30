@@ -12,6 +12,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -91,7 +92,10 @@ public class GCCoreItemSchematic extends Item implements ISchematicItem
                 break;
             case 1:
                 par3List.add(LanguageRegistry.instance().getStringLocalization("schematic.rocketT2.name"));
-                par3List.add(EnumColor.DARK_AQUA + "COMING SOON");
+                if (!Loader.isModLoaded("GalacticraftMars"))
+                {
+                    par3List.add(EnumColor.DARK_AQUA + "\"Galacticraft: Planets\" Not Installed!");
+                }
                 break;
             }
         }
