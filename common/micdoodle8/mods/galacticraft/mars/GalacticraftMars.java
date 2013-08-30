@@ -21,13 +21,13 @@ import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySludgeling;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityTerraformBubble;
 import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
 import micdoodle8.mods.galacticraft.mars.network.GCMarsPacketHandlerServer;
+import micdoodle8.mods.galacticraft.mars.recipe.GCMarsRecipeManager;
 import micdoodle8.mods.galacticraft.mars.schematic.GCMarsSchematicRocketT2;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityCryogenicChamber;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityDungeonSpawner;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntitySlimelingEgg;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityTerraformer;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityTreasureChest;
-import micdoodle8.mods.galacticraft.mars.util.GCMarsUtil;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
@@ -141,7 +141,6 @@ public class GalacticraftMars
 
         GalacticraftMars.galacticraftMarsTab = new GCCoreCreativeTab(CreativeTabs.getNextID(), GalacticraftMars.MODID, GCMarsItems.spaceship.itemID, 5);
         GalacticraftRegistry.registerTeleportType(GCMarsWorldProvider.class, new GCMarsTeleportType());
-        GCMarsUtil.addSmeltingRecipes();
         GalacticraftRegistry.registerCelestialBody(new GCMarsPlanet());
         NetworkRegistry.instance().registerGuiHandler(GalacticraftMars.instance, GalacticraftMars.proxy);
         this.registerTileEntities();
@@ -186,7 +185,7 @@ public class GalacticraftMars
     {
         GalacticraftMars.proxy.postInit(event);
         GalacticraftMars.proxy.registerRenderInformation();
-        GCMarsUtil.addCraftingRecipes();
+        GCMarsRecipeManager.loadRecipes();
     }
 
     public void registerGalacticraftCreature(Class var0, String var1, int id, int back, int fore)
