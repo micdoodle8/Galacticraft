@@ -447,13 +447,13 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
             return null;
         }
 
-        if (j < 64 && par1EnumCreatureType == EnumCreatureType.monster)
+        if (par1EnumCreatureType == EnumCreatureType.monster)
         {
             final List monsters = new ArrayList();
-            monsters.add(new SpawnListEntry(GCCoreEntityZombie.class, 1, 2, 3));
-            monsters.add(new SpawnListEntry(GCCoreEntitySpider.class, 1, 2, 3));
-            monsters.add(new SpawnListEntry(GCCoreEntitySkeleton.class, 1, 2, 3));
-            monsters.add(new SpawnListEntry(GCCoreEntityCreeper.class, 1, 2, 3));
+            monsters.add(new SpawnListEntry(GCCoreEntityZombie.class, 8, 2, 3));
+            monsters.add(new SpawnListEntry(GCCoreEntitySpider.class, 8, 2, 3));
+            monsters.add(new SpawnListEntry(GCCoreEntitySkeleton.class, 8, 2, 3));
+            monsters.add(new SpawnListEntry(GCCoreEntityCreeper.class, 8, 2, 3));
             return monsters;
         }
         else

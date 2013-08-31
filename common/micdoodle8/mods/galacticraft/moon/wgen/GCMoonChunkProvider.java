@@ -386,7 +386,7 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
     @Override
     public List getPossibleCreatures(EnumCreatureType par1EnumCreatureType, int i, int j, int k)
     {
-        if (/* j < 39 && */par1EnumCreatureType == EnumCreatureType.monster)
+        if (par1EnumCreatureType == EnumCreatureType.monster)
         {
             final List monsters = new ArrayList();
             monsters.add(new SpawnListEntry(GCCoreEntityZombie.class, 8, 2, 3));
