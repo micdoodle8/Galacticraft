@@ -103,14 +103,18 @@ public class GCMoonRoomTreasure extends GCCoreDungeonRoom
 
     public ItemStack getGuaranteedLoot(Random rand)
     {
-        switch (rand.nextInt(2))
-        {
-        case 0:
-            return new ItemStack(GCCoreItems.schematic, 1, 0);
-        case 1:
-            return new ItemStack(GCCoreItems.schematic, 1, 1);
-        }
+        List<ItemStack> possibleLoot = GalacticraftRegistry.getT1TreasureItems();
+		int num = rand.nextInt(possibleLoot.size() + 2);
 
+		switch(num)
+		{
+		case 0:
+			return new ItemStack(GCCoreItems.schematic, 1, 0);
+		case 1:
+			return new ItemStack(GCcoreItems.schematic, 1, 1);
+		default:
+			return possibleLoot.get(num-2);
+		}
         return null;
     }
 }

@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.api.world.IGalaxy;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.api.world.SpaceStationType;
 import net.minecraft.world.WorldProvider;
+import net.minecraft.item.ItemStack;
 
 public class GalacticraftRegistry
 {
@@ -20,6 +21,7 @@ public class GalacticraftRegistry
     private static List<INasaWorkbenchRecipe> rocketBenchT1Recipes = new ArrayList<INasaWorkbenchRecipe>();
     private static List<INasaWorkbenchRecipe> buggyBenchRecipes = new ArrayList<INasaWorkbenchRecipe>();
     private static List<INasaWorkbenchRecipe> rocketBenchT2Recipes = new ArrayList<INasaWorkbenchRecipe>();
+	private static List<ItemStack> t1TreasureChestItems = new ArrayList<ItemStack>();
 
     /**
      * Register a new Teleport type for the world provider passed
@@ -67,6 +69,17 @@ public class GalacticraftRegistry
             GalacticraftRegistry.galaxies.add(galaxy);
         }
     }
+
+	/**
+	* Add an itemstack to spawn in the T1 Treasure Chest
+	*
+	* @param item
+	*            the itemstack to add to the spawnable list
+	*/
+	public static void addT1TreasureChestItem(Itemstack item)
+	{
+		GalacticraftRegistry.t1TreasureChestItems.add(item);
+	}
 
     public static void addT1RocketRecipe(INasaWorkbenchRecipe recipe)
     {
@@ -127,4 +140,9 @@ public class GalacticraftRegistry
     {
         return GalacticraftRegistry.buggyBenchRecipes;
     }
+
+	public static List<ItemStack> getT1TreasureItems()
+	{
+		return GalacticraftRegistry.t1TreasureChestItems;
+	}
 }
