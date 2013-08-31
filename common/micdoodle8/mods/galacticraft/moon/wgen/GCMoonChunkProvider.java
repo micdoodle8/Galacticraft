@@ -408,7 +408,5 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
         {
             this.villageGenerator.generate(this, this.worldObj, par1, par2, (byte[]) null);
         }
-        // this.mapGenPuzzle.generate(this, this.worldObj, par1, par2,
-        // (byte[])null);
     }
 }

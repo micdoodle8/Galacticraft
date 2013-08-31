@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.mars;
 
 import java.io.File;
 import java.util.logging.Level;
+import micdoodle8.mods.galacticraft.moon.GCMoonConfigManager;
 import net.minecraftforge.common.Configuration;
 import cpw.mods.fml.common.FMLLog;
 
@@ -58,7 +59,7 @@ public class GCMarsConfigManager
     public static int idToolDeshSpade;
     public static int idToolDeshHoe;
 
-    // MOBS
+    // ENTITIES
     public static int idEntityCreeperBoss;
     public static int idEntityProjectileTNT;
     public static int idEntitySpaceshipTier2;
@@ -73,6 +74,9 @@ public class GCMarsConfigManager
 
     // SCHEMATIC
     public static int idSchematicRocketT2;
+    
+    // GENERAL
+    public static boolean generateOtherMods;
 
     private void setDefaultValues()
     {
@@ -119,6 +123,8 @@ public class GCMarsConfigManager
             GCMarsConfigManager.idGuiMachine = GCMarsConfigManager.configuration.get("GUI", "idGuiMachine", 146).getInt(146);
 
             GCMarsConfigManager.idSchematicRocketT2 = GCMarsConfigManager.configuration.get("Schematic", "idSchematicRocketT2", 2).getInt(2);
+
+            GCMarsConfigManager.generateOtherMods = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Generate other mod's features on Mars", false).getBoolean(false);
         }
         catch (final Exception e)
         {
