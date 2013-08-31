@@ -443,11 +443,6 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
     @Override
     public List getPossibleCreatures(EnumCreatureType par1EnumCreatureType, int i, int j, int k)
     {
-        if (this.worldObj.rand.nextInt(4) != 0)
-        {
-            return null;
-        }
-
         if (par1EnumCreatureType == EnumCreatureType.monster)
         {
             final List monsters = new ArrayList();
