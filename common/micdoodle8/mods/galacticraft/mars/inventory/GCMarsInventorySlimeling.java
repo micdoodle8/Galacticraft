@@ -59,11 +59,23 @@ public class GCMarsInventorySlimeling implements IInventory
         {
             ItemStack var3;
 
-            if (this.stackList[par1].stackSize <= par2)
+            if (par1 == 1 && this.stackList[par1].stackSize <= par2)
             {
                 GCMarsContainerSlimeling.removeSlots((GCMarsContainerSlimeling) this.currentContainer);
                 GCMarsContainerSlimeling.addSlots((GCMarsContainerSlimeling) this.currentContainer, ((EntityPlayer) this.slimeling.getOwner()).inventory, this.slimeling);
-                //GCMarsContainerSlimeling.addAdditionalSlots(this.currentContainer, this.slimeling);
+                
+                for (int i = 2; i < this.stackList.length; i++)
+                {
+                    if (this.stackList[i] != null)
+                    {
+                        if (!this.slimeling.worldObj.isRemote)
+                        {
+                            this.slimeling.entityDropItem(this.stackList[i], 0.5F);
+                        }
+                        
+                        this.stackList[i] = null;
+                    }
+                }
                 
                 var3 = this.stackList[par1];
                 this.stackList[par1] = null;
@@ -73,11 +85,23 @@ public class GCMarsInventorySlimeling implements IInventory
             {
                 var3 = this.stackList[par1].splitStack(par2);
 
-                if (this.stackList[par1].stackSize == 0)
+                if (par1 == 1 && this.stackList[par1].stackSize == 0)
                 {
                     GCMarsContainerSlimeling.removeSlots((GCMarsContainerSlimeling) this.currentContainer);
                     GCMarsContainerSlimeling.addSlots((GCMarsContainerSlimeling) this.currentContainer, ((EntityPlayer) this.slimeling.getOwner()).inventory, this.slimeling);
-                    //GCMarsContainerSlimeling.addAdditionalSlots(this.currentContainer, this.slimeling);
+                    
+                    for (int i = 2; i < this.stackList.length; i++)
+                    {
+                        if (this.stackList[i] != null)
+                        {
+                            if (!this.slimeling.worldObj.isRemote)
+                            {
+                                this.slimeling.entityDropItem(this.stackList[i], 0.5F);
+                            }
+                            
+                            this.stackList[i] = null;
+                        }
+                    }
                     
                     this.stackList[par1] = null;
                 }
