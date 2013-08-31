@@ -137,7 +137,7 @@ public class GCMarsSkyProvider extends IRenderHandler
 
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         
-        // HOME:
+        // Distant Galaxy:
         var12 = 10.5F;
         GL11.glRotatef(0.0F, 0.0F, 0.0F, 1.0F);
         GL11.glRotatef(150F, 1.0F, 0.0F, 0.0F);
@@ -164,10 +164,12 @@ public class GCMarsSkyProvider extends IRenderHandler
             GL11.glEnable(GL11.GL_TEXTURE_2D);
         }
         
+        GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 
         GL11.glPushMatrix();
 
+        // Sun:
         GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glRotatef(world.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
