@@ -27,7 +27,6 @@ import net.minecraftforge.fluids.FluidTank;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.IPacketReceiver;
 import com.google.common.io.ByteArrayDataInput;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -341,7 +340,6 @@ public class GCMarsEntityLandingBalloons extends GCCoreEntityAdvanced implements
         }
         else if (this.riddenByEntity == null && this.groundHitCount >= 14 && var1 instanceof EntityPlayerMP)
         {
-            FMLLog.info("done");
             GCMarsUtil.openParachestInv((EntityPlayerMP) var1, this);
             return true;
         }
