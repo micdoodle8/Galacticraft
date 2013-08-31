@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.entities;
 
 import java.util.List;
 import java.util.Random;
+import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
@@ -544,15 +545,8 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
 
     public ItemStack getGuaranteedLoot(Random rand)
     {
-        switch (rand.nextInt(2))
-        {
-        case 0:
-            return new ItemStack(GCCoreItems.schematic, 1, 0);
-        case 1:
-            return new ItemStack(GCCoreItems.schematic, 1, 1);
-        }
-
-        return null;
+        List<ItemStack> stackList = GalacticraftRegistry.getDungeonLoot(1);
+        return stackList.get(rand.nextInt(stackList.size()));
     }
 
     @Override

@@ -309,6 +309,8 @@ public class GalacticraftCore
         GalacticraftRegistry.registerRocketGui(GCCoreWorldProviderSpaceStation.class, new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/overworldRocketGui.png"));
         GalacticraftRegistry.registerRocketGui(WorldProviderSurface.class, new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/overworldRocketGui.png"));
         GalacticraftRegistry.registerRocketGui(GCMoonWorldProvider.class, new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/moonRocketGui.png"));
+        GalacticraftRegistry.addDungeonLoot(1, new ItemStack(GCCoreItems.schematic, 1, 0));
+        GalacticraftRegistry.addDungeonLoot(1, new ItemStack(GCCoreItems.schematic, 1, 1));
     }
 
     @EventHandler

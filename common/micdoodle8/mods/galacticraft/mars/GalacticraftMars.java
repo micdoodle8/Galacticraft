@@ -29,6 +29,7 @@ import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntitySlimelingEgg;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityTerraformer;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityTreasureChest;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
@@ -104,7 +105,6 @@ public class GalacticraftMars
     @EventHandler
     public void load(FMLInitializationEvent event)
     {
-
         int languages = 0;
 
         for (String language : GalacticraftMars.LANGUAGES_SUPPORTED)
@@ -141,15 +141,16 @@ public class GalacticraftMars
         SchematicRegistry.registerSchematicRecipe(new GCMarsSchematicRocketT2());
 
         GalacticraftMars.galacticraftMarsTab = new GCCoreCreativeTab(CreativeTabs.getNextID(), GalacticraftMars.MODID, GCMarsItems.spaceship.itemID, 5);
-        GalacticraftRegistry.registerTeleportType(GCMarsWorldProvider.class, new GCMarsTeleportType());
-        GalacticraftRegistry.registerCelestialBody(new GCMarsPlanet());
         NetworkRegistry.instance().registerGuiHandler(GalacticraftMars.instance, GalacticraftMars.proxy);
         this.registerTileEntities();
         this.registerCreatures();
         this.registerOtherEntities();
         GalacticraftMars.proxy.init(event);
-        
+
+        GalacticraftRegistry.registerTeleportType(GCMarsWorldProvider.class, new GCMarsTeleportType());
+        GalacticraftRegistry.registerCelestialBody(new GCMarsPlanet());
         GalacticraftRegistry.registerRocketGui(GCMarsWorldProvider.class, new ResourceLocation(GalacticraftMars.TEXTURE_DOMAIN, "textures/gui/marsRocketGui.png"));
+        GalacticraftRegistry.addDungeonLoot(2, new ItemStack(GCMarsItems.schematic, 1, 0));
     }
 
     @EventHandler

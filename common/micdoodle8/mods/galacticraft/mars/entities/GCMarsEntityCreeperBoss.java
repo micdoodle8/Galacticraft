@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.mars.entities;
 
 import java.util.List;
 import java.util.Random;
+import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -399,15 +400,8 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
 
     public ItemStack getGuaranteedLoot(Random rand)
     {
-        switch (rand.nextInt(2))
-        {
-        case 0:
-            return new ItemStack(GCMarsItems.schematic, 1, 0);
-        case 1:
-            return new ItemStack(GCMarsItems.schematic, 1, 0);
-        }
-
-        return null;
+        List<ItemStack> stackList = GalacticraftRegistry.getDungeonLoot(2);
+        return stackList.get(rand.nextInt(stackList.size()));
     }
 
     @Override

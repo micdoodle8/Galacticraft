@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.api.world.ICelestialBody;
 import micdoodle8.mods.galacticraft.api.world.IGalaxy;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.api.world.SpaceStationType;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldProvider;
 import cpw.mods.fml.relauncher.Side;
@@ -24,6 +25,7 @@ public class GalacticraftRegistry
     private static List<INasaWorkbenchRecipe> buggyBenchRecipes = new ArrayList<INasaWorkbenchRecipe>();
     private static List<INasaWorkbenchRecipe> rocketBenchT2Recipes = new ArrayList<INasaWorkbenchRecipe>();
     private static Map<Class<? extends WorldProvider>, ResourceLocation> rocketGuiMap = new HashMap<Class<? extends WorldProvider>, ResourceLocation>();
+    private static Map<Integer, List<ItemStack>> dungeonLootMap = new HashMap<Integer, List<ItemStack>>();
 
     /**
      * Register a new Teleport type for the world provider passed
@@ -87,6 +89,30 @@ public class GalacticraftRegistry
         {
             GalacticraftRegistry.rocketGuiMap.put(clazz, rocketGui);
         }
+    }
+    
+    /**
+     * Add loot to the list of items that can possibly spawn in dungeon chests, but it is guaranteed that one will always spawn
+     *
+     * @param tier Tier of dungeon chest to add loot to. For example Moon is 1 and Mars is 2
+     * @param loot The itemstack to add to the possible list of items
+     */
+    public static void addDungeonLoot(int tier, ItemStack loot)
+    {
+        List<ItemStack> dungeonStacks = null;
+        
+        if (GalacticraftRegistry.dungeonLootMap.containsKey(tier))
+        {
+            dungeonStacks = GalacticraftRegistry.dungeonLootMap.get(tier);
+            dungeonStacks.add(loot);
+        }
+        else
+        {
+            dungeonStacks = new ArrayList<ItemStack>();
+            dungeonStacks.add(loot);
+        }
+
+        GalacticraftRegistry.dungeonLootMap.put(tier, dungeonStacks);
     }
 
     public static void addT1RocketRecipe(INasaWorkbenchRecipe recipe)
@@ -153,5 +179,10 @@ public class GalacticraftRegistry
     public static ResourceLocation getResouceLocationForDimension(Class<? extends WorldProvider> clazz)
     {
         return GalacticraftRegistry.rocketGuiMap.get(clazz);
+    }
+    
+    public static List<ItemStack> getDungeonLoot(int tier)
+    {
+        return GalacticraftRegistry.dungeonLootMap.get(tier);
     }
 }
