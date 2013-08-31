@@ -27,6 +27,7 @@ import net.minecraftforge.fluids.FluidTank;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.IPacketReceiver;
 import com.google.common.io.ByteArrayDataInput;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -40,7 +41,6 @@ public class GCMarsEntityLandingBalloons extends GCCoreEntityAdvanced implements
     float minSpeed = 0.3F;
     float accel = 0.04F;
     float turnFactor = 0.2F;
-    private double lastMotionY;
     public ItemStack[] chestContents = new ItemStack[0];
     public int numUsingPlayers;
     public GCCorePlayerMP playerSpawnedIn;
@@ -101,7 +101,7 @@ public class GCMarsEntityLandingBalloons extends GCCoreEntityAdvanced implements
     {
         super.onUpdate();
 
-        if (this.ticks < 40 && this.posY > 100)
+        if (this.ticks < 40 && this.posY > 150)
         {
             if (this.riddenByEntity == null)
             {
@@ -146,8 +146,6 @@ public class GCMarsEntityLandingBalloons extends GCCoreEntityAdvanced implements
 
         this.rotationPitch += this.rotationPitchSpeed;
         this.rotationYaw += this.rotationYawSpeed;
-        
-        this.lastMotionY = this.motionY;
     }
 
     @Override
@@ -341,8 +339,9 @@ public class GCMarsEntityLandingBalloons extends GCCoreEntityAdvanced implements
 
             return true;
         }
-        else if (this.riddenByEntity == null && this.onGround && var1 instanceof EntityPlayerMP)
+        else if (this.riddenByEntity == null && this.groundHitCount >= 14 && var1 instanceof EntityPlayerMP)
         {
+            FMLLog.info("done");
             GCMarsUtil.openParachestInv((EntityPlayerMP) var1, this);
             return true;
         }
@@ -440,10 +439,14 @@ public class GCMarsEntityLandingBalloons extends GCCoreEntityAdvanced implements
             {
                 this.motionY = -this.posY / 50.0D;
             }
-            else
+            else if (this.groundHitCount < 14)
             {
                 this.motionY *= 0.95D;
                 this.motionY -= 0.08D;
+            }
+            else
+            {
+                this.motionY = this.motionX = this.motionZ = this.rotationPitch = this.rotationYaw = this.rotationPitchSpeed = this.rotationYawSpeed = 0.0F;
             }
         }
     }
