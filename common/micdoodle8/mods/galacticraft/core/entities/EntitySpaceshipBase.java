@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.entity.IDockable;
 import micdoodle8.mods.galacticraft.api.entity.IRocketType;
 import micdoodle8.mods.galacticraft.api.world.IExitHeight;
@@ -32,6 +33,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.IPacketReceiver;
@@ -651,5 +653,10 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
     public boolean canRiderInteract()
     {
         return true;
+    }
+    
+    public ResourceLocation getSpaceshipGui()
+    {
+        return GalacticraftRegistry.getResouceLocationForDimension(this.worldObj.provider.getClass());
     }
 }

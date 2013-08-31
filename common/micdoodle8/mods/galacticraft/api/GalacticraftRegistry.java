@@ -9,7 +9,10 @@ import micdoodle8.mods.galacticraft.api.world.ICelestialBody;
 import micdoodle8.mods.galacticraft.api.world.IGalaxy;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.api.world.SpaceStationType;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldProvider;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class GalacticraftRegistry
 {
@@ -20,6 +23,7 @@ public class GalacticraftRegistry
     private static List<INasaWorkbenchRecipe> rocketBenchT1Recipes = new ArrayList<INasaWorkbenchRecipe>();
     private static List<INasaWorkbenchRecipe> buggyBenchRecipes = new ArrayList<INasaWorkbenchRecipe>();
     private static List<INasaWorkbenchRecipe> rocketBenchT2Recipes = new ArrayList<INasaWorkbenchRecipe>();
+    private static Map<Class<? extends WorldProvider>, ResourceLocation> rocketGuiMap = new HashMap<Class<? extends WorldProvider>, ResourceLocation>();
 
     /**
      * Register a new Teleport type for the world provider passed
@@ -65,6 +69,23 @@ public class GalacticraftRegistry
         if (!GalacticraftRegistry.galaxies.contains(galaxy))
         {
             GalacticraftRegistry.galaxies.add(galaxy);
+        }
+    }
+
+    /**
+     * Link a world provider to a gui texture. This texture will be shown on the
+     * left-side of the screen while the player is in the rocket.
+     * 
+     * @param clazz
+     *            The World Provider class
+     * @param rocketGui
+     *            Resource Location for the gui texture
+     */
+    public static void registerRocketGui(Class<? extends WorldProvider> clazz, ResourceLocation rocketGui)
+    {
+        if (!GalacticraftRegistry.rocketGuiMap.containsKey(clazz))
+        {
+            GalacticraftRegistry.rocketGuiMap.put(clazz, rocketGui);
         }
     }
 
@@ -126,5 +147,11 @@ public class GalacticraftRegistry
     public static List<INasaWorkbenchRecipe> getBuggyBenchRecipes()
     {
         return GalacticraftRegistry.buggyBenchRecipes;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static ResourceLocation getResouceLocationForDimension(Class<? extends WorldProvider> clazz)
+    {
+        return GalacticraftRegistry.rocketGuiMap.get(clazz);
     }
 }
