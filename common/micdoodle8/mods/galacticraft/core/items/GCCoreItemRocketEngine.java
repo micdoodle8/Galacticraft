@@ -22,7 +22,6 @@ public class GCCoreItemRocketEngine extends Item
     public GCCoreItemRocketEngine(int par1)
     {
         super(par1);
-        this.setMaxStackSize(1);
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
     }
