@@ -112,7 +112,7 @@ public class GCMarsEvents
         
         if (event.worldObj.provider instanceof GCMarsWorldProvider)
         {
-            int eggsPerChunk = 3;
+            int eggsPerChunk = 2;
             int x;
             int y;
             int z;
