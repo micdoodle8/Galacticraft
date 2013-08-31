@@ -11,6 +11,7 @@ import micdoodle8.mods.galacticraft.core.perlin.generator.Gradient;
 import micdoodle8.mods.galacticraft.core.wgen.GCCoreCraterSize;
 import micdoodle8.mods.galacticraft.core.wgen.dungeon.GCCoreDungeonRoom;
 import micdoodle8.mods.galacticraft.core.wgen.dungeon.GCCoreMapGenDungeon;
+import micdoodle8.mods.galacticraft.mars.GCMarsConfigManager;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
 import micdoodle8.mods.galacticraft.mars.wgen.dungeon.GCMarsRoomBoss;
 import micdoodle8.mods.galacticraft.mars.wgen.dungeon.GCMarsRoomChests;
@@ -436,7 +437,7 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
     @Override
     public String makeString()
     {
-        return "RandomLevelSource";
+        return GCMarsConfigManager.generateOtherMods ? "RandomLevelSource" : "MarsLevelSource";
     }
 
     @Override
