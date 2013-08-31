@@ -235,7 +235,7 @@ public class GCMarsCavern
 
                                             if (arrayOfIDs[coords] == 0)
                                             {
-                                                if (arrayOfIDs[coordsAbove] == GCMarsBlocks.marsBlock.blockID && this.rand.nextInt(1200) == 0)
+                                                if (arrayOfIDs[coordsAbove] == GCMarsBlocks.marsBlock.blockID && this.rand.nextInt(200) == 0)
                                                 {
                                                     int modifier = 0;
 
@@ -247,7 +247,7 @@ public class GCMarsCavern
                                                         coordsBelow = var50 - 1 + modifier << 8 | var45 << 4 | var42;
                                                     }
                                                 }
-                                                else if (arrayOfIDs[coordsBelow] == GCMarsBlocks.marsBlock.blockID && this.rand.nextInt(32000) == 0)
+                                                else if (arrayOfIDs[coordsBelow] == GCMarsBlocks.marsBlock.blockID && this.rand.nextInt(200) == 0)
                                                 {
                                                     arrayOfIDs[coords] = (short) GCMarsBlocks.blockSludge.blockID;
                                                     arrayOfMeta[coords] = 0;
