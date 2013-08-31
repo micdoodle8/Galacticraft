@@ -44,6 +44,9 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
     {
         if (par1 < GCCoreGuiChoosePlanet.getDestinations(this.choosePlanetGui).length)
         {
+
+			GCCoreGuiChoosePlanet.setSelectedDimension(this.choosePlanetGui, par1);
+
             if (par1 != this.choosePlanetGui.selectedSlot)
             {
                 SlotClicked event = new SlotClicked(new ArrayList<GuiButton>(), this);
@@ -52,7 +55,6 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
                 this.choosePlanetGui.buttonList.addAll(event.buttonList);
             }
 
-            GCCoreGuiChoosePlanet.setSelectedDimension(this.choosePlanetGui, par1);
         }
 
         GCCoreGuiChoosePlanet.getSendButton(this.choosePlanetGui).displayString = LanguageRegistry.instance().getStringLocalization("gui.button.sendtodim.name");
