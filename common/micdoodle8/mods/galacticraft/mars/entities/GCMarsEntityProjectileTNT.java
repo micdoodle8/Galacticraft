@@ -31,11 +31,13 @@ public class GCMarsEntityProjectileTNT extends EntityFireball
         this.setSize(0.3125F, 0.3125F);
     }
 
+    @Override
     public boolean isBurning()
     {
         return false;
     }
 
+    @Override
     protected void onImpact(MovingObjectPosition movingObjectPosition)
     {
         if (!this.worldObj.isRemote)
@@ -45,11 +47,12 @@ public class GCMarsEntityProjectileTNT extends EntityFireball
                 movingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeFireballDamage(this, this.shootingEntity), 6.0F);
             }
 
-            this.worldObj.newExplosion((Entity)null, this.posX, this.posY, this.posZ, 1.0F, false, this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"));
+            this.worldObj.newExplosion((Entity) null, this.posX, this.posY, this.posZ, 1.0F, false, this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"));
             this.setDead();
         }
     }
 
+    @Override
     public boolean canBeCollidedWith()
     {
         return true;

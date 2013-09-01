@@ -139,7 +139,7 @@ public abstract class GCCoreEntityAdvanced extends GCCoreEntityControllable impl
             }
         }
     }
-    
+
     protected boolean forceGroundUpdate()
     {
         return true;

@@ -47,17 +47,17 @@ public class CommonProxyMars implements IGuiHandler
     {
         return -1;
     }
-    
+
     public int getTreasureRenderID()
     {
         return -1;
     }
-    
+
     public int getMachineRenderID()
     {
         return -1;
     }
-    
+
     public int getTintedGlassPaneRenderID()
     {
         return -1;
@@ -71,7 +71,7 @@ public class CommonProxyMars implements IGuiHandler
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
     {
         TileEntity tile = world.getBlockTileEntity(x, y, z);
-        
+
         if (ID == GCMarsConfigManager.idGuiMachine)
         {
             if (tile instanceof GCMarsTileEntityTerraformer)
@@ -79,7 +79,7 @@ public class CommonProxyMars implements IGuiHandler
                 return new GCMarsContainerTerraformer(player.inventory, (GCMarsTileEntityTerraformer) tile);
             }
         }
-        
+
         return null;
     }
 

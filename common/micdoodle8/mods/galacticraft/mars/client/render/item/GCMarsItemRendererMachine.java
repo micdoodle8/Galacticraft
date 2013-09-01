@@ -25,7 +25,7 @@ public class GCMarsItemRendererMachine implements IItemRenderer
     private static final ResourceLocation chamberTexture1 = new ResourceLocation(GalacticraftMars.TEXTURE_DOMAIN, "textures/model/chamber2_dark.png");
 
     private IModelCustom model;
-    
+
     public GCMarsItemRendererMachine(IModelCustom model)
     {
         this.model = model;
@@ -37,9 +37,9 @@ public class GCMarsItemRendererMachine implements IItemRenderer
 
         this.transform(type);
 
-        FMLClientHandler.instance().getClient().renderEngine.func_110577_a(chamberTexture0);
+        FMLClientHandler.instance().getClient().renderEngine.func_110577_a(GCMarsItemRendererMachine.chamberTexture0);
         this.model.renderPart("Main_Cylinder");
-        FMLClientHandler.instance().getClient().renderEngine.func_110577_a(chamberTexture1);
+        FMLClientHandler.instance().getClient().renderEngine.func_110577_a(GCMarsItemRendererMachine.chamberTexture1);
         this.model.renderPart("Shield_Torus");
         GL11.glPopMatrix();
     }
@@ -82,7 +82,7 @@ public class GCMarsItemRendererMachine implements IItemRenderer
         if (type == ItemRenderType.INVENTORY || type == ItemRenderType.ENTITY)
         {
             GL11.glTranslatef(0, -0.55F, 0);
-            
+
             if (type == ItemRenderType.INVENTORY)
             {
                 GL11.glTranslatef(0, -1.2F, 0);

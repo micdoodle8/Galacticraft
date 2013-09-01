@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.mars.items;
 
 import java.util.List;
 import micdoodle8.mods.galacticraft.api.item.IKeyItem;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import net.minecraft.client.renderer.texture.IconRegister;

@@ -21,12 +21,12 @@ public class GCMarsBlockRendererMachine implements ISimpleBlockRenderingHandler
     {
         par1Block.setBlockBoundsBasedOnState(iblockaccess, x, y, z);
         renderBlocks.setRenderBoundsFromBlock(par1Block);
-        
+
         int metadata = iblockaccess.getBlockMetadata(x, y, z);
-        
+
         if (metadata >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA)
         {
-            
+
         }
         else if (metadata >= GCMarsBlockMachine.TERRAFORMER_METADATA)
         {

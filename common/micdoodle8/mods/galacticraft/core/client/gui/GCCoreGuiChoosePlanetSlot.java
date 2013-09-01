@@ -45,7 +45,7 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
         if (par1 < GCCoreGuiChoosePlanet.getDestinations(this.choosePlanetGui).length)
         {
             GCCoreGuiChoosePlanet.setSelectedDimension(this.choosePlanetGui, par1);
-            
+
             if (par1 != this.choosePlanetGui.selectedSlot)
             {
                 SlotClicked event = new SlotClicked(new ArrayList<GuiButton>(), this);

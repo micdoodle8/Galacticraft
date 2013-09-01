@@ -60,12 +60,12 @@ public class GCMarsItemBlockMachine extends ItemBlock implements IHoldableItem
     public boolean shouldHoldLeftHandUp(EntityPlayer player)
     {
         ItemStack currentStack = player.getCurrentEquippedItem();
-        
+
         if (currentStack != null && currentStack.getItemDamage() >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA)
         {
             return true;
         }
-        
+
         return false;
     }
 
@@ -73,12 +73,12 @@ public class GCMarsItemBlockMachine extends ItemBlock implements IHoldableItem
     public boolean shouldHoldRightHandUp(EntityPlayer player)
     {
         ItemStack currentStack = player.getCurrentEquippedItem();
-        
+
         if (currentStack != null && currentStack.getItemDamage() >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA)
         {
             return true;
         }
-        
+
         return false;
     }
 

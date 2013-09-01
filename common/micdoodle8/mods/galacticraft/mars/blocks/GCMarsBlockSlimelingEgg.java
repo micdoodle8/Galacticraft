@@ -50,12 +50,12 @@ public class GCMarsBlockSlimelingEgg extends Block implements ITileEntityProvide
     public boolean canBlockStay(World par1World, int par2, int par3, int par4)
     {
         int blockID = par1World.getBlockId(par2, par3 - 1, par4);
-        
+
         if (blockID > 0)
         {
             return Block.blocksList[blockID].isBlockSolidOnSide(par1World, par2, par3, par4, ForgeDirection.UP);
         }
-        
+
         return false;
     }
 

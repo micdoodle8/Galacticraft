@@ -26,7 +26,7 @@ public class GCMarsGuiSlimelingInventory extends GuiContainer
     private final GCMarsEntitySlimeling slimeling;
 
     public static RenderItem drawItems = new RenderItem();
-    
+
     private int invX;
     private int invY;
     private final int invWidth = 18;
@@ -72,7 +72,7 @@ public class GCMarsGuiSlimelingInventory extends GuiContainer
 
     @Override
     protected void mouseClicked(int px, int py, int par3)
-    {        
+    {
         if (px >= this.invX && px < this.invX + this.invWidth && py >= this.invY && py < this.invY + this.invHeight)
         {
             this.mc.displayGuiScreen(new GCMarsGuiSlimeling(this.slimeling));
@@ -151,22 +151,22 @@ public class GCMarsGuiSlimelingInventory extends GuiContainer
         this.drawTexturedModalRect(var5 + 8, var6 + 8, 176, 9, 18, 18);
         this.drawTexturedModalRect(var5 + 8, var6 + 29, 176, 9, 18, 18);
 
-        ItemStack stack = slimeling.getCargoSlot();
-        
+        ItemStack stack = this.slimeling.getCargoSlot();
+
         if (stack != null && stack.getItem().itemID == GCMarsItems.marsItemBasic.itemID && stack.getItemDamage() == 4)
         {
             int offsetX = 7;
             int offsetY = 53;
-            
-            for (int y = 0; y < 3; ++ y)
+
+            for (int y = 0; y < 3; ++y)
             {
-                for (int x = 0; x < 9; ++ x)
+                for (int x = 0; x < 9; ++x)
                 {
                     this.drawTexturedModalRect(var5 + offsetX + x * 18, var6 + offsetY + y * 18, 176, 9, 18, 18);
                 }
             }
         }
-        
+
         GL11.glPopMatrix();
     }
 }

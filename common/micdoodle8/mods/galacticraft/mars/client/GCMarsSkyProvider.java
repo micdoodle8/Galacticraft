@@ -90,7 +90,7 @@ public class GCMarsSkyProvider extends IRenderHandler
         {
             gcProvider = (GCMarsWorldProvider) world.provider;
         }
-        
+
         float var10;
         float var11;
         float var12;
@@ -136,7 +136,7 @@ public class GCMarsSkyProvider extends IRenderHandler
         GL11.glDisable(GL11.GL_BLEND);
 
         GL11.glEnable(GL11.GL_TEXTURE_2D);
-        
+
         // Distant Galaxy:
         var12 = 10.5F;
         GL11.glRotatef(0.0F, 0.0F, 0.0F, 1.0F);
@@ -155,7 +155,7 @@ public class GCMarsSkyProvider extends IRenderHandler
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glEnable(GL11.GL_FOG);
         GL11.glPopMatrix();
-        
+
         if (var20 > 0.0F)
         {
             GL11.glDisable(GL11.GL_TEXTURE_2D);
@@ -163,7 +163,7 @@ public class GCMarsSkyProvider extends IRenderHandler
             GL11.glCallList(this.starGLCallList);
             GL11.glEnable(GL11.GL_TEXTURE_2D);
         }
-        
+
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 
@@ -207,7 +207,7 @@ public class GCMarsSkyProvider extends IRenderHandler
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glEnable(GL11.GL_FOG);
         GL11.glPopMatrix();
-        
+
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glColor3f(0.0F, 0.0F, 0.0F);
         final double var25 = mc.thePlayer.getPosition(partialTicks).yCoord - world.getHorizon();

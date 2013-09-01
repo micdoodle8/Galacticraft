@@ -30,7 +30,7 @@ public class GCMarsUtil
         player.openContainer.windowId = windowId;
         player.openContainer.addCraftingToCrafters(player);
     }
-    
+
     public static void openSlimelingInventory(EntityPlayerMP player, GCMarsEntitySlimeling slimeling)
     {
         player.incrementWindowID();

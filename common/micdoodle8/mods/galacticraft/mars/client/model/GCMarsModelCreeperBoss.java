@@ -5,7 +5,6 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
-import cpw.mods.fml.common.FMLLog;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -26,7 +25,7 @@ public class GCMarsModelCreeperBoss extends ModelBase
     ModelRenderer headRight;
     ModelRenderer neckRight;
     ModelRenderer neckLeft;
-    
+
     public GCMarsModelCreeperBoss()
     {
         this(0.0F);
@@ -114,7 +113,7 @@ public class GCMarsModelCreeperBoss extends ModelBase
         this.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
 
         final GCMarsEntityCreeperBoss creeper = (GCMarsEntityCreeperBoss) entity;
-        
+
         if (creeper.headsRemaining > 2)
         {
             this.headLeft.render(f5);

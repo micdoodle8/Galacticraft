@@ -45,7 +45,7 @@ public class GCMarsRoomBoss extends GCCoreDungeonRoom
                 {
                     if (i == this.posX - 1 || i == this.posX + this.sizeX || j == this.posY - 1 || j == this.posY + this.sizeY || k == this.posZ - 1 || k == this.posZ + this.sizeZ)
                     {
-                        if (j == posY - 1 && (i <= this.posX + 1 || i >=  this.posX + this.sizeX - 2 || k == this.posZ + 1 || k == this.posZ + this.sizeZ - 2) && this.rand.nextInt(4) == 0)
+                        if (j == this.posY - 1 && (i <= this.posX + 1 || i >= this.posX + this.sizeX - 2 || k == this.posZ + 1 || k == this.posZ + this.sizeZ - 2) && this.rand.nextInt(4) == 0)
                         {
                             this.placeBlock(chunk, meta, i, j, k, cx, cz, Block.glowStone.blockID, 0);
                         }
@@ -54,7 +54,7 @@ public class GCMarsRoomBoss extends GCCoreDungeonRoom
                             this.placeBlock(chunk, meta, i, j, k, cx, cz, this.dungeonInstance.DUNGEON_WALL_ID, this.dungeonInstance.DUNGEON_WALL_META);
                         }
                     }
-                    else if (j == posY && (i <= this.posX + 1 || i >=  this.posX + this.sizeX - 2 || k == this.posZ + 1 || k == this.posZ + this.sizeZ - 2) && this.rand.nextInt(6) == 0)
+                    else if (j == this.posY && (i <= this.posX + 1 || i >= this.posX + this.sizeX - 2 || k == this.posZ + 1 || k == this.posZ + this.sizeZ - 2) && this.rand.nextInt(6) == 0)
                     {
                         this.placeBlock(chunk, meta, i, j, k, cx, cz, GCMarsBlocks.creeperEgg.blockID, 0);
                     }

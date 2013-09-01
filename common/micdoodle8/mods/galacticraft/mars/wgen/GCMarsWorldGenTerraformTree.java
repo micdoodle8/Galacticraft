@@ -28,6 +28,7 @@ public class GCMarsWorldGenTerraformTree extends WorldGenerator
         this.vinesGrow = par5;
     }
 
+    @Override
     public boolean generate(World par1World, Random par2Random, int par3, int par4, int par5)
     {
         int l = par2Random.nextInt(3) + this.minTreeHeight;
@@ -54,7 +55,7 @@ public class GCMarsWorldGenTerraformTree extends WorldGenerator
                 {
                     b0 = 2;
                 }
-                
+
                 b0 += 5;
 
                 for (int l1 = par3 - b0; l1 <= par3 + b0 && flag; ++l1)
@@ -66,15 +67,9 @@ public class GCMarsWorldGenTerraformTree extends WorldGenerator
                             k1 = par1World.getBlockId(l1, i1, j1);
                             k2 = par1World.getBlockMetadata(l1, i1, j1);
 
-                            Block block = Block.blocksList[k1];
                             boolean isAir = par1World.isAirBlock(l1, i1, j1);
 
-                            if (!isAir &&
-                                k1 != Block.grass.blockID &&
-                                k1 != Block.waterStill.blockID &&
-                                k1 != Block.waterMoving.blockID &&
-                                k1 != GCMarsBlocks.marsBlock.blockID &&
-                                k2 != 5)
+                            if (!isAir && k1 != Block.grass.blockID && k1 != Block.waterStill.blockID && k1 != Block.waterMoving.blockID && k1 != GCMarsBlocks.marsBlock.blockID && k2 != 5)
                             {
                                 flag = false;
                             }
@@ -233,7 +228,8 @@ public class GCMarsWorldGenTerraformTree extends WorldGenerator
     }
 
     /**
-     * Grows vines downward from the given block for a given length. Args: World, x, starty, z, vine-length
+     * Grows vines downward from the given block for a given length. Args:
+     * World, x, starty, z, vine-length
      */
     private void growVines(World par1World, int par2, int par3, int par4, int par5)
     {

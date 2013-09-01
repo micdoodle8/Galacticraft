@@ -495,13 +495,13 @@ public class GCCoreRecipeManager
         }
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.blockCopperWire, 6), new Object[] { "WWW", "CCC", "WWW", 'W', Block.cloth, 'C', "ingotCopper" });
-        
+
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.blockMachineBase, 1, 4), new Object[] { "SSS", "BBB", "SSS", 'B', GCCoreItems.battery, 'S', "ingotSteel" });
-        
+
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.blockMachineBase, 1, 0), new Object[] { "MMM", "MOM", "MCM", 'M', "ingotSteel", 'C', "motor", 'O', Block.furnaceIdle });
-        
+
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.blockMachineBase, 1, 0), new Object[] { "MMM", "MOM", "MCM", 'M', "ingotBronze", 'C', "motor", 'O', Block.furnaceIdle });
-        
+
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.blockMachineBase, 1, 8), new Object[] { "SSS", "SCS", "SMS", 'S', "ingotSteel", 'C', "circuitAdvanced", 'M', "motor" });
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreItems.battery), new Object[] { " T ", "TRT", "TCT", 'T', "ingotTin", 'R', Item.redstone, 'C', Item.coal });

@@ -48,7 +48,7 @@ import cpw.mods.fml.relauncher.Side;
 public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBreathable
 {
     public GCMarsInventorySlimeling slimelingInventory = new GCMarsInventorySlimeling(this);
-    
+
     public float colorRed;
     public float colorGreen;
     public float colorBlue;
@@ -257,7 +257,7 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
     public void onLivingUpdate()
     {
         super.onLivingUpdate();
-        
+
         if (!this.worldObj.isRemote)
         {
             if (this.ticksAlive <= 0)
@@ -634,16 +634,16 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
     {
         return this.aiSit;
     }
-    
+
     public ItemStack getCargoSlot()
     {
         return this.dataWatcher.getWatchableObjectItemStack(27);
     }
-    
+
     public void setCargoSlot(ItemStack stack)
     {
         WatchableObject obj = this.dataWatcher.getWatchedObject(27);
-        
+
         if (stack != obj.getObject())
         {
             obj.setObject(stack);

@@ -56,7 +56,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreEvents
 {
     private static GCCoreThreadDownloadSound downloadResourcesThread;
-    
+
     @ForgeSubscribe
     public void onEntityFall(LivingFallEvent event)
     {
@@ -438,10 +438,10 @@ public class GCCoreEvents
     {
         try
         {
-            if (downloadResourcesThread == null)
+            if (GCCoreEvents.downloadResourcesThread == null)
             {
-                downloadResourcesThread = new GCCoreThreadDownloadSound(FMLClientHandler.instance().getClient().mcDataDir, FMLClientHandler.instance().getClient());
-                downloadResourcesThread.start();
+                GCCoreEvents.downloadResourcesThread = new GCCoreThreadDownloadSound(FMLClientHandler.instance().getClient().mcDataDir, FMLClientHandler.instance().getClient());
+                GCCoreEvents.downloadResourcesThread.start();
             }
         }
         catch (Exception e)
@@ -455,7 +455,7 @@ public class GCCoreEvents
     public void onLeaveBedButtonClicked(SleepCancelledEvent event)
     {
         EntityPlayer player = FMLClientHandler.instance().getClient().thePlayer;
-        
+
         if (player instanceof GCCorePlayerSP)
         {
             ((GCCorePlayerSP) player).wakeUpPlayer(false, true, true, true);

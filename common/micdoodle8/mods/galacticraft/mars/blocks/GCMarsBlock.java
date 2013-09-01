@@ -68,7 +68,7 @@ public class GCMarsBlock extends Block implements IDetectableResource, IPlantabl
     public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ)
     {
         int metadata = world.getBlockMetadata(x, y, z);
-        
+
         if (metadata == 10 || metadata == 7)
         {
             return 10000.0F;
@@ -269,12 +269,12 @@ public class GCMarsBlock extends Block implements IDetectableResource, IPlantabl
     }
 
     @Override
-    public void randomDisplayTick(World world, int x, int y, int z, Random rand) 
+    public void randomDisplayTick(World world, int x, int y, int z, Random rand)
     {
         if (rand.nextInt(10) == 0)
         {
             int metadata = world.getBlockMetadata(x, y, z);
-            
+
             if (metadata == 7)
             {
                 GalacticraftMars.proxy.spawnParticle("sludgeDrip", x + rand.nextDouble(), y, z + rand.nextDouble());

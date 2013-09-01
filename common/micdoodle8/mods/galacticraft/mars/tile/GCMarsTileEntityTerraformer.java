@@ -25,7 +25,6 @@ import universalelectricity.core.item.IItemElectric;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /**
@@ -122,7 +121,7 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectric implem
                     }
                 }
             }
-            
+
             if (this.terraformBubble.getSize() == this.MAX_SIZE && this.getEnergyStored() > 0 && this.getFirstBonemealStack() != null && this.waterTank.getFluid() != null && this.waterTank.getFluid().amount > 0)
             {
                 this.active = true;
@@ -137,7 +136,7 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectric implem
         {
             this.terraformableBlocksList.clear();
             this.grassBlockList.clear();
-            
+
             if (this.active)
             {
                 for (int x = (int) Math.floor(this.xCoord - this.terraformBubble.getSize()); x < Math.ceil(this.xCoord + this.terraformBubble.getSize()); x++)
@@ -180,9 +179,9 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectric implem
 
             int randomIndex = this.worldObj.rand.nextInt(this.terraformableBlocksList.size());
             Vector3 vec = terraformableBlocks2.get(randomIndex);
-            
+
             int ID = 0;
-            
+
             switch (this.worldObj.rand.nextInt(40))
             {
             case 0:
@@ -199,9 +198,9 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectric implem
                 ID = Block.grass.blockID;
                 break;
             }
-            
+
             this.worldObj.setBlock(vec.intX(), vec.intY(), vec.intZ(), ID);
-            
+
             if (ID == Block.grass.blockID)
             {
                 this.useCount[0]++;
@@ -222,7 +221,7 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectric implem
 
             int randomIndex = this.worldObj.rand.nextInt(this.grassBlockList.size());
             Vector3 vec = grassBlocks2.get(randomIndex);
-            
+
             if (new GCMarsWorldGenTerraformTree(true).generate(this.worldObj, this.worldObj.rand, vec.intX(), vec.intY(), vec.intZ()))
             {
                 this.useCount[1]++;
@@ -232,7 +231,7 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectric implem
 
             this.grassBlockList.remove(randomIndex);
         }
-        
+
         if (!this.worldObj.isRemote)
         {
             this.terraformableBlocksListSize = this.terraformableBlocksList.size();
@@ -250,35 +249,35 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectric implem
 
         this.lastActive = this.active;
     }
-    
+
     private void checkUsage(int type)
     {
         ItemStack stack = null;
-        
+
         if ((this.useCount[0] + this.useCount[1]) % 4 == 0)
         {
             stack = this.getFirstBonemealStack();
-            
+
             if (stack != null)
             {
                 stack.stackSize--;
-                
+
                 if (stack.stackSize <= 0)
                 {
                     this.containingItems[this.getSelectiveStack(2, 6)] = null;
                 }
             }
         }
-        
+
         switch (type)
         {
         case 0:
             stack = this.getFirstSaplingStack();
-            
+
             if (stack != null)
             {
                 stack.stackSize--;
-                
+
                 if (stack.stackSize <= 0)
                 {
                     this.containingItems[this.getSelectiveStack(6, 10)] = null;
@@ -289,11 +288,11 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectric implem
             if (this.useCount[0] % 4 == 0)
             {
                 stack = this.getFirstSeedStack();
-                
+
                 if (stack != null)
                 {
                     stack.stackSize--;
-                    
+
                     if (stack.stackSize <= 0)
                     {
                         this.containingItems[this.getSelectiveStack(10, 14)] = null;
@@ -306,55 +305,55 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectric implem
             break;
         }
     }
-    
+
     private int getSelectiveStack(int start, int end)
     {
         for (int i = start; i < end; i++)
         {
             ItemStack stack = this.containingItems[i];
-            
+
             if (stack != null)
             {
                 return i;
             }
         }
-        
+
         return -1;
     }
-    
+
     public ItemStack getFirstBonemealStack()
     {
         int index = this.getSelectiveStack(2, 6);
-        
+
         if (index != -1)
         {
             return this.containingItems[index];
         }
-        
+
         return null;
     }
-    
+
     public ItemStack getFirstSaplingStack()
     {
         int index = this.getSelectiveStack(6, 10);
-        
+
         if (index != -1)
         {
             return this.containingItems[index];
         }
-        
+
         return null;
     }
-    
+
     public ItemStack getFirstSeedStack()
     {
         int index = this.getSelectiveStack(10, 14);
-        
+
         if (index != -1)
         {
             return this.containingItems[index];
         }
-        
+
         return null;
     }
 
@@ -376,10 +375,10 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectric implem
                 this.containingItems[var5] = ItemStack.loadItemStackFromNBT(var4);
             }
         }
-        
+
         this.size = nbt.getFloat("BubbleSize");
         this.useCount = nbt.getIntArray("UseCountArray");
-        
+
         if (this.useCount.length == 0)
         {
             this.useCount = new int[2];
@@ -566,25 +565,25 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectric implem
             this.terraformableBlocksListSize = data.readInt();
             this.grassBlocksListSize = data.readInt();
             this.size = data.readFloat();
-            
+
             int firstStack = -1;
             int itemID = -1;
             int stackSize = -1;
             int stackMetadata = -1;
-            
+
             for (int i = 0; i < 3; i++)
             {
                 firstStack = data.readInt();
                 itemID = data.readInt();
                 stackSize = data.readInt();
                 stackMetadata = data.readInt();
-                
+
                 if (firstStack != -1)
                 {
                     this.containingItems[firstStack] = new ItemStack(itemID, stackSize, stackMetadata);
                 }
             }
-            
+
             this.waterTank.setFluid(new FluidStack(GalacticraftCore.FUEL, data.readInt()));
         }
     }
@@ -595,28 +594,7 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectric implem
         ItemStack stack1 = this.getFirstBonemealStack();
         ItemStack stack2 = this.getFirstSaplingStack();
         ItemStack stack3 = this.getFirstSeedStack();
-        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, 
-                this.getEnergyStored(), 
-                this.treesDisabled, 
-                this.grassDisabled, 
-                this.disableCooldown, 
-                this.terraformBubble != null ? this.terraformBubble.entityId : -1, 
-                this.terraformableBlocksListSize, 
-                this.grassBlocksListSize,
-                this.size, 
-                stack1 == null ? -1 : this.getSelectiveStack(2, 6),
-                stack1 == null ? -1 : stack1.itemID,
-                stack1 == null ? -1 : stack1.stackSize, 
-                stack1 == null ? -1 : stack1.getItemDamage(), 
-                stack2 == null ? -1 : this.getSelectiveStack(6, 4),
-                stack2 == null ? -1 : stack2.itemID,
-                stack2 == null ? -1 : stack2.stackSize, 
-                stack2 == null ? -1 : stack2.getItemDamage(), 
-                stack3 == null ? -1 : this.getSelectiveStack(10, 14),
-                stack3 == null ? -1 : stack3.itemID,
-                stack3 == null ? -1 : stack3.stackSize, 
-                stack3 == null ? -1 : stack3.getItemDamage(),
-                this.waterTank.getFluid() == null ? 0 : this.waterTank.getFluid().amount);
+        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getEnergyStored(), this.treesDisabled, this.grassDisabled, this.disableCooldown, this.terraformBubble != null ? this.terraformBubble.entityId : -1, this.terraformableBlocksListSize, this.grassBlocksListSize, this.size, stack1 == null ? -1 : this.getSelectiveStack(2, 6), stack1 == null ? -1 : stack1.itemID, stack1 == null ? -1 : stack1.stackSize, stack1 == null ? -1 : stack1.getItemDamage(), stack2 == null ? -1 : this.getSelectiveStack(6, 4), stack2 == null ? -1 : stack2.itemID, stack2 == null ? -1 : stack2.stackSize, stack2 == null ? -1 : stack2.getItemDamage(), stack3 == null ? -1 : this.getSelectiveStack(10, 14), stack3 == null ? -1 : stack3.itemID, stack3 == null ? -1 : stack3.stackSize, stack3 == null ? -1 : stack3.getItemDamage(), this.waterTank.getFluid() == null ? 0 : this.waterTank.getFluid().amount);
     }
 
     @Override
@@ -637,6 +615,7 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectric implem
         return this.getStackInSlot(1);
     }
 
+    @Override
     public void setDisabled(int index, boolean disabled)
     {
         if (this.disableCooldown <= 0)
@@ -650,11 +629,12 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectric implem
                 this.grassDisabled = !this.grassDisabled;
                 break;
             }
-            
+
             this.disableCooldown = 10;
         }
     }
-    
+
+    @Override
     public boolean getDisabled(int index)
     {
         switch (index)
@@ -664,7 +644,7 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectric implem
         case 1:
             return this.grassDisabled;
         }
-        
+
         return false;
     }
 }

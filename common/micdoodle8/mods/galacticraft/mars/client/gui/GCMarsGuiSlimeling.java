@@ -38,7 +38,7 @@ public class GCMarsGuiSlimeling extends GuiScreen
     public GuiButton stayButton;
 
     public static boolean renderingOnGui = false;
-    
+
     private int invX;
     private int invY;
     private final int invWidth = 18;
@@ -173,7 +173,7 @@ public class GCMarsGuiSlimeling extends GuiScreen
         {
             this.isTextFocused = false;
         }
-        
+
         if (px >= this.invX && px < this.invX + this.invWidth && py >= this.invY && py < this.invY + this.invHeight)
         {
             PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftMars.CHANNEL, 0, new Object[] { this.slimeling.entityId, 6, "" }));
@@ -199,7 +199,7 @@ public class GCMarsGuiSlimeling extends GuiScreen
 
         GL11.glPushMatrix();
         GL11.glTranslatef(0, 0, 150.0F);
-        this.mc.renderEngine.func_110577_a(slimelingPanelGui);
+        this.mc.renderEngine.func_110577_a(GCMarsGuiSlimeling.slimelingPanelGui);
         this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);
         this.drawTexturedModalRect(var5 + this.xSize - 15, var6 + 9, 176, 0, 9, 9);
         this.drawTexturedModalRect(var5 + this.xSize - 15, var6 + 22, 185, 0, 9, 9);
@@ -214,7 +214,7 @@ public class GCMarsGuiSlimeling extends GuiScreen
         this.mc.renderEngine.func_110577_a(GCMarsGuiSlimeling.slimelingPanelGui);
         GL11.glColor3f(1.0F, 1.0F, 1.0F);
         this.drawTexturedModalRect(this.invX, this.invY, 176, 9, this.invWidth, this.invHeight);
-        
+
         super.drawScreen(par1, par2, par3);
 
         this.cursorPulse++;

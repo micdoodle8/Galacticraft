@@ -45,7 +45,7 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced
     public void updateEntity()
     {
         super.updateEntity();
-        
+
         if (!this.worldObj.isRemote)
         {
             final Vector3 thisVec = new Vector3(this);
@@ -119,7 +119,7 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced
             this.lastPlayerInRange = this.playerInRange;
         }
     }
-    
+
     public List<Class<? extends EntityLiving>> getDisabledCreatures()
     {
         List<Class<? extends EntityLiving>> list = new ArrayList<Class<? extends EntityLiving>>();
@@ -146,7 +146,7 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced
         this.playerInRange = this.lastPlayerInRange = nbt.getBoolean("playerInRange");
         this.isBossDefeated = nbt.getBoolean("defeated");
         this.playerCheated = nbt.getBoolean("playerCheated");
-        
+
         try
         {
             this.bossClass = (Class<? extends IBoss>) Class.forName(nbt.getString("bossClass"));
@@ -155,7 +155,7 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced
         {
             e.printStackTrace();
         }
-        
+
         this.roomCoords = new Vector3();
         this.roomCoords.x = nbt.getDouble("roomCoordsX");
         this.roomCoords.y = nbt.getDouble("roomCoordsY");

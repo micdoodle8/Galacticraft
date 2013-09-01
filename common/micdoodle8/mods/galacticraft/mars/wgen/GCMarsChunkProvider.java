@@ -9,7 +9,6 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpider;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityZombie;
 import micdoodle8.mods.galacticraft.core.perlin.generator.Gradient;
 import micdoodle8.mods.galacticraft.core.wgen.GCCoreCraterSize;
-import micdoodle8.mods.galacticraft.core.wgen.dungeon.GCCoreDungeonRoom;
 import micdoodle8.mods.galacticraft.core.wgen.dungeon.GCCoreMapGenDungeon;
 import micdoodle8.mods.galacticraft.mars.GCMarsConfigManager;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
@@ -64,19 +63,19 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
     private final GCCoreMapGenDungeon dungeonGenerator = new GCCoreMapGenDungeon(GCMarsBlocks.marsBlock.blockID, 7, 8, 16, 6);
 
     {
-        dungeonGenerator.otherRooms.add(new GCMarsRoomEmpty(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        dungeonGenerator.otherRooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        dungeonGenerator.otherRooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        dungeonGenerator.otherRooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        dungeonGenerator.otherRooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        dungeonGenerator.otherRooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        dungeonGenerator.otherRooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        dungeonGenerator.otherRooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        dungeonGenerator.otherRooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        dungeonGenerator.otherRooms.add(new GCMarsRoomChests(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        dungeonGenerator.otherRooms.add(new GCMarsRoomChests(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        dungeonGenerator.bossRooms.add(new GCMarsRoomBoss(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        dungeonGenerator.treasureRooms.add(new GCMarsRoomTreasure(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        this.dungeonGenerator.otherRooms.add(new GCMarsRoomEmpty(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        this.dungeonGenerator.otherRooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        this.dungeonGenerator.otherRooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        this.dungeonGenerator.otherRooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        this.dungeonGenerator.otherRooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        this.dungeonGenerator.otherRooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        this.dungeonGenerator.otherRooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        this.dungeonGenerator.otherRooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        this.dungeonGenerator.otherRooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        this.dungeonGenerator.otherRooms.add(new GCMarsRoomChests(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        this.dungeonGenerator.otherRooms.add(new GCMarsRoomChests(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        this.dungeonGenerator.bossRooms.add(new GCMarsRoomBoss(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        this.dungeonGenerator.treasureRooms.add(new GCMarsRoomTreasure(null, 0, 0, 0, ForgeDirection.UNKNOWN));
     }
 
     private BiomeGenBase[] biomesForGeneration = { GCMarsBiomeGenBase.marsFlat };

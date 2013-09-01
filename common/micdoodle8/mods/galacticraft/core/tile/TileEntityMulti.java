@@ -41,19 +41,19 @@ public class TileEntityMulti extends TileEntity implements IPacketReceiver
     public void updateEntity()
     {
         super.updateEntity();
-        
+
         if (!this.worldObj.isRemote && this.mainBlockPosition != null)
         {
             if (this.ticks >= Long.MAX_VALUE)
             {
                 this.ticks = 0;
             }
-            
+
             if (this.ticks % 50 == 0)
             {
                 PacketDispatcher.sendPacketToAllAround(this.xCoord, this.yCoord, this.zCoord, 30, this.worldObj.provider.dimensionId, this.getDescriptionPacket());
             }
-            
+
             this.ticks++;
         }
     }

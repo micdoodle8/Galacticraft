@@ -13,7 +13,7 @@ public class GCMarsInventorySlimeling implements IInventory
     private ItemStack[] stackList = new ItemStack[27 + 3];
     private GCMarsEntitySlimeling slimeling;
     public Container currentContainer;
-    
+
     public GCMarsInventorySlimeling(GCMarsEntitySlimeling slimeling)
     {
         this.slimeling = slimeling;
@@ -63,7 +63,7 @@ public class GCMarsInventorySlimeling implements IInventory
             {
                 GCMarsContainerSlimeling.removeSlots((GCMarsContainerSlimeling) this.currentContainer);
                 GCMarsContainerSlimeling.addSlots((GCMarsContainerSlimeling) this.currentContainer, ((EntityPlayer) this.slimeling.getOwner()).inventory, this.slimeling);
-                
+
                 for (int i = 2; i < this.stackList.length; i++)
                 {
                     if (this.stackList[i] != null)
@@ -72,11 +72,11 @@ public class GCMarsInventorySlimeling implements IInventory
                         {
                             this.slimeling.entityDropItem(this.stackList[i], 0.5F);
                         }
-                        
+
                         this.stackList[i] = null;
                     }
                 }
-                
+
                 var3 = this.stackList[par1];
                 this.stackList[par1] = null;
                 return var3;
@@ -89,7 +89,7 @@ public class GCMarsInventorySlimeling implements IInventory
                 {
                     GCMarsContainerSlimeling.removeSlots((GCMarsContainerSlimeling) this.currentContainer);
                     GCMarsContainerSlimeling.addSlots((GCMarsContainerSlimeling) this.currentContainer, ((EntityPlayer) this.slimeling.getOwner()).inventory, this.slimeling);
-                    
+
                     for (int i = 2; i < this.stackList.length; i++)
                     {
                         if (this.stackList[i] != null)
@@ -98,11 +98,11 @@ public class GCMarsInventorySlimeling implements IInventory
                             {
                                 this.slimeling.entityDropItem(this.stackList[i], 0.5F);
                             }
-                            
+
                             this.stackList[i] = null;
                         }
                     }
-                    
+
                     this.stackList[par1] = null;
                 }
 
@@ -118,13 +118,13 @@ public class GCMarsInventorySlimeling implements IInventory
     @Override
     public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
     {
-        if (par1 == 1 && ((par2ItemStack == null && this.stackList[par1] != null) || !ItemStack.areItemStacksEqual(par2ItemStack, this.stackList[par1])))
+        if (par1 == 1 && (par2ItemStack == null && this.stackList[par1] != null || !ItemStack.areItemStacksEqual(par2ItemStack, this.stackList[par1])))
         {
             GCMarsContainerSlimeling.addAdditionalSlots((GCMarsContainerSlimeling) this.currentContainer, this.slimeling, par2ItemStack);
         }
-        
+
         this.stackList[par1] = par2ItemStack;
-        
+
     }
 
     public void readFromNBT(NBTTagList tagList)
@@ -133,7 +133,7 @@ public class GCMarsInventorySlimeling implements IInventory
         {
             return;
         }
-        
+
         this.stackList = new ItemStack[this.stackList.length];
 
         for (int i = 0; i < tagList.tagCount(); ++i)

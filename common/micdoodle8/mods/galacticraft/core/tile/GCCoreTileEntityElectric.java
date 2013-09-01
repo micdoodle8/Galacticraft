@@ -125,7 +125,7 @@ public abstract class GCCoreTileEntityElectric extends TileEntityUniversalElectr
             }
         }
     }
-    
+
     protected double getPacketRange()
     {
         return 12.0D;

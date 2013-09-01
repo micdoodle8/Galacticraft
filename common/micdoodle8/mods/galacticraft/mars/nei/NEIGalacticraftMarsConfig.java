@@ -52,7 +52,7 @@ public class NEIGalacticraftMarsConfig implements IConfigureNEI
         final int changey = 15;
 
         ArrayList<PositionedStack> input1 = new ArrayList<PositionedStack>();
-        
+
         input1.add(new PositionedStack(new ItemStack(GCCoreItems.rocketNoseCone), 45, -8 + changey));
         input1.add(new PositionedStack(new ItemStack(GCMarsItems.marsItemBasic, 1, 3), 36, -6 + 0 * 18 + 16 + changey));
         input1.add(new PositionedStack(new ItemStack(GCMarsItems.marsItemBasic, 1, 3), 36, -6 + 1 * 18 + 16 + changey));
@@ -76,30 +76,30 @@ public class NEIGalacticraftMarsConfig implements IConfigureNEI
         ArrayList<PositionedStack> input2 = new ArrayList<PositionedStack>(input1);
         input2.add(new PositionedStack(new ItemStack(Block.chest), 90 + 0 * 26, -15 + changey));
         this.registerRocketBenchRecipe(input2, new PositionedStack(new ItemStack(GCMarsItems.spaceship, 1, 1), 139, 87 + changey));
-        
+
         input2 = new ArrayList<PositionedStack>(input1);
         input2.add(new PositionedStack(new ItemStack(Block.chest), 90 + 1 * 26, -15 + changey));
         this.registerRocketBenchRecipe(input2, new PositionedStack(new ItemStack(GCMarsItems.spaceship, 1, 1), 139, 87 + changey));
-        
+
         input2 = new ArrayList<PositionedStack>(input1);
         input2.add(new PositionedStack(new ItemStack(Block.chest), 90 + 2 * 26, -15 + changey));
         this.registerRocketBenchRecipe(input2, new PositionedStack(new ItemStack(GCMarsItems.spaceship, 1, 1), 139, 87 + changey));
-        
+
         input2 = new ArrayList<PositionedStack>(input1);
         input2.add(new PositionedStack(new ItemStack(Block.chest), 90 + 0 * 26, -15 + changey));
         input2.add(new PositionedStack(new ItemStack(Block.chest), 90 + 1 * 26, -15 + changey));
         this.registerRocketBenchRecipe(input2, new PositionedStack(new ItemStack(GCMarsItems.spaceship, 1, 2), 139, 87 + changey));
-        
+
         input2 = new ArrayList<PositionedStack>(input1);
         input2.add(new PositionedStack(new ItemStack(Block.chest), 90 + 1 * 26, -15 + changey));
         input2.add(new PositionedStack(new ItemStack(Block.chest), 90 + 2 * 26, -15 + changey));
         this.registerRocketBenchRecipe(input2, new PositionedStack(new ItemStack(GCMarsItems.spaceship, 1, 2), 139, 87 + changey));
-        
+
         input2 = new ArrayList<PositionedStack>(input1);
         input2.add(new PositionedStack(new ItemStack(Block.chest), 90 + 0 * 26, -15 + changey));
         input2.add(new PositionedStack(new ItemStack(Block.chest), 90 + 2 * 26, -15 + changey));
         this.registerRocketBenchRecipe(input2, new PositionedStack(new ItemStack(GCMarsItems.spaceship, 1, 2), 139, 87 + changey));
-        
+
         input2 = new ArrayList<PositionedStack>(input1);
         input2.add(new PositionedStack(new ItemStack(Block.chest), 90 + 0 * 26, -15 + changey));
         input2.add(new PositionedStack(new ItemStack(Block.chest), 90 + 1 * 26, -15 + changey));

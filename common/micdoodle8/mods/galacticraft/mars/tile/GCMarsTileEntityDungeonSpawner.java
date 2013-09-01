@@ -15,7 +15,8 @@ public class GCMarsTileEntityDungeonSpawner extends GCCoreTileEntityDungeonSpawn
     {
         super(GCMarsEntityCreeperBoss.class);
     }
-    
+
+    @Override
     public List<Class<? extends EntityLiving>> getDisabledCreatures()
     {
         List<Class<? extends EntityLiving>> list = new ArrayList<Class<? extends EntityLiving>>();

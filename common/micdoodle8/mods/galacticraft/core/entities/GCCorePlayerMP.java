@@ -1311,7 +1311,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
     public Item getRocketItem()
     {
-        return rocketItem;
+        return this.rocketItem;
     }
 
     public void setRocketItem(Item rocketItem)

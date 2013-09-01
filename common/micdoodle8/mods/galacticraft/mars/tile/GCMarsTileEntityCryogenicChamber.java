@@ -18,19 +18,19 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.WorldServer;
 import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCMarsTileEntityCryogenicChamber extends TileEntityMulti implements IMultiBlock
 {
     public boolean isOccupied;
-    
+
     public GCMarsTileEntityCryogenicChamber()
     {
         super(GalacticraftCore.CHANNELENTITIES);
     }
-    
+
+    @Override
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
@@ -40,7 +40,7 @@ public class GCMarsTileEntityCryogenicChamber extends TileEntityMulti implements
     @Override
     public boolean onActivated(EntityPlayer entityPlayer)
     {
-        EnumStatus enumstatus = sleepInBedAt(entityPlayer, this.xCoord, this.yCoord, this.zCoord);
+        EnumStatus enumstatus = this.sleepInBedAt(entityPlayer, this.xCoord, this.yCoord, this.zCoord);
 
         if (enumstatus == EnumStatus.OK)
         {
@@ -51,7 +51,7 @@ public class GCMarsTileEntityCryogenicChamber extends TileEntityMulti implements
                 ((EntityPlayerMP) entityPlayer).playerNetServerHandler.setPlayerLocation(entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ, entityPlayer.rotationYaw, entityPlayer.rotationPitch);
                 ((EntityPlayerMP) entityPlayer).playerNetServerHandler.sendPacketToPlayer(packet17sleep);
             }
-            
+
             return true;
         }
         else
@@ -74,7 +74,7 @@ public class GCMarsTileEntityCryogenicChamber extends TileEntityMulti implements
                 return EnumStatus.NOT_POSSIBLE_HERE;
             }
 
-            if (Math.abs(entityPlayer.posX - (double)par1) > 3.0D || Math.abs(entityPlayer.posY - (double)par2) > 2.0D || Math.abs(entityPlayer.posZ - (double)par3) > 3.0D)
+            if (Math.abs(entityPlayer.posX - par1) > 3.0D || Math.abs(entityPlayer.posY - par2) > 2.0D || Math.abs(entityPlayer.posZ - par3) > 3.0D)
             {
                 return EnumStatus.TOO_FAR_AWAY;
             }
@@ -82,11 +82,11 @@ public class GCMarsTileEntityCryogenicChamber extends TileEntityMulti implements
 
         if (entityPlayer.isRiding())
         {
-            entityPlayer.mountEntity((Entity)null);
+            entityPlayer.mountEntity((Entity) null);
         }
 
-        entityPlayer.setPosition((double)((float)this.xCoord + 0.5F), (double)((float)this.yCoord + 0.5F), (double)((float)this.zCoord + 0.5F));
-        
+        entityPlayer.setPosition(this.xCoord + 0.5F, this.yCoord + 0.5F, this.zCoord + 0.5F);
+
         entityPlayer.sleeping = true;
         entityPlayer.sleepTimer = 0;
         entityPlayer.playerLocation = new ChunkCoordinates(par1, par2, par3);
@@ -116,12 +116,12 @@ public class GCMarsTileEntityCryogenicChamber extends TileEntityMulti implements
     public void onCreate(Vector3 placedPosition)
     {
         this.mainBlockPosition = placedPosition;
-        
+
         int x1 = 0;
         int x2 = 0;
         int z1 = 0;
         int z2 = 0;
-        
+
         switch (this.getBlockMetadata() - GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA)
         {
         case 0:
@@ -204,7 +204,7 @@ public class GCMarsTileEntityCryogenicChamber extends TileEntityMulti implements
             z2 = 0;
             break;
         }
-        
+
         for (int x = x1; x <= x2; x++)
         {
             for (int z = z1; z <= z2; z++)
@@ -220,7 +220,7 @@ public class GCMarsTileEntityCryogenicChamber extends TileEntityMulti implements
             }
         }
     }
-    
+
     @Override
     public void readFromNBT(NBTTagCompound nbt)
     {

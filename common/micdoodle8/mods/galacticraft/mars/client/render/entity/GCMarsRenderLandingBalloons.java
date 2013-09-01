@@ -56,7 +56,7 @@ public class GCMarsRenderLandingBalloons extends Render
         GL11.glScalef(0.5F, 0.5F, 0.5F);
         this.landerModel.renderAll();
         GL11.glPopMatrix();
-        
+
         if (entity.posY >= 500.0F)
         {
             GL11.glPushMatrix();
@@ -64,7 +64,7 @@ public class GCMarsRenderLandingBalloons extends Render
             GL11.glTranslatef((float) par2 - 1.25F, (float) par4 - 0.93F, (float) par6 - 0.3F);
             GL11.glScalef(2.5F, 3.0F, 2.5F);
             this.parachuteModel.renderAll();
-            
+
             GL11.glPopMatrix();
         }
     }

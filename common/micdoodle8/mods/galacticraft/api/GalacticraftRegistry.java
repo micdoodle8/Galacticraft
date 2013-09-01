@@ -90,17 +90,21 @@ public class GalacticraftRegistry
             GalacticraftRegistry.rocketGuiMap.put(clazz, rocketGui);
         }
     }
-    
+
     /**
-     * Add loot to the list of items that can possibly spawn in dungeon chests, but it is guaranteed that one will always spawn
-     *
-     * @param tier Tier of dungeon chest to add loot to. For example Moon is 1 and Mars is 2
-     * @param loot The itemstack to add to the possible list of items
+     * Add loot to the list of items that can possibly spawn in dungeon chests,
+     * but it is guaranteed that one will always spawn
+     * 
+     * @param tier
+     *            Tier of dungeon chest to add loot to. For example Moon is 1
+     *            and Mars is 2
+     * @param loot
+     *            The itemstack to add to the possible list of items
      */
     public static void addDungeonLoot(int tier, ItemStack loot)
     {
         List<ItemStack> dungeonStacks = null;
-        
+
         if (GalacticraftRegistry.dungeonLootMap.containsKey(tier))
         {
             dungeonStacks = GalacticraftRegistry.dungeonLootMap.get(tier);
@@ -180,7 +184,7 @@ public class GalacticraftRegistry
     {
         return GalacticraftRegistry.rocketGuiMap.get(clazz);
     }
-    
+
     public static List<ItemStack> getDungeonLoot(int tier)
     {
         return GalacticraftRegistry.dungeonLootMap.get(tier);

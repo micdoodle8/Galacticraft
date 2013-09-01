@@ -14,7 +14,6 @@ import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
 import universalelectricity.core.electricity.ElectricityDisplay;
 import universalelectricity.core.electricity.ElectricityDisplay.ElectricUnit;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 
 public class GCMarsGuiTerraformer extends GuiContainer
@@ -22,10 +21,10 @@ public class GCMarsGuiTerraformer extends GuiContainer
     private static final ResourceLocation terraformerGui = new ResourceLocation(GalacticraftMars.TEXTURE_DOMAIN, "textures/gui/terraformer.png");
 
     private GCMarsTileEntityTerraformer terraformer;
-    
+
     private GuiButton enableTreesButton;
     private GuiButton enableGrassButton;
-    
+
     public GCMarsGuiTerraformer(InventoryPlayer par1InventoryPlayer, GCMarsTileEntityTerraformer terraformer)
     {
         super(new GCMarsContainerTerraformer(par1InventoryPlayer, terraformer));
@@ -46,10 +45,10 @@ public class GCMarsGuiTerraformer extends GuiContainer
             this.enableTreesButton.enabled = true;
             this.enableGrassButton.enabled = true;
         }
-        
+
         this.enableTreesButton.displayString = (this.terraformer.treesDisabled ? "Enable" : "Disable") + " Trees";
         this.enableGrassButton.displayString = (this.terraformer.grassDisabled ? "Enable" : "Disable") + " Grass";
-        
+
         super.drawScreen(par1, par2, par3);
     }
 
@@ -93,34 +92,34 @@ public class GCMarsGuiTerraformer extends GuiContainer
         this.fontRenderer.drawString(ElectricityDisplay.getDisplay(this.terraformer.ueWattsPerTick * 20, ElectricUnit.WATT), 105, 56, 4210752);
         this.fontRenderer.drawString(ElectricityDisplay.getDisplay(this.terraformer.getVoltage(), ElectricUnit.VOLTAGE), 105, 68, 4210752);
     }
-    
+
     private String getStatus()
     {
         if (this.terraformer.getEnergyStored() <= 0.0F)
         {
             return EnumColor.RED + "Not Enough Energy";
         }
-        
+
         if (this.terraformer.grassDisabled && this.terraformer.treesDisabled)
         {
             return EnumColor.ORANGE + "Disabled";
         }
-        
+
         if (this.terraformer.waterTank.getFluid() == null || this.terraformer.waterTank.getFluid().amount <= 0)
         {
             return EnumColor.RED + "Not Enough Water";
         }
-        
+
         if (this.terraformer.getFirstBonemealStack() == null)
         {
             return EnumColor.RED + "Not Enough Bonemeal";
         }
-        
+
         if (!this.terraformer.grassDisabled && this.terraformer.getFirstSeedStack() == null)
         {
             return EnumColor.RED + "Not Enough Seeds";
         }
-        
+
         if (!this.terraformer.treesDisabled && this.terraformer.getFirstSaplingStack() == null)
         {
             return EnumColor.RED + "Not Enough Saplings";
@@ -130,7 +129,7 @@ public class GCMarsGuiTerraformer extends GuiContainer
         {
             return EnumColor.YELLOW + "Bubble Expanding";
         }
-        
+
         if (!this.terraformer.treesDisabled && this.terraformer.grassBlocksListSize <= 0)
         {
             return EnumColor.RED + "No Valid Blocks in Bubble";
@@ -139,7 +138,7 @@ public class GCMarsGuiTerraformer extends GuiContainer
         {
             return EnumColor.RED + "No Valid Blocks in Bubble";
         }
-        
+
         return EnumColor.BRIGHT_GREEN + "Terraforming";
     }
 

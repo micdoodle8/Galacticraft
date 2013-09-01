@@ -11,7 +11,6 @@ import micdoodle8.mods.galacticraft.core.perlin.NoiseModule;
 import micdoodle8.mods.galacticraft.core.perlin.generator.Gradient;
 import micdoodle8.mods.galacticraft.core.wgen.GCCoreCraterSize;
 import micdoodle8.mods.galacticraft.core.wgen.GCCoreMapGenBaseMeta;
-import micdoodle8.mods.galacticraft.core.wgen.dungeon.GCCoreDungeonRoom;
 import micdoodle8.mods.galacticraft.core.wgen.dungeon.GCCoreMapGenDungeon;
 import micdoodle8.mods.galacticraft.moon.GCMoonConfigManager;
 import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
@@ -30,7 +29,6 @@ import net.minecraft.world.biome.SpawnListEntry;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderGenerate;
-import net.minecraft.world.gen.structure.MapGenMineshaft;
 import net.minecraftforge.common.ForgeDirection;
 
 /**
@@ -63,19 +61,19 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
     private final GCCoreMapGenDungeon dungeonGenerator = new GCCoreMapGenDungeon(GCMoonBlocks.blockMoon.blockID, 14, 8, 16, 3);
 
     {
-        dungeonGenerator.otherRooms.add(new GCMoonRoomEmpty(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        dungeonGenerator.otherRooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        dungeonGenerator.otherRooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        dungeonGenerator.otherRooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        dungeonGenerator.otherRooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        dungeonGenerator.otherRooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        dungeonGenerator.otherRooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        dungeonGenerator.otherRooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        dungeonGenerator.otherRooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        dungeonGenerator.otherRooms.add(new GCMoonRoomChests(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        dungeonGenerator.otherRooms.add(new GCMoonRoomChests(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        dungeonGenerator.bossRooms.add(new GCMoonRoomBoss(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        dungeonGenerator.treasureRooms.add(new GCMoonRoomTreasure(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        this.dungeonGenerator.otherRooms.add(new GCMoonRoomEmpty(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        this.dungeonGenerator.otherRooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        this.dungeonGenerator.otherRooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        this.dungeonGenerator.otherRooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        this.dungeonGenerator.otherRooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        this.dungeonGenerator.otherRooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        this.dungeonGenerator.otherRooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        this.dungeonGenerator.otherRooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        this.dungeonGenerator.otherRooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        this.dungeonGenerator.otherRooms.add(new GCMoonRoomChests(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        this.dungeonGenerator.otherRooms.add(new GCMoonRoomChests(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        this.dungeonGenerator.bossRooms.add(new GCMoonRoomBoss(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        this.dungeonGenerator.treasureRooms.add(new GCMoonRoomTreasure(null, 0, 0, 0, ForgeDirection.UNKNOWN));
     }
 
     private BiomeGenBase[] biomesForGeneration = { GCMoonBiomeGenBase.moonFlat };

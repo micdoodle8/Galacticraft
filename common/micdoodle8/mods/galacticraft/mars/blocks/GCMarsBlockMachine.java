@@ -34,9 +34,7 @@ public class GCMarsBlockMachine extends BlockTile
     private Icon iconInput;
 
     private Icon iconTerraformer;
-    private Icon unusedIcon0;
     private Icon unusedIcon1;
-    private Icon unusedIcon2;
 
     public GCMarsBlockMachine(int id)
     {
@@ -338,20 +336,23 @@ public class GCMarsBlockMachine extends BlockTile
         return GalacticraftMars.proxy.getMachineRenderID();
     }
 
+    @Override
     public boolean isBed(World world, int x, int y, int z, EntityLivingBase player)
     {
-        return world.getBlockMetadata(x, y, z) >= CRYOGENIC_CHAMBER_METADATA;
+        return world.getBlockMetadata(x, y, z) >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA;
     }
 
+    @Override
     public ChunkCoordinates getBedSpawnPosition(World world, int x, int y, int z, EntityPlayer player)
     {
         return new ChunkCoordinates(x, y + 1, z);
     }
 
+    @Override
     public void setBedOccupied(World world, int x, int y, int z, EntityPlayer player, boolean occupied)
     {
         TileEntity tile = world.getBlockTileEntity(x, y, z);
-        
+
         if (tile instanceof GCMarsTileEntityCryogenicChamber)
         {
             ((GCMarsTileEntityCryogenicChamber) tile).isOccupied = true;

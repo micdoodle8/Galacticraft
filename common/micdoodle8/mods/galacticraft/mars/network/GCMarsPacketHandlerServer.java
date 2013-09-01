@@ -128,7 +128,7 @@ public class GCMarsPacketHandlerServer implements IPacketHandler
 
             if (e != null && e instanceof GCCoreEntityLander)
             {
-                player.playerNetServerHandler.sendPacketToPlayer(GCCorePacketLanderUpdate.buildKeyPacket((GCCoreEntityLander) e));
+                player.playerNetServerHandler.sendPacketToPlayer(GCCorePacketLanderUpdate.buildKeyPacket(e));
             }
         }
     }

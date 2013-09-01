@@ -110,7 +110,7 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
                 return false;
             }
         }
-        
+
         return false;
     }
 
@@ -170,7 +170,7 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
     protected void onDeathUpdate()
     {
         ++this.deathTicks;
-        
+
         this.headsRemaining = 0;
 
         if (this.deathTicks >= 180 && this.deathTicks <= 200)
@@ -436,12 +436,12 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
 
     private void func_82216_a(int par1, EntityLivingBase par2EntityLivingBase)
     {
-        this.func_82209_a(par1, par2EntityLivingBase.posX, par2EntityLivingBase.posY + (double)par2EntityLivingBase.getEyeHeight() * 0.5D, par2EntityLivingBase.posZ);
+        this.func_82209_a(par1, par2EntityLivingBase.posX, par2EntityLivingBase.posY + par2EntityLivingBase.getEyeHeight() * 0.5D, par2EntityLivingBase.posZ);
     }
 
     private void func_82209_a(int par1, double par2, double par4, double par6)
     {
-        this.worldObj.playAuxSFXAtEntity((EntityPlayer)null, 1014, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
+        this.worldObj.playAuxSFXAtEntity((EntityPlayer) null, 1014, (int) this.posX, (int) this.posY, (int) this.posZ, 0);
         double d3 = this.func_82214_u(par1);
         double d4 = this.func_82208_v(par1);
         double d5 = this.func_82213_w(par1);
@@ -464,9 +464,9 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
         }
         else
         {
-            float f = (this.renderYawOffset + (float)(180 * (par1 - 1))) / 180.0F * (float)Math.PI;
+            float f = (this.renderYawOffset + 180 * (par1 - 1)) / 180.0F * (float) Math.PI;
             float f1 = MathHelper.cos(f);
-            return this.posX + (double)f1 * 1.3D;
+            return this.posX + f1 * 1.3D;
         }
     }
 
@@ -483,9 +483,9 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
         }
         else
         {
-            float f = (this.renderYawOffset + (float)(180 * (par1 - 1))) / 180.0F * (float)Math.PI;
+            float f = (this.renderYawOffset + 180 * (par1 - 1)) / 180.0F * (float) Math.PI;
             float f1 = MathHelper.sin(f);
-            return this.posZ + (double)f1 * 1.3D;
+            return this.posZ + f1 * 1.3D;
         }
     }
 

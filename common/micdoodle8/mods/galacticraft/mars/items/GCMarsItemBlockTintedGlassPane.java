@@ -26,6 +26,7 @@ public class GCMarsItemBlockTintedGlassPane extends ItemBlock
         return damage;
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public Icon getIconFromDamage(int par1)
     {

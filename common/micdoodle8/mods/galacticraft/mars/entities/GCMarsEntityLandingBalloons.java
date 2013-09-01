@@ -92,7 +92,7 @@ public class GCMarsEntityLandingBalloons extends GCCoreEntityAdvanced implements
     @Override
     public double getMountedYOffset()
     {
-        return (double)this.height * 0.75D - 4.5;
+        return this.height * 0.75D - 4.5;
     }
 
     @Override
@@ -137,7 +137,7 @@ public class GCMarsEntityLandingBalloons extends GCCoreEntityAdvanced implements
                 }
             }
         }
-        
+
         if (this.groundHitCount >= 14)
         {
             this.yOffset = 2.0F;
@@ -169,7 +169,7 @@ public class GCMarsEntityLandingBalloons extends GCCoreEntityAdvanced implements
         {
             this.fuelTank.readFromNBT(nbt.getCompoundTag("fuelTank"));
         }
-        
+
         this.groundHitCount = nbt.getInteger("GroundHitCount");
     }
 
@@ -197,7 +197,7 @@ public class GCMarsEntityLandingBalloons extends GCCoreEntityAdvanced implements
         {
             nbt.setTag("fuelTank", this.fuelTank.writeToNBT(new NBTTagCompound()));
         }
-        
+
         nbt.setInteger("GroundHitCount", this.groundHitCount);
     }
 
@@ -393,7 +393,7 @@ public class GCMarsEntityLandingBalloons extends GCCoreEntityAdvanced implements
 
             return true;
         }
-        
+
         return false;
     }
 
@@ -404,7 +404,7 @@ public class GCMarsEntityLandingBalloons extends GCCoreEntityAdvanced implements
         {
             return this.riddenByEntity != null;
         }
-        
+
         return true;
     }
 
@@ -433,7 +433,7 @@ public class GCMarsEntityLandingBalloons extends GCCoreEntityAdvanced implements
     {
         if (this.worldObj.isRemote)
         {
-            if (groundHitCount == 0)
+            if (this.groundHitCount == 0)
             {
                 this.motionY = -this.posY / 50.0D;
             }
@@ -457,11 +457,11 @@ public class GCMarsEntityLandingBalloons extends GCCoreEntityAdvanced implements
     @Override
     public void onGroundHit()
     {
-        groundHitCount++;
-        
+        this.groundHitCount++;
+
         if (this.groundHitCount < 14)
         {
-            double mag = (1.0D / this.groundHitCount) * 4.0D;
+            double mag = 1.0D / this.groundHitCount * 4.0D;
             this.motionX = this.rand.nextDouble() * 0.5 - 0.5;
             this.motionY = 1.0;
             this.motionZ = this.rand.nextDouble() * 0.5 - 0.5;

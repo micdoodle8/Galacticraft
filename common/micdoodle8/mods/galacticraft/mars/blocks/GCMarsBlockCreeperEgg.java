@@ -73,7 +73,8 @@ public class GCMarsBlockCreeperEgg extends BlockDragonEgg
     {
         return 0;
     }
-    
+
+    @Override
     public void onBlockExploded(World world, int x, int y, int z, Explosion explosion)
     {
         if (!world.isRemote)
@@ -82,8 +83,8 @@ public class GCMarsBlockCreeperEgg extends BlockDragonEgg
             creeper.setPosition(x + 0.5, y + 1, z + 0.5);
             world.spawnEntityInWorld(creeper);
         }
-        
+
         world.setBlockToAir(x, y, z);
-        onBlockDestroyedByExplosion(world, x, y, z, explosion);
+        this.onBlockDestroyedByExplosion(world, x, y, z, explosion);
     }
 }

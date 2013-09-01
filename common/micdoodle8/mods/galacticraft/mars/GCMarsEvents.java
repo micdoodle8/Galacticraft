@@ -67,21 +67,21 @@ public class GCMarsEvents
             }
         }
     }
-    
+
     @ForgeSubscribe
     public void onPlayerWakeUp(PlayerWakeUpEvent event)
     {
         ChunkCoordinates c = event.entityPlayer.playerLocation;
         int blockID = event.entityPlayer.worldObj.getBlockId(c.posX, c.posY, c.posZ);
         int metadata = event.entityPlayer.worldObj.getBlockMetadata(c.posX, c.posY, c.posZ);
-        
+
         if (blockID == GCMarsBlocks.machine.blockID && metadata >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA && event.flag1 == false && event.flag2 == true && event.flag3 == true)
         {
             event.result = EnumStatus.NOT_POSSIBLE_HERE;
-            
+
             if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT && event.bypassed && event.entityPlayer instanceof GCCorePlayerSP)
             {
-                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftMars.CHANNEL, 3, new Object[] { }));
+                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftMars.CHANNEL, 3, new Object[] {}));
             }
         }
     }
@@ -93,7 +93,7 @@ public class GCMarsEvents
         ChunkCoordinates c = event.entityPlayer.playerLocation;
         int blockID = event.entityPlayer.worldObj.getBlockId(c.posX, c.posY, c.posZ);
         int metadata = event.entityPlayer.worldObj.getBlockMetadata(c.posX, c.posY, c.posZ);
-        
+
         if (blockID == GCMarsBlocks.machine.blockID && metadata >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA)
         {
             event.shouldRotate = false;
@@ -101,15 +101,15 @@ public class GCMarsEvents
     }
 
     private WorldGenerator eggGenerator;
-    
+
     @ForgeSubscribe
     public void onPlanetDecorated(GCCoreEventPopulate.Post event)
     {
-        if (eggGenerator == null)
+        if (this.eggGenerator == null)
         {
-            eggGenerator = new GCMarsWorldGenEggs(GCMarsBlocks.rock.blockID);
+            this.eggGenerator = new GCMarsWorldGenEggs(GCMarsBlocks.rock.blockID);
         }
-        
+
         if (event.worldObj.provider instanceof GCMarsWorldProvider)
         {
             int eggsPerChunk = 2;
@@ -132,7 +132,7 @@ public class GCMarsEvents
     public void orientCamera(OrientCameraEvent event)
     {
         EntityPlayer entity = Minecraft.getMinecraft().thePlayer;
-        
+
         if (entity != null)
         {
             int x = MathHelper.floor_double(entity.posX);
@@ -144,10 +144,10 @@ public class GCMarsEvents
             if (tile instanceof GCMarsTileEntityCryogenicChamber)
             {
                 int var12 = Block.blocksList[blockID].getBedDirection(Minecraft.getMinecraft().theWorld, x, y, z);
-                GL11.glRotatef((float)(-var12 * 90), 0.0F, 1.0F, 0.0F);
+                GL11.glRotatef(-var12 * 90, 0.0F, 1.0F, 0.0F);
 
                 float rotation = 0.0F;
-                
+
                 switch (tile.getBlockMetadata() - GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA)
                 {
                 case 0:
@@ -163,7 +163,7 @@ public class GCMarsEvents
                     rotation = 0.0F;
                     break;
                 }
-                
+
                 GL11.glRotatef(rotation, 0.0F, 1.0F, 0.0F);
 
                 GL11.glTranslatef(0, -1, 0);

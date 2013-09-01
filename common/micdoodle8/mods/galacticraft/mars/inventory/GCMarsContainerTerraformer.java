@@ -25,18 +25,18 @@ public class GCMarsContainerTerraformer extends Container
         this.tileEntity = tileEntity;
 
         this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 25, 19, new ItemStack(Item.bucketWater)));
-        
+
         this.addSlotToContainer(new SlotSpecific(tileEntity, 1, 25, 39, IItemElectric.class));
 
         int var6;
         int var7;
-        
+
         for (var6 = 0; var6 < 3; ++var6)
         {
             for (var7 = 0; var7 < 4; ++var7)
             {
                 List<ItemStack> stacks = new ArrayList<ItemStack>();
-                
+
                 if (var6 == 0)
                 {
                     stacks.add(new ItemStack(Item.dyePowder, 1, 15));
@@ -55,7 +55,7 @@ public class GCMarsContainerTerraformer extends Container
                 {
                     stacks.add(new ItemStack(Item.seeds));
                 }
-                
+
                 this.addSlotToContainer(new SlotSpecific(tileEntity, var7 + var6 * 4 + 2, 25 + var7 * 18, 63 + var6 * 24, stacks.toArray(new ItemStack[stacks.size()])));
             }
         }

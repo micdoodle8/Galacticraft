@@ -23,7 +23,7 @@ public class GCCorePacketLanderUpdate implements IGalacticraftAdvancedPacket
         {
             return null;
         }
-        
+
         final Packet250CustomPayload packet = new Packet250CustomPayload();
         packet.channel = GalacticraftCore.CHANNEL;
 

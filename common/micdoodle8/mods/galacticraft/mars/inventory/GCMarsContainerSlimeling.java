@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.mars.inventory;
 
-import java.util.ArrayList;
-import java.util.List;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySlimeling;
 import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,17 +21,17 @@ public class GCMarsContainerSlimeling extends Container
         this.slimelingInventory = slimeling.slimelingInventory;
         this.slimelingInventory.currentContainer = this;
 
-        addSlots(this, playerInventory, slimeling);
-        addAdditionalSlots(this, slimeling, slimeling.getCargoSlot());
+        GCMarsContainerSlimeling.addSlots(this, playerInventory, slimeling);
+        GCMarsContainerSlimeling.addAdditionalSlots(this, slimeling, slimeling.getCargoSlot());
 
-        slimelingInventory.openChest();
+        this.slimelingInventory.openChest();
     }
-    
+
     public static void addSlots(GCMarsContainerSlimeling container, InventoryPlayer playerInventory, GCMarsEntitySlimeling slimeling)
     {
         Slot slot = new SlotSpecific(slimeling.slimelingInventory, 1, 9, 8, new ItemStack(GCMarsItems.marsItemBasic, 1, 4));
         container.addSlotToContainer(slot);
-        
+
         int var3;
 
         for (var3 = 0; var3 < 3; ++var3)
@@ -51,13 +49,13 @@ public class GCMarsContainerSlimeling extends Container
             container.addSlotToContainer(slot);
         }
     }
-    
+
     public static void removeSlots(GCMarsContainerSlimeling container)
     {
         container.inventoryItemStacks.clear();
         container.inventorySlots.clear();
     }
-    
+
     public static void addAdditionalSlots(GCMarsContainerSlimeling container, GCMarsEntitySlimeling slimeling, ItemStack stack)
     {
         if (stack != null && stack.getItem().itemID == GCMarsItems.marsItemBasic.itemID && stack.getItemDamage() == 4)
@@ -69,7 +67,7 @@ public class GCMarsContainerSlimeling extends Container
                     Slot slot = new Slot(slimeling.slimelingInventory, var4 + var3 * 9 + 2, 8 + var4 * 18, 32 + var3 * 18);
                     slot.slotNumber = container.inventorySlots.size();
                     container.inventorySlots.add(slot);
-                    container.inventoryItemStacks.add((Object)null);
+                    container.inventoryItemStacks.add((Object) null);
                 }
             }
         }

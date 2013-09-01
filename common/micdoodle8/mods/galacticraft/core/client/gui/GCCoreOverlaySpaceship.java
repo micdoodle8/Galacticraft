@@ -29,7 +29,7 @@ public class GCCoreOverlaySpaceship extends GCCoreOverlay
         {
             return;
         }
-        
+
         final ScaledResolution scaledresolution = new ScaledResolution(GCCoreOverlaySpaceship.minecraft.gameSettings, GCCoreOverlaySpaceship.minecraft.displayWidth, GCCoreOverlaySpaceship.minecraft.displayHeight);
         scaledresolution.getScaledWidth();
         final int height = scaledresolution.getScaledHeight();
@@ -83,16 +83,16 @@ public class GCCoreOverlaySpaceship extends GCCoreOverlay
         GL11.glScalef(5F, 5F, 5F);
         GL11.glRotatef(180F, 1, 0, 0);
         GL11.glRotatef(90F, 0, 1, 0);
-        
+
         try
         {
-            spaceship.renderSpaceship((EntitySpaceshipBase) GCCoreOverlaySpaceship.minecraft.thePlayer.ridingEntity.getClass().getConstructor(World.class).newInstance(minecraft.thePlayer.worldObj), 0, 0, 0, 0, 0);
+            spaceship.renderSpaceship((EntitySpaceshipBase) GCCoreOverlaySpaceship.minecraft.thePlayer.ridingEntity.getClass().getConstructor(World.class).newInstance(GCCoreOverlaySpaceship.minecraft.thePlayer.worldObj), 0, 0, 0, 0, 0);
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
-        
+
         GL11.glPopMatrix();
 
         ResourceLocation resourcelocation = AbstractClientPlayer.field_110314_b;

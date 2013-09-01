@@ -270,10 +270,10 @@ public class GCCoreRenderPlayer extends RenderPlayer
 
             GL11.glPopMatrix();
         }
-        
+
         MinecraftForge.EVENT_BUS.post(new RenderPlayerEvent.Specials.Post(par1AbstractClientPlayer, this, par2));
     }
-    
+
     @Override
     protected void rotatePlayer(AbstractClientPlayer par1AbstractClientPlayer, float par2, float par3, float par4)
     {
@@ -281,7 +281,7 @@ public class GCCoreRenderPlayer extends RenderPlayer
         {
             RotatePlayerEvent event = new RotatePlayerEvent(par1AbstractClientPlayer);
             MinecraftForge.EVENT_BUS.post(event);
-            
+
             if (event.shouldRotate == null || event.shouldRotate == true)
             {
                 super.rotatePlayer(par1AbstractClientPlayer, par2, par3, par4);
@@ -292,11 +292,11 @@ public class GCCoreRenderPlayer extends RenderPlayer
             super.rotatePlayer(par1AbstractClientPlayer, par2, par3, par4);
         }
     }
-    
+
     public static class RotatePlayerEvent extends PlayerEvent
     {
         public Boolean shouldRotate = null;
-        
+
         public RotatePlayerEvent(AbstractClientPlayer player)
         {
             super(player);

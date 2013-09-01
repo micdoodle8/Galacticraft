@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.mars.client.render.entity;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelOxygenBubble;
-import micdoodle8.mods.galacticraft.mars.client.ClientProxyMars;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityTerraformBubble;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;

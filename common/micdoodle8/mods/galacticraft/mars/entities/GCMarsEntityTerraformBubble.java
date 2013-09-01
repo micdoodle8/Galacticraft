@@ -132,7 +132,7 @@ public class GCMarsEntityTerraformBubble extends Entity implements ISizeable
         {
             return;
         }
-        
+
         this.terraformer.size = bubbleSize;
     }
 
@@ -143,7 +143,7 @@ public class GCMarsEntityTerraformBubble extends Entity implements ISizeable
         {
             return 0.0F;
         }
-        
+
         return this.terraformer.size;
     }
 

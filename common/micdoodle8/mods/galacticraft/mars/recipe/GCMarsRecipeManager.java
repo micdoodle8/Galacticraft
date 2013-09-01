@@ -58,7 +58,7 @@ public class GCMarsRecipeManager
         RecipeUtil.addRecipe(new ItemStack(GCMarsBlocks.machine, 1, 0), new Object[] { "XWX", "XZX", "WVW", 'V', GCCoreItems.oxygenConcentrator, 'W', "plateDesh", 'X', "ingotDesh", 'Z', new ItemStack(GCCoreItems.canister) });
 
         RecipeUtil.addRecipe(new ItemStack(GCMarsBlocks.machine, 1, 4), new Object[] { "XYX", "XZX", "XYX", 'X', "plateDesh", 'Y', "plateHeavyT2", 'Z', Item.bed });
-        
+
         RecipeUtil.addRecipe(new ItemStack(GCMarsItems.marsItemBasic, 1, 1), new Object[] { "X", "X", 'X', "ingotDesh" });
 
         RecipeUtil.addRecipe(new ItemStack(GCMarsItems.marsItemBasic, 1, 4), new Object[] { "XWX", "XYX", " Z ", 'W', Item.diamond, 'X', Item.leather, 'Y', Item.slimeBall, 'Z', Block.chest });
@@ -66,36 +66,36 @@ public class GCMarsRecipeManager
         CraftingManager.getInstance().addShapelessRecipe(new ItemStack(GCMarsItems.marsItemBasic, 1, 5), new Object[] { OreDictionary.getOres("ingotDesh").get(0), OreDictionary.getOres("ingotDesh").get(0), OreDictionary.getOres("ingotDesh").get(0), OreDictionary.getOres("ingotDesh").get(0) });
 
         RecipeUtil.addRecipe(new ItemStack(GCMarsItems.deshSword), new Object[] { "X", "X", "Y", 'X', new ItemStack(GCMarsItems.marsItemBasic, 1, 2), 'Y', new ItemStack(GCMarsItems.marsItemBasic, 1, 1) });
-        
+
         RecipeUtil.addRecipe(new ItemStack(GCMarsItems.deshPickaxe), new Object[] { "XXX", " Y ", " Y ", 'X', new ItemStack(GCMarsItems.marsItemBasic, 1, 2), 'Y', new ItemStack(GCMarsItems.marsItemBasic, 1, 1) });
-        
+
         RecipeUtil.addRecipe(new ItemStack(GCMarsItems.deshSpade), new Object[] { "X", "Y", "Y", 'X', new ItemStack(GCMarsItems.marsItemBasic, 1, 2), 'Y', new ItemStack(GCMarsItems.marsItemBasic, 1, 1) });
-        
+
         RecipeUtil.addRecipe(new ItemStack(GCMarsItems.deshHoe), new Object[] { "XX", "Y ", "Y ", 'X', new ItemStack(GCMarsItems.marsItemBasic, 1, 2), 'Y', new ItemStack(GCMarsItems.marsItemBasic, 1, 1) });
-        
+
         RecipeUtil.addRecipe(new ItemStack(GCMarsItems.deshHoe), new Object[] { "XX", " Y", " Y", 'X', new ItemStack(GCMarsItems.marsItemBasic, 1, 2), 'Y', new ItemStack(GCMarsItems.marsItemBasic, 1, 1) });
-        
+
         RecipeUtil.addRecipe(new ItemStack(GCMarsItems.deshAxe), new Object[] { "XX", "XY", " Y", 'X', new ItemStack(GCMarsItems.marsItemBasic, 1, 2), 'Y', new ItemStack(GCMarsItems.marsItemBasic, 1, 1) });
-        
+
         RecipeUtil.addRecipe(new ItemStack(GCMarsItems.deshAxe), new Object[] { "XX", "YX", "Y ", 'X', new ItemStack(GCMarsItems.marsItemBasic, 1, 2), 'Y', new ItemStack(GCMarsItems.marsItemBasic, 1, 1) });
-        
+
         RecipeUtil.addRecipe(new ItemStack(GCMarsItems.deshHelmet), new Object[] { "XXX", "X X", 'X', new ItemStack(GCMarsItems.marsItemBasic, 1, 2) });
-        
+
         RecipeUtil.addRecipe(new ItemStack(GCMarsItems.deshChestplate), new Object[] { "X X", "XXX", "XXX", 'X', new ItemStack(GCMarsItems.marsItemBasic, 1, 2) });
-        
+
         RecipeUtil.addRecipe(new ItemStack(GCMarsItems.deshLeggings), new Object[] { "XXX", "X X", "X X", 'X', new ItemStack(GCMarsItems.marsItemBasic, 1, 2) });
-        
+
         RecipeUtil.addRecipe(new ItemStack(GCMarsItems.deshBoots), new Object[] { "X X", "X X", 'X', new ItemStack(GCMarsItems.marsItemBasic, 1, 2) });
-        
+
         for (int var2 = 0; var2 < 16; ++var2)
         {
             CraftingManager.getInstance().addShapelessRecipe(new ItemStack(GCMarsBlocks.tintedGlassPane, 1, 15 - var2), new Object[] { new ItemStack(Item.dyePowder, 1, var2), Block.thinGlass, OreDictionary.getOres("plateDesh").get(0) });
         }
-        
+
         // Smelting
         FurnaceRecipes.smelting().addSmelting(GCMarsItems.marsItemBasic.itemID, 0, new ItemStack(GCMarsItems.marsItemBasic, 1, 2), 0.2F);
         FurnaceRecipes.smelting().addSmelting(GCMarsBlocks.marsBlock.blockID, 4, new ItemStack(GCMarsBlocks.marsBlock, 1, 9), 0.0F);
-        
+
         if (OreDictionary.getOres("ingotCopper").size() > 0)
         {
             FurnaceRecipes.smelting().addSmelting(GCMarsBlocks.marsBlock.blockID, 0, OreDictionary.getOres("ingotCopper").get(0), 1.0F);
@@ -108,7 +108,7 @@ public class GCMarsRecipeManager
 
         FurnaceRecipes.smelting().addSmelting(GCMarsBlocks.marsBlock.blockID, 2, new ItemStack(GCMarsItems.marsItemBasic, 1, 2), 0.2F);
         FurnaceRecipes.smelting().addSmelting(GCMarsBlocks.marsBlock.blockID, 3, new ItemStack(Item.ingotIron), 0.2F);
-        
+
         // Schematic
         HashMap<Integer, ItemStack> input = new HashMap<Integer, ItemStack>();
         input.put(1, new ItemStack(GCCoreItems.rocketNoseCone));

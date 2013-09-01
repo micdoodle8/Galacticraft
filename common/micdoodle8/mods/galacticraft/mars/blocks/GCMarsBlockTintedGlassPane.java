@@ -10,7 +10,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -18,7 +17,7 @@ public class GCMarsBlockTintedGlassPane extends BlockPane
 {
     @SideOnly(Side.CLIENT)
     private Icon[] iconArray;
-    
+
     protected GCMarsBlockTintedGlassPane(int blockID)
     {
         super(blockID, "", "", Material.glass, false);
@@ -27,6 +26,7 @@ public class GCMarsBlockTintedGlassPane extends BlockPane
         this.func_111022_d(str);
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
@@ -36,6 +36,7 @@ public class GCMarsBlockTintedGlassPane extends BlockPane
         }
     }
 
+    @Override
     public int getRenderType()
     {
         return GalacticraftMars.proxy.getTintedGlassPaneRenderID();
@@ -47,6 +48,7 @@ public class GCMarsBlockTintedGlassPane extends BlockPane
         return GalacticraftMars.galacticraftMarsTab;
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
@@ -56,7 +58,7 @@ public class GCMarsBlockTintedGlassPane extends BlockPane
         {
             this.iconArray[i] = par1IconRegister.registerIcon(GalacticraftMars.TEXTURE_PREFIX + this.func_111023_E() + "_" + ItemDye.field_94595_b[BlockColored.getDyeFromBlock(i)]);
         }
-        
+
         this.blockIcon = this.iconArray[0];
     }
 
@@ -78,6 +80,7 @@ public class GCMarsBlockTintedGlassPane extends BlockPane
         return this.iconArray[metadata % this.iconArray.length];
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public int getRenderBlockPass()
     {

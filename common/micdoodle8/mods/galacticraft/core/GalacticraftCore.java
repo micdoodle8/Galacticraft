@@ -244,7 +244,7 @@ public class GalacticraftCore
         DimensionManager.registerProviderType(GCCoreConfigManager.idDimensionOverworldOrbit, GCCoreWorldProviderSpaceStation.class, false);
 
         GalacticraftCore.proxy.init(event);
-        
+
         GalacticraftRegistry.registerTeleportType(WorldProviderSurface.class, new GCCoreOverworldTeleportType());
         GalacticraftRegistry.registerTeleportType(GCCoreWorldProviderSpaceStation.class, new GCCoreOrbitTeleportType());
 
@@ -438,10 +438,16 @@ public class GalacticraftCore
         GCCoreUtil.registerGalacticraftNonMobEntity(GCCoreEntityOxygenBubble.class, "OxygenBubble", GCCoreConfigManager.idEntityOxygenBubble, 150, 20, false);
         GCCoreUtil.registerGalacticraftNonMobEntity(GCCoreEntityLander.class, "Lander", GCCoreConfigManager.idEntityLander, 150, 5, true);
     }
-    
-    public static class MinecraftLoadedEvent extends Event {}
-    
-    public static class SleepCancelledEvent extends Event {}
-    
-    public static class OrientCameraEvent extends Event {}
+
+    public static class MinecraftLoadedEvent extends Event
+    {
+    }
+
+    public static class SleepCancelledEvent extends Event
+    {
+    }
+
+    public static class OrientCameraEvent extends Event
+    {
+    }
 }
