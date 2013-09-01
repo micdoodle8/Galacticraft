@@ -11,6 +11,7 @@ import micdoodle8.mods.galacticraft.core.GCLog;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreSpaceStationData;
 import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
+import micdoodle8.mods.galacticraft.core.entities.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerSchematic;
@@ -117,9 +118,9 @@ public class GCCorePacketHandlerServer implements IPacketHandler
         }
         else if (packetType == 3)
         {
-            if (!player.worldObj.isRemote && !player.isDead && player.ridingEntity != null && !player.ridingEntity.isDead && player.ridingEntity instanceof EntitySpaceshipBase)
+            if (!player.worldObj.isRemote && !player.isDead && player.ridingEntity != null && !player.ridingEntity.isDead && player.ridingEntity instanceof EntityTieredRocket)
             {
-                final EntitySpaceshipBase ship = (EntitySpaceshipBase) player.ridingEntity;
+                final EntityTieredRocket ship = (EntityTieredRocket) player.ridingEntity;
 
                 if (ship.hasValidFuel())
                 {

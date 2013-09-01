@@ -75,6 +75,7 @@ import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntitySola
 import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityTreasureChestRenderer;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCCoreSounds;
 import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
+import micdoodle8.mods.galacticraft.core.entities.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityAlienVillager;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityArrow;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
@@ -676,7 +677,7 @@ public class ClientProxyCore extends CommonProxyCore
         }
         else if (ID == GCCoreConfigManager.idGuiSpaceshipInventory && player.ridingEntity != null && player.ridingEntity instanceof EntitySpaceshipBase && player.ridingEntity instanceof IRocketType)
         {
-            return new GCCoreGuiRocketRefill(player.inventory, (EntitySpaceshipBase) player.ridingEntity, ((IRocketType) player.ridingEntity).getType());
+            return new GCCoreGuiRocketRefill(player.inventory, (EntityTieredRocket) player.ridingEntity, ((IRocketType) player.ridingEntity).getType());
         }
         else if (ID == GCCoreConfigManager.idGuiRefinery)
         {

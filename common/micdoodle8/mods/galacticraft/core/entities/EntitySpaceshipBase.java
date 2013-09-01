@@ -3,33 +3,24 @@ package micdoodle8.mods.galacticraft.core.entities;
 import icbm.api.IMissileLockable;
 import icbm.api.sentry.IAATarget;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map.Entry;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
-import micdoodle8.mods.galacticraft.api.entity.IDockable;
-import micdoodle8.mods.galacticraft.api.entity.IRocketType;
 import micdoodle8.mods.galacticraft.api.world.IExitHeight;
-import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GCCoreDamageSource;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPad;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPadFull;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
-import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
@@ -42,7 +33,7 @@ import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public abstract class EntitySpaceshipBase extends Entity implements IPacketReceiver, IMissileLockable, IAATarget, IDockable, IInventory, IRocketType
+public abstract class EntitySpaceshipBase extends Entity implements IPacketReceiver, IMissileLockable, IAATarget
 {
     public static enum EnumLaunchPhase
     {
@@ -67,10 +58,8 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
     protected double dragAir;
     public int timeUntilLaunch;
     public float timeSinceLaunch;
-    public float rumble;
     public float rollAmplitude;
     public float shipDamage;
-    public EnumRocketType rocketType;
 
     public EntitySpaceshipBase(World par1World)
     {
@@ -85,8 +74,6 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
     public abstract int getMaxFuel();
 
     public abstract int getScaledFuelLevel(int i);
-
-    public abstract boolean hasValidFuel();
 
     public abstract int getPreLaunchWait();
 
@@ -221,46 +208,9 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
         super.onUpdate();
 
-        if (!this.worldObj.isRemote && this.getLandingPad() != null && this.getLandingPad().getConnectedTiles() != null)
-        {
-            for (final TileEntity tile : this.getLandingPad().getConnectedTiles())
-            {
-                if (this.worldObj.getBlockTileEntity(tile.xCoord, tile.yCoord, tile.zCoord) == null || !(this.worldObj.getBlockTileEntity(tile.xCoord, tile.yCoord, tile.zCoord) instanceof GCCoreTileEntityFuelLoader))
-                {
-
-                }
-                else
-                {
-                    if (tile instanceof GCCoreTileEntityFuelLoader && ((GCCoreTileEntityFuelLoader) tile).getEnergyStored() > 0)
-                    {
-                        if (this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase())
-                        {
-                            this.setPad(null);
-                        }
-                    }
-                }
-            }
-        }
-
-        if (this.rumble > 0)
-        {
-            this.rumble--;
-        }
-
-        if (this.rumble < 0)
-        {
-            this.rumble++;
-        }
-
-        if (this.riddenByEntity != null)
-        {
-            this.riddenByEntity.posX += this.rumble / 30F;
-            this.riddenByEntity.posZ += this.rumble / 30F;
-        }
-
         if (this.posY > (this.worldObj.provider instanceof IExitHeight ? ((IExitHeight) this.worldObj.provider).getYCoordinateToTeleport() : 1200))
         {
-            this.teleport();
+            this.onReachAtmoshpere();
         }
 
         if (this.rollAmplitude > 0)
@@ -323,12 +273,6 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
             if (!this.worldObj.isRemote)
             {
-                if (!(this.worldObj.provider instanceof IOrbitDimension) && this.riddenByEntity != null && this.riddenByEntity instanceof GCCorePlayerMP)
-                {
-                    ((GCCorePlayerMP) this.riddenByEntity).setCoordsTeleportedFromX(this.riddenByEntity.posX);
-                    ((GCCorePlayerMP) this.riddenByEntity).setCoordsTeleportedFromZ(this.riddenByEntity.posZ);
-                }
-
                 int amountRemoved = 0;
 
                 for (int x = MathHelper.floor_double(this.posX) - 1; x <= MathHelper.floor_double(this.posX) + 1; x++)
@@ -363,13 +307,6 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
                 this.playSound("random.pop", 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
             }
-        }
-
-        if (this.launchPhase == EnumLaunchPhase.IGNITED.getPhase() || this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase())
-        {
-            this.performHurtAnimation();
-
-            this.rumble = (float) this.rand.nextInt(3) - 3;
         }
 
         if (this.rotationPitch > 90)
@@ -435,7 +372,6 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
         this.launchPhase = dataStream.readInt();
         this.timeSinceLaunch = dataStream.readFloat();
         this.timeUntilLaunch = dataStream.readInt();
-        this.rocketType = EnumRocketType.values()[dataStream.readInt()];
     }
 
     public ArrayList getNetworkedData(ArrayList list)
@@ -443,7 +379,6 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
         list.add(this.launchPhase);
         list.add(this.timeSinceLaunch);
         list.add(this.timeUntilLaunch);
-        list.add(this.rocketType != null ? this.rocketType.getIndex() : 0);
         return list;
     }
 
@@ -484,14 +419,12 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
     {
         nbt.setInteger("launchPhase", this.launchPhase);
         nbt.setInteger("timeUntilLaunch", this.timeUntilLaunch);
-        nbt.setInteger("Type", this.rocketType.getIndex());
     }
 
     @Override
     protected void readEntityFromNBT(NBTTagCompound nbt)
     {
         this.timeUntilLaunch = nbt.getInteger("timeUntilLaunch");
-        this.rocketType = EnumRocketType.values()[nbt.getInteger("Type")];
 
         boolean hasOldTags = false;
 
@@ -540,46 +473,6 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
         return this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase();
     }
 
-    @Override
-    public boolean func_130002_c(EntityPlayer par1EntityPlayer)
-    {
-        if (this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase())
-        {
-            return false;
-        }
-
-        if (this.riddenByEntity != null && this.riddenByEntity instanceof GCCorePlayerMP)
-        {
-            if (!this.worldObj.isRemote)
-            {
-                final Object[] toSend = { ((EntityPlayerMP) this.riddenByEntity).username };
-                ((EntityPlayerMP) this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 13, toSend));
-                final Object[] toSend2 = { 0 };
-                ((EntityPlayerMP) par1EntityPlayer).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
-                ((GCCorePlayerMP) par1EntityPlayer).setChatCooldown(0);
-                par1EntityPlayer.mountEntity(null);
-            }
-
-            return true;
-        }
-        else if (par1EntityPlayer instanceof GCCorePlayerMP)
-        {
-            if (!this.worldObj.isRemote)
-            {
-                final Object[] toSend = { par1EntityPlayer.username };
-                ((EntityPlayerMP) par1EntityPlayer).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 8, toSend));
-                final Object[] toSend2 = { 1 };
-                ((EntityPlayerMP) par1EntityPlayer).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
-                ((GCCorePlayerMP) par1EntityPlayer).setChatCooldown(0);
-                par1EntityPlayer.mountEntity(this);
-            }
-
-            return true;
-        }
-
-        return false;
-    }
-
     public boolean canBeRidden()
     {
         return false;
@@ -596,46 +489,14 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
         return -1.0D;
     }
 
-    public void teleport()
-    {
-        if (this.riddenByEntity != null)
-        {
-            if (this.riddenByEntity instanceof GCCorePlayerMP)
-            {
-                GCCorePlayerMP player = (GCCorePlayerMP) this.riddenByEntity;
-
-                HashMap<String, Integer> map = WorldUtil.getArrayOfPossibleDimensions(WorldUtil.getPossibleDimensionsForSpaceshipTier(this.getRocketTier()), player);
-
-                String temp = "";
-                int count = 0;
-
-                for (Entry<String, Integer> entry : map.entrySet())
-                {
-                    temp = temp.concat(entry.getKey() + (count < map.entrySet().size() - 1 ? "." : ""));
-                    count++;
-                }
-
-                player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 2, new Object[] { player.username, temp }));
-                player.setSpaceshipTier(this.getRocketTier());
-                player.setUsingPlanetGui();
-
-                this.onTeleport(player);
-                player.mountEntity(this);
-
-                if (!this.isDead)
-                {
-                    this.setDead();
-                }
-            }
-        }
-    }
-
     public void onLaunch()
     {
+        ;
     }
 
-    public void onTeleport(EntityPlayerMP player)
+    public void onReachAtmoshpere()
     {
+        ;
     }
 
     @SideOnly(Side.CLIENT)
@@ -644,17 +505,11 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
     }
 
     @Override
-    public EnumRocketType getType()
-    {
-        return this.rocketType;
-    }
-
-    @Override
     public boolean canRiderInteract()
     {
         return true;
     }
-    
+
     public ResourceLocation getSpaceshipGui()
     {
         return GalacticraftRegistry.getResouceLocationForDimension(this.worldObj.provider.getClass());

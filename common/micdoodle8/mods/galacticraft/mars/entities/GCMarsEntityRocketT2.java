@@ -2,17 +2,14 @@ package micdoodle8.mods.galacticraft.mars.entities;
 
 import icbm.api.IMissile;
 import icbm.api.IMissileLockable;
-import icbm.api.RadarRegistry;
 import java.util.ArrayList;
 import java.util.List;
-import micdoodle8.mods.galacticraft.api.entity.IRocketType;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
+import micdoodle8.mods.galacticraft.core.entities.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
@@ -26,10 +23,8 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
 import universalelectricity.core.vector.Vector3;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -41,31 +36,17 @@ import cpw.mods.fml.relauncher.Side;
  * All rights reserved.
  * 
  */
-public class GCMarsEntityRocketT2 extends EntitySpaceshipBase implements IInventory, IMissileLockable, IRocketType
+public class GCMarsEntityRocketT2 extends EntityTieredRocket implements IInventory, IMissileLockable
 {
-    public final int tankCapacity = 1500;
-    public FluidTank spaceshipFuelTank = new FluidTank(this.tankCapacity);
-
     protected ItemStack[] cargoItems;
 
     public IUpdatePlayerListBox rocketSoundUpdater;
 
     private IFuelDock landingPad;
 
-    public int canisterToTankRatio = this.tankCapacity / GCCoreItems.fuelCanister.getMaxDamage();
-    public double canisterToFluidStackRatio = FluidContainerRegistry.BUCKET_VOLUME * 2.0D / GCCoreItems.fuelCanister.getMaxDamage();
-
     public GCMarsEntityRocketT2(World par1World)
     {
         super(par1World);
-    }
-
-    @Override
-    public int getScaledFuelLevel(int i)
-    {
-        final double fuelLevel = this.spaceshipFuelTank.getFluid() == null ? 0 : this.spaceshipFuelTank.getFluid().amount;
-
-        return (int) (fuelLevel * i / this.tankCapacity);
     }
 
     public GCMarsEntityRocketT2(World par1World, double par2, double par4, double par6, EnumRocketType rocketType)
@@ -92,15 +73,12 @@ public class GCMarsEntityRocketT2 extends EntitySpaceshipBase implements IInvent
     protected void entityInit()
     {
         super.entityInit();
-        RadarRegistry.register(this);
     }
 
     @Override
     public void setDead()
     {
         super.setDead();
-
-        RadarRegistry.unregister(this);
 
         if (this.rocketSoundUpdater != null)
         {
@@ -178,7 +156,6 @@ public class GCMarsEntityRocketT2 extends EntitySpaceshipBase implements IInvent
     public void readNetworkedData(ByteArrayDataInput dataStream)
     {
         super.readNetworkedData(dataStream);
-        this.spaceshipFuelTank.setFluid(new FluidStack(GalacticraftCore.FUEL, dataStream.readInt()));
 
         if (this.cargoItems == null)
         {
@@ -190,14 +167,7 @@ public class GCMarsEntityRocketT2 extends EntitySpaceshipBase implements IInvent
     public ArrayList getNetworkedData(ArrayList list)
     {
         super.getNetworkedData(list);
-        list.add(this.spaceshipFuelTank.getFluid() == null ? 0 : this.spaceshipFuelTank.getFluid().amount);
         return list;
-    }
-
-    @Override
-    public boolean hasValidFuel()
-    {
-        return !(this.spaceshipFuelTank.getFluid() == null || this.spaceshipFuelTank.getFluid().amount == 0);
     }
 
     @Override
@@ -263,12 +233,6 @@ public class GCMarsEntityRocketT2 extends EntitySpaceshipBase implements IInvent
     }
 
     @Override
-    public int getSizeInventory()
-    {
-        return this.rocketType.getInventorySpace();
-    }
-
-    @Override
     protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeEntityToNBT(par1NBTTagCompound);
@@ -289,11 +253,6 @@ public class GCMarsEntityRocketT2 extends EntitySpaceshipBase implements IInvent
             }
 
             par1NBTTagCompound.setTag("Items", var2);
-        }
-
-        if (this.spaceshipFuelTank.getFluid() != null)
-        {
-            par1NBTTagCompound.setTag("fuelTank", this.spaceshipFuelTank.writeToNBT(new NBTTagCompound()));
         }
     }
 
@@ -317,11 +276,6 @@ public class GCMarsEntityRocketT2 extends EntitySpaceshipBase implements IInvent
                     this.cargoItems[var5] = ItemStack.loadItemStackFromNBT(var4);
                 }
             }
-        }
-
-        if (par1NBTTagCompound.hasKey("fuelTank"))
-        {
-            this.spaceshipFuelTank.readFromNBT(par1NBTTagCompound.getCompoundTag("fuelTank"));
         }
     }
 
@@ -608,5 +562,11 @@ public class GCMarsEntityRocketT2 extends EntitySpaceshipBase implements IInvent
     public int getRocketTier()
     {
         return 2;
+    }
+
+    @Override
+    public int getFuelTankCapacity()
+    {
+        return 1500;
     }
 }

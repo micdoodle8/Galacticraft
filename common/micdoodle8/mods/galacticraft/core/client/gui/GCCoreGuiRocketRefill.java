@@ -6,6 +6,7 @@ import mekanism.api.EnumColor;
 import micdoodle8.mods.galacticraft.api.entity.IRocketType.EnumRocketType;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
+import micdoodle8.mods.galacticraft.core.entities.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRocketRefill;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.ResourceLocation;
@@ -47,7 +48,7 @@ public class GCCoreGuiRocketRefill extends GCCoreGuiContainer
         List<String> oxygenDesc = new ArrayList<String>();
         oxygenDesc.add("Rocket fuel tank. Requires");
         oxygenDesc.add("fuel loader to fill");
-        this.infoRegions.add(new GCCoreInfoRegion((this.width - this.xSize) / 2 + (((EntitySpaceshipBase) this.mc.thePlayer.ridingEntity).rocketType.getInventorySpace() == 2 ? 70 : 71), (this.height - this.ySize) / 2 + 6, 36, 40, oxygenDesc, this.width, this.height));
+        this.infoRegions.add(new GCCoreInfoRegion((this.width - this.xSize) / 2 + (((EntityTieredRocket) this.mc.thePlayer.ridingEntity).rocketType.getInventorySpace() == 2 ? 70 : 71), (this.height - this.ySize) / 2 + 6, 36, 40, oxygenDesc, this.width, this.height));
     }
 
     @Override
@@ -81,7 +82,7 @@ public class GCCoreGuiRocketRefill extends GCCoreGuiContainer
         {
             final int fuelLevel = ((EntitySpaceshipBase) this.mc.thePlayer.ridingEntity).getScaledFuelLevel(38);
 
-            this.drawTexturedModalRect((this.width - this.xSize) / 2 + (((EntitySpaceshipBase) this.mc.thePlayer.ridingEntity).rocketType.getInventorySpace() == 2 ? 71 : 72), (this.height - this.ySize) / 2 + 45 - fuelLevel, 176, 38 - fuelLevel, 42, fuelLevel);
+            this.drawTexturedModalRect((this.width - this.xSize) / 2 + (((EntityTieredRocket) this.mc.thePlayer.ridingEntity).rocketType.getInventorySpace() == 2 ? 71 : 72), (this.height - this.ySize) / 2 + 45 - fuelLevel, 176, 38 - fuelLevel, 42, fuelLevel);
         }
     }
 }

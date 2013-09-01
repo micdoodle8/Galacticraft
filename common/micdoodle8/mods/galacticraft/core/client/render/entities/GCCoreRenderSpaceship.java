@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -22,14 +23,24 @@ public class GCCoreRenderSpaceship extends Render
     private ResourceLocation spaceshipTexture;
 
     protected ModelBase modelSpaceship;
-    protected String texture;
+    protected IModelCustom modelSpaceshipObj;
 
     public GCCoreRenderSpaceship(ModelBase spaceshipModel, String textureDomain, String texture)
     {
-        this.spaceshipTexture = new ResourceLocation(textureDomain, "textures/model/" + texture + ".png");
-        this.shadowSize = 2F;
+        this(new ResourceLocation(textureDomain, "textures/model/" + texture + ".png"));
         this.modelSpaceship = spaceshipModel;
-        this.texture = texture;
+    }
+
+    public GCCoreRenderSpaceship(IModelCustom spaceshipModel, String textureDomain, String texture)
+    {
+        this(new ResourceLocation(textureDomain, "textures/model/" + texture + ".png"));
+        this.modelSpaceshipObj = spaceshipModel;
+    }
+
+    private GCCoreRenderSpaceship(ResourceLocation texture)
+    {
+        this.spaceshipTexture = texture;
+        this.shadowSize = 2F;
     }
 
     protected ResourceLocation func_110779_a(Entity par1EntityArrow)
@@ -70,7 +81,16 @@ public class GCCoreRenderSpaceship extends Render
 
         this.func_110777_b(entity);
         GL11.glScalef(-1.0F, -1.0F, 1.0F);
-        this.modelSpaceship.render(entity, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+
+        if (this.modelSpaceshipObj != null)
+        {
+            this.modelSpaceshipObj.renderAll();
+        }
+        else
+        {
+            this.modelSpaceship.render(entity, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+        }
+
         GL11.glPopMatrix();
     }
 
