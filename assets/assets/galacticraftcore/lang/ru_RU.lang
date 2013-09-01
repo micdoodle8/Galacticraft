@@ -133,12 +133,12 @@ tile.enclosed.PipePowerStone.name=Замаскированная каменна�
 tile.enclosed.PipePowerGold.name=Замаскированная золотая двигательная труба
 tile.solar.basic.name=Базовая солнечная панель
 tile.solar.advanced.name=Продвинутая солнечная панель
-tile.parachest.name=Parachest
+tile.parachest.name=Сундук с парашютом
 tile.oreCopper.name=Медная руда
 tile.oreTin.name=Оловянная руда
 tile.copperWire.name=Медный провод
 tile.machine.0.name=Генератор угля
-tile.machine.1.name=Battery Box
+tile.machine.1.name=Аккумуляторный ящик
 tile.machine.2.name=Электрическая печь
 
 
