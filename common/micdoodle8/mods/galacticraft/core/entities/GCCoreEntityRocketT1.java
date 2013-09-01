@@ -152,12 +152,6 @@ public class GCCoreEntityRocketT1 extends EntityTieredRocket implements IInvento
     }
 
     @Override
-    public void onLaunch()
-    {
-
-    }
-
-    @Override
     public void onTeleport(EntityPlayerMP player)
     {
         final GCCorePlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player);
