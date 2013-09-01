@@ -10,6 +10,9 @@ import net.minecraftforge.common.ForgeDirection;
 
 public class GCCoreMapGenDungeon
 {
+    public ArrayList<GCCoreDungeonRoom> bossRooms = new ArrayList<GCCoreDungeonRoom>();
+    public ArrayList<GCCoreDungeonRoom> treasureRooms = new ArrayList<GCCoreDungeonRoom>();
+    public ArrayList<GCCoreDungeonRoom> otherRooms = new ArrayList<GCCoreDungeonRoom>();
 
     public final int DUNGEON_WALL_ID;
     public final int DUNGEON_WALL_META;

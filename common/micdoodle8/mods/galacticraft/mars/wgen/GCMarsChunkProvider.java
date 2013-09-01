@@ -63,21 +63,20 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 
     private final GCCoreMapGenDungeon dungeonGenerator = new GCCoreMapGenDungeon(GCMarsBlocks.marsBlock.blockID, 7, 8, 16, 6);
 
-    static
     {
-        GCCoreDungeonRoom.rooms.add(new GCMarsRoomEmpty(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        GCCoreDungeonRoom.rooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        GCCoreDungeonRoom.rooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        GCCoreDungeonRoom.rooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        GCCoreDungeonRoom.rooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        GCCoreDungeonRoom.rooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        GCCoreDungeonRoom.rooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        GCCoreDungeonRoom.rooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        GCCoreDungeonRoom.rooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        GCCoreDungeonRoom.rooms.add(new GCMarsRoomChests(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        GCCoreDungeonRoom.rooms.add(new GCMarsRoomChests(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        GCCoreDungeonRoom.bossRooms.add(new GCMarsRoomBoss(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        GCCoreDungeonRoom.treasureRooms.add(new GCMarsRoomTreasure(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        dungeonGenerator.otherRooms.add(new GCMarsRoomEmpty(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        dungeonGenerator.otherRooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        dungeonGenerator.otherRooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        dungeonGenerator.otherRooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        dungeonGenerator.otherRooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        dungeonGenerator.otherRooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        dungeonGenerator.otherRooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        dungeonGenerator.otherRooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        dungeonGenerator.otherRooms.add(new GCMarsRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        dungeonGenerator.otherRooms.add(new GCMarsRoomChests(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        dungeonGenerator.otherRooms.add(new GCMarsRoomChests(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        dungeonGenerator.bossRooms.add(new GCMarsRoomBoss(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        dungeonGenerator.treasureRooms.add(new GCMarsRoomTreasure(null, 0, 0, 0, ForgeDirection.UNKNOWN));
     }
 
     private BiomeGenBase[] biomesForGeneration = { GCMarsBiomeGenBase.marsFlat };
