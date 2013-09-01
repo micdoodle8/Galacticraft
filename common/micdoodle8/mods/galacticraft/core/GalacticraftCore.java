@@ -332,12 +332,12 @@ public class GalacticraftCore
 
         GCCoreRecipeManager.loadRecipes();
 
-        // Register steel plate after, so the heavy duty boots recipe is added
-        // to recipe list first, allowing it to be crafted.
-        if (GCCoreConfigManager.loadBC.getBoolean(true))
-        {
-            BasicRegistry.register("plateSteel");
-        }
+//        // Register steel plate after, so the heavy duty boots recipe is added
+//        // to recipe list first, allowing it to be crafted.
+//        if (GCCoreConfigManager.loadBC.getBoolean(true))
+//        {
+//            BasicRegistry.register("plateSteel");
+//        }
 
         NetworkRegistry.instance().registerGuiHandler(this, GalacticraftCore.proxy);
 

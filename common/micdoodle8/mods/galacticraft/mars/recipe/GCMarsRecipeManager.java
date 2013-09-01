@@ -39,7 +39,7 @@ public class GCMarsRecipeManager
             GCMarsRecipeManager.addIndustrialcraftCraftingRecipes();
         }
 
-        if (GCCoreConfigManager.loadBC.getBoolean(true) && GCCoreConfigManager.useRecipesUE)
+        if (GCCoreCompatibilityManager.isBCLoaded() && GCCoreConfigManager.useRecipesUE)
         {
             GCMarsRecipeManager.addBasicComponentsCraftingRecipes();
         }
@@ -193,7 +193,10 @@ public class GCMarsRecipeManager
 
     private static void addBasicComponentsCraftingRecipes()
     {
-        CraftingManager.getInstance().addShapelessRecipe(new ItemStack(GCMarsItems.marsItemBasic, 2, 3), new Object[] { OreDictionary.getOres("plateIron").get(0), OreDictionary.getOres("plateSteel").get(0), OreDictionary.getOres("plateBronze").get(0), OreDictionary.getOres("plateMeteoricIron").get(0) });
+        if (OreDictionary.getOres("plateIron").size() > 0 && OreDictionary.getOres("plateSteel").size() > 0 && OreDictionary.getOres("plateBronze").size() > 0)
+        {
+            CraftingManager.getInstance().addShapelessRecipe(new ItemStack(GCMarsItems.marsItemBasic, 2, 3), new Object[] { OreDictionary.getOres("plateIron").get(0), OreDictionary.getOres("plateSteel").get(0), OreDictionary.getOres("plateBronze").get(0), OreDictionary.getOres("plateMeteoricIron").get(0) });
+        }
     }
 
     private static void addIndustrialcraftCraftingRecipes()

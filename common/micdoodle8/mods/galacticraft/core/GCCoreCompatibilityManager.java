@@ -5,14 +5,11 @@ import cpw.mods.fml.common.Loader;
 public class GCCoreCompatibilityManager
 {
     private static boolean modIc2Loaded;
-
     private static boolean modBCraftLoaded;
-
     private static boolean modGTLoaded;
-
     private static boolean modTELoaded;
-
     private static boolean modAetherIILoaded;
+    private static boolean modBasicComponentsLoaded;
 
     public static void checkForCompatibleMods()
     {
@@ -40,6 +37,11 @@ public class GCCoreCompatibilityManager
         {
             GCCoreCompatibilityManager.modAetherIILoaded = true;
         }
+
+        if (Loader.isModLoaded("BasicComponents"))
+        {
+            GCCoreCompatibilityManager.modBasicComponentsLoaded = true;
+        }
     }
 
     public static boolean isIc2Loaded()
@@ -65,5 +67,10 @@ public class GCCoreCompatibilityManager
     public static boolean isAIILoaded()
     {
         return GCCoreCompatibilityManager.modAetherIILoaded;
+    }
+
+    public static boolean isBCLoaded()
+    {
+        return GCCoreCompatibilityManager.modBasicComponentsLoaded;
     }
 }

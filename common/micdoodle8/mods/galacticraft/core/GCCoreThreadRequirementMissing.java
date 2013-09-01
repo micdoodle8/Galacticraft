@@ -41,7 +41,7 @@ public class GCCoreThreadRequirementMissing extends Thread
                 GCCoreThreadRequirementMissing.openGuiClient();
             }
         }
-        else if (!GCCoreConfigManager.forceLoadGC.getBoolean(false) && !GCCoreConfigManager.loadBC.getBoolean(true) && !GCCoreCompatibilityManager.isIc2Loaded() && !GCCoreCompatibilityManager.isTELoaded())
+        else if (!GCCoreConfigManager.forceLoadGC.getBoolean(false) && !GCCoreCompatibilityManager.isBCLoaded() && !GCCoreCompatibilityManager.isIc2Loaded() && !GCCoreCompatibilityManager.isTELoaded())
         {
             if (GCCoreThreadRequirementMissing.threadSide.isServer())
             {
@@ -74,12 +74,6 @@ public class GCCoreThreadRequirementMissing extends Thread
                 {
                     GCCoreConfigManager.forceLoadGC.set(true);
                     GCCoreConfigManager.configuration.save();
-                }
-                else if (selectedValue != null && selectedValue.equals(LanguageRegistry.instance().getStringLocalization("message.button2.name")))
-                {
-                    GCCoreConfigManager.loadBC.set(true);
-                    GCCoreConfigManager.configuration.save();
-                    JOptionPane.showMessageDialog(null, "You must restart Minecraft for this change to take effect!");
                 }
             }
         }
