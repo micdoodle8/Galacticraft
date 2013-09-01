@@ -9,6 +9,7 @@ item.reinforcedPlateT2.name=Heavy-Duty Plate
 item.tier2.desc=Tier 2
 item.slimelingCargo.name=Slimeling Inventory Bag
 item.key.T2.name=Tier 2 Dungeon Key
+item.deshPlate.name=Desh Plate
 
 # TOOLS
 item.deshPick.name=Desh Pickaxe
