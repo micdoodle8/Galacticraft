@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.mars.tile;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlockMachine;
@@ -19,7 +20,6 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.WorldServer;
 import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -42,6 +42,11 @@ public class GCMarsTileEntityCryogenicChamber extends TileEntityMulti implements
     @Override
     public boolean onActivated(EntityPlayer entityPlayer)
     {
+        if (this.worldObj.isRemote)
+        {
+            return false;
+        }
+        
         EnumStatus enumstatus = this.sleepInBedAt(entityPlayer, this.xCoord, this.yCoord, this.zCoord);
 
         switch (enumstatus)
@@ -56,8 +61,8 @@ public class GCMarsTileEntityCryogenicChamber extends TileEntityMulti implements
             }
 
             return true;
-        case TOO_FAR_AWAY:
-            entityPlayer.sendChatToPlayer(ChatMessageComponent.func_111066_d("Too far away"));
+        case NOT_POSSIBLE_NOW:
+            entityPlayer.sendChatToPlayer(ChatMessageComponent.func_111066_d("I can't use this for another " + (((GCCorePlayerMP) entityPlayer).getCryogenicChamberCooldown() / 20) + " seconds"));
             return false;
         default:
             return false;
@@ -76,6 +81,11 @@ public class GCMarsTileEntityCryogenicChamber extends TileEntityMulti implements
             if (!this.worldObj.provider.isSurfaceWorld())
             {
                 return EnumStatus.NOT_POSSIBLE_HERE;
+            }
+            
+            if (((GCCorePlayerMP) entityPlayer).getCryogenicChamberCooldown() > 0)
+            {
+                return EnumStatus.NOT_POSSIBLE_NOW;
             }
         }
 

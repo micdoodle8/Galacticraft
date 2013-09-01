@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.api.event.wgen.GCCoreEventPopulate;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore.OrientCameraEvent;
 import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderPlayer.RotatePlayerEvent;
+import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP.PlayerWakeUpEvent;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlockMachine;
@@ -28,7 +29,6 @@ import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -76,13 +76,24 @@ public class GCMarsEvents
         int blockID = event.entityPlayer.worldObj.getBlockId(c.posX, c.posY, c.posZ);
         int metadata = event.entityPlayer.worldObj.getBlockMetadata(c.posX, c.posY, c.posZ);
 
-        if (blockID == GCMarsBlocks.machine.blockID && metadata >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA && event.flag1 == false && event.flag2 == true && event.flag3 == true)
+        if (blockID == GCMarsBlocks.machine.blockID && metadata >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA)
         {
-            event.result = EnumStatus.NOT_POSSIBLE_HERE;
-
-            if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT && event.bypassed && event.entityPlayer instanceof GCCorePlayerSP)
+            if (event.flag1 == false && event.flag2 == true && event.flag3 == true)
             {
-                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftMars.CHANNEL, 3, new Object[] {}));
+                event.result = EnumStatus.NOT_POSSIBLE_HERE;
+
+                if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT && event.bypassed && event.entityPlayer instanceof GCCorePlayerSP)
+                {
+                    PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftMars.CHANNEL, 3, new Object[] {}));
+                }
+            }
+            else if (event.flag1 == false && event.flag2 == false && event.flag3 == true)
+            {
+                if (!event.entityPlayer.worldObj.isRemote)
+                {
+                    event.entityPlayer.heal(5.0F);
+                    ((GCCorePlayerMP) event.entityPlayer).setCryogenicChamberCooldown(6000);
+                }
             }
         }
     }
