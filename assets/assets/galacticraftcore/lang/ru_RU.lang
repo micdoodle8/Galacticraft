@@ -55,7 +55,7 @@ item.parachute_purple.name=Фиолетовый парашют
 item.parachute_red.name=Красный парашют
 item.parachute_teal.name=Бирюзовый парашют
 item.parachute_yellow.name=Жёлтый парашют
-item.flagPole.name=Флагшток
+item.steelPole.name=Стальной шест
 item.canvas.name=Полотнище
 item.buggy.name=Багги
 item.emptyLiquidCanister.name=Пустая канистра для жидкостей
@@ -70,6 +70,11 @@ item.key.T1.name=Ключ подземелья Tier 1
 item.buggymat.wheel.name=Колесо багги
 item.buggymat.seat.name=Сиденье багги
 item.buggymat.storage.name=Контейнер багги
+item.basicItem.solar_module_0.name=Одиночный солнечный модуль
+item.basicItem.solar_module_1.name=Целая солнечная панель
+item.tier1.desc=Tier 1
+item.battery.name=Аккумулятор
+item.infiniteBattery.name=Бесконечный аккумулятор
 
 # TOOLS
 item.steel_pickaxe.name=Кирка со сверхпрочным покрытием
@@ -86,7 +91,7 @@ item.steel_boots.name=Ботинки со сверхпрочным покрыт�
 
 # BLOCKS
 tile.treasureChest.name=Сундук с сокровищами
-tile.landingPad.landingPad.name=Взлетная площадка
+tile.landingPad.landingPad.name=Взлётная площадка
 tile.unlitTorch.name=Факел
 tile.unlitTorchLit.name=Факел
 tile.distributor.name=Распределитель кислородных пузырей
@@ -115,6 +120,27 @@ tile.cargo.loader.name=Загрузчик
 tile.cargo.unloader.name=Разгрузчик
 tile.landingPad.buggyFueler.name=Заправочная платформа для багги
 tile.landingPad.cargoPad.name=Погрузочная платформа для ракеты
+tile.enclosed.copperCable.name=Замаскированный медный провод
+tile.enclosed.goldCable.name=Замаскированный золотой провод
+tile.enclosed.hvCable.name=Замаскированный высоковольтный провод
+tile.enclosed.glassFibreCable.name=Замаскированное стекловолокно
+tile.enclosed.lvCable.name=Замаскированный низковольтный провод
+tile.enclosed.PipeItemsCobblestone.name=Замаскированная булыжниковая транспортная труба
+tile.enclosed.PipeItemsStone.name=Замаскированная каменная транспортная труба
+tile.enclosed.PipeFluidsCobblestone.name=Замаскированная булыжниковая жидкостная труба
+tile.enclosed.PipeFluidsStone.name=Замаскированная каменная жидкостная труба
+tile.enclosed.PipePowerStone.name=Замаскированная каменная двигательная труба
+tile.enclosed.PipePowerGold.name=Замаскированная золотая двигательная труба
+tile.solar.basic.name=Базовая солнечная панель
+tile.solar.advanced.name=Продвинутая солнечная панель
+tile.parachest.name=Parachest
+tile.oreCopper.name=Медная руда
+tile.oreTin.name=Оловянная руда
+tile.copperWire.name=Медный провод
+tile.machine.0.name=Генератор угля
+tile.machine.1.name=Battery Box
+tile.machine.2.name=Электрическая печь
+
 
 # ENTITIES
 entity.GalacticraftCore.EvolvedSpider.name=Эволюционировавший паук
@@ -134,6 +160,7 @@ entity.GalacticraftCore.Lander.name=Посадочный модуль
 
 # Schematics
 schematic.moonbuggy.name=Лунный багги
+schematic.rocketT1.name=Ракета Tier 1
 schematic.rocketT2.name=Ракета Tier 2
 
 # DEATH MESSAGES
@@ -160,12 +187,12 @@ newversion.success.name=Найдена новая версия Galacticraft:
 keybind.map.name=[GC] Галактическая карта
 keybind.spaceshipinv.name=[GC] Открыть инвентарь космического корабля
 keybind.sensortoggle.name=[GC] Переключить режим очков с сенсорами
-keybind.vehicleforward=[GC] "Вперёд" для техники
-keybind.vehiclebackward=[GC] "Назад" для техники
-keybind.vehicleleft=[GC] "Влево" для техники
-keybind.vehicleright=[GC] "Вправо" для техники
-keybind.vehicleup=[GC] "Вверх" для техники
-keybind.vehicledown=[GC] "Вниз" для техники
+keybind.vehicleforward.name=[GC] "Вперёд" для техники
+keybind.vehiclebackward.name=[GC] "Назад" для техники
+keybind.vehicleleft.name=[GC] "Влево" для техники
+keybind.vehicleright.name=[GC] "Вправо" для техники
+keybind.vehicleup.name=[GC] "Вверх" для техники
+keybind.vehicledown.name=[GC] "Вниз" для техники
 
 # CREATIVE TABS
 itemGroup.GalacticraftCore=Galacticraft
@@ -183,6 +210,8 @@ container.refinery.name=Очистительный завод
 container.treasurechest.name=Сундук с сокровищами
 container.lander.name=Посадочный модуль
 container.spaceship.name=Ракета Tier 1
+container.solarbasic.name=Базовая солнечная панель
+container.solaradvanced.name=Продвинутая солнечная панель
 
 gui.message.out.name=Выход
 gui.message.in.name=Вход
@@ -215,6 +244,11 @@ gui.status.ready.name=Готово
 gui.status.refining.name=Очищение
 gui.status.idle.name=Простой
 gui.status.nooil.name=Нет топлива
+gui.status.raining.name=Дождь
+gui.status.blockedpartial.name=Солнце частично видимо
+gui.status.blockedfully.name=Солнце невидимо
+gui.status.collectingenergy.name=Сбор энергии
+gui.status.sealerblocked.name=Выходное вентиляционное отверстие заблокировано!
 
 gui.button.enableseal.name=Запустить уплотнитель
 gui.button.disableseal.name=Отключить уплотнитель
@@ -230,6 +264,7 @@ gui.button.refine.name=Очистить
 gui.button.back.name=Назад
 gui.button.next.name=Вперёд
 gui.button.unlockschematic.name=Разблокировать схему
+gui.button.stoprefine.name=Остановить очистку
 
 gui.choosePlanet.desc.overworld=Полна жизни#Обитаема#Гравитация: 100%
 gui.warning=ОПАСНОСТЬ!
@@ -260,5 +295,6 @@ gui.buggy.inv.name=Инвентарь / Топливо
 dimension.Overworld.name=Земля
 dimension.Moon.name=Луна
 dimension.Sun.name=Солнце
+
 
 # </file>
