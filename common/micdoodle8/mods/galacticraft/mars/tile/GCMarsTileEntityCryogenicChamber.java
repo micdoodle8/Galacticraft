@@ -14,10 +14,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet17Sleep;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.WorldServer;
 import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -42,20 +44,22 @@ public class GCMarsTileEntityCryogenicChamber extends TileEntityMulti implements
     {
         EnumStatus enumstatus = this.sleepInBedAt(entityPlayer, this.xCoord, this.yCoord, this.zCoord);
 
-        if (enumstatus == EnumStatus.OK)
+        switch (enumstatus)
         {
+        case OK:
             if (this.worldObj instanceof WorldServer && entityPlayer instanceof EntityPlayerMP)
             {
                 Packet17Sleep packet17sleep = new Packet17Sleep(entityPlayer, 0, this.xCoord, this.yCoord, this.zCoord);
                 ((WorldServer) this.worldObj).getEntityTracker().sendPacketToAllPlayersTrackingEntity(entityPlayer, packet17sleep);
-                ((EntityPlayerMP) entityPlayer).playerNetServerHandler.setPlayerLocation(entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ, entityPlayer.rotationYaw, entityPlayer.rotationPitch);
+                ((EntityPlayerMP) entityPlayer).playerNetServerHandler.setPlayerLocation(this.xCoord, this.yCoord, this.zCoord, entityPlayer.rotationYaw, entityPlayer.rotationPitch);
                 ((EntityPlayerMP) entityPlayer).playerNetServerHandler.sendPacketToPlayer(packet17sleep);
             }
 
             return true;
-        }
-        else
-        {
+        case TOO_FAR_AWAY:
+            entityPlayer.sendChatToPlayer(ChatMessageComponent.func_111066_d("Too far away"));
+            return false;
+        default:
             return false;
         }
     }
@@ -72,11 +76,6 @@ public class GCMarsTileEntityCryogenicChamber extends TileEntityMulti implements
             if (!this.worldObj.provider.isSurfaceWorld())
             {
                 return EnumStatus.NOT_POSSIBLE_HERE;
-            }
-
-            if (Math.abs(entityPlayer.posX - par1) > 3.0D || Math.abs(entityPlayer.posY - par2) > 2.0D || Math.abs(entityPlayer.posZ - par3) > 3.0D)
-            {
-                return EnumStatus.TOO_FAR_AWAY;
             }
         }
 
