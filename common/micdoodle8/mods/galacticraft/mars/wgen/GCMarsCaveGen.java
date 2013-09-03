@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.mars.wgen;
 
 import java.util.Random;
 import micdoodle8.mods.galacticraft.core.wgen.GCCoreMapGenBaseMeta;
+import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
 import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -14,6 +15,9 @@ import net.minecraft.world.World;
  */
 public class GCMarsCaveGen extends GCCoreMapGenBaseMeta
 {
+	
+	public static final int BREAK_THROUGH_CHANCE = 25; // 1 in n chance
+	
     protected void generateLargeCaveNode(long par1, int par3, int par4, short[] blockIdArray, byte[] metaArray, double par6, double par8, double par10)
     {
         this.generateCaveNode(par1, par3, par4, blockIdArray, metaArray, par6, par8, par10, 1.0F + this.rand.nextFloat() * 6.0F, 0.0F, 0.0F, -1, -1, 0.5D);
@@ -154,14 +158,14 @@ public class GCMarsCaveGen extends GCCoreMapGenBaseMeta
                             final double yfactor = (localY + 0.5D - par8) / d7;
                             final double yfactorSq = yfactor * yfactor;
 
-                            for (int localZ = l1; localZ < i2; localZ++)
+                            for (int localX = l1; localX < i2; localX++)
                             {
-                                final double zfactor = (localZ + par3 * 16 + 0.5D - par6) / d6;
+                                final double zfactor = (localX + par3 * 16 + 0.5D - par6) / d6;
                                 final double zfactorSq = zfactor * zfactor;
 
-                                for (int localX = l2; localX < i3; localX++)
+                                for (int localZ = l2; localZ < i3; localZ++)
                                 {
-                                    final double xfactor = (localX + par4 * 16 + 0.5D - par10) / d6;
+                                    final double xfactor = (localZ + par4 * 16 + 0.5D - par10) / d6;
                                     final double xfactorSq = xfactor * xfactor;
 
                                     if (xfactorSq + zfactorSq < 1.0D)
@@ -170,9 +174,14 @@ public class GCMarsCaveGen extends GCCoreMapGenBaseMeta
 
                                         if (yfactor > -0.7D && xfactorSq + yfactorSq + zfactorSq < 1.0D)
                                         {
-                                            if (blockIdArray[coords] == GCMoonBlocks.blockMoon.blockID && (metaArray[coords] == 3 || metaArray[coords] == 4))
+                                            if (blockIdArray[coords] == GCMarsBlocks.marsBlock.blockID)
                                             {
-                                                blockIdArray[coords] = 0;
+                                            	if(metaArray[coords] == 6 || metaArray[coords] == 9) 
+                                            	{
+                                            		blockIdArray[coords] = 0;
+                                            	} else if(metaArray[coords] == 5 && random.nextInt(this.BREAK_THROUGH_CHANCE) == 0) {
+                                            		blockIdArray[coords] = 0;
+                                            	}
                                             }
                                         }
                                     }
