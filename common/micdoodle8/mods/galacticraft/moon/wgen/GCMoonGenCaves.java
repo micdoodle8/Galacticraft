@@ -2,12 +2,22 @@ package micdoodle8.mods.galacticraft.moon.wgen;
 
 import java.util.Random;
 import micdoodle8.mods.galacticraft.core.wgen.GCCoreMapGenBaseMeta;
+import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
 import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
+/**
+ * Copyright 2012-2013, micdoodle8
+ * 
+ * All rights reserved.
+ * 
+ */
 public class GCMoonGenCaves extends GCCoreMapGenBaseMeta
 {
+	
+	public static final int BREAK_THROUGH_CHANCE = 25; // 1 in n chance
+	
     protected void generateLargeCaveNode(long par1, int par3, int par4, short[] blockIdArray, byte[] metaArray, double par6, double par8, double par10)
     {
         this.generateCaveNode(par1, par3, par4, blockIdArray, metaArray, par6, par8, par10, 1.0F + this.rand.nextFloat() * 6.0F, 0.0F, 0.0F, -1, -1, 0.5D);
@@ -148,14 +158,14 @@ public class GCMoonGenCaves extends GCCoreMapGenBaseMeta
                             final double yfactor = (localY + 0.5D - par8) / d7;
                             final double yfactorSq = yfactor * yfactor;
 
-                            for (int localZ = l1; localZ < i2; localZ++)
+                            for (int localX = l1; localX < i2; localX++)
                             {
-                                final double zfactor = (localZ + par3 * 16 + 0.5D - par6) / d6;
+                                final double zfactor = (localX + par3 * 16 + 0.5D - par6) / d6;
                                 final double zfactorSq = zfactor * zfactor;
 
-                                for (int localX = l2; localX < i3; localX++)
+                                for (int localZ = l2; localZ < i3; localZ++)
                                 {
-                                    final double xfactor = (localX + par4 * 16 + 0.5D - par10) / d6;
+                                    final double xfactor = (localZ + par4 * 16 + 0.5D - par10) / d6;
                                     final double xfactorSq = xfactor * xfactor;
 
                                     if (xfactorSq + zfactorSq < 1.0D)
@@ -164,9 +174,16 @@ public class GCMoonGenCaves extends GCCoreMapGenBaseMeta
 
                                         if (yfactor > -0.7D && xfactorSq + yfactorSq + zfactorSq < 1.0D)
                                         {
-                                            if (blockIdArray[coords] == GCMoonBlocks.blockMoon.blockID && (metaArray[coords] == 3 || metaArray[coords] == 4))
+                                            if (blockIdArray[coords] == GCMoonBlocks.blockMoon.blockID)
                                             {
-                                                blockIdArray[coords] = 0;
+                                            	if(metaArray[coords] == 3 || metaArray[coords] == 4) 
+                                            	{
+                                            		blockIdArray[coords] = 0;
+                                            	} 
+                                            	else if(metaArray[coords] == 5 && random.nextInt(GCMoonGenCaves.BREAK_THROUGH_CHANCE) == 0) 
+                                            	{
+                                            		blockIdArray[coords] = 0;
+                                            	}
                                             }
                                         }
                                     }
@@ -187,38 +204,38 @@ public class GCMoonGenCaves extends GCCoreMapGenBaseMeta
     @Override
     protected void recursiveGenerate(World par1World, int par2, int par3, int par4, int par5, short[] blockIdArray, byte[] metaArray)
     {
-        int i1 = this.rand.nextInt(this.rand.nextInt(this.rand.nextInt(40) + 1) + 1);
+        int var7 = this.rand.nextInt(this.rand.nextInt(this.rand.nextInt(40) + 1) + 1);
 
         if (this.rand.nextInt(15) != 0)
         {
-            i1 = 0;
+            var7 = 0;
         }
 
-        for (int j1 = 0; j1 < i1; ++j1)
+        for (int var8 = 0; var8 < var7; ++var8)
         {
-            final double d0 = par2 * 16 + this.rand.nextInt(16);
-            final double d1 = this.rand.nextInt(this.rand.nextInt(120) + 8);
-            final double d2 = par3 * 16 + this.rand.nextInt(16);
-            int k1 = 1;
+            final double var9 = par2 * 16 + this.rand.nextInt(16);
+            final double var11 = this.rand.nextInt(this.rand.nextInt(120) + 8);
+            final double var13 = par3 * 16 + this.rand.nextInt(16);
+            int var15 = 1;
 
             if (this.rand.nextInt(4) == 0)
             {
-                this.generateLargeCaveNode(this.rand.nextLong(), par4, par5, blockIdArray, metaArray, d0, d1, d2);
-                k1 += this.rand.nextInt(4);
+                this.generateLargeCaveNode(this.rand.nextLong(), par4, par5, blockIdArray, metaArray, var9, var11, var13);
+                var15 += this.rand.nextInt(4);
             }
 
-            for (int l1 = 0; l1 < k1; ++l1)
+            for (int var16 = 0; var16 < var15; ++var16)
             {
-                final float f = this.rand.nextFloat() * (float) Math.PI * 2.0F;
-                final float f1 = (this.rand.nextFloat() - 0.5F) * 2.0F / 8.0F;
-                float f2 = this.rand.nextFloat() * 2.0F + this.rand.nextFloat();
+                final float var17 = this.rand.nextFloat() * (float) Math.PI * 2.0F;
+                final float var18 = (this.rand.nextFloat() - 0.5F) * 2.0F / 8.0F;
+                float var19 = this.rand.nextFloat() * 2.0F + this.rand.nextFloat();
 
                 if (this.rand.nextInt(10) == 0)
                 {
-                    f2 *= this.rand.nextFloat() * this.rand.nextFloat() * 3.0F + 1.0F;
+                    var19 *= this.rand.nextFloat() * this.rand.nextFloat() * 3.0F + 1.0F;
                 }
 
-                this.generateCaveNode(this.rand.nextLong(), par4, par5, blockIdArray, metaArray, d0, d1, d2, f2, f, f1, 0, 0, 1.0D);
+                this.generateCaveNode(this.rand.nextLong(), par4, par5, blockIdArray, metaArray, var9, var11, var13, var19, var17, var18, 0, 0, 1.0D);
             }
         }
     }

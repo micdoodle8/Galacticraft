@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.mars.wgen;
 import java.util.Random;
 import micdoodle8.mods.galacticraft.core.wgen.GCCoreMapGenBaseMeta;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
-import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
@@ -179,7 +178,7 @@ public class GCMarsCaveGen extends GCCoreMapGenBaseMeta
                                             	if(metaArray[coords] == 6 || metaArray[coords] == 9) 
                                             	{
                                             		blockIdArray[coords] = 0;
-                                            	} else if(metaArray[coords] == 5 && random.nextInt(this.BREAK_THROUGH_CHANCE) == 0) {
+                                            	} else if(metaArray[coords] == 5 && random.nextInt(GCMarsCaveGen.BREAK_THROUGH_CHANCE) == 0) {
                                             		blockIdArray[coords] = 0;
                                             	}
                                             }
