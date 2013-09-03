@@ -39,7 +39,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInventory, IPacketReceiver, IDockable
 {
-    private final int tankCapacity = 1000;
+    private final int tankCapacity = 700;
     public FluidTank buggyFuelTank = new FluidTank(this.tankCapacity);
     protected long ticks = 0;
     public int buggyType;
@@ -48,7 +48,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
     public int timeSinceHit;
     public int rockDirection;
     public double speed;
-    float maxSpeed = 0.5F;
+    float maxSpeed = 0.7F;
     float accel = 0.2F;
     float turnFactor = 3.0F;
     public String texture;
@@ -126,7 +126,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
     @Override
     public boolean canBePushed()
     {
-        return false;
+        return true;
     }
 
     @Override
