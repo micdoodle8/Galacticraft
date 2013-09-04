@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase.EnumLaunchPhase;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
@@ -102,7 +103,7 @@ public class GCMarsEntityRocketT2 extends EntityTieredRocket implements IInvento
             i = 1;
         }
 
-        if ((this.getLaunched() || this.rand.nextInt(i) == 0) && !GCCoreConfigManager.disableSpaceshipParticles && this.hasValidFuel())
+        if ((this.getLaunched() || (this.launchPhase == EnumLaunchPhase.IGNITED.getPhase() && this.rand.nextInt(i) == 0)) && !GCCoreConfigManager.disableSpaceshipParticles && this.hasValidFuel())
         {
             if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
             {
