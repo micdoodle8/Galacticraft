@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.mars.dimension;
 
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.mars.GCMarsConfigManager;
 import micdoodle8.mods.galacticraft.mars.wgen.GCMarsChunkProvider;
 import micdoodle8.mods.galacticraft.mars.wgen.GCMarsWorldChunkManager;
@@ -149,7 +150,7 @@ public class GCMarsWorldProvider extends WorldProvider implements IGalacticraftW
     @Override
     public boolean canRespawnHere()
     {
-        return true;
+        return !GCCoreConfigManager.forceOverworldRespawn;
     }
 
     @Override

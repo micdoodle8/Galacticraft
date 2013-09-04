@@ -163,7 +163,7 @@ public class GCCoreWorldProviderSpaceStation extends WorldProvider implements IO
     @Override
     public boolean canRespawnHere()
     {
-        return true;
+        return !GCCoreConfigManager.forceOverworldRespawn;
     }
 
     @Override

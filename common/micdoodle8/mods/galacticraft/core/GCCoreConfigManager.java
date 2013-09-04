@@ -185,6 +185,7 @@ public class GCCoreConfigManager
     public static int suffocationCooldown;
     public static int suffocationDamage;
     public static int[] externalOilGen;
+    public static boolean forceOverworldRespawn;
 
     // public static boolean disableExternalModGen;
 
@@ -344,6 +345,7 @@ public class GCCoreConfigManager
             GCCoreConfigManager.suffocationCooldown = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Suffocation Cooldown", 100, "Lower/Raise this value to change time between suffocation damage ticks").getInt(100);
             GCCoreConfigManager.suffocationDamage = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Suffocation Damage", 2, "Change this value to modify the damage taken per suffocation tick").getInt(2);
             GCCoreConfigManager.externalOilGen = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Oil gen in external dimensions", new int[] { 0 }, "List of non-galacticraft dimension IDs to generate oil in").getIntList();
+            GCCoreConfigManager.forceOverworldRespawn = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Force Overworld Spawn", false, "By default, you will respawn on galacticraft dimensions if you die. If you set this to true, you will respawn back on earth.").getBoolean(false);
         }
         catch (final Exception e)
         {
