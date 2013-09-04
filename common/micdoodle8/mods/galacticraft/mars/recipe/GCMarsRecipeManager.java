@@ -53,6 +53,8 @@ public class GCMarsRecipeManager
         OreDictionary.registerOre("plateDesh", new ItemStack(GCMarsItems.marsItemBasic, 1, 5));
         OreDictionary.registerOre("plateHeavyT2", new ItemStack(GCMarsItems.marsItemBasic, 1, 3));
 
+        RecipeUtil.addRecipe(new ItemStack(GCMarsItems.deshBoots), new Object[] { "X X", "X X", 'X', new ItemStack(GCMarsItems.marsItemBasic, 1, 2) });
+
         RecipeUtil.addRecipe(new ItemStack(GCMarsBlocks.marsBlock, 1, 8), new Object[] { "XXX", "XXX", "XXX", 'X', "ingotDesh" });
 
         RecipeUtil.addRecipe(new ItemStack(GCMarsBlocks.machine, 1, 0), new Object[] { "XWX", "XZX", "WVW", 'V', GCCoreItems.oxygenConcentrator, 'W', "plateDesh", 'X', "ingotDesh", 'Z', new ItemStack(GCCoreItems.canister) });
@@ -84,8 +86,6 @@ public class GCMarsRecipeManager
         RecipeUtil.addRecipe(new ItemStack(GCMarsItems.deshChestplate), new Object[] { "X X", "XXX", "XXX", 'X', new ItemStack(GCMarsItems.marsItemBasic, 1, 2) });
 
         RecipeUtil.addRecipe(new ItemStack(GCMarsItems.deshLeggings), new Object[] { "XXX", "X X", "X X", 'X', new ItemStack(GCMarsItems.marsItemBasic, 1, 2) });
-
-        RecipeUtil.addRecipe(new ItemStack(GCMarsItems.deshBoots), new Object[] { "X X", "X X", 'X', new ItemStack(GCMarsItems.marsItemBasic, 1, 2) });
 
         for (int var2 = 0; var2 < 16; ++var2)
         {
