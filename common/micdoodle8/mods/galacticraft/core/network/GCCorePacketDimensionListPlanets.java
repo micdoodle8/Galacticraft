@@ -32,7 +32,7 @@ public class GCCorePacketDimensionListPlanets implements IGalacticraftAdvancedPa
             while (var3.hasNext())
             {
                 final Integer var4 = (Integer) var3.next();
-                GCLog.info("" + var4);
+                GCLog.info("Registering remote planet dimension: " + var4);
                 data.writeInt(var4.intValue());
             }
 

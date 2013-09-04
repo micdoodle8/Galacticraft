@@ -350,7 +350,7 @@ public class GCCorePacketHandlerClient implements IPacketHandler
                     if (!WorldUtil.registeredPlanets.contains(Integer.valueOf(var3)))
                     {
                         WorldUtil.registeredPlanets.add(Integer.valueOf(var3));
-                        DimensionManager.registerDimension(var3, GCMoonConfigManager.dimensionIDMoon);
+                        DimensionManager.registerDimension(var3, var3);
                     }
                 }
             }
