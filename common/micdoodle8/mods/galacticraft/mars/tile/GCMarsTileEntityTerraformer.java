@@ -1,10 +1,10 @@
 package micdoodle8.mods.galacticraft.mars.tile;
 
 import java.util.ArrayList;
+import micdoodle8.mods.galacticraft.api.block.ITerraformableBlock;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectric;
-import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityTerraformBubble;
 import micdoodle8.mods.galacticraft.mars.wgen.GCMarsWorldGenTerraformTree;
 import net.minecraft.block.Block;
@@ -148,18 +148,18 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectric implem
                             int blockID = this.worldObj.getBlockId(x, y, z);
                             int blockIDAbove = this.worldObj.getBlockId(x, y + 1, z);
 
-                            if (blockID > 0 && blockIDAbove == 0 && Math.sqrt(this.getDistanceFromServer(x, y, z)) < this.terraformBubble.getSize())
+                            if (blockID > 0 && this.getDistanceFromServer(x, y, z) < this.terraformBubble.getSize() * this.terraformBubble.getSize())
                             {
                                 Block block = Block.blocksList[blockID];
 
-                                if (block.blockID == GCMarsBlocks.marsBlock.blockID && this.worldObj.getBlockMetadata(x, y, z) == 5)
+                                if (block instanceof ITerraformableBlock && ((ITerraformableBlock) block).isTerraformable(this.worldObj, x, y, z))
                                 {
                                     if (!this.grassDisabled && this.getFirstSeedStack() != null)
                                     {
                                         this.terraformableBlocksList.add(new Vector3(x, y, z));
                                     }
                                 }
-                                else if (block.blockID == Block.grass.blockID)
+                                else if (block.blockID == Block.grass.blockID && blockIDAbove == 0)
                                 {
                                     if (!this.treesDisabled && this.getFirstSaplingStack() != null)
                                     {

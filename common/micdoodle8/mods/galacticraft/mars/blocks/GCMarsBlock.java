@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
 import micdoodle8.mods.galacticraft.api.block.IPlantableBlock;
+import micdoodle8.mods.galacticraft.api.block.ITerraformableBlock;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
@@ -31,7 +32,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * All rights reserved.
  * 
  */
-public class GCMarsBlock extends Block implements IDetectableResource, IPlantableBlock, ITileEntityProvider
+public class GCMarsBlock extends Block implements IDetectableResource, IPlantableBlock, ITileEntityProvider, ITerraformableBlock
 {
     @SideOnly(Side.CLIENT)
     private Icon[] marsBlockIcons;
@@ -280,5 +281,11 @@ public class GCMarsBlock extends Block implements IDetectableResource, IPlantabl
                 GalacticraftMars.proxy.spawnParticle("sludgeDrip", x + rand.nextDouble(), y, z + rand.nextDouble());
             }
         }
+    }
+
+    @Override
+    public boolean isTerraformable(World world, int x, int y, int z)
+    {
+        return world.getBlockMetadata(x, y, z) == 5 && world.getBlockId(x, y + 1, z) == 0;
     }
 }

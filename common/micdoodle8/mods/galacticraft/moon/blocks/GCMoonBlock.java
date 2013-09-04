@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
 import micdoodle8.mods.galacticraft.api.block.IPlantableBlock;
+import micdoodle8.mods.galacticraft.api.block.ITerraformableBlock;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockAdvanced;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityDungeonSpawner;
@@ -31,7 +32,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * All rights reserved.
  * 
  */
-public class GCMoonBlock extends GCCoreBlockAdvanced implements IDetectableResource, IPlantableBlock
+public class GCMoonBlock extends GCCoreBlockAdvanced implements IDetectableResource, IPlantableBlock, ITerraformableBlock
 {
     // CopperMoon: 0, TinMoon: 1, CheeseStone: 2;
     @SideOnly(Side.CLIENT)
@@ -325,5 +326,11 @@ public class GCMoonBlock extends GCCoreBlockAdvanced implements IDetectableResou
         }
 
         return false;
+    }
+
+    @Override
+    public boolean isTerraformable(World world, int x, int y, int z)
+    {
+        return world.getBlockMetadata(x, y, z) == 5 && world.getBlockId(x, y + 1, z) == 0;
     }
 }
