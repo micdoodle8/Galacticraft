@@ -19,6 +19,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EnumStatus;
 import net.minecraft.potion.Potion;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EntityDamageSource;
@@ -93,6 +94,11 @@ public class GCMarsEvents
                 {
                     event.entityPlayer.heal(5.0F);
                     ((GCCorePlayerMP) event.entityPlayer).setCryogenicChamberCooldown(6000);
+                    
+                    for (int j = 0; j < MinecraftServer.getServer().worldServers.length; ++j)
+                    {
+                        MinecraftServer.getServer().worldServers[j].setWorldTime((long)0);
+                    }
                 }
             }
         }
