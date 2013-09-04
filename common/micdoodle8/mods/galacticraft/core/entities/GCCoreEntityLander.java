@@ -30,7 +30,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInventorySettable, IPacketReceiver
+public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInventorySettable, IPacketReceiver, IScaleableFuelLevel
 {
     private final int tankCapacity = 5000;
     public FluidTank fuelTank = new FluidTank(this.tankCapacity);

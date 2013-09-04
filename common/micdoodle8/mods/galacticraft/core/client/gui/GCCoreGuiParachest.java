@@ -1,9 +1,8 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
+import micdoodle8.mods.galacticraft.core.entities.IScaleableFuelLevel;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerParachest;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityParachest;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -55,14 +54,9 @@ public class GCCoreGuiParachest extends GCCoreGuiContainer
         int l = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
 
-        if (this.lowerChestInventory instanceof GCCoreTileEntityParachest)
+        if (this.lowerChestInventory instanceof IScaleableFuelLevel)
         {
-            int fuelLevel = ((GCCoreTileEntityParachest) this.lowerChestInventory).getScaledFuelLevel(28);
-            this.drawTexturedModalRect(k + 17, l + (this.inventorySlots == 3 ? 40 : 42) - fuelLevel + this.inventorySlots * 2, 176, 28 - fuelLevel, 34, fuelLevel);
-        }
-        else if (this.lowerChestInventory instanceof GCCoreEntityLander)
-        {
-            int fuelLevel = ((GCCoreEntityLander) this.lowerChestInventory).getScaledFuelLevel(28);
+            int fuelLevel = ((IScaleableFuelLevel) this.lowerChestInventory).getScaledFuelLevel(28);
             this.drawTexturedModalRect(k + 17, l + (this.inventorySlots == 3 ? 40 : 42) - fuelLevel + this.inventorySlots * 2, 176, 28 - fuelLevel, 34, fuelLevel);
         }
     }

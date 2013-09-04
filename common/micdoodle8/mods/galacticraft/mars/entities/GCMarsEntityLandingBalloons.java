@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLanderFlameFX;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityAdvanced;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.IScaleableFuelLevel;
 import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
@@ -31,7 +32,7 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class GCMarsEntityLandingBalloons extends GCCoreEntityAdvanced implements IInventorySettable, IPacketReceiver
+public class GCMarsEntityLandingBalloons extends GCCoreEntityAdvanced implements IInventorySettable, IPacketReceiver, IScaleableFuelLevel
 {
     private final int tankCapacity = 5000;
     public FluidTank fuelTank = new FluidTank(this.tankCapacity);

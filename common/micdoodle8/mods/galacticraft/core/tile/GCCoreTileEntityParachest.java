@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockParachest;
+import micdoodle8.mods.galacticraft.core.entities.IScaleableFuelLevel;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerParachest;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
@@ -27,7 +28,7 @@ import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-public class GCCoreTileEntityParachest extends TileEntity implements IInventory, IPacketReceiver
+public class GCCoreTileEntityParachest extends TileEntity implements IInventory, IPacketReceiver, IScaleableFuelLevel
 {
     private final int tankCapacity = 5000;
     public FluidTank fuelTank = new FluidTank(this.tankCapacity);
