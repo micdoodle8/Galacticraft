@@ -383,6 +383,11 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectric implem
         {
             this.useCount = new int[2];
         }
+
+        if (nbt.hasKey("waterTank"))
+        {
+            this.waterTank.readFromNBT(nbt.getCompoundTag("waterTank"));
+        }
     }
 
     @Override
@@ -406,6 +411,11 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectric implem
         nbt.setTag("Items", list);
         nbt.setFloat("BubbleSize", this.size);
         nbt.setIntArray("UseCountArray", this.useCount);
+
+        if (this.waterTank.getFluid() != null)
+        {
+            nbt.setTag("waterTank", this.waterTank.writeToNBT(new NBTTagCompound()));
+        }
     }
 
     @Override
