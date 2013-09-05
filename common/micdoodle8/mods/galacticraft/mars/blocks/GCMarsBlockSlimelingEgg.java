@@ -60,60 +60,18 @@ public class GCMarsBlockSlimelingEgg extends Block implements ITileEntityProvide
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9)
-    {
-        ItemStack stack = player.getCurrentEquippedItem();
-
-        if (stack != null && stack.itemID == Item.slimeBall.itemID && world.getBlockMetadata(x, y, z) < 3)
-        {
-        }
-        else if (world.getBlockMetadata(x, y, z) >= 3)
-        {
-            int l = world.getBlockMetadata(x, y, z) - 3;
-            world.setBlockMetadataWithNotify(x, y, z, l, 2);
-
-            if (!world.isRemote)
-            {
-                float f = world.rand.nextFloat() * 0.8F + 0.1F;
-                float f1 = world.rand.nextFloat() * 0.8F + 0.1F;
-                float f2 = world.rand.nextFloat() * 0.8F + 0.1F;
-                EntityItem entityitem;
-
-                entityitem = new EntityItem(world, x + f, y + f1, z + f2, new ItemStack(Item.slimeBall));
-                entityitem.motionX = (float) world.rand.nextGaussian() * 0.05F;
-                entityitem.motionY = (float) world.rand.nextGaussian() * 0.05F + 0.2F;
-                entityitem.motionZ = (float) world.rand.nextGaussian() * 0.05F;
-
-                world.spawnEntityInWorld(entityitem);
-
-                TileEntity tile = world.getBlockTileEntity(x, y, z);
-
-                if (tile instanceof GCMarsTileEntitySlimelingEgg)
-                {
-                    ((GCMarsTileEntitySlimelingEgg) tile).timeToHatch = -1;
-                    ((GCMarsTileEntitySlimelingEgg) tile).lastTouchedPlayer = "NoPlayer";
-                }
-            }
-
-            return true;
-        }
-
-        return false;
-    }
-
-    @Override
     public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z)
     {
         ItemStack currentStack = player.getCurrentEquippedItem();
+        int l = world.getBlockMetadata(x, y, z);
 
         if (currentStack != null && currentStack.getItem() instanceof ItemPickaxe)
         {
             return world.setBlockToAir(x, y, z);
         }
-        else
+        else if (l < 3)
         {
-            int l = world.getBlockMetadata(x, y, z) + 3;
-            world.setBlockMetadataWithNotify(x, y, z, l, 2);
+            world.setBlockMetadataWithNotify(x, y, z, l + 3, 2);
 
             TileEntity tile = world.getBlockTileEntity(x, y, z);
 
@@ -123,6 +81,14 @@ public class GCMarsBlockSlimelingEgg extends Block implements ITileEntityProvide
                 ((GCMarsTileEntitySlimelingEgg) tile).lastTouchedPlayer = player.username;
             }
 
+            return false;
+        }
+        else if (player.capabilities.isCreativeMode)
+        {
+            return world.setBlockToAir(x, y, z);
+        }
+        else
+        {
             return false;
         }
     }
