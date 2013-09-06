@@ -20,7 +20,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * All rights reserved.
  * 
  */
-public class GCMarsWorldProvider extends WorldProvider implements IGalacticraftWorldProvider
+public class GCMarsWorldProvider extends WorldProvider implements IGalacticraftWorldProvider, ISolarLevel
 {
     @Override
     public void setDimension(int var1)
@@ -229,5 +229,11 @@ public class GCMarsWorldProvider extends WorldProvider implements IGalacticraftW
     public boolean canSpaceshipTierPass(int tier)
     {
         return tier >= 2;
+    }
+    
+    @Override
+    public double getSolarEnergyMultiplier()
+    {
+        return 2.0D;
     }
 }
