@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.moon.wgen;
 
 import java.util.Random;
 import micdoodle8.mods.galacticraft.core.wgen.GCCoreMapGenBaseMeta;
-import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
 import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -15,9 +14,9 @@ import net.minecraft.world.World;
  */
 public class GCMoonGenCaves extends GCCoreMapGenBaseMeta
 {
-	
-	public static final int BREAK_THROUGH_CHANCE = 25; // 1 in n chance
-	
+
+    public static final int BREAK_THROUGH_CHANCE = 25; // 1 in n chance
+
     protected void generateLargeCaveNode(long par1, int par3, int par4, short[] blockIdArray, byte[] metaArray, double par6, double par8, double par10)
     {
         this.generateCaveNode(par1, par3, par4, blockIdArray, metaArray, par6, par8, par10, 1.0F + this.rand.nextFloat() * 6.0F, 0.0F, 0.0F, -1, -1, 0.5D);
@@ -176,14 +175,14 @@ public class GCMoonGenCaves extends GCCoreMapGenBaseMeta
                                         {
                                             if (blockIdArray[coords] == GCMoonBlocks.blockMoon.blockID)
                                             {
-                                            	if(metaArray[coords] == 3 || metaArray[coords] == 4) 
-                                            	{
-                                            		blockIdArray[coords] = 0;
-                                            	} 
-                                            	else if(metaArray[coords] == 5 && random.nextInt(GCMoonGenCaves.BREAK_THROUGH_CHANCE) == 0) 
-                                            	{
-                                            		blockIdArray[coords] = 0;
-                                            	}
+                                                if (metaArray[coords] == 3 || metaArray[coords] == 4)
+                                                {
+                                                    blockIdArray[coords] = 0;
+                                                }
+                                                else if (metaArray[coords] == 5 && random.nextInt(GCMoonGenCaves.BREAK_THROUGH_CHANCE) == 0)
+                                                {
+                                                    blockIdArray[coords] = 0;
+                                                }
                                             }
                                         }
                                     }

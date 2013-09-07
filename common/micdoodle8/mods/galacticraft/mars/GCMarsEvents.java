@@ -24,6 +24,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.WorldServer;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -94,10 +95,10 @@ public class GCMarsEvents
                 {
                     event.entityPlayer.heal(5.0F);
                     ((GCCorePlayerMP) event.entityPlayer).setCryogenicChamberCooldown(6000);
-                    
-                    for (int j = 0; j < MinecraftServer.getServer().worldServers.length; ++j)
+
+                    for (WorldServer worldServer : MinecraftServer.getServer().worldServers)
                     {
-                        MinecraftServer.getServer().worldServers[j].setWorldTime((long)0);
+                        worldServer.setWorldTime(0);
                     }
                 }
             }

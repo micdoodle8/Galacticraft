@@ -14,7 +14,6 @@ import net.minecraft.client.multiplayer.NetClientHandler;
 import net.minecraft.client.renderer.IImageBuffer;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.client.renderer.texture.TextureObject;
 import net.minecraft.entity.player.EnumStatus;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -109,7 +108,7 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
         TextureManager texturemanager = Minecraft.getMinecraft().getTextureManager();
 
         ThreadDownloadImageData object = new ThreadDownloadImageData(par1Str, par2ResourceLocation, par3IImageBuffer);
-        texturemanager.loadTexture(par0ResourceLocation, (TextureObject)object);
+        texturemanager.loadTexture(par0ResourceLocation, object);
 
         return object;
     }

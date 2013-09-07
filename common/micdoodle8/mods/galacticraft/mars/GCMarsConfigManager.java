@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.mars;
 
 import java.io.File;
 import java.util.logging.Level;
-import micdoodle8.mods.galacticraft.moon.GCMoonConfigManager;
 import net.minecraftforge.common.Configuration;
 import cpw.mods.fml.common.FMLLog;
 
@@ -74,7 +73,7 @@ public class GCMarsConfigManager
 
     // SCHEMATIC
     public static int idSchematicRocketT2;
-    
+
     // GENERAL
     public static boolean generateOtherMods;
 

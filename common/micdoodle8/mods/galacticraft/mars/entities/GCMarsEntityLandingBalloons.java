@@ -54,6 +54,7 @@ public class GCMarsEntityLandingBalloons extends GCCoreEntityAdvanced implements
         this.setSize(3.0F, 3.0F);
     }
 
+    @Override
     public int getScaledFuelLevel(int i)
     {
         final double fuelLevel = this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluid().amount;

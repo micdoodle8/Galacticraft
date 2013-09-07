@@ -109,7 +109,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
     private ArrayList<ISchematicPage> unlockedSchematics = new ArrayList<ISchematicPage>();
     private ArrayList<ISchematicPage> lastUnlockedSchematics = new ArrayList<ISchematicPage>();
-    
+
     private int cryogenicChamberCooldown;
 
     public GCCorePlayerMP(MinecraftServer server, World world, String username, ItemInWorldManager itemInWorldManager)
@@ -161,7 +161,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
         }
 
         this.tick++;
-        
+
         if (this.cryogenicChamberCooldown > 0)
         {
             this.cryogenicChamberCooldown--;
@@ -1016,7 +1016,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
         }
 
         Collections.sort(this.getUnlockedSchematics());
-        
+
         this.cryogenicChamberCooldown = nbt.getInteger("CryogenicChamberCooldown");
 
         super.readEntityFromNBT(nbt);
@@ -1068,7 +1068,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
         }
 
         nbt.setTag("RocketItems", var2);
-        
+
         nbt.setInteger("CryogenicChamberCooldown", this.cryogenicChamberCooldown);
 
         super.writeEntityToNBT(nbt);
@@ -1329,12 +1329,12 @@ public class GCCorePlayerMP extends EntityPlayerMP
     {
         this.rocketItem = rocketItem;
     }
-    
+
     public int getCryogenicChamberCooldown()
     {
         return this.cryogenicChamberCooldown;
     }
-    
+
     public void setCryogenicChamberCooldown(int cryogenicChamberCooldown)
     {
         this.cryogenicChamberCooldown = cryogenicChamberCooldown;

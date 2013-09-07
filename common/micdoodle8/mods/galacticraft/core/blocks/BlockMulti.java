@@ -33,6 +33,7 @@ public class BlockMulti extends BlockContainer
         return this;
     }
 
+    @Override
     public BlockMulti setTextureName(String name)
     {
         this.textureName = name;

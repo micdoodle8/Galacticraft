@@ -151,13 +151,13 @@ public class ClientProxyMars extends CommonProxyMars
     {
         return ClientProxyMars.treasureRenderID;
     }
-    
+
     @Override
     public int getMachineRenderID()
     {
         return ClientProxyMars.machineRenderID;
     }
-    
+
     @Override
     public int getTintedGlassPaneRenderID()
     {
@@ -203,13 +203,13 @@ public class ClientProxyMars extends CommonProxyMars
             final DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
             final int packetType = PacketUtil.readPacketID(data);
             EntityPlayer player = (EntityPlayer) p;
-            
+
             if (packetType == 0)
             {
                 final Class<?>[] decodeAs = { Integer.class, Integer.class, Integer.class };
                 final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
 
-                switch ((Integer)packetReadout[1])
+                switch ((Integer) packetReadout[1])
                 {
                 case 0:
                     int entityID = (Integer) packetReadout[2];
@@ -316,7 +316,7 @@ public class ClientProxyMars extends CommonProxyMars
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
     {
         TileEntity tile = world.getBlockTileEntity(x, y, z);
-        
+
         if (ID == GCMarsConfigManager.idGuiMachine)
         {
             if (tile instanceof GCMarsTileEntityTerraformer)
@@ -324,7 +324,7 @@ public class ClientProxyMars extends CommonProxyMars
                 return new GCMarsGuiTerraformer(player.inventory, (GCMarsTileEntityTerraformer) tile);
             }
         }
-        
+
         return null;
     }
 }

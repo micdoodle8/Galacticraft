@@ -46,7 +46,7 @@ public class GCMarsTileEntityCryogenicChamber extends TileEntityMulti implements
         {
             return false;
         }
-        
+
         EnumStatus enumstatus = this.sleepInBedAt(entityPlayer, this.xCoord, this.yCoord, this.zCoord);
 
         switch (enumstatus)
@@ -62,7 +62,7 @@ public class GCMarsTileEntityCryogenicChamber extends TileEntityMulti implements
 
             return true;
         case NOT_POSSIBLE_NOW:
-            entityPlayer.sendChatToPlayer(ChatMessageComponent.createFromText("I can't use this for another " + (((GCCorePlayerMP) entityPlayer).getCryogenicChamberCooldown() / 20) + " seconds"));
+            entityPlayer.sendChatToPlayer(ChatMessageComponent.createFromText("I can't use this for another " + ((GCCorePlayerMP) entityPlayer).getCryogenicChamberCooldown() / 20 + " seconds"));
             return false;
         default:
             return false;
@@ -82,7 +82,7 @@ public class GCMarsTileEntityCryogenicChamber extends TileEntityMulti implements
             {
                 return EnumStatus.NOT_POSSIBLE_HERE;
             }
-            
+
             if (((GCCorePlayerMP) entityPlayer).getCryogenicChamberCooldown() > 0)
             {
                 return EnumStatus.NOT_POSSIBLE_NOW;

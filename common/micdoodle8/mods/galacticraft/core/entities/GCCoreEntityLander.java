@@ -58,6 +58,7 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
         this.startingYSpeed = -5.0D;
     }
 
+    @Override
     public int getScaledFuelLevel(int i)
     {
         final double fuelLevel = this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluid().amount;
