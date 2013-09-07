@@ -14,6 +14,7 @@ import micdoodle8.mods.galacticraft.mars.GCMarsConfigManager;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
 import micdoodle8.mods.galacticraft.mars.client.fx.GCMarsEntityDropParticleFX;
+import micdoodle8.mods.galacticraft.mars.client.gui.GCMarsGuiSlimelingFeed;
 import micdoodle8.mods.galacticraft.mars.client.gui.GCMarsGuiSlimelingInventory;
 import micdoodle8.mods.galacticraft.mars.client.gui.GCMarsGuiTerraformer;
 import micdoodle8.mods.galacticraft.mars.client.model.GCMarsModelSpaceshipTier2;
@@ -245,6 +246,12 @@ public class ClientProxyMars extends CommonProxyMars
     public static boolean handleLiquidMovement(EntityPlayer player)
     {
         return ClientProxyMars.handleBacterialMovement(player) || ClientProxyMars.handleLavaMovement(player) || ClientProxyMars.handleWaterMovement(player);
+    }
+    
+    @Override
+    public void opengSlimelingGui(GCMarsEntitySlimeling slimeling)
+    {
+        FMLClientHandler.instance().getClient().displayGuiScreen(new GCMarsGuiSlimelingFeed(slimeling));
     }
 
     public static class TickHandlerClient implements ITickHandler

@@ -2,8 +2,7 @@ package micdoodle8.mods.galacticraft.mars.entities;
 
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
-import micdoodle8.mods.galacticraft.mars.client.gui.GCMarsGuiSlimeling;
-import micdoodle8.mods.galacticraft.mars.client.gui.GCMarsGuiSlimelingFeed;
+import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import micdoodle8.mods.galacticraft.mars.inventory.GCMarsInventorySlimeling;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -41,7 +40,6 @@ import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.world.World;
-import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 
@@ -385,7 +383,7 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
 
                         if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
                         {
-                            FMLClientHandler.instance().getClient().displayGuiScreen(new GCMarsGuiSlimelingFeed(this));
+                            GalacticraftMars.proxy.opengSlimelingGui(this);
                         }
 
                         if (this.rand.nextInt(2) == 0)
@@ -409,7 +407,7 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
                 {
                     if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
                     {
-                        FMLClientHandler.instance().getClient().displayGuiScreen(new GCMarsGuiSlimeling(this));
+                        GalacticraftMars.proxy.opengSlimelingGui(this);
                     }
                 }
             }
@@ -417,7 +415,7 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
             {
                 if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
                 {
-                    FMLClientHandler.instance().getClient().displayGuiScreen(new GCMarsGuiSlimeling(this));
+                    GalacticraftMars.proxy.opengSlimelingGui(this);
                 }
             }
         }

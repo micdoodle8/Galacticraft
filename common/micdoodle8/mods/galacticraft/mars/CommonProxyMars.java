@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.mars;
 
+import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySlimeling;
 import micdoodle8.mods.galacticraft.mars.inventory.GCMarsContainerTerraformer;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityTerraformer;
 import net.minecraft.entity.player.EntityPlayer;
@@ -65,6 +66,12 @@ public class CommonProxyMars implements IGuiHandler
 
     public void spawnParticle(String var1, double var2, double var4, double var6)
     {
+        ;
+    }
+    
+    public void opengSlimelingGui(GCMarsEntitySlimeling slimeling)
+    {
+        ;
     }
 
     @Override
