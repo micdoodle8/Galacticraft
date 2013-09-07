@@ -28,7 +28,6 @@ import net.minecraftforge.fluids.FluidTank;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.IPacketReceiver;
 import com.google.common.io.ByteArrayDataInput;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -467,8 +466,6 @@ public class GCMarsEntityLandingBalloons extends GCCoreEntityAdvanced implements
         {
             return;
         }
-        
-        FMLLog.info("" + this.worldObj.isRemote + " " + this.hasReceivedPacket + " " + this.groundHitCount);
 
         if (this.groundHitCount < 14)
         {
