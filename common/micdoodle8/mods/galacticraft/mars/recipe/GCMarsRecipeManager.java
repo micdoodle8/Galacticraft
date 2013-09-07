@@ -87,6 +87,8 @@ public class GCMarsRecipeManager
 
         RecipeUtil.addRecipe(new ItemStack(GCMarsItems.deshLeggings), new Object[] { "XXX", "X X", "X X", 'X', new ItemStack(GCMarsItems.marsItemBasic, 1, 2) });
 
+        RecipeUtil.addRecipe(new ItemStack(GCMarsItems.marsItemBasic, 9, 2), new Object[] { "X", 'X', new ItemStack(GCMarsBlocks.marsBlock, 1, 8) });
+
         for (int var2 = 0; var2 < 16; ++var2)
         {
             CraftingManager.getInstance().addShapelessRecipe(new ItemStack(GCMarsBlocks.tintedGlassPane, 1, 15 - var2), new Object[] { new ItemStack(Item.dyePowder, 1, var2), Block.thinGlass, OreDictionary.getOres("plateDesh").get(0) });
