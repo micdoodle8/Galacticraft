@@ -855,7 +855,10 @@ public class WorldUtil
                         {
                             if (i == var8.getRocketStacks().length - 1)
                             {
-                                var8.getRocketStacks()[i] = new ItemStack(var8.getRocketItem(), 1, var8.getRocketType());
+                                if (var8.getRocketItem() != null)
+                                {
+                                    var8.getRocketStacks()[i] = new ItemStack(var8.getRocketItem(), 1, var8.getRocketType());
+                                }
                             }
                             else if (i == var8.getRocketStacks().length - 2)
                             {
