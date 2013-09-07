@@ -90,8 +90,6 @@ import net.minecraftforge.fluids.FluidStack;
 import universalelectricity.compatibility.Compatibility;
 import universalelectricity.core.UniversalElectricity;
 import universalelectricity.prefab.ConductorChunkInitiate;
-import universalelectricity.prefab.ore.OreGenBase;
-import universalelectricity.prefab.ore.OreGenerator;
 import basiccomponents.api.BasicRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
@@ -212,16 +210,6 @@ public class GalacticraftCore
                 Class<?> basicComp = Class.forName("basiccomponents.BasicComponents");
                 Object generationOreTin = basicComp.getDeclaredField("generationOreTin").get(null);
                 Object generationOreCopper = basicComp.getDeclaredField("generationOreCopper").get(null);
-
-                if (GCCoreConfigManager.disableOreGenTin && generationOreTin != null)
-                {
-                    OreGenerator.removeOre((OreGenBase) generationOreTin);
-                }
-
-                if (GCCoreConfigManager.disableOreGenCopper && generationOreCopper != null)
-                {
-                    OreGenerator.removeOre((OreGenBase) generationOreCopper);
-                }
             }
             catch (Exception e)
             {
