@@ -34,7 +34,6 @@ import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.stats.StatBase;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -66,11 +65,6 @@ public class CommonProxyCore implements IGuiHandler
     }
 
     public void registerRenderInformation()
-    {
-
-    }
-
-    public void addStat(EntityPlayer player, StatBase stat, int i)
     {
 
     }
