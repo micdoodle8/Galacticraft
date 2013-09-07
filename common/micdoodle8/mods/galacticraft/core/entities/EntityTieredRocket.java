@@ -186,7 +186,7 @@ public abstract class EntityTieredRocket extends EntitySpaceshipBase implements 
     }
 
     @Override
-    public boolean func_130002_c(EntityPlayer par1EntityPlayer)
+    public boolean interactFirst(EntityPlayer par1EntityPlayer)
     {
         if (this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase())
         {

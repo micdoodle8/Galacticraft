@@ -90,29 +90,7 @@ public class GCCoreRenderPlayer extends RenderPlayer
             GL11.glPopMatrix();
         }
 
-        if (par1AbstractClientPlayer.getCommandSenderName().equals("deadmau5") && par1AbstractClientPlayer.func_110309_l().func_110557_a())
-        {
-            this.func_110776_a(par1AbstractClientPlayer.func_110306_p());
-
-            for (int i = 0; i < 2; ++i)
-            {
-                float f3 = par1AbstractClientPlayer.prevRotationYaw + (par1AbstractClientPlayer.rotationYaw - par1AbstractClientPlayer.prevRotationYaw) * par2 - (par1AbstractClientPlayer.prevRenderYawOffset + (par1AbstractClientPlayer.renderYawOffset - par1AbstractClientPlayer.prevRenderYawOffset) * par2);
-                float f4 = par1AbstractClientPlayer.prevRotationPitch + (par1AbstractClientPlayer.rotationPitch - par1AbstractClientPlayer.prevRotationPitch) * par2;
-                GL11.glPushMatrix();
-                GL11.glRotatef(f3, 0.0F, 1.0F, 0.0F);
-                GL11.glRotatef(f4, 1.0F, 0.0F, 0.0F);
-                GL11.glTranslatef(0.375F * (i * 2 - 1), 0.0F, 0.0F);
-                GL11.glTranslatef(0.0F, -0.375F, 0.0F);
-                GL11.glRotatef(-f4, 1.0F, 0.0F, 0.0F);
-                GL11.glRotatef(-f3, 0.0F, 1.0F, 0.0F);
-                float f5 = 1.3333334F;
-                GL11.glScalef(f5, f5, f5);
-                this.modelBipedMain.renderEars(0.0625F);
-                GL11.glPopMatrix();
-            }
-        }
-
-        boolean flag = par1AbstractClientPlayer.func_110310_o().func_110557_a();
+        boolean flag = par1AbstractClientPlayer.getTextureCape().isTextureUploaded();
         boolean flag1 = !par1AbstractClientPlayer.isInvisible();
         boolean flag2 = !par1AbstractClientPlayer.getHideCape();
         flag = event.renderCape && flag;
@@ -120,7 +98,7 @@ public class GCCoreRenderPlayer extends RenderPlayer
 
         if (flag && flag1 && flag2)
         {
-            this.func_110776_a(par1AbstractClientPlayer.func_110303_q());
+            this.bindTexture(par1AbstractClientPlayer.getLocationCape());
             GL11.glPushMatrix();
             GL11.glTranslatef(0.0F, 0.0F, 0.125F);
             double d0 = par1AbstractClientPlayer.field_71091_bM + (par1AbstractClientPlayer.field_71094_bP - par1AbstractClientPlayer.field_71091_bM) * par2 - (par1AbstractClientPlayer.prevPosX + (par1AbstractClientPlayer.posX - par1AbstractClientPlayer.prevPosX) * par2);

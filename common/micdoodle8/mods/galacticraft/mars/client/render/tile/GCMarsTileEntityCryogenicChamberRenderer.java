@@ -57,9 +57,9 @@ public class GCMarsTileEntityCryogenicChamberRenderer extends TileEntitySpecialR
         GL11.glRotatef(rotation, 0, 1, 0);
         GL11.glTranslatef(-0.5F, 0.0F, 0.0F);
 
-        this.func_110628_a(GCMarsTileEntityCryogenicChamberRenderer.chamberTexture0);
+        this.bindTexture(GCMarsTileEntityCryogenicChamberRenderer.chamberTexture0);
         this.model.renderPart("Main_Cylinder");
-        this.func_110628_a(GCMarsTileEntityCryogenicChamberRenderer.chamberTexture1);
+        this.bindTexture(GCMarsTileEntityCryogenicChamberRenderer.chamberTexture1);
         this.model.renderPart("Shield_Torus");
 
         GL11.glPopMatrix();

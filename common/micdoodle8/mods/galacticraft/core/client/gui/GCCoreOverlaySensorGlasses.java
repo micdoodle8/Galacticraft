@@ -47,7 +47,7 @@ public class GCCoreOverlaySensorGlasses extends GCCoreOverlay
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
-        FMLClientHandler.instance().getClient().renderEngine.func_110577_a(GCCoreOverlaySensorGlasses.hudTexture);
+        FMLClientHandler.instance().getClient().renderEngine.bindTexture(GCCoreOverlaySensorGlasses.hudTexture);
         final Tessellator tessellator = Tessellator.instance;
 
         tessellator.startDrawingQuads();
@@ -110,7 +110,7 @@ public class GCCoreOverlaySensorGlasses extends GCCoreOverlay
                 if (var20 < 4.0D)
                 {
                     GL11.glColor4f(0.0F, 255F / 255F, 198F / 255F, (float) Math.min(1.0D, Math.max(0.2D, (var20 - 1.0D) * 0.1D)));
-                    FMLClientHandler.instance().getClient().renderEngine.func_110577_a(GCCoreOverlaySensorGlasses.indicatorTexture);
+                    FMLClientHandler.instance().getClient().renderEngine.bindTexture(GCCoreOverlaySensorGlasses.indicatorTexture);
                     GL11.glRotatef(-var60 - ClientProxyCore.playerRotationYaw + 180.0F, 0.0F, 0.0F, 1.0F);
                     GL11.glTranslated(0.0D, var2 ? -var20 * 16 : -var21 * 16, 0.0D);
                     GL11.glRotatef(-(-var60 - ClientProxyCore.playerRotationYaw + 180.0F), 0.0F, 0.0F, 1.0F);

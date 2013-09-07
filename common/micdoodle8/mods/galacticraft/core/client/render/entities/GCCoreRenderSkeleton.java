@@ -42,7 +42,7 @@ public class GCCoreRenderSkeleton extends RenderLiving
     }
 
     @Override
-    protected ResourceLocation func_110775_a(Entity par1Entity)
+    protected ResourceLocation getEntityTexture(Entity par1Entity)
     {
         return this.func_110779_a((GCCoreEntitySkeleton) par1Entity);
     }
@@ -96,7 +96,7 @@ public class GCCoreRenderSkeleton extends RenderLiving
             if (par2 == 1)
             {
                 final float var4 = par1EntityLiving.ticksExisted * 2 + par3;
-                this.func_110776_a(GCCoreRenderSkeleton.powerTexture);
+                this.bindTexture(GCCoreRenderSkeleton.powerTexture);
                 GL11.glMatrixMode(GL11.GL_TEXTURE);
                 GL11.glLoadIdentity();
                 final float var5 = var4 * 0.01F;

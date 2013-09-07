@@ -46,7 +46,7 @@ public class GCCoreItemRendererSpaceship implements IItemRenderer
 
         this.transform(type);
 
-        FMLClientHandler.instance().getClient().renderEngine.func_110577_a(this.texture);
+        FMLClientHandler.instance().getClient().renderEngine.bindTexture(this.texture);
         this.modelSpaceship.render(this.spaceship, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
         GL11.glPopMatrix();
 
@@ -56,7 +56,7 @@ public class GCCoreItemRendererSpaceship implements IItemRenderer
             if (EnumRocketType.values()[index].getInventorySpace() > 3)
             {
                 final ModelChest modelChest = this.chestModel;
-                FMLClientHandler.instance().getClient().renderEngine.func_110577_a(GCCoreItemRendererSpaceship.chestTexture);
+                FMLClientHandler.instance().getClient().renderEngine.bindTexture(GCCoreItemRendererSpaceship.chestTexture);
 
                 GL11.glPushMatrix();
                 GL11.glDisable(GL11.GL_DEPTH_TEST);

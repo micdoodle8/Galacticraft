@@ -832,7 +832,7 @@ public class ClientProxyCore extends CommonProxyCore
 
         if (minecraft.thePlayer.isInsideOfMaterial(GCCoreBlocks.crudeOil))
         {
-            minecraft.func_110434_K().func_110577_a(ClientProxyCore.underOilTexture);
+            minecraft.getTextureManager().bindTexture(ClientProxyCore.underOilTexture);
         }
         else
         {

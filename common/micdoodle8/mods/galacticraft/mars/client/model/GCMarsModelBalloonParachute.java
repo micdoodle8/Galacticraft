@@ -48,7 +48,7 @@ public class GCMarsModelBalloonParachute extends ModelBase
 
     public void renderAll()
     {
-        FMLClientHandler.instance().getClient().renderEngine.func_110577_a(GCMarsModelBalloonParachute.grayParachuteTexture);
+        FMLClientHandler.instance().getClient().renderEngine.bindTexture(GCMarsModelBalloonParachute.grayParachuteTexture);
 
         int i;
 

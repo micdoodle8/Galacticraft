@@ -25,7 +25,7 @@ public class GCMarsRenderTerraformBubble extends Render
     private final GCCoreModelOxygenBubble bubbleModel = new GCCoreModelOxygenBubble();
 
     @Override
-    protected ResourceLocation func_110775_a(Entity par1Entity)
+    protected ResourceLocation getEntityTexture(Entity par1Entity)
     {
         return GCMarsRenderTerraformBubble.bubbleTexture;
     }
@@ -38,7 +38,7 @@ public class GCMarsRenderTerraformBubble extends Render
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glTranslatef((float) d0, (float) d1, (float) d2);
 
-        this.func_110777_b(entity);
+        this.bindEntityTexture(entity);
 
         GL11.glEnable(GL11.GL_BLEND);
 

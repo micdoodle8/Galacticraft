@@ -13,7 +13,7 @@ public class GCCoreBlockOre extends Block
     {
         super(id, Material.rock);
         this.setUnlocalizedName(name);
-        this.func_111022_d(GalacticraftCore.TEXTURE_PREFIX + name);
+        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + name);
         this.setHardness(2.0F);
     }
 

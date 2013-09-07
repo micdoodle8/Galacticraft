@@ -66,7 +66,7 @@ public class GCCoreGuiCoalGenerator extends GuiContainer
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
-        this.mc.renderEngine.func_110577_a(GCCoreGuiCoalGenerator.coalGeneratorTexture);
+        this.mc.renderEngine.bindTexture(GCCoreGuiCoalGenerator.coalGeneratorTexture);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         this.containerWidth = (this.width - this.xSize) / 2;

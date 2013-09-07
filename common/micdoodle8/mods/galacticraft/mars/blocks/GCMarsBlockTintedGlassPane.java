@@ -23,7 +23,7 @@ public class GCMarsBlockTintedGlassPane extends BlockPane
         super(blockID, "", "", Material.glass, false);
         String str = "tintedGlassPane";
         this.setUnlocalizedName(str);
-        this.func_111022_d(str);
+        this.setTextureName(str);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class GCMarsBlockTintedGlassPane extends BlockPane
 
         for (int i = 0; i < this.iconArray.length; ++i)
         {
-            this.iconArray[i] = par1IconRegister.registerIcon(GalacticraftMars.TEXTURE_PREFIX + this.func_111023_E() + "_" + ItemDye.field_94595_b[BlockColored.getDyeFromBlock(i)]);
+            this.iconArray[i] = par1IconRegister.registerIcon(GalacticraftMars.TEXTURE_PREFIX + this.getTextureName() + "_" + ItemDye.dyeColorNames[BlockColored.getDyeFromBlock(i)]);
         }
 
         this.blockIcon = this.iconArray[0];

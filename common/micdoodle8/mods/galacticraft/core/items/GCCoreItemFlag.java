@@ -114,7 +114,7 @@ public class GCCoreItemFlag extends Item implements IHoldableItem
                 }
                 else
                 {
-                    par3EntityPlayer.sendChatToPlayer(ChatMessageComponent.func_111066_d("Flag already placed here!"));
+                    par3EntityPlayer.sendChatToPlayer(ChatMessageComponent.createFromText("Flag already placed here!"));
                 }
             }
 

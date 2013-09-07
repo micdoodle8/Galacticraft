@@ -90,14 +90,14 @@ public class GCMarsGuiSlimelingFeed extends GuiScreen
     @Override
     public void drawScreen(int par1, int par2, float par3)
     {
-        this.mc.renderEngine.func_110577_a(GCMarsGuiSlimelingFeed.slimelingPanelGui);
+        this.mc.renderEngine.bindTexture(GCMarsGuiSlimelingFeed.slimelingPanelGui);
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(var5, var6 - 20, 0, 0, this.xSize, this.ySize);
 
         super.drawScreen(par1, par2, par3);
 
-        this.buttonHealSlimeling.enabled = this.slimeling.func_110143_aJ() < Math.floor(this.slimeling.func_110138_aP());
+        this.buttonHealSlimeling.enabled = this.slimeling.getHealth() < Math.floor(this.slimeling.getMaxHealth());
         this.buttonGrowSlimeling.enabled = this.slimeling.getScale() < 1.0F;
         this.buttonStrengthenSlimeling.enabled = this.slimeling.getAttackDamage() < 1.0;
         this.buttonBreedSlimeling.enabled = this.slimeling.inLove <= 0 && this.slimeling.getGrowingAge() == 0;

@@ -75,7 +75,7 @@ public class GCCoreItemRendererKey implements IItemRenderer
             GL11.glRotatef((float) (Math.sin((entityItem.age + 1) / 100.0F) * 180.0F), 0, 1, 0);
         }
 
-        FMLClientHandler.instance().getClient().renderEngine.func_110577_a(this.treasureChestTexture);
+        FMLClientHandler.instance().getClient().renderEngine.bindTexture(this.treasureChestTexture);
 
         this.keyModel.renderAll();
         GL11.glPopMatrix();

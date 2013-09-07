@@ -28,7 +28,7 @@ public class GCCoreGuiTexturedButton extends GuiButton
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             this.field_82253_i = par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height;
             this.getHoverState(this.field_82253_i);
-            par1Minecraft.renderEngine.func_110577_a(this.texture);
+            par1Minecraft.renderEngine.bindTexture(this.texture);
             this.drawTexturedModalRect(this.xPosition, this.yPosition, 0, 0, this.bWidth, this.bHeight);
             this.mouseDragged(par1Minecraft, par2, par3);
             int var6 = 14737632;

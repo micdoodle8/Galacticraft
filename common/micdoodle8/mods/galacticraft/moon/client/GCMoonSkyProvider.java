@@ -146,7 +146,7 @@ public class GCMoonSkyProvider extends IRenderHandler
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 5F);
         GL11.glRotatef(world.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
         var12 = 30.0F;
-        FMLClientHandler.instance().getClient().renderEngine.func_110577_a(GCMoonSkyProvider.sunTexture);
+        FMLClientHandler.instance().getClient().renderEngine.bindTexture(GCMoonSkyProvider.sunTexture);
         var23.startDrawingQuads();
         var23.addVertexWithUV(-var12, 150.0D, -var12, 0.0D, 0.0D);
         var23.addVertexWithUV(var12, 150.0D, -var12, 1.0D, 0.0D);
@@ -167,7 +167,7 @@ public class GCMoonSkyProvider extends IRenderHandler
         GL11.glRotatef(earthRotation, 1.0F, 0.0F, 0.0F);
         GL11.glRotatef(200F, 1.0F, 0.0F, 0.0F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1F);
-        FMLClientHandler.instance().getClient().renderEngine.func_110577_a(GCMoonSkyProvider.overworldTexture);
+        FMLClientHandler.instance().getClient().renderEngine.bindTexture(GCMoonSkyProvider.overworldTexture);
         world.getMoonPhase();
         var23.startDrawingQuads();
         var23.addVertexWithUV(-var12, -100.0D, var12, 0, 1);

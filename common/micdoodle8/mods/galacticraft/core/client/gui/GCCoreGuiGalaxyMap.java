@@ -383,7 +383,7 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
 
                     if (renderer != null)
                     {
-                        this.mc.renderEngine.func_110577_a(renderer.getPlanetSprite());
+                        this.mc.renderEngine.bindTexture(renderer.getPlanetSprite());
                         renderer.renderSlot(0, var42, var41, planet.getPlanetSize() * 15.0F + 1 / this.zoom * 3F, var3);
 
                         if (this.selectedPlanet != null && planet.getSlotRenderer().getPlanetName().equals(this.selectedPlanet.getMapObject().getSlotRenderer().getPlanetName()))
@@ -452,7 +452,7 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
 
                                     if (moonRenderer != null)
                                     {
-                                        this.mc.renderEngine.func_110577_a(moonRenderer.getPlanetSprite());
+                                        this.mc.renderEngine.bindTexture(moonRenderer.getPlanetSprite());
                                         moonRenderer.renderSlot(0, var42b, var41b, (float) (moon.getPlanetSize() * 15.0F + 1 / Math.pow(this.zoom, -2)), var3);
 
                                         if (this.selectedPlanet != null && moon.getSlotRenderer().getPlanetName().equals(this.selectedPlanet.getMapObject().getSlotRenderer().getPlanetName()))
@@ -498,7 +498,7 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
         GL11.glDisable(GL11.GL_DEPTH_TEST);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
 
-        this.mc.func_110434_K().func_110577_a(GCCoreGuiGalaxyMap.guiTexture);
+        this.mc.getTextureManager().bindTexture(GCCoreGuiGalaxyMap.guiTexture);
         this.drawTexturedModalRect(this.width / 2 - 5, this.height / 2 - 5, 123, 0, 10, 10);
 
         final int col = GCCoreUtil.convertTo32BitColor(255, 198, 198, 198);

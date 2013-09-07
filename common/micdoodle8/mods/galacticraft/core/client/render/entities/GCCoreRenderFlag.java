@@ -51,7 +51,7 @@ public class GCCoreRenderFlag extends Render
     }
 
     @Override
-    protected ResourceLocation func_110775_a(Entity entity)
+    protected ResourceLocation getEntityTexture(Entity entity)
     {
         return this.func_110779_a((GCCoreEntityFlag) entity);
     }
@@ -70,7 +70,7 @@ public class GCCoreRenderFlag extends Render
         GL11.glTranslatef((float) par2, (float) par4, (float) par6);
         GL11.glRotatef(180.0F - par8, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(-var24, 0.0F, 0.0F, 1.0F);
-        this.func_110777_b(entity);
+        this.bindEntityTexture(entity);
         GL11.glScalef(-1.0F, -1.0F, 1.0F);
         this.modelSpaceship.render(entity, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
         GL11.glPopMatrix();

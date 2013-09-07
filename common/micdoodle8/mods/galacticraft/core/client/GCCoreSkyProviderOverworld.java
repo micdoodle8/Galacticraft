@@ -171,7 +171,7 @@ public class GCCoreSkyProviderOverworld extends IRenderHandler
 
         GL11.glRotatef(this.minecraft.theWorld.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
         var12 = 30.0F;
-        this.minecraft.renderEngine.func_110577_a(GCCoreSkyProviderOverworld.sunTexture);
+        this.minecraft.renderEngine.bindTexture(GCCoreSkyProviderOverworld.sunTexture);
         var23.startDrawingQuads();
         var23.addVertexWithUV(-var12, 100.0D, -var12, 0.0D, 0.0D);
         var23.addVertexWithUV(var12, 100.0D, -var12, 1.0D, 0.0D);
@@ -180,8 +180,8 @@ public class GCCoreSkyProviderOverworld extends IRenderHandler
         var23.draw();
 
         var12 = 40.0F;
-        this.minecraft.renderEngine.func_110577_a(GCCoreSkyProviderOverworld.moonTexture);
-        float var28 = this.minecraft.theWorld.func_130001_d();
+        this.minecraft.renderEngine.bindTexture(GCCoreSkyProviderOverworld.moonTexture);
+        float var28 = this.minecraft.theWorld.getMoonPhase();
         final int var30 = (int) (var28 % 4);
         final int var29 = (int) (var28 / 4 % 2);
         final float var16 = (var30 + 0) / 4.0F;
@@ -221,7 +221,7 @@ public class GCCoreSkyProviderOverworld extends IRenderHandler
         scale = Math.max(scale, 0.2F);
         GL11.glScalef(scale, 0.0F, scale);
         GL11.glTranslatef(0.0F, -var20, 0.0F);
-        this.minecraft.renderEngine.func_110577_a(this.planetToRender);
+        this.minecraft.renderEngine.bindTexture(this.planetToRender);
 
         var10 = 1.0F;
 

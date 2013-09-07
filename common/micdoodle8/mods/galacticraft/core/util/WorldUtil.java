@@ -757,7 +757,7 @@ public class WorldUtil
             {
                 final NBTTagCompound var11 = new NBTTagCompound();
                 var1.isDead = false;
-                var1.addEntityID(var11);
+                var1.writeToNBTOptional(var11);
                 var1.isDead = true;
                 var1 = EntityList.createEntityFromNBT(var11, var0);
 

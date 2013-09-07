@@ -36,7 +36,7 @@ public class GCCoreRenderOxygenBubble extends Render
     }
 
     @Override
-    protected ResourceLocation func_110775_a(Entity par1Entity)
+    protected ResourceLocation getEntityTexture(Entity par1Entity)
     {
         return GCCoreRenderOxygenBubble.oxygenBubbleTexture;
     }
@@ -48,7 +48,7 @@ public class GCCoreRenderOxygenBubble extends Render
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         GL11.glTranslatef((float) d0, (float) d1, (float) d2);
 
-        this.func_110777_b(entity);
+        this.bindEntityTexture(entity);
 
         GL11.glEnable(GL11.GL_BLEND);
 

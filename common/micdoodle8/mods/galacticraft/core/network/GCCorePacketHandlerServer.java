@@ -138,14 +138,14 @@ public class GCCorePacketHandlerServer implements IPacketHandler
                     }
                     else if (playerBase.getChatCooldown() == 0 && playerBase.getLaunchAttempts() == 0)
                     {
-                        player.sendChatToPlayer(ChatMessageComponent.func_111066_d("I don't have a parachute! If I press launch again, there's no going back!"));
+                        player.sendChatToPlayer(ChatMessageComponent.createFromText("I don't have a parachute! If I press launch again, there's no going back!"));
                         playerBase.setChatCooldown(250);
                         playerBase.setLaunchAttempts(1);
                     }
                 }
                 else if (playerBase.getChatCooldown() == 0)
                 {
-                    player.sendChatToPlayer(ChatMessageComponent.func_111066_d("I'll need to load in some rocket fuel first!"));
+                    player.sendChatToPlayer(ChatMessageComponent.createFromText("I'll need to load in some rocket fuel first!"));
                     playerBase.setChatCooldown(250);
                 }
             }
@@ -358,7 +358,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
 
             if (playerBase.getChatCooldown() == 0)
             {
-                player.sendChatToPlayer(ChatMessageComponent.func_111066_d("I'll probably need a Tier " + packetReadout[0] + " Dungeon key to unlock this!"));
+                player.sendChatToPlayer(ChatMessageComponent.createFromText("I'll probably need a Tier " + packetReadout[0] + " Dungeon key to unlock this!"));
                 playerBase.setChatCooldown(100);
             }
         }

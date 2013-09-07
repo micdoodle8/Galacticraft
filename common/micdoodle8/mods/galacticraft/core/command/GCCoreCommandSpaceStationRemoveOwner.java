@@ -78,7 +78,7 @@ public class GCCoreCommandSpaceStationRemoveOwner extends CommandBase
 
         if (playerBase != null)
         {
-            playerBase.sendChatToPlayer(ChatMessageComponent.func_111066_d("Successfully removed " + var3 + " from Space Station list!"));
+            playerBase.sendChatToPlayer(ChatMessageComponent.createFromText("Successfully removed " + var3 + " from Space Station list!"));
         }
     }
 }

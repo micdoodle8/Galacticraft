@@ -214,7 +214,7 @@ public class GCCoreModelPlayer extends ModelBiped
 
             //
 
-            FMLClientHandler.instance().getClient().renderEngine.func_110577_a(GCCoreModelPlayer.oxygenMaskTexture);
+            FMLClientHandler.instance().getClient().renderEngine.bindTexture(GCCoreModelPlayer.oxygenMaskTexture);
 
             changed = false;
 
@@ -243,7 +243,7 @@ public class GCCoreModelPlayer extends ModelBiped
 
             //
 
-            FMLClientHandler.instance().getClient().renderEngine.func_110577_a(GCCoreModelPlayer.playerTexture);
+            FMLClientHandler.instance().getClient().renderEngine.bindTexture(GCCoreModelPlayer.playerTexture);
 
             changed = false;
 
@@ -414,7 +414,7 @@ public class GCCoreModelPlayer extends ModelBiped
 
             if (this.usingParachute)
             {
-                FMLClientHandler.instance().getClient().renderEngine.func_110577_a(ClientProxyCore.parachuteTextures.get(player.username));
+                FMLClientHandler.instance().getClient().renderEngine.bindTexture(ClientProxyCore.parachuteTextures.get(player.username));
 
                 this.parachute[0].render(var7);
                 this.parachute[1].render(var7);
@@ -426,7 +426,7 @@ public class GCCoreModelPlayer extends ModelBiped
                 this.parachuteStrings[3].render(var7);
             }
 
-            FMLClientHandler.instance().getClient().renderEngine.func_110577_a(((AbstractClientPlayer) player).func_110306_p());
+            FMLClientHandler.instance().getClient().renderEngine.bindTexture(((AbstractClientPlayer) player).getLocationSkin());
         }
 
         super.render(var1, var2, var3, var4, var5, var6, var7);

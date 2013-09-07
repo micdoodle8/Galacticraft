@@ -69,7 +69,7 @@ public class GCCoreGuiBuggy extends GCCoreGuiContainer
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
-        this.mc.func_110434_K().func_110577_a(GCCoreGuiBuggy.sealerTexture[this.type]);
+        this.mc.getTextureManager().bindTexture(GCCoreGuiBuggy.sealerTexture[this.type]);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         final int var5 = (this.width - this.xSize) / 2;

@@ -45,7 +45,7 @@ public class GCCoreRenderSkeletonBoss extends RenderLiving
     }
 
     @Override
-    protected ResourceLocation func_110775_a(Entity par1Entity)
+    protected ResourceLocation getEntityTexture(Entity par1Entity)
     {
         return this.func_110779_a((GCCoreEntitySkeletonBoss) par1Entity);
     }
@@ -59,7 +59,7 @@ public class GCCoreRenderSkeletonBoss extends RenderLiving
     @Override
     public void doRenderLiving(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9)
     {
-        BossStatus.func_82824_a((IBossDisplayData) par1EntityLiving, false);
+        BossStatus.setBossStatus((IBossDisplayData) par1EntityLiving, false);
 
         super.doRenderLiving(par1EntityLiving, par2, par4, par6, par8, par9);
     }
@@ -110,7 +110,7 @@ public class GCCoreRenderSkeletonBoss extends RenderLiving
             if (par2 == 1)
             {
                 final float var4 = par1EntityLiving.ticksExisted * 2 + par3;
-                this.func_110776_a(GCCoreRenderSkeletonBoss.powerTexture);
+                this.bindTexture(GCCoreRenderSkeletonBoss.powerTexture);
                 GL11.glMatrixMode(GL11.GL_TEXTURE);
                 GL11.glLoadIdentity();
                 final float var5 = var4 * 0.01F;

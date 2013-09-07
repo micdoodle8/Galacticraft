@@ -31,7 +31,7 @@ public class GCCoreRenderCopperWire extends TileEntitySpecialRenderer
     public void renderModelAt(GCCoreTileEntityCopperWire tileEntity, double d, double d1, double d2, float f)
     {
         // Texture file
-        FMLClientHandler.instance().getClient().renderEngine.func_110577_a(GCCoreRenderCopperWire.copperWireTexture);
+        FMLClientHandler.instance().getClient().renderEngine.bindTexture(GCCoreRenderCopperWire.copperWireTexture);
         GL11.glPushMatrix();
         GL11.glTranslatef((float) d + 0.5F, (float) d1 + 1.5F, (float) d2 + 0.5F);
         GL11.glScalef(1.0F, -1F, -1F);

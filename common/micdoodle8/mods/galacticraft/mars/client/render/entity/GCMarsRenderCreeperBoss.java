@@ -37,7 +37,7 @@ public class GCMarsRenderCreeperBoss extends RenderLiving
     }
 
     @Override
-    protected ResourceLocation func_110775_a(Entity entity)
+    protected ResourceLocation getEntityTexture(Entity entity)
     {
         return GCMarsRenderCreeperBoss.creeperTexture;
     }
@@ -45,7 +45,7 @@ public class GCMarsRenderCreeperBoss extends RenderLiving
     @Override
     public void doRenderLiving(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9)
     {
-        BossStatus.func_82824_a((IBossDisplayData) par1EntityLiving, false);
+        BossStatus.setBossStatus((IBossDisplayData) par1EntityLiving, false);
 
         super.doRenderLiving(par1EntityLiving, par2, par4, par6, par8, par9);
     }
@@ -57,7 +57,7 @@ public class GCMarsRenderCreeperBoss extends RenderLiving
             if (par2 == 1)
             {
                 final float var4 = par1EntityCreeper.ticksExisted + par3;
-                this.func_110776_a(GCMarsRenderCreeperBoss.powerTexture);
+                this.bindTexture(GCMarsRenderCreeperBoss.powerTexture);
                 GL11.glMatrixMode(GL11.GL_TEXTURE);
                 GL11.glLoadIdentity();
                 final float var5 = var4 * 0.01F;

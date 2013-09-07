@@ -117,7 +117,7 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
 
                     if (renderer.getPlanetName().toLowerCase().equals(str))
                     {
-                        FMLClientHandler.instance().getClient().renderEngine.func_110577_a(renderer.getPlanetSprite());
+                        FMLClientHandler.instance().getClient().renderEngine.bindTexture(renderer.getPlanetSprite());
 
                         renderer.renderSlot(par1, par2 - 18, par3 + 9, par4 + 3, par5Tessellator);
                     }

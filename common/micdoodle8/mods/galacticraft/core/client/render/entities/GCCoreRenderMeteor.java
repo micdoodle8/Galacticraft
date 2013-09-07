@@ -29,7 +29,7 @@ public class GCCoreRenderMeteor extends Render
     }
 
     @Override
-    protected ResourceLocation func_110775_a(Entity par1Entity)
+    protected ResourceLocation getEntityTexture(Entity par1Entity)
     {
         return this.func_110779_a((GCCoreEntityMeteor) par1Entity);
     }
@@ -42,7 +42,7 @@ public class GCCoreRenderMeteor extends Render
         GL11.glRotatef(par8, 1.0F, 0.0F, 0.0F);
         final float f = entity.getSize();
         GL11.glScalef(f / 2, f / 2, f / 2);
-        this.func_110777_b(entity);
+        this.bindEntityTexture(entity);
         this.modelMeteor.render(entity, 0.0F, 0.0F, -0.5F, 0.0F, 0.0F, 0.1F);
         GL11.glPopMatrix();
     }

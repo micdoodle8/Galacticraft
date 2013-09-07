@@ -96,7 +96,7 @@ public class GCMarsPacketHandlerServer implements IPacketHandler
                 case 5:
                     if (player.getCommandSenderName().equalsIgnoreCase(slimeling.getOwnerName()) && !slimeling.worldObj.isRemote)
                     {
-                        slimeling.setEntityHealth(slimeling.func_110143_aJ() + 5.0F);
+                        slimeling.setHealth(slimeling.getHealth() + 5.0F);
                     }
                     break;
                 case 6:

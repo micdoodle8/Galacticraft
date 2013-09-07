@@ -88,11 +88,11 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
     }
 
     @Override
-    protected void func_110147_ax()
+    protected void applyEntityAttributes()
     {
-        super.func_110147_ax();
-        this.func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(150.0F * GCCoreConfigManager.dungeonBossHealthMod);
-        this.func_110148_a(SharedMonsterAttributes.field_111263_d).func_111128_a(0.25F);
+        super.applyEntityAttributes();
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(150.0F * GCCoreConfigManager.dungeonBossHealthMod);
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.25F);
     }
 
     public GCCoreEntitySkeletonBoss(World world, Vector3 vec)
@@ -312,9 +312,9 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
 
         this.ticks++;
 
-        if (!this.worldObj.isRemote && this.func_110143_aJ() <= 150.0F * GCCoreConfigManager.dungeonBossHealthMod / 2)
+        if (!this.worldObj.isRemote && this.getHealth() <= 150.0F * GCCoreConfigManager.dungeonBossHealthMod / 2)
         {
-            this.func_110148_a(SharedMonsterAttributes.field_111263_d);
+            this.getEntityAttribute(SharedMonsterAttributes.movementSpeed);
         }
 
         final EntityPlayer player = this.worldObj.getClosestPlayer(this.posX, this.posY, this.posZ, 20.0);
@@ -375,7 +375,7 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
 
                 for (EntityPlayer p : entitiesWithin2)
                 {
-                    p.sendChatToPlayer(ChatMessageComponent.func_111066_d("Boss despawned, don't leave the boss room while fighting! Re-enter room to respawn boss."));
+                    p.sendChatToPlayer(ChatMessageComponent.createFromText("Boss despawned, don't leave the boss room while fighting! Re-enter room to respawn boss."));
                 }
 
                 this.setDead();

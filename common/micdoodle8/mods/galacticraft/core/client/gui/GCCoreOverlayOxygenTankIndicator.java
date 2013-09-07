@@ -32,7 +32,7 @@ public class GCCoreOverlayOxygenTankIndicator extends GCCoreOverlay
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
-        FMLClientHandler.instance().getClient().renderEngine.func_110577_a(GCCoreOverlayOxygenTankIndicator.guiTexture);
+        FMLClientHandler.instance().getClient().renderEngine.bindTexture(GCCoreOverlayOxygenTankIndicator.guiTexture);
         final Tessellator tessellator = Tessellator.instance;
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
@@ -106,7 +106,7 @@ public class GCCoreOverlayOxygenTankIndicator extends GCCoreOverlay
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
-        FMLClientHandler.instance().getClient().renderEngine.func_110577_a(GCCoreOverlayOxygenTankIndicator.guiTexture);
+        FMLClientHandler.instance().getClient().renderEngine.bindTexture(GCCoreOverlayOxygenTankIndicator.guiTexture);
         final Tessellator tessellator = Tessellator.instance;
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glEnable(GL11.GL_ALPHA_TEST);

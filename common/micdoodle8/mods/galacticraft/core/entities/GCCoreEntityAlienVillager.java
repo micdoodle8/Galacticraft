@@ -53,10 +53,10 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
     }
 
     @Override
-    protected void func_110147_ax()
+    protected void applyEntityAttributes()
     {
-        super.func_110147_ax();
-        this.func_110148_a(SharedMonsterAttributes.field_111263_d).func_111128_a(0.5D);
+        super.applyEntityAttributes();
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.5D);
     }
 
     private int randomTickDivider;
@@ -98,12 +98,12 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
 
             if (this.villageObj == null)
             {
-                this.func_110177_bN();
+                this.detachHome();
             }
             else
             {
                 ChunkCoordinates chunkcoordinates = this.villageObj.getCenter();
-                this.func_110171_b(chunkcoordinates.posX, chunkcoordinates.posY, chunkcoordinates.posZ, (int) (this.villageObj.getVillageRadius() * 0.6F));
+                this.setHomeArea(chunkcoordinates.posX, chunkcoordinates.posY, chunkcoordinates.posZ, (int) (this.villageObj.getVillageRadius() * 0.6F));
 
                 if (this.field_82190_bM)
                 {

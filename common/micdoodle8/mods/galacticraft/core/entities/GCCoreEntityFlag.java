@@ -190,7 +190,7 @@ public class GCCoreEntityFlag extends Entity
     }
 
     @Override
-    public boolean func_130002_c(EntityPlayer par1EntityPlayer)
+    public boolean interactFirst(EntityPlayer par1EntityPlayer)
     {
         this.setDirection(this.rotationYaw + 3F);
 
@@ -224,6 +224,6 @@ public class GCCoreEntityFlag extends Entity
 
     public float getDamage()
     {
-        return this.dataWatcher.func_111145_d(18);
+        return this.dataWatcher.getWatchableObjectFloat(18);
     }
 }

@@ -64,7 +64,7 @@ public class GCCoreCommandSpaceStationAddOwner extends CommandBase
 
                     if (playerToAdd != null)
                     {
-                        playerToAdd.sendChatToPlayer(ChatMessageComponent.func_111066_d("You've been added to " + playerBase.username + "\'s Space Station accepted players!"));
+                        playerToAdd.sendChatToPlayer(ChatMessageComponent.createFromText("You've been added to " + playerBase.username + "\'s Space Station accepted players!"));
                     }
                 }
             }
@@ -81,7 +81,7 @@ public class GCCoreCommandSpaceStationAddOwner extends CommandBase
 
         if (playerBase != null)
         {
-            playerBase.sendChatToPlayer(ChatMessageComponent.func_111066_d("Successfully added " + var3 + " to Space Station list!"));
+            playerBase.sendChatToPlayer(ChatMessageComponent.createFromText("Successfully added " + var3 + " to Space Station list!"));
         }
     }
 }

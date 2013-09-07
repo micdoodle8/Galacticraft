@@ -107,7 +107,7 @@ public class GCMarsBlock extends Block implements IDetectableResource, IPlantabl
     {
         final int meta = par1World.getBlockMetadata(par2, par3, par4);
 
-        if (meta == 10)
+        if (meta == 10 || meta == 7)
         {
             return -1.0F;
         }

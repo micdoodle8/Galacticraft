@@ -199,7 +199,7 @@ public class GCMarsGuiSlimeling extends GuiScreen
 
         GL11.glPushMatrix();
         GL11.glTranslatef(0, 0, 150.0F);
-        this.mc.renderEngine.func_110577_a(GCMarsGuiSlimeling.slimelingPanelGui);
+        this.mc.renderEngine.bindTexture(GCMarsGuiSlimeling.slimelingPanelGui);
         this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);
         this.drawTexturedModalRect(var5 + this.xSize - 15, var6 + 9, 176, 0, 9, 9);
         this.drawTexturedModalRect(var5 + this.xSize - 15, var6 + 22, 185, 0, 9, 9);
@@ -211,7 +211,7 @@ public class GCMarsGuiSlimeling extends GuiScreen
         str = "" + Math.round(this.slimeling.getColorBlue() * 1000) / 10.0F + "% ";
         this.drawString(this.fontRenderer, str, var5 + this.xSize - 15 - this.fontRenderer.getStringWidth(str), var6 + 36, GCCoreUtil.convertTo32BitColor(255, 0, 255, 0));
 
-        this.mc.renderEngine.func_110577_a(GCMarsGuiSlimeling.slimelingPanelGui);
+        this.mc.renderEngine.bindTexture(GCMarsGuiSlimeling.slimelingPanelGui);
         GL11.glColor3f(1.0F, 1.0F, 1.0F);
         this.drawTexturedModalRect(this.invX, this.invY, 176, 9, this.invWidth, this.invHeight);
 

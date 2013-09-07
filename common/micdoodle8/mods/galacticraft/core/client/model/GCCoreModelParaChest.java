@@ -51,7 +51,7 @@ public class GCCoreModelParaChest extends ModelChest
     {
         super.renderAll();
 
-        FMLClientHandler.instance().getClient().renderEngine.func_110577_a(GCCoreModelParaChest.grayParachuteTexture);
+        FMLClientHandler.instance().getClient().renderEngine.bindTexture(GCCoreModelParaChest.grayParachuteTexture);
 
         this.chestLid.rotateAngleX = (float) Math.PI;
         this.chestBelow.rotateAngleX = (float) Math.PI;

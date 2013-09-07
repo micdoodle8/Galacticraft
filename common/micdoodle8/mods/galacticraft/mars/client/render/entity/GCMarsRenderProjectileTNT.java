@@ -32,7 +32,7 @@ public class GCMarsRenderProjectileTNT extends Render
     {
         GL11.glPushMatrix();
         GL11.glTranslatef((float) par2, (float) par4, (float) par6);
-        this.func_110776_a(TextureMap.field_110575_b);
+        this.bindTexture(TextureMap.locationBlocksTexture);
         final Block var10 = Block.tnt;
         GL11.glDisable(GL11.GL_LIGHTING);
         if (var10 != null)
@@ -52,7 +52,7 @@ public class GCMarsRenderProjectileTNT extends Render
     }
 
     @Override
-    protected ResourceLocation func_110775_a(Entity entity)
+    protected ResourceLocation getEntityTexture(Entity entity)
     {
         return null;
     }

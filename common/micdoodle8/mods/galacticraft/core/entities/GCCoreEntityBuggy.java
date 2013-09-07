@@ -601,16 +601,16 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
     }
 
     @Override
-    public boolean func_130002_c(EntityPlayer var1)
+    public boolean interactFirst(EntityPlayer var1)
     {
         if (this.worldObj.isRemote)
         {
             if (this.riddenByEntity == null)
             {
-                var1.sendChatToPlayer(ChatMessageComponent.func_111066_d(Keyboard.getKeyName(GCKeyHandler.leftKey.keyCode) + " / " + Keyboard.getKeyName(GCKeyHandler.rightKey.keyCode) + "  - " + LanguageRegistry.instance().getStringLocalization("gui.buggy.turn.name")));
-                var1.sendChatToPlayer(ChatMessageComponent.func_111066_d(Keyboard.getKeyName(GCKeyHandler.accelerateKey.keyCode) + "       - " + LanguageRegistry.instance().getStringLocalization("gui.buggy.accel.name")));
-                var1.sendChatToPlayer(ChatMessageComponent.func_111066_d(Keyboard.getKeyName(GCKeyHandler.decelerateKey.keyCode) + "       - " + LanguageRegistry.instance().getStringLocalization("gui.buggy.decel.name")));
-                var1.sendChatToPlayer(ChatMessageComponent.func_111066_d(Keyboard.getKeyName(GCKeyHandler.openSpaceshipInv.keyCode) + "       - " + LanguageRegistry.instance().getStringLocalization("gui.buggy.inv.name")));
+                var1.sendChatToPlayer(ChatMessageComponent.createFromText(Keyboard.getKeyName(GCKeyHandler.leftKey.keyCode) + " / " + Keyboard.getKeyName(GCKeyHandler.rightKey.keyCode) + "  - " + LanguageRegistry.instance().getStringLocalization("gui.buggy.turn.name")));
+                var1.sendChatToPlayer(ChatMessageComponent.createFromText(Keyboard.getKeyName(GCKeyHandler.accelerateKey.keyCode) + "       - " + LanguageRegistry.instance().getStringLocalization("gui.buggy.accel.name")));
+                var1.sendChatToPlayer(ChatMessageComponent.createFromText(Keyboard.getKeyName(GCKeyHandler.decelerateKey.keyCode) + "       - " + LanguageRegistry.instance().getStringLocalization("gui.buggy.decel.name")));
+                var1.sendChatToPlayer(ChatMessageComponent.createFromText(Keyboard.getKeyName(GCKeyHandler.openSpaceshipInv.keyCode) + "       - " + LanguageRegistry.instance().getStringLocalization("gui.buggy.inv.name")));
             }
 
             return true;

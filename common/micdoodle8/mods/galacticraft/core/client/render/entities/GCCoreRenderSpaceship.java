@@ -49,7 +49,7 @@ public class GCCoreRenderSpaceship extends Render
     }
 
     @Override
-    protected ResourceLocation func_110775_a(Entity par1Entity)
+    protected ResourceLocation getEntityTexture(Entity par1Entity)
     {
         return this.func_110779_a(par1Entity);
     }
@@ -79,7 +79,7 @@ public class GCCoreRenderSpaceship extends Render
             GL11.glRotatef(MathHelper.sin(var28) * var28 * i * par9, 1.0F, 0.0F, 1.0F);
         }
 
-        this.func_110777_b(entity);
+        this.bindEntityTexture(entity);
         GL11.glScalef(-1.0F, -1.0F, 1.0F);
 
         if (this.modelSpaceshipObj != null)

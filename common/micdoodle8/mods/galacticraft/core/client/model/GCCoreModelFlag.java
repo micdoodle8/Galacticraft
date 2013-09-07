@@ -79,15 +79,15 @@ public class GCCoreModelFlag extends ModelBase
         if (((GCCoreEntityFlag) entity).getType() != 0)
         {
             GCCoreEntityFlag flag = (GCCoreEntityFlag) entity;
-            ResourceLocation resourcelocation = AbstractClientPlayer.field_110314_b;
+            ResourceLocation resourcelocation = AbstractClientPlayer.locationStevePng;
 
             if (flag.getOwner() != null && flag.getOwner().length() > 0)
             {
-                resourcelocation = AbstractClientPlayer.func_110305_h(flag.getOwner());
-                AbstractClientPlayer.func_110304_a(resourcelocation, flag.getOwner());
+                resourcelocation = AbstractClientPlayer.getLocationSkin(flag.getOwner());
+                AbstractClientPlayer.getDownloadImageSkin(resourcelocation, flag.getOwner());
             }
 
-            FMLClientHandler.instance().getClient().renderEngine.func_110577_a(resourcelocation);
+            FMLClientHandler.instance().getClient().renderEngine.bindTexture(resourcelocation);
 
             GL11.glScalef(0.5F, 0.5F, 0.5F);
             this.picSide1.render(f5);

@@ -23,7 +23,7 @@ public class GCCoreTileEntityAdvancedCraftingTableRenderer extends TileEntitySpe
         GL11.glTranslatef(0.5F, 3.0F, 0.5F);
         GL11.glScalef(1.3F, -1.3F, -1.3F);
 
-        this.func_110628_a(GCCoreTileEntityAdvancedCraftingTableRenderer.assemblyTableTexture);
+        this.bindTexture(GCCoreTileEntityAdvancedCraftingTableRenderer.assemblyTableTexture);
 
         this.model.renderAll();
 

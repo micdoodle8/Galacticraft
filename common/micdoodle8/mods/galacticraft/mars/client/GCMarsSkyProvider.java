@@ -141,7 +141,7 @@ public class GCMarsSkyProvider extends IRenderHandler
         var12 = 10.5F;
         GL11.glRotatef(0.0F, 0.0F, 0.0F, 1.0F);
         GL11.glRotatef(150F, 1.0F, 0.0F, 0.0F);
-        FMLClientHandler.instance().getClient().renderEngine.func_110577_a(GCMarsSkyProvider.galaxyTexture);
+        FMLClientHandler.instance().getClient().renderEngine.bindTexture(GCMarsSkyProvider.galaxyTexture);
         GL11.glColor4f(0.4F, 0.4F, 0.4F, 1.0F);
         var23.startDrawingQuads();
         var23.addVertexWithUV(-var12, -100.0D, var12, 0, 1);
@@ -174,7 +174,7 @@ public class GCMarsSkyProvider extends IRenderHandler
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glRotatef(world.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
         var12 = 30.0F;
-        FMLClientHandler.instance().getClient().renderEngine.func_110577_a(GCMarsSkyProvider.sunTexture);
+        FMLClientHandler.instance().getClient().renderEngine.bindTexture(GCMarsSkyProvider.sunTexture);
         var23.startDrawingQuads();
         var23.addVertexWithUV(-var12, 150.0D, -var12, 0.0D, 0.0D);
         var23.addVertexWithUV(var12, 150.0D, -var12, 1.0D, 0.0D);
@@ -194,7 +194,7 @@ public class GCMarsSkyProvider extends IRenderHandler
         GL11.glRotatef(40.0F, 0.0F, 0.0F, 1.0F);
         GL11.glRotatef(200F, 1.0F, 0.0F, 0.0F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1F);
-        FMLClientHandler.instance().getClient().renderEngine.func_110577_a(GCMarsSkyProvider.overworldTexture);
+        FMLClientHandler.instance().getClient().renderEngine.bindTexture(GCMarsSkyProvider.overworldTexture);
         var23.startDrawingQuads();
         var23.addVertexWithUV(-var12, -100.0D, var12, 0, 1);
         var23.addVertexWithUV(var12, -100.0D, var12, 1, 1);

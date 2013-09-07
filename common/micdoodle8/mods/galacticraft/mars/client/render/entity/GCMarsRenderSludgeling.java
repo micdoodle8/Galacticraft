@@ -27,7 +27,7 @@ public class GCMarsRenderSludgeling extends RenderLiving
     }
 
     @Override
-    protected ResourceLocation func_110775_a(Entity par1Entity)
+    protected ResourceLocation getEntityTexture(Entity par1Entity)
     {
         return this.func_110779_a((GCMarsEntitySludgeling) par1Entity);
     }

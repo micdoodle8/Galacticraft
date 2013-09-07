@@ -57,7 +57,7 @@ public class GCMarsTileEntitySlimelingEgg extends TileEntity
                 slimeling.setTamed(true);
                 slimeling.setPathToEntity((PathEntity) null);
                 slimeling.setAttackTarget((EntityLivingBase) null);
-                slimeling.setEntityHealth(20.0F);
+                slimeling.setHealth(20.0F);
                 slimeling.setOwner(this.lastTouchedPlayer);
 
                 this.worldObj.setBlockToAir(this.xCoord, this.yCoord, this.zCoord);

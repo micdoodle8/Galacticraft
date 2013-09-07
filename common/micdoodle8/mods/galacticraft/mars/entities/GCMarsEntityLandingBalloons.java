@@ -328,7 +328,7 @@ public class GCMarsEntityLandingBalloons extends GCCoreEntityAdvanced implements
     }
 
     @Override
-    public boolean func_130002_c(EntityPlayer var1)
+    public boolean interactFirst(EntityPlayer var1)
     {
         if (this.worldObj.isRemote)
         {

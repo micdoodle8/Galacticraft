@@ -124,7 +124,7 @@ public class GCCoreGuiCargoUnloader extends GCCoreGuiContainer
     protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3)
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.func_110434_K().func_110577_a(GCCoreGuiCargoUnloader.unloaderTexture);
+        this.mc.getTextureManager().bindTexture(GCCoreGuiCargoUnloader.unloaderTexture);
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(var5, var6 + 5, 0, 0, this.xSize, this.ySize);

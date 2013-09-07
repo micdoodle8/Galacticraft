@@ -20,7 +20,7 @@ public class GCCoreBlockSapling extends BlockSapling
 
     @Override
     @SideOnly(Side.CLIENT)
-    protected String func_111023_E()
+    protected String getTextureName()
     {
         return "sapling";
     }

@@ -23,11 +23,11 @@ public class GCCoreTileEntitySolarPanelRenderer extends TileEntitySpecialRendere
 
         if (var1.getBlockMetadata() >= GCCoreBlockSolar.ADVANCED_METADATA)
         {
-            this.func_110628_a(GCCoreTileEntitySolarPanelRenderer.solarPanelAdvTexture);
+            this.bindTexture(GCCoreTileEntitySolarPanelRenderer.solarPanelAdvTexture);
         }
         else
         {
-            this.func_110628_a(GCCoreTileEntitySolarPanelRenderer.solarPanelTexture);
+            this.bindTexture(GCCoreTileEntitySolarPanelRenderer.solarPanelTexture);
         }
 
         GL11.glPushMatrix();

@@ -14,6 +14,7 @@ import net.minecraft.client.multiplayer.NetClientHandler;
 import net.minecraft.client.renderer.IImageBuffer;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
 import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.client.renderer.texture.TextureObject;
 import net.minecraft.entity.player.EnumStatus;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -87,13 +88,13 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
     }
 
     @Override
-    protected void func_110302_j()
+    protected void setupCustomSkin()
     {
-        super.func_110302_j();
+        super.setupCustomSkin();
 
         if (GCCoreConfigManager.overrideCapes)
         {
-            this.galacticraftCape = AbstractClientPlayer.func_110299_g(this.username);
+            this.galacticraftCape = AbstractClientPlayer.getLocationCape(this.username);
             this.galacticraftCapeImageData = GCCorePlayerSP.getImageData(this.galacticraftCape, GCCorePlayerSP.getCapeURL(this.username), null, null);
         }
     }
@@ -105,31 +106,31 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
 
     private static ThreadDownloadImageData getImageData(ResourceLocation par0ResourceLocation, String par1Str, ResourceLocation par2ResourceLocation, IImageBuffer par3IImageBuffer)
     {
-        TextureManager texturemanager = Minecraft.getMinecraft().func_110434_K();
+        TextureManager texturemanager = Minecraft.getMinecraft().getTextureManager();
 
         ThreadDownloadImageData object = new ThreadDownloadImageData(par1Str, par2ResourceLocation, par3IImageBuffer);
-        texturemanager.func_110579_a(par0ResourceLocation, object);
+        texturemanager.loadTexture(par0ResourceLocation, (TextureObject)object);
 
         return object;
     }
 
     @Override
-    public ResourceLocation func_110303_q()
+    public ResourceLocation getLocationCape()
     {
-        if (!GCCoreConfigManager.overrideCapes || !this.func_110310_o().func_110557_a())
+        if (!GCCoreConfigManager.overrideCapes || !this.getTextureCape().isTextureUploaded())
         {
-            return super.func_110303_q();
+            return super.getLocationCape();
         }
 
         return this.galacticraftCape;
     }
 
     @Override
-    public ThreadDownloadImageData func_110310_o()
+    public ThreadDownloadImageData getTextureCape()
     {
-        if (!GCCoreConfigManager.overrideCapes || !this.galacticraftCapeImageData.func_110557_a())
+        if (!GCCoreConfigManager.overrideCapes || !this.galacticraftCapeImageData.isTextureUploaded())
         {
-            return super.func_110310_o();
+            return super.getTextureCape();
         }
 
         return this.galacticraftCapeImageData;

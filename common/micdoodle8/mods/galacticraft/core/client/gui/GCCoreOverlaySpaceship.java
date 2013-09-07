@@ -36,7 +36,7 @@ public class GCCoreOverlaySpaceship extends GCCoreOverlay
         GCCoreOverlaySpaceship.minecraft.entityRenderer.setupOverlayRendering();
         GL11.glDepthMask(true);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        FMLClientHandler.instance().getClient().renderEngine.func_110577_a(guiTexture);
+        FMLClientHandler.instance().getClient().renderEngine.bindTexture(guiTexture);
 
         float var1 = 0F;
         float var2 = height / 2 - 170 / 2;
@@ -95,11 +95,11 @@ public class GCCoreOverlaySpaceship extends GCCoreOverlay
 
         GL11.glPopMatrix();
 
-        ResourceLocation resourcelocation = AbstractClientPlayer.field_110314_b;
-        resourcelocation = AbstractClientPlayer.func_110305_h(GCCoreOverlaySpaceship.minecraft.thePlayer.username);
-        AbstractClientPlayer.func_110304_a(resourcelocation, GCCoreOverlaySpaceship.minecraft.thePlayer.username);
+        ResourceLocation resourcelocation = AbstractClientPlayer.locationStevePng;
+        resourcelocation = AbstractClientPlayer.getLocationSkin(GCCoreOverlaySpaceship.minecraft.thePlayer.username);
+        AbstractClientPlayer.getDownloadImageSkin(resourcelocation, GCCoreOverlaySpaceship.minecraft.thePlayer.username);
 
-        FMLClientHandler.instance().getClient().renderEngine.func_110577_a(resourcelocation);
+        FMLClientHandler.instance().getClient().renderEngine.bindTexture(resourcelocation);
 
         GL11.glTranslatef(0F, 0F, 60F);
 

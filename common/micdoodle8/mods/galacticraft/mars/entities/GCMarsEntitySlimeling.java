@@ -143,18 +143,18 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
     }
 
     @Override
-    protected void func_110147_ax()
+    protected void applyEntityAttributes()
     {
-        super.func_110147_ax();
-        this.func_110148_a(SharedMonsterAttributes.field_111263_d).func_111128_a(0.30000001192092896D);
+        super.applyEntityAttributes();
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.30000001192092896D);
 
         if (this.isTamed())
         {
-            this.func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(20.0D);
+            this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(20.0D);
         }
         else
         {
-            this.func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(8.0D);
+            this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(8.0D);
         }
     }
 
@@ -167,14 +167,14 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
     @Override
     protected void updateAITick()
     {
-        this.dataWatcher.updateObject(18, Float.valueOf(this.func_110143_aJ()));
+        this.dataWatcher.updateObject(18, Float.valueOf(this.getHealth()));
     }
 
     @Override
     protected void entityInit()
     {
         super.entityInit();
-        this.dataWatcher.addObject(18, new Float(this.func_110143_aJ()));
+        this.dataWatcher.addObject(18, new Float(this.getHealth()));
         this.dataWatcher.addObject(19, new Float(this.colorRed));
         this.dataWatcher.addObject(20, new Float(this.colorGreen));
         this.dataWatcher.addObject(21, new Float(this.colorBlue));
@@ -299,14 +299,14 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
 
         if (!this.worldObj.isRemote)
         {
-            this.func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(20 + 30.0 * ((double) this.age / (double) this.MAX_AGE));
+            this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(20 + 30.0 * ((double) this.age / (double) this.MAX_AGE));
         }
     }
 
     @Override
-    public void func_98054_a(boolean par1)
+    public void setScaleForAge(boolean par1)
     {
-        this.func_98055_j(0.5F);
+        this.setScale(0.5F);
     }
 
     @Override
@@ -355,11 +355,11 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
 
         if (par1)
         {
-            this.func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(20.0D);
+            this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(20.0D);
         }
         else
         {
-            this.func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(8.0D);
+            this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(8.0D);
         }
     }
 
@@ -399,7 +399,7 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
                         {
                             if (((GCCorePlayerMP) par1EntityPlayer).getChatCooldown() == 0)
                             {
-                                par1EntityPlayer.sendChatToPlayer(ChatMessageComponent.func_111066_d("This isn't my Slimeling!"));
+                                par1EntityPlayer.sendChatToPlayer(ChatMessageComponent.createFromText("This isn't my Slimeling!"));
                                 ((GCCorePlayerMP) par1EntityPlayer).setChatCooldown(100);
                             }
                         }
@@ -441,7 +441,7 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
                     this.setPathToEntity((PathEntity) null);
                     this.setAttackTarget((EntityLivingBase) null);
                     this.aiSit.setSitting(true);
-                    this.setEntityHealth(20.0F);
+                    this.setHealth(20.0F);
                     this.setOwner(par1EntityPlayer.getCommandSenderName());
                     this.playTameEffect(true);
                     this.worldObj.setEntityState(this, (byte) 7);
@@ -524,7 +524,7 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
                 }
             }
 
-            return par1EntityLivingBase instanceof EntityPlayer && par2EntityLivingBase instanceof EntityPlayer && !((EntityPlayer) par2EntityLivingBase).func_96122_a((EntityPlayer) par1EntityLivingBase) ? false : !(par1EntityLivingBase instanceof EntityHorse) || !((EntityHorse) par1EntityLivingBase).func_110248_bS();
+            return par1EntityLivingBase instanceof EntityPlayer && par2EntityLivingBase instanceof EntityPlayer && !((EntityPlayer) par2EntityLivingBase).canAttackPlayer((EntityPlayer) par1EntityLivingBase) ? false : !(par1EntityLivingBase instanceof EntityHorse) || !((EntityHorse) par1EntityLivingBase).isTame();
         }
         else
         {
@@ -540,7 +540,7 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
 
     public float getColorRed()
     {
-        return this.dataWatcher.func_111145_d(19);
+        return this.dataWatcher.getWatchableObjectFloat(19);
     }
 
     public void setColorRed(float color)
@@ -550,7 +550,7 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
 
     public float getColorGreen()
     {
-        return this.dataWatcher.func_111145_d(20);
+        return this.dataWatcher.getWatchableObjectFloat(20);
     }
 
     public void setColorGreen(float color)
@@ -560,7 +560,7 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
 
     public float getColorBlue()
     {
-        return this.dataWatcher.func_111145_d(21);
+        return this.dataWatcher.getWatchableObjectFloat(21);
     }
 
     public void setColorBlue(float color)
@@ -601,7 +601,7 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
 
     public float getAttackDamage()
     {
-        return this.dataWatcher.func_111145_d(25);
+        return this.dataWatcher.getWatchableObjectFloat(25);
     }
 
     public void setAttackDamage(float damage)

@@ -115,11 +115,11 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
     }
 
     @Override
-    protected void func_110147_ax()
+    protected void applyEntityAttributes()
     {
-        super.func_110147_ax();
-        this.func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(200.0F * GCCoreConfigManager.dungeonBossHealthMod);
-        this.func_110148_a(SharedMonsterAttributes.field_111263_d).func_111128_a(0.05F);
+        super.applyEntityAttributes();
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(200.0F * GCCoreConfigManager.dungeonBossHealthMod);
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.05F);
     }
 
     public GCMarsEntityCreeperBoss(World world, Vector3 vec)
@@ -286,15 +286,15 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
 
         this.ticks++;
 
-        if (this.func_110143_aJ() <= 0)
+        if (this.getHealth() <= 0)
         {
             this.headsRemaining = 0;
         }
-        else if (this.func_110143_aJ() <= this.func_110138_aP() / 3.0)
+        else if (this.getHealth() <= this.getMaxHealth() / 3.0)
         {
             this.headsRemaining = 1;
         }
-        else if (this.func_110143_aJ() <= 2 * (this.func_110138_aP() / 3.0))
+        else if (this.getHealth() <= 2 * (this.getMaxHealth() / 3.0))
         {
             this.headsRemaining = 2;
         }
@@ -330,7 +330,7 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
 
                 for (EntityPlayer p : entitiesWithin2)
                 {
-                    p.sendChatToPlayer(ChatMessageComponent.func_111066_d("Boss despawned, don't leave the boss room while fighting! Re-enter room to respawn boss."));
+                    p.sendChatToPlayer(ChatMessageComponent.createFromText("Boss despawned, don't leave the boss room while fighting! Re-enter room to respawn boss."));
                 }
 
                 this.setDead();

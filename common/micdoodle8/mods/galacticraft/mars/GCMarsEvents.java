@@ -53,7 +53,7 @@ public class GCMarsEvents
     @ForgeSubscribe
     public void onLivingAttacked(LivingAttackEvent event)
     {
-        if (!event.entity.isEntityInvulnerable() && !event.entity.worldObj.isRemote && event.entityLiving.func_110143_aJ() <= 0.0F && !(event.source.isFireDamage() && event.entityLiving.isPotionActive(Potion.fireResistance)))
+        if (!event.entity.isEntityInvulnerable() && !event.entity.worldObj.isRemote && event.entityLiving.getHealth() <= 0.0F && !(event.source.isFireDamage() && event.entityLiving.isPotionActive(Potion.fireResistance)))
         {
             Entity entity = event.source.getEntity();
 

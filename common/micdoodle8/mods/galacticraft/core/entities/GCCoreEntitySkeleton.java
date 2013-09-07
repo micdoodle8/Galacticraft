@@ -50,11 +50,11 @@ public class GCCoreEntitySkeleton extends EntitySkeleton implements IEntityBreat
     }
 
     @Override
-    protected void func_110147_ax()
+    protected void applyEntityAttributes()
     {
-        super.func_110147_ax();
-        this.func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(25);
-        this.func_110148_a(SharedMonsterAttributes.field_111263_d).func_111128_a(0.35F);
+        super.applyEntityAttributes();
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(25);
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.35F);
     }
 
     @Override

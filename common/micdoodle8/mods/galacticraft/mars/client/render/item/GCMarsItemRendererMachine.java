@@ -37,9 +37,9 @@ public class GCMarsItemRendererMachine implements IItemRenderer
 
         this.transform(type);
 
-        FMLClientHandler.instance().getClient().renderEngine.func_110577_a(GCMarsItemRendererMachine.chamberTexture0);
+        FMLClientHandler.instance().getClient().renderEngine.bindTexture(GCMarsItemRendererMachine.chamberTexture0);
         this.model.renderPart("Main_Cylinder");
-        FMLClientHandler.instance().getClient().renderEngine.func_110577_a(GCMarsItemRendererMachine.chamberTexture1);
+        FMLClientHandler.instance().getClient().renderEngine.bindTexture(GCMarsItemRendererMachine.chamberTexture1);
         this.model.renderPart("Shield_Torus");
         GL11.glPopMatrix();
     }

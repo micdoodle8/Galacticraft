@@ -71,7 +71,7 @@ public class GCCoreGuiRocketRefill extends GCCoreGuiContainer
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
-        this.mc.func_110434_K().func_110577_a(GCCoreGuiRocketRefill.rocketTextures[(this.rocketType.getInventorySpace() - 2) / 18]);
+        this.mc.getTextureManager().bindTexture(GCCoreGuiRocketRefill.rocketTextures[(this.rocketType.getInventorySpace() - 2) / 18]);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         final int var5 = (this.width - this.xSize) / 2;

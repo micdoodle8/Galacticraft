@@ -56,12 +56,12 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
     }
 
     @Override
-    protected void func_110147_ax()
+    protected void applyEntityAttributes()
     {
-        super.func_110147_ax();
-        this.func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(30.0D);
-        this.func_110148_a(SharedMonsterAttributes.field_111263_d).func_111128_a(0.96F);
-        this.func_110148_a(SharedMonsterAttributes.field_111264_e).func_111128_a(3.0D);
+        super.applyEntityAttributes();
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(30.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.96F);
+        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setAttribute(3.0D);
     }
 
     @Override
@@ -370,7 +370,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
             final EntityZombie entityzombie = new EntityZombie(this.worldObj);
             entityzombie.copyLocationAndAnglesFrom(par1EntityLiving);
             this.worldObj.removeEntity(par1EntityLiving);
-            entityzombie.func_110161_a((EntityLivingData) null);
+            entityzombie.onSpawnWithEgg((EntityLivingData) null);
             entityzombie.setVillager(true);
 
             if (par1EntityLiving.isChild())
@@ -384,10 +384,10 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
     }
 
     @Override
-    public EntityLivingData func_110161_a(EntityLivingData par1EntityLivingData)
+    public EntityLivingData onSpawnWithEgg(EntityLivingData par1EntityLivingData)
     {
-        par1EntityLivingData = super.func_110161_a(par1EntityLivingData);
-        float f = this.worldObj.func_110746_b(this.posX, this.posY, this.posZ);
+        par1EntityLivingData = super.onSpawnWithEgg(par1EntityLivingData);
+        float f = this.worldObj.getLocationTensionFactor(this.posX, this.posY, this.posZ);
         this.setCanPickUpLoot(this.rand.nextFloat() < 0.55F * f);
 
         if (this.worldObj.rand.nextFloat() < 0.05F)
@@ -409,13 +409,13 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
             }
         }
 
-        this.func_110148_a(SharedMonsterAttributes.field_111266_c).func_111121_a(new AttributeModifier("Random spawn bonus", this.rand.nextDouble() * 0.05000000074505806D, 0));
-        this.func_110148_a(SharedMonsterAttributes.field_111265_b).func_111121_a(new AttributeModifier("Random zombie-spawn bonus", this.rand.nextDouble() * 1.5D, 2));
+        this.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).applyModifier(new AttributeModifier("Random spawn bonus", this.rand.nextDouble() * 0.05000000074505806D, 0));
+        this.getEntityAttribute(SharedMonsterAttributes.followRange).applyModifier(new AttributeModifier("Random zombie-spawn bonus", this.rand.nextDouble() * 1.5D, 2));
 
         if (this.rand.nextFloat() < f * 0.05F)
         {
-            this.func_110148_a(EntityZombie.field_110186_bp).func_111121_a(new AttributeModifier("Leader zombie bonus", this.rand.nextDouble() * 0.25D + 0.5D, 0));
-            this.func_110148_a(SharedMonsterAttributes.field_111267_a).func_111121_a(new AttributeModifier("Leader zombie bonus", this.rand.nextDouble() * 3.0D + 1.0D, 2));
+            this.getEntityAttribute(EntityZombie.field_110186_bp).applyModifier(new AttributeModifier("Leader zombie bonus", this.rand.nextDouble() * 0.25D + 0.5D, 0));
+            this.getEntityAttribute(SharedMonsterAttributes.maxHealth).applyModifier(new AttributeModifier("Leader zombie bonus", this.rand.nextDouble() * 3.0D + 1.0D, 2));
         }
 
         return par1EntityLivingData;
@@ -500,7 +500,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
     {
         final EntityVillager entityvillager = new EntityVillager(this.worldObj);
         entityvillager.copyLocationAndAnglesFrom(this);
-        entityvillager.func_110161_a((EntityLivingData) null);
+        entityvillager.onSpawnWithEgg((EntityLivingData) null);
         entityvillager.func_82187_q();
 
         if (this.isChild())

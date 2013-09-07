@@ -153,10 +153,10 @@ public class GCCorePacketHandlerClient implements IPacketHandler
 
             FMLClientHandler.instance().getClient().gameSettings.thirdPersonView = 1;
 
-            player.sendChatToPlayer(ChatMessageComponent.func_111066_d("SPACE - Launch"));
-            player.sendChatToPlayer(ChatMessageComponent.func_111066_d("A / D  - Turn left-right"));
-            player.sendChatToPlayer(ChatMessageComponent.func_111066_d("W / S  - Turn up-down"));
-            player.sendChatToPlayer(ChatMessageComponent.func_111066_d(Keyboard.getKeyName(GCKeyHandler.openSpaceshipInv.keyCode) + "       - Inventory / Fuel"));
+            player.sendChatToPlayer(ChatMessageComponent.createFromText("SPACE - Launch"));
+            player.sendChatToPlayer(ChatMessageComponent.createFromText("A / D  - Turn left-right"));
+            player.sendChatToPlayer(ChatMessageComponent.createFromText("W / S  - Turn up-down"));
+            player.sendChatToPlayer(ChatMessageComponent.createFromText(Keyboard.getKeyName(GCKeyHandler.openSpaceshipInv.keyCode) + "       - Inventory / Fuel"));
         }
         else if (packetType == 9)
         {

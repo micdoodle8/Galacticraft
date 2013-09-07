@@ -38,7 +38,7 @@ public class GCMarsRenderLandingBalloons extends Render
     }
 
     @Override
-    protected ResourceLocation func_110775_a(Entity par1Entity)
+    protected ResourceLocation getEntityTexture(Entity par1Entity)
     {
         return this.func_110779_a((GCMarsEntityLandingBalloons) par1Entity);
     }
@@ -51,7 +51,7 @@ public class GCMarsRenderLandingBalloons extends Render
         GL11.glRotatef(par8, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(180.0F, 1.0F, 0.0F, 0.0F);
         GL11.glRotatef(var24, 0.0F, 0.0F, 1.0F);
-        this.func_110777_b(entity);
+        this.bindEntityTexture(entity);
         GL11.glScalef(-1.0F, -1.0F, 1.0F);
         GL11.glScalef(0.5F, 0.5F, 0.5F);
         this.landerModel.renderAll();

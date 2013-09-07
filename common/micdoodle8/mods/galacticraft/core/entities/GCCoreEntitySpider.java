@@ -28,11 +28,11 @@ public class GCCoreEntitySpider extends EntitySpider implements IEntityBreathabl
     }
 
     @Override
-    protected void func_110147_ax()
+    protected void applyEntityAttributes()
     {
-        super.func_110147_ax();
-        this.func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(22.0D);
-        this.func_110148_a(SharedMonsterAttributes.field_111263_d).func_111128_a(1.0F);
+        super.applyEntityAttributes();
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(22.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(1.0F);
     }
 
     @Override
@@ -252,15 +252,15 @@ public class GCCoreEntitySpider extends EntitySpider implements IEntityBreathabl
      * Initialize this creature.
      */
     @Override
-    public EntityLivingData func_110161_a(EntityLivingData par1EntityLivingData)
+    public EntityLivingData onSpawnWithEgg(EntityLivingData par1EntityLivingData)
     {
-        EntityLivingData par1EntityLivingData1 = super.func_110161_a(par1EntityLivingData);
+        EntityLivingData par1EntityLivingData1 = super.onSpawnWithEgg(par1EntityLivingData);
 
         if (this.worldObj.rand.nextInt(100) == 0)
         {
             EntitySkeleton entityskeleton = new EntitySkeleton(this.worldObj);
             entityskeleton.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
-            entityskeleton.func_110161_a((EntityLivingData) null);
+            entityskeleton.onSpawnWithEgg((EntityLivingData) null);
             this.worldObj.spawnEntityInWorld(entityskeleton);
             entityskeleton.mountEntity(this);
         }

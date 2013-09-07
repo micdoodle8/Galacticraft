@@ -65,12 +65,12 @@ public class GCCoreTileEntityTreasureChestRenderer extends TileEntitySpecialRend
             if (par1GCTileEntityTreasureChest.adjacentChestXPos == null && par1GCTileEntityTreasureChest.adjacentChestZPos == null)
             {
                 var14 = this.chestModel;
-                this.func_110628_a(GCCoreTileEntityTreasureChestRenderer.treasureChestTexture);
+                this.bindTexture(GCCoreTileEntityTreasureChestRenderer.treasureChestTexture);
             }
             else
             {
                 var14b = this.largeChestModel;
-                this.func_110628_a(GCCoreTileEntityTreasureChestRenderer.treasureLargeChestTexture);
+                this.bindTexture(GCCoreTileEntityTreasureChestRenderer.treasureLargeChestTexture);
             }
 
             GL11.glPushMatrix();

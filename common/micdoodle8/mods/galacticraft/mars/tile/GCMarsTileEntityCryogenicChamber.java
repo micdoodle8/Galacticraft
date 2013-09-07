@@ -62,7 +62,7 @@ public class GCMarsTileEntityCryogenicChamber extends TileEntityMulti implements
 
             return true;
         case NOT_POSSIBLE_NOW:
-            entityPlayer.sendChatToPlayer(ChatMessageComponent.func_111066_d("I can't use this for another " + (((GCCorePlayerMP) entityPlayer).getCryogenicChamberCooldown() / 20) + " seconds"));
+            entityPlayer.sendChatToPlayer(ChatMessageComponent.createFromText("I can't use this for another " + (((GCCorePlayerMP) entityPlayer).getCryogenicChamberCooldown() / 20) + " seconds"));
             return false;
         default:
             return false;

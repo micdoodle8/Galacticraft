@@ -41,7 +41,7 @@ public class GCMarsRenderSlimeling extends RenderLiving
     }
 
     @Override
-    protected ResourceLocation func_110775_a(Entity par1Entity)
+    protected ResourceLocation getEntityTexture(Entity par1Entity)
     {
         return this.func_110779_a((GCMarsEntitySlimeling) par1Entity);
     }
@@ -90,8 +90,8 @@ public class GCMarsRenderSlimeling extends RenderLiving
         if (mc.currentScreen == null || !((mc.currentScreen instanceof GCMarsGuiSlimeling || mc.currentScreen instanceof GCMarsGuiSlimelingInventory) && GCMarsGuiSlimeling.renderingOnGui))
         {
             this.renderLivingLabel(par1EntityLivingBase, ((GCMarsEntitySlimeling) par1EntityLivingBase).getName(), par2, par4 + 0.33, par6, 64);
-            double health = Math.floor(((GCMarsEntitySlimeling) par1EntityLivingBase).func_110143_aJ());
-            double maxHealth = Math.floor(((GCMarsEntitySlimeling) par1EntityLivingBase).func_110138_aP());
+            double health = Math.floor(((GCMarsEntitySlimeling) par1EntityLivingBase).getHealth());
+            double maxHealth = Math.floor(((GCMarsEntitySlimeling) par1EntityLivingBase).getMaxHealth());
             double difference = health / maxHealth;
 
             if (difference < 0.33333)
