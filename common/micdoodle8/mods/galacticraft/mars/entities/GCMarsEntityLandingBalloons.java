@@ -28,6 +28,7 @@ import net.minecraftforge.fluids.FluidTank;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.IPacketReceiver;
 import com.google.common.io.ByteArrayDataInput;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -47,6 +48,7 @@ public class GCMarsEntityLandingBalloons extends GCCoreEntityAdvanced implements
     private int groundHitCount;
     private float rotationPitchSpeed;
     private float rotationYawSpeed;
+    private boolean hasReceivedPacket = false;
 
     public GCMarsEntityLandingBalloons(World var1)
     {
@@ -460,13 +462,20 @@ public class GCMarsEntityLandingBalloons extends GCCoreEntityAdvanced implements
     public void onGroundHit()
     {
         this.groundHitCount++;
+        
+        if (this.worldObj.isRemote && !this.hasReceivedPacket)
+        {
+            return;
+        }
+        
+        FMLLog.info("" + this.worldObj.isRemote + " " + this.hasReceivedPacket + " " + this.groundHitCount);
 
         if (this.groundHitCount < 14)
         {
             double mag = 1.0D / this.groundHitCount * 4.0D;
-            this.motionX = this.rand.nextDouble() * 0.5 - 0.5;
+            this.motionX = this.rand.nextDouble() - 0.5;
             this.motionY = 1.0;
-            this.motionZ = this.rand.nextDouble() * 0.5 - 0.5;
+            this.motionZ = this.rand.nextDouble() - 0.5;
             this.motionX *= mag / 3.0D;
             this.motionY *= mag;
             this.motionZ *= mag / 3.0D;
@@ -509,15 +518,26 @@ public class GCMarsEntityLandingBalloons extends GCCoreEntityAdvanced implements
     @Override
     public void readNetworkedData(ByteArrayDataInput dataStream)
     {
-        this.groundHitCount = dataStream.readInt();
-        int cargoLength = dataStream.readInt();
-        if (this.chestContents == null || this.chestContents.length == 0)
+        try
         {
-            this.chestContents = new ItemStack[cargoLength];
-            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 21, new Object[] { this.entityId }));
-        }
+            if (this.worldObj.isRemote)
+            {
+                this.hasReceivedPacket = true;
+                this.groundHitCount = dataStream.readInt();
+                int cargoLength = dataStream.readInt();
+                if (this.chestContents == null || this.chestContents.length == 0)
+                {
+                    this.chestContents = new ItemStack[cargoLength];
+                    PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 21, new Object[] { this.entityId }));
+                }
 
-        this.fuelTank.setFluid(new FluidStack(GalacticraftCore.FUEL, dataStream.readInt()));
+                this.fuelTank.setFluid(new FluidStack(GalacticraftCore.FUEL, dataStream.readInt()));
+            }
+        }
+        catch (final Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     @Override
