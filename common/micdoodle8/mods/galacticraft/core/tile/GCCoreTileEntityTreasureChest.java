@@ -578,7 +578,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
 
             if (this.worldObj.isRemote)
             {
-                player.playSound("galacticraft.player.unlockchest", 1.0F, 1.0F);
+//                player.playSound("galacticraft.player.unlockchest", 1.0F, 1.0F);
             }
             else
             {
