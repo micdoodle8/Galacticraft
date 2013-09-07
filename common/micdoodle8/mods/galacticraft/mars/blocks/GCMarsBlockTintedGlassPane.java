@@ -56,7 +56,7 @@ public class GCMarsBlockTintedGlassPane extends BlockPane
 
         for (int i = 0; i < this.iconArray.length; ++i)
         {
-            this.iconArray[i] = par1IconRegister.registerIcon(GalacticraftMars.TEXTURE_PREFIX + this.getTextureName() + "_" + ItemDye.dyeColorNames[BlockColored.getDyeFromBlock(i)]);
+            this.iconArray[i] = par1IconRegister.registerIcon(GalacticraftMars.TEXTURE_PREFIX + this.getTextureName() + "_" + ItemDye.dyeItemNames[BlockColored.getDyeFromBlock(i)]);
         }
 
         this.blockIcon = this.iconArray[0];
