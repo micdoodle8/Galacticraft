@@ -16,11 +16,13 @@ public class GCCoreItemBasic extends Item
 
     protected Icon[] icons = new Icon[GCCoreItemBasic.names.length];
 
-    public GCCoreItemBasic(int id)
+    public GCCoreItemBasic(int id, String assetName)
     {
         super(id);
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
+        this.setUnlocalizedName(assetName);
+        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
     }
 
     @Override
@@ -37,14 +39,14 @@ public class GCCoreItemBasic extends Item
 
         for (final String name : GCCoreItemBasic.names)
         {
-            this.icons[i++] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "" + name);
+            this.icons[i++] = iconRegister.registerIcon(this.getIconString() + "." + name);
         }
     }
 
     @Override
     public String getUnlocalizedName(ItemStack itemStack)
     {
-        return "item.basicItem." + GCCoreItemBasic.names[itemStack.getItemDamage()];
+        return this.getUnlocalizedName() + "." + GCCoreItemBasic.names[itemStack.getItemDamage()];
     }
 
     @Override

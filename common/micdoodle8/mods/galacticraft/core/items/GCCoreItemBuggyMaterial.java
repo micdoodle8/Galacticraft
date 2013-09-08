@@ -20,12 +20,14 @@ public class GCCoreItemBuggyMaterial extends Item
 
     protected Icon[] icons = new Icon[256];
 
-    public GCCoreItemBuggyMaterial(int par1)
+    public GCCoreItemBuggyMaterial(int id, String assetName)
     {
-        super(par1);
+        super(id);
         this.setMaxStackSize(1);
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
+        this.setUnlocalizedName(assetName);
+        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
     }
 
     @Override
@@ -47,16 +49,16 @@ public class GCCoreItemBuggyMaterial extends Item
     {
         int i = 0;
 
-        for (final String name : GCCoreItemBuggyMaterial.names)
+        for (String name : GCCoreItemBuggyMaterial.names)
         {
-            this.icons[i++] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "buggy_" + name + GalacticraftCore.TEXTURE_SUFFIX);
+            this.icons[i++] = iconRegister.registerIcon(this.getIconString() + "." + name);
         }
     }
 
     @Override
     public String getUnlocalizedName(ItemStack itemStack)
     {
-        return "item." + "buggymat." + GCCoreItemBuggyMaterial.names[itemStack.getItemDamage()];
+        return this.getUnlocalizedName() + "." + GCCoreItemBuggyMaterial.names[itemStack.getItemDamage()];
     }
 
     @Override

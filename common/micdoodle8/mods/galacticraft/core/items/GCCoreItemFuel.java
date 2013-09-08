@@ -17,10 +17,10 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreItemFuel extends Item
 {
-    public GCCoreItemFuel(int par1)
+    public GCCoreItemFuel(int id, String assetName)
     {
-        super(par1);
-        this.setUnlocalizedName("fuel");
+        super(id);
+        this.setUnlocalizedName(assetName);
     }
 
     @Override

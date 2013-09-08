@@ -16,22 +16,16 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreItemOilCanister extends Item
 {
-    protected Icon[] icons = new Icon[256];
+    protected Icon[] icons = new Icon[7];
 
-    public static final String[] names = { "liquidcan_oil_6", // 0
-    "liquidcan_oil_5", // 0
-    "liquidcan_oil_4", // 1
-    "liquidcan_oil_3", // 2
-    "liquidcan_oil_2", // 3
-    "liquidcan_oil_1", // 4
-    "liquidcan_empty" }; // 5
-
-    public GCCoreItemOilCanister(int par1)
+    public GCCoreItemOilCanister(int id, String assetName)
     {
-        super(par1);
+        super(id);
         this.setMaxDamage(FluidContainerRegistry.BUCKET_VOLUME + 1);
         this.setMaxStackSize(1);
         this.setNoRepair();
+        this.setUnlocalizedName(assetName);
+        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
     }
 
     @Override
@@ -51,11 +45,9 @@ public class GCCoreItemOilCanister extends Item
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister iconRegister)
     {
-        int i = 0;
-
-        for (final String name : GCCoreItemOilCanister.names)
+        for (int i = 0; i < this.icons.length; i++)
         {
-            this.icons[i++] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "" + name);
+            this.icons[i] = iconRegister.registerIcon(this.getIconString() + "_" + i);
         }
     }
 
@@ -82,7 +74,7 @@ public class GCCoreItemOilCanister extends Item
 
         if (this.icons.length > damage)
         {
-            return this.icons[damage];
+            return this.icons[this.icons.length - damage - 1];
         }
 
         return super.getIconFromDamage(damage);

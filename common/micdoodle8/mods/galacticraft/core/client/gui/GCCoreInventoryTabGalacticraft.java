@@ -11,7 +11,7 @@ public class GCCoreInventoryTabGalacticraft extends AbstractTab
 {
     public GCCoreInventoryTabGalacticraft()
     {
-        super(0, 0, 0, new ItemStack(GCCoreItems.oxygenMask));
+        super(0, 0, 0, new ItemStack(GCCoreItems.oxMask));
     }
 
     @Override

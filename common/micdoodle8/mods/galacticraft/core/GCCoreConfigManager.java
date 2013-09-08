@@ -17,15 +17,6 @@ public class GCCoreConfigManager
 
     static Configuration configuration;
 
-    public GCCoreConfigManager(File file)
-    {
-        if (!GCCoreConfigManager.loaded)
-        {
-            GCCoreConfigManager.configuration = new Configuration(file);
-            this.setDefaultValues();
-        }
-    }
-
     public static int idDimensionOverworldOrbit;
 
     // BLOCKS
@@ -185,10 +176,13 @@ public class GCCoreConfigManager
     public static int[] externalOilGen;
     public static boolean forceOverworldRespawn;
 
-    // public static boolean disableExternalModGen;
-
-    private void setDefaultValues()
+    public static void setDefaultValues(File file)
     {
+        if (!GCCoreConfigManager.loaded)
+        {
+            GCCoreConfigManager.configuration = new Configuration(file);
+        }
+        
         try
         {
             GCCoreConfigManager.configuration.load();

@@ -50,7 +50,7 @@ public class GalacticraftMoon
 
     public static IMoon celestialBodyMoon;
 
-    public void preLoad(FMLPreInitializationEvent event)
+    public static void preLoad(FMLPreInitializationEvent event)
     {
         new GCMoonConfigManager(new File(event.getModConfigurationDirectory(), GalacticraftMoon.CONFIG_FILE));
 
@@ -61,7 +61,7 @@ public class GalacticraftMoon
         GCMoonItems.initItems();
     }
 
-    public void load(FMLInitializationEvent event)
+    public static void load(FMLInitializationEvent event)
     {
         GalacticraftMoon.galacticraftMoonTab = new GCCoreCreativeTab(CreativeTabs.getNextID(), GalacticraftMoon.MODID, GCMoonBlocks.blockMoon.blockID, 5);
 
@@ -76,17 +76,17 @@ public class GalacticraftMoon
         GalacticraftMoon.addSmeltingRecipes();
     }
 
-    public void postLoad(FMLPostInitializationEvent event)
+    public static void postLoad(FMLPostInitializationEvent event)
     {
 
     }
 
-    public void serverInit(FMLServerStartedEvent event)
+    public static void serverInit(FMLServerStartedEvent event)
     {
         TickRegistry.registerTickHandler(new CommonTickHandler(), Side.SERVER);
     }
 
-    public void serverStarting(FMLServerStartingEvent event)
+    public static void serverStarting(FMLServerStartingEvent event)
     {
     }
 
@@ -116,7 +116,7 @@ public class GalacticraftMoon
         FurnaceRecipes.smelting().addSmelting(GCMoonBlocks.blockMoon.blockID, 2, new ItemStack(GCMoonItems.cheeseCurd), 1.0F);
     }
 
-    public class CommonTickHandler implements ITickHandler
+    public static class CommonTickHandler implements ITickHandler
     {
         @Override
         public void tickStart(EnumSet<TickType> type, Object... tickData)

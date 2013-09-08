@@ -19,16 +19,18 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreItemSchematic extends Item implements ISchematicItem
 {
-    protected Icon[] icons = new Icon[1];
+    public static final String[] names = { "buggy", "rocketT2" }; // 15
 
-    public static final String[] names = { "schematic_buggy", "schematic_rocketT2" }; // 15
+    protected Icon[] icons = new Icon[GCCoreItemSchematic.names.length];
 
-    public GCCoreItemSchematic(int itemID)
+    public GCCoreItemSchematic(int itemID, String assetName)
     {
         super(itemID);
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
         this.setMaxStackSize(1);
+        this.setUnlocalizedName(assetName);
+        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
     }
 
     @Override
@@ -63,9 +65,10 @@ public class GCCoreItemSchematic extends Item implements ISchematicItem
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister iconRegister)
     {
-        this.icons = new Icon[2];
-        this.icons[0] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "schematic_buggy" + GalacticraftCore.TEXTURE_SUFFIX);
-        this.icons[1] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "schematic_rocketT2" + GalacticraftCore.TEXTURE_SUFFIX);
+        for (int i = 0; i < this.icons.length; i++)
+        {
+            this.icons[i] = iconRegister.registerIcon(this.getIconString() + "_" + GCCoreItemSchematic.names[i]);
+        }
     }
 
     @Override

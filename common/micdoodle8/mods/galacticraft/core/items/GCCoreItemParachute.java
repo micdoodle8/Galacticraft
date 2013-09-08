@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import java.util.ArrayList;
 import java.util.List;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
@@ -15,8 +14,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreItemParachute extends Item
 {
-    protected Icon[] icons = new Icon[256];
-
     public static final String[] names = { "plain", // 0
     "black", // 1
     "blue", // 2
@@ -34,12 +31,16 @@ public class GCCoreItemParachute extends Item
     "teal", // 14
     "yellow" }; // 15
 
-    public GCCoreItemParachute(int par1)
+    protected Icon[] icons;
+
+    public GCCoreItemParachute(int id, String assetName)
     {
-        super(par1);
+        super(id);
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
         this.setMaxStackSize(1);
+        this.setUnlocalizedName(assetName);
+        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
     }
 
     @Override
@@ -67,19 +68,19 @@ public class GCCoreItemParachute extends Item
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister iconRegister)
     {
-        final List<ItemStack> list = new ArrayList<ItemStack>();
-        this.getSubItems(this.itemID, this.getCreativeTab(), list);
+        int i = 0;
+        this.icons = new Icon[GCCoreItemParachute.names.length];
 
-        for (final ItemStack itemStack : list)
+        for (String name : GCCoreItemParachute.names)
         {
-            this.icons[list.indexOf(itemStack)] = iconRegister.registerIcon(this.getUnlocalizedName(itemStack).replace("item.", GalacticraftCore.TEXTURE_PREFIX + ""));
+            this.icons[i++] = iconRegister.registerIcon(this.getIconString() + "_" + name);
         }
     }
 
     @Override
     public String getUnlocalizedName(ItemStack itemStack)
     {
-        return "item.parachute_" + GCCoreItemParachute.names[itemStack.getItemDamage()];
+        return this.getUnlocalizedName() + "_" + GCCoreItemParachute.names[itemStack.getItemDamage()];
     }
 
     @Override

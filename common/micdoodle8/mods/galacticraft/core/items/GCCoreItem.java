@@ -4,7 +4,6 @@ import java.util.List;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
@@ -22,19 +21,11 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreItem extends Item
 {
-    private final String iconName;
-
-    public GCCoreItem(int par1, String iconName)
+    public GCCoreItem(int id, String assetName)
     {
-        super(par1);
-        this.iconName = iconName;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister par1IconRegister)
-    {
-        this.itemIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "" + this.iconName);
+        super(id);
+        this.setUnlocalizedName(assetName);
+        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
     }
 
     @Override

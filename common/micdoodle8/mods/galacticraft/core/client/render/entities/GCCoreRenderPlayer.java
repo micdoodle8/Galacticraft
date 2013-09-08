@@ -178,7 +178,7 @@ public class GCCoreRenderPlayer extends RenderPlayer
                 GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
                 GL11.glScalef(-f11, -f11, f11);
             }
-            else if (itemstack1.itemID == Item.bow.itemID || itemstack1.itemID == GCCoreItems.gravityBow.itemID)
+            else if (itemstack1.itemID == Item.bow.itemID || itemstack1.itemID == GCCoreItems.bowGravity.itemID)
             {
                 f11 = 0.625F;
                 GL11.glTranslatef(0.0F, 0.125F, 0.3125F);

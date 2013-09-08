@@ -419,7 +419,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
                     }
                 }
 
-                final ItemStack stack = new ItemStack(GCCoreItems.gravityBow, var1, var2);
+                final ItemStack stack = new ItemStack(GCCoreItems.bowGravity, var1, var2);
 
                 final Iterator<Entry<Integer, Enchantment>> it = enchants.entrySet().iterator();
 
@@ -460,7 +460,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
                 final ItemStack stack = new ItemStack(Block.sapling, var1, var2);
                 this.inventory.mainInventory[this.inventory.currentItem] = stack;
             }
-            else if (this.inventory.getCurrentItem().getItem().itemID == GCCoreItems.gravityBow.itemID)
+            else if (this.inventory.getCurrentItem().getItem().itemID == GCCoreItems.bowGravity.itemID)
             {
                 final Hashtable<Integer, Enchantment> enchants = new Hashtable<Integer, Enchantment>();
 
@@ -522,7 +522,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
         this.tankInSlot2 = this.getExtendedInventory().getStackInSlot(3);
         this.parachuteInSlot = this.getExtendedInventory().getStackInSlot(4);
 
-        if (this.maskInSlot != null && this.lastMaskInSlot == null && this.maskInSlot.getItem().itemID == GCCoreItems.oxygenMask.itemID)
+        if (this.maskInSlot != null && this.lastMaskInSlot == null && this.maskInSlot.getItem().itemID == GCCoreItems.oxMask.itemID)
         {
             this.sendGearUpdatePacket(EnumModelPacket.ADDMASK.getIndex());
         }
@@ -548,15 +548,15 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
         if (this.tankInSlot1 != null && this.lastTankInSlot1 == null)
         {
-            if (this.tankInSlot1.getItem().itemID == GCCoreItems.lightOxygenTank.itemID)
+            if (this.tankInSlot1.getItem().itemID == GCCoreItems.oxTankLight.itemID)
             {
                 this.sendGearUpdatePacket(EnumModelPacket.ADDLEFTGREENTANK.getIndex());
             }
-            else if (this.tankInSlot1.getItem().itemID == GCCoreItems.medOxygenTank.itemID)
+            else if (this.tankInSlot1.getItem().itemID == GCCoreItems.oxTankMedium.itemID)
             {
                 this.sendGearUpdatePacket(EnumModelPacket.ADDLEFTORANGETANK.getIndex());
             }
-            else if (this.tankInSlot1.getItem().itemID == GCCoreItems.heavyOxygenTank.itemID)
+            else if (this.tankInSlot1.getItem().itemID == GCCoreItems.oxTankHeavy.itemID)
             {
                 this.sendGearUpdatePacket(EnumModelPacket.ADDLEFTREDTANK.getIndex());
             }
@@ -564,15 +564,15 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
         if (this.tankInSlot1 == null && this.lastTankInSlot1 != null)
         {
-            if (this.lastTankInSlot1.getItem().itemID == GCCoreItems.lightOxygenTank.itemID)
+            if (this.lastTankInSlot1.getItem().itemID == GCCoreItems.oxTankLight.itemID)
             {
                 this.sendGearUpdatePacket(EnumModelPacket.REMOVELEFTGREENTANK.getIndex());
             }
-            else if (this.lastTankInSlot1.getItem().itemID == GCCoreItems.medOxygenTank.itemID)
+            else if (this.lastTankInSlot1.getItem().itemID == GCCoreItems.oxTankMedium.itemID)
             {
                 this.sendGearUpdatePacket(EnumModelPacket.REMOVELEFTORANGETANK.getIndex());
             }
-            else if (this.lastTankInSlot1.getItem().itemID == GCCoreItems.heavyOxygenTank.itemID)
+            else if (this.lastTankInSlot1.getItem().itemID == GCCoreItems.oxTankHeavy.itemID)
             {
                 this.sendGearUpdatePacket(EnumModelPacket.REMOVELEFTREDTANK.getIndex());
             }
@@ -582,39 +582,39 @@ public class GCCorePlayerMP extends EntityPlayerMP
         {
             if (this.tankInSlot1.getItem().itemID != this.lastTankInSlot1.getItem().itemID)
             {
-                if (this.tankInSlot1.getItem().itemID == GCCoreItems.lightOxygenTank.itemID)
+                if (this.tankInSlot1.getItem().itemID == GCCoreItems.oxTankLight.itemID)
                 {
-                    if (this.lastTankInSlot1.getItem().itemID == GCCoreItems.medOxygenTank.itemID)
+                    if (this.lastTankInSlot1.getItem().itemID == GCCoreItems.oxTankMedium.itemID)
                     {
                         this.sendGearUpdatePacket(EnumModelPacket.REMOVELEFTORANGETANK.getIndex());
                     }
-                    else if (this.lastTankInSlot1.getItem().itemID == GCCoreItems.heavyOxygenTank.itemID)
+                    else if (this.lastTankInSlot1.getItem().itemID == GCCoreItems.oxTankHeavy.itemID)
                     {
                         this.sendGearUpdatePacket(EnumModelPacket.REMOVELEFTREDTANK.getIndex());
                     }
 
                     this.sendGearUpdatePacket(EnumModelPacket.ADDLEFTGREENTANK.getIndex());
                 }
-                else if (this.tankInSlot1.getItem().itemID == GCCoreItems.medOxygenTank.itemID)
+                else if (this.tankInSlot1.getItem().itemID == GCCoreItems.oxTankMedium.itemID)
                 {
-                    if (this.lastTankInSlot1.getItem().itemID == GCCoreItems.lightOxygenTank.itemID)
+                    if (this.lastTankInSlot1.getItem().itemID == GCCoreItems.oxTankLight.itemID)
                     {
                         this.sendGearUpdatePacket(EnumModelPacket.REMOVELEFTGREENTANK.getIndex());
                     }
-                    else if (this.lastTankInSlot1.getItem().itemID == GCCoreItems.heavyOxygenTank.itemID)
+                    else if (this.lastTankInSlot1.getItem().itemID == GCCoreItems.oxTankHeavy.itemID)
                     {
                         this.sendGearUpdatePacket(EnumModelPacket.REMOVELEFTREDTANK.getIndex());
                     }
 
                     this.sendGearUpdatePacket(EnumModelPacket.ADDLEFTORANGETANK.getIndex());
                 }
-                else if (this.tankInSlot1.getItem().itemID == GCCoreItems.heavyOxygenTank.itemID)
+                else if (this.tankInSlot1.getItem().itemID == GCCoreItems.oxTankHeavy.itemID)
                 {
-                    if (this.lastTankInSlot1.getItem().itemID == GCCoreItems.lightOxygenTank.itemID)
+                    if (this.lastTankInSlot1.getItem().itemID == GCCoreItems.oxTankLight.itemID)
                     {
                         this.sendGearUpdatePacket(EnumModelPacket.REMOVELEFTGREENTANK.getIndex());
                     }
-                    else if (this.lastTankInSlot1.getItem().itemID == GCCoreItems.medOxygenTank.itemID)
+                    else if (this.lastTankInSlot1.getItem().itemID == GCCoreItems.oxTankMedium.itemID)
                     {
                         this.sendGearUpdatePacket(EnumModelPacket.REMOVELEFTORANGETANK.getIndex());
                     }
@@ -628,15 +628,15 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
         if (this.tankInSlot2 != null && this.lastTankInSlot2 == null)
         {
-            if (this.tankInSlot2.getItem().itemID == GCCoreItems.lightOxygenTank.itemID)
+            if (this.tankInSlot2.getItem().itemID == GCCoreItems.oxTankLight.itemID)
             {
                 this.sendGearUpdatePacket(EnumModelPacket.ADDRIGHTGREENTANK.getIndex());
             }
-            else if (this.tankInSlot2.getItem().itemID == GCCoreItems.medOxygenTank.itemID)
+            else if (this.tankInSlot2.getItem().itemID == GCCoreItems.oxTankMedium.itemID)
             {
                 this.sendGearUpdatePacket(EnumModelPacket.ADDRIGHTORANGETANK.getIndex());
             }
-            else if (this.tankInSlot2.getItem().itemID == GCCoreItems.heavyOxygenTank.itemID)
+            else if (this.tankInSlot2.getItem().itemID == GCCoreItems.oxTankHeavy.itemID)
             {
                 this.sendGearUpdatePacket(EnumModelPacket.ADDRIGHTREDTANK.getIndex());
             }
@@ -644,15 +644,15 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
         if (this.tankInSlot2 == null && this.lastTankInSlot2 != null)
         {
-            if (this.lastTankInSlot2.getItem().itemID == GCCoreItems.lightOxygenTank.itemID)
+            if (this.lastTankInSlot2.getItem().itemID == GCCoreItems.oxTankLight.itemID)
             {
                 this.sendGearUpdatePacket(EnumModelPacket.REMOVERIGHTGREENTANK.getIndex());
             }
-            else if (this.lastTankInSlot2.getItem().itemID == GCCoreItems.medOxygenTank.itemID)
+            else if (this.lastTankInSlot2.getItem().itemID == GCCoreItems.oxTankMedium.itemID)
             {
                 this.sendGearUpdatePacket(EnumModelPacket.REMOVERIGHTORANGETANK.getIndex());
             }
-            else if (this.lastTankInSlot2.getItem().itemID == GCCoreItems.heavyOxygenTank.itemID)
+            else if (this.lastTankInSlot2.getItem().itemID == GCCoreItems.oxTankHeavy.itemID)
             {
                 this.sendGearUpdatePacket(EnumModelPacket.REMOVERIGHTREDTANK.getIndex());
             }
@@ -662,39 +662,39 @@ public class GCCorePlayerMP extends EntityPlayerMP
         {
             if (this.tankInSlot2.getItem().itemID != this.lastTankInSlot2.getItem().itemID)
             {
-                if (this.tankInSlot2.getItem().itemID == GCCoreItems.lightOxygenTank.itemID)
+                if (this.tankInSlot2.getItem().itemID == GCCoreItems.oxTankLight.itemID)
                 {
-                    if (this.lastTankInSlot2.getItem().itemID == GCCoreItems.medOxygenTank.itemID)
+                    if (this.lastTankInSlot2.getItem().itemID == GCCoreItems.oxTankMedium.itemID)
                     {
                         this.sendGearUpdatePacket(EnumModelPacket.REMOVERIGHTORANGETANK.getIndex());
                     }
-                    else if (this.lastTankInSlot2.getItem().itemID == GCCoreItems.heavyOxygenTank.itemID)
+                    else if (this.lastTankInSlot2.getItem().itemID == GCCoreItems.oxTankHeavy.itemID)
                     {
                         this.sendGearUpdatePacket(EnumModelPacket.REMOVERIGHTREDTANK.getIndex());
                     }
 
                     this.sendGearUpdatePacket(EnumModelPacket.ADDRIGHTGREENTANK.getIndex());
                 }
-                else if (this.tankInSlot2.getItem().itemID == GCCoreItems.medOxygenTank.itemID)
+                else if (this.tankInSlot2.getItem().itemID == GCCoreItems.oxTankMedium.itemID)
                 {
-                    if (this.lastTankInSlot2.getItem().itemID == GCCoreItems.lightOxygenTank.itemID)
+                    if (this.lastTankInSlot2.getItem().itemID == GCCoreItems.oxTankLight.itemID)
                     {
                         this.sendGearUpdatePacket(EnumModelPacket.REMOVERIGHTGREENTANK.getIndex());
                     }
-                    else if (this.lastTankInSlot2.getItem().itemID == GCCoreItems.heavyOxygenTank.itemID)
+                    else if (this.lastTankInSlot2.getItem().itemID == GCCoreItems.oxTankHeavy.itemID)
                     {
                         this.sendGearUpdatePacket(EnumModelPacket.REMOVERIGHTREDTANK.getIndex());
                     }
 
                     this.sendGearUpdatePacket(EnumModelPacket.ADDRIGHTORANGETANK.getIndex());
                 }
-                else if (this.tankInSlot2.getItem().itemID == GCCoreItems.heavyOxygenTank.itemID)
+                else if (this.tankInSlot2.getItem().itemID == GCCoreItems.oxTankHeavy.itemID)
                 {
-                    if (this.lastTankInSlot2.getItem().itemID == GCCoreItems.lightOxygenTank.itemID)
+                    if (this.lastTankInSlot2.getItem().itemID == GCCoreItems.oxTankLight.itemID)
                     {
                         this.sendGearUpdatePacket(EnumModelPacket.REMOVERIGHTGREENTANK.getIndex());
                     }
-                    else if (this.lastTankInSlot2.getItem().itemID == GCCoreItems.medOxygenTank.itemID)
+                    else if (this.lastTankInSlot2.getItem().itemID == GCCoreItems.oxTankMedium.itemID)
                     {
                         this.sendGearUpdatePacket(EnumModelPacket.REMOVERIGHTORANGETANK.getIndex());
                     }

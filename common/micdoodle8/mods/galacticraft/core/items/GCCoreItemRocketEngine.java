@@ -19,11 +19,13 @@ public class GCCoreItemRocketEngine extends Item
 
     protected Icon[] icons = new Icon[GCCoreItemRocketEngine.names.length];
 
-    public GCCoreItemRocketEngine(int par1)
+    public GCCoreItemRocketEngine(int id, String assetName)
     {
-        super(par1);
+        super(id);
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
+        this.setUnlocalizedName(assetName);
+        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
     }
 
     @Override
@@ -47,14 +49,14 @@ public class GCCoreItemRocketEngine extends Item
 
         for (final String name : GCCoreItemRocketEngine.names)
         {
-            this.icons[i++] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "engine_" + name + GalacticraftCore.TEXTURE_SUFFIX);
+            this.icons[i++] = iconRegister.registerIcon(this.getIconString() + "." + name);
         }
     }
 
     @Override
     public String getUnlocalizedName(ItemStack itemStack)
     {
-        return "item." + "engine." + GCCoreItemRocketEngine.names[itemStack.getItemDamage()];
+        return this.getUnlocalizedName() + "." + GCCoreItemRocketEngine.names[itemStack.getItemDamage()];
     }
 
     @Override

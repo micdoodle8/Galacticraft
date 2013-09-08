@@ -57,43 +57,43 @@ public class GCCoreSlotBuggyBench extends Slot
         switch (this.index)
         {
         case 1:
-            return par1ItemStack.getItem().itemID == GCCoreItems.heavyPlating.itemID ? true : false;
+            return par1ItemStack.getItem().itemID == GCCoreItems.heavyPlatingTier1.itemID ? true : false;
         case 2:
-            return par1ItemStack.getItem().itemID == GCCoreItems.heavyPlating.itemID ? true : false;
+            return par1ItemStack.getItem().itemID == GCCoreItems.heavyPlatingTier1.itemID ? true : false;
         case 3:
-            return par1ItemStack.getItem().itemID == GCCoreItems.heavyPlating.itemID ? true : false;
+            return par1ItemStack.getItem().itemID == GCCoreItems.heavyPlatingTier1.itemID ? true : false;
         case 4:
-            return par1ItemStack.getItem().itemID == GCCoreItems.heavyPlating.itemID ? true : false;
+            return par1ItemStack.getItem().itemID == GCCoreItems.heavyPlatingTier1.itemID ? true : false;
         case 5:
-            return par1ItemStack.getItem().itemID == GCCoreItems.heavyPlating.itemID ? true : false;
+            return par1ItemStack.getItem().itemID == GCCoreItems.heavyPlatingTier1.itemID ? true : false;
         case 6:
-            return par1ItemStack.getItem().itemID == GCCoreItems.buggyMaterial.itemID && par1ItemStack.getItemDamage() == 1 ? true : false;
+            return par1ItemStack.getItem().itemID == GCCoreItems.partBuggy.itemID && par1ItemStack.getItemDamage() == 1 ? true : false;
         case 7:
-            return par1ItemStack.getItem().itemID == GCCoreItems.heavyPlating.itemID ? true : false;
+            return par1ItemStack.getItem().itemID == GCCoreItems.heavyPlatingTier1.itemID ? true : false;
         case 8:
-            return par1ItemStack.getItem().itemID == GCCoreItems.heavyPlating.itemID ? true : false;
+            return par1ItemStack.getItem().itemID == GCCoreItems.heavyPlatingTier1.itemID ? true : false;
         case 9:
-            return par1ItemStack.getItem().itemID == GCCoreItems.heavyPlating.itemID ? true : false;
+            return par1ItemStack.getItem().itemID == GCCoreItems.heavyPlatingTier1.itemID ? true : false;
         case 10:
-            return par1ItemStack.getItem().itemID == GCCoreItems.heavyPlating.itemID ? true : false;
+            return par1ItemStack.getItem().itemID == GCCoreItems.heavyPlatingTier1.itemID ? true : false;
         case 11:
-            return par1ItemStack.getItem().itemID == GCCoreItems.heavyPlating.itemID ? true : false;
+            return par1ItemStack.getItem().itemID == GCCoreItems.heavyPlatingTier1.itemID ? true : false;
         case 12:
-            return par1ItemStack.getItem().itemID == GCCoreItems.heavyPlating.itemID ? true : false;
+            return par1ItemStack.getItem().itemID == GCCoreItems.heavyPlatingTier1.itemID ? true : false;
         case 13:
-            return par1ItemStack.getItem().itemID == GCCoreItems.buggyMaterial.itemID && par1ItemStack.getItemDamage() == 0 ? true : false;
+            return par1ItemStack.getItem().itemID == GCCoreItems.partBuggy.itemID && par1ItemStack.getItemDamage() == 0 ? true : false;
         case 14:
-            return par1ItemStack.getItem().itemID == GCCoreItems.buggyMaterial.itemID && par1ItemStack.getItemDamage() == 0 ? true : false;
+            return par1ItemStack.getItem().itemID == GCCoreItems.partBuggy.itemID && par1ItemStack.getItemDamage() == 0 ? true : false;
         case 15:
-            return par1ItemStack.getItem().itemID == GCCoreItems.buggyMaterial.itemID && par1ItemStack.getItemDamage() == 0 ? true : false;
+            return par1ItemStack.getItem().itemID == GCCoreItems.partBuggy.itemID && par1ItemStack.getItemDamage() == 0 ? true : false;
         case 16:
-            return par1ItemStack.getItem().itemID == GCCoreItems.buggyMaterial.itemID && par1ItemStack.getItemDamage() == 0 ? true : false;
+            return par1ItemStack.getItem().itemID == GCCoreItems.partBuggy.itemID && par1ItemStack.getItemDamage() == 0 ? true : false;
         case 17:
-            return par1ItemStack.getItem().itemID == GCCoreItems.buggyMaterial.itemID && par1ItemStack.getItemDamage() == 2 ? true : false;
+            return par1ItemStack.getItem().itemID == GCCoreItems.partBuggy.itemID && par1ItemStack.getItemDamage() == 2 ? true : false;
         case 18:
-            return par1ItemStack.getItem().itemID == GCCoreItems.buggyMaterial.itemID && par1ItemStack.getItemDamage() == 2 ? true : false;
+            return par1ItemStack.getItem().itemID == GCCoreItems.partBuggy.itemID && par1ItemStack.getItemDamage() == 2 ? true : false;
         case 19:
-            return par1ItemStack.getItem().itemID == GCCoreItems.buggyMaterial.itemID && par1ItemStack.getItemDamage() == 2 ? true : false;
+            return par1ItemStack.getItem().itemID == GCCoreItems.partBuggy.itemID && par1ItemStack.getItemDamage() == 2 ? true : false;
         }
 
         return false;

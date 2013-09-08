@@ -22,7 +22,7 @@ public class GCMarsItemSchematic extends GCCoreItemSchematic implements ISchemat
 
     public GCMarsItemSchematic(int itemID)
     {
-        super(itemID);
+        super(itemID, "schematic");
     }
 
     @Override

@@ -108,6 +108,9 @@ public class GCCoreBlocks
         GCCoreBlocks.hiddenBlocks.add(GCCoreBlocks.spaceStationBase.blockID);
 
         OreDictionary.registerOre("copperWire", GCCoreBlocks.blockCopperWire);
+        
+        GCCoreBlocks.setHarvestLevels();
+        GCCoreBlocks.registerBlocks();
     }
 
     public static void setHarvestLevels()

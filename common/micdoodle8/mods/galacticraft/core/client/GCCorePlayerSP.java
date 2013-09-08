@@ -216,7 +216,7 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
                 return par1ItemStack.getItem().getIcon(par1ItemStack, par2);
             }
 
-            if (this.getItemInUse() != null && par1ItemStack.itemID == GCCoreItems.gravityBow.itemID)
+            if (this.getItemInUse() != null && par1ItemStack.itemID == GCCoreItems.bowGravity.itemID)
             {
                 final int j = par1ItemStack.getMaxItemUseDuration() - this.getItemInUseCount();
 

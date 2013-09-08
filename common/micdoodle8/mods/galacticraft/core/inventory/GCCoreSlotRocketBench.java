@@ -57,33 +57,33 @@ public class GCCoreSlotRocketBench extends Slot
         switch (this.index)
         {
         case 1:
-            return par1ItemStack.getItem().itemID == GCCoreItems.rocketNoseCone.itemID ? true : false;
+            return par1ItemStack.getItem().itemID == GCCoreItems.partNoseCone.itemID ? true : false;
         case 2:
-            return par1ItemStack.getItem().itemID == GCCoreItems.heavyPlating.itemID ? true : false;
+            return par1ItemStack.getItem().itemID == GCCoreItems.heavyPlatingTier1.itemID ? true : false;
         case 3:
-            return par1ItemStack.getItem().itemID == GCCoreItems.heavyPlating.itemID ? true : false;
+            return par1ItemStack.getItem().itemID == GCCoreItems.heavyPlatingTier1.itemID ? true : false;
         case 4:
-            return par1ItemStack.getItem().itemID == GCCoreItems.heavyPlating.itemID ? true : false;
+            return par1ItemStack.getItem().itemID == GCCoreItems.heavyPlatingTier1.itemID ? true : false;
         case 5:
-            return par1ItemStack.getItem().itemID == GCCoreItems.heavyPlating.itemID ? true : false;
+            return par1ItemStack.getItem().itemID == GCCoreItems.heavyPlatingTier1.itemID ? true : false;
         case 6:
-            return par1ItemStack.getItem().itemID == GCCoreItems.heavyPlating.itemID ? true : false;
+            return par1ItemStack.getItem().itemID == GCCoreItems.heavyPlatingTier1.itemID ? true : false;
         case 7:
-            return par1ItemStack.getItem().itemID == GCCoreItems.heavyPlating.itemID ? true : false;
+            return par1ItemStack.getItem().itemID == GCCoreItems.heavyPlatingTier1.itemID ? true : false;
         case 8:
-            return par1ItemStack.getItem().itemID == GCCoreItems.heavyPlating.itemID ? true : false;
+            return par1ItemStack.getItem().itemID == GCCoreItems.heavyPlatingTier1.itemID ? true : false;
         case 9:
-            return par1ItemStack.getItem().itemID == GCCoreItems.heavyPlating.itemID ? true : false;
+            return par1ItemStack.getItem().itemID == GCCoreItems.heavyPlatingTier1.itemID ? true : false;
         case 10:
-            return par1ItemStack.getItem().itemID == GCCoreItems.rocketFins.itemID ? true : false;
+            return par1ItemStack.getItem().itemID == GCCoreItems.partFins.itemID ? true : false;
         case 11:
-            return par1ItemStack.getItem().itemID == GCCoreItems.rocketFins.itemID ? true : false;
+            return par1ItemStack.getItem().itemID == GCCoreItems.partFins.itemID ? true : false;
         case 12:
             return par1ItemStack.getItem().itemID == GCCoreItems.rocketEngine.itemID && par1ItemStack.getItemDamage() == 0 ? true : false;
         case 13:
-            return par1ItemStack.getItem().itemID == GCCoreItems.rocketFins.itemID ? true : false;
+            return par1ItemStack.getItem().itemID == GCCoreItems.partFins.itemID ? true : false;
         case 14:
-            return par1ItemStack.getItem().itemID == GCCoreItems.rocketFins.itemID ? true : false;
+            return par1ItemStack.getItem().itemID == GCCoreItems.partFins.itemID ? true : false;
         case 15:
             return true;
         case 16:

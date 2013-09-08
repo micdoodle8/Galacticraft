@@ -22,11 +22,12 @@ public class GCCoreItemBow extends Item
     @SideOnly(Side.CLIENT)
     private Icon[] iconArray;
 
-    public GCCoreItemBow(int par1)
+    public GCCoreItemBow(int id, String assetName)
     {
-        super(par1);
+        super(id);
         this.maxStackSize = 1;
         this.setMaxDamage(384);
+        this.setUnlocalizedName(assetName);
     }
 
     @Override

@@ -170,7 +170,7 @@ public class GCCoreEntityRocketT1 extends EntityTieredRocket implements IInvento
             }
 
             playerBase.setRocketType(this.rocketType.getIndex());
-            playerBase.setRocketItem(GCCoreItems.spaceship);
+            playerBase.setRocketItem(GCCoreItems.rocketTier1);
             int liquid = this.spaceshipFuelTank.getFluid() == null ? 0 : this.spaceshipFuelTank.getFluid().amount;
             playerBase.setFuelLevel(liquid);
         }
@@ -366,7 +366,7 @@ public class GCCoreEntityRocketT1 extends EntityTieredRocket implements IInvento
     public List<ItemStack> getItemsDropped()
     {
         final List<ItemStack> items = new ArrayList<ItemStack>();
-        items.add(new ItemStack(GCCoreItems.spaceship, 1, this.rocketType.getIndex()));
+        items.add(new ItemStack(GCCoreItems.rocketTier1, 1, this.rocketType.getIndex()));
 
         if (this.cargoItems != null)
         {

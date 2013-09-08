@@ -53,7 +53,7 @@ public class NEIGalacticraftMarsConfig implements IConfigureNEI
 
         ArrayList<PositionedStack> input1 = new ArrayList<PositionedStack>();
 
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.rocketNoseCone), 45, -8 + changey));
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partNoseCone), 45, -8 + changey));
         input1.add(new PositionedStack(new ItemStack(GCMarsItems.marsItemBasic, 1, 3), 36, -6 + 0 * 18 + 16 + changey));
         input1.add(new PositionedStack(new ItemStack(GCMarsItems.marsItemBasic, 1, 3), 36, -6 + 1 * 18 + 16 + changey));
         input1.add(new PositionedStack(new ItemStack(GCMarsItems.marsItemBasic, 1, 3), 36, -6 + 2 * 18 + 16 + changey));
@@ -67,10 +67,10 @@ public class NEIGalacticraftMarsConfig implements IConfigureNEI
         input1.add(new PositionedStack(new ItemStack(GCCoreItems.rocketEngine), 45, 100 + changey));
         input1.add(new PositionedStack(new ItemStack(GCCoreItems.rocketEngine, 1, 1), 18, 64 + changey));
         input1.add(new PositionedStack(new ItemStack(GCCoreItems.rocketEngine, 1, 1), 72, 64 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.rocketFins), 18, 82 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.rocketFins), 18, 100 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.rocketFins), 72, 82 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.rocketFins), 72, 100 + changey));
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partFins), 18, 82 + changey));
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partFins), 18, 100 + changey));
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partFins), 72, 82 + changey));
+        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partFins), 72, 100 + changey));
         this.registerRocketBenchRecipe(input1, new PositionedStack(new ItemStack(GCMarsItems.spaceship, 1, 0), 139, 87 + changey));
 
         ArrayList<PositionedStack> input2 = new ArrayList<PositionedStack>(input1);

@@ -17,14 +17,16 @@ public class GCCoreItemCanister extends Item
     public static final String[] names = { "tin", // 0
     "copper" }; // 1
 
-    protected Icon[] icons = new Icon[256];
+    protected Icon[] icons;
 
-    public GCCoreItemCanister(int par1)
+    public GCCoreItemCanister(int id, String assetName)
     {
-        super(par1);
+        super(id);
         this.setMaxStackSize(1);
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
+        this.setUnlocalizedName(assetName);
+        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
     }
 
     @Override
@@ -45,17 +47,18 @@ public class GCCoreItemCanister extends Item
     public void registerIcons(IconRegister iconRegister)
     {
         int i = 0;
+        this.icons = new Icon[GCCoreItemCanister.names.length];
 
         for (final String name : GCCoreItemCanister.names)
         {
-            this.icons[i++] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "canister_" + name + GalacticraftCore.TEXTURE_SUFFIX);
+            this.icons[i++] = iconRegister.registerIcon(this.getIconString() + "." + name);
         }
     }
 
     @Override
     public String getUnlocalizedName(ItemStack itemStack)
     {
-        return "item." + "canister." + GCCoreItemCanister.names[itemStack.getItemDamage()];
+        return this.getUnlocalizedName() + "." + GCCoreItemCanister.names[itemStack.getItemDamage()];
     }
 
     @Override

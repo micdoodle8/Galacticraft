@@ -58,7 +58,7 @@ public class GCMarsSlotRocketBenchT2 extends Slot
         switch (this.index)
         {
         case 1:
-            return par1ItemStack.getItem().itemID == GCCoreItems.rocketNoseCone.itemID ? true : false;
+            return par1ItemStack.getItem().itemID == GCCoreItems.partNoseCone.itemID ? true : false;
         case 2:
             return par1ItemStack.getItem().itemID == GCMarsItems.marsItemBasic.itemID && par1ItemStack.getItemDamage() == 3 ? true : false;
         case 3:
@@ -82,17 +82,17 @@ public class GCMarsSlotRocketBenchT2 extends Slot
         case 12:
             return par1ItemStack.getItem().itemID == GCCoreItems.rocketEngine.itemID && par1ItemStack.getItemDamage() == 1 ? true : false;
         case 13:
-            return par1ItemStack.getItem().itemID == GCCoreItems.rocketFins.itemID ? true : false;
+            return par1ItemStack.getItem().itemID == GCCoreItems.partFins.itemID ? true : false;
         case 14:
-            return par1ItemStack.getItem().itemID == GCCoreItems.rocketFins.itemID ? true : false;
+            return par1ItemStack.getItem().itemID == GCCoreItems.partFins.itemID ? true : false;
         case 15:
             return par1ItemStack.getItem().itemID == GCCoreItems.rocketEngine.itemID && par1ItemStack.getItemDamage() == 0 ? true : false;
         case 16:
             return par1ItemStack.getItem().itemID == GCCoreItems.rocketEngine.itemID && par1ItemStack.getItemDamage() == 1 ? true : false;
         case 17:
-            return par1ItemStack.getItem().itemID == GCCoreItems.rocketFins.itemID ? true : false;
+            return par1ItemStack.getItem().itemID == GCCoreItems.partFins.itemID ? true : false;
         case 18:
-            return par1ItemStack.getItem().itemID == GCCoreItems.rocketFins.itemID ? true : false;
+            return par1ItemStack.getItem().itemID == GCCoreItems.partFins.itemID ? true : false;
         case 19:
             return true;
         case 20:

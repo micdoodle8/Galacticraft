@@ -8,7 +8,6 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
@@ -27,19 +26,14 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreItemSpaceship extends Item implements IHoldableItem
 {
-    public GCCoreItemSpaceship(int par1)
+    public GCCoreItemSpaceship(int id, String assetName)
     {
-        super(par1);
+        super(id);
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
         this.setMaxStackSize(1);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister par1IconRegister)
-    {
-        this.itemIcon = null;
+        this.setTextureName("arrow");
+        this.setUnlocalizedName(assetName);
     }
 
     @Override

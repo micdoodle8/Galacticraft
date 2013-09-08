@@ -5,7 +5,6 @@ import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityFlag;
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
@@ -48,12 +47,14 @@ public class GCCoreItemFlag extends Item implements IHoldableItem
     "white" }; // 16
     public int placeProgress;
 
-    public GCCoreItemFlag(int par1)
+    public GCCoreItemFlag(int id, String assetName)
     {
-        super(par1);
+        super(id);
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
         this.setMaxStackSize(1);
+        this.setUnlocalizedName(assetName);
+        this.setTextureName("arrow");
     }
 
     @Override
@@ -63,13 +64,6 @@ public class GCCoreItemFlag extends Item implements IHoldableItem
         {
             par3List.add(new ItemStack(par1, 1, i));
         }
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister par1IconRegister)
-    {
-        this.itemIcon = null;
     }
 
     @Override

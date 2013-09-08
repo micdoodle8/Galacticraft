@@ -24,16 +24,12 @@ public class GCCoreItemOilExtractor extends Item
 {
     protected Icon[] icons = new Icon[5];
 
-    public static final String[] names = { "extactor_1", // 0
-    "extactor_2", // 1
-    "extactor_3", // 2
-    "extactor_4", // 3
-    "extactor_5" }; // 4
-
-    public GCCoreItemOilExtractor(int par1)
+    public GCCoreItemOilExtractor(int par1, String assetName)
     {
         super(par1);
         this.setMaxStackSize(1);
+        this.setUnlocalizedName(assetName);
+        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
     }
 
     @Override
@@ -74,19 +70,13 @@ public class GCCoreItemOilExtractor extends Item
     public void registerIcons(IconRegister iconRegister)
     {
         this.icons = new Icon[5];
-        this.icons[0] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "extractor_1" + GalacticraftCore.TEXTURE_SUFFIX);
-        this.icons[1] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "extractor_2" + GalacticraftCore.TEXTURE_SUFFIX);
-        this.icons[2] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "extractor_3" + GalacticraftCore.TEXTURE_SUFFIX);
-        this.icons[3] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "extractor_4" + GalacticraftCore.TEXTURE_SUFFIX);
-        this.icons[4] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "extractor_5" + GalacticraftCore.TEXTURE_SUFFIX);
+
+        for (int i = 0; i < this.icons.length; i++)
+        {
+            this.icons[i] = iconRegister.registerIcon(this.getIconString() + "_" + (i + 1));
+        }
 
         this.itemIcon = this.icons[0];
-    }
-
-    @Override
-    public String getUnlocalizedName(ItemStack itemStack)
-    {
-        return "item.oilExtractor";
     }
 
     @Override

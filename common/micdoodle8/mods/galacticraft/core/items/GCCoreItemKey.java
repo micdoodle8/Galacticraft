@@ -18,12 +18,14 @@ public class GCCoreItemKey extends Item implements IKeyItem
     public static String[] keyTypes = new String[] { "T1" };
     public Icon[] keyIcons = new Icon[1];
 
-    public GCCoreItemKey(int par1)
+    public GCCoreItemKey(int id, String assetName)
     {
-        super(par1);
+        super(id);
         this.setMaxStackSize(1);
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
+        this.setUnlocalizedName(assetName);
+        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
     }
 
     @Override
@@ -35,7 +37,7 @@ public class GCCoreItemKey extends Item implements IKeyItem
     @Override
     public String getUnlocalizedName(ItemStack itemStack)
     {
-        return "item." + "key." + GCCoreItemKey.keyTypes[itemStack.getItemDamage()];
+        return this.getUnlocalizedName() + "." + GCCoreItemKey.keyTypes[itemStack.getItemDamage()];
     }
 
     @Override
@@ -53,7 +55,7 @@ public class GCCoreItemKey extends Item implements IKeyItem
 
         for (final String name : GCCoreItemKey.keyTypes)
         {
-            this.keyIcons[i++] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "key_" + name + GalacticraftCore.TEXTURE_SUFFIX);
+            this.keyIcons[i++] = iconRegister.registerIcon(this.getIconString() + "_" + name);
         }
     }
 

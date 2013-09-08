@@ -14,10 +14,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreItemKnowledgeBook extends Item
 {
-    public GCCoreItemKnowledgeBook(int i)
+    public GCCoreItemKnowledgeBook(int id, String assetName)
     {
-        super(i);
+        super(id);
         this.maxStackSize = 1;
+        this.setUnlocalizedName(assetName);
+        this.setTextureName("arrow");
     }
 
     @Override

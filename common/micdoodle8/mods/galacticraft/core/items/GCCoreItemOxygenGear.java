@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.items;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -13,9 +12,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreItemOxygenGear extends Item
 {
-    public GCCoreItemOxygenGear(int par1)
+    public GCCoreItemOxygenGear(int id, String assetName)
     {
-        super(par1);
+        super(id);
+        this.setUnlocalizedName(assetName);
+        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
     }
 
     @Override
@@ -29,13 +30,6 @@ public class GCCoreItemOxygenGear extends Item
     public EnumRarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister iconRegister)
-    {
-        this.itemIcon = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "oxygen_gear" + GalacticraftCore.TEXTURE_SUFFIX);
     }
 
     @Override

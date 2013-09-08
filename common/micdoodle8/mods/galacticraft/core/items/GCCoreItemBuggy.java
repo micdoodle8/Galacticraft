@@ -5,7 +5,6 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -29,9 +28,11 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreItemBuggy extends Item
 {
-    public GCCoreItemBuggy(int par1)
+    public GCCoreItemBuggy(int id, String assetName)
     {
-        super(par1);
+        super(id);
+        this.setUnlocalizedName(assetName);
+        this.setTextureName("arrow");
     }
 
     @Override
@@ -45,13 +46,6 @@ public class GCCoreItemBuggy extends Item
     public EnumRarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister par1IconRegister)
-    {
-        this.itemIcon = null;
     }
 
     @Override

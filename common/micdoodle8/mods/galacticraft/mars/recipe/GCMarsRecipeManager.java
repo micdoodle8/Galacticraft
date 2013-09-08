@@ -113,7 +113,7 @@ public class GCMarsRecipeManager
 
         // Schematic
         HashMap<Integer, ItemStack> input = new HashMap<Integer, ItemStack>();
-        input.put(1, new ItemStack(GCCoreItems.rocketNoseCone));
+        input.put(1, new ItemStack(GCCoreItems.partNoseCone));
         input.put(2, new ItemStack(GCMarsItems.marsItemBasic, 1, 3));
         input.put(3, new ItemStack(GCMarsItems.marsItemBasic, 1, 3));
         input.put(4, new ItemStack(GCMarsItems.marsItemBasic, 1, 3));
@@ -125,12 +125,12 @@ public class GCMarsRecipeManager
         input.put(10, new ItemStack(GCMarsItems.marsItemBasic, 1, 3));
         input.put(11, new ItemStack(GCMarsItems.marsItemBasic, 1, 3));
         input.put(12, new ItemStack(GCCoreItems.rocketEngine, 1, 1));
-        input.put(13, new ItemStack(GCCoreItems.rocketFins));
-        input.put(14, new ItemStack(GCCoreItems.rocketFins));
+        input.put(13, new ItemStack(GCCoreItems.partFins));
+        input.put(14, new ItemStack(GCCoreItems.partFins));
         input.put(15, new ItemStack(GCCoreItems.rocketEngine));
         input.put(16, new ItemStack(GCCoreItems.rocketEngine, 1, 1));
-        input.put(17, new ItemStack(GCCoreItems.rocketFins));
-        input.put(18, new ItemStack(GCCoreItems.rocketFins));
+        input.put(17, new ItemStack(GCCoreItems.partFins));
+        input.put(18, new ItemStack(GCCoreItems.partFins));
         input.put(19, null);
         input.put(20, null);
         input.put(21, null);

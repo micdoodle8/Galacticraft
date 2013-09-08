@@ -7,6 +7,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.EnumArmorMaterial;
 import net.minecraft.item.EnumRarity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.relauncher.Side;
@@ -22,6 +23,14 @@ public class GCMarsItemArmor extends ItemArmor
         super(par1, par2EnumArmorMaterial, par3, par4);
         this.material = par2EnumArmorMaterial;
         this.attachedMask = breathable;
+    }
+    
+    @Override
+    public Item setUnlocalizedName(String par1Str)
+    {
+        super.setTextureName(par1Str);
+        super.setUnlocalizedName(par1Str);
+        return this;
     }
 
     @Override

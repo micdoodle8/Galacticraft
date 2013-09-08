@@ -18,22 +18,16 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreItemFuelCanister extends Item
 {
-    protected Icon[] icons = new Icon[256];
+    protected Icon[] icons = new Icon[7];
 
-    public static final String[] names = { "liquidcan_fuel_6", // 0
-    "liquidcan_fuel_5", // 0
-    "liquidcan_fuel_4", // 1
-    "liquidcan_fuel_3", // 2
-    "liquidcan_fuel_2", // 3
-    "liquidcan_fuel_1", // 4
-    "liquidcan_empty" }; // 5
-
-    public GCCoreItemFuelCanister(int par1)
+    public GCCoreItemFuelCanister(int id, String assetName)
     {
-        super(par1);
+        super(id);
         this.setMaxDamage(FluidContainerRegistry.BUCKET_VOLUME + 1);
         this.setMaxStackSize(1);
         this.setNoRepair();
+        this.setUnlocalizedName(assetName);
+        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
     }
 
     @Override
@@ -60,11 +54,9 @@ public class GCCoreItemFuelCanister extends Item
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister iconRegister)
     {
-        int i = 0;
-
-        for (final String name : GCCoreItemFuelCanister.names)
+        for (int i = 0; i < this.icons.length; i++)
         {
-            this.icons[i++] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "" + name);
+            this.icons[i] = iconRegister.registerIcon(this.getIconString() + "_" + i);
         }
     }
 
@@ -86,7 +78,7 @@ public class GCCoreItemFuelCanister extends Item
 
         if (this.icons.length > damage)
         {
-            return this.icons[damage];
+            return this.icons[this.icons.length - damage - 1];
         }
 
         return super.getIconFromDamage(damage);
@@ -101,7 +93,7 @@ public class GCCoreItemFuelCanister extends Item
 
             if (!(par1ItemStack.getItem() instanceof GCCoreItemOilCanister))
             {
-                par1ItemStack = new ItemStack(GCCoreItems.oilCanister, stackSize, 61);
+                par1ItemStack = new ItemStack(GCCoreItems.oilCanister, stackSize, GCCoreItems.oilCanister.getMaxDamage());
             }
         }
     }

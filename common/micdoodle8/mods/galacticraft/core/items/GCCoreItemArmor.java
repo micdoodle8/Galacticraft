@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.items;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.EnumArmorMaterial;
@@ -14,14 +13,14 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreItemArmor extends ItemArmor
 {
-    public boolean attachedMask;
     private final EnumArmorMaterial material;
 
-    public GCCoreItemArmor(int par1, EnumArmorMaterial par2EnumArmorMaterial, int par3, int par4, boolean breathable)
+    public GCCoreItemArmor(int id, int armorIndex, String assetSuffix)
     {
-        super(par1, par2EnumArmorMaterial, par3, par4);
-        this.material = par2EnumArmorMaterial;
-        this.attachedMask = breathable;
+        super(id, GCCoreItems.ARMOR_STEEL, GalacticraftCore.proxy.getTitaniumArmorRenderIndex(), armorIndex);
+        this.material = GCCoreItems.ARMOR_STEEL;
+        this.setUnlocalizedName("steel_" + assetSuffix);
+        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + "steel_" + assetSuffix);
     }
 
     @Override
@@ -40,7 +39,7 @@ public class GCCoreItemArmor extends ItemArmor
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, int slot, int layer)
     {
-        if (this.material == GCCoreItems.steelARMOR)
+        if (this.material == GCCoreItems.ARMOR_STEEL)
         {
             if (stack.getItem().itemID == GCCoreItems.steelHelmet.itemID)
             {
@@ -57,12 +56,5 @@ public class GCCoreItemArmor extends ItemArmor
         }
 
         return null;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister par1IconRegister)
-    {
-        this.itemIcon = par1IconRegister.registerIcon(this.getUnlocalizedName().replace("item.", GalacticraftCore.TEXTURE_PREFIX + ""));
     }
 }

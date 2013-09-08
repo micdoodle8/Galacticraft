@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.items;
 import java.util.List;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
@@ -21,11 +20,13 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreItemInfiniteBattery extends Item implements IItemElectric
 {
-    public GCCoreItemInfiniteBattery(int id)
+    public GCCoreItemInfiniteBattery(int id, String assetName)
     {
         super(id);
         this.setMaxStackSize(1);
         this.setNoRepair();
+        this.setUnlocalizedName(assetName);
+        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
     }
 
     @Override
@@ -39,13 +40,6 @@ public class GCCoreItemInfiniteBattery extends Item implements IItemElectric
     public EnumRarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void registerIcons(IconRegister iconRegister)
-    {
-        this.itemIcon = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + this.getUnlocalizedName().replace("item.", ""));
     }
 
     @Override
