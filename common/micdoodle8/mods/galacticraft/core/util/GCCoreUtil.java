@@ -7,6 +7,8 @@ import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerBuggy;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerParachest;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
@@ -69,5 +71,20 @@ public class GCCoreUtil
         }
 
         EntityRegistry.registerModEntity(var0, var1, id, GalacticraftCore.instance, trackingDistance, updateFreq, sendVel);
+    }
+    
+    public static void registerGalacticraftItem(String key, Item item)
+    {
+        GalacticraftCore.itemList.put(key, new ItemStack(item));
+    }
+    
+    public static void registerGalacticraftItem(String key, Item item, int metadata)
+    {
+        GalacticraftCore.itemList.put(key, new ItemStack(item, 1, metadata));
+    }
+    
+    public static void registerGalacticraftItem(String key, ItemStack stack)
+    {
+        GalacticraftCore.itemList.put(key, stack);
     }
 }

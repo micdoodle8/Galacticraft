@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import mekanism.api.transmitters.TransmitterNetworkRegistry;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
+import micdoodle8.mods.galacticraft.api.item.GCItems;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.world.ICelestialBody;
 import micdoodle8.mods.galacticraft.api.world.IGalaxy;
@@ -168,6 +169,9 @@ public class GalacticraftCore
 
     public static Fluid CRUDEOIL;
     public static Fluid FUEL;
+    
+    public static HashMap<String, ItemStack> itemList = new HashMap<String, ItemStack>();
+    public static HashMap<String, ItemStack> blocksList = new HashMap<String, ItemStack>();
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
