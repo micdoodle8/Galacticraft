@@ -48,6 +48,8 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
     public int timeSinceHit;
     public int rockDirection;
     public double speed;
+    public float wheelRotationZ;
+    public float wheelRotationX;
     float maxSpeed = 0.5F;
     float accel = 0.2F;
     float turnFactor = 3.0F;
@@ -62,6 +64,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
     public double boatPitch;
     public int boatPosRotationIncrements;
     private IFuelDock landingPad;
+    public Vector3 radarDishRotation = new Vector3();
 
     public GCCoreEntityBuggy(World var1)
     {
@@ -393,6 +396,10 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
         if (this.worldObj.isRemote)
         {
             this.moveEntity(this.motionX, this.motionY, this.motionZ);
+            this.wheelRotationX += (this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ) * 250.0F;
+            this.wheelRotationZ = Math.max(-30.0F, Math.min(30.0F, this.wheelRotationZ * 0.9F));
+            this.radarDishRotation.x = Math.sin(this.ticks * 0.05) * 50.0F;
+            this.radarDishRotation.z = Math.cos(this.ticks * 0.1) * 50.0F;
         }
 
         if (Math.abs(this.motionX * this.motionZ) > 0.000001)
@@ -653,11 +660,13 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
         case 2: // Left
         {
             this.rotationYaw -= 0.5F * this.turnFactor;
+            this.wheelRotationZ = Math.max(-30.0F, Math.min(30.0F, this.wheelRotationZ + 0.5F));
             return true;
         }
         case 3: // Right
         {
             this.rotationYaw += 0.5F * this.turnFactor;
+            this.wheelRotationZ = Math.max(-30.0F, Math.min(30.0F, this.wheelRotationZ - 0.5F));
             return true;
         }
         }

@@ -134,6 +134,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.EnumHelperClient;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.client.model.AdvancedModelLoader;
+import net.minecraftforge.client.model.IModelCustom;
 import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
@@ -326,6 +328,10 @@ public class ClientProxyCore extends CommonProxyCore
     public void registerRenderInformation()
     {
         ClientProxyCore.moon.registerRenderInformation();
+        
+        IModelCustom modelBuggy = AdvancedModelLoader.loadModel("/assets/galacticraftcore/models/buggy.obj");
+        IModelCustom modelBuggyWheelRight = AdvancedModelLoader.loadModel("/assets/galacticraftcore/models/buggyWheelRight.obj");
+        IModelCustom modelBuggyWheelLeft = AdvancedModelLoader.loadModel("/assets/galacticraftcore/models/buggyWheelLeft.obj");
 
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityRocketT1.class, new GCCoreRenderSpaceship(new GCCoreModelSpaceship(), GalacticraftCore.TEXTURE_DOMAIN, "rocketT1"));
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntitySpider.class, new GCCoreRenderSpider());
@@ -334,7 +340,7 @@ public class ClientProxyCore extends CommonProxyCore
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntitySkeleton.class, new GCCoreRenderSkeleton());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntitySkeletonBoss.class, new GCCoreRenderSkeletonBoss());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityMeteor.class, new GCCoreRenderMeteor());
-        RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityBuggy.class, new GCCoreRenderBuggy());
+        RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityBuggy.class, new GCCoreRenderBuggy(modelBuggy, modelBuggyWheelRight, modelBuggyWheelLeft));
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityFlag.class, new GCCoreRenderFlag());
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityParaChest.class, new GCCoreRenderParaChest());
         RenderingRegistry.registerEntityRenderingHandler(EntityPlayer.class, new GCCoreRenderPlayer());
@@ -344,7 +350,7 @@ public class ClientProxyCore extends CommonProxyCore
         RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityArrow.class, new GCCoreRenderArrow());
         MinecraftForgeClient.registerItemRenderer(GCCoreBlocks.unlitTorch.blockID, new GCCoreItemRendererUnlitTorch());
         MinecraftForgeClient.registerItemRenderer(GCCoreItems.rocketTier1.itemID, new GCCoreItemRendererSpaceship(new GCCoreEntityRocketT1(FMLClientHandler.instance().getClient().theWorld), new GCCoreModelSpaceship(), new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/rocketT1.png")));
-        MinecraftForgeClient.registerItemRenderer(GCCoreItems.buggy.itemID, new GCCoreItemRendererBuggy());
+        MinecraftForgeClient.registerItemRenderer(GCCoreItems.buggy.itemID, new GCCoreItemRendererBuggy(modelBuggy, modelBuggyWheelRight, modelBuggyWheelLeft));
         MinecraftForgeClient.registerItemRenderer(GCCoreItems.flag.itemID, new GCCoreItemRendererFlag());
         MinecraftForgeClient.registerItemRenderer(GCCoreItems.key.itemID, new GCCoreItemRendererKey(new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/treasure.png")));
     }
