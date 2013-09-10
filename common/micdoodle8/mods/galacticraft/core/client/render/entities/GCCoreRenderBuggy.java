@@ -57,7 +57,7 @@ public class GCCoreRenderBuggy extends Render
         GL11.glScalef(0.41F, 0.41F, 0.41F);
         this.bindTexture(buggyTextureWheel);
         
-        float rotation = entity.wheelRotationX * (entity.speed < 0 ? -1 : 1);
+        float rotation = entity.wheelRotationX;
         
         // Front wheel covers
         GL11.glPushMatrix();

@@ -396,7 +396,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
         if (this.worldObj.isRemote)
         {
             this.moveEntity(this.motionX, this.motionY, this.motionZ);
-            this.wheelRotationX += (this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ) * 250.0F;
+            this.wheelRotationX += (this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ) * 250.0F * (this.speed < 0 ? 1 : -1);
             this.wheelRotationZ = Math.max(-30.0F, Math.min(30.0F, this.wheelRotationZ * 0.9F));
             this.radarDishRotation.x = Math.sin(this.ticks * 0.05) * 50.0F;
             this.radarDishRotation.z = Math.cos(this.ticks * 0.1) * 50.0F;
