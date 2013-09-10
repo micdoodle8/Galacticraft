@@ -26,6 +26,7 @@ import micdoodle8.mods.galacticraft.core.dimension.GCCoreWorldProviderSpaceStati
 import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.planet.IUpdateable;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketDimensionListPlanets;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketDimensionListSpaceStations;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketSpaceStationData;
@@ -809,9 +810,13 @@ public class WorldUtil
         {
             var8 = (GCCorePlayerMP) var1;
 
-            if (type.useParachute())
+            if (type.useParachute() && var8.getExtendedInventory().getStackInSlot(4) != null && var8.getExtendedInventory().getStackInSlot(4).getItem() instanceof GCCoreItemParachute)
             {
                 var8.setUsingParachute(true);
+            }
+            else
+            {
+                var8.setUsingParachute(false);
             }
         }
 
