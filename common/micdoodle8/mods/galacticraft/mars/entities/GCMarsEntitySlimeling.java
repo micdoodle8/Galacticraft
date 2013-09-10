@@ -383,7 +383,7 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
 
                         if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
                         {
-                            GalacticraftMars.proxy.opengSlimelingGui(this);
+                            GalacticraftMars.proxy.opengSlimelingGui(this, 1);
                         }
 
                         if (this.rand.nextInt(2) == 0)
@@ -407,7 +407,7 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
                 {
                     if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
                     {
-                        GalacticraftMars.proxy.opengSlimelingGui(this);
+                        GalacticraftMars.proxy.opengSlimelingGui(this, 0);
                     }
                 }
             }
@@ -415,7 +415,7 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
             {
                 if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
                 {
-                    GalacticraftMars.proxy.opengSlimelingGui(this);
+                    GalacticraftMars.proxy.opengSlimelingGui(this, 0);
                 }
             }
         }
