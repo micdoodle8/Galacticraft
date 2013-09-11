@@ -5,6 +5,7 @@ import java.util.Random;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityParachest;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -30,9 +31,13 @@ public class GCCoreBlockParachest extends BlockContainer implements ITileEntityP
 {
     private final Random random = new Random();
 
-    protected GCCoreBlockParachest(int par1)
+    protected GCCoreBlockParachest(int id, String assetName)
     {
-        super(par1, Material.wood);
+        super(id, Material.wood);
+        this.setHardness(3.0F);
+        this.setStepSound(Block.soundWoodFootstep);
+        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setUnlocalizedName(assetName);
     }
 
     @Override

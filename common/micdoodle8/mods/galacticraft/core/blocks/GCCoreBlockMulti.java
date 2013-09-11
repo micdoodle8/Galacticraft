@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
@@ -16,9 +17,12 @@ public class GCCoreBlockMulti extends BlockMulti
     // Crafting Table
     Icon[] fakeIcons;
 
-    public GCCoreBlockMulti(int id)
+    public GCCoreBlockMulti(int id, String assetName)
     {
         super(id);
+        this.setStepSound(Block.soundMetalFootstep);
+        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setUnlocalizedName(assetName);
     }
 
     @Override

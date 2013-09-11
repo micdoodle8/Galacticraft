@@ -7,6 +7,7 @@ import mekanism.api.transmitters.ITransmitter;
 import micdoodle8.mods.galacticraft.api.tile.IColorable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenPipe;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -34,9 +35,13 @@ public class GCCoreBlockOxygenPipe extends BlockContainer implements ITileEntity
 {
     private Icon[] pipeIcons = new Icon[16];
 
-    public GCCoreBlockOxygenPipe(int i)
+    public GCCoreBlockOxygenPipe(int id, String assetName)
     {
-        super(i, Material.glass);
+        super(id, Material.glass);
+        this.setHardness(0.3F);
+        this.setStepSound(Block.soundGlassFootstep);
+        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setUnlocalizedName(assetName);
     }
 
     @Override

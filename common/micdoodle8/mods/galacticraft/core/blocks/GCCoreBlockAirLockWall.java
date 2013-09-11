@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import java.util.Random;
 import micdoodle8.mods.galacticraft.api.block.IPartialSealedBlock;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockBreakable;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -13,10 +14,14 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreBlockAirLockWall extends BlockBreakable implements IPartialSealedBlock
 {
-    public GCCoreBlockAirLockWall(int par1)
+    public GCCoreBlockAirLockWall(int id, String assetName)
     {
-        super(par1, GalacticraftCore.TEXTURE_PREFIX + "oxygentile_3", Material.portal, false);
+        super(id, GalacticraftCore.TEXTURE_PREFIX + "oxygentile_3", Material.portal, false);
         this.setTickRandomly(true);
+        this.setHardness(1000.0F);
+        this.setStepSound(Block.soundMetalFootstep);
+        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setUnlocalizedName(assetName);
     }
 
     @Override

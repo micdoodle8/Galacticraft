@@ -30,10 +30,14 @@ public class GCCoreBlockAdvancedCraftingTable extends BlockContainer implements 
 {
     Icon[] iconBuffer;
 
-    public GCCoreBlockAdvancedCraftingTable(int par1)
+    public GCCoreBlockAdvancedCraftingTable(int id, String assetName)
     {
-        super(par1, Material.iron);
+        super(id, Material.iron);
         this.setBlockBounds(-0.3F, 0.0F, -0.3F, 1.3F, 0.5F, 1.3F);
+        this.setHardness(2.5F);
+        this.setStepSound(Block.soundMetalFootstep);
+        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setUnlocalizedName(assetName);
     }
 
     @Override

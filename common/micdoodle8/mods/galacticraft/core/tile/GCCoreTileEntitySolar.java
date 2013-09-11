@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockMulti;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockSolar;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.block.Block;
@@ -299,7 +300,7 @@ public class GCCoreTileEntitySolar extends TileEntityUniversalElectrical impleme
 
                     if (!vecToAdd.equals(placedPosition))
                     {
-                        GCCoreBlocks.dummyBlock.makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 4);
+                        ((GCCoreBlockMulti) GCCoreBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 4);
                     }
                 }
             }

@@ -36,11 +36,14 @@ public class GCCoreBlockBasicMachine extends BlockTile
     private Icon iconBatteryBox;
     private Icon iconElectricFurnace;
 
-    public GCCoreBlockBasicMachine(int id)
+    public GCCoreBlockBasicMachine(int id, String assetName)
     {
         super(id, UniversalElectricity.machine);
         this.setUnlocalizedName("basicMachine");
+        this.setHardness(1.0F);
         this.setStepSound(Block.soundMetalFootstep);
+        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setUnlocalizedName(assetName);
     }
 
     @Override

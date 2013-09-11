@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoLoader;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoUnloader;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -28,9 +29,13 @@ public class GCCoreBlockCargoLoader extends GCCoreBlockAdvanced
     private Icon iconItemInput;
     private Icon iconItemOutput;
 
-    public GCCoreBlockCargoLoader(int id)
+    public GCCoreBlockCargoLoader(int id, String assetName)
     {
         super(id, Material.rock);
+        this.setHardness(1.0F);
+        this.setStepSound(Block.soundMetalFootstep);
+        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setUnlocalizedName(assetName);
     }
 
     @SideOnly(Side.CLIENT)

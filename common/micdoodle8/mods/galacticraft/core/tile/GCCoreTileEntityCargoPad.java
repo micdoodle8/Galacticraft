@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.api.entity.IDockable;
 import micdoodle8.mods.galacticraft.api.entity.IFuelable;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockMulti;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -125,7 +126,7 @@ public class GCCoreTileEntityCargoPad extends TileEntityMulti implements IMultiB
 
                 if (!vecToAdd.equals(placedPosition))
                 {
-                    GCCoreBlocks.dummyBlock.makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 2);
+                    ((GCCoreBlockMulti) GCCoreBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 2);
                 }
             }
         }

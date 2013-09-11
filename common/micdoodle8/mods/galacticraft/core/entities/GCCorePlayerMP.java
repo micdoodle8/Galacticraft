@@ -435,15 +435,6 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
                 this.inventory.mainInventory[this.inventory.currentItem] = stack;
             }
-            else if (this.inventory.getCurrentItem().getItem().itemID == Block.sapling.blockID)
-            {
-                // No jungle trees...
-                if (var2 != 3)
-                {
-                    final ItemStack stack = new ItemStack(GCCoreBlocks.sapling, var1, var2);
-                    this.inventory.mainInventory[this.inventory.currentItem] = stack;
-                }
-            }
         }
         else if (!(this.worldObj.provider instanceof IGalacticraftWorldProvider) && this.inventory.getCurrentItem() != null)
         {
@@ -453,11 +444,6 @@ public class GCCorePlayerMP extends EntityPlayerMP
             if (this.inventory.getCurrentItem().getItem().itemID == GCCoreBlocks.unlitTorch.blockID)
             {
                 final ItemStack stack = new ItemStack(Block.torchWood, var1, 0);
-                this.inventory.mainInventory[this.inventory.currentItem] = stack;
-            }
-            else if (this.inventory.getCurrentItem().getItem().itemID == GCCoreBlocks.sapling.blockID)
-            {
-                final ItemStack stack = new ItemStack(Block.sapling, var1, var2);
                 this.inventory.mainInventory[this.inventory.currentItem] = stack;
             }
             else if (this.inventory.getCurrentItem().getItem().itemID == GCCoreItems.bowGravity.itemID)

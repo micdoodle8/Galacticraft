@@ -13,10 +13,14 @@ import net.minecraft.world.World;
 
 public class GCCoreBlockFallenMeteor extends Block
 {
-    public GCCoreBlockFallenMeteor(int i)
+    public GCCoreBlockFallenMeteor(int id, String assetName)
     {
-        super(i, Material.rock);
+        super(id, Material.rock);
         this.setBlockBounds(0.2F, 0.2F, 0.2F, 0.8F, 0.8F, 0.8F);
+        this.setHardness(50.0F);
+        this.setStepSound(Block.soundStoneFootstep);
+        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setUnlocalizedName(assetName);
     }
 
     @Override

@@ -20,14 +20,14 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreBlock extends Block
 {
-    /**
-     * 0: COPPER BLOCK 1: ALUMINIUM BLOCK 2: TITANIUM BLOCK 3: DECO 1 4: DECO 2
-     */
-    Icon[][] iconBuffer;
+    Icon[] iconBuffer;
 
-    protected GCCoreBlock(int i)
+    protected GCCoreBlock(int id, String assetName)
     {
-        super(i, Material.rock);
+        super(id, Material.rock);
+        this.setHardness(1.0F);
+        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setUnlocalizedName(assetName);
     }
 
     @Override
@@ -39,11 +39,11 @@ public class GCCoreBlock extends Block
     @Override
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.iconBuffer = new Icon[5][3];
-        this.iconBuffer[3][0] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "deco_aluminium_2");
-        this.iconBuffer[3][1] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "deco_aluminium_4");
-        this.iconBuffer[3][2] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "deco_aluminium_1");
-        this.iconBuffer[4][0] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "deco_aluminium_4");
+        this.iconBuffer = new Icon[4];
+        this.iconBuffer[0] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "deco_aluminium_2");
+        this.iconBuffer[1] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "deco_aluminium_4");
+        this.iconBuffer[2] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "deco_aluminium_1");
+        this.iconBuffer[3] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "deco_aluminium_4");
     }
 
     @Override
@@ -55,16 +55,16 @@ public class GCCoreBlock extends Block
             switch (side)
             {
             case 0:
-                return this.iconBuffer[3][1];
+                return this.iconBuffer[1];
             case 1:
-                return this.iconBuffer[3][0];
+                return this.iconBuffer[0];
             default:
-                return this.iconBuffer[3][2];
+                return this.iconBuffer[2];
             }
         case 4:
-            return this.iconBuffer[4][0];
+            return this.iconBuffer[3];
         default:
-            return this.iconBuffer[4][0];
+            return this.iconBuffer[3];
         }
     }
 
@@ -98,6 +98,7 @@ public class GCCoreBlock extends Block
         }
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @SideOnly(Side.CLIENT)
     @Override
     public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)

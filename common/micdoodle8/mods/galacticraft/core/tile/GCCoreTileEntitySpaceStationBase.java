@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockMulti;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -55,7 +56,7 @@ public class GCCoreTileEntitySpaceStationBase extends TileEntityMulti implements
 
             if (!vecToAdd.equals(placedPosition))
             {
-                GCCoreBlocks.dummyBlock.makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 1);
+                ((GCCoreBlockMulti) GCCoreBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 1);
             }
         }
     }

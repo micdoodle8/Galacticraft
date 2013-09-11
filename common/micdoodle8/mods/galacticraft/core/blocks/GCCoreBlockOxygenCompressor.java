@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCompressor;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -31,9 +32,13 @@ public class GCCoreBlockOxygenCompressor extends GCCoreBlockAdvanced
     private Icon iconInput;
     private Icon iconOutput;
 
-    public GCCoreBlockOxygenCompressor(int par1, boolean isActive)
+    public GCCoreBlockOxygenCompressor(int id, boolean isActive, String assetName)
     {
-        super(par1, Material.rock);
+        super(id, Material.rock);
+        this.setHardness(1.0F);
+        this.setStepSound(Block.soundStoneFootstep);
+        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setUnlocalizedName(assetName);
     }
 
     @Override

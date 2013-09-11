@@ -68,8 +68,8 @@ public class GCCoreItemBlockEnclosedBlock extends ItemBlock
 
         if (type != null && type.getPipeClass() != null)
         {
-            int blockID = GCCoreBlocks.enclosedWire.blockID;
-            Block block = GCCoreBlocks.enclosedWire;
+            int blockID = GCCoreBlocks.sealableBlock.blockID;
+            Block block = GCCoreBlocks.sealableBlock;
 
             int id = world.getBlockId(i, j, k);
 

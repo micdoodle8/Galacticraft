@@ -56,7 +56,7 @@ public class GCCoreBlockRendererTreasureChest implements ISimpleBlockRenderingHa
 
     public void renderChest(Block par1Block, int par2, float par3)
     {
-        if (par1Block.blockID == GCCoreBlocks.treasureChest.blockID)
+        if (par1Block.blockID == GCCoreBlocks.treasureChestTier1.blockID)
         {
             TileEntityRenderer.instance.renderTileEntityAt(this.chest, 0.0D, 0.0D, 0.0D, 0.0F);
         }

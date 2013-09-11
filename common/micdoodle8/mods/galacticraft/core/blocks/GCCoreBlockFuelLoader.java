@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -24,9 +25,13 @@ public class GCCoreBlockFuelLoader extends GCCoreBlockAdvanced
     private Icon iconFront;
     private Icon iconFuelInput;
 
-    public GCCoreBlockFuelLoader(int id)
+    public GCCoreBlockFuelLoader(int id, String assetName)
     {
         super(id, Material.rock);
+        this.setHardness(1.0F);
+        this.setStepSound(Block.soundMetalFootstep);
+        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setUnlocalizedName(assetName);
     }
 
     @Override

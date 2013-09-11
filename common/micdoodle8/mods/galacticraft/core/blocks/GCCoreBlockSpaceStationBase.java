@@ -17,9 +17,12 @@ public class GCCoreBlockSpaceStationBase extends BlockContainer implements ITile
 {
     private Icon[] spaceStationIcons;
 
-    public GCCoreBlockSpaceStationBase(int par1)
+    public GCCoreBlockSpaceStationBase(int id, String assetName)
     {
-        super(par1, Material.rock);
+        super(id, Material.rock);
+        this.setHardness(10000.0F);
+        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setUnlocalizedName(assetName);
     }
 
     @Override

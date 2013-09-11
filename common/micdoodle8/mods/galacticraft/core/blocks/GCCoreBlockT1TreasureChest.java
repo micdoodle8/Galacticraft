@@ -36,9 +36,13 @@ public class GCCoreBlockT1TreasureChest extends BlockContainer implements ITileE
 {
     private final Random random = new Random();
 
-    protected GCCoreBlockT1TreasureChest(int par1)
+    protected GCCoreBlockT1TreasureChest(int id, String assetName)
     {
-        super(par1, Material.rock);
+        super(id, Material.rock);
+        this.setResistance(10.0F);
+        this.setStepSound(Block.soundStoneFootstep);
+        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setUnlocalizedName(assetName);
     }
 
     @Override
@@ -306,20 +310,11 @@ public class GCCoreBlockT1TreasureChest extends BlockContainer implements ITileE
         return var5 > 1 ? false : this.isThereANeighborChest(par1World, par2 - 1, par3, par4) ? false : this.isThereANeighborChest(par1World, par2 + 1, par3, par4) ? false : this.isThereANeighborChest(par1World, par2, par3, par4 - 1) ? false : !this.isThereANeighborChest(par1World, par2, par3, par4 + 1);
     }
 
-    /**
-     * Checks the neighbor blocks to see if there is a chest there. Args: world,
-     * x, y, z
-     */
     private boolean isThereANeighborChest(World par1World, int par2, int par3, int par4)
     {
         return par1World.getBlockId(par2, par3, par4) != this.blockID ? false : par1World.getBlockId(par2 - 1, par3, par4) == this.blockID ? true : par1World.getBlockId(par2 + 1, par3, par4) == this.blockID ? true : par1World.getBlockId(par2, par3, par4 - 1) == this.blockID ? true : par1World.getBlockId(par2, par3, par4 + 1) == this.blockID;
     }
 
-    /**
-     * Lets the block know when one of its neighbor changes. Doesn't know which
-     * neighbor changed (coordinates passed are their own) Args: x, y, z,
-     * neighbor blockID
-     */
     @Override
     public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
     {
@@ -332,10 +327,6 @@ public class GCCoreBlockT1TreasureChest extends BlockContainer implements ITileE
         }
     }
 
-    /**
-     * ejects contained items into the world, and notifies neighbours of an
-     * update, as appropriate
-     */
     @Override
     public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
     {
@@ -381,9 +372,6 @@ public class GCCoreBlockT1TreasureChest extends BlockContainer implements ITileE
         super.breakBlock(par1World, par2, par3, par4, par5, par6);
     }
 
-    /**
-     * Called upon block activation (right click on the block.)
-     */
     @Override
     public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
     {
@@ -451,19 +439,13 @@ public class GCCoreBlockT1TreasureChest extends BlockContainer implements ITileE
         }
     }
 
-    /**
-     * each class overrdies this to return a new <className>
-     */
     @Override
     public TileEntity createNewTileEntity(World par1World)
     {
         return new GCCoreTileEntityTreasureChest(1);
     }
 
-    /**
-     * Looks for a sitting ocelot within certain bounds. Such an ocelot is
-     * considered to be blocking access to the chest.
-     */
+    @SuppressWarnings("rawtypes")
     public static boolean isOcelotBlockingChest(World par0World, int par1, int par2, int par3)
     {
         final Iterator var4 = par0World.getEntitiesWithinAABB(EntityOcelot.class, AxisAlignedBB.getAABBPool().getAABB(par1, par2 + 1, par3, par1 + 1, par2 + 2, par3 + 1)).iterator();

@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerBuggy;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerParachest;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -86,5 +87,20 @@ public class GCCoreUtil
     public static void registerGalacticraftItem(String key, ItemStack stack)
     {
         GalacticraftCore.itemList.put(key, stack);
+    }
+    
+    public static void registerGalacticraftBlock(String key, Block block)
+    {
+        GalacticraftCore.blocksList.put(key, new ItemStack(block));
+    }
+    
+    public static void registerGalacticraftBlock(String key, Block block, int metadata)
+    {
+        GalacticraftCore.blocksList.put(key, new ItemStack(block, 1, metadata));
+    }
+    
+    public static void registerGalacticraftBlock(String key, ItemStack stack)
+    {
+        GalacticraftCore.blocksList.put(key, stack);
     }
 }

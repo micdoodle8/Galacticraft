@@ -18,7 +18,7 @@ import universalelectricity.prefab.block.BlockConductor;
  */
 public class GCCoreBlockCopperWire extends BlockConductor
 {
-    public GCCoreBlockCopperWire(int id)
+    public GCCoreBlockCopperWire(int id, String assetName)
     {
         super(id, Material.cloth);
         this.setStepSound(Block.soundClothFootstep);
@@ -26,6 +26,9 @@ public class GCCoreBlockCopperWire extends BlockConductor
         this.setHardness(0.1F);
         this.setBlockBounds(0.3F, 0.3F, 0.3F, 0.7F, 0.7F, 0.7F);
         Block.setBurnProperties(this.blockID, 30, 60);
+        this.setHardness(0.1F);
+        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setUnlocalizedName(assetName);
     }
 
     @Override

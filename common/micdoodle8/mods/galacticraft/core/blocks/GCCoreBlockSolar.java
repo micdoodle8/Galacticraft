@@ -32,9 +32,13 @@ public class GCCoreBlockSolar extends BlockTile
 
     private Icon[] icons = new Icon[6];
 
-    public GCCoreBlockSolar(int id)
+    public GCCoreBlockSolar(int id, String assetName)
     {
         super(id, Material.iron);
+        this.setHardness(1.0F);
+        this.setStepSound(Block.soundMetalFootstep);
+        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setUnlocalizedName(assetName);
     }
 
     @Override
@@ -132,7 +136,7 @@ public class GCCoreBlockSolar extends BlockTile
             }
         }
 
-        return new Vector3(x1, y1, z1).clone().modifyPositionFromSide(ForgeDirection.getOrientation(side).getOpposite()).getBlockID(world) != GCCoreBlocks.dummyBlock.blockID;
+        return new Vector3(x1, y1, z1).clone().modifyPositionFromSide(ForgeDirection.getOrientation(side).getOpposite()).getBlockID(world) != GCCoreBlocks.fakeBlock.blockID;
     }
 
     @Override

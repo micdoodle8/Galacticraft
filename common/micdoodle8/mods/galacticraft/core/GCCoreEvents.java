@@ -27,7 +27,6 @@ import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockSapling;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFlintAndSteel;
@@ -42,7 +41,6 @@ import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
-import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
@@ -129,22 +127,6 @@ public class GCCoreEvents
 
             event.setCanceled(((IKeyable) tileClicked).onActivatedWithoutKey(event.entityPlayer, event.face));
         }
-    }
-
-    @ForgeSubscribe
-    public void growTreeBonemeal(BonemealEvent event)
-    {
-        if (event.world.getBlockId(event.X, event.Y, event.Z) == GCCoreBlocks.sapling.blockID)
-        {
-            if (!event.world.isRemote && event.entityLiving.worldObj.provider instanceof IGalacticraftWorldProvider)
-            {
-                ((BlockSapling) GCCoreBlocks.sapling).growTree(event.world, event.X, event.Y, event.Z, event.world.rand);
-                event.setResult(Result.ALLOW);
-                return;
-            }
-        }
-
-        event.setResult(Result.DENY);
     }
 
     @ForgeSubscribe

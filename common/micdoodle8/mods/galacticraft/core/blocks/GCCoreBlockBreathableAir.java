@@ -6,16 +6,19 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class GCCoreBlockBreathableAir extends Block
 {
-    public GCCoreBlockBreathableAir(int var1)
+    public GCCoreBlockBreathableAir(int id, String assetName)
     {
-        super(var1, Material.air);
+        super(id, Material.air);
+        this.setResistance(1000.0F);
+        this.setHardness(0.0F);
+        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setUnlocalizedName(assetName);
     }
 
     @Override
@@ -58,12 +61,6 @@ public class GCCoreBlockBreathableAir extends Block
     public int getRenderBlockPass()
     {
         return GCCoreConfigManager.transparentBreathableAir ? 1 : 0;
-    }
-
-    @Override
-    public void registerIcons(IconRegister par1IconRegister)
-    {
-        this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "breathable_air");
     }
 
     @Override

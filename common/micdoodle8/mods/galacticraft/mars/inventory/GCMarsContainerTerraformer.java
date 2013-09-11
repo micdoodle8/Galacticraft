@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.mars.inventory;
 
 import java.util.ArrayList;
 import java.util.List;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityTerraformer;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -47,9 +46,6 @@ public class GCMarsContainerTerraformer extends Container
                     stacks.add(new ItemStack(Block.sapling, 1, 1));
                     stacks.add(new ItemStack(Block.sapling, 1, 2));
                     stacks.add(new ItemStack(Block.sapling, 1, 3));
-                    stacks.add(new ItemStack(GCCoreBlocks.sapling, 1, 0));
-                    stacks.add(new ItemStack(GCCoreBlocks.sapling, 1, 1));
-                    stacks.add(new ItemStack(GCCoreBlocks.sapling, 1, 2));
                 }
                 else if (var6 == 2)
                 {

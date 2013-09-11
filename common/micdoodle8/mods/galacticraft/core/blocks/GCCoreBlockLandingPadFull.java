@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBuggyFueler;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoPad;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.tileentity.TileEntity;
@@ -25,9 +26,14 @@ public class GCCoreBlockLandingPadFull extends GCCoreBlockAdvanced
 {
     private Icon[] icons = new Icon[3];
 
-    public GCCoreBlockLandingPadFull(int i)
+    public GCCoreBlockLandingPadFull(int id, String assetName)
     {
-        super(i, Material.rock);
+        super(id, Material.rock);
+        this.setHardness(1.0F);
+        this.setResistance(10.0F);
+        this.setStepSound(Block.soundStoneFootstep);
+        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setUnlocalizedName(assetName);
     }
 
     @Override

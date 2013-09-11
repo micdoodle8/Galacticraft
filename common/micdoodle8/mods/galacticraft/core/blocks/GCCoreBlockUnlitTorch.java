@@ -29,12 +29,16 @@ public class GCCoreBlockUnlitTorch extends Block implements IOxygenReliantBlock
 
     public static Icon[] torchIcons = new Icon[2];
 
-    protected GCCoreBlockUnlitTorch(int par1, boolean lit)
+    protected GCCoreBlockUnlitTorch(int id, boolean lit, String assetName)
     {
-        super(par1, Material.circuits);
+        super(id, Material.circuits);
         this.setTickRandomly(true);
         this.lit = lit;
         this.setLightValue(lit ? 0.9375F : 0.2F);
+        this.setHardness(0.0F);
+        this.setStepSound(Block.soundWoodFootstep);
+        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setUnlocalizedName(assetName);
     }
 
     @Override
@@ -64,8 +68,8 @@ public class GCCoreBlockUnlitTorch extends Block implements IOxygenReliantBlock
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
-        GCCoreBlockUnlitTorch.torchIcons[0] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "torch_lit");
-        GCCoreBlockUnlitTorch.torchIcons[1] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "torch_unlit");
+        GCCoreBlockUnlitTorch.torchIcons[0] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "unlitTorch");
+        GCCoreBlockUnlitTorch.torchIcons[1] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "unlitTorchLit");
     }
 
     @Override

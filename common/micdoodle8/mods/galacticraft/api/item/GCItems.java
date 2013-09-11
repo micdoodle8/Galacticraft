@@ -2,10 +2,53 @@ package micdoodle8.mods.galacticraft.api.item;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.item.ItemStack;
 
 public class GCItems
 {
+    // GALACTICRAFT CORE BLOCKS:
+        //    "rocketLaunchPad"
+        //    "buggyFuelingPad"
+        //    "oxygenDistributor"
+        //    "oxygenCompressor"
+        //    "oxygenCollector"
+        //    "refinery"
+        //    "fuelLoader"
+        //    "oxygenSealer"
+        //    "oxygenDetector"
+        //    "cargoLoader"
+        //    "cargoUnloader"
+        //    "oxygenPipe"
+        //    "nasaWorkbench"
+        //    "fallenMeteor"
+        //    "tinDecorationBlock1"
+        //    "tinDecorationBlock2"
+        //    "airLockFrame"
+        //    "sealableCopperWire"
+        //    "sealableOxygenPipe"
+        //    "sealableCopperCable"
+        //    "sealableGoldCable"
+        //    "sealableHighVoltageCable"
+        //    "sealableGlassFibreCable"
+        //    "sealableLowVoltageCable"
+        //    "sealableStonePipeItem"
+        //    "sealableCobblestonePipeItem"
+        //    "sealableStonePipeFluid"
+        //    "sealableCobblestonePipeFluid"
+        //    "sealableStonePipePower"
+        //    "sealableGoldPipePower"
+        //    "treasureChestTier1"
+        //    "parachest"
+        //    "solarPanelBasic"
+        //    "solarPanelAdvanced"
+        //    "copperWire"
+        //    "coalGenerator"
+        //    "batteryBox"
+        //    "electricFurnace"
+    
+    
     // GALACTICRAFT CORE ITEMS:
         //    "oxygenTankLightFull"
         //    "oxygenTankMediumFull"

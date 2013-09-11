@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDistributor;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -30,9 +31,13 @@ public class GCCoreBlockOxygenDistributor extends GCCoreBlockAdvanced
     private Icon iconInput;
     private Icon iconOutput;
 
-    public GCCoreBlockOxygenDistributor(int par1)
+    public GCCoreBlockOxygenDistributor(int id, String assetName)
     {
-        super(par1, Material.rock);
+        super(id, Material.rock);
+        this.setHardness(1.0F);
+        this.setStepSound(Block.soundStoneFootstep);
+        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setUnlocalizedName(assetName);
     }
 
     @Override

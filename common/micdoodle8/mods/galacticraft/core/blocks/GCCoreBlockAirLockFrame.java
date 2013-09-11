@@ -23,9 +23,13 @@ public class GCCoreBlockAirLockFrame extends BlockContainer implements ITileEnti
     @SideOnly(Side.CLIENT)
     private Icon[] airLockIcons;
 
-    public GCCoreBlockAirLockFrame(int par1)
+    public GCCoreBlockAirLockFrame(int id, String assetName)
     {
-        super(par1, Material.rock);
+        super(id, Material.rock);
+        this.setHardness(1.0F);
+        this.setStepSound(Block.soundMetalFootstep);
+        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setUnlocalizedName(assetName);
     }
 
     @Override

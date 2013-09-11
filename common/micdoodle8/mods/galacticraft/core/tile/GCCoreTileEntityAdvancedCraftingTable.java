@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockMulti;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -50,11 +51,11 @@ public class GCCoreTileEntityAdvancedCraftingTable extends TileEntityMulti imple
                         {
                             if ((y == 0 || y == 3) && x == 0 && z == 0)
                             {
-                                GCCoreBlocks.dummyBlock.makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 3);
+                                ((GCCoreBlockMulti) GCCoreBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 3);
                             }
                             else if (y != 0 && y != 3)
                             {
-                                GCCoreBlocks.dummyBlock.makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 3);
+                                ((GCCoreBlockMulti) GCCoreBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 3);
                             }
                         }
                     }
@@ -80,7 +81,7 @@ public class GCCoreTileEntityAdvancedCraftingTable extends TileEntityMulti imple
                         {
                             if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.05D)
                             {
-                                FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, GCCoreBlocks.rocketBench.blockID & 4095, GCCoreBlocks.rocketBench.blockID >> 12 & 255);
+                                FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, GCCoreBlocks.nasaWorkbench.blockID & 4095, GCCoreBlocks.nasaWorkbench.blockID >> 12 & 255);
                             }
                             this.worldObj.setBlock(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, 0, 0, 3);
                         }
@@ -88,7 +89,7 @@ public class GCCoreTileEntityAdvancedCraftingTable extends TileEntityMulti imple
                         {
                             if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.05D)
                             {
-                                FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, GCCoreBlocks.rocketBench.blockID & 4095, GCCoreBlocks.rocketBench.blockID >> 12 & 255);
+                                FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, GCCoreBlocks.nasaWorkbench.blockID & 4095, GCCoreBlocks.nasaWorkbench.blockID >> 12 & 255);
                             }
                             this.worldObj.setBlock(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, 0, 0, 3);
                         }

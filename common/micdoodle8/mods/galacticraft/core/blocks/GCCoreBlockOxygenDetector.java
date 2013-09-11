@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDetector;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -19,9 +20,13 @@ public class GCCoreBlockOxygenDetector extends BlockContainer implements ITileEn
     private Icon iconSide;
     private Icon iconTop;
 
-    protected GCCoreBlockOxygenDetector(int id)
+    protected GCCoreBlockOxygenDetector(int id, String assetName)
     {
         super(id, Material.iron);
+        this.setHardness(1.0F);
+        this.setStepSound(Block.soundStoneFootstep);
+        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setUnlocalizedName(assetName);
     }
 
     @Override
