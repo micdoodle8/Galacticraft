@@ -28,6 +28,9 @@ public class GCCoreBlockCargoLoader extends GCCoreBlockAdvanced
     private Icon iconFrontUnloader;
     private Icon iconItemInput;
     private Icon iconItemOutput;
+    
+    public static int METADATA_CARGO_LOADER = 0;
+    public static int METADATA_CARGO_UNLOADER = 4;
 
     public GCCoreBlockCargoLoader(int id, String assetName)
     {
@@ -42,8 +45,8 @@ public class GCCoreBlockCargoLoader extends GCCoreBlockAdvanced
     @Override
     public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
-        par3List.add(new ItemStack(par1, 1, 0));
-        par3List.add(new ItemStack(par1, 1, 4));
+        par3List.add(new ItemStack(par1, 1, METADATA_CARGO_LOADER));
+        par3List.add(new ItemStack(par1, 1, METADATA_CARGO_UNLOADER));
     }
 
     @Override
@@ -94,47 +97,81 @@ public class GCCoreBlockCargoLoader extends GCCoreBlockAdvanced
     @Override
     public Icon getIcon(int side, int metadata)
     {
-        int shiftedMeta = metadata >= 4 ? metadata - 4 : metadata;
-
+        int shiftedMeta = metadata;
+        
         if (side == 0 || side == 1)
         {
             return this.iconMachineSide;
         }
-        else if (side == shiftedMeta + 2)
+        
+        if (metadata >= METADATA_CARGO_UNLOADER)
         {
-            return this.iconInput;
+            shiftedMeta -= METADATA_CARGO_UNLOADER;
+            
+            if (side == shiftedMeta + 2)
+            {
+                return this.iconInput;
+            }
+            else if (side == ForgeDirection.getOrientation(shiftedMeta + 2).getOpposite().ordinal())
+            {
+                return metadata < 4 ? this.iconItemInput : this.iconItemOutput;
+            }
+            else
+            {
+                return metadata < 4 ? this.iconFrontLoader : this.iconFrontUnloader;
+            }
         }
-        else if (side == ForgeDirection.getOrientation(shiftedMeta + 2).getOpposite().ordinal())
+        else if (metadata >= METADATA_CARGO_LOADER)
         {
-            return metadata < 4 ? this.iconItemInput : this.iconItemOutput;
+            shiftedMeta -= METADATA_CARGO_LOADER;
+
+            if (side == shiftedMeta + 2)
+            {
+                return this.iconInput;
+            }
+            else if (side == ForgeDirection.getOrientation(shiftedMeta + 2).getOpposite().ordinal())
+            {
+                return metadata < 4 ? this.iconItemInput : this.iconItemOutput;
+            }
+            else
+            {
+                return metadata < 4 ? this.iconFrontLoader : this.iconFrontUnloader;
+            }
         }
-        else
-        {
-            return metadata < 4 ? this.iconFrontLoader : this.iconFrontUnloader;
-        }
+        
+        return this.iconMachineSide;
     }
 
     @Override
     public TileEntity createTileEntity(World world, int metadata)
     {
-        if (metadata < 4)
+        if (metadata < METADATA_CARGO_UNLOADER)
         {
             return new GCCoreTileEntityCargoLoader();
         }
-        else if (metadata < 8)
+        else
         {
             return new GCCoreTileEntityCargoUnloader();
         }
-
-        return null;
     }
 
     @Override
     public boolean onUseWrench(World world, int x, int y, int z, EntityPlayer par5EntityPlayer, int side, float hitX, float hitY, float hitZ)
     {
         final int metadata = world.getBlockMetadata(x, y, z);
-        int shiftedMeta = metadata >= 4 ? metadata - 4 : metadata;
-
+        int shiftedMeta = metadata;
+        int baseMeta = 0;
+        
+        if (metadata >= METADATA_CARGO_UNLOADER)
+        {
+            baseMeta = METADATA_CARGO_UNLOADER;
+        }
+        else if (metadata >= METADATA_CARGO_LOADER)
+        {
+            baseMeta = METADATA_CARGO_LOADER;
+        }
+        
+        shiftedMeta -= baseMeta;
         int change = 0;
 
         // Re-orient the block
@@ -154,8 +191,7 @@ public class GCCoreBlockCargoLoader extends GCCoreBlockAdvanced
             break;
         }
 
-        world.setBlockMetadataWithNotify(x, y, z, change + (metadata < 4 ? 0 : 4), 3);
-        return true;
+        return world.setBlockMetadataWithNotify(x, y, z, baseMeta + change, 3);
     }
 
     @Override
@@ -164,6 +200,16 @@ public class GCCoreBlockCargoLoader extends GCCoreBlockAdvanced
         final int angle = MathHelper.floor_double(entityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
         final int metadata = world.getBlockMetadata(x, y, z);
         int change = 0;
+        int baseMeta = 0;
+        
+        if (metadata >= METADATA_CARGO_UNLOADER)
+        {
+            baseMeta = METADATA_CARGO_UNLOADER;
+        }
+        else if (metadata >= METADATA_CARGO_LOADER)
+        {
+            baseMeta = METADATA_CARGO_LOADER;
+        }
 
         switch (angle)
         {
@@ -181,7 +227,7 @@ public class GCCoreBlockCargoLoader extends GCCoreBlockAdvanced
             break;
         }
 
-        world.setBlockMetadataWithNotify(x, y, z, change + (metadata < 4 ? 0 : 4), 3);
+        world.setBlockMetadataWithNotify(x, y, z, baseMeta + change, 3);
 
         for (int dX = -2; dX < 3; dX++)
         {

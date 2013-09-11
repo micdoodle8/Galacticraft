@@ -9,11 +9,8 @@ import micdoodle8.mods.galacticraft.api.world.IExitHeight;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GCCoreDamageSource;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPad;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPadFull;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -23,7 +20,6 @@ import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import universalelectricity.core.vector.Vector3;
@@ -270,43 +266,6 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
         {
             this.launchPhase = EnumLaunchPhase.LAUNCHED.getPhase();
             this.onLaunch();
-
-            if (!this.worldObj.isRemote)
-            {
-                int amountRemoved = 0;
-
-                for (int x = MathHelper.floor_double(this.posX) - 1; x <= MathHelper.floor_double(this.posX) + 1; x++)
-                {
-                    for (int y = MathHelper.floor_double(this.posY) - 3; y <= MathHelper.floor_double(this.posY) + 1; y++)
-                    {
-                        for (int z = MathHelper.floor_double(this.posZ) - 1; z <= MathHelper.floor_double(this.posZ) + 1; z++)
-                        {
-                            final int id = this.worldObj.getBlockId(x, y, z);
-                            final Block block = Block.blocksList[id];
-
-                            if (block != null && block instanceof GCCoreBlockLandingPadFull)
-                            {
-                                if (amountRemoved < 9)
-                                {
-                                    this.worldObj.setBlockToAir(x, y, z);
-                                    amountRemoved = 9;
-                                }
-                            }
-
-                            if (block != null && block instanceof GCCoreBlockLandingPad)
-                            {
-                                if (amountRemoved < 9)
-                                {
-                                    this.worldObj.setBlockToAir(x, y, z);
-                                    amountRemoved++;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                this.playSound("random.pop", 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-            }
         }
 
         if (this.rotationPitch > 90)

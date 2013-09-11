@@ -14,6 +14,7 @@ import micdoodle8.mods.galacticraft.mars.GCMarsConfigManager;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
 import micdoodle8.mods.galacticraft.mars.client.fx.GCMarsEntityDropParticleFX;
+import micdoodle8.mods.galacticraft.mars.client.gui.GCMarsGuiLaunchController;
 import micdoodle8.mods.galacticraft.mars.client.gui.GCMarsGuiSlimeling;
 import micdoodle8.mods.galacticraft.mars.client.gui.GCMarsGuiSlimelingFeed;
 import micdoodle8.mods.galacticraft.mars.client.gui.GCMarsGuiSlimelingInventory;
@@ -44,6 +45,7 @@ import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySludgeling;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityTerraformBubble;
 import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityCryogenicChamber;
+import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityLaunchController;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityTerraformer;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityTreasureChest;
 import net.minecraft.block.material.Material;
@@ -338,6 +340,10 @@ public class ClientProxyMars extends CommonProxyMars
             if (tile instanceof GCMarsTileEntityTerraformer)
             {
                 return new GCMarsGuiTerraformer(player.inventory, (GCMarsTileEntityTerraformer) tile);
+            }
+            else if (tile instanceof GCMarsTileEntityLaunchController)
+            {
+                return new GCMarsGuiLaunchController(player.inventory, (GCMarsTileEntityLaunchController) tile);
             }
         }
 

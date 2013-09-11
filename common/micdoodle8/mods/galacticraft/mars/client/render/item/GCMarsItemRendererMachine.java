@@ -104,7 +104,7 @@ public class GCMarsItemRendererMachine implements IItemRenderer
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type)
     {
-        if (item.getItemDamage() >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA)
+        if (item.getItemDamage() >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA && item.getItemDamage() < GCMarsBlockMachine.LAUNCH_CONTROLLER_METADATA)
         {
             switch (type)
             {
@@ -135,7 +135,7 @@ public class GCMarsItemRendererMachine implements IItemRenderer
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data)
     {
-        if (item.getItemDamage() >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA)
+        if (item.getItemDamage() >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA && item.getItemDamage() < GCMarsBlockMachine.LAUNCH_CONTROLLER_METADATA)
         {
             switch (type)
             {

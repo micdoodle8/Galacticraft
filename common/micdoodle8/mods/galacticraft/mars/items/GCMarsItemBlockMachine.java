@@ -31,7 +31,7 @@ public class GCMarsItemBlockMachine extends ItemBlock implements IHoldableItem
     {
         int metadata = 0;
 
-        if (itemstack.getItemDamage() >= GCMarsBlockMachine.UNUSED_MACHINE_1)
+        if (itemstack.getItemDamage() >= GCMarsBlockMachine.LAUNCH_CONTROLLER_METADATA)
         {
             metadata = 2;
         }

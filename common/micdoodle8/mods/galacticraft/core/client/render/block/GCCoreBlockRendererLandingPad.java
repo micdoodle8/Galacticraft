@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.render.block;
 
+import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPadFull;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHopper;
 import net.minecraft.client.renderer.EntityRenderer;
@@ -107,86 +107,88 @@ public class GCCoreBlockRendererLandingPad implements ISimpleBlockRenderingHandl
             renderBlocks.setRenderBounds(0F, 0.3F, 0F, 1F, 0.4F, 1F);
             renderBlocks.renderStandardBlock(par1Block, par2, par3, par4);
         }
+        
+        IFuelDock landingPad = (IFuelDock) var1.getBlockTileEntity(par2, par3, par4);
 
         // +X left
-        if (var1.getBlockId(par2 + 2, par3, par4 - 1) == GCCoreBlocks.fuelLoader.blockID || var1.getBlockId(par2 + 2, par3, par4 - 1) == GCCoreBlocks.cargoLoader.blockID)
+        if (landingPad.isBlockAttachable(var1, par2 + 2, par3, par4 - 1))
         {
             renderBlocks.setRenderBounds(1.5F, 0.2F, -0.9F, 2F, 0.901F, -0.1F);
             renderBlocks.renderStandardBlock(par1Block, par2, par3, par4);
         }
 
         // +X middle
-        if (var1.getBlockId(par2 + 2, par3, par4) == GCCoreBlocks.fuelLoader.blockID || var1.getBlockId(par2 + 2, par3, par4) == GCCoreBlocks.cargoLoader.blockID)
+        if (landingPad.isBlockAttachable(var1, par2 + 2, par3, par4))
         {
             renderBlocks.setRenderBounds(1.5F, 0.2F, 0.1F, 2F, 0.9F, 0.9F);
             renderBlocks.renderStandardBlock(par1Block, par2, par3, par4);
         }
 
         // +X right
-        if (var1.getBlockId(par2 + 2, par3, par4 + 1) == GCCoreBlocks.fuelLoader.blockID || var1.getBlockId(par2 + 2, par3, par4 + 1) == GCCoreBlocks.cargoLoader.blockID)
+        if (landingPad.isBlockAttachable(var1, par2 + 2, par3, par4 + 1))
         {
             renderBlocks.setRenderBounds(1.5F, 0.2F, 1.1F, 2F, 0.9F, 1.9F);
             renderBlocks.renderStandardBlock(par1Block, par2, par3, par4);
         }
 
         // +Z left
-        if (var1.getBlockId(par2 + 1, par3, par4 + 2) == GCCoreBlocks.fuelLoader.blockID || var1.getBlockId(par2 + 1, par3, par4 + 2) == GCCoreBlocks.cargoLoader.blockID)
+        if (landingPad.isBlockAttachable(var1, par2 + 1, par3, par4 + 2))
         {
             renderBlocks.setRenderBounds(1.1F, 0.2F, 1.5F, 1.9F, 0.901F, 2F);
             renderBlocks.renderStandardBlock(par1Block, par2, par3, par4);
         }
 
         // +Z left
-        if (var1.getBlockId(par2, par3, par4 + 2) == GCCoreBlocks.fuelLoader.blockID || var1.getBlockId(par2, par3, par4 + 2) == GCCoreBlocks.cargoLoader.blockID)
+        if (landingPad.isBlockAttachable(var1, par2, par3, par4 + 2))
         {
             renderBlocks.setRenderBounds(0.1F, 0.2F, 1.5F, 0.9F, 0.901F, 2F);
             renderBlocks.renderStandardBlock(par1Block, par2, par3, par4);
         }
 
         // +Z right
-        if (var1.getBlockId(par2 - 1, par3, par4 + 2) == GCCoreBlocks.fuelLoader.blockID || var1.getBlockId(par2 - 1, par3, par4 + 2) == GCCoreBlocks.cargoLoader.blockID)
+        if (landingPad.isBlockAttachable(var1, par2 - 1, par3, par4 + 2))
         {
             renderBlocks.setRenderBounds(-0.9F, 0.2F, 1.5F, -0.1F, 0.9F, 2F);
             renderBlocks.renderStandardBlock(par1Block, par2, par3, par4);
         }
 
         // -X left
-        if (var1.getBlockId(par2 - 2, par3, par4 + 1) == GCCoreBlocks.fuelLoader.blockID || var1.getBlockId(par2 - 2, par3, par4 + 1) == GCCoreBlocks.cargoLoader.blockID)
+        if (landingPad.isBlockAttachable(var1, par2 - 2, par3, par4 + 1))
         {
             renderBlocks.setRenderBounds(-1.0F, 0.2F, 1.1F, -0.5F, 0.901F, 1.9F);
             renderBlocks.renderStandardBlock(par1Block, par2, par3, par4);
         }
 
         // -X middle
-        if (var1.getBlockId(par2 - 2, par3, par4) == GCCoreBlocks.fuelLoader.blockID || var1.getBlockId(par2 - 2, par3, par4) == GCCoreBlocks.cargoLoader.blockID)
+        if (landingPad.isBlockAttachable(var1, par2 - 2, par3, par4))
         {
             renderBlocks.setRenderBounds(-1.0F, 0.2F, 0.1F, -0.5F, 0.9F, 0.9F);
             renderBlocks.renderStandardBlock(par1Block, par2, par3, par4);
         }
 
         // -X right
-        if (var1.getBlockId(par2 - 2, par3, par4 - 1) == GCCoreBlocks.fuelLoader.blockID || var1.getBlockId(par2 - 2, par3, par4 - 1) == GCCoreBlocks.cargoLoader.blockID)
+        if (landingPad.isBlockAttachable(var1, par2 - 2, par3, par4 - 1))
         {
             renderBlocks.setRenderBounds(-1.0F, 0.2F, -0.9F, -0.5F, 0.9F, -0.1F);
             renderBlocks.renderStandardBlock(par1Block, par2, par3, par4);
         }
 
         // -Z right
-        if (var1.getBlockId(par2 + 1, par3, par4 - 2) == GCCoreBlocks.fuelLoader.blockID || var1.getBlockId(par2 + 1, par3, par4 - 2) == GCCoreBlocks.cargoLoader.blockID)
+        if (landingPad.isBlockAttachable(var1, par2 + 1, par3, par4 - 2))
         {
             renderBlocks.setRenderBounds(1.1F, 0.2F, -1.0F, 1.9F, 0.9F, -0.5F);
             renderBlocks.renderStandardBlock(par1Block, par2, par3, par4);
         }
 
         // -Z middle
-        if (var1.getBlockId(par2, par3, par4 - 2) == GCCoreBlocks.fuelLoader.blockID || var1.getBlockId(par2, par3, par4 - 2) == GCCoreBlocks.cargoLoader.blockID)
+        if (landingPad.isBlockAttachable(var1, par2, par3, par4 - 2))
         {
             renderBlocks.setRenderBounds(0.1F, 0.2F, -1.0F, 0.9F, 0.9F, -0.5F);
             renderBlocks.renderStandardBlock(par1Block, par2, par3, par4);
         }
 
         // -Z left
-        if (var1.getBlockId(par2 - 1, par3, par4 - 2) == GCCoreBlocks.fuelLoader.blockID || var1.getBlockId(par2 - 1, par3, par4 - 2) == GCCoreBlocks.cargoLoader.blockID)
+        if (landingPad.isBlockAttachable(var1, par2 - 1, par3, par4 - 2))
         {
             renderBlocks.setRenderBounds(-0.9F, 0.2F, -1.0F, -0.1F, 0.901F, -0.5F);
             renderBlocks.renderStandardBlock(par1Block, par2, par3, par4);

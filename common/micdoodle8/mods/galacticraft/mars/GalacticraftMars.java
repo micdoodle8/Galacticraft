@@ -25,6 +25,7 @@ import micdoodle8.mods.galacticraft.mars.recipe.GCMarsRecipeManager;
 import micdoodle8.mods.galacticraft.mars.schematic.GCMarsSchematicRocketT2;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityCryogenicChamber;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityDungeonSpawner;
+import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityLaunchController;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntitySlimelingEgg;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityTerraformer;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityTreasureChest;
@@ -166,6 +167,7 @@ public class GalacticraftMars
         GameRegistry.registerTileEntity(GCMarsTileEntityTerraformer.class, "Planet Terraformer");
         GameRegistry.registerTileEntity(GCMarsTileEntityCryogenicChamber.class, "Cryogenic Chamber");
         GameRegistry.registerTileEntity(GCMarsTileEntityDungeonSpawner.class, "Mars Dungeon Spawner");
+        GameRegistry.registerTileEntity(GCMarsTileEntityLaunchController.class, "Launch Controller");
     }
 
     public void registerCreatures()

@@ -6,17 +6,23 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import micdoodle8.mods.galacticraft.api.entity.IDockable;
 import micdoodle8.mods.galacticraft.api.entity.IRocketType;
+import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPadFull;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import com.google.common.io.ByteArrayDataInput;
@@ -64,9 +70,9 @@ public abstract class EntityTieredRocket extends EntitySpaceshipBase implements 
 
         if (!this.worldObj.isRemote && this.getLandingPad() != null && this.getLandingPad().getConnectedTiles() != null)
         {
-            for (final TileEntity tile : this.getLandingPad().getConnectedTiles())
+            for (ILandingPadAttachable tile : this.getLandingPad().getConnectedTiles())
             {
-                if (this.worldObj.getBlockTileEntity(tile.xCoord, tile.yCoord, tile.zCoord) != null && this.worldObj.getBlockTileEntity(tile.xCoord, tile.yCoord, tile.zCoord) instanceof GCCoreTileEntityFuelLoader)
+                if (this.worldObj.getBlockTileEntity(((TileEntity) tile).xCoord, ((TileEntity) tile).yCoord, ((TileEntity) tile).zCoord) != null && this.worldObj.getBlockTileEntity(((TileEntity) tile).xCoord, ((TileEntity) tile).yCoord, ((TileEntity) tile).zCoord) instanceof GCCoreTileEntityFuelLoader)
                 {
                     if (tile instanceof GCCoreTileEntityFuelLoader && ((GCCoreTileEntityFuelLoader) tile).getEnergyStored() > 0)
                     {
@@ -182,6 +188,37 @@ public abstract class EntityTieredRocket extends EntitySpaceshipBase implements 
                 ((GCCorePlayerMP) this.riddenByEntity).setCoordsTeleportedFromX(this.riddenByEntity.posX);
                 ((GCCorePlayerMP) this.riddenByEntity).setCoordsTeleportedFromZ(this.riddenByEntity.posZ);
             }
+            
+            int amountRemoved = 0;
+
+            for (int x = MathHelper.floor_double(this.posX) - 1; x <= MathHelper.floor_double(this.posX) + 1; x++)
+            {
+                for (int y = MathHelper.floor_double(this.posY) - 3; y <= MathHelper.floor_double(this.posY) + 1; y++)
+                {
+                    for (int z = MathHelper.floor_double(this.posZ) - 1; z <= MathHelper.floor_double(this.posZ) + 1; z++)
+                    {
+                        final int id = this.worldObj.getBlockId(x, y, z);
+                        final Block block = Block.blocksList[id];
+
+                        if (block != null && block instanceof GCCoreBlockLandingPadFull)
+                        {
+                            if (amountRemoved < 9)
+                            {
+                                LandingPadRemovalEvent event = new LandingPadRemovalEvent(this.worldObj, x, y, z);
+                                MinecraftForge.EVENT_BUS.post(event);
+
+                                if (event.allow)
+                                {
+                                    this.worldObj.setBlockToAir(x, y, z);
+                                    amountRemoved = 9;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            this.playSound("random.pop", 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
         }
     }
 
@@ -259,5 +296,15 @@ public abstract class EntityTieredRocket extends EntitySpaceshipBase implements 
     public int getSizeInventory()
     {
         return this.rocketType.getInventorySpace();
+    }
+    
+    public static class LandingPadRemovalEvent extends BlockEvent
+    {
+        public boolean allow = true;
+        
+        public LandingPadRemovalEvent(World world, int x, int y, int z)
+        {
+            super(x, y, z, world, Block.blocksList[world.getBlockId(x, y, z)], world.getBlockMetadata(x, y, z));
+        }
     }
 }

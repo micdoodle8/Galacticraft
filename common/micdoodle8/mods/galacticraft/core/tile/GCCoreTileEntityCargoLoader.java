@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.entity.ICargoEntity;
+import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -10,6 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.item.IItemElectric;
 import universalelectricity.core.vector.Vector3;
@@ -17,7 +19,7 @@ import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-public class GCCoreTileEntityCargoLoader extends GCCoreTileEntityElectric implements IInventory, ISidedInventory, ICargoEntity
+public class GCCoreTileEntityCargoLoader extends GCCoreTileEntityElectric implements IInventory, ISidedInventory, ICargoEntity, ILandingPadAttachable
 {
     private ItemStack[] containingItems = new ItemStack[15];
     public static final float WATTS_PER_TICK = 0.2F;
@@ -407,5 +409,11 @@ public class GCCoreTileEntityCargoLoader extends GCCoreTileEntityElectric implem
         }
 
         return new RemovalResult(EnumCargoLoadingState.EMPTY, null);
+    }
+
+    @Override
+    public boolean canAttachToLandingPad(IBlockAccess world, int x, int y, int z)
+    {
+        return true;
     }
 }

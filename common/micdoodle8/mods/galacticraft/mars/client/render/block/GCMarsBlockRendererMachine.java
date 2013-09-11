@@ -24,7 +24,11 @@ public class GCMarsBlockRendererMachine implements ISimpleBlockRenderingHandler
 
         int metadata = iblockaccess.getBlockMetadata(x, y, z);
 
-        if (metadata >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA)
+        if (metadata >= GCMarsBlockMachine.LAUNCH_CONTROLLER_METADATA)
+        {
+            renderBlocks.renderStandardBlock(par1Block, x, y, z);
+        }
+        else if (metadata >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA)
         {
 
         }

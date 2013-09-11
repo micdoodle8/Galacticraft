@@ -1,7 +1,9 @@
 package micdoodle8.mods.galacticraft.mars;
 
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySlimeling;
+import micdoodle8.mods.galacticraft.mars.inventory.GCMarsContainerLaunchController;
 import micdoodle8.mods.galacticraft.mars.inventory.GCMarsContainerTerraformer;
+import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityLaunchController;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityTerraformer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -84,6 +86,10 @@ public class CommonProxyMars implements IGuiHandler
             if (tile instanceof GCMarsTileEntityTerraformer)
             {
                 return new GCMarsContainerTerraformer(player.inventory, (GCMarsTileEntityTerraformer) tile);
+            }
+            else if (tile instanceof GCMarsTileEntityLaunchController)
+            {
+                return new GCMarsContainerLaunchController(player.inventory, (GCMarsTileEntityLaunchController) tile);
             }
         }
 

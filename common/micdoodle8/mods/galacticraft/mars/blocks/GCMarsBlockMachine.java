@@ -2,10 +2,12 @@ package micdoodle8.mods.galacticraft.mars.blocks;
 
 import java.util.List;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.mars.GCMarsConfigManager;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityCryogenicChamber;
+import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityLaunchController;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityTerraformer;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -28,13 +30,13 @@ public class GCMarsBlockMachine extends BlockTile
 {
     public static final int TERRAFORMER_METADATA = 0;
     public static final int CRYOGENIC_CHAMBER_METADATA = 4;
-    public static final int UNUSED_MACHINE_1 = 8;
+    public static final int LAUNCH_CONTROLLER_METADATA = 8;
 
     private Icon iconMachineSide;
     private Icon iconInput;
 
     private Icon iconTerraformer;
-    private Icon unusedIcon1;
+    private Icon iconLaunchController;
 
     public GCMarsBlockMachine(int id)
     {
@@ -49,6 +51,7 @@ public class GCMarsBlockMachine extends BlockTile
 
         this.iconMachineSide = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_blank");
         this.iconTerraformer = par1IconRegister.registerIcon(GalacticraftMars.TEXTURE_PREFIX + "terraformer_0");
+        this.iconLaunchController = par1IconRegister.registerIcon(GalacticraftMars.TEXTURE_PREFIX + "launchController");
     }
 
     @Override
@@ -78,19 +81,22 @@ public class GCMarsBlockMachine extends BlockTile
             return this.blockIcon;
         }
 
-        if (metadata >= GCMarsBlockMachine.UNUSED_MACHINE_1)
+        if (metadata >= GCMarsBlockMachine.LAUNCH_CONTROLLER_METADATA)
         {
-            metadata -= GCMarsBlockMachine.UNUSED_MACHINE_1;
+            metadata -= GCMarsBlockMachine.LAUNCH_CONTROLLER_METADATA;
 
             // If it is the front side
             if (side == metadata + 2)
             {
                 return this.iconInput;
             }
-            // If it is the back side
-            else if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal())
+            else if (side == ForgeDirection.UP.ordinal() || side == ForgeDirection.DOWN.ordinal())
             {
-                return this.unusedIcon1;
+                return this.iconMachineSide;
+            }
+            else
+            {
+                return this.iconLaunchController;
             }
         }
         else
@@ -108,8 +114,6 @@ public class GCMarsBlockMachine extends BlockTile
                 return this.iconTerraformer;
             }
         }
-
-        return this.iconMachineSide;
     }
 
     /**
@@ -139,9 +143,25 @@ public class GCMarsBlockMachine extends BlockTile
             break;
         }
 
-        if (metadata >= GCMarsBlockMachine.UNUSED_MACHINE_1)
+        if (metadata >= GCMarsBlockMachine.LAUNCH_CONTROLLER_METADATA)
         {
-            world.setBlockMetadataWithNotify(x, y, z, GCMarsBlockMachine.UNUSED_MACHINE_1 + change, 3);
+            switch (angle)
+            {
+            case 0:
+                change = 3;
+                break;
+            case 1:
+                change = 1;
+                break;
+            case 2:
+                change = 2;
+                break;
+            case 3:
+                change = 0;
+                break;
+            }
+            
+            world.setBlockMetadataWithNotify(x, y, z, GCMarsBlockMachine.LAUNCH_CONTROLLER_METADATA + change, 3);
         }
         else if (metadata >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA)
         {
@@ -174,6 +194,22 @@ public class GCMarsBlockMachine extends BlockTile
         {
             ((IMultiBlock) var8).onCreate(new Vector3(x, y, z));
         }
+
+        if (metadata >= LAUNCH_CONTROLLER_METADATA)
+        {
+            for (int dX = -2; dX < 3; dX++)
+            {
+                for (int dZ = -2; dZ < 3; dZ++)
+                {
+                    final int id = world.getBlockId(x + dX, y, z + dZ);
+
+                    if (id == GCCoreBlocks.landingPadFull.blockID)
+                    {
+                        world.markBlockForUpdate(x + dX, y, z + dZ);
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -184,9 +220,9 @@ public class GCMarsBlockMachine extends BlockTile
 
         int change = 0;
 
-        if (metadata >= GCMarsBlockMachine.UNUSED_MACHINE_1)
+        if (metadata >= GCMarsBlockMachine.LAUNCH_CONTROLLER_METADATA)
         {
-            original -= GCMarsBlockMachine.UNUSED_MACHINE_1;
+            original -= GCMarsBlockMachine.LAUNCH_CONTROLLER_METADATA;
         }
         else if (metadata >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA)
         {
@@ -210,9 +246,9 @@ public class GCMarsBlockMachine extends BlockTile
             break;
         }
 
-        if (metadata >= GCMarsBlockMachine.UNUSED_MACHINE_1)
+        if (metadata >= GCMarsBlockMachine.LAUNCH_CONTROLLER_METADATA)
         {
-            change += GCMarsBlockMachine.UNUSED_MACHINE_1;
+            change += GCMarsBlockMachine.LAUNCH_CONTROLLER_METADATA;
         }
 
         par1World.setBlockMetadataWithNotify(x, y, z, change, 3);
@@ -227,9 +263,9 @@ public class GCMarsBlockMachine extends BlockTile
     {
         int metadata = world.getBlockMetadata(x, y, z);
 
-        if (metadata >= GCMarsBlockMachine.UNUSED_MACHINE_1)
+        if (metadata >= GCMarsBlockMachine.LAUNCH_CONTROLLER_METADATA)
         {
-            par5EntityPlayer.openGui(GalacticraftMars.instance, -1, world, x, y, z);
+            par5EntityPlayer.openGui(GalacticraftMars.instance, GCMarsConfigManager.idGuiMachine, world, x, y, z);
             return true;
         }
         else if (metadata >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA)
@@ -259,9 +295,9 @@ public class GCMarsBlockMachine extends BlockTile
     @Override
     public TileEntity createTileEntity(World world, int metadata)
     {
-        if (metadata >= GCMarsBlockMachine.UNUSED_MACHINE_1)
+        if (metadata >= GCMarsBlockMachine.LAUNCH_CONTROLLER_METADATA)
         {
-            return null;
+            return new GCMarsTileEntityLaunchController();
         }
         else if (metadata >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA)
         {
@@ -270,6 +306,28 @@ public class GCMarsBlockMachine extends BlockTile
         else
         {
             return new GCMarsTileEntityTerraformer();
+        }
+    }
+
+    @Override
+    public void onBlockDestroyedByPlayer(World world, int x, int y, int z, int par5)
+    {
+        super.onBlockDestroyedByPlayer(world, x, y, z, par5);
+
+        if (world.getBlockMetadata(x, y, z) >= LAUNCH_CONTROLLER_METADATA)
+        {
+            for (int dX = -2; dX < 3; dX++)
+            {
+                for (int dZ = -2; dZ < 3; dZ++)
+                {
+                    final int id = world.getBlockId(x + dX, y, z + dZ);
+
+                    if (id == GCCoreBlocks.landingPadFull.blockID)
+                    {
+                        world.markBlockForUpdate(x + dX, y, z + dZ);
+                    }
+                }
+            }
         }
     }
 
@@ -283,20 +341,26 @@ public class GCMarsBlockMachine extends BlockTile
         return new ItemStack(this.blockID, 1, GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA);
     }
 
+    public ItemStack getLaunchController()
+    {
+        return new ItemStack(this.blockID, 1, GCMarsBlockMachine.LAUNCH_CONTROLLER_METADATA);
+    }
+
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
         par3List.add(this.getTerraformer());
         par3List.add(this.getChamber());
+        par3List.add(this.getLaunchController());
     }
 
     @Override
     public int damageDropped(int metadata)
     {
-        if (metadata >= GCMarsBlockMachine.UNUSED_MACHINE_1)
+        if (metadata >= GCMarsBlockMachine.LAUNCH_CONTROLLER_METADATA)
         {
-            return GCMarsBlockMachine.UNUSED_MACHINE_1;
+            return GCMarsBlockMachine.LAUNCH_CONTROLLER_METADATA;
         }
         else if (metadata >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA)
         {

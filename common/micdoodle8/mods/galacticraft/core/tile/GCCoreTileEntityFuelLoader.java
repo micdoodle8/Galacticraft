@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.entity.IFuelable;
+import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemFuelCanister;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
@@ -13,6 +14,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -27,7 +29,7 @@ import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric implements IInventory, ISidedInventory, IFluidHandler
+public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric implements IInventory, ISidedInventory, IFluidHandler, ILandingPadAttachable
 {
     private final int tankCapacity = 12000;
     public FluidTank fuelTank = new FluidTank(this.tankCapacity);
@@ -410,5 +412,11 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
     public ItemStack getBatteryInSlot()
     {
         return this.getStackInSlot(0);
+    }
+
+    @Override
+    public boolean canAttachToLandingPad(IBlockAccess world, int x, int y, int z)
+    {
+        return true;
     }
 }

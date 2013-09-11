@@ -41,6 +41,7 @@ tile.slimelingEgg.blueEgg.name=Blue Slimeling Egg
 tile.slimelingEgg.yellowEgg.name=Yellow Slimeling Egg
 tile.marsMachine.0.name=Terraformer
 tile.marsMachine.1.name=Cryogenic Chamber
+tile.marsMachine.2.name=Launch Controller
 tile.sludge.name=Bacterial Sludge
 tile.creeperEgg.name=Creeper Egg
 tile.cavernVines.name=Cavernous Vines
@@ -78,3 +79,6 @@ schematic.rocketT3.name=Tier 3 Rocket
 entity.Sludgeling.name=Sludgeling
 entity.Slimeling.name=Slimeling
 entity.CreeperBoss.name=Evolved Creeper Boss
+
+# Container
+container.launchcontroller.name=Launch Controller

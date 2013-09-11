@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.api.entity.ICargoEntity;
 import micdoodle8.mods.galacticraft.api.entity.IDockable;
 import micdoodle8.mods.galacticraft.api.entity.IFuelable;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
+import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockMulti;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
@@ -13,9 +14,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fluids.FluidStack;
 import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -23,7 +26,7 @@ public class GCCoreTileEntityLandingPad extends TileEntityMulti implements IMult
 {
     protected long ticks = 0;
     private IDockable dockedEntity;
-    public HashSet<TileEntity> connectedTiles = new HashSet<TileEntity>();
+    public HashSet<ILandingPadAttachable> connectedTiles = new HashSet<ILandingPadAttachable>();
 
     public GCCoreTileEntityLandingPad()
     {
@@ -47,28 +50,28 @@ public class GCCoreTileEntityLandingPad extends TileEntityMulti implements IMult
                         {
                             final TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + x, this.yCoord, this.zCoord + z);
 
-                            if (tile != null && tile instanceof GCCoreTileEntityFuelLoader)
+                            if (tile != null && tile instanceof ILandingPadAttachable && ((ILandingPadAttachable) tile).canAttachToLandingPad(this.worldObj, this.xCoord, this.yCoord, this.zCoord))
                             {
-                                this.connectedTiles.add(tile);
+                                this.connectedTiles.add((ILandingPadAttachable) tile);
                             }
                         }
                     }
                 }
             }
-
-            for (final TileEntity tile : this.connectedTiles)
+            
+            HashSet<ILandingPadAttachable> copySet = new HashSet<ILandingPadAttachable>(this.connectedTiles);
+            
+            for (ILandingPadAttachable tile : copySet)
             {
-                final GCCoreTileEntityFuelLoader loader = (GCCoreTileEntityFuelLoader) tile;
+                final TileEntity newTile = this.worldObj.getBlockTileEntity(((TileEntity) tile).xCoord, ((TileEntity) tile).yCoord, ((TileEntity) tile).zCoord);
 
-                final TileEntity newTile = this.worldObj.getBlockTileEntity(loader.xCoord, loader.yCoord, loader.zCoord);
-
-                if (newTile == null || !(newTile instanceof GCCoreTileEntityFuelLoader))
+                if (newTile == null || !(newTile instanceof ILandingPadAttachable) || !((ILandingPadAttachable) newTile).canAttachToLandingPad(this.worldObj, this.xCoord, this.yCoord, this.zCoord))
                 {
                     this.connectedTiles.remove(newTile);
                 }
             }
 
-            final List list = this.worldObj.getEntitiesWithinAABB(IFuelable.class, AxisAlignedBB.getAABBPool().getAABB(this.xCoord - 0.5D, this.yCoord, this.zCoord - 0.5D, this.xCoord + 0.5D, this.yCoord + 5, this.zCoord + 0.5D));
+            final List<?> list = this.worldObj.getEntitiesWithinAABB(IFuelable.class, AxisAlignedBB.getAABBPool().getAABB(this.xCoord - 0.5D, this.yCoord, this.zCoord - 0.5D, this.xCoord + 0.5D, this.yCoord + 5, this.zCoord + 0.5D));
 
             boolean changed = false;
 
@@ -174,7 +177,7 @@ public class GCCoreTileEntityLandingPad extends TileEntityMulti implements IMult
     }
 
     @Override
-    public HashSet<TileEntity> getConnectedTiles()
+    public HashSet<ILandingPadAttachable> getConnectedTiles()
     {
         return this.connectedTiles;
     }
@@ -206,5 +209,18 @@ public class GCCoreTileEntityLandingPad extends TileEntityMulti implements IMult
     public AxisAlignedBB getRenderBoundingBox()
     {
         return TileEntity.INFINITE_EXTENT_AABB;
+    }
+
+    @Override
+    public boolean isBlockAttachable(IBlockAccess world, int x, int y, int z)
+    {
+        TileEntity tile = world.getBlockTileEntity(x, y, z);
+        
+        if (tile != null && tile instanceof ILandingPadAttachable)
+        {
+            return ((ILandingPadAttachable) tile).canAttachToLandingPad(world, this.xCoord, this.yCoord, this.zCoord);
+        }
+        
+        return false;
     }
 }

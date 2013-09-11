@@ -1,9 +1,12 @@
 package micdoodle8.mods.galacticraft.mars;
 
 import micdoodle8.mods.galacticraft.api.event.wgen.GCCoreEventPopulate;
+import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
+import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore.OrientCameraEvent;
 import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderPlayer.RotatePlayerEvent;
+import micdoodle8.mods.galacticraft.core.entities.EntityTieredRocket.LandingPadRemovalEvent;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP.PlayerWakeUpEvent;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
@@ -12,6 +15,7 @@ import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
 import micdoodle8.mods.galacticraft.mars.dimension.GCMarsWorldProvider;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySlimeling;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityCryogenicChamber;
+import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityLaunchController;
 import micdoodle8.mods.galacticraft.mars.wgen.GCMarsWorldGenEggs;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -186,6 +190,36 @@ public class GCMarsEvents
                 GL11.glRotatef(rotation, 0.0F, 1.0F, 0.0F);
 
                 GL11.glTranslatef(0, -1, 0);
+            }
+        }
+    }
+    
+    @ForgeSubscribe
+    public void onLandingPadRemoved(LandingPadRemovalEvent event)
+    {
+        TileEntity tile = event.world.getBlockTileEntity(event.x, event.y, event.z);
+        
+        if (tile instanceof IFuelDock)
+        {
+            IFuelDock dock = (IFuelDock) tile;
+            
+            GCMarsTileEntityLaunchController launchController = null;
+            
+            for (ILandingPadAttachable connectedTile : dock.getConnectedTiles())
+            {
+                if (connectedTile instanceof GCMarsTileEntityLaunchController)
+                {
+                    launchController = (GCMarsTileEntityLaunchController) event.world.getBlockTileEntity(((GCMarsTileEntityLaunchController) connectedTile).xCoord, ((GCMarsTileEntityLaunchController) connectedTile).yCoord, ((GCMarsTileEntityLaunchController) connectedTile).zCoord);
+                    break;
+                }
+            }
+            
+            if (launchController != null)
+            {
+                if (!launchController.getDisabled(0) && launchController.getEnergyStored() > 0.0F)
+                {
+                    event.allow = !launchController.getDisabled(1);
+                }
             }
         }
     }
