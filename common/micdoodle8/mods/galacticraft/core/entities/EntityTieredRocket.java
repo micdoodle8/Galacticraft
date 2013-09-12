@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPadFull;
+import micdoodle8.mods.galacticraft.core.event.GCCoreLandingPadRemovalEvent;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
@@ -22,7 +23,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import com.google.common.io.ByteArrayDataInput;
@@ -204,7 +204,7 @@ public abstract class EntityTieredRocket extends EntitySpaceshipBase implements 
                         {
                             if (amountRemoved < 9)
                             {
-                                LandingPadRemovalEvent event = new LandingPadRemovalEvent(this.worldObj, x, y, z);
+                                GCCoreLandingPadRemovalEvent event = new GCCoreLandingPadRemovalEvent(this.worldObj, x, y, z);
                                 MinecraftForge.EVENT_BUS.post(event);
 
                                 if (event.allow)
@@ -296,15 +296,5 @@ public abstract class EntityTieredRocket extends EntitySpaceshipBase implements 
     public int getSizeInventory()
     {
         return this.rocketType.getInventorySpace();
-    }
-    
-    public static class LandingPadRemovalEvent extends BlockEvent
-    {
-        public boolean allow = true;
-        
-        public LandingPadRemovalEvent(World world, int x, int y, int z)
-        {
-            super(x, y, z, world, Block.blocksList[world.getBlockId(x, y, z)], world.getBlockMetadata(x, y, z));
-        }
     }
 }

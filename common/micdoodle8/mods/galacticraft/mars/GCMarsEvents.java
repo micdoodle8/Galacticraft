@@ -6,9 +6,9 @@ import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore.OrientCameraEvent;
 import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderPlayer.RotatePlayerEvent;
-import micdoodle8.mods.galacticraft.core.entities.EntityTieredRocket.LandingPadRemovalEvent;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
-import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP.PlayerWakeUpEvent;
+import micdoodle8.mods.galacticraft.core.event.GCCoreEventWakePlayer;
+import micdoodle8.mods.galacticraft.core.event.GCCoreLandingPadRemovalEvent;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlockMachine;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
@@ -76,7 +76,7 @@ public class GCMarsEvents
     }
 
     @ForgeSubscribe
-    public void onPlayerWakeUp(PlayerWakeUpEvent event)
+    public void onPlayerWakeUp(GCCoreEventWakePlayer event)
     {
         ChunkCoordinates c = event.entityPlayer.playerLocation;
         int blockID = event.entityPlayer.worldObj.getBlockId(c.posX, c.posY, c.posZ);
@@ -195,7 +195,7 @@ public class GCMarsEvents
     }
     
     @ForgeSubscribe
-    public void onLandingPadRemoved(LandingPadRemovalEvent event)
+    public void onLandingPadRemoved(GCCoreLandingPadRemovalEvent event)
     {
         TileEntity tile = event.world.getBlockTileEntity(event.x, event.y, event.z);
         

@@ -14,6 +14,7 @@ import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GCCoreDamageSource;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.event.GCCoreEventWakePlayer;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryExtended;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
@@ -39,8 +40,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.Cancelable;
-import net.minecraftforge.event.entity.player.PlayerEvent;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
@@ -1132,7 +1131,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
         if (c != null)
         {
-            PlayerWakeUpEvent event = new PlayerWakeUpEvent(this, c.posX, c.posY, c.posZ, par1, par2, par3, bypass);
+            GCCoreEventWakePlayer event = new GCCoreEventWakePlayer(this, c.posX, c.posY, c.posZ, par1, par2, par3, bypass);
             MinecraftForge.EVENT_BUS.post(event);
 
             if (bypass || event.result == null || event.result == EnumStatus.OK)
@@ -1340,31 +1339,6 @@ public class GCCorePlayerMP extends EntityPlayerMP
         private int getIndex()
         {
             return this.index;
-        }
-    }
-
-    @Cancelable
-    public static class PlayerWakeUpEvent extends PlayerEvent
-    {
-        public EnumStatus result = null;
-        public final int x;
-        public final int y;
-        public final int z;
-        public final boolean flag1;
-        public final boolean flag2;
-        public final boolean flag3;
-        public final boolean bypassed;
-
-        public PlayerWakeUpEvent(EntityPlayer player, int x, int y, int z, boolean flag1, boolean flag2, boolean flag3, boolean bypassed)
-        {
-            super(player);
-            this.x = x;
-            this.y = y;
-            this.z = z;
-            this.flag1 = flag1;
-            this.flag2 = flag2;
-            this.flag3 = flag3;
-            this.bypassed = bypassed;
         }
     }
 }
