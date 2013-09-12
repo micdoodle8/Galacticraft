@@ -254,7 +254,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
         if (this.worldObj.provider instanceof IGalacticraftWorldProvider)
         {
-            this.fallDistance = 0.0F;
+            this.fallDistance *= ((IGalacticraftWorldProvider) this.worldObj.provider).getFallDamageModifier();
         }
 
         this.checkOxygen();

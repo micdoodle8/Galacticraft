@@ -261,4 +261,10 @@ public class GCCoreWorldProviderSpaceStation extends WorldProvider implements IO
     {
         return tier > 0;
     }
+
+    @Override
+    public float getFallDamageModifier()
+    {
+        return 0.4F;
+    }
 }

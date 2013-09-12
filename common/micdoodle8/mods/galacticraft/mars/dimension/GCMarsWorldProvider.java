@@ -230,4 +230,10 @@ public class GCMarsWorldProvider extends WorldProvider implements IGalacticraftW
     {
         return tier >= 2;
     }
+
+    @Override
+    public float getFallDamageModifier()
+    {
+        return 0.9F;
+    }
 }

@@ -41,4 +41,11 @@ public interface IGalacticraftWorldProvider
      *         dimension
      */
     public boolean canSpaceshipTierPass(int tier);
+
+    /**
+     * Fall damage will be multiplied by this number while on the planet/moon.
+     * 
+     * @return Fall damage multiplier, returning 1 will be equal to earth.
+     */
+    public float getFallDamageModifier();
 }

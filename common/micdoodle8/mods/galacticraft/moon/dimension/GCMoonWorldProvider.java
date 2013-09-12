@@ -253,4 +253,10 @@ public class GCMoonWorldProvider extends WorldProvider implements IGalacticraftW
     {
         return tier > 0;
     }
+
+    @Override
+    public float getFallDamageModifier()
+    {
+        return 0.85F;
+    }
 }
