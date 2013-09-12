@@ -1,0 +1,19 @@
+[
+{
+  "modid": "GalacticraftMars",
+  "name": "Galacticraft Mars",
+  "description": "Mars addon for Galacticraft.",
+  "version": "a0.1.40",
+  "mcversion": "1.6.2",
+  "url": "http://www.micdoodle8.com/",
+  "updateUrl": "http://www.micdoodle8.com/",
+  "authors": [
+    "micdoodle8"
+  ],
+  "credits": "",
+  "logoFile": "/micdoodle8/mods/galacticraft/logo.png",
+  "screenshots": [
+  ],
+  "parent":""
+}
+]
