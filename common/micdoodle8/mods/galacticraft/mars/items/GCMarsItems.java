@@ -30,8 +30,7 @@ public class GCMarsItems
     public static Item schematic;
 
     public static EnumArmorMaterial ARMORDESH = EnumHelper.addArmorMaterial("DESH", 42, new int[] { 4, 9, 7, 4 }, 12);
-    public static EnumToolMaterial TOOLDESH = EnumHelper.addToolMaterial("DESH", 3, 50, 5.0F, 2, 8);
-    public static EnumToolMaterial TOOLTROWEL = EnumHelper.addToolMaterial("TROWEL", 1, 5, 5.0F, 2, 1);
+    public static EnumToolMaterial TOOLDESH = EnumHelper.addToolMaterial("DESH", 3, 1024, 5.0F, 2.5F, 8);
 
     public static void initItems()
     {
