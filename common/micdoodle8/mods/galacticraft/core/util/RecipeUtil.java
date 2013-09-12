@@ -84,26 +84,6 @@ public class RecipeUtil
 
     public static ItemStack getIndustrialCraftItem(String indentifier)
     {
-        ItemStack stack = Items.getItem(indentifier);
-
-        if (stack != null)
-        {
-            return stack;
-        }
-        else
-        {
-            try
-            {
-                // Might as well, since it'll NPE when trying to add the recipe
-                // anyway.
-                throw new Exception("Failed to load IC2 item for recipe (" + indentifier + "), ensure it has loaded properly and isn't disabled.");
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
-
-        return stack;
+        return Items.getItem(indentifier);
     }
 }
