@@ -36,6 +36,7 @@ public class GCCorePacketManager extends PacketManager implements IPacketHandler
         }
     }
 
+    @SuppressWarnings("resource")
     public static Packet getPacket(String channelName, Entity sender, ArrayList<Object> objs)
     {
         final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -52,6 +53,7 @@ public class GCCorePacketManager extends PacketManager implements IPacketHandler
             packet.channel = channelName;
             packet.data = bytes.toByteArray();
             packet.length = packet.data.length;
+            data.close();
 
             return packet;
         }
@@ -119,6 +121,7 @@ public class GCCorePacketManager extends PacketManager implements IPacketHandler
         return data;
     }
 
+    @SuppressWarnings("resource")
     public static Packet getPacket(String channelName, Entity sender, Object... sendData)
     {
         final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -135,6 +138,7 @@ public class GCCorePacketManager extends PacketManager implements IPacketHandler
             packet.channel = channelName;
             packet.data = bytes.toByteArray();
             packet.length = packet.data.length;
+            data.close();
 
             return packet;
         }
@@ -191,43 +195,43 @@ public class GCCorePacketManager extends PacketManager implements IPacketHandler
                 }
                 else if (dataValue instanceof ArrayList)
                 {
-                    for (Object dataValue2 : (ArrayList) dataValue)
+                    for (Object subDataValue : (ArrayList<?>) dataValue)
                     {
-                        if (dataValue instanceof Integer)
+                        if (subDataValue instanceof Integer)
                         {
-                            data.writeInt((Integer) dataValue);
+                            data.writeInt((Integer) subDataValue);
                         }
-                        else if (dataValue instanceof Float)
+                        else if (subDataValue instanceof Float)
                         {
-                            data.writeFloat((Float) dataValue);
+                            data.writeFloat((Float) subDataValue);
                         }
-                        else if (dataValue instanceof Double)
+                        else if (subDataValue instanceof Double)
                         {
-                            data.writeDouble((Double) dataValue);
+                            data.writeDouble((Double) subDataValue);
                         }
-                        else if (dataValue instanceof Byte)
+                        else if (subDataValue instanceof Byte)
                         {
-                            data.writeByte((Byte) dataValue);
+                            data.writeByte((Byte) subDataValue);
                         }
-                        else if (dataValue instanceof Boolean)
+                        else if (subDataValue instanceof Boolean)
                         {
-                            data.writeBoolean((Boolean) dataValue);
+                            data.writeBoolean((Boolean) subDataValue);
                         }
-                        else if (dataValue instanceof String)
+                        else if (subDataValue instanceof String)
                         {
-                            data.writeUTF((String) dataValue);
+                            data.writeUTF((String) subDataValue);
                         }
-                        else if (dataValue instanceof Short)
+                        else if (subDataValue instanceof Short)
                         {
-                            data.writeShort((Short) dataValue);
+                            data.writeShort((Short) subDataValue);
                         }
-                        else if (dataValue instanceof Long)
+                        else if (subDataValue instanceof Long)
                         {
-                            data.writeLong((Long) dataValue);
+                            data.writeLong((Long) subDataValue);
                         }
-                        else if (dataValue instanceof NBTTagCompound)
+                        else if (subDataValue instanceof NBTTagCompound)
                         {
-                            PacketManager.writeNBTTagCompound((NBTTagCompound) dataValue, data);
+                            PacketManager.writeNBTTagCompound((NBTTagCompound) subDataValue, data);
                         }
                     }
                 }

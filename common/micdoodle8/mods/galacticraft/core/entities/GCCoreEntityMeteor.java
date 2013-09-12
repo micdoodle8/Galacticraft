@@ -83,9 +83,9 @@ public class GCCoreEntityMeteor extends Entity
         }
 
         Entity var4 = null;
-        final List var5 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(2.0D, 2.0D, 2.0D));
+        final List<?> var5 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(2.0D, 2.0D, 2.0D));
         double var6 = 0.0D;
-        final Iterator var8 = var5.iterator();
+        final Iterator<?> var8 = var5.iterator();
 
         while (var8.hasNext())
         {

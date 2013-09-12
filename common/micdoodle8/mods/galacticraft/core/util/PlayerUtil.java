@@ -17,11 +17,11 @@ public class PlayerUtil
             // new EmptyStackException().printStackTrace();
         }
 
-        final Iterator it = GalacticraftCore.playersServer.entrySet().iterator();
+        final Iterator<Map.Entry<String, GCCorePlayerMP>> it = GalacticraftCore.playersServer.entrySet().iterator();
 
         while (it.hasNext())
         {
-            final Map.Entry entry = (Map.Entry) it.next();
+            Map.Entry<String, GCCorePlayerMP> entry = it.next();
 
             if (entry.getKey().equals(username))
             {
@@ -46,11 +46,11 @@ public class PlayerUtil
             // new EmptyStackException().printStackTrace();
         }
 
-        final Iterator it = GalacticraftCore.playersServer.entrySet().iterator();
+        final Iterator<Map.Entry<String, GCCorePlayerMP>> it = GalacticraftCore.playersServer.entrySet().iterator();
 
         while (it.hasNext())
         {
-            final Map.Entry entry = (Map.Entry) it.next();
+            final Map.Entry<String, GCCorePlayerMP> entry = it.next();
 
             if (entry.getKey().equals(player.username))
             {
@@ -75,11 +75,11 @@ public class PlayerUtil
             return null;
         }
 
-        final Iterator it = GalacticraftCore.playersClient.entrySet().iterator();
+        final Iterator<Map.Entry<String, GCCorePlayerSP>> it = GalacticraftCore.playersClient.entrySet().iterator();
 
         while (it.hasNext())
         {
-            final Map.Entry entry = (Map.Entry) it.next();
+            final Map.Entry<String, GCCorePlayerSP> entry = it.next();
 
             if (entry.getKey() != null && entry.getKey().equals(player.username))
             {

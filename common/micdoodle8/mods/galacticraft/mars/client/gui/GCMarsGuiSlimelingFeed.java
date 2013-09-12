@@ -36,6 +36,7 @@ public class GCMarsGuiSlimelingFeed extends GuiScreen
         this.ySize = 51;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void initGui()
     {

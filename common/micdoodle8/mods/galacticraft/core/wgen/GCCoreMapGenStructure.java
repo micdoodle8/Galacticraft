@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.wgen;
 
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import net.minecraft.world.ChunkCoordIntPair;
@@ -12,7 +11,7 @@ import net.minecraft.world.gen.structure.StructureStart;
 
 public abstract class GCCoreMapGenStructure extends GCCoreMapGenBase
 {
-    protected Map structureMap = new HashMap();
+    protected Map<Long, StructureStart> structureMap = new HashMap<Long, StructureStart>();
 
     @Override
     protected void recursiveGenerate(World par1World, int par2, int par3, int par4, int par5, int[] par6ArrayOfByte)
@@ -31,7 +30,7 @@ public abstract class GCCoreMapGenStructure extends GCCoreMapGenBase
         final int var5 = (par3 << 4) + 8;
         final int var6 = (par4 << 4) + 8;
         boolean var7 = false;
-        final Iterator var8 = this.structureMap.values().iterator();
+        final Iterator<?> var8 = this.structureMap.values().iterator();
 
         while (var8.hasNext())
         {
@@ -45,11 +44,6 @@ public abstract class GCCoreMapGenStructure extends GCCoreMapGenBase
         }
 
         return var7;
-    }
-
-    protected List getCoordList()
-    {
-        return null;
     }
 
     protected abstract boolean canSpawnStructureAtCoords(int var1, int var2);

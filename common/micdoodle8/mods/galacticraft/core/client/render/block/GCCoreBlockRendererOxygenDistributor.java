@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.client.render.block;
 
-import micdoodle8.mods.galacticraft.core.client.model.block.GCCoreModelFan;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -17,7 +16,6 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 public class GCCoreBlockRendererOxygenDistributor implements ISimpleBlockRenderingHandler
 {
     final int renderID;
-    private static GCCoreModelFan fanModel = new GCCoreModelFan();
 
     public GCCoreBlockRendererOxygenDistributor(int var1)
     {
@@ -27,8 +25,6 @@ public class GCCoreBlockRendererOxygenDistributor implements ISimpleBlockRenderi
     @Override
     public boolean renderWorldBlock(IBlockAccess var1, int var2, int var3, int var4, Block var5, int var6, RenderBlocks var7)
     {
-        // var7.overrideBlockTexture = 32;
-
         // Corners
         var7.setRenderBounds(0.0F, 0.1F, 0.0F, 0.1F, 0.9F, 0.1F);
         var7.renderStandardBlock(var5, var2, var3, var4);

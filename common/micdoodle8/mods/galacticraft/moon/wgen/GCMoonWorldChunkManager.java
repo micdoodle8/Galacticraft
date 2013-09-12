@@ -75,12 +75,14 @@ public class GCMoonWorldChunkManager extends WorldChunkManager
         return this.loadBlockGeneratorData(par1ArrayOfBiomeGenBase, par2, par3, par4, par5);
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public ChunkPosition findBiomePosition(int par1, int par2, int par3, List par4List, Random par5Random)
     {
         return par4List.contains(GCMoonBiomeGenBase.moonFlat) ? new ChunkPosition(par1 - par3 + par5Random.nextInt(par3 * 2 + 1), 0, par2 - par3 + par5Random.nextInt(par3 * 2 + 1)) : null;
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public boolean areBiomesViable(int par1, int par2, int par3, List par4List)
     {

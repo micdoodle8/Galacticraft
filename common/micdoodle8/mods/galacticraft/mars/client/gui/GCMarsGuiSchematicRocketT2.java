@@ -15,8 +15,6 @@ public class GCMarsGuiSchematicRocketT2 extends GuiContainer implements ISchemat
 {
     private static final ResourceLocation tier2SchematicTexture = new ResourceLocation(GalacticraftMars.TEXTURE_DOMAIN, "textures/gui/schematic_rocket_T2.png");
 
-    private GuiButton backButton;
-    private GuiButton nextButton;
     private int pageIndex;
 
     public GCMarsGuiSchematicRocketT2(InventoryPlayer par1InventoryPlayer, int x, int y, int z)
@@ -25,13 +23,14 @@ public class GCMarsGuiSchematicRocketT2 extends GuiContainer implements ISchemat
         this.ySize = 238;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void initGui()
     {
         super.initGui();
         this.buttonList.clear();
-        this.buttonList.add(this.backButton = new GuiButton(0, this.width / 2 - 130, this.height / 2 - 30 + 27, 40, 20, "Back"));
-        this.buttonList.add(this.nextButton = new GuiButton(1, this.width / 2 + 90, this.height / 2 - 30 + 27, 40, 20, "Next"));
+        this.buttonList.add(new GuiButton(0, this.width / 2 - 130, this.height / 2 - 30 + 27, 40, 20, "Back"));
+        this.buttonList.add(new GuiButton(1, this.width / 2 + 90, this.height / 2 - 30 + 27, 40, 20, "Next"));
     }
 
     @Override

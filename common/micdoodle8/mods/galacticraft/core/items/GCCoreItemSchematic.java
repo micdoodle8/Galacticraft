@@ -39,6 +39,7 @@ public class GCCoreItemSchematic extends Item implements ISchematicItem
         return GalacticraftCore.galacticraftTab;
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
@@ -82,6 +83,7 @@ public class GCCoreItemSchematic extends Item implements ISchematicItem
         return super.getIconFromDamage(damage);
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)

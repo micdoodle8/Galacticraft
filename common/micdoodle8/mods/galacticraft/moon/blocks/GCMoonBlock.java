@@ -247,6 +247,7 @@ public class GCMoonBlock extends GCCoreBlockAdvanced implements IDetectableResou
         }
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @SideOnly(Side.CLIENT)
     @Override
     public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)

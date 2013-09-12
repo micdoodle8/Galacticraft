@@ -65,7 +65,7 @@ public class GCCoreOverlaySensorGlasses extends GCCoreOverlay
 
     public static void renderSensorGlassesValueableBlocks(ItemStack stack, EntityPlayer player, ScaledResolution resolution, float partialTicks, boolean hasScreen, int mouseX, int mouseY)
     {
-        final Iterator var51 = ClientProxyCore.valueableBlocks.iterator();
+        final Iterator<?> var51 = ClientProxyCore.valueableBlocks.iterator();
         double var52;
         double var58;
         double var59;

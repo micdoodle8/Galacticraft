@@ -218,6 +218,7 @@ public class GCMarsBlock extends Block implements IDetectableResource, IPlantabl
         return 1;
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @SideOnly(Side.CLIENT)
     @Override
     public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)

@@ -42,6 +42,7 @@ public class GCCoreItemInfiniteBattery extends Item implements IItemElectric
         return ClientProxyCore.galacticraftItem;
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
     {

@@ -342,6 +342,7 @@ public class GCCoreBlockBasicMachine extends BlockTile
         return new ItemStack(this.blockID, 1, GCCoreBlockBasicMachine.ELECTRIC_FURNACE_METADATA);
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {

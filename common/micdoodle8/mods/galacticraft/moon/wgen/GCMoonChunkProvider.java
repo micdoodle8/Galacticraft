@@ -378,6 +378,7 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
         return GCMoonConfigManager.generateOtherMods ? "RandomLevelSource" : "MoonLevelSource";
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public List getPossibleCreatures(EnumCreatureType par1EnumCreatureType, int i, int j, int k)
     {

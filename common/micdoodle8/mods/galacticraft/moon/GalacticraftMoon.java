@@ -90,6 +90,7 @@ public class GalacticraftMoon
     {
     }
 
+    @SuppressWarnings("unchecked")
     public static void addCraftingRecipes()
     {
         OreDictionary.registerOre("plateMeteoricIron", new ItemStack(GCMoonItems.meteoricIronIngot, 1, 1));

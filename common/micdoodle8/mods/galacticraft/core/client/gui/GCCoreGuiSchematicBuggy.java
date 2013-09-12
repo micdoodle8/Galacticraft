@@ -23,6 +23,7 @@ public class GCCoreGuiSchematicBuggy extends GCCoreGuiContainer implements ISche
         this.ySize = 221;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void initGui()
     {

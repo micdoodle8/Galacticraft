@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerBuggy;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerParachest;
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -53,7 +54,7 @@ public class GCCoreUtil
         player.openContainer.addCraftingToCrafters(player);
     }
 
-    public static void registerGalacticraftCreature(Class var0, String var1, int id, int back, int fore)
+    public static void registerGalacticraftCreature(Class<? extends Entity> var0, String var1, int id, int back, int fore)
     {
         if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
         {
@@ -64,7 +65,7 @@ public class GCCoreUtil
         EntityRegistry.registerModEntity(var0, var1, id, GalacticraftCore.instance, 80, 3, true);
     }
 
-    public static void registerGalacticraftNonMobEntity(Class var0, String var1, int id, int trackingDistance, int updateFreq, boolean sendVel)
+    public static void registerGalacticraftNonMobEntity(Class<? extends Entity> var0, String var1, int id, int trackingDistance, int updateFreq, boolean sendVel)
     {
         if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
         {

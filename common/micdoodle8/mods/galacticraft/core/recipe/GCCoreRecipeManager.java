@@ -190,6 +190,7 @@ public class GCCoreRecipeManager
         RecipeUtil.addBuggyBenchRecipe(new ItemStack(GCCoreItems.buggy, 1, 3), input2);
     }
 
+    @SuppressWarnings("unchecked")
     private static void addGregTechCraftingRecipes()
     {
         if (!GalacticraftCore.setSpaceStationRecipe)
@@ -346,6 +347,7 @@ public class GCCoreRecipeManager
 
     }
 
+    @SuppressWarnings("unchecked")
     private static void addThermalExpansionCraftingRecipes()
     {
         if (!GalacticraftCore.setSpaceStationRecipe)
@@ -482,6 +484,7 @@ public class GCCoreRecipeManager
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.solarPanel, 1, 4), new Object[] { " ZY", "XUX", "VWV", 'U', ItemRegistry.getItem("machineFrame", 1), 'V', ItemRegistry.getItem("gearInvar", 1), 'W', ItemRegistry.getItem("powerCoilSilver", 1), 'X', "ingotInvar", 'Y', new ItemStack(GCCoreItems.basicItem, 1, 1), 'Z', GCCoreItems.flagPole });
     }
 
+    @SuppressWarnings("unchecked")
     private static void addBasicComponentsCraftingRecipes()
     {
         if (!GalacticraftCore.setSpaceStationRecipe)
@@ -631,6 +634,7 @@ public class GCCoreRecipeManager
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.solarPanel, 1, 4), new Object[] { "XYX", "XZX", "VWV", 'V', "copperWire", 'W', "circuitAdvanced", 'X', "plateSteel", 'Y', new ItemStack(GCCoreItems.basicItem, 1, 1), 'Z', GCCoreItems.flagPole });
     }
 
+    @SuppressWarnings("unchecked")
     private static void addIndustrialcraftCraftingRecipes()
     {
         Object plate = null;

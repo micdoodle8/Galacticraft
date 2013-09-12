@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.wgen;
 
 import java.util.Random;
-import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.world.World;
@@ -57,18 +56,6 @@ public abstract class GCCoreStructureComponent extends StructureComponent
             {
                 var11.getSpawnerLogic().setMobID(var6);
             }
-        }
-    }
-
-    protected void placeTreasureAtCurrentPosition(World var1, Random var2, int var3, int var4, int var5, StructureBoundingBox var7)
-    {
-        final int var8 = this.getXWithOffset(var3, var5);
-        final int var9 = this.getYWithOffset(var4);
-        final int var10 = this.getZWithOffset(var3, var5);
-
-        if (var7.isVecInside(var8, var9, var10) && var1.getBlockId(var8, var9, var10) != Block.chest.blockID)
-        {
-            WorldUtil.generateChestContents(var1, var2, var8, var9, var10);
         }
     }
 

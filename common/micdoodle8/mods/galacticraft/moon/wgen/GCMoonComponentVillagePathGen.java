@@ -25,6 +25,7 @@ public class GCMoonComponentVillagePathGen extends GCMoonComponentVillageRoadPie
      * Initiates construction of the Structure Component picked, at the current
      * Location of StructGen
      */
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public void buildComponent(StructureComponent par1StructureComponent, List par2List, Random par3Random)
     {
@@ -91,6 +92,7 @@ public class GCMoonComponentVillagePathGen extends GCMoonComponentVillageRoadPie
         }
     }
 
+    @SuppressWarnings("rawtypes")
     public static StructureBoundingBox func_74933_a(GCMoonComponentVillageStartPiece par0ComponentVillageStartPiece, List par1List, Random par2Random, int par3, int par4, int par5, int par6)
     {
         for (int var7 = 7 * MathHelper.getRandomIntegerInRange(par2Random, 3, 5); var7 >= 7; var7 -= 7)

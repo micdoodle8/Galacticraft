@@ -69,7 +69,7 @@ public class RefineryRecipeHandler extends TemplateRecipeHandler
     {
         if (outputId.equals(this.getRecipeId()))
         {
-            for (final Map.Entry irecipe : this.getRecipes())
+            for (final Map.Entry<PositionedStack, PositionedStack> irecipe : this.getRecipes())
             {
                 this.arecipes.add(new CachedRefineryRecipe(irecipe));
             }
@@ -83,7 +83,7 @@ public class RefineryRecipeHandler extends TemplateRecipeHandler
     @Override
     public void loadCraftingRecipes(ItemStack result)
     {
-        for (final Map.Entry irecipe : this.getRecipes())
+        for (final Map.Entry<PositionedStack, PositionedStack> irecipe : this.getRecipes())
         {
             if (NEIServerUtils.areStacksSameTypeCrafting(((PositionedStack) irecipe.getValue()).item, result))
             {
@@ -95,7 +95,7 @@ public class RefineryRecipeHandler extends TemplateRecipeHandler
     @Override
     public void loadUsageRecipes(ItemStack ingredient)
     {
-        for (final Map.Entry irecipe : this.getRecipes())
+        for (final Map.Entry<PositionedStack, PositionedStack> irecipe : this.getRecipes())
         {
             if (NEIServerUtils.areStacksSameTypeCrafting(ingredient, ((PositionedStack) irecipe.getKey()).item))
             {
@@ -157,7 +157,7 @@ public class RefineryRecipeHandler extends TemplateRecipeHandler
             this.output = pstack2;
         }
 
-        public CachedRefineryRecipe(Map.Entry recipe)
+        public CachedRefineryRecipe(Map.Entry<PositionedStack, PositionedStack> recipe)
         {
             this((PositionedStack) recipe.getKey(), (PositionedStack) recipe.getValue());
         }

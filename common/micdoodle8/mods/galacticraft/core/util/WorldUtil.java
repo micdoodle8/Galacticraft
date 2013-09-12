@@ -31,7 +31,6 @@ import micdoodle8.mods.galacticraft.core.network.GCCorePacketDimensionListPlanet
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketDimensionListSpaceStations;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketSpaceStationData;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -64,11 +63,6 @@ public class WorldUtil
     public static Collection<Integer> registeredSpaceStations;
     public static Collection<Integer> registeredPlanets;
     public static Collection<String> registeredPlanetNames;
-    public static List<ItemStack> useless = new ArrayList();
-    public static List<ItemStack> common = new ArrayList();
-    public static List<ItemStack> uncommon = new ArrayList();
-    public static List<ItemStack> rare = new ArrayList();
-    public static List<ItemStack> ultrarare = new ArrayList();
 
     public static List<IUpdateable> updateableObjects = new ArrayList<IUpdateable>();
 
@@ -206,50 +200,6 @@ public class WorldUtil
         }
 
         return world.getSkyColor(FMLClientHandler.instance().getClient().renderViewEntity, 1.0F);
-    }
-
-    public static boolean generateChestContents(World var1, Random var2, int var3, int var4, int var5)
-    {
-        boolean var6 = true;
-        var1.setBlock(var3, var4, var5, Block.chest.blockID, 0, 3);
-        int var7;
-
-        for (var7 = 0; var7 < 4; ++var7)
-        {
-            var6 &= WorldUtil.addItemToChest(var1, var2, var3, var4, var5, WorldUtil.getCommonItem(var2));
-        }
-
-        for (var7 = 0; var7 < 2; ++var7)
-        {
-            var6 &= WorldUtil.addItemToChest(var1, var2, var3, var4, var5, WorldUtil.getUncommonItem(var2));
-        }
-
-        for (var7 = 0; var7 < 1; ++var7)
-        {
-            var6 &= WorldUtil.addItemToChest(var1, var2, var3, var4, var5, WorldUtil.getRareItem(var2));
-        }
-
-        return var6;
-    }
-
-    public static ItemStack getCommonItem(Random var1)
-    {
-        return var1.nextInt(4) == 0 ? WorldUtil.getRandomItemFromList(WorldUtil.useless, var1) : WorldUtil.getRandomItemFromList(WorldUtil.common, var1);
-    }
-
-    public static ItemStack getUncommonItem(Random var1)
-    {
-        return WorldUtil.getRandomItemFromList(WorldUtil.uncommon, var1);
-    }
-
-    public static ItemStack getRareItem(Random var1)
-    {
-        return var1.nextInt(4) == 0 ? WorldUtil.getRandomItemFromList(WorldUtil.ultrarare, var1) : WorldUtil.getRandomItemFromList(WorldUtil.rare, var1);
-    }
-
-    public static ItemStack getRandomItemFromList(List list, Random rand)
-    {
-        return (ItemStack) list.get(rand.nextInt(list.size()));
     }
 
     protected static boolean addItemToChest(World var1, Random var2, int var3, int var4, int var5, ItemStack var6)
@@ -479,9 +429,9 @@ public class WorldUtil
         return var5;
     }
 
-    public static List getPlayersOnPlanet(IMapObject planet)
+    public static List<String> getPlayersOnPlanet(IMapObject planet)
     {
-        final List list = new ArrayList();
+        final List<String> list = new ArrayList<String>();
 
         for (final WorldServer world : DimensionManager.getWorlds())
         {
@@ -503,9 +453,9 @@ public class WorldUtil
         return list;
     }
 
-    private static List getExistingSpaceStationList(File var0)
+    private static List<Integer> getExistingSpaceStationList(File var0)
     {
-        final ArrayList var1 = new ArrayList();
+        final ArrayList<Integer> var1 = new ArrayList<Integer>();
         final File[] var2 = var0.listFiles();
         final int var3 = var2.length;
 
@@ -528,7 +478,7 @@ public class WorldUtil
     {
         if (WorldUtil.registeredSpaceStations != null)
         {
-            final Iterator var0 = WorldUtil.registeredSpaceStations.iterator();
+            final Iterator<Integer> var0 = WorldUtil.registeredSpaceStations.iterator();
 
             while (var0.hasNext())
             {
@@ -543,7 +493,7 @@ public class WorldUtil
     public static void registerSpaceStations(File var0)
     {
         WorldUtil.registeredSpaceStations = WorldUtil.getExistingSpaceStationList(var0);
-        final Iterator var1 = WorldUtil.registeredSpaceStations.iterator();
+        final Iterator<Integer> var1 = WorldUtil.registeredSpaceStations.iterator();
 
         while (var1.hasNext())
         {
@@ -575,7 +525,7 @@ public class WorldUtil
     {
         if (WorldUtil.registeredPlanets != null)
         {
-            final Iterator var0 = WorldUtil.registeredPlanets.iterator();
+            final Iterator<Integer> var0 = WorldUtil.registeredPlanets.iterator();
 
             while (var0.hasNext())
             {
@@ -662,9 +612,9 @@ public class WorldUtil
 
             if (server != null)
             {
-                final ArrayList array = new ArrayList();
+                final ArrayList<Integer> array = new ArrayList<Integer>();
 
-                for (final int i : WorldUtil.registeredPlanets)
+                for (int i : WorldUtil.registeredPlanets)
                 {
                     array.add(i);
                 }
@@ -826,7 +776,7 @@ public class WorldUtil
             var8.theItemInWorldManager.setWorld((WorldServer) var0);
             var8.mcServer.getConfigurationManager().updateTimeAndWeatherForPlayer(var8, (WorldServer) var0);
             var8.mcServer.getConfigurationManager().syncPlayerInventory(var8);
-            final Iterator var9 = var8.getActivePotionEffects().iterator();
+            final Iterator<?> var9 = var8.getActivePotionEffects().iterator();
 
             while (var9.hasNext())
             {

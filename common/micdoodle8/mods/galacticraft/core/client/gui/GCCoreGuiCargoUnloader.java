@@ -51,6 +51,7 @@ public class GCCoreGuiCargoUnloader extends GCCoreGuiContainer
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void initGui()
     {

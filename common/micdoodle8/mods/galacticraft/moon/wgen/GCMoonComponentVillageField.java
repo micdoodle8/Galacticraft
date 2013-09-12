@@ -12,45 +12,14 @@ public class GCMoonComponentVillageField extends GCMoonComponentVillage
 {
     private int averageGroundLevel = -1;
 
-    /** First crop type for this field. */
-    private final int cropTypeA;
-
-    /** Second crop type for this field. */
-    private final int cropTypeB;
-
-    /** Third crop type for this field. */
-    private final int cropTypeC;
-
-    /** Fourth crop type for this field. */
-    private final int cropTypeD;
-
     public GCMoonComponentVillageField(GCMoonComponentVillageStartPiece par1ComponentVillageStartPiece, int par2, Random par3Random, StructureBoundingBox par4StructureBoundingBox, int par5)
     {
         super(par1ComponentVillageStartPiece, par2);
         this.coordBaseMode = par5;
         this.boundingBox = par4StructureBoundingBox;
-        this.cropTypeA = this.getRandomCrop(par3Random);
-        this.cropTypeB = this.getRandomCrop(par3Random);
-        this.cropTypeC = this.getRandomCrop(par3Random);
-        this.cropTypeD = this.getRandomCrop(par3Random);
     }
 
-    /**
-     * Returns a crop type to be planted on this field.
-     */
-    private int getRandomCrop(Random par1Random)
-    {
-        switch (par1Random.nextInt(5))
-        {
-        case 0:
-            return Block.carrot.blockID;
-        case 1:
-            return Block.potato.blockID;
-        default:
-            return Block.crops.blockID;
-        }
-    }
-
+    @SuppressWarnings("rawtypes")
     public static GCMoonComponentVillageField func_74900_a(GCMoonComponentVillageStartPiece par0ComponentVillageStartPiece, List par1List, Random par2Random, int par3, int par4, int par5, int par6, int par7)
     {
         final StructureBoundingBox var8 = StructureBoundingBox.getComponentToAddBoundingBox(par3, par4, par5, 0, 0, 0, 13, 4, 9, par6);

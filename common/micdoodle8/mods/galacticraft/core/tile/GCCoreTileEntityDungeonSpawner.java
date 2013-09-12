@@ -41,6 +41,7 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced
         this.bossClass = bossClass;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void updateEntity()
     {
@@ -76,7 +77,7 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced
             {
                 try
                 {
-                    Constructor c = this.bossClass.getConstructor(new Class[] { World.class });
+                    Constructor<?> c = this.bossClass.getConstructor(new Class[] { World.class });
                     this.boss = (IBoss) c.newInstance(new Object[] { this.worldObj });
                     ((Entity) this.boss).setPosition(this.xCoord + 0.5, this.yCoord + 1.0, this.zCoord + 0.5);
                     this.boss.setRoom(this.roomCoords, this.roomSize);

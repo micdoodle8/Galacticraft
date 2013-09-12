@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 import micdoodle8.mods.galacticraft.api.event.client.GCCoreEventChoosePlanetGui.Init;
 import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
 import micdoodle8.mods.galacticraft.core.GCLog;
@@ -50,8 +49,6 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     public static RenderItem drawItems = new RenderItem();
 
     private GCCoreGuiChoosePlanetSlot planetSlots;
-
-    private static final Random rand = new Random();
 
     public int selectedSlot;
 
@@ -131,6 +128,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         return ChatAllowedCharacters.allowedCharacters.indexOf(string.charAt(string.length() - 1)) >= 0;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void initGui()
     {
@@ -512,6 +510,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void drawScreen(int par1, int par2, float par3)
     {
@@ -611,9 +610,9 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
             {
                 if (this.playerAlreadyCreatedDimension())
                 {
-                    final List<String> strings = new ArrayList();
-                    final List<ItemStack> items = new ArrayList();
-                    final List<Boolean> hasEnough = new ArrayList();
+                    final List<String> strings = new ArrayList<String>();
+                    final List<ItemStack> items = new ArrayList<ItemStack>();
+                    final List<Boolean> hasEnough = new ArrayList<Boolean>();
                     strings.add(LanguageRegistry.instance().getStringLocalization("gui.chooseplanet.alreadycreated1.name"));
                     strings.add("        " + LanguageRegistry.instance().getStringLocalization("gui.chooseplanet.alreadycreated2.name"));
                     hasEnough.add(false);
@@ -622,15 +621,15 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
                 }
                 else if (this.canCreateSpaceStation() && WorldUtil.getSpaceStationRecipe(this.getDimensionIdFromSlot()) != null)
                 {
-                    final List<String> strings = new ArrayList();
-                    final List<ItemStack> items = new ArrayList();
-                    final List<Boolean> hasEnough = new ArrayList();
+                    final List<String> strings = new ArrayList<String>();
+                    final List<ItemStack> items = new ArrayList<ItemStack>();
+                    final List<Boolean> hasEnough = new ArrayList<Boolean>();
                     final SpaceStationRecipe recipe = WorldUtil.getSpaceStationRecipe(this.getDimensionIdFromSlot());
 
                     final HashMap<Object, Integer> required = new HashMap<Object, Integer>();
                     required.putAll(recipe.getInput());
 
-                    final Iterator req = recipe.getInput().keySet().iterator();
+                    final Iterator<?> req = recipe.getInput().keySet().iterator();
 
                     while (req.hasNext())
                     {
@@ -694,9 +693,9 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
                 else
                 {
                     this.createSpaceStationButton.enabled = false;
-                    final List<String> strings = new ArrayList();
-                    final List<ItemStack> items = new ArrayList();
-                    final List<Boolean> hasEnough = new ArrayList();
+                    final List<String> strings = new ArrayList<String>();
+                    final List<ItemStack> items = new ArrayList<ItemStack>();
+                    final List<Boolean> hasEnough = new ArrayList<Boolean>();
                     strings.add(LanguageRegistry.instance().getStringLocalization("gui.chooseplanet.cannotcreate1.name"));
                     strings.add("     " + LanguageRegistry.instance().getStringLocalization("gui.chooseplanet.cannotcreate2.name"));
                     hasEnough.add(false);

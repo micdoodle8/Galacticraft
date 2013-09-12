@@ -147,6 +147,7 @@ public class GCMarsBlockSlimelingEgg extends Block implements ITileEntityProvide
         return 1;
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @SideOnly(Side.CLIENT)
     @Override
     public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)

@@ -14,7 +14,7 @@ public class GCCorePacketDimensionListSpaceStations implements IGalacticraftAdva
 {
     public static byte packetID = 16;
 
-    public static Packet buildDimensionListPacket(Collection col)
+    public static Packet buildDimensionListPacket(Collection<?> col)
     {
         final Packet250CustomPayload packet = new Packet250CustomPayload();
         packet.channel = GalacticraftCore.CHANNEL;
@@ -26,7 +26,7 @@ public class GCCorePacketDimensionListSpaceStations implements IGalacticraftAdva
         {
             data.writeInt(GCCorePacketDimensionListSpaceStations.packetID);
             data.writeInt(col.size());
-            final Iterator var3 = col.iterator();
+            final Iterator<?> var3 = col.iterator();
 
             while (var3.hasNext())
             {

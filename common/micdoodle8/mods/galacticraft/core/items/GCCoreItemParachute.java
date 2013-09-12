@@ -49,6 +49,7 @@ public class GCCoreItemParachute extends Item
         return GalacticraftCore.galacticraftTab;
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {

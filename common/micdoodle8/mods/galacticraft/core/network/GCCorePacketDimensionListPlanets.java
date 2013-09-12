@@ -15,7 +15,7 @@ public class GCCorePacketDimensionListPlanets implements IGalacticraftAdvancedPa
 {
     public static byte packetID = 19;
 
-    public static Packet buildDimensionListPacket(Collection col)
+    public static Packet buildDimensionListPacket(Collection<?> col)
     {
         final Packet250CustomPayload packet = new Packet250CustomPayload();
         packet.channel = GalacticraftCore.CHANNEL;
@@ -27,7 +27,7 @@ public class GCCorePacketDimensionListPlanets implements IGalacticraftAdvancedPa
         {
             data.writeInt(GCCorePacketDimensionListPlanets.packetID);
             data.writeInt(col.size());
-            final Iterator var3 = col.iterator();
+            final Iterator<?> var3 = col.iterator();
 
             while (var3.hasNext())
             {

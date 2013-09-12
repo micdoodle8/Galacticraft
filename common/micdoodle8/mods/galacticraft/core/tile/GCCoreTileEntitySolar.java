@@ -127,7 +127,7 @@ public class GCCoreTileEntitySolar extends TileEntityUniversalElectrical impleme
                                 for (double d = 0.0D; d < distance; d++)
                                 {
                                     Vector3 thisVec = new Vector3(this);
-                                    Vector3 blockAt = thisVec.clone().add(new Vector3(x, 3, z)).clone().add(new Vector3(d * sinA, d * cosA, 0));
+                                    Vector3 blockAt = thisVec.clone().translate(new Vector3(x, 3, z)).clone().translate(new Vector3(d * sinA, d * cosA, 0));
                                     int blockID = blockAt.getBlockID(this.worldObj);
 
                                     if (blockID != 0 && Block.blocksList[blockID].isOpaqueCube())
@@ -296,7 +296,7 @@ public class GCCoreTileEntitySolar extends TileEntityUniversalElectrical impleme
             {
                 for (int z = -1; z < 2; z++)
                 {
-                    final Vector3 vecToAdd = Vector3.add(placedPosition, new Vector3(y == 2 ? x : 0, y, y == 2 ? z : 0));
+                    final Vector3 vecToAdd = Vector3.translate(placedPosition, new Vector3(y == 2 ? x : 0, y, y == 2 ? z : 0));
 
                     if (!vecToAdd.equals(placedPosition))
                     {
@@ -334,7 +334,7 @@ public class GCCoreTileEntitySolar extends TileEntityUniversalElectrical impleme
     public void readFromNBT(NBTTagCompound nbt)
     {
         super.readFromNBT(nbt);
-        this.mainBlockPosition = Vector3.readFromNBT(nbt.getCompoundTag("mainBlockPosition"));
+        this.mainBlockPosition = new Vector3(nbt.getCompoundTag("mainBlockPosition"));
         this.ueMaxEnergy = nbt.getFloat("maxEnergy");
 
         if (this.ueMaxEnergy > 1000.0F)

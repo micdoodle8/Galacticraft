@@ -198,6 +198,7 @@ public class GCCoreThreadDownloadSound extends Thread
         }
     }
 
+    @SuppressWarnings("resource")
     private void downloadResource(URL par1URL, File par2File, long par3) throws IOException
     {
         final byte[] abyte = new byte[4096];

@@ -466,6 +466,7 @@ public class GCMarsBlockT2TreasureChest extends BlockContainer implements ITileE
      * Looks for a sitting ocelot within certain bounds. Such an ocelot is
      * considered to be blocking access to the chest.
      */
+    @SuppressWarnings("rawtypes")
     public static boolean isOcelotBlockingChest(World par0World, int par1, int par2, int par3)
     {
         final Iterator var4 = par0World.getEntitiesWithinAABB(EntityOcelot.class, AxisAlignedBB.getAABBPool().getAABB(par1, par2 + 1, par3, par1 + 1, par2 + 2, par3 + 1)).iterator();

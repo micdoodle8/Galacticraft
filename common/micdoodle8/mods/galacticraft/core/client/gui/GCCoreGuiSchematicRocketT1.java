@@ -16,7 +16,6 @@ public class GCCoreGuiSchematicRocketT1 extends GCCoreGuiContainer implements IS
     private static final ResourceLocation rocketBenchTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/rocketbench.png");
 
     private GuiButton backButton;
-    private GuiButton nextButton;
     private int pageIndex;
 
     public GCCoreGuiSchematicRocketT1(InventoryPlayer par1InventoryPlayer, int x, int y, int z)
@@ -25,12 +24,13 @@ public class GCCoreGuiSchematicRocketT1 extends GCCoreGuiContainer implements IS
         this.ySize = 221;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void initGui()
     {
         super.initGui();
         this.buttonList.add(this.backButton = new GuiButton(0, this.width / 2 - 130, this.height / 2 - 30 + 27, 40, 20, LanguageRegistry.instance().getStringLocalization("gui.button.back.name")));
-        this.buttonList.add(this.nextButton = new GuiButton(1, this.width / 2 + 90, this.height / 2 - 30 + 27, 40, 20, LanguageRegistry.instance().getStringLocalization("gui.button.next.name")));
+        this.buttonList.add(new GuiButton(1, this.width / 2 + 90, this.height / 2 - 30 + 27, 40, 20, LanguageRegistry.instance().getStringLocalization("gui.button.next.name")));
         this.backButton.enabled = false;
     }
 

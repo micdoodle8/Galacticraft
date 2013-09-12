@@ -117,6 +117,7 @@ public class GCMarsItemSpaceshipTier2 extends Item implements IHoldableItem
         return true;
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
@@ -126,6 +127,7 @@ public class GCMarsItemSpaceshipTier2 extends Item implements IHoldableItem
         }
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack par1ItemStack, EntityPlayer player, List par2List, boolean b)

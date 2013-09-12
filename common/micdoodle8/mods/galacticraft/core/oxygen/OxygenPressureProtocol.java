@@ -93,7 +93,7 @@ public class OxygenPressureProtocol
             if (dir != ForgeDirection.UNKNOWN)
             {
                 Vector3 vec = new Vector3(var2, var3, var4);
-                vec = vec.add(new Vector3(dir));
+                vec = vec.translate(new Vector3(dir));
 
                 if (this.canBlockPass(var1, vec) && !this.isVisited(vec))
                 {
@@ -124,7 +124,7 @@ public class OxygenPressureProtocol
             if (dir != ForgeDirection.UNKNOWN)
             {
                 Vector3 vec = new Vector3(var2, var3, var4);
-                vec = vec.add(new Vector3(dir));
+                vec = vec.translate(new Vector3(dir));
 
                 if (OxygenPressureProtocol.isBreathableAir(var1, vec.intX(), vec.intY(), vec.intZ()) && !this.isVisited(vec))
                 {
@@ -309,7 +309,7 @@ public class OxygenPressureProtocol
         for (final ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
         {
             Vector3 vec = new Vector3(var2, var3, var4);
-            vec = vec.add(new Vector3(dir));
+            vec = vec.translate(new Vector3(dir));
 
             if (this.canBlockPass(var1, vec) && !this.isVisited(vec))
             {
@@ -327,7 +327,7 @@ public class OxygenPressureProtocol
             if (dir != ForgeDirection.UNKNOWN)
             {
                 Vector3 vec = new Vector3(var2, var3, var4);
-                vec = vec.add(new Vector3(dir));
+                vec = vec.translate(new Vector3(dir));
 
                 if (vec.getBlockID(var1) == 0 && !this.isVisited(vec))
                 {
@@ -346,7 +346,7 @@ public class OxygenPressureProtocol
             if (dir != ForgeDirection.UNKNOWN)
             {
                 Vector3 vec = new Vector3(var2, var3, var4);
-                vec = vec.add(new Vector3(dir));
+                vec = vec.translate(new Vector3(dir));
 
                 if (OxygenPressureProtocol.isBreathableAir(var1, vec.intX(), vec.intY(), vec.intZ()) && !this.isVisited(vec))
                 {

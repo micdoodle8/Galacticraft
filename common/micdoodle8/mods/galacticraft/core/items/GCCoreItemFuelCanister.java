@@ -43,6 +43,7 @@ public class GCCoreItemFuelCanister extends Item
         return GalacticraftCore.galacticraftTab;
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
@@ -98,6 +99,7 @@ public class GCCoreItemFuelCanister extends Item
         }
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)

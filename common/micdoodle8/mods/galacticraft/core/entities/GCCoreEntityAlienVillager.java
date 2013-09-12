@@ -31,6 +31,15 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityBreathable
 {
+    private int randomTickDivider;
+    private boolean isMating;
+    private boolean isPlaying;
+    private Village villageObj;
+    private EntityPlayer buyingPlayer;
+    private MerchantRecipeList buyingList;
+    private int wealth;
+    private boolean field_82190_bM;
+    
     public GCCoreEntityAlienVillager(World par1World)
     {
         super(par1World);
@@ -58,22 +67,6 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.5D);
     }
-
-    private int randomTickDivider;
-    private boolean isMating;
-    private boolean isPlaying;
-    Village villageObj;
-
-    /** This villager's current customer. */
-    private EntityPlayer buyingPlayer;
-
-    /** Initialises the MerchantRecipeList.java */
-    private MerchantRecipeList buyingList;
-    private int wealth;
-
-    /** Last player to trade with this villager, used for aggressivity. */
-    private String lastBuyingPlayer;
-    private boolean field_82190_bM;
 
     /**
      * Returns true if the newer Entity AI code should be run
@@ -297,18 +290,6 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
     public void useRecipe(MerchantRecipe par1MerchantRecipe)
     {
         par1MerchantRecipe.incrementToolUses();
-
-        if (par1MerchantRecipe.hasSameIDsAs((MerchantRecipe) this.buyingList.get(this.buyingList.size() - 1)))
-        {
-            if (this.buyingPlayer != null)
-            {
-                this.lastBuyingPlayer = this.buyingPlayer.getCommandSenderName();
-            }
-            else
-            {
-                this.lastBuyingPlayer = null;
-            }
-        }
 
         if (par1MerchantRecipe.getItemToBuy().itemID == Item.emerald.itemID)
         {

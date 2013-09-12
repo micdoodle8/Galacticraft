@@ -151,6 +151,8 @@ public class GCMarsItemRendererMachine implements IItemRenderer
             case ENTITY:
                 this.renderCryogenicChamber(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
                 break;
+            default:
+                break;
             }
         }
     }

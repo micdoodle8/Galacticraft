@@ -438,6 +438,7 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
         return GCMarsConfigManager.generateOtherMods ? "RandomLevelSource" : "MarsLevelSource";
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public List getPossibleCreatures(EnumCreatureType par1EnumCreatureType, int i, int j, int k)
     {

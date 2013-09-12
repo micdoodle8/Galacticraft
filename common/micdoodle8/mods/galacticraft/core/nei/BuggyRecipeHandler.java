@@ -57,7 +57,7 @@ public class BuggyRecipeHandler extends TemplateRecipeHandler
     {
         if (outputId.equals(this.getRecipeId()))
         {
-            for (final Map.Entry irecipe : this.getRecipes())
+            for (final Map.Entry<ArrayList<PositionedStack>, PositionedStack> irecipe : this.getRecipes())
             {
                 this.arecipes.add(new CachedRocketRecipe(irecipe));
             }
@@ -71,7 +71,7 @@ public class BuggyRecipeHandler extends TemplateRecipeHandler
     @Override
     public void loadCraftingRecipes(ItemStack result)
     {
-        for (final Map.Entry irecipe : this.getRecipes())
+        for (final Map.Entry<ArrayList<PositionedStack>, PositionedStack> irecipe : this.getRecipes())
         {
             if (NEIServerUtils.areStacksSameTypeCrafting(((PositionedStack) irecipe.getValue()).item, result))
             {
@@ -83,7 +83,7 @@ public class BuggyRecipeHandler extends TemplateRecipeHandler
     @Override
     public void loadUsageRecipes(ItemStack ingredient)
     {
-        for (final Map.Entry irecipe : this.getRecipes())
+        for (final Map.Entry<ArrayList<PositionedStack>, PositionedStack> irecipe : this.getRecipes())
         {
             for (final PositionedStack pstack : (ArrayList<PositionedStack>) irecipe.getKey())
             {
@@ -120,9 +120,9 @@ public class BuggyRecipeHandler extends TemplateRecipeHandler
             this.output = pstack2;
         }
 
-        public CachedRocketRecipe(Map.Entry recipe)
+        public CachedRocketRecipe(Map.Entry<ArrayList<PositionedStack>, PositionedStack> recipe)
         {
-            this((ArrayList<PositionedStack>) recipe.getKey(), (PositionedStack) recipe.getValue());
+            this(recipe.getKey(), recipe.getValue());
         }
     }
 

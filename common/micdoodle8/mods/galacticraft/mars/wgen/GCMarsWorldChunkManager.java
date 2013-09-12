@@ -24,12 +24,12 @@ public class GCMarsWorldChunkManager extends WorldChunkManager
     private GenLayer genBiomes;
     private GenLayer biomeIndexLayer;
     private final BiomeCache biomeCache;
-    private final List biomesToSpawnIn;
+    private final List<BiomeGenBase> biomesToSpawnIn;
 
     protected GCMarsWorldChunkManager()
     {
         this.biomeCache = new BiomeCache(this);
-        this.biomesToSpawnIn = new ArrayList();
+        this.biomesToSpawnIn = new ArrayList<BiomeGenBase>();
         this.biomesToSpawnIn.add(GCMarsBiomeGenBase.marsFlat);
     }
 
@@ -47,7 +47,7 @@ public class GCMarsWorldChunkManager extends WorldChunkManager
     }
 
     @Override
-    public List getBiomesToSpawnIn()
+    public List<BiomeGenBase> getBiomesToSpawnIn()
     {
         return this.biomesToSpawnIn;
     }
@@ -158,6 +158,7 @@ public class GCMarsWorldChunkManager extends WorldChunkManager
         }
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public boolean areBiomesViable(int par1, int par2, int par3, List par4List)
     {
@@ -182,6 +183,7 @@ public class GCMarsWorldChunkManager extends WorldChunkManager
         return true;
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public ChunkPosition findBiomePosition(int par1, int par2, int par3, List par4List, Random par5Random)
     {

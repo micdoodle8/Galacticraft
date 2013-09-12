@@ -255,9 +255,9 @@ public class GCCoreEntityArrow extends Entity
             }
 
             Entity var5 = null;
-            final List var6 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
+            final List<?> var6 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
             double var7 = 0.0D;
-            final Iterator var9 = var6.iterator();
+            final Iterator<?> var9 = var6.iterator();
             float var11;
 
             while (var9.hasNext())

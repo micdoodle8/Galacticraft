@@ -56,6 +56,7 @@ public class GCMarsContainerSlimeling extends Container
         container.inventorySlots.clear();
     }
 
+    @SuppressWarnings("unchecked")
     public static void addAdditionalSlots(GCMarsContainerSlimeling container, GCMarsEntitySlimeling slimeling, ItemStack stack)
     {
         if (stack != null && stack.getItem().itemID == GCMarsItems.marsItemBasic.itemID && stack.getItemDamage() == 4)

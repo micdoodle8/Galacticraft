@@ -80,6 +80,7 @@ public class GCCoreItemOilCanister extends Item
         return super.getIconFromDamage(damage);
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
@@ -88,6 +89,7 @@ public class GCCoreItemOilCanister extends Item
         par3List.add(new ItemStack(par1, 1, this.getMaxDamage()));
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)

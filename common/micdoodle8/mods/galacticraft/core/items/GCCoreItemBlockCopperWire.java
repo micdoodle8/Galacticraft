@@ -21,6 +21,7 @@ public class GCCoreItemBlockCopperWire extends ItemBlock
         this.setHasSubtypes(true);
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
     {

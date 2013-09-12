@@ -72,6 +72,7 @@ public class GCCoreItemBuggyMaterial extends Item
         return super.getIconFromDamage(damage);
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {

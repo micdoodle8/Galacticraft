@@ -41,6 +41,7 @@ public class GCCoreBlockCargoLoader extends GCCoreBlockAdvanced
         this.setUnlocalizedName(assetName);
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @SideOnly(Side.CLIENT)
     @Override
     public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)

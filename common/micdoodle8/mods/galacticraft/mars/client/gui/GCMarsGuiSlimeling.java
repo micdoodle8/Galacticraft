@@ -51,6 +51,7 @@ public class GCMarsGuiSlimeling extends GuiScreen
         this.ySize = 147;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void initGui()
     {

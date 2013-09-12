@@ -19,9 +19,7 @@ public class GCCoreGuiSchematicInput extends GCCoreGuiContainer implements ISche
 {
     private static final ResourceLocation schematicInputTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/schematicpage.png");
 
-    private GuiButton backButton;
     private GuiButton nextButton;
-    private GuiButton unlockButton;
     private int pageIndex;
 
     public GCCoreGuiSchematicInput(InventoryPlayer par1InventoryPlayer, int x, int y, int z)
@@ -29,6 +27,7 @@ public class GCCoreGuiSchematicInput extends GCCoreGuiContainer implements ISche
         super(new GCCoreContainerSchematic(par1InventoryPlayer, x, y, z));
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void initGui()
     {
@@ -39,9 +38,9 @@ public class GCCoreGuiSchematicInput extends GCCoreGuiContainer implements ISche
         schematicSlotDesc.add("by completing dungeons");
         schematicSlotDesc.add("on planets and moons");
         this.infoRegions.add(new GCCoreInfoRegion((this.width - this.xSize) / 2 + 79, (this.height - this.ySize) / 2, 18, 18, schematicSlotDesc, this.width, this.height));
-        this.buttonList.add(this.backButton = new GuiButton(0, this.width / 2 - 130, this.height / 2 - 30 + 27, 40, 20, LanguageRegistry.instance().getStringLocalization("gui.button.back.name")));
+        this.buttonList.add(new GuiButton(0, this.width / 2 - 130, this.height / 2 - 30 + 27, 40, 20, LanguageRegistry.instance().getStringLocalization("gui.button.back.name")));
         this.buttonList.add(this.nextButton = new GuiButton(1, this.width / 2 + 90, this.height / 2 - 30 + 27, 40, 20, LanguageRegistry.instance().getStringLocalization("gui.button.next.name")));
-        this.buttonList.add(this.unlockButton = new GuiButton(2, this.width / 2 - 46, this.height / 2 - 52, 92, 20, LanguageRegistry.instance().getStringLocalization("gui.button.unlockschematic.name")));
+        this.buttonList.add(new GuiButton(2, this.width / 2 - 46, this.height / 2 - 52, 92, 20, LanguageRegistry.instance().getStringLocalization("gui.button.unlockschematic.name")));
         this.nextButton.enabled = false;
     }
 

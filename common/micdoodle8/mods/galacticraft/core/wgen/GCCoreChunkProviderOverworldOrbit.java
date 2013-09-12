@@ -109,7 +109,7 @@ public class GCCoreChunkProviderOverworldOrbit extends ChunkProviderGenerate
     }
 
     @Override
-    public List getPossibleCreatures(EnumCreatureType par1EnumCreatureType, int i, int j, int k)
+    public List<?> getPossibleCreatures(EnumCreatureType par1EnumCreatureType, int i, int j, int k)
     {
         return null;
     }

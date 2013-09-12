@@ -97,6 +97,7 @@ public class GCCoreBlockAdvancedCraftingTable extends BlockContainer implements 
         return r;
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public void addCollisionBoxesToList(World world, int i, int j, int k, AxisAlignedBB axisalignedbb, List arraylist, Entity par7Entity)
     {

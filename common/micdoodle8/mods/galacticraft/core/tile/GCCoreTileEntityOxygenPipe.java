@@ -69,7 +69,7 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity implements ITubeConne
     @Override
     public boolean areTransmitterNetworksEqual(TileEntity tileEntity)
     {
-        return tileEntity instanceof ITransmitter && this.getTransmissionType() == ((ITransmitter) tileEntity).getTransmissionType();
+        return tileEntity instanceof ITransmitter && this.getTransmissionType() == ((ITransmitter<?>) tileEntity).getTransmissionType();
     }
 
     @Override

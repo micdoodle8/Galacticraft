@@ -457,10 +457,10 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
         final float angle3 = (float) ((this.rotationYaw + 180 - 40.0F) * Math.PI / 180.0F);
         final float angle4 = (float) ((this.rotationYaw + 180 + 40.0F) * Math.PI / 180.0F);
         final float pitch = (float) Math.sin(this.rotationPitch * Math.PI / 180.0F);
-        particleMap.put(new Vector3(this).add(new Vector3(0.4 * Math.cos(angle1) * Math.cos(pitch), -1.5, 0.4 * Math.sin(angle1) * Math.cos(pitch))), new Vector3(x1, y1, z1));
-        particleMap.put(new Vector3(this).add(new Vector3(0.4 * Math.cos(angle2) * Math.cos(pitch), -1.5, 0.4 * Math.sin(angle2) * Math.cos(pitch))), new Vector3(x1, y1, z1));
-        particleMap.put(new Vector3(this).add(new Vector3(0.4 * Math.cos(angle3) * Math.cos(pitch), -1.5, 0.4 * Math.sin(angle3) * Math.cos(pitch))), new Vector3(x1, y1, z1));
-        particleMap.put(new Vector3(this).add(new Vector3(0.4 * Math.cos(angle4) * Math.cos(pitch), -1.5, 0.4 * Math.sin(angle4) * Math.cos(pitch))), new Vector3(x1, y1, z1));
+        particleMap.put(new Vector3(this).translate(new Vector3(0.4 * Math.cos(angle1) * Math.cos(pitch), -1.5, 0.4 * Math.sin(angle1) * Math.cos(pitch))), new Vector3(x1, y1, z1));
+        particleMap.put(new Vector3(this).translate(new Vector3(0.4 * Math.cos(angle2) * Math.cos(pitch), -1.5, 0.4 * Math.sin(angle2) * Math.cos(pitch))), new Vector3(x1, y1, z1));
+        particleMap.put(new Vector3(this).translate(new Vector3(0.4 * Math.cos(angle3) * Math.cos(pitch), -1.5, 0.4 * Math.sin(angle3) * Math.cos(pitch))), new Vector3(x1, y1, z1));
+        particleMap.put(new Vector3(this).translate(new Vector3(0.4 * Math.cos(angle4) * Math.cos(pitch), -1.5, 0.4 * Math.sin(angle4) * Math.cos(pitch))), new Vector3(x1, y1, z1));
         return particleMap;
     }
 

@@ -11,17 +11,10 @@ import net.minecraft.world.gen.structure.StructureComponent;
 public class GCMoonComponentVillageField2 extends GCMoonComponentVillage
 {
     private int averageGroundLevel = -1;
-
-    /** First crop type for this field. */
+    
     private final int cropTypeA;
-
-    /** Second crop type for this field. */
     private final int cropTypeB;
-
-    /** Third crop type for this field. */
     private final int cropTypeC;
-
-    /** Fourth crop type for this field. */
     private final int cropTypeD;
 
     public GCMoonComponentVillageField2(GCMoonComponentVillageStartPiece par1ComponentVillageStartPiece, int par2, Random par3Random, StructureBoundingBox par4StructureBoundingBox, int par5)
@@ -51,6 +44,7 @@ public class GCMoonComponentVillageField2 extends GCMoonComponentVillage
         }
     }
 
+    @SuppressWarnings("rawtypes")
     public static GCMoonComponentVillageField2 func_74900_a(GCMoonComponentVillageStartPiece par0ComponentVillageStartPiece, List par1List, Random par2Random, int par3, int par4, int par5, int par6, int par7)
     {
         final StructureBoundingBox structureboundingbox = StructureBoundingBox.getComponentToAddBoundingBox(par3, par4, par5, 0, 0, 0, 13, 4, 9, par6);

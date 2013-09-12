@@ -192,6 +192,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
         return false;
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void onUpdate()
     {
@@ -247,7 +248,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
         box = this.boundingBox.expand(0.2D, 0.2D, 0.2D);
 
-        final List var15 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, box);
+        final List<?> var15 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, box);
 
         if (var15 != null && !var15.isEmpty())
         {
@@ -333,7 +334,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
         this.timeUntilLaunch = dataStream.readInt();
     }
 
-    public ArrayList getNetworkedData(ArrayList list)
+    public ArrayList<Object> getNetworkedData(ArrayList<Object> list)
     {
         list.add(this.launchPhase);
         list.add(this.timeSinceLaunch);

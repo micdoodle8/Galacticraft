@@ -19,6 +19,7 @@ public class GCMoonComponentVillageHouse3 extends GCMoonComponentVillage
         this.boundingBox = par4StructureBoundingBox;
     }
 
+    @SuppressWarnings("rawtypes")
     public static GCMoonComponentVillageHouse3 func_74921_a(GCMoonComponentVillageStartPiece par0ComponentVillageStartPiece, List par1List, Random par2Random, int par3, int par4, int par5, int par6, int par7)
     {
         final StructureBoundingBox var8 = StructureBoundingBox.getComponentToAddBoundingBox(par3, par4, par5, 0, 0, 0, 17, 9, 17, par6);

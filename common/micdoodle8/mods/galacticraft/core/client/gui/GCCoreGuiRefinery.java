@@ -43,6 +43,7 @@ public class GCCoreGuiRefinery extends GCCoreGuiContainer
         this.ySize = 168;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void initGui()
     {

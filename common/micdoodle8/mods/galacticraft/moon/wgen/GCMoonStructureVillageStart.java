@@ -9,14 +9,15 @@ import net.minecraft.world.gen.structure.StructureStart;
 
 class GCMoonStructureVillageStart extends StructureStart
 {
+    @SuppressWarnings("unchecked")
     public GCMoonStructureVillageStart(World par1World, Random par2Random, int par3, int par4, int par5)
     {
-        final ArrayList var6 = GCMoonStructureVillagePieces.getStructureVillageWeightedPieceList(par2Random, par5);
+        final ArrayList<GCMoonStructureVillagePieceWeight> var6 = GCMoonStructureVillagePieces.getStructureVillageWeightedPieceList(par2Random, par5);
         final GCMoonComponentVillageStartPiece var7 = new GCMoonComponentVillageStartPiece(par1World.getWorldChunkManager(), 0, par2Random, (par3 << 4) + 2, (par4 << 4) + 2, var6, par5);
         this.components.add(var7);
         var7.buildComponent(var7, this.components, par2Random);
-        final ArrayList var8 = var7.field_74930_j;
-        final ArrayList var9 = var7.field_74932_i;
+        final ArrayList<Object> var8 = var7.field_74930_j;
+        final ArrayList<Object> var9 = var7.field_74932_i;
         int var10;
 
         while (!var8.isEmpty() || !var9.isEmpty())
@@ -39,7 +40,7 @@ class GCMoonStructureVillageStart extends StructureStart
 
         this.updateBoundingBox();
         var10 = 0;
-        final Iterator var13 = this.components.iterator();
+        final Iterator<StructureComponent> var13 = this.components.iterator();
 
         while (var13.hasNext())
         {

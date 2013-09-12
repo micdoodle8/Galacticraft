@@ -52,6 +52,7 @@ public class GCMarsGuiLaunchController extends GuiContainer
         super.drawScreen(par1, par2, par3);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void initGui()
     {

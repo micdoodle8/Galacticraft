@@ -32,6 +32,7 @@ public class GCMoonComponentVillageWell extends GCMoonComponentVillage
      * Initiates construction of the Structure Component picked, at the current
      * Location of StructGen
      */
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public void buildComponent(StructureComponent par1StructureComponent, List par2List, Random par3Random)
     {
@@ -41,10 +42,6 @@ public class GCMoonComponentVillageWell extends GCMoonComponentVillage
         GCMoonStructureVillagePieces.getNextStructureComponentVillagePath((GCMoonComponentVillageStartPiece) par1StructureComponent, par2List, par3Random, this.boundingBox.minX + 1, this.boundingBox.maxY - 4, this.boundingBox.maxZ + 1, 0, this.getComponentType());
     }
 
-    /**
-     * second Part of Structure generating, this for example places Spiderwebs,
-     * Mob Spawners, it closes Mineshafts at the end, it adds Fences...
-     */
     @Override
     public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
     {

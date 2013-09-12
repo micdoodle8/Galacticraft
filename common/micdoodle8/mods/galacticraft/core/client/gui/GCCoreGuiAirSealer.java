@@ -52,6 +52,7 @@ public class GCCoreGuiAirSealer extends GCCoreGuiContainer
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void initGui()
     {

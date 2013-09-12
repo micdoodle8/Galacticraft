@@ -367,8 +367,8 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
         {
             this.numUsingPlayers = 0;
             f = 5.0F;
-            final List list = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getAABBPool().getAABB(this.xCoord - f, this.yCoord - f, this.zCoord - f, this.xCoord + 1 + f, this.yCoord + 1 + f, this.zCoord + 1 + f));
-            final Iterator iterator = list.iterator();
+            final List<?> list = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getAABBPool().getAABB(this.xCoord - f, this.yCoord - f, this.zCoord - f, this.xCoord + 1 + f, this.yCoord + 1 + f, this.zCoord + 1 + f));
+            final Iterator<?> iterator = list.iterator();
 
             while (iterator.hasNext())
             {

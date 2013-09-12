@@ -51,6 +51,7 @@ public class GCCoreGuiFuelLoader extends GCCoreGuiContainer
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void initGui()
     {

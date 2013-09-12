@@ -22,6 +22,7 @@ public class GCCoreItemOxygenTank extends Item
         this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
@@ -43,6 +44,7 @@ public class GCCoreItemOxygenTank extends Item
         return ClientProxyCore.galacticraftItem;
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void addInformation(ItemStack par1ItemStack, EntityPlayer player, List par2List, boolean b)
     {

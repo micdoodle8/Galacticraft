@@ -29,6 +29,7 @@ public abstract class GCMoonComponentVillage extends StructureComponent
      * Gets the next village component, with the bounding box shifted -1 in the
      * X and Z direction.
      */
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     protected StructureComponent getNextComponentNN(GCMoonComponentVillageStartPiece par1ComponentVillageStartPiece, List par2List, Random par3Random, int par4, int par5)
     {
         switch (this.coordBaseMode)
@@ -50,6 +51,7 @@ public abstract class GCMoonComponentVillage extends StructureComponent
      * Gets the next village component, with the bounding box shifted +1 in the
      * X and Z direction.
      */
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     protected StructureComponent getNextComponentPP(GCMoonComponentVillageStartPiece par1ComponentVillageStartPiece, List par2List, Random par3Random, int par4, int par5)
     {
         switch (this.coordBaseMode)

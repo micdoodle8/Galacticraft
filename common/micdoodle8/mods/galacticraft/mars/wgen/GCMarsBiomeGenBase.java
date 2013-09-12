@@ -15,6 +15,7 @@ public class GCMarsBiomeGenBase extends BiomeGenBase
 {
     public static final BiomeGenBase marsFlat = new GCMarsBiomeGenFlat(103).setBiomeName("marsFlat");
 
+    @SuppressWarnings("unchecked")
     public GCMarsBiomeGenBase(int var1)
     {
         super(var1);

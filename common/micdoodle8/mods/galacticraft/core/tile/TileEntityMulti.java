@@ -128,7 +128,7 @@ public class TileEntityMulti extends TileEntity implements IPacketReceiver
     public void readFromNBT(NBTTagCompound nbt)
     {
         super.readFromNBT(nbt);
-        this.mainBlockPosition = Vector3.readFromNBT(nbt.getCompoundTag("mainBlockPosition"));
+        this.mainBlockPosition = new Vector3(nbt.getCompoundTag("mainBlockPosition"));
     }
 
     /**

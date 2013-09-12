@@ -144,8 +144,8 @@ public abstract class Vector implements Cloneable
         {
             try
             {
-                Class clazz = Class.forName("universalelectricity.core.vector.Vector3");
-                Constructor c = clazz.getConstructor(Double.class, Double.class, Double.class);
+                Class<?> clazz = Class.forName("universalelectricity.core.vector.Vector3");
+                Constructor<?> c = clazz.getConstructor(Double.class, Double.class, Double.class);
                 return c.newInstance(this.x, this.y, this.z);
             }
             catch (Exception e)

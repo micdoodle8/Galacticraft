@@ -127,7 +127,7 @@ public class GCCoreBlockAirLockFrame extends BlockContainer implements ITileEnti
                         return this.airLockIcons[0];
                     }
 
-                    blockVec = vector.clone().add(new Vector3(orientation.offsetX, orientation.offsetY, orientation.offsetZ));
+                    blockVec = vector.clone().translate(new Vector3(orientation.offsetX, orientation.offsetY, orientation.offsetZ));
                     connection = Block.blocksList[blockVec.getBlockID(par1IBlockAccess)];
 
                     if (connection != null && connection.equals(GCCoreBlocks.airLockSeal))

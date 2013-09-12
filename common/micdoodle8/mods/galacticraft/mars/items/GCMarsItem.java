@@ -68,6 +68,7 @@ public class GCMarsItem extends Item
         return super.getIconFromDamage(damage);
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
@@ -88,6 +89,7 @@ public class GCMarsItem extends Item
         return "unnamed";
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)

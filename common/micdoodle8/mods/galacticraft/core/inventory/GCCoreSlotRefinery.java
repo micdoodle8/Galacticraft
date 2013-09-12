@@ -17,7 +17,7 @@ public class GCCoreSlotRefinery extends Slot
     @Override
     public boolean isItemValid(ItemStack par1ItemStack)
     {
-        Class buildCraftClass = null;
+        Class<?> buildCraftClass = null;
 
         try
         {

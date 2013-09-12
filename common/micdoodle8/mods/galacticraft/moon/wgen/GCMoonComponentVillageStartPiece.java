@@ -21,11 +21,11 @@ public class GCMoonComponentVillageStartPiece extends GCMoonComponentVillageWell
      * Contains List of all spawnable Structure Piece Weights. If no more Pieces
      * of a type can be spawned, they are removed from this list
      */
-    public ArrayList structureVillageWeightedPieceList;
-    public ArrayList field_74932_i = new ArrayList();
-    public ArrayList field_74930_j = new ArrayList();
+    public ArrayList<GCMoonStructureVillagePieceWeight> structureVillageWeightedPieceList;
+    public ArrayList<Object> field_74932_i = new ArrayList<Object>();
+    public ArrayList<Object> field_74930_j = new ArrayList<Object>();
 
-    public GCMoonComponentVillageStartPiece(WorldChunkManager par1WorldChunkManager, int par2, Random par3Random, int par4, int par5, ArrayList par6ArrayList, int par7)
+    public GCMoonComponentVillageStartPiece(WorldChunkManager par1WorldChunkManager, int par2, Random par3Random, int par4, int par5, ArrayList<GCMoonStructureVillagePieceWeight> par6ArrayList, int par7)
     {
         super((GCMoonComponentVillageStartPiece) null, 0, par3Random, par4, par5);
         this.worldChunkMngr = par1WorldChunkManager;

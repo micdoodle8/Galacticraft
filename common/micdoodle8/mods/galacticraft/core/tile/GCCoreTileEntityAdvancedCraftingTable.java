@@ -43,7 +43,7 @@ public class GCCoreTileEntityAdvancedCraftingTable extends TileEntityMulti imple
             {
                 for (int z = -1; z < 2; z++)
                 {
-                    final Vector3 vecToAdd = Vector3.add(placedPosition, new Vector3(x, y, z));
+                    final Vector3 vecToAdd = Vector3.translate(placedPosition, new Vector3(x, y, z));
 
                     if (!vecToAdd.equals(placedPosition))
                     {

@@ -118,7 +118,7 @@ public abstract class EntityTieredRocket extends EntitySpaceshipBase implements 
     }
 
     @Override
-    public ArrayList getNetworkedData(ArrayList list)
+    public ArrayList<Object> getNetworkedData(ArrayList<Object> list)
     {
         super.getNetworkedData(list);
         list.add(this.spaceshipFuelTank.getFluid() == null ? 0 : this.spaceshipFuelTank.getFluid().amount);

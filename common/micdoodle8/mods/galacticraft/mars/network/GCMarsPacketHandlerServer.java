@@ -122,7 +122,7 @@ public class GCMarsPacketHandlerServer implements IPacketHandler
         }
         else if (packetType == 4)
         {
-            final Class[] decodeAs = { Integer.class };
+            final Class<?>[] decodeAs = { Integer.class };
             final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
             Entity e = player.worldObj.getEntityByID((Integer) packetReadout[0]);
 

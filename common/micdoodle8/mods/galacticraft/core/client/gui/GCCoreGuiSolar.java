@@ -51,6 +51,7 @@ public class GCCoreGuiSolar extends GCCoreGuiContainer
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void initGui()
     {

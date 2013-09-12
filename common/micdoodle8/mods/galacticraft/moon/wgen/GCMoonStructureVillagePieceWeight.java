@@ -2,13 +2,12 @@ package micdoodle8.mods.galacticraft.moon.wgen;
 
 public class GCMoonStructureVillagePieceWeight
 {
-    /** The Class object for the represantation of this village piece. */
-    public Class villagePieceClass;
+    public Class<? extends GCMoonComponentVillage> villagePieceClass;
     public final int villagePieceWeight;
     public int villagePiecesSpawned;
     public int villagePiecesLimit;
 
-    public GCMoonStructureVillagePieceWeight(Class par1Class, int par2, int par3)
+    public GCMoonStructureVillagePieceWeight(Class<? extends GCMoonComponentVillage> par1Class, int par2, int par3)
     {
         this.villagePieceClass = par1Class;
         this.villagePieceWeight = par2;

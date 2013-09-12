@@ -43,6 +43,7 @@ public class GCCoreBlockLandingPad extends GCCoreBlockAdvanced
         return GalacticraftCore.galacticraftTab;
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)

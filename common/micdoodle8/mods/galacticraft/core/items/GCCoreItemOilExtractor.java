@@ -171,7 +171,7 @@ public class GCCoreItemOilExtractor extends Item
 
     private boolean isOilBlock(EntityPlayer player, World world, int x, int y, int z)
     {
-        Class buildCraftClass = null;
+        Class<?> buildCraftClass = null;
 
         try
         {
@@ -227,7 +227,7 @@ public class GCCoreItemOilExtractor extends Item
 
         for (double dist = 0.0; dist <= var21; dist += 1D)
         {
-            final Vector3 var23 = var13.add(new Vector3(var18 * dist, var17 * dist, var20 * dist));
+            final Vector3 var23 = var13.translate(new Vector3(var18 * dist, var17 * dist, var20 * dist));
 
             if (this.isOilBlock(par1EntityPlayer, par1EntityPlayer.worldObj, MathHelper.floor_double(var23.x), MathHelper.floor_double(var23.y), MathHelper.floor_double(var23.z)))
             {

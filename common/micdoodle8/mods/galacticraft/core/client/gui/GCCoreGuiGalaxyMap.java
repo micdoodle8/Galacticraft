@@ -249,6 +249,7 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
     // this.fontRenderer.drawString("Galaxy Map", 15, 5, 4210752);
     // }
 
+    @SuppressWarnings("rawtypes")
     protected void genAchievementBackground(int par1, int par2, float par3)
     {
         final ScaledResolution var13 = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
@@ -661,10 +662,11 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
         }
     }
 
-    public Map[] computePlanetPos(float cx, float cy, float r, float stretch)
+    @SuppressWarnings("unchecked")
+    public Map<Integer, Float>[] computePlanetPos(float cx, float cy, float r, float stretch)
     {
-        final Map mapX = new HashMap();
-        final Map mapY = new HashMap();
+        final Map<Integer, Float> mapX = new HashMap<Integer, Float>();
+        final Map<Integer, Float> mapY = new HashMap<Integer, Float>();
 
         final float theta = (float) (2 * Math.PI / stretch);
         final float c = (float) Math.cos(theta);

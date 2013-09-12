@@ -40,13 +40,13 @@ public class PacketUtil
         return packet;
     }
 
-    public static Object[] readPacketData(DataInputStream data, Class[] packetDataTypes)
+    public static Object[] readPacketData(DataInputStream data, Class<?>[] packetDataTypes)
     {
-        final List result = new ArrayList<Object>();
+        final List<Object> result = new ArrayList<Object>();
 
         try
         {
-            for (final Class curClass : packetDataTypes)
+            for (Class<?> curClass : packetDataTypes)
             {
                 result.add(PacketUtil.readObjectFromStream(data, curClass));
             }
@@ -61,7 +61,7 @@ public class PacketUtil
 
     private static void writeObjectToStream(Object obj, DataOutputStream data) throws IOException
     {
-        final Class objClass = obj.getClass();
+        Class<?> objClass = obj.getClass();
 
         if (objClass.equals(Boolean.class))
         {
@@ -97,7 +97,7 @@ public class PacketUtil
         }
     }
 
-    private static Object readObjectFromStream(DataInputStream data, Class curClass) throws IOException
+    private static Object readObjectFromStream(DataInputStream data, Class<?> curClass) throws IOException
     {
         if (curClass.equals(Boolean.class))
         {

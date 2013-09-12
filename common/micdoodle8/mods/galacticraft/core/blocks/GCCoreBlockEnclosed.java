@@ -99,6 +99,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
         this.setUnlocalizedName(assetName);
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @SideOnly(Side.CLIENT)
     @Override
     public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
@@ -187,7 +188,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
             {
                 try
                 {
-                    Class clazz = Class.forName("ic2.core.block.wiring.TileEntityCable");
+                    Class<?> clazz = Class.forName("ic2.core.block.wiring.TileEntityCable");
 
                     if (clazz != null && clazz.isInstance(tileEntity))
                     {
@@ -238,7 +239,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
             {
                 try
                 {
-                    Class clazz = Class.forName("ic2.core.block.wiring.TileEntityCable");
+                    Class<?> clazz = Class.forName("ic2.core.block.wiring.TileEntityCable");
 
                     if (clazz != null && clazz.isInstance(tileEntity))
                     {
@@ -265,9 +266,9 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
             {
                 try
                 {
-                    Class clazzPipe = Class.forName("buildcraft.transport.Pipe");
-                    Class clazzPipeTile = Class.forName("buildcraft.transport.TileGenericPipe");
-                    Class clazzPipeBlock = Class.forName("buildcraft.transport.BlockGenericPipe");
+                    Class<?> clazzPipe = Class.forName("buildcraft.transport.Pipe");
+                    Class<?> clazzPipeTile = Class.forName("buildcraft.transport.TileGenericPipe");
+                    Class<?> clazzPipeBlock = Class.forName("buildcraft.transport.BlockGenericPipe");
 
                     Method getPipe = null;
 
@@ -321,11 +322,11 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
             {
                 try
                 {
-                    Class clazz = Class.forName("ic2.core.block.wiring.TileEntityCable");
-                    Constructor[] constructors = clazz.getDeclaredConstructors();
-                    Constructor constructor = null;
+                    Class<?> clazz = Class.forName("ic2.core.block.wiring.TileEntityCable");
+                    Constructor<?>[] constructors = clazz.getDeclaredConstructors();
+                    Constructor<?> constructor = null;
 
-                    for (Constructor constructor2 : constructors)
+                    for (Constructor<?> constructor2 : constructors)
                     {
                         constructor = constructor2;
 
@@ -352,11 +353,11 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
 
                 try
                 {
-                    Class clazz = Class.forName("buildcraft.transport.TileGenericPipe");
-                    Constructor[] constructors = clazz.getDeclaredConstructors();
-                    Constructor constructor = null;
+                    Class<?> clazz = Class.forName("buildcraft.transport.TileGenericPipe");
+                    Constructor<?>[] constructors = clazz.getDeclaredConstructors();
+                    Constructor<?> constructor = null;
 
-                    for (Constructor constructor2 : constructors)
+                    for (Constructor<?> constructor2 : constructors)
                     {
                         constructor = constructor2;
 

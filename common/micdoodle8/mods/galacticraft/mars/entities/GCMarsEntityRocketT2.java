@@ -163,6 +163,7 @@ public class GCMarsEntityRocketT2 extends EntityTieredRocket implements IInvento
         }
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public ArrayList getNetworkedData(ArrayList list)
     {

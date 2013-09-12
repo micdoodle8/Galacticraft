@@ -30,6 +30,7 @@ import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntitySlimelingEgg;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityTerraformer;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityTreasureChest;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
@@ -194,13 +195,13 @@ public class GalacticraftMars
         GCMarsRecipeManager.loadRecipes();
     }
 
-    public void registerGalacticraftCreature(Class var0, String var1, int id, int back, int fore)
+    public void registerGalacticraftCreature(Class<? extends Entity> var0, String var1, int id, int back, int fore)
     {
         EntityRegistry.registerGlobalEntityID(var0, var1, id, back, fore);
         EntityRegistry.registerModEntity(var0, var1, id, GalacticraftMars.instance, 80, 3, true);
     }
 
-    public void registerGalacticraftNonMobEntity(Class var0, String var1, int id, int trackingDistance, int updateFreq, boolean sendVel)
+    public void registerGalacticraftNonMobEntity(Class<? extends Entity> var0, String var1, int id, int trackingDistance, int updateFreq, boolean sendVel)
     {
         EntityRegistry.registerModEntity(var0, var1, id, this, trackingDistance, updateFreq, sendVel);
     }

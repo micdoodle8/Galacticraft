@@ -10,14 +10,14 @@ import net.minecraft.world.gen.structure.StructureComponent;
 
 public class GCMoonStructureVillagePieces
 {
-    public static ArrayList getStructureVillageWeightedPieceList(Random par0Random, int par1)
+    public static ArrayList<GCMoonStructureVillagePieceWeight> getStructureVillageWeightedPieceList(Random par0Random, int par1)
     {
-        final ArrayList var2 = new ArrayList();
+        final ArrayList<GCMoonStructureVillagePieceWeight> var2 = new ArrayList<GCMoonStructureVillagePieceWeight>();
         var2.add(new GCMoonStructureVillagePieceWeight(GCMoonComponentVillageWoodHut.class, 5, MathHelper.getRandomIntegerInRange(par0Random, 2 + par1, 5 + par1 * 3)));
         var2.add(new GCMoonStructureVillagePieceWeight(GCMoonComponentVillageField.class, 5, MathHelper.getRandomIntegerInRange(par0Random, 3 + par1, 5 + par1)));
         var2.add(new GCMoonStructureVillagePieceWeight(GCMoonComponentVillageHouse3.class, 5, MathHelper.getRandomIntegerInRange(par0Random, 3 + par1, 4 + par1 * 2)));
 
-        final Iterator var3 = var2.iterator();
+        final Iterator<GCMoonStructureVillagePieceWeight> var3 = var2.iterator();
 
         while (var3.hasNext())
         {
@@ -30,13 +30,13 @@ public class GCMoonStructureVillagePieces
         return var2;
     }
 
-    private static int func_75079_a(List par0List)
+    private static int func_75079_a(List<GCMoonStructureVillagePieceWeight> par0List)
     {
         boolean var1 = false;
         int var2 = 0;
         GCMoonStructureVillagePieceWeight var4;
 
-        for (final Iterator var3 = par0List.iterator(); var3.hasNext(); var2 += var4.villagePieceWeight)
+        for (final Iterator<GCMoonStructureVillagePieceWeight> var3 = par0List.iterator(); var3.hasNext(); var2 += var4.villagePieceWeight)
         {
             var4 = (GCMoonStructureVillagePieceWeight) var3.next();
 
@@ -49,9 +49,9 @@ public class GCMoonStructureVillagePieces
         return var1 ? var2 : -1;
     }
 
-    private static GCMoonComponentVillage func_75083_a(GCMoonComponentVillageStartPiece par0ComponentVillageStartPiece, GCMoonStructureVillagePieceWeight par1StructureVillagePieceWeight, List par2List, Random par3Random, int par4, int par5, int par6, int par7, int par8)
+    private static GCMoonComponentVillage func_75083_a(GCMoonComponentVillageStartPiece par0ComponentVillageStartPiece, GCMoonStructureVillagePieceWeight par1StructureVillagePieceWeight, List<StructureComponent> par2List, Random par3Random, int par4, int par5, int par6, int par7, int par8)
     {
-        final Class var9 = par1StructureVillagePieceWeight.villagePieceClass;
+        final Class<?> var9 = par1StructureVillagePieceWeight.villagePieceClass;
         Object var10 = null;
 
         if (var9 == GCMoonComponentVillageWoodHut.class)
@@ -70,10 +70,7 @@ public class GCMoonStructureVillagePieces
         return (GCMoonComponentVillage) var10;
     }
 
-    /**
-     * attempts to find a next Village Component to be spawned
-     */
-    private static GCMoonComponentVillage getNextVillageComponent(GCMoonComponentVillageStartPiece par0ComponentVillageStartPiece, List par1List, Random par2Random, int par3, int par4, int par5, int par6, int par7)
+    private static GCMoonComponentVillage getNextVillageComponent(GCMoonComponentVillageStartPiece par0ComponentVillageStartPiece, List<StructureComponent> par1List, Random par2Random, int par3, int par4, int par5, int par6, int par7)
     {
         final int var8 = GCMoonStructureVillagePieces.func_75079_a(par0ComponentVillageStartPiece.structureVillageWeightedPieceList);
 
@@ -89,7 +86,7 @@ public class GCMoonStructureVillagePieces
             {
                 ++var9;
                 int var10 = par2Random.nextInt(var8);
-                final Iterator var11 = par0ComponentVillageStartPiece.structureVillageWeightedPieceList.iterator();
+                final Iterator<GCMoonStructureVillagePieceWeight> var11 = par0ComponentVillageStartPiece.structureVillageWeightedPieceList.iterator();
 
                 while (var11.hasNext())
                 {
@@ -138,7 +135,7 @@ public class GCMoonStructureVillagePieces
      * attempts to find a next Structure Component to be spawned, private
      * Village function
      */
-    private static StructureComponent getNextVillageStructureComponent(GCMoonComponentVillageStartPiece par0ComponentVillageStartPiece, List par1List, Random par2Random, int par3, int par4, int par5, int par6, int par7)
+    private static StructureComponent getNextVillageStructureComponent(GCMoonComponentVillageStartPiece par0ComponentVillageStartPiece, List<StructureComponent> par1List, Random par2Random, int par3, int par4, int par5, int par6, int par7)
     {
         if (par7 > 50)
         {
@@ -169,7 +166,7 @@ public class GCMoonStructureVillagePieces
         }
     }
 
-    private static StructureComponent getNextComponentVillagePath(GCMoonComponentVillageStartPiece par0ComponentVillageStartPiece, List par1List, Random par2Random, int par3, int par4, int par5, int par6, int par7)
+    private static StructureComponent getNextComponentVillagePath(GCMoonComponentVillageStartPiece par0ComponentVillageStartPiece, List<StructureComponent> par1List, Random par2Random, int par3, int par4, int par5, int par6, int par7)
     {
         if (par7 > 3 + par0ComponentVillageStartPiece.terrainType)
         {
@@ -204,12 +201,12 @@ public class GCMoonStructureVillagePieces
     /**
      * attempts to find a next Structure Component to be spawned
      */
-    static StructureComponent getNextStructureComponent(GCMoonComponentVillageStartPiece par0ComponentVillageStartPiece, List par1List, Random par2Random, int par3, int par4, int par5, int par6, int par7)
+    static StructureComponent getNextStructureComponent(GCMoonComponentVillageStartPiece par0ComponentVillageStartPiece, List<StructureComponent> par1List, Random par2Random, int par3, int par4, int par5, int par6, int par7)
     {
         return GCMoonStructureVillagePieces.getNextVillageStructureComponent(par0ComponentVillageStartPiece, par1List, par2Random, par3, par4, par5, par6, par7);
     }
 
-    static StructureComponent getNextStructureComponentVillagePath(GCMoonComponentVillageStartPiece par0ComponentVillageStartPiece, List par1List, Random par2Random, int par3, int par4, int par5, int par6, int par7)
+    static StructureComponent getNextStructureComponentVillagePath(GCMoonComponentVillageStartPiece par0ComponentVillageStartPiece, List<StructureComponent> par1List, Random par2Random, int par3, int par4, int par5, int par6, int par7)
     {
         return GCMoonStructureVillagePieces.getNextComponentVillagePath(par0ComponentVillageStartPiece, par1List, par2Random, par3, par4, par5, par6, par7);
     }

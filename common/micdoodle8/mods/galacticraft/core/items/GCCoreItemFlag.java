@@ -57,6 +57,7 @@ public class GCCoreItemFlag extends Item implements IHoldableItem
         this.setTextureName("arrow");
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {

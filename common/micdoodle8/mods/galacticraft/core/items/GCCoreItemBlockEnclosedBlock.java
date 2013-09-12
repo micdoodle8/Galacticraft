@@ -128,9 +128,9 @@ public class GCCoreItemBlockEnclosedBlock extends ItemBlock
                 {
                     String name = Character.toLowerCase(type.getPipeClass().charAt(0)) + type.getPipeClass().substring(1);
 
-                    Class clazz = Class.forName("buildcraft.BuildCraftCore");
-                    Class clazzConfig = Class.forName("net.minecraftforge.common.Configuration");
-                    Class clazzBlockPipe = Class.forName("buildcraft.transport.BlockGenericPipe");
+                    Class<?> clazz = Class.forName("buildcraft.BuildCraftCore");
+                    Class<?> clazzConfig = Class.forName("net.minecraftforge.common.Configuration");
+                    Class<?> clazzBlockPipe = Class.forName("buildcraft.transport.BlockGenericPipe");
 
                     Object mainConfiguration = clazz.getField("mainConfiguration").get(null);
 
