@@ -1,4 +1,4 @@
-# Galacticraft Mars Language File = GERMAN
+# Galacticraft Mars Language File = GERMANY GERMAN
 
 # GENERAL ITEMS
 item.rawDesh.name=Unraffiniertes Desh
@@ -78,3 +78,6 @@ schematic.rocketT3.name=Stufe-3-Rakete
 entity.Sludgeling.name=Schlammling
 entity.Slimeling.name=Schleimling
 entity.CreeperBoss.name=Entwickelter Creeper-Boss
+
+# Container
+container.launchcontroller.name=Start-Controller
