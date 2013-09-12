@@ -55,7 +55,7 @@ public class GCCoreItems
     public static Item fuel;
     public static Item key;
     public static Item partBuggy;
-    public static Item unused_knowledgeBook;
+    public static Item knowledgeBook;
     public static Item basicItem;
     public static Item battery;
     public static Item infiniteBatery;
@@ -106,13 +106,13 @@ public class GCCoreItems
         GCCoreItems.fuel = new GCCoreItemFuel(GCCoreConfigManager.idItemFuel, "fuel");
         GCCoreItems.key = new GCCoreItemKey(GCCoreConfigManager.idItemKey, "key");
         GCCoreItems.partBuggy = new GCCoreItemBuggyMaterial(GCCoreConfigManager.idItemBuggyMaterial, "buggymat");
-        GCCoreItems.unused_knowledgeBook = new GCCoreItemKnowledgeBook(GCCoreConfigManager.idItemKnowledgeBook, "knowledgeBook");
+        GCCoreItems.knowledgeBook = new GCCoreItemKnowledgeBook(GCCoreConfigManager.idItemKnowledgeBook, "knowledgeBook");
         GCCoreItems.basicItem = new GCCoreItemBasic(GCCoreConfigManager.idItemBasic, "basicItem");
         GCCoreItems.battery = new GCCoreItemBattery(GCCoreConfigManager.idItemBattery, "battery");
         GCCoreItems.infiniteBatery = new GCCoreItemInfiniteBattery(GCCoreConfigManager.idItemInfiniteBattery, "infiniteBattery");
 
         GCCoreItems.hiddenItems.add(GCCoreItems.bowGravity.itemID);
-        GCCoreItems.hiddenItems.add(GCCoreItems.unused_knowledgeBook.itemID);
+        GCCoreItems.hiddenItems.add(GCCoreItems.knowledgeBook.itemID);
 
         GCCoreItems.registerHarvestLevels();
         

@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import javax.xml.parsers.DocumentBuilderFactory;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.entity.IRocketType;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
@@ -35,11 +36,23 @@ import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiElectricFurnace;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiExtendedInventory;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiFuelLoader;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiGalaxyMap;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiManual;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiParachest;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRefinery;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRocketRefill;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiSolar;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreInventoryTabGalacticraft;
+import micdoodle8.mods.galacticraft.core.client.gui.page.GCCoreBlankPage;
+import micdoodle8.mods.galacticraft.core.client.gui.page.GCCoreBlockCastPage;
+import micdoodle8.mods.galacticraft.core.client.gui.page.GCCoreContentsTablePage;
+import micdoodle8.mods.galacticraft.core.client.gui.page.GCCoreCraftingPage;
+import micdoodle8.mods.galacticraft.core.client.gui.page.GCCoreFurnacePage;
+import micdoodle8.mods.galacticraft.core.client.gui.page.GCCorePicturePage;
+import micdoodle8.mods.galacticraft.core.client.gui.page.GCCoreSectionPage;
+import micdoodle8.mods.galacticraft.core.client.gui.page.GCCoreSidebarPage;
+import micdoodle8.mods.galacticraft.core.client.gui.page.GCCoreTextPage;
+import micdoodle8.mods.galacticraft.core.client.gui.page.GCCoreTitlePage;
+import micdoodle8.mods.galacticraft.core.client.gui.page.GCCoreToolPage;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelSpaceship;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererBreathableAir;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererCraftingTable;
@@ -115,6 +128,7 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.moon.client.ClientProxyMoon;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundPoolEntry;
@@ -129,6 +143,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.EnumRarity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -139,6 +154,7 @@ import net.minecraftforge.client.model.IModelCustom;
 import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
+import org.w3c.dom.Document;
 import tconstruct.client.tabs.InventoryTabVanilla;
 import tconstruct.client.tabs.TabRegistry;
 import cofh.api.core.RegistryAccess;
@@ -208,6 +224,8 @@ public class ClientProxyCore extends CommonProxyCore
     public static Map<String, String> capeMap = new HashMap<String, String>();
 
     public static GCCoreInventoryExtended dummyInventory = new GCCoreInventoryExtended();
+    
+    public static Document materialsTest;
 
     @Override
     public void preInit(FMLPreInitializationEvent event)
@@ -230,6 +248,27 @@ public class ClientProxyCore extends CommonProxyCore
         TickRegistry.registerScheduledTickHandler(new GCCoreTickHandlerSlowClient(), Side.CLIENT);
         NetworkRegistry.instance().registerChannel(new GCCorePacketHandlerClient(), GalacticraftCore.CHANNEL, Side.CLIENT);
 
+        GCCoreManualUtil.registerManualPage("crafting", GCCoreCraftingPage.class);
+        GCCoreManualUtil.registerManualPage("picture", GCCorePicturePage.class);
+        GCCoreManualUtil.registerManualPage("text", GCCoreTextPage.class);
+        GCCoreManualUtil.registerManualPage("intro", GCCoreTextPage.class);
+        GCCoreManualUtil.registerManualPage("sectionpage", GCCoreSectionPage.class);
+        GCCoreManualUtil.registerManualPage("intro", GCCoreTitlePage.class);
+        GCCoreManualUtil.registerManualPage("contents", GCCoreContentsTablePage.class);
+        GCCoreManualUtil.registerManualPage("furnace", GCCoreFurnacePage.class);
+        GCCoreManualUtil.registerManualPage("sidebar", GCCoreSidebarPage.class);
+        GCCoreManualUtil.registerManualPage("toolpage", GCCoreToolPage.class);
+        GCCoreManualUtil.registerManualPage("blockcast", GCCoreBlockCastPage.class);
+        GCCoreManualUtil.registerManualPage("blank", GCCoreBlankPage.class);
+        
+        GCCoreManualUtil.registerIcon("heavyplatingT1", new ItemStack(GCCoreItems.heavyPlatingTier1));
+        GCCoreManualUtil.registerIcon("oxygenmask", new ItemStack(GCCoreItems.oxMask));
+        GCCoreManualUtil.registerIcon("oxygenTankHeavy", new ItemStack(GCCoreItems.oxTankHeavy));
+        GCCoreManualUtil.registerIcon("rocketT1", new ItemStack(GCCoreItems.rocketTier1));
+
+        DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+        materialsTest = GCCoreManualUtil.readManual("/assets/galacticraftcore/manuals/gettingstarted.xml", docBuilderFactory);
+        
         ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityCopperWire.class, new GCCoreRenderCopperWire());
         ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityTreasureChest.class, new GCCoreTileEntityTreasureChestRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityParachest.class, new GCCoreTileEntityParachestRenderer());
@@ -787,6 +826,10 @@ public class ClientProxyCore extends CommonProxyCore
         else if (ID == GCCoreConfigManager.idGuiExtendedInventory)
         {
             return new GCCoreGuiExtendedInventory(player, ClientProxyCore.dummyInventory);
+        }
+        else if (ID == GCCoreConfigManager.idGuiKnowledgeBook)
+        {
+            return new GCCoreGuiManual(new ItemStack(Block.stone), ClientProxyCore.materialsTest);
         }
         else
         {
