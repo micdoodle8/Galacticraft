@@ -9,6 +9,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -43,7 +44,7 @@ public class GCCoreTileEntityAdvancedCraftingTable extends TileEntityMulti imple
             {
                 for (int z = -1; z < 2; z++)
                 {
-                    final Vector3 vecToAdd = Vector3.translate(placedPosition, new Vector3(x, y, z));
+                    final Vector3 vecToAdd = Vector3.add(placedPosition, new Vector3(x, y, z));
 
                     if (!vecToAdd.equals(placedPosition))
                     {

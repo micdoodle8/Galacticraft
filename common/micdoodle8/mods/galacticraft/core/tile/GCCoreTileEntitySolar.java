@@ -296,7 +296,7 @@ public class GCCoreTileEntitySolar extends TileEntityUniversalElectrical impleme
             {
                 for (int z = -1; z < 2; z++)
                 {
-                    final Vector3 vecToAdd = Vector3.translate(placedPosition, new Vector3(y == 2 ? x : 0, y, y == 2 ? z : 0));
+                    final Vector3 vecToAdd = Vector3.add(placedPosition, new Vector3(y == 2 ? x : 0, y, y == 2 ? z : 0));
 
                     if (!vecToAdd.equals(placedPosition))
                     {
