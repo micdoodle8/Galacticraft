@@ -133,14 +133,10 @@ public class GCCoreEntitySkeleton extends EntitySkeleton implements IEntityBreat
     @Override
     public void onLivingUpdate()
     {
-        FMLLog.info("a " + this.worldObj.isDaytime() + " " + !this.worldObj.isRemote);
-        
         if (this.worldObj.isDaytime() && !this.worldObj.isRemote)
         {
             float f = this.getBrightness(1.0F);
             
-            FMLLog.info("b " + f + " " + ((f - 0.4F) * 2.0F) + " " + this.worldObj.canBlockSeeTheSky(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)));
-
             if (f > 0.5F && this.rand.nextFloat() * 30.0F < (f - 0.4F) * 2.0F && this.worldObj.canBlockSeeTheSky(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)))
             {
                 boolean flag = true;
@@ -162,8 +158,6 @@ public class GCCoreEntitySkeleton extends EntitySkeleton implements IEntityBreat
                     flag = false;
                 }
                 
-                FMLLog.info("c " + flag);
-
                 if (flag)
                 {
                     this.setFire(8);
