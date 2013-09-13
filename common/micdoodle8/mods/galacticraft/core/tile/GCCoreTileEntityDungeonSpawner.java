@@ -110,6 +110,7 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced
                     if (this.boss instanceof Entity)
                     {
                         this.worldObj.spawnEntityInWorld((EntityLiving) this.boss);
+                        this.playSpawnSound((Entity) this.boss);
                         this.spawned = true;
                         this.boss.onBossSpawned(this);
                         this.boss.setRoom(this.roomCoords, this.roomSize);
@@ -119,6 +120,11 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced
 
             this.lastPlayerInRange = this.playerInRange;
         }
+    }
+    
+    public void playSpawnSound(Entity entity)
+    {
+        ;
     }
 
     public List<Class<? extends EntityLiving>> getDisabledCreatures()

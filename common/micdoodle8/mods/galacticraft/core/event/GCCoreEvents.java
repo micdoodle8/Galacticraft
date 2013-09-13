@@ -1,9 +1,11 @@
 package micdoodle8.mods.galacticraft.core.event;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -49,6 +51,7 @@ import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -402,15 +405,24 @@ public class GCCoreEvents
             }
         }
     }
-
+    
     @ForgeSubscribe
     public void onMinecraftLoaded(MinecraftLoadedEvent event)
     {
+        final List<String> downloadUrls = new ArrayList<String>();
+        
+        downloadUrls.add("http://micdoodle8.com/galacticraft/sounds/downloadsounds.xml");
+        
+        if (Loader.isModLoaded("GalacticraftMars"))
+        {
+            downloadUrls.add("http://micdoodle8.com/galacticraft/sounds/mars/downloadmarssounds.xml");
+        }
+        
         try
         {
             if (GCCoreEvents.downloadResourcesThread == null)
             {
-                GCCoreEvents.downloadResourcesThread = new GCCoreThreadDownloadSound(FMLClientHandler.instance().getClient().mcDataDir, FMLClientHandler.instance().getClient());
+                GCCoreEvents.downloadResourcesThread = new GCCoreThreadDownloadSound(FMLClientHandler.instance().getClient().mcDataDir, FMLClientHandler.instance().getClient(), downloadUrls);
                 GCCoreEvents.downloadResourcesThread.start();
             }
         }

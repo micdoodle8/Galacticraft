@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpider;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityZombie;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityDungeonSpawner;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityCreeperBoss;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 
 public class GCMarsTileEntityDungeonSpawner extends GCCoreTileEntityDungeonSpawner
@@ -24,5 +25,11 @@ public class GCMarsTileEntityDungeonSpawner extends GCCoreTileEntityDungeonSpawn
         list.add(GCCoreEntityZombie.class);
         list.add(GCCoreEntitySpider.class);
         return list;
+    }
+
+    @Override
+    public void playSpawnSound(Entity entity)
+    {
+        this.worldObj.playSoundAtEntity(entity, "galacticraft.ambience.scaryscape", 9.0F, 1.4F);
     }
 }

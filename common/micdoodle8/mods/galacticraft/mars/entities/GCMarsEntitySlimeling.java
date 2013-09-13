@@ -236,13 +236,8 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
     @Override
     protected String getDeathSound()
     {
+        this.playSound("galacticraft.entity.slime_death", this.getSoundVolume(), 0.8F);
         return "";
-    }
-
-    @Override
-    protected float getSoundVolume()
-    {
-        return 0.0F;
     }
 
     @Override

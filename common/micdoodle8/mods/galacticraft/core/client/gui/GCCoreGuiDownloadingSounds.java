@@ -19,7 +19,7 @@ public class GCCoreGuiDownloadingSounds extends GuiScreen
         int offset = this.height / 2 - 50;
         this.drawCenteredString(this.fontRenderer, "Galacticraft is downloading sounds to your minecraft directory", this.width / 2, offset, 0xFFFFFF);
         offset += 12;
-        this.drawCenteredString(this.fontRenderer, "This will only occur once", this.width / 2, offset, 0x777777);
+        this.drawCenteredString(this.fontRenderer, "This will only occur once, or when new sounds are added to the mod", this.width / 2, offset, 0x777777);
         offset += 20;
         this.drawCenteredString(this.fontRenderer, "Ensure you have an internet connection available", this.width / 2, offset, 0xFFFFFF);
         offset += 20;
