@@ -45,6 +45,7 @@ import net.minecraftforge.event.Event.Result;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
@@ -59,6 +60,15 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreEvents
 {
     private static GCCoreThreadDownloadSound downloadResourcesThread;
+    
+    @ForgeSubscribe
+    public void onEntityFall(LivingFallEvent event)
+    {
+        if (event.entityLiving.worldObj.provider instanceof IGalacticraftWorldProvider)
+        {
+            event.distance *= ((IGalacticraftWorldProvider) event.entityLiving.worldObj.provider).getFallDamageModifier();
+        }
+    }
 
     @ForgeSubscribe
     public void onPlayerClicked(PlayerInteractEvent event)

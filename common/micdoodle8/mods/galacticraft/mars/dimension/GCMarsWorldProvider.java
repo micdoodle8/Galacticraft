@@ -234,6 +234,6 @@ public class GCMarsWorldProvider extends WorldProvider implements IGalacticraftW
     @Override
     public float getFallDamageModifier()
     {
-        return 0.9F;
+        return 0.38F;
     }
 }
