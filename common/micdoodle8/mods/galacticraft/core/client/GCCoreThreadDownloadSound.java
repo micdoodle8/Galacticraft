@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiDownloadingSounds;
@@ -33,13 +34,15 @@ public class GCCoreThreadDownloadSound extends Thread
     private GuiScreen previousGui;
     private int downloadCount = 0;
     private int byteCount = 0;
+    private final List<String> downloadUrls;
 
-    public GCCoreThreadDownloadSound(File par1File, Minecraft par2Minecraft)
+    public GCCoreThreadDownloadSound(File par1File, Minecraft par2Minecraft, List<String> downloadUrls)
     {
         this.mc = par2Minecraft;
         this.setName("GC Resource download thread");
         this.setDaemon(true);
         this.resourcesFolder = new File(par1File, "assets/sound/");
+        this.downloadUrls = downloadUrls;
 
         if (!this.resourcesFolder.exists() && !this.resourcesFolder.mkdirs())
         {
@@ -50,51 +53,55 @@ public class GCCoreThreadDownloadSound extends Thread
     @Override
     public void run()
     {
-        try
+        this.previousGui = FMLClientHandler.instance().getClient().currentScreen;
+        this.gui = new GCCoreGuiDownloadingSounds();
+        
+        for (String urlString : this.downloadUrls)
         {
-            final URL url = new URL("http://micdoodle8.com/galacticraft/sounds/downloadsounds.xml");
-            final DocumentBuilderFactory documentbuilderfactory = DocumentBuilderFactory.newInstance();
-            final DocumentBuilder documentbuilder = documentbuilderfactory.newDocumentBuilder();
-            // Add a timeout of 60 seconds to getting the list, MC stalls
-            // without sound for some users.
-            final URLConnection con = url.openConnection();
-            con.addRequestProperty("User-Agent", "Mozilla/4.76");
-            con.setConnectTimeout(60000);
-            con.setReadTimeout(60000);
-            final Document document = documentbuilder.parse(con.getInputStream());
-            final NodeList nodelist = document.getElementsByTagName("Contents");
-            this.gui = new GCCoreGuiDownloadingSounds();
-            this.previousGui = FMLClientHandler.instance().getClient().currentScreen;
-
-            for (int i = 0; i < 2; ++i)
+            try
             {
-                for (int j = 0; j < nodelist.getLength(); ++j)
+                final URL url = new URL(urlString);
+                final DocumentBuilderFactory documentbuilderfactory = DocumentBuilderFactory.newInstance();
+                final DocumentBuilder documentbuilder = documentbuilderfactory.newDocumentBuilder();
+                // Add a timeout of 60 seconds to getting the list, MC stalls
+                // without sound for some users.
+                final URLConnection con = url.openConnection();
+                con.addRequestProperty("User-Agent", "Mozilla/4.76");
+                con.setConnectTimeout(60000);
+                con.setReadTimeout(60000);
+                final Document document = documentbuilder.parse(con.getInputStream());
+                final NodeList nodelist = document.getElementsByTagName("Contents");
+
+                for (int i = 0; i < 2; ++i)
                 {
-                    final Node node = nodelist.item(j);
-
-                    if (node.getNodeType() == 1)
+                    for (int j = 0; j < nodelist.getLength(); ++j)
                     {
-                        final Element element = (Element) node;
-                        final String s = element.getElementsByTagName("Key").item(0).getChildNodes().item(0).getNodeValue();
-                        final long k = Long.parseLong(element.getElementsByTagName("Size").item(0).getChildNodes().item(0).getNodeValue());
+                        final Node node = nodelist.item(j);
 
-                        if (k > 0L)
+                        if (node.getNodeType() == 1)
                         {
-                            this.downloadAndInstallResource(url, s, k, i);
+                            final Element element = (Element) node;
+                            final String s = element.getElementsByTagName("Key").item(0).getChildNodes().item(0).getNodeValue();
+                            final long k = Long.parseLong(element.getElementsByTagName("Size").item(0).getChildNodes().item(0).getNodeValue());
 
-                            if (this.closing)
+                            if (k > 0L)
                             {
-                                return;
+                                this.downloadAndInstallResource(url, s, k, i);
+
+                                if (this.closing)
+                                {
+                                    return;
+                                }
                             }
                         }
                     }
                 }
             }
-        }
-        catch (final Exception exception)
-        {
-            this.loadResource(this.resourcesFolder, "");
-            exception.printStackTrace();
+            catch (final Exception exception)
+            {
+                this.loadResource(this.resourcesFolder, "");
+                exception.printStackTrace();
+            }
         }
 
         GCCoreTickHandlerClient.lastOpenGui = this.previousGui;
