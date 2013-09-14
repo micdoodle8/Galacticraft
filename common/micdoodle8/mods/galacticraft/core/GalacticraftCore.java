@@ -57,6 +57,7 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCoalGenerator;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCopperWire;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityDungeonSpawner;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectricFurnace;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFallenMeteor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPadSingle;
@@ -376,6 +377,7 @@ public class GalacticraftCore
         GameRegistry.registerTileEntity(GCCoreTileEntityCoalGenerator.class, "UECoalGenerator");
         GameRegistry.registerTileEntity(GCCoreTileEntityElectricFurnace.class, "UEElectricFurnace");
         GameRegistry.registerTileEntity(GCCoreTileEntityCopperWire.class, "copperWire");
+        GameRegistry.registerTileEntity(GCCoreTileEntityFallenMeteor.class, "Fallen Meteor");
     }
 
     public void registerCreatures()

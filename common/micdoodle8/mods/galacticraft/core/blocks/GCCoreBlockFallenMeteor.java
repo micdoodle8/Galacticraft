@@ -2,16 +2,23 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.Random;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFallenMeteor;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
 import net.minecraft.block.Block;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import universalelectricity.core.vector.Vector3;
+import cpw.mods.fml.common.FMLLog;
 
-public class GCCoreBlockFallenMeteor extends Block
+public class GCCoreBlockFallenMeteor extends Block implements ITileEntityProvider
 {
     public GCCoreBlockFallenMeteor(int id, String assetName)
     {
@@ -62,31 +69,43 @@ public class GCCoreBlockFallenMeteor extends Block
     @Override
     public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity)
     {
-        if (par5Entity instanceof EntityLivingBase)
+        TileEntity tile = par1World.getBlockTileEntity(par2, par3, par4);
+        
+        if (tile instanceof GCCoreTileEntityFallenMeteor)
         {
-            final EntityLivingBase livingEntity = (EntityLivingBase) par5Entity;
-
-            par1World.playSoundEffect(par2 + 0.5F, par3 + 0.5F, par4 + 0.5F, "random.fizz", 0.5F, 2.6F + (par1World.rand.nextFloat() - par1World.rand.nextFloat()) * 0.8F);
-
-            for (int var5 = 0; var5 < 8; ++var5)
+            GCCoreTileEntityFallenMeteor meteor = (GCCoreTileEntityFallenMeteor) tile;
+            
+            if (meteor.getHeatLevel() <= 0)
             {
-                par1World.spawnParticle("largesmoke", par2 + Math.random(), par3 + 0.2D + Math.random(), par4 + Math.random(), 0.0D, 0.0D, 0.0D);
+                return;
             }
 
-            if (!livingEntity.isBurning())
+            if (par5Entity instanceof EntityLivingBase)
             {
-                livingEntity.setFire(2);
+                final EntityLivingBase livingEntity = (EntityLivingBase) par5Entity;
+
+                par1World.playSoundEffect(par2 + 0.5F, par3 + 0.5F, par4 + 0.5F, "random.fizz", 0.5F, 2.6F + (par1World.rand.nextFloat() - par1World.rand.nextFloat()) * 0.8F);
+
+                for (int var5 = 0; var5 < 8; ++var5)
+                {
+                    par1World.spawnParticle("largesmoke", par2 + Math.random(), par3 + 0.2D + Math.random(), par4 + Math.random(), 0.0D, 0.0D, 0.0D);
+                }
+
+                if (!livingEntity.isBurning())
+                {
+                    livingEntity.setFire(2);
+                }
+
+                double var9 = (par2 + 0.5F) - livingEntity.posX;
+                double var7;
+
+                for (var7 = livingEntity.posZ - par4; var9 * var9 + var7 * var7 < 1.0E-4D; var7 = (Math.random() - Math.random()) * 0.01D)
+                {
+                    var9 = (Math.random() - Math.random()) * 0.01D;
+                }
+
+                livingEntity.knockBack(livingEntity, 1, var9, var7);
             }
-
-            double var9 = (par2 + 0.5F) - livingEntity.posX;
-            double var7;
-
-            for (var7 = livingEntity.posZ - par4; var9 * var9 + var7 * var7 < 1.0E-4D; var7 = (Math.random() - Math.random()) * 0.01D)
-            {
-                var9 = (Math.random() - Math.random()) * 0.01D;
-            }
-
-            livingEntity.knockBack(livingEntity, 1, var9, var7);
         }
     }
 
@@ -146,5 +165,34 @@ public class GCCoreBlockFallenMeteor extends Block
             final Material var5 = Block.blocksList[var4].blockMaterial;
             return var5 == Material.water ? true : var5 == Material.lava;
         }
+    }
+
+    @Override
+    public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
+    {
+        TileEntity tile = par1IBlockAccess.getBlockTileEntity(par2, par3, par4);
+        
+        if (tile instanceof GCCoreTileEntityFallenMeteor)
+        {
+            GCCoreTileEntityFallenMeteor meteor = (GCCoreTileEntityFallenMeteor) tile;
+            
+            Vector3 col = new Vector3(198, 58, 108);
+            col.add(200 - meteor.getScaledHeatLevel() * 200);
+            col.x = Math.min(255, col.x);
+            col.y = Math.min(255, col.y);
+            col.z = Math.min(255, col.z);
+            
+            return GCCoreUtil.convertTo32BitColor(255, (byte)col.x, (byte)col.y, (byte)col.z);
+        }
+        
+        return super.colorMultiplier(par1IBlockAccess, par2, par3, par4);
+    }
+
+    @Override
+    public TileEntity createNewTileEntity(World world)
+    {
+        GCCoreTileEntityFallenMeteor meteor = new GCCoreTileEntityFallenMeteor();
+        meteor.setHeatLevel(GCCoreTileEntityFallenMeteor.MAX_HEAT_LEVEL);
+        return meteor;
     }
 }
