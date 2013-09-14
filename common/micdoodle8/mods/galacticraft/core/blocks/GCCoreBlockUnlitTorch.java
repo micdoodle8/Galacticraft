@@ -68,8 +68,8 @@ public class GCCoreBlockUnlitTorch extends Block implements IOxygenReliantBlock
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
-        GCCoreBlockUnlitTorch.torchIcons[0] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "unlitTorch");
-        GCCoreBlockUnlitTorch.torchIcons[1] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "unlitTorchLit");
+        GCCoreBlockUnlitTorch.torchIcons[0] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "unlitTorchLit");
+        GCCoreBlockUnlitTorch.torchIcons[1] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "unlitTorch");
     }
 
     @Override
