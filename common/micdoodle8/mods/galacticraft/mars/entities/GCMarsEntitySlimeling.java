@@ -61,7 +61,7 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
     public GCMarsEntitySlimeling(World par1World)
     {
         super(par1World);
-        this.setSize(1.0F, 1.0F);
+        this.setSize(0.25F, 0.7F);
         this.getNavigator().setAvoidsWater(true);
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(2, this.aiSit);
@@ -95,6 +95,23 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
         this.setRandomFavFood();
     }
 
+    public float getSlimelingSize()
+    {
+        return this.getScale() * 2.0F;
+    }
+    
+    @Override
+    public void setScaleForAge(boolean par1)
+    {
+        this.setScale(this.getSlimelingSize());
+    }
+
+    @Override
+    public boolean isChild()
+    {
+        return (this.getAge() / (float) this.MAX_AGE) < 0.4F;
+    }
+    
     private void setRandomFavFood()
     {
         switch (this.rand.nextInt(10))
@@ -283,23 +300,10 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
             this.setCargoSlot(this.slimelingInventory.getStackInSlot(1));
         }
 
-        this.height = this.getScale();
-        this.width = this.getScale();
-
-        this.boundingBox.maxX = this.boundingBox.minX + this.width;
-        this.boundingBox.maxZ = this.boundingBox.minZ + this.width;
-        this.boundingBox.maxY = this.boundingBox.minY + this.height;
-
         if (!this.worldObj.isRemote)
         {
             this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(20 + 30.0 * ((double) this.age / (double) this.MAX_AGE));
         }
-    }
-
-    @Override
-    public void setScaleForAge(boolean par1)
-    {
-        this.setScale(0.5F);
     }
 
     @Override
