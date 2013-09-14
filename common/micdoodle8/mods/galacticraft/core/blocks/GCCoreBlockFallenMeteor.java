@@ -8,7 +8,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.World;
 
 public class GCCoreBlockFallenMeteor extends Block
@@ -62,9 +62,9 @@ public class GCCoreBlockFallenMeteor extends Block
     @Override
     public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity)
     {
-        if (par5Entity instanceof EntityLiving)
+        if (par5Entity instanceof EntityLivingBase)
         {
-            final EntityLiving livingEntity = (EntityLiving) par5Entity;
+            final EntityLivingBase livingEntity = (EntityLivingBase) par5Entity;
 
             par1World.playSoundEffect(par2 + 0.5F, par3 + 0.5F, par4 + 0.5F, "random.fizz", 0.5F, 2.6F + (par1World.rand.nextFloat() - par1World.rand.nextFloat()) * 0.8F);
 
@@ -78,7 +78,7 @@ public class GCCoreBlockFallenMeteor extends Block
                 livingEntity.setFire(2);
             }
 
-            double var9 = livingEntity.posX - par2;
+            double var9 = (par2 + 0.5F) - livingEntity.posX;
             double var7;
 
             for (var7 = livingEntity.posZ - par4; var9 * var9 + var7 * var7 < 1.0E-4D; var7 = (Math.random() - Math.random()) * 0.01D)
@@ -86,7 +86,7 @@ public class GCCoreBlockFallenMeteor extends Block
                 var9 = (Math.random() - Math.random()) * 0.01D;
             }
 
-            livingEntity.knockBack(livingEntity, 1, var9 / 2, var7 / 2);
+            livingEntity.knockBack(livingEntity, 1, var9, var7);
         }
     }
 
