@@ -29,6 +29,8 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import universalelectricity.core.vector.Vector3;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -138,6 +140,33 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
         this.getDataWatcher().updateObject(13, Byte.valueOf((byte) (par1 ? 1 : 0)));
     }
 
+    public float getBrightnessD(float par1, boolean debug)
+    {
+        if (debug)
+        {
+            int i = MathHelper.floor_double(this.posX);
+            int j = MathHelper.floor_double(this.posZ);
+            
+            FMLLog.info("b " + this.worldObj.blockExists(i, 0, j));
+
+            if (this.worldObj.blockExists(i, 0, j))
+            {
+                double d0 = (this.boundingBox.maxY - this.boundingBox.minY) * 0.66D;
+                int k = MathHelper.floor_double(this.posY - (double)this.yOffset + d0);
+                FMLLog.info("d " + this.worldObj.getLightBrightness(i, k, j));
+                return this.worldObj.getLightBrightness(i, k, j);
+            }
+            else
+            {
+                return 0.0F;
+            }
+        }
+        else
+        {
+            return this.getBrightness(par1);
+        }
+    }
+
     /**
      * Called frequently so the entity can update its state every tick as
      * required. For example, zombies and skeletons use this to react to
@@ -146,11 +175,23 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
     @Override
     public void onLivingUpdate()
     {
+        boolean b = this.rand.nextInt(500) == 0;
+        if (b)
+        {
+            FMLLog.info("a " + this.worldObj.isDaytime() + " " + this.worldObj.isRemote + " " + this.isChild() + " " + (new Vector3(this)));
+        }
+        
         if (this.worldObj.isDaytime() && !this.worldObj.isRemote && !this.isChild())
         {
-            final float f = this.getBrightness(1.0F);
+            final float f = this.getBrightnessD(1.0F, b);
+            float rand = this.rand.nextFloat() * 30.0F;
 
-            if (f > 0.5F && this.rand.nextFloat() * 30.0F < (f - 0.4F) * 2.0F && this.worldObj.canBlockSeeTheSky(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)))
+            if (b)
+            {
+                FMLLog.info("c " + f + " " + rand + " " + ((f - 0.4F) * 2.0F) + " " + this.worldObj.canBlockSeeTheSky(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)));
+            }
+
+            if (f > 0.5F && rand < (f - 0.4F) * 2.0F && this.worldObj.canBlockSeeTheSky(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)))
             {
                 boolean flag = true;
                 final ItemStack itemstack = this.getCurrentItemOrArmor(4);
