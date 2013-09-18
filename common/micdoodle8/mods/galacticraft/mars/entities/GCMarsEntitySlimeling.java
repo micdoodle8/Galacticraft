@@ -162,15 +162,7 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
     {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.30000001192092896D);
-
-        if (this.isTamed())
-        {
-            this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(20.0D);
-        }
-        else
-        {
-            this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(8.0D);
-        }
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(this.getMaxHealthSlimeling());
     }
 
     @Override
@@ -302,7 +294,19 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
 
         if (!this.worldObj.isRemote)
         {
-            this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(20 + 30.0 * ((double) this.age / (double) this.MAX_AGE));
+            this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(this.getMaxHealthSlimeling());
+        }
+    }
+    
+    private double getMaxHealthSlimeling()
+    {
+        if (this.isTamed())
+        {
+            return 20 + 30.0 * ((double) this.age / (double) this.MAX_AGE);
+        }
+        else
+        {
+            return 8.0D;
         }
     }
 
@@ -349,15 +353,7 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
     public void setTamed(boolean par1)
     {
         super.setTamed(par1);
-
-        if (par1)
-        {
-            this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(20.0D);
-        }
-        else
-        {
-            this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(8.0D);
-        }
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(this.getMaxHealthSlimeling());
     }
 
     @Override
