@@ -62,7 +62,11 @@ public class GCMarsRenderSlimeling extends RenderLiving
     @Override
     protected int shouldRenderPass(EntityLivingBase par1EntityLivingBase, int par2, float par3)
     {
-        if (par2 == 0)
+        if (par1EntityLivingBase.isInvisible())
+        {
+            return 0;
+        }
+        else if (par2 == 0)
         {
             this.setRenderPassModel(this.renderPassModel);
             GL11.glEnable(GL11.GL_NORMALIZE);
@@ -87,7 +91,7 @@ public class GCMarsRenderSlimeling extends RenderLiving
     {
         Minecraft mc = FMLClientHandler.instance().getClient();
 
-        if (mc.currentScreen == null || !((mc.currentScreen instanceof GCMarsGuiSlimeling || mc.currentScreen instanceof GCMarsGuiSlimelingInventory) && GCMarsGuiSlimeling.renderingOnGui))
+        if (!par1EntityLivingBase.isInvisible() && (mc.currentScreen == null || !((mc.currentScreen instanceof GCMarsGuiSlimeling || mc.currentScreen instanceof GCMarsGuiSlimelingInventory) && GCMarsGuiSlimeling.renderingOnGui)))
         {
             this.renderLivingLabel(par1EntityLivingBase, ((GCMarsEntitySlimeling) par1EntityLivingBase).getName(), par2, par4 + 0.33, par6, 64);
             double health = Math.floor(((GCMarsEntitySlimeling) par1EntityLivingBase).getHealth());
@@ -113,7 +117,6 @@ public class GCMarsRenderSlimeling extends RenderLiving
 
     protected void renderLivingLabelWithColor(EntityLivingBase par1EntityLivingBase, String par2Str, double par3, double par5, double par7, int par9, float cR, float cG, float cB)
     {
-
         double d3 = par1EntityLivingBase.getDistanceSqToEntity(this.renderManager.livingPlayer);
 
         if (d3 <= par9 * par9)
