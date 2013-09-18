@@ -31,7 +31,6 @@ import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -455,7 +454,7 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
     @Override
     public boolean isBreedingItem(ItemStack par1ItemStack)
     {
-        return par1ItemStack == null ? false : !(Item.itemsList[par1ItemStack.itemID] instanceof ItemFood) ? false : ((ItemFood) Item.itemsList[par1ItemStack.itemID]).isWolfsFavoriteMeat();
+        return false;
     }
 
     public GCMarsEntitySlimeling spawnBabyAnimal(EntityAgeable par1EntityAgeable)
@@ -509,9 +508,9 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
         {
             if (par1EntityLivingBase instanceof GCMarsEntitySlimeling)
             {
-                GCMarsEntitySlimeling entitywolf = (GCMarsEntitySlimeling) par1EntityLivingBase;
+                GCMarsEntitySlimeling slimeling = (GCMarsEntitySlimeling) par1EntityLivingBase;
 
-                if (entitywolf.isTamed() && entitywolf.func_130012_q() == par2EntityLivingBase)
+                if (slimeling.isTamed() && slimeling.func_130012_q() == par2EntityLivingBase)
                 {
                     return false;
                 }
