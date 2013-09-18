@@ -191,8 +191,6 @@ public class GCCoreBlockFallenMeteor extends Block implements ITileEntityProvide
     @Override
     public TileEntity createNewTileEntity(World world)
     {
-        GCCoreTileEntityFallenMeteor meteor = new GCCoreTileEntityFallenMeteor();
-        meteor.setHeatLevel(GCCoreTileEntityFallenMeteor.MAX_HEAT_LEVEL);
-        return meteor;
+        return new GCCoreTileEntityFallenMeteor();
     }
 }

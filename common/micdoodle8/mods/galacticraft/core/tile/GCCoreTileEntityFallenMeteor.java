@@ -16,14 +16,14 @@ import cpw.mods.fml.common.FMLLog;
 public class GCCoreTileEntityFallenMeteor extends TileEntity implements IPacketReceiver
 {
     public static final int MAX_HEAT_LEVEL = 5000;
-    private int heatLevel;
+    private int heatLevel = MAX_HEAT_LEVEL;
     private int lastHeatLevel;
     
     public void updateEntity() 
     {
         super.updateEntity();
         
-        if (this.heatLevel > 0)
+        if (!this.worldObj.isRemote && this.heatLevel > 0)
         {
             this.heatLevel--;
         }
@@ -33,7 +33,7 @@ public class GCCoreTileEntityFallenMeteor extends TileEntity implements IPacketR
             this.worldObj.markBlockForRenderUpdate(this.xCoord, this.yCoord, this.zCoord);
         }
         
-        if ((this.heatLevel % 5 == 0 && this.heatLevel != 0) || this.heatLevel == 0 && this.lastHeatLevel != 0)
+        if (!this.worldObj.isRemote && ((this.heatLevel % 5 == 0 && this.heatLevel != 0) || this.heatLevel == 0 && this.lastHeatLevel != 0))
         {
             PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 50.0F);
         }
