@@ -56,4 +56,10 @@ public class GCMoonMapGenVillage extends MapGenStructure
     {
         return new GCMoonStructureVillageStart(this.worldObj, this.rand, par1, par2, this.terrainType);
     }
+
+    @Override
+    public String func_143025_a()
+    {
+        return "MoonVillage";
+    }
 }
