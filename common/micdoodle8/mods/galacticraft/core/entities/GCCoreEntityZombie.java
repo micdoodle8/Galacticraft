@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.entities;
 
 import java.util.Calendar;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
+import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -175,7 +176,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
     @Override
     public void onLivingUpdate()
     {
-        boolean b = this.rand.nextInt(500) == 0;
+        boolean b = this.rand.nextInt(500) == 0 && GCCoreConfigManager.enableDebug;
         if (b)
         {
             FMLLog.info("a " + this.worldObj.isDaytime() + " " + this.worldObj.isRemote + " " + this.isChild() + " " + (new Vector3(this)));

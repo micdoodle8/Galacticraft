@@ -175,6 +175,7 @@ public class GCCoreConfigManager
     public static int suffocationDamage;
     public static int[] externalOilGen;
     public static boolean forceOverworldRespawn;
+    public static boolean enableDebug;
 
     public static void setDefaultValues(File file)
     {
@@ -336,6 +337,7 @@ public class GCCoreConfigManager
             GCCoreConfigManager.suffocationDamage = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Suffocation Damage", 2, "Change this value to modify the damage taken per suffocation tick").getInt(2);
             GCCoreConfigManager.externalOilGen = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Oil gen in external dimensions", new int[] { 0 }, "List of non-galacticraft dimension IDs to generate oil in").getIntList();
             GCCoreConfigManager.forceOverworldRespawn = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Force Overworld Spawn", false, "By default, you will respawn on galacticraft dimensions if you die. If you set this to true, you will respawn back on earth.").getBoolean(false);
+            GCCoreConfigManager.enableDebug = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Enable Debug Messages", false, "If this is enabled, debug messages will appear in the console. This is useful for finding bugs in the mod.").getBoolean(false);
         }
         catch (final Exception e)
         {
