@@ -204,9 +204,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
         {
             this.dataWatcher.updateObject(this.rockDirection, Integer.valueOf(-this.dataWatcher.getWatchableObjectInt(this.rockDirection)));
             this.dataWatcher.updateObject(this.timeSinceHit, Integer.valueOf(10));
-            // this.dataWatcher.updateObject(this.currentDamage,
-            // Integer.valueOf(this.dataWatcher.getWatchableObjectInt(this.currentDamage)
-            // + var2 * 10)); TODO
+            this.dataWatcher.updateObject(this.currentDamage, Integer.valueOf((int) (this.dataWatcher.getWatchableObjectInt(this.currentDamage) + var2 * 10)));
             this.setBeenAttacked();
 
             if (var1.getEntity() instanceof EntityPlayer && ((EntityPlayer) var1.getEntity()).capabilities.isCreativeMode)
