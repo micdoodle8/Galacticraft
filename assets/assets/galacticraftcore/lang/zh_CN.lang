@@ -66,10 +66,15 @@ item.fuelCanister.name=燃油罐(满)
 item.oilExtractor.name=便携取油器
 item.schematic.name=NASA工作台图纸
 item.fuel.name=火箭燃料
-item.key.T1.name=地牢钥匙 等级1
+item.key.T1.name=一阶地牢钥匙
 item.buggymat.wheel.name=星球车车轮
 item.buggymat.seat.name=星球车座椅
 item.buggymat.storage.name=星球车存储箱
+item.basicItem.solar_module_0.name=单体太阳能模块
+item.basicItem.solar_module_1.name=全载太阳能模块
+item.tier1.desc=一阶
+item.battery.name=电池
+item.infiniteBattery.name=无限电池
 
 # TOOLS
 item.steel_pickaxe.name=重镐
@@ -126,6 +131,15 @@ tile.enclosed.PipeLiquidsCobblestone.name=可密封圆石防水管道
 tile.enclosed.PipeLiquidsStone.name=可密封石头防水管道
 tile.enclosed.PipePowerStone.name=可密封圆石导体管道
 tile.enclosed.PipePowerGold.name=可密封石头导体管道
+tile.solar.basic.name=基础太阳能板
+tile.solar.advanced.name=高级太阳能板
+tile.parachest.name=伞降箱
+tile.oreCopper.name=铜矿石
+tile.oreTin.name=锡矿石
+tile.copperWire.name=铜线
+tile.machine.0.name=燃煤发电机
+tile.machine.1.name=电池盒
+tile.machine.2.name=电炉
 
 # ENTITIES
 entity.GalacticraftCore.EvolvedSpider.name=蜘蛛(进化体)
@@ -134,7 +148,7 @@ entity.GalacticraftCore.EvolvedCreeper.name=爬行者(进化体)
 entity.GalacticraftCore.EvolvedSkeleton.name=骷髅(进化体)
 entity.GalacticraftCore.EvolvedSkeletonBoss.name=骷髅王(进化体)
 entity.GalacticraftCore.AlienVillager.name=外星村民
-entity.GalacticraftCore.Spaceship.name=火箭 等级1
+entity.GalacticraftCore.Spaceship.name=一阶火箭
 entity.GalacticraftCore.GravityArrow.name=箭
 entity.GalacticraftCore.Meteor.name=陨石
 entity.GalacticraftCore.Buggy.name=星球车
@@ -144,9 +158,9 @@ entity.GalacticraftCore.OxygenBubble.name=氧气气氛
 entity.GalacticraftCore.Lander.name=登陆舱
 
 # Schematics
-schematic.moonbuggy.name=月球车
-schematic.rocketT1.name=火箭 等级1
-schematic.rocketT2.name=火箭 等级2
+schematic.moonbuggy.name=探月车
+schematic.rocketT1.name=一阶火箭
+schematic.rocketT2.name=二阶火箭
 
 # DEATH MESSAGES
 death.spaceshipExplosion=%1$s的火箭出故障了!
@@ -157,13 +171,13 @@ death.oxygenSuffocation=%1$s因氧气消耗殆尽而死!
 galaxy.blockyway.name=方块银河
 
 # OTHER
-message.warning1.name=Galacticraft需要下列Mod之一: 工业2(IndustrialCraft 2), 热能扩展(Thermal Expansion)或基本组件(Basic Components)!
+message.warning1.name=Galacticraft需要下列Mod之一: 工业2(IndustrialCraft 2), 热能扩展(Thermal Expansion)或UE基本组件(Basic Components)!
 message.warning2.name=这些Mod的一个或多个对于合成等游戏内容至关重要, 确定忽视吗?
 message.button1.name=忽视
-message.button2.name=载入基本组件(Basic Components)
+message.button2.name=载入UE基本组件(Basic Components)
 message.button3.name=退出
 message.button4.name=不再显示
-newversion.message1.name=\u00a77新的 \u00a73Galacticraft \u00a77版本 可用! v
+newversion.message1.name=\u00a77新的\u00a73Galacticraft\u00a77版本可用! v
 newversion.message2.name=新的Galacticraft版本可用! v
 newversion.failed.name=Galacticraft新版本检查失败! 15秒后重试
 newversion.success.name=发现Galacticraft远程版本:
@@ -183,7 +197,7 @@ keybind.vehicledown.name=[GC] 载具下降键
 itemGroup.GalacticraftCore=Galacticraft
 
 # GUI
-container.cargoloader.name=货物加载器
+container.cargoloader.name=货物装载器
 container.cargounloader.name=货物卸载器
 container.fuelloader.name=燃料注入器
 container.oxygencollector.name=氧气收集器
@@ -194,7 +208,7 @@ container.parachest.name=伞降箱
 container.refinery.name=精炼器
 container.treasurechest.name=珍品箱
 container.lander.name=登陆舱
-container.spaceship.name=火箭 等级1
+container.spaceship.name=一阶火箭
 
 gui.message.out.name=输出
 gui.message.in.name=输入
@@ -226,7 +240,7 @@ gui.status.targetempty.name=目标载具已空!
 gui.status.ready.name=准备就绪
 gui.status.refining.name=精炼中
 gui.status.idle.name=空闲
-gui.status.nooil.name=没有油料
+gui.status.nooil.name=无油料
 
 gui.button.enableseal.name=密闭启动
 gui.button.disableseal.name=禁用密闭
@@ -267,7 +281,7 @@ gui.galaxymap.exit.name=Esc - 退出地图
 gui.buggy.turn.name=左转-右转
 gui.buggy.accel.name=加速
 gui.buggy.decel.name=减速
-gui.buggy.inv.name=物品栏 / 燃料
+gui.buggy.inv.name=物品栏/燃料
 
 # DIMENSIONS
 dimension.Overworld.name=主世界(地球)
