@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.mars.blocks;
 
 import java.util.List;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.IChunkLoader;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.mars.GCMarsConfigManager;
@@ -21,6 +22,8 @@ import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeChunkManager;
+import net.minecraftforge.common.ForgeChunkManager.Type;
 import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.UniversalElectricity;
 import universalelectricity.core.vector.Vector3;
@@ -209,6 +212,11 @@ public class GCMarsBlockMachine extends BlockTile
                     }
                 }
             }
+        }
+        
+        if (var8 instanceof IChunkLoader && !var8.worldObj.isRemote)
+        {
+            ((IChunkLoader) var8).onTicketLoaded(ForgeChunkManager.requestTicket(GalacticraftCore.instance, var8.worldObj, Type.NORMAL));
         }
     }
 

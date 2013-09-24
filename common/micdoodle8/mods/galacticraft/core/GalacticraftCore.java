@@ -82,6 +82,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldProviderSurface;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.Event;
 import net.minecraftforge.fluids.Fluid;
@@ -249,6 +250,8 @@ public class GalacticraftCore
 
             languages++;
         }
+        
+        ForgeChunkManager.setForcedChunkLoadingCallback(GalacticraftCore.instance, new ChunkLoadingCallback());
         
         GCLog.info("Galacticraft Loaded: " + languages + " Languages.");
         GalacticraftMoon.load(event);

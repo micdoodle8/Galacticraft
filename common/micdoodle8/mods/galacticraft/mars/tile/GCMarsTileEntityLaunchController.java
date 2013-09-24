@@ -1,12 +1,18 @@
 package micdoodle8.mods.galacticraft.mars.tile;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.List;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.IChunkLoader;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPadFull;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoPad;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectric;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlockMachine;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -15,7 +21,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.common.ForgeChunkManager;
+import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.block.IElectrical;
 import universalelectricity.core.item.IItemElectric;
@@ -24,11 +34,13 @@ import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric implements IElectrical, IInventory, ISidedInventory, IPacketReceiver, ILandingPadAttachable
+public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric implements IChunkLoader, IElectrical, IInventory, ISidedInventory, IPacketReceiver, ILandingPadAttachable
 {
     public static final float WATTS_PER_TICK = 0.05000001f;
     private ItemStack[] containingItems = new ItemStack[1];
     private boolean launchPadRemovalDisabled = true;
+    private Ticket chunkLoadTicket;
+    private List<ChunkCoordinates> connectedPads = new ArrayList<ChunkCoordinates>();
 
     public GCMarsTileEntityLaunchController()
     {
@@ -41,9 +53,78 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
         super.updateEntity();
 
         this.discharge(this.containingItems[0]);
-
+        
+        if (!this.worldObj.isRemote && this.ticks % 20 == 0 && this.chunkLoadTicket != null)
+        {
+            for (int i = 0; i < this.connectedPads.size(); i++)
+            {
+                ChunkCoordinates coords = this.connectedPads.get(i);
+                int blockID = this.worldObj.getBlockId(coords.posX, coords.posY, coords.posZ);
+                
+                if (blockID != GCCoreBlocks.landingPadFull.blockID)
+                {
+                    this.connectedPads.remove(i);
+                    ForgeChunkManager.unforceChunk(this.chunkLoadTicket, new ChunkCoordIntPair(coords.posX >> 4, coords.posZ >> 4));
+                }
+            }
+        }
+    }
+    
+    @Override
+    public void invalidate()
+    {
+        super.invalidate();
+        
+        if (this.chunkLoadTicket != null)
+        {
+            ForgeChunkManager.releaseTicket(this.chunkLoadTicket);
+        }
+    }
+    
+    @Override
+    public void validate()
+    {
+        super.validate();
+    }
+    
+    @Override
+    public void onTicketLoaded(Ticket ticket)
+    {
         if (!this.worldObj.isRemote)
         {
+            if (ticket == null)
+            {
+                return;
+            }
+            
+            if (this.chunkLoadTicket == null)
+            {
+                this.chunkLoadTicket = ticket;
+            }
+
+            NBTTagCompound nbt = this.chunkLoadTicket.getModData();
+            nbt.setInteger("ChunkLoaderTileX", this.xCoord);
+            nbt.setInteger("ChunkLoaderTileY", this.yCoord);
+            nbt.setInteger("ChunkLoaderTileZ", this.zCoord);
+            
+            for (int x = -2; x <= 2; x++)
+            {
+                for (int z = -2; z <= 2; z++)
+                {
+                    int blockID = this.worldObj.getBlockId(this.xCoord + x, this.yCoord, this.zCoord + z);
+                    
+                    if (blockID > 0 && Block.blocksList[blockID] instanceof GCCoreBlockLandingPadFull)
+                    {
+                        if (this.xCoord + x >> 4 != this.xCoord >> 4 || this.zCoord + z >> 4 != this.zCoord >> 4)
+                        {
+                            this.connectedPads.add(new ChunkCoordinates(this.xCoord + x, this.yCoord, this.zCoord + z));
+                            ForgeChunkManager.forceChunk(this.chunkLoadTicket, new ChunkCoordIntPair(this.xCoord + x >> 4, this.zCoord + z >> 4));
+                        }
+                    }
+                }
+            }
+            
+            ForgeChunkManager.forceChunk(this.chunkLoadTicket, new ChunkCoordIntPair(this.xCoord >> 4, this.zCoord >> 4));
         }
     }
 
