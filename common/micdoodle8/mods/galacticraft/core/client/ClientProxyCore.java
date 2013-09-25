@@ -157,7 +157,6 @@ import org.lwjgl.opengl.GL11;
 import org.w3c.dom.Document;
 import tconstruct.client.tabs.InventoryTabVanilla;
 import tconstruct.client.tabs.TabRegistry;
-import cofh.api.core.RegistryAccess;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
@@ -320,10 +319,22 @@ public class ClientProxyCore extends CommonProxyCore
         ClientProxyCore.capeMap.put("Made_This_Name", capeString);
         ClientProxyCore.capeMap.put("spamenigma", capeString);
 
-        // Add to CoFH cape registry as well
-        for (Entry<String, String> e : ClientProxyCore.capeMap.entrySet())
+        if (Loader.isModLoaded("CoFHCore"))
         {
-            RegistryAccess.capeRegistry.register(e.getKey(), e.getValue());
+            // Add to CoFH cape registry as well
+            for (Entry<String, String> e : ClientProxyCore.capeMap.entrySet())
+            {
+                try
+                {
+                    Object capeRegistry = Class.forName("cofh.api.core.RegistryAccess").getField("capeRegistry").get(null);
+                    Class.forName("cofh.api.core.ISimpleRegistry").getMethod("register", String.class, String.class).invoke(capeRegistry, e.getKey(), e.getValue());
+                }
+                catch (Exception e1)
+                {
+                    e1.printStackTrace();
+                    break;
+                }
+            }
         }
     }
 
