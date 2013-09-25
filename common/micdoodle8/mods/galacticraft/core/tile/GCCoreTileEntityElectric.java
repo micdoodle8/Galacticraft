@@ -1,9 +1,10 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import ic2.api.energy.event.EnergyTileLoadEvent;
-import ic2.api.tile.IWrenchable;
+import ic2.api.energy.tile.IEnergyTile;
 import java.util.EnumSet;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
+import micdoodle8.mods.galacticraft.core.ASMHelper.RuntimeInterface;
 import micdoodle8.mods.galacticraft.core.GCCoreCompatibilityManager;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,7 +16,6 @@ import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
-import universalelectricity.compatibility.TileEntityUniversalElectrical;
 import universalelectricity.core.electricity.ElectricityPack;
 import universalelectricity.core.item.ElectricItemHelper;
 import universalelectricity.core.vector.Vector3;
@@ -23,7 +23,7 @@ import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
 
-public abstract class GCCoreTileEntityElectric extends TileEntityUniversalElectrical implements IWrenchable, IPacketReceiver, IDisableableMachine
+public abstract class GCCoreTileEntityElectric extends GCCoreTileEntityUniversalElectrical implements IPacketReceiver, IDisableableMachine
 {
     public float ueWattsPerTick;
     private final float ueMaxEnergy;
@@ -106,7 +106,7 @@ public abstract class GCCoreTileEntityElectric extends TileEntityUniversalElectr
         {
             if (GCCoreCompatibilityManager.isIc2Loaded())
             {
-                MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
+                MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent((IEnergyTile) this));
             }
 
             this.addedToEnergyNet = true;
@@ -176,19 +176,19 @@ public abstract class GCCoreTileEntityElectric extends TileEntityUniversalElectr
         return this.disabled;
     }
 
-    @Override
+    @RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = "IC2")
     public boolean wrenchCanSetFacing(EntityPlayer entityPlayer, int side)
     {
         return true;
     }
 
-    @Override
+    @RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = "IC2")
     public short getFacing()
     {
         return (short) this.worldObj.getBlockMetadata(MathHelper.floor_double(this.xCoord), MathHelper.floor_double(this.yCoord), MathHelper.floor_double(this.zCoord));
     }
 
-    @Override
+    @RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = "IC2")
     public void setFacing(short facing)
     {
         int change = 0;
@@ -213,19 +213,19 @@ public abstract class GCCoreTileEntityElectric extends TileEntityUniversalElectr
         this.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.xCoord), MathHelper.floor_double(this.yCoord), MathHelper.floor_double(this.zCoord), change, 3);
     }
 
-    @Override
+    @RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = "IC2")
     public boolean wrenchCanRemove(EntityPlayer entityPlayer)
     {
         return true;
     }
 
-    @Override
+    @RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = "IC2")
     public float getWrenchDropRate()
     {
         return 1.0F;
     }
 
-    @Override
+    @RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = "IC2")
     public ItemStack getWrenchDrop(EntityPlayer entityPlayer)
     {
         return Block.blocksList[this.getBlockType().blockID].getPickBlock(null, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
