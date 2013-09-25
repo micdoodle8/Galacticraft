@@ -14,7 +14,6 @@ import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraftforge.common.ForgeDirection;
-import universalelectricity.compatibility.TileEntityUniversalElectrical;
 import universalelectricity.core.item.IItemElectric;
 import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
@@ -22,7 +21,7 @@ import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-public class GCCoreTileEntityBatteryBox extends TileEntityUniversalElectrical implements IPacketReceiver, ISidedInventory
+public class GCCoreTileEntityBatteryBox extends GCCoreTileEntityUniversalElectrical implements IPacketReceiver, ISidedInventory
 {
     private ItemStack[] containingItems = new ItemStack[2];
 

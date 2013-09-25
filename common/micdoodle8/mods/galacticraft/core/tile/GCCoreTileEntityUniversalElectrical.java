@@ -32,8 +32,7 @@ import buildcraft.api.power.PowerHandler.Type;
 public abstract class GCCoreTileEntityUniversalElectrical extends TileEntityElectrical
 {
 	protected boolean isAddedToEnergyNet;
-	public PowerHandler bcPowerHandler;
-	public Type bcBlockType = Type.MACHINE;
+	public Object bcPowerHandler;
 	public float maxInputEnergy = 100;
 
 	/**
@@ -123,7 +122,7 @@ public abstract class GCCoreTileEntityUniversalElectrical extends TileEntityElec
 
 			if (Compatibility.isBuildcraftLoaded())
 			{
-			    PowerHandler handler = this.bcPowerHandler;
+			    PowerHandler handler = (PowerHandler) this.bcPowerHandler;
 			    
 				if (handler.getEnergyStored() > 0)
 				{
@@ -171,7 +170,7 @@ public abstract class GCCoreTileEntityUniversalElectrical extends TileEntityElec
 						if (receiver != null)
 						{
 							float bc3Provide = provide * Compatibility.TO_BC_RATIO;
-							float energyUsed = Math.min(receiver.receiveEnergy(this.bcBlockType, bc3Provide, outputDirection.getOpposite()), bc3Provide);
+							float energyUsed = Math.min(receiver.receiveEnergy(Type.MACHINE, bc3Provide, outputDirection.getOpposite()), bc3Provide);
 							this.provideElectricity((bc3Provide - (energyUsed * Compatibility.TO_BC_RATIO)), true);
 							return true;
 						}
@@ -288,16 +287,16 @@ public abstract class GCCoreTileEntityUniversalElectrical extends TileEntityElec
 	    
 		if (this.bcPowerHandler == null)
 		{
-			this.bcPowerHandler = new PowerHandler((IPowerReceptor) this, this.bcBlockType);
+			this.bcPowerHandler = new PowerHandler((IPowerReceptor) this, Type.MACHINE);
 		}
-		this.bcPowerHandler.configure(0, this.maxInputEnergy, 0, (int) Math.ceil(this.getMaxEnergyStored() * Compatibility.BC3_RATIO));
+		((PowerHandler) this.bcPowerHandler).configure(0, this.maxInputEnergy, 0, (int) Math.ceil(this.getMaxEnergyStored() * Compatibility.BC3_RATIO));
 	}
 
     @RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "BuildCraft|Energy")
 	public PowerReceiver getPowerReceiver(ForgeDirection side)
 	{
 		this.initBuildCraft();
-		return this.bcPowerHandler.getPowerReceiver();
+		return ((PowerHandler) this.bcPowerHandler).getPowerReceiver();
 	}
 
     @RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "BuildCraft|Energy")

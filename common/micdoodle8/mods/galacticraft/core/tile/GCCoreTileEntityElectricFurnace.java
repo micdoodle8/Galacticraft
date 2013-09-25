@@ -16,7 +16,6 @@ import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraftforge.common.ForgeDirection;
-import universalelectricity.compatibility.TileEntityUniversalElectrical;
 import universalelectricity.core.block.IElectrical;
 import universalelectricity.core.item.IItemElectric;
 import universalelectricity.prefab.network.IPacketReceiver;
@@ -26,7 +25,7 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-public class GCCoreTileEntityElectricFurnace extends TileEntityUniversalElectrical implements IElectrical, IInventory, ISidedInventory, IPacketReceiver
+public class GCCoreTileEntityElectricFurnace extends GCCoreTileEntityUniversalElectrical implements IElectrical, IInventory, ISidedInventory, IPacketReceiver
 {
     /**
      * The amount of watts required every TICK.

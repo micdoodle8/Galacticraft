@@ -1,8 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import universalelectricity.compatibility.TileEntityUniversalConductor;
 
-public class GCCoreTileEntityCopperWire extends TileEntityUniversalConductor
+public class GCCoreTileEntityCopperWire extends GCCoreTileEntityUniversalConductor
 {
     /**
      * Changed this if your mod wants to nerf Basic Component's copper wire.
