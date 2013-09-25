@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.recipe;
 
-import ic2.api.item.Items;
-import ic2.api.recipe.RecipeInputItemStack;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
@@ -21,6 +20,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import thermalexpansion.api.item.ItemRegistry;
 
@@ -206,7 +206,7 @@ public class GCCoreRecipeManager
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreItems.rocketEngine, 1), new Object[] { " V ", "XWX", "XZX", 'V', new ItemStack(GCCoreItems.canister, 1, 0), 'W', RecipeUtil.getGregtechBlock(1, 1, 31), 'X', GCCoreItems.heavyPlatingTier1, 'Z', RecipeUtil.getGregtechBlock(1, 1, 37) });
 
-        RecipeUtil.addRecipe(new ItemStack(GCCoreItems.partNoseCone, 1), new Object[] { " Z ", " X ", "XYX", 'X', GCCoreItems.heavyPlatingTier1, 'Y', RecipeUtil.getGregtechBlock(1, 1, 4), 'Z', Items.getItem("reinforcedGlass"), });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreItems.partNoseCone, 1), new Object[] { " Z ", " X ", "XYX", 'X', GCCoreItems.heavyPlatingTier1, 'Y', RecipeUtil.getGregtechBlock(1, 1, 4), 'Z', RecipeUtil.getIndustrialCraftItem("reinforcedGlass"), });
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.oxygenPipe, 4), new Object[] { "XXX", "   ", "XXX", 'X', Block.thinGlass });
 
@@ -270,7 +270,7 @@ public class GCCoreRecipeManager
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.oxygenCollector, 1), new Object[] { "WVW", "YXZ", "WUW", 'U', RecipeUtil.getGregtechItem(0, 1, 83), 'V', GCCoreItems.oxygenConcentrator, 'W', "ingotSteel", 'X', RecipeUtil.getGregtechBlock(1, 0, 15), 'Y', GCCoreItems.oxygenFan, 'Z', GCCoreItems.oxygenVent });
 
-        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.nasaWorkbench, 1), new Object[] { "X Y", "ZAB", "DCD", 'X', RecipeUtil.getGregtechItem(42, 1, 1), 'Y', RecipeUtil.getGregtechItem(46, 1, 1), 'Z', Items.getItem("diamondDrill"), 'A', RecipeUtil.getGregtechBlock(1, 1, 16), 'B', Items.getItem("electricWrench"), 'C', RecipeUtil.getGregtechBlock(1, 1, 60), 'D', RecipeUtil.getGregtechBlock(1, 0, 10), });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.nasaWorkbench, 1), new Object[] { "X Y", "ZAB", "DCD", 'X', RecipeUtil.getGregtechItem(42, 1, 1), 'Y', RecipeUtil.getGregtechItem(46, 1, 1), 'Z', RecipeUtil.getIndustrialCraftItem("diamondDrill"), 'A', RecipeUtil.getGregtechBlock(1, 1, 16), 'B', RecipeUtil.getIndustrialCraftItem("electricWrench"), 'C', RecipeUtil.getGregtechBlock(1, 1, 60), 'D', RecipeUtil.getGregtechBlock(1, 0, 10), });
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreItems.oxTankHeavy, 1, GCCoreItems.oxTankHeavy.getMaxDamage()), new Object[] { "ZZZ", "XXX", "YYY", 'X', new ItemStack(GCCoreItems.canister, 1, 0), 'Y', "ingotSteel", 'Z', new ItemStack(Block.cloth, 1, 14) });
 
@@ -316,7 +316,7 @@ public class GCCoreRecipeManager
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.oxygenCompressor), new Object[] { "XZX", "XWX", "XYX", 'X', "ingotSteel", 'Y', RecipeUtil.getGregtechItem(0, 1, 83), 'Z', GCCoreItems.oxygenConcentrator, 'W', RecipeUtil.getGregtechBlock(1, 0, 15) });
 
-        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.fuelLoader), new Object[] { "XZX", "ZWZ", "XYX", 'X', "ingotSteel", 'Y', RecipeUtil.getGregtechItem(0, 1, 83), 'Z', Items.getItem("reinforcedGlass"), 'W', RecipeUtil.getGregtechBlock(1, 0, 15) });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.fuelLoader), new Object[] { "XZX", "ZWZ", "XYX", 'X', "ingotSteel", 'Y', RecipeUtil.getGregtechItem(0, 1, 83), 'Z', RecipeUtil.getIndustrialCraftItem("reinforcedGlass"), 'W', RecipeUtil.getGregtechBlock(1, 0, 15) });
     }
 
     private static void addBuildCraftCraftingRecipes()
@@ -795,13 +795,17 @@ public class GCCoreRecipeManager
         {
             Class<?> clazz = Class.forName("ic2.core.Ic2Items");
 
-            Object copperDustObject = clazz.getField("copperDust").get(null);
+            Object copperDustObject = clazz.getField("crushedCopperOre").get(null);
             ItemStack copperDustItemStack = (ItemStack) copperDustObject;
-            ic2.api.recipe.Recipes.macerator.addRecipe(new RecipeInputItemStack(new ItemStack(GCMoonBlocks.blockMoon.blockID, 1, 0)), null, new ItemStack(copperDustItemStack.getItem(), 2, 1));
+            Class<?> clazz2 = Class.forName("ic2.api.recipe.RecipeInputItemStack");
+            Object o = clazz2.getConstructor(ItemStack.class).newInstance(new ItemStack(GCMoonBlocks.blockMoon.blockID, 1, 0));
+            Method addRecipe = Class.forName("ic2.api.recipe.IMachineRecipeManager").getMethod("addRecipe", Class.forName("ic2.api.recipe.IRecipeInput"), NBTTagCompound.class, ItemStack[].class);
+            addRecipe.invoke(Class.forName("ic2.api.recipe.Recipes").getField("macerator").get(null), o, null, new ItemStack[] { new ItemStack(copperDustItemStack.getItem(), 2, copperDustItemStack.getItemDamage()) });
 
-            Object tinDustObject = clazz.getField("tinDust").get(null);
+            Object tinDustObject = clazz.getField("crushedTinOre").get(null);
             ItemStack tinDustItemStack = (ItemStack) tinDustObject;
-            ic2.api.recipe.Recipes.macerator.addRecipe(new RecipeInputItemStack(new ItemStack(GCMoonBlocks.blockMoon.blockID, 1, 1)), null, new ItemStack(tinDustItemStack.getItem(), 2, 1));
+            o = clazz2.getConstructor(ItemStack.class).newInstance(new ItemStack(GCMoonBlocks.blockMoon.blockID, 1, 1));
+            addRecipe.invoke(Class.forName("ic2.api.recipe.Recipes").getField("macerator").get(null), o, null, new ItemStack[] { new ItemStack(tinDustItemStack.getItem(), 2, tinDustItemStack.getItemDamage()) });
         }
         catch (Throwable e)
         {
