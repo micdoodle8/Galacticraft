@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
-import icbm.api.IMissileLockable;
-import icbm.api.sentry.IAATarget;
 import java.util.ArrayList;
 import java.util.List;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
@@ -29,7 +27,7 @@ import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public abstract class EntitySpaceshipBase extends Entity implements IPacketReceiver, IMissileLockable, IAATarget
+public abstract class EntitySpaceshipBase extends Entity implements IPacketReceiver
 {
     public static enum EnumLaunchPhase
     {

@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
-import icbm.api.RadarRegistry;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -15,6 +14,7 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
@@ -26,6 +26,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import com.google.common.io.ByteArrayDataInput;
+import cpw.mods.fml.common.Loader;
 
 public abstract class EntityTieredRocket extends EntitySpaceshipBase implements IRocketType, IDockable, IInventory
 {
@@ -52,15 +53,36 @@ public abstract class EntityTieredRocket extends EntitySpaceshipBase implements 
     protected void entityInit()
     {
         super.entityInit();
-        RadarRegistry.register(this);
+        
+        if (Loader.isModLoaded("ICBM|Explosion"))
+        {
+            try
+            {
+                Class.forName("icbm.api.RadarRegistry").getMethod("register", Entity.class).invoke(null, this);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
     public void setDead()
     {
         super.setDead();
-
-        RadarRegistry.unregister(this);
+        
+        if (Loader.isModLoaded("ICBM|Explosion"))
+        {
+            try
+            {
+                Class.forName("icbm.api.RadarRegistry").getMethod("unregister", Entity.class).invoke(null, this);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override

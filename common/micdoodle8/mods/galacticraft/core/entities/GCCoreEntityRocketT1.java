@@ -1,11 +1,11 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import icbm.api.IMissile;
-import icbm.api.IMissileLockable;
 import java.util.ArrayList;
 import java.util.List;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.core.ASMHelper.RuntimeInterface;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
@@ -36,7 +36,7 @@ import cpw.mods.fml.relauncher.Side;
  * All rights reserved.
  * 
  */
-public class GCCoreEntityRocketT1 extends EntityTieredRocket implements IInventory, IMissileLockable
+public class GCCoreEntityRocketT1 extends EntityTieredRocket implements IInventory
 {
     protected ItemStack[] cargoItems;
 
@@ -400,13 +400,13 @@ public class GCCoreEntityRocketT1 extends EntityTieredRocket implements IInvento
         return this.spaceshipFuelTank.getCapacity();
     }
 
-    @Override
+    @RuntimeInterface(clazz = "icbm.api.IMissileLockable", modID = "ICBM|Explosion")
     public boolean canLock(IMissile missile)
     {
         return true;
     }
 
-    @Override
+    @RuntimeInterface(clazz = "icbm.api.IMissileLockable", modID = "ICBM|Explosion")
     public Vector3 getPredictedPosition(int ticks)
     {
         return new Vector3(this);
@@ -526,19 +526,19 @@ public class GCCoreEntityRocketT1 extends EntityTieredRocket implements IInvento
         return dock instanceof GCCoreTileEntityLandingPad || dock instanceof GCCoreTileEntityCargoPad;
     }
 
-    @Override
+    @RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID = "ICBM|Explosion")
     public void destroyCraft()
     {
         this.setDead();
     }
 
-    @Override
+    @RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID = "ICBM|Explosion")
     public int doDamage(int damage)
     {
         return (int) (this.shipDamage += damage);
     }
 
-    @Override
+    @RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID = "ICBM|Explosion")
     public boolean canBeTargeted(Object entity)
     {
         return this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase() && this.timeSinceLaunch > 50;

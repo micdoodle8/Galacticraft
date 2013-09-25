@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
-import icbm.api.RadarRegistry;
 import java.util.Iterator;
 import java.util.List;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -16,11 +15,13 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.StatCollector;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import cpw.mods.fml.common.Loader;
 
 public class GCCoreEntityMeteor extends Entity
 {
     public EntityLiving shootingEntity;
     public int size;
+    public boolean radarSet;
 
     public GCCoreEntityMeteor(World world)
     {
@@ -45,9 +46,16 @@ public class GCCoreEntityMeteor extends Entity
     {
         super.setDead();
 
-        if (RadarRegistry.getEntities().contains(this))
+        if (this.radarSet && Loader.isModLoaded("ICBM|Explosion"))
         {
-            RadarRegistry.unregister(this);
+            try
+            {
+                Class.forName("icbm.api.RadarRegistry").getMethod("unregister", Entity.class).invoke(null, this);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -61,9 +69,17 @@ public class GCCoreEntityMeteor extends Entity
         this.motionY -= 0.03999999910593033D;
         this.moveEntity(this.motionX, this.motionY, this.motionZ);
 
-        if (this.posY <= 100 && !RadarRegistry.getEntities().contains(this))
+        if (!this.radarSet && this.posY <= 100 && Loader.isModLoaded("ICBM|Explosion"))
         {
-            RadarRegistry.register(this);
+            try
+            {
+                Class.forName("icbm.api.RadarRegistry").getMethod("register", Entity.class).invoke(null, this);
+                this.radarSet = true;
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
         }
 
         if (this.worldObj.isRemote)
