@@ -76,6 +76,7 @@ public class GCMarsConfigManager
 
     // GENERAL
     public static boolean generateOtherMods;
+    public static boolean launchControllerChunkLoad;
 
     private void setDefaultValues()
     {
@@ -124,6 +125,7 @@ public class GCMarsConfigManager
             GCMarsConfigManager.idSchematicRocketT2 = GCMarsConfigManager.configuration.get("Schematic", "idSchematicRocketT2", 2).getInt(2);
 
             GCMarsConfigManager.generateOtherMods = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Generate other mod's features on Mars", false).getBoolean(false);
+            GCMarsConfigManager.launchControllerChunkLoad = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Whether launch controller keeps chunks loaded. This will cause issues if disabled.", true).getBoolean(true);
         }
         catch (final Exception e)
         {

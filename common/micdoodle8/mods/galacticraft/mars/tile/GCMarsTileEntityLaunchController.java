@@ -11,6 +11,7 @@ import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoPad;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectric;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
+import micdoodle8.mods.galacticraft.mars.GCMarsConfigManager;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlockMachine;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -82,15 +83,9 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
     }
     
     @Override
-    public void validate()
-    {
-        super.validate();
-    }
-    
-    @Override
     public void onTicketLoaded(Ticket ticket)
     {
-        if (!this.worldObj.isRemote)
+        if (!this.worldObj.isRemote && GCMarsConfigManager.launchControllerChunkLoad)
         {
             if (ticket == null)
             {

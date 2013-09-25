@@ -214,7 +214,7 @@ public class GCMarsBlockMachine extends BlockTile
             }
         }
         
-        if (var8 instanceof IChunkLoader && !var8.worldObj.isRemote)
+        if (var8 instanceof IChunkLoader && !var8.worldObj.isRemote && GCMarsConfigManager.launchControllerChunkLoad)
         {
             ((IChunkLoader) var8).onTicketLoaded(ForgeChunkManager.requestTicket(GalacticraftCore.instance, var8.worldObj, Type.NORMAL));
         }
