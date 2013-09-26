@@ -176,7 +176,7 @@ public class GCCoreBlockFallenMeteor extends Block implements ITileEntityProvide
             GCCoreTileEntityFallenMeteor meteor = (GCCoreTileEntityFallenMeteor) tile;
             
             Vector3 col = new Vector3(198, 58, 108);
-            col.add(200 - meteor.getScaledHeatLevel() * 200);
+            col.translate(200 - meteor.getScaledHeatLevel() * 200);
             col.x = Math.min(255, col.x);
             col.y = Math.min(255, col.y);
             col.z = Math.min(255, col.z);

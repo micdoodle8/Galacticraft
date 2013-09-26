@@ -122,7 +122,7 @@ public class GCCoreTileEntityBuggyFueler extends TileEntityMulti implements IMul
         {
             for (int z = -1; z < 2; z++)
             {
-                final Vector3 vecToAdd = Vector3.add(placedPosition, new Vector3(x, 0, z));
+                final Vector3 vecToAdd = new Vector3(placedPosition.x + x, placedPosition.y, placedPosition.z + z);
 
                 if (!vecToAdd.equals(placedPosition))
                 {

@@ -52,7 +52,7 @@ public class GCCoreTileEntitySpaceStationBase extends TileEntityMulti implements
 
         for (int y = 1; y < 3; y++)
         {
-            final Vector3 vecToAdd = Vector3.add(placedPosition, new Vector3(0, y, 0));
+            final Vector3 vecToAdd = new Vector3(placedPosition.x, placedPosition.y + y, placedPosition.z);
 
             if (!vecToAdd.equals(placedPosition))
             {
