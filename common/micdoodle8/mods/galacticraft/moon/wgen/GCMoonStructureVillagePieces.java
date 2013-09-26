@@ -15,7 +15,7 @@ public class GCMoonStructureVillagePieces
         final ArrayList<GCMoonStructureVillagePieceWeight> var2 = new ArrayList<GCMoonStructureVillagePieceWeight>();
         var2.add(new GCMoonStructureVillagePieceWeight(GCMoonComponentVillageWoodHut.class, 5, MathHelper.getRandomIntegerInRange(par0Random, 2 + par1, 5 + par1 * 3)));
         var2.add(new GCMoonStructureVillagePieceWeight(GCMoonComponentVillageField.class, 5, MathHelper.getRandomIntegerInRange(par0Random, 3 + par1, 5 + par1)));
-        var2.add(new GCMoonStructureVillagePieceWeight(GCMoonComponentVillageHouse3.class, 5, MathHelper.getRandomIntegerInRange(par0Random, 3 + par1, 4 + par1 * 2)));
+        var2.add(new GCMoonStructureVillagePieceWeight(GCMoonComponentVillageHouse.class, 5, MathHelper.getRandomIntegerInRange(par0Random, 3 + par1, 4 + par1 * 2)));
 
         final Iterator<GCMoonStructureVillagePieceWeight> var3 = var2.iterator();
 
@@ -62,9 +62,9 @@ public class GCMoonStructureVillagePieces
         {
             var10 = GCMoonComponentVillageField.func_74900_a(par0ComponentVillageStartPiece, par2List, par3Random, par4, par5, par6, par7, par8);
         }
-        else if (var9 == GCMoonComponentVillageHouse3.class)
+        else if (var9 == GCMoonComponentVillageHouse.class)
         {
-            var10 = GCMoonComponentVillageHouse3.func_74921_a(par0ComponentVillageStartPiece, par2List, par3Random, par4, par5, par6, par7, par8);
+            var10 = GCMoonComponentVillageHouse.func_74921_a(par0ComponentVillageStartPiece, par2List, par3Random, par4, par5, par6, par7, par8);
         }
 
         return (GCMoonComponentVillage) var10;
