@@ -82,6 +82,7 @@ item.basicItem.compressedTin.name=Compressed Tin
 item.basicItem.compressedAluminum.name=Compressed Aluminum
 item.basicItem.compressedSteel.name=Compressed Steel
 item.basicItem.compressedBronze.name=Compressed Bronze
+item.basicItem.compressedIron.name=Compressed Iron
 item.tier1.desc=Tier 1
 item.battery.name=Battery
 item.infiniteBattery.name=Infinite Battery
