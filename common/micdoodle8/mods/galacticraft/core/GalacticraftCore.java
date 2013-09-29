@@ -93,6 +93,7 @@ import net.minecraftforge.fluids.FluidStack;
 import universalelectricity.compatibility.Compatibility;
 import universalelectricity.core.UniversalElectricity;
 import universalelectricity.prefab.ConductorChunkInitiate;
+import basiccomponents.api.BasicRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
@@ -198,6 +199,11 @@ public class GalacticraftCore
 
         GCCoreBlocks.initBlocks();
         GCCoreItems.initItems();
+        
+        if (GCCoreConfigManager.loadBC.getBoolean(true))
+        {
+            BasicRegistry.requestAll();
+        }
     }
 
     @EventHandler
