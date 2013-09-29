@@ -49,7 +49,7 @@ public class GCCoreRecipeManager
             GCCoreRecipeManager.addIndustrialcraftCraftingRecipes();
         }
 
-        if (GCCoreConfigManager.loadBC.getBoolean(true) && GCCoreConfigManager.useRecipesUE)
+        if (GCCoreCompatibilityManager.isBCLoaded() && GCCoreConfigManager.useRecipesUE)
         {
             GCCoreRecipeManager.addBasicComponentsCraftingRecipes();
         }
