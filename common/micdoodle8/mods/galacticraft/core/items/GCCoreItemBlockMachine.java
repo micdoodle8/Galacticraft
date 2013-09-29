@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockBasicMachine;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockMachine;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockMachine2;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import net.minecraft.block.Block;
 import net.minecraft.item.EnumRarity;
@@ -9,9 +11,9 @@ import net.minecraft.item.ItemStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class GCCoreItemBlockBasicMachine extends ItemBlock
+public class GCCoreItemBlockMachine extends ItemBlock
 {
-    public GCCoreItemBlockBasicMachine(int id)
+    public GCCoreItemBlockMachine(int id)
     {
         super(id);
         this.setMaxDamage(0);
@@ -35,14 +37,28 @@ public class GCCoreItemBlockBasicMachine extends ItemBlock
     public String getUnlocalizedName(ItemStack itemstack)
     {
         int metadata = 0;
-
-        if (itemstack.getItemDamage() >= GCCoreBlockBasicMachine.ELECTRIC_FURNACE_METADATA)
+        
+        if (this.getBlockID() == GCCoreBlocks.blockMachineBase.blockID)
         {
-            metadata = 2;
+            if (itemstack.getItemDamage() >= GCCoreBlockMachine.COMPRESSOR_METADATA)
+            {
+                metadata = 3;
+            }
+            else if (itemstack.getItemDamage() >= GCCoreBlockMachine.ELECTRIC_FURNACE_METADATA)
+            {
+                metadata = 2;
+            }
+            else if (itemstack.getItemDamage() >= GCCoreBlockMachine.BATTERY_BOX_METADATA)
+            {
+                metadata = 1;
+            }
         }
-        else if (itemstack.getItemDamage() >= GCCoreBlockBasicMachine.BATTERY_BOX_METADATA)
+        else
         {
-            metadata = 1;
+            if (itemstack.getItemDamage() >= GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
+            {
+                metadata = 4;
+            }
         }
 
         return Block.blocksList[this.getBlockID()].getUnlocalizedName() + "." + metadata;

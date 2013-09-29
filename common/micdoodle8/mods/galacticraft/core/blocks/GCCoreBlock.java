@@ -37,13 +37,16 @@ public class GCCoreBlock extends Block
     }
 
     @Override
-    public void registerIcons(IconRegister par1IconRegister)
+    public void registerIcons(IconRegister iconRegister)
     {
-        this.iconBuffer = new Icon[4];
-        this.iconBuffer[0] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "deco_aluminium_2");
-        this.iconBuffer[1] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "deco_aluminium_4");
-        this.iconBuffer[2] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "deco_aluminium_1");
-        this.iconBuffer[3] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "deco_aluminium_4");
+        this.iconBuffer = new Icon[7];
+        this.iconBuffer[0] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "deco_aluminium_2");
+        this.iconBuffer[1] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "deco_aluminium_4");
+        this.iconBuffer[2] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "deco_aluminium_1");
+        this.iconBuffer[3] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "deco_aluminium_4");
+        this.iconBuffer[4] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "oreCopper");
+        this.iconBuffer[5] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "oreTin");
+        this.iconBuffer[6] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "oreAluminum");
     }
 
     @Override
@@ -63,8 +66,14 @@ public class GCCoreBlock extends Block
             }
         case 4:
             return this.iconBuffer[3];
+        case 5:
+            return this.iconBuffer[4];
+        case 6:
+            return this.iconBuffer[5];
+        case 7:
+            return this.iconBuffer[6];
         default:
-            return this.iconBuffer[3];
+            return meta < this.iconBuffer.length ? this.iconBuffer[meta] : this.iconBuffer[0];
         }
     }
 
@@ -103,7 +112,7 @@ public class GCCoreBlock extends Block
     @Override
     public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
-        for (int var4 = 3; var4 < 5; ++var4)
+        for (int var4 = 3; var4 < 8; ++var4)
         {
             par3List.add(new ItemStack(par1, 1, var4));
         }

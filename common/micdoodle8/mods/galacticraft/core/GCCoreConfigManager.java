@@ -49,6 +49,7 @@ public class GCCoreConfigManager
     public static int idBlockSolarPanel;
     public static int idBlockBasicMachine;
     public static int idBlockCopperWire;
+    public static int idBlockBasicMachine2;
 
     // ITEMS
     public static int idItemKnowledgeBook;
@@ -218,7 +219,8 @@ public class GCCoreConfigManager
             GCCoreConfigManager.idBlockParachest = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockParachest", 3382).getInt(3382);
             GCCoreConfigManager.idBlockSolarPanel = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockSolarPanel", 3383).getInt(3383);
             GCCoreConfigManager.idBlockCopperWire = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockCopperWire", 3972).getInt(3972);
-            GCCoreConfigManager.idBlockBasicMachine = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockBasicMachine", 3973).getInt(3973);
+            GCCoreConfigManager.idBlockBasicMachine = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockBasicMachine", 3363).getInt(3363);
+            GCCoreConfigManager.idBlockBasicMachine2 = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockBasicMachine2", 3364).getInt(3364);
             // 3390 - Mars Base Block
 
             GCCoreConfigManager.idItemSpaceship = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemSpaceship", 9855).getInt(9855);

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import mekanism.api.transmitters.TransmitterNetworkRegistry;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
+import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.world.ICelestialBody;
 import micdoodle8.mods.galacticraft.api.world.IGalaxy;
@@ -57,8 +58,10 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCoalGenerator;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCopperWire;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityDungeonSpawner;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectricFurnace;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectricIngotCompressor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFallenMeteor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityIngotCompressor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPadSingle;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCollector;
@@ -265,7 +268,12 @@ public class GalacticraftCore
         {
             FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(GalacticraftCore.CRUDEOIL, GCCoreItems.oilCanister.getMaxDamage() - i), new ItemStack(GCCoreItems.oilCanister, 1, i), new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.fuelCanister.getMaxDamage())));
         }
-
+        
+        for (int i = 2; i < 7; i++)
+        {
+            CompressorRecipes.addCompressorRecipe(new ItemStack(GCCoreItems.basicItem, 1, i), new ItemStack(GCCoreItems.basicItem, 2, i + 5));
+        }
+        
         SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicRocketT1());
         SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicMoonBuggy());
         SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicAdd());
@@ -381,6 +389,8 @@ public class GalacticraftCore
         GameRegistry.registerTileEntity(GCCoreTileEntityElectricFurnace.class, "UEElectricFurnace");
         GameRegistry.registerTileEntity(GCCoreTileEntityCopperWire.class, "copperWire");
         GameRegistry.registerTileEntity(GCCoreTileEntityFallenMeteor.class, "Fallen Meteor");
+        GameRegistry.registerTileEntity(GCCoreTileEntityIngotCompressor.class, "Ingot Compressor");
+        GameRegistry.registerTileEntity(GCCoreTileEntityElectricIngotCompressor.class, "Electric Ingot Compressor");
     }
 
     public void registerCreatures()

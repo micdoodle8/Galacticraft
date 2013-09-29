@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBatteryBox;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCoalGenerator;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectricFurnace;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityIngotCompressor;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -22,11 +23,12 @@ import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.UniversalElectricity;
 import universalelectricity.prefab.block.BlockTile;
 
-public class GCCoreBlockBasicMachine extends BlockTile
+public class GCCoreBlockMachine extends BlockTile
 {
     public static final int COAL_GENERATOR_METADATA = 0;
     public static final int BATTERY_BOX_METADATA = 4;
     public static final int ELECTRIC_FURNACE_METADATA = 8;
+    public static final int COMPRESSOR_METADATA = 12;
 
     private Icon iconMachineSide;
     private Icon iconInput;
@@ -35,8 +37,9 @@ public class GCCoreBlockBasicMachine extends BlockTile
     private Icon iconCoalGenerator;
     private Icon iconBatteryBox;
     private Icon iconElectricFurnace;
+    private Icon iconCompressor;
 
-    public GCCoreBlockBasicMachine(int id, String assetName)
+    public GCCoreBlockMachine(int id, String assetName)
     {
         super(id, UniversalElectricity.machine);
         this.setUnlocalizedName("basicMachine");
@@ -53,16 +56,17 @@ public class GCCoreBlockBasicMachine extends BlockTile
     }
 
     @Override
-    public void registerIcons(IconRegister par1IconRegister)
+    public void registerIcons(IconRegister iconRegister)
     {
-        this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine");
-        this.iconInput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_input");
-        this.iconOutput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_output");
+        this.blockIcon = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine");
+        this.iconInput = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_input");
+        this.iconOutput = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_output");
 
-        this.iconMachineSide = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_side");
-        this.iconCoalGenerator = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "coalGenerator");
-        this.iconBatteryBox = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "batteryBox");
-        this.iconElectricFurnace = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "electricFurnace");
+        this.iconMachineSide = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_side");
+        this.iconCoalGenerator = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "coalGenerator");
+        this.iconBatteryBox = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "batteryBox");
+        this.iconElectricFurnace = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "electricFurnace");
+        this.iconCompressor = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "compressor");
     }
 
     @Override
@@ -114,9 +118,18 @@ public class GCCoreBlockBasicMachine extends BlockTile
             return this.blockIcon;
         }
 
-        if (metadata >= GCCoreBlockBasicMachine.ELECTRIC_FURNACE_METADATA)
+        if (metadata >= GCCoreBlockMachine.COMPRESSOR_METADATA)
         {
-            metadata -= GCCoreBlockBasicMachine.ELECTRIC_FURNACE_METADATA;
+            metadata -= GCCoreBlockMachine.COMPRESSOR_METADATA;
+
+            if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal())
+            {
+                return this.iconCompressor;
+            }
+        }
+        else if (metadata >= GCCoreBlockMachine.ELECTRIC_FURNACE_METADATA)
+        {
+            metadata -= GCCoreBlockMachine.ELECTRIC_FURNACE_METADATA;
 
             // If it is the front side
             if (side == metadata + 2)
@@ -129,9 +142,9 @@ public class GCCoreBlockBasicMachine extends BlockTile
                 return this.iconElectricFurnace;
             }
         }
-        else if (metadata >= GCCoreBlockBasicMachine.BATTERY_BOX_METADATA)
+        else if (metadata >= GCCoreBlockMachine.BATTERY_BOX_METADATA)
         {
-            metadata -= GCCoreBlockBasicMachine.BATTERY_BOX_METADATA;
+            metadata -= GCCoreBlockMachine.BATTERY_BOX_METADATA;
 
             // If it is the front side
             if (side == metadata + 2)
@@ -190,11 +203,15 @@ public class GCCoreBlockBasicMachine extends BlockTile
             break;
         }
 
-        if (metadata >= GCCoreBlockBasicMachine.ELECTRIC_FURNACE_METADATA)
+        if (metadata >= GCCoreBlockMachine.COMPRESSOR_METADATA)
         {
-            world.setBlockMetadataWithNotify(x, y, z, GCCoreBlockBasicMachine.ELECTRIC_FURNACE_METADATA + change, 3);
+            world.setBlockMetadataWithNotify(x, y, z, GCCoreBlockMachine.COMPRESSOR_METADATA + change, 3);
         }
-        else if (metadata >= GCCoreBlockBasicMachine.BATTERY_BOX_METADATA)
+        else if (metadata >= GCCoreBlockMachine.ELECTRIC_FURNACE_METADATA)
+        {
+            world.setBlockMetadataWithNotify(x, y, z, GCCoreBlockMachine.ELECTRIC_FURNACE_METADATA + change, 3);
+        }
+        else if (metadata >= GCCoreBlockMachine.BATTERY_BOX_METADATA)
         {
             switch (angle)
             {
@@ -212,11 +229,11 @@ public class GCCoreBlockBasicMachine extends BlockTile
                 break;
             }
 
-            world.setBlockMetadataWithNotify(x, y, z, GCCoreBlockBasicMachine.BATTERY_BOX_METADATA + change, 3);
+            world.setBlockMetadataWithNotify(x, y, z, GCCoreBlockMachine.BATTERY_BOX_METADATA + change, 3);
         }
         else
         {
-            world.setBlockMetadataWithNotify(x, y, z, GCCoreBlockBasicMachine.COAL_GENERATOR_METADATA + change, 3);
+            world.setBlockMetadataWithNotify(x, y, z, GCCoreBlockMachine.COAL_GENERATOR_METADATA + change, 3);
         }
     }
 
@@ -228,13 +245,17 @@ public class GCCoreBlockBasicMachine extends BlockTile
 
         int change = 0;
 
-        if (metadata >= GCCoreBlockBasicMachine.ELECTRIC_FURNACE_METADATA)
+        if (metadata >= GCCoreBlockMachine.COMPRESSOR_METADATA)
         {
-            original -= GCCoreBlockBasicMachine.ELECTRIC_FURNACE_METADATA;
+            original -= GCCoreBlockMachine.COMPRESSOR_METADATA;
         }
-        else if (metadata >= GCCoreBlockBasicMachine.BATTERY_BOX_METADATA)
+        else if (metadata >= GCCoreBlockMachine.ELECTRIC_FURNACE_METADATA)
         {
-            original -= GCCoreBlockBasicMachine.BATTERY_BOX_METADATA;
+            original -= GCCoreBlockMachine.ELECTRIC_FURNACE_METADATA;
+        }
+        else if (metadata >= GCCoreBlockMachine.BATTERY_BOX_METADATA)
+        {
+            original -= GCCoreBlockMachine.BATTERY_BOX_METADATA;
         }
 
         // Re-orient the block
@@ -254,13 +275,17 @@ public class GCCoreBlockBasicMachine extends BlockTile
             break;
         }
 
-        if (metadata >= GCCoreBlockBasicMachine.ELECTRIC_FURNACE_METADATA)
+        if (metadata >= GCCoreBlockMachine.COMPRESSOR_METADATA)
         {
-            change += GCCoreBlockBasicMachine.ELECTRIC_FURNACE_METADATA;
+            change += GCCoreBlockMachine.COMPRESSOR_METADATA;
         }
-        else if (metadata >= GCCoreBlockBasicMachine.BATTERY_BOX_METADATA)
+        else if (metadata >= GCCoreBlockMachine.ELECTRIC_FURNACE_METADATA)
         {
-            change += GCCoreBlockBasicMachine.BATTERY_BOX_METADATA;
+            change += GCCoreBlockMachine.ELECTRIC_FURNACE_METADATA;
+        }
+        else if (metadata >= GCCoreBlockMachine.BATTERY_BOX_METADATA)
+        {
+            change += GCCoreBlockMachine.BATTERY_BOX_METADATA;
         }
 
         par1World.setBlockMetadataWithNotify(x, y, z, change, 3);
@@ -277,12 +302,17 @@ public class GCCoreBlockBasicMachine extends BlockTile
 
         if (!par1World.isRemote)
         {
-            if (metadata >= GCCoreBlockBasicMachine.ELECTRIC_FURNACE_METADATA)
+            if (metadata >= GCCoreBlockMachine.COMPRESSOR_METADATA)
             {
                 par5EntityPlayer.openGui(GalacticraftCore.instance, -1, par1World, x, y, z);
                 return true;
             }
-            else if (metadata >= GCCoreBlockBasicMachine.BATTERY_BOX_METADATA)
+            else if (metadata >= GCCoreBlockMachine.ELECTRIC_FURNACE_METADATA)
+            {
+                par5EntityPlayer.openGui(GalacticraftCore.instance, -1, par1World, x, y, z);
+                return true;
+            }
+            else if (metadata >= GCCoreBlockMachine.BATTERY_BOX_METADATA)
             {
                 par5EntityPlayer.openGui(GalacticraftCore.instance, -1, par1World, x, y, z);
                 return true;
@@ -312,11 +342,15 @@ public class GCCoreBlockBasicMachine extends BlockTile
     @Override
     public TileEntity createTileEntity(World world, int metadata)
     {
-        if (metadata >= GCCoreBlockBasicMachine.ELECTRIC_FURNACE_METADATA)
+        if (metadata >= GCCoreBlockMachine.COMPRESSOR_METADATA)
+        {
+            return new GCCoreTileEntityIngotCompressor();
+        }
+        else if (metadata >= GCCoreBlockMachine.ELECTRIC_FURNACE_METADATA)
         {
             return new GCCoreTileEntityElectricFurnace();
         }
-        else if (metadata >= GCCoreBlockBasicMachine.BATTERY_BOX_METADATA)
+        else if (metadata >= GCCoreBlockMachine.BATTERY_BOX_METADATA)
         {
             return new GCCoreTileEntityBatteryBox();
         }
@@ -324,22 +358,26 @@ public class GCCoreBlockBasicMachine extends BlockTile
         {
             return new GCCoreTileEntityCoalGenerator();
         }
+    }
 
+    public ItemStack getCompressor()
+    {
+        return new ItemStack(this.blockID, 1, GCCoreBlockMachine.COMPRESSOR_METADATA);
     }
 
     public ItemStack getCoalGenerator()
     {
-        return new ItemStack(this.blockID, 1, GCCoreBlockBasicMachine.COAL_GENERATOR_METADATA);
+        return new ItemStack(this.blockID, 1, GCCoreBlockMachine.COAL_GENERATOR_METADATA);
     }
 
     public ItemStack getBatteryBox()
     {
-        return new ItemStack(this.blockID, 1, GCCoreBlockBasicMachine.BATTERY_BOX_METADATA);
+        return new ItemStack(this.blockID, 1, GCCoreBlockMachine.BATTERY_BOX_METADATA);
     }
 
     public ItemStack getElectricFurnace()
     {
-        return new ItemStack(this.blockID, 1, GCCoreBlockBasicMachine.ELECTRIC_FURNACE_METADATA);
+        return new ItemStack(this.blockID, 1, GCCoreBlockMachine.ELECTRIC_FURNACE_METADATA);
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -349,22 +387,27 @@ public class GCCoreBlockBasicMachine extends BlockTile
         par3List.add(this.getCoalGenerator());
         par3List.add(this.getBatteryBox());
         par3List.add(this.getElectricFurnace());
+        par3List.add(this.getCompressor());
     }
 
     @Override
     public int damageDropped(int metadata)
     {
-        if (metadata >= GCCoreBlockBasicMachine.ELECTRIC_FURNACE_METADATA)
+        if (metadata >= GCCoreBlockMachine.COMPRESSOR_METADATA)
         {
-            return GCCoreBlockBasicMachine.ELECTRIC_FURNACE_METADATA;
+            return GCCoreBlockMachine.COMPRESSOR_METADATA;
         }
-        else if (metadata >= GCCoreBlockBasicMachine.BATTERY_BOX_METADATA)
+        else if (metadata >= GCCoreBlockMachine.ELECTRIC_FURNACE_METADATA)
         {
-            return GCCoreBlockBasicMachine.BATTERY_BOX_METADATA;
+            return GCCoreBlockMachine.ELECTRIC_FURNACE_METADATA;
+        }
+        else if (metadata >= GCCoreBlockMachine.BATTERY_BOX_METADATA)
+        {
+            return GCCoreBlockMachine.BATTERY_BOX_METADATA;
         }
         else
         {
-            return GCCoreBlockBasicMachine.COAL_GENERATOR_METADATA;
+            return GCCoreBlockMachine.COAL_GENERATOR_METADATA;
         }
     }
 

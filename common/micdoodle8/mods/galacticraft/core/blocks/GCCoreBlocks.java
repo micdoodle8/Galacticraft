@@ -5,7 +5,7 @@ import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlock;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockBase;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockBasicMachine;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockMachine;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockCargoLoader;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockCopperWire;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockEnclosedBlock;
@@ -55,6 +55,7 @@ public class GCCoreBlocks
     public static Block parachest;
     public static Block solarPanel;
     public static Block blockMachineBase;
+    public static Block blockMachineBase2;
     public static Block blockCopperWire;
 
     public static Material crudeOil = new MaterialLiquid(MapColor.foliageColor);
@@ -73,7 +74,7 @@ public class GCCoreBlocks
         GCCoreBlocks.oxygenCollector =              new GCCoreBlockOxygenCollector(             GCCoreConfigManager.idBlockAirCollector,                        "oxygenCollector");
         GCCoreBlocks.nasaWorkbench =                new GCCoreBlockAdvancedCraftingTable(       GCCoreConfigManager.idBlockRocketBench,                         "rocketWorkbench");
         GCCoreBlocks.fallenMeteor =                 new GCCoreBlockFallenMeteor(                GCCoreConfigManager.idBlockFallenMeteor,                        "fallenMeteor");
-        GCCoreBlocks.decorationBlocks =             new GCCoreBlock(                            GCCoreConfigManager.idBlockDecorationBlock,                     "decorationblock");
+        GCCoreBlocks.decorationBlocks =             new GCCoreBlock(                            GCCoreConfigManager.idBlockDecorationBlock,                     "gcBlockCore");
         GCCoreBlocks.airLockFrame =                 new GCCoreBlockAirLockFrame(                GCCoreConfigManager.idBlockAirLockFrame,                        "airLockFrame");
         GCCoreBlocks.airLockSeal =                  new GCCoreBlockAirLockWall(                 GCCoreConfigManager.idBlockAirLockSeal,                         "airLockSeal");
         GCCoreBlocks.crudeOilStill =                new GCCoreBlockCrudeOil(                    GalacticraftCore.CRUDEOIL.getBlockID(),                         "crudeOilStill");
@@ -88,8 +89,9 @@ public class GCCoreBlocks
         GCCoreBlocks.cargoLoader =                  new GCCoreBlockCargoLoader(                 GCCoreConfigManager.idBlockCargoLoader,                         "cargo");
         GCCoreBlocks.parachest =                    new GCCoreBlockParachest(                   GCCoreConfigManager.idBlockParachest,                           "parachest");
         GCCoreBlocks.solarPanel =                   new GCCoreBlockSolar(                       GCCoreConfigManager.idBlockSolarPanel,                          "solar");
-        GCCoreBlocks.blockMachineBase =             new GCCoreBlockBasicMachine(                GCCoreConfigManager.idBlockBasicMachine,                        "machine");
+        GCCoreBlocks.blockMachineBase =             new GCCoreBlockMachine(                     GCCoreConfigManager.idBlockBasicMachine,                        "machine");
         GCCoreBlocks.blockCopperWire =              new GCCoreBlockCopperWire(                  GCCoreConfigManager.idBlockCopperWire,                          "copperWire");
+        GCCoreBlocks.blockMachineBase2 =            new GCCoreBlockMachine2(                    GCCoreConfigManager.idBlockBasicMachine2,                       "machine2");
 
         GCCoreUtil.registerGalacticraftBlock("rocketLaunchPad", GCCoreBlocks.landingPad, 0);
         GCCoreUtil.registerGalacticraftBlock("buggyFuelingPad", GCCoreBlocks.landingPad, 1);
@@ -181,7 +183,8 @@ public class GCCoreBlocks
         GameRegistry.registerBlock(GCCoreBlocks.cargoLoader, GCCoreItemBlockCargoLoader.class, GCCoreBlocks.cargoLoader.getUnlocalizedName(), GalacticraftCore.MODID);
         GameRegistry.registerBlock(GCCoreBlocks.parachest, GCCoreItemBlock.class, GCCoreBlocks.parachest.getUnlocalizedName(), GalacticraftCore.MODID);
         GameRegistry.registerBlock(GCCoreBlocks.solarPanel, GCCoreItemBlockSolar.class, GCCoreBlocks.solarPanel.getUnlocalizedName(), GalacticraftCore.MODID);
-        GameRegistry.registerBlock(GCCoreBlocks.blockMachineBase, GCCoreItemBlockBasicMachine.class, GCCoreBlocks.blockMachineBase.getUnlocalizedName(), GalacticraftCore.MODID);
+        GameRegistry.registerBlock(GCCoreBlocks.blockMachineBase, GCCoreItemBlockMachine.class, GCCoreBlocks.blockMachineBase.getUnlocalizedName(), GalacticraftCore.MODID);
+        GameRegistry.registerBlock(GCCoreBlocks.blockMachineBase2, GCCoreItemBlockMachine.class, GCCoreBlocks.blockMachineBase2.getUnlocalizedName(), GalacticraftCore.MODID);
         GameRegistry.registerBlock(GCCoreBlocks.blockCopperWire, GCCoreItemBlockCopperWire.class, GCCoreBlocks.blockCopperWire.getUnlocalizedName(), GalacticraftCore.MODID);
     }
 }

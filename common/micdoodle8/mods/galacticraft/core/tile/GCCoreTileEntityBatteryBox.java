@@ -4,7 +4,7 @@ import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockBasicMachine;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockMachine;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -285,13 +285,13 @@ public class GCCoreTileEntityBatteryBox extends GCCoreTileEntityUniversalElectri
     @Override
     public EnumSet<ForgeDirection> getInputDirections()
     {
-        return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() - GCCoreBlockBasicMachine.BATTERY_BOX_METADATA + 2).getOpposite(), ForgeDirection.UNKNOWN);
+        return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() - GCCoreBlockMachine.BATTERY_BOX_METADATA + 2).getOpposite(), ForgeDirection.UNKNOWN);
     }
 
     @Override
     public EnumSet<ForgeDirection> getOutputDirections()
     {
-        return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() - GCCoreBlockBasicMachine.BATTERY_BOX_METADATA + 2), ForgeDirection.UNKNOWN);
+        return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() - GCCoreBlockMachine.BATTERY_BOX_METADATA + 2), ForgeDirection.UNKNOWN);
     }
 
     @Override

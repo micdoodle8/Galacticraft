@@ -14,8 +14,10 @@ import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerAirCompressor;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerAirDistributor;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerAirSealer;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerCargoLoader;
+import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerElectricIngotCompressor;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerExtendedInventory;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerFuelLoader;
+import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerIngotCompressor;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerParachest;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRefinery;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRocketRefill;
@@ -23,7 +25,9 @@ import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerSolar;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBatteryBox;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCoalGenerator;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectricFurnace;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectricIngotCompressor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityIngotCompressor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCollector;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCompressor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDistributor;
@@ -51,22 +55,22 @@ public class CommonProxyCore implements IGuiHandler
 {
     public void preInit(FMLPreInitializationEvent event)
     {
-
+        ;
     }
 
     public void init(FMLInitializationEvent event)
     {
-
+        ;
     }
 
     public void postInit(FMLPostInitializationEvent event)
     {
-
+        ;
     }
 
     public void registerRenderInformation()
     {
-
+        ;
     }
 
     public int getGCUnlitTorchRenderID()
@@ -217,6 +221,14 @@ public class CommonProxyCore implements IGuiHandler
             else if (tileEntity instanceof GCCoreTileEntityElectricFurnace)
             {
                 return new ContainerElectricFurnace(player.inventory, (GCCoreTileEntityElectricFurnace) tileEntity);
+            }
+            else if (tileEntity instanceof GCCoreTileEntityIngotCompressor)
+            {
+                return new GCCoreContainerIngotCompressor(player.inventory, (GCCoreTileEntityIngotCompressor) tileEntity);
+            }
+            else if (tileEntity instanceof GCCoreTileEntityElectricIngotCompressor)
+            {
+                return new GCCoreContainerElectricIngotCompressor(player.inventory, (GCCoreTileEntityElectricIngotCompressor) tileEntity);
             }
         }
 

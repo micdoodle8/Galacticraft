@@ -1,10 +1,10 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
+import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockMachine;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -15,8 +15,8 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
-import net.minecraftforge.common.ForgeDirection;
-import universalelectricity.core.block.IElectrical;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityFurnace;
 import universalelectricity.core.item.IItemElectric;
 import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
@@ -25,32 +25,15 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-public class GCCoreTileEntityElectricFurnace extends GCCoreTileEntityUniversalElectrical implements IElectrical, IInventory, ISidedInventory, IPacketReceiver
+public class GCCoreTileEntityIngotCompressor extends TileEntity implements IInventory, ISidedInventory, IPacketReceiver
 {
-    /**
-     * The amount of watts required every TICK.
-     */
-    public static final float WATTS_PER_TICK = 0.2f;
-
-    /**
-     * The amount of processing time required.
-     */
-    public static final int PROCESS_TIME_REQUIRED = 130;
-
-    /**
-     * The amount of ticks this machine has been processing.
-     */
+    public static final int PROCESS_TIME_REQUIRED = 200;
     public int processTicks = 0;
+    public int furnaceBurnTime = 0;
+    public int currentItemBurnTime = 0;
+    private long ticks;
 
-    /**
-     * The ItemStacks that hold the items currently being used in the battery
-     * box
-     */
     private ItemStack[] containingItems = new ItemStack[3];
-
-    /**
-     * The amount of players using the electric furnace.
-     */
     public final Set<EntityPlayer> playersUsing = new HashSet<EntityPlayer>();
 
     @Override
@@ -58,49 +41,60 @@ public class GCCoreTileEntityElectricFurnace extends GCCoreTileEntityUniversalEl
     {
         super.updateEntity();
 
-        this.discharge(this.containingItems[0]);
-
-        /**
-         * Attempts to smelt an item.
-         */
         if (!this.worldObj.isRemote)
         {
-            if (this.canProcess())
-            {
-                if (this.getEnergyStored() >= GCCoreTileEntityElectricFurnace.WATTS_PER_TICK)
-                {
-                    if (this.processTicks == 0)
-                    {
-                        this.processTicks = GCCoreTileEntityElectricFurnace.PROCESS_TIME_REQUIRED;
-                    }
-                    else if (this.processTicks > 0)
-                    {
-                        this.processTicks--;
+            boolean updateInv = false;
+            boolean flag = this.furnaceBurnTime > 0;
 
-                        /**
-                         * Process the item when the process timer is done.
-                         */
-                        if (this.processTicks < 1)
+            if (this.furnaceBurnTime > 0)
+            {
+                --this.furnaceBurnTime;
+            }
+            
+            if (this.furnaceBurnTime == 0 && this.canSmelt())
+            {
+                this.currentItemBurnTime = this.furnaceBurnTime = TileEntityFurnace.getItemBurnTime(this.containingItems[0]);
+                
+                if (this.furnaceBurnTime > 0)
+                {
+                    updateInv = true;
+
+                    if (this.containingItems[0] != null)
+                    {
+                        --this.containingItems[0].stackSize;
+
+                        if (this.containingItems[0].stackSize == 0)
                         {
-                            this.smeltItem();
-                            this.processTicks = 0;
+                            this.containingItems[0] = this.containingItems[0].getItem().getContainerItemStack(containingItems[0]);
                         }
                     }
-                    else
-                    {
-                        this.processTicks = 0;
-                    }
                 }
-                else
+            }
+            
+            if (this.furnaceBurnTime > 0 && this.canSmelt())
+            {
+                ++this.processTicks;
+                
+                if (this.processTicks % 40 == 0 && this.processTicks > PROCESS_TIME_REQUIRED / 2)
                 {
-                    this.processTicks = 0;
+                    this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "random.anvil_land", 0.2F, 0.5F);
                 }
 
-                this.setEnergyStored(this.getEnergyStored() - GCCoreTileEntityElectricFurnace.WATTS_PER_TICK);
+                if (this.processTicks == PROCESS_TIME_REQUIRED)
+                {
+                    this.processTicks = 0;
+                    this.smeltItem();
+                    updateInv = true;
+                }
             }
             else
             {
                 this.processTicks = 0;
+            }
+
+            if (flag != this.furnaceBurnTime > 0)
+            {
+                updateInv = true;
             }
 
             if (this.ticks % 3 == 0)
@@ -110,26 +104,25 @@ public class GCCoreTileEntityElectricFurnace extends GCCoreTileEntityUniversalEl
                     PacketDispatcher.sendPacketToPlayer(this.getDescriptionPacket(), (Player) player);
                 }
             }
+            
+            if (updateInv)
+            {
+                this.onInventoryChanged();
+            }
         }
-    }
-
-    @Override
-    public float getRequest(ForgeDirection direction)
-    {
-        if (this.canProcess())
+        
+        if (this.ticks >= Long.MAX_VALUE)
         {
-            return GCCoreTileEntityElectricFurnace.WATTS_PER_TICK;
+            this.ticks = 0;
         }
-        else
-        {
-            return 0;
-        }
+        
+        this.ticks++;
     }
 
     @Override
     public Packet getDescriptionPacket()
     {
-        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.processTicks);
+        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.processTicks, this.currentItemBurnTime, this.furnaceBurnTime);
     }
 
     @Override
@@ -138,6 +131,8 @@ public class GCCoreTileEntityElectricFurnace extends GCCoreTileEntityUniversalEl
         try
         {
             this.processTicks = dataStream.readInt();
+            this.currentItemBurnTime = dataStream.readInt();
+            this.furnaceBurnTime = dataStream.readInt();
         }
         catch (Exception e)
         {
@@ -155,46 +150,28 @@ public class GCCoreTileEntityElectricFurnace extends GCCoreTileEntityUniversalEl
     {
     }
 
-    /**
-     * @return Is this machine able to process its specific task?
-     */
-    public boolean canProcess()
+    private boolean canSmelt()
     {
-        if (FurnaceRecipes.smelting().getSmeltingResult(this.containingItems[1]) == null)
-        {
-            return false;
-        }
-
         if (this.containingItems[1] == null)
         {
             return false;
         }
-
-        if (this.containingItems[2] != null)
+        else
         {
-            if (!this.containingItems[2].isItemEqual(FurnaceRecipes.smelting().getSmeltingResult(this.containingItems[1])))
-            {
-                return false;
-            }
-
-            if (this.containingItems[2].stackSize + 1 > 64)
-            {
-                return false;
-            }
+            ItemStack itemstack = CompressorRecipes.getCompressedResult(this.containingItems[1]);
+            if (itemstack == null) return false;
+            if (this.containingItems[2] == null) return true;
+            if (!this.containingItems[2].isItemEqual(itemstack)) return false;
+            int result = containingItems[2].stackSize + itemstack.stackSize;
+            return (result <= getInventoryStackLimit() && result <= itemstack.getMaxStackSize());
         }
-
-        return true;
     }
-
-    /**
-     * Turn one item from the furnace source stack into the appropriate smelted
-     * item in the furnace result stack
-     */
+    
     public void smeltItem()
     {
-        if (this.canProcess())
+        if (this.canSmelt())
         {
-            ItemStack resultItemStack = FurnaceRecipes.smelting().getSmeltingResult(this.containingItems[1]);
+            ItemStack resultItemStack = CompressorRecipes.getCompressedResult(this.containingItems[1]);
 
             if (this.containingItems[2] == null)
             {
@@ -202,7 +179,23 @@ public class GCCoreTileEntityElectricFurnace extends GCCoreTileEntityUniversalEl
             }
             else if (this.containingItems[2].isItemEqual(resultItemStack))
             {
-                this.containingItems[2].stackSize++;
+                if (this.containingItems[2].stackSize + resultItemStack.stackSize > 64)
+                {
+                    for (int i = 0; i < this.containingItems[2].stackSize + resultItemStack.stackSize - 64; i++)
+                    {
+                        float var = 0.7F;
+                        double dx = this.worldObj.rand.nextFloat() * var + (1.0F - var) * 0.5D;
+                        double dy = this.worldObj.rand.nextFloat() * var + (1.0F - var) * 0.5D;
+                        double dz = this.worldObj.rand.nextFloat() * var + (1.0F - var) * 0.5D;
+                        EntityItem entityitem = new EntityItem(this.worldObj, this.xCoord + dx, this.yCoord + dy, this.zCoord + dz, new ItemStack(resultItemStack.getItem(), 1, resultItemStack.getItemDamage()));
+
+                        entityitem.delayBeforeCanPickup = 10;
+
+                        this.worldObj.spawnEntityInWorld(entityitem);
+                    }
+                }
+                
+                this.containingItems[2].stackSize += resultItemStack.stackSize;
             }
 
             this.containingItems[1].stackSize--;
@@ -214,9 +207,6 @@ public class GCCoreTileEntityElectricFurnace extends GCCoreTileEntityUniversalEl
         }
     }
 
-    /**
-     * Reads a tile entity from NBT.
-     */
     @Override
     public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
@@ -237,9 +227,6 @@ public class GCCoreTileEntityElectricFurnace extends GCCoreTileEntityUniversalEl
         }
     }
 
-    /**
-     * Writes a tile entity to NBT.
-     */
     @Override
     public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
@@ -333,7 +320,7 @@ public class GCCoreTileEntityElectricFurnace extends GCCoreTileEntityUniversalEl
     @Override
     public String getInvName()
     {
-        return LanguageRegistry.instance().getStringLocalization("tile.machine.2.name");
+        return LanguageRegistry.instance().getStringLocalization("tile.machine.3.name");
     }
 
     @Override
@@ -354,19 +341,12 @@ public class GCCoreTileEntityElectricFurnace extends GCCoreTileEntityUniversalEl
         return true;
     }
 
-    /**
-     * Returns true if automation is allowed to insert the given stack (ignoring
-     * stack size) into the given slot.
-     */
     @Override
     public boolean isItemValidForSlot(int slotID, ItemStack itemStack)
     {
         return slotID == 1 ? FurnaceRecipes.smelting().getSmeltingResult(itemStack) != null : slotID == 0 ? itemStack.getItem() instanceof IItemElectric : false;
     }
 
-    /**
-     * Get the size of the side inventory.
-     */
     @Override
     public int[] getAccessibleSlotsFromSide(int side)
     {
@@ -383,29 +363,5 @@ public class GCCoreTileEntityElectricFurnace extends GCCoreTileEntityUniversalEl
     public boolean canExtractItem(int slotID, ItemStack par2ItemStack, int par3)
     {
         return slotID == 2;
-    }
-
-    @Override
-    public EnumSet<ForgeDirection> getInputDirections()
-    {
-        return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() - GCCoreBlockMachine.ELECTRIC_FURNACE_METADATA + 2), ForgeDirection.UNKNOWN);
-    }
-
-    @Override
-    public EnumSet<ForgeDirection> getOutputDirections()
-    {
-        return EnumSet.noneOf(ForgeDirection.class);
-    }
-
-    @Override
-    public float getProvide(ForgeDirection direction)
-    {
-        return 0;
-    }
-
-    @Override
-    public float getMaxEnergyStored()
-    {
-        return GCCoreTileEntityElectricFurnace.WATTS_PER_TICK;
     }
 }

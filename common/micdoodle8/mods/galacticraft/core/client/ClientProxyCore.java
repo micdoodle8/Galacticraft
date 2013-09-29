@@ -33,9 +33,11 @@ import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiCargoLoader;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiCargoUnloader;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiCoalGenerator;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiElectricFurnace;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiElectricIngotCompressor;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiExtendedInventory;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiFuelLoader;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiGalaxyMap;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiIngotCompressor;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiManual;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiParachest;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRefinery;
@@ -116,7 +118,9 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoUnloader;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCoalGenerator;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCopperWire;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectricFurnace;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectricIngotCompressor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityIngotCompressor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCollector;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCompressor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDistributor;
@@ -878,6 +882,14 @@ public class ClientProxyCore extends CommonProxyCore
             else if (tile instanceof GCCoreTileEntityElectricFurnace)
             {
                 return new GCCoreGuiElectricFurnace(player.inventory, (GCCoreTileEntityElectricFurnace) tile);
+            }
+            else if (tile instanceof GCCoreTileEntityIngotCompressor)
+            {
+                return new GCCoreGuiIngotCompressor(player.inventory, (GCCoreTileEntityIngotCompressor) tile);
+            }
+            else if (tile instanceof GCCoreTileEntityElectricIngotCompressor)
+            {
+                return new GCCoreGuiElectricIngotCompressor(player.inventory, (GCCoreTileEntityElectricIngotCompressor) tile);
             }
         }
 

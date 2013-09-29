@@ -62,6 +62,21 @@ public class GCCoreItemBlockBase extends ItemBlock
             name = "decoblock2";
             break;
         }
+        case 5:
+        {
+            name = "oreCopper";
+            break;
+        }
+        case 6:
+        {
+            name = "oreTin";
+            break;
+        }
+        case 7:
+        {
+            name = "oreAluminum";
+            break;
+        }
         default:
             name = "null";
         }
