@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.model;
 
+import org.lwjgl.opengl.GL11;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
@@ -7,7 +8,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class ModelCopperWire extends ModelBase
+public class GCCoreModelAluminumWire extends ModelBase
 {
     // fields
     ModelRenderer Middle;
@@ -18,7 +19,7 @@ public class ModelCopperWire extends ModelBase
     ModelRenderer Top;
     ModelRenderer Bottom;
 
-    public ModelCopperWire()
+    public GCCoreModelAluminumWire()
     {
         this.textureWidth = 64;
         this.textureHeight = 32;
@@ -112,7 +113,7 @@ public class ModelCopperWire extends ModelBase
 
     public void renderFront()
     {
-        this.Front.render(0.0625F);
+//        this.Front.render(0.0625F);
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z)

@@ -50,6 +50,7 @@ public class GCCoreConfigManager
     public static int idBlockBasicMachine;
     public static int idBlockCopperWire;
     public static int idBlockBasicMachine2;
+    public static int idBlockGlowstoneTorch;
 
     // ITEMS
     public static int idItemKnowledgeBook;
@@ -86,6 +87,7 @@ public class GCCoreConfigManager
     public static int idItemBasic;
     public static int idItemBattery;
     public static int idItemInfiniteBattery;
+    public static int idItemMeteorChunk;
 
     // RECIPES
     public static boolean useRecipesIC2;
@@ -151,6 +153,7 @@ public class GCCoreConfigManager
     public static int idEntityOxygenBubble;
     public static int idEntityLander;
     public static int idEntityLanderChest;
+    public static int idEntityMeteorChunk;
 
     // GENERAL
     public static boolean transparentBreathableAir;
@@ -218,8 +221,9 @@ public class GCCoreConfigManager
             GCCoreConfigManager.idBlockParachest = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockParachest", 3382).getInt(3382);
             GCCoreConfigManager.idBlockSolarPanel = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockSolarPanel", 3383).getInt(3383);
             GCCoreConfigManager.idBlockCopperWire = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockCopperWire", 3972).getInt(3972);
-            GCCoreConfigManager.idBlockBasicMachine = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockBasicMachine", 3363).getInt(3363);
-            GCCoreConfigManager.idBlockBasicMachine2 = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockBasicMachine2", 3364).getInt(3364);
+            GCCoreConfigManager.idBlockBasicMachine = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockMachine", 3363).getInt(3363);
+            GCCoreConfigManager.idBlockBasicMachine2 = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockMachine2", 3364).getInt(3364);
+            GCCoreConfigManager.idBlockGlowstoneTorch = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockGlowstoneTorch", 3384).getInt(3384);
             // 3390 - Mars Base Block
 
             GCCoreConfigManager.idItemSpaceship = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemSpaceship", 9855).getInt(9855);
@@ -255,6 +259,7 @@ public class GCCoreConfigManager
             GCCoreConfigManager.idItemBasic = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemBasic", 9894).getInt(9894);
             GCCoreConfigManager.idItemBattery = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemBattery", 13970).getInt(13970);
             GCCoreConfigManager.idItemInfiniteBattery = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemInfiniteBattery", 13971).getInt(13971);
+            GCCoreConfigManager.idItemMeteorChunk = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemMeteorChunk", 9895).getInt(9895);
 
             GCCoreConfigManager.idToolSteelSword = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idToolSteelSword", 9885).getInt(9885);
             GCCoreConfigManager.idToolSteelPickaxe = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idToolSteelPickaxe", 9886).getInt(9886);
@@ -314,6 +319,7 @@ public class GCCoreConfigManager
             GCCoreConfigManager.idEntityLander = GCCoreConfigManager.configuration.get("Entities", "idEntityLander", 168).getInt(168);
             GCCoreConfigManager.idEntityLanderChest = GCCoreConfigManager.configuration.get("Entities", "idEntityLanderChest", 169).getInt(169);
             GCCoreConfigManager.idEntityEvolvedSkeletonBoss = GCCoreConfigManager.configuration.get("Entities", "idEntityEvolvedSkeletonBoss", 170).getInt(170);
+            GCCoreConfigManager.idEntityMeteorChunk = GCCoreConfigManager.configuration.get("Entities", "idEntityMeteorChunk", 179).getInt(179);
 
             GCCoreConfigManager.transparentBreathableAir = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Transparent Breathable Air", true, "If you have FPS problems and wish to have solid blue breathable air blocks, set this to false").getBoolean(true);
             GCCoreConfigManager.moreStars = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "More Stars", true, "Setting this to false will revert night skies back to default minecraft star count").getBoolean(true);

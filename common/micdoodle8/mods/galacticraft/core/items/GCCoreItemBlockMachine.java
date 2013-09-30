@@ -38,7 +38,7 @@ public class GCCoreItemBlockMachine extends ItemBlock
     {
         int metadata = 0;
         
-        if (this.getBlockID() == GCCoreBlocks.blockMachineBase.blockID)
+        if (this.getBlockID() == GCCoreBlocks.machineBase.blockID)
         {
             if (itemstack.getItemDamage() >= GCCoreBlockMachine.COMPRESSOR_METADATA)
             {

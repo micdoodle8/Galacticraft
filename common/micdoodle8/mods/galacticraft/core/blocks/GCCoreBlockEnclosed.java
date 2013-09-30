@@ -6,7 +6,7 @@ import java.util.List;
 import micdoodle8.mods.galacticraft.api.block.IPartialSealedBlock;
 import micdoodle8.mods.galacticraft.core.GCCoreCompatibilityManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCopperWire;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAluminumWire;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenPipe;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -104,7 +104,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
     @Override
     public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
-        if (GCCoreBlocks.blockMachineBase != null)
+        if (GCCoreBlocks.machineBase != null)
         {
             par3List.add(new ItemStack(par1, 1, 0));
         }
@@ -310,7 +310,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
     {
         if (metadata <= EnumEnclosedBlock.COPPERWIRE.getMetadata())
         {
-            return new GCCoreTileEntityCopperWire();
+            return new GCCoreTileEntityAluminumWire();
         }
         else if (metadata <= EnumEnclosedBlock.OXYGENPIPE.getMetadata())
         {
