@@ -86,6 +86,9 @@ item.basicItem.compressedIron.name=Compressed Iron
 item.tier1.desc=Tier 1
 item.battery.name=Battery
 item.infiniteBattery.name=Infinite Battery
+item.meteorChunk.name=Throwable Meteor Chunk
+item.meteorChunkHot.name=Throwable Meteor Chunk
+item.hotDescription.name=Hot
 
 # TOOLS
 item.steel_pickaxe.name=Heavy Duty Pickaxe
@@ -149,12 +152,13 @@ tile.solar.advanced.name=Advanced Solar Panel
 tile.parachest.name=Parachest
 tile.oreCopper.name=Copper Ore
 tile.oreTin.name=Tin Ore
-tile.copperWire.name=Copper Wire
 tile.machine.0.name=Coal Generator
 tile.machine.1.name=Battery Box
 tile.machine.2.name=Electric Furnace
 tile.machine.3.name=Compressor
 tile.machine2.4.name=Electric Compressor
+tile.aluminumWire.name=Aluminum Wire
+tile.aluminumWireHeavy.name=Heavy Aluminum Wire
 
 # ENTITIES
 entity.GalacticraftCore.EvolvedSpider.name=Evolved Spider

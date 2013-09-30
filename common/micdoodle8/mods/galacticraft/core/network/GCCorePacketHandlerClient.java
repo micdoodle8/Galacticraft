@@ -25,6 +25,7 @@ import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerClient;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
@@ -33,10 +34,12 @@ import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.DimensionManager;
 import org.lwjgl.input.Keyboard;
+import universalelectricity.prefab.tile.TileEntityConductor;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.IPacketHandler;
@@ -484,6 +487,19 @@ public class GCCorePacketHandlerClient implements IPacketHandler
             catch (Exception e)
             {
                 e.printStackTrace();
+            }
+        }
+        else if (packetType == 31)
+        {
+            final Class<?>[] decodeAs = { Integer.class, Integer.class, Integer.class };
+            final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
+            
+            TileEntity tile = player.worldObj.getBlockTileEntity((Integer)packetReadout[0], (Integer)packetReadout[1], (Integer)packetReadout[2]);
+            
+            if (tile instanceof TileEntityConductor)
+            {
+                ((TileEntityConductor) tile).adjacentConnections = null;
+                Block.blocksList[player.worldObj.getBlockId(tile.xCoord, tile.yCoord, tile.zCoord)].setBlockBoundsBasedOnState(player.worldObj, tile.xCoord, tile.yCoord, tile.zCoord);
             }
         }
     }

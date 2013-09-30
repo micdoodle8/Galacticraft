@@ -61,6 +61,7 @@ public class GCCoreItems
     public static Item basicItem;
     public static Item battery;
     public static Item infiniteBatery;
+    public static Item meteorChunk;
 
     public static EnumArmorMaterial ARMOR_SENSOR_GLASSES = EnumHelper.addArmorMaterial("SENSORGLASSES", 200, new int[] { 0, 0, 0, 0 }, 0);
     public static EnumArmorMaterial ARMOR_STEEL = EnumHelper.addArmorMaterial("steel", 30, new int[] { 3, 8, 6, 3 }, 12);
@@ -112,6 +113,7 @@ public class GCCoreItems
         GCCoreItems.basicItem = new GCCoreItemBasic(GCCoreConfigManager.idItemBasic, "basicItem");
         GCCoreItems.battery = new GCCoreItemBattery(GCCoreConfigManager.idItemBattery, "battery");
         GCCoreItems.infiniteBatery = new GCCoreItemInfiniteBattery(GCCoreConfigManager.idItemInfiniteBattery, "infiniteBattery");
+        GCCoreItems.meteorChunk = new GCCoreItemMeteorChunk(GCCoreConfigManager.idItemMeteorChunk, "meteorChunk");
 
         GCCoreItems.hiddenItems.add(GCCoreItems.bowGravity.itemID);
         GCCoreItems.hiddenItems.add(GCCoreItems.knowledgeBook.itemID);
