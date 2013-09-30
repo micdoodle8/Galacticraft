@@ -46,7 +46,7 @@ public class GCCoreTileEntityElectricFurnace extends GCCoreTileEntityUniversalEl
      * The ItemStacks that hold the items currently being used in the battery
      * box
      */
-    private ItemStack[] containingItems = new ItemStack[3];
+    private ItemStack[] containingItems = new ItemStack[11];
 
     /**
      * The amount of players using the electric furnace.

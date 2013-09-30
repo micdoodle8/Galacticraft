@@ -28,7 +28,7 @@ public class GCCoreGuiElectricIngotCompressor extends GuiContainer
     {
         super(new GCCoreContainerElectricIngotCompressor(par1InventoryPlayer, tileEntity));
         this.tileEntity = tileEntity;
-        this.ySize = 197;
+        this.ySize = 199;
     }
 
     /**
@@ -39,13 +39,10 @@ public class GCCoreGuiElectricIngotCompressor extends GuiContainer
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
         this.fontRenderer.drawString(this.tileEntity.getInvName(), 10, 6, 4210752);
-        String displayText = "Ingots:";
-        this.fontRenderer.drawString(displayText, 50 - this.fontRenderer.getStringWidth(displayText), 32, 4210752);
-        this.fontRenderer.drawString(displayText, 50 - this.fontRenderer.getStringWidth(displayText), 53, 4210752);
-        displayText = "Battery:";
-        this.fontRenderer.drawString(displayText, 50 - this.fontRenderer.getStringWidth(displayText), 74, 4210752);
+        String displayText = "Battery:";
+        this.fontRenderer.drawString(displayText, 50 - this.fontRenderer.getStringWidth(displayText), 77, 4210752);
 
-        if (this.tileEntity.processTicks1 > 0 || this.tileEntity.processTicks2 > 0)
+        if (this.tileEntity.processTicks > 0)
         {
             displayText = mekanism.api.EnumColor.BRIGHT_GREEN + "Running";
         }
@@ -56,8 +53,8 @@ public class GCCoreGuiElectricIngotCompressor extends GuiContainer
 
         String str = "Status: " + displayText;
         this.fontRenderer.drawString(str, 120 - this.fontRenderer.getStringWidth(str) / 2, 75, 4210752);
-        this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 96, 4210752);
-        str = ElectricityDisplay.getDisplay(GCCoreTileEntityElectricIngotCompressor.WATTS_PER_TICK_PER_STACK * 20, ElectricUnit.WATT) + " Per";
+        this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 93, 4210752);
+        str = ElectricityDisplay.getDisplay(GCCoreTileEntityElectricIngotCompressor.WATTS_PER_TICK_PER_STACK * 20, ElectricUnit.WATT);
         this.fontRenderer.drawString(str, 120 - this.fontRenderer.getStringWidth(str) / 2, 85, 4210752);
         str = ElectricityDisplay.getDisplay(this.tileEntity.getVoltage(), ElectricUnit.VOLTAGE);
         this.fontRenderer.drawString(str, 120 - this.fontRenderer.getStringWidth(str) / 2, 95, 4210752);
@@ -79,28 +76,22 @@ public class GCCoreGuiElectricIngotCompressor extends GuiContainer
 
         int scale;
         
-        if (this.tileEntity.processTicks1 > 0)
+        if (this.tileEntity.processTicks > 0)
         {
-            scale = (int) ((double) this.tileEntity.processTicks1 / (double) GCCoreTileEntityElectricFurnace.PROCESS_TIME_REQUIRED * 34);
-            this.drawTexturedModalRect(this.containerWidth + 77, this.containerHeight + 26, 176, 13, scale, 17);
-        }
-
-        if (this.tileEntity.processTicks2 > 0)
-        {
-            scale = (int) ((double) this.tileEntity.processTicks2 / (double) GCCoreTileEntityElectricFurnace.PROCESS_TIME_REQUIRED * 34);
-            this.drawTexturedModalRect(this.containerWidth + 77, this.containerHeight + 47, 176, 13, scale, 17);
+            scale = (int) ((double) this.tileEntity.processTicks / (double) GCCoreTileEntityElectricIngotCompressor.PROCESS_TIME_REQUIRED * 54);
+            this.drawTexturedModalRect(this.containerWidth + 77, this.containerHeight + 38, 176, 13, scale, 17);
         }
 
         if (this.tileEntity.getEnergyStored() > 0)
         {
             scale = this.tileEntity.getScaledElecticalLevel(54);
-            this.drawTexturedModalRect(this.containerWidth + 116 - 98, this.containerHeight + 6 + 85, 176, 30, scale, 7);
-            this.drawTexturedModalRect(this.containerWidth + 4, this.containerHeight + 6 + 84, 176, 37, 11, 10);
+            this.drawTexturedModalRect(this.containerWidth + 116 - 98, this.containerHeight + 96, 176, 30, scale, 7);
+            this.drawTexturedModalRect(this.containerWidth + 4, this.containerHeight + 95, 176, 37, 11, 10);
         }
         
-        if (this.tileEntity.processTicks1 > GCCoreTileEntityElectricIngotCompressor.PROCESS_TIME_REQUIRED / 2 || this.tileEntity.processTicks2 > GCCoreTileEntityElectricIngotCompressor.PROCESS_TIME_REQUIRED / 2)
+        if (this.tileEntity.processTicks > GCCoreTileEntityElectricIngotCompressor.PROCESS_TIME_REQUIRED / 2)
         {
-            this.drawTexturedModalRect(this.containerWidth + 101, this.containerHeight + 18, 176, 0, 15, 13);
+            this.drawTexturedModalRect(this.containerWidth + 101, this.containerHeight + 30, 176, 0, 15, 13);
         }
     }
 }

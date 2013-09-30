@@ -36,6 +36,7 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpider;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityZombie;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.event.GCCoreEvents;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemBasic;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.network.GCCoreConnectionHandler;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerServer;
@@ -81,6 +82,7 @@ import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldProviderSurface;
@@ -93,6 +95,7 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 import universalelectricity.compatibility.Compatibility;
 import universalelectricity.core.UniversalElectricity;
 import universalelectricity.prefab.ConductorChunkInitiate;
@@ -263,11 +266,6 @@ public class GalacticraftCore
             FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(GalacticraftCore.CRUDEOIL, GCCoreItems.oilCanister.getMaxDamage() - i), new ItemStack(GCCoreItems.oilCanister, 1, i), new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.fuelCanister.getMaxDamage())));
         }
         
-        for (int i = 2; i < 7; i++)
-        {
-            CompressorRecipes.addCompressorRecipe(new ItemStack(GCCoreItems.basicItem, 1, i), new ItemStack(GCCoreItems.basicItem, 2, i + 5));
-        }
-        
         SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicRocketT1());
         SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicMoonBuggy());
         SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicAdd());
@@ -310,6 +308,24 @@ public class GalacticraftCore
         NetworkRegistry.instance().registerGuiHandler(this, GalacticraftCore.proxy);
         GalacticraftCore.proxy.postInit(event);
         GalacticraftCore.proxy.registerRenderInformation();
+        
+        for (int i = 2; i < 7; i++)
+        {
+            if (GCCoreItemBasic.names[i].contains("ingot"))
+            {
+                for (ItemStack stack : OreDictionary.getOres(GCCoreItemBasic.names[i]))
+                {
+                    CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, i + 5), stack);
+                }
+            }
+        }
+        
+        CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, 12), new ItemStack(Item.ingotIron, 1, 0));
+        
+        CompressorRecipes.addRecipe(new ItemStack(GCCoreItems.heavyPlatingTier1, 1, 0), "X", "Y", "Z", 
+                'X', new ItemStack(GCCoreItems.basicItem, 2, 12), 
+                'Y', new ItemStack(GCCoreItems.basicItem, 2, 10),
+                'Z', new ItemStack(GCCoreItems.basicItem, 2, 11));
     }
 
     @EventHandler

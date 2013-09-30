@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectricIngotCompr
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotFurnace;
 import net.minecraft.item.ItemStack;
@@ -18,32 +19,36 @@ public class GCCoreContainerElectricIngotCompressor extends Container
     public GCCoreContainerElectricIngotCompressor(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityElectricIngotCompressor tileEntity)
     {
         this.tileEntity = tileEntity;
+        tileEntity.compressingCraftMatrix.eventHandler = this;
+        
+        for (int x = 0; x < 3; x++)
+        {
+            for (int y = 0; y < 3; y++)
+            {
+                this.addSlotToContainer(new Slot(tileEntity.compressingCraftMatrix, y + x * 3, 19 + y * 18, 18 + x * 18));
+            }
+        }
 
         // Coal slot
-        this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 55, 70, IItemElectric.class));
-
-        // To be smelted
-        this.addSlotToContainer(new Slot(tileEntity, 1, 55, 28));
-
-        // To be smelted
-        this.addSlotToContainer(new Slot(tileEntity, 2, 55, 49));
+        this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 55, 75, IItemElectric.class));
 
         // Smelting result
-        this.addSlotToContainer(new SlotFurnace(par1InventoryPlayer.player, tileEntity, 3, 138, 28));
-        this.addSlotToContainer(new SlotFurnace(par1InventoryPlayer.player, tileEntity, 4, 138, 49));
+        this.addSlotToContainer(new SlotFurnace(par1InventoryPlayer.player, tileEntity, 1, 138, 30));
+        this.addSlotToContainer(new SlotFurnace(par1InventoryPlayer.player, tileEntity, 2, 138, 48));
+
         int var3;
 
         for (var3 = 0; var3 < 3; ++var3)
         {
             for (int var4 = 0; var4 < 9; ++var4)
             {
-                this.addSlotToContainer(new Slot(par1InventoryPlayer, var4 + var3 * 9 + 9, 8 + var4 * 18, 112 + var3 * 18));
+                this.addSlotToContainer(new Slot(par1InventoryPlayer, var4 + var3 * 9 + 9, 8 + var4 * 18, 117 + var3 * 18));
             }
         }
 
         for (var3 = 0; var3 < 9; ++var3)
         {
-            this.addSlotToContainer(new Slot(par1InventoryPlayer, var3, 8 + var3 * 18, 170));
+            this.addSlotToContainer(new Slot(par1InventoryPlayer, var3, 8 + var3 * 18, 175));
         }
     }
 
@@ -57,6 +62,13 @@ public class GCCoreContainerElectricIngotCompressor extends Container
     public boolean canInteractWith(EntityPlayer par1EntityPlayer)
     {
         return this.tileEntity.isUseableByPlayer(par1EntityPlayer);
+    }
+
+    @Override
+    public void onCraftMatrixChanged(IInventory par1IInventory)
+    {
+        super.onCraftMatrixChanged(par1IInventory);
+        this.tileEntity.updateInput();
     }
 
     /**

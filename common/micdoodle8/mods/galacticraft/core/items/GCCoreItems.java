@@ -6,8 +6,10 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.item.EnumArmorMaterial;
 import net.minecraft.item.EnumToolMaterial;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.EnumHelper;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.oredict.OreDictionary;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -203,6 +205,14 @@ public class GCCoreItems
         GCCoreUtil.registerGalacticraftItem("batteryEmpty", GCCoreItems.battery, 100);
         GCCoreUtil.registerGalacticraftItem("batteryFull", GCCoreItems.battery, 0);
         GCCoreUtil.registerGalacticraftItem("infiniteBattery", GCCoreItems.infiniteBatery);
+        
+        for (int i = 0; i < GCCoreItemBasic.names.length; i++)
+        {
+            if (GCCoreItemBasic.names[i].contains("ingot") || GCCoreItemBasic.names[i].contains("compressed"))
+            {
+                OreDictionary.registerOre(GCCoreItemBasic.names[i], new ItemStack(GCCoreItems.basicItem, 1, i));
+            }
+        }
     }
 
     public static void registerHarvestLevels()

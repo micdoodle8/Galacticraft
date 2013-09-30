@@ -7,6 +7,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
@@ -22,16 +23,17 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 public class GCCoreTileEntityElectricIngotCompressor extends GCCoreTileEntityElectric implements IInventory, ISidedInventory, IPacketReceiver
 {
     public static final int PROCESS_TIME_REQUIRED = 200;
-    public static final float WATTS_PER_TICK_PER_STACK = 0.15F;
-    public int processTicks1 = 0;
-    public int processTicks2 = 0;
+    public static final float WATTS_PER_TICK_PER_STACK = 0.25F;
+    public int processTicks = 0;
+    private ItemStack producingStack = null;
     private long ticks;
 
-    private ItemStack[] containingItems = new ItemStack[5];
+    private ItemStack[] containingItems = new ItemStack[3];
+    public InventoryCrafting compressingCraftMatrix = new InventoryCrafting(null, 3, 3);
 
     public GCCoreTileEntityElectricIngotCompressor()
     {
-        super(WATTS_PER_TICK_PER_STACK * 2, 50);
+        super(WATTS_PER_TICK_PER_STACK, 50);
     }
 
     @Override
@@ -42,54 +44,29 @@ public class GCCoreTileEntityElectricIngotCompressor extends GCCoreTileEntityEle
         if (!this.worldObj.isRemote)
         {
             boolean updateInv = false;
-            int compressingCount = 0;
             
             if (this.getEnergyStored() > 0.0F)
             {                
-                if (this.canSmelt1())
+                if (this.canCompress())
                 {
-                    ++this.processTicks1;
+                    ++this.processTicks;
                     
-                    compressingCount++;
-                    
-                    if (this.processTicks1 == PROCESS_TIME_REQUIRED)
+                    if (this.processTicks == PROCESS_TIME_REQUIRED)
                     {
                         this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "random.anvil_land", 0.2F, 0.5F);
-                        this.processTicks1 = 0;
-                        this.smeltItem1();
+                        this.processTicks = 0;
+                        this.compressItems();
                         updateInv = true;
                     }
                 }
                 else
                 {
-                    this.processTicks1 = 0;
+                    this.processTicks = 0;
                 }
-
-                if (this.canSmelt2())
-                {
-                    ++this.processTicks2;
-                    
-                    compressingCount++;
-                    
-                    if (this.processTicks2 == PROCESS_TIME_REQUIRED)
-                    {
-                        this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "random.anvil_land", 0.2F, 0.5F);
-                        this.processTicks2 = 0;
-                        this.smeltItem2();
-                        updateInv = true;
-                    }
-                }
-                else
-                {
-                    this.processTicks2 = 0;
-                }
-                
-                this.ueWattsPerTick = compressingCount * GCCoreTileEntityElectricIngotCompressor.WATTS_PER_TICK_PER_STACK;
             }
             else
             {
-                this.processTicks1 = 0;
-                this.processTicks2 = 0;
+                this.processTicks = 0;
             }
             
             if (updateInv)
@@ -116,58 +93,57 @@ public class GCCoreTileEntityElectricIngotCompressor extends GCCoreTileEntityEle
     {
     }
 
-    private boolean canSmelt1()
+    private boolean canCompress()
     {
-        if (this.containingItems[1] == null)
-        {
+        ItemStack itemstack = this.producingStack;
+        if (itemstack == null) 
             return false;
-        }
-        else
-        {
-            ItemStack itemstack = CompressorRecipes.getCompressedResult(this.containingItems[1]);
-            if (itemstack == null) 
-                return false;
-            if (this.containingItems[3] == null) 
-                return true;
-            if (!this.containingItems[3].isItemEqual(itemstack)) 
-                return false;
-            int result = containingItems[3].stackSize + itemstack.stackSize;
-            return (result <= getInventoryStackLimit() && result <= itemstack.getMaxStackSize());
-        }
+        if (this.containingItems[1] == null && this.containingItems[2] == null) 
+            return true;
+        if ((this.containingItems[1] != null && !this.containingItems[1].isItemEqual(itemstack)) || (this.containingItems[2] != null && !this.containingItems[2].isItemEqual(itemstack)))
+            return false;
+        int result = containingItems[1] == null ? 0 : containingItems[1].stackSize + itemstack.stackSize;
+        int result2 = containingItems[2] == null ? 0 : containingItems[2].stackSize + itemstack.stackSize;
+        return (result <= getInventoryStackLimit() && result <= itemstack.getMaxStackSize()) && (result2 <= getInventoryStackLimit() && result2 <= itemstack.getMaxStackSize());
     }
-
-    private boolean canSmelt2()
+    
+    public void updateInput()
     {
-        if (this.containingItems[2] == null)
+        this.producingStack = CompressorRecipes.findMatchingRecipe(this.compressingCraftMatrix, this.worldObj);
+    }
+    
+    public void compressItems()
+    {
+        int stackSize1 = this.containingItems[1] == null ? 0 : this.containingItems[1].stackSize;
+        int stackSize2 = this.containingItems[2] == null ? 0 : this.containingItems[2].stackSize;
+        
+        if (stackSize1 <= stackSize2)
         {
-            return false;
+            this.compressIntoSlot(1);
+            this.compressIntoSlot(2);
         }
         else
         {
-            ItemStack itemstack = CompressorRecipes.getCompressedResult(this.containingItems[2]);
-            if (itemstack == null) return false;
-            if (this.containingItems[4] == null) return true;
-            if (!this.containingItems[4].isItemEqual(itemstack)) return false;
-            int result = containingItems[4].stackSize + itemstack.stackSize;
-            return (result <= getInventoryStackLimit() && result <= itemstack.getMaxStackSize());
+            this.compressIntoSlot(2);
+            this.compressIntoSlot(1);
         }
     }
     
-    public void smeltItem1()
+    private void compressIntoSlot(int slot)
     {
-        if (this.canSmelt1())
+        if (this.canCompress())
         {
-            ItemStack resultItemStack = CompressorRecipes.getCompressedResult(this.containingItems[1]);
+            ItemStack resultItemStack = this.producingStack;
 
-            if (this.containingItems[3] == null)
+            if (this.containingItems[slot] == null)
             {
-                this.containingItems[3] = resultItemStack.copy();
+                this.containingItems[slot] = resultItemStack.copy();
             }
-            else if (this.containingItems[3].isItemEqual(resultItemStack))
+            else if (this.containingItems[slot].isItemEqual(resultItemStack))
             {
-                if (this.containingItems[3].stackSize + resultItemStack.stackSize > 64)
+                if (this.containingItems[slot].stackSize + resultItemStack.stackSize > 64)
                 {
-                    for (int i = 0; i < this.containingItems[3].stackSize + resultItemStack.stackSize - 64; i++)
+                    for (int i = 0; i < this.containingItems[slot].stackSize + resultItemStack.stackSize - 64; i++)
                     {
                         float var = 0.7F;
                         double dx = this.worldObj.rand.nextFloat() * var + (1.0F - var) * 0.5D;
@@ -181,54 +157,12 @@ public class GCCoreTileEntityElectricIngotCompressor extends GCCoreTileEntityEle
                     }
                 }
                 
-                this.containingItems[3].stackSize += resultItemStack.stackSize;
+                this.containingItems[slot].stackSize += resultItemStack.stackSize;
             }
-
-            this.containingItems[1].stackSize--;
-
-            if (this.containingItems[1].stackSize <= 0)
+            
+            for (int i = 0; i < this.compressingCraftMatrix.getSizeInventory(); i++)
             {
-                this.containingItems[1] = null;
-            }
-        }
-    }
-    
-    public void smeltItem2()
-    {
-        if (this.canSmelt2())
-        {
-            ItemStack resultItemStack = CompressorRecipes.getCompressedResult(this.containingItems[2]);
-
-            if (this.containingItems[4] == null)
-            {
-                this.containingItems[4] = resultItemStack.copy();
-            }
-            else if (this.containingItems[4].isItemEqual(resultItemStack))
-            {
-                if (this.containingItems[4].stackSize + resultItemStack.stackSize > 64)
-                {
-                    for (int i = 0; i < this.containingItems[5].stackSize + resultItemStack.stackSize - 64; i++)
-                    {
-                        float var = 0.7F;
-                        double dx = this.worldObj.rand.nextFloat() * var + (1.0F - var) * 0.5D;
-                        double dy = this.worldObj.rand.nextFloat() * var + (1.0F - var) * 0.5D;
-                        double dz = this.worldObj.rand.nextFloat() * var + (1.0F - var) * 0.5D;
-                        EntityItem entityitem = new EntityItem(this.worldObj, this.xCoord + dx, this.yCoord + dy, this.zCoord + dz, new ItemStack(resultItemStack.getItem(), 1, resultItemStack.getItemDamage()));
-
-                        entityitem.delayBeforeCanPickup = 10;
-
-                        this.worldObj.spawnEntityInWorld(entityitem);
-                    }
-                }
-                
-                this.containingItems[4].stackSize += resultItemStack.stackSize;
-            }
-
-            this.containingItems[2].stackSize--;
-
-            if (this.containingItems[2].stackSize <= 0)
-            {
-                this.containingItems[2] = null;
+                this.compressingCraftMatrix.decrStackSize(i, 1);
             }
         }
     }
@@ -237,8 +171,7 @@ public class GCCoreTileEntityElectricIngotCompressor extends GCCoreTileEntityEle
     public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readFromNBT(par1NBTTagCompound);
-        this.processTicks1 = par1NBTTagCompound.getInteger("smeltingTicks");
-        this.processTicks2 = par1NBTTagCompound.getInteger("smeltingTicks2");
+        this.processTicks = par1NBTTagCompound.getInteger("smeltingTicks");
         NBTTagList var2 = par1NBTTagCompound.getTagList("Items");
         this.containingItems = new ItemStack[this.getSizeInventory()];
 
@@ -258,8 +191,7 @@ public class GCCoreTileEntityElectricIngotCompressor extends GCCoreTileEntityEle
     public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setInteger("smeltingTicks", this.processTicks1);
-        par1NBTTagCompound.setInteger("smeltingTicks2", this.processTicks2);
+        par1NBTTagCompound.setInteger("smeltingTicks", this.processTicks);
         NBTTagList var2 = new NBTTagList();
 
         for (int var3 = 0; var3 < this.containingItems.length; ++var3)
@@ -402,7 +334,7 @@ public class GCCoreTileEntityElectricIngotCompressor extends GCCoreTileEntityEle
     @Override
     public boolean shouldUseEnergy()
     {
-        return this.processTicks1 > 0 || this.processTicks2 > 0;
+        return this.processTicks > 0;
     }
 
     @Override
@@ -410,8 +342,7 @@ public class GCCoreTileEntityElectricIngotCompressor extends GCCoreTileEntityEle
     {
         try
         {
-            this.processTicks1 = data.readInt();
-            this.processTicks2 = data.readInt();
+            this.processTicks = data.readInt();
             this.setEnergyStored(data.readFloat());
         }
         catch (Exception e)
@@ -423,7 +354,7 @@ public class GCCoreTileEntityElectricIngotCompressor extends GCCoreTileEntityEle
     @Override
     public Packet getPacket()
     {
-        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.processTicks1, this.processTicks2, this.getEnergyStored());
+        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.processTicks, this.getEnergyStored());
     }
 
     @Override

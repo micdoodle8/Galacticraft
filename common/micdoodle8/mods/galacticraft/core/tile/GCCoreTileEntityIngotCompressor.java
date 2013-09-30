@@ -8,6 +8,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
@@ -33,7 +34,9 @@ public class GCCoreTileEntityIngotCompressor extends TileEntity implements IInve
     public int currentItemBurnTime = 0;
     private long ticks;
 
-    private ItemStack[] containingItems = new ItemStack[3];
+    private ItemStack producingStack = null;
+    private ItemStack[] containingItems = new ItemStack[2];
+    public InventoryCrafting compressingCraftMatrix = new InventoryCrafting(null, 3, 3);
     public final Set<EntityPlayer> playersUsing = new HashSet<EntityPlayer>();
 
     @Override
@@ -149,39 +152,37 @@ public class GCCoreTileEntityIngotCompressor extends TileEntity implements IInve
     public void closeChest()
     {
     }
+    
+    public void updateInput()
+    {
+        this.producingStack = CompressorRecipes.findMatchingRecipe(this.compressingCraftMatrix, this.worldObj);
+    }
 
     private boolean canSmelt()
     {
-        if (this.containingItems[1] == null)
-        {
-            return false;
-        }
-        else
-        {
-            ItemStack itemstack = CompressorRecipes.getCompressedResult(this.containingItems[1]);
-            if (itemstack == null) return false;
-            if (this.containingItems[2] == null) return true;
-            if (!this.containingItems[2].isItemEqual(itemstack)) return false;
-            int result = containingItems[2].stackSize + itemstack.stackSize;
-            return (result <= getInventoryStackLimit() && result <= itemstack.getMaxStackSize());
-        }
+        ItemStack itemstack = this.producingStack;
+        if (itemstack == null) return false;
+        if (this.containingItems[1] == null) return true;
+        if (!this.containingItems[1].isItemEqual(itemstack)) return false;
+        int result = containingItems[1].stackSize + itemstack.stackSize;
+        return (result <= getInventoryStackLimit() && result <= itemstack.getMaxStackSize());
     }
     
     public void smeltItem()
     {
         if (this.canSmelt())
         {
-            ItemStack resultItemStack = CompressorRecipes.getCompressedResult(this.containingItems[1]);
+            ItemStack resultItemStack = this.producingStack;
 
-            if (this.containingItems[2] == null)
+            if (this.containingItems[1] == null)
             {
-                this.containingItems[2] = resultItemStack.copy();
+                this.containingItems[1] = resultItemStack.copy();
             }
-            else if (this.containingItems[2].isItemEqual(resultItemStack))
+            else if (this.containingItems[1].isItemEqual(resultItemStack))
             {
-                if (this.containingItems[2].stackSize + resultItemStack.stackSize > 64)
+                if (this.containingItems[1].stackSize + resultItemStack.stackSize > 64)
                 {
-                    for (int i = 0; i < this.containingItems[2].stackSize + resultItemStack.stackSize - 64; i++)
+                    for (int i = 0; i < this.containingItems[1].stackSize + resultItemStack.stackSize - 64; i++)
                     {
                         float var = 0.7F;
                         double dx = this.worldObj.rand.nextFloat() * var + (1.0F - var) * 0.5D;
@@ -195,14 +196,12 @@ public class GCCoreTileEntityIngotCompressor extends TileEntity implements IInve
                     }
                 }
                 
-                this.containingItems[2].stackSize += resultItemStack.stackSize;
+                this.containingItems[1].stackSize += resultItemStack.stackSize;
             }
-
-            this.containingItems[1].stackSize--;
-
-            if (this.containingItems[1].stackSize <= 0)
+            
+            for (int i = 0; i < this.compressingCraftMatrix.getSizeInventory(); i++)
             {
-                this.containingItems[1] = null;
+                this.compressingCraftMatrix.decrStackSize(i, 1);
             }
         }
     }

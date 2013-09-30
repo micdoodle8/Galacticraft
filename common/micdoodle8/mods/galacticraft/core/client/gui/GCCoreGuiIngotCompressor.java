@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.client.gui;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerIngotCompressor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectricFurnace;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectricIngotCompressor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityIngotCompressor;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -26,6 +27,7 @@ public class GCCoreGuiIngotCompressor extends GuiContainer
     {
         super(new GCCoreContainerIngotCompressor(par1InventoryPlayer, tileEntity));
         this.tileEntity = tileEntity;
+        this.ySize = 192;
     }
 
     /**
@@ -36,10 +38,8 @@ public class GCCoreGuiIngotCompressor extends GuiContainer
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
         this.fontRenderer.drawString(this.tileEntity.getInvName(), 10, 6, 4210752);
-        String displayText = "Ingots:";
-        this.fontRenderer.drawString(displayText, 50 - this.fontRenderer.getStringWidth(displayText), 28, 4210752);
-        displayText = "Fuel:";
-        this.fontRenderer.drawString(displayText, 50 - this.fontRenderer.getStringWidth(displayText), 53, 4210752);
+        String displayText = "Fuel:";
+        this.fontRenderer.drawString(displayText, 50 - this.fontRenderer.getStringWidth(displayText), 79, 4210752);
 
         if (this.tileEntity.processTicks > 0)
         {
@@ -51,9 +51,9 @@ public class GCCoreGuiIngotCompressor extends GuiContainer
         }
 
         String str = "Status:";
-        this.fontRenderer.drawString("Status:", 120 - this.fontRenderer.getStringWidth(str) / 2, 50, 4210752);
+        this.fontRenderer.drawString("Status:", 120 - this.fontRenderer.getStringWidth(str) / 2, 70, 4210752);
         str = displayText;
-        this.fontRenderer.drawString(displayText, 120 - this.fontRenderer.getStringWidth(str) / 2, 62, 4210752);
+        this.fontRenderer.drawString(displayText, 120 - this.fontRenderer.getStringWidth(str) / 2, 80, 4210752);
         this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
     }
 
@@ -73,14 +73,19 @@ public class GCCoreGuiIngotCompressor extends GuiContainer
 
         if (this.tileEntity.processTicks > 0)
         {
-            int scale = (int) ((double) this.tileEntity.processTicks / (double) GCCoreTileEntityElectricFurnace.PROCESS_TIME_REQUIRED * 34);
-            this.drawTexturedModalRect(this.containerWidth + 77, this.containerHeight + 15, 176, 0, scale, 25);
+            int scale = (int) ((double) this.tileEntity.processTicks / (double) GCCoreTileEntityIngotCompressor.PROCESS_TIME_REQUIRED * 54);
+            this.drawTexturedModalRect(this.containerWidth + 77, this.containerHeight + 36, 176, 13, scale, 17);
         }
 
         if (this.tileEntity.furnaceBurnTime > 0)
         {
             int scale = (int) ((double) this.tileEntity.furnaceBurnTime / (double) this.tileEntity.currentItemBurnTime * 14);
-            this.drawTexturedModalRect(this.containerWidth + 81, this.containerHeight + 14 + (14 - scale), 176, 25 + 14 - scale, 14, scale);
+            this.drawTexturedModalRect(this.containerWidth + 81, this.containerHeight + 27 + (14 - scale), 176, 30 + 14 - scale, 14, scale);
+        }
+        
+        if (this.tileEntity.processTicks > GCCoreTileEntityIngotCompressor.PROCESS_TIME_REQUIRED / 2)
+        {
+            this.drawTexturedModalRect(this.containerWidth + 101, this.containerHeight + 28, 176, 0, 15, 13);
         }
     }
 }
