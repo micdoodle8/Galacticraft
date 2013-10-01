@@ -82,6 +82,7 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
+import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -310,7 +311,7 @@ public class GalacticraftCore
         GalacticraftCore.proxy.postInit(event);
         GalacticraftCore.proxy.registerRenderInformation();
         
-        for (int i = 2; i < 7; i++)
+        for (int i = 3; i < 8; i++)
         {
             if (GCCoreItemBasic.names[i].contains("ingot"))
             {
@@ -321,12 +322,13 @@ public class GalacticraftCore
             }
         }
         
-        CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, 12), new ItemStack(Item.ingotIron, 1, 0));
+        CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, 13), new ItemStack(Item.ingotIron, 1, 0));
+        CompressorRecipes.addShapelessRecipe(new ItemStack(GCMoonItems.meteoricIronIngot, 1, 1), new ItemStack(GCMoonItems.meteoricIronIngot, 1, 0));
         
-        CompressorRecipes.addRecipe(new ItemStack(GCCoreItems.heavyPlatingTier1, 1, 0), "X", "Y", "Z", 
-                'X', new ItemStack(GCCoreItems.basicItem, 2, 12), 
+        CompressorRecipes.addRecipe(new ItemStack(GCCoreItems.heavyPlatingTier1, 1, 0), "XYZ", "XYZ",
+                'X', new ItemStack(GCCoreItems.basicItem, 2, 11), 
                 'Y', new ItemStack(GCCoreItems.basicItem, 2, 10),
-                'Z', new ItemStack(GCCoreItems.basicItem, 2, 11));
+                'Z', new ItemStack(GCCoreItems.basicItem, 2, 12));
     }
 
     @EventHandler

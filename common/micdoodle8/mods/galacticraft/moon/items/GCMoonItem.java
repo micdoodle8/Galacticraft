@@ -20,7 +20,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCMoonItem extends Item
 {
-    public static String[] names = { "meteoric_iron_ingot", "meteoric_iron_plate" };
+    public static String[] names = { "meteoric_iron_ingot", "compressedMeteoricIron" };
     protected Icon[] icons = new Icon[GCMoonItem.names.length];
 
     public GCMoonItem(int par1)

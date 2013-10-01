@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import java.util.List;
 import java.util.Random;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -39,7 +40,7 @@ public class GCCoreBlock extends Block
     @Override
     public void registerIcons(IconRegister iconRegister)
     {
-        this.iconBuffer = new Icon[7];
+        this.iconBuffer = new Icon[8];
         this.iconBuffer[0] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "deco_aluminium_2");
         this.iconBuffer[1] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "deco_aluminium_4");
         this.iconBuffer[2] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "deco_aluminium_1");
@@ -47,6 +48,7 @@ public class GCCoreBlock extends Block
         this.iconBuffer[4] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "oreCopper");
         this.iconBuffer[5] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "oreTin");
         this.iconBuffer[6] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "oreAluminum");
+        this.iconBuffer[7] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "oreSilicon");
     }
 
     @Override
@@ -72,6 +74,8 @@ public class GCCoreBlock extends Block
             return this.iconBuffer[5];
         case 7:
             return this.iconBuffer[6];
+        case 8:
+            return this.iconBuffer[7];
         default:
             return meta < this.iconBuffer.length ? this.iconBuffer[meta] : this.iconBuffer[0];
         }
@@ -82,6 +86,8 @@ public class GCCoreBlock extends Block
     {
         switch (meta)
         {
+        case 8:
+            return GCCoreItems.basicItem.itemID;
         default:
             return this.blockID;
         }
@@ -92,6 +98,8 @@ public class GCCoreBlock extends Block
     {
         switch (meta)
         {
+        case 8:
+            return 2;
         default:
             return meta;
         }
@@ -112,7 +120,7 @@ public class GCCoreBlock extends Block
     @Override
     public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
-        for (int var4 = 3; var4 < 8; ++var4)
+        for (int var4 = 3; var4 < 9; ++var4)
         {
             par3List.add(new ItemStack(par1, 1, var4));
         }
