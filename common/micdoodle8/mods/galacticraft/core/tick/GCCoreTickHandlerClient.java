@@ -11,6 +11,7 @@ import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.client.GCCoreSkyProviderOrbit;
 import micdoodle8.mods.galacticraft.core.client.GCCoreSkyProviderOverworld;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiChoosePlanet;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiDownloadingSounds;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlayCountdown;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlayLander;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlayOxygenTankIndicator;
@@ -74,7 +75,7 @@ public class GCCoreTickHandlerClient implements ITickHandler
 
         if (type.equals(EnumSet.of(TickType.CLIENT)))
         {
-            if (GCCoreTickHandlerClient.prevLastOpenGui == null && GCCoreTickHandlerClient.lastOpenGui != null)
+            if (GCCoreTickHandlerClient.prevLastOpenGui == null && GCCoreTickHandlerClient.lastOpenGui != null && FMLClientHandler.instance().getClient().currentScreen instanceof GCCoreGuiDownloadingSounds)
             {
                 FMLLog.info("Setting screen " + lastOpenGui);
                 FMLClientHandler.instance().getClient().displayGuiScreen(GCCoreTickHandlerClient.lastOpenGui);
