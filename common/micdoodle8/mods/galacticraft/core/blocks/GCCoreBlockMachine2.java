@@ -24,12 +24,13 @@ import universalelectricity.prefab.block.BlockTile;
 public class GCCoreBlockMachine2 extends BlockTile
 {
     public static final int ELECTRIC_COMPRESSOR_METADATA = 0;
+    public static final int CIRCUIT_FABRICATOR_METADATA = 4;
 
     private Icon iconMachineSide;
-    private Icon iconInput;
     private Icon iconOutput;
 
     private Icon iconElectricCompressor;
+    private Icon iconCircuitFabricator;
 
     public GCCoreBlockMachine2(int id, String assetName)
     {
@@ -51,11 +52,11 @@ public class GCCoreBlockMachine2 extends BlockTile
     public void registerIcons(IconRegister iconRegister)
     {
         this.blockIcon = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine");
-        this.iconInput = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_input");
         this.iconOutput = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_output");
 
         this.iconMachineSide = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_side");
         this.iconElectricCompressor = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "electric_compressor");
+        this.iconCircuitFabricator = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "circuit_fabricator");
     }
 
     @Override
@@ -107,7 +108,21 @@ public class GCCoreBlockMachine2 extends BlockTile
             return this.blockIcon;
         }
 
-        if (metadata >= GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
+        if (metadata >= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA)
+        {
+            metadata -= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA;
+
+            if (metadata == 0 && side == 4 || metadata == 1 && side == 5 || metadata == 2 && side == 3 || metadata == 3 && side == 2)
+            {
+                return this.iconCircuitFabricator;
+            }
+            
+            if (side == ForgeDirection.getOrientation(metadata + 2).ordinal())
+            {
+                return this.iconOutput;
+            }
+        }
+        else if (metadata >= GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
         {
             metadata -= GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA;
 
@@ -152,7 +167,11 @@ public class GCCoreBlockMachine2 extends BlockTile
             break;
         }
 
-        if (metadata >= GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
+        if (metadata >= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA)
+        {
+            world.setBlockMetadataWithNotify(x, y, z, GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA + change, 3);
+        }
+        else if (metadata >= GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
         {
             world.setBlockMetadataWithNotify(x, y, z, GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA + change, 3);
         }
@@ -166,7 +185,11 @@ public class GCCoreBlockMachine2 extends BlockTile
 
         int change = 0;
 
-        if (metadata >= GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
+        if (metadata >= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA)
+        {
+            original -= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA;
+        }
+        else if (metadata >= GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
         {
             original -= GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA;
         }
@@ -188,7 +211,11 @@ public class GCCoreBlockMachine2 extends BlockTile
             break;
         }
 
-        if (metadata >= GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
+        if (metadata >= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA)
+        {
+            change += GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA;
+        }
+        else if (metadata >= GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
         {
             change += GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA;
         }
@@ -208,6 +235,11 @@ public class GCCoreBlockMachine2 extends BlockTile
         if (!par1World.isRemote)
         {
             if (metadata >= GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
+            {
+                par5EntityPlayer.openGui(GalacticraftCore.instance, -1, par1World, x, y, z);
+                return true;
+            }
+            else if (metadata >= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA)
             {
                 par5EntityPlayer.openGui(GalacticraftCore.instance, -1, par1World, x, y, z);
                 return true;
@@ -241,6 +273,10 @@ public class GCCoreBlockMachine2 extends BlockTile
         {
             return new GCCoreTileEntityElectricIngotCompressor();
         }
+        else if (metadata >= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA)
+        {
+            return new GCCoreTileEntityElectricIngotCompressor();
+        }
         else
         {
             return null;
@@ -252,17 +288,27 @@ public class GCCoreBlockMachine2 extends BlockTile
         return new ItemStack(this.blockID, 1, GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA);
     }
 
+    public ItemStack getCircuitFabricator()
+    {
+        return new ItemStack(this.blockID, 1, GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA);
+    }
+
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
         par3List.add(this.getElectricCompressor());
+        par3List.add(this.getCircuitFabricator());
     }
 
     @Override
     public int damageDropped(int metadata)
     {
         if (metadata >= GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
+        {
+            return GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA;
+        }
+        else if (metadata >= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA)
         {
             return GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA;
         }
