@@ -86,6 +86,7 @@ import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
 import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
 import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -333,12 +334,26 @@ public class GalacticraftCore
                 'Y', new ItemStack(GCCoreItems.basicItem, 2, 10),
                 'Z', new ItemStack(GCCoreItems.basicItem, 2, 12));
         
-        CircuitFabricatorRecipes.addRecipe(new ItemStack(Item.appleGold), new ItemStack[] { 
+        CircuitFabricatorRecipes.addRecipe(new ItemStack(GCCoreItems.basicItem, 9, 14), new ItemStack[] { 
             new ItemStack(Item.diamond),
             new ItemStack(GCCoreItems.basicItem, 1, 2),
             new ItemStack(GCCoreItems.basicItem, 1, 2),
             new ItemStack(Item.redstone),
             new ItemStack(Item.dyePowder, 1, 4)});
+        
+        CircuitFabricatorRecipes.addRecipe(new ItemStack(GCCoreItems.basicItem, 3, 15), new ItemStack[] { 
+            new ItemStack(Item.diamond),
+            new ItemStack(GCCoreItems.basicItem, 1, 2),
+            new ItemStack(GCCoreItems.basicItem, 1, 2),
+            new ItemStack(Item.redstone),
+            new ItemStack(Block.torchRedstoneActive)});
+        
+        CircuitFabricatorRecipes.addRecipe(new ItemStack(GCCoreItems.basicItem, 1, 16), new ItemStack[] { 
+            new ItemStack(Item.diamond),
+            new ItemStack(GCCoreItems.basicItem, 1, 2),
+            new ItemStack(GCCoreItems.basicItem, 1, 2),
+            new ItemStack(Item.redstone),
+            new ItemStack(Item.redstoneRepeater)});
     }
 
     @EventHandler

@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.api.recipe;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import net.minecraft.item.ItemStack;
-import cpw.mods.fml.common.FMLLog;
 
 public class CircuitFabricatorRecipes
 {
@@ -46,9 +45,10 @@ public class CircuitFabricatorRecipes
             return null;
         }
         
-        recipeLoop:
         for (Entry<ItemStack[], ItemStack> recipe : recipes.entrySet())
         {
+            boolean found = true;
+            
             for (int i = 0; i < 5; i++)
             {
                 ItemStack recipeStack = recipe.getKey()[i];
@@ -58,17 +58,22 @@ public class CircuitFabricatorRecipes
                 {
                     if (recipeStack != null || inputStack != null)
                     {
-                        break recipeLoop;
+                        found = false;
+                        break;
                     }
                 }
                 else if (recipeStack.itemID != inputStack.itemID || recipeStack.getItemDamage() != inputStack.getItemDamage())
                 {
-                    FMLLog.info("" + recipeStack + " " + inputStack);
-                    break recipeLoop;
+                    found = false;
+                    break;
                 }
             }
+            
+            if (!found)
+            {
+                continue;
+            }
 
-            FMLLog.info("" + recipe.getValue());
             return recipe.getValue();
         }
         
