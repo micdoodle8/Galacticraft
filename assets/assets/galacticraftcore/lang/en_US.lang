@@ -157,6 +157,7 @@ tile.machine.1.name=Battery Box
 tile.machine.2.name=Electric Furnace
 tile.machine.3.name=Compressor
 tile.machine2.4.name=Electric Compressor
+tile.machine2.5.name=Circuit Fabricator
 tile.aluminumWire.name=Aluminum Wire
 tile.aluminumWireHeavy.name=Heavy Aluminum Wire
 

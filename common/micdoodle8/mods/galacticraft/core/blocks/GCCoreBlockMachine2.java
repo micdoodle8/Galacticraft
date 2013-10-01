@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import java.util.List;
 import java.util.Random;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCircuitFabricator;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCoalGenerator;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectricIngotCompressor;
 import net.minecraft.block.Block;
@@ -269,11 +270,11 @@ public class GCCoreBlockMachine2 extends BlockTile
     @Override
     public TileEntity createTileEntity(World world, int metadata)
     {
-        if (metadata >= GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
+        if (metadata >= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA)
         {
-            return new GCCoreTileEntityElectricIngotCompressor();
+            return new GCCoreTileEntityCircuitFabricator();
         }
-        else if (metadata >= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA)
+        else if (metadata >= GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
         {
             return new GCCoreTileEntityElectricIngotCompressor();
         }

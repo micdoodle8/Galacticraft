@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import mekanism.api.transmitters.TransmitterNetworkRegistry;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
+import micdoodle8.mods.galacticraft.api.recipe.CircuitFabricatorRecipes;
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.world.ICelestialBody;
@@ -57,6 +58,7 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoLoader;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoPad;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoPadSingle;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoUnloader;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCircuitFabricator;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCoalGenerator;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityDungeonSpawner;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectricFurnace;
@@ -330,6 +332,13 @@ public class GalacticraftCore
                 'X', new ItemStack(GCCoreItems.basicItem, 2, 11), 
                 'Y', new ItemStack(GCCoreItems.basicItem, 2, 10),
                 'Z', new ItemStack(GCCoreItems.basicItem, 2, 12));
+        
+        CircuitFabricatorRecipes.addRecipe(new ItemStack(Item.appleGold), new ItemStack[] { 
+            new ItemStack(Item.diamond),
+            new ItemStack(GCCoreItems.basicItem, 1, 2),
+            new ItemStack(GCCoreItems.basicItem, 1, 2),
+            new ItemStack(Item.redstone),
+            new ItemStack(Item.dyePowder, 1, 4)});
     }
 
     @EventHandler
@@ -405,6 +414,7 @@ public class GalacticraftCore
         GameRegistry.registerTileEntity(GCCoreTileEntityFallenMeteor.class, "Fallen Meteor");
         GameRegistry.registerTileEntity(GCCoreTileEntityIngotCompressor.class, "Ingot Compressor");
         GameRegistry.registerTileEntity(GCCoreTileEntityElectricIngotCompressor.class, "Electric Ingot Compressor");
+        GameRegistry.registerTileEntity(GCCoreTileEntityCircuitFabricator.class, "Circuit Fabricator");
     }
 
     public void registerCreatures()

@@ -55,7 +55,11 @@ public class GCCoreItemBlockMachine extends ItemBlock
         }
         else
         {
-            if (itemstack.getItemDamage() >= GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
+            if (itemstack.getItemDamage() >= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA)
+            {
+                metadata = 5;
+            }
+            else if (itemstack.getItemDamage() >= GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
             {
                 metadata = 4;
             }

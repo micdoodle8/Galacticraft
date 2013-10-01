@@ -31,6 +31,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirSealer;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiBatteryBox;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiCargoLoader;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiCargoUnloader;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiCircuitFabricator;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiCoalGenerator;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiElectricFurnace;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiElectricIngotCompressor;
@@ -119,6 +120,7 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAluminumWire;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBatteryBox;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoLoader;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoUnloader;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCircuitFabricator;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCoalGenerator;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectricFurnace;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectricIngotCompressor;
@@ -896,6 +898,10 @@ public class ClientProxyCore extends CommonProxyCore
             else if (tile instanceof GCCoreTileEntityElectricIngotCompressor)
             {
                 return new GCCoreGuiElectricIngotCompressor(player.inventory, (GCCoreTileEntityElectricIngotCompressor) tile);
+            }
+            else if (tile instanceof GCCoreTileEntityCircuitFabricator)
+            {
+                return new GCCoreGuiCircuitFabricator(player.inventory, (GCCoreTileEntityCircuitFabricator) tile);
             }
         }
 
