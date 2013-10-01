@@ -6,7 +6,7 @@ import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectric;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityTerraformBubble;
-import micdoodle8.mods.galacticraft.mars.wgen.GCMarsWorldGenTerraformTree;
+import micdoodle8.mods.galacticraft.mars.world.gen.GCMarsWorldGenTerraformTree;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;

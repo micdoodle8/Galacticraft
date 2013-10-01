@@ -80,6 +80,7 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
+import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
 import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
 import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;

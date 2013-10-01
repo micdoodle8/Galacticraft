@@ -4,7 +4,7 @@ import micdoodle8.mods.galacticraft.api.world.IExitHeight;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
-import micdoodle8.mods.galacticraft.core.wgen.GCCoreChunkProviderOverworldOrbit;
+import micdoodle8.mods.galacticraft.core.world.gen.GCCoreChunkProviderOverworldOrbit;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;

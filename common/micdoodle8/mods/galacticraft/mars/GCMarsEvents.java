@@ -16,7 +16,7 @@ import micdoodle8.mods.galacticraft.mars.dimension.GCMarsWorldProvider;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySlimeling;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityCryogenicChamber;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityLaunchController;
-import micdoodle8.mods.galacticraft.mars.wgen.GCMarsWorldGenEggs;
+import micdoodle8.mods.galacticraft.mars.world.gen.GCMarsWorldGenEggs;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;

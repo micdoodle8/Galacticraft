@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.Random;
-import micdoodle8.mods.galacticraft.core.wgen.GCCoreWorldGenForest;
-import micdoodle8.mods.galacticraft.core.wgen.GCCoreWorldGenTaiga2;
-import micdoodle8.mods.galacticraft.core.wgen.GCCoreWorldGenTrees;
+import micdoodle8.mods.galacticraft.core.world.gen.GCCoreWorldGenForest;
+import micdoodle8.mods.galacticraft.core.world.gen.GCCoreWorldGenTaiga2;
+import micdoodle8.mods.galacticraft.core.world.gen.GCCoreWorldGenTrees;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSapling;
 import net.minecraft.world.World;
