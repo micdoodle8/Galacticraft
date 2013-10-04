@@ -499,7 +499,7 @@ public class GCCoreRecipeManager
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.aluminumWire, 6), new Object[] { "WWW", "CCC", "WWW", 'W', Block.cloth, 'C', "ingotCopper" });
 
-        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.machineBase, 1, 4), new Object[] { "SSS", "BBB", "SSS", 'B', GCCoreItems.battery, 'S', "ingotSteel" });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.machineBase, 1, 4), new Object[] { "SSS", "BBB", "SSS", 'B', new ItemStack(GCCoreItems.battery, 1, GCCoreItems.battery.getMaxDamage()), 'S', "ingotSteel" });
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.machineBase, 1, 0), new Object[] { "MMM", "MOM", "MCM", 'M', "ingotSteel", 'C', "motor", 'O', Block.furnaceIdle });
 
