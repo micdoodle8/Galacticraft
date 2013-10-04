@@ -14,7 +14,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreItemBasic extends Item
 {
-    public static final String[] names = { "solar_module_0", "solar_module_1", "rawSilicon", "ingotCopper", "ingotTin", "ingotAluminum", "ingotSteel", "ingotBronze", "compressedCopper", "compressedTin", "compressedAluminum", "compressedSteel", "compressedBronze", "compressedIron", "waferSolar", "waferBasic", "waferAdvanced" };
+    public static final String[] names = { "solar_module_0", "solar_module_1", "rawSilicon", "ingotCopper", "ingotTin", "ingotAluminum", "ingotSteel", "ingotBronze", "compressedCopper", "compressedTin", "compressedAluminum", "compressedSteel", "compressedBronze", "compressedIron", "waferSolar", "waferBasic", "waferAdvanced", "dehydratedApple", "dehydratedCarrot", "dehydratedMelon", "dehydratedPotato" };
 
     protected Icon[] icons = new Icon[GCCoreItemBasic.names.length];
 

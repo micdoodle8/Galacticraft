@@ -92,6 +92,10 @@ item.infiniteBattery.name=Infinite Battery
 item.meteorChunk.name=Throwable Meteor Chunk
 item.meteorChunkHot.name=Throwable Meteor Chunk
 item.hotDescription.name=Hot
+item.basicItem.dehydratedApple.name=Dehydrated Apple
+item.basicItem.dehydratedCarrot.name=Dehydrated Carrot
+item.basicItem.dehydratedMelon.name=Dehydrated Melon
+item.basicItem.dehydratedPotato.name=Dehydrated Potato
 
 # TOOLS
 item.steel_pickaxe.name=Heavy Duty Pickaxe
