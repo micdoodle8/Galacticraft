@@ -33,6 +33,13 @@ public class GCCoreItemBasic extends Item
 
     @Override
     @SideOnly(Side.CLIENT)
+    public EnumRarity getRarity(ItemStack par1ItemStack)
+    {
+        return ClientProxyCore.galacticraftItem;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister iconRegister)
     {
         int i = 0;
