@@ -51,7 +51,7 @@ import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerServer;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAdvancedCraftingTable;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAirLock;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAluminumWire;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBatteryBox;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityEnergyStorageModule;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBuggyFueler;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBuggyFuelerSingle;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoLoader;
@@ -422,7 +422,7 @@ public class GalacticraftCore
         GameRegistry.registerTileEntity(GCCoreTileEntityCargoUnloader.class, "Cargo Unloader");
         GameRegistry.registerTileEntity(GCCoreTileEntityParachest.class, "Parachest Tile");
         GameRegistry.registerTileEntity(GCCoreTileEntitySolar.class, "Galacticraft Solar Panel");
-        GameRegistry.registerTileEntity(GCCoreTileEntityBatteryBox.class, "UEBatteryBox");
+        GameRegistry.registerTileEntity(GCCoreTileEntityEnergyStorageModule.class, "UEBatteryBox");
         GameRegistry.registerTileEntity(GCCoreTileEntityCoalGenerator.class, "UECoalGenerator");
         GameRegistry.registerTileEntity(GCCoreTileEntityElectricFurnace.class, "UEElectricFurnace");
         GameRegistry.registerTileEntity(GCCoreTileEntityAluminumWire.class, "copperWire");

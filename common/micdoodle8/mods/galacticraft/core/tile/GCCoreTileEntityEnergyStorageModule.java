@@ -21,16 +21,25 @@ import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-public class GCCoreTileEntityBatteryBox extends GCCoreTileEntityUniversalElectrical implements IPacketReceiver, ISidedInventory
+public class GCCoreTileEntityEnergyStorageModule extends GCCoreTileEntityUniversalElectrical implements IPacketReceiver, ISidedInventory
 {
     private ItemStack[] containingItems = new ItemStack[2];
 
     public final Set<EntityPlayer> playersUsing = new HashSet<EntityPlayer>();
+    public int scaledEnergyLevel;
+    public int lastScaledEnergyLevel;
 
     @Override
     public void updateEntity()
     {
         super.updateEntity();
+        
+        this.scaledEnergyLevel = (int) Math.floor(this.getEnergyStored() * 16 / (this.getMaxEnergyStored()));
+        
+        if (this.scaledEnergyLevel != this.lastScaledEnergyLevel)
+        {
+            this.worldObj.markBlockForRenderUpdate(this.xCoord, this.yCoord, this.zCoord);
+        }
 
         if (!this.worldObj.isRemote)
         {
@@ -52,6 +61,8 @@ public class GCCoreTileEntityBatteryBox extends GCCoreTileEntityUniversalElectri
                 PacketDispatcher.sendPacketToAllAround(this.xCoord, this.yCoord, this.zCoord, 40, this.worldObj.provider.dimensionId, this.getDescriptionPacket());
             }
         }
+        
+        this.lastScaledEnergyLevel = this.scaledEnergyLevel;
     }
 
     @Override
@@ -285,13 +296,13 @@ public class GCCoreTileEntityBatteryBox extends GCCoreTileEntityUniversalElectri
     @Override
     public EnumSet<ForgeDirection> getInputDirections()
     {
-        return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() - GCCoreBlockMachine.BATTERY_BOX_METADATA + 2).getOpposite(), ForgeDirection.UNKNOWN);
+        return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() - GCCoreBlockMachine.STORAGE_MODULE_METADATA + 2).getOpposite(), ForgeDirection.UNKNOWN);
     }
 
     @Override
     public EnumSet<ForgeDirection> getOutputDirections()
     {
-        return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() - GCCoreBlockMachine.BATTERY_BOX_METADATA + 2), ForgeDirection.UNKNOWN);
+        return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() - GCCoreBlockMachine.STORAGE_MODULE_METADATA + 2), ForgeDirection.UNKNOWN);
     }
 
     @Override

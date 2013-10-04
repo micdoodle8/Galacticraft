@@ -23,7 +23,7 @@ import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerParachest;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRefinery;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRocketRefill;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerSolar;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBatteryBox;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityEnergyStorageModule;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCircuitFabricator;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCoalGenerator;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectricFurnace;
@@ -212,9 +212,9 @@ public class CommonProxyCore implements IGuiHandler
 
         if (tileEntity != null)
         {
-            if (tileEntity instanceof GCCoreTileEntityBatteryBox)
+            if (tileEntity instanceof GCCoreTileEntityEnergyStorageModule)
             {
-                return new ContainerBatteryBox(player.inventory, (GCCoreTileEntityBatteryBox) tileEntity);
+                return new ContainerBatteryBox(player.inventory, (GCCoreTileEntityEnergyStorageModule) tileEntity);
             }
             else if (tileEntity instanceof GCCoreTileEntityCoalGenerator)
             {

@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBatteryBox;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityEnergyStorageModule;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -11,9 +11,9 @@ import universalelectricity.prefab.SlotSpecific;
 
 public class ContainerBatteryBox extends Container
 {
-    private GCCoreTileEntityBatteryBox tileEntity;
+    private GCCoreTileEntityEnergyStorageModule tileEntity;
 
-    public ContainerBatteryBox(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityBatteryBox batteryBox)
+    public ContainerBatteryBox(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityEnergyStorageModule batteryBox)
     {
         this.tileEntity = batteryBox;
         // Top slot for battery output

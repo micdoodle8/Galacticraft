@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.client.gui;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerBatteryBox;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBatteryBox;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityEnergyStorageModule;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -18,12 +18,12 @@ public class GCCoreGuiBatteryBox extends GuiContainer
 {
     private static final ResourceLocation batteryBoxTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/battery_box.png");
 
-    private GCCoreTileEntityBatteryBox tileEntity;
+    private GCCoreTileEntityEnergyStorageModule tileEntity;
 
     private int containerWidth;
     private int containerHeight;
 
-    public GCCoreGuiBatteryBox(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityBatteryBox batteryBox)
+    public GCCoreGuiBatteryBox(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityEnergyStorageModule batteryBox)
     {
         super(new ContainerBatteryBox(par1InventoryPlayer, batteryBox));
         this.tileEntity = batteryBox;

@@ -48,7 +48,7 @@ public class GCCoreItemBlockMachine extends ItemBlock
             {
                 metadata = 2;
             }
-            else if (itemstack.getItemDamage() >= GCCoreBlockMachine.BATTERY_BOX_METADATA)
+            else if (itemstack.getItemDamage() >= GCCoreBlockMachine.STORAGE_MODULE_METADATA)
             {
                 metadata = 1;
             }

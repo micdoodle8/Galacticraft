@@ -117,7 +117,7 @@ import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerClient;
 import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerSlowClient;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAdvancedCraftingTable;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAluminumWire;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBatteryBox;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityEnergyStorageModule;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoLoader;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoUnloader;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCircuitFabricator;
@@ -879,9 +879,9 @@ public class ClientProxyCore extends CommonProxyCore
 
         if (tile != null)
         {
-            if (tile instanceof GCCoreTileEntityBatteryBox)
+            if (tile instanceof GCCoreTileEntityEnergyStorageModule)
             {
-                return new GCCoreGuiBatteryBox(player.inventory, (GCCoreTileEntityBatteryBox) tile);
+                return new GCCoreGuiBatteryBox(player.inventory, (GCCoreTileEntityEnergyStorageModule) tile);
             }
             else if (tile instanceof GCCoreTileEntityCoalGenerator)
             {
