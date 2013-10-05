@@ -32,20 +32,20 @@ public class GCCoreItemRendererFlag implements IItemRenderer
         }
     }
 
-    GCCoreEntityFlag spaceship = new GCCoreEntityFlag(FMLClientHandler.instance().getClient().theWorld);
-    GCCoreModelFlag modelSpaceship = new GCCoreModelFlag();
+    GCCoreEntityFlag flag = new GCCoreEntityFlag(FMLClientHandler.instance().getClient().theWorld);
+    GCCoreModelFlag modelFlag = new GCCoreModelFlag();
 
     private void renderFlag(ItemRenderType type, RenderBlocks render, ItemStack item, float translateX, float translateY, float translateZ)
     {
         GL11.glPushMatrix();
-        long var10 = this.spaceship.entityId * 493286711L;
+        long var10 = this.flag.entityId * 493286711L;
         var10 = var10 * var10 * 4392167121L + var10 * 98761L;
         final float var12 = (((var10 >> 16 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
         final float var13 = (((var10 >> 20 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
         final float var14 = (((var10 >> 24 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
 
-        this.spaceship.setType(item.getItemDamage());
-        this.spaceship.setOwner(FMLClientHandler.instance().getClient().thePlayer.username);
+        this.flag.setType(item.getItemDamage());
+        this.flag.setOwner(FMLClientHandler.instance().getClient().thePlayer.username);
 
         if (type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON)
         {
@@ -106,7 +106,7 @@ public class GCCoreItemRendererFlag implements IItemRenderer
 
         FMLClientHandler.instance().getClient().renderEngine.bindTexture(GCCoreItemRendererFlag.flagTextures[item.getItemDamage()]);
 
-        this.modelSpaceship.render(this.spaceship, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+        this.modelFlag.render(this.flag, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
         GL11.glPopMatrix();
     }
 
