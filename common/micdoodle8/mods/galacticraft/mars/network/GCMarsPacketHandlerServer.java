@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.core.network.GCCorePacketLanderUpdate;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySlimeling;
+import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityLaunchController;
 import micdoodle8.mods.galacticraft.mars.util.GCMarsUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -15,6 +16,9 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.pathfinding.PathEntity;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.WorldServer;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.Player;
@@ -129,6 +133,116 @@ public class GCMarsPacketHandlerServer implements IPacketHandler
             if (e != null && e instanceof GCCoreEntityLander)
             {
                 player.playerNetServerHandler.sendPacketToPlayer(GCCorePacketLanderUpdate.buildKeyPacket(e));
+            }
+        }
+        else if (packetType == 5)
+        {
+            Class<?>[] decodeAs = { Integer.class, Integer.class, Integer.class, Integer.class, Integer.class };
+            Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
+            
+            TileEntity tile = player.worldObj.getBlockTileEntity((Integer)packetReadout[1], (Integer)packetReadout[2], (Integer)packetReadout[3]);
+            
+            switch ((Integer) packetReadout[0])
+            {
+            case 0:
+                if (tile instanceof GCMarsTileEntityLaunchController)
+                {
+                    GCMarsTileEntityLaunchController launchController = (GCMarsTileEntityLaunchController) tile;
+                    launchController.frequency = (Integer) packetReadout[4];
+                    
+                    if (launchController.frequency >= 0)
+                    {
+                        launchController.frequencyValid = true;
+                        
+                        worldLoop:
+                        for (int i = 0; i < FMLCommonHandler.instance().getMinecraftServerInstance().worldServers.length; i++)
+                        {
+                            WorldServer world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers[i];
+                            
+                            for (int j = 0; j < world.loadedTileEntityList.size(); j++)
+                            {
+                                TileEntity tile2 = (TileEntity) world.loadedTileEntityList.get(j);
+                                
+                                if (tile != tile2 && tile2 instanceof GCMarsTileEntityLaunchController)
+                                {
+                                    GCMarsTileEntityLaunchController launchController2 = (GCMarsTileEntityLaunchController) tile2;
+                                    
+                                    if (launchController2.frequency == launchController.frequency)
+                                    {
+                                        launchController.frequencyValid = false;
+                                        break worldLoop;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        launchController.frequencyValid = false;
+                    }
+                }
+                break;
+            case 1:
+                if (tile instanceof GCMarsTileEntityLaunchController)
+                {
+                    GCMarsTileEntityLaunchController launchController = (GCMarsTileEntityLaunchController) tile;
+                    launchController.launchDropdownSelection = (Integer) packetReadout[4];
+                }
+                break;
+            case 2:
+                if (tile instanceof GCMarsTileEntityLaunchController)
+                {
+                    GCMarsTileEntityLaunchController launchController = (GCMarsTileEntityLaunchController) tile;
+                    launchController.destFrequency = (Integer) packetReadout[4];
+                    
+                    if (launchController.destFrequency >= 0)
+                    {
+                        launchController.destFrequencyValid = false;
+                        
+                        worldLoop:
+                        for (int i = 0; i < FMLCommonHandler.instance().getMinecraftServerInstance().worldServers.length; i++)
+                        {
+                            WorldServer world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers[i];
+                            
+                            for (int j = 0; j < world.loadedTileEntityList.size(); j++)
+                            {
+                                TileEntity tile2 = (TileEntity) world.loadedTileEntityList.get(j);
+                                
+                                if (tile != tile2 && tile2 instanceof GCMarsTileEntityLaunchController)
+                                {
+                                    GCMarsTileEntityLaunchController launchController2 = (GCMarsTileEntityLaunchController) tile2;
+                                    
+                                    if (launchController2.frequency == launchController.destFrequency)
+                                    {
+                                        launchController.destFrequencyValid = true;
+                                        break worldLoop;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        launchController.destFrequencyValid = false;
+                    }
+                }
+                break;
+            case 3:
+                if (tile instanceof GCMarsTileEntityLaunchController)
+                {
+                    GCMarsTileEntityLaunchController launchController = (GCMarsTileEntityLaunchController) tile;
+                    launchController.launchPadRemovalDisabled = (Integer) packetReadout[4] == 1 ? true : false;
+                }
+                break;
+            case 4:
+                if (tile instanceof GCMarsTileEntityLaunchController)
+                {
+                    GCMarsTileEntityLaunchController launchController = (GCMarsTileEntityLaunchController) tile;
+                    launchController.launchSchedulingEnabled = (Integer) packetReadout[4] == 1 ? true : false;
+                }
+                break;
+            default:
+                break;
             }
         }
     }

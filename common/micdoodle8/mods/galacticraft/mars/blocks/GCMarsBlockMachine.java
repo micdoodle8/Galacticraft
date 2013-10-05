@@ -218,6 +218,11 @@ public class GCMarsBlockMachine extends BlockTile
         {
             ((IChunkLoader) var8).onTicketLoaded(ForgeChunkManager.requestTicket(GalacticraftCore.instance, var8.worldObj, Type.NORMAL));
         }
+        
+        if (var8 instanceof GCMarsTileEntityLaunchController && entityLiving instanceof EntityPlayer)
+        {
+            ((GCMarsTileEntityLaunchController) var8).setOwnerName(((EntityPlayer) entityLiving).username);
+        }
     }
 
     @Override

@@ -39,9 +39,16 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
 {
     public static final float WATTS_PER_TICK = 0.05000001f;
     private ItemStack[] containingItems = new ItemStack[1];
-    private boolean launchPadRemovalDisabled = true;
+    public boolean launchPadRemovalDisabled = true;
     private Ticket chunkLoadTicket;
     private List<ChunkCoordinates> connectedPads = new ArrayList<ChunkCoordinates>();
+    public int frequency = -1;
+    public int destFrequency = -1;
+    private String ownerName;
+    public boolean frequencyValid;
+    public boolean destFrequencyValid;
+    public int launchDropdownSelection;
+    public boolean launchSchedulingEnabled;
 
     public GCMarsTileEntityLaunchController()
     {
@@ -52,7 +59,7 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
     public void updateEntity()
     {
         super.updateEntity();
-
+        
         this.discharge(this.containingItems[0]);
         
         if (!this.worldObj.isRemote && this.ticks % 20 == 0 && this.chunkLoadTicket != null)
@@ -69,6 +76,16 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
                 }
             }
         }
+    }
+    
+    public String getOwnerName()
+    {
+        return this.ownerName;
+    }
+    
+    public void setOwnerName(String ownerName)
+    {
+        this.ownerName = ownerName;
     }
     
     @Override
@@ -152,6 +169,12 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
         }
         
         this.setDisabled(1, nbt.getBoolean("LeaveLaunchPads"));
+        this.ownerName = nbt.getString("OwnerName");
+        this.launchDropdownSelection = nbt.getInteger("LaunchSelection");
+        this.frequency = nbt.getInteger("ControllerFrequency");
+        this.destFrequency = nbt.getInteger("TargetFrequency");
+        this.launchPadRemovalDisabled = nbt.getBoolean("LaunchPadRemovalDisabled");
+        this.launchSchedulingEnabled = nbt.getBoolean("LaunchPadSchedulingEnabled");
     }
 
     @Override
@@ -173,6 +196,12 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
 
         nbt.setTag("Items", var2);
         nbt.setBoolean("LeaveLaunchPads", this.getDisabled(1));
+        nbt.setString("OwnerName", this.ownerName);
+        nbt.setInteger("LaunchSelection", this.launchDropdownSelection);
+        nbt.setInteger("ControllerFrequency", this.frequency);
+        nbt.setInteger("TargetFrequency", this.destFrequency);
+        nbt.setBoolean("LaunchPadRemovalDisabled", this.launchPadRemovalDisabled);
+        nbt.setBoolean("LaunchPadSchedulingEnabled", this.launchSchedulingEnabled);
     }
 
     @Override
@@ -327,6 +356,13 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
                 this.disabled = data.readBoolean();
                 this.launchPadRemovalDisabled = data.readBoolean();
                 this.disableCooldown = data.readInt();
+                this.ownerName = data.readUTF();
+                this.frequencyValid = data.readBoolean();
+                this.destFrequencyValid = data.readBoolean();
+                this.launchDropdownSelection = data.readInt();
+                this.frequency = data.readInt();
+                this.destFrequency = data.readInt();
+                this.launchSchedulingEnabled = data.readBoolean();
             }
         }
         catch (Exception e)
@@ -338,7 +374,7 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
     @Override
     public Packet getPacket()
     {
-        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getEnergyStored(), this.getDisabled(0), this.getDisabled(1), this.disableCooldown);
+        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getEnergyStored(), this.getDisabled(0), this.getDisabled(1), this.disableCooldown, this.ownerName, this.frequencyValid, this.destFrequencyValid, this.launchDropdownSelection, this.frequency, this.destFrequency, this.launchSchedulingEnabled);
     }
 
     @Override
@@ -362,9 +398,6 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
             {
             case 0:
                 this.disabled = disabled;
-                break;
-            case 1:
-                this.launchPadRemovalDisabled = disabled;
                 break;
             }
             

@@ -19,7 +19,7 @@ public class GCMarsContainerLaunchController extends Container
     {
         this.tileEntity = tileEntity;
 
-        this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 7, 7, IItemElectric.class));
+        this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 152, 105, IItemElectric.class));
         
         int var6;
         int var7;
