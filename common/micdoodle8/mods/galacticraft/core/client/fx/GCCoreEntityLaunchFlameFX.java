@@ -85,7 +85,7 @@ public class GCCoreEntityLaunchFlameFX extends EntityFX
         }
 
         this.setParticleTextureIndex(7 - this.particleAge * 8 / this.particleMaxAge);
-        this.motionY += 0.001D;
+        this.motionY += 0.001D;        
         this.moveEntity(this.motionX, this.motionY, this.motionZ);
 
         this.particleGreen += 0.01F;

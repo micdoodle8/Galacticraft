@@ -77,6 +77,11 @@ public class GCCoreItemBlockBase extends ItemBlock
             name = "oreAluminum";
             break;
         }
+        case 8:
+        {
+            name = "oreSilicon";
+            break;
+        }
         default:
             name = "null";
         }

@@ -19,12 +19,12 @@ import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPadFull;
 import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.event.GCCoreLandingPadRemovalEvent;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoPad;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
+import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityLaunchController;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -56,7 +56,8 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
     public EnumRocketType rocketType;
     public float rumble;
     public int destinationFrequency;
-    public TileEntity targetTile;
+    public Vector3 targetVec;
+    public int targetDimension;
     protected ItemStack[] cargoItems;
     public IUpdatePlayerListBox rocketSoundUpdater;
     private IFuelDock landingPad;
@@ -70,6 +71,7 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
     public GCMarsEntityCargoRocket(World par1World, double par2, double par4, double par6, EnumRocketType rocketType)
     {
         super(par1World);
+        this.yOffset = 0.0F;
         this.setPosition(par2, par4 + this.yOffset, par6);
         this.motionX = 0.0D;
         this.motionY = 0.0D;
@@ -215,30 +217,33 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
             }
             else
             {
-                this.motionY = (this.posY - this.targetTile.yCoord) / -100.0D;
-                
-                if (this.targetTile != null && this.worldObj.isRemote)
+                if (this.targetVec != null)
                 {
-                    landLoop:
-                        if (this.posY - this.targetTile.yCoord < 5)
-                        {
-                            for (int x = MathHelper.floor_double(this.posX) - 1; x <= MathHelper.floor_double(this.posX) + 1; x++)
+                    this.motionY = (this.posY - this.targetVec.y) / -100.0D;
+                    
+                    if (this.worldObj.isRemote)
+                    {
+                        landLoop:
+                            if (this.posY - this.targetVec.y < 5)
                             {
-                                for (int y = MathHelper.floor_double(this.posY - 3.5D); y <= MathHelper.floor_double(this.posY) + 1; y++)
+                                for (int x = MathHelper.floor_double(this.posX) - 1; x <= MathHelper.floor_double(this.posX) + 1; x++)
                                 {
-                                    for (int z = MathHelper.floor_double(this.posZ) - 1; z <= MathHelper.floor_double(this.posZ) + 1; z++)
+                                    for (int y = MathHelper.floor_double(this.posY - 3.5D); y <= MathHelper.floor_double(this.posY) + 1; y++)
                                     {
-                                        TileEntity tile = this.worldObj.getBlockTileEntity(x, y, z);
-    
-                                        if (tile instanceof IFuelDock)
+                                        for (int z = MathHelper.floor_double(this.posZ) - 1; z <= MathHelper.floor_double(this.posZ) + 1; z++)
                                         {
-                                            this.landRocket(x, y, z);
-                                            break landLoop;
+                                            TileEntity tile = this.worldObj.getBlockTileEntity(x, y, z);
+        
+                                            if (tile instanceof IFuelDock)
+                                            {
+                                                this.landRocket(x, y, z);
+                                                break landLoop;
+                                            }
                                         }
                                     }
                                 }
                             }
-                        }
+                    }
                 }
             }
 
@@ -270,23 +275,32 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
 
     protected void spawnParticles(boolean launched)
     {
-        final double x1 = 2 * Math.cos(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
-        final double z1 = 2 * Math.sin(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
+        double x1 = 2 * Math.cos(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
+        double z1 = 2 * Math.sin(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
         double y1 = 2 * Math.cos((this.rotationPitch - 180) * Math.PI / 180.0D);
+        
+        if (this.landing && this.targetVec != null)
+        {
+            double modifier = this.posY - this.targetVec.y;
+            modifier = Math.max(modifier, 1.0);
+            x1 *= modifier / 60.0D;
+            y1 *= modifier / 60.0D;
+            z1 *= modifier / 60.0D;
+        }
 
-        final double y = this.prevPosY + (this.posY - this.prevPosY);
+        final double y = this.prevPosY + (this.posY - this.prevPosY) - 2.0;
 
         if (!this.isDead)
         {
-            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX + 0.4 - this.rand.nextDouble() / 10 + x1, y - 0.0D + y1, this.posZ + 0.4 - this.rand.nextDouble() / 10 + z1, x1, y1, z1, this.getLaunched());
-            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX - 0.4 + this.rand.nextDouble() / 10 + x1, y - 0.0D + y1, this.posZ + 0.4 - this.rand.nextDouble() / 10 + z1, x1, y1, z1, this.getLaunched());
-            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX - 0.4 + this.rand.nextDouble() / 10 + x1, y - 0.0D + y1, this.posZ - 0.4 + this.rand.nextDouble() / 10 + z1, x1, y1, z1, this.getLaunched());
-            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX + 0.4 - this.rand.nextDouble() / 10 + x1, y - 0.0D + y1, this.posZ - 0.4 + this.rand.nextDouble() / 10 + z1, x1, y1, z1, this.getLaunched());
-            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX + x1, y - 0.0D + y1, this.posZ + z1, x1, y1, z1, this.getLaunched());
-            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX + 0.4 + x1, y - 0.0D + y1, this.posZ + z1, x1, y1, z1, this.getLaunched());
-            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX - 0.4 + x1, y - 0.0D + y1, this.posZ + z1, x1, y1, z1, this.getLaunched());
-            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX + x1, y - 0.0D + y1, this.posZ + 0.4D + z1, x1, y1, z1, this.getLaunched());
-            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX + x1, y - 0.0D + y1, this.posZ - 0.4D + z1, x1, y1, z1, this.getLaunched());
+            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX + 0.2 - this.rand.nextDouble() / 10 + x1, y, this.posZ + 0.2 - this.rand.nextDouble() / 10 + z1, x1, y1, z1, this.getLaunched());
+            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX - 0.2 + this.rand.nextDouble() / 10 + x1, y, this.posZ + 0.2 - this.rand.nextDouble() / 10 + z1, x1, y1, z1, this.getLaunched());
+            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX - 0.2 + this.rand.nextDouble() / 10 + x1, y, this.posZ - 0.2 + this.rand.nextDouble() / 10 + z1, x1, y1, z1, this.getLaunched());
+            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX + 0.2 - this.rand.nextDouble() / 10 + x1, y, this.posZ - 0.2 + this.rand.nextDouble() / 10 + z1, x1, y1, z1, this.getLaunched());
+            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX + x1, y, this.posZ + z1, x1, y1, z1, this.getLaunched());
+            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX + 0.2 + x1, y, this.posZ + z1, x1, y1, z1, this.getLaunched());
+            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX - 0.2 + x1, y, this.posZ + z1, x1, y1, z1, this.getLaunched());
+            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX + x1, y, this.posZ + 0.2D + z1, x1, y1, z1, this.getLaunched());
+            GalacticraftCore.proxy.spawnParticle("launchflame", this.posX + x1, y, this.posZ - 0.2D + z1, x1, y1, z1, this.getLaunched());
         }
     }
 
@@ -298,6 +312,11 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
         this.rocketType = EnumRocketType.values()[dataStream.readInt()];
         this.landing = dataStream.readBoolean();
         this.destinationFrequency = dataStream.readInt();
+        
+        if (dataStream.readBoolean())
+        {
+            this.targetVec = new Vector3(dataStream.readDouble(), dataStream.readDouble(), dataStream.readDouble());
+        }
     }
 
     @Override
@@ -308,6 +327,15 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
         list.add(this.rocketType != null ? this.rocketType.getIndex() : 0);
         list.add(this.landing);
         list.add(this.destinationFrequency);
+        list.add(this.targetVec != null);
+        
+        if (this.targetVec != null)
+        {
+            list.add(this.targetVec.x);
+            list.add(this.targetVec.y);
+            list.add(this.targetVec.z);
+        }
+        
         return list;
     }
 
@@ -339,25 +367,27 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
                         
                         if (launchController.frequency == this.destinationFrequency && launchController.attachedPad != null)
                         {
-                            this.targetTile = launchController.attachedPad;
+                            this.targetVec = new Vector3(launchController.attachedPad);
+                            this.targetDimension = launchController.worldObj.provider.dimensionId;
                             break worldLoop;
                         }
                     }
                 }
             }
     
-        if (this.targetTile != null)
+        if (this.targetVec != null)
         {
-            if (this.targetTile.worldObj.provider.dimensionId != this.worldObj.provider.dimensionId)
+            if (this.targetDimension != this.worldObj.provider.dimensionId)
             {
-                if (!this.targetTile.worldObj.isRemote && this.targetTile.worldObj instanceof WorldServer)
+                WorldServer worldServer = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(this.targetDimension);
+                if (!this.worldObj.isRemote && worldServer != null)
                 {
-                    WorldUtil.transferEntityToDimension(this, this.targetTile.worldObj.provider.dimensionId, (WorldServer) this.targetTile.worldObj, false);
+                    WorldUtil.transferEntityToDimension(this, this.targetDimension, worldServer, false);
                 }
             }
             else
             {
-                this.setPosition(this.targetTile.xCoord + 0.5F, this.targetTile.yCoord + 200, this.targetTile.zCoord + 0.5F);
+                this.setPosition(this.targetVec.x + 0.5F, this.targetVec.y + 200, this.targetVec.z + 0.5F);
                 this.landing = true;
             }
         }
@@ -401,7 +431,7 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
     @Override
     protected void failRocket()
     {
-        if (this.landing && this.targetTile != null && this.worldObj.getBlockTileEntity(this.targetTile.xCoord, this.targetTile.yCoord, this.targetTile.zCoord) == this.targetTile && this.posY - this.targetTile.yCoord < 5)
+        if (this.landing && this.targetVec != null && this.worldObj.getBlockTileEntity(this.targetVec.intX(), this.targetVec.intY(), this.targetVec.intZ()) instanceof IFuelDock && this.posY - this.targetVec.y < 5)
         {
             for (int x = MathHelper.floor_double(this.posX) - 1; x <= MathHelper.floor_double(this.posX) + 1; x++)
             {
@@ -421,7 +451,10 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
         }
         else
         {
-            super.failRocket();
+            if (this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase())
+            {
+                super.failRocket();
+            }
         }
     }
     
@@ -497,7 +530,6 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
                     }
                 }
             }
-        
         
         if (frequencySet)
         {
@@ -622,13 +654,13 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
             nbt.setTag("Items", var2);
         }
         
-        nbt.setBoolean("TargetValid", this.targetTile != null);
+        nbt.setBoolean("TargetValid", this.targetVec != null);
         
-        if (this.targetTile != null)
+        if (this.targetVec != null)
         {
-            nbt.setInteger("targetTileX", this.targetTile.xCoord);
-            nbt.setInteger("targetTileY", this.targetTile.yCoord);
-            nbt.setInteger("targetTileZ", this.targetTile.zCoord);
+            nbt.setDouble("targetTileX", this.targetVec.x);
+            nbt.setDouble("targetTileY", this.targetVec.y);
+            nbt.setDouble("targetTileZ", this.targetVec.z);
         }
         
         nbt.setBoolean("Landing", this.landing);
@@ -664,9 +696,9 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
         
         if (nbt.getBoolean("TargetValid") && nbt.hasKey("targetTileX"))
         {
-            this.targetTile = this.worldObj.getBlockTileEntity(nbt.getInteger("targetTileX"), nbt.getInteger("targetTileY"), nbt.getInteger("targetTileZ"));
+            this.targetVec = new Vector3(nbt.getDouble("targetTileX"), nbt.getDouble("targetTileY"), nbt.getDouble("targetTileX"));
         }
-        
+
         this.landing = nbt.getBoolean("Landing");
     }
 
@@ -771,9 +803,9 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
     @Override
     public void onWorldTransferred(World world)
     {
-        if (this.targetTile != null)
+        if (this.targetVec != null)
         {
-            this.setPosition(this.targetTile.xCoord + 0.5F, this.targetTile.yCoord + 200, this.targetTile.zCoord + 0.5F);
+            this.setPosition(this.targetVec.x + 0.5F, this.targetVec.y + 200, this.targetVec.z + 0.5F);
             this.landing = true;
         }
         else
@@ -940,7 +972,7 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
     public List<ItemStack> getItemsDropped()
     {
         final List<ItemStack> items = new ArrayList<ItemStack>();
-        items.add(new ItemStack(GCCoreItems.rocketTier1, 1, this.rocketType.getIndex()));
+        items.add(new ItemStack(GCMarsItems.spaceship, 1, this.rocketType.getIndex() + 10));
 
         if (this.cargoItems != null)
         {
