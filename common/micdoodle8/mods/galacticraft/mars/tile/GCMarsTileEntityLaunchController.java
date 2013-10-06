@@ -25,6 +25,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.ForgeDirection;
@@ -33,6 +34,7 @@ import universalelectricity.core.item.IItemElectric;
 import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric implements IChunkLoader, IElectrical, IInventory, ISidedInventory, IPacketReceiver, ILandingPadAttachable
@@ -49,6 +51,7 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
     public boolean destFrequencyValid;
     public int launchDropdownSelection;
     public boolean launchSchedulingEnabled;
+    public TileEntity attachedPad;
 
     public GCMarsTileEntityLaunchController()
     {
@@ -60,19 +63,38 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
     {
         super.updateEntity();
         
-        this.discharge(this.containingItems[0]);
-        
-        if (!this.worldObj.isRemote && this.ticks % 20 == 0 && this.chunkLoadTicket != null)
+        if (!this.worldObj.isRemote)
         {
-            for (int i = 0; i < this.connectedPads.size(); i++)
+            if (this.ticks % 40 == 0)
             {
-                ChunkCoordinates coords = this.connectedPads.get(i);
-                int blockID = this.worldObj.getBlockId(coords.posX, coords.posY, coords.posZ);
-                
-                if (blockID != GCCoreBlocks.landingPadFull.blockID)
+                this.setFrequency(this.frequency);
+                this.setDestinationFrequency(this.destFrequency);
+            }
+            
+            if (this.ticks % 20 == 0)
+            {
+                if (this.attachedPad != null)
                 {
-                    this.connectedPads.remove(i);
-                    ForgeChunkManager.unforceChunk(this.chunkLoadTicket, new ChunkCoordIntPair(coords.posX >> 4, coords.posZ >> 4));
+                    this.attachedPad = this.worldObj.getBlockTileEntity(this.attachedPad.xCoord, this.attachedPad.yCoord, this.attachedPad.zCoord);
+                }
+                
+                if (this.chunkLoadTicket != null)
+                {
+                    for (int i = 0; i < this.connectedPads.size(); i++)
+                    {
+                        ChunkCoordinates coords = this.connectedPads.get(i);
+                        int blockID = this.worldObj.getBlockId(coords.posX, coords.posY, coords.posZ);
+                        
+                        if (blockID != GCCoreBlocks.landingPadFull.blockID)
+                        {
+                            this.connectedPads.remove(i);
+                            ForgeChunkManager.unforceChunk(this.chunkLoadTicket, new ChunkCoordIntPair(coords.posX >> 4, coords.posZ >> 4));
+                        }
+                        else
+                        {
+                            this.attachedPad = this.worldObj.getBlockTileEntity(coords.posX, coords.posY, coords.posZ);
+                        }
+                    }
                 }
             }
         }
@@ -127,6 +149,8 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
                     
                     if (blockID > 0 && Block.blocksList[blockID] instanceof GCCoreBlockLandingPadFull)
                     {
+                        this.attachedPad = this.worldObj.getBlockTileEntity(this.xCoord + x, this.yCoord, this.zCoord + z);
+                        
                         if (this.xCoord + x >> 4 != this.xCoord >> 4 || this.zCoord + z >> 4 != this.zCoord >> 4)
                         {
                             this.connectedPads.add(new ChunkCoordinates(this.xCoord + x, this.yCoord, this.zCoord + z));
@@ -168,7 +192,6 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
             }
         }
         
-        this.setDisabled(1, nbt.getBoolean("LeaveLaunchPads"));
         this.ownerName = nbt.getString("OwnerName");
         this.launchDropdownSelection = nbt.getInteger("LaunchSelection");
         this.frequency = nbt.getInteger("ControllerFrequency");
@@ -195,7 +218,6 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
         }
 
         nbt.setTag("Items", var2);
-        nbt.setBoolean("LeaveLaunchPads", this.getDisabled(1));
         nbt.setString("OwnerName", this.ownerName);
         nbt.setInteger("LaunchSelection", this.launchDropdownSelection);
         nbt.setInteger("ControllerFrequency", this.frequency);
@@ -412,8 +434,6 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
         {
         case 0:
             return this.disabled;
-        case 1:
-            return this.launchPadRemovalDisabled;
         }
         
         return true;
@@ -425,5 +445,77 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
         TileEntity tile = world.getBlockTileEntity(x, y, z);
         
         return tile instanceof GCCoreTileEntityLandingPad || tile instanceof GCCoreTileEntityCargoPad;
+    }
+    
+    public void setFrequency(int frequency)
+    {
+        this.frequency = frequency;
+        
+        if (this.frequency >= 0)
+        {
+            this.frequencyValid = true;
+            
+            worldLoop:
+            for (int i = 0; i < FMLCommonHandler.instance().getMinecraftServerInstance().worldServers.length; i++)
+            {
+                WorldServer world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers[i];
+                
+                for (int j = 0; j < world.loadedTileEntityList.size(); j++)
+                {
+                    TileEntity tile2 = (TileEntity) world.loadedTileEntityList.get(j);
+                    
+                    if (this != tile2 && tile2 instanceof GCMarsTileEntityLaunchController)
+                    {
+                        GCMarsTileEntityLaunchController launchController2 = (GCMarsTileEntityLaunchController) tile2;
+                        
+                        if (launchController2.frequency == this.frequency)
+                        {
+                            this.frequencyValid = false;
+                            break worldLoop;
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            this.frequencyValid = false;
+        }
+    }
+    
+    public void setDestinationFrequency(int frequency)
+    {
+        this.destFrequency = frequency;
+        
+        if (this.destFrequency >= 0)
+        {
+            this.destFrequencyValid = false;
+            
+            worldLoop:
+            for (int i = 0; i < FMLCommonHandler.instance().getMinecraftServerInstance().worldServers.length; i++)
+            {
+                WorldServer world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers[i];
+                
+                for (int j = 0; j < world.loadedTileEntityList.size(); j++)
+                {
+                    TileEntity tile2 = (TileEntity) world.loadedTileEntityList.get(j);
+                    
+                    if (this != tile2 && tile2 instanceof GCMarsTileEntityLaunchController)
+                    {
+                        GCMarsTileEntityLaunchController launchController2 = (GCMarsTileEntityLaunchController) tile2;
+                        
+                        if (launchController2.frequency == this.destFrequency)
+                        {
+                            this.destFrequencyValid = true;
+                            break worldLoop;
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            this.destFrequencyValid = false;
+        }
     }
 }

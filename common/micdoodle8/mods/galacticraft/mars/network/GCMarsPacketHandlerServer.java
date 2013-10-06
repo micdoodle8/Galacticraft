@@ -148,38 +148,7 @@ public class GCMarsPacketHandlerServer implements IPacketHandler
                 if (tile instanceof GCMarsTileEntityLaunchController)
                 {
                     GCMarsTileEntityLaunchController launchController = (GCMarsTileEntityLaunchController) tile;
-                    launchController.frequency = (Integer) packetReadout[4];
-                    
-                    if (launchController.frequency >= 0)
-                    {
-                        launchController.frequencyValid = true;
-                        
-                        worldLoop:
-                        for (int i = 0; i < FMLCommonHandler.instance().getMinecraftServerInstance().worldServers.length; i++)
-                        {
-                            WorldServer world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers[i];
-                            
-                            for (int j = 0; j < world.loadedTileEntityList.size(); j++)
-                            {
-                                TileEntity tile2 = (TileEntity) world.loadedTileEntityList.get(j);
-                                
-                                if (tile != tile2 && tile2 instanceof GCMarsTileEntityLaunchController)
-                                {
-                                    GCMarsTileEntityLaunchController launchController2 = (GCMarsTileEntityLaunchController) tile2;
-                                    
-                                    if (launchController2.frequency == launchController.frequency)
-                                    {
-                                        launchController.frequencyValid = false;
-                                        break worldLoop;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        launchController.frequencyValid = false;
-                    }
+                    launchController.setFrequency((Integer) packetReadout[4]);
                 }
                 break;
             case 1:
@@ -193,38 +162,7 @@ public class GCMarsPacketHandlerServer implements IPacketHandler
                 if (tile instanceof GCMarsTileEntityLaunchController)
                 {
                     GCMarsTileEntityLaunchController launchController = (GCMarsTileEntityLaunchController) tile;
-                    launchController.destFrequency = (Integer) packetReadout[4];
-                    
-                    if (launchController.destFrequency >= 0)
-                    {
-                        launchController.destFrequencyValid = false;
-                        
-                        worldLoop:
-                        for (int i = 0; i < FMLCommonHandler.instance().getMinecraftServerInstance().worldServers.length; i++)
-                        {
-                            WorldServer world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers[i];
-                            
-                            for (int j = 0; j < world.loadedTileEntityList.size(); j++)
-                            {
-                                TileEntity tile2 = (TileEntity) world.loadedTileEntityList.get(j);
-                                
-                                if (tile != tile2 && tile2 instanceof GCMarsTileEntityLaunchController)
-                                {
-                                    GCMarsTileEntityLaunchController launchController2 = (GCMarsTileEntityLaunchController) tile2;
-                                    
-                                    if (launchController2.frequency == launchController.destFrequency)
-                                    {
-                                        launchController.destFrequencyValid = true;
-                                        break worldLoop;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        launchController.destFrequencyValid = false;
-                    }
+                    launchController.setDestinationFrequency((Integer) packetReadout[4]);
                 }
                 break;
             case 3:

@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
+import micdoodle8.mods.galacticraft.api.entity.IWorldTransferCallback;
 import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
 import micdoodle8.mods.galacticraft.api.world.ICelestialBody;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
@@ -715,6 +716,11 @@ public class WorldUtil
                 if (var1 == null)
                 {
                     return null;
+                }
+                
+                if (var1 instanceof IWorldTransferCallback)
+                {
+                    ((IWorldTransferCallback) var1).onWorldTransferred(var0);
                 }
             }
 

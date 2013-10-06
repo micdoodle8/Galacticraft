@@ -23,7 +23,7 @@ import cpw.mods.fml.client.FMLClientHandler;
  */
 public class GCCoreItemRendererSpaceship implements IItemRenderer
 {
-    private static final ResourceLocation chestTexture = new ResourceLocation("textures/entity/chest/normal.png");
+    protected static final ResourceLocation chestTexture = new ResourceLocation("textures/entity/chest/normal.png");
 
     protected EntitySpaceshipBase spaceship;
     protected ModelBase modelSpaceship;
@@ -40,11 +40,11 @@ public class GCCoreItemRendererSpaceship implements IItemRenderer
         this.texture = texture;
     }
 
-    private void renderSpaceship(ItemRenderType type, RenderBlocks render, ItemStack item, float translateX, float translateY, float translateZ)
+    protected void renderSpaceship(ItemRenderType type, RenderBlocks render, ItemStack item, float translateX, float translateY, float translateZ)
     {
         GL11.glPushMatrix();
 
-        this.transform(type);
+        this.transform(item, type);
 
         FMLClientHandler.instance().getClient().renderEngine.bindTexture(this.texture);
         this.modelSpaceship.render(this.spaceship, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
@@ -82,7 +82,7 @@ public class GCCoreItemRendererSpaceship implements IItemRenderer
         }
     }
 
-    public void transform(ItemRenderType type)
+    public void transform(ItemStack itemstack, ItemRenderType type)
     {
         final EntityPlayer player = FMLClientHandler.instance().getClient().thePlayer;
         long var10 = this.spaceship.entityId * 493286711L;

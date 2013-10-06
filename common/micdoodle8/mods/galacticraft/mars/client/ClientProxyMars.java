@@ -25,6 +25,7 @@ import micdoodle8.mods.galacticraft.mars.client.render.block.GCMarsBlockRenderer
 import micdoodle8.mods.galacticraft.mars.client.render.block.GCMarsBlockRendererTintedGlassPane;
 import micdoodle8.mods.galacticraft.mars.client.render.block.GCMarsBlockRendererTreasureChest;
 import micdoodle8.mods.galacticraft.mars.client.render.block.GCMarsBlockRendererVine;
+import micdoodle8.mods.galacticraft.mars.client.render.entity.GCMarsRenderCargoRocket;
 import micdoodle8.mods.galacticraft.mars.client.render.entity.GCMarsRenderCreeperBoss;
 import micdoodle8.mods.galacticraft.mars.client.render.entity.GCMarsRenderLandingBalloons;
 import micdoodle8.mods.galacticraft.mars.client.render.entity.GCMarsRenderProjectileTNT;
@@ -36,6 +37,7 @@ import micdoodle8.mods.galacticraft.mars.client.render.tile.GCMarsTileEntityCryo
 import micdoodle8.mods.galacticraft.mars.client.render.tile.GCMarsTileEntityTreasureChestRenderer;
 import micdoodle8.mods.galacticraft.mars.client.sounds.GCMarsSounds;
 import micdoodle8.mods.galacticraft.mars.dimension.GCMarsWorldProvider;
+import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityCargoRocket;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityCreeperBoss;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityLandingBalloons;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityProjectileTNT;
@@ -122,9 +124,10 @@ public class ClientProxyMars extends CommonProxyMars
     @Override
     public void registerRenderInformation()
     {
-        IModelCustom model = AdvancedModelLoader.loadModel("/assets/galacticraftmars/models/chamber.obj");
+        IModelCustom chamberModel = AdvancedModelLoader.loadModel("/assets/galacticraftmars/models/chamber.obj");
+        IModelCustom cargoRocketModel = AdvancedModelLoader.loadModel("/assets/galacticraftmars/models/cargoRocket.obj");
         ClientRegistry.bindTileEntitySpecialRenderer(GCMarsTileEntityTreasureChest.class, new GCMarsTileEntityTreasureChestRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(GCMarsTileEntityCryogenicChamber.class, new GCMarsTileEntityCryogenicChamberRenderer(model));
+        ClientRegistry.bindTileEntitySpecialRenderer(GCMarsTileEntityCryogenicChamber.class, new GCMarsTileEntityCryogenicChamberRenderer(chamberModel));
         RenderingRegistry.registerEntityRenderingHandler(GCMarsEntitySludgeling.class, new GCMarsRenderSludgeling());
         RenderingRegistry.registerEntityRenderingHandler(GCMarsEntitySlimeling.class, new GCMarsRenderSlimeling());
         RenderingRegistry.registerEntityRenderingHandler(GCMarsEntityCreeperBoss.class, new GCMarsRenderCreeperBoss());
@@ -132,10 +135,12 @@ public class ClientProxyMars extends CommonProxyMars
         RenderingRegistry.registerEntityRenderingHandler(GCMarsEntityTerraformBubble.class, new GCCoreRenderOxygenBubble(0.25F, 1.0F, 0.25F));
         RenderingRegistry.registerEntityRenderingHandler(GCMarsEntityProjectileTNT.class, new GCMarsRenderProjectileTNT());
         RenderingRegistry.registerEntityRenderingHandler(GCMarsEntityLandingBalloons.class, new GCMarsRenderLandingBalloons());
+        RenderingRegistry.registerEntityRenderingHandler(GCMarsEntityLandingBalloons.class, new GCMarsRenderLandingBalloons());
+        RenderingRegistry.registerEntityRenderingHandler(GCMarsEntityCargoRocket.class, new GCMarsRenderCargoRocket(cargoRocketModel));
         RenderingRegistry.addNewArmourRendererPrefix("desh");
-        MinecraftForgeClient.registerItemRenderer(GCMarsItems.spaceship.itemID, new GCMarsItemRendererSpaceshipT2(new GCMarsEntityRocketT2(FMLClientHandler.instance().getClient().theWorld), new GCMarsModelSpaceshipTier2(), new ResourceLocation(GalacticraftMars.TEXTURE_DOMAIN, "textures/model/rocketT2.png")));
+        MinecraftForgeClient.registerItemRenderer(GCMarsItems.spaceship.itemID, new GCMarsItemRendererSpaceshipT2(cargoRocketModel));
         MinecraftForgeClient.registerItemRenderer(GCMarsItems.key.itemID, new GCCoreItemRendererKey(new ResourceLocation(GalacticraftMars.TEXTURE_DOMAIN, "textures/model/treasure.png")));
-        MinecraftForgeClient.registerItemRenderer(GCMarsBlocks.machine.blockID, new GCMarsItemRendererMachine(model));
+        MinecraftForgeClient.registerItemRenderer(GCMarsBlocks.machine.blockID, new GCMarsItemRendererMachine(chamberModel));
     }
 
     @Override

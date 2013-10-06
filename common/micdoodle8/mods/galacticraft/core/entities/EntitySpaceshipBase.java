@@ -350,7 +350,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
         this.rotationPitch += f;
     }
 
-    private void failRocket()
+    protected void failRocket()
     {
         if (this.riddenByEntity != null)
         {

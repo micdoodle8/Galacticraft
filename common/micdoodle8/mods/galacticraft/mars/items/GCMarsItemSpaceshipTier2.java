@@ -2,12 +2,16 @@ package micdoodle8.mods.galacticraft.mars.items;
 
 import java.util.List;
 import mekanism.api.EnumColor;
+import micdoodle8.mods.galacticraft.api.entity.IRocketType;
 import micdoodle8.mods.galacticraft.api.entity.IRocketType.EnumRocketType;
 import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
+import micdoodle8.mods.galacticraft.core.entities.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
+import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityCargoRocket;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityRocketT2;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -96,17 +100,33 @@ public class GCMarsItemSpaceshipTier2 extends Item implements IHoldableItem
 
             if (amountOfCorrectBlocks == 9)
             {
-                final GCMarsEntityRocketT2 spaceship = new GCMarsEntityRocketT2(par3World, centerX, centerY + 0.2D, centerZ, EnumRocketType.values()[par1ItemStack.getItemDamage()]);
+                EntitySpaceshipBase rocket = null;
+                
+                if (par1ItemStack.getItemDamage() < 10)
+                {
+                    rocket = new GCMarsEntityRocketT2(par3World, centerX, centerY + 0.2D, centerZ, EnumRocketType.values()[par1ItemStack.getItemDamage()]);
+                }
+                else
+                {
+                    rocket = new GCMarsEntityCargoRocket(par3World, centerX, centerY + 0.2D, centerZ, EnumRocketType.values()[par1ItemStack.getItemDamage() - 10]);
+                }
 
-                par3World.spawnEntityInWorld(spaceship);
+                par3World.spawnEntityInWorld(rocket);
                 if (!par2EntityPlayer.capabilities.isCreativeMode)
                 {
                     par2EntityPlayer.inventory.consumeInventoryItem(par1ItemStack.getItem().itemID);
                 }
 
-                if (spaceship.rocketType.getPreFueled())
+                if (rocket instanceof IRocketType && ((IRocketType) rocket).getType().getPreFueled())
                 {
-                    spaceship.spaceshipFuelTank.fill(new FluidStack(GalacticraftCore.FUEL, spaceship.getFuelTankCapacity()), true);
+                    if (rocket instanceof EntityTieredRocket)
+                    {
+                        ((EntityTieredRocket) rocket).spaceshipFuelTank.fill(new FluidStack(GalacticraftCore.FUEL, rocket.getMaxFuel()), true);
+                    }
+                    else if (rocket instanceof GCMarsEntityCargoRocket)
+                    {
+                        ((GCMarsEntityCargoRocket) rocket).spaceshipFuelTank.fill(new FluidStack(GalacticraftCore.FUEL, rocket.getMaxFuel()), true);
+                    }
                 }
             }
             else
@@ -125,6 +145,11 @@ public class GCMarsItemSpaceshipTier2 extends Item implements IHoldableItem
         {
             par3List.add(new ItemStack(par1, 1, i));
         }
+        
+        for (int i = 10; i < 10 + EnumRocketType.values().length; i++)
+        {
+            par3List.add(new ItemStack(par1, 1, i));
+        }
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -132,7 +157,16 @@ public class GCMarsItemSpaceshipTier2 extends Item implements IHoldableItem
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack par1ItemStack, EntityPlayer player, List par2List, boolean b)
     {
-        EnumRocketType type = EnumRocketType.values()[par1ItemStack.getItemDamage()];
+        EnumRocketType type = null;
+        
+        if (par1ItemStack.getItemDamage() < 10)
+        {
+            type = EnumRocketType.values()[par1ItemStack.getItemDamage()];
+        }
+        else
+        {
+            type = EnumRocketType.values()[par1ItemStack.getItemDamage() - 10];
+        }
 
         if (!type.getTooltip().isEmpty())
         {
@@ -145,6 +179,12 @@ public class GCMarsItemSpaceshipTier2 extends Item implements IHoldableItem
         }
     }
 
+    @Override
+    public String getUnlocalizedName(ItemStack par1ItemStack)
+    {
+        return super.getUnlocalizedName(par1ItemStack) + (par1ItemStack.getItemDamage() < 10 ? ".t2Rocket" : ".cargoRocket");
+    }
+    
     @Override
     public boolean shouldHoldLeftHandUp(EntityPlayer player)
     {

@@ -218,7 +218,7 @@ public class GCMarsEvents
             {
                 if (!launchController.getDisabled(0) && launchController.getEnergyStored() > 0.0F)
                 {
-                    event.allow = !launchController.getDisabled(1);
+                    event.allow = !launchController.launchPadRemovalDisabled;
                 }
             }
         }

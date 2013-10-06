@@ -66,6 +66,7 @@ public class GCMarsConfigManager
     public static int idEntitySlimeling;
     public static int idEntityTerraformBubble;
     public static int idEntityLandingBalloons;
+    public static int idEntityCargoRocket;
 
     // GUI
     public static int idGuiRocketCraftingBenchT2;
@@ -118,6 +119,7 @@ public class GCMarsConfigManager
             GCMarsConfigManager.idEntitySlimeling = GCMarsConfigManager.configuration.get("Entities", "idEntitySlimeling", 175).getInt(175);
             GCMarsConfigManager.idEntityTerraformBubble = GCMarsConfigManager.configuration.get("Entities", "idEntityTerraformBubble", 176).getInt(176);
             GCMarsConfigManager.idEntityLandingBalloons = GCMarsConfigManager.configuration.get("Entities", "idEntityLandingBalloons", 177).getInt(177);
+            GCMarsConfigManager.idEntityCargoRocket = GCMarsConfigManager.configuration.get("Entities", "idEntityCargoRocket", 178).getInt(178);
 
             GCMarsConfigManager.idGuiRocketCraftingBenchT2 = GCMarsConfigManager.configuration.get("GUI", "idGuiRocketCraftingBenchT2", 143).getInt(143);
             GCMarsConfigManager.idGuiMachine = GCMarsConfigManager.configuration.get("GUI", "idGuiMachine", 146).getInt(146);

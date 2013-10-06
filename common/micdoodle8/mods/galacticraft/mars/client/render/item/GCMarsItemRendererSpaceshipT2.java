@@ -1,24 +1,86 @@
 package micdoodle8.mods.galacticraft.mars.client.render.item;
 
+import micdoodle8.mods.galacticraft.api.entity.IRocketType.EnumRocketType;
 import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererSpaceship;
-import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
-import net.minecraft.client.model.ModelBase;
+import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
+import micdoodle8.mods.galacticraft.mars.client.model.GCMarsModelSpaceshipTier2;
+import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityRocketT2;
+import net.minecraft.client.model.ModelChest;
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.FMLClientHandler;
 
 public class GCMarsItemRendererSpaceshipT2 extends GCCoreItemRendererSpaceship
 {
-    public GCMarsItemRendererSpaceshipT2(EntitySpaceshipBase spaceship, ModelBase model, ResourceLocation texture)
+    private static final ResourceLocation cargoRocketTexture = new ResourceLocation(GalacticraftMars.TEXTURE_DOMAIN, "textures/model/cargoRocket.png");
+    private IModelCustom cargoRocketModel;
+    
+    public GCMarsItemRendererSpaceshipT2(IModelCustom cargoRocketModel)
     {
-        super(spaceship, model, texture);
+        super(new GCMarsEntityRocketT2(FMLClientHandler.instance().getClient().theWorld), new GCMarsModelSpaceshipTier2(), new ResourceLocation(GalacticraftMars.TEXTURE_DOMAIN, "textures/model/rocketT2.png"));
+        this.cargoRocketModel = cargoRocketModel;
     }
 
     @Override
-    public void transform(ItemRenderType type)
+    protected void renderSpaceship(ItemRenderType type, RenderBlocks render, ItemStack item, float translateX, float translateY, float translateZ)
+    {
+        GL11.glPushMatrix();
+
+        this.transform(item, type);
+
+        if (item.getItemDamage() < 10)
+        {
+            FMLClientHandler.instance().getClient().renderEngine.bindTexture(this.texture);
+            this.modelSpaceship.render(this.spaceship, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+            GL11.glPopMatrix();
+        }
+        else
+        {
+            FMLClientHandler.instance().getClient().renderEngine.bindTexture(GCMarsItemRendererSpaceshipT2.cargoRocketTexture);
+            this.cargoRocketModel.renderAll();
+            GL11.glPopMatrix();
+        }
+
+        if (type == ItemRenderType.INVENTORY)
+        {
+            int index = Math.min(Math.max(item.getItemDamage(), 0), EnumRocketType.values().length - 1);
+            if (EnumRocketType.values()[index].getInventorySpace() > 3)
+            {
+                final ModelChest modelChest = this.chestModel;
+                FMLClientHandler.instance().getClient().renderEngine.bindTexture(GCCoreItemRendererSpaceship.chestTexture);
+
+                GL11.glPushMatrix();
+                GL11.glDisable(GL11.GL_DEPTH_TEST);
+                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+                GL11.glScalef(0.5F, -0.5F, -0.5F);
+                GL11.glTranslatef(1.5F, 1.95F, 1.7F);
+                final short short1 = 0;
+
+                GL11.glRotatef(short1, 0.0F, 1.0F, 0.0F);
+                GL11.glTranslatef(-1.5F, -1.5F, -1.5F);
+                float f1 = 0;
+                f1 = 1.0F - f1;
+                f1 = 1.0F - f1 * f1 * f1;
+                modelChest.chestLid.rotateAngleX = -(f1 * (float) Math.PI / 2.0F);
+
+                modelChest.chestBelow.render(0.0625F);
+                modelChest.chestLid.render(0.0625F);
+                modelChest.chestKnob.render(0.0625F);
+                GL11.glEnable(GL11.GL_DEPTH_TEST);
+                GL11.glPopMatrix();
+                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            }
+        }
+    }
+
+    @Override
+    public void transform(ItemStack itemstack, ItemRenderType type)
     {
         final EntityPlayer player = FMLClientHandler.instance().getClient().thePlayer;
         long var10 = this.spaceship.entityId * 493286711L;
@@ -70,6 +132,12 @@ public class GCMarsItemRendererSpaceshipT2 extends GCCoreItemRendererSpaceship
             {
                 GL11.glTranslatef(0, -0.9F, 0);
                 GL11.glScalef(0.5F, 0.5F, 0.5F);
+            }
+            
+            if (itemstack.getItemDamage() >= 10)
+            {
+                GL11.glRotatef(180F, 1F, 0F, 0F);
+                GL11.glScalef(0.75F, 0.75F, 0.75F);
             }
 
             GL11.glScalef(1.3F, 1.3F, 1.3F);
