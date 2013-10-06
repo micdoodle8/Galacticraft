@@ -33,7 +33,7 @@ public class GCCoreItemBlockEnclosedBlock extends ItemBlock
         switch (par1ItemStack.getItemDamage())
         {
         case 0:
-            name = "copperWire";
+            name = "null";
             break;
         case 1:
             name = "oxygenPipe";
@@ -52,6 +52,12 @@ public class GCCoreItemBlockEnclosedBlock extends ItemBlock
             break;
         case 6:
             name = "lvCable";
+            break;
+        case 14:
+            name = "aluminumWire";
+            break;
+        case 15:
+            name = "aluminumWireHeavy";
             break;
         default:
             name = GCCoreBlockEnclosed.getTypeFromMeta(par1ItemStack.getItemDamage()).getPipeClass();

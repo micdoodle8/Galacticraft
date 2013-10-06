@@ -28,7 +28,6 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
 
     public enum EnumEnclosedBlock
     {
-        COPPERWIRE(0, -1, null, "enclosed_copper_wire"), 
         OXYGENPIPE(1, -1, null, "enclosed_oxygen_pipe"), 
         IC2_COPPER_CABLE(2, 0, null, "enclosed_copper_cable"), 
         IC2_GOLD_CABLE(3, 3, null, "enclosed_gold_cable"), 
@@ -40,7 +39,9 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
         BC_FLUIDS_STONEPIPE(9, -1, "PipeFluidsStone", "enclosed_liquidpipe_stone"), 
         BC_FLUIDS_COBBLESTONEPIPE(10, -1, "PipeFluidsCobblestone", "enclosed_liquidpipe_cobblestone"), 
         BC_POWER_STONEPIPE(11, -1, "PipePowerStone", "enclosed_powerpipe_stone"), 
-        BC_POWER_GOLDPIPE(12, -1, "PipePowerGold", "enclosed_powerpipe_gold");
+        BC_POWER_GOLDPIPE(12, -1, "PipePowerGold", "enclosed_powerpipe_gold"),
+        ALUMINUM_WIRE(14, -1, null, "enclosed_aluminum_wire"),
+        ALUMINUM_WIRE_HEAVY(15, -1, null, "enclosed_heavy_aluminum_wire");
 
         int metadata;
         int ic2CableMeta;
@@ -104,11 +105,8 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
     @Override
     public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
-        if (GCCoreBlocks.machineBase != null)
-        {
-            par3List.add(new ItemStack(par1, 1, 0));
-        }
-
+        par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.ALUMINUM_WIRE.getMetadata()));
+        par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.ALUMINUM_WIRE_HEAVY.getMetadata()));
         par3List.add(new ItemStack(par1, 1, 1));
 
         if (GCCoreCompatibilityManager.isIc2Loaded())
@@ -153,14 +151,14 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
     @Override
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.enclosedIcons = new Icon[EnumEnclosedBlock.values().length];
+        this.enclosedIcons = new Icon[16];
 
-        for (EnumEnclosedBlock type : EnumEnclosedBlock.values())
+        for (int i = 0; i < EnumEnclosedBlock.values().length; i++)
         {
-            this.enclosedIcons[type.ordinal()] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "" + type.getTexture());
+            this.enclosedIcons[EnumEnclosedBlock.values()[i].getMetadata()] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + EnumEnclosedBlock.values()[i].getTexture());
         }
 
-        this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "" + EnumEnclosedBlock.COPPERWIRE.getTexture());
+        this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "" + EnumEnclosedBlock.OXYGENPIPE.getTexture());
     }
 
     @Override
@@ -171,14 +169,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
         int metadata = world.getBlockMetadata(x, y, z);
         final TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
 
-        if (metadata <= EnumEnclosedBlock.COPPERWIRE.getMetadata())
-        {
-            if (tileEntity instanceof IConductor)
-            {
-                ((IConductor) tileEntity).refresh();
-            }
-        }
-        else if (metadata <= EnumEnclosedBlock.OXYGENPIPE.getMetadata())
+        if (metadata > 0 && metadata <= EnumEnclosedBlock.OXYGENPIPE.getMetadata())
         {
 
         }
@@ -212,6 +203,20 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
         else if (metadata <= EnumEnclosedBlock.BC_POWER_GOLDPIPE.getMetadata())
         {
         }
+        else if (metadata <= EnumEnclosedBlock.ALUMINUM_WIRE.getMetadata())
+        {
+            if (tileEntity instanceof IConductor)
+            {
+                ((IConductor) tileEntity).refresh();
+            }
+        }
+        else if (metadata <= EnumEnclosedBlock.ALUMINUM_WIRE_HEAVY.getMetadata())
+        {
+            if (tileEntity instanceof IConductor)
+            {
+                ((IConductor) tileEntity).refresh();
+            }
+        }
     }
 
     @Override
@@ -222,14 +227,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
         int metadata = world.getBlockMetadata(x, y, z);
         final TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
 
-        if (metadata <= EnumEnclosedBlock.COPPERWIRE.getMetadata())
-        {
-            if (tileEntity instanceof IConductor)
-            {
-                ((IConductor) tileEntity).refresh();
-            }
-        }
-        else if (metadata <= EnumEnclosedBlock.OXYGENPIPE.getMetadata())
+        if (metadata > 0 && metadata <= EnumEnclosedBlock.OXYGENPIPE.getMetadata())
         {
 
         }
@@ -297,6 +295,20 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
                 }
             }
         }
+        else if (metadata <= EnumEnclosedBlock.ALUMINUM_WIRE.getMetadata())
+        {
+            if (tileEntity instanceof IConductor)
+            {
+                ((IConductor) tileEntity).refresh();
+            }
+        }
+        else if (metadata <= EnumEnclosedBlock.ALUMINUM_WIRE_HEAVY.getMetadata())
+        {
+            if (tileEntity instanceof IConductor)
+            {
+                ((IConductor) tileEntity).refresh();
+            }
+        }
     }
 
     @Override
@@ -308,11 +320,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
     @Override
     public TileEntity createTileEntity(World world, int metadata)
     {
-        if (metadata <= EnumEnclosedBlock.COPPERWIRE.getMetadata())
-        {
-            return new GCCoreTileEntityAluminumWire();
-        }
-        else if (metadata <= EnumEnclosedBlock.OXYGENPIPE.getMetadata())
+        if (metadata > 0 && metadata <= EnumEnclosedBlock.OXYGENPIPE.getMetadata())
         {
             return new GCCoreTileEntityOxygenPipe();
         }
@@ -376,6 +384,14 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
                     e.printStackTrace();
                 }
             }
+        }
+        else if (metadata <= EnumEnclosedBlock.ALUMINUM_WIRE.getMetadata())
+        {
+            return new GCCoreTileEntityAluminumWire();
+        }
+        else if (metadata <= EnumEnclosedBlock.ALUMINUM_WIRE_HEAVY.getMetadata())
+        {
+            return new GCCoreTileEntityAluminumWire(0.025F, 400.0F);
         }
 
         return null;
