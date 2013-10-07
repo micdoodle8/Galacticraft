@@ -10,8 +10,10 @@ import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoPad;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectric;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
+import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.world.IChunkLoader;
 import micdoodle8.mods.galacticraft.mars.GCMarsConfigManager;
+import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlockMachine;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -35,6 +37,8 @@ import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric implements IChunkLoader, IElectrical, IInventory, ISidedInventory, IPacketReceiver, ILandingPadAttachable
@@ -52,6 +56,37 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
     public int launchDropdownSelection;
     public boolean launchSchedulingEnabled;
     public TileEntity attachedPad;
+    public boolean requiresClientUpdate;
+    
+    public static enum EnumAutoLaunch
+    {
+        CARGO_IS_UNLOADED(0, "Cargo is Unloaded"),
+        CARGO_IS_FULL(1, "Cargo is Full"),
+        ROCKET_IS_FUELED(2, "Fully Fueled"),
+        INSTANT(3, "Instantly"),
+        TIME_10_SECONDS(4, "10 Seconds"),
+        TIME_30_SECONDS(5, "30 Seconds"),
+        TIME_1_MINUTE(6, "1 Minute");
+        
+        private final int index;
+        private String title;
+        
+        private EnumAutoLaunch(int index, String title)
+        {
+            this.index = index;
+            this.title = title;
+        }
+        
+        public int getIndex()
+        {
+            return this.index;
+        }
+        
+        public String getTitle()
+        {
+            return this.title;
+        }
+    }
 
     public GCMarsTileEntityLaunchController()
     {
@@ -63,8 +98,15 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
     {
         super.updateEntity();
         
+        
         if (!this.worldObj.isRemote)
         {
+            if (this.requiresClientUpdate)
+            {
+                PacketDispatcher.sendPacketToAllPlayers(this.getPacket());
+                this.requiresClientUpdate = false;
+            }
+            
             if (this.ticks % 40 == 0)
             {
                 this.setFrequency(this.frequency);
@@ -96,6 +138,14 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
                         }
                     }
                 }
+            }
+        }
+        else
+        {
+            FMLLog.info("" + this.worldObj.isRemote + " " + this.frequency + " " + this.destFrequency);
+            if (this.frequency == -1 && this.destFrequency == -1)
+            {
+                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftMars.CHANNEL, 5, new Object[] { 5, this.xCoord, this.yCoord, this.zCoord, 0 }));
             }
         }
     }
@@ -198,6 +248,7 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
         this.destFrequency = nbt.getInteger("TargetFrequency");
         this.launchPadRemovalDisabled = nbt.getBoolean("LaunchPadRemovalDisabled");
         this.launchSchedulingEnabled = nbt.getBoolean("LaunchPadSchedulingEnabled");
+        this.requiresClientUpdate = true;
     }
 
     @Override
@@ -463,15 +514,20 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
                 for (int j = 0; j < world.loadedTileEntityList.size(); j++)
                 {
                     TileEntity tile2 = (TileEntity) world.loadedTileEntityList.get(j);
-                    
-                    if (this != tile2 && tile2 instanceof GCMarsTileEntityLaunchController)
+
+                    if (this != tile2)
                     {
-                        GCMarsTileEntityLaunchController launchController2 = (GCMarsTileEntityLaunchController) tile2;
+                        tile2 = world.getBlockTileEntity(tile2.xCoord, tile2.yCoord, tile2.zCoord);
                         
-                        if (launchController2.frequency == this.frequency)
+                        if (tile2 instanceof GCMarsTileEntityLaunchController)
                         {
-                            this.frequencyValid = false;
-                            break worldLoop;
+                            GCMarsTileEntityLaunchController launchController2 = (GCMarsTileEntityLaunchController) tile2;
+                            
+                            if (launchController2.frequency == this.frequency)
+                            {
+                                this.frequencyValid = false;
+                                break worldLoop;
+                            }
                         }
                     }
                 }
@@ -500,14 +556,19 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
                 {
                     TileEntity tile2 = (TileEntity) world.loadedTileEntityList.get(j);
                     
-                    if (this != tile2 && tile2 instanceof GCMarsTileEntityLaunchController)
+                    if (this != tile2)
                     {
-                        GCMarsTileEntityLaunchController launchController2 = (GCMarsTileEntityLaunchController) tile2;
+                        tile2 = world.getBlockTileEntity(tile2.xCoord, tile2.yCoord, tile2.zCoord);
                         
-                        if (launchController2.frequency == this.destFrequency)
+                        if (tile2 instanceof GCMarsTileEntityLaunchController)
                         {
-                            this.destFrequencyValid = true;
-                            break worldLoop;
+                            GCMarsTileEntityLaunchController launchController2 = (GCMarsTileEntityLaunchController) tile2;
+                            
+                            if (launchController2.frequency == this.destFrequency)
+                            {
+                                this.destFrequencyValid = true;
+                                break worldLoop;
+                            }
                         }
                     }
                 }

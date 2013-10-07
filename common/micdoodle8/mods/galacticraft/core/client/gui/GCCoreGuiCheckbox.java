@@ -45,11 +45,18 @@ public class GCCoreGuiCheckbox extends GuiButton
     @Override
     public boolean mousePressed(Minecraft par1Minecraft, int par2, int par3)
     {
-        if (this.parentGui.canPlayerEdit(this, par1Minecraft.thePlayer) && this.enabled && this.drawButton && par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height)
+        if (this.enabled && this.drawButton && par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height)
         {
-            this.isSelected = !this.isSelected;
-            this.parentGui.onSelectionChanged(this, this.isSelected);
-            return true;
+            if (this.parentGui.canPlayerEdit(this, par1Minecraft.thePlayer))
+            {
+                this.isSelected = !this.isSelected;
+                this.parentGui.onSelectionChanged(this, this.isSelected);
+                return true;
+            }
+            else
+            {
+                this.parentGui.onIntruderInteraction();
+            }
         }
         
         return false;
@@ -62,5 +69,7 @@ public class GCCoreGuiCheckbox extends GuiButton
         public boolean canPlayerEdit(GCCoreGuiCheckbox checkbox, EntityPlayer player);
         
         public boolean getInitiallySelected(GCCoreGuiCheckbox checkbox);
+
+        public void onIntruderInteraction();
     }
 }

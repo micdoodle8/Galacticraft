@@ -227,4 +227,10 @@ public class GCCoreTileEntityCargoPad extends TileEntityMulti implements IMultiB
         
         return false;
     }
+
+    @Override
+    public IDockable getDockedEntity()
+    {
+        return this.dockedEntity;
+    }
 }

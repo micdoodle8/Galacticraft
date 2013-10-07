@@ -141,7 +141,7 @@ public class GCMarsPacketHandlerServer implements IPacketHandler
             Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
             
             TileEntity tile = player.worldObj.getBlockTileEntity((Integer)packetReadout[1], (Integer)packetReadout[2], (Integer)packetReadout[3]);
-            
+
             switch ((Integer) packetReadout[0])
             {
             case 0:
@@ -177,6 +177,13 @@ public class GCMarsPacketHandlerServer implements IPacketHandler
                 {
                     GCMarsTileEntityLaunchController launchController = (GCMarsTileEntityLaunchController) tile;
                     launchController.launchSchedulingEnabled = (Integer) packetReadout[4] == 1 ? true : false;
+                }
+                break;
+            case 5:
+                if (tile instanceof GCMarsTileEntityLaunchController)
+                {
+                    GCMarsTileEntityLaunchController launchController = (GCMarsTileEntityLaunchController) tile;
+                    launchController.requiresClientUpdate = true;
                 }
                 break;
             default:

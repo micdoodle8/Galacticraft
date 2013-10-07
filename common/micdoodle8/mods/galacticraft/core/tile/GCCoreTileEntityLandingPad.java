@@ -222,4 +222,10 @@ public class GCCoreTileEntityLandingPad extends TileEntityMulti implements IMult
         
         return false;
     }
+
+    @Override
+    public IDockable getDockedEntity()
+    {
+        return this.dockedEntity;
+    }
 }

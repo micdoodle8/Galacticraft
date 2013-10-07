@@ -218,4 +218,10 @@ public class GCCoreTileEntityBuggyFueler extends TileEntityMulti implements IMul
         
         return false;
     }
+
+    @Override
+    public IDockable getDockedEntity()
+    {
+        return this.dockedEntity;
+    }
 }

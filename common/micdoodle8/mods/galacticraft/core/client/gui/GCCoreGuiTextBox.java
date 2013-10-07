@@ -12,7 +12,7 @@ import cpw.mods.fml.client.FMLClientHandler;
 
 public class GCCoreGuiTextBox extends GuiButton
 {
-    private String text;
+    public String text;
     public boolean numericOnly;
     private int maxLength;
 
@@ -62,6 +62,7 @@ public class GCCoreGuiTextBox extends GuiButton
                     else
                     {
                         this.incorrectUseTimer = 10;
+                        this.parentGui.onIntruderInteraction();
                     }
                 }
             }
@@ -84,6 +85,7 @@ public class GCCoreGuiTextBox extends GuiButton
                     else
                     {
                         this.incorrectUseTimer = 10;
+                        this.parentGui.onIntruderInteraction();
                     }
                 }
             }
@@ -97,6 +99,7 @@ public class GCCoreGuiTextBox extends GuiButton
                 else
                 {
                     this.incorrectUseTimer = 10;
+                    this.parentGui.onIntruderInteraction();
                 }
             }
             
@@ -147,6 +150,7 @@ public class GCCoreGuiTextBox extends GuiButton
                     else if (!this.parentGui.canPlayerEdit(this, this.mc.thePlayer))
                     {
                         this.incorrectUseTimer = 10;
+                        this.parentGui.onIntruderInteraction();
                     }
                 }
                 else
@@ -229,5 +233,7 @@ public class GCCoreGuiTextBox extends GuiButton
         public String getInitialText(GCCoreGuiTextBox textBox);
         
         public int getTextColor(GCCoreGuiTextBox textBox);
+
+        public void onIntruderInteraction();
     }
 }

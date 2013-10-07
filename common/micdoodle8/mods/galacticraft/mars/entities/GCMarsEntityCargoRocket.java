@@ -2,9 +2,8 @@ package micdoodle8.mods.galacticraft.mars.entities;
 
 import icbm.api.IMissile;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map.Entry;
 import micdoodle8.mods.galacticraft.api.entity.IDockable;
 import micdoodle8.mods.galacticraft.api.entity.IRocketType;
 import micdoodle8.mods.galacticraft.api.entity.IWorldTransferCallback;
@@ -22,10 +21,10 @@ import micdoodle8.mods.galacticraft.core.event.GCCoreLandingPadRemovalEvent;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoPad;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
-import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityLaunchController;
+import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityLaunchController.EnumAutoLaunch;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -46,6 +45,7 @@ import net.minecraftforge.fluids.FluidTank;
 import universalelectricity.core.vector.Vector3;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -62,6 +62,9 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
     public IUpdatePlayerListBox rocketSoundUpdater;
     private IFuelDock landingPad;
     public boolean landing;
+    public EnumAutoLaunch autoLaunchSetting;
+    public EnumAutoLaunch lastAutoLaunchSetting;
+    public int autoLaunchCountdown;
 
     public GCMarsEntityCargoRocket(World par1World)
     {
@@ -136,11 +139,59 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
             this.rocketSoundUpdater.update();
         }
     }
+    
+    private void autoLaunch()
+    {
+        this.ignite();
+        this.autoLaunchSetting = this.lastAutoLaunchSetting = null;
+    }
 
     @Override
     public void onUpdate()
     {
         super.onUpdate();
+        
+        
+        if (!this.worldObj.isRemote)
+        {
+            if (this.autoLaunchCountdown > 0)
+            {
+                this.autoLaunchCountdown--;
+                
+                if (this.autoLaunchCountdown <= 0)
+                {
+                    this.autoLaunch();
+                }
+            }
+            
+            if (this.autoLaunchSetting == EnumAutoLaunch.ROCKET_IS_FUELED && this.spaceshipFuelTank.getFluidAmount() == this.spaceshipFuelTank.getCapacity())
+            {
+                this.autoLaunch();
+            }
+            
+            if (this.autoLaunchSetting != null && this.lastAutoLaunchSetting == null)
+            {
+                switch (this.autoLaunchSetting)
+                {
+                case INSTANT:
+                    this.autoLaunch();
+                    break;
+                case TIME_10_SECONDS:
+                    this.autoLaunchCountdown = 200;
+                    break;
+                case TIME_30_SECONDS:
+                    this.autoLaunchCountdown = 600;
+                    break;
+                case TIME_1_MINUTE:
+                    this.autoLaunchCountdown = 1200;
+                    break;
+                default:
+                    break;
+                }
+            }
+            
+            this.lastAutoLaunchSetting = this.autoLaunchSetting;
+        }
 
         if (!this.worldObj.isRemote && this.getLandingPad() != null && this.getLandingPad().getConnectedTiles() != null)
         {
@@ -361,15 +412,21 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
                 {
                     TileEntity tile = (TileEntity) world.loadedTileEntityList.get(j);
                     
-                    if (tile instanceof GCMarsTileEntityLaunchController)
+                    if (tile != null)
                     {
-                        GCMarsTileEntityLaunchController launchController = (GCMarsTileEntityLaunchController) tile;
-                        
-                        if (launchController.frequency == this.destinationFrequency && launchController.attachedPad != null)
+                        tile = world.getBlockTileEntity(tile.xCoord, tile.yCoord, tile.zCoord);
+
+                        if (tile instanceof GCMarsTileEntityLaunchController)
                         {
-                            this.targetVec = new Vector3(launchController.attachedPad);
-                            this.targetDimension = launchController.worldObj.provider.dimensionId;
-                            break worldLoop;
+                            GCMarsTileEntityLaunchController launchController = (GCMarsTileEntityLaunchController) tile;
+
+                            FMLLog.info("" + launchController.frequency + " " + this.destinationFrequency + " " + launchController.attachedPad);
+                            if (launchController.frequency == this.destinationFrequency && launchController.attachedPad != null)
+                            {
+                                this.targetVec = new Vector3(launchController.attachedPad);
+                                this.targetDimension = launchController.worldObj.provider.dimensionId;
+                                break worldLoop;
+                            }
                         }
                     }
                 }
@@ -394,37 +451,6 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
         else
         {
             this.setDead();
-        }
-        
-        if (this.riddenByEntity != null)
-        {
-            if (this.riddenByEntity instanceof GCCorePlayerMP)
-            {
-                GCCorePlayerMP player = (GCCorePlayerMP) this.riddenByEntity;
-
-                HashMap<String, Integer> map = WorldUtil.getArrayOfPossibleDimensions(WorldUtil.getPossibleDimensionsForSpaceshipTier(this.getRocketTier()), player);
-
-                String temp = "";
-                int count = 0;
-
-                for (Entry<String, Integer> entry : map.entrySet())
-                {
-                    temp = temp.concat(entry.getKey() + (count < map.entrySet().size() - 1 ? "." : ""));
-                    count++;
-                }
-
-                player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 2, new Object[] { player.username, temp }));
-                player.setSpaceshipTier(this.getRocketTier());
-                player.setUsingPlanetGui();
-
-                this.onTeleport(player);
-                player.mountEntity(this);
-
-                if (!this.isDead)
-                {
-                    this.setDead();
-                }
-            }
         }
     }
 
@@ -472,7 +498,29 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
                 {
                     this.launchPhase = EnumLaunchPhase.UNIGNITED.getPhase();
                     this.landing = false;
+                    this.setPad(dock);
+                    
+                    HashSet<ILandingPadAttachable> connectedTiles = dock.getConnectedTiles();
+                    
+                    for (ILandingPadAttachable connectedTile : connectedTiles)
+                    {                        
+                        if (connectedTile != null)
+                        {
+                            TileEntity updatedTile = this.worldObj.getBlockTileEntity(((TileEntity) connectedTile).xCoord, ((TileEntity) connectedTile).yCoord, ((TileEntity) connectedTile).zCoord);
+                                    
+                            if (updatedTile instanceof GCMarsTileEntityLaunchController)
+                            {
+                                GCMarsTileEntityLaunchController controller = (GCMarsTileEntityLaunchController) updatedTile;
+                                
+                                this.autoLaunchSetting = EnumAutoLaunch.values()[controller.launchDropdownSelection];
+                                
+                                break;
+                            }
+                        }
+                    }
                 }
+                
+                
                 
                 this.setPosition(this.posX, y + 0.2 + this.yOffset, this.posZ);
                 return;
@@ -531,6 +579,7 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
                 }
             }
         
+        
         if (frequencySet)
         {
             super.ignite();
@@ -587,40 +636,7 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
     public boolean interactFirst(EntityPlayer par1EntityPlayer)
     {
         if (!this.worldObj.isRemote)
-        this.ignite();
-//        if (this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase())
-//        {
-//            return false;
-//        }
-//
-//        if (this.riddenByEntity != null && this.riddenByEntity instanceof GCCorePlayerMP)
-//        {
-//            if (!this.worldObj.isRemote)
-//            {
-//                final Object[] toSend = { ((EntityPlayerMP) this.riddenByEntity).username };
-//                ((EntityPlayerMP) this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 13, toSend));
-//                final Object[] toSend2 = { 0 };
-//                ((EntityPlayerMP) par1EntityPlayer).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
-//                ((GCCorePlayerMP) par1EntityPlayer).setChatCooldown(0);
-//                par1EntityPlayer.mountEntity(null);
-//            }
-//
-//            return true;
-//        }
-//        else if (par1EntityPlayer instanceof GCCorePlayerMP)
-//        {
-//            if (!this.worldObj.isRemote)
-//            {
-//                final Object[] toSend = { par1EntityPlayer.username };
-//                ((EntityPlayerMP) par1EntityPlayer).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 8, toSend));
-//                final Object[] toSend2 = { 1 };
-//                ((EntityPlayerMP) par1EntityPlayer).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
-//                ((GCCorePlayerMP) par1EntityPlayer).setChatCooldown(0);
-//                par1EntityPlayer.mountEntity(this);
-//            }
-//
-//            return true;
-//        }
+            this.ignite();
 
         return false;
     }
@@ -664,6 +680,9 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
         }
         
         nbt.setBoolean("Landing", this.landing);
+        nbt.setInteger("AutoLaunchSetting", this.autoLaunchSetting != null ? this.autoLaunchSetting.getIndex() : -1);
+        nbt.setInteger("TimeUntilAutoLaunch", this.autoLaunchCountdown);
+        nbt.setInteger("DestinationFrequency", this.destinationFrequency);
     }
 
     @Override
@@ -700,6 +719,10 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
         }
 
         this.landing = nbt.getBoolean("Landing");
+        int autoLaunchValue = nbt.getInteger("AutoLaunchSetting");
+        this.autoLaunchSetting = this.lastAutoLaunchSetting = (autoLaunchValue == -1 ? null : EnumAutoLaunch.values()[autoLaunchValue]);
+        this.autoLaunchCountdown = nbt.getInteger("TimeUntilAutoLaunch");
+        this.destinationFrequency = nbt.getInteger("DestinationFrequency");
     }
 
     @Override
@@ -775,6 +798,11 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
                 return EnumCargoLoadingState.SUCCESS;
             }
         }
+        
+        if (this.autoLaunchSetting == EnumAutoLaunch.CARGO_IS_FULL)
+        {
+            this.autoLaunch();
+        }
 
         return EnumCargoLoadingState.FULL;
     }
@@ -795,6 +823,11 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
 
                 return new RemovalResult(EnumCargoLoadingState.SUCCESS, new ItemStack(stackAt.itemID, 1, stackAt.getItemDamage()));
             }
+        }
+        
+        if (this.autoLaunchSetting == EnumAutoLaunch.CARGO_IS_UNLOADED)
+        {
+            this.autoLaunch();
         }
 
         return new RemovalResult(EnumCargoLoadingState.EMPTY, null);

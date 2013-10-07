@@ -10,6 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreGuiDropdown extends GuiButton
 {
@@ -50,6 +51,7 @@ public class GCCoreGuiDropdown extends GuiButton
         if (this.drawButton)
         {
             GL11.glPushMatrix();
+            
             GL11.glTranslatef(0, 0, 200);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             this.field_82253_i = par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height;
@@ -75,6 +77,7 @@ public class GCCoreGuiDropdown extends GuiButton
             {
                 this.font.drawStringWithShadow(this.optionStrings[this.selectedOption], this.xPosition + this.width / 2 - this.font.getStringWidth(this.optionStrings[this.selectedOption]) / 2, this.yPosition + (this.height - 8) / 2, GCCoreUtil.convertTo32BitColor(255, 255, 255, 255));
             }
+            
             GL11.glPopMatrix();
         }
     }
@@ -82,19 +85,26 @@ public class GCCoreGuiDropdown extends GuiButton
     @Override
     public boolean mousePressed(Minecraft par1Minecraft, int par2, int par3)
     {
-        if (this.parentClass.canBeClickedBy(this, par1Minecraft.thePlayer))
+        if (!this.dropdownClicked)
         {
-            if (!this.dropdownClicked)
+            if (this.enabled && this.drawButton && par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height)
             {
-                if (this.enabled && this.drawButton && par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height)
+                if (this.parentClass.canBeClickedBy(this, par1Minecraft.thePlayer))
                 {
                     this.dropdownClicked = true;
                     return true;
                 }
+                else
+                {
+                    this.parentClass.onIntruderInteraction();
+                }
             }
-            else
+        }
+        else
+        {
+            if (this.enabled && this.drawButton && par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height * this.optionStrings.length)
             {
-                if (this.enabled && this.drawButton && par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height * this.optionStrings.length)
+                if (this.parentClass.canBeClickedBy(this, par1Minecraft.thePlayer))
                 {
                     int optionClicked = (par3 - this.yPosition) / this.height;
                     this.selectedOption = optionClicked % this.optionStrings.length;
@@ -104,8 +114,12 @@ public class GCCoreGuiDropdown extends GuiButton
                 }
                 else
                 {
-                    this.dropdownClicked = false;
+                    this.parentClass.onIntruderInteraction();
                 }
+            }
+            else
+            {
+                this.dropdownClicked = false;
             }
         }
         
@@ -119,5 +133,7 @@ public class GCCoreGuiDropdown extends GuiButton
         public void onSelectionChanged(GCCoreGuiDropdown dropdown, int selection);
         
         public int getInitialSelection(GCCoreGuiDropdown dropdown);
+        
+        public void onIntruderInteraction();
     }
 }

@@ -13,6 +13,7 @@ import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import micdoodle8.mods.galacticraft.mars.inventory.GCMarsContainerLaunchController;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityLaunchController;
+import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityLaunchController.EnumAutoLaunch;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
@@ -37,6 +38,8 @@ public class GCMarsGuiLaunchController extends GuiContainer implements IDropboxC
     private GCCoreGuiDropdown dropdownTest;
     private GCCoreGuiTextBox frequency;
     private GCCoreGuiTextBox destinationFrequency;
+    
+    private int cannotEditTimer;
 
     public GCMarsGuiLaunchController(InventoryPlayer playerInventory, GCMarsTileEntityLaunchController launchController)
     {
@@ -115,7 +118,14 @@ public class GCMarsGuiLaunchController extends GuiContainer implements IDropboxC
         this.enableControllerButton = new GuiButton(0, var5 + 70 + 124 - 72, var6 + 16, 48, 20, "Enable");
         this.enablePadRemovalButton = new GCCoreGuiCheckbox(1, this, (this.width / 2) - 78, var6 + 59, "Remove Pad");
         this.launchWhenCheckbox = new GCCoreGuiCheckbox(2, this, (this.width / 2) - 78, var6 + 77, "Launch when: ");
-        this.dropdownTest = new GCCoreGuiDropdown(3, this, var5 + 95, var6 + 77, "Instantly", "Cargo is Unloaded", "Fully Fueled", "10s After Landing", "30s After Landing", "1m After Landing");
+        this.dropdownTest = new GCCoreGuiDropdown(3, this, var5 + 95, var6 + 77, 
+                EnumAutoLaunch.CARGO_IS_UNLOADED.getTitle(), 
+                EnumAutoLaunch.CARGO_IS_FULL.getTitle(), 
+                EnumAutoLaunch.ROCKET_IS_FUELED.getTitle(), 
+                EnumAutoLaunch.INSTANT.getTitle(), 
+                EnumAutoLaunch.TIME_10_SECONDS.getTitle(), 
+                EnumAutoLaunch.TIME_30_SECONDS.getTitle(), 
+                EnumAutoLaunch.TIME_1_MINUTE.getTitle());
         this.frequency = new GCCoreGuiTextBox(4, this, var5 + 66, var6 + 16, 48, 20, "", true, 6);
         this.destinationFrequency = new GCCoreGuiTextBox(5, this, var5 + 122, var6 + 16 + 22, 48, 20, "", true, 6);
         this.buttonList.add(this.enableControllerButton);
@@ -157,6 +167,13 @@ public class GCMarsGuiLaunchController extends GuiContainer implements IDropboxC
     {
         String displayString = this.launchController.getOwnerName() + "\'s " + this.launchController.getInvName();
         this.fontRenderer.drawString(displayString, this.xSize / 2 - this.fontRenderer.getStringWidth(displayString) / 2, 5, 4210752);
+        
+        if (this.cannotEditTimer > 0)
+        {
+            this.fontRenderer.drawString(this.launchController.getOwnerName(), this.xSize / 2 - this.fontRenderer.getStringWidth(displayString) / 2, 5, (this.cannotEditTimer) % 30 < 15 ? GCCoreUtil.convertTo32BitColor(255, 255, 100, 100) : 4210752);
+            this.cannotEditTimer--;
+        }
+        
         this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, 115, 4210752);
         displayString = this.getStatus();
         this.fontRenderer.drawSplitString(displayString, 60 - this.fontRenderer.getStringWidth(displayString) / 2, 94, 60, 4210752);
@@ -327,5 +344,11 @@ public class GCMarsGuiLaunchController extends GuiContainer implements IDropboxC
         }
         
         return false;
+    }
+
+    @Override
+    public void onIntruderInteraction()
+    {
+        this.cannotEditTimer = 50;
     }
 }
