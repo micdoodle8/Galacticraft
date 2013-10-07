@@ -45,7 +45,6 @@ import net.minecraftforge.fluids.FluidTank;
 import universalelectricity.core.vector.Vector3;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -150,7 +149,6 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
     public void onUpdate()
     {
         super.onUpdate();
-        
         
         if (!this.worldObj.isRemote)
         {
@@ -279,7 +277,7 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
                             {
                                 for (int x = MathHelper.floor_double(this.posX) - 1; x <= MathHelper.floor_double(this.posX) + 1; x++)
                                 {
-                                    for (int y = MathHelper.floor_double(this.posY - 3.5D); y <= MathHelper.floor_double(this.posY) + 1; y++)
+                                    for (int y = MathHelper.floor_double(this.posY - 2.5D); y <= MathHelper.floor_double(this.posY) + 1; y++)
                                     {
                                         for (int z = MathHelper.floor_double(this.posZ) - 1; z <= MathHelper.floor_double(this.posZ) + 1; z++)
                                         {
@@ -420,7 +418,6 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
                         {
                             GCMarsTileEntityLaunchController launchController = (GCMarsTileEntityLaunchController) tile;
 
-                            FMLLog.info("" + launchController.frequency + " " + this.destinationFrequency + " " + launchController.attachedPad);
                             if (launchController.frequency == this.destinationFrequency && launchController.attachedPad != null)
                             {
                                 this.targetVec = new Vector3(launchController.attachedPad);
@@ -744,7 +741,7 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
 
         if (liquid != null && FluidRegistry.getFluidName(liquid).equalsIgnoreCase("Fuel"))
         {
-            if (liquidInTank == null || liquidInTank.amount + liquid.amount <= this.spaceshipFuelTank.getCapacity())
+//            if (liquidInTank == null || liquidInTank.amount + liquid.amount <= this.spaceshipFuelTank.getCapacity())
             {
                 return this.spaceshipFuelTank.fill(liquid, doFill);
             }
@@ -764,6 +761,11 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
     {
         if (this.rocketType.getInventorySpace() <= 3)
         {
+            if (this.autoLaunchSetting == EnumAutoLaunch.CARGO_IS_FULL)
+            {
+                this.autoLaunch();
+            }
+            
             return EnumCargoLoadingState.NOINVENTORY;
         }
 
