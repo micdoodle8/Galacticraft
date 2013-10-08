@@ -93,6 +93,21 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
     {
         return 2000;
     }
+    
+    public float getCargoFilledAmount()
+    {
+        float weight = 1;
+        
+        for (ItemStack stack : this.cargoItems)
+        {
+            if (stack != null)
+            {
+                weight += 0.1D;
+            }
+        }
+        
+        return weight;
+    }
 
     @Override
     public int getScaledFuelLevel(int scale)
@@ -177,7 +192,8 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
 
             d = Math.min(d, 1);
             
-            d *= 5;
+            double modifier = this.getCargoFilledAmount();
+            d *= 5.0D / modifier;
             
             if (!this.landing)
             {
@@ -421,6 +437,11 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
 
     public void teleport()
     {
+        if (this.worldObj.isRemote)
+        {
+            return;
+        }
+        
         worldLoop:
             for (int i = 0; i < FMLCommonHandler.instance().getMinecraftServerInstance().worldServers.length; i++)
             {
@@ -496,30 +517,32 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
     @Override
     protected void failRocket()
     {
-        if (this.landing && this.targetVec != null && this.worldObj.getBlockTileEntity((int) Math.floor(this.posX), (int) Math.floor(this.posY - 2), (int) Math.floor(this.posZ)) instanceof IFuelDock && this.posY - this.targetVec.y < 5)
+        for (int i = -3; i <= 3; i++)
         {
-            for (int x = MathHelper.floor_double(this.posX) - 1; x <= MathHelper.floor_double(this.posX) + 1; x++)
+            if (this.landing && this.targetVec != null && this.worldObj.getBlockTileEntity((int) Math.floor(this.posX), (int) Math.floor(this.posY + i), (int) Math.floor(this.posZ)) instanceof IFuelDock && this.posY - this.targetVec.y < 5)
             {
-                for (int y = MathHelper.floor_double(this.posY - 3.0D); y <= MathHelper.floor_double(this.posY) + 1; y++)
+                for (int x = MathHelper.floor_double(this.posX) - 1; x <= MathHelper.floor_double(this.posX) + 1; x++)
                 {
-                    for (int z = MathHelper.floor_double(this.posZ) - 1; z <= MathHelper.floor_double(this.posZ) + 1; z++)
+                    for (int y = MathHelper.floor_double(this.posY - 3.0D); y <= MathHelper.floor_double(this.posY) + 1; y++)
                     {
-                        TileEntity tile = this.worldObj.getBlockTileEntity(x, y, z);
-                        
-                        if (tile instanceof IFuelDock)
+                        for (int z = MathHelper.floor_double(this.posZ) - 1; z <= MathHelper.floor_double(this.posZ) + 1; z++)
                         {
-                            this.landRocket(x, y, z);
+                            TileEntity tile = this.worldObj.getBlockTileEntity(x, y, z);
+                            
+                            if (tile instanceof IFuelDock)
+                            {
+                                this.landRocket(x, y, z);
+                                return;
+                            }
                         }
                     }
                 }
             }
         }
-        else
+        
+        if (this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase())
         {
-            if (this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase())
-            {
-                super.failRocket();
-            }
+            super.failRocket();
         }
     }
     
