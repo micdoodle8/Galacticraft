@@ -191,30 +191,6 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
                 if (this.targetVec != null)
                 {
                     this.motionY = (this.posY - this.targetVec.y) / -150.0D;
-                    
-//                    if (this.worldObj.isRemote)
-//                    {
-//                        landLoop:
-//                            if (this.posY - this.targetVec.y < 5)
-//                            {
-//                                for (int x = MathHelper.floor_double(this.posX) - 1; x <= MathHelper.floor_double(this.posX) + 1; x++)
-//                                {
-//                                    for (int y = MathHelper.floor_double(this.posY - 2.5D); y <= MathHelper.floor_double(this.posY) + 1; y++)
-//                                    {
-//                                        for (int z = MathHelper.floor_double(this.posZ) - 1; z <= MathHelper.floor_double(this.posZ) + 1; z++)
-//                                        {
-//                                            TileEntity tile = this.worldObj.getBlockTileEntity(x, y, z);
-//        
-//                                            if (tile instanceof IFuelDock)
-//                                            {
-//                                                this.landRocket(x, y, z);
-//                                                break landLoop;
-//                                            }
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                    }
                 }
             }
 
