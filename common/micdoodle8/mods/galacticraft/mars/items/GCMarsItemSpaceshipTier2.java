@@ -108,10 +108,11 @@ public class GCMarsItemSpaceshipTier2 extends Item implements IHoldableItem
                 }
                 else
                 {
-                    rocket = new GCMarsEntityCargoRocket(par3World, centerX, centerY + 2.2D, centerZ, EnumRocketType.values()[par1ItemStack.getItemDamage() - 10]);
+                    rocket = new GCMarsEntityCargoRocket(par3World, centerX, centerY + 4.2D - 1.6D, centerZ, EnumRocketType.values()[par1ItemStack.getItemDamage() - 10]);
                 }
 
                 par3World.spawnEntityInWorld(rocket);
+                
                 if (!par2EntityPlayer.capabilities.isCreativeMode)
                 {
                     par2EntityPlayer.inventory.consumeInventoryItem(par1ItemStack.getItem().itemID);

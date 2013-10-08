@@ -37,6 +37,8 @@ public abstract class EntityTieredRocket extends EntitySpaceshipBase implements 
     public EntityTieredRocket(World par1World)
     {
         super(par1World);
+        this.setSize(0.98F, 4F);
+        this.yOffset = this.height / 2.0F;
     }
 
     public abstract int getFuelTankCapacity();

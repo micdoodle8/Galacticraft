@@ -37,7 +37,6 @@ import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
@@ -55,7 +54,6 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
     public boolean destFrequencyValid;
     public int launchDropdownSelection;
     public boolean launchSchedulingEnabled;
-    public TileEntity attachedPad;
     public boolean requiresClientUpdate;
     
     public static enum EnumAutoLaunch
@@ -115,11 +113,6 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
             
             if (this.ticks % 20 == 0)
             {
-                if (this.attachedPad != null)
-                {
-                    this.attachedPad = this.worldObj.getBlockTileEntity(this.attachedPad.xCoord, this.attachedPad.yCoord, this.attachedPad.zCoord);
-                }
-                
                 if (this.chunkLoadTicket != null)
                 {
                     for (int i = 0; i < this.connectedPads.size(); i++)
@@ -132,17 +125,12 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
                             this.connectedPads.remove(i);
                             ForgeChunkManager.unforceChunk(this.chunkLoadTicket, new ChunkCoordIntPair(coords.posX >> 4, coords.posZ >> 4));
                         }
-                        else
-                        {
-                            this.attachedPad = this.worldObj.getBlockTileEntity(coords.posX, coords.posY, coords.posZ);
-                        }
                     }
                 }
             }
         }
         else
         {
-            FMLLog.info("" + this.worldObj.isRemote + " " + this.frequency + " " + this.destFrequency);
             if (this.frequency == -1 && this.destFrequency == -1)
             {
                 PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftMars.CHANNEL, 5, new Object[] { 5, this.xCoord, this.yCoord, this.zCoord, 0 }));
@@ -199,8 +187,6 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
                     
                     if (blockID > 0 && Block.blocksList[blockID] instanceof GCCoreBlockLandingPadFull)
                     {
-                        this.attachedPad = this.worldObj.getBlockTileEntity(this.xCoord + x, this.yCoord, this.zCoord + z);
-                        
                         if (this.xCoord + x >> 4 != this.xCoord >> 4 || this.zCoord + z >> 4 != this.zCoord >> 4)
                         {
                             this.connectedPads.add(new ChunkCoordinates(this.xCoord + x, this.yCoord, this.zCoord + z));

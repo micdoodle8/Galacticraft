@@ -20,10 +20,9 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.IPacketReceiver;
-import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
+import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -59,8 +58,6 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
     {
         super(par1World);
         this.preventEntitySpawning = true;
-        this.setSize(0.98F, 4F);
-        this.yOffset = this.height / 2.0F;
         this.ignoreFrustumCheck = true;
         this.renderDistanceWeight = 5.0D;
     }
@@ -290,7 +287,19 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
             this.motionX = this.motionY = this.motionZ = 0.0F;
         }
 
-        this.moveEntity(this.motionX, this.motionY, this.motionZ);
+        if (this.worldObj.isRemote)
+        {
+            this.setPosition(this.posX, this.posY, this.posZ);
+            
+            if (this.shouldMoveClientSide())
+            {
+                this.moveEntity(this.motionX, this.motionY, this.motionZ);
+            }
+        }
+        else
+        {
+            this.moveEntity(this.motionX, this.motionY, this.motionZ);
+        }
 
         this.setRotation(this.rotationYaw, this.rotationPitch);
 
@@ -305,8 +314,13 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
         if (!this.worldObj.isRemote && this.ticks % 3 == 0)
         {
-            PacketManager.sendPacketToClients(GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getNetworkedData(new ArrayList())), this.worldObj, new Vector3(this), 50);
+            PacketDispatcher.sendPacketToAllInDimension(GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getNetworkedData(new ArrayList())), this.worldObj.provider.dimensionId);
         }
+    }
+    
+    protected boolean shouldMoveClientSide()
+    {
+        return true;
     }
 
     @Override

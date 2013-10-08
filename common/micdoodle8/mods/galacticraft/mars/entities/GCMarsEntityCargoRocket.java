@@ -18,6 +18,7 @@ import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPadFull;
 import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.event.GCCoreLandingPadRemovalEvent;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoPad;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
@@ -46,6 +47,7 @@ import universalelectricity.core.vector.Vector3;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 
@@ -68,13 +70,15 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
     public GCMarsEntityCargoRocket(World par1World)
     {
         super(par1World);
+        this.yOffset = 0;
     }
 
     public GCMarsEntityCargoRocket(World par1World, double par2, double par4, double par6, EnumRocketType rocketType)
     {
-        super(par1World);
-        this.yOffset = 0.0F;
-        this.setPosition(par2, par4 + this.yOffset, par6);
+        this(par1World);
+        this.setSize(0.98F, 2F);
+        this.yOffset = this.height / 2.0F;
+        this.setPosition(par2, par4, par6);
         this.motionX = 0.0D;
         this.motionY = 0.0D;
         this.motionZ = 0.0D;
@@ -148,6 +152,97 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
     @Override
     public void onUpdate()
     {
+        if (this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase() && this.hasValidFuel() && !this.worldObj.isRemote)
+        {
+            if (this.landing && this.targetVec != null && this.worldObj.getBlockTileEntity(this.targetVec.intX(), this.targetVec.intY(), this.targetVec.intZ()) instanceof IFuelDock && this.posY - this.targetVec.y < 5)
+            {
+                for (int x = MathHelper.floor_double(this.posX) - 1; x <= MathHelper.floor_double(this.posX) + 1; x++)
+                {
+                    for (int y = MathHelper.floor_double(this.posY - 1D); y <= MathHelper.floor_double(this.posY) + 1; y++)
+                    {
+                        for (int z = MathHelper.floor_double(this.posZ) - 1; z <= MathHelper.floor_double(this.posZ) + 1; z++)
+                        {
+                            TileEntity tile = this.worldObj.getBlockTileEntity(x, y, z);
+                            
+                            if (tile instanceof IFuelDock)
+                            {
+                                this.landRocket(x, y, z);
+                            }
+                        }
+                    }
+                }
+            }
+            
+            double d = this.timeSinceLaunch / 250;
+
+            d = Math.min(d, 1);
+            
+            d *= 5;
+            
+            if (!this.landing)
+            {
+                if (d != 0.0)
+                {
+                    this.motionY = -d * Math.cos((this.rotationPitch - 180) * Math.PI / 180.0D);
+                }
+            }
+            else
+            {
+                if (this.targetVec != null)
+                {
+                    this.motionY = (this.posY - this.targetVec.y) / -150.0D;
+                    
+//                    if (this.worldObj.isRemote)
+//                    {
+//                        landLoop:
+//                            if (this.posY - this.targetVec.y < 5)
+//                            {
+//                                for (int x = MathHelper.floor_double(this.posX) - 1; x <= MathHelper.floor_double(this.posX) + 1; x++)
+//                                {
+//                                    for (int y = MathHelper.floor_double(this.posY - 2.5D); y <= MathHelper.floor_double(this.posY) + 1; y++)
+//                                    {
+//                                        for (int z = MathHelper.floor_double(this.posZ) - 1; z <= MathHelper.floor_double(this.posZ) + 1; z++)
+//                                        {
+//                                            TileEntity tile = this.worldObj.getBlockTileEntity(x, y, z);
+//        
+//                                            if (tile instanceof IFuelDock)
+//                                            {
+//                                                this.landRocket(x, y, z);
+//                                                break landLoop;
+//                                            }
+//                                        }
+//                                    }
+//                                }
+//                            }
+//                    }
+                }
+            }
+
+            double multiplier = 1.0D;
+
+            if (this.worldObj.provider instanceof IGalacticraftWorldProvider)
+            {
+                multiplier = ((IGalacticraftWorldProvider) this.worldObj.provider).getFuelUsageMultiplier();
+
+                if (multiplier <= 0)
+                {
+                    multiplier = 1;
+                }
+            }
+
+            if (this.timeSinceLaunch % MathHelper.floor_double(3 * (1 / multiplier)) == 0)
+            {
+                this.removeFuel(1);
+            }
+        }
+        else if (!this.hasValidFuel() && this.getLaunched() && !this.worldObj.isRemote)
+        {
+            if (Math.abs(Math.sin(this.timeSinceLaunch / 1000)) / 10 != 0.0)
+            {
+                this.motionY -= Math.abs(Math.sin(this.timeSinceLaunch / 1000)) / 20;
+            }
+        }
+        
         super.onUpdate();
         
         if (!this.worldObj.isRemote)
@@ -249,77 +344,16 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
             this.rocketSoundUpdater.update();
         }
 
-        if (this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase() && this.hasValidFuel())
+        if (!this.worldObj.isRemote)
         {
-            double d = this.timeSinceLaunch / 250;
-
-            d = Math.min(d, 1);
-            
-            d *= 5;
-
-            if (!this.landing)
-            {
-                if (d != 0.0)
-                {
-                    this.motionY = -d * Math.cos((this.rotationPitch - 180) * Math.PI / 180.0D);
-                }
-            }
-            else
-            {
-                if (this.targetVec != null)
-                {
-                    this.motionY = (this.posY - this.targetVec.y) / -100.0D;
-                    
-                    if (this.worldObj.isRemote)
-                    {
-                        landLoop:
-                            if (this.posY - this.targetVec.y < 5)
-                            {
-                                for (int x = MathHelper.floor_double(this.posX) - 1; x <= MathHelper.floor_double(this.posX) + 1; x++)
-                                {
-                                    for (int y = MathHelper.floor_double(this.posY - 2.5D); y <= MathHelper.floor_double(this.posY) + 1; y++)
-                                    {
-                                        for (int z = MathHelper.floor_double(this.posZ) - 1; z <= MathHelper.floor_double(this.posZ) + 1; z++)
-                                        {
-                                            TileEntity tile = this.worldObj.getBlockTileEntity(x, y, z);
-        
-                                            if (tile instanceof IFuelDock)
-                                            {
-                                                this.landRocket(x, y, z);
-                                                break landLoop;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                    }
-                }
-            }
-
-            double multiplier = 1.0D;
-
-            if (this.worldObj.provider instanceof IGalacticraftWorldProvider)
-            {
-                multiplier = ((IGalacticraftWorldProvider) this.worldObj.provider).getFuelUsageMultiplier();
-
-                if (multiplier <= 0)
-                {
-                    multiplier = 1;
-                }
-            }
-
-            if (this.timeSinceLaunch % MathHelper.floor_double(3 * (1 / multiplier)) == 0)
-            {
-                this.removeFuel(1);
-            }
+            PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 60, this.worldObj.provider.dimensionId, GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getNetworkedData(new ArrayList<Object>())));
         }
-        else if (!this.hasValidFuel() && this.getLaunched() && !this.worldObj.isRemote)
-        {
-            if (Math.abs(Math.sin(this.timeSinceLaunch / 1000)) / 10 != 0.0)
-            {
-                this.motionY -= Math.abs(Math.sin(this.timeSinceLaunch / 1000)) / 20;
-            }
-        }
+    }
+    
+    @Override
+    protected boolean shouldMoveClientSide()
+    {
+        return false;
     }
 
     protected void spawnParticles(boolean launched)
@@ -337,7 +371,7 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
             z1 *= modifier / 60.0D;
         }
 
-        final double y = this.prevPosY + (this.posY - this.prevPosY) - 2.0;
+        final double y = this.prevPosY + (this.posY - this.prevPosY) - 0.4;
 
         if (!this.isDead)
         {
@@ -366,6 +400,11 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
         {
             this.targetVec = new Vector3(dataStream.readDouble(), dataStream.readDouble(), dataStream.readDouble());
         }
+
+        this.posX = dataStream.readDouble();
+        this.posY = dataStream.readDouble();
+        this.posZ = dataStream.readDouble();
+        this.motionY = dataStream.readDouble();
     }
 
     @Override
@@ -384,6 +423,11 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
             list.add(this.targetVec.y);
             list.add(this.targetVec.z);
         }
+
+        list.add(this.posX);
+        list.add(this.posY);
+        list.add(this.posZ);
+        list.add(this.motionY);
         
         return list;
     }
@@ -417,10 +461,32 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
                         if (tile instanceof GCMarsTileEntityLaunchController)
                         {
                             GCMarsTileEntityLaunchController launchController = (GCMarsTileEntityLaunchController) tile;
-
-                            if (launchController.frequency == this.destinationFrequency && launchController.attachedPad != null)
+                            
+                            if (launchController.frequency == this.destinationFrequency)
                             {
-                                this.targetVec = new Vector3(launchController.attachedPad);
+                                boolean targetSet = false;
+                                
+                                blockLoop:
+                                    for (int x = -2; x <= 2; x++)
+                                    {
+                                        for (int z = -2; z <= 2; z++)
+                                        {
+                                            int blockID = this.worldObj.getBlockId(launchController.xCoord + x, launchController.yCoord, launchController.zCoord + z);
+                                            
+                                            if (blockID > 0 && Block.blocksList[blockID] instanceof GCCoreBlockLandingPadFull)
+                                            {
+                                                this.targetVec = new Vector3(launchController.xCoord + x, launchController.yCoord, launchController.zCoord + z);
+                                                targetSet = true;
+                                                break blockLoop;
+                                            }
+                                        }
+                                    }
+                                
+                                if (!targetSet)
+                                {
+                                    this.targetVec = null;
+                                }
+                                
                                 this.targetDimension = launchController.worldObj.provider.dimensionId;
                                 break worldLoop;
                             }
@@ -441,7 +507,7 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
             }
             else
             {
-                this.setPosition(this.targetVec.x + 0.5F, this.targetVec.y + 200, this.targetVec.z + 0.5F);
+                this.setPosition(this.targetVec.x + 0.5F, this.targetVec.y + 800, this.targetVec.z + 0.5F);
                 this.landing = true;
             }
         }
@@ -454,11 +520,11 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
     @Override
     protected void failRocket()
     {
-        if (this.landing && this.targetVec != null && this.worldObj.getBlockTileEntity(this.targetVec.intX(), this.targetVec.intY(), this.targetVec.intZ()) instanceof IFuelDock && this.posY - this.targetVec.y < 5)
+        if (this.landing && this.targetVec != null && this.worldObj.getBlockTileEntity((int) Math.floor(this.posX), (int) Math.floor(this.posY - 2), (int) Math.floor(this.posZ)) instanceof IFuelDock && this.posY - this.targetVec.y < 5)
         {
             for (int x = MathHelper.floor_double(this.posX) - 1; x <= MathHelper.floor_double(this.posX) + 1; x++)
             {
-                for (int y = MathHelper.floor_double(this.posY - 2.5D); y <= MathHelper.floor_double(this.posY) + 1; y++)
+                for (int y = MathHelper.floor_double(this.posY - 3.0D); y <= MathHelper.floor_double(this.posY) + 1; y++)
                 {
                     for (int z = MathHelper.floor_double(this.posZ) - 1; z <= MathHelper.floor_double(this.posZ) + 1; z++)
                     {
@@ -519,7 +585,7 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
                 
                 
                 
-                this.setPosition(this.posX, y + 0.2 + this.yOffset, this.posZ);
+                this.setPosition(this.posX, y + 0.3D, this.posZ);
                 return;
             }
         }
@@ -555,7 +621,25 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
                                 if (connectedTile instanceof GCMarsTileEntityLaunchController)
                                 {
                                     launchController = (GCMarsTileEntityLaunchController) connectedTile;
-                                    break;
+                                    
+                                    if (launchController != null)
+                                    {
+                                        TileEntity tile2 = launchController.worldObj.getBlockTileEntity(launchController.xCoord, launchController.yCoord, launchController.zCoord);
+                                        
+                                        if (tile2 instanceof GCMarsTileEntityLaunchController)
+                                        {
+                                            launchController = (GCMarsTileEntityLaunchController) tile2;
+                                        }
+                                        else
+                                        {
+                                            launchController = null;
+                                        }
+                                    }
+                                    
+                                    if (launchController != null)
+                                    {
+                                        break;
+                                    }
                                 }
                             }
                             
@@ -737,14 +821,9 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
     @Override
     public int addFuel(FluidStack liquid, boolean doFill)
     {
-        final FluidStack liquidInTank = this.spaceshipFuelTank.getFluid();
-
         if (liquid != null && FluidRegistry.getFluidName(liquid).equalsIgnoreCase("Fuel"))
         {
-//            if (liquidInTank == null || liquidInTank.amount + liquid.amount <= this.spaceshipFuelTank.getCapacity())
-            {
-                return this.spaceshipFuelTank.fill(liquid, doFill);
-            }
+            return this.spaceshipFuelTank.fill(liquid, doFill);
         }
 
         return 0;
@@ -840,7 +919,7 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
     {
         if (this.targetVec != null)
         {
-            this.setPosition(this.targetVec.x + 0.5F, this.targetVec.y + 200, this.targetVec.z + 0.5F);
+            this.setPosition(this.targetVec.x + 0.5F, this.targetVec.y + 800, this.targetVec.z + 0.5F);
             this.landing = true;
         }
         else

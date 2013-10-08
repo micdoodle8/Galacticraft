@@ -6,7 +6,6 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
-import cpw.mods.fml.common.FMLLog;
 
 public class GCCoreGuiCheckbox extends GuiButton
 {
@@ -28,7 +27,6 @@ public class GCCoreGuiCheckbox extends GuiButton
         if (this.isSelected == null)
         {
             this.isSelected = this.parentGui.getInitiallySelected(this);
-            FMLLog.info("" + this.isSelected);
         }
         
         if (this.drawButton)
