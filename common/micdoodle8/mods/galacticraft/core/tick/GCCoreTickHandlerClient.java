@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tick;
 
 import java.util.EnumSet;
+import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GCCoreThreadRequirementMissing;
@@ -22,10 +23,13 @@ import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase.EnumLaunchPhase;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemSensorGlasses;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockOre;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -37,6 +41,7 @@ import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldProviderSurface;
 import org.lwjgl.input.Keyboard;
@@ -58,6 +63,7 @@ public class GCCoreTickHandlerClient implements ITickHandler
     private static boolean lastInvKeyPressed;
     public static GuiScreen lastOpenGui;
     private static GuiScreen prevLastOpenGui;
+    private static long tickCount;
 
     private static GCCoreThreadRequirementMissing missingRequirementThread;
 
@@ -74,6 +80,53 @@ public class GCCoreTickHandlerClient implements ITickHandler
 
         if (type.equals(EnumSet.of(TickType.CLIENT)))
         {
+            if (tickCount >= Long.MAX_VALUE)
+            {
+                tickCount = 0;
+            }
+            
+            tickCount++;
+            
+            if (tickCount % 20 == 0)
+            {
+                if (player != null && player.inventory.armorItemInSlot(3) != null && player.inventory.armorItemInSlot(3).getItem() instanceof GCCoreItemSensorGlasses)
+                {
+                    ClientProxyCore.valueableBlocks.clear();
+
+                    for (int i = -4; i < 5; i++)
+                    {
+                        for (int j = -4; j < 5; j++)
+                        {
+                            for (int k = -4; k < 5; k++)
+                            {
+                                int x, y, z;
+
+                                x = MathHelper.floor_double(player.posX + i);
+                                y = MathHelper.floor_double(player.posY + j);
+                                z = MathHelper.floor_double(player.posZ + k);
+
+                                final int id = player.worldObj.getBlockId(x, y, z);
+
+                                if (id != 0)
+                                {
+                                    final Block block = Block.blocksList[id];
+
+                                    if (block != null && (block instanceof BlockOre || block instanceof IDetectableResource || block instanceof IDetectableResource && ((IDetectableResource) block).isValueable(player.worldObj.getBlockMetadata(x, y, z))))
+                                    {
+                                        final int[] blockPos = { x, y, z };
+
+                                        if (!this.alreadyContainsBlock(x, y, z))
+                                        {
+                                            ClientProxyCore.valueableBlocks.add(blockPos);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
             if (GCCoreTickHandlerClient.prevLastOpenGui == null && GCCoreTickHandlerClient.lastOpenGui != null)
             {
                 FMLLog.info("Setting screen " + GCCoreTickHandlerClient.lastOpenGui);
@@ -234,6 +287,23 @@ public class GCCoreTickHandlerClient implements ITickHandler
                 ClientProxyCore.lastSpacebarDown = true;
             }
         }
+    }
+
+    private boolean alreadyContainsBlock(int x1, int y1, int z1)
+    {
+        for (final int[] coordArray : ClientProxyCore.valueableBlocks)
+        {
+            final int x = coordArray[0];
+            final int y = coordArray[1];
+            final int z = coordArray[2];
+
+            if (x1 == x && y1 == y && z1 == z)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public static void zoom(float value)

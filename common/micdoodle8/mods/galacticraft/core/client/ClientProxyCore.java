@@ -114,7 +114,6 @@ import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryExtended;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient;
 import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerClient;
-import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerSlowClient;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAdvancedCraftingTable;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAluminumWire;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoLoader;
@@ -253,7 +252,6 @@ public class ClientProxyCore extends CommonProxyCore
         ClientProxyCore.moon.init(event);
 
         TickRegistry.registerTickHandler(new GCCoreTickHandlerClient(), Side.CLIENT);
-        TickRegistry.registerScheduledTickHandler(new GCCoreTickHandlerSlowClient(), Side.CLIENT);
         NetworkRegistry.instance().registerChannel(new GCCorePacketHandlerClient(), GalacticraftCore.CHANNEL, Side.CLIENT);
 
         GCCoreManualUtil.registerManualPage("crafting", GCCoreCraftingPage.class);
