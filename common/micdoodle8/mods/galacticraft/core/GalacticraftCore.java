@@ -327,21 +327,24 @@ public class GalacticraftCore
             {
                 for (ItemStack stack : OreDictionary.getOres(GCCoreItemBasic.names[i]))
                 {
-                    CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, i + 5), stack);
+                    CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, i + 3), stack);
                 }
             }
         }
+        
+        CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, 9), new ItemStack(Item.coal), new ItemStack(GCCoreItems.basicItem, 1, 11));
+        CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, 10), new ItemStack(GCCoreItems.basicItem, 1, 6), new ItemStack(GCCoreItems.basicItem, 1, 7));
 
-        CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, 13), new ItemStack(Item.ingotIron, 1, 0));
+        CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, 11), new ItemStack(Item.ingotIron, 1, 0));
         CompressorRecipes.addShapelessRecipe(new ItemStack(GCMoonItems.meteoricIronIngot, 1, 1), new ItemStack(GCMoonItems.meteoricIronIngot, 1, 0));
 
         CompressorRecipes.addRecipe(new ItemStack(GCCoreItems.heavyPlatingTier1, 1, 0), "XYZ", "XYZ", 'X', new ItemStack(GCCoreItems.basicItem, 2, 11), 'Y', new ItemStack(GCCoreItems.basicItem, 2, 10), 'Z', new ItemStack(GCCoreItems.basicItem, 2, 12));
 
-        CircuitFabricatorRecipes.addRecipe(new ItemStack(GCCoreItems.basicItem, 9, 14), new ItemStack[] { new ItemStack(Item.diamond), new ItemStack(GCCoreItems.basicItem, 1, 2), new ItemStack(GCCoreItems.basicItem, 1, 2), new ItemStack(Item.redstone), new ItemStack(Item.dyePowder, 1, 4) });
+        CircuitFabricatorRecipes.addRecipe(new ItemStack(GCCoreItems.basicItem, 9, 12), new ItemStack[] { new ItemStack(Item.diamond), new ItemStack(GCCoreItems.basicItem, 1, 2), new ItemStack(GCCoreItems.basicItem, 1, 2), new ItemStack(Item.redstone), new ItemStack(Item.dyePowder, 1, 4) });
 
-        CircuitFabricatorRecipes.addRecipe(new ItemStack(GCCoreItems.basicItem, 3, 15), new ItemStack[] { new ItemStack(Item.diamond), new ItemStack(GCCoreItems.basicItem, 1, 2), new ItemStack(GCCoreItems.basicItem, 1, 2), new ItemStack(Item.redstone), new ItemStack(Block.torchRedstoneActive) });
+        CircuitFabricatorRecipes.addRecipe(new ItemStack(GCCoreItems.basicItem, 3, 13), new ItemStack[] { new ItemStack(Item.diamond), new ItemStack(GCCoreItems.basicItem, 1, 2), new ItemStack(GCCoreItems.basicItem, 1, 2), new ItemStack(Item.redstone), new ItemStack(Block.torchRedstoneActive) });
 
-        CircuitFabricatorRecipes.addRecipe(new ItemStack(GCCoreItems.basicItem, 1, 16), new ItemStack[] { new ItemStack(Item.diamond), new ItemStack(GCCoreItems.basicItem, 1, 2), new ItemStack(GCCoreItems.basicItem, 1, 2), new ItemStack(Item.redstone), new ItemStack(Item.redstoneRepeater) });
+        CircuitFabricatorRecipes.addRecipe(new ItemStack(GCCoreItems.basicItem, 1, 14), new ItemStack[] { new ItemStack(Item.diamond), new ItemStack(GCCoreItems.basicItem, 1, 2), new ItemStack(GCCoreItems.basicItem, 1, 2), new ItemStack(Item.redstone), new ItemStack(Item.redstoneRepeater) });
     }
 
     @EventHandler
