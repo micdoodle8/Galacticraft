@@ -62,7 +62,6 @@ public class GCCoreRecipeManager
         FurnaceRecipes.smelting().addSmelting(GCCoreBlocks.decorationBlocks.blockID, 5, new ItemStack(GCCoreItems.basicItem, 1, 3), 0.5F);
         FurnaceRecipes.smelting().addSmelting(GCCoreBlocks.decorationBlocks.blockID, 6, new ItemStack(GCCoreItems.basicItem, 1, 4), 0.5F);
         FurnaceRecipes.smelting().addSmelting(GCCoreBlocks.decorationBlocks.blockID, 7, new ItemStack(GCCoreItems.basicItem, 1, 5), 0.5F);
-        FurnaceRecipes.smelting().addSmelting(GCCoreBlocks.decorationBlocks.blockID, 8, new ItemStack(GCCoreItems.basicItem, 1, 6), 0.5F);
         
         RecipeUtil.addRecipe(new ItemStack(GCCoreItems.rocketEngine, 1, 1), new Object[] { "ZYZ", "ZWZ", "XVX", 'V', GCCoreItems.oxygenVent, 'W', new ItemStack(GCCoreItems.canister, 1, 0), 'X', GCCoreItems.heavyPlatingTier1, 'Y', new ItemStack(Block.cloth, 1, 4), 'Z', new ItemStack(GCMoonItems.meteoricIronIngot, 1, 1) });
 
