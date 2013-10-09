@@ -20,13 +20,13 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import thermalexpansion.api.item.ItemRegistry;
 
 public class GCCoreRecipeManager
 {
-
     public static void loadRecipes()
     {
         if (GCCoreCompatibilityManager.isTELoaded() && GCCoreConfigManager.useRecipesTE)
@@ -59,6 +59,11 @@ public class GCCoreRecipeManager
 
     private static void addUniversalRecipes()
     {
+        FurnaceRecipes.smelting().addSmelting(GCCoreBlocks.decorationBlocks.blockID, 5, new ItemStack(GCCoreItems.basicItem, 1, 3), 0.5F);
+        FurnaceRecipes.smelting().addSmelting(GCCoreBlocks.decorationBlocks.blockID, 6, new ItemStack(GCCoreItems.basicItem, 1, 4), 0.5F);
+        FurnaceRecipes.smelting().addSmelting(GCCoreBlocks.decorationBlocks.blockID, 7, new ItemStack(GCCoreItems.basicItem, 1, 5), 0.5F);
+        FurnaceRecipes.smelting().addSmelting(GCCoreBlocks.decorationBlocks.blockID, 8, new ItemStack(GCCoreItems.basicItem, 1, 6), 0.5F);
+        
         RecipeUtil.addRecipe(new ItemStack(GCCoreItems.rocketEngine, 1, 1), new Object[] { "ZYZ", "ZWZ", "XVX", 'V', GCCoreItems.oxygenVent, 'W', new ItemStack(GCCoreItems.canister, 1, 0), 'X', GCCoreItems.heavyPlatingTier1, 'Y', new ItemStack(Block.cloth, 1, 4), 'Z', new ItemStack(GCMoonItems.meteoricIronIngot, 1, 1) });
 
         HashMap<Integer, ItemStack> input = new HashMap<Integer, ItemStack>();
