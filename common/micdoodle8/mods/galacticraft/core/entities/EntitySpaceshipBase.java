@@ -7,8 +7,8 @@ import micdoodle8.mods.galacticraft.api.world.IExitHeight;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GCCoreDamageSource;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumClientPacket;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -291,7 +291,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
         if (this.worldObj.isRemote)
         {
             this.setPosition(this.posX, this.posY, this.posZ);
-            
+
             if (this.shouldMoveClientSide())
             {
                 this.moveEntity(this.motionX, this.motionY, this.motionZ);
@@ -318,7 +318,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
             PacketDispatcher.sendPacketToAllInDimension(GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getNetworkedData(new ArrayList())), this.worldObj.provider.dimensionId);
         }
     }
-    
+
     protected boolean shouldMoveClientSide()
     {
         return true;

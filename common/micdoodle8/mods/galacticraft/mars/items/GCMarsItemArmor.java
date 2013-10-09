@@ -24,7 +24,7 @@ public class GCMarsItemArmor extends ItemArmor
         this.material = par2EnumArmorMaterial;
         this.attachedMask = breathable;
     }
-    
+
     @Override
     public Item setUnlocalizedName(String par1Str)
     {

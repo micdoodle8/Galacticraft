@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.moon.dimension;
 
 import java.util.Random;
-import cpw.mods.fml.common.network.PacketDispatcher;
 import micdoodle8.mods.galacticraft.api.vector.Vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;

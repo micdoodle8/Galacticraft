@@ -186,7 +186,7 @@ public class GCCoreConfigManager
         {
             GCCoreConfigManager.configuration = new Configuration(file);
         }
-        
+
         try
         {
             GCCoreConfigManager.configuration.load();

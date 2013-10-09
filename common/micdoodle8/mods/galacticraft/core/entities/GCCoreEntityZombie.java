@@ -147,13 +147,13 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
         {
             int i = MathHelper.floor_double(this.posX);
             int j = MathHelper.floor_double(this.posZ);
-            
+
             FMLLog.info("b " + this.worldObj.blockExists(i, 0, j));
 
             if (this.worldObj.blockExists(i, 0, j))
             {
                 double d0 = (this.boundingBox.maxY - this.boundingBox.minY) * 0.66D;
-                int k = MathHelper.floor_double(this.posY - (double)this.yOffset + d0);
+                int k = MathHelper.floor_double(this.posY - this.yOffset + d0);
                 FMLLog.info("d " + this.worldObj.getLightBrightness(i, k, j));
                 return this.worldObj.getLightBrightness(i, k, j);
             }
@@ -179,9 +179,9 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
         boolean b = this.rand.nextInt(500) == 0 && GCCoreConfigManager.enableDebug;
         if (b)
         {
-            FMLLog.info("a " + this.worldObj.isDaytime() + " " + this.worldObj.isRemote + " " + this.isChild() + " " + (new Vector3(this)));
+            FMLLog.info("a " + this.worldObj.isDaytime() + " " + this.worldObj.isRemote + " " + this.isChild() + " " + new Vector3(this));
         }
-        
+
         if (this.worldObj.isDaytime() && !this.worldObj.isRemote && !this.isChild())
         {
             final float f = this.getBrightnessD(1.0F, b);
@@ -189,7 +189,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
 
             if (b)
             {
-                FMLLog.info("c " + f + " " + rand + " " + ((f - 0.4F) * 2.0F) + " " + this.worldObj.canBlockSeeTheSky(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)));
+                FMLLog.info("c " + f + " " + rand + " " + (f - 0.4F) * 2.0F + " " + this.worldObj.canBlockSeeTheSky(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)));
             }
 
             if (f > 0.5F && rand < (f - 0.4F) * 2.0F && this.worldObj.canBlockSeeTheSky(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)))

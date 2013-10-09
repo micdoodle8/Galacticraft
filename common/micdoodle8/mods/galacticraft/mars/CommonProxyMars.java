@@ -70,7 +70,7 @@ public class CommonProxyMars implements IGuiHandler
     {
         ;
     }
-    
+
     public void opengSlimelingGui(GCMarsEntitySlimeling slimeling, int gui)
     {
         ;

@@ -24,7 +24,7 @@ public class GCCoreBlockAluminumWire extends BlockConductor
 {
     public static final String[] names = { "aluminumWire", "aluminumWireHeavy" };
     private static Icon[] blockIcons;
-    
+
     public GCCoreBlockAluminumWire(int id, String assetName)
     {
         super(id, Material.cloth);
@@ -47,11 +47,11 @@ public class GCCoreBlockAluminumWire extends BlockConductor
     @Override
     public void registerIcons(IconRegister par1IconRegister)
     {
-        blockIcons = new Icon[names.length];
+        GCCoreBlockAluminumWire.blockIcons = new Icon[GCCoreBlockAluminumWire.names.length];
 
         for (int i = 0; i < GCCoreBlockAluminumWire.names.length; i++)
         {
-            GCCoreBlockAluminumWire.blockIcons[i] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + names[i]);
+            GCCoreBlockAluminumWire.blockIcons[i] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + GCCoreBlockAluminumWire.names[i]);
         }
     }
 
@@ -81,19 +81,19 @@ public class GCCoreBlockAluminumWire extends BlockConductor
             return GCCoreBlockAluminumWire.blockIcons[0];
         }
     }
-    
+
     @Override
     public void onNeighborBlockChange(World world, int x, int y, int z, int blockID)
     {
         super.onNeighborBlockChange(world, x, y, z, blockID);
-        
+
         TileEntity tile = world.getBlockTileEntity(x, y, z);
-        
+
         if (tile instanceof TileEntityConductor)
         {
             ((TileEntityConductor) tile).adjacentConnections = null;
             Block.blocksList[world.getBlockId(tile.xCoord, tile.yCoord, tile.zCoord)].setBlockBoundsBasedOnState(world, tile.xCoord, tile.yCoord, tile.zCoord);
-            PacketDispatcher.sendPacketToAllAround(x, y, z, 10, world.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumClientPacket.UPDATE_WIRE_BOUNDS, new Object[] {x, y, z}));
+            PacketDispatcher.sendPacketToAllAround(x, y, z, 10, world.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumClientPacket.UPDATE_WIRE_BOUNDS, new Object[] { x, y, z }));
         }
     }
 

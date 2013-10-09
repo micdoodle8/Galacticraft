@@ -7,8 +7,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -48,10 +46,10 @@ public class GCCoreRenderMeteorChunk extends Render
         GL11.glScalef(0.3F, 0.3F, 0.3F);
         GL11.glRotatef(var24b, 1.0F, 0.0F, 0.0F);
         GL11.glRotatef(var24, 0.0F, 0.0F, 1.0F);
-        
-        this.bindTexture(meteorChunkTexture);
+
+        this.bindTexture(GCCoreRenderMeteorChunk.meteorChunkTexture);
         this.meteorChunkModel.renderAll();
-        
+
         GL11.glPopMatrix();
     }
 

@@ -31,26 +31,30 @@ public class GCCoreBlockGlowstoneTorch extends Block
         return GalacticraftCore.galacticraftTab;
     }
 
+    @Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
     {
         return null;
     }
 
+    @Override
     public boolean isOpaqueCube()
     {
         return false;
     }
-    
+
+    @Override
     public boolean renderAsNormalBlock()
     {
         return false;
     }
 
+    @Override
     public int getRenderType()
     {
         return GalacticraftCore.proxy.getGCUnlitTorchRenderID();
     }
-    
+
     private boolean canPlaceTorchOn(World par1World, int par2, int par3, int par4)
     {
         if (par1World.doesBlockHaveSolidTopSurface(par2, par3, par4))
@@ -60,19 +64,17 @@ public class GCCoreBlockGlowstoneTorch extends Block
         else
         {
             int l = par1World.getBlockId(par2, par3, par4);
-            return (Block.blocksList[l] != null && Block.blocksList[l].canPlaceTorchOnTop(par1World, par2, par3, par4));
+            return Block.blocksList[l] != null && Block.blocksList[l].canPlaceTorchOnTop(par1World, par2, par3, par4);
         }
     }
-    
+
+    @Override
     public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4)
     {
-        return par1World.isBlockSolidOnSide(par2 - 1, par3, par4, EAST,  true) ||
-               par1World.isBlockSolidOnSide(par2 + 1, par3, par4, WEST,  true) ||
-               par1World.isBlockSolidOnSide(par2, par3, par4 - 1, SOUTH, true) ||
-               par1World.isBlockSolidOnSide(par2, par3, par4 + 1, NORTH, true) ||
-               canPlaceTorchOn(par1World, par2, par3 - 1, par4);
+        return par1World.isBlockSolidOnSide(par2 - 1, par3, par4, EAST, true) || par1World.isBlockSolidOnSide(par2 + 1, par3, par4, WEST, true) || par1World.isBlockSolidOnSide(par2, par3, par4 - 1, SOUTH, true) || par1World.isBlockSolidOnSide(par2, par3, par4 + 1, NORTH, true) || this.canPlaceTorchOn(par1World, par2, par3 - 1, par4);
     }
-    
+
+    @Override
     public int onBlockPlaced(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8, int par9)
     {
         int j1 = par9;
@@ -104,7 +106,8 @@ public class GCCoreBlockGlowstoneTorch extends Block
 
         return j1;
     }
-    
+
+    @Override
     public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
         super.updateTick(par1World, par2, par3, par4, par5Random);
@@ -114,7 +117,8 @@ public class GCCoreBlockGlowstoneTorch extends Block
             this.onBlockAdded(par1World, par2, par3, par4);
         }
     }
-    
+
+    @Override
     public void onBlockAdded(World par1World, int par2, int par3, int par4)
     {
         if (par1World.getBlockMetadata(par2, par3, par4) == 0)
@@ -143,7 +147,8 @@ public class GCCoreBlockGlowstoneTorch extends Block
 
         this.dropTorchIfCantStay(par1World, par2, par3, par4);
     }
-    
+
+    @Override
     public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
     {
         if (this.dropTorchIfCantStay(par1World, par2, par3, par4))
@@ -202,6 +207,7 @@ public class GCCoreBlockGlowstoneTorch extends Block
         }
     }
 
+    @Override
     public MovingObjectPosition collisionRayTrace(World par1World, int par2, int par3, int par4, Vec3 par5Vec3, Vec3 par6Vec3)
     {
         int l = par1World.getBlockMetadata(par2, par3, par4) & 7;

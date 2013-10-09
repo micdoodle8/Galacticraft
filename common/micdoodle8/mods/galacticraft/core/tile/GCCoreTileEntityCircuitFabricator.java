@@ -32,27 +32,27 @@ public class GCCoreTileEntityCircuitFabricator extends GCCoreTileEntityElectric 
 
     public GCCoreTileEntityCircuitFabricator()
     {
-        super(WATTS_PER_TICK_PER_STACK, 50);
+        super(GCCoreTileEntityCircuitFabricator.WATTS_PER_TICK_PER_STACK, 50);
     }
 
     @Override
     public void updateEntity()
     {
         super.updateEntity();
-        
+
         this.updateInput();
 
         if (!this.worldObj.isRemote)
         {
             boolean updateInv = false;
-            
+
             if (this.getEnergyStored() > 0.0F)
-            {                
+            {
                 if (this.canCompress())
                 {
                     ++this.processTicks;
-                    
-                    if (this.processTicks == PROCESS_TIME_REQUIRED)
+
+                    if (this.processTicks == GCCoreTileEntityCircuitFabricator.PROCESS_TIME_REQUIRED)
                     {
                         this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "random.anvil_land", 0.2F, 0.5F);
                         this.processTicks = 0;
@@ -69,21 +69,21 @@ public class GCCoreTileEntityCircuitFabricator extends GCCoreTileEntityElectric 
             {
                 this.processTicks = 0;
             }
-            
+
             if (updateInv)
             {
                 this.onInventoryChanged();
             }
         }
-        
+
         if (this.ticks >= Long.MAX_VALUE)
         {
             this.ticks = 0;
         }
-        
+
         this.ticks++;
     }
-    
+
     public void updateInput()
     {
         this.producingStack = CircuitFabricatorRecipes.getOutputForInput(Arrays.copyOfRange(this.containingItems, 1, 6));
@@ -102,16 +102,22 @@ public class GCCoreTileEntityCircuitFabricator extends GCCoreTileEntityElectric 
     private boolean canCompress()
     {
         ItemStack itemstack = this.producingStack;
-        if (itemstack == null) 
+        if (itemstack == null)
+        {
             return false;
-        if (this.containingItems[6] == null) 
+        }
+        if (this.containingItems[6] == null)
+        {
             return true;
-        if ((this.containingItems[6] != null && !this.containingItems[6].isItemEqual(itemstack)))
+        }
+        if (this.containingItems[6] != null && !this.containingItems[6].isItemEqual(itemstack))
+        {
             return false;
-        int result = containingItems[6] == null ? 0 : containingItems[6].stackSize + itemstack.stackSize;
-        return (result <= getInventoryStackLimit() && result <= itemstack.getMaxStackSize());
+        }
+        int result = this.containingItems[6] == null ? 0 : this.containingItems[6].stackSize + itemstack.stackSize;
+        return result <= this.getInventoryStackLimit() && result <= itemstack.getMaxStackSize();
     }
-    
+
     public void compressItems()
     {
         if (this.canCompress())
@@ -139,11 +145,11 @@ public class GCCoreTileEntityCircuitFabricator extends GCCoreTileEntityElectric 
                         this.worldObj.spawnEntityInWorld(entityitem);
                     }
                 }
-                
+
                 this.containingItems[6].stackSize += resultItemStack.stackSize;
             }
         }
-        
+
         for (int i = 1; i < 6; i++)
         {
             this.decrStackSize(i, 1);

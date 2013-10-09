@@ -107,7 +107,7 @@ public class GCCoreBlockRendererLandingPad implements ISimpleBlockRenderingHandl
             renderBlocks.setRenderBounds(0F, 0.3F, 0F, 1F, 0.4F, 1F);
             renderBlocks.renderStandardBlock(par1Block, par2, par3, par4);
         }
-        
+
         IFuelDock landingPad = (IFuelDock) var1.getBlockTileEntity(par2, par3, par4);
 
         // +X left

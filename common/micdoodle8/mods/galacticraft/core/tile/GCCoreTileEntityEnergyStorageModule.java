@@ -33,9 +33,9 @@ public class GCCoreTileEntityEnergyStorageModule extends GCCoreTileEntityUnivers
     public void updateEntity()
     {
         super.updateEntity();
-        
-        this.scaledEnergyLevel = (int) Math.floor(this.getEnergyStored() * 16 / (this.getMaxEnergyStored()));
-        
+
+        this.scaledEnergyLevel = (int) Math.floor(this.getEnergyStored() * 16 / this.getMaxEnergyStored());
+
         if (this.scaledEnergyLevel != this.lastScaledEnergyLevel)
         {
             this.worldObj.markBlockForRenderUpdate(this.xCoord, this.yCoord, this.zCoord);
@@ -61,7 +61,7 @@ public class GCCoreTileEntityEnergyStorageModule extends GCCoreTileEntityUnivers
                 PacketDispatcher.sendPacketToAllAround(this.xCoord, this.yCoord, this.zCoord, 40, this.worldObj.provider.dimensionId, this.getDescriptionPacket());
             }
         }
-        
+
         this.lastScaledEnergyLevel = this.scaledEnergyLevel;
     }
 

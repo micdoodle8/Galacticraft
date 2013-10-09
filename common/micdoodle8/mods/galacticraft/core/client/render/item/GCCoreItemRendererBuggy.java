@@ -25,12 +25,15 @@ public class GCCoreItemRendererBuggy implements IItemRenderer
     protected IModelCustom buggyModel;
     protected IModelCustom wheelModelRight;
     protected IModelCustom wheelModelLeft;
-    
-//    private static final ResourceLocation buggyTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/buggy.png");
+
+    // private static final ResourceLocation buggyTexture = new
+    // ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN,
+    // "textures/model/buggy.png");
 
     GCCoreEntityBuggy spaceship = new GCCoreEntityBuggy(FMLClientHandler.instance().getClient().theWorld);
-//    GCCoreModelBuggy modelSpaceship = new GCCoreModelBuggy();
-    
+
+    // GCCoreModelBuggy modelSpaceship = new GCCoreModelBuggy();
+
     public GCCoreItemRendererBuggy(IModelCustom model, IModelCustom wheelModelRight, IModelCustom wheelModelLeft)
     {
         this.buggyModel = model;
@@ -48,7 +51,7 @@ public class GCCoreItemRendererBuggy implements IItemRenderer
         final float var14 = (((var10 >> 24 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
 
         GL11.glScalef(0.75F, 0.75F, 0.75F);
-        
+
         if (type == ItemRenderType.EQUIPPED)
         {
             GL11.glScalef(2.2F, 2.2F, 2.2F);
@@ -77,73 +80,73 @@ public class GCCoreItemRendererBuggy implements IItemRenderer
             GL11.glTranslatef(0, 1.6F, 0);
             GL11.glRotatef(-45.0F, 0F, 1F, 0F);
         }
-        
+
         GL11.glRotatef(180, 0, 0, 1);
-        
-        FMLClientHandler.instance().getClient().getTextureManager().bindTexture(buggyTextureWheel);
-        
+
+        FMLClientHandler.instance().getClient().getTextureManager().bindTexture(GCCoreItemRendererBuggy.buggyTextureWheel);
+
         // Front wheel covers
         GL11.glPushMatrix();
-            GL11.glTranslatef(0.0F, 1.0F, -2.6F);
-            GL11.glTranslatef(1.4F, 0.0F, 0.0F);
-            this.wheelModelRight.renderPart("WheelRightCover_Cover");
-            GL11.glTranslatef(-2.8F, 0.0F, 0.0F);
-            this.wheelModelLeft.renderPart("WheelLeftCover_Cover");
-        GL11.glPopMatrix();
-        
-        // Back wheel covers
-        GL11.glPushMatrix();
-            GL11.glTranslatef(0.0F, 1.0F, 3.7F);
-            GL11.glTranslatef(2.0F, 0.0F, 0.0F);
-            this.wheelModelRight.renderPart("WheelRightCover_Cover");
-            GL11.glTranslatef(-4.0F, 0.0F, 0.0F);
-            this.wheelModelLeft.renderPart("WheelLeftCover_Cover");
-        GL11.glPopMatrix();
-        
-        // Front wheels
-        GL11.glPushMatrix();
-            GL11.glTranslatef(0.0F, 1.0F, -2.7F);
-            GL11.glTranslatef(1.4F, 0.0F, 0.0F);
-            this.wheelModelRight.renderPart("WheelRight_Wheel");
-            GL11.glTranslatef(-2.8F, 0.0F, 0.0F);
-            this.wheelModelLeft.renderPart("WheelLeft_Wheel");
-        GL11.glPopMatrix();
-        
-        // Back wheels
-        GL11.glPushMatrix();
-            GL11.glTranslatef(0.0F, 1.0F, 3.6F);
-            GL11.glTranslatef(2.0F, 0.0F, 0.0F);
-            this.wheelModelRight.renderPart("WheelRight_Wheel");
-            GL11.glTranslatef(-4.0F, 0.0F, 0.0F);
-            this.wheelModelLeft.renderPart("WheelLeft_Wheel");
-        GL11.glPopMatrix();
-        
-        FMLClientHandler.instance().getClient().getTextureManager().bindTexture(buggyTextureBody);
-        this.buggyModel.renderPart("MainBody");
-        
-        // Radar Dish
-        GL11.glPushMatrix();
-            GL11.glTranslatef(-1.178F, 4.1F, -2.397F);
-            this.buggyModel.renderPart("RadarDish_Dish");
+        GL11.glTranslatef(0.0F, 1.0F, -2.6F);
+        GL11.glTranslatef(1.4F, 0.0F, 0.0F);
+        this.wheelModelRight.renderPart("WheelRightCover_Cover");
+        GL11.glTranslatef(-2.8F, 0.0F, 0.0F);
+        this.wheelModelLeft.renderPart("WheelLeftCover_Cover");
         GL11.glPopMatrix();
 
-        FMLClientHandler.instance().getClient().getTextureManager().bindTexture(buggyTextureStorage);
-        
+        // Back wheel covers
+        GL11.glPushMatrix();
+        GL11.glTranslatef(0.0F, 1.0F, 3.7F);
+        GL11.glTranslatef(2.0F, 0.0F, 0.0F);
+        this.wheelModelRight.renderPart("WheelRightCover_Cover");
+        GL11.glTranslatef(-4.0F, 0.0F, 0.0F);
+        this.wheelModelLeft.renderPart("WheelLeftCover_Cover");
+        GL11.glPopMatrix();
+
+        // Front wheels
+        GL11.glPushMatrix();
+        GL11.glTranslatef(0.0F, 1.0F, -2.7F);
+        GL11.glTranslatef(1.4F, 0.0F, 0.0F);
+        this.wheelModelRight.renderPart("WheelRight_Wheel");
+        GL11.glTranslatef(-2.8F, 0.0F, 0.0F);
+        this.wheelModelLeft.renderPart("WheelLeft_Wheel");
+        GL11.glPopMatrix();
+
+        // Back wheels
+        GL11.glPushMatrix();
+        GL11.glTranslatef(0.0F, 1.0F, 3.6F);
+        GL11.glTranslatef(2.0F, 0.0F, 0.0F);
+        this.wheelModelRight.renderPart("WheelRight_Wheel");
+        GL11.glTranslatef(-4.0F, 0.0F, 0.0F);
+        this.wheelModelLeft.renderPart("WheelLeft_Wheel");
+        GL11.glPopMatrix();
+
+        FMLClientHandler.instance().getClient().getTextureManager().bindTexture(GCCoreItemRendererBuggy.buggyTextureBody);
+        this.buggyModel.renderPart("MainBody");
+
+        // Radar Dish
+        GL11.glPushMatrix();
+        GL11.glTranslatef(-1.178F, 4.1F, -2.397F);
+        this.buggyModel.renderPart("RadarDish_Dish");
+        GL11.glPopMatrix();
+
+        FMLClientHandler.instance().getClient().getTextureManager().bindTexture(GCCoreItemRendererBuggy.buggyTextureStorage);
+
         if (item.getItemDamage() > 0)
         {
             this.buggyModel.renderPart("CargoLeft");
-            
+
             if (item.getItemDamage() > 1)
             {
                 this.buggyModel.renderPart("CargoMid");
-                
+
                 if (item.getItemDamage() > 2)
                 {
                     this.buggyModel.renderPart("CargoRight");
                 }
             }
         }
-        
+
         GL11.glPopMatrix();
     }
 

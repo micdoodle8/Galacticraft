@@ -25,11 +25,10 @@ public class CompressorRecipes
 
         if (inputList[i] instanceof String[])
         {
-            String[] astring = (String[])((String[])inputList[i++]);
+            String[] astring = (String[]) inputList[i++];
 
-            for (int l = 0; l < astring.length; ++l)
+            for (String s1 : astring)
             {
-                String s1 = astring[l];
                 ++k;
                 j = s1.length();
                 s = s + s1;
@@ -39,7 +38,7 @@ public class CompressorRecipes
         {
             while (inputList[i] instanceof String)
             {
-                String s2 = (String)inputList[i++];
+                String s2 = (String) inputList[i++];
                 ++k;
                 j = s2.length();
                 s = s + s2;
@@ -50,20 +49,20 @@ public class CompressorRecipes
 
         for (hashmap = new HashMap<Character, ItemStack>(); i < inputList.length; i += 2)
         {
-            Character character = (Character)inputList[i];
+            Character character = (Character) inputList[i];
             ItemStack itemstack1 = null;
 
             if (inputList[i + 1] instanceof Item)
             {
-                itemstack1 = new ItemStack((Item)inputList[i + 1]);
+                itemstack1 = new ItemStack((Item) inputList[i + 1]);
             }
             else if (inputList[i + 1] instanceof Block)
             {
-                itemstack1 = new ItemStack((Block)inputList[i + 1], 1, 32767);
+                itemstack1 = new ItemStack((Block) inputList[i + 1], 1, 32767);
             }
             else if (inputList[i + 1] instanceof ItemStack)
             {
-                itemstack1 = (ItemStack)inputList[i + 1];
+                itemstack1 = (ItemStack) inputList[i + 1];
             }
 
             hashmap.put(character, itemstack1);
@@ -77,7 +76,7 @@ public class CompressorRecipes
 
             if (hashmap.containsKey(Character.valueOf(c0)))
             {
-                aitemstack[i1] = ((ItemStack)hashmap.get(Character.valueOf(c0))).copy();
+                aitemstack[i1] = hashmap.get(Character.valueOf(c0)).copy();
             }
             else
             {
@@ -102,11 +101,11 @@ public class CompressorRecipes
 
             if (object1 instanceof ItemStack)
             {
-                arraylist.add(((ItemStack)object1).copy());
+                arraylist.add(((ItemStack) object1).copy());
             }
             else if (object1 instanceof Item)
             {
-                arraylist.add(new ItemStack((Item)object1));
+                arraylist.add(new ItemStack((Item) object1));
             }
             else
             {
@@ -115,7 +114,7 @@ public class CompressorRecipes
                     throw new RuntimeException("Invalid shapeless compressor recipe!");
                 }
 
-                arraylist.add(new ItemStack((Block)object1));
+                arraylist.add(new ItemStack((Block) object1));
             }
         }
 
@@ -168,7 +167,7 @@ public class CompressorRecipes
         {
             for (j = 0; j < CompressorRecipes.recipes.size(); ++j)
             {
-                IRecipe irecipe = (IRecipe)CompressorRecipes.recipes.get(j);
+                IRecipe irecipe = CompressorRecipes.recipes.get(j);
 
                 if (irecipe.matches(par1InventoryCrafting, par2World))
                 {

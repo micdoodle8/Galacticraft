@@ -98,7 +98,7 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
     {
         return this.getScale() * 2.0F;
     }
-    
+
     @Override
     public void setScaleForAge(boolean par1)
     {
@@ -108,9 +108,9 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
     @Override
     public boolean isChild()
     {
-        return (this.getAge() / (float) this.MAX_AGE) < 0.4F;
+        return this.getAge() / (float) this.MAX_AGE < 0.4F;
     }
-    
+
     private void setRandomFavFood()
     {
         switch (this.rand.nextInt(10))
@@ -296,7 +296,7 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
             this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(this.getMaxHealthSlimeling());
         }
     }
-    
+
     private double getMaxHealthSlimeling()
     {
         if (this.isTamed())

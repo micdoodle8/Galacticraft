@@ -60,7 +60,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreEvents
 {
     private static GCCoreThreadDownloadSound downloadResourcesThread;
-    
+
     @ForgeSubscribe
     public void onEntityFall(LivingFallEvent event)
     {
@@ -415,19 +415,19 @@ public class GCCoreEvents
             }
         }
     }
-    
+
     @ForgeSubscribe
     public void onMinecraftLoaded(MinecraftLoadedEvent event)
     {
         final List<String> downloadUrls = new ArrayList<String>();
-        
+
         downloadUrls.add("http://micdoodle8.com/galacticraft/sounds/downloadsounds.xml");
-        
+
         if (Loader.isModLoaded("GalacticraftMars"))
         {
             downloadUrls.add("http://micdoodle8.com/galacticraft/sounds/mars/downloadmarssounds.xml");
         }
-        
+
         try
         {
             if (GCCoreEvents.downloadResourcesThread == null)

@@ -44,7 +44,7 @@ class GCMoonStructureVillageStart extends StructureStart
 
         while (var13.hasNext())
         {
-            final StructureComponent var12 = (StructureComponent) var13.next();
+            final StructureComponent var12 = var13.next();
 
             if (!(var12 instanceof GCMoonComponentVillageRoadPiece))
             {

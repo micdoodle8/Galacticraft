@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
+import micdoodle8.mods.galacticraft.api.entity.IWorldTransferCallback;
 import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
 import micdoodle8.mods.galacticraft.api.world.ICelestialBody;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
@@ -483,7 +484,7 @@ public class WorldUtil
 
             while (var0.hasNext())
             {
-                final Integer var1 = (Integer) var0.next();
+                final Integer var1 = var0.next();
                 DimensionManager.unregisterDimension(var1.intValue());
             }
 
@@ -498,7 +499,7 @@ public class WorldUtil
 
         while (var1.hasNext())
         {
-            final Integer var2 = (Integer) var1.next();
+            final Integer var2 = var1.next();
             DimensionManager.registerDimension(var2.intValue(), GCCoreConfigManager.idDimensionOverworldOrbit);
         }
     }
@@ -530,7 +531,7 @@ public class WorldUtil
 
             while (var0.hasNext())
             {
-                final Integer var1 = (Integer) var0.next();
+                final Integer var1 = var0.next();
                 DimensionManager.unregisterDimension(var1.intValue());
                 GCLog.info("Unregistered Dimension: " + var1.intValue());
             }
@@ -717,7 +718,7 @@ public class WorldUtil
                 {
                     return null;
                 }
-                
+
                 if (var1 instanceof IWorldTransferCallback)
                 {
                     ((IWorldTransferCallback) var1).onWorldTransferred(var0);

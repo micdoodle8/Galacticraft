@@ -75,32 +75,32 @@ public class GCCoreUtil
 
         EntityRegistry.registerModEntity(var0, var1, id, GalacticraftCore.instance, trackingDistance, updateFreq, sendVel);
     }
-    
+
     public static void registerGalacticraftItem(String key, Item item)
     {
         GalacticraftCore.itemList.put(key, new ItemStack(item));
     }
-    
+
     public static void registerGalacticraftItem(String key, Item item, int metadata)
     {
         GalacticraftCore.itemList.put(key, new ItemStack(item, 1, metadata));
     }
-    
+
     public static void registerGalacticraftItem(String key, ItemStack stack)
     {
         GalacticraftCore.itemList.put(key, stack);
     }
-    
+
     public static void registerGalacticraftBlock(String key, Block block)
     {
         GalacticraftCore.blocksList.put(key, new ItemStack(block));
     }
-    
+
     public static void registerGalacticraftBlock(String key, Block block, int metadata)
     {
         GalacticraftCore.blocksList.put(key, new ItemStack(block, 1, metadata));
     }
-    
+
     public static void registerGalacticraftBlock(String key, ItemStack stack)
     {
         GalacticraftCore.blocksList.put(key, stack);

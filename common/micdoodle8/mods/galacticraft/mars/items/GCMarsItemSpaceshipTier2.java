@@ -101,7 +101,7 @@ public class GCMarsItemSpaceshipTier2 extends Item implements IHoldableItem
             if (amountOfCorrectBlocks == 9)
             {
                 EntitySpaceshipBase rocket = null;
-                
+
                 if (par1ItemStack.getItemDamage() < 10)
                 {
                     rocket = new GCMarsEntityRocketT2(par3World, centerX, centerY + 0.2D, centerZ, EnumRocketType.values()[par1ItemStack.getItemDamage()]);
@@ -112,7 +112,7 @@ public class GCMarsItemSpaceshipTier2 extends Item implements IHoldableItem
                 }
 
                 par3World.spawnEntityInWorld(rocket);
-                
+
                 if (!par2EntityPlayer.capabilities.isCreativeMode)
                 {
                     par2EntityPlayer.inventory.consumeInventoryItem(par1ItemStack.getItem().itemID);
@@ -146,7 +146,7 @@ public class GCMarsItemSpaceshipTier2 extends Item implements IHoldableItem
         {
             par3List.add(new ItemStack(par1, 1, i));
         }
-        
+
         for (int i = 10; i < 10 + EnumRocketType.values().length; i++)
         {
             par3List.add(new ItemStack(par1, 1, i));
@@ -159,7 +159,7 @@ public class GCMarsItemSpaceshipTier2 extends Item implements IHoldableItem
     public void addInformation(ItemStack par1ItemStack, EntityPlayer player, List par2List, boolean b)
     {
         EnumRocketType type = null;
-        
+
         if (par1ItemStack.getItemDamage() < 10)
         {
             type = EnumRocketType.values()[par1ItemStack.getItemDamage()];
@@ -185,7 +185,7 @@ public class GCMarsItemSpaceshipTier2 extends Item implements IHoldableItem
     {
         return super.getUnlocalizedName(par1ItemStack) + (par1ItemStack.getItemDamage() < 10 ? ".t2Rocket" : ".cargoRocket");
     }
-    
+
     @Override
     public boolean shouldHoldLeftHandUp(EntityPlayer player)
     {

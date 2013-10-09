@@ -17,7 +17,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreItemMeteorChunk extends Item
 {
     public static final String[] names = { "meteorChunk", "meteorChunkHot" };
-    
+
     public GCCoreItemMeteorChunk(int id, String assetName)
     {
         super(id);
@@ -46,7 +46,7 @@ public class GCCoreItemMeteorChunk extends Item
     @SideOnly(Side.CLIENT)
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) 
+    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
     {
         if (par1ItemStack.getItemDamage() > 0)
         {
@@ -75,17 +75,17 @@ public class GCCoreItemMeteorChunk extends Item
             --itemStack.stackSize;
         }
 
-        world.playSoundAtEntity(player, "random.bow", 1.0F, 0.0001F / (itemRand.nextFloat() * 0.1F));
+        world.playSoundAtEntity(player, "random.bow", 1.0F, 0.0001F / (Item.itemRand.nextFloat() * 0.1F));
 
         if (!world.isRemote)
         {
             GCCoreEntityMeteorChunk meteor = new GCCoreEntityMeteorChunk(world, player, 1.0F);
-            
+
             if (itemStack.getItemDamage() > 0)
             {
                 meteor.setFire(5);
             }
-            
+
             world.spawnEntityInWorld(meteor);
         }
 

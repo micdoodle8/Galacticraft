@@ -10,16 +10,16 @@ public class CircuitFabricatorRecipes
 
     /**
      * 
-     * Input list must be ItemStack array with 5 elements, contain null if no item is used in the slot.
+     * Input list must be ItemStack array with 5 elements, contain null if no
+     * item is used in the slot.
      * 
-     * 0 - Crystal slot
-     * 1 - Silicon slot
-     * 2 - Silicon slot
-     * 3 - Redstone slot
-     * 4 - Optional slot 
+     * 0 - Crystal slot 1 - Silicon slot 2 - Silicon slot 3 - Redstone slot 4 -
+     * Optional slot
      * 
      * @param output
-     * @param inputList ItemStack array with length 5. Fill with stacks as explained above
+     * @param inputList
+     *            ItemStack array with length 5. Fill with stacks as explained
+     *            above
      * @return
      */
     public static void addRecipe(ItemStack output, ItemStack[] inputList)
@@ -28,14 +28,15 @@ public class CircuitFabricatorRecipes
         {
             throw new RuntimeException("Invalid circuit fabricator recipe!");
         }
-        
-        recipes.put(inputList, output);
+
+        CircuitFabricatorRecipes.recipes.put(inputList, output);
     }
 
     /**
      * Gets the output ItemStack for the passed input.
      * 
-     * @param inputList ItemStack array of input items
+     * @param inputList
+     *            ItemStack array of input items
      * @return The result ItemStack
      */
     public static ItemStack getOutputForInput(ItemStack[] inputList)
@@ -44,16 +45,16 @@ public class CircuitFabricatorRecipes
         {
             return null;
         }
-        
-        for (Entry<ItemStack[], ItemStack> recipe : recipes.entrySet())
+
+        for (Entry<ItemStack[], ItemStack> recipe : CircuitFabricatorRecipes.recipes.entrySet())
         {
             boolean found = true;
-            
+
             for (int i = 0; i < 5; i++)
             {
                 ItemStack recipeStack = recipe.getKey()[i];
                 ItemStack inputStack = inputList[i];
-                
+
                 if (recipeStack == null || inputStack == null)
                 {
                     if (recipeStack != null || inputStack != null)
@@ -68,7 +69,7 @@ public class CircuitFabricatorRecipes
                     break;
                 }
             }
-            
+
             if (!found)
             {
                 continue;
@@ -76,7 +77,7 @@ public class CircuitFabricatorRecipes
 
             return recipe.getValue();
         }
-        
+
         return CircuitFabricatorRecipes.recipes.get(inputList);
     }
 }

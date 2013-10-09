@@ -66,12 +66,12 @@ public class GCCoreBlockMachine extends BlockTile
         this.iconMachineSide = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_side");
         this.iconCoalGenerator = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "coalGenerator");
         this.iconEnergyStorageModule = new Icon[17];
-        
+
         for (int i = 0; i < this.iconEnergyStorageModule.length; i++)
         {
             this.iconEnergyStorageModule[i] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "energyStorageModule_" + i);
         }
-        
+
         this.iconElectricFurnace = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "electricFurnace");
         this.iconCompressor = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "compressor");
     }
@@ -121,7 +121,7 @@ public class GCCoreBlockMachine extends BlockTile
     public Icon getBlockTexture(IBlockAccess world, int x, int y, int z, int side)
     {
         int metadata = world.getBlockMetadata(x, y, z);
-        
+
         if (metadata >= GCCoreBlockMachine.STORAGE_MODULE_METADATA && metadata < GCCoreBlockMachine.ELECTRIC_FURNACE_METADATA)
         {
             TileEntity tile = world.getBlockTileEntity(x, y, z);
@@ -132,7 +132,7 @@ public class GCCoreBlockMachine extends BlockTile
             {
                 return this.blockIcon;
             }
-            
+
             // If it is the front side
             if (side == metadata + 2)
             {
@@ -143,7 +143,7 @@ public class GCCoreBlockMachine extends BlockTile
             {
                 return this.iconInput;
             }
-            
+
             if (tile instanceof GCCoreTileEntityEnergyStorageModule)
             {
                 return this.iconEnergyStorageModule[((GCCoreTileEntityEnergyStorageModule) tile).scaledEnergyLevel];
@@ -153,7 +153,7 @@ public class GCCoreBlockMachine extends BlockTile
                 return this.iconEnergyStorageModule[0];
             }
         }
-        
+
         return this.getIcon(side, world.getBlockMetadata(x, y, z));
     }
 

@@ -57,12 +57,12 @@ public class GCCoreTileEntityBuggyFueler extends TileEntityMulti implements IMul
             }
 
             HashSet<ILandingPadAttachable> copySet = new HashSet<ILandingPadAttachable>(this.connectedTiles);
-            
+
             for (ILandingPadAttachable tile : copySet)
             {
                 final TileEntity newTile = this.worldObj.getBlockTileEntity(((TileEntity) tile).xCoord, ((TileEntity) tile).yCoord, ((TileEntity) tile).zCoord);
 
-                if (newTile == null || !(newTile instanceof ILandingPadAttachable) || !((ILandingPadAttachable) tile).canAttachToLandingPad(this.worldObj, this.xCoord, this.yCoord, this.zCoord))
+                if (newTile == null || !(newTile instanceof ILandingPadAttachable) || !tile.canAttachToLandingPad(this.worldObj, this.xCoord, this.yCoord, this.zCoord))
                 {
                     this.connectedTiles.remove(newTile);
                 }
@@ -205,17 +205,17 @@ public class GCCoreTileEntityBuggyFueler extends TileEntityMulti implements IMul
     {
         return this.connectedTiles;
     }
-    
+
     @Override
     public boolean isBlockAttachable(IBlockAccess world, int x, int y, int z)
     {
         TileEntity tile = world.getBlockTileEntity(x, y, z);
-        
+
         if (tile != null && tile instanceof ILandingPadAttachable)
         {
             return ((ILandingPadAttachable) tile).canAttachToLandingPad(world, this.xCoord, this.yCoord, this.zCoord);
         }
-        
+
         return false;
     }
 

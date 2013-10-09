@@ -280,7 +280,7 @@ public class GCMarsBlock extends Block implements IDetectableResource, IPlantabl
             if (metadata == 7)
             {
                 GalacticraftMars.proxy.spawnParticle("sludgeDrip", x + rand.nextDouble(), y, z + rand.nextDouble());
-                
+
                 if (rand.nextInt(100) == 0)
                 {
                     world.playSound(x, y, z, "galacticraft.ambience.singledrip", 1, 0.8F + rand.nextFloat() / 5.0F, false);

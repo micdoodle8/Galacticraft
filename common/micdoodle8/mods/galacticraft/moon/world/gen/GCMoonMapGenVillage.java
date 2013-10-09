@@ -12,10 +12,10 @@ public class GCMoonMapGenVillage extends MapGenStructure
 {
     public static List<BiomeGenBase> villageSpawnBiomes = Arrays.asList(new BiomeGenBase[] { GCMoonBiomeGenBase.moonFlat });
     private final int terrainType;
-    
+
     static
     {
-        initiateStructures();
+        GCMoonMapGenVillage.initiateStructures();
     }
 
     public static void initiateStructures()

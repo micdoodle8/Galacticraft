@@ -193,7 +193,7 @@ public class GCMarsRecipeManager
     private static void addThermalExpansionCraftingRecipes()
     {
         CraftingManager.getInstance().addShapelessRecipe(new ItemStack(GCMarsItems.marsItemBasic, 2, 3), new Object[] { OreDictionary.getOres("ingotInvar").get(0), OreDictionary.getOres("ingotCopper").get(0), OreDictionary.getOres("ingotTin").get(0), OreDictionary.getOres("plateMeteoricIron").get(0) });
-        
+
         RecipeUtil.addRecipe(new ItemStack(GCMarsBlocks.machine, 1, GCMarsBlockMachine.LAUNCH_CONTROLLER_METADATA), new Object[] { "ZVZ", "YWY", "ZXZ", 'V', Item.diamond, 'W', ItemRegistry.getItem("gearInvar", 1), 'X', ItemRegistry.getItem("powerCoilGold", 1), 'Y', "plateDesh", 'Z', "ingotDesh" });
     }
 
@@ -203,14 +203,14 @@ public class GCMarsRecipeManager
         {
             CraftingManager.getInstance().addShapelessRecipe(new ItemStack(GCMarsItems.marsItemBasic, 2, 3), new Object[] { OreDictionary.getOres("plateIron").get(0), OreDictionary.getOres("plateSteel").get(0), OreDictionary.getOres("plateBronze").get(0), OreDictionary.getOres("plateMeteoricIron").get(0) });
         }
-        
+
         RecipeUtil.addRecipe(new ItemStack(GCMarsBlocks.machine, 1, GCMarsBlockMachine.LAUNCH_CONTROLLER_METADATA), new Object[] { "ZWZ", "YXY", "ZWZ", 'W', Item.redstone, 'X', "circuitAdvanced", 'Y', "plateDesh", 'Z', "ingotDesh" });
     }
 
     private static void addIndustrialcraftCraftingRecipes()
     {
         CraftingManager.getInstance().addShapelessRecipe(new ItemStack(GCMarsItems.marsItemBasic, 2, 3), new Object[] { RecipeUtil.getIndustrialCraftItem("carbonPlate"), RecipeUtil.getIndustrialCraftItem("carbonPlate"), OreDictionary.getOres("plateMeteoricIron").get(0) });
-    
+
         RecipeUtil.addRecipe(new ItemStack(GCMarsBlocks.machine, 1, GCMarsBlockMachine.LAUNCH_CONTROLLER_METADATA), new Object[] { "ZXZ", "YWY", "ZXZ", 'W', Item.redstone, 'X', RecipeUtil.getIndustrialCraftItem("advancedCircuit"), 'Y', "plateDesh", 'Z', "ingotDesh" });
     }
 }

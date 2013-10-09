@@ -408,7 +408,7 @@ public class GCMarsEntityRocketT2 extends EntityTieredRocket implements IInvento
     {
         return this.spaceshipFuelTank.getCapacity();
     }
-    
+
     @RuntimeInterface(clazz = "icbm.api.IMissileLockable", modID = "ICBM|Explosion")
     public boolean canLock(IMissile missile)
     {

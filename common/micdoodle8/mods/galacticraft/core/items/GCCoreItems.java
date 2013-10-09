@@ -119,7 +119,7 @@ public class GCCoreItems
         GCCoreItems.hiddenItems.add(GCCoreItems.knowledgeBook.itemID);
 
         GCCoreItems.registerHarvestLevels();
-        
+
         GCCoreUtil.registerGalacticraftItem("oxygenTankLightFull", GCCoreItems.oxTankLight);
         GCCoreUtil.registerGalacticraftItem("oxygenTankMediumFull", GCCoreItems.oxTankMedium);
         GCCoreUtil.registerGalacticraftItem("oxygenTankHeavyFull", GCCoreItems.oxTankHeavy);
@@ -207,7 +207,7 @@ public class GCCoreItems
         GCCoreUtil.registerGalacticraftItem("batteryEmpty", GCCoreItems.battery, 100);
         GCCoreUtil.registerGalacticraftItem("batteryFull", GCCoreItems.battery, 0);
         GCCoreUtil.registerGalacticraftItem("infiniteBattery", GCCoreItems.infiniteBatery);
-        
+
         for (int i = 0; i < GCCoreItemBasic.names.length; i++)
         {
             if (GCCoreItemBasic.names[i].contains("ingot") || GCCoreItemBasic.names[i].contains("compressed"))

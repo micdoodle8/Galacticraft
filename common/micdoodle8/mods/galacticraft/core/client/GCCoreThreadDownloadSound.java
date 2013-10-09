@@ -55,7 +55,7 @@ public class GCCoreThreadDownloadSound extends Thread
     {
         this.previousGui = FMLClientHandler.instance().getClient().currentScreen;
         this.gui = new GCCoreGuiDownloadingSounds();
-        
+
         for (String urlString : this.downloadUrls)
         {
             try

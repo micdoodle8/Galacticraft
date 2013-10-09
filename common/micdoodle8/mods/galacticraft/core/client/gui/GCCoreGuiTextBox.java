@@ -21,11 +21,11 @@ public class GCCoreGuiTextBox extends GuiButton
     public int backspacePressed;
     public boolean isTextFocused = false;
     public int incorrectUseTimer;
-    
+
     private ITextBoxCallback parentGui;
-    
+
     private Minecraft mc = FMLClientHandler.instance().getClient();
-    
+
     public GCCoreGuiTextBox(int id, ITextBoxCallback parentGui, int x, int y, int width, int height, String initialText, boolean numericOnly, int maxLength)
     {
         super(id, x, y, width, height, initialText);
@@ -33,7 +33,7 @@ public class GCCoreGuiTextBox extends GuiButton
         this.numericOnly = numericOnly;
         this.maxLength = maxLength;
     }
-    
+
     /**
      * Call this from the parent GUI class in keyTyped.
      */
@@ -48,7 +48,7 @@ public class GCCoreGuiTextBox extends GuiButton
                     if (this.parentGui.canPlayerEdit(this, this.mc.thePlayer))
                     {
                         String toBeParsed = this.text.substring(0, this.text.length() - 1);
-                        
+
                         if (this.isValid(toBeParsed))
                         {
                             this.text = toBeParsed;
@@ -77,7 +77,7 @@ public class GCCoreGuiTextBox extends GuiButton
 
                 if (this.isValid(this.text + pastestring))
                 {
-                    if (this.parentGui.canPlayerEdit(this, mc.thePlayer))
+                    if (this.parentGui.canPlayerEdit(this, this.mc.thePlayer))
                     {
                         this.text = this.text + pastestring;
                         this.text = this.text.substring(0, Math.min(String.valueOf(this.text).length(), this.maxLength));
@@ -91,7 +91,7 @@ public class GCCoreGuiTextBox extends GuiButton
             }
             else if (this.isValid(this.text + keyChar))
             {
-                if (this.parentGui.canPlayerEdit(this, mc.thePlayer))
+                if (this.parentGui.canPlayerEdit(this, this.mc.thePlayer))
                 {
                     this.text = this.text + keyChar;
                     this.text = this.text.substring(0, Math.min(this.text.length(), this.maxLength));
@@ -102,11 +102,11 @@ public class GCCoreGuiTextBox extends GuiButton
                     this.parentGui.onIntruderInteraction();
                 }
             }
-            
+
             this.parentGui.onTextChanged(this, this.text);
             return true;
         }
-        
+
         return false;
     }
 
@@ -118,7 +118,7 @@ public class GCCoreGuiTextBox extends GuiButton
             this.text = this.parentGui.getInitialText(this);
             this.parentGui.onTextChanged(this, this.text);
         }
-        
+
         if (this.drawButton)
         {
             Gui.drawRect(this.xPosition, this.yPosition, this.xPosition + this.width, this.yPosition + this.height, GCCoreUtil.convertTo32BitColor(140, 140, 140, 140));
@@ -133,7 +133,7 @@ public class GCCoreGuiTextBox extends GuiButton
                     if (System.currentTimeMillis() - this.timeBackspacePressed > 200 / (1 + this.backspacePressed * 0.3F) && this.parentGui.canPlayerEdit(this, this.mc.thePlayer))
                     {
                         String toBeParsed = this.text.substring(0, this.text.length() - 1);
-                        
+
                         if (this.isValid(toBeParsed))
                         {
                             this.text = toBeParsed;
@@ -143,7 +143,7 @@ public class GCCoreGuiTextBox extends GuiButton
                         {
                             this.text = "";
                         }
-                        
+
                         this.timeBackspacePressed = System.currentTimeMillis();
                         this.backspacePressed++;
                     }
@@ -168,7 +168,7 @@ public class GCCoreGuiTextBox extends GuiButton
             this.drawString(this.mc.fontRenderer, this.text + (this.cursorPulse / 24 % 2 == 0 && this.isTextFocused ? "_" : ""), this.xPosition + 4, this.yPosition + this.height / 2 - 4, this.incorrectUseTimer > 0 ? GCCoreUtil.convertTo32BitColor(255, 255, 20, 20) : this.parentGui.getTextColor(this));
         }
     }
-    
+
     public int getIntegerValue()
     {
         try
@@ -223,15 +223,15 @@ public class GCCoreGuiTextBox extends GuiButton
             return false;
         }
     }
-    
+
     public static interface ITextBoxCallback
     {
         public boolean canPlayerEdit(GCCoreGuiTextBox textBox, EntityPlayer player);
-        
+
         public void onTextChanged(GCCoreGuiTextBox textBox, String newText);
-        
+
         public String getInitialText(GCCoreGuiTextBox textBox);
-        
+
         public int getTextColor(GCCoreGuiTextBox textBox);
 
         public void onIntruderInteraction();

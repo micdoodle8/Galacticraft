@@ -59,7 +59,7 @@ public class GCCoreTileEntityCargoPad extends TileEntityMulti implements IMultiB
             }
 
             HashSet<ILandingPadAttachable> copySet = new HashSet<ILandingPadAttachable>(this.connectedTiles);
-            
+
             for (ILandingPadAttachable tile : copySet)
             {
                 final TileEntity newTile = this.worldObj.getBlockTileEntity(((TileEntity) tile).xCoord, ((TileEntity) tile).yCoord, ((TileEntity) tile).zCoord);
@@ -219,12 +219,12 @@ public class GCCoreTileEntityCargoPad extends TileEntityMulti implements IMultiB
     public boolean isBlockAttachable(IBlockAccess world, int x, int y, int z)
     {
         TileEntity tile = world.getBlockTileEntity(x, y, z);
-        
+
         if (tile != null && tile instanceof ILandingPadAttachable)
         {
             return ((ILandingPadAttachable) tile).canAttachToLandingPad(world, this.xCoord, this.yCoord, this.zCoord);
         }
-        
+
         return false;
     }
 

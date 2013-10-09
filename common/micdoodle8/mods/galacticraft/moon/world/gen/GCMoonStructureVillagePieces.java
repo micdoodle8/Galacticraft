@@ -21,7 +21,7 @@ public class GCMoonStructureVillagePieces
 
         while (var3.hasNext())
         {
-            if (((GCMoonStructureVillagePieceWeight) var3.next()).villagePiecesLimit == 0)
+            if (var3.next().villagePiecesLimit == 0)
             {
                 var3.remove();
             }
@@ -38,7 +38,7 @@ public class GCMoonStructureVillagePieces
 
         for (final Iterator<GCMoonStructureVillagePieceWeight> var3 = par0List.iterator(); var3.hasNext(); var2 += var4.villagePieceWeight)
         {
-            var4 = (GCMoonStructureVillagePieceWeight) var3.next();
+            var4 = var3.next();
 
             if (var4.villagePiecesLimit > 0 && var4.villagePiecesSpawned < var4.villagePiecesLimit)
             {
@@ -90,7 +90,7 @@ public class GCMoonStructureVillagePieces
 
                 while (var11.hasNext())
                 {
-                    final GCMoonStructureVillagePieceWeight var12 = (GCMoonStructureVillagePieceWeight) var11.next();
+                    final GCMoonStructureVillagePieceWeight var12 = var11.next();
                     var10 -= var12.villagePieceWeight;
 
                     if (var10 < 0)

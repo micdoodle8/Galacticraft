@@ -232,7 +232,7 @@ public class ClientProxyCore extends CommonProxyCore
     public static Map<String, String> capeMap = new HashMap<String, String>();
 
     public static GCCoreInventoryExtended dummyInventory = new GCCoreInventoryExtended();
-    
+
     public static Document materialsTest;
 
     @Override
@@ -268,15 +268,15 @@ public class ClientProxyCore extends CommonProxyCore
         GCCoreManualUtil.registerManualPage("toolpage", GCCoreToolPage.class);
         GCCoreManualUtil.registerManualPage("blockcast", GCCoreBlockCastPage.class);
         GCCoreManualUtil.registerManualPage("blank", GCCoreBlankPage.class);
-        
+
         GCCoreManualUtil.registerIcon("heavyplatingT1", new ItemStack(GCCoreItems.heavyPlatingTier1));
         GCCoreManualUtil.registerIcon("oxygenmask", new ItemStack(GCCoreItems.oxMask));
         GCCoreManualUtil.registerIcon("oxygenTankHeavy", new ItemStack(GCCoreItems.oxTankHeavy));
         GCCoreManualUtil.registerIcon("rocketT1", new ItemStack(GCCoreItems.rocketTier1));
 
         DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
-        materialsTest = GCCoreManualUtil.readManual("/assets/galacticraftcore/manuals/gettingstarted.xml", docBuilderFactory);
-        
+        ClientProxyCore.materialsTest = GCCoreManualUtil.readManual("/assets/galacticraftcore/manuals/gettingstarted.xml", docBuilderFactory);
+
         ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityAluminumWire.class, new GCCoreRenderAluminumWire());
         ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityTreasureChest.class, new GCCoreTileEntityTreasureChestRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(GCCoreTileEntityParachest.class, new GCCoreTileEntityParachestRenderer());
@@ -387,7 +387,7 @@ public class ClientProxyCore extends CommonProxyCore
     public void registerRenderInformation()
     {
         ClientProxyCore.moon.registerRenderInformation();
-        
+
         IModelCustom modelBuggy = AdvancedModelLoader.loadModel("/assets/galacticraftcore/models/buggy.obj");
         IModelCustom modelBuggyWheelRight = AdvancedModelLoader.loadModel("/assets/galacticraftcore/models/buggyWheelRight.obj");
         IModelCustom modelBuggyWheelLeft = AdvancedModelLoader.loadModel("/assets/galacticraftcore/models/buggyWheelLeft.obj");

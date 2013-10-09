@@ -78,7 +78,7 @@ public class RocketT2RecipeHandler extends TemplateRecipeHandler
     {
         for (final Map.Entry<ArrayList<PositionedStack>, PositionedStack> irecipe : this.getRecipes())
         {
-            if (NEIServerUtils.areStacksSameTypeCrafting(((PositionedStack) irecipe.getValue()).item, result))
+            if (NEIServerUtils.areStacksSameTypeCrafting(irecipe.getValue().item, result))
             {
                 this.arecipes.add(new CachedRocketRecipe(irecipe));
             }

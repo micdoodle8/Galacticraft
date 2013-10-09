@@ -11,7 +11,7 @@ import net.minecraft.world.gen.structure.StructureComponent;
 public class GCMoonComponentVillageField2 extends GCMoonComponentVillage
 {
     private int averageGroundLevel = -1;
-    
+
     private final int cropTypeA;
     private final int cropTypeB;
     private final int cropTypeC;

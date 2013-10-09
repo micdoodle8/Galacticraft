@@ -93,11 +93,11 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
     {
         return 2000;
     }
-    
+
     public float getCargoFilledAmount()
     {
         float weight = 1;
-        
+
         for (ItemStack stack : this.cargoItems)
         {
             if (stack != null)
@@ -105,7 +105,7 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
                 weight += 0.1D;
             }
         }
-        
+
         return weight;
     }
 
@@ -121,7 +121,7 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
     protected void entityInit()
     {
         super.entityInit();
-        
+
         if (Loader.isModLoaded("ICBM|Explosion"))
         {
             try
@@ -139,7 +139,7 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
     public void setDead()
     {
         super.setDead();
-        
+
         if (Loader.isModLoaded("ICBM|Explosion"))
         {
             try
@@ -157,7 +157,7 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
             this.rocketSoundUpdater.update();
         }
     }
-    
+
     private void autoLaunch()
     {
         this.ignite();
@@ -178,7 +178,7 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
                         for (int z = MathHelper.floor_double(this.posZ) - 1; z <= MathHelper.floor_double(this.posZ) + 1; z++)
                         {
                             TileEntity tile = this.worldObj.getBlockTileEntity(x, y, z);
-                            
+
                             if (tile instanceof IFuelDock)
                             {
                                 this.landRocket(x, y, z);
@@ -187,14 +187,14 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
                     }
                 }
             }
-            
+
             double motionScalar = this.timeSinceLaunch / 250;
 
             motionScalar = Math.min(motionScalar, 1);
-            
+
             double modifier = this.getCargoFilledAmount();
             motionScalar *= 5.0D / modifier;
-            
+
             if (!this.landing)
             {
                 if (motionScalar != 0.0)
@@ -234,26 +234,26 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
                 this.motionY -= Math.abs(Math.sin(this.timeSinceLaunch / 1000)) / 20;
             }
         }
-        
+
         super.onUpdate();
-        
+
         if (!this.worldObj.isRemote)
         {
             if (this.autoLaunchCountdown > 0)
             {
                 this.autoLaunchCountdown--;
-                
+
                 if (this.autoLaunchCountdown <= 0)
                 {
                     this.autoLaunch();
                 }
             }
-            
+
             if (this.autoLaunchSetting == EnumAutoLaunch.ROCKET_IS_FUELED && this.spaceshipFuelTank.getFluidAmount() == this.spaceshipFuelTank.getCapacity())
             {
                 this.autoLaunch();
             }
-            
+
             if (this.autoLaunchSetting != null && this.lastAutoLaunchSetting == null)
             {
                 switch (this.autoLaunchSetting)
@@ -274,7 +274,7 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
                     break;
                 }
             }
-            
+
             this.lastAutoLaunchSetting = this.autoLaunchSetting;
         }
 
@@ -341,7 +341,7 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
             PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 60, this.worldObj.provider.dimensionId, GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getNetworkedData(new ArrayList<Object>())));
         }
     }
-    
+
     @Override
     protected boolean shouldMoveClientSide()
     {
@@ -353,7 +353,7 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
         double x1 = 2 * Math.cos(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
         double z1 = 2 * Math.sin(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
         double y1 = 2 * Math.cos((this.rotationPitch - 180) * Math.PI / 180.0D);
-        
+
         if (this.landing && this.targetVec != null)
         {
             double modifier = this.posY - this.targetVec.y;
@@ -387,7 +387,7 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
         this.rocketType = EnumRocketType.values()[dataStream.readInt()];
         this.landing = dataStream.readBoolean();
         this.destinationFrequency = dataStream.readInt();
-        
+
         if (dataStream.readBoolean())
         {
             this.targetVec = new Vector3(dataStream.readDouble(), dataStream.readDouble(), dataStream.readDouble());
@@ -408,7 +408,7 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
         list.add(this.landing);
         list.add(this.destinationFrequency);
         list.add(this.targetVec != null);
-        
+
         if (this.targetVec != null)
         {
             list.add(this.targetVec.x);
@@ -420,7 +420,7 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
         list.add(this.posY);
         list.add(this.posZ);
         list.add(this.motionY);
-        
+
         return list;
     }
 
@@ -441,57 +441,57 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
         {
             return;
         }
-        
-        worldLoop:
-            for (int i = 0; i < FMLCommonHandler.instance().getMinecraftServerInstance().worldServers.length; i++)
-            {
-                WorldServer world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers[i];
-                
-                for (int j = 0; j < world.loadedTileEntityList.size(); j++)
-                {
-                    TileEntity tile = (TileEntity) world.loadedTileEntityList.get(j);
-                    
-                    if (tile != null)
-                    {
-                        tile = world.getBlockTileEntity(tile.xCoord, tile.yCoord, tile.zCoord);
 
-                        if (tile instanceof GCMarsTileEntityLaunchController)
+        worldLoop:
+        for (int i = 0; i < FMLCommonHandler.instance().getMinecraftServerInstance().worldServers.length; i++)
+        {
+            WorldServer world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers[i];
+
+            for (int j = 0; j < world.loadedTileEntityList.size(); j++)
+            {
+                TileEntity tile = (TileEntity) world.loadedTileEntityList.get(j);
+
+                if (tile != null)
+                {
+                    tile = world.getBlockTileEntity(tile.xCoord, tile.yCoord, tile.zCoord);
+
+                    if (tile instanceof GCMarsTileEntityLaunchController)
+                    {
+                        GCMarsTileEntityLaunchController launchController = (GCMarsTileEntityLaunchController) tile;
+
+                        if (launchController.frequency == this.destinationFrequency)
                         {
-                            GCMarsTileEntityLaunchController launchController = (GCMarsTileEntityLaunchController) tile;
-                            
-                            if (launchController.frequency == this.destinationFrequency)
+                            boolean targetSet = false;
+
+                            blockLoop:
+                            for (int x = -2; x <= 2; x++)
                             {
-                                boolean targetSet = false;
-                                
-                                blockLoop:
-                                    for (int x = -2; x <= 2; x++)
-                                    {
-                                        for (int z = -2; z <= 2; z++)
-                                        {
-                                            int blockID = this.worldObj.getBlockId(launchController.xCoord + x, launchController.yCoord, launchController.zCoord + z);
-                                            
-                                            if (blockID > 0 && Block.blocksList[blockID] instanceof GCCoreBlockLandingPadFull)
-                                            {
-                                                this.targetVec = new Vector3(launchController.xCoord + x, launchController.yCoord, launchController.zCoord + z);
-                                                targetSet = true;
-                                                break blockLoop;
-                                            }
-                                        }
-                                    }
-                                
-                                if (!targetSet)
+                                for (int z = -2; z <= 2; z++)
                                 {
-                                    this.targetVec = null;
+                                    int blockID = this.worldObj.getBlockId(launchController.xCoord + x, launchController.yCoord, launchController.zCoord + z);
+
+                                    if (blockID > 0 && Block.blocksList[blockID] instanceof GCCoreBlockLandingPadFull)
+                                    {
+                                        this.targetVec = new Vector3(launchController.xCoord + x, launchController.yCoord, launchController.zCoord + z);
+                                        targetSet = true;
+                                        break blockLoop;
+                                    }
                                 }
-                                
-                                this.targetDimension = launchController.worldObj.provider.dimensionId;
-                                break worldLoop;
                             }
+
+                            if (!targetSet)
+                            {
+                                this.targetVec = null;
+                            }
+
+                            this.targetDimension = launchController.worldObj.provider.dimensionId;
+                            break worldLoop;
                         }
                     }
                 }
             }
-    
+        }
+
         if (this.targetVec != null)
         {
             if (this.targetDimension != this.worldObj.provider.dimensionId)
@@ -528,7 +528,7 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
                         for (int z = MathHelper.floor_double(this.posZ) - 1; z <= MathHelper.floor_double(this.posZ) + 1; z++)
                         {
                             TileEntity tile = this.worldObj.getBlockTileEntity(x, y, z);
-                            
+
                             if (tile instanceof IFuelDock)
                             {
                                 this.landRocket(x, y, z);
@@ -539,21 +539,21 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
                 }
             }
         }
-        
+
         if (this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase())
         {
             super.failRocket();
         }
     }
-    
+
     private void landRocket(int x, int y, int z)
     {
         TileEntity tile = this.worldObj.getBlockTileEntity(x, y, z);
-        
+
         if (tile instanceof IFuelDock)
         {
             IFuelDock dock = (IFuelDock) tile;
-            
+
             if (this.isDockValid(dock))
             {
                 if (!this.worldObj.isRemote)
@@ -561,29 +561,27 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
                     this.launchPhase = EnumLaunchPhase.UNIGNITED.getPhase();
                     this.landing = false;
                     this.setPad(dock);
-                    
+
                     HashSet<ILandingPadAttachable> connectedTiles = dock.getConnectedTiles();
-                    
+
                     for (ILandingPadAttachable connectedTile : connectedTiles)
-                    {                        
+                    {
                         if (connectedTile != null)
                         {
                             TileEntity updatedTile = this.worldObj.getBlockTileEntity(((TileEntity) connectedTile).xCoord, ((TileEntity) connectedTile).yCoord, ((TileEntity) connectedTile).zCoord);
-                                    
+
                             if (updatedTile instanceof GCMarsTileEntityLaunchController)
                             {
                                 GCMarsTileEntityLaunchController controller = (GCMarsTileEntityLaunchController) updatedTile;
-                                
+
                                 this.autoLaunchSetting = EnumAutoLaunch.values()[controller.launchDropdownSelection];
-                                
+
                                 break;
                             }
                         }
                     }
                 }
-                
-                
-                
+
                 this.setPosition(this.posX, y + 0.3D, this.posZ);
                 return;
             }
@@ -594,72 +592,71 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
     {
         ;
     }
-    
+
     @Override
     public void ignite()
     {
         boolean frequencySet = false;
-        
+
         blockLoop:
-            for (int x = MathHelper.floor_double(this.posX) - 1; x <= MathHelper.floor_double(this.posX) + 1; x++)
+        for (int x = MathHelper.floor_double(this.posX) - 1; x <= MathHelper.floor_double(this.posX) + 1; x++)
+        {
+            for (int y = MathHelper.floor_double(this.posY) - 3; y <= MathHelper.floor_double(this.posY) + 1; y++)
             {
-                for (int y = MathHelper.floor_double(this.posY) - 3; y <= MathHelper.floor_double(this.posY) + 1; y++)
+                for (int z = MathHelper.floor_double(this.posZ) - 1; z <= MathHelper.floor_double(this.posZ) + 1; z++)
                 {
-                    for (int z = MathHelper.floor_double(this.posZ) - 1; z <= MathHelper.floor_double(this.posZ) + 1; z++)
+                    TileEntity tile = this.worldObj.getBlockTileEntity(x, y, z);
+
+                    if (tile instanceof IFuelDock)
                     {
-                        TileEntity tile = this.worldObj.getBlockTileEntity(x, y, z);
-                        
-                        if (tile instanceof IFuelDock)
+                        IFuelDock dock = (IFuelDock) tile;
+
+                        GCMarsTileEntityLaunchController launchController = null;
+
+                        for (ILandingPadAttachable connectedTile : dock.getConnectedTiles())
                         {
-                            IFuelDock dock = (IFuelDock) tile;
-                            
-                            GCMarsTileEntityLaunchController launchController = null;
-                            
-                            for (ILandingPadAttachable connectedTile : dock.getConnectedTiles())
+                            if (connectedTile instanceof GCMarsTileEntityLaunchController)
                             {
-                                if (connectedTile instanceof GCMarsTileEntityLaunchController)
+                                launchController = (GCMarsTileEntityLaunchController) connectedTile;
+
+                                if (launchController != null)
                                 {
-                                    launchController = (GCMarsTileEntityLaunchController) connectedTile;
-                                    
-                                    if (launchController != null)
+                                    TileEntity tile2 = launchController.worldObj.getBlockTileEntity(launchController.xCoord, launchController.yCoord, launchController.zCoord);
+
+                                    if (tile2 instanceof GCMarsTileEntityLaunchController)
                                     {
-                                        TileEntity tile2 = launchController.worldObj.getBlockTileEntity(launchController.xCoord, launchController.yCoord, launchController.zCoord);
-                                        
-                                        if (tile2 instanceof GCMarsTileEntityLaunchController)
-                                        {
-                                            launchController = (GCMarsTileEntityLaunchController) tile2;
-                                        }
-                                        else
-                                        {
-                                            launchController = null;
-                                        }
+                                        launchController = (GCMarsTileEntityLaunchController) tile2;
                                     }
-                                    
-                                    if (launchController != null)
+                                    else
                                     {
-                                        break;
+                                        launchController = null;
                                     }
                                 }
-                            }
-                            
-                            if (launchController != null)
-                            {
-                                if (!launchController.getDisabled(0) && launchController.getEnergyStored() > 0.0F)
+
+                                if (launchController != null)
                                 {
-                                    if (launchController.frequencyValid && launchController.destFrequencyValid)
-                                    {
-                                        this.destinationFrequency = launchController.destFrequency;
-                                        frequencySet = true;
-                                        break blockLoop;
-                                    }
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (launchController != null)
+                        {
+                            if (!launchController.getDisabled(0) && launchController.getEnergyStored() > 0.0F)
+                            {
+                                if (launchController.frequencyValid && launchController.destFrequencyValid)
+                                {
+                                    this.destinationFrequency = launchController.destFrequency;
+                                    frequencySet = true;
+                                    break blockLoop;
                                 }
                             }
                         }
                     }
                 }
             }
-        
-        
+        }
+
         if (frequencySet)
         {
             super.ignite();
@@ -678,7 +675,7 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
                 ((GCCorePlayerMP) this.riddenByEntity).setCoordsTeleportedFromX(this.riddenByEntity.posX);
                 ((GCCorePlayerMP) this.riddenByEntity).setCoordsTeleportedFromZ(this.riddenByEntity.posZ);
             }
-            
+
             int amountRemoved = 0;
 
             for (int x = MathHelper.floor_double(this.posX) - 1; x <= MathHelper.floor_double(this.posX) + 1; x++)
@@ -716,7 +713,9 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
     public boolean interactFirst(EntityPlayer par1EntityPlayer)
     {
         if (!this.worldObj.isRemote)
+        {
             this.ignite();
+        }
 
         return false;
     }
@@ -749,16 +748,16 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
 
             nbt.setTag("Items", var2);
         }
-        
+
         nbt.setBoolean("TargetValid", this.targetVec != null);
-        
+
         if (this.targetVec != null)
         {
             nbt.setDouble("targetTileX", this.targetVec.x);
             nbt.setDouble("targetTileY", this.targetVec.y);
             nbt.setDouble("targetTileZ", this.targetVec.z);
         }
-        
+
         nbt.setBoolean("Landing", this.landing);
         nbt.setInteger("AutoLaunchSetting", this.autoLaunchSetting != null ? this.autoLaunchSetting.getIndex() : -1);
         nbt.setInteger("TimeUntilAutoLaunch", this.autoLaunchCountdown);
@@ -792,7 +791,7 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
                 }
             }
         }
-        
+
         if (nbt.getBoolean("TargetValid") && nbt.hasKey("targetTileX"))
         {
             this.targetVec = new Vector3(nbt.getDouble("targetTileX"), nbt.getDouble("targetTileY"), nbt.getDouble("targetTileX"));
@@ -800,7 +799,7 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
 
         this.landing = nbt.getBoolean("Landing");
         int autoLaunchValue = nbt.getInteger("AutoLaunchSetting");
-        this.autoLaunchSetting = this.lastAutoLaunchSetting = (autoLaunchValue == -1 ? null : EnumAutoLaunch.values()[autoLaunchValue]);
+        this.autoLaunchSetting = this.lastAutoLaunchSetting = autoLaunchValue == -1 ? null : EnumAutoLaunch.values()[autoLaunchValue];
         this.autoLaunchCountdown = nbt.getInteger("TimeUntilAutoLaunch");
         this.destinationFrequency = nbt.getInteger("DestinationFrequency");
     }
@@ -843,7 +842,7 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
             {
                 this.autoLaunch();
             }
-            
+
             return EnumCargoLoadingState.NOINVENTORY;
         }
 
@@ -878,7 +877,7 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
                 return EnumCargoLoadingState.SUCCESS;
             }
         }
-        
+
         if (this.autoLaunchSetting == EnumAutoLaunch.CARGO_IS_FULL)
         {
             this.autoLaunch();
@@ -904,7 +903,7 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
                 return new RemovalResult(EnumCargoLoadingState.SUCCESS, new ItemStack(stackAt.itemID, 1, stackAt.getItemDamage()));
             }
         }
-        
+
         if (this.autoLaunchSetting == EnumAutoLaunch.CARGO_IS_UNLOADED)
         {
             this.autoLaunch();
@@ -1080,7 +1079,7 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
     {
         return 20;
     }
-    
+
     @Override
     public List<ItemStack> getItemsDropped()
     {
@@ -1100,7 +1099,7 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
 
         return items;
     }
-    
+
     @RuntimeInterface(clazz = "icbm.api.IMissileLockable", modID = "ICBM|Explosion")
     public boolean canLock(IMissile missile)
     {

@@ -37,7 +37,7 @@ public class GCCoreModelTreasureChest extends ModelChest
         this.keyParts[0].setRotationPoint(0F, 0F, 0F);
         this.keyParts[0].setTextureSize(64, 64);
         this.keyParts[0].mirror = true;
-        this.keyParts[5] = (ModelRenderer) new ModelRenderer(this, 0, 0).setTextureSize(64, 64);
+        this.keyParts[5] = new ModelRenderer(this, 0, 0).setTextureSize(64, 64);
         this.keyParts[5].addBox(-2.0F, -2.05F, -15.1F, 4, 4, 1, 0.0F);
         this.keyParts[5].rotationPointX = 8.0F;
         this.keyParts[5].rotationPointY = 7.0F;

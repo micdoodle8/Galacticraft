@@ -56,7 +56,7 @@ public abstract class EntityTieredRocket extends EntitySpaceshipBase implements 
     protected void entityInit()
     {
         super.entityInit();
-        
+
         if (Loader.isModLoaded("ICBM|Explosion"))
         {
             try
@@ -74,7 +74,7 @@ public abstract class EntityTieredRocket extends EntitySpaceshipBase implements 
     public void setDead()
     {
         super.setDead();
-        
+
         if (Loader.isModLoaded("ICBM|Explosion"))
         {
             try
@@ -213,7 +213,7 @@ public abstract class EntityTieredRocket extends EntitySpaceshipBase implements 
                 ((GCCorePlayerMP) this.riddenByEntity).setCoordsTeleportedFromX(this.riddenByEntity.posX);
                 ((GCCorePlayerMP) this.riddenByEntity).setCoordsTeleportedFromZ(this.riddenByEntity.posZ);
             }
-            
+
             int amountRemoved = 0;
 
             for (int x = MathHelper.floor_double(this.posX) - 1; x <= MathHelper.floor_double(this.posX) + 1; x++)

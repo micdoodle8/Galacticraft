@@ -27,7 +27,7 @@ public class GCCoreItemBlockAluminumWire extends ItemBlock
     @Override
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
     {
-        switch(par1ItemStack.getItemDamage())
+        switch (par1ItemStack.getItemDamage())
         {
         case 0:
             par3List.add("Resistance: " + ElectricityDisplay.getDisplay(0.05F, ElectricUnit.RESISTANCE));

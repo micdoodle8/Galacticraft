@@ -38,7 +38,7 @@ public class GCMarsGuiLaunchController extends GuiContainer implements IDropboxC
     private GCCoreGuiDropdown dropdownTest;
     private GCCoreGuiTextBox frequency;
     private GCCoreGuiTextBox destinationFrequency;
-    
+
     private int cannotEditTimer;
 
     public GCMarsGuiLaunchController(InventoryPlayer playerInventory, GCMarsTileEntityLaunchController launchController)
@@ -62,12 +62,12 @@ public class GCMarsGuiLaunchController extends GuiContainer implements IDropboxC
             this.enablePadRemovalButton.enabled = true;
         }
 
-        this.enableControllerButton.displayString = (this.launchController.getDisabled(0) ? "Enable" : "Disable");
+        this.enableControllerButton.displayString = this.launchController.getDisabled(0) ? "Enable" : "Disable";
         super.drawScreen(par1, par2, par3);
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glColor3f(1, 1, 1);
-        this.dropdownTest.drawButton(mc, par1, par2);
+        this.dropdownTest.drawButton(this.mc, par1, par2);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
     }
 
@@ -78,12 +78,12 @@ public class GCMarsGuiLaunchController extends GuiContainer implements IDropboxC
         {
             return;
         }
-        
+
         if (this.destinationFrequency.keyTyped(keyChar, keyID))
         {
             return;
         }
-        
+
         super.keyTyped(keyChar, keyID);
     }
 
@@ -116,16 +116,9 @@ public class GCMarsGuiLaunchController extends GuiContainer implements IDropboxC
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
         this.enableControllerButton = new GuiButton(0, var5 + 70 + 124 - 72, var6 + 16, 48, 20, "Enable");
-        this.enablePadRemovalButton = new GCCoreGuiCheckbox(1, this, (this.width / 2) - 78, var6 + 59, "Remove Pad");
-        this.launchWhenCheckbox = new GCCoreGuiCheckbox(2, this, (this.width / 2) - 78, var6 + 77, "Launch when: ");
-        this.dropdownTest = new GCCoreGuiDropdown(3, this, var5 + 95, var6 + 77, 
-                EnumAutoLaunch.CARGO_IS_UNLOADED.getTitle(), 
-                EnumAutoLaunch.CARGO_IS_FULL.getTitle(), 
-                EnumAutoLaunch.ROCKET_IS_FUELED.getTitle(), 
-                EnumAutoLaunch.INSTANT.getTitle(), 
-                EnumAutoLaunch.TIME_10_SECONDS.getTitle(), 
-                EnumAutoLaunch.TIME_30_SECONDS.getTitle(), 
-                EnumAutoLaunch.TIME_1_MINUTE.getTitle());
+        this.enablePadRemovalButton = new GCCoreGuiCheckbox(1, this, this.width / 2 - 78, var6 + 59, "Remove Pad");
+        this.launchWhenCheckbox = new GCCoreGuiCheckbox(2, this, this.width / 2 - 78, var6 + 77, "Launch when: ");
+        this.dropdownTest = new GCCoreGuiDropdown(3, this, var5 + 95, var6 + 77, EnumAutoLaunch.CARGO_IS_UNLOADED.getTitle(), EnumAutoLaunch.CARGO_IS_FULL.getTitle(), EnumAutoLaunch.ROCKET_IS_FUELED.getTitle(), EnumAutoLaunch.INSTANT.getTitle(), EnumAutoLaunch.TIME_10_SECONDS.getTitle(), EnumAutoLaunch.TIME_30_SECONDS.getTitle(), EnumAutoLaunch.TIME_1_MINUTE.getTitle());
         this.frequency = new GCCoreGuiTextBox(4, this, var5 + 66, var6 + 16, 48, 20, "", true, 6);
         this.destinationFrequency = new GCCoreGuiTextBox(5, this, var5 + 122, var6 + 16 + 22, 48, 20, "", true, 6);
         this.buttonList.add(this.enableControllerButton);
@@ -135,7 +128,7 @@ public class GCMarsGuiLaunchController extends GuiContainer implements IDropboxC
         this.buttonList.add(this.frequency);
         this.buttonList.add(this.destinationFrequency);
     }
-    
+
     @Override
     protected void mouseClicked(int px, int py, int par3)
     {
@@ -167,13 +160,13 @@ public class GCMarsGuiLaunchController extends GuiContainer implements IDropboxC
     {
         String displayString = this.launchController.getOwnerName() + "\'s " + this.launchController.getInvName();
         this.fontRenderer.drawString(displayString, this.xSize / 2 - this.fontRenderer.getStringWidth(displayString) / 2, 5, 4210752);
-        
+
         if (this.cannotEditTimer > 0)
         {
-            this.fontRenderer.drawString(this.launchController.getOwnerName(), this.xSize / 2 - this.fontRenderer.getStringWidth(displayString) / 2, 5, (this.cannotEditTimer) % 30 < 15 ? GCCoreUtil.convertTo32BitColor(255, 255, 100, 100) : 4210752);
+            this.fontRenderer.drawString(this.launchController.getOwnerName(), this.xSize / 2 - this.fontRenderer.getStringWidth(displayString) / 2, 5, this.cannotEditTimer % 30 < 15 ? GCCoreUtil.convertTo32BitColor(255, 255, 100, 100) : 4210752);
             this.cannotEditTimer--;
         }
-        
+
         this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, 115, 4210752);
         displayString = this.getStatus();
         this.fontRenderer.drawSplitString(displayString, 60 - this.fontRenderer.getStringWidth(displayString) / 2, 94, 60, 4210752);
@@ -192,7 +185,7 @@ public class GCMarsGuiLaunchController extends GuiContainer implements IDropboxC
         {
             return EnumColor.RED + "Invalid Frequency";
         }
-        
+
         if (this.launchController.getEnergyStored() <= 0.0F)
         {
             return EnumColor.RED + "Not Enough Energy";
@@ -217,13 +210,13 @@ public class GCMarsGuiLaunchController extends GuiContainer implements IDropboxC
         this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        
+
         if (this.launchController.getEnergyStored() > 0)
         {
             int scale = this.launchController.getScaledElecticalLevel(54);
             this.drawTexturedModalRect(var5 + 99, var6 + 114, 176, 0, Math.min(scale, 54), 7);
         }
-        
+
         GL11.glPopMatrix();
     }
 
@@ -234,7 +227,7 @@ public class GCMarsGuiLaunchController extends GuiContainer implements IDropboxC
         {
             return player.username.equals(this.launchController.getOwnerName());
         }
-        
+
         return false;
     }
 
@@ -255,7 +248,7 @@ public class GCMarsGuiLaunchController extends GuiContainer implements IDropboxC
         {
             return this.launchController.launchDropdownSelection;
         }
-        
+
         return 0;
     }
 
@@ -291,7 +284,7 @@ public class GCMarsGuiLaunchController extends GuiContainer implements IDropboxC
         {
             return String.valueOf(this.launchController.destFrequency);
         }
-        
+
         return "";
     }
 
@@ -306,7 +299,7 @@ public class GCMarsGuiLaunchController extends GuiContainer implements IDropboxC
         {
             return this.launchController.destFrequencyValid ? GCCoreUtil.convertTo32BitColor(255, 20, 20, 255) : GCCoreUtil.convertTo32BitColor(255, 255, 25, 25);
         }
-        
+
         return 0;
     }
 
@@ -342,7 +335,7 @@ public class GCMarsGuiLaunchController extends GuiContainer implements IDropboxC
         {
             return this.launchController.launchSchedulingEnabled;
         }
-        
+
         return false;
     }
 

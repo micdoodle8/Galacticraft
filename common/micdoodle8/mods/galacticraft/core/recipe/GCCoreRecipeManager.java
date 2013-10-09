@@ -638,7 +638,7 @@ public class GCCoreRecipeManager
     private static void addIndustrialcraftCraftingRecipes()
     {
         Object plate = null;
-        
+
         if (RecipeUtil.getIndustrialCraftItem("plateiron") != null)
         {
             plate = RecipeUtil.getIndustrialCraftItem("plateiron");
@@ -647,8 +647,7 @@ public class GCCoreRecipeManager
         {
             plate = "ingotRefinedIron";
         }
-        
-        
+
         if (!GalacticraftCore.setSpaceStationRecipe)
         {
             final HashMap<Object, Integer> inputMap = new HashMap<Object, Integer>();

@@ -76,7 +76,7 @@ public class GCCoreTickHandlerClient implements ITickHandler
         {
             if (GCCoreTickHandlerClient.prevLastOpenGui == null && GCCoreTickHandlerClient.lastOpenGui != null)
             {
-                FMLLog.info("Setting screen " + lastOpenGui);
+                FMLLog.info("Setting screen " + GCCoreTickHandlerClient.lastOpenGui);
                 FMLClientHandler.instance().getClient().displayGuiScreen(GCCoreTickHandlerClient.lastOpenGui);
             }
 

@@ -37,7 +37,7 @@ public class GCCoreItemBlockMachine extends ItemBlock
     public String getUnlocalizedName(ItemStack itemstack)
     {
         int metadata = 0;
-        
+
         if (this.getBlockID() == GCCoreBlocks.machineBase.blockID)
         {
             if (itemstack.getItemDamage() >= GCCoreBlockMachine.COMPRESSOR_METADATA)

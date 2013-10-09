@@ -26,199 +26,199 @@ import buildcraft.api.power.PowerHandler.Type;
 /**
  * A universal conductor class.
  * 
- * Extend this class or use as a reference for your own implementation of compatible conductor
- * tiles.
+ * Extend this class or use as a reference for your own implementation of
+ * compatible conductor tiles.
  * 
  * @author Calclavia, micdoodle8
  * 
  */
 public abstract class GCCoreTileEntityUniversalConductor extends TileEntityConductor implements IEnergySink, IPowerReceptor
 {
-	protected boolean isAddedToEnergyNet;
-	public Object powerHandler;
-	public float buildcraftBuffer = Compatibility.BC3_RATIO * 50;
+    protected boolean isAddedToEnergyNet;
+    public Object powerHandler;
+    public float buildcraftBuffer = Compatibility.BC3_RATIO * 50;
 
-	public GCCoreTileEntityUniversalConductor()
-	{
-	    this.initBC();
-	}
-	
-	private void initBC()
-	{
-	    if (Compatibility.isBuildcraftLoaded())
-	    {
-	        this.powerHandler = new PowerHandler(this, Type.PIPE);
-	        ((PowerHandler) this.powerHandler).configure(0, this.buildcraftBuffer, this.buildcraftBuffer, this.buildcraftBuffer * 2);
-	        ((PowerHandler) this.powerHandler).configurePowerPerdition(0, 0);
-	    }
-	}
+    public GCCoreTileEntityUniversalConductor()
+    {
+        this.initBC();
+    }
 
-	@Override
-	public TileEntity[] getAdjacentConnections()
-	{
-		if (this.adjacentConnections == null)
-		{
-			this.adjacentConnections = new TileEntity[6];
+    private void initBC()
+    {
+        if (Compatibility.isBuildcraftLoaded())
+        {
+            this.powerHandler = new PowerHandler(this, Type.PIPE);
+            ((PowerHandler) this.powerHandler).configure(0, this.buildcraftBuffer, this.buildcraftBuffer, this.buildcraftBuffer * 2);
+            ((PowerHandler) this.powerHandler).configurePowerPerdition(0, 0);
+        }
+    }
 
-			for (byte i = 0; i < 6; i++)
-			{
-				ForgeDirection side = ForgeDirection.getOrientation(i);
-				TileEntity tileEntity = VectorHelper.getTileEntityFromSide(this.worldObj, new Vector3(this), side);
+    @Override
+    public TileEntity[] getAdjacentConnections()
+    {
+        if (this.adjacentConnections == null)
+        {
+            this.adjacentConnections = new TileEntity[6];
 
-				if (tileEntity instanceof IConnector)
-				{
-					if (((IConnector) tileEntity).canConnect(side.getOpposite()))
-					{
-						this.adjacentConnections[i] = tileEntity;
-					}
-				}
-				else if (Compatibility.isIndustrialCraft2Loaded() && tileEntity instanceof IEnergyTile)
-				{
-					if (tileEntity instanceof IEnergyAcceptor)
-					{
-						if (((IEnergyAcceptor) tileEntity).acceptsEnergyFrom(this, side.getOpposite()))
-						{
-							this.adjacentConnections[i] = tileEntity;
-							continue;
-						}
-					}
+            for (byte i = 0; i < 6; i++)
+            {
+                ForgeDirection side = ForgeDirection.getOrientation(i);
+                TileEntity tileEntity = VectorHelper.getTileEntityFromSide(this.worldObj, new Vector3(this), side);
 
-					if (tileEntity instanceof IEnergyEmitter)
-					{
-						if (((IEnergyEmitter) tileEntity).emitsEnergyTo(tileEntity, side.getOpposite()))
-						{
-							this.adjacentConnections[i] = tileEntity;
-							continue;
-						}
-					}
+                if (tileEntity instanceof IConnector)
+                {
+                    if (((IConnector) tileEntity).canConnect(side.getOpposite()))
+                    {
+                        this.adjacentConnections[i] = tileEntity;
+                    }
+                }
+                else if (Compatibility.isIndustrialCraft2Loaded() && tileEntity instanceof IEnergyTile)
+                {
+                    if (tileEntity instanceof IEnergyAcceptor)
+                    {
+                        if (((IEnergyAcceptor) tileEntity).acceptsEnergyFrom(this, side.getOpposite()))
+                        {
+                            this.adjacentConnections[i] = tileEntity;
+                            continue;
+                        }
+                    }
 
-					this.adjacentConnections[i] = tileEntity;
-				}
-				else if (Compatibility.isBuildcraftLoaded() && tileEntity instanceof IPowerReceptor)
-				{
-					if (((IPowerReceptor) tileEntity).getPowerReceiver(side.getOpposite()) != null)
-					{
-						this.adjacentConnections[i] = tileEntity;
-					}
-				}
-			}
-		}
+                    if (tileEntity instanceof IEnergyEmitter)
+                    {
+                        if (((IEnergyEmitter) tileEntity).emitsEnergyTo(tileEntity, side.getOpposite()))
+                        {
+                            this.adjacentConnections[i] = tileEntity;
+                            continue;
+                        }
+                    }
 
-		return this.adjacentConnections;
-	}
+                    this.adjacentConnections[i] = tileEntity;
+                }
+                else if (Compatibility.isBuildcraftLoaded() && tileEntity instanceof IPowerReceptor)
+                {
+                    if (((IPowerReceptor) tileEntity).getPowerReceiver(side.getOpposite()) != null)
+                    {
+                        this.adjacentConnections[i] = tileEntity;
+                    }
+                }
+            }
+        }
 
-	/*
-	 * @Override public boolean canUpdate() { return !this.isAddedToEnergyNet; }
-	 */
+        return this.adjacentConnections;
+    }
 
-	@Override
-	public void updateEntity()
-	{
-		if (!this.worldObj.isRemote)
-		{
-			if (!this.isAddedToEnergyNet)
-			{
-				this.initIC();
-			}
-		}
-	}
+    /*
+     * @Override public boolean canUpdate() { return !this.isAddedToEnergyNet; }
+     */
 
-	@Override
-	public void invalidate()
-	{
-		this.unloadTileIC2();
-		super.invalidate();
-	}
+    @Override
+    public void updateEntity()
+    {
+        if (!this.worldObj.isRemote)
+        {
+            if (!this.isAddedToEnergyNet)
+            {
+                this.initIC();
+            }
+        }
+    }
 
-	@Override
-	public void onChunkUnload()
-	{
-		this.unloadTileIC2();
-		super.onChunkUnload();
-	}
+    @Override
+    public void invalidate()
+    {
+        this.unloadTileIC2();
+        super.invalidate();
+    }
 
-	protected void initIC()
-	{
-		if (Compatibility.isIndustrialCraft2Loaded())
-		{
-			MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
-		}
+    @Override
+    public void onChunkUnload()
+    {
+        this.unloadTileIC2();
+        super.onChunkUnload();
+    }
 
-		this.isAddedToEnergyNet = true;
-	}
+    protected void initIC()
+    {
+        if (Compatibility.isIndustrialCraft2Loaded())
+        {
+            MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
+        }
 
-	private void unloadTileIC2()
-	{
-		if (this.isAddedToEnergyNet && this.worldObj != null)
-		{
-			if (Compatibility.isIndustrialCraft2Loaded())
-			{
-				MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(this));
-			}
+        this.isAddedToEnergyNet = true;
+    }
 
-			this.isAddedToEnergyNet = false;
-		}
-	}
+    private void unloadTileIC2()
+    {
+        if (this.isAddedToEnergyNet && this.worldObj != null)
+        {
+            if (Compatibility.isIndustrialCraft2Loaded())
+            {
+                MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(this));
+            }
 
-	@Override
-	public double demandedEnergyUnits()
-	{
-		if (this.getNetwork() == null)
-		{
-			return 0.0;
-		}
+            this.isAddedToEnergyNet = false;
+        }
+    }
 
-		return this.getNetwork().getRequest(this).getWatts() * Compatibility.TO_IC2_RATIO;
-	}
+    @Override
+    public double demandedEnergyUnits()
+    {
+        if (this.getNetwork() == null)
+        {
+            return 0.0;
+        }
 
-	@Override
-	public double injectEnergyUnits(ForgeDirection directionFrom, double amount)
-	{
-		TileEntity tile = VectorHelper.getTileEntityFromSide(this.worldObj, new Vector3(this), directionFrom);
-		ElectricityPack pack = ElectricityPack.getFromWatts((float) (amount * Compatibility.IC2_RATIO), 120);
-		return this.getNetwork().produce(pack, this, tile) * Compatibility.TO_IC2_RATIO;
-	}
+        return this.getNetwork().getRequest(this).getWatts() * Compatibility.TO_IC2_RATIO;
+    }
 
-	@Override
-	public int getMaxSafeInput()
-	{
-		return Integer.MAX_VALUE;
-	}
+    @Override
+    public double injectEnergyUnits(ForgeDirection directionFrom, double amount)
+    {
+        TileEntity tile = VectorHelper.getTileEntityFromSide(this.worldObj, new Vector3(this), directionFrom);
+        ElectricityPack pack = ElectricityPack.getFromWatts((float) (amount * Compatibility.IC2_RATIO), 120);
+        return this.getNetwork().produce(pack, this, tile) * Compatibility.TO_IC2_RATIO;
+    }
 
-	@Override
-	public boolean acceptsEnergyFrom(TileEntity emitter, ForgeDirection direction)
-	{
-		return true;
-	}
+    @Override
+    public int getMaxSafeInput()
+    {
+        return Integer.MAX_VALUE;
+    }
 
-	/**
-	 * BuildCraft functions
-	 */
-	@Override
-	public PowerReceiver getPowerReceiver(ForgeDirection side)
-	{
-		return ((PowerHandler) this.powerHandler).getPowerReceiver();
-	}
+    @Override
+    public boolean acceptsEnergyFrom(TileEntity emitter, ForgeDirection direction)
+    {
+        return true;
+    }
 
-	@Override
-	public void doWork(PowerHandler workProvider)
-	{
-		Set<TileEntity> ignoreTiles = new HashSet<TileEntity>();
-		ignoreTiles.add(this);
+    /**
+     * BuildCraft functions
+     */
+    @Override
+    public PowerReceiver getPowerReceiver(ForgeDirection side)
+    {
+        return ((PowerHandler) this.powerHandler).getPowerReceiver();
+    }
 
-		for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
-		{
-			TileEntity tile = new Vector3(this).modifyPositionFromSide(direction).getTileEntity(this.worldObj);
-			ignoreTiles.add(tile);
-		}
+    @Override
+    public void doWork(PowerHandler workProvider)
+    {
+        Set<TileEntity> ignoreTiles = new HashSet<TileEntity>();
+        ignoreTiles.add(this);
 
-		ElectricityPack pack = ElectricityPack.getFromWatts(workProvider.useEnergy(0, this.getNetwork().getRequest(this).getWatts() * Compatibility.TO_BC_RATIO, true) * Compatibility.BC3_RATIO, 120);
-		this.getNetwork().produce(pack, ignoreTiles.toArray(new TileEntity[0]));
-	}
+        for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+        {
+            TileEntity tile = new Vector3(this).modifyPositionFromSide(direction).getTileEntity(this.worldObj);
+            ignoreTiles.add(tile);
+        }
 
-	@Override
-	public World getWorld()
-	{
-		return this.getWorldObj();
-	}
+        ElectricityPack pack = ElectricityPack.getFromWatts(workProvider.useEnergy(0, this.getNetwork().getRequest(this).getWatts() * Compatibility.TO_BC_RATIO, true) * Compatibility.BC3_RATIO, 120);
+        this.getNetwork().produce(pack, ignoreTiles.toArray(new TileEntity[0]));
+    }
+
+    @Override
+    public World getWorld()
+    {
+        return this.getWorldObj();
+    }
 }

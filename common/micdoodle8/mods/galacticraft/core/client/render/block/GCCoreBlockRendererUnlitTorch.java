@@ -116,7 +116,7 @@ public class GCCoreBlockRendererUnlitTorch implements ISimpleBlockRenderingHandl
 
     public static void renderTorchAtAngle(RenderBlocks renderBlocks, Block par1Block, double par2, double par4, double par6, double par8, double par10)
     {
-//        if (par1Block instanceof GCCoreBlockUnlitTorch)
+        // if (par1Block instanceof GCCoreBlockUnlitTorch)
         {
             final Tessellator tessellator = Tessellator.instance;
             Icon icon = renderBlocks.getBlockIconFromSideAndMetadata(par1Block, 0, 0);

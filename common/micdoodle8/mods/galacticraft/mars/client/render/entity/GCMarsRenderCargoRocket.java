@@ -48,10 +48,10 @@ public class GCMarsRenderCargoRocket extends Render
         GL11.glScalef(0.4F, 0.4F, 0.4F);
         GL11.glRotatef(180.0F - par8, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(-var24, 0.0F, 0.0F, 1.0F);
-        
-        this.bindTexture(cargoRocketTexture);
+
+        this.bindTexture(GCMarsRenderCargoRocket.cargoRocketTexture);
         this.rocketModel.renderAll();
-        
+
         GL11.glPopMatrix();
     }
 

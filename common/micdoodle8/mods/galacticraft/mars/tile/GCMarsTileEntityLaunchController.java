@@ -55,31 +55,25 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
     public int launchDropdownSelection;
     public boolean launchSchedulingEnabled;
     public boolean requiresClientUpdate;
-    
+
     public static enum EnumAutoLaunch
     {
-        CARGO_IS_UNLOADED(0, "Cargo is Unloaded"),
-        CARGO_IS_FULL(1, "Cargo is Full"),
-        ROCKET_IS_FUELED(2, "Fully Fueled"),
-        INSTANT(3, "Instantly"),
-        TIME_10_SECONDS(4, "10 Seconds"),
-        TIME_30_SECONDS(5, "30 Seconds"),
-        TIME_1_MINUTE(6, "1 Minute");
-        
+        CARGO_IS_UNLOADED(0, "Cargo is Unloaded"), CARGO_IS_FULL(1, "Cargo is Full"), ROCKET_IS_FUELED(2, "Fully Fueled"), INSTANT(3, "Instantly"), TIME_10_SECONDS(4, "10 Seconds"), TIME_30_SECONDS(5, "30 Seconds"), TIME_1_MINUTE(6, "1 Minute");
+
         private final int index;
         private String title;
-        
+
         private EnumAutoLaunch(int index, String title)
         {
             this.index = index;
             this.title = title;
         }
-        
+
         public int getIndex()
         {
             return this.index;
         }
-        
+
         public String getTitle()
         {
             return this.title;
@@ -88,14 +82,14 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
 
     public GCMarsTileEntityLaunchController()
     {
-        super(WATTS_PER_TICK, 50);
+        super(GCMarsTileEntityLaunchController.WATTS_PER_TICK, 50);
     }
 
     @Override
     public void updateEntity()
     {
         super.updateEntity();
-        
+
         if (!this.worldObj.isRemote)
         {
             if (this.requiresClientUpdate)
@@ -103,13 +97,13 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
                 PacketDispatcher.sendPacketToAllPlayers(this.getPacket());
                 this.requiresClientUpdate = false;
             }
-            
+
             if (this.ticks % 40 == 0)
             {
                 this.setFrequency(this.frequency);
                 this.setDestinationFrequency(this.destFrequency);
             }
-            
+
             if (this.ticks % 20 == 0)
             {
                 if (this.chunkLoadTicket != null)
@@ -118,7 +112,7 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
                     {
                         ChunkCoordinates coords = this.connectedPads.get(i);
                         int blockID = this.worldObj.getBlockId(coords.posX, coords.posY, coords.posZ);
-                        
+
                         if (blockID != GCCoreBlocks.landingPadFull.blockID)
                         {
                             this.connectedPads.remove(i);
@@ -136,28 +130,28 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
             }
         }
     }
-    
+
     public String getOwnerName()
     {
         return this.ownerName;
     }
-    
+
     public void setOwnerName(String ownerName)
     {
         this.ownerName = ownerName;
     }
-    
+
     @Override
     public void invalidate()
     {
         super.invalidate();
-        
+
         if (this.chunkLoadTicket != null)
         {
             ForgeChunkManager.releaseTicket(this.chunkLoadTicket);
         }
     }
-    
+
     @Override
     public void onTicketLoaded(Ticket ticket)
     {
@@ -167,7 +161,7 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
             {
                 return;
             }
-            
+
             if (this.chunkLoadTicket == null)
             {
                 this.chunkLoadTicket = ticket;
@@ -177,13 +171,13 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
             nbt.setInteger("ChunkLoaderTileX", this.xCoord);
             nbt.setInteger("ChunkLoaderTileY", this.yCoord);
             nbt.setInteger("ChunkLoaderTileZ", this.zCoord);
-            
+
             for (int x = -2; x <= 2; x++)
             {
                 for (int z = -2; z <= 2; z++)
                 {
                     int blockID = this.worldObj.getBlockId(this.xCoord + x, this.yCoord, this.zCoord + z);
-                    
+
                     if (blockID > 0 && Block.blocksList[blockID] instanceof GCCoreBlockLandingPadFull)
                     {
                         if (this.xCoord + x >> 4 != this.xCoord >> 4 || this.zCoord + z >> 4 != this.zCoord >> 4)
@@ -194,7 +188,7 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
                     }
                 }
             }
-            
+
             ForgeChunkManager.forceChunk(this.chunkLoadTicket, new ChunkCoordIntPair(this.xCoord >> 4, this.zCoord >> 4));
         }
     }
@@ -226,7 +220,7 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
                 this.containingItems[var5] = ItemStack.loadItemStackFromNBT(var4);
             }
         }
-        
+
         this.ownerName = nbt.getString("OwnerName");
         this.launchDropdownSelection = nbt.getInteger("LaunchSelection");
         this.frequency = nbt.getInteger("ControllerFrequency");
@@ -358,7 +352,7 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
     @Override
     public boolean isItemValidForSlot(int slotID, ItemStack itemStack)
     {
-        return slotID == 0 ?  itemStack.getItem() instanceof IItemElectric : false;
+        return slotID == 0 ? itemStack.getItem() instanceof IItemElectric : false;
     }
 
     @Override
@@ -458,7 +452,7 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
                 this.disabled = disabled;
                 break;
             }
-            
+
             this.disableCooldown = 20;
         }
     }
@@ -471,7 +465,7 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
         case 0:
             return this.disabled;
         }
-        
+
         return true;
     }
 
@@ -479,23 +473,23 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
     public boolean canAttachToLandingPad(IBlockAccess world, int x, int y, int z)
     {
         TileEntity tile = world.getBlockTileEntity(x, y, z);
-        
+
         return tile instanceof GCCoreTileEntityLandingPad || tile instanceof GCCoreTileEntityCargoPad;
     }
-    
+
     public void setFrequency(int frequency)
     {
         this.frequency = frequency;
-        
+
         if (this.frequency >= 0)
         {
             this.frequencyValid = true;
-            
+
             worldLoop:
             for (int i = 0; i < FMLCommonHandler.instance().getMinecraftServerInstance().worldServers.length; i++)
             {
                 WorldServer world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers[i];
-                
+
                 for (int j = 0; j < world.loadedTileEntityList.size(); j++)
                 {
                     TileEntity tile2 = (TileEntity) world.loadedTileEntityList.get(j);
@@ -503,11 +497,11 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
                     if (this != tile2)
                     {
                         tile2 = world.getBlockTileEntity(tile2.xCoord, tile2.yCoord, tile2.zCoord);
-                        
+
                         if (tile2 instanceof GCMarsTileEntityLaunchController)
                         {
                             GCMarsTileEntityLaunchController launchController2 = (GCMarsTileEntityLaunchController) tile2;
-                            
+
                             if (launchController2.frequency == this.frequency)
                             {
                                 this.frequencyValid = false;
@@ -523,32 +517,32 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
             this.frequencyValid = false;
         }
     }
-    
+
     public void setDestinationFrequency(int frequency)
     {
         this.destFrequency = frequency;
-        
+
         if (this.destFrequency >= 0)
         {
             this.destFrequencyValid = false;
-            
+
             worldLoop:
             for (int i = 0; i < FMLCommonHandler.instance().getMinecraftServerInstance().worldServers.length; i++)
             {
                 WorldServer world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers[i];
-                
+
                 for (int j = 0; j < world.loadedTileEntityList.size(); j++)
                 {
                     TileEntity tile2 = (TileEntity) world.loadedTileEntityList.get(j);
-                    
+
                     if (this != tile2)
                     {
                         tile2 = world.getBlockTileEntity(tile2.xCoord, tile2.yCoord, tile2.zCoord);
-                        
+
                         if (tile2 instanceof GCMarsTileEntityLaunchController)
                         {
                             GCMarsTileEntityLaunchController launchController2 = (GCMarsTileEntityLaunchController) tile2;
-                            
+
                             if (launchController2.frequency == this.destFrequency)
                             {
                                 this.destFrequencyValid = true;

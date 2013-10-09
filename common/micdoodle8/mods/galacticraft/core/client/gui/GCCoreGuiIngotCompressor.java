@@ -2,8 +2,6 @@ package micdoodle8.mods.galacticraft.core.client.gui;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerIngotCompressor;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectricFurnace;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectricIngotCompressor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityIngotCompressor;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -80,9 +78,9 @@ public class GCCoreGuiIngotCompressor extends GuiContainer
         if (this.tileEntity.furnaceBurnTime > 0)
         {
             int scale = (int) ((double) this.tileEntity.furnaceBurnTime / (double) this.tileEntity.currentItemBurnTime * 14);
-            this.drawTexturedModalRect(this.containerWidth + 81, this.containerHeight + 27 + (14 - scale), 176, 30 + 14 - scale, 14, scale);
+            this.drawTexturedModalRect(this.containerWidth + 81, this.containerHeight + 27 + 14 - scale, 176, 30 + 14 - scale, 14, scale);
         }
-        
+
         if (this.tileEntity.processTicks > GCCoreTileEntityIngotCompressor.PROCESS_TIME_REQUIRED / 2)
         {
             this.drawTexturedModalRect(this.containerWidth + 101, this.containerHeight + 28, 176, 0, 15, 13);

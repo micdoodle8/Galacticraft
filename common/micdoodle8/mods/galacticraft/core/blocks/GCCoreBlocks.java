@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlock;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockAluminumWire;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockBase;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockCargoLoader;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockAluminumWire;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockEnclosedBlock;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockLandingPad;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockMachine;
@@ -63,36 +63,36 @@ public class GCCoreBlocks
 
     public static void initBlocks()
     {
-        GCCoreBlocks.breatheableAir =               new GCCoreBlockBreathableAir(               GCCoreConfigManager.idBlockBreatheableAir,                      "breatheableAir");
-        GCCoreBlocks.treasureChestTier1 =           new GCCoreBlockT1TreasureChest(             GCCoreConfigManager.idBlockTreasureChest,                       "treasureChest");
-        GCCoreBlocks.landingPad =                   new GCCoreBlockLandingPad(                  GCCoreConfigManager.idBlockLandingPad,                          "landingPad");
-        GCCoreBlocks.landingPadFull =               new GCCoreBlockLandingPadFull(              GCCoreConfigManager.idBlockLandingPadFull,                      "landingPadFull");
-        GCCoreBlocks.unlitTorch =                   new GCCoreBlockUnlitTorch(                  GCCoreConfigManager.idBlockUnlitTorch,          false,          "unlitTorch");
-        GCCoreBlocks.unlitTorchLit =                new GCCoreBlockUnlitTorch(                  GCCoreConfigManager.idBlockUnlitTorchLit,       true,           "unlitTorchLit");
-        GCCoreBlocks.oxygenDistributor =            new GCCoreBlockOxygenDistributor(           GCCoreConfigManager.idBlockAirDistributor,                      "distributor");
-        GCCoreBlocks.oxygenPipe =                   new GCCoreBlockOxygenPipe(                  GCCoreConfigManager.idBlockAirPipe,                             "oxygenPipe");
-        GCCoreBlocks.oxygenCollector =              new GCCoreBlockOxygenCollector(             GCCoreConfigManager.idBlockAirCollector,                        "oxygenCollector");
-        GCCoreBlocks.nasaWorkbench =                new GCCoreBlockAdvancedCraftingTable(       GCCoreConfigManager.idBlockRocketBench,                         "rocketWorkbench");
-        GCCoreBlocks.fallenMeteor =                 new GCCoreBlockFallenMeteor(                GCCoreConfigManager.idBlockFallenMeteor,                        "fallenMeteor");
-        GCCoreBlocks.decorationBlocks =             new GCCoreBlock(                            GCCoreConfigManager.idBlockDecorationBlock,                     "gcBlockCore");
-        GCCoreBlocks.airLockFrame =                 new GCCoreBlockAirLockFrame(                GCCoreConfigManager.idBlockAirLockFrame,                        "airLockFrame");
-        GCCoreBlocks.airLockSeal =                  new GCCoreBlockAirLockWall(                 GCCoreConfigManager.idBlockAirLockSeal,                         "airLockSeal");
-        GCCoreBlocks.crudeOilStill =                new GCCoreBlockCrudeOil(                    GalacticraftCore.CRUDEOIL.getBlockID(),                         "crudeOilStill");
-        GCCoreBlocks.refinery =                     new GCCoreBlockRefinery(                    GCCoreConfigManager.idBlockRefinery,                            "refinery");
-        GCCoreBlocks.oxygenCompressor =             new GCCoreBlockOxygenCompressor(            GCCoreConfigManager.idBlockAirCompressor,       false,          "oxygenCompressor");
-        GCCoreBlocks.fuelLoader =                   new GCCoreBlockFuelLoader(                  GCCoreConfigManager.idBlockFuelLoader,                          "fuelLoader");
-        GCCoreBlocks.spaceStationBase =             new GCCoreBlockSpaceStationBase(            GCCoreConfigManager.idBlockSpaceStationBase,                    "spaceStationBase");
-        GCCoreBlocks.fakeBlock =                    new GCCoreBlockMulti(                       GCCoreConfigManager.idBlockDummy,                               "dummyblock");
-        GCCoreBlocks.oxygenSealer =                 new GCCoreBlockOxygenSealer(                GCCoreConfigManager.idBlockOxygenSealer,                        "sealer");
-        GCCoreBlocks.sealableBlock =                new GCCoreBlockEnclosed(                    GCCoreConfigManager.idBlockEnclosedWire,                        "enclosed");
-        GCCoreBlocks.oxygenDetector =               new GCCoreBlockOxygenDetector(              GCCoreConfigManager.idBlockOxygenDetector,                      "oxygenDetector");
-        GCCoreBlocks.cargoLoader =                  new GCCoreBlockCargoLoader(                 GCCoreConfigManager.idBlockCargoLoader,                         "cargo");
-        GCCoreBlocks.parachest =                    new GCCoreBlockParachest(                   GCCoreConfigManager.idBlockParachest,                           "parachest");
-        GCCoreBlocks.solarPanel =                   new GCCoreBlockSolar(                       GCCoreConfigManager.idBlockSolarPanel,                          "solar");
-        GCCoreBlocks.machineBase =                  new GCCoreBlockMachine(                     GCCoreConfigManager.idBlockBasicMachine,                        "machine");
-        GCCoreBlocks.aluminumWire =                 new GCCoreBlockAluminumWire(                GCCoreConfigManager.idBlockCopperWire,                          "aluminumWire");
-        GCCoreBlocks.machineBase2 =                 new GCCoreBlockMachine2(                    GCCoreConfigManager.idBlockBasicMachine2,                       "machine2");
-        GCCoreBlocks.glowstoneTorch =               new GCCoreBlockGlowstoneTorch(              GCCoreConfigManager.idBlockGlowstoneTorch,                      "glowstoneTorch");
+        GCCoreBlocks.breatheableAir = new GCCoreBlockBreathableAir(GCCoreConfigManager.idBlockBreatheableAir, "breatheableAir");
+        GCCoreBlocks.treasureChestTier1 = new GCCoreBlockT1TreasureChest(GCCoreConfigManager.idBlockTreasureChest, "treasureChest");
+        GCCoreBlocks.landingPad = new GCCoreBlockLandingPad(GCCoreConfigManager.idBlockLandingPad, "landingPad");
+        GCCoreBlocks.landingPadFull = new GCCoreBlockLandingPadFull(GCCoreConfigManager.idBlockLandingPadFull, "landingPadFull");
+        GCCoreBlocks.unlitTorch = new GCCoreBlockUnlitTorch(GCCoreConfigManager.idBlockUnlitTorch, false, "unlitTorch");
+        GCCoreBlocks.unlitTorchLit = new GCCoreBlockUnlitTorch(GCCoreConfigManager.idBlockUnlitTorchLit, true, "unlitTorchLit");
+        GCCoreBlocks.oxygenDistributor = new GCCoreBlockOxygenDistributor(GCCoreConfigManager.idBlockAirDistributor, "distributor");
+        GCCoreBlocks.oxygenPipe = new GCCoreBlockOxygenPipe(GCCoreConfigManager.idBlockAirPipe, "oxygenPipe");
+        GCCoreBlocks.oxygenCollector = new GCCoreBlockOxygenCollector(GCCoreConfigManager.idBlockAirCollector, "oxygenCollector");
+        GCCoreBlocks.nasaWorkbench = new GCCoreBlockAdvancedCraftingTable(GCCoreConfigManager.idBlockRocketBench, "rocketWorkbench");
+        GCCoreBlocks.fallenMeteor = new GCCoreBlockFallenMeteor(GCCoreConfigManager.idBlockFallenMeteor, "fallenMeteor");
+        GCCoreBlocks.decorationBlocks = new GCCoreBlock(GCCoreConfigManager.idBlockDecorationBlock, "gcBlockCore");
+        GCCoreBlocks.airLockFrame = new GCCoreBlockAirLockFrame(GCCoreConfigManager.idBlockAirLockFrame, "airLockFrame");
+        GCCoreBlocks.airLockSeal = new GCCoreBlockAirLockWall(GCCoreConfigManager.idBlockAirLockSeal, "airLockSeal");
+        GCCoreBlocks.crudeOilStill = new GCCoreBlockCrudeOil(GalacticraftCore.CRUDEOIL.getBlockID(), "crudeOilStill");
+        GCCoreBlocks.refinery = new GCCoreBlockRefinery(GCCoreConfigManager.idBlockRefinery, "refinery");
+        GCCoreBlocks.oxygenCompressor = new GCCoreBlockOxygenCompressor(GCCoreConfigManager.idBlockAirCompressor, false, "oxygenCompressor");
+        GCCoreBlocks.fuelLoader = new GCCoreBlockFuelLoader(GCCoreConfigManager.idBlockFuelLoader, "fuelLoader");
+        GCCoreBlocks.spaceStationBase = new GCCoreBlockSpaceStationBase(GCCoreConfigManager.idBlockSpaceStationBase, "spaceStationBase");
+        GCCoreBlocks.fakeBlock = new GCCoreBlockMulti(GCCoreConfigManager.idBlockDummy, "dummyblock");
+        GCCoreBlocks.oxygenSealer = new GCCoreBlockOxygenSealer(GCCoreConfigManager.idBlockOxygenSealer, "sealer");
+        GCCoreBlocks.sealableBlock = new GCCoreBlockEnclosed(GCCoreConfigManager.idBlockEnclosedWire, "enclosed");
+        GCCoreBlocks.oxygenDetector = new GCCoreBlockOxygenDetector(GCCoreConfigManager.idBlockOxygenDetector, "oxygenDetector");
+        GCCoreBlocks.cargoLoader = new GCCoreBlockCargoLoader(GCCoreConfigManager.idBlockCargoLoader, "cargo");
+        GCCoreBlocks.parachest = new GCCoreBlockParachest(GCCoreConfigManager.idBlockParachest, "parachest");
+        GCCoreBlocks.solarPanel = new GCCoreBlockSolar(GCCoreConfigManager.idBlockSolarPanel, "solar");
+        GCCoreBlocks.machineBase = new GCCoreBlockMachine(GCCoreConfigManager.idBlockBasicMachine, "machine");
+        GCCoreBlocks.aluminumWire = new GCCoreBlockAluminumWire(GCCoreConfigManager.idBlockCopperWire, "aluminumWire");
+        GCCoreBlocks.machineBase2 = new GCCoreBlockMachine2(GCCoreConfigManager.idBlockBasicMachine2, "machine2");
+        GCCoreBlocks.glowstoneTorch = new GCCoreBlockGlowstoneTorch(GCCoreConfigManager.idBlockGlowstoneTorch, "glowstoneTorch");
 
         GCCoreUtil.registerGalacticraftBlock("rocketLaunchPad", GCCoreBlocks.landingPad, 0);
         GCCoreUtil.registerGalacticraftBlock("buggyFuelingPad", GCCoreBlocks.landingPad, 1);
@@ -132,7 +132,7 @@ public class GCCoreBlocks
         GCCoreUtil.registerGalacticraftBlock("coalGenerator", GCCoreBlocks.machineBase, 0);
         GCCoreUtil.registerGalacticraftBlock("batteryBox", GCCoreBlocks.machineBase, 4);
         GCCoreUtil.registerGalacticraftBlock("electricFurnace", GCCoreBlocks.machineBase, 8);
-        
+
         // Hide certain items from NEI
         GCCoreBlocks.hiddenBlocks.add(GCCoreBlocks.airLockSeal.blockID);
         GCCoreBlocks.hiddenBlocks.add(GCCoreBlocks.breatheableAir.blockID);
@@ -141,7 +141,7 @@ public class GCCoreBlocks
         GCCoreBlocks.hiddenBlocks.add(GCCoreBlocks.landingPadFull.blockID);
         GCCoreBlocks.hiddenBlocks.add(GCCoreBlocks.fakeBlock.blockID);
         GCCoreBlocks.hiddenBlocks.add(GCCoreBlocks.spaceStationBase.blockID);
-        
+
         GCCoreBlocks.setHarvestLevels();
         GCCoreBlocks.registerBlocks();
     }

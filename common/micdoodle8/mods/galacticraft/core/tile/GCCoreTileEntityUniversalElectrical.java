@@ -24,290 +24,293 @@ import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
 
 /**
- * This was taken from Universal Electricity and adapted for improvements allowed by ASM.
+ * This was taken from Universal Electricity and adapted for improvements
+ * allowed by ASM.
  * 
  * @author micdoodle8, Calclavia
  * 
  */
 public abstract class GCCoreTileEntityUniversalElectrical extends TileEntityElectrical
 {
-	protected boolean isAddedToEnergyNet;
-	public Object bcPowerHandler;
-	public float maxInputEnergy = 100;
+    protected boolean isAddedToEnergyNet;
+    public Object bcPowerHandler;
+    public float maxInputEnergy = 100;
 
-	/**
-	 * Recharges electric item.
-	 */
-	@Override
-	public void recharge(ItemStack itemStack)
-	{
-		if (itemStack != null)
-		{
-			if (itemStack.getItem() instanceof IItemElectric)
-			{
-				super.recharge(itemStack);
-			}
-			else if (Compatibility.isIndustrialCraft2Loaded() && itemStack.getItem() instanceof ISpecialElectricItem)
-			{
-				ISpecialElectricItem electricItem = (ISpecialElectricItem) itemStack.getItem();
-				IElectricItemManager manager = electricItem.getManager(itemStack);
-				float energy = Math.max(this.getProvide(ForgeDirection.UNKNOWN) * Compatibility.IC2_RATIO, 0);
-				energy = manager.charge(itemStack, (int) (energy * Compatibility.TO_IC2_RATIO), 0, false, false) * Compatibility.IC2_RATIO;
-				this.provideElectricity(energy, true);
-			}
-			else if (GCCoreCompatibilityManager.isTELoaded() && itemStack.getItem() instanceof IChargeableItem)
-			{
-				float accepted = ((IChargeableItem) itemStack.getItem()).receiveEnergy(itemStack, this.getProvide(ForgeDirection.UNKNOWN) * Compatibility.BC3_RATIO, true);
-				this.provideElectricity(accepted, true);
-			}
-		}
-	}
+    /**
+     * Recharges electric item.
+     */
+    @Override
+    public void recharge(ItemStack itemStack)
+    {
+        if (itemStack != null)
+        {
+            if (itemStack.getItem() instanceof IItemElectric)
+            {
+                super.recharge(itemStack);
+            }
+            else if (Compatibility.isIndustrialCraft2Loaded() && itemStack.getItem() instanceof ISpecialElectricItem)
+            {
+                ISpecialElectricItem electricItem = (ISpecialElectricItem) itemStack.getItem();
+                IElectricItemManager manager = electricItem.getManager(itemStack);
+                float energy = Math.max(this.getProvide(ForgeDirection.UNKNOWN) * Compatibility.IC2_RATIO, 0);
+                energy = manager.charge(itemStack, (int) (energy * Compatibility.TO_IC2_RATIO), 0, false, false) * Compatibility.IC2_RATIO;
+                this.provideElectricity(energy, true);
+            }
+            else if (GCCoreCompatibilityManager.isTELoaded() && itemStack.getItem() instanceof IChargeableItem)
+            {
+                float accepted = ((IChargeableItem) itemStack.getItem()).receiveEnergy(itemStack, this.getProvide(ForgeDirection.UNKNOWN) * Compatibility.BC3_RATIO, true);
+                this.provideElectricity(accepted, true);
+            }
+        }
+    }
 
-	/**
-	 * Discharges electric item.
-	 */
-	@Override
-	public void discharge(ItemStack itemStack)
-	{
-		if (itemStack != null)
-		{
-			if (itemStack.getItem() instanceof IItemElectric)
-			{
-				super.discharge(itemStack);
-			}
-			else if (Compatibility.isIndustrialCraft2Loaded() && itemStack.getItem() instanceof ISpecialElectricItem)
-			{
-				ISpecialElectricItem electricItem = (ISpecialElectricItem) itemStack.getItem();
+    /**
+     * Discharges electric item.
+     */
+    @Override
+    public void discharge(ItemStack itemStack)
+    {
+        if (itemStack != null)
+        {
+            if (itemStack.getItem() instanceof IItemElectric)
+            {
+                super.discharge(itemStack);
+            }
+            else if (Compatibility.isIndustrialCraft2Loaded() && itemStack.getItem() instanceof ISpecialElectricItem)
+            {
+                ISpecialElectricItem electricItem = (ISpecialElectricItem) itemStack.getItem();
 
-				if (electricItem.canProvideEnergy(itemStack))
-				{
-					IElectricItemManager manager = electricItem.getManager(itemStack);
-					float energy = Math.max(this.getRequest(ForgeDirection.UNKNOWN) * Compatibility.IC2_RATIO, 0);
-					energy = manager.discharge(itemStack, (int) (energy * Compatibility.TO_IC2_RATIO), 0, false, false);
-					this.receiveElectricity(energy, true);
-				}
-			}
-			else if (GCCoreCompatibilityManager.isTELoaded() && itemStack.getItem() instanceof IChargeableItem)
-			{
-				float given = ((IChargeableItem) itemStack.getItem()).transferEnergy(itemStack, this.getRequest(ForgeDirection.UNKNOWN) * Compatibility.BC3_RATIO, true);
-				this.receiveElectricity(given, true);
-			}
-		}
-	}
+                if (electricItem.canProvideEnergy(itemStack))
+                {
+                    IElectricItemManager manager = electricItem.getManager(itemStack);
+                    float energy = Math.max(this.getRequest(ForgeDirection.UNKNOWN) * Compatibility.IC2_RATIO, 0);
+                    energy = manager.discharge(itemStack, (int) (energy * Compatibility.TO_IC2_RATIO), 0, false, false);
+                    this.receiveElectricity(energy, true);
+                }
+            }
+            else if (GCCoreCompatibilityManager.isTELoaded() && itemStack.getItem() instanceof IChargeableItem)
+            {
+                float given = ((IChargeableItem) itemStack.getItem()).transferEnergy(itemStack, this.getRequest(ForgeDirection.UNKNOWN) * Compatibility.BC3_RATIO, true);
+                this.receiveElectricity(given, true);
+            }
+        }
+    }
 
-	@Override
-	public void initiate()
-	{
-		super.initiate();
-		this.initBuildCraft();
-	}
+    @Override
+    public void initiate()
+    {
+        super.initiate();
+        this.initBuildCraft();
+    }
 
-	@Override
-	public void updateEntity()
-	{
-		super.updateEntity();
+    @Override
+    public void updateEntity()
+    {
+        super.updateEntity();
 
-		// Register to the IC2 Network
-		if (!this.worldObj.isRemote)
-		{
-			if (!this.isAddedToEnergyNet)
-			{
-				this.initIC();
-			}
+        // Register to the IC2 Network
+        if (!this.worldObj.isRemote)
+        {
+            if (!this.isAddedToEnergyNet)
+            {
+                this.initIC();
+            }
 
-			if (this.bcPowerHandler == null)
-			{
-				this.initBuildCraft();
-			}
+            if (this.bcPowerHandler == null)
+            {
+                this.initBuildCraft();
+            }
 
-			if (Compatibility.isBuildcraftLoaded())
-			{
-			    PowerHandler handler = (PowerHandler) this.bcPowerHandler;
-			    
-				if (handler.getEnergyStored() > 0)
-				{
-					/**
-					 * Cheat BuildCraft powerHandler and always empty energy inside of it.
-					 */
-					this.receiveElectricity(handler.getEnergyStored() * Compatibility.BC3_RATIO, true);
-					handler.setEnergy(0);
-				}
-			}
-		}
-	}
+            if (Compatibility.isBuildcraftLoaded())
+            {
+                PowerHandler handler = (PowerHandler) this.bcPowerHandler;
 
-	@Override
-	public void produce()
-	{
-		if (!this.worldObj.isRemote)
-		{
-			for (ForgeDirection outputDirection : this.getOutputDirections())
-			{
-				if (!this.produceUE(outputDirection))
-				{
-					this.produceBuildCraft(outputDirection);
-				}
-			}
-		}
-	}
+                if (handler.getEnergyStored() > 0)
+                {
+                    /**
+                     * Cheat BuildCraft powerHandler and always empty energy
+                     * inside of it.
+                     */
+                    this.receiveElectricity(handler.getEnergyStored() * Compatibility.BC3_RATIO, true);
+                    handler.setEnergy(0);
+                }
+            }
+        }
+    }
 
-	public boolean produceBuildCraft(ForgeDirection outputDirection)
-	{
-		if (!this.worldObj.isRemote && outputDirection != null && outputDirection != ForgeDirection.UNKNOWN)
-		{
-			float provide = this.getProvide(outputDirection);
+    @Override
+    public void produce()
+    {
+        if (!this.worldObj.isRemote)
+        {
+            for (ForgeDirection outputDirection : this.getOutputDirections())
+            {
+                if (!this.produceUE(outputDirection))
+                {
+                    this.produceBuildCraft(outputDirection);
+                }
+            }
+        }
+    }
 
-			if (this.getEnergyStored() >= provide && provide > 0)
-			{
-				if (Compatibility.isBuildcraftLoaded())
-				{
-					TileEntity tileEntity = new Vector3(this).modifyPositionFromSide(outputDirection).getTileEntity(this.worldObj);
+    public boolean produceBuildCraft(ForgeDirection outputDirection)
+    {
+        if (!this.worldObj.isRemote && outputDirection != null && outputDirection != ForgeDirection.UNKNOWN)
+        {
+            float provide = this.getProvide(outputDirection);
 
-					if (tileEntity instanceof IPowerReceptor)
-					{
-						PowerReceiver receiver = ((IPowerReceptor) tileEntity).getPowerReceiver(outputDirection.getOpposite());
+            if (this.getEnergyStored() >= provide && provide > 0)
+            {
+                if (Compatibility.isBuildcraftLoaded())
+                {
+                    TileEntity tileEntity = new Vector3(this).modifyPositionFromSide(outputDirection).getTileEntity(this.worldObj);
 
-						if (receiver != null)
-						{
-							float bc3Provide = provide * Compatibility.TO_BC_RATIO;
-							float energyUsed = Math.min(receiver.receiveEnergy(Type.MACHINE, bc3Provide, outputDirection.getOpposite()), bc3Provide);
-							this.provideElectricity((bc3Provide - (energyUsed * Compatibility.TO_BC_RATIO)), true);
-							return true;
-						}
-					}
-				}
-			}
-		}
+                    if (tileEntity instanceof IPowerReceptor)
+                    {
+                        PowerReceiver receiver = ((IPowerReceptor) tileEntity).getPowerReceiver(outputDirection.getOpposite());
 
-		return false;
-	}
+                        if (receiver != null)
+                        {
+                            float bc3Provide = provide * Compatibility.TO_BC_RATIO;
+                            float energyUsed = Math.min(receiver.receiveEnergy(Type.MACHINE, bc3Provide, outputDirection.getOpposite()), bc3Provide);
+                            this.provideElectricity(bc3Provide - energyUsed * Compatibility.TO_BC_RATIO, true);
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
 
-	/**
-	 * IC2 Methods
-	 */
-	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergyAcceptor", modID = "IC2")
-	public boolean acceptsEnergyFrom(TileEntity emitter, ForgeDirection direction)
-	{
-		return this.getInputDirections().contains(direction);
-	}
+        return false;
+    }
 
-    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySource", modID = "IC2")
-	public double getOfferedEnergy()
-	{
-		return this.getProvide(ForgeDirection.UNKNOWN) * Compatibility.TO_IC2_RATIO;
-	}
+    /**
+     * IC2 Methods
+     */
+    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergyAcceptor", modID = "IC2")
+    public boolean acceptsEnergyFrom(TileEntity emitter, ForgeDirection direction)
+    {
+        return this.getInputDirections().contains(direction);
+    }
 
     @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySource", modID = "IC2")
-	public void drawEnergy(double amount)
-	{
-		this.provideElectricity((float) amount * Compatibility.IC2_RATIO, true);
-	}
+    public double getOfferedEnergy()
+    {
+        return this.getProvide(ForgeDirection.UNKNOWN) * Compatibility.TO_IC2_RATIO;
+    }
 
-	@Override
-	public void invalidate()
-	{
-		this.unloadTileIC2();
-		super.invalidate();
-	}
+    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySource", modID = "IC2")
+    public void drawEnergy(double amount)
+    {
+        this.provideElectricity((float) amount * Compatibility.IC2_RATIO, true);
+    }
 
-	@Override
-	public void onChunkUnload()
-	{
-		this.unloadTileIC2();
-		super.onChunkUnload();
-	}
+    @Override
+    public void invalidate()
+    {
+        this.unloadTileIC2();
+        super.invalidate();
+    }
 
-	protected void initIC()
-	{
-		if (Compatibility.isIndustrialCraft2Loaded())
-		{
-			MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent((IEnergyTile) this));
-		}
+    @Override
+    public void onChunkUnload()
+    {
+        this.unloadTileIC2();
+        super.onChunkUnload();
+    }
 
-		this.isAddedToEnergyNet = true;
-	}
+    protected void initIC()
+    {
+        if (Compatibility.isIndustrialCraft2Loaded())
+        {
+            MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent((IEnergyTile) this));
+        }
 
-	private void unloadTileIC2()
-	{
-		if (this.isAddedToEnergyNet && this.worldObj != null)
-		{
-			if (Compatibility.isIndustrialCraft2Loaded())
-			{
-				MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent((IEnergyTile) this));
-			}
+        this.isAddedToEnergyNet = true;
+    }
 
-			this.isAddedToEnergyNet = false;
-		}
-	}
+    private void unloadTileIC2()
+    {
+        if (this.isAddedToEnergyNet && this.worldObj != null)
+        {
+            if (Compatibility.isIndustrialCraft2Loaded())
+            {
+                MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent((IEnergyTile) this));
+            }
 
-	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
-	public double demandedEnergyUnits()
-	{
-		return Math.ceil(this.getRequest(ForgeDirection.UNKNOWN) * Compatibility.TO_IC2_RATIO);
-	}
+            this.isAddedToEnergyNet = false;
+        }
+    }
 
     @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
-	public double injectEnergyUnits(ForgeDirection direction, double amount)
-	{
-		if (this.getInputDirections().contains(direction))
-		{
-			float convertedEnergy = (float) (amount * Compatibility.IC2_RATIO);
-			ElectricityPack toSend = ElectricityPack.getFromWatts(convertedEnergy, this.getVoltage());
-			float receive = this.receiveElectricity(direction, toSend, true);
+    public double demandedEnergyUnits()
+    {
+        return Math.ceil(this.getRequest(ForgeDirection.UNKNOWN) * Compatibility.TO_IC2_RATIO);
+    }
 
-			// Return the difference, since injectEnergy returns left over energy, and
-			// receiveElectricity returns energy used.
-			return Math.round(amount - (receive * Compatibility.TO_IC2_RATIO));
-		}
+    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
+    public double injectEnergyUnits(ForgeDirection direction, double amount)
+    {
+        if (this.getInputDirections().contains(direction))
+        {
+            float convertedEnergy = (float) (amount * Compatibility.IC2_RATIO);
+            ElectricityPack toSend = ElectricityPack.getFromWatts(convertedEnergy, this.getVoltage());
+            float receive = this.receiveElectricity(direction, toSend, true);
 
-		return amount;
-	}
+            // Return the difference, since injectEnergy returns left over
+            // energy, and
+            // receiveElectricity returns energy used.
+            return Math.round(amount - receive * Compatibility.TO_IC2_RATIO);
+        }
+
+        return amount;
+    }
 
     @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergyEmitter", modID = "IC2")
-	public boolean emitsEnergyTo(TileEntity receiver, ForgeDirection direction)
-	{
-		return receiver instanceof IEnergyTile && this.getOutputDirections().contains(direction);
-	}
+    public boolean emitsEnergyTo(TileEntity receiver, ForgeDirection direction)
+    {
+        return receiver instanceof IEnergyTile && this.getOutputDirections().contains(direction);
+    }
 
     @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
-	public int getMaxSafeInput()
-	{
-		return Integer.MAX_VALUE;
-	}
+    public int getMaxSafeInput()
+    {
+        return Integer.MAX_VALUE;
+    }
 
-	/**
-	 * BuildCraft power support
-	 */
-	public void initBuildCraft()
-	{
-	    if (!Compatibility.isBuildcraftLoaded())
-	    {
-	        return;
-	    }
-	    
-		if (this.bcPowerHandler == null)
-		{
-			this.bcPowerHandler = new PowerHandler((IPowerReceptor) this, Type.MACHINE);
-		}
-		((PowerHandler) this.bcPowerHandler).configure(0, this.maxInputEnergy, 0, (int) Math.ceil(this.getMaxEnergyStored() * Compatibility.BC3_RATIO));
-	}
+    /**
+     * BuildCraft power support
+     */
+    public void initBuildCraft()
+    {
+        if (!Compatibility.isBuildcraftLoaded())
+        {
+            return;
+        }
 
-    @RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "BuildCraft|Energy")
-	public PowerReceiver getPowerReceiver(ForgeDirection side)
-	{
-		this.initBuildCraft();
-		return ((PowerHandler) this.bcPowerHandler).getPowerReceiver();
-	}
+        if (this.bcPowerHandler == null)
+        {
+            this.bcPowerHandler = new PowerHandler((IPowerReceptor) this, Type.MACHINE);
+        }
+        ((PowerHandler) this.bcPowerHandler).configure(0, this.maxInputEnergy, 0, (int) Math.ceil(this.getMaxEnergyStored() * Compatibility.BC3_RATIO));
+    }
 
     @RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "BuildCraft|Energy")
-	public void doWork(PowerHandler workProvider)
-	{
+    public PowerReceiver getPowerReceiver(ForgeDirection side)
+    {
+        this.initBuildCraft();
+        return ((PowerHandler) this.bcPowerHandler).getPowerReceiver();
+    }
 
-	}
-    
     @RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "BuildCraft|Energy")
-	public World getWorld()
-	{
-		return this.getWorldObj();
-	}
+    public void doWork(PowerHandler workProvider)
+    {
+
+    }
+
+    @RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "BuildCraft|Energy")
+    public World getWorld()
+    {
+        return this.getWorldObj();
+    }
 }

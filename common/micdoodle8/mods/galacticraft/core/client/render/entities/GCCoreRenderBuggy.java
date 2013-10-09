@@ -55,81 +55,81 @@ public class GCCoreRenderBuggy extends Render
         GL11.glRotatef(180.0F - par8, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(-var24, 0.0F, 0.0F, 1.0F);
         GL11.glScalef(0.41F, 0.41F, 0.41F);
-        this.bindTexture(buggyTextureWheel);
-        
+        this.bindTexture(GCCoreRenderBuggy.buggyTextureWheel);
+
         float rotation = entity.wheelRotationX;
-        
+
         // Front wheel covers
         GL11.glPushMatrix();
-            GL11.glTranslatef(0.0F, 1.0F, -2.6F);
-            GL11.glRotatef(entity.wheelRotationZ, 0, 1, 0);
-            GL11.glTranslatef(1.4F, 0.0F, 0.0F);
-            this.wheelModelRight.renderPart("WheelRightCover_Cover");
-            GL11.glTranslatef(-2.8F, 0.0F, 0.0F);
-            this.wheelModelLeft.renderPart("WheelLeftCover_Cover");
+        GL11.glTranslatef(0.0F, 1.0F, -2.6F);
+        GL11.glRotatef(entity.wheelRotationZ, 0, 1, 0);
+        GL11.glTranslatef(1.4F, 0.0F, 0.0F);
+        this.wheelModelRight.renderPart("WheelRightCover_Cover");
+        GL11.glTranslatef(-2.8F, 0.0F, 0.0F);
+        this.wheelModelLeft.renderPart("WheelLeftCover_Cover");
         GL11.glPopMatrix();
-        
+
         // Back wheel covers
         GL11.glPushMatrix();
-            GL11.glTranslatef(0.0F, 1.0F, 3.7F);
-            GL11.glRotatef(-entity.wheelRotationZ, 0, 1, 0);
-            GL11.glTranslatef(2.0F, 0.0F, 0.0F);
-            this.wheelModelRight.renderPart("WheelRightCover_Cover");
-            GL11.glTranslatef(-4.0F, 0.0F, 0.0F);
-            this.wheelModelLeft.renderPart("WheelLeftCover_Cover");
+        GL11.glTranslatef(0.0F, 1.0F, 3.7F);
+        GL11.glRotatef(-entity.wheelRotationZ, 0, 1, 0);
+        GL11.glTranslatef(2.0F, 0.0F, 0.0F);
+        this.wheelModelRight.renderPart("WheelRightCover_Cover");
+        GL11.glTranslatef(-4.0F, 0.0F, 0.0F);
+        this.wheelModelLeft.renderPart("WheelLeftCover_Cover");
         GL11.glPopMatrix();
-        
+
         // Front wheels
         GL11.glPushMatrix();
-            GL11.glTranslatef(0.0F, 1.0F, -2.7F);
-            GL11.glRotatef(entity.wheelRotationZ, 0, 1, 0);
-            GL11.glRotatef(rotation, 1, 0, 0);
-            GL11.glTranslatef(1.4F, 0.0F, 0.0F);
-            this.wheelModelRight.renderPart("WheelRight_Wheel");
-            GL11.glTranslatef(-2.8F, 0.0F, 0.0F);
-            this.wheelModelLeft.renderPart("WheelLeft_Wheel");
+        GL11.glTranslatef(0.0F, 1.0F, -2.7F);
+        GL11.glRotatef(entity.wheelRotationZ, 0, 1, 0);
+        GL11.glRotatef(rotation, 1, 0, 0);
+        GL11.glTranslatef(1.4F, 0.0F, 0.0F);
+        this.wheelModelRight.renderPart("WheelRight_Wheel");
+        GL11.glTranslatef(-2.8F, 0.0F, 0.0F);
+        this.wheelModelLeft.renderPart("WheelLeft_Wheel");
         GL11.glPopMatrix();
-        
+
         // Back wheels
         GL11.glPushMatrix();
-            GL11.glTranslatef(0.0F, 1.0F, 3.6F);
-            GL11.glRotatef(-entity.wheelRotationZ, 0, 1, 0);
-            GL11.glRotatef(rotation, 1, 0, 0);
-            GL11.glTranslatef(2.0F, 0.0F, 0.0F);
-            this.wheelModelRight.renderPart("WheelRight_Wheel");
-            GL11.glTranslatef(-4.0F, 0.0F, 0.0F);
-            this.wheelModelLeft.renderPart("WheelLeft_Wheel");
+        GL11.glTranslatef(0.0F, 1.0F, 3.6F);
+        GL11.glRotatef(-entity.wheelRotationZ, 0, 1, 0);
+        GL11.glRotatef(rotation, 1, 0, 0);
+        GL11.glTranslatef(2.0F, 0.0F, 0.0F);
+        this.wheelModelRight.renderPart("WheelRight_Wheel");
+        GL11.glTranslatef(-4.0F, 0.0F, 0.0F);
+        this.wheelModelLeft.renderPart("WheelLeft_Wheel");
         GL11.glPopMatrix();
-        
-        this.bindTexture(buggyTextureBody);
+
+        this.bindTexture(GCCoreRenderBuggy.buggyTextureBody);
         this.buggyModel.renderPart("MainBody");
-        
+
         // Radar Dish
         GL11.glPushMatrix();
-            GL11.glTranslatef(-1.178F, 4.1F, -2.397F);
-            GL11.glRotatef(entity.radarDishRotation.floatX(), 1, 0, 0);
-            GL11.glRotatef(entity.radarDishRotation.floatY(), 0, 1, 0);
-            GL11.glRotatef(entity.radarDishRotation.floatZ(), 0, 0, 1);
-            this.buggyModel.renderPart("RadarDish_Dish");
+        GL11.glTranslatef(-1.178F, 4.1F, -2.397F);
+        GL11.glRotatef(entity.radarDishRotation.floatX(), 1, 0, 0);
+        GL11.glRotatef(entity.radarDishRotation.floatY(), 0, 1, 0);
+        GL11.glRotatef(entity.radarDishRotation.floatZ(), 0, 0, 1);
+        this.buggyModel.renderPart("RadarDish_Dish");
         GL11.glPopMatrix();
-        
-        this.bindTexture(buggyTextureStorage);
+
+        this.bindTexture(GCCoreRenderBuggy.buggyTextureStorage);
 
         if (entity.buggyType > 0)
         {
             this.buggyModel.renderPart("CargoLeft");
-            
+
             if (entity.buggyType > 1)
             {
                 this.buggyModel.renderPart("CargoMid");
-                
+
                 if (entity.buggyType > 2)
                 {
                     this.buggyModel.renderPart("CargoRight");
                 }
             }
         }
-        
+
         GL11.glPopMatrix();
     }
 

@@ -36,43 +36,43 @@ public class GCCoreManualUtil
             FMLLog.severe("Encountered problem while trying to read Galacticraft manual file...");
             e.printStackTrace();
         }
-        
+
         return null;
     }
-    
+
     public static void registerIcon(String iconName, ItemStack stack)
     {
         GCCoreManualUtil.manualIcons.put(iconName, stack);
     }
-    
+
     public static ItemStack getIcon(String iconName)
     {
         ItemStack preferredStack = GCCoreManualUtil.manualIcons.get(iconName);
-        return preferredStack != null ? preferredStack : defaultStack;
+        return preferredStack != null ? preferredStack : GCCoreManualUtil.defaultStack;
     }
-    
+
     public static void registerManualRecipe(String name, ItemStack output, ItemStack... input)
     {
         ItemStack[] recipe = new ItemStack[10];
         recipe[0] = output;
         System.arraycopy(input, 0, recipe, 1, 9);
-        recipeIcons.put(name, recipe);
+        GCCoreManualUtil.recipeIcons.put(name, recipe);
     }
 
     public static Map<String, Class<? extends GCCoreBookPage>> pageClasses = new HashMap<String, Class<? extends GCCoreBookPage>>();
 
-    public static void registerManualPage (String type, Class<? extends GCCoreBookPage> clazz)
+    public static void registerManualPage(String type, Class<? extends GCCoreBookPage> clazz)
     {
-        pageClasses.put(type, clazz);
+        GCCoreManualUtil.pageClasses.put(type, clazz);
     }
 
-    public static Class<? extends GCCoreBookPage> getPageClass (String type)
+    public static Class<? extends GCCoreBookPage> getPageClass(String type)
     {
-        return pageClasses.get(type);
+        return GCCoreManualUtil.pageClasses.get(type);
     }
-    
+
     public static ItemStack[] getRecipeIcons(String name)
     {
-        return recipeIcons.get(name);
+        return GCCoreManualUtil.recipeIcons.get(name);
     }
 }

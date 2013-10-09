@@ -462,7 +462,7 @@ public class GCMarsEntityLandingBalloons extends GCCoreEntityAdvanced implements
     public void onGroundHit()
     {
         this.groundHitCount++;
-        
+
         if (this.worldObj.isRemote && !this.hasReceivedPacket)
         {
             return;

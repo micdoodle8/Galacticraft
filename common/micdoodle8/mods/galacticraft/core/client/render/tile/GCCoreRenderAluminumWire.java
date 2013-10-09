@@ -29,11 +29,11 @@ public class GCCoreRenderAluminumWire extends TileEntitySpecialRenderer
 
     public final IModelCustom model;
     public final IModelCustom model2;
-    
+
     public GCCoreRenderAluminumWire()
     {
-        model = AdvancedModelLoader.loadModel("/assets/galacticraftcore/models/aluminumWire.obj");
-        model2 = AdvancedModelLoader.loadModel("/assets/galacticraftcore/models/aluminumWireHeavy.obj");
+        this.model = AdvancedModelLoader.loadModel("/assets/galacticraftcore/models/aluminumWire.obj");
+        this.model2 = AdvancedModelLoader.loadModel("/assets/galacticraftcore/models/aluminumWireHeavy.obj");
     }
 
     public void renderModelAt(GCCoreTileEntityAluminumWire tileEntity, double d, double d1, double d2, float f)
@@ -89,11 +89,11 @@ public class GCCoreRenderAluminumWire extends TileEntitySpecialRenderer
                 adjecentConnections.add(null);
             }
         }
-        
+
         int metadata = tileEntity.worldObj.getBlockMetadata(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
 
         IModelCustom model = null;
-        
+
         if (metadata == 0)
         {
             model = this.model;
@@ -102,7 +102,7 @@ public class GCCoreRenderAluminumWire extends TileEntitySpecialRenderer
         {
             model = this.model2;
         }
-        
+
         if (adjecentConnections.toArray()[0] != null)
         {
             model.renderPart("Top");

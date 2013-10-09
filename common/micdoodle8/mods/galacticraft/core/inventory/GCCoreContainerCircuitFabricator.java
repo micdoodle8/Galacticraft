@@ -22,17 +22,17 @@ public class GCCoreContainerCircuitFabricator extends Container
 
         // Coal slot
         this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 6, 69, IItemElectric.class));
-        
+
         // Diamond
         this.addSlotToContainer(new Slot(tileEntity, 1, 15, 17));
-        
+
         // Silicon
         this.addSlotToContainer(new Slot(tileEntity, 2, 74, 46));
         this.addSlotToContainer(new Slot(tileEntity, 3, 74, 64));
-        
+
         // Redstone
         this.addSlotToContainer(new Slot(tileEntity, 4, 122, 46));
-        
+
         // Optional
         this.addSlotToContainer(new Slot(tileEntity, 5, 145, 20));
 

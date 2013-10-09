@@ -117,7 +117,7 @@ public class GCCoreBlockMachine2 extends BlockTile
             {
                 return this.iconCircuitFabricator;
             }
-            
+
             if (side == ForgeDirection.getOrientation(metadata + 2).ordinal())
             {
                 return this.iconOutput;
@@ -131,7 +131,7 @@ public class GCCoreBlockMachine2 extends BlockTile
             {
                 return this.iconElectricCompressor;
             }
-            
+
             if (side == ForgeDirection.getOrientation(metadata + 2).ordinal())
             {
                 return this.iconOutput;

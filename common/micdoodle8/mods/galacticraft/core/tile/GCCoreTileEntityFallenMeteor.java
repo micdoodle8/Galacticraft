@@ -16,28 +16,29 @@ import cpw.mods.fml.common.FMLLog;
 public class GCCoreTileEntityFallenMeteor extends TileEntity implements IPacketReceiver
 {
     public static final int MAX_HEAT_LEVEL = 5000;
-    private int heatLevel = MAX_HEAT_LEVEL;
+    private int heatLevel = GCCoreTileEntityFallenMeteor.MAX_HEAT_LEVEL;
     private int lastHeatLevel;
-    
-    public void updateEntity() 
+
+    @Override
+    public void updateEntity()
     {
         super.updateEntity();
-        
+
         if (!this.worldObj.isRemote && this.heatLevel > 0)
         {
             this.heatLevel--;
         }
-        
+
         if (this.heatLevel % 20 == 0 && this.heatLevel != 0)
         {
             this.worldObj.markBlockForRenderUpdate(this.xCoord, this.yCoord, this.zCoord);
         }
-        
-        if (!this.worldObj.isRemote && ((this.heatLevel % 5 == 0 && this.heatLevel != 0) || this.heatLevel == 0 && this.lastHeatLevel != 0))
+
+        if (!this.worldObj.isRemote && (this.heatLevel % 5 == 0 && this.heatLevel != 0 || this.heatLevel == 0 && this.lastHeatLevel != 0))
         {
             PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 50.0F);
         }
-        
+
         this.lastHeatLevel = this.heatLevel;
     }
 
@@ -46,7 +47,7 @@ public class GCCoreTileEntityFallenMeteor extends TileEntity implements IPacketR
     {
         return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.heatLevel);
     }
-    
+
     @Override
     public void handlePacketData(INetworkManager network, int packetType, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream)
     {
@@ -66,25 +67,27 @@ public class GCCoreTileEntityFallenMeteor extends TileEntity implements IPacketR
 
     public int getHeatLevel()
     {
-        return heatLevel;
+        return this.heatLevel;
     }
 
     public void setHeatLevel(int heatLevel)
     {
         this.heatLevel = heatLevel;
     }
-    
+
     public float getScaledHeatLevel()
     {
-        return (float)this.heatLevel / GCCoreTileEntityFallenMeteor.MAX_HEAT_LEVEL;
+        return (float) this.heatLevel / GCCoreTileEntityFallenMeteor.MAX_HEAT_LEVEL;
     }
-    
+
+    @Override
     public void readFromNBT(NBTTagCompound nbt)
     {
         super.readFromNBT(nbt);
         this.heatLevel = nbt.getInteger("MeteorHeatLevel");
     }
 
+    @Override
     public void writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);

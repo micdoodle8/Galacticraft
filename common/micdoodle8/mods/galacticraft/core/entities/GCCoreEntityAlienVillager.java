@@ -39,7 +39,7 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
     private MerchantRecipeList buyingList;
     private int wealth;
     private boolean field_82190_bM;
-    
+
     public GCCoreEntityAlienVillager(World par1World)
     {
         super(par1World);

@@ -193,18 +193,18 @@ public class GCMarsEvents
             }
         }
     }
-    
+
     @ForgeSubscribe
     public void onLandingPadRemoved(GCCoreLandingPadRemovalEvent event)
     {
         TileEntity tile = event.world.getBlockTileEntity(event.x, event.y, event.z);
-        
+
         if (tile instanceof IFuelDock)
         {
             IFuelDock dock = (IFuelDock) tile;
-            
+
             GCMarsTileEntityLaunchController launchController = null;
-            
+
             for (ILandingPadAttachable connectedTile : dock.getConnectedTiles())
             {
                 if (connectedTile instanceof GCMarsTileEntityLaunchController)
@@ -213,7 +213,7 @@ public class GCMarsEvents
                     break;
                 }
             }
-            
+
             if (launchController != null)
             {
                 if (!launchController.getDisabled(0) && launchController.getEnergyStored() > 0.0F)

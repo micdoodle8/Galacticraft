@@ -15,7 +15,7 @@ public class PacketUtil
     {
         return PacketUtil.createPacket(channel, packetType.getIndex(), input);
     }
-    
+
     public static Packet250CustomPayload createPacket(String channel, int packetID, Object[] input)
     {
         final ByteArrayOutputStream bytes = new ByteArrayOutputStream();

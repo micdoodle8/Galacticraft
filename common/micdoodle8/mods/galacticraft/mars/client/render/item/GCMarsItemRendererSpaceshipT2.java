@@ -20,7 +20,7 @@ public class GCMarsItemRendererSpaceshipT2 extends GCCoreItemRendererSpaceship
 {
     private static final ResourceLocation cargoRocketTexture = new ResourceLocation(GalacticraftMars.TEXTURE_DOMAIN, "textures/model/cargoRocket.png");
     private IModelCustom cargoRocketModel;
-    
+
     public GCMarsItemRendererSpaceshipT2(IModelCustom cargoRocketModel)
     {
         super(new GCMarsEntityRocketT2(FMLClientHandler.instance().getClient().theWorld), new GCMarsModelSpaceshipTier2(), new ResourceLocation(GalacticraftMars.TEXTURE_DOMAIN, "textures/model/rocketT2.png"));
@@ -49,8 +49,8 @@ public class GCMarsItemRendererSpaceshipT2 extends GCCoreItemRendererSpaceship
 
         if (type == ItemRenderType.INVENTORY)
         {
-            int index = Math.min(Math.max((item.getItemDamage() >= 10 ? item.getItemDamage() - 10 : item.getItemDamage()), 0), EnumRocketType.values().length - 1);
-            
+            int index = Math.min(Math.max(item.getItemDamage() >= 10 ? item.getItemDamage() - 10 : item.getItemDamage(), 0), EnumRocketType.values().length - 1);
+
             if (EnumRocketType.values()[index].getInventorySpace() > 3)
             {
                 final ModelChest modelChest = this.chestModel;
@@ -96,13 +96,13 @@ public class GCMarsItemRendererSpaceshipT2 extends GCCoreItemRendererSpaceship
             {
                 GL11.glTranslatef(0.5F, 0.2F, 0F);
             }
-            
+
             GL11.glRotatef(70, 1.0F, 0, 0);
             GL11.glRotatef(-10, 0.0F, 1, 0);
             GL11.glRotatef(50, 0.0F, 1, 1);
             GL11.glTranslatef(0F, 2.0F, 0F);
             GL11.glScalef(5.2F, 5.2F, 5.2F);
-            
+
             if (itemstack.getItemDamage() >= 10)
             {
                 GL11.glTranslatef(0F, 0.45F, 0F);
@@ -118,12 +118,12 @@ public class GCMarsItemRendererSpaceshipT2 extends GCCoreItemRendererSpaceship
         if (type == ItemRenderType.EQUIPPED_FIRST_PERSON)
         {
             GL11.glTranslatef(-0.5F, 4.2F, 0F);
-            
+
             if (itemstack.getItemDamage() >= 10)
             {
                 GL11.glTranslatef(0F, 1.5F, -6.0F);
             }
-            
+
             GL11.glRotatef(28, 0.0F, 0, 1);
             GL11.glRotatef(50 + 180, 0.0F, 1, 0);
             GL11.glRotatef(73, 1.0F, 0, 0);
@@ -151,7 +151,7 @@ public class GCMarsItemRendererSpaceshipT2 extends GCCoreItemRendererSpaceship
                 GL11.glTranslatef(0, -0.9F, 0);
                 GL11.glScalef(0.5F, 0.5F, 0.5F);
             }
-            
+
             if (itemstack.getItemDamage() >= 10)
             {
                 GL11.glRotatef(180F, 1F, 0F, 0F);
@@ -160,7 +160,7 @@ public class GCMarsItemRendererSpaceshipT2 extends GCCoreItemRendererSpaceship
 
             GL11.glScalef(1.3F, 1.3F, 1.3F);
             GL11.glTranslatef(0, -0.6F, 0);
-            GL11.glRotatef((Sys.getTime() / 90F % 360F) * (itemstack.getItemDamage() >= 10 ? -1 : 1), 0F, 1F, 0F);
+            GL11.glRotatef(Sys.getTime() / 90F % 360F * (itemstack.getItemDamage() >= 10 ? -1 : 1), 0F, 1F, 0F);
         }
     }
 }

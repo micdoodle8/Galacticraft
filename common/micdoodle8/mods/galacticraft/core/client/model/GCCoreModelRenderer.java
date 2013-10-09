@@ -18,12 +18,13 @@ public class GCCoreModelRenderer extends ModelRenderer
 {
     private boolean compiled;
     private int displayList;
-    
+
     public GCCoreModelRenderer(ModelBase par1ModelBase, int par2, int par3)
     {
         super(par1ModelBase, par2, par3);
     }
-    
+
+    @Override
     @SideOnly(Side.CLIENT)
     public void render(float par1)
     {
@@ -49,7 +50,7 @@ public class GCCoreModelRenderer extends ModelRenderer
                         {
                             for (i = 0; i < this.childModels.size(); ++i)
                             {
-                                ((ModelRenderer)this.childModels.get(i)).render(par1);
+                                ((ModelRenderer) this.childModels.get(i)).render(par1);
                             }
                         }
                     }
@@ -62,7 +63,7 @@ public class GCCoreModelRenderer extends ModelRenderer
                         {
                             for (i = 0; i < this.childModels.size(); ++i)
                             {
-                                ((ModelRenderer)this.childModels.get(i)).render(par1);
+                                ((ModelRenderer) this.childModels.get(i)).render(par1);
                             }
                         }
 
@@ -76,17 +77,17 @@ public class GCCoreModelRenderer extends ModelRenderer
 
                     if (this.rotateAngleY != 0.0F)
                     {
-                        GL11.glRotatef(this.rotateAngleY * (180F / (float)Math.PI), 0.0F, 1.0F, 0.0F);
+                        GL11.glRotatef(this.rotateAngleY * (180F / (float) Math.PI), 0.0F, 1.0F, 0.0F);
                     }
 
                     if (this.rotateAngleX != 0.0F)
                     {
-                        GL11.glRotatef(this.rotateAngleX * (180F / (float)Math.PI), 1.0F, 0.0F, 0.0F);
+                        GL11.glRotatef(this.rotateAngleX * (180F / (float) Math.PI), 1.0F, 0.0F, 0.0F);
                     }
 
                     if (this.rotateAngleZ != 0.0F)
                     {
-                        GL11.glRotatef(this.rotateAngleZ * (180F / (float)Math.PI), 0.0F, 0.0F, 1.0F);
+                        GL11.glRotatef(this.rotateAngleZ * (180F / (float) Math.PI), 0.0F, 0.0F, 1.0F);
                     }
 
                     GL11.glCallList(this.displayList);
@@ -95,7 +96,7 @@ public class GCCoreModelRenderer extends ModelRenderer
                     {
                         for (i = 0; i < this.childModels.size(); ++i)
                         {
-                            ((ModelRenderer)this.childModels.get(i)).render(par1);
+                            ((ModelRenderer) this.childModels.get(i)).render(par1);
                         }
                     }
 
@@ -106,7 +107,7 @@ public class GCCoreModelRenderer extends ModelRenderer
             }
         }
     }
-    
+
     @SideOnly(Side.CLIENT)
     private void compileDisplayList(float par1)
     {
@@ -116,7 +117,7 @@ public class GCCoreModelRenderer extends ModelRenderer
 
         for (int i = 0; i < this.cubeList.size(); ++i)
         {
-            ((ModelBox)this.cubeList.get(i)).render(tessellator, par1);
+            ((ModelBox) this.cubeList.get(i)).render(tessellator, par1);
         }
 
         GL11.glEndList();

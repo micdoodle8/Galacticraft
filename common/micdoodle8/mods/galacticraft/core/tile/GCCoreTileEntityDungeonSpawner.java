@@ -121,7 +121,7 @@ public class GCCoreTileEntityDungeonSpawner extends TileEntityAdvanced
             this.lastPlayerInRange = this.playerInRange;
         }
     }
-    
+
     public void playSpawnSound(Entity entity)
     {
         ;

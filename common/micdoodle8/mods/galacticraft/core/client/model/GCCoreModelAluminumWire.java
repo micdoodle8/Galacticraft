@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.client.model;
 
-import org.lwjgl.opengl.GL11;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
@@ -113,7 +112,7 @@ public class GCCoreModelAluminumWire extends ModelBase
 
     public void renderFront()
     {
-//        this.Front.render(0.0625F);
+        // this.Front.render(0.0625F);
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z)

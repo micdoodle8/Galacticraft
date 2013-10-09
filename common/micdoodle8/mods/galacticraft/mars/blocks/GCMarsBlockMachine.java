@@ -163,7 +163,7 @@ public class GCMarsBlockMachine extends BlockTile
                 change = 0;
                 break;
             }
-            
+
             world.setBlockMetadataWithNotify(x, y, z, GCMarsBlockMachine.LAUNCH_CONTROLLER_METADATA + change, 3);
         }
         else if (metadata >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA)
@@ -198,7 +198,7 @@ public class GCMarsBlockMachine extends BlockTile
             ((IMultiBlock) var8).onCreate(new Vector3(x, y, z));
         }
 
-        if (metadata >= LAUNCH_CONTROLLER_METADATA)
+        if (metadata >= GCMarsBlockMachine.LAUNCH_CONTROLLER_METADATA)
         {
             for (int dX = -2; dX < 3; dX++)
             {
@@ -213,12 +213,12 @@ public class GCMarsBlockMachine extends BlockTile
                 }
             }
         }
-        
+
         if (var8 instanceof IChunkLoader && !var8.worldObj.isRemote && GCMarsConfigManager.launchControllerChunkLoad)
         {
             ((IChunkLoader) var8).onTicketLoaded(ForgeChunkManager.requestTicket(GalacticraftCore.instance, var8.worldObj, Type.NORMAL));
         }
-        
+
         if (var8 instanceof GCMarsTileEntityLaunchController && entityLiving instanceof EntityPlayer)
         {
             ((GCMarsTileEntityLaunchController) var8).setOwnerName(((EntityPlayer) entityLiving).username);
@@ -327,7 +327,7 @@ public class GCMarsBlockMachine extends BlockTile
     {
         super.onBlockDestroyedByPlayer(world, x, y, z, par5);
 
-        if (world.getBlockMetadata(x, y, z) >= LAUNCH_CONTROLLER_METADATA)
+        if (world.getBlockMetadata(x, y, z) >= GCMarsBlockMachine.LAUNCH_CONTROLLER_METADATA)
         {
             for (int dX = -2; dX < 3; dX++)
             {

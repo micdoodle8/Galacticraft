@@ -15,14 +15,14 @@ public class ChunkLoadingCallback implements LoadingCallback
         for (Ticket ticket : tickets)
         {
             NBTTagCompound nbt = ticket.getModData();
-            
+
             if (nbt != null)
             {
                 int tileX = nbt.getInteger("ChunkLoaderTileX");
                 int tileY = nbt.getInteger("ChunkLoaderTileY");
                 int tileZ = nbt.getInteger("ChunkLoaderTileZ");
                 TileEntity tile = world.getBlockTileEntity(tileX, tileY, tileZ);
-                
+
                 if (tile instanceof IChunkLoader)
                 {
                     ((IChunkLoader) tile).onTicketLoaded(ticket);

@@ -51,7 +51,6 @@ import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerServer;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAdvancedCraftingTable;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAirLock;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAluminumWire;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityEnergyStorageModule;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBuggyFueler;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBuggyFuelerSingle;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoLoader;
@@ -63,6 +62,7 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCoalGenerator;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityDungeonSpawner;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectricFurnace;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectricIngotCompressor;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityEnergyStorageModule;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFallenMeteor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityIngotCompressor;
@@ -182,7 +182,7 @@ public class GalacticraftCore
 
     public static Fluid CRUDEOIL;
     public static Fluid FUEL;
-    
+
     public static HashMap<String, ItemStack> itemList = new HashMap<String, ItemStack>();
     public static HashMap<String, ItemStack> blocksList = new HashMap<String, ItemStack>();
 
@@ -192,17 +192,17 @@ public class GalacticraftCore
         GalacticraftMoon.preLoad(event);
         MinecraftForge.EVENT_BUS.register(new GCCoreEvents());
         GalacticraftCore.proxy.preInit(event);
-        
+
         GCCoreConfigManager.setDefaultValues(new File(event.getModConfigurationDirectory(), GalacticraftCore.CONFIG_FILE));
 
         GalacticraftCore.CRUDEOIL = new Fluid("oil").setBlockID(GCCoreConfigManager.idBlockCrudeOilStill).setViscosity(3000);
         GalacticraftCore.FUEL = new Fluid("fuel").setViscosity(800);
-        
+
         if (!FluidRegistry.registerFluid(GalacticraftCore.CRUDEOIL))
         {
             GCLog.info("\"oil\" has already been registered as a fluid, ignoring...");
         }
-        
+
         if (!FluidRegistry.registerFluid(GalacticraftCore.FUEL))
         {
             GCLog.info("\"fuel\" has already been registered as a fluid, ignoring...");
@@ -256,9 +256,9 @@ public class GalacticraftCore
 
             languages++;
         }
-        
+
         ForgeChunkManager.setForcedChunkLoadingCallback(GalacticraftCore.instance, new ChunkLoadingCallback());
-        
+
         GCLog.info("Galacticraft Loaded: " + languages + " Languages.");
         GalacticraftMoon.load(event);
 
@@ -271,7 +271,7 @@ public class GalacticraftCore
         {
             FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(GalacticraftCore.CRUDEOIL, GCCoreItems.oilCanister.getMaxDamage() - i), new ItemStack(GCCoreItems.oilCanister, 1, i), new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.fuelCanister.getMaxDamage())));
         }
-        
+
         SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicRocketT1());
         SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicMoonBuggy());
         SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicAdd());
@@ -288,7 +288,7 @@ public class GalacticraftCore
         GalacticraftRegistry.addDungeonLoot(1, new ItemStack(GCCoreItems.schematic, 1, 0));
         GalacticraftRegistry.addDungeonLoot(1, new ItemStack(GCCoreItems.schematic, 1, 1));
     }
-    
+
     @SuppressWarnings("deprecation")
     private void initiateUENetwork()
     {
@@ -314,7 +314,7 @@ public class GalacticraftCore
         NetworkRegistry.instance().registerGuiHandler(this, GalacticraftCore.proxy);
         GalacticraftCore.proxy.postInit(event);
         GalacticraftCore.proxy.registerRenderInformation();
-        
+
         for (int i = 3; i < 8; i++)
         {
             if (GCCoreItemBasic.names[i].contains("ingot"))
@@ -325,35 +325,17 @@ public class GalacticraftCore
                 }
             }
         }
-        
+
         CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, 13), new ItemStack(Item.ingotIron, 1, 0));
         CompressorRecipes.addShapelessRecipe(new ItemStack(GCMoonItems.meteoricIronIngot, 1, 1), new ItemStack(GCMoonItems.meteoricIronIngot, 1, 0));
-        
-        CompressorRecipes.addRecipe(new ItemStack(GCCoreItems.heavyPlatingTier1, 1, 0), "XYZ", "XYZ",
-                'X', new ItemStack(GCCoreItems.basicItem, 2, 11), 
-                'Y', new ItemStack(GCCoreItems.basicItem, 2, 10),
-                'Z', new ItemStack(GCCoreItems.basicItem, 2, 12));
-        
-        CircuitFabricatorRecipes.addRecipe(new ItemStack(GCCoreItems.basicItem, 9, 14), new ItemStack[] { 
-            new ItemStack(Item.diamond),
-            new ItemStack(GCCoreItems.basicItem, 1, 2),
-            new ItemStack(GCCoreItems.basicItem, 1, 2),
-            new ItemStack(Item.redstone),
-            new ItemStack(Item.dyePowder, 1, 4)});
-        
-        CircuitFabricatorRecipes.addRecipe(new ItemStack(GCCoreItems.basicItem, 3, 15), new ItemStack[] { 
-            new ItemStack(Item.diamond),
-            new ItemStack(GCCoreItems.basicItem, 1, 2),
-            new ItemStack(GCCoreItems.basicItem, 1, 2),
-            new ItemStack(Item.redstone),
-            new ItemStack(Block.torchRedstoneActive)});
-        
-        CircuitFabricatorRecipes.addRecipe(new ItemStack(GCCoreItems.basicItem, 1, 16), new ItemStack[] { 
-            new ItemStack(Item.diamond),
-            new ItemStack(GCCoreItems.basicItem, 1, 2),
-            new ItemStack(GCCoreItems.basicItem, 1, 2),
-            new ItemStack(Item.redstone),
-            new ItemStack(Item.redstoneRepeater)});
+
+        CompressorRecipes.addRecipe(new ItemStack(GCCoreItems.heavyPlatingTier1, 1, 0), "XYZ", "XYZ", 'X', new ItemStack(GCCoreItems.basicItem, 2, 11), 'Y', new ItemStack(GCCoreItems.basicItem, 2, 10), 'Z', new ItemStack(GCCoreItems.basicItem, 2, 12));
+
+        CircuitFabricatorRecipes.addRecipe(new ItemStack(GCCoreItems.basicItem, 9, 14), new ItemStack[] { new ItemStack(Item.diamond), new ItemStack(GCCoreItems.basicItem, 1, 2), new ItemStack(GCCoreItems.basicItem, 1, 2), new ItemStack(Item.redstone), new ItemStack(Item.dyePowder, 1, 4) });
+
+        CircuitFabricatorRecipes.addRecipe(new ItemStack(GCCoreItems.basicItem, 3, 15), new ItemStack[] { new ItemStack(Item.diamond), new ItemStack(GCCoreItems.basicItem, 1, 2), new ItemStack(GCCoreItems.basicItem, 1, 2), new ItemStack(Item.redstone), new ItemStack(Block.torchRedstoneActive) });
+
+        CircuitFabricatorRecipes.addRecipe(new ItemStack(GCCoreItems.basicItem, 1, 16), new ItemStack[] { new ItemStack(Item.diamond), new ItemStack(GCCoreItems.basicItem, 1, 2), new ItemStack(GCCoreItems.basicItem, 1, 2), new ItemStack(Item.redstone), new ItemStack(Item.redstoneRepeater) });
     }
 
     @EventHandler

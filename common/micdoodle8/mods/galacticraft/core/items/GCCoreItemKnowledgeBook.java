@@ -29,11 +29,11 @@ public class GCCoreItemKnowledgeBook extends Item
         return ClientProxyCore.galacticraftItem;
     }
 
-//    @Override
-//    public CreativeTabs getCreativeTab()
-//    {
-//        return GalacticraftCore.galacticraftTab;
-//    }
+    // @Override
+    // public CreativeTabs getCreativeTab()
+    // {
+    // return GalacticraftCore.galacticraftTab;
+    // }
 
     @Override
     @SideOnly(Side.CLIENT)

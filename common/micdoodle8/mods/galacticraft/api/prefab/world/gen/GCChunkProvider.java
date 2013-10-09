@@ -246,7 +246,7 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
         this.createCraters(par1, par2, ids, meta);
         this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, par1 * 16, par2 * 16, 16, 16);
         this.replaceBlocksForBiome(par1, par2, ids, meta, this.biomesForGeneration);
-        
+
         if (this.getCaveGenerator() != null)
         {
             this.getCaveGenerator().generate(this, this.worldObj, par1, par2, ids, meta);
@@ -389,23 +389,23 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
         if (par1EnumCreatureType == EnumCreatureType.monster)
         {
             final List monsters = new ArrayList();
-            
+
             for (SpawnListEntry monster : this.getMonsters())
             {
                 monsters.add(monster);
             }
-            
+
             return monsters;
         }
         else if (par1EnumCreatureType == EnumCreatureType.creature)
         {
             final List creatures = new ArrayList();
-            
+
             for (SpawnListEntry creature : this.getCreatures())
             {
                 creatures.add(creature);
             }
-            
+
             return creatures;
         }
         else
@@ -413,36 +413,37 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
             return null;
         }
     }
-        
+
     /**
      * Do not return null
      * 
-     * @return The biome generator for this world, handles ore, flower, etc generation. See GCBiomeDecoratorBase.
+     * @return The biome generator for this world, handles ore, flower, etc
+     *         generation. See GCBiomeDecoratorBase.
      */
     protected abstract GCBiomeDecoratorBase getBiomeGenerator();
-    
+
     /**
      * Do not return null, have at least one biome for generation
      * 
      * @return Biome instance for generation
      */
     protected abstract BiomeGenBase[] getBiomesForGeneration();
-    
+
     /**
      * @return The average terrain level. Default is 64.
      */
     protected abstract int getSeaLevel();
-    
+
     /**
      * Return null for no caves
      * 
-     * @return Cave generator for this world. 
+     * @return Cave generator for this world.
      */
     protected GCCoreMapGenBaseMeta getCaveGenerator()
     {
         return null;
     }
-    
+
     /**
      * @return List of spawn list entries for monsters
      */
@@ -452,7 +453,7 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
      * @return List of spawn list entries for creatures
      */
     protected abstract SpawnListEntry[] getCreatures();
-    
+
     /**
      * @return Top block ID. Doesn't have to be grass of course.
      */

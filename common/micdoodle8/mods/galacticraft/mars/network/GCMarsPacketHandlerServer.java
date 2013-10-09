@@ -17,8 +17,6 @@ import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.WorldServer;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.Player;
@@ -139,8 +137,8 @@ public class GCMarsPacketHandlerServer implements IPacketHandler
         {
             Class<?>[] decodeAs = { Integer.class, Integer.class, Integer.class, Integer.class, Integer.class };
             Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
-            
-            TileEntity tile = player.worldObj.getBlockTileEntity((Integer)packetReadout[1], (Integer)packetReadout[2], (Integer)packetReadout[3]);
+
+            TileEntity tile = player.worldObj.getBlockTileEntity((Integer) packetReadout[1], (Integer) packetReadout[2], (Integer) packetReadout[3]);
 
             switch ((Integer) packetReadout[0])
             {

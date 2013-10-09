@@ -2,17 +2,16 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import net.minecraft.nbt.NBTTagCompound;
 
-
 public class GCCoreTileEntityAluminumWire extends GCCoreTileEntityUniversalConductor
 {
     public float resistance;
     public float amperage;
-    
+
     public GCCoreTileEntityAluminumWire()
     {
         this(0.05F, 200.0F);
     }
-    
+
     public GCCoreTileEntityAluminumWire(float resistance, float amperage)
     {
         this.resistance = resistance;

@@ -25,7 +25,7 @@ public class PlayerUtil
 
             if (entry.getKey().equals(username))
             {
-                return (GCCorePlayerMP) entry.getValue();
+                return entry.getValue();
             }
         }
 
@@ -54,7 +54,7 @@ public class PlayerUtil
 
             if (entry.getKey().equals(player.username))
             {
-                return (GCCorePlayerMP) entry.getValue();
+                return entry.getValue();
             }
         }
 
@@ -83,7 +83,7 @@ public class PlayerUtil
 
             if (entry.getKey() != null && entry.getKey().equals(player.username))
             {
-                return (GCCorePlayerSP) entry.getValue();
+                return entry.getValue();
             }
         }
 

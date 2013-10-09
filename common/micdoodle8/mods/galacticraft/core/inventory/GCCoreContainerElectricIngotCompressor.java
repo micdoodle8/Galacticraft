@@ -20,7 +20,7 @@ public class GCCoreContainerElectricIngotCompressor extends Container
     {
         this.tileEntity = tileEntity;
         tileEntity.compressingCraftMatrix.eventHandler = this;
-        
+
         for (int x = 0; x < 3; x++)
         {
             for (int y = 0; y < 3; y++)

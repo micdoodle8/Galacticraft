@@ -255,7 +255,7 @@ public class ClientProxyMars extends CommonProxyMars
     {
         return ClientProxyMars.handleBacterialMovement(player) || ClientProxyMars.handleLavaMovement(player) || ClientProxyMars.handleWaterMovement(player);
     }
-    
+
     @Override
     public void opengSlimelingGui(GCMarsEntitySlimeling slimeling, int gui)
     {

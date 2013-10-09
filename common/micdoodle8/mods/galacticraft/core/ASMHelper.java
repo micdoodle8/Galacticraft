@@ -12,6 +12,7 @@ public class ASMHelper
     public @interface RuntimeInterface
     {
         String clazz();
+
         String modID();
     }
 }

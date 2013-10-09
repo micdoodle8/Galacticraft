@@ -20,7 +20,7 @@ public class GCCoreItemRendererMeteorChunk implements IItemRenderer
     private static final ResourceLocation meteorChunkTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/meteorChunk.png");
 
     protected IModelCustom meteorChunkModel;
-    
+
     public GCCoreItemRendererMeteorChunk(IModelCustom model)
     {
         this.meteorChunkModel = model;
@@ -31,21 +31,21 @@ public class GCCoreItemRendererMeteorChunk implements IItemRenderer
         GL11.glPushMatrix();
 
         GL11.glScalef(0.7F, 0.7F, 0.7F);
-        
+
         if (type == ItemRenderType.EQUIPPED_FIRST_PERSON)
         {
             GL11.glTranslatef(1.4F, 1.0F, 0.0F);
             GL11.glRotatef(180.0F, 1, 0, 0);
         }
-        
+
         if (type == ItemRenderType.EQUIPPED)
         {
             GL11.glTranslatef(1.4F, 1.0F, 0.5F);
         }
-        
-        FMLClientHandler.instance().getClient().getTextureManager().bindTexture(meteorChunkTexture);
+
+        FMLClientHandler.instance().getClient().getTextureManager().bindTexture(GCCoreItemRendererMeteorChunk.meteorChunkTexture);
         this.meteorChunkModel.renderAll();
-        
+
         GL11.glPopMatrix();
     }
 

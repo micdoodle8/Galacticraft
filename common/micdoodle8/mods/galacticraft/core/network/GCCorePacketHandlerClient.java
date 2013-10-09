@@ -49,56 +49,25 @@ import cpw.mods.fml.relauncher.Side;
 public class GCCorePacketHandlerClient implements IPacketHandler
 {
     Minecraft mc = FMLClientHandler.instance().getClient();
-    
+
     public static enum EnumClientPacket
     {
-        AIR_REMAINING(0, Integer.class, Integer.class, String.class),
-        INVALID(1),
-        UPDATE_DIMENSION_LIST(2, String.class, String.class),
-        UNUSED_0(3),
-        GEAR_PARACHUTE_ADD(4, String.class),
-        GEAR_PARACHUTE_REMOVE(5, String.class),
-        GEAR_PARACHUTETEX_ADD(6, String.class, String.class),
-        GEAR_PARACHUTETEX_REMOVE(7, String.class, String.class),
-        MOUNT_ROCKET(8, String.class),
-        SPAWN_SPARK_PARTICLES(9, Integer.class, Integer.class, Integer.class),
-        UPDATE_GEAR_SLOT(10, String.class, Integer.class),
-        UNUSED_1(11),
-        CLOSE_GUI(12, String.class),
-        RESET_THIRD_PERSON(13, String.class),
-        UPDATE_CONTROLLABLE_ENTITY(14),
-        UNUSED_2(15),
-        UPDATE_SPACESTATION_LIST(16),
-        UPDATE_SPACESTATION_DATA(17),
-        UPDATE_SPACESTATION_CLIENT_ID(18, Integer.class),
-        UPDATE_PLANETS_LIST(19),
-        ADD_NEW_SCHEMATIC(20, Integer.class),
-        UPDATE_SCHEMATIC_LIST(21),
-        ZOOM_CAMERA(22, Integer.class),
-        PLAY_SOUND_BOSS_DEATH(23),
-        PLAY_SOUND_EXPLODE(24),
-        PLAY_SOUND_BOSS_LAUGH(25),
-        PLAY_SOUND_BOW(26),
-        UPDATE_OXYGEN_VALIDITY(27, Boolean.class),
-        OPEN_PARACHEST_GUI(28, Integer.class, Integer.class, Integer.class),
-        UPDATE_LANDER(29),
-        UPDATE_PARACHEST(30),
-        UPDATE_WIRE_BOUNDS(31, Integer.class, Integer.class, Integer.class);
-        
+        AIR_REMAINING(0, Integer.class, Integer.class, String.class), INVALID(1), UPDATE_DIMENSION_LIST(2, String.class, String.class), UNUSED_0(3), GEAR_PARACHUTE_ADD(4, String.class), GEAR_PARACHUTE_REMOVE(5, String.class), GEAR_PARACHUTETEX_ADD(6, String.class, String.class), GEAR_PARACHUTETEX_REMOVE(7, String.class, String.class), MOUNT_ROCKET(8, String.class), SPAWN_SPARK_PARTICLES(9, Integer.class, Integer.class, Integer.class), UPDATE_GEAR_SLOT(10, String.class, Integer.class), UNUSED_1(11), CLOSE_GUI(12, String.class), RESET_THIRD_PERSON(13, String.class), UPDATE_CONTROLLABLE_ENTITY(14), UNUSED_2(15), UPDATE_SPACESTATION_LIST(16), UPDATE_SPACESTATION_DATA(17), UPDATE_SPACESTATION_CLIENT_ID(18, Integer.class), UPDATE_PLANETS_LIST(19), ADD_NEW_SCHEMATIC(20, Integer.class), UPDATE_SCHEMATIC_LIST(21), ZOOM_CAMERA(22, Integer.class), PLAY_SOUND_BOSS_DEATH(23), PLAY_SOUND_EXPLODE(24), PLAY_SOUND_BOSS_LAUGH(25), PLAY_SOUND_BOW(26), UPDATE_OXYGEN_VALIDITY(27, Boolean.class), OPEN_PARACHEST_GUI(28, Integer.class, Integer.class, Integer.class), UPDATE_LANDER(29), UPDATE_PARACHEST(30), UPDATE_WIRE_BOUNDS(31, Integer.class, Integer.class, Integer.class);
+
         private int index;
         private Class<?>[] decodeAs;
-        
+
         private EnumClientPacket(int index, Class<?>... decodeAs)
         {
             this.index = index;
             this.decodeAs = decodeAs;
         }
-        
+
         public int getIndex()
         {
             return this.index;
         }
-        
+
         public Class<?>[] getDecodeClasses()
         {
             return this.decodeAs;
@@ -130,12 +99,12 @@ public class GCCorePacketHandlerClient implements IPacketHandler
         {
             playerBaseClient = PlayerUtil.getPlayerBaseClientFromPlayer(player);
         }
-        
+
         EnumClientPacket packetType = EnumClientPacket.values()[PacketUtil.readPacketID(data)];
 
         Class<?>[] decodeAs = packetType.getDecodeClasses();
         Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
-        
+
         switch (packetType)
         {
         case AIR_REMAINING:
@@ -191,7 +160,9 @@ public class GCCorePacketHandlerClient implements IPacketHandler
             player.sendChatToPlayer(ChatMessageComponent.createFromText(Keyboard.getKeyName(GCKeyHandler.openSpaceshipInv.keyCode) + "       - Inventory / Fuel"));
             break;
         case SPAWN_SPARK_PARTICLES:
-            int x, y, z;
+            int x,
+            y,
+            z;
             x = (Integer) packetReadout[0];
             y = (Integer) packetReadout[1];
             z = (Integer) packetReadout[2];
@@ -470,8 +441,8 @@ public class GCCorePacketHandlerClient implements IPacketHandler
             }
             break;
         case UPDATE_WIRE_BOUNDS:
-            TileEntity tile = player.worldObj.getBlockTileEntity((Integer)packetReadout[0], (Integer)packetReadout[1], (Integer)packetReadout[2]);
-            
+            TileEntity tile = player.worldObj.getBlockTileEntity((Integer) packetReadout[0], (Integer) packetReadout[1], (Integer) packetReadout[2]);
+
             if (tile instanceof TileEntityConductor)
             {
                 ((TileEntityConductor) tile).adjacentConnections = null;

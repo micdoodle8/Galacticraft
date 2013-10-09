@@ -53,11 +53,11 @@ public class GCCoreTileEntityIngotCompressor extends TileEntity implements IInve
             {
                 --this.furnaceBurnTime;
             }
-            
+
             if (this.furnaceBurnTime == 0 && this.canSmelt())
             {
                 this.currentItemBurnTime = this.furnaceBurnTime = TileEntityFurnace.getItemBurnTime(this.containingItems[0]);
-                
+
                 if (this.furnaceBurnTime > 0)
                 {
                     updateInv = true;
@@ -68,22 +68,22 @@ public class GCCoreTileEntityIngotCompressor extends TileEntity implements IInve
 
                         if (this.containingItems[0].stackSize == 0)
                         {
-                            this.containingItems[0] = this.containingItems[0].getItem().getContainerItemStack(containingItems[0]);
+                            this.containingItems[0] = this.containingItems[0].getItem().getContainerItemStack(this.containingItems[0]);
                         }
                     }
                 }
             }
-            
+
             if (this.furnaceBurnTime > 0 && this.canSmelt())
             {
                 ++this.processTicks;
-                
-                if (this.processTicks % 40 == 0 && this.processTicks > PROCESS_TIME_REQUIRED / 2)
+
+                if (this.processTicks % 40 == 0 && this.processTicks > GCCoreTileEntityIngotCompressor.PROCESS_TIME_REQUIRED / 2)
                 {
                     this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "random.anvil_land", 0.2F, 0.5F);
                 }
 
-                if (this.processTicks == PROCESS_TIME_REQUIRED)
+                if (this.processTicks == GCCoreTileEntityIngotCompressor.PROCESS_TIME_REQUIRED)
                 {
                     this.processTicks = 0;
                     this.smeltItem();
@@ -107,18 +107,18 @@ public class GCCoreTileEntityIngotCompressor extends TileEntity implements IInve
                     PacketDispatcher.sendPacketToPlayer(this.getDescriptionPacket(), (Player) player);
                 }
             }
-            
+
             if (updateInv)
             {
                 this.onInventoryChanged();
             }
         }
-        
+
         if (this.ticks >= Long.MAX_VALUE)
         {
             this.ticks = 0;
         }
-        
+
         this.ticks++;
     }
 
@@ -152,7 +152,7 @@ public class GCCoreTileEntityIngotCompressor extends TileEntity implements IInve
     public void closeChest()
     {
     }
-    
+
     public void updateInput()
     {
         this.producingStack = CompressorRecipes.findMatchingRecipe(this.compressingCraftMatrix, this.worldObj);
@@ -161,13 +161,22 @@ public class GCCoreTileEntityIngotCompressor extends TileEntity implements IInve
     private boolean canSmelt()
     {
         ItemStack itemstack = this.producingStack;
-        if (itemstack == null) return false;
-        if (this.containingItems[1] == null) return true;
-        if (!this.containingItems[1].isItemEqual(itemstack)) return false;
-        int result = containingItems[1].stackSize + itemstack.stackSize;
-        return (result <= getInventoryStackLimit() && result <= itemstack.getMaxStackSize());
+        if (itemstack == null)
+        {
+            return false;
+        }
+        if (this.containingItems[1] == null)
+        {
+            return true;
+        }
+        if (!this.containingItems[1].isItemEqual(itemstack))
+        {
+            return false;
+        }
+        int result = this.containingItems[1].stackSize + itemstack.stackSize;
+        return result <= this.getInventoryStackLimit() && result <= itemstack.getMaxStackSize();
     }
-    
+
     public void smeltItem()
     {
         if (this.canSmelt())
@@ -195,10 +204,10 @@ public class GCCoreTileEntityIngotCompressor extends TileEntity implements IInve
                         this.worldObj.spawnEntityInWorld(entityitem);
                     }
                 }
-                
+
                 this.containingItems[1].stackSize += resultItemStack.stackSize;
             }
-            
+
             for (int i = 0; i < this.compressingCraftMatrix.getSizeInventory(); i++)
             {
                 this.compressingCraftMatrix.decrStackSize(i, 1);

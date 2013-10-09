@@ -75,11 +75,11 @@ public class GCCoreGuiCircuitFabricator extends GuiContainer
         this.drawTexturedModalRect(this.containerWidth, this.containerHeight, 0, 0, this.xSize, this.ySize);
 
         int scale;
-        
+
         if (this.tileEntity.processTicks > 0)
         {
             scale = (int) ((double) this.tileEntity.processTicks / (double) GCCoreTileEntityCircuitFabricator.PROCESS_TIME_REQUIRED * 51);
-            this.drawTexturedModalRect(this.containerWidth + 88, this.containerHeight + 20, 176, 17 + (((this.tileEntity.processTicks % 9) / 3) * 10), scale, 10);
+            this.drawTexturedModalRect(this.containerWidth + 88, this.containerHeight + 20, 176, 17 + this.tileEntity.processTicks % 9 / 3 * 10, scale, 10);
         }
 
         if (this.tileEntity.getEnergyStored() > 0)

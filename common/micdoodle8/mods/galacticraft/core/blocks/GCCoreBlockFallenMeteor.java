@@ -69,11 +69,11 @@ public class GCCoreBlockFallenMeteor extends Block implements ITileEntityProvide
     public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity)
     {
         TileEntity tile = par1World.getBlockTileEntity(par2, par3, par4);
-        
+
         if (tile instanceof GCCoreTileEntityFallenMeteor)
         {
             GCCoreTileEntityFallenMeteor meteor = (GCCoreTileEntityFallenMeteor) tile;
-            
+
             if (meteor.getHeatLevel() <= 0)
             {
                 return;
@@ -95,7 +95,7 @@ public class GCCoreBlockFallenMeteor extends Block implements ITileEntityProvide
                     livingEntity.setFire(2);
                 }
 
-                double var9 = (par2 + 0.5F) - livingEntity.posX;
+                double var9 = par2 + 0.5F - livingEntity.posX;
                 double var7;
 
                 for (var7 = livingEntity.posZ - par4; var9 * var9 + var7 * var7 < 1.0E-4D; var7 = (Math.random() - Math.random()) * 0.01D)
@@ -170,20 +170,20 @@ public class GCCoreBlockFallenMeteor extends Block implements ITileEntityProvide
     public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         TileEntity tile = par1IBlockAccess.getBlockTileEntity(par2, par3, par4);
-        
+
         if (tile instanceof GCCoreTileEntityFallenMeteor)
         {
             GCCoreTileEntityFallenMeteor meteor = (GCCoreTileEntityFallenMeteor) tile;
-            
+
             Vector3 col = new Vector3(198, 58, 108);
             col.translate(200 - meteor.getScaledHeatLevel() * 200);
             col.x = Math.min(255, col.x);
             col.y = Math.min(255, col.y);
             col.z = Math.min(255, col.z);
-            
-            return GCCoreUtil.convertTo32BitColor(255, (byte)col.x, (byte)col.y, (byte)col.z);
+
+            return GCCoreUtil.convertTo32BitColor(255, (byte) col.x, (byte) col.y, (byte) col.z);
         }
-        
+
         return super.colorMultiplier(par1IBlockAccess, par2, par3, par4);
     }
 
