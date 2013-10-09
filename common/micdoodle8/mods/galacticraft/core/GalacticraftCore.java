@@ -83,6 +83,7 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
+import micdoodle8.mods.galacticraft.core.world.gen.GCCoreOverworldGenerator;
 import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
 import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
@@ -287,6 +288,11 @@ public class GalacticraftCore
         GalacticraftRegistry.registerRocketGui(GCMoonWorldProvider.class, new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/moonRocketGui.png"));
         GalacticraftRegistry.addDungeonLoot(1, new ItemStack(GCCoreItems.schematic, 1, 0));
         GalacticraftRegistry.addDungeonLoot(1, new ItemStack(GCCoreItems.schematic, 1, 1));
+        
+        GameRegistry.registerWorldGenerator(new GCCoreOverworldGenerator(GCCoreBlocks.decorationBlocks, 5, 22, 0, 60, 7));
+        GameRegistry.registerWorldGenerator(new GCCoreOverworldGenerator(GCCoreBlocks.decorationBlocks, 6, 22, 0, 60, 7));
+        GameRegistry.registerWorldGenerator(new GCCoreOverworldGenerator(GCCoreBlocks.decorationBlocks, 7, 18, 0, 45, 7));
+        GameRegistry.registerWorldGenerator(new GCCoreOverworldGenerator(GCCoreBlocks.decorationBlocks, 8, 3, 0, 25, 7));
     }
 
     @SuppressWarnings("deprecation")
