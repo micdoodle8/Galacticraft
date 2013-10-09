@@ -14,6 +14,7 @@ import micdoodle8.mods.galacticraft.mars.GCMarsConfigManager;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
 import micdoodle8.mods.galacticraft.mars.client.fx.GCMarsEntityDropParticleFX;
+import micdoodle8.mods.galacticraft.mars.client.gui.GCMarsGuiCargoRocket;
 import micdoodle8.mods.galacticraft.mars.client.gui.GCMarsGuiLaunchController;
 import micdoodle8.mods.galacticraft.mars.client.gui.GCMarsGuiSlimeling;
 import micdoodle8.mods.galacticraft.mars.client.gui.GCMarsGuiSlimelingFeed;
@@ -218,15 +219,29 @@ public class ClientProxyMars extends CommonProxyMars
                 final Class<?>[] decodeAs = { Integer.class, Integer.class, Integer.class };
                 final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
 
+                int entityID = 0;
+                Entity entity = null;
+                
                 switch ((Integer) packetReadout[1])
                 {
                 case 0:
-                    int entityID = (Integer) packetReadout[2];
-                    Entity entity = player.worldObj.getEntityByID(entityID);
+                    entityID = (Integer) packetReadout[2];
+                    entity = player.worldObj.getEntityByID(entityID);
 
                     if (entity != null && entity instanceof GCMarsEntitySlimeling)
                     {
                         FMLClientHandler.instance().getClient().displayGuiScreen(new GCMarsGuiSlimelingInventory(player, (GCMarsEntitySlimeling) entity));
+                    }
+
+                    player.openContainer.windowId = (Integer) packetReadout[0];
+                    break;
+                case 1:
+                    entityID = (Integer) packetReadout[2];
+                    entity = player.worldObj.getEntityByID(entityID);
+
+                    if (entity != null && entity instanceof GCMarsEntityCargoRocket)
+                    {
+                        FMLClientHandler.instance().getClient().displayGuiScreen(new GCMarsGuiCargoRocket(player.inventory, (GCMarsEntityCargoRocket) entity));
                     }
 
                     player.openContainer.windowId = (Integer) packetReadout[0];

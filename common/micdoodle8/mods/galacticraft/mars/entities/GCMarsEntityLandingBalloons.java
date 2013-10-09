@@ -344,7 +344,7 @@ public class GCMarsEntityLandingBalloons extends GCCoreEntityAdvanced implements
         }
         else if (this.riddenByEntity == null && this.groundHitCount >= 14 && var1 instanceof EntityPlayerMP)
         {
-            GCMarsUtil.openParachestInv((EntityPlayerMP) var1, this);
+            GCMarsUtil.openParachestInventory((EntityPlayerMP) var1, this);
             return true;
         }
         else if (var1 instanceof EntityPlayerMP)

@@ -25,7 +25,7 @@ public class GCMarsRenderCargoRocket extends Render
 
     public GCMarsRenderCargoRocket(IModelCustom model)
     {
-        this.shadowSize = 2F;
+        this.shadowSize = 0.5F;
         this.rocketModel = model;
     }
 

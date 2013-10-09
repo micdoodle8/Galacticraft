@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketLanderUpdate;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
+import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityCargoRocket;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySlimeling;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityLaunchController;
 import micdoodle8.mods.galacticraft.mars.util.GCMarsUtil;
@@ -186,6 +187,27 @@ public class GCMarsPacketHandlerServer implements IPacketHandler
                 break;
             default:
                 break;
+            }
+        }
+        else if (packetType == 6)
+        {
+            Class<?>[] decodeAs = { Integer.class, Integer.class };
+            Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
+
+            Entity entity = player.worldObj.getEntityByID((Integer) packetReadout[0]);
+
+            if (entity instanceof GCMarsEntityCargoRocket)
+            {
+                GCMarsEntityCargoRocket rocket = (GCMarsEntityCargoRocket) entity;
+
+                int subType = (Integer) packetReadout[1];
+                
+                switch (subType)
+                {
+                default:
+                    rocket.statusValid = rocket.checkLaunchValidity();
+                    break;
+                }
             }
         }
     }

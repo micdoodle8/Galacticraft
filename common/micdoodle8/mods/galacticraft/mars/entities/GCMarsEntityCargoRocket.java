@@ -26,6 +26,7 @@ import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityLaunchController;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityLaunchController.EnumAutoLaunch;
+import micdoodle8.mods.galacticraft.mars.util.GCMarsUtil;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -66,6 +67,10 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
     public EnumAutoLaunch autoLaunchSetting;
     public EnumAutoLaunch lastAutoLaunchSetting;
     public int autoLaunchCountdown;
+    public String statusMessage;
+    public int statusMessageCooldown;
+    public int lastStatusMessageCooldown;
+    public boolean statusValid;
 
     public GCMarsEntityCargoRocket(World par1World)
     {
@@ -163,10 +168,55 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
         this.ignite();
         this.autoLaunchSetting = this.lastAutoLaunchSetting = null;
     }
+    
+    public boolean checkLaunchValidity()
+    {
+        this.statusMessageCooldown = 40;
+        
+        if (this.launchPhase == EnumLaunchPhase.UNIGNITED.getPhase() && !this.worldObj.isRemote && this.spaceshipFuelTank.getFluidAmount() > 0)
+        {
+            if (!this.setFrequency())
+            {
+                this.destinationFrequency = -1;
+                this.statusMessage = "\u00a7cFrequency#\u00a7cNot Set";
+                return false;
+            }
+            else
+            {
+                this.statusMessage = "\u00a7aSuccess";
+                return true;
+            }
+        }
+
+        if (this.spaceshipFuelTank.getFluidAmount() <= 0)
+        {
+            this.destinationFrequency = -1;
+            this.statusMessage = "\u00a7cNot Enough#\u00a7cFuel";
+            return false;
+        }
+
+        this.destinationFrequency = -1;
+        return false;
+    }
 
     @Override
     public void onUpdate()
-    {
+    {        
+        if (!this.worldObj.isRemote)
+        {
+            if (this.statusMessageCooldown > 0)
+            {
+                this.statusMessageCooldown--;
+            }
+            
+            if (this.statusMessageCooldown == 0 && this.lastStatusMessageCooldown > 0 && this.statusValid)
+            {
+                this.ignite();
+            }
+            
+            this.lastStatusMessageCooldown = this.statusMessageCooldown;
+        }
+        
         if (this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase() && this.hasValidFuel() && !this.worldObj.isRemote)
         {
             if (this.landing && this.targetVec != null && this.worldObj.getBlockTileEntity(this.targetVec.intX(), this.targetVec.intY(), this.targetVec.intZ()) instanceof IFuelDock && this.posY - this.targetVec.y < 5)
@@ -397,6 +447,17 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
         this.posY = dataStream.readDouble();
         this.posZ = dataStream.readDouble();
         this.motionY = dataStream.readDouble();
+
+        if (this.cargoItems == null)
+        {
+            this.cargoItems = new ItemStack[this.getSizeInventory()];
+        }
+        
+        this.statusMessage = dataStream.readUTF();
+        this.statusMessage = (this.statusMessage.equals("") ? null : this.statusMessage);
+        this.statusMessageCooldown = dataStream.readInt();
+        this.lastStatusMessageCooldown = dataStream.readInt();
+        this.statusValid = dataStream.readBoolean();
     }
 
     @Override
@@ -420,6 +481,11 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
         list.add(this.posY);
         list.add(this.posZ);
         list.add(this.motionY);
+        
+        list.add(this.statusMessage != null ? this.statusMessage : "");
+        list.add(this.statusMessageCooldown);
+        list.add(this.lastStatusMessageCooldown);
+        list.add(this.statusValid);
 
         return list;
     }
@@ -441,57 +507,9 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
         {
             return;
         }
-
-        worldLoop:
-        for (int i = 0; i < FMLCommonHandler.instance().getMinecraftServerInstance().worldServers.length; i++)
-        {
-            WorldServer world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers[i];
-
-            for (int j = 0; j < world.loadedTileEntityList.size(); j++)
-            {
-                TileEntity tile = (TileEntity) world.loadedTileEntityList.get(j);
-
-                if (tile != null)
-                {
-                    tile = world.getBlockTileEntity(tile.xCoord, tile.yCoord, tile.zCoord);
-
-                    if (tile instanceof GCMarsTileEntityLaunchController)
-                    {
-                        GCMarsTileEntityLaunchController launchController = (GCMarsTileEntityLaunchController) tile;
-
-                        if (launchController.frequency == this.destinationFrequency)
-                        {
-                            boolean targetSet = false;
-
-                            blockLoop:
-                            for (int x = -2; x <= 2; x++)
-                            {
-                                for (int z = -2; z <= 2; z++)
-                                {
-                                    int blockID = this.worldObj.getBlockId(launchController.xCoord + x, launchController.yCoord, launchController.zCoord + z);
-
-                                    if (blockID > 0 && Block.blocksList[blockID] instanceof GCCoreBlockLandingPadFull)
-                                    {
-                                        this.targetVec = new Vector3(launchController.xCoord + x, launchController.yCoord, launchController.zCoord + z);
-                                        targetSet = true;
-                                        break blockLoop;
-                                    }
-                                }
-                            }
-
-                            if (!targetSet)
-                            {
-                                this.targetVec = null;
-                            }
-
-                            this.targetDimension = launchController.worldObj.provider.dimensionId;
-                            break worldLoop;
-                        }
-                    }
-                }
-            }
-        }
-
+        
+        this.setTarget(true, this.destinationFrequency);
+        
         if (this.targetVec != null)
         {
             if (this.targetDimension != this.worldObj.provider.dimensionId)
@@ -512,6 +530,75 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
         {
             this.setDead();
         }
+    }
+    
+    private boolean setTarget(boolean doSet, int destFreq)
+    {
+        for (int i = 0; i < FMLCommonHandler.instance().getMinecraftServerInstance().worldServers.length; i++)
+        {
+            WorldServer world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers[i];
+
+            for (int j = 0; j < world.loadedTileEntityList.size(); j++)
+            {
+                TileEntity tile = (TileEntity) world.loadedTileEntityList.get(j);
+
+                if (tile != null)
+                {
+                    tile = world.getBlockTileEntity(tile.xCoord, tile.yCoord, tile.zCoord);
+
+                    if (tile instanceof GCMarsTileEntityLaunchController)
+                    {
+                        GCMarsTileEntityLaunchController launchController = (GCMarsTileEntityLaunchController) tile;
+
+                        if (launchController.frequency == destFreq)
+                        {
+                            boolean targetSet = false;
+
+                            blockLoop:
+                                for (int x = -2; x <= 2; x++)
+                                {
+                                    for (int z = -2; z <= 2; z++)
+                                    {
+                                        int blockID = this.worldObj.getBlockId(launchController.xCoord + x, launchController.yCoord, launchController.zCoord + z);
+    
+                                        if (blockID > 0 && Block.blocksList[blockID] instanceof GCCoreBlockLandingPadFull)
+                                        {
+                                            if (doSet)
+                                            {
+                                                this.targetVec = new Vector3(launchController.xCoord + x, launchController.yCoord, launchController.zCoord + z);
+                                            }
+                                            
+                                            targetSet = true;
+                                            break blockLoop;
+                                        }
+                                    }
+                                }
+
+                            if (doSet)
+                            {
+                                this.targetDimension = launchController.worldObj.provider.dimensionId;
+                            }
+
+                            if (!targetSet)
+                            {
+                                if (doSet)
+                                {
+                                    this.targetVec = null;
+                                }
+                                
+                                return false;
+                            }
+                            else
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    
+        return false;
     }
 
     @Override
@@ -592,13 +679,9 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
     {
         ;
     }
-
-    @Override
-    public void ignite()
+    
+    public boolean setFrequency()
     {
-        boolean frequencySet = false;
-
-        blockLoop:
         for (int x = MathHelper.floor_double(this.posX) - 1; x <= MathHelper.floor_double(this.posX) + 1; x++)
         {
             for (int y = MathHelper.floor_double(this.posY) - 3; y <= MathHelper.floor_double(this.posY) + 1; y++)
@@ -646,9 +729,13 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
                             {
                                 if (launchController.frequencyValid && launchController.destFrequencyValid)
                                 {
-                                    this.destinationFrequency = launchController.destFrequency;
-                                    frequencySet = true;
-                                    break blockLoop;
+                                    boolean foundPad = this.setTarget(false, launchController.destFrequency);
+                                    
+                                    if (foundPad)
+                                    {
+                                        this.destinationFrequency = launchController.destFrequency;
+                                        return true;
+                                    }
                                 }
                             }
                         }
@@ -656,11 +743,27 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
                 }
             }
         }
-
-        if (frequencySet)
+        
+        return false;
+    }
+    
+    public boolean igniteWithResult()
+    {
+        if (this.setFrequency())
         {
             super.ignite();
+            return true;
         }
+        else
+        {
+            return false;
+        }
+    }
+
+    @Override
+    public void ignite()
+    {
+        this.igniteWithResult();
     }
 
     @Override
@@ -712,9 +815,10 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
     @Override
     public boolean interactFirst(EntityPlayer par1EntityPlayer)
     {
-        if (!this.worldObj.isRemote)
+        if (!this.worldObj.isRemote && par1EntityPlayer instanceof EntityPlayerMP)
         {
-            this.ignite();
+//            this.ignite();
+            GCMarsUtil.openCargoRocketInventory((EntityPlayerMP) par1EntityPlayer, this);
         }
 
         return false;

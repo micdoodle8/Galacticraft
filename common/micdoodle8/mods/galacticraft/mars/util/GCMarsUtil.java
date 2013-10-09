@@ -4,10 +4,12 @@ import java.util.HashMap;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerParachest;
+import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRocketRefill;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumClientPacket;
 import micdoodle8.mods.galacticraft.core.recipe.GCCoreNasaWorkbenchRecipe;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
+import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityCargoRocket;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityLandingBalloons;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySlimeling;
 import micdoodle8.mods.galacticraft.mars.inventory.GCMarsContainerSlimeling;
@@ -21,7 +23,7 @@ public class GCMarsUtil
         GalacticraftRegistry.addT2RocketRecipe(new GCCoreNasaWorkbenchRecipe(result, input));
     }
 
-    public static void openParachestInv(EntityPlayerMP player, GCMarsEntityLandingBalloons landerInv)
+    public static void openParachestInventory(EntityPlayerMP player, GCMarsEntityLandingBalloons landerInv)
     {
         player.incrementWindowID();
         player.closeContainer();
@@ -39,6 +41,17 @@ public class GCMarsUtil
         int windowId = player.currentWindowId;
         player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftMars.CHANNEL, 0, new Object[] { windowId, 0, slimeling.entityId }));
         player.openContainer = new GCMarsContainerSlimeling(player.inventory, slimeling);
+        player.openContainer.windowId = windowId;
+        player.openContainer.addCraftingToCrafters(player);
+    }
+
+    public static void openCargoRocketInventory(EntityPlayerMP player, GCMarsEntityCargoRocket rocket)
+    {
+        player.incrementWindowID();
+        player.closeContainer();
+        int windowId = player.currentWindowId;
+        player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftMars.CHANNEL, 0, new Object[] { windowId, 1, rocket.entityId }));
+        player.openContainer = new GCCoreContainerRocketRefill(player.inventory, rocket, rocket.rocketType);
         player.openContainer.windowId = windowId;
         player.openContainer.addCraftingToCrafters(player);
     }
