@@ -6,10 +6,16 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumClientPacket;
 import net.minecraft.network.packet.Packet250CustomPayload;
 
 public class PacketUtil
 {
+    public static Packet250CustomPayload createPacket(String channel, EnumClientPacket packetType, Object[] input)
+    {
+        return PacketUtil.createPacket(channel, packetType.getIndex(), input);
+    }
+    
     public static Packet250CustomPayload createPacket(String channel, int packetID, Object[] input)
     {
         final ByteArrayOutputStream bytes = new ByteArrayOutputStream();

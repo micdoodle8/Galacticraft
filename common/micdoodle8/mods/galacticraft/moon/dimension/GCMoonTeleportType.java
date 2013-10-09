@@ -1,12 +1,14 @@
 package micdoodle8.mods.galacticraft.moon.dimension;
 
 import java.util.Random;
+import cpw.mods.fml.common.network.PacketDispatcher;
 import micdoodle8.mods.galacticraft.api.vector.Vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumClientPacket;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -72,7 +74,7 @@ public class GCMoonTeleportType implements ITeleportType
             }
 
             final Object[] toSend2 = { 1 };
-            gcPlayer.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
+            gcPlayer.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumClientPacket.ZOOM_CAMERA, toSend2));
 
             gcPlayer.setTeleportCooldown(10);
         }

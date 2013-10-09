@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumClientPacket;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityParachest;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -14,8 +15,6 @@ import cpw.mods.fml.relauncher.Side;
 
 public class GCCorePacketParachestUpdate implements IGalacticraftAdvancedPacket
 {
-    public static final int packetID = 30;
-
     public static Packet buildKeyPacket(GCCoreTileEntityParachest chest)
     {
         final Packet250CustomPayload packet = new Packet250CustomPayload();
@@ -26,7 +25,7 @@ public class GCCorePacketParachestUpdate implements IGalacticraftAdvancedPacket
 
         try
         {
-            data.writeInt(GCCorePacketParachestUpdate.packetID);
+            data.writeInt(EnumClientPacket.UPDATE_PARACHEST.getIndex());
             data.writeInt(chest.xCoord);
             data.writeInt(chest.yCoord);
             data.writeInt(chest.zCoord);
@@ -55,7 +54,7 @@ public class GCCorePacketParachestUpdate implements IGalacticraftAdvancedPacket
     @Override
     public byte getPacketID()
     {
-        return GCCorePacketParachestUpdate.packetID;
+        return (byte) EnumClientPacket.UPDATE_PARACHEST.getIndex();
     }
 
     @Override

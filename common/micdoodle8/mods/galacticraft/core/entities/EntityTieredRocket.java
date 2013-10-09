@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPadFull;
 import micdoodle8.mods.galacticraft.core.event.GCCoreLandingPadRemovalEvent;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumClientPacket;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
@@ -180,7 +181,7 @@ public abstract class EntityTieredRocket extends EntitySpaceshipBase implements 
                     count++;
                 }
 
-                player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 2, new Object[] { player.username, temp }));
+                player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumClientPacket.UPDATE_DIMENSION_LIST, new Object[] { player.username, temp }));
                 player.setSpaceshipTier(this.getRocketTier());
                 player.setUsingPlanetGui();
 
@@ -259,9 +260,9 @@ public abstract class EntityTieredRocket extends EntitySpaceshipBase implements 
             if (!this.worldObj.isRemote)
             {
                 final Object[] toSend = { ((EntityPlayerMP) this.riddenByEntity).username };
-                ((EntityPlayerMP) this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 13, toSend));
+                ((EntityPlayerMP) this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumClientPacket.RESET_THIRD_PERSON, toSend));
                 final Object[] toSend2 = { 0 };
-                ((EntityPlayerMP) par1EntityPlayer).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
+                ((EntityPlayerMP) par1EntityPlayer).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumClientPacket.ZOOM_CAMERA, toSend2));
                 ((GCCorePlayerMP) par1EntityPlayer).setChatCooldown(0);
                 par1EntityPlayer.mountEntity(null);
             }
@@ -273,9 +274,9 @@ public abstract class EntityTieredRocket extends EntitySpaceshipBase implements 
             if (!this.worldObj.isRemote)
             {
                 final Object[] toSend = { par1EntityPlayer.username };
-                ((EntityPlayerMP) par1EntityPlayer).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 8, toSend));
+                ((EntityPlayerMP) par1EntityPlayer).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumClientPacket.MOUNT_ROCKET, toSend));
                 final Object[] toSend2 = { 1 };
-                ((EntityPlayerMP) par1EntityPlayer).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
+                ((EntityPlayerMP) par1EntityPlayer).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumClientPacket.ZOOM_CAMERA, toSend2));
                 ((GCCorePlayerMP) par1EntityPlayer).setChatCooldown(0);
                 par1EntityPlayer.mountEntity(this);
             }

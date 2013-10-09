@@ -8,6 +8,7 @@ import java.util.Random;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketEntityUpdate;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumClientPacket;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
@@ -179,7 +180,7 @@ public abstract class GCCoreEntityAdvanced extends GCCoreEntityControllable impl
                     if (this.riddenByEntity instanceof EntityPlayerMP)
                     {
                         final Object[] toSend2 = { 0 };
-                        ((EntityPlayerMP) this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
+                        ((EntityPlayerMP) this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumClientPacket.ZOOM_CAMERA, toSend2));
                     }
 
                     this.riddenByEntity.mountEntity(this);

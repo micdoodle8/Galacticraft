@@ -49,6 +49,61 @@ import cpw.mods.fml.relauncher.Side;
 public class GCCorePacketHandlerClient implements IPacketHandler
 {
     Minecraft mc = FMLClientHandler.instance().getClient();
+    
+    public static enum EnumClientPacket
+    {
+        AIR_REMAINING(0, Integer.class, Integer.class, String.class),
+        INVALID(1),
+        UPDATE_DIMENSION_LIST(2, String.class, String.class),
+        UNUSED_0(3),
+        GEAR_PARACHUTE_ADD(4, String.class),
+        GEAR_PARACHUTE_REMOVE(5, String.class),
+        GEAR_PARACHUTETEX_ADD(6, String.class, String.class),
+        GEAR_PARACHUTETEX_REMOVE(7, String.class, String.class),
+        MOUNT_ROCKET(8, String.class),
+        SPAWN_SPARK_PARTICLES(9, Integer.class, Integer.class, Integer.class),
+        UPDATE_GEAR_SLOT(10, String.class, Integer.class),
+        UNUSED_1(11),
+        CLOSE_GUI(12, String.class),
+        RESET_THIRD_PERSON(13, String.class),
+        UPDATE_CONTROLLABLE_ENTITY(14),
+        UNUSED_2(15),
+        UPDATE_SPACESTATION_LIST(16),
+        UPDATE_SPACESTATION_DATA(17),
+        UPDATE_SPACESTATION_CLIENT_ID(18, Integer.class),
+        UPDATE_PLANETS_LIST(19),
+        ADD_NEW_SCHEMATIC(20, Integer.class),
+        UPDATE_SCHEMATIC_LIST(21),
+        ZOOM_CAMERA(22, Integer.class),
+        PLAY_SOUND_BOSS_DEATH(23),
+        PLAY_SOUND_EXPLODE(24),
+        PLAY_SOUND_BOSS_LAUGH(25),
+        PLAY_SOUND_BOW(26),
+        UPDATE_OXYGEN_VALIDITY(27, Boolean.class),
+        OPEN_PARACHEST_GUI(28, Integer.class, Integer.class, Integer.class),
+        UPDATE_LANDER(29),
+        UPDATE_PARACHEST(30),
+        UPDATE_WIRE_BOUNDS(31, Integer.class, Integer.class, Integer.class);
+        
+        private int index;
+        private Class<?>[] decodeAs;
+        
+        private EnumClientPacket(int index, Class<?>... decodeAs)
+        {
+            this.index = index;
+            this.decodeAs = decodeAs;
+        }
+        
+        public int getIndex()
+        {
+            return this.index;
+        }
+        
+        public Class<?>[] getDecodeClasses()
+        {
+            return this.decodeAs;
+        }
+    }
 
     @Override
     public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player p)
@@ -67,8 +122,6 @@ public class GCCorePacketHandlerClient implements IPacketHandler
 
         final DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
 
-        final int packetType = PacketUtil.readPacketID(data);
-
         final EntityPlayer player = (EntityPlayer) p;
 
         GCCorePlayerSP playerBaseClient = null;
@@ -77,27 +130,25 @@ public class GCCorePacketHandlerClient implements IPacketHandler
         {
             playerBaseClient = PlayerUtil.getPlayerBaseClientFromPlayer(player);
         }
+        
+        EnumClientPacket packetType = EnumClientPacket.values()[PacketUtil.readPacketID(data)];
 
-        if (packetType == 0)
+        Class<?>[] decodeAs = packetType.getDecodeClasses();
+        Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
+        
+        switch (packetType)
         {
-            final Class<?>[] decodeAs = { Integer.class, Integer.class, String.class };
-            final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
-
+        case AIR_REMAINING:
             if (String.valueOf(packetReadout[2]).equals(String.valueOf(FMLClientHandler.instance().getClient().thePlayer.username)))
             {
                 GCCoreTickHandlerClient.airRemaining = (Integer) packetReadout[0];
                 GCCoreTickHandlerClient.airRemaining2 = (Integer) packetReadout[1];
             }
-        }
-        else if (packetType == 1)
-        {
+            break;
+        case INVALID:
             GCLog.severe("Found incorrect packet! Please report this as a bug.");
-        }
-        else if (packetType == 2)
-        {
-            final Class<?>[] decodeAs = { String.class, String.class };
-            final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
-
+            break;
+        case UPDATE_DIMENSION_LIST:
             if (String.valueOf(packetReadout[0]).equals(FMLClientHandler.instance().getClient().thePlayer.username))
             {
                 final String[] destinations = ((String) packetReadout[1]).split("\\.");
@@ -111,43 +162,22 @@ public class GCCorePacketHandlerClient implements IPacketHandler
                     ((GCCoreGuiChoosePlanet) FMLClientHandler.instance().getClient().currentScreen).updateDimensionList(destinations);
                 }
             }
-        }
-        else if (packetType == 3)
-        {
-        }
-        else if (packetType == 4)
-        {
-            final Class<?>[] decodeAs = { String.class };
-            final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
-
+            break;
+        case UNUSED_0:
+            break;
+        case GEAR_PARACHUTE_ADD:
             ClientProxyCore.playersUsingParachutes.add((String) packetReadout[0]);
-        }
-        else if (packetType == 5)
-        {
-            final Class<?>[] decodeAs = { String.class };
-            final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
-
+            break;
+        case GEAR_PARACHUTE_REMOVE:
             ClientProxyCore.playersUsingParachutes.remove(packetReadout[0]);
-        }
-        else if (packetType == 6)
-        {
-            final Class<?>[] decodeAs = { String.class, String.class };
-            final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
-
+            break;
+        case GEAR_PARACHUTETEX_ADD:
             ClientProxyCore.parachuteTextures.put((String) packetReadout[0], new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/parachute/" + (String) packetReadout[1] + ".png"));
-        }
-        else if (packetType == 7)
-        {
-            final Class<?>[] decodeAs = { String.class, String.class };
-            final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
-
+            break;
+        case GEAR_PARACHUTETEX_REMOVE:
             ClientProxyCore.parachuteTextures.remove(packetReadout[0]);
-        }
-        else if (packetType == 8)
-        {
-            final Class<?>[] decodeAs = { String.class };
-            PacketUtil.readPacketData(data, decodeAs);
-
+            break;
+        case MOUNT_ROCKET:
             if (playerBaseClient != null)
             {
                 playerBaseClient.setThirdPersonView(FMLClientHandler.instance().getClient().gameSettings.thirdPersonView);
@@ -159,12 +189,8 @@ public class GCCorePacketHandlerClient implements IPacketHandler
             player.sendChatToPlayer(ChatMessageComponent.createFromText("A / D  - Turn left-right"));
             player.sendChatToPlayer(ChatMessageComponent.createFromText("W / S  - Turn up-down"));
             player.sendChatToPlayer(ChatMessageComponent.createFromText(Keyboard.getKeyName(GCKeyHandler.openSpaceshipInv.keyCode) + "       - Inventory / Fuel"));
-        }
-        else if (packetType == 9)
-        {
-            final Class<?>[] decodeAs = { Integer.class, Integer.class, Integer.class };
-            final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
-
+            break;
+        case SPAWN_SPARK_PARTICLES:
             int x, y, z;
             x = (Integer) packetReadout[0];
             y = (Integer) packetReadout[1];
@@ -181,15 +207,9 @@ public class GCCorePacketHandlerClient implements IPacketHandler
                     }
                 }
             }
-        }
-        else if (packetType == 10)
-        {
-            final Class<?>[] decodeAs = { String.class, Integer.class };
-            final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
-
-            final int type = (Integer) packetReadout[1];
-
-            switch (type)
+            break;
+        case UPDATE_GEAR_SLOT:
+            switch ((Integer) packetReadout[1])
             {
             case 0:
                 ClientProxyCore.playersWithOxygenMask.add((String) packetReadout[0]);
@@ -240,26 +260,19 @@ public class GCCorePacketHandlerClient implements IPacketHandler
                 ClientProxyCore.playersWithOxygenTankRightGreen.remove(packetReadout[0]);
                 break;
             }
-        }
-        else if (packetType == 12)
-        {
-            final Class<?>[] decodeAs = { String.class };
-            PacketUtil.readPacketData(data, decodeAs);
-
+            break;
+        case UNUSED_1:
+            break;
+        case CLOSE_GUI:
             FMLClientHandler.instance().getClient().displayGuiScreen(null);
-        }
-        else if (packetType == 13)
-        {
-            final Class<?>[] decodeAs = { String.class };
-            PacketUtil.readPacketData(data, decodeAs);
-
+            break;
+        case RESET_THIRD_PERSON:
             if (playerBaseClient != null)
             {
                 FMLClientHandler.instance().getClient().gameSettings.thirdPersonView = playerBaseClient.getThirdPersonView();
             }
-        }
-        else if (packetType == 14)
-        {
+            break;
+        case UPDATE_CONTROLLABLE_ENTITY:
             try
             {
                 new GCCorePacketEntityUpdate().handlePacket(data, new Object[] { player }, Side.SERVER);
@@ -268,12 +281,10 @@ public class GCCorePacketHandlerClient implements IPacketHandler
             {
                 e.printStackTrace();
             }
-        }
-        else if (packetType == 15)
-        {
-        }
-        else if (packetType == 16)
-        {
+            break;
+        case UNUSED_2:
+            break;
+        case UPDATE_SPACESTATION_LIST:
             if (WorldUtil.registeredSpaceStations == null)
             {
                 WorldUtil.registeredSpaceStations = new ArrayList<Integer>();
@@ -298,9 +309,8 @@ public class GCCorePacketHandlerClient implements IPacketHandler
             {
                 e.printStackTrace();
             }
-        }
-        else if (packetType == 17)
-        {
+            break;
+        case UPDATE_SPACESTATION_DATA:
             try
             {
                 final int var2 = data.readInt();
@@ -326,16 +336,11 @@ public class GCCorePacketHandlerClient implements IPacketHandler
             {
                 var5.printStackTrace();
             }
-        }
-        else if (packetType == 18)
-        {
-            final Class<?>[] decodeAs = { Integer.class };
-            final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
-
+            break;
+        case UPDATE_SPACESTATION_CLIENT_ID:
             ClientProxyCore.clientSpaceStationID = (Integer) packetReadout[0];
-        }
-        else if (packetType == 19)
-        {
+            break;
+        case UPDATE_PLANETS_LIST:
             if (WorldUtil.registeredPlanets == null)
             {
                 WorldUtil.registeredPlanets = new ArrayList<Integer>();
@@ -360,12 +365,8 @@ public class GCCorePacketHandlerClient implements IPacketHandler
             {
                 e.printStackTrace();
             }
-        }
-        else if (packetType == 20)
-        {
-            final Class<?>[] decodeAs = { Integer.class };
-            final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
-
+            break;
+        case ADD_NEW_SCHEMATIC:
             if (playerBaseClient != null)
             {
                 final ISchematicPage page = SchematicRegistry.getMatchingRecipeForID((Integer) packetReadout[0]);
@@ -375,9 +376,8 @@ public class GCCorePacketHandlerClient implements IPacketHandler
                     playerBaseClient.unlockedSchematics.add(page);
                 }
             }
-        }
-        else if (packetType == 21)
-        {
+            break;
+        case UPDATE_SCHEMATIC_LIST:
             if (playerBaseClient != null)
             {
                 try
@@ -404,48 +404,30 @@ public class GCCorePacketHandlerClient implements IPacketHandler
                     e.printStackTrace();
                 }
             }
-        }
-        else if (packetType == 22)
-        {
-            final Class<?>[] decodeAs = { Integer.class };
-            final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
-
+            break;
+        case ZOOM_CAMERA:
             GCCoreTickHandlerClient.zoom((Integer) packetReadout[0] == 0 ? 4.0F : 15.0F);
-        }
-        else if (packetType == 23)
-        {
+            break;
+        case PLAY_SOUND_BOSS_DEATH:
             player.playSound("galacticraft.entity.bossdeath", 10.0F, 0.8F);
-        }
-        else if (packetType == 24)
-        {
+            break;
+        case PLAY_SOUND_EXPLODE:
             player.playSound("random.explode", 10.0F, 0.7F);
-        }
-        else if (packetType == 25)
-        {
+            break;
+        case PLAY_SOUND_BOSS_LAUGH:
             player.playSound("galacticraft.entity.bosslaugh", 10.0F, 0.2F);
-        }
-        else if (packetType == 26)
-        {
+            break;
+        case PLAY_SOUND_BOW:
             player.playSound("random.bow", 10.0F, 0.2F);
-        }
-        else if (packetType == 27)
-        {
-            final Class<?>[] decodeAs = { Boolean.class };
-            final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
-
+            break;
+        case UPDATE_OXYGEN_VALIDITY:
             if (playerBaseClient != null)
             {
                 playerBaseClient.oxygenSetupValid = (Boolean) packetReadout[0];
             }
-        }
-        else if (packetType == 28)
-        {
-            final Class<?>[] decodeAs = { Integer.class, Integer.class, Integer.class };
-            final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
-
-            int gui = (Integer) packetReadout[1];
-
-            switch (gui)
+            break;
+        case OPEN_PARACHEST_GUI:
+            switch ((Integer) packetReadout[1])
             {
             case 0:
                 if (player.ridingEntity instanceof GCCoreEntityBuggy)
@@ -466,9 +448,8 @@ public class GCCorePacketHandlerClient implements IPacketHandler
                 player.openContainer.windowId = (Integer) packetReadout[0];
                 break;
             }
-        }
-        else if (packetType == 29)
-        {
+            break;
+        case UPDATE_LANDER:
             try
             {
                 new GCCorePacketLanderUpdate().handlePacket(data, new Object[] { player }, Side.CLIENT);
@@ -477,9 +458,8 @@ public class GCCorePacketHandlerClient implements IPacketHandler
             {
                 e1.printStackTrace();
             }
-        }
-        else if (packetType == 30)
-        {
+            break;
+        case UPDATE_PARACHEST:
             try
             {
                 new GCCorePacketParachestUpdate().handlePacket(data, new Object[] { player }, Side.CLIENT);
@@ -488,12 +468,8 @@ public class GCCorePacketHandlerClient implements IPacketHandler
             {
                 e.printStackTrace();
             }
-        }
-        else if (packetType == 31)
-        {
-            final Class<?>[] decodeAs = { Integer.class, Integer.class, Integer.class };
-            final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
-            
+            break;
+        case UPDATE_WIRE_BOUNDS:
             TileEntity tile = player.worldObj.getBlockTileEntity((Integer)packetReadout[0], (Integer)packetReadout[1], (Integer)packetReadout[2]);
             
             if (tile instanceof TileEntityConductor)
@@ -501,6 +477,7 @@ public class GCCorePacketHandlerClient implements IPacketHandler
                 ((TileEntityConductor) tile).adjacentConnections = null;
                 Block.blocksList[player.worldObj.getBlockId(tile.xCoord, tile.yCoord, tile.zCoord)].setBlockBoundsBasedOnState(player.worldObj, tile.xCoord, tile.yCoord, tile.zCoord);
             }
+            break;
         }
     }
 }

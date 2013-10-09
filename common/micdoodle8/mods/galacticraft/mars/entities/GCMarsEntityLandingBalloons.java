@@ -12,6 +12,7 @@ import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.IScaleableFuelLevel;
 import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumClientPacket;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.mars.util.GCMarsUtil;
 import net.minecraft.client.particle.EntityFX;
@@ -348,7 +349,7 @@ public class GCMarsEntityLandingBalloons extends GCCoreEntityAdvanced implements
         }
         else if (var1 instanceof EntityPlayerMP)
         {
-            ((EntityPlayerMP) var1).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, new Object[] { 0 }));
+            ((EntityPlayerMP) var1).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumClientPacket.ZOOM_CAMERA, new Object[] { 0 }));
             var1.mountEntity(null);
             return true;
         }

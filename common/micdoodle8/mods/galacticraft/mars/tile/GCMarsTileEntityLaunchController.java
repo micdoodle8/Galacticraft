@@ -96,7 +96,6 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
     {
         super.updateEntity();
         
-        
         if (!this.worldObj.isRemote)
         {
             if (this.requiresClientUpdate)

@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLanderFlameFX;
 import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumClientPacket;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.client.particle.EntityFX;
@@ -353,7 +354,7 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
         }
         else if (var1 instanceof EntityPlayerMP)
         {
-            ((EntityPlayerMP) var1).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, new Object[] { 0 }));
+            ((EntityPlayerMP) var1).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumClientPacket.ZOOM_CAMERA, new Object[] { 0 }));
             var1.mountEntity(null);
             return true;
         }
@@ -518,7 +519,7 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
                 if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayerMP)
                 {
                     final Object[] toSend2 = { 0 };
-                    ((EntityPlayerMP) this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, toSend2));
+                    ((EntityPlayerMP) this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumClientPacket.ZOOM_CAMERA, toSend2));
 
                     this.riddenByEntity.mountEntity(this);
                 }

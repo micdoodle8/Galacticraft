@@ -17,6 +17,7 @@ import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerSchematic;
 import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumClientPacket;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityParachest;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
@@ -107,7 +108,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
 
                     playerBase.setTeleportCooldown(300);
                     final Object[] toSend = { player.username };
-                    player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 12, toSend));
+                    player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumClientPacket.CLOSE_GUI, toSend));
                 }
                 catch (final Exception e)
                 {
@@ -332,7 +333,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
                         schematicContainer.craftMatrix.setInventorySlotContents(0, stack);
                         schematicContainer.craftMatrix.onInventoryChanged();
 
-                        player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 20, new Object[] { page.getPageID() }));
+                        player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumClientPacket.ADD_NEW_SCHEMATIC, new Object[] { page.getPageID() }));
                     }
                 }
             }

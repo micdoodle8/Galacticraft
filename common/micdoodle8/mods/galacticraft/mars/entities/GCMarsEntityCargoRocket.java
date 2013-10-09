@@ -188,18 +188,18 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
                 }
             }
             
-            double d = this.timeSinceLaunch / 250;
+            double motionScalar = this.timeSinceLaunch / 250;
 
-            d = Math.min(d, 1);
+            motionScalar = Math.min(motionScalar, 1);
             
             double modifier = this.getCargoFilledAmount();
-            d *= 5.0D / modifier;
+            motionScalar *= 5.0D / modifier;
             
             if (!this.landing)
             {
-                if (d != 0.0)
+                if (motionScalar != 0.0)
                 {
-                    this.motionY = -d * Math.cos((this.rotationPitch - 180) * Math.PI / 180.0D);
+                    this.motionY = -motionScalar * Math.cos((this.rotationPitch - 180) * Math.PI / 180.0D);
                 }
             }
             else
