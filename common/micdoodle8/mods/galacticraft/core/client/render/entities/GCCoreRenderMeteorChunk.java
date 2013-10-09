@@ -17,6 +17,7 @@ import org.lwjgl.opengl.GL11;
 public class GCCoreRenderMeteorChunk extends Render
 {
     private static final ResourceLocation meteorChunkTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/meteorChunk.png");
+    private static final ResourceLocation meteorChunkHotTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/meteorChunkHot.png");
 
     protected IModelCustom meteorChunkModel;
 
@@ -47,7 +48,14 @@ public class GCCoreRenderMeteorChunk extends Render
         GL11.glRotatef(var24b, 1.0F, 0.0F, 0.0F);
         GL11.glRotatef(var24, 0.0F, 0.0F, 1.0F);
 
-        this.bindTexture(GCCoreRenderMeteorChunk.meteorChunkTexture);
+        if (entity.isHot())
+        {
+            this.bindTexture(GCCoreRenderMeteorChunk.meteorChunkHotTexture);
+        }
+        else
+        {
+            this.bindTexture(GCCoreRenderMeteorChunk.meteorChunkTexture);
+        }
         this.meteorChunkModel.renderAll();
 
         GL11.glPopMatrix();

@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.entities;
 
 import java.util.List;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.EnchantmentThorns;
 import net.minecraft.entity.Entity;
@@ -21,6 +22,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -40,6 +42,8 @@ public class GCCoreEntityMeteorChunk extends Entity implements IProjectile
     private boolean inGround;
 
     private int knockbackStrength;
+    
+    public boolean isHot;
 
     public GCCoreEntityMeteorChunk(World world)
     {
@@ -158,6 +162,20 @@ public class GCCoreEntityMeteorChunk extends Entity implements IProjectile
     public void onUpdate()
     {
         super.onUpdate();
+        
+        if (this.ticksExisted > 400)
+        {
+            if (this.isHot)
+            {
+                this.isHot = false;
+                this.setHot(this.isHot);
+            }
+        }
+        else if (!this.worldObj.isRemote)
+        {
+            FMLLog.info("" + this.ticksExisted);
+            this.setHot(this.isHot);
+        }
 
         if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F)
         {
@@ -396,7 +414,17 @@ public class GCCoreEntityMeteorChunk extends Entity implements IProjectile
     @Override
     protected void entityInit()
     {
-
+        this.dataWatcher.addObject(16, Integer.valueOf(0));
+    }
+    
+    public boolean isHot()
+    {
+        return this.dataWatcher.getWatchableObjectInt(16) == 1;
+    }
+    
+    public void setHot(boolean isHot)
+    {
+        this.dataWatcher.updateObject(16, isHot ? 1 : 0);
     }
 
     @Override
@@ -418,7 +446,7 @@ public class GCCoreEntityMeteorChunk extends Entity implements IProjectile
         {
             boolean flag = this.canBePickedUp == 1 || this.canBePickedUp == 2 && par1EntityPlayer.capabilities.isCreativeMode;
 
-            if (this.canBePickedUp == 1 && !par1EntityPlayer.inventory.addItemStackToInventory(new ItemStack(Item.arrow, 1)))
+            if (this.canBePickedUp == 1 && !par1EntityPlayer.inventory.addItemStackToInventory(new ItemStack(GCCoreItems.meteorChunk, 1, 0)))
             {
                 flag = false;
             }

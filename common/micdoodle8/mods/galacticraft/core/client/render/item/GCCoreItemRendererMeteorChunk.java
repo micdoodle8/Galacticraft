@@ -18,6 +18,7 @@ import cpw.mods.fml.client.FMLClientHandler;
 public class GCCoreItemRendererMeteorChunk implements IItemRenderer
 {
     private static final ResourceLocation meteorChunkTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/meteorChunk.png");
+    private static final ResourceLocation meteorChunkHotTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/meteorChunkHot.png");
 
     protected IModelCustom meteorChunkModel;
 
@@ -43,7 +44,14 @@ public class GCCoreItemRendererMeteorChunk implements IItemRenderer
             GL11.glTranslatef(1.4F, 1.0F, 0.5F);
         }
 
-        FMLClientHandler.instance().getClient().getTextureManager().bindTexture(GCCoreItemRendererMeteorChunk.meteorChunkTexture);
+        if (item.getItemDamage() == 0)
+        {
+            FMLClientHandler.instance().getClient().getTextureManager().bindTexture(GCCoreItemRendererMeteorChunk.meteorChunkTexture);
+        }
+        else
+        {
+            FMLClientHandler.instance().getClient().getTextureManager().bindTexture(GCCoreItemRendererMeteorChunk.meteorChunkHotTexture);
+        }
         this.meteorChunkModel.renderAll();
 
         GL11.glPopMatrix();
