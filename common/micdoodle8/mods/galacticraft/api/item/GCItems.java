@@ -43,8 +43,18 @@ public class GCItems
     // "solarPanelAdvanced"
     // "copperWire"
     // "coalGenerator"
-    // "batteryBox"
+    // "energyStorageModule"
     // "electricFurnace"
+    // "ingotCompressor"
+    // "ingotCompressorElectric"
+    // "circuitFabricator"
+    // "oreCopper"
+    // "oreTin"
+    // "oreAluminum"
+    // "oreSilicon"
+    // "torchGlowstone"
+    // "wireAluminum"
+    // "wireAluminumHeavy"
 
     // GALACTICRAFT CORE ITEMS:
     // "oxygenTankLightFull"
@@ -155,7 +165,6 @@ public class GCItems
     // "dehydratedPotato"
     // "meteorThrowable"
     // "meteorThrowableHot"
-
     /**
      * Request an itemstack from Galacticraft.
      * 
@@ -175,14 +184,17 @@ public class GCItems
     {
         try
         {
-            Class<?> clazz = Class.forName(GCItems.getItemListClass());
-            Field f = clazz.getDeclaredField("itemList");
-            Object o = f.get(null);
+            if (GCItems.itemsList == null)
+            {
+                Class<?> clazz = Class.forName(GCItems.getItemListClass());
+                Field f = clazz.getDeclaredField("itemList");
+                GCItems.itemsList = f.get(null);
+            }
 
-            if (o instanceof HashMap)
+            if (GCItems.itemsList instanceof HashMap)
             {
                 @SuppressWarnings("unchecked")
-                HashMap<String, ItemStack> blockMap = (HashMap<String, ItemStack>) o;
+                HashMap<String, ItemStack> blockMap = (HashMap<String, ItemStack>) GCItems.itemsList;
                 ItemStack stack = blockMap.get(key);
                 return new ItemStack(stack.itemID, amount, stack.getItemDamage());
             }
@@ -214,14 +226,17 @@ public class GCItems
     {
         try
         {
-            Class<?> clazz = Class.forName(GCItems.getItemListClass());
-            Field f = clazz.getDeclaredField("blocksList");
-            Object o = f.get(null);
+            if (GCItems.blocksList == null)
+            {
+                Class<?> clazz = Class.forName(GCItems.getItemListClass());
+                Field f = clazz.getDeclaredField("blocksList");
+                GCItems.blocksList = f.get(null);
+            }
 
-            if (o instanceof HashMap)
+            if (GCItems.blocksList instanceof HashMap)
             {
                 @SuppressWarnings("unchecked")
-                HashMap<String, ItemStack> blockMap = (HashMap<String, ItemStack>) o;
+                HashMap<String, ItemStack> blockMap = (HashMap<String, ItemStack>) GCItems.blocksList;
                 ItemStack stack = blockMap.get(key);
                 return new ItemStack(stack.itemID, amount, stack.getItemDamage());
             }
@@ -238,4 +253,7 @@ public class GCItems
     {
         return "micdoodle8.mods.galacticraft.core.GalacticraftCore";
     }
+    
+    private static Object blocksList;
+    private static Object itemsList;
 }

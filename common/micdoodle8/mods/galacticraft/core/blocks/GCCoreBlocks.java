@@ -130,8 +130,18 @@ public class GCCoreBlocks
         GCCoreUtil.registerGalacticraftBlock("solarPanelAdvanced", GCCoreBlocks.solarPanel, 4);
         GCCoreUtil.registerGalacticraftBlock("copperWire", GCCoreBlocks.aluminumWire);
         GCCoreUtil.registerGalacticraftBlock("coalGenerator", GCCoreBlocks.machineBase, 0);
-        GCCoreUtil.registerGalacticraftBlock("batteryBox", GCCoreBlocks.machineBase, 4);
+        GCCoreUtil.registerGalacticraftBlock("energyStorageModule", GCCoreBlocks.machineBase, 4);
         GCCoreUtil.registerGalacticraftBlock("electricFurnace", GCCoreBlocks.machineBase, 8);
+        GCCoreUtil.registerGalacticraftBlock("ingotCompressor", GCCoreBlocks.machineBase, 12);
+        GCCoreUtil.registerGalacticraftBlock("ingotCompressorElectric", GCCoreBlocks.machineBase2, 0);
+        GCCoreUtil.registerGalacticraftBlock("circuitFabricator", GCCoreBlocks.machineBase2, 4);
+        GCCoreUtil.registerGalacticraftBlock("oreCopper", GCCoreBlocks.decorationBlocks, 5);
+        GCCoreUtil.registerGalacticraftBlock("oreTin", GCCoreBlocks.decorationBlocks, 6);
+        GCCoreUtil.registerGalacticraftBlock("oreAluminum", GCCoreBlocks.decorationBlocks, 7);
+        GCCoreUtil.registerGalacticraftBlock("oreSilicon", GCCoreBlocks.decorationBlocks, 8);
+        GCCoreUtil.registerGalacticraftBlock("torchGlowstone", GCCoreBlocks.glowstoneTorch);
+        GCCoreUtil.registerGalacticraftBlock("wireAluminum", GCCoreBlocks.aluminumWire);
+        GCCoreUtil.registerGalacticraftBlock("wireAluminumHeavy", GCCoreBlocks.aluminumWire, 1);
 
         // Hide certain items from NEI
         GCCoreBlocks.hiddenBlocks.add(GCCoreBlocks.airLockSeal.blockID);
