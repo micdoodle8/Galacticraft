@@ -5,6 +5,8 @@ import java.util.EnumSet;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.world.IMoon;
 import micdoodle8.mods.galacticraft.core.GCCoreCreativeTab;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonTeleportType;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
@@ -96,8 +98,9 @@ public class GalacticraftMoon
         OreDictionary.registerOre("plateMeteoricIron", new ItemStack(GCMoonItems.meteoricIronIngot, 1, 1));
         OreDictionary.registerOre("ingotMeteoricIron", new ItemStack(GCMoonItems.meteoricIronIngot, 1, 0));
 
-        CraftingManager.getInstance().addRecipe(new ItemStack(GCMoonItems.cheeseBlock, 1), new Object[] { "YYY", "YXY", "YYY", 'X', Item.bucketMilk, 'Y', GCMoonItems.cheeseCurd });
-        CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(new ItemStack(GCMoonItems.meteoricIronIngot, 1, 1), new Object[] { new ItemStack(GCMoonItems.meteoricIronIngot, 1, 0), new ItemStack(GCMoonItems.meteoricIronIngot, 1, 0), new ItemStack(GCMoonItems.meteoricIronIngot, 1, 0), new ItemStack(GCMoonItems.meteoricIronIngot, 1, 0) }));
+        RecipeUtil.addRecipe(new ItemStack(GCMoonItems.cheeseBlock, 1), new Object[] { "YYY", "YXY", "YYY", 'X', Item.bucketMilk, 'Y', GCMoonItems.cheeseCurd });
+        
+        CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(new ItemStack(GCCoreItems.meteorChunk, 3), new Object[] { GCMoonItems.meteoricIronRaw }));
     }
 
     public static void addSmeltingRecipes()
