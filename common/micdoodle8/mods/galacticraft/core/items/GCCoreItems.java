@@ -207,6 +207,27 @@ public class GCCoreItems
         GCCoreUtil.registerGalacticraftItem("batteryEmpty", GCCoreItems.battery, 100);
         GCCoreUtil.registerGalacticraftItem("batteryFull", GCCoreItems.battery, 0);
         GCCoreUtil.registerGalacticraftItem("infiniteBattery", GCCoreItems.infiniteBatery);
+        GCCoreUtil.registerGalacticraftItem("rawSilicon", GCCoreItems.basicItem, 2);
+        GCCoreUtil.registerGalacticraftItem("ingotCopper", GCCoreItems.basicItem, 3);
+        GCCoreUtil.registerGalacticraftItem("ingotTin", GCCoreItems.basicItem, 4);
+        GCCoreUtil.registerGalacticraftItem("ingotAluminum", GCCoreItems.basicItem, 5);
+        GCCoreUtil.registerGalacticraftItem("ingotSteel", GCCoreItems.basicItem, 6);
+        GCCoreUtil.registerGalacticraftItem("ingotBronze", GCCoreItems.basicItem, 7);
+        GCCoreUtil.registerGalacticraftItem("compressedCopper", GCCoreItems.basicItem, 8);
+        GCCoreUtil.registerGalacticraftItem("compressedTin", GCCoreItems.basicItem, 9);
+        GCCoreUtil.registerGalacticraftItem("compressedAluminum", GCCoreItems.basicItem, 10);
+        GCCoreUtil.registerGalacticraftItem("compressedSteel", GCCoreItems.basicItem, 11);
+        GCCoreUtil.registerGalacticraftItem("compressedBronze", GCCoreItems.basicItem, 12);
+        GCCoreUtil.registerGalacticraftItem("compressedIron", GCCoreItems.basicItem, 13);
+        GCCoreUtil.registerGalacticraftItem("waferSolar", GCCoreItems.basicItem, 14);
+        GCCoreUtil.registerGalacticraftItem("waferBasic", GCCoreItems.basicItem, 15);
+        GCCoreUtil.registerGalacticraftItem("waferAdvanced", GCCoreItems.basicItem, 16);
+        GCCoreUtil.registerGalacticraftItem("dehydratedApple", GCCoreItems.basicItem, 17);
+        GCCoreUtil.registerGalacticraftItem("dehydratedCarrot", GCCoreItems.basicItem, 18);
+        GCCoreUtil.registerGalacticraftItem("dehydratedMelon", GCCoreItems.basicItem, 19);
+        GCCoreUtil.registerGalacticraftItem("dehydratedPotato", GCCoreItems.basicItem, 20);
+        GCCoreUtil.registerGalacticraftItem("meteorThrowable", GCCoreItems.meteorChunk);
+        GCCoreUtil.registerGalacticraftItem("meteorThrowableHot", GCCoreItems.meteorChunk, 1);
 
         for (int i = 0; i < GCCoreItemBasic.names.length; i++)
         {

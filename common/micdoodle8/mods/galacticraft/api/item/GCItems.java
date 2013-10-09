@@ -2,6 +2,8 @@ package micdoodle8.mods.galacticraft.api.item;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.item.ItemStack;
 
 public class GCItems
@@ -134,6 +136,27 @@ public class GCItems
     // "batteryEmpty"
     // "batteryFull"
     // "infiniteBattery"
+    // "rawSilicon"
+    // "ingotCopper"
+    // "ingotTin"
+    // "ingotAluminum"
+    // "ingotSteel"
+    // "ingotBronze"
+    // "compressedCopper"
+    // "compressedTin"
+    // "compressedAluminum"
+    // "compressedSteel"
+    // "compressedBronze"
+    // "compressedIron"
+    // "waferSolar"
+    // "waferBasic"
+    // "waferAdvanced"
+    // "dehydratedApple"
+    // "dehydratedCarrot"
+    // "dehydratedMelon"
+    // "dehydratedPotato"
+    // "meteorThrowable"
+    // "meteorThrowableHot"
 
     /**
      * Request an itemstack from Galacticraft.
