@@ -323,5 +323,13 @@ public class GCCoreRecipeManager
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.cargoLoader, 1, 4), new Object[] { "XXX", "YZY", "XWX", 'W', Block.hopperBlock, 'X', new ItemStack(GCCoreItems.basicItem, 1, 9), 'Y', new ItemStack(GCCoreItems.basicItem, 1, 8), 'Z', Block.chest });
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.glowstoneTorch, 4), new Object[] { "Y", "X", 'X', Item.stick, 'Y', Item.glowstone });
+
+        CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(new ItemStack(GCCoreItems.basicItem, 1, 15), new Object[] { new ItemStack(GCCoreItems.canister, 1, 0), Item.appleRed, Item.appleRed }));
+
+        CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(new ItemStack(GCCoreItems.basicItem, 1, 16), new Object[] { new ItemStack(GCCoreItems.canister, 1, 0), Item.carrot, Item.carrot }));
+
+        CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(new ItemStack(GCCoreItems.basicItem, 1, 17), new Object[] { new ItemStack(GCCoreItems.canister, 1, 0), Item.melon, Item.melon }));
+
+        CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(new ItemStack(GCCoreItems.basicItem, 1, 18), new Object[] { new ItemStack(GCCoreItems.canister, 1, 0), Item.potato, Item.potato }));
     }
 }
