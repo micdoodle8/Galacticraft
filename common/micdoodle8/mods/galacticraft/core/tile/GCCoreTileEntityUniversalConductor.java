@@ -4,10 +4,10 @@ import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileUnloadEvent;
 import ic2.api.energy.tile.IEnergyAcceptor;
 import ic2.api.energy.tile.IEnergyEmitter;
-import ic2.api.energy.tile.IEnergySink;
 import ic2.api.energy.tile.IEnergyTile;
 import java.util.HashSet;
 import java.util.Set;
+import micdoodle8.mods.galacticraft.core.ASMHelper.RuntimeInterface;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
@@ -32,7 +32,7 @@ import buildcraft.api.power.PowerHandler.Type;
  * @author Calclavia, micdoodle8
  * 
  */
-public abstract class GCCoreTileEntityUniversalConductor extends TileEntityConductor implements IEnergySink, IPowerReceptor
+public abstract class GCCoreTileEntityUniversalConductor extends TileEntityConductor
 {
     protected boolean isAddedToEnergyNet;
     public Object powerHandler;
@@ -47,7 +47,7 @@ public abstract class GCCoreTileEntityUniversalConductor extends TileEntityCondu
     {
         if (Compatibility.isBuildcraftLoaded())
         {
-            this.powerHandler = new PowerHandler(this, Type.PIPE);
+            this.powerHandler = new PowerHandler((IPowerReceptor) this, Type.PIPE);
             ((PowerHandler) this.powerHandler).configure(0, this.buildcraftBuffer, this.buildcraftBuffer, this.buildcraftBuffer * 2);
             ((PowerHandler) this.powerHandler).configurePowerPerdition(0, 0);
         }
@@ -118,7 +118,12 @@ public abstract class GCCoreTileEntityUniversalConductor extends TileEntityCondu
         {
             if (!this.isAddedToEnergyNet)
             {
-                this.initIC();
+                if (Compatibility.isIndustrialCraft2Loaded())
+                {
+                    this.initIC();
+                }
+                
+                this.isAddedToEnergyNet = true;
             }
         }
     }
@@ -141,10 +146,8 @@ public abstract class GCCoreTileEntityUniversalConductor extends TileEntityCondu
     {
         if (Compatibility.isIndustrialCraft2Loaded())
         {
-            MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
+            MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent((IEnergyTile) this));
         }
-
-        this.isAddedToEnergyNet = true;
     }
 
     private void unloadTileIC2()
@@ -153,14 +156,14 @@ public abstract class GCCoreTileEntityUniversalConductor extends TileEntityCondu
         {
             if (Compatibility.isIndustrialCraft2Loaded())
             {
-                MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(this));
+                MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent((IEnergyTile) this));
             }
 
             this.isAddedToEnergyNet = false;
         }
     }
 
-    @Override
+    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
     public double demandedEnergyUnits()
     {
         if (this.getNetwork() == null)
@@ -171,7 +174,7 @@ public abstract class GCCoreTileEntityUniversalConductor extends TileEntityCondu
         return this.getNetwork().getRequest(this).getWatts() * Compatibility.TO_IC2_RATIO;
     }
 
-    @Override
+    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
     public double injectEnergyUnits(ForgeDirection directionFrom, double amount)
     {
         TileEntity tile = VectorHelper.getTileEntityFromSide(this.worldObj, new Vector3(this), directionFrom);
@@ -179,13 +182,13 @@ public abstract class GCCoreTileEntityUniversalConductor extends TileEntityCondu
         return this.getNetwork().produce(pack, this, tile) * Compatibility.TO_IC2_RATIO;
     }
 
-    @Override
+    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
     public int getMaxSafeInput()
     {
         return Integer.MAX_VALUE;
     }
 
-    @Override
+    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergyAcceptor", modID = "IC2")
     public boolean acceptsEnergyFrom(TileEntity emitter, ForgeDirection direction)
     {
         return true;
@@ -194,13 +197,13 @@ public abstract class GCCoreTileEntityUniversalConductor extends TileEntityCondu
     /**
      * BuildCraft functions
      */
-    @Override
+    @RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "BuildCraft|Energy")
     public PowerReceiver getPowerReceiver(ForgeDirection side)
     {
         return ((PowerHandler) this.powerHandler).getPowerReceiver();
     }
 
-    @Override
+    @RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "BuildCraft|Energy")
     public void doWork(PowerHandler workProvider)
     {
         Set<TileEntity> ignoreTiles = new HashSet<TileEntity>();
@@ -216,7 +219,7 @@ public abstract class GCCoreTileEntityUniversalConductor extends TileEntityCondu
         this.getNetwork().produce(pack, ignoreTiles.toArray(new TileEntity[0]));
     }
 
-    @Override
+    @RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "BuildCraft|Energy")
     public World getWorld()
     {
         return this.getWorldObj();
