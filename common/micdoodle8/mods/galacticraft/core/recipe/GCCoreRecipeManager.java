@@ -186,11 +186,11 @@ public class GCCoreRecipeManager
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.machineBase, 1, 8), new Object[] { "XXX", "XZX", "WYW", 'W', new ItemStack(GCCoreItems.basicItem, 1, 8), 'X', new ItemStack(GCCoreItems.basicItem, 1, 9), 'Y', new ItemStack(GCCoreItems.basicItem, 1, 14), 'Z', Block.furnaceIdle });
 
-        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.machineBase, 1, 12), new Object[] { "WXW", "WYW", "WZW", 'W', new ItemStack(GCCoreItems.basicItem, 1, 9), 'X', Block.anvil, 'Y', new ItemStack(GCCoreItems.basicItem, 1, 10), 'Z', new ItemStack(GCCoreItems.basicItem, 1, 13) });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.machineBase, 1, 12), new Object[] { "WXW", "WYW", "WZW", 'W', new ItemStack(GCCoreItems.basicItem, 1, 5), 'X', Block.anvil, 'Y', new ItemStack(GCCoreItems.basicItem, 1, 3), 'Z', new ItemStack(GCCoreItems.basicItem, 1, 13) });
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.machineBase2, 1, 0), new Object[] { "WXW", "WYW", "VZV", 'V', new ItemStack(GCCoreBlocks.aluminumWire), 'W', new ItemStack(GCCoreItems.basicItem, 1, 9), 'X', Block.anvil, 'Y', new ItemStack(GCCoreItems.basicItem, 1, 10), 'Z', new ItemStack(GCCoreItems.basicItem, 1, 14) });
 
-        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.machineBase2, 1, 4), new Object[] { "WXW", "UYU", "VZV", 'U', Block.stoneButton, 'V', new ItemStack(GCCoreBlocks.aluminumWire), 'W', new ItemStack(GCCoreItems.basicItem, 1, 9), 'X', Block.lever, 'Y', Block.furnaceIdle, 'Z', Block.torchRedstoneActive });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.machineBase2, 1, 4), new Object[] { "WXW", "UYU", "VZV", 'U', Block.stoneButton, 'V', new ItemStack(GCCoreBlocks.aluminumWire), 'W', new ItemStack(GCCoreItems.basicItem, 1, 5), 'X', Block.lever, 'Y', Block.furnaceIdle, 'Z', Block.torchRedstoneActive });
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreItems.battery), new Object[] { " T ", "TRT", "TCT", 'T', new ItemStack(GCCoreItems.basicItem, 1, 7), 'R', Item.redstone, 'C', Item.coal });
 
