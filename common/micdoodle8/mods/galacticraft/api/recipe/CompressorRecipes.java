@@ -179,7 +179,7 @@ public class CompressorRecipes
         }
     }
 
-    public List<IRecipe> getRecipeList()
+    public static List<IRecipe> getRecipeList()
     {
         return CompressorRecipes.recipes;
     }

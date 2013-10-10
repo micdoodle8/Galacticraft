@@ -3,12 +3,16 @@ package micdoodle8.mods.galacticraft.core.nei;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Set;
+import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.ShapedRecipes;
+import net.minecraft.item.crafting.ShapelessRecipes;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
@@ -19,6 +23,7 @@ public class NEIGalacticraftConfig implements IConfigureNEI
     private static HashMap<HashMap<Integer, PositionedStack>, PositionedStack> buggyBenchRecipes = new HashMap<HashMap<Integer, PositionedStack>, PositionedStack>();
     private static HashMap<PositionedStack, PositionedStack> refineryRecipes = new HashMap<PositionedStack, PositionedStack>();
     private static HashMap<HashMap<Integer, PositionedStack>, PositionedStack> circuitFabricatorRecipes = new HashMap<HashMap<Integer, PositionedStack>, PositionedStack>();
+    private static HashMap<HashMap<Integer, PositionedStack>, PositionedStack> ingotCompressorRecipes = new HashMap<HashMap<Integer, PositionedStack>, PositionedStack>();
 
     @Override
     public void loadConfig()
@@ -34,6 +39,10 @@ public class NEIGalacticraftConfig implements IConfigureNEI
         API.registerUsageHandler(new RefineryRecipeHandler());
         API.registerRecipeHandler(new CircuitFabricatorRecipeHandler());
         API.registerUsageHandler(new CircuitFabricatorRecipeHandler());
+        API.registerRecipeHandler(new IngotCompressorRecipeHandler());
+        API.registerUsageHandler(new IngotCompressorRecipeHandler());
+        API.registerRecipeHandler(new ElectricIngotCompressorRecipeHandler());
+        API.registerUsageHandler(new ElectricIngotCompressorRecipeHandler());
     }
 
     @Override
@@ -46,6 +55,11 @@ public class NEIGalacticraftConfig implements IConfigureNEI
     public String getVersion()
     {
         return GalacticraftCore.LOCALMAJVERSION + "." + GalacticraftCore.LOCALMINVERSION + "." + GalacticraftCore.LOCALBUILDVERSION;
+    }
+
+    public void registerIngotCompressorRecipe(HashMap<Integer, PositionedStack> input, PositionedStack output)
+    {
+        NEIGalacticraftConfig.ingotCompressorRecipes.put(input, output);
     }
 
     public void registerCircuitFabricatorRecipe(HashMap<Integer, PositionedStack> input, PositionedStack output)
@@ -66,6 +80,11 @@ public class NEIGalacticraftConfig implements IConfigureNEI
     public void registerRefineryRecipe(PositionedStack input, PositionedStack output)
     {
         NEIGalacticraftConfig.refineryRecipes.put(input, output);
+    }
+
+    public static Set<Entry<HashMap<Integer, PositionedStack>, PositionedStack>> getIngotCompressorRecipes()
+    {
+        return NEIGalacticraftConfig.ingotCompressorRecipes.entrySet();
     }
 
     public static Set<Entry<HashMap<Integer, PositionedStack>, PositionedStack>> getCircuitFabricatorRecipes()
@@ -95,6 +114,7 @@ public class NEIGalacticraftConfig implements IConfigureNEI
         this.addRocketRecipes();
         this.addBuggyRecipes();
         this.addCircuitFabricatorRecipes();
+        this.addIngotCompressorRecipes();
     }
     
     private void addBuggyRecipes()
@@ -226,5 +246,39 @@ public class NEIGalacticraftConfig implements IConfigureNEI
         input2 = new HashMap<Integer, PositionedStack>(input1);
         input2.put(4, new PositionedStack(new ItemStack(Item.redstoneRepeater), 140, 25));
         this.registerCircuitFabricatorRecipe(input2, new PositionedStack(new ItemStack(GCCoreItems.basicItem, 1, 14), 147, 91));
+    }
+    
+    private void addIngotCompressorRecipes()
+    {
+        for (int i = 0; i < CompressorRecipes.getRecipeList().size(); i++)
+        {
+            HashMap<Integer, PositionedStack> input1 = new HashMap<Integer, PositionedStack>();
+            IRecipe rec = CompressorRecipes.getRecipeList().get(i);
+            
+            if (rec instanceof ShapedRecipes)
+            {
+                ShapedRecipes recipe = (ShapedRecipes) rec;
+                
+                for (int j = 0; j < recipe.recipeItems.length; j++)
+                {
+                    ItemStack stack = recipe.recipeItems[j];
+
+                    input1.put(j, new PositionedStack(stack, 21 + (j % 3) * 18, 26 + (j / 3) * 18));
+                }
+            }
+            else if (rec instanceof ShapelessRecipes)
+            {
+                ShapelessRecipes recipe = (ShapelessRecipes) rec;
+
+                for (int j = 0; j < recipe.recipeItems.size(); j++)
+                {
+                    ItemStack stack = (ItemStack) recipe.recipeItems.get(j);
+
+                    input1.put(j, new PositionedStack(stack, 21 + (j % 3) * 18, 26 + (j / 3) * 18));
+                }
+            }
+            
+            this.registerIngotCompressorRecipe(input1, new PositionedStack(rec.getRecipeOutput(), 140, 46));
+        }
     }
 }
