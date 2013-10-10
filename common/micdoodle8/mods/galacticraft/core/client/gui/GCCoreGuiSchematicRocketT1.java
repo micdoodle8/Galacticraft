@@ -64,8 +64,8 @@ public class GCCoreGuiSchematicRocketT1 extends GCCoreGuiContainer implements IS
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.renderEngine.bindTexture(GCCoreGuiSchematicRocketT1.rocketBenchTexture);
         final int var5 = (this.width - this.xSize) / 2;
-        final int var6 = (this.height - 220) / 2;
-        this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, 220);
+        final int var6 = (this.height - this.ySize) / 2;
+        this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);
     }
 
     @Override
