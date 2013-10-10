@@ -6,7 +6,6 @@ import net.minecraft.block.Block;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.IWorldGenerator;
 
 public class GCCoreOverworldGenerator implements IWorldGenerator
@@ -87,10 +86,6 @@ public class GCCoreOverworldGenerator implements IWorldGenerator
                                 int block = par1World.getBlockId(var38, var41, var44);
                                 if (var39 * var39 + var42 * var42 + var45 * var45 < 1.0D && block == Block.stone.blockID)
                                 {
-                                    if (this.metadata == 5)
-                                    {
-                                        FMLLog.info("DONE!");
-                                    }
                                     par1World.setBlock(var38, var41, var44, this.oreBlock.blockID, this.metadata, 2);
                                 }
                             }
