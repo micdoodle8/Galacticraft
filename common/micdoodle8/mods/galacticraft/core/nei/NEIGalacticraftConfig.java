@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.api.API;
@@ -17,6 +18,7 @@ public class NEIGalacticraftConfig implements IConfigureNEI
     private static HashMap<HashMap<Integer, PositionedStack>, PositionedStack> rocketBenchRecipes = new HashMap<HashMap<Integer, PositionedStack>, PositionedStack>();
     private static HashMap<HashMap<Integer, PositionedStack>, PositionedStack> buggyBenchRecipes = new HashMap<HashMap<Integer, PositionedStack>, PositionedStack>();
     private static HashMap<PositionedStack, PositionedStack> refineryRecipes = new HashMap<PositionedStack, PositionedStack>();
+    private static HashMap<HashMap<Integer, PositionedStack>, PositionedStack> circuitFabricatorRecipes = new HashMap<HashMap<Integer, PositionedStack>, PositionedStack>();
 
     @Override
     public void loadConfig()
@@ -30,6 +32,8 @@ public class NEIGalacticraftConfig implements IConfigureNEI
         API.registerUsageHandler(new BuggyRecipeHandler());
         API.registerRecipeHandler(new RefineryRecipeHandler());
         API.registerUsageHandler(new RefineryRecipeHandler());
+        API.registerRecipeHandler(new CircuitFabricatorRecipeHandler());
+        API.registerUsageHandler(new CircuitFabricatorRecipeHandler());
     }
 
     @Override
@@ -42,6 +46,11 @@ public class NEIGalacticraftConfig implements IConfigureNEI
     public String getVersion()
     {
         return GalacticraftCore.LOCALMAJVERSION + "." + GalacticraftCore.LOCALMINVERSION + "." + GalacticraftCore.LOCALBUILDVERSION;
+    }
+
+    public void registerCircuitFabricatorRecipe(HashMap<Integer, PositionedStack> input, PositionedStack output)
+    {
+        NEIGalacticraftConfig.circuitFabricatorRecipes.put(input, output);
     }
 
     public void registerRocketBenchRecipe(HashMap<Integer, PositionedStack> input, PositionedStack output)
@@ -57,6 +66,11 @@ public class NEIGalacticraftConfig implements IConfigureNEI
     public void registerRefineryRecipe(PositionedStack input, PositionedStack output)
     {
         NEIGalacticraftConfig.refineryRecipes.put(input, output);
+    }
+
+    public static Set<Entry<HashMap<Integer, PositionedStack>, PositionedStack>> getCircuitFabricatorRecipes()
+    {
+        return NEIGalacticraftConfig.circuitFabricatorRecipes.entrySet();
     }
 
     public static Set<Entry<HashMap<Integer, PositionedStack>, PositionedStack>> getRocketBenchRecipes()
@@ -78,6 +92,72 @@ public class NEIGalacticraftConfig implements IConfigureNEI
     {
         this.registerRefineryRecipe(new PositionedStack(new ItemStack(GCCoreItems.oilCanister, 1, 1), 2, 3), new PositionedStack(new ItemStack(GCCoreItems.fuelCanister, 1, 1), 148, 3));
 
+        this.addRocketRecipes();
+        this.addBuggyRecipes();
+        this.addCircuitFabricatorRecipes();
+    }
+    
+    private void addBuggyRecipes()
+    {
+        HashMap<Integer, PositionedStack> input1 = new HashMap<Integer, PositionedStack>();
+
+        input1 = new HashMap<Integer, PositionedStack>();
+        input1.put(0, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 0), 18, 37));
+        input1.put(1, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 0), 18, 91));
+        input1.put(2, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 0), 90, 37));
+        input1.put(3, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 0), 90, 91));
+        for (int x = 0; x < 3; x++)
+        {
+            for (int y = 0; y < 4; y++)
+            {
+                if (x == 1 && y == 1)
+                {
+                    input1.put(y * 3 + x + 4, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 1), 36 + x * 18, 37 + y * 18));
+                }
+                else
+                {
+                    input1.put(y * 3 + x + 4, new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36 + x * 18, 37 + y * 18));
+                }
+            }
+        }
+        this.registerBuggyBenchRecipe(input1, new PositionedStack(new ItemStack(GCCoreItems.buggy, 1, 0), 139, 101));
+
+        HashMap<Integer, PositionedStack> input2 = new HashMap<Integer, PositionedStack>(input1);
+        input2.put(16, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 90, 8));
+        this.registerBuggyBenchRecipe(input2, new PositionedStack(new ItemStack(GCCoreItems.buggy, 1, 1), 139, 101));
+
+        input2 = new HashMap<Integer, PositionedStack>(input1);
+        input2.put(17, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 116, 8));
+        this.registerBuggyBenchRecipe(input2, new PositionedStack(new ItemStack(GCCoreItems.buggy, 1, 1), 139, 101));
+
+        input2 = new HashMap<Integer, PositionedStack>(input1);
+        input2.put(18, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 142, 8));
+        this.registerBuggyBenchRecipe(input2, new PositionedStack(new ItemStack(GCCoreItems.buggy, 1, 1), 139, 101));
+
+        input2 = new HashMap<Integer, PositionedStack>(input1);
+        input2.put(16, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 90, 8));
+        input2.put(17, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 116, 8));
+        this.registerBuggyBenchRecipe(input2, new PositionedStack(new ItemStack(GCCoreItems.buggy, 1, 2), 139, 101));
+
+        input2 = new HashMap<Integer, PositionedStack>(input1);
+        input2.put(17, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 116, 8));
+        input2.put(18, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 142, 8));
+        this.registerBuggyBenchRecipe(input2, new PositionedStack(new ItemStack(GCCoreItems.buggy, 1, 2), 139, 101));
+
+        input2 = new HashMap<Integer, PositionedStack>(input1);
+        input2.put(16, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 90, 8));
+        input2.put(18, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 142, 8));
+        this.registerBuggyBenchRecipe(input2, new PositionedStack(new ItemStack(GCCoreItems.buggy, 1, 2), 139, 101));
+
+        input2 = new HashMap<Integer, PositionedStack>(input1);
+        input2.put(16, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 90, 8));
+        input2.put(17, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 116, 8));
+        input2.put(18, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 142, 8));
+        this.registerBuggyBenchRecipe(input2, new PositionedStack(new ItemStack(GCCoreItems.buggy, 1, 3), 139, 101));
+    }
+    
+    private void addRocketRecipes()
+    {
         HashMap<Integer, PositionedStack> input1 = new HashMap<Integer, PositionedStack>();
         input1.put(0, new PositionedStack(new ItemStack(GCCoreItems.partNoseCone), 45, 15));
         input1.put(1, new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36, 33));
@@ -127,59 +207,24 @@ public class NEIGalacticraftConfig implements IConfigureNEI
         input2.put(15, new PositionedStack(new ItemStack(Block.chest), 116, 8));
         input2.put(16, new PositionedStack(new ItemStack(Block.chest), 142, 8));
         this.registerRocketBenchRecipe(input2, new PositionedStack(new ItemStack(GCCoreItems.rocketTier1, 1, 3), 139, 92));
+    }
+    
+    private void addCircuitFabricatorRecipes()
+    {
+        HashMap<Integer, PositionedStack> input1 = new HashMap<Integer, PositionedStack>();
+        input1.put(0, new PositionedStack(new ItemStack(Item.diamond), 10, 22));
+        input1.put(1, new PositionedStack(new ItemStack(GCCoreItems.basicItem, 1, 2), 69, 51));
+        input1.put(2, new PositionedStack(new ItemStack(GCCoreItems.basicItem, 1, 2), 69, 69));
+        input1.put(3, new PositionedStack(new ItemStack(Item.redstone), 117, 51));
+        input1.put(4, new PositionedStack(new ItemStack(Block.torchRedstoneActive), 140, 25));
+        this.registerCircuitFabricatorRecipe(input1, new PositionedStack(new ItemStack(GCCoreItems.basicItem, 3, 13), 147, 91));
 
-        input1 = new HashMap<Integer, PositionedStack>();
-        input1.put(0, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 0), 18, 37));
-        input1.put(1, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 0), 18, 91));
-        input1.put(2, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 0), 90, 37));
-        input1.put(3, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 0), 90, 91));
-        for (int x = 0; x < 3; x++)
-        {
-            for (int y = 0; y < 4; y++)
-            {
-                if (x == 1 && y == 1)
-                {
-                    input1.put(y * 3 + x + 4, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 1), 36 + x * 18, 37 + y * 18));
-                }
-                else
-                {
-                    input1.put(y * 3 + x + 4, new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36 + x * 18, 37 + y * 18));
-                }
-            }
-        }
-        this.registerBuggyBenchRecipe(input1, new PositionedStack(new ItemStack(GCCoreItems.buggy, 1, 0), 139, 101));
+        HashMap<Integer, PositionedStack> input2 = new HashMap<Integer, PositionedStack>(input1);
+        input2.put(4, new PositionedStack(new ItemStack(Item.dyePowder, 1, 4), 140, 25));
+        this.registerCircuitFabricatorRecipe(input2, new PositionedStack(new ItemStack(GCCoreItems.basicItem, 9, 12), 147, 91));
 
         input2 = new HashMap<Integer, PositionedStack>(input1);
-        input2.put(16, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 90, 8));
-        this.registerBuggyBenchRecipe(input2, new PositionedStack(new ItemStack(GCCoreItems.buggy, 1, 1), 139, 101));
-
-        input2 = new HashMap<Integer, PositionedStack>(input1);
-        input2.put(17, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 116, 8));
-        this.registerBuggyBenchRecipe(input2, new PositionedStack(new ItemStack(GCCoreItems.buggy, 1, 1), 139, 101));
-
-        input2 = new HashMap<Integer, PositionedStack>(input1);
-        input2.put(18, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 142, 8));
-        this.registerBuggyBenchRecipe(input2, new PositionedStack(new ItemStack(GCCoreItems.buggy, 1, 1), 139, 101));
-
-        input2 = new HashMap<Integer, PositionedStack>(input1);
-        input2.put(16, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 90, 8));
-        input2.put(17, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 116, 8));
-        this.registerBuggyBenchRecipe(input2, new PositionedStack(new ItemStack(GCCoreItems.buggy, 1, 2), 139, 101));
-
-        input2 = new HashMap<Integer, PositionedStack>(input1);
-        input2.put(17, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 116, 8));
-        input2.put(18, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 142, 8));
-        this.registerBuggyBenchRecipe(input2, new PositionedStack(new ItemStack(GCCoreItems.buggy, 1, 2), 139, 101));
-
-        input2 = new HashMap<Integer, PositionedStack>(input1);
-        input2.put(16, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 90, 8));
-        input2.put(18, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 142, 8));
-        this.registerBuggyBenchRecipe(input2, new PositionedStack(new ItemStack(GCCoreItems.buggy, 1, 2), 139, 101));
-
-        input2 = new HashMap<Integer, PositionedStack>(input1);
-        input2.put(16, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 90, 8));
-        input2.put(17, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 116, 8));
-        input2.put(18, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 142, 8));
-        this.registerBuggyBenchRecipe(input2, new PositionedStack(new ItemStack(GCCoreItems.buggy, 1, 3), 139, 101));
+        input2.put(4, new PositionedStack(new ItemStack(Item.redstoneRepeater), 140, 25));
+        this.registerCircuitFabricatorRecipe(input2, new PositionedStack(new ItemStack(GCCoreItems.basicItem, 1, 14), 147, 91));
     }
 }
