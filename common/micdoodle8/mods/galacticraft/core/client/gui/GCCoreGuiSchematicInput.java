@@ -38,9 +38,9 @@ public class GCCoreGuiSchematicInput extends GCCoreGuiContainer implements ISche
         schematicSlotDesc.add("by completing dungeons");
         schematicSlotDesc.add("on planets and moons");
         this.infoRegions.add(new GCCoreInfoRegion((this.width - this.xSize) / 2 + 79, (this.height - this.ySize) / 2, 18, 18, schematicSlotDesc, this.width, this.height));
-        this.buttonList.add(new GuiButton(0, this.width / 2 - 130, this.height / 2 - 30 + 27, 40, 20, LanguageRegistry.instance().getStringLocalization("gui.button.back.name")));
-        this.buttonList.add(this.nextButton = new GuiButton(1, this.width / 2 + 90, this.height / 2 - 30 + 27, 40, 20, LanguageRegistry.instance().getStringLocalization("gui.button.next.name")));
-        this.buttonList.add(new GuiButton(2, this.width / 2 - 46, this.height / 2 - 52, 92, 20, LanguageRegistry.instance().getStringLocalization("gui.button.unlockschematic.name")));
+        this.buttonList.add(new GuiButton(0, this.width / 2 - 130, this.height / 2 - 30 + 27 - 12, 40, 20, LanguageRegistry.instance().getStringLocalization("gui.button.back.name")));
+        this.buttonList.add(this.nextButton = new GuiButton(1, this.width / 2 - 130, this.height / 2 - 30 + 27 + 12, 40, 20, LanguageRegistry.instance().getStringLocalization("gui.button.next.name")));
+        this.buttonList.add(new GuiButton(2, this.width / 2 - 92 / 2, this.height / 2 - 52, 92, 20, LanguageRegistry.instance().getStringLocalization("gui.button.unlockschematic.name")));
         this.nextButton.enabled = false;
     }
 
