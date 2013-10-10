@@ -13,7 +13,7 @@ public class GCMarsInventoryCargoRocketBench implements IInventory
 
     public GCMarsInventoryCargoRocketBench(Container par1Container)
     {
-        this.stackList = new ItemStack[22];
+        this.stackList = new ItemStack[17];
         this.eventHandler = par1Container;
         this.inventoryWidth = 5;
     }

@@ -142,6 +142,65 @@ public class GCMarsRecipeManager
         input2.put(21, new ItemStack(Block.chest));
         GCMarsUtil.addRocketBenchT2Recipe(new ItemStack(GCMarsItems.spaceship, 1, 3), input2);
         
+        //
+        
+        input = new HashMap<Integer, ItemStack>();
+        input.put(1, new ItemStack(GCCoreItems.partNoseCone));
+        input.put(2, new ItemStack(GCCoreItems.basicItem, 1, 14));
+        input.put(3, new ItemStack(GCMarsItems.marsItemBasic, 1, 3));
+        input.put(4, new ItemStack(GCMarsItems.marsItemBasic, 1, 3));
+        input.put(5, new ItemStack(GCMarsItems.marsItemBasic, 1, 3));
+        input.put(6, new ItemStack(GCMarsItems.marsItemBasic, 1, 3));
+        input.put(7, new ItemStack(GCMarsItems.marsItemBasic, 1, 3));
+        input.put(8, new ItemStack(GCMarsItems.marsItemBasic, 1, 3));
+        input.put(9, new ItemStack(GCCoreItems.partFins));
+        input.put(10, new ItemStack(GCCoreItems.partFins));
+        input.put(11, new ItemStack(GCCoreItems.rocketEngine));
+        input.put(12, new ItemStack(GCCoreItems.partFins));
+        input.put(13, new ItemStack(GCCoreItems.partFins));
+
+        input2 = new HashMap<Integer, ItemStack>(input);
+        input2.put(14, new ItemStack(Block.chest));
+        input2.put(15, null);
+        input2.put(16, null);
+        GCMarsUtil.adCargoRocketRecipe(new ItemStack(GCMarsItems.spaceship, 1, 11), input2);
+
+        input2 = new HashMap<Integer, ItemStack>(input);
+        input2.put(14, null);
+        input2.put(15, new ItemStack(Block.chest));
+        input2.put(16, null);
+        GCMarsUtil.adCargoRocketRecipe(new ItemStack(GCMarsItems.spaceship, 1, 11), input2);
+
+        input2 = new HashMap<Integer, ItemStack>(input);
+        input2.put(14, null);
+        input2.put(15, null);
+        input2.put(16, new ItemStack(Block.chest));
+        GCMarsUtil.adCargoRocketRecipe(new ItemStack(GCMarsItems.spaceship, 1, 11), input2);
+
+        input2 = new HashMap<Integer, ItemStack>(input);
+        input2.put(14, new ItemStack(Block.chest));
+        input2.put(15, new ItemStack(Block.chest));
+        input2.put(16, null);
+        GCMarsUtil.adCargoRocketRecipe(new ItemStack(GCMarsItems.spaceship, 1, 12), input2);
+
+        input2 = new HashMap<Integer, ItemStack>(input);
+        input2.put(14, new ItemStack(Block.chest));
+        input2.put(15, null);
+        input2.put(16, new ItemStack(Block.chest));
+        GCMarsUtil.adCargoRocketRecipe(new ItemStack(GCMarsItems.spaceship, 1, 12), input2);
+
+        input2 = new HashMap<Integer, ItemStack>(input);
+        input2.put(14, null);
+        input2.put(15, new ItemStack(Block.chest));
+        input2.put(16, new ItemStack(Block.chest));
+        GCMarsUtil.adCargoRocketRecipe(new ItemStack(GCMarsItems.spaceship, 1, 12), input2);
+
+        input2 = new HashMap<Integer, ItemStack>(input);
+        input2.put(14, new ItemStack(Block.chest));
+        input2.put(15, new ItemStack(Block.chest));
+        input2.put(16, new ItemStack(Block.chest));
+        GCMarsUtil.adCargoRocketRecipe(new ItemStack(GCMarsItems.spaceship, 1, 13), input2);
+        
         RecipeUtil.addRecipe(new ItemStack(GCMarsBlocks.machine, 1, GCMarsBlockMachine.LAUNCH_CONTROLLER_METADATA), new Object[] { "ZWZ", "YXY", "ZWZ", 'W', new ItemStack(GCCoreBlocks.aluminumWire, 1, 0), 'X', new ItemStack(GCCoreItems.basicItem, 1, 14), 'Y', "plateDesh", 'Z', "ingotDesh" });
     }
 }

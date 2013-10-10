@@ -23,6 +23,11 @@ public class GCMarsUtil
         GalacticraftRegistry.addT2RocketRecipe(new GCCoreNasaWorkbenchRecipe(result, input));
     }
 
+    public static void adCargoRocketRecipe(ItemStack result, HashMap<Integer, ItemStack> input)
+    {
+        GalacticraftRegistry.addCargoRocketRecipe(new GCCoreNasaWorkbenchRecipe(result, input));
+    }
+
     public static void openParachestInventory(EntityPlayerMP player, GCMarsEntityLandingBalloons landerInv)
     {
         player.incrementWindowID();

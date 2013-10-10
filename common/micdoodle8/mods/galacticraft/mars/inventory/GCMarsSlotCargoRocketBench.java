@@ -75,28 +75,20 @@ public class GCMarsSlotCargoRocketBench extends Slot
         case 8:
             return par1ItemStack.getItem().itemID == GCMarsItems.marsItemBasic.itemID && par1ItemStack.getItemDamage() == 3 ? true : false;
         case 9:
-            return par1ItemStack.getItem().itemID == GCMarsItems.marsItemBasic.itemID && par1ItemStack.getItemDamage() == 3 ? true : false;
-        case 10:
-            return par1ItemStack.getItem().itemID == GCMarsItems.marsItemBasic.itemID && par1ItemStack.getItemDamage() == 3 ? true : false;
-        case 11:
             return par1ItemStack.getItem().itemID == GCCoreItems.partFins.itemID ? true : false;
+        case 10:
+            return par1ItemStack.getItem().itemID == GCCoreItems.partFins.itemID ? true : false;
+        case 11:
+            return par1ItemStack.getItem().itemID == GCCoreItems.rocketEngine.itemID && par1ItemStack.getItemDamage() == 0 ? true : false;
         case 12:
             return par1ItemStack.getItem().itemID == GCCoreItems.partFins.itemID ? true : false;
         case 13:
             return par1ItemStack.getItem().itemID == GCCoreItems.partFins.itemID ? true : false;
         case 14:
-            return par1ItemStack.getItem().itemID == GCCoreItems.rocketEngine.itemID && par1ItemStack.getItemDamage() == 0 ? true : false;
+            return true;
         case 15:
-            return par1ItemStack.getItem().itemID == GCCoreItems.partFins.itemID ? true : false;
+            return true;
         case 16:
-            return par1ItemStack.getItem().itemID == GCCoreItems.partFins.itemID ? true : false;
-        case 17:
-            return par1ItemStack.getItem().itemID == GCCoreItems.partFins.itemID ? true : false;
-        case 18:
-            return true;
-        case 19:
-            return true;
-        case 20:
             return true;
         }
 

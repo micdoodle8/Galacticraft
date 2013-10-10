@@ -20,7 +20,7 @@ public class GCMarsGuiSchematicCargoRocketBench extends GuiContainer implements 
     public GCMarsGuiSchematicCargoRocketBench(InventoryPlayer par1InventoryPlayer, int x, int y, int z)
     {
         super(new GCMarsContainerCargoRocketBench(par1InventoryPlayer, x, y, z));
-        this.ySize = 238;
+        this.ySize = 220;
     }
 
     @SuppressWarnings("unchecked")

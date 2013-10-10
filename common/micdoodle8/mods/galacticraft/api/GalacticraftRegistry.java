@@ -130,7 +130,7 @@ public class GalacticraftRegistry
         GalacticraftRegistry.rocketBenchT2Recipes.add(recipe);
     }
 
-    public static void getCargoRocketRecipes(INasaWorkbenchRecipe recipe)
+    public static void addCargoRocketRecipe(INasaWorkbenchRecipe recipe)
     {
         GalacticraftRegistry.cargoRocketRecipes.add(recipe);
     }
