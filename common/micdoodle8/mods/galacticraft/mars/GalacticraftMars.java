@@ -25,6 +25,7 @@ import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityTerraformBubble;
 import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
 import micdoodle8.mods.galacticraft.mars.network.GCMarsPacketHandlerServer;
 import micdoodle8.mods.galacticraft.mars.recipe.GCMarsRecipeManager;
+import micdoodle8.mods.galacticraft.mars.schematic.GCMarsSchematicCargoRocket;
 import micdoodle8.mods.galacticraft.mars.schematic.GCMarsSchematicRocketT2;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityCryogenicChamber;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityDungeonSpawner;
@@ -145,6 +146,7 @@ public class GalacticraftMars
         GCLog.info("Galacticraft Mars Loaded: " + languages + " Languages.");
 
         SchematicRegistry.registerSchematicRecipe(new GCMarsSchematicRocketT2());
+        SchematicRegistry.registerSchematicRecipe(new GCMarsSchematicCargoRocket());
 
         GalacticraftMars.galacticraftMarsTab = new GCCoreCreativeTab(CreativeTabs.getNextID(), GalacticraftMars.MODID, GCMarsItems.spaceship.itemID, 5);
         NetworkRegistry.instance().registerGuiHandler(GalacticraftMars.instance, GalacticraftMars.proxy);

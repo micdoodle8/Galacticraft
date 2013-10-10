@@ -18,7 +18,7 @@ public class GCMarsItemSchematic extends GCCoreItemSchematic implements ISchemat
 {
     protected Icon[] icons = new Icon[1];
 
-    public static final String[] names = { "schematic_rocketT3" }; // 15
+    public static final String[] names = { "schematic_rocketT3", "schematic_rocket_cargo" };
 
     public GCMarsItemSchematic(int itemID)
     {
@@ -45,8 +45,13 @@ public class GCMarsItemSchematic extends GCCoreItemSchematic implements ISchemat
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister iconRegister)
     {
-        this.icons = new Icon[1];
-        this.icons[0] = iconRegister.registerIcon(GalacticraftMars.TEXTURE_PREFIX + "schematic_rocketT3");
+        this.icons = new Icon[GCMarsItemSchematic.names.length];
+        
+        for (int i = 0; i < GCMarsItemSchematic.names.length; i++)
+        {
+            this.icons[i] = iconRegister.registerIcon(GalacticraftMars.TEXTURE_PREFIX + GCMarsItemSchematic.names[i]);
+        }
+        
     }
 
     @Override
@@ -72,6 +77,9 @@ public class GCMarsItemSchematic extends GCCoreItemSchematic implements ISchemat
             case 0:
                 par3List.add(LanguageRegistry.instance().getStringLocalization("schematic.rocketT3.name"));
                 par3List.add(EnumColor.DARK_AQUA + "COMING SOON");
+                break;
+            case 1:
+                par3List.add(LanguageRegistry.instance().getStringLocalization("schematic.cargoRocket.name"));
                 break;
             }
         }

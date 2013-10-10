@@ -71,9 +71,11 @@ public class GCMarsConfigManager
     // GUI
     public static int idGuiRocketCraftingBenchT2;
     public static int idGuiMachine;
+    public static int idGuiCargoRocketCraftingBench;
 
     // SCHEMATIC
     public static int idSchematicRocketT2;
+    public static int idSchematicCargoRocket;
 
     // GENERAL
     public static boolean generateOtherMods;
@@ -123,8 +125,10 @@ public class GCMarsConfigManager
 
             GCMarsConfigManager.idGuiRocketCraftingBenchT2 = GCMarsConfigManager.configuration.get("GUI", "idGuiRocketCraftingBenchT2", 143).getInt(143);
             GCMarsConfigManager.idGuiMachine = GCMarsConfigManager.configuration.get("GUI", "idGuiMachine", 146).getInt(146);
+            GCMarsConfigManager.idGuiCargoRocketCraftingBench = GCMarsConfigManager.configuration.get("GUI", "idGuiCargoRocketCraftingBench", 147).getInt(147);
 
             GCMarsConfigManager.idSchematicRocketT2 = GCMarsConfigManager.configuration.get("Schematic", "idSchematicRocketT2", 2).getInt(2);
+            GCMarsConfigManager.idSchematicCargoRocket = GCMarsConfigManager.configuration.get("Schematic", "idSchematicCargoRocket", 3).getInt(3);
 
             GCMarsConfigManager.generateOtherMods = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Generate other mod's features on Mars", false).getBoolean(false);
             GCMarsConfigManager.launchControllerChunkLoad = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Whether launch controller keeps chunks loaded. This will cause issues if disabled.", true).getBoolean(true);

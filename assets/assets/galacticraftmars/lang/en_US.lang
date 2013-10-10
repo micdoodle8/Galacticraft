@@ -75,6 +75,7 @@ dimension.Mars.name=Mars
 
 # Schematics
 schematic.rocketT3.name=Tier 3 Rocket
+schematic.cargoRocket.name=Automatic Cargo Rocket
 
 # Entity
 entity.Sludgeling.name=Sludgeling
