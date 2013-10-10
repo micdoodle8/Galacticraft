@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.nei;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -15,8 +14,8 @@ import codechicken.nei.api.IConfigureNEI;
 
 public class NEIGalacticraftConfig implements IConfigureNEI
 {
-    private static HashMap<ArrayList<PositionedStack>, PositionedStack> rocketBenchRecipes = new HashMap<ArrayList<PositionedStack>, PositionedStack>();
-    private static HashMap<ArrayList<PositionedStack>, PositionedStack> buggyBenchRecipes = new HashMap<ArrayList<PositionedStack>, PositionedStack>();
+    private static HashMap<HashMap<Integer, PositionedStack>, PositionedStack> rocketBenchRecipes = new HashMap<HashMap<Integer, PositionedStack>, PositionedStack>();
+    private static HashMap<HashMap<Integer, PositionedStack>, PositionedStack> buggyBenchRecipes = new HashMap<HashMap<Integer, PositionedStack>, PositionedStack>();
     private static HashMap<PositionedStack, PositionedStack> refineryRecipes = new HashMap<PositionedStack, PositionedStack>();
 
     @Override
@@ -45,12 +44,12 @@ public class NEIGalacticraftConfig implements IConfigureNEI
         return GalacticraftCore.LOCALMAJVERSION + "." + GalacticraftCore.LOCALMINVERSION + "." + GalacticraftCore.LOCALBUILDVERSION;
     }
 
-    public void registerRocketBenchRecipe(ArrayList<PositionedStack> input, PositionedStack output)
+    public void registerRocketBenchRecipe(HashMap<Integer, PositionedStack> input, PositionedStack output)
     {
         NEIGalacticraftConfig.rocketBenchRecipes.put(input, output);
     }
 
-    public void registerBuggyBenchRecipe(ArrayList<PositionedStack> input, PositionedStack output)
+    public void registerBuggyBenchRecipe(HashMap<Integer, PositionedStack> input, PositionedStack output)
     {
         NEIGalacticraftConfig.buggyBenchRecipes.put(input, output);
     }
@@ -60,12 +59,12 @@ public class NEIGalacticraftConfig implements IConfigureNEI
         NEIGalacticraftConfig.refineryRecipes.put(input, output);
     }
 
-    public static Set<Entry<ArrayList<PositionedStack>, PositionedStack>> getRocketBenchRecipes()
+    public static Set<Entry<HashMap<Integer, PositionedStack>, PositionedStack>> getRocketBenchRecipes()
     {
         return NEIGalacticraftConfig.rocketBenchRecipes.entrySet();
     }
 
-    public static Set<Entry<ArrayList<PositionedStack>, PositionedStack>> getBuggyBenchRecipes()
+    public static Set<Entry<HashMap<Integer, PositionedStack>, PositionedStack>> getBuggyBenchRecipes()
     {
         return NEIGalacticraftConfig.buggyBenchRecipes.entrySet();
     }
@@ -77,336 +76,110 @@ public class NEIGalacticraftConfig implements IConfigureNEI
 
     public void registerRecipes()
     {
-        final int changey = 23;
-
         this.registerRefineryRecipe(new PositionedStack(new ItemStack(GCCoreItems.oilCanister, 1, 1), 2, 3), new PositionedStack(new ItemStack(GCCoreItems.fuelCanister, 1, 1), 148, 3));
 
-        ArrayList<PositionedStack> input1 = new ArrayList<PositionedStack>();
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partNoseCone), 45, -8 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36, -6 + 0 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36, -6 + 1 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36, -6 + 2 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36, -6 + 3 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 54, -6 + 0 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 54, -6 + 1 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 54, -6 + 2 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 54, -6 + 3 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.rocketEngine), 45, 82 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partFins), 18, 64 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partFins), 18, 82 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partFins), 72, 64 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partFins), 72, 82 + changey));
-        this.registerRocketBenchRecipe(input1, new PositionedStack(new ItemStack(GCCoreItems.rocketTier1, 1, 0), 139, 69 + changey));
+        HashMap<Integer, PositionedStack> input1 = new HashMap<Integer, PositionedStack>();
+        input1.put(0, new PositionedStack(new ItemStack(GCCoreItems.partNoseCone), 45, 15));
+        input1.put(1, new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36, 33));
+        input1.put(2, new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36, 51));
+        input1.put(3, new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36, 69));
+        input1.put(4, new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36, 87));
+        input1.put(5, new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 54, 33));
+        input1.put(6, new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 54, 51));
+        input1.put(7, new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 54, 69));
+        input1.put(8, new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 54, 87));
+        input1.put(9, new PositionedStack(new ItemStack(GCCoreItems.rocketEngine), 45, 105));
+        input1.put(10, new PositionedStack(new ItemStack(GCCoreItems.partFins), 18, 87));
+        input1.put(11, new PositionedStack(new ItemStack(GCCoreItems.partFins), 18, 105));
+        input1.put(12, new PositionedStack(new ItemStack(GCCoreItems.partFins), 72, 87));
+        input1.put(13, new PositionedStack(new ItemStack(GCCoreItems.partFins), 72, 105));
+        this.registerRocketBenchRecipe(input1, new PositionedStack(new ItemStack(GCCoreItems.rocketTier1, 1, 0), 139, 92));
 
-        input1 = new ArrayList<PositionedStack>();
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partNoseCone), 45, -8 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36, -6 + 0 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36, -6 + 1 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36, -6 + 2 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36, -6 + 3 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 54, -6 + 0 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 54, -6 + 1 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 54, -6 + 2 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 54, -6 + 3 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.rocketEngine), 45, 82 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partFins), 18, 64 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partFins), 18, 82 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partFins), 72, 64 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partFins), 72, 82 + changey));
-        input1.add(new PositionedStack(new ItemStack(Block.chest), 90 + 0 * 26, -15 + changey));
-        this.registerRocketBenchRecipe(input1, new PositionedStack(new ItemStack(GCCoreItems.rocketTier1, 1, 1), 139, 69 + changey));
+        HashMap<Integer, PositionedStack> input2 = new HashMap<Integer, PositionedStack>(input1);
+        input2.put(14, new PositionedStack(new ItemStack(Block.chest), 90, 8));
+        this.registerRocketBenchRecipe(input2, new PositionedStack(new ItemStack(GCCoreItems.rocketTier1, 1, 1), 139, 92));
 
-        input1 = new ArrayList<PositionedStack>();
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partNoseCone), 45, -8 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36, -6 + 0 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36, -6 + 1 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36, -6 + 2 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36, -6 + 3 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 54, -6 + 0 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 54, -6 + 1 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 54, -6 + 2 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 54, -6 + 3 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.rocketEngine), 45, 82 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partFins), 18, 64 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partFins), 18, 82 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partFins), 72, 64 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partFins), 72, 82 + changey));
-        input1.add(new PositionedStack(new ItemStack(Block.chest), 90 + 1 * 26, -15 + changey));
-        this.registerRocketBenchRecipe(input1, new PositionedStack(new ItemStack(GCCoreItems.rocketTier1, 1, 1), 139, 69 + changey));
+        input2 = new HashMap<Integer, PositionedStack>(input1);
+        input2.put(15, new PositionedStack(new ItemStack(Block.chest), 116, 8));
+        this.registerRocketBenchRecipe(input2, new PositionedStack(new ItemStack(GCCoreItems.rocketTier1, 1, 1), 139, 92));
 
-        input1 = new ArrayList<PositionedStack>();
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partNoseCone), 45, -8 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36, -6 + 0 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36, -6 + 1 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36, -6 + 2 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36, -6 + 3 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 54, -6 + 0 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 54, -6 + 1 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 54, -6 + 2 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 54, -6 + 3 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.rocketEngine), 45, 82 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partFins), 18, 64 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partFins), 18, 82 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partFins), 72, 64 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partFins), 72, 82 + changey));
-        input1.add(new PositionedStack(new ItemStack(Block.chest), 90 + 2 * 26, -15 + changey));
-        this.registerRocketBenchRecipe(input1, new PositionedStack(new ItemStack(GCCoreItems.rocketTier1, 1, 1), 139, 69 + changey));
+        input2 = new HashMap<Integer, PositionedStack>(input1);
+        input2.put(16, new PositionedStack(new ItemStack(Block.chest), 142, 8));
+        this.registerRocketBenchRecipe(input2, new PositionedStack(new ItemStack(GCCoreItems.rocketTier1, 1, 1), 139, 92));
 
-        input1 = new ArrayList<PositionedStack>();
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partNoseCone), 45, -8 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36, -6 + 0 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36, -6 + 1 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36, -6 + 2 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36, -6 + 3 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 54, -6 + 0 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 54, -6 + 1 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 54, -6 + 2 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 54, -6 + 3 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.rocketEngine), 45, 82 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partFins), 18, 64 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partFins), 18, 82 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partFins), 72, 64 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partFins), 72, 82 + changey));
-        input1.add(new PositionedStack(new ItemStack(Block.chest), 90 + 0 * 26, -15 + changey));
-        input1.add(new PositionedStack(new ItemStack(Block.chest), 90 + 1 * 26, -15 + changey));
-        this.registerRocketBenchRecipe(input1, new PositionedStack(new ItemStack(GCCoreItems.rocketTier1, 1, 2), 139, 69 + changey));
+        input2 = new HashMap<Integer, PositionedStack>(input1);
+        input2.put(14, new PositionedStack(new ItemStack(Block.chest), 90, 8));
+        input2.put(15, new PositionedStack(new ItemStack(Block.chest), 116, 8));
+        this.registerRocketBenchRecipe(input2, new PositionedStack(new ItemStack(GCCoreItems.rocketTier1, 1, 2), 139, 92));
 
-        input1 = new ArrayList<PositionedStack>();
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partNoseCone), 45, -8 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36, -6 + 0 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36, -6 + 1 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36, -6 + 2 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36, -6 + 3 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 54, -6 + 0 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 54, -6 + 1 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 54, -6 + 2 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 54, -6 + 3 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.rocketEngine), 45, 82 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partFins), 18, 64 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partFins), 18, 82 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partFins), 72, 64 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partFins), 72, 82 + changey));
-        input1.add(new PositionedStack(new ItemStack(Block.chest), 90 + 1 * 26, -15 + changey));
-        input1.add(new PositionedStack(new ItemStack(Block.chest), 90 + 2 * 26, -15 + changey));
-        this.registerRocketBenchRecipe(input1, new PositionedStack(new ItemStack(GCCoreItems.rocketTier1, 1, 2), 139, 69 + changey));
+        input2 = new HashMap<Integer, PositionedStack>(input1);
+        input2.put(15, new PositionedStack(new ItemStack(Block.chest), 116, 8));
+        input2.put(16, new PositionedStack(new ItemStack(Block.chest), 142, 8));
+        this.registerRocketBenchRecipe(input2, new PositionedStack(new ItemStack(GCCoreItems.rocketTier1, 1, 2), 139, 92));
 
-        input1 = new ArrayList<PositionedStack>();
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partNoseCone), 45, -8 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36, -6 + 0 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36, -6 + 1 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36, -6 + 2 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36, -6 + 3 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 54, -6 + 0 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 54, -6 + 1 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 54, -6 + 2 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 54, -6 + 3 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.rocketEngine), 45, 82 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partFins), 18, 64 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partFins), 18, 82 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partFins), 72, 64 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partFins), 72, 82 + changey));
-        input1.add(new PositionedStack(new ItemStack(Block.chest), 90 + 0 * 26, -15 + changey));
-        input1.add(new PositionedStack(new ItemStack(Block.chest), 90 + 2 * 26, -15 + changey));
-        this.registerRocketBenchRecipe(input1, new PositionedStack(new ItemStack(GCCoreItems.rocketTier1, 1, 2), 139, 69 + changey));
+        input2 = new HashMap<Integer, PositionedStack>(input1);
+        input2.put(14, new PositionedStack(new ItemStack(Block.chest), 90, 8));
+        input2.put(16, new PositionedStack(new ItemStack(Block.chest), 142, 8));
+        this.registerRocketBenchRecipe(input2, new PositionedStack(new ItemStack(GCCoreItems.rocketTier1, 1, 2), 139, 92));
 
-        input1 = new ArrayList<PositionedStack>();
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partNoseCone), 45, -8 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36, -6 + 0 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36, -6 + 1 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36, -6 + 2 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36, -6 + 3 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 54, -6 + 0 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 54, -6 + 1 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 54, -6 + 2 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 54, -6 + 3 * 18 + 16 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.rocketEngine), 45, 82 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partFins), 18, 64 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partFins), 18, 82 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partFins), 72, 64 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partFins), 72, 82 + changey));
-        input1.add(new PositionedStack(new ItemStack(Block.chest), 90 + 0 * 26, -15 + changey));
-        input1.add(new PositionedStack(new ItemStack(Block.chest), 90 + 1 * 26, -15 + changey));
-        input1.add(new PositionedStack(new ItemStack(Block.chest), 90 + 2 * 26, -15 + changey));
-        this.registerRocketBenchRecipe(input1, new PositionedStack(new ItemStack(GCCoreItems.rocketTier1, 1, 3), 139, 69 + changey));
+        input2 = new HashMap<Integer, PositionedStack>(input1);
+        input2.put(14, new PositionedStack(new ItemStack(Block.chest), 90, 8));
+        input2.put(15, new PositionedStack(new ItemStack(Block.chest), 116, 8));
+        input2.put(16, new PositionedStack(new ItemStack(Block.chest), 142, 8));
+        this.registerRocketBenchRecipe(input2, new PositionedStack(new ItemStack(GCCoreItems.rocketTier1, 1, 3), 139, 92));
 
-        input1 = new ArrayList<PositionedStack>();
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 0), 18, 37));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 0), 18, 91));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 0), 90, 37));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 0), 90, 91));
+        input1 = new HashMap<Integer, PositionedStack>();
+        input1.put(0, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 0), 18, 37));
+        input1.put(1, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 0), 18, 91));
+        input1.put(2, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 0), 90, 37));
+        input1.put(3, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 0), 90, 91));
         for (int x = 0; x < 3; x++)
         {
             for (int y = 0; y < 4; y++)
             {
                 if (x == 1 && y == 1)
                 {
-                    input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 1), 36 + x * 18, 37 + y * 18));
+                    input1.put(y * 3 + x + 4, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 1), 36 + x * 18, 37 + y * 18));
                 }
                 else
                 {
-                    input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36 + x * 18, 37 + y * 18));
+                    input1.put(y * 3 + x + 4, new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36 + x * 18, 37 + y * 18));
                 }
             }
         }
-        this.registerBuggyBenchRecipe(input1, new PositionedStack(new ItemStack(GCCoreItems.buggy, 1, 0), 139, 78 + changey));
+        this.registerBuggyBenchRecipe(input1, new PositionedStack(new ItemStack(GCCoreItems.buggy, 1, 0), 139, 101));
 
-        input1 = new ArrayList<PositionedStack>();
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 0), 18, 37));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 0), 18, 91));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 0), 90, 37));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 0), 90, 91));
-        for (int x = 0; x < 3; x++)
-        {
-            for (int y = 0; y < 4; y++)
-            {
-                if (x == 1 && y == 1)
-                {
-                    input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 1), 36 + x * 18, 37 + y * 18));
-                }
-                else
-                {
-                    input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36 + x * 18, 37 + y * 18));
-                }
-            }
-        }
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 90 + 0 * 26, -15 + changey));
-        this.registerBuggyBenchRecipe(input1, new PositionedStack(new ItemStack(GCCoreItems.buggy, 1, 1), 139, 78 + changey));
+        input2 = new HashMap<Integer, PositionedStack>(input1);
+        input2.put(16, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 90, 8));
+        this.registerBuggyBenchRecipe(input2, new PositionedStack(new ItemStack(GCCoreItems.buggy, 1, 1), 139, 101));
 
-        input1 = new ArrayList<PositionedStack>();
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 0), 18, 37));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 0), 18, 91));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 0), 90, 37));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 0), 90, 91));
-        for (int x = 0; x < 3; x++)
-        {
-            for (int y = 0; y < 4; y++)
-            {
-                if (x == 1 && y == 1)
-                {
-                    input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 1), 36 + x * 18, 37 + y * 18));
-                }
-                else
-                {
-                    input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36 + x * 18, 37 + y * 18));
-                }
-            }
-        }
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 90 + 1 * 26, -15 + changey));
-        this.registerBuggyBenchRecipe(input1, new PositionedStack(new ItemStack(GCCoreItems.buggy, 1, 1), 139, 78 + changey));
+        input2 = new HashMap<Integer, PositionedStack>(input1);
+        input2.put(17, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 116, 8));
+        this.registerBuggyBenchRecipe(input2, new PositionedStack(new ItemStack(GCCoreItems.buggy, 1, 1), 139, 101));
 
-        input1 = new ArrayList<PositionedStack>();
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 0), 18, 37));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 0), 18, 91));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 0), 90, 37));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 0), 90, 91));
-        for (int x = 0; x < 3; x++)
-        {
-            for (int y = 0; y < 4; y++)
-            {
-                if (x == 1 && y == 1)
-                {
-                    input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 1), 36 + x * 18, 37 + y * 18));
-                }
-                else
-                {
-                    input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36 + x * 18, 37 + y * 18));
-                }
-            }
-        }
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 90 + 2 * 26, -15 + changey));
-        this.registerBuggyBenchRecipe(input1, new PositionedStack(new ItemStack(GCCoreItems.buggy, 1, 1), 139, 78 + changey));
+        input2 = new HashMap<Integer, PositionedStack>(input1);
+        input2.put(18, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 142, 8));
+        this.registerBuggyBenchRecipe(input2, new PositionedStack(new ItemStack(GCCoreItems.buggy, 1, 1), 139, 101));
 
-        input1 = new ArrayList<PositionedStack>();
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 0), 18, 37));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 0), 18, 91));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 0), 90, 37));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 0), 90, 91));
-        for (int x = 0; x < 3; x++)
-        {
-            for (int y = 0; y < 4; y++)
-            {
-                if (x == 1 && y == 1)
-                {
-                    input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 1), 36 + x * 18, 37 + y * 18));
-                }
-                else
-                {
-                    input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36 + x * 18, 37 + y * 18));
-                }
-            }
-        }
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 90 + 0 * 26, -15 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 90 + 1 * 26, -15 + changey));
-        this.registerBuggyBenchRecipe(input1, new PositionedStack(new ItemStack(GCCoreItems.buggy, 1, 2), 139, 78 + changey));
+        input2 = new HashMap<Integer, PositionedStack>(input1);
+        input2.put(16, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 90, 8));
+        input2.put(17, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 116, 8));
+        this.registerBuggyBenchRecipe(input2, new PositionedStack(new ItemStack(GCCoreItems.buggy, 1, 2), 139, 101));
 
-        input1 = new ArrayList<PositionedStack>();
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 0), 18, 37));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 0), 18, 91));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 0), 90, 37));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 0), 90, 91));
-        for (int x = 0; x < 3; x++)
-        {
-            for (int y = 0; y < 4; y++)
-            {
-                if (x == 1 && y == 1)
-                {
-                    input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 1), 36 + x * 18, 37 + y * 18));
-                }
-                else
-                {
-                    input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36 + x * 18, 37 + y * 18));
-                }
-            }
-        }
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 90 + 1 * 26, -15 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 90 + 2 * 26, -15 + changey));
-        this.registerBuggyBenchRecipe(input1, new PositionedStack(new ItemStack(GCCoreItems.buggy, 1, 2), 139, 78 + changey));
+        input2 = new HashMap<Integer, PositionedStack>(input1);
+        input2.put(17, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 116, 8));
+        input2.put(18, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 142, 8));
+        this.registerBuggyBenchRecipe(input2, new PositionedStack(new ItemStack(GCCoreItems.buggy, 1, 2), 139, 101));
 
-        input1 = new ArrayList<PositionedStack>();
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 0), 18, 37));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 0), 18, 91));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 0), 90, 37));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 0), 90, 91));
-        for (int x = 0; x < 3; x++)
-        {
-            for (int y = 0; y < 4; y++)
-            {
-                if (x == 1 && y == 1)
-                {
-                    input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 1), 36 + x * 18, 37 + y * 18));
-                }
-                else
-                {
-                    input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36 + x * 18, 37 + y * 18));
-                }
-            }
-        }
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 90 + 0 * 26, -15 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 90 + 2 * 26, -15 + changey));
-        this.registerBuggyBenchRecipe(input1, new PositionedStack(new ItemStack(GCCoreItems.buggy, 1, 2), 139, 78 + changey));
+        input2 = new HashMap<Integer, PositionedStack>(input1);
+        input2.put(16, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 90, 8));
+        input2.put(18, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 142, 8));
+        this.registerBuggyBenchRecipe(input2, new PositionedStack(new ItemStack(GCCoreItems.buggy, 1, 2), 139, 101));
 
-        input1 = new ArrayList<PositionedStack>();
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 0), 18, 37));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 0), 18, 91));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 0), 90, 37));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 0), 90, 91));
-        for (int x = 0; x < 3; x++)
-        {
-            for (int y = 0; y < 4; y++)
-            {
-                if (x == 1 && y == 1)
-                {
-                    input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 1), 36 + x * 18, 37 + y * 18));
-                }
-                else
-                {
-                    input1.add(new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36 + x * 18, 37 + y * 18));
-                }
-            }
-        }
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 90 + 0 * 26, -15 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 90 + 1 * 26, -15 + changey));
-        input1.add(new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 90 + 2 * 26, -15 + changey));
-        this.registerBuggyBenchRecipe(input1, new PositionedStack(new ItemStack(GCCoreItems.buggy, 1, 3), 139, 78 + changey));
+        input2 = new HashMap<Integer, PositionedStack>(input1);
+        input2.put(16, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 90, 8));
+        input2.put(17, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 116, 8));
+        input2.put(18, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 142, 8));
+        this.registerBuggyBenchRecipe(input2, new PositionedStack(new ItemStack(GCCoreItems.buggy, 1, 3), 139, 101));
     }
 }
