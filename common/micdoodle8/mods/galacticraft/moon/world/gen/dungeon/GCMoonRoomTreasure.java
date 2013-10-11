@@ -3,17 +3,11 @@ package micdoodle8.mods.galacticraft.moon.world.gen.dungeon;
 import java.util.ArrayList;
 import java.util.Random;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.GCCoreDungeonBoundingBox;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.GCCoreDungeonRoom;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.GCCoreMapGenDungeon;
 import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.WeightedRandomChestContent;
-import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.ForgeDirection;
 
 public class GCMoonRoomTreasure extends GCCoreDungeonRoom
@@ -87,30 +81,10 @@ public class GCMoonRoomTreasure extends GCCoreDungeonRoom
     @Override
     protected void handleTileEntities(Random rand)
     {
-        for (final ChunkCoordinates chestCoords : this.chests)
+        if (!this.chests.isEmpty())
         {
-            final TileEntity chest = this.worldObj.getBlockTileEntity(chestCoords.posX, chestCoords.posY, chestCoords.posZ);
-            if (chest != null && chest instanceof GCCoreTileEntityTreasureChest)
-            {
-                ChestGenHooks info = ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST);
-
-                WeightedRandomChestContent.generateChestContents(rand, info.getItems(rand), (GCCoreTileEntityTreasureChest) chest, info.getCount(rand));
-
-                ((GCCoreTileEntityTreasureChest) chest).setInventorySlotContents(rand.nextInt(((GCCoreTileEntityTreasureChest) chest).getSizeInventory()), this.getGuaranteedLoot(rand));
-            }
+            this.worldObj.setBlock(this.chests.get(0).posX, this.chests.get(0).posY, this.chests.get(0).posZ, GCCoreBlocks.treasureChestTier1.blockID, 0, 2);
+            this.chests.clear();
         }
-    }
-
-    public ItemStack getGuaranteedLoot(Random rand)
-    {
-        switch (rand.nextInt(2))
-        {
-        case 0:
-            return new ItemStack(GCCoreItems.schematic, 1, 0);
-        case 1:
-            return new ItemStack(GCCoreItems.schematic, 1, 1);
-        }
-
-        return null;
     }
 }

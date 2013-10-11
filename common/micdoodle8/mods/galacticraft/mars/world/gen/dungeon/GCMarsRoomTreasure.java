@@ -7,9 +7,6 @@ import micdoodle8.mods.galacticraft.core.world.gen.dungeon.GCCoreDungeonRoom;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.GCCoreMapGenDungeon;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
 import net.minecraft.block.Block;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraftforge.common.ForgeDirection;
 
@@ -84,23 +81,10 @@ public class GCMarsRoomTreasure extends GCCoreDungeonRoom
     @Override
     protected void handleTileEntities(Random rand)
     {
-        for (final ChunkCoordinates chestCoords : this.chests)
+        if (!this.chests.isEmpty())
         {
-            final TileEntity chest = this.worldObj.getBlockTileEntity(chestCoords.posX, chestCoords.posY, chestCoords.posZ);
-            if (chest != null && chest instanceof IInventory)
-            {
-                final int amountOfGoodies = rand.nextInt(5) + 2;
-                for (int i = 0; i < amountOfGoodies; i++)
-                {
-                    ((IInventory) chest).setInventorySlotContents(rand.nextInt(((IInventory) chest).getSizeInventory()), this.getLoot(rand));
-                }
-            }
+            this.worldObj.setBlock(this.chests.get(0).posX, this.chests.get(0).posY, this.chests.get(0).posZ, GCMarsBlocks.tier2TreasureChest.blockID, 0, 2);
+            this.chests.clear();
         }
     }
-
-    private ItemStack getLoot(Random rand)
-    {
-        return null;
-    }
-
 }

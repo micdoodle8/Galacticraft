@@ -252,9 +252,16 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
                         {
                             ((GCCoreTileEntityTreasureChest) tile).locked = true;
                         }
+                        
+                        for (int k = 0; k < ((GCCoreTileEntityTreasureChest) tile).getSizeInventory(); k++)
+                        {
+                            ((GCCoreTileEntityTreasureChest) tile).setInventorySlotContents(k, null);
+                        }
 
                         ChestGenHooks info = ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST);
 
+                        // Generate twice, since it's an extra special chest
+                        WeightedRandomChestContent.generateChestContents(this.rand, info.getItems(this.rand), (GCCoreTileEntityTreasureChest) tile, info.getCount(this.rand));
                         WeightedRandomChestContent.generateChestContents(this.rand, info.getItems(this.rand), (GCCoreTileEntityTreasureChest) tile, info.getCount(this.rand));
 
                         ((GCCoreTileEntityTreasureChest) tile).setInventorySlotContents(this.rand.nextInt(((GCCoreTileEntityTreasureChest) tile).getSizeInventory()), this.getGuaranteedLoot(this.rand));

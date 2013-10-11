@@ -76,15 +76,24 @@ public class GCMoonRoomChests extends GCCoreDungeonRoom
     @Override
     protected void handleTileEntities(Random rand)
     {
-        for (final ChunkCoordinates chestCoords : this.chests)
+        if (!this.chests.isEmpty())
         {
-            final TileEntityChest chest = (TileEntityChest) this.worldObj.getBlockTileEntity(chestCoords.posX, chestCoords.posY, chestCoords.posZ);
-
+            this.worldObj.setBlock(this.chests.get(0).posX, this.chests.get(0).posY, this.chests.get(0).posZ, Block.chest.blockID, 0, 2);
+            TileEntityChest chest = (TileEntityChest) this.worldObj.getBlockTileEntity(this.chests.get(0).posX, this.chests.get(0).posY, this.chests.get(0).posZ);
+            
             if (chest != null)
             {
+                for (int i = 0; i < chest.getSizeInventory(); i++)
+                {
+                    chest.setInventorySlotContents(i, null);
+                }
+                
                 ChestGenHooks info = ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST);
+
                 WeightedRandomChestContent.generateChestContents(rand, info.getItems(rand), chest, info.getCount(rand));
             }
+            
+            this.chests.clear();
         }
     }
 }

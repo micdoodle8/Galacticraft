@@ -5,12 +5,11 @@ import java.util.Random;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.GCCoreDungeonBoundingBox;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.GCCoreDungeonRoom;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.GCCoreMapGenDungeon;
-import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
 import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.WeightedRandomChestContent;
+import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.ForgeDirection;
 
 public class GCMarsRoomChests extends GCCoreDungeonRoom
@@ -77,41 +76,24 @@ public class GCMarsRoomChests extends GCCoreDungeonRoom
     @Override
     protected void handleTileEntities(Random rand)
     {
-        for (final ChunkCoordinates chestCoords : this.chests)
+        if (!this.chests.isEmpty())
         {
-            final TileEntityChest chest = (TileEntityChest) this.worldObj.getBlockTileEntity(chestCoords.posX, chestCoords.posY, chestCoords.posZ);
+            this.worldObj.setBlock(this.chests.get(0).posX, this.chests.get(0).posY, this.chests.get(0).posZ, Block.chest.blockID, 0, 2);
+            TileEntityChest chest = (TileEntityChest) this.worldObj.getBlockTileEntity(this.chests.get(0).posX, this.chests.get(0).posY, this.chests.get(0).posZ);
+            
             if (chest != null)
             {
-                final int amountOfGoodies = rand.nextInt(5) + 2;
-                for (int i = 0; i < amountOfGoodies; i++)
+                for (int i = 0; i < chest.getSizeInventory(); i++)
                 {
-                    chest.setInventorySlotContents(rand.nextInt(chest.getSizeInventory()), this.getLoot(rand));
+                    chest.setInventorySlotContents(i, null);
                 }
+                
+                ChestGenHooks info = ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST);
+
+                WeightedRandomChestContent.generateChestContents(rand, info.getItems(rand), chest, info.getCount(rand));
             }
+            
+            this.chests.clear();
         }
-    }
-
-    private ItemStack getLoot(Random rand)
-    {
-        if (rand.nextInt(27) < 5)
-        {
-            int r = rand.nextInt(5);
-
-            switch (r)
-            {
-            case 0:
-                return new ItemStack(Item.appleRed, 1, 0);
-            case 1:
-                return new ItemStack(Item.ingotIron, rand.nextInt(8) + 2, 0);
-            case 2:
-                return new ItemStack(Item.arrow, rand.nextInt(14) + 2, 0);
-            case 3:
-                return new ItemStack(GCMoonItems.meteoricIronRaw, 1 + rand.nextInt(2), 0);
-            case 4:
-                return new ItemStack(Item.bucketWater, rand.nextInt(2) + 1, 0);
-            }
-        }
-
-        return null;
     }
 }

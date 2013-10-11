@@ -239,9 +239,16 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
                         {
                             ((GCCoreTileEntityTreasureChest) tile).locked = true;
                         }
+                        
+                        for (int k = 0; k < ((GCCoreTileEntityTreasureChest) tile).getSizeInventory(); k++)
+                        {
+                            ((GCCoreTileEntityTreasureChest) tile).setInventorySlotContents(k, null);
+                        }
 
                         ChestGenHooks info = ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST);
 
+                        // Generate twice, since it's an extra special chest
+                        WeightedRandomChestContent.generateChestContents(this.rand, info.getItems(this.rand), (GCCoreTileEntityTreasureChest) tile, info.getCount(this.rand));
                         WeightedRandomChestContent.generateChestContents(this.rand, info.getItems(this.rand), (GCCoreTileEntityTreasureChest) tile, info.getCount(this.rand));
 
                         ((GCMarsTileEntityTreasureChest) tile).setInventorySlotContents(this.rand.nextInt(((GCMarsTileEntityTreasureChest) tile).getSizeInventory()), this.getGuaranteedLoot(this.rand));
