@@ -106,7 +106,6 @@ import net.minecraftforge.oredict.OreDictionary;
 import universalelectricity.compatibility.Compatibility;
 import universalelectricity.core.UniversalElectricity;
 import universalelectricity.prefab.ConductorChunkInitiate;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -140,9 +139,9 @@ public class GalacticraftCore
     public static final String CHANNEL = "GalacticraftCore";
     public static final String CHANNELENTITIES = "GCCoreEntities";
 
-    public static final int LOCALMAJVERSION = 0;
-    public static final int LOCALMINVERSION = 1;
-    public static final int LOCALBUILDVERSION = 43;
+    public static final int LOCALMAJVERSION = 2;
+    public static final int LOCALMINVERSION = 0;
+    public static final int LOCALBUILDVERSION = 0;
     public static int remoteMajVer;
     public static int remoteMinVer;
     public static int remoteBuildVer;
@@ -152,8 +151,6 @@ public class GalacticraftCore
 
     @Instance(GalacticraftCore.MODID)
     public static GalacticraftCore instance;
-
-    private static GCCoreThreadRequirementMissing missingRequirementThread;
 
     public static Map<String, GCCorePlayerSP> playersClient = new HashMap<String, GCCorePlayerSP>();
     public static Map<String, GCCorePlayerMP> playersServer = new HashMap<String, GCCorePlayerMP>();
@@ -351,12 +348,6 @@ public class GalacticraftCore
     public void serverInit(FMLServerStartedEvent event)
     {
         GalacticraftMoon.serverInit(event);
-
-        if (GalacticraftCore.missingRequirementThread == null)
-        {
-            GalacticraftCore.missingRequirementThread = new GCCoreThreadRequirementMissing(FMLCommonHandler.instance().getEffectiveSide());
-            GalacticraftCore.missingRequirementThread.start();
-        }
 
         GCCoreUtil.checkVersion(Side.SERVER);
         TickRegistry.registerTickHandler(new GCCoreTickHandlerServer(), Side.SERVER);

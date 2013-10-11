@@ -4,7 +4,6 @@ import java.util.EnumSet;
 import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
-import micdoodle8.mods.galacticraft.core.GCCoreThreadRequirementMissing;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.client.GCCoreCloudRenderer;
@@ -47,7 +46,6 @@ import net.minecraft.world.WorldProviderSurface;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
@@ -64,8 +62,6 @@ public class GCCoreTickHandlerClient implements ITickHandler
     public static GuiScreen lastOpenGui;
     private static GuiScreen prevLastOpenGui;
     private static long tickCount;
-
-    private static GCCoreThreadRequirementMissing missingRequirementThread;
 
     @Override
     public void tickStart(EnumSet<TickType> type, Object... tickData)
@@ -158,12 +154,6 @@ public class GCCoreTickHandlerClient implements ITickHandler
                 ClientProxyCore.playersWithOxygenTankRightGreen.clear();
                 ClientProxyCore.playersWithOxygenTankRightOrange.clear();
                 ClientProxyCore.playersWithOxygenTankRightRed.clear();
-
-                if (GCCoreTickHandlerClient.missingRequirementThread == null)
-                {
-                    GCCoreTickHandlerClient.missingRequirementThread = new GCCoreThreadRequirementMissing(FMLCommonHandler.instance().getEffectiveSide());
-                    GCCoreTickHandlerClient.missingRequirementThread.start();
-                }
             }
 
             if (world != null && GCCoreTickHandlerClient.checkedVersion)
