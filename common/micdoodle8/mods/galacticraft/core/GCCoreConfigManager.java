@@ -221,8 +221,8 @@ public class GCCoreConfigManager
             GCCoreConfigManager.idBlockParachest = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockParachest", 3382).getInt(3382);
             GCCoreConfigManager.idBlockSolarPanel = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockSolarPanel", 3383).getInt(3383);
             GCCoreConfigManager.idBlockCopperWire = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockCopperWire", 3972).getInt(3972);
-            GCCoreConfigManager.idBlockBasicMachine = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockMachine", 3363).getInt(3363);
-            GCCoreConfigManager.idBlockBasicMachine2 = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockMachine2", 3364).getInt(3364);
+            GCCoreConfigManager.idBlockBasicMachine = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockMachineB", 3363).getInt(3363);
+            GCCoreConfigManager.idBlockBasicMachine2 = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockMachineB2", 3364).getInt(3364);
             GCCoreConfigManager.idBlockGlowstoneTorch = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockGlowstoneTorch", 3384).getInt(3384);
             // 3390 - Mars Base Block
 

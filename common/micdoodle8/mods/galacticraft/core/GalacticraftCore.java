@@ -405,9 +405,9 @@ public class GalacticraftCore
         GameRegistry.registerTileEntity(GCCoreTileEntityParachest.class, "Parachest Tile");
         GameRegistry.registerTileEntity(GCCoreTileEntitySolar.class, "Galacticraft Solar Panel");
         GameRegistry.registerTileEntity(GCCoreTileEntityEnergyStorageModule.class, "Energy Storage Module");
-        GameRegistry.registerTileEntity(GCCoreTileEntityCoalGenerator.class, "UECoalGenerator");
-        GameRegistry.registerTileEntity(GCCoreTileEntityElectricFurnace.class, "UEElectricFurnace");
-        GameRegistry.registerTileEntity(GCCoreTileEntityAluminumWire.class, "copperWire");
+        GameRegistry.registerTileEntity(GCCoreTileEntityCoalGenerator.class, "Galacticraft Coal Generator");
+        GameRegistry.registerTileEntity(GCCoreTileEntityElectricFurnace.class, "Galacticraft Electric Furnace");
+        GameRegistry.registerTileEntity(GCCoreTileEntityAluminumWire.class, "Galacticraft Aluminum Wire");
         GameRegistry.registerTileEntity(GCCoreTileEntityFallenMeteor.class, "Fallen Meteor");
         GameRegistry.registerTileEntity(GCCoreTileEntityIngotCompressor.class, "Ingot Compressor");
         GameRegistry.registerTileEntity(GCCoreTileEntityElectricIngotCompressor.class, "Electric Ingot Compressor");
