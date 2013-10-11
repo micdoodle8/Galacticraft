@@ -19,6 +19,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.AdvancedModelLoader;
+import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.Loader;
@@ -27,6 +29,7 @@ public class GCCoreModelPlayer extends ModelBiped
 {
     private static final ResourceLocation oxygenMaskTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/oxygen.png");
     private static final ResourceLocation playerTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/player.png");
+    private static final ResourceLocation frequencyModuleTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/frequencyModule.png");
 
     public ModelRenderer[] parachute = new ModelRenderer[3];
     public ModelRenderer[] parachuteStrings = new ModelRenderer[4];
@@ -35,7 +38,10 @@ public class GCCoreModelPlayer extends ModelBiped
     public ModelRenderer[] orangeOxygenTanks = new ModelRenderer[2];
     public ModelRenderer[] redOxygenTanks = new ModelRenderer[2];
     public ModelRenderer oxygenMask;
+    
+    private IModelCustom frequencyModule;
 
+    boolean wearingFrequencyModule = false;
     boolean usingParachute = false;
     boolean wearingMask = false;
     boolean wearingGear = false;
@@ -182,6 +188,8 @@ public class GCCoreModelPlayer extends ModelBiped
         this.redOxygenTanks[1].addBox(-1.5F, 0F, -1.5F, 3, 7, 3, var1);
         this.redOxygenTanks[1].setRotationPoint(-2F, 2F, 3.8F);
         this.redOxygenTanks[1].mirror = true;
+        
+        this.frequencyModule = AdvancedModelLoader.loadModel("/assets/galacticraftcore/models/frequencyModule.obj");
     }
 
     @Override
@@ -238,6 +246,44 @@ public class GCCoreModelPlayer extends ModelBiped
                 GL11.glScalef(1.05F, 1.05F, 1.05F);
                 this.oxygenMask.render(var7);
                 GL11.glScalef(1F, 1F, 1F);
+                GL11.glPopMatrix();
+            }
+
+            //
+
+            FMLClientHandler.instance().getClient().renderEngine.bindTexture(GCCoreModelPlayer.frequencyModuleTexture);
+
+            changed = false;
+
+            for (final String name : ClientProxyCore.playersWithFrequencyModule)
+            {
+                if (player.username.equals(name))
+                {
+                    this.wearingFrequencyModule = true;
+                    changed = true;
+                }
+            }
+
+            if (!changed)
+            {
+                this.wearingFrequencyModule = false;
+            }
+
+            if (this.wearingFrequencyModule)
+            {
+                GL11.glPushMatrix();
+                GL11.glRotatef(180, 1, 0, 0);
+                
+                GL11.glRotatef((float) (this.bipedHeadwear.rotateAngleY * (-180.0F / Math.PI)), 0, 1, 0);
+                GL11.glRotatef((float) (this.bipedHeadwear.rotateAngleX * (180.0F / Math.PI)), 1, 0, 0);
+                GL11.glScalef(0.3F, 0.3F, 0.3F);
+                GL11.glTranslatef(-1.1F, 1.2F, 0);
+                this.frequencyModule.renderPart("Main");
+                GL11.glTranslatef(0, 1.2F, 0);
+                GL11.glRotatef((float) (Math.sin(var1.ticksExisted * 0.05) * 50.0F), 1, 0, 0);
+                GL11.glRotatef((float) (Math.cos(var1.ticksExisted * 0.1) * 50.0F), 0, 1, 0);
+                GL11.glTranslatef(0, -1.2F, 0);
+                this.frequencyModule.renderPart("Radar");
                 GL11.glPopMatrix();
             }
 
@@ -807,4 +853,21 @@ public class GCCoreModelPlayer extends ModelBiped
     {
         super.renderCloak(var1);
     }
+
+//    private float interpolateRotation(float par1, float par2, float par3)
+//    {
+//        float f3;
+//
+//        for (f3 = par2 - par1; f3 < -180.0F; f3 += 360.0F)
+//        {
+//            ;
+//        }
+//
+//        while (f3 >= 180.0F)
+//        {
+//            f3 -= 360.0F;
+//        }
+//
+//        return par1 + par3 * f3;
+//    }
 }
