@@ -154,8 +154,11 @@ public class GCMarsItemRendererSpaceshipT2 extends GCCoreItemRendererSpaceship
 
             if (itemstack.getItemDamage() >= 10)
             {
-                GL11.glRotatef(180F, 1F, 0F, 0F);
+                GL11.glRotatef(90F, 1F, 0F, 1F);
                 GL11.glScalef(0.45F, 0.45F, 0.45F);
+                GL11.glTranslatef(0, -0.9F, 0);
+                GL11.glTranslatef(0, -0.9F, 0);
+                GL11.glTranslatef(0, -0.9F, 0);
             }
 
             GL11.glScalef(1.3F, 1.3F, 1.3F);
