@@ -21,6 +21,7 @@ public class GCCoreGuiExtendedInventory extends InventoryEffectRenderer
 
     private float xSize_lo_2;
     private float ySize_lo_2;
+    private static float rotation;
 
     public GCCoreGuiExtendedInventory(EntityPlayer entityPlayer, GCCoreInventoryExtended inventory)
     {
@@ -32,6 +33,7 @@ public class GCCoreGuiExtendedInventory extends InventoryEffectRenderer
     {
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void initGui()
     {
@@ -43,24 +45,22 @@ public class GCCoreGuiExtendedInventory extends InventoryEffectRenderer
         TabRegistry.updateTabValues(cornerX, cornerY, GCCoreInventoryTabGalacticraft.class);
         TabRegistry.addTabsToList(this.buttonList);
 
-        // this.buttonList.add(new GuiButton(0, (this.width - this.xSize) / 2 +
-        // 36, (this.height - this.ySize) / 2 + 71, 7, 7, ""));
-        // this.buttonList.add(new GuiButton(1, (this.width - this.xSize) / 2 +
-        // 60, (this.height - this.ySize) / 2 + 71, 7, 7, ""));
+         this.buttonList.add(new GuiButton(0, (this.width - this.xSize) / 2 + 15, (this.height - this.ySize) / 2 + 71, 7, 7, ""));
+         this.buttonList.add(new GuiButton(1, (this.width - this.xSize) / 2 + 45, (this.height - this.ySize) / 2 + 71, 7, 7, ""));
     }
 
     @Override
     protected void actionPerformed(GuiButton par1GuiButton)
     {
-        // switch (par1GuiButton.id)
-        // {
-        // case 0:
-        // this.rotation -= 10;
-        // break;
-        // case 1:
-        // this.rotation += 10;
-        // break;
-        // }
+         switch (par1GuiButton.id)
+         {
+         case 0:
+             GCCoreGuiExtendedInventory.rotation -= 10.0F;
+             break;
+         case 1:
+             GCCoreGuiExtendedInventory.rotation += 10.0F;
+             break;
+         }
     }
 
     @Override
@@ -71,9 +71,7 @@ public class GCCoreGuiExtendedInventory extends InventoryEffectRenderer
         final int k = this.guiLeft;
         final int l = this.guiTop;
         this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
-        // this.drawPlayerOnGui2(this.mc, k + 51, l + 75 + 1, 34, k + 51 -
-        // this.xSize_lo_2, l + 75 - 50 - this.ySize_lo_2);
-        GCCoreGuiExtendedInventory.drawPlayerOnGui(this.mc, k + 33, l + 75, 34, k + 51 - this.xSize_lo_2, l + 75 - 50 - this.ySize_lo_2);
+        GCCoreGuiExtendedInventory.drawPlayerOnGui(this.mc, k + 33, l + 75, 29, k + 51 - this.xSize_lo_2, l + 75 - 50 - this.ySize_lo_2);
     }
 
     @Override
@@ -98,10 +96,10 @@ public class GCCoreGuiExtendedInventory extends InventoryEffectRenderer
         GL11.glRotatef(135.0F, 0.0F, 1.0F, 0.0F);
         RenderHelper.enableStandardItemLighting();
         GL11.glRotatef(-135.0F, 0.0F, 1.0F, 0.0F);
-        GL11.glRotatef(-((float) Math.atan(par5 / 40.0F)) * 20.0F, 1.0F, 0.0F, 0.0F);
-        par0Minecraft.thePlayer.renderYawOffset = (float) Math.atan(par4 / 40.0F) * 20.0F;
+//        GL11.glRotatef(-((float) Math.atan(par5 / 40.0F)) * 20.0F, 1.0F, 0.0F, 0.0F);
+        par0Minecraft.thePlayer.renderYawOffset = GCCoreGuiExtendedInventory.rotation;
         par0Minecraft.thePlayer.rotationYaw = (float) Math.atan(par4 / 40.0F) * 40.0F;
-        par0Minecraft.thePlayer.rotationPitch = -((float) Math.atan(par5 / 40.0F)) * 20.0F;
+        par0Minecraft.thePlayer.rotationYaw = GCCoreGuiExtendedInventory.rotation;
         par0Minecraft.thePlayer.rotationYawHead = par0Minecraft.thePlayer.rotationYaw;
         GL11.glTranslatef(0.0F, par0Minecraft.thePlayer.yOffset, 0.0F);
         RenderManager.instance.playerViewY = 180.0F;
