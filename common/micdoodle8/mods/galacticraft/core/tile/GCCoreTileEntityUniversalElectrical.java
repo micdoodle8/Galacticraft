@@ -14,9 +14,12 @@ import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
 import thermalexpansion.api.item.IChargeableItem;
 import universalelectricity.compatibility.Compatibility;
+import universalelectricity.core.electricity.ElectricityHelper;
 import universalelectricity.core.electricity.ElectricityPack;
+import universalelectricity.core.grid.IElectricityNetwork;
 import universalelectricity.core.item.IItemElectric;
 import universalelectricity.core.vector.Vector3;
+import universalelectricity.core.vector.VectorHelper;
 import universalelectricity.prefab.tile.TileEntityElectrical;
 import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
@@ -62,6 +65,34 @@ public abstract class GCCoreTileEntityUniversalElectrical extends TileEntityElec
                 this.provideElectricity(accepted, true);
             }
         }
+    }
+
+    public boolean produceUE(ForgeDirection outputDirection)
+    {
+        if (!this.worldObj.isRemote && outputDirection != null && outputDirection != ForgeDirection.UNKNOWN)
+        {
+            float provide = this.getProvide(outputDirection);
+
+            if (provide > 0)
+            {
+                TileEntity outputTile = VectorHelper.getConnectorFromSide(this.worldObj, new Vector3(this), outputDirection);
+                IElectricityNetwork outputNetwork = ElectricityHelper.getNetworkFromTileEntity(outputTile, outputDirection);
+                if (outputNetwork != null)
+                {
+                    ElectricityPack powerRequest = outputNetwork.getRequest(this);
+
+                    if (powerRequest.getWatts() > 0)
+                    {
+                        ElectricityPack sendPack = ElectricityPack.min(ElectricityPack.getFromWatts(this.getEnergyStored(), this.getVoltage()), ElectricityPack.getFromWatts(provide, this.getVoltage()));
+                        float rejectedPower = outputNetwork.produce(sendPack, this);
+                        this.provideElectricity(sendPack.getWatts() - rejectedPower, true);
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
