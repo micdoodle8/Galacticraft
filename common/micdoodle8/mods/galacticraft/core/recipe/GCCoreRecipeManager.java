@@ -324,6 +324,8 @@ public class GCCoreRecipeManager
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.glowstoneTorch, 4), new Object[] { "Y", "X", 'X', Item.stick, 'Y', Item.glowstone });
 
+        RecipeUtil.addRecipe(new ItemStack(GCCoreItems.basicItem, 1, 19), new Object[] { " X ", "YUY", "ZWZ", 'U', Item.redstoneRepeater, 'W', new ItemStack(GCCoreItems.basicItem, 1, 13), 'X', new ItemStack(GCCoreItems.basicItem, 1, 8), 'Y', new ItemStack(GCCoreItems.basicItem, 1, 11), 'Z', Item.redstone });
+        
         CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(new ItemStack(GCCoreItems.basicItem, 1, 15), new Object[] { new ItemStack(GCCoreItems.canister, 1, 0), Item.appleRed, Item.appleRed }));
 
         CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(new ItemStack(GCCoreItems.basicItem, 1, 16), new Object[] { new ItemStack(GCCoreItems.canister, 1, 0), Item.carrot, Item.carrot }));
