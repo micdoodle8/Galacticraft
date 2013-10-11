@@ -259,4 +259,10 @@ public class GCMoonWorldProvider extends WorldProvider implements IGalacticraftW
     {
         return 0.18F;
     }
+
+    @Override
+    public float getSoundVolReductionAmount()
+    {
+        return 20.0F;
+    }
 }

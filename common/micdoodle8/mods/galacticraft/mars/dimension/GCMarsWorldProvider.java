@@ -236,4 +236,10 @@ public class GCMarsWorldProvider extends WorldProvider implements IGalacticraftW
     {
         return 0.38F;
     }
+
+    @Override
+    public float getSoundVolReductionAmount()
+    {
+        return 10.0F;
+    }
 }

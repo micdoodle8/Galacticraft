@@ -267,4 +267,10 @@ public class GCCoreWorldProviderSpaceStation extends WorldProvider implements IO
     {
         return 0.4F;
     }
+
+    @Override
+    public float getSoundVolReductionAmount()
+    {
+        return 50.0F;
+    }
 }
