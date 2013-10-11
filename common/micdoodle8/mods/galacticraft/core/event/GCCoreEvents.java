@@ -24,6 +24,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore.MinecraftLoadedEvent;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore.SleepCancelledEvent;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.client.GCCoreThreadDownloadSound;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
@@ -465,7 +466,7 @@ public class GCCoreEvents
     {
         EntityPlayerSP player = FMLClientHandler.instance().getClient().thePlayer;
         
-        if (player.worldObj.provider instanceof IGalacticraftWorldProvider)
+        if (player.worldObj.provider instanceof IGalacticraftWorldProvider && !ClientProxyCore.playersWithFrequencyModule.contains(player.username))
         {
             for (int i = 0; i < soundPlayList.size(); i++)
             {

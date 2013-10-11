@@ -19,7 +19,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreItemBasic extends Item
 {
-    public static final String[] names = { "solar_module_0", "solar_module_1", "rawSilicon", "ingotCopper", "ingotTin", "ingotAluminum", "compressedCopper", "compressedTin", "compressedAluminum", "compressedSteel", "compressedBronze", "compressedIron", "waferSolar", "waferBasic", "waferAdvanced", "dehydratedApple", "dehydratedCarrot", "dehydratedMelon", "dehydratedPotato" };
+    public static final String[] names = { "solar_module_0", "solar_module_1", "rawSilicon", "ingotCopper", "ingotTin", "ingotAluminum", "compressedCopper", "compressedTin", "compressedAluminum", "compressedSteel", "compressedBronze", "compressedIron", "waferSolar", "waferBasic", "waferAdvanced", "dehydratedApple", "dehydratedCarrot", "dehydratedMelon", "dehydratedPotato", "frequencyModule" };
 
     protected Icon[] icons = new Icon[GCCoreItemBasic.names.length];
 
@@ -103,6 +103,11 @@ public class GCCoreItemBasic extends Item
         if (par1ItemStack.getItemDamage() > 14 && par1ItemStack.getItemDamage() < 19)
         {
             par3List.add(EnumColor.BRIGHT_GREEN + StatCollector.translateToLocal(this.getUnlocalizedName() + "." + GCCoreItemBasic.names[par1ItemStack.getItemDamage()] + ".name"));
+        }
+        else if (par1ItemStack.getItemDamage() == 19)
+        {
+            par3List.add(EnumColor.AQUA + "Can receive weak sound");
+            par3List.add(EnumColor.AQUA + "waves and distant signals");
         }
     }
 

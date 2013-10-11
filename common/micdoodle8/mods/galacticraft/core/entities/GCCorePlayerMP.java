@@ -68,6 +68,9 @@ public class GCCorePlayerMP extends EntityPlayerMP
     private ItemStack parachuteInSlot;
     private ItemStack lastParachuteInSlot;
 
+    private ItemStack frequencyModuleInSlot;
+    private ItemStack lastFrequencyModuleInSlot;
+
     private ItemStack maskInSlot;
     private ItemStack lastMaskInSlot;
 
@@ -502,6 +505,21 @@ public class GCCorePlayerMP extends EntityPlayerMP
         this.tankInSlot1 = this.getExtendedInventory().getStackInSlot(2);
         this.tankInSlot2 = this.getExtendedInventory().getStackInSlot(3);
         this.parachuteInSlot = this.getExtendedInventory().getStackInSlot(4);
+        this.frequencyModuleInSlot = this.getExtendedInventory().getStackInSlot(5);
+
+        //
+
+        if (this.frequencyModuleInSlot != null && this.lastFrequencyModuleInSlot == null && this.frequencyModuleInSlot.getItem().itemID == GCCoreItems.basicItem.itemID && this.frequencyModuleInSlot.getItemDamage() == 19)
+        {
+            this.sendGearUpdatePacket(EnumModelPacket.ADD_FREQUENCY_MODULE.getIndex());
+        }
+
+        if (this.frequencyModuleInSlot == null && this.lastFrequencyModuleInSlot != null)
+        {
+            this.sendGearUpdatePacket(EnumModelPacket.REMOVE_FREQUENCY_MODULE.getIndex());
+        }
+        
+        //
 
         if (this.maskInSlot != null && this.lastMaskInSlot == null && this.maskInSlot.getItem().itemID == GCCoreItems.oxMask.itemID)
         {
@@ -713,6 +731,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
         this.lastTankInSlot1 = this.getExtendedInventory().getStackInSlot(2);
         this.lastTankInSlot2 = this.getExtendedInventory().getStackInSlot(3);
         this.lastParachuteInSlot = this.getExtendedInventory().getStackInSlot(4);
+        this.lastFrequencyModuleInSlot = this.getExtendedInventory().getStackInSlot(5);
     }
 
     private void checkOxygen()
@@ -1323,7 +1342,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
     private static enum EnumModelPacket
     {
-        ADDMASK(0), REMOVEMASK(1), ADDGEAR(2), REMOVEGEAR(3), ADDLEFTREDTANK(4), REMOVELEFTREDTANK(5), ADDLEFTORANGETANK(6), REMOVELEFTORANGETANK(7), ADDLEFTGREENTANK(8), REMOVELEFTGREENTANK(9), ADDRIGHTREDTANK(10), REMOVERIGHTREDTANK(11), ADDRIGHTORANGETANK(12), REMOVERIGHTORANGETANK(13), ADDRIGHTGREENTANK(14), REMOVERIGHTGREENTANK(15);
+        ADDMASK(0), REMOVEMASK(1), ADDGEAR(2), REMOVEGEAR(3), ADDLEFTREDTANK(4), REMOVELEFTREDTANK(5), ADDLEFTORANGETANK(6), REMOVELEFTORANGETANK(7), ADDLEFTGREENTANK(8), REMOVELEFTGREENTANK(9), ADDRIGHTREDTANK(10), REMOVERIGHTREDTANK(11), ADDRIGHTORANGETANK(12), REMOVERIGHTORANGETANK(13), ADDRIGHTGREENTANK(14), REMOVERIGHTGREENTANK(15), ADD_FREQUENCY_MODULE(16), REMOVE_FREQUENCY_MODULE(17);
 
         private int index;
 

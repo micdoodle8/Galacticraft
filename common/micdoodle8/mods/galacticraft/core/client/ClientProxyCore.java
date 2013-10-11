@@ -207,6 +207,7 @@ public class ClientProxyCore extends CommonProxyCore
 
     public static Set<String> playersUsingParachutes = new HashSet<String>();
     public static HashMap<String, ResourceLocation> parachuteTextures = new HashMap<String, ResourceLocation>();
+    public static Set<String> playersWithFrequencyModule = new HashSet<String>();
     public static Set<String> playersWithOxygenMask = new HashSet<String>();
     public static Set<String> playersWithOxygenGear = new HashSet<String>();
     public static Set<String> playersWithOxygenTankLeftRed = new HashSet<String>();

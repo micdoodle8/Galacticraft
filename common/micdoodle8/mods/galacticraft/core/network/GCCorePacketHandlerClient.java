@@ -230,6 +230,12 @@ public class GCCorePacketHandlerClient implements IPacketHandler
             case 15:
                 ClientProxyCore.playersWithOxygenTankRightGreen.remove(packetReadout[0]);
                 break;
+            case 16:
+                ClientProxyCore.playersWithFrequencyModule.add((String) packetReadout[0]);
+                break;
+            case 17:
+                ClientProxyCore.playersWithFrequencyModule.remove(packetReadout[0]);
+                break;
             }
             break;
         case UNUSED_1:

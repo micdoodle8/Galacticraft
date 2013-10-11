@@ -37,11 +37,12 @@ public class GCCoreContainerExtendedInventory extends Container
             this.addSlotToContainer(new Slot(thePlayer.inventory, i, 8 + i * 18, 142));
         }
 
-        this.addSlotToContainer(new GCCoreSlotPlayer(extendedInventory, 0, 106, 17));
-        this.addSlotToContainer(new GCCoreSlotPlayer(extendedInventory, 1, 115, 35));
-        this.addSlotToContainer(new GCCoreSlotPlayer(extendedInventory, 2, 106, 53));
-        this.addSlotToContainer(new GCCoreSlotPlayer(extendedInventory, 3, 124, 53));
-        this.addSlotToContainer(new GCCoreSlotPlayer(extendedInventory, 4, 124, 17));
+        this.addSlotToContainer(new GCCoreSlotPlayer(extendedInventory, 0, 106 + 19, 17));
+        this.addSlotToContainer(new GCCoreSlotPlayer(extendedInventory, 1, 106 + 19, 35));
+        this.addSlotToContainer(new GCCoreSlotPlayer(extendedInventory, 2, 106 + 19 - 9, 53));
+        this.addSlotToContainer(new GCCoreSlotPlayer(extendedInventory, 3, 106 + 19 + 9, 53));
+        this.addSlotToContainer(new GCCoreSlotPlayer(extendedInventory, 4, 124 + 19, 17));
+        this.addSlotToContainer(new GCCoreSlotPlayer(extendedInventory, 5, 106 + 1, 17));
     }
 
     @Override

@@ -98,6 +98,7 @@ item.basicItem.dehydratedCarrot.name=Dehydrated Carrot
 item.basicItem.dehydratedMelon.name=Dehydrated Melon
 item.basicItem.dehydratedPotato.name=Dehydrated Potato
 item.basicItem.cannedFood.name=Can of Food
+item.basicItem.frequencyModule.name=Frequency Module
 
 # TOOLS
 item.steel_pickaxe.name=Heavy Duty Pickaxe

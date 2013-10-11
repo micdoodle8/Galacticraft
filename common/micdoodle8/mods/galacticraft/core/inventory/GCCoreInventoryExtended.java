@@ -8,7 +8,7 @@ import net.minecraft.nbt.NBTTagList;
 
 public class GCCoreInventoryExtended implements IInventory
 {
-    public ItemStack[] inventoryStacks = new ItemStack[5];
+    public ItemStack[] inventoryStacks = new ItemStack[6];
 
     @Override
     public int getSizeInventory()
@@ -136,7 +136,7 @@ public class GCCoreInventoryExtended implements IInventory
     // Backwards compatibility for old inventory
     public void readFromNBTOld(NBTTagList par1NBTTagList)
     {
-        this.inventoryStacks = new ItemStack[5];
+        this.inventoryStacks = new ItemStack[6];
 
         for (int i = 0; i < par1NBTTagList.tagCount(); ++i)
         {
@@ -146,7 +146,7 @@ public class GCCoreInventoryExtended implements IInventory
 
             if (itemstack != null)
             {
-                if (j >= 200 && j < this.inventoryStacks.length + 200)
+                if (j >= 200 && j < this.inventoryStacks.length + 200 - 1)
                 {
                     this.inventoryStacks[j - 200] = itemstack;
                 }
@@ -156,7 +156,7 @@ public class GCCoreInventoryExtended implements IInventory
 
     public void readFromNBT(NBTTagList tagList)
     {
-        this.inventoryStacks = new ItemStack[5];
+        this.inventoryStacks = new ItemStack[6];
 
         for (int i = 0; i < tagList.tagCount(); ++i)
         {
