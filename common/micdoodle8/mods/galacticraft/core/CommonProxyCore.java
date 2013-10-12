@@ -41,6 +41,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -192,6 +193,11 @@ public class CommonProxyCore implements IGuiHandler
         else if (ID == GCCoreConfigManager.idGuiSolarPanel)
         {
             return new GCCoreContainerSolar(player.inventory, (GCCoreTileEntitySolar) world.getBlockTileEntity(x, y, z));
+        }
+        else if (playerBase == null)
+        {
+            player.sendChatToPlayer(ChatMessageComponent.createFromText("Player instance null server-side. Make sure you have MicdoodleCore installed correctly."));
+            return null;
         }
         else if (ID == GCCoreConfigManager.idGuiExtendedInventory)
         {
