@@ -1,8 +1,6 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import java.lang.reflect.Field;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -16,7 +14,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import universalelectricity.core.vector.Vector3;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -90,7 +91,6 @@ public class GCCoreItemOilExtractor extends Item
 
             if (this.isOilBlock(par3EntityPlayer, par3EntityPlayer.worldObj, x, y, z))
             {
-
                 par3EntityPlayer.worldObj.setBlock(x, y, z, 0);
 
                 if (this.openCanister(par3EntityPlayer) != null)
@@ -171,35 +171,23 @@ public class GCCoreItemOilExtractor extends Item
 
     private boolean isOilBlock(EntityPlayer player, World world, int x, int y, int z)
     {
-        Class<?> buildCraftClass = null;
-
-        try
+        int blockID = world.getBlockId(x, y, z);
+        
+        if (blockID > 0 && Block.blocksList[blockID] != null)
         {
-            if ((buildCraftClass = Class.forName("buildcraft.BuildCraftEnergy")) != null)
+            Fluid fluidHit = FluidRegistry.lookupFluidForBlock(Block.blocksList[blockID]);
+            
+            if (fluidHit != null)
             {
-                for (final Field f : buildCraftClass.getFields())
+                if (fluidHit.getName().equalsIgnoreCase("oil"))
                 {
-                    if (f.getName().equals("oilMoving") || f.getName().equals("oilStill"))
-                    {
-                        final Block block = (Block) f.get(null);
-
-                        if (world.getBlockId(x, y, z) == block.blockID && world.getBlockMetadata(x, y, z) == 0)
-                        {
-                            return true;
-                        }
-                    }
+                    FMLLog.info("HIT OIL");
+                    return true;
                 }
             }
         }
-        catch (final Throwable cnfe)
-        {
-        }
 
-        if (world.getBlockId(x, y, z) == GCCoreBlocks.crudeOilStill.blockID && world.getBlockMetadata(x, y, z) == 0)
-        {
-            return true;
-        }
-
+        FMLLog.info("DID NOT HIT OIL");
         return false;
     }
 
