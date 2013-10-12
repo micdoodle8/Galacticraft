@@ -106,6 +106,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import universalelectricity.compatibility.Compatibility;
 import universalelectricity.core.UniversalElectricity;
 import universalelectricity.prefab.ConductorChunkInitiate;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -151,6 +152,8 @@ public class GalacticraftCore
 
     @Instance(GalacticraftCore.MODID)
     public static GalacticraftCore instance;
+    
+    private static GCCoreThreadRequirementMissing missingRequirementThread;
 
     public static Map<String, GCCorePlayerSP> playersClient = new HashMap<String, GCCorePlayerSP>();
     public static Map<String, GCCorePlayerMP> playersServer = new HashMap<String, GCCorePlayerMP>();
@@ -348,6 +351,12 @@ public class GalacticraftCore
     public void serverInit(FMLServerStartedEvent event)
     {
         GalacticraftMoon.serverInit(event);
+        
+        if (GalacticraftCore.missingRequirementThread == null)
+        {
+            GalacticraftCore.missingRequirementThread = new GCCoreThreadRequirementMissing(FMLCommonHandler.instance().getEffectiveSide());
+            GalacticraftCore.missingRequirementThread.start();
+        }
 
         GCCoreUtil.checkVersion(Side.SERVER);
         TickRegistry.registerTickHandler(new GCCoreTickHandlerServer(), Side.SERVER);
