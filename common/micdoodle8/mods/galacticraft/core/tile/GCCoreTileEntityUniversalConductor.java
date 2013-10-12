@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import ic2.api.energy.event.EnergyTileUnloadEvent;
 import ic2.api.energy.tile.IEnergyAcceptor;
 import ic2.api.energy.tile.IEnergyEmitter;
 import ic2.api.energy.tile.IEnergyTile;
@@ -172,7 +171,22 @@ public abstract class GCCoreTileEntityUniversalConductor extends TileEntityCondu
         {
             if (Compatibility.isIndustrialCraft2Loaded())
             {
-                MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent((IEnergyTile) this));
+                try
+                {
+                    Class<?> tileLoadEvent = Class.forName("ic2.api.energy.event.EnergyTileUnloadEvent");
+                    Class<?> energyTile = Class.forName("ic2.api.energy.tile.IEnergyTile");
+                    Constructor<?> constr = tileLoadEvent.getConstructor(energyTile);
+                    Object o = constr.newInstance(this);
+                    
+                    if (o != null && o instanceof Event)
+                    {
+                        MinecraftForge.EVENT_BUS.post((Event) o);
+                    }
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
             }
 
             this.isAddedToEnergyNet = false;
