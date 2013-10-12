@@ -168,7 +168,8 @@ public class GCCoreRecipeManager
         {
             final HashMap<Object, Integer> inputMap = new HashMap<Object, Integer>();
             inputMap.put("ingotTin", 32);
-            inputMap.put("ingotSteel", 16);
+            inputMap.put("ingotAluminum", 16);
+            inputMap.put("waferAdvanced", 1);
             inputMap.put(Item.ingotIron, 24);
             GalacticraftRegistry.registerSpaceStation(new SpaceStationType(GCCoreConfigManager.idDimensionOverworldOrbit, 0, new SpaceStationRecipe(inputMap)));
             GalacticraftCore.setSpaceStationRecipe = true;
