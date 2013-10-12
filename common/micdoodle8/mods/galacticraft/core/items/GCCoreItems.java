@@ -229,7 +229,7 @@ public class GCCoreItems
 
         for (int i = 0; i < GCCoreItemBasic.names.length; i++)
         {
-            if (GCCoreItemBasic.names[i].contains("ingot") || GCCoreItemBasic.names[i].contains("compressed"))
+            if (GCCoreItemBasic.names[i].contains("ingot") || GCCoreItemBasic.names[i].contains("compressed") || GCCoreItemBasic.names[i].contains("wafer"))
             {
                 OreDictionary.registerOre(GCCoreItemBasic.names[i], new ItemStack(GCCoreItems.basicItem, 1, i));
             }
