@@ -1,11 +1,8 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import ic2.api.energy.event.EnergyTileLoadEvent;
-import ic2.api.energy.tile.IEnergyTile;
 import java.util.EnumSet;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.core.ASMHelper.RuntimeInterface;
-import micdoodle8.mods.galacticraft.core.GCCoreCompatibilityManager;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -15,7 +12,6 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.common.MinecraftForge;
 import universalelectricity.core.electricity.ElectricityPack;
 import universalelectricity.core.item.ElectricItemHelper;
 import universalelectricity.core.vector.Vector3;
@@ -27,8 +23,6 @@ public abstract class GCCoreTileEntityElectric extends GCCoreTileEntityUniversal
 {
     public float ueWattsPerTick;
     private final float ueMaxEnergy;
-
-    public boolean addedToEnergyNet = false;
 
     public boolean disabled = true;
     public int disableCooldown = 0;
@@ -101,16 +95,6 @@ public abstract class GCCoreTileEntityElectric extends GCCoreTileEntityUniversal
         }
 
         super.updateEntity();
-
-        if (!this.addedToEnergyNet && this.worldObj != null)
-        {
-            if (GCCoreCompatibilityManager.isIc2Loaded())
-            {
-                MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent((IEnergyTile) this));
-            }
-
-            this.addedToEnergyNet = true;
-        }
 
         if (!this.worldObj.isRemote)
         {

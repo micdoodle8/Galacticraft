@@ -1,10 +1,10 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileUnloadEvent;
 import ic2.api.energy.tile.IEnergyAcceptor;
 import ic2.api.energy.tile.IEnergyEmitter;
 import ic2.api.energy.tile.IEnergyTile;
+import java.lang.reflect.Constructor;
 import java.util.HashSet;
 import java.util.Set;
 import micdoodle8.mods.galacticraft.core.ASMHelper.RuntimeInterface;
@@ -12,6 +12,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.Event;
 import universalelectricity.compatibility.Compatibility;
 import universalelectricity.core.block.IConnector;
 import universalelectricity.core.electricity.ElectricityPack;
@@ -144,9 +145,24 @@ public abstract class GCCoreTileEntityUniversalConductor extends TileEntityCondu
 
     protected void initIC()
     {
-        if (Compatibility.isIndustrialCraft2Loaded())
+        if (Compatibility.isIndustrialCraft2Loaded() && !this.worldObj.isRemote)
         {
-            MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent((IEnergyTile) this));
+            try
+            {
+                Class<?> tileLoadEvent = Class.forName("ic2.api.energy.event.EnergyTileLoadEvent");
+                Class<?> energyTile = Class.forName("ic2.api.energy.tile.IEnergyTile");
+                Constructor<?> constr = tileLoadEvent.getConstructor(energyTile);
+                Object o = constr.newInstance(this);
+                
+                if (o != null && o instanceof Event)
+                {
+                    MinecraftForge.EVENT_BUS.post((Event) o);
+                }
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
         }
     }
 
