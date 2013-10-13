@@ -46,7 +46,7 @@ public class GCCoreMapGenDungeon
 
     public void generateUsingSetBlock(World world, int x, int y, int z)
     {
-        this.generate(world, new Random(this.worldObj.getWorldInfo().getSeed() * x * z * 24789), x, y, z, x, z, null, null, false);
+        this.generate(world, new Random(new Random().nextLong() * x * z * 24789), x, y, z, x, z, null, null, false);
     }
 
     public void generate(World world, Random rand, int x, int y, int z, int chunkX, int chunkZ, short[] blocks, byte[] metas, boolean useArrays)
@@ -68,7 +68,7 @@ public class GCCoreMapGenDungeon
         for (int i = 0; i <= length; i++)
         {
             tryLoop:
-            for (int j = 0; j < 6; j++)
+            for (int j = 0; j < 8; j++)
             {
                 int offsetX = 0;
                 int offsetZ = 0;
@@ -158,12 +158,12 @@ public class GCCoreMapGenDungeon
                 final GCCoreDungeonBoundingBox currentRoomBb = currentRoom.getBoundingBox();
                 if (!this.isIntersecting(possibleRoomBb, boundingBoxes))
                 {
-                    final int cx = (currentRoomBb.minX + currentRoomBb.maxX) / 2;
-                    final int cz = (currentRoomBb.minZ + currentRoomBb.maxZ) / 2;
-                    final int px = (possibleRoomBb.minX + possibleRoomBb.maxX) / 2;
-                    final int pz = (possibleRoomBb.minZ + possibleRoomBb.maxZ) / 2;
-                    final int ax = (cx + px) / 2;
-                    final int az = (cz + pz) / 2;
+                    final int curCenterX = (currentRoomBb.minX + currentRoomBb.maxX) / 2;
+                    final int curCenterZ = (currentRoomBb.minZ + currentRoomBb.maxZ) / 2;
+                    final int possibleCenterX = (possibleRoomBb.minX + possibleRoomBb.maxX) / 2;
+                    final int possibleCenterZ = (possibleRoomBb.minZ + possibleRoomBb.maxZ) / 2;
+                    final int corridorX = this.clamp((curCenterX + possibleCenterX) / 2, Math.max(currentRoomBb.minX + 1, possibleRoomBb.minX + 1), Math.min(currentRoomBb.maxX - 1, possibleRoomBb.maxX - 1));
+                    final int corridorZ = this.clamp((curCenterZ + possibleCenterZ) / 2, Math.max(currentRoomBb.minZ + 1, possibleRoomBb.minZ + 1), Math.min(currentRoomBb.maxZ - 1, possibleRoomBb.maxZ - 1));
                     if (offsetX == 0 || offsetZ == 0) // Only 1 hallway
                     {
                         GCCoreDungeonBoundingBox corridor1 = null;
@@ -171,21 +171,21 @@ public class GCCoreMapGenDungeon
                         // East = 0, North = 1, South = 2, West = 3
                         {
                         case EAST: // East z++
-                            corridor1 = new GCCoreDungeonBoundingBox(ax - 1, currentRoomBb.maxZ, ax, possibleRoomBb.minZ - 1);
+                            corridor1 = new GCCoreDungeonBoundingBox(corridorX - 1, currentRoomBb.maxZ, corridorX, possibleRoomBb.minZ - 1);
                             break;
                         case NORTH: // North x++
-                            corridor1 = new GCCoreDungeonBoundingBox(currentRoomBb.maxX, az - 1, possibleRoomBb.minX - 1, az);
+                            corridor1 = new GCCoreDungeonBoundingBox(currentRoomBb.maxX, corridorZ - 1, possibleRoomBb.minX - 1, corridorZ);
                             break;
                         case SOUTH: // South x--
-                            corridor1 = new GCCoreDungeonBoundingBox(possibleRoomBb.maxX, az - 1, currentRoomBb.minX - 1, az);
+                            corridor1 = new GCCoreDungeonBoundingBox(possibleRoomBb.maxX, corridorZ - 1, currentRoomBb.minX - 1, corridorZ);
                             break;
                         case WEST: // West z--
-                            corridor1 = new GCCoreDungeonBoundingBox(ax - 1, possibleRoomBb.maxZ, ax, currentRoomBb.minZ - 1);
+                            corridor1 = new GCCoreDungeonBoundingBox(corridorX - 1, possibleRoomBb.maxZ, corridorX, currentRoomBb.minZ - 1);
                             break;
                         default:
                             break;
                         }
-                        if (!this.isIntersecting(corridor1, boundingBoxes))
+                        if (!this.isIntersecting(corridor1, boundingBoxes) && !corridor1.isOverlapping(possibleRoomBb))
                         {
                             boundingBoxes.add(possibleRoomBb);
                             boundingBoxes.add(corridor1);
@@ -218,7 +218,7 @@ public class GCCoreMapGenDungeon
                         // East = 0, North = 1, South = 2, West = 3
                         {
                         case EAST: // East z++
-                            corridor1 = new GCCoreDungeonBoundingBox(cx - 1, currentRoomBb.maxZ, cx + 1, pz - 1);
+                            corridor1 = new GCCoreDungeonBoundingBox(curCenterX - 1, currentRoomBb.maxZ, curCenterX + 1, possibleCenterZ - 1);
                             if (offsetX > 0) // x++
                             {
                                 corridor2 = new GCCoreDungeonBoundingBox(corridor1.minX - extraLength, corridor1.maxZ + 1, possibleRoomBb.minX, corridor1.maxZ + 3);
@@ -232,7 +232,7 @@ public class GCCoreMapGenDungeon
                             }
                             break;
                         case NORTH: // North x++
-                            corridor1 = new GCCoreDungeonBoundingBox(currentRoomBb.maxX, cz - 1, px - 1, cz + 1);
+                            corridor1 = new GCCoreDungeonBoundingBox(currentRoomBb.maxX, curCenterZ - 1, possibleCenterX - 1, curCenterZ + 1);
                             if (offsetZ > 0) // z++
                             {
                                 corridor2 = new GCCoreDungeonBoundingBox(corridor1.maxX + 1, corridor1.minZ - extraLength, corridor1.maxX + 4, possibleRoomBb.minZ);
@@ -246,7 +246,7 @@ public class GCCoreMapGenDungeon
                             }
                             break;
                         case SOUTH: // South x--
-                            corridor1 = new GCCoreDungeonBoundingBox(px + 1, cz - 1, currentRoomBb.minX - 1, cz + 1);
+                            corridor1 = new GCCoreDungeonBoundingBox(possibleCenterX + 1, curCenterZ - 1, currentRoomBb.minX - 1, curCenterZ + 1);
                             if (offsetZ > 0) // z++
                             {
                                 corridor2 = new GCCoreDungeonBoundingBox(corridor1.minX - 3, corridor1.minZ - extraLength, corridor1.minX - 1, possibleRoomBb.minZ);
@@ -260,7 +260,7 @@ public class GCCoreMapGenDungeon
                             }
                             break;
                         case WEST: // West z--
-                            corridor1 = new GCCoreDungeonBoundingBox(cx - 1, pz + 1, cx + 1, currentRoomBb.minZ - 1);
+                            corridor1 = new GCCoreDungeonBoundingBox(curCenterX - 1, possibleCenterZ + 1, curCenterX + 1, currentRoomBb.minZ - 1);
                             if (offsetX > 0) // x++
                             {
                                 corridor2 = new GCCoreDungeonBoundingBox(corridor1.minX - extraLength, corridor1.minZ - 3, possibleRoomBb.minX, corridor1.minZ - 1);
@@ -276,7 +276,7 @@ public class GCCoreMapGenDungeon
                         default:
                             break;
                         }
-                        if (!this.isIntersecting(corridor1, boundingBoxes) && !this.isIntersecting(corridor2, boundingBoxes))
+                        if (!this.isIntersecting(corridor1, boundingBoxes) && !this.isIntersecting(corridor2, boundingBoxes) && !corridor1.isOverlapping(possibleRoomBb) && !corridor2.isOverlapping(possibleRoomBb))
                         {
                             boundingBoxes.add(possibleRoomBb);
                             boundingBoxes.add(corridor1);
@@ -382,7 +382,7 @@ public class GCCoreMapGenDungeon
                         {
                             flag = true;
                         }
-                        if (k == corridor.minZ - 1 || k == corridor.maxZ + 2 || j == y - 1 || j == y + this.HALLWAY_HEIGHT)
+                        if (k == corridor.minZ - 1 || k == corridor.maxZ + 1 || j == y - 1 || j == y + this.HALLWAY_HEIGHT)
                         {
                             flag = true;
                         }
@@ -568,4 +568,15 @@ public class GCCoreMapGenDungeon
         }
         return false;
     }
+    
+    private int clamp(int x, int min, int max) {
+    	if(x < min) {
+    		return min;
+    	} else if(x > max) {
+    		return max;
+    	} else {
+    		return x;
+    	}
+    }
+    
 }
