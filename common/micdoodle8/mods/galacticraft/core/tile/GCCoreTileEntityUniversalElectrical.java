@@ -14,6 +14,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.Event;
 import thermalexpansion.api.item.IChargeableItem;
 import universalelectricity.compatibility.Compatibility;
+import universalelectricity.core.block.IElectrical;
 import universalelectricity.core.electricity.ElectricityHelper;
 import universalelectricity.core.electricity.ElectricityPack;
 import universalelectricity.core.grid.IElectricityNetwork;
@@ -25,6 +26,7 @@ import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
+import cpw.mods.fml.common.FMLLog;
 
 /**
  * This was taken from Universal Electricity and adapted for improvements
@@ -85,13 +87,25 @@ public abstract class GCCoreTileEntityUniversalElectrical extends TileEntityElec
                     {
                         ElectricityPack sendPack = ElectricityPack.min(ElectricityPack.getFromWatts(this.getEnergyStored(), this.getVoltage()), ElectricityPack.getFromWatts(provide, this.getVoltage()));
                         float rejectedPower = outputNetwork.produce(sendPack, this);
-                        this.provideElectricity(sendPack.getWatts() - rejectedPower, true);
+                        this.provideElectricity(sendPack.getWatts() - rejectedPower, true);                    
+                        return true;
+                    }
+                }
+                else if (outputTile instanceof IElectrical)
+                {
+                    float requestedEnergy = ((IElectrical) outputTile).getRequest(outputDirection.getOpposite());
+                    
+                    if (requestedEnergy > 0)
+                    {
+                        ElectricityPack sendPack = ElectricityPack.min(ElectricityPack.getFromWatts(this.getEnergyStored(), this.getVoltage()), ElectricityPack.getFromWatts(provide, this.getVoltage()));
+                        float acceptedEnergy = ((IElectrical) outputTile).receiveElectricity(outputDirection.getOpposite(), sendPack, true);
+                        this.setEnergyStored(this.getEnergyStored() - acceptedEnergy);
                         return true;
                     }
                 }
             }
         }
-
+        
         return false;
     }
 
