@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Random;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityAlienVillager;
 import net.minecraft.block.Block;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
