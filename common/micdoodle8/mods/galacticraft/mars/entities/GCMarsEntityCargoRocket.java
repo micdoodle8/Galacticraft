@@ -25,7 +25,6 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityLaunchController;
-import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityLaunchController.EnumAutoLaunch;
 import micdoodle8.mods.galacticraft.mars.util.GCMarsUtil;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -57,7 +56,7 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
     public FluidTank spaceshipFuelTank = new FluidTank(this.getFuelTankCapacity());
     public EnumRocketType rocketType;
     public float rumble;
-    public int destinationFrequency;
+    public int destinationFrequency = -1;
     public Vector3 targetVec;
     public int targetDimension;
     protected ItemStack[] cargoItems;
@@ -559,7 +558,7 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
                                 {
                                     for (int z = -2; z <= 2; z++)
                                     {
-                                        int blockID = this.worldObj.getBlockId(launchController.xCoord + x, launchController.yCoord, launchController.zCoord + z);
+                                        int blockID = world.getBlockId(launchController.xCoord + x, launchController.yCoord, launchController.zCoord + z);
     
                                         if (blockID > 0 && Block.blocksList[blockID] instanceof GCCoreBlockLandingPadFull)
                                         {
