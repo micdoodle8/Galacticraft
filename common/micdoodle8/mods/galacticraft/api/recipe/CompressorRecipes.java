@@ -11,6 +11,7 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class CompressorRecipes
 {
@@ -106,6 +107,18 @@ public class CompressorRecipes
             else if (object1 instanceof Item)
             {
                 arraylist.add(new ItemStack((Item) object1));
+            }
+            else if (object1 instanceof String)
+            {
+                ArrayList<ItemStack> list = OreDictionary.getOres((String) object1);
+                
+                if (!list.isEmpty())
+                {
+                    for (ItemStack stack : list)
+                    {
+                        arraylist.add(stack);
+                    }
+                }
             }
             else
             {
