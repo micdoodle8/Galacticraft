@@ -47,9 +47,12 @@ public abstract class GCCoreTileEntityUniversalConductor extends TileEntityCondu
     {
         if (Compatibility.isBuildcraftLoaded())
         {
-            this.powerHandler = new PowerHandler((IPowerReceptor) this, Type.PIPE);
-            ((PowerHandler) this.powerHandler).configure(0, this.buildcraftBuffer, this.buildcraftBuffer, this.buildcraftBuffer * 2);
-            ((PowerHandler) this.powerHandler).configurePowerPerdition(0, 0);
+            if (this instanceof IPowerReceptor)
+            {
+                this.powerHandler = new PowerHandler((IPowerReceptor) this, Type.PIPE);
+                ((PowerHandler) this.powerHandler).configure(0, this.buildcraftBuffer, this.buildcraftBuffer, this.buildcraftBuffer * 2);
+                ((PowerHandler) this.powerHandler).configurePowerPerdition(0, 0);
+            }
         }
     }
 
