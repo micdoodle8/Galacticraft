@@ -55,13 +55,13 @@ public class GCMoonRoomSpawner extends GCCoreDungeonRoom
                 }
             }
         }
-        if (this.placeBlock(chunk, meta, this.posX + 1, this.posY - 2, this.posZ + 1, cx, cz, Block.mobSpawner.blockID, 0))
+        if (this.placeBlock(chunk, meta, this.posX + 1, this.posY - 1, this.posZ + 1, cx, cz, Block.mobSpawner.blockID, 0))
         {
-            this.spawners.add(new ChunkCoordinates(this.posX + 1, this.posY - 2, this.posZ + 1));
+            this.spawners.add(new ChunkCoordinates(this.posX + 1, this.posY - 1, this.posZ + 1));
         }
-        if (this.placeBlock(chunk, meta, this.posX + this.sizeX - 1, this.posY - 2, this.posZ + this.sizeZ - 1, cx, cz, Block.mobSpawner.blockID, 0))
+        if (this.placeBlock(chunk, meta, this.posX + this.sizeX - 1, this.posY - 1, this.posZ + this.sizeZ - 1, cx, cz, Block.mobSpawner.blockID, 0))
         {
-            this.spawners.add(new ChunkCoordinates(this.posX + this.sizeX - 1, this.posY - 2, this.posZ + this.sizeZ - 1));
+            this.spawners.add(new ChunkCoordinates(this.posX + this.sizeX - 1, this.posY - 1, this.posZ + this.sizeZ - 1));
         }
     }
 
