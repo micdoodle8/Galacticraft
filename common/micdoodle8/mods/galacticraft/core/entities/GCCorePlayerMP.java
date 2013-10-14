@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map.Entry;
+import mekanism.api.EnumColor;
 import micdoodle8.mods.galacticraft.api.event.oxygen.GCCoreOxygenSuffocationEvent;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
@@ -36,6 +37,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
@@ -114,6 +116,8 @@ public class GCCorePlayerMP extends EntityPlayerMP
     private ArrayList<ISchematicPage> lastUnlockedSchematics = new ArrayList<ISchematicPage>();
 
     private int cryogenicChamberCooldown;
+    
+    private boolean receivedSoundWarning;
 
     public GCCorePlayerMP(MinecraftServer server, World world, String username, ItemInWorldManager itemInWorldManager)
     {
@@ -161,6 +165,11 @@ public class GCCorePlayerMP extends EntityPlayerMP
         if (!GalacticraftCore.playersServer.containsKey(this.username) || this.tick % 360 == 0)
         {
             GalacticraftCore.playersServer.put(this.username, this);
+        }
+        
+        if (this.tick >= Long.MAX_VALUE)
+        {
+            this.tick = 0;
         }
 
         this.tick++;
@@ -279,6 +288,12 @@ public class GCCorePlayerMP extends EntityPlayerMP
         }
 
         this.updateSchematics();
+        
+        if (this.frequencyModuleInSlot == null && !this.receivedSoundWarning && this.tick > 0 && this.tick % 250 == 0 && this.worldObj.provider instanceof IGalacticraftWorldProvider && this.onGround)
+        {
+            this.sendChatToPlayer(ChatMessageComponent.createFromText(EnumColor.YELLOW + "I'll probably need a " + EnumColor.AQUA + GCCoreItems.basicItem.getItemStackDisplayName(new ItemStack(GCCoreItems.basicItem, 1, 19)) + EnumColor.YELLOW + " if I want to hear properly here."));
+            this.receivedSoundWarning = true;
+        }
 
         this.lastOxygenSetupValid = this.oxygenSetupValid;
         this.lastUnlockedSchematics = this.getUnlockedSchematics();
@@ -1018,6 +1033,11 @@ public class GCCorePlayerMP extends EntityPlayerMP
         Collections.sort(this.getUnlockedSchematics());
 
         this.cryogenicChamberCooldown = nbt.getInteger("CryogenicChamberCooldown");
+        
+        if (nbt.hasKey("ReceivedSoundWarning"))
+        {
+            this.receivedSoundWarning = nbt.getBoolean("ReceivedSoundWarning");
+        }
 
         super.readEntityFromNBT(nbt);
     }
@@ -1070,6 +1090,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
         nbt.setTag("RocketItems", var2);
 
         nbt.setInteger("CryogenicChamberCooldown", this.cryogenicChamberCooldown);
+        nbt.setBoolean("ReceivedSoundWarning", this.receivedSoundWarning);
 
         super.writeEntityToNBT(nbt);
     }
