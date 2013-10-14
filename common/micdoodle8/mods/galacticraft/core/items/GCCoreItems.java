@@ -223,7 +223,8 @@ public class GCCoreItems
         GCCoreUtil.registerGalacticraftItem("dehydratedApple", GCCoreItems.basicItem, 15);
         GCCoreUtil.registerGalacticraftItem("dehydratedCarrot", GCCoreItems.basicItem, 16);
         GCCoreUtil.registerGalacticraftItem("dehydratedMelon", GCCoreItems.basicItem, 17);
-        GCCoreUtil.registerGalacticraftItem("dehydratedPotato", GCCoreItems.basicItem, 19);
+        GCCoreUtil.registerGalacticraftItem("dehydratedPotato", GCCoreItems.basicItem, 18);
+        GCCoreUtil.registerGalacticraftItem("frequencyModule", GCCoreItems.basicItem, 19);
         GCCoreUtil.registerGalacticraftItem("meteorThrowable", GCCoreItems.meteorChunk);
         GCCoreUtil.registerGalacticraftItem("meteorThrowableHot", GCCoreItems.meteorChunk, 1);
 

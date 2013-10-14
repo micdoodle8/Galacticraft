@@ -165,6 +165,7 @@ public class GCItems
     // "dehydratedPotato"
     // "meteorThrowable"
     // "meteorThrowableHot"
+    // "frequencyModule"
     /**
      * Request an itemstack from Galacticraft.
      * 
