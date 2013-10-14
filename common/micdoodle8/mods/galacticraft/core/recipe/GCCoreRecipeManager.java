@@ -196,7 +196,7 @@ public class GCCoreRecipeManager
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.aluminumWire, 1, 1), new Object[] { "Z", "Y", "X", 'X', Block.cloth, 'Y', new ItemStack(GCCoreBlocks.aluminumWire, 1), 'Z', new ItemStack(GCCoreItems.basicItem, 1, 5) });
 
-        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.machineBase, 1, 0), new Object[] { "WWW", "XZX", "XYX", 'W', new ItemStack(GCCoreItems.basicItem, 1, 10), 'X', new ItemStack(GCCoreItems.basicItem, 1, 9), 'Y', new ItemStack(GCCoreBlocks.aluminumWire, 1, 0), 'Z', Block.furnaceIdle });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.machineBase, 1, 0), new Object[] { "WWW", "XZX", "XYX", 'W', new ItemStack(GCCoreItems.basicItem, 1, 3), 'X', Item.ingotIron, 'Y', new ItemStack(GCCoreBlocks.aluminumWire, 1, 0), 'Z', Block.furnaceIdle });
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.machineBase, 1, 4), new Object[] { "SSS", "BBB", "SSS", 'B', new ItemStack(GCCoreItems.battery, 1, 0), 'S', new ItemStack(GCCoreItems.basicItem, 1, 9) });
 
