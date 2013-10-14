@@ -14,7 +14,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class GCCoreGuiBatteryBox extends GuiContainer
+public class GCCoreGuiEnergyStorageModule extends GuiContainer
 {
     private static final ResourceLocation batteryBoxTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/battery_box.png");
 
@@ -23,7 +23,7 @@ public class GCCoreGuiBatteryBox extends GuiContainer
     private int containerWidth;
     private int containerHeight;
 
-    public GCCoreGuiBatteryBox(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityEnergyStorageModule batteryBox)
+    public GCCoreGuiEnergyStorageModule(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityEnergyStorageModule batteryBox)
     {
         super(new ContainerBatteryBox(par1InventoryPlayer, batteryBox));
         this.tileEntity = batteryBox;
@@ -36,7 +36,7 @@ public class GCCoreGuiBatteryBox extends GuiContainer
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRenderer.drawString(this.tileEntity.getInvName(), 65, 6, 4210752);
+        this.fontRenderer.drawString(this.tileEntity.getInvName(), this.xSize / 2 - this.fontRenderer.getStringWidth(this.tileEntity.getInvName()) / 2, 6, 4210752);
         String displayJoules = ElectricityDisplay.getDisplayShort(this.tileEntity.getEnergyStored(), ElectricUnit.JOULES) + " of";
         String displayMaxJoules = ElectricityDisplay.getDisplay(this.tileEntity.getMaxEnergyStored(), ElectricUnit.JOULES);
         String displayVoltage = "Voltage: " + (int) (this.tileEntity.getVoltage() * 1000.0F);
@@ -54,7 +54,7 @@ public class GCCoreGuiBatteryBox extends GuiContainer
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
-        this.mc.renderEngine.bindTexture(GCCoreGuiBatteryBox.batteryBoxTexture);
+        this.mc.renderEngine.bindTexture(GCCoreGuiEnergyStorageModule.batteryBoxTexture);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         this.containerWidth = (this.width - this.xSize) / 2;

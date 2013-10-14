@@ -28,7 +28,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirCollector;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirCompressor;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirDistributor;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirSealer;
-import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiBatteryBox;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiEnergyStorageModule;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiCargoLoader;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiCargoUnloader;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiCircuitFabricator;
@@ -880,7 +880,7 @@ public class ClientProxyCore extends CommonProxyCore
         {
             if (tile instanceof GCCoreTileEntityEnergyStorageModule)
             {
-                return new GCCoreGuiBatteryBox(player.inventory, (GCCoreTileEntityEnergyStorageModule) tile);
+                return new GCCoreGuiEnergyStorageModule(player.inventory, (GCCoreTileEntityEnergyStorageModule) tile);
             }
             else if (tile instanceof GCCoreTileEntityCoalGenerator)
             {
