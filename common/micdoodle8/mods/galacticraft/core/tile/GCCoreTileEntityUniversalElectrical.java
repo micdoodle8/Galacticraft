@@ -217,8 +217,9 @@ public abstract class GCCoreTileEntityUniversalElectrical extends TileEntityElec
                         if (receiver != null)
                         {
                             float bc3Provide = provide * Compatibility.TO_BC_RATIO;
-                            float energyUsed = Math.min(receiver.receiveEnergy(Type.MACHINE, bc3Provide, outputDirection.getOpposite()), bc3Provide);
-                            this.provideElectricity(bc3Provide - energyUsed * Compatibility.TO_BC_RATIO, true);
+                            float received = receiver.receiveEnergy(Type.MACHINE, bc3Provide, outputDirection.getOpposite());
+                            float energyUsed = Math.min(received, bc3Provide);
+                            this.provideElectricity(energyUsed * Compatibility.TO_BC_RATIO, true);
                             return true;
                         }
                     }
