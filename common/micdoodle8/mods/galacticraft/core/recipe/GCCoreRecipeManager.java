@@ -1,28 +1,43 @@
 package micdoodle8.mods.galacticraft.core.recipe;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
 import micdoodle8.mods.galacticraft.api.world.SpaceStationType;
+import micdoodle8.mods.galacticraft.core.GCCoreCompatibilityManager;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockEnclosed.EnumEnclosedBlock;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemFlag;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
+import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 public class GCCoreRecipeManager
 {
     public static void loadRecipes()
     {
+        if (GCCoreCompatibilityManager.isBCraftLoaded())
+        {
+            GCCoreRecipeManager.addBuildCraftCraftingRecipes();
+        }
+
+        if (GCCoreCompatibilityManager.isIc2Loaded())
+        {
+            GCCoreRecipeManager.addIndustrialCraft2Recipes();
+        }
+        
         GCCoreRecipeManager.addUniversalRecipes();
     }
 
@@ -334,5 +349,62 @@ public class GCCoreRecipeManager
         CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(new ItemStack(GCCoreItems.basicItem, 1, 17), new Object[] { new ItemStack(GCCoreItems.canister, 1, 0), Item.melon, Item.melon }));
 
         CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(new ItemStack(GCCoreItems.basicItem, 1, 18), new Object[] { new ItemStack(GCCoreItems.canister, 1, 0), Item.potato, Item.potato }));
+    }
+
+    private static void addBuildCraftCraftingRecipes()
+    {
+        try
+        {
+            Class<?> clazz = Class.forName("buildcraft.BuildCraftTransport");
+
+            Object pipeItemsStone = clazz.getField("pipeItemsStone").get(null);
+            Object pipeItemsCobblestone = clazz.getField("pipeItemsCobblestone").get(null);
+            Object pipeFluidsCobblestone = clazz.getField("pipeFluidsCobblestone").get(null);
+            Object pipeFluidsStone = clazz.getField("pipeFluidsStone").get(null);
+            Object pipePowerStone = clazz.getField("pipePowerStone").get(null);
+            Object pipePowerGold = clazz.getField("pipePowerGold").get(null);
+
+            RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.BC_ITEM_COBBLESTONEPIPE.getMetadata()), new Object[] { "XYX", 'Y', pipeItemsCobblestone, 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4) });
+            RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.BC_ITEM_STONEPIPE.getMetadata()), new Object[] { "XYX", 'Y', pipeItemsStone, 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4) });
+            RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.BC_FLUIDS_COBBLESTONEPIPE.getMetadata()), new Object[] { "XYX", 'Y', pipeFluidsCobblestone, 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4) });
+            RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.BC_FLUIDS_STONEPIPE.getMetadata()), new Object[] { "XYX", 'Y', pipeFluidsStone, 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4) });
+            RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.BC_POWER_STONEPIPE.getMetadata()), new Object[] { "XYX", 'Y', pipePowerStone, 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4) });
+            RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.BC_POWER_GOLDPIPE.getMetadata()), new Object[] { "XYX", 'Y', pipePowerGold, 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4) });
+
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
+    private static void addIndustrialCraft2Recipes()
+    {
+
+        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.IC2_GOLD_CABLE.getMetadata()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("insulatedGoldCableItem"), 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4) });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.IC2_HV_CABLE.getMetadata()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("insulatedIronCableItem"), 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4) });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.IC2_GLASS_FIBRE_CABLE.getMetadata()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("glassFiberCableItem"), 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4) });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.IC2_LV_CABLE.getMetadata()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("tinCableItem"), 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4) });
+        
+        try
+        {
+            Class<?> clazz = Class.forName("ic2.core.Ic2Items");
+
+            Object copperDustObject = clazz.getField("crushedCopperOre").get(null);
+            ItemStack copperDustItemStack = (ItemStack) copperDustObject;
+            Class<?> clazz2 = Class.forName("ic2.api.recipe.RecipeInputItemStack");
+            Object o = clazz2.getConstructor(ItemStack.class).newInstance(new ItemStack(GCMoonBlocks.blockMoon.blockID, 1, 0));
+            Method addRecipe = Class.forName("ic2.api.recipe.IMachineRecipeManager").getMethod("addRecipe", Class.forName("ic2.api.recipe.IRecipeInput"), NBTTagCompound.class, ItemStack[].class);
+            addRecipe.invoke(Class.forName("ic2.api.recipe.Recipes").getField("macerator").get(null), o, null, new ItemStack[] { new ItemStack(copperDustItemStack.getItem(), 2, copperDustItemStack.getItemDamage()) });
+
+            Object tinDustObject = clazz.getField("crushedTinOre").get(null);
+            ItemStack tinDustItemStack = (ItemStack) tinDustObject;
+            o = clazz2.getConstructor(ItemStack.class).newInstance(new ItemStack(GCMoonBlocks.blockMoon.blockID, 1, 1));
+            addRecipe.invoke(Class.forName("ic2.api.recipe.Recipes").getField("macerator").get(null), o, null, new ItemStack[] { new ItemStack(tinDustItemStack.getItem(), 2, tinDustItemStack.getItemDamage()) });
+        }
+        catch (Throwable e)
+        {
+            e.printStackTrace();
+        }
     }
 }
