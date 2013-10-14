@@ -181,13 +181,11 @@ public class GCCoreItemOilExtractor extends Item
             {
                 if (fluidHit.getName().equalsIgnoreCase("oil"))
                 {
-                    FMLLog.info("HIT OIL");
                     return true;
                 }
             }
         }
 
-        FMLLog.info("DID NOT HIT OIL");
         return false;
     }
 
