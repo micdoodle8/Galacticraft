@@ -94,7 +94,7 @@ public class GCMarsBlockTintedGlassPane extends BlockPane implements IPartialSea
         boolean var9 = this.canThisPaneConnectToThisBlockID(par1World.getBlockId(par2, par3, par4 + 1));
         boolean var10 = this.canThisPaneConnectToThisBlockID(par1World.getBlockId(par2 - 1, par3, par4));
         boolean var11 = this.canThisPaneConnectToThisBlockID(par1World.getBlockId(par2 + 1, par3, par4));
-        if((var8 && var9) || (var10 && var11) || (var8 && var10) || (var9 && var11) || (var9 && var10) || (var11 && var8)){
+        if( (var8 && var9 || var10 || var11) || (var9 && var10 || var11) || (var10 && var11)) {
             return true;
         }
         return false;
