@@ -311,7 +311,7 @@ public class GCCoreBlockMachine2 extends BlockTile
         }
         else if (metadata >= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA)
         {
-            return GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA;
+            return GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA;
         }
         else
         {

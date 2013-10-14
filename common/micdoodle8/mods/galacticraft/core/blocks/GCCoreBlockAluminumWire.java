@@ -104,6 +104,12 @@ public class GCCoreBlockAluminumWire extends BlockConductor
     }
 
     @Override
+    public int damageDropped(int metadata)
+    {
+        return metadata;
+    }
+
+    @Override
     public TileEntity createTileEntity(World world, int metadata)
     {
         switch (metadata)
