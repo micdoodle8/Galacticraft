@@ -92,14 +92,18 @@ public class GCMarsRoomSpawner extends GCCoreDungeonRoom
 
     private static String getMob(Random rand)
     {
-        switch (rand.nextInt(2))
+        switch (rand.nextInt(6))
         {
         case 0:
-            return "Evolved Spider";
+            return "EvolvedSpider";
         case 1:
-            return "Evolved Skeleton";
+            return "EvolvedZombie";
+        case 2:
+            return "EvolvedCreeper";
+        case 3:
+            return "EvolvedSkeleton";
         default:
-            return "Evolved Zombie";
+            return "EvolvedCreeper";
         }
     }
 }
