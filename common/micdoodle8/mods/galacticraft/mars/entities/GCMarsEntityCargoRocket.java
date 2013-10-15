@@ -25,7 +25,6 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityLaunchController;
-import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityLaunchController.EnumAutoLaunch;
 import micdoodle8.mods.galacticraft.mars.util.GCMarsUtil;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -51,6 +50,7 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
+import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityLaunchController.EnumAutoLaunch;
 
 public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRocketType, IDockable, IInventory, IWorldTransferCallback
 {
@@ -898,7 +898,7 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
 
         if (nbt.getBoolean("TargetValid") && nbt.hasKey("targetTileX"))
         {
-            this.targetVec = new Vector3(nbt.getDouble("targetTileX"), nbt.getDouble("targetTileY"), nbt.getDouble("targetTileX"));
+            this.targetVec = new Vector3(nbt.getDouble("targetTileX"), nbt.getDouble("targetTileY"), nbt.getDouble("targetTileZ"));
         }
 
         this.landing = nbt.getBoolean("Landing");
