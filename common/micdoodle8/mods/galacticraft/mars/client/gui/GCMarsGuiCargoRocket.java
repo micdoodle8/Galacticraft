@@ -18,7 +18,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -95,11 +94,11 @@ public class GCMarsGuiCargoRocket extends GCCoreGuiContainer
             this.fontRenderer.drawString(StatCollector.translateToLocal(this.upperChestInventory.getInvName()), 8, 89 + ((this.rocket.rocketType.getInventorySpace() - 20) / 9) * 18, 4210752);
         }
 
-        String str = LanguageRegistry.instance().getStringLocalization("gui.message.fuel.name") + ":";
+        String str = StatCollector.translateToLocal("gui.message.fuel.name") + ":";
         this.fontRenderer.drawString(str, 140 - this.fontRenderer.getStringWidth(str) / 2, 5, 4210752);
         final double percentage = this.rocket.getScaledFuelLevel(100);
         String color = percentage > 80.0D ? EnumColor.BRIGHT_GREEN.code : percentage > 40.0D ? EnumColor.ORANGE.code : EnumColor.RED.code;
-        str = percentage + "% " + LanguageRegistry.instance().getStringLocalization("gui.message.full.name");
+        str = percentage + "% " + StatCollector.translateToLocal("gui.message.full.name");
         this.fontRenderer.drawString(color + str, 140 - this.fontRenderer.getStringWidth(str) / 2, 15, 4210752);
         str = "Status:";
         this.fontRenderer.drawString(str, 40 - this.fontRenderer.getStringWidth(str) / 2, 9, 4210752);

@@ -205,12 +205,6 @@ death.attack.oxygenSuffocation=%1$s ran out of oxygen!
 galaxy.blockyway.name=The Blocky Way
 
 # OTHER
-message.warning1.name=Galacticraft Requires IndustrialCraft 2, Thermal Expansion or Basic Components!
-message.warning2.name=One or more of these mods is REQUIRED for crafting/gameplay. Ignore?
-message.button1.name=Ignore
-message.button2.name=Load Basic Components
-message.button3.name=Exit
-message.button4.name=Do not show again
 newversion.message1.name=\u00a77New \u00a73Galacticraft \u00a77version available! v
 newversion.message2.name=New Galacticraft version available! v
 newversion.failed.name=Galacticraft update check failed! Trying again in 15 seconds

@@ -14,6 +14,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -27,7 +28,6 @@ import universalelectricity.core.item.IItemElectric;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric implements IInventory, ISidedInventory, IFluidHandler, ILandingPadAttachable
 {
@@ -267,7 +267,7 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
     @Override
     public String getInvName()
     {
-        return LanguageRegistry.instance().getStringLocalization("container.fuelloader.name");
+        return StatCollector.translateToLocal("container.fuelloader.name");
     }
 
     @Override

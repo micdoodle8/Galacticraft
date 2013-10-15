@@ -11,13 +11,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.item.IItemElectric;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class GCCoreTileEntityCargoLoader extends GCCoreTileEntityElectric implements IInventory, ISidedInventory, ICargoEntity, ILandingPadAttachable
 {
@@ -231,7 +231,7 @@ public class GCCoreTileEntityCargoLoader extends GCCoreTileEntityElectric implem
     @Override
     public String getInvName()
     {
-        return LanguageRegistry.instance().getStringLocalization("container.cargoloader.name");
+        return StatCollector.translateToLocal("container.cargoloader.name");
     }
 
     @Override

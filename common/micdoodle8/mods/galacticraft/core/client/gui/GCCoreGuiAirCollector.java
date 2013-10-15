@@ -12,7 +12,6 @@ import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
 import universalelectricity.core.electricity.ElectricityDisplay;
 import universalelectricity.core.electricity.ElectricityDisplay.ElectricUnit;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -60,11 +59,11 @@ public class GCCoreGuiAirCollector extends GCCoreGuiContainer
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
         this.fontRenderer.drawString(this.collector.getInvName(), 8, 10, 4210752);
-        this.fontRenderer.drawString(LanguageRegistry.instance().getStringLocalization("gui.message.out.name") + ":", 81, 25, 4210752);
-        this.fontRenderer.drawString(LanguageRegistry.instance().getStringLocalization("gui.message.in.name") + ":", 87, 37, 4210752);
-        String status = LanguageRegistry.instance().getStringLocalization("gui.message.status.name") + ": " + this.getStatus();
+        this.fontRenderer.drawString(StatCollector.translateToLocal("gui.message.out.name") + ":", 81, 25, 4210752);
+        this.fontRenderer.drawString(StatCollector.translateToLocal("gui.message.in.name") + ":", 87, 37, 4210752);
+        String status = StatCollector.translateToLocal("gui.message.status.name") + ": " + this.getStatus();
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 50, 4210752);
-        status = LanguageRegistry.instance().getStringLocalization("gui.message.oxoutput.name") + ": " + Math.round(this.collector.getCappedScaledOxygenLevel(1000) * 10.0D) / 100.0D + "%";
+        status = StatCollector.translateToLocal("gui.message.oxoutput.name") + ": " + Math.round(this.collector.getCappedScaledOxygenLevel(1000) * 10.0D) / 100.0D + "%";
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 60, 4210752);
         status = ElectricityDisplay.getDisplay(GCCoreTileEntityOxygenCollector.WATTS_PER_TICK * 20, ElectricUnit.WATT);
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 70, 4210752);
@@ -77,20 +76,20 @@ public class GCCoreGuiAirCollector extends GCCoreGuiContainer
     {
         if (this.collector.getPower() > 1 && this.collector.getEnergyStored() > 0)
         {
-            return EnumColor.DARK_GREEN + LanguageRegistry.instance().getStringLocalization("gui.status.active.name");
+            return EnumColor.DARK_GREEN + StatCollector.translateToLocal("gui.status.active.name");
         }
 
         if (this.collector.getEnergyStored() == 0)
         {
-            return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.missingpower.name");
+            return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.missingpower.name");
         }
 
         if (this.collector.getPower() < 1)
         {
-            return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.missingleaves.name");
+            return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.missingleaves.name");
         }
 
-        return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.unknown.name");
+        return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.unknown.name");
     }
 
     @Override

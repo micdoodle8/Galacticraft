@@ -26,6 +26,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.input.Keyboard;
@@ -34,7 +35,6 @@ import org.lwjgl.opengl.GL12;
 import org.lwjgl.util.glu.GLU;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -141,11 +141,11 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 
         this.buttonList.clear();
         this.buttonList.add(new GCCoreGuiTexturedButton(0, this.width - 28, 5, 22, 22, new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/map_button.png"), 22, 22));
-        this.buttonList.add(this.sendButton = new GuiSmallButton(1, this.width - 110, this.height - 26, 105, 20, LanguageRegistry.instance().getStringLocalization("gui.button.sendtodim.name")));
+        this.buttonList.add(this.sendButton = new GuiSmallButton(1, this.width - 110, this.height - 26, 105, 20, StatCollector.translateToLocal("gui.button.sendtodim.name")));
 
         if (this.createSpaceStationButton == null)
         {
-            this.buttonList.add(this.createSpaceStationButton = new GuiSmallButton(2, this.width / 2 - 60, 4, 120, 20, LanguageRegistry.instance().getStringLocalization("gui.button.createsstation.name")));
+            this.buttonList.add(this.createSpaceStationButton = new GuiSmallButton(2, this.width / 2 - 60, 4, 120, 20, StatCollector.translateToLocal("gui.button.createsstation.name")));
             this.createSpaceStationButton.enabled = true;
         }
         else
@@ -156,7 +156,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 
         if (this.renameSpaceStationButton != null && this.destinations[this.selectedSlot].contains("$"))
         {
-            this.renameSpaceStationButton = new GuiSmallButton(3, this.width - 200, this.height - 26, 80, 20, LanguageRegistry.instance().getStringLocalization("gui.button.rename.name"));
+            this.renameSpaceStationButton = new GuiSmallButton(3, this.width - 200, this.height - 26, 80, 20, StatCollector.translateToLocal("gui.button.rename.name"));
             this.buttonList.add(this.renameSpaceStationButton);
         }
 
@@ -562,13 +562,13 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
             dest = dest.replace("*", "");
         }
 
-        str = LanguageRegistry.instance().getStringLocalization("gui.choosePlanet.desc." + dest);
+        str = StatCollector.translateToLocal("gui.choosePlanet.desc." + dest);
 
         // if
         // (this.destinations[this.selectedSlot].toLowerCase().equals("overworld"))
         // {
         // str =
-        // LanguageRegistry.instance().getStringLocalization("gui.choosePlanet.desc.overworld");
+        // StatCollector.translateToLocal("gui.choosePlanet.desc.overworld");
         // }
 
         if (str != null)
@@ -613,8 +613,8 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
                     final List<String> strings = new ArrayList<String>();
                     final List<ItemStack> items = new ArrayList<ItemStack>();
                     final List<Boolean> hasEnough = new ArrayList<Boolean>();
-                    strings.add(LanguageRegistry.instance().getStringLocalization("gui.chooseplanet.alreadycreated1.name"));
-                    strings.add("        " + LanguageRegistry.instance().getStringLocalization("gui.chooseplanet.alreadycreated2.name"));
+                    strings.add(StatCollector.translateToLocal("gui.chooseplanet.alreadycreated1.name"));
+                    strings.add("        " + StatCollector.translateToLocal("gui.chooseplanet.alreadycreated2.name"));
                     hasEnough.add(false);
                     hasEnough.add(false);
                     this.drawItemStackTooltip(strings, items, hasEnough, this.createSpaceStationButton.xPosition + 115, this.createSpaceStationButton.yPosition + 15);
@@ -696,8 +696,8 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
                     final List<String> strings = new ArrayList<String>();
                     final List<ItemStack> items = new ArrayList<ItemStack>();
                     final List<Boolean> hasEnough = new ArrayList<Boolean>();
-                    strings.add(LanguageRegistry.instance().getStringLocalization("gui.chooseplanet.cannotcreate1.name"));
-                    strings.add("     " + LanguageRegistry.instance().getStringLocalization("gui.chooseplanet.cannotcreate2.name"));
+                    strings.add(StatCollector.translateToLocal("gui.chooseplanet.cannotcreate1.name"));
+                    strings.add("     " + StatCollector.translateToLocal("gui.chooseplanet.cannotcreate2.name"));
                     hasEnough.add(false);
                     hasEnough.add(false);
                     this.drawItemStackTooltip(strings, items, hasEnough, this.createSpaceStationButton.xPosition + 115, this.createSpaceStationButton.yPosition + 15);

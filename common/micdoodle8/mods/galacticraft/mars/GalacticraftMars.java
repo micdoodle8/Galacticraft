@@ -41,7 +41,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -54,7 +53,6 @@ import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 
 /**
@@ -73,7 +71,6 @@ public class GalacticraftMars
     public static final String CHANNELENTITIES = "GCMarsEntities";
 
     public static final String LANGUAGE_PATH = "/assets/galacticraftmars/lang/";
-    private static final String[] LANGUAGES_SUPPORTED = new String[] { "en_US", "fi_FI", "ru_RU" };
 
     @SidedProxy(clientSide = "micdoodle8.mods.galacticraft.mars.client.ClientProxyMars", serverSide = "micdoodle8.mods.galacticraft.mars.CommonProxyMars")
     public static CommonProxyMars proxy;
@@ -112,39 +109,6 @@ public class GalacticraftMars
     @EventHandler
     public void load(FMLInitializationEvent event)
     {
-        int languages = 0;
-
-        for (String language : GalacticraftMars.LANGUAGES_SUPPORTED)
-        {
-            LanguageRegistry.instance().loadLocalization(GalacticraftMars.LANGUAGE_PATH + language + ".lang", language, false);
-
-            if (LanguageRegistry.instance().getStringLocalization("children", language) != "")
-            {
-                try
-                {
-                    String[] children = LanguageRegistry.instance().getStringLocalization("children", language).split(",");
-
-                    for (String child : children)
-                    {
-                        if (child != "" || child != null)
-                        {
-                            LanguageRegistry.instance().loadLocalization(GalacticraftMars.LANGUAGE_PATH + language + ".lang", child, false);
-                            languages++;
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    FMLLog.severe("Failed to load a child language file.");
-                    e.printStackTrace();
-                }
-            }
-
-            languages++;
-        }
-
-        GCLog.info("Galacticraft Mars Loaded: " + languages + " Languages.");
-
         SchematicRegistry.registerSchematicRecipe(new GCMarsSchematicRocketT2());
         SchematicRegistry.registerSchematicRecipe(new GCMarsSchematicCargoRocket());
 

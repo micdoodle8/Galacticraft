@@ -11,8 +11,8 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -110,7 +110,7 @@ public class GCCoreItemMeteorChunk extends Item
                 burnTime = 45.0F;
             }
             
-            par3List.add(LanguageRegistry.instance().getStringLocalization("item.hotDescription.name") + " " + burnTime + "s");
+            par3List.add(StatCollector.translateToLocal("item.hotDescription.name") + " " + burnTime + "s");
         }
     }
 

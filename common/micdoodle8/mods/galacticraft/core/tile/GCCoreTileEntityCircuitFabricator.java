@@ -13,12 +13,12 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.item.IItemElectric;
 import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class GCCoreTileEntityCircuitFabricator extends GCCoreTileEntityElectric implements IInventory, ISidedInventory, IPacketReceiver
 {
@@ -269,7 +269,7 @@ public class GCCoreTileEntityCircuitFabricator extends GCCoreTileEntityElectric 
     @Override
     public String getInvName()
     {
-        return LanguageRegistry.instance().getStringLocalization("tile.machine2.5.name");
+        return StatCollector.translateToLocal("tile.machine2.5.name");
     }
 
     @Override

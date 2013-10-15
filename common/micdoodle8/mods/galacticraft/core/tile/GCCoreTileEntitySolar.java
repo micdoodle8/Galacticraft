@@ -21,6 +21,7 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.item.IItemElectric;
 import universalelectricity.core.vector.Vector3;
@@ -28,7 +29,6 @@ import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -440,7 +440,7 @@ public class GCCoreTileEntitySolar extends GCCoreTileEntityUniversalElectrical i
     @Override
     public String getInvName()
     {
-        return LanguageRegistry.instance().getStringLocalization(this.getBlockMetadata() < GCCoreBlockSolar.ADVANCED_METADATA ? "container.solarbasic.name" : "container.solaradvanced.name");
+        return StatCollector.translateToLocal(this.getBlockMetadata() < GCCoreBlockSolar.ADVANCED_METADATA ? "container.solarbasic.name" : "container.solaradvanced.name");
     }
 
     @Override

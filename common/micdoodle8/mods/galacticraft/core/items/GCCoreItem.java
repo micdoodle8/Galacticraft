@@ -9,7 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import cpw.mods.fml.common.registry.LanguageRegistry;
+import net.minecraft.util.StatCollector;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -48,7 +48,7 @@ public class GCCoreItem extends Item
     {
         if (par1ItemStack != null && this.itemID == GCCoreConfigManager.idItemHeavyPlate + 256)
         {
-            par3List.add(LanguageRegistry.instance().getStringLocalization("item.tier1.desc"));
+            par3List.add(StatCollector.translateToLocal("item.tier1.desc"));
         }
     }
 }

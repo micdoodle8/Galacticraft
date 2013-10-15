@@ -12,9 +12,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -101,7 +101,7 @@ public class GCCoreOverlaySensorGlasses extends GCCoreOverlay
                 var2 = client.getUsingGoggles();
             }
 
-            GCCoreOverlaySensorGlasses.minecraft.fontRenderer.drawString(LanguageRegistry.instance().getStringLocalization("gui.sensor.advanced") + ": " + (var2 ? LanguageRegistry.instance().getStringLocalization("gui.sensor.advancedon") : LanguageRegistry.instance().getStringLocalization("gui.sensor.advancedoff")), var6 / 2 - 50, 4, 0x03b88f);
+            GCCoreOverlaySensorGlasses.minecraft.fontRenderer.drawString(StatCollector.translateToLocal("gui.sensor.advanced") + ": " + (var2 ? StatCollector.translateToLocal("gui.sensor.advancedon") : StatCollector.translateToLocal("gui.sensor.advancedoff")), var6 / 2 - 50, 4, 0x03b88f);
 
             try
             {

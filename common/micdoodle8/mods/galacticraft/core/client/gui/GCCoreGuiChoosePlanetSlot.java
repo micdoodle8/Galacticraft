@@ -8,10 +8,10 @@ import micdoodle8.mods.galacticraft.api.world.ICelestialBodyRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiSlot;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -55,10 +55,10 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
             }
         }
 
-        GCCoreGuiChoosePlanet.getSendButton(this.choosePlanetGui).displayString = LanguageRegistry.instance().getStringLocalization("gui.button.sendtodim.name");
+        GCCoreGuiChoosePlanet.getSendButton(this.choosePlanetGui).displayString = StatCollector.translateToLocal("gui.button.sendtodim.name");
         GCCoreGuiChoosePlanet.getSendButton(this.choosePlanetGui).enabled = this.choosePlanetGui.isValidDestination(this.choosePlanetGui.selectedSlot);
 
-        GCCoreGuiChoosePlanet.getCreateSpaceStationButton(this.choosePlanetGui).displayString = LanguageRegistry.instance().getStringLocalization("gui.button.createsstation.name");
+        GCCoreGuiChoosePlanet.getCreateSpaceStationButton(this.choosePlanetGui).displayString = StatCollector.translateToLocal("gui.button.createsstation.name");
         GCCoreGuiChoosePlanet.getCreateSpaceStationButton(this.choosePlanetGui).enabled = this.choosePlanetGui.canCreateSpaceStation();
     }
 
@@ -143,7 +143,7 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
                 }
                 else
                 {
-                    str = LanguageRegistry.instance().getStringLocalization("dimension." + str + ".name");
+                    str = StatCollector.translateToLocal("dimension." + str + ".name");
                 }
 
                 this.choosePlanetGui.drawCenteredString(this.choosePlanetGui.getFontRenderer(), str, this.choosePlanetGui.width / 2, par3 + 3, 0xEEEEEE);
@@ -177,7 +177,7 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
                 }
                 else
                 {
-                    str = LanguageRegistry.instance().getStringLocalization("dimension." + str + ".name");
+                    str = StatCollector.translateToLocal("dimension." + str + ".name");
                 }
 
                 this.choosePlanetGui.drawCenteredString(this.choosePlanetGui.getFontRenderer(), str, this.choosePlanetGui.width / 2, par3 + 3, 0xEEEEEE);

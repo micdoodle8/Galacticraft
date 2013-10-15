@@ -5,10 +5,10 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.util.StatCollector;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -36,10 +36,10 @@ public class GCCoreOverlayLander extends GCCoreOverlay
 
         if (GCCoreOverlayLander.minecraft.thePlayer.ridingEntity.motionY < -2.0)
         {
-            GCCoreOverlayLander.minecraft.fontRenderer.drawString(LanguageRegistry.instance().getStringLocalization("gui.warning"), width / 4 - GCCoreOverlayLander.minecraft.fontRenderer.getStringWidth(LanguageRegistry.instance().getStringLocalization("gui.warning")) / 2, height / 8 - 20, GCCoreUtil.convertTo32BitColor(255, 255, 0, 0));
+            GCCoreOverlayLander.minecraft.fontRenderer.drawString(StatCollector.translateToLocal("gui.warning"), width / 4 - GCCoreOverlayLander.minecraft.fontRenderer.getStringWidth(StatCollector.translateToLocal("gui.warning")) / 2, height / 8 - 20, GCCoreUtil.convertTo32BitColor(255, 255, 0, 0));
             final int alpha = (int) (255 * Math.sin(GCCoreOverlayLander.screenTicks / 20.0F));
-            final String press1 = LanguageRegistry.instance().getStringLocalization("gui.lander.warning2");
-            final String press2 = LanguageRegistry.instance().getStringLocalization("gui.lander.warning3");
+            final String press1 = StatCollector.translateToLocal("gui.lander.warning2");
+            final String press2 = StatCollector.translateToLocal("gui.lander.warning3");
             GCCoreOverlayLander.minecraft.fontRenderer.drawString(press1 + Keyboard.getKeyName(ClientProxyCore.GCKeyHandler.spaceKey.keyCode) + press2, width / 4 - GCCoreOverlayLander.minecraft.fontRenderer.getStringWidth(press1 + Keyboard.getKeyName(ClientProxyCore.GCKeyHandler.spaceKey.keyCode) + press2) / 2, height / 8, GCCoreUtil.convertTo32BitColor(alpha, alpha, alpha, alpha));
         }
 
@@ -47,7 +47,7 @@ public class GCCoreOverlayLander extends GCCoreOverlay
 
         if (GCCoreOverlayLander.minecraft.thePlayer.ridingEntity.motionY != 0.0D)
         {
-            String string = LanguageRegistry.instance().getStringLocalization("gui.lander.velocity") + ": " + Math.round(((GCCoreEntityLander) GCCoreOverlayLander.minecraft.thePlayer.ridingEntity).motionY * 1000) / 100.0D + " " + LanguageRegistry.instance().getStringLocalization("gui.lander.velocityu");
+            String string = StatCollector.translateToLocal("gui.lander.velocity") + ": " + Math.round(((GCCoreEntityLander) GCCoreOverlayLander.minecraft.thePlayer.ridingEntity).motionY * 1000) / 100.0D + " " + StatCollector.translateToLocal("gui.lander.velocityu");
             int color = GCCoreUtil.convertTo32BitColor(255, (int) Math.floor(Math.abs(GCCoreOverlayLander.minecraft.thePlayer.ridingEntity.motionY) * 51.0D), 0, 255 - (int) Math.floor(Math.abs(GCCoreOverlayLander.minecraft.thePlayer.ridingEntity.motionY) * 51.0D));
             GCCoreOverlayLander.minecraft.fontRenderer.drawString(string, width / 2 - GCCoreOverlayLander.minecraft.fontRenderer.getStringWidth(string) / 2, height / 3, color);
         }

@@ -12,6 +12,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
@@ -59,7 +60,7 @@ public class GCCoreUtil
     {
         if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
         {
-            LanguageRegistry.instance().addStringLocalization("entity." + var1 + ".name", LanguageRegistry.instance().getStringLocalization("entity.GalacticraftCore." + var1 + ".name"));
+            LanguageRegistry.instance().addStringLocalization("entity." + var1 + ".name", StatCollector.translateToLocal("entity.GalacticraftCore." + var1 + ".name"));
         }
 
         EntityRegistry.registerGlobalEntityID(var0, var1, id, back, fore);
@@ -70,7 +71,7 @@ public class GCCoreUtil
     {
         if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
         {
-            LanguageRegistry.instance().addStringLocalization("entity." + var1 + ".name", LanguageRegistry.instance().getStringLocalization("entity.GalacticraftCore." + var1 + ".name"));
+            LanguageRegistry.instance().addStringLocalization("entity." + var1 + ".name", StatCollector.translateToLocal("entity.GalacticraftCore." + var1 + ".name"));
         }
 
         EntityRegistry.registerModEntity(var0, var1, id, GalacticraftCore.instance, trackingDistance, updateFreq, sendVel);

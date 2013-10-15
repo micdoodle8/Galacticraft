@@ -16,7 +16,6 @@ import org.lwjgl.opengl.GL11;
 import universalelectricity.core.electricity.ElectricityDisplay;
 import universalelectricity.core.electricity.ElectricityDisplay.ElectricUnit;
 import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -79,20 +78,20 @@ public class GCCoreGuiAirSealer extends GCCoreGuiContainer
         this.electricInfoRegion.parentWidth = this.width;
         this.electricInfoRegion.parentHeight = this.height;
         this.infoRegions.add(this.electricInfoRegion);
-        this.buttonList.add(this.buttonDisable = new GuiButton(0, this.width / 2 - 38, this.height / 2 - 30 + 21, 76, 20, LanguageRegistry.instance().getStringLocalization("gui.button.enableseal.name")));
+        this.buttonList.add(this.buttonDisable = new GuiButton(0, this.width / 2 - 38, this.height / 2 - 30 + 21, 76, 20, StatCollector.translateToLocal("gui.button.enableseal.name")));
     }
 
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
         this.fontRenderer.drawString(this.sealer.getInvName(), 8, 10, 4210752);
-        this.fontRenderer.drawString(LanguageRegistry.instance().getStringLocalization("gui.message.in.name") + ":", 87, 25, 4210752);
-        this.fontRenderer.drawString(LanguageRegistry.instance().getStringLocalization("gui.message.in.name") + ":", 87, 37, 4210752);
-        String status = LanguageRegistry.instance().getStringLocalization("gui.message.status.name") + ": " + this.getStatus();
+        this.fontRenderer.drawString(StatCollector.translateToLocal("gui.message.in.name") + ":", 87, 25, 4210752);
+        this.fontRenderer.drawString(StatCollector.translateToLocal("gui.message.in.name") + ":", 87, 37, 4210752);
+        String status = StatCollector.translateToLocal("gui.message.status.name") + ": " + this.getStatus();
         this.buttonDisable.enabled = this.sealer.disableCooldown == 0;
-        this.buttonDisable.displayString = this.sealer.disabled ? LanguageRegistry.instance().getStringLocalization("gui.button.enableseal.name") : LanguageRegistry.instance().getStringLocalization("gui.button.disableseal.name");
+        this.buttonDisable.displayString = this.sealer.disabled ? StatCollector.translateToLocal("gui.button.enableseal.name") : StatCollector.translateToLocal("gui.button.disableseal.name");
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 50, 4210752);
-        status = LanguageRegistry.instance().getStringLocalization("gui.message.oxinput.name") + ": " + Math.round(this.sealer.getCappedScaledOxygenLevel(1000) * 10.0D) / 100.0D + "%";
+        status = StatCollector.translateToLocal("gui.message.oxinput.name") + ": " + Math.round(this.sealer.getCappedScaledOxygenLevel(1000) * 10.0D) / 100.0D + "%";
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 60, 4210752);
         status = ElectricityDisplay.getDisplay(this.sealer.ueWattsPerTick * 20, ElectricUnit.WATT);
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 70, 4210752);
@@ -107,31 +106,31 @@ public class GCCoreGuiAirSealer extends GCCoreGuiContainer
 
         if (blockAbove != 0 && blockAbove != GCCoreBlocks.breatheableAir.blockID)
         {
-            return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.sealerblocked.name");
+            return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.sealerblocked.name");
         }
 
         if (this.sealer.disabled)
         {
-            return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.disabled.name");
+            return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.disabled.name");
         }
 
         if (this.sealer.getEnergyStored() == 0)
         {
-            return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.missingpower.name");
+            return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.missingpower.name");
         }
 
         if (this.sealer.storedOxygen < 1)
         {
-            return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.missingoxygen.name");
+            return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.missingoxygen.name");
         }
 
         if (!this.sealer.sealed)
         {
-            return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.unsealed.name");
+            return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.unsealed.name");
         }
         else
         {
-            return EnumColor.DARK_GREEN + LanguageRegistry.instance().getStringLocalization("gui.status.sealed.name");
+            return EnumColor.DARK_GREEN + StatCollector.translateToLocal("gui.status.sealed.name");
         }
     }
 

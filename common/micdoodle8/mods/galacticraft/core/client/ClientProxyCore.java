@@ -28,13 +28,13 @@ import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirCollector;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirCompressor;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirDistributor;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirSealer;
-import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiEnergyStorageModule;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiCargoLoader;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiCargoUnloader;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiCircuitFabricator;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiCoalGenerator;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiElectricFurnace;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiElectricIngotCompressor;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiEnergyStorageModule;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiExtendedInventory;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiFuelLoader;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiGalaxyMap;
@@ -154,6 +154,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.client.EnumHelperClient;
 import net.minecraftforge.client.MinecraftForgeClient;
@@ -177,7 +178,6 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 
@@ -573,15 +573,15 @@ public class ClientProxyCore extends CommonProxyCore
 
     public static class GCKeyHandler extends KeyHandler
     {
-        public static KeyBinding galaxyMap = new KeyBinding(LanguageRegistry.instance().getStringLocalization("keybind.map.name"), Keyboard.KEY_M);
-        public static KeyBinding openSpaceshipInv = new KeyBinding(LanguageRegistry.instance().getStringLocalization("keybind.spaceshipinv.name"), Keyboard.KEY_F);
-        public static KeyBinding toggleAdvGoggles = new KeyBinding(LanguageRegistry.instance().getStringLocalization("keybind.sensortoggle.name"), Keyboard.KEY_K);
-        public static KeyBinding accelerateKey = new KeyBinding(LanguageRegistry.instance().getStringLocalization("keybind.vehicleforward.name"), Keyboard.KEY_W);
-        public static KeyBinding decelerateKey = new KeyBinding(LanguageRegistry.instance().getStringLocalization("keybind.vehiclebackward.name"), Keyboard.KEY_S);
-        public static KeyBinding leftKey = new KeyBinding(LanguageRegistry.instance().getStringLocalization("keybind.vehicleleft.name"), Keyboard.KEY_A);
-        public static KeyBinding rightKey = new KeyBinding(LanguageRegistry.instance().getStringLocalization("keybind.vehicleright.name"), Keyboard.KEY_D);
-        public static KeyBinding spaceKey = new KeyBinding(LanguageRegistry.instance().getStringLocalization("keybind.vehicleup.name"), Keyboard.KEY_SPACE);
-        public static KeyBinding leftShiftKey = new KeyBinding(LanguageRegistry.instance().getStringLocalization("keybind.vehicledown.name"), Keyboard.KEY_LSHIFT);
+        public static KeyBinding galaxyMap = new KeyBinding(StatCollector.translateToLocal("keybind.map.name"), Keyboard.KEY_M);
+        public static KeyBinding openSpaceshipInv = new KeyBinding(StatCollector.translateToLocal("keybind.spaceshipinv.name"), Keyboard.KEY_F);
+        public static KeyBinding toggleAdvGoggles = new KeyBinding(StatCollector.translateToLocal("keybind.sensortoggle.name"), Keyboard.KEY_K);
+        public static KeyBinding accelerateKey = new KeyBinding(StatCollector.translateToLocal("keybind.vehicleforward.name"), Keyboard.KEY_W);
+        public static KeyBinding decelerateKey = new KeyBinding(StatCollector.translateToLocal("keybind.vehiclebackward.name"), Keyboard.KEY_S);
+        public static KeyBinding leftKey = new KeyBinding(StatCollector.translateToLocal("keybind.vehicleleft.name"), Keyboard.KEY_A);
+        public static KeyBinding rightKey = new KeyBinding(StatCollector.translateToLocal("keybind.vehicleright.name"), Keyboard.KEY_D);
+        public static KeyBinding spaceKey = new KeyBinding(StatCollector.translateToLocal("keybind.vehicleup.name"), Keyboard.KEY_SPACE);
+        public static KeyBinding leftShiftKey = new KeyBinding(StatCollector.translateToLocal("keybind.vehicledown.name"), Keyboard.KEY_LSHIFT);
 
         public GCKeyHandler()
         {

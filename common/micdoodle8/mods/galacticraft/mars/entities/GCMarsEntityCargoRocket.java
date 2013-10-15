@@ -25,6 +25,7 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityLaunchController;
+import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityLaunchController.EnumAutoLaunch;
 import micdoodle8.mods.galacticraft.mars.util.GCMarsUtil;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -37,6 +38,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
@@ -48,9 +50,7 @@ import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
-import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityLaunchController.EnumAutoLaunch;
 
 public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRocketType, IDockable, IInventory, IWorldTransferCallback
 {
@@ -1096,7 +1096,7 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
     @Override
     public String getInvName()
     {
-        return LanguageRegistry.instance().getStringLocalization("container.spaceship.name");
+        return StatCollector.translateToLocal("container.spaceship.name");
     }
 
     @Override

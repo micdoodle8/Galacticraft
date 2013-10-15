@@ -18,13 +18,13 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.StatCollector;
 import universalelectricity.core.item.IItemElectric;
 import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class GCCoreTileEntityIngotCompressor extends TileEntity implements IInventory, ISidedInventory, IPacketReceiver
 {
@@ -328,7 +328,7 @@ public class GCCoreTileEntityIngotCompressor extends TileEntity implements IInve
     @Override
     public String getInvName()
     {
-        return LanguageRegistry.instance().getStringLocalization("tile.machine.3.name");
+        return StatCollector.translateToLocal("tile.machine.3.name");
     }
 
     @Override

@@ -16,7 +16,6 @@ import org.lwjgl.opengl.GL11;
 import universalelectricity.core.electricity.ElectricityDisplay;
 import universalelectricity.core.electricity.ElectricityDisplay.ElectricUnit;
 import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -69,7 +68,7 @@ public class GCCoreGuiCargoLoader extends GCCoreGuiContainer
         batterySlotDesc.add("Cargo Loader battery slot, place battery here");
         batterySlotDesc.add("if not using a connected power source");
         this.infoRegions.add(new GCCoreInfoRegion((this.width - this.xSize) / 2 + 9, (this.height - this.ySize) / 2 + 26, 18, 18, batterySlotDesc, this.width, this.height));
-        this.buttonList.add(this.buttonLoadItems = new GuiButton(0, this.width / 2 - 1, this.height / 2 - 23, 76, 20, LanguageRegistry.instance().getStringLocalization("gui.button.loaditems.name")));
+        this.buttonList.add(this.buttonLoadItems = new GuiButton(0, this.width / 2 - 1, this.height / 2 - 23, 76, 20, StatCollector.translateToLocal("gui.button.loaditems.name")));
     }
 
     @Override
@@ -79,8 +78,8 @@ public class GCCoreGuiCargoLoader extends GCCoreGuiContainer
         int offsetY = 45;
         this.fontRenderer.drawString(this.fuelLoader.getInvName(), 60, 12, 4210752);
         this.buttonLoadItems.enabled = this.fuelLoader.disableCooldown == 0;
-        this.buttonLoadItems.displayString = !this.fuelLoader.getDisabled(0) ? LanguageRegistry.instance().getStringLocalization("gui.button.stoploading.name") : LanguageRegistry.instance().getStringLocalization("gui.button.loaditems.name");
-        this.fontRenderer.drawString(LanguageRegistry.instance().getStringLocalization("gui.message.status.name") + ": " + this.getStatus(), 28 + offsetX, 45 + 23 - 46 + offsetY, 4210752);
+        this.buttonLoadItems.displayString = !this.fuelLoader.getDisabled(0) ? StatCollector.translateToLocal("gui.button.stoploading.name") : StatCollector.translateToLocal("gui.button.loaditems.name");
+        this.fontRenderer.drawString(StatCollector.translateToLocal("gui.message.status.name") + ": " + this.getStatus(), 28 + offsetX, 45 + 23 - 46 + offsetY, 4210752);
         this.fontRenderer.drawString(ElectricityDisplay.getDisplay(GCCoreTileEntityFuelLoader.WATTS_PER_TICK * 20, ElectricUnit.WATT), 28 + offsetX, 56 + 23 - 46 + offsetY, 4210752);
         this.fontRenderer.drawString(ElectricityDisplay.getDisplay(this.fuelLoader.getVoltage(), ElectricUnit.VOLTAGE), 28 + offsetX, 68 + 23 - 46 + offsetY, 4210752);
         this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 90, 4210752);
@@ -90,40 +89,40 @@ public class GCCoreGuiCargoLoader extends GCCoreGuiContainer
     {
         if (this.fuelLoader.outOfItems)
         {
-            return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.noitems.name");
+            return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.noitems.name");
         }
 
         if (this.fuelLoader.noTarget)
         {
-            return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.notargetload.name");
+            return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.notargetload.name");
         }
 
         if (this.fuelLoader.targetNoInventory)
         {
-            return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.noinvtarget.name");
+            return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.noinvtarget.name");
         }
 
         if (this.fuelLoader.targetFull)
         {
-            return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.targetfull.name");
+            return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.targetfull.name");
         }
 
         if (this.fuelLoader.getStackInSlot(0) == null && this.fuelLoader.getEnergyStored() == 0)
         {
-            return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.missingpower.name");
+            return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.missingpower.name");
         }
 
         if (this.fuelLoader.getDisabled(0))
         {
-            return EnumColor.ORANGE + LanguageRegistry.instance().getStringLocalization("gui.status.ready.name");
+            return EnumColor.ORANGE + StatCollector.translateToLocal("gui.status.ready.name");
         }
 
         if (this.fuelLoader.getEnergyStored() > 0)
         {
-            return EnumColor.DARK_GREEN + LanguageRegistry.instance().getStringLocalization("gui.status.active.name");
+            return EnumColor.DARK_GREEN + StatCollector.translateToLocal("gui.status.active.name");
         }
 
-        return EnumColor.ORANGE + LanguageRegistry.instance().getStringLocalization("gui.status.ready.name");
+        return EnumColor.ORANGE + StatCollector.translateToLocal("gui.status.ready.name");
     }
 
     @Override

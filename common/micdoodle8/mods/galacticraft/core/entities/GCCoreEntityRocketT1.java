@@ -22,13 +22,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import universalelectricity.core.vector.Vector3;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 
 /**
@@ -333,7 +333,7 @@ public class GCCoreEntityRocketT1 extends EntityTieredRocket implements IInvento
     @Override
     public String getInvName()
     {
-        return LanguageRegistry.instance().getStringLocalization("container.spaceship.name");
+        return StatCollector.translateToLocal("container.spaceship.name");
     }
 
     @Override

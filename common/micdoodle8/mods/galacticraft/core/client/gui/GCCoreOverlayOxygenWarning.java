@@ -3,9 +3,9 @@ package micdoodle8.mods.galacticraft.core.client.gui;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -35,9 +35,9 @@ public class GCCoreOverlayOxygenWarning extends GCCoreOverlay
 
         GL11.glScalef(2.0F, 2.0F, 0.0F);
 
-        GCCoreOverlayOxygenWarning.minecraft.fontRenderer.drawString(LanguageRegistry.instance().getStringLocalization("gui.warning"), width / 4 - GCCoreOverlayOxygenWarning.minecraft.fontRenderer.getStringWidth(LanguageRegistry.instance().getStringLocalization("gui.warning")) / 2, height / 8 - 20, GCCoreUtil.convertTo32BitColor(255, 255, 0, 0));
+        GCCoreOverlayOxygenWarning.minecraft.fontRenderer.drawString(StatCollector.translateToLocal("gui.warning"), width / 4 - GCCoreOverlayOxygenWarning.minecraft.fontRenderer.getStringWidth(StatCollector.translateToLocal("gui.warning")) / 2, height / 8 - 20, GCCoreUtil.convertTo32BitColor(255, 255, 0, 0));
         final int alpha = (int) (255 * Math.sin(GCCoreOverlayOxygenWarning.screenTicks / 20.0F));
-        GCCoreOverlayOxygenWarning.minecraft.fontRenderer.drawString(LanguageRegistry.instance().getStringLocalization("gui.oxygen.warning"), width / 4 - GCCoreOverlayOxygenWarning.minecraft.fontRenderer.getStringWidth(LanguageRegistry.instance().getStringLocalization("gui.oxygen.warning")) / 2, height / 8, GCCoreUtil.convertTo32BitColor(alpha, alpha, alpha, alpha));
+        GCCoreOverlayOxygenWarning.minecraft.fontRenderer.drawString(StatCollector.translateToLocal("gui.oxygen.warning"), width / 4 - GCCoreOverlayOxygenWarning.minecraft.fontRenderer.getStringWidth(StatCollector.translateToLocal("gui.oxygen.warning")) / 2, height / 8, GCCoreUtil.convertTo32BitColor(alpha, alpha, alpha, alpha));
 
         GL11.glPopMatrix();
     }
