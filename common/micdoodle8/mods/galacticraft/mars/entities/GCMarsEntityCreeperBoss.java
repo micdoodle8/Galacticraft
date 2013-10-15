@@ -13,7 +13,6 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityDungeonSpawner;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
-import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityTreasureChest;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -223,10 +222,10 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
                 i -= j;
                 this.worldObj.spawnEntityInWorld(new EntityXPOrb(this.worldObj, this.posX, this.posY, this.posZ, j));
             }
-
+            
             for (final TileEntity tile : (List<TileEntity>) this.worldObj.loadedTileEntityList)
             {
-                if (tile instanceof GCMarsTileEntityTreasureChest)
+                if (tile instanceof GCCoreTileEntityTreasureChest)
                 {
                     final double d3 = tile.xCoord + 0.5D - this.posX;
                     final double d4 = tile.yCoord + 0.5D - this.posY;
@@ -251,7 +250,7 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
                         WeightedRandomChestContent.generateChestContents(this.rand, info.getItems(this.rand), (GCCoreTileEntityTreasureChest) tile, info.getCount(this.rand));
                         WeightedRandomChestContent.generateChestContents(this.rand, info.getItems(this.rand), (GCCoreTileEntityTreasureChest) tile, info.getCount(this.rand));
 
-                        ((GCMarsTileEntityTreasureChest) tile).setInventorySlotContents(this.rand.nextInt(((GCMarsTileEntityTreasureChest) tile).getSizeInventory()), this.getGuaranteedLoot(this.rand));
+                        ((GCCoreTileEntityTreasureChest) tile).setInventorySlotContents(this.rand.nextInt(((GCCoreTileEntityTreasureChest) tile).getSizeInventory()), this.getGuaranteedLoot(this.rand));
 
                         break;
                     }

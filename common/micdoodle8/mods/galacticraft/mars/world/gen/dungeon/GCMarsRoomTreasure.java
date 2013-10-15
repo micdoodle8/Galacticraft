@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.core.world.gen.dungeon.GCCoreDungeonBounding
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.GCCoreDungeonRoom;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.GCCoreMapGenDungeon;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
+import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityTreasureChest;
 import net.minecraft.block.Block;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraftforge.common.ForgeDirection;
@@ -84,6 +85,7 @@ public class GCMarsRoomTreasure extends GCCoreDungeonRoom
         if (!this.chests.isEmpty())
         {
             this.worldObj.setBlock(this.chests.get(0).posX, this.chests.get(0).posY, this.chests.get(0).posZ, GCMarsBlocks.tier2TreasureChest.blockID, 0, 2);
+            this.worldObj.setBlockTileEntity(this.chests.get(0).posX, this.chests.get(0).posY, this.chests.get(0).posZ, new GCMarsTileEntityTreasureChest());
             this.chests.clear();
         }
     }
