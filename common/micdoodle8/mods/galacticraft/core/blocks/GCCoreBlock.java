@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.List;
 import java.util.Random;
+import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import net.minecraft.block.Block;
@@ -19,7 +20,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * All rights reserved.
  * 
  */
-public class GCCoreBlock extends Block
+public class GCCoreBlock extends Block implements IDetectableResource
 {
     Icon[] iconBuffer;
 
@@ -124,5 +125,11 @@ public class GCCoreBlock extends Block
         {
             par3List.add(new ItemStack(par1, 1, var4));
         }
+    }
+
+    @Override
+    public boolean isValueable(int metadata)
+    {
+        return metadata >= 5 && metadata <= 8;
     }
 }
