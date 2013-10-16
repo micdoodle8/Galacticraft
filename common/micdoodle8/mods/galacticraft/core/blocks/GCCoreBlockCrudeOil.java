@@ -4,6 +4,7 @@ import java.util.Random;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.util.Icon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import cpw.mods.fml.relauncher.Side;
@@ -53,5 +54,27 @@ public class GCCoreBlockCrudeOil extends BlockFluidClassic
         {
             world.playSound(x + 0.5F, y + 0.5F, z + 0.5F, "liquid.lava", rand.nextFloat() * 0.25F + 0.75F, 0.00001F + rand.nextFloat() * 0.5F, false);
         }
+    }
+    
+    @Override
+    public boolean canDisplace(IBlockAccess world, int x, int y, int z) 
+    {
+        if (world.getBlockMaterial(x, y, z).isLiquid())
+        {
+            return false;
+        }
+        
+        return super.canDisplace(world, x, y, z);
+    }
+    
+    @Override
+    public boolean displaceIfPossible(World world, int x, int y, int z) 
+    {
+        if (world.getBlockMaterial(x, y, z).isLiquid())
+        {
+            return false;
+        }
+        
+        return super.displaceIfPossible(world, x, y, z);
     }
 }
