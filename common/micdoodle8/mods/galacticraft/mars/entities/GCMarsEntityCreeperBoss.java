@@ -222,7 +222,7 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
                 i -= j;
                 this.worldObj.spawnEntityInWorld(new EntityXPOrb(this.worldObj, this.posX, this.posY, this.posZ, j));
             }
-            
+
             for (final TileEntity tile : (List<TileEntity>) this.worldObj.loadedTileEntityList)
             {
                 if (tile instanceof GCCoreTileEntityTreasureChest)
@@ -238,7 +238,7 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
                         {
                             ((GCCoreTileEntityTreasureChest) tile).locked = true;
                         }
-                        
+
                         for (int k = 0; k < ((GCCoreTileEntityTreasureChest) tile).getSizeInventory(); k++)
                         {
                             ((GCCoreTileEntityTreasureChest) tile).setInventorySlotContents(k, null);

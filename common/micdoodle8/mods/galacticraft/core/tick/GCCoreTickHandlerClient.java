@@ -64,9 +64,9 @@ public class GCCoreTickHandlerClient implements ITickHandler
     public static GuiScreen lastOpenGui;
     private static GuiScreen prevLastOpenGui;
     private static long tickCount;
-    
+
     private static GCCoreThreadRequirementMissing missingRequirementThread;
-    
+
     static
     {
         for (final String s : GCCoreConfigManager.detectableIDs)
@@ -101,14 +101,14 @@ public class GCCoreTickHandlerClient implements ITickHandler
 
         if (type.equals(EnumSet.of(TickType.CLIENT)))
         {
-            if (tickCount >= Long.MAX_VALUE)
+            if (GCCoreTickHandlerClient.tickCount >= Long.MAX_VALUE)
             {
-                tickCount = 0;
+                GCCoreTickHandlerClient.tickCount = 0;
             }
-            
-            tickCount++;
-            
-            if (tickCount % 20 == 0)
+
+            GCCoreTickHandlerClient.tickCount++;
+
+            if (GCCoreTickHandlerClient.tickCount % 20 == 0)
             {
                 if (player != null && player.inventory.armorItemInSlot(3) != null && player.inventory.armorItemInSlot(3).getItem() instanceof GCCoreItemSensorGlasses)
                 {
@@ -120,11 +120,9 @@ public class GCCoreTickHandlerClient implements ITickHandler
                         {
                             for (int k = -4; k < 5; k++)
                             {
-                                int x, y, z;
-
-                                x = MathHelper.floor_double(player.posX + i);
-                                y = MathHelper.floor_double(player.posY + j);
-                                z = MathHelper.floor_double(player.posZ + k);
+                                int x = MathHelper.floor_double(player.posX + i);
+                                int y = MathHelper.floor_double(player.posY + j);
+                                int z = MathHelper.floor_double(player.posZ + k);
 
                                 final int id = player.worldObj.getBlockId(x, y, z);
 
@@ -133,7 +131,7 @@ public class GCCoreTickHandlerClient implements ITickHandler
                                     final Block block = Block.blocksList[id];
                                     int metadata = world.getBlockMetadata(x, y, z);
 
-                                    if ((ClientProxyCore.detectableBlocks.containsKey(id) && ClientProxyCore.detectableBlocks.get(id).contains(metadata)))
+                                    if (ClientProxyCore.detectableBlocks.containsKey(id) && ClientProxyCore.detectableBlocks.get(id).contains(metadata))
                                     {
                                         final int[] blockPos = { x, y, z };
 
@@ -150,7 +148,7 @@ public class GCCoreTickHandlerClient implements ITickHandler
                                         {
                                             ClientProxyCore.valueableBlocks.add(blockPos);
                                         }
-                                        
+
                                         if (ClientProxyCore.detectableBlocks.containsKey(metadata))
                                         {
                                             final ArrayList<Integer> l = ClientProxyCore.detectableBlocks.get(id);
@@ -170,7 +168,7 @@ public class GCCoreTickHandlerClient implements ITickHandler
                     }
                 }
             }
-            
+
             if (GCCoreTickHandlerClient.prevLastOpenGui == null && GCCoreTickHandlerClient.lastOpenGui != null)
             {
                 FMLLog.info("Setting screen " + GCCoreTickHandlerClient.lastOpenGui);
@@ -202,7 +200,7 @@ public class GCCoreTickHandlerClient implements ITickHandler
                 ClientProxyCore.playersWithOxygenTankRightGreen.clear();
                 ClientProxyCore.playersWithOxygenTankRightOrange.clear();
                 ClientProxyCore.playersWithOxygenTankRightRed.clear();
-                
+
                 if (GCCoreTickHandlerClient.missingRequirementThread == null)
                 {
                     GCCoreTickHandlerClient.missingRequirementThread = new GCCoreThreadRequirementMissing(FMLCommonHandler.instance().getEffectiveSide());

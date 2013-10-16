@@ -90,10 +90,10 @@ public class GCCoreConfigManager
     public static int idItemStandardWrench;
 
     // RECIPES
-//    public static boolean useRecipesIC2;
-//    public static boolean useRecipesGT;
-//    public static boolean useRecipesTE;
-//    public static boolean useRecipesUE;
+    // public static boolean useRecipesIC2;
+    // public static boolean useRecipesGT;
+    // public static boolean useRecipesTE;
+    // public static boolean useRecipesUE;
 
     // SCHEMATICS
     public static int idSchematicRocketT1;
@@ -269,10 +269,18 @@ public class GCCoreConfigManager
             GCCoreConfigManager.idArmorSteelLeggings = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idArmorSteelLeggings", 9892).getInt(9892);
             GCCoreConfigManager.idArmorSteelBoots = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idArmorSteelBoots", 9893).getInt(9893);
 
-//            GCCoreConfigManager.useRecipesIC2 = GCCoreConfigManager.configuration.get("RECIPES", "Enable IC2 Recipes", true).getBoolean(true);
-//            GCCoreConfigManager.useRecipesGT = GCCoreConfigManager.configuration.get("RECIPES", "Enable Gregtech Recipes", true).getBoolean(true);
-//            GCCoreConfigManager.useRecipesUE = GCCoreConfigManager.configuration.get("RECIPES", "Enable Basic Components Recipes", true).getBoolean(true);
-//            GCCoreConfigManager.useRecipesTE = GCCoreConfigManager.configuration.get("RECIPES", "Enable Thermal Expansion Recipes", true).getBoolean(true);
+            // GCCoreConfigManager.useRecipesIC2 =
+            // GCCoreConfigManager.configuration.get("RECIPES",
+            // "Enable IC2 Recipes", true).getBoolean(true);
+            // GCCoreConfigManager.useRecipesGT =
+            // GCCoreConfigManager.configuration.get("RECIPES",
+            // "Enable Gregtech Recipes", true).getBoolean(true);
+            // GCCoreConfigManager.useRecipesUE =
+            // GCCoreConfigManager.configuration.get("RECIPES",
+            // "Enable Basic Components Recipes", true).getBoolean(true);
+            // GCCoreConfigManager.useRecipesTE =
+            // GCCoreConfigManager.configuration.get("RECIPES",
+            // "Enable Thermal Expansion Recipes", true).getBoolean(true);
 
             GCCoreConfigManager.idGuiTankRefill = GCCoreConfigManager.configuration.get("GUI", "idGuiTankRefill", 128).getInt(128);
             GCCoreConfigManager.idGuiAirCompressor = GCCoreConfigManager.configuration.get("GUI", "idGuiAirCompressor", 129).getInt(129);

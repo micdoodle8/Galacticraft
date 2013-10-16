@@ -333,12 +333,12 @@ public class GCMoonBlock extends GCCoreBlockAdvanced implements IDetectableResou
     public boolean isTerraformable(World world, int x, int y, int z)
     {
         int meta = world.getBlockMetadata(x, y, z);
-        
-        if ((meta >= 5 && meta <= 13))
+
+        if (meta >= 5 && meta <= 13)
         {
             return world.getBlockId(x, y + 1, z) == 0;
         }
-        
+
         return false;
     }
 }

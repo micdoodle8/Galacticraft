@@ -56,26 +56,26 @@ public class GCCoreBlockCrudeOil extends BlockFluidClassic
             world.playSound(x + 0.5F, y + 0.5F, z + 0.5F, "liquid.lava", rand.nextFloat() * 0.25F + 0.75F, 0.00001F + rand.nextFloat() * 0.5F, false);
         }
     }
-    
+
     @Override
-    public boolean canDisplace(IBlockAccess world, int x, int y, int z) 
+    public boolean canDisplace(IBlockAccess world, int x, int y, int z)
     {
         if (world.getBlockMaterial(x, y, z).isLiquid())
         {
             return false;
         }
-        
+
         return super.canDisplace(world, x, y, z);
     }
-    
+
     @Override
-    public boolean displaceIfPossible(World world, int x, int y, int z) 
+    public boolean displaceIfPossible(World world, int x, int y, int z)
     {
         if (world.getBlockMaterial(x, y, z).isLiquid())
         {
             return false;
         }
-        
+
         return super.displaceIfPossible(world, x, y, z);
     }
 }

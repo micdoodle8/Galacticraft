@@ -54,7 +54,7 @@ public class GCCoreBlocks
     public static Block machineBase2;
     public static Block aluminumWire;
     public static Block glowstoneTorch;
-    
+
     public static ArrayList<Integer> hiddenBlocks = new ArrayList<Integer>();
 
     public static void initBlocks()

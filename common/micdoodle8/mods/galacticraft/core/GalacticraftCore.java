@@ -151,7 +151,7 @@ public class GalacticraftCore
 
     @Instance(GalacticraftCore.MODID)
     public static GalacticraftCore instance;
-    
+
     private static GCCoreThreadRequirementMissing missingRequirementThread;
 
     public static Map<String, GCCorePlayerSP> playersClient = new HashMap<String, GCCorePlayerSP>();
@@ -170,7 +170,7 @@ public class GalacticraftCore
     public static final String BLOCK_TEXTURE_FILE = GalacticraftCore.FILE_PATH + GalacticraftCore.CLIENT_PATH + "blocks/core.png";
     public static final String ITEM_TEXTURE_FILE = GalacticraftCore.FILE_PATH + GalacticraftCore.CLIENT_PATH + "items/core.png";
     public static final String CONFIG_FILE = "Galacticraft/core.conf";
-    
+
     public static String TEXTURE_DOMAIN = "galacticraftcore";
     public static String TEXTURE_PREFIX = GalacticraftCore.TEXTURE_DOMAIN + ":";
 
@@ -202,7 +202,7 @@ public class GalacticraftCore
         FluidRegistry.registerFluid(GalacticraftCore.gcFluidFuel);
         GalacticraftCore.fluidOil = FluidRegistry.getFluid("oil");
         GalacticraftCore.fluidFuel = FluidRegistry.getFluid("fuel");
-        
+
         if (GalacticraftCore.fluidOil.getBlockID() == -1)
         {
             GCCoreBlocks.crudeOilStill = new GCCoreBlockCrudeOil(GCCoreConfigManager.idBlockCrudeOilStill, "crudeOilStill");
@@ -260,7 +260,7 @@ public class GalacticraftCore
         GalacticraftRegistry.registerRocketGui(GCMoonWorldProvider.class, new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/moonRocketGui.png"));
         GalacticraftRegistry.addDungeonLoot(1, new ItemStack(GCCoreItems.schematic, 1, 0));
         GalacticraftRegistry.addDungeonLoot(1, new ItemStack(GCCoreItems.schematic, 1, 1));
-        
+
         GameRegistry.registerWorldGenerator(new GCCoreOverworldGenerator(GCCoreBlocks.decorationBlocks, 5, 24, 0, 75, 7));
         GameRegistry.registerWorldGenerator(new GCCoreOverworldGenerator(GCCoreBlocks.decorationBlocks, 6, 22, 0, 60, 7));
         GameRegistry.registerWorldGenerator(new GCCoreOverworldGenerator(GCCoreBlocks.decorationBlocks, 7, 18, 0, 45, 7));
@@ -319,7 +319,7 @@ public class GalacticraftCore
                 CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, 9), stack, stack);
             }
         }
-        
+
         CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, 9), Item.coal, new ItemStack(GCCoreItems.basicItem, 1, 11), Item.coal);
         CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, 10), new ItemStack(GCCoreItems.basicItem, 1, 6), new ItemStack(GCCoreItems.basicItem, 1, 7));
 
@@ -339,7 +339,7 @@ public class GalacticraftCore
     public void serverInit(FMLServerStartedEvent event)
     {
         GalacticraftMoon.serverInit(event);
-        
+
         if (GalacticraftCore.missingRequirementThread == null)
         {
             GalacticraftCore.missingRequirementThread = new GCCoreThreadRequirementMissing(FMLCommonHandler.instance().getEffectiveSide());

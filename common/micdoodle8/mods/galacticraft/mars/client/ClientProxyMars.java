@@ -221,7 +221,7 @@ public class ClientProxyMars extends CommonProxyMars
 
                 int entityID = 0;
                 Entity entity = null;
-                
+
                 switch ((Integer) packetReadout[1])
                 {
                 case 0:

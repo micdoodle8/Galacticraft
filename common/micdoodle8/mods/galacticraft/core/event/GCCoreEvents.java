@@ -457,7 +457,7 @@ public class GCCoreEvents
             ((GCCorePlayerSP) player).wakeUpPlayer(false, true, true, true);
         }
     }
-    
+
     private List<SoundPlayEntry> soundPlayList = new ArrayList<SoundPlayEntry>();
 
     @SideOnly(Side.CLIENT)
@@ -465,32 +465,32 @@ public class GCCoreEvents
     public void onSoundPlayed(PlaySoundEvent event)
     {
         EntityPlayerSP player = FMLClientHandler.instance().getClient().thePlayer;
-        
+
         if (player.worldObj.provider instanceof IGalacticraftWorldProvider && !ClientProxyCore.playersWithFrequencyModule.contains(player.username))
         {
-            for (int i = 0; i < soundPlayList.size(); i++)
+            for (int i = 0; i < this.soundPlayList.size(); i++)
             {
                 SoundPlayEntry entry = this.soundPlayList.get(i);
-                
+
                 if (entry.name.equals(event.name) && entry.x == event.x && entry.y == event.y && entry.z == event.z && entry.volume == event.volume)
                 {
-                    soundPlayList.remove(i);
+                    this.soundPlayList.remove(i);
                     event.result = event.source;
                     return;
                 }
             }
-            
+
             float newVolume = event.volume / Math.max(0.01F, ((IGalacticraftWorldProvider) player.worldObj.provider).getSoundVolReductionAmount());
-            
+
             this.soundPlayList.add(new SoundPlayEntry(event.name, event.x, event.y, event.z, newVolume));
             event.manager.playSound(event.name, event.x, event.y, event.z, newVolume, event.pitch);
             event.result = null;
             return;
         }
-        
+
         event.result = event.source;
     }
-    
+
     private static class SoundPlayEntry
     {
         private final String name;
@@ -498,7 +498,7 @@ public class GCCoreEvents
         private final float y;
         private final float z;
         private final float volume;
-        
+
         private SoundPlayEntry(String name, float x, float y, float z, float volume)
         {
             this.name = name;

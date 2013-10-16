@@ -201,7 +201,7 @@ public class GCMarsPacketHandlerServer implements IPacketHandler
                 GCMarsEntityCargoRocket rocket = (GCMarsEntityCargoRocket) entity;
 
                 int subType = (Integer) packetReadout[1];
-                
+
                 switch (subType)
                 {
                 default:

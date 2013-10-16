@@ -45,22 +45,22 @@ public class GCCoreGuiExtendedInventory extends InventoryEffectRenderer
         TabRegistry.updateTabValues(cornerX, cornerY, GCCoreInventoryTabGalacticraft.class);
         TabRegistry.addTabsToList(this.buttonList);
 
-         this.buttonList.add(new GuiButton(0, (this.width - this.xSize) / 2 + 15, (this.height - this.ySize) / 2 + 71, 7, 7, ""));
-         this.buttonList.add(new GuiButton(1, (this.width - this.xSize) / 2 + 45, (this.height - this.ySize) / 2 + 71, 7, 7, ""));
+        this.buttonList.add(new GuiButton(0, (this.width - this.xSize) / 2 + 15, (this.height - this.ySize) / 2 + 71, 7, 7, ""));
+        this.buttonList.add(new GuiButton(1, (this.width - this.xSize) / 2 + 45, (this.height - this.ySize) / 2 + 71, 7, 7, ""));
     }
 
     @Override
     protected void actionPerformed(GuiButton par1GuiButton)
     {
-         switch (par1GuiButton.id)
-         {
-         case 0:
-             GCCoreGuiExtendedInventory.rotation -= 10.0F;
-             break;
-         case 1:
-             GCCoreGuiExtendedInventory.rotation += 10.0F;
-             break;
-         }
+        switch (par1GuiButton.id)
+        {
+        case 0:
+            GCCoreGuiExtendedInventory.rotation -= 10.0F;
+            break;
+        case 1:
+            GCCoreGuiExtendedInventory.rotation += 10.0F;
+            break;
+        }
     }
 
     @Override
@@ -96,7 +96,8 @@ public class GCCoreGuiExtendedInventory extends InventoryEffectRenderer
         GL11.glRotatef(135.0F, 0.0F, 1.0F, 0.0F);
         RenderHelper.enableStandardItemLighting();
         GL11.glRotatef(-135.0F, 0.0F, 1.0F, 0.0F);
-//        GL11.glRotatef(-((float) Math.atan(par5 / 40.0F)) * 20.0F, 1.0F, 0.0F, 0.0F);
+        // GL11.glRotatef(-((float) Math.atan(par5 / 40.0F)) * 20.0F, 1.0F,
+        // 0.0F, 0.0F);
         par0Minecraft.thePlayer.renderYawOffset = GCCoreGuiExtendedInventory.rotation;
         par0Minecraft.thePlayer.rotationYaw = (float) Math.atan(par4 / 40.0F) * 40.0F;
         par0Minecraft.thePlayer.rotationYaw = GCCoreGuiExtendedInventory.rotation;

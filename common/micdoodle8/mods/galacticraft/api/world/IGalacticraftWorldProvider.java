@@ -48,11 +48,14 @@ public interface IGalacticraftWorldProvider
      * @return Fall damage multiplier, returning 1 will be equal to earth.
      */
     public float getFallDamageModifier();
-    
+
     /**
-     * Changes volume of sounds on this planet. You should be using higher values for thin atmospheres and high values for dense atmospheres 
+     * Changes volume of sounds on this planet. You should be using higher
+     * values for thin atmospheres and high values for dense atmospheres
      * 
-     * @return Sound reduction divisor. Value of 10 will make sounds ten times more quiet. Value of 0.1 will make sounds 10 times louder. Be careful with the values you choose!
+     * @return Sound reduction divisor. Value of 10 will make sounds ten times
+     *         more quiet. Value of 0.1 will make sounds 10 times louder. Be
+     *         careful with the values you choose!
      */
     public float getSoundVolReductionAmount();
 }

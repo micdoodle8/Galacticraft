@@ -111,7 +111,7 @@ public class CompressorRecipes
             else if (object1 instanceof String)
             {
                 ArrayList<ItemStack> list = OreDictionary.getOres((String) object1);
-                
+
                 if (!list.isEmpty())
                 {
                     arraylist.add(list.get(0));

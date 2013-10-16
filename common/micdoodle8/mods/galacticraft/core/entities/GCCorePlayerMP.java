@@ -116,7 +116,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
     private ArrayList<ISchematicPage> lastUnlockedSchematics = new ArrayList<ISchematicPage>();
 
     private int cryogenicChamberCooldown;
-    
+
     private boolean receivedSoundWarning;
 
     public GCCorePlayerMP(MinecraftServer server, World world, String username, ItemInWorldManager itemInWorldManager)
@@ -166,7 +166,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
         {
             GalacticraftCore.playersServer.put(this.username, this);
         }
-        
+
         if (this.tick >= Long.MAX_VALUE)
         {
             this.tick = 0;
@@ -288,7 +288,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
         }
 
         this.updateSchematics();
-        
+
         if (this.frequencyModuleInSlot == null && !this.receivedSoundWarning && this.tick > 0 && this.tick % 250 == 0 && this.worldObj.provider instanceof IGalacticraftWorldProvider && this.onGround)
         {
             this.sendChatToPlayer(ChatMessageComponent.createFromText(EnumColor.YELLOW + "I'll probably need a " + EnumColor.AQUA + GCCoreItems.basicItem.getItemStackDisplayName(new ItemStack(GCCoreItems.basicItem, 1, 19)) + EnumColor.YELLOW + " if I want to hear properly here."));
@@ -533,7 +533,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
         {
             this.sendGearUpdatePacket(EnumModelPacket.REMOVE_FREQUENCY_MODULE.getIndex());
         }
-        
+
         //
 
         if (this.maskInSlot != null && this.lastMaskInSlot == null && this.maskInSlot.getItem().itemID == GCCoreItems.oxMask.itemID)
@@ -1033,7 +1033,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
         Collections.sort(this.getUnlockedSchematics());
 
         this.cryogenicChamberCooldown = nbt.getInteger("CryogenicChamberCooldown");
-        
+
         if (nbt.hasKey("ReceivedSoundWarning"))
         {
             this.receivedSoundWarning = nbt.getBoolean("ReceivedSoundWarning");

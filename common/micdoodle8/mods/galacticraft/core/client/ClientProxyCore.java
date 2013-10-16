@@ -950,12 +950,12 @@ public class ClientProxyCore extends CommonProxyCore
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDisable(GL11.GL_BLEND);
     }
-    
+
     public static boolean isInsideOfFluid(Entity entity, Fluid fluid)
     {
-        double d0 = entity.posY + (double)entity.getEyeHeight();
+        double d0 = entity.posY + entity.getEyeHeight();
         int i = MathHelper.floor_double(entity.posX);
-        int j = MathHelper.floor_float((float)MathHelper.floor_double(d0));
+        int j = MathHelper.floor_float(MathHelper.floor_double(d0));
         int k = MathHelper.floor_double(entity.posZ);
         int l = entity.worldObj.getBlockId(i, j, k);
 
@@ -966,12 +966,12 @@ public class ClientProxyCore extends CommonProxyCore
             if (filled < 0)
             {
                 filled *= -1;
-                //filled -= 0.11111111F; //Why this is needed.. not sure...
-                return d0 > (double)(j + (1 - filled));
+                // filled -= 0.11111111F; //Why this is needed.. not sure...
+                return d0 > j + (1 - filled);
             }
             else
             {
-                return d0 < (double)(j + filled);
+                return d0 < j + filled;
             }
         }
         else

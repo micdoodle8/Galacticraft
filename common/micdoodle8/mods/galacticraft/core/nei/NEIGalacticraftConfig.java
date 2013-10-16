@@ -116,7 +116,7 @@ public class NEIGalacticraftConfig implements IConfigureNEI
         this.addCircuitFabricatorRecipes();
         this.addIngotCompressorRecipes();
     }
-    
+
     private void addBuggyRecipes()
     {
         HashMap<Integer, PositionedStack> input1 = new HashMap<Integer, PositionedStack>();
@@ -175,7 +175,7 @@ public class NEIGalacticraftConfig implements IConfigureNEI
         input2.put(18, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 2), 142, 8));
         this.registerBuggyBenchRecipe(input2, new PositionedStack(new ItemStack(GCCoreItems.buggy, 1, 3), 139, 101));
     }
-    
+
     private void addRocketRecipes()
     {
         HashMap<Integer, PositionedStack> input1 = new HashMap<Integer, PositionedStack>();
@@ -228,7 +228,7 @@ public class NEIGalacticraftConfig implements IConfigureNEI
         input2.put(16, new PositionedStack(new ItemStack(Block.chest), 142, 8));
         this.registerRocketBenchRecipe(input2, new PositionedStack(new ItemStack(GCCoreItems.rocketTier1, 1, 3), 139, 92));
     }
-    
+
     private void addCircuitFabricatorRecipes()
     {
         HashMap<Integer, PositionedStack> input1 = new HashMap<Integer, PositionedStack>();
@@ -247,23 +247,23 @@ public class NEIGalacticraftConfig implements IConfigureNEI
         input2.put(4, new PositionedStack(new ItemStack(Item.redstoneRepeater), 140, 25));
         this.registerCircuitFabricatorRecipe(input2, new PositionedStack(new ItemStack(GCCoreItems.basicItem, 1, 14), 147, 91));
     }
-    
+
     private void addIngotCompressorRecipes()
     {
         for (int i = 0; i < CompressorRecipes.getRecipeList().size(); i++)
         {
             HashMap<Integer, PositionedStack> input1 = new HashMap<Integer, PositionedStack>();
             IRecipe rec = CompressorRecipes.getRecipeList().get(i);
-            
+
             if (rec instanceof ShapedRecipes)
             {
                 ShapedRecipes recipe = (ShapedRecipes) rec;
-                
+
                 for (int j = 0; j < recipe.recipeItems.length; j++)
                 {
                     ItemStack stack = recipe.recipeItems[j];
 
-                    input1.put(j, new PositionedStack(stack, 21 + (j % 3) * 18, 26 + (j / 3) * 18));
+                    input1.put(j, new PositionedStack(stack, 21 + j % 3 * 18, 26 + j / 3 * 18));
                 }
             }
             else if (rec instanceof ShapelessRecipes)
@@ -274,10 +274,10 @@ public class NEIGalacticraftConfig implements IConfigureNEI
                 {
                     ItemStack stack = (ItemStack) recipe.recipeItems.get(j);
 
-                    input1.put(j, new PositionedStack(stack, 21 + (j % 3) * 18, 26 + (j / 3) * 18));
+                    input1.put(j, new PositionedStack(stack, 21 + j % 3 * 18, 26 + j / 3 * 18));
                 }
             }
-            
+
             this.registerIngotCompressorRecipe(input1, new PositionedStack(rec.getRecipeOutput(), 140, 46));
         }
     }

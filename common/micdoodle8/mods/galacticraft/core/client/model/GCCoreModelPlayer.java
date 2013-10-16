@@ -38,7 +38,7 @@ public class GCCoreModelPlayer extends ModelBiped
     public ModelRenderer[] orangeOxygenTanks = new ModelRenderer[2];
     public ModelRenderer[] redOxygenTanks = new ModelRenderer[2];
     public ModelRenderer oxygenMask;
-    
+
     private IModelCustom frequencyModule;
 
     boolean wearingFrequencyModule = false;
@@ -188,7 +188,7 @@ public class GCCoreModelPlayer extends ModelBiped
         this.redOxygenTanks[1].addBox(-1.5F, 0F, -1.5F, 3, 7, 3, var1);
         this.redOxygenTanks[1].setRotationPoint(-2F, 2F, 3.8F);
         this.redOxygenTanks[1].mirror = true;
-        
+
         this.frequencyModule = AdvancedModelLoader.loadModel("/assets/galacticraftcore/models/frequencyModule.obj");
     }
 
@@ -273,7 +273,7 @@ public class GCCoreModelPlayer extends ModelBiped
             {
                 GL11.glPushMatrix();
                 GL11.glRotatef(180, 1, 0, 0);
-                
+
                 GL11.glRotatef((float) (this.bipedHeadwear.rotateAngleY * (-180.0F / Math.PI)), 0, 1, 0);
                 GL11.glRotatef((float) (this.bipedHeadwear.rotateAngleX * (180.0F / Math.PI)), 1, 0, 0);
                 GL11.glScalef(0.3F, 0.3F, 0.3F);
@@ -854,20 +854,20 @@ public class GCCoreModelPlayer extends ModelBiped
         super.renderCloak(var1);
     }
 
-//    private float interpolateRotation(float par1, float par2, float par3)
-//    {
-//        float f3;
-//
-//        for (f3 = par2 - par1; f3 < -180.0F; f3 += 360.0F)
-//        {
-//            ;
-//        }
-//
-//        while (f3 >= 180.0F)
-//        {
-//            f3 -= 360.0F;
-//        }
-//
-//        return par1 + par3 * f3;
-//    }
+    // private float interpolateRotation(float par1, float par2, float par3)
+    // {
+    // float f3;
+    //
+    // for (f3 = par2 - par1; f3 < -180.0F; f3 += 360.0F)
+    // {
+    // ;
+    // }
+    //
+    // while (f3 >= 180.0F)
+    // {
+    // f3 -= 360.0F;
+    // }
+    //
+    // return par1 + par3 * f3;
+    // }
 }

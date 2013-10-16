@@ -174,12 +174,12 @@ public class GCCoreItemOilExtractor extends Item
     private boolean isOilBlock(EntityPlayer player, World world, int x, int y, int z, boolean doDrain)
     {
         int blockID = world.getBlockId(x, y, z);
-        
+
         if (blockID > 0 && Block.blocksList[blockID] instanceof IFluidBlock)
         {
             IFluidBlock fluidBlockHit = (IFluidBlock) Block.blocksList[blockID];
             Fluid fluidHit = FluidRegistry.lookupFluidForBlock(Block.blocksList[blockID]);
-            
+
             if (fluidHit != null)
             {
                 if (fluidHit.getName().equalsIgnoreCase("oil"))

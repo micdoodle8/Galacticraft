@@ -254,7 +254,7 @@ public class GCItems
     {
         return "micdoodle8.mods.galacticraft.core.GalacticraftCore";
     }
-    
+
     private static Object blocksList;
     private static Object itemsList;
 }

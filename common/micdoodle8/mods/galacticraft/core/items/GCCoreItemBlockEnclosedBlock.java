@@ -64,7 +64,7 @@ public class GCCoreItemBlockEnclosedBlock extends ItemBlock
             {
                 name = GCCoreBlockEnclosed.getTypeFromMeta(par1ItemStack.getItemDamage()).getPipeClass();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 name = "null";
             }

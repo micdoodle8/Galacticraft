@@ -68,6 +68,7 @@ public abstract class GCCoreTileEntityUniversalElectrical extends TileEntityElec
         }
     }
 
+    @Override
     public boolean produceUE(ForgeDirection outputDirection)
     {
         if (!this.worldObj.isRemote && outputDirection != null && outputDirection != ForgeDirection.UNKNOWN)
@@ -86,14 +87,14 @@ public abstract class GCCoreTileEntityUniversalElectrical extends TileEntityElec
                     {
                         ElectricityPack sendPack = ElectricityPack.min(ElectricityPack.getFromWatts(this.getEnergyStored(), this.getVoltage()), ElectricityPack.getFromWatts(provide, this.getVoltage()));
                         float rejectedPower = outputNetwork.produce(sendPack, this);
-                        this.provideElectricity(sendPack.getWatts() - rejectedPower, true);                    
+                        this.provideElectricity(sendPack.getWatts() - rejectedPower, true);
                         return true;
                     }
                 }
                 else if (outputTile instanceof IElectrical)
                 {
                     float requestedEnergy = ((IElectrical) outputTile).getRequest(outputDirection.getOpposite());
-                    
+
                     if (requestedEnergy > 0)
                     {
                         ElectricityPack sendPack = ElectricityPack.min(ElectricityPack.getFromWatts(this.getEnergyStored(), this.getVoltage()), ElectricityPack.getFromWatts(provide, this.getVoltage()));
@@ -104,7 +105,7 @@ public abstract class GCCoreTileEntityUniversalElectrical extends TileEntityElec
                 }
             }
         }
-        
+
         return false;
     }
 
@@ -274,7 +275,7 @@ public abstract class GCCoreTileEntityUniversalElectrical extends TileEntityElec
                 Class<?> energyTile = Class.forName("ic2.api.energy.tile.IEnergyTile");
                 Constructor<?> constr = tileLoadEvent.getConstructor(energyTile);
                 Object o = constr.newInstance(this);
-                
+
                 if (o != null && o instanceof Event)
                 {
                     MinecraftForge.EVENT_BUS.post((Event) o);
@@ -301,7 +302,7 @@ public abstract class GCCoreTileEntityUniversalElectrical extends TileEntityElec
                     Class<?> energyTile = Class.forName("ic2.api.energy.tile.IEnergyTile");
                     Constructor<?> constr = tileLoadEvent.getConstructor(energyTile);
                     Object o = constr.newInstance(this);
-                    
+
                     if (o != null && o instanceof Event)
                     {
                         MinecraftForge.EVENT_BUS.post((Event) o);

@@ -55,7 +55,7 @@ public class GCMarsGuiCargoRocket extends GCCoreGuiContainer
     }
 
     @Override
-    protected void actionPerformed(GuiButton button) 
+    protected void actionPerformed(GuiButton button)
     {
         switch (button.id)
         {
@@ -87,11 +87,11 @@ public class GCMarsGuiCargoRocket extends GCCoreGuiContainer
     {
         if (this.rocket.rocketType.getInventorySpace() == 2)
         {
-            this.fontRenderer.drawString(StatCollector.translateToLocal(this.upperChestInventory.getInvName()), 8, 76 + ((this.rocket.rocketType.getInventorySpace() - 20) / 9) * 18, 4210752);
+            this.fontRenderer.drawString(StatCollector.translateToLocal(this.upperChestInventory.getInvName()), 8, 76 + (this.rocket.rocketType.getInventorySpace() - 20) / 9 * 18, 4210752);
         }
         else
         {
-            this.fontRenderer.drawString(StatCollector.translateToLocal(this.upperChestInventory.getInvName()), 8, 89 + ((this.rocket.rocketType.getInventorySpace() - 20) / 9) * 18, 4210752);
+            this.fontRenderer.drawString(StatCollector.translateToLocal(this.upperChestInventory.getInvName()), 8, 89 + (this.rocket.rocketType.getInventorySpace() - 20) / 9 * 18, 4210752);
         }
 
         String str = StatCollector.translateToLocal("gui.message.fuel.name") + ":";
@@ -102,15 +102,15 @@ public class GCMarsGuiCargoRocket extends GCCoreGuiContainer
         this.fontRenderer.drawString(color + str, 140 - this.fontRenderer.getStringWidth(str) / 2, 15, 4210752);
         str = "Status:";
         this.fontRenderer.drawString(str, 40 - this.fontRenderer.getStringWidth(str) / 2, 9, 4210752);
-        
-        String[] spltString = {""};
-        
+
+        String[] spltString = { "" };
+
         if (this.rocket.statusMessageCooldown == 0 || this.rocket.statusMessage == null)
         {
             spltString = new String[2];
             spltString[0] = EnumColor.YELLOW + "Waiting for";
             spltString[1] = EnumColor.YELLOW + "ignition";
-            
+
             if (this.rocket.launchPhase != EnumLaunchPhase.UNIGNITED.getPhase())
             {
                 spltString = new String[2];
@@ -123,7 +123,7 @@ public class GCMarsGuiCargoRocket extends GCCoreGuiContainer
         {
             spltString = this.rocket.statusMessage.split("#");
         }
-        
+
         int y = 2;
         for (String splitString : spltString)
         {
@@ -132,7 +132,7 @@ public class GCMarsGuiCargoRocket extends GCCoreGuiContainer
             this.fontRenderer.drawString(color + str, 30 - this.fontRenderer.getStringWidth(str) / 2, 9 * y, 4210752);
             y++;
         }
-        
+
         if (this.rocket.statusValid && this.rocket.statusMessageCooldown > 0 && this.rocket.statusMessageCooldown < 4)
         {
             this.mc.displayGuiScreen(null);

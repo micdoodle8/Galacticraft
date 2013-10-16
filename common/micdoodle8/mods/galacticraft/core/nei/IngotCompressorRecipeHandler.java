@@ -41,19 +41,19 @@ public class IngotCompressorRecipeHandler extends TemplateRecipeHandler
     public Set<Entry<ArrayList<PositionedStack>, PositionedStack>> getRecipes()
     {
         HashMap<ArrayList<PositionedStack>, PositionedStack> recipes = new HashMap<ArrayList<PositionedStack>, PositionedStack>();
-        
+
         for (Entry<HashMap<Integer, PositionedStack>, PositionedStack> stack : NEIGalacticraftConfig.getIngotCompressorRecipes())
         {
             ArrayList<PositionedStack> inputStacks = new ArrayList<PositionedStack>();
-            
+
             for (Map.Entry<Integer, PositionedStack> input : stack.getKey().entrySet())
             {
                 inputStacks.add(input.getValue());
             }
-            
+
             recipes.put(inputStacks, stack.getValue());
         }
-        
+
         return recipes.entrySet();
     }
 
@@ -63,16 +63,16 @@ public class IngotCompressorRecipeHandler extends TemplateRecipeHandler
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GuiDraw.changeTexture(IngotCompressorRecipeHandler.ingotCompressorTexture);
         GuiDraw.drawTexturedModalRect(20, 25, 18, 17, 137, 78);
-        
+
         if (this.ticksPassed % 70 > 26)
         {
             GuiDraw.drawTexturedModalRect(103, 36, 176, 0, 17, 13);
         }
 
         GuiDraw.drawTexturedModalRect(79, 44, 176, 13, Math.min(this.ticksPassed % 70, 53), 17);
-        
-        int yOffset = (int) Math.floor((this.ticksPassed % 48) * 0.29166666666666666666666666666667D);
-        
+
+        int yOffset = (int) Math.floor(this.ticksPassed % 48 * 0.29166666666666666666666666666667D);
+
         GuiDraw.drawTexturedModalRect(83, 35 + yOffset, 176, 30 + yOffset, 14, 14 - yOffset);
     }
 
@@ -131,15 +131,15 @@ public class IngotCompressorRecipeHandler extends TemplateRecipeHandler
             }
         }
     }
-    
+
     @Override
     public TemplateRecipeHandler newInstance()
     {
-        if (afuels == null)
+        if (IngotCompressorRecipeHandler.afuels == null)
         {
-            findFuels();
+            IngotCompressorRecipeHandler.findFuels();
         }
-        
+
         return super.newInstance();
     }
 
@@ -156,35 +156,35 @@ public class IngotCompressorRecipeHandler extends TemplateRecipeHandler
         {
             return this.arecipes.get(recipe).getResult();
         }
-        
+
         return null;
     }
-    
+
     private static void removeFuels()
     {
-        efuels = new TreeSet<Integer>();
-        efuels.add(Block.mushroomCapBrown.blockID);
-        efuels.add(Block.mushroomCapRed.blockID);
-        efuels.add(Block.signPost.blockID);
-        efuels.add(Block.signWall.blockID);
-        efuels.add(Block.doorWood.blockID);
-        efuels.add(Block.lockedChest.blockID);
+        IngotCompressorRecipeHandler.efuels = new TreeSet<Integer>();
+        IngotCompressorRecipeHandler.efuels.add(Block.mushroomCapBrown.blockID);
+        IngotCompressorRecipeHandler.efuels.add(Block.mushroomCapRed.blockID);
+        IngotCompressorRecipeHandler.efuels.add(Block.signPost.blockID);
+        IngotCompressorRecipeHandler.efuels.add(Block.signWall.blockID);
+        IngotCompressorRecipeHandler.efuels.add(Block.doorWood.blockID);
+        IngotCompressorRecipeHandler.efuels.add(Block.lockedChest.blockID);
     }
-    
+
     private static void findFuels()
-    {        
-        afuels = new ArrayList<FuelPair>();
-        for(ItemStack item : ItemList.items)
+    {
+        IngotCompressorRecipeHandler.afuels = new ArrayList<FuelPair>();
+        for (ItemStack item : ItemList.items)
         {
-            if(!efuels.contains(item.itemID))
+            if (!IngotCompressorRecipeHandler.efuels.contains(item.itemID))
             {
                 int burnTime = TileEntityFurnace.getItemBurnTime(item);
-                if(burnTime > 0)
+                if (burnTime > 0)
                 {
                     FuelPair fuelPair = new FuelPair(item.copy(), burnTime);
                     fuelPair.stack.relx = 57;
                     fuelPair.stack.rely = 83;
-                    afuels.add(fuelPair);
+                    IngotCompressorRecipeHandler.afuels.add(fuelPair);
                 }
             }
         }
@@ -224,19 +224,22 @@ public class IngotCompressorRecipeHandler extends TemplateRecipeHandler
             this(recipe.getKey(), recipe.getValue());
         }
 
+        @Override
         public List<PositionedStack> getOtherStacks()
         {
             ArrayList<PositionedStack> stacks = new ArrayList<PositionedStack>();
-            PositionedStack stack = getOtherStack();
-            if(stack != null)
+            PositionedStack stack = this.getOtherStack();
+            if (stack != null)
+            {
                 stacks.add(stack);
+            }
             return stacks;
         }
-        
+
         @Override
         public PositionedStack getOtherStack()
         {
-            return afuels.get((ticksPassed / 48) % afuels.size()).stack;
+            return IngotCompressorRecipeHandler.afuels.get(IngotCompressorRecipeHandler.this.ticksPassed / 48 % IngotCompressorRecipeHandler.afuels.size()).stack;
         }
     }
 
@@ -251,9 +254,9 @@ public class IngotCompressorRecipeHandler extends TemplateRecipeHandler
     {
         return "/assets/galacticraftcore/textures/gui/ingotCompressor.png";
     }
-    
+
     static
     {
-        removeFuels();
+        IngotCompressorRecipeHandler.removeFuels();
     }
 }

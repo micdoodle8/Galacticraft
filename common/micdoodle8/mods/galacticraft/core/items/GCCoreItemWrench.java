@@ -28,7 +28,7 @@ public class GCCoreItemWrench extends Item
     {
         return GalacticraftCore.galacticraftTab;
     }
-    
+
     @Override
     @SideOnly(Side.CLIENT)
     public EnumRarity getRarity(ItemStack par1ItemStack)

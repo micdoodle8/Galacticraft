@@ -46,12 +46,12 @@ public class GCMarsItemSchematic extends GCCoreItemSchematic implements ISchemat
     public void registerIcons(IconRegister iconRegister)
     {
         this.icons = new Icon[GCMarsItemSchematic.names.length];
-        
+
         for (int i = 0; i < GCMarsItemSchematic.names.length; i++)
         {
             this.icons[i] = iconRegister.registerIcon(GalacticraftMars.TEXTURE_PREFIX + GCMarsItemSchematic.names[i]);
         }
-        
+
     }
 
     @Override

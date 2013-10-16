@@ -252,7 +252,7 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
                         {
                             ((GCCoreTileEntityTreasureChest) tile).locked = true;
                         }
-                        
+
                         for (int k = 0; k < ((GCCoreTileEntityTreasureChest) tile).getSizeInventory(); k++)
                         {
                             ((GCCoreTileEntityTreasureChest) tile).setInventorySlotContents(k, null);

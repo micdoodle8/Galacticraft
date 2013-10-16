@@ -141,9 +141,9 @@ public class GCMarsRecipeManager
         input2.put(20, new ItemStack(Block.chest));
         input2.put(21, new ItemStack(Block.chest));
         GCMarsUtil.addRocketBenchT2Recipe(new ItemStack(GCMarsItems.spaceship, 1, 3), input2);
-        
+
         //
-        
+
         input = new HashMap<Integer, ItemStack>();
         input.put(1, new ItemStack(GCCoreItems.partNoseCone));
         input.put(2, new ItemStack(GCCoreItems.basicItem, 1, 14));
@@ -200,7 +200,7 @@ public class GCMarsRecipeManager
         input2.put(15, new ItemStack(Block.chest));
         input2.put(16, new ItemStack(Block.chest));
         GCMarsUtil.adCargoRocketRecipe(new ItemStack(GCMarsItems.spaceship, 1, 13), input2);
-        
+
         RecipeUtil.addRecipe(new ItemStack(GCMarsBlocks.machine, 1, GCMarsBlockMachine.LAUNCH_CONTROLLER_METADATA), new Object[] { "ZVZ", "YXY", "ZWZ", 'V', new ItemStack(GCCoreItems.basicItem, 1, 19), 'W', new ItemStack(GCCoreBlocks.aluminumWire, 1, 0), 'X', new ItemStack(GCCoreItems.basicItem, 1, 14), 'Y', "plateDesh", 'Z', "ingotDesh" });
     }
 }

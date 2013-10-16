@@ -125,7 +125,7 @@ public abstract class GCCoreTileEntityUniversalConductor extends TileEntityCondu
                 {
                     this.initIC();
                 }
-                
+
                 this.isAddedToEnergyNet = true;
             }
         }
@@ -155,7 +155,7 @@ public abstract class GCCoreTileEntityUniversalConductor extends TileEntityCondu
                 Class<?> energyTile = Class.forName("ic2.api.energy.tile.IEnergyTile");
                 Constructor<?> constr = tileLoadEvent.getConstructor(energyTile);
                 Object o = constr.newInstance(this);
-                
+
                 if (o != null && o instanceof Event)
                 {
                     MinecraftForge.EVENT_BUS.post((Event) o);
@@ -180,7 +180,7 @@ public abstract class GCCoreTileEntityUniversalConductor extends TileEntityCondu
                     Class<?> energyTile = Class.forName("ic2.api.energy.tile.IEnergyTile");
                     Constructor<?> constr = tileLoadEvent.getConstructor(energyTile);
                     Object o = constr.newInstance(this);
-                    
+
                     if (o != null && o instanceof Event)
                     {
                         MinecraftForge.EVENT_BUS.post((Event) o);

@@ -568,15 +568,21 @@ public class GCCoreMapGenDungeon
         }
         return false;
     }
-    
-    private int clamp(int x, int min, int max) {
-    	if(x < min) {
-    		return min;
-    	} else if(x > max) {
-    		return max;
-    	} else {
-    		return x;
-    	}
+
+    private int clamp(int x, int min, int max)
+    {
+        if (x < min)
+        {
+            return min;
+        }
+        else if (x > max)
+        {
+            return max;
+        }
+        else
+        {
+            return x;
+        }
     }
-    
+
 }

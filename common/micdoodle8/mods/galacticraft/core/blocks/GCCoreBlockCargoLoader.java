@@ -274,7 +274,7 @@ public class GCCoreBlockCargoLoader extends GCCoreBlockAdvanced
         {
             return GCCoreBlockCargoLoader.METADATA_CARGO_LOADER;
         }
-        
+
         return 0;
     }
 }

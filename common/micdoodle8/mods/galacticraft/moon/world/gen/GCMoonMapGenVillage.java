@@ -12,23 +12,32 @@ public class GCMoonMapGenVillage extends MapGenStructure
     public static List<BiomeGenBase> villageSpawnBiomes = Arrays.asList(new BiomeGenBase[] { GCMoonBiomeGenBase.moonFlat });
     private final int terrainType;
 
-//    static
-//    {
-//        GCMoonMapGenVillage.initiateStructures();
-//    }
+    // static
+    // {
+    // GCMoonMapGenVillage.initiateStructures();
+    // }
 
-//    public static void initiateStructures()
-//    {
-//        MapGenStructureIO.func_143034_b(GCMoonStructureVillageStart.class, "MoonVillage");
-//        MapGenStructureIO.func_143031_a(GCMoonComponentVillageField.class, "MoonField1");
-//        MapGenStructureIO.func_143031_a(GCMoonComponentVillageField2.class, "MoonField2");
-//        MapGenStructureIO.func_143031_a(GCMoonComponentVillageHouse.class, "MoonHouse");
-//        MapGenStructureIO.func_143031_a(GCMoonComponentVillageRoadPiece.class, "MoonRoadPiece");
-//        MapGenStructureIO.func_143031_a(GCMoonComponentVillagePathGen.class, "MoonPath");
-//        MapGenStructureIO.func_143031_a(GCMoonComponentVillageTorch.class, "MoonTorch");
-//        MapGenStructureIO.func_143031_a(GCMoonComponentVillageStartPiece.class, "MoonWell");
-//        MapGenStructureIO.func_143031_a(GCMoonComponentVillageWoodHut.class, "MoonWoodHut");
-//    }
+    // public static void initiateStructures()
+    // {
+    // MapGenStructureIO.func_143034_b(GCMoonStructureVillageStart.class,
+    // "MoonVillage");
+    // MapGenStructureIO.func_143031_a(GCMoonComponentVillageField.class,
+    // "MoonField1");
+    // MapGenStructureIO.func_143031_a(GCMoonComponentVillageField2.class,
+    // "MoonField2");
+    // MapGenStructureIO.func_143031_a(GCMoonComponentVillageHouse.class,
+    // "MoonHouse");
+    // MapGenStructureIO.func_143031_a(GCMoonComponentVillageRoadPiece.class,
+    // "MoonRoadPiece");
+    // MapGenStructureIO.func_143031_a(GCMoonComponentVillagePathGen.class,
+    // "MoonPath");
+    // MapGenStructureIO.func_143031_a(GCMoonComponentVillageTorch.class,
+    // "MoonTorch");
+    // MapGenStructureIO.func_143031_a(GCMoonComponentVillageStartPiece.class,
+    // "MoonWell");
+    // MapGenStructureIO.func_143031_a(GCMoonComponentVillageWoodHut.class,
+    // "MoonWoodHut");
+    // }
 
     public GCMoonMapGenVillage()
     {
@@ -75,9 +84,9 @@ public class GCMoonMapGenVillage extends MapGenStructure
         return new GCMoonStructureVillageStart(this.worldObj, this.rand, par1, par2, this.terrainType);
     }
 
-//    @Override
-//    public String func_143025_a()
-//    {
-//        return "MoonVillage";
-//    }
+    // @Override
+    // public String func_143025_a()
+    // {
+    // return "MoonVillage";
+    // }
 }
