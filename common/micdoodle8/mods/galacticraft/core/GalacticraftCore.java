@@ -195,11 +195,6 @@ public class GalacticraftCore
         GalacticraftCore.proxy.preInit(event);
 
         GCCoreConfigManager.setDefaultValues(new File(event.getModConfigurationDirectory(), GalacticraftCore.CONFIG_FILE));
-    }
-
-    @EventHandler
-    public void init(FMLInitializationEvent event)
-    {
 
         GalacticraftCore.gcFluidOil = new Fluid("oil").setViscosity(3000);
         GalacticraftCore.gcFluidFuel = new Fluid("fuel").setViscosity(800);
@@ -220,6 +215,11 @@ public class GalacticraftCore
 
         GCCoreBlocks.initBlocks();
         GCCoreItems.initItems();
+    }
+
+    @EventHandler
+    public void init(FMLInitializationEvent event)
+    {
         GalacticraftCore.galacticraftTab = new GCCoreCreativeTab(CreativeTabs.getNextID(), GalacticraftCore.CHANNEL, GCCoreItems.rocketTier1.itemID, 0);
         GalacticraftCore.overworld = new GCCorePlanetOverworld();
         GalacticraftRegistry.registerCelestialBody(GalacticraftCore.overworld);
