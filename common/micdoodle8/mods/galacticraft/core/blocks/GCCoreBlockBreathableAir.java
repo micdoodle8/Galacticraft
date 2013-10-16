@@ -60,7 +60,7 @@ public class GCCoreBlockBreathableAir extends Block
     @Override
     public int getRenderBlockPass()
     {
-        return GCCoreConfigManager.transparentBreathableAir ? 1 : 0;
+        return 1;
     }
 
     @Override

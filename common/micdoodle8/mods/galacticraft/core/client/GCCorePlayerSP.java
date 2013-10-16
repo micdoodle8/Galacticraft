@@ -41,7 +41,6 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
 
     private boolean usingParachute;
     private boolean lastUsingParachute;
-    private boolean showTutorialText = true;
     public boolean usingAdvancedGoggles;
     private int thirdPersonView = 0;
     public long tick;
@@ -264,16 +263,6 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
         }
 
         super.onUpdate();
-    }
-
-    public void setUseTutorialText(boolean b)
-    {
-        this.showTutorialText = b;
-    }
-
-    public boolean getUseTutorialText()
-    {
-        return this.showTutorialText && !GCCoreConfigManager.disableTutorialItemText;
     }
 
     public void setUsingGoggles(boolean b)
