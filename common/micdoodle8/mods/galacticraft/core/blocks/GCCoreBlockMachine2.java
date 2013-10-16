@@ -305,13 +305,13 @@ public class GCCoreBlockMachine2 extends BlockTile
     @Override
     public int damageDropped(int metadata)
     {
-        if (metadata >= GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
-        {
-            return GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA;
-        }
-        else if (metadata >= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA)
+        if (metadata >= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA)
         {
             return GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA;
+        }
+        else if (metadata >= GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
+        {
+            return GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA;
         }
         else
         {

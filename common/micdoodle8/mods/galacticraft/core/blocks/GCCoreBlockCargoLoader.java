@@ -262,4 +262,19 @@ public class GCCoreBlockCargoLoader extends GCCoreBlockAdvanced
             }
         }
     }
+
+    @Override
+    public int damageDropped(int metadata)
+    {
+        if (metadata >= GCCoreBlockCargoLoader.METADATA_CARGO_UNLOADER)
+        {
+            return GCCoreBlockCargoLoader.METADATA_CARGO_UNLOADER;
+        }
+        else if (metadata >= GCCoreBlockCargoLoader.METADATA_CARGO_LOADER)
+        {
+            return GCCoreBlockCargoLoader.METADATA_CARGO_LOADER;
+        }
+        
+        return 0;
+    }
 }
