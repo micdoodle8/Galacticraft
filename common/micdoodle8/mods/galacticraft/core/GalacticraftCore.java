@@ -308,7 +308,7 @@ public class GalacticraftCore
         {
             for (ItemStack stack : OreDictionary.getOres("ingotBronze"))
             {
-                CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, 9), stack);
+                CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, 10), stack);
             }
         }
 
@@ -316,7 +316,7 @@ public class GalacticraftCore
         {
             for (ItemStack stack : OreDictionary.getOres("ingotSteel"))
             {
-                CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, 10), stack);
+                CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, 9), stack);
             }
         }
         
