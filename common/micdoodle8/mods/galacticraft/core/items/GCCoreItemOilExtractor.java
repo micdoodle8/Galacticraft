@@ -16,6 +16,8 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidBlock;
 import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -82,22 +84,23 @@ public class GCCoreItemOilExtractor extends Item
     @Override
     public void onUsingItemTick(ItemStack par1ItemStack, EntityPlayer par3EntityPlayer, int count)
     {
-        Vector3 blockHit = null;
+        Vector3 blockHit = this.getNearestOilBlock(par3EntityPlayer);
 
-        if ((blockHit = this.getNearestOilBlock(par3EntityPlayer)) != null)
+        if (blockHit != null)
         {
-            final int x = MathHelper.floor_double(blockHit.x), y = MathHelper.floor_double(blockHit.y), z = MathHelper.floor_double(blockHit.z);
+            final int x = MathHelper.floor_double(blockHit.x);
+            final int y = MathHelper.floor_double(blockHit.y);
+            final int z = MathHelper.floor_double(blockHit.z);
 
-            if (this.isOilBlock(par3EntityPlayer, par3EntityPlayer.worldObj, x, y, z))
+            if (this.isOilBlock(par3EntityPlayer, par3EntityPlayer.worldObj, x, y, z, false))
             {
-                par3EntityPlayer.worldObj.setBlock(x, y, z, 0);
-
                 if (this.openCanister(par3EntityPlayer) != null)
                 {
                     final ItemStack canister = this.openCanister(par3EntityPlayer);
 
                     if (canister != null && count % 5 == 0 && canister.getItemDamage() > 25)
                     {
+                        this.isOilBlock(par3EntityPlayer, par3EntityPlayer.worldObj, x, y, z, true);
                         canister.setItemDamage(canister.getItemDamage() - 25);
                     }
                 }
@@ -168,19 +171,21 @@ public class GCCoreItemOilExtractor extends Item
         }
     }
 
-    private boolean isOilBlock(EntityPlayer player, World world, int x, int y, int z)
+    private boolean isOilBlock(EntityPlayer player, World world, int x, int y, int z, boolean doDrain)
     {
         int blockID = world.getBlockId(x, y, z);
         
-        if (blockID > 0 && Block.blocksList[blockID] != null)
+        if (blockID > 0 && Block.blocksList[blockID] instanceof IFluidBlock)
         {
+            IFluidBlock fluidBlockHit = (IFluidBlock) Block.blocksList[blockID];
             Fluid fluidHit = FluidRegistry.lookupFluidForBlock(Block.blocksList[blockID]);
             
             if (fluidHit != null)
             {
                 if (fluidHit.getName().equalsIgnoreCase("oil"))
                 {
-                    return true;
+                    FluidStack stack = fluidBlockHit.drain(world, x, y, z, doDrain);
+                    return stack != null && stack.amount > 0;
                 }
             }
         }
@@ -214,7 +219,7 @@ public class GCCoreItemOilExtractor extends Item
         {
             final Vector3 var23 = var13.translate(new Vector3(var18 * dist, var17 * dist, var20 * dist));
 
-            if (this.isOilBlock(par1EntityPlayer, par1EntityPlayer.worldObj, MathHelper.floor_double(var23.x), MathHelper.floor_double(var23.y), MathHelper.floor_double(var23.z)))
+            if (this.isOilBlock(par1EntityPlayer, par1EntityPlayer.worldObj, MathHelper.floor_double(var23.x), MathHelper.floor_double(var23.y), MathHelper.floor_double(var23.z), false))
             {
                 return var23;
             }
