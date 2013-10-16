@@ -299,7 +299,7 @@ public class GalacticraftCore
             {
                 for (ItemStack stack : OreDictionary.getOres(GCCoreItemBasic.names[i]))
                 {
-                    CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, i + 3), stack);
+                    CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, i + 3), stack, stack);
                 }
             }
         }
@@ -308,7 +308,7 @@ public class GalacticraftCore
         {
             for (ItemStack stack : OreDictionary.getOres("ingotBronze"))
             {
-                CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, 10), stack);
+                CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, 10), stack, stack);
             }
         }
 
@@ -316,14 +316,14 @@ public class GalacticraftCore
         {
             for (ItemStack stack : OreDictionary.getOres("ingotSteel"))
             {
-                CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, 9), stack);
+                CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, 9), stack, stack);
             }
         }
         
-        CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, 9), new ItemStack(Item.coal), new ItemStack(GCCoreItems.basicItem, 1, 11));
+        CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, 9), Item.coal, new ItemStack(GCCoreItems.basicItem, 1, 11), Item.coal);
         CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, 10), new ItemStack(GCCoreItems.basicItem, 1, 6), new ItemStack(GCCoreItems.basicItem, 1, 7));
 
-        CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, 11), new ItemStack(Item.ingotIron, 1, 0));
+        CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, 11), Item.ingotIron, Item.ingotIron);
         CompressorRecipes.addShapelessRecipe(new ItemStack(GCMoonItems.meteoricIronIngot, 1, 1), new ItemStack(GCMoonItems.meteoricIronIngot, 1, 0));
 
         CompressorRecipes.addRecipe(new ItemStack(GCCoreItems.heavyPlatingTier1, 1, 0), "XYZ", "XYZ", 'X', new ItemStack(GCCoreItems.basicItem, 1, 9), 'Y', new ItemStack(GCCoreItems.basicItem, 1, 8), 'Z', new ItemStack(GCCoreItems.basicItem, 1, 10));
