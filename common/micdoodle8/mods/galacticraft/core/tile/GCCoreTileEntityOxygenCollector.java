@@ -356,7 +356,7 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric im
     @Override
     public boolean shouldUseEnergy()
     {
-        return this.getPower() > 0;
+        return this.getPower() > 0 && this.getPower() < this.MAX_POWER;
     }
 
     @Override
