@@ -114,10 +114,7 @@ public class CompressorRecipes
                 
                 if (!list.isEmpty())
                 {
-                    for (ItemStack stack : list)
-                    {
-                        arraylist.add(stack);
-                    }
+                    arraylist.add(list.get(0));
                 }
             }
             else

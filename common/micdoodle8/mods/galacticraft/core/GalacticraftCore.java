@@ -306,12 +306,18 @@ public class GalacticraftCore
 
         if (OreDictionary.getOres("ingotBronze").size() > 0)
         {
-            CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, 9), "ingotBronze");
+            for (ItemStack stack : OreDictionary.getOres("ingotBronze"))
+            {
+                CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, 9), stack);
+            }
         }
 
         if (OreDictionary.getOres("ingotSteel").size() > 0)
         {
-            CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, 10), "ingotSteel");
+            for (ItemStack stack : OreDictionary.getOres("ingotSteel"))
+            {
+                CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, 10), stack);
+            }
         }
         
         CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, 9), new ItemStack(Item.coal), new ItemStack(GCCoreItems.basicItem, 1, 11));
