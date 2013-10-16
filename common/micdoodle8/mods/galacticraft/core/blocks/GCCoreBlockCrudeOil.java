@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.Random;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
@@ -19,7 +20,7 @@ public class GCCoreBlockCrudeOil extends BlockFluidClassic
 
     public GCCoreBlockCrudeOil(int id, String assetName)
     {
-        super(id, GalacticraftCore.fluidOil, GCCoreBlocks.crudeOil);
+        super(id, GalacticraftCore.fluidOil, Material.water);
         this.setQuantaPerBlock(3);
         this.setRenderPass(1);
         this.needsRandomTick = true;

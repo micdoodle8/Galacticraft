@@ -153,6 +153,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -161,6 +162,8 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.IFluidBlock;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.w3c.dom.Document;
@@ -913,7 +916,7 @@ public class ClientProxyCore extends CommonProxyCore
     {
         Minecraft minecraft = FMLClientHandler.instance().getClient();
 
-        if (minecraft.thePlayer.isInsideOfMaterial(GCCoreBlocks.crudeOil))
+        if (ClientProxyCore.isInsideOfFluid(minecraft.thePlayer, GalacticraftCore.fluidOil))
         {
             minecraft.getTextureManager().bindTexture(ClientProxyCore.underOilTexture);
         }
@@ -945,6 +948,35 @@ public class ClientProxyCore extends CommonProxyCore
         GL11.glPopMatrix();
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDisable(GL11.GL_BLEND);
+    }
+    
+    public static boolean isInsideOfFluid(Entity entity, Fluid fluid)
+    {
+        double d0 = entity.posY + (double)entity.getEyeHeight();
+        int i = MathHelper.floor_double(entity.posX);
+        int j = MathHelper.floor_float((float)MathHelper.floor_double(d0));
+        int k = MathHelper.floor_double(entity.posZ);
+        int l = entity.worldObj.getBlockId(i, j, k);
+
+        Block block = Block.blocksList[l];
+        if (block != null && block instanceof IFluidBlock && ((IFluidBlock) block).getFluid() != null && ((IFluidBlock) block).getFluid().getName().equals(fluid.getName()))
+        {
+            double filled = ((IFluidBlock) block).getFilledPercentage(entity.worldObj, i, j, k);
+            if (filled < 0)
+            {
+                filled *= -1;
+                //filled -= 0.11111111F; //Why this is needed.. not sure...
+                return d0 > (double)(j + (1 - filled));
+            }
+            else
+            {
+                return d0 < (double)(j + filled);
+            }
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public static boolean addTabsNextTick = false;

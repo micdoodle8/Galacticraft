@@ -13,9 +13,6 @@ import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockMachine;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockSolar;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.MapColor;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.material.MaterialLiquid;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -57,8 +54,7 @@ public class GCCoreBlocks
     public static Block machineBase2;
     public static Block aluminumWire;
     public static Block glowstoneTorch;
-
-    public static Material crudeOil = new MaterialLiquid(MapColor.foliageColor);
+    
     public static ArrayList<Integer> hiddenBlocks = new ArrayList<Integer>();
 
     public static void initBlocks()

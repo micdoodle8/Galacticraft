@@ -196,7 +196,7 @@ public class GalacticraftCore
 
         GCCoreConfigManager.setDefaultValues(new File(event.getModConfigurationDirectory(), GalacticraftCore.CONFIG_FILE));
 
-        GalacticraftCore.gcFluidOil = new Fluid("oil").setViscosity(3000);
+        GalacticraftCore.gcFluidOil = new Fluid("oil").setDensity(800).setViscosity(1500);
         GalacticraftCore.gcFluidFuel = new Fluid("fuel").setViscosity(800);
         FluidRegistry.registerFluid(GalacticraftCore.gcFluidOil);
         FluidRegistry.registerFluid(GalacticraftCore.gcFluidFuel);
