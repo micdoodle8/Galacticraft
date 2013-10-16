@@ -594,7 +594,7 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectric implem
                 }
             }
 
-            this.waterTank.setFluid(new FluidStack(GalacticraftCore.FUEL, data.readInt()));
+            this.waterTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, data.readInt()));
         }
     }
 

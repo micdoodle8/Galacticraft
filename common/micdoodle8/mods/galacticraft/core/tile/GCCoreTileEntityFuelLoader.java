@@ -131,7 +131,7 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
 
             if (this.fuelTank != null && this.fuelTank.getFluid() != null && this.fuelTank.getFluid().amount > 0)
             {
-                final FluidStack liquid = new FluidStack(GalacticraftCore.FUEL, 2);
+                final FluidStack liquid = new FluidStack(GalacticraftCore.fluidFuel, 2);
 
                 if (this.attachedFuelable != null && this.getEnergyStored() > 0 && !this.disabled)
                 {
@@ -390,7 +390,7 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectric impleme
         if (this.worldObj.isRemote)
         {
             this.setEnergyStored(data.readFloat());
-            this.fuelTank.setFluid(new FluidStack(GalacticraftCore.FUEL, data.readInt()));
+            this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, data.readInt()));
             this.disabled = data.readBoolean();
             this.disableCooldown = data.readInt();
         }

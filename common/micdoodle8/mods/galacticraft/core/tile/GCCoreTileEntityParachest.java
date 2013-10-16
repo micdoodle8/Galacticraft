@@ -334,7 +334,7 @@ public class GCCoreTileEntityParachest extends TileEntity implements IInventory,
         if (this.worldObj.isRemote)
         {
             int fuel = data.readInt();
-            this.fuelTank.setFluid(new FluidStack(GalacticraftCore.FUEL, fuel));
+            this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, fuel));
         }
     }
 

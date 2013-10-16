@@ -18,7 +18,7 @@ public class GCCoreBlockCrudeOil extends BlockFluidClassic
 
     public GCCoreBlockCrudeOil(int id, String assetName)
     {
-        super(id, GalacticraftCore.CRUDEOIL, GCCoreBlocks.crudeOil);
+        super(id, GalacticraftCore.fluidOil, GCCoreBlocks.crudeOil);
         this.setQuantaPerBlock(3);
         this.setRenderPass(1);
         this.needsRandomTick = true;
@@ -39,8 +39,8 @@ public class GCCoreBlockCrudeOil extends BlockFluidClassic
     {
         this.stillIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "oil");
         this.flowingIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "oil_flow");
-        GalacticraftCore.CRUDEOIL.setStillIcon(this.stillIcon);
-        GalacticraftCore.CRUDEOIL.setFlowingIcon(this.flowingIcon);
+        GalacticraftCore.fluidOil.setStillIcon(this.stillIcon);
+        GalacticraftCore.fluidOil.setFlowingIcon(this.flowingIcon);
     }
 
     @Override

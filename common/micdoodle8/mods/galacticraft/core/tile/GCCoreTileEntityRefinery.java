@@ -433,8 +433,8 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
         {
             this.setEnergyStored(data.readFloat());
             this.processTicks = data.readInt();
-            this.oilTank.setFluid(new FluidStack(GalacticraftCore.CRUDEOIL, data.readInt()));
-            this.fuelTank.setFluid(new FluidStack(GalacticraftCore.FUEL, data.readInt()));
+            this.oilTank.setFluid(new FluidStack(GalacticraftCore.fluidOil, data.readInt()));
+            this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, data.readInt()));
             this.disabled = data.readBoolean();
             this.disableCooldown = data.readInt();
         }
@@ -485,7 +485,7 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
     {
         if (from.equals(ForgeDirection.getOrientation(this.getBlockMetadata() + 2)))
         {
-            return this.drain(from, new FluidStack(GalacticraftCore.FUEL, maxDrain), doDrain);
+            return this.drain(from, new FluidStack(GalacticraftCore.fluidFuel, maxDrain), doDrain);
         }
 
         return null;

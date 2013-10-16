@@ -138,7 +138,7 @@ public abstract class EntityTieredRocket extends EntitySpaceshipBase implements 
     public void readNetworkedData(ByteArrayDataInput dataStream)
     {
         super.readNetworkedData(dataStream);
-        this.spaceshipFuelTank.setFluid(new FluidStack(GalacticraftCore.FUEL, dataStream.readInt()));
+        this.spaceshipFuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, dataStream.readInt()));
         this.rocketType = EnumRocketType.values()[dataStream.readInt()];
     }
 

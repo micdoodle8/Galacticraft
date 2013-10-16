@@ -443,7 +443,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
             if (this.worldObj.isRemote)
             {
                 this.buggyType = dataStream.readInt();
-                this.buggyFuelTank.setFluid(new FluidStack(GalacticraftCore.FUEL, dataStream.readInt()));
+                this.buggyFuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, dataStream.readInt()));
             }
         }
         catch (final Exception e)

@@ -14,6 +14,7 @@ import micdoodle8.mods.galacticraft.api.world.ICelestialBody;
 import micdoodle8.mods.galacticraft.api.world.IGalaxy;
 import micdoodle8.mods.galacticraft.api.world.IMoon;
 import micdoodle8.mods.galacticraft.api.world.IPlanet;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockCrudeOil;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.command.GCCoreCommandSpaceStationAddOwner;
@@ -178,8 +179,10 @@ public class GalacticraftCore
     public static GCCorePlanetOverworld overworld;
     public static GCCorePlanetSun sun;
 
-    public static Fluid CRUDEOIL;
-    public static Fluid FUEL;
+    public static Fluid gcFluidOil;
+    public static Fluid gcFluidFuel;
+    public static Fluid fluidOil;
+    public static Fluid fluidFuel;
 
     public static HashMap<String, ItemStack> itemList = new HashMap<String, ItemStack>();
     public static HashMap<String, ItemStack> blocksList = new HashMap<String, ItemStack>();
@@ -192,27 +195,31 @@ public class GalacticraftCore
         GalacticraftCore.proxy.preInit(event);
 
         GCCoreConfigManager.setDefaultValues(new File(event.getModConfigurationDirectory(), GalacticraftCore.CONFIG_FILE));
-
-        GalacticraftCore.CRUDEOIL = new Fluid("oil").setBlockID(GCCoreConfigManager.idBlockCrudeOilStill).setViscosity(3000);
-        GalacticraftCore.FUEL = new Fluid("fuel").setViscosity(800);
-
-        if (!FluidRegistry.registerFluid(GalacticraftCore.CRUDEOIL))
-        {
-            GCLog.info("\"oil\" has already been registered as a fluid, ignoring...");
-        }
-
-        if (!FluidRegistry.registerFluid(GalacticraftCore.FUEL))
-        {
-            GCLog.info("\"fuel\" has already been registered as a fluid, ignoring...");
-        }
-
-        GCCoreBlocks.initBlocks();
-        GCCoreItems.initItems();
     }
 
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
+
+        GalacticraftCore.gcFluidOil = new Fluid("oil").setViscosity(3000);
+        GalacticraftCore.gcFluidFuel = new Fluid("fuel").setViscosity(800);
+        FluidRegistry.registerFluid(GalacticraftCore.gcFluidOil);
+        FluidRegistry.registerFluid(GalacticraftCore.gcFluidFuel);
+        GalacticraftCore.fluidOil = FluidRegistry.getFluid("oil");
+        GalacticraftCore.fluidFuel = FluidRegistry.getFluid("fuel");
+        
+        if (GalacticraftCore.fluidOil.getBlockID() == -1)
+        {
+            GCCoreBlocks.crudeOilStill = new GCCoreBlockCrudeOil(GCCoreConfigManager.idBlockCrudeOilStill, "crudeOilStill");
+            GalacticraftCore.fluidOil.setBlockID(GCCoreConfigManager.idBlockCrudeOilStill);
+        }
+        else
+        {
+            GCCoreBlocks.crudeOilStill = Block.blocksList[FluidRegistry.getFluidID("oil")];
+        }
+
+        GCCoreBlocks.initBlocks();
+        GCCoreItems.initItems();
         GalacticraftCore.galacticraftTab = new GCCoreCreativeTab(CreativeTabs.getNextID(), GalacticraftCore.CHANNEL, GCCoreItems.rocketTier1.itemID, 0);
         GalacticraftCore.overworld = new GCCorePlanetOverworld();
         GalacticraftRegistry.registerCelestialBody(GalacticraftCore.overworld);
@@ -230,12 +237,12 @@ public class GalacticraftCore
 
         for (int i = GCCoreItems.fuelCanister.getMaxDamage() - 1; i > 0; i--)
         {
-            FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(GalacticraftCore.FUEL, GCCoreItems.fuelCanister.getMaxDamage() - i), new ItemStack(GCCoreItems.fuelCanister, 1, i), new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.fuelCanister.getMaxDamage())));
+            FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(GalacticraftCore.fluidFuel, GCCoreItems.fuelCanister.getMaxDamage() - i), new ItemStack(GCCoreItems.fuelCanister, 1, i), new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.fuelCanister.getMaxDamage())));
         }
 
         for (int i = GCCoreItems.oilCanister.getMaxDamage() - 1; i > 0; i--)
         {
-            FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(GalacticraftCore.CRUDEOIL, GCCoreItems.oilCanister.getMaxDamage() - i), new ItemStack(GCCoreItems.oilCanister, 1, i), new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.fuelCanister.getMaxDamage())));
+            FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(GalacticraftCore.fluidOil, GCCoreItems.oilCanister.getMaxDamage() - i), new ItemStack(GCCoreItems.oilCanister, 1, i), new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.fuelCanister.getMaxDamage())));
         }
 
         SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicRocketT1());

@@ -77,7 +77,6 @@ public class GCCoreBlocks
         GCCoreBlocks.decorationBlocks = new GCCoreBlock(GCCoreConfigManager.idBlockDecorationBlock, "gcBlockCore");
         GCCoreBlocks.airLockFrame = new GCCoreBlockAirLockFrame(GCCoreConfigManager.idBlockAirLockFrame, "airLockFrame");
         GCCoreBlocks.airLockSeal = new GCCoreBlockAirLockWall(GCCoreConfigManager.idBlockAirLockSeal, "airLockSeal");
-        GCCoreBlocks.crudeOilStill = new GCCoreBlockCrudeOil(GalacticraftCore.CRUDEOIL.getBlockID(), "crudeOilStill");
         GCCoreBlocks.refinery = new GCCoreBlockRefinery(GCCoreConfigManager.idBlockRefinery, "refinery");
         GCCoreBlocks.oxygenCompressor = new GCCoreBlockOxygenCompressor(GCCoreConfigManager.idBlockAirCompressor, false, "oxygenCompressor");
         GCCoreBlocks.fuelLoader = new GCCoreBlockFuelLoader(GCCoreConfigManager.idBlockFuelLoader, "fuelLoader");

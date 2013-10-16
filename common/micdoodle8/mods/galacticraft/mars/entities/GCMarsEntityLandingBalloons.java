@@ -76,7 +76,7 @@ public class GCMarsEntityLandingBalloons extends GCCoreEntityAdvanced implements
         this.playerSpawnedIn = player;
 
         this.chestContents = new ItemStack[player.getRocketStacks().length + 1];
-        this.fuelTank.setFluid(new FluidStack(GalacticraftCore.FUEL, player.getFuelLevel()));
+        this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, player.getFuelLevel()));
 
         for (int i = 0; i < player.getRocketStacks().length; i++)
         {
@@ -529,7 +529,7 @@ public class GCMarsEntityLandingBalloons extends GCCoreEntityAdvanced implements
                     PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 21, new Object[] { this.entityId }));
                 }
 
-                this.fuelTank.setFluid(new FluidStack(GalacticraftCore.FUEL, dataStream.readInt()));
+                this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, dataStream.readInt()));
             }
         }
         catch (final Exception e)

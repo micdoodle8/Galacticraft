@@ -100,7 +100,7 @@ public class GCCoreItemSpaceship extends Item implements IHoldableItem
 
                 if (spaceship.rocketType.getPreFueled())
                 {
-                    spaceship.spaceshipFuelTank.fill(new FluidStack(GalacticraftCore.FUEL, 2000), true);
+                    spaceship.spaceshipFuelTank.fill(new FluidStack(GalacticraftCore.fluidFuel, 2000), true);
                 }
             }
             else

@@ -122,11 +122,11 @@ public class GCMarsItemSpaceshipTier2 extends Item implements IHoldableItem
                 {
                     if (rocket instanceof EntityTieredRocket)
                     {
-                        ((EntityTieredRocket) rocket).spaceshipFuelTank.fill(new FluidStack(GalacticraftCore.FUEL, rocket.getMaxFuel()), true);
+                        ((EntityTieredRocket) rocket).spaceshipFuelTank.fill(new FluidStack(GalacticraftCore.fluidFuel, rocket.getMaxFuel()), true);
                     }
                     else if (rocket instanceof GCMarsEntityCargoRocket)
                     {
-                        ((GCMarsEntityCargoRocket) rocket).spaceshipFuelTank.fill(new FluidStack(GalacticraftCore.FUEL, rocket.getMaxFuel()), true);
+                        ((GCMarsEntityCargoRocket) rocket).spaceshipFuelTank.fill(new FluidStack(GalacticraftCore.fluidFuel, rocket.getMaxFuel()), true);
                     }
                 }
             }
