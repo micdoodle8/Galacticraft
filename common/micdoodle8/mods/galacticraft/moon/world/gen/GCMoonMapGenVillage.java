@@ -15,10 +15,17 @@ public class GCMoonMapGenVillage extends MapGenStructure
 
      static
      {
-     GCMoonMapGenVillage.initiateStructures();
+         try
+         {
+             GCMoonMapGenVillage.initiateStructures();
+         }
+         catch (ClassNotFoundException e)
+         {
+             e.printStackTrace();
+         }
      }
 
-     public static void initiateStructures()
+     public static void initiateStructures() throws ClassNotFoundException
      {
          MapGenStructureIO.func_143034_b(GCMoonStructureVillageStart.class, "MoonVillage");
          MapGenStructureIO.func_143031_a(GCMoonComponentVillageField.class, "MoonField1");

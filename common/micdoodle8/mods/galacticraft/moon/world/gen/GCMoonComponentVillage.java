@@ -26,13 +26,11 @@ public abstract class GCMoonComponentVillage extends StructureComponent
         this.startPiece = par1ComponentVillageStartPiece;
     }
 
-     @Override
      protected void func_143012_a(NBTTagCompound nbttagcompound)
      {
          nbttagcompound.setInteger("VCount", this.villagersSpawned);
      }
     
-     @Override
      protected void func_143011_b(NBTTagCompound nbttagcompound)
      {
          this.villagersSpawned = nbttagcompound.getInteger("VCount");
