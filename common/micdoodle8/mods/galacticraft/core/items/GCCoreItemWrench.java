@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import micdoodle8.mods.galacticraft.core.ASMHelper.RuntimeInterface;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import net.minecraft.block.Block;
@@ -10,11 +11,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class GCCoreItemWrench extends Item implements IToolWrench
+public class GCCoreItemWrench extends Item
 {
     public GCCoreItemWrench(int id, String assetName)
     {
@@ -36,13 +36,13 @@ public class GCCoreItemWrench extends Item implements IToolWrench
         return ClientProxyCore.galacticraftItem;
     }
 
-    @Override
+    @RuntimeInterface(clazz = "buildcraft.api.tools.IToolWrench", modID = "BuildCraft|Core")
     public boolean canWrench(EntityPlayer entityPlayer, int x, int y, int z)
     {
         return true;
     }
 
-    @Override
+    @RuntimeInterface(clazz = "buildcraft.api.tools.IToolWrench", modID = "BuildCraft|Core")
     public void wrenchUsed(EntityPlayer entityPlayer, int x, int y, int z)
     {
 
