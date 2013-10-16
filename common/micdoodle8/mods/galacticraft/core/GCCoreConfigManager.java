@@ -88,6 +88,7 @@ public class GCCoreConfigManager
     public static int idItemBattery;
     public static int idItemInfiniteBattery;
     public static int idItemMeteorChunk;
+    public static int idItemStandardWrench;
 
     // RECIPES
     public static boolean useRecipesIC2;
@@ -260,6 +261,7 @@ public class GCCoreConfigManager
             GCCoreConfigManager.idItemBattery = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemBattery", 13970).getInt(13970);
             GCCoreConfigManager.idItemInfiniteBattery = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemInfiniteBattery", 13971).getInt(13971);
             GCCoreConfigManager.idItemMeteorChunk = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemMeteorChunk", 9895).getInt(9895);
+            GCCoreConfigManager.idItemStandardWrench = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemStandardWrench", 9896).getInt(9896);
 
             GCCoreConfigManager.idToolSteelSword = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idToolSteelSword", 9885).getInt(9885);
             GCCoreConfigManager.idToolSteelPickaxe = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idToolSteelPickaxe", 9886).getInt(9886);
