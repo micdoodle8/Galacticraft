@@ -156,23 +156,19 @@ public class GCCoreConfigManager
     public static int idEntityMeteorChunk;
 
     // GENERAL
-//    public static boolean transparentBreathableAir;
     public static boolean moreStars;
     public static boolean wasdMapMovement;
     public static String[] sealableIDs;
+    public static String[] detectableIDs;
     public static boolean disableSpaceshipParticles;
     public static boolean disableSpaceshipGrief;
-//    public static boolean disableTutorialItemText;
     public static boolean oxygenIndicatorLeftSide;
     public static double oilGenFactor;
     public static boolean disableLeafDecay;
     public static boolean spaceStationsRequirePermission;
     public static boolean overrideCapes;
-//    public static boolean hiresTextures;
     public static double spaceStationEnergyScalar;
     public static boolean disableLander;
-//    public static Property forceLoadGC;
-//    public static boolean enableKnowledgeBook;
     public static double dungeonBossHealthMod;
     public static int suffocationCooldown;
     public static int suffocationDamage;
@@ -333,6 +329,7 @@ public class GCCoreConfigManager
             GCCoreConfigManager.overrideCapes = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Override Capes", true, "By default, Galacticraft will override capes with the mod's donor cape. Set to false to disable.").getBoolean(true);
             GCCoreConfigManager.spaceStationEnergyScalar = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Space Station Solar Energy Multiplier", 2.0, "If Mekanism is installed, solar panels will work (default 2x) more effective on space stations.").getDouble(2.0);
             GCCoreConfigManager.sealableIDs = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "External Sealable IDs", new String[] { String.valueOf(Block.glass.blockID + ":0"), String.valueOf(Block.thinGlass.blockID + ":0") }, "List IDs from other mods that the Oxygen Sealer should recognize as solid blocks. Format is ID:METADATA").getStringList();
+            GCCoreConfigManager.detectableIDs = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "External Detectable IDs", new String[] { String.valueOf(Block.oreCoal.blockID + ":0"), String.valueOf(Block.oreDiamond.blockID + ":0"), String.valueOf(Block.oreGold.blockID + ":0"), String.valueOf(Block.oreIron.blockID + ":0"), String.valueOf(Block.oreLapis.blockID + ":0"), String.valueOf(Block.oreRedstone.blockID + ":0"), String.valueOf(Block.oreRedstoneGlowing.blockID + ":0") }, "List IDs from other mods that the Sensor Glasses should recognize as solid blocks. Format is ID:METADATA").getStringList();
             GCCoreConfigManager.dungeonBossHealthMod = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Dungeon Boss Health Modifier", 1.0D, "Change this is you wish to balance the mod (if you have more powerful weapon mods)").getDouble(1.0D);
             GCCoreConfigManager.suffocationCooldown = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Suffocation Cooldown", 100, "Lower/Raise this value to change time between suffocation damage ticks").getInt(100);
             GCCoreConfigManager.suffocationDamage = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Suffocation Damage", 2, "Change this value to modify the damage taken per suffocation tick").getInt(2);

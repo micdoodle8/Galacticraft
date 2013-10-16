@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tick;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
 import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
@@ -29,7 +30,6 @@ import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockOre;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -66,6 +66,27 @@ public class GCCoreTickHandlerClient implements ITickHandler
     private static long tickCount;
     
     private static GCCoreThreadRequirementMissing missingRequirementThread;
+    
+    static
+    {
+        for (final String s : GCCoreConfigManager.detectableIDs)
+        {
+            final String[] split = s.split(":");
+
+            if (ClientProxyCore.detectableBlocks.containsKey(Integer.parseInt(split[0])))
+            {
+                final ArrayList<Integer> l = ClientProxyCore.detectableBlocks.get(Integer.parseInt(split[0]));
+                l.add(Integer.parseInt(split[1]));
+                ClientProxyCore.detectableBlocks.put(Integer.parseInt(split[0]), l);
+            }
+            else
+            {
+                final ArrayList<Integer> a = new ArrayList<Integer>();
+                a.add(Integer.parseInt(split[1]));
+                ClientProxyCore.detectableBlocks.put(Integer.parseInt(split[0]), a);
+            }
+        }
+    }
 
     @Override
     public void tickStart(EnumSet<TickType> type, Object... tickData)
@@ -110,14 +131,37 @@ public class GCCoreTickHandlerClient implements ITickHandler
                                 if (id != 0)
                                 {
                                     final Block block = Block.blocksList[id];
+                                    int metadata = world.getBlockMetadata(x, y, z);
 
-                                    if (block != null && (block instanceof BlockOre || block instanceof IDetectableResource || block instanceof IDetectableResource && ((IDetectableResource) block).isValueable(player.worldObj.getBlockMetadata(x, y, z))))
+                                    if ((ClientProxyCore.detectableBlocks.containsKey(id) && ClientProxyCore.detectableBlocks.get(id).contains(metadata)))
                                     {
                                         final int[] blockPos = { x, y, z };
 
                                         if (!this.alreadyContainsBlock(x, y, z))
                                         {
                                             ClientProxyCore.valueableBlocks.add(blockPos);
+                                        }
+                                    }
+                                    else if (block instanceof IDetectableResource && ((IDetectableResource) block).isValueable(metadata))
+                                    {
+                                        final int[] blockPos = { x, y, z };
+
+                                        if (!this.alreadyContainsBlock(x, y, z))
+                                        {
+                                            ClientProxyCore.valueableBlocks.add(blockPos);
+                                        }
+                                        
+                                        if (ClientProxyCore.detectableBlocks.containsKey(metadata))
+                                        {
+                                            final ArrayList<Integer> l = ClientProxyCore.detectableBlocks.get(id);
+                                            l.add(metadata);
+                                            ClientProxyCore.detectableBlocks.put(id, l);
+                                        }
+                                        else
+                                        {
+                                            final ArrayList<Integer> a = new ArrayList<Integer>();
+                                            a.add(metadata);
+                                            ClientProxyCore.detectableBlocks.put(id, a);
                                         }
                                     }
                                 }

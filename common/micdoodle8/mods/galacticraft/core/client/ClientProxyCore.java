@@ -207,6 +207,7 @@ public class ClientProxyCore extends CommonProxyCore
     public static ClientProxyMoon moon = new ClientProxyMoon();
     public static List<ICelestialBodyRenderer> slotRenderers = new ArrayList<ICelestialBodyRenderer>();
     public static List<int[]> valueableBlocks = new ArrayList<int[]>();
+    public static Map<Integer, ArrayList<Integer>> detectableBlocks = new HashMap<Integer, ArrayList<Integer>>();
 
     public static Set<String> playersUsingParachutes = new HashSet<String>();
     public static HashMap<String, ResourceLocation> parachuteTextures = new HashMap<String, ResourceLocation>();
