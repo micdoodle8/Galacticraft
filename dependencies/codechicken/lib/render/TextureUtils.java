@@ -176,4 +176,12 @@ public class TextureUtils
         }
         return false;
     }
+
+    public static Icon safeIcon(Icon icon)
+    {
+        if(icon == null)
+            icon = ((TextureMap)Minecraft.getMinecraft().getTextureManager().getTexture(TextureMap.locationBlocksTexture)).getAtlasSprite("missingno");
+        
+        return icon;
+    }
 }

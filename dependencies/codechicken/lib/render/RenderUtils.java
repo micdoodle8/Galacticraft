@@ -236,7 +236,7 @@ public class RenderUtils
         Fluid fluid = stack.getFluid();
         CCRenderState.setColour(fluid.getColor(stack)<<8|alpha);        
         TextureUtils.bindAtlas(fluid.getSpriteNumber());
-        return fluid.getIcon(stack);
+        return TextureUtils.safeIcon(fluid.getIcon(stack));
     }
     
     /**

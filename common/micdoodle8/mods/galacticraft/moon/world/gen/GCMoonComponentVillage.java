@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityAlienVillager;
 import net.minecraft.block.Block;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -25,17 +26,17 @@ public abstract class GCMoonComponentVillage extends StructureComponent
         this.startPiece = par1ComponentVillageStartPiece;
     }
 
-    // @Override
-    // protected void func_143012_a(NBTTagCompound nbttagcompound)
-    // {
-    // nbttagcompound.setInteger("VCount", this.villagersSpawned);
-    // }
-    //
-    // @Override
-    // protected void func_143011_b(NBTTagCompound nbttagcompound)
-    // {
-    // this.villagersSpawned = nbttagcompound.getInteger("VCount");
-    // }
+     @Override
+     protected void func_143012_a(NBTTagCompound nbttagcompound)
+     {
+         nbttagcompound.setInteger("VCount", this.villagersSpawned);
+     }
+    
+     @Override
+     protected void func_143011_b(NBTTagCompound nbttagcompound)
+     {
+         this.villagersSpawned = nbttagcompound.getInteger("VCount");
+     }
 
     /**
      * Gets the next village component, with the bounding box shifted -1 in the
