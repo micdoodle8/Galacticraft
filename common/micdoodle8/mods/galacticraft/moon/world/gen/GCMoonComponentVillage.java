@@ -14,6 +14,18 @@ import net.minecraftforge.event.terraingen.BiomeEvent;
 
 public abstract class GCMoonComponentVillage extends StructureComponent
 {
+    static
+    {
+        try
+        {
+            GCMoonMapGenVillage.initiateStructures();
+        }
+        catch (Throwable e)
+        {
+            ;
+        }
+    }
+    
     /** The number of villagers that have been spawned in this component. */
     private int villagersSpawned;
 
