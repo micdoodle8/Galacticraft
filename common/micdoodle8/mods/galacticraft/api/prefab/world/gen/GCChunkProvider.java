@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.api.prefab.world.gen;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import micdoodle8.mods.galacticraft.api.prefab.core.BlockMetaPair;
 import micdoodle8.mods.galacticraft.core.perlin.generator.Gradient;
 import micdoodle8.mods.galacticraft.core.world.gen.GCCoreCraterSize;
 import net.minecraft.block.Block;
@@ -33,7 +34,7 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
     private final Gradient noiseGen5;
     private final Gradient noiseGen6;
     private final Gradient noiseGen7;
-    public GCBiomeDecoratorBase biomedecoratorplanet = this.getBiomeGenerator();
+    public GCBiomeDecoratorBase biomeDecoratorPlanet = this.getBiomeGenerator();
 
     private final World worldObj;
 
@@ -48,11 +49,11 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
     float[] field_35388_l;
     int[][] field_914_i = new int[32][32];
 
-    private static final double TERRAIN_HEIGHT_MOD = 12;
-    private static final double SMALL_FEATURE_HEIGHT_MOD = 26;
-    private static final double MOUNTAIN_HEIGHT_MOD = 95;
-    private static final double VALLEY_HEIGHT_MOD = 50;
-    private static final int CRATER_PROB = 2000;
+    private final double TERRAIN_HEIGHT_MOD = this.getHeightModifier();
+    private final double SMALL_FEATURE_HEIGHT_MOD = this.getSmallFeatureHeightModifier();
+    private final double MOUNTAIN_HEIGHT_MOD = this.getMountainHeightModifier();
+    private final double VALLEY_HEIGHT_MOD = this.getValleyHeightModifier();
+    private final int CRATER_PROB = this.getCraterProbability();
 
     // DO NOT CHANGE
     private final int MID_HEIGHT = this.getSeaLevel();
@@ -62,12 +63,14 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
     private static final double MAIN_FEATURE_FILTER_MOD = 4;
     private static final double LARGE_FEATURE_FILTER_MOD = 8;
     private static final double SMALL_FEATURE_FILTER_MOD = 8;
+    
+    private List<GCCoreMapGenBaseMeta> worldGenerators;
 
-    public GCChunkProvider(World par1World, long par2, boolean par4)
+    public GCChunkProvider(World par1World, long seed, boolean mapFeaturesEnabled)
     {
-        super(par1World, par2, par4);
+        super(par1World, seed, mapFeaturesEnabled);
         this.worldObj = par1World;
-        this.rand = new Random(par2);
+        this.rand = new Random(seed);
 
         this.noiseGen1 = new Gradient(this.rand.nextLong(), 4, 0.25);
         this.noiseGen2 = new Gradient(this.rand.nextLong(), 4, 0.25);
@@ -92,15 +95,15 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
         {
             for (int z = 0; z < GCChunkProvider.CHUNK_SIZE_Z; z++)
             {
-                final double baseHeight = this.noiseGen1.getNoise(chunkX * 16 + x, chunkZ * 16 + z) * GCChunkProvider.TERRAIN_HEIGHT_MOD;
-                final double smallHillHeight = this.noiseGen2.getNoise(chunkX * 16 + x, chunkZ * 16 + z) * GCChunkProvider.SMALL_FEATURE_HEIGHT_MOD;
+                final double baseHeight = this.noiseGen1.getNoise(chunkX * 16 + x, chunkZ * 16 + z) * this.TERRAIN_HEIGHT_MOD;
+                final double smallHillHeight = this.noiseGen2.getNoise(chunkX * 16 + x, chunkZ * 16 + z) * this.SMALL_FEATURE_HEIGHT_MOD;
                 double mountainHeight = Math.abs(this.noiseGen3.getNoise(chunkX * 16 + x, chunkZ * 16 + z));
                 double valleyHeight = Math.abs(this.noiseGen4.getNoise(chunkX * 16 + x, chunkZ * 16 + z));
                 final double featureFilter = this.noiseGen5.getNoise(chunkX * 16 + x, chunkZ * 16 + z) * GCChunkProvider.MAIN_FEATURE_FILTER_MOD;
                 final double largeFilter = this.noiseGen6.getNoise(chunkX * 16 + x, chunkZ * 16 + z) * GCChunkProvider.LARGE_FEATURE_FILTER_MOD;
                 final double smallFilter = this.noiseGen7.getNoise(chunkX * 16 + x, chunkZ * 16 + z) * GCChunkProvider.SMALL_FEATURE_FILTER_MOD - 0.5;
-                mountainHeight = this.lerp(smallHillHeight, mountainHeight * GCChunkProvider.MOUNTAIN_HEIGHT_MOD, this.fade(this.clamp(mountainHeight * 2, 0, 1)));
-                valleyHeight = this.lerp(smallHillHeight, valleyHeight * GCChunkProvider.VALLEY_HEIGHT_MOD - GCChunkProvider.VALLEY_HEIGHT_MOD + 9, this.fade(this.clamp((valleyHeight + 2) * 4, 0, 1)));
+                mountainHeight = this.lerp(smallHillHeight, mountainHeight * this.MOUNTAIN_HEIGHT_MOD, this.fade(this.clamp(mountainHeight * 2, 0, 1)));
+                valleyHeight = this.lerp(smallHillHeight, valleyHeight * this.VALLEY_HEIGHT_MOD - this.VALLEY_HEIGHT_MOD + 9, this.fade(this.clamp((valleyHeight + 2) * 4, 0, 1)));
 
                 double yDev = this.lerp(valleyHeight, mountainHeight, this.fade(largeFilter));
                 yDev = this.lerp(smallHillHeight, yDev, smallFilter);
@@ -110,8 +113,8 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
                 {
                     if (y < this.MID_HEIGHT + yDev)
                     {
-                        idArray[this.getIndex(x, y, z)] = this.getStoneBlockID();
-                        metaArray[this.getIndex(x, y, z)] = this.getStoneBlockMetadata();
+                        idArray[this.getIndex(x, y, z)] = this.getStoneBlock().getBlockID();
+                        metaArray[this.getIndex(x, y, z)] = this.getStoneBlock().getMetadata();
                     }
                 }
             }
@@ -163,10 +166,10 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
             {
                 final int var12 = (int) (this.noiseGen4.getNoise(par1 * 16 + var8, par2 * 16 + var9) / 3.0D + 3.0D + this.rand.nextDouble() * 0.25D);
                 int var13 = -1;
-                short var14 = this.getGrassBlockID();
-                byte var14m = this.getGrassBlockMetadata();
-                short var15 = this.getDirtBlockID();
-                byte var15m = this.getDirtBlockMetadata();
+                short var14 = this.getGrassBlock().getBlockID();
+                byte var14m = this.getGrassBlock().getMetadata();
+                short var15 = this.getDirtBlock().getBlockID();
+                byte var15m = this.getDirtBlock().getMetadata();
 
                 for (int var16 = GCChunkProvider.CHUNK_SIZE_Y - 1; var16 >= 0; --var16)
                 {
@@ -184,9 +187,9 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
                         {
                             var13 = -1;
                         }
-                        else if (var18 == this.getStoneBlockID())
+                        else if (var18 == this.getStoneBlock().getBlockID())
                         {
-                            arrayOfMeta[index] = this.getStoneBlockMetadata();
+                            arrayOfMeta[index] = this.getStoneBlock().getMetadata();
 
                             if (var13 == -1)
                             {
@@ -194,15 +197,15 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
                                 {
                                     var14 = 0;
                                     var14m = 0;
-                                    var15 = this.getStoneBlockID();
-                                    var15m = this.getStoneBlockMetadata();
+                                    var15 = this.getStoneBlock().getBlockID();
+                                    var15m = this.getStoneBlock().getMetadata();
                                 }
                                 else if (var16 >= var5 - -16 && var16 <= var5 + 1)
                                 {
-                                    var14 = this.getGrassBlockID();
-                                    var14m = this.getGrassBlockMetadata();
-                                    var14 = this.getDirtBlockID();
-                                    var14m = this.getDirtBlockMetadata();
+                                    var14 = this.getGrassBlock().getBlockID();
+                                    var14m = this.getGrassBlock().getMetadata();
+                                    var14 = this.getDirtBlock().getBlockID();
+                                    var14m = this.getDirtBlock().getMetadata();
                                 }
 
                                 if (var16 < var5 && var14 == 0)
@@ -246,10 +249,15 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
         this.createCraters(par1, par2, ids, meta);
         this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, par1 * 16, par2 * 16, 16, 16);
         this.replaceBlocksForBiome(par1, par2, ids, meta, this.biomesForGeneration);
-
-        if (this.getCaveGenerator() != null)
+        
+        if (this.worldGenerators == null)
         {
-            this.getCaveGenerator().generate(this, this.worldObj, par1, par2, ids, meta);
+            this.worldGenerators = this.getWorldGenerators();
+        }
+        
+        for (GCCoreMapGenBaseMeta generator : this.worldGenerators)
+        {
+            generator.generate(this, this.worldObj, par1, par2, ids, meta);
         }
 
         final Chunk var4 = new Chunk(this.worldObj, ids, meta, par1, par2);
@@ -275,7 +283,7 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
                 {
                     for (int z = 0; z < GCChunkProvider.CHUNK_SIZE_Z; z++)
                     {
-                        if (Math.abs(this.randFromPoint(cx * 16 + x, (cz * 16 + z) * 1000)) < this.noiseGen5.getNoise(cx * 16 + x, cz * 16 + z) / GCChunkProvider.CRATER_PROB)
+                        if (Math.abs(this.randFromPoint(cx * 16 + x, (cz * 16 + z) * 1000)) < this.noiseGen5.getNoise(cx * 16 + x, cz * 16 + z) / this.CRATER_PROB)
                         {
                             final Random random = new Random(cx * 16 + x + (cz * 16 + z) * 5000);
                             final GCCoreCraterSize cSize = GCCoreCraterSize.sizeArray[random.nextInt(GCCoreCraterSize.sizeArray.length)];
@@ -343,7 +351,7 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
 
     public void decoratePlanet(World par1World, Random par2Random, int par3, int par4)
     {
-        this.biomedecoratorplanet.decorate(par1World, par2Random, par3, par4);
+        this.biomeDecoratorPlanet.decorate(par1World, par2Random, par3, par4);
     }
 
     @Override
@@ -433,16 +441,15 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
      * @return The average terrain level. Default is 64.
      */
     protected abstract int getSeaLevel();
-
+    
     /**
-     * Return null for no caves
+     * List of all world generators to use. Caves, ravines, structures, etc.
      * 
-     * @return Cave generator for this world.
+     * Return an empty list for no world generators. Do not return null.
+     * 
+     * @return
      */
-    protected GCCoreMapGenBaseMeta getCaveGenerator()
-    {
-        return null;
-    }
+    protected abstract List<GCCoreMapGenBaseMeta> getWorldGenerators();
 
     /**
      * @return List of spawn list entries for monsters
@@ -453,34 +460,50 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
      * @return List of spawn list entries for creatures
      */
     protected abstract SpawnListEntry[] getCreatures();
+    
+    /**
+     * The grass block to be generated. Doesn't have to be grass of course.
+     * 
+     * @return BlockMetaPair instance containing ID and metadata for grass block.
+     */
+    protected abstract BlockMetaPair getGrassBlock();
 
     /**
-     * @return Top block ID. Doesn't have to be grass of course.
+     * The dirt block to be generated. Doesn't have to be dirt of course.
+     * 
+     * @return BlockMetaPair instance containing ID and metadata for dirt block.
      */
-    protected abstract short getGrassBlockID();
+    protected abstract BlockMetaPair getDirtBlock();
 
     /**
-     * @return Filler block ID. Doesn't have to be stone of course.
+     * The stone block to be generated. Doesn't have to be stone of course.
+     * 
+     * @return BlockMetaPair instance containing ID and metadata for stone block.
      */
-    protected abstract short getStoneBlockID();
+    protected abstract BlockMetaPair getStoneBlock();
+    
+    /**
+     * @return Base height modifier
+     */
+    public abstract double getHeightModifier();
+    
+    /**
+     * @return Height modifier for small hills
+     */
+    public abstract double getSmallFeatureHeightModifier();
+    
+    /**
+     * @return Height modifier for mountains
+     */
+    public abstract double getMountainHeightModifier();
 
     /**
-     * @return Middle block ID. Doesn't have to be dirt of course.
+     * @return Height modifier for valleys
      */
-    protected abstract short getDirtBlockID();
-
+    public abstract double getValleyHeightModifier();
+    
     /**
-     * @return Top block metadata. Doesn't have to be grass of course.
+     * @return Probability that craters will be generated
      */
-    protected abstract byte getGrassBlockMetadata();
-
-    /**
-     * @return Top block metadata. Doesn't have to be stone of course.
-     */
-    protected abstract byte getStoneBlockMetadata();
-
-    /**
-     * @return Top block metadata. Doesn't have to be dirt of course.
-     */
-    protected abstract byte getDirtBlockMetadata();
+    public abstract int getCraterProbability();
 }
