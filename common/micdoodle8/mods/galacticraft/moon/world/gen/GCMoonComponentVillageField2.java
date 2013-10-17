@@ -12,10 +12,12 @@ public class GCMoonComponentVillageField2 extends GCMoonComponentVillage
 {
     private int averageGroundLevel = -1;
 
-    private final int cropTypeA;
-    private final int cropTypeB;
-    private final int cropTypeC;
-    private final int cropTypeD;
+    private int cropTypeA;
+    private int cropTypeB;
+    private int cropTypeC;
+    private int cropTypeD;
+    
+    public GCMoonComponentVillageField2() {}
 
     public GCMoonComponentVillageField2(GCMoonComponentVillageStartPiece par1ComponentVillageStartPiece, int par2, Random par3Random, StructureBoundingBox par4StructureBoundingBox, int par5)
     {

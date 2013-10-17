@@ -11,7 +11,9 @@ import net.minecraft.world.gen.structure.StructureComponent;
 
 public class GCMoonComponentVillagePathGen extends GCMoonComponentVillageRoadPiece
 {
-    private final int averageGroundLevel;
+    private int averageGroundLevel;
+    
+    public GCMoonComponentVillagePathGen() {}
 
     public GCMoonComponentVillagePathGen(GCMoonComponentVillageStartPiece par1ComponentVillageStartPiece, int par2, Random par3Random, StructureBoundingBox par4StructureBoundingBox, int par5)
     {

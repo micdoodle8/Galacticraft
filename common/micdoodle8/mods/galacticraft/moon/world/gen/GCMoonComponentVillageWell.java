@@ -11,6 +11,8 @@ import net.minecraft.world.gen.structure.StructureComponent;
 public class GCMoonComponentVillageWell extends GCMoonComponentVillage
 {
     private int averageGroundLevel = -1;
+    
+    public GCMoonComponentVillageWell() {}
 
     public GCMoonComponentVillageWell(GCMoonComponentVillageStartPiece par1ComponentVillageStartPiece, int par2, Random par3Random, int par4, int par5)
     {

@@ -7,14 +7,14 @@ import net.minecraft.world.biome.WorldChunkManager;
 
 public class GCMoonComponentVillageStartPiece extends GCMoonComponentVillageWell
 {
-    public final WorldChunkManager worldChunkMngr;
+    public WorldChunkManager worldChunkMngr;
 
     /** Boolean that determines if the village is in a desert or not. */
-    public final boolean inDesert;
-    public final BiomeGenBase biome;
+    public boolean inDesert;
+    public BiomeGenBase biome;
 
     /** World terrain type, 0 for normal, 1 for flap map */
-    public final int terrainType;
+    public int terrainType;
     public GCMoonStructureVillagePieceWeight structVillagePieceWeight;
 
     /**
@@ -24,6 +24,8 @@ public class GCMoonComponentVillageStartPiece extends GCMoonComponentVillageWell
     public ArrayList<GCMoonStructureVillagePieceWeight> structureVillageWeightedPieceList;
     public ArrayList<Object> field_74932_i = new ArrayList<Object>();
     public ArrayList<Object> field_74930_j = new ArrayList<Object>();
+    
+    public GCMoonComponentVillageStartPiece() {}
 
     public GCMoonComponentVillageStartPiece(WorldChunkManager par1WorldChunkManager, int par2, Random par3Random, int par4, int par5, ArrayList<GCMoonStructureVillagePieceWeight> par6ArrayList, int par7)
     {

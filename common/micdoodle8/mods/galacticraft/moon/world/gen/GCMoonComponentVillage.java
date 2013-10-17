@@ -31,6 +31,8 @@ public abstract class GCMoonComponentVillage extends StructureComponent
 
     /** The starting piece of the village. */
     protected GCMoonComponentVillageStartPiece startPiece;
+    
+    public GCMoonComponentVillage() {}
 
     protected GCMoonComponentVillage(GCMoonComponentVillageStartPiece par1ComponentVillageStartPiece, int par2)
     {
