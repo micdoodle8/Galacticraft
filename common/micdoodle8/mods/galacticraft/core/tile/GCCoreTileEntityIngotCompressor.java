@@ -221,7 +221,7 @@ public class GCCoreTileEntityIngotCompressor extends TileEntity implements IInve
         super.readFromNBT(par1NBTTagCompound);
         this.processTicks = par1NBTTagCompound.getInteger("smeltingTicks");
         NBTTagList var2 = par1NBTTagCompound.getTagList("Items");
-        this.containingItems = new ItemStack[this.getSizeInventory()];
+        this.containingItems = new ItemStack[this.getSizeInventory() - this.compressingCraftMatrix.getSizeInventory()];
 
         for (int var3 = 0; var3 < var2.tagCount(); ++var3)
         {
@@ -232,6 +232,10 @@ public class GCCoreTileEntityIngotCompressor extends TileEntity implements IInve
             {
                 this.containingItems[var5] = ItemStack.loadItemStackFromNBT(var4);
             }
+            else if (var5 < this.containingItems.length + this.compressingCraftMatrix.getSizeInventory())
+            {
+                this.compressingCraftMatrix.setInventorySlotContents(var5 - this.containingItems.length, ItemStack.loadItemStackFromNBT(var4));
+            }
         }
     }
 
@@ -241,14 +245,26 @@ public class GCCoreTileEntityIngotCompressor extends TileEntity implements IInve
         super.writeToNBT(par1NBTTagCompound);
         par1NBTTagCompound.setInteger("smeltingTicks", this.processTicks);
         NBTTagList var2 = new NBTTagList();
+        int var3;
 
-        for (int var3 = 0; var3 < this.containingItems.length; ++var3)
+        for (var3 = 0; var3 < this.containingItems.length; ++var3)
         {
             if (this.containingItems[var3] != null)
             {
                 NBTTagCompound var4 = new NBTTagCompound();
                 var4.setByte("Slot", (byte) var3);
                 this.containingItems[var3].writeToNBT(var4);
+                var2.appendTag(var4);
+            }
+        }
+        
+        for (var3 = 0; var3 < this.compressingCraftMatrix.getSizeInventory(); ++var3)
+        {
+            if (this.compressingCraftMatrix.getStackInSlot(var3) != null)
+            {
+                NBTTagCompound var4 = new NBTTagCompound();
+                var4.setByte("Slot", (byte) (var3 + this.containingItems.length));
+                this.compressingCraftMatrix.getStackInSlot(var3).writeToNBT(var4);
                 var2.appendTag(var4);
             }
         }
@@ -259,18 +275,28 @@ public class GCCoreTileEntityIngotCompressor extends TileEntity implements IInve
     @Override
     public int getSizeInventory()
     {
-        return this.containingItems.length;
+        return this.containingItems.length + this.compressingCraftMatrix.getSizeInventory();
     }
 
     @Override
     public ItemStack getStackInSlot(int par1)
     {
+        if (par1 >= this.containingItems.length)
+        {
+            return this.compressingCraftMatrix.getStackInSlot(par1 - this.containingItems.length);
+        }
+        
         return this.containingItems[par1];
     }
 
     @Override
     public ItemStack decrStackSize(int par1, int par2)
     {
+        if (par1 >= this.containingItems.length)
+        {
+            return this.compressingCraftMatrix.decrStackSize(par1 - this.containingItems.length, par2);
+        }
+        
         if (this.containingItems[par1] != null)
         {
             ItemStack var3;
@@ -302,6 +328,11 @@ public class GCCoreTileEntityIngotCompressor extends TileEntity implements IInve
     @Override
     public ItemStack getStackInSlotOnClosing(int par1)
     {
+        if (par1 >= this.containingItems.length)
+        {
+            return this.compressingCraftMatrix.getStackInSlotOnClosing(par1 - this.containingItems.length);
+        }
+        
         if (this.containingItems[par1] != null)
         {
             ItemStack var2 = this.containingItems[par1];
@@ -317,11 +348,18 @@ public class GCCoreTileEntityIngotCompressor extends TileEntity implements IInve
     @Override
     public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
     {
-        this.containingItems[par1] = par2ItemStack;
-
-        if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())
+        if (par1 >= this.containingItems.length)
         {
-            par2ItemStack.stackSize = this.getInventoryStackLimit();
+            this.compressingCraftMatrix.setInventorySlotContents(par1 - this.containingItems.length, par2ItemStack);
+        }
+        else
+        {
+            this.containingItems[par1] = par2ItemStack;
+
+            if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())
+            {
+                par2ItemStack.stackSize = this.getInventoryStackLimit();
+            }
         }
     }
 
