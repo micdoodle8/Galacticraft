@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.util.Icon;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import universalelectricity.core.vector.Vector3;
@@ -23,6 +24,7 @@ public class GCCoreBlockMulti extends BlockMulti
         this.setStepSound(Block.soundMetalFootstep);
         this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
+        this.setResistance(1000000000000000.0F);
     }
 
     @Override
@@ -71,6 +73,12 @@ public class GCCoreBlockMulti extends BlockMulti
         {
             this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         }
+    }
+
+    @Override
+    public boolean canDropFromExplosion(Explosion par1Explosion)
+    {
+        return false;
     }
 
     @Override
