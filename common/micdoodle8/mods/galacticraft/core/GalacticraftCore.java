@@ -40,6 +40,7 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityZombie;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.event.GCCoreEvents;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBasic;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlock;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.network.GCCoreConnectionHandler;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerServer;
@@ -207,6 +208,7 @@ public class GalacticraftCore
         {
             GCCoreBlocks.crudeOilStill = new GCCoreBlockCrudeOil(GCCoreConfigManager.idBlockCrudeOilStill, "crudeOilStill");
             GalacticraftCore.fluidOil.setBlockID(GCCoreConfigManager.idBlockCrudeOilStill);
+            GameRegistry.registerBlock(GCCoreBlocks.crudeOilStill, GCCoreItemBlock.class, GCCoreBlocks.crudeOilStill.getUnlocalizedName(), GalacticraftCore.MODID);
         }
         else
         {
