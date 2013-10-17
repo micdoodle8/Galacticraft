@@ -206,13 +206,13 @@ public class GalacticraftCore
 
         if (GalacticraftCore.fluidOil.getBlockID() == -1)
         {
-            GCCoreBlocks.crudeOilStill = new GCCoreBlockCrudeOil(GCCoreConfigManager.idBlockCrudeOilStill, "crudeOilStill");
-            GalacticraftCore.fluidOil.setBlockID(GCCoreConfigManager.idBlockCrudeOilStill);
+            GCCoreBlocks.crudeOilStill = new GCCoreBlockCrudeOil(GCCoreConfigManager.idBlockCrudeOilStill, GalacticraftCore.fluidOil, "crudeOilStill");
             GameRegistry.registerBlock(GCCoreBlocks.crudeOilStill, GCCoreItemBlock.class, GCCoreBlocks.crudeOilStill.getUnlocalizedName(), GalacticraftCore.MODID);
+            GalacticraftCore.fluidOil.setBlockID(GCCoreBlocks.crudeOilStill);
         }
         else
         {
-            GCCoreBlocks.crudeOilStill = Block.blocksList[FluidRegistry.getFluidID("oil")];
+            GCCoreBlocks.crudeOilStill = Block.blocksList[GalacticraftCore.fluidOil.getBlockID()];
         }
 
         GCCoreBlocks.initBlocks();

@@ -8,6 +8,7 @@ import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidClassic;
+import net.minecraftforge.fluids.Fluid;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -18,9 +19,9 @@ public class GCCoreBlockCrudeOil extends BlockFluidClassic
     @SideOnly(Side.CLIENT)
     Icon flowingIcon;
 
-    public GCCoreBlockCrudeOil(int id, String assetName)
+    public GCCoreBlockCrudeOil(int id, Fluid fluid, String assetName)
     {
-        super(id, GalacticraftCore.fluidOil, Material.water);
+        super(id, fluid, Material.water);
         this.setQuantaPerBlock(3);
         this.setRenderPass(1);
         this.needsRandomTick = true;
