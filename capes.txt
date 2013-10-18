@@ -28,4 +28,5 @@ Yangjo123:capeLime
 Made_This_Name:capeLime
 spamenigma:capeLime
 EzerArch:capeLime
-GiantWaffle:capeLime
+GiantWaffle:capeOrange
+Lastnecron:capeLightBlue
