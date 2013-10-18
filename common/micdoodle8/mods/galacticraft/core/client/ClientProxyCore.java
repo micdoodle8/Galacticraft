@@ -1,5 +1,10 @@
 package micdoodle8.mods.galacticraft.core.client;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -174,6 +179,7 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -299,39 +305,34 @@ public class ClientProxyCore extends CommonProxyCore
         RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererCraftingTable(ClientProxyCore.craftingTableID));
         ClientProxyCore.fullLandingPadRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererLandingPad(ClientProxyCore.fullLandingPadRenderID));
-
-        String capeString = "https://dl.dropboxusercontent.com/s/zmhn8i0w1v152ei/cape.png?token_hash=AAFuDqDVxs_z9SK3h3DgrOp8W9SFiS-9-VFxapHsbCs4wA&dl=1";
-        ClientProxyCore.capeMap.put("JTE", capeString);
-        ClientProxyCore.capeMap.put("ajmski", capeString);
-        ClientProxyCore.capeMap.put("Azeryuu", capeString);
-        ClientProxyCore.capeMap.put("bob10234", capeString);
-        ClientProxyCore.capeMap.put("crazybob84", capeString);
-        ClientProxyCore.capeMap.put("CrimsonKMR", capeString);
-        ClientProxyCore.capeMap.put("_lime", capeString);
-        ClientProxyCore.capeMap.put("Hachipatas", capeString);
-        ClientProxyCore.capeMap.put("Happypancakes56", capeString);
-        ClientProxyCore.capeMap.put("hosker666", capeString);
-        ClientProxyCore.capeMap.put("iTyroul", capeString);
-        ClientProxyCore.capeMap.put("kingdonflon", capeString);
-        ClientProxyCore.capeMap.put("kungfu_dragon", capeString);
-        ClientProxyCore.capeMap.put("Lewis_McReu", capeString);
-        ClientProxyCore.capeMap.put("mrgreaper", capeString);
-        ClientProxyCore.capeMap.put("NukeMaster2009", capeString);
-        ClientProxyCore.capeMap.put("odriew", capeString);
-        ClientProxyCore.capeMap.put("PureTryOut", capeString);
-        ClientProxyCore.capeMap.put("ramenators", capeString);
-        ClientProxyCore.capeMap.put("micdoodle8", capeString);
-        ClientProxyCore.capeMap.put("randhope21", capeString);
-        ClientProxyCore.capeMap.put("smates", capeString);
-        ClientProxyCore.capeMap.put("SoaringChris137", capeString);
-        ClientProxyCore.capeMap.put("TeisAngel", capeString);
-        ClientProxyCore.capeMap.put("TerraGenome", capeString);
-        ClientProxyCore.capeMap.put("X_angelz_X", capeString);
-        ClientProxyCore.capeMap.put("Yangjo123", capeString);
-        ClientProxyCore.capeMap.put("Made_This_Name", capeString);
-        ClientProxyCore.capeMap.put("spamenigma", capeString);
-        ClientProxyCore.capeMap.put("EzerArch", capeString);
-        ClientProxyCore.capeMap.put("GiantWaffle", capeString);
+        
+        try
+        {
+            int timeout = 10000;
+            URL capeListUrl = new URL("https://raw.github.com/micdoodle8/Galacticraft/master/capes.txt");
+            URLConnection connection = capeListUrl.openConnection();
+            connection.setConnectTimeout(timeout);
+            connection.setReadTimeout(timeout);
+            InputStream stream = connection.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+            
+            String line;
+            while ((line = reader.readLine()) != null)
+            {
+                if ((line.contains(":")))
+                {
+                    int splitLocation = line.indexOf(":");
+                    String username = line.substring(0, splitLocation);
+                    String capeUrl = "https://raw.github.com/micdoodle8/Galacticraft/master/capes/" + line.substring(splitLocation + 1) + ".png";
+                    ClientProxyCore.capeMap.put(username, capeUrl);
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            FMLLog.severe("Error while setting up Galacticraft donor capes");
+            e.printStackTrace();
+        }
 
         if (Loader.isModLoaded("CoFHCore"))
         {
