@@ -145,11 +145,6 @@ public class ElectricIngotCompressorRecipeHandler extends TemplateRecipeHandler
         @Override
         public ArrayList<PositionedStack> getIngredients()
         {
-            if (ElectricIngotCompressorRecipeHandler.ticksPassed % 70 >= 53)
-            {
-                return new ArrayList<PositionedStack>();
-            }
-
             return this.input;
         }
 

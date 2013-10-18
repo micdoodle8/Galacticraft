@@ -23,7 +23,7 @@ import codechicken.nei.recipe.TemplateRecipeHandler;
 public class IngotCompressorRecipeHandler extends TemplateRecipeHandler
 {
     private static final ResourceLocation ingotCompressorTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/ingotCompressor.png");
-    int ticksPassed;
+    private static int ticksPassed;
     public static ArrayList<FuelPair> afuels;
     public static TreeSet<Integer> efuels;
 
@@ -152,7 +152,7 @@ public class IngotCompressorRecipeHandler extends TemplateRecipeHandler
     @Override
     public PositionedStack getResultStack(int recipe)
     {
-        if (this.ticksPassed % 70 >= 53)
+        if (IngotCompressorRecipeHandler.ticksPassed % 70 >= 53)
         {
             return this.arecipes.get(recipe).getResult();
         }
@@ -198,11 +198,6 @@ public class IngotCompressorRecipeHandler extends TemplateRecipeHandler
         @Override
         public ArrayList<PositionedStack> getIngredients()
         {
-            if (ElectricIngotCompressorRecipeHandler.ticksPassed % 70 >= 53)
-            {
-                return new ArrayList<PositionedStack>();
-            }
-
             return this.input;
         }
 
