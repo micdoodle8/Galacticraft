@@ -2,25 +2,14 @@ package micdoodle8.mods.galacticraft.moon.world.gen;
 
 import java.util.ArrayList;
 import java.util.Random;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.biome.WorldChunkManager;
 
 public class GCMoonComponentVillageStartPiece extends GCMoonComponentVillageWell
 {
     public WorldChunkManager worldChunkMngr;
-
-    /** Boolean that determines if the village is in a desert or not. */
-    public boolean inDesert;
-    public BiomeGenBase biome;
-
-    /** World terrain type, 0 for normal, 1 for flap map */
     public int terrainType;
     public GCMoonStructureVillagePieceWeight structVillagePieceWeight;
-
-    /**
-     * Contains List of all spawnable Structure Piece Weights. If no more Pieces
-     * of a type can be spawned, they are removed from this list
-     */
     public ArrayList<GCMoonStructureVillagePieceWeight> structureVillageWeightedPieceList;
     public ArrayList<Object> field_74932_i = new ArrayList<Object>();
     public ArrayList<Object> field_74930_j = new ArrayList<Object>();
@@ -33,10 +22,23 @@ public class GCMoonComponentVillageStartPiece extends GCMoonComponentVillageWell
         this.worldChunkMngr = par1WorldChunkManager;
         this.structureVillageWeightedPieceList = par6ArrayList;
         this.terrainType = par7;
-        final BiomeGenBase var8 = par1WorldChunkManager.getBiomeGenAt(par4, par5);
-        this.inDesert = var8 == BiomeGenBase.desert || var8 == BiomeGenBase.desertHills;
-        this.biome = var8;
         this.startPiece = this;
+    }
+    
+    @Override
+    protected void func_143012_a(NBTTagCompound nbt)
+    {
+        super.func_143012_a(nbt);
+
+        nbt.setInteger("TerrainType", this.terrainType);
+    }
+
+    @Override
+    protected void func_143011_b(NBTTagCompound nbt)
+    {
+        super.func_143011_b(nbt);
+        
+        this.terrainType = nbt.getInteger("TerrainType");
     }
 
     public WorldChunkManager getWorldChunkManager()

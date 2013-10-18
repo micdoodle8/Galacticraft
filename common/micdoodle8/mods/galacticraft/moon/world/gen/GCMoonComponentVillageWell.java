@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.block.Block;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -29,11 +30,23 @@ public class GCMoonComponentVillageWell extends GCMoonComponentVillage
             this.boundingBox = new StructureBoundingBox(par4, 64, par5, par4 + 6 - 1, 78, par5 + 6 - 1);
         }
     }
+    
+    @Override
+    protected void func_143012_a(NBTTagCompound nbt)
+    {
+        super.func_143012_a(nbt);
+        
+        nbt.setInteger("AvgGroundLevel", this.averageGroundLevel);
+    }
 
-    /**
-     * Initiates construction of the Structure Component picked, at the current
-     * Location of StructGen
-     */
+    @Override
+    protected void func_143011_b(NBTTagCompound nbt)
+    {
+        super.func_143011_b(nbt);
+        
+        this.averageGroundLevel = nbt.getInteger("AvgGroundLevel");
+    }
+    
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public void buildComponent(StructureComponent par1StructureComponent, List par2List, Random par3Random)

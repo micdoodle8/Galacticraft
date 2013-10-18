@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.moon.world.gen;
 import java.util.List;
 import java.util.Random;
 import net.minecraft.block.Block;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -20,6 +21,22 @@ public class GCMoonComponentVillageField extends GCMoonComponentVillage
         this.coordBaseMode = par5;
         this.boundingBox = par4StructureBoundingBox;
     }
+    
+    @Override
+    protected void func_143012_a(NBTTagCompound nbt)
+    {
+        super.func_143012_a(nbt);
+        
+        nbt.setInteger("AvgGroundLevel", this.averageGroundLevel);
+    }
+
+    @Override
+    protected void func_143011_b(NBTTagCompound nbt)
+    {
+        super.func_143011_b(nbt);
+        
+        this.averageGroundLevel = nbt.getInteger("AvgGroundLevel");
+    }
 
     @SuppressWarnings("rawtypes")
     public static GCMoonComponentVillageField func_74900_a(GCMoonComponentVillageStartPiece par0ComponentVillageStartPiece, List par1List, Random par2Random, int par3, int par4, int par5, int par6, int par7)
@@ -28,10 +45,6 @@ public class GCMoonComponentVillageField extends GCMoonComponentVillage
         return StructureComponent.findIntersecting(par1List, var8) == null ? new GCMoonComponentVillageField(par0ComponentVillageStartPiece, par7, par2Random, var8, par6) : null;
     }
 
-    /**
-     * second Part of Structure generating, this for example places Spiderwebs,
-     * Mob Spawners, it closes Mineshafts at the end, it adds Fences...
-     */
     @Override
     public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
     {
