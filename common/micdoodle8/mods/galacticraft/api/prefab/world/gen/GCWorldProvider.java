@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.api.prefab.world.gen;
 
 import java.lang.reflect.Constructor;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
-import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
@@ -182,18 +181,18 @@ public abstract class GCWorldProvider extends WorldProvider implements IGalactic
     @Override
     public boolean canRespawnHere()
     {
-        return !GCCoreConfigManager.forceOverworldRespawn;
+        return true;
     }
 
     @Override
     public String getWelcomeMessage()
     {
-        return "Entering Mars";
+        return "Entering " + this.getDimensionName();
     }
 
     @Override
     public String getDepartMessage()
     {
-        return "Leaving Mars";
+        return "Leaving " + this.getDimensionName();
     }
 }
