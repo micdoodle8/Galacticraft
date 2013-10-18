@@ -58,7 +58,7 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
 
     public static enum EnumAutoLaunch
     {
-        CARGO_IS_UNLOADED(0, "Cargo is Unloaded"), CARGO_IS_FULL(1, "Cargo is Full"), ROCKET_IS_FUELED(2, "Fully Fueled"), INSTANT(3, "Instantly"), TIME_10_SECONDS(4, "10 Seconds"), TIME_30_SECONDS(5, "30 Seconds"), TIME_1_MINUTE(6, "1 Minute");
+        CARGO_IS_UNLOADED(0, "Cargo is Unloaded"), CARGO_IS_FULL(1, "Cargo is Full"), ROCKET_IS_FUELED(2, "Fully Fueled"), INSTANT(3, "Instantly"), TIME_10_SECONDS(4, "10 Seconds"), TIME_30_SECONDS(5, "30 Seconds"), TIME_1_MINUTE(6, "1 Minute"), REDSTONE_SIGNAL(7, "Redstone Signal");
 
         private final int index;
         private String title;

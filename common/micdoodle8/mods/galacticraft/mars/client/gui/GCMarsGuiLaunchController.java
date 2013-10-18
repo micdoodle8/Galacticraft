@@ -118,7 +118,7 @@ public class GCMarsGuiLaunchController extends GuiContainer implements IDropboxC
         this.enableControllerButton = new GuiButton(0, var5 + 70 + 124 - 72, var6 + 16, 48, 20, "Enable");
         this.enablePadRemovalButton = new GCCoreGuiCheckbox(1, this, this.width / 2 - 78, var6 + 59, "Remove Pad");
         this.launchWhenCheckbox = new GCCoreGuiCheckbox(2, this, this.width / 2 - 78, var6 + 77, "Launch when: ");
-        this.dropdownTest = new GCCoreGuiDropdown(3, this, var5 + 95, var6 + 77, EnumAutoLaunch.CARGO_IS_UNLOADED.getTitle(), EnumAutoLaunch.CARGO_IS_FULL.getTitle(), EnumAutoLaunch.ROCKET_IS_FUELED.getTitle(), EnumAutoLaunch.INSTANT.getTitle(), EnumAutoLaunch.TIME_10_SECONDS.getTitle(), EnumAutoLaunch.TIME_30_SECONDS.getTitle(), EnumAutoLaunch.TIME_1_MINUTE.getTitle());
+        this.dropdownTest = new GCCoreGuiDropdown(3, this, var5 + 95, var6 + 77, EnumAutoLaunch.CARGO_IS_UNLOADED.getTitle(), EnumAutoLaunch.CARGO_IS_FULL.getTitle(), EnumAutoLaunch.ROCKET_IS_FUELED.getTitle(), EnumAutoLaunch.INSTANT.getTitle(), EnumAutoLaunch.TIME_10_SECONDS.getTitle(), EnumAutoLaunch.TIME_30_SECONDS.getTitle(), EnumAutoLaunch.TIME_1_MINUTE.getTitle(), EnumAutoLaunch.REDSTONE_SIGNAL.getTitle());
         this.frequency = new GCCoreGuiTextBox(4, this, var5 + 66, var6 + 16, 48, 20, "", true, 6);
         this.destinationFrequency = new GCCoreGuiTextBox(5, this, var5 + 122, var6 + 16 + 22, 48, 20, "", true, 6);
         this.buttonList.add(this.enableControllerButton);

@@ -324,6 +324,29 @@ public class GCMarsEntityCargoRocket extends EntitySpaceshipBase implements IRoc
                     break;
                 }
             }
+            
+            if (this.autoLaunchSetting == EnumAutoLaunch.REDSTONE_SIGNAL)
+            {
+                if (this.ticks % 5 == 0)
+                {
+                    if (this.getLandingPad() != null && this.getLandingPad().getConnectedTiles() != null)
+                    {
+                        for (ILandingPadAttachable tile : this.getLandingPad().getConnectedTiles())
+                        {
+                            if (this.worldObj.getBlockTileEntity(((TileEntity) tile).xCoord, ((TileEntity) tile).yCoord, ((TileEntity) tile).zCoord) != null && this.worldObj.getBlockTileEntity(((TileEntity) tile).xCoord, ((TileEntity) tile).yCoord, ((TileEntity) tile).zCoord) instanceof GCMarsTileEntityLaunchController)
+                            {
+                                if (tile instanceof GCMarsTileEntityLaunchController)
+                                {
+                                    if (this.worldObj.isBlockIndirectlyGettingPowered(((TileEntity) tile).xCoord, ((TileEntity) tile).yCoord, ((TileEntity) tile).zCoord))
+                                    {
+                                        this.autoLaunch();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
             this.lastAutoLaunchSetting = this.autoLaunchSetting;
         }
