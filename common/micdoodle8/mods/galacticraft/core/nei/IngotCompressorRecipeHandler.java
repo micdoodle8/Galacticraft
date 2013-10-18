@@ -64,14 +64,14 @@ public class IngotCompressorRecipeHandler extends TemplateRecipeHandler
         GuiDraw.changeTexture(IngotCompressorRecipeHandler.ingotCompressorTexture);
         GuiDraw.drawTexturedModalRect(20, 25, 18, 17, 137, 78);
 
-        if (this.ticksPassed % 70 > 26)
+        if (IngotCompressorRecipeHandler.ticksPassed % 70 > 26)
         {
             GuiDraw.drawTexturedModalRect(103, 36, 176, 0, 17, 13);
         }
 
-        GuiDraw.drawTexturedModalRect(79, 44, 176, 13, Math.min(this.ticksPassed % 70, 53), 17);
+        GuiDraw.drawTexturedModalRect(79, 44, 176, 13, Math.min(IngotCompressorRecipeHandler.ticksPassed % 70, 53), 17);
 
-        int yOffset = (int) Math.floor(this.ticksPassed % 48 * 0.29166666666666666666666666666667D);
+        int yOffset = (int) Math.floor(IngotCompressorRecipeHandler.ticksPassed % 48 * 0.29166666666666666666666666666667D);
 
         GuiDraw.drawTexturedModalRect(83, 35 + yOffset, 176, 30 + yOffset, 14, 14 - yOffset);
     }
@@ -79,7 +79,7 @@ public class IngotCompressorRecipeHandler extends TemplateRecipeHandler
     @Override
     public void onUpdate()
     {
-        this.ticksPassed += 1;
+        IngotCompressorRecipeHandler.ticksPassed += 1;
         super.onUpdate();
     }
 
@@ -234,7 +234,7 @@ public class IngotCompressorRecipeHandler extends TemplateRecipeHandler
         @Override
         public PositionedStack getOtherStack()
         {
-            return IngotCompressorRecipeHandler.afuels.get(IngotCompressorRecipeHandler.this.ticksPassed / 48 % IngotCompressorRecipeHandler.afuels.size()).stack;
+            return IngotCompressorRecipeHandler.afuels.get(IngotCompressorRecipeHandler.ticksPassed / 48 % IngotCompressorRecipeHandler.afuels.size()).stack;
         }
     }
 
