@@ -17,6 +17,7 @@ import micdoodle8.mods.galacticraft.api.world.IPlanet;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockCrudeOil;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
+import micdoodle8.mods.galacticraft.core.command.GCCoreCommandPlanetTeleport;
 import micdoodle8.mods.galacticraft.core.command.GCCoreCommandSpaceStationAddOwner;
 import micdoodle8.mods.galacticraft.core.command.GCCoreCommandSpaceStationRemoveOwner;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreOrbitTeleportType;
@@ -374,6 +375,7 @@ public class GalacticraftCore
         GalacticraftMoon.serverStarting(event);
         event.registerServerCommand(new GCCoreCommandSpaceStationAddOwner());
         event.registerServerCommand(new GCCoreCommandSpaceStationRemoveOwner());
+        event.registerServerCommand(new GCCoreCommandPlanetTeleport());
         WorldUtil.registerSpaceStations(event.getServer().worldServerForDimension(0).getSaveHandler().getMapFileFromName("dummy").getParentFile());
 
         for (ICelestialBody celestialBody : GalacticraftRegistry.getCelestialBodies())

@@ -328,5 +328,7 @@ dimension.Overworld.name=Overworld
 dimension.Moon.name=Moon
 dimension.Sun.name=Sun
 
+# COMMANDS
+commands.dimensionteleport=%s was sent into the atmosphere%s
 
 # </file>
