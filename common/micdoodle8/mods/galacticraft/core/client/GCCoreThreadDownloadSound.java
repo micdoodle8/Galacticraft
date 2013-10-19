@@ -21,6 +21,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -104,6 +105,7 @@ public class GCCoreThreadDownloadSound extends Thread
             }
         }
 
+        FMLCommonHandler.instance().updateResourcePackList();
         GCCoreTickHandlerClient.lastOpenGui = this.previousGui;
     }
 
