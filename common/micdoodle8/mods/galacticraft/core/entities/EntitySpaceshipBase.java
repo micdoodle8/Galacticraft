@@ -156,18 +156,18 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
     public void dropShipAsItem()
     {
-        if (this.getItemsDropped() == null || this.worldObj.isRemote)
+        if (this.worldObj.isRemote)
         {
             return;
         }
 
-        for (final ItemStack item : this.getItemsDropped())
+        for (final ItemStack item : this.getItemsDropped(new ArrayList<ItemStack>()))
         {
             this.entityDropItem(item, 0);
         }
     }
 
-    public abstract List<ItemStack> getItemsDropped();
+    public abstract List<ItemStack> getItemsDropped(List<ItemStack> droppedItemList);
 
     @Override
     public void performHurtAnimation()

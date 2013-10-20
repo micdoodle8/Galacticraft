@@ -56,30 +56,6 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
     public boolean launchSchedulingEnabled;
     public boolean requiresClientUpdate;
 
-    public static enum EnumAutoLaunch
-    {
-        CARGO_IS_UNLOADED(0, "Cargo is Unloaded"), CARGO_IS_FULL(1, "Cargo is Full"), ROCKET_IS_FUELED(2, "Fully Fueled"), INSTANT(3, "Instantly"), TIME_10_SECONDS(4, "10 Seconds"), TIME_30_SECONDS(5, "30 Seconds"), TIME_1_MINUTE(6, "1 Minute"), REDSTONE_SIGNAL(7, "Redstone Signal");
-
-        private final int index;
-        private String title;
-
-        private EnumAutoLaunch(int index, String title)
-        {
-            this.index = index;
-            this.title = title;
-        }
-
-        public int getIndex()
-        {
-            return this.index;
-        }
-
-        public String getTitle()
-        {
-            return this.title;
-        }
-    }
-
     public GCMarsTileEntityLaunchController()
     {
         super(GCMarsTileEntityLaunchController.WATTS_PER_TICK, 50);
@@ -557,5 +533,10 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
         {
             this.destFrequencyValid = false;
         }
+    }
+
+    public boolean validFrequency()
+    {
+        return !this.getDisabled(0) && this.getEnergyStored() > 0 && this.frequencyValid && this.destFrequencyValid;
     }
 }

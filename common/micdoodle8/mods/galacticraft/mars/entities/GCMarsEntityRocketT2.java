@@ -372,10 +372,9 @@ public class GCMarsEntityRocketT2 extends EntityTieredRocket implements IInvento
     }
 
     @Override
-    public List<ItemStack> getItemsDropped()
+    public List<ItemStack> getItemsDropped(List<ItemStack> droppedItems)
     {
-        final List<ItemStack> items = new ArrayList<ItemStack>();
-        items.add(new ItemStack(GCMarsItems.spaceship, 1, this.rocketType.getIndex()));
+        droppedItems.add(new ItemStack(GCMarsItems.spaceship, 1, this.rocketType.getIndex()));
 
         if (this.cargoItems != null)
         {
@@ -383,12 +382,12 @@ public class GCMarsEntityRocketT2 extends EntityTieredRocket implements IInvento
             {
                 if (item != null)
                 {
-                    items.add(item);
+                    droppedItems.add(item);
                 }
             }
         }
 
-        return items;
+        return droppedItems;
     }
 
     @Override
