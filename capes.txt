@@ -31,3 +31,4 @@ EzerArch:capeBlue
 GiantWaffle:capeOrange
 Lastnecron:capeLightBlue
 WetToast:capeBlue
+Devsio:capeOrange
