@@ -60,15 +60,17 @@ public class GCCoreTileEntityLandingPad extends TileEntityMulti implements IMult
 
             HashSet<ILandingPadAttachable> copySet = new HashSet<ILandingPadAttachable>(this.connectedTiles);
 
-            for (ILandingPadAttachable tile : copySet)
+            for (ILandingPadAttachable tile : this.connectedTiles)
             {
                 final TileEntity newTile = this.worldObj.getBlockTileEntity(((TileEntity) tile).xCoord, ((TileEntity) tile).yCoord, ((TileEntity) tile).zCoord);
 
                 if (newTile == null || !(newTile instanceof ILandingPadAttachable) || !((ILandingPadAttachable) newTile).canAttachToLandingPad(this.worldObj, this.xCoord, this.yCoord, this.zCoord))
                 {
-                    this.connectedTiles.remove(newTile);
+                    copySet.remove(newTile);
                 }
             }
+            
+            this.connectedTiles = copySet;
 
             final List<?> list = this.worldObj.getEntitiesWithinAABB(IFuelable.class, AxisAlignedBB.getAABBPool().getAABB(this.xCoord - 0.5D, this.yCoord, this.zCoord - 0.5D, this.xCoord + 0.5D, this.yCoord + 5, this.zCoord + 0.5D));
 
