@@ -105,7 +105,6 @@ public class GCCoreThreadDownloadSound extends Thread
             }
         }
 
-        FMLCommonHandler.instance().updateResourcePackList();
         GCCoreTickHandlerClient.lastOpenGui = this.previousGui;
     }
 
