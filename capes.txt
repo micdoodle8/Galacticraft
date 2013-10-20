@@ -13,7 +13,7 @@ iTyroul:capeLime
 kingdonflon:capeLime
 kungfu_dragon:capeLime
 Lewis_McReu:capeLime
-mrgreaper:capeLime
+mrgreaper:capeLightGray
 NukeMaster2009:capeLime
 odriew:capeLime
 PureTryOut:capeLime
