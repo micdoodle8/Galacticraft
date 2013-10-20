@@ -30,3 +30,4 @@ spamenigma:capeLime
 EzerArch:capeLime
 GiantWaffle:capeOrange
 Lastnecron:capeLightBlue
+WetToast:capeBlue
