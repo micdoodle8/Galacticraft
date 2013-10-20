@@ -3,7 +3,7 @@
 # GENERAL ITEMS
 item.meteoricIronRaw.name=Необработанное метеоритное железо
 item.meteoric_iron_ingot.name=Слиток метеоритного железа
-item.meteoric_iron_plate.name=Покрытие из метеоритного железа
+item.compressedMeteoricIron.name=Сжатое метеоритное железо
 
 # FOOD
 item.cheeseCurd.name=Сырок
