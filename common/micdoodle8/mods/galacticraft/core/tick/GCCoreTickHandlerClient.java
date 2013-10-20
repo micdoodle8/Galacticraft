@@ -174,7 +174,7 @@ public class GCCoreTickHandlerClient implements ITickHandler
             {
                 FMLCommonHandler.instance().updateResourcePackList();
                 
-                if (!(GCCoreTickHandlerClient.lastOpenGui instanceof GCCoreGuiDownloadingSounds))
+                if (FMLClientHandler.instance().getClient().currentScreen instanceof GCCoreGuiDownloadingSounds)
                 {
                     FMLLog.info("Setting screen " + GCCoreTickHandlerClient.lastOpenGui);
                     FMLClientHandler.instance().getClient().displayGuiScreen(GCCoreTickHandlerClient.lastOpenGui);
