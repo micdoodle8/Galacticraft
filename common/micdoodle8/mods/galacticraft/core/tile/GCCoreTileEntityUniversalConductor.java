@@ -109,25 +109,27 @@ public abstract class GCCoreTileEntityUniversalConductor extends TileEntityCondu
 
         return this.adjacentConnections;
     }
-
-    /*
-     * @Override public boolean canUpdate() { return !this.isAddedToEnergyNet; }
-     */
+    
+    @Override 
+    public boolean canUpdate() 
+    {
+        return true;
+    }
 
     @Override
     public void updateEntity()
     {
-        if (!this.worldObj.isRemote)
+        if (!this.isAddedToEnergyNet)
         {
-            if (!this.isAddedToEnergyNet)
+            if (!this.worldObj.isRemote)
             {
                 if (Compatibility.isIndustrialCraft2Loaded())
                 {
                     this.initIC();
                 }
-
-                this.isAddedToEnergyNet = true;
             }
+            
+            this.isAddedToEnergyNet = true;
         }
     }
 
