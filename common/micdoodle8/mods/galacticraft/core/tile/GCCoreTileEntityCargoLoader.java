@@ -22,7 +22,7 @@ import com.google.common.io.ByteArrayDataInput;
 public class GCCoreTileEntityCargoLoader extends GCCoreTileEntityElectric implements IInventory, ISidedInventory, ICargoEntity, ILandingPadAttachable
 {
     private ItemStack[] containingItems = new ItemStack[15];
-    public static final float WATTS_PER_TICK = 0.2F;
+    public static final float WATTS_PER_TICK = 0.075F;
     public boolean outOfItems;
     public boolean targetFull;
     public boolean targetNoInventory;
