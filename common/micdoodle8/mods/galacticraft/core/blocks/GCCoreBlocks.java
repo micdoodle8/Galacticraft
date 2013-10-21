@@ -13,7 +13,9 @@ import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockMachine;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockSolar;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
@@ -146,6 +148,12 @@ public class GCCoreBlocks
         GCCoreBlocks.hiddenBlocks.add(GCCoreBlocks.landingPadFull.blockID);
         GCCoreBlocks.hiddenBlocks.add(GCCoreBlocks.fakeBlock.blockID);
         GCCoreBlocks.hiddenBlocks.add(GCCoreBlocks.spaceStationBase.blockID);
+        
+        OreDictionary.registerOre("oreCopper", new ItemStack(GCCoreBlocks.decorationBlocks, 1, 5));
+        OreDictionary.registerOre("oreTin", new ItemStack(GCCoreBlocks.decorationBlocks, 1, 6));
+        OreDictionary.registerOre("oreAluminum", new ItemStack(GCCoreBlocks.decorationBlocks, 1, 7));
+        OreDictionary.registerOre("oreAluminium", new ItemStack(GCCoreBlocks.decorationBlocks, 1, 7));
+        OreDictionary.registerOre("oreSilicon", new ItemStack(GCCoreBlocks.decorationBlocks, 1, 8));
 
         GCCoreBlocks.setHarvestLevels();
         GCCoreBlocks.registerBlocks();
