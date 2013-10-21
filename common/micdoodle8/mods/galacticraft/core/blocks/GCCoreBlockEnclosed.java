@@ -28,7 +28,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
 
     public enum EnumEnclosedBlock
     {
-        OXYGENPIPE(1, -1, null, "enclosed_oxygen_pipe"), IC2_COPPER_CABLE(2, 0, null, "enclosed_copper_cable"), IC2_GOLD_CABLE(3, 3, null, "enclosed_gold_cable"), IC2_HV_CABLE(4, 6, null, "enclosed_hv_cable"), IC2_GLASS_FIBRE_CABLE(5, 9, null, "enclosed_glassfibre_cable"), IC2_LV_CABLE(6, 10, null, "enclosed_lv_cable"), BC_ITEM_STONEPIPE(7, -1, "PipeItemsStone", "enclosed_itempipe_stone"), BC_ITEM_COBBLESTONEPIPE(8, -1, "PipeItemsCobblestone", "enclosed_itempipe_cobblestone"), BC_FLUIDS_STONEPIPE(9, -1, "PipeFluidsStone", "enclosed_liquidpipe_stone"), BC_FLUIDS_COBBLESTONEPIPE(10, -1, "PipeFluidsCobblestone", "enclosed_liquidpipe_cobblestone"), BC_POWER_STONEPIPE(11, -1, "PipePowerStone", "enclosed_powerpipe_stone"), BC_POWER_GOLDPIPE(12, -1, "PipePowerGold", "enclosed_powerpipe_gold"), ALUMINUM_WIRE(14, -1, null, "enclosed_aluminum_wire"), ALUMINUM_WIRE_HEAVY(15, -1, null, "enclosed_heavy_aluminum_wire");
+        OXYGENPIPE(1, -1, null, "enclosed_oxygen_pipe"), IC2_COPPER_CABLE(2, 0, null, "enclosed_copper_cable"), IC2_GOLD_CABLE(3, 3, null, "enclosed_gold_cable"), IC2_HV_CABLE(4, 6, null, "enclosed_hv_cable"), IC2_GLASS_FIBRE_CABLE(5, 9, null, "enclosed_glassfibre_cable"), IC2_LV_CABLE(6, 10, null, "enclosed_lv_cable"), BC_ITEM_STONEPIPE(7, -1, "PipeItemsStone", "enclosed_itempipe_stone"), BC_ITEM_COBBLESTONEPIPE(8, -1, "PipeItemsCobblestone", "enclosed_itempipe_cobblestone"), BC_FLUIDS_STONEPIPE(9, -1, "PipeFluidsStone", "enclosed_liquidpipe_stone"), BC_FLUIDS_COBBLESTONEPIPE(10, -1, "PipeFluidsCobblestone", "enclosed_liquidpipe_cobblestone"), BC_POWER_STONEPIPE(11, -1, "PipePowerStone", "enclosed_powerpipe_stone"), BC_POWER_GOLDPIPE(12, -1, "PipePowerGold", "enclosed_powerpipe_gold"), ME_CABLE(13, -1, null, "enclosed_me_cable"), ALUMINUM_WIRE(14, -1, null, "enclosed_aluminum_wire"), ALUMINUM_WIRE_HEAVY(15, -1, null, "enclosed_heavy_aluminum_wire");
 
         int metadata;
         int ic2CableMeta;
@@ -114,6 +114,11 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
             par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.BC_POWER_STONEPIPE.getMetadata()));
             par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.BC_POWER_GOLDPIPE.getMetadata()));
         }
+
+        if (GCCoreCompatibilityManager.isAppEngLoaded())
+        {
+            par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.ME_CABLE.getMetadata()));
+        }
     }
 
     @Override
@@ -188,6 +193,9 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
             }
         }
         else if (metadata <= EnumEnclosedBlock.BC_POWER_GOLDPIPE.getMetadata())
+        {
+        }
+        else if (metadata <= EnumEnclosedBlock.ME_CABLE.getMetadata())
         {
         }
         else if (metadata <= EnumEnclosedBlock.ALUMINUM_WIRE.getMetadata())
@@ -282,6 +290,13 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
                 }
             }
         }
+        else if (metadata <= EnumEnclosedBlock.ME_CABLE.getMetadata())
+        {
+            if (GCCoreCompatibilityManager.isAppEngLoaded())
+            {
+                world.markBlockForUpdate(x, y, z);
+            }
+        }
         else if (metadata <= EnumEnclosedBlock.ALUMINUM_WIRE.getMetadata())
         {
             if (tileEntity instanceof IConductor)
@@ -345,7 +360,6 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
         {
             if (GCCoreCompatibilityManager.isBCraftLoaded())
             {
-
                 try
                 {
                     Class<?> clazz = Class.forName("buildcraft.transport.TileGenericPipe");
@@ -365,6 +379,21 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
                     constructor.setAccessible(true);
 
                     return (TileEntity) constructor.newInstance();
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+        else if (metadata <= EnumEnclosedBlock.ME_CABLE.getMetadata())
+        {
+            if (GCCoreCompatibilityManager.isAppEngLoaded())
+            {
+                try
+                {
+                    Class<?> clazz = Class.forName("appeng.me.tile.TileCable");
+                    return (TileEntity) clazz.newInstance();
                 }
                 catch (Exception e)
                 {

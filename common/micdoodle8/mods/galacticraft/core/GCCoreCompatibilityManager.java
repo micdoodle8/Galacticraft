@@ -10,6 +10,7 @@ public class GCCoreCompatibilityManager
     private static boolean modTELoaded;
     private static boolean modAetherIILoaded;
     private static boolean modBasicComponentsLoaded;
+    private static boolean modAppEngLoaded;
 
     public static void checkForCompatibleMods()
     {
@@ -42,6 +43,11 @@ public class GCCoreCompatibilityManager
         {
             GCCoreCompatibilityManager.modBasicComponentsLoaded = true;
         }
+
+        if (Loader.isModLoaded("AppliedEnergistics"))
+        {
+            GCCoreCompatibilityManager.modAppEngLoaded = true;
+        }
     }
 
     public static boolean isIc2Loaded()
@@ -72,5 +78,10 @@ public class GCCoreCompatibilityManager
     public static boolean isBCLoaded()
     {
         return GCCoreCompatibilityManager.modBasicComponentsLoaded;
+    }
+
+    public static boolean isAppEngLoaded()
+    {
+        return GCCoreCompatibilityManager.modAppEngLoaded;
     }
 }
