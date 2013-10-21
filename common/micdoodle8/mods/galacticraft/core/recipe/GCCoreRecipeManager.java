@@ -192,8 +192,6 @@ public class GCCoreRecipeManager
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.aluminumWire, 6), new Object[] { "WWW", "CCC", "WWW", 'W', Block.cloth, 'C', "ingotAluminum" });
 
-        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.aluminumWire, 6), new Object[] { "WWW", "CCC", "WWW", 'W', Block.cloth, 'C', "ingotAluminium" });
-
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.aluminumWire, 1, 1), new Object[] { "X", "Y", "Z", 'X', Block.cloth, 'Y', new ItemStack(GCCoreBlocks.aluminumWire, 1), 'Z', "ingotAluminum" });
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.aluminumWire, 1, 1), new Object[] { "Z", "Y", "X", 'X', Block.cloth, 'Y', new ItemStack(GCCoreBlocks.aluminumWire, 1), 'Z', "ingotAluminum" });
