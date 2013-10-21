@@ -62,6 +62,8 @@ public class UniversalNetwork extends ElectricityNetwork
 
 				if (totalEnergyRequest > 0)
 				{
+					boolean markRefresh = false;
+					
 					for (TileEntity tileEntity : avaliableEnergyTiles)
 					{
 						if (tileEntity != null && !tileEntity.isInvalid())
@@ -132,9 +134,13 @@ public class UniversalNetwork extends ElectricityNetwork
 						}
 						else
 						{
-							this.refresh();
-							break;
+							markRefresh = true;
 						}
+					}
+					
+					if(markRefresh)
+					{
+						this.refresh();
 					}
 				}
 			}
