@@ -53,6 +53,9 @@ public class GCCoreItemBlockEnclosedBlock extends ItemBlock
         case 6:
             name = "lvCable";
             break;
+        case 13:
+            name = "meCable";
+            break;
         case 14:
             name = "aluminumWire";
             break;
