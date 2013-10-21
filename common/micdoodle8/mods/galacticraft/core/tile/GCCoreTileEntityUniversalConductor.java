@@ -174,7 +174,7 @@ public abstract class GCCoreTileEntityUniversalConductor extends TileEntityCondu
     {
         if (this.isAddedToEnergyNet && this.worldObj != null)
         {
-            if (Compatibility.isIndustrialCraft2Loaded())
+            if (!this.worldObj.isRemote && Compatibility.isIndustrialCraft2Loaded())
             {
                 try
                 {
