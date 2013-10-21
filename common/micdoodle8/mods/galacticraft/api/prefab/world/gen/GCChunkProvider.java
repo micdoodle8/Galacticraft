@@ -18,10 +18,7 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderGenerate;
 
 /**
- * Copyright 2012-2013, micdoodle8
- * 
- * All rights reserved.
- * 
+ * Do not include this prefab class in your released mod download.
  */
 public abstract class GCChunkProvider extends ChunkProviderGenerate
 {

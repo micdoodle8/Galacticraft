@@ -4,6 +4,9 @@ import java.util.Random;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 
+/**
+ * Do not include this prefab class in your released mod download.
+ */
 public class GCCoreMapGenBaseMeta
 {
     /** The number of Chunks to gen-check in any given direction. */

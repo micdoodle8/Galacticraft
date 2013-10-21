@@ -13,6 +13,9 @@ import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
 
+/**
+ * Do not include this prefab class in your released mod download.
+ */
 public abstract class GCWorldChunkManager extends WorldChunkManager
 {
     private GenLayer genBiomes;

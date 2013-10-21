@@ -12,6 +12,9 @@ import net.minecraft.world.chunk.IChunkProvider;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+/**
+ * Do not include this prefab class in your released mod download.
+ */
 public abstract class GCWorldProvider extends WorldProvider implements IGalacticraftWorldProvider
 {
     public abstract Class<? extends GCChunkProvider> getChunkProviderClass();

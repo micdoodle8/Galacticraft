@@ -30,6 +30,9 @@ import net.minecraftforge.fluids.FluidTank;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.Loader;
 
+/**
+ * Do not include this prefab class in your released mod download.
+ */
 public abstract class EntityTieredRocket extends EntitySpaceshipBase implements IRocketType, IDockable, IInventory
 {
     public FluidTank spaceshipFuelTank = new FluidTank(this.getFuelTankCapacity());

@@ -28,6 +28,9 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+/**
+ * Do not include this prefab class in your released mod download.
+ */
 public abstract class EntitySpaceshipBase extends Entity implements IPacketReceiver
 {
     public static enum EnumLaunchPhase

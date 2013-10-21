@@ -35,6 +35,9 @@ import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
 
+/**
+ * Do not include this prefab class in your released mod download.
+ */
 public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IDockable, IInventory
 {
     public FluidTank fuelTank = new FluidTank(this.getFuelTankCapacity());
