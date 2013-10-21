@@ -32,3 +32,4 @@ GiantWaffle:capeOrange
 Lastnecron:capeLightBlue
 WetToast:capeBlue
 Devsio:capeOrange
+Tyrantelf:capeOrange
