@@ -16,7 +16,7 @@ import codechicken.nei.recipe.TemplateRecipeHandler;
 
 public class BuggyRecipeHandler extends TemplateRecipeHandler
 {
-    private static final ResourceLocation buggyGuiTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/buggybench.png");
+    private static final ResourceLocation buggyGuiTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/buggybench.png");
 
     public String getRecipeId()
     {

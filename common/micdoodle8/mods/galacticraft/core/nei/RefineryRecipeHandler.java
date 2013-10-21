@@ -16,7 +16,7 @@ import codechicken.nei.recipe.TemplateRecipeHandler;
 
 public class RefineryRecipeHandler extends TemplateRecipeHandler
 {
-    private static final ResourceLocation refineryGuiTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/refinery.png");
+    private static final ResourceLocation refineryGuiTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/refinery.png");
     int ticksPassed;
 
     public String getRecipeId()

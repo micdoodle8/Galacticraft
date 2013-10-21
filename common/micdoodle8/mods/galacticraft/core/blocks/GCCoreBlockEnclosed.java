@@ -83,7 +83,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
         this.setResistance(0.2F);
         this.setHardness(0.4f);
         this.setStepSound(Block.soundStoneFootstep);
-        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
     }
 
@@ -147,10 +147,10 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
 
         for (int i = 0; i < EnumEnclosedBlock.values().length; i++)
         {
-            this.enclosedIcons[EnumEnclosedBlock.values()[i].getMetadata()] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + EnumEnclosedBlock.values()[i].getTexture());
+            this.enclosedIcons[EnumEnclosedBlock.values()[i].getMetadata()] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + EnumEnclosedBlock.values()[i].getTexture());
         }
 
-        this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "" + EnumEnclosedBlock.OXYGENPIPE.getTexture());
+        this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "" + EnumEnclosedBlock.OXYGENPIPE.getTexture());
     }
 
     @Override

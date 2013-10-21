@@ -21,8 +21,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCCoreOverlaySensorGlasses extends GCCoreOverlay
 {
-    private static final ResourceLocation hudTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/hud.png");
-    private static final ResourceLocation indicatorTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/indicator.png");
+    private static final ResourceLocation hudTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/hud.png");
+    private static final ResourceLocation indicatorTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/indicator.png");
 
     private static Minecraft minecraft = FMLClientHandler.instance().getClient();
 

@@ -25,7 +25,7 @@ public class GCCoreBlockOxygenDetector extends BlockContainer implements ITileEn
         super(id, Material.iron);
         this.setHardness(1.0F);
         this.setStepSound(Block.soundStoneFootstep);
-        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
     }
 
@@ -33,8 +33,8 @@ public class GCCoreBlockOxygenDetector extends BlockContainer implements ITileEn
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.iconTop = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_blank");
-        this.iconSide = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "detector_side");
+        this.iconTop = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_blank");
+        this.iconSide = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "detector_side");
     }
 
     @Override

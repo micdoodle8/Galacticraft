@@ -141,7 +141,7 @@ public class GCCorePacketHandlerClient implements IPacketHandler
             ClientProxyCore.playersUsingParachutes.remove(packetReadout[0]);
             break;
         case GEAR_PARACHUTETEX_ADD:
-            ClientProxyCore.parachuteTextures.put((String) packetReadout[0], new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/parachute/" + (String) packetReadout[1] + ".png"));
+            ClientProxyCore.parachuteTextures.put((String) packetReadout[0], new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/parachute/" + (String) packetReadout[1] + ".png"));
             break;
         case GEAR_PARACHUTETEX_REMOVE:
             ClientProxyCore.parachuteTextures.remove(packetReadout[0]);
@@ -386,13 +386,13 @@ public class GCCorePacketHandlerClient implements IPacketHandler
             GCCoreTickHandlerClient.zoom((Integer) packetReadout[0] == 0 ? 4.0F : 15.0F);
             break;
         case PLAY_SOUND_BOSS_DEATH:
-            player.playSound("galacticraft.entity.bossdeath", 10.0F, 0.8F);
+            player.playSound(GalacticraftCore.ASSET_PREFIX + "entity.bossdeath", 10.0F, 0.8F);
             break;
         case PLAY_SOUND_EXPLODE:
             player.playSound("random.explode", 10.0F, 0.7F);
             break;
         case PLAY_SOUND_BOSS_LAUGH:
-            player.playSound("galacticraft.entity.bosslaugh", 10.0F, 0.2F);
+            player.playSound(GalacticraftCore.ASSET_PREFIX + "entity.bosslaugh", 10.0F, 0.2F);
             break;
         case PLAY_SOUND_BOW:
             player.playSound("random.bow", 10.0F, 0.2F);

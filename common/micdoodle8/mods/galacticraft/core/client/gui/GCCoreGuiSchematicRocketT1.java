@@ -12,7 +12,7 @@ import org.lwjgl.opengl.GL11;
 
 public class GCCoreGuiSchematicRocketT1 extends GCCoreGuiContainer implements ISchematicResultPage
 {
-    private static final ResourceLocation rocketBenchTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/rocketbench.png");
+    private static final ResourceLocation rocketBenchTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/rocketbench.png");
 
     private GuiButton backButton;
     private int pageIndex;

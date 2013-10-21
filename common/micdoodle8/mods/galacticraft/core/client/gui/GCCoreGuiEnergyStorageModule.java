@@ -16,7 +16,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCCoreGuiEnergyStorageModule extends GuiContainer
 {
-    private static final ResourceLocation batteryBoxTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/battery_box.png");
+    private static final ResourceLocation batteryBoxTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/battery_box.png");
 
     private GCCoreTileEntityEnergyStorageModule tileEntity;
 

@@ -12,7 +12,7 @@ import org.lwjgl.opengl.GL11;
 
 public class GCCoreGuiSchematicBuggy extends GCCoreGuiContainer implements ISchematicResultPage
 {
-    private static final ResourceLocation buggyBenchTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/buggybench.png");
+    private static final ResourceLocation buggyBenchTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/buggybench.png");
 
     private int pageIndex;
 

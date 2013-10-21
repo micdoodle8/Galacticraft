@@ -25,7 +25,7 @@ import cpw.mods.fml.common.network.PacketDispatcher;
  */
 public class GCCoreGuiCargoUnloader extends GCCoreGuiContainer
 {
-    private static final ResourceLocation unloaderTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/cargo_loader.png");
+    private static final ResourceLocation unloaderTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/cargo_loader.png");
 
     private final GCCoreTileEntityCargoUnloader fuelLoader;
 

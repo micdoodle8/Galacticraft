@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import java.util.ArrayList;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
@@ -43,7 +44,7 @@ public class GCCoreTileEntityAirLock extends TileEntityAdvanced
 
                 if (this.worldObj.getBlockId(x, y, z) != GCCoreBlocks.airLockSeal.blockID)
                 {
-                    this.worldObj.playSoundEffect(x, y, z, "galacticraft.player.openairlock", 1.0F, 1.0F);
+                    this.worldObj.playSoundEffect(x, y, z, GalacticraftCore.ASSET_PREFIX + "player.openairlock", 1.0F, 1.0F);
                 }
 
                 if (this.protocol.minX != this.protocol.maxX)
@@ -85,7 +86,7 @@ public class GCCoreTileEntityAirLock extends TileEntityAdvanced
 
                 if (this.worldObj.getBlockId(x, y, z) != 0)
                 {
-                    this.worldObj.playSoundEffect(x, y, z, "galacticraft.player.closeairlock", 1.0F, 1.0F);
+                    this.worldObj.playSoundEffect(x, y, z, GalacticraftCore.ASSET_PREFIX + "player.closeairlock", 1.0F, 1.0F);
                 }
 
                 if (this.lastProtocol.minX != this.lastProtocol.maxX)

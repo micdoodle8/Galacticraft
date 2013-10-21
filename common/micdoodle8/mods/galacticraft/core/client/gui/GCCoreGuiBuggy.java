@@ -22,7 +22,7 @@ public class GCCoreGuiBuggy extends GCCoreGuiContainer
     {
         for (int i = 0; i < 4; i++)
         {
-            GCCoreGuiBuggy.sealerTexture[i] = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/buggy_" + i * 18 + ".png");
+            GCCoreGuiBuggy.sealerTexture[i] = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/buggy_" + i * 18 + ".png");
         }
     }
 

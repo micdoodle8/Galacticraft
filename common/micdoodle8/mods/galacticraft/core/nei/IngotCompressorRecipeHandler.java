@@ -22,7 +22,7 @@ import codechicken.nei.recipe.TemplateRecipeHandler;
 
 public class IngotCompressorRecipeHandler extends TemplateRecipeHandler
 {
-    private static final ResourceLocation ingotCompressorTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/ingotCompressor.png");
+    private static final ResourceLocation ingotCompressorTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/ingotCompressor.png");
     private static int ticksPassed;
     public static ArrayList<FuelPair> afuels;
     public static TreeSet<Integer> efuels;

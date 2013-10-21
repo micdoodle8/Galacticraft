@@ -16,7 +16,7 @@ public class GCCoreItemOxygenGear extends Item
     {
         super(id);
         this.setUnlocalizedName(assetName);
-        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
     }
 
     @Override

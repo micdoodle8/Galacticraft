@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.sounds;
 
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.client.audio.SoundManager;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.server.gui.IUpdatePlayerListBox;
@@ -74,7 +75,7 @@ public class GCCoreSoundUpdaterSpaceship implements IUpdatePlayerListBox
 
         if (this.theSoundManager != null && this.theMinecart != null && this.theMinecart.posY < 250 && this.minecartMoveSoundVolume > 0.0F)
         {
-            this.theSoundManager.playEntitySound("galacticraft.shuttle.shuttle", this.theMinecart, 5.0F, this.minecartSoundPitch, false);
+            this.theSoundManager.playEntitySound(GalacticraftCore.ASSET_PREFIX + "shuttle.shuttle", this.theMinecart, 5.0F, this.minecartSoundPitch, false);
             this.silent = false;
             var1 = true;
         }

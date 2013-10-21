@@ -41,7 +41,7 @@ public class GCCoreBlockT1TreasureChest extends BlockContainer implements ITileE
         super(id, Material.rock);
         this.setResistance(10.0F);
         this.setStepSound(Block.soundStoneFootstep);
-        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
     }
 
@@ -49,7 +49,7 @@ public class GCCoreBlockT1TreasureChest extends BlockContainer implements ITileE
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "treasure_front_single");
+        this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "treasure_front_single");
     }
 
     @Override

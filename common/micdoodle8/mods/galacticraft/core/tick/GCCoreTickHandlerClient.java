@@ -15,7 +15,6 @@ import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.client.GCCoreSkyProviderOrbit;
 import micdoodle8.mods.galacticraft.core.client.GCCoreSkyProviderOverworld;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiChoosePlanet;
-import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiDownloadingSounds;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlayCountdown;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlayLander;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlayOxygenTankIndicator;
@@ -35,7 +34,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiMainMenu;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
@@ -49,7 +47,6 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.common.TickType;
@@ -62,8 +59,6 @@ public class GCCoreTickHandlerClient implements ITickHandler
     public static int airRemaining2;
     public static boolean checkedVersion = true;
     private static boolean lastInvKeyPressed;
-    public static GuiScreen lastOpenGui;
-    private static GuiScreen prevLastOpenGui;
     private static long tickCount;
 
     private static GCCoreThreadRequirementMissing missingRequirementThread;
@@ -170,19 +165,6 @@ public class GCCoreTickHandlerClient implements ITickHandler
                 }
             }
 
-            if (GCCoreTickHandlerClient.prevLastOpenGui == null && GCCoreTickHandlerClient.lastOpenGui != null)
-            {
-                FMLCommonHandler.instance().updateResourcePackList();
-                
-                if (FMLClientHandler.instance().getClient().currentScreen instanceof GCCoreGuiDownloadingSounds)
-                {
-                    FMLLog.info("Setting screen " + GCCoreTickHandlerClient.lastOpenGui);
-                    FMLClientHandler.instance().getClient().displayGuiScreen(GCCoreTickHandlerClient.lastOpenGui);
-                }
-            }
-
-            GCCoreTickHandlerClient.prevLastOpenGui = GCCoreTickHandlerClient.lastOpenGui;
-
             if (ClientProxyCore.addTabsNextTick)
             {
                 if (minecraft.currentScreen.getClass().equals(GuiInventory.class))
@@ -244,7 +226,7 @@ public class GCCoreTickHandlerClient implements ITickHandler
             {
                 if (world.provider.getSkyRenderer() == null)
                 {
-                    world.provider.setSkyRenderer(new GCCoreSkyProviderOrbit(new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/planets/overworld.png"), true, true));
+                    world.provider.setSkyRenderer(new GCCoreSkyProviderOrbit(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/planets/overworld.png"), true, true));
                 }
 
                 if (world.provider.getCloudRenderer() == null)

@@ -20,7 +20,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCCoreRenderOxygenBubble extends Render
 {
-    private static final ResourceLocation oxygenBubbleTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/bubble.png");
+    private static final ResourceLocation oxygenBubbleTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/bubble.png");
 
     private final GCCoreModelOxygenBubble oxygenBubbleModel = new GCCoreModelOxygenBubble();
 

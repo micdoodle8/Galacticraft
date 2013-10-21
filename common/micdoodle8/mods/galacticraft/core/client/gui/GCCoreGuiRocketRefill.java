@@ -24,7 +24,7 @@ public class GCCoreGuiRocketRefill extends GCCoreGuiContainer
     {
         for (int i = 0; i < 4; i++)
         {
-            GCCoreGuiRocketRefill.rocketTextures[i] = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/rocket_" + i * 18 + ".png");
+            GCCoreGuiRocketRefill.rocketTextures[i] = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/rocket_" + i * 18 + ".png");
         }
     }
 

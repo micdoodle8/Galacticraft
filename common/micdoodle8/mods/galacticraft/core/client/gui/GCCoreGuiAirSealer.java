@@ -25,7 +25,7 @@ import cpw.mods.fml.common.network.PacketDispatcher;
  */
 public class GCCoreGuiAirSealer extends GCCoreGuiContainer
 {
-    private static final ResourceLocation sealerTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/oxygen_large.png");
+    private static final ResourceLocation sealerTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/oxygen_large.png");
 
     private final GCCoreTileEntityOxygenSealer sealer;
     private GuiButton buttonDisable;

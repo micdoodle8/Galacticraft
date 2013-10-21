@@ -171,7 +171,7 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
     @Override
     protected String getHurtSound()
     {
-        this.playSound("galacticraft.entity.bossliving", this.getSoundVolume(), this.getSoundPitch() + 6.0F);
+        this.playSound(GalacticraftCore.ASSET_PREFIX + "entity.bossliving", this.getSoundVolume(), this.getSoundPitch() + 6.0F);
         return "";
     }
 

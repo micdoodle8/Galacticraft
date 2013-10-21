@@ -15,7 +15,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCCoreRenderAlienVillager extends RenderLiving
 {
-    private static final ResourceLocation villagerTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/villager.png");
+    private static final ResourceLocation villagerTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/villager.png");
 
     protected GCCoreModelVillager villagerModel;
 

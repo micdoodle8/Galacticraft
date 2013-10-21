@@ -89,7 +89,7 @@ public class GCMoonBlock extends GCCoreBlockAdvanced implements IDetectableResou
         this.moonBlockIcons[13] = par1IconRegister.registerIcon("galacticraftmoon:moonore_tin");
         this.moonBlockIcons[14] = par1IconRegister.registerIcon("galacticraftmoon:moonore_cheese");
         this.moonBlockIcons[15] = par1IconRegister.registerIcon("galacticraftmoon:bottom");
-        this.moonBlockIcons[16] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "blank");
+        this.moonBlockIcons[16] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "blank");
     }
 
     @SideOnly(Side.CLIENT)

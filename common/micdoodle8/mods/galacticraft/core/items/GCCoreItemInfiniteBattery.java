@@ -26,7 +26,7 @@ public class GCCoreItemInfiniteBattery extends Item implements IItemElectric
         this.setMaxStackSize(1);
         this.setNoRepair();
         this.setUnlocalizedName(assetName);
-        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
     }
 
     @Override

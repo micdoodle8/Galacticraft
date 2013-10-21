@@ -15,7 +15,7 @@ public class GCCoreItemSpade extends ItemSpade
     {
         super(id, GCCoreItems.TOOL_STEEL);
         this.setUnlocalizedName(assetName);
-        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
     }
 
     @Override

@@ -28,7 +28,7 @@ public class GCCoreItemRendererFlag implements IItemRenderer
 
         for (int i = 0; i < GCCoreItemFlag.names.length; i++)
         {
-            GCCoreItemRendererFlag.flagTextures[i] = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/flag/" + GCCoreItemFlag.names[i] + ".png");
+            GCCoreItemRendererFlag.flagTextures[i] = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/flag/" + GCCoreItemFlag.names[i] + ".png");
         }
     }
 

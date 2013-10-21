@@ -22,7 +22,7 @@ import universalelectricity.core.electricity.ElectricityDisplay.ElectricUnit;
  */
 public class GCCoreGuiAirCompressor extends GCCoreGuiContainer
 {
-    private static final ResourceLocation compressorTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/compressor.png");
+    private static final ResourceLocation compressorTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/compressor.png");
 
     private final GCCoreTileEntityOxygenCompressor compressor;
 

@@ -19,9 +19,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCCoreRenderBuggy extends Render
 {
-    private static final ResourceLocation buggyTextureBody = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/buggyMain.png");
-    private static final ResourceLocation buggyTextureWheel = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/buggyWheels.png");
-    private static final ResourceLocation buggyTextureStorage = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/buggyStorage.png");
+    private static final ResourceLocation buggyTextureBody = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/buggyMain.png");
+    private static final ResourceLocation buggyTextureWheel = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/buggyWheels.png");
+    private static final ResourceLocation buggyTextureStorage = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/buggyStorage.png");
 
     protected IModelCustom buggyModel;
     protected IModelCustom wheelModelRight;

@@ -14,7 +14,7 @@ public class GCCoreBlockCastPage extends GCCoreBookPage
 {
     String text;
     ItemStack[] icons;
-    private static final ResourceLocation background = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/booksmeltery.png");
+    private static final ResourceLocation background = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/booksmeltery.png");
 
     @Override
     public void readPageFromXML(Element element)

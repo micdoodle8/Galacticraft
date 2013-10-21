@@ -13,7 +13,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCCoreRenderParaChest extends Render
 {
-    private static final ResourceLocation parachestTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/parachest.png");
+    private static final ResourceLocation parachestTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/parachest.png");
 
     private final GCCoreModelParaChest chestModel;
 

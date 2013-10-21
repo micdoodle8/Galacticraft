@@ -19,7 +19,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCCoreRenderLander extends Render
 {
-    private static final ResourceLocation landerTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/lander.png");
+    private static final ResourceLocation landerTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/lander.png");
 
     protected GCCoreModelLander landerModel;
 

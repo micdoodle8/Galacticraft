@@ -17,8 +17,8 @@ import cpw.mods.fml.client.FMLClientHandler;
  */
 public class GCCoreItemRendererMeteorChunk implements IItemRenderer
 {
-    private static final ResourceLocation meteorChunkTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/meteorChunk.png");
-    private static final ResourceLocation meteorChunkHotTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/meteorChunkHot.png");
+    private static final ResourceLocation meteorChunkTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/meteorChunk.png");
+    private static final ResourceLocation meteorChunkHotTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/meteorChunkHot.png");
 
     protected IModelCustom meteorChunkModel;
 

@@ -46,7 +46,7 @@ public class GCCoreBlockMachine extends BlockTile
         this.setUnlocalizedName("basicMachine");
         this.setHardness(1.0F);
         this.setStepSound(Block.soundMetalFootstep);
-        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
     }
 
@@ -59,21 +59,21 @@ public class GCCoreBlockMachine extends BlockTile
     @Override
     public void registerIcons(IconRegister iconRegister)
     {
-        this.blockIcon = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine");
-        this.iconInput = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_input");
-        this.iconOutput = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_output");
+        this.blockIcon = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine");
+        this.iconInput = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_input");
+        this.iconOutput = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_output");
 
-        this.iconMachineSide = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_side");
-        this.iconCoalGenerator = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "coalGenerator");
+        this.iconMachineSide = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_side");
+        this.iconCoalGenerator = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "coalGenerator");
         this.iconEnergyStorageModule = new Icon[17];
 
         for (int i = 0; i < this.iconEnergyStorageModule.length; i++)
         {
-            this.iconEnergyStorageModule[i] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "energyStorageModule_" + i);
+            this.iconEnergyStorageModule[i] = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "energyStorageModule_" + i);
         }
 
-        this.iconElectricFurnace = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "electricFurnace");
-        this.iconCompressor = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "compressor");
+        this.iconElectricFurnace = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "electricFurnace");
+        this.iconCompressor = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "compressor");
     }
 
     @Override

@@ -28,7 +28,7 @@ public class GCCoreBlockAirLockFrame extends BlockContainer implements ITileEnti
         super(id, Material.rock);
         this.setHardness(1.0F);
         this.setStepSound(Block.soundMetalFootstep);
-        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
     }
 
@@ -49,12 +49,12 @@ public class GCCoreBlockAirLockFrame extends BlockContainer implements ITileEnti
     public void registerIcons(IconRegister par1IconRegister)
     {
         this.airLockIcons = new Icon[6];
-        this.airLockIcons[0] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "airlock_off");
-        this.airLockIcons[1] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "airlock_on_1");
-        this.airLockIcons[2] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "airlock_on_2");
-        this.airLockIcons[3] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "airlock_on_3");
-        this.airLockIcons[4] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "airlock_on_4");
-        this.airLockIcons[5] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "airlock_on_5");
+        this.airLockIcons[0] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "airlock_off");
+        this.airLockIcons[1] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "airlock_on_1");
+        this.airLockIcons[2] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "airlock_on_2");
+        this.airLockIcons[3] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "airlock_on_3");
+        this.airLockIcons[4] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "airlock_on_4");
+        this.airLockIcons[5] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "airlock_on_5");
     }
 
     @Override

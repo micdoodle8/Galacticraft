@@ -16,11 +16,11 @@ public class GCCoreBlockAirLockWall extends BlockBreakable implements IPartialSe
 {
     public GCCoreBlockAirLockWall(int id, String assetName)
     {
-        super(id, GalacticraftCore.TEXTURE_PREFIX + "oxygentile_3", Material.portal, false);
+        super(id, GalacticraftCore.ASSET_PREFIX + "oxygentile_3", Material.portal, false);
         this.setTickRandomly(true);
         this.setHardness(1000.0F);
         this.setStepSound(Block.soundMetalFootstep);
-        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
     }
 
@@ -28,7 +28,7 @@ public class GCCoreBlockAirLockWall extends BlockBreakable implements IPartialSe
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "deco_aluminium_4");
+        this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "deco_aluminium_4");
     }
 
     @Override

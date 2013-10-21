@@ -47,7 +47,7 @@ public class GCMarsBlockT2TreasureChest extends BlockContainer implements ITileE
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "treasure_front_single");
+        this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "treasure_front_single");
     }
 
     @Override

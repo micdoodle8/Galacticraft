@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.mars.entities;
 
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import micdoodle8.mods.galacticraft.mars.inventory.GCMarsInventorySlimeling;
@@ -244,7 +245,7 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
     @Override
     protected String getDeathSound()
     {
-        this.playSound("galacticraft.entity.slime_death", this.getSoundVolume(), 0.8F);
+        this.playSound(GalacticraftCore.ASSET_PREFIX + "entity.slime_death", this.getSoundVolume(), 0.8F);
         return "";
     }
 

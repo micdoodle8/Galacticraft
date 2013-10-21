@@ -16,7 +16,7 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 
 public class GCCoreGuiSchematicInput extends GCCoreGuiContainer implements ISchematicResultPage
 {
-    private static final ResourceLocation schematicInputTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/schematicpage.png");
+    private static final ResourceLocation schematicInputTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/schematicpage.png");
 
     private GuiButton nextButton;
     private int pageIndex;

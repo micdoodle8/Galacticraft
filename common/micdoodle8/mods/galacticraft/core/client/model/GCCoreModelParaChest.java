@@ -8,7 +8,7 @@ import cpw.mods.fml.client.FMLClientHandler;
 
 public class GCCoreModelParaChest extends ModelChest
 {
-    private static final ResourceLocation grayParachuteTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/parachute/gray.png");
+    private static final ResourceLocation grayParachuteTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/parachute/gray.png");
 
     public ModelRenderer[] parachute = new ModelRenderer[3];
     public ModelRenderer[] parachuteStrings = new ModelRenderer[4];

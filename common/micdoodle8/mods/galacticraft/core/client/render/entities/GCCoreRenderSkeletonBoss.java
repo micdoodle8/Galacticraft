@@ -29,8 +29,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCCoreRenderSkeletonBoss extends RenderLiving
 {
-    private static final ResourceLocation skeletonBossTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/skeletonboss.png");
-    private static final ResourceLocation powerTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/power.png");
+    private static final ResourceLocation skeletonBossTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/skeletonboss.png");
+    private static final ResourceLocation powerTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/power.png");
 
     private final GCCoreModelSkeletonBoss model = new GCCoreModelSkeletonBoss();
 

@@ -27,7 +27,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCCoreRenderAluminumWire extends TileEntitySpecialRenderer
 {
-    private static final ResourceLocation aluminumWireTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/aluminumWire.png");
+    private static final ResourceLocation aluminumWireTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/aluminumWire.png");
 
     public final IModelCustom model;
     public final IModelCustom model2;

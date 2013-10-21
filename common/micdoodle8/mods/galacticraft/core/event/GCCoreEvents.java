@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.core.event;
 
 import java.lang.reflect.Field;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -26,13 +28,15 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore.SleepCancelledEvent;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
-import micdoodle8.mods.galacticraft.core.client.GCCoreThreadDownloadSound;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketSchematicList;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.block.Block;
+import net.minecraft.client.audio.SoundPool;
+import net.minecraft.client.audio.SoundPoolEntry;
+import net.minecraft.client.audio.SoundPoolProtocolHandler;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -40,9 +44,11 @@ import net.minecraft.item.ItemFlintAndSteel;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.client.event.sound.PlaySoundEvent;
+import net.minecraftforge.client.event.sound.SoundLoadEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.Event.Result;
 import net.minecraftforge.event.ForgeSubscribe;
@@ -55,15 +61,13 @@ import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreEvents
 {
-    private static GCCoreThreadDownloadSound downloadResourcesThread;
-
     @ForgeSubscribe
     public void onEntityFall(LivingFallEvent event)
     {
@@ -423,29 +427,55 @@ public class GCCoreEvents
     @ForgeSubscribe
     public void onMinecraftLoaded(MinecraftLoadedEvent event)
     {
-        final List<String> downloadUrls = new ArrayList<String>();
+        ;
+    }
+    
+    @ForgeSubscribe
+    public void onSoundLoad(SoundLoadEvent event)
+    {
+        event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "ambience/scaryscape.ogg");
+        event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "ambience/singledrip1.ogg");
+        event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "ambience/singledrip2.ogg");
+        event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "ambience/singledrip3.ogg");
+        event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "ambience/singledrip4.ogg");
+        event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "ambience/singledrip5.ogg");
+        event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "ambience/singledrip6.ogg");
+        event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "ambience/singledrip7.ogg");
+        event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "ambience/singledrip8.ogg");
+        event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "entity/bossdeath.ogg");
+        event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "entity/bosslaugh.ogg");
+        event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "entity/bossliving.ogg");
+        event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "entity/slime_death.ogg");
+        ClientProxyCore.newMusic.add(this.func_110654_c(event.manager.soundPoolMusic, GalacticraftCore.ASSET_PREFIX + "music/mars_JC.ogg"));
+        ClientProxyCore.newMusic.add(this.func_110654_c(event.manager.soundPoolMusic, GalacticraftCore.ASSET_PREFIX + "music/mimas_JC.ogg"));
+        ClientProxyCore.newMusic.add(this.func_110654_c(event.manager.soundPoolMusic, GalacticraftCore.ASSET_PREFIX + "music/orbit_JC.ogg"));
+        ClientProxyCore.newMusic.add(this.func_110654_c(event.manager.soundPoolMusic, GalacticraftCore.ASSET_PREFIX + "music/scary_ambience.ogg"));
+        ClientProxyCore.newMusic.add(this.func_110654_c(event.manager.soundPoolMusic, GalacticraftCore.ASSET_PREFIX + "music/spacerace_JC.ogg"));
+        event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "player/closeairlock.ogg");
+        event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "player/openairlock.ogg");
+        event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "player/parachute.ogg");
+        event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "player/unlockchest.ogg");
+        event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "shuttle/shuttle.ogg");
+    }
 
-        downloadUrls.add("http://micdoodle8.com/galacticraft/sounds/downloadsounds.xml");
-
-        if (Loader.isModLoaded("GalacticraftMars"))
-        {
-            downloadUrls.add("http://micdoodle8.com/galacticraft/sounds/mars/downloadmarssounds.xml");
-        }
-
+    private SoundPoolEntry func_110654_c(SoundPool pool, String par1Str)
+    {
         try
         {
-            if (GCCoreEvents.downloadResourcesThread == null)
-            {
-                GCCoreEvents.downloadResourcesThread = new GCCoreThreadDownloadSound(FMLClientHandler.instance().getClient().mcDataDir, FMLClientHandler.instance().getClient(), downloadUrls);
-                GCCoreEvents.downloadResourcesThread.start();
-            }
+            ResourceLocation resourcelocation = new ResourceLocation(par1Str);
+            String s1 = String.format("%s:%s:%s/%s", new Object[] {"mcsounddomain", resourcelocation.getResourceDomain(), "sound", resourcelocation.getResourcePath()});
+            FMLLog.info("adding new sound : " + s1);
+            SoundPoolProtocolHandler soundpoolprotocolhandler = new SoundPoolProtocolHandler(pool);
+            return new SoundPoolEntry(par1Str, new URL((URL)null, s1, soundpoolprotocolhandler));
         }
-        catch (Exception e)
+        catch (MalformedURLException e)
         {
             e.printStackTrace();
         }
+        
+        return null;
     }
-
+    
     @SideOnly(Side.CLIENT)
     @ForgeSubscribe
     public void onLeaveBedButtonClicked(SleepCancelledEvent event)

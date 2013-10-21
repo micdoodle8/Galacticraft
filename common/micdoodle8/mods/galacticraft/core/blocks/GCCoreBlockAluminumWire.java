@@ -51,7 +51,7 @@ public class GCCoreBlockAluminumWire extends BlockConductor
 
         for (int i = 0; i < GCCoreBlockAluminumWire.names.length; i++)
         {
-            GCCoreBlockAluminumWire.blockIcons[i] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + GCCoreBlockAluminumWire.names[i]);
+            GCCoreBlockAluminumWire.blockIcons[i] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + GCCoreBlockAluminumWire.names[i]);
         }
     }
 

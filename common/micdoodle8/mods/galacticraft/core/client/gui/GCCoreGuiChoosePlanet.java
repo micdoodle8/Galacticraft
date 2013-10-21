@@ -66,8 +66,8 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     public int backspacePressed;
     public boolean isTextFocused = false;
 
-    private static final ResourceLocation backgroundTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/stars.png");
-    private static final ResourceLocation blackTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/black.png");
+    private static final ResourceLocation backgroundTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/stars.png");
+    private static final ResourceLocation blackTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/black.png");
 
     public GCCoreGuiChoosePlanet(EntityPlayer player, String[] listOfDestinations)
     {
@@ -140,7 +140,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         this.planetSlots = new GCCoreGuiChoosePlanetSlot(this);
 
         this.buttonList.clear();
-        this.buttonList.add(new GCCoreGuiTexturedButton(0, this.width - 28, 5, 22, 22, new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/map_button.png"), 22, 22));
+        this.buttonList.add(new GCCoreGuiTexturedButton(0, this.width - 28, 5, 22, 22, new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/map_button.png"), 22, 22));
         this.buttonList.add(this.sendButton = new GuiSmallButton(1, this.width - 110, this.height - 26, 105, 20, StatCollector.translateToLocal("gui.button.sendtodim.name")));
 
         if (this.createSpaceStationButton == null)

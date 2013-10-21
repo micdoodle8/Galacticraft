@@ -23,8 +23,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCCoreTileEntityTreasureChestRenderer extends TileEntitySpecialRenderer
 {
-    private static final ResourceLocation treasureChestTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/treasure.png");
-    private static final ResourceLocation treasureLargeChestTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/treasurelarge.png");
+    private static final ResourceLocation treasureChestTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/treasure.png");
+    private static final ResourceLocation treasureLargeChestTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/treasurelarge.png");
 
     /** The normal small chest model. */
     private final GCCoreModelTreasureChest chestModel = new GCCoreModelTreasureChest();

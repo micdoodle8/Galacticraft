@@ -28,7 +28,7 @@ public class GCCoreRenderFlag extends Render
 
         for (int i = 0; i < GCCoreItemFlag.names.length; i++)
         {
-            GCCoreRenderFlag.flagTextures[i] = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/flag/" + GCCoreItemFlag.names[i] + ".png");
+            GCCoreRenderFlag.flagTextures[i] = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/flag/" + GCCoreItemFlag.names[i] + ".png");
         }
     }
 

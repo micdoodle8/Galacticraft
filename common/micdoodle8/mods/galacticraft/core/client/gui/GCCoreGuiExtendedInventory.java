@@ -17,7 +17,7 @@ import tconstruct.client.tabs.TabRegistry;
 
 public class GCCoreGuiExtendedInventory extends InventoryEffectRenderer
 {
-    private static final ResourceLocation inventoryTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/inventory.png");
+    private static final ResourceLocation inventoryTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/inventory.png");
 
     private float xSize_lo_2;
     private float ySize_lo_2;

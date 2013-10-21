@@ -27,9 +27,9 @@ import cpw.mods.fml.common.Loader;
 
 public class GCCoreModelPlayer extends ModelBiped
 {
-    private static final ResourceLocation oxygenMaskTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/oxygen.png");
-    private static final ResourceLocation playerTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/player.png");
-    private static final ResourceLocation frequencyModuleTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/frequencyModule.png");
+    private static final ResourceLocation oxygenMaskTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/oxygen.png");
+    private static final ResourceLocation playerTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/player.png");
+    private static final ResourceLocation frequencyModuleTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/frequencyModule.png");
 
     public ModelRenderer[] parachute = new ModelRenderer[3];
     public ModelRenderer[] parachuteStrings = new ModelRenderer[4];

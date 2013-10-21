@@ -21,7 +21,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCCoreTileEntityParachestRenderer extends TileEntitySpecialRenderer
 {
-    private static final ResourceLocation parachestTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/parachest.png");
+    private static final ResourceLocation parachestTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/parachest.png");
 
     private final GCCoreModelParachestTile chestModel = new GCCoreModelParachestTile();
 

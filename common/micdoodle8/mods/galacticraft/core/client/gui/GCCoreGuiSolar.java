@@ -24,7 +24,7 @@ import cpw.mods.fml.common.network.PacketDispatcher;
  */
 public class GCCoreGuiSolar extends GCCoreGuiContainer
 {
-    private static final ResourceLocation solarGuiTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/solar.png");
+    private static final ResourceLocation solarGuiTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/solar.png");
 
     private final GCCoreTileEntitySolar solarPanel;
 

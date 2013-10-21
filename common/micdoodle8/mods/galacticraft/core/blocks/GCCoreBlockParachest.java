@@ -36,7 +36,7 @@ public class GCCoreBlockParachest extends BlockContainer implements ITileEntityP
         super(id, Material.wood);
         this.setHardness(3.0F);
         this.setStepSound(Block.soundWoodFootstep);
-        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
     }
 

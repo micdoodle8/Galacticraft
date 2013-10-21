@@ -21,7 +21,7 @@ import universalelectricity.core.electricity.ElectricityDisplay.ElectricUnit;
  */
 public class GCCoreGuiAirCollector extends GCCoreGuiContainer
 {
-    private static final ResourceLocation collectorTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/oxygen.png");
+    private static final ResourceLocation collectorTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/oxygen.png");
 
     private final GCCoreTileEntityOxygenCollector collector;
 

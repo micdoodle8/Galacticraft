@@ -16,7 +16,7 @@ public class GCCoreBlockBreathableAir extends Block
         super(id, Material.air);
         this.setResistance(1000.0F);
         this.setHardness(0.0F);
-        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
     }
 

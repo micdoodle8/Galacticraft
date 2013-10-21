@@ -9,7 +9,7 @@ import org.lwjgl.opengl.GL11;
 
 public class GCCoreGuiCheckbox extends GuiButton
 {
-    protected static final ResourceLocation texture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/gui.png");
+    protected static final ResourceLocation texture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/gui.png");
 
     public Boolean isSelected;
 

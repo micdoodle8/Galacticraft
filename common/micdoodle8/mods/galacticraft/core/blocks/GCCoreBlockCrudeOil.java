@@ -25,7 +25,7 @@ public class GCCoreBlockCrudeOil extends BlockFluidClassic
         this.setQuantaPerBlock(3);
         this.setRenderPass(1);
         this.needsRandomTick = true;
-        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
     }
 
@@ -40,8 +40,8 @@ public class GCCoreBlockCrudeOil extends BlockFluidClassic
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.stillIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "oil");
-        this.flowingIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "oil_flow");
+        this.stillIcon = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "oil");
+        this.flowingIcon = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "oil_flow");
         GalacticraftCore.fluidOil.setStillIcon(this.stillIcon);
         GalacticraftCore.fluidOil.setFlowingIcon(this.flowingIcon);
     }
