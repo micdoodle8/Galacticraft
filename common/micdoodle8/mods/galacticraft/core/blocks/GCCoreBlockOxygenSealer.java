@@ -143,4 +143,19 @@ public class GCCoreBlockOxygenSealer extends GCCoreBlockAdvanced
     {
         return new GCCoreTileEntityOxygenSealer();
     }
+
+    @Override
+    public void breakBlock(World world, int x, int y, int z, int par5, int par6)
+    {
+        TileEntity tile = world.getBlockTileEntity(x, y, z);
+        
+        if (tile instanceof GCCoreTileEntityOxygenSealer)
+        {
+            GCCoreTileEntityOxygenSealer sealer = (GCCoreTileEntityOxygenSealer) tile;
+            
+            sealer.unSealArea(world, x, y + 1, z);
+        }
+        
+        super.breakBlock(world, x, y, z, par5, par6);
+    }
 }

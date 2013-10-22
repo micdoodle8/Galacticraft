@@ -258,7 +258,7 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
         protocol.seal(var1, var2, var3, var4, 2);
     }
 
-    private void unSealArea(World var1, int var2, int var3, int var4)
+    public void unSealArea(World var1, int var2, int var3, int var4)
     {
         final OxygenPressureProtocol protocol = new OxygenPressureProtocol();
         protocol.unSeal(var1, var2, var3, var4);
