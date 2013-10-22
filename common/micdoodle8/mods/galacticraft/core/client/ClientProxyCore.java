@@ -34,6 +34,7 @@ import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityOxygenFX;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirCollector;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirCompressor;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirDistributor;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirLockController;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirSealer;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiCargoLoader;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiCargoUnloader;
@@ -120,6 +121,7 @@ import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient;
 import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerClient;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAdvancedCraftingTable;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAirLockController;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAluminumWire;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoLoader;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoUnloader;
@@ -860,6 +862,11 @@ public class ClientProxyCore extends CommonProxyCore
         {
             return new GCCoreGuiManual(new ItemStack(Block.stone), ClientProxyCore.materialsTest);
         }
+        else if (ID == GCCoreConfigManager.idGuiAirLockController)
+        {
+            // TODO
+            return null;
+        }
         else
         {
             final GCCorePlayerSP playerClient = PlayerUtil.getPlayerBaseClientFromPlayer(player);
@@ -912,6 +919,12 @@ public class ClientProxyCore extends CommonProxyCore
         }
 
         return null;
+    }
+    
+    @Override
+    public void openAirLockGui(GCCoreTileEntityAirLockController controller)
+    {
+        FMLClientHandler.instance().getClient().displayGuiScreen(new GCCoreGuiAirLockController(controller));
     }
 
     private static final ResourceLocation underOilTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/misc/underoil.png");

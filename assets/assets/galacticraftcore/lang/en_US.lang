@@ -176,6 +176,7 @@ tile.glowstoneTorch.name=Glowstone Torch
 tile.enclosed.aluminumWire.name=Sealable Aluminum Wire
 tile.enclosed.aluminumWireHeavy.name=Sealable Heavy Aluminum Wire
 tile.enclosed.meCable.name=Sealable ME Cable
+tile.airLockController.name=Air Lock Controller
 
 # ENTITIES
 entity.GalacticraftCore.EvolvedSpider.name=Evolved Spider

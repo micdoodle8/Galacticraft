@@ -89,12 +89,6 @@ public class GCCoreConfigManager
     public static int idItemMeteorChunk;
     public static int idItemStandardWrench;
 
-    // RECIPES
-    // public static boolean useRecipesIC2;
-    // public static boolean useRecipesGT;
-    // public static boolean useRecipesTE;
-    // public static boolean useRecipesUE;
-
     // SCHEMATICS
     public static int idSchematicRocketT1;
     public static int idSchematicMoonBuggy;
@@ -133,6 +127,7 @@ public class GCCoreConfigManager
     public static int idGuiParachest;
     public static int idGuiSolarPanel;
     public static int idGuiExtendedInventory;
+    public static int idGuiAirLockController;
 
     // ACHIEVEMENTS
     public static int idAchievBase;
@@ -273,19 +268,6 @@ public class GCCoreConfigManager
             GCCoreConfigManager.idArmorSteelLeggings = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idArmorSteelLeggings", 9892).getInt(9892);
             GCCoreConfigManager.idArmorSteelBoots = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idArmorSteelBoots", 9893).getInt(9893);
 
-            // GCCoreConfigManager.useRecipesIC2 =
-            // GCCoreConfigManager.configuration.get("RECIPES",
-            // "Enable IC2 Recipes", true).getBoolean(true);
-            // GCCoreConfigManager.useRecipesGT =
-            // GCCoreConfigManager.configuration.get("RECIPES",
-            // "Enable Gregtech Recipes", true).getBoolean(true);
-            // GCCoreConfigManager.useRecipesUE =
-            // GCCoreConfigManager.configuration.get("RECIPES",
-            // "Enable Basic Components Recipes", true).getBoolean(true);
-            // GCCoreConfigManager.useRecipesTE =
-            // GCCoreConfigManager.configuration.get("RECIPES",
-            // "Enable Thermal Expansion Recipes", true).getBoolean(true);
-
             GCCoreConfigManager.idGuiTankRefill = GCCoreConfigManager.configuration.get("GUI", "idGuiTankRefill", 128).getInt(128);
             GCCoreConfigManager.idGuiAirCompressor = GCCoreConfigManager.configuration.get("GUI", "idGuiAirCompressor", 129).getInt(129);
             GCCoreConfigManager.idGuiRocketCraftingBench = GCCoreConfigManager.configuration.get("GUI", "idGuiRocketCraftingBench", 130).getInt(130);
@@ -303,12 +285,11 @@ public class GCCoreConfigManager
             GCCoreConfigManager.idGuiParachest = GCCoreConfigManager.configuration.get("GUI", "idGuiParachest", 142).getInt(142);
             GCCoreConfigManager.idGuiSolarPanel = GCCoreConfigManager.configuration.get("GUI", "idGuiSolarPanel", 144).getInt(144);
             GCCoreConfigManager.idGuiExtendedInventory = GCCoreConfigManager.configuration.get("GUI", "idGuiExtendedInventory", 145).getInt(145);
-            // 143 - Tier 2 Rocket Bench GUI
+            GCCoreConfigManager.idGuiAirLockController = GCCoreConfigManager.configuration.get("GUI", "idGuiAirLockController", 148).getInt(148);
 
             GCCoreConfigManager.idSchematicRocketT1 = GCCoreConfigManager.configuration.get("Schematic", "idSchematicRocketT1", 0).getInt(0);
             GCCoreConfigManager.idSchematicMoonBuggy = GCCoreConfigManager.configuration.get("Schematic", "idSchematicMoonBuggy", 1).getInt(1);
             GCCoreConfigManager.idSchematicAddSchematic = GCCoreConfigManager.configuration.get("Schematic", "idSchematicAddSchematic", Integer.MAX_VALUE).getInt(Integer.MAX_VALUE);
-            // 2 - Mars Tier 2 Rocket Schematic
 
             GCCoreConfigManager.idAchievBase = GCCoreConfigManager.configuration.get("Achievements", "idAchievBase", 1784).getInt(1784);
 

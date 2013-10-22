@@ -18,6 +18,7 @@ import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerSchematic;
 import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumClientPacket;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAirLockController;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityParachest;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
@@ -280,31 +281,6 @@ public class GCCorePacketHandlerServer implements IPacketHandler
                 WorldUtil.bindSpaceStationToNewDimension(playerBase.worldObj, playerBase);
 
                 WorldUtil.getSpaceStationRecipe((Integer) packetReadout[0]).matches(playerBase, true);
-
-                // for (ItemStack stack :
-                // RecipeUtil.getStandardSpaceStationRequirements())
-                // {
-                // int amountToRemove = stack.stackSize;
-                //
-                // for (ItemStack stack2 : playerBase.inventory.mainInventory)
-                // {
-                // if (stack != null && stack2 != null && stack.itemID ==
-                // stack2.itemID && stack.getItemDamage() ==
-                // stack2.getItemDamage())
-                // {
-                // if (stack2.stackSize > amountToRemove)
-                // {
-                // stack2.stackSize -= amountToRemove;
-                // break;
-                // }
-                // else if (stack2.stackSize <= amountToRemove)
-                // {
-                // amountToRemove -= stack2.stackSize;
-                // stack2.stackSize = 0;
-                // }
-                // }
-                // }
-                // }
             }
         }
         else if (packetType == 16)
@@ -409,6 +385,74 @@ public class GCCorePacketHandlerServer implements IPacketHandler
         else if (packetType == 23)
         {
             player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiExtendedInventory, player.worldObj, 0, 0, 0);
+        }
+        else if (packetType == 24)
+        {
+            Class<?>[] decodeAs = { Integer.class, Integer.class, Integer.class, Integer.class, Integer.class };
+            Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
+
+            TileEntity tile = player.worldObj.getBlockTileEntity((Integer) packetReadout[1], (Integer) packetReadout[2], (Integer) packetReadout[3]);
+
+            switch ((Integer) packetReadout[0])
+            {
+            case 0:
+                if (tile instanceof GCCoreTileEntityAirLockController)
+                {
+                    GCCoreTileEntityAirLockController launchController = (GCCoreTileEntityAirLockController) tile;
+                    launchController.redstoneActivation = ((Integer) packetReadout[4]) == 1;
+                }
+                break;
+            case 1:
+                if (tile instanceof GCCoreTileEntityAirLockController)
+                {
+                    GCCoreTileEntityAirLockController launchController = (GCCoreTileEntityAirLockController) tile;
+                    launchController.playerDistanceActivation = ((Integer) packetReadout[4]) == 1;
+                }
+                break;
+            case 2:
+                if (tile instanceof GCCoreTileEntityAirLockController)
+                {
+                    GCCoreTileEntityAirLockController launchController = (GCCoreTileEntityAirLockController) tile;
+                    launchController.playerDistanceSelection = ((Integer) packetReadout[4]);
+                }
+                break;
+            case 3:
+                if (tile instanceof GCCoreTileEntityAirLockController)
+                {
+                    GCCoreTileEntityAirLockController launchController = (GCCoreTileEntityAirLockController) tile;
+                    launchController.playerNameMatches = ((Integer) packetReadout[4]) == 1;
+                }
+                break;
+            case 4:
+                if (tile instanceof GCCoreTileEntityAirLockController)
+                {
+                    GCCoreTileEntityAirLockController launchController = (GCCoreTileEntityAirLockController) tile;
+                    launchController.invertSelection = ((Integer) packetReadout[4]) == 1;
+                }
+                break;
+            default:
+                break;
+            }
+        }
+        else if (packetType == 25)
+        {
+            Class<?>[] decodeAs = { Integer.class, Integer.class, Integer.class, Integer.class, String.class };
+            Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
+
+            TileEntity tile = player.worldObj.getBlockTileEntity((Integer) packetReadout[1], (Integer) packetReadout[2], (Integer) packetReadout[3]);
+
+            switch ((Integer) packetReadout[0])
+            {
+            case 0:
+                if (tile instanceof GCCoreTileEntityAirLockController)
+                {
+                    GCCoreTileEntityAirLockController launchController = (GCCoreTileEntityAirLockController) tile;
+                    launchController.playerToOpenFor = ((String) packetReadout[4]);
+                }
+                break;
+            default:
+                break;
+            }
         }
     }
 }
