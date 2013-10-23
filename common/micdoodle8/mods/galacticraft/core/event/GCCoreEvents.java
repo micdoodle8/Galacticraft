@@ -429,7 +429,8 @@ public class GCCoreEvents
     {
         ;
     }
-    
+
+    @SideOnly(Side.CLIENT)
     @ForgeSubscribe
     public void onSoundLoad(SoundLoadEvent event)
     {
@@ -458,6 +459,7 @@ public class GCCoreEvents
         event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "shuttle/shuttle.ogg");
     }
 
+    @SideOnly(Side.CLIENT)
     private SoundPoolEntry func_110654_c(SoundPool pool, String par1Str)
     {
         try
