@@ -33,3 +33,4 @@ Lastnecron:capeLightBlue
 WetToast:capeBlue
 Devsio:capeOrange
 Tyrantelf:capeOrange
+rainbowdash22222:capeRainbow
