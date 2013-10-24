@@ -606,7 +606,7 @@ public class WorldUtil
         WorldUtil.transferEntityToDimension(entity, dimensionID, world, true);
     }
 
-    public static void transferEntityToDimension(Entity entity, int dimensionID, WorldServer world, boolean transferInv)
+    public static Entity transferEntityToDimension(Entity entity, int dimensionID, WorldServer world, boolean transferInv)
     {
         if (!world.isRemote)
         {
@@ -642,10 +642,12 @@ public class WorldUtil
 
                 if (type != null)
                 {
-                    WorldUtil.teleportEntity(var6, entity, dimensionID, type, transferInv);
+                    return WorldUtil.teleportEntity(var6, entity, dimensionID, type, transferInv);
                 }
             }
         }
+        
+        return null;
     }
 
     private static Entity teleportEntity(World var0, Entity var1, int var2, ITeleportType type, boolean transferInv)
@@ -794,13 +796,16 @@ public class WorldUtil
             var8.playerNetServerHandler.sendPacketToPlayer(new Packet43Experience(var8.experience, var8.experienceTotal, var8.experienceLevel));
         }
 
-        if (var8 != null)
+        if (var1 instanceof GCCorePlayerMP)
         {
-            var1.setLocationAndAngles(type.getPlayerSpawnLocation((WorldServer) var1.worldObj, (EntityPlayerMP) var1).x, type.getPlayerSpawnLocation((WorldServer) var1.worldObj, (EntityPlayerMP) var1).y, type.getPlayerSpawnLocation((WorldServer) var1.worldObj, (EntityPlayerMP) var1).z, var1.rotationYaw, var1.rotationPitch);
-        }
-        else
-        {
-            var1.setLocationAndAngles(type.getEntitySpawnLocation((WorldServer) var1.worldObj, var1).x, type.getEntitySpawnLocation((WorldServer) var1.worldObj, var1).y, type.getEntitySpawnLocation((WorldServer) var1.worldObj, var1).z, var1.rotationYaw, var1.rotationPitch);
+            if (var8 != null)
+            {
+                var1.setLocationAndAngles(type.getPlayerSpawnLocation((WorldServer) var1.worldObj, (EntityPlayerMP) var1).x, type.getPlayerSpawnLocation((WorldServer) var1.worldObj, (EntityPlayerMP) var1).y, type.getPlayerSpawnLocation((WorldServer) var1.worldObj, (EntityPlayerMP) var1).z, var1.rotationYaw, var1.rotationPitch);
+            }
+            else
+            {
+                var1.setLocationAndAngles(type.getEntitySpawnLocation((WorldServer) var1.worldObj, var1).x, type.getEntitySpawnLocation((WorldServer) var1.worldObj, var1).y, type.getEntitySpawnLocation((WorldServer) var1.worldObj, var1).z, var1.rotationYaw, var1.rotationPitch);
+            }
         }
 
         if (var1 instanceof GCCorePlayerMP)

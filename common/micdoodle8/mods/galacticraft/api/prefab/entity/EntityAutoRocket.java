@@ -129,7 +129,15 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
                             for (ILandingPadAttachable connectedTile : dock.getConnectedTiles())
                             {
-                                controllerClass.cast(connectedTile);
+                                try
+                                {
+                                    controllerClass.cast(connectedTile);
+                                }
+                                catch (ClassCastException e)
+                                {
+                                    continue;
+                                }
+                                
                                 launchController = (TileEntity) connectedTile;
 
                                 if (launchController != null)
@@ -196,7 +204,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
         for (int i = 0; i < FMLCommonHandler.instance().getMinecraftServerInstance().worldServers.length; i++)
         {
             WorldServer world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers[i];
-
+            
             for (int j = 0; j < world.loadedTileEntityList.size(); j++)
             {
                 TileEntity tile = (TileEntity) world.loadedTileEntityList.get(j);
@@ -248,7 +256,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
                                 {
                                     this.targetVec = null;
                                 }
-
+                                
                                 return false;
                             }
                             else
@@ -671,6 +679,20 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
             nbt.setTag("Items", var2);
         }
+
+        nbt.setBoolean("TargetValid", this.targetVec != null);
+
+        if (this.targetVec != null)
+        {
+            nbt.setDouble("targetTileX", this.targetVec.x);
+            nbt.setDouble("targetTileY", this.targetVec.y);
+            nbt.setDouble("targetTileZ", this.targetVec.z);
+        }
+
+        nbt.setBoolean("Landing", this.landing);
+        nbt.setInteger("AutoLaunchSetting", this.autoLaunchSetting != null ? this.autoLaunchSetting.getIndex() : -1);
+        nbt.setInteger("TimeUntilAutoLaunch", this.autoLaunchCountdown);
+        nbt.setInteger("DestinationFrequency", this.destinationFrequency);
     }
 
     @Override
@@ -699,6 +721,17 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
                 }
             }
         }
+
+        if (nbt.getBoolean("TargetValid") && nbt.hasKey("targetTileX"))
+        {
+            this.targetVec = new Vector3(nbt.getDouble("targetTileX"), nbt.getDouble("targetTileY"), nbt.getDouble("targetTileZ"));
+        }
+
+        this.landing = nbt.getBoolean("Landing");
+        int autoLaunchValue = nbt.getInteger("AutoLaunchSetting");
+        this.autoLaunchSetting = this.lastAutoLaunchSetting = autoLaunchValue == -1 ? null : EnumAutoLaunch.values()[autoLaunchValue];
+        this.autoLaunchCountdown = nbt.getInteger("TimeUntilAutoLaunch");
+        this.destinationFrequency = nbt.getInteger("DestinationFrequency");
     }
 
     @Override

@@ -159,7 +159,7 @@ public class GCCoreTileEntityLandingPad extends TileEntityMulti implements IMult
                     if (Math.abs(x) != Math.abs(z))
                     {
                         final TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + x, this.yCoord, this.zCoord + z);
-
+                        
                         if (tile != null && tile instanceof ILandingPadAttachable && ((ILandingPadAttachable) tile).canAttachToLandingPad(this.worldObj, this.xCoord, this.yCoord, this.zCoord))
                         {
                             connectedTiles.add((ILandingPadAttachable) tile);

@@ -253,7 +253,7 @@ public class GCCoreWorldProviderSpaceStation extends WorldProvider implements IO
     @Override
     public double getYCoordinateToTeleport()
     {
-        return 120;
+        return 1200;
     }
 
     @Override

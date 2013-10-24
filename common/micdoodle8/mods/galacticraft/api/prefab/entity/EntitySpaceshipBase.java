@@ -380,7 +380,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
         {
             this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 5, true);
         }
-
+        
         this.setDead();
     }
 

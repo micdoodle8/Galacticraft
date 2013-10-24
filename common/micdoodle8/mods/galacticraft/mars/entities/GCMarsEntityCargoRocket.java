@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.ASMHelper.RuntimeInterface;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.sounds.GCCoreSoundUpdaterSpaceship;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
 import micdoodle8.mods.galacticraft.mars.util.GCMarsUtil;
@@ -132,7 +133,7 @@ public class GCMarsEntityCargoRocket extends EntityAutoRocket implements IRocket
             {
                 if (this.targetVec != null)
                 {
-                    this.motionY = (this.posY - this.targetVec.y) / -150.0D;
+                    this.motionY = (this.posY - this.targetVec.y) / -100.0D;
                 }
             }
 
@@ -203,6 +204,14 @@ public class GCMarsEntityCargoRocket extends EntityAutoRocket implements IRocket
         {
             this.rocketSoundUpdater.update();
         }
+        else
+        {
+            if (this.rocketSoundUpdater instanceof GCCoreSoundUpdaterSpaceship)
+            {
+                ((GCCoreSoundUpdaterSpaceship) this.rocketSoundUpdater).stopRocketSound();
+                this.rocketSoundUpdater.update();
+            }
+        }
     }
 
     protected void spawnParticles(boolean launched)
@@ -271,9 +280,17 @@ public class GCMarsEntityCargoRocket extends EntityAutoRocket implements IRocket
             if (this.targetDimension != this.worldObj.provider.dimensionId)
             {
                 WorldServer worldServer = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(this.targetDimension);
+                
                 if (!this.worldObj.isRemote && worldServer != null)
                 {
-                    WorldUtil.transferEntityToDimension(this, this.targetDimension, worldServer, false);
+                    this.setPosition(this.targetVec.x + 0.5F, this.targetVec.y + 800, this.targetVec.z + 0.5F);
+                    Entity e = WorldUtil.transferEntityToDimension(this, this.targetDimension, worldServer, false);
+                    
+                    if (e instanceof GCMarsEntityCargoRocket)
+                    {
+                        e.setPosition(this.targetVec.x + 0.5F, this.targetVec.y + 800, this.targetVec.z + 0.5F);
+                        ((GCMarsEntityCargoRocket) e).landing = true;
+                    }
                 }
             }
             else
