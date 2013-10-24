@@ -42,11 +42,11 @@ public abstract class GCWorldChunkManager extends WorldChunkManager
     {
         this(par1World.getSeed(), par1World.getWorldInfo().getTerrainType());
     }
-    
+
     public abstract BiomeGenBase getPlanetBiomeGenAt(int par1, int par2);
-    
+
     public abstract List<BiomeGenBase> getBiomeList();
-    
+
     @Override
     public List<BiomeGenBase> getBiomesToSpawnIn()
     {

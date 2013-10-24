@@ -60,7 +60,7 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
     private static final double MAIN_FEATURE_FILTER_MOD = 4;
     private static final double LARGE_FEATURE_FILTER_MOD = 8;
     private static final double SMALL_FEATURE_FILTER_MOD = 8;
-    
+
     private List<GCCoreMapGenBaseMeta> worldGenerators;
 
     public GCChunkProvider(World par1World, long seed, boolean mapFeaturesEnabled)
@@ -246,12 +246,12 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
         this.createCraters(par1, par2, ids, meta);
         this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, par1 * 16, par2 * 16, 16, 16);
         this.replaceBlocksForBiome(par1, par2, ids, meta, this.biomesForGeneration);
-        
+
         if (this.worldGenerators == null)
         {
             this.worldGenerators = this.getWorldGenerators();
         }
-        
+
         for (GCCoreMapGenBaseMeta generator : this.worldGenerators)
         {
             generator.generate(this, this.worldObj, par1, par2, ids, meta);
@@ -438,7 +438,7 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
      * @return The average terrain level. Default is 64.
      */
     protected abstract int getSeaLevel();
-    
+
     /**
      * List of all world generators to use. Caves, ravines, structures, etc.
      * 
@@ -457,11 +457,12 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
      * @return List of spawn list entries for creatures
      */
     protected abstract SpawnListEntry[] getCreatures();
-    
+
     /**
      * The grass block to be generated. Doesn't have to be grass of course.
      * 
-     * @return BlockMetaPair instance containing ID and metadata for grass block.
+     * @return BlockMetaPair instance containing ID and metadata for grass
+     *         block.
      */
     protected abstract BlockMetaPair getGrassBlock();
 
@@ -475,20 +476,21 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
     /**
      * The stone block to be generated. Doesn't have to be stone of course.
      * 
-     * @return BlockMetaPair instance containing ID and metadata for stone block.
+     * @return BlockMetaPair instance containing ID and metadata for stone
+     *         block.
      */
     protected abstract BlockMetaPair getStoneBlock();
-    
+
     /**
      * @return Base height modifier
      */
     public abstract double getHeightModifier();
-    
+
     /**
      * @return Height modifier for small hills
      */
     public abstract double getSmallFeatureHeightModifier();
-    
+
     /**
      * @return Height modifier for mountains
      */
@@ -498,7 +500,7 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
      * @return Height modifier for valleys
      */
     public abstract double getValleyHeightModifier();
-    
+
     /**
      * @return Probability that craters will be generated
      */

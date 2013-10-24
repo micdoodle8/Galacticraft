@@ -99,7 +99,7 @@ public class GCCoreGuiAirLockController extends GuiScreen implements ICheckBoxCa
         this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);
 
         this.drawTexturedModalRect(var5 + 15, var6 + 51, 176, 0, 7, 9);
-        
+
         String displayString = this.controller.getOwnerName() + "\'s " + "Air Lock Controller";
         this.fontRenderer.drawString(displayString, this.width / 2 - this.fontRenderer.getStringWidth(displayString) / 2, this.height / 2 - 65, 4210752);
 
@@ -108,11 +108,11 @@ public class GCCoreGuiAirLockController extends GuiScreen implements ICheckBoxCa
             this.fontRenderer.drawString(this.controller.getOwnerName(), this.width / 2 - this.fontRenderer.getStringWidth(displayString) / 2, this.height / 2 - 56, this.cannotEditTimer % 30 < 15 ? GCCoreUtil.convertTo32BitColor(255, 255, 100, 100) : 4210752);
             this.cannotEditTimer--;
         }
-        
+
         displayString = "Status:";
         this.fontRenderer.drawString(displayString, this.width / 2 - this.fontRenderer.getStringWidth(displayString) / 2, this.height / 2 + 45, 4210752);
         displayString = "Air Lock Closed";
-        
+
         if (this.controller.active)
         {
             displayString = "Air Lock Closed";
@@ -121,9 +121,9 @@ public class GCCoreGuiAirLockController extends GuiScreen implements ICheckBoxCa
         {
             displayString = "Air Lock Open";
         }
-        
+
         this.fontRenderer.drawString(displayString, this.width / 2 - this.fontRenderer.getStringWidth(displayString) / 2, this.height / 2 + 55, 4210752);
-        
+
         super.drawScreen(par1, par2, par3);
     }
 
@@ -187,7 +187,7 @@ public class GCCoreGuiAirLockController extends GuiScreen implements ICheckBoxCa
         {
             return this.controller.horizontalModeEnabled;
         }
-        
+
         return false;
     }
 
@@ -236,7 +236,7 @@ public class GCCoreGuiAirLockController extends GuiScreen implements ICheckBoxCa
         {
             return this.controller.playerToOpenFor;
         }
-        
+
         return null;
     }
 

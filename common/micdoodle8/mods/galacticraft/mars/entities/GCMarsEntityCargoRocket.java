@@ -280,12 +280,12 @@ public class GCMarsEntityCargoRocket extends EntityAutoRocket implements IRocket
             if (this.targetDimension != this.worldObj.provider.dimensionId)
             {
                 WorldServer worldServer = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(this.targetDimension);
-                
+
                 if (!this.worldObj.isRemote && worldServer != null)
                 {
                     this.setPosition(this.targetVec.x + 0.5F, this.targetVec.y + 800, this.targetVec.z + 0.5F);
                     Entity e = WorldUtil.transferEntityToDimension(this, this.targetDimension, worldServer, false);
-                    
+
                     if (e instanceof GCMarsEntityCargoRocket)
                     {
                         e.setPosition(this.targetVec.x + 0.5F, this.targetVec.y + 800, this.targetVec.z + 0.5F);
@@ -320,7 +320,7 @@ public class GCMarsEntityCargoRocket extends EntityAutoRocket implements IRocket
     protected void writeEntityToNBT(NBTTagCompound nbt)
     {
         nbt.setInteger("Type", this.rocketType.getIndex());
-        
+
         super.writeEntityToNBT(nbt);
     }
 

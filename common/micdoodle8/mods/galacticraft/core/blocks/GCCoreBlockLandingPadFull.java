@@ -160,8 +160,8 @@ public class GCCoreBlockLandingPadFull extends GCCoreBlockAdvanced
             return new GCCoreTileEntityLandingPad();
         case 1:
             return new GCCoreTileEntityBuggyFueler();
-//        case 2:
-//            return new GCCoreTileEntityCargoPad();
+            // case 2:
+            // return new GCCoreTileEntityCargoPad();
         default:
             return null;
         }

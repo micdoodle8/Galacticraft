@@ -21,18 +21,20 @@ public abstract class GCMoonComponentVillage extends StructureComponent
             ;
         }
     }
-    
+
     private int villagersSpawned;
     protected GCMoonComponentVillageStartPiece startPiece;
-    
-    public GCMoonComponentVillage() {}
+
+    public GCMoonComponentVillage()
+    {
+    }
 
     protected GCMoonComponentVillage(GCMoonComponentVillageStartPiece par1ComponentVillageStartPiece, int par2)
     {
         super(par2);
         this.startPiece = par1ComponentVillageStartPiece;
     }
-    
+
     @Override
     protected void func_143012_a(NBTTagCompound nbttagcompound)
     {
@@ -153,7 +155,7 @@ public abstract class GCMoonComponentVillage extends StructureComponent
     {
         return par2;
     }
-    
+
     @Override
     protected void placeBlockAtCurrentPosition(World par1World, int par2, int par3, int par4, int par5, int par6, StructureBoundingBox par7StructureBoundingBox)
     {

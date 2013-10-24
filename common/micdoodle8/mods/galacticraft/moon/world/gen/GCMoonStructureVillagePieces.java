@@ -173,7 +173,7 @@ public class GCMoonStructureVillagePieces
             if (var8 != null && var8.minY > 10)
             {
                 final GCMoonComponentVillagePathGen var9 = new GCMoonComponentVillagePathGen(par0ComponentVillageStartPiece, par7, par2Random, var8, par6);
-                
+
                 par1List.add(var9);
                 par0ComponentVillageStartPiece.field_74930_j.add(var9);
                 return var9;

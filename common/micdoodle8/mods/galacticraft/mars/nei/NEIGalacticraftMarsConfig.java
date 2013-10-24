@@ -118,7 +118,7 @@ public class NEIGalacticraftMarsConfig implements IConfigureNEI
         input2.add(new PositionedStack(new ItemStack(Block.chest), 90 + 1 * 26, -15 + changey));
         input2.add(new PositionedStack(new ItemStack(Block.chest), 90 + 2 * 26, -15 + changey));
         this.registerRocketBenchRecipe(input2, new PositionedStack(new ItemStack(GCMarsItems.spaceship, 1, 3), 139, 87 + changey));
-        
+
         input1 = new ArrayList<PositionedStack>();
         input1.add(new PositionedStack(new ItemStack(GCCoreItems.partNoseCone), 45, 14));
         input1.add(new PositionedStack(new ItemStack(GCCoreItems.basicItem, 1, 14), 45, 32));

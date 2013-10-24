@@ -258,7 +258,7 @@ public class CommonProxyCore implements IGuiHandler
     {
         return null;
     }
-    
+
     public void openAirLockGui(GCCoreTileEntityAirLockController controller)
     {
         ;

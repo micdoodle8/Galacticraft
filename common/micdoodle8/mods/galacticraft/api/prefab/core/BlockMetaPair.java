@@ -7,7 +7,7 @@ public class BlockMetaPair
 {
     private final short blockID;
     private final byte metadata;
-    
+
     public BlockMetaPair(short blockID, byte metadata)
     {
         this.blockID = blockID;
@@ -16,11 +16,11 @@ public class BlockMetaPair
 
     public short getBlockID()
     {
-        return blockID;
+        return this.blockID;
     }
 
     public byte getMetadata()
     {
-        return metadata;
+        return this.metadata;
     }
 }

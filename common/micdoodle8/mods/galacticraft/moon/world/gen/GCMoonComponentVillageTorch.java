@@ -13,7 +13,9 @@ public class GCMoonComponentVillageTorch extends GCMoonComponentVillage
 {
     private int averageGroundLevel = -1;
 
-    public GCMoonComponentVillageTorch() {}
+    public GCMoonComponentVillageTorch()
+    {
+    }
 
     public GCMoonComponentVillageTorch(GCMoonComponentVillageStartPiece par1ComponentVillageStartPiece, int par2, Random par3Random, StructureBoundingBox par4StructureBoundingBox, int par5)
     {
@@ -21,12 +23,12 @@ public class GCMoonComponentVillageTorch extends GCMoonComponentVillage
         this.coordBaseMode = par5;
         this.boundingBox = par4StructureBoundingBox;
     }
-    
+
     @Override
     protected void func_143012_a(NBTTagCompound nbt)
     {
         super.func_143012_a(nbt);
-        
+
         nbt.setInteger("AvgGroundLevel", this.averageGroundLevel);
     }
 
@@ -34,7 +36,7 @@ public class GCMoonComponentVillageTorch extends GCMoonComponentVillage
     protected void func_143011_b(NBTTagCompound nbt)
     {
         super.func_143011_b(nbt);
-        
+
         this.averageGroundLevel = nbt.getInteger("AvgGroundLevel");
     }
 

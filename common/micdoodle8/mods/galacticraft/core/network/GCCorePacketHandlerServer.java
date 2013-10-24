@@ -399,35 +399,35 @@ public class GCCorePacketHandlerServer implements IPacketHandler
                 if (tile instanceof GCCoreTileEntityAirLockController)
                 {
                     GCCoreTileEntityAirLockController launchController = (GCCoreTileEntityAirLockController) tile;
-                    launchController.redstoneActivation = ((Integer) packetReadout[4]) == 1;
+                    launchController.redstoneActivation = (Integer) packetReadout[4] == 1;
                 }
                 break;
             case 1:
                 if (tile instanceof GCCoreTileEntityAirLockController)
                 {
                     GCCoreTileEntityAirLockController launchController = (GCCoreTileEntityAirLockController) tile;
-                    launchController.playerDistanceActivation = ((Integer) packetReadout[4]) == 1;
+                    launchController.playerDistanceActivation = (Integer) packetReadout[4] == 1;
                 }
                 break;
             case 2:
                 if (tile instanceof GCCoreTileEntityAirLockController)
                 {
                     GCCoreTileEntityAirLockController launchController = (GCCoreTileEntityAirLockController) tile;
-                    launchController.playerDistanceSelection = ((Integer) packetReadout[4]);
+                    launchController.playerDistanceSelection = (Integer) packetReadout[4];
                 }
                 break;
             case 3:
                 if (tile instanceof GCCoreTileEntityAirLockController)
                 {
                     GCCoreTileEntityAirLockController launchController = (GCCoreTileEntityAirLockController) tile;
-                    launchController.playerNameMatches = ((Integer) packetReadout[4]) == 1;
+                    launchController.playerNameMatches = (Integer) packetReadout[4] == 1;
                 }
                 break;
             case 4:
                 if (tile instanceof GCCoreTileEntityAirLockController)
                 {
                     GCCoreTileEntityAirLockController launchController = (GCCoreTileEntityAirLockController) tile;
-                    launchController.invertSelection = ((Integer) packetReadout[4]) == 1;
+                    launchController.invertSelection = (Integer) packetReadout[4] == 1;
                 }
                 break;
             case 5:
@@ -435,7 +435,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
                 {
                     GCCoreTileEntityAirLockController launchController = (GCCoreTileEntityAirLockController) tile;
                     launchController.lastHorizontalModeEnabled = launchController.horizontalModeEnabled;
-                    launchController.horizontalModeEnabled = ((Integer) packetReadout[4]) == 1;
+                    launchController.horizontalModeEnabled = (Integer) packetReadout[4] == 1;
                 }
                 break;
             default:
@@ -455,7 +455,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
                 if (tile instanceof GCCoreTileEntityAirLockController)
                 {
                     GCCoreTileEntityAirLockController launchController = (GCCoreTileEntityAirLockController) tile;
-                    launchController.playerToOpenFor = ((String) packetReadout[4]);
+                    launchController.playerToOpenFor = (String) packetReadout[4];
                 }
                 break;
             default:

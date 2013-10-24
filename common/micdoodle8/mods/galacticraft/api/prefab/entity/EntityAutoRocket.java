@@ -137,7 +137,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
                                 {
                                     continue;
                                 }
-                                
+
                                 launchController = (TileEntity) connectedTile;
 
                                 if (launchController != null)
@@ -204,7 +204,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
         for (int i = 0; i < FMLCommonHandler.instance().getMinecraftServerInstance().worldServers.length; i++)
         {
             WorldServer world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers[i];
-            
+
             for (int j = 0; j < world.loadedTileEntityList.size(); j++)
             {
                 TileEntity tile = (TileEntity) world.loadedTileEntityList.get(j);
@@ -256,7 +256,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
                                 {
                                     this.targetVec = null;
                                 }
-                                
+
                                 return false;
                             }
                             else
@@ -296,7 +296,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
     public void onUpdate()
     {
         super.onUpdate();
-        
+
         if (!this.worldObj.isRemote)
         {
             if (this.statusMessageCooldown > 0)
@@ -308,7 +308,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
             {
                 this.ignite();
             }
-            
+
             if (this.autoLaunchCountdown > 0)
             {
                 this.autoLaunchCountdown--;
@@ -359,7 +359,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
                                 {
                                     Class<?> controllerClass = Class.forName("micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityLaunchController");
                                     controllerClass.cast(this.worldObj.getBlockTileEntity(((TileEntity) tile).xCoord, ((TileEntity) tile).yCoord, ((TileEntity) tile).zCoord));
-                                    
+
                                     if (this.worldObj.isBlockIndirectlyGettingPowered(((TileEntity) tile).xCoord, ((TileEntity) tile).yCoord, ((TileEntity) tile).zCoord))
                                     {
                                         this.autoLaunch();
@@ -378,7 +378,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
                     }
                 }
             }
-            
+
             if (this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase() && this.hasValidFuel())
             {
                 if (this.landing && this.targetVec != null && this.worldObj.getBlockTileEntity(this.targetVec.intX(), this.targetVec.intY(), this.targetVec.intZ()) instanceof IFuelDock && this.posY - this.targetVec.y < 5)
@@ -417,7 +417,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
                     }
                 }
             }
-            
+
             PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 60, this.worldObj.provider.dimensionId, GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getNetworkedData(new ArrayList<Object>())));
 
             this.lastAutoLaunchSetting = this.autoLaunchSetting;
@@ -473,7 +473,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
                     this.setPad(dock);
 
                     HashSet<ILandingPadAttachable> connectedTiles = dock.getConnectedTiles();
-                    
+
                     try
                     {
                         Class<?> controllerClass = Class.forName("micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityLaunchController");
@@ -541,7 +541,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
     public ArrayList<Object> getNetworkedData(ArrayList<Object> list)
     {
         super.getNetworkedData(list);
-        
+
         list.add(this.fuelTank.getFluidAmount());
         list.add(this.landing);
         list.add(this.destinationFrequency);
@@ -565,7 +565,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
         list.add(this.statusMessageCooldown);
         list.add(this.lastStatusMessageCooldown);
         list.add(this.statusValid);
-        
+
         return list;
     }
 
@@ -985,13 +985,20 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
                 }
             }
         }
-        
+
         return droppedItemList;
     }
 
     public static enum EnumAutoLaunch
     {
-        CARGO_IS_UNLOADED(0, "Cargo is Unloaded"), CARGO_IS_FULL(1, "Cargo is Full"), ROCKET_IS_FUELED(2, "Fully Fueled"), INSTANT(3, "Instantly"), TIME_10_SECONDS(4, "10 Seconds"), TIME_30_SECONDS(5, "30 Seconds"), TIME_1_MINUTE(6, "1 Minute"), REDSTONE_SIGNAL(7, "Redstone Signal");
+        CARGO_IS_UNLOADED(0, "Cargo is Unloaded"),
+        CARGO_IS_FULL(1, "Cargo is Full"),
+        ROCKET_IS_FUELED(2, "Fully Fueled"),
+        INSTANT(3, "Instantly"),
+        TIME_10_SECONDS(4, "10 Seconds"),
+        TIME_30_SECONDS(5, "30 Seconds"),
+        TIME_1_MINUTE(6, "1 Minute"),
+        REDSTONE_SIGNAL(7, "Redstone Signal");
 
         private final int index;
         private String title;

@@ -57,14 +57,14 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced
     {
         return true;
     }
-    
+
     @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLiving, ItemStack itemStack)
     {
         super.onBlockPlacedBy(world, x, y, z, entityLiving, itemStack);
 
         TileEntity tile = world.getBlockTileEntity(x, y, z);
-        
+
         if (tile instanceof GCCoreTileEntityAirLockController && entityLiving instanceof EntityPlayer)
         {
             ((GCCoreTileEntityAirLockController) tile).setOwnerName(((EntityPlayer) entityLiving).username);
@@ -90,13 +90,13 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced
     @SideOnly(Side.CLIENT)
     public Icon getIcon(int par1, int par2)
     {
-        if (par2 >= METADATA_AIR_LOCK_CONTROLLER)
+        if (par2 >= GCCoreBlockAirLockFrame.METADATA_AIR_LOCK_CONTROLLER)
         {
             if (par1 == ForgeDirection.UP.ordinal() || par1 == ForgeDirection.DOWN.ordinal())
             {
                 return this.airLockIcons[0];
             }
-            
+
             return this.airLockIcons[7];
         }
         else
@@ -108,13 +108,13 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced
     @Override
     public Icon getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int side)
     {
-        if (par1IBlockAccess.getBlockMetadata(par2, par3, par4) >= METADATA_AIR_LOCK_CONTROLLER)
+        if (par1IBlockAccess.getBlockMetadata(par2, par3, par4) >= GCCoreBlockAirLockFrame.METADATA_AIR_LOCK_CONTROLLER)
         {
             if (side == ForgeDirection.UP.ordinal() || side == ForgeDirection.DOWN.ordinal())
             {
                 return this.airLockIcons[0];
             }
-            
+
             return this.airLockIcons[6];
         }
         else
@@ -319,7 +319,7 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced
     {
         int metadata = world.getBlockMetadata(x, y, z);
         TileEntity tile = world.getBlockTileEntity(x, y, z);
-        
+
         if (metadata >= GCCoreBlockAirLockFrame.METADATA_AIR_LOCK_CONTROLLER && tile instanceof GCCoreTileEntityAirLockController)
         {
             GalacticraftCore.proxy.openAirLockGui((GCCoreTileEntityAirLockController) tile);
@@ -328,17 +328,17 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced
 
         return false;
     }
-    
+
     @Override
     public void breakBlock(World world, int x, int y, int z, int par5, int par6)
     {
         TileEntity tile = world.getBlockTileEntity(x, y, z);
-        
+
         if (tile instanceof GCCoreTileEntityAirLockController)
         {
             ((GCCoreTileEntityAirLockController) tile).unsealAirLock();
         }
-        
+
         super.breakBlock(world, x, y, z, par5, par6);
     }
 

@@ -46,16 +46,16 @@ public class RecipeUtil
     public static void addRecipe(ItemStack result, Object[] obj)
     {
         CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(result, obj));
-        
+
         Object[] newIngredients = Arrays.copyOf(obj, obj.length);
         boolean changed = false;
-        
+
         for (int i = 0; i < obj.length; i++)
         {
             if (newIngredients[i] instanceof String)
             {
                 String ingred = (String) newIngredients[i];
-                
+
                 if (ingred.equals("ingotAluminum"))
                 {
                     newIngredients[i] = "ingotAluminium";
@@ -68,7 +68,7 @@ public class RecipeUtil
                 }
             }
         }
-        
+
         if (changed)
         {
             CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(result, newIngredients));

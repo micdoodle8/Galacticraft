@@ -28,7 +28,33 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
 
     public enum EnumEnclosedBlock
     {
-        OXYGENPIPE(1, -1, null, "enclosed_oxygen_pipe"), IC2_COPPER_CABLE(2, 0, null, "enclosed_copper_cable"), IC2_GOLD_CABLE(3, 3, null, "enclosed_gold_cable"), IC2_HV_CABLE(4, 6, null, "enclosed_hv_cable"), IC2_GLASS_FIBRE_CABLE(5, 9, null, "enclosed_glassfibre_cable"), IC2_LV_CABLE(6, 10, null, "enclosed_lv_cable"), BC_ITEM_STONEPIPE(7, -1, "PipeItemsStone", "enclosed_itempipe_stone"), BC_ITEM_COBBLESTONEPIPE(8, -1, "PipeItemsCobblestone", "enclosed_itempipe_cobblestone"), BC_FLUIDS_STONEPIPE(9, -1, "PipeFluidsStone", "enclosed_liquidpipe_stone"), BC_FLUIDS_COBBLESTONEPIPE(10, -1, "PipeFluidsCobblestone", "enclosed_liquidpipe_cobblestone"), BC_POWER_STONEPIPE(11, -1, "PipePowerStone", "enclosed_powerpipe_stone"), BC_POWER_GOLDPIPE(12, -1, "PipePowerGold", "enclosed_powerpipe_gold"), ME_CABLE(13, -1, null, "enclosed_me_cable"), ALUMINUM_WIRE(14, -1, null, "enclosed_aluminum_wire"), ALUMINUM_WIRE_HEAVY(15, -1, null, "enclosed_heavy_aluminum_wire");
+        OXYGENPIPE(1, -1, null, "enclosed_oxygen_pipe"),
+        IC2_COPPER_CABLE(2, 0, null, "enclosed_copper_cable"),
+        IC2_GOLD_CABLE(3, 3, null, "enclosed_gold_cable"),
+        IC2_HV_CABLE(4, 6, null, "enclosed_hv_cable"),
+        IC2_GLASS_FIBRE_CABLE(5, 9, null, "enclosed_glassfibre_cable"),
+        IC2_LV_CABLE(6, 10, null, "enclosed_lv_cable"),
+        BC_ITEM_STONEPIPE(7, -1, "PipeItemsStone", "enclosed_itempipe_stone"),
+        BC_ITEM_COBBLESTONEPIPE(
+                8,
+                    -1,
+                    "PipeItemsCobblestone",
+                    "enclosed_itempipe_cobblestone"),
+        BC_FLUIDS_STONEPIPE(
+                9,
+                    -1,
+                    "PipeFluidsStone",
+                    "enclosed_liquidpipe_stone"),
+        BC_FLUIDS_COBBLESTONEPIPE(
+                10,
+                    -1,
+                    "PipeFluidsCobblestone",
+                    "enclosed_liquidpipe_cobblestone"),
+        BC_POWER_STONEPIPE(11, -1, "PipePowerStone", "enclosed_powerpipe_stone"),
+        BC_POWER_GOLDPIPE(12, -1, "PipePowerGold", "enclosed_powerpipe_gold"),
+        ME_CABLE(13, -1, null, "enclosed_me_cable"),
+        ALUMINUM_WIRE(14, -1, null, "enclosed_aluminum_wire"),
+        ALUMINUM_WIRE_HEAVY(15, -1, null, "enclosed_heavy_aluminum_wire");
 
         int metadata;
         int ic2CableMeta;

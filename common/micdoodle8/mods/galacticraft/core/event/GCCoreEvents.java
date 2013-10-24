@@ -464,18 +464,18 @@ public class GCCoreEvents
         try
         {
             ResourceLocation resourcelocation = new ResourceLocation(par1Str);
-            String s1 = String.format("%s:%s:%s/%s", new Object[] {"mcsounddomain", resourcelocation.getResourceDomain(), "sound", resourcelocation.getResourcePath()});
+            String s1 = String.format("%s:%s:%s/%s", new Object[] { "mcsounddomain", resourcelocation.getResourceDomain(), "sound", resourcelocation.getResourcePath() });
             SoundPoolProtocolHandler soundpoolprotocolhandler = new SoundPoolProtocolHandler(pool);
-            return new SoundPoolEntry(par1Str, new URL((URL)null, s1, soundpoolprotocolhandler));
+            return new SoundPoolEntry(par1Str, new URL((URL) null, s1, soundpoolprotocolhandler));
         }
         catch (MalformedURLException e)
         {
             e.printStackTrace();
         }
-        
+
         return null;
     }
-    
+
     @SideOnly(Side.CLIENT)
     @ForgeSubscribe
     public void onLeaveBedButtonClicked(SleepCancelledEvent event)

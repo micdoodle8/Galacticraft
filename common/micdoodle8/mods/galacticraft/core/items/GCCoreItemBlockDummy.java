@@ -43,7 +43,7 @@ public class GCCoreItemBlockDummy extends ItemBlock
     {
         int metadata = itemstack.getItemDamage();
         String blockName = "";
-        
+
         switch (metadata)
         {
         case 1:

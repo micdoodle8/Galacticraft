@@ -29,7 +29,7 @@ public class GCMoonMapGenVillage extends MapGenStructure
 
     public static void initiateStructures() throws Throwable
     {
-        if (!initialized)
+        if (!GCMoonMapGenVillage.initialized)
         {
             MapGenStructureIO.func_143034_b(GCMoonStructureVillageStart.class, "MoonVillage");
             MapGenStructureIO.func_143031_a(GCMoonComponentVillageField.class, "MoonField1");
@@ -41,8 +41,8 @@ public class GCMoonMapGenVillage extends MapGenStructure
             MapGenStructureIO.func_143031_a(GCMoonComponentVillageStartPiece.class, "MoonWell");
             MapGenStructureIO.func_143031_a(GCMoonComponentVillageWoodHut.class, "MoonWoodHut");
         }
-         
-        initialized = true;
+
+        GCMoonMapGenVillage.initialized = true;
     }
 
     public GCMoonMapGenVillage()
@@ -87,13 +87,13 @@ public class GCMoonMapGenVillage extends MapGenStructure
     @Override
     protected StructureStart getStructureStart(int par1, int par2)
     {
-        FMLLog.info("Generating Moon Village at x" + (par1 * 16) + " z" + (par2 * 16));
+        FMLLog.info("Generating Moon Village at x" + par1 * 16 + " z" + par2 * 16);
         return new GCMoonStructureVillageStart(this.worldObj, this.rand, par1, par2, this.terrainType);
     }
 
-     @Override
-     public String func_143025_a()
-     {
-         return "MoonVillage";
-     }
+    @Override
+    public String func_143025_a()
+    {
+        return "MoonVillage";
+    }
 }

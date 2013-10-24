@@ -17,8 +17,10 @@ public class GCMoonComponentVillageField2 extends GCMoonComponentVillage
     private int cropTypeB;
     private int cropTypeC;
     private int cropTypeD;
-    
-    public GCMoonComponentVillageField2() {}
+
+    public GCMoonComponentVillageField2()
+    {
+    }
 
     public GCMoonComponentVillageField2(GCMoonComponentVillageStartPiece par1ComponentVillageStartPiece, int par2, Random par3Random, StructureBoundingBox par4StructureBoundingBox, int par5)
     {
@@ -30,12 +32,12 @@ public class GCMoonComponentVillageField2 extends GCMoonComponentVillage
         this.cropTypeC = this.getRandomCrop(par3Random);
         this.cropTypeD = this.getRandomCrop(par3Random);
     }
-    
+
     @Override
     protected void func_143012_a(NBTTagCompound nbt)
     {
         super.func_143012_a(nbt);
-        
+
         nbt.setInteger("AvgGroundLevel", this.averageGroundLevel);
         nbt.setInteger("CropTypeA", this.cropTypeA);
         nbt.setInteger("CropTypeB", this.cropTypeB);
@@ -47,7 +49,7 @@ public class GCMoonComponentVillageField2 extends GCMoonComponentVillage
     protected void func_143011_b(NBTTagCompound nbt)
     {
         super.func_143011_b(nbt);
-        
+
         this.averageGroundLevel = nbt.getInteger("AvgGroundLevel");
         this.cropTypeA = nbt.getInteger("CropTypeA");
         this.cropTypeB = nbt.getInteger("CropTypeB");

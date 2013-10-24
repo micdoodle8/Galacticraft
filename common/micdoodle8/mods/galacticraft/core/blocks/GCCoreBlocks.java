@@ -150,7 +150,7 @@ public class GCCoreBlocks
         GCCoreBlocks.hiddenBlocks.add(GCCoreBlocks.landingPadFull.blockID);
         GCCoreBlocks.hiddenBlocks.add(GCCoreBlocks.fakeBlock.blockID);
         GCCoreBlocks.hiddenBlocks.add(GCCoreBlocks.spaceStationBase.blockID);
-        
+
         OreDictionary.registerOre("oreCopper", new ItemStack(GCCoreBlocks.decorationBlocks, 1, 5));
         OreDictionary.registerOre("oreTin", new ItemStack(GCCoreBlocks.decorationBlocks, 1, 6));
         OreDictionary.registerOre("oreAluminum", new ItemStack(GCCoreBlocks.decorationBlocks, 1, 7));

@@ -34,7 +34,7 @@ public class GCCoreTileEntityAirLockController extends GCCoreTileEntityAirLock i
     public ArrayList<GCCoreTileEntityAirLock> lastOtherAirLocks;
     private AirLockProtocol protocol;
     private AirLockProtocol lastProtocol = this.protocol;
-    
+
     @SuppressWarnings("rawtypes")
     @Override
     public void updateEntity()
@@ -44,11 +44,11 @@ public class GCCoreTileEntityAirLockController extends GCCoreTileEntityAirLock i
         if (!this.worldObj.isRemote)
         {
             boolean optionHandled = false;
-            
+
             if (this.redstoneActivation)
             {
                 optionHandled = true;
-                
+
                 if (this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord))
                 {
                     this.active = true;
@@ -58,13 +58,13 @@ public class GCCoreTileEntityAirLockController extends GCCoreTileEntityAirLock i
                     this.active = false;
                 }
             }
-            
+
             if (this.playerDistanceActivation)
             {
                 optionHandled = true;
-                
+
                 double distance = 0.0F;
-                
+
                 switch (this.playerDistanceSelection)
                 {
                 case 0:
@@ -80,19 +80,19 @@ public class GCCoreTileEntityAirLockController extends GCCoreTileEntityAirLock i
                     distance = 10.0D;
                     break;
                 }
-                
+
                 Vector3 thisPos = new Vector3(this).translate(0.5F);
                 Vector3 minPos = new Vector3(thisPos).translate(-distance);
                 Vector3 maxPos = new Vector3(thisPos).translate(distance);
                 AxisAlignedBB matchingRegion = AxisAlignedBB.getBoundingBox(minPos.x, minPos.y, minPos.z, maxPos.x, maxPos.y, maxPos.z);
                 List playersWithin = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, matchingRegion);
-                
+
                 boolean foundPlayer = false;
-                
+
                 for (int i = 0; i < playersWithin.size(); i++)
                 {
                     Object o = playersWithin.get(i);
-                    
+
                     if (o instanceof EntityPlayer)
                     {
                         if (this.playerNameMatches)
@@ -110,20 +110,20 @@ public class GCCoreTileEntityAirLockController extends GCCoreTileEntityAirLock i
                         }
                     }
                 }
-                
+
                 this.active = !foundPlayer;
             }
-            
+
             if (!optionHandled)
             {
                 this.active = false;
             }
-            
+
             if (this.invertSelection)
             {
                 this.active = !this.active;
             }
-            
+
             if (this.protocol == null)
             {
                 this.protocol = this.lastProtocol = new AirLockProtocol(this, 40);
@@ -154,14 +154,14 @@ public class GCCoreTileEntityAirLockController extends GCCoreTileEntityAirLock i
                 this.lastProtocol = this.protocol;
                 this.lastHorizontalModeEnabled = this.horizontalModeEnabled;
             }
-            
+
             if (this.ticks % 3 == 0)
             {
                 PacketManager.sendPacketToClients(this.getPacket(), this.worldObj, new Vector3(this), 12.0D);
             }
         }
     }
-    
+
     public void sealAirLock()
     {
         int x = this.lastProtocol.minX + (this.lastProtocol.maxX - this.lastProtocol.minX) / 2;
@@ -182,7 +182,7 @@ public class GCCoreTileEntityAirLockController extends GCCoreTileEntityAirLock i
                     for (z = this.protocol.minZ + 1; z <= this.protocol.maxZ - 1; z++)
                     {
                         int id = this.worldObj.getBlockId(x, y, z);
-                        
+
                         if (id == 0 || Block.blocksList[id].isAirBlock(this.worldObj, x, y, z))
                         {
                             this.worldObj.setBlock(x, this.protocol.minY, z, GCCoreBlocks.airLockSeal.blockID, 0, 3);
@@ -225,7 +225,7 @@ public class GCCoreTileEntityAirLockController extends GCCoreTileEntityAirLock i
             }
         }
     }
-    
+
     public void unsealAirLock()
     {
         int x = this.lastProtocol.minX + (this.lastProtocol.maxX - this.lastProtocol.minX) / 2;
@@ -349,7 +349,7 @@ public class GCCoreTileEntityAirLockController extends GCCoreTileEntityAirLock i
 
     public String getOwnerName()
     {
-        return ownerName;
+        return this.ownerName;
     }
 
     public void setOwnerName(String ownerName)

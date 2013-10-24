@@ -35,7 +35,9 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 {
     public static enum EnumLaunchPhase
     {
-        UNIGNITED(1), IGNITED(2), LAUNCHED(3);
+        UNIGNITED(1),
+        IGNITED(2),
+        LAUNCHED(3);
 
         private int phase;
 
@@ -380,7 +382,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
         {
             this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 5, true);
         }
-        
+
         this.setDead();
     }
 

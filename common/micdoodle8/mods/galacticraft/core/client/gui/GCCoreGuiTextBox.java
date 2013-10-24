@@ -208,7 +208,7 @@ public class GCCoreGuiTextBox extends GuiButton
             {
                 return false;
             }
-            
+
             return ChatAllowedCharacters.allowedCharacters.indexOf(string.charAt(string.length() - 1)) >= 0;
         }
     }

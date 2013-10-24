@@ -267,17 +267,17 @@ public class GalacticraftCore
         {
             GameRegistry.registerWorldGenerator(new GCCoreOverworldGenerator(GCCoreBlocks.decorationBlocks, 5, 24, 0, 75, 7));
         }
-        
+
         if (GCCoreConfigManager.enableTinOreGen)
         {
             GameRegistry.registerWorldGenerator(new GCCoreOverworldGenerator(GCCoreBlocks.decorationBlocks, 6, 22, 0, 60, 7));
         }
-        
+
         if (GCCoreConfigManager.enableAluminumOreGen)
         {
             GameRegistry.registerWorldGenerator(new GCCoreOverworldGenerator(GCCoreBlocks.decorationBlocks, 7, 18, 0, 45, 7));
         }
-        
+
         if (GCCoreConfigManager.enableSiliconOreGen)
         {
             GameRegistry.registerWorldGenerator(new GCCoreOverworldGenerator(GCCoreBlocks.decorationBlocks, 8, 3, 0, 25, 7));
@@ -320,7 +320,7 @@ public class GalacticraftCore
                 }
             }
         }
-        
+
         // Support for the other spelling of Aluminum
         if (OreDictionary.getOres("ingotAluminium").size() > 0)
         {
@@ -329,7 +329,7 @@ public class GalacticraftCore
                 CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, 8), stack, stack);
             }
         }
-        
+
         if (OreDictionary.getOres("ingotBronze").size() > 0)
         {
             for (ItemStack stack : OreDictionary.getOres("ingotBronze"))

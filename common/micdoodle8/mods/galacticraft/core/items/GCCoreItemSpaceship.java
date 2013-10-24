@@ -62,7 +62,7 @@ public class GCCoreItemSpaceship extends Item implements IHoldableItem
                 for (int j = -1; j < 2; j++)
                 {
                     final int id = par3World.getBlockId(par4 + i, par5, par6 + j);
-                    
+
                     if (id == GCCoreBlocks.landingPadFull.blockID)
                     {
                         amountOfCorrectBlocks = 9;
@@ -83,7 +83,7 @@ public class GCCoreItemSpaceship extends Item implements IHoldableItem
                 if (!par2EntityPlayer.capabilities.isCreativeMode)
                 {
                     par1ItemStack.stackSize--;
-                    
+
                     if (par1ItemStack.stackSize <= 0)
                     {
                         par1ItemStack = null;

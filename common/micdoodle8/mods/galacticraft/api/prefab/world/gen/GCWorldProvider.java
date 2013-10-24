@@ -18,9 +18,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 public abstract class GCWorldProvider extends WorldProvider implements IGalacticraftWorldProvider
 {
     public abstract Class<? extends GCChunkProvider> getChunkProviderClass();
-    
+
     public abstract Class<? extends GCWorldChunkManager> getWorldChunkManagerClass();
-    
+
     @Override
     public void setDimension(int var1)
     {
@@ -114,7 +114,7 @@ public abstract class GCWorldProvider extends WorldProvider implements IGalactic
         {
             e.printStackTrace();
         }
-        
+
         return null;
     }
 

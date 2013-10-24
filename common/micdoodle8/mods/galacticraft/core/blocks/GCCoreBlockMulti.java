@@ -36,7 +36,7 @@ public class GCCoreBlockMulti extends BlockMulti
         this.fakeIcons[0] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "launch_pad");
         this.fakeIcons[1] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "workbench_nasa_top");
         this.fakeIcons[2] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "solar_basic_0");
-        
+
         if (Loader.isModLoaded("GalacticraftMars"))
         {
             try

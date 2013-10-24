@@ -45,7 +45,7 @@ public abstract class GCCoreBlockAdvanced extends BlockAdvanced implements ITile
     {
         return null;
     }
-    
+
     @Override
     public void onBlockAdded(World par1World, int par2, int par3, int par4)
     {
@@ -99,7 +99,7 @@ public abstract class GCCoreBlockAdvanced extends BlockAdvanced implements ITile
                             }
 
                             var7.stackSize -= var11;
-                            EntityItem var12 = new EntityItem(world, (x + var8), (y + var9), (z + var10), new ItemStack(var7.itemID, var11, var7.getItemDamage()));
+                            EntityItem var12 = new EntityItem(world, x + var8, y + var9, z + var10, new ItemStack(var7.itemID, var11, var7.getItemDamage()));
 
                             if (var7.hasTagCompound())
                             {
@@ -107,9 +107,9 @@ public abstract class GCCoreBlockAdvanced extends BlockAdvanced implements ITile
                             }
 
                             float var13 = 0.05F;
-                            var12.motionX = ((float) random.nextGaussian() * var13);
-                            var12.motionY = ((float) random.nextGaussian() * var13 + 0.2F);
-                            var12.motionZ = ((float) random.nextGaussian() * var13);
+                            var12.motionX = (float) random.nextGaussian() * var13;
+                            var12.motionY = (float) random.nextGaussian() * var13 + 0.2F;
+                            var12.motionZ = (float) random.nextGaussian() * var13;
                             world.spawnEntityInWorld(var12);
                         }
                     }

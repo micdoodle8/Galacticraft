@@ -307,7 +307,7 @@ public class ClientProxyCore extends CommonProxyCore
         RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererCraftingTable(ClientProxyCore.craftingTableID));
         ClientProxyCore.fullLandingPadRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererLandingPad(ClientProxyCore.fullLandingPadRenderID));
-        
+
         try
         {
             int timeout = 10000;
@@ -317,11 +317,11 @@ public class ClientProxyCore extends CommonProxyCore
             connection.setReadTimeout(timeout);
             InputStream stream = connection.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-            
+
             String line;
             while ((line = reader.readLine()) != null)
             {
-                if ((line.contains(":")))
+                if (line.contains(":"))
                 {
                     int splitLocation = line.indexOf(":");
                     String username = line.substring(0, splitLocation);
@@ -920,7 +920,7 @@ public class ClientProxyCore extends CommonProxyCore
 
         return null;
     }
-    
+
     @Override
     public void openAirLockGui(GCCoreTileEntityAirLockController controller)
     {

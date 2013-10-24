@@ -13,20 +13,22 @@ public class GCMoonComponentVillageWoodHut extends GCMoonComponentVillage
 {
     private int averageGroundLevel = -1;
 
-    public GCMoonComponentVillageWoodHut() {}
-    
+    public GCMoonComponentVillageWoodHut()
+    {
+    }
+
     public GCMoonComponentVillageWoodHut(GCMoonComponentVillageStartPiece par1ComponentVillageStartPiece, int par2, Random par3Random, StructureBoundingBox par4StructureBoundingBox, int par5)
     {
         super(par1ComponentVillageStartPiece, par2);
         this.coordBaseMode = par5;
         this.boundingBox = par4StructureBoundingBox;
     }
-    
+
     @Override
     protected void func_143012_a(NBTTagCompound nbt)
     {
         super.func_143012_a(nbt);
-        
+
         nbt.setInteger("AvgGroundLevel", this.averageGroundLevel);
     }
 
@@ -34,7 +36,7 @@ public class GCMoonComponentVillageWoodHut extends GCMoonComponentVillage
     protected void func_143011_b(NBTTagCompound nbt)
     {
         super.func_143011_b(nbt);
-        
+
         this.averageGroundLevel = nbt.getInteger("AvgGroundLevel");
     }
 

@@ -12,8 +12,10 @@ import net.minecraft.world.gen.structure.StructureComponent;
 public class GCMoonComponentVillageWell extends GCMoonComponentVillage
 {
     private int averageGroundLevel = -1;
-    
-    public GCMoonComponentVillageWell() {}
+
+    public GCMoonComponentVillageWell()
+    {
+    }
 
     public GCMoonComponentVillageWell(GCMoonComponentVillageStartPiece par1ComponentVillageStartPiece, int par2, Random par3Random, int par4, int par5)
     {
@@ -30,12 +32,12 @@ public class GCMoonComponentVillageWell extends GCMoonComponentVillage
             this.boundingBox = new StructureBoundingBox(par4, 64, par5, par4 + 6 - 1, 78, par5 + 6 - 1);
         }
     }
-    
+
     @Override
     protected void func_143012_a(NBTTagCompound nbt)
     {
         super.func_143012_a(nbt);
-        
+
         nbt.setInteger("AvgGroundLevel", this.averageGroundLevel);
     }
 
@@ -43,10 +45,10 @@ public class GCMoonComponentVillageWell extends GCMoonComponentVillage
     protected void func_143011_b(NBTTagCompound nbt)
     {
         super.func_143011_b(nbt);
-        
+
         this.averageGroundLevel = nbt.getInteger("AvgGroundLevel");
     }
-    
+
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public void buildComponent(StructureComponent par1StructureComponent, List par2List, Random par3Random)

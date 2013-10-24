@@ -38,10 +38,10 @@ public class GCCoreBlockAirLockWall extends BlockBreakable implements IPartialSe
     {
         float var5;
         float var6;
-        
+
         int frameID = GCCoreBlocks.airLockSeal.blockID;
         int sealID = GCCoreBlocks.airLockSeal.blockID;
-        
+
         int idXMin = world.getBlockId(x - 1, y, z);
         int idXMax = world.getBlockId(x + 1, y, z);
 
@@ -54,7 +54,7 @@ public class GCCoreBlockAirLockWall extends BlockBreakable implements IPartialSe
         else
         {
             int adjacentCount = 0;
-            
+
             for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
             {
                 if (dir != ForgeDirection.UP && dir != ForgeDirection.DOWN)
@@ -62,14 +62,14 @@ public class GCCoreBlockAirLockWall extends BlockBreakable implements IPartialSe
                     Vector3 thisVec = new Vector3(x, y, z);
                     thisVec = thisVec.modifyPositionFromSide(dir);
                     int blockID = thisVec.getBlockID(world);
-                    
+
                     if (blockID == GCCoreBlocks.airLockFrame.blockID || blockID == GCCoreBlocks.airLockSeal.blockID)
                     {
                         adjacentCount++;
                     }
                 }
             }
-            
+
             if (adjacentCount == 4)
             {
                 var5 = 0.5F;

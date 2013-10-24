@@ -10,8 +10,10 @@ import net.minecraft.world.gen.structure.StructureComponent;
 
 public abstract class GCMoonComponent extends StructureComponent
 {
-    public GCMoonComponent() {}
-    
+    public GCMoonComponent()
+    {
+    }
+
     public GCMoonComponent(int var1)
     {
         super(var1);

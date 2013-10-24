@@ -113,8 +113,6 @@ public class GCCoreTileEntityLandingPad extends TileEntityMulti implements IMult
                 this.worldObj.destroyBlock(thisBlock.intX() + x, thisBlock.intY(), thisBlock.intZ() + z, x == 0 && z == 0);
             }
         }
-        
-        
 
         if (this.dockedEntity != null)
         {
@@ -149,7 +147,7 @@ public class GCCoreTileEntityLandingPad extends TileEntityMulti implements IMult
     public HashSet<ILandingPadAttachable> getConnectedTiles()
     {
         HashSet<ILandingPadAttachable> connectedTiles = new HashSet<ILandingPadAttachable>();
-        
+
         for (int x = -2; x < 3; x++)
         {
             for (int z = -2; z < 3; z++)
@@ -159,7 +157,7 @@ public class GCCoreTileEntityLandingPad extends TileEntityMulti implements IMult
                     if (Math.abs(x) != Math.abs(z))
                     {
                         final TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + x, this.yCoord, this.zCoord + z);
-                        
+
                         if (tile != null && tile instanceof ILandingPadAttachable && ((ILandingPadAttachable) tile).canAttachToLandingPad(this.worldObj, this.xCoord, this.yCoord, this.zCoord))
                         {
                             connectedTiles.add((ILandingPadAttachable) tile);
@@ -168,7 +166,7 @@ public class GCCoreTileEntityLandingPad extends TileEntityMulti implements IMult
                 }
             }
         }
-        
+
         return connectedTiles;
     }
 

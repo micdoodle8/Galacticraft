@@ -51,13 +51,13 @@ public class GCCoreCommandPlanetTeleport extends CommandBase
                         temp = temp.concat(entry.getKey() + (count < map.entrySet().size() - 1 ? "." : ""));
                         count++;
                     }
-                    
+
                     playerBase.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumClientPacket.UPDATE_DIMENSION_LIST, new Object[] { playerBase.username, temp }));
                     playerBase.setSpaceshipTier(Integer.MAX_VALUE);
                     playerBase.setUsingPlanetGui();
                     playerBase.mountEntity(null);
-                    
-                    notifyAdmins(icommandsender, "commands.dimensionteleport", new Object[] { String.valueOf(EnumColor.GREY + "[" + playerBase.getEntityName()), "]" });
+
+                    CommandBase.notifyAdmins(icommandsender, "commands.dimensionteleport", new Object[] { String.valueOf(EnumColor.GREY + "[" + playerBase.getEntityName()), "]" });
                 }
             }
             catch (final Exception var6)

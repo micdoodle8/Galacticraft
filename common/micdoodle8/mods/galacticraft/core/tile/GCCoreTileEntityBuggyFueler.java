@@ -172,7 +172,7 @@ public class GCCoreTileEntityBuggyFueler extends TileEntityMulti implements IMul
     public HashSet<ILandingPadAttachable> getConnectedTiles()
     {
         HashSet<ILandingPadAttachable> connectedTiles = new HashSet<ILandingPadAttachable>();
-        
+
         for (int x = -2; x < 3; x++)
         {
             for (int z = -2; z < 3; z++)
@@ -191,7 +191,7 @@ public class GCCoreTileEntityBuggyFueler extends TileEntityMulti implements IMul
                 }
             }
         }
-        
+
         return connectedTiles;
     }
 

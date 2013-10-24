@@ -295,40 +295,40 @@ public class OxygenPressureProtocol
     public boolean canBlockPass(World var0, Vector3 vec)
     {
         int id = vec.getBlockID(var0);
-        
+
         if (id > 0)
         {
             Block block = Block.blocksList[id];
             int metadata = var0.getBlockMetadata(vec.intX(), vec.intY(), vec.intZ());
-            
+
             if (id == GCCoreBlocks.breatheableAir.blockID)
             {
                 return true;
             }
-            
+
             if (OxygenPressureProtocol.vanillaPermeableBlocks.contains(id))
             {
                 return true;
             }
-            
+
             if (!block.isOpaqueCube())
             {
                 if (block instanceof IPartialSealedBlock)
                 {
                     return !((IPartialSealedBlock) block).isSealed(var0, vec.intX(), vec.intY(), vec.intZ());
                 }
-                
+
                 if (OxygenPressureProtocol.nonPermeableBlocks.containsKey(id) && OxygenPressureProtocol.nonPermeableBlocks.get(id).contains(metadata))
                 {
                     return false;
                 }
-                
+
                 return true;
             }
-            
+
             return false;
         }
-        
+
         return true;
     }
 

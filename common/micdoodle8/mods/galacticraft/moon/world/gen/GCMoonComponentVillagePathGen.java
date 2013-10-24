@@ -13,8 +13,10 @@ import net.minecraft.world.gen.structure.StructureComponent;
 public class GCMoonComponentVillagePathGen extends GCMoonComponentVillageRoadPiece
 {
     private int averageGroundLevel;
-    
-    public GCMoonComponentVillagePathGen() {}
+
+    public GCMoonComponentVillagePathGen()
+    {
+    }
 
     public GCMoonComponentVillagePathGen(GCMoonComponentVillageStartPiece par1ComponentVillageStartPiece, int par2, Random par3Random, StructureBoundingBox par4StructureBoundingBox, int par5)
     {
@@ -23,12 +25,12 @@ public class GCMoonComponentVillagePathGen extends GCMoonComponentVillageRoadPie
         this.boundingBox = par4StructureBoundingBox;
         this.averageGroundLevel = Math.max(par4StructureBoundingBox.getXSize(), par4StructureBoundingBox.getZSize());
     }
-    
+
     @Override
     protected void func_143012_a(NBTTagCompound nbt)
     {
         super.func_143012_a(nbt);
-        
+
         nbt.setInteger("AvgGroundLevel", this.averageGroundLevel);
     }
 
@@ -36,7 +38,7 @@ public class GCMoonComponentVillagePathGen extends GCMoonComponentVillageRoadPie
     protected void func_143011_b(NBTTagCompound nbt)
     {
         super.func_143011_b(nbt);
-        
+
         this.averageGroundLevel = nbt.getInteger("AvgGroundLevel");
     }
 

@@ -24,7 +24,9 @@ public class GCCorePacketManager extends PacketManager implements IPacketHandler
 {
     public enum GCCorePacketType
     {
-        UNSPECIFIED, TILEENTITY, ENTITY;
+        UNSPECIFIED,
+        TILEENTITY,
+        ENTITY;
 
         public static GCCorePacketType get(int id)
         {

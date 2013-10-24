@@ -109,9 +109,9 @@ public abstract class GCCoreTileEntityUniversalConductor extends TileEntityCondu
 
         return this.adjacentConnections;
     }
-    
-    @Override 
-    public boolean canUpdate() 
+
+    @Override
+    public boolean canUpdate()
     {
         return true;
     }
@@ -128,7 +128,7 @@ public abstract class GCCoreTileEntityUniversalConductor extends TileEntityCondu
                     this.initIC();
                 }
             }
-            
+
             this.isAddedToEnergyNet = true;
         }
     }
