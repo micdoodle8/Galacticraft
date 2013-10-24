@@ -61,7 +61,6 @@ import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -466,7 +465,6 @@ public class GCCoreEvents
         {
             ResourceLocation resourcelocation = new ResourceLocation(par1Str);
             String s1 = String.format("%s:%s:%s/%s", new Object[] {"mcsounddomain", resourcelocation.getResourceDomain(), "sound", resourcelocation.getResourcePath()});
-            FMLLog.info("adding new sound : " + s1);
             SoundPoolProtocolHandler soundpoolprotocolhandler = new SoundPoolProtocolHandler(pool);
             return new SoundPoolEntry(par1Str, new URL((URL)null, s1, soundpoolprotocolhandler));
         }

@@ -21,7 +21,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -172,7 +171,6 @@ public class GCCoreEntityMeteorChunk extends Entity implements IProjectile
         }
         else if (!this.worldObj.isRemote)
         {
-            FMLLog.info("" + this.ticksExisted);
             this.setHot(this.isHot);
         }
 
