@@ -319,7 +319,16 @@ public class ClientProxyMars extends CommonProxyMars
                         {
                             if (e instanceof GCMarsEntityRocketT2)
                             {
-                                final GCMarsEntityRocketT2 eship = (GCMarsEntityRocketT2) e;
+                                 GCMarsEntityRocketT2 eship = (GCMarsEntityRocketT2) e;
+
+                                if (eship.rocketSoundUpdater == null)
+                                {
+                                    eship.rocketSoundUpdater = new GCCoreSoundUpdaterSpaceship(FMLClientHandler.instance().getClient().sndManager, eship, FMLClientHandler.instance().getClient().thePlayer);
+                                }
+                            }
+                            else if (e instanceof GCMarsEntityCargoRocket)
+                            {
+                                GCMarsEntityCargoRocket eship = (GCMarsEntityCargoRocket) e;
 
                                 if (eship.rocketSoundUpdater == null)
                                 {
