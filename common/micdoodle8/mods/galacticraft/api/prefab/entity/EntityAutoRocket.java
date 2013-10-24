@@ -12,7 +12,6 @@ import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPadFull;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.event.GCCoreLandingPadRemovalEvent;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoPad;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
 import net.minecraft.block.Block;
@@ -740,7 +739,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
     @Override
     public boolean isDockValid(IFuelDock dock)
     {
-        return dock instanceof GCCoreTileEntityLandingPad || dock instanceof GCCoreTileEntityCargoPad;
+        return dock instanceof GCCoreTileEntityLandingPad;
     }
 
     @Override

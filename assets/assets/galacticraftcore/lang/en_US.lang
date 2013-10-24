@@ -117,6 +117,7 @@ item.steel_boots.name=Heavy Duty Boots
 # BLOCKS
 tile.treasureChest.name=Treasure Chest
 tile.landingPad.landingPad.name=Rocket Launch Pad
+tile.landingPadFull.name=Rocket Launch Pad
 tile.unlitTorch.name=Torch
 tile.unlitTorchLit.name=Torch
 tile.distributor.name=Oxygen Bubble Distributor
@@ -177,6 +178,11 @@ tile.enclosed.aluminumWire.name=Sealable Aluminum Wire
 tile.enclosed.aluminumWireHeavy.name=Sealable Heavy Aluminum Wire
 tile.enclosed.meCable.name=Sealable ME Cable
 tile.airLockController.name=Air Lock Controller
+tile.dummyblock.spaceStationBase.name=Space Station Base
+tile.dummyblock.launchPad.name=Rocket Launch Pad
+tile.dummyblock.nasaWorkbench.name=NASA Workbench
+tile.dummyblock.solar.name=Solar Panel
+tile.dummyblock.cryogenicChamber.name=Cryogenic Chamber
 
 # ENTITIES
 entity.GalacticraftCore.EvolvedSpider.name=Evolved Spider

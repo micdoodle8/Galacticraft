@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import java.util.List;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBuggyFuelerSingle;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoPadSingle;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPadSingle;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -119,8 +118,8 @@ public class GCCoreBlockLandingPad extends GCCoreBlockAdvanced
             return new GCCoreTileEntityLandingPadSingle();
         case 1:
             return new GCCoreTileEntityBuggyFuelerSingle();
-        case 2:
-            return new GCCoreTileEntityCargoPadSingle();
+//        case 2:
+//            return new GCCoreTileEntityCargoPadSingle();
         default:
             return null;
         }

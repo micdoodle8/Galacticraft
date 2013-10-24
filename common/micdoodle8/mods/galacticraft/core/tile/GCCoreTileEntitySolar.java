@@ -321,11 +321,11 @@ public class GCCoreTileEntitySolar extends GCCoreTileEntityUniversalElectrical i
                     {
                         FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + (y == 2 ? x : 0), thisBlock.intY() + y, thisBlock.intZ() + (y == 2 ? z : 0), GCCoreBlocks.solarPanel.blockID & 4095, GCCoreBlocks.solarPanel.blockID >> 12 & 255);
                     }
-                    this.worldObj.setBlock(thisBlock.intX() + (y == 2 ? x : 0), thisBlock.intY() + y, thisBlock.intZ() + (y == 2 ? z : 0), 0, 0, 3);
                 }
             }
         }
 
+        this.worldObj.destroyBlock(thisBlock.intX(), thisBlock.intY(), thisBlock.intZ(), true);
         this.worldObj.setBlock(thisBlock.intX(), thisBlock.intY(), thisBlock.intZ(), 0, 0, 3);
     }
 

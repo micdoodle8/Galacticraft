@@ -40,6 +40,7 @@ public class GCMarsBlockMachine extends BlockTile
 
     private Icon iconTerraformer;
     private Icon iconLaunchController;
+    private Icon iconCryochamber;
 
     public GCMarsBlockMachine(int id)
     {
@@ -55,6 +56,7 @@ public class GCMarsBlockMachine extends BlockTile
         this.iconMachineSide = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_blank");
         this.iconTerraformer = par1IconRegister.registerIcon(GalacticraftMars.TEXTURE_PREFIX + "terraformer_0");
         this.iconLaunchController = par1IconRegister.registerIcon(GalacticraftMars.TEXTURE_PREFIX + "launchController");
+        this.iconCryochamber = par1IconRegister.registerIcon(GalacticraftMars.TEXTURE_PREFIX + "cryoDummy");
     }
 
     @Override
@@ -101,6 +103,10 @@ public class GCMarsBlockMachine extends BlockTile
             {
                 return this.iconLaunchController;
             }
+        }
+        else if (metadata >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA)
+        {
+            return this.iconCryochamber;
         }
         else
         {
@@ -312,7 +318,7 @@ public class GCMarsBlockMachine extends BlockTile
         {
             return new GCMarsTileEntityLaunchController();
         }
-        else if (metadata >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA)
+        if (metadata >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA)
         {
             return new GCMarsTileEntityCryogenicChamber();
         }

@@ -9,6 +9,7 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import universalelectricity.core.vector.Vector3;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -31,10 +32,29 @@ public class GCCoreBlockMulti extends BlockMulti
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.fakeIcons = new Icon[3];
+        this.fakeIcons = new Icon[4];
         this.fakeIcons[0] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "launch_pad");
         this.fakeIcons[1] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "workbench_nasa_top");
         this.fakeIcons[2] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "solar_basic_0");
+        
+        if (Loader.isModLoaded("GalacticraftMars"))
+        {
+            try
+            {
+                Class<?> c = Class.forName("micdoodle8.mods.galacticraft.mars.GalacticraftMars");
+                String texturePrefix = (String) c.getField("TEXTURE_PREFIX").get(null);
+                this.fakeIcons[3] = par1IconRegister.registerIcon(texturePrefix + "cryoDummy");
+            }
+            catch (Exception e)
+            {
+                this.fakeIcons[3] = this.fakeIcons[2];
+                e.printStackTrace();
+            }
+        }
+        else
+        {
+            this.fakeIcons[3] = this.fakeIcons[2];
+        }
     }
 
     @Override
@@ -49,6 +69,8 @@ public class GCCoreBlockMulti extends BlockMulti
             return this.fakeIcons[1];
         case 4:
             return this.fakeIcons[2];
+        case 5:
+            return this.fakeIcons[3];
         default:
             return this.fakeIcons[0];
         }
@@ -96,6 +118,6 @@ public class GCCoreBlockMulti extends BlockMulti
     @Override
     public float getBlockHardness(World par1World, int par2, int par3, int par4)
     {
-        return par1World.getBlockMetadata(par2, par3, par4) == 0 ? this.blockHardness : -1.0F;
+        return par1World.getBlockMetadata(par2, par3, par4) == 1 ? -1.0F : this.blockHardness;
     }
 }

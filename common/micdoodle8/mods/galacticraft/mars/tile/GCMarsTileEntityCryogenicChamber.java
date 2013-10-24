@@ -170,7 +170,7 @@ public class GCMarsTileEntityCryogenicChamber extends TileEntityMulti implements
 
                     if (!vecToAdd.equals(placedPosition))
                     {
-                        ((GCCoreBlockMulti) GCCoreBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 4);
+                        ((GCCoreBlockMulti) GCCoreBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 5);
                     }
                 }
             }
@@ -225,7 +225,7 @@ public class GCMarsTileEntityCryogenicChamber extends TileEntityMulti implements
                     {
                         FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, GCMarsBlocks.machine.blockID & 4095, GCMarsBlocks.machine.blockID >> 12 & 255);
                     }
-                    this.worldObj.setBlock(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, 0, 0, 3);
+                    this.worldObj.destroyBlock(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, x == 0 && z == 0);
                 }
             }
         }

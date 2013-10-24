@@ -113,7 +113,7 @@ public class GCCoreTileEntityBuggyFueler extends TileEntityMulti implements IMul
                 {
                     FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + x, thisBlock.intY(), thisBlock.intZ() + z, GCCoreBlocks.landingPad.blockID & 4095, GCCoreBlocks.landingPad.blockID >> 12 & 255);
                 }
-                this.worldObj.setBlock(thisBlock.intX() + x, thisBlock.intY(), thisBlock.intZ() + z, 0, 0, 3);
+                this.worldObj.destroyBlock(thisBlock.intX() + x, thisBlock.intY(), thisBlock.intZ() + z, x == 0 && z == 0);
             }
         }
 
