@@ -22,6 +22,7 @@ public class GCCoreSoundUpdaterSpaceship implements IUpdatePlayerListBox
     private float minecartMoveSoundVolume = 0.0F;
     private float minecartRideSoundVolume = 0.0F;
     private double minecartSpeed = 0.0D;
+    private boolean soundStopped;
 
     public GCCoreSoundUpdaterSpaceship(SoundManager par1SoundManager, EntitySpaceshipBase par2EntityMinecart, EntityPlayerSP par3EntityPlayerSP)
     {
@@ -48,7 +49,7 @@ public class GCCoreSoundUpdaterSpaceship implements IUpdatePlayerListBox
         this.minecartSpeed = 20;
         this.minecartIsMoving = this.minecartSpeed >= 0.01D;
 
-        if (var2 && !this.playerSPRidingMinecart)
+        if ((var2 && !this.playerSPRidingMinecart) || this.soundStopped)
         {
             this.theSoundManager.stopEntitySound(this.thePlayer);
         }
@@ -140,5 +141,12 @@ public class GCCoreSoundUpdaterSpaceship implements IUpdatePlayerListBox
                 this.theSoundManager.updateSoundLocation(this.thePlayer, this.theMinecart);
             }
         }
+    }
+    
+    public void stopRocketSound()
+    {
+        this.minecartRideSoundVolume = 0.0F;
+        this.minecartMoveSoundVolume = 0.0F;
+        this.soundStopped = true;
     }
 }
