@@ -9,6 +9,8 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
+import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -32,12 +34,18 @@ public class GCCoreBlockAirLockWall extends BlockBreakable implements IPartialSe
     }
 
     @Override
-    public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
+    public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
     {
         float var5;
         float var6;
+        
+        int frameID = GCCoreBlocks.airLockSeal.blockID;
+        int sealID = GCCoreBlocks.airLockSeal.blockID;
+        
+        int idXMin = world.getBlockId(x - 1, y, z);
+        int idXMax = world.getBlockId(x + 1, y, z);
 
-        if (par1IBlockAccess.getBlockId(par2 - 1, par3, par4) != GCCoreBlocks.airLockFrame.blockID && par1IBlockAccess.getBlockId(par2 + 1, par3, par4) != GCCoreBlocks.airLockFrame.blockID && par1IBlockAccess.getBlockId(par2 - 1, par3, par4) != GCCoreBlocks.airLockSeal.blockID && par1IBlockAccess.getBlockId(par2 + 1, par3, par4) != GCCoreBlocks.airLockSeal.blockID)
+        if (idXMin != frameID && idXMax != frameID && idXMin != sealID && idXMax != sealID)
         {
             var5 = 0.325F;
             var6 = 0.5F;
@@ -45,9 +53,35 @@ public class GCCoreBlockAirLockWall extends BlockBreakable implements IPartialSe
         }
         else
         {
-            var5 = 0.5F;
-            var6 = 0.325F;
-            this.setBlockBounds(0.5F - var5, 0.0F, 0.5F - var6, 0.5F + var5, 1.0F, 0.5F + var6);
+            int adjacentCount = 0;
+            
+            for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+            {
+                if (dir != ForgeDirection.UP && dir != ForgeDirection.DOWN)
+                {
+                    Vector3 thisVec = new Vector3(x, y, z);
+                    thisVec = thisVec.modifyPositionFromSide(dir);
+                    int blockID = thisVec.getBlockID(world);
+                    
+                    if (blockID == GCCoreBlocks.airLockFrame.blockID || blockID == GCCoreBlocks.airLockSeal.blockID)
+                    {
+                        adjacentCount++;
+                    }
+                }
+            }
+            
+            if (adjacentCount == 4)
+            {
+                var5 = 0.5F;
+                var6 = 0.325F;
+                this.setBlockBounds(0.0F, 0.0F + var6, 0.0F, 1.0F, 1.0F - var6, 1.0F);
+            }
+            else
+            {
+                var5 = 0.5F;
+                var6 = 0.325F;
+                this.setBlockBounds(0.5F - var5, 0.0F, 0.5F - var6, 0.5F + var5, 1.0F, 0.5F + var6);
+            }
         }
     }
 

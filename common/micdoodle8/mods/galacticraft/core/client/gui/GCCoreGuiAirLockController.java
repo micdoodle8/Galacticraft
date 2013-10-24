@@ -25,13 +25,14 @@ public class GCCoreGuiAirLockController extends GuiScreen implements ICheckBoxCa
     private GCCoreGuiCheckbox checkboxOpenForPlayer;
     private GCCoreGuiTextBox textBoxPlayerToOpenFor;
     private GCCoreGuiCheckbox checkboxInvertSelection;
+    private GCCoreGuiCheckbox checkboxHorizontalMode;
     private int cannotEditTimer;
 
     public GCCoreGuiAirLockController(GCCoreTileEntityAirLockController controller)
     {
         this.controller = controller;
         this.xSize = 176;
-        this.ySize = 124;
+        this.ySize = 139;
     }
 
     @SuppressWarnings("unchecked")
@@ -48,12 +49,14 @@ public class GCCoreGuiAirLockController extends GuiScreen implements ICheckBoxCa
         this.checkboxOpenForPlayer = new GCCoreGuiCheckbox(3, this, this.width / 2 - 62, var6 + 49, "Player name is: ");
         this.textBoxPlayerToOpenFor = new GCCoreGuiTextBox(4, this, this.width / 2 - 55, var6 + 64, 110, 15, "", false, 16);
         this.checkboxInvertSelection = new GCCoreGuiCheckbox(5, this, this.width / 2 - 78, var6 + 80, "Invert Selection");
+        this.checkboxHorizontalMode = new GCCoreGuiCheckbox(6, this, this.width / 2 - 78, var6 + 96, "Horizontal Mode");
         this.buttonList.add(this.checkboxRedstoneSignal);
         this.buttonList.add(this.checkboxPlayerDistance);
         this.buttonList.add(this.dropdownPlayerDistance);
         this.buttonList.add(this.checkboxOpenForPlayer);
         this.buttonList.add(this.textBoxPlayerToOpenFor);
         this.buttonList.add(this.checkboxInvertSelection);
+        this.buttonList.add(this.checkboxHorizontalMode);
     }
 
     @Override
@@ -95,10 +98,10 @@ public class GCCoreGuiAirLockController extends GuiScreen implements ICheckBoxCa
         this.mc.renderEngine.bindTexture(GCCoreGuiAirLockController.airLockControllerGui);
         this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);
 
-        this.drawTexturedModalRect(var5 + 15, var6 + 51, 176, 26, 7, 9);
+        this.drawTexturedModalRect(var5 + 15, var6 + 51, 176, 0, 7, 9);
         
         String displayString = this.controller.getOwnerName() + "\'s " + "Air Lock Controller";
-        this.fontRenderer.drawString(displayString, this.width / 2 - this.fontRenderer.getStringWidth(displayString) / 2, this.height / 2 - 56, 4210752);
+        this.fontRenderer.drawString(displayString, this.width / 2 - this.fontRenderer.getStringWidth(displayString) / 2, this.height / 2 - 65, 4210752);
 
         if (this.cannotEditTimer > 0)
         {
@@ -107,7 +110,7 @@ public class GCCoreGuiAirLockController extends GuiScreen implements ICheckBoxCa
         }
         
         displayString = "Status:";
-        this.fontRenderer.drawString(displayString, this.width / 2 - this.fontRenderer.getStringWidth(displayString) / 2, this.height / 2 + 35, 4210752);
+        this.fontRenderer.drawString(displayString, this.width / 2 - this.fontRenderer.getStringWidth(displayString) / 2, this.height / 2 + 45, 4210752);
         displayString = "Air Lock Closed";
         
         if (this.controller.active)
@@ -119,7 +122,7 @@ public class GCCoreGuiAirLockController extends GuiScreen implements ICheckBoxCa
             displayString = "Air Lock Open";
         }
         
-        this.fontRenderer.drawString(displayString, this.width / 2 - this.fontRenderer.getStringWidth(displayString) / 2, this.height / 2 + 45, 4210752);
+        this.fontRenderer.drawString(displayString, this.width / 2 - this.fontRenderer.getStringWidth(displayString) / 2, this.height / 2 + 55, 4210752);
         
         super.drawScreen(par1, par2, par3);
     }
@@ -147,6 +150,12 @@ public class GCCoreGuiAirLockController extends GuiScreen implements ICheckBoxCa
             this.controller.invertSelection = newSelected;
             PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 24, new Object[] { 4, this.controller.xCoord, this.controller.yCoord, this.controller.zCoord, this.controller.invertSelection ? 1 : 0 }));
         }
+        else if (checkbox.equals(this.checkboxHorizontalMode))
+        {
+            this.controller.lastHorizontalModeEnabled = this.controller.horizontalModeEnabled;
+            this.controller.horizontalModeEnabled = newSelected;
+            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 24, new Object[] { 5, this.controller.xCoord, this.controller.yCoord, this.controller.zCoord, this.controller.horizontalModeEnabled ? 1 : 0 }));
+        }
     }
 
     @Override
@@ -173,6 +182,10 @@ public class GCCoreGuiAirLockController extends GuiScreen implements ICheckBoxCa
         else if (checkbox.equals(this.checkboxInvertSelection))
         {
             return this.controller.invertSelection;
+        }
+        else if (checkbox.equals(this.checkboxHorizontalMode))
+        {
+            return this.controller.horizontalModeEnabled;
         }
         
         return false;

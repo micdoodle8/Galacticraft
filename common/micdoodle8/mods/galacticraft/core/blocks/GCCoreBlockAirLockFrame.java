@@ -328,6 +328,19 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced
 
         return false;
     }
+    
+    @Override
+    public void breakBlock(World world, int x, int y, int z, int par5, int par6)
+    {
+        TileEntity tile = world.getBlockTileEntity(x, y, z);
+        
+        if (tile instanceof GCCoreTileEntityAirLockController)
+        {
+            ((GCCoreTileEntityAirLockController) tile).unsealAirLock();
+        }
+        
+        super.breakBlock(world, x, y, z, par5, par6);
+    }
 
     @Override
     public int damageDropped(int metadata)

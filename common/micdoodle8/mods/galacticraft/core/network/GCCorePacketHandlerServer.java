@@ -430,6 +430,14 @@ public class GCCorePacketHandlerServer implements IPacketHandler
                     launchController.invertSelection = ((Integer) packetReadout[4]) == 1;
                 }
                 break;
+            case 5:
+                if (tile instanceof GCCoreTileEntityAirLockController)
+                {
+                    GCCoreTileEntityAirLockController launchController = (GCCoreTileEntityAirLockController) tile;
+                    launchController.lastHorizontalModeEnabled = launchController.horizontalModeEnabled;
+                    launchController.horizontalModeEnabled = ((Integer) packetReadout[4]) == 1;
+                }
+                break;
             default:
                 break;
             }
