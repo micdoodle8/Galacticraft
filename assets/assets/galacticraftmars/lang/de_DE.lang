@@ -4,12 +4,13 @@
 item.rawDesh.name=Unraffiniertes Desh
 item.deshStick.name=Desh-Stock
 item.ingotDesh.name=Desh-Barren
-item.spaceshipTier2.name=Stufe-2-Rakete
+item.spaceshipTier2.t2Rocket.name=Stufe-2-Rakete
 item.reinforcedPlateT2.name=Robuste Platte
 item.tier2.desc=Stufe 2
 item.slimelingCargo.name=Schleimling-Inventarbeutel
 item.key.T2.name=Stufe 2 Dungeonschlüssel
-item.deshPlate.name=Desh-Platte
+item.compressedDesh.name=Gepresstes Desh
+item.spaceshipTier2.cargoRocket.name=Güterrakete
 
 # TOOLS
 item.deshPick.name=Desh-Spitzhacke
@@ -41,6 +42,7 @@ tile.slimelingEgg.blueEgg.name=Blaues Schleimling-Ei
 tile.slimelingEgg.yellowEgg.name=Gelbes Schleimling-Ei
 tile.marsMachine.0.name=Terraformer
 tile.marsMachine.1.name=Kryogene Kammer
+tile.marsMachine.2.name=Start-Controller
 tile.sludge.name=Bakterieller Schlamm
 tile.creeperEgg.name=Creeper-Ei
 tile.cavernVines.name=Kavernöse Weinranken
@@ -73,6 +75,7 @@ dimension.Mars.name=Mars
 
 # Schematics
 schematic.rocketT3.name=Stufe-3-Rakete
+schematic.cargoRocket.name=Automatische Güterrakete
 
 # Entity
 entity.Sludgeling.name=Schlammling
