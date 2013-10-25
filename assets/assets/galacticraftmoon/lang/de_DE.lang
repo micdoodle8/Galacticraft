@@ -3,7 +3,7 @@
 # GENERAL ITEMS
 item.meteoricIronRaw.name=Rohes Meteorisches Eisen
 item.meteoric_iron_ingot.name=Meteorischer Eisenbarren
-item.meteoric_iron_plate.name=Meteorische Eisenplatte
+item.compressedMeteoricIron.name=Gepresstes Meteorisches Eisen
 
 # FOOD
 item.cheeseCurd.name=Quark
