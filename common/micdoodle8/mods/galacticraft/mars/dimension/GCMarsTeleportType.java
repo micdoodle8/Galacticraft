@@ -6,7 +6,7 @@ import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumClientPacket;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumPacketClient;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityLandingBalloons;
 import net.minecraft.entity.Entity;
@@ -66,7 +66,7 @@ public class GCMarsTeleportType implements ITeleportType
             }
 
             final Object[] toSend2 = { 1 };
-            gcPlayer.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumClientPacket.ZOOM_CAMERA, toSend2));
+            gcPlayer.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.ZOOM_CAMERA, toSend2));
 
             gcPlayer.setTeleportCooldown(10);
         }

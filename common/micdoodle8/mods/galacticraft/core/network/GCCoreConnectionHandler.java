@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.network;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumClientPacket;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumPacketClient;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.network.INetworkManager;
@@ -25,7 +25,7 @@ public class GCCoreConnectionHandler implements IConnectionHandler
         {
             final GCCorePlayerMP playerMP = (GCCorePlayerMP) player;
             PacketDispatcher.sendPacketToPlayer(GCCorePacketSchematicList.buildSchematicListPacket(playerMP.getUnlockedSchematics()), player);
-            PacketDispatcher.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumClientPacket.UPDATE_SPACESTATION_CLIENT_ID, new Object[] { ((GCCorePlayerMP) player).getSpaceStationDimensionID() }), player);
+            PacketDispatcher.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.UPDATE_SPACESTATION_CLIENT_ID, new Object[] { ((GCCorePlayerMP) player).getSpaceStationDimensionID() }), player);
         }
     }
 

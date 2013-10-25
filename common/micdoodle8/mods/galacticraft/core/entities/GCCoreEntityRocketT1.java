@@ -9,7 +9,7 @@ import micdoodle8.mods.galacticraft.core.ASMHelper.RuntimeInterface;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumClientPacket;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumPacketClient;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
@@ -156,7 +156,7 @@ public class GCCoreEntityRocketT1 extends EntityTieredRocket implements IInvento
     {
         final GCCorePlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player);
 
-        player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumClientPacket.ZOOM_CAMERA, new Object[] { 0 }));
+        player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.ZOOM_CAMERA, new Object[] { 0 }));
 
         if (playerBase != null)
         {

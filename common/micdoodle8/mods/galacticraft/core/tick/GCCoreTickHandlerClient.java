@@ -25,6 +25,7 @@ import micdoodle8.mods.galacticraft.core.dimension.GCCoreWorldProviderSpaceStati
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemSensorGlasses;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerServer.EnumPacketServer;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
@@ -205,9 +206,9 @@ public class GCCoreTickHandlerClient implements ITickHandler
             if (player != null && player.ridingEntity != null && player.ridingEntity instanceof EntitySpaceshipBase)
             {
                 final Object[] toSend = { player.ridingEntity.rotationPitch };
-                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 8, toSend));
+                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.UPDATE_SHIP_PITCH, toSend));
                 final Object[] toSend2 = { player.ridingEntity.rotationYaw };
-                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 7, toSend2));
+                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.UPDATE_SHIP_YAW, toSend2));
             }
 
             if (world != null && world.provider instanceof WorldProviderSurface)
@@ -243,14 +244,14 @@ public class GCCoreTickHandlerClient implements ITickHandler
                 {
                     ship.turnYaw(-1.0F);
                     final Object[] toSend = { ship.rotationYaw };
-                    PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 7, toSend));
+                    PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.UPDATE_SHIP_YAW, toSend));
                 }
 
                 if (minecraft.gameSettings.keyBindRight.pressed)
                 {
                     ship.turnYaw(1.0F);
                     final Object[] toSend = { ship.rotationYaw };
-                    PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 7, toSend));
+                    PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.UPDATE_SHIP_YAW, toSend));
                 }
 
                 if (minecraft.gameSettings.keyBindForward.pressed)
@@ -259,7 +260,7 @@ public class GCCoreTickHandlerClient implements ITickHandler
                     {
                         ship.turnPitch(-0.7F);
                         final Object[] toSend = { ship.rotationPitch };
-                        PacketDispatcher.sendPacketToServer(PacketUtil.createPacket("Galacticraft", 8, toSend));
+                        PacketDispatcher.sendPacketToServer(PacketUtil.createPacket("Galacticraft", EnumPacketServer.UPDATE_SHIP_PITCH, toSend));
                     }
                 }
 
@@ -269,7 +270,7 @@ public class GCCoreTickHandlerClient implements ITickHandler
                     {
                         ship.turnPitch(0.7F);
                         final Object[] toSend = { ship.rotationPitch };
-                        PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 8, toSend));
+                        PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.UPDATE_SHIP_PITCH, toSend));
                     }
                 }
             }
@@ -313,7 +314,7 @@ public class GCCoreTickHandlerClient implements ITickHandler
             if (player != null && player.ridingEntity != null && minecraft.gameSettings.keyBindJump.pressed && !ClientProxyCore.lastSpacebarDown)
             {
                 final Object[] toSend = { 0 };
-                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 3, toSend));
+                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.IGNITE_ROCKET, toSend));
                 ClientProxyCore.lastSpacebarDown = true;
             }
         }

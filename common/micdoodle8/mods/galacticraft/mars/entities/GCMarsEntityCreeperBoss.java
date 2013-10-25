@@ -8,7 +8,7 @@ import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityAIArrowAttack;
 import micdoodle8.mods.galacticraft.core.entities.IBoss;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumClientPacket;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumPacketClient;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityDungeonSpawner;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
@@ -188,7 +188,7 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
         {
             if (this.deathTicks >= 180 && this.deathTicks % 5 == 0)
             {
-                PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 40.0, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumClientPacket.PLAY_SOUND_EXPLODE, new Object[] { 0 }));
+                PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 40.0, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.PLAY_SOUND_EXPLODE, new Object[] { 0 }));
             }
 
             if (this.deathTicks > 150 && this.deathTicks % 5 == 0)
@@ -205,7 +205,7 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
 
             if (this.deathTicks == 1)
             {
-                PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 40.0, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumClientPacket.PLAY_SOUND_BOSS_DEATH, new Object[] { 0 }));
+                PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 40.0, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.PLAY_SOUND_BOSS_DEATH, new Object[] { 0 }));
             }
         }
 

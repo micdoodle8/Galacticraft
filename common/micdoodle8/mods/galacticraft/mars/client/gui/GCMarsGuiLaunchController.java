@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiDropdown;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiDropdown.IDropboxCallback;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiTextBox;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiTextBox.ITextBoxCallback;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerServer.EnumPacketServer;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
@@ -143,13 +144,13 @@ public class GCMarsGuiLaunchController extends GuiContainer implements IDropboxC
             switch (par1GuiButton.id)
             {
             case 0:
-                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 17, new Object[] { this.launchController.xCoord, this.launchController.yCoord, this.launchController.zCoord, 0 }));
+                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.UPDATE_DISABLEABLE_BUTTON, new Object[] { this.launchController.xCoord, this.launchController.yCoord, this.launchController.zCoord, 0 }));
                 break;
             case 1:
-                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 17, new Object[] { this.launchController.xCoord, this.launchController.yCoord, this.launchController.zCoord, 1 }));
+                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.UPDATE_DISABLEABLE_BUTTON, new Object[] { this.launchController.xCoord, this.launchController.yCoord, this.launchController.zCoord, 1 }));
                 break;
             default:
-                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 17, new Object[] { this.launchController.xCoord, this.launchController.yCoord, this.launchController.zCoord, 1 }));
+                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.UPDATE_DISABLEABLE_BUTTON, new Object[] { this.launchController.xCoord, this.launchController.yCoord, this.launchController.zCoord, 1 }));
                 break;
             }
         }

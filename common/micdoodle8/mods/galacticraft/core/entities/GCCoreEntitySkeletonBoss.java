@@ -8,7 +8,7 @@ import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumClientPacket;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumPacketClient;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityDungeonSpawner;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
@@ -140,7 +140,7 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
         {
             if (!this.worldObj.isRemote)
             {
-                PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 40.0, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumClientPacket.PLAY_SOUND_BOSS_LAUGH, new Object[] { 0 }));
+                PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 40.0, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.PLAY_SOUND_BOSS_LAUGH, new Object[] { 0 }));
                 par1EntityPlayer.mountEntity(this);
             }
 
@@ -202,7 +202,7 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
         {
             if (this.deathTicks >= 180 && this.deathTicks % 5 == 0)
             {
-                PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 40.0, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumClientPacket.PLAY_SOUND_EXPLODE, new Object[] { 0 }));
+                PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 40.0, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.PLAY_SOUND_EXPLODE, new Object[] { 0 }));
             }
 
             if (this.deathTicks > 150 && this.deathTicks % 5 == 0)
@@ -219,7 +219,7 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
 
             if (this.deathTicks == 1)
             {
-                PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 40.0, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumClientPacket.PLAY_SOUND_BOSS_DEATH, new Object[] { 0 }));
+                PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 40.0, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.PLAY_SOUND_BOSS_DEATH, new Object[] { 0 }));
             }
         }
 
@@ -421,7 +421,7 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
                 d0 = (Math.random() - Math.random()) * 0.01D;
             }
 
-            PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 40.0, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumClientPacket.PLAY_SOUND_BOW, new Object[] { 0 }));
+            PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 40.0, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.PLAY_SOUND_BOW, new Object[] { 0 }));
 
             ((EntityPlayer) this.thrownEntity).attackedAtYaw = (float) (Math.atan2(d1, d0) * 180.0D / Math.PI) - this.rotationYaw;
 

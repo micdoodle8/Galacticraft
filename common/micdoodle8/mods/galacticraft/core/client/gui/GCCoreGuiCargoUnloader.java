@@ -5,6 +5,7 @@ import java.util.List;
 import mekanism.api.EnumColor;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerCargoLoader;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerServer.EnumPacketServer;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoUnloader;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.client.gui.GuiButton;
@@ -44,7 +45,7 @@ public class GCCoreGuiCargoUnloader extends GCCoreGuiContainer
         switch (par1GuiButton.id)
         {
         case 0:
-            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 17, new Object[] { this.cargoUnloader.xCoord, this.cargoUnloader.yCoord, this.cargoUnloader.zCoord, 0 }));
+            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.UPDATE_DISABLEABLE_BUTTON, new Object[] { this.cargoUnloader.xCoord, this.cargoUnloader.yCoord, this.cargoUnloader.zCoord, 0 }));
             break;
         }
     }

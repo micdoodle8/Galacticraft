@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiCheckbox.ICheckBoxCallback;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiDropdown.IDropboxCallback;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiTextBox.ITextBoxCallback;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerServer.EnumPacketServer;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAirLockController;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
@@ -133,28 +134,28 @@ public class GCCoreGuiAirLockController extends GuiScreen implements ICheckBoxCa
         if (checkbox.equals(this.checkboxRedstoneSignal))
         {
             this.controller.redstoneActivation = newSelected;
-            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 24, new Object[] { 0, this.controller.xCoord, this.controller.yCoord, this.controller.zCoord, this.controller.redstoneActivation ? 1 : 0 }));
+            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.ON_ADVANCED_GUI_CLICKED_INT, new Object[] { 0, this.controller.xCoord, this.controller.yCoord, this.controller.zCoord, this.controller.redstoneActivation ? 1 : 0 }));
         }
         else if (checkbox.equals(this.checkboxPlayerDistance))
         {
             this.controller.playerDistanceActivation = newSelected;
-            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 24, new Object[] { 1, this.controller.xCoord, this.controller.yCoord, this.controller.zCoord, this.controller.playerDistanceActivation ? 1 : 0 }));
+            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.ON_ADVANCED_GUI_CLICKED_INT, new Object[] { 1, this.controller.xCoord, this.controller.yCoord, this.controller.zCoord, this.controller.playerDistanceActivation ? 1 : 0 }));
         }
         else if (checkbox.equals(this.checkboxOpenForPlayer))
         {
             this.controller.playerNameMatches = newSelected;
-            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 24, new Object[] { 3, this.controller.xCoord, this.controller.yCoord, this.controller.zCoord, this.controller.playerNameMatches ? 1 : 0 }));
+            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.ON_ADVANCED_GUI_CLICKED_INT, new Object[] { 3, this.controller.xCoord, this.controller.yCoord, this.controller.zCoord, this.controller.playerNameMatches ? 1 : 0 }));
         }
         else if (checkbox.equals(this.checkboxInvertSelection))
         {
             this.controller.invertSelection = newSelected;
-            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 24, new Object[] { 4, this.controller.xCoord, this.controller.yCoord, this.controller.zCoord, this.controller.invertSelection ? 1 : 0 }));
+            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.ON_ADVANCED_GUI_CLICKED_INT, new Object[] { 4, this.controller.xCoord, this.controller.yCoord, this.controller.zCoord, this.controller.invertSelection ? 1 : 0 }));
         }
         else if (checkbox.equals(this.checkboxHorizontalMode))
         {
             this.controller.lastHorizontalModeEnabled = this.controller.horizontalModeEnabled;
             this.controller.horizontalModeEnabled = newSelected;
-            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 24, new Object[] { 5, this.controller.xCoord, this.controller.yCoord, this.controller.zCoord, this.controller.horizontalModeEnabled ? 1 : 0 }));
+            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.ON_ADVANCED_GUI_CLICKED_INT, new Object[] { 5, this.controller.xCoord, this.controller.yCoord, this.controller.zCoord, this.controller.horizontalModeEnabled ? 1 : 0 }));
         }
     }
 
@@ -203,7 +204,7 @@ public class GCCoreGuiAirLockController extends GuiScreen implements ICheckBoxCa
         if (dropdown.equals(this.dropdownPlayerDistance))
         {
             this.controller.playerDistanceSelection = selection;
-            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 24, new Object[] { 2, this.controller.xCoord, this.controller.yCoord, this.controller.zCoord, this.controller.playerDistanceSelection }));
+            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.ON_ADVANCED_GUI_CLICKED_INT, new Object[] { 2, this.controller.xCoord, this.controller.yCoord, this.controller.zCoord, this.controller.playerDistanceSelection }));
         }
     }
 
@@ -225,7 +226,7 @@ public class GCCoreGuiAirLockController extends GuiScreen implements ICheckBoxCa
         if (textBox.equals(this.textBoxPlayerToOpenFor))
         {
             this.controller.playerToOpenFor = newText != null ? newText : "";
-            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 25, new Object[] { 0, this.controller.xCoord, this.controller.yCoord, this.controller.zCoord, this.controller.playerToOpenFor }));
+            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.ON_ADVANCED_GUI_CLICKED_STRING, new Object[] { 0, this.controller.xCoord, this.controller.yCoord, this.controller.zCoord, this.controller.playerToOpenFor }));
         }
     }
 

@@ -50,7 +50,7 @@ public class GCCorePacketHandlerClient implements IPacketHandler
 {
     Minecraft mc = FMLClientHandler.instance().getClient();
 
-    public static enum EnumClientPacket
+    public static enum EnumPacketClient
     {
         AIR_REMAINING(0, Integer.class, Integer.class, String.class),
         INVALID(1),
@@ -88,7 +88,7 @@ public class GCCorePacketHandlerClient implements IPacketHandler
         private int index;
         private Class<?>[] decodeAs;
 
-        private EnumClientPacket(int index, Class<?>... decodeAs)
+        private EnumPacketClient(int index, Class<?>... decodeAs)
         {
             this.index = index;
             this.decodeAs = decodeAs;
@@ -131,7 +131,7 @@ public class GCCorePacketHandlerClient implements IPacketHandler
             playerBaseClient = PlayerUtil.getPlayerBaseClientFromPlayer(player);
         }
 
-        EnumClientPacket packetType = EnumClientPacket.values()[PacketUtil.readPacketID(data)];
+        EnumPacketClient packetType = EnumPacketClient.values()[PacketUtil.readPacketID(data)];
 
         Class<?>[] decodeAs = packetType.getDecodeClasses();
         Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);

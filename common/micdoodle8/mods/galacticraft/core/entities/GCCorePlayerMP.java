@@ -19,7 +19,7 @@ import micdoodle8.mods.galacticraft.core.event.GCCoreEventWakePlayer;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryExtended;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumClientPacket;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumPacketClient;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketSchematicList;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
@@ -269,7 +269,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
         if (this.worldObj.provider instanceof IGalacticraftWorldProvider && (this.oxygenSetupValid != this.lastOxygenSetupValid || this.tick % 100 == 0))
         {
-            this.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumClientPacket.UPDATE_OXYGEN_VALIDITY, new Object[] { Boolean.valueOf(this.oxygenSetupValid) }));
+            this.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.UPDATE_OXYGEN_VALIDITY, new Object[] { Boolean.valueOf(this.oxygenSetupValid) }));
         }
 
         if (this.getParachute())
@@ -510,7 +510,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
             count++;
         }
 
-        this.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumClientPacket.UPDATE_DIMENSION_LIST, new Object[] { this.username, temp }));
+        this.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.UPDATE_DIMENSION_LIST, new Object[] { this.username, temp }));
     }
 
     private void checkGear()
@@ -1102,7 +1102,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
         final Object[] toSend = { MathHelper.floor_float(this.airRemaining / f1), MathHelper.floor_float(this.airRemaining2 / f2), this.username };
 
-        this.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumClientPacket.AIR_REMAINING, toSend));
+        this.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.AIR_REMAINING, toSend));
     }
 
     private void sendGearUpdatePacket(int gearType)
@@ -1111,7 +1111,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
         if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.username) != null)
         {
-            PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 50, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumClientPacket.UPDATE_GEAR_SLOT, toSend));
+            PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 50, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.UPDATE_GEAR_SLOT, toSend));
         }
     }
 
@@ -1121,7 +1121,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
         if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.username) != null)
         {
-            PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 50, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumClientPacket.GEAR_PARACHUTE_REMOVE, toSend));
+            PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 50, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.GEAR_PARACHUTE_REMOVE, toSend));
         }
     }
 
@@ -1131,7 +1131,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
         if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.username) != null)
         {
-            PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 50, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumClientPacket.GEAR_PARACHUTE_ADD, toSend));
+            PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 50, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.GEAR_PARACHUTE_ADD, toSend));
         }
     }
 
@@ -1151,7 +1151,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
         if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.username) != null)
         {
-            PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 50, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumClientPacket.GEAR_PARACHUTETEX_ADD, toSend));
+            PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 50, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.GEAR_PARACHUTETEX_ADD, toSend));
         }
     }
 

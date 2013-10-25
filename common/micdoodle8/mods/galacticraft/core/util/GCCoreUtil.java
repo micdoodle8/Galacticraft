@@ -5,7 +5,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerBuggy;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerParachest;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumClientPacket;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumPacketClient;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -39,7 +39,7 @@ public class GCCoreUtil
         player.incrementWindowID();
         player.closeContainer();
         int id = player.currentWindowId;
-        player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumClientPacket.OPEN_PARACHEST_GUI, new Object[] { id, 0, 0 }));
+        player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.OPEN_PARACHEST_GUI, new Object[] { id, 0, 0 }));
         player.openContainer = new GCCoreContainerBuggy(player.inventory, buggyInv, type);
         player.openContainer.windowId = id;
         player.openContainer.addCraftingToCrafters(player);
@@ -50,7 +50,7 @@ public class GCCoreUtil
         player.incrementWindowID();
         player.closeContainer();
         int windowId = player.currentWindowId;
-        player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumClientPacket.OPEN_PARACHEST_GUI, new Object[] { windowId, 1, landerInv.entityId }));
+        player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.OPEN_PARACHEST_GUI, new Object[] { windowId, 1, landerInv.entityId }));
         player.openContainer = new GCCoreContainerParachest(player.inventory, landerInv);
         player.openContainer.windowId = windowId;
         player.openContainer.addCraftingToCrafters(player);

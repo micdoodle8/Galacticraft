@@ -119,6 +119,7 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityZombie;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryExtended;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerServer.EnumPacketServer;
 import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerClient;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAdvancedCraftingTable;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAirLockController;
@@ -632,7 +633,7 @@ public class ClientProxyCore extends CommonProxyCore
             else if (kb.keyCode == GCKeyHandler.openSpaceshipInv.keyCode)
             {
                 final Object[] toSend = { player.username };
-                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, player.ridingEntity instanceof EntitySpaceshipBase ? 6 : player.ridingEntity instanceof GCCoreEntityBuggy ? 20 : -1, toSend));
+                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, player.ridingEntity instanceof EntitySpaceshipBase ? EnumPacketServer.OPEN_SPACESHIP_INV : player.ridingEntity instanceof GCCoreEntityBuggy ? EnumPacketServer.OPEN_BUGGY_INV : null, toSend));
 
                 if (player.ridingEntity instanceof EntitySpaceshipBase)
                 {

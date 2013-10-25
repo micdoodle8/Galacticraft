@@ -5,7 +5,7 @@ import java.util.Map.Entry;
 import mekanism.api.EnumColor;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumClientPacket;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumPacketClient;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
@@ -52,7 +52,7 @@ public class GCCoreCommandPlanetTeleport extends CommandBase
                         count++;
                     }
 
-                    playerBase.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumClientPacket.UPDATE_DIMENSION_LIST, new Object[] { playerBase.username, temp }));
+                    playerBase.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.UPDATE_DIMENSION_LIST, new Object[] { playerBase.username, temp }));
                     playerBase.setSpaceshipTier(Integer.MAX_VALUE);
                     playerBase.setUsingPlanetGui();
                     playerBase.mountEntity(null);

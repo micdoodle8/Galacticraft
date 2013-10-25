@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
 import micdoodle8.mods.galacticraft.core.GCLog;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerServer.EnumPacketServer;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
@@ -747,7 +748,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
                 {
                     this.mc.gameSettings.thirdPersonView = 0;
                 }
-                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 2, toSend));
+                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.TELEPORT_ENTITY, toSend));
                 return;
             }
             else
@@ -760,7 +761,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
             if (recipe != null && par1GuiButton != null && par1GuiButton.enabled && recipe.matches(this.playerToSend, false))
             {
                 final Object[] toSend = { this.getDimensionIdFromSlot() };
-                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 15, toSend));
+                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.BIND_SPACE_STATION_ID, toSend));
                 par1GuiButton.enabled = false;
                 return;
             }
@@ -768,7 +769,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         case 3:
             if (par1GuiButton != null && par1GuiButton.equals(this.renameSpaceStationButton))
             {
-                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 19, new Object[] { this.renameText, this.getDimensionIdFromSlot() }));
+                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.RENAME_SPACE_STATION, new Object[] { this.renameText, this.getDimensionIdFromSlot() }));
                 this.renameText = "";
             }
             break;

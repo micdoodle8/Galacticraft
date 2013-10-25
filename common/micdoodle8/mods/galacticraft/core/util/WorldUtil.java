@@ -30,7 +30,7 @@ import micdoodle8.mods.galacticraft.core.entities.planet.IUpdateable;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketDimensionListPlanets;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketDimensionListSpaceStations;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumClientPacket;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumPacketClient;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketSpaceStationData;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
 import net.minecraft.entity.Entity;
@@ -577,7 +577,7 @@ public class WorldUtil
         final int newID = DimensionManager.getNextFreeDimId();
         final GCCoreSpaceStationData data = WorldUtil.createSpaceStation(var0, newID, player);
         player.setSpaceStationDimensionID(newID);
-        player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumClientPacket.UPDATE_SPACESTATION_CLIENT_ID, new Object[] { newID }));
+        player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.UPDATE_SPACESTATION_CLIENT_ID, new Object[] { newID }));
         return data;
     }
 

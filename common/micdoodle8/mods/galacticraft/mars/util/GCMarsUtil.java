@@ -5,7 +5,7 @@ import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerParachest;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRocketRefill;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumClientPacket;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumPacketClient;
 import micdoodle8.mods.galacticraft.core.recipe.GCCoreNasaWorkbenchRecipe;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
@@ -33,7 +33,7 @@ public class GCMarsUtil
         player.incrementWindowID();
         player.closeContainer();
         int windowId = player.currentWindowId;
-        player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumClientPacket.OPEN_PARACHEST_GUI, new Object[] { windowId, 1, landerInv.entityId }));
+        player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.OPEN_PARACHEST_GUI, new Object[] { windowId, 1, landerInv.entityId }));
         player.openContainer = new GCCoreContainerParachest(player.inventory, landerInv);
         player.openContainer.windowId = windowId;
         player.openContainer.addCraftingToCrafters(player);
