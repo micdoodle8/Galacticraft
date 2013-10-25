@@ -10,8 +10,7 @@ item.oxygenTankHeavyEmpty.name=Leerer grosser Sauerstofftank
 item.oxygenMask.name=Sauerstoffmaske
 item.spaceship.name=Stufe-1-Rakete
 item.sensorGlasses.name=Sensorbrille
-item.sensorGlassesWithOxygenMask.name=Sensorbrille mit Sauerstoffmaske
-item.jetpack.name=Jetpack
+
 item.canister.tin.name=Zinnkanister
 item.canister.copper.name=Kupferkanister
 item.airVent.name=Lüftungsventil
@@ -74,9 +73,34 @@ item.buggymat.seat.name=Buggy-Sitz
 item.buggymat.storage.name=Buggy-Lagerbox
 item.basicItem.solar_module_0.name=Einzelnes Solarmodul
 item.basicItem.solar_module_1.name=Komplettes Solarmodul
+item.basicItem.ingotCopper.name=Kupferbarren
+item.basicItem.ingotTin.name=Zinnbarren
+item.basicItem.ingotAluminum.name=Aluminiumbarren
+item.basicItem.ingotSteel.name=Stahlbarren
+item.basicItem.ingotBronze.name=Bronzebarren
+item.basicItem.compressedCopper.name=Gepresstes Kupfer
+item.basicItem.compressedTin.name=Gepresstes Zinn
+item.basicItem.compressedAluminum.name=Gepresstes Aluminium
+item.basicItem.compressedSteel.name=Gepresster Stahl
+item.basicItem.compressedBronze.name=Gepresste Bronze
+item.basicItem.compressedIron.name=Gepresstes Eisen
+item.basicItem.waferSolar.name=Blauer Solar-Wafer
+item.basicItem.waferBasic.name=Basis-Wafer
+item.basicItem.waferAdvanced.name=Fortgeschrittener Wafer
+item.basicItem.rawSilicon.name=Rohes Silizium
 item.tier1.desc=Stufe 1
 item.battery.name=Batterie
 item.infiniteBattery.name=Unendliche Batterie
+item.meteorChunk.name=Werfbarer Meteorbrocken
+item.meteorChunkHot.name=Werfbarer Meteorbrocken
+item.hotDescription.name=Heiß
+item.basicItem.dehydratedApple.name=Dehydrierter Apfel
+item.basicItem.dehydratedCarrot.name=Dehydrierte Karotte
+item.basicItem.dehydratedMelon.name=Dehydrierte Melone
+item.basicItem.dehydratedPotato.name=Dehydrierte Kartoffel
+item.basicItem.cannedFood.name=Dose mit Nahrung
+item.basicItem.frequencyModule.name=Frequenzmodul
+item.standardWrench.name=Standard-Schraubenschlüssel
 
 # TOOLS
 item.steel_pickaxe.name=Stahlspitzhacke
@@ -93,7 +117,7 @@ item.steel_boots.name=Stahlstiefel
 
 # BLOCKS
 tile.treasureChest.name=Schatztruhe
-tile.landingPad.landingpad.name=Start- und Landerampe
+tile.landingPad.landingpad.name=Raketenstartrampe
 tile.unlitTorch.name=Fackel
 tile.unlitTorchLit.name=Fackel
 tile.distributor.name=Sauerstoffverteiler
@@ -101,8 +125,12 @@ tile.oxygenPipe.name=Sauerstoffleitung
 tile.oxygenCollector.name=Sauerstoffsammler
 tile.fallenMeteor.name=Meteor
 tile.rocketWorkbench.name=Raketenwerkbank
-tile.decorationblock.decoblock1.name=Zinndekorationsblock
-tile.decorationblock.decoblock2.name=Zinndekorationsblock
+tile.gcBlockCore.decoblock1.name=Zinndekorationsblock
+tile.gcBlockCore.decoblock2.name=Zinndekorationsblock
+tile.gcBlockCore.oreCopper.name=Kupfererz
+tile.gcBlockCore.oreTin.name=Zinnerz
+tile.gcBlockCore.oreAluminum.name=Aluminiumerz
+tile.gcBlockCore.oreSilicon.name=Siliziumerz
 tile.airLockFrame.name=Luftschleusenrahmen
 tile.airLockSeal.name=Luftschleusensiegel
 tile.crudeOilStill.name=Rohöl
@@ -115,7 +143,6 @@ tile.sapling2.spruce.name=Fichtensetzling
 tile.sapling2.birch.name=Birkensetzling
 tile.sapling2.jungle.name=Tropenbaumsetzling
 tile.sealer.name=Sauerstoff-Versiegeler
-tile.enclosed.copperWire.name=Versiegelbares Kupferkabel
 tile.enclosed.oxygenPipe.name=Versiegelbares Sauerstoffrohr
 tile.oxygenDetector.name=Sauerstoff-Detektor
 tile.cargo.loader.name=Cargo-Lader
@@ -129,8 +156,8 @@ tile.enclosed.glassFibreCable.name=Versiegelbares Glasfaserkabel
 tile.enclosed.lvCable.name=Versiegelbares Niederspannungskabel
 tile.enclosed.PipeItemsCobblestone.name=Versiegelbares Pflasterstein-Transportrohr
 tile.enclosed.PipeItemsStone.name=Versiegelbares Stein-Transportrohr
-tile.enclosed.PipeLiquidsCobblestone.name=Versiegelbares Pflasterstein-Wasserrohr
-tile.enclosed.PipeLiquidsStone.name=Versiegelbares Stein-Wasserrohr
+tile.enclosed.PipeFluidsCobblestone.name=Versiegelbares Pflasterstein-Wasserrohr
+tile.enclosed.PipeFluidsStone.name=Versiegelbares Stein-Wasserrohr
 tile.enclosed.PipePowerStone.name=Versiegelbare Stein-Energieleitung
 tile.enclosed.PipePowerGold.name=Versiegelbare Gold-Energieleitung
 tile.solar.basic.name=Basis-Solarmodul
@@ -138,10 +165,24 @@ tile.solar.advanced.name=Fortgeschrittenes Solarmodul
 tile.parachest.name=Paratruhe
 tile.oreCopper.name=Kupfererz
 tile.oreTin.name=Zinnerz
-tile.copperWire.name=Kupferkabel
 tile.machine.0.name=Kohle-Generator
 tile.machine.1.name=Batteriebox
-tile.machine.2.name=Electrischer Ofen
+tile.machine.2.name=Elektrischer Ofen
+tile.machine.3.name=Kompressor
+tile.machine2.4.name=Elektrischer Kompressor
+tile.machine2.5.name=Schaltkreisfabrikator
+tile.aluminumWire.name=Aluminiumkabel
+tile.aluminumWireHeavy.name=Schweres Aluminiumkabel
+tile.glowstoneTorch.name=Glowstonefackel
+tile.enclosed.aluminumWire.name=Versiegelbares Aluminiumkabel
+tile.enclosed.aluminumWireHeavy.name=Versiegelbares Schweres Aluminiumkabel
+tile.enclosed.meCable.name=Versiegelbares ME-Kabel
+tile.airLockController.name=Luftschleusen-Controller
+tile.dummyblock.spaceStationBase.name=Raumstationsbasis
+tile.dummyblock.launchPad.name=Raketenstartrampe
+tile.dummyblock.nasaWorkbench.name=NASA-Werkbank
+tile.dummyblock.solar.name=Solarmodul
+tile.dummyblock.cryogenicChamber.name=Kältekammer
 
 # ENTITIES
 entity.GalacticraftCore.EvolvedSpider.name=Entwickelte Spinne
@@ -157,7 +198,7 @@ entity.GalacticraftCore.Buggy.name=Buggy
 entity.GalacticraftCore.Flag.name=Flagge
 entity.GalacticraftCore.ParaChest.name=Parakiste
 entity.GalacticraftCore.OxygenBubble.name=Sauerstoffblase
-entity.GalacticraftCore.Lander.name=Weltraum-Lander
+entity.GalacticraftCore.Lander.name=Weltraum-Landekapsel
 
 # Schematics
 schematic.moonbuggy.name=Mond-Buggy
@@ -173,12 +214,6 @@ death.attack.oxygenSuffocation=%1$s ist der Sauerstoff ausgegangen!
 galaxy.blockyway.name=The Blocky Way
 
 # OTHER
-message.warning1.name=Galacticraft Benötigt IndustrialCraft 2, Thermal Expansion oder Basic Components!
-message.warning2.name=Einer oder mehrere dieser Mods ist ERFPRDERLICH zum Herstellen/spielen. Ignorieren?
-message.button1.name=Ignorieren
-message.button2.name=Lade Basic Components
-message.button3.name=Ignorieren
-message.button4.name=Zeige nicht nochmal
 newversion.message1.name=\u00a77New \u00a73Galacticraft \u00a77version available! v
 newversion.message2.name=Eine neue Version von Galacticraft ist verfügbar! v
 newversion.failed.name=Galacticraft update check fehlgeschlagen! Veruche es in 15 Sekunden erneut...
@@ -300,5 +335,8 @@ gui.buggy.inv.name=Inventar / Treibstoff
 dimension.Overworld.name=Overworld
 dimension.Moon.name=Mond
 dimension.Sun.name=Sonne
+
+# COMMANDS
+commands.dimensionteleport=%s wurde in die Atmosphäre geschickt%s
 
 # </file>
