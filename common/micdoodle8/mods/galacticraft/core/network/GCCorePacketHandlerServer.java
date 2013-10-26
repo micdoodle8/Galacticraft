@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.network;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
+import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
@@ -70,7 +71,8 @@ public class GCCorePacketHandlerServer implements IPacketHandler
         UPDATE_DYNAMIC_TILE_INV(22, Integer.class, Integer.class, Integer.class),
         OPEN_EXTENDED_INVENTORY(23),
         ON_ADVANCED_GUI_CLICKED_INT(24, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class),
-        ON_ADVANCED_GUI_CLICKED_STRING(25, Integer.class, Integer.class, Integer.class, Integer.class, String.class);
+        ON_ADVANCED_GUI_CLICKED_STRING(25, Integer.class, Integer.class, Integer.class, Integer.class, String.class),
+        UPDATE_SHIP_MOTION_Y(26, Integer.class, Boolean.class);
         
         private int index;
         private Class<?>[] decodeAs;
@@ -429,6 +431,19 @@ public class GCCorePacketHandlerServer implements IPacketHandler
             default:
                 break;
             }
+            break;
+        case UPDATE_SHIP_MOTION_Y:
+            int entityID = (Integer) packetReadout[0];
+            boolean up = (Boolean) packetReadout[1];
+            
+            Entity entity = player.worldObj.getEntityByID(entityID);
+            
+            if (entity instanceof EntityAutoRocket)
+            {
+                EntityAutoRocket autoRocket = (EntityAutoRocket) entity;
+                autoRocket.motionY += up ? 0.02F : -0.02F;
+            }
+            
             break;
         }
     }

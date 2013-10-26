@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import micdoodle8.mods.galacticraft.api.entity.IDockable;
 import micdoodle8.mods.galacticraft.api.entity.IRocketType;
+import micdoodle8.mods.galacticraft.api.entity.IWorldTransferCallback;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -24,18 +25,17 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
 import com.google.common.io.ByteArrayDataInput;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 
 /**
  * Do not include this prefab class in your released mod download.
  */
-public abstract class EntityTieredRocket extends EntitySpaceshipBase implements IRocketType, IDockable, IInventory
+public abstract class EntityTieredRocket extends EntityAutoRocket implements IRocketType, IDockable, IInventory, IWorldTransferCallback
 {
-    public FluidTank spaceshipFuelTank = new FluidTank(this.getFuelTankCapacity());
     public EnumRocketType rocketType;
     public float rumble;
 
@@ -46,14 +46,9 @@ public abstract class EntityTieredRocket extends EntitySpaceshipBase implements 
         this.yOffset = this.height / 2.0F;
     }
 
-    public abstract int getFuelTankCapacity();
-
-    @Override
-    public int getScaledFuelLevel(int scale)
+    public EntityTieredRocket(World world, double posX, double posY, double posZ)
     {
-        final double fuelLevel = this.spaceshipFuelTank.getFluid() == null ? 0 : this.spaceshipFuelTank.getFluid().amount;
-
-        return (int) (fuelLevel * scale / this.getFuelTankCapacity());
+        super(world, posX, posY, posZ);
     }
 
     @Override
@@ -136,75 +131,117 @@ public abstract class EntityTieredRocket extends EntitySpaceshipBase implements 
 
             this.rumble = (float) this.rand.nextInt(3) - 3;
         }
+        
+        if (!this.worldObj.isRemote)
+        {
+            this.lastLastMotionY = this.lastMotionY;
+            this.lastMotionY = this.motionY;
+        }
     }
 
     @Override
     public void readNetworkedData(ByteArrayDataInput dataStream)
     {
-        super.readNetworkedData(dataStream);
-        this.spaceshipFuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, dataStream.readInt()));
         this.rocketType = EnumRocketType.values()[dataStream.readInt()];
+        super.readNetworkedData(dataStream);
     }
 
     @Override
     public ArrayList<Object> getNetworkedData(ArrayList<Object> list)
     {
-        super.getNetworkedData(list);
-        list.add(this.spaceshipFuelTank.getFluid() == null ? 0 : this.spaceshipFuelTank.getFluid().amount);
         list.add(this.rocketType != null ? this.rocketType.getIndex() : 0);
+        super.getNetworkedData(list);
         return list;
-    }
-
-    public boolean hasValidFuel()
-    {
-        return !(this.spaceshipFuelTank.getFluid() == null || this.spaceshipFuelTank.getFluid().amount == 0);
     }
 
     @Override
     public void onReachAtmoshpere()
     {
-        this.teleport();
-    }
-
-    public void teleport()
-    {
-        if (this.riddenByEntity != null)
+        if (this.destinationFrequency != -1)
         {
-            if (this.riddenByEntity instanceof GCCorePlayerMP)
+            if (this.worldObj.isRemote)
             {
-                GCCorePlayerMP player = (GCCorePlayerMP) this.riddenByEntity;
+                return;
+            }
 
-                HashMap<String, Integer> map = WorldUtil.getArrayOfPossibleDimensions(WorldUtil.getPossibleDimensionsForSpaceshipTier(this.getRocketTier()), player);
+            this.setTarget(true, this.destinationFrequency);
 
-                String temp = "";
-                int count = 0;
-
-                for (Entry<String, Integer> entry : map.entrySet())
+            if (this.targetVec != null)
+            {
+                if (this.targetDimension != this.worldObj.provider.dimensionId)
                 {
-                    temp = temp.concat(entry.getKey() + (count < map.entrySet().size() - 1 ? "." : ""));
-                    count++;
+                    WorldServer worldServer = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(this.targetDimension);
+
+                    if (!this.worldObj.isRemote && worldServer != null)
+                    {
+                        if (this.riddenByEntity != null)
+                        {
+                            WorldUtil.transferEntityToDimension(this.riddenByEntity, this.targetDimension, worldServer, false, this);
+                        }
+                    }
                 }
-
-                player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.UPDATE_DIMENSION_LIST, new Object[] { player.username, temp }));
-                player.setSpaceshipTier(this.getRocketTier());
-                player.setUsingPlanetGui();
-
-                this.onTeleport(player);
-                player.mountEntity(this);
-
-                if (!this.isDead)
+                else
                 {
-                    this.setDead();
+                    this.setPosition(this.targetVec.x + 0.5F, this.targetVec.y + 800, this.targetVec.z + 0.5F);
+                    this.landing = true;
+                }
+            }
+            else
+            {
+                this.setDead();
+            }
+        }
+        else
+        {
+            if (this.riddenByEntity != null)
+            {
+                if (this.riddenByEntity instanceof GCCorePlayerMP)
+                {
+                    GCCorePlayerMP player = (GCCorePlayerMP) this.riddenByEntity;
+
+                    HashMap<String, Integer> map = WorldUtil.getArrayOfPossibleDimensions(WorldUtil.getPossibleDimensionsForSpaceshipTier(this.getRocketTier()), player);
+
+                    String temp = "";
+                    int count = 0;
+
+                    for (Entry<String, Integer> entry : map.entrySet())
+                    {
+                        temp = temp.concat(entry.getKey() + (count < map.entrySet().size() - 1 ? "." : ""));
+                        count++;
+                    }
+
+                    player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.UPDATE_DIMENSION_LIST, new Object[] { player.username, temp }));
+                    player.setSpaceshipTier(this.getRocketTier());
+                    player.setUsingPlanetGui();
+
+                    this.onTeleport(player);
+                    player.mountEntity(this);
+
+                    if (!this.isDead)
+                    {
+                        this.setDead();
+                    }
                 }
             }
         }
+    }
+    
+    protected boolean shouldCancelExplosion()
+    {
+        return this.hasValidFuel() && Math.abs(this.lastLastMotionY) < 4;
     }
 
     public void onTeleport(EntityPlayerMP player)
     {
         ;
     }
-
+    
+    protected void onRocketLand(int x, int y, int z)
+    {
+        super.onRocketLand(x, y, z);
+        this.setPositionAndRotation(x + 0.5, y + 1.8D, z + 0.5, this.rotationYaw, 0.0F);
+    }
+    
     @Override
     public void onLaunch()
     {
@@ -252,6 +289,12 @@ public abstract class EntityTieredRocket extends EntitySpaceshipBase implements 
     }
 
     @Override
+    protected boolean shouldMoveClientSide()
+    {
+        return true;
+    }
+
+    @Override
     public boolean interactFirst(EntityPlayer par1EntityPlayer)
     {
         if (this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase())
@@ -294,25 +337,15 @@ public abstract class EntityTieredRocket extends EntitySpaceshipBase implements 
     @Override
     protected void writeEntityToNBT(NBTTagCompound nbt)
     {
-        super.writeEntityToNBT(nbt);
         nbt.setInteger("Type", this.rocketType.getIndex());
-
-        if (this.spaceshipFuelTank.getFluid() != null)
-        {
-            nbt.setTag("fuelTank", this.spaceshipFuelTank.writeToNBT(new NBTTagCompound()));
-        }
+        super.writeEntityToNBT(nbt);
     }
 
     @Override
     protected void readEntityFromNBT(NBTTagCompound nbt)
     {
-        super.readEntityFromNBT(nbt);
         this.rocketType = EnumRocketType.values()[nbt.getInteger("Type")];
-
-        if (nbt.hasKey("fuelTank"))
-        {
-            this.spaceshipFuelTank.readFromNBT(nbt.getCompoundTag("fuelTank"));
-        }
+        super.readEntityFromNBT(nbt);
     }
 
     @Override
@@ -325,5 +358,35 @@ public abstract class EntityTieredRocket extends EntitySpaceshipBase implements 
     public int getSizeInventory()
     {
         return this.rocketType.getInventorySpace();
+    }
+
+    @Override
+    public void onWorldTransferred(World world)
+    {
+        if (this.targetVec != null)
+        {
+            this.setPosition(this.targetVec.x + 0.5F, this.targetVec.y + 800, this.targetVec.z + 0.5F);
+            this.landing = true;
+            this.motionY = -0.5D;
+        }
+        else
+        {
+            this.setDead();
+        }
+    }
+
+    @Override
+    public void updateRiderPosition()
+    {
+        if (this.riddenByEntity != null)
+        {
+            this.riddenByEntity.setPosition(this.posX, this.posY + this.getMountedYOffset() + this.riddenByEntity.getYOffset(), this.posZ);
+        }
+    }
+
+    @Override
+    public boolean isPlayerRocket()
+    {
+        return true;
     }
 }

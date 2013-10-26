@@ -263,11 +263,6 @@ public class GCMarsEntityCargoRocket extends EntityAutoRocket implements IRocket
     @Override
     public void onReachAtmoshpere()
     {
-        this.teleport();
-    }
-
-    public void teleport()
-    {
         if (this.worldObj.isRemote)
         {
             return;
@@ -284,7 +279,7 @@ public class GCMarsEntityCargoRocket extends EntityAutoRocket implements IRocket
                 if (!this.worldObj.isRemote && worldServer != null)
                 {
                     this.setPosition(this.targetVec.x + 0.5F, this.targetVec.y + 800, this.targetVec.z + 0.5F);
-                    Entity e = WorldUtil.transferEntityToDimension(this, this.targetDimension, worldServer, false);
+                    Entity e = WorldUtil.transferEntityToDimension(this, this.targetDimension, worldServer, false, null);
 
                     if (e instanceof GCMarsEntityCargoRocket)
                     {
@@ -302,6 +297,16 @@ public class GCMarsEntityCargoRocket extends EntityAutoRocket implements IRocket
         else
         {
             this.setDead();
+        }
+    }
+    
+    protected void onRocketLand(int x, int y, int z)
+    {
+        super.onRocketLand(x, y, z);
+        
+        if (this.rocketSoundUpdater instanceof GCCoreSoundUpdaterSpaceship)
+        {
+            ((GCCoreSoundUpdaterSpaceship) this.rocketSoundUpdater).stopRocketSound();
         }
     }
 
@@ -416,5 +421,11 @@ public class GCMarsEntityCargoRocket extends EntityAutoRocket implements IRocket
     public boolean canBeTargeted(Object entity)
     {
         return this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase() && this.timeSinceLaunch > 50;
+    }
+
+    @Override
+    public boolean isPlayerRocket()
+    {
+        return false;
     }
 }

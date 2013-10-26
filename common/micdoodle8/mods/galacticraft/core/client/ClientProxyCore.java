@@ -16,6 +16,7 @@ import java.util.Set;
 import javax.xml.parsers.DocumentBuilderFactory;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.entity.IRocketType;
+import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
@@ -632,9 +633,12 @@ public class ClientProxyCore extends CommonProxyCore
             }
             else if (kb.keyCode == GCKeyHandler.openSpaceshipInv.keyCode)
             {
-                final Object[] toSend = { player.username };
-                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, player.ridingEntity instanceof EntitySpaceshipBase ? EnumPacketServer.OPEN_SPACESHIP_INV : player.ridingEntity instanceof GCCoreEntityBuggy ? EnumPacketServer.OPEN_BUGGY_INV : null, toSend));
-
+                if (player.ridingEntity instanceof EntitySpaceshipBase || player.ridingEntity instanceof GCCoreEntityBuggy)
+                {
+                    final Object[] toSend = { player.username };
+                    PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, player.ridingEntity instanceof EntitySpaceshipBase ? EnumPacketServer.OPEN_SPACESHIP_INV : player.ridingEntity instanceof GCCoreEntityBuggy ? EnumPacketServer.OPEN_BUGGY_INV : null, toSend));
+                }
+                
                 if (player.ridingEntity instanceof EntitySpaceshipBase)
                 {
                     player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiSpaceshipInventory, minecraft.theWorld, (int) player.posX, (int) player.posY, (int) player.posZ);
@@ -698,6 +702,33 @@ public class ClientProxyCore extends CommonProxyCore
                 }
 
                 handled = entity.pressKey(keyNum);
+            }
+            else if (entityTest != null && entityTest instanceof EntityAutoRocket && handled == true)
+            {
+                EntityAutoRocket autoRocket = (EntityAutoRocket) entityTest;
+                
+                if (autoRocket.landing)
+                {
+                    if (kb == GCKeyHandler.leftShiftKey)
+                    {
+                        autoRocket.motionY -= 0.02D;
+                        Object[] toSend = { autoRocket.entityId, false };
+                        PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.UPDATE_SHIP_MOTION_Y, toSend));
+                        handled = true;
+                    }
+                    
+                    if (kb == GCKeyHandler.spaceKey)
+                    {
+                        autoRocket.motionY += 0.02D;
+                        Object[] toSend = { autoRocket.entityId, true };
+                        PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.UPDATE_SHIP_MOTION_Y, toSend));
+                        handled = true;
+                    }
+                }
+                else
+                {
+                    handled = false;
+                }
             }
             else
             {

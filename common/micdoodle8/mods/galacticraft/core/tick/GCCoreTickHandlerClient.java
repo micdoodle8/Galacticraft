@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.tick;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
+import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase.EnumLaunchPhase;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
@@ -16,6 +17,7 @@ import micdoodle8.mods.galacticraft.core.client.GCCoreSkyProviderOrbit;
 import micdoodle8.mods.galacticraft.core.client.GCCoreSkyProviderOverworld;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiChoosePlanet;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlayCountdown;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlayDockingRocket;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlayLander;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlayOxygenTankIndicator;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlayOxygenWarning;
@@ -260,7 +262,7 @@ public class GCCoreTickHandlerClient implements ITickHandler
                     {
                         ship.turnPitch(-0.7F);
                         final Object[] toSend = { ship.rotationPitch };
-                        PacketDispatcher.sendPacketToServer(PacketUtil.createPacket("Galacticraft", EnumPacketServer.UPDATE_SHIP_PITCH, toSend));
+                        PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.UPDATE_SHIP_PITCH, toSend));
                     }
                 }
 
@@ -426,6 +428,11 @@ public class GCCoreTickHandlerClient implements ITickHandler
             if (minecraft.currentScreen == null && player != null && player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntityLander && minecraft.gameSettings.thirdPersonView != 0 && !minecraft.gameSettings.hideGUI)
             {
                 GCCoreOverlayLander.renderLanderOverlay();
+            }
+            
+            if (minecraft.currentScreen == null && player != null && player.ridingEntity != null && player.ridingEntity instanceof EntityAutoRocket && minecraft.gameSettings.thirdPersonView != 0 && !minecraft.gameSettings.hideGUI)
+            {
+                GCCoreOverlayDockingRocket.renderDockingOverlay();
             }
 
             if (minecraft.currentScreen == null && player != null && player.ridingEntity != null && player.ridingEntity instanceof EntitySpaceshipBase && minecraft.gameSettings.thirdPersonView != 0 && !minecraft.gameSettings.hideGUI && ((EntitySpaceshipBase) minecraft.thePlayer.ridingEntity).launchPhase != EnumLaunchPhase.LAUNCHED.getPhase())

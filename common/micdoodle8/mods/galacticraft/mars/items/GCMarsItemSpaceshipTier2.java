@@ -91,7 +91,7 @@ public class GCMarsItemSpaceshipTier2 extends Item implements IHoldableItem
 
                 if (par1ItemStack.getItemDamage() < 10)
                 {
-                    rocket = new GCMarsEntityRocketT2(par3World, centerX, centerY + 0.2D, centerZ, EnumRocketType.values()[par1ItemStack.getItemDamage()]);
+                    rocket = new GCMarsEntityRocketT2(par3World, centerX, centerY + 4.2D, centerZ, EnumRocketType.values()[par1ItemStack.getItemDamage()]);
                 }
                 else
                 {
@@ -114,7 +114,7 @@ public class GCMarsItemSpaceshipTier2 extends Item implements IHoldableItem
                 {
                     if (rocket instanceof EntityTieredRocket)
                     {
-                        ((EntityTieredRocket) rocket).spaceshipFuelTank.fill(new FluidStack(GalacticraftCore.fluidFuel, rocket.getMaxFuel()), true);
+                        ((EntityTieredRocket) rocket).fuelTank.fill(new FluidStack(GalacticraftCore.fluidFuel, rocket.getMaxFuel()), true);
                     }
                     else if (rocket instanceof GCMarsEntityCargoRocket)
                     {

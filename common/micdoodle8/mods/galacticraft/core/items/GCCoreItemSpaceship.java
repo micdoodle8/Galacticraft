@@ -68,7 +68,7 @@ public class GCCoreItemSpaceship extends Item implements IHoldableItem
                         amountOfCorrectBlocks = 9;
 
                         centerX = par4 + i + 0.5F;
-                        centerY = par5 - 2.2F;
+                        centerY = par5 + 1.6F;
                         centerZ = par6 + j + 0.5F;
                     }
                 }
@@ -92,7 +92,7 @@ public class GCCoreItemSpaceship extends Item implements IHoldableItem
 
                 if (spaceship.rocketType.getPreFueled())
                 {
-                    spaceship.spaceshipFuelTank.fill(new FluidStack(GalacticraftCore.fluidFuel, 2000), true);
+                    spaceship.fuelTank.fill(new FluidStack(GalacticraftCore.fluidFuel, 2000), true);
                 }
             }
             else

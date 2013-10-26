@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Random;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.entity.IWorldTransferCallback;
+import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
 import micdoodle8.mods.galacticraft.api.world.ICelestialBody;
@@ -601,12 +602,12 @@ public class WorldUtil
 
     private static MinecraftServer mcServer = null;
 
-    public static void transferEntityToDimension(Entity entity, int dimensionID, WorldServer world)
+    public static Entity transferEntityToDimension(Entity entity, int dimensionID, WorldServer world)
     {
-        WorldUtil.transferEntityToDimension(entity, dimensionID, world, true);
+        return WorldUtil.transferEntityToDimension(entity, dimensionID, world, true, null);
     }
 
-    public static Entity transferEntityToDimension(Entity entity, int dimensionID, WorldServer world, boolean transferInv)
+    public static Entity transferEntityToDimension(Entity entity, int dimensionID, WorldServer world, boolean transferInv, EntityAutoRocket ridingRocket)
     {
         if (!world.isRemote)
         {
@@ -642,7 +643,7 @@ public class WorldUtil
 
                 if (type != null)
                 {
-                    return WorldUtil.teleportEntity(var6, entity, dimensionID, type, transferInv);
+                    return WorldUtil.teleportEntity(var6, entity, dimensionID, type, transferInv, ridingRocket);
                 }
             }
         }
@@ -650,7 +651,7 @@ public class WorldUtil
         return null;
     }
 
-    private static Entity teleportEntity(World var0, Entity var1, int var2, ITeleportType type, boolean transferInv)
+    private static Entity teleportEntity(World var0, Entity var1, int var2, ITeleportType type, boolean transferInv, EntityAutoRocket ridingRocket)
     {
         final Entity var6 = var1.ridingEntity;
 
@@ -686,7 +687,14 @@ public class WorldUtil
 
         if (var7)
         {
-            WorldUtil.removeEntityFromWorld(var1.worldObj, var1);
+            if (ridingRocket == null)
+            {
+                WorldUtil.removeEntityFromWorld(var1.worldObj, var1, true);
+            }
+            else
+            {
+                WorldUtil.removeEntityFromWorld(var1.worldObj, var1, false);
+            }
         }
 
         if (var7)
@@ -856,6 +864,35 @@ public class WorldUtil
 
             var1.mountEntity(var6);
         }
+                
+        if (ridingRocket != null)
+        {
+            final NBTTagCompound var11 = new NBTTagCompound();
+            ridingRocket.isDead = false;
+            ridingRocket.riddenByEntity = null;
+            ridingRocket.writeToNBTOptional(var11);
+            
+            ridingRocket.worldObj.loadedEntityList.remove(ridingRocket);
+            ridingRocket.worldObj.onEntityRemoved(ridingRocket);
+            
+            ridingRocket = (EntityAutoRocket) EntityList.createEntityFromNBT(var11, var0);
+            
+            if (ridingRocket != null)
+            {
+                if (ridingRocket instanceof IWorldTransferCallback)
+                {
+                    ((IWorldTransferCallback) ridingRocket).onWorldTransferred(var0);
+                }
+                
+                var1.setPositionAndRotation(ridingRocket.posX, ridingRocket.posY, ridingRocket.posZ, 0, 0);
+                var0.updateEntityWithOptionalForce(var1, true);
+    
+                var0.spawnEntityInWorld(ridingRocket);
+                ridingRocket.setWorld(var0);
+    
+                var0.updateEntityWithOptionalForce(ridingRocket, true);
+            }
+        }
 
         if (var1 instanceof EntityPlayerMP)
         {
@@ -863,11 +900,16 @@ public class WorldUtil
 
             type.onSpaceDimensionChanged(var0, (EntityPlayerMP) var1);
         }
+        
+        if (ridingRocket != null)
+        {
+            var1.mountEntity(ridingRocket);
+        }
 
         return var1;
     }
 
-    private static void removeEntityFromWorld(World var0, Entity var1)
+    private static void removeEntityFromWorld(World var0, Entity var1, boolean directlyRemove)
     {
         if (var1 instanceof EntityPlayer)
         {
@@ -884,11 +926,22 @@ public class WorldUtil
                 var0.getChunkFromChunkCoords(var3, var4).isModified = true;
             }
 
-            var0.loadedEntityList.remove(var1);
-            var0.onEntityRemoved(var1);
+            if (directlyRemove)
+            {
+                var0.loadedEntityList.remove(var1);
+                var0.onEntityRemoved(var1);
+            }
         }
 
-        var1.isDead = false;
+//        if (directlyRemove)
+        {
+            var1.isDead = false;
+        }
+//        else
+//        {
+//            var1.setDead();
+//        }
+//        var1.setDead();
     }
 
     public static SpaceStationRecipe getSpaceStationRecipe(int planetID)
