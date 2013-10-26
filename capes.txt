@@ -34,3 +34,5 @@ WetToast:capeBlue
 Devsio:capeOrange
 Tyrantelf:capeOrange
 rainbowdash22222:capeRainbow
+ChrisX930:capeBlue
+SgtAce:capeOrange
