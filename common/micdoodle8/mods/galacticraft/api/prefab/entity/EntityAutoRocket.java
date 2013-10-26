@@ -32,6 +32,7 @@ import net.minecraftforge.fluids.FluidTank;
 import universalelectricity.core.vector.Vector3;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 
 /**
@@ -53,6 +54,8 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
     public int statusMessageCooldown;
     public int lastStatusMessageCooldown;
     public boolean statusValid;
+    protected double lastMotionY;
+    protected double lastLastMotionY;
 
     public EntityAutoRocket(World world)
     {
@@ -147,12 +150,14 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
                                     try
                                     {
                                         controllerClass.cast(tile2);
-                                        launchController = tile2;
                                     }
                                     catch (ClassCastException e)
                                     {
                                         launchController = null;
+                                        continue;
                                     }
+                                    
+                                    launchController = tile2;
                                 }
 
                                 if (launchController != null)
@@ -191,6 +196,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
             }
         }
 
+        this.destinationFrequency = -1;
         return false;
     }
 
@@ -217,7 +223,15 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
                     {
                         Class<?> controllerClass = Class.forName("micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityLaunchController");
 
-                        controllerClass.cast(tile);
+                        try
+                        {
+                            controllerClass.cast(tile);
+                        }
+                        catch (ClassCastException e)
+                        {
+                            continue;
+                        }
+                        
                         TileEntity launchController = tile;
                         int controllerFrequency = controllerClass.getField("frequency").getInt(tile);
 
@@ -264,11 +278,6 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
                                 return true;
                             }
                         }
-
-                    }
-                    catch (ClassCastException e)
-                    {
-                        ;
                     }
                     catch (Exception e)
                     {
@@ -298,7 +307,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
         super.onUpdate();
 
         if (!this.worldObj.isRemote)
-        {
+        {            
             if (this.statusMessageCooldown > 0)
             {
                 this.statusMessageCooldown--;
@@ -358,16 +367,20 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
                                 try
                                 {
                                     Class<?> controllerClass = Class.forName("micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityLaunchController");
-                                    controllerClass.cast(this.worldObj.getBlockTileEntity(((TileEntity) tile).xCoord, ((TileEntity) tile).yCoord, ((TileEntity) tile).zCoord));
+                                    
+                                    try
+                                    {
+                                        controllerClass.cast(this.worldObj.getBlockTileEntity(((TileEntity) tile).xCoord, ((TileEntity) tile).yCoord, ((TileEntity) tile).zCoord));
+                                    }
+                                    catch (ClassCastException e)
+                                    {
+                                        continue;
+                                    }
 
                                     if (this.worldObj.isBlockIndirectlyGettingPowered(((TileEntity) tile).xCoord, ((TileEntity) tile).yCoord, ((TileEntity) tile).zCoord))
                                     {
                                         this.autoLaunch();
                                     }
-                                }
-                                catch (ClassCastException e)
-                                {
-                                    ;
                                 }
                                 catch (Exception e)
                                 {
@@ -393,7 +406,14 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
                                 if (tile instanceof IFuelDock)
                                 {
-                                    this.landRocket(x, y, z);
+                                    if (this.shouldCancelExplosion())
+                                    {
+                                        this.landRocket(x, y, z);
+                                    }
+                                    else
+                                    {
+                                        this.failRocket();
+                                    }
                                 }
                             }
                         }
@@ -446,6 +466,11 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
         }
         else
         {
+            if (this.isPlayerRocket())
+            {
+                super.ignite();
+            }
+            
             return false;
         }
     }
@@ -455,9 +480,12 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
     {
         this.igniteWithResult();
     }
+    
+    public abstract boolean isPlayerRocket();
 
     protected void landRocket(int x, int y, int z)
     {
+        FMLLog.info("" + this.worldObj.isRemote + " " + Math.abs(this.motionY));
         TileEntity tile = this.worldObj.getBlockTileEntity(x, y, z);
 
         if (tile instanceof IFuelDock)
@@ -470,6 +498,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
                 {
                     this.launchPhase = EnumLaunchPhase.UNIGNITED.getPhase();
                     this.landing = false;
+                    this.targetVec = null;
                     this.setPad(dock);
 
                     HashSet<ILandingPadAttachable> connectedTiles = dock.getConnectedTiles();
@@ -483,15 +512,20 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
                             if (connectedTile != null)
                             {
                                 TileEntity updatedTile = this.worldObj.getBlockTileEntity(((TileEntity) connectedTile).xCoord, ((TileEntity) connectedTile).yCoord, ((TileEntity) connectedTile).zCoord);
-                                controllerClass.cast(updatedTile);
+                                
+                                try
+                                {
+                                    controllerClass.cast(updatedTile);
+                                }
+                                catch (ClassCastException e)
+                                {
+                                    continue;
+                                }
+                                
                                 this.autoLaunchSetting = EnumAutoLaunch.values()[controllerClass.getField("launchDropdownSelection").getInt(updatedTile)];
                                 break;
                             }
                         }
-                    }
-                    catch (ClassCastException e)
-                    {
-                        ;
                     }
                     catch (Exception e)
                     {
@@ -499,10 +533,15 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
                     }
                 }
 
-                this.setPosition(this.posX, y + 0.3D, this.posZ);
+                this.onRocketLand(x, y, z);
                 return;
             }
         }
+    }
+    
+    protected void onRocketLand(int x, int y, int z)
+    {
+        this.setPositionAndRotation(x + 0.5, y + 0.3D, z + 0.5, this.rotationYaw, 0.0F);
     }
 
     @Override
@@ -518,12 +557,14 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
             this.targetVec = new Vector3(dataStream.readDouble(), dataStream.readDouble(), dataStream.readDouble());
         }
 
-        this.posX = dataStream.readDouble();
-        this.posY = dataStream.readDouble();
-        this.posZ = dataStream.readDouble();
-        this.motionX = dataStream.readDouble();
-        this.motionY = dataStream.readDouble();
-        this.motionZ = dataStream.readDouble();
+        this.posX = dataStream.readDouble() / 8000.0D;
+        this.posY = dataStream.readDouble() / 8000.0D;
+        this.posZ = dataStream.readDouble() / 8000.0D;
+        this.motionX = dataStream.readDouble() / 8000.0D;
+        this.motionY = dataStream.readDouble() / 8000.0D;
+        this.motionZ = dataStream.readDouble() / 8000.0D;
+        this.lastMotionY = dataStream.readDouble() / 8000.0D;
+        this.lastLastMotionY = dataStream.readDouble() / 8000.0D;
 
         if (this.cargoItems == null)
         {
@@ -554,12 +595,14 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
             list.add(this.targetVec.z);
         }
 
-        list.add(this.posX);
-        list.add(this.posY);
-        list.add(this.posZ);
-        list.add(this.motionX);
-        list.add(this.motionY);
-        list.add(this.motionZ);
+        list.add(this.posX * 8000.0D);
+        list.add(this.posY * 8000.0D);
+        list.add(this.posZ * 8000.0D);
+        list.add(this.motionX * 8000.0D);
+        list.add(this.motionY * 8000.0D);
+        list.add(this.motionZ * 8000.0D);
+        list.add(this.lastMotionY * 8000.0D);
+        list.add(this.lastLastMotionY * 8000.0D);
 
         list.add(this.statusMessage != null ? this.statusMessage : "");
         list.add(this.statusMessageCooldown);
@@ -572,22 +615,25 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
     @Override
     protected void failRocket()
     {
-        for (int i = -3; i <= 3; i++)
+        if (this.shouldCancelExplosion())
         {
-            if (this.landing && this.targetVec != null && this.worldObj.getBlockTileEntity((int) Math.floor(this.posX), (int) Math.floor(this.posY + i), (int) Math.floor(this.posZ)) instanceof IFuelDock && this.posY - this.targetVec.y < 5)
+            for (int i = -3; i <= 3; i++)
             {
-                for (int x = MathHelper.floor_double(this.posX) - 1; x <= MathHelper.floor_double(this.posX) + 1; x++)
+                if (this.landing && this.targetVec != null && this.worldObj.getBlockTileEntity((int) Math.floor(this.posX), (int) Math.floor(this.posY + i), (int) Math.floor(this.posZ)) instanceof IFuelDock && this.posY - this.targetVec.y < 5)
                 {
-                    for (int y = MathHelper.floor_double(this.posY - 3.0D); y <= MathHelper.floor_double(this.posY) + 1; y++)
+                    for (int x = MathHelper.floor_double(this.posX) - 1; x <= MathHelper.floor_double(this.posX) + 1; x++)
                     {
-                        for (int z = MathHelper.floor_double(this.posZ) - 1; z <= MathHelper.floor_double(this.posZ) + 1; z++)
+                        for (int y = MathHelper.floor_double(this.posY - 3.0D); y <= MathHelper.floor_double(this.posY) + 1; y++)
                         {
-                            TileEntity tile = this.worldObj.getBlockTileEntity(x, y, z);
-
-                            if (tile instanceof IFuelDock)
+                            for (int z = MathHelper.floor_double(this.posZ) - 1; z <= MathHelper.floor_double(this.posZ) + 1; z++)
                             {
-                                this.landRocket(x, y, z);
-                                return;
+                                TileEntity tile = this.worldObj.getBlockTileEntity(x, y, z);
+
+                                if (tile instanceof IFuelDock)
+                                {
+                                    this.landRocket(x, y, z);
+                                    return;
+                                }
                             }
                         }
                     }
@@ -599,6 +645,11 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
         {
             super.failRocket();
         }
+    }
+    
+    protected boolean shouldCancelExplosion()
+    {
+        return this.hasValidFuel();
     }
 
     public boolean hasValidFuel()
