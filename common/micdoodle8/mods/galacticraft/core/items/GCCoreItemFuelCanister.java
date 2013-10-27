@@ -27,6 +27,7 @@ public class GCCoreItemFuelCanister extends Item
         this.setMaxStackSize(1);
         this.setNoRepair();
         this.setUnlocalizedName(assetName);
+        this.setContainerItem(GCCoreItems.oilCanister);
         this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
     }
 
@@ -108,5 +109,16 @@ public class GCCoreItemFuelCanister extends Item
         {
             par3List.add("Fuel: " + (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage()));
         }
+    }
+
+    @Override
+    public ItemStack getContainerItemStack(ItemStack itemStack)
+    {
+        if (itemStack != null && itemStack.itemID == this.getContainerItem().itemID && itemStack.getItemDamage() == itemStack.getMaxDamage())
+        {
+            return null;
+        }
+        
+        return new ItemStack(this.getContainerItem(), 1, this.getContainerItem().getMaxDamage());
     }
 }

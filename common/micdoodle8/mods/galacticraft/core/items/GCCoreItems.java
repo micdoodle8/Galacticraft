@@ -102,9 +102,9 @@ public class GCCoreItems
         GCCoreItems.oxygenGear = new GCCoreItemOxygenGear(GCCoreConfigManager.idItemOxygenGear, "oxygenGear");
         GCCoreItems.parachute = new GCCoreItemParachute(GCCoreConfigManager.idItemParachute, "parachute");
         GCCoreItems.canvas = new GCCoreItem(GCCoreConfigManager.idItemCanvas, "canvas");
+        GCCoreItems.oilCanister = new GCCoreItemOilCanister(GCCoreConfigManager.idItemOilCanister, "oilCanisterPartial");
         GCCoreItems.fuelCanister = new GCCoreItemFuelCanister(GCCoreConfigManager.idItemRocketFuelBucket, "fuelCanisterPartial");
         GCCoreItems.flagPole = new GCCoreItem(GCCoreConfigManager.idItemFlagPole, "steelPole");
-        GCCoreItems.oilCanister = new GCCoreItemOilCanister(GCCoreConfigManager.idItemOilCanister, "oilCanisterPartial");
         GCCoreItems.oilExtractor = new GCCoreItemOilExtractor(GCCoreConfigManager.idItemOilExtractor, "oilExtractor");
         GCCoreItems.schematic = new GCCoreItemSchematic(GCCoreConfigManager.idItemSchematic, "schematic");
         GCCoreItems.fuel = new GCCoreItemFuel(GCCoreConfigManager.idItemFuel, "fuel");
