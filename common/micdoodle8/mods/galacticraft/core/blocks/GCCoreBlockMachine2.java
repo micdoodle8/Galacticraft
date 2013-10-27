@@ -61,6 +61,12 @@ public class GCCoreBlockMachine2 extends BlockTile
     }
 
     @Override
+    public int getRenderType()
+    {
+        return GalacticraftCore.proxy.getGCMachineRenderID();
+    }
+
+    @Override
     public void randomDisplayTick(World par1World, int x, int y, int z, Random par5Random)
     {
         TileEntity tile = par1World.getBlockTileEntity(x, y, z);

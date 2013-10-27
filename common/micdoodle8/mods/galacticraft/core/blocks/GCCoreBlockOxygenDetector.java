@@ -30,6 +30,12 @@ public class GCCoreBlockOxygenDetector extends BlockContainer implements ITileEn
     }
 
     @Override
+    public int getRenderType()
+    {
+        return GalacticraftCore.proxy.getGCMachineRenderID();
+    }
+
+    @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {

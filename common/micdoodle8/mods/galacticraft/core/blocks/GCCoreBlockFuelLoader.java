@@ -41,6 +41,12 @@ public class GCCoreBlockFuelLoader extends GCCoreBlockAdvanced
     }
 
     @Override
+    public int getRenderType()
+    {
+        return GalacticraftCore.proxy.getGCMachineRenderID();
+    }
+
+    @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {

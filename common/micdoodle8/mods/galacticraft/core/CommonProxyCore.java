@@ -112,6 +112,11 @@ public class CommonProxyCore implements IGuiHandler
         return -1;
     }
 
+    public int getGCMachineRenderID()
+    {
+        return -1;
+    }
+
     public int getTitaniumArmorRenderIndex()
     {
         return 0;

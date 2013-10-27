@@ -69,6 +69,7 @@ import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelSpaceship;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererBreathableAir;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererCraftingTable;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererLandingPad;
+import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererMachine;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererMeteor;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererOxygenPipe;
 import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererTreasureChest;
@@ -209,6 +210,7 @@ public class ClientProxyCore extends CommonProxyCore
     private static int meteorRenderID;
     private static int craftingTableID;
     private static int fullLandingPadRenderID;
+    private static int machineRenderID;
     private static int titaniumArmorRenderIndex;
     private static int sensorArmorRenderIndex;
     public static long getFirstBootTime;
@@ -309,6 +311,8 @@ public class ClientProxyCore extends CommonProxyCore
         RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererCraftingTable(ClientProxyCore.craftingTableID));
         ClientProxyCore.fullLandingPadRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererLandingPad(ClientProxyCore.fullLandingPadRenderID));
+        ClientProxyCore.machineRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererMachine(ClientProxyCore.machineRenderID));
 
         try
         {
@@ -483,6 +487,12 @@ public class ClientProxyCore extends CommonProxyCore
     public int getGCFullLandingPadRenderID()
     {
         return ClientProxyCore.fullLandingPadRenderID;
+    }
+
+    @Override
+    public int getGCMachineRenderID()
+    {
+        return ClientProxyCore.machineRenderID;
     }
 
     @Override

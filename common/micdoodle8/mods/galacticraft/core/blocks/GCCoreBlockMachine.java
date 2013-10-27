@@ -57,6 +57,12 @@ public class GCCoreBlockMachine extends BlockTile
     }
 
     @Override
+    public int getRenderType()
+    {
+        return GalacticraftCore.proxy.getGCMachineRenderID();
+    }
+
+    @Override
     public void registerIcons(IconRegister iconRegister)
     {
         this.blockIcon = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine");

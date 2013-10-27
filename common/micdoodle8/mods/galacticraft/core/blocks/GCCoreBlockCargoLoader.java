@@ -41,6 +41,12 @@ public class GCCoreBlockCargoLoader extends GCCoreBlockAdvanced
         this.setUnlocalizedName(assetName);
     }
 
+    @Override
+    public int getRenderType()
+    {
+        return GalacticraftCore.proxy.getGCMachineRenderID();
+    }
+
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @SideOnly(Side.CLIENT)
     @Override

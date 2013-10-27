@@ -42,6 +42,12 @@ public class GCCoreBlockOxygenCompressor extends GCCoreBlockAdvanced
     }
 
     @Override
+    public int getRenderType()
+    {
+        return GalacticraftCore.proxy.getGCMachineRenderID();
+    }
+
+    @Override
     public CreativeTabs getCreativeTabToDisplayOn()
     {
         return GalacticraftCore.galacticraftTab;
