@@ -558,9 +558,6 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
             this.targetVec = new Vector3(dataStream.readDouble(), dataStream.readDouble(), dataStream.readDouble());
         }
 
-        this.posX = dataStream.readDouble() / 8000.0D;
-        this.posY = dataStream.readDouble() / 8000.0D;
-        this.posZ = dataStream.readDouble() / 8000.0D;
         this.motionX = dataStream.readDouble() / 8000.0D;
         this.motionY = dataStream.readDouble() / 8000.0D;
         this.motionZ = dataStream.readDouble() / 8000.0D;
@@ -598,9 +595,6 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
             list.add(this.targetVec.z);
         }
 
-        list.add(this.posX * 8000.0D);
-        list.add(this.posY * 8000.0D);
-        list.add(this.posZ * 8000.0D);
         list.add(this.motionX * 8000.0D);
         list.add(this.motionY * 8000.0D);
         list.add(this.motionZ * 8000.0D);

@@ -144,6 +144,13 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
     {
         this.rocketType = EnumRocketType.values()[dataStream.readInt()];
         super.readNetworkedData(dataStream);
+        
+        if (dataStream.readBoolean())
+        {
+            this.posX = dataStream.readDouble() / 8000.0D;
+            this.posY = dataStream.readDouble() / 8000.0D;
+            this.posZ = dataStream.readDouble() / 8000.0D;
+        }
     }
 
     @Override
@@ -151,6 +158,15 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
     {
         list.add(this.rocketType != null ? this.rocketType.getIndex() : 0);
         super.getNetworkedData(list);
+
+        list.add(this.ticks < 25);
+        if (this.ticks < 25)
+        {
+            list.add(this.posX * 8000.0D);
+            list.add(this.posY * 8000.0D);
+            list.add(this.posZ * 8000.0D);
+        }
+        
         return list;
     }
 

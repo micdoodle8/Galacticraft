@@ -250,6 +250,9 @@ public class GCMarsEntityCargoRocket extends EntityAutoRocket implements IRocket
     {
         this.rocketType = EnumRocketType.values()[dataStream.readInt()];
         super.readNetworkedData(dataStream);
+        this.posX = dataStream.readDouble() / 8000.0D;
+        this.posY = dataStream.readDouble() / 8000.0D;
+        this.posZ = dataStream.readDouble() / 8000.0D;
     }
 
     @Override
@@ -257,6 +260,9 @@ public class GCMarsEntityCargoRocket extends EntityAutoRocket implements IRocket
     {
         list.add(this.rocketType != null ? this.rocketType.getIndex() : 0);
         super.getNetworkedData(list);
+        list.add(this.posX * 8000.0D);
+        list.add(this.posY * 8000.0D);
+        list.add(this.posZ * 8000.0D);
         return list;
     }
 
