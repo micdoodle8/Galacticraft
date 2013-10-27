@@ -3,6 +3,7 @@
 # GENERAL ITEMS
 item.meteoricIronRaw.name=生陨铁锭
 item.meteoricIronIngot.name=陨铁锭
+item.compressedMeteoricIron.name=致密陨铁
 
 # FOOD
 item.cheeseCurd.name=奶酪凝乳
@@ -25,4 +26,4 @@ tile.cheeseBlock.name=奶酪块
 # GUI
 gui.choosePlanet.desc.moon=宜居#无氧气#重力: 18%
 
-itemGroup.GalacticraftMoon=星系Mod 月球
+itemGroup.GalacticraftMoon=Galacticraft|月球
