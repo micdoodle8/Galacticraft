@@ -41,12 +41,6 @@ public class GCCoreBlockSolar extends BlockTile
         this.setUnlocalizedName(assetName);
     }
 
-    @Override
-    public int getRenderType()
-    {
-        return GalacticraftCore.proxy.getGCMachineRenderID();
-    }
-
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @SideOnly(Side.CLIENT)
