@@ -148,7 +148,7 @@ public class GCCoreTileEntityAirLockController extends GCCoreTileEntityAirLock i
                         this.unsealAirLock();
                     }
                 }
-                
+
                 if (this.active != this.lastActive)
                 {
                     this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);

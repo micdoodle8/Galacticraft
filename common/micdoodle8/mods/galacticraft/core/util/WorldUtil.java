@@ -864,34 +864,34 @@ public class WorldUtil
 
             var1.mountEntity(var6);
         }
-                
+
         if (ridingRocket != null)
         {
             final NBTTagCompound var11 = new NBTTagCompound();
             ridingRocket.isDead = false;
             ridingRocket.riddenByEntity = null;
             ridingRocket.writeToNBTOptional(var11);
-            
+
             ridingRocket.worldObj.loadedEntityList.remove(ridingRocket);
             ridingRocket.worldObj.onEntityRemoved(ridingRocket);
-            
+
             ridingRocket = (EntityAutoRocket) EntityList.createEntityFromNBT(var11, var0);
-            
+
             if (ridingRocket != null)
             {
                 ridingRocket.setWaitForPlayer(true);
-                
+
                 if (ridingRocket instanceof IWorldTransferCallback)
                 {
                     ((IWorldTransferCallback) ridingRocket).onWorldTransferred(var0);
                 }
-                
+
                 var1.setPositionAndRotation(ridingRocket.posX, ridingRocket.posY, ridingRocket.posZ, 0, 0);
                 var0.updateEntityWithOptionalForce(var1, true);
-    
+
                 var0.spawnEntityInWorld(ridingRocket);
                 ridingRocket.setWorld(var0);
-    
+
                 var0.updateEntityWithOptionalForce(ridingRocket, true);
             }
         }
@@ -901,7 +901,7 @@ public class WorldUtil
             GameRegistry.onPlayerChangedDimension((EntityPlayerMP) var1);
             type.onSpaceDimensionChanged(var0, (EntityPlayerMP) var1, ridingRocket != null);
         }
-        
+
         if (ridingRocket != null)
         {
             var1.mountEntity(ridingRocket);
@@ -933,7 +933,7 @@ public class WorldUtil
                 var0.onEntityRemoved(var1);
             }
         }
-        
+
         var1.isDead = false;
     }
 

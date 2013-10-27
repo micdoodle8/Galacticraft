@@ -305,11 +305,12 @@ public class GCMarsEntityCargoRocket extends EntityAutoRocket implements IRocket
             this.setDead();
         }
     }
-    
+
+    @Override
     protected void onRocketLand(int x, int y, int z)
     {
         super.onRocketLand(x, y, z);
-        
+
         if (this.rocketSoundUpdater instanceof GCCoreSoundUpdaterSpaceship)
         {
             ((GCCoreSoundUpdaterSpaceship) this.rocketSoundUpdater).stopRocketSound();

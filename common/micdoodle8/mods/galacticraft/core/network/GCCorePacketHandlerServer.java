@@ -63,17 +63,34 @@ public class GCCorePacketHandlerServer implements IPacketHandler
         UPDATE_ADVANCED_ENTITY(14),
         BIND_SPACE_STATION_ID(15, Integer.class),
         UNLOCK_NEW_SCHEMATIC(16),
-        UPDATE_DISABLEABLE_BUTTON(17, Integer.class, Integer.class, Integer.class, Integer.class),
+        UPDATE_DISABLEABLE_BUTTON(
+                17,
+                    Integer.class,
+                    Integer.class,
+                    Integer.class,
+                    Integer.class),
         ON_FAILED_CHEST_UNLOCK(18, Integer.class),
         RENAME_SPACE_STATION(19, String.class, Integer.class),
         OPEN_BUGGY_INV(20),
         UPDATE_DYNAMIC_ENTITY_INV(21, Integer.class),
         UPDATE_DYNAMIC_TILE_INV(22, Integer.class, Integer.class, Integer.class),
         OPEN_EXTENDED_INVENTORY(23),
-        ON_ADVANCED_GUI_CLICKED_INT(24, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class),
-        ON_ADVANCED_GUI_CLICKED_STRING(25, Integer.class, Integer.class, Integer.class, Integer.class, String.class),
+        ON_ADVANCED_GUI_CLICKED_INT(
+                24,
+                    Integer.class,
+                    Integer.class,
+                    Integer.class,
+                    Integer.class,
+                    Integer.class),
+        ON_ADVANCED_GUI_CLICKED_STRING(
+                25,
+                    Integer.class,
+                    Integer.class,
+                    Integer.class,
+                    Integer.class,
+                    String.class),
         UPDATE_SHIP_MOTION_Y(26, Integer.class, Boolean.class);
-        
+
         private int index;
         private Class<?>[] decodeAs;
 
@@ -93,7 +110,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
             return this.decodeAs;
         }
     }
-    
+
     @Override
     public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player p)
     {
@@ -117,12 +134,12 @@ public class GCCorePacketHandlerServer implements IPacketHandler
 
         Object[] packetReadout = null;
         EnumPacketServer packetInfo = EnumPacketServer.values()[packetType];
-        
+
         if (packetInfo.getDecodeClasses() != null && packetInfo.getDecodeClasses().length > 0)
         {
             packetReadout = PacketUtil.readPacketData(data, packetInfo.getDecodeClasses());
         }
-        
+
         switch (packetInfo)
         {
         case OPEN_TANK_GUI:
@@ -435,15 +452,15 @@ public class GCCorePacketHandlerServer implements IPacketHandler
         case UPDATE_SHIP_MOTION_Y:
             int entityID = (Integer) packetReadout[0];
             boolean up = (Boolean) packetReadout[1];
-            
+
             Entity entity = player.worldObj.getEntityByID(entityID);
-            
+
             if (entity instanceof EntityAutoRocket)
             {
                 EntityAutoRocket autoRocket = (EntityAutoRocket) entity;
                 autoRocket.motionY += up ? 0.02F : -0.02F;
             }
-            
+
             break;
         }
     }

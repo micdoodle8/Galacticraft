@@ -77,7 +77,7 @@ public class GCCoreEntityRocketT1 extends EntityTieredRocket
                 this.motionX = this.motionY = this.motionZ = 0.0D;
             }
         }
-        
+
         super.onUpdate();
 
         int i;
@@ -146,17 +146,18 @@ public class GCCoreEntityRocketT1 extends EntityTieredRocket
                 this.motionY -= Math.abs(Math.sin(this.timeSinceLaunch / 1000)) / 20;
             }
         }
-        
+
         if (!this.worldObj.isRemote)
         {
             PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 100, this.worldObj.provider.dimensionId, GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getNetworkedData(new ArrayList())));
         }
     }
-    
+
+    @Override
     protected void onRocketLand(int x, int y, int z)
     {
         super.onRocketLand(x, y, z);
-        
+
         if (this.rocketSoundUpdater instanceof GCCoreSoundUpdaterSpaceship)
         {
             ((GCCoreSoundUpdaterSpaceship) this.rocketSoundUpdater).stopRocketSound();

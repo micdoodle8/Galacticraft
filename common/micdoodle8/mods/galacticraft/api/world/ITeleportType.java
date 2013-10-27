@@ -69,7 +69,8 @@ public interface ITeleportType
      * @param player
      *            The player that has transferred dimensions
      * @param ridingAutoRocket
-     *            If the player is riding an auto rocket. Do not spawn in landers if so.
+     *            If the player is riding an auto rocket. Do not spawn in
+     *            landers if so.
      */
     public void onSpaceDimensionChanged(World newWorld, EntityPlayerMP player, boolean ridingAutoRocket);
 }

@@ -429,7 +429,7 @@ public class GCCoreTickHandlerClient implements ITickHandler
             {
                 GCCoreOverlayLander.renderLanderOverlay();
             }
-            
+
             if (minecraft.currentScreen == null && player != null && player.ridingEntity != null && player.ridingEntity instanceof EntityAutoRocket && minecraft.gameSettings.thirdPersonView != 0 && !minecraft.gameSettings.hideGUI)
             {
                 GCCoreOverlayDockingRocket.renderDockingOverlay();

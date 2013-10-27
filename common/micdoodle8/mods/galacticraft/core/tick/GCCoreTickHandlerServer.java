@@ -26,7 +26,7 @@ public class GCCoreTickHandlerServer implements ITickHandler
                     if (o instanceof Entity)
                     {
                         final Entity e = (Entity) o;
-                        
+
                         if (e.worldObj.provider instanceof IOrbitDimension)
                         {
                             final IOrbitDimension dimension = (IOrbitDimension) e.worldObj.provider;

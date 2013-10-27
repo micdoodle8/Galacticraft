@@ -108,7 +108,7 @@ public class GCCoreItemOilCanister extends Item
         {
             return null;
         }
-        
+
         return new ItemStack(this.getContainerItem(), 1, this.getContainerItem().getMaxDamage());
     }
 }

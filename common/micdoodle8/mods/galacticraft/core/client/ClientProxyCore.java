@@ -648,7 +648,7 @@ public class ClientProxyCore extends CommonProxyCore
                     final Object[] toSend = { player.username };
                     PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, player.ridingEntity instanceof EntitySpaceshipBase ? EnumPacketServer.OPEN_SPACESHIP_INV : player.ridingEntity instanceof GCCoreEntityBuggy ? EnumPacketServer.OPEN_BUGGY_INV : null, toSend));
                 }
-                
+
                 if (player.ridingEntity instanceof EntitySpaceshipBase)
                 {
                     player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiSpaceshipInventory, minecraft.theWorld, (int) player.posX, (int) player.posY, (int) player.posZ);
@@ -716,7 +716,7 @@ public class ClientProxyCore extends CommonProxyCore
             else if (entityTest != null && entityTest instanceof EntityAutoRocket && handled == true)
             {
                 EntityAutoRocket autoRocket = (EntityAutoRocket) entityTest;
-                
+
                 if (autoRocket.landing)
                 {
                     if (kb == GCKeyHandler.leftShiftKey)
@@ -726,7 +726,7 @@ public class ClientProxyCore extends CommonProxyCore
                         PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.UPDATE_SHIP_MOTION_Y, toSend));
                         handled = true;
                     }
-                    
+
                     if (kb == GCKeyHandler.spaceKey)
                     {
                         autoRocket.motionY += 0.02D;

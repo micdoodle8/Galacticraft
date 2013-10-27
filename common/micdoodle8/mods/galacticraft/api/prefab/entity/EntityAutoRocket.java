@@ -157,7 +157,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
                                         launchController = null;
                                         continue;
                                     }
-                                    
+
                                     launchController = tile2;
                                 }
 
@@ -232,7 +232,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
                         {
                             continue;
                         }
-                        
+
                         TileEntity launchController = tile;
                         int controllerFrequency = controllerClass.getField("frequency").getInt(tile);
 
@@ -308,7 +308,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
         super.onUpdate();
 
         if (!this.worldObj.isRemote)
-        {            
+        {
             if (this.statusMessageCooldown > 0)
             {
                 this.statusMessageCooldown--;
@@ -368,7 +368,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
                                 try
                                 {
                                     Class<?> controllerClass = Class.forName("micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityLaunchController");
-                                    
+
                                     try
                                     {
                                         controllerClass.cast(this.worldObj.getBlockTileEntity(((TileEntity) tile).xCoord, ((TileEntity) tile).yCoord, ((TileEntity) tile).zCoord));
@@ -471,7 +471,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
             {
                 super.ignite();
             }
-            
+
             return false;
         }
     }
@@ -481,7 +481,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
     {
         this.igniteWithResult();
     }
-    
+
     public abstract boolean isPlayerRocket();
 
     protected void landRocket(int x, int y, int z)
@@ -513,7 +513,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
                             if (connectedTile != null)
                             {
                                 TileEntity updatedTile = this.worldObj.getBlockTileEntity(((TileEntity) connectedTile).xCoord, ((TileEntity) connectedTile).yCoord, ((TileEntity) connectedTile).zCoord);
-                                
+
                                 try
                                 {
                                     controllerClass.cast(updatedTile);
@@ -522,7 +522,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
                                 {
                                     continue;
                                 }
-                                
+
                                 this.autoLaunchSetting = EnumAutoLaunch.values()[controllerClass.getField("launchDropdownSelection").getInt(updatedTile)];
                                 break;
                             }
@@ -539,7 +539,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
             }
         }
     }
-    
+
     protected void onRocketLand(int x, int y, int z)
     {
         this.setPositionAndRotation(x + 0.5, y + 0.3D, z + 0.5, this.rotationYaw, 0.0F);
@@ -568,7 +568,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
         {
             this.cargoItems = new ItemStack[this.getSizeInventory()];
         }
-        
+
         this.setWaitForPlayer(dataStream.readBoolean());
 
         this.statusMessage = dataStream.readUTF();
@@ -600,7 +600,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
         list.add(this.motionZ * 8000.0D);
         list.add(this.lastMotionY * 8000.0D);
         list.add(this.lastLastMotionY * 8000.0D);
-        
+
         list.add(this.getWaitForPlayer());
 
         list.add(this.statusMessage != null ? this.statusMessage : "");
@@ -645,7 +645,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
             super.failRocket();
         }
     }
-    
+
     protected boolean shouldCancelExplosion()
     {
         return this.hasValidFuel();

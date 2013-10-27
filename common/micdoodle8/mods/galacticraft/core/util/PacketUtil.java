@@ -18,17 +18,17 @@ public class PacketUtil
         {
             return null;
         }
-        
+
         return PacketUtil.createPacket(channel, packetType.getIndex(), input);
     }
-    
+
     public static Packet250CustomPayload createPacket(String channel, EnumPacketServer packetType, Object[] input)
     {
         if (packetType == null)
         {
             return null;
         }
-        
+
         return PacketUtil.createPacket(channel, packetType.getIndex(), input);
     }
 

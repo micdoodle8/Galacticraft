@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.mars.blocks;
 
 import java.util.List;
+import micdoodle8.mods.galacticraft.api.block.IPartialSealedBlock;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import net.minecraft.block.BlockColored;
 import net.minecraft.block.BlockPane;
@@ -10,6 +11,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
+import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -89,12 +91,15 @@ public class GCMarsBlockTintedGlassPane extends BlockPane implements IPartialSea
     }
 
     @Override
-    public boolean isSealed(World world, int x, int y, int z){
-        boolean var8 = this.canThisPaneConnectToThisBlockID(par1World.getBlockId(par2, par3, par4 - 1));
-        boolean var9 = this.canThisPaneConnectToThisBlockID(par1World.getBlockId(par2, par3, par4 + 1));
-        boolean var10 = this.canThisPaneConnectToThisBlockID(par1World.getBlockId(par2 - 1, par3, par4));
-        boolean var11 = this.canThisPaneConnectToThisBlockID(par1World.getBlockId(par2 + 1, par3, par4));
-        if( (var8 && (var9 || var10 || var11)) || (var9 && (var10 || var11)) || (var10 && var11)) {
+    public boolean isSealed(World world, int x, int y, int z)
+    {
+        boolean var8 = this.canThisPaneConnectToThisBlockID(world.getBlockId(x, y, z - 1));
+        boolean var9 = this.canThisPaneConnectToThisBlockID(world.getBlockId(x, y, z + 1));
+        boolean var10 = this.canThisPaneConnectToThisBlockID(world.getBlockId(x - 1, y, z));
+        boolean var11 = this.canThisPaneConnectToThisBlockID(world.getBlockId(x + 1, y, z));
+
+        if (var8 && (var9 || var10 || var11) || var9 && (var10 || var11) || var10 && var11)
+        {
             return true;
         }
         return false;

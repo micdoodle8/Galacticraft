@@ -131,7 +131,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 
             this.rumble = (float) this.rand.nextInt(3) - 3;
         }
-        
+
         if (!this.worldObj.isRemote)
         {
             this.lastLastMotionY = this.lastMotionY;
@@ -144,7 +144,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
     {
         this.rocketType = EnumRocketType.values()[dataStream.readInt()];
         super.readNetworkedData(dataStream);
-        
+
         if (dataStream.readBoolean())
         {
             this.posX = dataStream.readDouble() / 8000.0D;
@@ -166,7 +166,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
             list.add(this.posY * 8000.0D);
             list.add(this.posZ * 8000.0D);
         }
-        
+
         return list;
     }
 
@@ -241,7 +241,8 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
             }
         }
     }
-    
+
+    @Override
     protected boolean shouldCancelExplosion()
     {
         return this.hasValidFuel() && Math.abs(this.lastLastMotionY) < 4;
@@ -251,13 +252,14 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
     {
         ;
     }
-    
+
+    @Override
     protected void onRocketLand(int x, int y, int z)
     {
         super.onRocketLand(x, y, z);
         this.setPositionAndRotation(x + 0.5, y + 1.8D, z + 0.5, this.rotationYaw, 0.0F);
     }
-    
+
     @Override
     public void onLaunch()
     {
