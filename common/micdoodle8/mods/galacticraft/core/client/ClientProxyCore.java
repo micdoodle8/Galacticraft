@@ -904,10 +904,9 @@ public class ClientProxyCore extends CommonProxyCore
         {
             return new GCCoreGuiManual(new ItemStack(Block.stone), ClientProxyCore.materialsTest);
         }
-        else if (ID == GCCoreConfigManager.idGuiAirLockController)
+        else if (ID == GCCoreConfigManager.idGuiAirLockController && tile instanceof GCCoreTileEntityAirLockController)
         {
-            // TODO
-            return null;
+            return new GCCoreGuiAirLockController((GCCoreTileEntityAirLockController) tile);
         }
         else
         {
@@ -961,12 +960,6 @@ public class ClientProxyCore extends CommonProxyCore
         }
 
         return null;
-    }
-
-    @Override
-    public void openAirLockGui(GCCoreTileEntityAirLockController controller)
-    {
-        FMLClientHandler.instance().getClient().displayGuiScreen(new GCCoreGuiAirLockController(controller));
     }
 
     private static final ResourceLocation underOilTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/misc/underoil.png");

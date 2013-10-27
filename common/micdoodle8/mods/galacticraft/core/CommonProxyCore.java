@@ -23,7 +23,6 @@ import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerParachest;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRefinery;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRocketRefill;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerSolar;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAirLockController;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCircuitFabricator;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCoalGenerator;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectricFurnace;
@@ -211,7 +210,6 @@ public class CommonProxyCore implements IGuiHandler
         }
         else if (ID == GCCoreConfigManager.idGuiAirLockController)
         {
-            // TODO
             return null;
         }
         else
@@ -262,10 +260,5 @@ public class CommonProxyCore implements IGuiHandler
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
     {
         return null;
-    }
-
-    public void openAirLockGui(GCCoreTileEntityAirLockController controller)
-    {
-        ;
     }
 }
