@@ -116,7 +116,25 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced
                 return this.airLockIcons[0];
             }
 
-            return this.airLockIcons[6];
+            TileEntity tile = par1IBlockAccess.getBlockTileEntity(par2, par3, par4);
+            
+            if (tile instanceof GCCoreTileEntityAirLockController)
+            {
+                GCCoreTileEntityAirLockController controller = (GCCoreTileEntityAirLockController) tile;
+                
+                if (controller.active)
+                {
+                    return this.airLockIcons[6];
+                }
+                else
+                {
+                    return this.airLockIcons[7];
+                }
+            }
+            else
+            {
+                return this.airLockIcons[6];
+            }
         }
         else
         {

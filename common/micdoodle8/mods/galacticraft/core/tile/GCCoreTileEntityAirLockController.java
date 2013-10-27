@@ -148,6 +148,11 @@ public class GCCoreTileEntityAirLockController extends GCCoreTileEntityAirLock i
                         this.unsealAirLock();
                     }
                 }
+                
+                if (this.active != this.lastActive)
+                {
+                    this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+                }
 
                 this.lastActive = this.active;
                 this.lastOtherAirLocks = this.otherAirLocks;
@@ -327,6 +332,7 @@ public class GCCoreTileEntityAirLockController extends GCCoreTileEntityAirLock i
     {
         try
         {
+            this.active = data.readBoolean();
             this.ownerName = data.readUTF();
             this.redstoneActivation = data.readBoolean();
             this.playerDistanceActivation = data.readBoolean();
@@ -344,7 +350,7 @@ public class GCCoreTileEntityAirLockController extends GCCoreTileEntityAirLock i
 
     public Packet getPacket()
     {
-        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.ownerName, this.redstoneActivation, this.playerDistanceActivation, this.playerDistanceSelection, this.playerNameMatches, this.playerToOpenFor != null ? this.playerToOpenFor : "", this.invertSelection, this.horizontalModeEnabled);
+        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.active, this.ownerName, this.redstoneActivation, this.playerDistanceActivation, this.playerDistanceSelection, this.playerNameMatches, this.playerToOpenFor != null ? this.playerToOpenFor : "", this.invertSelection, this.horizontalModeEnabled);
     }
 
     public String getOwnerName()
