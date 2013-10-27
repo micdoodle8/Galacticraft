@@ -46,13 +46,6 @@ public class GCCoreEntityRocketT1 extends EntityTieredRocket
     public GCCoreEntityRocketT1(World par1World, double par2, double par4, double par6, EnumRocketType rocketType)
     {
         super(par1World, par2, par4, par6);
-//        this.setPosition(par2, par4 + this.yOffset, par6);
-//        this.motionX = 0.0D;
-//        this.motionY = 0.0D;
-//        this.motionZ = 0.0D;
-//        this.prevPosX = par2;
-//        this.prevPosY = par4;
-//        this.prevPosZ = par6;
         this.rocketType = rocketType;
         this.cargoItems = new ItemStack[this.getSizeInventory()];
     }
@@ -72,6 +65,19 @@ public class GCCoreEntityRocketT1 extends EntityTieredRocket
     @Override
     public void onUpdate()
     {
+        if (this.getWaitForPlayer())
+        {
+            if (this.riddenByEntity != null)
+            {
+                this.setWaitForPlayer(false);
+                this.motionY = -0.5D;
+            }
+            else
+            {
+                this.motionX = this.motionY = this.motionZ = 0.0D;
+            }
+        }
+        
         super.onUpdate();
 
         int i;

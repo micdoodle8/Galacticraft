@@ -777,7 +777,7 @@ public class WorldUtil
         {
             var8 = (GCCorePlayerMP) var1;
 
-            if (type.useParachute() && var8.getExtendedInventory().getStackInSlot(4) != null && var8.getExtendedInventory().getStackInSlot(4).getItem() instanceof GCCoreItemParachute)
+            if (ridingRocket == null && type.useParachute() && var8.getExtendedInventory().getStackInSlot(4) != null && var8.getExtendedInventory().getStackInSlot(4).getItem() instanceof GCCoreItemParachute)
             {
                 var8.setUsingParachute(true);
             }
@@ -879,6 +879,8 @@ public class WorldUtil
             
             if (ridingRocket != null)
             {
+                ridingRocket.setWaitForPlayer(true);
+                
                 if (ridingRocket instanceof IWorldTransferCallback)
                 {
                     ((IWorldTransferCallback) ridingRocket).onWorldTransferred(var0);
@@ -897,8 +899,7 @@ public class WorldUtil
         if (var1 instanceof EntityPlayerMP)
         {
             GameRegistry.onPlayerChangedDimension((EntityPlayerMP) var1);
-
-            type.onSpaceDimensionChanged(var0, (EntityPlayerMP) var1);
+            type.onSpaceDimensionChanged(var0, (EntityPlayerMP) var1, ridingRocket != null);
         }
         
         if (ridingRocket != null)
@@ -932,16 +933,8 @@ public class WorldUtil
                 var0.onEntityRemoved(var1);
             }
         }
-
-//        if (directlyRemove)
-        {
-            var1.isDead = false;
-        }
-//        else
-//        {
-//            var1.setDead();
-//        }
-//        var1.setDead();
+        
+        var1.isDead = false;
     }
 
     public static SpaceStationRecipe getSpaceStationRecipe(int planetID)

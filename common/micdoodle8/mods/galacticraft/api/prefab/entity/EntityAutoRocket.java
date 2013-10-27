@@ -56,6 +56,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
     public boolean statusValid;
     protected double lastMotionY;
     protected double lastLastMotionY;
+    private boolean waitForPlayer;
 
     public EntityAutoRocket(World world)
     {
@@ -570,6 +571,8 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
         {
             this.cargoItems = new ItemStack[this.getSizeInventory()];
         }
+        
+        this.setWaitForPlayer(dataStream.readBoolean());
 
         this.statusMessage = dataStream.readUTF();
         this.statusMessage = this.statusMessage.equals("") ? null : this.statusMessage;
@@ -603,6 +606,8 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
         list.add(this.motionZ * 8000.0D);
         list.add(this.lastMotionY * 8000.0D);
         list.add(this.lastLastMotionY * 8000.0D);
+        
+        list.add(this.getWaitForPlayer());
 
         list.add(this.statusMessage != null ? this.statusMessage : "");
         list.add(this.statusMessageCooldown);
@@ -740,6 +745,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
             nbt.setDouble("targetTileZ", this.targetVec.z);
         }
 
+        nbt.setBoolean("WaitingForPlayer", this.getWaitForPlayer());
         nbt.setBoolean("Landing", this.landing);
         nbt.setInteger("AutoLaunchSetting", this.autoLaunchSetting != null ? this.autoLaunchSetting.getIndex() : -1);
         nbt.setInteger("TimeUntilAutoLaunch", this.autoLaunchCountdown);
@@ -778,6 +784,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
             this.targetVec = new Vector3(nbt.getDouble("targetTileX"), nbt.getDouble("targetTileY"), nbt.getDouble("targetTileZ"));
         }
 
+        this.setWaitForPlayer(nbt.getBoolean("WaitingForPlayer"));
         this.landing = nbt.getBoolean("Landing");
         int autoLaunchValue = nbt.getInteger("AutoLaunchSetting");
         this.autoLaunchSetting = this.lastAutoLaunchSetting = autoLaunchValue == -1 ? null : EnumAutoLaunch.values()[autoLaunchValue];
@@ -1038,6 +1045,16 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
         }
 
         return droppedItemList;
+    }
+
+    public boolean getWaitForPlayer()
+    {
+        return this.waitForPlayer;
+    }
+
+    public void setWaitForPlayer(boolean waitForPlayer)
+    {
+        this.waitForPlayer = waitForPlayer;
     }
 
     public static enum EnumAutoLaunch

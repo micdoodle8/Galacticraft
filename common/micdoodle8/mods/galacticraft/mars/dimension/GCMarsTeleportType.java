@@ -46,9 +46,9 @@ public class GCMarsTeleportType implements ITeleportType
     }
 
     @Override
-    public void onSpaceDimensionChanged(World newWorld, EntityPlayerMP player)
+    public void onSpaceDimensionChanged(World newWorld, EntityPlayerMP player, boolean ridingAutoRocket)
     {
-        if (player instanceof GCCorePlayerMP && ((GCCorePlayerMP) player).getTeleportCooldown() <= 0)
+        if (!ridingAutoRocket && player instanceof GCCorePlayerMP && ((GCCorePlayerMP) player).getTeleportCooldown() <= 0)
         {
             final GCCorePlayerMP gcPlayer = (GCCorePlayerMP) player;
 

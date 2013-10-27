@@ -207,6 +207,11 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
         this.ticks++;
 
         super.onUpdate();
+        
+        if (this.riddenByEntity != null)
+        {
+            this.riddenByEntity.fallDistance = 0.0F;
+        }
 
         if (this.posY > (this.worldObj.provider instanceof IExitHeight ? ((IExitHeight) this.worldObj.provider).getYCoordinateToTeleport() : 1200))
         {

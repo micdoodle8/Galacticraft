@@ -367,7 +367,8 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
         {
             this.setPosition(this.targetVec.x + 0.5F, this.targetVec.y + 800, this.targetVec.z + 0.5F);
             this.landing = true;
-            this.motionY = -0.5D;
+            this.setWaitForPlayer(true);
+            this.motionX = this.motionY = this.motionZ = 0.0D;
         }
         else
         {
