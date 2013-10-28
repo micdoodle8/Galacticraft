@@ -38,6 +38,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 {
     public EnumRocketType rocketType;
     public float rumble;
+    public int launchCooldown;
 
     public EntityTieredRocket(World par1World)
     {
@@ -86,6 +87,14 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
             }
         }
     }
+    
+    public void igniteCheckingCooldown()
+    {
+        if (!this.worldObj.isRemote && this.launchCooldown <= 0)
+        {
+            this.ignite();
+        }
+    }
 
     @Override
     public void onUpdate()
@@ -120,6 +129,14 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
         }
         
         super.onUpdate();
+        
+        if (!this.worldObj.isRemote)
+        {
+            if (this.launchCooldown > 0)
+            {
+                this.launchCooldown--;
+            }
+        }
 
         if (!this.worldObj.isRemote && this.getLandingPad() != null && this.getLandingPad().getConnectedTiles() != null)
         {
@@ -287,6 +304,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
     protected void onRocketLand(int x, int y, int z)
     {
         super.onRocketLand(x, y, z);
+        this.launchCooldown = 40;
         this.setPositionAndRotation(x + 0.5, y + 1.8D, z + 0.5, this.rotationYaw, 0.0F);
     }
 

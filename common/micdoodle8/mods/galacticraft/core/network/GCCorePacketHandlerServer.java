@@ -198,7 +198,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
 
                     if (stack2 != null && stack2.getItem() instanceof GCCoreItemParachute || playerBase != null && playerBase.getLaunchAttempts() > 0)
                     {
-                        ship.ignite();
+                        ship.igniteCheckingCooldown();
                         playerBase.setLaunchAttempts(0);
                     }
                     else if (playerBase.getChatCooldown() == 0 && playerBase.getLaunchAttempts() == 0)
