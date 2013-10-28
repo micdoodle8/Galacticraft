@@ -103,7 +103,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
         {
             if (this.riddenByEntity != null)
             {
-                if (this.ticks >= 60)
+                if (this.ticks >= 10)
                 {
                     if (!this.worldObj.isRemote)
                     {
