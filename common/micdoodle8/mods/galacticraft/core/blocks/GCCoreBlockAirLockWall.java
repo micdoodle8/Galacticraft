@@ -39,7 +39,7 @@ public class GCCoreBlockAirLockWall extends BlockBreakable implements IPartialSe
         float var5;
         float var6;
 
-        int frameID = GCCoreBlocks.airLockSeal.blockID;
+        int frameID = GCCoreBlocks.airLockFrame.blockID;
         int sealID = GCCoreBlocks.airLockSeal.blockID;
 
         int idXMin = world.getBlockId(x - 1, y, z);
