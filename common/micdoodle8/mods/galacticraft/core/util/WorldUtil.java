@@ -653,8 +653,6 @@ public class WorldUtil
 
     private static Entity teleportEntity(World var0, Entity var1, int var2, ITeleportType type, boolean transferInv, EntityAutoRocket ridingRocket)
     {
-        final Entity var6 = var1.ridingEntity;
-
         if (var1.ridingEntity != null && var1.ridingEntity instanceof EntitySpaceshipBase)
         {
             var1.mountEntity(var1.ridingEntity);
@@ -693,7 +691,7 @@ public class WorldUtil
             }
             else
             {
-                WorldUtil.removeEntityFromWorld(var1.worldObj, var1, false);
+                WorldUtil.removeEntityFromWorld(var1.worldObj, var1, true);
             }
         }
 
@@ -711,6 +709,30 @@ public class WorldUtil
             if (var1 instanceof EntityPlayer)
             {
                 var1.setPosition(type.getPlayerSpawnLocation((WorldServer) var1.worldObj, (EntityPlayerMP) var1).x, type.getPlayerSpawnLocation((WorldServer) var1.worldObj, (EntityPlayerMP) var1).y, type.getPlayerSpawnLocation((WorldServer) var1.worldObj, (EntityPlayerMP) var1).z);
+            }
+        }
+
+        if (ridingRocket != null)
+        {
+            final NBTTagCompound var11 = new NBTTagCompound();
+            ridingRocket.isDead = false;
+            ridingRocket.riddenByEntity = null;
+            ridingRocket.writeToNBTOptional(var11);
+
+            ((WorldServer) ridingRocket.worldObj).getEntityTracker().removeEntityFromAllTrackingPlayers(ridingRocket);
+            ridingRocket.worldObj.loadedEntityList.remove(ridingRocket);
+            ridingRocket.worldObj.onEntityRemoved(ridingRocket);
+
+            ridingRocket = (EntityAutoRocket) EntityList.createEntityFromNBT(var11, var0);
+
+            if (ridingRocket != null)
+            {
+                ridingRocket.setWaitForPlayer(true);
+
+                if (ridingRocket instanceof IWorldTransferCallback)
+                {
+                    ((IWorldTransferCallback) ridingRocket).onWorldTransferred(var0);
+                }
             }
         }
 
@@ -854,46 +876,16 @@ public class WorldUtil
                 var8.setChestSpawnCooldown(200);
             }
         }
-
-        if (var1 != null && var6 != null)
-        {
-            if (var1 instanceof EntityPlayerMP)
-            {
-                var0.updateEntityWithOptionalForce(var1, true);
-            }
-
-            var1.mountEntity(var6);
-        }
-
+        
         if (ridingRocket != null)
         {
-            final NBTTagCompound var11 = new NBTTagCompound();
-            ridingRocket.isDead = false;
-            ridingRocket.riddenByEntity = null;
-            ridingRocket.writeToNBTOptional(var11);
+            var1.setPositionAndRotation(ridingRocket.posX, ridingRocket.posY, ridingRocket.posZ, 0, 0);
+            var0.updateEntityWithOptionalForce(var1, true);
 
-            ridingRocket.worldObj.loadedEntityList.remove(ridingRocket);
-            ridingRocket.worldObj.onEntityRemoved(ridingRocket);
+            var0.spawnEntityInWorld(ridingRocket);
+            ridingRocket.setWorld(var0);
 
-            ridingRocket = (EntityAutoRocket) EntityList.createEntityFromNBT(var11, var0);
-
-            if (ridingRocket != null)
-            {
-                ridingRocket.setWaitForPlayer(true);
-
-                if (ridingRocket instanceof IWorldTransferCallback)
-                {
-                    ((IWorldTransferCallback) ridingRocket).onWorldTransferred(var0);
-                }
-
-                var1.setPositionAndRotation(ridingRocket.posX, ridingRocket.posY, ridingRocket.posZ, 0, 0);
-                var0.updateEntityWithOptionalForce(var1, true);
-
-                var0.spawnEntityInWorld(ridingRocket);
-                ridingRocket.setWorld(var0);
-
-                var0.updateEntityWithOptionalForce(ridingRocket, true);
-            }
+            var0.updateEntityWithOptionalForce(ridingRocket, true);
         }
 
         if (var1 instanceof EntityPlayerMP)
@@ -904,7 +896,8 @@ public class WorldUtil
 
         if (ridingRocket != null)
         {
-            var1.mountEntity(ridingRocket);
+            var1.ridingEntity = ridingRocket;
+            ridingRocket.riddenByEntity = var1;
         }
 
         return var1;

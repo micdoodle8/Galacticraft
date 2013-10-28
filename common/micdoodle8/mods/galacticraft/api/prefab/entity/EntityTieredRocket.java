@@ -90,6 +90,35 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
     @Override
     public void onUpdate()
     {
+        if (this.getWaitForPlayer())
+        {
+            if (this.riddenByEntity != null)
+            {
+                if (this.ticks >= 60)
+                {
+                    if (!this.worldObj.isRemote)
+                    {
+                        Entity e = this.riddenByEntity;
+                        this.riddenByEntity.ridingEntity = null;
+                        this.riddenByEntity = null;
+                        e.mountEntity(this);
+                    }
+                    
+                    this.setWaitForPlayer(false);
+                    this.motionY = -0.5D;
+                }
+                else
+                {
+                    this.motionX = this.motionY = this.motionZ = 0.0D;
+                    this.riddenByEntity.motionX = this.riddenByEntity.motionY = this.riddenByEntity.motionZ = 0;
+                }
+            }
+            else
+            {
+                this.motionX = this.motionY = this.motionZ = 0.0D;
+            }
+        }
+        
         super.onUpdate();
 
         if (!this.worldObj.isRemote && this.getLandingPad() != null && this.getLandingPad().getConnectedTiles() != null)
@@ -159,8 +188,9 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
         list.add(this.rocketType != null ? this.rocketType.getIndex() : 0);
         super.getNetworkedData(list);
 
-        list.add(this.ticks < 25);
-        if (this.ticks < 25)
+        boolean sendPosUpdates = this.ticks < 25 || this.launchPhase != EnumLaunchPhase.LAUNCHED.getPhase();
+        list.add(sendPosUpdates);
+        if (sendPosUpdates)
         {
             list.add(this.posX * 8000.0D);
             list.add(this.posY * 8000.0D);

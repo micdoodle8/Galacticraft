@@ -66,19 +66,6 @@ public class GCCoreEntityRocketT1 extends EntityTieredRocket
     @Override
     public void onUpdate()
     {
-        if (this.getWaitForPlayer())
-        {
-            if (this.riddenByEntity != null)
-            {
-                this.setWaitForPlayer(false);
-                this.motionY = -0.5D;
-            }
-            else
-            {
-                this.motionX = this.motionY = this.motionZ = 0.0D;
-            }
-        }
-
         super.onUpdate();
 
         int i;
