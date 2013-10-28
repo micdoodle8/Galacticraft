@@ -9,7 +9,7 @@ import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPadFull;
-import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.event.GCCoreLandingPadRemovalEvent;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
@@ -32,7 +32,6 @@ import net.minecraftforge.fluids.FluidTank;
 import universalelectricity.core.vector.Vector3;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 
 /**
@@ -48,7 +47,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
     private IFuelDock landingPad;
     public boolean landing;
     public EnumAutoLaunch autoLaunchSetting;
-    public EnumAutoLaunch lastAutoLaunchSetting;
+
     public int autoLaunchCountdown;
     public String statusMessage;
     public int statusMessageCooldown;
@@ -316,7 +315,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
             if (this.statusMessageCooldown == 0 && this.lastStatusMessageCooldown > 0 && this.statusValid)
             {
-                this.ignite();
+                this.autoLaunch();
             }
 
             if (this.autoLaunchCountdown > 0)
@@ -332,27 +331,6 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
             if (this.autoLaunchSetting == EnumAutoLaunch.ROCKET_IS_FUELED && this.fuelTank.getFluidAmount() == this.fuelTank.getCapacity())
             {
                 this.autoLaunch();
-            }
-
-            if (this.autoLaunchSetting != null && this.lastAutoLaunchSetting == null)
-            {
-                switch (this.autoLaunchSetting)
-                {
-                case INSTANT:
-                    this.autoLaunch();
-                    break;
-                case TIME_10_SECONDS:
-                    this.autoLaunchCountdown = 200;
-                    break;
-                case TIME_30_SECONDS:
-                    this.autoLaunchCountdown = 600;
-                    break;
-                case TIME_1_MINUTE:
-                    this.autoLaunchCountdown = 1200;
-                    break;
-                default:
-                    break;
-                }
             }
 
             if (this.autoLaunchSetting == EnumAutoLaunch.REDSTONE_SIGNAL)
@@ -407,14 +385,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
                                 if (tile instanceof IFuelDock)
                                 {
-                                    if (this.shouldCancelExplosion())
-                                    {
-                                        this.landRocket(x, y, z);
-                                    }
-                                    else
-                                    {
-                                        this.failRocket();
-                                    }
+                                    this.failRocket();
                                 }
                             }
                         }
@@ -440,8 +411,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
             }
 
             PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 60, this.worldObj.provider.dimensionId, GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getNetworkedData(new ArrayList<Object>())));
-
-            this.lastAutoLaunchSetting = this.autoLaunchSetting;
+            
             this.lastStatusMessageCooldown = this.statusMessageCooldown;
         }
     }
@@ -455,7 +425,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
     private void autoLaunch()
     {
         this.ignite();
-        this.autoLaunchSetting = this.lastAutoLaunchSetting = null;
+        this.autoLaunchSetting = null;
     }
 
     public boolean igniteWithResult()
@@ -486,7 +456,6 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
     protected void landRocket(int x, int y, int z)
     {
-        FMLLog.info("" + this.worldObj.isRemote + " " + Math.abs(this.motionY));
         TileEntity tile = this.worldObj.getBlockTileEntity(x, y, z);
 
         if (tile instanceof IFuelDock)
@@ -524,6 +493,28 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
                                 }
 
                                 this.autoLaunchSetting = EnumAutoLaunch.values()[controllerClass.getField("launchDropdownSelection").getInt(updatedTile)];
+                                
+                                if (this.autoLaunchSetting != null)
+                                {
+                                    switch (this.autoLaunchSetting)
+                                    {
+                                    case INSTANT:
+                                        this.autoLaunch();
+                                        break;
+                                    case TIME_10_SECONDS:
+                                        this.autoLaunchCountdown = 200;
+                                        break;
+                                    case TIME_30_SECONDS:
+                                        this.autoLaunchCountdown = 600;
+                                        break;
+                                    case TIME_1_MINUTE:
+                                        this.autoLaunchCountdown = 1200;
+                                        break;
+                                    default:
+                                        break;
+                                    }
+                                }
+                                
                                 break;
                             }
                         }
@@ -781,7 +772,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
         this.setWaitForPlayer(nbt.getBoolean("WaitingForPlayer"));
         this.landing = nbt.getBoolean("Landing");
         int autoLaunchValue = nbt.getInteger("AutoLaunchSetting");
-        this.autoLaunchSetting = this.lastAutoLaunchSetting = autoLaunchValue == -1 ? null : EnumAutoLaunch.values()[autoLaunchValue];
+        this.autoLaunchSetting = autoLaunchValue == -1 ? null : EnumAutoLaunch.values()[autoLaunchValue];
         this.autoLaunchCountdown = nbt.getInteger("TimeUntilAutoLaunch");
         this.destinationFrequency = nbt.getInteger("DestinationFrequency");
     }
