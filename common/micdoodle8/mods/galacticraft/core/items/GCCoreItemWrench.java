@@ -20,6 +20,8 @@ public class GCCoreItemWrench extends Item
     {
         super(id);
         this.setUnlocalizedName(assetName);
+        this.setMaxStackSize(1);
+        this.setMaxDamage(256);
         this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
     }
 
@@ -45,7 +47,22 @@ public class GCCoreItemWrench extends Item
     @RuntimeInterface(clazz = "buildcraft.api.tools.IToolWrench", modID = "BuildCraft|Core")
     public void wrenchUsed(EntityPlayer entityPlayer, int x, int y, int z)
     {
-
+        ItemStack stack = entityPlayer.inventory.getCurrentItem();
+        
+        if (stack != null)
+        {
+            stack.damageItem(1, entityPlayer);
+            
+            if (stack.getItemDamage() >= stack.getMaxDamage())
+            {
+                stack.stackSize--;
+            }
+            
+            if (stack.stackSize <= 0)
+            {
+                entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, null);
+            }
+        }
     }
 
     @Override
