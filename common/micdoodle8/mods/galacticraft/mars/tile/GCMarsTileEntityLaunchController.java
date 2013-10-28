@@ -541,8 +541,6 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
                         if (tile2 instanceof GCMarsTileEntityLaunchController)
                         {
                             GCMarsTileEntityLaunchController launchController2 = (GCMarsTileEntityLaunchController) tile2;
-                            if (world.provider.dimensionId == -29)
-                                FMLLog.info("launchController2 frequency " + launchController2.frequency + " " + new Vector3(launchController2));
 
                             if (launchController2.frequency == this.destFrequency)
                             {
