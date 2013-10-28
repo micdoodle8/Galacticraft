@@ -464,9 +464,9 @@ public class GalacticraftCore
         GCCoreUtil.registerGalacticraftNonMobEntity(GCCoreEntityMeteorChunk.class, "MeteorChunk", GCCoreConfigManager.idEntityMeteorChunk, 150, 5, true);
     }
 
-    public static class MinecraftLoadedEvent extends Event
-    {
-    }
+//    public static class MinecraftLoadedEvent extends Event
+//    {
+//    }
 
     public static class SleepCancelledEvent extends Event
     {

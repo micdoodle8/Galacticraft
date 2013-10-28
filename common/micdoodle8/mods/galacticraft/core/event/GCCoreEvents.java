@@ -23,7 +23,6 @@ import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GCCoreDamageSource;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore.MinecraftLoadedEvent;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore.SleepCancelledEvent;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
@@ -449,12 +448,12 @@ public class GCCoreEvents
         }
     }
 
-    @SideOnly(Side.CLIENT)
-    @ForgeSubscribe
-    public void onMinecraftLoaded(MinecraftLoadedEvent event)
-    {
-        ;
-    }
+//    @SideOnly(Side.CLIENT)
+//    @ForgeSubscribe
+//    public void onMinecraftLoaded(MinecraftLoadedEvent event)
+//    {
+//        ;
+//    }
 
     @SideOnly(Side.CLIENT)
     @ForgeSubscribe
