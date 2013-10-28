@@ -12,7 +12,6 @@ import micdoodle8.mods.galacticraft.core.GCCoreThreadRequirementMissing;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.client.GCCoreCloudRenderer;
-import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.client.GCCoreSkyProviderOrbit;
 import micdoodle8.mods.galacticraft.core.client.GCCoreSkyProviderOverworld;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiChoosePlanet;
@@ -26,6 +25,7 @@ import micdoodle8.mods.galacticraft.core.client.sounds.GCCoreSoundUpdaterSpacesh
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreWorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
+import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemSensorGlasses;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerServer.EnumPacketServer;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;

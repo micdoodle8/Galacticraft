@@ -4,7 +4,7 @@ import java.util.List;
 import micdoodle8.mods.galacticraft.api.item.IBreathableArmor;
 import micdoodle8.mods.galacticraft.api.item.IBreathableArmor.EnumGearType;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
-import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenGear;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenMask;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenTank;

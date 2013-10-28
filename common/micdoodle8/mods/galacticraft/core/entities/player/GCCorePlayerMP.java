@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.core.entities;
+package micdoodle8.mods.galacticraft.core.entities.player;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,6 +16,8 @@ import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GCCoreDamageSource;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityMeteor;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityParaChest;
 import micdoodle8.mods.galacticraft.core.event.GCCoreEventWakePlayer;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryExtended;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
