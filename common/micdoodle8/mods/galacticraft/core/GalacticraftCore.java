@@ -16,7 +16,6 @@ import micdoodle8.mods.galacticraft.api.world.IMoon;
 import micdoodle8.mods.galacticraft.api.world.IPlanet;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockCrudeOil;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
-import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.command.GCCoreCommandPlanetTeleport;
 import micdoodle8.mods.galacticraft.core.command.GCCoreCommandSpaceStationAddOwner;
 import micdoodle8.mods.galacticraft.core.command.GCCoreCommandSpaceStationRemoveOwner;
@@ -38,7 +37,9 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeleton;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeletonBoss;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpider;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityZombie;
-import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerSP;
+import micdoodle8.mods.galacticraft.core.entities.player.PlayerTracker;
 import micdoodle8.mods.galacticraft.core.event.GCCoreEvents;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBasic;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlock;
@@ -171,6 +172,7 @@ public class GalacticraftCore
     public static final String BLOCK_TEXTURE_FILE = GalacticraftCore.FILE_PATH + GalacticraftCore.CLIENT_PATH + "blocks/core.png";
     public static final String ITEM_TEXTURE_FILE = GalacticraftCore.FILE_PATH + GalacticraftCore.CLIENT_PATH + "items/core.png";
     public static final String CONFIG_FILE = "Galacticraft/core.conf";
+    public static final String CHUNKLOADER_CONFIG_FILE = "Galacticraft/chunkloading.conf";
 
     public static String ASSET_DOMAIN = "galacticraftcore";
     public static String ASSET_PREFIX = GalacticraftCore.ASSET_DOMAIN + ":";
@@ -196,6 +198,7 @@ public class GalacticraftCore
         GalacticraftCore.proxy.preInit(event);
 
         GCCoreConfigManager.setDefaultValues(new File(event.getModConfigurationDirectory(), GalacticraftCore.CONFIG_FILE));
+        ChunkLoadingCallback.loadConfig(new File(event.getModConfigurationDirectory(), GalacticraftCore.CHUNKLOADER_CONFIG_FILE));
 
         GalacticraftCore.gcFluidOil = new Fluid("oil").setDensity(800).setViscosity(1500);
         GalacticraftCore.gcFluidFuel = new Fluid("fuel").setViscosity(800);
@@ -234,6 +237,7 @@ public class GalacticraftCore
         GalacticraftRegistry.registerTeleportType(GCCoreWorldProviderSpaceStation.class, new GCCoreOrbitTeleportType());
 
         ForgeChunkManager.setForcedChunkLoadingCallback(GalacticraftCore.instance, new ChunkLoadingCallback());
+        GameRegistry.registerPlayerTracker(new PlayerTracker());
 
         GalacticraftMoon.load(event);
 

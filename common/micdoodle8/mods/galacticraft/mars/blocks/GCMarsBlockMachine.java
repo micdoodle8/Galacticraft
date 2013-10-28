@@ -220,12 +220,12 @@ public class GCMarsBlockMachine extends BlockTile
             }
         }
 
-        if (var8 instanceof IChunkLoader && !var8.worldObj.isRemote && GCMarsConfigManager.launchControllerChunkLoad)
+        if (var8 instanceof IChunkLoader && !var8.worldObj.isRemote && GCMarsConfigManager.launchControllerChunkLoad && entityLiving instanceof EntityPlayer)
         {
-            ((IChunkLoader) var8).onTicketLoaded(ForgeChunkManager.requestTicket(GalacticraftCore.instance, var8.worldObj, Type.NORMAL));
+            ((IChunkLoader) var8).setOwnerName(((EntityPlayer) entityLiving).username);
+            ((IChunkLoader) var8).onTicketLoaded(ForgeChunkManager.requestTicket(GalacticraftCore.instance, var8.worldObj, Type.NORMAL), true);
         }
-
-        if (var8 instanceof GCMarsTileEntityLaunchController && entityLiving instanceof EntityPlayer)
+        else if (var8 instanceof GCMarsTileEntityLaunchController && entityLiving instanceof EntityPlayer)
         {
             ((GCMarsTileEntityLaunchController) var8).setOwnerName(((EntityPlayer) entityLiving).username);
         }

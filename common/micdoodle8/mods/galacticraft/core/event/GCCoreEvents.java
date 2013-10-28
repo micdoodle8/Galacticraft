@@ -27,13 +27,14 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore.MinecraftLoadedEvent;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore.SleepCancelledEvent;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
-import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
-import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerServer.EnumPacketServer;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketSchematicList;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
+import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
 import net.minecraft.block.Block;
 import net.minecraft.client.audio.SoundPool;
 import net.minecraft.client.audio.SoundPoolEntry;
@@ -47,6 +48,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.client.event.sound.SoundLoadEvent;
@@ -60,6 +62,9 @@ import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
+import net.minecraftforge.event.world.ChunkDataEvent;
+import net.minecraftforge.event.world.ChunkEvent.Load;
+import net.minecraftforge.event.world.WorldEvent.Save;
 import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
@@ -68,6 +73,27 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreEvents
 {
+    @ForgeSubscribe
+    public void onWorldSave(Save event)
+    {
+        ChunkLoadingCallback.save((WorldServer) event.world);
+    }
+
+    @ForgeSubscribe
+    public void onChunkDataLoad(ChunkDataEvent.Load event)
+    {
+        ChunkLoadingCallback.load((WorldServer) event.world);
+    }
+    
+    @ForgeSubscribe
+    public void onWorldLoad(Load event)
+    {
+        if(!event.world.isRemote)
+        {
+            ChunkLoadingCallback.load((WorldServer) event.world);
+        }
+    }
+    
     @ForgeSubscribe
     public void onEntityFall(LivingFallEvent event)
     {

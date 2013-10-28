@@ -139,7 +139,7 @@ public class GCMarsItemSpaceshipTier2 extends Item implements IHoldableItem
             par3List.add(new ItemStack(par1, 1, i));
         }
 
-        for (int i = 11; i < 10 + EnumRocketType.values().length - 1; i++)
+        for (int i = 11; i < 10 + EnumRocketType.values().length; i++)
         {
             par3List.add(new ItemStack(par1, 1, i));
         }
