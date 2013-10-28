@@ -91,7 +91,7 @@ public class GCMarsRenderSlimeling extends RenderLiving
     {
         Minecraft mc = FMLClientHandler.instance().getClient();
 
-        if (!par1EntityLivingBase.isInvisible() && (mc.currentScreen == null || !((mc.currentScreen instanceof GCMarsGuiSlimeling || mc.currentScreen instanceof GCMarsGuiSlimelingInventory) && GCMarsGuiSlimeling.renderingOnGui)))
+        if (!mc.gameSettings.hideGUI && !par1EntityLivingBase.isInvisible() && (mc.currentScreen == null || !((mc.currentScreen instanceof GCMarsGuiSlimeling || mc.currentScreen instanceof GCMarsGuiSlimelingInventory) && GCMarsGuiSlimeling.renderingOnGui)))
         {
             this.renderLivingLabel(par1EntityLivingBase, ((GCMarsEntitySlimeling) par1EntityLivingBase).getName(), par2, par4 + 0.33, par6, 64);
             double health = Math.floor(((GCMarsEntitySlimeling) par1EntityLivingBase).getHealth());
