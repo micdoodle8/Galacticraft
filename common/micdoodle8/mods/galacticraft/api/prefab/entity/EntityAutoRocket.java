@@ -848,7 +848,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
             }
         }
 
-        for (count = 0; count < this.cargoItems.length - 3; count++)
+        for (count = 0; count < this.cargoItems.length - 2; count++)
         {
             ItemStack stackAt = this.cargoItems[count];
 
