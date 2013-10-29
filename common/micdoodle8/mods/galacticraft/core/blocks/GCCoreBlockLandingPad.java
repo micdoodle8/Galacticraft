@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.List;
+import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBuggyFuelerSingle;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPadSingle;
@@ -12,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -21,7 +23,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * All rights reserved.
  * 
  */
-public class GCCoreBlockLandingPad extends GCCoreBlockAdvanced
+public class GCCoreBlockLandingPad extends GCCoreBlockAdvanced implements IPartialSealableBlock
 {
     private Icon[] icons = new Icon[3];
 
@@ -141,5 +143,11 @@ public class GCCoreBlockLandingPad extends GCCoreBlockAdvanced
     public TileEntity createNewTileEntity(World world)
     {
         return null;
+    }
+
+    @Override
+    public boolean isSealed(World world, int x, int y, int z, ForgeDirection direction)
+    {
+        return direction == ForgeDirection.UP || direction == ForgeDirection.DOWN;
     }
 }

@@ -262,18 +262,6 @@ public class GCCoreBlockMachine2 extends BlockTile
     }
 
     @Override
-    public boolean isOpaqueCube()
-    {
-        return false;
-    }
-
-    @Override
-    public boolean renderAsNormalBlock()
-    {
-        return false;
-    }
-
-    @Override
     public TileEntity createTileEntity(World world, int metadata)
     {
         if (metadata >= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA)
