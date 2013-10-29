@@ -49,7 +49,7 @@ public class OxygenUtil
 
     public static boolean isAABBInBreathableAirBlock(Entity entity)
     {
-        return OxygenUtil.isAABBInBreathableAirBlock(entity.worldObj, new Vector3(entity.boundingBox.minX, entity.boundingBox.minY, entity.boundingBox.minZ), new Vector3(entity.boundingBox.maxX + 1, entity.boundingBox.maxY + 1, entity.boundingBox.maxZ + 1));
+        return OxygenUtil.isAABBInBreathableAirBlock(entity.worldObj, new Vector3(entity.boundingBox.minX - 1, entity.boundingBox.minY - 1, entity.boundingBox.minZ - 1), new Vector3(entity.boundingBox.maxX + 1, entity.boundingBox.maxY + 1, entity.boundingBox.maxZ + 1));
     }
 
     @SuppressWarnings("rawtypes")

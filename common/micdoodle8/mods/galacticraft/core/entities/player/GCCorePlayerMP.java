@@ -276,7 +276,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
         {
             this.setLaunchAttempts(0);
         }
-
+        
         this.checkOxygen();
 
         if (this.worldObj.provider instanceof IGalacticraftWorldProvider && (this.oxygenSetupValid != this.lastOxygenSetupValid || this.tick % 100 == 0))
@@ -767,7 +767,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
         final ItemStack tankInSlot2 = this.getExtendedInventory().getStackInSlot(3);
 
         final int drainSpacing = OxygenUtil.getDrainSpacing(tankInSlot, tankInSlot2);
-
+        
         if (this.worldObj.provider instanceof IGalacticraftWorldProvider && !this.capabilities.isCreativeMode)
         {
             if (tankInSlot == null)
@@ -837,33 +837,37 @@ public class GCCorePlayerMP extends EntityPlayerMP
             }
 
             final boolean airEmpty = this.airRemaining <= 0 && this.airRemaining2 <= 0;
-
-            if ((!OxygenUtil.hasValidOxygenSetup(this) || airEmpty) && !OxygenUtil.isAABBInBreathableAirBlock(this))
+            
+            if (this.isOnLadder())
+            {
+                this.oxygenSetupValid = this.lastOxygenSetupValid;
+            }
+            else if ((!OxygenUtil.hasValidOxygenSetup(this) || airEmpty) && !OxygenUtil.isAABBInBreathableAirBlock(this))
             {
                 this.oxygenSetupValid = false;
-
-                if (!this.worldObj.isRemote && this.isEntityAlive())
-                {
-                    if (this.damageCounter == 0)
-                    {
-                        this.damageCounter = GCCoreConfigManager.suffocationCooldown;
-
-                        GCCoreOxygenSuffocationEvent suffocationEvent = new GCCoreOxygenSuffocationEvent.Pre(this);
-                        MinecraftForge.EVENT_BUS.post(suffocationEvent);
-
-                        if (!suffocationEvent.isCanceled())
-                        {
-                            this.attackEntityFrom(GCCoreDamageSource.oxygenSuffocation, GCCoreConfigManager.suffocationDamage);
-
-                            GCCoreOxygenSuffocationEvent suffocationEventPost = new GCCoreOxygenSuffocationEvent.Post(this);
-                            MinecraftForge.EVENT_BUS.post(suffocationEventPost);
-                        }
-                    }
-                }
             }
             else
             {
                 this.oxygenSetupValid = true;
+            }
+            
+            if (!this.oxygenSetupValid && !this.worldObj.isRemote && this.isEntityAlive())
+            {
+                if (this.damageCounter == 0)
+                {
+                    this.damageCounter = GCCoreConfigManager.suffocationCooldown;
+
+                    GCCoreOxygenSuffocationEvent suffocationEvent = new GCCoreOxygenSuffocationEvent.Pre(this);
+                    MinecraftForge.EVENT_BUS.post(suffocationEvent);
+
+                    if (!suffocationEvent.isCanceled())
+                    {
+                        this.attackEntityFrom(GCCoreDamageSource.oxygenSuffocation, GCCoreConfigManager.suffocationDamage);
+
+                        GCCoreOxygenSuffocationEvent suffocationEventPost = new GCCoreOxygenSuffocationEvent.Post(this);
+                        MinecraftForge.EVENT_BUS.post(suffocationEventPost);
+                    }
+                }
             }
         }
         else if (this.tick % 20 == 0 && !this.capabilities.isCreativeMode && this.airRemaining < 90)
@@ -967,6 +971,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
     {
         this.airRemaining = nbt.getInteger("playerAirRemaining");
         this.damageCounter = nbt.getInteger("damageCounter");
+        this.oxygenSetupValid = this.lastOxygenSetupValid = nbt.getBoolean("OxygenSetupValid");
 
         // Backwards compatibility
         NBTTagList nbttaglist = nbt.getTagList("Inventory");
@@ -1060,6 +1065,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
         nbt.setTag("ExtendedInventoryGC", this.getExtendedInventory().writeToNBT(new NBTTagList()));
         nbt.setInteger("playerAirRemaining", this.airRemaining);
         nbt.setInteger("damageCounter", this.damageCounter);
+        nbt.setBoolean("OxygenSetupValid", this.oxygenSetupValid);
         nbt.setBoolean("usingParachute2", this.getParachute());
         nbt.setBoolean("usingPlanetSelectionGui", this.usingPlanetSelectionGui);
         nbt.setInteger("teleportCooldown", this.getTeleportCooldown());
