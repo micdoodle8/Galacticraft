@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.List;
-import micdoodle8.mods.galacticraft.api.block.IPartialSealedBlock;
+import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.core.GCCoreCompatibilityManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAluminumWire;
@@ -18,11 +18,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.block.IConductor;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSealedBlock, ITileEntityProvider
+public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSealableBlock, ITileEntityProvider
 {
     private Icon[] enclosedIcons;
 
@@ -440,7 +441,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
     }
 
     @Override
-    public boolean isSealed(World world, int x, int y, int z)
+    public boolean isSealed(World world, int x, int y, int z, ForgeDirection direction)
     {
         return true;
     }

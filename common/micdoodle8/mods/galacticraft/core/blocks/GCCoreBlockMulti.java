@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.List;
+import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
 import net.minecraft.block.Block;
@@ -11,12 +12,13 @@ import net.minecraft.util.Icon;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class GCCoreBlockMulti extends BlockMulti
+public class GCCoreBlockMulti extends BlockMulti implements IPartialSealableBlock
 {
     // 0: Normal, 1: Space Station Teleport, 2: Rocket Launch Pad, 3: Rocket
     // Crafting Table
@@ -153,5 +155,18 @@ public class GCCoreBlockMulti extends BlockMulti
     public float getBlockHardness(World par1World, int par2, int par3, int par4)
     {
         return par1World.getBlockMetadata(par2, par3, par4) == 1 ? -1.0F : this.blockHardness;
+    }
+
+    @Override
+    public boolean isSealed(World world, int x, int y, int z, ForgeDirection direction)
+    {
+        int metadata = world.getBlockMetadata(x, y, z);
+        
+        if (metadata == 4)
+        {
+            return direction == ForgeDirection.UP || direction == ForgeDirection.DOWN;
+        }
+        
+        return true;
     }
 }

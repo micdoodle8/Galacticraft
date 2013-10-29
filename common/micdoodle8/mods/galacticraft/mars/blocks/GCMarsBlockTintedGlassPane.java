@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.mars.blocks;
 
 import java.util.List;
-import micdoodle8.mods.galacticraft.api.block.IPartialSealedBlock;
+import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import net.minecraft.block.BlockColored;
 import net.minecraft.block.BlockPane;
@@ -12,10 +12,11 @@ import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class GCMarsBlockTintedGlassPane extends BlockPane implements IPartialSealedBlock
+public class GCMarsBlockTintedGlassPane extends BlockPane implements IPartialSealableBlock
 {
     @SideOnly(Side.CLIENT)
     private Icon[] iconArray;
@@ -91,7 +92,7 @@ public class GCMarsBlockTintedGlassPane extends BlockPane implements IPartialSea
     }
 
     @Override
-    public boolean isSealed(World world, int x, int y, int z)
+    public boolean isSealed(World world, int x, int y, int z, ForgeDirection direction)
     {
         boolean var8 = this.canThisPaneConnectToThisBlockID(world.getBlockId(x, y, z - 1));
         boolean var9 = this.canThisPaneConnectToThisBlockID(world.getBlockId(x, y, z + 1));
@@ -102,6 +103,7 @@ public class GCMarsBlockTintedGlassPane extends BlockPane implements IPartialSea
         {
             return true;
         }
+        
         return false;
     }
 }

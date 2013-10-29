@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.Random;
-import micdoodle8.mods.galacticraft.api.block.IPartialSealedBlock;
+import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBreakable;
@@ -14,7 +14,7 @@ import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class GCCoreBlockAirLockWall extends BlockBreakable implements IPartialSealedBlock
+public class GCCoreBlockAirLockWall extends BlockBreakable implements IPartialSealableBlock
 {
     public GCCoreBlockAirLockWall(int id, String assetName)
     {
@@ -111,7 +111,7 @@ public class GCCoreBlockAirLockWall extends BlockBreakable implements IPartialSe
     }
 
     @Override
-    public boolean isSealed(World world, int x, int y, int z)
+    public boolean isSealed(World world, int x, int y, int z, ForgeDirection direction)
     {
         return true;
     }

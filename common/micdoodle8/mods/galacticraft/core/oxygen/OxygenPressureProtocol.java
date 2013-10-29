@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import micdoodle8.mods.galacticraft.api.block.IOxygenReliantBlock;
-import micdoodle8.mods.galacticraft.api.block.IPartialSealedBlock;
+import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenSealer;
@@ -18,7 +18,7 @@ import universalelectricity.core.vector.Vector3;
 
 public class OxygenPressureProtocol
 {
-    private LinkedList<Vector3> checked = new LinkedList<Vector3>();
+    private LinkedList<VecDirPair> checked = new LinkedList<VecDirPair>();
     private LinkedList<Vector3> oxygenReliantBlocks = new LinkedList<Vector3>();
     private boolean airtight;
     private static ArrayList<Integer> vanillaPermeableBlocks = new ArrayList<Integer>();
@@ -57,11 +57,11 @@ public class OxygenPressureProtocol
         }
     }
 
-    private void loopThrough(World var1, int var2, int var3, int var4, int var5)
+    private void loopThrough(World var1, int var2, int var3, int var4, int var5, ForgeDirection dir)
     {
         final Vector3 vecAt = new Vector3(var2, var3, var4);
 
-        this.checked.add(vecAt);
+        this.checked.add(new VecDirPair(vecAt, dir));
 
         if (this.touchingUnsealedBlock(var1, var2, var3, var4) && this.airtight)
         {
@@ -76,9 +76,9 @@ public class OxygenPressureProtocol
         }
     }
 
-    private void checkAtVec(World var1, Vector3 vec)
+    private void checkAtVec(World var1, Vector3 vec, ForgeDirection dir)
     {
-        this.checked.add(vec);
+        this.checked.add(new VecDirPair(vec, dir));
 
         if (this.isTouchingBreathableAir(var1, vec.intX(), vec.intY(), vec.intZ()))
         {
@@ -95,9 +95,9 @@ public class OxygenPressureProtocol
                 Vector3 vec = new Vector3(var2, var3, var4);
                 vec = vec.translate(new Vector3(dir));
 
-                if (this.canBlockPass(var1, vec) && !this.isVisited(vec))
+                if (this.canBlockPass(var1, vec, dir) && !this.isVisited(vec))
                 {
-                    this.loopThrough(var1, vec.intX(), vec.intY(), vec.intZ(), var5 - 1);
+                    this.loopThrough(var1, vec.intX(), vec.intY(), vec.intZ(), var5 - 1, dir);
                 }
 
                 final int idAtVec = vec.getBlockID(var1);
@@ -128,7 +128,7 @@ public class OxygenPressureProtocol
 
                 if (OxygenPressureProtocol.isBreathableAir(var1, vec.intX(), vec.intY(), vec.intZ()) && !this.isVisited(vec))
                 {
-                    this.checkAtVec(var1, vec);
+                    this.checkAtVec(var1, vec, dir);
                 }
 
                 final int idAtVec = vec.getBlockID(var1);
@@ -148,30 +148,31 @@ public class OxygenPressureProtocol
 
         if (this.airtight)
         {
-            Iterator<Vector3> var6 = this.checked.iterator();
-            Vector3 var7;
+            Iterator<VecDirPair> var6 = this.checked.iterator();
+            VecDirPair var7;
 
             while (var6.hasNext())
             {
                 var7 = var6.next();
 
-                if (!this.getIsSealed(var1, var7.intX(), var7.intY(), var7.intZ()))
+                if (!this.getIsSealed(var1, var7.position.intX(), var7.position.intY(), var7.position.intZ()))
                 {
                     this.airtight = false;
                 }
             }
 
-            var6 = this.oxygenReliantBlocks.iterator();
+            Iterator<Vector3> var6b = this.oxygenReliantBlocks.iterator();
+            Vector3 var7b;
 
-            while (var6.hasNext())
+            while (var6b.hasNext())
             {
-                var7 = var6.next();
+                var7b = var6b.next();
 
-                final Block block = Block.blocksList[var7.getBlockID(var1)];
+                final Block block = Block.blocksList[var7b.getBlockID(var1)];
 
                 if (block != null && block instanceof IOxygenReliantBlock)
                 {
-                    ((IOxygenReliantBlock) block).onOxygenAdded(var1, var7.intX(), var7.intY(), var7.intZ());
+                    ((IOxygenReliantBlock) block).onOxygenAdded(var1, var7b.intX(), var7b.intY(), var7b.intZ());
                 }
             }
 
@@ -181,24 +182,24 @@ public class OxygenPressureProtocol
             {
                 var7 = var6.next();
 
-                if (var7.getBlockID(var1) == 0)
+                if (var7.position.getBlockID(var1) == 0)
                 {
-                    if (var1.getBlockId(var7.intX(), var7.intY() + 1, var7.intZ()) == Block.doorWood.blockID)
+                    if (var1.getBlockId(var7.position.intX(), var7.position.intY() + 1, var7.position.intZ()) == Block.doorWood.blockID)
                     {
-                        var1.setBlock(var7.intX(), var7.intY() + 1, var7.intZ(), GCCoreBlocks.breatheableAir.blockID);
+                        var1.setBlock(var7.position.intX(), var7.position.intY() + 1, var7.position.intZ(), GCCoreBlocks.breatheableAir.blockID);
                     }
 
-                    if (var1.getBlockId(var7.intX(), var7.intY() - 1, var7.intZ()) == Block.doorWood.blockID && var1.getBlockId(var7.intX(), var7.intY() - 2, var7.intZ()) != Block.doorWood.blockID)
+                    if (var1.getBlockId(var7.position.intX(), var7.position.intY() - 1, var7.position.intZ()) == Block.doorWood.blockID && var1.getBlockId(var7.position.intX(), var7.position.intY() - 2, var7.position.intZ()) != Block.doorWood.blockID)
                     {
-                        var1.setBlock(var7.intX(), var7.intY() - 1, var7.intZ(), GCCoreBlocks.breatheableAir.blockID);
+                        var1.setBlock(var7.position.intX(), var7.position.intY() - 1, var7.position.intZ(), GCCoreBlocks.breatheableAir.blockID);
                     }
 
-                    var1.setBlock(var7.intX(), var7.intY(), var7.intZ(), GCCoreBlocks.breatheableAir.blockID, 0, 2);
+                    var1.setBlock(var7.position.intX(), var7.position.intY(), var7.position.intZ(), GCCoreBlocks.breatheableAir.blockID, 0, 2);
                 }
             }
         }
 
-        this.checked = new LinkedList<Vector3>();
+        this.checked = new LinkedList<VecDirPair>();
         this.oxygenReliantBlocks = new LinkedList<Vector3>();
         return this.airtight;
     }
@@ -214,39 +215,39 @@ public class OxygenPressureProtocol
 
         if (this.airtight)
         {
-            final Iterator<Vector3> var6 = this.checked.iterator();
+            final Iterator<VecDirPair> var6 = this.checked.iterator();
 
             while (var6.hasNext())
             {
-                final Vector3 var7 = var6.next();
+                final VecDirPair var7 = var6.next();
 
-                if (!this.getIsSealed(var1, var7.intX(), var7.intY(), var7.intZ()))
+                if (!this.getIsSealed(var1, var7.position.intX(), var7.position.intY(), var7.position.intZ()))
                 {
                     this.airtight = false;
                 }
             }
         }
 
-        this.checked = new LinkedList<Vector3>();
+        this.checked = new LinkedList<VecDirPair>();
         return this.airtight;
     }
 
     public void unSeal(World var1, int var2, int var3, int var4)
     {
         this.nextVecD(var1, var2, var3, var4);
-        Iterator<Vector3> var5 = this.checked.iterator();
-        Vector3 var6;
+        Iterator<VecDirPair> var5 = this.checked.iterator();
+        VecDirPair var6;
 
         while (var5.hasNext())
         {
             var6 = var5.next();
 
-            if (this.canBlockPass(var1, var6))
+            if (this.canBlockPass(var1, var6.position, var6.direction))
             {
-                var1.getBlockId(var6.intX(), var6.intY(), var6.intZ());
+                var1.getBlockId(var6.position.intX(), var6.position.intY(), var6.position.intZ());
 
-                Block.blocksList[var1.getBlockId(var6.intX(), var6.intY(), var6.intZ())].dropBlockAsItem(var1, var6.intX(), var6.intY(), var6.intZ(), var1.getBlockMetadata(var6.intX(), var6.intY(), var6.intZ()), 0);
-                var1.setBlock(var6.intX(), var6.intY(), var6.intZ(), 0, 0, 2);
+                Block.blocksList[var1.getBlockId(var6.position.intX(), var6.position.intY(), var6.position.intZ())].dropBlockAsItem(var1, var6.position.intX(), var6.position.intY(), var6.position.intZ(), var1.getBlockMetadata(var6.position.intX(), var6.position.intY(), var6.position.intZ()), 0);
+                var1.setBlock(var6.position.intX(), var6.position.intY(), var6.position.intZ(), 0, 0, 2);
             }
         }
 
@@ -256,23 +257,24 @@ public class OxygenPressureProtocol
         {
             var6 = var5.next();
 
-            if (var1.getBlockId(var6.intX(), var6.intY(), var6.intZ()) == GCCoreBlocks.breatheableAir.blockID)
+            if (var1.getBlockId(var6.position.intX(), var6.position.intY(), var6.position.intZ()) == GCCoreBlocks.breatheableAir.blockID)
             {
-                var1.setBlock(var6.intX(), var6.intY(), var6.intZ(), 0, 0, 2);
+                var1.setBlock(var6.position.intX(), var6.position.intY(), var6.position.intZ(), 0, 0, 2);
             }
         }
 
-        var5 = this.oxygenReliantBlocks.iterator();
+        Iterator<Vector3> var5b = this.oxygenReliantBlocks.iterator();
+        Vector3 var6b;
 
-        while (var5.hasNext())
+        while (var5b.hasNext())
         {
-            var6 = var5.next();
+            var6b = var5b.next();
 
-            final int idAt = var6.getBlockID(var1);
+            final int idAt = var6b.getBlockID(var1);
 
             if (idAt != 0 && Block.blocksList[idAt] instanceof IOxygenReliantBlock)
             {
-                ((IOxygenReliantBlock) Block.blocksList[idAt]).onOxygenRemoved(var1, var6.intX(), var6.intY(), var6.intZ());
+                ((IOxygenReliantBlock) Block.blocksList[idAt]).onOxygenRemoved(var1, var6b.intX(), var6b.intY(), var6b.intZ());
             }
         }
 
@@ -282,17 +284,17 @@ public class OxygenPressureProtocol
         {
             var6 = var5.next();
 
-            if (var6.getBlockID(var1) == 0)
+            if (var6.position.getBlockID(var1) == 0)
             {
-                var1.notifyBlocksOfNeighborChange(var6.intX(), var6.intY(), var6.intZ(), 0);
+                var1.notifyBlocksOfNeighborChange(var6.position.intX(), var6.position.intY(), var6.position.intZ(), 0);
             }
         }
 
         this.oxygenReliantBlocks = new LinkedList<Vector3>();
-        this.checked = new LinkedList<Vector3>();
+        this.checked = new LinkedList<VecDirPair>();
     }
 
-    public boolean canBlockPass(World var0, Vector3 vec)
+    public boolean canBlockPass(World var0, Vector3 vec, ForgeDirection direction)
     {
         int id = vec.getBlockID(var0);
 
@@ -313,9 +315,9 @@ public class OxygenPressureProtocol
 
             if (!block.isOpaqueCube())
             {
-                if (block instanceof IPartialSealedBlock)
+                if (block instanceof IPartialSealableBlock)
                 {
-                    return !((IPartialSealedBlock) block).isSealed(var0, vec.intX(), vec.intY(), vec.intZ());
+                    return !((IPartialSealableBlock) block).isSealed(var0, vec.intX(), vec.intY(), vec.intZ(), direction);
                 }
 
                 if (OxygenPressureProtocol.nonPermeableBlocks.containsKey(id) && OxygenPressureProtocol.nonPermeableBlocks.get(id).contains(metadata))
@@ -344,7 +346,7 @@ public class OxygenPressureProtocol
             Vector3 vec = new Vector3(var2, var3, var4);
             vec = vec.translate(new Vector3(dir));
 
-            if (this.canBlockPass(var1, vec) && !this.isVisited(vec))
+            if (this.canBlockPass(var1, vec, dir) && !this.isVisited(vec))
             {
                 return true;
             }
@@ -394,14 +396,36 @@ public class OxygenPressureProtocol
     private boolean isVisited(Vector3 var1)
     {
         this.checked.iterator();
-        for (final Vector3 vec : this.checked)
+        for (final VecDirPair vec : this.checked)
         {
-            if (vec.equals(var1))
+            if (vec.position.equals(var1))
             {
                 return true;
             }
         }
 
         return false;
+    }
+    
+    public static class VecDirPair
+    {
+        private final Vector3 position;
+        private final ForgeDirection direction;
+        
+        public VecDirPair(Vector3 position, ForgeDirection direction)
+        {
+            this.position = position;
+            this.direction = direction;
+        }
+        
+        public Vector3 getPosition()
+        {
+            return position;
+        }
+        
+        public ForgeDirection getDirection()
+        {
+            return direction;
+        }
     }
 }
