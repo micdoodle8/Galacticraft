@@ -94,16 +94,27 @@ public class GCMarsBlockTintedGlassPane extends BlockPane implements IPartialSea
     @Override
     public boolean isSealed(World world, int x, int y, int z, ForgeDirection direction)
     {
-        boolean var8 = this.canThisPaneConnectToThisBlockID(world.getBlockId(x, y, z - 1));
-        boolean var9 = this.canThisPaneConnectToThisBlockID(world.getBlockId(x, y, z + 1));
-        boolean var10 = this.canThisPaneConnectToThisBlockID(world.getBlockId(x - 1, y, z));
-        boolean var11 = this.canThisPaneConnectToThisBlockID(world.getBlockId(x + 1, y, z));
-
-        if (var8 && (var9 || var10 || var11) || var9 && (var10 || var11) || var10 && var11)
-        {
-            return true;
-        }
+        boolean connectedNorth = this.canThisPaneConnectToThisBlockID(world.getBlockId(x, y, z - 1));
+        boolean connectedSouth = this.canThisPaneConnectToThisBlockID(world.getBlockId(x, y, z + 1));
+        boolean connectedWest = this.canThisPaneConnectToThisBlockID(world.getBlockId(x - 1, y, z));
+        boolean connectedEast = this.canThisPaneConnectToThisBlockID(world.getBlockId(x + 1, y, z));
         
-        return false;
+        switch (direction)
+        {
+        case UP:
+            return false;
+        case DOWN:
+            return false;
+        case NORTH:
+            return connectedWest && connectedEast;
+        case EAST:
+            return connectedNorth && connectedSouth;
+        case SOUTH:
+            return connectedWest && connectedEast;
+        case WEST:
+            return connectedNorth && connectedSouth;
+        default:
+            return false;
+        }
     }
 }
