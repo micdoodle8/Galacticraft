@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.client.fx;
 
 import java.util.List;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerServer.EnumPacketServer;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.Tessellator;
@@ -114,7 +115,7 @@ public class GCCoreEntityLanderFlameFX extends EntityFX
                     {
                         var5.setFire(3);
                         final Object[] toSend = { var5.entityId };
-                        PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 10, toSend));
+                        PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.SET_ENTITY_FIRE, toSend));
                     }
                 }
             }

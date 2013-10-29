@@ -9,12 +9,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.item.IItemElectric;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -189,7 +189,7 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
     @Override
     public String getInvName()
     {
-        return LanguageRegistry.instance().getStringLocalization("container.oxygensealer.name");
+        return StatCollector.translateToLocal("container.oxygensealer.name");
     }
 
     @Override
@@ -258,7 +258,7 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
         protocol.seal(var1, var2, var3, var4, 2);
     }
 
-    private void unSealArea(World var1, int var2, int var3, int var4)
+    public void unSealArea(World var1, int var2, int var3, int var4)
     {
         final OxygenPressureProtocol protocol = new OxygenPressureProtocol();
         protocol.unSeal(var1, var2, var3, var4);

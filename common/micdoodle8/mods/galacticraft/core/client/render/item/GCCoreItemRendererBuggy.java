@@ -18,9 +18,9 @@ import cpw.mods.fml.client.FMLClientHandler;
  */
 public class GCCoreItemRendererBuggy implements IItemRenderer
 {
-    private static final ResourceLocation buggyTextureBody = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/buggyMain.png");
-    private static final ResourceLocation buggyTextureWheel = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/buggyWheels.png");
-    private static final ResourceLocation buggyTextureStorage = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/buggyStorage.png");
+    private static final ResourceLocation buggyTextureBody = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/buggyMain.png");
+    private static final ResourceLocation buggyTextureWheel = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/buggyWheels.png");
+    private static final ResourceLocation buggyTextureStorage = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/buggyStorage.png");
 
     protected IModelCustom buggyModel;
     protected IModelCustom wheelModelRight;

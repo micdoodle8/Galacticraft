@@ -16,7 +16,7 @@ public class GCCoreOverworldGenerator implements IWorldGenerator
     private final int amountPerVein;
     private final Block oreBlock;
     private final int metadata;
-    
+
     public GCCoreOverworldGenerator(Block oreBlock, int metadata, int amountPerChunk, int minGenLevel, int maxGenLevel, int amountPerVein)
     {
         this.oreBlock = oreBlock;
@@ -26,7 +26,7 @@ public class GCCoreOverworldGenerator implements IWorldGenerator
         this.maxGenerateLevel = maxGenLevel;
         this.amountPerVein = amountPerVein;
     }
-    
+
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider)
     {
@@ -34,8 +34,8 @@ public class GCCoreOverworldGenerator implements IWorldGenerator
         {
             for (int i = 0; i < this.amountPerChunk; i++)
             {
-                int x = (chunkX * 16) + random.nextInt(16);
-                int z = (chunkZ * 16) + random.nextInt(16);
+                int x = chunkX * 16 + random.nextInt(16);
+                int z = chunkZ * 16 + random.nextInt(16);
                 int y = random.nextInt(Math.max(this.maxGenerateLevel - this.minGenerateLevel, 0)) + this.minGenerateLevel;
                 this.generateOre(world, random, x, y, z);
             }

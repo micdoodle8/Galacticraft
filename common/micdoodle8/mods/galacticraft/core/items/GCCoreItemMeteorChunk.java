@@ -11,15 +11,15 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreItemMeteorChunk extends Item
 {
     public static final String[] names = { "meteorChunk", "meteorChunkHot" };
-    
+
     public static final int METEOR_BURN_TIME = 45 * 20;
 
     public GCCoreItemMeteorChunk(int id, String assetName)
@@ -39,14 +39,14 @@ public class GCCoreItemMeteorChunk extends Item
     }
 
     @Override
-    public void onUpdate(ItemStack itemstack, World world, Entity entity, int par4, boolean par5) 
+    public void onUpdate(ItemStack itemstack, World world, Entity entity, int par4, boolean par5)
     {
         if (itemstack.getItemDamage() == 1 && !world.isRemote)
         {
             if (itemstack.hasTagCompound())
             {
                 float meteorBurnTime = itemstack.getTagCompound().getFloat("MeteorBurnTimeF");
-                
+
                 if (meteorBurnTime >= 0.5F)
                 {
                     meteorBurnTime -= 0.5F;
@@ -61,13 +61,13 @@ public class GCCoreItemMeteorChunk extends Item
             else
             {
                 itemstack.setTagCompound(new NBTTagCompound());
-                itemstack.getTagCompound().setFloat("MeteorBurnTimeF", METEOR_BURN_TIME);
+                itemstack.getTagCompound().setFloat("MeteorBurnTimeF", GCCoreItemMeteorChunk.METEOR_BURN_TIME);
             }
         }
     }
 
     @Override
-    public void onCreated(ItemStack itemstack, World world, EntityPlayer entityPlayer) 
+    public void onCreated(ItemStack itemstack, World world, EntityPlayer entityPlayer)
     {
         super.onCreated(itemstack, world, entityPlayer);
 
@@ -77,8 +77,8 @@ public class GCCoreItemMeteorChunk extends Item
             {
                 itemstack.setTagCompound(new NBTTagCompound());
             }
-            
-            itemstack.getTagCompound().setFloat("MeteorBurnTimeF", METEOR_BURN_TIME);
+
+            itemstack.getTagCompound().setFloat("MeteorBurnTimeF", GCCoreItemMeteorChunk.METEOR_BURN_TIME);
         }
     }
 
@@ -99,18 +99,18 @@ public class GCCoreItemMeteorChunk extends Item
         if (itemstack.getItemDamage() > 0)
         {
             float burnTime = 0.0F;
-            
+
             if (itemstack.hasTagCompound())
             {
                 float meteorBurnTime = itemstack.getTagCompound().getFloat("MeteorBurnTimeF");
-                burnTime = Math.round((meteorBurnTime) / 10.0F) / 2.0F;
+                burnTime = Math.round(meteorBurnTime / 10.0F) / 2.0F;
             }
             else
             {
                 burnTime = 45.0F;
             }
-            
-            par3List.add(LanguageRegistry.instance().getStringLocalization("item.hotDescription.name") + " " + burnTime + "s");
+
+            par3List.add(StatCollector.translateToLocal("item.hotDescription.name") + " " + burnTime + "s");
         }
     }
 

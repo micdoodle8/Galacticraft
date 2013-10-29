@@ -7,10 +7,10 @@ import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPadFull;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoPad;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectric;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
+import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
 import micdoodle8.mods.galacticraft.core.world.IChunkLoader;
 import micdoodle8.mods.galacticraft.mars.GCMarsConfigManager;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
@@ -25,6 +25,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.WorldServer;
@@ -33,12 +34,13 @@ import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.block.IElectrical;
 import universalelectricity.core.item.IItemElectric;
+import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric implements IChunkLoader, IElectrical, IInventory, ISidedInventory, IPacketReceiver, ILandingPadAttachable
 {
@@ -55,30 +57,6 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
     public int launchDropdownSelection;
     public boolean launchSchedulingEnabled;
     public boolean requiresClientUpdate;
-
-    public static enum EnumAutoLaunch
-    {
-        CARGO_IS_UNLOADED(0, "Cargo is Unloaded"), CARGO_IS_FULL(1, "Cargo is Full"), ROCKET_IS_FUELED(2, "Fully Fueled"), INSTANT(3, "Instantly"), TIME_10_SECONDS(4, "10 Seconds"), TIME_30_SECONDS(5, "30 Seconds"), TIME_1_MINUTE(6, "1 Minute");
-
-        private final int index;
-        private String title;
-
-        private EnumAutoLaunch(int index, String title)
-        {
-            this.index = index;
-            this.title = title;
-        }
-
-        public int getIndex()
-        {
-            return this.index;
-        }
-
-        public String getTitle()
-        {
-            return this.title;
-        }
-    }
 
     public GCMarsTileEntityLaunchController()
     {
@@ -153,7 +131,7 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
     }
 
     @Override
-    public void onTicketLoaded(Ticket ticket)
+    public void onTicketLoaded(Ticket ticket, boolean placed)
     {
         if (!this.worldObj.isRemote && GCMarsConfigManager.launchControllerChunkLoad)
         {
@@ -183,14 +161,34 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
                         if (this.xCoord + x >> 4 != this.xCoord >> 4 || this.zCoord + z >> 4 != this.zCoord >> 4)
                         {
                             this.connectedPads.add(new ChunkCoordinates(this.xCoord + x, this.yCoord, this.zCoord + z));
-                            ForgeChunkManager.forceChunk(this.chunkLoadTicket, new ChunkCoordIntPair(this.xCoord + x >> 4, this.zCoord + z >> 4));
+                            
+                            if (placed)
+                            {
+                                ChunkLoadingCallback.forceChunk(this.chunkLoadTicket, this.worldObj, this.xCoord + x, this.yCoord, this.zCoord + z, this.getOwnerName());
+                            }
+                            else
+                            {
+                                ChunkLoadingCallback.addToList(this.worldObj, this.xCoord, this.yCoord, this.zCoord, this.getOwnerName());
+                            }
                         }
                     }
                 }
             }
 
-            ForgeChunkManager.forceChunk(this.chunkLoadTicket, new ChunkCoordIntPair(this.xCoord >> 4, this.zCoord >> 4));
+            ChunkLoadingCallback.forceChunk(this.chunkLoadTicket, this.worldObj, this.xCoord, this.yCoord, this.zCoord, this.getOwnerName());
         }
+    }
+
+    @Override
+    public Ticket getTicket()
+    {
+        return this.chunkLoadTicket;
+    }
+
+    @Override
+    public ChunkCoordinates getCoords()
+    {
+        return new ChunkCoordinates(this.xCoord, this.yCoord, this.zCoord);
     }
 
     @Override
@@ -328,7 +326,7 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
     @Override
     public String getInvName()
     {
-        return LanguageRegistry.instance().getStringLocalization("container.launchcontroller.name");
+        return StatCollector.translateToLocal("container.launchcontroller.name");
     }
 
     @Override
@@ -474,7 +472,7 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
     {
         TileEntity tile = world.getBlockTileEntity(x, y, z);
 
-        return tile instanceof GCCoreTileEntityLandingPad || tile instanceof GCCoreTileEntityCargoPad;
+        return tile instanceof GCCoreTileEntityLandingPad;
     }
 
     public void setFrequency(int frequency)
@@ -525,6 +523,7 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
         if (this.destFrequency >= 0)
         {
             this.destFrequencyValid = false;
+            
 
             worldLoop:
             for (int i = 0; i < FMLCommonHandler.instance().getMinecraftServerInstance().worldServers.length; i++)
@@ -557,5 +556,10 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
         {
             this.destFrequencyValid = false;
         }
+    }
+
+    public boolean validFrequency()
+    {
+        return !this.getDisabled(0) && this.getEnergyStored() > 0 && this.frequencyValid && this.destFrequencyValid;
     }
 }

@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.mars.blocks;
 
 import java.util.List;
+import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import net.minecraft.block.BlockColored;
 import net.minecraft.block.BlockPane;
@@ -10,10 +11,12 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
+import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class GCMarsBlockTintedGlassPane extends BlockPane
+public class GCMarsBlockTintedGlassPane extends BlockPane implements IPartialSealableBlock
 {
     @SideOnly(Side.CLIENT)
     private Icon[] iconArray;
@@ -86,5 +89,32 @@ public class GCMarsBlockTintedGlassPane extends BlockPane
     public int getRenderBlockPass()
     {
         return 1;
+    }
+
+    @Override
+    public boolean isSealed(World world, int x, int y, int z, ForgeDirection direction)
+    {
+        boolean connectedNorth = this.canThisPaneConnectToThisBlockID(world.getBlockId(x, y, z - 1));
+        boolean connectedSouth = this.canThisPaneConnectToThisBlockID(world.getBlockId(x, y, z + 1));
+        boolean connectedWest = this.canThisPaneConnectToThisBlockID(world.getBlockId(x - 1, y, z));
+        boolean connectedEast = this.canThisPaneConnectToThisBlockID(world.getBlockId(x + 1, y, z));
+        
+        switch (direction)
+        {
+        case UP:
+            return false;
+        case DOWN:
+            return false;
+        case NORTH:
+            return connectedWest && connectedEast;
+        case EAST:
+            return connectedNorth && connectedSouth;
+        case SOUTH:
+            return connectedWest && connectedEast;
+        case WEST:
+            return connectedNorth && connectedSouth;
+        default:
+            return false;
+        }
     }
 }

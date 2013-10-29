@@ -65,6 +65,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
         this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(30.0D);
         this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.96F);
         this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setAttribute(3.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.followRange).setAttribute(16.0D);
     }
 
     @Override
@@ -452,7 +453,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
         }
 
         this.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).applyModifier(new AttributeModifier("Random spawn bonus", this.rand.nextDouble() * 0.05000000074505806D, 0));
-        this.getEntityAttribute(SharedMonsterAttributes.followRange).applyModifier(new AttributeModifier("Random zombie-spawn bonus", this.rand.nextDouble() * 1.5D, 2));
+        this.getEntityAttribute(SharedMonsterAttributes.followRange).removeModifier(new AttributeModifier("Random zombie-spawn bonus", this.rand.nextDouble() * 1.5D, 2));
 
         if (this.rand.nextFloat() < f * 0.05F)
         {

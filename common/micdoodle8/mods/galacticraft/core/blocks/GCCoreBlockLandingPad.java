@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.List;
+import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBuggyFuelerSingle;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoPadSingle;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPadSingle;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -22,7 +23,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * All rights reserved.
  * 
  */
-public class GCCoreBlockLandingPad extends GCCoreBlockAdvanced
+public class GCCoreBlockLandingPad extends GCCoreBlockAdvanced implements IPartialSealableBlock
 {
     private Icon[] icons = new Icon[3];
 
@@ -33,7 +34,7 @@ public class GCCoreBlockLandingPad extends GCCoreBlockAdvanced
         this.setHardness(1.0F);
         this.setResistance(10.0F);
         this.setStepSound(Block.soundStoneFootstep);
-        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
     }
 
@@ -57,10 +58,10 @@ public class GCCoreBlockLandingPad extends GCCoreBlockAdvanced
     @Override
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.icons[0] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "launch_pad");
-        this.icons[1] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "buggy_fueler_blank");
-        this.icons[2] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "cargo_pad");
-        this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "launch_pad");
+        this.icons[0] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "launch_pad");
+        this.icons[1] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "buggy_fueler_blank");
+        this.icons[2] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "cargo_pad");
+        this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "launch_pad");
     }
 
     @Override
@@ -119,8 +120,8 @@ public class GCCoreBlockLandingPad extends GCCoreBlockAdvanced
             return new GCCoreTileEntityLandingPadSingle();
         case 1:
             return new GCCoreTileEntityBuggyFuelerSingle();
-        case 2:
-            return new GCCoreTileEntityCargoPadSingle();
+            // case 2:
+            // return new GCCoreTileEntityCargoPadSingle();
         default:
             return null;
         }
@@ -142,5 +143,11 @@ public class GCCoreBlockLandingPad extends GCCoreBlockAdvanced
     public TileEntity createNewTileEntity(World world)
     {
         return null;
+    }
+
+    @Override
+    public boolean isSealed(World world, int x, int y, int z, ForgeDirection direction)
+    {
+        return direction == ForgeDirection.UP || direction == ForgeDirection.DOWN;
     }
 }

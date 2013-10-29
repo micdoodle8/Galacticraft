@@ -14,7 +14,7 @@ public class GCCoreFurnacePage extends GCCoreBookPage
 {
     String text;
     ItemStack[] icons;
-    private static final ResourceLocation background = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/bookfurnace.png");
+    private static final ResourceLocation background = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/bookfurnace.png");
 
     @Override
     public void readPageFromXML(Element element)

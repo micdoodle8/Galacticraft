@@ -37,7 +37,7 @@ public class GCCoreBlockRefinery extends GCCoreBlockAdvanced
         super(id, Material.rock);
         this.setHardness(1.0F);
         this.setStepSound(Block.soundMetalFootstep);
-        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
     }
 
@@ -48,15 +48,21 @@ public class GCCoreBlockRefinery extends GCCoreBlockAdvanced
     }
 
     @Override
+    public int getRenderType()
+    {
+        return GalacticraftCore.proxy.getGCMachineRenderID();
+    }
+
+    @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.iconMachineSide = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_blank");
-        this.iconFuelOutput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_fuel_input");
-        this.iconOilInput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_oil_input");
-        this.iconFront = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "refinery_front");
-        this.iconBack = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "refinery_side");
-        this.iconTop = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_power_input");
+        this.iconMachineSide = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_blank");
+        this.iconFuelOutput = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_fuel_input");
+        this.iconOilInput = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_oil_input");
+        this.iconFront = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "refinery_front");
+        this.iconBack = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "refinery_side");
+        this.iconTop = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_power_input");
     }
 
     @Override

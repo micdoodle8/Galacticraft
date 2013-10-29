@@ -29,7 +29,7 @@ public class GCCoreItemBasic extends Item
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
         this.setUnlocalizedName(assetName);
-        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
     }
 
     @Override
@@ -64,7 +64,7 @@ public class GCCoreItemBasic extends Item
         {
             return this.getUnlocalizedName() + ".cannedFood";
         }
-        
+
         return this.getUnlocalizedName() + "." + GCCoreItemBasic.names[itemStack.getItemDamage()];
     }
 
@@ -98,7 +98,7 @@ public class GCCoreItemBasic extends Item
     @Override
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) 
+    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
     {
         if (par1ItemStack.getItemDamage() > 14 && par1ItemStack.getItemDamage() < 19)
         {
@@ -156,7 +156,7 @@ public class GCCoreItemBasic extends Item
             par3EntityPlayer.dropPlayerItem(new ItemStack(GCCoreItems.canister, 1, 0));
             return par1ItemStack;
         }
-        
+
         return super.onEaten(par1ItemStack, par2World, par3EntityPlayer);
     }
 
@@ -167,7 +167,7 @@ public class GCCoreItemBasic extends Item
         {
             return 32;
         }
-        
+
         return super.getMaxItemUseDuration(par1ItemStack);
     }
 
@@ -178,7 +178,7 @@ public class GCCoreItemBasic extends Item
         {
             return EnumAction.eat;
         }
-        
+
         return super.getItemUseAction(par1ItemStack);
     }
 

@@ -8,12 +8,11 @@ import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityAIArrowAttack;
 import micdoodle8.mods.galacticraft.core.entities.IBoss;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumClientPacket;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumPacketClient;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityDungeonSpawner;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
-import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityTreasureChest;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -156,7 +155,7 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
     @Override
     protected String getHurtSound()
     {
-        this.playSound("galacticraft.entity.bossliving", this.getSoundVolume(), this.getSoundPitch() + 6.0F);
+        this.playSound(GalacticraftCore.ASSET_PREFIX + "entity.bossliving", this.getSoundVolume(), this.getSoundPitch() + 6.0F);
         return "";
     }
 
@@ -189,7 +188,7 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
         {
             if (this.deathTicks >= 180 && this.deathTicks % 5 == 0)
             {
-                PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 40.0, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumClientPacket.PLAY_SOUND_EXPLODE, new Object[] { 0 }));
+                PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 40.0, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.PLAY_SOUND_EXPLODE, new Object[] { 0 }));
             }
 
             if (this.deathTicks > 150 && this.deathTicks % 5 == 0)
@@ -206,7 +205,7 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
 
             if (this.deathTicks == 1)
             {
-                PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 40.0, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumClientPacket.PLAY_SOUND_BOSS_DEATH, new Object[] { 0 }));
+                PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 40.0, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.PLAY_SOUND_BOSS_DEATH, new Object[] { 0 }));
             }
         }
 
@@ -226,7 +225,7 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
 
             for (final TileEntity tile : (List<TileEntity>) this.worldObj.loadedTileEntityList)
             {
-                if (tile instanceof GCMarsTileEntityTreasureChest)
+                if (tile instanceof GCCoreTileEntityTreasureChest)
                 {
                     final double d3 = tile.xCoord + 0.5D - this.posX;
                     final double d4 = tile.yCoord + 0.5D - this.posY;
@@ -239,7 +238,7 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
                         {
                             ((GCCoreTileEntityTreasureChest) tile).locked = true;
                         }
-                        
+
                         for (int k = 0; k < ((GCCoreTileEntityTreasureChest) tile).getSizeInventory(); k++)
                         {
                             ((GCCoreTileEntityTreasureChest) tile).setInventorySlotContents(k, null);
@@ -251,7 +250,7 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
                         WeightedRandomChestContent.generateChestContents(this.rand, info.getItems(this.rand), (GCCoreTileEntityTreasureChest) tile, info.getCount(this.rand));
                         WeightedRandomChestContent.generateChestContents(this.rand, info.getItems(this.rand), (GCCoreTileEntityTreasureChest) tile, info.getCount(this.rand));
 
-                        ((GCMarsTileEntityTreasureChest) tile).setInventorySlotContents(this.rand.nextInt(((GCMarsTileEntityTreasureChest) tile).getSizeInventory()), this.getGuaranteedLoot(this.rand));
+                        ((GCCoreTileEntityTreasureChest) tile).setInventorySlotContents(this.rand.nextInt(((GCCoreTileEntityTreasureChest) tile).getSizeInventory()), this.getGuaranteedLoot(this.rand));
 
                         break;
                     }

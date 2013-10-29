@@ -5,6 +5,7 @@ import java.util.List;
 import micdoodle8.mods.galacticraft.api.item.IKeyable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockT1TreasureChest;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerServer.EnumPacketServer;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,13 +20,13 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.StatCollector;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 
 public class GCCoreTileEntityTreasureChest extends TileEntity implements IInventory, IKeyable, IPacketReceiver
@@ -554,7 +555,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
     @Override
     public String getInvName()
     {
-        return FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT ? LanguageRegistry.instance().getStringLocalization("container.treasurechest.name") : LanguageRegistry.instance().getStringLocalization("container.treasurechest.name", "en_US");
+        return FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT ? StatCollector.translateToLocal("container.treasurechest.name") : StatCollector.translateToLocal("container.treasurechest.name");
     }
 
     @Override
@@ -642,7 +643,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
         {
             if (player.worldObj.isRemote)
             {
-                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 18, new Object[] { this.getTierOfKeyRequired() }));
+                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.ON_FAILED_CHEST_UNLOCK, new Object[] { this.getTierOfKeyRequired() }));
             }
             return true;
         }

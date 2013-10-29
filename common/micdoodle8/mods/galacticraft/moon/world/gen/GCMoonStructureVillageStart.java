@@ -7,11 +7,25 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureStart;
 
-class GCMoonStructureVillageStart extends StructureStart
+public class GCMoonStructureVillageStart extends StructureStart
 {
+    public GCMoonStructureVillageStart()
+    {
+    }
+
     @SuppressWarnings("unchecked")
     public GCMoonStructureVillageStart(World par1World, Random par2Random, int par3, int par4, int par5)
     {
+        try
+        {
+            this.field_143024_c = par3;
+            this.field_143023_d = par4;
+        }
+        catch (NoSuchFieldError e)
+        {
+            ;
+        }
+
         final ArrayList<GCMoonStructureVillagePieceWeight> var6 = GCMoonStructureVillagePieces.getStructureVillageWeightedPieceList(par2Random, par5);
         final GCMoonComponentVillageStartPiece var7 = new GCMoonComponentVillageStartPiece(par1World.getWorldChunkManager(), 0, par2Random, (par3 << 4) + 2, (par4 << 4) + 2, var6, par5);
         this.components.add(var7);

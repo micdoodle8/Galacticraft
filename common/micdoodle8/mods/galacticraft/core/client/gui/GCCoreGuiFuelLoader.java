@@ -6,6 +6,7 @@ import mekanism.api.EnumColor;
 import micdoodle8.mods.galacticraft.core.GCCoreCompatibilityManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerFuelLoader;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerServer.EnumPacketServer;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.client.gui.GuiButton;
@@ -16,7 +17,6 @@ import org.lwjgl.opengl.GL11;
 import universalelectricity.core.electricity.ElectricityDisplay;
 import universalelectricity.core.electricity.ElectricityDisplay.ElectricUnit;
 import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -26,7 +26,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
  */
 public class GCCoreGuiFuelLoader extends GCCoreGuiContainer
 {
-    private static final ResourceLocation fuelLoaderTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/fuel_loader.png");
+    private static final ResourceLocation fuelLoaderTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/fuel_loader.png");
 
     private final GCCoreTileEntityFuelLoader fuelLoader;
 
@@ -46,7 +46,7 @@ public class GCCoreGuiFuelLoader extends GCCoreGuiContainer
         switch (par1GuiButton.id)
         {
         case 0:
-            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 17, new Object[] { this.fuelLoader.xCoord, this.fuelLoader.yCoord, this.fuelLoader.zCoord, 0 }));
+            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.UPDATE_DISABLEABLE_BUTTON, new Object[] { this.fuelLoader.xCoord, this.fuelLoader.yCoord, this.fuelLoader.zCoord, 0 }));
             break;
         }
     }
@@ -78,7 +78,7 @@ public class GCCoreGuiFuelLoader extends GCCoreGuiContainer
         this.electricInfoRegion.parentWidth = this.width;
         this.electricInfoRegion.parentHeight = this.height;
         this.infoRegions.add(this.electricInfoRegion);
-        this.buttonList.add(this.buttonLoadFuel = new GuiButton(0, this.width / 2 + 2, this.height / 2 - 49, 76, 20, LanguageRegistry.instance().getStringLocalization("gui.button.loadfuel.name")));
+        this.buttonList.add(this.buttonLoadFuel = new GuiButton(0, this.width / 2 + 2, this.height / 2 - 49, 76, 20, StatCollector.translateToLocal("gui.button.loadfuel.name")));
     }
 
     @Override
@@ -86,8 +86,8 @@ public class GCCoreGuiFuelLoader extends GCCoreGuiContainer
     {
         this.fontRenderer.drawString(this.fuelLoader.getInvName(), 60, 10, 4210752);
         this.buttonLoadFuel.enabled = this.fuelLoader.disableCooldown == 0 && !(this.fuelLoader.fuelTank.getFluid() == null || this.fuelLoader.fuelTank.getFluid().amount == 0);
-        this.buttonLoadFuel.displayString = !this.fuelLoader.getDisabled(0) ? LanguageRegistry.instance().getStringLocalization("gui.button.stoploading.name") : LanguageRegistry.instance().getStringLocalization("gui.button.loadfuel.name");
-        this.fontRenderer.drawString(LanguageRegistry.instance().getStringLocalization("gui.message.status.name") + ": " + this.getStatus(), 28, 45 + 23 - 46, 4210752);
+        this.buttonLoadFuel.displayString = !this.fuelLoader.getDisabled(0) ? StatCollector.translateToLocal("gui.button.stoploading.name") : StatCollector.translateToLocal("gui.button.loadfuel.name");
+        this.fontRenderer.drawString(StatCollector.translateToLocal("gui.message.status.name") + ": " + this.getStatus(), 28, 45 + 23 - 46, 4210752);
         this.fontRenderer.drawString(ElectricityDisplay.getDisplay(GCCoreTileEntityFuelLoader.WATTS_PER_TICK * 20, ElectricUnit.WATT), 28, 56 + 23 - 46, 4210752);
         this.fontRenderer.drawString(ElectricityDisplay.getDisplay(this.fuelLoader.getVoltage(), ElectricUnit.VOLTAGE), 28, 68 + 23 - 46, 4210752);
         this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 118 + 2 + 11, 4210752);
@@ -97,25 +97,25 @@ public class GCCoreGuiFuelLoader extends GCCoreGuiContainer
     {
         if (this.fuelLoader.fuelTank.getFluid() == null || this.fuelLoader.fuelTank.getFluid().amount == 0)
         {
-            return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.nofuel.name");
+            return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.nofuel.name");
         }
 
         if (this.fuelLoader.getStackInSlot(0) == null && this.fuelLoader.getEnergyStored() == 0)
         {
-            return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.missingpower.name");
+            return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.missingpower.name");
         }
 
         if (this.fuelLoader.getDisabled(0))
         {
-            return EnumColor.ORANGE + LanguageRegistry.instance().getStringLocalization("gui.status.ready.name");
+            return EnumColor.ORANGE + StatCollector.translateToLocal("gui.status.ready.name");
         }
 
         if (this.fuelLoader.getEnergyStored() > 0)
         {
-            return EnumColor.DARK_GREEN + LanguageRegistry.instance().getStringLocalization("gui.status.active.name");
+            return EnumColor.DARK_GREEN + StatCollector.translateToLocal("gui.status.active.name");
         }
 
-        return EnumColor.ORANGE + LanguageRegistry.instance().getStringLocalization("gui.status.ready.name");
+        return EnumColor.ORANGE + StatCollector.translateToLocal("gui.status.ready.name");
     }
 
     @Override

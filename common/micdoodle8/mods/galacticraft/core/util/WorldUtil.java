@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Random;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.entity.IWorldTransferCallback;
+import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
+import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
 import micdoodle8.mods.galacticraft.api.world.ICelestialBody;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
@@ -21,16 +23,15 @@ import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GCLog;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
-import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreSpaceStationData;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreWorldProviderSpaceStation;
-import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
-import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.planet.IUpdateable;
+import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketDimensionListPlanets;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketDimensionListSpaceStations;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumClientPacket;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumPacketClient;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketSpaceStationData;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
 import net.minecraft.entity.Entity;
@@ -577,7 +578,7 @@ public class WorldUtil
         final int newID = DimensionManager.getNextFreeDimId();
         final GCCoreSpaceStationData data = WorldUtil.createSpaceStation(var0, newID, player);
         player.setSpaceStationDimensionID(newID);
-        player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumClientPacket.UPDATE_SPACESTATION_CLIENT_ID, new Object[] { newID }));
+        player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.UPDATE_SPACESTATION_CLIENT_ID, new Object[] { newID }));
         return data;
     }
 
@@ -601,12 +602,12 @@ public class WorldUtil
 
     private static MinecraftServer mcServer = null;
 
-    public static void transferEntityToDimension(Entity entity, int dimensionID, WorldServer world)
+    public static Entity transferEntityToDimension(Entity entity, int dimensionID, WorldServer world)
     {
-        WorldUtil.transferEntityToDimension(entity, dimensionID, world, true);
+        return WorldUtil.transferEntityToDimension(entity, dimensionID, world, true, null);
     }
 
-    public static void transferEntityToDimension(Entity entity, int dimensionID, WorldServer world, boolean transferInv)
+    public static Entity transferEntityToDimension(Entity entity, int dimensionID, WorldServer world, boolean transferInv, EntityAutoRocket ridingRocket)
     {
         if (!world.isRemote)
         {
@@ -642,16 +643,16 @@ public class WorldUtil
 
                 if (type != null)
                 {
-                    WorldUtil.teleportEntity(var6, entity, dimensionID, type, transferInv);
+                    return WorldUtil.teleportEntity(var6, entity, dimensionID, type, transferInv, ridingRocket);
                 }
             }
         }
+
+        return null;
     }
 
-    private static Entity teleportEntity(World var0, Entity var1, int var2, ITeleportType type, boolean transferInv)
+    private static Entity teleportEntity(World var0, Entity var1, int var2, ITeleportType type, boolean transferInv, EntityAutoRocket ridingRocket)
     {
-        final Entity var6 = var1.ridingEntity;
-
         if (var1.ridingEntity != null && var1.ridingEntity instanceof EntitySpaceshipBase)
         {
             var1.mountEntity(var1.ridingEntity);
@@ -684,7 +685,14 @@ public class WorldUtil
 
         if (var7)
         {
-            WorldUtil.removeEntityFromWorld(var1.worldObj, var1);
+            if (ridingRocket == null)
+            {
+                WorldUtil.removeEntityFromWorld(var1.worldObj, var1, true);
+            }
+            else
+            {
+                WorldUtil.removeEntityFromWorld(var1.worldObj, var1, true);
+            }
         }
 
         if (var7)
@@ -701,6 +709,30 @@ public class WorldUtil
             if (var1 instanceof EntityPlayer)
             {
                 var1.setPosition(type.getPlayerSpawnLocation((WorldServer) var1.worldObj, (EntityPlayerMP) var1).x, type.getPlayerSpawnLocation((WorldServer) var1.worldObj, (EntityPlayerMP) var1).y, type.getPlayerSpawnLocation((WorldServer) var1.worldObj, (EntityPlayerMP) var1).z);
+            }
+        }
+
+        if (ridingRocket != null)
+        {
+            final NBTTagCompound var11 = new NBTTagCompound();
+            ridingRocket.isDead = false;
+            ridingRocket.riddenByEntity = null;
+            ridingRocket.writeToNBTOptional(var11);
+
+            ((WorldServer) ridingRocket.worldObj).getEntityTracker().removeEntityFromAllTrackingPlayers(ridingRocket);
+            ridingRocket.worldObj.loadedEntityList.remove(ridingRocket);
+            ridingRocket.worldObj.onEntityRemoved(ridingRocket);
+
+            ridingRocket = (EntityAutoRocket) EntityList.createEntityFromNBT(var11, var0);
+
+            if (ridingRocket != null)
+            {
+                ridingRocket.setWaitForPlayer(true);
+
+                if (ridingRocket instanceof IWorldTransferCallback)
+                {
+                    ((IWorldTransferCallback) ridingRocket).onWorldTransferred(var0);
+                }
             }
         }
 
@@ -767,7 +799,7 @@ public class WorldUtil
         {
             var8 = (GCCorePlayerMP) var1;
 
-            if (type.useParachute() && var8.getExtendedInventory().getStackInSlot(4) != null && var8.getExtendedInventory().getStackInSlot(4).getItem() instanceof GCCoreItemParachute)
+            if (ridingRocket == null && type.useParachute() && var8.getExtendedInventory().getStackInSlot(4) != null && var8.getExtendedInventory().getStackInSlot(4).getItem() instanceof GCCoreItemParachute)
             {
                 var8.setUsingParachute(true);
             }
@@ -794,13 +826,16 @@ public class WorldUtil
             var8.playerNetServerHandler.sendPacketToPlayer(new Packet43Experience(var8.experience, var8.experienceTotal, var8.experienceLevel));
         }
 
-        if (var8 != null)
+        if (var1 instanceof GCCorePlayerMP)
         {
-            var1.setLocationAndAngles(type.getPlayerSpawnLocation((WorldServer) var1.worldObj, (EntityPlayerMP) var1).x, type.getPlayerSpawnLocation((WorldServer) var1.worldObj, (EntityPlayerMP) var1).y, type.getPlayerSpawnLocation((WorldServer) var1.worldObj, (EntityPlayerMP) var1).z, var1.rotationYaw, var1.rotationPitch);
-        }
-        else
-        {
-            var1.setLocationAndAngles(type.getEntitySpawnLocation((WorldServer) var1.worldObj, var1).x, type.getEntitySpawnLocation((WorldServer) var1.worldObj, var1).y, type.getEntitySpawnLocation((WorldServer) var1.worldObj, var1).z, var1.rotationYaw, var1.rotationPitch);
+            if (var8 != null)
+            {
+                var1.setLocationAndAngles(type.getPlayerSpawnLocation((WorldServer) var1.worldObj, (EntityPlayerMP) var1).x, type.getPlayerSpawnLocation((WorldServer) var1.worldObj, (EntityPlayerMP) var1).y, type.getPlayerSpawnLocation((WorldServer) var1.worldObj, (EntityPlayerMP) var1).z, var1.rotationYaw, var1.rotationPitch);
+            }
+            else
+            {
+                var1.setLocationAndAngles(type.getEntitySpawnLocation((WorldServer) var1.worldObj, var1).x, type.getEntitySpawnLocation((WorldServer) var1.worldObj, var1).y, type.getEntitySpawnLocation((WorldServer) var1.worldObj, var1).z, var1.rotationYaw, var1.rotationPitch);
+            }
         }
 
         if (var1 instanceof GCCorePlayerMP)
@@ -841,28 +876,34 @@ public class WorldUtil
                 var8.setChestSpawnCooldown(200);
             }
         }
-
-        if (var1 != null && var6 != null)
+        
+        if (ridingRocket != null)
         {
-            if (var1 instanceof EntityPlayerMP)
-            {
-                var0.updateEntityWithOptionalForce(var1, true);
-            }
+            var1.setPositionAndRotation(ridingRocket.posX, ridingRocket.posY, ridingRocket.posZ, 0, 0);
+            var0.updateEntityWithOptionalForce(var1, true);
 
-            var1.mountEntity(var6);
+            var0.spawnEntityInWorld(ridingRocket);
+            ridingRocket.setWorld(var0);
+
+            var0.updateEntityWithOptionalForce(ridingRocket, true);
         }
 
         if (var1 instanceof EntityPlayerMP)
         {
             GameRegistry.onPlayerChangedDimension((EntityPlayerMP) var1);
+            type.onSpaceDimensionChanged(var0, (EntityPlayerMP) var1, ridingRocket != null);
+        }
 
-            type.onSpaceDimensionChanged(var0, (EntityPlayerMP) var1);
+        if (ridingRocket != null)
+        {
+            var1.ridingEntity = ridingRocket;
+            ridingRocket.riddenByEntity = var1;
         }
 
         return var1;
     }
 
-    private static void removeEntityFromWorld(World var0, Entity var1)
+    private static void removeEntityFromWorld(World var0, Entity var1, boolean directlyRemove)
     {
         if (var1 instanceof EntityPlayer)
         {
@@ -879,8 +920,11 @@ public class WorldUtil
                 var0.getChunkFromChunkCoords(var3, var4).isModified = true;
             }
 
-            var0.loadedEntityList.remove(var1);
-            var0.onEntityRemoved(var1);
+            if (directlyRemove)
+            {
+                var0.loadedEntityList.remove(var1);
+                var0.onEntityRemoved(var1);
+            }
         }
 
         var1.isDead = false;

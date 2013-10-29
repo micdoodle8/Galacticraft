@@ -9,7 +9,11 @@ public interface ICargoEntity
 {
     public static enum EnumCargoLoadingState
     {
-        FULL, EMPTY, NOTARGET, NOINVENTORY, SUCCESS;
+        FULL,
+        EMPTY,
+        NOTARGET,
+        NOINVENTORY,
+        SUCCESS;
     }
 
     public static class RemovalResult

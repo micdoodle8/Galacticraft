@@ -12,7 +12,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreGuiTurnPageButton extends GuiButton
 {
     private final boolean nextPage;
-    private static final ResourceLocation background = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/bookleft.png");
+    private static final ResourceLocation background = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/bookleft.png");
 
     public GCCoreGuiTurnPageButton(int par1, int par2, int par3, boolean par4)
     {

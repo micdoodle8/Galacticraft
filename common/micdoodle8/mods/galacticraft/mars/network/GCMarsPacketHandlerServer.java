@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.mars.network;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
-import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketLanderUpdate;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
@@ -201,7 +201,7 @@ public class GCMarsPacketHandlerServer implements IPacketHandler
                 GCMarsEntityCargoRocket rocket = (GCMarsEntityCargoRocket) entity;
 
                 int subType = (Integer) packetReadout[1];
-                
+
                 switch (subType)
                 {
                 default:

@@ -2,14 +2,14 @@ package micdoodle8.mods.galacticraft.core;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalaxy;
-import cpw.mods.fml.common.registry.LanguageRegistry;
+import net.minecraft.util.StatCollector;
 
 public class GCCoreGalaxyBlockyWay implements IGalaxy
 {
     @Override
     public String getGalaxyName()
     {
-        return LanguageRegistry.instance().getStringLocalization("galaxy.blockyway.name");
+        return StatCollector.translateToLocal("galaxy.blockyway.name");
     }
 
     @Override

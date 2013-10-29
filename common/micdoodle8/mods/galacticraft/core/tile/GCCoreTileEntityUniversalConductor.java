@@ -47,9 +47,12 @@ public abstract class GCCoreTileEntityUniversalConductor extends TileEntityCondu
     {
         if (Compatibility.isBuildcraftLoaded())
         {
-            this.powerHandler = new PowerHandler((IPowerReceptor) this, Type.PIPE);
-            ((PowerHandler) this.powerHandler).configure(0, this.buildcraftBuffer, this.buildcraftBuffer, this.buildcraftBuffer * 2);
-            ((PowerHandler) this.powerHandler).configurePowerPerdition(0, 0);
+            if (this instanceof IPowerReceptor)
+            {
+                this.powerHandler = new PowerHandler((IPowerReceptor) this, Type.PIPE);
+                ((PowerHandler) this.powerHandler).configure(0, this.buildcraftBuffer, this.buildcraftBuffer, this.buildcraftBuffer * 2);
+                ((PowerHandler) this.powerHandler).configurePowerPerdition(0, 0);
+            }
         }
     }
 
@@ -107,24 +110,26 @@ public abstract class GCCoreTileEntityUniversalConductor extends TileEntityCondu
         return this.adjacentConnections;
     }
 
-    /*
-     * @Override public boolean canUpdate() { return !this.isAddedToEnergyNet; }
-     */
+    @Override
+    public boolean canUpdate()
+    {
+        return true;
+    }
 
     @Override
     public void updateEntity()
     {
-        if (!this.worldObj.isRemote)
+        if (!this.isAddedToEnergyNet)
         {
-            if (!this.isAddedToEnergyNet)
+            if (!this.worldObj.isRemote)
             {
                 if (Compatibility.isIndustrialCraft2Loaded())
                 {
                     this.initIC();
                 }
-                
-                this.isAddedToEnergyNet = true;
             }
+
+            this.isAddedToEnergyNet = true;
         }
     }
 
@@ -152,7 +157,7 @@ public abstract class GCCoreTileEntityUniversalConductor extends TileEntityCondu
                 Class<?> energyTile = Class.forName("ic2.api.energy.tile.IEnergyTile");
                 Constructor<?> constr = tileLoadEvent.getConstructor(energyTile);
                 Object o = constr.newInstance(this);
-                
+
                 if (o != null && o instanceof Event)
                 {
                     MinecraftForge.EVENT_BUS.post((Event) o);
@@ -169,7 +174,7 @@ public abstract class GCCoreTileEntityUniversalConductor extends TileEntityCondu
     {
         if (this.isAddedToEnergyNet && this.worldObj != null)
         {
-            if (Compatibility.isIndustrialCraft2Loaded())
+            if (!this.worldObj.isRemote && Compatibility.isIndustrialCraft2Loaded())
             {
                 try
                 {
@@ -177,7 +182,7 @@ public abstract class GCCoreTileEntityUniversalConductor extends TileEntityCondu
                     Class<?> energyTile = Class.forName("ic2.api.energy.tile.IEnergyTile");
                     Constructor<?> constr = tileLoadEvent.getConstructor(energyTile);
                     Object o = constr.newInstance(this);
-                    
+
                     if (o != null && o instanceof Event)
                     {
                         MinecraftForge.EVENT_BUS.post((Event) o);

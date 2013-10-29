@@ -16,6 +16,7 @@ public class AirLockProtocol
     public int airLocksVerticalMax = 0;
     public int airLocksHorizontalMin = 0;
     public int airLocksHorizontalMax = 0;
+    private boolean horizontal;
 
     public int minX = 6000000;
     public int maxX = -6000000;
@@ -47,10 +48,18 @@ public class AirLockProtocol
 
                         if (!(x == 0 && y == 0 && z == 0))
                         {
-                            if (tile != null && tile instanceof GCCoreTileEntityAirLock && !this.adjacentAirLocks.contains(tile) && (tile.xCoord == this.head.xCoord || tile.zCoord == this.head.zCoord))
+                            if (tile != null && tile instanceof GCCoreTileEntityAirLock && !this.adjacentAirLocks.contains(tile))
                             {
-                                this.adjacentAirLocks.add((GCCoreTileEntityAirLock) tile);
-                                this.loopThrough(tile, loops - 1);
+                                if (this.horizontal && tile.yCoord == this.head.yCoord)
+                                {
+                                    this.adjacentAirLocks.add((GCCoreTileEntityAirLock) tile);
+                                    this.loopThrough(tile, loops - 1);
+                                }
+                                else if (!this.horizontal && tile.xCoord == this.head.xCoord || tile.zCoord == this.head.zCoord)
+                                {
+                                    this.adjacentAirLocks.add((GCCoreTileEntityAirLock) tile);
+                                    this.loopThrough(tile, loops - 1);
+                                }
                             }
                         }
                     }
@@ -59,7 +68,13 @@ public class AirLockProtocol
         }
     }
 
+    @Deprecated
     public ArrayList<GCCoreTileEntityAirLock> calculate()
+    {
+        return this.calculate(false);
+    }
+
+    public ArrayList<GCCoreTileEntityAirLock> calculate(boolean horizontal)
     {
         if (this.worldObj.isRemote)
         {
@@ -68,6 +83,7 @@ public class AirLockProtocol
 
         this.adjacentAirLocks = new ArrayList<GCCoreTileEntityAirLock>();
 
+        this.horizontal = horizontal;
         this.loopThrough(this.head, this.maxLoops);
 
         for (final GCCoreTileEntityAirLock airLock : this.adjacentAirLocks)

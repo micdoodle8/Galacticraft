@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import mekanism.api.EnumColor;
 import micdoodle8.mods.galacticraft.api.entity.IRocketType.EnumRocketType;
+import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase.EnumLaunchPhase;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiContainer;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreInfoRegion;
-import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase.EnumLaunchPhase;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRocketRefill;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
@@ -18,7 +18,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -31,7 +30,7 @@ public class GCMarsGuiCargoRocket extends GCCoreGuiContainer
     {
         for (int i = 0; i < 4; i++)
         {
-            GCMarsGuiCargoRocket.rocketTextures[i] = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/rocket_" + i * 18 + ".png");
+            GCMarsGuiCargoRocket.rocketTextures[i] = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/rocket_" + i * 18 + ".png");
         }
     }
 
@@ -56,7 +55,7 @@ public class GCMarsGuiCargoRocket extends GCCoreGuiContainer
     }
 
     @Override
-    protected void actionPerformed(GuiButton button) 
+    protected void actionPerformed(GuiButton button)
     {
         switch (button.id)
         {
@@ -88,30 +87,30 @@ public class GCMarsGuiCargoRocket extends GCCoreGuiContainer
     {
         if (this.rocket.rocketType.getInventorySpace() == 2)
         {
-            this.fontRenderer.drawString(StatCollector.translateToLocal(this.upperChestInventory.getInvName()), 8, 76 + ((this.rocket.rocketType.getInventorySpace() - 20) / 9) * 18, 4210752);
+            this.fontRenderer.drawString(StatCollector.translateToLocal(this.upperChestInventory.getInvName()), 8, 76 + (this.rocket.rocketType.getInventorySpace() - 20) / 9 * 18, 4210752);
         }
         else
         {
-            this.fontRenderer.drawString(StatCollector.translateToLocal(this.upperChestInventory.getInvName()), 8, 89 + ((this.rocket.rocketType.getInventorySpace() - 20) / 9) * 18, 4210752);
+            this.fontRenderer.drawString(StatCollector.translateToLocal(this.upperChestInventory.getInvName()), 8, 89 + (this.rocket.rocketType.getInventorySpace() - 20) / 9 * 18, 4210752);
         }
 
-        String str = LanguageRegistry.instance().getStringLocalization("gui.message.fuel.name") + ":";
+        String str = StatCollector.translateToLocal("gui.message.fuel.name") + ":";
         this.fontRenderer.drawString(str, 140 - this.fontRenderer.getStringWidth(str) / 2, 5, 4210752);
         final double percentage = this.rocket.getScaledFuelLevel(100);
         String color = percentage > 80.0D ? EnumColor.BRIGHT_GREEN.code : percentage > 40.0D ? EnumColor.ORANGE.code : EnumColor.RED.code;
-        str = percentage + "% " + LanguageRegistry.instance().getStringLocalization("gui.message.full.name");
+        str = percentage + "% " + StatCollector.translateToLocal("gui.message.full.name");
         this.fontRenderer.drawString(color + str, 140 - this.fontRenderer.getStringWidth(str) / 2, 15, 4210752);
         str = "Status:";
         this.fontRenderer.drawString(str, 40 - this.fontRenderer.getStringWidth(str) / 2, 9, 4210752);
-        
-        String[] spltString = {""};
-        
+
+        String[] spltString = { "" };
+
         if (this.rocket.statusMessageCooldown == 0 || this.rocket.statusMessage == null)
         {
             spltString = new String[2];
             spltString[0] = EnumColor.YELLOW + "Waiting for";
             spltString[1] = EnumColor.YELLOW + "ignition";
-            
+
             if (this.rocket.launchPhase != EnumLaunchPhase.UNIGNITED.getPhase())
             {
                 spltString = new String[2];
@@ -124,7 +123,7 @@ public class GCMarsGuiCargoRocket extends GCCoreGuiContainer
         {
             spltString = this.rocket.statusMessage.split("#");
         }
-        
+
         int y = 2;
         for (String splitString : spltString)
         {
@@ -133,7 +132,7 @@ public class GCMarsGuiCargoRocket extends GCCoreGuiContainer
             this.fontRenderer.drawString(color + str, 30 - this.fontRenderer.getStringWidth(str) / 2, 9 * y, 4210752);
             y++;
         }
-        
+
         if (this.rocket.statusValid && this.rocket.statusMessageCooldown > 0 && this.rocket.statusMessageCooldown < 4)
         {
             this.mc.displayGuiScreen(null);

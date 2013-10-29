@@ -17,7 +17,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCCoreGuiCircuitFabricator extends GuiContainer
 {
-    private static final ResourceLocation circuitFabricatorTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/circuitFabricator.png");
+    private static final ResourceLocation circuitFabricatorTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/circuitFabricator.png");
 
     private GCCoreTileEntityCircuitFabricator tileEntity;
 

@@ -5,7 +5,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumClientPacket;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumPacketClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -31,7 +31,7 @@ public class GCCorePacketLanderUpdate implements IGalacticraftAdvancedPacket
 
         try
         {
-            data.writeInt(EnumClientPacket.UPDATE_LANDER.getIndex());
+            data.writeInt(EnumPacketClient.UPDATE_LANDER.getIndex());
             data.writeInt(lander.entityId);
             data.writeInt(((IInventory) lander).getSizeInventory());
 
@@ -58,7 +58,7 @@ public class GCCorePacketLanderUpdate implements IGalacticraftAdvancedPacket
     @Override
     public byte getPacketID()
     {
-        return (byte) EnumClientPacket.UPDATE_LANDER.getIndex();
+        return (byte) EnumPacketClient.UPDATE_LANDER.getIndex();
     }
 
     @Override

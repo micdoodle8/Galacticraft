@@ -16,7 +16,7 @@ import codechicken.nei.recipe.TemplateRecipeHandler;
 
 public class ElectricIngotCompressorRecipeHandler extends TemplateRecipeHandler
 {
-    private static final ResourceLocation ingotCompressorTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/electric_IngotCompressor.png");
+    private static final ResourceLocation ingotCompressorTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/electric_IngotCompressor.png");
     public static int ticksPassed;
 
     public String getRecipeId()
@@ -33,19 +33,19 @@ public class ElectricIngotCompressorRecipeHandler extends TemplateRecipeHandler
     public Set<Entry<ArrayList<PositionedStack>, PositionedStack>> getRecipes()
     {
         HashMap<ArrayList<PositionedStack>, PositionedStack> recipes = new HashMap<ArrayList<PositionedStack>, PositionedStack>();
-        
+
         for (Entry<HashMap<Integer, PositionedStack>, PositionedStack> stack : NEIGalacticraftConfig.getIngotCompressorRecipes())
         {
             ArrayList<PositionedStack> inputStacks = new ArrayList<PositionedStack>();
-            
+
             for (Map.Entry<Integer, PositionedStack> input : stack.getKey().entrySet())
             {
                 inputStacks.add(input.getValue());
             }
-            
+
             recipes.put(inputStacks, stack.getValue());
         }
-        
+
         return recipes.entrySet();
     }
 
@@ -55,7 +55,7 @@ public class ElectricIngotCompressorRecipeHandler extends TemplateRecipeHandler
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GuiDraw.changeTexture(ElectricIngotCompressorRecipeHandler.ingotCompressorTexture);
         GuiDraw.drawTexturedModalRect(20, 25, 18, 17, 137, 54);
-        
+
         if (ElectricIngotCompressorRecipeHandler.ticksPassed % 70 > 26)
         {
             GuiDraw.drawTexturedModalRect(103, 38, 176, 0, 17, 13);
@@ -133,7 +133,7 @@ public class ElectricIngotCompressorRecipeHandler extends TemplateRecipeHandler
         {
             return this.arecipes.get(recipe).getResult();
         }
-        
+
         return null;
     }
 
@@ -145,11 +145,6 @@ public class ElectricIngotCompressorRecipeHandler extends TemplateRecipeHandler
         @Override
         public ArrayList<PositionedStack> getIngredients()
         {
-            if (ElectricIngotCompressorRecipeHandler.ticksPassed % 70 >= 53)
-            {
-                return new ArrayList<PositionedStack>();
-            }
-
             return this.input;
         }
 
@@ -162,16 +157,16 @@ public class ElectricIngotCompressorRecipeHandler extends TemplateRecipeHandler
         public ElectricCompressorRecipe(ArrayList<PositionedStack> pstack1, PositionedStack pstack2)
         {
             super();
-            
+
             ArrayList<PositionedStack> ingred = new ArrayList<PositionedStack>();
-            
+
             for (PositionedStack stack : pstack1)
             {
                 PositionedStack stack2 = stack.copy();
                 stack2.item.stackSize *= 2;
                 ingred.add(stack2);
             }
-            
+
             this.input = ingred;
             pstack2.rely -= 8;
             this.output = pstack2;
@@ -191,7 +186,7 @@ public class ElectricIngotCompressorRecipeHandler extends TemplateRecipeHandler
                 outputCopy.rely += 18;
                 return outputCopy;
             }
-            
+
             return null;
         }
     }

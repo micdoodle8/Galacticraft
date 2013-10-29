@@ -5,7 +5,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityControllable;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumClientPacket;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumPacketClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.packet.Packet;
@@ -24,7 +24,7 @@ public class GCCorePacketEntityUpdate implements IGalacticraftAdvancedPacket
 
         try
         {
-            data.writeInt(EnumClientPacket.UPDATE_CONTROLLABLE_ENTITY.getIndex());
+            data.writeInt(EnumPacketClient.UPDATE_CONTROLLABLE_ENTITY.getIndex());
             data.writeInt(driveable.entityId);
             data.writeDouble(driveable.posX);
             data.writeDouble(driveable.posY);
@@ -83,6 +83,6 @@ public class GCCorePacketEntityUpdate implements IGalacticraftAdvancedPacket
     @Override
     public byte getPacketID()
     {
-        return (byte) EnumClientPacket.UPDATE_CONTROLLABLE_ENTITY.getIndex();
+        return (byte) EnumPacketClient.UPDATE_CONTROLLABLE_ENTITY.getIndex();
     }
 }

@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.List;
-import micdoodle8.mods.galacticraft.api.block.IPartialSealedBlock;
+import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.core.GCCoreCompatibilityManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAluminumWire;
@@ -18,17 +18,44 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.block.IConductor;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSealedBlock, ITileEntityProvider
+public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSealableBlock, ITileEntityProvider
 {
     private Icon[] enclosedIcons;
 
     public enum EnumEnclosedBlock
     {
-        OXYGENPIPE(1, -1, null, "enclosed_oxygen_pipe"), IC2_COPPER_CABLE(2, 0, null, "enclosed_copper_cable"), IC2_GOLD_CABLE(3, 3, null, "enclosed_gold_cable"), IC2_HV_CABLE(4, 6, null, "enclosed_hv_cable"), IC2_GLASS_FIBRE_CABLE(5, 9, null, "enclosed_glassfibre_cable"), IC2_LV_CABLE(6, 10, null, "enclosed_lv_cable"), BC_ITEM_STONEPIPE(7, -1, "PipeItemsStone", "enclosed_itempipe_stone"), BC_ITEM_COBBLESTONEPIPE(8, -1, "PipeItemsCobblestone", "enclosed_itempipe_cobblestone"), BC_FLUIDS_STONEPIPE(9, -1, "PipeFluidsStone", "enclosed_liquidpipe_stone"), BC_FLUIDS_COBBLESTONEPIPE(10, -1, "PipeFluidsCobblestone", "enclosed_liquidpipe_cobblestone"), BC_POWER_STONEPIPE(11, -1, "PipePowerStone", "enclosed_powerpipe_stone"), BC_POWER_GOLDPIPE(12, -1, "PipePowerGold", "enclosed_powerpipe_gold"), ALUMINUM_WIRE(14, -1, null, "enclosed_aluminum_wire"), ALUMINUM_WIRE_HEAVY(15, -1, null, "enclosed_heavy_aluminum_wire");
+        OXYGENPIPE(1, -1, null, "enclosed_oxygen_pipe"),
+        IC2_COPPER_CABLE(2, 0, null, "enclosed_copper_cable"),
+        IC2_GOLD_CABLE(3, 3, null, "enclosed_gold_cable"),
+        IC2_HV_CABLE(4, 6, null, "enclosed_hv_cable"),
+        IC2_GLASS_FIBRE_CABLE(5, 9, null, "enclosed_glassfibre_cable"),
+        IC2_LV_CABLE(6, 10, null, "enclosed_lv_cable"),
+        BC_ITEM_STONEPIPE(7, -1, "PipeItemsStone", "enclosed_itempipe_stone"),
+        BC_ITEM_COBBLESTONEPIPE(
+                8,
+                    -1,
+                    "PipeItemsCobblestone",
+                    "enclosed_itempipe_cobblestone"),
+        BC_FLUIDS_STONEPIPE(
+                9,
+                    -1,
+                    "PipeFluidsStone",
+                    "enclosed_liquidpipe_stone"),
+        BC_FLUIDS_COBBLESTONEPIPE(
+                10,
+                    -1,
+                    "PipeFluidsCobblestone",
+                    "enclosed_liquidpipe_cobblestone"),
+        BC_POWER_STONEPIPE(11, -1, "PipePowerStone", "enclosed_powerpipe_stone"),
+        BC_POWER_GOLDPIPE(12, -1, "PipePowerGold", "enclosed_powerpipe_gold"),
+        ME_CABLE(13, -1, null, "enclosed_me_cable"),
+        ALUMINUM_WIRE(14, -1, null, "enclosed_aluminum_wire"),
+        ALUMINUM_WIRE_HEAVY(15, -1, null, "enclosed_heavy_aluminum_wire");
 
         int metadata;
         int ic2CableMeta;
@@ -83,7 +110,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
         this.setResistance(0.2F);
         this.setHardness(0.4f);
         this.setStepSound(Block.soundStoneFootstep);
-        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
     }
 
@@ -114,6 +141,11 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
             par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.BC_POWER_STONEPIPE.getMetadata()));
             par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.BC_POWER_GOLDPIPE.getMetadata()));
         }
+
+        if (GCCoreCompatibilityManager.isAppEngLoaded())
+        {
+            par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.ME_CABLE.getMetadata()));
+        }
     }
 
     @Override
@@ -142,10 +174,10 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
 
         for (int i = 0; i < EnumEnclosedBlock.values().length; i++)
         {
-            this.enclosedIcons[EnumEnclosedBlock.values()[i].getMetadata()] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + EnumEnclosedBlock.values()[i].getTexture());
+            this.enclosedIcons[EnumEnclosedBlock.values()[i].getMetadata()] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + EnumEnclosedBlock.values()[i].getTexture());
         }
 
-        this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "" + EnumEnclosedBlock.OXYGENPIPE.getTexture());
+        this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "" + EnumEnclosedBlock.OXYGENPIPE.getTexture());
     }
 
     @Override
@@ -188,6 +220,9 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
             }
         }
         else if (metadata <= EnumEnclosedBlock.BC_POWER_GOLDPIPE.getMetadata())
+        {
+        }
+        else if (metadata <= EnumEnclosedBlock.ME_CABLE.getMetadata())
         {
         }
         else if (metadata <= EnumEnclosedBlock.ALUMINUM_WIRE.getMetadata())
@@ -282,6 +317,13 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
                 }
             }
         }
+        else if (metadata <= EnumEnclosedBlock.ME_CABLE.getMetadata())
+        {
+            if (GCCoreCompatibilityManager.isAppEngLoaded())
+            {
+                world.markBlockForUpdate(x, y, z);
+            }
+        }
         else if (metadata <= EnumEnclosedBlock.ALUMINUM_WIRE.getMetadata())
         {
             if (tileEntity instanceof IConductor)
@@ -345,7 +387,6 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
         {
             if (GCCoreCompatibilityManager.isBCraftLoaded())
             {
-
                 try
                 {
                     Class<?> clazz = Class.forName("buildcraft.transport.TileGenericPipe");
@@ -372,6 +413,21 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
                 }
             }
         }
+        else if (metadata <= EnumEnclosedBlock.ME_CABLE.getMetadata())
+        {
+            if (GCCoreCompatibilityManager.isAppEngLoaded())
+            {
+                try
+                {
+                    Class<?> clazz = Class.forName("appeng.me.tile.TileCable");
+                    return (TileEntity) clazz.newInstance();
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
         else if (metadata <= EnumEnclosedBlock.ALUMINUM_WIRE.getMetadata())
         {
             return new GCCoreTileEntityAluminumWire();
@@ -385,7 +441,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeale
     }
 
     @Override
-    public boolean isSealed(World world, int x, int y, int z)
+    public boolean isSealed(World world, int x, int y, int z, ForgeDirection direction)
     {
         return true;
     }

@@ -12,8 +12,8 @@ import org.lwjgl.util.glu.GLU;
 
 public abstract class GCCoreGuiStarBackground extends GuiScreen
 {
-    private static final ResourceLocation backgroundTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/stars.png");
-    private static final ResourceLocation blackTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/black.png");
+    private static final ResourceLocation backgroundTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/stars.png");
+    private static final ResourceLocation blackTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/black.png");
 
     public void drawBlackBackground()
     {

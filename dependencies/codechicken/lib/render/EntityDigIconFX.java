@@ -25,6 +25,14 @@ public class EntityDigIconFX extends EntityFX
         return 1;
     }
     
+    public void setScale(float scale) {
+        particleScale = scale;
+    }
+
+    public float getScale() {
+        return particleScale;
+    }
+    
     /**
      * copy pasted from EntityDiggingFX
      */

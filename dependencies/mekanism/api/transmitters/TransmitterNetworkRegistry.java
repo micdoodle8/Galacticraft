@@ -1,5 +1,6 @@
 package mekanism.api.transmitters;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
@@ -136,7 +137,8 @@ public class TransmitterNetworkRegistry implements ITickHandler
 		{
 			if(c != null)
 			{
-				for(Object obj : c.chunkTileEntityMap.values())
+			    ArrayList<Object> list = new ArrayList<Object>(c.chunkTileEntityMap.values());
+				for(Object obj : list)
 				{
 					if(obj instanceof TileEntity)
 					{

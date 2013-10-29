@@ -83,7 +83,7 @@ public class GCCoreTileEntityAdvancedCraftingTable extends TileEntityMulti imple
                             {
                                 FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, GCCoreBlocks.nasaWorkbench.blockID & 4095, GCCoreBlocks.nasaWorkbench.blockID >> 12 & 255);
                             }
-                            this.worldObj.setBlock(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, 0, 0, 3);
+                            this.worldObj.destroyBlock(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, y == 0);
                         }
                         else if (y != 0 && y != 3)
                         {
@@ -91,7 +91,7 @@ public class GCCoreTileEntityAdvancedCraftingTable extends TileEntityMulti imple
                             {
                                 FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, GCCoreBlocks.nasaWorkbench.blockID & 4095, GCCoreBlocks.nasaWorkbench.blockID >> 12 & 255);
                             }
-                            this.worldObj.setBlock(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, 0, 0, 3);
+                            this.worldObj.destroyBlock(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, false);
                         }
                     }
                 }

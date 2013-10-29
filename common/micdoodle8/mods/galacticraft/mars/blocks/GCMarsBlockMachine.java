@@ -40,6 +40,7 @@ public class GCMarsBlockMachine extends BlockTile
 
     private Icon iconTerraformer;
     private Icon iconLaunchController;
+    private Icon iconCryochamber;
 
     public GCMarsBlockMachine(int id)
     {
@@ -49,12 +50,13 @@ public class GCMarsBlockMachine extends BlockTile
     @Override
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_blank");
-        this.iconInput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_power_input");
+        this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_blank");
+        this.iconInput = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_power_input");
 
-        this.iconMachineSide = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_blank");
+        this.iconMachineSide = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_blank");
         this.iconTerraformer = par1IconRegister.registerIcon(GalacticraftMars.TEXTURE_PREFIX + "terraformer_0");
         this.iconLaunchController = par1IconRegister.registerIcon(GalacticraftMars.TEXTURE_PREFIX + "launchController");
+        this.iconCryochamber = par1IconRegister.registerIcon(GalacticraftMars.TEXTURE_PREFIX + "cryoDummy");
     }
 
     @Override
@@ -101,6 +103,10 @@ public class GCMarsBlockMachine extends BlockTile
             {
                 return this.iconLaunchController;
             }
+        }
+        else if (metadata >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA)
+        {
+            return this.iconCryochamber;
         }
         else
         {
@@ -214,12 +220,12 @@ public class GCMarsBlockMachine extends BlockTile
             }
         }
 
-        if (var8 instanceof IChunkLoader && !var8.worldObj.isRemote && GCMarsConfigManager.launchControllerChunkLoad)
+        if (var8 instanceof IChunkLoader && !var8.worldObj.isRemote && GCMarsConfigManager.launchControllerChunkLoad && entityLiving instanceof EntityPlayer)
         {
-            ((IChunkLoader) var8).onTicketLoaded(ForgeChunkManager.requestTicket(GalacticraftCore.instance, var8.worldObj, Type.NORMAL));
+            ((IChunkLoader) var8).setOwnerName(((EntityPlayer) entityLiving).username);
+            ((IChunkLoader) var8).onTicketLoaded(ForgeChunkManager.requestTicket(GalacticraftCore.instance, var8.worldObj, Type.NORMAL), true);
         }
-
-        if (var8 instanceof GCMarsTileEntityLaunchController && entityLiving instanceof EntityPlayer)
+        else if (var8 instanceof GCMarsTileEntityLaunchController && entityLiving instanceof EntityPlayer)
         {
             ((GCMarsTileEntityLaunchController) var8).setOwnerName(((EntityPlayer) entityLiving).username);
         }
@@ -312,7 +318,7 @@ public class GCMarsBlockMachine extends BlockTile
         {
             return new GCMarsTileEntityLaunchController();
         }
-        else if (metadata >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA)
+        if (metadata >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA)
         {
             return new GCMarsTileEntityCryogenicChamber();
         }

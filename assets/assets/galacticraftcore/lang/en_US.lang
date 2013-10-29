@@ -99,6 +99,7 @@ item.basicItem.dehydratedMelon.name=Dehydrated Melon
 item.basicItem.dehydratedPotato.name=Dehydrated Potato
 item.basicItem.cannedFood.name=Can of Food
 item.basicItem.frequencyModule.name=Frequency Module
+item.standardWrench.name=Standard Wrench
 
 # TOOLS
 item.steel_pickaxe.name=Heavy Duty Pickaxe
@@ -116,6 +117,7 @@ item.steel_boots.name=Heavy Duty Boots
 # BLOCKS
 tile.treasureChest.name=Treasure Chest
 tile.landingPad.landingPad.name=Rocket Launch Pad
+tile.landingPadFull.name=Rocket Launch Pad
 tile.unlitTorch.name=Torch
 tile.unlitTorchLit.name=Torch
 tile.distributor.name=Oxygen Bubble Distributor
@@ -154,8 +156,8 @@ tile.enclosed.glassFibreCable.name=Sealable Glass Fibre Cable
 tile.enclosed.lvCable.name=Sealable Ultra-Low-Current Cable
 tile.enclosed.PipeItemsCobblestone.name=Sealable Cobblestone Transport Pipe
 tile.enclosed.PipeItemsStone.name=Sealable Stone Transport Pipe
-tile.enclosed.PipeLiquidsCobblestone.name=Sealable Cobblestone Waterproof Pipe
-tile.enclosed.PipeLiquidsStone.name=Sealable Stone Waterproof Pipe
+tile.enclosed.PipeFluidsCobblestone.name=Sealable Cobblestone Waterproof Pipe
+tile.enclosed.PipeFluidsStone.name=Sealable Stone Waterproof Pipe
 tile.enclosed.PipePowerStone.name=Sealable Stone Conductive Pipe
 tile.enclosed.PipePowerGold.name=Sealable Golden Conductive Pipe
 tile.solar.basic.name=Basic Solar Panel
@@ -174,6 +176,13 @@ tile.aluminumWireHeavy.name=Heavy Aluminum Wire
 tile.glowstoneTorch.name=Glowstone Torch
 tile.enclosed.aluminumWire.name=Sealable Aluminum Wire
 tile.enclosed.aluminumWireHeavy.name=Sealable Heavy Aluminum Wire
+tile.enclosed.meCable.name=Sealable ME Cable
+tile.airLockController.name=Air Lock Controller
+tile.dummyblock.spaceStationBase.name=Space Station Base
+tile.dummyblock.launchPad.name=Rocket Launch Pad
+tile.dummyblock.nasaWorkbench.name=NASA Workbench
+tile.dummyblock.solar.name=Solar Panel
+tile.dummyblock.cryogenicChamber.name=Cryogenic Chamber
 
 # ENTITIES
 entity.GalacticraftCore.EvolvedSpider.name=Evolved Spider
@@ -205,12 +214,6 @@ death.attack.oxygenSuffocation=%1$s ran out of oxygen!
 galaxy.blockyway.name=The Blocky Way
 
 # OTHER
-message.warning1.name=Galacticraft Requires IndustrialCraft 2, Thermal Expansion or Basic Components!
-message.warning2.name=One or more of these mods is REQUIRED for crafting/gameplay. Ignore?
-message.button1.name=Ignore
-message.button2.name=Load Basic Components
-message.button3.name=Exit
-message.button4.name=Do not show again
 newversion.message1.name=\u00a77New \u00a73Galacticraft \u00a77version available! v
 newversion.message2.name=New Galacticraft version available! v
 newversion.failed.name=Galacticraft update check failed! Trying again in 15 seconds
@@ -333,5 +336,7 @@ dimension.Overworld.name=Overworld
 dimension.Moon.name=Moon
 dimension.Sun.name=Sun
 
+# COMMANDS
+commands.dimensionteleport=%s was sent into the atmosphere%s
 
 # </file>

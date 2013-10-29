@@ -24,6 +24,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -35,7 +36,6 @@ import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInventory, IPacketReceiver, IDockable
 {
@@ -443,7 +443,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
             if (this.worldObj.isRemote)
             {
                 this.buggyType = dataStream.readInt();
-                this.buggyFuelTank.setFluid(new FluidStack(GalacticraftCore.FUEL, dataStream.readInt()));
+                this.buggyFuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, dataStream.readInt()));
             }
         }
         catch (final Exception e)
@@ -612,10 +612,10 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
         {
             if (this.riddenByEntity == null)
             {
-                var1.sendChatToPlayer(ChatMessageComponent.createFromText(Keyboard.getKeyName(GCKeyHandler.leftKey.keyCode) + " / " + Keyboard.getKeyName(GCKeyHandler.rightKey.keyCode) + "  - " + LanguageRegistry.instance().getStringLocalization("gui.buggy.turn.name")));
-                var1.sendChatToPlayer(ChatMessageComponent.createFromText(Keyboard.getKeyName(GCKeyHandler.accelerateKey.keyCode) + "       - " + LanguageRegistry.instance().getStringLocalization("gui.buggy.accel.name")));
-                var1.sendChatToPlayer(ChatMessageComponent.createFromText(Keyboard.getKeyName(GCKeyHandler.decelerateKey.keyCode) + "       - " + LanguageRegistry.instance().getStringLocalization("gui.buggy.decel.name")));
-                var1.sendChatToPlayer(ChatMessageComponent.createFromText(Keyboard.getKeyName(GCKeyHandler.openSpaceshipInv.keyCode) + "       - " + LanguageRegistry.instance().getStringLocalization("gui.buggy.inv.name")));
+                var1.sendChatToPlayer(ChatMessageComponent.createFromText(Keyboard.getKeyName(GCKeyHandler.leftKey.keyCode) + " / " + Keyboard.getKeyName(GCKeyHandler.rightKey.keyCode) + "  - " + StatCollector.translateToLocal("gui.buggy.turn.name")));
+                var1.sendChatToPlayer(ChatMessageComponent.createFromText(Keyboard.getKeyName(GCKeyHandler.accelerateKey.keyCode) + "       - " + StatCollector.translateToLocal("gui.buggy.accel.name")));
+                var1.sendChatToPlayer(ChatMessageComponent.createFromText(Keyboard.getKeyName(GCKeyHandler.decelerateKey.keyCode) + "       - " + StatCollector.translateToLocal("gui.buggy.decel.name")));
+                var1.sendChatToPlayer(ChatMessageComponent.createFromText(Keyboard.getKeyName(GCKeyHandler.openSpaceshipInv.keyCode) + "       - " + StatCollector.translateToLocal("gui.buggy.inv.name")));
             }
 
             return true;

@@ -26,13 +26,17 @@ public class GCCoreTickHandlerServer implements ITickHandler
                     if (o instanceof Entity)
                     {
                         final Entity e = (Entity) o;
-                        final IOrbitDimension dimension = (IOrbitDimension) ((Entity) o).worldObj.provider;
 
-                        if (e.posY <= dimension.getYCoordToTeleportToPlanet())
+                        if (e.worldObj.provider instanceof IOrbitDimension)
                         {
-                            final Integer dim = WorldUtil.getProviderForName(dimension.getPlanetToOrbit()).dimensionId;
+                            final IOrbitDimension dimension = (IOrbitDimension) e.worldObj.provider;
 
-                            WorldUtil.transferEntityToDimension(e, dim, world, false);
+                            if (e.posY <= dimension.getYCoordToTeleportToPlanet())
+                            {
+                                final Integer dim = WorldUtil.getProviderForName(dimension.getPlanetToOrbit()).dimensionId;
+
+                                WorldUtil.transferEntityToDimension(e, dim, world, false, null);
+                            }
                         }
                     }
                 }

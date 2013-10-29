@@ -13,7 +13,6 @@ import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
 import universalelectricity.core.electricity.ElectricityDisplay;
 import universalelectricity.core.electricity.ElectricityDisplay.ElectricUnit;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -23,7 +22,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
  */
 public class GCCoreGuiAirCompressor extends GCCoreGuiContainer
 {
-    private static final ResourceLocation compressorTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/compressor.png");
+    private static final ResourceLocation compressorTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/compressor.png");
 
     private final GCCoreTileEntityOxygenCompressor compressor;
 
@@ -73,11 +72,11 @@ public class GCCoreGuiAirCompressor extends GCCoreGuiContainer
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
         this.fontRenderer.drawString(this.compressor.getInvName(), 8, 10, 4210752);
-        this.fontRenderer.drawString(LanguageRegistry.instance().getStringLocalization("gui.message.in.name") + ":", 87, 26, 4210752);
-        this.fontRenderer.drawString(LanguageRegistry.instance().getStringLocalization("gui.message.in.name") + ":", 87, 38, 4210752);
-        String status = LanguageRegistry.instance().getStringLocalization("gui.message.status.name") + ": " + this.getStatus();
+        this.fontRenderer.drawString(StatCollector.translateToLocal("gui.message.in.name") + ":", 87, 26, 4210752);
+        this.fontRenderer.drawString(StatCollector.translateToLocal("gui.message.in.name") + ":", 87, 38, 4210752);
+        String status = StatCollector.translateToLocal("gui.message.status.name") + ": " + this.getStatus();
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 50, 4210752);
-        status = LanguageRegistry.instance().getStringLocalization("gui.message.oxinput.name") + ": " + Math.round(this.compressor.getCappedScaledOxygenLevel(1000) * 10.0D) / 100.0D + "%";
+        status = StatCollector.translateToLocal("gui.message.oxinput.name") + ": " + Math.round(this.compressor.getCappedScaledOxygenLevel(1000) * 10.0D) / 100.0D + "%";
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 60, 4210752);
         status = ElectricityDisplay.getDisplay(this.compressor.ueWattsPerTick * 20, ElectricUnit.WATT);
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 70, 4210752);
@@ -90,25 +89,25 @@ public class GCCoreGuiAirCompressor extends GCCoreGuiContainer
     {
         if (this.compressor.getStackInSlot(0) == null || !(this.compressor.getStackInSlot(0).getItem() instanceof GCCoreItemOxygenTank))
         {
-            return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.missingtank.name");
+            return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.missingtank.name");
         }
 
         if (this.compressor.getEnergyStored() == 0)
         {
-            return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.missingpower.name");
+            return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.missingpower.name");
         }
 
         if (this.compressor.getStackInSlot(0) != null && this.compressor.getStackInSlot(0).getItemDamage() == 0)
         {
-            return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.fulltank.name");
+            return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.fulltank.name");
         }
 
         if (this.compressor.storedOxygen < 1.0D)
         {
-            return EnumColor.DARK_RED + LanguageRegistry.instance().getStringLocalization("gui.status.missingoxygen.name");
+            return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.missingoxygen.name");
         }
 
-        return EnumColor.DARK_GREEN + LanguageRegistry.instance().getStringLocalization("gui.status.active.name");
+        return EnumColor.DARK_GREEN + StatCollector.translateToLocal("gui.status.active.name");
     }
 
     @Override

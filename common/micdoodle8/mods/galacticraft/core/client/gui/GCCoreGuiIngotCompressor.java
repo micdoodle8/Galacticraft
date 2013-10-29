@@ -14,7 +14,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCCoreGuiIngotCompressor extends GuiContainer
 {
-    private static final ResourceLocation electricFurnaceTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/ingotCompressor.png");
+    private static final ResourceLocation electricFurnaceTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/ingotCompressor.png");
 
     private GCCoreTileEntityIngotCompressor tileEntity;
 

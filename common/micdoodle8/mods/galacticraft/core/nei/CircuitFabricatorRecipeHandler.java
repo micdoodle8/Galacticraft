@@ -16,7 +16,7 @@ import codechicken.nei.recipe.TemplateRecipeHandler;
 
 public class CircuitFabricatorRecipeHandler extends TemplateRecipeHandler
 {
-    private static final ResourceLocation circuitFabricatorTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/circuitFabricator.png");
+    private static final ResourceLocation circuitFabricatorTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/circuitFabricator.png");
     int ticksPassed;
 
     public String getRecipeId()
@@ -33,19 +33,19 @@ public class CircuitFabricatorRecipeHandler extends TemplateRecipeHandler
     public Set<Entry<ArrayList<PositionedStack>, PositionedStack>> getRecipes()
     {
         HashMap<ArrayList<PositionedStack>, PositionedStack> recipes = new HashMap<ArrayList<PositionedStack>, PositionedStack>();
-        
+
         for (Entry<HashMap<Integer, PositionedStack>, PositionedStack> stack : NEIGalacticraftConfig.getCircuitFabricatorRecipes())
         {
             ArrayList<PositionedStack> inputStacks = new ArrayList<PositionedStack>();
-            
+
             for (Map.Entry<Integer, PositionedStack> input : stack.getKey().entrySet())
             {
                 inputStacks.add(input.getValue());
             }
-            
+
             recipes.put(inputStacks, stack.getValue());
         }
-        
+
         return recipes.entrySet();
     }
 
@@ -56,7 +56,7 @@ public class CircuitFabricatorRecipeHandler extends TemplateRecipeHandler
         GuiDraw.changeTexture(CircuitFabricatorRecipeHandler.circuitFabricatorTexture);
         GuiDraw.drawTexturedModalRect(-2, 9, 3, 4, 168, 64);
         GuiDraw.drawTexturedModalRect(68, 73, 73, 68, 96, 35);
-        GuiDraw.drawTexturedModalRect(83, 25, 176, 17 + (10 * ((Math.min(this.ticksPassed % 70, 51) / 3) % 3)), Math.min(this.ticksPassed % 70, 51), 10);
+        GuiDraw.drawTexturedModalRect(83, 25, 176, 17 + 10 * (Math.min(this.ticksPassed % 70, 51) / 3 % 3), Math.min(this.ticksPassed % 70, 51), 10);
     }
 
     @Override
@@ -128,7 +128,7 @@ public class CircuitFabricatorRecipeHandler extends TemplateRecipeHandler
         {
             return this.arecipes.get(recipe).getResult();
         }
-        
+
         return null;
     }
 

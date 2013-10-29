@@ -37,8 +37,14 @@ public class GCCoreBlockCargoLoader extends GCCoreBlockAdvanced
         super(id, Material.rock);
         this.setHardness(1.0F);
         this.setStepSound(Block.soundMetalFootstep);
-        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
+    }
+
+    @Override
+    public int getRenderType()
+    {
+        return GalacticraftCore.proxy.getGCMachineRenderID();
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -80,12 +86,12 @@ public class GCCoreBlockCargoLoader extends GCCoreBlockAdvanced
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.iconInput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_power_input");
-        this.iconMachineSide = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_blank");
-        this.iconFrontLoader = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_cargoloader");
-        this.iconFrontUnloader = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_cargounloader");
-        this.iconItemInput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_item_input");
-        this.iconItemOutput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_item_output");
+        this.iconInput = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_power_input");
+        this.iconMachineSide = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_blank");
+        this.iconFrontLoader = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_cargoloader");
+        this.iconFrontUnloader = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_cargounloader");
+        this.iconItemInput = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_item_input");
+        this.iconItemOutput = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_item_output");
     }
 
     @Override
@@ -261,5 +267,20 @@ public class GCCoreBlockCargoLoader extends GCCoreBlockAdvanced
                 }
             }
         }
+    }
+
+    @Override
+    public int damageDropped(int metadata)
+    {
+        if (metadata >= GCCoreBlockCargoLoader.METADATA_CARGO_UNLOADER)
+        {
+            return GCCoreBlockCargoLoader.METADATA_CARGO_UNLOADER;
+        }
+        else if (metadata >= GCCoreBlockCargoLoader.METADATA_CARGO_LOADER)
+        {
+            return GCCoreBlockCargoLoader.METADATA_CARGO_LOADER;
+        }
+
+        return 0;
     }
 }

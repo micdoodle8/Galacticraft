@@ -36,7 +36,7 @@ public class GCCoreBlockAdvancedCraftingTable extends BlockContainer implements 
         this.setBlockBounds(-0.3F, 0.0F, -0.3F, 1.3F, 0.5F, 1.3F);
         this.setHardness(2.5F);
         this.setStepSound(Block.soundMetalFootstep);
-        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
     }
 
@@ -50,8 +50,8 @@ public class GCCoreBlockAdvancedCraftingTable extends BlockContainer implements 
     public void registerIcons(IconRegister par1IconRegister)
     {
         this.iconBuffer = new Icon[2];
-        this.iconBuffer[0] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "workbench_nasa_side");
-        this.iconBuffer[1] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "workbench_nasa_top");
+        this.iconBuffer[0] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "workbench_nasa_side");
+        this.iconBuffer[1] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "workbench_nasa_top");
     }
 
     @Override

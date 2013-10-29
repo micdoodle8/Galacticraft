@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.List;
 import java.util.Random;
+import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import net.minecraft.block.Block;
@@ -19,7 +20,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * All rights reserved.
  * 
  */
-public class GCCoreBlock extends Block
+public class GCCoreBlock extends Block implements IDetectableResource
 {
     Icon[] iconBuffer;
 
@@ -27,7 +28,7 @@ public class GCCoreBlock extends Block
     {
         super(id, Material.rock);
         this.setHardness(1.0F);
-        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
     }
 
@@ -41,14 +42,14 @@ public class GCCoreBlock extends Block
     public void registerIcons(IconRegister iconRegister)
     {
         this.iconBuffer = new Icon[8];
-        this.iconBuffer[0] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "deco_aluminium_2");
-        this.iconBuffer[1] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "deco_aluminium_4");
-        this.iconBuffer[2] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "deco_aluminium_1");
-        this.iconBuffer[3] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "deco_aluminium_4");
-        this.iconBuffer[4] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "oreCopper");
-        this.iconBuffer[5] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "oreTin");
-        this.iconBuffer[6] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "oreAluminum");
-        this.iconBuffer[7] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "oreSilicon");
+        this.iconBuffer[0] = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "deco_aluminium_2");
+        this.iconBuffer[1] = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "deco_aluminium_4");
+        this.iconBuffer[2] = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "deco_aluminium_1");
+        this.iconBuffer[3] = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "deco_aluminium_4");
+        this.iconBuffer[4] = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "oreCopper");
+        this.iconBuffer[5] = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "oreTin");
+        this.iconBuffer[6] = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "oreAluminum");
+        this.iconBuffer[7] = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "oreSilicon");
     }
 
     @Override
@@ -124,5 +125,11 @@ public class GCCoreBlock extends Block
         {
             par3List.add(new ItemStack(par1, 1, var4));
         }
+    }
+
+    @Override
+    public boolean isValueable(int metadata)
+    {
+        return metadata >= 5 && metadata <= 8;
     }
 }

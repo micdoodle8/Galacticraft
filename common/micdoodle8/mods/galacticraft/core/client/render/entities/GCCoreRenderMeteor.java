@@ -13,7 +13,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCCoreRenderMeteor extends Render
 {
-    private static final ResourceLocation meteorTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/meteor.png");
+    private static final ResourceLocation meteorTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/meteor.png");
 
     private final GCCoreModelMeteor modelMeteor;
 

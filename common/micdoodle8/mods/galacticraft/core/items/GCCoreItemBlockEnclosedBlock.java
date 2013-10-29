@@ -53,6 +53,9 @@ public class GCCoreItemBlockEnclosedBlock extends ItemBlock
         case 6:
             name = "lvCable";
             break;
+        case 13:
+            name = "meCable";
+            break;
         case 14:
             name = "aluminumWire";
             break;
@@ -60,7 +63,14 @@ public class GCCoreItemBlockEnclosedBlock extends ItemBlock
             name = "aluminumWireHeavy";
             break;
         default:
-            name = GCCoreBlockEnclosed.getTypeFromMeta(par1ItemStack.getItemDamage()).getPipeClass();
+            try
+            {
+                name = GCCoreBlockEnclosed.getTypeFromMeta(par1ItemStack.getItemDamage()).getPipeClass();
+            }
+            catch (Exception e)
+            {
+                name = "null";
+            }
             break;
         }
 

@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockParachest;
 import micdoodle8.mods.galacticraft.core.entities.IScaleableFuelLevel;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerParachest;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerServer.EnumPacketServer;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -18,6 +19,7 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
@@ -26,7 +28,6 @@ import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class GCCoreTileEntityParachest extends TileEntity implements IInventory, IPacketReceiver, IScaleableFuelLevel
 {
@@ -52,7 +53,7 @@ public class GCCoreTileEntityParachest extends TileEntity implements IInventory,
 
         if (this.worldObj != null && this.worldObj.isRemote)
         {
-            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 22, new Object[] { this.xCoord, this.yCoord, this.zCoord }));
+            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.UPDATE_DYNAMIC_TILE_INV, new Object[] { this.xCoord, this.yCoord, this.zCoord }));
         }
     }
 
@@ -140,7 +141,7 @@ public class GCCoreTileEntityParachest extends TileEntity implements IInventory,
     @Override
     public String getInvName()
     {
-        return LanguageRegistry.instance().getStringLocalization("container.parachest.name");
+        return StatCollector.translateToLocal("container.parachest.name");
     }
 
     @Override
@@ -334,7 +335,7 @@ public class GCCoreTileEntityParachest extends TileEntity implements IInventory,
         if (this.worldObj.isRemote)
         {
             int fuel = data.readInt();
-            this.fuelTank.setFluid(new FluidStack(GalacticraftCore.FUEL, fuel));
+            this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, fuel));
         }
     }
 

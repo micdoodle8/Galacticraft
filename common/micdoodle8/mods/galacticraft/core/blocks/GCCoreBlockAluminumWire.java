@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.List;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumClientPacket;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumPacketClient;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAluminumWire;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.block.Block;
@@ -51,7 +51,7 @@ public class GCCoreBlockAluminumWire extends BlockConductor
 
         for (int i = 0; i < GCCoreBlockAluminumWire.names.length; i++)
         {
-            GCCoreBlockAluminumWire.blockIcons[i] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + GCCoreBlockAluminumWire.names[i]);
+            GCCoreBlockAluminumWire.blockIcons[i] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + GCCoreBlockAluminumWire.names[i]);
         }
     }
 
@@ -93,7 +93,7 @@ public class GCCoreBlockAluminumWire extends BlockConductor
         {
             ((TileEntityConductor) tile).adjacentConnections = null;
             Block.blocksList[world.getBlockId(tile.xCoord, tile.yCoord, tile.zCoord)].setBlockBoundsBasedOnState(world, tile.xCoord, tile.yCoord, tile.zCoord);
-            PacketDispatcher.sendPacketToAllAround(x, y, z, 10, world.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumClientPacket.UPDATE_WIRE_BOUNDS, new Object[] { x, y, z }));
+            PacketDispatcher.sendPacketToAllAround(x, y, z, 10, world.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.UPDATE_WIRE_BOUNDS, new Object[] { x, y, z }));
         }
     }
 
@@ -101,6 +101,12 @@ public class GCCoreBlockAluminumWire extends BlockConductor
     public int getRenderType()
     {
         return -1;
+    }
+
+    @Override
+    public int damageDropped(int metadata)
+    {
+        return metadata;
     }
 
     @Override

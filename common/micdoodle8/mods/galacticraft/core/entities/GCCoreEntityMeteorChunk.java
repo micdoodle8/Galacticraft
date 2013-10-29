@@ -21,7 +21,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -41,7 +40,7 @@ public class GCCoreEntityMeteorChunk extends Entity implements IProjectile
     private boolean inGround;
 
     private int knockbackStrength;
-    
+
     public boolean isHot;
 
     public GCCoreEntityMeteorChunk(World world)
@@ -161,7 +160,7 @@ public class GCCoreEntityMeteorChunk extends Entity implements IProjectile
     public void onUpdate()
     {
         super.onUpdate();
-        
+
         if (this.ticksExisted > 400)
         {
             if (this.isHot)
@@ -172,7 +171,6 @@ public class GCCoreEntityMeteorChunk extends Entity implements IProjectile
         }
         else if (!this.worldObj.isRemote)
         {
-            FMLLog.info("" + this.ticksExisted);
             this.setHot(this.isHot);
         }
 
@@ -415,12 +413,12 @@ public class GCCoreEntityMeteorChunk extends Entity implements IProjectile
     {
         this.dataWatcher.addObject(16, Integer.valueOf(0));
     }
-    
+
     public boolean isHot()
     {
         return this.dataWatcher.getWatchableObjectInt(16) == 1;
     }
-    
+
     public void setHot(boolean isHot)
     {
         this.dataWatcher.updateObject(16, isHot ? 1 : 0);

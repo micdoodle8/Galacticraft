@@ -107,7 +107,6 @@ public class GCCoreSmallFontRenderer implements ResourceManagerReloadListener
         this.field_111273_g = par2ResourceLocation;
         this.renderEngine = par3TextureManager;
         this.unicodeFlag = true;
-        par3TextureManager.bindTexture(this.field_111273_g);
 
         for (int i = 0; i < 32; ++i)
         {

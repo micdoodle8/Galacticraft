@@ -11,12 +11,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.item.IItemElectric;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -255,7 +255,7 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen im
     @Override
     public String getInvName()
     {
-        return LanguageRegistry.instance().getStringLocalization("container.oxygendistributor.name");
+        return StatCollector.translateToLocal("container.oxygendistributor.name");
     }
 
     @Override

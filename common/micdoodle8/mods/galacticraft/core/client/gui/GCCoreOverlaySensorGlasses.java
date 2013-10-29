@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.client.gui;
 import java.util.Iterator;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
-import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
@@ -12,17 +12,17 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class GCCoreOverlaySensorGlasses extends GCCoreOverlay
 {
-    private static final ResourceLocation hudTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/hud.png");
-    private static final ResourceLocation indicatorTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/indicator.png");
+    private static final ResourceLocation hudTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/hud.png");
+    private static final ResourceLocation indicatorTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/indicator.png");
 
     private static Minecraft minecraft = FMLClientHandler.instance().getClient();
 
@@ -101,7 +101,7 @@ public class GCCoreOverlaySensorGlasses extends GCCoreOverlay
                 var2 = client.getUsingGoggles();
             }
 
-            GCCoreOverlaySensorGlasses.minecraft.fontRenderer.drawString(LanguageRegistry.instance().getStringLocalization("gui.sensor.advanced") + ": " + (var2 ? LanguageRegistry.instance().getStringLocalization("gui.sensor.advancedon") : LanguageRegistry.instance().getStringLocalization("gui.sensor.advancedoff")), var6 / 2 - 50, 4, 0x03b88f);
+            GCCoreOverlaySensorGlasses.minecraft.fontRenderer.drawString(StatCollector.translateToLocal("gui.sensor.advanced") + ": " + (var2 ? StatCollector.translateToLocal("gui.sensor.advancedon") : StatCollector.translateToLocal("gui.sensor.advancedoff")), var6 / 2 - 50, 4, 0x03b88f);
 
             try
             {

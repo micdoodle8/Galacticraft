@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.core.event;
 
 import java.lang.reflect.Field;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -21,18 +23,21 @@ import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GCCoreDamageSource;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore.MinecraftLoadedEvent;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore.SleepCancelledEvent;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
-import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
-import micdoodle8.mods.galacticraft.core.client.GCCoreThreadDownloadSound;
-import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerSP;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerServer.EnumPacketServer;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketSchematicList;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
+import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
 import net.minecraft.block.Block;
+import net.minecraft.client.audio.SoundPool;
+import net.minecraft.client.audio.SoundPoolEntry;
+import net.minecraft.client.audio.SoundPoolProtocolHandler;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -40,9 +45,12 @@ import net.minecraft.item.ItemFlintAndSteel;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.client.event.sound.PlaySoundEvent;
+import net.minecraftforge.client.event.sound.SoundLoadEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.Event.Result;
 import net.minecraftforge.event.ForgeSubscribe;
@@ -53,17 +61,38 @@ import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
+import net.minecraftforge.event.world.ChunkDataEvent;
+import net.minecraftforge.event.world.ChunkEvent.Load;
+import net.minecraftforge.event.world.WorldEvent.Save;
 import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreEvents
 {
-    private static GCCoreThreadDownloadSound downloadResourcesThread;
+    @ForgeSubscribe
+    public void onWorldSave(Save event)
+    {
+        ChunkLoadingCallback.save((WorldServer) event.world);
+    }
 
+    @ForgeSubscribe
+    public void onChunkDataLoad(ChunkDataEvent.Load event)
+    {
+        ChunkLoadingCallback.load((WorldServer) event.world);
+    }
+    
+    @ForgeSubscribe
+    public void onWorldLoad(Load event)
+    {
+        if(!event.world.isRemote)
+        {
+            ChunkLoadingCallback.load((WorldServer) event.world);
+        }
+    }
+    
     @ForgeSubscribe
     public void onEntityFall(LivingFallEvent event)
     {
@@ -325,7 +354,7 @@ public class GCCoreEvents
 
         if (page != null)
         {
-            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 4, new Object[] { page.getPageID() }));
+            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.OPEN_SCHEMATIC_PAGE, new Object[] { page.getPageID() }));
             FMLClientHandler.instance().getClient().thePlayer.openGui(GalacticraftCore.instance, page.getGuiID(), FMLClientHandler.instance().getClient().thePlayer.worldObj, (int) FMLClientHandler.instance().getClient().thePlayer.posX, (int) FMLClientHandler.instance().getClient().thePlayer.posY, (int) FMLClientHandler.instance().getClient().thePlayer.posZ);
         }
     }
@@ -419,31 +448,58 @@ public class GCCoreEvents
         }
     }
 
+//    @SideOnly(Side.CLIENT)
+//    @ForgeSubscribe
+//    public void onMinecraftLoaded(MinecraftLoadedEvent event)
+//    {
+//        ;
+//    }
+
     @SideOnly(Side.CLIENT)
     @ForgeSubscribe
-    public void onMinecraftLoaded(MinecraftLoadedEvent event)
+    public void onSoundLoad(SoundLoadEvent event)
     {
-        final List<String> downloadUrls = new ArrayList<String>();
+        event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "ambience/scaryscape.ogg");
+        event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "ambience/singledrip1.ogg");
+        event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "ambience/singledrip2.ogg");
+        event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "ambience/singledrip3.ogg");
+        event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "ambience/singledrip4.ogg");
+        event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "ambience/singledrip5.ogg");
+        event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "ambience/singledrip6.ogg");
+        event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "ambience/singledrip7.ogg");
+        event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "ambience/singledrip8.ogg");
+        event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "entity/bossdeath.ogg");
+        event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "entity/bosslaugh.ogg");
+        event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "entity/bossliving.ogg");
+        event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "entity/slime_death.ogg");
+        ClientProxyCore.newMusic.add(this.func_110654_c(event.manager.soundPoolMusic, GalacticraftCore.ASSET_PREFIX + "music/mars_JC.ogg"));
+        ClientProxyCore.newMusic.add(this.func_110654_c(event.manager.soundPoolMusic, GalacticraftCore.ASSET_PREFIX + "music/mimas_JC.ogg"));
+        ClientProxyCore.newMusic.add(this.func_110654_c(event.manager.soundPoolMusic, GalacticraftCore.ASSET_PREFIX + "music/orbit_JC.ogg"));
+        ClientProxyCore.newMusic.add(this.func_110654_c(event.manager.soundPoolMusic, GalacticraftCore.ASSET_PREFIX + "music/scary_ambience.ogg"));
+        ClientProxyCore.newMusic.add(this.func_110654_c(event.manager.soundPoolMusic, GalacticraftCore.ASSET_PREFIX + "music/spacerace_JC.ogg"));
+        event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "player/closeairlock.ogg");
+        event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "player/openairlock.ogg");
+        event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "player/parachute.ogg");
+        event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "player/unlockchest.ogg");
+        event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "shuttle/shuttle.ogg");
+    }
 
-        downloadUrls.add("http://micdoodle8.com/galacticraft/sounds/downloadsounds.xml");
-
-        if (Loader.isModLoaded("GalacticraftMars"))
-        {
-            downloadUrls.add("http://micdoodle8.com/galacticraft/sounds/mars/downloadmarssounds.xml");
-        }
-
+    @SideOnly(Side.CLIENT)
+    private SoundPoolEntry func_110654_c(SoundPool pool, String par1Str)
+    {
         try
         {
-            if (GCCoreEvents.downloadResourcesThread == null)
-            {
-                GCCoreEvents.downloadResourcesThread = new GCCoreThreadDownloadSound(FMLClientHandler.instance().getClient().mcDataDir, FMLClientHandler.instance().getClient(), downloadUrls);
-                GCCoreEvents.downloadResourcesThread.start();
-            }
+            ResourceLocation resourcelocation = new ResourceLocation(par1Str);
+            String s1 = String.format("%s:%s:%s/%s", new Object[] { "mcsounddomain", resourcelocation.getResourceDomain(), "sound", resourcelocation.getResourcePath() });
+            SoundPoolProtocolHandler soundpoolprotocolhandler = new SoundPoolProtocolHandler(pool);
+            return new SoundPoolEntry(par1Str, new URL((URL) null, s1, soundpoolprotocolhandler));
         }
-        catch (Exception e)
+        catch (MalformedURLException e)
         {
             e.printStackTrace();
         }
+
+        return null;
     }
 
     @SideOnly(Side.CLIENT)
@@ -457,7 +513,7 @@ public class GCCoreEvents
             ((GCCorePlayerSP) player).wakeUpPlayer(false, true, true, true);
         }
     }
-    
+
     private List<SoundPlayEntry> soundPlayList = new ArrayList<SoundPlayEntry>();
 
     @SideOnly(Side.CLIENT)
@@ -465,32 +521,32 @@ public class GCCoreEvents
     public void onSoundPlayed(PlaySoundEvent event)
     {
         EntityPlayerSP player = FMLClientHandler.instance().getClient().thePlayer;
-        
+
         if (player.worldObj.provider instanceof IGalacticraftWorldProvider && !ClientProxyCore.playersWithFrequencyModule.contains(player.username))
         {
-            for (int i = 0; i < soundPlayList.size(); i++)
+            for (int i = 0; i < this.soundPlayList.size(); i++)
             {
                 SoundPlayEntry entry = this.soundPlayList.get(i);
-                
+
                 if (entry.name.equals(event.name) && entry.x == event.x && entry.y == event.y && entry.z == event.z && entry.volume == event.volume)
                 {
-                    soundPlayList.remove(i);
+                    this.soundPlayList.remove(i);
                     event.result = event.source;
                     return;
                 }
             }
-            
+
             float newVolume = event.volume / Math.max(0.01F, ((IGalacticraftWorldProvider) player.worldObj.provider).getSoundVolReductionAmount());
-            
+
             this.soundPlayList.add(new SoundPlayEntry(event.name, event.x, event.y, event.z, newVolume));
             event.manager.playSound(event.name, event.x, event.y, event.z, newVolume, event.pitch);
             event.result = null;
             return;
         }
-        
+
         event.result = event.source;
     }
-    
+
     private static class SoundPlayEntry
     {
         private final String name;
@@ -498,7 +554,7 @@ public class GCCoreEvents
         private final float y;
         private final float z;
         private final float volume;
-        
+
         private SoundPlayEntry(String name, float x, float y, float z, float volume)
         {
             this.name = name;

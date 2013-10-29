@@ -29,7 +29,7 @@ public class GCMarsContainerCargoRocketBench extends Container
 
         // Cone
         this.addSlotToContainer(new GCMarsSlotCargoRocketBench(this.craftMatrix, 1, 48, -9 + change, x, y, z, par1InventoryPlayer.player));
-        
+
         this.addSlotToContainer(new GCMarsSlotCargoRocketBench(this.craftMatrix, 2, 48, -9 + 18 + change, x, y, z, par1InventoryPlayer.player));
 
         // Body
@@ -60,7 +60,7 @@ public class GCMarsContainerCargoRocketBench extends Container
         {
             this.addSlotToContainer(new GCMarsSlotCargoRocketBench(this.craftMatrix, 14 + var8, 93 + var8 * 26, -15 + change, x, y, z, par1InventoryPlayer.player));
         }
-        
+
         change = 9;
 
         // Player inv:

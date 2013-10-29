@@ -36,7 +36,7 @@ public class GCCoreBlockOxygenSealer extends GCCoreBlockAdvanced
         super(id, Material.rock);
         this.setHardness(1.0F);
         this.setStepSound(Block.soundStoneFootstep);
-        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
     }
 
@@ -47,13 +47,19 @@ public class GCCoreBlockOxygenSealer extends GCCoreBlockAdvanced
     }
 
     @Override
+    public int getRenderType()
+    {
+        return GalacticraftCore.proxy.getGCMachineRenderID();
+    }
+
+    @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.iconMachineSide = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_blank");
-        this.iconSealer = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_sealer");
-        this.iconInput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_oxygen_input");
-        this.iconOutput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_power_input");
+        this.iconMachineSide = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_blank");
+        this.iconSealer = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_sealer");
+        this.iconInput = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_oxygen_input");
+        this.iconOutput = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_power_input");
     }
 
     @Override
@@ -142,5 +148,20 @@ public class GCCoreBlockOxygenSealer extends GCCoreBlockAdvanced
     public TileEntity createTileEntity(World world, int metadata)
     {
         return new GCCoreTileEntityOxygenSealer();
+    }
+
+    @Override
+    public void breakBlock(World world, int x, int y, int z, int par5, int par6)
+    {
+        TileEntity tile = world.getBlockTileEntity(x, y, z);
+
+        if (tile instanceof GCCoreTileEntityOxygenSealer)
+        {
+            GCCoreTileEntityOxygenSealer sealer = (GCCoreTileEntityOxygenSealer) tile;
+
+            sealer.unSealArea(world, x, y + 1, z);
+        }
+
+        super.breakBlock(world, x, y, z, par5, par6);
     }
 }

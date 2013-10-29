@@ -9,11 +9,10 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class GCCoreGuiSchematicRocketT1 extends GCCoreGuiContainer implements ISchematicResultPage
 {
-    private static final ResourceLocation rocketBenchTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/rocketbench.png");
+    private static final ResourceLocation rocketBenchTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/rocketbench.png");
 
     private GuiButton backButton;
     private int pageIndex;
@@ -29,8 +28,8 @@ public class GCCoreGuiSchematicRocketT1 extends GCCoreGuiContainer implements IS
     public void initGui()
     {
         super.initGui();
-        this.buttonList.add(this.backButton = new GuiButton(0, this.width / 2 - 130, this.height / 2 - 30 + 27 - 12, 40, 20, LanguageRegistry.instance().getStringLocalization("gui.button.back.name")));
-        this.buttonList.add(new GuiButton(1, this.width / 2 - 130, this.height / 2 - 30 + 27 + 12, 40, 20, LanguageRegistry.instance().getStringLocalization("gui.button.next.name")));
+        this.buttonList.add(this.backButton = new GuiButton(0, this.width / 2 - 130, this.height / 2 - 30 + 27 - 12, 40, 20, StatCollector.translateToLocal("gui.button.back.name")));
+        this.buttonList.add(new GuiButton(1, this.width / 2 - 130, this.height / 2 - 30 + 27 + 12, 40, 20, StatCollector.translateToLocal("gui.button.next.name")));
         this.backButton.enabled = false;
     }
 
@@ -54,7 +53,7 @@ public class GCCoreGuiSchematicRocketT1 extends GCCoreGuiContainer implements IS
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRenderer.drawString(LanguageRegistry.instance().getStringLocalization("schematic.rocketT1.name"), 7, -20 + 27, 4210752);
+        this.fontRenderer.drawString(StatCollector.translateToLocal("schematic.rocketT1.name"), 7, -20 + 27, 4210752);
         this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, 202 - 104 + 2 + 27, 4210752);
     }
 

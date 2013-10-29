@@ -62,6 +62,7 @@ public class GCCoreItems
     public static Item battery;
     public static Item infiniteBatery;
     public static Item meteorChunk;
+    public static Item wrench;
 
     public static EnumArmorMaterial ARMOR_SENSOR_GLASSES = EnumHelper.addArmorMaterial("SENSORGLASSES", 200, new int[] { 0, 0, 0, 0 }, 0);
     public static EnumArmorMaterial ARMOR_STEEL = EnumHelper.addArmorMaterial("steel", 30, new int[] { 3, 8, 6, 3 }, 12);
@@ -101,9 +102,9 @@ public class GCCoreItems
         GCCoreItems.oxygenGear = new GCCoreItemOxygenGear(GCCoreConfigManager.idItemOxygenGear, "oxygenGear");
         GCCoreItems.parachute = new GCCoreItemParachute(GCCoreConfigManager.idItemParachute, "parachute");
         GCCoreItems.canvas = new GCCoreItem(GCCoreConfigManager.idItemCanvas, "canvas");
+        GCCoreItems.oilCanister = new GCCoreItemOilCanister(GCCoreConfigManager.idItemOilCanister, "oilCanisterPartial");
         GCCoreItems.fuelCanister = new GCCoreItemFuelCanister(GCCoreConfigManager.idItemRocketFuelBucket, "fuelCanisterPartial");
         GCCoreItems.flagPole = new GCCoreItem(GCCoreConfigManager.idItemFlagPole, "steelPole");
-        GCCoreItems.oilCanister = new GCCoreItemOilCanister(GCCoreConfigManager.idItemOilCanister, "oilCanisterPartial");
         GCCoreItems.oilExtractor = new GCCoreItemOilExtractor(GCCoreConfigManager.idItemOilExtractor, "oilExtractor");
         GCCoreItems.schematic = new GCCoreItemSchematic(GCCoreConfigManager.idItemSchematic, "schematic");
         GCCoreItems.fuel = new GCCoreItemFuel(GCCoreConfigManager.idItemFuel, "fuel");
@@ -114,6 +115,7 @@ public class GCCoreItems
         GCCoreItems.battery = new GCCoreItemBattery(GCCoreConfigManager.idItemBattery, "battery");
         GCCoreItems.infiniteBatery = new GCCoreItemInfiniteBattery(GCCoreConfigManager.idItemInfiniteBattery, "infiniteBattery");
         GCCoreItems.meteorChunk = new GCCoreItemMeteorChunk(GCCoreConfigManager.idItemMeteorChunk, "meteorChunk");
+        GCCoreItems.wrench = new GCCoreItemWrench(GCCoreConfigManager.idItemStandardWrench, "standardWrench");
 
         GCCoreItems.hiddenItems.add(GCCoreItems.bowGravity.itemID);
         GCCoreItems.hiddenItems.add(GCCoreItems.knowledgeBook.itemID);
@@ -223,9 +225,11 @@ public class GCCoreItems
         GCCoreUtil.registerGalacticraftItem("dehydratedApple", GCCoreItems.basicItem, 15);
         GCCoreUtil.registerGalacticraftItem("dehydratedCarrot", GCCoreItems.basicItem, 16);
         GCCoreUtil.registerGalacticraftItem("dehydratedMelon", GCCoreItems.basicItem, 17);
-        GCCoreUtil.registerGalacticraftItem("dehydratedPotato", GCCoreItems.basicItem, 19);
+        GCCoreUtil.registerGalacticraftItem("dehydratedPotato", GCCoreItems.basicItem, 18);
+        GCCoreUtil.registerGalacticraftItem("frequencyModule", GCCoreItems.basicItem, 19);
         GCCoreUtil.registerGalacticraftItem("meteorThrowable", GCCoreItems.meteorChunk);
         GCCoreUtil.registerGalacticraftItem("meteorThrowableHot", GCCoreItems.meteorChunk, 1);
+        GCCoreUtil.registerGalacticraftItem("standardWrench", GCCoreItems.wrench);
 
         for (int i = 0; i < GCCoreItemBasic.names.length; i++)
         {

@@ -36,12 +36,12 @@ import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -54,7 +54,6 @@ import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 
 /**
@@ -73,7 +72,6 @@ public class GalacticraftMars
     public static final String CHANNELENTITIES = "GCMarsEntities";
 
     public static final String LANGUAGE_PATH = "/assets/galacticraftmars/lang/";
-    private static final String[] LANGUAGES_SUPPORTED = new String[] { "en_US", "fi_FI", "ru_RU" };
 
     @SidedProxy(clientSide = "micdoodle8.mods.galacticraft.mars.client.ClientProxyMars", serverSide = "micdoodle8.mods.galacticraft.mars.CommonProxyMars")
     public static CommonProxyMars proxy;
@@ -112,39 +110,6 @@ public class GalacticraftMars
     @EventHandler
     public void load(FMLInitializationEvent event)
     {
-        int languages = 0;
-
-        for (String language : GalacticraftMars.LANGUAGES_SUPPORTED)
-        {
-            LanguageRegistry.instance().loadLocalization(GalacticraftMars.LANGUAGE_PATH + language + ".lang", language, false);
-
-            if (LanguageRegistry.instance().getStringLocalization("children", language) != "")
-            {
-                try
-                {
-                    String[] children = LanguageRegistry.instance().getStringLocalization("children", language).split(",");
-
-                    for (String child : children)
-                    {
-                        if (child != "" || child != null)
-                        {
-                            LanguageRegistry.instance().loadLocalization(GalacticraftMars.LANGUAGE_PATH + language + ".lang", child, false);
-                            languages++;
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    FMLLog.severe("Failed to load a child language file.");
-                    e.printStackTrace();
-                }
-            }
-
-            languages++;
-        }
-
-        GCLog.info("Galacticraft Mars Loaded: " + languages + " Languages.");
-
         SchematicRegistry.registerSchematicRecipe(new GCMarsSchematicRocketT2());
         SchematicRegistry.registerSchematicRecipe(new GCMarsSchematicCargoRocket());
 
@@ -190,8 +155,7 @@ public class GalacticraftMars
 
     public void registerOtherEntities()
     {
-        this.registerGalacticraftNonMobEntity(GCMarsEntityRocketT2.class, "SpaceshipT2", GCMarsConfigManager.idEntitySpaceshipTier2, 150, 1, true);
-        this.registerGalacticraftNonMobEntity(GCMarsEntityRocketT2.class, "SpaceshipT2", GCMarsConfigManager.idEntitySpaceshipTier2, 150, 1, true);
+        this.registerGalacticraftNonMobEntity(GCMarsEntityRocketT2.class, "SpaceshipT2", GCMarsConfigManager.idEntitySpaceshipTier2, 150, 1, false);
         this.registerGalacticraftNonMobEntity(GCMarsEntityTerraformBubble.class, "TerraformBubble", GCMarsConfigManager.idEntityTerraformBubble, 150, 20, false);
         this.registerGalacticraftNonMobEntity(GCMarsEntityProjectileTNT.class, "ProjectileTNT", GCMarsConfigManager.idEntityProjectileTNT, 150, 1, true);
         this.registerGalacticraftNonMobEntity(GCMarsEntityLandingBalloons.class, "LandingBalloons", GCMarsConfigManager.idEntityLandingBalloons, 150, 5, true);
@@ -214,6 +178,7 @@ public class GalacticraftMars
 
     public void registerGalacticraftNonMobEntity(Class<? extends Entity> var0, String var1, int id, int trackingDistance, int updateFreq, boolean sendVel)
     {
+        EntityList.addMapping(var0, var1, id);
         EntityRegistry.registerModEntity(var0, var1, id, this, trackingDistance, updateFreq, sendVel);
     }
 }

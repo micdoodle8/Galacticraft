@@ -26,8 +26,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCCoreRenderZombie extends RenderLiving
 {
-    private static final ResourceLocation zombieTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/zombie.png");
-    private static final ResourceLocation powerTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/power.png");
+    private static final ResourceLocation zombieTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/zombie.png");
+    private static final ResourceLocation powerTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/power.png");
 
     private final ModelBase model = new GCCoreModelZombie(0.2F);
 

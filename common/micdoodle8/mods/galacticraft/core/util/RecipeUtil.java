@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.util;
 
 import gregtechmod.api.GregTech_API;
 import ic2.api.item.Items;
+import java.util.Arrays;
 import java.util.HashMap;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
@@ -45,6 +46,33 @@ public class RecipeUtil
     public static void addRecipe(ItemStack result, Object[] obj)
     {
         CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(result, obj));
+
+        Object[] newIngredients = Arrays.copyOf(obj, obj.length);
+        boolean changed = false;
+
+        for (int i = 0; i < obj.length; i++)
+        {
+            if (newIngredients[i] instanceof String)
+            {
+                String ingred = (String) newIngredients[i];
+
+                if (ingred.equals("ingotAluminum"))
+                {
+                    newIngredients[i] = "ingotAluminium";
+                    changed = true;
+                }
+                else if (ingred.equals("compressedAluminum"))
+                {
+                    newIngredients[i] = "compressedAluminium";
+                    changed = true;
+                }
+            }
+        }
+
+        if (changed)
+        {
+            CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(result, newIngredients));
+        }
     }
 
     public static void addRocketBenchRecipe(ItemStack result, HashMap<Integer, ItemStack> input)

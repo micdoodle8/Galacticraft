@@ -10,7 +10,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
-import cpw.mods.fml.common.registry.LanguageRegistry;
+import net.minecraft.util.StatCollector;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -96,7 +96,7 @@ public class GCMarsItem extends Item
     {
         if (par1ItemStack != null && par1ItemStack.getItemDamage() == 3)
         {
-            par3List.add(LanguageRegistry.instance().getStringLocalization("item.tier2.desc"));
+            par3List.add(StatCollector.translateToLocal("item.tier2.desc"));
         }
     }
 

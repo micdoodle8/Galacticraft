@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.mars.tile;
 
 import java.util.ArrayList;
 import java.util.List;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeleton;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpider;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityZombie;
@@ -30,6 +31,6 @@ public class GCMarsTileEntityDungeonSpawner extends GCCoreTileEntityDungeonSpawn
     @Override
     public void playSpawnSound(Entity entity)
     {
-        this.worldObj.playSoundAtEntity(entity, "galacticraft.ambience.scaryscape", 9.0F, 1.4F);
+        this.worldObj.playSoundAtEntity(entity, GalacticraftCore.ASSET_PREFIX + "ambience.scaryscape", 9.0F, 1.4F);
     }
 }

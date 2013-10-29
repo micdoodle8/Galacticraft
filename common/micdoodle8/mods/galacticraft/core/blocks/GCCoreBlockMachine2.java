@@ -39,7 +39,7 @@ public class GCCoreBlockMachine2 extends BlockTile
         this.setUnlocalizedName("basicMachine");
         this.setHardness(1.0F);
         this.setStepSound(Block.soundMetalFootstep);
-        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
     }
 
@@ -52,12 +52,18 @@ public class GCCoreBlockMachine2 extends BlockTile
     @Override
     public void registerIcons(IconRegister iconRegister)
     {
-        this.blockIcon = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine");
-        this.iconOutput = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_output");
+        this.blockIcon = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine");
+        this.iconOutput = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_output");
 
-        this.iconMachineSide = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_side");
-        this.iconElectricCompressor = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "electric_compressor");
-        this.iconCircuitFabricator = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "circuit_fabricator");
+        this.iconMachineSide = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_side");
+        this.iconElectricCompressor = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "electric_compressor");
+        this.iconCircuitFabricator = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "circuit_fabricator");
+    }
+
+    @Override
+    public int getRenderType()
+    {
+        return GalacticraftCore.proxy.getGCMachineRenderID();
     }
 
     @Override
@@ -256,18 +262,6 @@ public class GCCoreBlockMachine2 extends BlockTile
     }
 
     @Override
-    public boolean isOpaqueCube()
-    {
-        return false;
-    }
-
-    @Override
-    public boolean renderAsNormalBlock()
-    {
-        return false;
-    }
-
-    @Override
     public TileEntity createTileEntity(World world, int metadata)
     {
         if (metadata >= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA)
@@ -305,11 +299,11 @@ public class GCCoreBlockMachine2 extends BlockTile
     @Override
     public int damageDropped(int metadata)
     {
-        if (metadata >= GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
+        if (metadata >= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA)
         {
-            return GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA;
+            return GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA;
         }
-        else if (metadata >= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA)
+        else if (metadata >= GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
         {
             return GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA;
         }

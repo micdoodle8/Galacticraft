@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.render.item;
 
 import micdoodle8.mods.galacticraft.api.entity.IRocketType.EnumRocketType;
-import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
+import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelChest;

@@ -40,7 +40,7 @@ public class GCCoreItemParachute extends Item
         this.setHasSubtypes(true);
         this.setMaxStackSize(1);
         this.setUnlocalizedName(assetName);
-        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
     }
 
     @Override

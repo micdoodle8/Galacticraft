@@ -1,40 +1,42 @@
 package micdoodle8.mods.galacticraft.core.tick;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
 import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
+import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
+import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
+import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase.EnumLaunchPhase;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GCCoreThreadRequirementMissing;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.client.GCCoreCloudRenderer;
-import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.client.GCCoreSkyProviderOrbit;
 import micdoodle8.mods.galacticraft.core.client.GCCoreSkyProviderOverworld;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiChoosePlanet;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlayCountdown;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlayDockingRocket;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlayLander;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlayOxygenTankIndicator;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlayOxygenWarning;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreOverlaySpaceship;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCCoreSoundUpdaterSpaceship;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreWorldProviderSpaceStation;
-import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
-import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase.EnumLaunchPhase;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
+import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemSensorGlasses;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerServer.EnumPacketServer;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockOre;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiMainMenu;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
@@ -48,7 +50,6 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.common.TickType;
@@ -61,11 +62,30 @@ public class GCCoreTickHandlerClient implements ITickHandler
     public static int airRemaining2;
     public static boolean checkedVersion = true;
     private static boolean lastInvKeyPressed;
-    public static GuiScreen lastOpenGui;
-    private static GuiScreen prevLastOpenGui;
     private static long tickCount;
-    
+
     private static GCCoreThreadRequirementMissing missingRequirementThread;
+
+    static
+    {
+        for (final String s : GCCoreConfigManager.detectableIDs)
+        {
+            final String[] split = s.split(":");
+
+            if (ClientProxyCore.detectableBlocks.containsKey(Integer.parseInt(split[0])))
+            {
+                final ArrayList<Integer> l = ClientProxyCore.detectableBlocks.get(Integer.parseInt(split[0]));
+                l.add(Integer.parseInt(split[1]));
+                ClientProxyCore.detectableBlocks.put(Integer.parseInt(split[0]), l);
+            }
+            else
+            {
+                final ArrayList<Integer> a = new ArrayList<Integer>();
+                a.add(Integer.parseInt(split[1]));
+                ClientProxyCore.detectableBlocks.put(Integer.parseInt(split[0]), a);
+            }
+        }
+    }
 
     @Override
     public void tickStart(EnumSet<TickType> type, Object... tickData)
@@ -80,14 +100,14 @@ public class GCCoreTickHandlerClient implements ITickHandler
 
         if (type.equals(EnumSet.of(TickType.CLIENT)))
         {
-            if (tickCount >= Long.MAX_VALUE)
+            if (GCCoreTickHandlerClient.tickCount >= Long.MAX_VALUE)
             {
-                tickCount = 0;
+                GCCoreTickHandlerClient.tickCount = 0;
             }
-            
-            tickCount++;
-            
-            if (tickCount % 20 == 0)
+
+            GCCoreTickHandlerClient.tickCount++;
+
+            if (GCCoreTickHandlerClient.tickCount % 20 == 0)
             {
                 if (player != null && player.inventory.armorItemInSlot(3) != null && player.inventory.armorItemInSlot(3).getItem() instanceof GCCoreItemSensorGlasses)
                 {
@@ -99,19 +119,18 @@ public class GCCoreTickHandlerClient implements ITickHandler
                         {
                             for (int k = -4; k < 5; k++)
                             {
-                                int x, y, z;
-
-                                x = MathHelper.floor_double(player.posX + i);
-                                y = MathHelper.floor_double(player.posY + j);
-                                z = MathHelper.floor_double(player.posZ + k);
+                                int x = MathHelper.floor_double(player.posX + i);
+                                int y = MathHelper.floor_double(player.posY + j);
+                                int z = MathHelper.floor_double(player.posZ + k);
 
                                 final int id = player.worldObj.getBlockId(x, y, z);
 
                                 if (id != 0)
                                 {
                                     final Block block = Block.blocksList[id];
+                                    int metadata = world.getBlockMetadata(x, y, z);
 
-                                    if (block != null && (block instanceof BlockOre || block instanceof IDetectableResource || block instanceof IDetectableResource && ((IDetectableResource) block).isValueable(player.worldObj.getBlockMetadata(x, y, z))))
+                                    if (ClientProxyCore.detectableBlocks.containsKey(id) && ClientProxyCore.detectableBlocks.get(id).contains(metadata))
                                     {
                                         final int[] blockPos = { x, y, z };
 
@@ -120,20 +139,34 @@ public class GCCoreTickHandlerClient implements ITickHandler
                                             ClientProxyCore.valueableBlocks.add(blockPos);
                                         }
                                     }
+                                    else if (block instanceof IDetectableResource && ((IDetectableResource) block).isValueable(metadata))
+                                    {
+                                        final int[] blockPos = { x, y, z };
+
+                                        if (!this.alreadyContainsBlock(x, y, z))
+                                        {
+                                            ClientProxyCore.valueableBlocks.add(blockPos);
+                                        }
+
+                                        if (ClientProxyCore.detectableBlocks.containsKey(metadata))
+                                        {
+                                            final ArrayList<Integer> l = ClientProxyCore.detectableBlocks.get(id);
+                                            l.add(metadata);
+                                            ClientProxyCore.detectableBlocks.put(id, l);
+                                        }
+                                        else
+                                        {
+                                            final ArrayList<Integer> a = new ArrayList<Integer>();
+                                            a.add(metadata);
+                                            ClientProxyCore.detectableBlocks.put(id, a);
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
                 }
             }
-            
-            if (GCCoreTickHandlerClient.prevLastOpenGui == null && GCCoreTickHandlerClient.lastOpenGui != null)
-            {
-                FMLLog.info("Setting screen " + GCCoreTickHandlerClient.lastOpenGui);
-                FMLClientHandler.instance().getClient().displayGuiScreen(GCCoreTickHandlerClient.lastOpenGui);
-            }
-
-            GCCoreTickHandlerClient.prevLastOpenGui = GCCoreTickHandlerClient.lastOpenGui;
 
             if (ClientProxyCore.addTabsNextTick)
             {
@@ -158,7 +191,7 @@ public class GCCoreTickHandlerClient implements ITickHandler
                 ClientProxyCore.playersWithOxygenTankRightGreen.clear();
                 ClientProxyCore.playersWithOxygenTankRightOrange.clear();
                 ClientProxyCore.playersWithOxygenTankRightRed.clear();
-                
+
                 if (GCCoreTickHandlerClient.missingRequirementThread == null)
                 {
                     GCCoreTickHandlerClient.missingRequirementThread = new GCCoreThreadRequirementMissing(FMLCommonHandler.instance().getEffectiveSide());
@@ -175,9 +208,9 @@ public class GCCoreTickHandlerClient implements ITickHandler
             if (player != null && player.ridingEntity != null && player.ridingEntity instanceof EntitySpaceshipBase)
             {
                 final Object[] toSend = { player.ridingEntity.rotationPitch };
-                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 8, toSend));
+                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.UPDATE_SHIP_PITCH, toSend));
                 final Object[] toSend2 = { player.ridingEntity.rotationYaw };
-                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 7, toSend2));
+                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.UPDATE_SHIP_YAW, toSend2));
             }
 
             if (world != null && world.provider instanceof WorldProviderSurface)
@@ -196,7 +229,7 @@ public class GCCoreTickHandlerClient implements ITickHandler
             {
                 if (world.provider.getSkyRenderer() == null)
                 {
-                    world.provider.setSkyRenderer(new GCCoreSkyProviderOrbit(new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/planets/overworld.png"), true, true));
+                    world.provider.setSkyRenderer(new GCCoreSkyProviderOrbit(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/planets/overworld.png"), true, true));
                 }
 
                 if (world.provider.getCloudRenderer() == null)
@@ -213,14 +246,14 @@ public class GCCoreTickHandlerClient implements ITickHandler
                 {
                     ship.turnYaw(-1.0F);
                     final Object[] toSend = { ship.rotationYaw };
-                    PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 7, toSend));
+                    PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.UPDATE_SHIP_YAW, toSend));
                 }
 
                 if (minecraft.gameSettings.keyBindRight.pressed)
                 {
                     ship.turnYaw(1.0F);
                     final Object[] toSend = { ship.rotationYaw };
-                    PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 7, toSend));
+                    PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.UPDATE_SHIP_YAW, toSend));
                 }
 
                 if (minecraft.gameSettings.keyBindForward.pressed)
@@ -229,7 +262,7 @@ public class GCCoreTickHandlerClient implements ITickHandler
                     {
                         ship.turnPitch(-0.7F);
                         final Object[] toSend = { ship.rotationPitch };
-                        PacketDispatcher.sendPacketToServer(PacketUtil.createPacket("Galacticraft", 8, toSend));
+                        PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.UPDATE_SHIP_PITCH, toSend));
                     }
                 }
 
@@ -239,7 +272,7 @@ public class GCCoreTickHandlerClient implements ITickHandler
                     {
                         ship.turnPitch(0.7F);
                         final Object[] toSend = { ship.rotationPitch };
-                        PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 8, toSend));
+                        PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.UPDATE_SHIP_PITCH, toSend));
                     }
                 }
             }
@@ -283,7 +316,7 @@ public class GCCoreTickHandlerClient implements ITickHandler
             if (player != null && player.ridingEntity != null && minecraft.gameSettings.keyBindJump.pressed && !ClientProxyCore.lastSpacebarDown)
             {
                 final Object[] toSend = { 0 };
-                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 3, toSend));
+                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.IGNITE_ROCKET, toSend));
                 ClientProxyCore.lastSpacebarDown = true;
             }
         }
@@ -395,6 +428,11 @@ public class GCCoreTickHandlerClient implements ITickHandler
             if (minecraft.currentScreen == null && player != null && player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntityLander && minecraft.gameSettings.thirdPersonView != 0 && !minecraft.gameSettings.hideGUI)
             {
                 GCCoreOverlayLander.renderLanderOverlay();
+            }
+
+            if (minecraft.currentScreen == null && player != null && player.ridingEntity != null && player.ridingEntity instanceof EntityAutoRocket && minecraft.gameSettings.thirdPersonView != 0 && !minecraft.gameSettings.hideGUI)
+            {
+                GCCoreOverlayDockingRocket.renderDockingOverlay();
             }
 
             if (minecraft.currentScreen == null && player != null && player.ridingEntity != null && player.ridingEntity instanceof EntitySpaceshipBase && minecraft.gameSettings.thirdPersonView != 0 && !minecraft.gameSettings.hideGUI && ((EntitySpaceshipBase) minecraft.thePlayer.ridingEntity).launchPhase != EnumLaunchPhase.LAUNCHED.getPhase())

@@ -35,7 +35,7 @@ public class GCCoreOrbitTeleportType implements ITeleportType
     }
 
     @Override
-    public void onSpaceDimensionChanged(World newWorld, EntityPlayerMP player)
+    public void onSpaceDimensionChanged(World newWorld, EntityPlayerMP player, boolean ridingAutoRocket)
     {
     }
 }

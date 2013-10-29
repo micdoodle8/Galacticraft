@@ -4,15 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import mekanism.api.EnumColor;
 import micdoodle8.mods.galacticraft.api.entity.IRocketType.EnumRocketType;
+import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
+import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
-import micdoodle8.mods.galacticraft.core.entities.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRocketRefill;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -25,7 +24,7 @@ public class GCCoreGuiRocketRefill extends GCCoreGuiContainer
     {
         for (int i = 0; i < 4; i++)
         {
-            GCCoreGuiRocketRefill.rocketTextures[i] = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/rocket_" + i * 18 + ".png");
+            GCCoreGuiRocketRefill.rocketTextures[i] = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/rocket_" + i * 18 + ".png");
         }
     }
 
@@ -54,16 +53,16 @@ public class GCCoreGuiRocketRefill extends GCCoreGuiContainer
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRenderer.drawString(LanguageRegistry.instance().getStringLocalization("gui.message.fuel.name"), 8, 2 + 3, 4210752);
+        this.fontRenderer.drawString(StatCollector.translateToLocal("gui.message.fuel.name"), 8, 2 + 3, 4210752);
 
         this.fontRenderer.drawString(StatCollector.translateToLocal(this.upperChestInventory.getInvName()), 8, 34 + 2 + 3, 4210752);
 
         if (this.mc.thePlayer != null && this.mc.thePlayer.ridingEntity != null && this.mc.thePlayer.ridingEntity instanceof EntitySpaceshipBase)
         {
-            this.fontRenderer.drawString(LanguageRegistry.instance().getStringLocalization("gui.message.fuel.name") + ":", 125, 15 + 3, 4210752);
+            this.fontRenderer.drawString(StatCollector.translateToLocal("gui.message.fuel.name") + ":", 125, 15 + 3, 4210752);
             final double percentage = ((EntitySpaceshipBase) this.mc.thePlayer.ridingEntity).getScaledFuelLevel(100);
             final String color = percentage > 80.0D ? EnumColor.BRIGHT_GREEN.code : percentage > 40.0D ? EnumColor.ORANGE.code : EnumColor.RED.code;
-            final String str = percentage + "% " + LanguageRegistry.instance().getStringLocalization("gui.message.full.name");
+            final String str = percentage + "% " + StatCollector.translateToLocal("gui.message.full.name");
             this.fontRenderer.drawString(color + str, 117 - str.length() / 2, 20 + 8, 4210752);
         }
     }

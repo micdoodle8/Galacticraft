@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core;
 import java.io.File;
 import net.minecraft.block.Block;
 import net.minecraftforge.common.Configuration;
-import net.minecraftforge.common.Property;
 
 /**
  * Copyright 2012-2013, micdoodle8
@@ -88,12 +87,7 @@ public class GCCoreConfigManager
     public static int idItemBattery;
     public static int idItemInfiniteBattery;
     public static int idItemMeteorChunk;
-
-    // RECIPES
-    public static boolean useRecipesIC2;
-    public static boolean useRecipesGT;
-    public static boolean useRecipesTE;
-    public static boolean useRecipesUE;
+    public static int idItemStandardWrench;
 
     // SCHEMATICS
     public static int idSchematicRocketT1;
@@ -133,6 +127,7 @@ public class GCCoreConfigManager
     public static int idGuiParachest;
     public static int idGuiSolarPanel;
     public static int idGuiExtendedInventory;
+    public static int idGuiAirLockController;
 
     // ACHIEVEMENTS
     public static int idAchievBase;
@@ -156,29 +151,29 @@ public class GCCoreConfigManager
     public static int idEntityMeteorChunk;
 
     // GENERAL
-    public static boolean transparentBreathableAir;
     public static boolean moreStars;
     public static boolean wasdMapMovement;
     public static String[] sealableIDs;
+    public static String[] detectableIDs;
     public static boolean disableSpaceshipParticles;
     public static boolean disableSpaceshipGrief;
-    public static boolean disableTutorialItemText;
     public static boolean oxygenIndicatorLeftSide;
     public static double oilGenFactor;
     public static boolean disableLeafDecay;
     public static boolean spaceStationsRequirePermission;
     public static boolean overrideCapes;
-    public static boolean hiresTextures;
     public static double spaceStationEnergyScalar;
     public static boolean disableLander;
-    public static Property forceLoadGC;
-    public static boolean enableKnowledgeBook;
     public static double dungeonBossHealthMod;
     public static int suffocationCooldown;
     public static int suffocationDamage;
     public static int[] externalOilGen;
     public static boolean forceOverworldRespawn;
     public static boolean enableDebug;
+    public static boolean enableCopperOreGen;
+    public static boolean enableTinOreGen;
+    public static boolean enableAluminumOreGen;
+    public static boolean enableSiliconOreGen;
 
     public static void setDefaultValues(File file)
     {
@@ -260,6 +255,7 @@ public class GCCoreConfigManager
             GCCoreConfigManager.idItemBattery = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemBattery", 13970).getInt(13970);
             GCCoreConfigManager.idItemInfiniteBattery = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemInfiniteBattery", 13971).getInt(13971);
             GCCoreConfigManager.idItemMeteorChunk = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemMeteorChunk", 9895).getInt(9895);
+            GCCoreConfigManager.idItemStandardWrench = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemStandardWrench", 9896).getInt(9896);
 
             GCCoreConfigManager.idToolSteelSword = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idToolSteelSword", 9885).getInt(9885);
             GCCoreConfigManager.idToolSteelPickaxe = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idToolSteelPickaxe", 9886).getInt(9886);
@@ -271,11 +267,6 @@ public class GCCoreConfigManager
             GCCoreConfigManager.idArmorSteelChestplate = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idArmorSteelChestplate", 9891).getInt(9891);
             GCCoreConfigManager.idArmorSteelLeggings = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idArmorSteelLeggings", 9892).getInt(9892);
             GCCoreConfigManager.idArmorSteelBoots = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idArmorSteelBoots", 9893).getInt(9893);
-
-            GCCoreConfigManager.useRecipesIC2 = GCCoreConfigManager.configuration.get("RECIPES", "Enable IC2 Recipes", true).getBoolean(true);
-            GCCoreConfigManager.useRecipesGT = GCCoreConfigManager.configuration.get("RECIPES", "Enable Gregtech Recipes", true).getBoolean(true);
-            GCCoreConfigManager.useRecipesUE = GCCoreConfigManager.configuration.get("RECIPES", "Enable Basic Components Recipes", true).getBoolean(true);
-            GCCoreConfigManager.useRecipesTE = GCCoreConfigManager.configuration.get("RECIPES", "Enable Thermal Expansion Recipes", true).getBoolean(true);
 
             GCCoreConfigManager.idGuiTankRefill = GCCoreConfigManager.configuration.get("GUI", "idGuiTankRefill", 128).getInt(128);
             GCCoreConfigManager.idGuiAirCompressor = GCCoreConfigManager.configuration.get("GUI", "idGuiAirCompressor", 129).getInt(129);
@@ -294,12 +285,11 @@ public class GCCoreConfigManager
             GCCoreConfigManager.idGuiParachest = GCCoreConfigManager.configuration.get("GUI", "idGuiParachest", 142).getInt(142);
             GCCoreConfigManager.idGuiSolarPanel = GCCoreConfigManager.configuration.get("GUI", "idGuiSolarPanel", 144).getInt(144);
             GCCoreConfigManager.idGuiExtendedInventory = GCCoreConfigManager.configuration.get("GUI", "idGuiExtendedInventory", 145).getInt(145);
-            // 143 - Tier 2 Rocket Bench GUI
+            GCCoreConfigManager.idGuiAirLockController = GCCoreConfigManager.configuration.get("GUI", "idGuiAirLockController", 148).getInt(148);
 
             GCCoreConfigManager.idSchematicRocketT1 = GCCoreConfigManager.configuration.get("Schematic", "idSchematicRocketT1", 0).getInt(0);
             GCCoreConfigManager.idSchematicMoonBuggy = GCCoreConfigManager.configuration.get("Schematic", "idSchematicMoonBuggy", 1).getInt(1);
             GCCoreConfigManager.idSchematicAddSchematic = GCCoreConfigManager.configuration.get("Schematic", "idSchematicAddSchematic", Integer.MAX_VALUE).getInt(Integer.MAX_VALUE);
-            // 2 - Mars Tier 2 Rocket Schematic
 
             GCCoreConfigManager.idAchievBase = GCCoreConfigManager.configuration.get("Achievements", "idAchievBase", 1784).getInt(1784);
 
@@ -321,29 +311,28 @@ public class GCCoreConfigManager
             GCCoreConfigManager.idEntityEvolvedSkeletonBoss = GCCoreConfigManager.configuration.get("Entities", "idEntityEvolvedSkeletonBoss", 170).getInt(170);
             GCCoreConfigManager.idEntityMeteorChunk = GCCoreConfigManager.configuration.get("Entities", "idEntityMeteorChunk", 179).getInt(179);
 
-            GCCoreConfigManager.transparentBreathableAir = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Transparent Breathable Air", true, "If you have FPS problems and wish to have solid blue breathable air blocks, set this to false").getBoolean(true);
             GCCoreConfigManager.moreStars = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "More Stars", true, "Setting this to false will revert night skies back to default minecraft star count").getBoolean(true);
             GCCoreConfigManager.wasdMapMovement = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "WASD Map Movement", true, "If you prefer to move the Galaxy map with your mouse, set to false").getBoolean(true);
             GCCoreConfigManager.oilGenFactor = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Oil Generation Factor", 1.8, "Increasing this will increase amount of oil that will generate in each chunk.").getDouble(1.8);
             GCCoreConfigManager.disableSpaceshipParticles = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Spaceship Particles", false, "If you have FPS problems, setting this to true will help if spaceship particles are in your sights").getBoolean(false);
             GCCoreConfigManager.disableSpaceshipGrief = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Spaceship Explosion", false, "Spaceships will not explode on contact if set to true").getBoolean(false);
-            GCCoreConfigManager.disableTutorialItemText = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Tutorial Item Info Text", false, "When set to true, the \"Press R to open Galacticraft Inventory\" message will not show").getBoolean(false);
             GCCoreConfigManager.oxygenIndicatorLeftSide = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Using Minimap Mod", false, "If true, this will move the Oxygen Indicator to the left side.").getBoolean(false);
             GCCoreConfigManager.disableLeafDecay = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Oxygen Collector Leaf Decay", false, "If set to true, Oxygen Collectors will not consume leaf blocks.").getBoolean(false);
             GCCoreConfigManager.spaceStationsRequirePermission = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Space Stations Require Permission", true, "While true, space stations require you to invite other players using /ssinvite <playername>").getBoolean(true);
             GCCoreConfigManager.overrideCapes = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Override Capes", true, "By default, Galacticraft will override capes with the mod's donor cape. Set to false to disable.").getBoolean(true);
-            GCCoreConfigManager.hiresTextures = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Hi-Res Textures (32x32)", true, "If you prefer low-resolution textures, set this to false").getBoolean(true);
             GCCoreConfigManager.spaceStationEnergyScalar = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Space Station Solar Energy Multiplier", 2.0, "If Mekanism is installed, solar panels will work (default 2x) more effective on space stations.").getDouble(2.0);
             GCCoreConfigManager.sealableIDs = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "External Sealable IDs", new String[] { String.valueOf(Block.glass.blockID + ":0"), String.valueOf(Block.thinGlass.blockID + ":0") }, "List IDs from other mods that the Oxygen Sealer should recognize as solid blocks. Format is ID:METADATA").getStringList();
-            GCCoreConfigManager.disableLander = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Lander", false, "Set to true if you do not want to use the new Moon Lander feature, and land on the moon with a parachute instead.").getBoolean(false);
-            GCCoreConfigManager.forceLoadGC = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Force Load", false, "Bypass mod requirements and load anyway (not recommended).");
-            GCCoreConfigManager.enableKnowledgeBook = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Enable Knowledge Book", true, "Set to false if you do not wish to have the book of knowledge item").getBoolean(true);
+            GCCoreConfigManager.detectableIDs = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "External Detectable IDs", new String[] { String.valueOf(Block.oreCoal.blockID + ":0"), String.valueOf(Block.oreDiamond.blockID + ":0"), String.valueOf(Block.oreGold.blockID + ":0"), String.valueOf(Block.oreIron.blockID + ":0"), String.valueOf(Block.oreLapis.blockID + ":0"), String.valueOf(Block.oreRedstone.blockID + ":0"), String.valueOf(Block.oreRedstoneGlowing.blockID + ":0") }, "List IDs from other mods that the Sensor Glasses should recognize as solid blocks. Format is ID:METADATA").getStringList();
             GCCoreConfigManager.dungeonBossHealthMod = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Dungeon Boss Health Modifier", 1.0D, "Change this is you wish to balance the mod (if you have more powerful weapon mods)").getDouble(1.0D);
             GCCoreConfigManager.suffocationCooldown = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Suffocation Cooldown", 100, "Lower/Raise this value to change time between suffocation damage ticks").getInt(100);
             GCCoreConfigManager.suffocationDamage = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Suffocation Damage", 2, "Change this value to modify the damage taken per suffocation tick").getInt(2);
             GCCoreConfigManager.externalOilGen = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Oil gen in external dimensions", new int[] { 0 }, "List of non-galacticraft dimension IDs to generate oil in").getIntList();
             GCCoreConfigManager.forceOverworldRespawn = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Force Overworld Spawn", false, "By default, you will respawn on galacticraft dimensions if you die. If you set this to true, you will respawn back on earth.").getBoolean(false);
             GCCoreConfigManager.enableDebug = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Enable Debug Messages", false, "If this is enabled, debug messages will appear in the console. This is useful for finding bugs in the mod.").getBoolean(false);
+            GCCoreConfigManager.enableCopperOreGen = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Enable Copper Ore Gen", true, "If this is enabled, copper ore will generate on the overworld.").getBoolean(true);
+            GCCoreConfigManager.enableTinOreGen = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Enable Tin Ore Gen", true, "If this is enabled, tin ore will generate on the overworld.").getBoolean(true);
+            GCCoreConfigManager.enableAluminumOreGen = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Enable Aluminum Ore Gen", true, "If this is enabled, aluminum ore will generate on the overworld.").getBoolean(true);
+            GCCoreConfigManager.enableSiliconOreGen = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Enable Silicon Ore Gen", true, "If this is enabled, silicon ore will generate on the overworld.").getBoolean(true);
         }
         catch (final Exception e)
         {

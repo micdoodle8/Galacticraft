@@ -1,11 +1,11 @@
 package micdoodle8.mods.galacticraft.core;
 
 import micdoodle8.mods.galacticraft.api.entity.IRocketType;
+import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
+import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.world.ICelestialBodyRenderer;
-import micdoodle8.mods.galacticraft.core.entities.EntitySpaceshipBase;
-import micdoodle8.mods.galacticraft.core.entities.EntityTieredRocket;
-import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerBatteryBox;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerCoalGenerator;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerElectricFurnace;
@@ -111,6 +111,11 @@ public class CommonProxyCore implements IGuiHandler
         return -1;
     }
 
+    public int getGCMachineRenderID()
+    {
+        return -1;
+    }
+
     public int getTitaniumArmorRenderIndex()
     {
         return 0;
@@ -202,6 +207,10 @@ public class CommonProxyCore implements IGuiHandler
         else if (ID == GCCoreConfigManager.idGuiExtendedInventory)
         {
             return new GCCoreContainerExtendedInventory(player, playerBase.getExtendedInventory());
+        }
+        else if (ID == GCCoreConfigManager.idGuiAirLockController)
+        {
+            return null;
         }
         else
         {

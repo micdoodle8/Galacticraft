@@ -10,7 +10,10 @@ public interface IBreathableArmor
 {
     public enum EnumGearType
     {
-        HELMET, GEAR, TANK1, TANK2;
+        HELMET,
+        GEAR,
+        TANK1,
+        TANK2;
     }
 
     /**

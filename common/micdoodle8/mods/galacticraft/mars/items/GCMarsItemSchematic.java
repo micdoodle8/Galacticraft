@@ -10,7 +10,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
-import cpw.mods.fml.common.registry.LanguageRegistry;
+import net.minecraft.util.StatCollector;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -46,12 +46,12 @@ public class GCMarsItemSchematic extends GCCoreItemSchematic implements ISchemat
     public void registerIcons(IconRegister iconRegister)
     {
         this.icons = new Icon[GCMarsItemSchematic.names.length];
-        
+
         for (int i = 0; i < GCMarsItemSchematic.names.length; i++)
         {
             this.icons[i] = iconRegister.registerIcon(GalacticraftMars.TEXTURE_PREFIX + GCMarsItemSchematic.names[i]);
         }
-        
+
     }
 
     @Override
@@ -75,11 +75,11 @@ public class GCMarsItemSchematic extends GCCoreItemSchematic implements ISchemat
             switch (par1ItemStack.getItemDamage())
             {
             case 0:
-                par3List.add(LanguageRegistry.instance().getStringLocalization("schematic.rocketT3.name"));
+                par3List.add(StatCollector.translateToLocal("schematic.rocketT3.name"));
                 par3List.add(EnumColor.DARK_AQUA + "COMING SOON");
                 break;
             case 1:
-                par3List.add(LanguageRegistry.instance().getStringLocalization("schematic.cargoRocket.name"));
+                par3List.add(StatCollector.translateToLocal("schematic.cargoRocket.name"));
                 break;
             }
         }

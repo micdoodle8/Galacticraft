@@ -139,12 +139,12 @@ public class SpaceStationRecipe
                             final int amountToRemove = Math.min(slot.stackSize, amountRemaining);
                             ItemStack newStack = slot.copy();
                             newStack.stackSize -= amountToRemove;
-                            
+
                             if (newStack.stackSize <= 0)
                             {
                                 newStack = null;
                             }
-                            
+
                             player.inventory.setInventorySlotContents(x, newStack);
                             amountRemoved += amountToRemove;
                         }
@@ -158,12 +158,12 @@ public class SpaceStationRecipe
                                 final int amountToRemove = Math.min(slot.stackSize, amountRemaining);
                                 ItemStack newStack = slot.copy();
                                 newStack.stackSize -= amountToRemove;
-                                
+
                                 if (newStack.stackSize <= 0)
                                 {
                                     newStack = null;
                                 }
-                                
+
                                 player.inventory.setInventorySlotContents(x, newStack);
                                 amountRemoved += amountToRemove;
                             }

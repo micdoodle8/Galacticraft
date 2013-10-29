@@ -20,7 +20,7 @@ public class GCCoreBlockGlowstoneTorch extends Block
     {
         super(id, Material.circuits);
         this.setTickRandomly(true);
-        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
         this.setLightValue(0.85F);
     }

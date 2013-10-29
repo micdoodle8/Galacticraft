@@ -16,8 +16,8 @@ import org.lwjgl.opengl.GL11;
  */
 public class GCCoreRenderMeteorChunk extends Render
 {
-    private static final ResourceLocation meteorChunkTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/meteorChunk.png");
-    private static final ResourceLocation meteorChunkHotTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/meteorChunkHot.png");
+    private static final ResourceLocation meteorChunkTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/meteorChunk.png");
+    private static final ResourceLocation meteorChunkHotTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/meteorChunkHot.png");
 
     protected IModelCustom meteorChunkModel;
 

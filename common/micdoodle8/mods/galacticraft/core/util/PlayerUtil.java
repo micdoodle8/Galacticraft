@@ -4,8 +4,8 @@ import java.util.Iterator;
 import java.util.Map;
 import micdoodle8.mods.galacticraft.core.GCLog;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
-import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
 
 public class PlayerUtil

@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.entity.ICargoEntity;
+import micdoodle8.mods.galacticraft.api.entity.ICargoEntity.EnumCargoLoadingState;
+import micdoodle8.mods.galacticraft.api.entity.ICargoEntity.RemovalResult;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,18 +13,18 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.item.IItemElectric;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
-public class GCCoreTileEntityCargoUnloader extends GCCoreTileEntityElectric implements IInventory, ISidedInventory, ICargoEntity, ILandingPadAttachable
+public class GCCoreTileEntityCargoUnloader extends GCCoreTileEntityElectric implements IInventory, ISidedInventory, ILandingPadAttachable
 {
     private ItemStack[] containingItems = new ItemStack[15];
-    public static final float WATTS_PER_TICK = 0.15F;
+    public static final float WATTS_PER_TICK = 0.075F;
     public boolean targetEmpty;
     public boolean targetNoInventory;
     public boolean noTarget;
@@ -230,7 +232,7 @@ public class GCCoreTileEntityCargoUnloader extends GCCoreTileEntityElectric impl
     @Override
     public String getInvName()
     {
-        return LanguageRegistry.instance().getStringLocalization("container.cargounloader.name");
+        return StatCollector.translateToLocal("container.cargounloader.name");
     }
 
     @Override
@@ -350,7 +352,6 @@ public class GCCoreTileEntityCargoUnloader extends GCCoreTileEntityElectric impl
         return this.getStackInSlot(0);
     }
 
-    @Override
     public EnumCargoLoadingState addCargo(ItemStack stack, boolean doAdd)
     {
         int count = 1;
@@ -388,7 +389,6 @@ public class GCCoreTileEntityCargoUnloader extends GCCoreTileEntityElectric impl
         return EnumCargoLoadingState.FULL;
     }
 
-    @Override
     public RemovalResult removeCargo(boolean doRemove)
     {
         for (int i = 1; i < this.containingItems.length; i++)

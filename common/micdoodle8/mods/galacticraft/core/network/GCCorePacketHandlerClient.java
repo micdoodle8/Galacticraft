@@ -12,7 +12,6 @@ import micdoodle8.mods.galacticraft.core.GCLog;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore.GCKeyHandler;
-import micdoodle8.mods.galacticraft.core.client.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityWeldingSmoke;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiBuggy;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiChoosePlanet;
@@ -20,6 +19,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiGalaxyMap;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiParachest;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreSpaceStationData;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
+import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
 import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerClient;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
@@ -50,14 +50,45 @@ public class GCCorePacketHandlerClient implements IPacketHandler
 {
     Minecraft mc = FMLClientHandler.instance().getClient();
 
-    public static enum EnumClientPacket
+    public static enum EnumPacketClient
     {
-        AIR_REMAINING(0, Integer.class, Integer.class, String.class), INVALID(1), UPDATE_DIMENSION_LIST(2, String.class, String.class), UNUSED_0(3), GEAR_PARACHUTE_ADD(4, String.class), GEAR_PARACHUTE_REMOVE(5, String.class), GEAR_PARACHUTETEX_ADD(6, String.class, String.class), GEAR_PARACHUTETEX_REMOVE(7, String.class, String.class), MOUNT_ROCKET(8, String.class), SPAWN_SPARK_PARTICLES(9, Integer.class, Integer.class, Integer.class), UPDATE_GEAR_SLOT(10, String.class, Integer.class), UNUSED_1(11), CLOSE_GUI(12), RESET_THIRD_PERSON(13, String.class), UPDATE_CONTROLLABLE_ENTITY(14), UNUSED_2(15), UPDATE_SPACESTATION_LIST(16), UPDATE_SPACESTATION_DATA(17), UPDATE_SPACESTATION_CLIENT_ID(18, Integer.class), UPDATE_PLANETS_LIST(19), ADD_NEW_SCHEMATIC(20, Integer.class), UPDATE_SCHEMATIC_LIST(21), ZOOM_CAMERA(22, Integer.class), PLAY_SOUND_BOSS_DEATH(23), PLAY_SOUND_EXPLODE(24), PLAY_SOUND_BOSS_LAUGH(25), PLAY_SOUND_BOW(26), UPDATE_OXYGEN_VALIDITY(27, Boolean.class), OPEN_PARACHEST_GUI(28, Integer.class, Integer.class, Integer.class), UPDATE_LANDER(29), UPDATE_PARACHEST(30), UPDATE_WIRE_BOUNDS(31, Integer.class, Integer.class, Integer.class);
+        AIR_REMAINING(0, Integer.class, Integer.class, String.class),
+        INVALID(1),
+        UPDATE_DIMENSION_LIST(2, String.class, String.class),
+        UNUSED_0(3),
+        GEAR_PARACHUTE_ADD(4, String.class),
+        GEAR_PARACHUTE_REMOVE(5, String.class),
+        GEAR_PARACHUTETEX_ADD(6, String.class, String.class),
+        GEAR_PARACHUTETEX_REMOVE(7, String.class, String.class),
+        MOUNT_ROCKET(8, String.class),
+        SPAWN_SPARK_PARTICLES(9, Integer.class, Integer.class, Integer.class),
+        UPDATE_GEAR_SLOT(10, String.class, Integer.class),
+        UNUSED_1(11),
+        CLOSE_GUI(12),
+        RESET_THIRD_PERSON(13, String.class),
+        UPDATE_CONTROLLABLE_ENTITY(14),
+        UNUSED_2(15),
+        UPDATE_SPACESTATION_LIST(16),
+        UPDATE_SPACESTATION_DATA(17),
+        UPDATE_SPACESTATION_CLIENT_ID(18, Integer.class),
+        UPDATE_PLANETS_LIST(19),
+        ADD_NEW_SCHEMATIC(20, Integer.class),
+        UPDATE_SCHEMATIC_LIST(21),
+        ZOOM_CAMERA(22, Integer.class),
+        PLAY_SOUND_BOSS_DEATH(23),
+        PLAY_SOUND_EXPLODE(24),
+        PLAY_SOUND_BOSS_LAUGH(25),
+        PLAY_SOUND_BOW(26),
+        UPDATE_OXYGEN_VALIDITY(27, Boolean.class),
+        OPEN_PARACHEST_GUI(28, Integer.class, Integer.class, Integer.class),
+        UPDATE_LANDER(29),
+        UPDATE_PARACHEST(30),
+        UPDATE_WIRE_BOUNDS(31, Integer.class, Integer.class, Integer.class);
 
         private int index;
         private Class<?>[] decodeAs;
 
-        private EnumClientPacket(int index, Class<?>... decodeAs)
+        private EnumPacketClient(int index, Class<?>... decodeAs)
         {
             this.index = index;
             this.decodeAs = decodeAs;
@@ -100,7 +131,7 @@ public class GCCorePacketHandlerClient implements IPacketHandler
             playerBaseClient = PlayerUtil.getPlayerBaseClientFromPlayer(player);
         }
 
-        EnumClientPacket packetType = EnumClientPacket.values()[PacketUtil.readPacketID(data)];
+        EnumPacketClient packetType = EnumPacketClient.values()[PacketUtil.readPacketID(data)];
 
         Class<?>[] decodeAs = packetType.getDecodeClasses();
         Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
@@ -141,7 +172,7 @@ public class GCCorePacketHandlerClient implements IPacketHandler
             ClientProxyCore.playersUsingParachutes.remove(packetReadout[0]);
             break;
         case GEAR_PARACHUTETEX_ADD:
-            ClientProxyCore.parachuteTextures.put((String) packetReadout[0], new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/parachute/" + (String) packetReadout[1] + ".png"));
+            ClientProxyCore.parachuteTextures.put((String) packetReadout[0], new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/parachute/" + (String) packetReadout[1] + ".png"));
             break;
         case GEAR_PARACHUTETEX_REMOVE:
             ClientProxyCore.parachuteTextures.remove(packetReadout[0]);
@@ -386,13 +417,13 @@ public class GCCorePacketHandlerClient implements IPacketHandler
             GCCoreTickHandlerClient.zoom((Integer) packetReadout[0] == 0 ? 4.0F : 15.0F);
             break;
         case PLAY_SOUND_BOSS_DEATH:
-            player.playSound("galacticraft.entity.bossdeath", 10.0F, 0.8F);
+            player.playSound(GalacticraftCore.ASSET_PREFIX + "entity.bossdeath", 10.0F, 0.8F);
             break;
         case PLAY_SOUND_EXPLODE:
             player.playSound("random.explode", 10.0F, 0.7F);
             break;
         case PLAY_SOUND_BOSS_LAUGH:
-            player.playSound("galacticraft.entity.bosslaugh", 10.0F, 0.2F);
+            player.playSound(GalacticraftCore.ASSET_PREFIX + "entity.bosslaugh", 10.0F, 0.2F);
             break;
         case PLAY_SOUND_BOW:
             player.playSound("random.bow", 10.0F, 0.2F);

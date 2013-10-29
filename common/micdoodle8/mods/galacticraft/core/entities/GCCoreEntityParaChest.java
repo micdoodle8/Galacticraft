@@ -150,7 +150,7 @@ public class GCCoreEntityParaChest extends Entity
                 chest.chestContents[i] = this.cargo[i];
             }
 
-            chest.fuelTank.fill(FluidRegistry.getFluidStack(GalacticraftCore.FUEL.getName().toLowerCase(), this.fuelLevel), true);
+            chest.fuelTank.fill(FluidRegistry.getFluidStack(GalacticraftCore.fluidFuel.getName().toLowerCase(), this.fuelLevel), true);
 
             return true;
         }

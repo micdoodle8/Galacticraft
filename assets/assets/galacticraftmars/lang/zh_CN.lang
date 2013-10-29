@@ -9,6 +9,8 @@ item.reinforcedPlateT2.name=重装板
 item.tier2.desc=2阶
 item.slimelingCargo.name=黏滑物品背包
 item.key.T2.name=2阶地牢钥匙
+item.compressedDesh.name=致密戴斯
+item.spaceshipTier2.cargoRocket.name=货运火箭
 
 # TOOLS
 item.deshPick.name=戴斯镐
@@ -24,7 +26,7 @@ item.deshLeggings.name=戴斯护腿
 item.deshBoots.name=戴斯靴子
 
 # BLOCKS
-tile.mars.deshmars.name=Desh矿石
+tile.mars.deshmars.name=戴斯矿石
 tile.mars.coppermars.name=铜矿石
 tile.mars.tinmars.name=锡矿石
 tile.mars.ironmars.name=铁矿石
@@ -40,6 +42,7 @@ tile.slimelingEgg.blueEgg.name=蓝色黏滑怪蛋
 tile.slimelingEgg.yellowEgg.name=黄色黏滑怪蛋
 tile.marsMachine.0.name=地形改造机
 tile.marsMachine.1.name=低温仓
+tile.marsMachine.2.name=发射控制器
 tile.sludge.name=菌泥
 tile.creeperEgg.name=爬行者蛋
 tile.cavernVines.name=岩穴藤蔓
@@ -72,8 +75,12 @@ dimension.Mars.name=火星
 
 # Schematics
 schematic.rocketT3.name=3阶火箭
+schematic.cargoRocket.name=自动货运火箭
 
 # Entity
 entity.Sludgeling.name=泥浆怪
 entity.Slimeling.name=黏滑怪
 entity.CreeperBoss.name=进化爬行者之王
+
+# Container
+container.launchcontroller.name=发射控制器

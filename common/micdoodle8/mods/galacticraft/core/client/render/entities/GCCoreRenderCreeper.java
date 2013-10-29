@@ -27,8 +27,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCCoreRenderCreeper extends RenderLiving
 {
-    private static final ResourceLocation creeperTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/creeper.png");
-    private static final ResourceLocation powerTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/power.png");
+    private static final ResourceLocation creeperTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/creeper.png");
+    private static final ResourceLocation powerTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/power.png");
 
     private final ModelBase creeperModel = new GCCoreModelCreeper(0.2F);
 

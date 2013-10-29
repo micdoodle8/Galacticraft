@@ -8,11 +8,12 @@ import java.util.Random;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLanderFlameFX;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityAdvanced;
-import micdoodle8.mods.galacticraft.core.entities.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.IScaleableFuelLevel;
+import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumClientPacket;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumPacketClient;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerServer.EnumPacketServer;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.mars.util.GCMarsUtil;
 import net.minecraft.client.particle.EntityFX;
@@ -76,7 +77,7 @@ public class GCMarsEntityLandingBalloons extends GCCoreEntityAdvanced implements
         this.playerSpawnedIn = player;
 
         this.chestContents = new ItemStack[player.getRocketStacks().length + 1];
-        this.fuelTank.setFluid(new FluidStack(GalacticraftCore.FUEL, player.getFuelLevel()));
+        this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, player.getFuelLevel()));
 
         for (int i = 0; i < player.getRocketStacks().length; i++)
         {
@@ -349,7 +350,7 @@ public class GCMarsEntityLandingBalloons extends GCCoreEntityAdvanced implements
         }
         else if (var1 instanceof EntityPlayerMP)
         {
-            ((EntityPlayerMP) var1).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumClientPacket.ZOOM_CAMERA, new Object[] { 0 }));
+            ((EntityPlayerMP) var1).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.ZOOM_CAMERA, new Object[] { 0 }));
             var1.mountEntity(null);
             return true;
         }
@@ -526,10 +527,10 @@ public class GCMarsEntityLandingBalloons extends GCCoreEntityAdvanced implements
                 if (this.chestContents == null || this.chestContents.length == 0)
                 {
                     this.chestContents = new ItemStack[cargoLength];
-                    PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 21, new Object[] { this.entityId }));
+                    PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.UPDATE_DYNAMIC_ENTITY_INV, new Object[] { this.entityId }));
                 }
 
-                this.fuelTank.setFluid(new FluidStack(GalacticraftCore.FUEL, dataStream.readInt()));
+                this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, dataStream.readInt()));
             }
         }
         catch (final Exception e)

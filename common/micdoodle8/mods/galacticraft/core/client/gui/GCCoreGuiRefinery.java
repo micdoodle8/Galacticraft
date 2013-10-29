@@ -6,6 +6,7 @@ import mekanism.api.EnumColor;
 import micdoodle8.mods.galacticraft.core.GCCoreCompatibilityManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRefinery;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerServer.EnumPacketServer;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityRefinery;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.client.gui.GuiButton;
@@ -16,14 +17,13 @@ import org.lwjgl.opengl.GL11;
 import universalelectricity.core.electricity.ElectricityDisplay;
 import universalelectricity.core.electricity.ElectricityDisplay.ElectricUnit;
 import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class GCCoreGuiRefinery extends GCCoreGuiContainer
 {
-    private static final ResourceLocation refineryTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/refinery.png");
+    private static final ResourceLocation refineryTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/refinery.png");
 
     private final GCCoreTileEntityRefinery tileEntity;
 
@@ -92,7 +92,7 @@ public class GCCoreGuiRefinery extends GCCoreGuiContainer
         this.electricInfoRegion.parentWidth = this.width;
         this.electricInfoRegion.parentHeight = this.height;
         this.infoRegions.add(this.electricInfoRegion);
-        this.buttonList.add(this.buttonDisable = new GuiButton(0, this.width / 2 - 39, this.height / 2 - 56, 76, 20, LanguageRegistry.instance().getStringLocalization("gui.button.refine.name")));
+        this.buttonList.add(this.buttonDisable = new GuiButton(0, this.width / 2 - 39, this.height / 2 - 56, 76, 20, StatCollector.translateToLocal("gui.button.refine.name")));
     }
 
     @Override
@@ -101,7 +101,7 @@ public class GCCoreGuiRefinery extends GCCoreGuiContainer
         switch (par1GuiButton.id)
         {
         case 0:
-            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, 17, new Object[] { this.tileEntity.xCoord, this.tileEntity.yCoord, this.tileEntity.zCoord, 0 }));
+            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.UPDATE_DISABLEABLE_BUTTON, new Object[] { this.tileEntity.xCoord, this.tileEntity.yCoord, this.tileEntity.zCoord, 0 }));
             break;
         }
     }
@@ -115,24 +115,24 @@ public class GCCoreGuiRefinery extends GCCoreGuiContainer
 
         if (this.tileEntity.oilTank.getFluid() == null || this.tileEntity.oilTank.getFluidAmount() == 0)
         {
-            displayText = EnumColor.RED + LanguageRegistry.instance().getStringLocalization("gui.status.nooil.name");
+            displayText = EnumColor.RED + StatCollector.translateToLocal("gui.status.nooil.name");
         }
         else if (this.tileEntity.oilTank.getFluidAmount() > 0 && this.tileEntity.disabled)
         {
-            displayText = EnumColor.ORANGE + LanguageRegistry.instance().getStringLocalization("gui.status.ready.name");
+            displayText = EnumColor.ORANGE + StatCollector.translateToLocal("gui.status.ready.name");
         }
         else if (this.tileEntity.canProcess())
         {
-            displayText = EnumColor.BRIGHT_GREEN + LanguageRegistry.instance().getStringLocalization("gui.status.refining.name");
+            displayText = EnumColor.BRIGHT_GREEN + StatCollector.translateToLocal("gui.status.refining.name");
         }
         else
         {
-            displayText = EnumColor.RED + LanguageRegistry.instance().getStringLocalization("gui.status.unknown.name");
+            displayText = EnumColor.RED + StatCollector.translateToLocal("gui.status.unknown.name");
         }
 
         this.buttonDisable.enabled = this.tileEntity.disableCooldown == 0;
-        this.buttonDisable.displayString = this.tileEntity.processTicks == 0 ? LanguageRegistry.instance().getStringLocalization("gui.button.refine.name") : LanguageRegistry.instance().getStringLocalization("gui.button.stoprefine.name");
-        this.fontRenderer.drawString(LanguageRegistry.instance().getStringLocalization("gui.message.status.name") + ": " + displayText, 72, 45 + 23 + yOffset, 4210752);
+        this.buttonDisable.displayString = this.tileEntity.processTicks == 0 ? StatCollector.translateToLocal("gui.button.refine.name") : StatCollector.translateToLocal("gui.button.stoprefine.name");
+        this.fontRenderer.drawString(StatCollector.translateToLocal("gui.message.status.name") + ": " + displayText, 72, 45 + 23 + yOffset, 4210752);
         this.fontRenderer.drawString(ElectricityDisplay.getDisplay(this.tileEntity.ueWattsPerTick * 20, ElectricUnit.WATT), 72, 56 + 23 + yOffset, 4210752);
         this.fontRenderer.drawString(ElectricityDisplay.getDisplay(this.tileEntity.getVoltage(), ElectricUnit.VOLTAGE), 72, 68 + 23 + yOffset, 4210752);
         this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 118 + 2 + 23, 4210752);

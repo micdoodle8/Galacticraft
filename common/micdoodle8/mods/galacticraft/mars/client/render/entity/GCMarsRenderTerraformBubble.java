@@ -20,7 +20,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCMarsRenderTerraformBubble extends Render
 {
-    private static final ResourceLocation bubbleTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/bubble.png");
+    private static final ResourceLocation bubbleTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/bubble.png");
 
     private final GCCoreModelOxygenBubble bubbleModel = new GCCoreModelOxygenBubble();
 

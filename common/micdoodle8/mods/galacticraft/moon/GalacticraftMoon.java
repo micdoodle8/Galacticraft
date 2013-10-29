@@ -99,7 +99,7 @@ public class GalacticraftMoon
         OreDictionary.registerOre("ingotMeteoricIron", new ItemStack(GCMoonItems.meteoricIronIngot, 1, 0));
 
         RecipeUtil.addRecipe(new ItemStack(GCMoonItems.cheeseBlock, 1), new Object[] { "YYY", "YXY", "YYY", 'X', Item.bucketMilk, 'Y', GCMoonItems.cheeseCurd });
-        
+
         CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(new ItemStack(GCCoreItems.meteorChunk, 3), new Object[] { GCMoonItems.meteoricIronRaw }));
     }
 

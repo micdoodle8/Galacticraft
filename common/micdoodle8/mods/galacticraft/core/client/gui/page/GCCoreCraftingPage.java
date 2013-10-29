@@ -16,7 +16,7 @@ public class GCCoreCraftingPage extends GCCoreBookPage
     String text;
     String size;
     ItemStack[] icons;
-    private static final ResourceLocation background = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/bookcrafting.png");
+    private static final ResourceLocation background = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/bookcrafting.png");
 
     @Override
     public void readPageFromXML(Element element)

@@ -4,12 +4,13 @@
 item.rawDesh.name=Необработанная деш
 item.deshStick.name=Палка из деш
 item.ingotDesh.name=Слиток деш
-item.deshPlate.name=Деш покрытие
 item.spaceshipTier2.name=Ракета Tier 2
 item.reinforcedPlateT2.name=Сверхпрочное покрытие
 item.tier2.desc=Tier 2
 item.slimelingCargo.name=Сумка слаймлинга
 item.key.T2.name=Ключ подземелья Tier 2
+item.compressedDesh.name=Сжатая деш
+item.spaceshipTier2.cargoRocket.name=Грузовая ракета
 
 # TOOLS
 item.deshPick.name=Кирка из деш
@@ -33,7 +34,7 @@ tile.mars.marscobblestone.name=Марсианский булыжник
 tile.mars.marsstone.name=Марсианский камень
 tile.mars.marsdirt.name=Марсианский грунт
 tile.mars.marsgrass.name=Марсианский дёрн
-tile.mars.marsdeco.name=Декорационный блок деш
+tile.mars.marsdeco.name=Декоративный блок деш
 tile.mars.marsdungeon.name=Стена подземелья
 tile.treasureT2.name=Tier 2 сундук с сокровищами
 tile.slimelingEgg.redEgg.name=Красное яйцо слаймлинга
@@ -41,6 +42,7 @@ tile.slimelingEgg.blueEgg.name=Синее яйцо слаймлинга
 tile.slimelingEgg.yellowEgg.name=Жёлтое яйцо слаймлинга
 tile.marsMachine.0.name=Терраформер
 tile.marsMachine.1.name=Криогенная камера
+tile.marsMachine.2.name=Контроллер запуска
 tile.sludge.name=Бактериальный осадкок
 tile.creeperEgg.name=Яйцо крипера
 tile.cavernVines.name=Пещерные лианы
@@ -73,8 +75,12 @@ dimension.Mars.name=Марс
 
 # Schematics
 schematic.rocketT3.name=Ракета Tier 3
+schematic.cargoRocket.name=Автоматическая грузовая ракета
 
 # Entity
 entity.Sludgeling.name=Сладжлинг
 entity.Slimeling.name=Слаймлинг
 entity.CreeperBoss.name=Эволюционировавший крипер-босс
+
+# Container
+container.launchcontroller.name=Контроллер запуска

@@ -20,7 +20,7 @@ public class GCCoreItemArmor extends ItemArmor
         super(id, GCCoreItems.ARMOR_STEEL, GalacticraftCore.proxy.getTitaniumArmorRenderIndex(), armorIndex);
         this.material = GCCoreItems.ARMOR_STEEL;
         this.setUnlocalizedName("steel_" + assetSuffix);
-        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + "steel_" + assetSuffix);
+        this.setTextureName(GalacticraftCore.ASSET_PREFIX + "steel_" + assetSuffix);
     }
 
     @Override

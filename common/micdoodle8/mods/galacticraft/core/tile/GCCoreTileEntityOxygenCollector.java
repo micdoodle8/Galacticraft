@@ -18,6 +18,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.IPlantable;
@@ -26,7 +27,6 @@ import universalelectricity.core.vector.Vector3;
 import universalelectricity.core.vector.VectorHelper;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric implements ITubeConnection, IInventory, ISidedInventory
 {
@@ -288,7 +288,7 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric im
     @Override
     public String getInvName()
     {
-        return LanguageRegistry.instance().getStringLocalization("container.oxygencollector.name");
+        return StatCollector.translateToLocal("container.oxygencollector.name");
     }
 
     @Override

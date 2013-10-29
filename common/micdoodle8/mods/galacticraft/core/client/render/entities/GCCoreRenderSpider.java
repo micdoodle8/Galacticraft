@@ -26,8 +26,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCCoreRenderSpider extends RenderLiving
 {
-    private static final ResourceLocation spiderTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/spider.png");
-    private static final ResourceLocation powerTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/model/power.png");
+    private static final ResourceLocation spiderTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/spider.png");
+    private static final ResourceLocation powerTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/power.png");
 
     private final ModelBase model = new GCCoreModelSpider(0.2F);
 

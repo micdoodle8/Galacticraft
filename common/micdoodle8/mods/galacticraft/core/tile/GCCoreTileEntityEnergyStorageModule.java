@@ -13,13 +13,13 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.item.IItemElectric;
 import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class GCCoreTileEntityEnergyStorageModule extends GCCoreTileEntityUniversalElectrical implements IPacketReceiver, ISidedInventory
 {
@@ -212,7 +212,7 @@ public class GCCoreTileEntityEnergyStorageModule extends GCCoreTileEntityUnivers
     @Override
     public String getInvName()
     {
-        return LanguageRegistry.instance().getStringLocalization("tile.machine.1.name");
+        return StatCollector.translateToLocal("tile.machine.1.name");
     }
 
     @Override

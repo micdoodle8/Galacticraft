@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.Random;
-import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol;
 import net.minecraft.block.Block;
@@ -17,7 +16,7 @@ public class GCCoreBlockBreathableAir extends Block
         super(id, Material.air);
         this.setResistance(1000.0F);
         this.setHardness(0.0F);
-        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
     }
 
@@ -60,7 +59,7 @@ public class GCCoreBlockBreathableAir extends Block
     @Override
     public int getRenderBlockPass()
     {
-        return GCCoreConfigManager.transparentBreathableAir ? 1 : 0;
+        return 1;
     }
 
     @Override

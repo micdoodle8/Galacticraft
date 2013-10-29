@@ -12,8 +12,8 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
+import net.minecraft.util.StatCollector;
 import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -30,7 +30,7 @@ public class GCCoreItemSchematic extends Item implements ISchematicItem
         this.setHasSubtypes(true);
         this.setMaxStackSize(1);
         this.setUnlocalizedName(assetName);
-        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
     }
 
     @Override
@@ -93,10 +93,10 @@ public class GCCoreItemSchematic extends Item implements ISchematicItem
             switch (par1ItemStack.getItemDamage())
             {
             case 0:
-                par3List.add(LanguageRegistry.instance().getStringLocalization("schematic.moonbuggy.name"));
+                par3List.add(StatCollector.translateToLocal("schematic.moonbuggy.name"));
                 break;
             case 1:
-                par3List.add(LanguageRegistry.instance().getStringLocalization("schematic.rocketT2.name"));
+                par3List.add(StatCollector.translateToLocal("schematic.rocketT2.name"));
                 if (!Loader.isModLoaded("GalacticraftMars"))
                 {
                     par3List.add(EnumColor.DARK_AQUA + "\"Galacticraft: Planets\" Not Installed!");

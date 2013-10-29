@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -23,7 +24,6 @@ import universalelectricity.core.item.IItemElectric;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implements IInventory, ISidedInventory, IFluidHandler
 {
@@ -325,7 +325,7 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
     @Override
     public String getInvName()
     {
-        return LanguageRegistry.instance().getStringLocalization("container.refinery.name");
+        return StatCollector.translateToLocal("container.refinery.name");
     }
 
     @Override
@@ -433,8 +433,8 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
         {
             this.setEnergyStored(data.readFloat());
             this.processTicks = data.readInt();
-            this.oilTank.setFluid(new FluidStack(GalacticraftCore.CRUDEOIL, data.readInt()));
-            this.fuelTank.setFluid(new FluidStack(GalacticraftCore.FUEL, data.readInt()));
+            this.oilTank.setFluid(new FluidStack(GalacticraftCore.fluidOil, data.readInt()));
+            this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, data.readInt()));
             this.disabled = data.readBoolean();
             this.disableCooldown = data.readInt();
         }
@@ -485,7 +485,7 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
     {
         if (from.equals(ForgeDirection.getOrientation(this.getBlockMetadata() + 2)))
         {
-            return this.drain(from, new FluidStack(GalacticraftCore.FUEL, maxDrain), doDrain);
+            return this.drain(from, new FluidStack(GalacticraftCore.fluidFuel, maxDrain), doDrain);
         }
 
         return null;

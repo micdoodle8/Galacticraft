@@ -30,8 +30,8 @@ public class GCCoreGuiManual extends GuiScreen
     int currentPage;
     int maxPages;
 
-    private static final ResourceLocation bookRight = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/bookright.png");
-    private static final ResourceLocation bookLeft = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/bookleft.png");
+    private static final ResourceLocation bookRight = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/bookright.png");
+    private static final ResourceLocation bookLeft = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/bookleft.png");
 
     private GCCoreBookPage pageLeft;
     private GCCoreBookPage pageRight;

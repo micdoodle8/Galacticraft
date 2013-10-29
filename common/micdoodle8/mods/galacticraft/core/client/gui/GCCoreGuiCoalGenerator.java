@@ -16,7 +16,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCCoreGuiCoalGenerator extends GuiContainer
 {
-    private static final ResourceLocation coalGeneratorTexture = new ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN, "textures/gui/coal_generator.png");
+    private static final ResourceLocation coalGeneratorTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/coal_generator.png");
 
     private GCCoreTileEntityCoalGenerator tileEntity;
 
