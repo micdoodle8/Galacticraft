@@ -103,7 +103,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
         {
             if (this.riddenByEntity != null)
             {
-                if (this.ticks >= 10)
+                if (this.ticks >= 40)
                 {
                     if (!this.worldObj.isRemote)
                     {
@@ -129,6 +129,11 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
         }
         
         super.onUpdate();
+        
+        if (this.landing)
+        {
+            this.rotationPitch = this.rotationYaw = 0;
+        }
         
         if (!this.worldObj.isRemote)
         {
@@ -431,7 +436,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
     {
         if (this.targetVec != null)
         {
-            this.setPositionAndRotation(this.targetVec.x + 0.5F, this.targetVec.y + 800, this.targetVec.z + 0.5F, 0.0F, 0.0F);
+            this.setPosition(this.targetVec.x + 0.5F, this.targetVec.y + 800, this.targetVec.z + 0.5F);
             this.landing = true;
             this.setWaitForPlayer(true);
             this.motionX = this.motionY = this.motionZ = 0.0D;
