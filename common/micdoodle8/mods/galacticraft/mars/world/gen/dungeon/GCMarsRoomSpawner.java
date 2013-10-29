@@ -82,11 +82,14 @@ public class GCMarsRoomSpawner extends GCCoreDungeonRoom
     {
         for (final ChunkCoordinates spawnerCoords : this.spawners)
         {
-            final TileEntityMobSpawner spawner = (TileEntityMobSpawner) this.worldObj.getBlockTileEntity(spawnerCoords.posX, spawnerCoords.posY, spawnerCoords.posZ);
-            if (spawner != null)
-            {
-                spawner.getSpawnerLogic().setMobID(GCMarsRoomSpawner.getMob(rand));
-            }
+        	if(this.worldObj.getBlockId(spawnerCoords.posX, spawnerCoords.posY, spawnerCoords.posZ) == Block.mobSpawner.blockID)
+        	{
+	            final TileEntityMobSpawner spawner = (TileEntityMobSpawner) this.worldObj.getBlockTileEntity(spawnerCoords.posX, spawnerCoords.posY, spawnerCoords.posZ);
+	            if (spawner != null)
+	            {
+	                spawner.getSpawnerLogic().setMobID(GCMarsRoomSpawner.getMob(rand));
+	            }
+        	}
         }
     }
 
