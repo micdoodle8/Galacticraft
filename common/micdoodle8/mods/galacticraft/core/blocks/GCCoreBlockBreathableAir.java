@@ -2,13 +2,11 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.Random;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import universalelectricity.core.vector.Vector3;
 
 public class GCCoreBlockBreathableAir extends Block
 {
@@ -76,16 +74,6 @@ public class GCCoreBlockBreathableAir extends Block
     }
 
     @Override
-    public void onBlockAdded(World var1, int var2, int var3, int var4)
-    {
-        if (var1.getBlockMetadata(var2, var3, var4) == 5)
-        {
-            final OxygenPressureProtocol protocol = new OxygenPressureProtocol();
-            this.spread(protocol, var1, var2, var3, var4);
-        }
-    }
-
-    @Override
     public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
         if (par1IBlockAccess.getBlockId(par2, par3, par4) == this.blockID)
@@ -132,29 +120,6 @@ public class GCCoreBlockBreathableAir extends Block
             {
                 return false;
             }
-        }
-    }
-
-    @Override
-    public void onNeighborBlockChange(World var1, int var2, int var3, int var4, int var5)
-    {
-        final OxygenPressureProtocol protocol = new OxygenPressureProtocol();
-        
-        if (var5 != 0 && var5 != GCCoreBlocks.breatheableAir.blockID)
-        {
-            this.spread(protocol, var1, var2, var3, var4);
-        }
-    }
-
-    private void spread(OxygenPressureProtocol var5, World var1, int x, int y, int z)
-    {
-        if (OxygenPressureProtocol.checkSeal(var1, x, y, z, OxygenPressureProtocol.MAX_SEAL_CHECKS))
-        {
-            OxygenPressureProtocol.seal2(var1, new Vector3(x, y, z), OxygenPressureProtocol.MAX_SEAL_CHECKS);
-        }
-        else
-        {
-            OxygenPressureProtocol.unSeal2(var1, new Vector3(x, y, z));
         }
     }
 }

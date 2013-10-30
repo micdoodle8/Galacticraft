@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol;
+import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol.ThreadFindSeal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -10,10 +11,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.item.IItemElectric;
-import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
 
@@ -33,6 +32,7 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 
     public boolean active;
     private ItemStack[] containingItems = new ItemStack[1];
+    public ThreadFindSeal threadFindSeal;
 
     public GCCoreTileEntityOxygenSealer()
     {
@@ -46,11 +46,11 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 
         if (!this.worldObj.isRemote)
         {
-            if (this.ticks % 10 == 0)
+            if (this.threadFindSeal != null)
             {
-                this.sealed = this.checkSeal(this.worldObj, this.xCoord, this.yCoord + 1, this.zCoord);
+                this.sealed = this.threadFindSeal.sealed;
             }
-
+            
             if (this.storedOxygen >= 1 && this.getEnergyStored() > 0 && !this.disabled)
             {
                 this.active = true;
@@ -59,10 +59,13 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
             {
                 this.active = false;
             }
-
-            if (this.sealed && !this.lastSealed)
+            
+            if (this.active)
             {
-                this.sealArea((int) Math.floor(this.storedOxygen / 10.0D));
+                if (this.ticks % 60 == 0)
+                {
+                    OxygenPressureProtocol.updateSealerStatus(this);
+                }
             }
 
             this.lastDisabled = this.disabled;
@@ -238,21 +241,6 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
     public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
     {
         return slotID == 0 ? itemstack.getItem() instanceof IItemElectric : false;
-    }
-
-    private boolean checkSeal(World var1, int x, int y, int z)
-    {
-        return OxygenPressureProtocol.checkSeal(var1, x, y, z, 3);
-    }
-
-    private void sealArea(int maxChecks)
-    {
-        OxygenPressureProtocol.seal2(this, 2);
-    }
-
-    public void unSealArea(World var1, int var2, int var3, int var4)
-    {
-        OxygenPressureProtocol.unSeal2(var1, new Vector3(var2, var3, var4));
     }
 
     @Override

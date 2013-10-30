@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol.VecDirPair;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenSealer;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -158,8 +159,19 @@ public class GCCoreBlockOxygenSealer extends GCCoreBlockAdvanced
         if (tile instanceof GCCoreTileEntityOxygenSealer)
         {
             GCCoreTileEntityOxygenSealer sealer = (GCCoreTileEntityOxygenSealer) tile;
-
-            sealer.unSealArea(world, x, y + 1, z);
+            
+            if (sealer.threadFindSeal != null && sealer.threadFindSeal.sealed)
+            {
+                for (VecDirPair checkedVec : sealer.threadFindSeal.checked)
+                {
+                    int blockID = checkedVec.getPosition().getBlockID(world);
+                    
+                    if (blockID == GCCoreBlocks.breatheableAir.blockID)
+                    {
+                        world.setBlock(checkedVec.getPosition().intX(), checkedVec.getPosition().intY(), checkedVec.getPosition().intZ(), 0, 0, 2);
+                    }
+                }
+            }
         }
 
         super.breakBlock(world, x, y, z, par5, par6);
