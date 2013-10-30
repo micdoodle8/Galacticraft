@@ -84,6 +84,46 @@ public class OxygenPressureProtocol
         }
     }
 
+    private static void nextVecD(World var1, int var2, int var3, int var4, LinkedList<VecDirPair> checked)
+    {
+        for (final ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+        {
+            Vector3 vec = new Vector3(var2, var3, var4);
+            vec = vec.translate(new Vector3(dir));
+
+            if (OxygenPressureProtocol.isBreathableAir(var1, vec.intX(), vec.intY(), vec.intZ()) && !isVisited(vec, checked))
+            {
+                checkAtVec(var1, vec, dir, checked);
+            }
+        }
+    }
+
+    private static void checkAtVec(World var1, Vector3 vec, ForgeDirection dir, LinkedList<VecDirPair> checked)
+    {
+        checked.add(new VecDirPair(vec, dir));
+
+        if (isTouchingBreathableAir(var1, vec.intX(), vec.intY(), vec.intZ(), checked))
+        {
+            nextVecD(var1, vec.intX(), vec.intY(), vec.intZ(), checked);
+        }
+    }
+
+    private static boolean isTouchingBreathableAir(World world, int x, int y, int z, LinkedList<VecDirPair> checked)
+    {
+        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+        {
+            Vector3 vec = new Vector3(x, y, z);
+            vec = vec.translate(new Vector3(dir));
+
+            if (OxygenPressureProtocol.isBreathableAir(world, vec.intX(), vec.intY(), vec.intZ()) && !isVisited(vec, checked))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private static boolean nextVec(World world, int x, int y, int z, int maxChecks, LinkedList<VecDirPair> checked, List<GCCoreTileEntityOxygenSealer> sealers, List<Vector3> oxygenReliantBlocks)
     {
         boolean airTight = true;
@@ -260,6 +300,12 @@ public class OxygenPressureProtocol
         {
             long startTime = System.nanoTime();
             this.sealed = nextVec(this.world, this.head.xCoord, this.head.yCoord, this.head.zCoord, MAX_SEAL_CHECKS, checked, this.sealers, this.oxygenReliantBlocks);
+            
+            if (!this.sealed)
+            {
+                this.checked.clear();
+                nextVecD(world, this.head.xCoord, this.head.yCoord, this.head.zCoord, checked);
+            }
             
             for (GCCoreTileEntityOxygenSealer sealer : this.sealers)
             {
