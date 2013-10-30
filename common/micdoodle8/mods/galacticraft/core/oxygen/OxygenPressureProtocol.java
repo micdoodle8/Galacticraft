@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.oxygen;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
 import micdoodle8.mods.galacticraft.api.block.IOxygenReliantBlock;
@@ -18,11 +18,10 @@ import universalelectricity.core.vector.Vector3;
 
 public class OxygenPressureProtocol
 {
-    private LinkedList<VecDirPair> checked = new LinkedList<VecDirPair>();
-    private LinkedList<Vector3> oxygenReliantBlocks = new LinkedList<Vector3>();
-    private boolean airtight;
+//    private static HashMap<Integer, HashSet<SealedSet>> sealedEdgeList = new HashMap<Integer, HashSet<SealedSet>>();
     private static ArrayList<Integer> vanillaPermeableBlocks = new ArrayList<Integer>();
     private static Map<Integer, ArrayList<Integer>> nonPermeableBlocks = new HashMap<Integer, ArrayList<Integer>>();
+    public static final int MAX_SEAL_CHECKS = 400;
 
     static
     {
@@ -56,193 +55,219 @@ public class OxygenPressureProtocol
             e.printStackTrace();
         }
     }
-
-    private void loopThrough(World var1, int var2, int var3, int var4, int var5, ForgeDirection dir)
+    
+    public static class VecDirPair
     {
-        final Vector3 vecAt = new Vector3(var2, var3, var4);
-
-        this.checked.add(new VecDirPair(vecAt, dir));
-
-        if (this.touchingUnsealedBlock(var1, var2, var3, var4) && this.airtight)
+        private final Vector3 position;
+        private final ForgeDirection direction;
+        
+        public VecDirPair(Vector3 position, ForgeDirection direction)
         {
-            if (var5 > 0)
-            {
-                this.nextVec(var1, var2, var3, var4, var5);
-            }
-            else if (!this.getIsSealed(var1, var2, var3, var4))
-            {
-                this.airtight = false;
-            }
+            this.position = position;
+            this.direction = direction;
+        }
+        
+        public Vector3 getPosition()
+        {
+            return position;
+        }
+        
+        public ForgeDirection getDirection()
+        {
+            return direction;
+        }
+        
+        @Override
+        public int hashCode()
+        {
+            return this.position.hashCode() + ("Dir: " + this.direction).hashCode();
+        }
+    }
+    
+    public static class SealedSet
+    {
+        private ArrayList<GCCoreTileEntityOxygenSealer> sealers;
+        private HashSet<Vector3> sealedAirBlocks;
+        private HashSet<Vector3> edgeBlocks;
+        private HashSet<Vector3> oxygenReliantBlocks;
+        
+        public SealedSet(ArrayList<GCCoreTileEntityOxygenSealer> sealers, HashSet<Vector3> sealedAirBlocks, HashSet<Vector3> edgeBlocks, HashSet<Vector3> oxygenReliantBlocks)
+        {
+            this.sealers = sealers;
+            this.sealedAirBlocks = sealedAirBlocks;
+            this.edgeBlocks = edgeBlocks;
+            this.setOxygenReliantBlocks(oxygenReliantBlocks);
+        }
+
+        public ArrayList<GCCoreTileEntityOxygenSealer> getSealers()
+        {
+            return sealers;
+        }
+        
+        public void setSealers(ArrayList<GCCoreTileEntityOxygenSealer> sealers)
+        {
+            this.sealers = sealers;
+        }
+        
+        public HashSet<Vector3> getSealedAirBlocks()
+        {
+            return sealedAirBlocks;
+        }
+        
+        public void setSealedAirBlocks(HashSet<Vector3> sealedAirBlocks)
+        {
+            this.sealedAirBlocks = sealedAirBlocks;
+        }
+
+        public HashSet<Vector3> getEdgeBlocks()
+        {
+            return edgeBlocks;
+        }
+
+        public void setEdgeBlocks(HashSet<Vector3> edgeBlocks)
+        {
+            this.edgeBlocks = edgeBlocks;
+        }
+
+        public HashSet<Vector3> getOxygenReliantBlocks()
+        {
+            return oxygenReliantBlocks;
+        }
+
+        public void setOxygenReliantBlocks(HashSet<Vector3> oxygenReliantBlocks)
+        {
+            this.oxygenReliantBlocks = oxygenReliantBlocks;
         }
     }
 
-    private void checkAtVec(World var1, Vector3 vec, ForgeDirection dir)
+    public static boolean checkSeal(World var1, int x, int y, int z, int maxChecks)
     {
-        this.checked.add(new VecDirPair(vec, dir));
+        boolean airTight = true;
+        LinkedList<VecDirPair> checked = new LinkedList<VecDirPair>();
+        SealedSet set = new SealedSet(new ArrayList<GCCoreTileEntityOxygenSealer>(), new HashSet<Vector3>(), new HashSet<Vector3>(), new HashSet<Vector3>());
+//        SealedSet set = getSealedSetFromAirBlock(var1, new Vector3(x, y, z));
+//        
+//        if (set == null)
+//        {
+//            TileEntity tile = var1.getBlockTileEntity(x, y, z);
+//            
+//            if (tile instanceof GCCoreTileEntityOxygenSealer)
+//            {
+//                set = getSealedSetFromSealer((GCCoreTileEntityOxygenSealer) tile);
+//            }
+//        }
+//        
+//        if (set == null)
+//        {
+//            return false;
+//        }
 
-        if (this.isTouchingBreathableAir(var1, vec.intX(), vec.intY(), vec.intZ()))
+        if (var1.getBlockMetadata(x, y, z) != 100)
         {
-            this.nextVecD(var1, vec.intX(), vec.intY(), vec.intZ());
+            airTight = OxygenPressureProtocol.nextVec2(var1, x, y, z, maxChecks, checked, set);
         }
-    }
 
-    private void nextVec(World var1, int var2, int var3, int var4, int var5)
-    {
-        for (final ForgeDirection dir : ForgeDirection.values())
+        if (airTight)
         {
-            if (dir != ForgeDirection.UNKNOWN)
+            for (VecDirPair var7 : checked)
             {
-                Vector3 vec = new Vector3(var2, var3, var4);
-                vec = vec.translate(new Vector3(dir));
-
-                if (this.canBlockPass(var1, vec, dir) && !this.isVisited(vec))
+                if (!OxygenPressureProtocol.getIsSealed2(var1, var7.position.intX(), var7.position.intY(), var7.position.intZ(), checked))
                 {
-                    this.loopThrough(var1, vec.intX(), vec.intY(), vec.intZ(), var5 - 1, dir);
-                }
-
-                final int idAtVec = vec.getBlockID(var1);
-
-                if (idAtVec != 0 && Block.blocksList[idAtVec] instanceof IOxygenReliantBlock)
-                {
-                    this.oxygenReliantBlocks.add(vec);
-                }
-
-                final TileEntity tileAtVec = vec.getTileEntity(var1);
-
-                if (tileAtVec != null && tileAtVec instanceof GCCoreTileEntityOxygenSealer)
-                {
-                    var5 += ((GCCoreTileEntityOxygenSealer) tileAtVec).storedOxygen / 25.0D;
+                    airTight = false;
                 }
             }
         }
+
+        return airTight;
     }
-
-    private void nextVecD(World var1, int var2, int var3, int var4)
+    
+    private static boolean sealFromSet(World world, Vector3 vec, SealedSet set, int maxChecks)
     {
-        for (final ForgeDirection dir : ForgeDirection.values())
+//        int dimID = world.provider.dimensionId;
+
+//        if (set == null)
         {
-            if (dir != ForgeDirection.UNKNOWN)
+            set = new SealedSet(new ArrayList<GCCoreTileEntityOxygenSealer>(), new HashSet<Vector3>(), new HashSet<Vector3>(), new HashSet<Vector3>());
+            LinkedList<VecDirPair> checked = new LinkedList<VecDirPair>();
+            
+            boolean airTight = nextVec2(world, vec.intX(), vec.intY(), vec.intZ(), maxChecks, checked, set);
+
+            if (airTight)
             {
-                Vector3 vec = new Vector3(var2, var3, var4);
-                vec = vec.translate(new Vector3(dir));
-
-                if (OxygenPressureProtocol.isBreathableAir(var1, vec.intX(), vec.intY(), vec.intZ()) && !this.isVisited(vec))
+                for (VecDirPair nextCheckedBlock : checked)
                 {
-                    this.checkAtVec(var1, vec, dir);
-                }
-
-                final int idAtVec = vec.getBlockID(var1);
-
-                if (idAtVec != 0 && Block.blocksList[idAtVec] instanceof IOxygenReliantBlock)
-                {
-                    this.oxygenReliantBlocks.add(vec);
-                }
-            }
-        }
-    }
-
-    public boolean seal(World var1, int var2, int var3, int var4, int var5)
-    {
-        this.airtight = true;
-        this.nextVec(var1, var2, var3, var4, var5);
-
-        if (this.airtight)
-        {
-            Iterator<VecDirPair> var6 = this.checked.iterator();
-            VecDirPair var7;
-
-            while (var6.hasNext())
-            {
-                var7 = var6.next();
-
-                if (!this.getIsSealed(var1, var7.position.intX(), var7.position.intY(), var7.position.intZ()))
-                {
-                    this.airtight = false;
-                }
-            }
-
-            Iterator<Vector3> var6b = this.oxygenReliantBlocks.iterator();
-            Vector3 var7b;
-
-            while (var6b.hasNext())
-            {
-                var7b = var6b.next();
-
-                final Block block = Block.blocksList[var7b.getBlockID(var1)];
-
-                if (block != null && block instanceof IOxygenReliantBlock)
-                {
-                    ((IOxygenReliantBlock) block).onOxygenAdded(var1, var7b.intX(), var7b.intY(), var7b.intZ());
-                }
-            }
-
-            var6 = this.checked.iterator();
-
-            while (var6.hasNext())
-            {
-                var7 = var6.next();
-
-                if (var7.position.getBlockID(var1) == 0)
-                {
-                    if (var1.getBlockId(var7.position.intX(), var7.position.intY() + 1, var7.position.intZ()) == Block.doorWood.blockID)
+                    if (world.getBlockId(nextCheckedBlock.position.intX(), nextCheckedBlock.position.intY(), nextCheckedBlock.position.intZ()) == 0)
                     {
-                        var1.setBlock(var7.position.intX(), var7.position.intY() + 1, var7.position.intZ(), GCCoreBlocks.breatheableAir.blockID);
+                        world.setBlock(nextCheckedBlock.position.intX(), nextCheckedBlock.position.intY(), nextCheckedBlock.position.intZ(), GCCoreBlocks.breatheableAir.blockID, 0, 2);
                     }
-
-                    if (var1.getBlockId(var7.position.intX(), var7.position.intY() - 1, var7.position.intZ()) == Block.doorWood.blockID && var1.getBlockId(var7.position.intX(), var7.position.intY() - 2, var7.position.intZ()) != Block.doorWood.blockID)
-                    {
-                        var1.setBlock(var7.position.intX(), var7.position.intY() - 1, var7.position.intZ(), GCCoreBlocks.breatheableAir.blockID);
-                    }
-
-                    var1.setBlock(var7.position.intX(), var7.position.intY(), var7.position.intZ(), GCCoreBlocks.breatheableAir.blockID, 0, 2);
                 }
-            }
-        }
 
-        this.checked = new LinkedList<VecDirPair>();
-        this.oxygenReliantBlocks = new LinkedList<Vector3>();
-        return this.airtight;
-    }
-
-    public boolean checkSeal(World var1, int var2, int var3, int var4, int var5)
-    {
-        this.airtight = true;
-
-        if (var1.getBlockMetadata(var2, var3, var4) != 100)
-        {
-            this.nextVec(var1, var2, var3, var4, var5);
-        }
-
-        if (this.airtight)
-        {
-            final Iterator<VecDirPair> var6 = this.checked.iterator();
-
-            while (var6.hasNext())
-            {
-                final VecDirPair var7 = var6.next();
-
-                if (!this.getIsSealed(var1, var7.position.intX(), var7.position.intY(), var7.position.intZ()))
+                for (Vector3 nextVector : set.oxygenReliantBlocks)
                 {
-                    this.airtight = false;
+                    Block block = Block.blocksList[nextVector.getBlockID(world)];
+
+                    if (block != null && block instanceof IOxygenReliantBlock)
+                    {
+                        ((IOxygenReliantBlock) block).onOxygenAdded(world, nextVector.intX(), nextVector.intY(), nextVector.intZ());
+                    }
                 }
+            }
+            else
+            {
+                set = null;
+                unSeal2(world, vec);
             }
         }
 
-        this.checked = new LinkedList<VecDirPair>();
-        return this.airtight;
+//        HashSet<SealedSet> sealedSetList = sealedEdgeList.get(dimID);
+//        
+//        if (sealedSetList == null)
+//        {
+//            sealedSetList = new HashSet<SealedSet>();
+//        }
+//        
+//        if (set != null)
+//        {
+//            sealedSetList.add(set);
+//        }
+//        
+//        sealedEdgeList.put(dimID, sealedSetList);
+        return set == null;
+    }
+    
+    public static boolean seal2(World world, Vector3 vec, int maxChecks)
+    {
+        return sealFromSet(world, vec, null, maxChecks);
+    }
+    
+    public static boolean seal2(GCCoreTileEntityOxygenSealer sealer, int maxChecks)
+    {
+        return sealFromSet(sealer.worldObj, new Vector3(sealer).translate(new Vector3(0, 1, 0)), null, maxChecks);
     }
 
-    public void unSeal(World var1, int var2, int var3, int var4)
+    public static void unSeal2(World var1, Vector3 vec)
     {
-        this.nextVecD(var1, var2, var3, var4);
-        Iterator<VecDirPair> var5 = this.checked.iterator();
-        VecDirPair var6;
+        LinkedList<VecDirPair> checked = new LinkedList<VecDirPair>();
+        
+//        SealedSet set = getSealedSetFromAirBlock(var1, vec);
+//
+//        if (set == null)
+//        {
+//            set = getSealedSetFromEdgeBlock(var1, vec);
+//        }
+//        
+//        if (set != null)
+//        {
+////            sealedEdgeList.get(var1.provider.dimensionId).remove(set);
+//        }
+        
+        SealedSet set = new SealedSet(new ArrayList<GCCoreTileEntityOxygenSealer>(), new HashSet<Vector3>(), new HashSet<Vector3>(), new HashSet<Vector3>());
+        
+        nextVecD2(var1, vec.intX(), vec.intY(), vec.intZ(), checked, set);
 
-        while (var5.hasNext())
+        for (VecDirPair var6 : checked)
         {
-            var6 = var5.next();
-
-            if (this.canBlockPass(var1, var6.position, var6.direction))
+            if (canBlockPass(var1, var6.position, var6.direction))
             {
                 var1.getBlockId(var6.position.intX(), var6.position.intY(), var6.position.intZ());
 
@@ -251,25 +276,16 @@ public class OxygenPressureProtocol
             }
         }
 
-        var5 = this.checked.iterator();
-
-        while (var5.hasNext())
+        for (VecDirPair var6 : checked)
         {
-            var6 = var5.next();
-
             if (var1.getBlockId(var6.position.intX(), var6.position.intY(), var6.position.intZ()) == GCCoreBlocks.breatheableAir.blockID)
             {
                 var1.setBlock(var6.position.intX(), var6.position.intY(), var6.position.intZ(), 0, 0, 2);
             }
         }
 
-        Iterator<Vector3> var5b = this.oxygenReliantBlocks.iterator();
-        Vector3 var6b;
-
-        while (var5b.hasNext())
+        for (Vector3 var6b : set.oxygenReliantBlocks)
         {
-            var6b = var5b.next();
-
             final int idAt = var6b.getBlockID(var1);
 
             if (idAt != 0 && Block.blocksList[idAt] instanceof IOxygenReliantBlock)
@@ -278,23 +294,297 @@ public class OxygenPressureProtocol
             }
         }
 
-        var5 = this.checked.iterator();
-
-        while (var5.hasNext())
+        for (VecDirPair var6 : checked)
         {
-            var6 = var5.next();
-
             if (var6.position.getBlockID(var1) == 0)
             {
                 var1.notifyBlocksOfNeighborChange(var6.position.intX(), var6.position.intY(), var6.position.intZ(), 0);
             }
         }
-
-        this.oxygenReliantBlocks = new LinkedList<Vector3>();
-        this.checked = new LinkedList<VecDirPair>();
     }
 
-    public boolean canBlockPass(World var0, Vector3 vec, ForgeDirection direction)
+    private static void nextVecD2(World var1, int var2, int var3, int var4, LinkedList<VecDirPair> checked, SealedSet sealedSet)
+    {
+        for (final ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+        {
+            Vector3 vec = new Vector3(var2, var3, var4);
+            vec = vec.translate(new Vector3(dir));
+
+            if (OxygenPressureProtocol.isBreathableAir(var1, vec.intX(), vec.intY(), vec.intZ()) && !isVisited2(vec, checked))
+            {
+                sealedSet.sealedAirBlocks.add(vec);
+                checkAtVec2(var1, vec, dir, checked, sealedSet);
+            }
+
+            final int idAtVec = vec.getBlockID(var1);
+
+            if (idAtVec != 0 && Block.blocksList[idAtVec] instanceof IOxygenReliantBlock)
+            {
+                sealedSet.oxygenReliantBlocks.add(vec);
+            }
+        }
+    }
+
+    private static void checkAtVec2(World var1, Vector3 vec, ForgeDirection dir, LinkedList<VecDirPair> checked, SealedSet sealedSet)
+    {
+        checked.add(new VecDirPair(vec, dir));
+
+        if (isTouchingBreathableAir2(var1, vec.intX(), vec.intY(), vec.intZ(), checked, sealedSet))
+        {
+            nextVecD2(var1, vec.intX(), vec.intY(), vec.intZ(), checked, sealedSet);
+        }
+    }
+
+    private static boolean nextVec2(World world, int x, int y, int z, int maxChecks, LinkedList<VecDirPair> checked, SealedSet sealedSet)
+    {
+        boolean airTight = true;
+        
+        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+        {
+            maxChecks--;
+            Vector3 vec = new Vector3(x, y, z);
+            vec = vec.translate(new Vector3(dir));
+
+            if (canBlockPass(world, vec, dir) && !isVisited2(vec, checked))
+            {
+                airTight = loopThrough2(world, vec.intX(), vec.intY(), vec.intZ(), maxChecks, dir, checked, sealedSet);
+                
+                if (!airTight)
+                {
+                    return false;
+                }
+            }
+
+            int idAtVec = vec.getBlockID(world);
+
+            if (idAtVec != 0 && Block.blocksList[idAtVec] instanceof IOxygenReliantBlock)
+            {
+                sealedSet.oxygenReliantBlocks.add(vec);
+            }
+
+            TileEntity tileAtVec = vec.getTileEntity(world);
+
+            if (tileAtVec != null && tileAtVec instanceof GCCoreTileEntityOxygenSealer && dir.equals(ForgeDirection.DOWN))
+            {
+                sealedSet.sealers.add((GCCoreTileEntityOxygenSealer) tileAtVec);
+                maxChecks += Math.floor(((GCCoreTileEntityOxygenSealer) tileAtVec).storedOxygen / 15.55D);
+            }
+        }
+
+        return airTight;
+    }
+
+    private static boolean loopThrough2(World var1, int var2, int var3, int var4, int var5, ForgeDirection dir, LinkedList<VecDirPair> checked, SealedSet sealedSet)
+    {
+        Vector3 vecAt = new Vector3(var2, var3, var4);
+        checked.add(new VecDirPair(vecAt, dir));
+        boolean airTight = true;
+
+        if (touchingUnsealedBlock2(var1, var2, var3, var4, checked, sealedSet))
+        {
+            if (airTight)
+            {
+                if (var5 > 0)
+                {
+                    airTight = nextVec2(var1, var2, var3, var4, var5, checked, sealedSet);
+                }
+                else if (!getIsSealed2(var1, var2, var3, var4, checked))
+                {
+                    airTight = false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+        
+        return airTight;
+    }
+    
+    public static void onBlockBroken(World world, int x, int y, int z, int oldBlockID, int oldBlockMetadata)
+    {
+//        if (oldBlockID != GCCoreBlocks.breatheableAir.blockID)
+//        {
+//            SealedSet sealedSet = getSealedSetFromEdgeBlock(world, new Vector3(x, y, z));
+//            
+//            if (sealedSet != null)
+//            {
+//                seal2(world, new Vector3(x, y, z), MAX_SEAL_CHECKS);
+//                
+////                FMLLog.info("Edge block broken: " + new Vector3(x, y, z));
+////                
+////                if (sealedSet.sealers.size() > 0)
+////                {
+////                    seal2(sealedSet.sealers.get(0), MAX_SEAL_CHECKS);
+////                }
+//            }
+//        }
+    }
+    
+//    private static SealedSet getSealedSetFromSealer(GCCoreTileEntityOxygenSealer sealer)
+//    {
+//        HashSet<SealedSet> sealedSets = getSealedSets(sealer.worldObj);
+//
+//        if (sealedSets != null && !sealedSets.isEmpty())
+//        {
+//            for (SealedSet sealedSet : sealedSets)
+//            {
+//                if (sealedSet.getSealers().contains(sealer))
+//                {
+//                    return sealedSet;
+//                }
+//            }
+//        }
+//        
+//        return null;
+//    }
+//    
+//    private static SealedSet getSealedSetFromAirBlock(World world, Vector3 airBlock)
+//    {
+//        HashSet<SealedSet> sealedSets = getSealedSets(world);
+//
+//        if (sealedSets != null && !sealedSets.isEmpty())
+//        {
+//            for (SealedSet sealedSet : sealedSets)
+//            {
+//                if (sealedSet.getSealedAirBlocks().contains(airBlock))
+//                {
+//                    return sealedSet;
+//                }
+//            }
+//        }
+//        
+//        return null;
+//    }
+//    
+//    private static SealedSet getSealedSetFromEdgeBlock(World world, Vector3 edgeBlock)
+//    {
+//        HashSet<SealedSet> sealedSets = getSealedSets(world);
+//        
+//        if (sealedSets != null && !sealedSets.isEmpty())
+//        {
+//            for (SealedSet sealedSet : sealedSets)
+//            {
+//                if (sealedSet.getEdgeBlocks().contains(edgeBlock))
+//                {
+//                    return sealedSet;
+//                }
+//            }
+//        }
+//        
+//        return null;
+//    }
+    
+//    private static HashSet<SealedSet> getSealedSets(World world)
+//    {
+//        int dimID = world.provider.dimensionId;
+//        HashSet<SealedSet> sealedPositions = sealedEdgeList.get(dimID);
+//        
+//        if (sealedPositions != null && !sealedPositions.isEmpty())
+//        {
+//            for (Entry<Integer, HashSet<SealedSet>> e : sealedEdgeList.entrySet())
+//            {
+//                if (e.getKey() == dimID)
+//                {
+//                    return new HashSet<SealedSet>(e.getValue());
+//                }
+//            }
+//        }
+//        
+//        return null;
+//    }
+
+    public static boolean isBreathableAir(World var0, int var1, int var2, int var3)
+    {
+        return var0.getBlockId(var1, var2, var3) == GCCoreBlocks.breatheableAir.blockID;
+    }
+
+    private static boolean isTouchingBreathableAir2(World world, int x, int y, int z, LinkedList<VecDirPair> checked, SealedSet sealedSet)
+    {
+        boolean hitBreathableAir = false;
+        
+        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+        {
+            Vector3 vec = new Vector3(x, y, z);
+            vec = vec.translate(new Vector3(dir));
+
+            if (OxygenPressureProtocol.isBreathableAir(world, vec.intX(), vec.intY(), vec.intZ()))
+            {
+                sealedSet.sealedAirBlocks.add(vec);
+                
+                if (!hitBreathableAir)
+                {
+                    hitBreathableAir = !isVisited2(vec, checked);
+                }
+            }
+        }
+
+        return hitBreathableAir;
+    }
+
+    private static boolean touchingUnsealedBlock2(World var1, int var2, int var3, int var4, LinkedList<VecDirPair> checked, SealedSet sealedSet)
+    {
+        boolean hitUnsealed = false;
+        
+        for (final ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+        {
+            Vector3 vec = new Vector3(var2, var3, var4);
+            vec = vec.translate(new Vector3(dir));
+
+            if (canBlockPass(var1, vec, dir))
+            {
+                if (!hitUnsealed)
+                {
+                    hitUnsealed = !isVisited2(vec, checked);
+                }
+                
+                int blockID = vec.getBlockID(var1);
+                
+                if (blockID != 0 && blockID != GCCoreBlocks.breatheableAir.blockID)
+                {
+                    sealedSet.edgeBlocks.add(vec);
+                }
+            }
+            else
+            {
+                sealedSet.edgeBlocks.add(vec);
+            }
+        }
+
+        return hitUnsealed;
+    }
+
+    private static boolean isVisited2(Vector3 var1, LinkedList<VecDirPair> checked)
+    {
+        for (VecDirPair vec : checked)
+        {
+            if (vec.position.equals(var1))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static boolean getIsSealed2(World var1, int var2, int var3, int var4, LinkedList<VecDirPair> checked)
+    {
+        for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+        {
+            Vector3 vec = new Vector3(var2, var3, var4);
+            vec = vec.translate(new Vector3(direction));
+
+            if (vec.getBlockID(var1) == 0 && !isVisited2(vec, checked))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static boolean canBlockPass(World var0, Vector3 vec, ForgeDirection direction)
     {
         int id = vec.getBlockID(var0);
 
@@ -332,100 +622,5 @@ public class OxygenPressureProtocol
         }
 
         return true;
-    }
-
-    public static boolean isBreathableAir(World var0, int var1, int var2, int var3)
-    {
-        return var0.getBlockId(var1, var2, var3) == GCCoreBlocks.breatheableAir.blockID;
-    }
-
-    private boolean touchingUnsealedBlock(World var1, int var2, int var3, int var4)
-    {
-        for (final ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
-        {
-            Vector3 vec = new Vector3(var2, var3, var4);
-            vec = vec.translate(new Vector3(dir));
-
-            if (this.canBlockPass(var1, vec, dir) && !this.isVisited(vec))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private boolean getIsSealed(World var1, int var2, int var3, int var4)
-    {
-        for (final ForgeDirection dir : ForgeDirection.values())
-        {
-            if (dir != ForgeDirection.UNKNOWN)
-            {
-                Vector3 vec = new Vector3(var2, var3, var4);
-                vec = vec.translate(new Vector3(dir));
-
-                if (vec.getBlockID(var1) == 0 && !this.isVisited(vec))
-                {
-                    return false;
-                }
-            }
-        }
-
-        return true;
-    }
-
-    private boolean isTouchingBreathableAir(World var1, int var2, int var3, int var4)
-    {
-        for (final ForgeDirection dir : ForgeDirection.values())
-        {
-            if (dir != ForgeDirection.UNKNOWN)
-            {
-                Vector3 vec = new Vector3(var2, var3, var4);
-                vec = vec.translate(new Vector3(dir));
-
-                if (OxygenPressureProtocol.isBreathableAir(var1, vec.intX(), vec.intY(), vec.intZ()) && !this.isVisited(vec))
-                {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    private boolean isVisited(Vector3 var1)
-    {
-        this.checked.iterator();
-        for (final VecDirPair vec : this.checked)
-        {
-            if (vec.position.equals(var1))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-    
-    public static class VecDirPair
-    {
-        private final Vector3 position;
-        private final ForgeDirection direction;
-        
-        public VecDirPair(Vector3 position, ForgeDirection direction)
-        {
-            this.position = position;
-            this.direction = direction;
-        }
-        
-        public Vector3 getPosition()
-        {
-            return position;
-        }
-        
-        public ForgeDirection getDirection()
-        {
-            return direction;
-        }
     }
 }

@@ -8,6 +8,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import universalelectricity.core.vector.Vector3;
 
 public class GCCoreBlockBreathableAir extends Block
 {
@@ -138,24 +139,22 @@ public class GCCoreBlockBreathableAir extends Block
     public void onNeighborBlockChange(World var1, int var2, int var3, int var4, int var5)
     {
         final OxygenPressureProtocol protocol = new OxygenPressureProtocol();
-
+        
         if (var5 != 0 && var5 != GCCoreBlocks.breatheableAir.blockID)
         {
             this.spread(protocol, var1, var2, var3, var4);
         }
     }
 
-    private void spread(OxygenPressureProtocol var5, World var1, int var2, int var3, int var4)
+    private void spread(OxygenPressureProtocol var5, World var1, int x, int y, int z)
     {
-        boolean sealed = var5.checkSeal(var1, var2, var3, var4, 200);
-
-        if (sealed)
+        if (OxygenPressureProtocol.checkSeal(var1, x, y, z, OxygenPressureProtocol.MAX_SEAL_CHECKS))
         {
-            var5.seal(var1, var2, var3, var4, 200);
+            OxygenPressureProtocol.seal2(var1, new Vector3(x, y, z), OxygenPressureProtocol.MAX_SEAL_CHECKS);
         }
         else
         {
-            var5.unSeal(var1, var2, var3, var4);
+            OxygenPressureProtocol.unSeal2(var1, new Vector3(x, y, z));
         }
     }
 }

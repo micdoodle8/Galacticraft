@@ -13,6 +13,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.item.IItemElectric;
+import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
 
@@ -59,16 +60,9 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
                 this.active = false;
             }
 
-            if (this.lastSealed != this.sealed || this.lastDisabled != this.disabled || this.ticks % 400 == 0)
+            if (this.sealed && !this.lastSealed)
             {
-                if (this.active)
-                {
-                    this.sealArea(this.worldObj, this.xCoord, this.yCoord + 1, this.zCoord, (int) (this.storedOxygen / 10.0D));
-                }
-                else
-                {
-                    this.unSealArea(this.worldObj, this.xCoord, this.yCoord + 1, this.zCoord);
-                }
+                this.sealArea((int) Math.floor(this.storedOxygen / 10.0D));
             }
 
             this.lastDisabled = this.disabled;
@@ -246,22 +240,19 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
         return slotID == 0 ? itemstack.getItem() instanceof IItemElectric : false;
     }
 
-    private boolean checkSeal(World var1, int var2, int var3, int var4)
+    private boolean checkSeal(World var1, int x, int y, int z)
     {
-        final OxygenPressureProtocol protocol = new OxygenPressureProtocol();
-        return protocol.checkSeal(var1, var2, var3, var4, 3);
+        return OxygenPressureProtocol.checkSeal(var1, x, y, z, 3);
     }
 
-    private void sealArea(World var1, int var2, int var3, int var4, int var5)
+    private void sealArea(int maxChecks)
     {
-        final OxygenPressureProtocol protocol = new OxygenPressureProtocol();
-        protocol.seal(var1, var2, var3, var4, 2);
+        OxygenPressureProtocol.seal2(this, 2);
     }
 
     public void unSealArea(World var1, int var2, int var3, int var4)
     {
-        final OxygenPressureProtocol protocol = new OxygenPressureProtocol();
-        protocol.unSeal(var1, var2, var3, var4);
+        OxygenPressureProtocol.unSeal2(var1, new Vector3(var2, var3, var4));
     }
 
     @Override
