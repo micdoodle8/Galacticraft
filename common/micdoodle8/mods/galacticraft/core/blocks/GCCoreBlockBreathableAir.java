@@ -2,11 +2,13 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.Random;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import universalelectricity.core.vector.Vector3;
 
 public class GCCoreBlockBreathableAir extends Block
 {
@@ -120,6 +122,15 @@ public class GCCoreBlockBreathableAir extends Block
             {
                 return false;
             }
+        }
+    }
+
+    @Override
+    public void onNeighborBlockChange(World world, int x, int y, int z, int idBroken)
+    {
+        if (idBroken != 0 && idBroken != GCCoreBlocks.breatheableAir.blockID)
+        {
+            OxygenPressureProtocol.onEdgeBlockUpdated(world, new Vector3(x, y, z));
         }
     }
 }

@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol;
-import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol.ThreadFindSeal;
+import micdoodle8.mods.galacticraft.core.oxygen.ThreadFindSeal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -32,11 +32,22 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 
     public boolean active;
     private ItemStack[] containingItems = new ItemStack[1];
-    public ThreadFindSeal threadFindSeal;
+    public ThreadFindSeal threadSeal;
+    public int stopSealThreadCooldown;
 
     public GCCoreTileEntityOxygenSealer()
     {
         super(GCCoreTileEntityOxygenSealer.WATTS_PER_TICK, 50, 10000, 12);
+    }
+    
+    public int getFindSealChecks()
+    {
+        if (!this.active)
+        {
+            return 0;
+        }
+        
+        return (int) Math.floor(this.storedOxygen / 7.5D);
     }
 
     @Override
@@ -46,9 +57,14 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 
         if (!this.worldObj.isRemote)
         {
-            if (this.threadFindSeal != null)
+            if (this.stopSealThreadCooldown > 0)
             {
-                this.sealed = this.threadFindSeal.sealed;
+                this.stopSealThreadCooldown--;
+            }
+            
+            if (this.threadSeal != null)
+            {
+                this.sealed = this.threadSeal.sealed;
             }
             
             if (this.storedOxygen >= 1 && this.getEnergyStored() > 0 && !this.disabled)
@@ -60,12 +76,9 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
                 this.active = false;
             }
             
-            if (this.active)
+            if (this.ticks % 60 == 0 && this.stopSealThreadCooldown <= 0)
             {
-                if (this.ticks % 60 == 0)
-                {
-                    OxygenPressureProtocol.updateSealerStatus(this);
-                }
+                OxygenPressureProtocol.updateSealerStatus(this);
             }
 
             this.lastDisabled = this.disabled;

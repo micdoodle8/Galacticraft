@@ -160,9 +160,9 @@ public class GCCoreBlockOxygenSealer extends GCCoreBlockAdvanced
         {
             GCCoreTileEntityOxygenSealer sealer = (GCCoreTileEntityOxygenSealer) tile;
             
-            if (sealer.threadFindSeal != null && sealer.threadFindSeal.sealed)
+            if (sealer.threadSeal != null && sealer.threadSeal.sealed)
             {
-                for (VecDirPair checkedVec : sealer.threadFindSeal.checked)
+                for (VecDirPair checkedVec : sealer.threadSeal.checked)
                 {
                     int blockID = checkedVec.getPosition().getBlockID(world);
                     
