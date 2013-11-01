@@ -1,0 +1,342 @@
+# Galacticraft Core Language File = TRADITIONAL CHINESE
+
+# GENERAL ITEMS
+item.oxygenTankLightFull.name=輕型氧氣罐
+item.oxygenTankLightEmpty.name=輕型氧氣罐(空)
+item.oxygenTankMedFull.name=中型氧氣罐
+item.oxygenTankMedEmpty.name=中型氧氣罐(空)
+item.oxygenTankHeavyFull.name=重型氧氣罐
+item.oxygenTankHeavyEmpty.name=重型氧氣罐(空)
+item.oxygenMask.name=氧氣面罩
+item.spaceship.name=火箭 等級1
+item.sensorGlasses.name=探測眼鏡
+item.canister.tin.name=錫罐
+item.canister.copper.name=銅罐
+item.airVent.name=排氣孔
+item.airFan.name=排氣扇
+item.oxygenConcentrator.name=氧濃縮器
+item.heavyPlating.name=重型防護板
+item.engine.tier1engine.name=火箭引擎 等級1
+item.engine.tier1booster.name=助推器 等級1
+item.rocketFins.name=火箭尾鰭
+item.noseCone.name=鼻錐
+item.sensorLens.name=探測鏡片
+item.oxygenGear.name=供氧設備
+item.flag.american.name=美國國旗
+item.flag.black.name=黑色旗幟
+item.flag.blue.name=淺藍色旗幟
+item.flag.green.name=檸檬色旗幟
+item.flag.brown.name=棕色旗幟
+item.flag.darkblue.name=藍色旗幟
+item.flag.darkgray.name=灰色旗幟
+item.flag.darkgreen.name=綠色旗幟
+item.flag.gray.name=淺灰色旗幟
+item.flag.magenta.name=品紅色旗幟
+item.flag.orange.name=橙色旗幟
+item.flag.pink.name=粉色旗幟
+item.flag.purple.name=紫色旗幟
+item.flag.red.name=紅色旗幟
+item.flag.teal.name=青色旗幟
+item.flag.yellow.name=黃色旗幟
+item.flag.white.name=旗帜
+item.parachute_plain.name=降落傘
+item.parachute_black.name=黑色降落傘
+item.parachute_blue.name=淺藍色降落傘
+item.parachute_green.name=檸檬色降落傘
+item.parachute_brown.name=棕色降落傘
+item.parachute_darkblue.name=藍色降落傘
+item.parachute_darkgray.name=灰色降落傘
+item.parachute_darkgreen.name=綠色降落傘
+item.parachute_gray.name=淺灰色降落傘
+item.parachute_magenta.name=品紅色降落傘
+item.parachute_orange.name=橙色降落傘
+item.parachute_pink.name=粉色降落傘
+item.parachute_purple.name=紫色降落傘
+item.parachute_red.name=紅色降落傘
+item.parachute_teal.name=青色降落傘
+item.parachute_yellow.name=黃色降落傘
+item.flagPole.name=旗桿
+item.canvas.name=帆布
+item.buggy.name=星球車
+item.emptyLiquidCanister.name=液體罐(空)
+item.oilCanisterPartial.name=石油罐(半滿)
+item.fuelCanisterPartial.name=燃油罐(半滿)
+item.oilCanister.name=石油罐(滿)
+item.fuelCanister.name=燃油罐(滿)
+item.oilExtractor.name=便攜取油器
+item.schematic.name=NASA工作台圖紙
+item.fuel.name=火箭燃料
+item.key.T1.name=一階地牢鑰匙
+item.buggymat.wheel.name=星球車車輪
+item.buggymat.seat.name=星球車座椅
+item.buggymat.storage.name=星球車存儲箱
+item.basicItem.solar_module_0.name=單體太陽能模塊
+item.basicItem.solar_module_1.name=全載太陽能模塊
+item.basicItem.ingotCopper.name=銅錠
+item.basicItem.ingotTin.name=錫錠
+item.basicItem.ingotAluminum.name=鋁錠
+item.basicItem.ingotSteel.name=鋼錠
+item.basicItem.ingotBronze.name=青銅錠
+item.basicItem.compressedCopper.name=緻密銅
+item.basicItem.compressedTin.name=緻密錫
+item.basicItem.compressedAluminum.name=緻密鋁
+item.basicItem.compressedSteel.name=緻密鋼
+item.basicItem.compressedBronze.name=緻密青銅
+item.basicItem.compressedIron.name=緻密鐵
+item.basicItem.waferSolar.name=藍色太陽能晶圓
+item.basicItem.waferBasic.name=基礎晶圓
+item.basicItem.waferAdvanced.name=高級晶圓
+item.basicItem.rawSilicon.name=生矽
+item.tier1.desc=一階
+item.battery.name=電池
+item.infiniteBattery.name=無限電池
+item.meteorChunk.name=可投擲流星碎片
+item.meteorChunkHot.name=可投擲流星碎片
+item.hotDescription.name=炙熱
+item.basicItem.dehydratedApple.name=脫水蘋果
+item.basicItem.dehydratedCarrot.name=脫水胡蘿蔔
+item.basicItem.dehydratedMelon.name=脫水西瓜
+item.basicItem.dehydratedPotato.name=脫水馬鈴薯
+item.basicItem.cannedFood.name=罐裝食物
+item.basicItem.frequencyModule.name=頻率模塊
+item.standardWrench.name=標準扳手
+
+# TOOLS
+item.steel_pickaxe.name=重鎬
+item.steel_axe.name=重斧
+item.steel_hoe.name=重鋤
+item.steel_shovel.name=重鍬
+item.steel_sword.name=重劍
+
+# ARMOR
+item.steel_helmet.name=重型頭盔
+item.steel_chestplate.name=重型胸甲
+item.steel_leggings.name=重型護腿
+item.steel_boots.name=重型靴子
+
+# BLOCKS
+tile.treasureChest.name=珍品箱
+tile.landingPad.landingPad.name=火箭發射平台
+tile.unlitTorch.name=火把
+tile.unlitTorchLit.name=火把
+tile.distributor.name=氧氣分配器
+tile.oxygenPipe.name=氧氣管道
+tile.oxygenCollector.name=氧氣收集器
+tile.fallenMeteor.name=隕石
+tile.rocketWorkbench.name=NASA工作台
+tile.decorationblock.decoblock1.name=裝飾鋁塊
+tile.decorationblock.decoblock2.name=装饰铝块
+tile.airLockFrame.name=氣密框架
+tile.airLockSeal.name=氣密閘
+tile.crudeOilStill.name=原油
+tile.crudeOilMoving.name=原油
+tile.refinery.name=精煉機
+tile.fuelLoader.name=燃料注入器
+tile.oxygenCompressor.name=氧氣壓縮機
+tile.sapling2.oak.name=橡樹樹苗
+tile.sapling2.spruce.name=雲杉樹苗
+tile.sapling2.birch.name=樺木樹苗
+tile.sapling2.jungle.name=叢林樹苗
+tile.sealer.name=氧氣密封器
+tile.enclosed.copperWire.name=可密封銅線
+tile.enclosed.oxygenPipe.name=可密封氧氣管道
+tile.oxygenDetector.name=氧氣探測器
+tile.cargo.loader.name=貨物加載器
+tile.cargo.unloader.name=貨物卸載器
+tile.landingPad.buggyFueler.name=星球車燃料注入器
+tile.landingPad.cargoPad.name=貨物火箭平台
+tile.enclosed.copperCable.name=可密封銅質線纜
+tile.enclosed.goldCable.name=可密封金質線纜
+tile.enclosed.hvCable.name=可密封高壓線纜
+tile.enclosed.glassFibreCable.name=可密封玻璃纖維線纜
+tile.enclosed.lvCable.name=可密封超低壓線纜
+tile.enclosed.PipeItemsCobblestone.name=可密封圓石管道
+tile.enclosed.PipeItemsStone.name=可密封石頭管道
+tile.enclosed.PipeLiquidsCobblestone.name=可密封圓石防水管道
+tile.enclosed.PipeLiquidsStone.name=可密封石頭防水管道
+tile.enclosed.PipePowerStone.name=可密封圓石能量管道
+tile.enclosed.PipePowerGold.name=可密封石頭能量管道
+tile.solar.basic.name=基礎太陽能板
+tile.solar.advanced.name=高級太陽能板
+tile.parachest.name=傘降箱
+tile.oreCopper.name=銅礦石
+tile.oreTin.name=錫礦石
+tile.machine.0.name=燃煤發電機
+tile.machine.1.name=能量存儲模塊
+tile.machine.2.name=電爐
+tile.machine.3.name=壓縮機
+tile.machine2.4.name=電動壓縮機
+tile.machine2.5.name=元件製造台
+tile.copperWire.name=銅線
+tile.machine.0.name=燃煤發電機
+tile.machine.1.name=電池盒
+tile.machine.2.name=電爐
+tile.aluminumWire.name=鋁質線纜
+tile.aluminumWireHeavy.name=重型鋁質線纜
+tile.glowstoneTorch.name=熒石火把
+tile.enclosed.aluminumWire.name=可密封鋁質線纜
+tile.enclosed.aluminumWireHeavy.name=可密封重型鋁質線纜
+tile.enclosed.meCable.name=可密封ME線纜
+tile.airLockController.name=空氣鎖控制器
+tile.dummyblock.spaceStationBase.name=空間站基板
+tile.dummyblock.launchPad.name=火箭發射平台
+tile.dummyblock.nasaWorkbench.name=NASA工作台
+tile.dummyblock.solar.name=太陽能板
+tile.dummyblock.cryogenicChamber.name=低溫倉
+
+# ENTITIES
+entity.GalacticraftCore.EvolvedSpider.name=蜘蛛(進化體)
+entity.GalacticraftCore.EvolvedZombie.name=殭屍(進化體)
+entity.GalacticraftCore.EvolvedCreeper.name=爬行者(進化體)
+entity.GalacticraftCore.EvolvedSkeleton.name=骷髏(進化體)
+entity.GalacticraftCore.EvolvedSkeletonBoss.name=骷髏王(進化體)
+entity.GalacticraftCore.AlienVillager.name=外星村民
+entity.GalacticraftCore.Spaceship.name=一階火箭
+entity.GalacticraftCore.GravityArrow.name=箭
+entity.GalacticraftCore.Meteor.name=隕石
+entity.GalacticraftCore.Buggy.name=星球車
+entity.GalacticraftCore.Flag.name=旗幟
+entity.GalacticraftCore.ParaChest.name=傘降箱
+entity.GalacticraftCore.OxygenBubble.name=氧氣氣氛
+entity.GalacticraftCore.Lander.name=登陸艙
+
+# Schematics
+schematic.moonbuggy.name=探月車
+schematic.rocketT1.name=一階火箭
+schematic.rocketT2.name=二階火箭
+
+# DEATH MESSAGES
+death.spaceshipExplosion=%1$s的火箭出故障了!
+death.spaceshipExplosionB=%1$s不走運地喪生於一次太空事故!
+death.oxygenSuffocation=%1$s因氧氣消耗殆盡而死!
+
+# GALAXIES
+galaxy.blockyway.name=方塊銀河
+
+# OTHER
+newversion.message1.name=\u00a77新的\u00a73Galacticraft\u00a77版本可用! v
+newversion.message2.name=新的Galacticraft版本可用! v
+newversion.failed.name=Galacticraft新版本檢查失敗! 15秒後重試
+newversion.success.name=發現Galacticraft遠程版本:
+
+# KEYBINDINGS
+keybind.map.name=[GC] 星系地圖
+keybind.spaceshipinv.name=[GC] 打開飛船倉庫
+keybind.sensortoggle.name=[GC] 切換傳感器護目鏡模式
+keybind.vehicleforward.name=[GC] 載具前進鍵
+keybind.vehiclebackward.name=[GC] 載具後退鍵
+keybind.vehicleleft.name=[GC] 載具左轉鍵
+keybind.vehicleright.name=[GC] 載具右轉鍵
+keybind.vehicleup.name=[GC] 載具上升鍵
+keybind.vehicledown.name=[GC] 載具下降鍵
+
+# CREATIVE TABS
+itemGroup.GalacticraftCore=Galacticraft
+
+# GUI
+container.cargoloader.name=貨物裝載器
+container.cargounloader.name=貨物卸載器
+container.fuelloader.name=燃料注入器
+container.oxygencollector.name=氧氣收集器
+container.oxygencompressor.name=氧氣壓縮機
+container.oxygendistributor.name=氧氣分配器
+container.oxygensealer.name=氣密裝置
+container.parachest.name=傘降箱
+container.refinery.name=精煉器
+container.treasurechest.name=珍品箱
+container.lander.name=登陸艙
+container.spaceship.name=一階火箭
+container.solarbasic.name=基礎太陽能板
+container.solaradvanced.name=高級太陽能板
+
+gui.message.out.name=輸出
+gui.message.in.name=輸入
+gui.message.status.name=狀態
+gui.message.oxoutput.name=氧氣輸出
+gui.message.oxinput.name=氧氣輸入
+gui.message.fuel.name=燃料
+gui.message.full.name=满
+gui.message.page.name=頁
+gui.message.addnewsch.name=新增設計圖
+gui.message.generating.name=生成中
+gui.message.environment.name=環境促進
+
+gui.status.active.name=活動的
+gui.status.missingleaves.name=樹葉不足
+gui.status.missingpower.name=能量不足
+gui.status.missingoxygen.name=氧氣不足
+gui.status.missingtank.name=沒有可用的氧氣罐
+gui.status.fulltank.name=氧氣罐滿
+gui.status.unsealed.name=未密封的
+gui.status.sealed.name=密封的
+gui.status.unknown.name=未知
+gui.status.disabled.name=禁用的
+gui.status.nofuel.name=無燃料可用!
+gui.status.noitems.name=無物品可加載!
+gui.status.notargetload.name=無效加載目標!
+gui.status.notargetunload.name=無效卸載目標!
+gui.status.noinvtarget.name=目標無物品欄!
+gui.status.targetfull.name=目標載具已滿!
+gui.status.targetempty.name=目標載具已空!
+gui.status.ready.name=準備就緒
+gui.status.refining.name=精煉中
+gui.status.idle.name=空閒
+gui.status.nooil.name=無油料
+gui.status.raining.name=下雨中
+gui.status.blockedpartial.name=陽光粒子效果可視
+gui.status.blockedfully.name=陽光粒子效果不可視
+gui.status.collectingenergy.name=收集能量
+gui.status.sealerblocked.name=輸出口堵塞!
+
+gui.button.enableseal.name=密閉啟動
+gui.button.disableseal.name=禁用密閉
+gui.button.loaditems.name=載入物品
+gui.button.stoploading.name=停止載入
+gui.button.unloaditems.name=卸載物品
+gui.button.stopunloading.name=停止卸載
+gui.button.createsstation.name=創建空間站
+gui.button.sendtodim.name=傳送到維度
+gui.button.rename.name=重命名
+gui.button.loadfuel.name=加載燃料
+gui.button.refine.name=精煉
+gui.button.back.name=返回
+gui.button.next.name=下一個
+gui.button.unlockschematic.name=解鎖設計圖
+gui.button.stoprefine.name=停止精煉
+gui.button.enable.name=開啟
+gui.button.disable.name=關閉
+
+gui.choosePlanet.desc.overworld=生機勃勃#宜居#重力: 100%
+gui.warning=警告！
+gui.lander.warning2=按下 "
+gui.lander.warning3=" 以減速！
+gui.lander.velocity=登陸速度
+gui.lander.velocityu=米/秒
+gui.oxygen.warning=氧氣裝置配置無效！
+gui.sensor.advanced=高級模式
+gui.sensor.advancedon=開
+gui.sensor.advancedoff=關
+gui.chooseplanet.cannotcreate1.name=無法創建空間
+gui.chooseplanet.cannotcreate2.name=空間站在此!
+gui.chooseplanet.alreadycreated1.name=空間站已經
+gui.chooseplanet.alreadycreated2.name=創建!
+
+gui.galaxymap.movemap.name=ASWD - 移動地圖
+gui.galaxymap.zoom.name=鼠標滾輪 - 縮放
+gui.galaxymap.select.name=鼠標左鍵 - 選擇星球
+gui.galaxymap.exit.name=Esc - 退出地圖
+
+gui.buggy.turn.name=左轉-右轉
+gui.buggy.accel.name=加速
+gui.buggy.decel.name=減速
+gui.buggy.inv.name=物品欄/燃料
+
+# DIMENSIONS
+dimension.Overworld.name=主世界(地球)
+dimension.Moon.name=月球
+dimension.Sun.name=太陽
+
+# COMMANDS
+commands.dimensionteleport=%s被傳送到%s附近.
+
+# </file>
