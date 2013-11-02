@@ -492,7 +492,12 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
                                     continue;
                                 }
 
-                                this.autoLaunchSetting = EnumAutoLaunch.values()[controllerClass.getField("launchDropdownSelection").getInt(updatedTile)];
+                                Boolean autoLaunchEnabled = controllerClass.getField("launchSchedulingEnabled").getBoolean(updatedTile);
+                                
+                                if (autoLaunchEnabled)
+                                {
+                                    this.autoLaunchSetting = EnumAutoLaunch.values()[controllerClass.getField("launchDropdownSelection").getInt(updatedTile)];
+                                }
                                 
                                 if (this.autoLaunchSetting != null)
                                 {
