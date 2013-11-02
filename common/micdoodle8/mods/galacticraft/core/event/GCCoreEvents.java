@@ -77,7 +77,7 @@ public class GCCoreEvents
     {
         ChunkLoadingCallback.save((WorldServer) event.world);
     }
-
+    
     @ForgeSubscribe
     public void onChunkDataLoad(ChunkDataEvent.Load event)
     {
@@ -87,7 +87,7 @@ public class GCCoreEvents
     @ForgeSubscribe
     public void onWorldLoad(Load event)
     {
-        if(!event.world.isRemote)
+        if (!event.world.isRemote)
         {
             ChunkLoadingCallback.load((WorldServer) event.world);
         }

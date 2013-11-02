@@ -26,7 +26,6 @@ import net.minecraftforge.common.ForgeChunkManager.Ticket;
 
 public class ChunkLoadingCallback implements LoadingCallback
 {
-    private static File saveDir;
     private static boolean loaded;
     private static HashMap<String, HashMap<Integer, HashSet<ChunkCoordinates>>> chunkLoaderList = new HashMap<String, HashMap<Integer, HashSet<ChunkCoordinates>>>();
 //    private static HashMap<Integer, HashSet<IChunkLoader>> loadedChunks = new HashMap<Integer, HashSet<IChunkLoader>>();
@@ -137,41 +136,63 @@ public class ChunkLoadingCallback implements LoadingCallback
     {
         try
         {
-            File saveFile = new File(saveDir, "chunkloaders.dat");
-
-            if (!saveFile.exists())
-            {
-                saveFile.createNewFile();
-            }
+            File saveDir = getSaveDir();
             
-            DataOutputStream dataStream = new DataOutputStream(new FileOutputStream(saveFile));
-            dataStream.writeInt(chunkLoaderList.size());
-            
-            for (Entry<String, HashMap<Integer, HashSet<ChunkCoordinates>>> playerEntry : chunkLoaderList.entrySet())
+            if (saveDir != null)
             {
-                dataStream.writeUTF(playerEntry.getKey());
-                dataStream.writeInt(playerEntry.getValue().size());
+                File saveFile = new File(saveDir, "chunkloaders.dat");
 
-                for (Entry<Integer, HashSet<ChunkCoordinates>> dimensionEntry : playerEntry.getValue().entrySet())
+                if (!saveFile.exists())
                 {
-                    dataStream.writeInt(dimensionEntry.getKey());
-                    dataStream.writeInt(dimensionEntry.getValue().size());
-                    
-                    for (ChunkCoordinates coords : dimensionEntry.getValue())
+                    saveFile.createNewFile();
+                }
+                
+                DataOutputStream dataStream = new DataOutputStream(new FileOutputStream(saveFile));
+                dataStream.writeInt(chunkLoaderList.size());
+                
+                for (Entry<String, HashMap<Integer, HashSet<ChunkCoordinates>>> playerEntry : chunkLoaderList.entrySet())
+                {
+                    dataStream.writeUTF(playerEntry.getKey());
+                    dataStream.writeInt(playerEntry.getValue().size());
+
+                    for (Entry<Integer, HashSet<ChunkCoordinates>> dimensionEntry : playerEntry.getValue().entrySet())
                     {
-                        dataStream.writeInt(coords.posX);
-                        dataStream.writeInt(coords.posY);
-                        dataStream.writeInt(coords.posZ);
+                        dataStream.writeInt(dimensionEntry.getKey());
+                        dataStream.writeInt(dimensionEntry.getValue().size());
+                        
+                        for (ChunkCoordinates coords : dimensionEntry.getValue())
+                        {
+                            dataStream.writeInt(coords.posX);
+                            dataStream.writeInt(coords.posY);
+                            dataStream.writeInt(coords.posZ);
+                        }
                     }
                 }
+                
+                dataStream.close();
             }
-            
-            dataStream.close();
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
+    }
+    
+    private static File getSaveDir()
+    {
+        if (DimensionManager.getWorld(0) != null)
+        {
+            File saveDir = new File(DimensionManager.getCurrentSaveRootDirectory(), "galacticraft");
+            
+            if (!saveDir.exists())
+            {
+                saveDir.mkdirs();
+            }
+            
+            return saveDir;
+        }
+        
+        return null;
     }
     
     public static void load(WorldServer world)
@@ -183,46 +204,49 @@ public class ChunkLoadingCallback implements LoadingCallback
         
         try
         {
-            saveDir = new File(DimensionManager.getCurrentSaveRootDirectory(), "galacticraft");
+            File saveDir = getSaveDir();
             
-            if (!saveDir.exists())
+            if (saveDir != null)
             {
-                saveDir.mkdir();
-            }
-            
-            File saveFile = new File(saveDir, "chunkloaders.dat");
-            
-            if (saveFile.exists())
-            {
-                DataInputStream dataStream = new DataInputStream(new FileInputStream(saveFile));
-                
-                int playerCount = dataStream.readInt();
-                
-                for (int l = 0; l < playerCount; l++)
+                if (!saveDir.exists())
                 {
-                    String ownerName = dataStream.readUTF();
-                    
-                    int mapSize = dataStream.readInt();
-                    HashMap<Integer, HashSet<ChunkCoordinates>> dimensionMap = new HashMap<Integer, HashSet<ChunkCoordinates>>();
-                    
-                    for (int i = 0; i < mapSize; i++)
-                    {
-                        int dimensionID = dataStream.readInt();
-                        HashSet<ChunkCoordinates> coords = new HashSet<ChunkCoordinates>();
-                        dimensionMap.put(dimensionID, coords);
-                        int coordSetSize = dataStream.readInt();
-                        
-                        for (int j = 0; j < coordSetSize; j++)
-                        {
-                            coords.add(new ChunkCoordinates(dataStream.readInt(), dataStream.readInt(), dataStream.readInt()));
-                        }
-                    }
-                    
-                    chunkLoaderList.put(ownerName, dimensionMap);
+                    saveDir.mkdirs();
                 }
                 
+                File saveFile = new File(saveDir, "chunkloaders.dat");
                 
-                dataStream.close();
+                if (saveFile.exists())
+                {
+                    DataInputStream dataStream = new DataInputStream(new FileInputStream(saveFile));
+                    
+                    int playerCount = dataStream.readInt();
+                    
+                    for (int l = 0; l < playerCount; l++)
+                    {
+                        String ownerName = dataStream.readUTF();
+                        
+                        int mapSize = dataStream.readInt();
+                        HashMap<Integer, HashSet<ChunkCoordinates>> dimensionMap = new HashMap<Integer, HashSet<ChunkCoordinates>>();
+                        
+                        for (int i = 0; i < mapSize; i++)
+                        {
+                            int dimensionID = dataStream.readInt();
+                            HashSet<ChunkCoordinates> coords = new HashSet<ChunkCoordinates>();
+                            dimensionMap.put(dimensionID, coords);
+                            int coordSetSize = dataStream.readInt();
+                            
+                            for (int j = 0; j < coordSetSize; j++)
+                            {
+                                coords.add(new ChunkCoordinates(dataStream.readInt(), dataStream.readInt(), dataStream.readInt()));
+                            }
+                        }
+                        
+                        chunkLoaderList.put(ownerName, dimensionMap);
+                    }
+                    
+                    
+                    dataStream.close();
+                }
             }
         }
         catch (Exception e)
