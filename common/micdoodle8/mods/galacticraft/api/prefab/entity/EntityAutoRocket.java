@@ -32,6 +32,7 @@ import net.minecraftforge.fluids.FluidTank;
 import universalelectricity.core.vector.Vector3;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.network.PacketDispatcher;
 
 /**
@@ -47,6 +48,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
     private IFuelDock landingPad;
     public boolean landing;
     public EnumAutoLaunch autoLaunchSetting;
+    private static boolean marsLoaded = Loader.isModLoaded("GalacticraftMars");
 
     public int autoLaunchCountdown;
     public String statusMessage;
@@ -113,6 +115,11 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
     public boolean setFrequency()
     {
+        if (!marsLoaded)
+        {
+            return false;
+        }
+        
         for (int x = MathHelper.floor_double(this.posX) - 1; x <= MathHelper.floor_double(this.posX) + 1; x++)
         {
             for (int y = MathHelper.floor_double(this.posY) - 3; y <= MathHelper.floor_double(this.posY) + 1; y++)
@@ -202,7 +209,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
     protected boolean setTarget(boolean doSet, int destFreq)
     {
-        if (FMLCommonHandler.instance().getMinecraftServerInstance() == null || FMLCommonHandler.instance().getMinecraftServerInstance().worldServers == null)
+        if (!marsLoaded || FMLCommonHandler.instance().getMinecraftServerInstance() == null || FMLCommonHandler.instance().getMinecraftServerInstance().worldServers == null)
         {
             return false;
         }
@@ -333,7 +340,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
                 this.autoLaunch();
             }
 
-            if (this.autoLaunchSetting == EnumAutoLaunch.REDSTONE_SIGNAL)
+            if (marsLoaded && this.autoLaunchSetting == EnumAutoLaunch.REDSTONE_SIGNAL)
             {
                 if (this.ticks % 5 == 0)
                 {
@@ -471,62 +478,65 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
                     this.targetVec = null;
                     this.setPad(dock);
 
-                    HashSet<ILandingPadAttachable> connectedTiles = dock.getConnectedTiles();
-
-                    try
+                    if (marsLoaded)
                     {
-                        Class<?> controllerClass = Class.forName("micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityLaunchController");
+                        HashSet<ILandingPadAttachable> connectedTiles = dock.getConnectedTiles();
 
-                        for (ILandingPadAttachable connectedTile : connectedTiles)
+                        try
                         {
-                            if (connectedTile != null)
+                            Class<?> controllerClass = Class.forName("micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityLaunchController");
+
+                            for (ILandingPadAttachable connectedTile : connectedTiles)
                             {
-                                TileEntity updatedTile = this.worldObj.getBlockTileEntity(((TileEntity) connectedTile).xCoord, ((TileEntity) connectedTile).yCoord, ((TileEntity) connectedTile).zCoord);
+                                if (connectedTile != null)
+                                {
+                                    TileEntity updatedTile = this.worldObj.getBlockTileEntity(((TileEntity) connectedTile).xCoord, ((TileEntity) connectedTile).yCoord, ((TileEntity) connectedTile).zCoord);
 
-                                try
-                                {
-                                    controllerClass.cast(updatedTile);
-                                }
-                                catch (ClassCastException e)
-                                {
-                                    continue;
-                                }
-
-                                Boolean autoLaunchEnabled = controllerClass.getField("launchSchedulingEnabled").getBoolean(updatedTile);
-                                
-                                if (autoLaunchEnabled)
-                                {
-                                    this.autoLaunchSetting = EnumAutoLaunch.values()[controllerClass.getField("launchDropdownSelection").getInt(updatedTile)];
-                                }
-                                
-                                if (this.autoLaunchSetting != null)
-                                {
-                                    switch (this.autoLaunchSetting)
+                                    try
                                     {
-                                    case INSTANT:
-                                        this.autoLaunch();
-                                        break;
-                                    case TIME_10_SECONDS:
-                                        this.autoLaunchCountdown = 200;
-                                        break;
-                                    case TIME_30_SECONDS:
-                                        this.autoLaunchCountdown = 600;
-                                        break;
-                                    case TIME_1_MINUTE:
-                                        this.autoLaunchCountdown = 1200;
-                                        break;
-                                    default:
-                                        break;
+                                        controllerClass.cast(updatedTile);
                                     }
+                                    catch (ClassCastException e)
+                                    {
+                                        continue;
+                                    }
+
+                                    Boolean autoLaunchEnabled = controllerClass.getField("launchSchedulingEnabled").getBoolean(updatedTile);
+                                    
+                                    if (autoLaunchEnabled)
+                                    {
+                                        this.autoLaunchSetting = EnumAutoLaunch.values()[controllerClass.getField("launchDropdownSelection").getInt(updatedTile)];
+                                    }
+                                    
+                                    if (this.autoLaunchSetting != null)
+                                    {
+                                        switch (this.autoLaunchSetting)
+                                        {
+                                        case INSTANT:
+                                            this.autoLaunch();
+                                            break;
+                                        case TIME_10_SECONDS:
+                                            this.autoLaunchCountdown = 200;
+                                            break;
+                                        case TIME_30_SECONDS:
+                                            this.autoLaunchCountdown = 600;
+                                            break;
+                                        case TIME_1_MINUTE:
+                                            this.autoLaunchCountdown = 1200;
+                                            break;
+                                        default:
+                                            break;
+                                        }
+                                    }
+                                    
+                                    break;
                                 }
-                                
-                                break;
                             }
                         }
-                    }
-                    catch (Exception e)
-                    {
-                        e.printStackTrace();
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
                     }
                 }
 
