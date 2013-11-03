@@ -118,10 +118,20 @@ public class GCCoreBlock extends Block implements IDetectableResource
     @Override
     public int quantityDropped(int meta, int fortune, Random random)
     {
-        switch (meta)
+        if (fortune > 0 && this.blockID != this.idDropped(meta, random, fortune))
         {
-        default:
-            return 1;
+            int j = random.nextInt(fortune + 2) - 1;
+
+            if (j < 0)
+            {
+                j = 0;
+            }
+
+            return this.quantityDropped(random) * (j + 1);
+        }
+        else
+        {
+            return this.quantityDropped(random);
         }
     }
 
