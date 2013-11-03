@@ -345,6 +345,18 @@ public class GCCoreRecipeManager
         RecipeUtil.addRecipe(new ItemStack(GCCoreItems.basicItem, 1, 19), new Object[] { " X ", "YUY", "ZWZ", 'U', Item.redstoneRepeater, 'W', "waferBasic", 'X', "compressedAluminum", 'Y', "compressedIron", 'Z', Item.redstone });
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreItems.wrench), new Object[] { "  Y", " X ", "X  ", 'X', "compressedBronze", 'Y', "compressedSteel" });
+        
+        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.decorationBlocks, 1, 9), new Object[] { "XXX", "XXX", "XXX", 'X', "ingotCopper" });
+        
+        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.decorationBlocks, 1, 10), new Object[] { "XXX", "XXX", "XXX", 'X', "ingotTin" });
+        
+        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.decorationBlocks, 1, 11), new Object[] { "XXX", "XXX", "XXX", 'X', "ingotAluminum" });
+        
+        RecipeUtil.addRecipe(new ItemStack(GCCoreItems.basicItem, 9, 3), new Object[] { "X", 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 9) });
+        
+        RecipeUtil.addRecipe(new ItemStack(GCCoreItems.basicItem, 9, 4), new Object[] { "X", 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 10) });
+
+        RecipeUtil.addRecipe(new ItemStack(GCCoreItems.basicItem, 9, 5), new Object[] { "X", 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 11) });
 
         CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(new ItemStack(GCCoreItems.basicItem, 1, 15), new Object[] { new ItemStack(GCCoreItems.canister, 1, 0), Item.appleRed, Item.appleRed }));
 

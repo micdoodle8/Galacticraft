@@ -183,6 +183,9 @@ tile.dummyblock.launchPad.name=Rocket Launch Pad
 tile.dummyblock.nasaWorkbench.name=NASA Workbench
 tile.dummyblock.solar.name=Solar Panel
 tile.dummyblock.cryogenicChamber.name=Cryogenic Chamber
+tile.gcBlockCore.copperBlock.name=Copper Block
+tile.gcBlockCore.tinBlock.name=Tin Block
+tile.gcBlockCore.aluminumBlock.name=Aluminum Block
 
 # ENTITIES
 entity.GalacticraftCore.EvolvedSpider.name=Evolved Spider

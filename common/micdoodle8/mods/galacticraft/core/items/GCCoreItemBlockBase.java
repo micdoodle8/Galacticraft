@@ -37,51 +37,33 @@ public class GCCoreItemBlockBase extends ItemBlock
 
         switch (itemstack.getItemDamage())
         {
-        case 0:
-        {
-            name = "copperblock";
-            break;
-        }
-        case 1:
-        {
-            name = "aluminiumblock";
-            break;
-        }
-        case 2:
-        {
-            name = "titaniumblock";
-            break;
-        }
         case 3:
-        {
             name = "decoblock1";
             break;
-        }
         case 4:
-        {
             name = "decoblock2";
             break;
-        }
         case 5:
-        {
             name = "oreCopper";
             break;
-        }
         case 6:
-        {
             name = "oreTin";
             break;
-        }
         case 7:
-        {
             name = "oreAluminum";
             break;
-        }
         case 8:
-        {
             name = "oreSilicon";
             break;
-        }
+        case 9:
+            name = "copperBlock";
+            break;
+        case 10:
+            name = "tinBlock";
+            break;
+        case 11:
+            name = "aluminumBlock";
+            break;
         default:
             name = "null";
         }

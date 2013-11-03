@@ -41,7 +41,7 @@ public class GCCoreBlock extends Block implements IDetectableResource
     @Override
     public void registerIcons(IconRegister iconRegister)
     {
-        this.iconBuffer = new Icon[8];
+        this.iconBuffer = new Icon[11];
         this.iconBuffer[0] = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "deco_aluminium_2");
         this.iconBuffer[1] = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "deco_aluminium_4");
         this.iconBuffer[2] = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "deco_aluminium_1");
@@ -50,6 +50,9 @@ public class GCCoreBlock extends Block implements IDetectableResource
         this.iconBuffer[5] = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "oreTin");
         this.iconBuffer[6] = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "oreAluminum");
         this.iconBuffer[7] = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "oreSilicon");
+        this.iconBuffer[8] = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "deco_copper_block");
+        this.iconBuffer[9] = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "deco_tin_block");
+        this.iconBuffer[10] = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "deco_aluminium_block");
     }
 
     @Override
@@ -77,6 +80,12 @@ public class GCCoreBlock extends Block implements IDetectableResource
             return this.iconBuffer[6];
         case 8:
             return this.iconBuffer[7];
+        case 9:
+            return this.iconBuffer[8];
+        case 10:
+            return this.iconBuffer[9];
+        case 11:
+            return this.iconBuffer[10];
         default:
             return meta < this.iconBuffer.length ? this.iconBuffer[meta] : this.iconBuffer[0];
         }
@@ -121,7 +130,7 @@ public class GCCoreBlock extends Block implements IDetectableResource
     @Override
     public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
-        for (int var4 = 3; var4 < 9; ++var4)
+        for (int var4 = 3; var4 < 12; ++var4)
         {
             par3List.add(new ItemStack(par1, 1, var4));
         }
