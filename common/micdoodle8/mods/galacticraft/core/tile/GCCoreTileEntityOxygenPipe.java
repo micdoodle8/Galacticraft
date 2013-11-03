@@ -324,4 +324,10 @@ public class GCCoreTileEntityOxygenPipe extends TileEntity implements ITubeConne
     {
         return this.getTransmitterNetwork().getFlow();
     }
+
+    @Override
+    public void chunkLoad()
+    {
+        ;
+    }
 }
