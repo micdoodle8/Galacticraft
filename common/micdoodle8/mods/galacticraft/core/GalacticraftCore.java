@@ -326,11 +326,11 @@ public class GalacticraftCore
         }
 
         // Support for the other spelling of Aluminum
-        if (OreDictionary.getOres("ingotAluminium").size() > 0 || OreDictionary.getOres("oreNaturalAluminum").size() > 0)
+        if (OreDictionary.getOres("ingotAluminium").size() > 0 || OreDictionary.getOres("ingotNaturalAluminum").size() > 0)
         {
             List<ItemStack> aluminumIngotList = new ArrayList<ItemStack>();
             aluminumIngotList.addAll(OreDictionary.getOres("ingotAluminium"));
-            aluminumIngotList.addAll(OreDictionary.getOres("oreNaturalAluminum"));
+            aluminumIngotList.addAll(OreDictionary.getOres("ingotNaturalAluminum"));
             
             for (ItemStack stack : aluminumIngotList)
             {
