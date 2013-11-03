@@ -73,6 +73,28 @@ public class RecipeUtil
         {
             CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(result, newIngredients));
         }
+
+        newIngredients = Arrays.copyOf(obj, obj.length);
+        changed = false;
+
+        for (int i = 0; i < obj.length; i++)
+        {
+            if (newIngredients[i] instanceof String)
+            {
+                String ingred = (String) newIngredients[i];
+
+                if (ingred.equals("ingotAluminum"))
+                {
+                    newIngredients[i] = "ingotNaturalAluminum";
+                    changed = true;
+                }
+            }
+        }
+
+        if (changed)
+        {
+            CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(result, newIngredients));
+        }
     }
 
     public static void addRocketBenchRecipe(ItemStack result, HashMap<Integer, ItemStack> input)
