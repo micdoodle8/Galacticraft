@@ -326,9 +326,13 @@ public class GalacticraftCore
         }
 
         // Support for the other spelling of Aluminum
-        if (OreDictionary.getOres("ingotAluminium").size() > 0)
+        if (OreDictionary.getOres("ingotAluminium").size() > 0 || OreDictionary.getOres("oreNaturalAluminum").size() > 0)
         {
-            for (ItemStack stack : OreDictionary.getOres("ingotAluminium"))
+            List<ItemStack> aluminumIngotList = new ArrayList<ItemStack>();
+            aluminumIngotList.addAll(OreDictionary.getOres("ingotAluminium"));
+            aluminumIngotList.addAll(OreDictionary.getOres("oreNaturalAluminum"));
+            
+            for (ItemStack stack : aluminumIngotList)
             {
                 CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, 8), stack, stack);
             }

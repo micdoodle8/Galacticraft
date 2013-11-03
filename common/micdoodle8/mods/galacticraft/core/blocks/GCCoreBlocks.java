@@ -155,6 +155,7 @@ public class GCCoreBlocks
         OreDictionary.registerOre("oreTin", new ItemStack(GCCoreBlocks.decorationBlocks, 1, 6));
         OreDictionary.registerOre("oreAluminum", new ItemStack(GCCoreBlocks.decorationBlocks, 1, 7));
         OreDictionary.registerOre("oreAluminium", new ItemStack(GCCoreBlocks.decorationBlocks, 1, 7));
+        OreDictionary.registerOre("oreNaturalAluminum", new ItemStack(GCCoreBlocks.decorationBlocks, 1, 7));
         OreDictionary.registerOre("oreSilicon", new ItemStack(GCCoreBlocks.decorationBlocks, 1, 8));
 
         GCCoreBlocks.setHarvestLevels();
