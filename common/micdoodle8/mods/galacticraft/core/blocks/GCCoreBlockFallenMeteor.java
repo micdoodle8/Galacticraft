@@ -133,6 +133,7 @@ public class GCCoreBlockFallenMeteor extends Block implements ITileEntityProvide
     {
         if (GCCoreBlockFallenMeteor.canFallBelow(par1World, par2, par3 - 1, par4) && par3 >= 0)
         {
+            int prevHeatLevel = ((GCCoreTileEntityFallenMeteor) par1World.getBlockTileEntity(par2, par3, par4)).getHeatLevel();
             par1World.setBlock(par2, par3, par4, 0, 0, 3);
 
             while (GCCoreBlockFallenMeteor.canFallBelow(par1World, par2, par3 - 1, par4) && par3 > 0)
@@ -143,6 +144,7 @@ public class GCCoreBlockFallenMeteor extends Block implements ITileEntityProvide
             if (par3 > 0)
             {
                 par1World.setBlock(par2, par3, par4, this.blockID, 0, 3);
+                ((GCCoreTileEntityFallenMeteor) par1World.getBlockTileEntity(par2, par3, par4)).setHeatLevel(prevHeatLevel);
             }
         }
     }
