@@ -5,10 +5,8 @@ import mekanism.api.gas.GasTransmission;
 import mekanism.api.gas.IGasAcceptor;
 import mekanism.api.gas.ITubeConnection;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
-import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -110,21 +108,9 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric im
 
                                 if (block != null)
                                 {
-                                    if (this.worldObj.getBlockMaterial(x, y, z) == Material.leaves)
+                                    if (block.isLeaves(this.worldObj, x, y, z) || (block instanceof IPlantable && ((IPlantable) block).getPlantType(this.worldObj, x, y, z) == EnumPlantType.Crop))
                                     {
-                                        if (!this.worldObj.isRemote && this.worldObj.rand.nextInt(100000) == 0 && !GCCoreConfigManager.disableLeafDecay)
-                                        {
-                                            this.worldObj.setBlockToAir(x, y, z);
-                                        }
-
                                         power++;
-                                    }
-                                    else if (block instanceof IPlantable && ((IPlantable) block).getPlantType(this.worldObj, x, y, z) == EnumPlantType.Crop)
-                                    {
-                                        // Add two, since leaves can be packed
-                                        // into
-                                        // an area much easier than crops can.
-                                        power += 2.0;
                                     }
                                 }
                             }
