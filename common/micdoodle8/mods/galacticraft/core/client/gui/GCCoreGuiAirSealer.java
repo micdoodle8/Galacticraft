@@ -124,6 +124,11 @@ public class GCCoreGuiAirSealer extends GCCoreGuiContainer
         {
             return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.missingoxygen.name");
         }
+        
+        if (this.sealer.calculatingSealed)
+        {
+            return EnumColor.ORANGE + "Checking seal...";
+        }
 
         if (!this.sealer.sealed)
         {

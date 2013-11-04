@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.oxygen;
 
 import java.util.HashSet;
 import java.util.List;
+import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol.VecDirPair;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenSealer;
@@ -21,6 +22,7 @@ public class ThreadFindSeal extends Thread
     public List<Vector3> oxygenReliantBlocks;
     public HashSet<VecDirPair> checked;
     public int checkCount;
+    public boolean looping;
     
     public ThreadFindSeal()
     {
@@ -32,7 +34,8 @@ public class ThreadFindSeal extends Thread
     {
         long time1 = System.nanoTime();
         
-        this.sealed = true;        
+        this.sealed = true;
+        this.looping = true;
         loopThrough(this.head.clone().translate(new Vector3(0, 1, 0)));
         
         if (this.sealers.size() > 1)
@@ -98,7 +101,9 @@ public class ThreadFindSeal extends Thread
         
         long time3 = System.nanoTime();
         
-//        if (GCCoreConfigManager.enableDebug)
+        this.looping = false;
+        
+        if (GCCoreConfigManager.enableDebug)
         {
             FMLLog.info("Oxygen Sealer Check Completed at x" + this.head.intX() + " y" + this.head.intY() + " z" + this.head.intZ());
             FMLLog.info("   Sealed: " + this.sealed);

@@ -34,6 +34,7 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
     private ItemStack[] containingItems = new ItemStack[1];
     public ThreadFindSeal threadSeal;
     public int stopSealThreadCooldown;
+    public boolean calculatingSealed;
 
     public GCCoreTileEntityOxygenSealer()
     {
@@ -65,6 +66,7 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
             if (this.threadSeal != null)
             {
                 this.sealed = this.threadSeal.sealed;
+                this.calculatingSealed = this.threadSeal.looping;
             }
             
             if (this.storedOxygen >= 1 && this.getEnergyStored() > 0 && !this.disabled)
@@ -277,13 +279,14 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
             this.setEnergyStored(data.readFloat());
             this.disabled = data.readBoolean();
             this.sealed = data.readBoolean();
+            this.calculatingSealed = data.readBoolean();
         }
     }
 
     @Override
     public Packet getPacket()
     {
-        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.storedOxygen, this.getEnergyStored(), this.disabled, this.sealed);
+        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.storedOxygen, this.getEnergyStored(), this.disabled, this.sealed, this.calculatingSealed);
     }
 
     @Override
