@@ -132,6 +132,7 @@ public class OxygenPressureProtocol
         ThreadFindSeal threadSeal = new ThreadFindSeal();
         threadSeal.world = world;
         threadSeal.head = vec;
+        threadSeal.checkCount = 2500;
         threadSeal.sealers = new ArrayList<GCCoreTileEntityOxygenSealer>();
         threadSeal.oxygenReliantBlocks = Lists.newArrayList();
         threadSeal.checked = new HashSet<VecDirPair>();

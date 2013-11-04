@@ -76,7 +76,7 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
                 this.active = false;
             }
             
-            if (this.ticks % 60 == 0 && this.stopSealThreadCooldown <= 0)
+            if (this.ticks % 100 == 0 && this.stopSealThreadCooldown <= 0)
             {
                 OxygenPressureProtocol.updateSealerStatus(this);
             }
