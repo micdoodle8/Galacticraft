@@ -2,12 +2,15 @@ package micdoodle8.mods.galacticraft.core.oxygen;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenSealer;
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import universalelectricity.core.vector.Vector3;
 import com.google.common.collect.Lists;
 
@@ -74,16 +77,33 @@ public class OxygenPressureProtocol
         @Override
         public int hashCode()
         {
-            return this.position.hashCode() + ("Dir: " + this.direction).hashCode();
+            return new HashCodeBuilder()
+            .append(this.position.x)
+            .append(this.position.y)
+            .append(this.position.z)
+            .hashCode();
         }
         
         @Override
         public boolean equals(Object other)
         {
+            if (other == null)
+            {
+                return false;
+            }
+            
+            if (other == this)
+            {
+                return true;
+            }
+            
             if (other instanceof VecDirPair)
             {
                 VecDirPair otherPair = (VecDirPair) other;
-                return otherPair.position.equals(this.position) && otherPair.direction.equals(this.direction);
+                return new EqualsBuilder()
+                    .append(this.position.x, otherPair.position.x)
+                    .append(this.position.y, otherPair.position.y)
+                    .append(this.position.z, otherPair.position.z).isEquals();
             }
             
             return false;
@@ -103,7 +123,7 @@ public class OxygenPressureProtocol
         head.threadSeal.checkCount = head.getFindSealChecks();
         head.threadSeal.sealers = new ArrayList<GCCoreTileEntityOxygenSealer>();
         head.threadSeal.oxygenReliantBlocks = Lists.newArrayList();
-        head.threadSeal.checked = Lists.newLinkedList();
+        head.threadSeal.checked = new HashSet<VecDirPair>();
         head.threadSeal.start();
     }
     
@@ -114,7 +134,7 @@ public class OxygenPressureProtocol
         threadSeal.head = vec;
         threadSeal.sealers = new ArrayList<GCCoreTileEntityOxygenSealer>();
         threadSeal.oxygenReliantBlocks = Lists.newArrayList();
-        threadSeal.checked = Lists.newLinkedList();
+        threadSeal.checked = new HashSet<VecDirPair>();
         threadSeal.start();
     }
 }

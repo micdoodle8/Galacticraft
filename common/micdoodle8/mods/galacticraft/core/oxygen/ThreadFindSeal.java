@@ -1,13 +1,11 @@
 package micdoodle8.mods.galacticraft.core.oxygen;
 
-import java.util.LinkedList;
+import java.util.HashSet;
 import java.util.List;
-import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
-import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol.VecDirPair;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenSealer;
-import net.minecraft.block.Block;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
@@ -21,7 +19,7 @@ public class ThreadFindSeal extends Thread
     public boolean sealed;
     public List<GCCoreTileEntityOxygenSealer> sealers;
     public List<Vector3> oxygenReliantBlocks;
-    public LinkedList<VecDirPair> checked;
+    public HashSet<VecDirPair> checked;
     public int checkCount;
     
     public ThreadFindSeal()
@@ -51,6 +49,8 @@ public class ThreadFindSeal extends Thread
             this.checked.clear();
             loopThrough(this.head.clone().translate(new Vector3(0, 1, 0)));
         }
+
+        long time2 = System.nanoTime();
         
         if (sealed)
         {
@@ -80,19 +80,6 @@ public class ThreadFindSeal extends Thread
             }
         }
         
-        
-        long time2 = System.nanoTime();
-        
-        for (VecDirPair checkedVec : checked)
-        {
-            int blockID = checkedVec.getPosition().getBlockID(world);
-            
-            if (this.sealed && blockID == 0)
-            {
-                world.setBlock(checkedVec.getPosition().intX(), checkedVec.getPosition().intY(), checkedVec.getPosition().intZ(), GCCoreBlocks.breatheableAir.blockID, 0, 2);
-            }
-        }
-        
         TileEntity headTile = this.head.getTileEntity(this.world);
         
         if (headTile instanceof GCCoreTileEntityOxygenSealer)
@@ -111,7 +98,7 @@ public class ThreadFindSeal extends Thread
         
         long time3 = System.nanoTime();
         
-        if (GCCoreConfigManager.enableDebug)
+//        if (GCCoreConfigManager.enableDebug)
         {
             FMLLog.info("Oxygen Sealer Check Completed at x" + this.head.intX() + " y" + this.head.intY() + " z" + this.head.intZ());
             FMLLog.info("   Sealed: " + this.sealed);
@@ -158,7 +145,7 @@ public class ThreadFindSeal extends Thread
                         this.checkCount--;
                         check(pair);
                         
-                        if (this.canBlockPass(pair))
+                        if (WorldUtil.canBlockPass(world, pair))
                         {
                             this.loopThrough(sideVec);
                         }
@@ -199,15 +186,15 @@ public class ThreadFindSeal extends Thread
     
     private boolean checked(VecDirPair pair)
     {
-        for (VecDirPair pair2 : this.checked)
-        {
-            if (pair2.getPosition().equals(pair.getPosition()))
-            {
-                return true;
-            }
-        }
+//        for (VecDirPair pair2 : this.checked)
+//        {
+//            if (pair2.getPosition().equals(pair.getPosition()))
+//            {
+//                return true;
+//            }
+//        }
         
-        return false;
+        return this.checked.contains(pair);
     }
     
     private void check(VecDirPair pair)
@@ -233,45 +220,5 @@ public class ThreadFindSeal extends Thread
     private boolean isBreathableAir(VecDirPair pair)
     {
         return pair.getPosition().getBlockID(this.world) == GCCoreBlocks.breatheableAir.blockID;
-    }
-
-    private boolean canBlockPass(VecDirPair pair)
-    {
-        int id = pair.getPosition().getBlockID(this.world);
-
-        if (id > 0)
-        {
-            Block block = Block.blocksList[id];
-            int metadata = this.world.getBlockMetadata(pair.getPosition().intX(), pair.getPosition().intY(), pair.getPosition().intZ());
-
-            if (id == GCCoreBlocks.breatheableAir.blockID)
-            {
-                return true;
-            }
-
-            if (OxygenPressureProtocol.vanillaPermeableBlocks.contains(id))
-            {
-                return true;
-            }
-
-            if (!block.isOpaqueCube())
-            {
-                if (block instanceof IPartialSealableBlock)
-                {
-                    return !((IPartialSealableBlock) block).isSealed(this.world, pair.getPosition().intX(), pair.getPosition().intY(), pair.getPosition().intZ(), pair.getDirection());
-                }
-
-                if (OxygenPressureProtocol.nonPermeableBlocks.containsKey(id) && OxygenPressureProtocol.nonPermeableBlocks.get(id).contains(metadata))
-                {
-                    return false;
-                }
-
-                return true;
-            }
-
-            return false;
-        }
-
-        return true;
     }
 }

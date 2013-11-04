@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
+import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.api.entity.IWorldTransferCallback;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
@@ -33,7 +34,10 @@ import micdoodle8.mods.galacticraft.core.network.GCCorePacketDimensionListPlanet
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketDimensionListSpaceStations;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumPacketClient;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketSpaceStationData;
+import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol;
+import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol.VecDirPair;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -941,5 +945,51 @@ public class WorldUtil
         }
 
         return null;
+    }
+    
+    public static void onBlockBroken(World world, int x, int y, int z, int oldBlockID, int oldBlockMetadata)
+    {
+    }
+
+    public static boolean canBlockPass(World world, int id, int metadata, VecDirPair pair)
+    {
+        if (id > 0)
+        {
+            Block block = Block.blocksList[id];
+
+            if (id == GCCoreBlocks.breatheableAir.blockID)
+            {
+                return true;
+            }
+
+            if (OxygenPressureProtocol.vanillaPermeableBlocks.contains(id))
+            {
+                return true;
+            }
+
+            if (!block.isOpaqueCube())
+            {
+                if (block instanceof IPartialSealableBlock)
+                {
+                    return !((IPartialSealableBlock) block).isSealed(world, pair.getPosition().intX(), pair.getPosition().intY(), pair.getPosition().intZ(), pair.getDirection());
+                }
+
+                if (OxygenPressureProtocol.nonPermeableBlocks.containsKey(id) && OxygenPressureProtocol.nonPermeableBlocks.get(id).contains(metadata))
+                {
+                    return false;
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+        return true;
+    }
+
+    public static boolean canBlockPass(World world, VecDirPair pair)
+    {
+        return canBlockPass(world, pair.getPosition().getBlockID(world), pair.getPosition().getBlockMetadata(world), pair);
     }
 }
