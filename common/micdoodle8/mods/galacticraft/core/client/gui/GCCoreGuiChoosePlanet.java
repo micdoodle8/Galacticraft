@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.GCLog;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerServer.EnumPacketServer;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
@@ -45,7 +46,7 @@ import cpw.mods.fml.common.network.PacketDispatcher;
  */
 public class GCCoreGuiChoosePlanet extends GuiScreen
 {
-    private int spaceTimer = 0;
+    private long spaceTimer = 0;
 
     public static RenderItem drawItems = new RenderItem();
 
@@ -171,7 +172,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     @Override
     public void updateScreen()
     {
-        this.spaceTimer += 2;
+        this.spaceTimer++;
     }
 
     @Override
@@ -325,8 +326,8 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
             final float var8 = ((float) (var6 / var5) / (float) var5 - 0.5F) / 64.0F;
             final float var9 = 0.0F;
             GL11.glTranslatef(var7, var8, var9);
-            GL11.glRotatef(MathHelper.sin((this.spaceTimer + par1) / 1000.0F) * 25.0F + 20.0F, 1.0F, 0.0F, 0.0F);
-            GL11.glRotatef(-(this.spaceTimer + par1) * 0.005F, 0.0F, 1.0F, 0.0F);
+            GL11.glRotatef(MathHelper.sin(((this.spaceTimer * 2) + par1) / 1000.0F) * 25.0F + 20.0F, 1.0F, 0.0F, 0.0F);
+            GL11.glRotatef(-((this.spaceTimer * 2) + par1) * 0.005F, 0.0F, 1.0F, 0.0F);
             GL11.glRotatef(41, 0, 0, 1);
 
             for (int var10 = 0; var10 < 6; ++var10)
@@ -430,26 +431,29 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         GL11.glColorMask(true, true, true, true);
     }
 
-    protected void drawItemStackTooltip(List<String> strings, List<ItemStack> items, List<Boolean> correctAmount, int par2, int par3)
+    protected void drawItemStackTooltip(HashMap<Integer, ToolTipEntry> itemList, int par2, int par3)
     {
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         RenderHelper.disableStandardItemLighting();
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
 
-        if (!strings.isEmpty())
+        if (!itemList.isEmpty())
         {
             int k = 0;
             int l;
             int i1;
 
-            for (l = 0; l < strings.size(); ++l)
+            for (l = 0; l < itemList.size(); ++l)
             {
-                i1 = this.fontRenderer.getStringWidth(strings.get(l));
-
-                if (i1 > k)
+                for (ItemStringPair pair : itemList.get(l).itemStringPairs)
                 {
-                    k = i1 + (items.isEmpty() ? 0 : 34);
+                    i1 = this.fontRenderer.getStringWidth(pair.description);
+
+                    if (i1 > k)
+                    {
+                        k = i1 + (itemList.isEmpty() ? 0 : 50);
+                    }
                 }
             }
 
@@ -457,9 +461,9 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
             i1 = par3 - 12;
             int j1 = 14;
 
-            if (strings.size() > 1)
+            if (itemList.size() > 1)
             {
-                j1 += 2 + (strings.size() - 1) * (items.isEmpty() ? 10 : 16);
+                j1 += 2 + (itemList.size() - 1) * (itemList.isEmpty() ? 10 : 16);
             }
 
             if ((this.height - 500) / 2 + i1 + j1 + 6 > this.height)
@@ -483,27 +487,33 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
             this.drawGradientRect(l - 3, i1 - 3, l + k + 3, i1 - 3 + 1, l1, l1);
             this.drawGradientRect(l - 3, i1 + j1 + 2, l + k + 3, i1 + j1 + 3, i2, i2);
 
-            int stringY = i1 + (items.isEmpty() ? 0 : 5);
+            int stringY = i1 + (itemList.isEmpty() ? 0 : 5);
 
-            for (int j2 = 0; j2 < correctAmount.size(); ++j2)
+            for (int j2 = 0; j2 < itemList.size(); ++j2)
             {
-                String s = strings.get(j2);
-                final Boolean b = correctAmount.get(j2);
+                int count = (int) ((spaceTimer / 20) % itemList.get(j2).itemStringPairs.size());
+                ItemStringPair pair = itemList.get(j2).itemStringPairs.get(count);
+                
+                int red = GCCoreUtil.convertTo32BitColor(255, 255, 10, 10);
+                int green = GCCoreUtil.convertTo32BitColor(255, 10, 10, 255);
 
-                s = "\u00a7" + Integer.toHexString(b ? 10 : 4) + s;
+                String s = pair.description;
 
-                this.fontRenderer.drawStringWithShadow(s, l + (items.isEmpty() ? 0 : 19), stringY, -1);
+                this.fontRenderer.drawString(s, l + (itemList.isEmpty() ? 0 : 19), stringY, itemList.get(j2).isValid ? green : red);
 
-                stringY += items.size() > 0 ? 16 : 14;
+                stringY += itemList.size() > 0 ? 16 : 14;
             }
 
-            int itemY = i1;
-
-            for (final ItemStack stack : items)
+            stringY = i1 + (itemList.isEmpty() ? 0 : 5);
+            
+            for (int j2 = 0; j2 < itemList.size(); ++j2)
             {
-                GCCoreGuiChoosePlanet.drawItems.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.renderEngine, stack, l, itemY);
+                int count = (int) ((spaceTimer / 20) % itemList.get(j2).itemStringPairs.size());
+                ItemStringPair pair = itemList.get(j2).itemStringPairs.get(count);
+                
+                GCCoreGuiChoosePlanet.drawItems.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.renderEngine, pair.stack, l, stringY - 4);
 
-                itemY += 16;
+                stringY += itemList.size() > 0 ? 16 : 14;
             }
 
             this.zLevel = 0.0F;
@@ -511,7 +521,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         }
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void drawScreen(int par1, int par2, float par3)
     {
@@ -611,26 +621,25 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
             {
                 if (this.playerAlreadyCreatedDimension())
                 {
-                    final List<String> strings = new ArrayList<String>();
-                    final List<ItemStack> items = new ArrayList<ItemStack>();
-                    final List<Boolean> hasEnough = new ArrayList<Boolean>();
-                    strings.add(StatCollector.translateToLocal("gui.chooseplanet.alreadycreated1.name"));
-                    strings.add("        " + StatCollector.translateToLocal("gui.chooseplanet.alreadycreated2.name"));
-                    hasEnough.add(false);
-                    hasEnough.add(false);
-                    this.drawItemStackTooltip(strings, items, hasEnough, this.createSpaceStationButton.xPosition + 115, this.createSpaceStationButton.yPosition + 15);
+                    HashMap<Integer, ToolTipEntry> itemList = new HashMap<Integer, ToolTipEntry>();
+                    ArrayList<ItemStringPair> pairList0 = new ArrayList<ItemStringPair>();
+                    ArrayList<ItemStringPair> pairList1 = new ArrayList<ItemStringPair>();
+                    pairList0.add(new ItemStringPair(null, StatCollector.translateToLocal("gui.chooseplanet.alreadycreated1.name")));
+                    pairList1.add(new ItemStringPair(null, "        " + StatCollector.translateToLocal("gui.chooseplanet.alreadycreated2.name")));
+                    itemList.put(0, new ToolTipEntry(false, pairList0));
+                    itemList.put(1, new ToolTipEntry(false, pairList1));
+                    this.drawItemStackTooltip(itemList, this.createSpaceStationButton.xPosition + 115, this.createSpaceStationButton.yPosition + 15);
                 }
                 else if (this.canCreateSpaceStation() && WorldUtil.getSpaceStationRecipe(this.getDimensionIdFromSlot()) != null)
                 {
-                    final List<String> strings = new ArrayList<String>();
-                    final List<ItemStack> items = new ArrayList<ItemStack>();
-                    final List<Boolean> hasEnough = new ArrayList<Boolean>();
+                    HashMap<Integer, ToolTipEntry> itemList = new HashMap<Integer, ToolTipEntry>();
                     final SpaceStationRecipe recipe = WorldUtil.getSpaceStationRecipe(this.getDimensionIdFromSlot());
 
                     final HashMap<Object, Integer> required = new HashMap<Object, Integer>();
                     required.putAll(recipe.getInput());
 
                     final Iterator<?> req = recipe.getInput().keySet().iterator();
+                    int itemSlot = 0;
 
                     while (req.hasNext())
                     {
@@ -638,18 +647,6 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 
                         final int amountRequired = required.get(next);
                         int amountInInv = 0;
-
-                        ItemStack item = null;
-
-                        if (next instanceof ItemStack)
-                        {
-                            item = (ItemStack) next;
-                        }
-
-                        if (next instanceof ArrayList)
-                        {
-                            item = ((ArrayList<ItemStack>) next).get(0);
-                        }
 
                         for (int x = 0; x < this.playerToSend.inventory.getSizeInventory(); x++)
                         {
@@ -677,33 +674,89 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
                             }
                         }
 
-                        if (item != null)
+                        ArrayList<ItemStack> inputList = new ArrayList();
+                        
+                        if (next instanceof ItemStack)
                         {
-                            items.add(item);
+                            inputList.add((ItemStack) next);
                         }
-                        if (item != null)
+                        else if (next instanceof ArrayList)
                         {
-                            String displayName = item.getDisplayName();
-                            strings.add(displayName + (displayName.equals("Tin") ? " " : "s ") + amountInInv + "/" + amountRequired);
+                            inputList.addAll((ArrayList) next);
                         }
-                        hasEnough.add(amountInInv >= amountRequired);
+                        
+                        ArrayList<ItemStringPair> stringList = new ArrayList<ItemStringPair>();
+                        
+                        for (ItemStack inputStack : inputList)
+                        {
+                            String display = inputStack.getDisplayName() + " " + amountInInv + "/" + amountRequired;
+                            stringList.add(new ItemStringPair(inputStack, display));
+                        }
+                        
+                        itemList.put(itemSlot, new ToolTipEntry(amountInInv >= amountRequired, stringList));                        
+                        itemSlot++;
                     }
 
-                    this.drawItemStackTooltip(strings, items, hasEnough, this.createSpaceStationButton.xPosition + 115, this.createSpaceStationButton.yPosition + 15);
+                    this.drawItemStackTooltip(itemList, this.createSpaceStationButton.xPosition + 115, this.createSpaceStationButton.yPosition + 15);
                 }
                 else
                 {
                     this.createSpaceStationButton.enabled = false;
-                    final List<String> strings = new ArrayList<String>();
-                    final List<ItemStack> items = new ArrayList<ItemStack>();
-                    final List<Boolean> hasEnough = new ArrayList<Boolean>();
-                    strings.add(StatCollector.translateToLocal("gui.chooseplanet.cannotcreate1.name"));
-                    strings.add("     " + StatCollector.translateToLocal("gui.chooseplanet.cannotcreate2.name"));
-                    hasEnough.add(false);
-                    hasEnough.add(false);
-                    this.drawItemStackTooltip(strings, items, hasEnough, this.createSpaceStationButton.xPosition + 115, this.createSpaceStationButton.yPosition + 15);
+                    HashMap<Integer, ToolTipEntry> itemList = new HashMap<Integer, ToolTipEntry>();
+                    ArrayList<ItemStringPair> pairList0 = new ArrayList<ItemStringPair>();
+                    ArrayList<ItemStringPair> pairList1 = new ArrayList<ItemStringPair>();
+                    pairList0.add(new ItemStringPair(null, StatCollector.translateToLocal("gui.chooseplanet.cannotcreate1.name")));
+                    pairList1.add(new ItemStringPair(null, "     " + StatCollector.translateToLocal("gui.chooseplanet.cannotcreate2.name")));
+                    itemList.put(0, new ToolTipEntry(false, pairList0));
+                    itemList.put(1, new ToolTipEntry(false, pairList1));
+                    this.drawItemStackTooltip(itemList, this.createSpaceStationButton.xPosition + 115, this.createSpaceStationButton.yPosition + 15);
                 }
             }
+        }
+    }
+    
+    public static class ToolTipEntry
+    {
+        private final boolean isValid;
+        
+        public ToolTipEntry(boolean isValid, List<ItemStringPair> itemStringPairs)
+        {
+            this.isValid = isValid;
+            this.itemStringPairs = itemStringPairs;
+        }
+
+        private final List<ItemStringPair> itemStringPairs;
+        
+        public boolean isValid()
+        {
+            return isValid;
+        }
+        
+        public List<ItemStringPair> getItemStringPairs()
+        {
+            return itemStringPairs;
+        }
+    }
+
+    public static class ItemStringPair
+    {
+        private final ItemStack stack;
+        private final String description;
+        
+        public ItemStringPair(ItemStack stack, String description)
+        {
+            this.stack = stack;
+            this.description = description;
+        }
+        
+        public ItemStack getStack()
+        {
+            return this.stack;
+        }
+        
+        public String getDescription()
+        {
+            return this.description;
         }
     }
 

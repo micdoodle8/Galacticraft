@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.recipe;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
@@ -22,6 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 public class GCCoreRecipeManager
@@ -181,9 +183,14 @@ public class GCCoreRecipeManager
 
         if (!GalacticraftCore.setSpaceStationRecipe)
         {
+            ArrayList<ItemStack> aluminumIngots = new ArrayList<ItemStack>();
+            aluminumIngots.addAll(OreDictionary.getOres("ingotAluminum"));
+            aluminumIngots.addAll(OreDictionary.getOres("ingotAluminium"));
+            aluminumIngots.addAll(OreDictionary.getOres("ingotNaturalAluminum"));
+            
             final HashMap<Object, Integer> inputMap = new HashMap<Object, Integer>();
             inputMap.put("ingotTin", 32);
-            inputMap.put("ingotAluminum", 16);
+            inputMap.put(aluminumIngots, 16);
             inputMap.put("waferAdvanced", 1);
             inputMap.put(Item.ingotIron, 24);
             GalacticraftRegistry.registerSpaceStation(new SpaceStationType(GCCoreConfigManager.idDimensionOverworldOrbit, 0, new SpaceStationRecipe(inputMap)));

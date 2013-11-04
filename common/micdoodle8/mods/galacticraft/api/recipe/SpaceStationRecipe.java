@@ -43,6 +43,10 @@ public class SpaceStationRecipe
                 FMLLog.info("While registering space station recipe, found " + OreDictionary.getOres((String) obj).size() + " type(s) of " + obj);
                 this.input.put(OreDictionary.getOres((String) obj), amount);
             }
+            else if (obj instanceof ArrayList)
+            {
+                this.input.put(obj, amount);
+            }
             else
             {
                 throw new RuntimeException("INVALID SPACE STATION RECIPE");
