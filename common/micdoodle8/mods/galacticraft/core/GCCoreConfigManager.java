@@ -50,6 +50,7 @@ public class GCCoreConfigManager
     public static int idBlockCopperWire;
     public static int idBlockBasicMachine2;
     public static int idBlockGlowstoneTorch;
+    public static int idBlockFuel;
 
     // ITEMS
     public static int idItemKnowledgeBook;
@@ -79,7 +80,6 @@ public class GCCoreConfigManager
     public static int idItemFlagPole;
     public static int idItemOilCanister;
     public static int idItemOilExtractor;
-    public static int idItemFuel;
     public static int idItemSchematic;
     public static int idItemKey;
     public static int idItemBuggyMaterial;
@@ -219,6 +219,7 @@ public class GCCoreConfigManager
             GCCoreConfigManager.idBlockBasicMachine = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockMachineB", 3363).getInt(3363);
             GCCoreConfigManager.idBlockBasicMachine2 = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockMachineB2", 3364).getInt(3364);
             GCCoreConfigManager.idBlockGlowstoneTorch = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockGlowstoneTorch", 3384).getInt(3384);
+            GCCoreConfigManager.idBlockFuel = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockFuel", 3385).getInt(3385);
             // 3390 - Mars Base Block
 
             GCCoreConfigManager.idItemSpaceship = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemSpaceship", 9855).getInt(9855);
@@ -246,7 +247,6 @@ public class GCCoreConfigManager
             GCCoreConfigManager.idItemOilExtractor = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemOilExtractor", 9877).getInt(9877);
             GCCoreConfigManager.idItemOilCanister = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemOilCanister", 9878).getInt(9878);
             GCCoreConfigManager.idItemRocketFuelBucket = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemRocketFuelCanister", 9879).getInt(9879);
-            GCCoreConfigManager.idItemFuel = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "iditemFuel", 9880).getInt(9880);
             GCCoreConfigManager.idItemKnowledgeBook = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemKnowledgeBook", 9881).getInt(9881);
             GCCoreConfigManager.idItemSchematic = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemSchematic", 9882).getInt(9882);
             GCCoreConfigManager.idItemKey = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idItemKey", 9883).getInt(9883);

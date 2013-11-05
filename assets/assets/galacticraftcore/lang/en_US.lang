@@ -186,6 +186,7 @@ tile.dummyblock.cryogenicChamber.name=Cryogenic Chamber
 tile.gcBlockCore.copperBlock.name=Copper Block
 tile.gcBlockCore.tinBlock.name=Tin Block
 tile.gcBlockCore.aluminumBlock.name=Aluminum Block
+tile.fuel.name=Fuel
 
 # ENTITIES
 entity.GalacticraftCore.EvolvedSpider.name=Evolved Spider

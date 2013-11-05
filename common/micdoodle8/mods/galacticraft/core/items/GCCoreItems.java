@@ -54,7 +54,6 @@ public class GCCoreItems
     public static Item fuelCanister;
     public static Item oilExtractor;
     public static Item schematic;
-    public static Item fuel;
     public static Item key;
     public static Item partBuggy;
     public static Item knowledgeBook;
@@ -107,7 +106,6 @@ public class GCCoreItems
         GCCoreItems.flagPole = new GCCoreItem(GCCoreConfigManager.idItemFlagPole, "steelPole");
         GCCoreItems.oilExtractor = new GCCoreItemOilExtractor(GCCoreConfigManager.idItemOilExtractor, "oilExtractor");
         GCCoreItems.schematic = new GCCoreItemSchematic(GCCoreConfigManager.idItemSchematic, "schematic");
-        GCCoreItems.fuel = new GCCoreItemFuel(GCCoreConfigManager.idItemFuel, "fuel");
         GCCoreItems.key = new GCCoreItemKey(GCCoreConfigManager.idItemKey, "key");
         GCCoreItems.partBuggy = new GCCoreItemBuggyMaterial(GCCoreConfigManager.idItemBuggyMaterial, "buggymat");
         GCCoreItems.knowledgeBook = new GCCoreItemKnowledgeBook(GCCoreConfigManager.idItemKnowledgeBook, "knowledgeBook");
