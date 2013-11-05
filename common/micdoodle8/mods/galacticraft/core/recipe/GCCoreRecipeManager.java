@@ -233,9 +233,9 @@ public class GCCoreRecipeManager
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreItems.sensorLens, 1), new Object[] { "ZXZ", "XYX", "ZXZ", 'X', Block.thinGlass, 'Y', new ItemStack(GCMoonItems.meteoricIronIngot, 1, 1), 'Z', Item.redstone });
 
-        RecipeUtil.addRecipe(new ItemStack(GCCoreItems.canister, 1, 0), new Object[] { "X X", "X X", "XXX", 'X', "compressedTin" });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreItems.canister, 2, 0), new Object[] { "X X", "X X", "XXX", 'X', "ingotTin" });
 
-        RecipeUtil.addRecipe(new ItemStack(GCCoreItems.canister, 1, 1), new Object[] { "X X", "X X", "XXX", 'X', "compressedCopper" });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreItems.canister, 2, 1), new Object[] { "X X", "X X", "XXX", 'X', "ingotCopper" });
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreItems.oxMask, 1), new Object[] { "XXX", "XYX", "XXX", 'X', Block.thinGlass, 'Y', Item.helmetIron });
 
