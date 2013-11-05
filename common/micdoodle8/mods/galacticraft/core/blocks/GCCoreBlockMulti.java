@@ -118,7 +118,7 @@ public class GCCoreBlockMulti extends BlockMulti implements IPartialSealableBloc
             super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, list, entity);
         }
     }
-    
+
     @Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
     {
@@ -161,12 +161,12 @@ public class GCCoreBlockMulti extends BlockMulti implements IPartialSealableBloc
     public boolean isSealed(World world, int x, int y, int z, ForgeDirection direction)
     {
         int metadata = world.getBlockMetadata(x, y, z);
-        
+
         if (metadata == 4)
         {
             return direction == ForgeDirection.UP || direction == ForgeDirection.DOWN;
         }
-        
+
         return true;
     }
 }

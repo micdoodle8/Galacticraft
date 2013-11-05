@@ -108,7 +108,7 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric im
 
                                 if (block != null)
                                 {
-                                    if (block.isLeaves(this.worldObj, x, y, z) || (block instanceof IPlantable && ((IPlantable) block).getPlantType(this.worldObj, x, y, z) == EnumPlantType.Crop))
+                                    if (block.isLeaves(this.worldObj, x, y, z) || block instanceof IPlantable && ((IPlantable) block).getPlantType(this.worldObj, x, y, z) == EnumPlantType.Crop)
                                     {
                                         power++;
                                     }

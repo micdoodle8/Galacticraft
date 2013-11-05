@@ -48,16 +48,16 @@ public class GCCoreItemWrench extends Item
     public void wrenchUsed(EntityPlayer entityPlayer, int x, int y, int z)
     {
         ItemStack stack = entityPlayer.inventory.getCurrentItem();
-        
+
         if (stack != null)
         {
             stack.damageItem(1, entityPlayer);
-            
+
             if (stack.getItemDamage() >= stack.getMaxDamage())
             {
                 stack.stackSize--;
             }
-            
+
             if (stack.stackSize <= 0)
             {
                 entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, null);

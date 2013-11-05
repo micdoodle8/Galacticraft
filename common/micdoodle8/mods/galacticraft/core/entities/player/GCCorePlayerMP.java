@@ -276,7 +276,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
         {
             this.setLaunchAttempts(0);
         }
-        
+
         this.checkOxygen();
 
         if (this.worldObj.provider instanceof IGalacticraftWorldProvider && (this.oxygenSetupValid != this.lastOxygenSetupValid || this.tick % 100 == 0))
@@ -767,7 +767,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
         final ItemStack tankInSlot2 = this.getExtendedInventory().getStackInSlot(3);
 
         final int drainSpacing = OxygenUtil.getDrainSpacing(tankInSlot, tankInSlot2);
-        
+
         if (this.worldObj.provider instanceof IGalacticraftWorldProvider && !this.capabilities.isCreativeMode)
         {
             if (tankInSlot == null)
@@ -837,7 +837,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
             }
 
             final boolean airEmpty = this.airRemaining <= 0 && this.airRemaining2 <= 0;
-            
+
             if (this.isOnLadder())
             {
                 this.oxygenSetupValid = this.lastOxygenSetupValid;
@@ -850,7 +850,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
             {
                 this.oxygenSetupValid = true;
             }
-            
+
             if (!this.oxygenSetupValid && !this.worldObj.isRemote && this.isEntityAlive())
             {
                 if (this.damageCounter == 0)

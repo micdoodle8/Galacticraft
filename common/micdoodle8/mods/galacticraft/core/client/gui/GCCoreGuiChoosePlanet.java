@@ -326,8 +326,8 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
             final float var8 = ((float) (var6 / var5) / (float) var5 - 0.5F) / 64.0F;
             final float var9 = 0.0F;
             GL11.glTranslatef(var7, var8, var9);
-            GL11.glRotatef(MathHelper.sin(((this.spaceTimer * 2) + par1) / 1000.0F) * 25.0F + 20.0F, 1.0F, 0.0F, 0.0F);
-            GL11.glRotatef(-((this.spaceTimer * 2) + par1) * 0.005F, 0.0F, 1.0F, 0.0F);
+            GL11.glRotatef(MathHelper.sin((this.spaceTimer * 2 + par1) / 1000.0F) * 25.0F + 20.0F, 1.0F, 0.0F, 0.0F);
+            GL11.glRotatef(-(this.spaceTimer * 2 + par1) * 0.005F, 0.0F, 1.0F, 0.0F);
             GL11.glRotatef(41, 0, 0, 1);
 
             for (int var10 = 0; var10 < 6; ++var10)
@@ -491,9 +491,9 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 
             for (int j2 = 0; j2 < itemList.size(); ++j2)
             {
-                int count = (int) ((spaceTimer / 20) % itemList.get(j2).itemStringPairs.size());
+                int count = (int) (this.spaceTimer / 20 % itemList.get(j2).itemStringPairs.size());
                 ItemStringPair pair = itemList.get(j2).itemStringPairs.get(count);
-                
+
                 int red = GCCoreUtil.convertTo32BitColor(255, 255, 10, 10);
                 int green = GCCoreUtil.convertTo32BitColor(255, 10, 10, 255);
 
@@ -505,12 +505,12 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
             }
 
             stringY = i1 + (itemList.isEmpty() ? 0 : 5);
-            
+
             for (int j2 = 0; j2 < itemList.size(); ++j2)
             {
-                int count = (int) ((spaceTimer / 20) % itemList.get(j2).itemStringPairs.size());
+                int count = (int) (this.spaceTimer / 20 % itemList.get(j2).itemStringPairs.size());
                 ItemStringPair pair = itemList.get(j2).itemStringPairs.get(count);
-                
+
                 GCCoreGuiChoosePlanet.drawItems.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.renderEngine, pair.stack, l, stringY - 4);
 
                 stringY += itemList.size() > 0 ? 16 : 14;
@@ -675,7 +675,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
                         }
 
                         ArrayList<ItemStack> inputList = new ArrayList();
-                        
+
                         if (next instanceof ItemStack)
                         {
                             inputList.add((ItemStack) next);
@@ -684,16 +684,16 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
                         {
                             inputList.addAll((ArrayList) next);
                         }
-                        
+
                         ArrayList<ItemStringPair> stringList = new ArrayList<ItemStringPair>();
-                        
+
                         for (ItemStack inputStack : inputList)
                         {
                             String display = inputStack.getDisplayName() + " " + amountInInv + "/" + amountRequired;
                             stringList.add(new ItemStringPair(inputStack, display));
                         }
-                        
-                        itemList.put(itemSlot, new ToolTipEntry(amountInInv >= amountRequired, stringList));                        
+
+                        itemList.put(itemSlot, new ToolTipEntry(amountInInv >= amountRequired, stringList));
                         itemSlot++;
                     }
 
@@ -714,11 +714,11 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
             }
         }
     }
-    
+
     public static class ToolTipEntry
     {
         private final boolean isValid;
-        
+
         public ToolTipEntry(boolean isValid, List<ItemStringPair> itemStringPairs)
         {
             this.isValid = isValid;
@@ -726,15 +726,15 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
         }
 
         private final List<ItemStringPair> itemStringPairs;
-        
+
         public boolean isValid()
         {
-            return isValid;
+            return this.isValid;
         }
-        
+
         public List<ItemStringPair> getItemStringPairs()
         {
-            return itemStringPairs;
+            return this.itemStringPairs;
         }
     }
 
@@ -742,18 +742,18 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
     {
         private final ItemStack stack;
         private final String description;
-        
+
         public ItemStringPair(ItemStack stack, String description)
         {
             this.stack = stack;
             this.description = description;
         }
-        
+
         public ItemStack getStack()
         {
             return this.stack;
         }
-        
+
         public String getDescription()
         {
             return this.description;

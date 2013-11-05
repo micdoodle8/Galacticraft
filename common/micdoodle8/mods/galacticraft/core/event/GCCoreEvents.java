@@ -77,13 +77,13 @@ public class GCCoreEvents
     {
         ChunkLoadingCallback.save((WorldServer) event.world);
     }
-    
+
     @ForgeSubscribe
     public void onChunkDataLoad(ChunkDataEvent.Load event)
     {
         ChunkLoadingCallback.load((WorldServer) event.world);
     }
-    
+
     @ForgeSubscribe
     public void onWorldLoad(Load event)
     {
@@ -92,7 +92,7 @@ public class GCCoreEvents
             ChunkLoadingCallback.load((WorldServer) event.world);
         }
     }
-    
+
     @ForgeSubscribe
     public void onEntityFall(LivingFallEvent event)
     {
@@ -448,12 +448,12 @@ public class GCCoreEvents
         }
     }
 
-//    @SideOnly(Side.CLIENT)
-//    @ForgeSubscribe
-//    public void onMinecraftLoaded(MinecraftLoadedEvent event)
-//    {
-//        ;
-//    }
+    // @SideOnly(Side.CLIENT)
+    // @ForgeSubscribe
+    // public void onMinecraftLoaded(MinecraftLoadedEvent event)
+    // {
+    // ;
+    // }
 
     @SideOnly(Side.CLIENT)
     @ForgeSubscribe

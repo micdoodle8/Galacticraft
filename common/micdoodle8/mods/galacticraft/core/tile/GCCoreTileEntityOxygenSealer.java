@@ -40,14 +40,14 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
     {
         super(GCCoreTileEntityOxygenSealer.WATTS_PER_TICK, 50, 10000, 12);
     }
-    
+
     public int getFindSealChecks()
     {
         if (!this.active)
         {
             return 0;
         }
-        
+
         return (int) Math.floor(this.storedOxygen / 7.5D);
     }
 
@@ -62,13 +62,13 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
             {
                 this.stopSealThreadCooldown--;
             }
-            
+
             if (this.threadSeal != null)
             {
                 this.sealed = this.threadSeal.sealed;
                 this.calculatingSealed = this.threadSeal.looping;
             }
-            
+
             if (this.storedOxygen >= 1 && this.getEnergyStored() > 0 && !this.disabled)
             {
                 this.active = true;
@@ -77,7 +77,7 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
             {
                 this.active = false;
             }
-            
+
             if (this.ticks % 100 == 0 && this.stopSealThreadCooldown <= 0)
             {
                 OxygenPressureProtocol.updateSealerStatus(this);

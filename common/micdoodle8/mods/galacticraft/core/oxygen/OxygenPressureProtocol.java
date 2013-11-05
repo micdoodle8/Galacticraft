@@ -52,38 +52,34 @@ public class OxygenPressureProtocol
             e.printStackTrace();
         }
     }
-    
+
     public static class VecDirPair
     {
         private final Vector3 position;
         private final ForgeDirection direction;
-        
+
         public VecDirPair(Vector3 position, ForgeDirection direction)
         {
             this.position = position;
             this.direction = direction;
         }
-        
+
         public Vector3 getPosition()
         {
-            return position;
+            return this.position;
         }
-        
+
         public ForgeDirection getDirection()
         {
-            return direction;
+            return this.direction;
         }
-        
+
         @Override
         public int hashCode()
         {
-            return new HashCodeBuilder()
-            .append(this.position.x)
-            .append(this.position.y)
-            .append(this.position.z)
-            .hashCode();
+            return new HashCodeBuilder().append(this.position.x).append(this.position.y).append(this.position.z).hashCode();
         }
-        
+
         @Override
         public boolean equals(Object other)
         {
@@ -91,32 +87,29 @@ public class OxygenPressureProtocol
             {
                 return false;
             }
-            
+
             if (other == this)
             {
                 return true;
             }
-            
+
             if (other instanceof VecDirPair)
             {
                 VecDirPair otherPair = (VecDirPair) other;
-                return new EqualsBuilder()
-                    .append(this.position.x, otherPair.position.x)
-                    .append(this.position.y, otherPair.position.y)
-                    .append(this.position.z, otherPair.position.z).isEquals();
+                return new EqualsBuilder().append(this.position.x, otherPair.position.x).append(this.position.y, otherPair.position.y).append(this.position.z, otherPair.position.z).isEquals();
             }
-            
+
             return false;
         }
     }
-    
+
     public static void updateSealerStatus(GCCoreTileEntityOxygenSealer head)
     {
         if (head.threadSeal != null)
         {
             head.threadSeal.interrupt();
         }
-        
+
         head.threadSeal = new ThreadFindSeal();
         head.threadSeal.world = head.worldObj;
         head.threadSeal.head = new Vector3(head);
@@ -126,7 +119,7 @@ public class OxygenPressureProtocol
         head.threadSeal.checked = new HashSet<VecDirPair>();
         head.threadSeal.start();
     }
-    
+
     public static void onEdgeBlockUpdated(World world, Vector3 vec)
     {
         ThreadFindSeal threadSeal = new ThreadFindSeal();

@@ -87,7 +87,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
             }
         }
     }
-    
+
     public void igniteCheckingCooldown()
     {
         if (!this.worldObj.isRemote && this.launchCooldown <= 0)
@@ -112,7 +112,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                         this.riddenByEntity = null;
                         e.mountEntity(this);
                     }
-                    
+
                     this.setWaitForPlayer(false);
                     this.motionY = -0.5D;
                 }
@@ -127,14 +127,14 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                 this.motionX = this.motionY = this.motionZ = 0.0D;
             }
         }
-        
+
         super.onUpdate();
-        
+
         if (this.landing)
         {
             this.rotationPitch = this.rotationYaw = 0;
         }
-        
+
         if (!this.worldObj.isRemote)
         {
             if (this.launchCooldown > 0)

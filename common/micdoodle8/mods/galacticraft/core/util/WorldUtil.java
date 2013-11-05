@@ -880,7 +880,7 @@ public class WorldUtil
                 var8.setChestSpawnCooldown(200);
             }
         }
-        
+
         if (ridingRocket != null)
         {
             var1.setPositionAndRotation(ridingRocket.posX, ridingRocket.posY, ridingRocket.posZ, 0, 0);
@@ -946,7 +946,7 @@ public class WorldUtil
 
         return null;
     }
-    
+
     public static void onBlockBroken(World world, int x, int y, int z, int oldBlockID, int oldBlockMetadata)
     {
     }
@@ -990,6 +990,6 @@ public class WorldUtil
 
     public static boolean canBlockPass(World world, VecDirPair pair)
     {
-        return canBlockPass(world, pair.getPosition().getBlockID(world), pair.getPosition().getBlockMetadata(world), pair);
+        return WorldUtil.canBlockPass(world, pair.getPosition().getBlockID(world), pair.getPosition().getBlockMetadata(world), pair);
     }
 }

@@ -115,11 +115,11 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
     public boolean setFrequency()
     {
-        if (!marsLoaded)
+        if (!EntityAutoRocket.marsLoaded)
         {
             return false;
         }
-        
+
         for (int x = MathHelper.floor_double(this.posX) - 1; x <= MathHelper.floor_double(this.posX) + 1; x++)
         {
             for (int y = MathHelper.floor_double(this.posY) - 3; y <= MathHelper.floor_double(this.posY) + 1; y++)
@@ -209,7 +209,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
     protected boolean setTarget(boolean doSet, int destFreq)
     {
-        if (!marsLoaded || FMLCommonHandler.instance().getMinecraftServerInstance() == null || FMLCommonHandler.instance().getMinecraftServerInstance().worldServers == null)
+        if (!EntityAutoRocket.marsLoaded || FMLCommonHandler.instance().getMinecraftServerInstance() == null || FMLCommonHandler.instance().getMinecraftServerInstance().worldServers == null)
         {
             return false;
         }
@@ -340,7 +340,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
                 this.autoLaunch();
             }
 
-            if (marsLoaded && this.autoLaunchSetting == EnumAutoLaunch.REDSTONE_SIGNAL)
+            if (EntityAutoRocket.marsLoaded && this.autoLaunchSetting == EnumAutoLaunch.REDSTONE_SIGNAL)
             {
                 if (this.ticks % 5 == 0)
                 {
@@ -418,7 +418,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
             }
 
             PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 60, this.worldObj.provider.dimensionId, GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getNetworkedData(new ArrayList<Object>())));
-            
+
             this.lastStatusMessageCooldown = this.statusMessageCooldown;
         }
     }
@@ -478,7 +478,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
                     this.targetVec = null;
                     this.setPad(dock);
 
-                    if (marsLoaded)
+                    if (EntityAutoRocket.marsLoaded)
                     {
                         HashSet<ILandingPadAttachable> connectedTiles = dock.getConnectedTiles();
 
@@ -502,12 +502,12 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
                                     }
 
                                     Boolean autoLaunchEnabled = controllerClass.getField("launchSchedulingEnabled").getBoolean(updatedTile);
-                                    
+
                                     if (autoLaunchEnabled)
                                     {
                                         this.autoLaunchSetting = EnumAutoLaunch.values()[controllerClass.getField("launchDropdownSelection").getInt(updatedTile)];
                                     }
-                                    
+
                                     if (this.autoLaunchSetting != null)
                                     {
                                         switch (this.autoLaunchSetting)
@@ -528,7 +528,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
                                             break;
                                         }
                                     }
-                                    
+
                                     break;
                                 }
                             }

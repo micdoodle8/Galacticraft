@@ -34,12 +34,10 @@ import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.block.IElectrical;
 import universalelectricity.core.item.IItemElectric;
-import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 
 public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric implements IChunkLoader, IElectrical, IInventory, ISidedInventory, IPacketReceiver, ILandingPadAttachable
@@ -109,11 +107,13 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
         }
     }
 
+    @Override
     public String getOwnerName()
     {
         return this.ownerName;
     }
 
+    @Override
     public void setOwnerName(String ownerName)
     {
         this.ownerName = ownerName;
@@ -161,7 +161,7 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
                         if (this.xCoord + x >> 4 != this.xCoord >> 4 || this.zCoord + z >> 4 != this.zCoord >> 4)
                         {
                             this.connectedPads.add(new ChunkCoordinates(this.xCoord + x, this.yCoord, this.zCoord + z));
-                            
+
                             if (placed)
                             {
                                 ChunkLoadingCallback.forceChunk(this.chunkLoadTicket, this.worldObj, this.xCoord + x, this.yCoord, this.zCoord + z, this.getOwnerName());
@@ -523,7 +523,6 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
         if (this.destFrequency >= 0)
         {
             this.destFrequencyValid = false;
-            
 
             worldLoop:
             for (int i = 0; i < FMLCommonHandler.instance().getMinecraftServerInstance().worldServers.length; i++)

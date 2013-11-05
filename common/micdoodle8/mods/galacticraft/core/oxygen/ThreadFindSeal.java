@@ -23,47 +23,47 @@ public class ThreadFindSeal extends Thread
     public HashSet<VecDirPair> checked;
     public int checkCount;
     public boolean looping;
-    
+
     public ThreadFindSeal()
     {
         super("GC Sealer Roomfinder Thread");
     }
-    
+
     @Override
     public void run()
     {
         long time1 = System.nanoTime();
-        
+
         this.sealed = true;
         this.looping = true;
-        loopThrough(this.head.clone().translate(new Vector3(0, 1, 0)));
-        
+        this.loopThrough(this.head.clone().translate(new Vector3(0, 1, 0)));
+
         if (this.sealers.size() > 1)
         {
             this.checkCount = 0;
-            
+
             for (int i = 0; i < this.sealers.size(); i++)
             {
                 GCCoreTileEntityOxygenSealer sealer = this.sealers.get(i);
                 this.checkCount += sealer.getFindSealChecks();
             }
-            
+
             this.sealed = true;
             this.checked.clear();
-            loopThrough(this.head.clone().translate(new Vector3(0, 1, 0)));
+            this.loopThrough(this.head.clone().translate(new Vector3(0, 1, 0)));
         }
 
         long time2 = System.nanoTime();
-        
-        if (sealed)
+
+        if (this.sealed)
         {
-            for (VecDirPair checkedVec : checked)
+            for (VecDirPair checkedVec : this.checked)
             {
-                int blockID = checkedVec.getPosition().getBlockID(world);
-                
+                int blockID = checkedVec.getPosition().getBlockID(this.world);
+
                 if (this.sealed && blockID == 0)
                 {
-                    world.setBlock(checkedVec.getPosition().intX(), checkedVec.getPosition().intY(), checkedVec.getPosition().intZ(), GCCoreBlocks.breatheableAir.blockID, 0, 2);
+                    this.world.setBlock(checkedVec.getPosition().intX(), checkedVec.getPosition().intY(), checkedVec.getPosition().intZ(), GCCoreBlocks.breatheableAir.blockID, 0, 2);
                 }
             }
         }
@@ -71,24 +71,24 @@ public class ThreadFindSeal extends Thread
         {
             this.checked.clear();
             this.loopThroughD(this.head.clone().translate(new Vector3(0, 1, 0)));
-            
-            for (VecDirPair checkedVec : checked)
+
+            for (VecDirPair checkedVec : this.checked)
             {
-                int blockID = checkedVec.getPosition().getBlockID(world);
-                
+                int blockID = checkedVec.getPosition().getBlockID(this.world);
+
                 if (blockID == GCCoreBlocks.breatheableAir.blockID)
                 {
-                    world.setBlock(checkedVec.getPosition().intX(), checkedVec.getPosition().intY(), checkedVec.getPosition().intZ(), 0, 0, 2);
+                    this.world.setBlock(checkedVec.getPosition().intX(), checkedVec.getPosition().intY(), checkedVec.getPosition().intZ(), 0, 0, 2);
                 }
             }
         }
-        
+
         TileEntity headTile = this.head.getTileEntity(this.world);
-        
+
         if (headTile instanceof GCCoreTileEntityOxygenSealer)
         {
             GCCoreTileEntityOxygenSealer headSealer = (GCCoreTileEntityOxygenSealer) headTile;
-            
+
             for (GCCoreTileEntityOxygenSealer sealer : this.sealers)
             {
                 if (sealer != null && headSealer != sealer && headSealer.stopSealThreadCooldown <= sealer.stopSealThreadCooldown)
@@ -98,34 +98,34 @@ public class ThreadFindSeal extends Thread
                 }
             }
         }
-        
+
         long time3 = System.nanoTime();
-        
+
         this.looping = false;
-        
+
         if (GCCoreConfigManager.enableDebug)
         {
             FMLLog.info("Oxygen Sealer Check Completed at x" + this.head.intX() + " y" + this.head.intY() + " z" + this.head.intZ());
             FMLLog.info("   Sealed: " + this.sealed);
-            FMLLog.info("   Loop Time taken: " + ((time2 - time1) / 1000000.0D) + "ms");
-            FMLLog.info("   Place Time taken: " + ((time3 - time2) / 1000000.0D) + "ms");
-            FMLLog.info("   Total Time taken: " + ((time3 - time1) / 1000000.0D) + "ms");
+            FMLLog.info("   Loop Time taken: " + (time2 - time1) / 1000000.0D + "ms");
+            FMLLog.info("   Place Time taken: " + (time3 - time2) / 1000000.0D + "ms");
+            FMLLog.info("   Total Time taken: " + (time3 - time1) / 1000000.0D + "ms");
             FMLLog.info("   Found: " + this.sealers.size() + " sealers");
-            FMLLog.info("   Looped through: " + checked.size() + " blocks");
+            FMLLog.info("   Looped through: " + this.checked.size() + " blocks");
         }
     }
-    
+
     private void loopThroughD(Vector3 vec)
     {
         for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
         {
             Vector3 sideVec = vec.clone().modifyPositionFromSide(dir);
             VecDirPair pair = new VecDirPair(sideVec, dir);
-            
-            if (!checked(pair))
+
+            if (!this.checked(pair))
             {
-                check(pair);
-                
+                this.check(pair);
+
                 if (this.breathableAirAdjacent(pair))
                 {
                     this.loopThroughD(sideVec);
@@ -133,7 +133,7 @@ public class ThreadFindSeal extends Thread
             }
         }
     }
-    
+
     private void loopThrough(Vector3 vec)
     {
         if (this.sealed)
@@ -144,23 +144,23 @@ public class ThreadFindSeal extends Thread
                 {
                     Vector3 sideVec = vec.clone().modifyPositionFromSide(dir);
                     VecDirPair pair = new VecDirPair(sideVec, dir);
-                    
-                    if (!checked(pair))
+
+                    if (!this.checked(pair))
                     {
                         this.checkCount--;
-                        check(pair);
-                        
-                        if (WorldUtil.canBlockPass(world, pair))
+                        this.check(pair);
+
+                        if (WorldUtil.canBlockPass(this.world, pair))
                         {
                             this.loopThrough(sideVec);
                         }
-                        
+
                         TileEntity tileAtVec = sideVec.getTileEntity(this.world);
-                        
+
                         if (tileAtVec != null && tileAtVec instanceof GCCoreTileEntityOxygenSealer && !this.sealers.contains(tileAtVec))
                         {
                             GCCoreTileEntityOxygenSealer sealer = (GCCoreTileEntityOxygenSealer) tileAtVec;
-                            
+
                             if (sealer.active)
                             {
                                 this.sealers.add(sealer);
@@ -175,7 +175,7 @@ public class ThreadFindSeal extends Thread
                 {
                     Vector3 sideVec = vec.clone().modifyPositionFromSide(dir);
 
-                    if ((sideVec.getBlockID(this.world) == 0 || sideVec.getBlockID(this.world) == GCCoreBlocks.breatheableAir.blockID) && !checked(sideVec, dir))
+                    if ((sideVec.getBlockID(this.world) == 0 || sideVec.getBlockID(this.world) == GCCoreBlocks.breatheableAir.blockID) && !this.checked(sideVec, dir))
                     {
                         this.sealed = false;
                     }
@@ -183,30 +183,30 @@ public class ThreadFindSeal extends Thread
             }
         }
     }
-    
+
     private boolean checked(Vector3 vec, ForgeDirection dir)
     {
         return this.checked(new VecDirPair(vec, dir));
     }
-    
+
     private boolean checked(VecDirPair pair)
     {
-//        for (VecDirPair pair2 : this.checked)
-//        {
-//            if (pair2.getPosition().equals(pair.getPosition()))
-//            {
-//                return true;
-//            }
-//        }
-        
+        // for (VecDirPair pair2 : this.checked)
+        // {
+        // if (pair2.getPosition().equals(pair.getPosition()))
+        // {
+        // return true;
+        // }
+        // }
+
         return this.checked.contains(pair);
     }
-    
+
     private void check(VecDirPair pair)
     {
         this.checked.add(pair);
     }
-    
+
     private boolean breathableAirAdjacent(VecDirPair pair)
     {
         for (final ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
@@ -221,7 +221,7 @@ public class ThreadFindSeal extends Thread
 
         return false;
     }
-    
+
     private boolean isBreathableAir(VecDirPair pair)
     {
         return pair.getPosition().getBlockID(this.world) == GCCoreBlocks.breatheableAir.blockID;

@@ -98,7 +98,7 @@ public class GCMarsBlockTintedGlassPane extends BlockPane implements IPartialSea
         boolean connectedSouth = this.canThisPaneConnectToThisBlockID(world.getBlockId(x, y, z + 1));
         boolean connectedWest = this.canThisPaneConnectToThisBlockID(world.getBlockId(x - 1, y, z));
         boolean connectedEast = this.canThisPaneConnectToThisBlockID(world.getBlockId(x + 1, y, z));
-        
+
         switch (direction)
         {
         case UP:

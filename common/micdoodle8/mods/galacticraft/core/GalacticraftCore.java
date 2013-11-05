@@ -331,7 +331,7 @@ public class GalacticraftCore
             List<ItemStack> aluminumIngotList = new ArrayList<ItemStack>();
             aluminumIngotList.addAll(OreDictionary.getOres("ingotAluminium"));
             aluminumIngotList.addAll(OreDictionary.getOres("ingotNaturalAluminum"));
-            
+
             for (ItemStack stack : aluminumIngotList)
             {
                 CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, 8), stack, stack);
@@ -468,9 +468,9 @@ public class GalacticraftCore
         GCCoreUtil.registerGalacticraftNonMobEntity(GCCoreEntityMeteorChunk.class, "MeteorChunk", GCCoreConfigManager.idEntityMeteorChunk, 150, 5, true);
     }
 
-//    public static class MinecraftLoadedEvent extends Event
-//    {
-//    }
+    // public static class MinecraftLoadedEvent extends Event
+    // {
+    // }
 
     public static class SleepCancelledEvent extends Event
     {
