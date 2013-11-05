@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.moon.world.gen.dungeon;
 import java.util.ArrayList;
 import java.util.Random;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.GCCoreDungeonBoundingBox;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.GCCoreDungeonRoom;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.GCCoreMapGenDungeon;
@@ -83,8 +84,13 @@ public class GCMoonRoomTreasure extends GCCoreDungeonRoom
     {
         if (!this.chests.isEmpty())
         {
-            this.worldObj.setBlock(this.chests.get(0).posX, this.chests.get(0).posY, this.chests.get(0).posZ, GCCoreBlocks.treasureChestTier1.blockID, 0, 2);
-            this.chests.clear();
+            for (int i = 0; i < this.chests.size(); i++)
+            {
+                ChunkCoordinates coords = this.chests.get(i);
+                this.worldObj.setBlock(coords.posX, coords.posY, coords.posZ, GCCoreBlocks.treasureChestTier1.blockID, 0, 3);
+                this.worldObj.setBlockTileEntity(coords.posX, coords.posY, coords.posZ, new GCCoreTileEntityTreasureChest(1));
+                this.chests.remove(i);
+            }
         }
     }
 }

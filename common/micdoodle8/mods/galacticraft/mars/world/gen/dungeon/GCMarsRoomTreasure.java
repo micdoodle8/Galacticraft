@@ -84,9 +84,13 @@ public class GCMarsRoomTreasure extends GCCoreDungeonRoom
     {
         if (!this.chests.isEmpty())
         {
-            this.worldObj.setBlock(this.chests.get(0).posX, this.chests.get(0).posY, this.chests.get(0).posZ, GCMarsBlocks.tier2TreasureChest.blockID, 0, 2);
-            this.worldObj.setBlockTileEntity(this.chests.get(0).posX, this.chests.get(0).posY, this.chests.get(0).posZ, new GCMarsTileEntityTreasureChest());
-            this.chests.clear();
+            for (int i = 0; i < this.chests.size(); i++)
+            {
+                ChunkCoordinates coords = this.chests.get(i);
+                this.worldObj.setBlock(coords.posX, coords.posY, coords.posZ, GCMarsBlocks.tier2TreasureChest.blockID, 0, 3);
+                this.worldObj.setBlockTileEntity(coords.posX, coords.posY, coords.posZ, new GCMarsTileEntityTreasureChest());
+                this.chests.remove(i);
+            }
         }
     }
 }
