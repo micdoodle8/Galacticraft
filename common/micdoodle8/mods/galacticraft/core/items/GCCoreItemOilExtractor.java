@@ -98,10 +98,10 @@ public class GCCoreItemOilExtractor extends Item
                 {
                     final ItemStack canister = this.openCanister(par3EntityPlayer);
 
-                    if (canister != null && count % 5 == 0 && canister.getItemDamage() > 25)
+                    if (canister != null && count % 5 == 0 && canister.getItemDamage() > 1)
                     {
                         this.isOilBlock(par3EntityPlayer, par3EntityPlayer.worldObj, x, y, z, true);
-                        canister.setItemDamage(canister.getItemDamage() - 25);
+                        canister.setItemDamage(Math.max(canister.getItemDamage() - 200, 1));
                     }
                 }
             }
