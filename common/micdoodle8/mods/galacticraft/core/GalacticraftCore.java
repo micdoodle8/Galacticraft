@@ -73,10 +73,12 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPadSingle;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCollector;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCompressor;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDecompressor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDetector;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenPipe;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenSealer;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenStorageModule;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityParachest;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityRefinery;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntitySolar;
@@ -462,6 +464,8 @@ public class GalacticraftCore
         GameRegistry.registerTileEntity(GCCoreTileEntityElectricIngotCompressor.class, "Electric Ingot Compressor");
         GameRegistry.registerTileEntity(GCCoreTileEntityCircuitFabricator.class, "Circuit Fabricator");
         GameRegistry.registerTileEntity(GCCoreTileEntityAirLockController.class, "Air Lock Controller");
+        GameRegistry.registerTileEntity(GCCoreTileEntityOxygenStorageModule.class, "Oxygen Storage Module");
+        GameRegistry.registerTileEntity(GCCoreTileEntityOxygenDecompressor.class, "Oxygen Decompressor");
     }
 
     public void registerCreatures()
