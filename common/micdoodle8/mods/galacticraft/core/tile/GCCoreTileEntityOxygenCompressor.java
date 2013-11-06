@@ -26,10 +26,11 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen imp
     private ItemStack[] containingItems = new ItemStack[2];
 
     public static final float WATTS_PER_TICK = 0.2F;
+    public static final int TANK_TRANSFER_SPEED = 1;
 
     public GCCoreTileEntityOxygenCompressor()
     {
-        super(GCCoreTileEntityOxygenCompressor.WATTS_PER_TICK, 50, 1200, 12);
+        super(GCCoreTileEntityOxygenCompressor.WATTS_PER_TICK, 50, 1200, 0);
     }
 
     @Override
@@ -39,19 +40,19 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen imp
 
         if (!this.worldObj.isRemote)
         {
-            if (this.storedOxygen / 5.0D >= 1.0D && this.getEnergyStored() > 0)
+            if (this.storedOxygen > 0 && this.getEnergyStored() > 0)
             {
-                if (!this.worldObj.isRemote && this.ticks % ((31 - Math.min(Math.floor(this.storedOxygen / 5.0D), 30)) * 10) == 0)
+                if (!this.worldObj.isRemote)
                 {
-                    final ItemStack stack = this.getStackInSlot(0);
-
-                    if (stack != null && stack.getItem() instanceof GCCoreItemOxygenTank && stack.getItemDamage() > 0)
+                    if (this.containingItems[0] != null)
                     {
-                        stack.setItemDamage(stack.getItemDamage() - 1);
-                    }
-                    else if (stack != null && stack.getItem() instanceof GCCoreItemOxygenTank)
-                    {
-                        stack.setItemDamage(0);
+                        ItemStack tank0 = this.containingItems[0];
+                        
+                        if (tank0.getItem() instanceof GCCoreItemOxygenTank && tank0.getItemDamage() > 0)
+                        {
+                            tank0.setItemDamage(tank0.getItemDamage() - TANK_TRANSFER_SPEED);
+                            this.storedOxygen -= TANK_TRANSFER_SPEED;
+                        }
                     }
                 }
             }

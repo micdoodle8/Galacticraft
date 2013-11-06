@@ -42,13 +42,6 @@ public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectric im
                 GCCoreTileEntityOxygen.timeSinceOxygenRequest--;
             }
 
-            this.oxygenPerTick = (int) (this.storedOxygen / 250.0F);
-
-            if (this.storedOxygen == this.lastStoredOxygen && this.storedOxygen < 250)
-            {
-                this.oxygenPerTick = 1;
-            }
-
             this.storedOxygen = Math.max(this.storedOxygen - this.oxygenPerTick, 0);
         }
 
@@ -58,13 +51,13 @@ public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectric im
     @Override
     public boolean canReceiveGas(ForgeDirection side, EnumGas type)
     {
-        return side == this.getOxygenInputDirection() && type == EnumGas.OXYGEN;
+        return this.getOxygenInputDirection() != null && side == this.getOxygenInputDirection() && type == EnumGas.OXYGEN;
     }
 
     @Override
     public boolean canTubeConnect(ForgeDirection direction)
     {
-        return direction == this.getOxygenInputDirection();
+        return this.getOxygenInputDirection() != null && direction == this.getOxygenInputDirection();
     }
 
     @Override

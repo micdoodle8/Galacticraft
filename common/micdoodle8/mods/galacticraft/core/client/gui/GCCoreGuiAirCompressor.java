@@ -76,7 +76,7 @@ public class GCCoreGuiAirCompressor extends GCCoreGuiContainer
         this.fontRenderer.drawString(StatCollector.translateToLocal("gui.message.in.name") + ":", 87, 38, 4210752);
         String status = StatCollector.translateToLocal("gui.message.status.name") + ": " + this.getStatus();
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 50, 4210752);
-        status = StatCollector.translateToLocal("gui.message.oxinput.name") + ": " + Math.round(this.compressor.getCappedScaledOxygenLevel(1000) * 10.0D) / 100.0D + "%";
+        status = "Oxygen Use: " + (GCCoreTileEntityOxygenCompressor.TANK_TRANSFER_SPEED * 20) + "/s";
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 60, 4210752);
         status = ElectricityDisplay.getDisplay(this.compressor.ueWattsPerTick * 20, ElectricUnit.WATT);
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 70, 4210752);

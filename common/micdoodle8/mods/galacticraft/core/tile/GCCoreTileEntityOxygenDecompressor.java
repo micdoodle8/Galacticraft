@@ -1,9 +1,11 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import micdoodle8.mods.galacticraft.api.block.IOxygenReliantBlock;
+import mekanism.api.gas.EnumGas;
+import mekanism.api.gas.GasTransmission;
+import mekanism.api.gas.IGasAcceptor;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityOxygenBubble;
-import net.minecraft.block.Block;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockOxygenCompressor;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenTank;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -11,10 +13,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.item.IItemElectric;
 import universalelectricity.core.vector.Vector3;
+import universalelectricity.core.vector.VectorHelper;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
 
@@ -24,58 +29,17 @@ import com.google.common.io.ByteArrayDataInput;
  * All rights reserved.
  * 
  */
-public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen implements IInventory, ISidedInventory
+public class GCCoreTileEntityOxygenDecompressor extends GCCoreTileEntityOxygen implements IInventory, ISidedInventory
 {
-    public boolean active;
-    public boolean lastActive;
+    private ItemStack[] containingItems = new ItemStack[2];
 
     public static final float WATTS_PER_TICK = 0.2F;
+    
+    public static final int OUTPUT_PER_TICK = 100;
 
-    private ItemStack[] containingItems = new ItemStack[1];
-
-    public GCCoreEntityOxygenBubble oxygenBubble;
-
-    public GCCoreTileEntityOxygenDistributor()
+    public GCCoreTileEntityOxygenDecompressor()
     {
-        super(GCCoreTileEntityOxygenDistributor.WATTS_PER_TICK, 50, 6000, 10);
-    }
-
-    @Override
-    public void invalidate()
-    {
-        if (this.oxygenBubble != null)
-        {
-            for (int x = (int) Math.floor(this.xCoord - this.oxygenBubble.getSize()); x < Math.ceil(this.xCoord + this.oxygenBubble.getSize()); x++)
-            {
-                for (int y = (int) Math.floor(this.yCoord - this.oxygenBubble.getSize()); y < Math.ceil(this.yCoord + this.oxygenBubble.getSize()); y++)
-                {
-                    for (int z = (int) Math.floor(this.zCoord - this.oxygenBubble.getSize()); z < Math.ceil(this.zCoord + this.oxygenBubble.getSize()); z++)
-                    {
-                        int blockID = this.worldObj.getBlockId(x, y, z);
-
-                        if (blockID > 0)
-                        {
-                            Block block = Block.blocksList[blockID];
-
-                            if (block instanceof IOxygenReliantBlock)
-                            {
-                                ((IOxygenReliantBlock) block).onOxygenRemoved(this.worldObj, x, y, z);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        super.invalidate();
-    }
-
-    public double getDistanceFromServer(double par1, double par3, double par5)
-    {
-        final double d3 = this.xCoord + 0.5D - par1;
-        final double d4 = this.yCoord + 0.5D - par3;
-        final double d5 = this.zCoord + 0.5D - par5;
-        return d3 * d3 + d4 * d4 + d5 * d5;
+        super(GCCoreTileEntityOxygenDecompressor.WATTS_PER_TICK, 50, 1200, 0);
     }
 
     @Override
@@ -83,63 +47,44 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen im
     {
         super.updateEntity();
 
-        if (this.oxygenBubble == null)
-        {
-            this.oxygenBubble = new GCCoreEntityOxygenBubble(this.worldObj, new Vector3(this), this);
-
-            if (!this.worldObj.isRemote)
-            {
-                this.worldObj.spawnEntityInWorld(this.oxygenBubble);
-            }
-        }
-
         if (!this.worldObj.isRemote)
         {
-            if (this.oxygenBubble.getSize() >= 1 && this.getEnergyStored() > 0)
+            if (this.containingItems[0] != null && this.getEnergyStored() > 0.0F && this.storedOxygen < this.maxOxygen)
             {
-                this.active = true;
-            }
-            else
-            {
-                this.active = false;
-            }
-        }
-
-        if (!this.worldObj.isRemote && (this.active != this.lastActive || this.ticks % 20 == 0))
-        {
-            if (this.active)
-            {
-                for (int x = (int) Math.floor(this.xCoord - this.oxygenBubble.getSize() - 4); x < Math.ceil(this.xCoord + this.oxygenBubble.getSize() + 4); x++)
+                ItemStack tank1 = this.containingItems[0];
+                
+                if (tank1.getItem() instanceof GCCoreItemOxygenTank && tank1.getItemDamage() < tank1.getMaxDamage())
                 {
-                    for (int y = (int) Math.floor(this.yCoord - this.oxygenBubble.getSize() - 4); y < Math.ceil(this.yCoord + this.oxygenBubble.getSize() + 4); y++)
+                    tank1.setItemDamage(tank1.getItemDamage() + 1);
+                    this.storedOxygen += 1;
+                }
+            }
+            
+            int gasToSend = (int) Math.min(this.storedOxygen, OUTPUT_PER_TICK);
+            
+            this.storedOxygen -= gasToSend - GasTransmission.emitGasToNetwork(EnumGas.OXYGEN, gasToSend, this, this.getOxygenOutputDirection());
+
+            final TileEntity tileEntity = VectorHelper.getTileEntityFromSide(this.worldObj, new Vector3(this), this.getOxygenOutputDirection());
+
+            if (tileEntity instanceof IGasAcceptor)
+            {
+                if (((IGasAcceptor) tileEntity).canReceiveGas(this.getOxygenOutputDirection().getOpposite(), EnumGas.OXYGEN))
+                {
+                    double sendingGas = 0;
+
+                    if (this.storedOxygen >= OUTPUT_PER_TICK)
                     {
-                        for (int z = (int) Math.floor(this.zCoord - this.oxygenBubble.getSize() - 4); z < Math.ceil(this.zCoord + this.oxygenBubble.getSize() + 4); z++)
-                        {
-                            int blockID = this.worldObj.getBlockId(x, y, z);
-
-                            if (blockID > 0)
-                            {
-                                Block block = Block.blocksList[blockID];
-
-                                if (block instanceof IOxygenReliantBlock)
-                                {
-                                    if (this.getDistanceFromServer(x, y, z) < Math.pow(this.oxygenBubble.getSize() - 0.5D, 2))
-                                    {
-                                        ((IOxygenReliantBlock) block).onOxygenAdded(this.worldObj, x, y, z);
-                                    }
-                                    else
-                                    {
-                                        ((IOxygenReliantBlock) block).onOxygenRemoved(this.worldObj, x, y, z);
-                                    }
-                                }
-                            }
-                        }
+                        sendingGas = OUTPUT_PER_TICK;
                     }
+                    else
+                    {
+                        sendingGas = this.storedOxygen;
+                    }
+
+                    this.storedOxygen -= sendingGas - ((IGasAcceptor) tileEntity).transferGasToAcceptor(MathHelper.floor_double(sendingGas), EnumGas.OXYGEN);
                 }
             }
         }
-
-        this.lastActive = this.active;
     }
 
     @Override
@@ -255,13 +200,13 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen im
     @Override
     public String getInvName()
     {
-        return StatCollector.translateToLocal("container.oxygendistributor.name");
+        return StatCollector.translateToLocal("container.oxygendecompressor.name");
     }
 
     @Override
     public int getInventoryStackLimit()
     {
-        return 64;
+        return 1;
     }
 
     @Override
@@ -270,48 +215,78 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen im
         return this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
     }
 
+    @Override
+    public void openChest()
+    {
+    }
+
+    @Override
+    public void closeChest()
+    {
+    }
+
     // ISidedInventory Implementation:
 
     @Override
     public int[] getAccessibleSlotsFromSide(int side)
     {
-        return new int[] { 0 };
+        return new int[] { 0, 1 };
     }
 
     @Override
     public boolean canInsertItem(int slotID, ItemStack itemstack, int side)
     {
-        return this.isItemValidForSlot(slotID, itemstack);
+        if (this.isItemValidForSlot(slotID, itemstack))
+        {
+            switch (slotID)
+            {
+            case 0:
+                return itemstack.getItemDamage() > 1;
+            case 1:
+                return ((IItemElectric) itemstack.getItem()).getElectricityStored(itemstack) > 0;
+            default:
+                return false;
+            }
+        }
+        return false;
     }
 
     @Override
     public boolean canExtractItem(int slotID, ItemStack itemstack, int side)
     {
-        return slotID == 0;
+        if (this.isItemValidForSlot(slotID, itemstack))
+        {
+            switch (slotID)
+            {
+            case 0:
+                return itemstack.getItemDamage() == 0;
+            case 1:
+                return ((IItemElectric) itemstack.getItem()).getElectricityStored(itemstack) <= 0 || !this.shouldPullEnergy();
+            default:
+                return false;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
+    {
+        switch (slotID)
+        {
+        case 0:
+            return itemstack.getItem() instanceof GCCoreItemOxygenTank;
+        case 1:
+            return itemstack.getItem() instanceof IItemElectric;
+        }
+
+        return false;
     }
 
     @Override
     public boolean isInvNameLocalized()
     {
         return true;
-    }
-
-    @Override
-    public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
-    {
-        return slotID == 0 ? itemstack.getItem() instanceof IItemElectric : false;
-    }
-
-    @Override
-    public void openChest()
-    {
-
-    }
-
-    @Override
-    public void closeChest()
-    {
-
     }
 
     @Override
@@ -323,7 +298,7 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen im
     @Override
     public boolean shouldUseEnergy()
     {
-        return GCCoreTileEntityOxygen.timeSinceOxygenRequest > 0;
+        return GCCoreTileEntityOxygen.timeSinceOxygenRequest > 0 && this.getStackInSlot(0) != null;
     }
 
     @Override
@@ -346,17 +321,28 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen im
     @Override
     public ForgeDirection getElectricInputDirection()
     {
-        return ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
+        return ForgeDirection.getOrientation(this.getBlockMetadata() - GCCoreBlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA + 2);
     }
 
     @Override
     public ItemStack getBatteryInSlot()
     {
-        return this.getStackInSlot(0);
+        return this.getStackInSlot(1);
     }
 
     @Override
     public ForgeDirection getOxygenInputDirection()
+    {
+        return null;
+    }
+
+    @Override
+    public boolean canTubeConnect(ForgeDirection direction)
+    {
+        return direction == this.getOxygenOutputDirection();
+    }
+    
+    public ForgeDirection getOxygenOutputDirection()
     {
         return this.getElectricInputDirection().getOpposite();
     }
@@ -364,6 +350,6 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen im
     @Override
     public boolean shouldPullOxygen()
     {
-        return this.getEnergyStored() > 0;
+        return false;
     }
 }

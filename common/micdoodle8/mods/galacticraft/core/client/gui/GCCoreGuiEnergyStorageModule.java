@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.inventory.ContainerBatteryBox;
+import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerEnergyStorageModule;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityEnergyStorageModule;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -16,16 +16,13 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCCoreGuiEnergyStorageModule extends GuiContainer
 {
-    private static final ResourceLocation batteryBoxTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/battery_box.png");
+    private static final ResourceLocation batteryBoxTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/energyStorageModule.png");
 
     private GCCoreTileEntityEnergyStorageModule tileEntity;
 
-    private int containerWidth;
-    private int containerHeight;
-
     public GCCoreGuiEnergyStorageModule(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityEnergyStorageModule batteryBox)
     {
-        super(new ContainerBatteryBox(par1InventoryPlayer, batteryBox));
+        super(new GCCoreContainerEnergyStorageModule(par1InventoryPlayer, batteryBox));
         this.tileEntity = batteryBox;
     }
 
@@ -57,12 +54,12 @@ public class GCCoreGuiEnergyStorageModule extends GuiContainer
         this.mc.renderEngine.bindTexture(GCCoreGuiEnergyStorageModule.batteryBoxTexture);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-        this.containerWidth = (this.width - this.xSize) / 2;
-        this.containerHeight = (this.height - this.ySize) / 2;
+        int containerWidth = (this.width - this.xSize) / 2;
+        int containerHeight = (this.height - this.ySize) / 2;
         // Background energy bar
-        this.drawTexturedModalRect(this.containerWidth, this.containerHeight, 0, 0, this.xSize, this.ySize);
+        this.drawTexturedModalRect(containerWidth, containerHeight, 0, 0, this.xSize, this.ySize);
         // Foreground energy bar
         int scale = (int) (this.tileEntity.getEnergyStored() / this.tileEntity.getMaxEnergyStored() * 72);
-        this.drawTexturedModalRect(this.containerWidth + 87, this.containerHeight + 52, 176, 0, scale, 20);
+        this.drawTexturedModalRect(containerWidth + 87, containerHeight + 52, 176, 0, scale, 3);
     }
 }

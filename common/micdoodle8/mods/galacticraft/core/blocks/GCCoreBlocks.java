@@ -12,6 +12,7 @@ import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockDummy;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockEnclosedBlock;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockLandingPad;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockMachine;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockOxygenCompressor;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockSolar;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
@@ -191,7 +192,7 @@ public class GCCoreBlocks
         GameRegistry.registerBlock(GCCoreBlocks.airLockFrame, GCCoreItemBlockAirLock.class, GCCoreBlocks.airLockFrame.getUnlocalizedName(), GalacticraftCore.MODID);
         GameRegistry.registerBlock(GCCoreBlocks.airLockSeal, GCCoreItemBlock.class, GCCoreBlocks.airLockSeal.getUnlocalizedName(), GalacticraftCore.MODID);
         GameRegistry.registerBlock(GCCoreBlocks.refinery, GCCoreItemBlock.class, GCCoreBlocks.refinery.getUnlocalizedName(), GalacticraftCore.MODID);
-        GameRegistry.registerBlock(GCCoreBlocks.oxygenCompressor, GCCoreItemBlock.class, GCCoreBlocks.oxygenCompressor.getUnlocalizedName(), GalacticraftCore.MODID);
+        GameRegistry.registerBlock(GCCoreBlocks.oxygenCompressor, GCCoreItemBlockOxygenCompressor.class, GCCoreBlocks.oxygenCompressor.getUnlocalizedName(), GalacticraftCore.MODID);
         GameRegistry.registerBlock(GCCoreBlocks.decorationBlocks, GCCoreItemBlockBase.class, GCCoreBlocks.decorationBlocks.getUnlocalizedName(), GalacticraftCore.MODID);
         GameRegistry.registerBlock(GCCoreBlocks.fuelLoader, GCCoreItemBlock.class, GCCoreBlocks.fuelLoader.getUnlocalizedName(), GalacticraftCore.MODID);
         GameRegistry.registerBlock(GCCoreBlocks.spaceStationBase, GCCoreItemBlock.class, GCCoreBlocks.spaceStationBase.getUnlocalizedName(), GalacticraftCore.MODID);

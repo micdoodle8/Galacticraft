@@ -86,7 +86,7 @@ public class GCCoreBlockCargoLoader extends GCCoreBlockAdvanced
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.iconInput = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_power_input");
+        this.iconInput = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_input");
         this.iconMachineSide = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_blank");
         this.iconFrontLoader = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_cargoloader");
         this.iconFrontUnloader = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_cargounloader");

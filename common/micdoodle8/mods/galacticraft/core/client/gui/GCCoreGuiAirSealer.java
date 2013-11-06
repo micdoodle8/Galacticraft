@@ -92,7 +92,7 @@ public class GCCoreGuiAirSealer extends GCCoreGuiContainer
         this.buttonDisable.enabled = this.sealer.disableCooldown == 0;
         this.buttonDisable.displayString = this.sealer.disabled ? StatCollector.translateToLocal("gui.button.enableseal.name") : StatCollector.translateToLocal("gui.button.disableseal.name");
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 50, 4210752);
-        status = StatCollector.translateToLocal("gui.message.oxinput.name") + ": " + Math.round(this.sealer.getCappedScaledOxygenLevel(1000) * 10.0D) / 100.0D + "%";
+        status = "Oxygen Use: " + (this.sealer.oxygenPerTick * 20) + "/s";
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 60, 4210752);
         status = ElectricityDisplay.getDisplay(this.sealer.ueWattsPerTick * 20, ElectricUnit.WATT);
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 70, 4210752);

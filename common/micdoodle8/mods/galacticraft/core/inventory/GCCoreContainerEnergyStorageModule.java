@@ -9,11 +9,11 @@ import net.minecraft.item.ItemStack;
 import universalelectricity.core.item.IItemElectric;
 import universalelectricity.prefab.SlotSpecific;
 
-public class ContainerBatteryBox extends Container
+public class GCCoreContainerEnergyStorageModule extends Container
 {
     private GCCoreTileEntityEnergyStorageModule tileEntity;
 
-    public ContainerBatteryBox(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityEnergyStorageModule batteryBox)
+    public GCCoreContainerEnergyStorageModule(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityEnergyStorageModule batteryBox)
     {
         this.tileEntity = batteryBox;
         // Top slot for battery output

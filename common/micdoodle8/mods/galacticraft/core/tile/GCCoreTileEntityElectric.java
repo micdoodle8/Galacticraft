@@ -84,7 +84,7 @@ public abstract class GCCoreTileEntityElectric extends GCCoreTileEntityUniversal
     @Override
     public void updateEntity()
     {
-        if (this.shouldPullEnergy() && this.getEnergyStored() < this.getMaxEnergyStored())
+        if (this.shouldPullEnergy() && this.getEnergyStored() < this.getMaxEnergyStored() && this.getBatteryInSlot() != null && this.getElectricInputDirection() != null)
         {
             this.receiveElectricity(this.getElectricInputDirection(), ElectricityPack.getFromWatts(ElectricItemHelper.dischargeItem(this.getBatteryInSlot(), this.getRequest(ForgeDirection.UNKNOWN)), this.getVoltage()), true);
         }
@@ -218,6 +218,11 @@ public abstract class GCCoreTileEntityElectric extends GCCoreTileEntityUniversal
     @Override
     public EnumSet<ForgeDirection> getInputDirections()
     {
+        if (this.getElectricInputDirection() == null)
+        {
+            return EnumSet.noneOf(ForgeDirection.class);
+        }
+        
         return EnumSet.of(this.getElectricInputDirection());
     }
 }

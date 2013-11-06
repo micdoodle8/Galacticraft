@@ -34,6 +34,7 @@ import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLaunchSmokeFX;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityOxygenFX;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirCollector;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirCompressor;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirDecompressor;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirDistributor;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirLockController;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiAirSealer;
@@ -49,6 +50,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiFuelLoader;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiGalaxyMap;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiIngotCompressor;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiManual;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiOxygenStorageModule;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiParachest;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRefinery;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiRocketRefill;
@@ -138,8 +140,10 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityIngotCompressor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCollector;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCompressor;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDecompressor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenSealer;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenStorageModule;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityParachest;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityRefinery;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntitySolar;
@@ -802,17 +806,6 @@ public class ClientProxyCore extends CommonProxyCore
         {
             return new GCCoreGuiRefinery(player.inventory, (GCCoreTileEntityRefinery) world.getBlockTileEntity(x, y, z));
         }
-        else if (ID == GCCoreConfigManager.idGuiAirCompressor)
-        {
-            if (tile != null && tile instanceof GCCoreTileEntityOxygenCompressor)
-            {
-                return new GCCoreGuiAirCompressor(player.inventory, (GCCoreTileEntityOxygenCompressor) tile);
-            }
-            else
-            {
-                return null;
-            }
-        }
         else if (ID == GCCoreConfigManager.idGuiAirCollector)
         {
             if (tile != null && tile instanceof GCCoreTileEntityOxygenCollector)
@@ -957,6 +950,18 @@ public class ClientProxyCore extends CommonProxyCore
             else if (tile instanceof GCCoreTileEntityCircuitFabricator)
             {
                 return new GCCoreGuiCircuitFabricator(player.inventory, (GCCoreTileEntityCircuitFabricator) tile);
+            }
+            else if (tile instanceof GCCoreTileEntityOxygenStorageModule)
+            {
+                return new GCCoreGuiOxygenStorageModule(player.inventory, (GCCoreTileEntityOxygenStorageModule) tile);
+            }
+            else if (tile instanceof GCCoreTileEntityOxygenCompressor)
+            {
+                return new GCCoreGuiAirCompressor(player.inventory, (GCCoreTileEntityOxygenCompressor) tile);
+            }
+            else if (tile instanceof GCCoreTileEntityOxygenDecompressor)
+            {
+                return new GCCoreGuiAirDecompressor(player.inventory, (GCCoreTileEntityOxygenDecompressor) tile);
             }
         }
 

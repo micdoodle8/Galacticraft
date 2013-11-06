@@ -125,10 +125,10 @@ public class OxygenUtil
 
         if (tank1Valid && !tank2Valid || !tank1Valid && tank2Valid)
         {
-            return 90;
+            return 9;
         }
 
-        return 180;
+        return 18;
     }
 
     public static boolean hasValidOxygenSetup(GCCorePlayerMP player)

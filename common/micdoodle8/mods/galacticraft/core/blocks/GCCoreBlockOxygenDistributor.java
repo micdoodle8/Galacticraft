@@ -59,7 +59,7 @@ public class GCCoreBlockOxygenDistributor extends GCCoreBlockAdvanced
         this.iconMachineSide = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_blank");
         this.iconDistributor = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_distributor_fan");
         this.iconInput = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_oxygen_input");
-        this.iconOutput = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_power_input");
+        this.iconOutput = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_input");
     }
 
     @Override

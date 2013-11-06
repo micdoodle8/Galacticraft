@@ -62,7 +62,7 @@ public class GCCoreBlockRefinery extends GCCoreBlockAdvanced
         this.iconOilInput = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_oil_input");
         this.iconFront = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "refinery_front");
         this.iconBack = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "refinery_side");
-        this.iconTop = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_power_input");
+        this.iconTop = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_input");
     }
 
     @Override

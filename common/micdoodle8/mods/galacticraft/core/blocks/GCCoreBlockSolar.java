@@ -58,7 +58,7 @@ public class GCCoreBlockSolar extends BlockTile
         this.icons[2] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "solar_advanced_0");
         this.icons[3] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "solar_advanced_1");
         this.icons[4] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_blank");
-        this.icons[5] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_power_input");
+        this.icons[5] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_output");
         this.blockIcon = this.icons[0];
     }
 

@@ -17,7 +17,7 @@ public class GCCoreItemOxygenTank extends Item
     {
         super(id);
         this.setMaxStackSize(1);
-        this.setMaxDamage(tier * 90);
+        this.setMaxDamage(tier * 900);
         this.setUnlocalizedName(assetName);
         this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
     }

@@ -6,19 +6,21 @@ import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.world.ICelestialBodyRenderer;
 import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
-import micdoodle8.mods.galacticraft.core.inventory.ContainerBatteryBox;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerCoalGenerator;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerElectricFurnace;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerAirCollector;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerAirCompressor;
+import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerAirDecompressor;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerAirDistributor;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerAirSealer;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerCargoLoader;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerCircuitFabricator;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerElectricIngotCompressor;
+import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerEnergyStorageModule;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerExtendedInventory;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerFuelLoader;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerIngotCompressor;
+import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerOxygenStorageModule;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerParachest;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRefinery;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRocketRefill;
@@ -32,8 +34,10 @@ import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityIngotCompressor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCollector;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCompressor;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDecompressor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenSealer;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenStorageModule;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityRefinery;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntitySolar;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
@@ -167,10 +171,6 @@ public class CommonProxyCore implements IGuiHandler
         {
             return new GCCoreContainerRefinery(player.inventory, (GCCoreTileEntityRefinery) world.getBlockTileEntity(x, y, z));
         }
-        else if (ID == GCCoreConfigManager.idGuiAirCompressor)
-        {
-            return new GCCoreContainerAirCompressor(player.inventory, (GCCoreTileEntityOxygenCompressor) world.getBlockTileEntity(x, y, z));
-        }
         else if (ID == GCCoreConfigManager.idGuiAirCollector)
         {
             return new GCCoreContainerAirCollector(player.inventory, (GCCoreTileEntityOxygenCollector) world.getBlockTileEntity(x, y, z));
@@ -229,7 +229,7 @@ public class CommonProxyCore implements IGuiHandler
         {
             if (tileEntity instanceof GCCoreTileEntityEnergyStorageModule)
             {
-                return new ContainerBatteryBox(player.inventory, (GCCoreTileEntityEnergyStorageModule) tileEntity);
+                return new GCCoreContainerEnergyStorageModule(player.inventory, (GCCoreTileEntityEnergyStorageModule) tileEntity);
             }
             else if (tileEntity instanceof GCCoreTileEntityCoalGenerator)
             {
@@ -250,6 +250,18 @@ public class CommonProxyCore implements IGuiHandler
             else if (tileEntity instanceof GCCoreTileEntityCircuitFabricator)
             {
                 return new GCCoreContainerCircuitFabricator(player.inventory, (GCCoreTileEntityCircuitFabricator) tileEntity);
+            }
+            else if (tileEntity instanceof GCCoreTileEntityOxygenStorageModule)
+            {
+                return new GCCoreContainerOxygenStorageModule(player.inventory, (GCCoreTileEntityOxygenStorageModule) tileEntity);
+            }
+            else if (tileEntity instanceof GCCoreTileEntityOxygenCompressor)
+            {
+                return new GCCoreContainerAirCompressor(player.inventory, (GCCoreTileEntityOxygenCompressor) world.getBlockTileEntity(x, y, z));
+            }
+            else if (tileEntity instanceof GCCoreTileEntityOxygenDecompressor)
+            {
+                return new GCCoreContainerAirDecompressor(player.inventory, (GCCoreTileEntityOxygenDecompressor) world.getBlockTileEntity(x, y, z));
             }
         }
 

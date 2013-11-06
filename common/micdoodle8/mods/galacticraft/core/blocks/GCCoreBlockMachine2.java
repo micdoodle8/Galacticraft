@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCircuitFabricator;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCoalGenerator;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectricIngotCompressor;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenStorageModule;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -17,6 +18,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.UniversalElectricity;
@@ -26,17 +28,20 @@ public class GCCoreBlockMachine2 extends BlockTile
 {
     public static final int ELECTRIC_COMPRESSOR_METADATA = 0;
     public static final int CIRCUIT_FABRICATOR_METADATA = 4;
+    public static final int OXYGEN_STORAGE_MODULE_METADATA = 8;
 
     private Icon iconMachineSide;
     private Icon iconOutput;
+    private Icon iconOxygenInput;
+    private Icon iconOxygenOutput;
 
     private Icon iconElectricCompressor;
     private Icon iconCircuitFabricator;
+    private Icon[] iconOxygenStorageModule;
 
     public GCCoreBlockMachine2(int id, String assetName)
     {
         super(id, UniversalElectricity.machine);
-        this.setUnlocalizedName("basicMachine");
         this.setHardness(1.0F);
         this.setStepSound(Block.soundMetalFootstep);
         this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
@@ -54,10 +59,18 @@ public class GCCoreBlockMachine2 extends BlockTile
     {
         this.blockIcon = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine");
         this.iconOutput = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_output");
+        this.iconOxygenInput = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_oxygen_input");
+        this.iconOxygenOutput = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_oxygen_output");
 
         this.iconMachineSide = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_side");
         this.iconElectricCompressor = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "electric_compressor");
         this.iconCircuitFabricator = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "circuit_fabricator");
+        this.iconOxygenStorageModule = new Icon[17];
+
+        for (int i = 0; i < this.iconOxygenStorageModule.length; i++)
+        {
+            this.iconOxygenStorageModule[i] = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "oxygenStorageModule_" + i);
+        }
     }
 
     @Override
@@ -108,6 +121,38 @@ public class GCCoreBlockMachine2 extends BlockTile
     }
 
     @Override
+    public Icon getBlockTexture(IBlockAccess world, int x, int y, int z, int side)
+    {
+        int metadata = world.getBlockMetadata(x, y, z);
+        
+        if (metadata >= GCCoreBlockMachine2.OXYGEN_STORAGE_MODULE_METADATA)
+        {
+            metadata -= GCCoreBlockMachine2.OXYGEN_STORAGE_MODULE_METADATA;
+            TileEntity tile = world.getBlockTileEntity(x, y, z);
+
+            if (side == 0 || side == 1)
+            {
+                return this.blockIcon;
+            }
+
+            // If it is the front side
+            if (side == metadata + 2)
+            {
+                return this.iconOxygenInput;
+            }
+            // If it is the back side
+            else if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal())
+            {
+                return this.iconOxygenOutput;
+            }
+
+            return this.iconOxygenStorageModule[((GCCoreTileEntityOxygenStorageModule) tile).scaledOxygenLevel];
+        }
+        
+        return super.getBlockTexture(world, x, y, z, side);
+    }
+
+    @Override
     public Icon getIcon(int side, int metadata)
     {
         if (side == 0 || side == 1)
@@ -115,7 +160,29 @@ public class GCCoreBlockMachine2 extends BlockTile
             return this.blockIcon;
         }
 
-        if (metadata >= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA)
+        if (metadata >= GCCoreBlockMachine2.OXYGEN_STORAGE_MODULE_METADATA)
+        {
+            metadata -= GCCoreBlockMachine2.OXYGEN_STORAGE_MODULE_METADATA;
+
+            if (side == 0 || side == 1)
+            {
+                return this.blockIcon;
+            }
+
+            // If it is the front side
+            if (side == metadata + 2)
+            {
+                return this.iconOxygenInput;
+            }
+            // If it is the back side
+            else if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal())
+            {
+                return this.iconOxygenOutput;
+            }
+
+            return this.iconOxygenStorageModule[16];
+        }
+        else if (metadata >= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA)
         {
             metadata -= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA;
 
@@ -174,7 +241,11 @@ public class GCCoreBlockMachine2 extends BlockTile
             break;
         }
 
-        if (metadata >= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA)
+        if (metadata >= GCCoreBlockMachine2.OXYGEN_STORAGE_MODULE_METADATA)
+        {
+            world.setBlockMetadataWithNotify(x, y, z, GCCoreBlockMachine2.OXYGEN_STORAGE_MODULE_METADATA + change, 3);
+        }
+        else if (metadata >= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA)
         {
             world.setBlockMetadataWithNotify(x, y, z, GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA + change, 3);
         }
@@ -192,7 +263,11 @@ public class GCCoreBlockMachine2 extends BlockTile
 
         int change = 0;
 
-        if (metadata >= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA)
+        if (metadata >= GCCoreBlockMachine2.OXYGEN_STORAGE_MODULE_METADATA)
+        {
+            original -= GCCoreBlockMachine2.OXYGEN_STORAGE_MODULE_METADATA;
+        }
+        else if (metadata >= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA)
         {
             original -= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA;
         }
@@ -218,7 +293,11 @@ public class GCCoreBlockMachine2 extends BlockTile
             break;
         }
 
-        if (metadata >= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA)
+        if (metadata >= GCCoreBlockMachine2.OXYGEN_STORAGE_MODULE_METADATA)
+        {
+            change += GCCoreBlockMachine2.OXYGEN_STORAGE_MODULE_METADATA;
+        }
+        else if (metadata >= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA)
         {
             change += GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA;
         }
@@ -237,25 +316,10 @@ public class GCCoreBlockMachine2 extends BlockTile
     @Override
     public boolean onMachineActivated(World par1World, int x, int y, int z, EntityPlayer par5EntityPlayer, int side, float hitX, float hitY, float hitZ)
     {
-        int metadata = par1World.getBlockMetadata(x, y, z);
-
         if (!par1World.isRemote)
         {
-            if (metadata >= GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
-            {
-                par5EntityPlayer.openGui(GalacticraftCore.instance, -1, par1World, x, y, z);
-                return true;
-            }
-            else if (metadata >= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA)
-            {
-                par5EntityPlayer.openGui(GalacticraftCore.instance, -1, par1World, x, y, z);
-                return true;
-            }
-            else
-            {
-                par5EntityPlayer.openGui(GalacticraftCore.instance, -1, par1World, x, y, z);
-                return true;
-            }
+            par5EntityPlayer.openGui(GalacticraftCore.instance, -1, par1World, x, y, z);
+            return true;
         }
 
         return true;
@@ -264,7 +328,11 @@ public class GCCoreBlockMachine2 extends BlockTile
     @Override
     public TileEntity createTileEntity(World world, int metadata)
     {
-        if (metadata >= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA)
+        if (metadata >= GCCoreBlockMachine2.OXYGEN_STORAGE_MODULE_METADATA)
+        {
+            return new GCCoreTileEntityOxygenStorageModule();
+        }
+        else if (metadata >= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA)
         {
             return new GCCoreTileEntityCircuitFabricator();
         }
@@ -288,18 +356,28 @@ public class GCCoreBlockMachine2 extends BlockTile
         return new ItemStack(this.blockID, 1, GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA);
     }
 
+    public ItemStack getOxygenStorageModule()
+    {
+        return new ItemStack(this.blockID, 1, GCCoreBlockMachine2.OXYGEN_STORAGE_MODULE_METADATA);
+    }
+
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
         par3List.add(this.getElectricCompressor());
         par3List.add(this.getCircuitFabricator());
+        par3List.add(this.getOxygenStorageModule());
     }
 
     @Override
     public int damageDropped(int metadata)
     {
-        if (metadata >= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA)
+        if (metadata >= GCCoreBlockMachine2.OXYGEN_STORAGE_MODULE_METADATA)
+        {
+            return GCCoreBlockMachine2.OXYGEN_STORAGE_MODULE_METADATA;
+        }
+        else if (metadata >= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA)
         {
             return GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA;
         }

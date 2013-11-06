@@ -137,7 +137,6 @@ tile.crudeOilStill.name=Crude Oil
 tile.crudeOilMoving.name=Crude Oil
 tile.refinery.name=Refinery
 tile.fuelLoader.name=Fuel Loader
-tile.oxygenCompressor.name=Oxygen Compressor
 tile.sapling2.oak.name=Oak Sapling
 tile.sapling2.spruce.name=Spruce Sapling
 tile.sapling2.birch.name=Birch Sapling
@@ -171,6 +170,7 @@ tile.machine.2.name=Electric Furnace
 tile.machine.3.name=Compressor
 tile.machine2.4.name=Electric Compressor
 tile.machine2.5.name=Circuit Fabricator
+tile.machine2.6.name=Oxygen Storage Module
 tile.aluminumWire.name=Aluminum Wire
 tile.aluminumWireHeavy.name=Heavy Aluminum Wire
 tile.glowstoneTorch.name=Glowstone Torch
@@ -187,6 +187,8 @@ tile.gcBlockCore.copperBlock.name=Copper Block
 tile.gcBlockCore.tinBlock.name=Tin Block
 tile.gcBlockCore.aluminumBlock.name=Aluminum Block
 tile.fuel.name=Fuel
+tile.oxygenCompressor.0.name=Oxygen Compressor
+tile.oxygenCompressor.1.name=Oxygen Decompressor
 
 # ENTITIES
 entity.GalacticraftCore.EvolvedSpider.name=Evolved Spider
@@ -252,6 +254,7 @@ container.lander.name=Space Lander
 container.spaceship.name=Tier 1 Rocket
 container.solarbasic.name=Basic Solar Panel
 container.solaradvanced.name=Advanced Solar Panel
+container.oxygendecompressor.name=Oxygen Decompressor
 
 gui.message.out.name=Out
 gui.message.in.name=In

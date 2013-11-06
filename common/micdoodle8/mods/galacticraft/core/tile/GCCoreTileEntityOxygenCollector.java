@@ -34,9 +34,9 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric im
 
     public double power;
 
-    public int MAX_POWER = 180;
+    public int MAX_POWER = 20;
 
-    public int outputSpeed = 16;
+    public int outputSpeed = 50;
 
     private ItemStack[] containingItems = new ItemStack[1];
 
@@ -110,19 +110,19 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityElectric im
                                 {
                                     if (block.isLeaves(this.worldObj, x, y, z) || block instanceof IPlantable && ((IPlantable) block).getPlantType(this.worldObj, x, y, z) == EnumPlantType.Crop)
                                     {
-                                        power++;
+                                        power += 0.075;
                                     }
                                 }
                             }
                         }
                     }
-
-                    power /= 1.2D;
                 }
                 else
                 {
                     power = this.MAX_POWER;
                 }
+                
+                power = Math.floor(power);
 
                 if (power < this.getPower())
                 {
