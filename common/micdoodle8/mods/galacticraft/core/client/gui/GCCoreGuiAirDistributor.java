@@ -82,22 +82,17 @@ public class GCCoreGuiAirDistributor extends GCCoreGuiContainer
 
     private String getStatus()
     {
-        if (this.distributor.storedOxygen >= 1 && this.distributor.getEnergyStored() > 0)
-        {
-            return EnumColor.DARK_GREEN + StatCollector.translateToLocal("gui.status.active.name");
-        }
-
         if (this.distributor.getEnergyStored() == 0)
         {
             return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.missingpower.name");
         }
 
-        if (this.distributor.storedOxygen < 1)
+        if (this.distributor.storedOxygen < this.distributor.oxygenPerTick)
         {
             return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.missingoxygen.name");
         }
 
-        return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.unknown.name");
+        return EnumColor.DARK_GREEN + StatCollector.translateToLocal("gui.status.active.name");
     }
 
     @Override
