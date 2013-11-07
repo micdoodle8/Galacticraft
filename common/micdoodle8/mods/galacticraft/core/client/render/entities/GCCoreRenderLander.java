@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelLander;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.relauncher.Side;
@@ -47,6 +48,20 @@ public class GCCoreRenderLander extends Render
         GL11.glTranslatef((float) par2, (float) par4 + 1.45F, (float) par6);
         GL11.glRotatef(180.0F - par8, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(-var24, 0.0F, 0.0F, 1.0F);
+        
+        float f6 = (float)entity.timeSinceHit - par9;
+        float f7 = entity.currentDamage - par9;
+
+        if (f7 < 0.0F)
+        {
+            f7 = 0.0F;
+        }
+
+        if (f6 > 0.0F)
+        {
+            GL11.glRotatef((float)Math.sin(f6) * 0.2F * f6 * f7 / 25.0F, 1.0F, 0.0F, 0.0F);
+        }
+        
         this.bindEntityTexture(entity);
         GL11.glScalef(-1.0F, -1.0F, 1.0F);
         this.landerModel.render(entity, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);

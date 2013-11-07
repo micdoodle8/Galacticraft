@@ -43,7 +43,7 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
     private boolean lastWaitForPlayer;
     public float currentDamage;
     public int timeSinceHit;
-    public int rockDirection;
+    public int rockDirection = 1;
     public boolean lastOnGround;
     private double lastMotionY;
     
@@ -133,6 +133,16 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
     @Override
     public void onUpdate()
     {
+        if (this.timeSinceHit > 0)
+        {
+            this.timeSinceHit--;
+        }
+
+        if (this.currentDamage > 0.0F)
+        {
+            this.currentDamage--;
+        }
+        
         if (this.getWaitForPlayer())
         {
             if (this.riddenByEntity != null)
