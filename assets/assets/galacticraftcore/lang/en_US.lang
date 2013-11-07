@@ -220,8 +220,6 @@ death.attack.oxygenSuffocation=%1$s ran out of oxygen!
 galaxy.blockyway.name=The Blocky Way
 
 # OTHER
-newversion.message1.name=\u00a77New \u00a73Galacticraft \u00a77version available! v
-newversion.message2.name=New Galacticraft version available! v
 newversion.failed.name=Galacticraft update check failed! Trying again in 15 seconds
 newversion.success.name=Galacticraft remote version found:
 

@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import mekanism.api.EnumColor;
 import net.minecraft.util.StatCollector;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -68,11 +69,11 @@ public class GCCoreThreadVersionCheck extends Thread
 
                             if (sideToCheck.equals(Side.CLIENT))
                             {
-                                FMLClientHandler.instance().getClient().thePlayer.addChatMessage(StatCollector.translateToLocal("newversion.message1.name") + String.valueOf(GalacticraftCore.remoteMajVer) + "." + String.valueOf(GalacticraftCore.remoteMinVer) + "." + String.valueOf(GalacticraftCore.remoteBuildVer) + " \u00a71http://micdoodle8.com/");
+                                FMLClientHandler.instance().getClient().thePlayer.addChatMessage(EnumColor.GREY + "New " + EnumColor.DARK_AQUA + "Galacticraft" + EnumColor.GREY + " version available! v" + String.valueOf(GalacticraftCore.remoteMajVer) + "." + String.valueOf(GalacticraftCore.remoteMinVer) + "." + String.valueOf(GalacticraftCore.remoteBuildVer) + EnumColor.DARK_BLUE + " http://micdoodle8.com/");
                             }
                             else if (sideToCheck.equals(Side.SERVER))
                             {
-                                GCLog.severe(StatCollector.translateToLocal("newversion.message2.name") + String.valueOf(GalacticraftCore.remoteMajVer) + "." + String.valueOf(GalacticraftCore.remoteMinVer) + "." + String.valueOf(GalacticraftCore.remoteBuildVer) + " http://micdoodle8.com/");
+                                GCLog.severe("New Galacticraft version available! v" + String.valueOf(GalacticraftCore.remoteMajVer) + "." + String.valueOf(GalacticraftCore.remoteMinVer) + "." + String.valueOf(GalacticraftCore.remoteBuildVer) + " http://micdoodle8.com/");
                             }
                         }
                     }
