@@ -43,12 +43,12 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 
     public int getFindSealChecks()
     {
-        if (!this.active)
+        if (!this.active || this.storedOxygen < this.oxygenPerTick || this.getEnergyStored() <= 0.0F)
         {
             return 0;
         }
 
-        return (int) Math.floor(this.storedOxygen / 7.5D);
+        return 1250;
     }
 
     @Override
