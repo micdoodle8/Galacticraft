@@ -25,7 +25,10 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import com.google.common.io.ByteArrayDataInput;
+import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.relauncher.Side;
 
 public class GCCoreEntityLander extends InventoryEntity implements IInventorySettable, IScaleableFuelLevel, IControllableEntity
 {
@@ -202,9 +205,11 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
             }
         }
         
-        if (this.worldObj.isRemote)
+        this.motionY -= 0.008D;
+        
+        if (this.worldObj.isRemote && FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
         {
-            PacketDispatcher.sendPacketToServer(GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getNetworkedData(new ArrayList<Object>())));
+            this.sendPacketToServer();
         }
         
         if (this.onGround)
@@ -251,6 +256,14 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
         this.lastWaitForPlayer = this.waitForPlayer;
         this.lastOnGround = this.onGround;
         this.lastMotionY = this.motionY;
+    }
+    
+    private void sendPacketToServer()
+    {
+        if (this.riddenByEntity == FMLClientHandler.instance().getClient().thePlayer)
+        {
+            PacketDispatcher.sendPacketToServer(GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getNetworkedData(new ArrayList<Object>())));
+        }
     }
     
     public void pushEntityAway(Entity par1Entity)
@@ -325,7 +338,7 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
 
             return true;
         case 4:
-            this.motionY = Math.min(this.motionY + 0.022F, -1.0);
+            this.motionY = Math.min(this.motionY + 0.03F, -1.0);
             return true;
         case 5:
             this.motionY = Math.min(this.motionY - 0.022F, -1.0);
@@ -499,6 +512,8 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
             this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, dataStream.readInt()));
 
             this.setWaitForPlayer(dataStream.readBoolean());
+            
+            this.onGround = dataStream.readBoolean();
         }
         else
         {
@@ -520,6 +535,8 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
             list.add(this.fuelTank.getFluidAmount());
 
             list.add(this.getWaitForPlayer());
+            
+            list.add(this.onGround);
             
             return list;
         }
