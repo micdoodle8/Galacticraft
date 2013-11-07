@@ -31,7 +31,8 @@ public class GCCoreGuiOxygenStorageModule extends GuiContainer
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRenderer.drawString(this.tileEntity.getInvName(), this.xSize / 2 - this.fontRenderer.getStringWidth(this.tileEntity.getInvName()) / 2, 6, 4210752);
+        String guiTitle = StatCollector.translateToLocal("tile.machine2.6.name");
+        this.fontRenderer.drawString(guiTitle, this.xSize / 2 - this.fontRenderer.getStringWidth(guiTitle) / 2, 6, 4210752);
         String displayJoules = this.tileEntity.storedOxygen + " of";
         String displayMaxJoules = "" + this.tileEntity.maxOxygen;
         String maxOutputLabel = "Max Output: " + (GCCoreTileEntityOxygenStorageModule.OUTPUT_PER_TICK * 20) + "/s";

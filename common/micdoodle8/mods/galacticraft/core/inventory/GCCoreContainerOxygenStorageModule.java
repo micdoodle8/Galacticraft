@@ -7,7 +7,6 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import universalelectricity.core.item.IItemElectric;
-import universalelectricity.prefab.SlotSpecific;
 
 public class GCCoreContainerOxygenStorageModule extends Container
 {
@@ -16,10 +15,7 @@ public class GCCoreContainerOxygenStorageModule extends Container
     public GCCoreContainerOxygenStorageModule(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityOxygenStorageModule storageModule)
     {
         this.tileEntity = storageModule;
-        // Top slot for battery output
-        this.addSlotToContainer(new SlotSpecific(storageModule, 0, 33, 24, IItemElectric.class));
-        // Bottom slot for batter input
-        this.addSlotToContainer(new SlotSpecific(storageModule, 1, 33, 48, IItemElectric.class));
+        
         int var3;
 
         for (var3 = 0; var3 < 3; ++var3)
@@ -48,7 +44,7 @@ public class GCCoreContainerOxygenStorageModule extends Container
     @Override
     public boolean canInteractWith(EntityPlayer par1EntityPlayer)
     {
-        return this.tileEntity.isUseableByPlayer(par1EntityPlayer);
+        return true;
     }
 
     /**
