@@ -16,6 +16,7 @@ import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GCCoreDamageSource;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityMeteor;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityParaChest;
 import micdoodle8.mods.galacticraft.core.event.GCCoreEventWakePlayer;
@@ -163,10 +164,12 @@ public class GCCorePlayerMP extends EntityPlayerMP
     @Override
     protected void fall(float par1)
     {
-        if (this.ridingEntity == null || !(this.ridingEntity instanceof EntityAutoRocket))
+        if (this.ridingEntity instanceof EntityAutoRocket || this.ridingEntity instanceof GCCoreEntityLander)
         {
-            super.fall(par1);
+            return;
         }
+        
+        super.fall(par1);
     }
 
     @Override
