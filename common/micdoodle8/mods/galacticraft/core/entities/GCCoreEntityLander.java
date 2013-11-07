@@ -471,7 +471,7 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
     @Override
     public boolean attackEntityFrom(DamageSource var1, float var2)
     {
-        if (this.isDead || var1.equals(DamageSource.cactus) || !this.onGround || this.riddenByEntity != null)
+        if (this.isDead || var1.equals(DamageSource.cactus) || this.riddenByEntity != null)
         {
             return true;
         }
