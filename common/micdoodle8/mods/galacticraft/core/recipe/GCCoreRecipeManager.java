@@ -205,7 +205,7 @@ public class GCCoreRecipeManager
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.machineBase, 1, 0), new Object[] { "WWW", "XZX", "XYX", 'W', "ingotCopper", 'X', Item.ingotIron, 'Y', new ItemStack(GCCoreBlocks.aluminumWire, 1, 0), 'Z', Block.furnaceIdle });
 
-        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.machineBase, 1, 4), new Object[] { "SSS", "BBB", "SSS", 'B', new ItemStack(GCCoreItems.battery, 1, 100), 'S', "compressedSteel" });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.machineBase, 1, 4), new Object[] { "SSS", "BBB", "SSS", 'B', new ItemStack(GCCoreItems.battery, 1, GCCoreItems.battery.getMaxDamage()), 'S', "compressedSteel" });
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.machineBase, 1, 8), new Object[] { "XXX", "XZX", "WYW", 'W', "compressedAluminum", 'X', "compressedSteel", 'Y', "waferAdvanced", 'Z', Block.furnaceIdle });
 
@@ -214,6 +214,8 @@ public class GCCoreRecipeManager
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.machineBase2, 1, 0), new Object[] { "WXW", "WYW", "VZV", 'V', new ItemStack(GCCoreBlocks.aluminumWire), 'W', "compressedSteel", 'X', Block.anvil, 'Y', "compressedBronze", 'Z', "waferAdvanced" });
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.machineBase2, 1, 4), new Object[] { "WXW", "UYU", "VZV", 'U', Block.stoneButton, 'V', new ItemStack(GCCoreBlocks.aluminumWire), 'W', "ingotAluminum", 'X', Block.lever, 'Y', Block.furnaceIdle, 'Z', Block.torchRedstoneActive });
+        
+        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.machineBase2, 1, 8), new Object[] { "SSS", "BBB", "SSS", 'B', new ItemStack(GCCoreItems.oxTankHeavy, 1, GCCoreItems.oxTankHeavy.getMaxDamage()), 'S', "compressedSteel" });
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreItems.battery, 1, 100), new Object[] { " T ", "TRT", "TCT", 'T', "compressedTin", 'R', Item.redstone, 'C', Item.coal });
 
@@ -331,7 +333,9 @@ public class GCCoreRecipeManager
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.refinery), new Object[] { " Z ", "WZW", "XYX", 'X', "compressedSteel", 'Y', Block.furnaceIdle, 'Z', new ItemStack(GCCoreItems.canister, 1, 1), 'W', Block.stone });
 
-        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.oxygenCompressor), new Object[] { "XWX", "WZW", "XYX", 'W', "compressedAluminum", 'X', "compressedSteel", 'Y', "compressedBronze", 'Z', GCCoreItems.oxygenConcentrator });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.oxygenCompressor, 1, 0), new Object[] { "XWX", "WZW", "XYX", 'W', "compressedAluminum", 'X', "compressedSteel", 'Y', "compressedBronze", 'Z', GCCoreItems.oxygenConcentrator });
+
+        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.oxygenCompressor, 1, 4), new Object[] { "XVX", "WZW", "XYX", 'V', GCCoreItems.oxygenFan, 'W', "compressedAluminum", 'X', "compressedSteel", 'Y', Block.torchRedstoneActive, 'Z', GCCoreItems.oxygenConcentrator });
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.fuelLoader), new Object[] { "XXX", "XZX", "WYW", 'W', "compressedAluminum", 'X', "compressedSteel", 'Y', "waferBasic", 'Z', new ItemStack(GCCoreItems.canister, 1, 0) });
 
