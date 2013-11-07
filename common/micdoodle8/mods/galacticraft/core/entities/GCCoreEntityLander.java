@@ -1,294 +1,356 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLanderFlameFX;
 import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumPacketClient;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerServer.EnumPacketServer;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
-import net.minecraft.client.particle.EntityFX;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
-import universalelectricity.core.vector.Vector3;
-import universalelectricity.prefab.network.IPacketReceiver;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInventorySettable, IPacketReceiver, IScaleableFuelLevel
+public class GCCoreEntityLander extends InventoryEntity implements IInventorySettable, IScaleableFuelLevel, IControllableEntity
 {
     private final int tankCapacity = 5000;
     public FluidTank fuelTank = new FluidTank(this.tankCapacity);
-
-    public double ySpeed;
-    public double startingYSpeed;
-    float maxSpeed = 0.05F;
-    float minSpeed = 0.3F;
-    float accel = 0.04F;
-    float turnFactor = 2.0F;
+    private boolean waitForPlayer;
+    private boolean lastWaitForPlayer;
+    public float currentDamage;
+    public int timeSinceHit;
+    public int rockDirection;
+    public boolean lastOnGround;
     private double lastMotionY;
-    public ItemStack[] chestContents = new ItemStack[0];
-    public int numUsingPlayers;
-    public GCCorePlayerMP playerSpawnedIn;
-    private final float MAX_PITCH_ROTATION = 25.0F;
-    public boolean landed;
-
-    public float rumble;
-
-    public GCCoreEntityLander(World var1)
+    
+    public GCCoreEntityLander(World par1World)
     {
-        super(var1, -5.0D, 2.5F);
-        this.setSize(3.0F, 4.5F);
-        this.ySpeed = 0.0D;
-        this.startingYSpeed = -5.0D;
-    }
-
-    @Override
-    public int getScaledFuelLevel(int i)
-    {
-        final double fuelLevel = this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluid().amount;
-
-        return (int) (fuelLevel * i / this.tankCapacity);
-    }
-
-    public GCCoreEntityLander(World var1, double var2, double var4, double var6)
-    {
-        this(var1);
-        this.setPosition(var2, var4 + this.yOffset, var6);
+        super(par1World);
+        this.setSize(3.5F, 4.8F);
+        this.ignoreFrustumCheck = true;
+        this.isImmuneToFire = true;
     }
 
     public GCCoreEntityLander(GCCorePlayerMP player)
     {
-        this(player.worldObj, player.posX, player.posY, player.posZ);
-        this.playerSpawnedIn = player;
-
-        this.chestContents = new ItemStack[player.getRocketStacks().length + 1];
+        this(player.worldObj);
+        
+        this.containedItems = new ItemStack[player.getRocketStacks().length + 1];
         this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, player.getFuelLevel()));
-
+        
         for (int i = 0; i < player.getRocketStacks().length; i++)
         {
-            this.chestContents[i] = player.getRocketStacks()[i];
+            this.containedItems[i] = player.getRocketStacks()[i];
         }
     }
-
+    
     @Override
-    public void onUpdate()
+    protected void entityInit()
     {
-        super.onUpdate();
+        ;
+    }
+    
+    @Override
+    protected void readEntityFromNBT(NBTTagCompound nbt)
+    {
+        NBTTagList itemList = nbt.getTagList("Items");
+        this.containedItems = new ItemStack[nbt.getInteger("rocketStacksLength")];
 
-        if (this.rumble > 0)
+        for (int i = 0; i < itemList.tagCount(); ++i)
         {
-            this.rumble--;
-        }
+            NBTTagCompound itemTag = (NBTTagCompound) itemList.tagAt(i);
+            int slotID = itemTag.getByte("Slot") & 255;
 
-        if (this.rumble < 0)
-        {
-            this.rumble++;
-        }
-
-        if (this.riddenByEntity != null)
-        {
-            this.riddenByEntity.posX += this.rumble * Math.abs(this.motionY) / 20F;
-            this.riddenByEntity.posZ += this.rumble * Math.abs(this.motionY) / 20F;
-        }
-
-        if (this.motionY != 0.0D)
-        {
-            this.performHurtAnimation();
-
-            this.rumble = (float) this.rand.nextInt(3) - 3;
-        }
-
-        if (this.ticks < 40 && this.posY > 100)
-        {
-            if (this.riddenByEntity == null)
+            if (slotID >= 0 && slotID < this.containedItems.length)
             {
-                final EntityPlayer player = this.worldObj.getClosestPlayerToEntity(this, 5);
-
-                if (player != null)
-                {
-                    player.mountEntity(this);
-                }
+                this.containedItems[slotID] = ItemStack.loadItemStackFromNBT(itemTag);
             }
         }
 
+        if (nbt.hasKey("fuelTank"))
+        {
+            this.fuelTank.readFromNBT(nbt.getCompoundTag("fuelTank"));
+        }
+        
+        this.setWaitForPlayer(nbt.getBoolean("WaitingForPlayer"));
+        
+        this.lastOnGround = this.onGround;
+        this.lastMotionY = this.motionY;
+    }
+
+    @Override
+    protected void writeEntityToNBT(NBTTagCompound nbt)
+    {
+        NBTTagList itemList = new NBTTagList();
+
+        nbt.setInteger("rocketStacksLength", this.containedItems.length);
+
+        for (int i = 0; i < this.containedItems.length; ++i)
+        {
+            if (this.containedItems[i] != null)
+            {
+                NBTTagCompound itemTag = new NBTTagCompound();
+                itemTag.setByte("Slot", (byte) i);
+                this.containedItems[i].writeToNBT(itemTag);
+                itemList.appendTag(itemTag);
+            }
+        }
+
+        nbt.setTag("Items", itemList);
+
+        if (this.fuelTank.getFluid() != null)
+        {
+            nbt.setTag("fuelTank", this.fuelTank.writeToNBT(new NBTTagCompound()));
+        }
+        
+        nbt.setBoolean("WaitingForPlayer", this.getWaitForPlayer());
+    }
+    
+    @Override
+    public void onUpdate()
+    {
+        if (this.getWaitForPlayer())
+        {
+            if (this.riddenByEntity != null)
+            {
+                if (this.ticksExisted >= 40)
+                {
+                    if (!this.worldObj.isRemote)
+                    {
+                        Entity e = this.riddenByEntity;
+                        this.riddenByEntity.ridingEntity = null;
+                        this.riddenByEntity = null;
+                        e.mountEntity(this);
+                    }
+
+                    this.setWaitForPlayer(false);
+                }
+                else
+                {
+                    this.motionX = this.motionY = this.motionZ = 0.0D;
+                    this.riddenByEntity.motionX = this.riddenByEntity.motionY = this.riddenByEntity.motionZ = 0;
+                }
+            }
+            else
+            {
+                this.motionX = this.motionY = this.motionZ = 0.0D;
+            }
+        }
+        
+        if (!this.waitForPlayer && this.lastWaitForPlayer)
+        {
+            this.motionY = -3.5D;
+        }
+        
+        super.onUpdate();
+
+        AxisAlignedBB box = this.boundingBox.expand(0.2D, 0.4D, 0.2D);
+
+        final List<?> var15 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, box);
+
+        if (var15 != null && !var15.isEmpty())
+        {
+            for (int var52 = 0; var52 < var15.size(); ++var52)
+            {
+                final Entity var17 = (Entity) var15.get(var52);
+
+                if (var17 != this.riddenByEntity)
+                {
+                    this.pushEntityAway(var17);
+                }
+            }
+        }
+        
         if (!this.worldObj.isRemote)
         {
             final FluidStack liquid = this.fuelTank.getFluid();
 
             if (liquid != null && this.fuelTank.getFluid() != null && this.fuelTank.getFluid().getFluid().getName().equalsIgnoreCase("Fuel"))
             {
-                if (FluidContainerRegistry.isEmptyContainer(this.chestContents[this.chestContents.length - 1]))
+                if (FluidContainerRegistry.isEmptyContainer(this.containedItems[this.containedItems.length - 1]))
                 {
-                    boolean isCanister = this.chestContents[this.chestContents.length - 1].isItemEqual(new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.oilCanister.getMaxDamage()));
+                    boolean isCanister = this.containedItems[this.containedItems.length - 1].isItemEqual(new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.oilCanister.getMaxDamage()));
                     final int amountToFill = Math.min(liquid.amount, isCanister ? GCCoreItems.fuelCanister.getMaxDamage() - 1 : FluidContainerRegistry.BUCKET_VOLUME);
 
                     if (isCanister)
                     {
-                        this.chestContents[this.chestContents.length - 1] = new ItemStack(GCCoreItems.fuelCanister, 1, GCCoreItems.fuelCanister.getMaxDamage() - amountToFill);
+                        this.containedItems[this.containedItems.length - 1] = new ItemStack(GCCoreItems.fuelCanister, 1, GCCoreItems.fuelCanister.getMaxDamage() - amountToFill);
                     }
                     else
                     {
-                        this.chestContents[this.chestContents.length - 1] = FluidContainerRegistry.fillFluidContainer(liquid, this.chestContents[this.chestContents.length - 1]);
+                        this.containedItems[this.containedItems.length - 1] = FluidContainerRegistry.fillFluidContainer(liquid, this.containedItems[this.containedItems.length - 1]);
                     }
 
                     this.fuelTank.drain(amountToFill, true);
                 }
             }
         }
+        
+        if (this.worldObj.isRemote)
+        {
+            PacketDispatcher.sendPacketToServer(GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getNetworkedData(new ArrayList<Object>())));
+        }
+        
+        if (this.onGround)
+        {
+            this.motionX = this.motionY = this.motionZ = 0.0D;
+        }
+        else
+        {
+            if (this.worldObj.isRemote)
+            {
+                this.motionX = -50.0 * Math.cos(Math.toRadians(this.rotationYaw)) * Math.sin(Math.toRadians(this.rotationPitch * 0.01));
+                this.motionZ = -50.0 * Math.sin(Math.toRadians(this.rotationYaw)) * Math.sin(Math.toRadians(this.rotationPitch * 0.01));
+            }
+            
+            this.moveEntity(this.motionX, this.motionY, this.motionZ);
+        }
+        
+        if (!this.worldObj.isRemote)
+        {
+            if (this.onGround && !this.lastOnGround)
+            {
+                if (Math.abs(this.lastMotionY) > 2.0D)
+                {
+                    if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayerMP)
+                    {
+                        final Object[] toSend2 = { 0 };
+                        ((EntityPlayerMP) this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.ZOOM_CAMERA, toSend2));
 
+                        this.riddenByEntity.mountEntity(this);
+                    }
+
+                    this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 12, true);
+
+                    this.setDead();
+                }
+            }
+        }
+        
+        if (this.onGround)
+        {
+            this.rotationPitch = 0.0F;
+        }
+        
+        this.lastWaitForPlayer = this.waitForPlayer;
+        this.lastOnGround = this.onGround;
         this.lastMotionY = this.motionY;
     }
-
-    @Override
-    protected void readEntityFromNBT(NBTTagCompound nbt)
+    
+    public void pushEntityAway(Entity par1Entity)
     {
-        final NBTTagList var2 = nbt.getTagList("Items");
-
-        this.chestContents = new ItemStack[nbt.getInteger("rocketStacksLength")];
-
-        for (int var3 = 0; var3 < var2.tagCount(); ++var3)
+        if (this.riddenByEntity != par1Entity && this.ridingEntity != par1Entity)
         {
-            final NBTTagCompound var4 = (NBTTagCompound) var2.tagAt(var3);
-            final int var5 = var4.getByte("Slot") & 255;
+            double d0 = this.posX - par1Entity.posX;
+            double d1 = this.posZ - par1Entity.posZ;
+            double d2 = MathHelper.abs_max(d0, d1);
 
-            if (var5 >= 0 && var5 < this.chestContents.length)
+            if (d2 >= 0.009999999776482582D)
             {
-                this.chestContents[var5] = ItemStack.loadItemStackFromNBT(var4);
+                d2 = (double)MathHelper.sqrt_double(d2);
+                d0 /= d2;
+                d1 /= d2;
+                double d3 = 1.0D / d2;
+
+                if (d3 > 1.0D)
+                {
+                    d3 = 1.0D;
+                }
+
+                d0 *= d3;
+                d1 *= d3;
+                d0 *= 0.05000000074505806D;
+                d1 *= 0.05000000074505806D;
+                d0 *= (double)(1.0F - par1Entity.entityCollisionReduction);
+                d1 *= (double)(1.0F - par1Entity.entityCollisionReduction);
+                par1Entity.addVelocity(-d0, 0.0D, -d1);
             }
-        }
-
-        this.landed = nbt.getBoolean("landed");
-
-        if (nbt.hasKey("fuelTank"))
-        {
-            this.fuelTank.readFromNBT(nbt.getCompoundTag("fuelTank"));
         }
     }
 
     @Override
-    protected void writeEntityToNBT(NBTTagCompound nbt)
+    public boolean pressKey(int key)
     {
-        final NBTTagList nbttaglist = new NBTTagList();
-
-        nbt.setInteger("rocketStacksLength", this.chestContents.length);
-
-        for (int i = 0; i < this.chestContents.length; ++i)
+        if (this.onGround)
         {
-            if (this.chestContents[i] != null)
+            return false;
+        }
+        
+        float turnFactor = 2.0F;
+        
+        switch (key)
+        {
+        case 0:
+            if (!this.onGround)
             {
-                final NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-                nbttagcompound1.setByte("Slot", (byte) i);
-                this.chestContents[i].writeToNBT(nbttagcompound1);
-                nbttaglist.appendTag(nbttagcompound1);
+                this.rotationPitch = Math.min(Math.max(this.rotationPitch - 0.5F * turnFactor, -35), 35);
             }
+
+            return true;
+        case 1:
+            if (!this.onGround)
+            {
+                this.rotationPitch = Math.min(Math.max(this.rotationPitch + 0.5F * turnFactor, -35), 35);
+            }
+
+            return true;
+        case 2:
+            if (!this.onGround)
+            {
+                this.rotationYaw -= 0.5F * turnFactor;
+            }
+
+            return true;
+        case 3:
+            if (!this.onGround)
+            {
+                this.rotationYaw += 0.5F * turnFactor;
+            }
+
+            return true;
+        case 4:
+            this.motionY = Math.min(this.motionY + 0.022F, -1.0);
+            return true;
+        case 5:
+            this.motionY = Math.min(this.motionY - 0.022F, -1.0);
+            return true;
         }
 
-        nbt.setTag("Items", nbttaglist);
+        return false;
+    }
 
-        nbt.setBoolean("landed", this.landed);
-
-        if (this.fuelTank.getFluid() != null)
-        {
-            nbt.setTag("fuelTank", this.fuelTank.writeToNBT(new NBTTagCompound()));
-        }
+    @Override
+    public double getMountedYOffset()
+    {
+        return 1.0D;
     }
 
     @Override
     public int getSizeInventory()
     {
-        return this.chestContents.length;
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int par1)
-    {
-        return this.chestContents[par1];
-    }
-
-    @Override
-    public ItemStack decrStackSize(int par1, int par2)
-    {
-        if (this.chestContents[par1] != null)
-        {
-            ItemStack itemstack;
-
-            if (this.chestContents[par1].stackSize <= par2)
-            {
-                itemstack = this.chestContents[par1];
-                this.chestContents[par1] = null;
-                this.onInventoryChanged();
-                return itemstack;
-            }
-            else
-            {
-                itemstack = this.chestContents[par1].splitStack(par2);
-
-                if (this.chestContents[par1].stackSize == 0)
-                {
-                    this.chestContents[par1] = null;
-                }
-
-                this.onInventoryChanged();
-                return itemstack;
-            }
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    @Override
-    public ItemStack getStackInSlotOnClosing(int par1)
-    {
-        if (this.chestContents[par1] != null)
-        {
-            final ItemStack itemstack = this.chestContents[par1];
-            this.chestContents[par1] = null;
-            return itemstack;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    @Override
-    public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
-    {
-        this.chestContents[par1] = par2ItemStack;
-
-        if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())
-        {
-            par2ItemStack.stackSize = this.getInventoryStackLimit();
-        }
-
-        this.onInventoryChanged();
+        return this.containedItems.length;
     }
 
     @Override
     public String getInvName()
     {
-        return StatCollector.translateToLocal("container.lander");
+        return "Lander";
     }
 
     @Override
@@ -298,58 +360,113 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
     }
 
     @Override
-    public int getInventoryStackLimit()
-    {
-        return 64;
-    }
-
-    @Override
-    public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
-    {
-        return par1EntityPlayer.getDistanceSq(this.posX + 0.5D, this.posY + 0.5D, this.posZ + 0.5D) <= 64.0D;
-    }
-
-    @Override
-    public void openChest()
-    {
-        if (this.numUsingPlayers < 0)
-        {
-            this.numUsingPlayers = 0;
-        }
-
-        ++this.numUsingPlayers;
-    }
-
-    @Override
-    public void closeChest()
-    {
-        --this.numUsingPlayers;
-    }
-
-    @Override
-    public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack)
+    public boolean isItemValidForSlot(int i, ItemStack itemstack)
     {
         return false;
     }
 
     @Override
-    public void onInventoryChanged()
+    public int getScaledFuelLevel(int scale)
     {
+        return (int) (((double)this.fuelTank.getFluidAmount() / (double)this.tankCapacity) * scale);
     }
 
+    @Override
+    public void setSizeInventory(int size)
+    {
+        this.containedItems = new ItemStack[size];
+    }
+
+    @Override
+    protected boolean canTriggerWalking()
+    {
+        return false;
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox()
+    {
+        return null;
+    }
+
+    @Override
+    public AxisAlignedBB getCollisionBox(Entity par1Entity)
+    {
+        return null;
+    }
+
+    @Override
+    public boolean canBePushed()
+    {
+        return false;
+    }
+
+    @Override
+    public boolean canBeCollidedWith()
+    {
+        return !this.isDead;
+    }
+
+    @Override
+    public boolean attackEntityFrom(DamageSource var1, float var2)
+    {
+        if (this.isDead || var1.equals(DamageSource.cactus) || !this.onGround || this.riddenByEntity != null)
+        {
+            return true;
+        }
+        else
+        {
+            this.rockDirection = -this.rockDirection;
+            this.timeSinceHit = 10;
+            this.currentDamage = this.currentDamage + var2 * 10;
+            this.setBeenAttacked();
+
+            if (var1.getEntity() instanceof EntityPlayer && ((EntityPlayer) var1.getEntity()).capabilities.isCreativeMode)
+            {
+                this.currentDamage = 100;
+            }
+
+            if (this.currentDamage > 70)
+            {
+                if (this.riddenByEntity != null)
+                {
+                    if (this.riddenByEntity instanceof EntityPlayerMP)
+                    {
+                        final Object[] toSend2 = { 0 };
+                        ((EntityPlayerMP) this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.ZOOM_CAMERA, toSend2));
+                    }
+
+                    this.riddenByEntity.mountEntity(this);
+
+                    return false;
+                }
+
+                if (!this.worldObj.isRemote)
+                {
+                    if (this.riddenByEntity != null)
+                    {
+                        this.riddenByEntity.mountEntity(this);
+                    }
+
+                    this.dropItems();
+
+                    this.setDead();
+                }
+            }
+
+            return true;
+        }
+    }
+    
     @Override
     public boolean interactFirst(EntityPlayer var1)
     {
         if (this.worldObj.isRemote)
         {
-            if (this.riddenByEntity != null)
-            {
-                this.riddenByEntity.mountEntity(this);
-            }
-
-            return true;
+            return false;
         }
-        else if (this.riddenByEntity == null && this.onGround && var1 instanceof EntityPlayerMP)
+        
+        if (this.riddenByEntity == null && this.onGround && var1 instanceof EntityPlayerMP)
         {
             GCCoreUtil.openParachestInv((EntityPlayerMP) var1, this);
             return true;
@@ -367,240 +484,97 @@ public class GCCoreEntityLander extends GCCoreEntityAdvanced implements IInvento
     }
 
     @Override
-    protected boolean forceGroundUpdate()
+    public void readNetworkedData(ByteArrayDataInput dataStream)
     {
-        return false;
-    }
-
-    @Override
-    public boolean pressKey(int key)
-    {
-        switch (key)
-        {
-        case 0: // Accelerate
-        {
-            if (!this.onGround)
-            {
-                this.rotationPitch -= 0.5F * this.turnFactor;
-            }
-
-            return true;
-        }
-        case 1: // Deccelerate
-        {
-            if (!this.onGround)
-            {
-                this.rotationPitch += 0.5F * this.turnFactor;
-            }
-
-            return true;
-        }
-        case 2: // Left
-        {
-            if (!this.onGround)
-            {
-                this.rotationYaw -= 0.5F * this.turnFactor;
-            }
-
-            return true;
-        }
-        case 3: // Right
-        {
-            if (!this.onGround)
-            {
-                this.rotationYaw += 0.5F * this.turnFactor;
-            }
-
-            return true;
-        }
-        case 4: // Space
-        {
-            this.ySpeed += 0.05F;
-            return true;
-        }
-        case 5: // LShift
-        {
-            this.ySpeed -= 0.005F;
-            return true;
-        }
-        }
-
-        return false;
-    }
-
-    @Override
-    public boolean shouldMove()
-    {
-        if (this.ticks < 40)
-        {
-            return this.riddenByEntity != null;
-        }
-
-        return !this.landed;
-    }
-
-    @Override
-    public boolean shouldSpawnParticles()
-    {
-        return !this.landed && this.posY < 256;
-    }
-
-    @Override
-    public Map<Vector3, Vector3> getParticleMap()
-    {
-        final double x1 = 2 * Math.cos(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
-        final double z1 = 2 * Math.sin(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
-        final double y1 = -5.0D;
-
-        new Vector3(this);
-
-        final Map<Vector3, Vector3> particleMap = new HashMap<Vector3, Vector3>();
-        final float angle1 = (float) ((this.rotationYaw - 40.0F) * Math.PI / 180.0F);
-        final float angle2 = (float) ((this.rotationYaw + 40.0F) * Math.PI / 180.0F);
-        final float angle3 = (float) ((this.rotationYaw + 180 - 40.0F) * Math.PI / 180.0F);
-        final float angle4 = (float) ((this.rotationYaw + 180 + 40.0F) * Math.PI / 180.0F);
-        final float pitch = (float) Math.sin(this.rotationPitch * Math.PI / 180.0F);
-        particleMap.put(new Vector3(this).translate(new Vector3(0.4 * Math.cos(angle1) * Math.cos(pitch), -1.5, 0.4 * Math.sin(angle1) * Math.cos(pitch))), new Vector3(x1, y1, z1));
-        particleMap.put(new Vector3(this).translate(new Vector3(0.4 * Math.cos(angle2) * Math.cos(pitch), -1.5, 0.4 * Math.sin(angle2) * Math.cos(pitch))), new Vector3(x1, y1, z1));
-        particleMap.put(new Vector3(this).translate(new Vector3(0.4 * Math.cos(angle3) * Math.cos(pitch), -1.5, 0.4 * Math.sin(angle3) * Math.cos(pitch))), new Vector3(x1, y1, z1));
-        particleMap.put(new Vector3(this).translate(new Vector3(0.4 * Math.cos(angle4) * Math.cos(pitch), -1.5, 0.4 * Math.sin(angle4) * Math.cos(pitch))), new Vector3(x1, y1, z1));
-        return particleMap;
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public EntityFX getParticle(Random rand, double x, double y, double z, double motX, double motY, double motZ)
-    {
-        return new GCCoreEntityLanderFlameFX(this.worldObj, x, y, z, motX, motY, motZ);
-    }
-
-    @Override
-    public void tickInAir()
-    {
-        if (this.landed)
-        {
-            this.motionY = 0;
-            return;
-        }
-
-        if (this.rotationPitch >= this.MAX_PITCH_ROTATION)
-        {
-            this.rotationPitch = this.MAX_PITCH_ROTATION;
-        }
-        else if (this.rotationPitch <= -this.MAX_PITCH_ROTATION)
-        {
-            this.rotationPitch = -this.MAX_PITCH_ROTATION;
-        }
-
-        this.ySpeed *= 0.98D;
-
-        this.startingYSpeed += this.ySpeed * this.accel;
-
-        this.startingYSpeed = this.startingYSpeed < -5.0F ? -5.0F : this.startingYSpeed > -this.minSpeed ? -this.minSpeed : this.startingYSpeed;
-
         if (this.worldObj.isRemote)
         {
-            this.motionY = this.startingYSpeed;
+            int cargoLength = dataStream.readInt();
+            
+            if (this.containedItems == null || this.containedItems.length == 0)
+            {
+                this.containedItems = new ItemStack[cargoLength];
+                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.UPDATE_DYNAMIC_ENTITY_INV, new Object[] { this.entityId }));
+            }
+
+            this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, dataStream.readInt()));
+
+            this.setWaitForPlayer(dataStream.readBoolean());
+        }
+        else
+        {
+            this.motionX = dataStream.readDouble() / 8000.0D;
+            this.motionY = dataStream.readDouble() / 8000.0D;
+            this.motionZ = dataStream.readDouble() / 8000.0D;
+            
+            this.rotationPitch = dataStream.readFloat();
+            this.rotationYaw = dataStream.readFloat();
         }
     }
 
     @Override
-    public void tickOnGround()
-    {
-        this.rotationPitch = 0.0F;
-        this.rotationYaw = 0.0F;
-    }
-
-    @Override
-    public void onGroundHit()
+    public ArrayList<Object> getNetworkedData(ArrayList<Object> list)
     {
         if (!this.worldObj.isRemote)
         {
-            if (Math.abs(this.lastMotionY) > 2.0D)
-            {
-                if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayerMP)
-                {
-                    final Object[] toSend2 = { 0 };
-                    ((EntityPlayerMP) this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.ZOOM_CAMERA, toSend2));
+            list.add(this.containedItems != null ? this.containedItems.length : 0);
+            list.add(this.fuelTank.getFluidAmount());
 
-                    this.riddenByEntity.mountEntity(this);
-                }
-
-                this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 12, true);
-
-                this.setDead();
-            }
-
-            this.landed = true;
+            list.add(this.getWaitForPlayer());
+            
+            return list;
         }
-    }
-
-    @Override
-    public Vector3 getMotionVec()
-    {
-        return new Vector3(-(50 * Math.cos(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * 0.01 * Math.PI / 180.0D)), this.ticks < 40 ? 0 : this.motionY, -(50 * Math.sin(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * 0.01 * Math.PI / 180.0D)));
-    }
-
-    @Override
-    public ArrayList<Object> getNetworkedData()
-    {
-        final ArrayList<Object> objList = new ArrayList<Object>();
-        objList.add(this.landed);
-        Integer cargoLength = this.chestContents != null ? this.chestContents.length : 0;
-        objList.add(cargoLength);
-        objList.add(this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluid().amount);
-        return objList;
-    }
-
-    @Override
-    public int getPacketTickSpacing()
-    {
-        return 5;
-    }
-
-    @Override
-    public double getPacketSendDistance()
-    {
-        return 50.0D;
-    }
-
-    @Override
-    public void readNetworkedData(ByteArrayDataInput dataStream)
-    {
-        this.landed = dataStream.readBoolean();
-
-        int cargoLength = dataStream.readInt();
-        if (this.chestContents == null || this.chestContents.length == 0)
+        else
         {
-            this.chestContents = new ItemStack[cargoLength];
-            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.UPDATE_DYNAMIC_ENTITY_INV, new Object[] { this.entityId }));
+            list.add(this.motionX * 8000.0D);
+            list.add(this.motionY * 8000.0D);
+            list.add(this.motionZ * 8000.0D);
+            
+            list.add(this.rotationPitch);
+            list.add(this.rotationYaw);
+            
+            return list;
         }
-
-        this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, dataStream.readInt()));
     }
 
     @Override
-    public boolean allowDamageSource(DamageSource damageSource)
+    public double getPacketRange()
     {
-        return this.landed && !damageSource.isExplosion();
+        return 100.0D;
     }
 
-    @Override
+    public boolean getWaitForPlayer()
+    {
+        return this.waitForPlayer;
+    }
+
+    public void setWaitForPlayer(boolean waitForPlayer)
+    {
+        this.waitForPlayer = waitForPlayer;
+    }
+
+    public void dropItems()
+    {
+        for (ItemStack item : this.getItemsDropped())
+        {
+            if (item != null)
+            {
+                this.entityDropItem(item, 0);
+            }
+        }
+    }
+    
     public List<ItemStack> getItemsDropped()
     {
         final List<ItemStack> items = new ArrayList<ItemStack>();
 
-        for (final ItemStack stack : this.chestContents)
+        for (ItemStack stack : this.containedItems)
         {
-            items.add(stack);
+            if (stack != null)
+            {
+                items.add(stack);
+            }
         }
 
         return items;
-    }
-
-    @Override
-    public void setSizeInventory(int size)
-    {
-        this.chestContents = new ItemStack[size];
     }
 }

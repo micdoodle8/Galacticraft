@@ -64,8 +64,12 @@ public class GCMoonTeleportType implements ITeleportType
                 gcPlayer.capabilities.isFlying = false;
             }
 
-            final GCCoreEntityLander lander = new GCCoreEntityLander(gcPlayer);
+            GCCoreEntityLander lander = new GCCoreEntityLander(gcPlayer);
+            lander.setWaitForPlayer(true);
             lander.setPositionAndRotation(player.posX, player.posY, player.posZ, 0, 0);
+            
+            lander.riddenByEntity = player;
+            player.ridingEntity = lander;
 
             if (!newWorld.isRemote)
             {

@@ -4,7 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityControllable;
+import micdoodle8.mods.galacticraft.core.entities.IControllableEntity;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerServer.EnumPacketServer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.packet.Packet;
@@ -55,10 +55,11 @@ public class GCCorePacketControllableEntity implements IGalacticraftAdvancedPack
         {
             final EntityPlayer player = (EntityPlayer) extraData[0];
 
-            final int key = stream.readInt();
-            if (player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntityControllable)
+            int key = stream.readInt();
+            
+            if (player.ridingEntity != null && player.ridingEntity instanceof IControllableEntity)
             {
-                ((GCCoreEntityControllable) player.ridingEntity).pressKey(key);
+                ((IControllableEntity) player.ridingEntity).pressKey(key);
             }
 
         }
