@@ -39,3 +39,4 @@ SgtAce:capeOrange
 Roosterteeth546:capeRainbow
 SundayxFunday:capeOrange
 THEproWINN:capeLime
+Puggy04:capeLime
