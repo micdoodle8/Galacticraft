@@ -163,7 +163,7 @@ public class GCCoreBlockOxygenCompressor extends GCCoreBlockAdvanced
             }
             else if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal())
             {
-                return this.iconOxygenInput;
+                return this.iconOxygenOutput;
             }
             else if (metadata == 0 && side == 5 || metadata == 3 && side == 3 || metadata == 1 && side == 4 || metadata == 2 && side == 2)
             {
