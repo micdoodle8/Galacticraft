@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.entities;
 import java.util.ArrayList;
 import java.util.List;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLanderFlameFX;
 import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
@@ -11,6 +12,8 @@ import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerServer.EnumP
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -24,11 +27,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
+import universalelectricity.core.vector.Vector3;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCCoreEntityLander extends InventoryEntity implements IInventorySettable, IScaleableFuelLevel, IControllableEntity
 {
@@ -162,6 +167,11 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
         }
         
         super.onUpdate();
+        
+        if (!this.onGround && Math.abs(this.motionY) > 0.01 && FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+        {
+            this.spawnParticles();
+        }
 
         AxisAlignedBB box = this.boundingBox.expand(0.2D, 0.4D, 0.2D);
 
@@ -256,6 +266,44 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
         this.lastWaitForPlayer = this.waitForPlayer;
         this.lastOnGround = this.onGround;
         this.lastMotionY = this.motionY;
+    }
+
+    @SideOnly(Side.CLIENT)
+    private void spawnParticles()
+    {
+        final double x1 = 2 * Math.cos(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
+        final double z1 = 2 * Math.sin(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
+        final double y1 = -5.0D;
+
+        final float angle1 = (float) ((this.rotationYaw - 40.0F) * Math.PI / 180.0F);
+        final float angle2 = (float) ((this.rotationYaw + 40.0F) * Math.PI / 180.0F);
+        final float angle3 = (float) ((this.rotationYaw + 180 - 40.0F) * Math.PI / 180.0F);
+        final float angle4 = (float) ((this.rotationYaw + 180 + 40.0F) * Math.PI / 180.0F);
+        final float pitch = (float) Math.sin(this.rotationPitch * Math.PI / 180.0F);
+        
+        Vector3 vec1 = new Vector3(this).translate(new Vector3(0.4 * Math.cos(angle1) * Math.cos(pitch), 0.5, 0.4 * Math.sin(angle1) * Math.cos(pitch)));
+        Vector3 vec2 = new Vector3(this).translate(new Vector3(0.4 * Math.cos(angle2) * Math.cos(pitch), 0.5, 0.4 * Math.sin(angle2) * Math.cos(pitch)));
+        Vector3 vec3 = new Vector3(this).translate(new Vector3(0.4 * Math.cos(angle3) * Math.cos(pitch), 0.5, 0.4 * Math.sin(angle3) * Math.cos(pitch)));
+        Vector3 vec4 = new Vector3(this).translate(new Vector3(0.4 * Math.cos(angle4) * Math.cos(pitch), 0.5, 0.4 * Math.sin(angle4) * Math.cos(pitch)));
+        
+        this.spawnParticle(new GCCoreEntityLanderFlameFX(this.worldObj, vec1.x, vec1.y, vec1.z, x1, y1, z1));
+        this.spawnParticle(new GCCoreEntityLanderFlameFX(this.worldObj, vec2.x, vec2.y, vec2.z, x1, y1, z1));
+        this.spawnParticle(new GCCoreEntityLanderFlameFX(this.worldObj, vec3.x, vec3.y, vec3.z, x1, y1, z1));
+        this.spawnParticle(new GCCoreEntityLanderFlameFX(this.worldObj, vec4.x, vec4.y, vec4.z, x1, y1, z1));
+    }
+
+    @SideOnly(Side.CLIENT)
+    private void spawnParticle(EntityFX fx)
+    {
+        final Minecraft mc = FMLClientHandler.instance().getClient();
+
+        if (mc != null && mc.renderViewEntity != null && mc.effectRenderer != null)
+        {
+            if (fx != null)
+            {
+                mc.effectRenderer.addEffect(fx);
+            }
+        }
     }
     
     private void sendPacketToServer()
