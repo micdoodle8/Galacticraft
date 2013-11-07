@@ -22,7 +22,6 @@ public class GCCoreItemCanister extends Item
     public GCCoreItemCanister(int id, String assetName)
     {
         super(id);
-        this.setMaxStackSize(1);
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
         this.setUnlocalizedName(assetName);
