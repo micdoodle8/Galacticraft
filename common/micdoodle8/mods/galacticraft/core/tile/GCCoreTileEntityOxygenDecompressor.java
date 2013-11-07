@@ -352,4 +352,10 @@ public class GCCoreTileEntityOxygenDecompressor extends GCCoreTileEntityOxygen i
     {
         return false;
     }
+
+    @Override
+    public boolean shouldUseOxygen()
+    {
+        return false;
+    }
 }

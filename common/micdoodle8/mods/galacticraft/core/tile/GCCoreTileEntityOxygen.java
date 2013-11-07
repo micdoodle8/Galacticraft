@@ -24,6 +24,8 @@ public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectric im
     public abstract ForgeDirection getOxygenInputDirection();
 
     public abstract boolean shouldPullOxygen();
+    
+    public abstract boolean shouldUseOxygen();
 
     public int getCappedScaledOxygenLevel(int scale)
     {
@@ -42,7 +44,10 @@ public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectric im
                 GCCoreTileEntityOxygen.timeSinceOxygenRequest--;
             }
 
-            this.storedOxygen = Math.max(this.storedOxygen - this.oxygenPerTick, 0);
+            if (this.shouldUseOxygen())
+            {
+                this.storedOxygen = Math.max(this.storedOxygen - this.oxygenPerTick, 0);
+            }
         }
 
         this.lastStoredOxygen = this.storedOxygen;

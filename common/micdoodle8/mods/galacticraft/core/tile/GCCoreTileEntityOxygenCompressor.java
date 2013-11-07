@@ -313,4 +313,10 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen imp
     {
         return this.getEnergyStored() > 0;
     }
+
+    @Override
+    public boolean shouldUseOxygen()
+    {
+        return false;
+    }
 }

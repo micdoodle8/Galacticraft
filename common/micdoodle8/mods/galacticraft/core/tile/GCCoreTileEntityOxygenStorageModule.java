@@ -179,4 +179,10 @@ public class GCCoreTileEntityOxygenStorageModule extends GCCoreTileEntityOxygen 
     {
         return null;
     }
+
+    @Override
+    public boolean shouldUseOxygen()
+    {
+        return false;
+    }
 }

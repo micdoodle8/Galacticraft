@@ -366,4 +366,10 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen im
     {
         return this.getEnergyStored() > 0;
     }
+
+    @Override
+    public boolean shouldUseOxygen()
+    {
+        return true;
+    }
 }

@@ -312,4 +312,10 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
     {
         return this.getEnergyStored() > 0;
     }
+    
+    @Override
+    public boolean shouldUseOxygen()
+    {
+        return this.active && this.sealed;
+    }
 }
