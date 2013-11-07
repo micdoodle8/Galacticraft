@@ -63,7 +63,7 @@ public class GCCoreGuiAirCollector extends GCCoreGuiContainer
         this.fontRenderer.drawString(StatCollector.translateToLocal("gui.message.in.name") + ":", 87, 37, 4210752);
         String status = StatCollector.translateToLocal("gui.message.status.name") + ": " + this.getStatus();
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 50, 4210752);
-        status = "Oxygen Output: " + ((int) Math.min(this.collector.getPower(), this.collector.outputSpeed)) * 20 + "/s";
+        status = "Collecting: " + ((int) Math.min(this.collector.lastOxygenCollected, GCCoreTileEntityOxygenCollector.OUTPUT_PER_TICK)) * 20 + "/s";
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 60, 4210752);
         status = ElectricityDisplay.getDisplay(GCCoreTileEntityOxygenCollector.WATTS_PER_TICK * 20, ElectricUnit.WATT);
         this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 70, 4210752);
@@ -74,22 +74,18 @@ public class GCCoreGuiAirCollector extends GCCoreGuiContainer
 
     private String getStatus()
     {
-        if (this.collector.getPower() > 1 && this.collector.getEnergyStored() > 0)
-        {
-            return EnumColor.DARK_GREEN + StatCollector.translateToLocal("gui.status.active.name");
-        }
 
         if (this.collector.getEnergyStored() == 0)
         {
             return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.missingpower.name");
         }
 
-        if (this.collector.getPower() < 1)
+        if (this.collector.lastOxygenCollected <= 0.0F)
         {
             return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.missingleaves.name");
         }
-
-        return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.unknown.name");
+        
+        return EnumColor.DARK_GREEN + StatCollector.translateToLocal("gui.status.active.name");
     }
 
     @Override
@@ -113,14 +109,14 @@ public class GCCoreGuiAirCollector extends GCCoreGuiContainer
                 this.drawTexturedModalRect(var5 + 99, var6 + 37, 176, 0, 11, 10);
             }
 
-            if (this.collector.getPower() > 0)
+            if (this.collector.storedOxygen > 0)
             {
                 this.drawTexturedModalRect(var5 + 100, var6 + 24, 187, 0, 10, 10);
             }
 
             List<String> oxygenDesc = new ArrayList<String>();
             oxygenDesc.add("Oxygen Storage");
-            oxygenDesc.add(EnumColor.YELLOW + "Oxygen: " + (int) Math.floor(Math.min(this.collector.getPower(), this.collector.MAX_POWER)));
+            oxygenDesc.add(EnumColor.YELLOW + "Oxygen: " + ((int) Math.floor(this.collector.storedOxygen) + " / " + (int) Math.floor(this.collector.maxOxygen)));
             this.oxygenInfoRegion.tooltipStrings = oxygenDesc;
 
             List<String> electricityDesc = new ArrayList<String>();

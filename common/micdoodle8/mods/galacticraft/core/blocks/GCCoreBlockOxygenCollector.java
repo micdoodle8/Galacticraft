@@ -54,8 +54,8 @@ public class GCCoreBlockOxygenCollector extends GCCoreBlockAdvanced
     public void registerIcons(IconRegister par1IconRegister)
     {
         this.iconMachineSide = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_collector_fan");
-        this.iconInput = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_oxygen_input");
-        this.iconOutput = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_output");
+        this.iconInput = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_oxygen_output");
+        this.iconOutput = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_input");
     }
 
     @Override
@@ -146,7 +146,7 @@ public class GCCoreBlockOxygenCollector extends GCCoreBlockAdvanced
     {
         if (par1World.getBlockTileEntity(par2, par3, par4) instanceof GCCoreTileEntityOxygenCollector)
         {
-            if (((GCCoreTileEntityOxygenCollector) par1World.getBlockTileEntity(par2, par3, par4)).getPower() > 1)
+            if (((GCCoreTileEntityOxygenCollector) par1World.getBlockTileEntity(par2, par3, par4)).lastOxygenCollected > 1)
             {
                 for (int var6 = 0; var6 < 10; ++var6)
                 {
