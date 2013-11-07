@@ -479,7 +479,7 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
             return false;
         }
         
-        if (this.riddenByEntity == null && this.onGround && var1 instanceof EntityPlayerMP)
+        if (this.riddenByEntity == null && var1 instanceof EntityPlayerMP)
         {
             GCCoreUtil.openParachestInv((EntityPlayerMP) var1, this);
             return true;
