@@ -2,9 +2,9 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.Random;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFallenMeteor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -44,7 +44,7 @@ public class GCCoreBlockFallenMeteor extends Block implements ITileEntityProvide
     @Override
     public int getRenderType()
     {
-        return GalacticraftCore.proxy.getGCMeteorRenderID();
+        return GalacticraftCore.proxy.getBlockRenderID(this.blockID);
     }
 
     @Override
@@ -62,7 +62,7 @@ public class GCCoreBlockFallenMeteor extends Block implements ITileEntityProvide
     @Override
     public int idDropped(int par1, Random par2Random, int par3)
     {
-        return GCMoonItems.meteoricIronRaw.itemID;
+        return GCCoreItems.meteoricIronRaw.itemID;
     }
 
     @Override

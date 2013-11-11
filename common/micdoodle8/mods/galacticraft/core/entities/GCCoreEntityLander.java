@@ -46,7 +46,7 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
     public int rockDirection = 1;
     public boolean lastOnGround;
     private double lastMotionY;
-    
+
     public GCCoreEntityLander(World par1World)
     {
         super(par1World);
@@ -58,22 +58,22 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
     public GCCoreEntityLander(GCCorePlayerMP player)
     {
         this(player.worldObj);
-        
+
         this.containedItems = new ItemStack[player.getRocketStacks().length + 1];
         this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, player.getFuelLevel()));
-        
+
         for (int i = 0; i < player.getRocketStacks().length; i++)
         {
             this.containedItems[i] = player.getRocketStacks()[i];
         }
     }
-    
+
     @Override
     protected void entityInit()
     {
         ;
     }
-    
+
     @Override
     protected void readEntityFromNBT(NBTTagCompound nbt)
     {
@@ -95,9 +95,9 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
         {
             this.fuelTank.readFromNBT(nbt.getCompoundTag("fuelTank"));
         }
-        
+
         this.setWaitForPlayer(nbt.getBoolean("WaitingForPlayer"));
-        
+
         this.lastOnGround = this.onGround;
         this.lastMotionY = this.motionY;
     }
@@ -126,10 +126,10 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
         {
             nbt.setTag("fuelTank", this.fuelTank.writeToNBT(new NBTTagCompound()));
         }
-        
+
         nbt.setBoolean("WaitingForPlayer", this.getWaitForPlayer());
     }
-    
+
     @Override
     public void onUpdate()
     {
@@ -142,7 +142,7 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
         {
             this.currentDamage--;
         }
-        
+
         if (this.getWaitForPlayer())
         {
             if (this.riddenByEntity != null)
@@ -170,14 +170,14 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
                 this.motionX = this.motionY = this.motionZ = 0.0D;
             }
         }
-        
+
         if (!this.waitForPlayer && this.lastWaitForPlayer)
         {
             this.motionY = -3.5D;
         }
-        
+
         super.onUpdate();
-        
+
         if (!this.onGround && Math.abs(this.motionY) > 0.01 && FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
         {
             this.spawnParticles();
@@ -199,7 +199,7 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
                 }
             }
         }
-        
+
         if (!this.worldObj.isRemote)
         {
             final FluidStack liquid = this.fuelTank.getFluid();
@@ -224,14 +224,14 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
                 }
             }
         }
-        
+
         this.motionY -= 0.008D;
-        
+
         if (this.worldObj.isRemote && FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
         {
             this.sendPacketToServer();
         }
-        
+
         if (this.onGround)
         {
             this.motionX = this.motionY = this.motionZ = 0.0D;
@@ -243,10 +243,10 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
                 this.motionX = -50.0 * Math.cos(Math.toRadians(this.rotationYaw)) * Math.sin(Math.toRadians(this.rotationPitch * 0.01));
                 this.motionZ = -50.0 * Math.sin(Math.toRadians(this.rotationYaw)) * Math.sin(Math.toRadians(this.rotationPitch * 0.01));
             }
-            
+
             this.moveEntity(this.motionX, this.motionY, this.motionZ);
         }
-        
+
         if (!this.worldObj.isRemote)
         {
             if (this.onGround && !this.lastOnGround)
@@ -267,12 +267,12 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
                 }
             }
         }
-        
+
         if (this.onGround)
         {
             this.rotationPitch = 0.0F;
         }
-        
+
         this.lastWaitForPlayer = this.waitForPlayer;
         this.lastOnGround = this.onGround;
         this.lastMotionY = this.motionY;
@@ -290,12 +290,12 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
         final float angle3 = (float) ((this.rotationYaw + 180 - 40.0F) * Math.PI / 180.0F);
         final float angle4 = (float) ((this.rotationYaw + 180 + 40.0F) * Math.PI / 180.0F);
         final float pitch = (float) Math.sin(this.rotationPitch * Math.PI / 180.0F);
-        
+
         Vector3 vec1 = new Vector3(this).translate(new Vector3(0.4 * Math.cos(angle1) * Math.cos(pitch), 0.5, 0.4 * Math.sin(angle1) * Math.cos(pitch)));
         Vector3 vec2 = new Vector3(this).translate(new Vector3(0.4 * Math.cos(angle2) * Math.cos(pitch), 0.5, 0.4 * Math.sin(angle2) * Math.cos(pitch)));
         Vector3 vec3 = new Vector3(this).translate(new Vector3(0.4 * Math.cos(angle3) * Math.cos(pitch), 0.5, 0.4 * Math.sin(angle3) * Math.cos(pitch)));
         Vector3 vec4 = new Vector3(this).translate(new Vector3(0.4 * Math.cos(angle4) * Math.cos(pitch), 0.5, 0.4 * Math.sin(angle4) * Math.cos(pitch)));
-        
+
         this.spawnParticle(new GCCoreEntityLanderFlameFX(this.worldObj, vec1.x, vec1.y, vec1.z, x1, y1, z1));
         this.spawnParticle(new GCCoreEntityLanderFlameFX(this.worldObj, vec2.x, vec2.y, vec2.z, x1, y1, z1));
         this.spawnParticle(new GCCoreEntityLanderFlameFX(this.worldObj, vec3.x, vec3.y, vec3.z, x1, y1, z1));
@@ -315,7 +315,7 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
             }
         }
     }
-    
+
     private void sendPacketToServer()
     {
         if (this.riddenByEntity == FMLClientHandler.instance().getClient().thePlayer)
@@ -323,7 +323,7 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
             PacketDispatcher.sendPacketToServer(GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getNetworkedData(new ArrayList<Object>())));
         }
     }
-    
+
     public void pushEntityAway(Entity par1Entity)
     {
         if (this.riddenByEntity != par1Entity && this.ridingEntity != par1Entity)
@@ -334,7 +334,7 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
 
             if (d2 >= 0.009999999776482582D)
             {
-                d2 = (double)MathHelper.sqrt_double(d2);
+                d2 = MathHelper.sqrt_double(d2);
                 d0 /= d2;
                 d1 /= d2;
                 double d3 = 1.0D / d2;
@@ -348,8 +348,8 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
                 d1 *= d3;
                 d0 *= 0.05000000074505806D;
                 d1 *= 0.05000000074505806D;
-                d0 *= (double)(1.0F - par1Entity.entityCollisionReduction);
-                d1 *= (double)(1.0F - par1Entity.entityCollisionReduction);
+                d0 *= 1.0F - par1Entity.entityCollisionReduction;
+                d1 *= 1.0F - par1Entity.entityCollisionReduction;
                 par1Entity.addVelocity(-d0, 0.0D, -d1);
             }
         }
@@ -362,9 +362,9 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
         {
             return false;
         }
-        
+
         float turnFactor = 2.0F;
-        
+
         switch (key)
         {
         case 0:
@@ -439,7 +439,7 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
     @Override
     public int getScaledFuelLevel(int scale)
     {
-        return (int) (((double)this.fuelTank.getFluidAmount() / (double)this.tankCapacity) * scale);
+        return (int) ((double) this.fuelTank.getFluidAmount() / (double) this.tankCapacity * scale);
     }
 
     @Override
@@ -528,7 +528,7 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
             return true;
         }
     }
-    
+
     @Override
     public boolean interactFirst(EntityPlayer var1)
     {
@@ -536,7 +536,7 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
         {
             return false;
         }
-        
+
         if (this.riddenByEntity == null && var1 instanceof EntityPlayerMP)
         {
             GCCoreUtil.openParachestInv((EntityPlayerMP) var1, this);
@@ -560,7 +560,7 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
         if (this.worldObj.isRemote)
         {
             int cargoLength = dataStream.readInt();
-            
+
             if (this.containedItems == null || this.containedItems.length == 0)
             {
                 this.containedItems = new ItemStack[cargoLength];
@@ -570,7 +570,7 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
             this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, dataStream.readInt()));
 
             this.setWaitForPlayer(dataStream.readBoolean());
-            
+
             this.onGround = dataStream.readBoolean();
         }
         else
@@ -578,7 +578,7 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
             this.motionX = dataStream.readDouble() / 8000.0D;
             this.motionY = dataStream.readDouble() / 8000.0D;
             this.motionZ = dataStream.readDouble() / 8000.0D;
-            
+
             this.rotationPitch = dataStream.readFloat();
             this.rotationYaw = dataStream.readFloat();
         }
@@ -593,9 +593,9 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
             list.add(this.fuelTank.getFluidAmount());
 
             list.add(this.getWaitForPlayer());
-            
+
             list.add(this.onGround);
-            
+
             return list;
         }
         else
@@ -603,10 +603,10 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
             list.add(this.motionX * 8000.0D);
             list.add(this.motionY * 8000.0D);
             list.add(this.motionZ * 8000.0D);
-            
+
             list.add(this.rotationPitch);
             list.add(this.rotationYaw);
-            
+
             return list;
         }
     }
@@ -637,7 +637,7 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
             }
         }
     }
-    
+
     public List<ItemStack> getItemsDropped()
     {
         final List<ItemStack> items = new ArrayList<ItemStack>();

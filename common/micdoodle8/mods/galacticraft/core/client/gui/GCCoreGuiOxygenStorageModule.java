@@ -35,7 +35,7 @@ public class GCCoreGuiOxygenStorageModule extends GuiContainer
         this.fontRenderer.drawString(guiTitle, this.xSize / 2 - this.fontRenderer.getStringWidth(guiTitle) / 2, 6, 4210752);
         String displayJoules = this.tileEntity.storedOxygen + " of";
         String displayMaxJoules = "" + this.tileEntity.maxOxygen;
-        String maxOutputLabel = "Max Output: " + (GCCoreTileEntityOxygenStorageModule.OUTPUT_PER_TICK * 20) + "/s";
+        String maxOutputLabel = "Max Output: " + GCCoreTileEntityOxygenStorageModule.OUTPUT_PER_TICK * 20 + "/s";
 
         this.fontRenderer.drawString(displayJoules, 122 - this.fontRenderer.getStringWidth(displayJoules) / 2 - 35, 30, 4210752);
         this.fontRenderer.drawString(displayMaxJoules, 122 - this.fontRenderer.getStringWidth(displayMaxJoules) / 2 - 35, 40, 4210752);
@@ -58,7 +58,7 @@ public class GCCoreGuiOxygenStorageModule extends GuiContainer
         // Background energy bar
         this.drawTexturedModalRect(containerWidth, containerHeight, 0, 0, this.xSize, this.ySize);
         // Foreground energy bar
-        int scale = (int) (((double)this.tileEntity.storedOxygen / (double)this.tileEntity.maxOxygen) * 72);
+        int scale = (int) ((double) this.tileEntity.storedOxygen / (double) this.tileEntity.maxOxygen * 72);
         this.drawTexturedModalRect(containerWidth + 52, containerHeight + 52, 176, 0, scale, 3);
     }
 }

@@ -100,7 +100,7 @@ public class GCCoreBlockLandingPadFull extends GCCoreBlockAdvanced implements IP
     @Override
     public int getRenderType()
     {
-        return GalacticraftCore.proxy.getGCFullLandingPadRenderID();
+        return GalacticraftCore.proxy.getBlockRenderID(this.blockID);
     }
 
     @Override

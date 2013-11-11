@@ -21,14 +21,12 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityMeteor;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityParaChest;
 import micdoodle8.mods.galacticraft.core.event.GCCoreEventWakePlayer;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryExtended;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumPacketClient;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketSchematicList;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
-import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
@@ -97,7 +95,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
     private boolean hasOpenedPlanetSelectionGui = false;
 
     private int chestSpawnCooldown;
-    private micdoodle8.mods.galacticraft.api.vector.Vector.Vector3 chestSpawnVector;
+    private micdoodle8.mods.galacticraft.api.vector.Vector3 chestSpawnVector;
 
     private int teleportCooldown;
 
@@ -168,7 +166,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
         {
             return;
         }
-        
+
         super.fall(par1);
     }
 
@@ -247,7 +245,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
         if (this.onGround && this.getParachute())
         {
-            this.sendParachuteRemovalPacket();
+            this.sendGearUpdatePacket(EnumModelPacket.REMOVE_PARACHUTE.getIndex());
             this.setUsingParachute(false);
         }
 
@@ -320,7 +318,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
     {
         if (this.worldObj != null && this.worldObj.provider instanceof GCMoonWorldProvider && !this.isAirBorne && this.ridingEntity == null)
         {
-            if (this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1), MathHelper.floor_double(this.posZ)) == GCMoonBlocks.blockMoon.blockID)
+            if (this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1), MathHelper.floor_double(this.posZ)) == GCCoreBlocks.blockMoon.blockID)
             {
                 if (this.worldObj.getBlockMetadata(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1), MathHelper.floor_double(this.posZ)) == 5)
                 {
@@ -593,18 +591,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
         if (this.tankInSlot1 == null && this.lastTankInSlot1 != null)
         {
-            if (this.lastTankInSlot1.getItem().itemID == GCCoreItems.oxTankLight.itemID)
-            {
-                this.sendGearUpdatePacket(EnumModelPacket.REMOVELEFTGREENTANK.getIndex());
-            }
-            else if (this.lastTankInSlot1.getItem().itemID == GCCoreItems.oxTankMedium.itemID)
-            {
-                this.sendGearUpdatePacket(EnumModelPacket.REMOVELEFTORANGETANK.getIndex());
-            }
-            else if (this.lastTankInSlot1.getItem().itemID == GCCoreItems.oxTankHeavy.itemID)
-            {
-                this.sendGearUpdatePacket(EnumModelPacket.REMOVELEFTREDTANK.getIndex());
-            }
+            this.sendGearUpdatePacket(EnumModelPacket.REMOVE_LEFT_TANK.getIndex());
         }
 
         if (this.tankInSlot1 != null && this.lastTankInSlot1 != null)
@@ -613,41 +600,14 @@ public class GCCorePlayerMP extends EntityPlayerMP
             {
                 if (this.tankInSlot1.getItem().itemID == GCCoreItems.oxTankLight.itemID)
                 {
-                    if (this.lastTankInSlot1.getItem().itemID == GCCoreItems.oxTankMedium.itemID)
-                    {
-                        this.sendGearUpdatePacket(EnumModelPacket.REMOVELEFTORANGETANK.getIndex());
-                    }
-                    else if (this.lastTankInSlot1.getItem().itemID == GCCoreItems.oxTankHeavy.itemID)
-                    {
-                        this.sendGearUpdatePacket(EnumModelPacket.REMOVELEFTREDTANK.getIndex());
-                    }
-
                     this.sendGearUpdatePacket(EnumModelPacket.ADDLEFTGREENTANK.getIndex());
                 }
                 else if (this.tankInSlot1.getItem().itemID == GCCoreItems.oxTankMedium.itemID)
                 {
-                    if (this.lastTankInSlot1.getItem().itemID == GCCoreItems.oxTankLight.itemID)
-                    {
-                        this.sendGearUpdatePacket(EnumModelPacket.REMOVELEFTGREENTANK.getIndex());
-                    }
-                    else if (this.lastTankInSlot1.getItem().itemID == GCCoreItems.oxTankHeavy.itemID)
-                    {
-                        this.sendGearUpdatePacket(EnumModelPacket.REMOVELEFTREDTANK.getIndex());
-                    }
-
                     this.sendGearUpdatePacket(EnumModelPacket.ADDLEFTORANGETANK.getIndex());
                 }
                 else if (this.tankInSlot1.getItem().itemID == GCCoreItems.oxTankHeavy.itemID)
                 {
-                    if (this.lastTankInSlot1.getItem().itemID == GCCoreItems.oxTankLight.itemID)
-                    {
-                        this.sendGearUpdatePacket(EnumModelPacket.REMOVELEFTGREENTANK.getIndex());
-                    }
-                    else if (this.lastTankInSlot1.getItem().itemID == GCCoreItems.oxTankMedium.itemID)
-                    {
-                        this.sendGearUpdatePacket(EnumModelPacket.REMOVELEFTORANGETANK.getIndex());
-                    }
-
                     this.sendGearUpdatePacket(EnumModelPacket.ADDLEFTREDTANK.getIndex());
                 }
             }
@@ -673,18 +633,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
         if (this.tankInSlot2 == null && this.lastTankInSlot2 != null)
         {
-            if (this.lastTankInSlot2.getItem().itemID == GCCoreItems.oxTankLight.itemID)
-            {
-                this.sendGearUpdatePacket(EnumModelPacket.REMOVERIGHTGREENTANK.getIndex());
-            }
-            else if (this.lastTankInSlot2.getItem().itemID == GCCoreItems.oxTankMedium.itemID)
-            {
-                this.sendGearUpdatePacket(EnumModelPacket.REMOVERIGHTORANGETANK.getIndex());
-            }
-            else if (this.lastTankInSlot2.getItem().itemID == GCCoreItems.oxTankHeavy.itemID)
-            {
-                this.sendGearUpdatePacket(EnumModelPacket.REMOVERIGHTREDTANK.getIndex());
-            }
+            this.sendGearUpdatePacket(EnumModelPacket.REMOVE_RIGHT_TANK.getIndex());
         }
 
         if (this.tankInSlot2 != null && this.lastTankInSlot2 != null)
@@ -693,41 +642,14 @@ public class GCCorePlayerMP extends EntityPlayerMP
             {
                 if (this.tankInSlot2.getItem().itemID == GCCoreItems.oxTankLight.itemID)
                 {
-                    if (this.lastTankInSlot2.getItem().itemID == GCCoreItems.oxTankMedium.itemID)
-                    {
-                        this.sendGearUpdatePacket(EnumModelPacket.REMOVERIGHTORANGETANK.getIndex());
-                    }
-                    else if (this.lastTankInSlot2.getItem().itemID == GCCoreItems.oxTankHeavy.itemID)
-                    {
-                        this.sendGearUpdatePacket(EnumModelPacket.REMOVERIGHTREDTANK.getIndex());
-                    }
-
                     this.sendGearUpdatePacket(EnumModelPacket.ADDRIGHTGREENTANK.getIndex());
                 }
                 else if (this.tankInSlot2.getItem().itemID == GCCoreItems.oxTankMedium.itemID)
                 {
-                    if (this.lastTankInSlot2.getItem().itemID == GCCoreItems.oxTankLight.itemID)
-                    {
-                        this.sendGearUpdatePacket(EnumModelPacket.REMOVERIGHTGREENTANK.getIndex());
-                    }
-                    else if (this.lastTankInSlot2.getItem().itemID == GCCoreItems.oxTankHeavy.itemID)
-                    {
-                        this.sendGearUpdatePacket(EnumModelPacket.REMOVERIGHTREDTANK.getIndex());
-                    }
-
                     this.sendGearUpdatePacket(EnumModelPacket.ADDRIGHTORANGETANK.getIndex());
                 }
                 else if (this.tankInSlot2.getItem().itemID == GCCoreItems.oxTankHeavy.itemID)
                 {
-                    if (this.lastTankInSlot2.getItem().itemID == GCCoreItems.oxTankLight.itemID)
-                    {
-                        this.sendGearUpdatePacket(EnumModelPacket.REMOVERIGHTGREENTANK.getIndex());
-                    }
-                    else if (this.lastTankInSlot2.getItem().itemID == GCCoreItems.oxTankMedium.itemID)
-                    {
-                        this.sendGearUpdatePacket(EnumModelPacket.REMOVERIGHTORANGETANK.getIndex());
-                    }
-
                     this.sendGearUpdatePacket(EnumModelPacket.ADDRIGHTREDTANK.getIndex());
                 }
             }
@@ -735,24 +657,19 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
         if (this.getParachute() && this.parachuteInSlot == null && this.lastParachuteInSlot != null)
         {
-            this.sendParachuteRemovalPacket();
+            this.sendGearUpdatePacket(EnumModelPacket.REMOVE_PARACHUTE.getIndex());
         }
 
         if (this.getParachute() && this.parachuteInSlot != null && this.lastParachuteInSlot == null)
         {
-            this.sendParachuteAddPacket();
-        }
-
-        if (this.parachuteInSlot != null && this.lastParachuteInSlot == null)
-        {
-            this.sendPlayerParachuteTexturePacket();
+            this.sendGearUpdatePacket(EnumModelPacket.ADD_PARACHUTE.getIndex());
         }
 
         if (this.parachuteInSlot != null && this.lastParachuteInSlot != null)
         {
             if (this.parachuteInSlot.getItemDamage() != this.lastParachuteInSlot.getItemDamage())
             {
-                this.sendPlayerParachuteTexturePacket();
+                this.sendGearUpdatePacket(EnumModelPacket.ADD_PARACHUTE.getIndex());
             }
         }
 
@@ -1128,51 +1045,16 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
     private void sendGearUpdatePacket(int gearType)
     {
-        final Object[] toSend = { this.username, gearType };
+        this.sendGearUpdatePacket(gearType, -1);
+    }
+
+    private void sendGearUpdatePacket(int gearType, int subtype)
+    {
+        final Object[] toSend = { this.username, gearType, subtype };
 
         if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.username) != null)
         {
             PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 50, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.UPDATE_GEAR_SLOT, toSend));
-        }
-    }
-
-    private void sendParachuteRemovalPacket()
-    {
-        final Object[] toSend = { this.username };
-
-        if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.username) != null)
-        {
-            PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 50, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.GEAR_PARACHUTE_REMOVE, toSend));
-        }
-    }
-
-    private void sendParachuteAddPacket()
-    {
-        final Object[] toSend = { this.username };
-
-        if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.username) != null)
-        {
-            PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 50, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.GEAR_PARACHUTE_ADD, toSend));
-        }
-    }
-
-    private void sendPlayerParachuteTexturePacket()
-    {
-        final ItemStack stack = this.getExtendedInventory().getStackInSlot(4);
-        String s;
-        String s2 = null;
-        if (stack != null && stack.getItem() instanceof GCCoreItemParachute)
-        {
-            s = stack.getItem().getUnlocalizedName(stack);
-
-            s2 = s.replace("item.parachute_", "");
-        }
-
-        final Object[] toSend = { this.username, stack == null ? "none" : String.valueOf(s2) };
-
-        if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.username) != null)
-        {
-            PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 50, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.GEAR_PARACHUTETEX_ADD, toSend));
         }
     }
 
@@ -1204,11 +1086,18 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
         if (tf)
         {
-            this.sendParachuteAddPacket();
+            int subtype = -1;
+
+            if (this.parachuteInSlot != null)
+            {
+                subtype = this.parachuteInSlot.getItemDamage();
+            }
+
+            this.sendGearUpdatePacket(EnumModelPacket.ADD_PARACHUTE.getIndex(), subtype);
         }
         else
         {
-            this.sendParachuteRemovalPacket();
+            this.sendGearUpdatePacket(EnumModelPacket.REMOVE_PARACHUTE.getIndex());
         }
     }
 
@@ -1312,12 +1201,12 @@ public class GCCorePlayerMP extends EntityPlayerMP
         this.chestSpawnCooldown = chestSpawnCooldown;
     }
 
-    public micdoodle8.mods.galacticraft.api.vector.Vector.Vector3 getChestSpawnVector()
+    public micdoodle8.mods.galacticraft.api.vector.Vector3 getChestSpawnVector()
     {
         return this.chestSpawnVector;
     }
 
-    public void setChestSpawnVector(micdoodle8.mods.galacticraft.api.vector.Vector.Vector3 chestSpawnVector)
+    public void setChestSpawnVector(micdoodle8.mods.galacticraft.api.vector.Vector3 chestSpawnVector)
     {
         this.chestSpawnVector = chestSpawnVector;
     }
@@ -1382,26 +1271,24 @@ public class GCCorePlayerMP extends EntityPlayerMP
         this.cryogenicChamberCooldown = cryogenicChamberCooldown;
     }
 
-    private static enum EnumModelPacket
+    public static enum EnumModelPacket
     {
         ADDMASK(0),
         REMOVEMASK(1),
         ADDGEAR(2),
         REMOVEGEAR(3),
         ADDLEFTREDTANK(4),
-        REMOVELEFTREDTANK(5),
-        ADDLEFTORANGETANK(6),
-        REMOVELEFTORANGETANK(7),
-        ADDLEFTGREENTANK(8),
-        REMOVELEFTGREENTANK(9),
-        ADDRIGHTREDTANK(10),
-        REMOVERIGHTREDTANK(11),
-        ADDRIGHTORANGETANK(12),
-        REMOVERIGHTORANGETANK(13),
-        ADDRIGHTGREENTANK(14),
-        REMOVERIGHTGREENTANK(15),
-        ADD_FREQUENCY_MODULE(16),
-        REMOVE_FREQUENCY_MODULE(17);
+        ADDLEFTORANGETANK(5),
+        ADDLEFTGREENTANK(6),
+        REMOVE_LEFT_TANK(7),
+        ADDRIGHTREDTANK(8),
+        ADDRIGHTORANGETANK(9),
+        ADDRIGHTGREENTANK(10),
+        REMOVE_RIGHT_TANK(11),
+        ADD_PARACHUTE(12),
+        REMOVE_PARACHUTE(13),
+        ADD_FREQUENCY_MODULE(14),
+        REMOVE_FREQUENCY_MODULE(15);
 
         private int index;
 

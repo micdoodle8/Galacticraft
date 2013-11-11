@@ -2,8 +2,8 @@ package micdoodle8.mods.galacticraft.moon.world.gen;
 
 import java.util.Random;
 import micdoodle8.mods.galacticraft.api.event.wgen.GCCoreEventPopulate;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.world.gen.GCCoreWorldGenMinableMeta;
-import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.feature.WorldGenerator;
@@ -30,10 +30,10 @@ public class GCMoonBiomeDecorator
 
     public GCMoonBiomeDecorator(BiomeGenBase par1BiomeGenBase)
     {
-        this.copperGen = new GCCoreWorldGenMinableMeta(GCMoonBlocks.blockMoon.blockID, 4, 0, true, GCMoonBlocks.blockMoon.blockID, 4);
-        this.tinGen = new GCCoreWorldGenMinableMeta(GCMoonBlocks.blockMoon.blockID, 4, 1, true, GCMoonBlocks.blockMoon.blockID, 4);
-        this.cheeseGen = new GCCoreWorldGenMinableMeta(GCMoonBlocks.blockMoon.blockID, 3, 2, true, GCMoonBlocks.blockMoon.blockID, 4);
-        this.dirtGen = new GCCoreWorldGenMinableMeta(GCMoonBlocks.blockMoon.blockID, 32, 3, true, GCMoonBlocks.blockMoon.blockID, 4);
+        this.copperGen = new GCCoreWorldGenMinableMeta(GCCoreBlocks.blockMoon.blockID, 4, 0, true, GCCoreBlocks.blockMoon.blockID, 4);
+        this.tinGen = new GCCoreWorldGenMinableMeta(GCCoreBlocks.blockMoon.blockID, 4, 1, true, GCCoreBlocks.blockMoon.blockID, 4);
+        this.cheeseGen = new GCCoreWorldGenMinableMeta(GCCoreBlocks.blockMoon.blockID, 3, 2, true, GCCoreBlocks.blockMoon.blockID, 4);
+        this.dirtGen = new GCCoreWorldGenMinableMeta(GCCoreBlocks.blockMoon.blockID, 32, 3, true, GCCoreBlocks.blockMoon.blockID, 4);
     }
 
     public void decorate(World worldObj, Random rand, int chunkX, int chunkZ)

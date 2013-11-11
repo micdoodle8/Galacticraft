@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.List;
-import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntitySolar;
 import net.minecraft.block.Block;
@@ -235,7 +234,7 @@ public class GCCoreBlockSolar extends BlockTile
     @Override
     public boolean onMachineActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ)
     {
-        entityPlayer.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiSolarPanel, world, x, y, z);
+        entityPlayer.openGui(GalacticraftCore.instance, -1, world, x, y, z);
         return true;
     }
 

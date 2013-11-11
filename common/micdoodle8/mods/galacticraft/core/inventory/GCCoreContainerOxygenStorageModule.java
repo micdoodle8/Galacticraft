@@ -15,7 +15,7 @@ public class GCCoreContainerOxygenStorageModule extends Container
     public GCCoreContainerOxygenStorageModule(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityOxygenStorageModule storageModule)
     {
         this.tileEntity = storageModule;
-        
+
         int var3;
 
         for (var3 = 0; var3 < 3; ++var3)

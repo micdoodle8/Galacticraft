@@ -26,7 +26,7 @@ public class GCCoreTileEntityOxygenStorageModule extends GCCoreTileEntityOxygen 
     public final Set<EntityPlayer> playersUsing = new HashSet<EntityPlayer>();
     public int scaledOxygenLevel;
     public int lastScaledOxygenLevel;
-    
+
     public static final int OUTPUT_PER_TICK = 100;
 
     public GCCoreTileEntityOxygenStorageModule()
@@ -48,8 +48,8 @@ public class GCCoreTileEntityOxygenStorageModule extends GCCoreTileEntityOxygen 
 
         if (!this.worldObj.isRemote)
         {
-            int gasToSend = (int) Math.min(this.storedOxygen, OUTPUT_PER_TICK);
-            
+            int gasToSend = Math.min(this.storedOxygen, GCCoreTileEntityOxygenStorageModule.OUTPUT_PER_TICK);
+
             this.storedOxygen -= gasToSend - GasTransmission.emitGasToNetwork(EnumGas.OXYGEN, gasToSend, this, this.getOxygenInputDirection().getOpposite());
 
             final TileEntity tileEntity = VectorHelper.getTileEntityFromSide(this.worldObj, new Vector3(this), this.getOxygenInputDirection().getOpposite());
@@ -60,9 +60,9 @@ public class GCCoreTileEntityOxygenStorageModule extends GCCoreTileEntityOxygen 
                 {
                     double sendingGas = 0;
 
-                    if (this.storedOxygen >= OUTPUT_PER_TICK)
+                    if (this.storedOxygen >= GCCoreTileEntityOxygenStorageModule.OUTPUT_PER_TICK)
                     {
-                        sendingGas = OUTPUT_PER_TICK;
+                        sendingGas = GCCoreTileEntityOxygenStorageModule.OUTPUT_PER_TICK;
                     }
                     else
                     {
@@ -76,13 +76,13 @@ public class GCCoreTileEntityOxygenStorageModule extends GCCoreTileEntityOxygen 
 
         this.lastScaledOxygenLevel = this.scaledOxygenLevel;
     }
-    
+
     @Override
     public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readFromNBT(par1NBTTagCompound);
     }
-    
+
     @Override
     public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {

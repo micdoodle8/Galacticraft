@@ -1,10 +1,12 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.relauncher.Side;
@@ -23,16 +25,13 @@ public class GCCoreRenderBuggy extends Render
     private static final ResourceLocation buggyTextureWheel = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/buggyWheels.png");
     private static final ResourceLocation buggyTextureStorage = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/buggyStorage.png");
 
-    protected IModelCustom buggyModel;
-    protected IModelCustom wheelModelRight;
-    protected IModelCustom wheelModelLeft;
+    private final IModelCustom modelBuggy = AdvancedModelLoader.loadModel(ClientProxyCore.MODEL_DIRECTORY + "buggy.obj");
+    private final IModelCustom modelBuggyWheelRight = AdvancedModelLoader.loadModel(ClientProxyCore.MODEL_DIRECTORY + "buggyWheelRight.obj");
+    private final IModelCustom modelBuggyWheelLeft = AdvancedModelLoader.loadModel(ClientProxyCore.MODEL_DIRECTORY + "buggyWheelLeft.obj");
 
-    public GCCoreRenderBuggy(IModelCustom model, IModelCustom wheelModelRight, IModelCustom wheelModelLeft)
+    public GCCoreRenderBuggy()
     {
-        this.shadowSize = 2F;
-        this.buggyModel = model;
-        this.wheelModelRight = wheelModelRight;
-        this.wheelModelLeft = wheelModelLeft;
+        this.shadowSize = 2.0F;
     }
 
     protected ResourceLocation func_110779_a(GCCoreEntityBuggy par1EntityArrow)
@@ -64,9 +63,9 @@ public class GCCoreRenderBuggy extends Render
         GL11.glTranslatef(0.0F, 1.0F, -2.6F);
         GL11.glRotatef(entity.wheelRotationZ, 0, 1, 0);
         GL11.glTranslatef(1.4F, 0.0F, 0.0F);
-        this.wheelModelRight.renderPart("WheelRightCover_Cover");
+        this.modelBuggyWheelRight.renderPart("WheelRightCover_Cover");
         GL11.glTranslatef(-2.8F, 0.0F, 0.0F);
-        this.wheelModelLeft.renderPart("WheelLeftCover_Cover");
+        this.modelBuggyWheelLeft.renderPart("WheelLeftCover_Cover");
         GL11.glPopMatrix();
 
         // Back wheel covers
@@ -74,9 +73,9 @@ public class GCCoreRenderBuggy extends Render
         GL11.glTranslatef(0.0F, 1.0F, 3.7F);
         GL11.glRotatef(-entity.wheelRotationZ, 0, 1, 0);
         GL11.glTranslatef(2.0F, 0.0F, 0.0F);
-        this.wheelModelRight.renderPart("WheelRightCover_Cover");
+        this.modelBuggyWheelRight.renderPart("WheelRightCover_Cover");
         GL11.glTranslatef(-4.0F, 0.0F, 0.0F);
-        this.wheelModelLeft.renderPart("WheelLeftCover_Cover");
+        this.modelBuggyWheelLeft.renderPart("WheelLeftCover_Cover");
         GL11.glPopMatrix();
 
         // Front wheels
@@ -85,9 +84,9 @@ public class GCCoreRenderBuggy extends Render
         GL11.glRotatef(entity.wheelRotationZ, 0, 1, 0);
         GL11.glRotatef(rotation, 1, 0, 0);
         GL11.glTranslatef(1.4F, 0.0F, 0.0F);
-        this.wheelModelRight.renderPart("WheelRight_Wheel");
+        this.modelBuggyWheelRight.renderPart("WheelRight_Wheel");
         GL11.glTranslatef(-2.8F, 0.0F, 0.0F);
-        this.wheelModelLeft.renderPart("WheelLeft_Wheel");
+        this.modelBuggyWheelLeft.renderPart("WheelLeft_Wheel");
         GL11.glPopMatrix();
 
         // Back wheels
@@ -96,13 +95,13 @@ public class GCCoreRenderBuggy extends Render
         GL11.glRotatef(-entity.wheelRotationZ, 0, 1, 0);
         GL11.glRotatef(rotation, 1, 0, 0);
         GL11.glTranslatef(2.0F, 0.0F, 0.0F);
-        this.wheelModelRight.renderPart("WheelRight_Wheel");
+        this.modelBuggyWheelRight.renderPart("WheelRight_Wheel");
         GL11.glTranslatef(-4.0F, 0.0F, 0.0F);
-        this.wheelModelLeft.renderPart("WheelLeft_Wheel");
+        this.modelBuggyWheelLeft.renderPart("WheelLeft_Wheel");
         GL11.glPopMatrix();
 
         this.bindTexture(GCCoreRenderBuggy.buggyTextureBody);
-        this.buggyModel.renderPart("MainBody");
+        this.modelBuggy.renderPart("MainBody");
 
         // Radar Dish
         GL11.glPushMatrix();
@@ -110,22 +109,22 @@ public class GCCoreRenderBuggy extends Render
         GL11.glRotatef(entity.radarDishRotation.floatX(), 1, 0, 0);
         GL11.glRotatef(entity.radarDishRotation.floatY(), 0, 1, 0);
         GL11.glRotatef(entity.radarDishRotation.floatZ(), 0, 0, 1);
-        this.buggyModel.renderPart("RadarDish_Dish");
+        this.modelBuggy.renderPart("RadarDish_Dish");
         GL11.glPopMatrix();
 
         this.bindTexture(GCCoreRenderBuggy.buggyTextureStorage);
 
         if (entity.buggyType > 0)
         {
-            this.buggyModel.renderPart("CargoLeft");
+            this.modelBuggy.renderPart("CargoLeft");
 
             if (entity.buggyType > 1)
             {
-                this.buggyModel.renderPart("CargoMid");
+                this.modelBuggy.renderPart("CargoMid");
 
                 if (entity.buggyType > 2)
                 {
-                    this.buggyModel.renderPart("CargoRight");
+                    this.modelBuggy.renderPart("CargoRight");
                 }
             }
         }

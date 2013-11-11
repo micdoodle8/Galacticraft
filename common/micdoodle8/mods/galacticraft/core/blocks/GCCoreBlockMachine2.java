@@ -76,7 +76,7 @@ public class GCCoreBlockMachine2 extends BlockTile
     @Override
     public int getRenderType()
     {
-        return GalacticraftCore.proxy.getGCMachineRenderID();
+        return GalacticraftCore.proxy.getBlockRenderID(this.blockID);
     }
 
     @Override
@@ -124,7 +124,7 @@ public class GCCoreBlockMachine2 extends BlockTile
     public Icon getBlockTexture(IBlockAccess world, int x, int y, int z, int side)
     {
         int metadata = world.getBlockMetadata(x, y, z);
-        
+
         if (metadata >= GCCoreBlockMachine2.OXYGEN_STORAGE_MODULE_METADATA)
         {
             metadata -= GCCoreBlockMachine2.OXYGEN_STORAGE_MODULE_METADATA;
@@ -148,7 +148,7 @@ public class GCCoreBlockMachine2 extends BlockTile
 
             return this.iconOxygenStorageModule[((GCCoreTileEntityOxygenStorageModule) tile).scaledOxygenLevel];
         }
-        
+
         return super.getBlockTexture(world, x, y, z, side);
     }
 

@@ -56,7 +56,7 @@ public class GCCorePacketControllableEntity implements IGalacticraftAdvancedPack
             final EntityPlayer player = (EntityPlayer) extraData[0];
 
             int key = stream.readInt();
-            
+
             if (player.ridingEntity != null && player.ridingEntity instanceof IControllableEntity)
             {
                 ((IControllableEntity) player.ridingEntity).pressKey(key);

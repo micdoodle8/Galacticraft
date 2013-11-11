@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.moon.world.gen;
 
 import java.util.Random;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.world.gen.GCCoreMapGenBaseMeta;
-import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
@@ -173,7 +173,7 @@ public class GCMoonGenCaves extends GCCoreMapGenBaseMeta
 
                                         if (yfactor > -0.7D && xfactorSq + yfactorSq + zfactorSq < 1.0D)
                                         {
-                                            if (blockIdArray[coords] == GCMoonBlocks.blockMoon.blockID)
+                                            if (blockIdArray[coords] == GCCoreBlocks.blockMoon.blockID)
                                             {
                                                 if (metaArray[coords] == 3 || metaArray[coords] == 4)
                                                 {

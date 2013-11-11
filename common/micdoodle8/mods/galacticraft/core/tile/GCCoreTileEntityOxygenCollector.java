@@ -31,9 +31,9 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityOxygen impl
     public boolean active;
 
     public static final float WATTS_PER_TICK = 0.2F;
-    
+
     public static final int OUTPUT_PER_TICK = 100;
-    
+
     public float lastOxygenCollected;
 
     private ItemStack[] containingItems = new ItemStack[1];
@@ -43,9 +43,10 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityOxygen impl
         super(GCCoreTileEntityOxygenCollector.WATTS_PER_TICK, 50, 1200, 0);
     }
 
+    @Override
     public int getCappedScaledOxygenLevel(int scale)
     {
-        return (int) Math.max(Math.min(Math.floor(((double)this.storedOxygen / (double)maxOxygen) * scale), scale), 0);
+        return (int) Math.max(Math.min(Math.floor((double) this.storedOxygen / (double) this.maxOxygen * scale), scale), 0);
     }
 
     @Override
@@ -57,8 +58,8 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityOxygen impl
         {
             if (this.getEnergyStored() > 0)
             {
-                int gasToSend = (int) Math.min(this.storedOxygen, OUTPUT_PER_TICK);
-                
+                int gasToSend = Math.min(this.storedOxygen, GCCoreTileEntityOxygenCollector.OUTPUT_PER_TICK);
+
                 this.storedOxygen -= gasToSend - GasTransmission.emitGasToNetwork(EnumGas.OXYGEN, gasToSend, this, this.getOxygenOutputDirection());
 
                 final TileEntity tileEntity = VectorHelper.getTileEntityFromSide(this.worldObj, new Vector3(this), this.getOxygenOutputDirection());
@@ -69,9 +70,9 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityOxygen impl
                     {
                         double sendingGas = 0;
 
-                        if (this.storedOxygen >= OUTPUT_PER_TICK)
+                        if (this.storedOxygen >= GCCoreTileEntityOxygenCollector.OUTPUT_PER_TICK)
                         {
-                            sendingGas = OUTPUT_PER_TICK;
+                            sendingGas = GCCoreTileEntityOxygenCollector.OUTPUT_PER_TICK;
                         }
                         else
                         {
@@ -112,11 +113,11 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityOxygen impl
                 {
                     power = 9.3;
                 }
-                
+
                 power = Math.floor(power);
-                
+
                 this.lastOxygenCollected = (float) power;
-                
+
                 this.storedOxygen += power;
             }
             else
@@ -345,7 +346,7 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityOxygen impl
     {
         return this.getStackInSlot(0);
     }
-    
+
     public ForgeDirection getOxygenOutputDirection()
     {
         return this.getElectricInputDirection().getOpposite();

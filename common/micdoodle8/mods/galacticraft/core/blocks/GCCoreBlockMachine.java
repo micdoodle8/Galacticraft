@@ -59,7 +59,7 @@ public class GCCoreBlockMachine extends BlockTile
     @Override
     public int getRenderType()
     {
-        return GalacticraftCore.proxy.getGCMachineRenderID();
+        return GalacticraftCore.proxy.getBlockRenderID(this.blockID);
     }
 
     @Override

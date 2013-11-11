@@ -24,7 +24,7 @@ public class GCCoreBlockFluid extends BlockFluidClassic
         super(id, fluid, Material.water);
         this.setRenderPass(1);
         this.fluidName = assetName;
-        
+
         if (assetName.equals("oil"))
         {
             this.needsRandomTick = true;
@@ -88,11 +88,11 @@ public class GCCoreBlockFluid extends BlockFluidClassic
 
     public Icon getStillIcon()
     {
-        return stillIcon;
+        return this.stillIcon;
     }
 
     public Icon getFlowingIcon()
     {
-        return flowingIcon;
+        return this.flowingIcon;
     }
 }

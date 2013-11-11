@@ -16,6 +16,7 @@ import micdoodle8.mods.galacticraft.api.world.IMoon;
 import micdoodle8.mods.galacticraft.api.world.IPlanet;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockFluid;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiHandler;
 import micdoodle8.mods.galacticraft.core.command.GCCoreCommandPlanetTeleport;
 import micdoodle8.mods.galacticraft.core.command.GCCoreCommandSpaceStationAddOwner;
 import micdoodle8.mods.galacticraft.core.command.GCCoreCommandSpaceStationRemoveOwner;
@@ -91,7 +92,6 @@ import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
 import micdoodle8.mods.galacticraft.core.world.gen.GCCoreOverworldGenerator;
 import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
-import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -319,8 +319,6 @@ public class GalacticraftCore
     @EventHandler
     public void postInit(FMLPostInitializationEvent event)
     {
-        GalacticraftMoon.postLoad(event);
-
         for (ICelestialBody celestialBody : GalacticraftRegistry.getCelestialBodies())
         {
             if (celestialBody.autoRegister())
@@ -332,7 +330,7 @@ public class GalacticraftCore
         GCCoreCompatibilityManager.checkForCompatibleMods();
         this.registerTileEntities();
         GCCoreRecipeManager.loadRecipes();
-        NetworkRegistry.instance().registerGuiHandler(this, GalacticraftCore.proxy);
+        NetworkRegistry.instance().registerGuiHandler(this, new GCCoreGuiHandler());
         GalacticraftCore.proxy.postInit(event);
         GalacticraftCore.proxy.registerRenderInformation();
 
@@ -380,7 +378,7 @@ public class GalacticraftCore
         CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, 10), new ItemStack(GCCoreItems.basicItem, 1, 6), new ItemStack(GCCoreItems.basicItem, 1, 7));
 
         CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, 11), Item.ingotIron, Item.ingotIron);
-        CompressorRecipes.addShapelessRecipe(new ItemStack(GCMoonItems.meteoricIronIngot, 1, 1), new ItemStack(GCMoonItems.meteoricIronIngot, 1, 0));
+        CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.meteoricIronIngot, 1, 1), new ItemStack(GCCoreItems.meteoricIronIngot, 1, 0));
 
         CompressorRecipes.addRecipe(new ItemStack(GCCoreItems.heavyPlatingTier1, 1, 0), "XYZ", "XYZ", 'X', new ItemStack(GCCoreItems.basicItem, 1, 9), 'Y', new ItemStack(GCCoreItems.basicItem, 1, 8), 'Z', new ItemStack(GCCoreItems.basicItem, 1, 10));
 
@@ -394,8 +392,6 @@ public class GalacticraftCore
     @EventHandler
     public void serverInit(FMLServerStartedEvent event)
     {
-        GalacticraftMoon.serverInit(event);
-
         if (GalacticraftCore.missingRequirementThread == null)
         {
             GalacticraftCore.missingRequirementThread = new GCCoreThreadRequirementMissing(FMLCommonHandler.instance().getEffectiveSide());
@@ -410,10 +406,10 @@ public class GalacticraftCore
     @EventHandler
     public void serverStarting(FMLServerStartingEvent event)
     {
-        GalacticraftMoon.serverStarting(event);
         event.registerServerCommand(new GCCoreCommandSpaceStationAddOwner());
         event.registerServerCommand(new GCCoreCommandSpaceStationRemoveOwner());
         event.registerServerCommand(new GCCoreCommandPlanetTeleport());
+
         WorldUtil.registerSpaceStations(event.getServer().worldServerForDimension(0).getSaveHandler().getMapFileFromName("dummy").getParentFile());
 
         for (ICelestialBody celestialBody : GalacticraftRegistry.getCelestialBodies())
@@ -491,10 +487,6 @@ public class GalacticraftCore
         GCCoreUtil.registerGalacticraftNonMobEntity(GCCoreEntityLander.class, "Lander", GCCoreConfigManager.idEntityLander, 150, 5, false);
         GCCoreUtil.registerGalacticraftNonMobEntity(GCCoreEntityMeteorChunk.class, "MeteorChunk", GCCoreConfigManager.idEntityMeteorChunk, 150, 5, true);
     }
-
-    // public static class MinecraftLoadedEvent extends Event
-    // {
-    // }
 
     public static class SleepCancelledEvent extends Event
     {

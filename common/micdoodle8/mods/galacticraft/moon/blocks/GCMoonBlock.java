@@ -7,9 +7,9 @@ import micdoodle8.mods.galacticraft.api.block.IPlantableBlock;
 import micdoodle8.mods.galacticraft.api.block.ITerraformableBlock;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockAdvanced;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityDungeonSpawner;
 import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
-import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
 import net.minecraft.block.BlockFlower;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -210,7 +210,7 @@ public class GCMoonBlock extends GCCoreBlockAdvanced implements IDetectableResou
         switch (meta)
         {
         case 2:
-            return GCMoonItems.cheeseCurd.itemID;
+            return GCCoreItems.cheeseCurd.itemID;
         case 15:
             return 0;
         default:

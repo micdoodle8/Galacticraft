@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.moon.world.gen;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityCreeper;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeleton;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpider;
@@ -13,7 +14,6 @@ import micdoodle8.mods.galacticraft.core.world.gen.GCCoreCraterSize;
 import micdoodle8.mods.galacticraft.core.world.gen.GCCoreMapGenBaseMeta;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.GCCoreMapGenDungeon;
 import micdoodle8.mods.galacticraft.moon.GCMoonConfigManager;
-import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
 import micdoodle8.mods.galacticraft.moon.world.gen.dungeon.GCMoonRoomBoss;
 import micdoodle8.mods.galacticraft.moon.world.gen.dungeon.GCMoonRoomChests;
 import micdoodle8.mods.galacticraft.moon.world.gen.dungeon.GCMoonRoomEmpty;
@@ -39,11 +39,11 @@ import net.minecraftforge.common.ForgeDirection;
  */
 public class GCMoonChunkProvider extends ChunkProviderGenerate
 {
-    final short topBlockID = (short) GCMoonBlocks.blockMoon.blockID;
+    final short topBlockID = (short) GCCoreBlocks.blockMoon.blockID;
     final byte topBlockMeta = 5;
-    final short fillBlockID = (short) GCMoonBlocks.blockMoon.blockID;
+    final short fillBlockID = (short) GCCoreBlocks.blockMoon.blockID;
     final byte fillBlockMeta = 3;
-    final short lowerBlockID = (short) GCMoonBlocks.blockMoon.blockID;
+    final short lowerBlockID = (short) GCCoreBlocks.blockMoon.blockID;
     final byte lowerBlockMeta = 4;
 
     private final Random rand;
@@ -58,7 +58,7 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
     private final World worldObj;
     private final GCMoonMapGenVillage villageGenerator = new GCMoonMapGenVillage();
 
-    private final GCCoreMapGenDungeon dungeonGenerator = new GCCoreMapGenDungeon(GCMoonBlocks.blockMoon.blockID, 14, 8, 16, 3);
+    private final GCCoreMapGenDungeon dungeonGenerator = new GCCoreMapGenDungeon(GCCoreBlocks.blockMoon.blockID, 14, 8, 16, 3);
 
     {
         this.dungeonGenerator.otherRooms.add(new GCMoonRoomEmpty(null, 0, 0, 0, ForgeDirection.UNKNOWN));

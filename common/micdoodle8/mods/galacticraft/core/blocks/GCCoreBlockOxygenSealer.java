@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol.VecDirPair;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenSealer;
@@ -50,7 +49,7 @@ public class GCCoreBlockOxygenSealer extends GCCoreBlockAdvanced
     @Override
     public int getRenderType()
     {
-        return GalacticraftCore.proxy.getGCMachineRenderID();
+        return GalacticraftCore.proxy.getBlockRenderID(this.blockID);
     }
 
     @Override
@@ -95,7 +94,7 @@ public class GCCoreBlockOxygenSealer extends GCCoreBlockAdvanced
     @Override
     public boolean onMachineActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ)
     {
-        entityPlayer.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiAirSealer, world, x, y, z);
+        entityPlayer.openGui(GalacticraftCore.instance, -1, world, x, y, z);
         return true;
     }
 

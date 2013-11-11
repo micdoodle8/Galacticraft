@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.dimension;
 
 import java.util.Random;
 import mekanism.api.EnumColor;
-import micdoodle8.mods.galacticraft.api.vector.Vector.Vector3;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import net.minecraft.entity.Entity;

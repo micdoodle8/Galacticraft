@@ -34,6 +34,7 @@ import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
+import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.block.Block;
 import net.minecraft.client.audio.SoundPool;
 import net.minecraft.client.audio.SoundPoolEntry;
@@ -522,7 +523,18 @@ public class GCCoreEvents
     {
         EntityPlayerSP player = FMLClientHandler.instance().getClient().thePlayer;
 
-        if (player.worldObj.provider instanceof IGalacticraftWorldProvider && !ClientProxyCore.playersWithFrequencyModule.contains(player.username))
+        PlayerGearData gearData = null;
+
+        for (PlayerGearData gearData2 : ClientProxyCore.playerItemData)
+        {
+            if (gearData2.getPlayer().username.equals(player.username))
+            {
+                gearData = gearData2;
+                break;
+            }
+        }
+
+        if (player.worldObj.provider instanceof IGalacticraftWorldProvider && (gearData == null || gearData.getFrequencyModule() == -1))
         {
             for (int i = 0; i < this.soundPlayList.size(); i++)
             {

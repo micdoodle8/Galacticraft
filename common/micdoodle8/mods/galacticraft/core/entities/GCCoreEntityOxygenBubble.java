@@ -130,7 +130,7 @@ public class GCCoreEntityOxygenBubble extends Entity implements IPacketReceiver,
             {
                 this.size -= 0.1F;
             }
-            
+
             this.size = Math.min(Math.max(this.size, 0.0F), 10.0F);
         }
 

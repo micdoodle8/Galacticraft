@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderPlayer;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
 import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerSP;
+import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
@@ -204,272 +205,144 @@ public class GCCoreModelPlayer extends ModelBiped
         if (var1 instanceof AbstractClientPlayer && this.equals(modelBipedMain))
         {
             final EntityPlayer player = (EntityPlayer) var1;
-            boolean changed = false;
+            PlayerGearData gearData = null;
 
-            for (final String name : ClientProxyCore.playersUsingParachutes)
+            for (PlayerGearData gearData2 : ClientProxyCore.playerItemData)
             {
-                if (player.username.equals(name))
+                if (gearData2.getPlayer().username.equals(player.username))
                 {
-                    this.usingParachute = true;
-                    changed = true;
+                    gearData = gearData2;
+                    break;
                 }
             }
 
-            if (!changed || ClientProxyCore.parachuteTextures.get(player.username) == null || ClientProxyCore.parachuteTextures.get(player.username).equals("none"))
+            this.usingParachute = false;
+            this.wearingMask = false;
+            this.wearingGear = false;
+            this.wearingLeftTankGreen = false;
+            this.wearingLeftTankOrange = false;
+            this.wearingLeftTankRed = false;
+            this.wearingRightTankGreen = false;
+            this.wearingRightTankOrange = false;
+            this.wearingRightTankRed = false;
+            this.wearingFrequencyModule = false;
+
+            if (gearData != null)
             {
-                this.usingParachute = false;
-            }
+                this.usingParachute = gearData.getParachute() != null;
+                this.wearingMask = gearData.getMask() > -1;
+                this.wearingGear = gearData.getGear() > -1;
+                this.wearingLeftTankGreen = gearData.getLeftTank() == 0;
+                this.wearingLeftTankOrange = gearData.getLeftTank() == 1;
+                this.wearingLeftTankRed = gearData.getLeftTank() == 2;
+                this.wearingRightTankGreen = gearData.getRightTank() == 0;
+                this.wearingRightTankOrange = gearData.getRightTank() == 1;
+                this.wearingRightTankRed = gearData.getRightTank() == 2;
+                this.wearingFrequencyModule = gearData.getFrequencyModule() > -1;
 
-            //
-
-            FMLClientHandler.instance().getClient().renderEngine.bindTexture(GCCoreModelPlayer.oxygenMaskTexture);
-
-            changed = false;
-
-            for (final String name : ClientProxyCore.playersWithOxygenMask)
-            {
-                if (player.username.equals(name))
+                if (this.wearingMask)
                 {
-                    this.wearingMask = true;
-                    changed = true;
+                    FMLClientHandler.instance().getClient().renderEngine.bindTexture(GCCoreModelPlayer.oxygenMaskTexture);
+                    GL11.glPushMatrix();
+                    GL11.glScalef(1.05F, 1.05F, 1.05F);
+                    this.oxygenMask.render(var7);
+                    GL11.glScalef(1F, 1F, 1F);
+                    GL11.glPopMatrix();
                 }
-            }
 
-            if (!changed)
-            {
-                this.wearingMask = false;
-            }
+                //
 
-            if (this.wearingMask)
-            {
-                GL11.glPushMatrix();
-                GL11.glScalef(1.05F, 1.05F, 1.05F);
-                this.oxygenMask.render(var7);
-                GL11.glScalef(1F, 1F, 1F);
-                GL11.glPopMatrix();
-            }
-
-            //
-
-            FMLClientHandler.instance().getClient().renderEngine.bindTexture(GCCoreModelPlayer.frequencyModuleTexture);
-
-            changed = false;
-
-            for (final String name : ClientProxyCore.playersWithFrequencyModule)
-            {
-                if (player.username.equals(name))
+                if (this.wearingFrequencyModule)
                 {
-                    this.wearingFrequencyModule = true;
-                    changed = true;
+                    FMLClientHandler.instance().getClient().renderEngine.bindTexture(GCCoreModelPlayer.frequencyModuleTexture);
+                    GL11.glPushMatrix();
+                    GL11.glRotatef(180, 1, 0, 0);
+
+                    GL11.glRotatef((float) (this.bipedHeadwear.rotateAngleY * (-180.0F / Math.PI)), 0, 1, 0);
+                    GL11.glRotatef((float) (this.bipedHeadwear.rotateAngleX * (180.0F / Math.PI)), 1, 0, 0);
+                    GL11.glScalef(0.3F, 0.3F, 0.3F);
+                    GL11.glTranslatef(-1.1F, 1.2F, 0);
+                    this.frequencyModule.renderPart("Main");
+                    GL11.glTranslatef(0, 1.2F, 0);
+                    GL11.glRotatef((float) (Math.sin(var1.ticksExisted * 0.05) * 50.0F), 1, 0, 0);
+                    GL11.glRotatef((float) (Math.cos(var1.ticksExisted * 0.1) * 50.0F), 0, 1, 0);
+                    GL11.glTranslatef(0, -1.2F, 0);
+                    this.frequencyModule.renderPart("Radar");
+                    GL11.glPopMatrix();
                 }
-            }
 
-            if (!changed)
-            {
-                this.wearingFrequencyModule = false;
-            }
+                //
 
-            if (this.wearingFrequencyModule)
-            {
-                GL11.glPushMatrix();
-                GL11.glRotatef(180, 1, 0, 0);
+                FMLClientHandler.instance().getClient().renderEngine.bindTexture(GCCoreModelPlayer.playerTexture);
 
-                GL11.glRotatef((float) (this.bipedHeadwear.rotateAngleY * (-180.0F / Math.PI)), 0, 1, 0);
-                GL11.glRotatef((float) (this.bipedHeadwear.rotateAngleX * (180.0F / Math.PI)), 1, 0, 0);
-                GL11.glScalef(0.3F, 0.3F, 0.3F);
-                GL11.glTranslatef(-1.1F, 1.2F, 0);
-                this.frequencyModule.renderPart("Main");
-                GL11.glTranslatef(0, 1.2F, 0);
-                GL11.glRotatef((float) (Math.sin(var1.ticksExisted * 0.05) * 50.0F), 1, 0, 0);
-                GL11.glRotatef((float) (Math.cos(var1.ticksExisted * 0.1) * 50.0F), 0, 1, 0);
-                GL11.glTranslatef(0, -1.2F, 0);
-                this.frequencyModule.renderPart("Radar");
-                GL11.glPopMatrix();
-            }
-
-            //
-
-            FMLClientHandler.instance().getClient().renderEngine.bindTexture(GCCoreModelPlayer.playerTexture);
-
-            changed = false;
-
-            for (final String name : ClientProxyCore.playersWithOxygenGear)
-            {
-                if (player.username.equals(name))
+                if (this.wearingGear)
                 {
-                    this.wearingGear = true;
-                    changed = true;
-                }
-            }
-
-            if (!changed)
-            {
-                this.wearingGear = false;
-            }
-
-            if (this.wearingGear)
-            {
-                for (int i = 0; i < 7; i++)
-                {
-                    for (int k = 0; k < 2; k++)
+                    for (int i = 0; i < 7; i++)
                     {
-                        this.tubes[k][i].render(var7);
+                        for (int k = 0; k < 2; k++)
+                        {
+                            this.tubes[k][i].render(var7);
+                        }
                     }
                 }
-            }
 
-            //
+                //
 
-            changed = false;
-
-            for (final String name : ClientProxyCore.playersWithOxygenTankLeftRed)
-            {
-                if (player.username.equals(name))
+                if (this.wearingLeftTankRed)
                 {
-                    this.wearingLeftTankRed = true;
-                    changed = true;
+                    this.redOxygenTanks[0].render(var7);
                 }
-            }
 
-            if (!changed)
-            {
-                this.wearingLeftTankRed = false;
-            }
+                //
 
-            if (this.wearingLeftTankRed)
-            {
-                this.redOxygenTanks[0].render(var7);
-            }
-
-            //
-
-            changed = false;
-
-            for (final String name : ClientProxyCore.playersWithOxygenTankLeftOrange)
-            {
-                if (player.username.equals(name))
+                if (this.wearingLeftTankOrange)
                 {
-                    this.wearingLeftTankOrange = true;
-                    changed = true;
+                    this.orangeOxygenTanks[0].render(var7);
                 }
-            }
 
-            if (!changed)
-            {
-                this.wearingLeftTankOrange = false;
-            }
+                //
 
-            if (this.wearingLeftTankOrange)
-            {
-                this.orangeOxygenTanks[0].render(var7);
-            }
-
-            //
-
-            changed = false;
-
-            for (final String name : ClientProxyCore.playersWithOxygenTankLeftGreen)
-            {
-                if (player.username.equals(name))
+                if (this.wearingLeftTankGreen)
                 {
-                    this.wearingLeftTankGreen = true;
-                    changed = true;
+                    this.greenOxygenTanks[0].render(var7);
                 }
-            }
 
-            if (!changed)
-            {
-                this.wearingLeftTankGreen = false;
-            }
+                //
 
-            if (this.wearingLeftTankGreen)
-            {
-                this.greenOxygenTanks[0].render(var7);
-            }
-
-            //
-
-            changed = false;
-
-            for (final String name : ClientProxyCore.playersWithOxygenTankRightRed)
-            {
-                if (player.username.equals(name))
+                if (this.wearingRightTankRed)
                 {
-                    this.wearingRightTankRed = true;
-                    changed = true;
+                    this.redOxygenTanks[1].render(var7);
                 }
-            }
 
-            if (!changed)
-            {
-                this.wearingRightTankRed = false;
-            }
+                //
 
-            if (this.wearingRightTankRed)
-            {
-                this.redOxygenTanks[1].render(var7);
-            }
-
-            //
-
-            changed = false;
-
-            for (final String name : ClientProxyCore.playersWithOxygenTankRightOrange)
-            {
-                if (player.username.equals(name))
+                if (this.wearingRightTankOrange)
                 {
-                    this.wearingRightTankOrange = true;
-                    changed = true;
+                    this.orangeOxygenTanks[1].render(var7);
                 }
-            }
 
-            if (!changed)
-            {
-                this.wearingRightTankOrange = false;
-            }
+                //
 
-            if (this.wearingRightTankOrange)
-            {
-                this.orangeOxygenTanks[1].render(var7);
-            }
-
-            //
-
-            changed = false;
-
-            for (final String name : ClientProxyCore.playersWithOxygenTankRightGreen)
-            {
-                if (player.username.equals(name))
+                if (this.wearingRightTankGreen)
                 {
-                    this.wearingRightTankGreen = true;
-                    changed = true;
+                    this.greenOxygenTanks[1].render(var7);
                 }
-            }
 
-            if (!changed)
-            {
-                this.wearingRightTankGreen = false;
-            }
+                //
 
-            if (this.wearingRightTankGreen)
-            {
-                this.greenOxygenTanks[1].render(var7);
-            }
+                if (this.usingParachute)
+                {
+                    FMLClientHandler.instance().getClient().renderEngine.bindTexture(gearData.getParachute());
 
-            //
+                    this.parachute[0].render(var7);
+                    this.parachute[1].render(var7);
+                    this.parachute[2].render(var7);
 
-            if (this.usingParachute)
-            {
-                FMLClientHandler.instance().getClient().renderEngine.bindTexture(ClientProxyCore.parachuteTextures.get(player.username));
-
-                this.parachute[0].render(var7);
-                this.parachute[1].render(var7);
-                this.parachute[2].render(var7);
-
-                this.parachuteStrings[0].render(var7);
-                this.parachuteStrings[1].render(var7);
-                this.parachuteStrings[2].render(var7);
-                this.parachuteStrings[3].render(var7);
+                    this.parachuteStrings[0].render(var7);
+                    this.parachuteStrings[1].render(var7);
+                    this.parachuteStrings[2].render(var7);
+                    this.parachuteStrings[3].render(var7);
+                }
             }
 
             FMLClientHandler.instance().getClient().renderEngine.bindTexture(((AbstractClientPlayer) player).getLocationSkin());
@@ -847,27 +720,4 @@ public class GCCoreModelPlayer extends ModelBiped
             }
         }
     }
-
-    @Override
-    public void renderCloak(float var1)
-    {
-        super.renderCloak(var1);
-    }
-
-    // private float interpolateRotation(float par1, float par2, float par3)
-    // {
-    // float f3;
-    //
-    // for (f3 = par2 - par1; f3 < -180.0F; f3 += 360.0F)
-    // {
-    // ;
-    // }
-    //
-    // while (f3 >= 180.0F)
-    // {
-    // f3 -= 360.0F;
-    // }
-    //
-    // return par1 + par3 * f3;
-    // }
 }

@@ -5,11 +5,11 @@ import java.util.List;
 import micdoodle8.mods.galacticraft.api.entity.IDockable;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.client.ClientProxyCore.GCKeyHandler;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketControllableEntity;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketEntityUpdate;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
+import micdoodle8.mods.galacticraft.core.tick.GCCoreKeyHandlerClient;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBuggyFueler;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -612,10 +612,10 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
         {
             if (this.riddenByEntity == null)
             {
-                var1.sendChatToPlayer(ChatMessageComponent.createFromText(Keyboard.getKeyName(GCKeyHandler.leftKey.keyCode) + " / " + Keyboard.getKeyName(GCKeyHandler.rightKey.keyCode) + "  - " + StatCollector.translateToLocal("gui.buggy.turn.name")));
-                var1.sendChatToPlayer(ChatMessageComponent.createFromText(Keyboard.getKeyName(GCKeyHandler.accelerateKey.keyCode) + "       - " + StatCollector.translateToLocal("gui.buggy.accel.name")));
-                var1.sendChatToPlayer(ChatMessageComponent.createFromText(Keyboard.getKeyName(GCKeyHandler.decelerateKey.keyCode) + "       - " + StatCollector.translateToLocal("gui.buggy.decel.name")));
-                var1.sendChatToPlayer(ChatMessageComponent.createFromText(Keyboard.getKeyName(GCKeyHandler.openSpaceshipInv.keyCode) + "       - " + StatCollector.translateToLocal("gui.buggy.inv.name")));
+                var1.sendChatToPlayer(ChatMessageComponent.createFromText(Keyboard.getKeyName(GCCoreKeyHandlerClient.leftKey.keyCode) + " / " + Keyboard.getKeyName(GCCoreKeyHandlerClient.rightKey.keyCode) + "  - " + StatCollector.translateToLocal("gui.buggy.turn.name")));
+                var1.sendChatToPlayer(ChatMessageComponent.createFromText(Keyboard.getKeyName(GCCoreKeyHandlerClient.accelerateKey.keyCode) + "       - " + StatCollector.translateToLocal("gui.buggy.accel.name")));
+                var1.sendChatToPlayer(ChatMessageComponent.createFromText(Keyboard.getKeyName(GCCoreKeyHandlerClient.decelerateKey.keyCode) + "       - " + StatCollector.translateToLocal("gui.buggy.decel.name")));
+                var1.sendChatToPlayer(ChatMessageComponent.createFromText(Keyboard.getKeyName(GCCoreKeyHandlerClient.openSpaceshipInv.keyCode) + "       - " + StatCollector.translateToLocal("gui.buggy.inv.name")));
             }
 
             return true;

@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.Random;
-import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCollector;
 import net.minecraft.block.Block;
@@ -16,6 +15,7 @@ import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -46,7 +46,7 @@ public class GCCoreBlockOxygenCollector extends GCCoreBlockAdvanced
     @Override
     public int getRenderType()
     {
-        return GalacticraftCore.proxy.getGCMachineRenderID();
+        return GalacticraftCore.proxy.getBlockRenderID(this.blockID);
     }
 
     @Override
@@ -90,7 +90,7 @@ public class GCCoreBlockOxygenCollector extends GCCoreBlockAdvanced
     @Override
     public boolean onMachineActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ)
     {
-        entityPlayer.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiAirCollector, world, x, y, z);
+        entityPlayer.openGui(GalacticraftCore.instance, -1, world, x, y, z);
         return true;
     }
 
@@ -142,39 +142,39 @@ public class GCCoreBlockOxygenCollector extends GCCoreBlockAdvanced
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random)
+    public void randomDisplayTick(World par1World, int x, int y, int z, Random rand)
     {
-        if (par1World.getBlockTileEntity(par2, par3, par4) instanceof GCCoreTileEntityOxygenCollector)
+        if (par1World.getBlockTileEntity(x, y, z) instanceof GCCoreTileEntityOxygenCollector)
         {
-            if (((GCCoreTileEntityOxygenCollector) par1World.getBlockTileEntity(par2, par3, par4)).lastOxygenCollected > 1)
+            if (((GCCoreTileEntityOxygenCollector) par1World.getBlockTileEntity(x, y, z)).lastOxygenCollected > 1)
             {
-                for (int var6 = 0; var6 < 10; ++var6)
+                for (int particleCount = 0; particleCount < 10; particleCount++)
                 {
-                    double var7 = par2 + par5Random.nextFloat();
-                    final double var9 = par3 + par5Random.nextFloat();
-                    double var11 = par4 + par5Random.nextFloat();
-                    double var13 = 0.0D;
-                    double var15 = 0.0D;
-                    double var17 = 0.0D;
-                    final int var19 = par5Random.nextInt(2) * 2 - 1;
-                    var13 = (par5Random.nextFloat() - 0.5D) * 0.5D;
-                    var15 = (par5Random.nextFloat() - 0.5D) * 0.5D;
-                    var17 = (par5Random.nextFloat() - 0.5D) * 0.5D;
+                    double x2 = x + rand.nextFloat();
+                    double y2 = y + rand.nextFloat();
+                    double z2 = z + rand.nextFloat();
+                    double mX = 0.0D;
+                    double mY = 0.0D;
+                    double mZ = 0.0D;
+                    int dir = rand.nextInt(2) * 2 - 1;
+                    mX = (rand.nextFloat() - 0.5D) * 0.5D;
+                    mY = (rand.nextFloat() - 0.5D) * 0.5D;
+                    mZ = (rand.nextFloat() - 0.5D) * 0.5D;
 
-                    final int var2 = par1World.getBlockMetadata(par2, par3, par4);
+                    final int var2 = par1World.getBlockMetadata(x, y, z);
 
                     if (var2 == 3 || var2 == 2)
                     {
-                        var7 = par2 + 0.5D + 0.25D * var19;
-                        var13 = par5Random.nextFloat() * 2.0F * var19;
+                        x2 = x + 0.5D + 0.25D * dir;
+                        mX = rand.nextFloat() * 2.0F * dir;
                     }
                     else
                     {
-                        var11 = par4 + 0.5D + 0.25D * var19;
-                        var17 = par5Random.nextFloat() * 2.0F * var19;
+                        z2 = z + 0.5D + 0.25D * dir;
+                        mZ = rand.nextFloat() * 2.0F * dir;
                     }
 
-                    GalacticraftCore.proxy.spawnParticle("oxygen", var7, var9, var11, var13, var15, var17, 0.7D, 0.7D, 1.0D, false);
+                    GalacticraftCore.proxy.spawnParticle("oxygen", new Vector3(x2, y2, z2), new Vector3(mX, mY, mZ), new Vector3(0.7D, 0.7D, 1.0D));
                 }
             }
         }

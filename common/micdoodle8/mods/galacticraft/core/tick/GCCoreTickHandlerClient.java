@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tick;
 
-import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.List;
 import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
@@ -32,6 +32,7 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
+import micdoodle8.mods.galacticraft.core.wrappers.BlockMetaList;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
@@ -48,9 +49,13 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldProviderSurface;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
+import tconstruct.client.tabs.TabRegistry;
+import universalelectricity.core.vector.Vector3;
+import com.google.common.collect.Lists;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.ITickHandler;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.network.PacketDispatcher;
@@ -63,6 +68,7 @@ public class GCCoreTickHandlerClient implements ITickHandler
     public static boolean checkedVersion = true;
     private static boolean lastInvKeyPressed;
     private static long tickCount;
+    public static boolean addTabsNextTick = false;
 
     private static GCCoreThreadRequirementMissing missingRequirementThread;
 
@@ -71,27 +77,31 @@ public class GCCoreTickHandlerClient implements ITickHandler
         for (final String s : GCCoreConfigManager.detectableIDs)
         {
             final String[] split = s.split(":");
+            int blockID = Integer.parseInt(split[0]);
+            List<Integer> metaList = Lists.newArrayList();
+            metaList.add(Integer.parseInt(split[1]));
 
-            if (ClientProxyCore.detectableBlocks.containsKey(Integer.parseInt(split[0])))
+            for (BlockMetaList blockMetaList : ClientProxyCore.detectableBlocks)
             {
-                final ArrayList<Integer> l = ClientProxyCore.detectableBlocks.get(Integer.parseInt(split[0]));
-                l.add(Integer.parseInt(split[1]));
-                ClientProxyCore.detectableBlocks.put(Integer.parseInt(split[0]), l);
+                if (blockMetaList.getBlockID() == blockID)
+                {
+                    metaList.addAll(blockMetaList.getMetaList());
+                    break;
+                }
             }
-            else
+
+            if (!metaList.contains(0))
             {
-                final ArrayList<Integer> a = new ArrayList<Integer>();
-                a.add(Integer.parseInt(split[1]));
-                ClientProxyCore.detectableBlocks.put(Integer.parseInt(split[0]), a);
+                metaList.add(0);
             }
+
+            ClientProxyCore.detectableBlocks.add(new BlockMetaList(blockID, metaList));
         }
     }
 
     @Override
     public void tickStart(EnumSet<TickType> type, Object... tickData)
     {
-        ClientProxyCore.getCurrentTime = System.currentTimeMillis();
-
         final Minecraft minecraft = FMLClientHandler.instance().getClient();
 
         final WorldClient world = minecraft.theWorld;
@@ -129,37 +139,44 @@ public class GCCoreTickHandlerClient implements ITickHandler
                                 {
                                     final Block block = Block.blocksList[id];
                                     int metadata = world.getBlockMetadata(x, y, z);
+                                    boolean isDetectable = false;
 
-                                    if (ClientProxyCore.detectableBlocks.containsKey(id) && ClientProxyCore.detectableBlocks.get(id).contains(metadata))
+                                    for (BlockMetaList blockMetaList : ClientProxyCore.detectableBlocks)
                                     {
-                                        final int[] blockPos = { x, y, z };
+                                        if (blockMetaList.getBlockID() == id && blockMetaList.getMetaList().contains(metadata))
+                                        {
+                                            isDetectable = true;
+                                            break;
+                                        }
+                                    }
 
+                                    if (isDetectable)
+                                    {
                                         if (!this.alreadyContainsBlock(x, y, z))
                                         {
-                                            ClientProxyCore.valueableBlocks.add(blockPos);
+                                            ClientProxyCore.valueableBlocks.add(new Vector3(x, y, z));
                                         }
                                     }
                                     else if (block instanceof IDetectableResource && ((IDetectableResource) block).isValueable(metadata))
                                     {
-                                        final int[] blockPos = { x, y, z };
-
                                         if (!this.alreadyContainsBlock(x, y, z))
                                         {
-                                            ClientProxyCore.valueableBlocks.add(blockPos);
+                                            ClientProxyCore.valueableBlocks.add(new Vector3(x, y, z));
                                         }
 
-                                        if (ClientProxyCore.detectableBlocks.containsKey(metadata))
+                                        List<Integer> metaList = Lists.newArrayList();
+                                        metaList.add(metadata);
+
+                                        for (BlockMetaList blockMetaList : ClientProxyCore.detectableBlocks)
                                         {
-                                            final ArrayList<Integer> l = ClientProxyCore.detectableBlocks.get(id);
-                                            l.add(metadata);
-                                            ClientProxyCore.detectableBlocks.put(id, l);
+                                            if (blockMetaList.getBlockID() == id)
+                                            {
+                                                metaList.addAll(blockMetaList.getMetaList());
+                                                break;
+                                            }
                                         }
-                                        else
-                                        {
-                                            final ArrayList<Integer> a = new ArrayList<Integer>();
-                                            a.add(metadata);
-                                            ClientProxyCore.detectableBlocks.put(id, a);
-                                        }
+
+                                        ClientProxyCore.detectableBlocks.add(new BlockMetaList(id, metaList));
                                     }
                                 }
                             }
@@ -168,29 +185,21 @@ public class GCCoreTickHandlerClient implements ITickHandler
                 }
             }
 
-            if (ClientProxyCore.addTabsNextTick)
+            if (GCCoreTickHandlerClient.addTabsNextTick)
             {
                 if (minecraft.currentScreen.getClass().equals(GuiInventory.class))
                 {
-                    ClientProxyCore.addTabsToInventory((GuiContainer) minecraft.currentScreen);
+                    GCCoreTickHandlerClient.addTabsToInventory((GuiContainer) minecraft.currentScreen);
                 }
 
-                ClientProxyCore.addTabsNextTick = false;
+                GCCoreTickHandlerClient.addTabsNextTick = false;
             }
 
             if (minecraft.currentScreen != null && minecraft.currentScreen instanceof GuiMainMenu)
             {
                 GalacticraftCore.playersServer.clear();
                 GalacticraftCore.playersClient.clear();
-                ClientProxyCore.playersUsingParachutes.clear();
-                ClientProxyCore.playersWithOxygenGear.clear();
-                ClientProxyCore.playersWithOxygenMask.clear();
-                ClientProxyCore.playersWithOxygenTankLeftGreen.clear();
-                ClientProxyCore.playersWithOxygenTankLeftOrange.clear();
-                ClientProxyCore.playersWithOxygenTankLeftRed.clear();
-                ClientProxyCore.playersWithOxygenTankRightGreen.clear();
-                ClientProxyCore.playersWithOxygenTankRightOrange.clear();
-                ClientProxyCore.playersWithOxygenTankRightRed.clear();
+                ClientProxyCore.playerItemData.clear();
 
                 if (GCCoreTickHandlerClient.missingRequirementThread == null)
                 {
@@ -324,19 +333,7 @@ public class GCCoreTickHandlerClient implements ITickHandler
 
     private boolean alreadyContainsBlock(int x1, int y1, int z1)
     {
-        for (final int[] coordArray : ClientProxyCore.valueableBlocks)
-        {
-            final int x = coordArray[0];
-            final int y = coordArray[1];
-            final int z = coordArray[2];
-
-            if (x1 == x && y1 == y && z1 == z)
-            {
-                return true;
-            }
-        }
-
-        return false;
+        return ClientProxyCore.valueableBlocks.contains(new Vector3(x1, y1, z1));
     }
 
     public static void zoom(float value)
@@ -372,7 +369,7 @@ public class GCCoreTickHandlerClient implements ITickHandler
 
             if (!GCCoreTickHandlerClient.lastInvKeyPressed && invKeyPressed && minecraft.currentScreen != null && minecraft.currentScreen.getClass() == GuiInventory.class)
             {
-                ClientProxyCore.addTabsToInventory((GuiContainer) minecraft.currentScreen);
+                GCCoreTickHandlerClient.addTabsToInventory((GuiContainer) minecraft.currentScreen);
             }
 
             GCCoreTickHandlerClient.lastInvKeyPressed = invKeyPressed;
@@ -470,6 +467,22 @@ public class GCCoreTickHandlerClient implements ITickHandler
             {
                 GCCoreOverlayOxygenWarning.renderOxygenWarningOverlay();
             }
+        }
+    }
+
+    public static void addTabsToInventory(GuiContainer gui)
+    {
+        boolean tConstructLoaded = Loader.isModLoaded("TConstruct");
+
+        if (!tConstructLoaded)
+        {
+            if (!GCCoreTickHandlerClient.addTabsNextTick)
+            {
+                GCCoreTickHandlerClient.addTabsNextTick = true;
+                return;
+            }
+
+            TabRegistry.addTabsToInventory(gui);
         }
     }
 

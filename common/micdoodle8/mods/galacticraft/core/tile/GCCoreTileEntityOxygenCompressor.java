@@ -47,11 +47,11 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen imp
                     if (this.containingItems[0] != null)
                     {
                         ItemStack tank0 = this.containingItems[0];
-                        
+
                         if (tank0.getItem() instanceof GCCoreItemOxygenTank && tank0.getItemDamage() > 0)
                         {
-                            tank0.setItemDamage(tank0.getItemDamage() - TANK_TRANSFER_SPEED);
-                            this.storedOxygen -= TANK_TRANSFER_SPEED;
+                            tank0.setItemDamage(tank0.getItemDamage() - GCCoreTileEntityOxygenCompressor.TANK_TRANSFER_SPEED);
+                            this.storedOxygen -= GCCoreTileEntityOxygenCompressor.TANK_TRANSFER_SPEED;
                         }
                     }
                 }

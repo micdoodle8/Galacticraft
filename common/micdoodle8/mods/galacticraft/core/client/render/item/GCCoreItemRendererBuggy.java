@@ -1,11 +1,13 @@
 package micdoodle8.mods.galacticraft.core.client.render.item;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.FMLClientHandler;
@@ -22,24 +24,11 @@ public class GCCoreItemRendererBuggy implements IItemRenderer
     private static final ResourceLocation buggyTextureWheel = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/buggyWheels.png");
     private static final ResourceLocation buggyTextureStorage = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/buggyStorage.png");
 
-    protected IModelCustom buggyModel;
-    protected IModelCustom wheelModelRight;
-    protected IModelCustom wheelModelLeft;
-
-    // private static final ResourceLocation buggyTexture = new
-    // ResourceLocation(GalacticraftCore.TEXTURE_DOMAIN,
-    // "textures/model/buggy.png");
-
     GCCoreEntityBuggy spaceship = new GCCoreEntityBuggy(FMLClientHandler.instance().getClient().theWorld);
 
-    // GCCoreModelBuggy modelSpaceship = new GCCoreModelBuggy();
-
-    public GCCoreItemRendererBuggy(IModelCustom model, IModelCustom wheelModelRight, IModelCustom wheelModelLeft)
-    {
-        this.buggyModel = model;
-        this.wheelModelRight = wheelModelRight;
-        this.wheelModelLeft = wheelModelLeft;
-    }
+    private final IModelCustom modelBuggy = AdvancedModelLoader.loadModel(ClientProxyCore.MODEL_DIRECTORY + "buggy.obj");
+    private final IModelCustom modelBuggyWheelRight = AdvancedModelLoader.loadModel(ClientProxyCore.MODEL_DIRECTORY + "buggyWheelRight.obj");
+    private final IModelCustom modelBuggyWheelLeft = AdvancedModelLoader.loadModel(ClientProxyCore.MODEL_DIRECTORY + "buggyWheelLeft.obj");
 
     private void renderPipeItem(ItemRenderType type, RenderBlocks render, ItemStack item, float translateX, float translateY, float translateZ)
     {
@@ -89,60 +78,60 @@ public class GCCoreItemRendererBuggy implements IItemRenderer
         GL11.glPushMatrix();
         GL11.glTranslatef(0.0F, 1.0F, -2.6F);
         GL11.glTranslatef(1.4F, 0.0F, 0.0F);
-        this.wheelModelRight.renderPart("WheelRightCover_Cover");
+        this.modelBuggyWheelRight.renderPart("WheelRightCover_Cover");
         GL11.glTranslatef(-2.8F, 0.0F, 0.0F);
-        this.wheelModelLeft.renderPart("WheelLeftCover_Cover");
+        this.modelBuggyWheelLeft.renderPart("WheelLeftCover_Cover");
         GL11.glPopMatrix();
 
         // Back wheel covers
         GL11.glPushMatrix();
         GL11.glTranslatef(0.0F, 1.0F, 3.7F);
         GL11.glTranslatef(2.0F, 0.0F, 0.0F);
-        this.wheelModelRight.renderPart("WheelRightCover_Cover");
+        this.modelBuggyWheelRight.renderPart("WheelRightCover_Cover");
         GL11.glTranslatef(-4.0F, 0.0F, 0.0F);
-        this.wheelModelLeft.renderPart("WheelLeftCover_Cover");
+        this.modelBuggyWheelLeft.renderPart("WheelLeftCover_Cover");
         GL11.glPopMatrix();
 
         // Front wheels
         GL11.glPushMatrix();
         GL11.glTranslatef(0.0F, 1.0F, -2.7F);
         GL11.glTranslatef(1.4F, 0.0F, 0.0F);
-        this.wheelModelRight.renderPart("WheelRight_Wheel");
+        this.modelBuggyWheelRight.renderPart("WheelRight_Wheel");
         GL11.glTranslatef(-2.8F, 0.0F, 0.0F);
-        this.wheelModelLeft.renderPart("WheelLeft_Wheel");
+        this.modelBuggyWheelLeft.renderPart("WheelLeft_Wheel");
         GL11.glPopMatrix();
 
         // Back wheels
         GL11.glPushMatrix();
         GL11.glTranslatef(0.0F, 1.0F, 3.6F);
         GL11.glTranslatef(2.0F, 0.0F, 0.0F);
-        this.wheelModelRight.renderPart("WheelRight_Wheel");
+        this.modelBuggyWheelRight.renderPart("WheelRight_Wheel");
         GL11.glTranslatef(-4.0F, 0.0F, 0.0F);
-        this.wheelModelLeft.renderPart("WheelLeft_Wheel");
+        this.modelBuggyWheelLeft.renderPart("WheelLeft_Wheel");
         GL11.glPopMatrix();
 
         FMLClientHandler.instance().getClient().getTextureManager().bindTexture(GCCoreItemRendererBuggy.buggyTextureBody);
-        this.buggyModel.renderPart("MainBody");
+        this.modelBuggy.renderPart("MainBody");
 
         // Radar Dish
         GL11.glPushMatrix();
         GL11.glTranslatef(-1.178F, 4.1F, -2.397F);
-        this.buggyModel.renderPart("RadarDish_Dish");
+        this.modelBuggy.renderPart("RadarDish_Dish");
         GL11.glPopMatrix();
 
         FMLClientHandler.instance().getClient().getTextureManager().bindTexture(GCCoreItemRendererBuggy.buggyTextureStorage);
 
         if (item.getItemDamage() > 0)
         {
-            this.buggyModel.renderPart("CargoLeft");
+            this.modelBuggy.renderPart("CargoLeft");
 
             if (item.getItemDamage() > 1)
             {
-                this.buggyModel.renderPart("CargoMid");
+                this.modelBuggy.renderPart("CargoMid");
 
                 if (item.getItemDamage() > 2)
                 {
-                    this.buggyModel.renderPart("CargoRight");
+                    this.modelBuggy.renderPart("CargoRight");
                 }
             }
         }

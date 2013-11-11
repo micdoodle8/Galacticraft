@@ -177,7 +177,7 @@ public class GCCoreBlockOxygenPipe extends BlockContainer implements ITileEntity
     @Override
     public int getRenderType()
     {
-        return GalacticraftCore.proxy.getGCOxygenPipeRenderID();
+        return GalacticraftCore.proxy.getBlockRenderID(this.blockID);
     }
 
     @Override

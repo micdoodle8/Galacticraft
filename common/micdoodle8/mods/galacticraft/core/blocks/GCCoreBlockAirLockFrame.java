@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.List;
-import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAirLock;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAirLockController;
@@ -341,7 +340,7 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced
 
         if (metadata >= GCCoreBlockAirLockFrame.METADATA_AIR_LOCK_CONTROLLER && tile instanceof GCCoreTileEntityAirLockController)
         {
-            entityPlayer.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiAirLockController, world, x, y, z);
+            entityPlayer.openGui(GalacticraftCore.instance, -1, world, x, y, z);
             return true;
         }
 

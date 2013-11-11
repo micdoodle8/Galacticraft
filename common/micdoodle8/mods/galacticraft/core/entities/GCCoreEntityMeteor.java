@@ -15,6 +15,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.StatCollector;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.common.Loader;
 
 public class GCCoreEntityMeteor extends Entity
@@ -144,11 +145,11 @@ public class GCCoreEntityMeteor extends Entity
 
     protected void spawnParticles()
     {
-        GalacticraftCore.proxy.spawnParticle("distancesmoke", this.posX, this.posY + 1D + Math.random(), this.posZ, 0.0D, 0.0D, 0.0D, false);
-        GalacticraftCore.proxy.spawnParticle("distancesmoke", this.posX + Math.random() / 2, this.posY + 1D + Math.random() / 2, this.posZ, 0.0D, 0.0D, 0.0D, false);
-        GalacticraftCore.proxy.spawnParticle("distancesmoke", this.posX, this.posY + 1D + Math.random(), this.posZ + Math.random(), 0.0D, 0.0D, 0.0D, false);
-        GalacticraftCore.proxy.spawnParticle("distancesmoke", this.posX - Math.random() / 2, this.posY + 1D + Math.random() / 2, this.posZ, 0.0D, 0.0D, 0.0D, false);
-        GalacticraftCore.proxy.spawnParticle("distancesmoke", this.posX, this.posY + 1D + Math.random(), this.posZ - Math.random(), 0.0D, 0.0D, 0.0D, false);
+        GalacticraftCore.proxy.spawnParticle("distanceSmoke", new Vector3(this.posX, this.posY + 1D + Math.random(), this.posZ), new Vector3(0.0D, 0.0D, 0.0D));
+        GalacticraftCore.proxy.spawnParticle("distanceSmoke", new Vector3(this.posX + Math.random() / 2, this.posY + 1D + Math.random() / 2, this.posZ), new Vector3(0.0D, 0.0D, 0.0D));
+        GalacticraftCore.proxy.spawnParticle("distanceSmoke", new Vector3(this.posX, this.posY + 1D + Math.random(), this.posZ + Math.random()), new Vector3(0.0D, 0.0D, 0.0D));
+        GalacticraftCore.proxy.spawnParticle("distanceSmoke", new Vector3(this.posX - Math.random() / 2, this.posY + 1D + Math.random() / 2, this.posZ), new Vector3(0.0D, 0.0D, 0.0D));
+        GalacticraftCore.proxy.spawnParticle("distanceSmoke", new Vector3(this.posX, this.posY + 1D + Math.random(), this.posZ - Math.random()), new Vector3(0.0D, 0.0D, 0.0D));
     }
 
     protected void onImpact(MovingObjectPosition par1MovingObjectPosition)

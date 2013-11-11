@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
-import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
+import micdoodle8.mods.galacticraft.core.tick.GCCoreKeyHandlerClient;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
@@ -40,7 +40,7 @@ public class GCCoreOverlayLander extends GCCoreOverlay
             final int alpha = (int) (255 * Math.sin(GCCoreOverlayLander.screenTicks / 20.0F));
             final String press1 = StatCollector.translateToLocal("gui.lander.warning2");
             final String press2 = StatCollector.translateToLocal("gui.lander.warning3");
-            GCCoreOverlayLander.minecraft.fontRenderer.drawString(press1 + Keyboard.getKeyName(ClientProxyCore.GCKeyHandler.spaceKey.keyCode) + press2, width / 4 - GCCoreOverlayLander.minecraft.fontRenderer.getStringWidth(press1 + Keyboard.getKeyName(ClientProxyCore.GCKeyHandler.spaceKey.keyCode) + press2) / 2, height / 8, GCCoreUtil.convertTo32BitColor(alpha, alpha, alpha, alpha));
+            GCCoreOverlayLander.minecraft.fontRenderer.drawString(press1 + Keyboard.getKeyName(GCCoreKeyHandlerClient.spaceKey.keyCode) + press2, width / 4 - GCCoreOverlayLander.minecraft.fontRenderer.getStringWidth(press1 + Keyboard.getKeyName(GCCoreKeyHandlerClient.spaceKey.keyCode) + press2) / 2, height / 8, GCCoreUtil.convertTo32BitColor(alpha, alpha, alpha, alpha));
         }
 
         GL11.glPopMatrix();

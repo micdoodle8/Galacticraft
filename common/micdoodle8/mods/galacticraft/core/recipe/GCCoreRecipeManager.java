@@ -15,8 +15,6 @@ import micdoodle8.mods.galacticraft.core.items.GCCoreItemFlag;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
-import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlocks;
-import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -50,8 +48,12 @@ public class GCCoreRecipeManager
         FurnaceRecipes.smelting().addSmelting(GCCoreBlocks.decorationBlocks.blockID, 6, new ItemStack(GCCoreItems.basicItem, 1, 4), 0.5F);
         FurnaceRecipes.smelting().addSmelting(GCCoreBlocks.decorationBlocks.blockID, 7, new ItemStack(GCCoreItems.basicItem, 1, 5), 0.5F);
         FurnaceRecipes.smelting().addSmelting(GCCoreItems.meteorChunk.itemID, 0, new ItemStack(GCCoreItems.meteorChunk.itemID, 1, 1), 0.1F);
+        FurnaceRecipes.smelting().addSmelting(GCCoreItems.meteoricIronRaw.itemID, new ItemStack(GCCoreItems.meteoricIronIngot), 1.0F);
+        FurnaceRecipes.smelting().addSmelting(GCCoreBlocks.blockMoon.blockID, 0, OreDictionary.getOres("ingotCopper").get(0), 1.0F);
+        FurnaceRecipes.smelting().addSmelting(GCCoreBlocks.blockMoon.blockID, 1, OreDictionary.getOres("ingotTin").get(0), 1.0F);
+        FurnaceRecipes.smelting().addSmelting(GCCoreBlocks.blockMoon.blockID, 2, new ItemStack(GCCoreItems.cheeseCurd), 1.0F);
 
-        RecipeUtil.addRecipe(new ItemStack(GCCoreItems.rocketEngine, 1, 1), new Object[] { "ZYZ", "ZWZ", "XVX", 'V', GCCoreItems.oxygenVent, 'W', new ItemStack(GCCoreItems.canister, 1, 0), 'X', GCCoreItems.heavyPlatingTier1, 'Y', new ItemStack(Block.cloth, 1, 4), 'Z', new ItemStack(GCMoonItems.meteoricIronIngot, 1, 1) });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreItems.rocketEngine, 1, 1), new Object[] { "ZYZ", "ZWZ", "XVX", 'V', GCCoreItems.oxygenVent, 'W', new ItemStack(GCCoreItems.canister, 1, 0), 'X', GCCoreItems.heavyPlatingTier1, 'Y', new ItemStack(Block.cloth, 1, 4), 'Z', new ItemStack(GCCoreItems.meteoricIronIngot, 1, 1) });
 
         HashMap<Integer, ItemStack> input = new HashMap<Integer, ItemStack>();
         input.put(1, new ItemStack(GCCoreItems.partNoseCone));
@@ -214,7 +216,7 @@ public class GCCoreRecipeManager
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.machineBase2, 1, 0), new Object[] { "WXW", "WYW", "VZV", 'V', new ItemStack(GCCoreBlocks.aluminumWire), 'W', "compressedSteel", 'X', Block.anvil, 'Y', "compressedBronze", 'Z', "waferAdvanced" });
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.machineBase2, 1, 4), new Object[] { "WXW", "UYU", "VZV", 'U', Block.stoneButton, 'V', new ItemStack(GCCoreBlocks.aluminumWire), 'W', "ingotAluminum", 'X', Block.lever, 'Y', Block.furnaceIdle, 'Z', Block.torchRedstoneActive });
-        
+
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.machineBase2, 1, 8), new Object[] { "SSS", "BBB", "SSS", 'B', new ItemStack(GCCoreItems.oxTankHeavy, 1, GCCoreItems.oxTankHeavy.getMaxDamage()), 'S', "compressedSteel" });
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreItems.battery, 1, 100), new Object[] { " T ", "TRT", "TCT", 'T', "compressedTin", 'R', Item.redstone, 'C', Item.coal });
@@ -231,9 +233,9 @@ public class GCCoreRecipeManager
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreItems.oxTankMedium, 1, GCCoreItems.oxTankMedium.getMaxDamage()), new Object[] { "ZZ", "XX", "YY", 'X', new ItemStack(GCCoreItems.canister, 1, 0), 'Y', "compressedTin", 'Z', new ItemStack(Block.cloth, 1, 1) });
 
-        RecipeUtil.addRecipe(new ItemStack(GCCoreItems.sensorGlasses, 1), new Object[] { "ZWZ", "Z Z", "XYX", 'W', Item.diamond, 'X', GCCoreItems.sensorLens, 'Y', GCMoonItems.meteoricIronIngot, 'Z', Item.silk });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreItems.sensorGlasses, 1), new Object[] { "ZWZ", "Z Z", "XYX", 'W', Item.diamond, 'X', GCCoreItems.sensorLens, 'Y', GCCoreItems.meteoricIronIngot, 'Z', Item.silk });
 
-        RecipeUtil.addRecipe(new ItemStack(GCCoreItems.sensorLens, 1), new Object[] { "ZXZ", "XYX", "ZXZ", 'X', Block.thinGlass, 'Y', new ItemStack(GCMoonItems.meteoricIronIngot, 1, 1), 'Z', Item.redstone });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreItems.sensorLens, 1), new Object[] { "ZXZ", "XYX", "ZXZ", 'X', Block.thinGlass, 'Y', new ItemStack(GCCoreItems.meteoricIronIngot, 1, 1), 'Z', Item.redstone });
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreItems.canister, 2, 0), new Object[] { "X X", "X X", "XXX", 'X', "ingotTin" });
 
@@ -325,7 +327,7 @@ public class GCCoreRecipeManager
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.airLockFrame, 4, 0), new Object[] { "XXX", "YZY", "XXX", 'X', "compressedAluminum", 'Y', "compressedSteel", 'Z', GCCoreItems.oxygenConcentrator });
 
-        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.airLockFrame, 1, 1), new Object[] { "YYY", "WZW", "YYY", 'W', new ItemStack(GCMoonItems.meteoricIronIngot, 1, 1), 'Y', "compressedSteel", 'Z', new ItemStack(GCCoreItems.basicItem, 1, 13) });
+        RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.airLockFrame, 1, 1), new Object[] { "YYY", "WZW", "YYY", 'W', new ItemStack(GCCoreItems.meteoricIronIngot, 1, 1), 'Y', "compressedSteel", 'Z', new ItemStack(GCCoreItems.basicItem, 1, 13) });
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreItems.oilExtractor), new Object[] { "X  ", " XY", "ZYY", 'X', "compressedSteel", 'Y', "compressedBronze", 'Z', Item.redstone });
 
@@ -369,6 +371,8 @@ public class GCCoreRecipeManager
 
         RecipeUtil.addRecipe(new ItemStack(GCCoreItems.basicItem, 9, 5), new Object[] { "X", 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 11) });
 
+        RecipeUtil.addRecipe(new ItemStack(GCCoreItems.cheeseBlock, 1), new Object[] { "YYY", "YXY", "YYY", 'X', Item.bucketMilk, 'Y', GCCoreItems.cheeseCurd });
+
         CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(new ItemStack(GCCoreItems.basicItem, 1, 15), new Object[] { new ItemStack(GCCoreItems.canister, 1, 0), Item.appleRed, Item.appleRed }));
 
         CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(new ItemStack(GCCoreItems.basicItem, 1, 16), new Object[] { new ItemStack(GCCoreItems.canister, 1, 0), Item.carrot, Item.carrot }));
@@ -376,6 +380,8 @@ public class GCCoreRecipeManager
         CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(new ItemStack(GCCoreItems.basicItem, 1, 17), new Object[] { new ItemStack(GCCoreItems.canister, 1, 0), Item.melon, Item.melon }));
 
         CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(new ItemStack(GCCoreItems.basicItem, 1, 18), new Object[] { new ItemStack(GCCoreItems.canister, 1, 0), Item.potato, Item.potato }));
+
+        CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(new ItemStack(GCCoreItems.meteorChunk, 3), new Object[] { GCCoreItems.meteoricIronRaw }));
     }
 
     private static void addBuildCraftCraftingRecipes()
@@ -420,13 +426,13 @@ public class GCCoreRecipeManager
             Object copperDustObject = clazz.getField("crushedCopperOre").get(null);
             ItemStack copperDustItemStack = (ItemStack) copperDustObject;
             Class<?> clazz2 = Class.forName("ic2.api.recipe.RecipeInputItemStack");
-            Object o = clazz2.getConstructor(ItemStack.class).newInstance(new ItemStack(GCMoonBlocks.blockMoon.blockID, 1, 0));
+            Object o = clazz2.getConstructor(ItemStack.class).newInstance(new ItemStack(GCCoreBlocks.blockMoon.blockID, 1, 0));
             Method addRecipe = Class.forName("ic2.api.recipe.IMachineRecipeManager").getMethod("addRecipe", Class.forName("ic2.api.recipe.IRecipeInput"), NBTTagCompound.class, ItemStack[].class);
             addRecipe.invoke(Class.forName("ic2.api.recipe.Recipes").getField("macerator").get(null), o, null, new ItemStack[] { new ItemStack(copperDustItemStack.getItem(), 2, copperDustItemStack.getItemDamage()) });
 
             Object tinDustObject = clazz.getField("crushedTinOre").get(null);
             ItemStack tinDustItemStack = (ItemStack) tinDustObject;
-            o = clazz2.getConstructor(ItemStack.class).newInstance(new ItemStack(GCMoonBlocks.blockMoon.blockID, 1, 1));
+            o = clazz2.getConstructor(ItemStack.class).newInstance(new ItemStack(GCCoreBlocks.blockMoon.blockID, 1, 1));
             addRecipe.invoke(Class.forName("ic2.api.recipe.Recipes").getField("macerator").get(null), o, null, new ItemStack[] { new ItemStack(tinDustItemStack.getItem(), 2, tinDustItemStack.getItemDamage()) });
         }
         catch (Throwable e)

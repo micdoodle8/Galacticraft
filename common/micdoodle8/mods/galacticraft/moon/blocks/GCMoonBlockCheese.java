@@ -17,7 +17,7 @@ public class GCMoonBlockCheese extends Block
 {
     Icon[] cheeseIcons;
 
-    protected GCMoonBlockCheese(int par1)
+    public GCMoonBlockCheese(int par1)
     {
         super(par1, Material.cake);
         this.setTickRandomly(true);

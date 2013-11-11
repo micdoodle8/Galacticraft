@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
 import net.minecraft.block.Block;
@@ -43,7 +42,7 @@ public class GCCoreBlockFuelLoader extends GCCoreBlockAdvanced
     @Override
     public int getRenderType()
     {
-        return GalacticraftCore.proxy.getGCMachineRenderID();
+        return GalacticraftCore.proxy.getBlockRenderID(this.blockID);
     }
 
     @Override
@@ -65,7 +64,7 @@ public class GCCoreBlockFuelLoader extends GCCoreBlockAdvanced
     @Override
     public boolean onMachineActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ)
     {
-        entityPlayer.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiFuelLoader, world, x, y, z);
+        entityPlayer.openGui(GalacticraftCore.instance, -1, world, x, y, z);
         return true;
     }
 

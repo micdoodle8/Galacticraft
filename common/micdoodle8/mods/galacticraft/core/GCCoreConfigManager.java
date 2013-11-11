@@ -110,23 +110,13 @@ public class GCCoreConfigManager
     public static int idToolSteelHoe;
 
     // GUI
-    public static int idGuiTankRefill;
     public static int idGuiRocketCraftingBench;
     public static int idGuiBuggyCraftingBench;
     public static int idGuiGalaxyMap;
     public static int idGuiSpaceshipInventory;
-    public static int idGuiRefinery;
-    public static int idGuiAirCollector;
-    public static int idGuiAirDistributor;
-    public static int idGuiFuelLoader;
     public static int idGuiAddSchematic;
-    public static int idGuiAirSealer;
     public static int idGuiKnowledgeBook;
-    public static int idGuiCargoLoader;
-    public static int idGuiParachest;
-    public static int idGuiSolarPanel;
     public static int idGuiExtendedInventory;
-    public static int idGuiAirLockController;
 
     // ACHIEVEMENTS
     public static int idAchievBase;
@@ -267,23 +257,13 @@ public class GCCoreConfigManager
             GCCoreConfigManager.idArmorSteelLeggings = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idArmorSteelLeggings", 9892).getInt(9892);
             GCCoreConfigManager.idArmorSteelBoots = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_ITEM, "idArmorSteelBoots", 9893).getInt(9893);
 
-            GCCoreConfigManager.idGuiTankRefill = GCCoreConfigManager.configuration.get("GUI", "idGuiTankRefill", 128).getInt(128);
             GCCoreConfigManager.idGuiRocketCraftingBench = GCCoreConfigManager.configuration.get("GUI", "idGuiRocketCraftingBench", 130).getInt(130);
             GCCoreConfigManager.idGuiBuggyCraftingBench = GCCoreConfigManager.configuration.get("GUI", "idGuiBuggyCraftingBench", 131).getInt(131);
             GCCoreConfigManager.idGuiGalaxyMap = GCCoreConfigManager.configuration.get("GUI", "idGuiGalaxyMap", 132).getInt(132);
             GCCoreConfigManager.idGuiSpaceshipInventory = GCCoreConfigManager.configuration.get("GUI", "idGuiSpaceshipInventory", 133).getInt(133);
-            GCCoreConfigManager.idGuiRefinery = GCCoreConfigManager.configuration.get("GUI", "idGuiRefinery", 134).getInt(134);
-            GCCoreConfigManager.idGuiAirCollector = GCCoreConfigManager.configuration.get("GUI", "idGuiAirCollector", 135).getInt(135);
-            GCCoreConfigManager.idGuiAirDistributor = GCCoreConfigManager.configuration.get("GUI", "idGuiAirDistributor", 136).getInt(136);
-            GCCoreConfigManager.idGuiFuelLoader = GCCoreConfigManager.configuration.get("GUI", "idGuiFuelLoader", 137).getInt(137);
             GCCoreConfigManager.idGuiAddSchematic = GCCoreConfigManager.configuration.get("GUI", "idGuiAddSchematic", 138).getInt(138);
-            GCCoreConfigManager.idGuiAirSealer = GCCoreConfigManager.configuration.get("GUI", "idGuiAirSealer", 139).getInt(139);
             GCCoreConfigManager.idGuiKnowledgeBook = GCCoreConfigManager.configuration.get("GUI", "idGuiKnowledgeBook", 140).getInt(140);
-            GCCoreConfigManager.idGuiCargoLoader = GCCoreConfigManager.configuration.get("GUI", "idGuiCargoLoader", 141).getInt(141);
-            GCCoreConfigManager.idGuiParachest = GCCoreConfigManager.configuration.get("GUI", "idGuiParachest", 142).getInt(142);
-            GCCoreConfigManager.idGuiSolarPanel = GCCoreConfigManager.configuration.get("GUI", "idGuiSolarPanel", 144).getInt(144);
             GCCoreConfigManager.idGuiExtendedInventory = GCCoreConfigManager.configuration.get("GUI", "idGuiExtendedInventory", 145).getInt(145);
-            GCCoreConfigManager.idGuiAirLockController = GCCoreConfigManager.configuration.get("GUI", "idGuiAirLockController", 148).getInt(148);
 
             GCCoreConfigManager.idSchematicRocketT1 = GCCoreConfigManager.configuration.get("Schematic", "idSchematicRocketT1", 0).getInt(0);
             GCCoreConfigManager.idSchematicMoonBuggy = GCCoreConfigManager.configuration.get("Schematic", "idSchematicMoonBuggy", 1).getInt(1);

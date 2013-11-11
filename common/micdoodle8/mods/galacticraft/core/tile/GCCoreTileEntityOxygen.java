@@ -24,7 +24,7 @@ public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectric im
     public abstract ForgeDirection getOxygenInputDirection();
 
     public abstract boolean shouldPullOxygen();
-    
+
     public abstract boolean shouldUseOxygen();
 
     public int getCappedScaledOxygenLevel(int scale)

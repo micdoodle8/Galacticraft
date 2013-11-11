@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.event.GCCoreEventWakePlayer;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.entity.EntityClientPlayerMP;
@@ -163,25 +164,27 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
             this.touchedGround = true;
         }
 
-        boolean changed = false;
-
         if (this.getParachute())
         {
             this.fallDistance = 0.0F;
         }
 
-        for (final String name : ClientProxyCore.playersUsingParachutes)
+        PlayerGearData gearData = null;
+
+        for (PlayerGearData gearData2 : ClientProxyCore.playerItemData)
         {
-            if (this.username.equals(name))
+            if (gearData2.getPlayer().username.equals(this.username))
             {
-                this.usingParachute = true;
-                changed = true;
+                gearData = gearData2;
+                break;
             }
         }
 
-        if (!changed)
+        this.usingParachute = false;
+
+        if (gearData != null)
         {
-            this.usingParachute = false;
+            this.usingParachute = gearData.getParachute() != null;
         }
 
         if (this.getParachute() && this.onGround)

@@ -46,7 +46,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
 {
     public static enum EnumPacketServer
     {
-        OPEN_TANK_GUI(0, String.class),
+        UNUSED_0(0),
         RESPAWN_PLAYER(1, String.class),
         TELEPORT_ENTITY(2, String.class),
         IGNITE_ROCKET(3),
@@ -142,8 +142,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
 
         switch (packetInfo)
         {
-        case OPEN_TANK_GUI:
-            player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiTankRefill, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
+        case UNUSED_0:
             break;
         case RESPAWN_PLAYER:
             player.playerNetServerHandler.sendPacketToPlayer(new Packet9Respawn(player.dimension, (byte) player.worldObj.difficultySetting, player.worldObj.getWorldInfo().getTerrainType(), player.worldObj.getHeight(), player.theItemInWorldManager.getGameType()));
@@ -267,7 +266,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
             }
             break;
         case OPEN_REFINERY_GUI:
-            player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiRefinery, player.worldObj, (Integer) packetReadout[0], (Integer) packetReadout[1], (Integer) packetReadout[2]);
+            player.openGui(GalacticraftCore.instance, -1, player.worldObj, (Integer) packetReadout[0], (Integer) packetReadout[1], (Integer) packetReadout[2]);
             break;
         case UPDATE_CONTROLLABLE_ENTITY:
             try

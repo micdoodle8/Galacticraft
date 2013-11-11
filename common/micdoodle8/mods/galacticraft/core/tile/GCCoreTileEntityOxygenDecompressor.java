@@ -34,7 +34,7 @@ public class GCCoreTileEntityOxygenDecompressor extends GCCoreTileEntityOxygen i
     private ItemStack[] containingItems = new ItemStack[2];
 
     public static final float WATTS_PER_TICK = 0.2F;
-    
+
     public static final int OUTPUT_PER_TICK = 100;
 
     public GCCoreTileEntityOxygenDecompressor()
@@ -52,16 +52,16 @@ public class GCCoreTileEntityOxygenDecompressor extends GCCoreTileEntityOxygen i
             if (this.containingItems[0] != null && this.getEnergyStored() > 0.0F && this.storedOxygen < this.maxOxygen)
             {
                 ItemStack tank1 = this.containingItems[0];
-                
+
                 if (tank1.getItem() instanceof GCCoreItemOxygenTank && tank1.getItemDamage() < tank1.getMaxDamage())
                 {
                     tank1.setItemDamage(tank1.getItemDamage() + 1);
                     this.storedOxygen += 1;
                 }
             }
-            
-            int gasToSend = (int) Math.min(this.storedOxygen, OUTPUT_PER_TICK);
-            
+
+            int gasToSend = Math.min(this.storedOxygen, GCCoreTileEntityOxygenDecompressor.OUTPUT_PER_TICK);
+
             this.storedOxygen -= gasToSend - GasTransmission.emitGasToNetwork(EnumGas.OXYGEN, gasToSend, this, this.getOxygenOutputDirection());
 
             final TileEntity tileEntity = VectorHelper.getTileEntityFromSide(this.worldObj, new Vector3(this), this.getOxygenOutputDirection());
@@ -72,9 +72,9 @@ public class GCCoreTileEntityOxygenDecompressor extends GCCoreTileEntityOxygen i
                 {
                     double sendingGas = 0;
 
-                    if (this.storedOxygen >= OUTPUT_PER_TICK)
+                    if (this.storedOxygen >= GCCoreTileEntityOxygenDecompressor.OUTPUT_PER_TICK)
                     {
-                        sendingGas = OUTPUT_PER_TICK;
+                        sendingGas = GCCoreTileEntityOxygenDecompressor.OUTPUT_PER_TICK;
                     }
                     else
                     {
@@ -341,7 +341,7 @@ public class GCCoreTileEntityOxygenDecompressor extends GCCoreTileEntityOxygen i
     {
         return direction == this.getOxygenOutputDirection();
     }
-    
+
     public ForgeDirection getOxygenOutputDirection()
     {
         return this.getElectricInputDirection().getOpposite();

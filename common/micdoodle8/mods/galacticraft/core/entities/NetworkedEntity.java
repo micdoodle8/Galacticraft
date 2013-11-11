@@ -18,12 +18,12 @@ public abstract class NetworkedEntity extends Entity implements IPacketReceiver
     {
         super(par1World);
     }
-    
+
     @Override
     public void onUpdate()
     {
         super.onUpdate();
-        
+
         if (!this.worldObj.isRemote)
         {
             PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, this.getPacketRange(), this.worldObj.provider.dimensionId, GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getNetworkedData(new ArrayList<Object>())));
@@ -42,10 +42,10 @@ public abstract class NetworkedEntity extends Entity implements IPacketReceiver
             e.printStackTrace();
         }
     }
-    
+
     public abstract void readNetworkedData(ByteArrayDataInput dataStream);
-    
+
     public abstract ArrayList<Object> getNetworkedData(ArrayList<Object> list);
-    
+
     public abstract double getPacketRange();
 }

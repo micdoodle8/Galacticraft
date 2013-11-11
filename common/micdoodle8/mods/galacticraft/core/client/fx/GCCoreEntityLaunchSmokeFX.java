@@ -4,6 +4,7 @@ import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
+import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -18,31 +19,31 @@ public class GCCoreEntityLaunchSmokeFX extends EntityFX
 {
     float smokeParticleScale;
 
-    public GCCoreEntityLaunchSmokeFX(World par1World, double par2, double par4, double par6, double par8, double par10, double par12, float par14, boolean b)
+    public GCCoreEntityLaunchSmokeFX(World par1World, Vector3 position, Vector3 motion, float size, boolean launched)
     {
-        super(par1World, par2, par4, par6, 0.0D, 0.0D, 0.0D);
+        super(par1World, position.x, position.y, position.z, 0.0D, 0.0D, 0.0D);
         this.motionX *= 0.10000000149011612D;
         this.motionY *= 0.10000000149011612D;
         this.motionZ *= 0.10000000149011612D;
         this.setSize(0.2F, 0.2F);
-        this.motionX += par8;
-        this.motionY += par10;
-        this.motionZ += par12;
+        this.motionX += motion.x;
+        this.motionY += motion.y;
+        this.motionZ += motion.z;
         this.particleAlpha = 1.0F;
         this.particleRed = this.particleGreen = this.particleBlue = (float) (Math.random() * 0.30000001192092896D) + 0.6F;
         this.particleScale *= 0.75F;
-        this.particleScale *= par14 * 3;
+        this.particleScale *= size * 3;
         this.smokeParticleScale = this.particleScale;
-        if (b)
+
+        if (launched)
         {
-            this.particleMaxAge = (int) 50.0D;
-            this.particleMaxAge = (int) (this.particleMaxAge * par14);
+            this.particleMaxAge = (int) (this.particleMaxAge * size);
         }
         else
         {
-            this.particleMaxAge = (int) 2.0D;
             this.particleMaxAge = 1;
         }
+
         this.noClip = false;
     }
 

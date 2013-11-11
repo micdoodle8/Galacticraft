@@ -2,7 +2,13 @@ package micdoodle8.mods.galacticraft.core.items;
 
 import java.util.ArrayList;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.moon.GCMoonConfigManager;
+import micdoodle8.mods.galacticraft.moon.items.GCMoonItem;
+import micdoodle8.mods.galacticraft.moon.items.GCMoonItemCheese;
+import micdoodle8.mods.galacticraft.moon.items.GCMoonItemRawIron;
+import micdoodle8.mods.galacticraft.moon.items.GCMoonItemReed;
 import net.minecraft.item.EnumArmorMaterial;
 import net.minecraft.item.EnumToolMaterial;
 import net.minecraft.item.Item;
@@ -62,6 +68,10 @@ public class GCCoreItems
     public static Item infiniteBatery;
     public static Item meteorChunk;
     public static Item wrench;
+    public static Item cheeseCurd;
+    public static Item meteoricIronRaw;
+    public static Item meteoricIronIngot;
+    public static Item cheeseBlock;
 
     public static EnumArmorMaterial ARMOR_SENSOR_GLASSES = EnumHelper.addArmorMaterial("SENSORGLASSES", 200, new int[] { 0, 0, 0, 0 }, 0);
     public static EnumArmorMaterial ARMOR_STEEL = EnumHelper.addArmorMaterial("steel", 30, new int[] { 3, 8, 6, 3 }, 12);
@@ -114,6 +124,10 @@ public class GCCoreItems
         GCCoreItems.infiniteBatery = new GCCoreItemInfiniteBattery(GCCoreConfigManager.idItemInfiniteBattery, "infiniteBattery");
         GCCoreItems.meteorChunk = new GCCoreItemMeteorChunk(GCCoreConfigManager.idItemMeteorChunk, "meteorChunk");
         GCCoreItems.wrench = new GCCoreItemWrench(GCCoreConfigManager.idItemStandardWrench, "standardWrench");
+        GCCoreItems.cheeseCurd = new GCMoonItemCheese(GCMoonConfigManager.idItemCheeseCurd, 1, 0.1F, false).setUnlocalizedName("cheeseCurd");
+        GCCoreItems.cheeseBlock = new GCMoonItemReed(GCMoonConfigManager.idItemBlockCheese, GCCoreBlocks.cheeseBlock).setUnlocalizedName("cheeseBlock");
+        GCCoreItems.meteoricIronRaw = new GCMoonItemRawIron(GCMoonConfigManager.idItemMeteoricIronRaw, "meteoric_iron_raw").setUnlocalizedName("meteoricIronRaw");
+        GCCoreItems.meteoricIronIngot = new GCMoonItem(GCMoonConfigManager.idItemMeteoricIronIngot).setUnlocalizedName("meteoricIronIngot");
 
         GCCoreItems.hiddenItems.add(GCCoreItems.bowGravity.itemID);
         GCCoreItems.hiddenItems.add(GCCoreItems.knowledgeBook.itemID);
@@ -236,6 +250,9 @@ public class GCCoreItems
                 OreDictionary.registerOre(GCCoreItemBasic.names[i], new ItemStack(GCCoreItems.basicItem, 1, i));
             }
         }
+
+        OreDictionary.registerOre("plateMeteoricIron", new ItemStack(GCCoreItems.meteoricIronIngot, 1, 1));
+        OreDictionary.registerOre("ingotMeteoricIron", new ItemStack(GCCoreItems.meteoricIronIngot, 1, 0));
     }
 
     public static void registerHarvestLevels()

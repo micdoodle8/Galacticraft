@@ -222,7 +222,7 @@ public abstract class GCCoreTileEntityElectric extends GCCoreTileEntityUniversal
         {
             return EnumSet.noneOf(ForgeDirection.class);
         }
-        
+
         return EnumSet.of(this.getElectricInputDirection());
     }
 }

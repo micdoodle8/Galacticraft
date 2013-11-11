@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.moon.dimension;
 
 import java.util.Random;
-import micdoodle8.mods.galacticraft.api.vector.Vector.Vector3;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -67,7 +67,7 @@ public class GCMoonTeleportType implements ITeleportType
             GCCoreEntityLander lander = new GCCoreEntityLander(gcPlayer);
             lander.setWaitForPlayer(true);
             lander.setPositionAndRotation(player.posX, player.posY, player.posZ, 0, 0);
-            
+
             lander.riddenByEntity = player;
             player.ridingEntity = lander;
 

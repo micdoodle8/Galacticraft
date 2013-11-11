@@ -31,7 +31,7 @@ public class GCCoreBlockOxygenCompressor extends GCCoreBlockAdvanced
 {
     public static final int OXYGEN_COMPRESSOR_METADATA = 0;
     public static final int OXYGEN_DECOMPRESSOR_METADATA = 4;
-    
+
     private Icon iconMachineSide;
     private Icon iconCompressor1;
     private Icon iconCompressor2;
@@ -52,7 +52,7 @@ public class GCCoreBlockOxygenCompressor extends GCCoreBlockAdvanced
     @Override
     public int getRenderType()
     {
-        return GalacticraftCore.proxy.getGCMachineRenderID();
+        return GalacticraftCore.proxy.getBlockRenderID(this.blockID);
     }
 
     @Override
@@ -79,14 +79,14 @@ public class GCCoreBlockOxygenCompressor extends GCCoreBlockAdvanced
     {
         final int metadata = par1World.getBlockMetadata(x, y, z);
         int original = metadata;
-        
-        if (metadata >= OXYGEN_DECOMPRESSOR_METADATA)
+
+        if (metadata >= GCCoreBlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA)
         {
-            original -= OXYGEN_DECOMPRESSOR_METADATA;
+            original -= GCCoreBlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA;
         }
-        else if (metadata >= OXYGEN_COMPRESSOR_METADATA)
+        else if (metadata >= GCCoreBlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA)
         {
-            original -= OXYGEN_COMPRESSOR_METADATA;
+            original -= GCCoreBlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA;
         }
 
         int meta = 0;
@@ -107,14 +107,14 @@ public class GCCoreBlockOxygenCompressor extends GCCoreBlockAdvanced
             meta = 0;
             break;
         }
-        
-        if (metadata >= OXYGEN_DECOMPRESSOR_METADATA)
+
+        if (metadata >= GCCoreBlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA)
         {
-            meta += OXYGEN_DECOMPRESSOR_METADATA;
+            meta += GCCoreBlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA;
         }
-        else if (metadata >= OXYGEN_COMPRESSOR_METADATA)
+        else if (metadata >= GCCoreBlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA)
         {
-            meta += OXYGEN_COMPRESSOR_METADATA;
+            meta += GCCoreBlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA;
         }
 
         par1World.setBlockMetadataWithNotify(x, y, z, meta, 3);
@@ -131,11 +131,11 @@ public class GCCoreBlockOxygenCompressor extends GCCoreBlockAdvanced
     @Override
     public TileEntity createTileEntity(World world, int metadata)
     {
-        if (metadata >= OXYGEN_DECOMPRESSOR_METADATA)
+        if (metadata >= GCCoreBlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA)
         {
             return new GCCoreTileEntityOxygenDecompressor();
         }
-        else if (metadata >= OXYGEN_COMPRESSOR_METADATA)
+        else if (metadata >= GCCoreBlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA)
         {
             return new GCCoreTileEntityOxygenCompressor();
         }
@@ -152,11 +152,11 @@ public class GCCoreBlockOxygenCompressor extends GCCoreBlockAdvanced
         {
             return this.iconMachineSide;
         }
-        
-        if (metadata >= OXYGEN_DECOMPRESSOR_METADATA)
+
+        if (metadata >= GCCoreBlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA)
         {
-            metadata -= OXYGEN_DECOMPRESSOR_METADATA;
-            
+            metadata -= GCCoreBlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA;
+
             if (side == metadata + 2)
             {
                 return this.iconInput;
@@ -174,10 +174,10 @@ public class GCCoreBlockOxygenCompressor extends GCCoreBlockAdvanced
                 return this.iconDecompressor;
             }
         }
-        else if (metadata >= OXYGEN_COMPRESSOR_METADATA)
+        else if (metadata >= GCCoreBlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA)
         {
-            metadata -= OXYGEN_COMPRESSOR_METADATA;
-            
+            metadata -= GCCoreBlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA;
+
             if (side == metadata + 2)
             {
                 return this.iconInput;
@@ -222,14 +222,14 @@ public class GCCoreBlockOxygenCompressor extends GCCoreBlockAdvanced
             change = 0;
             break;
         }
-        
-        if (itemStack.getItemDamage() >= OXYGEN_DECOMPRESSOR_METADATA)
+
+        if (itemStack.getItemDamage() >= GCCoreBlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA)
         {
-            change += OXYGEN_DECOMPRESSOR_METADATA;
+            change += GCCoreBlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA;
         }
-        else if (itemStack.getItemDamage() >= OXYGEN_COMPRESSOR_METADATA)
+        else if (itemStack.getItemDamage() >= GCCoreBlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA)
         {
-            change += OXYGEN_COMPRESSOR_METADATA;
+            change += GCCoreBlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA;
         }
 
         world.setBlockMetadataWithNotify(x, y, z, change, 3);
@@ -239,20 +239,20 @@ public class GCCoreBlockOxygenCompressor extends GCCoreBlockAdvanced
     @Override
     public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
-        par3List.add(new ItemStack(this.blockID, 1, OXYGEN_COMPRESSOR_METADATA));
-        par3List.add(new ItemStack(this.blockID, 1, OXYGEN_DECOMPRESSOR_METADATA));
+        par3List.add(new ItemStack(this.blockID, 1, GCCoreBlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA));
+        par3List.add(new ItemStack(this.blockID, 1, GCCoreBlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA));
     }
 
     @Override
     public int damageDropped(int metadata)
     {
-        if (metadata >= OXYGEN_DECOMPRESSOR_METADATA)
+        if (metadata >= GCCoreBlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA)
         {
-            return OXYGEN_DECOMPRESSOR_METADATA;
+            return GCCoreBlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA;
         }
-        else if (metadata >= OXYGEN_COMPRESSOR_METADATA)
+        else if (metadata >= GCCoreBlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA)
         {
-            return OXYGEN_COMPRESSOR_METADATA;
+            return GCCoreBlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA;
         }
         else
         {

@@ -32,7 +32,7 @@ public class GCCoreBlockOxygenDetector extends BlockContainer implements ITileEn
     @Override
     public int getRenderType()
     {
-        return GalacticraftCore.proxy.getGCMachineRenderID();
+        return GalacticraftCore.proxy.getBlockRenderID(this.blockID);
     }
 
     @Override

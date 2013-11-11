@@ -57,7 +57,7 @@ public class GCCoreBlockAdvancedCraftingTable extends BlockContainer implements 
     @Override
     public int getRenderType()
     {
-        return GalacticraftCore.proxy.getGCCraftingTableRenderID();
+        return GalacticraftCore.proxy.getBlockRenderID(this.blockID);
     }
 
     @Override

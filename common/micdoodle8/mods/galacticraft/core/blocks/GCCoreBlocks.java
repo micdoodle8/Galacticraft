@@ -15,7 +15,12 @@ import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockMachine;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockOxygenCompressor;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockSolar;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.moon.GCMoonConfigManager;
+import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlock;
+import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlockCheese;
+import micdoodle8.mods.galacticraft.moon.items.GCMoonItemBlock;
 import net.minecraft.block.Block;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
@@ -60,6 +65,8 @@ public class GCCoreBlocks
     public static Block machineBase2;
     public static Block aluminumWire;
     public static Block glowstoneTorch;
+    public static Block blockMoon;
+    public static Block cheeseBlock;
 
     public static ArrayList<Integer> hiddenBlocks = new ArrayList<Integer>();
 
@@ -94,6 +101,8 @@ public class GCCoreBlocks
         GCCoreBlocks.aluminumWire = new GCCoreBlockAluminumWire(GCCoreConfigManager.idBlockCopperWire, "aluminumWire");
         GCCoreBlocks.machineBase2 = new GCCoreBlockMachine2(GCCoreConfigManager.idBlockBasicMachine2, "machine2");
         GCCoreBlocks.glowstoneTorch = new GCCoreBlockGlowstoneTorch(GCCoreConfigManager.idBlockGlowstoneTorch, "glowstoneTorch");
+        GCCoreBlocks.blockMoon = new GCMoonBlock(GCMoonConfigManager.idBlock);
+        GCCoreBlocks.cheeseBlock = new GCMoonBlockCheese(GCMoonConfigManager.idBlockCheese).setHardness(0.5F).setStepSound(Block.soundClothFootstep).setUnlocalizedName("cheeseBlock");
 
         GCCoreUtil.registerGalacticraftBlock("rocketLaunchPad", GCCoreBlocks.landingPad, 0);
         GCCoreUtil.registerGalacticraftBlock("buggyFuelingPad", GCCoreBlocks.landingPad, 1);
@@ -174,6 +183,18 @@ public class GCCoreBlocks
         MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.decorationBlocks, 6, "pickaxe", 1);
         MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.decorationBlocks, 7, "pickaxe", 2);
         MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.decorationBlocks, 8, "pickaxe", 2);
+        MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.blockMoon, 0, "pickaxe", 3);
+        MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.blockMoon, 1, "pickaxe", 3);
+        MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.blockMoon, 2, "pickaxe", 3);
+        MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.blockMoon, 3, "shovel", 0);
+        MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.blockMoon, 4, "pickaxe", 2);
+
+        for (int num = 5; num < 14; num++)
+        {
+            MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.blockMoon, num, "shovel", 0);
+        }
+
+        MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.blockMoon, 14, "pickaxe", 2);
     }
 
     public static void registerBlocks()
@@ -207,5 +228,7 @@ public class GCCoreBlocks
         GameRegistry.registerBlock(GCCoreBlocks.machineBase2, GCCoreItemBlockMachine.class, GCCoreBlocks.machineBase2.getUnlocalizedName(), GalacticraftCore.MODID);
         GameRegistry.registerBlock(GCCoreBlocks.aluminumWire, GCCoreItemBlockAluminumWire.class, GCCoreBlocks.aluminumWire.getUnlocalizedName(), GalacticraftCore.MODID);
         GameRegistry.registerBlock(GCCoreBlocks.glowstoneTorch, GCCoreItemBlock.class, GCCoreBlocks.glowstoneTorch.getUnlocalizedName(), GalacticraftCore.MODID);
+        GameRegistry.registerBlock(GCCoreBlocks.blockMoon, GCMoonItemBlock.class, GCCoreBlocks.blockMoon.getUnlocalizedName(), GalacticraftCore.MODID);
+        GameRegistry.registerBlock(GCCoreBlocks.cheeseBlock, ItemBlock.class, GCCoreBlocks.cheeseBlock.getUnlocalizedName(), GalacticraftCore.MODID);
     }
 }

@@ -10,12 +10,12 @@ import net.minecraft.world.World;
 public abstract class InventoryEntity extends NetworkedEntity implements IInventory
 {
     public ItemStack[] containedItems;
-    
+
     public InventoryEntity(World par1World)
     {
         super(par1World);
     }
-    
+
     @Override
     protected void readEntityFromNBT(NBTTagCompound nbt)
     {

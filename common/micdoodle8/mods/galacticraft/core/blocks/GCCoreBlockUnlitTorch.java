@@ -93,7 +93,7 @@ public class GCCoreBlockUnlitTorch extends Block implements IOxygenReliantBlock
     @Override
     public int getRenderType()
     {
-        return GalacticraftCore.proxy.getGCUnlitTorchRenderID();
+        return GalacticraftCore.proxy.getBlockRenderID(this.blockID);
     }
 
     private boolean canPlaceTorchOn(World par1World, int par2, int par3, int par4)

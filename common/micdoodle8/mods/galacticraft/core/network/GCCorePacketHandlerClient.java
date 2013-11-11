@@ -11,7 +11,6 @@ import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GCLog;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
-import micdoodle8.mods.galacticraft.core.client.ClientProxyCore.GCKeyHandler;
 import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityWeldingSmoke;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiBuggy;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiChoosePlanet;
@@ -19,12 +18,16 @@ import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiGalaxyMap;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiParachest;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreSpaceStationData;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
+import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP.EnumModelPacket;
 import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
+import micdoodle8.mods.galacticraft.core.tick.GCCoreKeyHandlerClient;
 import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerClient;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
+import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
@@ -56,18 +59,18 @@ public class GCCorePacketHandlerClient implements IPacketHandler
         INVALID(1),
         UPDATE_DIMENSION_LIST(2, String.class, String.class),
         UNUSED_0(3),
-        GEAR_PARACHUTE_ADD(4, String.class),
-        GEAR_PARACHUTE_REMOVE(5, String.class),
-        GEAR_PARACHUTETEX_ADD(6, String.class, String.class),
-        GEAR_PARACHUTETEX_REMOVE(7, String.class, String.class),
+        UNUSED_1(4),
+        UNUSED_2(5),
+        UNUSED_3(6),
+        UNUSED_4(7),
         MOUNT_ROCKET(8, String.class),
         SPAWN_SPARK_PARTICLES(9, Integer.class, Integer.class, Integer.class),
-        UPDATE_GEAR_SLOT(10, String.class, Integer.class),
-        UNUSED_1(11),
+        UPDATE_GEAR_SLOT(10, String.class, Integer.class, Integer.class),
+        UNUSED_5(11),
         CLOSE_GUI(12),
         RESET_THIRD_PERSON(13, String.class),
         UPDATE_CONTROLLABLE_ENTITY(14),
-        UNUSED_2(15),
+        UNUSED_6(15),
         UPDATE_SPACESTATION_LIST(16),
         UPDATE_SPACESTATION_DATA(17),
         UPDATE_SPACESTATION_CLIENT_ID(18, Integer.class),
@@ -165,17 +168,13 @@ public class GCCorePacketHandlerClient implements IPacketHandler
             break;
         case UNUSED_0:
             break;
-        case GEAR_PARACHUTE_ADD:
-            ClientProxyCore.playersUsingParachutes.add((String) packetReadout[0]);
+        case UNUSED_1:
             break;
-        case GEAR_PARACHUTE_REMOVE:
-            ClientProxyCore.playersUsingParachutes.remove(packetReadout[0]);
+        case UNUSED_2:
             break;
-        case GEAR_PARACHUTETEX_ADD:
-            ClientProxyCore.parachuteTextures.put((String) packetReadout[0], new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/parachute/" + (String) packetReadout[1] + ".png"));
+        case UNUSED_3:
             break;
-        case GEAR_PARACHUTETEX_REMOVE:
-            ClientProxyCore.parachuteTextures.remove(packetReadout[0]);
+        case UNUSED_4:
             break;
         case MOUNT_ROCKET:
             if (playerBaseClient != null)
@@ -188,7 +187,7 @@ public class GCCorePacketHandlerClient implements IPacketHandler
             player.sendChatToPlayer(ChatMessageComponent.createFromText("SPACE - Launch"));
             player.sendChatToPlayer(ChatMessageComponent.createFromText("A / D  - Turn left-right"));
             player.sendChatToPlayer(ChatMessageComponent.createFromText("W / S  - Turn up-down"));
-            player.sendChatToPlayer(ChatMessageComponent.createFromText(Keyboard.getKeyName(GCKeyHandler.openSpaceshipInv.keyCode) + "       - Inventory / Fuel"));
+            player.sendChatToPlayer(ChatMessageComponent.createFromText(Keyboard.getKeyName(GCCoreKeyHandlerClient.openSpaceshipInv.keyCode) + "       - Inventory / Fuel"));
             break;
         case SPAWN_SPARK_PARTICLES:
             int x,
@@ -211,65 +210,87 @@ public class GCCorePacketHandlerClient implements IPacketHandler
             }
             break;
         case UPDATE_GEAR_SLOT:
-            switch ((Integer) packetReadout[1])
+            PlayerGearData gearData = null;
+            int subtype = (Integer) packetReadout[2];
+
+            for (PlayerGearData gearData2 : ClientProxyCore.playerItemData)
             {
-            case 0:
-                ClientProxyCore.playersWithOxygenMask.add((String) packetReadout[0]);
+                if (gearData2.getPlayer().username.equals(packetReadout[0]))
+                {
+                    gearData = gearData2;
+                    break;
+                }
+            }
+
+            if (gearData == null)
+            {
+                gearData = new PlayerGearData(player);
+            }
+
+            switch (EnumModelPacket.values()[(Integer) packetReadout[1]])
+            {
+            case ADDMASK:
+                gearData.setMask(0);
                 break;
-            case 1:
-                ClientProxyCore.playersWithOxygenMask.remove(packetReadout[0]);
+            case REMOVEMASK:
+                gearData.setMask(-1);
                 break;
-            case 2:
-                ClientProxyCore.playersWithOxygenGear.add((String) packetReadout[0]);
+            case ADDGEAR:
+                gearData.setGear(0);
                 break;
-            case 3:
-                ClientProxyCore.playersWithOxygenGear.remove(packetReadout[0]);
+            case REMOVEGEAR:
+                gearData.setGear(-1);
                 break;
-            case 4:
-                ClientProxyCore.playersWithOxygenTankLeftRed.add((String) packetReadout[0]);
+            case ADDLEFTGREENTANK:
+                gearData.setLeftTank(0);
                 break;
-            case 5:
-                ClientProxyCore.playersWithOxygenTankLeftRed.remove(packetReadout[0]);
+            case ADDLEFTORANGETANK:
+                gearData.setLeftTank(1);
                 break;
-            case 6:
-                ClientProxyCore.playersWithOxygenTankLeftOrange.add((String) packetReadout[0]);
+            case ADDLEFTREDTANK:
+                gearData.setLeftTank(2);
                 break;
-            case 7:
-                ClientProxyCore.playersWithOxygenTankLeftOrange.remove(packetReadout[0]);
+            case ADDRIGHTGREENTANK:
+                gearData.setRightTank(0);
                 break;
-            case 8:
-                ClientProxyCore.playersWithOxygenTankLeftGreen.add((String) packetReadout[0]);
+            case ADDRIGHTORANGETANK:
+                gearData.setRightTank(1);
                 break;
-            case 9:
-                ClientProxyCore.playersWithOxygenTankLeftGreen.remove(packetReadout[0]);
+            case ADDRIGHTREDTANK:
+                gearData.setRightTank(2);
                 break;
-            case 10:
-                ClientProxyCore.playersWithOxygenTankRightRed.add((String) packetReadout[0]);
+            case REMOVE_LEFT_TANK:
+                gearData.setLeftTank(-1);
                 break;
-            case 11:
-                ClientProxyCore.playersWithOxygenTankRightRed.remove(packetReadout[0]);
+            case REMOVE_RIGHT_TANK:
+                gearData.setRightTank(-1);
                 break;
-            case 12:
-                ClientProxyCore.playersWithOxygenTankRightOrange.add((String) packetReadout[0]);
+            case ADD_PARACHUTE:
+                String name = "";
+
+                if (subtype != -1)
+                {
+                    name = GCCoreItemParachute.names[subtype];
+                    gearData.setParachute(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/parachute/" + name + ".png"));
+                }
                 break;
-            case 13:
-                ClientProxyCore.playersWithOxygenTankRightOrange.remove(packetReadout[0]);
+            case REMOVE_PARACHUTE:
+                gearData.setParachute(null);
                 break;
-            case 14:
-                ClientProxyCore.playersWithOxygenTankRightGreen.add((String) packetReadout[0]);
+            case ADD_FREQUENCY_MODULE:
+                gearData.setFrequencyModule(0);
                 break;
-            case 15:
-                ClientProxyCore.playersWithOxygenTankRightGreen.remove(packetReadout[0]);
+            case REMOVE_FREQUENCY_MODULE:
+                gearData.setFrequencyModule(-1);
                 break;
-            case 16:
-                ClientProxyCore.playersWithFrequencyModule.add((String) packetReadout[0]);
-                break;
-            case 17:
-                ClientProxyCore.playersWithFrequencyModule.remove(packetReadout[0]);
+            default:
                 break;
             }
+
+            ClientProxyCore.playerItemData.add(gearData);
+
             break;
-        case UNUSED_1:
+        case UNUSED_5:
             break;
         case CLOSE_GUI:
             FMLClientHandler.instance().getClient().displayGuiScreen(null);
@@ -290,7 +311,7 @@ public class GCCorePacketHandlerClient implements IPacketHandler
                 e.printStackTrace();
             }
             break;
-        case UNUSED_2:
+        case UNUSED_6:
             break;
         case UPDATE_SPACESTATION_LIST:
             if (WorldUtil.registeredSpaceStations == null)

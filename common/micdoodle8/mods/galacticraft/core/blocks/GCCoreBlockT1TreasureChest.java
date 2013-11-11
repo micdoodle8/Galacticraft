@@ -79,7 +79,7 @@ public class GCCoreBlockT1TreasureChest extends BlockContainer implements ITileE
     @Override
     public int getRenderType()
     {
-        return GalacticraftCore.proxy.getGCTreasureChestRenderID();
+        return GalacticraftCore.proxy.getBlockRenderID(this.blockID);
     }
 
     @Override

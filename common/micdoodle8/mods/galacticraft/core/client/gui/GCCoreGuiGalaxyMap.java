@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
-import micdoodle8.mods.galacticraft.api.vector.Vector.Vector3;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.ICelestialBody;
 import micdoodle8.mods.galacticraft.api.world.ICelestialBodyRenderer;
 import micdoodle8.mods.galacticraft.api.world.IGalaxy;

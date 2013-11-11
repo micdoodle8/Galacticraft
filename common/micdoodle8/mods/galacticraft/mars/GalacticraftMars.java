@@ -33,7 +33,6 @@ import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityLaunchController;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntitySlimelingEgg;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityTerraformer;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityTreasureChest;
-import micdoodle8.mods.galacticraft.moon.items.GCMoonItems;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -126,7 +125,7 @@ public class GalacticraftMars
         GalacticraftRegistry.addDungeonLoot(2, new ItemStack(GCMarsItems.schematic, 1, 0));
         GalacticraftRegistry.addDungeonLoot(2, new ItemStack(GCMarsItems.schematic, 1, 1));
 
-        CompressorRecipes.addShapelessRecipe(new ItemStack(GCMarsItems.marsItemBasic, 1, 3), new ItemStack(GCCoreItems.heavyPlatingTier1), new ItemStack(GCMoonItems.meteoricIronIngot, 1, 1));
+        CompressorRecipes.addShapelessRecipe(new ItemStack(GCMarsItems.marsItemBasic, 1, 3), new ItemStack(GCCoreItems.heavyPlatingTier1), new ItemStack(GCCoreItems.meteoricIronIngot, 1, 1));
         CompressorRecipes.addShapelessRecipe(new ItemStack(GCMarsItems.marsItemBasic, 1, 5), new ItemStack(GCMarsItems.marsItemBasic, 1, 2));
     }
 

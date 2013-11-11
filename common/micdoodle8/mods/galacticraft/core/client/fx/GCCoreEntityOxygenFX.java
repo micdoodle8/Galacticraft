@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.client.fx;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.World;
+import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -14,20 +15,19 @@ public class GCCoreEntityOxygenFX extends EntityFX
     private final double portalPosY;
     private final double portalPosZ;
 
-    public GCCoreEntityOxygenFX(World par1World, double par2, double par4, double par6, double par8, double par10, double par12)
+    public GCCoreEntityOxygenFX(World par1World, Vector3 position, Vector3 motion, Vector3 color)
     {
-        super(par1World, par2, par4, par6, par8, par10, par12);
-        this.motionX = par8;
-        this.motionY = par10;
-        this.motionZ = par12;
-        this.portalPosX = this.posX = par2;
-        this.portalPosY = this.posY = par4;
-        this.portalPosZ = this.posZ = par6;
-        final float var14 = this.rand.nextFloat() * 0.6F + 0.4F;
+        super(par1World, position.x, position.y, position.z, motion.x, motion.y, motion.z);
+        this.motionX = motion.x;
+        this.motionY = motion.y;
+        this.motionZ = motion.z;
+        this.portalPosX = this.posX = position.x;
+        this.portalPosY = this.posY = position.y;
+        this.portalPosZ = this.posZ = position.z;
         this.portalParticleScale = this.particleScale = 0.1F;
-        this.particleRed = this.particleGreen = this.particleBlue = 1.0F * var14;
-        this.particleGreen *= 0.3F;
-        this.particleRed *= 0.9F;
+        this.particleRed = color.floatX();
+        this.particleGreen = color.floatY();
+        this.particleBlue = color.floatZ();
         this.particleMaxAge = (int) (Math.random() * 10.0D) + 40;
         this.noClip = true;
         this.setParticleTextureIndex((int) (Math.random() * 8.0D));

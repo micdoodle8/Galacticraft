@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.Iterator;
 import java.util.Random;
-import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityParachest;
 import net.minecraft.block.Block;
@@ -89,7 +88,7 @@ public class GCCoreBlockParachest extends BlockContainer implements ITileEntityP
 
             if (iinventory != null && par5EntityPlayer instanceof EntityPlayerMP)
             {
-                par5EntityPlayer.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiParachest, par1World, par2, par3, par4);
+                par5EntityPlayer.openGui(GalacticraftCore.instance, -1, par1World, par2, par3, par4);
             }
 
             return true;

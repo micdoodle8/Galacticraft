@@ -1,10 +1,12 @@
 package micdoodle8.mods.galacticraft.core.client.render.item;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.FMLClientHandler;
@@ -20,12 +22,7 @@ public class GCCoreItemRendererMeteorChunk implements IItemRenderer
     private static final ResourceLocation meteorChunkTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/meteorChunk.png");
     private static final ResourceLocation meteorChunkHotTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/meteorChunkHot.png");
 
-    protected IModelCustom meteorChunkModel;
-
-    public GCCoreItemRendererMeteorChunk(IModelCustom model)
-    {
-        this.meteorChunkModel = model;
-    }
+    private final IModelCustom meteorChunkModel = AdvancedModelLoader.loadModel(ClientProxyCore.MODEL_DIRECTORY + "meteorChunk.obj");
 
     private void renderMeteorChunk(ItemRenderType type, RenderBlocks render, ItemStack item, float translateX, float translateY, float translateZ)
     {
