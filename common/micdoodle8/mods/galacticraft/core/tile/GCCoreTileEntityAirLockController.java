@@ -233,6 +233,11 @@ public class GCCoreTileEntityAirLockController extends GCCoreTileEntityAirLock i
 
     public void unsealAirLock()
     {
+        if (this.lastProtocol == null)
+        {
+            return;
+        }
+        
         int x = this.lastProtocol.minX + (this.lastProtocol.maxX - this.lastProtocol.minX) / 2;
         int y = this.lastProtocol.minY + (this.lastProtocol.maxY - this.lastProtocol.minY) / 2;
         int z = this.lastProtocol.minZ + (this.lastProtocol.maxZ - this.lastProtocol.minZ) / 2;
