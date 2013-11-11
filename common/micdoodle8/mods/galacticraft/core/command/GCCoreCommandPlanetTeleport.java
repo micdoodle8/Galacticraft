@@ -37,7 +37,7 @@ public class GCCoreCommandPlanetTeleport extends CommandBase
         {
             try
             {
-                playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(icommandsender.getCommandSenderName());
+                playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(astring[0]);
 
                 if (playerBase != null)
                 {
@@ -58,6 +58,10 @@ public class GCCoreCommandPlanetTeleport extends CommandBase
                     playerBase.mountEntity(null);
 
                     CommandBase.notifyAdmins(icommandsender, "commands.dimensionteleport", new Object[] { String.valueOf(EnumColor.GREY + "[" + playerBase.getEntityName()), "]" });
+                }
+                else
+                {
+                    throw new Exception("Could not find player with name: " + astring[0]);
                 }
             }
             catch (final Exception var6)
