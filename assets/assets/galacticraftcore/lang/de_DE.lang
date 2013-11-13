@@ -10,7 +10,6 @@ item.oxygenTankHeavyEmpty.name=Leerer grosser Sauerstofftank
 item.oxygenMask.name=Sauerstoffmaske
 item.spaceship.name=Stufe-1-Rakete
 item.sensorGlasses.name=Sensorbrille
-
 item.canister.tin.name=Zinnkanister
 item.canister.copper.name=Kupferkanister
 item.airVent.name=Lüftungsventil
@@ -118,6 +117,7 @@ item.steel_boots.name=Stahlstiefel
 # BLOCKS
 tile.treasureChest.name=Schatztruhe
 tile.landingPad.landingpad.name=Raketenstartrampe
+tile.landingPadFull.name=Raketenstartrampe
 tile.unlitTorch.name=Fackel
 tile.unlitTorchLit.name=Fackel
 tile.distributor.name=Sauerstoffverteiler
@@ -137,7 +137,6 @@ tile.crudeOilStill.name=Rohöl
 tile.crudeOilMoving.name=Rohöl
 tile.refinery.name=Raffinerie
 tile.fuelLoader.name=Treibstofflader
-tile.oxygenCompressor.name=Sauerstoffkompressor
 tile.sapling2.oak.name=Eichensetzling
 tile.sapling2.spruce.name=Fichtensetzling
 tile.sapling2.birch.name=Birkensetzling
@@ -171,6 +170,7 @@ tile.machine.2.name=Elektrischer Ofen
 tile.machine.3.name=Kompressor
 tile.machine2.4.name=Elektrischer Kompressor
 tile.machine2.5.name=Schaltkreisfabrikator
+tile.machine2.6.name=Sauerstoff-Speichermodul
 tile.aluminumWire.name=Aluminiumkabel
 tile.aluminumWireHeavy.name=Schweres Aluminiumkabel
 tile.glowstoneTorch.name=Glowstonefackel
@@ -183,6 +183,12 @@ tile.dummyblock.launchPad.name=Raketenstartrampe
 tile.dummyblock.nasaWorkbench.name=NASA-Werkbank
 tile.dummyblock.solar.name=Solarmodul
 tile.dummyblock.cryogenicChamber.name=Kältekammer
+tile.gcBlockCore.copperBlock.name=Kupferblock
+tile.gcBlockCore.tinBlock.name=Zinnblock
+tile.gcBlockCore.aluminumBlock.name=Aluminiumblock
+tile.fuel.name=Treibstoff
+tile.oxygenCompressor.0.name=Sauerstoffkompressor
+tile.oxygenCompressor.1.name=Sauerstoffdekompressor
 
 # ENTITIES
 entity.GalacticraftCore.EvolvedSpider.name=Entwickelte Spinne
@@ -214,8 +220,6 @@ death.attack.oxygenSuffocation=%1$s ist der Sauerstoff ausgegangen!
 galaxy.blockyway.name=The Blocky Way
 
 # OTHER
-newversion.message1.name=\u00a77New \u00a73Galacticraft \u00a77version available! v
-newversion.message2.name=Eine neue Version von Galacticraft ist verfügbar! v
 newversion.failed.name=Galacticraft update check fehlgeschlagen! Veruche es in 15 Sekunden erneut...
 newversion.success.name=Neue Galacticraft-Version gefunden:
 
@@ -248,6 +252,7 @@ container.lander.name=Weltraum-Lander
 container.spaceship.name=Stufe-1-Rakete
 container.solarbasic.name=Basis-Solarmodul
 container.solaradvanced.name=Fortgeschrittenes Solarmodul
+container.oxygendecompressor.name=Sauerstoffdekompressor
 
 gui.message.out.name=Out
 gui.message.in.name=In
