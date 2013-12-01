@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import mekanism.api.gas.Gas;
+import mekanism.api.gas.GasRegistry;
 import mekanism.api.transmitters.TransmitterNetworkRegistry;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.recipe.CircuitFabricatorRecipes;
@@ -188,6 +190,8 @@ public class GalacticraftCore
     public static Fluid gcFluidFuel;
     public static Fluid fluidOil;
     public static Fluid fluidFuel;
+    
+    public static Gas gasOxygen;
 
     public static HashMap<String, ItemStack> itemList = new HashMap<String, ItemStack>();
     public static HashMap<String, ItemStack> blocksList = new HashMap<String, ItemStack>();
@@ -307,6 +311,17 @@ public class GalacticraftCore
         if (GCCoreConfigManager.enableSiliconOreGen)
         {
             GameRegistry.registerWorldGenerator(new GCCoreOverworldGenerator(GCCoreBlocks.decorationBlocks, 8, 3, 0, 25, 7));
+        }
+        
+        Gas oxygen = GasRegistry.getGas("oxygen");
+        
+        if (oxygen == null)
+        {
+            GalacticraftCore.gasOxygen = GasRegistry.register(new Gas("oxygen")).registerFluid();
+        }
+        else
+        {
+            GalacticraftCore.gasOxygen = oxygen;
         }
     }
 

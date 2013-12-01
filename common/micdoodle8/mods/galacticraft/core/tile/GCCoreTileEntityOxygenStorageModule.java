@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
-import mekanism.api.gas.EnumGas;
+import mekanism.api.gas.GasStack;
 import mekanism.api.gas.GasTransmission;
 import mekanism.api.gas.IGasAcceptor;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -13,7 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.core.vector.VectorHelper;
@@ -49,14 +48,14 @@ public class GCCoreTileEntityOxygenStorageModule extends GCCoreTileEntityOxygen 
         if (!this.worldObj.isRemote)
         {
             int gasToSend = Math.min(this.storedOxygen, GCCoreTileEntityOxygenStorageModule.OUTPUT_PER_TICK);
-
-            this.storedOxygen -= gasToSend - GasTransmission.emitGasToNetwork(EnumGas.OXYGEN, gasToSend, this, this.getOxygenInputDirection().getOpposite());
+            GasStack toSend = new GasStack(GalacticraftCore.gasOxygen, gasToSend);
+            this.storedOxygen -= GasTransmission.emitGasToNetwork(toSend, this, this.getOxygenInputDirection().getOpposite());
 
             final TileEntity tileEntity = VectorHelper.getTileEntityFromSide(this.worldObj, new Vector3(this), this.getOxygenInputDirection().getOpposite());
 
             if (tileEntity instanceof IGasAcceptor)
             {
-                if (((IGasAcceptor) tileEntity).canReceiveGas(this.getOxygenInputDirection(), EnumGas.OXYGEN))
+                if (((IGasAcceptor) tileEntity).canReceiveGas(this.getOxygenInputDirection(), GalacticraftCore.gasOxygen))
                 {
                     double sendingGas = 0;
 
@@ -69,7 +68,7 @@ public class GCCoreTileEntityOxygenStorageModule extends GCCoreTileEntityOxygen 
                         sendingGas = this.storedOxygen;
                     }
 
-                    this.storedOxygen -= sendingGas - ((IGasAcceptor) tileEntity).transferGasToAcceptor(MathHelper.floor_double(sendingGas), EnumGas.OXYGEN);
+                    this.storedOxygen -= sendingGas - ((IGasAcceptor) tileEntity).receiveGas(new GasStack(GalacticraftCore.gasOxygen, (int)Math.floor(sendingGas)));
                 }
             }
         }

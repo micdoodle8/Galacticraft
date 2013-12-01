@@ -13,6 +13,7 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.world.ChunkEvent;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.registry.TickRegistry;
@@ -111,7 +112,7 @@ public class TransmitterNetworkRegistry implements ITickHandler
 		@ForgeSubscribe
 		public void onChunkLoad(ChunkEvent.Load event)
 		{
-			if(event.getChunk() != null)
+			if(event.getChunk() != null && !event.world.isRemote)
 			{
 				int x = event.getChunk().xPosition;
 				int z = event.getChunk().zPosition;
@@ -140,17 +141,14 @@ public class TransmitterNetworkRegistry implements ITickHandler
 	            {
 			    	Map copy = (Map)((HashMap)c.chunkTileEntityMap).clone();
 			    	
-	                for(Object obj : copy.values())
+	                for(Iterator iter = c.chunkTileEntityMap.values().iterator(); iter.hasNext();)
 	                {
-	                    if(obj instanceof TileEntity)
+	                	Object obj = iter.next();
+	                	
+	                    if(obj instanceof ITransmitter)
 	                    {
-	                        TileEntity tileEntity = (TileEntity)obj;
-	
-	                        if(tileEntity instanceof ITransmitter)
-	                        {
-	                            ((ITransmitter)tileEntity).refreshTransmitterNetwork();
-	                            ((ITransmitter)tileEntity).chunkLoad();
-	                        }
+                            ((ITransmitter)obj).refreshTransmitterNetwork();
+                            ((ITransmitter)obj).chunkLoad();
 	                    }
 	                }
 	            }

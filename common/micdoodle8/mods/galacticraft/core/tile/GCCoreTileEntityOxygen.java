@@ -1,12 +1,15 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import mekanism.api.gas.EnumGas;
+import mekanism.api.gas.Gas;
+import mekanism.api.gas.GasStack;
 import mekanism.api.gas.IGasAcceptor;
+import mekanism.api.gas.IGasStorage;
 import mekanism.api.gas.ITubeConnection;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.ForgeDirection;
 
-public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectric implements IGasAcceptor, ITubeConnection
+public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectric implements IGasAcceptor, ITubeConnection, IGasStorage
 {
     public int maxOxygen;
     public int oxygenPerTick;
@@ -54,9 +57,9 @@ public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectric im
     }
 
     @Override
-    public boolean canReceiveGas(ForgeDirection side, EnumGas type)
+    public boolean canReceiveGas(ForgeDirection side, Gas type)
     {
-        return this.getOxygenInputDirection() != null && side == this.getOxygenInputDirection() && type == EnumGas.OXYGEN;
+        return this.getOxygenInputDirection() != null && side == this.getOxygenInputDirection() && type.getName().equals("oxygen");
     }
 
     @Override
@@ -66,29 +69,29 @@ public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectric im
     }
 
     @Override
-    public int transferGasToAcceptor(int amount, EnumGas type)
+    public int receiveGas(GasStack stack)
     {
         GCCoreTileEntityOxygen.timeSinceOxygenRequest = 20;
 
-        if (this.shouldPullOxygen() && type == EnumGas.OXYGEN)
+        if (this.shouldPullOxygen() && stack.getGas().equals(GalacticraftCore.gasOxygen))
         {
             int rejectedOxygen = 0;
             final int requiredOxygen = this.maxOxygen - this.storedOxygen;
 
-            if (amount <= requiredOxygen)
+            if (stack.amount <= requiredOxygen)
             {
-                this.storedOxygen += amount;
+                this.storedOxygen += stack.amount;
             }
             else
             {
                 this.storedOxygen += requiredOxygen;
-                rejectedOxygen = amount - requiredOxygen;
+                rejectedOxygen = stack.amount - requiredOxygen;
             }
 
             return rejectedOxygen;
         }
 
-        return amount;
+        return stack.amount;
     }
 
     @Override
@@ -103,5 +106,29 @@ public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectric im
     {
         super.writeToNBT(nbt);
         nbt.setInteger("storedOxygen", this.storedOxygen);
+    }
+
+    @Override
+    public GasStack getGas(Object... data)
+    {
+        return new GasStack(GalacticraftCore.gasOxygen, this.storedOxygen);
+    }
+
+    @Override
+    public void setGas(GasStack stack, Object... data)
+    {
+        if (stack == null)
+        {
+            this.storedOxygen = 0;
+            return;
+        }
+        
+        this.storedOxygen = stack.amount;
+    }
+
+    @Override
+    public int getMaxGas(Object... data)
+    {
+        return this.maxOxygen;
     }
 }

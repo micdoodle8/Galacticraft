@@ -3,29 +3,37 @@ package mekanism.api.transmitters;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+import mekanism.api.IClientTicker;
 import mekanism.api.Object3D;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.Event;
+import cpw.mods.fml.common.FMLCommonHandler;
 
-public abstract class DynamicNetwork<A, N> implements ITransmitterNetwork<A, N>
+public abstract class DynamicNetwork<A, N> implements ITransmitterNetwork<A, N>, IClientTicker
 {
 	public HashSet<ITransmitter<N>> transmitters = new HashSet<ITransmitter<N>>();
 	
 	public HashSet<A> possibleAcceptors = new HashSet<A>();
 	public HashMap<A, ForgeDirection> acceptorDirections = new HashMap<A, ForgeDirection>();
 	
+	private List<DelayQueue> updateQueue = new ArrayList<DelayQueue>();
+	
 	protected int ticksSinceCreate = 0;
 	
 	protected boolean fixed = false;
+	
+	protected boolean needsUpdate = false;
 	
 	protected abstract ITransmitterNetwork<A, N> create(ITransmitter<N>... varTransmitters);
 	
@@ -55,9 +63,15 @@ public abstract class DynamicNetwork<A, N> implements ITransmitterNetwork<A, N>
 		try {
 			ITransmitter<N> aTransmitter = transmitters.iterator().next();
 			
-			if(aTransmitter instanceof TileEntity && !((TileEntity)aTransmitter).worldObj.isRemote)
+			if(aTransmitter instanceof TileEntity)
 			{
-				TransmitterNetworkRegistry.getInstance().registerNetwork(this);			
+				if(!((TileEntity)aTransmitter).worldObj.isRemote)
+				{
+					TransmitterNetworkRegistry.getInstance().registerNetwork(this);			
+				}
+				else {
+					MinecraftForge.EVENT_BUS.post(new ClientTickUpdate(this, (byte)1));
+				}
 			}
 		} catch(NoSuchElementException e) {}
 	}
@@ -66,7 +80,14 @@ public abstract class DynamicNetwork<A, N> implements ITransmitterNetwork<A, N>
 	public void deregister()
 	{
 		transmitters.clear();
-		TransmitterNetworkRegistry.getInstance().removeNetwork(this);
+		
+		if(FMLCommonHandler.instance().getEffectiveSide().isServer())
+		{
+			TransmitterNetworkRegistry.getInstance().removeNetwork(this);
+		}
+		else {
+			MinecraftForge.EVENT_BUS.post(new ClientTickUpdate(this, (byte)0));
+		}
 	}
 	
 	@Override
@@ -94,6 +115,25 @@ public abstract class DynamicNetwork<A, N> implements ITransmitterNetwork<A, N>
 				fixMessedUpNetwork(transmitters.iterator().next());
 			}
 		}
+		
+		if(FMLCommonHandler.instance().getEffectiveSide().isServer())
+		{
+			Iterator<DelayQueue> i = updateQueue.iterator();
+			
+			while(i.hasNext())
+			{
+				DelayQueue q = i.next();
+				
+				if(q.delay > 0)
+				{
+					q.delay--;
+				}
+				else {
+					needsUpdate = true;
+					i.remove();
+				}
+			}
+		}
 	}
 	
 	@Override
@@ -109,7 +149,7 @@ public abstract class DynamicNetwork<A, N> implements ITransmitterNetwork<A, N>
 			{
 				TileEntity nodeTile = node.getTileEntity(((TileEntity)transmitter).worldObj);
 
-				if(TransmissionType.checkTransmissionType(nodeTile, getTransmissionType(), (TileEntity) transmitter))
+				if(TransmissionType.checkTransmissionType(nodeTile, getTransmissionType(), (TileEntity)transmitter))
 				{
 					((ITransmitter<N>)nodeTile).removeFromTransmitterNetwork();
 					newTransporters.add((ITransmitter<N>)nodeTile);
@@ -180,7 +220,7 @@ public abstract class DynamicNetwork<A, N> implements ITransmitterNetwork<A, N>
 						}
 					}
 					
-					ITransmitterNetwork<A, N> newNetwork = create(newNetCables);					
+					ITransmitterNetwork<A, N> newNetwork = create(newNetCables);
 					newNetwork.refresh();
 				}
 			}
@@ -193,6 +233,51 @@ public abstract class DynamicNetwork<A, N> implements ITransmitterNetwork<A, N>
 	public void setFixed(boolean value)
 	{
 		fixed = value;
+	}
+	
+	@Override
+	public boolean needsTicks()
+	{
+		return getSize() > 0;
+	}
+	
+	@Override
+	public void clientTick() 
+	{
+		ticksSinceCreate++;
+		
+		if(ticksSinceCreate == 5 && getSize() > 0)
+		{
+			TileEntity tile = (TileEntity)transmitters.iterator().next();
+			MinecraftForge.EVENT_BUS.post(new NetworkClientRequest(tile));
+		}
+	}
+	
+	public static class ClientTickUpdate extends Event
+	{
+		public DynamicNetwork network;
+		public byte operation; /*0 remove, 1 add*/
+		
+		public ClientTickUpdate(DynamicNetwork net, byte b)
+		{
+			network = net;
+			operation = b;
+		}
+	}
+	
+	public static class NetworkClientRequest extends Event
+	{
+		public TileEntity tileEntity;
+		
+		public NetworkClientRequest(TileEntity tile)
+		{
+			tileEntity = tile;
+		}
+	}
+	
+	public void addUpdate(EntityPlayer player)
+	{
+		updateQueue.add(new DelayQueue(player));
 	}
 	
 	public static class NetworkFinder
@@ -216,7 +301,7 @@ public abstract class DynamicNetwork<A, N> implements ITransmitterNetwork<A, N>
 			{
 			    for(int i = 0; i < ignore.length; i++)
 			    {
-			        this.toIgnore.add(ignore[i]);
+			        toIgnore.add(ignore[i]);
 			    }
 			}
 		}
@@ -252,6 +337,18 @@ public abstract class DynamicNetwork<A, N> implements ITransmitterNetwork<A, N>
 			loopAll(start);
 			
 			return iterated;
+		}
+	}
+	
+	public static class DelayQueue
+	{
+		public EntityPlayer player;
+		public int delay;
+		
+		public DelayQueue(EntityPlayer p)
+		{
+			player = p;
+			delay = 5;
 		}
 	}
 }
