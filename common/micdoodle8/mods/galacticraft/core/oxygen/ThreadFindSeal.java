@@ -63,7 +63,7 @@ public class ThreadFindSeal extends Thread
 
                 if (this.sealed && blockID == 0)
                 {
-                    this.world.setBlock(checkedVec.getPosition().intX(), checkedVec.getPosition().intY(), checkedVec.getPosition().intZ(), GCCoreBlocks.breatheableAir.blockID, 0, 2);
+                    this.world.setBlock(checkedVec.getPosition().intX(), checkedVec.getPosition().intY(), checkedVec.getPosition().intZ(), GCCoreBlocks.breatheableAir.blockID, 0, 3);
                 }
             }
         }
@@ -78,7 +78,7 @@ public class ThreadFindSeal extends Thread
 
                 if (blockID == GCCoreBlocks.breatheableAir.blockID)
                 {
-                    this.world.setBlock(checkedVec.getPosition().intX(), checkedVec.getPosition().intY(), checkedVec.getPosition().intZ(), 0, 0, 2);
+                    this.world.setBlock(checkedVec.getPosition().intX(), checkedVec.getPosition().intY(), checkedVec.getPosition().intZ(), 0, 0, 3);
                 }
             }
         }
