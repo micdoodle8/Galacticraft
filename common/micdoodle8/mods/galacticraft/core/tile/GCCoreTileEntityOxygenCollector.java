@@ -113,7 +113,7 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityOxygen impl
 
                 this.lastOxygenCollected = (float) power;
 
-                this.storedOxygen += power;
+                this.storedOxygen = (int) Math.max(Math.min(this.storedOxygen + power, this.maxOxygen), 0);
             }
             else
             {
