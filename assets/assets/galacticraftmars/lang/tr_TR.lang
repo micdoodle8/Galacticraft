@@ -1,0 +1,86 @@
+# Galacticraft Mars Language File = TURKEY TURKISH
+
+# GENERAL ITEMS
+item.rawDesh.name=Arıtılmamış Desh
+item.deshStick.name=Desh Çubuğu
+item.ingotDesh.name=Desh Cevheri
+item.spaceshipTier2.t2Rocket.name=Tier 2 Roketi
+item.reinforcedPlateT2.name=Ağır Plaka
+item.tier2.desc=Tier 2
+item.slimelingCargo.name=Slimeling Envanter Çantası
+item.key.T2.name=Tier 2 Zindan Anahtarı
+item.compressedDesh.name=Sıkıştırılmış Desh
+item.spaceshipTier2.cargoRocket.name=Kargo Roketi
+
+# TOOLS
+item.deshPick.name=Desh Kazma
+item.deshAxe.name=Desh Balta
+item.deshHoe.name=Desh Çapa
+item.deshSpade.name=Desh Kürek
+item.deshSword.name=Desh Kılıç
+
+# ARMOR
+item.deshHelmet.name=Desh Kask
+item.deshChestplate.name=Desh Zırh
+item.deshLeggings.name=Desh Pantolon
+item.deshBoots.name=Desh Bot
+
+# BLOCKS
+tile.mars.deshmars.name=Desh Cevheri
+tile.mars.coppermars.name=Bakır Cevheri
+tile.mars.tinmars.name=Kalay Cevheri
+tile.mars.ironmars.name=Demir Cevheri
+tile.mars.marscobblestone.name=Kırıktaş
+tile.mars.marsstone.name=Mars Taşı
+tile.mars.marsdirt.name=Mars Yeraltı Kayası
+tile.mars.marsgrass.name=Mars Yüzey Kayası
+tile.mars.marsdeco.name=Desh Bloğu
+tile.mars.marsdungeon.name=Zindan Duvarı
+tile.treasureT2.name=Tier 2 Hazine Sandığı
+tile.slimelingEgg.redEgg.name=Kırmızı Slimeling Yumurtası
+tile.slimelingEgg.blueEgg.name=Mavi Slimeling Yumurtası
+tile.slimelingEgg.yellowEgg.name=Sarı Slimeling Yumurtası
+tile.marsMachine.0.name=Terraformer
+tile.marsMachine.1.name=Kriyojenik Odası
+tile.marsMachine.2.name=Fırlatma Kontrollü
+tile.sludge.name=Bakteriyelli Çamur
+tile.creeperEgg.name=Creeper Yumurtası
+tile.cavernVines.name=Cavernous Vines
+tile.tintedGlassPane.white.name=Beyaz Renkli İnce Cam
+tile.tintedGlassPane.orange.name=Turuncu Renkli İnce Cam
+tile.tintedGlassPane.magenta.name=Eflatun Renkli İnce Cam
+tile.tintedGlassPane.light_blue.name=Açık Mavi Renkli İnce Cam
+tile.tintedGlassPane.yellow.name=Sarı Renkli İnce Cam
+tile.tintedGlassPane.lime.name=Açık Yeşil Renkli İnce Cam
+tile.tintedGlassPane.pink.name=Pembe Renkli İnce Cam
+tile.tintedGlassPane.gray.name=Gri Renkli İnce Cam
+tile.tintedGlassPane.silver.name=Açık Gri Renkli İnce Cam
+tile.tintedGlassPane.cyan.name=Turkuaz Renkli İnce Cam
+tile.tintedGlassPane.purple.name=Mor Renkli İnce Cam
+tile.tintedGlassPane.blue.name=Mavi Renkli İnce Cam
+tile.tintedGlassPane.brown.name=Kahverengi Renkli İnce Cam
+tile.tintedGlassPane.green.name=Yeşil Renkli İnce Cam
+tile.tintedGlassPane.red.name=Kırmızı Renkli İnce Cam
+tile.tintedGlassPane.black.name=Siyah Renkli İnce Cam
+
+# GUI
+gui.choosePlanet.desc.mars=Yaşanabilir#Oksijen Bulunmuyor#Yerçekimi: %38
+item.deshPickSlime.description.name=Slimeling yumurtası hasat edebilirsiniz.
+
+gui.desc.reinforcedPlateT2.name=Tier 2
+
+itemGroup.GalacticraftMars=Galacticraft Mars
+
+dimension.Mars.name=Mars
+
+# Schematics
+schematic.rocketT3.name=Tier 3 Roketi
+schematic.cargoRocket.name=Otomatik Kargo Roketi
+
+# Entity
+entity.Sludgeling.name=Sludgeling
+entity.Slimeling.name=Slimeling
+entity.CreeperBoss.name=Evrimleşmiş Creeper Patronu
+
+# Container
+container.launchcontroller.name=Fırlatma Kontrollü
