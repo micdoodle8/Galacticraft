@@ -447,7 +447,7 @@ public class ClientProxyCore extends CommonProxyCore
         {
             return ClientProxyCore.renderIdLandingPad;
         }
-        else if (blockID == GCCoreBlocks.unlitTorch.blockID || blockID == GCCoreBlocks.unlitTorchLit.blockID)
+        else if (blockID == GCCoreBlocks.unlitTorch.blockID || blockID == GCCoreBlocks.unlitTorchLit.blockID || blockID == GCCoreBlocks.glowstoneTorch.blockID)
         {
             return ClientProxyCore.renderIdTorchUnlit;
         }
