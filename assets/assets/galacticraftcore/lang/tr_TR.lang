@@ -1,0 +1,347 @@
+# Galacticraft Core Language File = TURKEY TURKISH
+
+# GENERAL ITEMS
+item.oxygenTankLightFull.name=Işıklı Oksijen Tankı
+item.oxygenTankLightEmpty.name=Boş Işıklı Oksijen Tankı
+item.oxygenTankMedFull.name=Orta Büyüklükte Oksijen Tankı
+item.oxygenTankMedEmpty.name=Boş Orta Büyüklükte Oksijen Tankı
+item.oxygenTankHeavyFull.name=Ağır Oksijen Tankı
+item.oxygenTankHeavyEmpty.name=Boş Ağır Oksijen Tankı
+item.oxygenMask.name=Oksijen Maskesi
+item.spaceship.name=Tier 1 Roket
+item.sensorGlasses.name=Sensörlü Gözlük
+item.canister.tin.name=Kalay Teneke Kutusu
+item.canister.copper.name=Bakır Teneke Kutusu
+item.airVent.name=Oksijen Havalandırması
+item.airFan.name=Oksijen Fan
+item.oxygenConcentrator.name=Oksijen Konsantratörü
+item.heavyPlating.name=Ağır Plaka
+item.engine.tier1engine.name=Tier 1 Roket Motoru
+item.engine.tier1booster.name=Tier 1 Hızlandırı
+item.rocketFins.name=Roket Kanatları
+item.noseCone.name=Roket Burnu
+item.sensorLens.name=Sensör Merceği
+item.oxygenGear.name=Oksijen Takımı
+item.flag.american.name=Amerikan Bayrağı
+item.flag.black.name=Siyah Bayrak
+item.flag.blue.name=Açık Mavi Bayrak
+item.flag.green.name=Açık Yeşil Bayrak
+item.flag.brown.name=Kahverengi Bayrak
+item.flag.darkblue.name=Mavi Bayrak
+item.flag.darkgray.name=Gri Bayrak
+item.flag.darkgreen.name=Yeşil Bayrak
+item.flag.gray.name=Açık Gri Bayrak
+item.flag.magenta.name=Eflatun Bayrak
+item.flag.orange.name=Turuncu Bayrak
+item.flag.pink.name=Pembe Bayrak
+item.flag.purple.name=Mor Bayrak
+item.flag.red.name=Kırmızı Bayrak
+item.flag.teal.name=Turkuaz Bayrak
+item.flag.yellow.name=Sarı Bayrak
+item.flag.white.name=Bayrak
+item.parachute_plain.name=Paraşüt
+item.parachute_black.name=Siyah Paraşüt
+item.parachute_blue.name=Açık Mavi Paraşüt
+item.parachute_lime.name=Açık Yeşil Paraşüt
+item.parachute_brown.name=Kahverengi Paraşüt
+item.parachute_darkblue.name=Mavi Paraşüt
+item.parachute_darkgray.name=Gri Paraşüt
+item.parachute_darkgreen.name=Yeşil Paraşüt
+item.parachute_gray.name=Açık Gri Paraşüt
+item.parachute_magenta.name=Eflatun Paraşüt
+item.parachute_orange.name=Turuncu Paraşüt
+item.parachute_pink.name=Pembe Paraşüt
+item.parachute_purple.name=Mor Paraşüt
+item.parachute_red.name=Kırmızı Paraşüt
+item.parachute_teal.name=Turkuaz Paraşüt
+item.parachute_yellow.name=Sarı Paraşüt
+item.steelPole.name=Çelik Direk
+item.canvas.name=Parşomen
+item.buggy.name=Buggy
+item.emptyLiquidCanister.name=Boş Sıvı Silindiri
+item.oilCanisterPartial.name=Kısmen Dolu Petrol Silindiri
+item.fuelCanisterPartial.name=Kısmen Dolu Yakıt Silindiri
+item.oilCanister.name=Dolu Petrol Silindiri
+item.fuelCanister.name=Dolu Yakıt Silindiri
+item.oilExtractor.name=Taşınabilir Petrol Çıkarıcı
+item.schematic.name=NASA Çalışma Masası Şematiği
+item.fuel.name=Roket Yakıtı
+item.key.T1.name=Tier 1 Zindan Anahtarı
+item.buggymat.wheel.name=Buggy Tekerleği
+item.buggymat.seat.name=Buggy Koltuğu
+item.buggymat.storage.name=Buggy Depolama Kutusu
+item.basicItem.solar_module_0.name=Güneş Paneli
+item.basicItem.solar_module_1.name=Çoklu Güneş Paneli
+item.basicItem.ingotCopper.name=Bakır Külçesi
+item.basicItem.ingotTin.name=Kalay Külçesi
+item.basicItem.ingotAluminum.name=Alüminyum Külçesi
+item.basicItem.ingotSteel.name=Çelik Külçesi
+item.basicItem.ingotBronze.name=Bronz Külçesi
+item.basicItem.compressedCopper.name=Sıkıştırılmış Bakır
+item.basicItem.compressedTin.name=Sıkıştırılmış Kalay
+item.basicItem.compressedAluminum.name=Sıkıştırılmış Alüminyum
+item.basicItem.compressedSteel.name=Sıkıştırılmış Çelik
+item.basicItem.compressedBronze.name=Sıkıştırılmış Bronz
+item.basicItem.compressedIron.name=Sıkıştırılmış Demir
+item.basicItem.waferSolar.name=Mavi Güneş Wafer'ı
+item.basicItem.waferBasic.name=Basit Wafer
+item.basicItem.waferAdvanced.name=Gelişmiş Wafer
+item.basicItem.rawSilicon.name=Ham Silikon
+item.tier1.desc=Tier 1
+item.battery.name=Pil
+item.infiniteBattery.name=Sonsuz Pil
+item.meteorChunk.name=Throwable Meteor Chunk
+item.meteorChunkHot.name=Throwable Meteor Chunk
+item.hotDescription.name=Sıcak
+item.basicItem.dehydratedApple.name=Susuz Elma
+item.basicItem.dehydratedCarrot.name=Susuz Havuç
+item.basicItem.dehydratedMelon.name=Susuz Karpuz
+item.basicItem.dehydratedPotato.name=Susuz Patates
+item.basicItem.cannedFood.name=Uzay Yiyecekleri
+item.basicItem.frequencyModule.name=Frekans Modülü
+item.standardWrench.name=Standart İngiliz anahtarı
+
+# TOOLS
+item.steel_pickaxe.name=Ağır Kazma
+item.steel_axe.name=Ağır Balta
+item.steel_hoe.name=Ağır Çapa
+item.steel_shovel.name=Ağır Kürek
+item.steel_sword.name=Ağır Kılıç
+
+# ARMOR
+item.steel_helmet.name=Ağır Kask
+item.steel_chestplate.name=Ağır Zırh
+item.steel_leggings.name=Ağır Pantalon
+item.steel_boots.name=Ağır Bot
+
+# BLOCKS
+tile.treasureChest.name=Hazine Sandığı
+tile.landingPad.landingPad.name=Roket Fırlatma Pedi
+tile.landingPadFull.name=Roket Fırlatma Pedi
+tile.unlitTorch.name=Meşale
+tile.unlitTorchLit.name=Meşale
+tile.distributor.name=Oksijen Kabarcık Distribütörü
+tile.oxygenPipe.name=Oksijen Borusu
+tile.oxygenCollector.name=Oksijen Toplayıcısı
+tile.fallenMeteor.name=Düşmüş Meteor
+tile.rocketWorkbench.name=NASA Çalışma Masası
+tile.gcBlockCore.decoblock1.name=Kalay Dekorasyon Bloğu
+tile.gcBlockCore.decoblock2.name=Kalay Dekorasyon Bloğu
+tile.gcBlockCore.oreCopper.name=Bakır Cevheri
+tile.gcBlockCore.oreTin.name=Kalay Cevheri
+tile.gcBlockCore.oreAluminum.name=Alüminyum Cevheri
+tile.gcBlockCore.oreSilicon.name=Silikon Cevheri
+tile.airLockFrame.name=Hava Kilidi Çerçevesi
+tile.airLockSeal.name=Hava Kilidi Mühürü
+tile.crudeOilStill.name=Ham Petrol
+tile.crudeOilMoving.name=Ham Petrol
+tile.refinery.name=Rafineri
+tile.fuelLoader.name=Yakıt Yükleyicisi
+tile.sapling2.oak.name=Meşe Fidanı
+tile.sapling2.spruce.name=Ladin Ağacı Fidanı
+tile.sapling2.birch.name=Huş Ağacı Fidanı
+tile.sapling2.jungle.name=Orman Ağacı Fidanı
+tile.sealer.name=Oksijen Verici
+tile.enclosed.oxygenPipe.name=Mühürlenebilir Oksijen Borusu
+tile.oxygenDetector.name=Oksijen Dedektörü
+tile.cargo.loader.name=Kargo Yükleyici
+tile.cargo.unloader.name=Kargo Boşaltıcı
+tile.landingPad.buggyFueler.name=Buggy Akaryakıt Pedi
+tile.landingPad.cargoPad.name=Kargo Roket Pedi
+tile.enclosed.copperCable.name=Mühürlenebilir Bakır Kablosu
+tile.enclosed.goldCable.name=Mühürlenebilir Altın Kablosu
+tile.enclosed.hvCable.name=Mühürlenebilir HV Kablosu
+tile.enclosed.glassFibreCable.name=Mühürlenebilir Cam Fiber Kablosu
+tile.enclosed.lvCable.name=Mühürlenebilir Ultra Düşük Akım Kablosu
+tile.enclosed.PipeItemsCobblestone.name=Mühürlenebilir Kırıktaş Taşıma Borusu
+tile.enclosed.PipeItemsStone.name=Mühürlenebilir Taş Taşıma Boru
+tile.enclosed.PipeFluidsCobblestone.name=Mühürlenebilir Kırıktaş Sıvı Borusu
+tile.enclosed.PipeFluidsStone.name=Mühürlenebilir Stone Sıvı Borusu
+tile.enclosed.PipePowerStone.name=Mühürlenebilir Taş İletken Borusu
+tile.enclosed.PipePowerGold.name=Mühürlenebilir Altın İletken Borusu
+tile.solar.basic.name=Basit Güneş Paneli
+tile.solar.advanced.name=Gelişmiş Güneş Paneli
+tile.parachest.name=Para Sandık
+tile.oreCopper.name=Bakır Külçesi
+tile.oreTin.name=Kalay Külçesi
+tile.machine.0.name=Kömür Jeneratörü
+tile.machine.1.name=Enerji Depolama Modülü
+tile.machine.2.name=Elektrikli Ocak
+tile.machine.3.name=Kompresör
+tile.machine2.4.name=Elektrikli Kompresör
+tile.machine2.5.name=Devre Fabrikatörü
+tile.machine2.6.name=Oksijen Depolama Modülü
+tile.aluminumWire.name=Alüminyum Tel
+tile.aluminumWireHeavy.name=Ağır Alüminyum Teli
+tile.glowstoneTorch.name=Işık Taşı Meşale
+tile.enclosed.aluminumWire.name=Mühürlenebilir Alüminyum Teli
+tile.enclosed.aluminumWireHeavy.name=Mühürlenebilir Ağır Alüminyum Teli
+tile.enclosed.meCable.name=Mühürlenebilir ME Kablo
+tile.airLockController.name=Hava Kilidi Kontrolörü
+tile.dummyblock.spaceStationBase.name=Uzay İstasyonu
+tile.dummyblock.launchPad.name=Roket Fırlatma Pedi
+tile.dummyblock.nasaWorkbench.name=NASA Çalışma Masası
+tile.dummyblock.solar.name=Güneş Paneli
+tile.dummyblock.cryogenicChamber.name=Kriyojenik Odası
+tile.gcBlockCore.copperBlock.name=Bakır Blok
+tile.gcBlockCore.tinBlock.name=Kalay Blok
+tile.gcBlockCore.aluminumBlock.name=Alüminyum Blok
+tile.fuel.name=Yakıt
+tile.oxygenCompressor.0.name=Oksijen Kompresör
+tile.oxygenCompressor.1.name=Oksijen Açıcı
+
+# ENTITIES
+entity.GalacticraftCore.EvolvedSpider.name=Gelişmiş Örümcek
+entity.GalacticraftCore.EvolvedZombie.name=Gelişmiş Zombi
+entity.GalacticraftCore.EvolvedCreeper.name=Gelişmiş Creeper
+entity.GalacticraftCore.EvolvedSkeleton.name=Gelişmiş İskelet
+entity.GalacticraftCore.EvolvedSkeletonBoss.name=Gelişmiş İskelet Patronu
+entity.GalacticraftCore.AlienVillager.name=Uzaylı Köylü
+entity.GalacticraftCore.Spaceship.name=Tier 1 Roket
+entity.GalacticraftCore.GravityArrow.name=Ok
+entity.GalacticraftCore.Meteor.name=Meteor
+entity.GalacticraftCore.Buggy.name=Buggy
+entity.GalacticraftCore.Bayrak.name=Bayrak
+entity.GalacticraftCore.ParaChest.name=Para Sandık
+entity.GalacticraftCore.OxygenBubble.name=Oksijen Kabarcığı
+entity.GalacticraftCore.Lander.name=Uzay Lander
+
+# Schematics
+schematic.moonbuggy.name=Ay Taşıtı
+schematic.rocketT1.name=Tier 1 Roketi
+schematic.rocketT2.name=Tier 2 Roketi
+
+# DEATH MESSAGES
+death.attack.spaceshipExplosion=%1$s's roket havaya uçtu!
+death.attack.spaceshipExplosionB=%1$s talihsiz bir uzay gemisi kazasında öldü!
+death.attack.oxygenSuffocation=%1$s oksijen yeterli olmadığından öldü!
+
+# GALAXIES
+galaxy.blockyway.name=Bloklaşmış Yol
+
+# OTHER
+newversion.failed.name=Galacticraft güncellemesinde hata oluştu! 15 saniye sonra tekrar denenecek
+newversion.success.name=Galacticraft yeni versiyon bulundu:
+
+# KEYBINDINGS
+keybind.map.name=[GC] Galaksi Haritası
+keybind.spaceshipinv.name=[GC] Uzay Gemisinin Envanteri Açma Tuşu
+keybind.sensortoggle.name=[GC] Sensörlü Gözlük Modunu Değiştirme Tuşu
+keybind.vehicleforward.name=[GC] Araç İleri Tuşu
+keybind.vehiclebackward.name=[GC] Araç Geri Tuşu
+keybind.vehicleleft.name=[GC] Araç Sol Tuşu
+keybind.vehicleright.name=[GC] Araç Sağ Tuşu
+keybind.vehicleup.name=[GC] Araç Yukarı Tuşu
+keybind.vehicledown.name=[GC] Araç Aşağı Tuşu
+
+# CREATIVE TABS
+itemGroup.GalacticraftCore=Galacticraft
+
+# GUI
+container.cargoloader.name=Kargo Yükleyici
+container.cargounloader.name=Kargo Boşaltıcı
+container.fuelloader.name=Yakıt Yükleyicisi
+container.oxygencollector.name=Oksijen Toplayıcısı
+container.oxygencompressor.name=Oksijen Kompresör
+container.oxygendistributor.name=Oksijen Distribütörü
+container.oxygensealer.name=Oksijen Mühürleyen
+container.parachest.name=Para-Sandık
+container.refinery.name=Rafineri
+container.treasurechest.name=Hazine Sandığı
+container.lander.name=Uzay Lander
+container.spaceship.name=Tier 1 Roket
+container.solarbasic.name=Basit Güneş Paneli
+container.solaradvanced.name=Gelişmiş Güneş Paneli
+container.oxygendecompressor.name=Oksijen Açıcı
+
+gui.message.out.name=Çıkış
+gui.message.in.name=Giriş
+gui.message.status.name=Durum
+gui.message.oxoutput.name=Oksijen Çıkışı
+gui.message.oxinput.name=Oksijen Girişi
+gui.message.fuel.name=Yakıt
+gui.message.full.name=tam dolu
+gui.message.page.name=Sayfa
+gui.message.addnewsch.name=Yeni Şematik Ekle
+gui.message.generating.name=Oluşturuluyor
+gui.message.environment.name=Çevresel Kuvvetlendirme
+
+gui.status.active.name=Aktif
+gui.status.missingleaves.name=Yaprak Blokları Yetersiz
+gui.status.missingpower.name=Yeterli Enerji Yok
+gui.status.missingoxygen.name=Yeterli Oksijen Yok
+gui.status.missingtank.name=Oksijen Tankı Doğrulanamadı
+gui.status.fulltank.name=Oksijen Tankı Tam Dolu
+gui.status.unsealed.name=Mühürsüz
+gui.status.sealed.name=Mühürlü
+gui.status.unknown.name=Bilinmeyen
+gui.status.disabled.name=Kapalı
+gui.status.nofuel.name=Yülemek İçin Yakıt Yok!
+gui.status.noitems.name=Yüklemek İçin İtem Yok!
+gui.status.notargetload.name=Yüklemek İçin Hedef Yok!
+gui.status.notargetunload.name=Boşaltmak İçin Hedef Yok!
+gui.status.noinvtarget.name=Hedefin Envanteri Yok!
+gui.status.targetfull.name=Hedeflenen Araç Dolu!
+gui.status.targetempty.name=Hedeflenen Araç Boş!
+gui.status.ready.name=Hazır
+gui.status.refining.name=Rafine Ediliyor
+gui.status.idle.name=Boş
+gui.status.nooil.name=Petrol Yok
+gui.status.raining.name=Yağmurlu
+gui.status.blockedpartial.name=Güneş Kısmen Gözüküyor
+gui.status.blockedfully.name=Güneş Yok
+gui.status.collectingenergy.name=Enerji Toplanıyor
+gui.status.sealerblocked.name=Havalandırma Çıkışı Tıkalı!
+
+gui.button.enableseal.name=Mührü Etkinleştir
+gui.button.disableseal.name=Mührü Devre Dışı Bırak
+gui.button.loaditems.name=İtemları Yükle
+gui.button.stoploading.name=Yüklenmeyi Durdur
+gui.button.unloaditems.name=İtemları Boşalt
+gui.button.stopunloading.name=Boşaltmayı Durdur
+gui.button.createsstation.name=Uzay İstasyonu Yarat
+gui.button.sendtodim.name=Gitmek İçin Tıklayın
+gui.button.rename.name=Ad Değiştir
+gui.button.loadfuel.name=Yakıtı Yükle
+gui.button.refine.name=Rafine Et
+gui.button.back.name=Geri
+gui.button.next.name=İleri
+gui.button.unlockschematic.name=Şematik Kilidini Aç
+gui.button.stoprefine.name=Rafine Etmeyi Durdur
+gui.button.enable.name=Etkin
+gui.button.disable.name=Devre Dışı
+
+gui.choosePlanet.desc.overworld=Hayat Dolu#Yaşanabilir#Yerçekimi: %100
+gui.warning=UYARI!
+gui.lander.warning2=Yavaşlamak için "
+gui.lander.warning3=" tuşuna basılı tut!
+gui.lander.velocity=Giriş Hızı
+gui.lander.velocityu=m/s
+gui.oxygen.warning=Oksijen Kurulumu Geçersiz!
+gui.sensor.advanced=Gelişmiş Mod
+gui.sensor.advancedon=AÇIK
+gui.sensor.advancedoff=KAPALI
+gui.chooseplanet.cannotcreate1.name=Uzaya yaratamazsınız
+gui.chooseplanet.cannotcreate2.name=Burada İstasyon!
+gui.chooseplanet.alreadycreated1.name=Uzay istasyonu zaten var
+gui.chooseplanet.alreadycreated2.name=Yaratıldı!
+
+gui.galaxymap.movemap.name=ASWD - Haritada Haraket İçin
+gui.galaxymap.zoom.name=Fare Tekerleği - Yakınlaşma
+gui.galaxymap.select.name=Fare 1 - Gezegen Seç
+gui.galaxymap.exit.name=Esc - Haritadan Çık
+
+gui.buggy.turn.name=Sol-Sağ
+gui.buggy.accel.name=Hızlandırmak
+gui.buggy.decel.name=Yavaşlatmak
+gui.buggy.inv.name=Envanter / Yakıt Durumu
+
+# DIMENSIONS
+dimension.Overworld.name=Dünya
+dimension.Moon.name=Ay
+dimension.Sun.name=Güneş
+
+# COMMANDS
+commands.dimensionteleport=%s was sent into the atmosphere%s
+
+# </file>
