@@ -12,10 +12,11 @@ import net.minecraftforge.common.ForgeDirection;
  * A block that can rotate based on placed position and wrenching.
  * 
  * @author Calclavia
- * 
  */
-public abstract class BlockRotatable extends BlockTile
+public abstract class BlockRotatable extends BlockTile implements IRotatableBlock
 {
+	protected byte rotationMask = 60;
+
 	public BlockRotatable(int id, Material material)
 	{
 		super(id, material);
@@ -52,17 +53,36 @@ public abstract class BlockRotatable extends BlockTile
 	@Override
 	public boolean onUseWrench(World world, int x, int y, int z, EntityPlayer par5EntityPlayer, int side, float hitX, float hitY, float hitZ)
 	{
-		this.rotateBlock(world, x, y, z, ForgeDirection.getOrientation(side));
-		return true;
+		return this.rotateBlock(world, x, y, z, ForgeDirection.getOrientation(side));
 	}
 
-	public static boolean rotateBlock(World worldObj, int x, int y, int z, ForgeDirection axis, int mask)
+	@Override
+	public boolean rotateBlock(World worldObj, int x, int y, int z, ForgeDirection axis)
 	{
-		int rotMeta = worldObj.getBlockMetadata(x, y, z);
-		int masked = rotMeta & ~mask;
-		ForgeDirection orientation = ForgeDirection.getOrientation(rotMeta & mask);
+		int currentRotMeta = worldObj.getBlockMetadata(x, y, z);
+		ForgeDirection orientation = ForgeDirection.getOrientation(currentRotMeta);
 		ForgeDirection rotated = orientation.getRotation(axis);
-		worldObj.setBlockMetadataWithNotify(x, y, z, rotated.ordinal() & mask | masked, 3);
-		return true;
+		int rmeta = rotated.ordinal();
+		int rmetaBit = 1 << rmeta;
+		System.out.println(rmetaBit + ": " + (rmetaBit & this.rotationMask));
+		if ((rmetaBit & this.rotationMask) == rmetaBit)
+		{
+			worldObj.setBlockMetadataWithNotify(x, y, z, rmeta, 3);
+			return true;
+		}
+
+		return false;
+	}
+
+	@Override
+	public ForgeDirection getDirection(World world, int x, int y, int z)
+	{
+		return ForgeDirection.getOrientation(world.getBlockMetadata(x, y, z));
+	}
+
+	@Override
+	public void setDirection(World world, int x, int y, int z, ForgeDirection direction)
+	{
+		world.setBlockMetadataWithNotify(x, y, z, direction.ordinal(), 3);
 	}
 }

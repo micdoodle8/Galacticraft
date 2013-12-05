@@ -112,7 +112,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 import universalelectricity.compatibility.Compatibility;
 import universalelectricity.core.UniversalElectricity;
-import universalelectricity.prefab.ConductorChunkInitiate;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -279,7 +278,6 @@ public class GalacticraftCore
         SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicRocketT1());
         SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicMoonBuggy());
         SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicAdd());
-        ConductorChunkInitiate.register();
         Compatibility.initiate();
         TransmitterNetworkRegistry.initiate();
         this.registerCreatures();
