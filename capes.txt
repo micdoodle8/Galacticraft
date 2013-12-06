@@ -42,3 +42,4 @@ THEproWINN:capeLime
 Puggy04:capeLime
 scriptoffate14:capeRainbow
 Ohrm:capeRainbow
+SirFuzzhead:capeRainbow
