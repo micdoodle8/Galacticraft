@@ -4,6 +4,15 @@ import net.minecraft.util.ResourceLocation;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+/**
+ * GCCorePicturePage.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author mDiyo, micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class GCCorePicturePage extends GCCoreBookPage
 {
     String text;

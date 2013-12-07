@@ -27,6 +27,15 @@ import universalelectricity.core.electricity.ElectricityDisplay;
 import universalelectricity.core.electricity.ElectricityDisplay.ElectricUnit;
 import cpw.mods.fml.common.network.PacketDispatcher;
 
+/**
+ * GCMarsGuiLaunchController.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class GCMarsGuiLaunchController extends GuiContainer implements IDropboxCallback, ITextBoxCallback, ICheckBoxCallback
 {
     private static final ResourceLocation launchControllerGui = new ResourceLocation(GalacticraftMars.TEXTURE_DOMAIN, "textures/gui/launchController.png");

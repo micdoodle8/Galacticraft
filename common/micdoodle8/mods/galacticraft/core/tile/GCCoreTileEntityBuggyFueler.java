@@ -19,6 +19,15 @@ import net.minecraftforge.fluids.FluidStack;
 import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.client.FMLClientHandler;
 
+/**
+ * GCCoreTileEntityBuggyFueler.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class GCCoreTileEntityBuggyFueler extends TileEntityMulti implements IMultiBlock, IFuelable, IFuelDock, ICargoEntity
 {
     protected long ticks = 0;

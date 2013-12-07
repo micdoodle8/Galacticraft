@@ -13,6 +13,15 @@ import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 
+/**
+ * RocketT2RecipeHandler.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class RocketT2RecipeHandler extends TemplateRecipeHandler
 {
     private static final ResourceLocation rocketGuiTexture = new ResourceLocation(GalacticraftMars.TEXTURE_DOMAIN, "textures/gui/schematic_rocket_T2.png");

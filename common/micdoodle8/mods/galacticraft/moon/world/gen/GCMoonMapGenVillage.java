@@ -9,6 +9,15 @@ import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraft.world.gen.structure.StructureStart;
 import cpw.mods.fml.common.FMLLog;
 
+/**
+ * GCMoonMapGenVillage.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class GCMoonMapGenVillage extends MapGenStructure
 {
     public static List<BiomeGenBase> villageSpawnBiomes = Arrays.asList(new BiomeGenBase[] { GCMoonBiomeGenBase.moonFlat });

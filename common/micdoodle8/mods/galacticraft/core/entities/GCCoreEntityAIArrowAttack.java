@@ -6,6 +6,15 @@ import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.util.MathHelper;
 
+/**
+ * GCCoreEntityAIArrowAttack.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class GCCoreEntityAIArrowAttack extends EntityAIBase
 {
     private final EntityLiving entityHost;

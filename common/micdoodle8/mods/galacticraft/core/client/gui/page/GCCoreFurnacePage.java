@@ -10,6 +10,15 @@ import org.lwjgl.opengl.GL12;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+/**
+ * GCCoreFurnacePage.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author mDiyo, micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class GCCoreFurnacePage extends GCCoreBookPage
 {
     String text;

@@ -11,6 +11,15 @@ import net.minecraft.item.ItemStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+/**
+ * GCMarsItemAxe.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class GCMarsItemAxe extends ItemAxe
 {
     public GCMarsItemAxe(int par1, EnumToolMaterial par2EnumToolMaterial)

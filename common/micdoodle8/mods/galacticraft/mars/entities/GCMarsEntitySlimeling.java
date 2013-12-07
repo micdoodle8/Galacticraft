@@ -43,6 +43,15 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 
+/**
+ * GCMarsEntitySlimeling.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBreathable
 {
     public GCMarsInventorySlimeling slimelingInventory = new GCMarsInventorySlimeling(this);

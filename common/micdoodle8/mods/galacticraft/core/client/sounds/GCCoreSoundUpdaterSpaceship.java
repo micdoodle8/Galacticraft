@@ -7,6 +7,15 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.util.MathHelper;
 
+/**
+ * GCCoreSoundUpdaterSpaceship.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class GCCoreSoundUpdaterSpaceship implements IUpdatePlayerListBox
 {
     private final SoundManager theSoundManager;

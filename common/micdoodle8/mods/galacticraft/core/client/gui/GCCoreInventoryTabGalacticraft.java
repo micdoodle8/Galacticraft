@@ -8,6 +8,15 @@ import net.minecraft.item.ItemStack;
 import tconstruct.client.tabs.AbstractTab;
 import cpw.mods.fml.common.network.PacketDispatcher;
 
+/**
+ * GCCoreInventoryTabGalacticraft.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class GCCoreInventoryTabGalacticraft extends AbstractTab
 {
     public GCCoreInventoryTabGalacticraft()

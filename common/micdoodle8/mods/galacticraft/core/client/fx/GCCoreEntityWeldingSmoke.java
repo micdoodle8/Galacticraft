@@ -4,6 +4,15 @@ import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.World;
 
+/**
+ * GCCoreEntityWeldingSmoke.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class GCCoreEntityWeldingSmoke extends EntityFX
 {
     float smokeParticleScale;

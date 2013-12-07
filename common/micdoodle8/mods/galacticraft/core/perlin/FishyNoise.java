@@ -2,6 +2,15 @@ package micdoodle8.mods.galacticraft.core.perlin;
 
 import java.util.Random;
 
+/**
+ * FishyNoise.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author fishtaco567
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class FishyNoise
 {
 

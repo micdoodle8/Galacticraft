@@ -11,6 +11,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import universalelectricity.prefab.SlotSpecific;
 
+/**
+ * GCCoreContainerSchematic.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class GCCoreContainerSchematic extends Container
 {
     public GCCoreInventorySchematic craftMatrix = new GCCoreInventorySchematic(this);

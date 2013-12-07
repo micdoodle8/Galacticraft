@@ -11,6 +11,15 @@ import net.minecraftforge.fluids.FluidRegistry;
 import universalelectricity.core.item.IItemElectric;
 import universalelectricity.prefab.SlotSpecific;
 
+/**
+ * GCCoreContainerRefinery.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class GCCoreContainerRefinery extends Container
 {
     private final GCCoreTileEntityRefinery tileEntity;

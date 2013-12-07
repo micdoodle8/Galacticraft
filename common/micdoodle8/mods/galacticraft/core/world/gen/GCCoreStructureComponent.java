@@ -8,9 +8,12 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 
 /**
- * Copyright 2012-2013, micdoodle8
- * 
- * All rights reserved.
+ * GCCoreStructureComponent.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
 public abstract class GCCoreStructureComponent extends StructureComponent

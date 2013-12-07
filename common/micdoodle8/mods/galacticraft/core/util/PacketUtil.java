@@ -10,6 +10,15 @@ import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumP
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerServer.EnumPacketServer;
 import net.minecraft.network.packet.Packet250CustomPayload;
 
+/**
+ * PacketUtil.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class PacketUtil
 {
     public static Packet250CustomPayload createPacket(String channel, EnumPacketClient packetType, Object[] input)

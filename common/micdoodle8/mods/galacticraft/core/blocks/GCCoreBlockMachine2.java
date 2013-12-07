@@ -24,6 +24,15 @@ import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.UniversalElectricity;
 import universalelectricity.prefab.block.BlockTile;
 
+/**
+ * GCCoreBlockMachine2.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class GCCoreBlockMachine2 extends BlockTile
 {
     public static final int ELECTRIC_COMPRESSOR_METADATA = 0;

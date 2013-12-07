@@ -5,6 +5,15 @@ import java.util.Random;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.biome.WorldChunkManager;
 
+/**
+ * GCMoonComponentVillageStartPiece.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class GCMoonComponentVillageStartPiece extends GCMoonComponentVillageWell
 {
     public WorldChunkManager worldChunkMngr;

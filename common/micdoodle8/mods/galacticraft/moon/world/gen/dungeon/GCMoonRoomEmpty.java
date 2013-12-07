@@ -6,9 +6,17 @@ import micdoodle8.mods.galacticraft.core.world.gen.dungeon.GCCoreDungeonRoom;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.GCCoreMapGenDungeon;
 import net.minecraftforge.common.ForgeDirection;
 
+/**
+ * GCMoonRoomEmpty.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author fishtaco567
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class GCMoonRoomEmpty extends GCCoreDungeonRoom
 {
-
     int sizeX;
     int sizeY;
     int sizeZ;

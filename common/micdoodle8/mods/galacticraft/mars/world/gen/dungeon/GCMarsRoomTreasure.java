@@ -11,9 +11,17 @@ import net.minecraft.block.Block;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraftforge.common.ForgeDirection;
 
+/**
+ * GCMarsRoomTreasure.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class GCMarsRoomTreasure extends GCCoreDungeonRoom
 {
-
     int sizeX;
     int sizeY;
     int sizeZ;

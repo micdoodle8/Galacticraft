@@ -13,7 +13,13 @@ import org.w3c.dom.Document;
 import cpw.mods.fml.common.FMLLog;
 
 /**
- * Majority of the code is ripped from mDiyo. All credits go to him!
+ * GCCoreManualUtil.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author mDiyo, micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
  */
 public class GCCoreManualUtil
 {

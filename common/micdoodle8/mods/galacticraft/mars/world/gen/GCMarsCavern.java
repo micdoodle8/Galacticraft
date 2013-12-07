@@ -7,9 +7,12 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 
 /**
- * Copyright 2012, micdoodle8
- * 
- * All rights reserved.
+ * GCMarsCavern.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
 public class GCMarsCavern

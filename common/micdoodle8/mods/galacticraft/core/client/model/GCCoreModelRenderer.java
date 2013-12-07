@@ -10,9 +10,13 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 /**
- * Model renderer with changed rotation order to fix certain techne models.
+ * GCCoreModelRenderer.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
- * I wish there was a better way, but oh well.
  */
 public class GCCoreModelRenderer extends ModelRenderer
 {

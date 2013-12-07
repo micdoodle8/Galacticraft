@@ -20,6 +20,15 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+/**
+ * GCCoreBlockAluminumWire.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class GCCoreBlockAluminumWire extends BlockConductor
 {
     public static final String[] names = { "aluminumWire", "aluminumWireHeavy" };

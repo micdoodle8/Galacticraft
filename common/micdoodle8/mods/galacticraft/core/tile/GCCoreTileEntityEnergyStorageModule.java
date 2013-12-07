@@ -21,6 +21,15 @@ import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.network.PacketDispatcher;
 
+/**
+ * GCCoreTileEntityEnergyStorageModule.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class GCCoreTileEntityEnergyStorageModule extends GCCoreTileEntityUniversalElectrical implements IPacketReceiver, ISidedInventory
 {
     private ItemStack[] containingItems = new ItemStack[2];

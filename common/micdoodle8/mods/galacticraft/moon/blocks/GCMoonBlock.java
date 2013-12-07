@@ -27,9 +27,12 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 /**
- * Copyright 2012-2013, micdoodle8
- * 
- * All rights reserved.
+ * GCMoonBlock.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
 public class GCMoonBlock extends GCCoreBlockAdvanced implements IDetectableResource, IPlantableBlock, ITerraformableBlock

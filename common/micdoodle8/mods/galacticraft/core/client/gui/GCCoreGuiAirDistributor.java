@@ -14,9 +14,12 @@ import universalelectricity.core.electricity.ElectricityDisplay;
 import universalelectricity.core.electricity.ElectricityDisplay.ElectricUnit;
 
 /**
- * Copyright 2012-2013, micdoodle8
- * 
- * All rights reserved.
+ * GCCoreGuiAirDistributor.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
 public class GCCoreGuiAirDistributor extends GCCoreGuiContainer

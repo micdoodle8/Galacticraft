@@ -14,6 +14,15 @@ import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 
+/**
+ * BuggyRecipeHandler.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class BuggyRecipeHandler extends TemplateRecipeHandler
 {
     private static final ResourceLocation buggyGuiTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/buggybench.png");

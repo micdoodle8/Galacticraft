@@ -28,10 +28,12 @@ import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
 
 /**
- * This was taken from Universal Electricity and adapted for improvements
- * allowed by ASM.
- * 
- * @author micdoodle8, Calclavia
+ * GCCoreTileEntityUniversalElectrical.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
 public abstract class GCCoreTileEntityUniversalElectrical extends TileEntityElectrical

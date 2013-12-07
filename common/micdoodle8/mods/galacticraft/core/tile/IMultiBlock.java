@@ -5,10 +5,12 @@ import net.minecraft.tileentity.TileEntity;
 import universalelectricity.core.vector.Vector3;
 
 /**
- * Interface to be applied to tile entity blocks that occupies more than one
- * block space. Useful for large machines.
- * 
- * @author Calclavia
+ * IMultiBlock.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
 public interface IMultiBlock

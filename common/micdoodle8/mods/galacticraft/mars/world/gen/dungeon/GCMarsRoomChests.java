@@ -12,9 +12,17 @@ import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.ForgeDirection;
 
+/**
+ * GCMarsRoomChests.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class GCMarsRoomChests extends GCCoreDungeonRoom
 {
-
     int sizeX;
     int sizeY;
     int sizeZ;

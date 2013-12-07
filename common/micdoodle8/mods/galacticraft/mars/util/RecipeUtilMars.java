@@ -6,6 +6,15 @@ import micdoodle8.mods.galacticraft.mars.inventory.GCMarsInventoryCargoRocketBen
 import micdoodle8.mods.galacticraft.mars.inventory.GCMarsInventoryRocketBenchT2;
 import net.minecraft.item.ItemStack;
 
+/**
+ * RecipeUtilMars.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class RecipeUtilMars
 {
     public static ItemStack findMatchingSpaceshipT2Recipe(GCMarsInventoryRocketBenchT2 inventoryRocketBench)

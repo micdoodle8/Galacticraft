@@ -13,6 +13,15 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import universalelectricity.prefab.block.BlockAdvanced;
 
+/**
+ * GCCoreBlockAdvanced.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public abstract class GCCoreBlockAdvanced extends BlockAdvanced implements ITileEntityProvider
 {
     public GCCoreBlockAdvanced(int par1, Material par3Material)

@@ -21,6 +21,15 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+/**
+ * GCCoreSmallFontRenderer.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author mDiyo, micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 @SideOnly(Side.CLIENT)
 public class GCCoreSmallFontRenderer implements ResourceManagerReloadListener
 {

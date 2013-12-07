@@ -18,10 +18,17 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+/**
+ * GCCoreBlockMulti.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class GCCoreBlockMulti extends BlockMulti implements IPartialSealableBlock
 {
-    // 0: Normal, 1: Space Station Teleport, 2: Rocket Launch Pad, 3: Rocket
-    // Crafting Table
     Icon[] fakeIcons;
 
     public GCCoreBlockMulti(int id, String assetName)

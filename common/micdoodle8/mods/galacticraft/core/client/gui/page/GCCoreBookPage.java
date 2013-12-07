@@ -3,6 +3,15 @@ package micdoodle8.mods.galacticraft.core.client.gui.page;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiManual;
 import org.w3c.dom.Element;
 
+/**
+ * GCCoreBookPage.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author mDiyo, micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public abstract class GCCoreBookPage
 {
     protected GCCoreGuiManual manual;

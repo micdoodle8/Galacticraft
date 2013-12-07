@@ -7,14 +7,16 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 /**
- * Copyright 2012-2013, micdoodle8
- * 
- * All rights reserved.
+ * GCMoonGenCaves.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
 public class GCMoonGenCaves extends GCCoreMapGenBaseMeta
 {
-
     public static final int BREAK_THROUGH_CHANCE = 25; // 1 in n chance
 
     protected void generateLargeCaveNode(long par1, int par3, int par4, short[] blockIdArray, byte[] metaArray, double par6, double par8, double par10)

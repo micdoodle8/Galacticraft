@@ -8,6 +8,15 @@ import net.minecraft.block.BlockGrass;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
+/**
+ * GCCoreWorldGenForest.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class GCCoreWorldGenForest extends WorldGenerator
 {
     public GCCoreWorldGenForest(boolean par1)

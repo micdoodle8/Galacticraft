@@ -3,6 +3,15 @@ package micdoodle8.mods.galacticraft.core.wrappers;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 
+/**
+ * PlayerGearData.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class PlayerGearData
 {
     private final EntityPlayer player;

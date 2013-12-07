@@ -20,6 +20,15 @@ import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
 
+/**
+ * GCCoreTileEntityCircuitFabricator.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class GCCoreTileEntityCircuitFabricator extends GCCoreTileEntityElectric implements IInventory, ISidedInventory, IPacketReceiver
 {
     public static final int PROCESS_TIME_REQUIRED = 300;

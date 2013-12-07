@@ -14,6 +14,15 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
+/**
+ * GCCoreBlockGlowstoneTorch.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class GCCoreBlockGlowstoneTorch extends Block
 {
     protected GCCoreBlockGlowstoneTorch(int id, String assetName)

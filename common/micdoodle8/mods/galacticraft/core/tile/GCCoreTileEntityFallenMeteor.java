@@ -13,6 +13,15 @@ import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.FMLLog;
 
+/**
+ * GCCoreTileEntityFallenMeteor.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class GCCoreTileEntityFallenMeteor extends TileEntity implements IPacketReceiver
 {
     public static final int MAX_HEAT_LEVEL = 5000;

@@ -9,6 +9,15 @@ import net.minecraft.item.ItemStack;
 import universalelectricity.core.item.IItemElectric;
 import universalelectricity.prefab.SlotSpecific;
 
+/**
+ * GCCoreContainerAirSealer.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class GCCoreContainerAirSealer extends Container
 {
     public GCCoreContainerAirSealer(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityOxygenSealer distributor)

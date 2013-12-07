@@ -11,6 +11,15 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import universalelectricity.core.item.IItemElectric;
 import universalelectricity.prefab.SlotSpecific;
 
+/**
+ * ContainerElectricFurnace.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class ContainerElectricFurnace extends Container
 {
     private GCCoreTileEntityElectricFurnace tileEntity;

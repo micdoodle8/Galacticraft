@@ -15,9 +15,12 @@ import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.network.PacketDispatcher;
 
 /**
- * This is a multiblock to be used for blocks that are bigger than one block.
- * 
- * @author Calclavia
+ * TileEntityMulti.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
 public class TileEntityMulti extends TileEntity implements IPacketReceiver

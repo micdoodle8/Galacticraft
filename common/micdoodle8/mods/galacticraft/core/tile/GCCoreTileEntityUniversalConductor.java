@@ -24,12 +24,12 @@ import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
 
 /**
- * A universal conductor class.
- * 
- * Extend this class or use as a reference for your own implementation of
- * compatible conductor tiles.
- * 
- * @author Calclavia, micdoodle8
+ * GCCoreTileEntityUniversalConductor.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
 public abstract class GCCoreTileEntityUniversalConductor extends TileEntityConductor

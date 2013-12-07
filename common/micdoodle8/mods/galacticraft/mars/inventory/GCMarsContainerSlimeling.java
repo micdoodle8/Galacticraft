@@ -12,6 +12,15 @@ import net.minecraftforge.fluids.FluidRegistry;
 import universalelectricity.core.item.IItemElectric;
 import universalelectricity.prefab.SlotSpecific;
 
+/**
+ * GCMarsContainerSlimeling.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class GCMarsContainerSlimeling extends Container
 {
     private final GCMarsInventorySlimeling slimelingInventory;

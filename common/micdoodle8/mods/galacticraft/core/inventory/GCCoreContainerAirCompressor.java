@@ -7,6 +7,15 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
+/**
+ * GCCoreContainerAirCompressor.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class GCCoreContainerAirCompressor extends Container
 {
     public GCCoreContainerAirCompressor(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityOxygenCompressor compressor)

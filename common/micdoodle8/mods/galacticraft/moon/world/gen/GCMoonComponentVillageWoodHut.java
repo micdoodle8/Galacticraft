@@ -9,6 +9,15 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 
+/**
+ * GCMoonComponentVillageWoodHut.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class GCMoonComponentVillageWoodHut extends GCMoonComponentVillage
 {
     private int averageGroundLevel = -1;

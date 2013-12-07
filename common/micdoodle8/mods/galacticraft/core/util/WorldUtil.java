@@ -63,6 +63,15 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 
+/**
+ * WorldUtil.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class WorldUtil
 {
     public static Collection<Integer> registeredSpaceStations;
@@ -369,7 +378,7 @@ public class WorldUtil
     public static void registerSpaceStations(File spaceStationList)
     {
         WorldUtil.registeredSpaceStations = WorldUtil.getExistingSpaceStationList(spaceStationList);
-        
+
         for (Integer registeredID : WorldUtil.registeredSpaceStations)
         {
             DimensionManager.registerDimension(registeredID.intValue(), GCCoreConfigManager.idDimensionOverworldOrbit);
@@ -413,8 +422,8 @@ public class WorldUtil
     }
 
     /**
-     * This doesn't check if player is using the correct rocket,
-     * this is just a total list of all space dimensions.
+     * This doesn't check if player is using the correct rocket, this is just a
+     * total list of all space dimensions.
      */
     public static Integer[] getArrayOfPossibleDimensions()
     {
@@ -493,7 +502,7 @@ public class WorldUtil
 
                 server.getConfigurationManager().sendPacketToAllPlayers(GCCorePacketDimensionListPlanets.buildDimensionListPacket(array));
             }
-            
+
             MinecraftServer mcServer = FMLCommonHandler.instance().getMinecraftServerInstance();
 
             if (mcServer != null)
@@ -570,7 +579,7 @@ public class WorldUtil
                 micdoodle8.mods.galacticraft.api.vector.Vector3 spawnPos = type.getPlayerSpawnLocation((WorldServer) entity.worldObj, (EntityPlayerMP) entity);
                 ChunkCoordIntPair pair = worldNew.getChunkFromChunkCoords(spawnPos.intX(), spawnPos.intZ()).getChunkCoordIntPair();
                 ((WorldServer) worldNew).theChunkProviderServer.loadChunk(pair.chunkXPos, pair.chunkZPos);
-                
+
                 entity.setPosition(spawnPos.x, spawnPos.y, spawnPos.z);
             }
         }
@@ -692,7 +701,7 @@ public class WorldUtil
         if (entity instanceof GCCorePlayerMP)
         {
             micdoodle8.mods.galacticraft.api.vector.Vector3 spawnPos = null;
-            
+
             if (player != null)
             {
                 spawnPos = type.getPlayerSpawnLocation((WorldServer) entity.worldObj, (EntityPlayerMP) entity);

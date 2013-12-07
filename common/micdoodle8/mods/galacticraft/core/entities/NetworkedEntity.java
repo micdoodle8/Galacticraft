@@ -12,6 +12,15 @@ import universalelectricity.prefab.network.IPacketReceiver;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.network.PacketDispatcher;
 
+/**
+ * NetworkedEntity.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public abstract class NetworkedEntity extends Entity implements IPacketReceiver
 {
     public NetworkedEntity(World par1World)

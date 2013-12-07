@@ -4,6 +4,15 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalaxy;
 import net.minecraft.util.StatCollector;
 
+/**
+ * GCCoreGalaxyBlockyWay.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class GCCoreGalaxyBlockyWay implements IGalaxy
 {
     @Override

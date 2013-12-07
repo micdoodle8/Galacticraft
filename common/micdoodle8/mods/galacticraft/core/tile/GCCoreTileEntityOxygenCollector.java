@@ -25,6 +25,15 @@ import universalelectricity.core.vector.VectorHelper;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
 
+/**
+ * GCCoreTileEntityOxygenCollector.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityOxygen implements ITubeConnection, IInventory, ISidedInventory
 {
     public boolean active;
@@ -74,7 +83,7 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityOxygen impl
                             sendingGas = this.storedOxygen;
                         }
 
-                        this.storedOxygen -= sendingGas - ((IGasAcceptor) tileEntity).receiveGas(new GasStack(GalacticraftCore.gasOxygen, (int)Math.floor(sendingGas)));
+                        this.storedOxygen -= sendingGas - ((IGasAcceptor) tileEntity).receiveGas(new GasStack(GalacticraftCore.gasOxygen, (int) Math.floor(sendingGas)));
                     }
                 }
             }

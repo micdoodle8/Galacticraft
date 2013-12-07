@@ -1,5 +1,14 @@
 package micdoodle8.mods.galacticraft.moon.world.gen;
 
+/**
+ * GCMoonStructureVillagePieceWeight.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class GCMoonStructureVillagePieceWeight
 {
     public Class<? extends GCMoonComponentVillage> villagePieceClass;

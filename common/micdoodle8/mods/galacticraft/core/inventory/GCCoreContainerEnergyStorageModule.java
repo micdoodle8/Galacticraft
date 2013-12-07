@@ -9,6 +9,15 @@ import net.minecraft.item.ItemStack;
 import universalelectricity.core.item.IItemElectric;
 import universalelectricity.prefab.SlotSpecific;
 
+/**
+ * GCCoreContainerEnergyStorageModule.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class GCCoreContainerEnergyStorageModule extends Container
 {
     private GCCoreTileEntityEnergyStorageModule tileEntity;

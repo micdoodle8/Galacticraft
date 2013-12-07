@@ -23,9 +23,12 @@ import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
 
 /**
- * Copyright 2012-2013, micdoodle8
- * 
- * All rights reserved.
+ * GCCoreTileEntityOxygenDecompressor.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
 public class GCCoreTileEntityOxygenDecompressor extends GCCoreTileEntityOxygen implements IInventory, ISidedInventory
@@ -80,7 +83,7 @@ public class GCCoreTileEntityOxygenDecompressor extends GCCoreTileEntityOxygen i
                         sendingGas = this.storedOxygen;
                     }
 
-                    this.storedOxygen -= sendingGas - ((IGasAcceptor) tileEntity).receiveGas(new GasStack(GalacticraftCore.gasOxygen, (int)Math.floor(sendingGas)));
+                    this.storedOxygen -= sendingGas - ((IGasAcceptor) tileEntity).receiveGas(new GasStack(GalacticraftCore.gasOxygen, (int) Math.floor(sendingGas)));
                 }
             }
         }

@@ -16,6 +16,15 @@ import org.lwjgl.Sys;
 import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.FMLClientHandler;
 
+/**
+ * GCMarsItemRendererSpaceshipT2.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class GCMarsItemRendererSpaceshipT2 extends GCCoreItemRendererSpaceship
 {
     private static final ResourceLocation cargoRocketTexture = new ResourceLocation(GalacticraftMars.TEXTURE_DOMAIN, "textures/model/cargoRocket.png");

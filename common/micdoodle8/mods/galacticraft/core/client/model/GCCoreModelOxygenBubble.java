@@ -5,6 +5,15 @@ import net.minecraft.entity.Entity;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 
+/**
+ * GCCoreModelOxygenBubble.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class GCCoreModelOxygenBubble extends ModelBase
 {
     IModelCustom sphere;

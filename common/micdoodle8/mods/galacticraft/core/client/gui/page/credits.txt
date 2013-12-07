@@ -1,6 +1,0 @@
-All credits for these classes go to mDiyo.
-
-Most of the code is ripped from the TC repository.
-
-Tinker's Construct Repository:
-	https://github.com/mDiyo/TinkersConstruct

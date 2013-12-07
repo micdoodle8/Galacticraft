@@ -6,6 +6,15 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Container;
 
+/**
+ * GCCoreGuiContainer.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public abstract class GCCoreGuiContainer extends GuiContainer
 {
     public List<GCCoreInfoRegion> infoRegions = new ArrayList<GCCoreInfoRegion>();

@@ -15,6 +15,15 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
+/**
+ * GCMarsEntitySludgeling.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class GCMarsEntitySludgeling extends EntityMob implements IEntityBreathable
 {
     public GCMarsEntitySludgeling(World par1World)

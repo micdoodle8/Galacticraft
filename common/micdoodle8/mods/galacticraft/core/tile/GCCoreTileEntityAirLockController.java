@@ -16,6 +16,15 @@ import universalelectricity.prefab.network.IPacketReceiver;
 import universalelectricity.prefab.network.PacketManager;
 import com.google.common.io.ByteArrayDataInput;
 
+/**
+ * GCCoreTileEntityAirLockController.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class GCCoreTileEntityAirLockController extends GCCoreTileEntityAirLock implements IPacketReceiver
 {
     public boolean redstoneActivation;
@@ -237,7 +246,7 @@ public class GCCoreTileEntityAirLockController extends GCCoreTileEntityAirLock i
         {
             return;
         }
-        
+
         int x = this.lastProtocol.minX + (this.lastProtocol.maxX - this.lastProtocol.minX) / 2;
         int y = this.lastProtocol.minY + (this.lastProtocol.maxY - this.lastProtocol.minY) / 2;
         int z = this.lastProtocol.minZ + (this.lastProtocol.maxZ - this.lastProtocol.minZ) / 2;

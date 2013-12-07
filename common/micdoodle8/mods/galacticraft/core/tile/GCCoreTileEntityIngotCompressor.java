@@ -26,6 +26,15 @@ import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 
+/**
+ * GCCoreTileEntityIngotCompressor.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class GCCoreTileEntityIngotCompressor extends TileEntity implements IInventory, ISidedInventory, IPacketReceiver
 {
     public static final int PROCESS_TIME_REQUIRED = 200;

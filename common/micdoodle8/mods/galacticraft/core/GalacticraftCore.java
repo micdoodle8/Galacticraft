@@ -130,9 +130,12 @@ import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 
 /**
- * Copyright 2012-2013, micdoodle8
- * 
- * All rights reserved.
+ * GalacticraftCore.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
 @Mod(name = GalacticraftCore.NAME, version = GalacticraftCore.LOCALMAJVERSION + "." + GalacticraftCore.LOCALMINVERSION + "." + GalacticraftCore.LOCALBUILDVERSION, useMetadata = true, modid = GalacticraftCore.MODID, dependencies = "required-after:Forge@[9.10.0.837,); after:ICBM|Explosion; after:IC2; after:BuildCraft|Core; after:BuildCraft|Energy; after:IC2")
@@ -189,7 +192,7 @@ public class GalacticraftCore
     public static Fluid gcFluidFuel;
     public static Fluid fluidOil;
     public static Fluid fluidFuel;
-    
+
     public static Gas gasOxygen;
 
     public static HashMap<String, ItemStack> itemList = new HashMap<String, ItemStack>();
@@ -310,9 +313,9 @@ public class GalacticraftCore
         {
             GameRegistry.registerWorldGenerator(new GCCoreOverworldGenerator(GCCoreBlocks.decorationBlocks, 8, 3, 0, 25, 7));
         }
-        
+
         Gas oxygen = GasRegistry.getGas("oxygen");
-        
+
         if (oxygen == null)
         {
             GalacticraftCore.gasOxygen = GasRegistry.register(new Gas("oxygen")).registerFluid();

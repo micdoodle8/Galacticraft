@@ -2,6 +2,15 @@ package micdoodle8.mods.galacticraft.core;
 
 import net.minecraft.util.DamageSource;
 
+/**
+ * GCCoreDamageSource.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class GCCoreDamageSource extends DamageSource
 {
     public static final GCCoreDamageSource spaceshipCrash = (GCCoreDamageSource) new GCCoreDamageSource("spaceshipCrash").setDamageBypassesArmor();

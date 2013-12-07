@@ -25,23 +25,17 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 /**
- * Copyright 2012-2013, micdoodle8
- * 
- * All rights reserved.
+ * GCCoreEntityCreeper.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
 public class GCCoreEntityCreeper extends EntityCreeper implements IEntityBreathable
 {
-    /**
-     * The amount of time since the creeper was close enough to the player to
-     * ignite
-     */
     int timeSinceIgnited2;
-
-    /**
-     * Time when this creeper was last in an active state (Messed up code here,
-     * probably causes creeper animation to go weird)
-     */
     int lastActiveTime;
 
     public GCCoreEntityCreeper(World par1World)

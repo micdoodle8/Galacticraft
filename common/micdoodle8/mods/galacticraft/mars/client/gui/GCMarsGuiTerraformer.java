@@ -17,6 +17,15 @@ import universalelectricity.core.electricity.ElectricityDisplay;
 import universalelectricity.core.electricity.ElectricityDisplay.ElectricUnit;
 import cpw.mods.fml.common.network.PacketDispatcher;
 
+/**
+ * GCMarsGuiTerraformer.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class GCMarsGuiTerraformer extends GuiContainer
 {
     private static final ResourceLocation terraformerGui = new ResourceLocation(GalacticraftMars.TEXTURE_DOMAIN, "textures/gui/terraformer.png");

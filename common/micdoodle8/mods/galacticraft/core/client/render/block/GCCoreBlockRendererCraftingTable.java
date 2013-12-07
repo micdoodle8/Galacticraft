@@ -9,6 +9,15 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
+/**
+ * GCCoreBlockRendererCraftingTable.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class GCCoreBlockRendererCraftingTable implements ISimpleBlockRenderingHandler
 {
     final int renderID;

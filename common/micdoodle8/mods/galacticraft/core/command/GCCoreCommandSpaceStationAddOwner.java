@@ -9,6 +9,15 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.util.ChatMessageComponent;
 
+/**
+ * GCCoreCommandSpaceStationAddOwner.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class GCCoreCommandSpaceStationAddOwner extends CommandBase
 {
     @Override

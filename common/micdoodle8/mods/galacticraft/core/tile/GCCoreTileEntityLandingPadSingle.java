@@ -5,6 +5,15 @@ import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.tileentity.TileEntity;
 import universalelectricity.core.vector.Vector3;
 
+/**
+ * GCCoreTileEntityLandingPadSingle.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class GCCoreTileEntityLandingPadSingle extends TileEntity
 {
     @Override

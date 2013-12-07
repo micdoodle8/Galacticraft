@@ -8,6 +8,15 @@ import net.minecraft.world.IBlockAccess;
 import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
+/**
+ * GCMarsBlockRendererMachine.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class GCMarsBlockRendererMachine implements ISimpleBlockRenderingHandler
 {
     final int renderID;

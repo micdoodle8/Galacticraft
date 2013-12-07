@@ -12,9 +12,17 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.core.vector.Vector3;
 
+/**
+ * GCMoonRoomBoss.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author fishtaco567
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public class GCMoonRoomBoss extends GCCoreDungeonRoom
 {
-
     public int sizeX;
     public int sizeY;
     public int sizeZ;

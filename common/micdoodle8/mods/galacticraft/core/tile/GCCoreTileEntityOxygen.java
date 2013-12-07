@@ -9,6 +9,15 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.ForgeDirection;
 
+/**
+ * GCCoreTileEntityOxygen.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
 public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectric implements IGasAcceptor, ITubeConnection, IGasStorage
 {
     public int maxOxygen;
@@ -122,7 +131,7 @@ public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectric im
             this.storedOxygen = 0;
             return;
         }
-        
+
         this.storedOxygen = stack.amount;
     }
 

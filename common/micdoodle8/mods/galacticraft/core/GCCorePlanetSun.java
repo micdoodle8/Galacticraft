@@ -7,7 +7,13 @@ import micdoodle8.mods.galacticraft.core.client.GCCoreMapSun;
 import net.minecraft.world.WorldProvider;
 
 /**
- * Yes, I know it's not a planet...
+ * GCCorePlanetSun.java
+ *
+ * This file is part of the Galacticraft project
+ *
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
  */
 public class GCCorePlanetSun implements IPlanet
 {
