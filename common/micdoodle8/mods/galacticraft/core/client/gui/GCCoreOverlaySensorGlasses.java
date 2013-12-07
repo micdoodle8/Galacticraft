@@ -14,6 +14,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
+import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -74,7 +75,7 @@ public class GCCoreOverlaySensorGlasses extends GCCoreOverlay
 
     public static void renderSensorGlassesValueableBlocks(ItemStack stack, EntityPlayer player, ScaledResolution resolution, float partialTicks, boolean hasScreen, int mouseX, int mouseY)
     {
-        final Iterator<?> var51 = ClientProxyCore.valueableBlocks.iterator();
+        final Iterator<Vector3> var51 = ClientProxyCore.valueableBlocks.iterator();
         double var52;
         double var58;
         double var59;
@@ -84,15 +85,11 @@ public class GCCoreOverlaySensorGlasses extends GCCoreOverlay
 
         while (var51.hasNext())
         {
-            final int[] coords = (int[]) var51.next();
+            Vector3 coords = var51.next();
 
-            final int x = coords[0];
-            final int y = coords[1];
-            final int z = coords[2];
-
-            var52 = ClientProxyCore.playerPosX - x - 0.5D;
-            var58 = ClientProxyCore.playerPosY - y - 0.5D;
-            var59 = ClientProxyCore.playerPosZ - z - 0.5D;
+            var52 = ClientProxyCore.playerPosX - coords.x - 0.5D;
+            var58 = ClientProxyCore.playerPosY - coords.y - 0.5D;
+            var59 = ClientProxyCore.playerPosZ - coords.z - 0.5D;
             var60 = (float) Math.toDegrees(Math.atan2(var52, var59));
             var20 = Math.sqrt(var52 * var52 + var58 * var58 + var59 * var59) * 0.5D;
             var21 = Math.sqrt(var52 * var52 + var59 * var59) * 0.5D;
