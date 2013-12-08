@@ -43,3 +43,4 @@ Puggy04:capeLime
 scriptoffate14:capeRainbow
 Ohrm:capeRainbow
 SirFuzzhead:capeRainbow
+alexljn5:capeYellow
