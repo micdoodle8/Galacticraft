@@ -494,17 +494,22 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 
             for (int j2 = 0; j2 < itemList.size(); ++j2)
             {
-                int count = (int) (this.spaceTimer / 20 % itemList.get(j2).itemStringPairs.size());
-                ItemStringPair pair = itemList.get(j2).itemStringPairs.get(count);
+                ToolTipEntry entry = itemList.get(j2);
+                
+                if (!entry.itemStringPairs.isEmpty())
+                {
+                    int count = (int) (this.spaceTimer / 20 % entry.itemStringPairs.size());
+                    ItemStringPair pair = entry.itemStringPairs.get(count);
 
-                int red = GCCoreUtil.convertTo32BitColor(255, 255, 10, 10);
-                int green = GCCoreUtil.convertTo32BitColor(255, 10, 10, 255);
+                    int red = GCCoreUtil.convertTo32BitColor(255, 255, 10, 10);
+                    int green = GCCoreUtil.convertTo32BitColor(255, 10, 10, 255);
 
-                String s = pair.description;
+                    String s = pair.description;
 
-                this.fontRenderer.drawString(s, l + (itemList.isEmpty() ? 0 : 19), stringY, itemList.get(j2).isValid ? green : red);
+                    this.fontRenderer.drawString(s, l + (itemList.isEmpty() ? 0 : 19), stringY, itemList.get(j2).isValid ? green : red);
 
-                stringY += itemList.size() > 0 ? 16 : 14;
+                    stringY += itemList.size() > 0 ? 16 : 14;
+                }
             }
 
             stringY = i1 + (itemList.isEmpty() ? 0 : 5);
