@@ -27,12 +27,14 @@ public class GCCoreBlockFluid extends BlockFluidClassic
     private Icon stillIcon;
     private Icon flowingIcon;
     private final String fluidName;
+    private final Fluid fluid;
 
     public GCCoreBlockFluid(int id, Fluid fluid, String assetName)
     {
         super(id, fluid, Material.water);
         this.setRenderPass(1);
         this.fluidName = assetName;
+        this.fluid = fluid;
 
         if (assetName.equals("oil"))
         {
@@ -59,6 +61,8 @@ public class GCCoreBlockFluid extends BlockFluidClassic
     {
         this.stillIcon = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + this.fluidName + "_still");
         this.flowingIcon = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + this.fluidName + "_flow");
+        this.fluid.setStillIcon(this.stillIcon);
+        this.fluid.setFlowingIcon(this.flowingIcon);
     }
 
     @Override

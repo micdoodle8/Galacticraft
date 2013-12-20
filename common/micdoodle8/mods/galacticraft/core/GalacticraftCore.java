@@ -222,8 +222,6 @@ public class GalacticraftCore
             GCCoreBlocks.crudeOilStill.setUnlocalizedName("crudeOilStill");
             GameRegistry.registerBlock(GCCoreBlocks.crudeOilStill, GCCoreItemBlock.class, GCCoreBlocks.crudeOilStill.getUnlocalizedName(), GalacticraftCore.MODID);
             GalacticraftCore.fluidOil.setBlockID(GCCoreBlocks.crudeOilStill);
-            GalacticraftCore.fluidOil.setStillIcon(((GCCoreBlockFluid) GCCoreBlocks.crudeOilStill).getStillIcon());
-            GalacticraftCore.fluidOil.setFlowingIcon(((GCCoreBlockFluid) GCCoreBlocks.crudeOilStill).getFlowingIcon());
         }
         else
         {
@@ -237,8 +235,6 @@ public class GalacticraftCore
             GCCoreBlocks.fuelStill.setUnlocalizedName("fuel");
             GameRegistry.registerBlock(GCCoreBlocks.fuelStill, GCCoreItemBlock.class, GCCoreBlocks.fuelStill.getUnlocalizedName(), GalacticraftCore.MODID);
             GalacticraftCore.fluidFuel.setBlockID(GCCoreBlocks.fuelStill);
-            GalacticraftCore.fluidFuel.setStillIcon(((GCCoreBlockFluid) GCCoreBlocks.fuelStill).getStillIcon());
-            GalacticraftCore.fluidFuel.setFlowingIcon(((GCCoreBlockFluid) GCCoreBlocks.fuelStill).getFlowingIcon());
         }
         else
         {
