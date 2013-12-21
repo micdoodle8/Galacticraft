@@ -8,17 +8,15 @@ item.oxygenTankMedEmpty.name=空の中型酸素タンク
 item.oxygenTankHeavyFull.name=重い酸素タンク
 item.oxygenTankHeavyEmpty.name=空の重い酸素タンク
 item.oxygenMask.name=酸素マスク
-item.spaceship.name=宇宙機
+item.spaceship.name=レベル 1 宇宙機
 item.sensorGlasses.name=センサーゴーグル
-item.sensorGlassesWithOxygenMask.name=センサーゴーグルと酸素マスク
-item.jetpack.name=ジェットパック
 item.canister.tin.name=鈴缶
 item.canister.copper.name=銅缶
 item.airVent.name=換気口
 item.airFan.name=換気扇
-item.oxygenConcentrator.name=酸素濃縮器
-item.heavyPlating.name=ヘビーデューティーメッキ
-item.rocketEngine.name=ロケットエンジン
+item.heavyPlating.name=ヘビーデューティーめっき
+item.engine.tier1engine.name=ティア 1 ロケットエンジン
+item.engine.tier1booster.name=ティア 1 ブースター
 item.rocketFins.name=ロケットフィン
 item.noseCone.name=ノーズコーン
 item.sensorLens.name=センサーレンズ
@@ -56,28 +54,63 @@ item.parachute_purple.name=紫色のパラシュート
 item.parachute_red.name=赤色のパラシュート
 item.parachute_teal.name=水色のパラシュート
 item.parachute_yellow.name=黄色のパラシュート
-item.flagPole.name=旗竿
+item.steelPole.name=鋼棒
 item.canvas.name=キャンバス
 item.buggy.name=ムーンバギー
-item.emptyLiquidCanister.name=空の液体缶
 item.oilCanisterPartial.name=部分的にフルな燃油缶
 item.fuelCanisterPartial.name=部分的にフルな燃料缶
 item.oilCanister.name=フルな油缶
 item.fuelCanister.name=フルな燃料缶
 item.oilExtractor.name=ポータブルの油抽出器
+item.schematic.name=NASA 作業台図解
+item.fuel.name=ロケットの燃料
+item.key.T1.name=レベル 1 ダンジョン鍵
+item.buggymat.wheel.name=バギーホイール
+item.buggymat.seat.name=バギー座席
+item.buggymat.storage.name=バギー貯蔵容器
+item.basicItem.solar_module_0.name=太陽電池モジュール
+item.basicItem.solar_module_1.name=太陽光発電パネル
+item.basicItem.ingotCopper.name=銅インゴット
+item.basicItem.ingotTin.name=鈴インゴット
+item.basicItem.ingotAluminum.name=アルミインゴット
+item.basicItem.ingotSteel.name=鋼インゴット
+item.basicItem.ingotBronze.name=ブロンズインゴット
+item.basicItem.compressedCopper.name=圧縮された銅
+item.basicItem.compressedTin.name=圧縮された鈴
+item.basicItem.compressedAluminum.name=圧縮されたアルミ
+item.basicItem.compressedSteel.name=圧縮された鋼
+item.basicItem.compressedBronze.name=圧縮されたブロンズ
+item.basicItem.compressedIron.name=圧縮された鉄
+item.basicItem.waferSolar.name=ソーラーウェファー
+item.basicItem.waferBasic.name=基本なウェファー
+item.basicItem.waferAdvanced.name=高度なウェファー
+item.basicItem.rawSilicon.name=生シリコン
+item.tier1.desc=レベル 1
+item.battery.name=電池
+item.infiniteBattery.name=無限の電池
+item.meteorChunk.name=投げれる流星
+item.meteorChunkHot.name=投げれる流星
+item.hotDescription.name=温かい
+item.basicItem.dehydratedApple.name=脱水リンゴ
+item.basicItem.dehydratedCarrot.name=脱水ニンジン
+item.basicItem.dehydratedMelon.name=脱水スイカ
+item.basicItem.dehydratedPotato.name=脱水ジャガイモ
+item.basicItem.cannedFood.name=缶詰食品
+item.basicItem.frequencyModule.name=フリークエンシーモジュール
+item.standardWrench.name=標準レンチ
 
 # TOOLS
-item.steel_pickaxe.name=鋼のツルハシ
-item.steel_axe.name=鋼の斧
-item.steel_hoe.name=鋼のクワ
-item.steel_shovel.name=鋼のシャベル
-item.steel_sword.name=鋼の剣
+item.steel_pickaxe.name=ヘビーデューティーツルハシ
+item.steel_axe.name=ヘビーデューティー斧
+item.steel_hoe.name=ヘビーデューティークワ
+item.steel_shovel.name=ヘビーデューティーシャベル
+item.steel_sword.name=ヘビーデューティー剣
 
 # ARMOR
-item.steel_helmet.name=鋼のヘルメット
-item.steel_chestplate.name=鋼のチェストプレート
-item.steel_leggings.name=鋼のレギンス
-item.steel_boots.name=鋼のブーツ
+item.steel_helmet.name=ヘビーデューティーヘルメット
+item.steel_chestplate.name=ヘビーデューティーチェストプレート
+item.steel_leggings.name=ヘビーデューティーレギンス
+item.steel_boots.name=ヘビーデューティーブーツ
 
 # BLOCKS
 tile.treasureChest.name=宝物箱
@@ -88,36 +121,224 @@ tile.distributor.name=酸素拡散機
 tile.oxygenPipe.name=酸素パイプ
 tile.oxygenCollector.name=酸素コレクター
 tile.fallenMeteor.name=落ちた流星
-tile.rocketWorkbench.name=ロケット作業台
-tile.decorationblock.decoblock1.name=鈴ブロック
-tile.decorationblock.decoblock2.name=鈴ブロック
+tile.rocketWorkbench.name=NASA 作業台
+tile.gcBlockCore.decoblock1.name=鈴ブロック
+tile.gcBlockCore.decoblock2.name=鈴ブロック
+tile.gcBlockCore.oreCopper.name=銅鉱石
+tile.gcBlockCore.oreTin.name=鈴鉱石
+tile.gcBlockCore.oreAluminum.name=アルミ鉱石
+tile.gcBlockCore.oreSilicon.name=シリコン鉱石
 tile.airLockFrame.name=エアロック枠
-tile.airLockSeal.name=エアロック封
+tile.airLockSeal.name=エアロック密封
 tile.crudeOilStill.name=原油
 tile.crudeOilMoving.name=原油
 tile.refinery.name=精製所
 tile.fuelLoader.name=燃料積込機
-tile.oxygenCompressor.name=酸素圧縮機
 tile.sapling2.oak.name=樫の苗木
 tile.sapling2.spruce.name=松の苗木
 tile.sapling2.birch.name=白樺の苗木
 tile.sapling2.jungle.name=ジャングルの苗木
+tile.sealer.name=酸素密封機
+tile.enclosed.oxygenPipe.name=密封できる酸素パイプ
+tile.oxygenDetector.name=酸素センサー
+tile.cargo.loader.name=貨物荷造り機
+tile.cargo.unloader.name=貨物取り出し機
+tile.landingPad.buggyFueler.name=Buggy Fueling Pad
+tile.landingPad.cargoPad.name=Cargo Rocket Pad
+tile.enclosed.copperCable.name=Sealable 銅 Cable
+tile.enclosed.goldCable.name=Sealable Gold Cable
+tile.enclosed.hvCable.name=Sealable HV Cable
+tile.enclosed.glassFibreCable.name=Sealable Glass Fibre Cable
+tile.enclosed.lvCable.name=Sealable Ultra-Low-Current Cable
+tile.enclosed.PipeItemsCobblestone.name=Sealable Cobblestone Transport Pipe
+tile.enclosed.PipeItemsStone.name=Sealable Stone Transport Pipe
+tile.enclosed.PipeFluidsCobblestone.name=Sealable Cobblestone Waterproof Pipe
+tile.enclosed.PipeFluidsStone.name=Sealable Stone Waterproof Pipe
+tile.enclosed.PipePowerStone.name=Sealable Stone Conductive Pipe
+tile.enclosed.PipePowerGold.name=Sealable Golden Conductive Pipe
+tile.solar.basic.name=Basic ソーラーパネル
+tile.solar.advanced.name=Advanced ソーラーパネル
+tile.parachest.name=パラシュートチェスト
+tile.oreCopper.name=銅鉱石
+tile.oreTin.name=鈴鉱石
+tile.machine.0.name=Coal Generator
+tile.machine.1.name=Energy Storage Module
+tile.machine.2.name=Electric Furnace
+tile.machine.3.name=圧縮機
+tile.machine2.4.name=Electric圧縮機
+tile.machine2.5.name=Circuit Fabricator
+tile.machine2.6.name=Oxygen Storage Module
+tile.aluminumWire.name=アルミ Wire
+tile.aluminumWireHeavy.name=Heavy アルミ Wire
+tile.glowstoneTorch.name=Glowstone Torch
+tile.enclosed.aluminumWire.name=Sealable アルミ Wire
+tile.enclosed.aluminumWireHeavy.name=Sealable Heavy アルミ Wire
+tile.enclosed.meCable.name=Sealable ME Cable
+tile.airLockController.name=Air Lock Controller
+tile.dummyblock.spaceStationBase.name=Space Station Base
+tile.dummyblock.launchPad.name=Rocket Launch Pad
+tile.dummyblock.nasaWorkbench.name=NASA 作業台
+tile.dummyblock.solar.name=ソーラーパネル
+tile.dummyblock.cryogenicChamber.name=Cryogenic Chamber
+tile.gcBlockCore.copperBlock.name=銅ブロック
+tile.gcBlockCore.tinBlock.name=鈴ブロック
+tile.gcBlockCore.aluminumBlock.name=アルミブロック
+tile.fuel.name=Fuel
+tile.oxygenCompressor.0.name=酸素圧縮機
+tile.oxygenCompressor.1.name=酸素減圧装置
 
-# Entities
+# ENTITIES
+entity.GalacticraftCore.EvolvedSpider.name=進化したクモ
+entity.GalacticraftCore.EvolvedZombie.name=進化したゾンビ
+entity.GalacticraftCore.EvolvedCreeper.name=進化したリーパー
+entity.GalacticraftCore.EvolvedSkeleton.name=進化したスケルトン
+entity.GalacticraftCore.EvolvedSkeletonBoss.name=進化したスケルトンボス
+entity.GalacticraftCore.AlienVillager.name=Alien Villager
+entity.GalacticraftCore.Spaceship.name=レベル 1 ロケット
+entity.GalacticraftCore.GravityArrow.name=矢
+entity.GalacticraftCore.Meteor.name=流星
+entity.GalacticraftCore.Buggy.name=バギー
+entity.GalacticraftCore.Flag.name=旗
+entity.GalacticraftCore.ParaChest.name=パラシュートチェスト
+entity.GalacticraftCore.OxygenBubble.name=酸素バブル
+entity.GalacticraftCore.Lander.name=ランダー
 
-entity.GalacticraftCore.Spaceship.name=宇宙機
+# SCHEMATICS
+schematic.moonbuggy.name=ムーンバギー
+schematic.rocketT1.name=レベル 1 宇宙機
+schematic.rocketT2.name=レベル 2 宇宙機
 
 # DEATH MESSAGES
+death.attack.spaceshipExplosion=%1$s のロケットが故障してしまった
+death.attack.spaceshipExplosionB=%1$s 気の毒の宇宙機の事故で死んでしまった
+death.attack.oxygenSuffocation=%1$s の酸素が不足してしまった
 
-death.spaceshipExplosion=%1$s のロケットが故障してしまった
-death.spaceshipExplosionB=%1$s あいにく宇宙機の事故で死んでしまった
-death.oxygenSuffocation=%1$s の酸素が不足してしまった
+# GALAXIES
+galaxy.blockyway.name=銀ブロック系
+
+# OTHER
+newversion.failed.name=Galacticraft update check failed! Trying again in 15 seconds
+newversion.success.name=Galacticraft remote version found:
+
+# KEYBINDINGS
+keybind.map.name=[GC] Galaxy Map
+keybind.spaceshipinv.name=[GC] Open Spaceship Inventory
+keybind.sensortoggle.name=[GC] Toggle Sensor Goggles Mode
+keybind.vehicleforward.name=[GC] Vehicle Forward Key
+keybind.vehiclebackward.name=[GC] Vehicle Backward Key
+keybind.vehicleleft.name=[GC] Vehicle Left Key
+keybind.vehicleright.name=[GC] Vehicle Right Key
+keybind.vehicleup.name=[GC] Vehicle Up Key
+keybind.vehicledown.name=[GC] Vehicle Down Key
 
 # CREATIVE TABS
 itemGroup.GalacticraftCore=Galacticraft
 
 # GUI
-gui.spaceshipFailureChance=故障確率
-gui.choosePlanet.desc.overworld=生命の完全#住みやすい#重力: 100%
+container.cargoloader.name=貨物荷造り機
+container.cargounloader.name=貨物取り出し機
+container.fuelloader.name=燃料積込機
+container.oxygencollector.name=酸素集め機
+container.oxygencompressor.name=酸素圧縮機
+container.oxygendistributor.name=酸素拡散機
+container.oxygensealer.name=酸素密封機
+container.parachest.name=パラシュートチェスト
+container.refinery.name=精製所
+container.treasurechest.name=宝物箱
+container.lander.name=ランダー
+container.spaceship.name=レベル 1 宇宙機
+container.solarbasic.name=Basic ソーラーパネル
+container.solaradvanced.name=Advanced ソーラーパネル
+container.oxygendecompressor.name=酸素減圧装置
+
+gui.message.out.name=出
+gui.message.in.name=入
+gui.message.status.name=ステータス
+gui.message.oxoutput.name=Oxygen Output
+gui.message.oxinput.name=Oxygen Input
+gui.message.fuel.name=燃料
+gui.message.full.name=いっぱい
+gui.message.page.name=ページ
+gui.message.addnewsch.name=新しい図解を追加する
+gui.message.generating.name=Generating
+gui.message.environment.name=Environmental Boost
+
+gui.status.active.name=Active
+gui.status.missingleaves.name=Not Enough Leaf Blocks
+gui.status.missingpower.name=Not Enough Power
+gui.status.missingoxygen.name=Not Enough Oxygen
+gui.status.missingtank.name=No Valid Oxygen Tank
+gui.status.fulltank.name=酸素タンクがいっぱい
+gui.status.unsealed.name=密封されていない
+gui.status.sealed.name=密封されている
+gui.status.unknown.name=不明
+gui.status.disabled.name=使用禁止
+gui.status.nofuel.name=No Fuel to Load!
+gui.status.noitems.name=No Items to Load!
+gui.status.notargetload.name=No Target to Load Into!
+gui.status.notargetunload.name=No Target to Unload!
+gui.status.noinvtarget.name=No Inventory on Target!
+gui.status.targetfull.name=Target Vehicle is Full!
+gui.status.targetempty.name=Target Vehicle is Empty!
+gui.status.ready.name=準備できる
+gui.status.refining.name=Refining
+gui.status.idle.name=Idle
+gui.status.nooil.name=No Oil
+gui.status.raining.name=雨
+gui.status.blockedpartial.name=日が部分的に見えている
+gui.status.blockedfully.name=日が見えていない
+gui.status.collectingenergy.name=エネを集めている
+gui.status.sealerblocked.name=Output Vent Blocked!
+
+gui.button.enableseal.name=密封を有効にする
+gui.button.disableseal.name=密封を無効にする
+gui.button.loaditems.name=Load Items
+gui.button.stoploading.name=Stop Loading
+gui.button.unloaditems.name=Unload Items
+gui.button.stopunloading.name=Stop Unloading
+gui.button.createsstation.name=Create Space Station
+gui.button.sendtodim.name=Send to Dimension
+gui.button.rename.name=Rename
+gui.button.loadfuel.name=Load Fuel
+gui.button.refine.name=Refine
+gui.button.back.name=戻る
+gui.button.next.name=次へ
+gui.button.unlockschematic.name=Unlock Schematic
+gui.button.stoprefine.name=Stop Refining
+gui.button.enable.name=Enable
+gui.button.disable.name=Disable
+
+gui.choosePlanet.desc.overworld=Full of Life#Habitable#Gravity: 100%
+gui.warning=WARNING!
+gui.lander.warning2=Hold "
+gui.lander.warning3=" to slow down!
+gui.lander.velocity=Entry Velocity
+gui.lander.velocityu=m/s
+gui.oxygen.warning=Oxygen Setup is Invalid!
+gui.sensor.advanced=Advanced Mode
+gui.sensor.advancedon=ON
+gui.sensor.advancedoff=OFF
+gui.chooseplanet.cannotcreate1.name=Cannot create Space
+gui.chooseplanet.cannotcreate2.name=Station here!
+gui.chooseplanet.alreadycreated1.name=Space Station Already
+gui.chooseplanet.alreadycreated2.name=作った！
+
+gui.galaxymap.movemap.name=ASWD - 地図を移動する
+gui.galaxymap.zoom.name=マウスホイール - ズーム
+gui.galaxymap.select.name=マウス 1 - 惑星を選ぶ
+gui.galaxymap.exit.name=Esc - 地図を終了する
+
+gui.buggy.turn.name=左折ー右折
+gui.buggy.accel.name=加速する
+gui.buggy.decel.name=減速する
+gui.buggy.inv.name=インベントリー / 燃料
+
+# DIMENSIONS
+dimension.Overworld.name=地球
+dimension.Moon.name=月
+dimension.Sun.name=日
+
+# COMMANDS
+commands.dimensionteleport=%s が空気へ行った%s
 
 # </file>
