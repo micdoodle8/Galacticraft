@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.mars;
 
 import java.io.File;
+
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;

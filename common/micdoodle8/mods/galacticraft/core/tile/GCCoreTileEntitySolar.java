@@ -2,13 +2,18 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import java.util.EnumSet;
 import java.util.HashSet;
+
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockMulti;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockSolar;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
+import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
+import micdoodle8.mods.galacticraft.power.core.item.IItemElectric;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -23,12 +28,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.ForgeDirection;
-import universalelectricity.core.item.IItemElectric;
-import universalelectricity.core.vector.Vector3;
-import universalelectricity.prefab.network.IPacketReceiver;
-import universalelectricity.prefab.network.PacketManager;
+
 import com.google.common.io.ByteArrayDataInput;
+
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -79,6 +83,8 @@ public class GCCoreTileEntitySolar extends GCCoreTileEntityUniversalElectrical i
     public void updateEntity()
     {
         this.setEnergyStored(this.getEnergyStored() + this.generateWatts);
+        
+        FMLLog.info("b " + this.worldObj.isRemote + " " + this.getEnergyStored());
 
         super.updateEntity();
 
@@ -214,7 +220,7 @@ public class GCCoreTileEntitySolar extends GCCoreTileEntityUniversalElectrical i
 
         if (this.ticks % 3 == 0)
         {
-            PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 50);
+        	GCCorePacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 50);
         }
     }
 
@@ -247,6 +253,7 @@ public class GCCoreTileEntitySolar extends GCCoreTileEntityUniversalElectrical i
         {
             this.mainBlockPosition = new Vector3(dataStream.readInt(), dataStream.readInt(), dataStream.readInt());
             this.solarStrength = dataStream.readInt();
+            this.setEnergyStored(dataStream.readFloat());
             this.generateWatts = dataStream.readFloat();
             this.disableCooldown = dataStream.readInt();
             this.disabled = dataStream.readBoolean();
@@ -260,7 +267,7 @@ public class GCCoreTileEntitySolar extends GCCoreTileEntityUniversalElectrical i
     @Override
     public Packet getDescriptionPacket()
     {
-        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.mainBlockPosition != null ? this.mainBlockPosition.intX() : 0, this.mainBlockPosition != null ? this.mainBlockPosition.intY() : 0, this.mainBlockPosition != null ? this.mainBlockPosition.intZ() : 0, this.solarStrength, this.generateWatts, this.disableCooldown, this.disabled);
+        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.mainBlockPosition != null ? this.mainBlockPosition.intX() : 0, this.mainBlockPosition != null ? this.mainBlockPosition.intY() : 0, this.mainBlockPosition != null ? this.mainBlockPosition.intZ() : 0, this.solarStrength, this.getEnergyStored(), this.generateWatts, this.disableCooldown, this.disabled);
     }
 
     public void onBlockRemoval()
@@ -412,6 +419,7 @@ public class GCCoreTileEntitySolar extends GCCoreTileEntityUniversalElectrical i
     @Override
     public float getProvide(ForgeDirection direction)
     {
+    	FMLLog.info("a " + this.getEnergyStored() + " " + (this.getOutputDirections().contains(direction) ? Math.min(Math.max(this.getEnergyStored(), 0), 1300) : 0));
         return this.getOutputDirections().contains(direction) ? Math.min(Math.max(this.getEnergyStored(), 0), 1300) : 0;
     }
 

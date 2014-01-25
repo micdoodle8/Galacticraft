@@ -1,9 +1,10 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import java.util.ArrayList;
+
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import universalelectricity.core.vector.Vector3;
 
 /**
  * AirLockProtocol.java

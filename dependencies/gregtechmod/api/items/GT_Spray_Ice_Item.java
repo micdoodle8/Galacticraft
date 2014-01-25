@@ -1,9 +1,15 @@
 package gregtechmod.api.items;
 
 import gregtechmod.api.GregTech_API;
+import gregtechmod.api.enums.GT_OreDictNames;
+import gregtechmod.api.enums.Materials;
+import gregtechmod.api.enums.OrePrefixes;
 import gregtechmod.api.util.GT_ModHandler;
 import gregtechmod.api.util.GT_OreDictUnificator;
 import gregtechmod.api.util.GT_Utility;
+
+import java.util.Arrays;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -12,13 +18,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 
 public class GT_Spray_Ice_Item extends GT_Tool_Item {
-	public GT_Spray_Ice_Item(int aID, String aName, int aMaxDamage, int aEntityDamage) {
-		super(aID, aName, "Very effective against Slimes", aMaxDamage, aEntityDamage);
+	public GT_Spray_Ice_Item(int aID, String aUnlocalized, String aEnglish, int aMaxDamage, int aEntityDamage) {
+		super(aID, aUnlocalized, aEnglish, "Very effective against Slimes", aMaxDamage, aEntityDamage, true);
 		addToEffectiveList(EntitySlime.class.getName());
 		addToEffectiveList("BlueSlime");
 		addToEffectiveList("SlimeClone");
@@ -29,7 +34,11 @@ public class GT_Spray_Ice_Item extends GT_Tool_Item {
 		setCraftingSound(GregTech_API.sSoundList.get(102));
 		setBreakingSound(GregTech_API.sSoundList.get(102));
 		setEntityHitSound(GregTech_API.sSoundList.get(102));
-		setUsageAmounts(32, 16, 1);
+		setUsageAmounts(4, 16, 1);
+		
+		for (String tName : Arrays.asList(OrePrefixes.bucket.get(Materials.Water), OrePrefixes.cell.get(Materials.Water), OrePrefixes.capsule.get(Materials.Water))) {
+			GT_ModHandler.addShapelessCraftingRecipe(new ItemStack(Block.ice, 1, 0), false, new Object[] {new ItemStack(this, 1, GregTech_API.ITEM_WILDCARD_DAMAGE), tName});
+		}
 	}
 	
 	@Override
@@ -42,7 +51,7 @@ public class GT_Spray_Ice_Item extends GT_Tool_Item {
 	
 	@Override
 	public ItemStack getEmptyItem(ItemStack aStack) {
-		return GT_OreDictUnificator.getFirstOre("craftingSprayCan", 1);
+		return GT_OreDictUnificator.getFirstOre(GT_OreDictNames.craftingSprayCan, 1);
 	}
 	
 	@Override
@@ -54,12 +63,10 @@ public class GT_Spray_Ice_Item extends GT_Tool_Item {
     	aX += ForgeDirection.getOrientation(aSide).offsetX;
     	aY += ForgeDirection.getOrientation(aSide).offsetY;
     	aZ += ForgeDirection.getOrientation(aSide).offsetZ;
-    	short aBlockID = (short)aWorld.getBlockId(aX, aY, aZ);
-    	if (aBlockID < 0 || aBlockID >= Block.blocksList.length) return false;
-    	Block aBlock = Block.blocksList[aBlockID];
+    	Block aBlock = Block.blocksList[aWorld.getBlockId(aX, aY, aZ)];
     	if (aBlock == null) return false;
     	byte aMeta = (byte)aWorld.getBlockMetadata(aX, aY, aZ);
-    	TileEntity aTileEntity = aWorld.getBlockTileEntity(aX, aY, aZ);
+//    	TileEntity aTileEntity = aWorld.getBlockTileEntity(aX, aY, aZ);
     	
     	if (aBlock == Block.waterStill || aBlock == Block.waterMoving) {
     		if (aMeta == 0 && GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {

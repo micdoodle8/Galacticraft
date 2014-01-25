@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.moon.world.gen;
 
 import java.util.List;
 import java.util.Random;
+
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityAlienVillager;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;

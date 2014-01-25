@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core;
 
 import java.util.logging.Level;
+
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
 
 /**

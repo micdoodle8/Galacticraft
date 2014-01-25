@@ -10,22 +10,22 @@ public class GT_PulverizerRecipe {
 	private final int mChance;
 	
 	public GT_PulverizerRecipe(ItemStack aInput, ItemStack aOutput1, ItemStack aOutput2, int aChance) {
-		mInput = aInput;
-		mOutput1 = aOutput1;
-		mOutput2 = aOutput2;
+		mInput = GT_Utility.copy(aInput);
+		mOutput1 = GT_Utility.copy(aOutput1);
+		mOutput2 = GT_Utility.copy(aOutput2);
 		mChance = aChance;
 	}
 	
 	public ItemStack getInput() {
-		return mInput;
+		return GT_Utility.copy(mInput);
 	}
 	
 	public ItemStack getPrimaryOutput() {
-		return mOutput1;
+		return GT_Utility.copy(mOutput1);
 	}
 	
 	public ItemStack getSecondaryOutput() {
-		return mOutput2;
+		return GT_Utility.copy(mOutput2);
 	}
 	
 	public int getSecondaryOutputChance() {
@@ -35,5 +35,4 @@ public class GT_PulverizerRecipe {
 	public int getEnergy() {
 		return 400;
 	}
-
 }

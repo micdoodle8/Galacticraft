@@ -1,6 +1,7 @@
 package gregtechmod.api.interfaces;
 
 import gregtechmod.api.util.GT_CoverBehavior;
+import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 
 /**
@@ -40,7 +41,7 @@ public interface IRedstoneCircuitBlock {
 	/**
 	 * returns whatever Block-ID is adjacent to the Redstone Circuit Block
 	 */
-	public int getBlockIDAtSide(byte aSide);
+	public Block getBlockAtSide(byte aSide);
 	
 	/**
 	 * returns whatever Meta-Value is adjacent to the Redstone Circuit Block

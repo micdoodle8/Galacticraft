@@ -1,14 +1,10 @@
 package gregtechmod.api.metatileentity.implementations;
 
 import gregtechmod.api.interfaces.IGregTechTileEntity;
-import gregtechmod.api.interfaces.IMetaTileEntity;
-import gregtechmod.api.metatileentity.BaseMetaPipeEntity;
 import gregtechmod.api.metatileentity.MetaPipeEntity;
-import gregtechmod.api.util.GT_Utility;
 
 import java.util.HashMap;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.ForgeDirection;
@@ -22,8 +18,8 @@ public abstract class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
 	public FluidStack mFluid;
 	public byte mLastReceivedFrom = 0, oLastReceivedFrom = 0;
 
-	public GT_MetaPipeEntity_Fluid(int aID, String mName, String mNameRegional) {
-		super(aID, mName, mNameRegional);
+	public GT_MetaPipeEntity_Fluid(int aID, String aName, String aNameRegional) {
+		super(aID, aName, aNameRegional);
 	}
 	
 	public GT_MetaPipeEntity_Fluid() {
@@ -33,6 +29,7 @@ public abstract class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
 	@Override public boolean isSimpleMachine()						{return true;}
 	@Override public boolean isFacingValid(byte aFacing)			{return false;}
 	@Override public boolean isValidSlot(int aIndex)				{return false;}
+    @Override public final boolean renderInside()					{return false;}
     @Override public final int getInvSize()							{return 0;}
     @Override public int getProgresstime()							{return getFluidAmount();}
     @Override public int maxProgresstime()							{return getCapacity();}
@@ -42,7 +39,7 @@ public abstract class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
 		if (mFluid != null) {
 			try {
 				aNBT.setCompoundTag("mLiquid", mFluid.writeToNBT(new NBTTagCompound("mLiquid")));
-			} catch(Throwable e) {}
+			} catch(Throwable e) {/*Do nothing*/}
 		}
 		aNBT.setByte("mLastReceivedFrom", mLastReceivedFrom);
 	}
@@ -72,7 +69,7 @@ public abstract class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
 		    			if (tTileEntity instanceof IGregTechTileEntity) {
 		    				if (getBaseMetaTileEntity().getColorization() >= 0) {
 			    				byte tColor = ((IGregTechTileEntity)tTileEntity).getColorization();
-			    				if (tColor >= 0 && tColor != getBaseMetaTileEntity().getColorization()) {
+			    				if (tColor >= 0 && (tColor & 15) != (getBaseMetaTileEntity().getColorization() & 15)) {
 			    					continue;
 			    				}
 			    			}
@@ -85,6 +82,9 @@ public abstract class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
 					    	if (getBaseMetaTileEntity().getCoverBehaviorAtSide(i).letsLiquidOut(i, getBaseMetaTileEntity().getCoverIDAtSide(i), getBaseMetaTileEntity().getCoverDataAtSide(i), getBaseMetaTileEntity())) {
 					    		mConnections |= (1<<i);
 					    		if (((1<<i) & mLastReceivedFrom) == 0) tTanks.put(tTileEntity, ForgeDirection.getOrientation(i).getOpposite());
+					    	}
+					    	if (getBaseMetaTileEntity().getCoverBehaviorAtSide(i).alwaysLookConnected(i, getBaseMetaTileEntity().getCoverIDAtSide(i), getBaseMetaTileEntity().getCoverDataAtSide(i), getBaseMetaTileEntity())) {
+					    		mConnections |= (1<<i);
 					    	}
 			    		}
 			    	}
@@ -158,16 +158,15 @@ public abstract class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
 					mLastReceivedFrom |= (1<<aSide.ordinal());
 				}
 				return aFluid.amount;
-			} else {
-				if (doFill) {
-					mFluid = aFluid.copy();
-					mLastReceivedFrom |= (1<<aSide.ordinal());
-					mFluid.amount = getCapacity();
-					if (getBaseMetaTileEntity()!=null)
-						FluidEvent.fireEvent(new FluidEvent.FluidFillingEvent(mFluid, getBaseMetaTileEntity().getWorld(), getBaseMetaTileEntity().getXCoord(), getBaseMetaTileEntity().getYCoord(), getBaseMetaTileEntity().getZCoord(), this));
-				}
-				return getCapacity();
 			}
+			if (doFill) {
+				mFluid = aFluid.copy();
+				mLastReceivedFrom |= (1<<aSide.ordinal());
+				mFluid.amount = getCapacity();
+				if (getBaseMetaTileEntity()!=null)
+					FluidEvent.fireEvent(new FluidEvent.FluidFillingEvent(mFluid, getBaseMetaTileEntity().getWorld(), getBaseMetaTileEntity().getXCoord(), getBaseMetaTileEntity().getYCoord(), getBaseMetaTileEntity().getZCoord(), this));
+			}
+			return getCapacity();
 		}
 		
 		if (!mFluid.isFluidEqual(aFluid)) return 0;
@@ -179,13 +178,12 @@ public abstract class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
 				mLastReceivedFrom |= (1<<aSide.ordinal());
 			}
 			return aFluid.amount;
-		} else {
-			if (doFill) {
-				mFluid.amount = getCapacity();
-				mLastReceivedFrom |= (1<<aSide.ordinal());
-			}
-			return space;
 		}
+		if (doFill) {
+			mFluid.amount = getCapacity();
+			mLastReceivedFrom |= (1<<aSide.ordinal());
+		}
+		return space;
 	}
 	
 	@Override

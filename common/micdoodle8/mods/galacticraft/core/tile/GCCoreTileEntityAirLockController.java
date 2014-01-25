@@ -2,8 +2,12 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
+import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -11,9 +15,7 @@ import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.util.AxisAlignedBB;
-import universalelectricity.core.vector.Vector3;
-import universalelectricity.prefab.network.IPacketReceiver;
-import universalelectricity.prefab.network.PacketManager;
+
 import com.google.common.io.ByteArrayDataInput;
 
 /**
@@ -171,7 +173,7 @@ public class GCCoreTileEntityAirLockController extends GCCoreTileEntityAirLock i
 
             if (this.ticks % 3 == 0)
             {
-                PacketManager.sendPacketToClients(this.getPacket(), this.worldObj, new Vector3(this), 12.0D);
+            	GCCorePacketManager.sendPacketToClients(this.getPacket(), this.worldObj, new Vector3(this), 12.0D);
             }
         }
     }
@@ -364,7 +366,7 @@ public class GCCoreTileEntityAirLockController extends GCCoreTileEntityAirLock i
 
     public Packet getPacket()
     {
-        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.active, this.ownerName, this.redstoneActivation, this.playerDistanceActivation, this.playerDistanceSelection, this.playerNameMatches, this.playerToOpenFor != null ? this.playerToOpenFor : "", this.invertSelection, this.horizontalModeEnabled);
+        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.active, this.ownerName, this.redstoneActivation, this.playerDistanceActivation, this.playerDistanceSelection, this.playerNameMatches, this.playerToOpenFor != null ? this.playerToOpenFor : "", this.invertSelection, this.horizontalModeEnabled);
     }
 
     public String getOwnerName()

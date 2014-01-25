@@ -23,8 +23,8 @@ public class GT_MetaTileEntity_E_Furnace extends GT_MetaTileEntity_BasicMachine 
 	public int mHeatingCoilTier = 0;
 	
 	// see @MetaTileEntity to register MetaTileEntities
-	public GT_MetaTileEntity_E_Furnace(int aID, String mName, String mNameRegional) {
-		super(aID, mName, mNameRegional);
+	public GT_MetaTileEntity_E_Furnace(int aID, String aName, String aNameRegional) {
+		super(aID, aName, aNameRegional);
 	}
 	
 	// An empty constructor, which is needed for several Java reasons
@@ -61,18 +61,18 @@ public class GT_MetaTileEntity_E_Furnace extends GT_MetaTileEntity_BasicMachine 
 	public void onRightclick(EntityPlayer aPlayer) {
 	    ItemStack tPlayerItem = aPlayer.inventory.getCurrentItem();
 	    // Adds the Heating Coil Upgrades when rightclicking the Machine with them
-	    if (mHeatingCoilTier <= 0 && GT_OreDictUnificator.isItemStackInstanceOf(tPlayerItem, "craftingHeatingCoilTier01", false)) {
+	    if (mHeatingCoilTier <= 0 && GT_OreDictUnificator.isItemStackInstanceOf(tPlayerItem, "craftingHeatingCoilTier01")) {
 	    	// Creative Players don't have to pay
 	    	if (!aPlayer.capabilities.isCreativeMode) tPlayerItem.stackSize--;
 		    mHeatingCoilTier = 1;
 	    	return;
 	    }
-	    if (mHeatingCoilTier == 1 && GT_OreDictUnificator.isItemStackInstanceOf(tPlayerItem, "craftingHeatingCoilTier02", false)) {
+	    if (mHeatingCoilTier == 1 && GT_OreDictUnificator.isItemStackInstanceOf(tPlayerItem, "craftingHeatingCoilTier02")) {
 	    	if (!aPlayer.capabilities.isCreativeMode) tPlayerItem.stackSize--;
 		    mHeatingCoilTier = 2;
 	    	return;
 	    }
-	    if (mHeatingCoilTier == 2 && GT_OreDictUnificator.isItemStackInstanceOf(tPlayerItem, "craftingHeatingCoilTier03", false)) {
+	    if (mHeatingCoilTier == 2 && GT_OreDictUnificator.isItemStackInstanceOf(tPlayerItem, "craftingHeatingCoilTier03")) {
 	    	if (!aPlayer.capabilities.isCreativeMode) tPlayerItem.stackSize--;
 		    mHeatingCoilTier = 3;
 	    	return;

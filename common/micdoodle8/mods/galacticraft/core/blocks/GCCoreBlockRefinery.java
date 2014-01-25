@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.Random;
+
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityRefinery;
 import net.minecraft.block.Block;
@@ -29,7 +30,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class GCCoreBlockRefinery extends GCCoreBlockAdvanced
+public class GCCoreBlockRefinery extends GCCoreBlockAdvancedTile
 {
     private final Random refineryRand = new Random();
 

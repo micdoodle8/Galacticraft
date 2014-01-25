@@ -3,7 +3,7 @@ package gregtechmod.api.interfaces;
 import gregtechmod.api.util.GT_CoverBehavior;
 import net.minecraft.item.ItemStack;
 
-public interface ICoverable extends IRedstoneTileEntity, IHasWorldObjectAndCoords, IHasInventory, IBasicEnergyContainer {
+public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEnergyContainer {
 	public boolean			canPlaceCoverIDAtSide	(byte aSide, int aID);
 	public boolean			canPlaceCoverItemAtSide	(byte aSide, ItemStack aCover);
 	public boolean			dropCover				(byte aSide, byte aDroppedSide, boolean aForced);

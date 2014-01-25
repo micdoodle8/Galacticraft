@@ -9,7 +9,6 @@ import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import universalelectricity.prefab.SlotSpecific;
 
 /**
  * GCCoreContainerSchematic.java

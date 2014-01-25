@@ -22,11 +22,16 @@ public interface IGregTechTileEntity extends IGearEnergyTileEntity, ICoverable, 
 	 * sets the Error displayed on the GUI
 	 */
 	public void setErrorDisplayID(int aErrorID);
-	
+
 	/**
 	 * @return the MetaID of the Block or the MetaTileEntity ID.
 	 */
 	public int getMetaTileID();
+	
+	/**
+	 * Internal Usage only!
+	 */
+	public int setMetaTileID(short aID);
 
 	/**
 	 * @return the MetaTileEntity which is belonging to this, or null if it doesnt has one.
@@ -81,13 +86,13 @@ public interface IGregTechTileEntity extends IGearEnergyTileEntity, ICoverable, 
 	public void setInitialValuesAsNBT(NBTTagCompound aNBT, short aID);
 	
 	/**
-	 * @return 0 - 15 are Colors while -1 means uncolored.
+	 * @return 0 - 15 are Colors, 16-31 are the same Colors but on a bleached Machine, while -1 means uncolored and -2 means bleached.
 	 */
 	public byte getColorization();
 	
 	/**
 	 * Sets the Color Modulation of the Block
-	 * @param aColor the Color you want to set it to. -1 for reset
+	 * @param aColor the Color you want to set it to. -1 for reset, -2 for bleached
 	 */
 	public byte setColorization(byte aColor);
 	
@@ -102,6 +107,7 @@ public interface IGregTechTileEntity extends IGearEnergyTileEntity, ICoverable, 
 	 */
 	public boolean onRightclick(EntityPlayer aPlayer, byte aSide, float par1, float par2, float par3);
 	
+	public float getBlastResistance(byte aSide);
 	public int getTextureIndex(byte aSide, byte aMeta);
 	public Icon getTextureIcon(byte aSide, byte aMeta);
 }

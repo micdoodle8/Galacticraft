@@ -1,12 +1,16 @@
 package micdoodle8.mods.galacticraft.mars.tile;
 
 import java.util.ArrayList;
+
 import micdoodle8.mods.galacticraft.api.block.ITerraformableBlock;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectric;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectricBlock;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityTerraformBubble;
 import micdoodle8.mods.galacticraft.mars.world.gen.GCMarsWorldGenTerraformTree;
+import micdoodle8.mods.galacticraft.power.core.item.IItemElectric;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -22,9 +26,7 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
-import universalelectricity.core.item.IItemElectric;
-import universalelectricity.core.vector.Vector3;
-import universalelectricity.prefab.network.PacketManager;
+
 import com.google.common.io.ByteArrayDataInput;
 
 /**
@@ -36,7 +38,7 @@ import com.google.common.io.ByteArrayDataInput;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectric implements IInventory, ISidedInventory, IDisableableMachine
+public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectricBlock implements IInventory, ISidedInventory, IDisableableMachine
 {
     private final int tankCapacity = 2000;
     public FluidTank waterTank = new FluidTank(this.tankCapacity);
@@ -607,7 +609,7 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectric implem
         ItemStack stack1 = this.getFirstBonemealStack();
         ItemStack stack2 = this.getFirstSaplingStack();
         ItemStack stack3 = this.getFirstSeedStack();
-        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getEnergyStored(), this.treesDisabled, this.grassDisabled, this.disableCooldown, this.terraformBubble != null ? this.terraformBubble.entityId : -1, this.terraformableBlocksListSize, this.grassBlocksListSize, this.size, stack1 == null ? -1 : this.getSelectiveStack(2, 6), stack1 == null ? -1 : stack1.itemID, stack1 == null ? -1 : stack1.stackSize, stack1 == null ? -1 : stack1.getItemDamage(), stack2 == null ? -1 : this.getSelectiveStack(6, 4), stack2 == null ? -1 : stack2.itemID, stack2 == null ? -1 : stack2.stackSize, stack2 == null ? -1 : stack2.getItemDamage(), stack3 == null ? -1 : this.getSelectiveStack(10, 14), stack3 == null ? -1 : stack3.itemID, stack3 == null ? -1 : stack3.stackSize, stack3 == null ? -1 : stack3.getItemDamage(), this.waterTank.getFluid() == null ? 0 : this.waterTank.getFluid().amount);
+        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getEnergyStored(), this.treesDisabled, this.grassDisabled, this.disableCooldown, this.terraformBubble != null ? this.terraformBubble.entityId : -1, this.terraformableBlocksListSize, this.grassBlocksListSize, this.size, stack1 == null ? -1 : this.getSelectiveStack(2, 6), stack1 == null ? -1 : stack1.itemID, stack1 == null ? -1 : stack1.stackSize, stack1 == null ? -1 : stack1.getItemDamage(), stack2 == null ? -1 : this.getSelectiveStack(6, 4), stack2 == null ? -1 : stack2.itemID, stack2 == null ? -1 : stack2.stackSize, stack2 == null ? -1 : stack2.getItemDamage(), stack3 == null ? -1 : this.getSelectiveStack(10, 14), stack3 == null ? -1 : stack3.itemID, stack3 == null ? -1 : stack3.stackSize, stack3 == null ? -1 : stack3.getItemDamage(), this.waterTank.getFluid() == null ? 0 : this.waterTank.getFluid().amount);
     }
 
     @Override

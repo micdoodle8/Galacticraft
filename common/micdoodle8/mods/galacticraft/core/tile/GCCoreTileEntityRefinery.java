@@ -1,8 +1,11 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOilCanister;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
+import micdoodle8.mods.galacticraft.power.core.item.IItemElectric;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -20,9 +23,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
-import universalelectricity.core.item.IItemElectric;
-import universalelectricity.core.vector.Vector3;
-import universalelectricity.prefab.network.PacketManager;
+
 import com.google.common.io.ByteArrayDataInput;
 
 /**
@@ -34,7 +35,7 @@ import com.google.common.io.ByteArrayDataInput;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implements IInventory, ISidedInventory, IFluidHandler
+public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectricBlock implements IInventory, ISidedInventory, IFluidHandler
 {
     private final int tankCapacity = 24000;
     public FluidTank oilTank = new FluidTank(this.tankCapacity);
@@ -158,7 +159,7 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
     {
         if (!this.worldObj.isRemote)
         {
-            PacketManager.sendPacketToClients(this.getPacket(), this.worldObj, new Vector3(this), 15);
+        	GCCorePacketManager.sendPacketToClients(this.getPacket(), this.worldObj, new Vector3(this), 15);
         }
     }
 
@@ -452,7 +453,7 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectric implement
     @Override
     public Packet getPacket()
     {
-        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getEnergyStored(), this.processTicks, this.oilTank.getFluid() == null ? 0 : this.oilTank.getFluid().amount, this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluid().amount, this.disabled, this.disableCooldown);
+        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getEnergyStored(), this.processTicks, this.oilTank.getFluid() == null ? 0 : this.oilTank.getFluid().amount, this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluid().amount, this.disabled, this.disableCooldown);
     }
 
     @Override

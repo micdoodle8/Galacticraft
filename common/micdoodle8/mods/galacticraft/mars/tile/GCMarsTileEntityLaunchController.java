@@ -3,18 +3,23 @@ package micdoodle8.mods.galacticraft.mars.tile;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPadFull;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectric;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
+import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectricBlock;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
+import micdoodle8.mods.galacticraft.core.tile.IElectrical;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
 import micdoodle8.mods.galacticraft.core.world.IChunkLoader;
 import micdoodle8.mods.galacticraft.mars.GCMarsConfigManager;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlockMachine;
+import micdoodle8.mods.galacticraft.power.core.item.IItemElectric;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -32,11 +37,9 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.ForgeDirection;
-import universalelectricity.core.block.IElectrical;
-import universalelectricity.core.item.IItemElectric;
-import universalelectricity.prefab.network.IPacketReceiver;
-import universalelectricity.prefab.network.PacketManager;
+
 import com.google.common.io.ByteArrayDataInput;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
 
@@ -49,7 +52,7 @@ import cpw.mods.fml.common.network.PacketDispatcher;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric implements IChunkLoader, IElectrical, IInventory, ISidedInventory, IPacketReceiver, ILandingPadAttachable
+public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectricBlock implements IChunkLoader, IElectrical, IInventory, ISidedInventory, IPacketReceiver, ILandingPadAttachable
 {
     public static final float WATTS_PER_TICK = 0.05000001f;
     private ItemStack[] containingItems = new ItemStack[1];
@@ -433,7 +436,7 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectric i
     @Override
     public Packet getPacket()
     {
-        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getEnergyStored(), this.getDisabled(0), this.getDisabled(1), this.disableCooldown, this.ownerName, this.frequencyValid, this.destFrequencyValid, this.launchDropdownSelection, this.frequency, this.destFrequency, this.launchSchedulingEnabled);
+        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getEnergyStored(), this.getDisabled(0), this.getDisabled(1), this.disableCooldown, this.ownerName, this.frequencyValid, this.destFrequencyValid, this.launchDropdownSelection, this.frequency, this.destFrequency, this.launchSchedulingEnabled);
     }
 
     @Override

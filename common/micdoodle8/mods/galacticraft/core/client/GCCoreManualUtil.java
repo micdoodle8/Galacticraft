@@ -3,13 +3,17 @@ package micdoodle8.mods.galacticraft.core.client;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.page.GCCoreBookPage;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+
 import org.w3c.dom.Document;
+
 import cpw.mods.fml.common.FMLLog;
 
 /**

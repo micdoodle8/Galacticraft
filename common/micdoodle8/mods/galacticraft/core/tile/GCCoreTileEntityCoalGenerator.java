@@ -3,7 +3,11 @@ package micdoodle8.mods.galacticraft.core.tile;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
+
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
+import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
+import micdoodle8.mods.galacticraft.power.ElectricityPack;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -16,11 +20,9 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.ForgeDirection;
-import universalelectricity.core.block.IElectrical;
-import universalelectricity.core.electricity.ElectricityPack;
-import universalelectricity.prefab.network.IPacketReceiver;
-import universalelectricity.prefab.network.PacketManager;
+
 import com.google.common.io.ByteArrayDataInput;
+
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 
@@ -117,7 +119,7 @@ public class GCCoreTileEntityCoalGenerator extends GCCoreTileEntityUniversalElec
 
             if (this.prevGenerateWatts <= 0 && this.generateWatts > 0 || this.prevGenerateWatts > 0 && this.generateWatts <= 0)
             {
-                PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj);
+            	GCCorePacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj);
             }
         }
     }
@@ -125,7 +127,7 @@ public class GCCoreTileEntityCoalGenerator extends GCCoreTileEntityUniversalElec
     @Override
     public Packet getDescriptionPacket()
     {
-        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.generateWatts, this.itemCookTime, this.getEnergyStored());
+        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.generateWatts, this.itemCookTime, this.getEnergyStored());
     }
 
     @Override

@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.mars.world.gen;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityCreeper;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeleton;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpider;

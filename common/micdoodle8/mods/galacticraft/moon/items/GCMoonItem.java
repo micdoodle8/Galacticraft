@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.moon.items;
 
 import java.util.List;
+
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
 import net.minecraft.client.renderer.texture.IconRegister;

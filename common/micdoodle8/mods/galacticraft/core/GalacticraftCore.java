@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import mekanism.api.gas.Gas;
 import mekanism.api.gas.GasRegistry;
 import mekanism.api.transmitters.TransmitterNetworkRegistry;
@@ -94,6 +95,7 @@ import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
 import micdoodle8.mods.galacticraft.core.world.gen.GCCoreOverworldGenerator;
 import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
+import micdoodle8.mods.galacticraft.power.compatibility.PowerConfigHandler;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -110,8 +112,6 @@ import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
-import universalelectricity.compatibility.Compatibility;
-import universalelectricity.core.UniversalElectricity;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -178,6 +178,7 @@ public class GalacticraftCore
     public static final String BLOCK_TEXTURE_FILE = GalacticraftCore.FILE_PATH + GalacticraftCore.CLIENT_PATH + "blocks/core.png";
     public static final String ITEM_TEXTURE_FILE = GalacticraftCore.FILE_PATH + GalacticraftCore.CLIENT_PATH + "items/core.png";
     public static final String CONFIG_FILE = "Galacticraft/core.conf";
+    public static final String POWER_CONFIG_FILE = "Galacticraft/power.conf";
     public static final String CHUNKLOADER_CONFIG_FILE = "Galacticraft/chunkloading.conf";
 
     public static String ASSET_DOMAIN = "galacticraftcore";
@@ -206,6 +207,7 @@ public class GalacticraftCore
         GalacticraftCore.proxy.preInit(event);
 
         GCCoreConfigManager.setDefaultValues(new File(event.getModConfigurationDirectory(), GalacticraftCore.CONFIG_FILE));
+        PowerConfigHandler.setDefaultValues(new File(event.getModConfigurationDirectory(), GalacticraftCore.POWER_CONFIG_FILE));
         ChunkLoadingCallback.loadConfig(new File(event.getModConfigurationDirectory(), GalacticraftCore.CHUNKLOADER_CONFIG_FILE));
 
         GalacticraftCore.gcFluidOil = new Fluid("oil").setDensity(800).setViscosity(1500);
@@ -277,11 +279,10 @@ public class GalacticraftCore
         SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicRocketT1());
         SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicMoonBuggy());
         SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicAdd());
-        Compatibility.initiate();
         TransmitterNetworkRegistry.initiate();
+        
         this.registerCreatures();
         this.registerOtherEntities();
-        this.initiateUENetwork();
         NetworkRegistry.instance().registerChannel(new GCCorePacketManager(), GalacticraftCore.CHANNELENTITIES, Side.CLIENT);
         NetworkRegistry.instance().registerChannel(new GCCorePacketManager(), GalacticraftCore.CHANNELENTITIES, Side.SERVER);
         GalacticraftRegistry.registerRocketGui(GCCoreWorldProviderSpaceStation.class, new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/overworldRocketGui.png"));
@@ -320,12 +321,6 @@ public class GalacticraftCore
         {
             GalacticraftCore.gasOxygen = oxygen;
         }
-    }
-
-    @SuppressWarnings("deprecation")
-    private void initiateUENetwork()
-    {
-        UniversalElectricity.isNetworkActive = true;
     }
 
     @EventHandler

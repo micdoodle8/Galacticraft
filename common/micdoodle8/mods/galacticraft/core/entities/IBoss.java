@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityDungeonSpawner;
-import universalelectricity.core.vector.Vector3;
 
 /**
  * IBoss.java

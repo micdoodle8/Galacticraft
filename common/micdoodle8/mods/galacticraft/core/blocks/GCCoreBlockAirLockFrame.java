@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.List;
+
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAirLock;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAirLockController;
@@ -16,7 +18,6 @@ import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -29,7 +30,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvanced
+public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvancedTile
 {
     @SideOnly(Side.CLIENT)
     private Icon[] airLockIcons;

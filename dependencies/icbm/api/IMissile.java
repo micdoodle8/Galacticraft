@@ -1,7 +1,6 @@
 package icbm.api;
 
 import icbm.api.explosion.IExplosiveContainer;
-import universalelectricity.core.vector.Vector3;
 
 /**
  * This is an interface applied by all missile entities. You may cast this into an @Entity. The
@@ -47,7 +46,7 @@ public interface IMissile extends IExplosiveContainer
 	 * 
 	 * @param target
 	 */
-	public void launch(Vector3 target);
+	public void launch(int/*Vector3*/ target);
 
-	public void launch(Vector3 target, int height);
+	public void launch(int/*Vector3*/ target, int height);
 }

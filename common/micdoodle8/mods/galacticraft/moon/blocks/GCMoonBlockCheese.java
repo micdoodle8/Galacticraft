@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.moon.blocks;
 
 import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;

@@ -13,7 +13,7 @@ public abstract class GT_Worldgen {
 	
 	public GT_Worldgen(String aName, boolean aDefault) {
 		mWorldGenName = aName;
-		if (GregTech_API.sConfiguration.addAdvConfig("worldgen", mWorldGenName, aDefault)) {
+		if (GregTech_API.sWorldgenFile.add("worldgen", mWorldGenName, aDefault)) {
 			GregTech_API.sWorldgenList.add(this);
 		}
 	}

@@ -18,7 +18,7 @@ import net.minecraftforge.common.ForgeDirection;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectric implements IGasAcceptor, ITubeConnection, IGasStorage
+public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectricBlock implements IGasAcceptor, ITubeConnection, IGasStorage
 {
     public int maxOxygen;
     public int oxygenPerTick;

@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.recipe;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
 import micdoodle8.mods.galacticraft.api.world.SpaceStationType;

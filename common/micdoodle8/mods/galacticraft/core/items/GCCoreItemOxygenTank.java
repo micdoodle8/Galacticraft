@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.items;
 
 import java.util.List;
+
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import net.minecraft.creativetab.CreativeTabs;

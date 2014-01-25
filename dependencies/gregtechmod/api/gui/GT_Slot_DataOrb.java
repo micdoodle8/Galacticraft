@@ -1,6 +1,6 @@
 package gregtechmod.api.gui;
 
-import gregtechmod.api.GregTech_API;
+import gregtechmod.api.enums.GT_Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -10,7 +10,8 @@ public class GT_Slot_DataOrb extends Slot {
 		super(par1iInventory, par2, par3, par4);
 	}
 	
-    public boolean isItemValid(ItemStack aStack) {
-        return aStack != null && aStack.itemID == GregTech_API.getGregTechItem(43, 1, 0).itemID;
+    @Override
+	public boolean isItemValid(ItemStack aStack) {
+        return GT_Items.Tool_DataOrb.isStackEqual(aStack, true, true);
     }
 }

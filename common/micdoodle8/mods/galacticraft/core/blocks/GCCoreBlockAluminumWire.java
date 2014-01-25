@@ -1,9 +1,12 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.List;
+
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumPacketClient;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAluminumWire;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityConductor;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -13,9 +16,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
-import universalelectricity.core.vector.Vector3;
-import universalelectricity.prefab.block.BlockConductor;
-import universalelectricity.prefab.tile.TileEntityConductor;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -29,7 +29,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class GCCoreBlockAluminumWire extends BlockConductor
+public class GCCoreBlockAluminumWire extends GCCoreBlockConductor
 {
     public static final String[] names = { "aluminumWire", "aluminumWireHeavy" };
     private static Icon[] blockIcons;
@@ -98,9 +98,9 @@ public class GCCoreBlockAluminumWire extends BlockConductor
 
         TileEntity tile = world.getBlockTileEntity(x, y, z);
 
-        if (tile instanceof TileEntityConductor)
+        if (tile instanceof GCCoreTileEntityConductor)
         {
-            ((TileEntityConductor) tile).adjacentConnections = null;
+            ((GCCoreTileEntityConductor) tile).adjacentConnections = null;
             Block.blocksList[world.getBlockId(tile.xCoord, tile.yCoord, tile.zCoord)].setBlockBoundsBasedOnState(world, tile.xCoord, tile.yCoord, tile.zCoord);
             PacketDispatcher.sendPacketToAllAround(x, y, z, 10, world.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.UPDATE_WIRE_BOUNDS, new Object[] { x, y, z }));
         }

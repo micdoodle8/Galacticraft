@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.Random;
+
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCollector;
 import net.minecraft.block.Block;
@@ -15,7 +17,6 @@ import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -28,7 +29,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class GCCoreBlockOxygenCollector extends GCCoreBlockAdvanced
+public class GCCoreBlockOxygenCollector extends GCCoreBlockAdvancedTile
 {
     @SideOnly(Side.CLIENT)
     private Icon[] collectorIcons;

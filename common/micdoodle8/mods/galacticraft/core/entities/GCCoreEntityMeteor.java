@@ -2,6 +2,8 @@ package micdoodle8.mods.galacticraft.core.entities;
 
 import java.util.Iterator;
 import java.util.List;
+
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.entity.Entity;
@@ -15,7 +17,6 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.StatCollector;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.common.Loader;
 
 /**

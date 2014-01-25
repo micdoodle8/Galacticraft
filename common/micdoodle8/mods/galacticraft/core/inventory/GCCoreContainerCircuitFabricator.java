@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCircuitFabricator;
+import micdoodle8.mods.galacticraft.power.core.item.IItemElectric;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -9,8 +10,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotFurnace;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
-import universalelectricity.core.item.IItemElectric;
-import universalelectricity.prefab.SlotSpecific;
 
 /**
  * GCCoreContainerCircuitFabricator.java

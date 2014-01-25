@@ -1,7 +1,9 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import java.util.Calendar;
+
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -30,7 +32,6 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

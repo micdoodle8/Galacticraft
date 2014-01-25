@@ -3,9 +3,12 @@ package micdoodle8.mods.galacticraft.core.tile;
 import mekanism.api.gas.GasStack;
 import mekanism.api.gas.GasTransmission;
 import mekanism.api.gas.IGasAcceptor;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockOxygenCompressor;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenTank;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
+import micdoodle8.mods.galacticraft.power.core.item.IItemElectric;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -16,10 +19,7 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.ForgeDirection;
-import universalelectricity.core.item.IItemElectric;
-import universalelectricity.core.vector.Vector3;
-import universalelectricity.core.vector.VectorHelper;
-import universalelectricity.prefab.network.PacketManager;
+
 import com.google.common.io.ByteArrayDataInput;
 
 /**
@@ -66,8 +66,9 @@ public class GCCoreTileEntityOxygenDecompressor extends GCCoreTileEntityOxygen i
             GasStack toSend = new GasStack(GalacticraftCore.gasOxygen, gasToSend);
             this.storedOxygen -= GasTransmission.emitGasToNetwork(toSend, this, this.getOxygenOutputDirection());
 
-            final TileEntity tileEntity = VectorHelper.getTileEntityFromSide(this.worldObj, new Vector3(this), this.getOxygenOutputDirection());
-
+            Vector3 thisVec = new Vector3(this);
+            TileEntity tileEntity = thisVec.modifyPositionFromSide(this.getOxygenOutputDirection()).getTileEntity(this.worldObj);
+            
             if (tileEntity instanceof IGasAcceptor)
             {
                 if (((IGasAcceptor) tileEntity).canReceiveGas(this.getOxygenOutputDirection().getOpposite(), GalacticraftCore.gasOxygen))
@@ -317,7 +318,7 @@ public class GCCoreTileEntityOxygenDecompressor extends GCCoreTileEntityOxygen i
     @Override
     public Packet getPacket()
     {
-        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.storedOxygen, this.getEnergyStored(), this.disabled);
+        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.storedOxygen, this.getEnergyStored(), this.disabled);
     }
 
     @Override

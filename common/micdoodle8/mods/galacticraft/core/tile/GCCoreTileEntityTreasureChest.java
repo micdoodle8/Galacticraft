@@ -2,10 +2,14 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import java.util.Iterator;
 import java.util.List;
+
 import micdoodle8.mods.galacticraft.api.item.IKeyable;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockT1TreasureChest;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerServer.EnumPacketServer;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
+import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,10 +25,9 @@ import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.StatCollector;
-import universalelectricity.core.vector.Vector3;
-import universalelectricity.prefab.network.IPacketReceiver;
-import universalelectricity.prefab.network.PacketManager;
+
 import com.google.common.io.ByteArrayDataInput;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
@@ -473,7 +476,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
 
             if (this.ticks % 40 == 0)
             {
-                PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 6);
+            	GCCorePacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 6);
             }
         }
     }
@@ -481,7 +484,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
     @Override
     public Packet getDescriptionPacket()
     {
-        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.locked);
+        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.locked);
     }
 
     @Override
@@ -615,28 +618,27 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
                     player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
                 }
 
-                PacketManager.sendPacketToClients(this.getDescriptionPacket());
+                GCCorePacketManager.sendPacketToClients(this.getDescriptionPacket());
 
                 if (this.adjacentChestXNeg != null)
                 {
-                    PacketManager.sendPacketToClients(this.adjacentChestXNeg.getDescriptionPacket());
+                    GCCorePacketManager.sendPacketToClients(this.adjacentChestXNeg.getDescriptionPacket());
                 }
-                ;
+
                 if (this.adjacentChestXPos != null)
                 {
-                    PacketManager.sendPacketToClients(this.adjacentChestXPos.getDescriptionPacket());
+                    GCCorePacketManager.sendPacketToClients(this.adjacentChestXPos.getDescriptionPacket());
                 }
-                ;
+
                 if (this.adjacentChestZNeg != null)
                 {
-                    PacketManager.sendPacketToClients(this.adjacentChestZNeg.getDescriptionPacket());
+                    GCCorePacketManager.sendPacketToClients(this.adjacentChestZNeg.getDescriptionPacket());
                 }
-                ;
+
                 if (this.adjacentChestZPos != null)
                 {
-                    PacketManager.sendPacketToClients(this.adjacentChestZPos.getDescriptionPacket());
+                    GCCorePacketManager.sendPacketToClients(this.adjacentChestZPos.getDescriptionPacket());
                 }
-                ;
 
                 return true;
             }

@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.mars.client;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.util.EnumSet;
+
 import micdoodle8.mods.galacticraft.core.client.GCCoreCloudRenderer;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderOxygenBubble;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderSpaceship;

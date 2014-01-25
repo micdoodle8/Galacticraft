@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.moon.world.gen.dungeon;
 
 import java.util.ArrayList;
 import java.util.Random;
+
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.GCCoreDungeonBoundingBox;

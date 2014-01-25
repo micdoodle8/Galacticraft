@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.ArrayList;
+
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlock;
@@ -20,6 +21,8 @@ import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlock;
 import micdoodle8.mods.galacticraft.moon.blocks.GCMoonBlockCheese;
 import micdoodle8.mods.galacticraft.moon.items.GCMoonItemBlock;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
@@ -71,6 +74,8 @@ public class GCCoreBlocks
     public static Block blockMoon;
     public static Block cheeseBlock;
 
+	public static final Material machine = new Material(MapColor.ironColor);
+	
     public static ArrayList<Integer> hiddenBlocks = new ArrayList<Integer>();
 
     public static void initBlocks()

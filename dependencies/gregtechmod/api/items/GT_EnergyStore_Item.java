@@ -11,10 +11,10 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class GT_EnergyStore_Item extends GT_Generic_Item {
-	public int mCharge, mTransfer, mTier, mEmptyID, mFullID;
+	protected int mCharge, mTransfer, mTier, mEmptyID, mFullID;
 	
-	public GT_EnergyStore_Item(int aID, String aName, int aCharge, int aTransfer, int aTier, int aEmptyID, int aFullID) {
-		super(aID, aName, null);
+	public GT_EnergyStore_Item(int aID, String aUnlocalized, String aEnglish, int aCharge, int aTransfer, int aTier, int aEmptyID, int aFullID) {
+		super(aID, aUnlocalized, aEnglish, null);
 		setMaxStackSize(1);
 		setMaxDamage(100);
 		setNoRepair();
@@ -25,16 +25,18 @@ public class GT_EnergyStore_Item extends GT_Generic_Item {
 		mFullID = aFullID;
 	}
     
-    public boolean getShareTag() {
+    @Override
+	public boolean getShareTag() {
         return true;
     }
     
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public void getSubItems(int var1, CreativeTabs var2, List var3) {
-        ItemStack tCharged = GregTech_API.getGregTechItem(mFullID, 1, 0), tUncharged = GregTech_API.getGregTechItem(mEmptyID, 1, getMaxDamage());
+        ItemStack tCharged = new ItemStack(GregTech_API.sItemList[mFullID], 1, 0), tUncharged = new ItemStack(GregTech_API.sItemList[mEmptyID], 1, getMaxDamage() - 1);
         GT_ModHandler.chargeElectricItem(tCharged, Integer.MAX_VALUE, Integer.MAX_VALUE, true, false);
-        if (itemID == GregTech_API.getGregTechItem(mFullID, 1, 0).itemID) var3.add(tCharged);
-        if (itemID == GregTech_API.getGregTechItem(mEmptyID, 1, 0).itemID) var3.add(tUncharged);
+        if (this == GregTech_API.sItemList[mFullID]) var3.add(tCharged);
+        if (this == GregTech_API.sItemList[mEmptyID]) var3.add(tUncharged);
     }
     
 	@Override
@@ -52,27 +54,8 @@ public class GT_EnergyStore_Item extends GT_Generic_Item {
         return false;
     }
 	
-	public boolean canProvideEnergy(ItemStack aStack) {
-		return true;
-	}
-	
-	public int getChargedItemId(ItemStack aStack) {
-		return GregTech_API.getGregTechItem(mFullID, 1, 0).itemID;
-	}
-	
-	public int getEmptyItemId(ItemStack aStack) {
-		return GregTech_API.getGregTechItem(mEmptyID, 1, 0).itemID;
-	}
-	
-	public int getMaxCharge(ItemStack aStack) {
-		return mCharge;
-	}
-	
+	@Override
 	public int getTier(ItemStack aStack) {
 		return mTier;
-	}
-	
-	public int getTransferLimit(ItemStack aStack) {
-		return mTransfer;
 	}
 }

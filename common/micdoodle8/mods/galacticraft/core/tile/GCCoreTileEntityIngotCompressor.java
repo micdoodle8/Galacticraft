@@ -2,8 +2,12 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import java.util.HashSet;
 import java.util.Set;
+
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
+import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
+import micdoodle8.mods.galacticraft.power.core.item.IItemElectric;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -19,10 +23,9 @@ import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.StatCollector;
-import universalelectricity.core.item.IItemElectric;
-import universalelectricity.prefab.network.IPacketReceiver;
-import universalelectricity.prefab.network.PacketManager;
+
 import com.google.common.io.ByteArrayDataInput;
+
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 
@@ -134,7 +137,7 @@ public class GCCoreTileEntityIngotCompressor extends TileEntity implements IInve
     @Override
     public Packet getDescriptionPacket()
     {
-        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.processTicks, this.currentItemBurnTime, this.furnaceBurnTime);
+        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.processTicks, this.currentItemBurnTime, this.furnaceBurnTime);
     }
 
     @Override

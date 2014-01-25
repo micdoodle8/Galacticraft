@@ -4,7 +4,10 @@ import micdoodle8.mods.galacticraft.api.entity.ICargoEntity;
 import micdoodle8.mods.galacticraft.api.entity.ICargoEntity.EnumCargoLoadingState;
 import micdoodle8.mods.galacticraft.api.entity.ICargoEntity.RemovalResult;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
+import micdoodle8.mods.galacticraft.power.core.item.IItemElectric;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -16,9 +19,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.ForgeDirection;
-import universalelectricity.core.item.IItemElectric;
-import universalelectricity.core.vector.Vector3;
-import universalelectricity.prefab.network.PacketManager;
+
 import com.google.common.io.ByteArrayDataInput;
 
 /**
@@ -30,7 +31,7 @@ import com.google.common.io.ByteArrayDataInput;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class GCCoreTileEntityCargoLoader extends GCCoreTileEntityElectric implements IInventory, ISidedInventory, ILandingPadAttachable
+public class GCCoreTileEntityCargoLoader extends GCCoreTileEntityElectricBlock implements IInventory, ISidedInventory, ILandingPadAttachable
 {
     private ItemStack[] containingItems = new ItemStack[15];
     public static final float WATTS_PER_TICK = 0.075F;
@@ -348,7 +349,7 @@ public class GCCoreTileEntityCargoLoader extends GCCoreTileEntityElectric implem
     @Override
     public Packet getPacket()
     {
-        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getEnergyStored(), this.disabled, this.disableCooldown, this.targetFull, this.outOfItems, this.noTarget, this.targetNoInventory);
+        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getEnergyStored(), this.disabled, this.disableCooldown, this.targetFull, this.outOfItems, this.noTarget, this.targetNoInventory);
     }
 
     @Override

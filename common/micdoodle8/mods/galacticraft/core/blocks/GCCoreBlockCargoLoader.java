@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.List;
+
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoLoader;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoUnloader;
@@ -28,7 +29,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class GCCoreBlockCargoLoader extends GCCoreBlockAdvanced
+public class GCCoreBlockCargoLoader extends GCCoreBlockAdvancedTile
 {
     private Icon iconMachineSide;
     private Icon iconInput;

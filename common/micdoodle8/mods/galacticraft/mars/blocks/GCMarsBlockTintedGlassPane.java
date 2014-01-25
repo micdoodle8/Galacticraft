@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.mars.blocks;
 
 import java.util.List;
+
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import net.minecraft.block.BlockColored;

@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.mars.blocks;
 
 import java.util.Iterator;
 import java.util.Random;
+
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;

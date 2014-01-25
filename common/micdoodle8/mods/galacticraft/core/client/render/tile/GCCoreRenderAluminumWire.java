@@ -4,21 +4,24 @@ import ic2.api.energy.tile.IEnergyAcceptor;
 import ic2.api.energy.tile.IEnergyEmitter;
 import ic2.api.energy.tile.IEnergySource;
 import ic2.api.energy.tile.IEnergyTile;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAluminumWire;
+import micdoodle8.mods.galacticraft.core.tile.IConnector;
+import micdoodle8.mods.galacticraft.power.compatibility.PowerConfigHandler;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 import net.minecraftforge.common.ForgeDirection;
+
 import org.lwjgl.opengl.GL11;
-import universalelectricity.compatibility.Compatibility;
-import universalelectricity.core.block.IConnector;
-import universalelectricity.core.vector.Vector3;
-import universalelectricity.core.vector.VectorHelper;
+
 import buildcraft.api.power.IPowerReceptor;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -60,7 +63,8 @@ public class GCCoreRenderAluminumWire extends TileEntitySpecialRenderer
         for (byte i = 0; i < 6; i++)
         {
             ForgeDirection side = ForgeDirection.getOrientation(i);
-            TileEntity adjacentTile = VectorHelper.getTileEntityFromSide(tileEntity.worldObj, new Vector3(tileEntity), side);
+            Vector3 tileVec = new Vector3(tileEntity);
+            TileEntity adjacentTile = tileVec.modifyPositionFromSide(side).getTileEntity(tileEntity.worldObj);
 
             if (adjacentTile instanceof IConnector)
             {
@@ -73,7 +77,7 @@ public class GCCoreRenderAluminumWire extends TileEntitySpecialRenderer
                     adjecentConnections.add(null);
                 }
             }
-            else if (Compatibility.isIndustrialCraft2Loaded() && adjacentTile instanceof IEnergyTile)
+            else if (PowerConfigHandler.isIndustrialCraft2Loaded() && adjacentTile instanceof IEnergyTile)
             {
                 if (adjacentTile instanceof IEnergyAcceptor)
                 {
@@ -98,7 +102,7 @@ public class GCCoreRenderAluminumWire extends TileEntitySpecialRenderer
                     adjecentConnections.add(adjacentTile);
                 }
             }
-            else if (Compatibility.isBuildcraftLoaded() && adjacentTile instanceof IPowerReceptor)
+            else if (PowerConfigHandler.isBuildcraftLoaded() && adjacentTile instanceof IPowerReceptor)
             {
                 adjecentConnections.add(adjacentTile);
             }

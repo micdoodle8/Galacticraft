@@ -5,6 +5,13 @@ package gregtechmod.api.interfaces;
  */
 public interface IBasicEnergyContainer {
 	/**
+	 * Gets if that Amount of Energy is stored inside the Machine.
+	 * It is used for checking the contained Energy before consuming it.
+	 * If this returns false, it will also give a Message inside the Scanner, that this Machine doesn't have enough Energy.
+	 */
+	public boolean isUniversalEnergyStored(int aEnergyAmount);
+	
+	/**
 	 * Gets the stored electric, kinetic or steam Energy (with EU as reference Value)
 	 * Always returns the largest one.
 	 */

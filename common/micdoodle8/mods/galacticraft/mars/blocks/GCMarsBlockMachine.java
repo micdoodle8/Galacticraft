@@ -1,7 +1,10 @@
 package micdoodle8.mods.galacticraft.mars.blocks;
 
 import java.util.List;
+
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockTile;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.world.IChunkLoader;
@@ -25,9 +28,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Type;
 import net.minecraftforge.common.ForgeDirection;
-import universalelectricity.core.UniversalElectricity;
-import universalelectricity.core.vector.Vector3;
-import universalelectricity.prefab.block.BlockTile;
 
 /**
  * GCMarsBlockMachine.java
@@ -38,7 +38,7 @@ import universalelectricity.prefab.block.BlockTile;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class GCMarsBlockMachine extends BlockTile
+public class GCMarsBlockMachine extends GCCoreBlockTile
 {
     public static final int TERRAFORMER_METADATA = 0;
     public static final int CRYOGENIC_CHAMBER_METADATA = 4;
@@ -53,7 +53,7 @@ public class GCMarsBlockMachine extends BlockTile
 
     public GCMarsBlockMachine(int id)
     {
-        super(id, UniversalElectricity.machine);
+        super(id, GCCoreBlocks.machine);
     }
 
     @Override

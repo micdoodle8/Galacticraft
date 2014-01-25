@@ -20,11 +20,12 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GT_Container_BasicMachine extends GT_ContainerMetaTile_Machine {
 	
-	public GT_Container_BasicMachine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, int aID) {
-		super(aInventoryPlayer, aTileEntity, aID);
+	public GT_Container_BasicMachine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
+		super(aInventoryPlayer, aTileEntity);
 	}
 	
-    public void addSlots(InventoryPlayer aInventoryPlayer) {
+    @Override
+	public void addSlots(InventoryPlayer aInventoryPlayer) {
         addSlotToContainer(new Slot(mTileEntity,  1,  35,  25));
         addSlotToContainer(new Slot(mTileEntity,  2,  53,  25));
         addSlotToContainer(new Slot(mTileEntity,  5,  80,  63));
@@ -35,9 +36,10 @@ public class GT_Container_BasicMachine extends GT_ContainerMetaTile_Machine {
         addSlotToContainer(new GT_Slot_Holo(mTileEntity, 0, 44, 63, false, true, 1));
     }
     
-    public boolean mOutput = false, mItemTransfer = false, mSeperatedInputs = false;
+    public boolean mOutputting = false, mItemTransfer = false, mSeperatedInputs = false;
     
-    public ItemStack slotClick(int aSlotIndex, int aMouseclick, int aShifthold, EntityPlayer aPlayer) {
+    @Override
+	public ItemStack slotClick(int aSlotIndex, int aMouseclick, int aShifthold, EntityPlayer aPlayer) {
     	if (aSlotIndex < 5) return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
 	    
     	Slot tSlot = (Slot)inventorySlots.get(aSlotIndex);
@@ -60,42 +62,47 @@ public class GT_Container_BasicMachine extends GT_ContainerMetaTile_Machine {
     	return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
     }
     
-    public void detectAndSendChanges() {
+    @Override
+	public void detectAndSendChanges() {
         super.detectAndSendChanges();
     	if (mTileEntity.isClientSide() || mTileEntity.getMetaTileEntity() == null) return;
     	
-    	mOutput = ((GT_MetaTileEntity_BasicMachine)mTileEntity.getMetaTileEntity()).bOutput;
+    	mOutputting = ((GT_MetaTileEntity_BasicMachine)mTileEntity.getMetaTileEntity()).bOutput;
     	mItemTransfer = ((GT_MetaTileEntity_BasicMachine)mTileEntity.getMetaTileEntity()).bItemTransfer;
     	mSeperatedInputs = ((GT_MetaTileEntity_BasicMachine)mTileEntity.getMetaTileEntity()).bSeperatedInputs;
     	
         Iterator var2 = this.crafters.iterator();
         while (var2.hasNext()) {
             ICrafting var1 = (ICrafting)var2.next();
-            var1.sendProgressBarUpdate(this, 101, mOutput?1:0);
+            var1.sendProgressBarUpdate(this, 101, mOutputting?1:0);
             var1.sendProgressBarUpdate(this, 102, mItemTransfer?1:0);
             var1.sendProgressBarUpdate(this, 103, mSeperatedInputs?1:0);
         }
     }
     
-    public void addCraftingToCrafters(ICrafting par1ICrafting) {
+    @Override
+	public void addCraftingToCrafters(ICrafting par1ICrafting) {
         super.addCraftingToCrafters(par1ICrafting);
     }
     
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public void updateProgressBar(int par1, int par2) {
     	super.updateProgressBar(par1, par2);
     	switch (par1) {
-    	case 101: mOutput = (par2 != 0); break;
+    	case 101: mOutputting = (par2 != 0); break;
     	case 102: mItemTransfer = (par2 != 0); break;
     	case 103: mSeperatedInputs = (par2 != 0); break;
     	}
     }
     
-    public int getSlotCount() {
+    @Override
+	public int getSlotCount() {
     	return 5;
     }
     
-    public int getShiftClickSlotCount() {
+    @Override
+	public int getShiftClickSlotCount() {
     	return 2;
     }
 }

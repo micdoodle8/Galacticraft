@@ -1,9 +1,11 @@
 package gregtechmod.api.metatileentity;
 
 import gregtechmod.api.GregTech_API;
+import gregtechmod.api.interfaces.IGregTechTileEntity;
 import gregtechmod.api.interfaces.IHasWorldObjectAndCoords;
 import gregtechmod.api.util.GT_Log;
 import gregtechmod.api.util.GT_Utility;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
@@ -40,6 +42,10 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     @Override public final short getBlockIDOffset(int aX, int aY, int aZ) {return getBlockID(getXCoord()+aX, getYCoord()+aY, getZCoord()+aZ);}
     @Override public final short getBlockIDAtSide(byte aSide) {return getBlockIDAtSideAndDistance(aSide, 1);}
     @Override public final short getBlockIDAtSideAndDistance(byte aSide, int aDistance) {return getBlockID(getOffsetX(aSide, aDistance), getOffsetY(aSide, aDistance), getOffsetZ(aSide, aDistance));}
+    @Override public final Block getBlock(int aX, int aY, int aZ) {return Block.blocksList[getBlockID(aX, aY, aZ)];}
+    @Override public final Block getBlockOffset(int aX, int aY, int aZ) {return Block.blocksList[getBlockIDOffset(aX, aY, aZ)];}
+    @Override public final Block getBlockAtSide(byte aSide) {return Block.blocksList[getBlockIDAtSide(aSide)];}
+    @Override public final Block getBlockAtSideAndDistance(byte aSide, int aDistance) {return Block.blocksList[getBlockIDAtSideAndDistance(aSide, aDistance)];}
     @Override public final byte getMetaID(int aX, int aY, int aZ) {if (ignoreUnloadedChunks && !getWorld().blockExists(aX, aY, aZ)) return 0; return (byte)getWorld().getBlockMetadata(aX, aY, aZ);}
     @Override public final byte getMetaIDOffset(int aX, int aY, int aZ) {return getMetaID(getXCoord()+aX, getYCoord()+aY, getZCoord()+aZ);}
     @Override public final byte getMetaIDAtSide(byte aSide) {return getMetaIDAtSideAndDistance(aSide, 1);}
@@ -48,6 +54,10 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 	@Override public final byte getLightLevelOffset(int aX, int aY, int aZ) {return getLightLevel(getXCoord()+aX, getYCoord()+aY, getZCoord()+aZ);}
 	@Override public final byte getLightLevelAtSide(byte aSide) {return getLightLevelAtSideAndDistance(aSide, 1);}
 	@Override public final byte getLightLevelAtSideAndDistance(byte aSide, int aDistance) {return getLightLevel(getOffsetX(aSide, aDistance), getOffsetY(aSide, aDistance), getOffsetZ(aSide, aDistance));}
+	@Override public final boolean getOpacity(int aX, int aY, int aZ) {if (ignoreUnloadedChunks && !getWorld().blockExists(aX, aY, aZ)) return false; return GT_Utility.isOpaqueBlock(getWorld(), aX, aY, aZ);}
+	@Override public final boolean getOpacityOffset(int aX, int aY, int aZ) {return getOpacity(getXCoord()+aX, getYCoord()+aY, getZCoord()+aZ);}
+	@Override public final boolean getOpacityAtSide(byte aSide) {return getOpacityAtSideAndDistance(aSide, 1);}
+	@Override public final boolean getOpacityAtSideAndDistance(byte aSide, int aDistance) {return getOpacity(getOffsetX(aSide, aDistance), getOffsetY(aSide, aDistance), getOffsetZ(aSide, aDistance));}
 	@Override public final boolean getSky(int aX, int aY, int aZ) {if (ignoreUnloadedChunks && !getWorld().blockExists(aX, aY, aZ)) return false; return getWorld().canBlockSeeTheSky(aX, aY, aZ);}
 	@Override public final boolean getSkyOffset(int aX, int aY, int aZ) {return getSky(getXCoord()+aX, getYCoord()+aY, getZCoord()+aZ);}
 	@Override public final boolean getSkyAtSide(byte aSide) {return getSkyAtSideAndDistance(aSide, 1);}
@@ -64,6 +74,10 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     @Override public final IInventory getIInventoryOffset(int aX, int aY, int aZ) {return getIInventory(getXCoord()+aX, getYCoord()+aY, getZCoord()+aZ);}
     @Override public final IInventory getIInventoryAtSide(byte aSide) {return getIInventoryAtSideAndDistance(aSide, 1);}
     @Override public final IInventory getIInventoryAtSideAndDistance(byte aSide, int aDistance) {return getIInventory(getOffsetX(aSide, aDistance), getOffsetY(aSide, aDistance), getOffsetZ(aSide, aDistance));}
+    @Override public final IGregTechTileEntity getIGregTechTileEntity(int aX, int aY, int aZ) {TileEntity tTileEntity = getTileEntity(aX, aY, aZ); if (tTileEntity != null && tTileEntity instanceof IGregTechTileEntity) return (IGregTechTileEntity)tTileEntity; return null;}
+    @Override public final IGregTechTileEntity getIGregTechTileEntityOffset(int aX, int aY, int aZ) {return getIGregTechTileEntity(getXCoord()+aX, getYCoord()+aY, getZCoord()+aZ);}
+    @Override public final IGregTechTileEntity getIGregTechTileEntityAtSide(byte aSide) {return getIGregTechTileEntityAtSideAndDistance(aSide, 1);}
+    @Override public final IGregTechTileEntity getIGregTechTileEntityAtSideAndDistance(byte aSide, int aDistance) {return getIGregTechTileEntity(getOffsetX(aSide, aDistance), getOffsetY(aSide, aDistance), getOffsetZ(aSide, aDistance));}
     @Override public final IFluidHandler getITankContainer(int aX, int aY, int aZ) {TileEntity tTileEntity = getTileEntity(aX, aY, aZ); if (tTileEntity != null && tTileEntity instanceof IFluidHandler) return (IFluidHandler)tTileEntity; return null;}
     @Override public final IFluidHandler getITankContainerOffset(int aX, int aY, int aZ) {return getITankContainer(getXCoord()+aX, getYCoord()+aY, getZCoord()+aZ);}
     @Override public final IFluidHandler getITankContainerAtSide(byte aSide) {return getITankContainerAtSideAndDistance(aSide, 1);}

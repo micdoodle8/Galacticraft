@@ -15,8 +15,8 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends MetaTileEntity {
 	
 	public boolean mDuctTape = false, mWrench = false, mScrewdriver = false, mSoftHammer = false, mHardHammer = false, mSolderingTool = false, mCrowbar = false;
 	
-	public GT_MetaTileEntity_Hatch_Maintenance(int aID, String mName, String mNameRegional) {
-		super(aID, mName, mNameRegional);
+	public GT_MetaTileEntity_Hatch_Maintenance(int aID, String aName, String aNameRegional) {
+		super(aID, aName, aNameRegional);
 	}
 	
 	public GT_MetaTileEntity_Hatch_Maintenance() {
@@ -59,14 +59,13 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends MetaTileEntity {
 	
 	public void onToolClick(ItemStack aStack, EntityLivingBase aPlayer) {
 		if (aStack == null || aPlayer == null) return;
-		int tStack = GT_Utility.stackToInt(aStack);
 		if (GT_Utility.isItemStackInList(aStack, GregTech_API.sWrenchList)			&& GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) mWrench = true;
 		if (GT_Utility.isItemStackInList(aStack, GregTech_API.sScrewdriverList)		&& GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) mScrewdriver = true;
 		if (GT_Utility.isItemStackInList(aStack, GregTech_API.sSoftHammerList)		&& GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) mSoftHammer = true;
 		if (GT_Utility.isItemStackInList(aStack, GregTech_API.sHardHammerList)		&& GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) mHardHammer = true;
 		if (GT_Utility.isItemStackInList(aStack, GregTech_API.sCrowbarList)			&& GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) mCrowbar = true;
-		if (GT_Utility.isItemStackInList(aStack, GregTech_API.sSolderingToolList)	&& GT_ModHandler.useSolderingIron(aStack, aPlayer)) mSolderingTool = true;
-		if (GT_OreDictUnificator.isItemStackInstanceOf(aStack, "craftingDuctTape", false)) {
+		if (GT_ModHandler.useSolderingIron(aStack, aPlayer)) mSolderingTool = true;
+		if (GT_OreDictUnificator.isItemStackInstanceOf(aStack, "craftingDuctTape")) {
 			mDuctTape = mWrench = mScrewdriver = mSoftHammer = mHardHammer = mCrowbar = mSolderingTool = true;
 			aStack.stackSize--;
 		}

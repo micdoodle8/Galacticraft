@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
 import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.world.World;

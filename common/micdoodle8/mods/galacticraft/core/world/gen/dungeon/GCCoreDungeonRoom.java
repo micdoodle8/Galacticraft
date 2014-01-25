@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 
 import java.util.Random;
+
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 

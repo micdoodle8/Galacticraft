@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.gui.page;
 
 import net.minecraft.util.ResourceLocation;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 

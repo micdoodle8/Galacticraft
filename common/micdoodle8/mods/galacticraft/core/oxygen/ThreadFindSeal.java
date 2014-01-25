@@ -2,6 +2,8 @@ package micdoodle8.mods.galacticraft.core.oxygen;
 
 import java.util.HashSet;
 import java.util.List;
+
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol.VecDirPair;
@@ -10,7 +12,6 @@ import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.common.FMLLog;
 
 /**

@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.moon.client;
 
 import java.util.EnumSet;
+
 import micdoodle8.mods.galacticraft.core.client.GCCoreCloudRenderer;
 import micdoodle8.mods.galacticraft.moon.CommonProxyMoon;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;

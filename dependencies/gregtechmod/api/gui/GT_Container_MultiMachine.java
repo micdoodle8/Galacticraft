@@ -10,19 +10,22 @@ import net.minecraft.inventory.Slot;
  * The Container I use for all my Basic Machines
  */
 public class GT_Container_MultiMachine extends GT_ContainerMetaTile_Machine {
-	public GT_Container_MultiMachine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, int aID) {
-		super(aInventoryPlayer, aTileEntity, aID);
+	public GT_Container_MultiMachine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
+		super(aInventoryPlayer, aTileEntity);
 	}
 	
-    public void addSlots(InventoryPlayer aInventoryPlayer) {
+    @Override
+	public void addSlots(InventoryPlayer aInventoryPlayer) {
         addSlotToContainer(new Slot(mTileEntity,  1, 152,   5));
     }
     
-    public int getSlotCount() {
+    @Override
+	public int getSlotCount() {
     	return 1;
     }
     
-    public int getShiftClickSlotCount() {
+    @Override
+	public int getShiftClickSlotCount() {
     	return 1;
     }
 }

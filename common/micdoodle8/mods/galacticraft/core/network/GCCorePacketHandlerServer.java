@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.network;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
+
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;

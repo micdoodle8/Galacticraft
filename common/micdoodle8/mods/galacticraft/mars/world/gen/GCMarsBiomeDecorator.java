@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.mars.world.gen;
 
 import java.util.Random;
+
 import micdoodle8.mods.galacticraft.api.event.wgen.GCCoreEventPopulate;
 import micdoodle8.mods.galacticraft.core.world.gen.GCCoreWorldGenMinableMeta;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;

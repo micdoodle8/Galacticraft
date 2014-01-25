@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.client.gui;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import mekanism.api.EnumColor;
 import micdoodle8.mods.galacticraft.core.GCCoreCompatibilityManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -9,13 +10,15 @@ import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerFuelLoader;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerServer.EnumPacketServer;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
+import micdoodle8.mods.galacticraft.power.ElectricityDisplay;
+import micdoodle8.mods.galacticraft.power.ElectricityDisplay.ElectricUnit;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+
 import org.lwjgl.opengl.GL11;
-import universalelectricity.core.electricity.ElectricityDisplay;
-import universalelectricity.core.electricity.ElectricityDisplay.ElectricUnit;
+
 import cpw.mods.fml.common.network.PacketDispatcher;
 
 /**

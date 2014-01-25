@@ -12,17 +12,9 @@ public interface IGregTechDeviceInformation {
 	public boolean isGivingInformation();
 	
 	/**
-	 * @return the first Line displayed by the Nuclear Control Panel
+	 * Up to 8 Strings can be returned.
+	 * Note: If you insert "\\\\" in the String it tries to translate seperate Parts of the String instead of the String as a whole.
+	 * @return an Array of Information Strings. Don't return null!
 	 */
-	public String getMainInfo();
-	
-	/**
-	 * @return the second Line displayed by the Nuclear Control Panel
-	 */
-	public String getSecondaryInfo();
-	
-	/**
-	 * @return the third Line displayed by the Nuclear Control Panel
-	 */
-	public String getTertiaryInfo();
+	public String[] getInfoData();
 }

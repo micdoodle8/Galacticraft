@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.mars.util;
 
 import java.util.HashMap;
+
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerParachest;

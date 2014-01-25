@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
 import java.util.Random;
+
 import micdoodle8.mods.galacticraft.api.block.IPlantableBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirt;

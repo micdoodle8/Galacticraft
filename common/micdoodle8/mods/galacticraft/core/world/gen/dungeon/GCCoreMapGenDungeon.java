@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;

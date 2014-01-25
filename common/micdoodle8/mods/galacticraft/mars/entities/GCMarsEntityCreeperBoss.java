@@ -2,8 +2,10 @@ package micdoodle8.mods.galacticraft.mars.entities;
 
 import java.util.List;
 import java.util.Random;
+
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityAIArrowAttack;
@@ -40,7 +42,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ChestGenHooks;
-import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.common.network.PacketDispatcher;
 
 /**

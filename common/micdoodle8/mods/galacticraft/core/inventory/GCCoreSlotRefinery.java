@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
 import java.lang.reflect.Field;
+
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOilCanister;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;

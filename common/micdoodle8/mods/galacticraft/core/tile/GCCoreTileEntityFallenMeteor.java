@@ -1,16 +1,18 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
+import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
-import universalelectricity.core.vector.Vector3;
-import universalelectricity.prefab.network.IPacketReceiver;
-import universalelectricity.prefab.network.PacketManager;
+
 import com.google.common.io.ByteArrayDataInput;
+
 import cpw.mods.fml.common.FMLLog;
 
 /**
@@ -45,7 +47,7 @@ public class GCCoreTileEntityFallenMeteor extends TileEntity implements IPacketR
 
         if (!this.worldObj.isRemote && (this.heatLevel % 5 == 0 && this.heatLevel != 0 || this.heatLevel == 0 && this.lastHeatLevel != 0))
         {
-            PacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 50.0F);
+        	GCCorePacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 50.0F);
         }
 
         this.lastHeatLevel = this.heatLevel;
@@ -54,7 +56,7 @@ public class GCCoreTileEntityFallenMeteor extends TileEntity implements IPacketR
     @Override
     public Packet getDescriptionPacket()
     {
-        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.heatLevel);
+        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.heatLevel);
     }
 
     @Override

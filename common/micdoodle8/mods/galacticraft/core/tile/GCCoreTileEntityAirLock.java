@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import universalelectricity.prefab.tile.TileEntityAdvanced;
+
 
 /**
  * GCCoreTileEntityAirLock.java
@@ -11,7 +11,7 @@ import universalelectricity.prefab.tile.TileEntityAdvanced;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class GCCoreTileEntityAirLock extends TileEntityAdvanced
+public class GCCoreTileEntityAirLock extends GCCoreTileEntityAdvanced
 {
     @Override
     public void updateEntity()

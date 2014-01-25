@@ -10,6 +10,11 @@ public interface IUpgradableMachine extends IMachineProgress {
 	boolean isUpgradable();
 
 	/**
+	 * Accepts Muffler Upgrades
+	 */
+	boolean isMufflerUpgradable();
+	
+	/**
 	 * Accepts MJ-Converter Upgrades
 	 */
 	boolean isMJConverterUpgradable();
@@ -34,6 +39,11 @@ public interface IUpgradableMachine extends IMachineProgress {
 	 * if Storage and Tier are 0 then it just checks if it can accept Battery Upgrades in general
 	 */
 	boolean isBatteryUpgradable(int aStorage, byte aTier);
+
+	/**
+	 * Adds Muffler Upgrade
+	 */
+	boolean addMufflerUpgrade();
 	
 	/**
 	 * Adds MJ-Converter Upgrade
@@ -59,6 +69,11 @@ public interface IUpgradableMachine extends IMachineProgress {
 	 * Adds Battery Upgrade with that much additional Power
 	 */
 	boolean addBatteryUpgrade(int aStorage, byte aTier);
+
+	/**
+	 * Does this Machine have an Muffler
+	 */
+	boolean hasMufflerUpgrade();
 	
 	/**
 	 * Does this Machine have an MJ-Converter

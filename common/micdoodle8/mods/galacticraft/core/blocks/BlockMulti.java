@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.Random;
+
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -10,8 +12,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
-import universalelectricity.core.UniversalElectricity;
-import universalelectricity.core.vector.Vector3;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -31,7 +31,7 @@ public class BlockMulti extends BlockContainer
 
     public BlockMulti(int id)
     {
-        super(id, UniversalElectricity.machine);
+        super(id, GCCoreBlocks.machine);
         this.setHardness(0.8F);
         this.setUnlocalizedName("multiBlock");
     }

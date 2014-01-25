@@ -17,12 +17,11 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GT_ContainerMetaTile_Machine extends GT_Container {
     
-    public GT_ContainerMetaTile_Machine (InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, int aID) {
+    public GT_ContainerMetaTile_Machine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
     	super(aInventoryPlayer, aTileEntity);
     	mTileEntity = aTileEntity;
-        mID = aID;
         
-    	if (mTileEntity.getMetaTileEntity() != null) {
+    	if (mTileEntity != null && mTileEntity.getMetaTileEntity() != null) {
             addSlots(aInventoryPlayer);
             if (doesBindPlayerInventory()) bindPlayerInventory(aInventoryPlayer);
             detectAndSendChanges();

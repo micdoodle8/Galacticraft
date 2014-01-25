@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.items;
 
 import java.lang.reflect.Method;
+
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockEnclosed;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockEnclosed.EnumEnclosedBlock;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;

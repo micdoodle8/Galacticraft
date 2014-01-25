@@ -1,11 +1,14 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.Arrays;
+
 import mekanism.api.gas.GasTransmission;
 import mekanism.api.gas.ITubeConnection;
 import mekanism.api.transmitters.ITransmitter;
 import micdoodle8.mods.galacticraft.api.tile.IColorable;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenPipe;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -26,8 +29,6 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import universalelectricity.core.vector.Vector3;
-import universalelectricity.prefab.network.PacketManager;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -153,7 +154,7 @@ public class GCCoreBlockOxygenPipe extends BlockContainer implements ITileEntity
                         par1World.spawnEntityInWorld(entityitem);
                     }
 
-                    PacketManager.sendPacketToClients(PacketManager.getPacket(GalacticraftCore.CHANNEL, tileEntity, tileEntity.getColor(), -1));
+                    GCCorePacketManager.sendPacketToClients(GCCorePacketManager.getPacket(GalacticraftCore.CHANNEL, tileEntity, tileEntity.getColor(), -1));
 
                     for (final ForgeDirection dir : ForgeDirection.values())
                     {

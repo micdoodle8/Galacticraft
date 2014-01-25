@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.items;
 
 import java.util.ArrayList;
+
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;

@@ -1,6 +1,7 @@
 package gregtechmod.api.util;
 
 public class GT_ItsNotMyFaultException extends RuntimeException {
+	private static final long serialVersionUID = -8752778866486460495L;
 	
 	private String mError;
 	

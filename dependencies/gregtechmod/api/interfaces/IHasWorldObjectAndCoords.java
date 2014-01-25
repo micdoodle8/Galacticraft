@@ -1,5 +1,6 @@
 package gregtechmod.api.interfaces;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.nbt.NBTTagCompound;
@@ -37,6 +38,16 @@ public interface IHasWorldObjectAndCoords {
 	public IFluidHandler getITankContainerAtSide(byte aSide);
 	public IFluidHandler getITankContainerAtSideAndDistance(byte aSide, int aDistance);
 	
+	public IGregTechTileEntity getIGregTechTileEntity(int aX, int aY, int aZ);
+    public IGregTechTileEntity getIGregTechTileEntityOffset(int aX, int aY, int aZ);
+	public IGregTechTileEntity getIGregTechTileEntityAtSide(byte aSide);
+	public IGregTechTileEntity getIGregTechTileEntityAtSideAndDistance(byte aSide, int aDistance);
+	
+    public Block getBlock(int aX, int aY, int aZ);
+    public Block getBlockOffset(int aX, int aY, int aZ);
+    public Block getBlockAtSide(byte aSide);
+    public Block getBlockAtSideAndDistance(byte aSide, int aDistance);
+    
     public short getBlockID(int aX, int aY, int aZ);
     public short getBlockIDOffset(int aX, int aY, int aZ);
     public short getBlockIDAtSide(byte aSide);
@@ -51,6 +62,11 @@ public interface IHasWorldObjectAndCoords {
     public byte getLightLevelOffset(int aX, int aY, int aZ);
     public byte getLightLevelAtSide(byte aSide);
     public byte getLightLevelAtSideAndDistance(byte aSide, int aDistance);
+
+	public boolean getOpacity(int aX, int aY, int aZ);
+    public boolean getOpacityOffset(int aX, int aY, int aZ);
+    public boolean getOpacityAtSide(byte aSide);
+    public boolean getOpacityAtSideAndDistance(byte aSide, int aDistance);
     
 	public boolean getSky(int aX, int aY, int aZ);
     public boolean getSkyOffset(int aX, int aY, int aZ);

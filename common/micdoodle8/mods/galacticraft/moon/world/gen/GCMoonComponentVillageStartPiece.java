@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.moon.world.gen;
 
 import java.util.ArrayList;
 import java.util.Random;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.biome.WorldChunkManager;
 

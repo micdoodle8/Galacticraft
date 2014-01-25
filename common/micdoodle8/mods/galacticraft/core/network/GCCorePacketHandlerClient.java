@@ -5,6 +5,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
@@ -24,6 +25,7 @@ import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
 import micdoodle8.mods.galacticraft.core.tick.GCCoreKeyHandlerClient;
 import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerClient;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityConductor;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
@@ -41,8 +43,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.DimensionManager;
+
 import org.lwjgl.input.Keyboard;
-import universalelectricity.prefab.tile.TileEntityConductor;
+
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.IPacketHandler;
@@ -510,9 +513,9 @@ public class GCCorePacketHandlerClient implements IPacketHandler
         case UPDATE_WIRE_BOUNDS:
             TileEntity tile = player.worldObj.getBlockTileEntity((Integer) packetReadout[0], (Integer) packetReadout[1], (Integer) packetReadout[2]);
 
-            if (tile instanceof TileEntityConductor)
+            if (tile instanceof GCCoreTileEntityConductor)
             {
-                ((TileEntityConductor) tile).adjacentConnections = null;
+                ((GCCoreTileEntityConductor) tile).adjacentConnections = null;
                 Block.blocksList[player.worldObj.getBlockId(tile.xCoord, tile.yCoord, tile.zCoord)].setBlockBoundsBasedOnState(player.worldObj, tile.xCoord, tile.yCoord, tile.zCoord);
             }
             break;

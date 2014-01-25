@@ -1,23 +1,29 @@
 package micdoodle8.mods.galacticraft.core.network;
 
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import universalelectricity.prefab.network.IPacketReceiver;
-import universalelectricity.prefab.network.PacketManager;
+
 import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.IPacketHandler;
+import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 
 /**
@@ -29,7 +35,7 @@ import cpw.mods.fml.common.network.Player;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class GCCorePacketManager extends PacketManager implements IPacketHandler, IPacketReceiver
+public class GCCorePacketManager implements IPacketHandler, IPacketReceiver
 {
     public enum GCCorePacketType
     {
@@ -39,7 +45,7 @@ public class GCCorePacketManager extends PacketManager implements IPacketHandler
 
         public static GCCorePacketType get(int id)
         {
-            if (id >= 0 && id < PacketType.values().length)
+            if (id >= 0 && id < GCCorePacketType.values().length)
             {
                 return GCCorePacketType.values()[id];
             }
@@ -117,7 +123,7 @@ public class GCCorePacketManager extends PacketManager implements IPacketHandler
                 }
                 else if (dataValue instanceof NBTTagCompound)
                 {
-                    PacketManager.writeNBTTagCompound((NBTTagCompound) dataValue, data);
+                    writeNBTTagCompound((NBTTagCompound) dataValue, data);
                 }
             }
 
@@ -161,6 +167,37 @@ public class GCCorePacketManager extends PacketManager implements IPacketHandler
 
         return null;
     }
+    
+	@SuppressWarnings("resource")
+	public static Packet getPacket(String channelName, TileEntity sender, Object... sendData)
+	{
+		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+		DataOutputStream data = new DataOutputStream(bytes);
+
+		try
+		{
+			data.writeInt(GCCorePacketType.TILEENTITY.ordinal());
+
+			data.writeInt(sender.xCoord);
+			data.writeInt(sender.yCoord);
+			data.writeInt(sender.zCoord);
+			data = encodeDataStream(data, sendData);
+
+			Packet250CustomPayload packet = new Packet250CustomPayload();
+			packet.channel = channelName;
+			packet.data = bytes.toByteArray();
+			packet.length = packet.data.length;
+
+			return packet;
+		}
+		catch (IOException e)
+		{
+			System.out.println("Failed to create packet.");
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 
     public static DataOutputStream encodeDataStream(DataOutputStream data, Object... sendData)
     {
@@ -202,7 +239,7 @@ public class GCCorePacketManager extends PacketManager implements IPacketHandler
                 }
                 else if (dataValue instanceof NBTTagCompound)
                 {
-                    PacketManager.writeNBTTagCompound((NBTTagCompound) dataValue, data);
+                    writeNBTTagCompound((NBTTagCompound) dataValue, data);
                 }
                 else if (dataValue instanceof ArrayList)
                 {
@@ -242,7 +279,7 @@ public class GCCorePacketManager extends PacketManager implements IPacketHandler
                         }
                         else if (subDataValue instanceof NBTTagCompound)
                         {
-                            PacketManager.writeNBTTagCompound((NBTTagCompound) subDataValue, data);
+                            writeNBTTagCompound((NBTTagCompound) subDataValue, data);
                         }
                     }
                 }
@@ -280,7 +317,7 @@ public class GCCorePacketManager extends PacketManager implements IPacketHandler
 
             final int packetTypeID = data.readInt();
 
-            if (packetTypeID == 2)
+            if (packetTypeID == GCCorePacketType.ENTITY.ordinal())
             {
                 final double id = data.readInt();
 
@@ -302,7 +339,7 @@ public class GCCorePacketManager extends PacketManager implements IPacketHandler
                     }
                 }
             }
-            else if (packetTypeID == 1)
+            else if (packetTypeID == GCCorePacketType.TILEENTITY.ordinal())
             {
                 final int x = data.readInt();
                 final int y = data.readInt();
@@ -335,4 +372,103 @@ public class GCCorePacketManager extends PacketManager implements IPacketHandler
     {
 
     }
+
+	public static void writeNBTTagCompound(NBTTagCompound tag, DataOutputStream dataStream) throws IOException
+	{
+		if (tag == null)
+		{
+			dataStream.writeShort(-1);
+		}
+		else
+		{
+			byte[] var2 = CompressedStreamTools.compress(tag);
+			dataStream.writeShort((short) var2.length);
+			dataStream.write(var2);
+		}
+	}
+
+	public static void writeNBTTagCompound(NBTTagCompound tag, ByteArrayDataOutput dataStream) throws IOException
+	{
+		if (tag == null)
+		{
+			dataStream.writeShort(-1);
+		}
+		else
+		{
+			byte[] var2 = CompressedStreamTools.compress(tag);
+			dataStream.writeShort((short) var2.length);
+			dataStream.write(var2);
+		}
+	}
+	
+	public static NBTTagCompound readNBTTagCompound(DataInputStream dataStream) throws IOException
+	{
+		short var1 = dataStream.readShort();
+
+		if (var1 < 0)
+		{
+			return null;
+		}
+		else
+		{
+			byte[] var2 = new byte[var1];
+			dataStream.readFully(var2);
+			return CompressedStreamTools.decompress(var2);
+		}
+	}
+
+	public static NBTTagCompound readNBTTagCompound(ByteArrayDataInput dataStream) throws IOException
+	{
+		short var1 = dataStream.readShort();
+
+		if (var1 < 0)
+		{
+			return null;
+		}
+		else
+		{
+			byte[] var2 = new byte[var1];
+			dataStream.readFully(var2);
+			return CompressedStreamTools.decompress(var2);
+		}
+	}
+	
+	public static void sendPacketToClients(Packet packet, World worldObj)
+	{
+		try
+		{
+			PacketDispatcher.sendPacketToAllInDimension(packet, worldObj.provider.dimensionId);
+		}
+		catch (Exception e)
+		{
+			System.out.println("Sending packet to client failed.");
+			e.printStackTrace();
+		}
+	}
+	
+	public static void sendPacketToClients(Packet packet, World worldObj, Vector3 position, double range)
+	{
+		try
+		{
+			PacketDispatcher.sendPacketToAllAround(position.x, position.y, position.z, range, worldObj.provider.dimensionId, packet);
+		}
+		catch (Exception e)
+		{
+			System.out.println("Sending packet to client failed.");
+			e.printStackTrace();
+		}
+	}
+
+	public static void sendPacketToClients(Packet packet)
+	{
+		try
+		{
+			PacketDispatcher.sendPacketToAllPlayers(packet);
+		}
+		catch (Exception e)
+		{
+			System.out.println("Sending packet to client failed.");
+			e.printStackTrace();
+		}
+	}
 }

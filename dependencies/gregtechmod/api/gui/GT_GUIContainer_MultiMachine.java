@@ -4,8 +4,6 @@ import gregtechmod.api.GregTech_API;
 import gregtechmod.api.interfaces.IGregTechTileEntity;
 import net.minecraft.entity.player.InventoryPlayer;
 
-import org.lwjgl.opengl.GL11;
-
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
  * 
@@ -17,8 +15,8 @@ public class GT_GUIContainer_MultiMachine extends GT_GUIContainerMetaTile_Machin
 	
 	String mName = "";
 	
-    public GT_GUIContainer_MultiMachine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, int aID, String aName, String aTextureFile) {
-        super(new GT_Container_MultiMachine(aInventoryPlayer, aTileEntity, aID), aTileEntity, aID, GregTech_API.GUI_PATH + aTextureFile);
+    public GT_GUIContainer_MultiMachine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName, String aTextureFile) {
+        super(new GT_Container_MultiMachine(aInventoryPlayer, aTileEntity), GregTech_API.GUI_PATH + aTextureFile);
         mName = aName;
     }
     

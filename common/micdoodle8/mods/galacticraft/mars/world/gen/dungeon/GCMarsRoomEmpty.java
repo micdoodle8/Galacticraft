@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.mars.world.gen.dungeon;
 
 import java.util.Random;
+
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.GCCoreDungeonBoundingBox;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.GCCoreDungeonRoom;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.GCCoreMapGenDungeon;

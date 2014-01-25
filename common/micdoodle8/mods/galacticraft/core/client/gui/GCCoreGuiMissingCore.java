@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
 import java.net.URI;
+
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;

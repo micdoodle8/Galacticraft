@@ -74,7 +74,9 @@ public interface IGT_RecipeAdder {
 	/**
 	 * Adds an Alloy Smelter Recipe
 	 * @param aInput1 must be != null
+	 * @param aInput2 can be null
 	 * @param aOutput1 must be != null
+	 * @param aOutput2 can be null
 	 * @param aDuration must be > 0
 	 * @param aEUt should be > 0
 	 */
@@ -106,7 +108,7 @@ public interface IGT_RecipeAdder {
 	 * @param aEUt should be > 0
 	 */
 	public boolean addWiremillRecipe(ItemStack aInput1, ItemStack aOutput1, int aDuration, int aEUt);
-	
+
 	/**
 	 * Adds a Plate Bending Machine Recipe
 	 * @param aInput1 must be != null
@@ -115,6 +117,16 @@ public interface IGT_RecipeAdder {
 	 * @param aEUt should be > 0
 	 */
 	public boolean addBenderRecipe(ItemStack aInput1, ItemStack aOutput1, int aDuration, int aEUt);
+	
+	/**
+	 * Adds a Extruder Machine Recipe
+	 * @param aInput1 must be != null
+	 * @param aShape must be != null, Set the stackSize to 0 if you don't want to let it consume this Item.
+	 * @param aOutput1 must be != null
+	 * @param aDuration must be > 0
+	 * @param aEUt should be > 0
+	 */
+	public boolean addExtruderRecipe(ItemStack aInput1, ItemStack aShape, ItemStack aOutput1, int aDuration, int aEUt);
 	
 	/**
 	 * Adds an Implosion Compressor Recipe
@@ -126,14 +138,10 @@ public interface IGT_RecipeAdder {
 	public boolean addImplosionRecipe(ItemStack aInput1, int aInput2, ItemStack aOutput1, ItemStack aOutput2);
 	
 	/**
-	 * Adds a Grinder Recipe
-	 * @param aInput1 must be != null
-	 * @param aCellInput this is for the needed Cells, > 0 for Tincell count, < 0 for negative Water Cell count, == 0 for nothing
-	 * @param aOutput1 must be != null
-	 * @param aOutput2 can be null
-	 * @param aOutput3 can be null
-	 * @param aOutput4 can be null
+	 * Use the Grinder Recipe adder below.
+	 * Just use GT_ModHandler.getWaterCell(1) as second Parameter.
 	 */
+	@Deprecated
 	public boolean addGrinderRecipe(ItemStack aInput1, int aInput2, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4);
 	
 	/**
@@ -171,12 +179,8 @@ public interface IGT_RecipeAdder {
 	public boolean addVacuumFreezerRecipe(ItemStack aInput1, ItemStack aOutput1, int aDuration);
 	
 	/**
-	 * Adds a Sawmill Recipe
-	 * @param aInput1 must be != null
-	 * @param aCellInput this is for the needed Cells, > 0 for Tincell count, < 0 for negative Water Cell count, == 0 for nothing
-	 * @param aOutput1 must be != null
-	 * @param aOutput2 can be null
-	 * @param aOutput3 can be null
+	 * Use the Sawmill Recipe adder below.
+	 * Just use GT_ModHandler.getWaterCell(1) as second Parameter.
 	 */
 	public boolean addSawmillRecipe(ItemStack aInput1, int aInput2, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3);
 	

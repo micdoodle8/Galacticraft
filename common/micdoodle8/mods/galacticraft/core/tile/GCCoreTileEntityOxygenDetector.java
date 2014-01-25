@@ -1,9 +1,8 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockOxygenDetector;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
-import universalelectricity.core.vector.Vector3;
-import universalelectricity.prefab.tile.TileEntityAdvanced;
 
 /**
  * GCCoreTileEntityOxygenDetector.java
@@ -14,7 +13,7 @@ import universalelectricity.prefab.tile.TileEntityAdvanced;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class GCCoreTileEntityOxygenDetector extends TileEntityAdvanced
+public class GCCoreTileEntityOxygenDetector extends GCCoreTileEntityAdvanced
 {
     @Override
     public void updateEntity()

@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.mars.blocks;
 
 import java.util.List;
 import java.util.Random;
+
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntitySlimelingEgg;
 import net.minecraft.block.Block;

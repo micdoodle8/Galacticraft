@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.mars;
 
 import java.io.File;
 import java.util.logging.Level;
+
 import net.minecraftforge.common.Configuration;
 import cpw.mods.fml.common.FMLLog;
 

@@ -2,16 +2,18 @@ package micdoodle8.mods.galacticraft.core.client.gui;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import mekanism.api.EnumColor;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerAirCollector;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCollector;
+import micdoodle8.mods.galacticraft.power.ElectricityDisplay;
+import micdoodle8.mods.galacticraft.power.ElectricityDisplay.ElectricUnit;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+
 import org.lwjgl.opengl.GL11;
-import universalelectricity.core.electricity.ElectricityDisplay;
-import universalelectricity.core.electricity.ElectricityDisplay.ElectricUnit;
 
 /**
  * GCCoreGuiAirCollector.java

@@ -1,9 +1,13 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import java.util.Arrays;
+
 import micdoodle8.mods.galacticraft.api.recipe.CircuitFabricatorRecipes;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockMachine2;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
+import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
+import micdoodle8.mods.galacticraft.power.core.item.IItemElectric;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -15,9 +19,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.ForgeDirection;
-import universalelectricity.core.item.IItemElectric;
-import universalelectricity.prefab.network.IPacketReceiver;
-import universalelectricity.prefab.network.PacketManager;
+
 import com.google.common.io.ByteArrayDataInput;
 
 /**
@@ -29,7 +31,7 @@ import com.google.common.io.ByteArrayDataInput;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class GCCoreTileEntityCircuitFabricator extends GCCoreTileEntityElectric implements IInventory, ISidedInventory, IPacketReceiver
+public class GCCoreTileEntityCircuitFabricator extends GCCoreTileEntityElectricBlock implements IInventory, ISidedInventory, IPacketReceiver
 {
     public static final int PROCESS_TIME_REQUIRED = 300;
     public static final float WATTS_PER_TICK_PER_STACK = 0.20F;
@@ -352,7 +354,7 @@ public class GCCoreTileEntityCircuitFabricator extends GCCoreTileEntityElectric 
     @Override
     public Packet getPacket()
     {
-        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.processTicks, this.getEnergyStored());
+        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.processTicks, this.getEnergyStored());
     }
 
     @Override

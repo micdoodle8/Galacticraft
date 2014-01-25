@@ -25,9 +25,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
 	 * This determines the BaseMetaTileEntity belonging to this MetaTileEntity by using the Meta ID of the Block itself.
 	 * 
 	 * 0 = BaseMetaTileEntity
-	 * 1 = BaseMetaCable
-	 * 2 = BaseMetaFluidPipe
-	 * 3 = BaseMetaItemPipe
+	 * 1 = BaseMetaPipeEntity
 	 */
 	public byte getTileEntityBaseType();
 	
@@ -38,6 +36,11 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
 	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity);
 	
 	/**
+	 * @return an ItemStack representing this MetaTileEntity.
+	 */
+	public ItemStack getStackForm(long aAmount);
+	
+	/**
 	 * Sets the BaseMetaTileEntity of this
 	 */
 	public void setBaseMetaTileEntity(IGregTechTileEntity aBaseMetaTileEntity);
@@ -46,6 +49,11 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
 	 * new getter for the BaseMetaTileEntity, which restricts usage to certain Functions.
 	 */
 	public IGregTechTileEntity getBaseMetaTileEntity();
+
+	/**
+	 * when placing a Machine in World, to initialize default Modes. aNBT can be null!
+	 */
+	public void initDefaultModes(NBTTagCompound aNBT);
 	
 	/**
 	 * ^= writeToNBT
@@ -69,13 +77,18 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
 	public void onServerStart();
 	
 	/**
+	 * Called in the registered MetaTileEntity when the Server ticks the first time, to initialize static variables
+	 */
+	public void onFirstServerTick();
+	
+	/**
 	 * Called in the registered MetaTileEntity when the Server stops, to reset static variables
 	 */
 	public void onServerStop();
 	
 	/**
 	 * Called to set Configuration values for this MetaTileEntity.
-	 * Use aConfig.addAdvConfig("machineconfig", "MetaTileEntityName.Ability", DEFAULT_VALUE); to set the Values.
+	 * Use aConfig.addAdvConfig(GT_Config_Category.machineconfig, "MetaTileEntityName.Ability", DEFAULT_VALUE); to set the Values.
 	 */
 	public void onConfigLoad(GT_Config aConfig);
 	
@@ -242,6 +255,13 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
 	 */
 	public boolean isSimpleMachine();
 	
+	/**
+	 * If there should be a Lag Warning if something laggy happens during this Tick.
+	 * 
+	 * The Advanced Pump uses this to not cause the Lag Message, while it scans for all close Fluids.
+	 */
+	public boolean doTickProfilingMessageDuringThisTick();
+	
     /**
      * returns the DebugLog
      */
@@ -290,11 +310,12 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
 	 */
 	public byte getComparatorValue(byte aSide);
 	
+	public float getExplosionResistance(byte aSide);
+	
+	@Override
 	public String getInvName();
 	
-	public String getMainInfo();
-	public String getSecondaryInfo();
-	public String getTertiaryInfo();
+	public String[] getInfoData();
 	public boolean isGivingInformation();
 	
 	public ItemStack[] getRealInventory();

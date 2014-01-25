@@ -1,6 +1,5 @@
 package gregtechmod.api.util;
 
-import gregtechmod.api.GregTech_API;
 import ic2.api.crops.CropCard;
 import ic2.api.crops.Crops;
 import ic2.api.crops.ICropTile;
@@ -14,7 +13,7 @@ import net.minecraft.item.ItemStack;
 
 public class GT_BaseCrop extends CropCard {
 	private String mName = "", mDiscoveredBy = "Gregorius Techneticies", mAttributes[];
-	private int mTier = 0, mMaxSize = 0, mGrowthSpeed = 0, mAfterHarvestSize = 0, mHarvestSize = 0, mStats[] = new int[5];
+	private int mTier = 0, mMaxSize = 0, mAfterHarvestSize = 0, mHarvestSize = 0, mStats[] = new int[5];
 	private ItemStack mDrop = null, mSpecialDrops[] = null;
 	
 	public static ArrayList<GT_BaseCrop> sCropList = new ArrayList<GT_BaseCrop>();
@@ -33,14 +32,14 @@ public class GT_BaseCrop extends CropCard {
 	 */
 	public GT_BaseCrop(int aID, String aCropName, String aDiscoveredBy, ItemStack aDrop, ItemStack[] aSpecialDrops, ItemStack aBaseSeed, int aTier, int aMaxSize, int aGrowthSpeed, int aAfterHarvestSize, int aHarvestSize, int aStatChemical, int aStatFood, int aStatDefensive, int aStatColor, int aStatWeed, String[] aAttributes) {
 		mName = aCropName;
-		aID = GregTech_API.sConfiguration.addIDConfig("crops", mName.replaceAll(" ", "_"), aID);
+		aID = GT_Config.addIDConfig("crops", mName.replaceAll(" ", "_"), aID);
 		if (aDiscoveredBy != null && !aDiscoveredBy.equals("")) mDiscoveredBy = aDiscoveredBy;
 		if (aDrop != null && aID > 0 && aID < 256) {
-			mDrop = aDrop.copy();
+			mDrop = GT_Utility.copy(aDrop);
 			mSpecialDrops = aSpecialDrops;
 			mTier = Math.max(1, aTier);
 			mMaxSize = Math.max(3, aMaxSize);
-			mGrowthSpeed = aGrowthSpeed>0?aGrowthSpeed:mTier*300;
+//			mGrowthSpeed = aGrowthSpeed>0?aGrowthSpeed:mTier*300;
 			mHarvestSize = Math.min(Math.max(aHarvestSize, 2), mMaxSize);
 			mAfterHarvestSize = Math.min(Math.max(aAfterHarvestSize, 1), mMaxSize-1);
 			mStats[0] = aStatChemical;
@@ -110,9 +109,9 @@ public class GT_BaseCrop extends CropCard {
 	public ItemStack getGain(ICropTile aCrop) {
 		int tDrop = 0;
 		if (mSpecialDrops != null && (tDrop = new Random().nextInt(mSpecialDrops.length+4)) < mSpecialDrops.length && mSpecialDrops[tDrop] != null) {
-			return mSpecialDrops[tDrop].copy();
+			return GT_Utility.copy(mSpecialDrops[tDrop]);
 		}
-		if (mDrop.getItem().getContainerItemStack(mDrop)==null) return mDrop.copy();
+		if (mDrop.getItem().getContainerItemStack(mDrop)==null) return GT_Utility.copy(mDrop);
 		return null;
 	}
 	
@@ -122,12 +121,11 @@ public class GT_BaseCrop extends CropCard {
     	ItemStack tContainerItem = mDrop.getItem().getContainerItemStack(mDrop);
     	if (tContainerItem == null) {
     		return aCrop.harvest(aPlayer==null?false:aPlayer instanceof EntityPlayerMP);
-    	} else {
-        	if (aPlayer!=null&&GT_Utility.areStacksEqual(tContainerItem, aPlayer.getCurrentEquippedItem())&&aPlayer.getCurrentEquippedItem().stackSize>=mDrop.stackSize&&aPlayer.inventory.addItemStackToInventory(mDrop.copy())) {
-        		aPlayer.getCurrentEquippedItem().stackSize-=mDrop.stackSize;
-        		return aCrop.harvest(aPlayer==null?false:aPlayer instanceof EntityPlayerMP);
-        	}
     	}
+		if (aPlayer!=null&&GT_Utility.areStacksEqual(tContainerItem, aPlayer.getCurrentEquippedItem())&&aPlayer.getCurrentEquippedItem().stackSize>=mDrop.stackSize&&aPlayer.inventory.addItemStackToInventory(GT_Utility.copy(mDrop))) {
+			aPlayer.getCurrentEquippedItem().stackSize-=mDrop.stackSize;
+			return aCrop.harvest(aPlayer instanceof EntityPlayerMP);
+		}
     	return false;
     }
 }

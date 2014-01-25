@@ -1,6 +1,7 @@
 package gregtechmod.api.items;
 
 import gregtechmod.api.GregTech_API;
+import gregtechmod.api.enums.GT_OreDictNames;
 import gregtechmod.api.util.GT_ModHandler;
 import gregtechmod.api.util.GT_OreDictUnificator;
 import gregtechmod.api.util.GT_Utility;
@@ -11,8 +12,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 public class GT_Spray_Hydration_Item extends GT_Tool_Item {
-	public GT_Spray_Hydration_Item(int aID, String aName, int aMaxDamage, int aEntityDamage) {
-		super(aID, aName, "To hydrate Crops and similar", aMaxDamage, aEntityDamage);
+	public GT_Spray_Hydration_Item(int aID, String aUnlocalized, String aEnglish, int aMaxDamage, int aEntityDamage) {
+		super(aID, aUnlocalized, aEnglish, "To hydrate Crops and similar", aMaxDamage, aEntityDamage, true);
 		setCraftingSound(GregTech_API.sSoundList.get(102));
 		setBreakingSound(GregTech_API.sSoundList.get(102));
 		setEntityHitSound(GregTech_API.sSoundList.get(102));
@@ -21,7 +22,7 @@ public class GT_Spray_Hydration_Item extends GT_Tool_Item {
 	
 	@Override
 	public ItemStack getEmptyItem(ItemStack aStack) {
-		return GT_OreDictUnificator.getFirstOre("craftingSprayCan", 1);
+		return GT_OreDictUnificator.getFirstOre(GT_OreDictNames.craftingSprayCan, 1);
 	}
 	
 	@Override
@@ -30,11 +31,9 @@ public class GT_Spray_Hydration_Item extends GT_Tool_Item {
 		if (aWorld.isRemote) {
     		return false;
     	}
-    	short aBlockID = (short)aWorld.getBlockId(aX, aY, aZ);
-    	if (aBlockID < 0 || aBlockID >= Block.blocksList.length) return false;
-    	Block aBlock = Block.blocksList[aBlockID];
+    	Block aBlock = Block.blocksList[aWorld.getBlockId(aX, aY, aZ)];
     	if (aBlock == null) return false;
-    	byte aMeta = (byte)aWorld.getBlockMetadata(aX, aY, aZ);
+//    	byte aMeta = (byte)aWorld.getBlockMetadata(aX, aY, aZ);
     	TileEntity aTileEntity = aWorld.getBlockTileEntity(aX, aY, aZ);
     	
     	try {
@@ -43,10 +42,10 @@ public class GT_Spray_Hydration_Item extends GT_Tool_Item {
 	    		if (tCropBefore <= 100 && GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
 	    			((ic2.api.crops.ICropTile)aTileEntity).setHydrationStorage(tCropBefore+100);
 	    			GT_Utility.sendSoundToPlayers(aWorld, GregTech_API.sSoundList.get(102), 1.0F, -1, aX, aY, aZ);
-	        		return true;
 	    		}
+        		return true;
     		}
-    	} catch (Throwable e) {}
+    	} catch (Throwable e) {/*Do nothing*/}
     	
     	return false;
     }

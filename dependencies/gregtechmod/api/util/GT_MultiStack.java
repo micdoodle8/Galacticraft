@@ -58,10 +58,10 @@ public class GT_MultiStack {
 	
 	public boolean isItemEqual(ItemStack aStack) {
 		if (GT_Utility.areStacksEqual(mStack, aStack)) return true;
-		if (GT_OreDictUnificator.isItemStackInstanceOf(aStack, mOreName, false)) return true;
+		if (GT_OreDictUnificator.isItemStackInstanceOf(aStack, mOreName)) return true;
 		if (mStackHashList != null && GT_Utility.isItemStackInList(aStack, mStackHashList)) return true;
 		if (mOreList != null) for (String tOreName : mOreList) {
-			if (GT_OreDictUnificator.isItemStackInstanceOf(aStack, tOreName, false)) return true;
+			if (GT_OreDictUnificator.isItemStackInstanceOf(aStack, tOreName)) return true;
 		}
 		return false;
 	}

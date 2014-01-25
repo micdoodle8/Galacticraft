@@ -12,8 +12,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+
 import javax.xml.parsers.DocumentBuilderFactory;
+
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.ICelestialBody;
 import micdoodle8.mods.galacticraft.api.world.ICelestialBodyRenderer;
 import micdoodle8.mods.galacticraft.api.world.IMoon;
@@ -115,13 +118,16 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.IFluidBlock;
+
 import org.lwjgl.opengl.GL11;
 import org.w3c.dom.Document;
+
 import tconstruct.client.tabs.InventoryTabVanilla;
 import tconstruct.client.tabs.TabRegistry;
-import universalelectricity.core.vector.Vector3;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;

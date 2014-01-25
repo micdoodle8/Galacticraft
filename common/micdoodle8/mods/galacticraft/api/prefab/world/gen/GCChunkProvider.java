@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.api.prefab.world.gen;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
 import micdoodle8.mods.galacticraft.api.prefab.core.BlockMetaPair;
 import micdoodle8.mods.galacticraft.core.perlin.generator.Gradient;
 import micdoodle8.mods.galacticraft.core.world.gen.GCCoreCraterSize;

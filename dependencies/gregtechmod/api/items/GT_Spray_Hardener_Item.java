@@ -1,6 +1,7 @@
 package gregtechmod.api.items;
 
 import gregtechmod.api.GregTech_API;
+import gregtechmod.api.enums.GT_OreDictNames;
 import gregtechmod.api.metatileentity.BaseMetaPipeEntity;
 import gregtechmod.api.util.GT_Log;
 import gregtechmod.api.util.GT_ModHandler;
@@ -8,13 +9,14 @@ import gregtechmod.api.util.GT_OreDictUnificator;
 import gregtechmod.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 public class GT_Spray_Hardener_Item extends GT_Tool_Item {
-	public GT_Spray_Hardener_Item(int aID, String aName, int aMaxDamage, int aEntityDamage) {
-		super(aID, aName, "Construction Foam Hardener", aMaxDamage, aEntityDamage);
+	public GT_Spray_Hardener_Item(int aID, String aUnlocalized, String aEnglish, int aMaxDamage, int aEntityDamage) {
+		super(aID, aUnlocalized, aEnglish, "Construction Foam Hardener", aMaxDamage, aEntityDamage, true);
 		setCraftingSound(GregTech_API.sSoundList.get(102));
 		setBreakingSound(GregTech_API.sSoundList.get(102));
 		setEntityHitSound(GregTech_API.sSoundList.get(102));
@@ -23,7 +25,7 @@ public class GT_Spray_Hardener_Item extends GT_Tool_Item {
 	
 	@Override
 	public ItemStack getEmptyItem(ItemStack aStack) {
-		return GT_OreDictUnificator.getFirstOre("craftingSprayCan", 1);
+		return GT_OreDictUnificator.getFirstOre(GT_OreDictNames.craftingSprayCan, 1);
 	}
 	
 	@Override
@@ -32,11 +34,9 @@ public class GT_Spray_Hardener_Item extends GT_Tool_Item {
 		if (aWorld.isRemote) {
     		return false;
     	}
-    	short aBlockID = (short)aWorld.getBlockId(aX, aY, aZ);
-    	if (aBlockID < 0 || aBlockID >= Block.blocksList.length) return false;
-    	Block aBlock = Block.blocksList[aBlockID];
+    	Block aBlock = Block.blocksList[aWorld.getBlockId(aX, aY, aZ)];
     	if (aBlock == null) return false;
-    	byte aMeta = (byte)aWorld.getBlockMetadata(aX, aY, aZ);
+//    	byte aMeta = (byte)aWorld.getBlockMetadata(aX, aY, aZ);
     	TileEntity aTileEntity = aWorld.getBlockTileEntity(aX, aY, aZ);
     	
     	try {
@@ -55,10 +55,10 @@ public class GT_Spray_Hardener_Item extends GT_Tool_Item {
     	}
     	
     	ItemStack tStack1 = GT_ModHandler.getIC2Item("constructionFoam", 1), tStack2 = GT_ModHandler.getIC2Item("constructionFoamWall", 1);
-    	if (tStack1 != null && tStack1.itemID == aBlockID && tStack2 != null && tStack2.itemID > 0 && tStack2.itemID < Block.blocksList.length) {
+    	if (tStack1 != null && tStack1.isItemEqual(new ItemStack(aBlock)) && tStack2 != null && tStack2.getItem() != null && tStack2.getItem() instanceof ItemBlock) {
     		if (GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
     			GT_Utility.sendSoundToPlayers(aWorld, GregTech_API.sSoundList.get(102), 1.0F, -1, aX, aY, aZ);
-        		aWorld.setBlock(aX, aY, aZ, tStack2.itemID, 7, 3);
+        		aWorld.setBlock(aX, aY, aZ, ((ItemBlock)tStack2.getItem()).getBlockID(), 7, 3);
     		}
     		return true;
     	}

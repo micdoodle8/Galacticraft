@@ -8,8 +8,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class GT_MetaTileEntity_Hatch_Dynamo extends MetaTileEntity {
-	public GT_MetaTileEntity_Hatch_Dynamo(int aID, String mName, String mNameRegional) {
-		super(aID, mName, mNameRegional);
+	public GT_MetaTileEntity_Hatch_Dynamo(int aID, String aName, String aNameRegional) {
+		super(aID, aName, aNameRegional);
 	}
 	
 	public GT_MetaTileEntity_Hatch_Dynamo() {
@@ -33,11 +33,11 @@ public class GT_MetaTileEntity_Hatch_Dynamo extends MetaTileEntity {
 	}
 	
 	@Override public void saveNBTData(NBTTagCompound aNBT) {
-		
+		//
 	}
 	
 	@Override public void loadNBTData(NBTTagCompound aNBT) {
-		
+		//
 	}
 	
 	@Override

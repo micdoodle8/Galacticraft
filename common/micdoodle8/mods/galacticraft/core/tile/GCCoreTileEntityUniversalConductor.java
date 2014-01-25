@@ -3,21 +3,20 @@ package micdoodle8.mods.galacticraft.core.tile;
 import ic2.api.energy.tile.IEnergyAcceptor;
 import ic2.api.energy.tile.IEnergyEmitter;
 import ic2.api.energy.tile.IEnergyTile;
+
 import java.lang.reflect.Constructor;
 import java.util.HashSet;
 import java.util.Set;
+
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.ASMHelper.RuntimeInterface;
+import micdoodle8.mods.galacticraft.power.ElectricityPack;
+import micdoodle8.mods.galacticraft.power.compatibility.PowerConfigHandler;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.Event;
-import universalelectricity.compatibility.Compatibility;
-import universalelectricity.core.block.IConnector;
-import universalelectricity.core.electricity.ElectricityPack;
-import universalelectricity.core.vector.Vector3;
-import universalelectricity.core.vector.VectorHelper;
-import universalelectricity.prefab.tile.TileEntityConductor;
 import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
@@ -32,11 +31,11 @@ import buildcraft.api.power.PowerHandler.Type;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public abstract class GCCoreTileEntityUniversalConductor extends TileEntityConductor
+public abstract class GCCoreTileEntityUniversalConductor extends GCCoreTileEntityConductor
 {
     protected boolean isAddedToEnergyNet;
     public Object powerHandler;
-    public float buildcraftBuffer = Compatibility.BC3_RATIO * 50;
+    public float buildcraftBuffer = PowerConfigHandler.BC3_RATIO * 50;
 
     public GCCoreTileEntityUniversalConductor()
     {
@@ -45,7 +44,7 @@ public abstract class GCCoreTileEntityUniversalConductor extends TileEntityCondu
 
     private void initBC()
     {
-        if (Compatibility.isBuildcraftLoaded())
+        if (PowerConfigHandler.isBuildcraftLoaded())
         {
             if (this instanceof IPowerReceptor)
             {
@@ -66,7 +65,8 @@ public abstract class GCCoreTileEntityUniversalConductor extends TileEntityCondu
             for (byte i = 0; i < 6; i++)
             {
                 ForgeDirection side = ForgeDirection.getOrientation(i);
-                TileEntity tileEntity = VectorHelper.getTileEntityFromSide(this.worldObj, new Vector3(this), side);
+                Vector3 thisVec = new Vector3(this);
+                TileEntity tileEntity = thisVec.modifyPositionFromSide(side).getTileEntity(this.worldObj);
 
                 if (tileEntity instanceof IConnector)
                 {
@@ -75,7 +75,7 @@ public abstract class GCCoreTileEntityUniversalConductor extends TileEntityCondu
                         this.adjacentConnections[i] = tileEntity;
                     }
                 }
-                else if (Compatibility.isIndustrialCraft2Loaded() && tileEntity instanceof IEnergyTile)
+                else if (PowerConfigHandler.isIndustrialCraft2Loaded() && tileEntity instanceof IEnergyTile)
                 {
                     if (tileEntity instanceof IEnergyAcceptor)
                     {
@@ -97,7 +97,7 @@ public abstract class GCCoreTileEntityUniversalConductor extends TileEntityCondu
 
                     this.adjacentConnections[i] = tileEntity;
                 }
-                else if (Compatibility.isBuildcraftLoaded() && tileEntity instanceof IPowerReceptor)
+                else if (PowerConfigHandler.isBuildcraftLoaded() && tileEntity instanceof IPowerReceptor)
                 {
                     if (((IPowerReceptor) tileEntity).getPowerReceiver(side.getOpposite()) != null)
                     {
@@ -123,7 +123,7 @@ public abstract class GCCoreTileEntityUniversalConductor extends TileEntityCondu
         {
             if (!this.worldObj.isRemote)
             {
-                if (Compatibility.isIndustrialCraft2Loaded())
+                if (PowerConfigHandler.isIndustrialCraft2Loaded())
                 {
                     this.initIC();
                 }
@@ -149,7 +149,7 @@ public abstract class GCCoreTileEntityUniversalConductor extends TileEntityCondu
 
     protected void initIC()
     {
-        if (Compatibility.isIndustrialCraft2Loaded() && !this.worldObj.isRemote)
+        if (PowerConfigHandler.isIndustrialCraft2Loaded() && !this.worldObj.isRemote)
         {
             try
             {
@@ -174,7 +174,7 @@ public abstract class GCCoreTileEntityUniversalConductor extends TileEntityCondu
     {
         if (this.isAddedToEnergyNet && this.worldObj != null)
         {
-            if (!this.worldObj.isRemote && Compatibility.isIndustrialCraft2Loaded())
+            if (!this.worldObj.isRemote && PowerConfigHandler.isIndustrialCraft2Loaded())
             {
                 try
                 {
@@ -206,15 +206,16 @@ public abstract class GCCoreTileEntityUniversalConductor extends TileEntityCondu
             return 0.0;
         }
 
-        return this.getNetwork().getRequest(this).getWatts() * Compatibility.TO_IC2_RATIO;
+        return this.getNetwork().getRequest(this).getWatts() * PowerConfigHandler.TO_IC2_RATIO;
     }
 
     @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
     public double injectEnergyUnits(ForgeDirection directionFrom, double amount)
     {
-        TileEntity tile = VectorHelper.getTileEntityFromSide(this.worldObj, new Vector3(this), directionFrom);
-        ElectricityPack pack = ElectricityPack.getFromWatts((float) (amount * Compatibility.IC2_RATIO), 120);
-        return this.getNetwork().produce(pack, this, tile) * Compatibility.TO_IC2_RATIO;
+    	Vector3 thisVec = new Vector3(this);
+        TileEntity tile = thisVec.modifyPositionFromSide(directionFrom).getTileEntity(this.worldObj);
+        ElectricityPack pack = ElectricityPack.getFromWatts((float) (amount * PowerConfigHandler.IC2_RATIO), 120);
+        return this.getNetwork().produce(pack, this, tile) * PowerConfigHandler.TO_IC2_RATIO;
     }
 
     @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
@@ -250,7 +251,7 @@ public abstract class GCCoreTileEntityUniversalConductor extends TileEntityCondu
             ignoreTiles.add(tile);
         }
 
-        ElectricityPack pack = ElectricityPack.getFromWatts(workProvider.useEnergy(0, this.getNetwork().getRequest(this).getWatts() * Compatibility.TO_BC_RATIO, true) * Compatibility.BC3_RATIO, 120);
+        ElectricityPack pack = ElectricityPack.getFromWatts(workProvider.useEnergy(0, this.getNetwork().getRequest(this).getWatts() * PowerConfigHandler.TO_BC_RATIO, true) * PowerConfigHandler.BC3_RATIO, 120);
         this.getNetwork().produce(pack, ignoreTiles.toArray(new TileEntity[0]));
     }
 

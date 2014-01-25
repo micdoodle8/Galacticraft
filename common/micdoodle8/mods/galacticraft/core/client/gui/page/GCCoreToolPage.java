@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.client.gui.page;
 import micdoodle8.mods.galacticraft.core.client.GCCoreManualUtil;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.item.ItemStack;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.w3c.dom.Element;

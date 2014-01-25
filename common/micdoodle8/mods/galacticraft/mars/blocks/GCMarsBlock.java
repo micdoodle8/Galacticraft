@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.mars.blocks;
 
 import java.util.List;
 import java.util.Random;
+
 import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
 import micdoodle8.mods.galacticraft.api.block.IPlantableBlock;
 import micdoodle8.mods.galacticraft.api.block.ITerraformableBlock;

@@ -18,19 +18,21 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
 
-	public GT_Container_BasicTank(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, int aID) {
-		super(aInventoryPlayer, aTileEntity, aID);
+	public GT_Container_BasicTank(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
+		super(aInventoryPlayer, aTileEntity);
 	}
 	
-    public void addSlots(InventoryPlayer aInventoryPlayer) {
+    @Override
+	public void addSlots(InventoryPlayer aInventoryPlayer) {
         addSlotToContainer(new Slot(mTileEntity, 0,  80,  17));
         addSlotToContainer(new GT_Slot_Output(mTileEntity, 1,  80,  53));
-        addSlotToContainer(new GT_Slot_Holo(mTileEntity, 2,  59,  42, false, false, 1));
+        addSlotToContainer(new GT_Slot_Render(mTileEntity, 2,  59,  42));
     }
     
     public int mContent = 0;
     
-    public void detectAndSendChanges() {
+    @Override
+	public void detectAndSendChanges() {
         super.detectAndSendChanges();
     	if (mTileEntity.isClientSide() || mTileEntity.getMetaTileEntity() == null) return;
     	if (((GT_MetaTileEntity_BasicTank)mTileEntity.getMetaTileEntity()).mFluid != null)
@@ -46,7 +48,8 @@ public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
         }
     }
     
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public void updateProgressBar(int par1, int par2) {
     	super.updateProgressBar(par1, par2);
     	switch (par1) {
@@ -55,11 +58,13 @@ public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
     	}
     }
     
-    public int getSlotCount() {
+    @Override
+	public int getSlotCount() {
     	return 2;
     }
 
-    public int getShiftClickSlotCount() {
+    @Override
+	public int getShiftClickSlotCount() {
     	return 1;
     }
 }

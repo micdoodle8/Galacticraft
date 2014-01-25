@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.client.gui;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import mekanism.api.EnumColor;
 import micdoodle8.mods.galacticraft.api.entity.IRocketType.EnumRocketType;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
@@ -11,7 +12,9 @@ import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRocketRefill;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+
 import org.lwjgl.opengl.GL11;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

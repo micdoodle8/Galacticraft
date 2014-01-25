@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.List;
+
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBuggyFuelerSingle;
@@ -26,7 +27,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class GCCoreBlockLandingPad extends GCCoreBlockAdvanced implements IPartialSealableBlock
+public class GCCoreBlockLandingPad extends GCCoreBlockAdvancedTile implements IPartialSealableBlock
 {
     private Icon[] icons = new Icon[3];
 

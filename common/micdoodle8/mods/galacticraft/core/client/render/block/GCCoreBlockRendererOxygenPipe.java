@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.render.block;
 
 import java.util.Arrays;
+
 import mekanism.api.gas.GasTransmission;
 import mekanism.api.gas.ITubeConnection;
 import net.minecraft.block.Block;
@@ -9,7 +10,9 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.ForgeDirection;
+
 import org.lwjgl.opengl.GL11;
+
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 /**

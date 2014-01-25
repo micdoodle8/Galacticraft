@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.mars.items;
 
 import java.util.List;
+
 import mekanism.api.EnumColor;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicItem;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemSchematic;

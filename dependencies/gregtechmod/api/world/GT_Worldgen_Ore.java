@@ -15,11 +15,11 @@ public abstract class GT_Worldgen_Ore extends GT_Worldgen {
 		mBlockID		= Math.min(Math.max(aBlockID, 0), 4095);
 		mBlockMeta		= Math.min(Math.max(aBlockMeta, 0), 15);
 		mDimensionType	= aDimensionType;
-		mProbability	= GregTech_API.sConfiguration.addAdvConfig("worldgen."+mWorldGenName, "Probability"	, aProbability);
-		mAmount			= GregTech_API.sConfiguration.addAdvConfig("worldgen."+mWorldGenName, "Amount"		, aAmount);
-		mSize			= GregTech_API.sConfiguration.addAdvConfig("worldgen."+mWorldGenName, "Size"		, aSize);
-		mMinY			= GregTech_API.sConfiguration.addAdvConfig("worldgen."+mWorldGenName, "MinHeight"	, aMinY);
-		mMaxY			= GregTech_API.sConfiguration.addAdvConfig("worldgen."+mWorldGenName, "MaxHeight"	, aMaxY);
+		mProbability	= GregTech_API.sWorldgenFile.add("worldgen."+mWorldGenName, "Probability"	, aProbability);
+		mAmount			= GregTech_API.sWorldgenFile.add("worldgen."+mWorldGenName, "Amount"		, aAmount);
+		mSize			= GregTech_API.sWorldgenFile.add("worldgen."+mWorldGenName, "Size"			, aSize);
+		mMinY			= GregTech_API.sWorldgenFile.add("worldgen."+mWorldGenName, "MinHeight"		, aMinY);
+		mMaxY			= GregTech_API.sWorldgenFile.add("worldgen."+mWorldGenName, "MaxHeight"		, aMaxY);
 		if (aBiomeList != null) mBiomeList.addAll(aBiomeList);
 		mAllowToGenerateinVoid = aAllowToGenerateinVoid;
 	}

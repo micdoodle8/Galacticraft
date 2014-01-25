@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.mars.blocks;
 
 import java.util.ArrayList;
 import java.util.Random;
+
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

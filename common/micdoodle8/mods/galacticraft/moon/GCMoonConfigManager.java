@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.moon;
 
 import java.io.File;
+
 import micdoodle8.mods.galacticraft.core.GCLog;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.Property;

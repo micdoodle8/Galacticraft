@@ -2,6 +2,8 @@ package micdoodle8.mods.galacticraft.core.world.gen;
 
 import java.util.List;
 import java.util.Random;
+
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import net.minecraft.block.BlockSand;
@@ -12,7 +14,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderGenerate;
-import universalelectricity.core.vector.Vector3;
 
 /**
  * GCCoreChunkProviderOverworldOrbit.java

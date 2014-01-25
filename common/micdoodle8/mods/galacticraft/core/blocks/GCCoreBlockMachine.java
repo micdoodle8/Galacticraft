@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.List;
 import java.util.Random;
+
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCoalGenerator;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectricFurnace;
@@ -21,8 +22,6 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import universalelectricity.core.UniversalElectricity;
-import universalelectricity.prefab.block.BlockTile;
 
 /**
  * GCCoreBlockMachine.java
@@ -33,7 +32,7 @@ import universalelectricity.prefab.block.BlockTile;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class GCCoreBlockMachine extends BlockTile
+public class GCCoreBlockMachine extends GCCoreBlockTile
 {
     public static final int COAL_GENERATOR_METADATA = 0;
     public static final int STORAGE_MODULE_METADATA = 4;
@@ -51,7 +50,7 @@ public class GCCoreBlockMachine extends BlockTile
 
     public GCCoreBlockMachine(int id, String assetName)
     {
-        super(id, UniversalElectricity.machine);
+        super(id, GCCoreBlocks.machine);
         this.setUnlocalizedName("basicMachine");
         this.setHardness(1.0F);
         this.setStepSound(Block.soundMetalFootstep);

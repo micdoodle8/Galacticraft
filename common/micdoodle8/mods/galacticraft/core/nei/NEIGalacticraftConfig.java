@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.nei;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Set;
+
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;

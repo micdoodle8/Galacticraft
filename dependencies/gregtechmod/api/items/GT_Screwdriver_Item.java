@@ -1,6 +1,7 @@
 package gregtechmod.api.items;
 
 import gregtechmod.api.GregTech_API;
+import gregtechmod.api.enums.GT_ToolDictNames;
 import gregtechmod.api.util.GT_LanguageManager;
 import gregtechmod.api.util.GT_ModHandler;
 import gregtechmod.api.util.GT_OreDictUnificator;
@@ -13,14 +14,13 @@ import net.minecraft.entity.monster.EntityCaveSpider;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 public class GT_Screwdriver_Item extends GT_Tool_Item {
-	public GT_Screwdriver_Item(int aID, String aName, int aMaxDamage, int aEntityDamage, int aDischargedGTID) {
-		super(aID, aName, "To screw Covers on Machines", aMaxDamage, aEntityDamage, -1, aDischargedGTID);
-		GregTech_API.registerScrewdriver(new ItemStack(itemID, 1, GregTech_API.ITEM_WILDCARD_DAMAGE));
-		GT_OreDictUnificator.registerOre("craftingToolScrewdriver", new ItemStack(itemID, 1, GregTech_API.ITEM_WILDCARD_DAMAGE));
+	public GT_Screwdriver_Item(int aID, String aUnlocalized, String aEnglish, int aMaxDamage, int aEntityDamage, int aDischargedGTID) {
+		super(aID, aUnlocalized, aEnglish, "To screw Covers on Machines", aMaxDamage, aEntityDamage, true, -1, aDischargedGTID);
+		GregTech_API.registerScrewdriver(new ItemStack(this, 1, GregTech_API.ITEM_WILDCARD_DAMAGE));
+		GT_OreDictUnificator.registerOre(GT_ToolDictNames.craftingToolScrewdriver, new ItemStack(this, 1, GregTech_API.ITEM_WILDCARD_DAMAGE));
 		addToEffectiveList(EntityCaveSpider.class.getName());
 		addToEffectiveList(EntitySpider.class.getName());
 		addToEffectiveList("EntityTFHedgeSpider");
@@ -43,22 +43,20 @@ public class GT_Screwdriver_Item extends GT_Tool_Item {
     	if (aWorld.isRemote) {
     		return false;
     	}
-    	short aBlockID = (short)aWorld.getBlockId(aX, aY, aZ);
-    	if (aBlockID < 0 || aBlockID >= Block.blocksList.length) return false;
-    	Block aBlock = Block.blocksList[aBlockID];
+    	Block aBlock = Block.blocksList[aWorld.getBlockId(aX, aY, aZ)];
     	if (aBlock == null) return false;
     	byte aMeta = (byte)aWorld.getBlockMetadata(aX, aY, aZ);
-    	TileEntity aTileEntity = aWorld.getBlockTileEntity(aX, aY, aZ);
+//    	TileEntity aTileEntity = aWorld.getBlockTileEntity(aX, aY, aZ);
     	
-    	if (aBlockID == Block.redstoneRepeaterIdle.blockID || aBlockID == Block.redstoneRepeaterActive.blockID) {
-			if (GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
+    	if (aBlock == Block.redstoneRepeaterIdle || aBlock == Block.redstoneRepeaterActive) {
+			if (GT_ModHandler.damageOrDechargeItem(aStack, 1, 200, aPlayer)) {
 				aWorld.setBlockMetadataWithNotify(aX, aY, aZ, (aMeta / 4) * 4  + (((aMeta%4) + 1) % 4), 3);
 				GT_Utility.sendSoundToPlayers(aWorld, GregTech_API.sSoundList.get(100), 1.0F, -1, aX, aY, aZ);
 			}
     		return true;
     	}
-    	if (aBlockID == Block.redstoneComparatorIdle.blockID || aBlockID == Block.redstoneComparatorActive.blockID) {
-			if (GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
+    	if (aBlock == Block.redstoneComparatorIdle || aBlock == Block.redstoneComparatorActive) {
+			if (GT_ModHandler.damageOrDechargeItem(aStack, 1, 200, aPlayer)) {
 				aWorld.setBlockMetadataWithNotify(aX, aY, aZ, (aMeta / 4) * 4  + (((aMeta%4) + 1) % 4), 3);
 				GT_Utility.sendSoundToPlayers(aWorld, GregTech_API.sSoundList.get(100), 1.0F, -1, aX, aY, aZ);
 			}

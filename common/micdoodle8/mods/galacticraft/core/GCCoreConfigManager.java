@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core;
 
 import java.io.File;
+
 import net.minecraft.block.Block;
 import net.minecraftforge.common.Configuration;
 

@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
  * For Covers with a special behavior.
  */
 public abstract class GT_CoverBehavior {
-	public static volatile int VERSION = 402;
+	public static volatile int VERSION = 407;
 	
 	/**
 	 * Gives all Covers which are out of these Stacks a special behavior.
@@ -176,9 +176,15 @@ public abstract class GT_CoverBehavior {
 	
 	/**
 	 * Needs to return true for Covers, which have a Redstone Output on their Facing.
-	 * 
 	 */
 	public boolean manipulatesSidedRedstoneOutput(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+		return false;
+	}
+	
+	/**
+	 * if this Cover should let Pipe Connections look connected even if it is not the case.
+	 */
+	public boolean alwaysLookConnected(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
 		return false;
 	}
 	

@@ -4,8 +4,11 @@ import mekanism.api.gas.GasStack;
 import mekanism.api.gas.GasTransmission;
 import mekanism.api.gas.IGasAcceptor;
 import mekanism.api.gas.ITubeConnection;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
+import micdoodle8.mods.galacticraft.power.core.item.IItemElectric;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -19,10 +22,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.IPlantable;
-import universalelectricity.core.item.IItemElectric;
-import universalelectricity.core.vector.Vector3;
-import universalelectricity.core.vector.VectorHelper;
-import universalelectricity.prefab.network.PacketManager;
+
 import com.google.common.io.ByteArrayDataInput;
 
 /**
@@ -66,7 +66,8 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityOxygen impl
                 GasStack toSend = new GasStack(GalacticraftCore.gasOxygen, gasToSend);
                 this.storedOxygen -= GasTransmission.emitGasToNetwork(toSend, this, this.getOxygenOutputDirection());
 
-                final TileEntity tileEntity = VectorHelper.getTileEntityFromSide(this.worldObj, new Vector3(this), this.getOxygenOutputDirection());
+                Vector3 thisVec = new Vector3(this);
+                TileEntity tileEntity = thisVec.modifyPositionFromSide(this.getOxygenOutputDirection()).getTileEntity(this.worldObj);
 
                 if (tileEntity instanceof IGasAcceptor)
                 {
@@ -336,7 +337,7 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityOxygen impl
     @Override
     public Packet getPacket()
     {
-        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.storedOxygen, this.getEnergyStored(), this.disabled, this.lastOxygenCollected);
+        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.storedOxygen, this.getEnergyStored(), this.disabled, this.lastOxygenCollected);
     }
 
     @Override

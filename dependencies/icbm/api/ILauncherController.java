@@ -1,15 +1,13 @@
 package icbm.api;
 
 import net.minecraft.item.ItemStack;
-import universalelectricity.core.block.IElectricalStorage;
-import universalelectricity.core.vector.Vector3;
 
 /**
  * Applied to all launcher TileEntitiies that operates the launching of missiles.
  * 
  * @author Calclavia
  */
-public interface ILauncherController extends IElectricalStorage, IBlockFrequency
+public interface ILauncherController //extends IElectricalStorage, IBlockFrequency
 {
 	/**
 	 * What type of launcher is this?
@@ -34,12 +32,12 @@ public interface ILauncherController extends IElectricalStorage, IBlockFrequency
 	/**
 	 * @return The target of the launcher.
 	 */
-	public Vector3 getTarget();
+	public int/*Vector3*/ getTarget();
 
 	/**
 	 * @param target Sets the target of the launcher
 	 */
-	public void setTarget(Vector3 target);
+	public void setTarget(int/*Vector3*/ target);
 
 	/**
 	 * Places a missile into the launcher.

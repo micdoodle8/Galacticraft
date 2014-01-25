@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.client.gui;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Container;

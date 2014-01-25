@@ -19,8 +19,8 @@ import net.minecraftforge.common.ForgeDirection;
  * Extend this class to make a simple Machine
  */
 public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileEntity_BasicMachine {
-	public GT_MetaTileEntity_BasicMachine_Bronze(int aID, String mName, String mNameRegional) {
-		super(aID, mName, mNameRegional);
+	public GT_MetaTileEntity_BasicMachine_Bronze(int aID, String aName, String aNameRegional) {
+		super(aID, aName, aNameRegional);
 	}
 	
 	public GT_MetaTileEntity_BasicMachine_Bronze() {
@@ -41,25 +41,11 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
 		mNeedsSteamVenting = aNBT.getBoolean("mNeedsSteamVenting");
 	}
 	
+	@Override public int getElectricTier()							{return 0;}
 	@Override public boolean isSteampowered()						{return true;}
-	@Override public boolean isElectric()							{return false;}
-	@Override public boolean isPneumatic()							{return false;}
-	@Override public boolean isTransformerUpgradable()				{return false;}
-	@Override public boolean isOverclockerUpgradable()				{return false;}
-	@Override public boolean isBatteryUpgradable()					{return false;}
-	@Override public boolean isEnetInput() 							{return false;}
-	@Override public boolean isEnetOutput() 						{return false;}
-	@Override public boolean isInputFacing(byte aSide)				{return false;}
-	@Override public boolean isOutputFacing(byte aSide)				{return false;}
-	@Override public boolean isTeleporterCompatible()				{return false;}
 	@Override public boolean isFacingValid(byte aFacing)			{return super.isFacingValid(aFacing) && aFacing != mMainFacing;}
 	@Override public int getMinimumStoredEU()						{return 1000;}
-	@Override public int maxEUInput()								{return 0;}
-    @Override public int maxEUOutput()								{return 0;}
-    @Override public int maxEUStore()								{return 0;}
-    @Override public int maxMJStore()								{return 0;}
     @Override public int maxSteamStore()							{return 2000;}
-	@Override public int dechargerSlotCount()						{return 0;}
 	@Override public boolean isLiquidInput (byte aSide)				{return aSide != mMainFacing;}
 	@Override public boolean isLiquidOutput(byte aSide)				{return aSide != mMainFacing;}
 	
@@ -100,7 +86,7 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
     public void doSound(byte aIndex, double aX, double aY, double aZ) {
 		super.doSound(aIndex, aX, aY, aZ);
 		if (aIndex == 9) {
-			GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(4), 1.0F, aX, aY, aZ);
+			GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(4), 5, 1.0F, aX, aY, aZ);
 	        for (int l = 0; l < 8; ++l) getBaseMetaTileEntity().getWorld().spawnParticle("largesmoke", aX - 0.5 + Math.random(), aY - 0.5 + Math.random(), aZ - 0.5 + Math.random(), ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()).offsetX / 5.0, ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()).offsetY / 5.0, ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()).offsetZ / 5.0);
 		}
 	}

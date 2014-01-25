@@ -1,16 +1,17 @@
 package micdoodle8.mods.galacticraft.core.items;
 
 import java.util.List;
+
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockAluminumWire;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
+import micdoodle8.mods.galacticraft.power.ElectricityDisplay;
+import micdoodle8.mods.galacticraft.power.ElectricityDisplay.ElectricUnit;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
-import universalelectricity.core.electricity.ElectricityDisplay;
-import universalelectricity.core.electricity.ElectricityDisplay.ElectricUnit;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.moon.world.gen;
 
 import java.util.Random;
+
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.world.gen.GCCoreMapGenBaseMeta;
 import net.minecraft.util.MathHelper;

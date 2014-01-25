@@ -3,21 +3,22 @@ package micdoodle8.mods.galacticraft.core.tile;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
+
 import mekanism.api.gas.GasStack;
 import mekanism.api.gas.GasTransmission;
 import mekanism.api.gas.IGasAcceptor;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockMachine2;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
+import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
-import universalelectricity.core.vector.Vector3;
-import universalelectricity.core.vector.VectorHelper;
-import universalelectricity.prefab.network.IPacketReceiver;
-import universalelectricity.prefab.network.PacketManager;
+
 import com.google.common.io.ByteArrayDataInput;
 
 /**
@@ -58,9 +59,10 @@ public class GCCoreTileEntityOxygenStorageModule extends GCCoreTileEntityOxygen 
         {
             int gasToSend = Math.min(this.storedOxygen, GCCoreTileEntityOxygenStorageModule.OUTPUT_PER_TICK);
             GasStack toSend = new GasStack(GalacticraftCore.gasOxygen, gasToSend);
-            this.storedOxygen -= GasTransmission.emitGasToNetwork(toSend, this, this.getOxygenInputDirection().getOpposite());
+            this.storedOxygen -= GasTransmission.emitGasToNetwork(toSend, this, this.getOxygenOutputDirection());
 
-            final TileEntity tileEntity = VectorHelper.getTileEntityFromSide(this.worldObj, new Vector3(this), this.getOxygenInputDirection().getOpposite());
+            Vector3 thisVec = new Vector3(this);
+            TileEntity tileEntity = thisVec.modifyPositionFromSide(this.getOxygenOutputDirection()).getTileEntity(this.worldObj);
 
             if (tileEntity instanceof IGasAcceptor)
             {
@@ -133,10 +135,15 @@ public class GCCoreTileEntityOxygenStorageModule extends GCCoreTileEntityOxygen 
         return ForgeDirection.getOrientation(this.getBlockMetadata() - GCCoreBlockMachine2.OXYGEN_STORAGE_MODULE_METADATA + 2);
     }
 
+    public ForgeDirection getOxygenOutputDirection()
+    {
+        return this.getOxygenInputDirection().getOpposite();
+    }
+
     @Override
     public boolean canTubeConnect(ForgeDirection direction)
     {
-        return direction == this.getOxygenInputDirection() || direction == this.getOxygenInputDirection().getOpposite();
+        return direction == this.getOxygenInputDirection() || direction == this.getOxygenOutputDirection();
     }
 
     @Override
@@ -173,7 +180,7 @@ public class GCCoreTileEntityOxygenStorageModule extends GCCoreTileEntityOxygen 
     @Override
     public Packet getPacket()
     {
-        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.storedOxygen);
+        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.storedOxygen);
     }
 
     @Override

@@ -7,8 +7,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 public class GT_MetaTileEntity_Hatch_Input extends GT_MetaTileEntity_BasicTank {
-	public GT_MetaTileEntity_Hatch_Input(int aID, String mName, String mNameRegional) {
-		super(aID, mName, mNameRegional);
+	public GT_MetaTileEntity_Hatch_Input(int aID, String aName, String aNameRegional) {
+		super(aID, aName, aNameRegional);
 	}
 	
 	public GT_MetaTileEntity_Hatch_Input() {

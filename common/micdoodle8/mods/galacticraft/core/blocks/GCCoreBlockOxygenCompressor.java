@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.List;
+
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCompressor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDecompressor;
@@ -30,7 +31,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class GCCoreBlockOxygenCompressor extends GCCoreBlockAdvanced
+public class GCCoreBlockOxygenCompressor extends GCCoreBlockAdvancedTile
 {
     public static final int OXYGEN_COMPRESSOR_METADATA = 0;
     public static final int OXYGEN_DECOMPRESSOR_METADATA = 4;

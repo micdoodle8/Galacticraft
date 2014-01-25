@@ -2,6 +2,7 @@ package gregtechmod.api.gui;
 
 import gregtechmod.api.interfaces.IGregTechTileEntity;
 import gregtechmod.api.util.GT_Log;
+import gregtechmod.api.util.GT_Utility;
 
 import java.util.List;
 
@@ -19,7 +20,6 @@ import net.minecraft.item.ItemStack;
  * Main Container-Class, used for all my GUIs
  */
 public class GT_Container extends Container {
-
     public IGregTechTileEntity mTileEntity;
 	public InventoryPlayer mPlayerInventory;
 	
@@ -32,7 +32,7 @@ public class GT_Container extends Container {
      * To add the Slots to your GUI
      */
     public void addSlots(InventoryPlayer aPlayerInventory) {
-    	
+    	//
     }
     
     /**
@@ -47,11 +47,8 @@ public class GT_Container extends Container {
      */
     protected final int getAllSlotCount() {
     	if (inventorySlots != null) {
-    		if (doesBindPlayerInventory()) {
-    			return inventorySlots.size()-36;
-    		} else {
-    			return inventorySlots.size();
-    		}
+    		if (doesBindPlayerInventory()) return inventorySlots.size()-36;
+    		return inventorySlots.size();
     	}
     	return getSlotCount();
     }
@@ -133,9 +130,8 @@ public class GT_Container extends Container {
                 if (aSlot != null && aSlot.canTakeStack(aPlayer)) {
                     tTempStack = this.transferStackInSlot(aPlayer, aSlotIndex);
                     if (tTempStack != null) {
-                        int var12 = tTempStack.itemID;
-                        rStack = tTempStack.copy();
-                        if (aSlot != null && aSlot.getStack() != null && aSlot.getStack().itemID == var12) {
+                        rStack = GT_Utility.copy(tTempStack);
+                        if (aSlot.getStack() != null && aSlot.getStack().getItem() == tTempStack.getItem()) {
                             slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
                         }
                     }
@@ -149,7 +145,7 @@ public class GT_Container extends Container {
                     tTempStack = aSlot.getStack();
                     ItemStack var13 = aPlayerInventory.getItemStack();
                     if (tTempStack != null) {
-                        rStack = tTempStack.copy();
+                        rStack = GT_Utility.copy(tTempStack);
                     }
                     if (tTempStack == null) {
                         if (var13 != null && aSlot.isItemValid(var13)) {
@@ -173,7 +169,7 @@ public class GT_Container extends Container {
                             }
                             aSlot.onPickupFromSlot(aPlayer, aPlayerInventory.getItemStack());
                         } else if (aSlot.isItemValid(var13)) {
-                            if (tTempStack.itemID == var13.itemID && tTempStack.getItemDamage() == var13.getItemDamage() && ItemStack.areItemStackTagsEqual(tTempStack, var13)) {
+                            if (tTempStack.getItem() == var13.getItem() && tTempStack.getItemDamage() == var13.getItemDamage() && ItemStack.areItemStackTagsEqual(tTempStack, var13)) {
                                 tTempStackSize = aMouseclick == 0 ? var13.stackSize : 1;
                                 if (tTempStackSize > aSlot.getSlotStackLimit() - tTempStack.stackSize) {
                                     tTempStackSize = aSlot.getSlotStackLimit() - tTempStack.stackSize;
@@ -190,7 +186,7 @@ public class GT_Container extends Container {
                                 aSlot.putStack(var13);
                                 aPlayerInventory.setItemStack(tTempStack);
                             }
-                        } else if (tTempStack.itemID == var13.itemID && var13.getMaxStackSize() > 1 && (!tTempStack.getHasSubtypes() || tTempStack.getItemDamage() == var13.getItemDamage()) && ItemStack.areItemStackTagsEqual(tTempStack, var13)) {
+                        } else if (tTempStack.getItem() == var13.getItem() && var13.getMaxStackSize() > 1 && (!tTempStack.getHasSubtypes() || tTempStack.getItemDamage() == var13.getItemDamage()) && ItemStack.areItemStackTagsEqual(tTempStack, var13)) {
                             tTempStackSize = tTempStack.stackSize;
 
                             if (tTempStackSize > 0 && tTempStackSize + var13.stackSize <= var13.getMaxStackSize()) {
@@ -245,7 +241,7 @@ public class GT_Container extends Container {
         } else if (aShifthold == 3 && aPlayer.capabilities.isCreativeMode && aPlayerInventory.getItemStack() == null && aSlotIndex >= 0) {
             aSlot = (Slot)this.inventorySlots.get(aSlotIndex);
             if (aSlot != null && aSlot.getHasStack()) {
-                tTempStack = aSlot.getStack().copy();
+                tTempStack = GT_Utility.copy(aSlot.getStack());
                 tTempStack.stackSize = tTempStack.getMaxStackSize();
                 aPlayerInventory.setItemStack(tTempStack);
             }
@@ -261,7 +257,7 @@ public class GT_Container extends Container {
         //null checks and checks if the item can be stacked (maxStackSize > 1)
         if (getSlotCount() > 0 && slotObject != null && slotObject.getHasStack() && !(slotObject instanceof GT_Slot_Holo)) {
             ItemStack stackInSlot = slotObject.getStack();
-            stack = stackInSlot.copy();
+            stack = GT_Utility.copy(stackInSlot);
             
             //TileEntity -> Player
             if (aSlotIndex < getAllSlotCount()) {
@@ -303,7 +299,7 @@ public class GT_Container extends Container {
                 var7 = (Slot)this.inventorySlots.get(var6);
                 var8 = var7.getStack();
                 
-                if (!(var7 instanceof GT_Slot_Holo) && !(var7 instanceof GT_Slot_Output) && var8 != null && var8.itemID == aStack.itemID && (!aStack.getHasSubtypes() || aStack.getItemDamage() == var8.getItemDamage()) && ItemStack.areItemStackTagsEqual(aStack, var8)) {
+                if (!(var7 instanceof GT_Slot_Holo) && !(var7 instanceof GT_Slot_Output) && var8 != null && var8.getItem() == aStack.getItem() && (!aStack.getHasSubtypes() || aStack.getItemDamage() == var8.getItemDamage()) && ItemStack.areItemStackTagsEqual(aStack, var8)) {
                     int var9 = var8.stackSize + aStack.stackSize;
 
                     if (var9 <= aStack.getMaxStackSize()) {
@@ -345,7 +341,7 @@ public class GT_Container extends Container {
 
                 if (var8 == null)
                 {
-                    var7.putStack(aStack.copy());
+                    var7.putStack(GT_Utility.copy(aStack));
                     var7.onSlotChanged();
                     aStack.stackSize = 0;
                     var5 = true;
@@ -436,7 +432,7 @@ public class GT_Container extends Container {
     @Override
     public Slot getSlot(int par1) {
     	try {
-            return super.getSlot(par1);
+    		if (this.inventorySlots.size() > par1) return super.getSlot(par1);
     	} catch(Throwable e) {
     		e.printStackTrace(GT_Log.err);
     	}

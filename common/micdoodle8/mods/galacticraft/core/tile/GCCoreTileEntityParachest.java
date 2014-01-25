@@ -2,12 +2,16 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import java.util.Iterator;
 import java.util.List;
+
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockParachest;
 import micdoodle8.mods.galacticraft.core.entities.IScaleableFuelLevel;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerParachest;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerServer.EnumPacketServer;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
+import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -23,10 +27,9 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
-import universalelectricity.core.vector.Vector3;
-import universalelectricity.prefab.network.IPacketReceiver;
-import universalelectricity.prefab.network.PacketManager;
+
 import com.google.common.io.ByteArrayDataInput;
+
 import cpw.mods.fml.common.network.PacketDispatcher;
 
 /**
@@ -328,14 +331,14 @@ public class GCCoreTileEntityParachest extends TileEntity implements IInventory,
 
             if (this.ticksSinceSync % 3 == 0)
             {
-                PacketManager.sendPacketToClients(this.getPacket(), this.worldObj, new Vector3(this), 12);
+            	GCCorePacketManager.sendPacketToClients(this.getPacket(), this.worldObj, new Vector3(this), 12);
             }
         }
     }
 
     public Packet getPacket()
     {
-        return PacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluidAmount());
+        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluidAmount());
     }
 
     @Override

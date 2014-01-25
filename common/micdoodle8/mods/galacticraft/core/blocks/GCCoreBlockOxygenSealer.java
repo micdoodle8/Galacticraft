@@ -27,7 +27,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class GCCoreBlockOxygenSealer extends GCCoreBlockAdvanced
+public class GCCoreBlockOxygenSealer extends GCCoreBlockAdvancedTile
 {
     private Icon iconMachineSide;
     private Icon iconSealer;

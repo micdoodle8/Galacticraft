@@ -1,7 +1,7 @@
 package gregtechmod.api.items;
 
 import gregtechmod.api.GregTech_API;
-import gregtechmod.api.interfaces.IPlayerTickingItem;
+import gregtechmod.api.util.GT_LanguageManager;
 import gregtechmod.api.util.GT_ModHandler;
 import gregtechmod.api.util.GT_Utility;
 
@@ -29,19 +29,20 @@ import net.minecraftforge.event.entity.living.LivingFallEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class GT_EnergyArmor_Item extends ItemArmor implements IPlayerTickingItem, ISpecialArmor {
+public class GT_EnergyArmor_Item extends ItemArmor implements ISpecialArmor {
 	public int mCharge, mTransfer, mTier, mDamageEnergyCost, mSpecials;
 	public boolean mChargeProvider;
 	public double mArmorAbsorbtionPercentage;
 	
     public static Map jumpChargeMap = new HashMap();
     
-	public GT_EnergyArmor_Item(int aID, String aName, int aCharge, int aTransfer, int aTier, int aDamageEnergyCost, int aSpecials, double aArmorAbsorbtionPercentage, boolean aChargeProvider, int aType, int aArmorIndex) {
+	public GT_EnergyArmor_Item(int aID, String aUnlocalized, String aEnglish, int aCharge, int aTransfer, int aTier, int aDamageEnergyCost, int aSpecials, double aArmorAbsorbtionPercentage, boolean aChargeProvider, int aType, int aArmorIndex) {
 		super(aID, EnumArmorMaterial.DIAMOND, aArmorIndex, aType);
 		setMaxStackSize(1);
 		setMaxDamage(100);
 		setNoRepair();
-		setUnlocalizedName(aName);
+		setUnlocalizedName(aUnlocalized);
+		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".name", aEnglish);
 		mCharge = Math.max(1, aCharge);
 		mTransfer = Math.max(1, aTransfer);
 		mTier = Math.max(1, aTier);
@@ -92,7 +93,7 @@ public class GT_EnergyArmor_Item extends ItemArmor implements IPlayerTickingItem
 		if ((mSpecials & 1024) != 0) aList.add("Infinite Charge");
     }
 	
-    private void setCharge(ItemStack aStack) {
+    private static void setCharge(ItemStack aStack) {
 		NBTTagCompound tNBT = aStack.getTagCompound();
 		if (tNBT == null) tNBT = new NBTTagCompound();
 		tNBT.setInteger("charge", 1000000000);
@@ -100,8 +101,8 @@ public class GT_EnergyArmor_Item extends ItemArmor implements IPlayerTickingItem
     }
     
 	@Override
-	public boolean onTick(EntityPlayer aPlayer, ItemStack aStack, int aTimer, boolean aIsArmor) {
-		if (mSpecials == 0 || !aIsArmor) return false;
+	public void onArmorTickUpdate(World aWorld, EntityPlayer aPlayer, ItemStack aStack) {
+		if (mSpecials == 0) return;
 		
 		if (!aPlayer.worldObj.isRemote && (mSpecials & 1) != 0) {
 	        int var4 = aPlayer.getAir();
@@ -148,8 +149,8 @@ public class GT_EnergyArmor_Item extends ItemArmor implements IPlayerTickingItem
                     	aPlayer.motionZ *= 3.5D;
                     }
 
-                    aPlayer.motionY += (double)(var6 * 0.3F);
-                    var6 = (float)((double)var6 * 0.75D);
+                    aPlayer.motionY += (var6 * 0.3F);
+                    var6 = (float)(var6 * 0.75D);
                 } else if (var6 < 1.0F) {
                     var6 = 0.0F;
                 }
@@ -187,7 +188,7 @@ public class GT_EnergyArmor_Item extends ItemArmor implements IPlayerTickingItem
 		}
 		
 		if (!aPlayer.worldObj.isRemote && (mSpecials & (16|32)) != 0) {
-			if (aTimer%20==0) {
+			if (GregTech_API.sWorldTickCounter%20==0) {
 				ItemStack tTargetChargeItem = aStack, tTargetDechargeItem = aStack;
 				
 				if (GT_ModHandler.chargeElectricItem(tTargetChargeItem, 1, Integer.MAX_VALUE, true, true) < 1) {
@@ -210,14 +211,13 @@ public class GT_EnergyArmor_Item extends ItemArmor implements IPlayerTickingItem
 					}
 				} else {
 					if ((mSpecials & 16) != 0 && tTargetDechargeItem != null && GT_ModHandler.canUseElectricItem(tTargetDechargeItem, 10)) {
-						if (aPlayer.worldObj.getBlockId	(MathHelper.floor_double(aPlayer.posX), MathHelper.floor_double(aPlayer.posY+1), MathHelper.floor_double(aPlayer.posZ)) == 0)
-							aPlayer.worldObj.setBlock	(MathHelper.floor_double(aPlayer.posX), MathHelper.floor_double(aPlayer.posY+1), MathHelper.floor_double(aPlayer.posZ), GregTech_API.getGregTechBlock(3, 1, 0).itemID);
+						if (aPlayer.worldObj.getBlockId	((int)aPlayer.posX, (int)aPlayer.posY+1, (int)aPlayer.posZ) == 0)
+							aPlayer.worldObj.setBlock	((int)aPlayer.posX, (int)aPlayer.posY+1, (int)aPlayer.posZ, GregTech_API.sBlockList[3].blockID);
 						GT_ModHandler.useElectricItem(tTargetDechargeItem, 10, aPlayer);
 					}
 				}
 			}
 		}
-		return true;
 	}
 	
 	@Override
@@ -313,10 +313,6 @@ public class GT_EnergyArmor_Item extends ItemArmor implements IPlayerTickingItem
         GT_ModHandler.dischargeElectricItem(var2, var4 * mDamageEnergyCost, Integer.MAX_VALUE, true, false, true);
     }
 	
-    public boolean isMetalArmor(ItemStack var1, EntityPlayer var2) {
-        return true;
-    }
-    
     private double getBaseAbsorptionRatio() {
     	if (mArmorAbsorbtionPercentage <= 0) return 0.00;
         switch (this.armorType) {

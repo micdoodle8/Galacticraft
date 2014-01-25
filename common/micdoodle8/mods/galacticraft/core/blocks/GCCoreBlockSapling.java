@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.Random;
+
 import micdoodle8.mods.galacticraft.core.world.gen.GCCoreWorldGenForest;
 import micdoodle8.mods.galacticraft.core.world.gen.GCCoreWorldGenTaiga2;
 import micdoodle8.mods.galacticraft.core.world.gen.GCCoreWorldGenTrees;

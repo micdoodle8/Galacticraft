@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.util;
 
 import java.util.Iterator;
 import java.util.Map;
+
 import micdoodle8.mods.galacticraft.core.GCLog;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;

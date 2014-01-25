@@ -13,7 +13,7 @@ import buildcraft.api.tools.IToolWrench;
 
 public class GT_WrenchBC_Item extends GT_Wrench_Item implements IToolWrench {
 	public GT_WrenchBC_Item(int aID, String aName, int aMaxDamage, int aEntityDamage, int aDischargedGTID) {
-		super(aID, aName, aMaxDamage, aEntityDamage, aDischargedGTID);
+		super(aID, aName, aName, aMaxDamage, aEntityDamage, aDischargedGTID);
 	}
 	
 	@Override

@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.mars.network;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
+
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
 import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketLanderUpdate;

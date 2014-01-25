@@ -1,11 +1,10 @@
 package gregtechmod.api.metatileentity.implementations;
 
-import gregtechmod.api.GregTech_API;
+import gregtechmod.api.enums.GT_Items;
 import gregtechmod.api.metatileentity.MetaTileEntity;
 import gregtechmod.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidEvent;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -18,8 +17,8 @@ public abstract class GT_MetaTileEntity_BasicTank extends MetaTileEntity {
 	
 	public FluidStack mFluid;
 	
-	public GT_MetaTileEntity_BasicTank(int aID, String mName, String mNameRegional) {
-		super(aID, mName, mNameRegional);
+	public GT_MetaTileEntity_BasicTank(int aID, String aName, String aNameRegional) {
+		super(aID, aName, aNameRegional);
 	}
 	
 	public GT_MetaTileEntity_BasicTank() {
@@ -35,7 +34,7 @@ public abstract class GT_MetaTileEntity_BasicTank extends MetaTileEntity {
 		if (mFluid != null) {
 			try {
 				aNBT.setCompoundTag("mLiquid", mFluid.writeToNBT(new NBTTagCompound("mLiquid")));
-			} catch(Throwable e) {}
+			} catch(Throwable e) {/*Do nothing*/}
 		}
 	}
 	
@@ -62,6 +61,7 @@ public abstract class GT_MetaTileEntity_BasicTank extends MetaTileEntity {
 	public int getStackDisplaySlot() {return 2;}
 	
 	public boolean isFluidInputAllowed(FluidStack aFluid) {return true;}
+	public boolean isFluidChangingAllowed() {return true;}
 	
 	public FluidStack getFillableStack() {return mFluid;}
 	public FluidStack setFillableStack(FluidStack aFluid) {mFluid = aFluid; return mFluid;}
@@ -71,18 +71,18 @@ public abstract class GT_MetaTileEntity_BasicTank extends MetaTileEntity {
 	@Override
 	public void onPreTick() {
 		if (getBaseMetaTileEntity().isServerSide()) {
-			if (mFluid != null && mFluid.amount <= 0) mFluid = null;
+			if (isFluidChangingAllowed() && mFluid != null && mFluid.amount <= 0) mFluid = null;
 			
 			if (displaysItemStack()) {
 				if (getDrainableStack() != null) {
-					mInventory[getStackDisplaySlot()] = GregTech_API.getGregTechItem(15, displaysStackSize()?Math.max(1, Math.min(getDrainableStack().amount/1000, 64)):1, getDrainableStack().fluidID);
+					mInventory[getStackDisplaySlot()] = GT_Items.Display_Fluid.getWithDamage(displaysStackSize()?Math.max(1, Math.min(getDrainableStack().amount/1000, 64)):1, getDrainableStack().fluidID);
 				} else {
 					mInventory[getStackDisplaySlot()] = null;
 				}
 			}
 			
 			if (doesEmptyContainers()) {
-				FluidStack tFluid = FluidContainerRegistry.getFluidForFilledItem(mInventory[getInputSlot()]);
+				FluidStack tFluid = GT_Utility.getFluidForFilledItem(mInventory[getInputSlot()]);
 				if (tFluid != null && isFluidInputAllowed(tFluid)) {
 					if (getFillableStack() == null) {
 						if (isFluidInputAllowed(tFluid) && tFluid.amount <= getCapacity()) {
@@ -103,11 +103,12 @@ public abstract class GT_MetaTileEntity_BasicTank extends MetaTileEntity {
 			}
 			
 			if (doesFillContainers()) {
-				ItemStack tOutput = FluidContainerRegistry.fillFluidContainer(getDrainableStack(), mInventory[getInputSlot()]);
+				ItemStack tOutput = GT_Utility.fillFluidContainer(getDrainableStack(), mInventory[getInputSlot()]);
 				if (tOutput != null && getBaseMetaTileEntity().addStackToSlot(getOutputSlot(), tOutput, 1)) {
+					FluidStack tFluid = GT_Utility.getFluidForFilledItem(tOutput);
 					getBaseMetaTileEntity().decrStackSize(getInputSlot(), 1);
-					getDrainableStack().amount -= FluidContainerRegistry.getFluidForFilledItem(tOutput).amount;
-					if (getDrainableStack().amount <= 0) setDrainableStack(null);
+					if (tFluid != null) getDrainableStack().amount -= tFluid.amount;
+					if (getDrainableStack().amount <= 0 && isFluidChangingAllowed()) setDrainableStack(null);
 				}
 			}
 		}
@@ -132,15 +133,14 @@ public abstract class GT_MetaTileEntity_BasicTank extends MetaTileEntity {
 				if (doFill)
 					setFillableStack(aFluid.copy());
 				return aFluid.amount;
-			} else {
-				if (doFill) {
-					setFillableStack(aFluid.copy());
-					getFillableStack().amount = getCapacity();
-					if (getBaseMetaTileEntity()!=null)
-						FluidEvent.fireEvent(new FluidEvent.FluidFillingEvent(getFillableStack(), getBaseMetaTileEntity().getWorld(), getBaseMetaTileEntity().getXCoord(), getBaseMetaTileEntity().getYCoord(), getBaseMetaTileEntity().getZCoord(), this));
-				}
-				return getCapacity();
 			}
+			if (doFill) {
+				setFillableStack(aFluid.copy());
+				getFillableStack().amount = getCapacity();
+				if (getBaseMetaTileEntity()!=null)
+					FluidEvent.fireEvent(new FluidEvent.FluidFillingEvent(getFillableStack(), getBaseMetaTileEntity().getWorld(), getBaseMetaTileEntity().getXCoord(), getBaseMetaTileEntity().getYCoord(), getBaseMetaTileEntity().getZCoord(), this));
+			}
+			return getCapacity();
 		}
 		
 		if (!getFillableStack().isFluidEqual(aFluid))
@@ -151,17 +151,16 @@ public abstract class GT_MetaTileEntity_BasicTank extends MetaTileEntity {
 			if (doFill)
 				getFillableStack().amount += aFluid.amount;
 			return aFluid.amount;
-		} else {
-			if (doFill)
-				getFillableStack().amount = getCapacity();
-			return space;
 		}
+		if (doFill)
+			getFillableStack().amount = getCapacity();
+		return space;
 	}
 	
 	@Override
 	public final FluidStack drain(int maxDrain, boolean doDrain) {
 		if (getDrainableStack() == null || !canTankBeEmptied()) return null;
-		if (getDrainableStack().amount <= 0) {
+		if (getDrainableStack().amount <= 0 && isFluidChangingAllowed()) {
 			setDrainableStack(null);
 			return null;
 		}
@@ -177,7 +176,7 @@ public abstract class GT_MetaTileEntity_BasicTank extends MetaTileEntity {
 		FluidStack drained = getDrainableStack().copy();
 		drained.amount = used;
 		
-		if (getDrainableStack().amount <= 0) {
+		if (getDrainableStack().amount <= 0 && isFluidChangingAllowed()) {
 			setDrainableStack(null);
 		}
 		

@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.gui.page;
 
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiManual;
+
 import org.w3c.dom.Element;
 
 /**

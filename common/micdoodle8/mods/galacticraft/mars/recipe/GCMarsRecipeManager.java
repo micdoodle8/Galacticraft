@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.mars.recipe;
 
 import java.util.HashMap;
+
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
