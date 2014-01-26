@@ -21,6 +21,7 @@ import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
+import cofh.api.energy.IEnergyHandler;
 
 /**
  * GCCoreTileEntityUniversalConductor.java
@@ -103,6 +104,13 @@ public abstract class GCCoreTileEntityUniversalConductor extends GCCoreTileEntit
                     {
                         this.adjacentConnections[i] = tileEntity;
                     }
+                }
+                else if (PowerConfigHandler.isThermalExpansionLoaded() && tileEntity instanceof IEnergyHandler)
+                {
+                	if (((IEnergyHandler) tileEntity).canInterface(side.getOpposite()))
+                	{
+                		this.adjacentConnections[i] = tileEntity;
+                	}
                 }
             }
         }

@@ -209,6 +209,7 @@ public class UniversalNetwork extends ElectricityNetwork
 								requests.add(ElectricityPack.getFromWatts(((IElectrical) tileEntity).getRequest(direction), ((IElectrical) tileEntity).getVoltage()));
 							}
 						}
+						
 						continue;
 					}
 

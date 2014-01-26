@@ -95,7 +95,10 @@ import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
 import micdoodle8.mods.galacticraft.core.world.gen.GCCoreOverworldGenerator;
 import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
+import micdoodle8.mods.galacticraft.power.NetworkLoader;
 import micdoodle8.mods.galacticraft.power.compatibility.PowerConfigHandler;
+import micdoodle8.mods.galacticraft.power.compatibility.UniversalNetwork;
+import micdoodle8.mods.galacticraft.power.core.grid.ChunkPowerHandler;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -280,6 +283,8 @@ public class GalacticraftCore
         SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicMoonBuggy());
         SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicAdd());
         TransmitterNetworkRegistry.initiate();
+        ChunkPowerHandler.initiate();
+		NetworkLoader.setNetworkClass(UniversalNetwork.class);
         
         this.registerCreatures();
         this.registerOtherEntities();
