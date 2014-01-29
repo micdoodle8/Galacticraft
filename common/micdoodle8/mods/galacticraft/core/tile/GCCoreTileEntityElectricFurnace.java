@@ -397,13 +397,13 @@ public class GCCoreTileEntityElectricFurnace extends GCCoreTileEntityUniversalEl
     }
 
     @Override
-    public EnumSet<ForgeDirection> getInputDirections()
+    public EnumSet<ForgeDirection> getElectricalInputDirections()
     {
         return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() - GCCoreBlockMachine.ELECTRIC_FURNACE_METADATA + 2), ForgeDirection.UNKNOWN);
     }
 
     @Override
-    public EnumSet<ForgeDirection> getOutputDirections()
+    public EnumSet<ForgeDirection> getElectricalOutputDirections()
     {
         return EnumSet.noneOf(ForgeDirection.class);
     }

@@ -1,18 +1,12 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import java.util.Arrays;
-
-import mekanism.api.gas.GasTransmission;
-import mekanism.api.gas.ITubeConnection;
-import mekanism.api.transmitters.ITransmitter;
 import micdoodle8.mods.galacticraft.api.tile.IColorable;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenPipe;
+import micdoodle8.mods.galacticraft.power.NetworkType;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -24,8 +18,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
@@ -41,7 +33,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class GCCoreBlockOxygenPipe extends BlockContainer implements ITileEntityProvider
+public class GCCoreBlockOxygenPipe extends GCCoreBlockTransmitter
 {
     private Icon[] pipeIcons = new Icon[16];
 
@@ -77,28 +69,6 @@ public class GCCoreBlockOxygenPipe extends BlockContainer implements ITileEntity
     public CreativeTabs getCreativeTabToDisplayOn()
     {
         return GalacticraftCore.galacticraftTab;
-    }
-
-    @Override
-    public void onBlockAdded(World world, int x, int y, int z)
-    {
-        TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
-
-        if (!world.isRemote && tileEntity instanceof ITransmitter<?>)
-        {
-            ((ITransmitter<?>) tileEntity).refreshTransmitterNetwork();
-        }
-    }
-
-    @Override
-    public void onNeighborBlockChange(World world, int x, int y, int z, int blockID)
-    {
-        TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
-
-        if (!world.isRemote && tileEntity instanceof ITransmitter<?>)
-        {
-            ((ITransmitter<?>) tileEntity).refreshTransmitterNetwork();
-        }
     }
 
     @Override
@@ -166,11 +136,6 @@ public class GCCoreBlockOxygenPipe extends BlockContainer implements ITileEntity
                         {
                             ((IColorable) tileAt).onAdjacentColorChanged(dir);
                         }
-
-                        if (!par1World.isRemote && tileAt instanceof ITransmitter<?>)
-                        {
-                            ((ITransmitter<?>) tileAt).refreshTransmitterNetwork();
-                        }
                     }
 
                     return true;
@@ -228,59 +193,6 @@ public class GCCoreBlockOxygenPipe extends BlockContainer implements ITileEntity
         return new GCCoreTileEntityOxygenPipe();
     }
 
-    @Override
-    public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
-    {
-        final TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
-
-        float minX = 0.3F;
-        final float minY = 0.3F;
-        float minZ = 0.3F;
-        float maxX = 0.7F;
-        final float maxY = 0.7F;
-        float maxZ = 0.7F;
-
-        if (tileEntity != null)
-        {
-            final boolean[] connectable = new boolean[] { false, false, false, false, false, false };
-            final ITubeConnection[] connections = GasTransmission.getConnections(tileEntity);
-
-            for (final ITubeConnection connection : connections)
-            {
-                if (connection != null)
-                {
-                    final int side = Arrays.asList(connections).indexOf(connection);
-
-                    if (connection.canTubeConnect(ForgeDirection.getOrientation(side).getOpposite()))
-                    {
-                        connectable[side] = true;
-                    }
-                }
-            }
-
-            if (connectable[2])
-            {
-                minZ = 0.0F;
-            }
-            if (connectable[3])
-            {
-                maxZ = 1.0F;
-            }
-
-            if (connectable[4])
-            {
-                minX = 0.0F;
-            }
-
-            if (connectable[5])
-            {
-                maxX = 1.0F;
-            }
-
-            this.setBlockBounds(minX, minY, minZ, maxX, maxY, maxZ);
-        }
-    }
-
     @SideOnly(Side.CLIENT)
     @Override
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int i, int j, int k)
@@ -288,114 +200,9 @@ public class GCCoreBlockOxygenPipe extends BlockContainer implements ITileEntity
         return this.getCollisionBoundingBoxFromPool(world, i, j, k);
     }
 
-    @Override
-    public MovingObjectPosition collisionRayTrace(World world, int x, int y, int z, Vec3 vec3d, Vec3 vec3d1)
-    {
-        final TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
-
-        float minX = 0.0F;
-        final float minY = 0.0F;
-        float minZ = 0.0F;
-        float maxX = 1.0F;
-        final float maxY = 1.0F;
-        float maxZ = 1.0F;
-
-        if (tileEntity != null)
-        {
-            final boolean[] connectable = new boolean[] { false, false, false, false, false, false };
-            final ITubeConnection[] connections = GasTransmission.getConnections(tileEntity);
-
-            for (final ITubeConnection connection : connections)
-            {
-                if (connection != null)
-                {
-                    final int side = Arrays.asList(connections).indexOf(connection);
-
-                    if (connection.canTubeConnect(ForgeDirection.getOrientation(side).getOpposite()))
-                    {
-                        connectable[side] = true;
-                    }
-                }
-            }
-
-            if (connectable[2])
-            {
-                minZ = 0.0F;
-            }
-
-            if (connectable[3])
-            {
-                maxZ = 1.0F;
-            }
-
-            if (connectable[4])
-            {
-                minX = 0.0F;
-            }
-
-            if (connectable[5])
-            {
-                maxX = 1.0F;
-            }
-
-            this.setBlockBounds(minX, minY, minZ, maxX, maxY, maxZ);
-        }
-
-        return super.collisionRayTrace(world, x, y, z, vec3d, vec3d1);
-    }
-
-    @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
-    {
-        final TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
-
-        float minX = 0.35F;
-        final float minY = 0.35F;
-        float minZ = 0.35F;
-        float maxX = 0.65F;
-        final float maxY = 0.65F;
-        float maxZ = 0.65F;
-
-        if (tileEntity != null)
-        {
-            final boolean[] connectable = new boolean[] { false, false, false, false, false, false };
-            final ITubeConnection[] connections = GasTransmission.getConnections(tileEntity);
-
-            for (final ITubeConnection connection : connections)
-            {
-                if (connection != null)
-                {
-                    final int side = Arrays.asList(connections).indexOf(connection);
-
-                    if (connection.canTubeConnect(ForgeDirection.getOrientation(side).getOpposite()))
-                    {
-                        connectable[side] = true;
-                    }
-                }
-            }
-
-            if (connectable[2])
-            {
-                minZ = 0.0F;
-            }
-            if (connectable[3])
-            {
-                maxZ = 1.0F;
-            }
-
-            if (connectable[4])
-            {
-                minX = 0.0F;
-            }
-
-            if (connectable[5])
-            {
-                maxX = 1.0F;
-            }
-
-            this.setBlockBounds(minX, minY, minZ, maxX, maxY, maxZ);
-        }
-
-        return AxisAlignedBB.getAABBPool().getAABB(x + this.minX, y + this.minY, z + this.minZ, x + this.maxX, y + this.maxY, z + this.maxZ);
-    }
+	@Override
+	public NetworkType getNetworkType()
+	{
+		return NetworkType.OXYGEN;
+	}
 }

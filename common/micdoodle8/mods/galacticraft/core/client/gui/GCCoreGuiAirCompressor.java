@@ -3,11 +3,11 @@ package micdoodle8.mods.galacticraft.core.client.gui;
 import java.util.ArrayList;
 import java.util.List;
 
-import mekanism.api.EnumColor;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerAirCompressor;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenTank;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCompressor;
+import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.power.ElectricityDisplay;
 import micdoodle8.mods.galacticraft.power.ElectricityDisplay.ElectricUnit;
 import net.minecraft.entity.player.InventoryPlayer;

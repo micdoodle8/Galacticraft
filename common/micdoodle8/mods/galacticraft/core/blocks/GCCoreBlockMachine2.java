@@ -154,7 +154,9 @@ public class GCCoreBlockMachine2 extends GCCoreBlockTile
                 return this.iconOxygenOutput;
             }
 
-            return this.iconOxygenStorageModule[((GCCoreTileEntityOxygenStorageModule) tile).scaledOxygenLevel];
+            int oxygenLevel = Math.min(((GCCoreTileEntityOxygenStorageModule) tile).scaledOxygenLevel, 16);
+            
+            return this.iconOxygenStorageModule[oxygenLevel];
         }
 
         return super.getBlockTexture(world, x, y, z, side);

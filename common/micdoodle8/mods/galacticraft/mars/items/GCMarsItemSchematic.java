@@ -2,9 +2,9 @@ package micdoodle8.mods.galacticraft.mars.items;
 
 import java.util.List;
 
-import mekanism.api.EnumColor;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicItem;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemSchematic;
+import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;

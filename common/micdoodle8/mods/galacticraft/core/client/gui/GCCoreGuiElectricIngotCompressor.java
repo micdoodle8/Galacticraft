@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.client.gui;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerElectricIngotCompressor;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectricIngotCompressor;
+import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.power.ElectricityDisplay;
 import micdoodle8.mods.galacticraft.power.ElectricityDisplay.ElectricUnit;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -54,11 +55,11 @@ public class GCCoreGuiElectricIngotCompressor extends GuiContainer
 
         if (this.tileEntity.processTicks > 0)
         {
-            displayText = mekanism.api.EnumColor.BRIGHT_GREEN + "Running";
+            displayText = EnumColor.BRIGHT_GREEN + "Running";
         }
         else
         {
-            displayText = mekanism.api.EnumColor.ORANGE + "Idle";
+            displayText = EnumColor.ORANGE + "Idle";
         }
 
         String str = "Status: " + displayText;

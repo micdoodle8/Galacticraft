@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.api.event.wgen;
 
 import java.util.Random;
+
 import net.minecraft.world.World;
 import net.minecraftforge.event.Event;
 

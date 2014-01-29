@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.api.recipe;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;

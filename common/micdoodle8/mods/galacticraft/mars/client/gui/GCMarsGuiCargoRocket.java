@@ -3,13 +3,13 @@ package micdoodle8.mods.galacticraft.mars.client.gui;
 import java.util.ArrayList;
 import java.util.List;
 
-import mekanism.api.EnumColor;
 import micdoodle8.mods.galacticraft.api.entity.IRocketType.EnumRocketType;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase.EnumLaunchPhase;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiContainer;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreInfoRegion;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRocketRefill;
+import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityCargoRocket;

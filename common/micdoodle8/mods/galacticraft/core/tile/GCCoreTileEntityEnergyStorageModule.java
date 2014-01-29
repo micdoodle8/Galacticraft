@@ -296,23 +296,23 @@ public class GCCoreTileEntityEnergyStorageModule extends GCCoreTileEntityUnivers
     @Override
     public float getRequest(ForgeDirection direction)
     {
-        return this.getInputDirections().contains(direction) ? this.getMaxEnergyStored() - this.getEnergyStored() : 0;
+        return this.getElectricalInputDirections().contains(direction) ? this.getMaxEnergyStored() - this.getEnergyStored() : 0;
     }
 
     @Override
     public float getProvide(ForgeDirection direction)
     {
-        return this.getOutputDirections().contains(direction) ? Math.min(1.3F, this.getEnergyStored()) : 0;
+        return this.getElectricalOutputDirections().contains(direction) ? Math.min(1.3F, this.getEnergyStored()) : 0;
     }
 
     @Override
-    public EnumSet<ForgeDirection> getInputDirections()
+    public EnumSet<ForgeDirection> getElectricalInputDirections()
     {
         return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() - GCCoreBlockMachine.STORAGE_MODULE_METADATA + 2).getOpposite(), ForgeDirection.UNKNOWN);
     }
 
     @Override
-    public EnumSet<ForgeDirection> getOutputDirections()
+    public EnumSet<ForgeDirection> getElectricalOutputDirections()
     {
         return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() - GCCoreBlockMachine.STORAGE_MODULE_METADATA + 2), ForgeDirection.UNKNOWN);
     }

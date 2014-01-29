@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.api.vector;
 
-import micdoodle8.mods.galacticraft.api.vector.Vector2;
 
 /**
  * Vector2 Class is used for defining objects in a 2D space.

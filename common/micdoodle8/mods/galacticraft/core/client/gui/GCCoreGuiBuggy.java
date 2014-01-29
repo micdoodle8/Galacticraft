@@ -3,10 +3,10 @@ package micdoodle8.mods.galacticraft.core.client.gui;
 import java.util.ArrayList;
 import java.util.List;
 
-import mekanism.api.EnumColor;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerBuggy;
+import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;

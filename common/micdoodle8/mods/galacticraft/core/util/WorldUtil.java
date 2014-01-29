@@ -1,5 +1,9 @@
 package micdoodle8.mods.galacticraft.core.util;
 
+import ic2.api.energy.tile.IEnergyAcceptor;
+import ic2.api.energy.tile.IEnergyEmitter;
+import ic2.api.energy.tile.IEnergyTile;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,6 +12,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import mekanism.api.gas.IGasTransmitter;
+import mekanism.api.gas.ITubeConnection;
+import mekanism.api.transmitters.TransmissionType;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.api.entity.IWorldTransferCallback;
@@ -36,7 +43,10 @@ import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumP
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketSpaceStationData;
 import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol;
 import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol.VecDirPair;
+import micdoodle8.mods.galacticraft.core.tile.IConnector;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
+import micdoodle8.mods.galacticraft.power.NetworkType;
+import micdoodle8.mods.galacticraft.power.compatibility.NetworkConfigHandler;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -51,6 +61,7 @@ import net.minecraft.network.packet.Packet43Experience;
 import net.minecraft.network.packet.Packet9Respawn;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.ChunkCoordIntPair;
@@ -59,6 +70,9 @@ import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldProviderSurface;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.ForgeDirection;
+import buildcraft.api.power.IPowerReceptor;
+import cofh.api.energy.IEnergyHandler;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -860,5 +874,93 @@ public class WorldUtil
     public static boolean canBlockPass(World world, VecDirPair pair)
     {
         return WorldUtil.canBlockPass(world, pair.getPosition().getBlockID(world), pair.getPosition().getBlockMetadata(world), pair);
+    }
+    
+    public static TileEntity[] getAdjacentOxygenConnections(TileEntity tile)
+    {
+    	TileEntity[] adjacentConnections = new TileEntity[ForgeDirection.VALID_DIRECTIONS.length];
+    	
+    	for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+    	{
+    		Vector3 tileVec = new Vector3(tile);
+    		TileEntity tileEntity = tileVec.modifyPositionFromSide(direction).getTileEntity(tile.worldObj);
+    		
+    		if (tileEntity instanceof IConnector)
+    		{
+    			if (((IConnector) tileEntity).canConnect(direction.getOpposite(), NetworkType.OXYGEN))
+    			{
+    				adjacentConnections[direction.ordinal()] = tileEntity;
+    			}
+    		}
+    		else if (NetworkConfigHandler.isMekanismLoaded())
+    		{
+    			if (tileEntity instanceof ITubeConnection && (!(tileEntity instanceof IGasTransmitter) || TransmissionType.checkTransmissionType(tileEntity, TransmissionType.GAS, tileEntity)))
+    			{
+    				if (((ITubeConnection) tileEntity).canTubeConnect(direction))
+    				{
+        				adjacentConnections[direction.ordinal()] = tileEntity;
+    				}
+    			}
+    		}
+    	}
+    	
+    	return adjacentConnections;
+    }
+    
+    public static TileEntity[] getAdjacentPowerConnections(TileEntity tile)
+    {
+    	TileEntity[] adjacentConnections = new TileEntity[ForgeDirection.VALID_DIRECTIONS.length];
+    	
+    	for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+    	{
+            Vector3 tileVec = new Vector3(tile);
+            TileEntity tileEntity = tileVec.modifyPositionFromSide(direction).getTileEntity(tile.worldObj);
+
+            if (tileEntity instanceof IConnector)
+            {
+                if (((IConnector) tileEntity).canConnect(direction.getOpposite(), NetworkType.POWER))
+                {
+                    adjacentConnections[direction.ordinal()] = tileEntity;
+                }
+            }
+            else if (NetworkConfigHandler.isIndustrialCraft2Loaded() && tileEntity instanceof IEnergyTile)
+            {
+                if (tileEntity instanceof IEnergyAcceptor)
+                {
+                    if (((IEnergyAcceptor) tileEntity).acceptsEnergyFrom(tile, direction.getOpposite()))
+                    {
+                        adjacentConnections[direction.ordinal()] = tileEntity;
+                        continue;
+                    }
+                }
+
+                if (tileEntity instanceof IEnergyEmitter)
+                {
+                    if (((IEnergyEmitter) tileEntity).emitsEnergyTo(tileEntity, direction.getOpposite()))
+                    {
+                        adjacentConnections[direction.ordinal()] = tileEntity;
+                        continue;
+                    }
+                }
+
+                adjacentConnections[direction.ordinal()] = tileEntity;
+            }
+            else if (NetworkConfigHandler.isBuildcraftLoaded() && tileEntity instanceof IPowerReceptor)
+            {
+                if (((IPowerReceptor) tileEntity).getPowerReceiver(direction.getOpposite()) != null)
+                {
+                    adjacentConnections[direction.ordinal()] = tileEntity;
+                }
+            }
+            else if (NetworkConfigHandler.isThermalExpansionLoaded() && tileEntity instanceof IEnergyHandler)
+            {
+            	if (((IEnergyHandler) tileEntity).canInterface(direction.getOpposite()))
+            	{
+            		adjacentConnections[direction.ordinal()] = tileEntity;
+            	}
+            }
+    	}
+    	
+    	return adjacentConnections;
     }
 }

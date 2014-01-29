@@ -1,28 +1,16 @@
 package micdoodle8.mods.galacticraft.core.client.render.tile;
 
-import ic2.api.energy.tile.IEnergyAcceptor;
-import ic2.api.energy.tile.IEnergyEmitter;
-import ic2.api.energy.tile.IEnergySource;
-import ic2.api.energy.tile.IEnergyTile;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAluminumWire;
-import micdoodle8.mods.galacticraft.core.tile.IConnector;
-import micdoodle8.mods.galacticraft.power.compatibility.PowerConfigHandler;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
-import net.minecraftforge.common.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
-import buildcraft.api.power.IPowerReceptor;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -58,59 +46,59 @@ public class GCCoreRenderAluminumWire extends TileEntitySpecialRenderer
         GL11.glTranslatef((float) d + 0.5F, (float) d1 + 0.5F, (float) d2 + 0.5F);
         GL11.glScalef(1.0F, -1F, -1F);
 
-        List<TileEntity> adjecentConnections = new ArrayList<TileEntity>();
+        TileEntity[] adjecentConnections = WorldUtil.getAdjacentPowerConnections(tileEntity);
 
-        for (byte i = 0; i < 6; i++)
-        {
-            ForgeDirection side = ForgeDirection.getOrientation(i);
-            Vector3 tileVec = new Vector3(tileEntity);
-            TileEntity adjacentTile = tileVec.modifyPositionFromSide(side).getTileEntity(tileEntity.worldObj);
-
-            if (adjacentTile instanceof IConnector)
-            {
-                if (((IConnector) adjacentTile).canConnect(side.getOpposite()))
-                {
-                    adjecentConnections.add(adjacentTile);
-                }
-                else
-                {
-                    adjecentConnections.add(null);
-                }
-            }
-            else if (PowerConfigHandler.isIndustrialCraft2Loaded() && adjacentTile instanceof IEnergyTile)
-            {
-                if (adjacentTile instanceof IEnergyAcceptor)
-                {
-                    if (((IEnergyAcceptor) adjacentTile).acceptsEnergyFrom(tileEntity, side.getOpposite()))
-                    {
-                        adjecentConnections.add(adjacentTile);
-                    }
-                    else
-                    {
-                        if (adjacentTile instanceof IEnergySource && ((IEnergyEmitter) adjacentTile).emitsEnergyTo(tileEntity, side.getOpposite()))
-                        {
-                            adjecentConnections.add(adjacentTile);
-                        }
-                        else
-                        {
-                            adjecentConnections.add(null);
-                        }
-                    }
-                }
-                else
-                {
-                    adjecentConnections.add(adjacentTile);
-                }
-            }
-            else if (PowerConfigHandler.isBuildcraftLoaded() && adjacentTile instanceof IPowerReceptor)
-            {
-                adjecentConnections.add(adjacentTile);
-            }
-            else
-            {
-                adjecentConnections.add(null);
-            }
-        }
+//        for (byte i = 0; i < 6; i++)
+//        {
+//            ForgeDirection side = ForgeDirection.getOrientation(i);
+//            Vector3 tileVec = new Vector3(tileEntity);
+//            TileEntity adjacentTile = tileVec.modifyPositionFromSide(side).getTileEntity(tileEntity.worldObj);
+//
+//            if (adjacentTile instanceof IConnector)
+//            {
+//                if (((IConnector) adjacentTile).canConnect(side.getOpposite()))
+//                {
+//                    adjecentConnections.add(adjacentTile);
+//                }
+//                else
+//                {
+//                    adjecentConnections.add(null);
+//                }
+//            }
+//            else if (PowerConfigHandler.isIndustrialCraft2Loaded() && adjacentTile instanceof IEnergyTile)
+//            {
+//                if (adjacentTile instanceof IEnergyAcceptor)
+//                {
+//                    if (((IEnergyAcceptor) adjacentTile).acceptsEnergyFrom(tileEntity, side.getOpposite()))
+//                    {
+//                        adjecentConnections.add(adjacentTile);
+//                    }
+//                    else
+//                    {
+//                        if (adjacentTile instanceof IEnergySource && ((IEnergyEmitter) adjacentTile).emitsEnergyTo(tileEntity, side.getOpposite()))
+//                        {
+//                            adjecentConnections.add(adjacentTile);
+//                        }
+//                        else
+//                        {
+//                            adjecentConnections.add(null);
+//                        }
+//                    }
+//                }
+//                else
+//                {
+//                    adjecentConnections.add(adjacentTile);
+//                }
+//            }
+//            else if (PowerConfigHandler.isBuildcraftLoaded() && adjacentTile instanceof IPowerReceptor)
+//            {
+//                adjecentConnections.add(adjacentTile);
+//            }
+//            else
+//            {
+//                adjecentConnections.add(null);
+//            }
+//        }
 
         int metadata = tileEntity.worldObj.getBlockMetadata(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
 
@@ -125,32 +113,32 @@ public class GCCoreRenderAluminumWire extends TileEntitySpecialRenderer
             model = this.model2;
         }
 
-        if (adjecentConnections.toArray()[0] != null)
+        if (adjecentConnections[0] != null)
         {
             model.renderPart("Top");
         }
 
-        if (adjecentConnections.toArray()[1] != null)
+        if (adjecentConnections[1] != null)
         {
             model.renderPart("Bottom");
         }
 
-        if (adjecentConnections.toArray()[2] != null)
+        if (adjecentConnections[2] != null)
         {
             model.renderPart("Front");
         }
 
-        if (adjecentConnections.toArray()[3] != null)
+        if (adjecentConnections[3] != null)
         {
             model.renderPart("Back");
         }
 
-        if (adjecentConnections.toArray()[4] != null)
+        if (adjecentConnections[4] != null)
         {
             model.renderPart("Right");
         }
 
-        if (adjecentConnections.toArray()[5] != null)
+        if (adjecentConnections[5] != null)
         {
             model.renderPart("Left");
         }

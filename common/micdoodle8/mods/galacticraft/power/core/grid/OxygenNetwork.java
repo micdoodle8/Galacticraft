@@ -9,21 +9,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import mekanism.api.gas.Gas;
+import mekanism.api.gas.IGasAcceptor;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.IConductor;
 import micdoodle8.mods.galacticraft.core.tile.IConnector;
-import micdoodle8.mods.galacticraft.core.tile.IElectrical;
 import micdoodle8.mods.galacticraft.core.tile.INetworkConnection;
 import micdoodle8.mods.galacticraft.core.tile.INetworkProvider;
-import micdoodle8.mods.galacticraft.power.ElectricalEvent.ElectricityProductionEvent;
-import micdoodle8.mods.galacticraft.power.ElectricalEvent.ElectricityRequestEvent;
-import micdoodle8.mods.galacticraft.power.ElectricityPack;
+import micdoodle8.mods.galacticraft.core.tile.IOxygenReceiver;
+import micdoodle8.mods.galacticraft.core.tile.ITransmitter;
 import micdoodle8.mods.galacticraft.power.NetworkType;
+import micdoodle8.mods.galacticraft.power.compatibility.NetworkConfigHandler;
 import micdoodle8.mods.galacticraft.power.core.path.Pathfinder;
 import micdoodle8.mods.galacticraft.power.core.path.PathfinderChecker;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.FMLLog;
 
 /**
@@ -36,60 +37,63 @@ import cpw.mods.fml.common.FMLLog;
  * @author Calclavia
  * 
  */
-public class ElectricityNetwork implements IElectricityNetwork
+public class OxygenNetwork implements IOxygenNetwork
 {
-	public Map<TileEntity, ArrayList<ForgeDirection>> electricalTiles = new HashMap<TileEntity, ArrayList<ForgeDirection>>();
+	public Map<TileEntity, ArrayList<ForgeDirection>> oxygenTiles = new HashMap<TileEntity, ArrayList<ForgeDirection>>();
 
-	private final Set<IConductor> conductors = new HashSet<IConductor>();
-
-	public float acceptorResistance = 500;
+	private final Set<ITransmitter> pipes = new HashSet<ITransmitter>();
 
 	@Override
-	public float produce(ElectricityPack electricity, TileEntity... ignoreTiles)
+	public float produce(float totalEnergy, TileEntity... ignoreTiles)
 	{
-		ElectricityProductionEvent evt = new ElectricityProductionEvent(this, electricity, ignoreTiles);
-		MinecraftForge.EVENT_BUS.post(evt);
+		float remainingUsableOxygen = totalEnergy;
 
-		float totalEnergy = electricity.getWatts();
-		float proportionWasted = getTotalResistance() / (getTotalResistance() + acceptorResistance);
-		float energyWasted = totalEnergy * proportionWasted;
-		float totalUsableEnergy = totalEnergy - energyWasted;
-		float remainingUsableEnergy = totalUsableEnergy;
-		float voltage = electricity.voltage;
+		Set<TileEntity> avaliableEnergyTiles = this.getAcceptors();
 
-		if (!evt.isCanceled())
+		if (!avaliableEnergyTiles.isEmpty())
 		{
-			Set<TileEntity> avaliableEnergyTiles = this.getAcceptors();
+			final float totalOxygenRequest = this.getRequest(ignoreTiles);
 
-			if (!avaliableEnergyTiles.isEmpty())
+			if (totalOxygenRequest > 0)
 			{
-				final float totalEnergyRequest = this.getRequest(ignoreTiles).getWatts();
-
-				if (totalEnergyRequest > 0)
+				for (TileEntity tileEntity : avaliableEnergyTiles)
 				{
-					for (TileEntity tileEntity : avaliableEnergyTiles)
+					if (!Arrays.asList(ignoreTiles).contains(tileEntity))
 					{
-						if (!Arrays.asList(ignoreTiles).contains(tileEntity))
+						if (tileEntity instanceof IOxygenReceiver)
 						{
-							if (tileEntity instanceof IElectrical)
+							IOxygenReceiver electricalTile = (IOxygenReceiver) tileEntity;
+
+							for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
 							{
-								IElectrical electricalTile = (IElectrical) tileEntity;
-
-								for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+								TileEntity tile = new Vector3(tileEntity).modifyPositionFromSide(direction).getTileEntity(tileEntity.worldObj);
+																
+								if (electricalTile.canConnect(direction, NetworkType.OXYGEN) && this.getTransmitters().contains(tile))
 								{
-									Vector3 tileVec = new Vector3(tileEntity);
-									TileEntity tile = tileVec.modifyPositionFromSide(direction).getTileEntity(tileEntity.worldObj);
-									
-									if (electricalTile.canConnect(direction, NetworkType.POWER) && this.getTransmitters().contains(tile))
+									float oxygenToSend = totalEnergy * (electricalTile.getOxygenRequest(direction) / totalOxygenRequest);
+
+									if (oxygenToSend > 0)
 									{
-										float energyToSend = totalUsableEnergy * (electricalTile.getRequest(direction) / totalEnergyRequest);
+										remainingUsableOxygen -= ((IOxygenReceiver) tileEntity).receiveOxygen(direction, oxygenToSend, true);
+									}
+								}
+							}
+						}
+						else if (NetworkConfigHandler.isMekanismLoaded() && tileEntity instanceof IGasAcceptor)
+						{
+							IGasAcceptor gasAcceptor = (IGasAcceptor) tileEntity;
 
-										if (energyToSend > 0)
-										{
-											ElectricityPack electricityToSend = ElectricityPack.getFromWatts(energyToSend, voltage);
+							for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+							{
+								TileEntity tile = new Vector3(tileEntity).modifyPositionFromSide(direction).getTileEntity(tileEntity.worldObj);
+																
+								if (gasAcceptor.canReceiveGas(direction, (Gas) GalacticraftCore.gasOxygen) && this.getTransmitters().contains(tile))
+								{
+									float oxygenToSend = totalEnergy / (float)avaliableEnergyTiles.size(); // TODO: Mekanism PR to simulate received gas amount
 
-											remainingUsableEnergy -= ((IElectrical) tileEntity).receiveElectricity(direction, electricityToSend, true);
-										}
+									if (oxygenToSend > 0)
+									{
+										remainingUsableOxygen -= ((IOxygenReceiver) tileEntity).receiveOxygen(direction, oxygenToSend, true);
 									}
 								}
 							}
@@ -99,16 +103,16 @@ public class ElectricityNetwork implements IElectricityNetwork
 			}
 		}
 
-		return remainingUsableEnergy;
+		return remainingUsableOxygen;
 	}
 
 	/**
 	 * @return How much electricity this network needs.
 	 */
 	@Override
-	public ElectricityPack getRequest(TileEntity... ignoreTiles)
+	public float getRequest(TileEntity... ignoreTiles)
 	{
-		List<ElectricityPack> requests = new ArrayList<ElectricityPack>();
+		List<Float> requests = new ArrayList<Float>();
 
 		Iterator<TileEntity> it = this.getAcceptors().iterator();
 
@@ -121,7 +125,7 @@ public class ElectricityNetwork implements IElectricityNetwork
 				continue;
 			}
 
-			if (tileEntity instanceof IElectrical)
+			if (tileEntity instanceof IOxygenReceiver)
 			{
 				if (!tileEntity.isInvalid())
 				{
@@ -132,9 +136,9 @@ public class ElectricityNetwork implements IElectricityNetwork
 							Vector3 tileVec = new Vector3(tileEntity);
 							TileEntity tile = tileVec.modifyPositionFromSide(direction).getTileEntity(tileEntity.worldObj);
 							
-							if (((IElectrical) tileEntity).canConnect(direction, NetworkType.POWER) && this.getTransmitters().contains(tile))
+							if (((IOxygenReceiver) tileEntity).canConnect(direction, NetworkType.OXYGEN) && this.getTransmitters().contains(tile))
 							{
-								requests.add(ElectricityPack.getFromWatts(((IElectrical) tileEntity).getRequest(direction), ((IElectrical) tileEntity).getVoltage()));
+								requests.add(((IOxygenReceiver) tileEntity).getOxygenRequest(direction));
 								continue;
 							}
 						}
@@ -143,10 +147,14 @@ public class ElectricityNetwork implements IElectricityNetwork
 			}
 		}
 
-		ElectricityPack mergedPack = ElectricityPack.merge(requests);
-		ElectricityRequestEvent evt = new ElectricityRequestEvent(this, mergedPack, ignoreTiles);
-		MinecraftForge.EVENT_BUS.post(evt);
-		return mergedPack;
+		float total = 0.0F;
+		
+		for (Float f : requests)
+		{
+			total += f;
+		}
+		
+		return total / (float)requests.size();
 	}
 
 	/**
@@ -155,7 +163,7 @@ public class ElectricityNetwork implements IElectricityNetwork
 	@Override
 	public Set<TileEntity> getAcceptors()
 	{
-		return this.electricalTiles.keySet();
+		return this.oxygenTiles.keySet();
 	}
 
 	/**
@@ -165,7 +173,7 @@ public class ElectricityNetwork implements IElectricityNetwork
 	@Override
 	public ArrayList<ForgeDirection> getPossibleDirections(TileEntity tile)
 	{
-		return this.electricalTiles.containsKey(tile) ? this.electricalTiles.get(tile) : null;
+		return this.oxygenTiles.containsKey(tile) ? this.oxygenTiles.get(tile) : null;
 	}
 
 	/**
@@ -174,40 +182,40 @@ public class ElectricityNetwork implements IElectricityNetwork
 	@Override
 	public void refresh()
 	{
-		this.electricalTiles.clear();
+		this.oxygenTiles.clear();
 
 		try
 		{
-			Iterator<IConductor> it = this.conductors.iterator();
+			Iterator<ITransmitter> it = this.pipes.iterator();
 
 			while (it.hasNext())
 			{
-				IConductor conductor = it.next();
+				ITransmitter transmitter = it.next();
 
-				if (conductor == null)
+				if (transmitter == null)
 				{
 					it.remove();
 				}
-				else if (((TileEntity) conductor).isInvalid())
+				else if (((TileEntity) transmitter).isInvalid())
 				{
 					it.remove();
 				}
 				else
 				{
-					conductor.setNetwork(this);
+					transmitter.setNetwork(this);
 				}
 
-				for (int i = 0; i < conductor.getAdjacentConnections().length; i++)
+				for (int i = 0; i < transmitter.getAdjacentConnections().length; i++)
 				{
-					TileEntity acceptor = conductor.getAdjacentConnections()[i];
+					TileEntity acceptor = transmitter.getAdjacentConnections()[i];
 
 					if (!(acceptor instanceof IConductor) && acceptor instanceof IConnector)
 					{
 						ArrayList<ForgeDirection> possibleDirections = null;
 
-						if (this.electricalTiles.containsKey(acceptor))
+						if (this.oxygenTiles.containsKey(acceptor))
 						{
-							possibleDirections = this.electricalTiles.get(acceptor);
+							possibleDirections = this.oxygenTiles.get(acceptor);
 						}
 						else
 						{
@@ -216,7 +224,7 @@ public class ElectricityNetwork implements IElectricityNetwork
 
 						possibleDirections.add(ForgeDirection.getOrientation(i));
 
-						this.electricalTiles.put(acceptor, possibleDirections);
+						this.oxygenTiles.put(acceptor, possibleDirections);
 					}
 				}
 			}
@@ -229,57 +237,28 @@ public class ElectricityNetwork implements IElectricityNetwork
 	}
 
 	@Override
-	public float getTotalResistance()
+	public Set<ITransmitter> getTransmitters()
 	{
-		float resistance = 0;
-
-		for (IConductor conductor : this.conductors)
-		{
-			resistance += conductor.getResistance();
-		}
-
-		return resistance;
+		return this.pipes;
 	}
 
 	@Override
-	public float getLowestCurrentCapacity()
-	{
-		float lowestAmperage = 0;
-
-		for (IConductor conductor : this.conductors)
-		{
-			if (lowestAmperage == 0 || conductor.getCurrentCapacity() < lowestAmperage)
-			{
-				lowestAmperage = conductor.getCurrentCapacity();
-			}
-		}
-
-		return lowestAmperage;
-	}
-
-	@Override
-	public Set<IConductor> getTransmitters()
-	{
-		return this.conductors;
-	}
-
-	@Override
-	public IElectricityNetwork merge(IElectricityNetwork network)
+	public IOxygenNetwork merge(IOxygenNetwork network)
 	{
 		if (network != null && network != this)
 		{
-			ElectricityNetwork newNetwork = new ElectricityNetwork();
+			OxygenNetwork newNetwork = new OxygenNetwork();
 			newNetwork.getTransmitters().addAll(this.getTransmitters());
 			newNetwork.getTransmitters().addAll(network.getTransmitters());
 			newNetwork.refresh();
 			return newNetwork;
 		}
 		
-		return null;
+		return this;
 	}
 
 	@Override
-	public void split(IConductor splitPoint)
+	public void split(ITransmitter splitPoint)
 	{
 		if (splitPoint instanceof TileEntity)
 		{
@@ -303,7 +282,7 @@ public class ElectricityNetwork implements IElectricityNetwork
 
 						if (connectedBlockA != connectedBlockB && connectedBlockB instanceof INetworkConnection)
 						{
-							Pathfinder finder = new PathfinderChecker(((TileEntity) splitPoint).worldObj, (INetworkConnection) connectedBlockB, NetworkType.POWER, splitPoint);
+							Pathfinder finder = new PathfinderChecker(((TileEntity) splitPoint).worldObj, (INetworkConnection) connectedBlockB, NetworkType.OXYGEN, splitPoint);
 							finder.init(new Vector3(connectedBlockA));
 
 							if (finder.results.size() > 0)
@@ -332,7 +311,7 @@ public class ElectricityNetwork implements IElectricityNetwork
 								 * The connections A and B are not connected anymore. Give both of
 								 * them a new network.
 								 */
-								IElectricityNetwork newNetwork = new ElectricityNetwork();
+								IOxygenNetwork newNetwork = new OxygenNetwork();
 
 								for (Vector3 node : finder.closedSet)
 								{
@@ -342,7 +321,7 @@ public class ElectricityNetwork implements IElectricityNetwork
 									{
 										if (nodeTile != splitPoint)
 										{
-											newNetwork.getTransmitters().add((IConductor) nodeTile);
+											newNetwork.getTransmitters().add((ITransmitter) nodeTile);
 										}
 									}
 								}
@@ -359,6 +338,6 @@ public class ElectricityNetwork implements IElectricityNetwork
 	@Override
 	public String toString()
 	{
-		return "ElectricityNetwork[" + this.hashCode() + "|Wires:" + this.conductors.size() + "|Acceptors:" + this.electricalTiles.size() + "]";
+		return "OxygenNetwork[" + this.hashCode() + "|Pipes:" + this.pipes.size() + "|Acceptors:" + this.oxygenTiles.size() + "]";
 	}
 }

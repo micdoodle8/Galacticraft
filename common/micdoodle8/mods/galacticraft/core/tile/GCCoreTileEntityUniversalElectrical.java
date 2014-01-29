@@ -10,9 +10,10 @@ import java.util.EnumSet;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.ASMHelper.RuntimeInterface;
 import micdoodle8.mods.galacticraft.core.GCCoreCompatibilityManager;
-import micdoodle8.mods.galacticraft.power.ElectricityHelper;
 import micdoodle8.mods.galacticraft.power.ElectricityPack;
-import micdoodle8.mods.galacticraft.power.compatibility.PowerConfigHandler;
+import micdoodle8.mods.galacticraft.power.NetworkHelper;
+import micdoodle8.mods.galacticraft.power.NetworkType;
+import micdoodle8.mods.galacticraft.power.compatibility.NetworkConfigHandler;
 import micdoodle8.mods.galacticraft.power.core.grid.IElectricityNetwork;
 import micdoodle8.mods.galacticraft.power.core.item.ElectricItemHelper;
 import micdoodle8.mods.galacticraft.power.core.item.IItemElectric;
@@ -45,12 +46,12 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
     public float maxInputEnergy = 100;
 	public float energyStored = 0;
 
-	public EnumSet<ForgeDirection> getInputDirections()
+	public EnumSet<ForgeDirection> getElectricalInputDirections()
 	{
 		return EnumSet.allOf(ForgeDirection.class);
 	}
 	
-	public EnumSet<ForgeDirection> getOutputDirections()
+	public EnumSet<ForgeDirection> getElectricalOutputDirections()
 	{
 		return EnumSet.noneOf(ForgeDirection.class);
 	}
@@ -66,17 +67,17 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
             {
         		this.setEnergyStored(this.getEnergyStored() - ElectricItemHelper.chargeItem(itemStack, this.getProvide(ForgeDirection.UNKNOWN)));
             }
-            else if (PowerConfigHandler.isIndustrialCraft2Loaded() && itemStack.getItem() instanceof ISpecialElectricItem)
+            else if (NetworkConfigHandler.isIndustrialCraft2Loaded() && itemStack.getItem() instanceof ISpecialElectricItem)
             {
                 ISpecialElectricItem electricItem = (ISpecialElectricItem) itemStack.getItem();
                 IElectricItemManager manager = electricItem.getManager(itemStack);
-                float energy = Math.max(this.getProvide(ForgeDirection.UNKNOWN) * PowerConfigHandler.IC2_RATIO, 0);
-                energy = manager.charge(itemStack, (int) (energy * PowerConfigHandler.TO_IC2_RATIO), 0, false, false) * PowerConfigHandler.IC2_RATIO;
+                float energy = Math.max(this.getProvide(ForgeDirection.UNKNOWN) * NetworkConfigHandler.IC2_RATIO, 0);
+                energy = manager.charge(itemStack, (int) (energy * NetworkConfigHandler.TO_IC2_RATIO), 0, false, false) * NetworkConfigHandler.IC2_RATIO;
                 this.provideElectricity(energy, true);
             }
             else if (GCCoreCompatibilityManager.isTELoaded() && itemStack.getItem() instanceof IChargeableItem)
             {
-                float accepted = ((IChargeableItem) itemStack.getItem()).receiveEnergy(itemStack, this.getProvide(ForgeDirection.UNKNOWN) * PowerConfigHandler.BC3_RATIO, true);
+                float accepted = ((IChargeableItem) itemStack.getItem()).receiveEnergy(itemStack, this.getProvide(ForgeDirection.UNKNOWN) * NetworkConfigHandler.BC3_RATIO, true);
                 this.provideElectricity(accepted, true);
             }
         }
@@ -86,7 +87,7 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
     {
         if (!this.worldObj.isRemote)
         {
-            for (ForgeDirection outputDirection : this.getOutputDirections())
+            for (ForgeDirection outputDirection : this.getElectricalOutputDirections())
             {
                 if (outputDirection != ForgeDirection.UNKNOWN)
                 {
@@ -109,7 +110,7 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
             {
 				Vector3 thisVec = new Vector3(this);
 				TileEntity outputTile = thisVec.modifyPositionFromSide(outputDirection).getTileEntity(this.worldObj);
-				IElectricityNetwork outputNetwork = ElectricityHelper.getNetworkFromTileEntity(outputTile, outputDirection);
+				IElectricityNetwork outputNetwork = NetworkHelper.getElectricalNetworkFromTileEntity(outputTile, outputDirection);
 				
                 if (outputNetwork != null)
                 {
@@ -152,21 +153,21 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
             {
         		this.setEnergyStored(this.getEnergyStored() + ElectricItemHelper.dischargeItem(itemStack, this.getRequest(ForgeDirection.UNKNOWN)));
             }
-            else if (PowerConfigHandler.isIndustrialCraft2Loaded() && itemStack.getItem() instanceof ISpecialElectricItem)
+            else if (NetworkConfigHandler.isIndustrialCraft2Loaded() && itemStack.getItem() instanceof ISpecialElectricItem)
             {
                 ISpecialElectricItem electricItem = (ISpecialElectricItem) itemStack.getItem();
 
                 if (electricItem.canProvideEnergy(itemStack))
                 {
                     IElectricItemManager manager = electricItem.getManager(itemStack);
-                    float energy = Math.max(this.getRequest(ForgeDirection.UNKNOWN) * PowerConfigHandler.IC2_RATIO, 0);
-                    energy = manager.discharge(itemStack, (int) (energy * PowerConfigHandler.TO_IC2_RATIO), 0, false, false);
+                    float energy = Math.max(this.getRequest(ForgeDirection.UNKNOWN) * NetworkConfigHandler.IC2_RATIO, 0);
+                    energy = manager.discharge(itemStack, (int) (energy * NetworkConfigHandler.TO_IC2_RATIO), 0, false, false);
                     this.receiveElectricity(energy, true);
                 }
             }
             else if (GCCoreCompatibilityManager.isTELoaded() && itemStack.getItem() instanceof IChargeableItem)
             {
-                float given = ((IChargeableItem) itemStack.getItem()).transferEnergy(itemStack, this.getRequest(ForgeDirection.UNKNOWN) * PowerConfigHandler.BC3_RATIO, true);
+                float given = ((IChargeableItem) itemStack.getItem()).transferEnergy(itemStack, this.getRequest(ForgeDirection.UNKNOWN) * NetworkConfigHandler.BC3_RATIO, true);
                 this.receiveElectricity(given, true);
             }
         }
@@ -197,7 +198,7 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
                 this.initBuildCraft();
             }
 
-            if (PowerConfigHandler.isBuildcraftLoaded())
+            if (NetworkConfigHandler.isBuildcraftLoaded())
             {
                 PowerHandler handler = (PowerHandler) this.bcPowerHandler;
 
@@ -207,7 +208,7 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
                      * Cheat BuildCraft powerHandler and always empty energy
                      * inside of it.
                      */
-                    this.receiveElectricity(handler.getEnergyStored() * PowerConfigHandler.BC3_RATIO, true);
+                    this.receiveElectricity(handler.getEnergyStored() * NetworkConfigHandler.BC3_RATIO, true);
                     handler.setEnergy(0);
                 }
             }
@@ -222,7 +223,7 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 
             if (this.getEnergyStored() >= provide && provide > 0)
             {
-                if (PowerConfigHandler.isBuildcraftLoaded())
+                if (NetworkConfigHandler.isBuildcraftLoaded())
                 {
                     TileEntity tileEntity = new Vector3(this).modifyPositionFromSide(outputDirection).getTileEntity(this.worldObj);
 
@@ -234,9 +235,9 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
                         {
                             if (receiver.powerRequest() > 0)
                             {
-                                float bc3Provide = provide * PowerConfigHandler.TO_BC_RATIO;
+                                float bc3Provide = provide * NetworkConfigHandler.TO_BC_RATIO;
                                 float energyUsed = Math.min(receiver.receiveEnergy(Type.MACHINE, bc3Provide, outputDirection.getOpposite()), bc3Provide);
-                                this.provideElectricity(energyUsed * PowerConfigHandler.TO_BC_RATIO, true);
+                                this.provideElectricity(energyUsed * NetworkConfigHandler.TO_BC_RATIO, true);
                             }
                         }
 
@@ -255,19 +256,19 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
     @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergyAcceptor", modID = "IC2")
     public boolean acceptsEnergyFrom(TileEntity emitter, ForgeDirection direction)
     {
-        return this.getInputDirections().contains(direction);
+        return this.getElectricalInputDirections().contains(direction);
     }
 
     @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySource", modID = "IC2")
     public double getOfferedEnergy()
     {
-        return this.getProvide(ForgeDirection.UNKNOWN) * PowerConfigHandler.TO_IC2_RATIO;
+        return this.getProvide(ForgeDirection.UNKNOWN) * NetworkConfigHandler.TO_IC2_RATIO;
     }
 
     @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySource", modID = "IC2")
     public void drawEnergy(double amount)
     {
-        this.provideElectricity((float) amount * PowerConfigHandler.IC2_RATIO, true);
+        this.provideElectricity((float) amount * NetworkConfigHandler.IC2_RATIO, true);
     }
 
     @Override
@@ -286,7 +287,7 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 
     protected void initIC()
     {
-        if (PowerConfigHandler.isIndustrialCraft2Loaded() && !this.worldObj.isRemote)
+        if (NetworkConfigHandler.isIndustrialCraft2Loaded() && !this.worldObj.isRemote)
         {
             try
             {
@@ -313,7 +314,7 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
     {
         if (this.isAddedToEnergyNet && this.worldObj != null)
         {
-            if (PowerConfigHandler.isIndustrialCraft2Loaded() && !this.worldObj.isRemote)
+            if (NetworkConfigHandler.isIndustrialCraft2Loaded() && !this.worldObj.isRemote)
             {
                 try
                 {
@@ -340,22 +341,22 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
     @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
     public double demandedEnergyUnits()
     {
-        return Math.ceil(this.getRequest(ForgeDirection.UNKNOWN) * PowerConfigHandler.TO_IC2_RATIO);
+        return Math.ceil(this.getRequest(ForgeDirection.UNKNOWN) * NetworkConfigHandler.TO_IC2_RATIO);
     }
 
     @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
     public double injectEnergyUnits(ForgeDirection direction, double amount)
     {
-        if (this.getInputDirections().contains(direction))
+        if (this.getElectricalInputDirections().contains(direction))
         {
-            float convertedEnergy = (float) (amount * PowerConfigHandler.IC2_RATIO);
+            float convertedEnergy = (float) (amount * NetworkConfigHandler.IC2_RATIO);
             ElectricityPack toSend = ElectricityPack.getFromWatts(convertedEnergy, this.getVoltage());
             float receive = this.receiveElectricity(direction, toSend, true);
 
             // Return the difference, since injectEnergy returns left over
             // energy, and
             // receiveElectricity returns energy used.
-            return Math.round(amount - receive * PowerConfigHandler.TO_IC2_RATIO);
+            return Math.round(amount - receive * NetworkConfigHandler.TO_IC2_RATIO);
         }
 
         return amount;
@@ -364,7 +365,7 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
     @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergyEmitter", modID = "IC2")
     public boolean emitsEnergyTo(TileEntity receiver, ForgeDirection direction)
     {
-        return receiver instanceof IEnergyTile && this.getOutputDirections().contains(direction);
+        return receiver instanceof IEnergyTile && this.getElectricalOutputDirections().contains(direction);
     }
 
     @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
@@ -378,7 +379,7 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
      */
     public void initBuildCraft()
     {
-        if (!PowerConfigHandler.isBuildcraftLoaded())
+        if (!NetworkConfigHandler.isBuildcraftLoaded())
         {
             return;
         }
@@ -387,7 +388,7 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
         {
             this.bcPowerHandler = new PowerHandler((IPowerReceptor) this, Type.MACHINE);
         }
-        ((PowerHandler) this.bcPowerHandler).configure(0, this.maxInputEnergy, 0, (int) Math.ceil(this.getMaxEnergyStored() * PowerConfigHandler.BC3_RATIO));
+        ((PowerHandler) this.bcPowerHandler).configure(0, this.maxInputEnergy, 0, (int) Math.ceil(this.getMaxEnergyStored() * NetworkConfigHandler.BC3_RATIO));
     }
 
     @RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "BuildCraft|Energy")
@@ -411,7 +412,7 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 	@Override
 	public float receiveElectricity(ForgeDirection from, ElectricityPack receive, boolean doReceive)
 	{
-		if (this.getInputDirections().contains(from))
+		if (this.getElectricalInputDirections().contains(from))
 		{
 			if (!doReceive)
 			{
@@ -427,7 +428,7 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 	@Override
 	public ElectricityPack provideElectricity(ForgeDirection from, ElectricityPack request, boolean doProvide)
 	{
-		if (this.getOutputDirections().contains(from))
+		if (this.getElectricalOutputDirections().contains(from))
 		{
 			if (!doProvide)
 			{
@@ -504,14 +505,14 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 	}
 
 	@Override
-	public boolean canConnect(ForgeDirection direction)
+	public boolean canConnect(ForgeDirection direction, NetworkType type)
 	{
-		if (direction == null || direction.equals(ForgeDirection.UNKNOWN))
+		if (direction == null || direction.equals(ForgeDirection.UNKNOWN) || type != NetworkType.POWER)
 		{
 			return false;
 		}
 
-		return this.getInputDirections().contains(direction) || this.getOutputDirections().contains(direction);
+		return this.getElectricalInputDirections().contains(direction) || this.getElectricalOutputDirections().contains(direction);
 	}
 
 	@Override

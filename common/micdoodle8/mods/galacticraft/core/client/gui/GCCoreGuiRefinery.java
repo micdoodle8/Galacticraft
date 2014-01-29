@@ -3,12 +3,12 @@ package micdoodle8.mods.galacticraft.core.client.gui;
 import java.util.ArrayList;
 import java.util.List;
 
-import mekanism.api.EnumColor;
 import micdoodle8.mods.galacticraft.core.GCCoreCompatibilityManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRefinery;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerServer.EnumPacketServer;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityRefinery;
+import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.power.ElectricityDisplay;
 import micdoodle8.mods.galacticraft.power.ElectricityDisplay.ElectricUnit;

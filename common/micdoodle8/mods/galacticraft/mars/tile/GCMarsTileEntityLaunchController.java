@@ -384,7 +384,7 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectricBl
     }
 
     @Override
-    public EnumSet<ForgeDirection> getOutputDirections()
+    public EnumSet<ForgeDirection> getElectricalOutputDirections()
     {
         return EnumSet.noneOf(ForgeDirection.class);
     }

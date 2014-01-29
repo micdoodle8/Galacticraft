@@ -1,14 +1,13 @@
 package micdoodle8.mods.galacticraft.core;
 
 import java.io.File;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import mekanism.api.gas.Gas;
-import mekanism.api.gas.GasRegistry;
-import mekanism.api.transmitters.TransmitterNetworkRegistry;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.recipe.CircuitFabricatorRecipes;
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
@@ -95,9 +94,7 @@ import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
 import micdoodle8.mods.galacticraft.core.world.gen.GCCoreOverworldGenerator;
 import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
-import micdoodle8.mods.galacticraft.power.NetworkLoader;
-import micdoodle8.mods.galacticraft.power.compatibility.PowerConfigHandler;
-import micdoodle8.mods.galacticraft.power.compatibility.UniversalNetwork;
+import micdoodle8.mods.galacticraft.power.compatibility.NetworkConfigHandler;
 import micdoodle8.mods.galacticraft.power.core.grid.ChunkPowerHandler;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
@@ -197,7 +194,7 @@ public class GalacticraftCore
     public static Fluid fluidOil;
     public static Fluid fluidFuel;
 
-    public static Gas gasOxygen;
+    public static Object gasOxygen;
 
     public static HashMap<String, ItemStack> itemList = new HashMap<String, ItemStack>();
     public static HashMap<String, ItemStack> blocksList = new HashMap<String, ItemStack>();
@@ -210,7 +207,7 @@ public class GalacticraftCore
         GalacticraftCore.proxy.preInit(event);
 
         GCCoreConfigManager.setDefaultValues(new File(event.getModConfigurationDirectory(), GalacticraftCore.CONFIG_FILE));
-        PowerConfigHandler.setDefaultValues(new File(event.getModConfigurationDirectory(), GalacticraftCore.POWER_CONFIG_FILE));
+        NetworkConfigHandler.setDefaultValues(new File(event.getModConfigurationDirectory(), GalacticraftCore.POWER_CONFIG_FILE));
         ChunkLoadingCallback.loadConfig(new File(event.getModConfigurationDirectory(), GalacticraftCore.CHUNKLOADER_CONFIG_FILE));
 
         GalacticraftCore.gcFluidOil = new Fluid("oil").setDensity(800).setViscosity(1500);
@@ -282,9 +279,7 @@ public class GalacticraftCore
         SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicRocketT1());
         SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicMoonBuggy());
         SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicAdd());
-        TransmitterNetworkRegistry.initiate();
         ChunkPowerHandler.initiate();
-		NetworkLoader.setNetworkClass(UniversalNetwork.class);
         
         this.registerCreatures();
         this.registerOtherEntities();
@@ -315,16 +310,34 @@ public class GalacticraftCore
         {
             GameRegistry.registerWorldGenerator(new GCCoreOverworldGenerator(GCCoreBlocks.decorationBlocks, 8, 3, 0, 25, 7));
         }
-
-        Gas oxygen = GasRegistry.getGas("oxygen");
-
-        if (oxygen == null)
+        
+        if (NetworkConfigHandler.isMekanismLoaded())
         {
-            GalacticraftCore.gasOxygen = GasRegistry.register(new Gas("oxygen")).registerFluid();
-        }
-        else
-        {
-            GalacticraftCore.gasOxygen = oxygen;
+        	try
+			{
+        		Class<?> gas = Class.forName("mekanism.api.gas.Gas");
+				Class<?> gasRegistry = Class.forName("mekanism.api.gas.GasRegistry");
+				Method getGas = gasRegistry.getMethod("getGas", String.class);
+				Object oxygen = getGas.invoke(null, "oxygen");
+
+		        if (oxygen == null)
+		        {
+		        	Method register = gasRegistry.getMethod("register", gas);
+		        	Method registerFluid = gas.getMethod("registerFluid");
+		        	Constructor<?> newGas = gas.getConstructor(String.class);
+		        	Object gasObj = register.invoke(null, newGas.newInstance("oxygen"));
+		        	GalacticraftCore.gasOxygen = registerFluid.invoke(gasObj);
+//		            GalacticraftCore.gasOxygen = GasRegistry.register(new Gas("oxygen")).registerFluid();
+		        }
+		        else
+		        {
+		            GalacticraftCore.gasOxygen = oxygen;
+		        }
+			} 
+        	catch (Exception e)
+			{
+				e.printStackTrace();
+			}
         }
     }
 

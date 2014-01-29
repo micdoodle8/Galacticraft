@@ -7,6 +7,7 @@ import java.util.Set;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.tile.IConductor;
 import micdoodle8.mods.galacticraft.core.tile.INetworkConnection;
+import micdoodle8.mods.galacticraft.power.NetworkType;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
@@ -19,7 +20,7 @@ import net.minecraftforge.common.ForgeDirection;
  */
 public class PathfinderChecker extends Pathfinder
 {
-	public PathfinderChecker(final World world, final INetworkConnection targetConnector, final INetworkConnection... ignoreConnector)
+	public PathfinderChecker(final World world, final INetworkConnection targetConnector, final NetworkType networkType, final INetworkConnection... ignoreConnector)
 	{
 		super(new IPathCallBack()
 		{
@@ -36,7 +37,7 @@ public class PathfinderChecker extends Pathfinder
 
 					if (connectedBlock instanceof IConductor && !Arrays.asList(ignoreConnector).contains(connectedBlock))
 					{
-						if (((IConductor) connectedBlock).canConnect(direction.getOpposite()))
+						if (((IConductor) connectedBlock).canConnect(direction.getOpposite(), networkType))
 						{
 							neighbors.add(position);
 						}

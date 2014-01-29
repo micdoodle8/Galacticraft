@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.api.recipe;
 
 import java.util.HashMap;
+
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 

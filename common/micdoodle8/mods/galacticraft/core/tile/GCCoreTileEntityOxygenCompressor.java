@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import java.util.EnumSet;
+
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenTank;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
@@ -282,7 +284,7 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen imp
     {
         if (this.worldObj.isRemote)
         {
-            this.storedOxygen = data.readInt();
+            this.setOxygenStored(data.readFloat());
             this.setEnergyStored(data.readFloat());
             this.disabled = data.readBoolean();
         }
@@ -291,7 +293,7 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen imp
     @Override
     public Packet getPacket()
     {
-        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.storedOxygen, this.getEnergyStored(), this.disabled);
+        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getOxygenStored(), this.getEnergyStored(), this.disabled);
     }
 
     @Override
@@ -307,12 +309,6 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen imp
     }
 
     @Override
-    public ForgeDirection getOxygenInputDirection()
-    {
-        return this.getElectricInputDirection().getOpposite();
-    }
-
-    @Override
     public boolean shouldPullOxygen()
     {
         return this.getEnergyStored() > 0;
@@ -323,4 +319,16 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen imp
     {
         return false;
     }
+
+	@Override
+	public EnumSet<ForgeDirection> getOxygenInputDirections()
+	{
+		return EnumSet.of(this.getElectricInputDirection().getOpposite());
+	}
+
+	@Override
+	public EnumSet<ForgeDirection> getOxygenOutputDirections()
+	{
+		return EnumSet.noneOf(ForgeDirection.class);
+	}
 }

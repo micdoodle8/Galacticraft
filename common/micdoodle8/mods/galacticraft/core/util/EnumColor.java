@@ -1,4 +1,4 @@
-package mekanism.api;
+package micdoodle8.mods.galacticraft.core.util;
 
 import net.minecraft.util.StatCollector;
 

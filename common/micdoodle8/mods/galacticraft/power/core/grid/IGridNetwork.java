@@ -29,7 +29,7 @@ public interface IGridNetwork<N, C, A>
 	 * 
 	 * @return conductor set
 	 */
-	public Set<C> getConductors();
+	public Set<C> getTransmitters();
 
 	/**
 	 * Gets the Set of AVAILABLE acceptors in this network. Make sure this doesn't include any stray
@@ -54,7 +54,7 @@ public interface IGridNetwork<N, C, A>
 	 * 
 	 * @param network - network to merge
 	 */
-	public void merge(N network);
+	public N merge(N network);
 
 	/**
 	 * Splits a network by the conductor referenced in the parameters. It will then create and

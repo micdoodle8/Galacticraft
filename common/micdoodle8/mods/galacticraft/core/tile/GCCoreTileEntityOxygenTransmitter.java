@@ -2,21 +2,15 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.power.NetworkType;
-import micdoodle8.mods.galacticraft.power.compatibility.UniversalNetwork;
 import micdoodle8.mods.galacticraft.power.core.grid.IGridNetwork;
+import micdoodle8.mods.galacticraft.power.core.grid.OxygenNetwork;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-/**
- * This tile entity pre-fabricated for all conductors.
- * 
- * @author Calclavia
- * 
- */
-public abstract class GCCoreTileEntityConductor extends GCCoreTileEntityAdvanced implements IConductor
+public abstract class GCCoreTileEntityOxygenTransmitter extends GCCoreTileEntityAdvanced implements ITransmitter
 {
 	private IGridNetwork network;
 
@@ -44,7 +38,7 @@ public abstract class GCCoreTileEntityConductor extends GCCoreTileEntityAdvanced
 	{
 		if (this.network == null)
 		{
-			UniversalNetwork network = new UniversalNetwork();
+			OxygenNetwork network = new OxygenNetwork();
 			network.getTransmitters().add(this);
 			this.setNetwork(network);
 		}
@@ -67,8 +61,7 @@ public abstract class GCCoreTileEntityConductor extends GCCoreTileEntityAdvanced
 
 			for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS)
 			{
-				Vector3 thisVec = new Vector3(this);
-				TileEntity tileEntity = thisVec.modifyPositionFromSide(side).getTileEntity(this.worldObj);
+				TileEntity tileEntity = new Vector3(this).modifyPositionFromSide(side).getTileEntity(this.worldObj);
 
 				if (tileEntity != null)
 				{
@@ -78,7 +71,7 @@ public abstract class GCCoreTileEntityConductor extends GCCoreTileEntityAdvanced
 					}
 				}
 			}
-
+			
 			this.getNetwork().refresh();
 		}
 	}
@@ -93,17 +86,16 @@ public abstract class GCCoreTileEntityConductor extends GCCoreTileEntityAdvanced
 		{
 			this.adjacentConnections = new TileEntity[6];
 
-			for (byte i = 0; i < 6; i++)
+			for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS)
 			{
-				ForgeDirection side = ForgeDirection.getOrientation(i);
 				Vector3 thisVec = new Vector3(this);
 				TileEntity tileEntity = thisVec.modifyPositionFromSide(side).getTileEntity(worldObj);
 
 				if (tileEntity instanceof IConnector)
 				{
-					if (((IConnector) tileEntity).canConnect(side.getOpposite(), NetworkType.POWER))
+					if (((IConnector) tileEntity).canConnect(side.getOpposite(), NetworkType.OXYGEN))
 					{
-						this.adjacentConnections[i] = tileEntity;
+						this.adjacentConnections[side.ordinal()] = tileEntity;
 					}
 				}
 			}
@@ -128,6 +120,6 @@ public abstract class GCCoreTileEntityConductor extends GCCoreTileEntityAdvanced
 	@Override
 	public NetworkType getNetworkType()
 	{
-		return NetworkType.POWER;
+		return NetworkType.OXYGEN;
 	}
 }

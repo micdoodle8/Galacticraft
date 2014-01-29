@@ -1,12 +1,13 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import mekanism.api.gas.Gas;
-import mekanism.api.gas.GasStack;
-import mekanism.api.gas.IGasAcceptor;
-import mekanism.api.gas.IGasStorage;
-import mekanism.api.gas.ITubeConnection;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import java.util.EnumSet;
+
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.power.NetworkHelper;
+import micdoodle8.mods.galacticraft.power.NetworkType;
+import micdoodle8.mods.galacticraft.power.core.grid.IOxygenNetwork;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 
 /**
@@ -18,22 +19,25 @@ import net.minecraftforge.common.ForgeDirection;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectricBlock implements IGasAcceptor, ITubeConnection, IGasStorage
+public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectricBlock implements IOxygenReceiver, IOxygenStorage
 {
-    public int maxOxygen;
-    public int oxygenPerTick;
-    public int storedOxygen;
-    public int lastStoredOxygen;
+    public float maxOxygen;
+    public float oxygenPerTick;
+    public float storedOxygen;
+    public float lastStoredOxygen;
     public static int timeSinceOxygenRequest;
 
-    public GCCoreTileEntityOxygen(float wattsPerTick, float maxEnergy, int maxOxygen, int oxygenPerTick)
+    public GCCoreTileEntityOxygen(float wattsPerTick, float maxEnergy, float maxOxygen, float oxygenPerTick)
     {
         super(wattsPerTick, maxEnergy);
         this.maxOxygen = maxOxygen;
         this.oxygenPerTick = oxygenPerTick;
     }
-
-    public abstract ForgeDirection getOxygenInputDirection();
+    
+    public int getScaledOxygenLevel(int scale)
+    {
+        return (int) Math.floor((this.getOxygenStored() * scale) / (this.getMaxOxygenStored() - this.oxygenPerTick));
+    }
 
     public abstract boolean shouldPullOxygen();
 
@@ -66,78 +70,205 @@ public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectricBlo
     }
 
     @Override
-    public boolean canReceiveGas(ForgeDirection side, Gas type)
-    {
-        return this.getOxygenInputDirection() != null && side == this.getOxygenInputDirection() && type.getName().equals("oxygen");
-    }
-
-    @Override
-    public boolean canTubeConnect(ForgeDirection direction)
-    {
-        return this.getOxygenInputDirection() != null && direction == this.getOxygenInputDirection();
-    }
-
-    @Override
-    public int receiveGas(GasStack stack)
-    {
-        GCCoreTileEntityOxygen.timeSinceOxygenRequest = 20;
-
-        if (this.shouldPullOxygen() && stack.getGas().equals(GalacticraftCore.gasOxygen))
-        {
-            int rejectedOxygen = 0;
-            final int requiredOxygen = this.maxOxygen - this.storedOxygen;
-
-            if (stack.amount <= requiredOxygen)
-            {
-                this.storedOxygen += stack.amount;
-            }
-            else
-            {
-                this.storedOxygen += requiredOxygen;
-                rejectedOxygen = stack.amount - requiredOxygen;
-            }
-
-            return rejectedOxygen;
-        }
-
-        return stack.amount;
-    }
-
-    @Override
     public void readFromNBT(NBTTagCompound nbt)
     {
         super.readFromNBT(nbt);
-        this.storedOxygen = nbt.getInteger("storedOxygen");
+        
+        if (nbt.hasKey("storedOxygen"))
+        {
+        	this.storedOxygen = nbt.getInteger("storedOxygen");
+        }
+        else
+        {
+            this.storedOxygen = nbt.getFloat("storedOxygenF");
+        }
     }
 
     @Override
     public void writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
-        nbt.setInteger("storedOxygen", this.storedOxygen);
+        nbt.setFloat("storedOxygenF", this.storedOxygen);
     }
 
-    @Override
-    public GasStack getGas(Object... data)
-    {
-        return new GasStack(GalacticraftCore.gasOxygen, this.storedOxygen);
-    }
+	public void setOxygenStored(float oxygen)
+	{
+		this.storedOxygen = Math.max(Math.min(oxygen, this.getMaxOxygenStored()), 0);
+	}
 
-    @Override
-    public void setGas(GasStack stack, Object... data)
+	public float getOxygenStored()
+	{
+		return this.storedOxygen;
+	}
+
+	@Override
+	public float getMaxOxygenStored()
+	{
+		return this.maxOxygen;
+	}
+
+	public EnumSet<ForgeDirection> getOxygenInputDirections()
+	{
+		return EnumSet.allOf(ForgeDirection.class);
+	}
+	
+	public EnumSet<ForgeDirection> getOxygenOutputDirections()
+	{
+		return EnumSet.noneOf(ForgeDirection.class);
+	}
+
+	@Override
+	public boolean canConnect(ForgeDirection direction, NetworkType type)
+	{
+		if (direction == null || direction.equals(ForgeDirection.UNKNOWN))
+		{
+			return false;
+		}
+
+		return this.getElectricalInputDirections().contains(direction) || this.getElectricalOutputDirections().contains(direction) || this.getOxygenInputDirections().contains(direction) || this.getOxygenOutputDirections().contains(direction);
+	}
+
+	@Override
+	public float receiveOxygen(ForgeDirection from, float receive, boolean doReceive)
+	{
+		if (this.getOxygenInputDirections().contains(from))
+		{
+			if (!doReceive)
+			{
+				return this.getOxygenRequest(from);
+			}
+			
+			return this.receiveOxygen(receive, doReceive);
+		}
+		
+		return 0;
+	}
+
+	public float receiveOxygen(float receive, boolean doReceive)
+	{
+		if (receive > 0)
+		{
+			float prevEnergyStored = this.getOxygenStored();
+			float newStoredEnergy = Math.min(prevEnergyStored + receive, this.getMaxOxygenStored());
+
+			if (doReceive)
+			{
+				timeSinceOxygenRequest = 20;
+				this.setOxygenStored(newStoredEnergy);
+			}
+
+			return Math.max(newStoredEnergy - prevEnergyStored, 0);
+		}
+
+		return 0;
+	}
+
+	@Override
+	public float provideOxygen(ForgeDirection from, float request, boolean doProvide)
+	{
+		if (this.getOxygenOutputDirections().contains(from))
+		{
+			if (!doProvide)
+			{
+				return this.getProvide(from);
+			}
+
+			return this.provideOxygen(request, doProvide);
+		}
+
+		return 0;
+	}
+
+	public float provideOxygen(float request, boolean doProvide)
+	{
+		if (request > 0)
+		{
+			float requestedEnergy = Math.min(request, this.storedOxygen);
+
+			if (doProvide)
+			{
+				this.setOxygenStored(this.storedOxygen - requestedEnergy);
+			}
+
+			return requestedEnergy;
+		}
+
+		return 0;
+	}
+	
+	public void produceOxygen()
+	{
+		if (!this.worldObj.isRemote)
+		{
+			for (ForgeDirection direction : this.getOxygenOutputDirections())
+			{
+                if (direction != ForgeDirection.UNKNOWN)
+                {
+    				this.produceOxygen(direction);
+                }
+			}
+		}
+	}
+
+    public boolean produceOxygen(ForgeDirection outputDirection)
     {
-        if (stack == null)
+        if (!this.worldObj.isRemote && outputDirection != null && outputDirection != ForgeDirection.UNKNOWN)
         {
-            this.storedOxygen = 0;
-            return;
+            float provide = this.getOxygenProvide(outputDirection);
+
+            if (provide > 0)
+            {
+				Vector3 thisVec = new Vector3(this);
+				TileEntity outputTile = new Vector3(this).modifyPositionFromSide(outputDirection).getTileEntity(this.worldObj);
+				IOxygenNetwork outputNetwork = NetworkHelper.getOxygenNetworkFromTileEntity(outputTile, outputDirection);
+
+                if (outputNetwork != null)
+                {
+                    float powerRequest = outputNetwork.getRequest(this);
+
+                    if (powerRequest > 0)
+                    {
+                    	float toSend = Math.min(this.getOxygenStored(), provide);
+                        float rejectedPower = outputNetwork.produce(toSend, this);
+
+						this.provideOxygen(Math.max(toSend - rejectedPower, 0), true);
+                        return true;
+                    }
+                }
+                else if (outputTile instanceof IOxygenReceiver)
+                {
+                    float requestedEnergy = ((IOxygenReceiver) outputTile).getOxygenRequest(outputDirection.getOpposite());
+
+                    if (requestedEnergy > 0)
+                    {
+                    	float toSend = Math.min(this.getOxygenStored(), provide);
+                        float acceptedEnergy = ((IOxygenReceiver) outputTile).receiveOxygen(outputDirection.getOpposite(), toSend, true);
+						this.provideOxygen(acceptedEnergy, true);
+                        return true;
+                    }
+                }
+            }
         }
 
-        this.storedOxygen = stack.amount;
+        return false;
     }
 
-    @Override
-    public int getMaxGas(Object... data)
-    {
-        return this.maxOxygen;
-    }
+	@Override
+	public float getOxygenRequest(ForgeDirection direction)
+	{
+		if (this.shouldPullOxygen())
+		{
+			return this.oxygenPerTick * 2;
+		}
+		else
+		{
+			return 0;
+		}
+	}
+
+	@Override
+	public float getOxygenProvide(ForgeDirection direction)
+	{
+		return 0;
+	}
 }

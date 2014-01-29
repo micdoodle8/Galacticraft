@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 
-public interface IConductor extends INetworkProvider, INetworkConnection
+public interface IConductor extends ITransmitter
 {
 	/**
 	 * Gets the resistance of the conductor. Used to calculate energy loss. A higher resistance

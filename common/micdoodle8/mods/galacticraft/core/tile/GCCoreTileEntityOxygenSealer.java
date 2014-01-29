@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import java.util.EnumSet;
+
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol;
@@ -279,7 +281,7 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
     {
         if (this.worldObj.isRemote)
         {
-            this.storedOxygen = data.readInt();
+            this.setOxygenStored(data.readFloat());
             this.setEnergyStored(data.readFloat());
             this.disabled = data.readBoolean();
             this.sealed = data.readBoolean();
@@ -290,7 +292,7 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
     @Override
     public Packet getPacket()
     {
-        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.storedOxygen, this.getEnergyStored(), this.disabled, this.sealed, this.calculatingSealed);
+        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getOxygenStored(), this.getEnergyStored(), this.disabled, this.sealed, this.calculatingSealed);
     }
 
     @Override
@@ -306,12 +308,6 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
     }
 
     @Override
-    public ForgeDirection getOxygenInputDirection()
-    {
-        return this.getElectricInputDirection().getOpposite();
-    }
-
-    @Override
     public boolean shouldPullOxygen()
     {
         return this.getEnergyStored() > 0;
@@ -322,4 +318,16 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
     {
         return this.active && this.sealed;
     }
+
+	@Override
+	public EnumSet<ForgeDirection> getOxygenInputDirections()
+	{
+		return EnumSet.of(this.getElectricInputDirection().getOpposite());
+	}
+
+	@Override
+	public EnumSet<ForgeDirection> getOxygenOutputDirections()
+	{
+		return EnumSet.noneOf(ForgeDirection.class);
+	}
 }

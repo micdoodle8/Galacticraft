@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.api.recipe;
 
 import java.util.ArrayList;
+
 import micdoodle8.mods.galacticraft.api.recipe.SchematicEvent.FlipPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicEvent.Unlock;
 import net.minecraft.entity.player.EntityPlayerMP;

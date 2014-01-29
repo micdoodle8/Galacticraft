@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.api.recipe;
 
 import java.util.HashMap;
 import java.util.Map.Entry;
+
 import net.minecraft.item.ItemStack;
 
 public class CircuitFabricatorRecipes

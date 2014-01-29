@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.tile.IConnector;
 import micdoodle8.mods.galacticraft.core.tile.INetworkProvider;
 import micdoodle8.mods.galacticraft.power.core.grid.IElectricityNetwork;
+import micdoodle8.mods.galacticraft.power.core.grid.IOxygenNetwork;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 
@@ -17,9 +18,9 @@ import net.minecraftforge.common.ForgeDirection;
  * @author Calclavia
  * 
  */
-public class ElectricityHelper
+public class NetworkHelper
 {
-	public static EnumSet<ForgeDirection> getDirections(TileEntity tileEntity)
+	public static EnumSet<ForgeDirection> getDirections(TileEntity tileEntity, NetworkType type)
 	{
 		EnumSet<ForgeDirection> possibleSides = EnumSet.noneOf(ForgeDirection.class);
 
@@ -28,7 +29,7 @@ public class ElectricityHelper
 			for (int i = 0; i < 6; i++)
 			{
 				ForgeDirection direction = ForgeDirection.getOrientation(i);
-				if (((IConnector) tileEntity).canConnect(direction))
+				if (((IConnector) tileEntity).canConnect(direction, type))
 				{
 					possibleSides.add(direction);
 				}
@@ -36,56 +37,6 @@ public class ElectricityHelper
 		}
 
 		return possibleSides;
-	}
-
-	@Deprecated
-	public static ElectricityPack produceFromMultipleSides(TileEntity tileEntity, ElectricityPack electricityPack)
-	{
-		return ElectricityHelper.produceFromMultipleSides(tileEntity, getDirections(tileEntity), electricityPack);
-	}
-
-	/**
-	 * Produces electricity from all specified sides. Use this as a simple helper function.
-	 * 
-	 * @param tileEntity - The TileEntity consuming the electricity.
-	 * @param approachDirection - The sides in which you can connect to.
-	 * @param producePack - The amount of electricity to be produced.
-	 * @return What remained in the electricity pack.
-	 */
-	@Deprecated
-	public static ElectricityPack produceFromMultipleSides(TileEntity tileEntity, EnumSet<ForgeDirection> approachingDirection, ElectricityPack producingPack)
-	{
-		ElectricityPack remainingElectricity = producingPack.clone();
-
-		if (tileEntity != null && approachingDirection != null)
-		{
-			final Set<IElectricityNetwork> connectedNetworks = ElectricityHelper.getNetworksFromMultipleSides(tileEntity, approachingDirection);
-
-			if (connectedNetworks.size() > 0)
-			{
-				/**
-				 * Requests an even amount of electricity from all sides.
-				 */
-				float wattsPerSide = (producingPack.getWatts() / connectedNetworks.size());
-				float voltage = producingPack.voltage;
-
-				for (IElectricityNetwork network : connectedNetworks)
-				{
-					if (wattsPerSide > 0 && producingPack.getWatts() > 0)
-					{
-						float amperes = Math.min(wattsPerSide / voltage, network.getRequest(tileEntity).getWatts() / voltage);
-
-						if (amperes > 0)
-						{
-							network.produce(new ElectricityPack(amperes, voltage));
-							remainingElectricity.amperes -= amperes;
-						}
-					}
-				}
-			}
-		}
-
-		return remainingElectricity;
 	}
 
 	/**
@@ -106,7 +57,7 @@ public class ElectricityHelper
 				position.modifyPositionFromSide(side);
 
 				TileEntity outputConductor = position.getTileEntity(tileEntity.worldObj);
-				IElectricityNetwork electricityNetwork = ElectricityHelper.getNetworkFromTileEntity(outputConductor, side);
+				IElectricityNetwork electricityNetwork = NetworkHelper.getElectricalNetworkFromTileEntity(outputConductor, side);
 
 				if (electricityNetwork != null)
 				{
@@ -127,7 +78,7 @@ public class ElectricityHelper
 	 * @param approachDirection - The direction you are approaching this wire from.
 	 * @return The ElectricityNetwork or null if not found.
 	 */
-	public static IElectricityNetwork getNetworkFromTileEntity(TileEntity tileEntity, ForgeDirection approachDirection)
+	public static IElectricityNetwork getElectricalNetworkFromTileEntity(TileEntity tileEntity, ForgeDirection approachDirection)
 	{
 		if (tileEntity != null)
 		{
@@ -135,14 +86,49 @@ public class ElectricityHelper
 			{
 				if (tileEntity instanceof IConnector)
 				{
-					if (((IConnector) tileEntity).canConnect(approachDirection.getOpposite()))
+					if (((IConnector) tileEntity).canConnect(approachDirection.getOpposite(), NetworkType.POWER))
 					{
-						return ((INetworkProvider) tileEntity).getNetwork();
+						if (((INetworkProvider) tileEntity).getNetwork() instanceof IElectricityNetwork)
+						{
+							return (IElectricityNetwork) ((INetworkProvider) tileEntity).getNetwork();
+						}
 					}
 				}
 				else
 				{
-					return ((INetworkProvider) tileEntity).getNetwork();
+					if (((INetworkProvider) tileEntity).getNetwork() instanceof IElectricityNetwork)
+					{
+						return (IElectricityNetwork) ((INetworkProvider) tileEntity).getNetwork();
+					}
+				}
+			}
+		}
+
+		return null;
+	}
+
+	public static IOxygenNetwork getOxygenNetworkFromTileEntity(TileEntity tileEntity, ForgeDirection approachDirection)
+	{
+		if (tileEntity != null)
+		{
+			if (tileEntity instanceof INetworkProvider)
+			{
+				if (tileEntity instanceof IConnector)
+				{
+		        	if (((IConnector) tileEntity).canConnect(approachDirection.getOpposite(), NetworkType.OXYGEN))
+					{
+						if (((INetworkProvider) tileEntity).getNetwork() instanceof IOxygenNetwork)
+						{
+							return (IOxygenNetwork) ((INetworkProvider) tileEntity).getNetwork();
+						}
+					}
+				}
+				else
+				{
+					if (((INetworkProvider) tileEntity).getNetwork() instanceof IOxygenNetwork)
+					{
+						return (IOxygenNetwork) ((INetworkProvider) tileEntity).getNetwork();
+					}
 				}
 			}
 		}

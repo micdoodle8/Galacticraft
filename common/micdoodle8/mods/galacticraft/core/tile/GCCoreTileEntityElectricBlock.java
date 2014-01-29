@@ -7,8 +7,6 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.ASMHelper.RuntimeInterface;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
-import micdoodle8.mods.galacticraft.power.ElectricityPack;
-import micdoodle8.mods.galacticraft.power.core.item.ElectricItemHelper;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -97,7 +95,11 @@ public abstract class GCCoreTileEntityElectricBlock extends GCCoreTileEntityUniv
     {
         if (this.shouldPullEnergy() && this.getEnergyStored() < this.getMaxEnergyStored() && this.getBatteryInSlot() != null && this.getElectricInputDirection() != null)
         {
-            this.receiveElectricity(this.getElectricInputDirection(), ElectricityPack.getFromWatts(ElectricItemHelper.dischargeItem(this.getBatteryInSlot(), this.getRequest(ForgeDirection.UNKNOWN)), this.getVoltage()), true);
+        	if (!this.worldObj.isRemote)
+        	{
+            	this.discharge(this.getBatteryInSlot());
+        	}
+//            this.receiveElectricity(this.getElectricInputDirection(), ElectricityPack.getFromWatts(ElectricItemHelper.dischargeItem(this.getBatteryInSlot(), this.getRequest(ForgeDirection.UNKNOWN)), this.getVoltage()), true);
         }
 
         if (!this.worldObj.isRemote && this.shouldUseEnergy())
@@ -227,7 +229,7 @@ public abstract class GCCoreTileEntityElectricBlock extends GCCoreTileEntityUniv
     }
 
     @Override
-    public EnumSet<ForgeDirection> getInputDirections()
+    public EnumSet<ForgeDirection> getElectricalInputDirections()
     {
         if (this.getElectricInputDirection() == null)
         {

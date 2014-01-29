@@ -32,7 +32,6 @@ import net.minecraftforge.common.ForgeDirection;
 import com.google.common.io.ByteArrayDataInput;
 
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -83,8 +82,6 @@ public class GCCoreTileEntitySolar extends GCCoreTileEntityUniversalElectrical i
     public void updateEntity()
     {
         this.setEnergyStored(this.getEnergyStored() + this.generateWatts);
-        
-        FMLLog.info("b " + this.worldObj.isRemote + " " + this.getEnergyStored());
 
         super.updateEntity();
 
@@ -419,18 +416,17 @@ public class GCCoreTileEntitySolar extends GCCoreTileEntityUniversalElectrical i
     @Override
     public float getProvide(ForgeDirection direction)
     {
-    	FMLLog.info("a " + this.getEnergyStored() + " " + (this.getOutputDirections().contains(direction) ? Math.min(Math.max(this.getEnergyStored(), 0), 1300) : 0));
-        return this.getOutputDirections().contains(direction) ? Math.min(Math.max(this.getEnergyStored(), 0), 1300) : 0;
+    	return this.getElectricalOutputDirections().contains(direction) ? Math.min(Math.max(this.getEnergyStored(), 0), 1300) : 0;
     }
 
     @Override
-    public EnumSet<ForgeDirection> getInputDirections()
+    public EnumSet<ForgeDirection> getElectricalInputDirections()
     {
         return EnumSet.noneOf(ForgeDirection.class);
     }
 
     @Override
-    public EnumSet<ForgeDirection> getOutputDirections()
+    public EnumSet<ForgeDirection> getElectricalOutputDirections()
     {
         int metadata = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
 

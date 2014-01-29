@@ -343,13 +343,13 @@ public class GCCoreTileEntityCoalGenerator extends GCCoreTileEntityUniversalElec
     }
 
     @Override
-    public EnumSet<ForgeDirection> getInputDirections()
+    public EnumSet<ForgeDirection> getElectricalInputDirections()
     {
         return EnumSet.noneOf(ForgeDirection.class);
     }
 
     @Override
-    public EnumSet<ForgeDirection> getOutputDirections()
+    public EnumSet<ForgeDirection> getElectricalOutputDirections()
     {
         return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() + 2));
     }

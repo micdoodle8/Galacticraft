@@ -1,10 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import mekanism.api.gas.GasStack;
-import mekanism.api.gas.GasTransmission;
-import mekanism.api.gas.IGasAcceptor;
-import mekanism.api.gas.ITubeConnection;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import java.util.EnumSet;
+
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
@@ -17,7 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.ForgeDirection;
@@ -34,7 +30,7 @@ import com.google.common.io.ByteArrayDataInput;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityOxygen implements ITubeConnection, IInventory, ISidedInventory
+public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityOxygen implements IInventory, ISidedInventory
 {
     public boolean active;
     public static final float WATTS_PER_TICK = 0.2F;
@@ -60,34 +56,35 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityOxygen impl
 
         if (!this.worldObj.isRemote)
         {
-            if (this.getEnergyStored() > 0)
-            {
-                int gasToSend = Math.min(this.storedOxygen, GCCoreTileEntityOxygenCollector.OUTPUT_PER_TICK);
-                GasStack toSend = new GasStack(GalacticraftCore.gasOxygen, gasToSend);
-                this.storedOxygen -= GasTransmission.emitGasToNetwork(toSend, this, this.getOxygenOutputDirection());
-
-                Vector3 thisVec = new Vector3(this);
-                TileEntity tileEntity = thisVec.modifyPositionFromSide(this.getOxygenOutputDirection()).getTileEntity(this.worldObj);
-
-                if (tileEntity instanceof IGasAcceptor)
-                {
-                    if (((IGasAcceptor) tileEntity).canReceiveGas(this.getOxygenOutputDirection().getOpposite(), GalacticraftCore.gasOxygen))
-                    {
-                        double sendingGas = 0;
-
-                        if (this.storedOxygen >= GCCoreTileEntityOxygenCollector.OUTPUT_PER_TICK)
-                        {
-                            sendingGas = GCCoreTileEntityOxygenCollector.OUTPUT_PER_TICK;
-                        }
-                        else
-                        {
-                            sendingGas = this.storedOxygen;
-                        }
-
-                        this.storedOxygen -= sendingGas - ((IGasAcceptor) tileEntity).receiveGas(new GasStack(GalacticraftCore.gasOxygen, (int) Math.floor(sendingGas)));
-                    }
-                }
-            }
+        	this.produceOxygen();
+//            if (this.getEnergyStored() > 0)
+//            {
+//                int gasToSend = Math.min(this.storedOxygen, GCCoreTileEntityOxygenCollector.OUTPUT_PER_TICK);
+//                GasStack toSend = new GasStack(GalacticraftCore.gasOxygen, gasToSend);
+//                this.storedOxygen -= GasTransmission.emitGasToNetwork(toSend, this, this.getOxygenOutputDirection());
+//
+//                Vector3 thisVec = new Vector3(this);
+//                TileEntity tileEntity = thisVec.modifyPositionFromSide(this.getOxygenOutputDirection()).getTileEntity(this.worldObj);
+//
+//                if (tileEntity instanceof IGasAcceptor)
+//                {
+//                    if (((IGasAcceptor) tileEntity).canReceiveGas(this.getOxygenOutputDirection().getOpposite(), GalacticraftCore.gasOxygen))
+//                    {
+//                        double sendingGas = 0;
+//
+//                        if (this.storedOxygen >= GCCoreTileEntityOxygenCollector.OUTPUT_PER_TICK)
+//                        {
+//                            sendingGas = GCCoreTileEntityOxygenCollector.OUTPUT_PER_TICK;
+//                        }
+//                        else
+//                        {
+//                            sendingGas = this.storedOxygen;
+//                        }
+//
+//                        this.storedOxygen -= sendingGas - ((IGasAcceptor) tileEntity).receiveGas(new GasStack(GalacticraftCore.gasOxygen, (int) Math.floor(sendingGas)));
+//                    }
+//                }
+//            }
 
             double power = 0;
 
@@ -171,12 +168,6 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityOxygen impl
         }
 
         par1NBTTagCompound.setTag("Items", list);
-    }
-
-    @Override
-    public boolean canTubeConnect(ForgeDirection direction)
-    {
-        return direction == this.getElectricInputDirection().getOpposite();
     }
 
     @Override
@@ -327,7 +318,7 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityOxygen impl
     {
         if (this.worldObj.isRemote)
         {
-            this.storedOxygen = data.readInt();
+            this.setOxygenStored(data.readFloat());
             this.setEnergyStored(data.readFloat());
             this.disabled = data.readBoolean();
             this.lastOxygenCollected = data.readFloat();
@@ -337,7 +328,7 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityOxygen impl
     @Override
     public Packet getPacket()
     {
-        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.storedOxygen, this.getEnergyStored(), this.disabled, this.lastOxygenCollected);
+        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getOxygenStored(), this.getEnergyStored(), this.disabled, this.lastOxygenCollected);
     }
 
     @Override
@@ -352,17 +343,6 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityOxygen impl
         return this.getStackInSlot(0);
     }
 
-    public ForgeDirection getOxygenOutputDirection()
-    {
-        return this.getElectricInputDirection().getOpposite();
-    }
-
-    @Override
-    public ForgeDirection getOxygenInputDirection()
-    {
-        return null;
-    }
-
     @Override
     public boolean shouldPullOxygen()
     {
@@ -374,4 +354,22 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityOxygen impl
     {
         return false;
     }
+
+	@Override
+	public EnumSet<ForgeDirection> getOxygenInputDirections()
+	{
+		return EnumSet.noneOf(ForgeDirection.class);
+	}
+
+	@Override
+	public EnumSet<ForgeDirection> getOxygenOutputDirections()
+	{
+		return EnumSet.of(this.getElectricInputDirection().getOpposite());
+	}
+
+	@Override
+	public float getOxygenProvide(ForgeDirection direction)
+	{
+		return this.getOxygenOutputDirections().contains(direction) ? Math.min(GCCoreTileEntityOxygenStorageModule.OUTPUT_PER_TICK, this.getOxygenStored()) : 0.0F;
+	}
 }

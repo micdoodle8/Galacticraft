@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.mars.client.gui;
 
-import mekanism.api.EnumColor;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket.EnumAutoLaunch;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiCheckbox;
@@ -10,6 +9,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiDropdown.IDropboxCa
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiTextBox;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiTextBox.ITextBoxCallback;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerServer.EnumPacketServer;
+import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;

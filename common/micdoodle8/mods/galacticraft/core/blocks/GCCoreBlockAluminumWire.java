@@ -4,10 +4,8 @@ import java.util.List;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumPacketClient;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAluminumWire;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityConductor;
-import micdoodle8.mods.galacticraft.core.util.PacketUtil;
+import micdoodle8.mods.galacticraft.power.NetworkType;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -16,7 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -29,7 +26,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class GCCoreBlockAluminumWire extends GCCoreBlockConductor
+public class GCCoreBlockAluminumWire extends GCCoreBlockTransmitter
 {
     public static final String[] names = { "aluminumWire", "aluminumWireHeavy" };
     private static Icon[] blockIcons;
@@ -92,21 +89,6 @@ public class GCCoreBlockAluminumWire extends GCCoreBlockConductor
     }
 
     @Override
-    public void onNeighborBlockChange(World world, int x, int y, int z, int blockID)
-    {
-        super.onNeighborBlockChange(world, x, y, z, blockID);
-
-        TileEntity tile = world.getBlockTileEntity(x, y, z);
-
-        if (tile instanceof GCCoreTileEntityConductor)
-        {
-            ((GCCoreTileEntityConductor) tile).adjacentConnections = null;
-            Block.blocksList[world.getBlockId(tile.xCoord, tile.yCoord, tile.zCoord)].setBlockBoundsBasedOnState(world, tile.xCoord, tile.yCoord, tile.zCoord);
-            PacketDispatcher.sendPacketToAllAround(x, y, z, 10, world.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.UPDATE_WIRE_BOUNDS, new Object[] { x, y, z }));
-        }
-    }
-
-    @Override
     public int getRenderType()
     {
         return -1;
@@ -146,4 +128,10 @@ public class GCCoreBlockAluminumWire extends GCCoreBlockConductor
         par3List.add(new ItemStack(par1, 1, 0));
         par3List.add(new ItemStack(par1, 1, 1));
     }
+
+	@Override
+	public NetworkType getNetworkType()
+	{
+		return NetworkType.POWER;
+	}
 }

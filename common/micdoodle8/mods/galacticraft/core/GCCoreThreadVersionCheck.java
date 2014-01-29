@@ -5,7 +5,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import mekanism.api.EnumColor;
+import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import net.minecraft.util.StatCollector;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
