@@ -1,8 +1,13 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import mekanism.api.gas.Gas;
+import mekanism.api.gas.GasStack;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.ASMHelper.RuntimeInterface;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.power.NetworkType;
 import micdoodle8.mods.galacticraft.power.core.grid.IGridNetwork;
+import micdoodle8.mods.galacticraft.power.core.grid.IOxygenNetwork;
 import micdoodle8.mods.galacticraft.power.core.grid.OxygenNetwork;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -84,21 +89,22 @@ public abstract class GCCoreTileEntityOxygenTransmitter extends GCCoreTileEntity
 		 */
 		if (this.adjacentConnections == null)
 		{
-			this.adjacentConnections = new TileEntity[6];
-
-			for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS)
-			{
-				Vector3 thisVec = new Vector3(this);
-				TileEntity tileEntity = thisVec.modifyPositionFromSide(side).getTileEntity(worldObj);
-
-				if (tileEntity instanceof IConnector)
-				{
-					if (((IConnector) tileEntity).canConnect(side.getOpposite(), NetworkType.OXYGEN))
-					{
-						this.adjacentConnections[side.ordinal()] = tileEntity;
-					}
-				}
-			}
+			this.adjacentConnections = WorldUtil.getAdjacentOxygenConnections(this);
+//			this.adjacentConnections = new TileEntity[6];
+//
+//			for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS)
+//			{
+//				Vector3 thisVec = new Vector3(this);
+//				TileEntity tileEntity = thisVec.modifyPositionFromSide(side).getTileEntity(worldObj);
+//
+//				if (tileEntity instanceof IConnector)
+//				{
+//					if (((IConnector) tileEntity).canConnect(side.getOpposite(), NetworkType.OXYGEN))
+//					{
+//						this.adjacentConnections[side.ordinal()] = tileEntity;
+//					}
+//				}
+//			}
 		}
 
 		return this.adjacentConnections;
@@ -121,5 +127,17 @@ public abstract class GCCoreTileEntityOxygenTransmitter extends GCCoreTileEntity
 	public NetworkType getNetworkType()
 	{
 		return NetworkType.OXYGEN;
+	}
+
+	@RuntimeInterface(clazz = "mekanism.api.gas.IGasAcceptor", modID = "Mekanism")
+	public int receiveGas(GasStack stack)
+	{
+		return (int) Math.floor(((IOxygenNetwork) this.getNetwork()).produce(stack.amount, this));
+	}
+
+	@RuntimeInterface(clazz = "mekanism.api.gas.IGasAcceptor", modID = "Mekanism")
+	public boolean canReceiveGas(ForgeDirection side, Gas type)
+	{
+		return type.getName().equals("oxygen");
 	}
 }
