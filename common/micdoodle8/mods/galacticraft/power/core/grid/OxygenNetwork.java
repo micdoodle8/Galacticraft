@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 import mekanism.api.gas.Gas;
+import mekanism.api.gas.GasStack;
 import mekanism.api.gas.IGasAcceptor;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -89,11 +90,11 @@ public class OxygenNetwork implements IOxygenNetwork
 																
 								if (gasAcceptor.canReceiveGas(direction, (Gas) GalacticraftCore.gasOxygen) && this.getTransmitters().contains(tile))
 								{
-									float oxygenToSend = totalEnergy / (float)avaliableEnergyTiles.size(); // TODO: Mekanism PR to simulate received gas amount
+									int oxygenToSend = (int) Math.floor(totalEnergy / (float)avaliableEnergyTiles.size()); // TODO: Mekanism PR to simulate received gas amount
 
 									if (oxygenToSend > 0)
 									{
-										remainingUsableOxygen -= ((IOxygenReceiver) tileEntity).receiveOxygen(direction, oxygenToSend, true);
+										remainingUsableOxygen -= ((IGasAcceptor) tileEntity).receiveGas(new GasStack((Gas) GalacticraftCore.gasOxygen, oxygenToSend));
 									}
 								}
 							}
