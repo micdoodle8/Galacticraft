@@ -4,6 +4,7 @@ import mekanism.api.gas.Gas;
 import mekanism.api.gas.GasStack;
 import mekanism.api.gas.ITubeConnection;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.ASMHelper.RuntimeInterface;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.power.NetworkType;
@@ -146,5 +147,23 @@ public abstract class GCCoreTileEntityOxygenTransmitter extends GCCoreTileEntity
 	public boolean canTubeConnect(ForgeDirection side)
 	{
 		return this.canConnect(side, NetworkType.OXYGEN);
+	}
+
+	@RuntimeInterface(clazz = "mekanism.api.gas.IGasStorage", modID = "Mekanism")
+	public GasStack getGas(Object... data)
+	{
+		return new GasStack((Gas) GalacticraftCore.gasOxygen, 0);
+	}
+
+	@RuntimeInterface(clazz = "mekanism.api.gas.IGasStorage", modID = "Mekanism")
+	public void setGas(GasStack stack, Object... data)
+	{
+		;
+	}
+
+	@RuntimeInterface(clazz = "mekanism.api.gas.IGasStorage", modID = "Mekanism")
+	public int getMaxGas(Object... data)
+	{
+		return 1;
 	}
 }
