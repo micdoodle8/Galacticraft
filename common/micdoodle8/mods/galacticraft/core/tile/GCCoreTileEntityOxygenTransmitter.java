@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import mekanism.api.gas.Gas;
 import mekanism.api.gas.GasStack;
+import mekanism.api.gas.ITubeConnection;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.ASMHelper.RuntimeInterface;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
@@ -113,7 +114,7 @@ public abstract class GCCoreTileEntityOxygenTransmitter extends GCCoreTileEntity
 	@Override
 	public boolean canConnect(ForgeDirection direction, NetworkType type)
 	{
-		return type == NetworkType.POWER;
+		return type == NetworkType.OXYGEN;
 	}
 
 	@Override
@@ -139,5 +140,11 @@ public abstract class GCCoreTileEntityOxygenTransmitter extends GCCoreTileEntity
 	public boolean canReceiveGas(ForgeDirection side, Gas type)
 	{
 		return type.getName().equals("oxygen");
+	}
+
+	@RuntimeInterface(clazz = "mekanism.api.gas.ITubeConnection", modID = "Mekanism")
+	public boolean canTubeConnect(ForgeDirection side)
+	{
+		return this.canConnect(side, NetworkType.OXYGEN);
 	}
 }
