@@ -3,9 +3,9 @@ package micdoodle8.mods.galacticraft.mars.inventory;
 import java.util.ArrayList;
 import java.util.List;
 
+import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
 import micdoodle8.mods.galacticraft.core.inventory.SlotSpecific;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityTerraformer;
-import micdoodle8.mods.galacticraft.power.core.item.IItemElectric;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;

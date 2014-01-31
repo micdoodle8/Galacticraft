@@ -4,10 +4,11 @@ import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
+import micdoodle8.mods.galacticraft.api.transmission.ElectricityPack;
+import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
-import micdoodle8.mods.galacticraft.power.ElectricityPack;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;

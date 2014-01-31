@@ -1,10 +1,10 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
+import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay;
+import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay.ElectricUnit;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerEnergyStorageModule;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityEnergyStorageModule;
-import micdoodle8.mods.galacticraft.power.ElectricityDisplay;
-import micdoodle8.mods.galacticraft.power.ElectricityDisplay.ElectricUnit;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;

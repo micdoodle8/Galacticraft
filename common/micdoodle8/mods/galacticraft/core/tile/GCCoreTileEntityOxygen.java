@@ -4,12 +4,14 @@ import java.util.EnumSet;
 
 import mekanism.api.gas.Gas;
 import mekanism.api.gas.GasStack;
+import micdoodle8.mods.galacticraft.api.transmission.NetworkHelper;
+import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
+import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
+import micdoodle8.mods.galacticraft.api.transmission.core.grid.IOxygenNetwork;
+import micdoodle8.mods.galacticraft.api.transmission.tile.IOxygenReceiver;
+import micdoodle8.mods.galacticraft.api.transmission.tile.IOxygenStorage;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.ASMHelper.RuntimeInterface;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.power.NetworkHelper;
-import micdoodle8.mods.galacticraft.power.NetworkType;
-import micdoodle8.mods.galacticraft.power.core.grid.IOxygenNetwork;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
@@ -297,7 +299,7 @@ public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectricBlo
 	@RuntimeInterface(clazz = "mekanism.api.gas.IGasStorage", modID = "Mekanism")
 	public GasStack getGas(Object... data)
 	{
-		return new GasStack((Gas) GalacticraftCore.gasOxygen, (int)Math.floor(this.getOxygenStored()));
+		return new GasStack((Gas) NetworkConfigHandler.gasOxygen, (int)Math.floor(this.getOxygenStored()));
 	}
 
 	@RuntimeInterface(clazz = "mekanism.api.gas.IGasStorage", modID = "Mekanism")

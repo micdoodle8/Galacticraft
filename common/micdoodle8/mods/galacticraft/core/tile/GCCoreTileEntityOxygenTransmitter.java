@@ -2,15 +2,16 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import mekanism.api.gas.Gas;
 import mekanism.api.gas.GasStack;
-import mekanism.api.gas.ITubeConnection;
+import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
+import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
+import micdoodle8.mods.galacticraft.api.transmission.core.grid.IGridNetwork;
+import micdoodle8.mods.galacticraft.api.transmission.core.grid.IOxygenNetwork;
+import micdoodle8.mods.galacticraft.api.transmission.core.grid.OxygenNetwork;
+import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
+import micdoodle8.mods.galacticraft.api.transmission.tile.ITransmitter;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.ASMHelper.RuntimeInterface;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
-import micdoodle8.mods.galacticraft.power.NetworkType;
-import micdoodle8.mods.galacticraft.power.core.grid.IGridNetwork;
-import micdoodle8.mods.galacticraft.power.core.grid.IOxygenNetwork;
-import micdoodle8.mods.galacticraft.power.core.grid.OxygenNetwork;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.ForgeDirection;
@@ -152,7 +153,7 @@ public abstract class GCCoreTileEntityOxygenTransmitter extends GCCoreTileEntity
 	@RuntimeInterface(clazz = "mekanism.api.gas.IGasStorage", modID = "Mekanism")
 	public GasStack getGas(Object... data)
 	{
-		return new GasStack((Gas) GalacticraftCore.gasOxygen, 0);
+		return new GasStack((Gas) NetworkConfigHandler.gasOxygen, 0);
 	}
 
 	@RuntimeInterface(clazz = "mekanism.api.gas.IGasStorage", modID = "Mekanism")

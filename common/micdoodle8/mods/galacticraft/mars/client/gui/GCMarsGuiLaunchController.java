@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.mars.client.gui;
 
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket.EnumAutoLaunch;
+import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay;
+import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay.ElectricUnit;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiCheckbox;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiCheckbox.ICheckBoxCallback;
@@ -15,8 +17,6 @@ import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import micdoodle8.mods.galacticraft.mars.inventory.GCMarsContainerLaunchController;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityLaunchController;
-import micdoodle8.mods.galacticraft.power.ElectricityDisplay;
-import micdoodle8.mods.galacticraft.power.ElectricityDisplay.ElectricUnit;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;

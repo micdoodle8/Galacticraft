@@ -1,9 +1,12 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
+import micdoodle8.mods.galacticraft.api.transmission.compatibility.UniversalNetwork;
+import micdoodle8.mods.galacticraft.api.transmission.core.grid.IGridNetwork;
+import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
+import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
+import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.power.NetworkType;
-import micdoodle8.mods.galacticraft.power.compatibility.UniversalNetwork;
-import micdoodle8.mods.galacticraft.power.core.grid.IGridNetwork;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.ForgeDirection;

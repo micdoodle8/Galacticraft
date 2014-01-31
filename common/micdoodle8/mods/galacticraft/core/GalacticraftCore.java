@@ -1,8 +1,6 @@
 package micdoodle8.mods.galacticraft.core;
 
 import java.io.File;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +10,8 @@ import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.recipe.CircuitFabricatorRecipes;
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
+import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
+import micdoodle8.mods.galacticraft.api.transmission.core.grid.ChunkPowerHandler;
 import micdoodle8.mods.galacticraft.api.world.ICelestialBody;
 import micdoodle8.mods.galacticraft.api.world.IGalaxy;
 import micdoodle8.mods.galacticraft.api.world.IMoon;
@@ -94,8 +94,6 @@ import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
 import micdoodle8.mods.galacticraft.core.world.gen.GCCoreOverworldGenerator;
 import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
-import micdoodle8.mods.galacticraft.power.compatibility.NetworkConfigHandler;
-import micdoodle8.mods.galacticraft.power.core.grid.ChunkPowerHandler;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -194,8 +192,6 @@ public class GalacticraftCore
     public static Fluid fluidOil;
     public static Fluid fluidFuel;
 
-    public static Object gasOxygen;
-
     public static HashMap<String, ItemStack> itemList = new HashMap<String, ItemStack>();
     public static HashMap<String, ItemStack> blocksList = new HashMap<String, ItemStack>();
 
@@ -280,6 +276,7 @@ public class GalacticraftCore
         SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicMoonBuggy());
         SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicAdd());
         ChunkPowerHandler.initiate();
+        NetworkConfigHandler.initMekanismGas();
         
         this.registerCreatures();
         this.registerOtherEntities();
@@ -309,35 +306,6 @@ public class GalacticraftCore
         if (GCCoreConfigManager.enableSiliconOreGen)
         {
             GameRegistry.registerWorldGenerator(new GCCoreOverworldGenerator(GCCoreBlocks.decorationBlocks, 8, 3, 0, 25, 7));
-        }
-        
-        if (NetworkConfigHandler.isMekanismLoaded())
-        {
-        	try
-			{
-        		Class<?> gas = Class.forName("mekanism.api.gas.Gas");
-				Class<?> gasRegistry = Class.forName("mekanism.api.gas.GasRegistry");
-				Method getGas = gasRegistry.getMethod("getGas", String.class);
-				Object oxygen = getGas.invoke(null, "oxygen");
-
-		        if (oxygen == null)
-		        {
-		        	Method register = gasRegistry.getMethod("register", gas);
-		        	Method registerFluid = gas.getMethod("registerFluid");
-		        	Constructor<?> newGas = gas.getConstructor(String.class);
-		        	Object gasObj = register.invoke(null, newGas.newInstance("oxygen"));
-		        	GalacticraftCore.gasOxygen = registerFluid.invoke(gasObj);
-//		            GalacticraftCore.gasOxygen = GasRegistry.register(new Gas("oxygen")).registerFluid();
-		        }
-		        else
-		        {
-		            GalacticraftCore.gasOxygen = oxygen;
-		        }
-			} 
-        	catch (Exception e)
-			{
-				e.printStackTrace();
-			}
         }
     }
 
