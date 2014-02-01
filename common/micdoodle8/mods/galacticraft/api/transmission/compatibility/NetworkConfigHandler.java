@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.api.transmission.compatibility;
 
 import java.io.File;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 
+import mekanism.api.gas.Gas;
+import mekanism.api.gas.GasRegistry;
 import net.minecraftforge.common.Configuration;
 import cpw.mods.fml.common.Loader;
 
@@ -75,34 +75,20 @@ public class NetworkConfigHandler
 		NetworkConfigHandler.config.save();
 	}
 	
-	public static void initMekanismGas()
+	public static void initGas()
 	{
         if (NetworkConfigHandler.isMekanismLoaded())
         {
-        	try
-			{
-        		Class<?> gas = Class.forName("mekanism.api.gas.Gas");
-				Class<?> gasRegistry = Class.forName("mekanism.api.gas.GasRegistry");
-				Method getGas = gasRegistry.getMethod("getGas", String.class);
-				Object oxygen = getGas.invoke(null, "oxygen");
-
-		        if (oxygen == null)
-		        {
-		        	Method register = gasRegistry.getMethod("register", gas);
-		        	Method registerFluid = gas.getMethod("registerFluid");
-		        	Constructor<?> newGas = gas.getConstructor(String.class);
-		        	Object gasObj = register.invoke(null, newGas.newInstance("oxygen"));
-		        	gasOxygen = registerFluid.invoke(gasObj);
-		        }
-		        else
-		        {
-		            gasOxygen = oxygen;
-		        }
-			} 
-        	catch (Exception e)
-			{
-				e.printStackTrace();
-			}
+        	Gas oxygen = GasRegistry.getGas("oxygen");
+        	
+        	if (oxygen == null)
+        	{
+        		gasOxygen = GasRegistry.register(new Gas("oxygen")).registerFluid();
+        	}
+        	else
+        	{
+        		gasOxygen = oxygen;
+        	}
         }
 	}
 

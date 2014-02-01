@@ -276,7 +276,7 @@ public class GalacticraftCore
         SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicMoonBuggy());
         SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicAdd());
         ChunkPowerHandler.initiate();
-        NetworkConfigHandler.initMekanismGas();
+        NetworkConfigHandler.initGas();
         
         this.registerCreatures();
         this.registerOtherEntities();
