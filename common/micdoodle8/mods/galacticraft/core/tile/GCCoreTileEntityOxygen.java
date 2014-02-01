@@ -224,7 +224,6 @@ public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectricBlo
 
             if (provide > 0)
             {
-				Vector3 thisVec = new Vector3(this);
 				TileEntity outputTile = new Vector3(this).modifyPositionFromSide(outputDirection).getTileEntity(this.worldObj);
 				IOxygenNetwork outputNetwork = NetworkHelper.getOxygenNetworkFromTileEntity(outputTile, outputDirection);
 

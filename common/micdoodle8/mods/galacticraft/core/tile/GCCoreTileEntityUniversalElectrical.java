@@ -57,6 +57,131 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 	{
 		return EnumSet.noneOf(ForgeDirection.class);
 	}
+	@Override
+	public float receiveElectricity(ForgeDirection from, ElectricityPack receive, boolean doReceive)
+	{
+		if (this.getElectricalInputDirections().contains(from))
+		{
+			if (!doReceive)
+			{
+				return this.getRequest(from);
+			}
+
+			return this.receiveElectricity(receive, doReceive);
+		}
+
+		return 0;
+	}
+
+	@Override
+	public ElectricityPack provideElectricity(ForgeDirection from, ElectricityPack request, boolean doProvide)
+	{
+		if (this.getElectricalOutputDirections().contains(from))
+		{
+			if (!doProvide)
+			{
+				return ElectricityPack.getFromWatts(this.getProvide(from), this.getVoltage());
+			}
+
+			return this.provideElectricity(request, doProvide);
+		}
+
+		return new ElectricityPack();
+	}
+
+	/**
+	 * A non-side specific version of receiveElectricity for you to optionally use it internally.
+	 */
+	public float receiveElectricity(ElectricityPack receive, boolean doReceive)
+	{
+		if (receive != null)
+		{
+			float prevEnergyStored = this.getEnergyStored();
+			float newStoredEnergy = Math.min(this.getEnergyStored() + receive.getWatts(), this.getMaxEnergyStored());
+
+			if (doReceive)
+			{
+				this.setEnergyStored(newStoredEnergy);
+			}
+
+			return Math.max(newStoredEnergy - prevEnergyStored, 0);
+		}
+
+		return 0;
+	}
+
+	public float receiveElectricity(float energy, boolean doReceive)
+	{
+		return this.receiveElectricity(ElectricityPack.getFromWatts(energy, this.getVoltage()), doReceive);
+	}
+
+	/**
+	 * A non-side specific version of provideElectricity for you to optionally use it internally.
+	 */
+	public ElectricityPack provideElectricity(ElectricityPack request, boolean doProvide)
+	{
+		if (request != null)
+		{
+			float requestedEnergy = Math.min(request.getWatts(), this.energyStored);
+
+			if (doProvide)
+			{
+				this.setEnergyStored(this.energyStored - requestedEnergy);
+			}
+
+			return ElectricityPack.getFromWatts(requestedEnergy, this.getVoltage());
+		}
+
+		return new ElectricityPack();
+	}
+
+	public ElectricityPack provideElectricity(float energy, boolean doProvide)
+	{
+		return this.provideElectricity(ElectricityPack.getFromWatts(energy, this.getVoltage()), doProvide);
+	}
+
+	@Override
+	public void setEnergyStored(float energy)
+	{
+		this.energyStored = Math.max(Math.min(energy, this.getMaxEnergyStored()), 0);
+	}
+
+	@Override
+	public float getEnergyStored()
+	{
+		return this.energyStored;
+	}
+
+	@Override
+	public boolean canConnect(ForgeDirection direction, NetworkType type)
+	{
+		if (direction == null || direction.equals(ForgeDirection.UNKNOWN) || type != NetworkType.POWER)
+		{
+			return false;
+		}
+
+		return this.getElectricalInputDirections().contains(direction) || this.getElectricalOutputDirections().contains(direction);
+	}
+
+	@Override
+	public float getVoltage()
+	{
+		return 0.120F;
+	}
+
+	@Override
+	public void readFromNBT(NBTTagCompound nbt)
+	{
+		super.readFromNBT(nbt);
+		this.energyStored = nbt.getFloat("energyStored");
+	}
+
+	@Override
+	public void writeToNBT(NBTTagCompound nbt)
+	{
+		super.writeToNBT(nbt);
+		nbt.setFloat("energyStored", this.energyStored);
+	}
 	
     /**
      * Recharges electric item.
@@ -411,129 +536,44 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
     {
         return this.getWorldObj();
     }
-	@Override
-	public float receiveElectricity(ForgeDirection from, ElectricityPack receive, boolean doReceive)
+    
+    @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "ThermalExpansion")
+	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate)
 	{
-		if (this.getElectricalInputDirections().contains(from))
-		{
-			if (!doReceive)
-			{
-				return this.getRequest(from);
-			}
-
-			return this.receiveElectricity(receive, doReceive);
-		}
-
-		return 0;
+		return (int) Math.floor(this.receiveElectricity(maxReceive * NetworkConfigHandler.TE_RATIO, simulate));
 	}
 
-	@Override
-	public ElectricityPack provideElectricity(ForgeDirection from, ElectricityPack request, boolean doProvide)
+    @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "ThermalExpansion")
+	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate)
 	{
-		if (this.getElectricalOutputDirections().contains(from))
-		{
-			if (!doProvide)
-			{
-				return ElectricityPack.getFromWatts(this.getProvide(from), this.getVoltage());
-			}
-
-			return this.provideElectricity(request, doProvide);
-		}
-
-		return new ElectricityPack();
+		return (int) Math.floor(this.provideElectricity(maxExtract * NetworkConfigHandler.TE_RATIO, simulate).getWatts());
 	}
 
-	/**
-	 * A non-side specific version of receiveElectricity for you to optionally use it internally.
-	 */
-	public float receiveElectricity(ElectricityPack receive, boolean doReceive)
+    @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "ThermalExpansion")
+	public boolean canInterface(ForgeDirection from)
 	{
-		if (receive != null)
-		{
-			float prevEnergyStored = this.getEnergyStored();
-			float newStoredEnergy = Math.min(this.getEnergyStored() + receive.getWatts(), this.getMaxEnergyStored());
-
-			if (doReceive)
-			{
-				this.setEnergyStored(newStoredEnergy);
-			}
-
-			return Math.max(newStoredEnergy - prevEnergyStored, 0);
-		}
-
-		return 0;
+		return this.getElectricalInputDirections().contains(from) || this.getElectricalOutputDirections().contains(from);
 	}
 
-	public float receiveElectricity(float energy, boolean doReceive)
+    @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "ThermalExpansion")
+	public int getEnergyStored(ForgeDirection from)
 	{
-		return this.receiveElectricity(ElectricityPack.getFromWatts(energy, this.getVoltage()), doReceive);
+    	if (!this.canInterface(from))
+    	{
+    		return 0;
+    	}
+    	
+		return (int) Math.floor(this.getEnergyStored() * NetworkConfigHandler.TE_RATIO);
 	}
 
-	/**
-	 * A non-side specific version of provideElectricity for you to optionally use it internally.
-	 */
-	public ElectricityPack provideElectricity(ElectricityPack request, boolean doProvide)
+    @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "ThermalExpansion")
+	public int getMaxEnergyStored(ForgeDirection from)
 	{
-		if (request != null)
-		{
-			float requestedEnergy = Math.min(request.getWatts(), this.energyStored);
-
-			if (doProvide)
-			{
-				this.setEnergyStored(this.energyStored - requestedEnergy);
-			}
-
-			return ElectricityPack.getFromWatts(requestedEnergy, this.getVoltage());
-		}
-
-		return new ElectricityPack();
-	}
-
-	public ElectricityPack provideElectricity(float energy, boolean doProvide)
-	{
-		return this.provideElectricity(ElectricityPack.getFromWatts(energy, this.getVoltage()), doProvide);
-	}
-
-	@Override
-	public void setEnergyStored(float energy)
-	{
-		this.energyStored = Math.max(Math.min(energy, this.getMaxEnergyStored()), 0);
-	}
-
-	@Override
-	public float getEnergyStored()
-	{
-		return this.energyStored;
-	}
-
-	@Override
-	public boolean canConnect(ForgeDirection direction, NetworkType type)
-	{
-		if (direction == null || direction.equals(ForgeDirection.UNKNOWN) || type != NetworkType.POWER)
-		{
-			return false;
-		}
-
-		return this.getElectricalInputDirections().contains(direction) || this.getElectricalOutputDirections().contains(direction);
-	}
-
-	@Override
-	public float getVoltage()
-	{
-		return 0.120F;
-	}
-
-	@Override
-	public void readFromNBT(NBTTagCompound nbt)
-	{
-		super.readFromNBT(nbt);
-		this.energyStored = nbt.getFloat("energyStored");
-	}
-
-	@Override
-	public void writeToNBT(NBTTagCompound nbt)
-	{
-		super.writeToNBT(nbt);
-		nbt.setFloat("energyStored", this.energyStored);
+    	if (!this.canInterface(from))
+    	{
+    		return 0;
+    	}
+    	
+		return (int) Math.floor(this.getMaxEnergyStored() * NetworkConfigHandler.TE_RATIO);
 	}
 }
