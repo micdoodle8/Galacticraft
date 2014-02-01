@@ -45,3 +45,4 @@ Ohrm:capeRainbow
 SirFuzzhead:capeRainbow
 alexljn5:capeYellow
 Tatertot2222:capeRainbow
+atomicpichu:capeRainbow
