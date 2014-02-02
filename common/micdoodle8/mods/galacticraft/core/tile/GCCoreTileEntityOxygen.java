@@ -11,10 +11,12 @@ import micdoodle8.mods.galacticraft.api.transmission.core.grid.IOxygenNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IOxygenReceiver;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IOxygenStorage;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.ASMHelper.RuntimeInterface;
+import micdoodle8.mods.galacticraft.core.GCCoreAnnotations.NetworkedField;
+import micdoodle8.mods.galacticraft.core.GCCoreAnnotations.RuntimeInterface;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
+import cpw.mods.fml.relauncher.Side;
 
 /**
  * GCCoreTileEntityOxygen.java
@@ -29,6 +31,7 @@ public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectricBlo
 {
     public float maxOxygen;
     public float oxygenPerTick;
+    @NetworkedField(targetSide = Side.CLIENT)
     public float storedOxygen;
     public float lastStoredOxygen;
     public static int timeSinceOxygenRequest;

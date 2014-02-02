@@ -3,8 +3,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 import java.util.EnumSet;
 
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
+import micdoodle8.mods.galacticraft.core.GCCoreAnnotations.NetworkedField;
 import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol;
 import micdoodle8.mods.galacticraft.core.oxygen.ThreadFindSeal;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,11 +12,9 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.packet.Packet;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.ForgeDirection;
-
-import com.google.common.io.ByteArrayDataInput;
+import cpw.mods.fml.relauncher.Side;
 
 /**
  * GCCoreTileEntityOxygenSealer.java
@@ -30,6 +27,7 @@ import com.google.common.io.ByteArrayDataInput;
  */
 public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen implements IInventory, ISidedInventory
 {
+	@NetworkedField(targetSide = Side.CLIENT)
     public boolean sealed;
     public boolean lastSealed = false;
 
@@ -40,6 +38,7 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
     private ItemStack[] containingItems = new ItemStack[1];
     public ThreadFindSeal threadSeal;
     public int stopSealThreadCooldown;
+	@NetworkedField(targetSide = Side.CLIENT)
     public boolean calculatingSealed;
 
     public GCCoreTileEntityOxygenSealer()
@@ -274,25 +273,6 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
     public boolean shouldUseEnergy()
     {
         return GCCoreTileEntityOxygen.timeSinceOxygenRequest > 0 && !this.getDisabled(0);
-    }
-
-    @Override
-    public void readPacket(ByteArrayDataInput data)
-    {
-        if (this.worldObj.isRemote)
-        {
-            this.setOxygenStored(data.readFloat());
-            this.setEnergyStored(data.readFloat());
-            this.disabled = data.readBoolean();
-            this.sealed = data.readBoolean();
-            this.calculatingSealed = data.readBoolean();
-        }
-    }
-
-    @Override
-    public Packet getPacket()
-    {
-        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getOxygenStored(), this.getEnergyStored(), this.disabled, this.sealed, this.calculatingSealed);
     }
 
     @Override

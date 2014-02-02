@@ -6,21 +6,18 @@ import micdoodle8.mods.galacticraft.api.entity.ICargoEntity.RemovalResult;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
+import micdoodle8.mods.galacticraft.core.GCCoreAnnotations.NetworkedField;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.ForgeDirection;
-
-import com.google.common.io.ByteArrayDataInput;
+import cpw.mods.fml.relauncher.Side;
 
 /**
  * GCCoreTileEntityCargoLoader.java
@@ -36,8 +33,11 @@ public class GCCoreTileEntityCargoLoader extends GCCoreTileEntityElectricBlock i
     private ItemStack[] containingItems = new ItemStack[15];
     public static final float WATTS_PER_TICK = 0.075F;
     public boolean outOfItems;
+    @NetworkedField(targetSide = Side.CLIENT)
     public boolean targetFull;
+    @NetworkedField(targetSide = Side.CLIENT)
     public boolean targetNoInventory;
+    @NetworkedField(targetSide = Side.CLIENT)
     public boolean noTarget;
 
     public ICargoEntity attachedFuelable;
@@ -329,27 +329,6 @@ public class GCCoreTileEntityCargoLoader extends GCCoreTileEntityElectricBlock i
     public boolean shouldUseEnergy()
     {
         return !this.getDisabled(0);
-    }
-
-    @Override
-    public void readPacket(ByteArrayDataInput data)
-    {
-        if (this.worldObj.isRemote)
-        {
-            this.setEnergyStored(data.readFloat());
-            this.disabled = data.readBoolean();
-            this.disableCooldown = data.readInt();
-            this.targetFull = data.readBoolean();
-            this.outOfItems = data.readBoolean();
-            this.noTarget = data.readBoolean();
-            this.targetNoInventory = data.readBoolean();
-        }
-    }
-
-    @Override
-    public Packet getPacket()
-    {
-        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getEnergyStored(), this.disabled, this.disableCooldown, this.targetFull, this.outOfItems, this.noTarget, this.targetNoInventory);
     }
 
     @Override

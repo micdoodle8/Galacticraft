@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 
 
+
 /**
  * GCCoreTileEntityAirLock.java
  *
@@ -18,4 +19,22 @@ public class GCCoreTileEntityAirLock extends GCCoreTileEntityAdvanced
     {
         super.updateEntity();
     }
+
+	@Override
+	public double getPacketRange()
+	{
+		return 0;
+	}
+
+	@Override
+	public int getPacketCooldown()
+	{
+		return 0;
+	}
+
+	@Override
+	public boolean isNetworkedTile()
+	{
+		return false;
+	}
 }

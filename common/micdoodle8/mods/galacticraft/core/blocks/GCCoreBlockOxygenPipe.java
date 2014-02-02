@@ -124,7 +124,7 @@ public class GCCoreBlockOxygenPipe extends GCCoreBlockTransmitter
                         par1World.spawnEntityInWorld(entityitem);
                     }
 
-                    GCCorePacketManager.sendPacketToClients(GCCorePacketManager.getPacket(GalacticraftCore.CHANNEL, tileEntity, tileEntity.getColor(), -1));
+                    GCCorePacketManager.sendPacketToClients(GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, tileEntity, tileEntity.getColor(), (byte)-1));
 
                     for (final ForgeDirection dir : ForgeDirection.values())
                     {

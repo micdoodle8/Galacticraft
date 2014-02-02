@@ -7,10 +7,9 @@ import java.util.List;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.GCCoreAnnotations.NetworkedField;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPadFull;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectricBlock;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
@@ -27,7 +26,6 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.StatCollector;
@@ -37,11 +35,9 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.ForgeDirection;
-
-import com.google.common.io.ByteArrayDataInput;
-
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.relauncher.Side;
 
 /**
  * GCMarsTileEntityLaunchController.java
@@ -56,15 +52,23 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectricBl
 {
     public static final float WATTS_PER_TICK = 0.05000001f;
     private ItemStack[] containingItems = new ItemStack[1];
+	@NetworkedField(targetSide = Side.CLIENT)
     public boolean launchPadRemovalDisabled = true;
     private Ticket chunkLoadTicket;
     private List<ChunkCoordinates> connectedPads = new ArrayList<ChunkCoordinates>();
+	@NetworkedField(targetSide = Side.CLIENT)
     public int frequency = -1;
+	@NetworkedField(targetSide = Side.CLIENT)
     public int destFrequency = -1;
+	@NetworkedField(targetSide = Side.CLIENT)
     private String ownerName;
+	@NetworkedField(targetSide = Side.CLIENT)
     public boolean frequencyValid;
+	@NetworkedField(targetSide = Side.CLIENT)
     public boolean destFrequencyValid;
+	@NetworkedField(targetSide = Side.CLIENT)
     public int launchDropdownSelection;
+	@NetworkedField(targetSide = Side.CLIENT)
     public boolean launchSchedulingEnabled;
     public boolean requiresClientUpdate;
 
@@ -82,7 +86,7 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectricBl
         {
             if (this.requiresClientUpdate)
             {
-                PacketDispatcher.sendPacketToAllPlayers(this.getPacket());
+//                PacketDispatcher.sendPacketToAllPlayers(this.getPacket()); TODO
                 this.requiresClientUpdate = false;
             }
 
@@ -408,38 +412,6 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectricBl
     }
 
     @Override
-    public void readPacket(ByteArrayDataInput data)
-    {
-        try
-        {
-            if (this.worldObj.isRemote)
-            {
-                this.setEnergyStored(data.readFloat());
-                this.disabled = data.readBoolean();
-                this.launchPadRemovalDisabled = data.readBoolean();
-                this.disableCooldown = data.readInt();
-                this.ownerName = data.readUTF();
-                this.frequencyValid = data.readBoolean();
-                this.destFrequencyValid = data.readBoolean();
-                this.launchDropdownSelection = data.readInt();
-                this.frequency = data.readInt();
-                this.destFrequency = data.readInt();
-                this.launchSchedulingEnabled = data.readBoolean();
-            }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public Packet getPacket()
-    {
-        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getEnergyStored(), this.getDisabled(0), this.getDisabled(1), this.disableCooldown, this.ownerName, this.frequencyValid, this.destFrequencyValid, this.launchDropdownSelection, this.frequency, this.destFrequency, this.launchSchedulingEnabled);
-    }
-
-    @Override
     public ForgeDirection getElectricInputDirection()
     {
         return ForgeDirection.getOrientation(this.getBlockMetadata() - GCMarsBlockMachine.LAUNCH_CONTROLLER_METADATA + 2);
@@ -461,6 +433,9 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectricBl
             case 0:
                 this.disabled = disabled;
                 break;
+            case 1:
+            	this.launchSchedulingEnabled = disabled;
+            	break;
             }
 
             this.disableCooldown = 20;
@@ -474,6 +449,8 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectricBl
         {
         case 0:
             return this.disabled;
+        case 1:
+        	return this.launchSchedulingEnabled;
         }
 
         return true;

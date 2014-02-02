@@ -4,17 +4,12 @@ import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockMachine2;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.packet.Packet;
 import net.minecraftforge.common.ForgeDirection;
-
-import com.google.common.io.ByteArrayDataInput;
 
 /**
  * GCCoreTileEntityOxygenStorageModule.java
@@ -144,25 +139,6 @@ public class GCCoreTileEntityOxygenStorageModule extends GCCoreTileEntityOxygen 
     public boolean shouldUseEnergy()
     {
         return false;
-    }
-
-    @Override
-    public void readPacket(ByteArrayDataInput data)
-    {
-        try
-        {
-        	this.setOxygenStored(data.readFloat());
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public Packet getPacket()
-    {
-        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getOxygenStored());
     }
 
     @Override

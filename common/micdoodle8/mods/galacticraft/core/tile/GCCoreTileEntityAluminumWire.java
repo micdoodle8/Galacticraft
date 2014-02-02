@@ -54,4 +54,22 @@ public class GCCoreTileEntityAluminumWire extends GCCoreTileEntityUniversalCondu
         nbt.setFloat("resistance", this.resistance);
         nbt.setFloat("amperage", this.amperage);
     }
+
+	@Override
+	public double getPacketRange()
+	{
+		return 0;
+	}
+
+	@Override
+	public int getPacketCooldown()
+	{
+		return 0;
+	}
+
+	@Override
+	public boolean isNetworkedTile()
+	{
+		return false;
+	}
 }

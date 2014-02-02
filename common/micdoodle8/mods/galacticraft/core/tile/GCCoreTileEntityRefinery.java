@@ -1,11 +1,10 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.GCCoreAnnotations.NetworkedField;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOilCanister;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -13,7 +12,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.packet.Packet;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -23,8 +21,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
-
-import com.google.common.io.ByteArrayDataInput;
+import cpw.mods.fml.relauncher.Side;
 
 /**
  * GCCoreTileEntityRefinery.java
@@ -38,12 +35,15 @@ import com.google.common.io.ByteArrayDataInput;
 public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectricBlock implements IInventory, ISidedInventory, IFluidHandler
 {
     private final int tankCapacity = 24000;
+	@NetworkedField(targetSide = Side.CLIENT)
     public FluidTank oilTank = new FluidTank(this.tankCapacity);
+	@NetworkedField(targetSide = Side.CLIENT)
     public FluidTank fuelTank = new FluidTank(this.tankCapacity);
 
     public static final float WATTS_PER_TICK = 0.4F;
     public static final int PROCESS_TIME_REQUIRED = 2;
     public static final int OUTPUT_PER_SECOND = 1;
+	@NetworkedField(targetSide = Side.CLIENT)
     public int processTicks = 0;
     private ItemStack[] containingItems = new ItemStack[3];
 
@@ -157,10 +157,6 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectricBlock impl
     @Override
     public void openChest()
     {
-        if (!this.worldObj.isRemote)
-        {
-        	GCCorePacketManager.sendPacketToClients(this.getPacket(), this.worldObj, new Vector3(this), 15);
-        }
     }
 
     @Override
@@ -434,26 +430,6 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectricBlock impl
     public boolean shouldUseEnergy()
     {
         return this.canProcess();
-    }
-
-    @Override
-    public void readPacket(ByteArrayDataInput data)
-    {
-        if (this.worldObj.isRemote)
-        {
-            this.setEnergyStored(data.readFloat());
-            this.processTicks = data.readInt();
-            this.oilTank.setFluid(new FluidStack(GalacticraftCore.fluidOil, data.readInt()));
-            this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, data.readInt()));
-            this.disabled = data.readBoolean();
-            this.disableCooldown = data.readInt();
-        }
-    }
-
-    @Override
-    public Packet getPacket()
-    {
-        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getEnergyStored(), this.processTicks, this.oilTank.getFluid() == null ? 0 : this.oilTank.getFluid().amount, this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluid().amount, this.disabled, this.disableCooldown);
     }
 
     @Override

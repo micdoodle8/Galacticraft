@@ -3,20 +3,15 @@ package micdoodle8.mods.galacticraft.core.tile;
 import java.util.EnumSet;
 
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenTank;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.packet.Packet;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.ForgeDirection;
-
-import com.google.common.io.ByteArrayDataInput;
 
 /**
  * GCCoreTileEntityOxygenCompressor.java
@@ -277,23 +272,6 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen imp
     public boolean shouldUseEnergy()
     {
         return GCCoreTileEntityOxygen.timeSinceOxygenRequest > 0 && this.getStackInSlot(0) != null;
-    }
-
-    @Override
-    public void readPacket(ByteArrayDataInput data)
-    {
-        if (this.worldObj.isRemote)
-        {
-            this.setOxygenStored(data.readFloat());
-            this.setEnergyStored(data.readFloat());
-            this.disabled = data.readBoolean();
-        }
-    }
-
-    @Override
-    public Packet getPacket()
-    {
-        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getOxygenStored(), this.getEnergyStored(), this.disabled);
     }
 
     @Override

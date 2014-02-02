@@ -4,8 +4,7 @@ import java.util.EnumSet;
 
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
+import micdoodle8.mods.galacticraft.core.GCCoreAnnotations.NetworkedField;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -13,13 +12,11 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.packet.Packet;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.IPlantable;
-
-import com.google.common.io.ByteArrayDataInput;
+import cpw.mods.fml.relauncher.Side;
 
 /**
  * GCCoreTileEntityOxygenCollector.java
@@ -35,6 +32,7 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityOxygen impl
     public boolean active;
     public static final float WATTS_PER_TICK = 0.2F;
     public static final int OUTPUT_PER_TICK = 100;
+    @NetworkedField(targetSide = Side.CLIENT)
     public float lastOxygenCollected;
     private ItemStack[] containingItems = new ItemStack[1];
 
@@ -311,24 +309,6 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityOxygen impl
     public boolean shouldUseEnergy()
     {
         return this.storedOxygen > 0;
-    }
-
-    @Override
-    public void readPacket(ByteArrayDataInput data)
-    {
-        if (this.worldObj.isRemote)
-        {
-            this.setOxygenStored(data.readFloat());
-            this.setEnergyStored(data.readFloat());
-            this.disabled = data.readBoolean();
-            this.lastOxygenCollected = data.readFloat();
-        }
-    }
-
-    @Override
-    public Packet getPacket()
-    {
-        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getOxygenStored(), this.getEnergyStored(), this.disabled, this.lastOxygenCollected);
     }
 
     @Override

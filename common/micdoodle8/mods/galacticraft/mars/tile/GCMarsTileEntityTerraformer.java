@@ -1,13 +1,13 @@
 package micdoodle8.mods.galacticraft.mars.tile;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import micdoodle8.mods.galacticraft.api.block.ITerraformableBlock;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
+import micdoodle8.mods.galacticraft.core.GCCoreAnnotations.NetworkedField;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectricBlock;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityTerraformBubble;
 import micdoodle8.mods.galacticraft.mars.world.gen.GCMarsWorldGenTerraformTree;
@@ -19,7 +19,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.packet.Packet;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -28,6 +27,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 
 import com.google.common.io.ByteArrayDataInput;
+
+import cpw.mods.fml.relauncher.Side;
 
 /**
  * GCMarsTileEntityTerraformer.java
@@ -41,18 +42,25 @@ import com.google.common.io.ByteArrayDataInput;
 public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectricBlock implements IInventory, ISidedInventory, IDisableableMachine
 {
     private final int tankCapacity = 2000;
+    @NetworkedField(targetSide = Side.CLIENT)
     public FluidTank waterTank = new FluidTank(this.tankCapacity);
     public boolean active;
     public boolean lastActive;
     public static final float WATTS_PER_TICK = 0.2F;
     private ItemStack[] containingItems = new ItemStack[14];
+	@NetworkedField(targetSide = Side.CLIENT)
     public GCMarsEntityTerraformBubble terraformBubble;
     private ArrayList<Vector3> terraformableBlocksList = new ArrayList<Vector3>();
     private ArrayList<Vector3> grassBlockList = new ArrayList<Vector3>();
+	@NetworkedField(targetSide = Side.CLIENT)
     public int terraformableBlocksListSize = 0; // used for server->client ease
+	@NetworkedField(targetSide = Side.CLIENT)
     public int grassBlocksListSize = 0; // used for server->client ease
+	@NetworkedField(targetSide = Side.CLIENT)
     public boolean treesDisabled;
+	@NetworkedField(targetSide = Side.CLIENT)
     public boolean grassDisabled;
+	@NetworkedField(targetSide = Side.CLIENT)
     public float size;
     public final double MAX_SIZE = 15.0D;
     private int[] useCount = new int[2];
@@ -565,55 +573,51 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectricBlock i
     {
         return !this.grassDisabled || !this.treesDisabled;
     }
-
+    
     @Override
-    public void readPacket(ByteArrayDataInput data)
-    {
-        if (this.worldObj.isRemote)
-        {
-            this.setEnergyStored(data.readFloat());
-            this.treesDisabled = data.readBoolean();
-            this.grassDisabled = data.readBoolean();
-            this.disableCooldown = data.readInt();
-            int terraformBubbleEntityID = data.readInt();
-            this.terraformBubble = (GCMarsEntityTerraformBubble) (terraformBubbleEntityID == -1 ? null : this.worldObj.getEntityByID(terraformBubbleEntityID));
-            this.terraformableBlocksListSize = data.readInt();
-            this.grassBlocksListSize = data.readInt();
-            this.size = data.readFloat();
-
-            int firstStack = -1;
-            int itemID = -1;
-            int stackSize = -1;
-            int stackMetadata = -1;
-
-            for (int i = 0; i < 3; i++)
-            {
-                firstStack = data.readInt();
-                itemID = data.readInt();
-                stackSize = data.readInt();
-                stackMetadata = data.readInt();
-
-                if (firstStack != -1)
-                {
-                    this.containingItems[firstStack] = new ItemStack(itemID, stackSize, stackMetadata);
-                }
-            }
-
-            this.waterTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, data.readInt()));
-        }
-    }
-
-    @Override
-    public Packet getPacket()
-    {
+	public void addExtraNetworkedData(List<Object> networkedList)
+	{
         ItemStack stack1 = this.getFirstBonemealStack();
         ItemStack stack2 = this.getFirstSaplingStack();
         ItemStack stack3 = this.getFirstSeedStack();
-        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getEnergyStored(), this.treesDisabled, this.grassDisabled, this.disableCooldown, this.terraformBubble != null ? this.terraformBubble.entityId : -1, this.terraformableBlocksListSize, this.grassBlocksListSize, this.size, stack1 == null ? -1 : this.getSelectiveStack(2, 6), stack1 == null ? -1 : stack1.itemID, stack1 == null ? -1 : stack1.stackSize, stack1 == null ? -1 : stack1.getItemDamage(), stack2 == null ? -1 : this.getSelectiveStack(6, 4), stack2 == null ? -1 : stack2.itemID, stack2 == null ? -1 : stack2.stackSize, stack2 == null ? -1 : stack2.getItemDamage(), stack3 == null ? -1 : this.getSelectiveStack(10, 14), stack3 == null ? -1 : stack3.itemID, stack3 == null ? -1 : stack3.stackSize, stack3 == null ? -1 : stack3.getItemDamage(), this.waterTank.getFluid() == null ? 0 : this.waterTank.getFluid().amount);
-    }
+        networkedList.add(stack1 == null ? -1 : this.getSelectiveStack(2, 6)); 
+        networkedList.add(stack1 == null ? -1 : stack1.itemID);
+        networkedList.add(stack1 == null ? -1 : stack1.stackSize);
+        networkedList.add(stack1 == null ? -1 : stack1.getItemDamage());
+        networkedList.add(stack2 == null ? -1 : this.getSelectiveStack(6, 4));
+        networkedList.add(stack2 == null ? -1 : stack2.itemID);
+        networkedList.add(stack2 == null ? -1 : stack2.stackSize);
+        networkedList.add(stack2 == null ? -1 : stack2.getItemDamage());
+        networkedList.add(stack3 == null ? -1 : this.getSelectiveStack(10, 14));
+        networkedList.add(stack3 == null ? -1 : stack3.itemID);
+        networkedList.add(stack3 == null ? -1 : stack3.stackSize);
+        networkedList.add(stack3 == null ? -1 : stack3.getItemDamage());
+	}
+	
+    @Override
+	public void readExtraNetworkedData(ByteArrayDataInput dataStream)
+	{
+        int firstStack = -1;
+        int itemID = -1;
+        int stackSize = -1;
+        int stackMetadata = -1;
+
+        for (int i = 0; i < 3; i++)
+        {
+            firstStack = dataStream.readInt();
+            itemID = dataStream.readInt();
+            stackSize = dataStream.readInt();
+            stackMetadata = dataStream.readInt();
+
+            if (firstStack != -1)
+            {
+                this.containingItems[firstStack] = new ItemStack(itemID, stackSize, stackMetadata);
+            }
+        }
+	}
 
     @Override
-    protected double getPacketRange()
+    public double getPacketRange()
     {
         return 320.0D;
     }

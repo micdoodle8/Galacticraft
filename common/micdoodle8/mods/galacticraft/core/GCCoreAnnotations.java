@@ -5,6 +5,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import cpw.mods.fml.relauncher.Side;
+
 /**
  * ASMHelper.java
  *
@@ -14,7 +16,7 @@ import java.lang.annotation.Target;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class ASMHelper
+public class GCCoreAnnotations
 {
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.METHOD)
@@ -23,5 +25,12 @@ public class ASMHelper
         String clazz();
 
         String modID();
+    }
+
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.FIELD)
+    public @interface NetworkedField
+    {
+    	Side targetSide();
     }
 }

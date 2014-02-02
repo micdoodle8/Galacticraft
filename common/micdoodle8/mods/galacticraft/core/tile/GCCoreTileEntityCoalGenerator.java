@@ -6,6 +6,7 @@ import java.util.Set;
 
 import micdoodle8.mods.galacticraft.api.transmission.ElectricityPack;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
+import micdoodle8.mods.galacticraft.core.GCCoreAnnotations.NetworkedField;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
@@ -16,16 +17,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.ForgeDirection;
-
-import com.google.common.io.ByteArrayDataInput;
-
-import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.network.Player;
+import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.relauncher.Side;
 
 /**
  * GCCoreTileEntityCoalGenerator.java
@@ -53,12 +49,16 @@ public class GCCoreTileEntityCoalGenerator extends GCCoreTileEntityUniversalElec
     /**
      * Per second
      */
-    public float prevGenerateWatts, generateWatts = 0;
+    public float prevGenerateWatts = 0;
+
+    @NetworkedField(targetSide = Side.CLIENT)
+    public float generateWatts = 0;
 
     /**
      * The number of ticks that a fresh copy of the currently-burning item would
      * keep the furnace burning for
      */
+    @NetworkedField(targetSide = Side.CLIENT)
     public int itemCookTime = 0;
     /**
      * The ItemStacks that hold the items currently being used in the battery
@@ -114,13 +114,13 @@ public class GCCoreTileEntityCoalGenerator extends GCCoreTileEntityUniversalElec
             {
                 for (EntityPlayer player : this.playersUsing)
                 {
-                    PacketDispatcher.sendPacketToPlayer(this.getDescriptionPacket(), (Player) player);
+//                    PacketDispatcher.sendPacketToPlayer(this.getDescriptionPacket(), (Player) player);
                 }
             }
 
             if (this.prevGenerateWatts <= 0 && this.generateWatts > 0 || this.prevGenerateWatts > 0 && this.generateWatts <= 0)
             {
-            	GCCorePacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj);
+//            	GCCorePacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj);
             }
         }
     }
@@ -131,23 +131,21 @@ public class GCCoreTileEntityCoalGenerator extends GCCoreTileEntityUniversalElec
         return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.generateWatts, this.itemCookTime, this.getEnergyStored());
     }
 
-    @Override
-    public void handlePacketData(INetworkManager network, int type, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream)
-    {
-        try
-        {
-            if (this.worldObj.isRemote)
-            {
-                this.generateWatts = dataStream.readFloat();
-                this.itemCookTime = dataStream.readInt();
-                this.setEnergyStored(dataStream.readFloat());
-            }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
+//    @Override
+//    public void handlePacketData(INetworkManager network, int type, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream)
+//    {
+//        try
+//        {
+//            if (this.worldObj.isRemote)
+//            {
+//                this.setEnergyStored(dataStream.readFloat());
+//            }
+//        }
+//        catch (Exception e)
+//        {
+//            e.printStackTrace();
+//        }
+//    }
 
     @Override
     public void openChest()

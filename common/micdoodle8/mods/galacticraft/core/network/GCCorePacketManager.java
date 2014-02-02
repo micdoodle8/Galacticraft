@@ -4,7 +4,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import net.minecraft.entity.Entity;
@@ -16,6 +18,10 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
@@ -241,9 +247,17 @@ public class GCCorePacketManager implements IPacketHandler, IPacketReceiver
                 {
                     writeNBTTagCompound((NBTTagCompound) dataValue, data);
                 }
-                else if (dataValue instanceof ArrayList)
+                else if (dataValue instanceof FluidTank)
                 {
-                    for (Object subDataValue : (ArrayList<?>) dataValue)
+                	writeFluidTank((FluidTank) dataValue, data);
+                }
+                else if (dataValue instanceof Entity)
+                {
+                	data.writeInt(((Entity) dataValue).entityId);
+                }
+                else if (dataValue instanceof Collection)
+                {
+                    for (Object subDataValue : (Collection<?>) dataValue)
                     {
                         if (subDataValue instanceof Integer)
                         {
@@ -280,6 +294,14 @@ public class GCCorePacketManager implements IPacketHandler, IPacketReceiver
                         else if (subDataValue instanceof NBTTagCompound)
                         {
                             writeNBTTagCompound((NBTTagCompound) subDataValue, data);
+                        }
+                        else if (subDataValue instanceof FluidTank)
+                        {
+                        	writeFluidTank((FluidTank) subDataValue, data);
+                        }
+                        else if (subDataValue instanceof Entity)
+                        {
+                        	data.writeInt(((Entity) subDataValue).entityId);
                         }
                     }
                 }
@@ -372,6 +394,42 @@ public class GCCorePacketManager implements IPacketHandler, IPacketReceiver
     {
 
     }
+    
+    public static void writeFluidTank(FluidTank fluidTank, DataOutputStream dataStream) throws IOException
+    {
+    	if (fluidTank == null)
+    	{
+    		dataStream.writeInt(0);
+    		dataStream.writeInt(-1);
+    		dataStream.writeInt(0);
+    	}
+    	else
+    	{
+    		dataStream.writeInt(fluidTank.getCapacity());
+    		dataStream.writeInt(fluidTank.getFluid() == null ? -1 : fluidTank.getFluid().fluidID);
+    		dataStream.writeInt(fluidTank.getFluidAmount());
+    	}
+    }
+    
+    public static FluidTank readFluidTank(ByteArrayDataInput dataStream) throws IOException
+    {
+    	int capacity = dataStream.readInt();
+    	int fluidID = dataStream.readInt();
+    	FluidTank fluidTank = new FluidTank(capacity);
+    	int amount = dataStream.readInt();
+    	
+    	if (fluidID == -1)
+    	{
+    		fluidTank.setFluid(null);
+    	}
+    	else
+    	{
+        	Fluid fluid = FluidRegistry.getFluid(fluidID);
+        	fluidTank.setFluid(new FluidStack(fluid, amount));
+    	}
+    	
+    	return fluidTank;
+    }
 
 	public static void writeNBTTagCompound(NBTTagCompound tag, DataOutputStream dataStream) throws IOException
 	{
@@ -432,7 +490,7 @@ public class GCCorePacketManager implements IPacketHandler, IPacketReceiver
 			return CompressedStreamTools.decompress(var2);
 		}
 	}
-	
+		
 	public static void sendPacketToClients(Packet packet, World worldObj)
 	{
 		try
@@ -470,5 +528,67 @@ public class GCCorePacketManager implements IPacketHandler, IPacketReceiver
 			System.out.println("Sending packet to client failed.");
 			e.printStackTrace();
 		}
+	}
+	
+	public static Object getFieldValueFromStream(Field field, ByteArrayDataInput stream, World world) throws IOException
+	{
+		Class<?> dataValue = field.getType();
+		
+		if (dataValue.equals(int.class))
+        {
+			return stream.readInt();
+        }
+        else if (dataValue.equals(float.class))
+        {
+        	return stream.readFloat();
+        }
+        else if (dataValue.equals(double.class))
+        {
+        	return stream.readDouble();
+        }
+        else if (dataValue.equals(byte.class))
+        {
+        	return stream.readByte();
+        }
+        else if (dataValue.equals(boolean.class))
+        {
+        	return stream.readBoolean();
+        }
+        else if (dataValue.equals(String.class))
+        {
+        	return stream.readUTF();
+        }
+        else if (dataValue.equals(short.class))
+        {
+        	return stream.readShort();
+        }
+        else if (dataValue.equals(Long.class))
+        {
+        	return stream.readLong();
+        }
+        else if (dataValue.equals(NBTTagCompound.class))
+        {
+        	return readNBTTagCompound(stream);
+        }
+        else if (dataValue.equals(FluidTank.class))
+        {
+        	return readFluidTank(stream);
+        }
+        else
+        {
+        	Class<?> c = dataValue;
+        	
+        	while (c != null)
+        	{
+        		if (c.equals(Entity.class))
+        		{
+        			return world.getEntityByID(stream.readInt());
+        		}
+        		
+        		c = c.getSuperclass();
+        	}
+        }
+				
+		throw new NullPointerException("Field type not found: " + field.getType().getSimpleName());
 	}
 }

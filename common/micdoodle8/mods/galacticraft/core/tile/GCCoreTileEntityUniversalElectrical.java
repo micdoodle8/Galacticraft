@@ -7,6 +7,8 @@ import ic2.api.item.ISpecialElectricItem;
 import java.lang.reflect.Constructor;
 import java.util.EnumSet;
 
+import cpw.mods.fml.relauncher.Side;
+
 import micdoodle8.mods.galacticraft.api.transmission.ElectricityPack;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkHelper;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
@@ -17,7 +19,8 @@ import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IElectricalStorage;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.ASMHelper.RuntimeInterface;
+import micdoodle8.mods.galacticraft.core.GCCoreAnnotations.NetworkedField;
+import micdoodle8.mods.galacticraft.core.GCCoreAnnotations.RuntimeInterface;
 import micdoodle8.mods.galacticraft.core.GCCoreCompatibilityManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -46,7 +49,26 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
     protected boolean isAddedToEnergyNet;
     public Object bcPowerHandler;
     public float maxInputEnergy = 100;
+    @NetworkedField(targetSide = Side.CLIENT)
 	public float energyStored = 0;
+
+	@Override
+	public double getPacketRange()
+	{
+		return 12.0D;
+	}
+
+	@Override
+	public int getPacketCooldown()
+	{
+		return 3;
+	}
+
+	@Override
+	public boolean isNetworkedTile()
+	{
+		return true;
+	}
 
 	public EnumSet<ForgeDirection> getElectricalInputDirections()
 	{
@@ -57,6 +79,7 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 	{
 		return EnumSet.noneOf(ForgeDirection.class);
 	}
+	
 	@Override
 	public float receiveElectricity(ForgeDirection from, ElectricityPack receive, boolean doReceive)
 	{
@@ -246,7 +269,7 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
                     if (powerRequest.getWatts() > 0)
                     {
                         ElectricityPack sendPack = ElectricityPack.min(ElectricityPack.getFromWatts(this.getEnergyStored(), this.getVoltage()), ElectricityPack.getFromWatts(provide, this.getVoltage()));
-                        float rejectedPower = outputNetwork.produce(sendPack, this);
+                        float rejectedPower = outputNetwork.produce(sendPack, true, this);
 						this.provideElectricity(Math.max(sendPack.getWatts() - rejectedPower, 0), true);
                         return true;
                     }
@@ -536,25 +559,53 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
     {
         return this.getWorldObj();
     }
-    
+
+	/**
+	 * Add energy to an IEnergyHandler, internal distribution is left entirely to the IEnergyHandler.
+	 * 
+	 * @param from
+	 *            Orientation the energy is received from.
+	 * @param maxReceive
+	 *            Maximum amount of energy to receive.
+	 * @param simulate
+	 *            If TRUE, the charge will only be simulated.
+	 * @return Amount of energy that was (or would have been, if simulated) received.
+	 */
     @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "ThermalExpansion")
 	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate)
 	{
-		return (int) Math.floor(this.receiveElectricity(maxReceive * NetworkConfigHandler.TE_RATIO, simulate));
+		return (int) Math.floor(this.receiveElectricity(maxReceive * NetworkConfigHandler.TE_RATIO, !simulate));
 	}
 
+	/**
+	 * Remove energy from an IEnergyHandler, internal distribution is left entirely to the IEnergyHandler.
+	 * 
+	 * @param from
+	 *            Orientation the energy is extracted from.
+	 * @param maxExtract
+	 *            Maximum amount of energy to extract.
+	 * @param simulate
+	 *            If TRUE, the extraction will only be simulated.
+	 * @return Amount of energy that was (or would have been, if simulated) extracted.
+	 */
     @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "ThermalExpansion")
 	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate)
 	{
-		return (int) Math.floor(this.provideElectricity(maxExtract * NetworkConfigHandler.TE_RATIO, simulate).getWatts());
+		return (int) Math.floor(this.provideElectricity(maxExtract * NetworkConfigHandler.TE_RATIO, !simulate).getWatts());
 	}
 
+	/**
+	 * Returns true if the Handler functions on a given side - if a Tile Entity can receive or send energy on a given side, this should return true.
+	 */
     @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "ThermalExpansion")
 	public boolean canInterface(ForgeDirection from)
 	{
 		return this.getElectricalInputDirections().contains(from) || this.getElectricalOutputDirections().contains(from);
 	}
 
+	/**
+	 * Returns the amount of energy currently stored.
+	 */
     @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "ThermalExpansion")
 	public int getEnergyStored(ForgeDirection from)
 	{
@@ -566,6 +617,9 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 		return (int) Math.floor(this.getEnergyStored() * NetworkConfigHandler.TE_RATIO);
 	}
 
+	/**
+	 * Returns the maximum amount of energy that can be stored.
+	 */
     @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "ThermalExpansion")
 	public int getMaxEnergyStored(ForgeDirection from)
 	{

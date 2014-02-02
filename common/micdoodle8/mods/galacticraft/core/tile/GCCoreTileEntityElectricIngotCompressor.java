@@ -2,9 +2,8 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.GCCoreAnnotations.NetworkedField;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockMachine2;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,11 +14,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.packet.Packet;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.ForgeDirection;
-
-import com.google.common.io.ByteArrayDataInput;
+import cpw.mods.fml.relauncher.Side;
 
 /**
  * GCCoreTileEntityElectricIngotCompressor.java
@@ -34,6 +31,7 @@ public class GCCoreTileEntityElectricIngotCompressor extends GCCoreTileEntityEle
 {
     public static final int PROCESS_TIME_REQUIRED = 200;
     public static final float WATTS_PER_TICK_PER_STACK = 0.25F;
+    @NetworkedField(targetSide = Side.CLIENT)
     public int processTicks = 0;
     private ItemStack producingStack = null;
     private long ticks;
@@ -389,26 +387,6 @@ public class GCCoreTileEntityElectricIngotCompressor extends GCCoreTileEntityEle
     public boolean shouldUseEnergy()
     {
         return this.processTicks > 0;
-    }
-
-    @Override
-    public void readPacket(ByteArrayDataInput data)
-    {
-        try
-        {
-            this.processTicks = data.readInt();
-            this.setEnergyStored(data.readFloat());
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public Packet getPacket()
-    {
-        return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.processTicks, this.getEnergyStored());
     }
 
     @Override

@@ -3,21 +3,16 @@ package micdoodle8.mods.galacticraft.core.tile;
 import java.util.EnumSet;
 
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.ASMHelper.RuntimeInterface;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
+import micdoodle8.mods.galacticraft.core.GCCoreAnnotations.NetworkedField;
+import micdoodle8.mods.galacticraft.core.GCCoreAnnotations.RuntimeInterface;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.ForgeDirection;
-
-import com.google.common.io.ByteArrayDataInput;
+import cpw.mods.fml.relauncher.Side;
 
 /**
  * GCCoreTileEntityElectric.java
@@ -33,16 +28,14 @@ public abstract class GCCoreTileEntityElectricBlock extends GCCoreTileEntityUniv
     public float ueWattsPerTick;
     private final float ueMaxEnergy;
 
+    @NetworkedField(targetSide = Side.CLIENT)
     public boolean disabled = true;
+    @NetworkedField(targetSide = Side.CLIENT)
     public int disableCooldown = 0;
 
     public abstract boolean shouldPullEnergy();
 
     public abstract boolean shouldUseEnergy();
-
-    public abstract void readPacket(ByteArrayDataInput data);
-
-    public abstract Packet getPacket();
 
     public abstract ForgeDirection getElectricInputDirection();
 
@@ -115,17 +108,7 @@ public abstract class GCCoreTileEntityElectricBlock extends GCCoreTileEntityUniv
             {
                 this.disableCooldown--;
             }
-
-            if (this.ticks % 3 == 0)
-            {
-            	GCCorePacketManager.sendPacketToClients(this.getPacket(), this.worldObj, new Vector3(this), this.getPacketRange());
-            }
         }
-    }
-
-    protected double getPacketRange()
-    {
-        return 12.0D;
     }
 
     @Override
@@ -142,19 +125,6 @@ public abstract class GCCoreTileEntityElectricBlock extends GCCoreTileEntityUniv
         super.readFromNBT(nbt);
 
         this.setDisabled(0, nbt.getBoolean("isDisabled"));
-    }
-
-    @Override
-    public void handlePacketData(INetworkManager network, int type, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream)
-    {
-        try
-        {
-            this.readPacket(dataStream);
-        }
-        catch (final Exception e)
-        {
-            e.printStackTrace();
-        }
     }
 
     @Override

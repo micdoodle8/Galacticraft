@@ -203,4 +203,22 @@ public class GCCoreTileEntityDungeonSpawner extends GCCoreTileEntityAdvanced
             nbt.setDouble("roomSizeZ", this.roomSize.z);
         }
     }
+
+	@Override
+	public double getPacketRange()
+	{
+		return 0;
+	}
+
+	@Override
+	public int getPacketCooldown()
+	{
+		return 0;
+	}
+
+	@Override
+	public boolean isNetworkedTile()
+	{
+		return false;
+	}
 }
