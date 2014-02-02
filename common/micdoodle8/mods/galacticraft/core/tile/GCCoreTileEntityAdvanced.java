@@ -49,7 +49,7 @@ public abstract class GCCoreTileEntityAdvanced extends TileEntity implements IPa
 
 		this.ticks++;
 		
-		if (this.ticks % 3 == 0 && this.isNetworkedTile())
+		if (this.ticks % this.getPacketCooldown() == 0 && this.isNetworkedTile())
 		{
 			if (this.fieldCacheClient == null || this.fieldCacheServer == null)
 			{

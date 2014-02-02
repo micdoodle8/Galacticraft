@@ -4,12 +4,19 @@ import micdoodle8.mods.galacticraft.api.tile.IColorable;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GCCoreAnnotations.NetworkedField;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.INetworkManager;
+import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.ForgeDirection;
-import cpw.mods.fml.common.FMLLog;
+
+import com.google.common.io.ByteArrayDataInput;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -49,10 +56,10 @@ public class GCCoreTileEntityOxygenPipe extends GCCoreTileEntityOxygenTransmitte
 	                return false;
 	            }
 	        }
-	        
+
 	        return true;
 		}
-		
+
 		return false;
 	}
 
@@ -79,13 +86,13 @@ public class GCCoreTileEntityOxygenPipe extends GCCoreTileEntityOxygenTransmitte
 
         if (this.preColorCooldown == 0 && !this.worldObj.isRemote && this.preLoadColor != -1)
         {
+        	GCCorePacketManager.sendPacketToClients(GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getColor(), this.preLoadColor));
         	this.preLoadColor = -1;
             this.setColor = true;
         }
 
         if (this.preColorCooldown == 0 && this.worldObj.isRemote && this.preLoadColor == 0)
         {
-        	FMLLog.info("done1");
             final Vector3 thisVec = new Vector3(this);
             this.worldObj.markBlockForRenderUpdate(thisVec.intX(), thisVec.intY(), thisVec.intZ());
             this.preLoadColor = -1;
@@ -102,7 +109,7 @@ public class GCCoreTileEntityOxygenPipe extends GCCoreTileEntityOxygenTransmitte
 	@Override
 	public int getPacketCooldown()
 	{
-		return 0;
+		return 1;
 	}
 
 	@Override
@@ -135,6 +142,12 @@ public class GCCoreTileEntityOxygenPipe extends GCCoreTileEntityOxygenTransmitte
             final Vector3 thisVec = new Vector3(this);
             this.worldObj.markBlockForRenderUpdate(thisVec.intX(), thisVec.intY(), thisVec.intZ());
         }
+        
+        if (!this.worldObj.isRemote)
+        {
+        	this.getNetwork().split(this);
+			this.resetNetwork();
+        }
     }
 
     @Override
@@ -147,6 +160,11 @@ public class GCCoreTileEntityOxygenPipe extends GCCoreTileEntityOxygenTransmitte
     public void onAdjacentColorChanged(ForgeDirection direction)
     {
         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+        
+        if (!this.worldObj.isRemote)
+        {
+        	this.refresh();
+        }
     }
 
     @Override
@@ -165,5 +183,22 @@ public class GCCoreTileEntityOxygenPipe extends GCCoreTileEntityOxygenTransmitte
         super.writeToNBT(par1NBTTagCompound);
 
         par1NBTTagCompound.setByte("pipeColor", this.getColor());
+    }
+
+    @Override
+    public void handlePacketData(INetworkManager network, int packetType, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream)
+    {
+        try
+        {
+            if (this.worldObj.isRemote)
+            {
+                this.setColor(dataStream.readByte());
+                this.preLoadColor = dataStream.readByte();
+            }
+        }
+        catch (final Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 }
