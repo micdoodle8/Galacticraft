@@ -4,7 +4,7 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.ITransmitter;
 import net.minecraft.tileentity.TileEntity;
 
 /**
- * The Electrical Network in interface form.
+ * The Oxygen Network in interface form.
  * 
  * @author Calclavia
  * 
@@ -12,14 +12,14 @@ import net.minecraft.tileentity.TileEntity;
 public interface IOxygenNetwork extends IGridNetwork<IOxygenNetwork, ITransmitter, TileEntity>
 {
 	/**
-	 * Produces electricity in this electrical network.
+	 * Produces oxygen in this oxygen network.
 	 * 
 	 * @return Rejected energy in Joules.
 	 */
 	public float produce(float sendAmount, TileEntity... ignoreTiles);
 
 	/**
-	 * Gets the total amount of electricity requested/needed in the electricity network.
+	 * Gets the total amount of oxygen requested/needed in the electricity network.
 	 * 
 	 * @param ignoreTiles The TileEntities to ignore during this calculation (optional).
 	 */

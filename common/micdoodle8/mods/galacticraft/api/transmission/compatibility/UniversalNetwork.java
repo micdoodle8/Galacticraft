@@ -41,7 +41,7 @@ import cpw.mods.fml.common.FMLLog;
 public class UniversalNetwork extends ElectricityNetwork
 {
 	@Override
-	public float produce(ElectricityPack electricity, TileEntity... ignoreTiles)
+	public float produce(ElectricityPack electricity, boolean doReceive, TileEntity... ignoreTiles)
 	{
 		ElectricityProductionEvent evt = new ElectricityProductionEvent(this, electricity, ignoreTiles);
 		MinecraftForge.EVENT_BUS.post(evt);
@@ -87,7 +87,7 @@ public class UniversalNetwork extends ElectricityNetwork
 											if (energyToSend > 0)
 											{
 												ElectricityPack electricityToSend = ElectricityPack.getFromWatts(energyToSend, voltage);
-												remainingUsableEnergy -= electricalTile.receiveElectricity(direction, electricityToSend, true);
+												remainingUsableEnergy -= electricalTile.receiveElectricity(direction, electricityToSend, doReceive);
 											}
 										}
 									}
@@ -105,7 +105,11 @@ public class UniversalNetwork extends ElectricityNetwork
 										{
 											float energyToSend = (float) Math.min(totalUsableEnergy * ((electricalTile.demandedEnergyUnits() * NetworkConfigHandler.IC2_RATIO) / totalEnergyRequest), electricalTile.getMaxSafeInput() * NetworkConfigHandler.IC2_RATIO);
 
-											if (energyToSend > 0)
+											if (!doReceive)
+											{
+												remainingUsableEnergy -= energyToSend;
+											}
+											else if (energyToSend > 0)
 											{
 												remainingUsableEnergy -= electricalTile.injectEnergyUnits(direction, energyToSend * NetworkConfigHandler.TO_IC2_RATIO) * NetworkConfigHandler.IC2_RATIO;
 											}
@@ -128,7 +132,11 @@ public class UniversalNetwork extends ElectricityNetwork
 											{
 												float energyToSend = totalUsableEnergy * ((receiver.powerRequest() * NetworkConfigHandler.BC3_RATIO) / totalEnergyRequest);
 
-												if (energyToSend > 0)
+												if (!doReceive)
+												{
+													remainingUsableEnergy -= energyToSend;
+												}
+												else if (energyToSend > 0)
 												{
 													remainingUsableEnergy -= receiver.receiveEnergy(Type.PIPE, energyToSend * NetworkConfigHandler.TO_BC_RATIO, direction) * NetworkConfigHandler.BC3_RATIO;
 												}
@@ -153,7 +161,7 @@ public class UniversalNetwork extends ElectricityNetwork
 
 												if (energyToSend > 0)
 												{
-													remainingUsableEnergy -= receiver.receiveEnergy(direction, (int) (energyToSend * NetworkConfigHandler.TO_TE_RATIO), false) * NetworkConfigHandler.TE_RATIO;
+													remainingUsableEnergy -= receiver.receiveEnergy(direction, (int) (energyToSend * NetworkConfigHandler.TO_TE_RATIO), !doReceive) * NetworkConfigHandler.TE_RATIO;
 												}
 											}
 										}

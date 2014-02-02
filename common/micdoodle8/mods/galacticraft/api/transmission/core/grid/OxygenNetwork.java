@@ -28,8 +28,8 @@ import net.minecraftforge.common.ForgeDirection;
 import cpw.mods.fml.common.FMLLog;
 
 /**
- * An Electrical Network specifies a wire connection. Each wire connection line will have its own
- * electrical network.
+ * An Oxygen Network specifies a wire connection. Each wire connection line will have its own
+ * oxygen network.
  * 
  * !! Do not include this class if you do not intend to have custom wires in your mod. This will
  * increase future compatibility. !!
@@ -44,33 +44,33 @@ public class OxygenNetwork implements IOxygenNetwork
 	private final Set<ITransmitter> pipes = new HashSet<ITransmitter>();
 
 	@Override
-	public float produce(float totalEnergy, TileEntity... ignoreTiles)
+	public float produce(float totalOxygen, TileEntity... ignoreTiles)
 	{
-		float remainingUsableOxygen = totalEnergy;
+		float remainingUsableOxygen = totalOxygen;
 
-		Set<TileEntity> avaliableEnergyTiles = this.getAcceptors();
+		Set<TileEntity> avaliableOxygenTiles = this.getAcceptors();
 
-		if (!avaliableEnergyTiles.isEmpty())
+		if (!avaliableOxygenTiles.isEmpty())
 		{
 			final float totalOxygenRequest = this.getRequest(ignoreTiles);
 
 			if (totalOxygenRequest > 0)
 			{
-				for (TileEntity tileEntity : avaliableEnergyTiles)
+				for (TileEntity tileEntity : avaliableOxygenTiles)
 				{
 					if (!Arrays.asList(ignoreTiles).contains(tileEntity))
 					{
 						if (tileEntity instanceof IOxygenReceiver)
 						{
-							IOxygenReceiver electricalTile = (IOxygenReceiver) tileEntity;
+							IOxygenReceiver oxygenTile = (IOxygenReceiver) tileEntity;
 
 							for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
 							{
 								TileEntity tile = new Vector3(tileEntity).modifyPositionFromSide(direction).getTileEntity(tileEntity.worldObj);
 																
-								if (electricalTile.canConnect(direction, NetworkType.OXYGEN) && this.getTransmitters().contains(tile))
+								if (oxygenTile.canConnect(direction, NetworkType.OXYGEN) && this.getTransmitters().contains(tile))
 								{
-									float oxygenToSend = totalEnergy * (electricalTile.getOxygenRequest(direction) / totalOxygenRequest);
+									float oxygenToSend = totalOxygen * (oxygenTile.getOxygenRequest(direction) / totalOxygenRequest);
 
 									if (oxygenToSend > 0)
 									{
@@ -89,7 +89,7 @@ public class OxygenNetwork implements IOxygenNetwork
 																
 								if (gasAcceptor.canReceiveGas(direction, (Gas) NetworkConfigHandler.gasOxygen) && this.getTransmitters().contains(tile))
 								{
-									int oxygenToSend = (int) Math.floor(totalEnergy / (float)avaliableEnergyTiles.size()); // TODO: Mekanism PR to simulate received gas amount
+									int oxygenToSend = (int) Math.floor(totalOxygen / (float)avaliableOxygenTiles.size()); // TODO: Mekanism PR to simulate received gas amount
 
 									if (oxygenToSend > 0)
 									{
@@ -107,7 +107,7 @@ public class OxygenNetwork implements IOxygenNetwork
 	}
 
 	/**
-	 * @return How much electricity this network needs.
+	 * @return How much oxygen this network needs.
 	 */
 	@Override
 	public float getRequest(TileEntity... ignoreTiles)
@@ -158,7 +158,7 @@ public class OxygenNetwork implements IOxygenNetwork
 	}
 
 	/**
-	 * @return Returns all producers in this electricity network.
+	 * @return Returns all producers in this oxygen network.
 	 */
 	@Override
 	public Set<TileEntity> getAcceptors()
@@ -231,7 +231,7 @@ public class OxygenNetwork implements IOxygenNetwork
 		}
 		catch (Exception e)
 		{
-			FMLLog.severe("Universal Electricity: Failed to refresh conductor.");
+			FMLLog.severe("Failed to refresh oxygen pipe network.");
 			e.printStackTrace();
 		}
 	}

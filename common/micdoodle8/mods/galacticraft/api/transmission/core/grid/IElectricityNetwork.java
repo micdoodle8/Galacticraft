@@ -17,7 +17,7 @@ public interface IElectricityNetwork extends IGridNetwork<IElectricityNetwork, I
 	 * 
 	 * @return Rejected energy in Joules.
 	 */
-	public float produce(ElectricityPack electricityPack, TileEntity... ignoreTiles);
+	public float produce(ElectricityPack electricityPack, boolean doReceive, TileEntity... ignoreTiles);
 
 	/**
 	 * Gets the total amount of electricity requested/needed in the electricity network.
