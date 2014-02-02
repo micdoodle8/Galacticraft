@@ -48,103 +48,98 @@ public abstract class GCCoreTileEntityAdvanced extends TileEntity implements IPa
 		}
 
 		this.ticks++;
-		
-		if (this.ticks % this.getPacketCooldown() == 0 && this.isNetworkedTile())
+
+		if (this.isNetworkedTile() && this.ticks % this.getPacketCooldown() == 0)
 		{
 			if (this.fieldCacheClient == null || this.fieldCacheServer == null)
 			{
 				try
 				{
 					this.initFieldCache();
-				} 
-				catch (Exception e)
+				} catch (Exception e)
 				{
 					e.printStackTrace();
 				}
 			}
-			
+
 			if (this.worldObj.isRemote && this.fieldCacheServer.size() > 0)
 			{
 				this.sendPackets();
-			}
-			else if (!this.worldObj.isRemote && this.fieldCacheClient.size() > 0)
+			} else if (!this.worldObj.isRemote && this.fieldCacheClient.size() > 0)
 			{
 				this.sendPackets();
 			}
 		}
 	}
-	
+
 	private void sendPackets()
 	{
 		try
 		{
 			Packet packet = null;
 			Set<Field> fieldList = null;
-			
+
 			if (this.worldObj.isRemote)
 			{
 				fieldList = this.fieldCacheServer;
-			}
-			else
+			} else
 			{
 				fieldList = this.fieldCacheClient;
 			}
-			
+
 			List<Object> objList = new ArrayList<Object>();
-			
+
 			for (Field f : fieldList)
 			{
 				objList.add(f.get(this));
 			}
-			
+
 			this.addExtraNetworkedData(objList);
-			
+
 			packet = GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, objList);
 			GCCorePacketManager.sendPacketToClients(packet, this.worldObj, new Vector3(this), 12);
-		}
-		catch (Exception e)
+		} catch (Exception e)
 		{
 			e.printStackTrace();
 		}
 	}
-	
-	private void initFieldCache() throws IllegalArgumentException, IllegalAccessException 
+
+	private void initFieldCache() throws IllegalArgumentException, IllegalAccessException
 	{
 		this.fieldCacheClient = new LinkedHashSet<Field>();
 		this.fieldCacheServer = new LinkedHashSet<Field>();
-		
+
 		for (Field field : this.getClass().getFields())
 		{
 			if (field.isAnnotationPresent(NetworkedField.class))
 			{
 				NetworkedField f = field.getAnnotation(NetworkedField.class);
-				
+
 				if (f.targetSide() == Side.CLIENT)
 				{
 					this.fieldCacheClient.add(field);
-				}
-				else
+				} else
 				{
 					this.fieldCacheServer.add(field);
 				}
 			}
 		}
 	}
-	
+
 	public abstract double getPacketRange();
-	
+
 	public abstract int getPacketCooldown();
-	
+
 	public abstract boolean isNetworkedTile();
-	
+
 	public void addExtraNetworkedData(List<Object> networkedList)
 	{
-		
+
 	}
-	
+
 	public void readExtraNetworkedData(ByteArrayDataInput dataStream)
 	{
-		
+
 	}
 
 	@Override
@@ -155,8 +150,7 @@ public abstract class GCCoreTileEntityAdvanced extends TileEntity implements IPa
 			try
 			{
 				this.initFieldCache();
-			} 
-			catch (Exception e)
+			} catch (Exception e)
 			{
 				e.printStackTrace();
 			}
@@ -165,35 +159,32 @@ public abstract class GCCoreTileEntityAdvanced extends TileEntity implements IPa
 		if (this.worldObj.isRemote && this.fieldCacheClient.size() == 0)
 		{
 			return;
-		}
-		else if (!this.worldObj.isRemote && this.fieldCacheServer.size() == 0)
+		} else if (!this.worldObj.isRemote && this.fieldCacheServer.size() == 0)
 		{
 			return;
 		}
-		
+
 		Set<Field> fieldSet = null;
 
 		if (this.worldObj.isRemote)
 		{
 			fieldSet = this.fieldCacheClient;
-		}
-		else
+		} else
 		{
 			fieldSet = this.fieldCacheServer;
 		}
-		
+
 		for (Field field : fieldSet)
 		{
 			try
 			{
 				field.set(this, GCCorePacketManager.getFieldValueFromStream(field, dataStream, this.worldObj));
-			} 
-			catch (Exception e)
+			} catch (Exception e)
 			{
 				e.printStackTrace();
 			}
 		}
-		
+
 		this.readExtraNetworkedData(dataStream);
 	}
 
