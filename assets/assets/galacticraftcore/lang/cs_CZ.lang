@@ -1,0 +1,347 @@
+# Galacticraft Core Language File = CZECH REPUBLIC CZECH
+
+# GENERAL ITEMS
+item.oxygenTankLightFull.name=Malá kyslíková lahev
+item.oxygenTankLightEmpty.name=Prázdná malá kyslíková lahev
+item.oxygenTankMedFull.name=Střední kyslíková lahev
+item.oxygenTankMedEmpty.name=Prázdná střední kyslíková lahev
+item.oxygenTankHeavyFull.name=Velká kyslíková lahev
+item.oxygenTankHeavyEmpty.name=Prázdná velká kyslíková lahev
+item.oxygenMask.name=Kyslíková maska
+item.spaceship.name=Raketa typ 1
+item.sensorGlasses.name=Senzorové brýle
+item.canister.tin.name=Cínová plechovka
+item.canister.copper.name=Měděná plechovka
+item.airVent.name=Kyslíkový výdech
+item.airFan.name=Kyslíkový ventilátor
+item.oxygenConcentrator.name=Kyslíkový koncentrátor
+item.heavyPlating.name=Plech pro těžký provoz
+item.engine.tier1engine.name=Raketový motor typ 1
+item.engine.tier1booster.name=Posilovač typ 1
+item.rocketFins.name=Raketové Křidélko
+item.noseCone.name=Špička rakety
+item.sensorLens.name=Senzorové čočky
+item.oxygenGear.name=Kyslíková výstroj
+item.flag.american.name=Americká vlajka
+item.flag.black.name=Černá vlajka
+item.flag.blue.name=Světle modrá vlajka
+item.flag.green.name=Světle zelená vlajka
+item.flag.brown.name=Hnědá vlajka
+item.flag.darkblue.name=Modrá vlajka
+item.flag.darkgray.name=Šedá vlajka
+item.flag.darkgreen.name=Zelená vlajka
+item.flag.gray.name=Světle šedá vlajka
+item.flag.magenta.name=Tmavě purpurová vlajka
+item.flag.orange.name=Oranžová vlajka
+item.flag.pink.name=Růžová vlajka
+item.flag.purple.name=Fialová vlajka
+item.flag.red.name=Červená vlajka
+item.flag.teal.name=Modrozelená vlajka
+item.flag.yellow.name=Žlutá vlajka
+item.flag.white.name=Vlajka
+item.parachute_plain.name=Padák
+item.parachute_black.name=Černý padák
+item.parachute_blue.name=Světle modrý padák
+item.parachute_lime.name=Světle zelený padák
+item.parachute_brown.name=Hnědý padák
+item.parachute_darkblue.name=Modrý padák
+item.parachute_darkgray.name=Šedý padák
+item.parachute_darkgreen.name=Zelený padák
+item.parachute_gray.name=Světle šedý padák
+item.parachute_magenta.name=Tmavě purpurový padák
+item.parachute_orange.name=Oranžový padák
+item.parachute_pink.name=Růžový padák
+item.parachute_purple.name=Fialový padák
+item.parachute_red.name=Červený padák
+item.parachute_teal.name=Modrozelený padák
+item.parachute_yellow.name=Žlutý padák
+item.steelPole.name=Ocelový stožár
+item.canvas.name=Plátno
+item.buggy.name=Bugina
+item.emptyLiquidCanister.name=Prázdná plechovka
+item.oilCanisterPartial.name=Plechovka částečně naplněná ropou
+item.fuelCanisterPartial.name=Plechovka částečně naplněná palivem
+item.oilCanister.name=Plechovka naplněná ropou
+item.fuelCanister.name=Plechovka naplněná palivem
+item.oilExtractor.name=Přenosná těžební souprava
+item.schematic.name=Schéma konstrukčního pracoviště
+item.fuel.name=Raketové palivo
+item.key.T1.name=Klíč typ 1
+item.buggymat.wheel.name=Kolo k bugině
+item.buggymat.seat.name=Sedačka k bugině
+item.buggymat.storage.name=Zavazadelník k bugině
+item.basicItem.solar_module_0.name=Solární článek
+item.basicItem.solar_module_1.name=Solární panel
+item.basicItem.ingotCopper.name=Měděný ingot
+item.basicItem.ingotTin.name=Cínový ingot
+item.basicItem.ingotAluminum.name=Hliníkový ingot
+item.basicItem.ingotSteel.name=Ocelový ingot
+item.basicItem.ingotBronze.name=Bronzový ingot
+item.basicItem.compressedCopper.name=Stlačená měď
+item.basicItem.compressedTin.name=Stlačený cín
+item.basicItem.compressedAluminum.name=Stlačený hliník
+item.basicItem.compressedSteel.name=Stlačená ocel
+item.basicItem.compressedBronze.name=Stlačený bronz
+item.basicItem.compressedIron.name=Stlačené železo
+item.basicItem.waferSolar.name=Modrý solární wafer
+item.basicItem.waferBasic.name=Základní wafer
+item.basicItem.waferAdvanced.name=Pokročilý Wafer
+item.basicItem.rawSilicon.name=Nezpracovaný silikon
+item.tier1.desc=Typ 1
+item.battery.name=Baterie
+item.infiniteBattery.name=Nevyčerpatelná Baterie
+item.meteorChunk.name=Meteorický kámen
+item.meteorChunkHot.name=Meteorický kámen
+item.hotDescription.name=Horký
+item.basicItem.dehydratedApple.name=Dehydrované jablko
+item.basicItem.dehydratedCarrot.name=Dehydrovaná mrkev
+item.basicItem.dehydratedMelon.name=Dehydrovaný meloun
+item.basicItem.dehydratedPotato.name=Dehydrované rajče
+item.basicItem.cannedFood.name=Jídlo v plechovce
+item.basicItem.frequencyModule.name=Frekvenční modul
+item.standardWrench.name=Standardní klíč
+
+# TOOLS
+item.steel_pickaxe.name=Zesílený krumpáč
+item.steel_axe.name=Zesílená sekera
+item.steel_hoe.name=Zesílená motyka
+item.steel_shovel.name=Zesílená lopata
+item.steel_sword.name=Zesílený meč
+
+# ARMOR
+item.steel_helmet.name=Zesílená helma
+item.steel_chestplate.name=Zesílený hrudní chránič
+item.steel_leggings.name=Zesílené kalhoty
+item.steel_boots.name=Zesílené boty
+
+# BLOCKS
+tile.treasureChest.name=Pokladnice
+tile.landingPad.landingPad.name=Startovací rampa
+tile.landingPadFull.name=Startovací rampa
+tile.unlitTorch.name=Pochodeň
+tile.unlitTorchLit.name=Pochodeň
+tile.distributor.name=Bublinový distributor kyslíku
+tile.oxygenPipe.name=Kyslíková trubka
+tile.oxygenCollector.name=Kyslíkový kolektor
+tile.fallenMeteor.name=Spadlý metorit
+tile.rocketWorkbench.name=Raketové konstrukční pracoviště
+tile.gcBlockCore.decoblock1.name=Cínový dekorační blok
+tile.gcBlockCore.decoblock2.name=Cínový dekorační blok
+tile.gcBlockCore.oreCopper.name=Měděná ruda
+tile.gcBlockCore.oreTin.name=Cínová ruda
+tile.gcBlockCore.oreAluminum.name=Hliníková ruda
+tile.gcBlockCore.oreSilicon.name=Silikonová ruda
+tile.airLockFrame.name=Rám vzduchového uzávěru
+tile.airLockSeal.name=Vzduchový uzávěr
+tile.crudeOilStill.name=Surová ropa
+tile.crudeOilMoving.name=Surová ropa
+tile.refinery.name=Refinérie
+tile.fuelLoader.name=Palivové čerpadlo
+tile.sapling2.oak.name=Dubové větve
+tile.sapling2.spruce.name=Smrkové větve
+tile.sapling2.birch.name=Březové větve
+tile.sapling2.jungle.name=Větve z džungle
+tile.sealer.name=Systém podpory života
+tile.enclosed.oxygenPipe.name=Kyslíková trubka s uzávěrem
+tile.oxygenDetector.name=Detektor kyslíku
+tile.cargo.loader.name=Nakladač
+tile.cargo.unloader.name=Vykladač
+tile.landingPad.buggyFueler.name=Čerpací stanice pro buginu
+tile.landingPad.cargoPad.name=Nákladni odpalovací rampa
+tile.enclosed.copperCable.name=Odpojitelný měděný kabel
+tile.enclosed.goldCable.name=Odpojitelný zlatý kabel
+tile.enclosed.hvCable.name=Odpojitelný VN kabel
+tile.enclosed.glassFibreCable.name=Odpojitelné optický kabel
+tile.enclosed.lvCable.name=Odpojitelný sdělovací kabel
+tile.enclosed.PipeItemsCobblestone.name=Trubka z dlažebního kamene s uzávěrem
+tile.enclosed.PipeItemsStone.name=Kamená trubka s uzávěrem
+tile.enclosed.PipeFluidsCobblestone.name=Vodovodní trubka z dlažebního kamene s uzávěrem
+tile.enclosed.PipeFluidsStone.name=Kamená vodovodní trubka s uzávěrem
+tile.enclosed.PipePowerStone.name=Odpojitelná vodivá trubka z kamene
+tile.enclosed.PipePowerGold.name=Odpojitelná vodivá trubka ze zlata
+tile.solar.basic.name=Základní solární panel
+tile.solar.advanced.name=Pokročilý solární panel
+tile.parachest.name=Truhla na padáku
+tile.oreCopper.name=Měděná ruda
+tile.oreTin.name=Cínová ruda
+tile.machine.0.name=Tepelná elektrárna
+tile.machine.1.name=Energetická zásobárna
+tile.machine.2.name=Elektrická pec
+tile.machine.3.name=Kompresor
+tile.machine2.4.name=Elektrický kompresor
+tile.machine2.5.name=Stroj na výrobu solárních waferů
+tile.machine2.6.name=Zásobárna kyslíku
+tile.aluminumWire.name=Hliníkový vodič
+tile.aluminumWireHeavy.name=Zesílený hliníkový vodič
+tile.glowstoneTorch.name=Pochodeň ze svítícího kamene
+tile.enclosed.aluminumWire.name=Odpojitelný hliníkový vodič
+tile.enclosed.aluminumWireHeavy.name=Odpojitelný zesílený Al vodič
+tile.enclosed.meCable.name=Odpojitelný ME kabel
+tile.airLockController.name=Ovládací terminál vzduchového uzávěru
+tile.dummyblock.spaceStationBase.name=Vesmírná stanice
+tile.dummyblock.launchPad.name=Startovací rampa
+tile.dummyblock.nasaWorkbench.name=Raketové konstrukční pracoviště
+tile.dummyblock.solar.name=Solární panel
+tile.dummyblock.cryogenicChamber.name=Kryogenní komora
+tile.gcBlockCore.copperBlock.name=Měděný blok
+tile.gcBlockCore.tinBlock.name=Cínový blok
+tile.gcBlockCore.aluminumBlock.name=Hliníkový block
+tile.fuel.name=Palivo
+tile.oxygenCompressor.0.name=Kyslíkový kompresor
+tile.oxygenCompressor.1.name=Kyslíkový dekompresor
+
+# ENTITIES
+entity.GalacticraftCore.EvolvedSpider.name=Vyvinutý pavouk
+entity.GalacticraftCore.EvolvedZombie.name=Vyvinutý zombie
+entity.GalacticraftCore.EvolvedCreeper.name=Vyvinutý creeper
+entity.GalacticraftCore.EvolvedSkeleton.name=Vyvinutý kostlivec
+entity.GalacticraftCore.EvolvedSkeletonBoss.name=Vyvinutý kostlivec (Boss)
+entity.GalacticraftCore.AlienVillager.name=Mimozemšťan
+entity.GalacticraftCore.Spaceship.name=Raketa typ 1
+entity.GalacticraftCore.GravityArrow.name=Šíp
+entity.GalacticraftCore.Meteor.name=Meteorit
+entity.GalacticraftCore.Buggy.name=Bugina
+entity.GalacticraftCore.Flag.name=Vlajka
+entity.GalacticraftCore.ParaChest.name=Truhla na padáku
+entity.GalacticraftCore.OxygenBubble.name=Kyslíková bublina
+entity.GalacticraftCore.Lander.name=Přistávací modul
+
+# Schematics
+schematic.moonbuggy.name=Bugina
+schematic.rocketT1.name=Raketa typ 1
+schematic.rocketT2.name=Raketa typ 2
+
+# DEATH MESSAGES
+death.attack.spaceshipExplosion=%1$s zemřel/a při závadě rakety.
+death.attack.spaceshipExplosionB=%1$s zemřel/a při nehodě ve vesmíru.
+death.attack.oxygenSuffocation=%1$s zemřel/a na hypoxii.
+
+# GALAXIES
+galaxy.blockyway.name=Bloková dráha
+
+# OTHER
+newversion.failed.name=Pokus o zjištění nové verze Galacticraftu selhal! Další pokus za 15 sekund.
+newversion.success.name=Nalezena verze Galacticraftu:
+
+# KEYBINDINGS
+keybind.map.name=[GC] Mapa galaxie
+keybind.spaceshipinv.name=[GC] Otevření inventáře
+keybind.sensortoggle.name=[GC] Přepnutí detekčního módu
+keybind.vehicleforward.name=[GC] Jízda vpřed
+keybind.vehiclebackward.name=[GC] Jízda vzad
+keybind.vehicleleft.name=[GC] Jízda vlevo
+keybind.vehicleright.name=[GC] Jízda vpravo
+keybind.vehicleup.name=[GC] Jízda nehoru
+keybind.vehicledown.name=[GC] Jízda dolu
+
+# CREATIVE TABS
+itemGroup.GalacticraftCore=Galacticraft
+
+# GUI
+container.cargoloader.name=Nakladač
+container.cargounloader.name=Vykladač
+container.fuelloader.name=Palivové čerpadlo
+container.oxygencollector.name=Kyslikový kolektor
+container.oxygencompressor.name=Kyslíkový kompresor
+container.oxygendistributor.name=Kyslíkový distributor
+container.oxygensealer.name=Systém podpory života
+container.parachest.name=Truhla na padáku
+container.refinery.name=Refinérie
+container.treasurechest.name=Pokladnice
+container.lander.name=Přistávací modul
+container.spaceship.name=Raketa typ 1
+container.solarbasic.name=Základní solární panel
+container.solaradvanced.name=Pokročilý solární panel
+container.oxygendecompressor.name=Kyslíkový dekompresor
+
+gui.message.out.name=Výstup
+gui.message.in.name=Vstup
+gui.message.status.name=Stav
+gui.message.oxoutput.name=Kyslíkový výstup
+gui.message.oxinput.name=Kyslikový vstup
+gui.message.fuel.name=Palivo
+gui.message.full.name=plný
+gui.message.page.name=Strana
+gui.message.addnewsch.name=Nové schéma
+gui.message.generating.name=Generuje
+gui.message.environment.name=Akcelerátor prostředí
+
+gui.status.active.name=Aktivní
+gui.status.missingleaves.name=Nedostatek rostlin
+gui.status.missingpower.name=Nedostatek energie
+gui.status.missingoxygen.name=Nedostatek kyslíku
+gui.status.missingtank.name=Nekompatibilní tl. lahev
+gui.status.fulltank.name=Lahev je plná
+gui.status.unsealed.name=Neutěsněno
+gui.status.sealed.name=Utěsněno
+gui.status.unknown.name=Neznámý
+gui.status.disabled.name=Vypnuto
+gui.status.nofuel.name=Chybí palivo
+gui.status.noitems.name=Není co naložit!
+gui.status.notargetload.name=Není kam nakládat!
+gui.status.notargetunload.name=Není od kud vykládat!
+gui.status.noinvtarget.name=Cíl nemá inventář!
+gui.status.targetfull.name=Cíl je plně naložen!
+gui.status.targetempty.name=Cíl je vyložen!
+gui.status.ready.name=Připraven
+gui.status.refining.name=Zpracovávám
+gui.status.idle.name=Zapnuto
+gui.status.nooil.name=Chybí ropa
+gui.status.raining.name=Prší
+gui.status.blockedpartial.name=Slunce částečně vyditelné
+gui.status.blockedfully.name=Slunce není vidět
+gui.status.collectingenergy.name=Sbírám energii
+gui.status.sealerblocked.name=Uzavřen výstupní ventil!
+
+gui.button.enableseal.name=Spustit uzávěr
+gui.button.disableseal.name=Vypnout uzávěr
+gui.button.loaditems.name=Naložit
+gui.button.stoploading.name=Zastavit
+gui.button.unloaditems.name=Vyložit
+gui.button.stopunloading.name=Zastavit
+gui.button.createsstation.name=Vybudovat vesmírnou stanici
+gui.button.sendtodim.name=Cestovat
+gui.button.rename.name=Přejmenovat
+gui.button.loadfuel.name=Natankovat
+gui.button.refine.name=Zpracovat
+gui.button.back.name=Zpět
+gui.button.next.name=Další
+gui.button.unlockschematic.name=Odemknout další
+gui.button.stoprefine.name=Zastavit
+gui.button.enable.name=Zapnout
+gui.button.disable.name=Vypnout
+
+gui.choosePlanet.desc.overworld=Plná života#Obyvatelná#Gravitace: 100%
+gui.warning=Varování!
+gui.lander.warning2=Zastav "
+gui.lander.warning3=" zpomal!
+gui.lander.velocity=Vstupní rychlost
+gui.lander.velocityu=m/s
+gui.oxygen.warning=Chybné uspořádání kyslíku!
+gui.sensor.advanced=Pokročilý režim
+gui.sensor.advancedon=ZAP
+gui.sensor.advancedoff=VYP
+gui.chooseplanet.cannotcreate1.name=Zde nelze vytvořit
+gui.chooseplanet.cannotcreate2.name=vesmírnou stanici!
+gui.chooseplanet.alreadycreated1.name=Vesmírná stanice
+gui.chooseplanet.alreadycreated2.name=je již vytvořena!
+
+gui.galaxymap.movemap.name=ASWD - Pohyb mapy
+gui.galaxymap.zoom.name=Mouse Wheel - Zoom
+gui.galaxymap.select.name=Myš 1 - Výběr planety
+gui.galaxymap.exit.name=Esc - Opuštění mapy
+
+gui.buggy.turn.name=Zatáčení vlevo-vpravo
+gui.buggy.accel.name=Zrychlení
+gui.buggy.decel.name=Zpomelení
+gui.buggy.inv.name=Inventář / Palivo
+
+# DIMENSIONS
+dimension.Overworld.name=Zemský povrh
+dimension.Moon.name=Měsic
+dimension.Sun.name=Slunce
+
+# COMMANDS
+commands.dimensionteleport=%s byl/a odeslán do atmosféry%s
+
+# </file>
