@@ -12,42 +12,42 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * GCMoonItemCheese.java
- *
+ * 
  * This file is part of the Galacticraft project
- *
+ * 
  * @author micdoodle8
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
 public class GCMoonItemCheese extends ItemFood
 {
-    public GCMoonItemCheese(int par1, int par2, float par3, boolean par4)
-    {
-        super(par1, par2, par3, par4);
-    }
+	public GCMoonItemCheese(int par1, int par2, float par3, boolean par4)
+	{
+		super(par1, par2, par3, par4);
+	}
 
-    public GCMoonItemCheese(int par1, int par2, boolean par3)
-    {
-        this(par1, par2, 0.6F, par3);
-    }
+	public GCMoonItemCheese(int par1, int par2, boolean par3)
+	{
+		this(par1, par2, 0.6F, par3);
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister iconRegister)
-    {
-        this.itemIcon = iconRegister.registerIcon("galacticraftmoon:cheese_curd");
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister iconRegister)
+	{
+		this.itemIcon = iconRegister.registerIcon("galacticraftmoon:cheese_curd");
+	}
 
-    @Override
-    public CreativeTabs getCreativeTab()
-    {
-        return GalacticraftMoon.galacticraftMoonTab;
-    }
+	@Override
+	public CreativeTabs getCreativeTab()
+	{
+		return GalacticraftMoon.galacticraftMoonTab;
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack par1ItemStack)
-    {
-        return ClientProxyCore.galacticraftItem;
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public EnumRarity getRarity(ItemStack par1ItemStack)
+	{
+		return ClientProxyCore.galacticraftItem;
+	}
 }

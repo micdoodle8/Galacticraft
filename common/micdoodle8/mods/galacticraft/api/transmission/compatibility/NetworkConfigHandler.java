@@ -52,7 +52,7 @@ public class NetworkConfigHandler
 	 * this to convert it to IC2 power
 	 */
 	public static float TO_IC2_RATIO = 1 / NetworkConfigHandler.IC2_RATIO;
-	
+
 	/**
 	 * Oxygen gas used when Mekanism is loaded. Always null otherwise.
 	 */
@@ -74,22 +74,21 @@ public class NetworkConfigHandler
 		NetworkConfigHandler.TO_BC_RATIO = 1 / NetworkConfigHandler.BC3_RATIO;
 		NetworkConfigHandler.config.save();
 	}
-	
+
 	public static void initGas()
 	{
-        if (NetworkConfigHandler.isMekanismLoaded())
-        {
-        	Gas oxygen = GasRegistry.getGas("oxygen");
-        	
-        	if (oxygen == null)
-        	{
-        		gasOxygen = GasRegistry.register(new Gas("oxygen")).registerFluid();
-        	}
-        	else
-        	{
-        		gasOxygen = oxygen;
-        	}
-        }
+		if (NetworkConfigHandler.isMekanismLoaded())
+		{
+			Gas oxygen = GasRegistry.getGas("oxygen");
+
+			if (oxygen == null)
+			{
+				NetworkConfigHandler.gasOxygen = GasRegistry.register(new Gas("oxygen")).registerFluid();
+			} else
+			{
+				NetworkConfigHandler.gasOxygen = oxygen;
+			}
+		}
 	}
 
 	/** Checks using the FML loader too see if IC2 is loaded */
@@ -108,7 +107,7 @@ public class NetworkConfigHandler
 	{
 		return Loader.isModLoaded("ThermalExpansion");
 	}
-	
+
 	public static boolean isMekanismLoaded()
 	{
 		return Loader.isModLoaded("Mekanism");

@@ -17,78 +17,78 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * GCCoreItemBlockAluminumWire.java
- *
+ * 
  * This file is part of the Galacticraft project
- *
+ * 
  * @author micdoodle8
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
 public class GCCoreItemBlockAluminumWire extends ItemBlock
 {
-    public GCCoreItemBlockAluminumWire(int id)
-    {
-        super(id);
-        this.setMaxDamage(0);
-        this.setHasSubtypes(true);
-    }
+	public GCCoreItemBlockAluminumWire(int id)
+	{
+		super(id);
+		this.setMaxDamage(0);
+		this.setHasSubtypes(true);
+	}
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    @Override
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
-    {
-        switch (par1ItemStack.getItemDamage())
-        {
-        case 0:
-            par3List.add("Resistance: " + ElectricityDisplay.getDisplay(0.05F, ElectricUnit.RESISTANCE));
-            par3List.add("Max Amps: " + ElectricityDisplay.getDisplay(200.0F, ElectricUnit.AMPERE));
-            break;
-        case 1:
-            par3List.add("Resistance: " + ElectricityDisplay.getDisplay(0.025F, ElectricUnit.RESISTANCE));
-            par3List.add("Max Amps: " + ElectricityDisplay.getDisplay(400.0F, ElectricUnit.AMPERE));
-            break;
-        default:
-        }
-    }
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
+	{
+		switch (par1ItemStack.getItemDamage())
+		{
+		case 0:
+			par3List.add("Resistance: " + ElectricityDisplay.getDisplay(0.05F, ElectricUnit.RESISTANCE));
+			par3List.add("Max Amps: " + ElectricityDisplay.getDisplay(200.0F, ElectricUnit.AMPERE));
+			break;
+		case 1:
+			par3List.add("Resistance: " + ElectricityDisplay.getDisplay(0.025F, ElectricUnit.RESISTANCE));
+			par3List.add("Max Amps: " + ElectricityDisplay.getDisplay(400.0F, ElectricUnit.AMPERE));
+			break;
+		default:
+		}
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public Icon getIconFromDamage(int par1)
-    {
-        return Block.blocksList[this.getBlockID()].getIcon(0, par1);
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public Icon getIconFromDamage(int par1)
+	{
+		return Block.blocksList[this.getBlockID()].getIcon(0, par1);
+	}
 
-    @Override
-    public String getUnlocalizedName(ItemStack par1ItemStack)
-    {
-        String name = "";
+	@Override
+	public String getUnlocalizedName(ItemStack par1ItemStack)
+	{
+		String name = "";
 
-        switch (par1ItemStack.getItemDamage())
-        {
-        case 0:
-            name = GCCoreBlockAluminumWire.names[0];
-            break;
-        case 1:
-            name = GCCoreBlockAluminumWire.names[1];
-            break;
-        default:
-            name = "null";
-            break;
-        }
+		switch (par1ItemStack.getItemDamage())
+		{
+		case 0:
+			name = GCCoreBlockAluminumWire.names[0];
+			break;
+		case 1:
+			name = GCCoreBlockAluminumWire.names[1];
+			break;
+		default:
+			name = "null";
+			break;
+		}
 
-        return "tile." + name;
-    }
+		return "tile." + name;
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack par1ItemStack)
-    {
-        return ClientProxyCore.galacticraftItem;
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public EnumRarity getRarity(ItemStack par1ItemStack)
+	{
+		return ClientProxyCore.galacticraftItem;
+	}
 
-    @Override
-    public int getMetadata(int damage)
-    {
-        return damage;
-    }
+	@Override
+	public int getMetadata(int damage)
+	{
+		return damage;
+	}
 }

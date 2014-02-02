@@ -5,9 +5,10 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 /**
- * Creates a slot with a specific amount of items that matches the slot's requirements. Allows easy
- * shift right clicking management and slot blocking in classes. In your container you can use
- * this.getSlot(i).isItemValid to justify the player's shift clicking actions to match the slot.
+ * Creates a slot with a specific amount of items that matches the slot's
+ * requirements. Allows easy shift right clicking management and slot blocking
+ * in classes. In your container you can use this.getSlot(i).isItemValid to
+ * justify the player's shift clicking actions to match the slot.
  * 
  * @author Calclavia
  * 
@@ -60,7 +61,8 @@ public class SlotSpecific extends Slot
 	}
 
 	/**
-	 * Check if the stack is a valid item for this slot. Always true beside for the armor slots.
+	 * Check if the stack is a valid item for this slot. Always true beside for
+	 * the armor slots.
 	 */
 	@SuppressWarnings("rawtypes")
 	@Override

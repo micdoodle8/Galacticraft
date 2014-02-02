@@ -11,94 +11,94 @@ import net.minecraft.entity.player.EntityPlayer;
 
 /**
  * PlayerUtil.java
- *
+ * 
  * This file is part of the Galacticraft project
- *
+ * 
  * @author micdoodle8
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
 public class PlayerUtil
 {
-    public static GCCorePlayerMP getPlayerBaseServerFromPlayerUsername(String username)
-    {
-        if (GalacticraftCore.playersServer.isEmpty())
-        {
-            // new EmptyStackException().printStackTrace();
-        }
+	public static GCCorePlayerMP getPlayerBaseServerFromPlayerUsername(String username)
+	{
+		if (GalacticraftCore.playersServer.isEmpty())
+		{
+			// new EmptyStackException().printStackTrace();
+		}
 
-        final Iterator<Map.Entry<String, GCCorePlayerMP>> it = GalacticraftCore.playersServer.entrySet().iterator();
+		final Iterator<Map.Entry<String, GCCorePlayerMP>> it = GalacticraftCore.playersServer.entrySet().iterator();
 
-        while (it.hasNext())
-        {
-            Map.Entry<String, GCCorePlayerMP> entry = it.next();
+		while (it.hasNext())
+		{
+			Map.Entry<String, GCCorePlayerMP> entry = it.next();
 
-            if (entry.getKey().equals(username))
-            {
-                return entry.getValue();
-            }
-        }
+			if (entry.getKey().equals(username))
+			{
+				return entry.getValue();
+			}
+		}
 
-        GCLog.severe("Warning: Could not find player base server instance for player " + username);
+		GCLog.severe("Warning: Could not find player base server instance for player " + username);
 
-        return null;
-    }
+		return null;
+	}
 
-    public static GCCorePlayerMP getPlayerBaseServerFromPlayer(EntityPlayer player)
-    {
-        if (player == null)
-        {
-            return null;
-        }
+	public static GCCorePlayerMP getPlayerBaseServerFromPlayer(EntityPlayer player)
+	{
+		if (player == null)
+		{
+			return null;
+		}
 
-        if (GalacticraftCore.playersServer.isEmpty())
-        {
-            // new EmptyStackException().printStackTrace();
-        }
+		if (GalacticraftCore.playersServer.isEmpty())
+		{
+			// new EmptyStackException().printStackTrace();
+		}
 
-        final Iterator<Map.Entry<String, GCCorePlayerMP>> it = GalacticraftCore.playersServer.entrySet().iterator();
+		final Iterator<Map.Entry<String, GCCorePlayerMP>> it = GalacticraftCore.playersServer.entrySet().iterator();
 
-        while (it.hasNext())
-        {
-            final Map.Entry<String, GCCorePlayerMP> entry = it.next();
+		while (it.hasNext())
+		{
+			final Map.Entry<String, GCCorePlayerMP> entry = it.next();
 
-            if (entry.getKey().equals(player.username))
-            {
-                return entry.getValue();
-            }
-        }
+			if (entry.getKey().equals(player.username))
+			{
+				return entry.getValue();
+			}
+		}
 
-        GCLog.severe("Warning: Could not find player base server instance for player " + player.username);
+		GCLog.severe("Warning: Could not find player base server instance for player " + player.username);
 
-        return null;
-    }
+		return null;
+	}
 
-    public static GCCorePlayerSP getPlayerBaseClientFromPlayer(EntityPlayer player)
-    {
-        if (player == null)
-        {
-            return null;
-        }
+	public static GCCorePlayerSP getPlayerBaseClientFromPlayer(EntityPlayer player)
+	{
+		if (player == null)
+		{
+			return null;
+		}
 
-        if (GalacticraftCore.playersClient.isEmpty())
-        {
-            return null;
-        }
+		if (GalacticraftCore.playersClient.isEmpty())
+		{
+			return null;
+		}
 
-        final Iterator<Map.Entry<String, GCCorePlayerSP>> it = GalacticraftCore.playersClient.entrySet().iterator();
+		final Iterator<Map.Entry<String, GCCorePlayerSP>> it = GalacticraftCore.playersClient.entrySet().iterator();
 
-        while (it.hasNext())
-        {
-            final Map.Entry<String, GCCorePlayerSP> entry = it.next();
+		while (it.hasNext())
+		{
+			final Map.Entry<String, GCCorePlayerSP> entry = it.next();
 
-            if (entry.getKey() != null && entry.getKey().equals(player.username))
-            {
-                return entry.getValue();
-            }
-        }
+			if (entry.getKey() != null && entry.getKey().equals(player.username))
+			{
+				return entry.getValue();
+			}
+		}
 
-        GCLog.severe("Warning: Could not find player base client instance for player " + player.username);
+		GCLog.severe("Warning: Could not find player base client instance for player " + player.username);
 
-        return null;
-    }
+		return null;
+	}
 }

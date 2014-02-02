@@ -52,7 +52,7 @@ public abstract class GCCoreTileEntityOxygenTransmitter extends GCCoreTileEntity
 
 		return this.network;
 	}
-	
+
 	protected void resetNetwork()
 	{
 		OxygenNetwork network = new OxygenNetwork();
@@ -86,7 +86,7 @@ public abstract class GCCoreTileEntityOxygenTransmitter extends GCCoreTileEntity
 					}
 				}
 			}
-			
+
 			this.getNetwork().refresh();
 		}
 	}
@@ -100,21 +100,23 @@ public abstract class GCCoreTileEntityOxygenTransmitter extends GCCoreTileEntity
 		if (this.adjacentConnections == null)
 		{
 			this.adjacentConnections = WorldUtil.getAdjacentOxygenConnections(this);
-//			this.adjacentConnections = new TileEntity[6];
-//
-//			for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS)
-//			{
-//				Vector3 thisVec = new Vector3(this);
-//				TileEntity tileEntity = thisVec.modifyPositionFromSide(side).getTileEntity(worldObj);
-//
-//				if (tileEntity instanceof IConnector)
-//				{
-//					if (((IConnector) tileEntity).canConnect(side.getOpposite(), NetworkType.OXYGEN))
-//					{
-//						this.adjacentConnections[side.ordinal()] = tileEntity;
-//					}
-//				}
-//			}
+			// this.adjacentConnections = new TileEntity[6];
+			//
+			// for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS)
+			// {
+			// Vector3 thisVec = new Vector3(this);
+			// TileEntity tileEntity =
+			// thisVec.modifyPositionFromSide(side).getTileEntity(worldObj);
+			//
+			// if (tileEntity instanceof IConnector)
+			// {
+			// if (((IConnector) tileEntity).canConnect(side.getOpposite(),
+			// NetworkType.OXYGEN))
+			// {
+			// this.adjacentConnections[side.ordinal()] = tileEntity;
+			// }
+			// }
+			// }
 		}
 
 		return this.adjacentConnections;

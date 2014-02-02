@@ -13,57 +13,55 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * GCCoreItemArmor.java
- *
+ * 
  * This file is part of the Galacticraft project
- *
+ * 
  * @author micdoodle8
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
 public class GCCoreItemArmor extends ItemArmor
 {
-    private final EnumArmorMaterial material;
+	private final EnumArmorMaterial material;
 
-    public GCCoreItemArmor(int id, int armorIndex, String assetSuffix)
-    {
-        super(id, GCCoreItems.ARMOR_STEEL, GalacticraftCore.proxy.getTitaniumArmorRenderIndex(), armorIndex);
-        this.material = GCCoreItems.ARMOR_STEEL;
-        this.setUnlocalizedName("steel_" + assetSuffix);
-        this.setTextureName(GalacticraftCore.ASSET_PREFIX + "steel_" + assetSuffix);
-    }
+	public GCCoreItemArmor(int id, int armorIndex, String assetSuffix)
+	{
+		super(id, GCCoreItems.ARMOR_STEEL, GalacticraftCore.proxy.getTitaniumArmorRenderIndex(), armorIndex);
+		this.material = GCCoreItems.ARMOR_STEEL;
+		this.setUnlocalizedName("steel_" + assetSuffix);
+		this.setTextureName(GalacticraftCore.ASSET_PREFIX + "steel_" + assetSuffix);
+	}
 
-    @Override
-    public CreativeTabs getCreativeTab()
-    {
-        return GalacticraftCore.galacticraftTab;
-    }
+	@Override
+	public CreativeTabs getCreativeTab()
+	{
+		return GalacticraftCore.galacticraftTab;
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack par1ItemStack)
-    {
-        return ClientProxyCore.galacticraftItem;
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public EnumRarity getRarity(ItemStack par1ItemStack)
+	{
+		return ClientProxyCore.galacticraftItem;
+	}
 
-    @Override
-    public String getArmorTexture(ItemStack stack, Entity entity, int slot, int layer)
-    {
-        if (this.material == GCCoreItems.ARMOR_STEEL)
-        {
-            if (stack.getItem().itemID == GCCoreItems.steelHelmet.itemID)
-            {
-                return "textures/model/armor/titanium_1.png";
-            }
-            else if (stack.getItem().itemID == GCCoreItems.steelChestplate.itemID || stack.getItem().itemID == GCCoreItems.steelBoots.itemID)
-            {
-                return "textures/model/armor/titanium_2.png";
-            }
-            else if (stack.getItem().itemID == GCCoreItems.steelLeggings.itemID)
-            {
-                return "textures/model/armor/titanium_3.png";
-            }
-        }
+	@Override
+	public String getArmorTexture(ItemStack stack, Entity entity, int slot, int layer)
+	{
+		if (this.material == GCCoreItems.ARMOR_STEEL)
+		{
+			if (stack.getItem().itemID == GCCoreItems.steelHelmet.itemID)
+			{
+				return "textures/model/armor/titanium_1.png";
+			} else if (stack.getItem().itemID == GCCoreItems.steelChestplate.itemID || stack.getItem().itemID == GCCoreItems.steelBoots.itemID)
+			{
+				return "textures/model/armor/titanium_2.png";
+			} else if (stack.getItem().itemID == GCCoreItems.steelLeggings.itemID)
+			{
+				return "textures/model/armor/titanium_3.png";
+			}
+		}
 
-        return null;
-    }
+		return null;
+	}
 }

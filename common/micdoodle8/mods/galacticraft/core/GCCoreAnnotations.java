@@ -9,28 +9,28 @@ import cpw.mods.fml.relauncher.Side;
 
 /**
  * ASMHelper.java
- *
+ * 
  * This file is part of the Galacticraft project
- *
+ * 
  * @author micdoodle8
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
 public class GCCoreAnnotations
 {
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target(ElementType.METHOD)
-    public @interface RuntimeInterface
-    {
-        String clazz();
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target(ElementType.METHOD)
+	public @interface RuntimeInterface
+	{
+		String clazz();
 
-        String modID();
-    }
+		String modID();
+	}
 
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target(ElementType.FIELD)
-    public @interface NetworkedField
-    {
-    	Side targetSide();
-    }
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target(ElementType.FIELD)
+	public @interface NetworkedField
+	{
+		Side targetSide();
+	}
 }

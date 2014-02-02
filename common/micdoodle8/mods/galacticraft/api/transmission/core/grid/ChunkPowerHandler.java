@@ -9,16 +9,16 @@ import net.minecraftforge.event.world.ChunkEvent;
 public class ChunkPowerHandler
 {
 	private static boolean initiated = false;
-	
+
 	public static void initiate()
 	{
-		if (!initiated)
+		if (!ChunkPowerHandler.initiated)
 		{
-			initiated = true;
+			ChunkPowerHandler.initiated = true;
 			MinecraftForge.EVENT_BUS.register(new ChunkPowerHandler());
 		}
 	}
-	
+
 	@ForgeSubscribe
 	public void onChunkLoad(ChunkEvent.Load event)
 	{
@@ -31,15 +31,14 @@ public class ChunkPowerHandler
 					if (o instanceof TileEntity)
 					{
 						TileEntity tile = (TileEntity) o;
-						
+
 						if (tile instanceof INetworkConnection)
 						{
 							((INetworkConnection) tile).refresh();
 						}
 					}
 				}
-			}
-			catch (Exception e)
+			} catch (Exception e)
 			{
 				e.printStackTrace();
 			}

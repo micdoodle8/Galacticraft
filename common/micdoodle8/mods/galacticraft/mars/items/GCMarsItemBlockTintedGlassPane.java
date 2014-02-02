@@ -13,51 +13,51 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * GCMarsItemBlockTintedGlassPane.java
- *
+ * 
  * This file is part of the Galacticraft project
- *
+ * 
  * @author micdoodle8
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
 public class GCMarsItemBlockTintedGlassPane extends ItemBlock
 {
-    public GCMarsItemBlockTintedGlassPane(int id)
-    {
-        super(id);
-        this.setMaxDamage(0);
-        this.setHasSubtypes(true);
-    }
+	public GCMarsItemBlockTintedGlassPane(int id)
+	{
+		super(id);
+		this.setMaxDamage(0);
+		this.setHasSubtypes(true);
+	}
 
-    @Override
-    public int getMetadata(int damage)
-    {
-        return damage;
-    }
+	@Override
+	public int getMetadata(int damage)
+	{
+		return damage;
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public Icon getIconFromDamage(int par1)
-    {
-        return Block.blocksList[this.getBlockID()].getIcon(0, par1);
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public Icon getIconFromDamage(int par1)
+	{
+		return Block.blocksList[this.getBlockID()].getIcon(0, par1);
+	}
 
-    @Override
-    public String getUnlocalizedName(ItemStack itemstack)
-    {
-        return Block.blocksList[this.getBlockID()].getUnlocalizedName() + "." + ItemDye.dyeItemNames[BlockColored.getDyeFromBlock(itemstack.getItemDamage())];
-    }
+	@Override
+	public String getUnlocalizedName(ItemStack itemstack)
+	{
+		return Block.blocksList[this.getBlockID()].getUnlocalizedName() + "." + ItemDye.dyeItemNames[BlockColored.getDyeFromBlock(itemstack.getItemDamage())];
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack par1ItemStack)
-    {
-        return ClientProxyCore.galacticraftItem;
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public EnumRarity getRarity(ItemStack par1ItemStack)
+	{
+		return ClientProxyCore.galacticraftItem;
+	}
 
-    @Override
-    public String getUnlocalizedName()
-    {
-        return Block.blocksList[this.getBlockID()].getUnlocalizedName() + ".0";
-    }
+	@Override
+	public String getUnlocalizedName()
+	{
+		return Block.blocksList[this.getBlockID()].getUnlocalizedName() + ".0";
+	}
 }

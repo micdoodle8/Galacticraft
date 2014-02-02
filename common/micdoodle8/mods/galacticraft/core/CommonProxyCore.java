@@ -9,67 +9,67 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 /**
  * CommonProxyCore.java
- *
+ * 
  * This file is part of the Galacticraft project
- *
+ * 
  * @author micdoodle8
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
 public class CommonProxyCore
 {
-    public void preInit(FMLPreInitializationEvent event)
-    {
-        ;
-    }
+	public void preInit(FMLPreInitializationEvent event)
+	{
+		;
+	}
 
-    public void init(FMLInitializationEvent event)
-    {
-        ;
-    }
+	public void init(FMLInitializationEvent event)
+	{
+		;
+	}
 
-    public void postInit(FMLPostInitializationEvent event)
-    {
-        ;
-    }
+	public void postInit(FMLPostInitializationEvent event)
+	{
+		;
+	}
 
-    public void registerRenderInformation()
-    {
-        ;
-    }
+	public void registerRenderInformation()
+	{
+		;
+	}
 
-    public int getBlockRenderID(int blockID)
-    {
-        return -1;
-    }
+	public int getBlockRenderID(int blockID)
+	{
+		return -1;
+	}
 
-    public int getTitaniumArmorRenderIndex()
-    {
-        return 0;
-    }
+	public int getTitaniumArmorRenderIndex()
+	{
+		return 0;
+	}
 
-    public int getSensorArmorRenderIndex()
-    {
-        return 0;
-    }
+	public int getSensorArmorRenderIndex()
+	{
+		return 0;
+	}
 
-    public World getClientWorld()
-    {
-        return null;
-    }
+	public World getClientWorld()
+	{
+		return null;
+	}
 
-    public void addSlotRenderer(ICelestialBodyRenderer slotRenderer)
-    {
-        ;
-    }
+	public void addSlotRenderer(ICelestialBodyRenderer slotRenderer)
+	{
+		;
+	}
 
-    public void spawnParticle(String particleID, Vector3 position, Vector3 motion)
-    {
-        ;
-    }
+	public void spawnParticle(String particleID, Vector3 position, Vector3 motion)
+	{
+		;
+	}
 
-    public void spawnParticle(String particleID, Vector3 position, Vector3 motion, Vector3 color)
-    {
-        ;
-    }
+	public void spawnParticle(String particleID, Vector3 position, Vector3 motion, Vector3 color)
+	{
+		;
+	}
 }

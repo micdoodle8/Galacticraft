@@ -13,37 +13,37 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * GCMarsItemSpade.java
- *
+ * 
  * This file is part of the Galacticraft project
- *
+ * 
  * @author micdoodle8
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
 public class GCMarsItemSpade extends ItemSpade
 {
-    public GCMarsItemSpade(int par1, EnumToolMaterial par2EnumToolMaterial)
-    {
-        super(par1, par2EnumToolMaterial);
-    }
+	public GCMarsItemSpade(int par1, EnumToolMaterial par2EnumToolMaterial)
+	{
+		super(par1, par2EnumToolMaterial);
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack par1ItemStack)
-    {
-        return ClientProxyCore.galacticraftItem;
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public EnumRarity getRarity(ItemStack par1ItemStack)
+	{
+		return ClientProxyCore.galacticraftItem;
+	}
 
-    @Override
-    public CreativeTabs getCreativeTab()
-    {
-        return GalacticraftMars.galacticraftMarsTab;
-    }
+	@Override
+	public CreativeTabs getCreativeTab()
+	{
+		return GalacticraftMars.galacticraftMarsTab;
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister par1IconRegister)
-    {
-        this.itemIcon = par1IconRegister.registerIcon(this.getUnlocalizedName().replace("item.", "galacticraftmars:"));
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister par1IconRegister)
+	{
+		this.itemIcon = par1IconRegister.registerIcon(this.getUnlocalizedName().replace("item.", "galacticraftmars:"));
+	}
 }

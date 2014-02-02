@@ -14,68 +14,66 @@ import cpw.mods.fml.relauncher.Side;
 
 /**
  * GCCorePacketControllableEntity.java
- *
+ * 
  * This file is part of the Galacticraft project
- *
+ * 
  * @author micdoodle8
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
 public class GCCorePacketControllableEntity implements IGalacticraftAdvancedPacket
 {
-    public static final int packetID = EnumPacketServer.UPDATE_CONTROLLABLE_ENTITY.getIndex();
+	public static final int packetID = EnumPacketServer.UPDATE_CONTROLLABLE_ENTITY.getIndex();
 
-    public static Packet buildKeyPacket(int key)
-    {
-        final Packet250CustomPayload packet = new Packet250CustomPayload();
-        packet.channel = GalacticraftCore.CHANNEL;
+	public static Packet buildKeyPacket(int key)
+	{
+		final Packet250CustomPayload packet = new Packet250CustomPayload();
+		packet.channel = GalacticraftCore.CHANNEL;
 
-        final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        final DataOutputStream data = new DataOutputStream(bytes);
+		final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+		final DataOutputStream data = new DataOutputStream(bytes);
 
-        try
-        {
-            data.writeInt(GCCorePacketControllableEntity.packetID);
-            data.writeInt(key);
+		try
+		{
+			data.writeInt(GCCorePacketControllableEntity.packetID);
+			data.writeInt(key);
 
-            packet.data = bytes.toByteArray();
-            packet.length = packet.data.length;
+			packet.data = bytes.toByteArray();
+			packet.length = packet.data.length;
 
-            data.close();
-            bytes.close();
-        }
-        catch (final Exception e)
-        {
-            e.printStackTrace();
-        }
+			data.close();
+			bytes.close();
+		} catch (final Exception e)
+		{
+			e.printStackTrace();
+		}
 
-        return packet;
-    }
+		return packet;
+	}
 
-    @Override
-    public byte getPacketID()
-    {
-        return (byte) GCCorePacketControllableEntity.packetID;
-    }
+	@Override
+	public byte getPacketID()
+	{
+		return (byte) GCCorePacketControllableEntity.packetID;
+	}
 
-    @Override
-    public void handlePacket(DataInputStream stream, Object[] extraData, Side side)
-    {
-        try
-        {
-            final EntityPlayer player = (EntityPlayer) extraData[0];
+	@Override
+	public void handlePacket(DataInputStream stream, Object[] extraData, Side side)
+	{
+		try
+		{
+			final EntityPlayer player = (EntityPlayer) extraData[0];
 
-            int key = stream.readInt();
+			int key = stream.readInt();
 
-            if (player.ridingEntity != null && player.ridingEntity instanceof IControllableEntity)
-            {
-                ((IControllableEntity) player.ridingEntity).pressKey(key);
-            }
+			if (player.ridingEntity != null && player.ridingEntity instanceof IControllableEntity)
+			{
+				((IControllableEntity) player.ridingEntity).pressKey(key);
+			}
 
-        }
-        catch (final Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
+		} catch (final Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
 }

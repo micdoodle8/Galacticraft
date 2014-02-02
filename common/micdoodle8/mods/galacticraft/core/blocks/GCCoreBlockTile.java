@@ -32,7 +32,8 @@ public abstract class GCCoreBlockTile extends GCCoreBlockAdvanced implements ITi
 	}
 
 	/**
-	 * ejects contained items into the world, and notifies neighbours of an update, as appropriate
+	 * ejects contained items into the world, and notifies neighbours of an
+	 * update, as appropriate
 	 */
 	@Override
 	public void breakBlock(World world, int x, int y, int z, int par5, int par6)
@@ -43,9 +44,9 @@ public abstract class GCCoreBlockTile extends GCCoreBlockAdvanced implements ITi
 	}
 
 	/**
-	 * Called when the block receives a BlockEvent - see World.addBlockEvent. By default, passes it
-	 * on to the tile entity at this location. Args: world, x, y, z, blockID, EventID, event
-	 * parameter
+	 * Called when the block receives a BlockEvent - see World.addBlockEvent. By
+	 * default, passes it on to the tile entity at this location. Args: world,
+	 * x, y, z, blockID, EventID, event parameter
 	 */
 	@Override
 	public boolean onBlockEventReceived(World par1World, int par2, int par3, int par4, int par5, int par6)
@@ -56,8 +57,8 @@ public abstract class GCCoreBlockTile extends GCCoreBlockAdvanced implements ITi
 	}
 
 	/**
-	 * Override this if you don't need it. This will eject all items out of this machine if it has
-	 * an inventory.
+	 * Override this if you don't need it. This will eject all items out of this
+	 * machine if it has an inventory.
 	 */
 	public void dropEntireInventory(World world, int x, int y, int z, int par5, int par6)
 	{
@@ -110,8 +111,8 @@ public abstract class GCCoreBlockTile extends GCCoreBlockAdvanced implements ITi
 	}
 
 	/**
-	 * Returns the TileEntity used by this block. You should use the metadata sensitive version of
-	 * this to get the maximum optimization!
+	 * Returns the TileEntity used by this block. You should use the metadata
+	 * sensitive version of this to get the maximum optimization!
 	 */
 	@Override
 	public TileEntity createNewTileEntity(World var1)

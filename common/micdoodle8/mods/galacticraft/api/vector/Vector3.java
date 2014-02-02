@@ -90,8 +90,10 @@ public class Vector3 implements Cloneable
 	/**
 	 * Get a Vector3 based on the rotationYaw and rotationPitch.
 	 * 
-	 * @param rotationYaw - Degree
-	 * @param rotationPitch- Degree
+	 * @param rotationYaw
+	 *            - Degree
+	 * @param rotationPitch
+	 *            - Degree
 	 */
 	public Vector3(float rotationYaw, float rotationPitch)
 	{
@@ -299,13 +301,13 @@ public class Vector3 implements Cloneable
 	@Deprecated
 	public Vector3 add(Vector3 amount)
 	{
-		return translate(amount);
+		return this.translate(amount);
 	}
 
 	@Deprecated
 	public Vector3 add(double amount)
 	{
-		return translate(amount);
+		return this.translate(amount);
 	}
 
 	@Deprecated
@@ -451,8 +453,10 @@ public class Vector3 implements Cloneable
 	/**
 	 * Gets a position relative to a position's side
 	 * 
-	 * @param position - The position
-	 * @param side - The side. 0-5
+	 * @param position
+	 *            - The position
+	 * @param side
+	 *            - The side. 0-5
 	 * @return The position relative to the original position's side
 	 */
 	public Vector3 modifyPositionFromSide(ForgeDirection side, double amount)
@@ -530,7 +534,7 @@ public class Vector3 implements Cloneable
 	 */
 	public Vector3 rotate(float angle, Vector3 axis)
 	{
-		return translateMatrix(getRotationMatrix(angle, axis), this.clone());
+		return Vector3.translateMatrix(Vector3.getRotationMatrix(angle, axis), this.clone());
 	}
 
 	public double[] getRotationMatrix(float angle)
@@ -592,7 +596,8 @@ public class Vector3 implements Cloneable
 	}
 
 	/**
-	 * Rotates a point by a yaw and pitch around the anchor 0,0 by a specific angle.
+	 * Rotates a point by a yaw and pitch around the anchor 0,0 by a specific
+	 * angle.
 	 */
 	public void rotate(double yaw, double pitch)
 	{
@@ -614,8 +619,9 @@ public class Vector3 implements Cloneable
 	}
 
 	/**
-	 * Gets the delta look position based on the rotation yaw and pitch. Minecraft coordinates are
-	 * messed up. Y and Z are flipped. Yaw is displaced by 90 degrees. Pitch is inversed.
+	 * Gets the delta look position based on the rotation yaw and pitch.
+	 * Minecraft coordinates are messed up. Y and Z are flipped. Yaw is
+	 * displaced by 90 degrees. Pitch is inversed.
 	 * 
 	 * @param rotationYaw
 	 * @param rotationPitch
@@ -632,7 +638,7 @@ public class Vector3 implements Cloneable
 	 */
 	public double getAngle(Vector3 vec2)
 	{
-		return anglePreNorm(this.clone().normalize(), vec2.clone().normalize());
+		return Vector3.anglePreNorm(this.clone().normalize(), vec2.clone().normalize());
 	}
 
 	public static double getAngle(Vector3 vec1, Vector3 vec2)
@@ -662,8 +668,10 @@ public class Vector3 implements Cloneable
 	/**
 	 * Saves this Vector3 to disk
 	 * 
-	 * @param prefix - The prefix of this save. Use some unique string.
-	 * @param nbt - The NBT compound object to save the data in
+	 * @param prefix
+	 *            - The prefix of this save. Use some unique string.
+	 * @param nbt
+	 *            - The NBT compound object to save the data in
 	 */
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt)
 	{
@@ -717,12 +725,10 @@ public class Vector3 implements Cloneable
 		if (pickedBlock == null)
 		{
 			return pickedEntity;
-		}
-		else if (pickedEntity == null)
+		} else if (pickedEntity == null)
 		{
 			return pickedBlock;
-		}
-		else
+		} else
 		{
 			double dBlock = this.distance(new Vector3(pickedBlock.hitVec));
 			double dEntity = this.distance(new Vector3(pickedEntity.hitVec));
@@ -730,8 +736,7 @@ public class Vector3 implements Cloneable
 			if (dEntity < dBlock)
 			{
 				return pickedEntity;
-			}
-			else
+			} else
 			{
 				return pickedBlock;
 			}
@@ -740,7 +745,7 @@ public class Vector3 implements Cloneable
 
 	public MovingObjectPosition rayTraceBlocks(World world, float rotationYaw, float rotationPitch, boolean collisionFlag, double reachDistance)
 	{
-		Vector3 lookVector = this.getDeltaPositionFromRotation(rotationYaw, rotationPitch);
+		Vector3 lookVector = Vector3.getDeltaPositionFromRotation(rotationYaw, rotationPitch);
 		Vector3 reachPoint = this.clone().translate(lookVector.clone().scale(reachDistance));
 		return world.rayTraceBlocks_do_do(this.toVec3(), reachPoint.toVec3(), collisionFlag, !collisionFlag);
 	}
@@ -753,15 +758,17 @@ public class Vector3 implements Cloneable
 
 	public MovingObjectPosition rayTraceEntities(World world, float rotationYaw, float rotationPitch, double reachDistance)
 	{
-		return this.rayTraceEntities(world, getDeltaPositionFromRotation(rotationYaw, rotationPitch).scale(reachDistance));
+		return this.rayTraceEntities(world, Vector3.getDeltaPositionFromRotation(rotationYaw, rotationPitch).scale(reachDistance));
 	}
 
 	/**
 	 * Does an entity raytrace.
 	 * 
-	 * @param world - The world object.
-	 * @param target - The rotation in terms of Vector3. Convert using
-	 * getDeltaPositionFromRotation()
+	 * @param world
+	 *            - The world object.
+	 * @param target
+	 *            - The rotation in terms of Vector3. Convert using
+	 *            getDeltaPositionFromRotation()
 	 * @return The target hit.
 	 */
 	public MovingObjectPosition rayTraceEntities(World world, Vector3 target)
@@ -804,8 +811,7 @@ public class Vector3 implements Cloneable
 								closestEntity = 0.0D;
 							}
 						}
-					}
-					else
+					} else
 					{
 						double distance = startingPosition.distanceTo(hitMOP.hitVec);
 

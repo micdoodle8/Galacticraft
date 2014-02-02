@@ -20,91 +20,92 @@ import cpw.mods.fml.relauncher.Side;
 
 /**
  * GCCoreTileEntityOxygen.java
- *
+ * 
  * This file is part of the Galacticraft project
- *
+ * 
  * @author micdoodle8
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
 public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectricBlock implements IOxygenReceiver, IOxygenStorage
 {
-    public float maxOxygen;
-    public float oxygenPerTick;
-    @NetworkedField(targetSide = Side.CLIENT)
-    public float storedOxygen;
-    public float lastStoredOxygen;
-    public static int timeSinceOxygenRequest;
+	public float maxOxygen;
+	public float oxygenPerTick;
+	@NetworkedField(targetSide = Side.CLIENT)
+	public float storedOxygen;
+	public float lastStoredOxygen;
+	public static int timeSinceOxygenRequest;
 
-    public GCCoreTileEntityOxygen(float wattsPerTick, float maxEnergy, float maxOxygen, float oxygenPerTick)
-    {
-        super(wattsPerTick, maxEnergy);
-        this.maxOxygen = maxOxygen;
-        this.oxygenPerTick = oxygenPerTick;
-    }
-    
-    public int getScaledOxygenLevel(int scale)
-    {
-        return (int) Math.floor((this.getOxygenStored() * scale) / (this.getMaxOxygenStored() - this.oxygenPerTick));
-    }
+	public GCCoreTileEntityOxygen(float wattsPerTick, float maxEnergy, float maxOxygen, float oxygenPerTick)
+	{
+		super(wattsPerTick, maxEnergy);
+		this.maxOxygen = maxOxygen;
+		this.oxygenPerTick = oxygenPerTick;
+	}
 
-    public abstract boolean shouldPullOxygen();
+	public int getScaledOxygenLevel(int scale)
+	{
+		return (int) Math.floor((this.getOxygenStored() * scale) / (this.getMaxOxygenStored() - this.oxygenPerTick));
+	}
 
-    public abstract boolean shouldUseOxygen();
+	public abstract boolean shouldPullOxygen();
 
-    public int getCappedScaledOxygenLevel(int scale)
-    {
-        return (int) Math.max(Math.min(Math.floor((double) this.storedOxygen / (double) this.maxOxygen * scale), scale), 0);
-    }
+	public abstract boolean shouldUseOxygen();
 
-    @Override
-    public void updateEntity()
-    {
-        super.updateEntity();
+	public int getCappedScaledOxygenLevel(int scale)
+	{
+		return (int) Math.max(Math.min(Math.floor((double) this.storedOxygen / (double) this.maxOxygen * scale), scale), 0);
+	}
 
-        if (!this.worldObj.isRemote)
-        {
-            if (GCCoreTileEntityOxygen.timeSinceOxygenRequest > 0)
-            {
-                GCCoreTileEntityOxygen.timeSinceOxygenRequest--;
-            }
+	@Override
+	public void updateEntity()
+	{
+		super.updateEntity();
 
-            if (this.shouldUseOxygen())
-            {
-                this.storedOxygen = Math.max(this.storedOxygen - this.oxygenPerTick, 0);
-            }
-        }
+		if (!this.worldObj.isRemote)
+		{
+			if (GCCoreTileEntityOxygen.timeSinceOxygenRequest > 0)
+			{
+				GCCoreTileEntityOxygen.timeSinceOxygenRequest--;
+			}
 
-        this.lastStoredOxygen = this.storedOxygen;
-    }
+			if (this.shouldUseOxygen())
+			{
+				this.storedOxygen = Math.max(this.storedOxygen - this.oxygenPerTick, 0);
+			}
+		}
 
-    @Override
-    public void readFromNBT(NBTTagCompound nbt)
-    {
-        super.readFromNBT(nbt);
-        
-        if (nbt.hasKey("storedOxygen"))
-        {
-        	this.storedOxygen = nbt.getInteger("storedOxygen");
-        }
-        else
-        {
-            this.storedOxygen = nbt.getFloat("storedOxygenF");
-        }
-    }
+		this.lastStoredOxygen = this.storedOxygen;
+	}
 
-    @Override
-    public void writeToNBT(NBTTagCompound nbt)
-    {
-        super.writeToNBT(nbt);
-        nbt.setFloat("storedOxygenF", this.storedOxygen);
-    }
+	@Override
+	public void readFromNBT(NBTTagCompound nbt)
+	{
+		super.readFromNBT(nbt);
 
+		if (nbt.hasKey("storedOxygen"))
+		{
+			this.storedOxygen = nbt.getInteger("storedOxygen");
+		} else
+		{
+			this.storedOxygen = nbt.getFloat("storedOxygenF");
+		}
+	}
+
+	@Override
+	public void writeToNBT(NBTTagCompound nbt)
+	{
+		super.writeToNBT(nbt);
+		nbt.setFloat("storedOxygenF", this.storedOxygen);
+	}
+
+	@Override
 	public void setOxygenStored(float oxygen)
 	{
 		this.storedOxygen = Math.max(Math.min(oxygen, this.getMaxOxygenStored()), 0);
 	}
 
+	@Override
 	public float getOxygenStored()
 	{
 		return this.storedOxygen;
@@ -120,7 +121,7 @@ public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectricBlo
 	{
 		return EnumSet.allOf(ForgeDirection.class);
 	}
-	
+
 	public EnumSet<ForgeDirection> getOxygenOutputDirections()
 	{
 		return EnumSet.noneOf(ForgeDirection.class);
@@ -146,10 +147,10 @@ public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectricBlo
 			{
 				return this.getOxygenRequest(from);
 			}
-			
+
 			return this.receiveOxygen(receive, doReceive);
 		}
-		
+
 		return 0;
 	}
 
@@ -162,7 +163,7 @@ public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectricBlo
 
 			if (doReceive)
 			{
-				timeSinceOxygenRequest = 20;
+				GCCoreTileEntityOxygen.timeSinceOxygenRequest = 20;
 				this.setOxygenStored(newStoredEnergy);
 			}
 
@@ -204,62 +205,61 @@ public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectricBlo
 
 		return 0;
 	}
-	
+
 	public void produceOxygen()
 	{
 		if (!this.worldObj.isRemote)
 		{
 			for (ForgeDirection direction : this.getOxygenOutputDirections())
 			{
-                if (direction != ForgeDirection.UNKNOWN)
-                {
-    				this.produceOxygen(direction);
-                }
+				if (direction != ForgeDirection.UNKNOWN)
+				{
+					this.produceOxygen(direction);
+				}
 			}
 		}
 	}
 
-    public boolean produceOxygen(ForgeDirection outputDirection)
-    {
-        if (!this.worldObj.isRemote && outputDirection != null && outputDirection != ForgeDirection.UNKNOWN)
-        {
-            float provide = this.getOxygenProvide(outputDirection);
+	public boolean produceOxygen(ForgeDirection outputDirection)
+	{
+		if (!this.worldObj.isRemote && outputDirection != null && outputDirection != ForgeDirection.UNKNOWN)
+		{
+			float provide = this.getOxygenProvide(outputDirection);
 
-            if (provide > 0)
-            {
+			if (provide > 0)
+			{
 				TileEntity outputTile = new Vector3(this).modifyPositionFromSide(outputDirection).getTileEntity(this.worldObj);
 				IOxygenNetwork outputNetwork = NetworkHelper.getOxygenNetworkFromTileEntity(outputTile, outputDirection);
 
-                if (outputNetwork != null)
-                {
-                    float powerRequest = outputNetwork.getRequest(this);
+				if (outputNetwork != null)
+				{
+					float powerRequest = outputNetwork.getRequest(this);
 
-                    if (powerRequest > 0)
-                    {
-                    	float toSend = Math.min(this.getOxygenStored(), provide);
-                        float rejectedPower = outputNetwork.produce(toSend, this);
+					if (powerRequest > 0)
+					{
+						float toSend = Math.min(this.getOxygenStored(), provide);
+						float rejectedPower = outputNetwork.produce(toSend, this);
 
 						this.provideOxygen(Math.max(toSend - rejectedPower, 0), true);
-                        return true;
-                    }
-                }
-                else if (outputTile instanceof IOxygenReceiver)
-                {
-                    float requestedEnergy = ((IOxygenReceiver) outputTile).getOxygenRequest(outputDirection.getOpposite());
+						return true;
+					}
+				} else if (outputTile instanceof IOxygenReceiver)
+				{
+					float requestedEnergy = ((IOxygenReceiver) outputTile).getOxygenRequest(outputDirection.getOpposite());
 
-                    if (requestedEnergy > 0)
-                    {
-                    	float toSend = Math.min(this.getOxygenStored(), provide);
-                        float acceptedEnergy = ((IOxygenReceiver) outputTile).receiveOxygen(outputDirection.getOpposite(), toSend, true);
+					if (requestedEnergy > 0)
+					{
+						float toSend = Math.min(this.getOxygenStored(), provide);
+						float acceptedEnergy = ((IOxygenReceiver) outputTile).receiveOxygen(outputDirection.getOpposite(), toSend, true);
 						this.provideOxygen(acceptedEnergy, true);
-                        return true;
-                    }
-                }
-            }
-        }
+						return true;
+					}
+				}
+			}
+		}
 
-        return false;
-    }
+		return false;
+	}
 
 	@Override
 	public float getOxygenRequest(ForgeDirection direction)
@@ -267,8 +267,7 @@ public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectricBlo
 		if (this.shouldPullOxygen())
 		{
 			return this.oxygenPerTick * 2;
-		}
-		else
+		} else
 		{
 			return 0;
 		}
@@ -301,7 +300,7 @@ public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectricBlo
 	@RuntimeInterface(clazz = "mekanism.api.gas.IGasStorage", modID = "Mekanism")
 	public GasStack getGas(Object... data)
 	{
-		return new GasStack((Gas) NetworkConfigHandler.gasOxygen, (int)Math.floor(this.getOxygenStored()));
+		return new GasStack((Gas) NetworkConfigHandler.gasOxygen, (int) Math.floor(this.getOxygenStored()));
 	}
 
 	@RuntimeInterface(clazz = "mekanism.api.gas.IGasStorage", modID = "Mekanism")

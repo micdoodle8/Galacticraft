@@ -9,10 +9,10 @@ package micdoodle8.mods.galacticraft.api.world;
  */
 public interface IPlanet extends ICelestialBody
 {
-    /**
-     * @return IGalaxy object for the galaxy this planet resides in
-     * 
-     * @see IGalaxy
-     */
-    public IGalaxy getParentGalaxy();
+	/**
+	 * @return IGalaxy object for the galaxy this planet resides in
+	 * 
+	 * @see IGalaxy
+	 */
+	public IGalaxy getParentGalaxy();
 }

@@ -14,57 +14,57 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * GCCoreItemKnowledgeBook.java
- *
+ * 
  * This file is part of the Galacticraft project
- *
+ * 
  * @author micdoodle8
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
 public class GCCoreItemKnowledgeBook extends Item
 {
-    public GCCoreItemKnowledgeBook(int id, String assetName)
-    {
-        super(id);
-        this.maxStackSize = 1;
-        this.setUnlocalizedName(assetName);
-        this.setTextureName("arrow");
-    }
+	public GCCoreItemKnowledgeBook(int id, String assetName)
+	{
+		super(id);
+		this.maxStackSize = 1;
+		this.setUnlocalizedName(assetName);
+		this.setTextureName("arrow");
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack par1ItemStack)
-    {
-        return ClientProxyCore.galacticraftItem;
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public EnumRarity getRarity(ItemStack par1ItemStack)
+	{
+		return ClientProxyCore.galacticraftItem;
+	}
 
-    // @Override
-    // public CreativeTabs getCreativeTab()
-    // {
-    // return GalacticraftCore.galacticraftTab;
-    // }
+	// @Override
+	// public CreativeTabs getCreativeTab()
+	// {
+	// return GalacticraftCore.galacticraftTab;
+	// }
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister par1IconRegister)
-    {
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister par1IconRegister)
+	{
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public boolean hasEffect(ItemStack par1ItemStack)
-    {
-        return true;
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean hasEffect(ItemStack par1ItemStack)
+	{
+		return true;
+	}
 
-    @Override
-    public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
-    {
-        if (par2World.isRemote)
-        {
-            par3EntityPlayer.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiKnowledgeBook, par2World, (int) par3EntityPlayer.posX, (int) par3EntityPlayer.posY, (int) par3EntityPlayer.posZ);
-        }
+	@Override
+	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
+	{
+		if (par2World.isRemote)
+		{
+			par3EntityPlayer.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiKnowledgeBook, par2World, (int) par3EntityPlayer.posX, (int) par3EntityPlayer.posY, (int) par3EntityPlayer.posZ);
+		}
 
-        return par1ItemStack;
-    }
+		return par1ItemStack;
+	}
 }

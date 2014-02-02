@@ -11,11 +11,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 
 /**
- * An Electrical Network specifies a wire connection. Each wire connection line will have its own
- * electrical network.
+ * An Electrical Network specifies a wire connection. Each wire connection line
+ * will have its own electrical network.
  * 
- * !! Do not include this class if you do not intend to have custom wires in your mod. This will
- * increase future compatibility. !!
+ * !! Do not include this class if you do not intend to have custom wires in
+ * your mod. This will increase future compatibility. !!
  * 
  * @author Calclavia
  * 
@@ -27,7 +27,7 @@ public abstract class ElectricityNetwork implements IElectricityNetwork
 	private final Set<IConductor> conductors = new HashSet<IConductor>();
 
 	public float acceptorResistance = 500;
-	
+
 	/**
 	 * @return Returns all producers in this electricity network.
 	 */
@@ -38,8 +38,10 @@ public abstract class ElectricityNetwork implements IElectricityNetwork
 	}
 
 	/**
-	 * @param tile The tile to get connections for
-	 * @return The list of directions that can be connected to for the provided tile
+	 * @param tile
+	 *            The tile to get connections for
+	 * @return The list of directions that can be connected to for the provided
+	 *         tile
 	 */
 	@Override
 	public ArrayList<ForgeDirection> getPossibleDirections(TileEntity tile)

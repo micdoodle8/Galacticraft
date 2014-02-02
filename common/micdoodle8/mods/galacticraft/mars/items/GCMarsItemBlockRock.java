@@ -13,52 +13,52 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * GCMarsItemBlockRock.java
- *
+ * 
  * This file is part of the Galacticraft project
- *
+ * 
  * @author micdoodle8
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
 public class GCMarsItemBlockRock extends ItemBlock
 {
-    public GCMarsItemBlockRock(int i)
-    {
-        super(i);
-        this.setMaxDamage(0);
-        this.setHasSubtypes(true);
-    }
+	public GCMarsItemBlockRock(int i)
+	{
+		super(i);
+		this.setMaxDamage(0);
+		this.setHasSubtypes(true);
+	}
 
-    @Override
-    public int getMetadata(int meta)
-    {
-        return meta;
-    }
+	@Override
+	public int getMetadata(int meta)
+	{
+		return meta;
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack par1ItemStack)
-    {
-        return ClientProxyCore.galacticraftItem;
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public EnumRarity getRarity(ItemStack par1ItemStack)
+	{
+		return ClientProxyCore.galacticraftItem;
+	}
 
-    @Override
-    public String getUnlocalizedName(ItemStack itemstack)
-    {
-        String name = GCMarsBlockSlimelingEgg.names[itemstack.getItemDamage() % 3];
+	@Override
+	public String getUnlocalizedName(ItemStack itemstack)
+	{
+		String name = GCMarsBlockSlimelingEgg.names[itemstack.getItemDamage() % 3];
 
-        return Block.blocksList[this.getBlockID()].getUnlocalizedName() + "." + name;
-    }
+		return Block.blocksList[this.getBlockID()].getUnlocalizedName() + "." + name;
+	}
 
-    @Override
-    public CreativeTabs getCreativeTab()
-    {
-        return GalacticraftMars.galacticraftMarsTab;
-    }
+	@Override
+	public CreativeTabs getCreativeTab()
+	{
+		return GalacticraftMars.galacticraftMarsTab;
+	}
 
-    @Override
-    public String getUnlocalizedName()
-    {
-        return Block.blocksList[this.getBlockID()].getUnlocalizedName() + ".0";
-    }
+	@Override
+	public String getUnlocalizedName()
+	{
+		return Block.blocksList[this.getBlockID()].getUnlocalizedName() + ".0";
+	}
 }

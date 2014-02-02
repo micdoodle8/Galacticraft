@@ -17,71 +17,68 @@ import net.minecraft.command.WrongUsageException;
 
 /**
  * GCCoreCommandPlanetTeleport.java
- *
+ * 
  * This file is part of the Galacticraft project
- *
+ * 
  * @author micdoodle8
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
 public class GCCoreCommandPlanetTeleport extends CommandBase
 {
-    @Override
-    public String getCommandUsage(ICommandSender var1)
-    {
-        return "/" + this.getCommandName() + " [player]";
-    }
+	@Override
+	public String getCommandUsage(ICommandSender var1)
+	{
+		return "/" + this.getCommandName() + " [player]";
+	}
 
-    @Override
-    public String getCommandName()
-    {
-        return "dimensiontp";
-    }
+	@Override
+	public String getCommandName()
+	{
+		return "dimensiontp";
+	}
 
-    @Override
-    public void processCommand(ICommandSender icommandsender, String[] astring)
-    {
-        GCCorePlayerMP playerBase = null;
+	@Override
+	public void processCommand(ICommandSender icommandsender, String[] astring)
+	{
+		GCCorePlayerMP playerBase = null;
 
-        if (astring.length > 0)
-        {
-            try
-            {
-                playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(astring[0]);
+		if (astring.length > 0)
+		{
+			try
+			{
+				playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(astring[0]);
 
-                if (playerBase != null)
-                {
-                    HashMap<String, Integer> map = WorldUtil.getArrayOfPossibleDimensions(WorldUtil.getPossibleDimensionsForSpaceshipTier(Integer.MAX_VALUE), playerBase);
+				if (playerBase != null)
+				{
+					HashMap<String, Integer> map = WorldUtil.getArrayOfPossibleDimensions(WorldUtil.getPossibleDimensionsForSpaceshipTier(Integer.MAX_VALUE), playerBase);
 
-                    String temp = "";
-                    int count = 0;
+					String temp = "";
+					int count = 0;
 
-                    for (Entry<String, Integer> entry : map.entrySet())
-                    {
-                        temp = temp.concat(entry.getKey() + (count < map.entrySet().size() - 1 ? "." : ""));
-                        count++;
-                    }
+					for (Entry<String, Integer> entry : map.entrySet())
+					{
+						temp = temp.concat(entry.getKey() + (count < map.entrySet().size() - 1 ? "." : ""));
+						count++;
+					}
 
-                    playerBase.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.UPDATE_DIMENSION_LIST, new Object[] { playerBase.username, temp }));
-                    playerBase.setSpaceshipTier(Integer.MAX_VALUE);
-                    playerBase.setUsingPlanetGui();
-                    playerBase.mountEntity(null);
+					playerBase.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.UPDATE_DIMENSION_LIST, new Object[] { playerBase.username, temp }));
+					playerBase.setSpaceshipTier(Integer.MAX_VALUE);
+					playerBase.setUsingPlanetGui();
+					playerBase.mountEntity(null);
 
-                    CommandBase.notifyAdmins(icommandsender, "commands.dimensionteleport", new Object[] { String.valueOf(EnumColor.GREY + "[" + playerBase.getEntityName()), "]" });
-                }
-                else
-                {
-                    throw new Exception("Could not find player with name: " + astring[0]);
-                }
-            }
-            catch (final Exception var6)
-            {
-                throw new CommandException(var6.getMessage(), new Object[0]);
-            }
-        }
-        else
-        {
-            throw new WrongUsageException("Not enough command arguments! Usage: " + this.getCommandUsage(icommandsender), new Object[0]);
-        }
-    }
+					CommandBase.notifyAdmins(icommandsender, "commands.dimensionteleport", new Object[] { String.valueOf(EnumColor.GREY + "[" + playerBase.getEntityName()), "]" });
+				} else
+				{
+					throw new Exception("Could not find player with name: " + astring[0]);
+				}
+			} catch (final Exception var6)
+			{
+				throw new CommandException(var6.getMessage(), new Object[0]);
+			}
+		} else
+		{
+			throw new WrongUsageException("Not enough command arguments! Usage: " + this.getCommandUsage(icommandsender), new Object[0]);
+		}
+	}
 }

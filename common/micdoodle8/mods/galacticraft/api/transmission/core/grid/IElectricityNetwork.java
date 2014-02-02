@@ -20,19 +20,23 @@ public interface IElectricityNetwork extends IGridNetwork<IElectricityNetwork, I
 	public float produce(ElectricityPack electricityPack, boolean doReceive, TileEntity... ignoreTiles);
 
 	/**
-	 * Gets the total amount of electricity requested/needed in the electricity network.
+	 * Gets the total amount of electricity requested/needed in the electricity
+	 * network.
 	 * 
-	 * @param ignoreTiles The TileEntities to ignore during this calculation (optional).
+	 * @param ignoreTiles
+	 *            The TileEntities to ignore during this calculation (optional).
 	 */
 	public ElectricityPack getRequest(TileEntity... ignoreTiles);
 
 	/**
-	 * @return The total amount of resistance of this electrical network. In Ohms.
+	 * @return The total amount of resistance of this electrical network. In
+	 *         Ohms.
 	 */
 	public float getTotalResistance();
 
 	/**
-	 * @return The lowest amount of current (amperage) that this electrical network can tolerate.
+	 * @return The lowest amount of current (amperage) that this electrical
+	 *         network can tolerate.
 	 */
 	public float getLowestCurrentCapacity();
 }

@@ -10,53 +10,53 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * GCCoreItemBlockLandingPad.java
- *
+ * 
  * This file is part of the Galacticraft project
- *
+ * 
  * @author micdoodle8
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
 public class GCCoreItemBlockLandingPad extends ItemBlock
 {
-    public GCCoreItemBlockLandingPad(int id)
-    {
-        super(id);
-        this.setMaxDamage(0);
-        this.setHasSubtypes(true);
-    }
+	public GCCoreItemBlockLandingPad(int id)
+	{
+		super(id);
+		this.setMaxDamage(0);
+		this.setHasSubtypes(true);
+	}
 
-    @Override
-    public String getUnlocalizedName(ItemStack par1ItemStack)
-    {
-        String name = "";
+	@Override
+	public String getUnlocalizedName(ItemStack par1ItemStack)
+	{
+		String name = "";
 
-        switch (par1ItemStack.getItemDamage())
-        {
-        case 0:
-            name = "landingPad";
-            break;
-        case 1:
-            name = "buggyFueler";
-            break;
-        case 2:
-            name = "cargoPad";
-            break;
-        }
+		switch (par1ItemStack.getItemDamage())
+		{
+		case 0:
+			name = "landingPad";
+			break;
+		case 1:
+			name = "buggyFueler";
+			break;
+		case 2:
+			name = "cargoPad";
+			break;
+		}
 
-        return Block.blocksList[this.getBlockID()].getUnlocalizedName() + "." + name;
-    }
+		return Block.blocksList[this.getBlockID()].getUnlocalizedName() + "." + name;
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack par1ItemStack)
-    {
-        return ClientProxyCore.galacticraftItem;
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public EnumRarity getRarity(ItemStack par1ItemStack)
+	{
+		return ClientProxyCore.galacticraftItem;
+	}
 
-    @Override
-    public int getMetadata(int damage)
-    {
-        return damage;
-    }
+	@Override
+	public int getMetadata(int damage)
+	{
+		return damage;
+	}
 }

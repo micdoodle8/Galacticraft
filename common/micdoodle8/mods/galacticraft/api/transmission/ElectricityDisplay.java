@@ -8,13 +8,18 @@ package micdoodle8.mods.galacticraft.api.transmission;
 public class ElectricityDisplay
 {
 	/**
-	 * Universal Electricity's units are in KILOJOULES, KILOWATTS and KILOVOLTS. Try to make your
-	 * energy ratio as close to real life as possible.
+	 * Universal Electricity's units are in KILOJOULES, KILOWATTS and KILOVOLTS.
+	 * Try to make your energy ratio as close to real life as possible.
 	 */
 	public static enum ElectricUnit
 	{
-		AMPERE("Amp", "I"), AMP_HOUR("Amp Hour", "Ah"), VOLTAGE("Volt", "V"), WATT("Watt", "W"),
-		WATT_HOUR("Watt Hour", "Wh"), RESISTANCE("Ohm", "R"), CONDUCTANCE("Siemen", "S"),
+		AMPERE("Amp", "I"),
+		AMP_HOUR("Amp Hour", "Ah"),
+		VOLTAGE("Volt", "V"),
+		WATT("Watt", "W"),
+		WATT_HOUR("Watt Hour", "Wh"),
+		RESISTANCE("Ohm", "R"),
+		CONDUCTANCE("Siemen", "S"),
 		JOULES("Joule", "J");
 
 		public String name;
@@ -35,10 +40,16 @@ public class ElectricityDisplay
 	/** Metric system of measurement. */
 	public static enum MeasurementUnit
 	{
-		MICRO("Micro", "u", 0.000001f), MILLI("Milli", "m", 0.001f), BASE("", "", 1),
-		KILO("Kilo", "k", 1000f), MEGA("Mega", "M", 1000000f), GIGA("Giga", "G", 1000000000f),
-		TERA("Tera", "T", 1000000000000f), PETA("Peta", "P", 1000000000000000f),
-		EXA("Exa", "E", 1000000000000000000f), ZETTA("Zetta", "Z", 1000000000000000000000f),
+		MICRO("Micro", "u", 0.000001f),
+		MILLI("Milli", "m", 0.001f),
+		BASE("", "", 1),
+		KILO("Kilo", "k", 1000f),
+		MEGA("Mega", "M", 1000000f),
+		GIGA("Giga", "G", 1000000000f),
+		TERA("Tera", "T", 1000000000000f),
+		PETA("Peta", "P", 1000000000000000f),
+		EXA("Exa", "E", 1000000000000000000f),
+		ZETTA("Zetta", "Z", 1000000000000000000000f),
 		YOTTA("Yotta", "Y", 1000000000000000000000000f);
 
 		/** long name for the unit */
@@ -59,11 +70,10 @@ public class ElectricityDisplay
 		{
 			if (getShort)
 			{
-				return symbol;
-			}
-			else
+				return this.symbol;
+			} else
 			{
-				return name;
+				return this.name;
 			}
 		}
 
@@ -86,16 +96,19 @@ public class ElectricityDisplay
 		}
 	}
 
-	/** By default, mods should store energy in Kilo-Joules, hence a multiplier of 1/1000. */
+	/**
+	 * By default, mods should store energy in Kilo-Joules, hence a multiplier
+	 * of 1/1000.
+	 */
 	public static String getDisplay(float value, ElectricUnit unit, int decimalPlaces, boolean isShort)
 	{
-		return getDisplay(value, unit, decimalPlaces, isShort, 1000);
+		return ElectricityDisplay.getDisplay(value, unit, decimalPlaces, isShort, 1000);
 	}
 
 	/**
-	 * Displays the unit as text. Does handle negative numbers, and will place a negative sign in
-	 * front of the output string showing this. Use string.replace to remove the negative sign if
-	 * unwanted
+	 * Displays the unit as text. Does handle negative numbers, and will place a
+	 * negative sign in front of the output string showing this. Use
+	 * string.replace to remove the negative sign if unwanted
 	 */
 	public static String getDisplay(float value, ElectricUnit unit, int decimalPlaces, boolean isShort, float multiplier)
 	{
@@ -111,8 +124,7 @@ public class ElectricityDisplay
 		if (isShort)
 		{
 			unitName = unit.symbol;
-		}
-		else if (value > 1)
+		} else if (value > 1)
 		{
 			unitName = unit.getPlural();
 		}
@@ -120,44 +132,43 @@ public class ElectricityDisplay
 		if (value == 0)
 		{
 			return value + " " + unitName;
-		}
-		else
+		} else
 		{
 			for (int i = 0; i < MeasurementUnit.values().length; i++)
 			{
 				MeasurementUnit lowerMeasure = MeasurementUnit.values()[i];
 				if (lowerMeasure.isBellow(value) && lowerMeasure.ordinal() == 0)
 				{
-					return prefix + roundDecimals(lowerMeasure.process(value), decimalPlaces) + " " + lowerMeasure.getName(isShort) + unitName;
+					return prefix + ElectricityDisplay.roundDecimals(lowerMeasure.process(value), decimalPlaces) + " " + lowerMeasure.getName(isShort) + unitName;
 				}
 				if (lowerMeasure.ordinal() + 1 >= MeasurementUnit.values().length)
 				{
-					return prefix + roundDecimals(lowerMeasure.process(value), decimalPlaces) + " " + lowerMeasure.getName(isShort) + unitName;
+					return prefix + ElectricityDisplay.roundDecimals(lowerMeasure.process(value), decimalPlaces) + " " + lowerMeasure.getName(isShort) + unitName;
 				}
 				MeasurementUnit upperMeasure = MeasurementUnit.values()[i + 1];
 				if ((lowerMeasure.isAbove(value) && upperMeasure.isBellow(value)) || lowerMeasure.value == value)
 				{
-					return prefix + roundDecimals(lowerMeasure.process(value), decimalPlaces) + " " + lowerMeasure.getName(isShort) + unitName;
+					return prefix + ElectricityDisplay.roundDecimals(lowerMeasure.process(value), decimalPlaces) + " " + lowerMeasure.getName(isShort) + unitName;
 				}
 			}
 		}
 
-		return prefix + roundDecimals(value, decimalPlaces) + " " + unitName;
+		return prefix + ElectricityDisplay.roundDecimals(value, decimalPlaces) + " " + unitName;
 	}
 
 	public static String getDisplay(float value, ElectricUnit unit)
 	{
-		return getDisplay(value, unit, 2, false);
+		return ElectricityDisplay.getDisplay(value, unit, 2, false);
 	}
 
 	public static String getDisplayShort(float value, ElectricUnit unit)
 	{
-		return getDisplay(value, unit, 2, true);
+		return ElectricityDisplay.getDisplay(value, unit, 2, true);
 	}
 
 	public static String getDisplayShort(float value, ElectricUnit unit, int decimalPlaces)
 	{
-		return getDisplay(value, unit, decimalPlaces, true);
+		return ElectricityDisplay.getDisplay(value, unit, decimalPlaces, true);
 	}
 
 	public static String getDisplaySimple(float value, ElectricUnit unit, int decimalPlaces)
@@ -169,7 +180,7 @@ public class ElectricityDisplay
 				return (int) value + " " + unit.getPlural();
 			}
 
-			return roundDecimals(value, decimalPlaces) + " " + unit.getPlural();
+			return ElectricityDisplay.roundDecimals(value, decimalPlaces) + " " + unit.getPlural();
 		}
 
 		if (decimalPlaces < 1)
@@ -177,13 +188,14 @@ public class ElectricityDisplay
 			return (int) value + " " + unit.name;
 		}
 
-		return roundDecimals(value, decimalPlaces) + " " + unit.name;
+		return ElectricityDisplay.roundDecimals(value, decimalPlaces) + " " + unit.name;
 	}
 
 	/**
 	 * Rounds a number to a specific number place places
 	 * 
-	 * @param The number
+	 * @param The
+	 *            number
 	 * @return The rounded number
 	 */
 	public static double roundDecimals(double d, int decimalPlaces)
@@ -194,6 +206,6 @@ public class ElectricityDisplay
 
 	public static double roundDecimals(double d)
 	{
-		return roundDecimals(d, 2);
+		return ElectricityDisplay.roundDecimals(d, 2);
 	}
 }

@@ -16,43 +16,43 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * GCCoreItem.java
- *
+ * 
  * This file is part of the Galacticraft project
- *
+ * 
  * @author micdoodle8
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
 public class GCCoreItem extends Item
 {
-    public GCCoreItem(int id, String assetName)
-    {
-        super(id);
-        this.setUnlocalizedName(assetName);
-        this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
-    }
+	public GCCoreItem(int id, String assetName)
+	{
+		super(id);
+		this.setUnlocalizedName(assetName);
+		this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+	}
 
-    @Override
-    public CreativeTabs getCreativeTab()
-    {
-        return GalacticraftCore.galacticraftTab;
-    }
+	@Override
+	public CreativeTabs getCreativeTab()
+	{
+		return GalacticraftCore.galacticraftTab;
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack par1ItemStack)
-    {
-        return ClientProxyCore.galacticraftItem;
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public EnumRarity getRarity(ItemStack par1ItemStack)
+	{
+		return ClientProxyCore.galacticraftItem;
+	}
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
-    {
-        if (par1ItemStack != null && this.itemID == GCCoreConfigManager.idItemHeavyPlate + 256)
-        {
-            par3List.add(StatCollector.translateToLocal("item.tier1.desc"));
-        }
-    }
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
+	{
+		if (par1ItemStack != null && this.itemID == GCCoreConfigManager.idItemHeavyPlate + 256)
+		{
+			par3List.add(StatCollector.translateToLocal("item.tier1.desc"));
+		}
+	}
 }

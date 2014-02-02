@@ -8,19 +8,19 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * GCCoreCloudRenderer.java
- *
+ * 
  * This file is part of the Galacticraft project
- *
+ * 
  * @author micdoodle8
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
 public class GCCoreCloudRenderer extends IRenderHandler
 {
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void render(float partialTicks, WorldClient world, Minecraft mc)
-    {
-        // Do nothing
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void render(float partialTicks, WorldClient world, Minecraft mc)
+	{
+		// Do nothing
+	}
 }

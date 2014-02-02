@@ -8,11 +8,10 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.common.ForgeDirection;
 
-
 public class VectorD3
 {
 	public Vector3 position;
-    public int dimensionID;
+	public int dimensionID;
 
 	public VectorD3(double x, double y, double z, int dimID)
 	{
@@ -87,7 +86,7 @@ public class VectorD3
 		nbt.setInteger("dimID", this.dimensionID);
 		return nbt;
 	}
-	
+
 	@Override
 	public VectorD3 clone()
 	{

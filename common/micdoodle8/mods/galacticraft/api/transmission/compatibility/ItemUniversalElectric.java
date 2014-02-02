@@ -47,7 +47,7 @@ public abstract class ItemUniversalElectric extends ItemElectric implements ISpe
 	@Override
 	public int getTransferLimit(ItemStack itemStack)
 	{
-		return (int) ((this.getMaxElectricityStored(itemStack) * CHARGE_RATE) * NetworkConfigHandler.TO_IC2_RATIO);
+		return (int) ((this.getMaxElectricityStored(itemStack) * ItemUniversalElectric.CHARGE_RATE) * NetworkConfigHandler.TO_IC2_RATIO);
 	}
 
 	@Override
@@ -106,14 +106,14 @@ public abstract class ItemUniversalElectric extends ItemElectric implements ISpe
 		public int charge(ItemStack itemStack, int amount, int tier, boolean ignoreTransferLimit, boolean simulate)
 		{
 			float inputElectricity = amount * NetworkConfigHandler.IC2_RATIO;
-			return (int) (getElectricItem(itemStack).recharge(itemStack, inputElectricity, !simulate) * NetworkConfigHandler.TO_IC2_RATIO);
+			return (int) (this.getElectricItem(itemStack).recharge(itemStack, inputElectricity, !simulate) * NetworkConfigHandler.TO_IC2_RATIO);
 		}
 
 		@Override
 		public int discharge(ItemStack itemStack, int amount, int tier, boolean ignoreTransferLimit, boolean simulate)
 		{
 			float outputElectricity = amount * NetworkConfigHandler.IC2_RATIO;
-			return (int) (getElectricItem(itemStack).discharge(itemStack, outputElectricity, !simulate) * NetworkConfigHandler.TO_IC2_RATIO);
+			return (int) (this.getElectricItem(itemStack).discharge(itemStack, outputElectricity, !simulate) * NetworkConfigHandler.TO_IC2_RATIO);
 		}
 
 		@Override

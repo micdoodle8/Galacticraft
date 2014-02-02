@@ -11,32 +11,32 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * GCCoreItemAxe.java
- *
+ * 
  * This file is part of the Galacticraft project
- *
+ * 
  * @author micdoodle8
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
 public class GCCoreItemAxe extends ItemAxe
 {
-    public GCCoreItemAxe(int id, String assetName)
-    {
-        super(id, GCCoreItems.TOOL_STEEL);
-        this.setUnlocalizedName(assetName);
-        this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
-    }
+	public GCCoreItemAxe(int id, String assetName)
+	{
+		super(id, GCCoreItems.TOOL_STEEL);
+		this.setUnlocalizedName(assetName);
+		this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+	}
 
-    @Override
-    public CreativeTabs getCreativeTab()
-    {
-        return GalacticraftCore.galacticraftTab;
-    }
+	@Override
+	public CreativeTabs getCreativeTab()
+	{
+		return GalacticraftCore.galacticraftTab;
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack par1ItemStack)
-    {
-        return ClientProxyCore.galacticraftItem;
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public EnumRarity getRarity(ItemStack par1ItemStack)
+	{
+		return ClientProxyCore.galacticraftItem;
+	}
 }

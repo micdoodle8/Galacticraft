@@ -100,7 +100,7 @@ public abstract class GCCoreTileEntityConductor extends GCCoreTileEntityAdvanced
 			{
 				ForgeDirection side = ForgeDirection.getOrientation(i);
 				Vector3 thisVec = new Vector3(this);
-				TileEntity tileEntity = thisVec.modifyPositionFromSide(side).getTileEntity(worldObj);
+				TileEntity tileEntity = thisVec.modifyPositionFromSide(side).getTileEntity(this.worldObj);
 
 				if (tileEntity instanceof IConnector)
 				{

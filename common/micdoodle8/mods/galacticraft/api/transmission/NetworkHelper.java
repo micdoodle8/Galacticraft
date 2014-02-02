@@ -13,7 +13,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 
 /**
- * A helper class that provides additional useful functions to interact with the ElectricityNetwork
+ * A helper class that provides additional useful functions to interact with the
+ * ElectricityNetwork
  * 
  * @author Calclavia
  * 
@@ -40,10 +41,12 @@ public class NetworkHelper
 	}
 
 	/**
-	 * @param tileEntity - The TileEntity's sides.
-	 * @param approachingDirection - The directions that can be connected.
-	 * @return A list of networks from all specified sides. There will be no repeated
-	 * ElectricityNetworks and it will never return null.
+	 * @param tileEntity
+	 *            - The TileEntity's sides.
+	 * @param approachingDirection
+	 *            - The directions that can be connected.
+	 * @return A list of networks from all specified sides. There will be no
+	 *         repeated ElectricityNetworks and it will never return null.
 	 */
 	public static Set<IElectricityNetwork> getNetworksFromMultipleSides(TileEntity tileEntity, EnumSet<ForgeDirection> approachingDirection)
 	{
@@ -70,12 +73,14 @@ public class NetworkHelper
 	}
 
 	/**
-	 * Tries to find the electricity network based in a tile entity and checks to see if it is a
-	 * conductor. All machines should use this function to search for a connecting conductor around
-	 * it.
+	 * Tries to find the electricity network based in a tile entity and checks
+	 * to see if it is a conductor. All machines should use this function to
+	 * search for a connecting conductor around it.
 	 * 
-	 * @param conductor - The TileEntity conductor
-	 * @param approachDirection - The direction you are approaching this wire from.
+	 * @param conductor
+	 *            - The TileEntity conductor
+	 * @param approachDirection
+	 *            - The direction you are approaching this wire from.
 	 * @return The ElectricityNetwork or null if not found.
 	 */
 	public static IElectricityNetwork getElectricalNetworkFromTileEntity(TileEntity tileEntity, ForgeDirection approachDirection)
@@ -93,8 +98,7 @@ public class NetworkHelper
 							return (IElectricityNetwork) ((INetworkProvider) tileEntity).getNetwork();
 						}
 					}
-				}
-				else
+				} else
 				{
 					if (((INetworkProvider) tileEntity).getNetwork() instanceof IElectricityNetwork)
 					{
@@ -115,15 +119,14 @@ public class NetworkHelper
 			{
 				if (tileEntity instanceof IConnector)
 				{
-		        	if (((IConnector) tileEntity).canConnect(approachDirection.getOpposite(), NetworkType.OXYGEN))
+					if (((IConnector) tileEntity).canConnect(approachDirection.getOpposite(), NetworkType.OXYGEN))
 					{
 						if (((INetworkProvider) tileEntity).getNetwork() instanceof IOxygenNetwork)
 						{
 							return (IOxygenNetwork) ((INetworkProvider) tileEntity).getNetwork();
 						}
 					}
-				}
-				else
+				} else
 				{
 					if (((INetworkProvider) tileEntity).getNetwork() instanceof IOxygenNetwork)
 					{

@@ -13,9 +13,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * GCCoreOverlayCountdown.java
- *
+ * 
  * This file is part of the Galacticraft project
- *
+ * 
  * @author micdoodle8
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
@@ -23,34 +23,33 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCCoreOverlayCountdown extends GCCoreOverlay
 {
-    private static Minecraft minecraft = FMLClientHandler.instance().getClient();
+	private static Minecraft minecraft = FMLClientHandler.instance().getClient();
 
-    public static void renderCountdownOverlay()
-    {
-        int count = ((EntitySpaceshipBase) GCCoreOverlayCountdown.minecraft.thePlayer.ridingEntity).timeUntilLaunch / 2;
+	public static void renderCountdownOverlay()
+	{
+		int count = ((EntitySpaceshipBase) GCCoreOverlayCountdown.minecraft.thePlayer.ridingEntity).timeUntilLaunch / 2;
 
-        count = Math.round(count / 10);
+		count = Math.round(count / 10);
 
-        final ScaledResolution scaledresolution = new ScaledResolution(GCCoreOverlayCountdown.minecraft.gameSettings, GCCoreOverlayCountdown.minecraft.displayWidth, GCCoreOverlayCountdown.minecraft.displayHeight);
-        final int width = scaledresolution.getScaledWidth();
-        final int height = scaledresolution.getScaledHeight();
-        GCCoreOverlayCountdown.minecraft.entityRenderer.setupOverlayRendering();
+		final ScaledResolution scaledresolution = new ScaledResolution(GCCoreOverlayCountdown.minecraft.gameSettings, GCCoreOverlayCountdown.minecraft.displayWidth, GCCoreOverlayCountdown.minecraft.displayHeight);
+		final int width = scaledresolution.getScaledWidth();
+		final int height = scaledresolution.getScaledHeight();
+		GCCoreOverlayCountdown.minecraft.entityRenderer.setupOverlayRendering();
 
-        GL11.glPushMatrix();
+		GL11.glPushMatrix();
 
-        if (count <= 10)
-        {
-            GL11.glScalef(4.0F, 4.0F, 0.0F);
+		if (count <= 10)
+		{
+			GL11.glScalef(4.0F, 4.0F, 0.0F);
 
-            GCCoreOverlayCountdown.minecraft.fontRenderer.drawString(String.valueOf(count), width / 8 - GCCoreOverlayCountdown.minecraft.fontRenderer.getStringWidth(String.valueOf(count)) / 2, height / 20, GCCoreUtil.convertTo32BitColor(255, 255, 0, 0));
-        }
-        else
-        {
-            GL11.glScalef(2.0F, 2.0F, 0.0F);
+			GCCoreOverlayCountdown.minecraft.fontRenderer.drawString(String.valueOf(count), width / 8 - GCCoreOverlayCountdown.minecraft.fontRenderer.getStringWidth(String.valueOf(count)) / 2, height / 20, GCCoreUtil.convertTo32BitColor(255, 255, 0, 0));
+		} else
+		{
+			GL11.glScalef(2.0F, 2.0F, 0.0F);
 
-            GCCoreOverlayCountdown.minecraft.fontRenderer.drawString(String.valueOf(count), width / 4 - GCCoreOverlayCountdown.minecraft.fontRenderer.getStringWidth(String.valueOf(count)) / 2, height / 8, GCCoreUtil.convertTo32BitColor(255, 255, 0, 0));
-        }
+			GCCoreOverlayCountdown.minecraft.fontRenderer.drawString(String.valueOf(count), width / 4 - GCCoreOverlayCountdown.minecraft.fontRenderer.getStringWidth(String.valueOf(count)) / 2, height / 8, GCCoreUtil.convertTo32BitColor(255, 255, 0, 0));
+		}
 
-        GL11.glPopMatrix();
-    }
+		GL11.glPopMatrix();
+	}
 }

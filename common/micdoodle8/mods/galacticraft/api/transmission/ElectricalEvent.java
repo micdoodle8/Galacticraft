@@ -43,7 +43,8 @@ public class ElectricalEvent extends Event
 	}
 
 	/**
-	 * Internal Events. These events are fired when something happens in the network.
+	 * Internal Events. These events are fired when something happens in the
+	 * network.
 	 * 
 	 * @author Calclavia
 	 * 

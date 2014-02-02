@@ -21,21 +21,27 @@ public abstract class GCCoreBlockAdvanced extends Block
 	}
 
 	/**
-	 * DO NOT OVERRIDE THIS FUNCTION! Called when the block is right clicked by the player. This
-	 * modified version detects electric items and wrench actions on your machine block. Do not
-	 * override this function. Use onMachineActivated instead! (It does the same thing)
+	 * DO NOT OVERRIDE THIS FUNCTION! Called when the block is right clicked by
+	 * the player. This modified version detects electric items and wrench
+	 * actions on your machine block. Do not override this function. Use
+	 * onMachineActivated instead! (It does the same thing)
 	 * 
-	 * @param world The World Object.
-	 * @param x , y, z The coordinate of the block.
-	 * @param side The side the player clicked on.
-	 * @param hitX , hitY, hitZ The position the player clicked on relative to the block.
+	 * @param world
+	 *            The World Object.
+	 * @param x
+	 *            , y, z The coordinate of the block.
+	 * @param side
+	 *            The side the player clicked on.
+	 * @param hitX
+	 *            , hitY, hitZ The position the player clicked on relative to
+	 *            the block.
 	 */
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ)
 	{
 		/**
-		 * Check if the player is holding a wrench or an electric item. If so, call the wrench
-		 * event.
+		 * Check if the player is holding a wrench or an electric item. If so,
+		 * call the wrench event.
 		 */
 		if (this.isUsableWrench(entityPlayer, entityPlayer.inventory.getCurrentItem(), x, y, z))
 		{
@@ -67,8 +73,9 @@ public abstract class GCCoreBlockAdvanced extends Block
 	}
 
 	/**
-	 * A function that denotes if an itemStack is a wrench that can be used. Override this for more
-	 * wrench compatibility. Compatible with Buildcraft and IC2 wrench API via reflection.
+	 * A function that denotes if an itemStack is a wrench that can be used.
+	 * Override this for more wrench compatibility. Compatible with Buildcraft
+	 * and IC2 wrench API via reflection.
 	 * 
 	 * @return True if it is a wrench.
 	 */
@@ -85,11 +92,9 @@ public abstract class GCCoreBlockAdvanced extends Block
 			{
 				Method methodCanWrench = wrenchClass.getMethod("canWrench", EntityPlayer.class, Integer.TYPE, Integer.TYPE, Integer.TYPE);
 				return (Boolean) methodCanWrench.invoke(itemStack.getItem(), entityPlayer, x, y, z);
-			}
-			catch (NoClassDefFoundError e)
+			} catch (NoClassDefFoundError e)
 			{
-			}
-			catch (Exception e)
+			} catch (Exception e)
 			{
 			}
 
@@ -102,8 +107,7 @@ public abstract class GCCoreBlockAdvanced extends Block
 				{
 					return itemStack.getItemDamage() < itemStack.getMaxDamage();
 				}
-			}
-			catch (Exception e)
+			} catch (Exception e)
 			{
 			}
 		}
@@ -112,7 +116,8 @@ public abstract class GCCoreBlockAdvanced extends Block
 	}
 
 	/**
-	 * This function damages a wrench. Works with Buildcraft and Industrialcraft wrenches.
+	 * This function damages a wrench. Works with Buildcraft and Industrialcraft
+	 * wrenches.
 	 * 
 	 * @return True if damage was successfull.
 	 */
@@ -130,8 +135,7 @@ public abstract class GCCoreBlockAdvanced extends Block
 				Method methodWrenchUsed = wrenchClass.getMethod("wrenchUsed", EntityPlayer.class, Integer.TYPE, Integer.TYPE, Integer.TYPE);
 				methodWrenchUsed.invoke(itemStack.getItem(), entityPlayer, x, y, z);
 				return true;
-			}
-			catch (Exception e)
+			} catch (Exception e)
 			{
 			}
 
@@ -146,8 +150,7 @@ public abstract class GCCoreBlockAdvanced extends Block
 					methodWrenchDamage.invoke(itemStack.getItem(), itemStack, 1, entityPlayer);
 					return true;
 				}
-			}
-			catch (Exception e)
+			} catch (Exception e)
 			{
 			}
 		}
@@ -186,8 +189,8 @@ public abstract class GCCoreBlockAdvanced extends Block
 	}
 
 	/**
-	 * Called when a player uses a wrench on the machine while sneaking. Only works with the UE
-	 * wrench.
+	 * Called when a player uses a wrench on the machine while sneaking. Only
+	 * works with the UE wrench.
 	 * 
 	 * @return True if some happens
 	 */

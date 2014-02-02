@@ -62,255 +62,217 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * GCCoreGuiHandler.java
- *
+ * 
  * This file is part of the Galacticraft project
- *
+ * 
  * @author micdoodle8
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
 public class GCCoreGuiHandler implements IGuiHandler
 {
-    @Override
-    public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
-    {
-        GCCorePlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player);
+	@Override
+	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
+	{
+		GCCorePlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player);
 
-        if (playerBase == null)
-        {
-            player.sendChatToPlayer(ChatMessageComponent.createFromText("Galacticraft player instance null server-side. This is a bug."));
-            return null;
-        }
+		if (playerBase == null)
+		{
+			player.sendChatToPlayer(ChatMessageComponent.createFromText("Galacticraft player instance null server-side. This is a bug."));
+			return null;
+		}
 
-        if (ID == GCCoreConfigManager.idGuiSpaceshipInventory && player.ridingEntity instanceof EntityTieredRocket)
-        {
-            return new GCCoreContainerRocketRefill(player.inventory, (EntityTieredRocket) player.ridingEntity, ((EntityTieredRocket) player.ridingEntity).getType());
-        }
-        else if (ID == GCCoreConfigManager.idGuiExtendedInventory)
-        {
-            return new GCCoreContainerExtendedInventory(player, playerBase.getExtendedInventory());
-        }
+		if (ID == GCCoreConfigManager.idGuiSpaceshipInventory && player.ridingEntity instanceof EntityTieredRocket)
+		{
+			return new GCCoreContainerRocketRefill(player.inventory, (EntityTieredRocket) player.ridingEntity, ((EntityTieredRocket) player.ridingEntity).getType());
+		} else if (ID == GCCoreConfigManager.idGuiExtendedInventory)
+		{
+			return new GCCoreContainerExtendedInventory(player, playerBase.getExtendedInventory());
+		}
 
-        TileEntity tile = world.getBlockTileEntity(x, y, z);
+		TileEntity tile = world.getBlockTileEntity(x, y, z);
 
-        if (tile != null)
-        {
-            if (tile instanceof GCCoreTileEntityRefinery)
-            {
-                return new GCCoreContainerRefinery(player.inventory, (GCCoreTileEntityRefinery) tile);
-            }
-            else if (tile instanceof GCCoreTileEntityOxygenCollector)
-            {
-                return new GCCoreContainerAirCollector(player.inventory, (GCCoreTileEntityOxygenCollector) tile);
-            }
-            else if (tile instanceof GCCoreTileEntityOxygenDistributor)
-            {
-                return new GCCoreContainerAirDistributor(player.inventory, (GCCoreTileEntityOxygenDistributor) tile);
-            }
-            else if (tile instanceof GCCoreTileEntityFuelLoader)
-            {
-                return new GCCoreContainerFuelLoader(player.inventory, (GCCoreTileEntityFuelLoader) tile);
-            }
-            else if (tile instanceof GCCoreTileEntityOxygenSealer)
-            {
-                return new GCCoreContainerAirSealer(player.inventory, (GCCoreTileEntityOxygenSealer) tile);
-            }
-            else if (tile instanceof GCCoreTileEntityCargoLoader)
-            {
-                return new GCCoreContainerCargoLoader(player.inventory, (GCCoreTileEntityCargoLoader) tile);
-            }
-            else if (tile instanceof GCCoreTileEntityParachest)
-            {
-                return new GCCoreContainerParachest(player.inventory, (GCCoreTileEntityParachest) tile);
-            }
-            else if (tile instanceof GCCoreTileEntitySolar)
-            {
-                return new GCCoreContainerSolar(player.inventory, (GCCoreTileEntitySolar) tile);
-            }
-            else if (tile instanceof GCCoreTileEntityEnergyStorageModule)
-            {
-                return new GCCoreContainerEnergyStorageModule(player.inventory, (GCCoreTileEntityEnergyStorageModule) tile);
-            }
-            else if (tile instanceof GCCoreTileEntityCoalGenerator)
-            {
-                return new ContainerCoalGenerator(player.inventory, (GCCoreTileEntityCoalGenerator) tile);
-            }
-            else if (tile instanceof GCCoreTileEntityElectricFurnace)
-            {
-                return new ContainerElectricFurnace(player.inventory, (GCCoreTileEntityElectricFurnace) tile);
-            }
-            else if (tile instanceof GCCoreTileEntityIngotCompressor)
-            {
-                return new GCCoreContainerIngotCompressor(player.inventory, (GCCoreTileEntityIngotCompressor) tile);
-            }
-            else if (tile instanceof GCCoreTileEntityElectricIngotCompressor)
-            {
-                return new GCCoreContainerElectricIngotCompressor(player.inventory, (GCCoreTileEntityElectricIngotCompressor) tile);
-            }
-            else if (tile instanceof GCCoreTileEntityCircuitFabricator)
-            {
-                return new GCCoreContainerCircuitFabricator(player.inventory, (GCCoreTileEntityCircuitFabricator) tile);
-            }
-            else if (tile instanceof GCCoreTileEntityOxygenStorageModule)
-            {
-                return new GCCoreContainerOxygenStorageModule(player.inventory, (GCCoreTileEntityOxygenStorageModule) tile);
-            }
-            else if (tile instanceof GCCoreTileEntityOxygenCompressor)
-            {
-                return new GCCoreContainerAirCompressor(player.inventory, (GCCoreTileEntityOxygenCompressor) tile);
-            }
-            else if (tile instanceof GCCoreTileEntityOxygenDecompressor)
-            {
-                return new GCCoreContainerAirDecompressor(player.inventory, (GCCoreTileEntityOxygenDecompressor) tile);
-            }
-        }
+		if (tile != null)
+		{
+			if (tile instanceof GCCoreTileEntityRefinery)
+			{
+				return new GCCoreContainerRefinery(player.inventory, (GCCoreTileEntityRefinery) tile);
+			} else if (tile instanceof GCCoreTileEntityOxygenCollector)
+			{
+				return new GCCoreContainerAirCollector(player.inventory, (GCCoreTileEntityOxygenCollector) tile);
+			} else if (tile instanceof GCCoreTileEntityOxygenDistributor)
+			{
+				return new GCCoreContainerAirDistributor(player.inventory, (GCCoreTileEntityOxygenDistributor) tile);
+			} else if (tile instanceof GCCoreTileEntityFuelLoader)
+			{
+				return new GCCoreContainerFuelLoader(player.inventory, (GCCoreTileEntityFuelLoader) tile);
+			} else if (tile instanceof GCCoreTileEntityOxygenSealer)
+			{
+				return new GCCoreContainerAirSealer(player.inventory, (GCCoreTileEntityOxygenSealer) tile);
+			} else if (tile instanceof GCCoreTileEntityCargoLoader)
+			{
+				return new GCCoreContainerCargoLoader(player.inventory, (GCCoreTileEntityCargoLoader) tile);
+			} else if (tile instanceof GCCoreTileEntityParachest)
+			{
+				return new GCCoreContainerParachest(player.inventory, (GCCoreTileEntityParachest) tile);
+			} else if (tile instanceof GCCoreTileEntitySolar)
+			{
+				return new GCCoreContainerSolar(player.inventory, (GCCoreTileEntitySolar) tile);
+			} else if (tile instanceof GCCoreTileEntityEnergyStorageModule)
+			{
+				return new GCCoreContainerEnergyStorageModule(player.inventory, (GCCoreTileEntityEnergyStorageModule) tile);
+			} else if (tile instanceof GCCoreTileEntityCoalGenerator)
+			{
+				return new ContainerCoalGenerator(player.inventory, (GCCoreTileEntityCoalGenerator) tile);
+			} else if (tile instanceof GCCoreTileEntityElectricFurnace)
+			{
+				return new ContainerElectricFurnace(player.inventory, (GCCoreTileEntityElectricFurnace) tile);
+			} else if (tile instanceof GCCoreTileEntityIngotCompressor)
+			{
+				return new GCCoreContainerIngotCompressor(player.inventory, (GCCoreTileEntityIngotCompressor) tile);
+			} else if (tile instanceof GCCoreTileEntityElectricIngotCompressor)
+			{
+				return new GCCoreContainerElectricIngotCompressor(player.inventory, (GCCoreTileEntityElectricIngotCompressor) tile);
+			} else if (tile instanceof GCCoreTileEntityCircuitFabricator)
+			{
+				return new GCCoreContainerCircuitFabricator(player.inventory, (GCCoreTileEntityCircuitFabricator) tile);
+			} else if (tile instanceof GCCoreTileEntityOxygenStorageModule)
+			{
+				return new GCCoreContainerOxygenStorageModule(player.inventory, (GCCoreTileEntityOxygenStorageModule) tile);
+			} else if (tile instanceof GCCoreTileEntityOxygenCompressor)
+			{
+				return new GCCoreContainerAirCompressor(player.inventory, (GCCoreTileEntityOxygenCompressor) tile);
+			} else if (tile instanceof GCCoreTileEntityOxygenDecompressor)
+			{
+				return new GCCoreContainerAirDecompressor(player.inventory, (GCCoreTileEntityOxygenDecompressor) tile);
+			}
+		}
 
-        for (ISchematicPage page : playerBase.getUnlockedSchematics())
-        {
-            if (ID == page.getGuiID())
-            {
-                final Container container = page.getResultContainer(playerBase, x, y, z);
+		for (ISchematicPage page : playerBase.getUnlockedSchematics())
+		{
+			if (ID == page.getGuiID())
+			{
+				final Container container = page.getResultContainer(playerBase, x, y, z);
 
-                return container;
-            }
-        }
+				return container;
+			}
+		}
 
-        return null;
-    }
+		return null;
+	}
 
-    @Override
-    public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
-    {
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
-        {
-            return this.getClientGuiElement(ID, player, world, new Vector3(x, y, z));
-        }
+	@Override
+	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
+	{
+		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+		{
+			return this.getClientGuiElement(ID, player, world, new Vector3(x, y, z));
+		}
 
-        return null;
-    }
+		return null;
+	}
 
-    @SideOnly(Side.CLIENT)
-    private Object getClientGuiElement(int ID, EntityPlayer player, World world, Vector3 position)
-    {
-        if (ID == GCCoreConfigManager.idGuiGalaxyMap)
-        {
-            return new GCCoreGuiGalaxyMap(player);
-        }
-        else if (ID == GCCoreConfigManager.idGuiSpaceshipInventory && player.ridingEntity instanceof EntityTieredRocket)
-        {
-            return new GCCoreGuiRocketRefill(player.inventory, (EntityTieredRocket) player.ridingEntity, ((EntityTieredRocket) player.ridingEntity).getType());
-        }
-        else if (ID == GCCoreConfigManager.idGuiExtendedInventory)
-        {
-            return new GCCoreGuiExtendedInventory(player, ClientProxyCore.dummyInventory);
-        }
-        else if (ID == GCCoreConfigManager.idGuiKnowledgeBook)
-        {
-            return new GCCoreGuiManual(new ItemStack(Block.stone), ClientProxyCore.materialsTest);
-        }
+	@SideOnly(Side.CLIENT)
+	private Object getClientGuiElement(int ID, EntityPlayer player, World world, Vector3 position)
+	{
+		if (ID == GCCoreConfigManager.idGuiGalaxyMap)
+		{
+			return new GCCoreGuiGalaxyMap(player);
+		} else if (ID == GCCoreConfigManager.idGuiSpaceshipInventory && player.ridingEntity instanceof EntityTieredRocket)
+		{
+			return new GCCoreGuiRocketRefill(player.inventory, (EntityTieredRocket) player.ridingEntity, ((EntityTieredRocket) player.ridingEntity).getType());
+		} else if (ID == GCCoreConfigManager.idGuiExtendedInventory)
+		{
+			return new GCCoreGuiExtendedInventory(player, ClientProxyCore.dummyInventory);
+		} else if (ID == GCCoreConfigManager.idGuiKnowledgeBook)
+		{
+			return new GCCoreGuiManual(new ItemStack(Block.stone), ClientProxyCore.materialsTest);
+		}
 
-        TileEntity tile = world.getBlockTileEntity(position.intX(), position.intY(), position.intZ());
+		TileEntity tile = world.getBlockTileEntity(position.intX(), position.intY(), position.intZ());
 
-        if (tile != null)
-        {
-            if (tile instanceof GCCoreTileEntityRefinery)
-            {
-                return new GCCoreGuiRefinery(player.inventory, (GCCoreTileEntityRefinery) world.getBlockTileEntity(position.intX(), position.intY(), position.intZ()));
-            }
-            else if (tile instanceof GCCoreTileEntityOxygenCollector)
-            {
-                return new GCCoreGuiAirCollector(player.inventory, (GCCoreTileEntityOxygenCollector) tile);
-            }
-            else if (tile instanceof GCCoreTileEntityOxygenDistributor)
-            {
-                return new GCCoreGuiAirDistributor(player.inventory, (GCCoreTileEntityOxygenDistributor) tile);
-            }
-            else if (tile instanceof GCCoreTileEntityFuelLoader)
-            {
-                return new GCCoreGuiFuelLoader(player.inventory, (GCCoreTileEntityFuelLoader) tile);
-            }
-            else if (tile instanceof GCCoreTileEntityOxygenSealer)
-            {
-                return new GCCoreGuiAirSealer(player.inventory, (GCCoreTileEntityOxygenSealer) tile);
-            }
-            else if (tile instanceof GCCoreTileEntityCargoLoader)
-            {
-                return new GCCoreGuiCargoLoader(player.inventory, (GCCoreTileEntityCargoLoader) tile);
-            }
-            else if (tile instanceof GCCoreTileEntityCargoUnloader)
-            {
-                return new GCCoreGuiCargoUnloader(player.inventory, (GCCoreTileEntityCargoUnloader) tile);
-            }
-            else if (tile instanceof GCCoreTileEntityParachest)
-            {
-                return new GCCoreGuiParachest(player.inventory, (GCCoreTileEntityParachest) tile);
-            }
-            else if (tile instanceof GCCoreTileEntitySolar)
-            {
-                return new GCCoreGuiSolar(player.inventory, (GCCoreTileEntitySolar) tile);
-            }
-            else if (tile instanceof GCCoreTileEntityAirLockController)
-            {
-                return new GCCoreGuiAirLockController((GCCoreTileEntityAirLockController) tile);
-            }
-            else if (tile instanceof GCCoreTileEntityEnergyStorageModule)
-            {
-                return new GCCoreGuiEnergyStorageModule(player.inventory, (GCCoreTileEntityEnergyStorageModule) tile);
-            }
-            else if (tile instanceof GCCoreTileEntityCoalGenerator)
-            {
-                return new GCCoreGuiCoalGenerator(player.inventory, (GCCoreTileEntityCoalGenerator) tile);
-            }
-            else if (tile instanceof GCCoreTileEntityElectricFurnace)
-            {
-                return new GCCoreGuiElectricFurnace(player.inventory, (GCCoreTileEntityElectricFurnace) tile);
-            }
-            else if (tile instanceof GCCoreTileEntityIngotCompressor)
-            {
-                return new GCCoreGuiIngotCompressor(player.inventory, (GCCoreTileEntityIngotCompressor) tile);
-            }
-            else if (tile instanceof GCCoreTileEntityElectricIngotCompressor)
-            {
-                return new GCCoreGuiElectricIngotCompressor(player.inventory, (GCCoreTileEntityElectricIngotCompressor) tile);
-            }
-            else if (tile instanceof GCCoreTileEntityCircuitFabricator)
-            {
-                return new GCCoreGuiCircuitFabricator(player.inventory, (GCCoreTileEntityCircuitFabricator) tile);
-            }
-            else if (tile instanceof GCCoreTileEntityOxygenStorageModule)
-            {
-                return new GCCoreGuiOxygenStorageModule(player.inventory, (GCCoreTileEntityOxygenStorageModule) tile);
-            }
-            else if (tile instanceof GCCoreTileEntityOxygenCompressor)
-            {
-                return new GCCoreGuiAirCompressor(player.inventory, (GCCoreTileEntityOxygenCompressor) tile);
-            }
-            else if (tile instanceof GCCoreTileEntityOxygenDecompressor)
-            {
-                return new GCCoreGuiAirDecompressor(player.inventory, (GCCoreTileEntityOxygenDecompressor) tile);
-            }
-        }
+		if (tile != null)
+		{
+			if (tile instanceof GCCoreTileEntityRefinery)
+			{
+				return new GCCoreGuiRefinery(player.inventory, (GCCoreTileEntityRefinery) world.getBlockTileEntity(position.intX(), position.intY(), position.intZ()));
+			} else if (tile instanceof GCCoreTileEntityOxygenCollector)
+			{
+				return new GCCoreGuiAirCollector(player.inventory, (GCCoreTileEntityOxygenCollector) tile);
+			} else if (tile instanceof GCCoreTileEntityOxygenDistributor)
+			{
+				return new GCCoreGuiAirDistributor(player.inventory, (GCCoreTileEntityOxygenDistributor) tile);
+			} else if (tile instanceof GCCoreTileEntityFuelLoader)
+			{
+				return new GCCoreGuiFuelLoader(player.inventory, (GCCoreTileEntityFuelLoader) tile);
+			} else if (tile instanceof GCCoreTileEntityOxygenSealer)
+			{
+				return new GCCoreGuiAirSealer(player.inventory, (GCCoreTileEntityOxygenSealer) tile);
+			} else if (tile instanceof GCCoreTileEntityCargoLoader)
+			{
+				return new GCCoreGuiCargoLoader(player.inventory, (GCCoreTileEntityCargoLoader) tile);
+			} else if (tile instanceof GCCoreTileEntityCargoUnloader)
+			{
+				return new GCCoreGuiCargoUnloader(player.inventory, (GCCoreTileEntityCargoUnloader) tile);
+			} else if (tile instanceof GCCoreTileEntityParachest)
+			{
+				return new GCCoreGuiParachest(player.inventory, (GCCoreTileEntityParachest) tile);
+			} else if (tile instanceof GCCoreTileEntitySolar)
+			{
+				return new GCCoreGuiSolar(player.inventory, (GCCoreTileEntitySolar) tile);
+			} else if (tile instanceof GCCoreTileEntityAirLockController)
+			{
+				return new GCCoreGuiAirLockController((GCCoreTileEntityAirLockController) tile);
+			} else if (tile instanceof GCCoreTileEntityEnergyStorageModule)
+			{
+				return new GCCoreGuiEnergyStorageModule(player.inventory, (GCCoreTileEntityEnergyStorageModule) tile);
+			} else if (tile instanceof GCCoreTileEntityCoalGenerator)
+			{
+				return new GCCoreGuiCoalGenerator(player.inventory, (GCCoreTileEntityCoalGenerator) tile);
+			} else if (tile instanceof GCCoreTileEntityElectricFurnace)
+			{
+				return new GCCoreGuiElectricFurnace(player.inventory, (GCCoreTileEntityElectricFurnace) tile);
+			} else if (tile instanceof GCCoreTileEntityIngotCompressor)
+			{
+				return new GCCoreGuiIngotCompressor(player.inventory, (GCCoreTileEntityIngotCompressor) tile);
+			} else if (tile instanceof GCCoreTileEntityElectricIngotCompressor)
+			{
+				return new GCCoreGuiElectricIngotCompressor(player.inventory, (GCCoreTileEntityElectricIngotCompressor) tile);
+			} else if (tile instanceof GCCoreTileEntityCircuitFabricator)
+			{
+				return new GCCoreGuiCircuitFabricator(player.inventory, (GCCoreTileEntityCircuitFabricator) tile);
+			} else if (tile instanceof GCCoreTileEntityOxygenStorageModule)
+			{
+				return new GCCoreGuiOxygenStorageModule(player.inventory, (GCCoreTileEntityOxygenStorageModule) tile);
+			} else if (tile instanceof GCCoreTileEntityOxygenCompressor)
+			{
+				return new GCCoreGuiAirCompressor(player.inventory, (GCCoreTileEntityOxygenCompressor) tile);
+			} else if (tile instanceof GCCoreTileEntityOxygenDecompressor)
+			{
+				return new GCCoreGuiAirDecompressor(player.inventory, (GCCoreTileEntityOxygenDecompressor) tile);
+			}
+		}
 
-        GCCorePlayerSP playerClient = PlayerUtil.getPlayerBaseClientFromPlayer(player);
+		GCCorePlayerSP playerClient = PlayerUtil.getPlayerBaseClientFromPlayer(player);
 
-        if (playerClient != null)
-        {
-            for (ISchematicPage page : playerClient.unlockedSchematics)
-            {
-                if (ID == page.getGuiID())
-                {
-                    GuiScreen screen = page.getResultScreen(playerClient, position.intX(), position.intY(), position.intZ());
+		if (playerClient != null)
+		{
+			for (ISchematicPage page : playerClient.unlockedSchematics)
+			{
+				if (ID == page.getGuiID())
+				{
+					GuiScreen screen = page.getResultScreen(playerClient, position.intX(), position.intY(), position.intZ());
 
-                    if (screen instanceof ISchematicResultPage)
-                    {
-                        ((ISchematicResultPage) screen).setPageIndex(page.getPageID());
-                    }
+					if (screen instanceof ISchematicResultPage)
+					{
+						((ISchematicResultPage) screen).setPageIndex(page.getPageID());
+					}
 
-                    return screen;
-                }
-            }
-        }
+					return screen;
+				}
+			}
+		}
 
-        return null;
-    }
+		return null;
+	}
 }

@@ -27,11 +27,11 @@ import net.minecraftforge.common.ForgeDirection;
 import cpw.mods.fml.common.FMLLog;
 
 /**
- * An Oxygen Network specifies a wire connection. Each wire connection line will have its own
- * oxygen network.
+ * An Oxygen Network specifies a wire connection. Each wire connection line will
+ * have its own oxygen network.
  * 
- * !! Do not include this class if you do not intend to have custom wires in your mod. This will
- * increase future compatibility. !!
+ * !! Do not include this class if you do not intend to have custom wires in
+ * your mod. This will increase future compatibility. !!
  * 
  * @author Calclavia
  * 
@@ -66,7 +66,7 @@ public class OxygenNetwork implements IOxygenNetwork
 							for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
 							{
 								TileEntity tile = new Vector3(tileEntity).modifyPositionFromSide(direction).getTileEntity(tileEntity.worldObj);
-																
+
 								if (oxygenTile.canConnect(direction, NetworkType.OXYGEN) && this.getTransmitters().contains(tile))
 								{
 									float oxygenToSend = totalOxygen * (oxygenTile.getOxygenRequest(direction) / totalOxygenRequest);
@@ -77,18 +77,24 @@ public class OxygenNetwork implements IOxygenNetwork
 									}
 								}
 							}
-						}
-						else if (NetworkConfigHandler.isMekanismLoaded() && tileEntity instanceof IGasAcceptor)
+						} else if (NetworkConfigHandler.isMekanismLoaded() && tileEntity instanceof IGasAcceptor)
 						{
 							IGasAcceptor gasAcceptor = (IGasAcceptor) tileEntity;
 
 							for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
 							{
 								TileEntity tile = new Vector3(tileEntity).modifyPositionFromSide(direction).getTileEntity(tileEntity.worldObj);
-																
+
 								if (gasAcceptor.canReceiveGas(direction, (Gas) NetworkConfigHandler.gasOxygen) && this.getTransmitters().contains(tile))
 								{
-									int oxygenToSend = (int) Math.floor(totalOxygen / (float)avaliableOxygenTiles.size()); // TODO: Mekanism PR to simulate received gas amount
+									int oxygenToSend = (int) Math.floor(totalOxygen / avaliableOxygenTiles.size()); // TODO:
+																													// Mekanism
+																													// PR
+																													// to
+																													// simulate
+																													// received
+																													// gas
+																													// amount
 
 									if (oxygenToSend > 0)
 									{
@@ -134,7 +140,7 @@ public class OxygenNetwork implements IOxygenNetwork
 						{
 							Vector3 tileVec = new Vector3(tileEntity);
 							TileEntity tile = tileVec.modifyPositionFromSide(direction).getTileEntity(tileEntity.worldObj);
-							
+
 							if (((IOxygenReceiver) tileEntity).canConnect(direction, NetworkType.OXYGEN) && this.getTransmitters().contains(tile))
 							{
 								requests.add(((IOxygenReceiver) tileEntity).getOxygenRequest(direction));
@@ -147,13 +153,13 @@ public class OxygenNetwork implements IOxygenNetwork
 		}
 
 		float total = 0.0F;
-		
+
 		for (Float f : requests)
 		{
 			total += f;
 		}
-		
-		return total / (float)requests.size();
+
+		return total / requests.size();
 	}
 
 	/**
@@ -166,8 +172,10 @@ public class OxygenNetwork implements IOxygenNetwork
 	}
 
 	/**
-	 * @param tile The tile to get connections for
-	 * @return The list of directions that can be connected to for the provided tile
+	 * @param tile
+	 *            The tile to get connections for
+	 * @return The list of directions that can be connected to for the provided
+	 *         tile
 	 */
 	@Override
 	public ArrayList<ForgeDirection> getPossibleDirections(TileEntity tile)
@@ -194,12 +202,10 @@ public class OxygenNetwork implements IOxygenNetwork
 				if (transmitter == null)
 				{
 					it.remove();
-				}
-				else if (((TileEntity) transmitter).isInvalid())
+				} else if (((TileEntity) transmitter).isInvalid())
 				{
 					it.remove();
-				}
-				else
+				} else
 				{
 					transmitter.setNetwork(this);
 				}
@@ -215,8 +221,7 @@ public class OxygenNetwork implements IOxygenNetwork
 						if (this.oxygenTiles.containsKey(acceptor))
 						{
 							possibleDirections = this.oxygenTiles.get(acceptor);
-						}
-						else
+						} else
 						{
 							possibleDirections = new ArrayList<ForgeDirection>();
 						}
@@ -227,8 +232,7 @@ public class OxygenNetwork implements IOxygenNetwork
 					}
 				}
 			}
-		}
-		catch (Exception e)
+		} catch (Exception e)
 		{
 			FMLLog.severe("Failed to refresh oxygen pipe network.");
 			e.printStackTrace();
@@ -252,7 +256,7 @@ public class OxygenNetwork implements IOxygenNetwork
 			newNetwork.refresh();
 			return newNetwork;
 		}
-		
+
 		return this;
 	}
 
@@ -264,21 +268,17 @@ public class OxygenNetwork implements IOxygenNetwork
 			this.getTransmitters().remove(splitPoint);
 
 			/**
-			 * Loop through the connected blocks and attempt to see if there are connections between
-			 * the two points elsewhere.
+			 * Loop through the connected blocks and attempt to see if there are
+			 * connections between the two points elsewhere.
 			 */
 			TileEntity[] connectedBlocks = splitPoint.getAdjacentConnections();
 
-			for (int i = 0; i < connectedBlocks.length; i++)
+			for (TileEntity connectedBlockA : connectedBlocks)
 			{
-				TileEntity connectedBlockA = connectedBlocks[i];
-
 				if (connectedBlockA instanceof INetworkConnection)
 				{
-					for (int ii = 0; ii < connectedBlocks.length; ii++)
+					for (final TileEntity connectedBlockB : connectedBlocks)
 					{
-						final TileEntity connectedBlockB = connectedBlocks[ii];
-
 						if (connectedBlockA != connectedBlockB && connectedBlockB instanceof INetworkConnection)
 						{
 							Pathfinder finder = new PathfinderChecker(((TileEntity) splitPoint).worldObj, (INetworkConnection) connectedBlockB, NetworkType.OXYGEN, splitPoint);
@@ -287,8 +287,9 @@ public class OxygenNetwork implements IOxygenNetwork
 							if (finder.results.size() > 0)
 							{
 								/**
-								 * The connections A and B are still intact elsewhere. Set all
-								 * references of wire connection into one network.
+								 * The connections A and B are still intact
+								 * elsewhere. Set all references of wire
+								 * connection into one network.
 								 */
 
 								for (Vector3 node : finder.closedSet)
@@ -303,12 +304,11 @@ public class OxygenNetwork implements IOxygenNetwork
 										}
 									}
 								}
-							}
-							else
+							} else
 							{
 								/**
-								 * The connections A and B are not connected anymore. Give both of
-								 * them a new network.
+								 * The connections A and B are not connected
+								 * anymore. Give both of them a new network.
 								 */
 								IOxygenNetwork newNetwork = new OxygenNetwork();
 

@@ -14,56 +14,55 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * GCMarsSchematicRocketT2.java
- *
+ * 
  * This file is part of the Galacticraft project
- *
+ * 
  * @author micdoodle8
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
 public class GCMarsSchematicRocketT2 implements ISchematicPage
 {
-    @Override
-    public int getPageID()
-    {
-        return GCMarsConfigManager.idSchematicRocketT2;
-    }
+	@Override
+	public int getPageID()
+	{
+		return GCMarsConfigManager.idSchematicRocketT2;
+	}
 
-    @Override
-    public int getGuiID()
-    {
-        return GCMarsConfigManager.idGuiRocketCraftingBenchT2;
-    }
+	@Override
+	public int getGuiID()
+	{
+		return GCMarsConfigManager.idGuiRocketCraftingBenchT2;
+	}
 
-    @Override
-    public ItemStack getRequiredItem()
-    {
-        return new ItemStack(GCCoreItems.schematic.itemID, 1, 1);
-    }
+	@Override
+	public ItemStack getRequiredItem()
+	{
+		return new ItemStack(GCCoreItems.schematic.itemID, 1, 1);
+	}
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public GuiScreen getResultScreen(EntityPlayer player, int x, int y, int z)
-    {
-        return new GCMarsGuiSchematicRocketT2(player.inventory, x, y, z);
-    }
+	@SideOnly(Side.CLIENT)
+	@Override
+	public GuiScreen getResultScreen(EntityPlayer player, int x, int y, int z)
+	{
+		return new GCMarsGuiSchematicRocketT2(player.inventory, x, y, z);
+	}
 
-    @Override
-    public Container getResultContainer(EntityPlayer player, int x, int y, int z)
-    {
-        return new GCMarsContainerRocketBenchT2(player.inventory, x, y, z);
-    }
+	@Override
+	public Container getResultContainer(EntityPlayer player, int x, int y, int z)
+	{
+		return new GCMarsContainerRocketBenchT2(player.inventory, x, y, z);
+	}
 
-    @Override
-    public int compareTo(ISchematicPage o)
-    {
-        if (this.getPageID() > o.getPageID())
-        {
-            return 1;
-        }
-        else
-        {
-            return -1;
-        }
-    }
+	@Override
+	public int compareTo(ISchematicPage o)
+	{
+		if (this.getPageID() > o.getPageID())
+		{
+			return 1;
+		} else
+		{
+			return -1;
+		}
+	}
 }

@@ -1,7 +1,8 @@
 package micdoodle8.mods.galacticraft.api.transmission.tile;
 
 /**
- * This interface is to be applied to all TileEntities which stores electricity within them.
+ * This interface is to be applied to all TileEntities which stores electricity
+ * within them.
  * 
  * @author Calclavia
  */

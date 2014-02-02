@@ -17,47 +17,46 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 
 /**
  * NetworkedEntity.java
- *
+ * 
  * This file is part of the Galacticraft project
- *
+ * 
  * @author micdoodle8
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
 public abstract class NetworkedEntity extends Entity implements IPacketReceiver
 {
-    public NetworkedEntity(World par1World)
-    {
-        super(par1World);
-    }
+	public NetworkedEntity(World par1World)
+	{
+		super(par1World);
+	}
 
-    @Override
-    public void onUpdate()
-    {
-        super.onUpdate();
+	@Override
+	public void onUpdate()
+	{
+		super.onUpdate();
 
-        if (!this.worldObj.isRemote)
-        {
-            PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, this.getPacketRange(), this.worldObj.provider.dimensionId, GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getNetworkedData(new ArrayList<Object>())));
-        }
-    }
+		if (!this.worldObj.isRemote)
+		{
+			PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, this.getPacketRange(), this.worldObj.provider.dimensionId, GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getNetworkedData(new ArrayList<Object>())));
+		}
+	}
 
-    @Override
-    public void handlePacketData(INetworkManager network, int packetType, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream)
-    {
-        try
-        {
-            this.readNetworkedData(dataStream);
-        }
-        catch (final Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
+	@Override
+	public void handlePacketData(INetworkManager network, int packetType, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream)
+	{
+		try
+		{
+			this.readNetworkedData(dataStream);
+		} catch (final Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
 
-    public abstract void readNetworkedData(ByteArrayDataInput dataStream);
+	public abstract void readNetworkedData(ByteArrayDataInput dataStream);
 
-    public abstract ArrayList<Object> getNetworkedData(ArrayList<Object> list);
+	public abstract ArrayList<Object> getNetworkedData(ArrayList<Object> list);
 
-    public abstract double getPacketRange();
+	public abstract double getPacketRange();
 }

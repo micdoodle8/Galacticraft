@@ -10,10 +10,10 @@ import net.minecraft.item.ItemStack;
  */
 public interface IKeyItem
 {
-    /**
-     * Gets the tier of this object
-     * 
-     * @return - The item's tier
-     */
-    public int getTier(ItemStack stack);
+	/**
+	 * Gets the tier of this object
+	 * 
+	 * @return - The item's tier
+	 */
+	public int getTier(ItemStack stack);
 }

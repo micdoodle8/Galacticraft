@@ -47,7 +47,7 @@ public class UniversalNetwork extends ElectricityNetwork
 		MinecraftForge.EVENT_BUS.post(evt);
 
 		float totalEnergy = electricity.getWatts();
-		float proportionWasted = getTotalResistance() / (getTotalResistance() + acceptorResistance);
+		float proportionWasted = this.getTotalResistance() / (this.getTotalResistance() + this.acceptorResistance);
 		float energyWasted = totalEnergy * proportionWasted;
 		float totalUsableEnergy = totalEnergy - energyWasted;
 		float remainingUsableEnergy = totalUsableEnergy;
@@ -79,7 +79,7 @@ public class UniversalNetwork extends ElectricityNetwork
 									{
 										Vector3 tileVec = new Vector3(tileEntity);
 										TileEntity tile = tileVec.modifyPositionFromSide(direction).getTileEntity(tileEntity.worldObj);
-										
+
 										if (electricalTile.canConnect(direction, NetworkType.POWER) && this.getTransmitters().contains(tile))
 										{
 											float energyToSend = totalUsableEnergy * (Math.min(electricalTile.getRequest(direction), totalEnergyRequest) / totalEnergyRequest);
@@ -91,8 +91,7 @@ public class UniversalNetwork extends ElectricityNetwork
 											}
 										}
 									}
-								}
-								else if (NetworkConfigHandler.isIndustrialCraft2Loaded() && tileEntity instanceof IEnergySink)
+								} else if (NetworkConfigHandler.isIndustrialCraft2Loaded() && tileEntity instanceof IEnergySink)
 								{
 									IEnergySink electricalTile = (IEnergySink) tileEntity;
 
@@ -108,15 +107,13 @@ public class UniversalNetwork extends ElectricityNetwork
 											if (!doReceive)
 											{
 												remainingUsableEnergy -= energyToSend;
-											}
-											else if (energyToSend > 0)
+											} else if (energyToSend > 0)
 											{
 												remainingUsableEnergy -= electricalTile.injectEnergyUnits(direction, energyToSend * NetworkConfigHandler.TO_IC2_RATIO) * NetworkConfigHandler.IC2_RATIO;
 											}
 										}
 									}
-								}
-								else if (NetworkConfigHandler.isBuildcraftLoaded() && tileEntity instanceof IPowerReceptor)
+								} else if (NetworkConfigHandler.isBuildcraftLoaded() && tileEntity instanceof IPowerReceptor)
 								{
 									IPowerReceptor electricalTile = (IPowerReceptor) tileEntity;
 
@@ -135,16 +132,14 @@ public class UniversalNetwork extends ElectricityNetwork
 												if (!doReceive)
 												{
 													remainingUsableEnergy -= energyToSend;
-												}
-												else if (energyToSend > 0)
+												} else if (energyToSend > 0)
 												{
 													remainingUsableEnergy -= receiver.receiveEnergy(Type.PIPE, energyToSend * NetworkConfigHandler.TO_BC_RATIO, direction) * NetworkConfigHandler.BC3_RATIO;
 												}
 											}
 										}
 									}
-								}
-								else if (NetworkConfigHandler.isThermalExpansionLoaded() && tileEntity instanceof IEnergyHandler)
+								} else if (NetworkConfigHandler.isThermalExpansionLoaded() && tileEntity instanceof IEnergyHandler)
 								{
 									IEnergyHandler receiver = (IEnergyHandler) tileEntity;
 
@@ -168,8 +163,7 @@ public class UniversalNetwork extends ElectricityNetwork
 									}
 								}
 							}
-						}
-						else
+						} else
 						{
 							markRefresh = true;
 						}
@@ -212,13 +206,13 @@ public class UniversalNetwork extends ElectricityNetwork
 						{
 							Vector3 tileVec = new Vector3(tileEntity);
 							TileEntity tile = tileVec.modifyPositionFromSide(direction).getTileEntity(tileEntity.worldObj);
-							
+
 							if (((IElectrical) tileEntity).canConnect(direction, NetworkType.POWER) && this.getTransmitters().contains(tile))
 							{
 								requests.add(ElectricityPack.getFromWatts(((IElectrical) tileEntity).getRequest(direction), ((IElectrical) tileEntity).getVoltage()));
 							}
 						}
-						
+
 						continue;
 					}
 
@@ -233,7 +227,7 @@ public class UniversalNetwork extends ElectricityNetwork
 
 							if (receiver.canInterface(direction) && this.getTransmitters().contains(conductor))
 							{
-								ElectricityPack pack = ElectricityPack.getFromWatts(receiver.receiveEnergy(direction, (int) Integer.MAX_VALUE, true) * NetworkConfigHandler.TE_RATIO, 1);
+								ElectricityPack pack = ElectricityPack.getFromWatts(receiver.receiveEnergy(direction, Integer.MAX_VALUE, true) * NetworkConfigHandler.TE_RATIO, 1);
 
 								if (pack.getWatts() > 0)
 								{
@@ -252,7 +246,7 @@ public class UniversalNetwork extends ElectricityNetwork
 						{
 							Vector3 tileVec = new Vector3(tileEntity);
 							TileEntity conductor = tileVec.modifyPositionFromSide(direction).getTileEntity(tileEntity.worldObj);
-							
+
 							if (((IEnergySink) tileEntity).acceptsEnergyFrom(tileVec.modifyPositionFromSide(direction).getTileEntity(tileEntity.worldObj), direction) && this.getTransmitters().contains(conductor))
 							{
 								ElectricityPack pack = ElectricityPack.getFromWatts((float) (((IEnergySink) tileEntity).demandedEnergyUnits() * NetworkConfigHandler.IC2_RATIO), 1);
@@ -312,18 +306,15 @@ public class UniversalNetwork extends ElectricityNetwork
 				{
 					it.remove();
 					continue;
-				}
-				else if (((TileEntity) conductor).isInvalid() || ((TileEntity) conductor).getWorldObj() == null)
+				} else if (((TileEntity) conductor).isInvalid() || ((TileEntity) conductor).getWorldObj() == null)
 				{
 					it.remove();
 					continue;
-				}
-				else if (((TileEntity) conductor).getWorldObj().getBlockTileEntity(((TileEntity) conductor).xCoord, ((TileEntity) conductor).yCoord, ((TileEntity) conductor).zCoord) != conductor)
+				} else if (((TileEntity) conductor).getWorldObj().getBlockTileEntity(((TileEntity) conductor).xCoord, ((TileEntity) conductor).yCoord, ((TileEntity) conductor).zCoord) != conductor)
 				{
 					it.remove();
 					continue;
-				}
-				else
+				} else
 				{
 					conductor.setNetwork(this);
 				}
@@ -343,8 +334,7 @@ public class UniversalNetwork extends ElectricityNetwork
 							if (this.electricalTiles.containsKey(acceptor))
 							{
 								possibleDirections = this.electricalTiles.get(acceptor);
-							}
-							else
+							} else
 							{
 								possibleDirections = new ArrayList<ForgeDirection>();
 							}
@@ -352,16 +342,13 @@ public class UniversalNetwork extends ElectricityNetwork
 							if (acceptor instanceof IElectrical && ((IElectrical) acceptor).canConnect(direction, NetworkType.POWER))
 							{
 								possibleDirections.add(direction);
-							}
-							else if (NetworkConfigHandler.isThermalExpansionLoaded() && acceptor instanceof IEnergyHandler && ((IEnergyHandler) acceptor).canInterface(direction))
+							} else if (NetworkConfigHandler.isThermalExpansionLoaded() && acceptor instanceof IEnergyHandler && ((IEnergyHandler) acceptor).canInterface(direction))
 							{
 								possibleDirections.add(direction);
-							}
-							else if (NetworkConfigHandler.isIndustrialCraft2Loaded() && acceptor instanceof IEnergyAcceptor && ((IEnergyAcceptor) acceptor).acceptsEnergyFrom((TileEntity) conductor, direction))
+							} else if (NetworkConfigHandler.isIndustrialCraft2Loaded() && acceptor instanceof IEnergyAcceptor && ((IEnergyAcceptor) acceptor).acceptsEnergyFrom((TileEntity) conductor, direction))
 							{
 								possibleDirections.add(direction);
-							}
-							else if (NetworkConfigHandler.isBuildcraftLoaded() && acceptor instanceof IPowerReceptor && ((IPowerReceptor) acceptor).getPowerReceiver(direction) != null)
+							} else if (NetworkConfigHandler.isBuildcraftLoaded() && acceptor instanceof IPowerReceptor && ((IPowerReceptor) acceptor).getPowerReceiver(direction) != null)
 							{
 								possibleDirections.add(direction);
 							}
@@ -376,8 +363,7 @@ public class UniversalNetwork extends ElectricityNetwork
 					}
 				}
 			}
-		}
-		catch (Exception e)
+		} catch (Exception e)
 		{
 			FMLLog.severe("Universal Electricity: Failed to refresh conductor.");
 			e.printStackTrace();
@@ -395,7 +381,7 @@ public class UniversalNetwork extends ElectricityNetwork
 			newNetwork.refresh();
 			return newNetwork;
 		}
-		
+
 		return null;
 	}
 
@@ -407,21 +393,17 @@ public class UniversalNetwork extends ElectricityNetwork
 			this.getTransmitters().remove(splitPoint);
 
 			/**
-			 * Loop through the connected blocks and attempt to see if there are connections between
-			 * the two points elsewhere.
+			 * Loop through the connected blocks and attempt to see if there are
+			 * connections between the two points elsewhere.
 			 */
 			TileEntity[] connectedBlocks = splitPoint.getAdjacentConnections();
 
-			for (int i = 0; i < connectedBlocks.length; i++)
+			for (TileEntity connectedBlockA : connectedBlocks)
 			{
-				TileEntity connectedBlockA = connectedBlocks[i];
-
 				if (connectedBlockA instanceof INetworkConnection)
 				{
-					for (int ii = 0; ii < connectedBlocks.length; ii++)
+					for (final TileEntity connectedBlockB : connectedBlocks)
 					{
-						final TileEntity connectedBlockB = connectedBlocks[ii];
-
 						if (connectedBlockA != connectedBlockB && connectedBlockB instanceof INetworkConnection)
 						{
 							Pathfinder finder = new PathfinderChecker(((TileEntity) splitPoint).worldObj, (INetworkConnection) connectedBlockB, NetworkType.POWER, splitPoint);
@@ -430,8 +412,9 @@ public class UniversalNetwork extends ElectricityNetwork
 							if (finder.results.size() > 0)
 							{
 								/**
-								 * The connections A and B are still intact elsewhere. Set all
-								 * references of wire connection into one network.
+								 * The connections A and B are still intact
+								 * elsewhere. Set all references of wire
+								 * connection into one network.
 								 */
 
 								for (Vector3 node : finder.closedSet)
@@ -446,12 +429,11 @@ public class UniversalNetwork extends ElectricityNetwork
 										}
 									}
 								}
-							}
-							else
+							} else
 							{
 								/**
-								 * The connections A and B are not connected anymore. Give both of
-								 * them a new network.
+								 * The connections A and B are not connected
+								 * anymore. Give both of them a new network.
 								 */
 								IElectricityNetwork newNetwork = new UniversalNetwork();
 

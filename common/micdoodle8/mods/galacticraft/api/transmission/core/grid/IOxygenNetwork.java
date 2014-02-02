@@ -19,9 +19,11 @@ public interface IOxygenNetwork extends IGridNetwork<IOxygenNetwork, ITransmitte
 	public float produce(float sendAmount, TileEntity... ignoreTiles);
 
 	/**
-	 * Gets the total amount of oxygen requested/needed in the electricity network.
+	 * Gets the total amount of oxygen requested/needed in the electricity
+	 * network.
 	 * 
-	 * @param ignoreTiles The TileEntities to ignore during this calculation (optional).
+	 * @param ignoreTiles
+	 *            The TileEntities to ignore during this calculation (optional).
 	 */
 	public float getRequest(TileEntity... ignoreTiles);
 }

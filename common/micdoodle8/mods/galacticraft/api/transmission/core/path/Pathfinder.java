@@ -6,8 +6,9 @@ import java.util.Set;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 
 /**
- * A class that allows flexible pathfinding for different positions. Compared to AStar pathfinding,
- * this version is faster but does not calculated the most optimal path.
+ * A class that allows flexible pathfinding for different positions. Compared to
+ * AStar pathfinding, this version is faster but does not calculated the most
+ * optimal path.
  * 
  * @author Calclavia
  * 
@@ -25,7 +26,8 @@ public class Pathfinder
 	public Set<Vector3> closedSet;
 
 	/**
-	 * The resulted path found by the pathfinder. Could be null if no path was found.
+	 * The resulted path found by the pathfinder. Could be null if no path was
+	 * found.
 	 */
 	public Set<Vector3> results;
 

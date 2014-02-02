@@ -10,49 +10,48 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * GCCoreItemBlockCargoLoader.java
- *
+ * 
  * This file is part of the Galacticraft project
- *
+ * 
  * @author micdoodle8
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
 public class GCCoreItemBlockCargoLoader extends ItemBlock
 {
-    public GCCoreItemBlockCargoLoader(int id)
-    {
-        super(id);
-        this.setMaxDamage(0);
-        this.setHasSubtypes(true);
-    }
+	public GCCoreItemBlockCargoLoader(int id)
+	{
+		super(id);
+		this.setMaxDamage(0);
+		this.setHasSubtypes(true);
+	}
 
-    @Override
-    public String getUnlocalizedName(ItemStack par1ItemStack)
-    {
-        String name = "";
+	@Override
+	public String getUnlocalizedName(ItemStack par1ItemStack)
+	{
+		String name = "";
 
-        if (par1ItemStack.getItemDamage() < 4)
-        {
-            name = "loader";
-        }
-        else
-        {
-            name = "unloader";
-        }
+		if (par1ItemStack.getItemDamage() < 4)
+		{
+			name = "loader";
+		} else
+		{
+			name = "unloader";
+		}
 
-        return Block.blocksList[this.getBlockID()].getUnlocalizedName() + "." + name;
-    }
+		return Block.blocksList[this.getBlockID()].getUnlocalizedName() + "." + name;
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack par1ItemStack)
-    {
-        return ClientProxyCore.galacticraftItem;
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public EnumRarity getRarity(ItemStack par1ItemStack)
+	{
+		return ClientProxyCore.galacticraftItem;
+	}
 
-    @Override
-    public int getMetadata(int damage)
-    {
-        return damage;
-    }
+	@Override
+	public int getMetadata(int damage)
+	{
+		return damage;
+	}
 }

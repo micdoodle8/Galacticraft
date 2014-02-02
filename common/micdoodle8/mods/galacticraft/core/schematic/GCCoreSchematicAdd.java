@@ -13,43 +13,43 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * GCCoreSchematicAdd.java
- *
+ * 
  * This file is part of the Galacticraft project
- *
+ * 
  * @author micdoodle8
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
 public class GCCoreSchematicAdd extends SchematicPage
 {
-    @Override
-    public int getPageID()
-    {
-        return GCCoreConfigManager.idSchematicAddSchematic;
-    }
+	@Override
+	public int getPageID()
+	{
+		return GCCoreConfigManager.idSchematicAddSchematic;
+	}
 
-    @Override
-    public int getGuiID()
-    {
-        return GCCoreConfigManager.idGuiAddSchematic;
-    }
+	@Override
+	public int getGuiID()
+	{
+		return GCCoreConfigManager.idGuiAddSchematic;
+	}
 
-    @Override
-    public ItemStack getRequiredItem()
-    {
-        return null;
-    }
+	@Override
+	public ItemStack getRequiredItem()
+	{
+		return null;
+	}
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public GuiScreen getResultScreen(EntityPlayer player, int x, int y, int z)
-    {
-        return new GCCoreGuiSchematicInput(player.inventory, x, y, z);
-    }
+	@SideOnly(Side.CLIENT)
+	@Override
+	public GuiScreen getResultScreen(EntityPlayer player, int x, int y, int z)
+	{
+		return new GCCoreGuiSchematicInput(player.inventory, x, y, z);
+	}
 
-    @Override
-    public Container getResultContainer(EntityPlayer player, int x, int y, int z)
-    {
-        return new GCCoreContainerSchematic(player.inventory, x, y, z);
-    }
+	@Override
+	public Container getResultContainer(EntityPlayer player, int x, int y, int z)
+	{
+		return new GCCoreContainerSchematic(player.inventory, x, y, z);
+	}
 }

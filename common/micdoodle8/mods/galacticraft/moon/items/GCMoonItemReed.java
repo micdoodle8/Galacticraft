@@ -16,46 +16,46 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * GCMoonItemReed.java
- *
+ * 
  * This file is part of the Galacticraft project
- *
+ * 
  * @author micdoodle8
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
 public class GCMoonItemReed extends ItemReed
 {
-    public GCMoonItemReed(int par1, Block par2Block)
-    {
-        super(par1, par2Block);
-        this.setMaxStackSize(1);
-    }
+	public GCMoonItemReed(int par1, Block par2Block)
+	{
+		super(par1, par2Block);
+		this.setMaxStackSize(1);
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister iconRegister)
-    {
-        this.itemIcon = iconRegister.registerIcon("galacticraftmoon:cheese_block");
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister iconRegister)
+	{
+		this.itemIcon = iconRegister.registerIcon("galacticraftmoon:cheese_block");
+	}
 
-    @Override
-    public CreativeTabs getCreativeTab()
-    {
-        return GalacticraftMoon.galacticraftMoonTab;
-    }
+	@Override
+	public CreativeTabs getCreativeTab()
+	{
+		return GalacticraftMoon.galacticraftMoonTab;
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack par1ItemStack)
-    {
-        return ClientProxyCore.galacticraftItem;
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public EnumRarity getRarity(ItemStack par1ItemStack)
+	{
+		return ClientProxyCore.galacticraftItem;
+	}
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
-    {
-        par3List.add("Placeable");
-    }
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
+	{
+		par3List.add("Placeable");
+	}
 }

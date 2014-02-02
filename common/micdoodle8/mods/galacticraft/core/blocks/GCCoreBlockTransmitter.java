@@ -44,25 +44,25 @@ public abstract class GCCoreBlockTransmitter extends BlockContainer
 		}
 	}
 
-    @Override
-    public void onNeighborBlockChange(World world, int x, int y, int z, int blockID)
-    {
-        super.onNeighborBlockChange(world, x, y, z, blockID);
+	@Override
+	public void onNeighborBlockChange(World world, int x, int y, int z, int blockID)
+	{
+		super.onNeighborBlockChange(world, x, y, z, blockID);
 
-        TileEntity tile = world.getBlockTileEntity(x, y, z);
+		TileEntity tile = world.getBlockTileEntity(x, y, z);
 
-        this.setBlockBoundsBasedOnState(world, x, y, z);
-        PacketDispatcher.sendPacketToAllAround(x, y, z, 10, world.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.UPDATE_WIRE_BOUNDS, new Object[] { x, y, z }));
+		this.setBlockBoundsBasedOnState(world, x, y, z);
+		PacketDispatcher.sendPacketToAllAround(x, y, z, 10, world.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.UPDATE_WIRE_BOUNDS, new Object[] { x, y, z }));
 
 		if (tile instanceof INetworkConnection)
 		{
 			((INetworkConnection) tile).refresh();
 		}
-    }
+	}
 
 	/**
-	 * Returns a bounding box from the pool of bounding boxes (this means this box can change after
-	 * the pool has been cleared to be reused)
+	 * Returns a bounding box from the pool of bounding boxes (this means this
+	 * box can change after the pool has been cleared to be reused)
 	 */
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
@@ -100,7 +100,7 @@ public abstract class GCCoreBlockTransmitter extends BlockContainer
 			default:
 				break;
 			}
-			
+
 			float minX = (float) this.minVector.x;
 			float minY = (float) this.minVector.y;
 			float minZ = (float) this.minVector.z;
@@ -141,7 +141,7 @@ public abstract class GCCoreBlockTransmitter extends BlockContainer
 			this.setBlockBounds(minX, minY, minZ, maxX, maxY, maxZ);
 		}
 	}
-	
+
 	public abstract NetworkType getNetworkType();
 
 	@SuppressWarnings("rawtypes")
@@ -150,7 +150,7 @@ public abstract class GCCoreBlockTransmitter extends BlockContainer
 	{
 		TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
 		TileEntity[] connectable = new TileEntity[6];
-		
+
 		switch (this.getNetworkType())
 		{
 		case OXYGEN:

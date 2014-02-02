@@ -30,7 +30,8 @@ public class ElectricityPack implements Cloneable
 	}
 
 	/**
-	 * Merges multiple ElectricityPacks together to form one with an average voltage.
+	 * Merges multiple ElectricityPacks together to form one with an average
+	 * voltage.
 	 */
 	public static ElectricityPack merge(ElectricityPack... packs)
 	{
@@ -53,7 +54,7 @@ public class ElectricityPack implements Cloneable
 
 	public static ElectricityPack merge(List<ElectricityPack> providedPacks)
 	{
-		return merge(providedPacks.toArray(new ElectricityPack[0]));
+		return ElectricityPack.merge(providedPacks.toArray(new ElectricityPack[0]));
 	}
 
 	/**
@@ -94,17 +95,17 @@ public class ElectricityPack implements Cloneable
 
 	public float getWatts()
 	{
-		return getWatts(amperes, voltage);
+		return ElectricityPack.getWatts(this.amperes, this.voltage);
 	}
 
 	public float getConductance()
 	{
-		return getConductance(amperes, voltage);
+		return ElectricityPack.getConductance(this.amperes, this.voltage);
 	}
 
 	public float getResistance()
 	{
-		return getResistance(amperes, voltage);
+		return ElectricityPack.getResistance(this.amperes, this.voltage);
 	}
 
 	public static float getJoules(float watts, float seconds)
@@ -134,7 +135,7 @@ public class ElectricityPack implements Cloneable
 
 	public static float getAmpsFromWattHours(float wattHours, float voltage)
 	{
-		return getWatts(wattHours) / voltage;
+		return ElectricityPack.getWatts(wattHours) / voltage;
 	}
 
 	public static float getWattHoursFromAmpHours(float ampHours, float voltage)
@@ -164,7 +165,7 @@ public class ElectricityPack implements Cloneable
 
 	public static float getWattHours(float amps, float voltage)
 	{
-		return getWattHours(getWatts(amps, voltage));
+		return ElectricityPack.getWattHours(ElectricityPack.getWatts(amps, voltage));
 	}
 
 	public static float getResistance(float amps, float voltage)
