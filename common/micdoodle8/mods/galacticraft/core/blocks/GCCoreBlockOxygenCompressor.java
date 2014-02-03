@@ -266,8 +266,6 @@ public class GCCoreBlockOxygenCompressor extends GCCoreBlockAdvancedTile
 			return null;
 		}
 
-		int metadata = this.getDamageValue(world, x, y, z);
-
-		return new ItemStack(id, 1, metadata);
+		return new ItemStack(id, 1, this.damageDropped(world.getBlockMetadata(x, y, z)));
 	}
 }
