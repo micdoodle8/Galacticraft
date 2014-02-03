@@ -532,6 +532,7 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 		{
 			this.bcPowerHandler = new PowerHandler((IPowerReceptor) this, Type.MACHINE);
 		}
+		
 		((PowerHandler) this.bcPowerHandler).configure(0, this.maxInputEnergy, 0, (int) Math.ceil(this.getMaxEnergyStored() * NetworkConfigHandler.BC3_RATIO));
 	}
 
