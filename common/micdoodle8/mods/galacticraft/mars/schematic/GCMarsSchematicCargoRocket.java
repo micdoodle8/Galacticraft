@@ -60,7 +60,8 @@ public class GCMarsSchematicCargoRocket implements ISchematicPage
 		if (this.getPageID() > o.getPageID())
 		{
 			return 1;
-		} else
+		}
+		else
 		{
 			return -1;
 		}

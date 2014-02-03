@@ -172,14 +172,17 @@ public class GCMoonBlock extends GCCoreBlockAdvancedTile implements IDetectableR
 				case 8:
 					return this.moonBlockIcons[11];
 				}
-			} else if (side == 0)
+			}
+			else if (side == 0)
 			{
 				return this.moonBlockIcons[2];
-			} else
+			}
+			else
 			{
 				return this.moonBlockIcons[3];
 			}
-		} else
+		}
+		else
 		{
 			switch (meta)
 			{
@@ -225,10 +228,12 @@ public class GCMoonBlock extends GCCoreBlockAdvancedTile implements IDetectableR
 		if (meta >= 5 && meta <= 13)
 		{
 			return 5;
-		} else if (meta == 2)
+		}
+		else if (meta == 2)
 		{
 			return 0;
-		} else
+		}
+		else
 		{
 			return meta;
 		}

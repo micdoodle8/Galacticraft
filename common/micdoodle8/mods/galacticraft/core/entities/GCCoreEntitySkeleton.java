@@ -235,7 +235,8 @@ public class GCCoreEntitySkeleton extends EntitySkeleton implements IEntityBreat
 			final ItemStack var2 = new ItemStack(Item.bow);
 			EnchantmentHelper.addRandomEnchantment(this.rand, var2, 5);
 			this.entityDropItem(var2, 0.0F);
-		} else
+		}
+		else
 		{
 			this.dropItem(Item.bow.itemID, 1);
 		}

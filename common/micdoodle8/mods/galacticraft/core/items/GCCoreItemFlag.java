@@ -110,7 +110,8 @@ public class GCCoreItemFlag extends Item implements IHoldableItem
 					flag.setType(par1ItemStack.getItemDamage());
 					flag.setOwner(par3EntityPlayer.username);
 					placed = true;
-				} else
+				}
+				else
 				{
 					par3EntityPlayer.sendChatToPlayer(ChatMessageComponent.createFromText("Flag already placed here!"));
 				}

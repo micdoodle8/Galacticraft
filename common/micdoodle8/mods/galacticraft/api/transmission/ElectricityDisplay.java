@@ -71,7 +71,8 @@ public class ElectricityDisplay
 			if (getShort)
 			{
 				return this.symbol;
-			} else
+			}
+			else
 			{
 				return this.name;
 			}
@@ -124,7 +125,8 @@ public class ElectricityDisplay
 		if (isShort)
 		{
 			unitName = unit.symbol;
-		} else if (value > 1)
+		}
+		else if (value > 1)
 		{
 			unitName = unit.getPlural();
 		}
@@ -132,7 +134,8 @@ public class ElectricityDisplay
 		if (value == 0)
 		{
 			return value + " " + unitName;
-		} else
+		}
+		else
 		{
 			for (int i = 0; i < MeasurementUnit.values().length; i++)
 			{

@@ -64,7 +64,8 @@ public class AirLockProtocol
 								{
 									this.adjacentAirLocks.add((GCCoreTileEntityAirLock) tile);
 									this.loopThrough(tile, loops - 1);
-								} else if (!this.horizontal && tile.xCoord == this.head.xCoord || tile.zCoord == this.head.zCoord)
+								}
+								else if (!this.horizontal && tile.xCoord == this.head.xCoord || tile.zCoord == this.head.zCoord)
 								{
 									this.adjacentAirLocks.add((GCCoreTileEntityAirLock) tile);
 									this.loopThrough(tile, loops - 1);
@@ -183,7 +184,8 @@ public class AirLockProtocol
 					this.airLocksHorizontalMin++;
 				}
 			}
-		} else if (this.minZ != this.maxZ)
+		}
+		else if (this.minZ != this.maxZ)
 		{
 			for (int z = this.minZ; z <= this.maxZ; z++)
 			{

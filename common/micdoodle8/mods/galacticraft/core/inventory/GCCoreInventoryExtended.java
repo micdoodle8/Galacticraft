@@ -43,7 +43,8 @@ public class GCCoreInventoryExtended implements IInventory
 				var3 = this.inventoryStacks[i];
 				this.inventoryStacks[i] = null;
 				return var3;
-			} else
+			}
+			else
 			{
 				var3 = this.inventoryStacks[i].splitStack(j);
 
@@ -54,7 +55,8 @@ public class GCCoreInventoryExtended implements IInventory
 
 				return var3;
 			}
-		} else
+		}
+		else
 		{
 			return null;
 		}

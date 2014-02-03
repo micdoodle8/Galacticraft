@@ -53,7 +53,8 @@ public class GCCoreGuiIngotCompressor extends GuiContainer
 		if (this.tileEntity.processTicks > 0)
 		{
 			displayText = "Compressing";
-		} else
+		}
+		else
 		{
 			displayText = "Idle";
 		}

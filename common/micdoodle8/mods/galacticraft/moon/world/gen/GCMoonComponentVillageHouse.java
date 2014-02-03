@@ -457,7 +457,8 @@ public class GCMoonComponentVillageHouse extends GCMoonComponentVillage
 					if (i >= 7 && i <= 9 && j >= 7 && j <= 9)
 					{
 						this.placeBlockAtCurrentPosition(par1World, Block.glass.blockID, 0, i, yLevel, j, par3StructureBoundingBox);
-					} else
+					}
+					else
 					{
 						this.placeBlockAtCurrentPosition(par1World, GCCoreBlocks.decorationBlocks.blockID, 4, i, yLevel, j, par3StructureBoundingBox);
 					}

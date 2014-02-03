@@ -119,7 +119,8 @@ public class GCCoreEntityOxygenBubble extends Entity implements IPacketReceiver,
 		if (this.distributor != null && (this.distributor.oxygenBubble == null || this.distributor.oxygenBubble.equals(this)) && !this.worldObj.isRemote)
 		{
 			this.distributor.oxygenBubble = this;
-		} else if (!this.worldObj.isRemote)
+		}
+		else if (!this.worldObj.isRemote)
 		{
 			this.setDead();
 		}
@@ -134,7 +135,8 @@ public class GCCoreEntityOxygenBubble extends Entity implements IPacketReceiver,
 			if (this.distributor.getEnergyStored() > 0.0F && this.distributor.storedOxygen > this.distributor.oxygenPerTick)
 			{
 				this.size += 0.01F;
-			} else
+			}
+			else
 			{
 				this.size -= 0.1F;
 			}
@@ -171,7 +173,8 @@ public class GCCoreEntityOxygenBubble extends Entity implements IPacketReceiver,
 			{
 				this.size = dataStream.readFloat();
 			}
-		} catch (final Exception e)
+		}
+		catch (final Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -205,7 +208,8 @@ public class GCCoreEntityOxygenBubble extends Entity implements IPacketReceiver,
 		if (nbt.getTags().contains("bubbleSize"))
 		{
 			this.size = (float) nbt.getDouble("bubbleSize");
-		} else
+		}
+		else
 		{
 			this.size = nbt.getFloat("bubbleSizeF");
 		}

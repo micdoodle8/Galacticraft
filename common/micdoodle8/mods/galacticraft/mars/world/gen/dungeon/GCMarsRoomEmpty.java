@@ -46,7 +46,8 @@ public class GCMarsRoomEmpty extends GCCoreDungeonRoom
 					if (i == this.posX - 1 || i == this.posX + this.sizeX || j == this.posY - 1 || j == this.posY + this.sizeY || k == this.posZ - 1 || k == this.posZ + this.sizeZ)
 					{
 						this.placeBlock(chunk, meta, i, j, k, cx, cz, this.dungeonInstance.DUNGEON_WALL_ID, this.dungeonInstance.DUNGEON_WALL_META);
-					} else
+					}
+					else
 					{
 						this.placeBlock(chunk, meta, i, j, k, cx, cz, 0, 0);
 					}

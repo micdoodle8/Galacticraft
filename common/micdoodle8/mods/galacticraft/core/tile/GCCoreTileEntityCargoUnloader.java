@@ -75,13 +75,15 @@ public class GCCoreTileEntityCargoUnloader extends GCCoreTileEntityElectricBlock
 					{
 						this.addCargo(this.attachedFuelable.removeCargo(true).resultStack, true);
 					}
-				} else
+				}
+				else
 				{
 					this.targetNoInventory = result.resultState == EnumCargoLoadingState.NOINVENTORY;
 					this.noTarget = result.resultState == EnumCargoLoadingState.NOTARGET;
 					this.targetEmpty = true;
 				}
-			} else
+			}
+			else
 			{
 				this.noTarget = true;
 			}
@@ -111,7 +113,8 @@ public class GCCoreTileEntityCargoUnloader extends GCCoreTileEntityElectricBlock
 						foundFuelable = true;
 						break;
 					}
-				} else if (pad != null && pad instanceof ICargoEntity)
+				}
+				else if (pad != null && pad instanceof ICargoEntity)
 				{
 					this.attachedFuelable = (ICargoEntity) pad;
 					foundFuelable = true;
@@ -150,7 +153,8 @@ public class GCCoreTileEntityCargoUnloader extends GCCoreTileEntityElectricBlock
 				var3 = this.containingItems[par1];
 				this.containingItems[par1] = null;
 				return var3;
-			} else
+			}
+			else
 			{
 				var3 = this.containingItems[par1].splitStack(par2);
 
@@ -161,7 +165,8 @@ public class GCCoreTileEntityCargoUnloader extends GCCoreTileEntityElectricBlock
 
 				return var3;
 			}
-		} else
+		}
+		else
 		{
 			return null;
 		}
@@ -175,7 +180,8 @@ public class GCCoreTileEntityCargoUnloader extends GCCoreTileEntityElectricBlock
 			final ItemStack var2 = this.containingItems[par1];
 			this.containingItems[par1] = null;
 			return var2;
-		} else
+		}
+		else
 		{
 			return null;
 		}
@@ -283,7 +289,8 @@ public class GCCoreTileEntityCargoUnloader extends GCCoreTileEntityElectricBlock
 			if (slotID == 0)
 			{
 				return itemstack.getItem() instanceof IItemElectric;
-			} else
+			}
+			else
 			{
 				return true;
 			}
@@ -304,7 +311,8 @@ public class GCCoreTileEntityCargoUnloader extends GCCoreTileEntityElectricBlock
 		if (slotID == 0)
 		{
 			return itemstack.getItem() instanceof IItemElectric;
-		} else
+		}
+		else
 		{
 			return true;
 		}

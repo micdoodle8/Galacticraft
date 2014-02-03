@@ -77,7 +77,8 @@ public class OxygenNetwork implements IOxygenNetwork
 									}
 								}
 							}
-						} else if (NetworkConfigHandler.isMekanismLoaded() && tileEntity instanceof IGasAcceptor)
+						}
+						else if (NetworkConfigHandler.isMekanismLoaded() && tileEntity instanceof IGasAcceptor)
 						{
 							IGasAcceptor gasAcceptor = (IGasAcceptor) tileEntity;
 
@@ -202,10 +203,12 @@ public class OxygenNetwork implements IOxygenNetwork
 				if (transmitter == null)
 				{
 					it.remove();
-				} else if (((TileEntity) transmitter).isInvalid())
+				}
+				else if (((TileEntity) transmitter).isInvalid())
 				{
 					it.remove();
-				} else
+				}
+				else
 				{
 					transmitter.setNetwork(this);
 				}
@@ -221,7 +224,8 @@ public class OxygenNetwork implements IOxygenNetwork
 						if (this.oxygenTiles.containsKey(acceptor))
 						{
 							possibleDirections = this.oxygenTiles.get(acceptor);
-						} else
+						}
+						else
 						{
 							possibleDirections = new ArrayList<ForgeDirection>();
 						}
@@ -232,7 +236,8 @@ public class OxygenNetwork implements IOxygenNetwork
 					}
 				}
 			}
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
 			FMLLog.severe("Failed to refresh oxygen pipe network.");
 			e.printStackTrace();
@@ -304,7 +309,8 @@ public class OxygenNetwork implements IOxygenNetwork
 										}
 									}
 								}
-							} else
+							}
+							else
 							{
 								/**
 								 * The connections A and B are not connected

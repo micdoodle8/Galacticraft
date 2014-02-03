@@ -45,7 +45,8 @@ public class GCMoonBiomeDecorator
 		if (this.worldObj != null)
 		{
 			throw new RuntimeException("Already decorating!!");
-		} else
+		}
+		else
 		{
 			this.worldObj = worldObj;
 			this.randomGenerator = rand;

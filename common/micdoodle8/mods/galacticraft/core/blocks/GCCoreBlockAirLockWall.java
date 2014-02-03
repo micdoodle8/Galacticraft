@@ -60,7 +60,8 @@ public class GCCoreBlockAirLockWall extends BlockBreakable implements IPartialSe
 			var5 = 0.325F;
 			var6 = 0.5F;
 			this.setBlockBounds(0.5F - var5, 0.0F, 0.5F - var6, 0.5F + var5, 1.0F, 0.5F + var6);
-		} else
+		}
+		else
 		{
 			int adjacentCount = 0;
 
@@ -84,7 +85,8 @@ public class GCCoreBlockAirLockWall extends BlockBreakable implements IPartialSe
 				var5 = 0.5F;
 				var6 = 0.325F;
 				this.setBlockBounds(0.0F, 0.0F + var6, 0.0F, 1.0F, 1.0F - var6, 1.0F);
-			} else
+			}
+			else
 			{
 				var5 = 0.5F;
 				var6 = 0.325F;

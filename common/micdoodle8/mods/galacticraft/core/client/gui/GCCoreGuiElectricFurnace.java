@@ -55,7 +55,8 @@ public class GCCoreGuiElectricFurnace extends GuiContainer
 		if (this.tileEntity.processTicks > 0)
 		{
 			displayText = "Smelting";
-		} else
+		}
+		else
 		{
 			displayText = "Idle";
 		}

@@ -159,7 +159,8 @@ public class GCCorePlayerMP extends EntityPlayerMP
 			if (keepInv)
 			{
 				this.getExtendedInventory().copyInventory(((GCCorePlayerMP) par1EntityPlayer).extendedInventory);
-			} else if (this.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory"))
+			}
+			else if (this.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory"))
 			{
 				this.getExtendedInventory().copyInventory(((GCCorePlayerMP) par1EntityPlayer).extendedInventory);
 			}
@@ -434,7 +435,8 @@ public class GCCorePlayerMP extends EntityPlayerMP
 			{
 				final ItemStack stack = new ItemStack(GCCoreBlocks.unlitTorch, var1, 0);
 				this.inventory.mainInventory[this.inventory.currentItem] = stack;
-			} else if (this.inventory.getCurrentItem().getItem().itemID == Item.bow.itemID)
+			}
+			else if (this.inventory.getCurrentItem().getItem().itemID == Item.bow.itemID)
 			{
 				final Hashtable<Integer, Enchantment> enchants = new Hashtable<Integer, Enchantment>();
 
@@ -469,7 +471,8 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
 				this.inventory.mainInventory[this.inventory.currentItem] = stack;
 			}
-		} else if (!(this.worldObj.provider instanceof IGalacticraftWorldProvider) && this.inventory.getCurrentItem() != null)
+		}
+		else if (!(this.worldObj.provider instanceof IGalacticraftWorldProvider) && this.inventory.getCurrentItem() != null)
 		{
 			final int var1 = this.inventory.getCurrentItem().stackSize;
 			final int var2 = this.inventory.getCurrentItem().getItemDamage();
@@ -478,7 +481,8 @@ public class GCCorePlayerMP extends EntityPlayerMP
 			{
 				final ItemStack stack = new ItemStack(Block.torchWood, var1, 0);
 				this.inventory.mainInventory[this.inventory.currentItem] = stack;
-			} else if (this.inventory.getCurrentItem().getItem().itemID == GCCoreItems.bowGravity.itemID)
+			}
+			else if (this.inventory.getCurrentItem().getItem().itemID == GCCoreItems.bowGravity.itemID)
 			{
 				final Hashtable<Integer, Enchantment> enchants = new Hashtable<Integer, Enchantment>();
 
@@ -584,10 +588,12 @@ public class GCCorePlayerMP extends EntityPlayerMP
 			if (this.tankInSlot1.getItem().itemID == GCCoreItems.oxTankLight.itemID)
 			{
 				this.sendGearUpdatePacket(EnumModelPacket.ADDLEFTGREENTANK.getIndex());
-			} else if (this.tankInSlot1.getItem().itemID == GCCoreItems.oxTankMedium.itemID)
+			}
+			else if (this.tankInSlot1.getItem().itemID == GCCoreItems.oxTankMedium.itemID)
 			{
 				this.sendGearUpdatePacket(EnumModelPacket.ADDLEFTORANGETANK.getIndex());
-			} else if (this.tankInSlot1.getItem().itemID == GCCoreItems.oxTankHeavy.itemID)
+			}
+			else if (this.tankInSlot1.getItem().itemID == GCCoreItems.oxTankHeavy.itemID)
 			{
 				this.sendGearUpdatePacket(EnumModelPacket.ADDLEFTREDTANK.getIndex());
 			}
@@ -605,10 +611,12 @@ public class GCCorePlayerMP extends EntityPlayerMP
 				if (this.tankInSlot1.getItem().itemID == GCCoreItems.oxTankLight.itemID)
 				{
 					this.sendGearUpdatePacket(EnumModelPacket.ADDLEFTGREENTANK.getIndex());
-				} else if (this.tankInSlot1.getItem().itemID == GCCoreItems.oxTankMedium.itemID)
+				}
+				else if (this.tankInSlot1.getItem().itemID == GCCoreItems.oxTankMedium.itemID)
 				{
 					this.sendGearUpdatePacket(EnumModelPacket.ADDLEFTORANGETANK.getIndex());
-				} else if (this.tankInSlot1.getItem().itemID == GCCoreItems.oxTankHeavy.itemID)
+				}
+				else if (this.tankInSlot1.getItem().itemID == GCCoreItems.oxTankHeavy.itemID)
 				{
 					this.sendGearUpdatePacket(EnumModelPacket.ADDLEFTREDTANK.getIndex());
 				}
@@ -622,10 +630,12 @@ public class GCCorePlayerMP extends EntityPlayerMP
 			if (this.tankInSlot2.getItem().itemID == GCCoreItems.oxTankLight.itemID)
 			{
 				this.sendGearUpdatePacket(EnumModelPacket.ADDRIGHTGREENTANK.getIndex());
-			} else if (this.tankInSlot2.getItem().itemID == GCCoreItems.oxTankMedium.itemID)
+			}
+			else if (this.tankInSlot2.getItem().itemID == GCCoreItems.oxTankMedium.itemID)
 			{
 				this.sendGearUpdatePacket(EnumModelPacket.ADDRIGHTORANGETANK.getIndex());
-			} else if (this.tankInSlot2.getItem().itemID == GCCoreItems.oxTankHeavy.itemID)
+			}
+			else if (this.tankInSlot2.getItem().itemID == GCCoreItems.oxTankHeavy.itemID)
 			{
 				this.sendGearUpdatePacket(EnumModelPacket.ADDRIGHTREDTANK.getIndex());
 			}
@@ -643,10 +653,12 @@ public class GCCorePlayerMP extends EntityPlayerMP
 				if (this.tankInSlot2.getItem().itemID == GCCoreItems.oxTankLight.itemID)
 				{
 					this.sendGearUpdatePacket(EnumModelPacket.ADDRIGHTGREENTANK.getIndex());
-				} else if (this.tankInSlot2.getItem().itemID == GCCoreItems.oxTankMedium.itemID)
+				}
+				else if (this.tankInSlot2.getItem().itemID == GCCoreItems.oxTankMedium.itemID)
 				{
 					this.sendGearUpdatePacket(EnumModelPacket.ADDRIGHTORANGETANK.getIndex());
-				} else if (this.tankInSlot2.getItem().itemID == GCCoreItems.oxTankHeavy.itemID)
+				}
+				else if (this.tankInSlot2.getItem().itemID == GCCoreItems.oxTankHeavy.itemID)
 				{
 					this.sendGearUpdatePacket(EnumModelPacket.ADDRIGHTREDTANK.getIndex());
 				}
@@ -722,7 +734,8 @@ public class GCCorePlayerMP extends EntityPlayerMP
 				{
 					this.airRemaining2 = tankInSlot2.getMaxDamage() - tankInSlot2.getItemDamage();
 				}
-			} else
+			}
+			else
 			{
 				if (this.tick % 60 == 0)
 				{
@@ -737,7 +750,8 @@ public class GCCorePlayerMP extends EntityPlayerMP
 						{
 							this.airRemaining2 = Math.min(this.airRemaining2 + 1, tankInSlot2.getMaxDamage() - tankInSlot2.getItemDamage());
 						}
-					} else
+					}
+					else
 					{
 						if (this.airRemaining > 0)
 						{
@@ -757,10 +771,12 @@ public class GCCorePlayerMP extends EntityPlayerMP
 			if (this.isOnLadder())
 			{
 				this.oxygenSetupValid = this.lastOxygenSetupValid;
-			} else if ((!OxygenUtil.hasValidOxygenSetup(this) || airEmpty) && !OxygenUtil.isAABBInBreathableAirBlock(this))
+			}
+			else if ((!OxygenUtil.hasValidOxygenSetup(this) || airEmpty) && !OxygenUtil.isAABBInBreathableAirBlock(this))
 			{
 				this.oxygenSetupValid = false;
-			} else
+			}
+			else
 			{
 				this.oxygenSetupValid = true;
 			}
@@ -783,15 +799,18 @@ public class GCCorePlayerMP extends EntityPlayerMP
 					}
 				}
 			}
-		} else if (this.tick % 20 == 0 && !this.capabilities.isCreativeMode && this.airRemaining < 90)
+		}
+		else if (this.tick % 20 == 0 && !this.capabilities.isCreativeMode && this.airRemaining < 90)
 		{
 			this.airRemaining += 1;
 			this.airRemaining2 += 1;
-		} else if (this.capabilities.isCreativeMode)
+		}
+		else if (this.capabilities.isCreativeMode)
 		{
 			this.airRemaining = 90;
 			this.airRemaining2 = 90;
-		} else
+		}
+		else
 		{
 			this.oxygenSetupValid = true;
 		}
@@ -1085,7 +1104,8 @@ public class GCCorePlayerMP extends EntityPlayerMP
 			}
 
 			this.sendGearUpdatePacket(EnumModelPacket.ADD_PARACHUTE.getIndex(), subtype);
-		} else
+		}
+		else
 		{
 			this.sendGearUpdatePacket(EnumModelPacket.REMOVE_PARACHUTE.getIndex());
 		}

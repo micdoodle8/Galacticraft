@@ -89,7 +89,8 @@ public class GCCoreTileEntityEnergyStorageModule extends GCCoreTileEntityUnivers
 		try
 		{
 			this.setEnergyStored(dataStream.readFloat());
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -175,7 +176,8 @@ public class GCCoreTileEntityEnergyStorageModule extends GCCoreTileEntityUnivers
 				var3 = this.containingItems[par1];
 				this.containingItems[par1] = null;
 				return var3;
-			} else
+			}
+			else
 			{
 				var3 = this.containingItems[par1].splitStack(par2);
 
@@ -186,7 +188,8 @@ public class GCCoreTileEntityEnergyStorageModule extends GCCoreTileEntityUnivers
 
 				return var3;
 			}
-		} else
+		}
+		else
 		{
 			return null;
 		}
@@ -200,7 +203,8 @@ public class GCCoreTileEntityEnergyStorageModule extends GCCoreTileEntityUnivers
 			ItemStack var2 = this.containingItems[par1];
 			this.containingItems[par1] = null;
 			return var2;
-		} else
+		}
+		else
 		{
 			return null;
 		}
@@ -261,7 +265,8 @@ public class GCCoreTileEntityEnergyStorageModule extends GCCoreTileEntityUnivers
 			if (slotID == 0)
 			{
 				return ((IItemElectric) itemstack.getItem()).getTransfer(itemstack) > 0;
-			} else if (slotID == 1)
+			}
+			else if (slotID == 1)
 			{
 				return ((IItemElectric) itemstack.getItem()).getElectricityStored(itemstack) > 0;
 			}
@@ -277,7 +282,8 @@ public class GCCoreTileEntityEnergyStorageModule extends GCCoreTileEntityUnivers
 			if (slotID == 0)
 			{
 				return ((IItemElectric) itemstack.getItem()).getTransfer(itemstack) <= 0;
-			} else if (slotID == 1)
+			}
+			else if (slotID == 1)
 			{
 				return ((IItemElectric) itemstack.getItem()).getElectricityStored(itemstack) <= 0 || this.getEnergyStored() >= this.getMaxEnergyStored();
 			}

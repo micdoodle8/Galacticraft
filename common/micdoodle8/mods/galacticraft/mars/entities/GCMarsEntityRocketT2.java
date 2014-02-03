@@ -89,7 +89,8 @@ public class GCMarsEntityRocketT2 extends EntityTieredRocket
 		if (this.timeUntilLaunch >= 100)
 		{
 			i = Math.abs(this.timeUntilLaunch / 100);
-		} else
+		}
+		else
 		{
 			i = 1;
 		}
@@ -119,7 +120,8 @@ public class GCMarsEntityRocketT2 extends EntityTieredRocket
 				{
 					this.motionY = -d * 1.5D * Math.cos((this.rotationPitch - 180) * Math.PI / 180.0D);
 				}
-			} else
+			}
+			else
 			{
 				this.motionY -= 0.008D;
 			}
@@ -140,7 +142,8 @@ public class GCMarsEntityRocketT2 extends EntityTieredRocket
 			{
 				this.removeFuel(1);
 			}
-		} else if (!this.hasValidFuel() && this.getLaunched() && !this.worldObj.isRemote)
+		}
+		else if (!this.hasValidFuel() && this.getLaunched() && !this.worldObj.isRemote)
 		{
 			if (Math.abs(Math.sin(this.timeSinceLaunch / 1000)) / 10 != 0.0)
 			{
@@ -166,7 +169,8 @@ public class GCMarsEntityRocketT2 extends EntityTieredRocket
 			if (this.cargoItems == null || this.cargoItems.length == 0)
 			{
 				playerBase.setRocketStacks(new ItemStack[3]);
-			} else
+			}
+			else
 			{
 				playerBase.setRocketStacks(this.cargoItems);
 			}

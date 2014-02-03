@@ -112,7 +112,8 @@ public class GCCoreRenderAluminumWire extends TileEntitySpecialRenderer
 		if (metadata == 0)
 		{
 			model = this.model;
-		} else
+		}
+		else
 		{
 			model = this.model2;
 		}

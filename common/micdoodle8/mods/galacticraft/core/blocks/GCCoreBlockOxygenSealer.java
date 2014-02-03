@@ -107,13 +107,16 @@ public class GCCoreBlockOxygenSealer extends GCCoreBlockAdvancedTile
 		if (side == 1)
 		{
 			return this.iconSealer;
-		} else if (side == metadata + 2)
+		}
+		else if (side == metadata + 2)
 		{
 			return this.iconOutput;
-		} else if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal())
+		}
+		else if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal())
 		{
 			return this.iconInput;
-		} else
+		}
+		else
 		{
 			return this.iconMachineSide;
 		}

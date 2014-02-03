@@ -43,7 +43,8 @@ public class GCCoreEntityLaunchSmokeFX extends EntityFX
 		if (launched)
 		{
 			this.particleMaxAge = (int) (this.particleMaxAge * size);
-		} else
+		}
+		else
 		{
 			this.particleMaxAge = 1;
 		}

@@ -146,7 +146,8 @@ public abstract class GCWorldChunkManager extends WorldChunkManager
 			final BiomeGenBase[] var9 = this.biomeCache.getCachedBiomes(par2, par3);
 			System.arraycopy(var9, 0, par1ArrayOfBiomeGenBase, 0, par4 * par5);
 			return par1ArrayOfBiomeGenBase;
-		} else
+		}
+		else
 		{
 			final int[] var7 = this.biomeIndexLayer.getInts(par2, par3, par4, par5);
 

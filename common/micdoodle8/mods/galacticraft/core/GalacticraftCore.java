@@ -220,7 +220,8 @@ public class GalacticraftCore
 			GCCoreBlocks.crudeOilStill.setUnlocalizedName("crudeOilStill");
 			GameRegistry.registerBlock(GCCoreBlocks.crudeOilStill, GCCoreItemBlock.class, GCCoreBlocks.crudeOilStill.getUnlocalizedName(), GalacticraftCore.MODID);
 			GalacticraftCore.fluidOil.setBlockID(GCCoreBlocks.crudeOilStill);
-		} else
+		}
+		else
 		{
 			GCCoreBlocks.crudeOilStill = Block.blocksList[GalacticraftCore.fluidOil.getBlockID()];
 		}
@@ -232,7 +233,8 @@ public class GalacticraftCore
 			GCCoreBlocks.fuelStill.setUnlocalizedName("fuel");
 			GameRegistry.registerBlock(GCCoreBlocks.fuelStill, GCCoreItemBlock.class, GCCoreBlocks.fuelStill.getUnlocalizedName(), GalacticraftCore.MODID);
 			GalacticraftCore.fluidFuel.setBlockID(GCCoreBlocks.fuelStill);
-		} else
+		}
+		else
 		{
 			GCCoreBlocks.fuelStill = Block.blocksList[GalacticraftCore.fluidFuel.getBlockID()];
 		}

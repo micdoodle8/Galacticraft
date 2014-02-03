@@ -146,7 +146,8 @@ public class GCMarsEntitySludgeling extends EntityMob implements IEntityBreathab
 		{
 			EntityPlayer var1 = this.worldObj.getClosestPlayerToEntity(this, 5.0D);
 			return var1 == null;
-		} else
+		}
+		else
 		{
 			return false;
 		}

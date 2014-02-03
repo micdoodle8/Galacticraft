@@ -108,15 +108,18 @@ public class GCCoreBlockMachine2 extends GCCoreBlockTile
 				{
 					par1World.spawnParticle("smoke", var7 - var10, var8, var9 + var11, 0.0D, 0.0D, 0.0D);
 					par1World.spawnParticle("flame", var7 - var10, var8, var9 + var11, 0.0D, 0.0D, 0.0D);
-				} else if (metadata == 2)
+				}
+				else if (metadata == 2)
 				{
 					par1World.spawnParticle("smoke", var7 + var10, var8, var9 + var11, 0.0D, 0.0D, 0.0D);
 					par1World.spawnParticle("flame", var7 + var10, var8, var9 + var11, 0.0D, 0.0D, 0.0D);
-				} else if (metadata == 1)
+				}
+				else if (metadata == 1)
 				{
 					par1World.spawnParticle("smoke", var7 + var11, var8, var9 - var10, 0.0D, 0.0D, 0.0D);
 					par1World.spawnParticle("flame", var7 + var11, var8, var9 - var10, 0.0D, 0.0D, 0.0D);
-				} else if (metadata == 0)
+				}
+				else if (metadata == 0)
 				{
 					par1World.spawnParticle("smoke", var7 + var11, var8, var9 + var10, 0.0D, 0.0D, 0.0D);
 					par1World.spawnParticle("flame", var7 + var11, var8, var9 + var10, 0.0D, 0.0D, 0.0D);
@@ -188,7 +191,8 @@ public class GCCoreBlockMachine2 extends GCCoreBlockTile
 			}
 
 			return this.iconOxygenStorageModule[16];
-		} else if (metadata >= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA)
+		}
+		else if (metadata >= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA)
 		{
 			metadata -= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA;
 
@@ -201,7 +205,8 @@ public class GCCoreBlockMachine2 extends GCCoreBlockTile
 			{
 				return this.iconOutput;
 			}
-		} else if (metadata >= GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
+		}
+		else if (metadata >= GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
 		{
 			metadata -= GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA;
 
@@ -249,10 +254,12 @@ public class GCCoreBlockMachine2 extends GCCoreBlockTile
 		if (metadata >= GCCoreBlockMachine2.OXYGEN_STORAGE_MODULE_METADATA)
 		{
 			world.setBlockMetadataWithNotify(x, y, z, GCCoreBlockMachine2.OXYGEN_STORAGE_MODULE_METADATA + change, 3);
-		} else if (metadata >= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA)
+		}
+		else if (metadata >= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA)
 		{
 			world.setBlockMetadataWithNotify(x, y, z, GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA + change, 3);
-		} else if (metadata >= GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
+		}
+		else if (metadata >= GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
 		{
 			world.setBlockMetadataWithNotify(x, y, z, GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA + change, 3);
 		}
@@ -269,10 +276,12 @@ public class GCCoreBlockMachine2 extends GCCoreBlockTile
 		if (metadata >= GCCoreBlockMachine2.OXYGEN_STORAGE_MODULE_METADATA)
 		{
 			original -= GCCoreBlockMachine2.OXYGEN_STORAGE_MODULE_METADATA;
-		} else if (metadata >= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA)
+		}
+		else if (metadata >= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA)
 		{
 			original -= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA;
-		} else if (metadata >= GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
+		}
+		else if (metadata >= GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
 		{
 			original -= GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA;
 		}
@@ -297,10 +306,12 @@ public class GCCoreBlockMachine2 extends GCCoreBlockTile
 		if (metadata >= GCCoreBlockMachine2.OXYGEN_STORAGE_MODULE_METADATA)
 		{
 			change += GCCoreBlockMachine2.OXYGEN_STORAGE_MODULE_METADATA;
-		} else if (metadata >= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA)
+		}
+		else if (metadata >= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA)
 		{
 			change += GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA;
-		} else if (metadata >= GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
+		}
+		else if (metadata >= GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
 		{
 			change += GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA;
 		}
@@ -330,13 +341,16 @@ public class GCCoreBlockMachine2 extends GCCoreBlockTile
 		if (metadata >= GCCoreBlockMachine2.OXYGEN_STORAGE_MODULE_METADATA)
 		{
 			return new GCCoreTileEntityOxygenStorageModule();
-		} else if (metadata >= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA)
+		}
+		else if (metadata >= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA)
 		{
 			return new GCCoreTileEntityCircuitFabricator();
-		} else if (metadata >= GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
+		}
+		else if (metadata >= GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
 		{
 			return new GCCoreTileEntityElectricIngotCompressor();
-		} else
+		}
+		else
 		{
 			return null;
 		}
@@ -372,13 +386,16 @@ public class GCCoreBlockMachine2 extends GCCoreBlockTile
 		if (metadata >= GCCoreBlockMachine2.OXYGEN_STORAGE_MODULE_METADATA)
 		{
 			return GCCoreBlockMachine2.OXYGEN_STORAGE_MODULE_METADATA;
-		} else if (metadata >= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA)
+		}
+		else if (metadata >= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA)
 		{
 			return GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA;
-		} else if (metadata >= GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
+		}
+		else if (metadata >= GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
 		{
 			return GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA;
-		} else
+		}
+		else
 		{
 			return 0;
 		}

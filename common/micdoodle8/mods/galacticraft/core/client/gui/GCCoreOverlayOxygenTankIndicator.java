@@ -48,7 +48,7 @@ public class GCCoreOverlayOxygenTankIndicator extends GCCoreOverlay
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glEnable(GL11.GL_ALPHA_TEST);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		
+
 		int minLeftX = 0;
 		int maxLeftX = 0;
 		int minRightX = 0;
@@ -56,7 +56,7 @@ public class GCCoreOverlayOxygenTankIndicator extends GCCoreOverlay
 		double bottomY = 0;
 		double topY = 0;
 		double zLevel = -190.0D;
-		
+
 		if (right)
 		{
 			minLeftX = i - 49;
@@ -71,7 +71,7 @@ public class GCCoreOverlayOxygenTankIndicator extends GCCoreOverlay
 			minRightX = 30;
 			maxRightX = 49;
 		}
-		
+
 		if (top)
 		{
 			topY = 10.5;
@@ -80,7 +80,7 @@ public class GCCoreOverlayOxygenTankIndicator extends GCCoreOverlay
 		{
 			topY = j - 57;
 		}
-		
+
 		bottomY = topY + 46.5;
 
 		tessellator.startDrawingQuads();

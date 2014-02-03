@@ -312,7 +312,8 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
 		if (this.isTamed())
 		{
 			return 20 + 30.0 * ((double) this.age / (double) this.MAX_AGE);
-		} else
+		}
+		else
 		{
 			return 8.0D;
 		}
@@ -330,7 +331,8 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
 		if (this.isEntityInvulnerable())
 		{
 			return false;
-		} else
+		}
+		else
 		{
 			Entity entity = par1DamageSource.getEntity();
 			this.aiSit.setSitting(false);
@@ -392,7 +394,8 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
 						{
 							this.setRandomFavFood();
 						}
-					} else
+					}
+					else
 					{
 						if (par1EntityPlayer instanceof GCCorePlayerMP)
 						{
@@ -403,21 +406,24 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
 							}
 						}
 					}
-				} else
+				}
+				else
 				{
 					if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
 					{
 						GalacticraftMars.proxy.opengSlimelingGui(this, 0);
 					}
 				}
-			} else
+			}
+			else
 			{
 				if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
 				{
 					GalacticraftMars.proxy.opengSlimelingGui(this, 0);
 				}
 			}
-		} else if (itemstack != null && itemstack.itemID == Item.slimeBall.itemID)
+		}
+		else if (itemstack != null && itemstack.itemID == Item.slimeBall.itemID)
 		{
 			if (!par1EntityPlayer.capabilities.isCreativeMode)
 			{
@@ -441,7 +447,8 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
 					this.setOwner(par1EntityPlayer.getCommandSenderName());
 					this.playTameEffect(true);
 					this.worldObj.setEntityState(this, (byte) 7);
-				} else
+				}
+				else
 				{
 					this.playTameEffect(false);
 					this.worldObj.setEntityState(this, (byte) 6);
@@ -488,13 +495,16 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
 		if (par1EntityAnimal == this)
 		{
 			return false;
-		} else if (!this.isTamed())
+		}
+		else if (!this.isTamed())
 		{
 			return false;
-		} else if (!(par1EntityAnimal instanceof GCMarsEntitySlimeling))
+		}
+		else if (!(par1EntityAnimal instanceof GCMarsEntitySlimeling))
 		{
 			return false;
-		} else
+		}
+		else
 		{
 			GCMarsEntitySlimeling slimeling = (GCMarsEntitySlimeling) par1EntityAnimal;
 			return !slimeling.isTamed() ? false : slimeling.isSitting() ? false : this.isInLove() && slimeling.isInLove();
@@ -517,7 +527,8 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
 			}
 
 			return par1EntityLivingBase instanceof EntityPlayer && par2EntityLivingBase instanceof EntityPlayer && !((EntityPlayer) par2EntityLivingBase).canAttackPlayer((EntityPlayer) par1EntityLivingBase) ? false : !(par1EntityLivingBase instanceof EntityHorse) || !((EntityHorse) par1EntityLivingBase).isTame();
-		} else
+		}
+		else
 		{
 			return false;
 		}

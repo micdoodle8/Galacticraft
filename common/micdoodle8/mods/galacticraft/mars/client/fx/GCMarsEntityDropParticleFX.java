@@ -37,7 +37,8 @@ public class GCMarsEntityDropParticleFX extends EntityFX
 			this.particleRed = 0.0F;
 			this.particleGreen = 0.0F;
 			this.particleBlue = 0.0F;
-		} else
+		}
+		else
 		{
 			this.particleRed = 1.0F;
 			this.particleGreen = 0.0F;
@@ -89,7 +90,8 @@ public class GCMarsEntityDropParticleFX extends EntityFX
 			this.particleRed = 0.1F;
 			this.particleGreen = 0.1F;
 			this.particleBlue = 0.1F;
-		} else
+		}
+		else
 		{
 			this.particleRed = 1.0F;
 			this.particleGreen = 16.0F / (40 - this.bobTimer + 16);
@@ -104,7 +106,8 @@ public class GCMarsEntityDropParticleFX extends EntityFX
 			this.motionY *= 0.02D;
 			this.motionZ *= 0.02D;
 			this.setParticleTextureIndex(113);
-		} else
+		}
+		else
 		{
 			this.setParticleTextureIndex(112);
 		}
@@ -125,7 +128,8 @@ public class GCMarsEntityDropParticleFX extends EntityFX
 			{
 				this.setDead();
 				this.worldObj.spawnParticle("splash", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
-			} else
+			}
+			else
 			{
 				this.setParticleTextureIndex(114);
 			}

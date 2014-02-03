@@ -389,7 +389,8 @@ public class GCCoreModelWorm extends ModelBase
 				// 0.15F * (float)Math.PI) * (float)Math.PI * 0.005F * (float)(1
 				// + Math.abs(i - 2));
 				this.body[i].rotationPointX = MathHelper.sin(f * 0.9F + i * 0.15F * (float) Math.PI) * (float) Math.PI * 1F * Math.abs(i - 2);
-			} else
+			}
+			else
 			{
 				// body[i].rotateAngleY = MathHelper.cos(f * 0.9F + (float)i *
 				// 0.15F * (float)Math.PI) * (float)Math.PI * 0.005F * (float)(1

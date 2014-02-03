@@ -70,10 +70,12 @@ public class GCMoonConfigManager
 			GCMoonConfigManager.disableCheeseMoon = GCMoonConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Cheese Ore Gen on Moon", false).getBoolean(false);
 			GCMoonConfigManager.generateOtherMods = GCMoonConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Generate other mod's features on Moon", false).getBoolean(false);
 			GCMoonConfigManager.disableMoonVillageGen = GCMoonConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Moon Village Gen", false).getBoolean(false);
-		} catch (final Exception e)
+		}
+		catch (final Exception e)
 		{
 			GCLog.severe("Problem loading moon config (\"moon.conf\")");
-		} finally
+		}
+		finally
 		{
 			if (GCMoonConfigManager.configuration.hasChanged())
 			{

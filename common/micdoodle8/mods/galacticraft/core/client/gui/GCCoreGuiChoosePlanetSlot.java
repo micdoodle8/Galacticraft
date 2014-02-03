@@ -114,7 +114,8 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
 						if (twoDimensions.length > 2)
 						{
 							str = twoDimensions[2];
-						} else
+						}
+						else
 						{
 							str = "";
 						}
@@ -140,24 +141,28 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
 					if (strs.length > 2)
 					{
 						str = strs[2];
-					} else
+					}
+					else
 					{
 						str = "";
 					}
-				} else
+				}
+				else
 				{
 					str = StatCollector.translateToLocal("dimension." + str + ".name");
 				}
 
 				this.choosePlanetGui.drawCenteredString(this.choosePlanetGui.getFontRenderer(), str, this.choosePlanetGui.width / 2, par3 + 3, 0xEEEEEE);
-			} else
+			}
+			else
 			{
 				String str = GCCoreGuiChoosePlanet.getDestinations(this.choosePlanetGui)[par1];
 				str = str.replace("*", "");
 
 				this.choosePlanetGui.drawCenteredString(this.choosePlanetGui.getFontRenderer(), str, this.choosePlanetGui.width / 2, par3 + 3, 0xEEEEEE);
 			}
-		} else
+		}
+		else
 		{
 			if (this.choosePlanetGui.isValidDestination(par1))
 			{
@@ -170,17 +175,20 @@ public class GCCoreGuiChoosePlanetSlot extends GuiSlot
 					if (strs.length > 2)
 					{
 						str = strs[2];
-					} else
+					}
+					else
 					{
 						str = "";
 					}
-				} else
+				}
+				else
 				{
 					str = StatCollector.translateToLocal("dimension." + str + ".name");
 				}
 
 				this.choosePlanetGui.drawCenteredString(this.choosePlanetGui.getFontRenderer(), str, this.choosePlanetGui.width / 2, par3 + 3, 0xEEEEEE);
-			} else
+			}
+			else
 			{
 				String str = GCCoreGuiChoosePlanet.getDestinations(this.choosePlanetGui)[par1];
 				str = str.replace("*", "");

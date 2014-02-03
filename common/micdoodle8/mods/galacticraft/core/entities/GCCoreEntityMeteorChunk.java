@@ -178,7 +178,8 @@ public class GCCoreEntityMeteorChunk extends Entity implements IProjectile
 				this.isHot = false;
 				this.setHot(this.isHot);
 			}
-		} else if (!this.worldObj.isRemote)
+		}
+		else if (!this.worldObj.isRemote)
 		{
 			this.setHot(this.isHot);
 		}
@@ -216,7 +217,8 @@ public class GCCoreEntityMeteorChunk extends Entity implements IProjectile
 				{
 					this.setDead();
 				}
-			} else
+			}
+			else
 			{
 				this.inGround = false;
 				this.motionX *= this.rand.nextFloat() * 0.2F;
@@ -225,7 +227,8 @@ public class GCCoreEntityMeteorChunk extends Entity implements IProjectile
 				this.ticksInGround = 0;
 				this.ticksInAir = 0;
 			}
-		} else
+		}
+		else
 		{
 			++this.ticksInAir;
 			Vec3 vec3 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
@@ -300,7 +303,8 @@ public class GCCoreEntityMeteorChunk extends Entity implements IProjectile
 					if (this.shootingEntity == null)
 					{
 						damagesource = new EntityDamageSourceIndirect("meteorChunk", this, this).setProjectile();
-					} else
+					}
+					else
 					{
 						damagesource = new EntityDamageSourceIndirect("meteorChunk", this, this.shootingEntity).setProjectile();
 					}
@@ -346,7 +350,8 @@ public class GCCoreEntityMeteorChunk extends Entity implements IProjectile
 						{
 							this.setDead();
 						}
-					} else
+					}
+					else
 					{
 						this.motionX *= -0.10000000149011612D;
 						this.motionY *= -0.10000000149011612D;
@@ -355,7 +360,8 @@ public class GCCoreEntityMeteorChunk extends Entity implements IProjectile
 						this.prevRotationYaw += 180.0F;
 						this.ticksInAir = 0;
 					}
-				} else
+				}
+				else
 				{
 					this.xTile = movingobjectposition.blockX;
 					this.yTile = movingobjectposition.blockY;

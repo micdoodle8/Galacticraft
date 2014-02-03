@@ -82,7 +82,8 @@ public class GCCoreKeyHandlerClient extends KeyHandler
 			{
 				player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiGalaxyMap, minecraft.theWorld, (int) player.posX, (int) player.posY, (int) player.posZ);
 			}
-		} else if (kb.keyCode == GCCoreKeyHandlerClient.openSpaceshipInv.keyCode)
+		}
+		else if (kb.keyCode == GCCoreKeyHandlerClient.openSpaceshipInv.keyCode)
 		{
 			if (player.ridingEntity instanceof EntitySpaceshipBase || player.ridingEntity instanceof GCCoreEntityBuggy)
 			{
@@ -94,7 +95,8 @@ public class GCCoreKeyHandlerClient extends KeyHandler
 			{
 				player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiSpaceshipInventory, minecraft.theWorld, (int) player.posX, (int) player.posY, (int) player.posZ);
 			}
-		} else if (kb.keyCode == GCCoreKeyHandlerClient.toggleAdvGoggles.keyCode)
+		}
+		else if (kb.keyCode == GCCoreKeyHandlerClient.toggleAdvGoggles.keyCode)
 		{
 			if (playerBase != null)
 			{
@@ -113,22 +115,28 @@ public class GCCoreKeyHandlerClient extends KeyHandler
 		if (kb == GCCoreKeyHandlerClient.accelerateKey)
 		{
 			keyNum = 0;
-		} else if (kb == GCCoreKeyHandlerClient.decelerateKey)
+		}
+		else if (kb == GCCoreKeyHandlerClient.decelerateKey)
 		{
 			keyNum = 1;
-		} else if (kb == GCCoreKeyHandlerClient.leftKey)
+		}
+		else if (kb == GCCoreKeyHandlerClient.leftKey)
 		{
 			keyNum = 2;
-		} else if (kb == GCCoreKeyHandlerClient.rightKey)
+		}
+		else if (kb == GCCoreKeyHandlerClient.rightKey)
 		{
 			keyNum = 3;
-		} else if (kb == GCCoreKeyHandlerClient.spaceKey)
+		}
+		else if (kb == GCCoreKeyHandlerClient.spaceKey)
 		{
 			keyNum = 4;
-		} else if (kb == GCCoreKeyHandlerClient.leftShiftKey)
+		}
+		else if (kb == GCCoreKeyHandlerClient.leftShiftKey)
 		{
 			keyNum = 5;
-		} else
+		}
+		else
 		{
 			handled = false;
 		}
@@ -146,7 +154,8 @@ public class GCCoreKeyHandlerClient extends KeyHandler
 			}
 
 			handled = entity.pressKey(keyNum);
-		} else if (entityTest != null && entityTest instanceof EntityAutoRocket && handled == true)
+		}
+		else if (entityTest != null && entityTest instanceof EntityAutoRocket && handled == true)
 		{
 			EntityAutoRocket autoRocket = (EntityAutoRocket) entityTest;
 
@@ -167,11 +176,13 @@ public class GCCoreKeyHandlerClient extends KeyHandler
 					PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.UPDATE_SHIP_MOTION_Y, toSend));
 					handled = true;
 				}
-			} else
+			}
+			else
 			{
 				handled = false;
 			}
-		} else
+		}
+		else
 		{
 			handled = false;
 		}

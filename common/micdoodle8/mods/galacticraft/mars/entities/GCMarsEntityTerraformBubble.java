@@ -108,7 +108,8 @@ public class GCMarsEntityTerraformBubble extends Entity implements ISizeable
 		if (this.terraformer != null && (this.terraformer.terraformBubble == null || this.terraformer.terraformBubble.equals(this)) && !this.worldObj.isRemote)
 		{
 			this.terraformer.terraformBubble = this;
-		} else if (!this.worldObj.isRemote)
+		}
+		else if (!this.worldObj.isRemote)
 		{
 			this.setDead();
 		}

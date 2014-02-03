@@ -314,7 +314,8 @@ public class GCCoreSkyProviderOrbit extends IRenderHandler
 		if (this.minecraft.theWorld.provider.isSkyColored())
 		{
 			GL11.glColor3f(0.0f, 0.0f, 0.0f);
-		} else
+		}
+		else
 		{
 			GL11.glColor3f(var3, var4, var5);
 		}

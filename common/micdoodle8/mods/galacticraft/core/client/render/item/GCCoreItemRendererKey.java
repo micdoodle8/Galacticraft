@@ -50,17 +50,20 @@ public class GCCoreItemRendererKey implements IItemRenderer
 			GL11.glRotatef((MathHelper.sin(Sys.getTime() / 90F / 20.0F) - 55.0F) * 50.0F, 0, 0, 1);
 			GL11.glScalef(5.0F, 5.0F, 5.0F);
 			GL11.glScalef(1.5F, 1.5F, 1.5F);
-		} else if (type == ItemRenderType.ENTITY)
+		}
+		else if (type == ItemRenderType.ENTITY)
 		{
 			GL11.glTranslatef(0.0F, 2.0F, 0F);
 			GL11.glScalef(3.0F, 3.0F, 3.0F);
-		} else if (type == ItemRenderType.EQUIPPED)
+		}
+		else if (type == ItemRenderType.EQUIPPED)
 		{
 			GL11.glRotatef(100.0F, 0, 1, 0);
 			GL11.glRotatef(60.0F, 0, 0, 1);
 			GL11.glRotatef(-10.0F, 1, 0, 0);
 			GL11.glTranslatef(0.4F, 0.1F, 0.5F);
-		} else if (type == ItemRenderType.EQUIPPED_FIRST_PERSON)
+		}
+		else if (type == ItemRenderType.EQUIPPED_FIRST_PERSON)
 		{
 			GL11.glRotatef(-4.0F, 0, 1, 0);
 			GL11.glRotatef(2.0F, 1, 0, 0);

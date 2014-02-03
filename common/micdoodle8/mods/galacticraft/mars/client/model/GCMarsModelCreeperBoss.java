@@ -125,13 +125,15 @@ public class GCMarsModelCreeperBoss extends ModelBase
 			this.neckRight.render(f5);
 			this.headMain.render(f5);
 			this.oxygenTank.render(f5);
-		} else if (creeper.headsRemaining > 1)
+		}
+		else if (creeper.headsRemaining > 1)
 		{
 			this.headRight.render(f5);
 			this.neckRight.render(f5);
 			this.headMain.render(f5);
 			this.oxygenTank.render(f5);
-		} else if (creeper.headsRemaining > 0)
+		}
+		else if (creeper.headsRemaining > 0)
 		{
 			this.headMain.render(f5);
 			this.oxygenTank.render(f5);

@@ -725,10 +725,12 @@ public class Vector3 implements Cloneable
 		if (pickedBlock == null)
 		{
 			return pickedEntity;
-		} else if (pickedEntity == null)
+		}
+		else if (pickedEntity == null)
 		{
 			return pickedBlock;
-		} else
+		}
+		else
 		{
 			double dBlock = this.distance(new Vector3(pickedBlock.hitVec));
 			double dEntity = this.distance(new Vector3(pickedEntity.hitVec));
@@ -736,7 +738,8 @@ public class Vector3 implements Cloneable
 			if (dEntity < dBlock)
 			{
 				return pickedEntity;
-			} else
+			}
+			else
 			{
 				return pickedBlock;
 			}
@@ -811,7 +814,8 @@ public class Vector3 implements Cloneable
 								closestEntity = 0.0D;
 							}
 						}
-					} else
+					}
+					else
 					{
 						double distance = startingPosition.distanceTo(hitMOP.hitVec);
 

@@ -86,7 +86,8 @@ public class GCCoreRenderItemCustom extends Render
 			if (ForgeHooksClient.renderEntityItem(par1EntityItem, itemstack, f2, f3, this.random, this.renderManager.renderEngine, this.renderBlocks))
 			{
 				;
-			} else if (itemstack.getItemSpriteNumber() == 0 && block != null && RenderBlocks.renderItemIn3d(Block.blocksList[itemstack.itemID].getRenderType()))
+			}
+			else if (itemstack.getItemSpriteNumber() == 0 && block != null && RenderBlocks.renderItemIn3d(Block.blocksList[itemstack.itemID].getRenderType()))
 			{
 				GL11.glRotatef(f3, 0.0F, 1.0F, 0.0F);
 
@@ -123,7 +124,8 @@ public class GCCoreRenderItemCustom extends Render
 					this.itemRenderBlocks.renderBlockAsItem(block, itemstack.getItemDamage(), f5);
 					GL11.glPopMatrix();
 				}
-			} else
+			}
+			else
 			{
 				float f8;
 
@@ -133,7 +135,8 @@ public class GCCoreRenderItemCustom extends Render
 					{
 						GL11.glScalef(0.5128205F, 0.5128205F, 0.5128205F);
 						GL11.glTranslatef(0.0F, -0.05F, 0.0F);
-					} else
+					}
+					else
 					{
 						GL11.glScalef(0.5F, 0.5F, 0.5F);
 					}
@@ -152,18 +155,21 @@ public class GCCoreRenderItemCustom extends Render
 							f6 = (i & 255) / 255.0F;
 							GL11.glColor4f(f5 * f8, f4 * f8, f6 * f8, 1.0F);
 							this.renderDroppedItem(par1EntityItem, icon, b0, par9, f5 * f8, f4 * f8, f6 * f8, k);
-						} else
+						}
+						else
 						{
 							this.renderDroppedItem(par1EntityItem, icon, b0, par9, 1.0F, 1.0F, 1.0F, k);
 						}
 					}
-				} else
+				}
+				else
 				{
 					if (GCCoreRenderItemCustom.renderInFrame)
 					{
 						GL11.glScalef(0.5128205F, 0.5128205F, 0.5128205F);
 						GL11.glTranslatef(0.0F, -0.05F, 0.0F);
-					} else
+					}
+					else
 					{
 						GL11.glScalef(0.5F, 0.5F, 0.5F);
 					}
@@ -178,7 +184,8 @@ public class GCCoreRenderItemCustom extends Render
 						f5 = (l & 255) / 255.0F;
 						f4 = 1.0F;
 						this.renderDroppedItem(par1EntityItem, icon1, b0, par9, f8 * f4, f9 * f4, f5 * f4);
-					} else
+					}
+					else
 					{
 						this.renderDroppedItem(par1EntityItem, icon1, b0, par9, 1.0F, 1.0F, 1.0F);
 					}
@@ -230,7 +237,8 @@ public class GCCoreRenderItemCustom extends Render
 			if (GCCoreRenderItemCustom.renderInFrame)
 			{
 				GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
-			} else
+			}
+			else
 			{
 				GL11.glRotatef(((par1EntityItem.age + par4) / 20.0F + par1EntityItem.hoverStart) * (180F / (float) Math.PI), 0.0F, 1.0F, 0.0F);
 			}
@@ -251,7 +259,8 @@ public class GCCoreRenderItemCustom extends Render
 					float x = (this.random.nextFloat() * 2.0F - 1.0F) * 0.3F / 0.5F;
 					float y = (this.random.nextFloat() * 2.0F - 1.0F) * 0.3F / 0.5F;
 					GL11.glTranslatef(x, y, f12 + f11);
-				} else
+				}
+				else
 				{
 					GL11.glTranslatef(0f, 0f, f12 + f11);
 				}
@@ -259,7 +268,8 @@ public class GCCoreRenderItemCustom extends Render
 				if (itemstack.getItemSpriteNumber() == 0)
 				{
 					this.bindTexture(TextureMap.locationBlocksTexture);
-				} else
+				}
+				else
 				{
 					this.bindTexture(TextureMap.locationItemsTexture);
 				}
@@ -300,7 +310,8 @@ public class GCCoreRenderItemCustom extends Render
 			}
 
 			GL11.glPopMatrix();
-		} else
+		}
+		else
 		{
 			for (int l = 0; l < par3; ++l)
 			{
@@ -376,7 +387,8 @@ public class GCCoreRenderItemCustom extends Render
 			this.itemRenderBlocks.renderBlockAsItem(block, l, 1.0F);
 			this.itemRenderBlocks.useInventoryTint = true;
 			GL11.glPopMatrix();
-		} else if (Item.itemsList[k].requiresMultipleRenderPasses())
+		}
+		else if (Item.itemsList[k].requiresMultipleRenderPasses())
 		{
 			GL11.glDisable(GL11.GL_LIGHTING);
 
@@ -403,7 +415,8 @@ public class GCCoreRenderItemCustom extends Render
 			}
 
 			GL11.glEnable(GL11.GL_LIGHTING);
-		} else
+		}
+		else
 		{
 			GL11.glDisable(GL11.GL_LIGHTING);
 			ResourceLocation resourcelocation = par2TextureManager.getResourceLocation(par3ItemStack.getItemSpriteNumber());

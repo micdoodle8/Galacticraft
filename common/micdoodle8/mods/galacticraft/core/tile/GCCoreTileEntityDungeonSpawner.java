@@ -90,7 +90,8 @@ public class GCCoreTileEntityDungeonSpawner extends GCCoreTileEntityAdvanced
 					this.boss = (IBoss) c.newInstance(new Object[] { this.worldObj });
 					((Entity) this.boss).setPosition(this.xCoord + 0.5, this.yCoord + 1.0, this.zCoord + 0.5);
 					this.boss.setRoom(this.roomCoords, this.roomSize);
-				} catch (Exception e)
+				}
+				catch (Exception e)
 				{
 					e.printStackTrace();
 				}
@@ -165,7 +166,8 @@ public class GCCoreTileEntityDungeonSpawner extends GCCoreTileEntityAdvanced
 		try
 		{
 			this.bossClass = (Class<? extends IBoss>) Class.forName(nbt.getString("bossClass"));
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}

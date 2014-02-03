@@ -114,7 +114,8 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectricBl
 					}
 				}
 			}
-		} else
+		}
+		else
 		{
 			if (this.frequency == -1 && this.destFrequency == -1)
 			{
@@ -181,7 +182,8 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectricBl
 							if (placed)
 							{
 								ChunkLoadingCallback.forceChunk(this.chunkLoadTicket, this.worldObj, this.xCoord + x, this.yCoord, this.zCoord + z, this.getOwnerName());
-							} else
+							}
+							else
 							{
 								ChunkLoadingCallback.addToList(this.worldObj, this.xCoord, this.yCoord, this.zCoord, this.getOwnerName());
 							}
@@ -293,7 +295,8 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectricBl
 				var3 = this.containingItems[par1];
 				this.containingItems[par1] = null;
 				return var3;
-			} else
+			}
+			else
 			{
 				var3 = this.containingItems[par1].splitStack(par2);
 
@@ -304,7 +307,8 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectricBl
 
 				return var3;
 			}
-		} else
+		}
+		else
 		{
 			return null;
 		}
@@ -318,7 +322,8 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectricBl
 			ItemStack var2 = this.containingItems[par1];
 			this.containingItems[par1] = null;
 			return var2;
-		} else
+		}
+		else
 		{
 			return null;
 		}
@@ -494,7 +499,8 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectricBl
 					}
 				}
 			}
-		} else
+		}
+		else
 		{
 			this.frequencyValid = false;
 		}
@@ -534,7 +540,8 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectricBl
 					}
 				}
 			}
-		} else
+		}
+		else
 		{
 			this.destFrequencyValid = false;
 		}

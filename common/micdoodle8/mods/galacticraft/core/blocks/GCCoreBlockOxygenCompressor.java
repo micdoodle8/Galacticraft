@@ -87,7 +87,8 @@ public class GCCoreBlockOxygenCompressor extends GCCoreBlockAdvancedTile
 		if (metadata >= GCCoreBlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA)
 		{
 			original -= GCCoreBlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA;
-		} else if (metadata >= GCCoreBlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA)
+		}
+		else if (metadata >= GCCoreBlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA)
 		{
 			original -= GCCoreBlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA;
 		}
@@ -114,7 +115,8 @@ public class GCCoreBlockOxygenCompressor extends GCCoreBlockAdvancedTile
 		if (metadata >= GCCoreBlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA)
 		{
 			meta += GCCoreBlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA;
-		} else if (metadata >= GCCoreBlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA)
+		}
+		else if (metadata >= GCCoreBlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA)
 		{
 			meta += GCCoreBlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA;
 		}
@@ -136,10 +138,12 @@ public class GCCoreBlockOxygenCompressor extends GCCoreBlockAdvancedTile
 		if (metadata >= GCCoreBlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA)
 		{
 			return new GCCoreTileEntityOxygenDecompressor();
-		} else if (metadata >= GCCoreBlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA)
+		}
+		else if (metadata >= GCCoreBlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA)
 		{
 			return new GCCoreTileEntityOxygenCompressor();
-		} else
+		}
+		else
 		{
 			return null;
 		}
@@ -160,34 +164,42 @@ public class GCCoreBlockOxygenCompressor extends GCCoreBlockAdvancedTile
 			if (side == metadata + 2)
 			{
 				return this.iconInput;
-			} else if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal())
+			}
+			else if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal())
 			{
 				return this.iconOxygenOutput;
-			} else if (metadata == 0 && side == 5 || metadata == 3 && side == 3 || metadata == 1 && side == 4 || metadata == 2 && side == 2)
+			}
+			else if (metadata == 0 && side == 5 || metadata == 3 && side == 3 || metadata == 1 && side == 4 || metadata == 2 && side == 2)
 			{
 				return this.iconCompressor2;
-			} else
+			}
+			else
 			{
 				return this.iconDecompressor;
 			}
-		} else if (metadata >= GCCoreBlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA)
+		}
+		else if (metadata >= GCCoreBlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA)
 		{
 			metadata -= GCCoreBlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA;
 
 			if (side == metadata + 2)
 			{
 				return this.iconInput;
-			} else if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal())
+			}
+			else if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal())
 			{
 				return this.iconOxygenInput;
-			} else if (metadata == 0 && side == 5 || metadata == 3 && side == 3 || metadata == 1 && side == 4 || metadata == 2 && side == 2)
+			}
+			else if (metadata == 0 && side == 5 || metadata == 3 && side == 3 || metadata == 1 && side == 4 || metadata == 2 && side == 2)
 			{
 				return this.iconCompressor2;
-			} else
+			}
+			else
 			{
 				return this.iconCompressor1;
 			}
-		} else
+		}
+		else
 		{
 			return this.iconMachineSide;
 		}
@@ -218,7 +230,8 @@ public class GCCoreBlockOxygenCompressor extends GCCoreBlockAdvancedTile
 		if (itemStack.getItemDamage() >= GCCoreBlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA)
 		{
 			change += GCCoreBlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA;
-		} else if (itemStack.getItemDamage() >= GCCoreBlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA)
+		}
+		else if (itemStack.getItemDamage() >= GCCoreBlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA)
 		{
 			change += GCCoreBlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA;
 		}
@@ -240,10 +253,12 @@ public class GCCoreBlockOxygenCompressor extends GCCoreBlockAdvancedTile
 		if (metadata >= GCCoreBlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA)
 		{
 			return GCCoreBlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA;
-		} else if (metadata >= GCCoreBlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA)
+		}
+		else if (metadata >= GCCoreBlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA)
 		{
 			return GCCoreBlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA;
-		} else
+		}
+		else
 		{
 			return 0;
 		}

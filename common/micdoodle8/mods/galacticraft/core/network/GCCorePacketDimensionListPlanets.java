@@ -51,7 +51,8 @@ public class GCCorePacketDimensionListPlanets implements IGalacticraftAdvancedPa
 
 			data.close();
 			bytes.close();
-		} catch (final Exception e)
+		}
+		catch (final Exception e)
 		{
 			e.printStackTrace();
 		}

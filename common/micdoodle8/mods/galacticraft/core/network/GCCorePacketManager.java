@@ -79,7 +79,8 @@ public class GCCorePacketManager implements IPacketHandler, IPacketReceiver
 			data.close();
 
 			return packet;
-		} catch (final IOException e)
+		}
+		catch (final IOException e)
 		{
 			System.out.println("Failed to create packet.");
 			e.printStackTrace();
@@ -97,35 +98,44 @@ public class GCCorePacketManager implements IPacketHandler, IPacketReceiver
 				if (dataValue instanceof Integer)
 				{
 					data.writeInt((Integer) dataValue);
-				} else if (dataValue instanceof Float)
+				}
+				else if (dataValue instanceof Float)
 				{
 					data.writeFloat((Float) dataValue);
-				} else if (dataValue instanceof Double)
+				}
+				else if (dataValue instanceof Double)
 				{
 					data.writeDouble((Double) dataValue);
-				} else if (dataValue instanceof Byte)
+				}
+				else if (dataValue instanceof Byte)
 				{
 					data.writeByte((Byte) dataValue);
-				} else if (dataValue instanceof Boolean)
+				}
+				else if (dataValue instanceof Boolean)
 				{
 					data.writeBoolean((Boolean) dataValue);
-				} else if (dataValue instanceof String)
+				}
+				else if (dataValue instanceof String)
 				{
 					data.writeUTF((String) dataValue);
-				} else if (dataValue instanceof Short)
+				}
+				else if (dataValue instanceof Short)
 				{
 					data.writeShort((Short) dataValue);
-				} else if (dataValue instanceof Long)
+				}
+				else if (dataValue instanceof Long)
 				{
 					data.writeLong((Long) dataValue);
-				} else if (dataValue instanceof NBTTagCompound)
+				}
+				else if (dataValue instanceof NBTTagCompound)
 				{
 					GCCorePacketManager.writeNBTTagCompound((NBTTagCompound) dataValue, data);
 				}
 			}
 
 			return data;
-		} catch (final IOException e)
+		}
+		catch (final IOException e)
 		{
 			System.out.println("Packet data encoding failed.");
 			e.printStackTrace();
@@ -154,7 +164,8 @@ public class GCCorePacketManager implements IPacketHandler, IPacketReceiver
 			data.close();
 
 			return packet;
-		} catch (final IOException e)
+		}
+		catch (final IOException e)
 		{
 			System.out.println("Failed to create packet.");
 			e.printStackTrace();
@@ -184,7 +195,8 @@ public class GCCorePacketManager implements IPacketHandler, IPacketReceiver
 			packet.length = packet.data.length;
 
 			return packet;
-		} catch (IOException e)
+		}
+		catch (IOException e)
 		{
 			System.out.println("Failed to create packet.");
 			e.printStackTrace();
@@ -202,71 +214,92 @@ public class GCCorePacketManager implements IPacketHandler, IPacketReceiver
 				if (dataValue instanceof Integer)
 				{
 					data.writeInt((Integer) dataValue);
-				} else if (dataValue instanceof Float)
+				}
+				else if (dataValue instanceof Float)
 				{
 					data.writeFloat((Float) dataValue);
-				} else if (dataValue instanceof Double)
+				}
+				else if (dataValue instanceof Double)
 				{
 					data.writeDouble((Double) dataValue);
-				} else if (dataValue instanceof Byte)
+				}
+				else if (dataValue instanceof Byte)
 				{
 					data.writeByte((Byte) dataValue);
-				} else if (dataValue instanceof Boolean)
+				}
+				else if (dataValue instanceof Boolean)
 				{
 					data.writeBoolean((Boolean) dataValue);
-				} else if (dataValue instanceof String)
+				}
+				else if (dataValue instanceof String)
 				{
 					data.writeUTF((String) dataValue);
-				} else if (dataValue instanceof Short)
+				}
+				else if (dataValue instanceof Short)
 				{
 					data.writeShort((Short) dataValue);
-				} else if (dataValue instanceof Long)
+				}
+				else if (dataValue instanceof Long)
 				{
 					data.writeLong((Long) dataValue);
-				} else if (dataValue instanceof NBTTagCompound)
+				}
+				else if (dataValue instanceof NBTTagCompound)
 				{
 					GCCorePacketManager.writeNBTTagCompound((NBTTagCompound) dataValue, data);
-				} else if (dataValue instanceof FluidTank)
+				}
+				else if (dataValue instanceof FluidTank)
 				{
 					GCCorePacketManager.writeFluidTank((FluidTank) dataValue, data);
-				} else if (dataValue instanceof Entity)
+				}
+				else if (dataValue instanceof Entity)
 				{
 					data.writeInt(((Entity) dataValue).entityId);
-				} else if (dataValue instanceof Collection)
+				}
+				else if (dataValue instanceof Collection)
 				{
 					for (Object subDataValue : (Collection<?>) dataValue)
 					{
 						if (subDataValue instanceof Integer)
 						{
 							data.writeInt((Integer) subDataValue);
-						} else if (subDataValue instanceof Float)
+						}
+						else if (subDataValue instanceof Float)
 						{
 							data.writeFloat((Float) subDataValue);
-						} else if (subDataValue instanceof Double)
+						}
+						else if (subDataValue instanceof Double)
 						{
 							data.writeDouble((Double) subDataValue);
-						} else if (subDataValue instanceof Byte)
+						}
+						else if (subDataValue instanceof Byte)
 						{
 							data.writeByte((Byte) subDataValue);
-						} else if (subDataValue instanceof Boolean)
+						}
+						else if (subDataValue instanceof Boolean)
 						{
 							data.writeBoolean((Boolean) subDataValue);
-						} else if (subDataValue instanceof String)
+						}
+						else if (subDataValue instanceof String)
 						{
 							data.writeUTF((String) subDataValue);
-						} else if (subDataValue instanceof Short)
+						}
+						else if (subDataValue instanceof Short)
 						{
 							data.writeShort((Short) subDataValue);
-						} else if (subDataValue instanceof Long)
+						}
+						else if (subDataValue instanceof Long)
 						{
 							data.writeLong((Long) subDataValue);
-						} else if (subDataValue instanceof NBTTagCompound)
+						}
+						else if (subDataValue instanceof NBTTagCompound)
 						{
 							GCCorePacketManager.writeNBTTagCompound((NBTTagCompound) subDataValue, data);
-						} else if (subDataValue instanceof FluidTank)
+						}
+						else if (subDataValue instanceof FluidTank)
 						{
 							GCCorePacketManager.writeFluidTank((FluidTank) subDataValue, data);
-						} else if (subDataValue instanceof Entity)
+						}
+						else if (subDataValue instanceof Entity)
 						{
 							data.writeInt(((Entity) subDataValue).entityId);
 						}
@@ -275,7 +308,8 @@ public class GCCorePacketManager implements IPacketHandler, IPacketReceiver
 			}
 
 			return data;
-		} catch (IOException e)
+		}
+		catch (IOException e)
 		{
 			System.out.println("Packet data encoding failed.");
 			e.printStackTrace();
@@ -326,7 +360,8 @@ public class GCCorePacketManager implements IPacketHandler, IPacketReceiver
 						}
 					}
 				}
-			} else if (packetTypeID == GCCorePacketType.TILEENTITY.ordinal())
+			}
+			else if (packetTypeID == GCCorePacketType.TILEENTITY.ordinal())
 			{
 				final int x = data.readInt();
 				final int y = data.readInt();
@@ -347,7 +382,8 @@ public class GCCorePacketManager implements IPacketHandler, IPacketReceiver
 					}
 				}
 			}
-		} catch (final Exception e)
+		}
+		catch (final Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -366,7 +402,8 @@ public class GCCorePacketManager implements IPacketHandler, IPacketReceiver
 			dataStream.writeInt(0);
 			dataStream.writeInt(-1);
 			dataStream.writeInt(0);
-		} else
+		}
+		else
 		{
 			dataStream.writeInt(fluidTank.getCapacity());
 			dataStream.writeInt(fluidTank.getFluid() == null ? -1 : fluidTank.getFluid().fluidID);
@@ -384,7 +421,8 @@ public class GCCorePacketManager implements IPacketHandler, IPacketReceiver
 		if (fluidID == -1)
 		{
 			fluidTank.setFluid(null);
-		} else
+		}
+		else
 		{
 			Fluid fluid = FluidRegistry.getFluid(fluidID);
 			fluidTank.setFluid(new FluidStack(fluid, amount));
@@ -398,7 +436,8 @@ public class GCCorePacketManager implements IPacketHandler, IPacketReceiver
 		if (tag == null)
 		{
 			dataStream.writeShort(-1);
-		} else
+		}
+		else
 		{
 			byte[] var2 = CompressedStreamTools.compress(tag);
 			dataStream.writeShort((short) var2.length);
@@ -411,7 +450,8 @@ public class GCCorePacketManager implements IPacketHandler, IPacketReceiver
 		if (tag == null)
 		{
 			dataStream.writeShort(-1);
-		} else
+		}
+		else
 		{
 			byte[] var2 = CompressedStreamTools.compress(tag);
 			dataStream.writeShort((short) var2.length);
@@ -426,7 +466,8 @@ public class GCCorePacketManager implements IPacketHandler, IPacketReceiver
 		if (var1 < 0)
 		{
 			return null;
-		} else
+		}
+		else
 		{
 			byte[] var2 = new byte[var1];
 			dataStream.readFully(var2);
@@ -441,7 +482,8 @@ public class GCCorePacketManager implements IPacketHandler, IPacketReceiver
 		if (var1 < 0)
 		{
 			return null;
-		} else
+		}
+		else
 		{
 			byte[] var2 = new byte[var1];
 			dataStream.readFully(var2);
@@ -454,7 +496,8 @@ public class GCCorePacketManager implements IPacketHandler, IPacketReceiver
 		try
 		{
 			PacketDispatcher.sendPacketToAllInDimension(packet, worldObj.provider.dimensionId);
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
 			System.out.println("Sending packet to client failed.");
 			e.printStackTrace();
@@ -466,7 +509,8 @@ public class GCCorePacketManager implements IPacketHandler, IPacketReceiver
 		try
 		{
 			PacketDispatcher.sendPacketToAllAround(position.x, position.y, position.z, range, worldObj.provider.dimensionId, packet);
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
 			System.out.println("Sending packet to client failed.");
 			e.printStackTrace();
@@ -478,7 +522,8 @@ public class GCCorePacketManager implements IPacketHandler, IPacketReceiver
 		try
 		{
 			PacketDispatcher.sendPacketToAllPlayers(packet);
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
 			System.out.println("Sending packet to client failed.");
 			e.printStackTrace();
@@ -492,34 +537,44 @@ public class GCCorePacketManager implements IPacketHandler, IPacketReceiver
 		if (dataValue.equals(int.class))
 		{
 			return stream.readInt();
-		} else if (dataValue.equals(float.class))
+		}
+		else if (dataValue.equals(float.class))
 		{
 			return stream.readFloat();
-		} else if (dataValue.equals(double.class))
+		}
+		else if (dataValue.equals(double.class))
 		{
 			return stream.readDouble();
-		} else if (dataValue.equals(byte.class))
+		}
+		else if (dataValue.equals(byte.class))
 		{
 			return stream.readByte();
-		} else if (dataValue.equals(boolean.class))
+		}
+		else if (dataValue.equals(boolean.class))
 		{
 			return stream.readBoolean();
-		} else if (dataValue.equals(String.class))
+		}
+		else if (dataValue.equals(String.class))
 		{
 			return stream.readUTF();
-		} else if (dataValue.equals(short.class))
+		}
+		else if (dataValue.equals(short.class))
 		{
 			return stream.readShort();
-		} else if (dataValue.equals(Long.class))
+		}
+		else if (dataValue.equals(Long.class))
 		{
 			return stream.readLong();
-		} else if (dataValue.equals(NBTTagCompound.class))
+		}
+		else if (dataValue.equals(NBTTagCompound.class))
 		{
 			return GCCorePacketManager.readNBTTagCompound(stream);
-		} else if (dataValue.equals(FluidTank.class))
+		}
+		else if (dataValue.equals(FluidTank.class))
 		{
 			return GCCorePacketManager.readFluidTank(stream);
-		} else
+		}
+		else
 		{
 			Class<?> c = dataValue;
 

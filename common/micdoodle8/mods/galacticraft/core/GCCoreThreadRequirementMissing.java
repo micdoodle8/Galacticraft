@@ -37,7 +37,8 @@ public class GCCoreThreadRequirementMissing extends Thread
 				FMLCommonHandler.instance().getMinecraftServerInstance().getLogAgent().logSevere("===================================================================");
 				FMLCommonHandler.instance().getMinecraftServerInstance().getLogAgent().logSevere("MicdoodleCore not found in mods folder. Galacticraft will not load.");
 				FMLCommonHandler.instance().getMinecraftServerInstance().getLogAgent().logSevere("===================================================================");
-			} else
+			}
+			else
 			{
 				GCCoreThreadRequirementMissing.openGuiClient();
 			}

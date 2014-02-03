@@ -30,7 +30,8 @@ public class GCMoonMapGenVillage extends MapGenStructure
 		try
 		{
 			GCMoonMapGenVillage.initiateStructures();
-		} catch (Throwable e)
+		}
+		catch (Throwable e)
 		{
 			;
 		}

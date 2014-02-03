@@ -62,7 +62,8 @@ public class GCMoonGenCaves extends GCCoreMapGenBaseMeta
 			if (flag1)
 			{
 				par14 *= 0.92F;
-			} else
+			}
+			else
 			{
 				par14 *= 0.7F;
 			}
@@ -180,7 +181,8 @@ public class GCMoonGenCaves extends GCCoreMapGenBaseMeta
 												if (metaArray[coords] == 3 || metaArray[coords] == 4)
 												{
 													blockIdArray[coords] = 0;
-												} else if (metaArray[coords] == 5 && random.nextInt(GCMoonGenCaves.BREAK_THROUGH_CHANCE) == 0)
+												}
+												else if (metaArray[coords] == 5 && random.nextInt(GCMoonGenCaves.BREAK_THROUGH_CHANCE) == 0)
 												{
 													blockIdArray[coords] = 0;
 												}

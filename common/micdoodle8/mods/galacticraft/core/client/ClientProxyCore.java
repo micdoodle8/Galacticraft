@@ -331,7 +331,8 @@ public class ClientProxyCore extends CommonProxyCore
 		try
 		{
 			ClientProxyCore.updateCapeList();
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
 			FMLLog.severe("Error while setting up Galacticraft donor capes");
 			e.printStackTrace();
@@ -345,7 +346,8 @@ public class ClientProxyCore extends CommonProxyCore
 				{
 					Object capeRegistry = Class.forName("cofh.api.core.RegistryAccess").getField("capeRegistry").get(null);
 					Class.forName("cofh.api.core.ISimpleRegistry").getMethod("register", String.class, String.class).invoke(capeRegistry, e.getKey(), e.getValue());
-				} catch (Exception e1)
+				}
+				catch (Exception e1)
 				{
 					e1.printStackTrace();
 					break;
@@ -433,25 +435,32 @@ public class ClientProxyCore extends CommonProxyCore
 		if (blockID == GCCoreBlocks.treasureChestTier1.blockID)
 		{
 			return ClientProxyCore.renderIdTreasureChest;
-		} else if (blockID == GCCoreBlocks.breatheableAir.blockID)
+		}
+		else if (blockID == GCCoreBlocks.breatheableAir.blockID)
 		{
 			return ClientProxyCore.renderIdBreathableAir;
-		} else if (blockID == GCCoreBlocks.oxygenPipe.blockID)
+		}
+		else if (blockID == GCCoreBlocks.oxygenPipe.blockID)
 		{
 			return ClientProxyCore.renderIdOxygenPipe;
-		} else if (blockID == GCCoreBlocks.fallenMeteor.blockID)
+		}
+		else if (blockID == GCCoreBlocks.fallenMeteor.blockID)
 		{
 			return ClientProxyCore.renderIdMeteor;
-		} else if (blockID == GCCoreBlocks.nasaWorkbench.blockID)
+		}
+		else if (blockID == GCCoreBlocks.nasaWorkbench.blockID)
 		{
 			return ClientProxyCore.renderIdCraftingTable;
-		} else if (blockID == GCCoreBlocks.landingPadFull.blockID)
+		}
+		else if (blockID == GCCoreBlocks.landingPadFull.blockID)
 		{
 			return ClientProxyCore.renderIdLandingPad;
-		} else if (blockID == GCCoreBlocks.unlitTorch.blockID || blockID == GCCoreBlocks.unlitTorchLit.blockID || blockID == GCCoreBlocks.glowstoneTorch.blockID)
+		}
+		else if (blockID == GCCoreBlocks.unlitTorch.blockID || blockID == GCCoreBlocks.unlitTorchLit.blockID || blockID == GCCoreBlocks.glowstoneTorch.blockID)
 		{
 			return ClientProxyCore.renderIdTorchUnlit;
-		} else if (blockID == GCCoreBlocks.fuelLoader.blockID || blockID == GCCoreBlocks.cargoLoader.blockID || blockID == GCCoreBlocks.machineBase.blockID || blockID == GCCoreBlocks.machineBase2.blockID || blockID == GCCoreBlocks.oxygenCollector.blockID || blockID == GCCoreBlocks.oxygenCompressor.blockID || blockID == GCCoreBlocks.oxygenDetector.blockID || blockID == GCCoreBlocks.oxygenDistributor.blockID || blockID == GCCoreBlocks.oxygenSealer.blockID || blockID == GCCoreBlocks.refinery.blockID)
+		}
+		else if (blockID == GCCoreBlocks.fuelLoader.blockID || blockID == GCCoreBlocks.cargoLoader.blockID || blockID == GCCoreBlocks.machineBase.blockID || blockID == GCCoreBlocks.machineBase2.blockID || blockID == GCCoreBlocks.oxygenCollector.blockID || blockID == GCCoreBlocks.oxygenCompressor.blockID || blockID == GCCoreBlocks.oxygenDetector.blockID || blockID == GCCoreBlocks.oxygenDistributor.blockID || blockID == GCCoreBlocks.oxygenSealer.blockID || blockID == GCCoreBlocks.refinery.blockID)
 		{
 			return ClientProxyCore.renderIdMachine;
 		}
@@ -496,7 +505,8 @@ public class ClientProxyCore extends CommonProxyCore
 		if (ClientProxyCore.isInsideOfFluid(minecraft.thePlayer, GalacticraftCore.fluidOil))
 		{
 			minecraft.getTextureManager().bindTexture(ClientProxyCore.underOilTexture);
-		} else
+		}
+		else
 		{
 			return;
 		}
@@ -542,11 +552,13 @@ public class ClientProxyCore extends CommonProxyCore
 			{
 				filled *= -1;
 				return d0 > j + (1 - filled);
-			} else
+			}
+			else
 			{
 				return d0 < j + filled;
 			}
-		} else
+		}
+		else
 		{
 			return false;
 		}

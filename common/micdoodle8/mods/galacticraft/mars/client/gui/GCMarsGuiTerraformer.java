@@ -51,7 +51,8 @@ public class GCMarsGuiTerraformer extends GuiContainer
 		{
 			this.enableTreesButton.enabled = false;
 			this.enableGrassButton.enabled = false;
-		} else
+		}
+		else
 		{
 			this.enableTreesButton.enabled = true;
 			this.enableGrassButton.enabled = true;
@@ -145,7 +146,8 @@ public class GCMarsGuiTerraformer extends GuiContainer
 		if (!this.terraformer.treesDisabled && this.terraformer.grassBlocksListSize <= 0)
 		{
 			return EnumColor.RED + "No Valid Blocks in Bubble";
-		} else if (!this.terraformer.grassDisabled && this.terraformer.terraformableBlocksListSize <= 0)
+		}
+		else if (!this.terraformer.grassDisabled && this.terraformer.terraformableBlocksListSize <= 0)
 		{
 			return EnumColor.RED + "No Valid Blocks in Bubble";
 		}

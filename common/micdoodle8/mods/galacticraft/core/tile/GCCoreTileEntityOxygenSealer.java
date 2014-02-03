@@ -77,7 +77,8 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 			if (this.storedOxygen >= 1 && this.getEnergyStored() > 0 && !this.disabled)
 			{
 				this.active = true;
-			} else
+			}
+			else
 			{
 				this.active = false;
 			}
@@ -157,7 +158,8 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 				var3 = this.containingItems[par1];
 				this.containingItems[par1] = null;
 				return var3;
-			} else
+			}
+			else
 			{
 				var3 = this.containingItems[par1].splitStack(par2);
 
@@ -168,7 +170,8 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 
 				return var3;
 			}
-		} else
+		}
+		else
 		{
 			return null;
 		}
@@ -182,7 +185,8 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 			final ItemStack var2 = this.containingItems[par1];
 			this.containingItems[par1] = null;
 			return var2;
-		} else
+		}
+		else
 		{
 			return null;
 		}

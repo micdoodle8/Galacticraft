@@ -51,7 +51,8 @@ public class GCCoreInventorySchematic implements IInventory
 			final ItemStack var2 = this.stackList[par1];
 			this.stackList[par1] = null;
 			return var2;
-		} else
+		}
+		else
 		{
 			return null;
 		}
@@ -70,7 +71,8 @@ public class GCCoreInventorySchematic implements IInventory
 				this.stackList[par1] = null;
 				this.eventHandler.onCraftMatrixChanged(this);
 				return var3;
-			} else
+			}
+			else
 			{
 				var3 = this.stackList[par1].splitStack(par2);
 
@@ -82,7 +84,8 @@ public class GCCoreInventorySchematic implements IInventory
 				this.eventHandler.onCraftMatrixChanged(this);
 				return var3;
 			}
-		} else
+		}
+		else
 		{
 			return null;
 		}

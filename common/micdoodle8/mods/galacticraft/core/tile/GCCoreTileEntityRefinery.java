@@ -72,11 +72,13 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectricBlock impl
 						if (this.containingItems[1].getItem() instanceof GCCoreItemOilCanister)
 						{
 							this.containingItems[1] = new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.oilCanister.getMaxDamage());
-						} else if (FluidContainerRegistry.isBucket(this.containingItems[1]) && FluidContainerRegistry.isFilledContainer(this.containingItems[1]))
+						}
+						else if (FluidContainerRegistry.isBucket(this.containingItems[1]) && FluidContainerRegistry.isFilledContainer(this.containingItems[1]))
 						{
 							final int amount = this.containingItems[1].stackSize;
 							this.containingItems[1] = new ItemStack(Item.bucketEmpty, amount);
-						} else
+						}
+						else
 						{
 							this.containingItems[1].stackSize--;
 
@@ -103,7 +105,8 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectricBlock impl
 						if (isCanister)
 						{
 							this.containingItems[2] = new ItemStack(GCCoreItems.fuelCanister, 1, GCCoreItems.fuelCanister.getMaxDamage() - amountToFill);
-						} else
+						}
+						else
 						{
 							this.containingItems[2] = FluidContainerRegistry.fillFluidContainer(liquid, this.containingItems[2]);
 						}
@@ -118,7 +121,8 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectricBlock impl
 				if (this.processTicks == 0)
 				{
 					this.processTicks = GCCoreTileEntityRefinery.PROCESS_TIME_REQUIRED;
-				} else if (this.processTicks > 0)
+				}
+				else if (this.processTicks > 0)
 				{
 					this.processTicks--;
 
@@ -127,11 +131,13 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectricBlock impl
 						this.smeltItem();
 						this.processTicks = 0;
 					}
-				} else
+				}
+				else
 				{
 					this.processTicks = 0;
 				}
-			} else
+			}
+			else
 			{
 				this.processTicks = 0;
 			}
@@ -277,7 +283,8 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectricBlock impl
 				var3 = this.containingItems[par1];
 				this.containingItems[par1] = null;
 				return var3;
-			} else
+			}
+			else
 			{
 				var3 = this.containingItems[par1].splitStack(par2);
 
@@ -288,7 +295,8 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectricBlock impl
 
 				return var3;
 			}
-		} else
+		}
+		else
 		{
 			return null;
 		}
@@ -302,7 +310,8 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectricBlock impl
 			final ItemStack var2 = this.containingItems[par1];
 			this.containingItems[par1] = null;
 			return var2;
-		} else
+		}
+		else
 		{
 			return null;
 		}
@@ -505,7 +514,8 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectricBlock impl
 		if (from == ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite())
 		{
 			tankInfo = new FluidTankInfo[] { new FluidTankInfo(this.oilTank) };
-		} else if (from == ForgeDirection.getOrientation(this.getBlockMetadata() + 2))
+		}
+		else if (from == ForgeDirection.getOrientation(this.getBlockMetadata() + 2))
 		{
 			tankInfo = new FluidTankInfo[] { new FluidTankInfo(this.fuelTank) };
 		}

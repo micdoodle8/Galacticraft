@@ -81,7 +81,8 @@ public abstract class GCCoreGuiStarBackground extends GuiScreen
 			if (Mouse.getY() < this.height)
 			{
 				mY = (-this.height + Mouse.getY()) / 100F;
-			} else
+			}
+			else
 			{
 				mY = (-this.height + Mouse.getY()) / 100F;
 			}
@@ -191,7 +192,8 @@ public abstract class GCCoreGuiStarBackground extends GuiScreen
 			if (Mouse.getY() < this.height)
 			{
 				mY = (-this.height + Mouse.getY()) / 100F;
-			} else
+			}
+			else
 			{
 				mY = (-this.height + Mouse.getY()) / 100F;
 			}

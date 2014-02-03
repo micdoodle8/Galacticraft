@@ -71,7 +71,8 @@ public class RecipeUtil
 				{
 					newIngredients[i] = "ingotAluminium";
 					changed = true;
-				} else if (ingred.equals("compressedAluminum"))
+				}
+				else if (ingred.equals("compressedAluminum"))
 				{
 					newIngredients[i] = "compressedAluminium";
 					changed = true;

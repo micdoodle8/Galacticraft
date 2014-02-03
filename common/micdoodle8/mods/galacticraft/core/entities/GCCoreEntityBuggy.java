@@ -186,7 +186,8 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
 			this.motionY = motY;
 			this.motionZ = motZ;
 			this.boatPosRotationIncrements = 5;
-		} else
+		}
+		else
 		{
 			this.setPosition(x, y, z);
 			this.setRotation(yaw, pitch);
@@ -210,7 +211,8 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
 		if (this.isDead || var1.equals(DamageSource.cactus))
 		{
 			return true;
-		} else
+		}
+		else
 		{
 			this.dataWatcher.updateObject(this.rockDirection, Integer.valueOf(-this.dataWatcher.getWatchableObjectInt(this.rockDirection)));
 			this.dataWatcher.updateObject(this.timeSinceHit, Integer.valueOf(10));
@@ -282,7 +284,8 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
 		{
 			if (this.riddenByEntity instanceof EntityPlayer && FMLClientHandler.instance().getClient().thePlayer.equals(this.riddenByEntity))
 			{
-			} else
+			}
+			else
 			{
 				this.boatPosRotationIncrements = i + 5;
 				this.boatX = d;
@@ -323,7 +326,8 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
 				--this.boatPosRotationIncrements;
 				this.setPosition(x, y, z);
 				this.setRotation(this.rotationYaw, this.rotationPitch);
-			} else
+			}
+			else
 			{
 				x = this.posX + this.motionX;
 				y = this.posY + this.motionY;
@@ -453,7 +457,8 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
 				this.buggyType = dataStream.readInt();
 				this.buggyFuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, dataStream.readInt()));
 			}
-		} catch (final Exception e)
+		}
+		catch (final Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -534,7 +539,8 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
 				var3 = this.cargoItems[var1];
 				this.cargoItems[var1] = null;
 				return var3;
-			} else
+			}
+			else
 			{
 				var3 = this.cargoItems[var1].splitStack(var2);
 
@@ -545,7 +551,8 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
 
 				return var3;
 			}
-		} else
+		}
+		else
 		{
 			return null;
 		}
@@ -559,7 +566,8 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
 			final ItemStack var2 = this.cargoItems[var1];
 			this.cargoItems[var1] = null;
 			return var2;
-		} else
+		}
+		else
 		{
 			return null;
 		}
@@ -623,13 +631,15 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
 			}
 
 			return true;
-		} else
+		}
+		else
 		{
 			if (this.riddenByEntity != null)
 			{
 				var1.mountEntity(null);
 				return true;
-			} else
+			}
+			else
 			{
 				var1.mountEntity(this);
 				return true;

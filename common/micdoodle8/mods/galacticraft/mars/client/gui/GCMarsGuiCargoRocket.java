@@ -100,7 +100,8 @@ public class GCMarsGuiCargoRocket extends GCCoreGuiContainer
 		if (this.rocket.rocketType.getInventorySpace() == 2)
 		{
 			this.fontRenderer.drawString(StatCollector.translateToLocal(this.upperChestInventory.getInvName()), 8, 76 + (this.rocket.rocketType.getInventorySpace() - 20) / 9 * 18, 4210752);
-		} else
+		}
+		else
 		{
 			this.fontRenderer.drawString(StatCollector.translateToLocal(this.upperChestInventory.getInvName()), 8, 89 + (this.rocket.rocketType.getInventorySpace() - 20) / 9 * 18, 4210752);
 		}
@@ -129,7 +130,8 @@ public class GCMarsGuiCargoRocket extends GCCoreGuiContainer
 				spltString[1] = EnumColor.YELLOW + "Launched";
 				this.launchButton.enabled = false;
 			}
-		} else
+		}
+		else
 		{
 			spltString = this.rocket.statusMessage.split("#");
 		}

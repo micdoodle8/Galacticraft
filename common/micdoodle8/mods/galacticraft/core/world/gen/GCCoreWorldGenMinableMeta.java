@@ -85,7 +85,8 @@ public class GCCoreWorldGenMinableMeta extends WorldGenMinable
 								if (var39 * var39 + var42 * var42 + var45 * var45 < 1.0D && par1World.getBlockId(var38, var41, var44) == this.fillerID && par1World.getBlockMetadata(var38, var41, var44) == this.fillerMetadata && this.usingMetadata == false)
 								{
 									par1World.setBlock(var38, var41, var44, this.minableBlockId, 0, 3);
-								} else if (var39 * var39 + var42 * var42 + var45 * var45 < 1.0D && par1World.getBlockId(var38, var41, var44) == this.fillerID && par1World.getBlockMetadata(var38, var41, var44) == this.fillerMetadata && this.usingMetadata == true)
+								}
+								else if (var39 * var39 + var42 * var42 + var45 * var45 < 1.0D && par1World.getBlockId(var38, var41, var44) == this.fillerID && par1World.getBlockMetadata(var38, var41, var44) == this.fillerMetadata && this.usingMetadata == true)
 								{
 									par1World.setBlock(var38, var41, var44, this.minableBlockId, this.metadata, 3);
 								}

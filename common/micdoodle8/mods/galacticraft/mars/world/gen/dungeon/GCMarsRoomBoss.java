@@ -57,14 +57,17 @@ public class GCMarsRoomBoss extends GCCoreDungeonRoom
 						if (j == this.posY - 1 && (i <= this.posX + 1 || i >= this.posX + this.sizeX - 2 || k == this.posZ + 1 || k == this.posZ + this.sizeZ - 2) && this.rand.nextInt(4) == 0)
 						{
 							this.placeBlock(chunk, meta, i, j, k, cx, cz, Block.glowStone.blockID, 0);
-						} else
+						}
+						else
 						{
 							this.placeBlock(chunk, meta, i, j, k, cx, cz, this.dungeonInstance.DUNGEON_WALL_ID, this.dungeonInstance.DUNGEON_WALL_META);
 						}
-					} else if (j == this.posY && (i <= this.posX + 1 || i >= this.posX + this.sizeX - 2 || k == this.posZ + 1 || k == this.posZ + this.sizeZ - 2) && this.rand.nextInt(6) == 0)
+					}
+					else if (j == this.posY && (i <= this.posX + 1 || i >= this.posX + this.sizeX - 2 || k == this.posZ + 1 || k == this.posZ + this.sizeZ - 2) && this.rand.nextInt(6) == 0)
 					{
 						this.placeBlock(chunk, meta, i, j, k, cx, cz, GCMarsBlocks.creeperEgg.blockID, 0);
-					} else
+					}
+					else
 					{
 						this.placeBlock(chunk, meta, i, j, k, cx, cz, 0, 0);
 					}
@@ -106,7 +109,8 @@ public class GCMarsRoomBoss extends GCCoreDungeonRoom
 			GCCoreTileEntityDungeonSpawner spawner = new GCMarsTileEntityDungeonSpawner();
 			spawner.setRoom(new Vector3(this.posX, this.posY, this.posZ), new Vector3(this.sizeX, this.sizeY, this.sizeZ));
 			this.worldObj.setBlockTileEntity(this.spawnerCoords.posX, this.spawnerCoords.posY, this.spawnerCoords.posZ, spawner);
-		} else if (tile instanceof GCCoreTileEntityDungeonSpawner)
+		}
+		else if (tile instanceof GCCoreTileEntityDungeonSpawner)
 		{
 			((GCCoreTileEntityDungeonSpawner) tile).setRoom(new Vector3(this.posX, this.posY, this.posZ), new Vector3(this.sizeX, this.sizeY, this.sizeZ));
 		}

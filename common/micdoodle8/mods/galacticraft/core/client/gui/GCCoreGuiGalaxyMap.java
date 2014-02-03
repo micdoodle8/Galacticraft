@@ -106,7 +106,8 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
 		{
 			this.mc.displayGuiScreen((GuiScreen) null);
 			this.mc.setIngameFocus();
-		} else if (par2 == Keyboard.KEY_ESCAPE)
+		}
+		else if (par2 == Keyboard.KEY_ESCAPE)
 		{
 			if (this.listOfDimensions != null)
 			{
@@ -114,11 +115,13 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
 				FMLClientHandler.instance().getClient().displayGuiScreen(new GCCoreGuiChoosePlanet(this.player, this.listOfDimensions));
 				this.mc.inGameHasFocus = true;
 				this.mc.mouseHelper.ungrabMouseCursor();
-			} else
+			}
+			else
 			{
 				super.keyTyped(par1, par2);
 			}
-		} else
+		}
+		else
 		{
 			super.keyTyped(par1, par2);
 		}
@@ -179,7 +182,8 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
 
 			this.mouseY *= 0.9;
 			this.mouseX *= 0.9;
-		} else
+		}
+		else
 		{
 			this.mouseY = (-(this.mc.displayHeight / 2) + Mouse.getY()) / 100F * (1 / (this.zoom * 5));
 			this.mouseX = (this.mc.displayWidth / 2 - Mouse.getX()) / 100F * (1 / (this.zoom * 5));
@@ -379,7 +383,8 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
 									{
 										this.selectedPlanet = thePlanet;
 									}
-								} else
+								}
+								else
 								{
 									this.selectedPlanet = thePlanet;
 								}
@@ -627,7 +632,8 @@ public class GCCoreGuiGalaxyMap extends GCCoreGuiStarBackground
 			if (i < 8)
 			{
 				x = (float) (4400F + Math.pow(2.5, i));
-			} else
+			}
+			else
 			{
 				x = (float) (4400F - Math.pow(2.5, 15 - i));
 			}

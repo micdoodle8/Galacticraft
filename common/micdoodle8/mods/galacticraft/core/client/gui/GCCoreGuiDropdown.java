@@ -82,7 +82,8 @@ public class GCCoreGuiDropdown extends GuiButton
 				{
 					this.font.drawStringWithShadow(this.optionStrings[i], this.xPosition + this.width / 2 - this.font.getStringWidth(this.optionStrings[i]) / 2, this.yPosition + (this.height - 8) / 2 + this.height * i, GCCoreUtil.convertTo32BitColor(255, 255, 255, 255));
 				}
-			} else
+			}
+			else
 			{
 				this.font.drawStringWithShadow(this.optionStrings[this.selectedOption], this.xPosition + this.width / 2 - this.font.getStringWidth(this.optionStrings[this.selectedOption]) / 2, this.yPosition + (this.height - 8) / 2, GCCoreUtil.convertTo32BitColor(255, 255, 255, 255));
 			}
@@ -102,12 +103,14 @@ public class GCCoreGuiDropdown extends GuiButton
 				{
 					this.dropdownClicked = true;
 					return true;
-				} else
+				}
+				else
 				{
 					this.parentClass.onIntruderInteraction();
 				}
 			}
-		} else
+		}
+		else
 		{
 			if (this.enabled && this.drawButton && par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height * this.optionStrings.length)
 			{
@@ -118,11 +121,13 @@ public class GCCoreGuiDropdown extends GuiButton
 					this.dropdownClicked = false;
 					this.parentClass.onSelectionChanged(this, this.selectedOption);
 					return true;
-				} else
+				}
+				else
 				{
 					this.parentClass.onIntruderInteraction();
 				}
-			} else
+			}
+			else
 			{
 				this.dropdownClicked = false;
 			}

@@ -113,7 +113,8 @@ public class GCCoreItemBasic extends Item
 		if (par1ItemStack.getItemDamage() > 14 && par1ItemStack.getItemDamage() < 19)
 		{
 			par3List.add(EnumColor.BRIGHT_GREEN + StatCollector.translateToLocal(this.getUnlocalizedName() + "." + GCCoreItemBasic.names[par1ItemStack.getItemDamage()] + ".name"));
-		} else if (par1ItemStack.getItemDamage() == 19)
+		}
+		else if (par1ItemStack.getItemDamage() == 19)
 		{
 			par3List.add(EnumColor.AQUA + "Can receive weak sound");
 			par3List.add(EnumColor.AQUA + "waves and distant signals");

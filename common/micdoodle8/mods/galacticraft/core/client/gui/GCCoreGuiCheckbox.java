@@ -60,7 +60,8 @@ public class GCCoreGuiCheckbox extends GuiButton
 				this.isSelected = !this.isSelected;
 				this.parentGui.onSelectionChanged(this, this.isSelected);
 				return true;
-			} else
+			}
+			else
 			{
 				this.parentGui.onIntruderInteraction();
 			}

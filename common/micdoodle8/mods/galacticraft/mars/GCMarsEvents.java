@@ -103,7 +103,8 @@ public class GCMarsEvents
 				{
 					PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftMars.CHANNEL, 3, new Object[] {}));
 				}
-			} else if (event.flag1 == false && event.flag2 == false && event.flag3 == true)
+			}
+			else if (event.flag1 == false && event.flag2 == false && event.flag3 == true)
 			{
 				if (!event.entityPlayer.worldObj.isRemote)
 				{

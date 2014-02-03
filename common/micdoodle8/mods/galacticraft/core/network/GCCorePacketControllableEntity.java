@@ -43,7 +43,8 @@ public class GCCorePacketControllableEntity implements IGalacticraftAdvancedPack
 
 			data.close();
 			bytes.close();
-		} catch (final Exception e)
+		}
+		catch (final Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -71,7 +72,8 @@ public class GCCorePacketControllableEntity implements IGalacticraftAdvancedPack
 				((IControllableEntity) player.ridingEntity).pressKey(key);
 			}
 
-		} catch (final Exception e)
+		}
+		catch (final Exception e)
 		{
 			e.printStackTrace();
 		}

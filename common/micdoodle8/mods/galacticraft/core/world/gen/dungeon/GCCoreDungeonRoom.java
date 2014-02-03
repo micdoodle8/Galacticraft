@@ -76,7 +76,8 @@ public abstract class GCCoreDungeonRoom
 			final int index = this.getIndex(x, y, z);
 			blocks[index] = (short) id;
 			metas[index] = (byte) meta;
-		} else
+		}
+		else
 		{
 			this.worldObj.setBlock(x, y, z, id, meta, 3);
 		}

@@ -101,7 +101,8 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
 			if (this.villageObj == null)
 			{
 				this.detachHome();
-			} else
+			}
+			else
 			{
 				ChunkCoordinates chunkcoordinates = this.villageObj.getCenter();
 				this.setHomeArea(chunkcoordinates.posX, chunkcoordinates.posY, chunkcoordinates.posZ, (int) (this.villageObj.getVillageRadius() * 0.6F));
@@ -260,11 +261,13 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
 				if (entity instanceof EntityPlayer)
 				{
 					this.villageObj.setReputationForPlayer(((EntityPlayer) entity).getCommandSenderName(), -2);
-				} else if (entity instanceof IMob)
+				}
+				else if (entity instanceof IMob)
 				{
 					this.villageObj.endMatingSeason();
 				}
-			} else if (entity == null)
+			}
+			else if (entity == null)
 			{
 				final EntityPlayer entityplayer = this.worldObj.getClosestPlayerToEntity(this, 16.0D);
 
@@ -310,13 +313,16 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
 		if (par1 == 12)
 		{
 			this.generateRandomParticles("heart");
-		} else if (par1 == 13)
+		}
+		else if (par1 == 13)
 		{
 			this.generateRandomParticles("angryVillager");
-		} else if (par1 == 14)
+		}
+		else if (par1 == 14)
 		{
 			this.generateRandomParticles("happyVillager");
-		} else
+		}
+		else
 		{
 			super.handleHealthUpdate(par1);
 		}

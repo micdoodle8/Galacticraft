@@ -52,7 +52,8 @@ public class GCCorePacketParachestUpdate implements IGalacticraftAdvancedPacket
 
 			data.close();
 			bytes.close();
-		} catch (final Exception e)
+		}
+		catch (final Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -91,7 +92,8 @@ public class GCCorePacketParachestUpdate implements IGalacticraftAdvancedPacket
 				}
 			}
 
-		} catch (final Exception e)
+		}
+		catch (final Exception e)
 		{
 			e.printStackTrace();
 		}

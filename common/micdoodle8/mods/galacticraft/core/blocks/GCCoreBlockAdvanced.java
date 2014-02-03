@@ -92,9 +92,11 @@ public abstract class GCCoreBlockAdvanced extends Block
 			{
 				Method methodCanWrench = wrenchClass.getMethod("canWrench", EntityPlayer.class, Integer.TYPE, Integer.TYPE, Integer.TYPE);
 				return (Boolean) methodCanWrench.invoke(itemStack.getItem(), entityPlayer, x, y, z);
-			} catch (NoClassDefFoundError e)
+			}
+			catch (NoClassDefFoundError e)
 			{
-			} catch (Exception e)
+			}
+			catch (Exception e)
 			{
 			}
 
@@ -107,7 +109,8 @@ public abstract class GCCoreBlockAdvanced extends Block
 				{
 					return itemStack.getItemDamage() < itemStack.getMaxDamage();
 				}
-			} catch (Exception e)
+			}
+			catch (Exception e)
 			{
 			}
 		}
@@ -135,7 +138,8 @@ public abstract class GCCoreBlockAdvanced extends Block
 				Method methodWrenchUsed = wrenchClass.getMethod("wrenchUsed", EntityPlayer.class, Integer.TYPE, Integer.TYPE, Integer.TYPE);
 				methodWrenchUsed.invoke(itemStack.getItem(), entityPlayer, x, y, z);
 				return true;
-			} catch (Exception e)
+			}
+			catch (Exception e)
 			{
 			}
 
@@ -150,7 +154,8 @@ public abstract class GCCoreBlockAdvanced extends Block
 					methodWrenchDamage.invoke(itemStack.getItem(), itemStack, 1, entityPlayer);
 					return true;
 				}
-			} catch (Exception e)
+			}
+			catch (Exception e)
 			{
 			}
 		}

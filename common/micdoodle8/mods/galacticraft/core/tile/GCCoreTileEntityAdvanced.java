@@ -56,7 +56,8 @@ public abstract class GCCoreTileEntityAdvanced extends TileEntity implements IPa
 				try
 				{
 					this.initFieldCache();
-				} catch (Exception e)
+				}
+				catch (Exception e)
 				{
 					e.printStackTrace();
 				}
@@ -65,7 +66,8 @@ public abstract class GCCoreTileEntityAdvanced extends TileEntity implements IPa
 			if (this.worldObj.isRemote && this.fieldCacheServer.size() > 0)
 			{
 				this.sendPackets();
-			} else if (!this.worldObj.isRemote && this.fieldCacheClient.size() > 0)
+			}
+			else if (!this.worldObj.isRemote && this.fieldCacheClient.size() > 0)
 			{
 				this.sendPackets();
 			}
@@ -82,7 +84,8 @@ public abstract class GCCoreTileEntityAdvanced extends TileEntity implements IPa
 			if (this.worldObj.isRemote)
 			{
 				fieldList = this.fieldCacheServer;
-			} else
+			}
+			else
 			{
 				fieldList = this.fieldCacheClient;
 			}
@@ -98,7 +101,8 @@ public abstract class GCCoreTileEntityAdvanced extends TileEntity implements IPa
 
 			packet = GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, objList);
 			GCCorePacketManager.sendPacketToClients(packet, this.worldObj, new Vector3(this), 12);
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -118,7 +122,8 @@ public abstract class GCCoreTileEntityAdvanced extends TileEntity implements IPa
 				if (f.targetSide() == Side.CLIENT)
 				{
 					this.fieldCacheClient.add(field);
-				} else
+				}
+				else
 				{
 					this.fieldCacheServer.add(field);
 				}
@@ -150,7 +155,8 @@ public abstract class GCCoreTileEntityAdvanced extends TileEntity implements IPa
 			try
 			{
 				this.initFieldCache();
-			} catch (Exception e)
+			}
+			catch (Exception e)
 			{
 				e.printStackTrace();
 			}
@@ -159,7 +165,8 @@ public abstract class GCCoreTileEntityAdvanced extends TileEntity implements IPa
 		if (this.worldObj.isRemote && this.fieldCacheClient.size() == 0)
 		{
 			return;
-		} else if (!this.worldObj.isRemote && this.fieldCacheServer.size() == 0)
+		}
+		else if (!this.worldObj.isRemote && this.fieldCacheServer.size() == 0)
 		{
 			return;
 		}
@@ -169,7 +176,8 @@ public abstract class GCCoreTileEntityAdvanced extends TileEntity implements IPa
 		if (this.worldObj.isRemote)
 		{
 			fieldSet = this.fieldCacheClient;
-		} else
+		}
+		else
 		{
 			fieldSet = this.fieldCacheServer;
 		}
@@ -179,7 +187,8 @@ public abstract class GCCoreTileEntityAdvanced extends TileEntity implements IPa
 			try
 			{
 				field.set(this, GCCorePacketManager.getFieldValueFromStream(field, dataStream, this.worldObj));
-			} catch (Exception e)
+			}
+			catch (Exception e)
 			{
 				e.printStackTrace();
 			}

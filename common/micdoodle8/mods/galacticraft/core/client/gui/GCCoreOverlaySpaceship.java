@@ -98,7 +98,8 @@ public class GCCoreOverlaySpaceship extends GCCoreOverlay
 		try
 		{
 			spaceship.renderSpaceship((EntitySpaceshipBase) GCCoreOverlaySpaceship.minecraft.thePlayer.ridingEntity.getClass().getConstructor(World.class).newInstance(GCCoreOverlaySpaceship.minecraft.thePlayer.worldObj), 0, 0, 0, 0, 0);
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}

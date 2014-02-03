@@ -108,7 +108,8 @@ public class GCCoreBlockLandingPad extends GCCoreBlockAdvancedTile implements IP
 		if (par1World.getBlockId(par2, par3 - 1, par4) == GCCoreBlocks.landingPad.blockID && par5 == 1)
 		{
 			return false;
-		} else
+		}
+		else
 		{
 			return this.canPlaceBlockAt(par1World, par2, par3, par4);
 		}

@@ -60,7 +60,8 @@ public class GCCoreInfoRegion extends Gui
 		if (!this.enabled)
 		{
 			b0 = 0;
-		} else if (par1)
+		}
+		else if (par1)
 		{
 			b0 = 2;
 		}

@@ -159,7 +159,8 @@ public class GCMoonBlockCheese extends Block
 			if (l >= 6)
 			{
 				par1World.setBlockToAir(par2, par3, par4);
-			} else
+			}
+			else
 			{
 				par1World.setBlockMetadataWithNotify(par2, par3, par4, l, 2);
 			}

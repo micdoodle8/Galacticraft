@@ -233,7 +233,8 @@ public class GCCoreEntityArrow extends Entity
 				{
 					this.setDead();
 				}
-			} else
+			}
+			else
 			{
 				this.inGround = false;
 				this.motionX *= this.rand.nextFloat() * 0.2F;
@@ -242,7 +243,8 @@ public class GCCoreEntityArrow extends Entity
 				this.ticksInGround = 0;
 				this.ticksInAir = 0;
 			}
-		} else
+		}
+		else
 		{
 			++this.ticksInAir;
 			Vec3 var17 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
@@ -309,7 +311,8 @@ public class GCCoreEntityArrow extends Entity
 					if (this.shootingEntity == null)
 					{
 						var22 = GCCoreEntityArrow.causeArrowDamage(this, this);
-					} else
+					}
+					else
 					{
 						var22 = GCCoreEntityArrow.causeArrowDamage(this, this.shootingEntity);
 					}
@@ -338,7 +341,8 @@ public class GCCoreEntityArrow extends Entity
 
 						this.worldObj.playSoundAtEntity(this, "random.bowhit", 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
 						this.setDead();
-					} else
+					}
+					else
 					{
 						this.motionX *= -0.10000000149011612D;
 						this.motionY *= -0.10000000149011612D;
@@ -347,7 +351,8 @@ public class GCCoreEntityArrow extends Entity
 						this.prevRotationYaw += 180.0F;
 						this.ticksInAir = 0;
 					}
-				} else
+				}
+				else
 				{
 					this.xTile = var4.blockX;
 					this.yTile = var4.blockY;
@@ -471,7 +476,8 @@ public class GCCoreEntityArrow extends Entity
 		if (par1NBTTagCompound.hasKey("pickup"))
 		{
 			this.canBePickedUp = par1NBTTagCompound.getByte("pickup");
-		} else if (par1NBTTagCompound.hasKey("player"))
+		}
+		else if (par1NBTTagCompound.hasKey("player"))
 		{
 			this.canBePickedUp = par1NBTTagCompound.getBoolean("player") ? 1 : 0;
 		}
@@ -546,7 +552,8 @@ public class GCCoreEntityArrow extends Entity
 		if (par1)
 		{
 			this.dataWatcher.updateObject(16, Byte.valueOf((byte) (var2 | 1)));
-		} else
+		}
+		else
 		{
 			this.dataWatcher.updateObject(16, Byte.valueOf((byte) (var2 & -2)));
 		}

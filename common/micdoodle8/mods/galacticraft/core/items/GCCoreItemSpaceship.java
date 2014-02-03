@@ -54,7 +54,8 @@ public class GCCoreItemSpaceship extends Item implements IHoldableItem
 		if (par3World.isRemote)
 		{
 			return false;
-		} else
+		}
+		else
 		{
 			float centerX = -1;
 			float centerY = -1;
@@ -97,7 +98,8 @@ public class GCCoreItemSpaceship extends Item implements IHoldableItem
 				{
 					spaceship.fuelTank.fill(new FluidStack(GalacticraftCore.fluidFuel, 2000), true);
 				}
-			} else
+			}
+			else
 			{
 				return false;
 			}

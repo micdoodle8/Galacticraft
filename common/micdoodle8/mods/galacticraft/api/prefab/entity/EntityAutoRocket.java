@@ -97,13 +97,15 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 					this.destinationFrequency = -1;
 					this.statusMessage = "\u00a7cFrequency#\u00a7cNot Set";
 					return false;
-				} else
+				}
+				else
 				{
 					this.statusMessage = "\u00a7aSuccess";
 					return true;
 				}
 			}
-		} else
+		}
+		else
 		{
 			this.destinationFrequency = -1;
 			this.statusMessage = "\u00a7cNot Enough#\u00a7cFuel";
@@ -143,7 +145,8 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 								try
 								{
 									controllerClass.cast(connectedTile);
-								} catch (ClassCastException e)
+								}
+								catch (ClassCastException e)
 								{
 									continue;
 								}
@@ -157,7 +160,8 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 									try
 									{
 										controllerClass.cast(tile2);
-									} catch (ClassCastException e)
+									}
+									catch (ClassCastException e)
 									{
 										launchController = null;
 										continue;
@@ -188,10 +192,12 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 									}
 								}
 							}
-						} catch (ClassCastException e)
+						}
+						catch (ClassCastException e)
 						{
 							;
-						} catch (Exception e)
+						}
+						catch (Exception e)
 						{
 							e.printStackTrace();
 						}
@@ -230,7 +236,8 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 						try
 						{
 							controllerClass.cast(tile);
-						} catch (ClassCastException e)
+						}
+						catch (ClassCastException e)
 						{
 							continue;
 						}
@@ -275,12 +282,14 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 								}
 
 								return false;
-							} else
+							}
+							else
 							{
 								return true;
 							}
 						}
-					} catch (Exception e)
+					}
+					catch (Exception e)
 					{
 						e.printStackTrace();
 					}
@@ -351,7 +360,8 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 									try
 									{
 										controllerClass.cast(this.worldObj.getBlockTileEntity(((TileEntity) tile).xCoord, ((TileEntity) tile).yCoord, ((TileEntity) tile).zCoord));
-									} catch (ClassCastException e)
+									}
+									catch (ClassCastException e)
 									{
 										continue;
 									}
@@ -360,7 +370,8 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 									{
 										this.autoLaunch();
 									}
-								} catch (Exception e)
+								}
+								catch (Exception e)
 								{
 									e.printStackTrace();
 								}
@@ -433,7 +444,8 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 		{
 			super.ignite();
 			return true;
-		} else
+		}
+		else
 		{
 			if (this.isPlayerRocket())
 			{
@@ -486,7 +498,8 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 									try
 									{
 										controllerClass.cast(updatedTile);
-									} catch (ClassCastException e)
+									}
+									catch (ClassCastException e)
 									{
 										continue;
 									}
@@ -522,7 +535,8 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 									break;
 								}
 							}
-						} catch (Exception e)
+						}
+						catch (Exception e)
 						{
 							e.printStackTrace();
 						}
@@ -919,7 +933,8 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 				var3 = this.cargoItems[par1];
 				this.cargoItems[par1] = null;
 				return var3;
-			} else
+			}
+			else
 			{
 				var3 = this.cargoItems[par1].splitStack(par2);
 
@@ -930,7 +945,8 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
 				return var3;
 			}
-		} else
+		}
+		else
 		{
 			return null;
 		}
@@ -944,7 +960,8 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 			final ItemStack var2 = this.cargoItems[par1];
 			this.cargoItems[par1] = null;
 			return var2;
-		} else
+		}
+		else
 		{
 			return null;
 		}

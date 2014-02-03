@@ -52,7 +52,8 @@ public class GCCoreBlockUnlitTorch extends Block implements IOxygenReliantBlock
 		if (this.blockID == GCCoreBlocks.unlitTorch.blockID)
 		{
 			return GCCoreBlockUnlitTorch.torchIcons[1];
-		} else if (this.blockID == GCCoreBlocks.unlitTorchLit.blockID)
+		}
+		else if (this.blockID == GCCoreBlocks.unlitTorchLit.blockID)
 		{
 			return GCCoreBlockUnlitTorch.torchIcons[0];
 		}
@@ -104,7 +105,8 @@ public class GCCoreBlockUnlitTorch extends Block implements IOxygenReliantBlock
 		if (par1World.doesBlockHaveSolidTopSurface(par2, par3, par4))
 		{
 			return true;
-		} else
+		}
+		else
 		{
 			final int var5 = par1World.getBlockId(par2, par3, par4);
 			return Block.blocksList[var5] != null && Block.blocksList[var5].canPlaceTorchOnTop(par1World, par2, par3, par4);
@@ -169,16 +171,20 @@ public class GCCoreBlockUnlitTorch extends Block implements IOxygenReliantBlock
 			if (par1World.isBlockSolidOnSide(par2 - 1, par3, par4, ForgeDirection.EAST, true))
 			{
 				par1World.setBlockMetadataWithNotify(par2, par3, par4, 1, 2);
-			} else if (par1World.isBlockSolidOnSide(par2 + 1, par3, par4, ForgeDirection.WEST, true))
+			}
+			else if (par1World.isBlockSolidOnSide(par2 + 1, par3, par4, ForgeDirection.WEST, true))
 			{
 				par1World.setBlockMetadataWithNotify(par2, par3, par4, 2, 2);
-			} else if (par1World.isBlockSolidOnSide(par2, par3, par4 - 1, ForgeDirection.SOUTH, true))
+			}
+			else if (par1World.isBlockSolidOnSide(par2, par3, par4 - 1, ForgeDirection.SOUTH, true))
 			{
 				par1World.setBlockMetadataWithNotify(par2, par3, par4, 3, 2);
-			} else if (par1World.isBlockSolidOnSide(par2, par3, par4 + 1, ForgeDirection.NORTH, true))
+			}
+			else if (par1World.isBlockSolidOnSide(par2, par3, par4 + 1, ForgeDirection.NORTH, true))
 			{
 				par1World.setBlockMetadataWithNotify(par2, par3, par4, 4, 2);
-			} else if (this.canPlaceTorchOn(par1World, par2, par3 - 1, par4))
+			}
+			else if (this.canPlaceTorchOn(par1World, par2, par3 - 1, par4))
 			{
 				par1World.setBlockMetadataWithNotify(par2, par3, par4, 5, 2);
 			}
@@ -249,7 +255,8 @@ public class GCCoreBlockUnlitTorch extends Block implements IOxygenReliantBlock
 			}
 
 			return false;
-		} else
+		}
+		else
 		{
 			return true;
 		}
@@ -268,16 +275,20 @@ public class GCCoreBlockUnlitTorch extends Block implements IOxygenReliantBlock
 		if (var7 == 1)
 		{
 			this.setBlockBounds(0.0F, 0.2F, 0.5F - var8, var8 * 2.0F, 0.8F, 0.5F + var8);
-		} else if (var7 == 2)
+		}
+		else if (var7 == 2)
 		{
 			this.setBlockBounds(1.0F - var8 * 2.0F, 0.2F, 0.5F - var8, 1.0F, 0.8F, 0.5F + var8);
-		} else if (var7 == 3)
+		}
+		else if (var7 == 3)
 		{
 			this.setBlockBounds(0.5F - var8, 0.2F, 0.0F, 0.5F + var8, 0.8F, var8 * 2.0F);
-		} else if (var7 == 4)
+		}
+		else if (var7 == 4)
 		{
 			this.setBlockBounds(0.5F - var8, 0.2F, 1.0F - var8 * 2.0F, 0.5F + var8, 0.8F, 1.0F);
-		} else
+		}
+		else
 		{
 			var8 = 0.1F;
 			this.setBlockBounds(0.5F - var8, 0.0F, 0.5F - var8, 0.5F + var8, 0.6F, 0.5F + var8);
@@ -305,16 +316,20 @@ public class GCCoreBlockUnlitTorch extends Block implements IOxygenReliantBlock
 			if (var6 == 1)
 			{
 				par1World.spawnParticle("smoke", var7 - var15, var9 + var13, var11, 0.0D, 0.0D, 0.0D);
-			} else if (var6 == 2)
+			}
+			else if (var6 == 2)
 			{
 				par1World.spawnParticle("smoke", var7 + var15, var9 + var13, var11, 0.0D, 0.0D, 0.0D);
-			} else if (var6 == 3)
+			}
+			else if (var6 == 3)
 			{
 				par1World.spawnParticle("smoke", var7, var9 + var13, var11 - var15, 0.0D, 0.0D, 0.0D);
-			} else if (var6 == 4)
+			}
+			else if (var6 == 4)
 			{
 				par1World.spawnParticle("smoke", var7, var9 + var13, var11 + var15, 0.0D, 0.0D, 0.0D);
-			} else
+			}
+			else
 			{
 				par1World.spawnParticle("smoke", var7, var9, var11, 0.0D, 0.0D, 0.0D);
 			}
@@ -327,7 +342,8 @@ public class GCCoreBlockUnlitTorch extends Block implements IOxygenReliantBlock
 		if (world.provider instanceof IGalacticraftWorldProvider)
 		{
 			world.setBlock(x, y, z, GCCoreBlocks.unlitTorch.blockID, world.getBlockMetadata(x, y, z), 2);
-		} else
+		}
+		else
 		{
 			world.setBlock(x, y, z, Block.torchWood.blockID, world.getBlockMetadata(x, y, z), 2);
 		}
@@ -339,7 +355,8 @@ public class GCCoreBlockUnlitTorch extends Block implements IOxygenReliantBlock
 		if (world.provider instanceof IGalacticraftWorldProvider)
 		{
 			world.setBlock(x, y, z, GCCoreBlocks.unlitTorchLit.blockID, world.getBlockMetadata(x, y, z), 2);
-		} else
+		}
+		else
 		{
 			world.setBlock(x, y, z, Block.torchWood.blockID, world.getBlockMetadata(x, y, z), 2);
 		}

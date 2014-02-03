@@ -43,7 +43,8 @@ public class GCCoreOverlayCountdown extends GCCoreOverlay
 			GL11.glScalef(4.0F, 4.0F, 0.0F);
 
 			GCCoreOverlayCountdown.minecraft.fontRenderer.drawString(String.valueOf(count), width / 8 - GCCoreOverlayCountdown.minecraft.fontRenderer.getStringWidth(String.valueOf(count)) / 2, height / 20, GCCoreUtil.convertTo32BitColor(255, 255, 0, 0));
-		} else
+		}
+		else
 		{
 			GL11.glScalef(2.0F, 2.0F, 0.0F);
 

@@ -56,7 +56,8 @@ public class RefineryRecipeHandler extends TemplateRecipeHandler
 		if (this.ticksPassed % 144 < 124 && this.ticksPassed % 144 > 10)
 		{
 			GuiDraw.drawTexturedModalRect(2, 42, 176, 6, 16, 20);
-		} else if (this.ticksPassed % 144 < 134)
+		}
+		else if (this.ticksPassed % 144 < 134)
 		{
 			GuiDraw.drawTexturedModalRect(148, 42, 176 + 16, 6, 16, 20);
 		}
@@ -84,7 +85,8 @@ public class RefineryRecipeHandler extends TemplateRecipeHandler
 			{
 				this.arecipes.add(new CachedRefineryRecipe(irecipe));
 			}
-		} else
+		}
+		else
 		{
 			super.loadCraftingRecipes(outputId, results);
 		}
@@ -123,7 +125,8 @@ public class RefineryRecipeHandler extends TemplateRecipeHandler
 			ArrayList<PositionedStack> stacks = new ArrayList<PositionedStack>();
 			stacks.add(new PositionedStack(new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.oilCanister.getMaxDamage()), this.arecipes.get(recipe).getIngredients().get(0).relx, this.arecipes.get(recipe).getIngredients().get(0).rely));
 			return stacks;
-		} else
+		}
+		else
 		{
 			return (ArrayList<PositionedStack>) this.arecipes.get(recipe).getIngredients();
 		}
@@ -135,7 +138,8 @@ public class RefineryRecipeHandler extends TemplateRecipeHandler
 		if (this.ticksPassed % 144 < 134)
 		{
 			return new PositionedStack(new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.oilCanister.getMaxDamage()), this.arecipes.get(recipe).getResult().relx, this.arecipes.get(recipe).getResult().rely);
-		} else
+		}
+		else
 		{
 			return this.arecipes.get(recipe).getResult();
 		}

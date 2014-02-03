@@ -76,7 +76,8 @@ public class GCCoreItemBlockEnclosedBlock extends ItemBlock
 			try
 			{
 				name = GCCoreBlockEnclosed.getTypeFromMeta(par1ItemStack.getItemDamage()).getPipeClass();
-			} catch (Exception e)
+			}
+			catch (Exception e)
 			{
 				name = "null";
 			}
@@ -101,7 +102,8 @@ public class GCCoreItemBlockEnclosedBlock extends ItemBlock
 			if (id == Block.snow.blockID)
 			{
 				side = 1;
-			} else if (id != Block.vine.blockID && id != Block.tallGrass.blockID && id != Block.deadBush.blockID && (Block.blocksList[id] == null || !Block.blocksList[id].isBlockReplaceable(world, i, j, k)))
+			}
+			else if (id != Block.vine.blockID && id != Block.tallGrass.blockID && id != Block.deadBush.blockID && (Block.blocksList[id] == null || !Block.blocksList[id].isBlockReplaceable(world, i, j, k)))
 			{
 				if (side == 0)
 				{
@@ -137,13 +139,16 @@ public class GCCoreItemBlockEnclosedBlock extends ItemBlock
 			if (itemstack.stackSize == 0)
 			{
 				return false;
-			} else if (!entityplayer.canPlayerEdit(i, j, k, side, itemstack))
+			}
+			else if (!entityplayer.canPlayerEdit(i, j, k, side, itemstack))
 			{
 				return false;
-			} else if (j == 255 && Block.blocksList[this.getBlockID()].blockMaterial.isSolid())
+			}
+			else if (j == 255 && Block.blocksList[this.getBlockID()].blockMaterial.isSolid())
 			{
 				return false;
-			} else if (world.canPlaceEntityOnSide(blockID, i, j, k, false, side, entityplayer, itemstack))
+			}
+			else if (world.canPlaceEntityOnSide(blockID, i, j, k, false, side, entityplayer, itemstack))
 			{
 				try
 				{
@@ -208,17 +213,20 @@ public class GCCoreItemBlockEnclosedBlock extends ItemBlock
 					}
 
 					return true;
-				} catch (Exception e)
+				}
+				catch (Exception e)
 				{
 					e.printStackTrace();
 				}
 
 				return false;
-			} else
+			}
+			else
 			{
 				return false;
 			}
-		} else
+		}
+		else
 		{
 			return super.onItemUse(itemstack, entityplayer, world, i, j, k, side, par8, par9, par10);
 		}

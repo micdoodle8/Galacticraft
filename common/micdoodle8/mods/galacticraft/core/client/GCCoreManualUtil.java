@@ -40,7 +40,8 @@ public class GCCoreManualUtil
 			Document doc = docBuilder.parse(stream);
 			doc.getDocumentElement().normalize();
 			return doc;
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
 			FMLLog.severe("Encountered problem while trying to read Galacticraft manual file...");
 			e.printStackTrace();

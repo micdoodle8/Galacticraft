@@ -67,7 +67,8 @@ public class GCMarsGuiLaunchController extends GuiContainer implements IDropboxC
 		{
 			this.enableControllerButton.enabled = false;
 			this.enablePadRemovalButton.enabled = false;
-		} else
+		}
+		else
 		{
 			this.enableControllerButton.enabled = true;
 			this.enablePadRemovalButton.enabled = true;
@@ -106,11 +107,13 @@ public class GCMarsGuiLaunchController extends GuiContainer implements IDropboxC
 			{
 				Integer.parseInt(string);
 				return true;
-			} catch (Exception e)
+			}
+			catch (Exception e)
 			{
 				return false;
 			}
-		} else
+		}
+		else
 		{
 			return false;
 		}
@@ -274,7 +277,8 @@ public class GCMarsGuiLaunchController extends GuiContainer implements IDropboxC
 		{
 			this.launchController.frequency = textBox.getIntegerValue();
 			PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftMars.CHANNEL, 5, new Object[] { 0, this.launchController.xCoord, this.launchController.yCoord, this.launchController.zCoord, this.launchController.frequency }));
-		} else if (textBox.equals(this.destinationFrequency))
+		}
+		else if (textBox.equals(this.destinationFrequency))
 		{
 			this.launchController.destFrequency = textBox.getIntegerValue();
 			PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftMars.CHANNEL, 5, new Object[] { 2, this.launchController.xCoord, this.launchController.yCoord, this.launchController.zCoord, this.launchController.destFrequency }));
@@ -287,7 +291,8 @@ public class GCMarsGuiLaunchController extends GuiContainer implements IDropboxC
 		if (textBox.equals(this.frequency))
 		{
 			return String.valueOf(this.launchController.frequency);
-		} else if (textBox.equals(this.destinationFrequency))
+		}
+		else if (textBox.equals(this.destinationFrequency))
 		{
 			return String.valueOf(this.launchController.destFrequency);
 		}
@@ -301,7 +306,8 @@ public class GCMarsGuiLaunchController extends GuiContainer implements IDropboxC
 		if (textBox.equals(this.frequency))
 		{
 			return this.launchController.frequencyValid ? GCCoreUtil.convertTo32BitColor(255, 20, 20, 255) : GCCoreUtil.convertTo32BitColor(255, 255, 25, 25);
-		} else if (textBox.equals(this.destinationFrequency))
+		}
+		else if (textBox.equals(this.destinationFrequency))
 		{
 			return this.launchController.destFrequencyValid ? GCCoreUtil.convertTo32BitColor(255, 20, 20, 255) : GCCoreUtil.convertTo32BitColor(255, 255, 25, 25);
 		}
@@ -316,7 +322,8 @@ public class GCMarsGuiLaunchController extends GuiContainer implements IDropboxC
 		{
 			this.launchController.launchPadRemovalDisabled = !newSelected;
 			PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftMars.CHANNEL, 5, new Object[] { 3, this.launchController.xCoord, this.launchController.yCoord, this.launchController.zCoord, this.launchController.launchPadRemovalDisabled ? 1 : 0 }));
-		} else if (checkbox.equals(this.launchWhenCheckbox))
+		}
+		else if (checkbox.equals(this.launchWhenCheckbox))
 		{
 			this.launchController.launchSchedulingEnabled = newSelected;
 			PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftMars.CHANNEL, 5, new Object[] { 4, this.launchController.xCoord, this.launchController.yCoord, this.launchController.zCoord, this.launchController.launchSchedulingEnabled ? 1 : 0 }));
@@ -335,7 +342,8 @@ public class GCMarsGuiLaunchController extends GuiContainer implements IDropboxC
 		if (checkbox.equals(this.enablePadRemovalButton))
 		{
 			return !this.launchController.launchPadRemovalDisabled;
-		} else if (checkbox.equals(this.launchWhenCheckbox))
+		}
+		else if (checkbox.equals(this.launchWhenCheckbox))
 		{
 			return this.launchController.launchSchedulingEnabled;
 		}

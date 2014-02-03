@@ -65,7 +65,8 @@ public class GCMarsItemSpaceshipTier2 extends Item implements IHoldableItem
 		if (par3World.isRemote)
 		{
 			return false;
-		} else
+		}
+		else
 		{
 			float centerX = -1;
 			float centerY = -1;
@@ -95,7 +96,8 @@ public class GCMarsItemSpaceshipTier2 extends Item implements IHoldableItem
 				if (par1ItemStack.getItemDamage() < 10)
 				{
 					rocket = new GCMarsEntityRocketT2(par3World, centerX, centerY + 4.2D, centerZ, EnumRocketType.values()[par1ItemStack.getItemDamage()]);
-				} else
+				}
+				else
 				{
 					rocket = new GCMarsEntityCargoRocket(par3World, centerX, centerY + 4.2D - 1.6D, centerZ, EnumRocketType.values()[par1ItemStack.getItemDamage() - 10]);
 				}
@@ -117,12 +119,14 @@ public class GCMarsItemSpaceshipTier2 extends Item implements IHoldableItem
 					if (rocket instanceof EntityTieredRocket)
 					{
 						((EntityTieredRocket) rocket).fuelTank.fill(new FluidStack(GalacticraftCore.fluidFuel, rocket.getMaxFuel()), true);
-					} else if (rocket instanceof GCMarsEntityCargoRocket)
+					}
+					else if (rocket instanceof GCMarsEntityCargoRocket)
 					{
 						((GCMarsEntityCargoRocket) rocket).fuelTank.fill(new FluidStack(GalacticraftCore.fluidFuel, rocket.getMaxFuel()), true);
 					}
 				}
-			} else
+			}
+			else
 			{
 				return false;
 			}
@@ -155,7 +159,8 @@ public class GCMarsItemSpaceshipTier2 extends Item implements IHoldableItem
 		if (par1ItemStack.getItemDamage() < 10)
 		{
 			type = EnumRocketType.values()[par1ItemStack.getItemDamage()];
-		} else
+		}
+		else
 		{
 			type = EnumRocketType.values()[par1ItemStack.getItemDamage() - 10];
 		}

@@ -30,7 +30,8 @@ public class GCMoonStructureVillageStart extends StructureStart
 		{
 			this.field_143024_c = par3;
 			this.field_143023_d = par4;
-		} catch (NoSuchFieldError e)
+		}
+		catch (NoSuchFieldError e)
 		{
 			;
 		}
@@ -52,7 +53,8 @@ public class GCMoonStructureVillageStart extends StructureStart
 				var10 = par2Random.nextInt(var9.size());
 				var11 = (StructureComponent) var9.remove(var10);
 				var11.buildComponent(var7, this.components, par2Random);
-			} else
+			}
+			else
 			{
 				var10 = par2Random.nextInt(var8.size());
 				var11 = (StructureComponent) var8.remove(var10);

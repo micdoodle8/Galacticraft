@@ -76,7 +76,8 @@ public class GCMarsBlockSlimelingEgg extends Block implements ITileEntityProvide
 		if (currentStack != null && currentStack.getItem() instanceof ItemPickaxe)
 		{
 			return world.setBlockToAir(x, y, z);
-		} else if (l < 3)
+		}
+		else if (l < 3)
 		{
 			world.setBlockMetadataWithNotify(x, y, z, l + 3, 2);
 
@@ -89,10 +90,12 @@ public class GCMarsBlockSlimelingEgg extends Block implements ITileEntityProvide
 			}
 
 			return false;
-		} else if (player.capabilities.isCreativeMode)
+		}
+		else if (player.capabilities.isCreativeMode)
 		{
 			return world.setBlockToAir(x, y, z);
-		} else
+		}
+		else
 		{
 			return false;
 		}

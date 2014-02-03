@@ -201,7 +201,8 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeala
 		if (metadata > 0 && metadata <= EnumEnclosedBlock.OXYGENPIPE.getMetadata())
 		{
 
-		} else if (metadata <= EnumEnclosedBlock.IC2_LV_CABLE.getMetadata())
+		}
+		else if (metadata <= EnumEnclosedBlock.IC2_LV_CABLE.getMetadata())
 		{
 			if (GCCoreCompatibilityManager.isIc2Loaded())
 			{
@@ -215,27 +216,33 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeala
 						{
 							Method method = clazz.getMethod("onNeighborBlockChange");
 							method.invoke(tileEntity);
-						} catch (Exception e)
+						}
+						catch (Exception e)
 						{
 							e.printStackTrace();
 						}
 					}
-				} catch (Exception e)
+				}
+				catch (Exception e)
 				{
 					e.printStackTrace();
 				}
 			}
-		} else if (metadata <= EnumEnclosedBlock.BC_POWER_GOLDPIPE.getMetadata())
+		}
+		else if (metadata <= EnumEnclosedBlock.BC_POWER_GOLDPIPE.getMetadata())
 		{
-		} else if (metadata <= EnumEnclosedBlock.ME_CABLE.getMetadata())
+		}
+		else if (metadata <= EnumEnclosedBlock.ME_CABLE.getMetadata())
 		{
-		} else if (metadata <= EnumEnclosedBlock.ALUMINUM_WIRE.getMetadata())
+		}
+		else if (metadata <= EnumEnclosedBlock.ALUMINUM_WIRE.getMetadata())
 		{
 			if (tileEntity instanceof IConductor)
 			{
 				((IConductor) tileEntity).refresh();
 			}
-		} else if (metadata <= EnumEnclosedBlock.ALUMINUM_WIRE_HEAVY.getMetadata())
+		}
+		else if (metadata <= EnumEnclosedBlock.ALUMINUM_WIRE_HEAVY.getMetadata())
 		{
 			if (tileEntity instanceof IConductor)
 			{
@@ -255,7 +262,8 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeala
 		if (metadata > 0 && metadata <= EnumEnclosedBlock.OXYGENPIPE.getMetadata())
 		{
 
-		} else if (metadata <= EnumEnclosedBlock.IC2_LV_CABLE.getMetadata())
+		}
+		else if (metadata <= EnumEnclosedBlock.IC2_LV_CABLE.getMetadata())
 		{
 			if (GCCoreCompatibilityManager.isIc2Loaded())
 			{
@@ -269,17 +277,20 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeala
 						{
 							Method method = clazz.getMethod("onNeighborBlockChange");
 							method.invoke(tileEntity);
-						} catch (Exception e)
+						}
+						catch (Exception e)
 						{
 							e.printStackTrace();
 						}
 					}
-				} catch (Exception e)
+				}
+				catch (Exception e)
 				{
 					e.printStackTrace();
 				}
 			}
-		} else if (metadata <= EnumEnclosedBlock.BC_POWER_GOLDPIPE.getMetadata())
+		}
+		else if (metadata <= EnumEnclosedBlock.BC_POWER_GOLDPIPE.getMetadata())
 		{
 			if (GCCoreCompatibilityManager.isBCraftLoaded())
 			{
@@ -309,24 +320,28 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeala
 						Object container = clazzPipe.getField("container").get(pipe);
 						schedule.invoke(container);
 					}
-				} catch (Exception e)
+				}
+				catch (Exception e)
 				{
 					e.printStackTrace();
 				}
 			}
-		} else if (metadata <= EnumEnclosedBlock.ME_CABLE.getMetadata())
+		}
+		else if (metadata <= EnumEnclosedBlock.ME_CABLE.getMetadata())
 		{
 			if (GCCoreCompatibilityManager.isAppEngLoaded())
 			{
 				world.markBlockForUpdate(x, y, z);
 			}
-		} else if (metadata <= EnumEnclosedBlock.ALUMINUM_WIRE.getMetadata())
+		}
+		else if (metadata <= EnumEnclosedBlock.ALUMINUM_WIRE.getMetadata())
 		{
 			if (tileEntity instanceof IConductor)
 			{
 				((IConductor) tileEntity).refresh();
 			}
-		} else if (metadata <= EnumEnclosedBlock.ALUMINUM_WIRE_HEAVY.getMetadata())
+		}
+		else if (metadata <= EnumEnclosedBlock.ALUMINUM_WIRE_HEAVY.getMetadata())
 		{
 			if (tileEntity instanceof IConductor)
 			{
@@ -347,7 +362,8 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeala
 		if (metadata > 0 && metadata <= EnumEnclosedBlock.OXYGENPIPE.getMetadata())
 		{
 			return new GCCoreTileEntityOxygenPipe();
-		} else if (metadata <= EnumEnclosedBlock.IC2_LV_CABLE.getMetadata())
+		}
+		else if (metadata <= EnumEnclosedBlock.IC2_LV_CABLE.getMetadata())
 		{
 			if (GCCoreCompatibilityManager.isIc2Loaded())
 			{
@@ -370,12 +386,14 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeala
 					constructor.setAccessible(true);
 
 					return (TileEntity) constructor.newInstance((short) GCCoreBlockEnclosed.getTypeFromMeta(metadata).getIC2CableMeta());
-				} catch (Exception e)
+				}
+				catch (Exception e)
 				{
 					e.printStackTrace();
 				}
 			}
-		} else if (metadata <= EnumEnclosedBlock.BC_POWER_GOLDPIPE.getMetadata())
+		}
+		else if (metadata <= EnumEnclosedBlock.BC_POWER_GOLDPIPE.getMetadata())
 		{
 			if (GCCoreCompatibilityManager.isBCraftLoaded())
 			{
@@ -398,12 +416,14 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeala
 					constructor.setAccessible(true);
 
 					return (TileEntity) constructor.newInstance();
-				} catch (Exception e)
+				}
+				catch (Exception e)
 				{
 					e.printStackTrace();
 				}
 			}
-		} else if (metadata <= EnumEnclosedBlock.ME_CABLE.getMetadata())
+		}
+		else if (metadata <= EnumEnclosedBlock.ME_CABLE.getMetadata())
 		{
 			if (GCCoreCompatibilityManager.isAppEngLoaded())
 			{
@@ -411,15 +431,18 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeala
 				{
 					Class<?> clazz = Class.forName("appeng.me.tile.TileCable");
 					return (TileEntity) clazz.newInstance();
-				} catch (Exception e)
+				}
+				catch (Exception e)
 				{
 					e.printStackTrace();
 				}
 			}
-		} else if (metadata <= EnumEnclosedBlock.ALUMINUM_WIRE.getMetadata())
+		}
+		else if (metadata <= EnumEnclosedBlock.ALUMINUM_WIRE.getMetadata())
 		{
 			return new GCCoreTileEntityAluminumWire();
-		} else if (metadata <= EnumEnclosedBlock.ALUMINUM_WIRE_HEAVY.getMetadata())
+		}
+		else if (metadata <= EnumEnclosedBlock.ALUMINUM_WIRE_HEAVY.getMetadata())
 		{
 			return new GCCoreTileEntityAluminumWire(0.025F, 400.0F);
 		}

@@ -87,30 +87,37 @@ public class GCCoreBlockSolar extends GCCoreBlockTile
 			if (side == ForgeDirection.getOrientation(shiftedMeta + 2).getOpposite().ordinal())
 			{
 				return this.icons[5];
-			} else if (side == ForgeDirection.UP.ordinal())
+			}
+			else if (side == ForgeDirection.UP.ordinal())
 			{
 				return this.icons[2];
-			} else if (side == ForgeDirection.DOWN.ordinal())
+			}
+			else if (side == ForgeDirection.DOWN.ordinal())
 			{
 				return this.icons[4];
-			} else
+			}
+			else
 			{
 				return this.icons[3];
 			}
-		} else if (meta >= GCCoreBlockSolar.BASIC_METADATA)
+		}
+		else if (meta >= GCCoreBlockSolar.BASIC_METADATA)
 		{
 			int shiftedMeta = meta -= GCCoreBlockSolar.BASIC_METADATA;
 
 			if (side == ForgeDirection.getOrientation(shiftedMeta + 2).getOpposite().ordinal())
 			{
 				return this.icons[5];
-			} else if (side == ForgeDirection.UP.ordinal())
+			}
+			else if (side == ForgeDirection.UP.ordinal())
 			{
 				return this.icons[0];
-			} else if (side == ForgeDirection.DOWN.ordinal())
+			}
+			else if (side == ForgeDirection.DOWN.ordinal())
 			{
 				return this.icons[4];
-			} else
+			}
+			else
 			{
 				return this.icons[1];
 			}
@@ -168,7 +175,8 @@ public class GCCoreBlockSolar extends GCCoreBlockTile
 		if (metadata >= GCCoreBlockSolar.ADVANCED_METADATA)
 		{
 			world.setBlockMetadataWithNotify(x, y, z, GCCoreBlockSolar.ADVANCED_METADATA + change, 3);
-		} else
+		}
+		else
 		{
 			world.setBlockMetadataWithNotify(x, y, z, GCCoreBlockSolar.BASIC_METADATA + change, 3);
 		}
@@ -245,7 +253,8 @@ public class GCCoreBlockSolar extends GCCoreBlockTile
 		if (metadata >= GCCoreBlockSolar.ADVANCED_METADATA)
 		{
 			return GCCoreBlockSolar.ADVANCED_METADATA;
-		} else
+		}
+		else
 		{
 			return GCCoreBlockSolar.BASIC_METADATA;
 		}
@@ -279,7 +288,8 @@ public class GCCoreBlockSolar extends GCCoreBlockTile
 		if (metadata >= GCCoreBlockSolar.ADVANCED_METADATA)
 		{
 			return new GCCoreTileEntitySolar(100);
-		} else
+		}
+		else
 		{
 			return new GCCoreTileEntitySolar(50);
 		}

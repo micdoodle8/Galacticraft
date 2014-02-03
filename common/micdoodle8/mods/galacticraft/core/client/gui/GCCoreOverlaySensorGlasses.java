@@ -125,7 +125,8 @@ public class GCCoreOverlaySensorGlasses extends GCCoreOverlay
 					GL11.glRotatef(-(-var60 - ClientProxyCore.playerRotationYaw + 180.0F), 0.0F, 0.0F, 1.0F);
 					GCCoreOverlay.drawCenteringRectangle(var6 / 2, var7 / 2, 1.0D, 8.0D, 8.0D);
 				}
-			} finally
+			}
+			finally
 			{
 				GL11.glPopMatrix();
 			}

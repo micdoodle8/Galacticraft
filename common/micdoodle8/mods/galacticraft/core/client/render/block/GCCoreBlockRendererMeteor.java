@@ -122,10 +122,12 @@ public class GCCoreBlockRendererMeteor implements ISimpleBlockRenderingHandler
 		if (var6 == 0)
 		{
 			renderBlocks.uvRotateTop = 3;
-		} else if (var6 == 3)
+		}
+		else if (var6 == 3)
 		{
 			renderBlocks.uvRotateTop = 1;
-		} else if (var6 == 1)
+		}
+		else if (var6 == 1)
 		{
 			renderBlocks.uvRotateTop = 2;
 		}

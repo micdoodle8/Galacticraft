@@ -46,7 +46,8 @@ public class GCMarsBiomeDecorator
 		if (this.currentWorld != null)
 		{
 			throw new RuntimeException("Already decorating!!");
-		} else
+		}
+		else
 		{
 			this.currentWorld = world;
 			this.rand = random;

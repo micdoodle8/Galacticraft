@@ -120,16 +120,20 @@ public class GCMarsPacketHandlerServer implements IPacketHandler
 					break;
 				}
 			}
-		} else if (packetType == 1)
+		}
+		else if (packetType == 1)
 		{
 			FMLLog.severe("Galacticraft Mars: Received bad packet!");
-		} else if (packetType == 2)
+		}
+		else if (packetType == 2)
 		{
 			FMLLog.severe("Galacticraft Mars: Received bad packet!");
-		} else if (packetType == 3)
+		}
+		else if (packetType == 3)
 		{
 			gcPlayer.wakeUpPlayer(false, true, true, true);
-		} else if (packetType == 4)
+		}
+		else if (packetType == 4)
 		{
 			final Class<?>[] decodeAs = { Integer.class };
 			final Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
@@ -139,7 +143,8 @@ public class GCMarsPacketHandlerServer implements IPacketHandler
 			{
 				player.playerNetServerHandler.sendPacketToPlayer(GCCorePacketLanderUpdate.buildKeyPacket(e));
 			}
-		} else if (packetType == 5)
+		}
+		else if (packetType == 5)
 		{
 			Class<?>[] decodeAs = { Integer.class, Integer.class, Integer.class, Integer.class, Integer.class };
 			Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);
@@ -193,7 +198,8 @@ public class GCMarsPacketHandlerServer implements IPacketHandler
 			default:
 				break;
 			}
-		} else if (packetType == 6)
+		}
+		else if (packetType == 6)
 		{
 			Class<?>[] decodeAs = { Integer.class, Integer.class };
 			Object[] packetReadout = PacketUtil.readPacketData(data, decodeAs);

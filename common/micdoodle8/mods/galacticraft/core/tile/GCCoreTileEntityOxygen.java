@@ -86,7 +86,8 @@ public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectricBlo
 		if (nbt.hasKey("storedOxygen"))
 		{
 			this.storedOxygen = nbt.getInteger("storedOxygen");
-		} else
+		}
+		else
 		{
 			this.storedOxygen = nbt.getFloat("storedOxygenF");
 		}
@@ -243,7 +244,8 @@ public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectricBlo
 						this.provideOxygen(Math.max(toSend - rejectedPower, 0), true);
 						return true;
 					}
-				} else if (outputTile instanceof IOxygenReceiver)
+				}
+				else if (outputTile instanceof IOxygenReceiver)
 				{
 					float requestedEnergy = ((IOxygenReceiver) outputTile).getOxygenRequest(outputDirection.getOpposite());
 
@@ -267,7 +269,8 @@ public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectricBlo
 		if (this.shouldPullOxygen())
 		{
 			return this.oxygenPerTick * 2;
-		} else
+		}
+		else
 		{
 			return 0;
 		}

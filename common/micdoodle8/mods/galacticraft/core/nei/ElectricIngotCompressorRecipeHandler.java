@@ -97,7 +97,8 @@ public class ElectricIngotCompressorRecipeHandler extends TemplateRecipeHandler
 			{
 				this.arecipes.add(new ElectricCompressorRecipe(irecipe));
 			}
-		} else
+		}
+		else
 		{
 			super.loadCraftingRecipes(outputId, results);
 		}

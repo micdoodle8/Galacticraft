@@ -89,7 +89,8 @@ public class GCCoreWorldGenTrees extends WorldGenerator
 							{
 								var7 = false;
 							}
-						} else
+						}
+						else
 						{
 							var7 = false;
 						}
@@ -100,7 +101,8 @@ public class GCCoreWorldGenTrees extends WorldGenerator
 			if (!var7)
 			{
 				return false;
-			} else
+			}
+			else
 			{
 
 				var8 = par1World.getBlockId(par3, par4 - 1, par5);
@@ -247,16 +249,19 @@ public class GCCoreWorldGenTrees extends WorldGenerator
 						}
 
 						return true;
-					} else
+					}
+					else
 					{
 						return false;
 					}
-				} else
+				}
+				else
 				{
 					return false;
 				}
 			}
-		} else
+		}
+		else
 		{
 			return false;
 		}

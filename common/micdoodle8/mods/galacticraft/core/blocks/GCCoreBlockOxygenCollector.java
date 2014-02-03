@@ -116,7 +116,8 @@ public class GCCoreBlockOxygenCollector extends GCCoreBlockAdvancedTile
 		if (side == metadata + 2)
 		{
 			return this.iconOutput;
-		} else if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal())
+		}
+		else if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal())
 		{
 			return this.iconInput;
 		}
@@ -176,7 +177,8 @@ public class GCCoreBlockOxygenCollector extends GCCoreBlockAdvancedTile
 					{
 						x2 = x + 0.5D + 0.25D * dir;
 						mX = rand.nextFloat() * 2.0F * dir;
-					} else
+					}
+					else
 					{
 						z2 = z + 0.5D + 0.25D * dir;
 						mZ = rand.nextFloat() * 2.0F * dir;

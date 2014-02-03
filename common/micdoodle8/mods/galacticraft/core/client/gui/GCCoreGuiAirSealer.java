@@ -139,7 +139,8 @@ public class GCCoreGuiAirSealer extends GCCoreGuiContainer
 		if (!this.sealer.sealed)
 		{
 			return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.unsealed.name");
-		} else
+		}
+		else
 		{
 			return EnumColor.DARK_GREEN + StatCollector.translateToLocal("gui.status.sealed.name");
 		}

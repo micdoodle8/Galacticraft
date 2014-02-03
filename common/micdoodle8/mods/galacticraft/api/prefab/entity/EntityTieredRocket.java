@@ -65,7 +65,8 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 			try
 			{
 				Class.forName("icbm.api.RadarRegistry").getMethod("register", Entity.class).invoke(null, this);
-			} catch (Exception e)
+			}
+			catch (Exception e)
 			{
 				e.printStackTrace();
 			}
@@ -82,7 +83,8 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 			try
 			{
 				Class.forName("icbm.api.RadarRegistry").getMethod("unregister", Entity.class).invoke(null, this);
-			} catch (Exception e)
+			}
+			catch (Exception e)
 			{
 				e.printStackTrace();
 			}
@@ -116,12 +118,14 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 
 					this.setWaitForPlayer(false);
 					this.motionY = -0.5D;
-				} else
+				}
+				else
 				{
 					this.motionX = this.motionY = this.motionZ = 0.0D;
 					this.riddenByEntity.motionX = this.riddenByEntity.motionY = this.riddenByEntity.motionZ = 0;
 				}
-			} else
+			}
+			else
 			{
 				this.motionX = this.motionY = this.motionZ = 0.0D;
 			}
@@ -246,16 +250,19 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 							WorldUtil.transferEntityToDimension(this.riddenByEntity, this.targetDimension, worldServer, false, this);
 						}
 					}
-				} else
+				}
+				else
 				{
 					this.setPosition(this.targetVec.x + 0.5F, this.targetVec.y + 800, this.targetVec.z + 0.5F);
 					this.landing = true;
 				}
-			} else
+			}
+			else
 			{
 				this.setDead();
 			}
-		} else
+		}
+		else
 		{
 			if (this.riddenByEntity != null)
 			{
@@ -382,7 +389,8 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 			}
 
 			return true;
-		} else if (par1EntityPlayer instanceof GCCorePlayerMP)
+		}
+		else if (par1EntityPlayer instanceof GCCorePlayerMP)
 		{
 			if (!this.worldObj.isRemote)
 			{
@@ -435,7 +443,8 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 			this.landing = true;
 			this.setWaitForPlayer(true);
 			this.motionX = this.motionY = this.motionZ = 0.0D;
-		} else
+		}
+		else
 		{
 			this.setDead();
 		}

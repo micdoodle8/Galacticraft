@@ -98,7 +98,8 @@ public class GCCoreItemRendererFlag implements IItemRenderer
 				GL11.glRotatef(30F, 1F, 0F, 1F);
 				GL11.glRotatef(110F, 0F, 1F, 0F);
 				GL11.glTranslatef(-0.5F, 0.3F, 0);
-			} else
+			}
+			else
 			{
 				GL11.glTranslatef(0, -0.9F, 0);
 				GL11.glScalef(0.5F, 0.5F, 0.5F);

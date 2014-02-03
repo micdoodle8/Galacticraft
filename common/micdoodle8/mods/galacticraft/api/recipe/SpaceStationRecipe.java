@@ -30,20 +30,25 @@ public class SpaceStationRecipe
 			if (obj instanceof ItemStack)
 			{
 				this.input.put(((ItemStack) obj).copy(), amount);
-			} else if (obj instanceof Item)
+			}
+			else if (obj instanceof Item)
 			{
 				this.input.put(new ItemStack((Item) obj), amount);
-			} else if (obj instanceof Block)
+			}
+			else if (obj instanceof Block)
 			{
 				this.input.put(new ItemStack((Block) obj), amount);
-			} else if (obj instanceof String)
+			}
+			else if (obj instanceof String)
 			{
 				FMLLog.info("While registering space station recipe, found " + OreDictionary.getOres((String) obj).size() + " type(s) of " + obj);
 				this.input.put(OreDictionary.getOres((String) obj), amount);
-			} else if (obj instanceof ArrayList)
+			}
+			else if (obj instanceof ArrayList)
 			{
 				this.input.put(obj, amount);
-			} else
+			}
+			else
 			{
 				throw new RuntimeException("INVALID SPACE STATION RECIPE");
 			}
@@ -82,7 +87,8 @@ public class SpaceStationRecipe
 						{
 							amountInInv += slot.stackSize;
 						}
-					} else if (next instanceof ArrayList)
+					}
+					else if (next instanceof ArrayList)
 					{
 						for (final ItemStack item : (ArrayList<ItemStack>) next)
 						{
@@ -147,7 +153,8 @@ public class SpaceStationRecipe
 							player.inventory.setInventorySlotContents(x, newStack);
 							amountRemoved += amountToRemove;
 						}
-					} else if (next instanceof ArrayList)
+					}
+					else if (next instanceof ArrayList)
 					{
 						for (final ItemStack item : (ArrayList<ItemStack>) next)
 						{

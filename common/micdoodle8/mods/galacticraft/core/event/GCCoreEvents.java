@@ -129,18 +129,21 @@ public class GCCoreEvents
 				{
 					event.setCanceled(!((IKeyable) tileClicked).canBreak() && !event.entityPlayer.capabilities.isCreativeMode);
 					return;
-				} else if (event.action.equals(PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK))
+				}
+				else if (event.action.equals(PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK))
 				{
 					if (heldStack.getItem() instanceof IKeyItem)
 					{
 						if (((IKeyItem) heldStack.getItem()).getTier(heldStack) == -1 || ((IKeyable) tileClicked).getTierOfKeyRequired() == -1 || ((IKeyItem) heldStack.getItem()).getTier(heldStack) == ((IKeyable) tileClicked).getTierOfKeyRequired())
 						{
 							event.setCanceled(((IKeyable) tileClicked).onValidKeyActivated(event.entityPlayer, heldStack, event.face));
-						} else
+						}
+						else
 						{
 							event.setCanceled(((IKeyable) tileClicked).onActivatedWithoutKey(event.entityPlayer, event.face));
 						}
-					} else
+					}
+					else
 					{
 						event.setCanceled(((IKeyable) tileClicked).onActivatedWithoutKey(event.entityPlayer, event.face));
 					}
@@ -157,7 +160,8 @@ public class GCCoreEvents
 					}
 				}
 			}
-		} else if (tileClicked != null && tileClicked instanceof IKeyable)
+		}
+		else if (tileClicked != null && tileClicked instanceof IKeyable)
 		{
 			if (event.action.equals(PlayerInteractEvent.Action.LEFT_CLICK_BLOCK))
 			{
@@ -225,12 +229,14 @@ public class GCCoreEvents
 						final Block block = (Block) f.get(null);
 
 						bcOilID1 = block.blockID;
-					} else if (f.getName().equals("oilStill"))
+					}
+					else if (f.getName().equals("oilStill"))
 					{
 						final Block block = (Block) f.get(null);
 
 						bcOilID2 = block.blockID;
-					} else if (f.getName().equals("bucketOil"))
+					}
+					else if (f.getName().equals("bucketOil"))
 					{
 						final Item item = (Item) f.get(null);
 
@@ -238,7 +244,8 @@ public class GCCoreEvents
 					}
 				}
 			}
-		} catch (final Throwable cnfe)
+		}
+		catch (final Throwable cnfe)
 		{
 
 		}
@@ -250,7 +257,8 @@ public class GCCoreEvents
 			world.setBlockToAir(pos.blockX, pos.blockY, pos.blockZ);
 
 			return new ItemStack(bcOilBucket);
-		} else
+		}
+		else
 		{
 			return null;
 		}
@@ -385,7 +393,8 @@ public class GCCoreEvents
 				if (count + 1 < PlayerUtil.getPlayerBaseClientFromPlayer(FMLClientHandler.instance().getClient().thePlayer).unlockedSchematics.size())
 				{
 					return PlayerUtil.getPlayerBaseClientFromPlayer(FMLClientHandler.instance().getClient().thePlayer).unlockedSchematics.get(count + 1);
-				} else
+				}
+				else
 				{
 					return null;
 				}
@@ -418,7 +427,8 @@ public class GCCoreEvents
 				if (count - 1 >= 0)
 				{
 					return PlayerUtil.getPlayerBaseClientFromPlayer(FMLClientHandler.instance().getClient().thePlayer).unlockedSchematics.get(count - 1);
-				} else
+				}
+				else
 				{
 					return null;
 				}
@@ -494,7 +504,8 @@ public class GCCoreEvents
 			String s1 = String.format("%s:%s:%s/%s", new Object[] { "mcsounddomain", resourcelocation.getResourceDomain(), "sound", resourcelocation.getResourcePath() });
 			SoundPoolProtocolHandler soundpoolprotocolhandler = new SoundPoolProtocolHandler(pool);
 			return new SoundPoolEntry(par1Str, new URL((URL) null, s1, soundpoolprotocolhandler));
-		} catch (MalformedURLException e)
+		}
+		catch (MalformedURLException e)
 		{
 			e.printStackTrace();
 		}

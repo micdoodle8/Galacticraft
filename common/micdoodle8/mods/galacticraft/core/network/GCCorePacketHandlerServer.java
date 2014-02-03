@@ -173,7 +173,8 @@ public class GCCorePacketHandlerServer implements IPacketHandler
 						if (provider instanceof IOrbitDimension)
 						{
 							WorldUtil.transferEntityToDimension(playerBase, dim, world);
-						} else
+						}
+						else
 						{
 							WorldUtil.transferEntityToDimension(playerBase, dim, world);
 						}
@@ -182,7 +183,8 @@ public class GCCorePacketHandlerServer implements IPacketHandler
 					playerBase.setTeleportCooldown(300);
 					final Object[] toSend = { player.username };
 					player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.CLOSE_GUI, toSend));
-				} catch (final Exception e)
+				}
+				catch (final Exception e)
 				{
 					GCLog.severe("Error occurred when attempting to transfer entity to dimension: " + (String) packetReadout[0]);
 					e.printStackTrace();
@@ -207,13 +209,15 @@ public class GCCorePacketHandlerServer implements IPacketHandler
 					{
 						ship.igniteCheckingCooldown();
 						playerBase.setLaunchAttempts(0);
-					} else if (playerBase.getChatCooldown() == 0 && playerBase.getLaunchAttempts() == 0)
+					}
+					else if (playerBase.getChatCooldown() == 0 && playerBase.getLaunchAttempts() == 0)
 					{
 						player.sendChatToPlayer(ChatMessageComponent.createFromText("I don't have a parachute! If I press launch again, there's no going back!"));
 						playerBase.setChatCooldown(250);
 						playerBase.setLaunchAttempts(1);
 					}
-				} else if (playerBase.getChatCooldown() == 0)
+				}
+				else if (playerBase.getChatCooldown() == 0)
 				{
 					player.sendChatToPlayer(ChatMessageComponent.createFromText("I'll need to load in some rocket fuel first!"));
 					playerBase.setChatCooldown(250);
@@ -278,7 +282,8 @@ public class GCCorePacketHandlerServer implements IPacketHandler
 			try
 			{
 				new GCCorePacketControllableEntity().handlePacket(data, new Object[] { player }, Side.SERVER);
-			} catch (final Exception e)
+			}
+			catch (final Exception e)
 			{
 				e.printStackTrace();
 			}
@@ -289,7 +294,8 @@ public class GCCorePacketHandlerServer implements IPacketHandler
 			try
 			{
 				new GCCorePacketEntityUpdate().handlePacket(data, new Object[] { player }, Side.SERVER);
-			} catch (final Exception e)
+			}
+			catch (final Exception e)
 			{
 				e.printStackTrace();
 			}

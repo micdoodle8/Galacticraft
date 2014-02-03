@@ -93,7 +93,8 @@ public class GCMarsItemRendererMachine implements IItemRenderer
 				GL11.glTranslatef(0, -1.2F, 0);
 				GL11.glScalef(0.7F, 0.6F, 0.7F);
 				GL11.glRotatef(Sys.getTime() / 90F % 360F, 0F, 1F, 0F);
-			} else
+			}
+			else
 			{
 				GL11.glTranslatef(0, -3.9F, 0);
 				GL11.glRotatef(Sys.getTime() / 90F % 360F, 0F, 1F, 0F);
@@ -123,7 +124,8 @@ public class GCMarsItemRendererMachine implements IItemRenderer
 			default:
 				return false;
 			}
-		} else
+		}
+		else
 		{
 			return false;
 		}

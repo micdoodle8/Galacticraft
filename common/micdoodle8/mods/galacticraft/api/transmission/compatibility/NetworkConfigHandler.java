@@ -84,7 +84,8 @@ public class NetworkConfigHandler
 			if (oxygen == null)
 			{
 				NetworkConfigHandler.gasOxygen = GasRegistry.register(new Gas("oxygen")).registerFluid();
-			} else
+			}
+			else
 			{
 				NetworkConfigHandler.gasOxygen = oxygen;
 			}

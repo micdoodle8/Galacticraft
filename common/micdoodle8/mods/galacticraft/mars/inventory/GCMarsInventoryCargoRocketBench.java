@@ -45,7 +45,8 @@ public class GCMarsInventoryCargoRocketBench implements IInventory
 		{
 			final int var3 = par1 + par2 * this.inventoryWidth;
 			return this.getStackInSlot(var3);
-		} else
+		}
+		else
 		{
 			return null;
 		}
@@ -65,7 +66,8 @@ public class GCMarsInventoryCargoRocketBench implements IInventory
 			final ItemStack var2 = this.stackList[par1];
 			this.stackList[par1] = null;
 			return var2;
-		} else
+		}
+		else
 		{
 			return null;
 		}
@@ -84,7 +86,8 @@ public class GCMarsInventoryCargoRocketBench implements IInventory
 				this.stackList[par1] = null;
 				this.eventHandler.onCraftMatrixChanged(this);
 				return var3;
-			} else
+			}
+			else
 			{
 				var3 = this.stackList[par1].splitStack(par2);
 
@@ -96,7 +99,8 @@ public class GCMarsInventoryCargoRocketBench implements IInventory
 				this.eventHandler.onCraftMatrixChanged(this);
 				return var3;
 			}
-		} else
+		}
+		else
 		{
 			return null;
 		}

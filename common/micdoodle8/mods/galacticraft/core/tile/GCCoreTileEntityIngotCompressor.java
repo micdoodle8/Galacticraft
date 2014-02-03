@@ -101,7 +101,8 @@ public class GCCoreTileEntityIngotCompressor extends TileEntity implements IInve
 					this.smeltItem();
 					updateInv = true;
 				}
-			} else
+			}
+			else
 			{
 				this.processTicks = 0;
 			}
@@ -147,7 +148,8 @@ public class GCCoreTileEntityIngotCompressor extends TileEntity implements IInve
 			this.processTicks = dataStream.readInt();
 			this.currentItemBurnTime = dataStream.readInt();
 			this.furnaceBurnTime = dataStream.readInt();
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -196,7 +198,8 @@ public class GCCoreTileEntityIngotCompressor extends TileEntity implements IInve
 			if (this.containingItems[1] == null)
 			{
 				this.containingItems[1] = resultItemStack.copy();
-			} else if (this.containingItems[1].isItemEqual(resultItemStack))
+			}
+			else if (this.containingItems[1].isItemEqual(resultItemStack))
 			{
 				if (this.containingItems[1].stackSize + resultItemStack.stackSize > 64)
 				{
@@ -240,7 +243,8 @@ public class GCCoreTileEntityIngotCompressor extends TileEntity implements IInve
 			if (var5 >= 0 && var5 < this.containingItems.length)
 			{
 				this.containingItems[var5] = ItemStack.loadItemStackFromNBT(var4);
-			} else if (var5 < this.containingItems.length + this.compressingCraftMatrix.getSizeInventory())
+			}
+			else if (var5 < this.containingItems.length + this.compressingCraftMatrix.getSizeInventory())
 			{
 				this.compressingCraftMatrix.setInventorySlotContents(var5 - this.containingItems.length, ItemStack.loadItemStackFromNBT(var4));
 			}
@@ -314,7 +318,8 @@ public class GCCoreTileEntityIngotCompressor extends TileEntity implements IInve
 				var3 = this.containingItems[par1];
 				this.containingItems[par1] = null;
 				return var3;
-			} else
+			}
+			else
 			{
 				var3 = this.containingItems[par1].splitStack(par2);
 
@@ -325,7 +330,8 @@ public class GCCoreTileEntityIngotCompressor extends TileEntity implements IInve
 
 				return var3;
 			}
-		} else
+		}
+		else
 		{
 			return null;
 		}
@@ -344,7 +350,8 @@ public class GCCoreTileEntityIngotCompressor extends TileEntity implements IInve
 			ItemStack var2 = this.containingItems[par1];
 			this.containingItems[par1] = null;
 			return var2;
-		} else
+		}
+		else
 		{
 			return null;
 		}
@@ -356,7 +363,8 @@ public class GCCoreTileEntityIngotCompressor extends TileEntity implements IInve
 		if (par1 >= this.containingItems.length)
 		{
 			this.compressingCraftMatrix.setInventorySlotContents(par1 - this.containingItems.length, par2ItemStack);
-		} else
+		}
+		else
 		{
 			this.containingItems[par1] = par2ItemStack;
 

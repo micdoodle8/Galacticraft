@@ -108,7 +108,8 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 				this.renameText = this.renameText.substring(0, this.renameText.length() - 1);
 				this.timeBackspacePressed = System.currentTimeMillis();
 			}
-		} else if (keyChar == 22)
+		}
+		else if (keyChar == 22)
 		{
 			String pastestring = GuiScreen.getClipboardString();
 
@@ -123,7 +124,8 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 				this.renameText = this.renameText.replace('$', ' ');
 				this.renameText = this.renameText.replace('.', ' ');
 			}
-		} else if (this.isValid(this.renameText + keyChar) && keyID != Keyboard.KEY_PERIOD && keyChar != '$')
+		}
+		else if (this.isValid(this.renameText + keyChar) && keyID != Keyboard.KEY_PERIOD && keyChar != '$')
 		{
 			this.renameText = this.renameText + keyChar;
 		}
@@ -153,7 +155,8 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 		{
 			this.buttonList.add(this.createSpaceStationButton = new GuiSmallButton(2, this.width / 2 - 60, 4, 120, 20, StatCollector.translateToLocal("gui.button.createsstation.name")));
 			this.createSpaceStationButton.enabled = true;
-		} else
+		}
+		else
 		{
 			this.createSpaceStationButton.xPosition = this.width / 2 - 60;
 			this.buttonList.add(this.createSpaceStationButton);
@@ -196,7 +199,8 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 		{
 			Gui.drawRect(startX, startY, startX + width, startY + height, 0xffA0A0A0);
 			this.isTextFocused = true;
-		} else
+		}
+		else
 		{
 			this.isTextFocused = false;
 		}
@@ -546,7 +550,8 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 					this.timeBackspacePressed = System.currentTimeMillis();
 					this.backspacePressed++;
 				}
-			} else
+			}
+			else
 			{
 				this.timeBackspacePressed = 0;
 				this.backspacePressed = 0;
@@ -557,7 +562,8 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 		{
 			this.renameSpaceStationButton = new GuiSmallButton(3, this.width - 200, this.height - 26, 80, 20, "Rename");
 			this.buttonList.add(this.renameSpaceStationButton);
-		} else if (this.renameSpaceStationButton != null && !this.destinations[this.selectedSlot].contains("$"))
+		}
+		else if (this.renameSpaceStationButton != null && !this.destinations[this.selectedSlot].contains("$"))
 		{
 			this.buttonList.remove(this.renameSpaceStationButton);
 			this.renameSpaceStationButton = null;
@@ -599,7 +605,8 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 				{
 					strArray[i] = strArray[i].replace("*", "");
 					this.drawCenteredString(this.fontRenderer, strArray[i], 50 + i * j, this.height - 20, 16716305);
-				} else
+				}
+				else
 				{
 					this.drawCenteredString(this.fontRenderer, strArray[i], 50 + i * j, this.height - 20, 16777215);
 				}
@@ -633,7 +640,8 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 					itemList.put(0, new ToolTipEntry(false, pairList0));
 					itemList.put(1, new ToolTipEntry(false, pairList1));
 					this.drawItemStackTooltip(itemList, this.createSpaceStationButton.xPosition + 115, this.createSpaceStationButton.yPosition + 15);
-				} else if (this.canCreateSpaceStation() && WorldUtil.getSpaceStationRecipe(this.getDimensionIdFromSlot()) != null)
+				}
+				else if (this.canCreateSpaceStation() && WorldUtil.getSpaceStationRecipe(this.getDimensionIdFromSlot()) != null)
 				{
 					HashMap<Integer, ToolTipEntry> itemList = new HashMap<Integer, ToolTipEntry>();
 					final SpaceStationRecipe recipe = WorldUtil.getSpaceStationRecipe(this.getDimensionIdFromSlot());
@@ -663,7 +671,8 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 									{
 										amountInInv += slot.stackSize;
 									}
-								} else if (next instanceof ArrayList)
+								}
+								else if (next instanceof ArrayList)
 								{
 									for (final ItemStack item2 : (ArrayList<ItemStack>) next)
 									{
@@ -681,7 +690,8 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 						if (next instanceof ItemStack)
 						{
 							inputList.add((ItemStack) next);
-						} else if (next instanceof ArrayList)
+						}
+						else if (next instanceof ArrayList)
 						{
 							inputList.addAll((ArrayList) next);
 						}
@@ -699,7 +709,8 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 					}
 
 					this.drawItemStackTooltip(itemList, this.createSpaceStationButton.xPosition + 115, this.createSpaceStationButton.yPosition + 15);
-				} else
+				}
+				else
 				{
 					this.createSpaceStationButton.enabled = false;
 					HashMap<Integer, ToolTipEntry> itemList = new HashMap<Integer, ToolTipEntry>();
@@ -803,7 +814,8 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 				}
 				PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.TELEPORT_ENTITY, toSend));
 				return;
-			} else
+			}
+			else
 			{
 				GCLog.severe("Severe problem when trying to teleport " + this.playerToSend.username);
 			}
@@ -849,7 +861,8 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 		if (str.contains("*"))
 		{
 			return false;
-		} else
+		}
+		else
 		{
 			return true;
 		}
@@ -860,10 +873,12 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 		if (ClientProxyCore.clientSpaceStationID == 0)
 		{
 			return true;
-		} else if (ClientProxyCore.clientSpaceStationID == -1)
+		}
+		else if (ClientProxyCore.clientSpaceStationID == -1)
 		{
 			return true;
-		} else
+		}
+		else
 		{
 			return false;
 		}
@@ -886,7 +901,8 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 		if (str.contains("$"))
 		{
 			return true;
-		} else
+		}
+		else
 		{
 			return false;
 		}

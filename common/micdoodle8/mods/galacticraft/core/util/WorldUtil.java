@@ -104,18 +104,22 @@ public class WorldUtil
 				if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT && eLiving instanceof GCCorePlayerSP)
 				{
 					return ((GCCorePlayerSP) eLiving).touchedGround ? 0.08D - customProvider.getGravity() : 0.08D;
-				} else if (eLiving instanceof GCCorePlayerMP)
+				}
+				else if (eLiving instanceof GCCorePlayerMP)
 				{
 					return ((GCCorePlayerMP) eLiving).isTouchedGround() ? 0.08D - customProvider.getGravity() : 0.08D;
-				} else
+				}
+				else
 				{
 					return 0.08D;
 				}
-			} else
+			}
+			else
 			{
 				return 0.08D - customProvider.getGravity();
 			}
-		} else
+		}
+		else
 		{
 			return 0.08D;
 		}
@@ -127,7 +131,8 @@ public class WorldUtil
 		{
 			final IGalacticraftWorldProvider customProvider = (IGalacticraftWorldProvider) e.worldObj.provider;
 			return 0.03999999910593033D - (customProvider instanceof IOrbitDimension ? 0.05999999910593033D : customProvider.getGravity()) / 1.75D;
-		} else
+		}
+		else
 		{
 			return 0.03999999910593033D;
 		}
@@ -138,7 +143,8 @@ public class WorldUtil
 		if (e.worldObj.provider instanceof IGalacticraftWorldProvider)
 		{
 			return 1.0D;
-		} else
+		}
+		else
 		{
 			return 0.9800000190734863D;
 		}
@@ -229,7 +235,8 @@ public class WorldUtil
 					{
 						return WorldProvider.getProviderForDimension(element);
 					}
-				} else if (WorldProvider.getProviderForDimension(element).getDimensionName().equals(par1String))
+				}
+				else if (WorldProvider.getProviderForDimension(element).getDimensionName().equals(par1String))
 				{
 					return WorldProvider.getProviderForDimension(element);
 				}
@@ -257,7 +264,8 @@ public class WorldUtil
 					{
 						temp.add(element);
 					}
-				} else
+				}
+				else
 				{
 					temp.add(element);
 				}
@@ -276,7 +284,8 @@ public class WorldUtil
 					{
 						temp.add(element);
 					}
-				} else
+				}
+				else
 				{
 					temp.add(element);
 				}
@@ -297,7 +306,8 @@ public class WorldUtil
 				if (WorldProvider.getProviderForDimension(id) instanceof IGalacticraftWorldProvider && !(WorldProvider.getProviderForDimension(id) instanceof IOrbitDimension) || WorldProvider.getProviderForDimension(id).dimensionId == 0)
 				{
 					map.put(WorldProvider.getProviderForDimension(id).getDimensionName(), WorldProvider.getProviderForDimension(id).dimensionId);
-				} else if (playerBase != null && WorldProvider.getProviderForDimension(id) instanceof IOrbitDimension)
+				}
+				else if (playerBase != null && WorldProvider.getProviderForDimension(id) instanceof IOrbitDimension)
 				{
 					final GCCoreSpaceStationData data = GCCoreSpaceStationData.getStationData(playerBase.worldObj, id, playerBase);
 
@@ -568,7 +578,8 @@ public class WorldUtil
 			if (ridingRocket == null)
 			{
 				WorldUtil.removeEntityFromWorld(entity.worldObj, entity, true);
-			} else
+			}
+			else
 			{
 				WorldUtil.removeEntityFromWorld(entity.worldObj, entity, true);
 			}
@@ -678,7 +689,8 @@ public class WorldUtil
 			if (ridingRocket == null && type.useParachute() && player.getExtendedInventory().getStackInSlot(4) != null && player.getExtendedInventory().getStackInSlot(4).getItem() instanceof GCCoreItemParachute)
 			{
 				player.setUsingParachute(true);
-			} else
+			}
+			else
 			{
 				player.setUsingParachute(false);
 			}
@@ -709,7 +721,8 @@ public class WorldUtil
 			{
 				spawnPos = type.getPlayerSpawnLocation((WorldServer) entity.worldObj, (EntityPlayerMP) entity);
 				entity.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
-			} else
+			}
+			else
 			{
 				spawnPos = type.getEntitySpawnLocation((WorldServer) entity.worldObj, entity);
 				entity.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
@@ -734,12 +747,14 @@ public class WorldUtil
 								{
 									player.getRocketStacks()[stack] = new ItemStack(player.getRocketItem(), 1, player.getRocketType());
 								}
-							} else if (stack == player.getRocketStacks().length - 2)
+							}
+							else if (stack == player.getRocketStacks().length - 2)
 							{
 								player.getRocketStacks()[stack] = new ItemStack(GCCoreBlocks.landingPad, 9, 0);
 							}
 						}
-					} else
+					}
+					else
 					{
 						player.getRocketStacks()[stack] = null;
 					}
@@ -876,7 +891,8 @@ public class WorldUtil
 				{
 					adjacentConnections[direction.ordinal()] = tileEntity;
 				}
-			} else if (NetworkConfigHandler.isMekanismLoaded())
+			}
+			else if (NetworkConfigHandler.isMekanismLoaded())
 			{
 				if (tileEntity instanceof ITubeConnection && (!(tileEntity instanceof IGasTransmitter) || TransmissionType.checkTransmissionType(tileEntity, TransmissionType.GAS, tileEntity)))
 				{
@@ -906,7 +922,8 @@ public class WorldUtil
 				{
 					adjacentConnections[direction.ordinal()] = tileEntity;
 				}
-			} else if (NetworkConfigHandler.isIndustrialCraft2Loaded() && tileEntity instanceof IEnergyTile)
+			}
+			else if (NetworkConfigHandler.isIndustrialCraft2Loaded() && tileEntity instanceof IEnergyTile)
 			{
 				if (tileEntity instanceof IEnergyAcceptor)
 				{
@@ -927,13 +944,15 @@ public class WorldUtil
 				}
 
 				adjacentConnections[direction.ordinal()] = tileEntity;
-			} else if (NetworkConfigHandler.isBuildcraftLoaded() && tileEntity instanceof IPowerReceptor)
+			}
+			else if (NetworkConfigHandler.isBuildcraftLoaded() && tileEntity instanceof IPowerReceptor)
 			{
 				if (((IPowerReceptor) tileEntity).getPowerReceiver(direction.getOpposite()) != null)
 				{
 					adjacentConnections[direction.ordinal()] = tileEntity;
 				}
-			} else if (NetworkConfigHandler.isThermalExpansionLoaded() && tileEntity instanceof IEnergyHandler)
+			}
+			else if (NetworkConfigHandler.isThermalExpansionLoaded() && tileEntity instanceof IEnergyHandler)
 			{
 				if (((IEnergyHandler) tileEntity).canInterface(direction.getOpposite()))
 				{

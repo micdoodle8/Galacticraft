@@ -93,7 +93,8 @@ public class GCMoonComponentVillageField extends GCMoonComponentVillage
 				if (i % 3 == 0)
 				{
 					;
-				} else
+				}
+				else
 				{
 					if (par2Random.nextInt(3) == 0)
 					{

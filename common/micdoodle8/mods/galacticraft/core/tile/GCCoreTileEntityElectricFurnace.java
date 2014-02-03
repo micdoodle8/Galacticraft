@@ -84,7 +84,8 @@ public class GCCoreTileEntityElectricFurnace extends GCCoreTileEntityUniversalEl
 					if (this.processTicks == 0)
 					{
 						this.processTicks = GCCoreTileEntityElectricFurnace.PROCESS_TIME_REQUIRED;
-					} else if (this.processTicks > 0)
+					}
+					else if (this.processTicks > 0)
 					{
 						this.processTicks--;
 
@@ -96,17 +97,20 @@ public class GCCoreTileEntityElectricFurnace extends GCCoreTileEntityUniversalEl
 							this.smeltItem();
 							this.processTicks = 0;
 						}
-					} else
+					}
+					else
 					{
 						this.processTicks = 0;
 					}
-				} else
+				}
+				else
 				{
 					this.processTicks = 0;
 				}
 
 				this.setEnergyStored(this.getEnergyStored() - GCCoreTileEntityElectricFurnace.WATTS_PER_TICK);
-			} else
+			}
+			else
 			{
 				this.processTicks = 0;
 			}
@@ -127,7 +131,8 @@ public class GCCoreTileEntityElectricFurnace extends GCCoreTileEntityUniversalEl
 		if (this.canProcess())
 		{
 			return GCCoreTileEntityElectricFurnace.WATTS_PER_TICK;
-		} else
+		}
+		else
 		{
 			return 0;
 		}
@@ -145,7 +150,8 @@ public class GCCoreTileEntityElectricFurnace extends GCCoreTileEntityUniversalEl
 		try
 		{
 			this.processTicks = dataStream.readInt();
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -205,7 +211,8 @@ public class GCCoreTileEntityElectricFurnace extends GCCoreTileEntityUniversalEl
 			if (this.containingItems[2] == null)
 			{
 				this.containingItems[2] = resultItemStack.copy();
-			} else if (this.containingItems[2].isItemEqual(resultItemStack))
+			}
+			else if (this.containingItems[2].isItemEqual(resultItemStack))
 			{
 				this.containingItems[2].stackSize++;
 			}
@@ -290,7 +297,8 @@ public class GCCoreTileEntityElectricFurnace extends GCCoreTileEntityUniversalEl
 				var3 = this.containingItems[par1];
 				this.containingItems[par1] = null;
 				return var3;
-			} else
+			}
+			else
 			{
 				var3 = this.containingItems[par1].splitStack(par2);
 
@@ -301,7 +309,8 @@ public class GCCoreTileEntityElectricFurnace extends GCCoreTileEntityUniversalEl
 
 				return var3;
 			}
-		} else
+		}
+		else
 		{
 			return null;
 		}
@@ -315,7 +324,8 @@ public class GCCoreTileEntityElectricFurnace extends GCCoreTileEntityUniversalEl
 			ItemStack var2 = this.containingItems[par1];
 			this.containingItems[par1] = null;
 			return var2;
-		} else
+		}
+		else
 		{
 			return null;
 		}

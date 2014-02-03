@@ -130,7 +130,8 @@ public class GCCoreTileEntitySolar extends GCCoreTileEntityUniversalElectrical i
 										this.solarStrength++;
 									}
 								}
-							} else
+							}
+							else
 							{
 								boolean valid = true;
 
@@ -170,22 +171,27 @@ public class GCCoreTileEntitySolar extends GCCoreTileEntityUniversalElectrical i
 				float difference = this.targetAngle - celestialAngle;
 
 				this.targetAngle -= difference / 20.0F;
-			} else if (!this.worldObj.isDaytime() || this.worldObj.isRaining() || this.worldObj.isThundering())
+			}
+			else if (!this.worldObj.isDaytime() || this.worldObj.isRaining() || this.worldObj.isThundering())
 			{
 				this.targetAngle = 77.5F + 180.0F;
-			} else if (celestialAngle < 50)
+			}
+			else if (celestialAngle < 50)
 			{
 				this.targetAngle = 50;
-			} else if (celestialAngle > 150)
+			}
+			else if (celestialAngle > 150)
 			{
 				this.targetAngle = 150;
 			}
-		} else
+		}
+		else
 		{
 			if (!this.worldObj.isDaytime() || this.worldObj.isRaining() || this.worldObj.isThundering())
 			{
 				this.targetAngle = 77.5F + 180.0F;
-			} else
+			}
+			else
 			{
 				this.targetAngle = 77.5F;
 			}
@@ -200,7 +206,8 @@ public class GCCoreTileEntitySolar extends GCCoreTileEntityUniversalElectrical i
 			if (this.getGenerate() > 0.0F)
 			{
 				this.generateWatts = Math.min(Math.max(this.getGenerate(), 0), GCCoreTileEntitySolar.MAX_GENERATE_WATTS) / 20.0F;
-			} else
+			}
+			else
 			{
 				this.generateWatts = 0.0F;
 			}
@@ -247,7 +254,8 @@ public class GCCoreTileEntitySolar extends GCCoreTileEntityUniversalElectrical i
 			this.generateWatts = dataStream.readFloat();
 			this.disableCooldown = dataStream.readInt();
 			this.disabled = dataStream.readBoolean();
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -494,7 +502,8 @@ public class GCCoreTileEntitySolar extends GCCoreTileEntityUniversalElectrical i
 				var3 = this.containingItems[par1];
 				this.containingItems[par1] = null;
 				return var3;
-			} else
+			}
+			else
 			{
 				var3 = this.containingItems[par1].splitStack(par2);
 
@@ -505,7 +514,8 @@ public class GCCoreTileEntitySolar extends GCCoreTileEntityUniversalElectrical i
 
 				return var3;
 			}
-		} else
+		}
+		else
 		{
 			return null;
 		}
@@ -519,7 +529,8 @@ public class GCCoreTileEntitySolar extends GCCoreTileEntityUniversalElectrical i
 			final ItemStack var2 = this.containingItems[par1];
 			this.containingItems[par1] = null;
 			return var2;
-		} else
+		}
+		else
 		{
 			return null;
 		}

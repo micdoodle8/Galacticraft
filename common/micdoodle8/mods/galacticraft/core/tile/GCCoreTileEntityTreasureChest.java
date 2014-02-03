@@ -123,7 +123,8 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
 				this.chestContents[par1] = null;
 				this.onInventoryChanged();
 				return itemstack;
-			} else
+			}
+			else
 			{
 				itemstack = this.chestContents[par1].splitStack(par2);
 
@@ -135,7 +136,8 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
 				this.onInventoryChanged();
 				return itemstack;
 			}
-		} else
+		}
+		else
 		{
 			return null;
 		}
@@ -154,7 +156,8 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
 			final ItemStack itemstack = this.chestContents[par1];
 			this.chestContents[par1] = null;
 			return itemstack;
-		} else
+		}
+		else
 		{
 			return null;
 		}
@@ -263,7 +266,8 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
 		if (par1TileEntityChest.isInvalid())
 		{
 			this.adjacentChestChecked = false;
-		} else if (this.adjacentChestChecked)
+		}
+		else if (this.adjacentChestChecked)
 		{
 			switch (par2)
 			{
@@ -424,7 +428,8 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
 			if (this.numUsingPlayers > 0)
 			{
 				this.lidAngle += f;
-			} else
+			}
+			else
 			{
 				this.lidAngle -= f;
 			}
@@ -491,7 +496,8 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
 			{
 				this.locked = dataStream.readBoolean();
 			}
-		} catch (final Exception e)
+		}
+		catch (final Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -508,7 +514,8 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
 		{
 			this.numUsingPlayers = par2;
 			return true;
-		} else
+		}
+		else
 		{
 			return super.receiveClientEvent(par1, par2);
 		}
@@ -586,7 +593,8 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
 			{
 				// player.playSound("galacticraft.player.unlockchest", 1.0F,
 				// 1.0F);
-			} else
+			}
+			else
 			{
 				if (this.adjacentChestXNeg != null)
 				{

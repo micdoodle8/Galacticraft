@@ -124,10 +124,12 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
 		if (t < 0.0)
 		{
 			return d1;
-		} else if (t > 1.0)
+		}
+		else if (t > 1.0)
 		{
 			return d2;
-		} else
+		}
+		else
 		{
 			return d1 + (d2 - d1) * t;
 		}
@@ -174,14 +176,16 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
 					if (var16 <= 0 + this.rand.nextInt(5))
 					{
 						arrayOfIDs[index] = (short) Block.bedrock.blockID;
-					} else
+					}
+					else
 					{
 						final int var18 = arrayOfIDs[index];
 
 						if (var18 == 0)
 						{
 							var13 = -1;
-						} else if (var18 == this.getStoneBlock().getBlockID())
+						}
+						else if (var18 == this.getStoneBlock().getBlockID())
 						{
 							arrayOfMeta[index] = this.getStoneBlock().getMetadata();
 
@@ -193,7 +197,8 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
 									var14m = 0;
 									var15 = this.getStoneBlock().getBlockID();
 									var15m = this.getStoneBlock().getMetadata();
-								} else if (var16 >= var5 - -16 && var16 <= var5 + 1)
+								}
+								else if (var16 >= var5 - -16 && var16 <= var5 + 1)
 								{
 									var14 = this.getGrassBlock().getBlockID();
 									var14m = this.getGrassBlock().getMetadata();
@@ -212,12 +217,14 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
 								{
 									arrayOfIDs[index] = var14;
 									arrayOfMeta[index] = var14m;
-								} else
+								}
+								else
 								{
 									arrayOfIDs[index] = var15;
 									arrayOfMeta[index] = var15m;
 								}
-							} else if (var13 > 0)
+							}
+							else if (var13 > 0)
 							{
 								--var13;
 								arrayOfIDs[index] = var15;
@@ -395,7 +402,8 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
 			}
 
 			return monsters;
-		} else if (par1EnumCreatureType == EnumCreatureType.creature)
+		}
+		else if (par1EnumCreatureType == EnumCreatureType.creature)
 		{
 			final List creatures = new ArrayList();
 
@@ -405,7 +413,8 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
 			}
 
 			return creatures;
-		} else
+		}
+		else
 		{
 			return null;
 		}

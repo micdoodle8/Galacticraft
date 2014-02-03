@@ -155,7 +155,8 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
 		{
 			this.boundingBoxBefore = this.boundingBox;
 			this.boundingBox.setBounds(this.boundingBoxBefore.minX + 0.4, this.boundingBoxBefore.minY + 0.9, this.boundingBoxBefore.minZ + 0.4, this.boundingBoxBefore.maxX - 0.4, this.boundingBoxBefore.maxY - 0.9, this.boundingBoxBefore.maxZ - 0.4);
-		} else if (this.boundingBox != null && this.boundingBoxBefore != null)
+		}
+		else if (this.boundingBox != null && this.boundingBoxBefore != null)
 		{
 			this.boundingBox.setBB(this.boundingBoxBefore);
 		}
@@ -214,7 +215,8 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
 		if (par1ItemStack.itemID == Item.fishingRod.itemID && this.fishEntity != null)
 		{
 			icon = Item.fishingRod.func_94597_g();
-		} else
+		}
+		else
 		{
 			if (par1ItemStack.getItem().requiresMultipleRenderPasses())
 			{
@@ -239,7 +241,8 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
 				{
 					return Item.bow.getItemIconForUseDuration(0);
 				}
-			} else
+			}
+			else
 			{
 				return super.getItemIcon(par1ItemStack, par2);
 			}
@@ -285,7 +288,8 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
 		if (this.usingAdvancedGoggles)
 		{
 			this.usingAdvancedGoggles = false;
-		} else
+		}
+		else
 		{
 			this.usingAdvancedGoggles = true;
 		}

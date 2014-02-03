@@ -200,7 +200,8 @@ public class GCItems
 				ItemStack stack = blockMap.get(key);
 				return new ItemStack(stack.itemID, amount, stack.getItemDamage());
 			}
-		} catch (Exception ex)
+		}
+		catch (Exception ex)
 		{
 			ex.printStackTrace();
 		}
@@ -241,7 +242,8 @@ public class GCItems
 				ItemStack stack = blockMap.get(key);
 				return new ItemStack(stack.itemID, amount, stack.getItemDamage());
 			}
-		} catch (Exception ex)
+		}
+		catch (Exception ex)
 		{
 			ex.printStackTrace();
 		}

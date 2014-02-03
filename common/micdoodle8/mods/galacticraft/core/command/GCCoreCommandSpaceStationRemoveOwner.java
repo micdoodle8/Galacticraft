@@ -57,7 +57,8 @@ public class GCCoreCommandSpaceStationRemoveOwner extends CommandBase
 					if (playerBase.getSpaceStationDimensionID() <= 0)
 					{
 						throw new WrongUsageException("Could not find space station for your username, you need to travel there first!", new Object[0]);
-					} else
+					}
+					else
 					{
 						final GCCoreSpaceStationData data = GCCoreSpaceStationData.getStationData(playerBase.worldObj, playerBase.getSpaceStationDimensionID(), playerBase);
 
@@ -65,18 +66,21 @@ public class GCCoreCommandSpaceStationRemoveOwner extends CommandBase
 						{
 							data.getAllowedPlayers().remove(var3.toLowerCase());
 							data.markDirty();
-						} else
+						}
+						else
 						{
 							throw new CommandException("Couldn't find player with username \"" + var3 + "\" on your Space Station list!", new Object[0]);
 						}
 					}
 				}
-			} catch (final Exception var6)
+			}
+			catch (final Exception var6)
 			{
 				throw new CommandException(var6.getMessage(), new Object[0]);
 			}
 
-		} else
+		}
+		else
 		{
 			throw new WrongUsageException("Not enough command arguments! Usage: " + this.getCommandUsage(icommandsender), new Object[0]);
 		}

@@ -49,13 +49,15 @@ public class GCMarsContainerTerraformer extends Container
 				if (var6 == 0)
 				{
 					stacks.add(new ItemStack(Item.dyePowder, 1, 15));
-				} else if (var6 == 1)
+				}
+				else if (var6 == 1)
 				{
 					stacks.add(new ItemStack(Block.sapling, 1, 0));
 					stacks.add(new ItemStack(Block.sapling, 1, 1));
 					stacks.add(new ItemStack(Block.sapling, 1, 2));
 					stacks.add(new ItemStack(Block.sapling, 1, 3));
-				} else if (var6 == 2)
+				}
+				else if (var6 == 2)
 				{
 					stacks.add(new ItemStack(Item.seeds));
 				}
@@ -112,7 +114,8 @@ public class GCMarsContainerTerraformer extends Container
 				}
 
 				var3.onSlotChange(var4, var2);
-			} else if (par1 != 1 && par1 != 0)
+			}
+			else if (par1 != 1 && par1 != 0)
 			{
 				if (var4.getItem() instanceof IItemElectric)
 				{
@@ -120,23 +123,27 @@ public class GCMarsContainerTerraformer extends Container
 					{
 						return null;
 					}
-				} else if (FluidContainerRegistry.isContainer(var4) || FluidContainerRegistry.containsFluid(var4, FluidRegistry.getFluidStack("fuel", 1)))
+				}
+				else if (FluidContainerRegistry.isContainer(var4) || FluidContainerRegistry.containsFluid(var4, FluidRegistry.getFluidStack("fuel", 1)))
 				{
 					if (!this.mergeItemStack(var4, 1, 2, false))
 					{
 						return null;
 					}
-				} else if (par1 >= 3 && par1 < 30)
+				}
+				else if (par1 >= 3 && par1 < 30)
 				{
 					if (!this.mergeItemStack(var4, 30, 39, false))
 					{
 						return null;
 					}
-				} else if (par1 >= 30 && par1 < 39 && !this.mergeItemStack(var4, 3, 30, false))
+				}
+				else if (par1 >= 30 && par1 < 39 && !this.mergeItemStack(var4, 3, 30, false))
 				{
 					return null;
 				}
-			} else if (!this.mergeItemStack(var4, 3, 39, false))
+			}
+			else if (!this.mergeItemStack(var4, 3, 39, false))
 			{
 				return null;
 			}
@@ -144,7 +151,8 @@ public class GCMarsContainerTerraformer extends Container
 			if (var4.stackSize == 0)
 			{
 				var3.putStack((ItemStack) null);
-			} else
+			}
+			else
 			{
 				var3.onSlotChanged();
 			}

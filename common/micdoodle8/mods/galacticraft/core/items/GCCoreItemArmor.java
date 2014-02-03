@@ -53,10 +53,12 @@ public class GCCoreItemArmor extends ItemArmor
 			if (stack.getItem().itemID == GCCoreItems.steelHelmet.itemID)
 			{
 				return "textures/model/armor/titanium_1.png";
-			} else if (stack.getItem().itemID == GCCoreItems.steelChestplate.itemID || stack.getItem().itemID == GCCoreItems.steelBoots.itemID)
+			}
+			else if (stack.getItem().itemID == GCCoreItems.steelChestplate.itemID || stack.getItem().itemID == GCCoreItems.steelBoots.itemID)
 			{
 				return "textures/model/armor/titanium_2.png";
-			} else if (stack.getItem().itemID == GCCoreItems.steelLeggings.itemID)
+			}
+			else if (stack.getItem().itemID == GCCoreItems.steelLeggings.itemID)
 			{
 				return "textures/model/armor/titanium_3.png";
 			}

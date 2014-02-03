@@ -57,7 +57,8 @@ public class GCCoreEntityFlag extends Entity
 			if (this.isEntityInvulnerable())
 			{
 				return false;
-			} else
+			}
+			else
 			{
 				this.setBeenAttacked();
 				this.setDamage(this.getDamage() + par2 * 10);
@@ -80,7 +81,8 @@ public class GCCoreEntityFlag extends Entity
 
 				return true;
 			}
-		} else
+		}
+		else
 		{
 			return true;
 		}
@@ -186,7 +188,8 @@ public class GCCoreEntityFlag extends Entity
 			if (blockAt instanceof BlockFence)
 			{
 
-			} else if (blockAt.isAirBlock(this.worldObj, vec.intX(), vec.intY(), vec.intZ()))
+			}
+			else if (blockAt.isAirBlock(this.worldObj, vec.intX(), vec.intY(), vec.intZ()))
 			{
 				this.motionY -= 0.02F;
 			}

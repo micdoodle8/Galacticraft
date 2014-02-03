@@ -81,7 +81,8 @@ public class GCCoreContainerOxygenStorageModule extends Container
 						{
 							return null;
 						}
-					} else
+					}
+					else
 					{
 						if (!this.mergeItemStack(itemStack, 0, 1, false))
 						{
@@ -94,7 +95,8 @@ public class GCCoreContainerOxygenStorageModule extends Container
 				{
 					return null;
 				}
-			} else if (!this.mergeItemStack(itemStack, 3, 38, false))
+			}
+			else if (!this.mergeItemStack(itemStack, 3, 38, false))
 			{
 				return null;
 			}
@@ -102,7 +104,8 @@ public class GCCoreContainerOxygenStorageModule extends Container
 			if (itemStack.stackSize == 0)
 			{
 				slot.putStack((ItemStack) null);
-			} else
+			}
+			else
 			{
 				slot.onSlotChanged();
 			}

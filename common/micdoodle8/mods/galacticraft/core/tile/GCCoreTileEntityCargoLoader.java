@@ -78,11 +78,13 @@ public class GCCoreTileEntityCargoLoader extends GCCoreTileEntityElectricBlock i
 					{
 						this.attachedFuelable.addCargo(this.removeCargo(true).resultStack, true);
 					}
-				} else
+				}
+				else
 				{
 					this.outOfItems = true;
 				}
-			} else
+			}
+			else
 			{
 				this.noTarget = true;
 			}
@@ -112,7 +114,8 @@ public class GCCoreTileEntityCargoLoader extends GCCoreTileEntityElectricBlock i
 						foundFuelable = true;
 						break;
 					}
-				} else if (pad != null && pad instanceof ICargoEntity)
+				}
+				else if (pad != null && pad instanceof ICargoEntity)
 				{
 					this.attachedFuelable = (ICargoEntity) pad;
 					foundFuelable = true;
@@ -151,7 +154,8 @@ public class GCCoreTileEntityCargoLoader extends GCCoreTileEntityElectricBlock i
 				var3 = this.containingItems[par1];
 				this.containingItems[par1] = null;
 				return var3;
-			} else
+			}
+			else
 			{
 				var3 = this.containingItems[par1].splitStack(par2);
 
@@ -162,7 +166,8 @@ public class GCCoreTileEntityCargoLoader extends GCCoreTileEntityElectricBlock i
 
 				return var3;
 			}
-		} else
+		}
+		else
 		{
 			return null;
 		}
@@ -176,7 +181,8 @@ public class GCCoreTileEntityCargoLoader extends GCCoreTileEntityElectricBlock i
 			final ItemStack var2 = this.containingItems[par1];
 			this.containingItems[par1] = null;
 			return var2;
-		} else
+		}
+		else
 		{
 			return null;
 		}
@@ -278,7 +284,8 @@ public class GCCoreTileEntityCargoLoader extends GCCoreTileEntityElectricBlock i
 			if (slotID == 0)
 			{
 				return itemstack.getItem() instanceof IItemElectric;
-			} else
+			}
+			else
 			{
 				return true;
 			}
@@ -305,7 +312,8 @@ public class GCCoreTileEntityCargoLoader extends GCCoreTileEntityElectricBlock i
 		if (slotID == 0)
 		{
 			return itemstack.getItem() instanceof IItemElectric;
-		} else
+		}
+		else
 		{
 			return true;
 		}

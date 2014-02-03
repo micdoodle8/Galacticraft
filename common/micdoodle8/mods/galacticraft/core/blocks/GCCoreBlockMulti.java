@@ -57,12 +57,14 @@ public class GCCoreBlockMulti extends BlockMulti implements IPartialSealableBloc
 				Class<?> c = Class.forName("micdoodle8.mods.galacticraft.mars.GalacticraftMars");
 				String texturePrefix = (String) c.getField("TEXTURE_PREFIX").get(null);
 				this.fakeIcons[3] = par1IconRegister.registerIcon(texturePrefix + "cryoDummy");
-			} catch (Exception e)
+			}
+			catch (Exception e)
 			{
 				this.fakeIcons[3] = this.fakeIcons[2];
 				e.printStackTrace();
 			}
-		} else
+		}
+		else
 		{
 			this.fakeIcons[3] = this.fakeIcons[2];
 		}
@@ -101,7 +103,8 @@ public class GCCoreBlockMulti extends BlockMulti implements IPartialSealableBloc
 		if (meta == 2)
 		{
 			this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
-		} else
+		}
+		else
 		{
 			this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 		}
@@ -117,7 +120,8 @@ public class GCCoreBlockMulti extends BlockMulti implements IPartialSealableBloc
 		{
 			this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
 			super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, list, entity);
-		} else
+		}
+		else
 		{
 			super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, list, entity);
 		}

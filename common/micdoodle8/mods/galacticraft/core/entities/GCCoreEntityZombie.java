@@ -167,11 +167,13 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
 				int k = MathHelper.floor_double(this.posY - this.yOffset + d0);
 				FMLLog.info("d " + this.worldObj.getLightBrightness(i, k, j));
 				return this.worldObj.getLightBrightness(i, k, j);
-			} else
+			}
+			else
 			{
 				return 0.0F;
 			}
-		} else
+		}
+		else
 		{
 			return this.getBrightness(par1);
 		}
@@ -350,7 +352,8 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
 			if (i == 0)
 			{
 				this.setCurrentItemOrArmor(0, new ItemStack(Item.swordIron));
-			} else
+			}
+			else
 			{
 				this.setCurrentItemOrArmor(0, new ItemStack(Item.shovelIron));
 			}
@@ -498,7 +501,8 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
 			}
 
 			return true;
-		} else
+		}
+		else
 		{
 			return false;
 		}
@@ -525,7 +529,8 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
 		if (par1 == 16)
 		{
 			this.worldObj.playSound(this.posX + 0.5D, this.posY + 0.5D, this.posZ + 0.5D, "mob.zombie.remedy", 1.0F + this.rand.nextFloat(), this.rand.nextFloat() * 0.7F + 0.3F, false);
-		} else
+		}
+		else
 		{
 			super.handleHealthUpdate(par1);
 		}

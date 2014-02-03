@@ -185,7 +185,8 @@ public class GCMarsBlock extends Block implements IDetectableResource, IPlantabl
 		if (meta == 2)
 		{
 			return GCMarsItems.marsItemBasic.itemID;
-		} else if (meta == 10 || meta == 7)
+		}
+		else if (meta == 10 || meta == 7)
 		{
 			return 0;
 		}
@@ -199,10 +200,12 @@ public class GCMarsBlock extends Block implements IDetectableResource, IPlantabl
 		if (meta == 9)
 		{
 			return 4;
-		} else if (meta == 2)
+		}
+		else if (meta == 2)
 		{
 			return 0;
-		} else
+		}
+		else
 		{
 			return meta;
 		}

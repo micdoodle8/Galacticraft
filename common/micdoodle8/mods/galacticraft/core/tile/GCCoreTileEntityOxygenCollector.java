@@ -117,7 +117,8 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityOxygen impl
 							}
 						}
 					}
-				} else
+				}
+				else
 				{
 					power = 9.3;
 				}
@@ -127,7 +128,8 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityOxygen impl
 				this.lastOxygenCollected = (float) power;
 
 				this.storedOxygen = (int) Math.max(Math.min(this.storedOxygen + power, this.maxOxygen), 0);
-			} else
+			}
+			else
 			{
 				this.lastOxygenCollected = 0;
 			}
@@ -199,7 +201,8 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityOxygen impl
 				var3 = this.containingItems[par1];
 				this.containingItems[par1] = null;
 				return var3;
-			} else
+			}
+			else
 			{
 				var3 = this.containingItems[par1].splitStack(par2);
 
@@ -210,7 +213,8 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityOxygen impl
 
 				return var3;
 			}
-		} else
+		}
+		else
 		{
 			return null;
 		}
@@ -224,7 +228,8 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityOxygen impl
 			final ItemStack var2 = this.containingItems[par1];
 			this.containingItems[par1] = null;
 			return var2;
-		} else
+		}
+		else
 		{
 			return null;
 		}

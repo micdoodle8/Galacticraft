@@ -128,13 +128,16 @@ public class GCCoreGuiRefinery extends GCCoreGuiContainer
 		if (this.tileEntity.oilTank.getFluid() == null || this.tileEntity.oilTank.getFluidAmount() == 0)
 		{
 			displayText = EnumColor.RED + StatCollector.translateToLocal("gui.status.nooil.name");
-		} else if (this.tileEntity.oilTank.getFluidAmount() > 0 && this.tileEntity.disabled)
+		}
+		else if (this.tileEntity.oilTank.getFluidAmount() > 0 && this.tileEntity.disabled)
 		{
 			displayText = EnumColor.ORANGE + StatCollector.translateToLocal("gui.status.ready.name");
-		} else if (this.tileEntity.canProcess())
+		}
+		else if (this.tileEntity.canProcess())
 		{
 			displayText = EnumColor.BRIGHT_GREEN + StatCollector.translateToLocal("gui.status.refining.name");
-		} else
+		}
+		else
 		{
 			displayText = EnumColor.RED + StatCollector.translateToLocal("gui.status.unknown.name");
 		}

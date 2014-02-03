@@ -49,7 +49,8 @@ public class GCCoreItemRendererMeteorChunk implements IItemRenderer
 		if (item.getItemDamage() == 0)
 		{
 			FMLClientHandler.instance().getClient().getTextureManager().bindTexture(GCCoreItemRendererMeteorChunk.meteorChunkTexture);
-		} else
+		}
+		else
 		{
 			FMLClientHandler.instance().getClient().getTextureManager().bindTexture(GCCoreItemRendererMeteorChunk.meteorChunkHotTexture);
 		}

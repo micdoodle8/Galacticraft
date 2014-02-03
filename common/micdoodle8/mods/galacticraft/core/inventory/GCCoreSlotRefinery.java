@@ -46,7 +46,8 @@ public class GCCoreSlotRefinery extends Slot
 					}
 				}
 			}
-		} catch (final Throwable cnfe)
+		}
+		catch (final Throwable cnfe)
 		{
 		}
 

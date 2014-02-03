@@ -80,14 +80,16 @@ public class GCCoreThreadVersionCheck extends Thread
 							if (sideToCheck.equals(Side.CLIENT))
 							{
 								FMLClientHandler.instance().getClient().thePlayer.addChatMessage(EnumColor.GREY + "New " + EnumColor.DARK_AQUA + "Galacticraft" + EnumColor.GREY + " version available! v" + String.valueOf(GalacticraftCore.remoteMajVer) + "." + String.valueOf(GalacticraftCore.remoteMinVer) + "." + String.valueOf(GalacticraftCore.remoteBuildVer) + EnumColor.DARK_BLUE + " http://micdoodle8.com/");
-							} else if (sideToCheck.equals(Side.SERVER))
+							}
+							else if (sideToCheck.equals(Side.SERVER))
 							{
 								GCLog.severe("New Galacticraft version available! v" + String.valueOf(GalacticraftCore.remoteMajVer) + "." + String.valueOf(GalacticraftCore.remoteMinVer) + "." + String.valueOf(GalacticraftCore.remoteBuildVer) + " http://micdoodle8.com/");
 							}
 						}
 					}
 				}
-			} catch (final Exception e)
+			}
+			catch (final Exception e)
 			{
 			}
 
@@ -97,10 +99,12 @@ public class GCCoreThreadVersionCheck extends Thread
 				{
 					GCLog.severe(StatCollector.translateToLocal("newversion.failed.name"));
 					Thread.sleep(15000);
-				} catch (final InterruptedException e)
+				}
+				catch (final InterruptedException e)
 				{
 				}
-			} else
+			}
+			else
 			{
 				GCLog.info(StatCollector.translateToLocal("newversion.success.name") + " " + GalacticraftCore.remoteMajVer + "." + GalacticraftCore.remoteMinVer + "." + GalacticraftCore.remoteBuildVer);
 			}

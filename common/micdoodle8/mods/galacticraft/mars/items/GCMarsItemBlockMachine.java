@@ -43,7 +43,8 @@ public class GCMarsItemBlockMachine extends ItemBlock implements IHoldableItem
 		if (itemstack.getItemDamage() >= GCMarsBlockMachine.LAUNCH_CONTROLLER_METADATA)
 		{
 			metadata = 2;
-		} else if (itemstack.getItemDamage() >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA)
+		}
+		else if (itemstack.getItemDamage() >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA)
 		{
 			metadata = 1;
 		}

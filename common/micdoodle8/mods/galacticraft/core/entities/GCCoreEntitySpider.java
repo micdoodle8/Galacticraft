@@ -88,7 +88,8 @@ public class GCCoreEntitySpider extends EntitySpider implements IEntityBreathabl
 		{
 			final double var2 = 16.0D;
 			return this.worldObj.getClosestVulnerablePlayerToEntity(this, var2);
-		} else
+		}
+		else
 		{
 			return null;
 		}
@@ -142,7 +143,8 @@ public class GCCoreEntitySpider extends EntitySpider implements IEntityBreathabl
 		if (var3 > 0.5F && this.rand.nextInt(100) == 0)
 		{
 			this.entityToAttack = null;
-		} else
+		}
+		else
 		{
 			if (par2 > 2.0F && par2 < 6.0F && this.rand.nextInt(10) == 0)
 			{
@@ -155,7 +157,8 @@ public class GCCoreEntitySpider extends EntitySpider implements IEntityBreathabl
 					this.motionZ = var6 / var8 * 0.5D * 0.800000011920929D + this.motionZ * 0.20000000298023224D;
 					this.motionY = 0.4000000059604645D;
 				}
-			} else
+			}
+			else
 			{
 				super.attackEntity(par1Entity, par2);
 			}
@@ -239,7 +242,8 @@ public class GCCoreEntitySpider extends EntitySpider implements IEntityBreathabl
 		if (par1)
 		{
 			var2 = (byte) (var2 | 1);
-		} else
+		}
+		else
 		{
 			var2 &= -2;
 		}

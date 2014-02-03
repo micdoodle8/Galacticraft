@@ -108,7 +108,8 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvancedTile
 			}
 
 			return this.airLockIcons[7];
-		} else
+		}
+		else
 		{
 			return this.airLockIcons[0];
 		}
@@ -133,15 +134,18 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvancedTile
 				if (controller.active)
 				{
 					return this.airLockIcons[6];
-				} else
+				}
+				else
 				{
 					return this.airLockIcons[7];
 				}
-			} else
+			}
+			else
 			{
 				return this.airLockIcons[6];
 			}
-		} else
+		}
+		else
 		{
 			for (final ForgeDirection orientation : ForgeDirection.values())
 			{
@@ -158,38 +162,47 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvancedTile
 							if (side == 0)
 							{
 								return this.airLockIcons[1];
-							} else if (side == 1)
+							}
+							else if (side == 1)
 							{
 								return this.airLockIcons[0];
-							} else
+							}
+							else
 							{
 								return this.airLockIcons[2];
 							}
-						} else if (orientation.offsetY == 1)
+						}
+						else if (orientation.offsetY == 1)
 						{
 							if (side == 0)
 							{
 								return this.airLockIcons[0];
-							} else if (side == 1)
+							}
+							else if (side == 1)
 							{
 								return this.airLockIcons[1];
-							} else
+							}
+							else
 							{
 								return this.airLockIcons[3];
 							}
-						} else if (orientation.ordinal() == side)
+						}
+						else if (orientation.ordinal() == side)
 						{
 							if (side == 0)
 							{
 								return this.airLockIcons[0];
-							} else if (side == 1)
+							}
+							else if (side == 1)
 							{
 								return this.airLockIcons[1];
-							} else
+							}
+							else
 							{
 								return this.airLockIcons[3];
 							}
-						} else if (orientation.getOpposite().ordinal() == side)
+						}
+						else if (orientation.getOpposite().ordinal() == side)
 						{
 							return this.airLockIcons[0];
 						}
@@ -204,58 +217,73 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvancedTile
 								if (side == 0)
 								{
 									return this.airLockIcons[4];
-								} else if (side == 1)
+								}
+								else if (side == 1)
 								{
 									return this.airLockIcons[4];
-								} else if (side == 3)
+								}
+								else if (side == 3)
 								{
 									return this.airLockIcons[4];
-								} else if (side == 2)
+								}
+								else if (side == 2)
 								{
 									return this.airLockIcons[5];
 								}
-							} else if (orientation.offsetX == -1)
+							}
+							else if (orientation.offsetX == -1)
 							{
 								if (side == 0)
 								{
 									return this.airLockIcons[5];
-								} else if (side == 1)
+								}
+								else if (side == 1)
 								{
 									return this.airLockIcons[5];
-								} else if (side == 3)
+								}
+								else if (side == 3)
 								{
 									return this.airLockIcons[5];
-								} else if (side == 2)
+								}
+								else if (side == 2)
 								{
 									return this.airLockIcons[4];
 								}
-							} else if (orientation.offsetZ == 1)
+							}
+							else if (orientation.offsetZ == 1)
 							{
 								if (side == 0)
 								{
 									return this.airLockIcons[2];
-								} else if (side == 1)
+								}
+								else if (side == 1)
 								{
 									return this.airLockIcons[2];
-								} else if (side == 4)
+								}
+								else if (side == 4)
 								{
 									return this.airLockIcons[4];
-								} else if (side == 5)
+								}
+								else if (side == 5)
 								{
 									return this.airLockIcons[5];
 								}
-							} else if (orientation.offsetZ == -1)
+							}
+							else if (orientation.offsetZ == -1)
 							{
 								if (side == 0)
 								{
 									return this.airLockIcons[3];
-								} else if (side == 1)
+								}
+								else if (side == 1)
 								{
 									return this.airLockIcons[3];
-								} else if (side == 4)
+								}
+								else if (side == 4)
 								{
 									return this.airLockIcons[5];
-								} else if (side == 5)
+								}
+								else if (side == 5)
 								{
 									return this.airLockIcons[4];
 								}
@@ -301,7 +329,8 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvancedTile
 		if (metadata < GCCoreBlockAirLockFrame.METADATA_AIR_LOCK_CONTROLLER)
 		{
 			return new GCCoreTileEntityAirLock();
-		} else
+		}
+		else
 		{
 			return new GCCoreTileEntityAirLockController();
 		}
@@ -347,7 +376,8 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvancedTile
 		if (metadata >= GCCoreBlockAirLockFrame.METADATA_AIR_LOCK_CONTROLLER)
 		{
 			return GCCoreBlockAirLockFrame.METADATA_AIR_LOCK_CONTROLLER;
-		} else if (metadata >= GCCoreBlockAirLockFrame.METADATA_AIR_LOCK_FRAME)
+		}
+		else if (metadata >= GCCoreBlockAirLockFrame.METADATA_AIR_LOCK_FRAME)
 		{
 			return GCCoreBlockAirLockFrame.METADATA_AIR_LOCK_FRAME;
 		}

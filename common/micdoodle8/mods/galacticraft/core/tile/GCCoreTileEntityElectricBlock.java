@@ -70,7 +70,8 @@ public abstract class GCCoreTileEntityElectricBlock extends GCCoreTileEntityUniv
 		if (this.shouldPullEnergy())
 		{
 			return this.ueWattsPerTick * 2;
-		} else
+		}
+		else
 		{
 			return 0;
 		}

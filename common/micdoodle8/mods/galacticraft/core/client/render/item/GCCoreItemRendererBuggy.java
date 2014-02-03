@@ -50,7 +50,8 @@ public class GCCoreItemRendererBuggy implements IItemRenderer
 		{
 			GL11.glScalef(2.2F, 2.2F, 2.2F);
 			GL11.glTranslatef(0.3F, 2.7F, 0.4F);
-		} else if (type == ItemRenderType.EQUIPPED_FIRST_PERSON)
+		}
+		else if (type == ItemRenderType.EQUIPPED_FIRST_PERSON)
 		{
 			GL11.glTranslatef(0.0F, 1.0F, 0.0F);
 		}
@@ -62,7 +63,8 @@ public class GCCoreItemRendererBuggy implements IItemRenderer
 			if (type == ItemRenderType.INVENTORY)
 			{
 				GL11.glScalef(0.5F, 0.35F, 0.5F);
-			} else
+			}
+			else
 			{
 				GL11.glTranslatef(0, -0.9F, 0);
 				GL11.glScalef(0.5F, 0.5F, 0.5F);

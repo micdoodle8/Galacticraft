@@ -117,7 +117,8 @@ public class GCCoreContainerRocketRefill extends Container
 				{
 					return null;
 				}
-			} else if (!this.mergeItemStack(var5, 0, 27, false))
+			}
+			else if (!this.mergeItemStack(var5, 0, 27, false))
 			{
 				return null;
 			}
@@ -125,7 +126,8 @@ public class GCCoreContainerRocketRefill extends Container
 			if (var5.stackSize == 0)
 			{
 				var4.putStack((ItemStack) null);
-			} else
+			}
+			else
 			{
 				var4.onSlotChanged();
 			}

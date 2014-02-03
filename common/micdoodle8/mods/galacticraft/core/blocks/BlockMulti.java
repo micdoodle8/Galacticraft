@@ -62,7 +62,8 @@ public class BlockMulti extends BlockContainer
 		if (this.textureName != null)
 		{
 			this.blockIcon = iconRegister.registerIcon(this.textureName);
-		} else
+		}
+		else
 		{
 			super.registerIcons(iconRegister);
 		}

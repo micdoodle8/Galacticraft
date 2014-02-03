@@ -144,7 +144,8 @@ public class GCMarsEntityLandingBalloons extends GCCoreEntityAdvanced implements
 					if (isCanister)
 					{
 						this.chestContents[this.chestContents.length - 1] = new ItemStack(GCCoreItems.fuelCanister, 1, GCCoreItems.fuelCanister.getMaxDamage() - amountToFill);
-					} else
+					}
+					else
 					{
 						this.chestContents[this.chestContents.length - 1] = FluidContainerRegistry.fillFluidContainer(liquid, this.chestContents[this.chestContents.length - 1]);
 					}
@@ -242,7 +243,8 @@ public class GCMarsEntityLandingBalloons extends GCCoreEntityAdvanced implements
 				this.chestContents[par1] = null;
 				this.onInventoryChanged();
 				return itemstack;
-			} else
+			}
+			else
 			{
 				itemstack = this.chestContents[par1].splitStack(par2);
 
@@ -254,7 +256,8 @@ public class GCMarsEntityLandingBalloons extends GCCoreEntityAdvanced implements
 				this.onInventoryChanged();
 				return itemstack;
 			}
-		} else
+		}
+		else
 		{
 			return null;
 		}
@@ -268,7 +271,8 @@ public class GCMarsEntityLandingBalloons extends GCCoreEntityAdvanced implements
 			final ItemStack itemstack = this.chestContents[par1];
 			this.chestContents[par1] = null;
 			return itemstack;
-		} else
+		}
+		else
 		{
 			return null;
 		}
@@ -350,16 +354,19 @@ public class GCMarsEntityLandingBalloons extends GCCoreEntityAdvanced implements
 			}
 
 			return true;
-		} else if (this.riddenByEntity == null && this.groundHitCount >= 14 && var1 instanceof EntityPlayerMP)
+		}
+		else if (this.riddenByEntity == null && this.groundHitCount >= 14 && var1 instanceof EntityPlayerMP)
 		{
 			GCMarsUtil.openParachestInventory((EntityPlayerMP) var1, this);
 			return true;
-		} else if (var1 instanceof EntityPlayerMP)
+		}
+		else if (var1 instanceof EntityPlayerMP)
 		{
 			((EntityPlayerMP) var1).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.ZOOM_CAMERA, new Object[] { 0 }));
 			var1.mountEntity(null);
 			return true;
-		} else
+		}
+		else
 		{
 			return true;
 		}
@@ -446,11 +453,13 @@ public class GCMarsEntityLandingBalloons extends GCCoreEntityAdvanced implements
 			if (this.groundHitCount == 0)
 			{
 				this.motionY = -this.posY / 50.0D;
-			} else if (this.groundHitCount < 14)
+			}
+			else if (this.groundHitCount < 14)
 			{
 				this.motionY *= 0.95D;
 				this.motionY -= 0.08D;
-			} else
+			}
+			else
 			{
 				this.motionY = this.motionX = this.motionZ = this.rotationPitch = this.rotationYaw = this.rotationPitchSpeed = this.rotationYawSpeed = 0.0F;
 			}
@@ -481,7 +490,8 @@ public class GCMarsEntityLandingBalloons extends GCCoreEntityAdvanced implements
 			this.motionX *= mag / 3.0D;
 			this.motionY *= mag;
 			this.motionZ *= mag / 3.0D;
-		} else
+		}
+		else
 		{
 			this.motionY = this.motionX = this.motionZ = this.rotationPitch = this.rotationYaw = this.rotationPitchSpeed = this.rotationYawSpeed = 0.0F;
 		}
@@ -534,7 +544,8 @@ public class GCMarsEntityLandingBalloons extends GCCoreEntityAdvanced implements
 
 				this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, dataStream.readInt()));
 			}
-		} catch (final Exception e)
+		}
+		catch (final Exception e)
 		{
 			e.printStackTrace();
 		}

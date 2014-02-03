@@ -136,10 +136,12 @@ public class GCMarsConfigManager
 
 			GCMarsConfigManager.generateOtherMods = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Generate other mod's features on Mars", false).getBoolean(false);
 			GCMarsConfigManager.launchControllerChunkLoad = GCMarsConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Whether launch controller keeps chunks loaded. This will cause issues if disabled.", true).getBoolean(true);
-		} catch (final Exception e)
+		}
+		catch (final Exception e)
 		{
 			FMLLog.log(Level.SEVERE, e, "Galacticraft Mars has a problem loading it's configuration");
-		} finally
+		}
+		finally
 		{
 			GCMarsConfigManager.configuration.save();
 			GCMarsConfigManager.loaded = true;

@@ -103,25 +103,31 @@ public class GCMarsBlockMachine extends GCCoreBlockTile
 			if (side == metadata + 2)
 			{
 				return this.iconInput;
-			} else if (side == ForgeDirection.UP.ordinal() || side == ForgeDirection.DOWN.ordinal())
+			}
+			else if (side == ForgeDirection.UP.ordinal() || side == ForgeDirection.DOWN.ordinal())
 			{
 				return this.iconMachineSide;
-			} else
+			}
+			else
 			{
 				return this.iconLaunchController;
 			}
-		} else if (metadata >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA)
+		}
+		else if (metadata >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA)
 		{
 			return this.iconCryochamber;
-		} else
+		}
+		else
 		{
 			if (side == ForgeDirection.UP.ordinal() || side == ForgeDirection.DOWN.ordinal())
 			{
 				return this.iconMachineSide;
-			} else if (side == ForgeDirection.getOrientation(metadata + 2).ordinal())
+			}
+			else if (side == ForgeDirection.getOrientation(metadata + 2).ordinal())
 			{
 				return this.iconInput;
-			} else
+			}
+			else
 			{
 				return this.iconTerraformer;
 			}
@@ -174,7 +180,8 @@ public class GCMarsBlockMachine extends GCCoreBlockTile
 			}
 
 			world.setBlockMetadataWithNotify(x, y, z, GCMarsBlockMachine.LAUNCH_CONTROLLER_METADATA + change, 3);
-		} else if (metadata >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA)
+		}
+		else if (metadata >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA)
 		{
 			switch (angle)
 			{
@@ -193,7 +200,8 @@ public class GCMarsBlockMachine extends GCCoreBlockTile
 			}
 
 			world.setBlockMetadataWithNotify(x, y, z, GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA + change, 3);
-		} else
+		}
+		else
 		{
 			world.setBlockMetadataWithNotify(x, y, z, GCMarsBlockMachine.TERRAFORMER_METADATA + change, 3);
 		}
@@ -225,7 +233,8 @@ public class GCMarsBlockMachine extends GCCoreBlockTile
 		{
 			((IChunkLoader) var8).setOwnerName(((EntityPlayer) entityLiving).username);
 			((IChunkLoader) var8).onTicketLoaded(ForgeChunkManager.requestTicket(GalacticraftCore.instance, var8.worldObj, Type.NORMAL), true);
-		} else if (var8 instanceof GCMarsTileEntityLaunchController && entityLiving instanceof EntityPlayer)
+		}
+		else if (var8 instanceof GCMarsTileEntityLaunchController && entityLiving instanceof EntityPlayer)
 		{
 			((GCMarsTileEntityLaunchController) var8).setOwnerName(((EntityPlayer) entityLiving).username);
 		}
@@ -242,7 +251,8 @@ public class GCMarsBlockMachine extends GCCoreBlockTile
 		if (metadata >= GCMarsBlockMachine.LAUNCH_CONTROLLER_METADATA)
 		{
 			original -= GCMarsBlockMachine.LAUNCH_CONTROLLER_METADATA;
-		} else if (metadata >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA)
+		}
+		else if (metadata >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA)
 		{
 			return false;
 		}
@@ -285,11 +295,13 @@ public class GCMarsBlockMachine extends GCCoreBlockTile
 		{
 			par5EntityPlayer.openGui(GalacticraftMars.instance, GCMarsConfigManager.idGuiMachine, world, x, y, z);
 			return true;
-		} else if (metadata >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA)
+		}
+		else if (metadata >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA)
 		{
 			((IMultiBlock) world.getBlockTileEntity(x, y, z)).onActivated(par5EntityPlayer);
 			return true;
-		} else
+		}
+		else
 		{
 			par5EntityPlayer.openGui(GalacticraftMars.instance, GCMarsConfigManager.idGuiMachine, world, x, y, z);
 			return true;
@@ -318,7 +330,8 @@ public class GCMarsBlockMachine extends GCCoreBlockTile
 		if (metadata >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA)
 		{
 			return new GCMarsTileEntityCryogenicChamber();
-		} else
+		}
+		else
 		{
 			return new GCMarsTileEntityTerraformer();
 		}
@@ -376,10 +389,12 @@ public class GCMarsBlockMachine extends GCCoreBlockTile
 		if (metadata >= GCMarsBlockMachine.LAUNCH_CONTROLLER_METADATA)
 		{
 			return GCMarsBlockMachine.LAUNCH_CONTROLLER_METADATA;
-		} else if (metadata >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA)
+		}
+		else if (metadata >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA)
 		{
 			return GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA;
-		} else
+		}
+		else
 		{
 			return GCMarsBlockMachine.TERRAFORMER_METADATA;
 		}

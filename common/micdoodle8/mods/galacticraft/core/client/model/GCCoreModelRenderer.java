@@ -59,7 +59,8 @@ public class GCCoreModelRenderer extends ModelRenderer
 								((ModelRenderer) this.childModels.get(i)).render(par1);
 							}
 						}
-					} else
+					}
+					else
 					{
 						GL11.glTranslatef(this.rotationPointX * par1, this.rotationPointY * par1, this.rotationPointZ * par1);
 						GL11.glCallList(this.displayList);
@@ -74,7 +75,8 @@ public class GCCoreModelRenderer extends ModelRenderer
 
 						GL11.glTranslatef(-this.rotationPointX * par1, -this.rotationPointY * par1, -this.rotationPointZ * par1);
 					}
-				} else
+				}
+				else
 				{
 					GL11.glPushMatrix();
 					GL11.glTranslatef(this.rotationPointX * par1, this.rotationPointY * par1, this.rotationPointZ * par1);

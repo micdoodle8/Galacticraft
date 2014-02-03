@@ -67,10 +67,12 @@ public class GCMoonStructureVillagePieces
 		if (var9 == GCMoonComponentVillageWoodHut.class)
 		{
 			var10 = GCMoonComponentVillageWoodHut.func_74908_a(par0ComponentVillageStartPiece, par2List, par3Random, par4, par5, par6, par7, par8);
-		} else if (var9 == GCMoonComponentVillageField.class)
+		}
+		else if (var9 == GCMoonComponentVillageField.class)
 		{
 			var10 = GCMoonComponentVillageField.func_74900_a(par0ComponentVillageStartPiece, par2List, par3Random, par4, par5, par6, par7, par8);
-		} else if (var9 == GCMoonComponentVillageHouse.class)
+		}
+		else if (var9 == GCMoonComponentVillageHouse.class)
 		{
 			var10 = GCMoonComponentVillageHouse.func_74921_a(par0ComponentVillageStartPiece, par2List, par3Random, par4, par5, par6, par7, par8);
 		}
@@ -85,7 +87,8 @@ public class GCMoonStructureVillagePieces
 		if (var8 <= 0)
 		{
 			return null;
-		} else
+		}
+		else
 		{
 			int var9 = 0;
 
@@ -130,7 +133,8 @@ public class GCMoonStructureVillagePieces
 			if (var14 != null)
 			{
 				return new GCMoonComponentVillageTorch(par0ComponentVillageStartPiece, par7, par2Random, var14, par6);
-			} else
+			}
+			else
 			{
 				return null;
 			}
@@ -146,7 +150,8 @@ public class GCMoonStructureVillagePieces
 		if (par7 > 50)
 		{
 			return null;
-		} else if (Math.abs(par3 - par0ComponentVillageStartPiece.getBoundingBox().minX) <= 112 && Math.abs(par5 - par0ComponentVillageStartPiece.getBoundingBox().minZ) <= 112)
+		}
+		else if (Math.abs(par3 - par0ComponentVillageStartPiece.getBoundingBox().minX) <= 112 && Math.abs(par5 - par0ComponentVillageStartPiece.getBoundingBox().minZ) <= 112)
 		{
 			final GCMoonComponentVillage var8 = GCMoonStructureVillagePieces.getNextVillageComponent(par0ComponentVillageStartPiece, par1List, par2Random, par3, par4, par5, par6, par7 + 1);
 
@@ -158,7 +163,8 @@ public class GCMoonStructureVillagePieces
 			}
 
 			return null;
-		} else
+		}
+		else
 		{
 			return null;
 		}
@@ -169,7 +175,8 @@ public class GCMoonStructureVillagePieces
 		if (par7 > 3 + par0ComponentVillageStartPiece.terrainType)
 		{
 			return null;
-		} else if (Math.abs(par3 - par0ComponentVillageStartPiece.getBoundingBox().minX) <= 112 && Math.abs(par5 - par0ComponentVillageStartPiece.getBoundingBox().minZ) <= 112)
+		}
+		else if (Math.abs(par3 - par0ComponentVillageStartPiece.getBoundingBox().minX) <= 112 && Math.abs(par5 - par0ComponentVillageStartPiece.getBoundingBox().minZ) <= 112)
 		{
 			final StructureBoundingBox var8 = GCMoonComponentVillagePathGen.func_74933_a(par0ComponentVillageStartPiece, par1List, par2Random, par3, par4, par5, par6);
 
@@ -183,7 +190,8 @@ public class GCMoonStructureVillagePieces
 			}
 
 			return null;
-		} else
+		}
+		else
 		{
 			return null;
 		}

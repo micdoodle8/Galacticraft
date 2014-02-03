@@ -128,19 +128,22 @@ public class GCCoreContainerBuggyBench extends Container
 				}
 
 				var3.onSlotChange(var4, var2);
-			} else if (par1 >= 10 && par1 < 37)
+			}
+			else if (par1 >= 10 && par1 < 37)
 			{
 				if (!this.mergeItemStack(var4, 37, 46, false))
 				{
 					return null;
 				}
-			} else if (par1 >= 37 && par1 < 46)
+			}
+			else if (par1 >= 37 && par1 < 46)
 			{
 				if (!this.mergeItemStack(var4, 11, 37, false))
 				{
 					return null;
 				}
-			} else if (!this.mergeItemStack(var4, 11, 46, false))
+			}
+			else if (!this.mergeItemStack(var4, 11, 46, false))
 			{
 				return null;
 			}
@@ -148,7 +151,8 @@ public class GCCoreContainerBuggyBench extends Container
 			if (var4.stackSize == 0)
 			{
 				var3.putStack((ItemStack) null);
-			} else
+			}
+			else
 			{
 				var3.onSlotChanged();
 			}

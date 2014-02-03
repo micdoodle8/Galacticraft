@@ -125,7 +125,8 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen imp
 				var3 = this.containingItems[par1];
 				this.containingItems[par1] = null;
 				return var3;
-			} else
+			}
+			else
 			{
 				var3 = this.containingItems[par1].splitStack(par2);
 
@@ -136,7 +137,8 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen imp
 
 				return var3;
 			}
-		} else
+		}
+		else
 		{
 			return null;
 		}
@@ -150,7 +152,8 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen imp
 			final ItemStack var2 = this.containingItems[par1];
 			this.containingItems[par1] = null;
 			return var2;
-		} else
+		}
+		else
 		{
 			return null;
 		}

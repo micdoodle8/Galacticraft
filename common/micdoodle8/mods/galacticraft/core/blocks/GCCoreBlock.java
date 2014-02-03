@@ -132,7 +132,8 @@ public class GCCoreBlock extends Block implements IDetectableResource
 			}
 
 			return this.quantityDropped(random) * (j + 1);
-		} else
+		}
+		else
 		{
 			return this.quantityDropped(random);
 		}

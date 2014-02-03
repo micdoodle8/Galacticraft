@@ -99,7 +99,8 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen im
 			if (this.oxygenBubble.getSize() >= 1 && this.getEnergyStored() > 0)
 			{
 				this.active = true;
-			} else
+			}
+			else
 			{
 				this.active = false;
 			}
@@ -126,7 +127,8 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen im
 									if (this.getDistanceFromServer(x, y, z) < Math.pow(this.oxygenBubble.getSize() - 0.5D, 2))
 									{
 										((IOxygenReliantBlock) block).onOxygenAdded(this.worldObj, x, y, z);
-									} else
+									}
+									else
 									{
 										((IOxygenReliantBlock) block).onOxygenRemoved(this.worldObj, x, y, z);
 									}
@@ -206,7 +208,8 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen im
 				var3 = this.containingItems[par1];
 				this.containingItems[par1] = null;
 				return var3;
-			} else
+			}
+			else
 			{
 				var3 = this.containingItems[par1].splitStack(par2);
 
@@ -217,7 +220,8 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen im
 
 				return var3;
 			}
-		} else
+		}
+		else
 		{
 			return null;
 		}
@@ -231,7 +235,8 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen im
 			final ItemStack var2 = this.containingItems[par1];
 			this.containingItems[par1] = null;
 			return var2;
-		} else
+		}
+		else
 		{
 			return null;
 		}

@@ -70,14 +70,16 @@ public class GCMarsRenderSlimeling extends RenderLiving
 		if (par1EntityLivingBase.isInvisible())
 		{
 			return 0;
-		} else if (par2 == 0)
+		}
+		else if (par2 == 0)
 		{
 			this.setRenderPassModel(this.renderPassModel);
 			GL11.glEnable(GL11.GL_NORMALIZE);
 			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			return 1;
-		} else
+		}
+		else
 		{
 			if (par2 == 1)
 			{
@@ -104,10 +106,12 @@ public class GCMarsRenderSlimeling extends RenderLiving
 			if (difference < 0.33333)
 			{
 				this.renderLivingLabelWithColor(par1EntityLivingBase, "" + (int) Math.floor(health) + " / " + (int) Math.floor(maxHealth), par2, par4, par6, 64, 1, 0, 0);
-			} else if (difference < 0.66666)
+			}
+			else if (difference < 0.66666)
 			{
 				this.renderLivingLabelWithColor(par1EntityLivingBase, "" + (int) Math.floor(health) + " / " + (int) Math.floor(maxHealth), par2, par4, par6, 64, 1, 1, 0);
-			} else
+			}
+			else
 			{
 				this.renderLivingLabelWithColor(par1EntityLivingBase, "" + (int) Math.floor(health) + " / " + (int) Math.floor(maxHealth), par2, par4, par6, 64, 0, 1, 0);
 			}

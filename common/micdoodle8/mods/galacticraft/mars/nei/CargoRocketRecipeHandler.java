@@ -78,7 +78,8 @@ public class CargoRocketRecipeHandler extends TemplateRecipeHandler
 			{
 				this.arecipes.add(new CachedRocketRecipe(irecipe));
 			}
-		} else
+		}
+		else
 		{
 			super.loadCraftingRecipes(outputId, results);
 		}

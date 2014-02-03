@@ -98,7 +98,8 @@ public class GCCoreBlockRendererBreathableAir implements ISimpleBlockRenderingHa
 		if (!var10 && !var11 && !var12[0] && !var12[1] && !var12[2] && !var12[3])
 		{
 			return;
-		} else
+		}
+		else
 		{
 			final float var14 = 0.5F;
 			final float var15 = 1.0F;
@@ -220,7 +221,8 @@ public class GCCoreBlockRendererBreathableAir implements ISimpleBlockRenderingHa
 						var49 = par2 + 1;
 						var47 = par4 + var32;
 						var51 = par4 + var32;
-					} else if (var34 == 1)
+					}
+					else if (var34 == 1)
 					{
 						var41 = var28;
 						var43 = var26;
@@ -228,7 +230,8 @@ public class GCCoreBlockRendererBreathableAir implements ISimpleBlockRenderingHa
 						var49 = par2;
 						var47 = par4 + 1 - var32;
 						var51 = par4 + 1 - var32;
-					} else if (var34 == 2)
+					}
+					else if (var34 == 2)
 					{
 						var41 = var26;
 						var43 = var24;
@@ -236,7 +239,8 @@ public class GCCoreBlockRendererBreathableAir implements ISimpleBlockRenderingHa
 						var49 = par2 + var32;
 						var47 = par4 + 1;
 						var51 = par4;
-					} else
+					}
+					else
 					{
 						var41 = var30;
 						var43 = var28;
@@ -257,7 +261,8 @@ public class GCCoreBlockRendererBreathableAir implements ISimpleBlockRenderingHa
 					if (var34 < 2)
 					{
 						var63 *= var16;
-					} else
+					}
+					else
 					{
 						var63 *= var17;
 					}

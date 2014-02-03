@@ -171,7 +171,8 @@ public class GCCorePacketHandlerClient implements IPacketHandler
 				if (FMLClientHandler.instance().getClient().theWorld != null && !(FMLClientHandler.instance().getClient().currentScreen instanceof GCCoreGuiChoosePlanet || FMLClientHandler.instance().getClient().currentScreen instanceof GCCoreGuiGalaxyMap))
 				{
 					FMLClientHandler.instance().getClient().displayGuiScreen(new GCCoreGuiChoosePlanet(FMLClientHandler.instance().getClient().thePlayer, destinations));
-				} else if (FMLClientHandler.instance().getClient().currentScreen instanceof GCCoreGuiChoosePlanet)
+				}
+				else if (FMLClientHandler.instance().getClient().currentScreen instanceof GCCoreGuiChoosePlanet)
 				{
 					((GCCoreGuiChoosePlanet) FMLClientHandler.instance().getClient().currentScreen).updateDimensionList(destinations);
 				}
@@ -316,7 +317,8 @@ public class GCCorePacketHandlerClient implements IPacketHandler
 			try
 			{
 				new GCCorePacketEntityUpdate().handlePacket(data, new Object[] { player }, Side.SERVER);
-			} catch (final Exception e)
+			}
+			catch (final Exception e)
 			{
 				e.printStackTrace();
 			}
@@ -343,7 +345,8 @@ public class GCCorePacketHandlerClient implements IPacketHandler
 						DimensionManager.registerDimension(var3, GCCoreConfigManager.idDimensionOverworldOrbit);
 					}
 				}
-			} catch (final IOException e)
+			}
+			catch (final IOException e)
 			{
 				e.printStackTrace();
 			}
@@ -359,7 +362,8 @@ public class GCCorePacketHandlerClient implements IPacketHandler
 				if (var1 < 0)
 				{
 					var3 = null;
-				} else
+				}
+				else
 				{
 					final byte[] var21 = new byte[var1];
 					data.readFully(var21);
@@ -368,7 +372,8 @@ public class GCCorePacketHandlerClient implements IPacketHandler
 
 				final GCCoreSpaceStationData var4 = GCCoreSpaceStationData.getMPSpaceStationData(player.worldObj, var2, player);
 				var4.readFromNBT(var3);
-			} catch (final IOException var5)
+			}
+			catch (final IOException var5)
 			{
 				var5.printStackTrace();
 			}
@@ -396,7 +401,8 @@ public class GCCorePacketHandlerClient implements IPacketHandler
 						DimensionManager.registerDimension(var3, var3);
 					}
 				}
-			} catch (final IOException e)
+			}
+			catch (final IOException e)
 			{
 				e.printStackTrace();
 			}
@@ -433,7 +439,8 @@ public class GCCorePacketHandlerClient implements IPacketHandler
 							}
 						}
 					}
-				} catch (final IOException e)
+				}
+				catch (final IOException e)
 				{
 					e.printStackTrace();
 				}
@@ -487,7 +494,8 @@ public class GCCorePacketHandlerClient implements IPacketHandler
 			try
 			{
 				new GCCorePacketLanderUpdate().handlePacket(data, new Object[] { player }, Side.CLIENT);
-			} catch (Exception e1)
+			}
+			catch (Exception e1)
 			{
 				e1.printStackTrace();
 			}
@@ -496,7 +504,8 @@ public class GCCorePacketHandlerClient implements IPacketHandler
 			try
 			{
 				new GCCorePacketParachestUpdate().handlePacket(data, new Object[] { player }, Side.CLIENT);
-			} catch (Exception e)
+			}
+			catch (Exception e)
 			{
 				e.printStackTrace();
 			}

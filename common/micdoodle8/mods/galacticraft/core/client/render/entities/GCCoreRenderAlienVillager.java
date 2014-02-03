@@ -64,7 +64,8 @@ public class GCCoreRenderAlienVillager extends RenderLiving
 		{
 			f1 = (float) (f1 * 0.5D);
 			this.shadowSize = 0.25F;
-		} else
+		}
+		else
 		{
 			this.shadowSize = 0.5F;
 		}

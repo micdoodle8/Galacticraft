@@ -115,7 +115,8 @@ public class GCCoreSoundUpdaterSpaceship implements IUpdatePlayerListBox
 				this.minecartMoveSoundVolume = 0F;
 				this.minecartRideSoundVolume = 0F;
 			}
-		} else if (var4)
+		}
+		else if (var4)
 		{
 			this.minecartMoveSoundVolume = 0.0F;
 			this.minecartSoundPitch = 0.0F;

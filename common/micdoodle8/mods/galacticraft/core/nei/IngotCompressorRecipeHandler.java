@@ -109,7 +109,8 @@ public class IngotCompressorRecipeHandler extends TemplateRecipeHandler
 			{
 				this.arecipes.add(new CompressorRecipe(irecipe));
 			}
-		} else
+		}
+		else
 		{
 			super.loadCraftingRecipes(outputId, results);
 		}

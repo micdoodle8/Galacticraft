@@ -71,7 +71,8 @@ public class GCCoreBlockGlowstoneTorch extends Block
 		if (par1World.doesBlockHaveSolidTopSurface(par2, par3, par4))
 		{
 			return true;
-		} else
+		}
+		else
 		{
 			int l = par1World.getBlockId(par2, par3, par4);
 			return Block.blocksList[l] != null && Block.blocksList[l].canPlaceTorchOnTop(par1World, par2, par3, par4);
@@ -136,16 +137,20 @@ public class GCCoreBlockGlowstoneTorch extends Block
 			if (par1World.isBlockSolidOnSide(par2 - 1, par3, par4, EAST, true))
 			{
 				par1World.setBlockMetadataWithNotify(par2, par3, par4, 1, 2);
-			} else if (par1World.isBlockSolidOnSide(par2 + 1, par3, par4, WEST, true))
+			}
+			else if (par1World.isBlockSolidOnSide(par2 + 1, par3, par4, WEST, true))
 			{
 				par1World.setBlockMetadataWithNotify(par2, par3, par4, 2, 2);
-			} else if (par1World.isBlockSolidOnSide(par2, par3, par4 - 1, SOUTH, true))
+			}
+			else if (par1World.isBlockSolidOnSide(par2, par3, par4 - 1, SOUTH, true))
 			{
 				par1World.setBlockMetadataWithNotify(par2, par3, par4, 3, 2);
-			} else if (par1World.isBlockSolidOnSide(par2, par3, par4 + 1, NORTH, true))
+			}
+			else if (par1World.isBlockSolidOnSide(par2, par3, par4 + 1, NORTH, true))
 			{
 				par1World.setBlockMetadataWithNotify(par2, par3, par4, 4, 2);
-			} else if (this.canPlaceTorchOn(par1World, par2, par3 - 1, par4))
+			}
+			else if (this.canPlaceTorchOn(par1World, par2, par3 - 1, par4))
 			{
 				par1World.setBlockMetadataWithNotify(par2, par3, par4, 5, 2);
 			}
@@ -206,7 +211,8 @@ public class GCCoreBlockGlowstoneTorch extends Block
 			}
 
 			return false;
-		} else
+		}
+		else
 		{
 			return true;
 		}
@@ -221,16 +227,20 @@ public class GCCoreBlockGlowstoneTorch extends Block
 		if (l == 1)
 		{
 			this.setBlockBounds(0.0F, 0.2F, 0.5F - f, f * 2.0F, 0.8F, 0.5F + f);
-		} else if (l == 2)
+		}
+		else if (l == 2)
 		{
 			this.setBlockBounds(1.0F - f * 2.0F, 0.2F, 0.5F - f, 1.0F, 0.8F, 0.5F + f);
-		} else if (l == 3)
+		}
+		else if (l == 3)
 		{
 			this.setBlockBounds(0.5F - f, 0.2F, 0.0F, 0.5F + f, 0.8F, f * 2.0F);
-		} else if (l == 4)
+		}
+		else if (l == 4)
 		{
 			this.setBlockBounds(0.5F - f, 0.2F, 1.0F - f * 2.0F, 0.5F + f, 0.8F, 1.0F);
-		} else
+		}
+		else
 		{
 			f = 0.1F;
 			this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, 0.6F, 0.5F + f);

@@ -80,7 +80,8 @@ public abstract class InventoryEntity extends NetworkedEntity implements IInvent
 				var3 = this.containedItems[slotIndex];
 				this.containedItems[slotIndex] = null;
 				return var3;
-			} else
+			}
+			else
 			{
 				var3 = this.containedItems[slotIndex].splitStack(amount);
 
@@ -91,7 +92,8 @@ public abstract class InventoryEntity extends NetworkedEntity implements IInvent
 
 				return var3;
 			}
-		} else
+		}
+		else
 		{
 			return null;
 		}
@@ -105,7 +107,8 @@ public abstract class InventoryEntity extends NetworkedEntity implements IInvent
 			ItemStack stack = this.containedItems[slotIndex];
 			this.containedItems[slotIndex] = null;
 			return stack;
-		} else
+		}
+		else
 		{
 			return null;
 		}

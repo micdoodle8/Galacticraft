@@ -50,7 +50,8 @@ public class GCCorePacketSchematicList implements IGalacticraftAdvancedPacket
 
 			data.close();
 			bytes.close();
-		} catch (final Exception e)
+		}
+		catch (final Exception e)
 		{
 			e.printStackTrace();
 		}

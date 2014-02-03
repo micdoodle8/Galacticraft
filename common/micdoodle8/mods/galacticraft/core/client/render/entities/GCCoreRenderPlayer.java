@@ -82,7 +82,8 @@ public class GCCoreRenderPlayer extends RenderPlayer
 				}
 
 				this.renderManager.itemRenderer.renderItem(par1AbstractClientPlayer, itemstack, 0);
-			} else if (itemstack.getItem().itemID == Item.skull.itemID)
+			}
+			else if (itemstack.getItem().itemID == Item.skull.itemID)
 			{
 				f2 = 1.0625F;
 				GL11.glScalef(f2, -f2, -f2);
@@ -186,7 +187,8 @@ public class GCCoreRenderPlayer extends RenderPlayer
 				GL11.glRotatef(20.0F, 1.0F, 0.0F, 0.0F);
 				GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
 				GL11.glScalef(-f11, -f11, f11);
-			} else if (itemstack1.itemID == Item.bow.itemID || itemstack1.itemID == GCCoreItems.bowGravity.itemID)
+			}
+			else if (itemstack1.itemID == Item.bow.itemID || itemstack1.itemID == GCCoreItems.bowGravity.itemID)
 			{
 				f11 = 0.625F;
 				GL11.glTranslatef(0.0F, 0.125F, 0.3125F);
@@ -194,7 +196,8 @@ public class GCCoreRenderPlayer extends RenderPlayer
 				GL11.glScalef(f11, -f11, f11);
 				GL11.glRotatef(-100.0F, 1.0F, 0.0F, 0.0F);
 				GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
-			} else if (Item.itemsList[itemstack1.itemID].isFull3D())
+			}
+			else if (Item.itemsList[itemstack1.itemID].isFull3D())
 			{
 				f11 = 0.625F;
 
@@ -216,7 +219,8 @@ public class GCCoreRenderPlayer extends RenderPlayer
 				GL11.glScalef(f11, -f11, f11);
 				GL11.glRotatef(-100.0F, 1.0F, 0.0F, 0.0F);
 				GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
-			} else
+			}
+			else
 			{
 				f11 = 0.375F;
 				GL11.glTranslatef(0.25F, 0.1875F, -0.1875F);
@@ -241,7 +245,8 @@ public class GCCoreRenderPlayer extends RenderPlayer
 					GL11.glColor4f(f13, f12, f6, 1.0F);
 					this.renderManager.itemRenderer.renderItem(par1AbstractClientPlayer, itemstack1, j);
 				}
-			} else
+			}
+			else
 			{
 				j = itemstack1.getItem().getColorFromItemStack(itemstack1, 0);
 				float f14 = (j >> 16 & 255) / 255.0F;
@@ -269,7 +274,8 @@ public class GCCoreRenderPlayer extends RenderPlayer
 			{
 				super.rotatePlayer(par1AbstractClientPlayer, par2, par3, par4);
 			}
-		} else
+		}
+		else
 		{
 			super.rotatePlayer(par1AbstractClientPlayer, par2, par3, par4);
 		}

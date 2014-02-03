@@ -100,12 +100,14 @@ public class GCMarsGuiSlimeling extends GuiScreen
 				{
 					this.slimeling.setName(this.slimeling.getName().substring(0, this.slimeling.getName().length() - 1));
 					this.timeBackspacePressed = System.currentTimeMillis();
-				} else
+				}
+				else
 				{
 					this.incorrectUseTimer = 10;
 				}
 			}
-		} else if (keyChar == 22)
+		}
+		else if (keyChar == 22)
 		{
 			String pastestring = GuiScreen.getClipboardString();
 
@@ -120,18 +122,21 @@ public class GCMarsGuiSlimeling extends GuiScreen
 				{
 					this.slimeling.setName(this.slimeling.getName() + pastestring);
 					this.slimeling.setName(this.slimeling.getName().substring(0, Math.min(this.slimeling.getName().length(), 16)));
-				} else
+				}
+				else
 				{
 					this.incorrectUseTimer = 10;
 				}
 			}
-		} else if (this.isValid(this.slimeling.getName() + keyChar))
+		}
+		else if (this.isValid(this.slimeling.getName() + keyChar))
 		{
 			if (this.mc.thePlayer.username.equals(this.slimeling.getOwnerName()))
 			{
 				this.slimeling.setName(this.slimeling.getName() + keyChar);
 				this.slimeling.setName(this.slimeling.getName().substring(0, Math.min(this.slimeling.getName().length(), 16)));
-			} else
+			}
+			else
 			{
 				this.incorrectUseTimer = 10;
 			}
@@ -175,7 +180,8 @@ public class GCMarsGuiSlimeling extends GuiScreen
 		{
 			Gui.drawRect(startX, startY, startX + width, startY + height, 0xffA0A0A0);
 			this.isTextFocused = true;
-		} else
+		}
+		else
 		{
 			this.isTextFocused = false;
 		}
@@ -235,11 +241,13 @@ public class GCMarsGuiSlimeling extends GuiScreen
 					PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftMars.CHANNEL, 0, new Object[] { this.slimeling.entityId, 1, this.slimeling.getName() }));
 					this.timeBackspacePressed = System.currentTimeMillis();
 					this.backspacePressed++;
-				} else if (!this.mc.thePlayer.username.equals(this.slimeling.getOwnerName()))
+				}
+				else if (!this.mc.thePlayer.username.equals(this.slimeling.getOwnerName()))
 				{
 					this.incorrectUseTimer = 10;
 				}
-			} else
+			}
+			else
 			{
 				this.timeBackspacePressed = 0;
 				this.backspacePressed = 0;

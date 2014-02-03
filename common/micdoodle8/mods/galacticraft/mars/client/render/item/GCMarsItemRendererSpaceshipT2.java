@@ -50,7 +50,8 @@ public class GCMarsItemRendererSpaceshipT2 extends GCCoreItemRendererSpaceship
 			FMLClientHandler.instance().getClient().renderEngine.bindTexture(this.texture);
 			this.modelSpaceship.render(this.spaceship, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 			GL11.glPopMatrix();
-		} else
+		}
+		else
 		{
 			FMLClientHandler.instance().getClient().renderEngine.bindTexture(GCMarsItemRendererSpaceshipT2.cargoRocketTexture);
 			this.cargoRocketModel.renderAll();
@@ -155,7 +156,8 @@ public class GCMarsItemRendererSpaceshipT2 extends GCCoreItemRendererSpaceship
 				GL11.glRotatef(85F, 1F, 0F, 1F);
 				GL11.glRotatef(20F, 1F, 0F, 0F);
 				GL11.glScalef(0.9F, 0.9F, 0.9F);
-			} else
+			}
+			else
 			{
 				GL11.glTranslatef(0, -0.9F, 0);
 				GL11.glScalef(0.5F, 0.5F, 0.5F);

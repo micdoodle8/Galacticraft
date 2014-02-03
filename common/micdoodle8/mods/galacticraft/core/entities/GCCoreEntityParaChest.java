@@ -111,7 +111,8 @@ public class GCCoreEntityParaChest extends Entity
 						{
 							this.setDead();
 							return;
-						} else if (this.cargo != null)
+						}
+						else if (this.cargo != null)
 						{
 							for (final ItemStack stack : this.cargo)
 							{
@@ -132,7 +133,8 @@ public class GCCoreEntityParaChest extends Entity
 						this.worldObj.spawnEntityInWorld(e);
 					}
 				}
-			} else
+			}
+			else
 			{
 				this.motionY = -0.25;
 			}

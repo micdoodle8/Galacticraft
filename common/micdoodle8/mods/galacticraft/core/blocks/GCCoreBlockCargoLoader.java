@@ -83,7 +83,8 @@ public class GCCoreBlockCargoLoader extends GCCoreBlockAdvancedTile
 			if (tileEntity instanceof GCCoreTileEntityCargoLoader)
 			{
 				((GCCoreTileEntityCargoLoader) tileEntity).checkForCargoEntity();
-			} else if (tileEntity instanceof GCCoreTileEntityCargoUnloader)
+			}
+			else if (tileEntity instanceof GCCoreTileEntityCargoUnloader)
 			{
 				((GCCoreTileEntityCargoUnloader) tileEntity).checkForCargoEntity();
 			}
@@ -126,24 +127,29 @@ public class GCCoreBlockCargoLoader extends GCCoreBlockAdvancedTile
 			if (side == shiftedMeta + 2)
 			{
 				return this.iconInput;
-			} else if (side == ForgeDirection.getOrientation(shiftedMeta + 2).getOpposite().ordinal())
+			}
+			else if (side == ForgeDirection.getOrientation(shiftedMeta + 2).getOpposite().ordinal())
 			{
 				return metadata < 4 ? this.iconItemInput : this.iconItemOutput;
-			} else
+			}
+			else
 			{
 				return metadata < 4 ? this.iconFrontLoader : this.iconFrontUnloader;
 			}
-		} else if (metadata >= GCCoreBlockCargoLoader.METADATA_CARGO_LOADER)
+		}
+		else if (metadata >= GCCoreBlockCargoLoader.METADATA_CARGO_LOADER)
 		{
 			shiftedMeta -= GCCoreBlockCargoLoader.METADATA_CARGO_LOADER;
 
 			if (side == shiftedMeta + 2)
 			{
 				return this.iconInput;
-			} else if (side == ForgeDirection.getOrientation(shiftedMeta + 2).getOpposite().ordinal())
+			}
+			else if (side == ForgeDirection.getOrientation(shiftedMeta + 2).getOpposite().ordinal())
 			{
 				return metadata < 4 ? this.iconItemInput : this.iconItemOutput;
-			} else
+			}
+			else
 			{
 				return metadata < 4 ? this.iconFrontLoader : this.iconFrontUnloader;
 			}
@@ -158,7 +164,8 @@ public class GCCoreBlockCargoLoader extends GCCoreBlockAdvancedTile
 		if (metadata < GCCoreBlockCargoLoader.METADATA_CARGO_UNLOADER)
 		{
 			return new GCCoreTileEntityCargoLoader();
-		} else
+		}
+		else
 		{
 			return new GCCoreTileEntityCargoUnloader();
 		}
@@ -174,7 +181,8 @@ public class GCCoreBlockCargoLoader extends GCCoreBlockAdvancedTile
 		if (metadata >= GCCoreBlockCargoLoader.METADATA_CARGO_UNLOADER)
 		{
 			baseMeta = GCCoreBlockCargoLoader.METADATA_CARGO_UNLOADER;
-		} else if (metadata >= GCCoreBlockCargoLoader.METADATA_CARGO_LOADER)
+		}
+		else if (metadata >= GCCoreBlockCargoLoader.METADATA_CARGO_LOADER)
 		{
 			baseMeta = GCCoreBlockCargoLoader.METADATA_CARGO_LOADER;
 		}
@@ -213,7 +221,8 @@ public class GCCoreBlockCargoLoader extends GCCoreBlockAdvancedTile
 		if (metadata >= GCCoreBlockCargoLoader.METADATA_CARGO_UNLOADER)
 		{
 			baseMeta = GCCoreBlockCargoLoader.METADATA_CARGO_UNLOADER;
-		} else if (metadata >= GCCoreBlockCargoLoader.METADATA_CARGO_LOADER)
+		}
+		else if (metadata >= GCCoreBlockCargoLoader.METADATA_CARGO_LOADER)
 		{
 			baseMeta = GCCoreBlockCargoLoader.METADATA_CARGO_LOADER;
 		}
@@ -275,7 +284,8 @@ public class GCCoreBlockCargoLoader extends GCCoreBlockAdvancedTile
 		if (metadata >= GCCoreBlockCargoLoader.METADATA_CARGO_UNLOADER)
 		{
 			return GCCoreBlockCargoLoader.METADATA_CARGO_UNLOADER;
-		} else if (metadata >= GCCoreBlockCargoLoader.METADATA_CARGO_LOADER)
+		}
+		else if (metadata >= GCCoreBlockCargoLoader.METADATA_CARGO_LOADER)
 		{
 			return GCCoreBlockCargoLoader.METADATA_CARGO_LOADER;
 		}

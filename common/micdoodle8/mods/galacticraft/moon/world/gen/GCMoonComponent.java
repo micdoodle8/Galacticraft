@@ -146,7 +146,8 @@ public abstract class GCMoonComponent extends StructureComponent
 		if (this.coordBaseMode < 0)
 		{
 			return var1;
-		} else
+		}
+		else
 		{
 			switch ((this.coordBaseMode + var3) % 4)
 			{
@@ -173,7 +174,8 @@ public abstract class GCMoonComponent extends StructureComponent
 		if (this.coordBaseMode < 0)
 		{
 			return var1;
-		} else
+		}
+		else
 		{
 			switch ((this.coordBaseMode + var3) % 4)
 			{

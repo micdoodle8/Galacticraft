@@ -117,7 +117,8 @@ public abstract class GCCoreTileEntityUniversalConductor extends GCCoreTileEntit
 				{
 					MinecraftForge.EVENT_BUS.post((Event) o);
 				}
-			} catch (Exception e)
+			}
+			catch (Exception e)
 			{
 				e.printStackTrace();
 			}
@@ -141,7 +142,8 @@ public abstract class GCCoreTileEntityUniversalConductor extends GCCoreTileEntit
 					{
 						MinecraftForge.EVENT_BUS.post((Event) o);
 					}
-				} catch (Exception e)
+				}
+				catch (Exception e)
 				{
 					e.printStackTrace();
 				}

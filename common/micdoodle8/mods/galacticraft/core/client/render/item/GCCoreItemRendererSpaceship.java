@@ -134,7 +134,8 @@ public class GCCoreItemRendererSpaceship implements IItemRenderer
 				GL11.glRotatef(85F, 1F, 0F, 1F);
 				GL11.glRotatef(20F, 1F, 0F, 0F);
 				GL11.glScalef(0.9F, 0.9F, 0.9F);
-			} else
+			}
+			else
 			{
 				GL11.glTranslatef(0, -0.9F, 0);
 				GL11.glScalef(0.5F, 0.5F, 0.5F);

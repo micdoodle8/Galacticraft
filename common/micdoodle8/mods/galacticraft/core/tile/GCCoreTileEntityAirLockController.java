@@ -63,7 +63,8 @@ public class GCCoreTileEntityAirLockController extends GCCoreTileEntityAirLock i
 				if (this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord))
 				{
 					this.active = true;
-				} else
+				}
+				else
 				{
 					this.active = false;
 				}
@@ -112,7 +113,8 @@ public class GCCoreTileEntityAirLockController extends GCCoreTileEntityAirLock i
 								foundPlayer = true;
 								break;
 							}
-						} else
+						}
+						else
 						{
 							foundPlayer = true;
 							break;
@@ -143,14 +145,16 @@ public class GCCoreTileEntityAirLockController extends GCCoreTileEntityAirLock i
 				if (this.horizontalModeEnabled != this.lastHorizontalModeEnabled)
 				{
 					this.unsealAirLock();
-				} else
+				}
+				else
 				{
 					this.otherAirLocks = this.protocol.calculate(this.horizontalModeEnabled);
 
 					if (this.active && (this.otherAirLocks != null || this.otherAirLocks != null && this.lastOtherAirLocks != null && this.otherAirLocks != this.lastOtherAirLocks || this.otherAirLocks != null && this.lastOtherAirLocks != null && this.otherAirLocks.size() != this.lastOtherAirLocks.size()))
 					{
 						this.sealAirLock();
-					} else if (!this.active && this.lastActive || this.otherAirLocks == null && this.lastOtherAirLocks != null)
+					}
+					else if (!this.active && this.lastActive || this.otherAirLocks == null && this.lastOtherAirLocks != null)
 					{
 						this.unsealAirLock();
 					}
@@ -202,7 +206,8 @@ public class GCCoreTileEntityAirLockController extends GCCoreTileEntityAirLock i
 					}
 				}
 			}
-		} else
+		}
+		else
 		{
 			if (this.protocol.minX != this.protocol.maxX)
 			{
@@ -218,7 +223,8 @@ public class GCCoreTileEntityAirLockController extends GCCoreTileEntityAirLock i
 						}
 					}
 				}
-			} else if (this.protocol.minZ != this.protocol.maxZ)
+			}
+			else if (this.protocol.minZ != this.protocol.maxZ)
 			{
 				for (z = this.protocol.minZ + 1; z <= this.protocol.maxZ - 1; z++)
 				{
@@ -269,7 +275,8 @@ public class GCCoreTileEntityAirLockController extends GCCoreTileEntityAirLock i
 					}
 				}
 			}
-		} else
+		}
+		else
 		{
 			if (this.lastProtocol.minX != this.lastProtocol.maxX)
 			{
@@ -285,7 +292,8 @@ public class GCCoreTileEntityAirLockController extends GCCoreTileEntityAirLock i
 						}
 					}
 				}
-			} else if (this.lastProtocol.minZ != this.lastProtocol.maxZ)
+			}
+			else if (this.lastProtocol.minZ != this.lastProtocol.maxZ)
 			{
 				for (z = this.lastProtocol.minZ + 1; z <= this.lastProtocol.maxZ - 1; z++)
 				{
@@ -349,7 +357,8 @@ public class GCCoreTileEntityAirLockController extends GCCoreTileEntityAirLock i
 			this.playerToOpenFor = data.readUTF();
 			this.invertSelection = data.readBoolean();
 			this.horizontalModeEnabled = data.readBoolean();
-		} catch (final Exception e)
+		}
+		catch (final Exception e)
 		{
 			e.printStackTrace();
 		}

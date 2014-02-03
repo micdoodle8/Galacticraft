@@ -50,7 +50,8 @@ public class GCCoreTileEntityOxygenPipe extends GCCoreTileEntityOxygenTransmitte
 				if (this.getColor() == ((IColorable) adjacentTile).getColor())
 				{
 					return true;
-				} else
+				}
+				else
 				{
 					return false;
 				}
@@ -194,7 +195,8 @@ public class GCCoreTileEntityOxygenPipe extends GCCoreTileEntityOxygenTransmitte
 				this.setColor(dataStream.readByte());
 				this.preLoadColor = dataStream.readByte();
 			}
-		} catch (final Exception e)
+		}
+		catch (final Exception e)
 		{
 			e.printStackTrace();
 		}

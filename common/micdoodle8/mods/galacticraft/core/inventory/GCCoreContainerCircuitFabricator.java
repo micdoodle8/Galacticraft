@@ -98,7 +98,8 @@ public class GCCoreContainerCircuitFabricator extends Container
 				}
 
 				var3.onSlotChange(var4, var2);
-			} else if (par1 != 1 && par1 != 0)
+			}
+			else if (par1 != 1 && par1 != 0)
 			{
 				if (var4.getItem() instanceof IItemElectric)
 				{
@@ -106,23 +107,27 @@ public class GCCoreContainerCircuitFabricator extends Container
 					{
 						return null;
 					}
-				} else if (FurnaceRecipes.smelting().getSmeltingResult(var4) != null)
+				}
+				else if (FurnaceRecipes.smelting().getSmeltingResult(var4) != null)
 				{
 					if (!this.mergeItemStack(var4, 1, 2, false))
 					{
 						return null;
 					}
-				} else if (par1 >= 3 && par1 < 30)
+				}
+				else if (par1 >= 3 && par1 < 30)
 				{
 					if (!this.mergeItemStack(var4, 30, 39, false))
 					{
 						return null;
 					}
-				} else if (par1 >= 30 && par1 < 39 && !this.mergeItemStack(var4, 3, 30, false))
+				}
+				else if (par1 >= 30 && par1 < 39 && !this.mergeItemStack(var4, 3, 30, false))
 				{
 					return null;
 				}
-			} else if (!this.mergeItemStack(var4, 3, 39, false))
+			}
+			else if (!this.mergeItemStack(var4, 3, 39, false))
 			{
 				return null;
 			}
@@ -130,7 +135,8 @@ public class GCCoreContainerCircuitFabricator extends Container
 			if (var4.stackSize == 0)
 			{
 				var3.putStack((ItemStack) null);
-			} else
+			}
+			else
 			{
 				var3.onSlotChanged();
 			}

@@ -34,7 +34,8 @@ public class GCCoreItemBlockCargoLoader extends ItemBlock
 		if (par1ItemStack.getItemDamage() < 4)
 		{
 			name = "loader";
-		} else
+		}
+		else
 		{
 			name = "unloader";
 		}

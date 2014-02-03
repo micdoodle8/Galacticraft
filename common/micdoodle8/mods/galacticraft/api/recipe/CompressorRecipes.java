@@ -35,7 +35,8 @@ public class CompressorRecipes
 				j = s1.length();
 				s = s + s1;
 			}
-		} else
+		}
+		else
 		{
 			while (inputList[i] instanceof String)
 			{
@@ -56,10 +57,12 @@ public class CompressorRecipes
 			if (inputList[i + 1] instanceof Item)
 			{
 				itemstack1 = new ItemStack((Item) inputList[i + 1]);
-			} else if (inputList[i + 1] instanceof Block)
+			}
+			else if (inputList[i + 1] instanceof Block)
 			{
 				itemstack1 = new ItemStack((Block) inputList[i + 1], 1, 32767);
-			} else if (inputList[i + 1] instanceof ItemStack)
+			}
+			else if (inputList[i + 1] instanceof ItemStack)
 			{
 				itemstack1 = (ItemStack) inputList[i + 1];
 			}
@@ -76,7 +79,8 @@ public class CompressorRecipes
 			if (hashmap.containsKey(Character.valueOf(c0)))
 			{
 				aitemstack[i1] = hashmap.get(Character.valueOf(c0)).copy();
-			} else
+			}
+			else
 			{
 				aitemstack[i1] = null;
 			}
@@ -100,10 +104,12 @@ public class CompressorRecipes
 			if (object1 instanceof ItemStack)
 			{
 				arraylist.add(((ItemStack) object1).copy());
-			} else if (object1 instanceof Item)
+			}
+			else if (object1 instanceof Item)
 			{
 				arraylist.add(new ItemStack((Item) object1));
-			} else if (object1 instanceof String)
+			}
+			else if (object1 instanceof String)
 			{
 				ArrayList<ItemStack> list = OreDictionary.getOres((String) object1);
 
@@ -111,7 +117,8 @@ public class CompressorRecipes
 				{
 					arraylist.add(list.get(0));
 				}
-			} else
+			}
+			else
 			{
 				if (!(object1 instanceof Block))
 				{
@@ -166,7 +173,8 @@ public class CompressorRecipes
 			}
 
 			return new ItemStack(itemstack.itemID, 1, j1);
-		} else
+		}
+		else
 		{
 			for (j = 0; j < CompressorRecipes.recipes.size(); ++j)
 			{

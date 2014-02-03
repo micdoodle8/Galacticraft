@@ -95,7 +95,8 @@ public class GCCoreMapGenDungeon
 						{
 							entranceDir = ForgeDirection.NORTH;
 							offsetX = this.HALLWAY_LENGTH + rand.nextInt(15);
-						} else
+						}
+						else
 						{
 							entranceDir = ForgeDirection.SOUTH;
 							offsetX = -this.HALLWAY_LENGTH - rand.nextInt(15);
@@ -110,7 +111,8 @@ public class GCCoreMapGenDungeon
 						{
 							entranceDir = ForgeDirection.EAST;
 							offsetZ = this.HALLWAY_LENGTH + rand.nextInt(15);
-						} else
+						}
+						else
 						{
 							entranceDir = ForgeDirection.WEST;
 							offsetZ = -this.HALLWAY_LENGTH - rand.nextInt(15);
@@ -125,7 +127,8 @@ public class GCCoreMapGenDungeon
 						{
 							entranceDir = ForgeDirection.EAST;
 							offsetZ = this.HALLWAY_LENGTH + rand.nextInt(15);
-						} else
+						}
+						else
 						{
 							entranceDir = ForgeDirection.WEST;
 							offsetZ = -this.HALLWAY_LENGTH - rand.nextInt(15);
@@ -140,7 +143,8 @@ public class GCCoreMapGenDungeon
 						{
 							entranceDir = ForgeDirection.NORTH;
 							offsetX = this.HALLWAY_LENGTH + rand.nextInt(15);
-						} else
+						}
+						else
 						{
 							entranceDir = ForgeDirection.SOUTH;
 							offsetX = -this.HALLWAY_LENGTH - rand.nextInt(15);
@@ -203,11 +207,13 @@ public class GCCoreMapGenDungeon
 								this.genCorridor(corridor1, rand, possibleRoom.posY, chunkX, chunkZ, dir, blocks, metas, false);
 							}
 							break;
-						} else
+						}
+						else
 						{
 							continue tryLoop;
 						}
-					} else
+					}
+					else
 					// Two Hallways
 					{
 						GCCoreDungeonBoundingBox corridor1 = null;
@@ -227,7 +233,8 @@ public class GCCoreMapGenDungeon
 							{
 								corridor2 = new GCCoreDungeonBoundingBox(corridor1.minX - extraLength, corridor1.maxZ + 1, possibleRoomBb.minX, corridor1.maxZ + 3);
 								dir2 = ForgeDirection.NORTH;
-							} else
+							}
+							else
 							// x--
 							{
 								corridor2 = new GCCoreDungeonBoundingBox(possibleRoomBb.maxX, corridor1.maxZ + 1, corridor1.maxX + extraLength, corridor1.maxZ + 3);
@@ -240,7 +247,8 @@ public class GCCoreMapGenDungeon
 							{
 								corridor2 = new GCCoreDungeonBoundingBox(corridor1.maxX + 1, corridor1.minZ - extraLength, corridor1.maxX + 4, possibleRoomBb.minZ);
 								dir2 = ForgeDirection.EAST;
-							} else
+							}
+							else
 							// z--
 							{
 								corridor2 = new GCCoreDungeonBoundingBox(corridor1.maxX + 1, possibleRoomBb.maxZ, corridor1.maxX + 4, corridor1.maxZ + extraLength);
@@ -253,7 +261,8 @@ public class GCCoreMapGenDungeon
 							{
 								corridor2 = new GCCoreDungeonBoundingBox(corridor1.minX - 3, corridor1.minZ - extraLength, corridor1.minX - 1, possibleRoomBb.minZ);
 								dir2 = ForgeDirection.EAST;
-							} else
+							}
+							else
 							// z--
 							{
 								corridor2 = new GCCoreDungeonBoundingBox(corridor1.minX - 3, possibleRoomBb.maxZ, corridor1.minX - 1, corridor1.maxZ + extraLength);
@@ -266,7 +275,8 @@ public class GCCoreMapGenDungeon
 							{
 								corridor2 = new GCCoreDungeonBoundingBox(corridor1.minX - extraLength, corridor1.minZ - 3, possibleRoomBb.minX, corridor1.minZ - 1);
 								dir2 = ForgeDirection.NORTH;
-							} else
+							}
+							else
 							// x--
 							{
 								corridor2 = new GCCoreDungeonBoundingBox(possibleRoomBb.maxX, corridor1.minZ - 3, corridor1.maxX + extraLength, corridor1.minZ - 1);
@@ -290,12 +300,14 @@ public class GCCoreMapGenDungeon
 								this.genCorridor(corridor1, rand, possibleRoom.posY, chunkX, chunkZ, dir, blocks, metas, false);
 							}
 							break;
-						} else
+						}
+						else
 						{
 							continue tryLoop;
 						}
 					}
-				} else
+				}
+				else
 				{
 					continue tryLoop;
 				}
@@ -399,11 +411,13 @@ public class GCCoreMapGenDungeon
 						{
 							this.placeBlock(blocks, metas, i, j, k, cx, cz, GCCoreBlocks.unlitTorch.blockID, 0);
 							this.worldObj.scheduleBlockUpdateFromLoad(i, j, k, GCCoreBlocks.unlitTorch.blockID, 40, 0);
-						} else
+						}
+						else
 						{
 							this.placeBlock(blocks, metas, i, j, k, cx, cz, 0, 0);
 						}
-					} else
+					}
+					else
 					{
 						this.placeBlock(blocks, metas, i, j, k, cx, cz, this.DUNGEON_WALL_ID, this.DUNGEON_WALL_META);
 					}
@@ -516,7 +530,8 @@ public class GCCoreMapGenDungeon
 			final int index = this.getIndex(x, y, z);
 			blocks[index] = (short) id;
 			metas[index] = (byte) meta;
-		} else
+		}
+		else
 		{
 			this.worldObj.setBlock(x, y, z, id, meta, 3);
 		}
@@ -535,7 +550,8 @@ public class GCCoreMapGenDungeon
 				return 1;
 			}
 			return blocks[this.getIndex(x, y, z)];
-		} else
+		}
+		else
 		{
 			return this.worldObj.getBlockId(x, y, z);
 		}
@@ -568,10 +584,12 @@ public class GCCoreMapGenDungeon
 		if (x < min)
 		{
 			return min;
-		} else if (x > max)
+		}
+		else if (x > max)
 		{
 			return max;
-		} else
+		}
+		else
 		{
 			return x;
 		}

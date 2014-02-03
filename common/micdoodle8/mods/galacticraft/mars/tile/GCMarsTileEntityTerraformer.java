@@ -121,7 +121,8 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectricBlock i
 						if (FluidContainerRegistry.isBucket(this.containingItems[0]) && FluidContainerRegistry.isFilledContainer(this.containingItems[0]))
 						{
 							this.containingItems[0] = new ItemStack(Item.bucketEmpty, this.containingItems[0].stackSize);
-						} else
+						}
+						else
 						{
 							this.containingItems[0].stackSize--;
 
@@ -137,7 +138,8 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectricBlock i
 			if (this.terraformBubble.getSize() == this.MAX_SIZE && this.getEnergyStored() > 0 && this.getFirstBonemealStack() != null && this.waterTank.getFluid() != null && this.waterTank.getFluid().amount > 0)
 			{
 				this.active = true;
-			} else
+			}
+			else
 			{
 				this.active = false;
 			}
@@ -169,7 +171,8 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectricBlock i
 									{
 										this.terraformableBlocksList.add(new Vector3(x, y, z));
 									}
-								} else if (block.blockID == Block.grass.blockID && blockIDAbove == 0)
+								}
+								else if (block.blockID == Block.grass.blockID && blockIDAbove == 0)
 								{
 									if (!this.treesDisabled && this.getFirstSaplingStack() != null)
 									{
@@ -198,7 +201,8 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectricBlock i
 				if (this.worldObj.isBlockFullCube(vec.intX() - 1, vec.intY(), vec.intZ()) && this.worldObj.isBlockFullCube(vec.intX() + 1, vec.intY(), vec.intZ()) && this.worldObj.isBlockFullCube(vec.intX(), vec.intY(), vec.intZ() - 1) && this.worldObj.isBlockFullCube(vec.intX(), vec.intY(), vec.intZ() + 1))
 				{
 					ID = Block.waterMoving.blockID;
-				} else
+				}
+				else
 				{
 					ID = Block.grass.blockID;
 				}
@@ -215,7 +219,8 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectricBlock i
 				this.useCount[0]++;
 				this.waterTank.drain(1, true);
 				this.checkUsage(1);
-			} else if (ID == Block.waterMoving.blockID)
+			}
+			else if (ID == Block.waterMoving.blockID)
 			{
 				this.checkUsage(2);
 			}
@@ -249,7 +254,8 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectricBlock i
 		if (this.getEnergyStored() > 0.0F && (!this.grassDisabled || !this.treesDisabled))
 		{
 			this.size = (float) Math.min(Math.max(0, this.size + 0.1F), this.MAX_SIZE);
-		} else
+		}
+		else
 		{
 			this.size = (float) Math.min(Math.max(0, this.size - 0.1F), this.MAX_SIZE);
 		}
@@ -449,7 +455,8 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectricBlock i
 				var3 = this.containingItems[par1];
 				this.containingItems[par1] = null;
 				return var3;
-			} else
+			}
+			else
 			{
 				var3 = this.containingItems[par1].splitStack(par2);
 
@@ -460,7 +467,8 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectricBlock i
 
 				return var3;
 			}
-		} else
+		}
+		else
 		{
 			return null;
 		}
@@ -474,7 +482,8 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectricBlock i
 			final ItemStack var2 = this.containingItems[par1];
 			this.containingItems[par1] = null;
 			return var2;
-		} else
+		}
+		else
 		{
 			return null;
 		}

@@ -126,7 +126,8 @@ public class GCCoreGuiAirLockController extends GuiScreen implements ICheckBoxCa
 		if (this.controller.active)
 		{
 			displayString = "Air Lock Closed";
-		} else
+		}
+		else
 		{
 			displayString = "Air Lock Open";
 		}
@@ -143,19 +144,23 @@ public class GCCoreGuiAirLockController extends GuiScreen implements ICheckBoxCa
 		{
 			this.controller.redstoneActivation = newSelected;
 			PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.ON_ADVANCED_GUI_CLICKED_INT, new Object[] { 0, this.controller.xCoord, this.controller.yCoord, this.controller.zCoord, this.controller.redstoneActivation ? 1 : 0 }));
-		} else if (checkbox.equals(this.checkboxPlayerDistance))
+		}
+		else if (checkbox.equals(this.checkboxPlayerDistance))
 		{
 			this.controller.playerDistanceActivation = newSelected;
 			PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.ON_ADVANCED_GUI_CLICKED_INT, new Object[] { 1, this.controller.xCoord, this.controller.yCoord, this.controller.zCoord, this.controller.playerDistanceActivation ? 1 : 0 }));
-		} else if (checkbox.equals(this.checkboxOpenForPlayer))
+		}
+		else if (checkbox.equals(this.checkboxOpenForPlayer))
 		{
 			this.controller.playerNameMatches = newSelected;
 			PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.ON_ADVANCED_GUI_CLICKED_INT, new Object[] { 3, this.controller.xCoord, this.controller.yCoord, this.controller.zCoord, this.controller.playerNameMatches ? 1 : 0 }));
-		} else if (checkbox.equals(this.checkboxInvertSelection))
+		}
+		else if (checkbox.equals(this.checkboxInvertSelection))
 		{
 			this.controller.invertSelection = newSelected;
 			PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.ON_ADVANCED_GUI_CLICKED_INT, new Object[] { 4, this.controller.xCoord, this.controller.yCoord, this.controller.zCoord, this.controller.invertSelection ? 1 : 0 }));
-		} else if (checkbox.equals(this.checkboxHorizontalMode))
+		}
+		else if (checkbox.equals(this.checkboxHorizontalMode))
 		{
 			this.controller.lastHorizontalModeEnabled = this.controller.horizontalModeEnabled;
 			this.controller.horizontalModeEnabled = newSelected;
@@ -175,16 +180,20 @@ public class GCCoreGuiAirLockController extends GuiScreen implements ICheckBoxCa
 		if (checkbox.equals(this.checkboxRedstoneSignal))
 		{
 			return this.controller.redstoneActivation;
-		} else if (checkbox.equals(this.checkboxPlayerDistance))
+		}
+		else if (checkbox.equals(this.checkboxPlayerDistance))
 		{
 			return this.controller.playerDistanceActivation;
-		} else if (checkbox.equals(this.checkboxOpenForPlayer))
+		}
+		else if (checkbox.equals(this.checkboxOpenForPlayer))
 		{
 			return this.controller.playerNameMatches;
-		} else if (checkbox.equals(this.checkboxInvertSelection))
+		}
+		else if (checkbox.equals(this.checkboxInvertSelection))
 		{
 			return this.controller.invertSelection;
-		} else if (checkbox.equals(this.checkboxHorizontalMode))
+		}
+		else if (checkbox.equals(this.checkboxHorizontalMode))
 		{
 			return this.controller.horizontalModeEnabled;
 		}

@@ -100,16 +100,20 @@ public class GCCoreBlockRendererUnlitTorch implements ISimpleBlockRenderingHandl
 		if (var5 == 1)
 		{
 			GCCoreBlockRendererUnlitTorch.renderTorchAtAngle(renderBlocks, par1Block, par2 - var9, par3 + var11, par4, -var7, 0.0D);
-		} else if (var5 == 2)
+		}
+		else if (var5 == 2)
 		{
 			GCCoreBlockRendererUnlitTorch.renderTorchAtAngle(renderBlocks, par1Block, par2 + var9, par3 + var11, par4, var7, 0.0D);
-		} else if (var5 == 3)
+		}
+		else if (var5 == 3)
 		{
 			GCCoreBlockRendererUnlitTorch.renderTorchAtAngle(renderBlocks, par1Block, par2, par3 + var11, par4 - var9, 0.0D, -var7);
-		} else if (var5 == 4)
+		}
+		else if (var5 == 4)
 		{
 			GCCoreBlockRendererUnlitTorch.renderTorchAtAngle(renderBlocks, par1Block, par2, par3 + var11, par4 + var9, 0.0D, var7);
-		} else
+		}
+		else
 		{
 			GCCoreBlockRendererUnlitTorch.renderTorchAtAngle(renderBlocks, par1Block, par2, par3, par4, 0.0D, 0.0D);
 		}

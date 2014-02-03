@@ -111,15 +111,18 @@ public class GCCoreBlockMachine extends GCCoreBlockTile
 				{
 					par1World.spawnParticle("smoke", var7 - var10, var8, var9 + var11, 0.0D, 0.0D, 0.0D);
 					par1World.spawnParticle("flame", var7 - var10, var8, var9 + var11, 0.0D, 0.0D, 0.0D);
-				} else if (metadata == 2)
+				}
+				else if (metadata == 2)
 				{
 					par1World.spawnParticle("smoke", var7 + var10, var8, var9 + var11, 0.0D, 0.0D, 0.0D);
 					par1World.spawnParticle("flame", var7 + var10, var8, var9 + var11, 0.0D, 0.0D, 0.0D);
-				} else if (metadata == 1)
+				}
+				else if (metadata == 1)
 				{
 					par1World.spawnParticle("smoke", var7 + var11, var8, var9 - var10, 0.0D, 0.0D, 0.0D);
 					par1World.spawnParticle("flame", var7 + var11, var8, var9 - var10, 0.0D, 0.0D, 0.0D);
-				} else if (metadata == 0)
+				}
+				else if (metadata == 0)
 				{
 					par1World.spawnParticle("smoke", var7 + var11, var8, var9 + var10, 0.0D, 0.0D, 0.0D);
 					par1World.spawnParticle("flame", var7 + var11, var8, var9 + var10, 0.0D, 0.0D, 0.0D);
@@ -158,7 +161,8 @@ public class GCCoreBlockMachine extends GCCoreBlockTile
 			if (tile instanceof GCCoreTileEntityEnergyStorageModule)
 			{
 				return this.iconEnergyStorageModule[((GCCoreTileEntityEnergyStorageModule) tile).scaledEnergyLevel];
-			} else
+			}
+			else
 			{
 				return this.iconEnergyStorageModule[0];
 			}
@@ -183,7 +187,8 @@ public class GCCoreBlockMachine extends GCCoreBlockTile
 			{
 				return this.iconCompressor;
 			}
-		} else if (metadata >= GCCoreBlockMachine.ELECTRIC_FURNACE_METADATA)
+		}
+		else if (metadata >= GCCoreBlockMachine.ELECTRIC_FURNACE_METADATA)
 		{
 			metadata -= GCCoreBlockMachine.ELECTRIC_FURNACE_METADATA;
 
@@ -197,7 +202,8 @@ public class GCCoreBlockMachine extends GCCoreBlockTile
 			{
 				return this.iconElectricFurnace;
 			}
-		} else if (metadata >= GCCoreBlockMachine.STORAGE_MODULE_METADATA)
+		}
+		else if (metadata >= GCCoreBlockMachine.STORAGE_MODULE_METADATA)
 		{
 			metadata -= GCCoreBlockMachine.STORAGE_MODULE_METADATA;
 
@@ -213,7 +219,8 @@ public class GCCoreBlockMachine extends GCCoreBlockTile
 			}
 
 			return this.iconEnergyStorageModule[16];
-		} else
+		}
+		else
 		{
 			// If it is the front side
 			if (side == metadata + 2)
@@ -260,13 +267,16 @@ public class GCCoreBlockMachine extends GCCoreBlockTile
 		if (metadata >= GCCoreBlockMachine.COMPRESSOR_METADATA)
 		{
 			world.setBlockMetadataWithNotify(x, y, z, GCCoreBlockMachine.COMPRESSOR_METADATA + change, 3);
-		} else if (metadata >= GCCoreBlockMachine.ELECTRIC_FURNACE_METADATA)
+		}
+		else if (metadata >= GCCoreBlockMachine.ELECTRIC_FURNACE_METADATA)
 		{
 			world.setBlockMetadataWithNotify(x, y, z, GCCoreBlockMachine.ELECTRIC_FURNACE_METADATA + change, 3);
-		} else if (metadata >= GCCoreBlockMachine.STORAGE_MODULE_METADATA)
+		}
+		else if (metadata >= GCCoreBlockMachine.STORAGE_MODULE_METADATA)
 		{
 			world.setBlockMetadataWithNotify(x, y, z, GCCoreBlockMachine.STORAGE_MODULE_METADATA + change, 3);
-		} else
+		}
+		else
 		{
 			world.setBlockMetadataWithNotify(x, y, z, GCCoreBlockMachine.COAL_GENERATOR_METADATA + change, 3);
 		}
@@ -283,10 +293,12 @@ public class GCCoreBlockMachine extends GCCoreBlockTile
 		if (metadata >= GCCoreBlockMachine.COMPRESSOR_METADATA)
 		{
 			original -= GCCoreBlockMachine.COMPRESSOR_METADATA;
-		} else if (metadata >= GCCoreBlockMachine.ELECTRIC_FURNACE_METADATA)
+		}
+		else if (metadata >= GCCoreBlockMachine.ELECTRIC_FURNACE_METADATA)
 		{
 			original -= GCCoreBlockMachine.ELECTRIC_FURNACE_METADATA;
-		} else if (metadata >= GCCoreBlockMachine.STORAGE_MODULE_METADATA)
+		}
+		else if (metadata >= GCCoreBlockMachine.STORAGE_MODULE_METADATA)
 		{
 			original -= GCCoreBlockMachine.STORAGE_MODULE_METADATA;
 		}
@@ -311,10 +323,12 @@ public class GCCoreBlockMachine extends GCCoreBlockTile
 		if (metadata >= GCCoreBlockMachine.COMPRESSOR_METADATA)
 		{
 			change += GCCoreBlockMachine.COMPRESSOR_METADATA;
-		} else if (metadata >= GCCoreBlockMachine.ELECTRIC_FURNACE_METADATA)
+		}
+		else if (metadata >= GCCoreBlockMachine.ELECTRIC_FURNACE_METADATA)
 		{
 			change += GCCoreBlockMachine.ELECTRIC_FURNACE_METADATA;
-		} else if (metadata >= GCCoreBlockMachine.STORAGE_MODULE_METADATA)
+		}
+		else if (metadata >= GCCoreBlockMachine.STORAGE_MODULE_METADATA)
 		{
 			change += GCCoreBlockMachine.STORAGE_MODULE_METADATA;
 		}
@@ -337,15 +351,18 @@ public class GCCoreBlockMachine extends GCCoreBlockTile
 			{
 				par5EntityPlayer.openGui(GalacticraftCore.instance, -1, par1World, x, y, z);
 				return true;
-			} else if (metadata >= GCCoreBlockMachine.ELECTRIC_FURNACE_METADATA)
+			}
+			else if (metadata >= GCCoreBlockMachine.ELECTRIC_FURNACE_METADATA)
 			{
 				par5EntityPlayer.openGui(GalacticraftCore.instance, -1, par1World, x, y, z);
 				return true;
-			} else if (metadata >= GCCoreBlockMachine.STORAGE_MODULE_METADATA)
+			}
+			else if (metadata >= GCCoreBlockMachine.STORAGE_MODULE_METADATA)
 			{
 				par5EntityPlayer.openGui(GalacticraftCore.instance, -1, par1World, x, y, z);
 				return true;
-			} else
+			}
+			else
 			{
 				par5EntityPlayer.openGui(GalacticraftCore.instance, -1, par1World, x, y, z);
 				return true;
@@ -361,13 +378,16 @@ public class GCCoreBlockMachine extends GCCoreBlockTile
 		if (metadata >= GCCoreBlockMachine.COMPRESSOR_METADATA)
 		{
 			return new GCCoreTileEntityIngotCompressor();
-		} else if (metadata >= GCCoreBlockMachine.ELECTRIC_FURNACE_METADATA)
+		}
+		else if (metadata >= GCCoreBlockMachine.ELECTRIC_FURNACE_METADATA)
 		{
 			return new GCCoreTileEntityElectricFurnace();
-		} else if (metadata >= GCCoreBlockMachine.STORAGE_MODULE_METADATA)
+		}
+		else if (metadata >= GCCoreBlockMachine.STORAGE_MODULE_METADATA)
 		{
 			return new GCCoreTileEntityEnergyStorageModule();
-		} else
+		}
+		else
 		{
 			return new GCCoreTileEntityCoalGenerator();
 		}
@@ -409,13 +429,16 @@ public class GCCoreBlockMachine extends GCCoreBlockTile
 		if (metadata >= GCCoreBlockMachine.COMPRESSOR_METADATA)
 		{
 			return GCCoreBlockMachine.COMPRESSOR_METADATA;
-		} else if (metadata >= GCCoreBlockMachine.ELECTRIC_FURNACE_METADATA)
+		}
+		else if (metadata >= GCCoreBlockMachine.ELECTRIC_FURNACE_METADATA)
 		{
 			return GCCoreBlockMachine.ELECTRIC_FURNACE_METADATA;
-		} else if (metadata >= GCCoreBlockMachine.STORAGE_MODULE_METADATA)
+		}
+		else if (metadata >= GCCoreBlockMachine.STORAGE_MODULE_METADATA)
 		{
 			return GCCoreBlockMachine.STORAGE_MODULE_METADATA;
-		} else
+		}
+		else
 		{
 			return GCCoreBlockMachine.COAL_GENERATOR_METADATA;
 		}

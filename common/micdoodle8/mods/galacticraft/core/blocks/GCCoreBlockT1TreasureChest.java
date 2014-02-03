@@ -150,14 +150,16 @@ public class GCCoreBlockT1TreasureChest extends BlockContainer implements ITileE
 		if (var6 != this.blockID && var7 != this.blockID && var8 != this.blockID && var9 != this.blockID)
 		{
 			par1World.setBlockMetadataWithNotify(par2, par3, par4, var10, 3);
-		} else
+		}
+		else
 		{
 			if ((var6 == this.blockID || var7 == this.blockID) && (var10 == 4 || var10 == 5))
 			{
 				if (var6 == this.blockID)
 				{
 					par1World.setBlockMetadataWithNotify(par2, par3, par4 - 1, var10, 3);
-				} else
+				}
+				else
 				{
 					par1World.setBlockMetadataWithNotify(par2, par3, par4 + 1, var10, 3);
 				}
@@ -170,7 +172,8 @@ public class GCCoreBlockT1TreasureChest extends BlockContainer implements ITileE
 				if (var8 == this.blockID)
 				{
 					par1World.setBlockMetadataWithNotify(par2 - 1, par3, par4, var10, 3);
-				} else
+				}
+				else
 				{
 					par1World.setBlockMetadataWithNotify(par2 + 1, par3, par4, var10, 3);
 				}
@@ -218,7 +221,8 @@ public class GCCoreBlockT1TreasureChest extends BlockContainer implements ITileE
 					{
 						var13 = 4;
 					}
-				} else
+				}
+				else
 				{
 					var10 = par1World.getBlockId(var7 == this.blockID ? par2 - 1 : par2 + 1, par3, par4 - 1);
 					var11 = par1World.getBlockId(var7 == this.blockID ? par2 - 1 : par2 + 1, par3, par4 + 1);
@@ -226,7 +230,8 @@ public class GCCoreBlockT1TreasureChest extends BlockContainer implements ITileE
 					if (var7 == this.blockID)
 					{
 						var14 = par1World.getBlockMetadata(par2 - 1, par3, par4);
-					} else
+					}
+					else
 					{
 						var14 = par1World.getBlockMetadata(par2 + 1, par3, par4);
 					}
@@ -246,7 +251,8 @@ public class GCCoreBlockT1TreasureChest extends BlockContainer implements ITileE
 						var13 = 2;
 					}
 				}
-			} else
+			}
+			else
 			{
 				var10 = par1World.getBlockId(par2 - 1, par3, var5 == this.blockID ? par4 - 1 : par4 + 1);
 				var11 = par1World.getBlockId(par2 + 1, par3, var5 == this.blockID ? par4 - 1 : par4 + 1);
@@ -254,7 +260,8 @@ public class GCCoreBlockT1TreasureChest extends BlockContainer implements ITileE
 				if (var5 == this.blockID)
 				{
 					var14 = par1World.getBlockMetadata(par2, par3, par4 - 1);
-				} else
+				}
+				else
 				{
 					var14 = par1World.getBlockMetadata(par2, par3, par4 + 1);
 				}
@@ -377,25 +384,32 @@ public class GCCoreBlockT1TreasureChest extends BlockContainer implements ITileE
 		if (var10 == null)
 		{
 			return true;
-		} else if (par1World.isBlockSolidOnSide(par2, par3 + 1, par4, ForgeDirection.DOWN))
+		}
+		else if (par1World.isBlockSolidOnSide(par2, par3 + 1, par4, ForgeDirection.DOWN))
 		{
 			return true;
-		} else if (GCCoreBlockT1TreasureChest.isOcelotBlockingChest(par1World, par2, par3, par4))
+		}
+		else if (GCCoreBlockT1TreasureChest.isOcelotBlockingChest(par1World, par2, par3, par4))
 		{
 			return true;
-		} else if (par1World.getBlockId(par2 - 1, par3, par4) == this.blockID && (par1World.isBlockSolidOnSide(par2 - 1, par3 + 1, par4, ForgeDirection.DOWN) || GCCoreBlockT1TreasureChest.isOcelotBlockingChest(par1World, par2 - 1, par3, par4)))
+		}
+		else if (par1World.getBlockId(par2 - 1, par3, par4) == this.blockID && (par1World.isBlockSolidOnSide(par2 - 1, par3 + 1, par4, ForgeDirection.DOWN) || GCCoreBlockT1TreasureChest.isOcelotBlockingChest(par1World, par2 - 1, par3, par4)))
 		{
 			return true;
-		} else if (par1World.getBlockId(par2 + 1, par3, par4) == this.blockID && (par1World.isBlockSolidOnSide(par2 + 1, par3 + 1, par4, ForgeDirection.DOWN) || GCCoreBlockT1TreasureChest.isOcelotBlockingChest(par1World, par2 + 1, par3, par4)))
+		}
+		else if (par1World.getBlockId(par2 + 1, par3, par4) == this.blockID && (par1World.isBlockSolidOnSide(par2 + 1, par3 + 1, par4, ForgeDirection.DOWN) || GCCoreBlockT1TreasureChest.isOcelotBlockingChest(par1World, par2 + 1, par3, par4)))
 		{
 			return true;
-		} else if (par1World.getBlockId(par2, par3, par4 - 1) == this.blockID && (par1World.isBlockSolidOnSide(par2, par3 + 1, par4 - 1, ForgeDirection.DOWN) || GCCoreBlockT1TreasureChest.isOcelotBlockingChest(par1World, par2, par3, par4 - 1)))
+		}
+		else if (par1World.getBlockId(par2, par3, par4 - 1) == this.blockID && (par1World.isBlockSolidOnSide(par2, par3 + 1, par4 - 1, ForgeDirection.DOWN) || GCCoreBlockT1TreasureChest.isOcelotBlockingChest(par1World, par2, par3, par4 - 1)))
 		{
 			return true;
-		} else if (par1World.getBlockId(par2, par3, par4 + 1) == this.blockID && (par1World.isBlockSolidOnSide(par2, par3 + 1, par4 + 1, ForgeDirection.DOWN) || GCCoreBlockT1TreasureChest.isOcelotBlockingChest(par1World, par2, par3, par4 + 1)))
+		}
+		else if (par1World.getBlockId(par2, par3, par4 + 1) == this.blockID && (par1World.isBlockSolidOnSide(par2, par3 + 1, par4 + 1, ForgeDirection.DOWN) || GCCoreBlockT1TreasureChest.isOcelotBlockingChest(par1World, par2, par3, par4 + 1)))
 		{
 			return true;
-		} else
+		}
+		else
 		{
 			if (par1World.getBlockId(par2 - 1, par3, par4) == this.blockID)
 			{
@@ -420,7 +434,8 @@ public class GCCoreBlockT1TreasureChest extends BlockContainer implements ITileE
 			if (par1World.isRemote)
 			{
 				return true;
-			} else
+			}
+			else
 			{
 				par5EntityPlayer.displayGUIChest((IInventory) var10);
 				return true;
@@ -449,7 +464,8 @@ public class GCCoreBlockT1TreasureChest extends BlockContainer implements ITileE
 
 			final EntityOcelot var5 = (EntityOcelot) var4.next();
 			var6 = var5;
-		} while (!var6.isSitting());
+		}
+		while (!var6.isSitting());
 
 		return true;
 	}

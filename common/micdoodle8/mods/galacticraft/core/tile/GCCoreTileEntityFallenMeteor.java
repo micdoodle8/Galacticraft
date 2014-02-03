@@ -68,7 +68,8 @@ public class GCCoreTileEntityFallenMeteor extends TileEntity implements IPacketR
 			{
 				this.heatLevel = dataStream.readInt();
 			}
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
 			FMLLog.severe("Failed to read packet");
 			e.printStackTrace();

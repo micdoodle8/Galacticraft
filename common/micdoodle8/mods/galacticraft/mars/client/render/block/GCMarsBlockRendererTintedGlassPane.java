@@ -75,7 +75,8 @@ public class GCMarsBlockRendererTintedGlassPane implements ISimpleBlockRendering
 		{
 			icon = renderBlocks.overrideBlockTexture;
 			icon1 = renderBlocks.overrideBlockTexture;
-		} else
+		}
+		else
 		{
 			int j1 = iblockaccess.getBlockMetadata(par2, par3, par4);
 			icon = renderBlocks.getBlockIconFromSideAndMetadata(par1BlockPane, 0, j1);
@@ -156,7 +157,8 @@ public class GCMarsBlockRendererTintedGlassPane implements ISimpleBlockRendering
 					tessellator.addVertexWithUV(d10, par3 - 0.01D, d18, d5, d9);
 					tessellator.addVertexWithUV(d11, par3 - 0.01D, d18, d5, d8);
 				}
-			} else if (!flag2 && flag3)
+			}
+			else if (!flag2 && flag3)
 			{
 				tessellator.addVertexWithUV(d11, par3 + 1, d14 + 0.001F, d1, d3);
 				tessellator.addVertexWithUV(d11, par3 + 0, d14 + 0.001F, d1, d4);
@@ -203,7 +205,8 @@ public class GCMarsBlockRendererTintedGlassPane implements ISimpleBlockRendering
 					tessellator.addVertexWithUV(d12, par3 - 0.01D, d18, d5, d7);
 				}
 			}
-		} else
+		}
+		else
 		{
 			tessellator.addVertexWithUV(d10, par3 + 1, d14 + 0.001F, d0, d3);
 			tessellator.addVertexWithUV(d10, par3 + 0, d14 + 0.001F, d0, d4);
@@ -224,7 +227,8 @@ public class GCMarsBlockRendererTintedGlassPane implements ISimpleBlockRendering
 				tessellator.addVertexWithUV(d10, par3 + 1 + 0.001D, d19, d6, d7);
 				tessellator.addVertexWithUV(d10, par3 + 1 + 0.001D, d18, d5, d7);
 				tessellator.addVertexWithUV(d12, par3 + 1 + 0.001D, d18, d5, d9);
-			} else
+			}
+			else
 			{
 				if (par3 < l - 1 && iblockaccess.isAirBlock(par2 - 1, par3 + 1, par4))
 				{
@@ -261,7 +265,8 @@ public class GCMarsBlockRendererTintedGlassPane implements ISimpleBlockRendering
 				tessellator.addVertexWithUV(d10, par3 - 0.01D, d19, d6, d7);
 				tessellator.addVertexWithUV(d10, par3 - 0.01D, d18, d5, d7);
 				tessellator.addVertexWithUV(d12, par3 - 0.01D, d18, d5, d9);
-			} else
+			}
+			else
 			{
 				if (par3 > 1 && iblockaccess.isAirBlock(par2 - 1, par3 - 1, par4))
 				{
@@ -337,7 +342,8 @@ public class GCMarsBlockRendererTintedGlassPane implements ISimpleBlockRendering
 					tessellator.addVertexWithUV(d17, par3 - 0.005D, d13, d5, d8);
 					tessellator.addVertexWithUV(d17, par3 - 0.005D, d14, d5, d7);
 				}
-			} else if (!flag && flag1)
+			}
+			else if (!flag && flag1)
 			{
 				tessellator.addVertexWithUV(d11 + 0.001F, par3 + 1, d14, d1, d3);
 				tessellator.addVertexWithUV(d11 + 0.001F, par3 + 0, d14, d1, d4);
@@ -384,7 +390,8 @@ public class GCMarsBlockRendererTintedGlassPane implements ISimpleBlockRendering
 					tessellator.addVertexWithUV(d17, par3 - 0.005D, d15, d6, d8);
 				}
 			}
-		} else
+		}
+		else
 		{
 			tessellator.addVertexWithUV(d11 + 0.001F, par3 + 1, d15, d0, d3);
 			tessellator.addVertexWithUV(d11 + 0.001F, par3 + 0, d15, d0, d4);
@@ -405,7 +412,8 @@ public class GCMarsBlockRendererTintedGlassPane implements ISimpleBlockRendering
 				tessellator.addVertexWithUV(d17, par3 + 1 + 0.0005D, d15, d6, d7);
 				tessellator.addVertexWithUV(d16, par3 + 1 + 0.0005D, d15, d5, d7);
 				tessellator.addVertexWithUV(d16, par3 + 1 + 0.0005D, d13, d5, d9);
-			} else
+			}
+			else
 			{
 				if (par3 < l - 1 && iblockaccess.isAirBlock(par2, par3 + 1, par4 - 1))
 				{
@@ -442,7 +450,8 @@ public class GCMarsBlockRendererTintedGlassPane implements ISimpleBlockRendering
 				tessellator.addVertexWithUV(d17, par3 - 0.005D, d15, d6, d7);
 				tessellator.addVertexWithUV(d16, par3 - 0.005D, d15, d5, d7);
 				tessellator.addVertexWithUV(d16, par3 - 0.005D, d13, d5, d9);
-			} else
+			}
+			else
 			{
 				if (par3 > 1 && iblockaccess.isAirBlock(par2, par3 - 1, par4 - 1))
 				{

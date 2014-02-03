@@ -37,7 +37,8 @@ public class GCCoreTileEntityParachestRenderer extends TileEntitySpecialRenderer
 		if (!tile.hasWorldObj())
 		{
 			var9 = 0;
-		} else
+		}
+		else
 		{
 			final Block var10 = tile.getBlockType();
 			var9 = tile.getBlockMetadata();

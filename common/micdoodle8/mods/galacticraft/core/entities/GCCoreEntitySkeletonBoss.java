@@ -338,7 +338,8 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
 				this.getNavigator().getPathToEntityLiving(player);
 				this.targetEntity = player;
 			}
-		} else
+		}
+		else
 		{
 			this.targetEntity = null;
 		}
@@ -516,7 +517,8 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
 		if (this.captureDrops)
 		{
 			this.capturedDrops.add(entityitem);
-		} else
+		}
+		else
 		{
 			this.worldObj.spawnEntityInWorld(entityitem);
 		}
@@ -531,7 +533,8 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
 			final ItemStack var2 = new ItemStack(Item.bow);
 			EnchantmentHelper.addRandomEnchantment(this.rand, var2, 5);
 			this.entityDropItem(var2, 0.0F);
-		} else
+		}
+		else
 		{
 			this.dropItem(Item.bow.itemID, 1);
 		}
@@ -602,7 +605,8 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
 		if (this.worldObj.provider instanceof IGalacticraftWorldProvider)
 		{
 			var1 = new GCCoreEntityArrow(this.worldObj, this, entitylivingbase, 0.3F, 12.0F);
-		} else
+		}
+		else
 		{
 			var1 = new EntityArrow(this.worldObj, this, entitylivingbase, 1.6F, 12.0F);
 		}

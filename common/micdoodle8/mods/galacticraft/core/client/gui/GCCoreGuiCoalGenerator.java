@@ -54,10 +54,12 @@ public class GCCoreGuiCoalGenerator extends GuiContainer
 		if (this.tileEntity.generateWatts <= 0)
 		{
 			displayText = "Not Generating";
-		} else if (this.tileEntity.generateWatts < GCCoreTileEntityCoalGenerator.MIN_GENERATE_WATTS)
+		}
+		else if (this.tileEntity.generateWatts < GCCoreTileEntityCoalGenerator.MIN_GENERATE_WATTS)
 		{
 			displayText = "Hull Heat: " + (int) (this.tileEntity.generateWatts / GCCoreTileEntityCoalGenerator.MIN_GENERATE_WATTS * 100) + "%";
-		} else
+		}
+		else
 		{
 			displayText = ElectricityDisplay.getDisplay(this.tileEntity.generateWatts * 20, ElectricUnit.WATT);
 		}

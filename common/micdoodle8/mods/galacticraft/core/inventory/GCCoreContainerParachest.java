@@ -78,7 +78,8 @@ public class GCCoreContainerParachest extends Container
 				{
 					return null;
 				}
-			} else if (!this.mergeItemStack(itemstack1, 0, this.lowerChestInventory.getSizeInventory(), false))
+			}
+			else if (!this.mergeItemStack(itemstack1, 0, this.lowerChestInventory.getSizeInventory(), false))
 			{
 				return null;
 			}
@@ -86,7 +87,8 @@ public class GCCoreContainerParachest extends Container
 			if (itemstack1.stackSize == 0)
 			{
 				slot.putStack((ItemStack) null);
-			} else
+			}
+			else
 			{
 				slot.onSlotChanged();
 			}

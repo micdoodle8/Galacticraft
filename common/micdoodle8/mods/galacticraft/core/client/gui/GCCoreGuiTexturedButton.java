@@ -46,7 +46,8 @@ public class GCCoreGuiTexturedButton extends GuiButton
 			if (!this.enabled)
 			{
 				var6 = -6250336;
-			} else if (this.field_82253_i)
+			}
+			else if (this.field_82253_i)
 			{
 				var6 = 16777120;
 			}

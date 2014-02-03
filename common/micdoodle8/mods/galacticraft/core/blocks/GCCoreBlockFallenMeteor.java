@@ -166,10 +166,12 @@ public class GCCoreBlockFallenMeteor extends Block implements ITileEntityProvide
 		if (var4 == 0)
 		{
 			return true;
-		} else if (var4 == Block.fire.blockID)
+		}
+		else if (var4 == Block.fire.blockID)
 		{
 			return true;
-		} else
+		}
+		else
 		{
 			final Material var5 = Block.blocksList[var4].blockMaterial;
 			return var5 == Material.water ? true : var5 == Material.lava;

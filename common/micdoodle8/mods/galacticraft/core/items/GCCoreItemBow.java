@@ -101,7 +101,8 @@ public class GCCoreItemBow extends Item
 			if (flag)
 			{
 				entityarrow.canBePickedUp = 2;
-			} else
+			}
+			else
 			{
 				par3EntityPlayer.inventory.consumeInventoryItem(Item.arrow.itemID);
 			}

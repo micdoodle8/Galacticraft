@@ -170,7 +170,8 @@ public class GCCoreTickHandlerClient implements ITickHandler
 										{
 											ClientProxyCore.valueableBlocks.add(new Vector3(x, y, z));
 										}
-									} else if (block instanceof IDetectableResource && ((IDetectableResource) block).isValueable(metadata))
+									}
+									else if (block instanceof IDetectableResource && ((IDetectableResource) block).isValueable(metadata))
 									{
 										if (!this.alreadyContainsBlock(x, y, z))
 										{
@@ -240,7 +241,8 @@ public class GCCoreTickHandlerClient implements ITickHandler
 				if (world.provider.getSkyRenderer() == null && player.ridingEntity != null && player.ridingEntity.posY >= 200)
 				{
 					world.provider.setSkyRenderer(new GCCoreSkyProviderOverworld());
-				} else if (world.provider.getSkyRenderer() != null && world.provider.getSkyRenderer() instanceof GCCoreSkyProviderOverworld && (player.ridingEntity == null || player.ridingEntity.posY < 200))
+				}
+				else if (world.provider.getSkyRenderer() != null && world.provider.getSkyRenderer() instanceof GCCoreSkyProviderOverworld && (player.ridingEntity == null || player.ridingEntity.posY < 200))
 				{
 					world.provider.setSkyRenderer(null);
 				}
@@ -354,7 +356,8 @@ public class GCCoreTickHandlerClient implements ITickHandler
 		{
 			ObfuscationReflectionHelper.setPrivateValue(EntityRenderer.class, FMLClientHandler.instance().getClient().entityRenderer, value, 15);
 			ObfuscationReflectionHelper.setPrivateValue(EntityRenderer.class, FMLClientHandler.instance().getClient().entityRenderer, value, 16);
-		} catch (final Exception ex)
+		}
+		catch (final Exception ex)
 		{
 			ex.printStackTrace();
 		}
@@ -384,7 +387,8 @@ public class GCCoreTickHandlerClient implements ITickHandler
 			}
 
 			GCCoreTickHandlerClient.lastInvKeyPressed = invKeyPressed;
-		} else if (type.equals(EnumSet.of(TickType.RENDER)))
+		}
+		else if (type.equals(EnumSet.of(TickType.RENDER)))
 		{
 			final float partialTickTime = (Float) tickData[0];
 

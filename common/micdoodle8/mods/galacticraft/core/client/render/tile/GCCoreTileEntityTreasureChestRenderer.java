@@ -47,7 +47,8 @@ public class GCCoreTileEntityTreasureChestRenderer extends TileEntitySpecialRend
 		if (!par1GCTileEntityTreasureChest.hasWorldObj())
 		{
 			var9 = 0;
-		} else
+		}
+		else
 		{
 			final Block var10 = par1GCTileEntityTreasureChest.getBlockType();
 			var9 = par1GCTileEntityTreasureChest.getBlockMetadata();
@@ -70,7 +71,8 @@ public class GCCoreTileEntityTreasureChestRenderer extends TileEntitySpecialRend
 			{
 				var14 = this.chestModel;
 				this.bindTexture(GCCoreTileEntityTreasureChestRenderer.treasureChestTexture);
-			} else
+			}
+			else
 			{
 				var14b = this.largeChestModel;
 				this.bindTexture(GCCoreTileEntityTreasureChestRenderer.treasureLargeChestTexture);

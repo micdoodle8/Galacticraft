@@ -61,7 +61,8 @@ public class GCCoreTileEntityAdvancedCraftingTable extends TileEntityMulti imple
 							if ((y == 0 || y == 3) && x == 0 && z == 0)
 							{
 								((GCCoreBlockMulti) GCCoreBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 3);
-							} else if (y != 0 && y != 3)
+							}
+							else if (y != 0 && y != 3)
 							{
 								((GCCoreBlockMulti) GCCoreBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 3);
 							}
@@ -92,7 +93,8 @@ public class GCCoreTileEntityAdvancedCraftingTable extends TileEntityMulti imple
 								FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, GCCoreBlocks.nasaWorkbench.blockID & 4095, GCCoreBlocks.nasaWorkbench.blockID >> 12 & 255);
 							}
 							this.worldObj.destroyBlock(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, y == 0);
-						} else if (y != 0 && y != 3)
+						}
+						else if (y != 0 && y != 3)
 						{
 							if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.05D)
 							{

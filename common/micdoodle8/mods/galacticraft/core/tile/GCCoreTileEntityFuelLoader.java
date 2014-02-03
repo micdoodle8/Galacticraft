@@ -80,11 +80,13 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectricBlock im
 						if (this.containingItems[1].getItem() instanceof GCCoreItemFuelCanister)
 						{
 							this.containingItems[1] = new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.oilCanister.getMaxDamage());
-						} else if (FluidContainerRegistry.isBucket(this.containingItems[1]) && FluidContainerRegistry.isFilledContainer(this.containingItems[1]))
+						}
+						else if (FluidContainerRegistry.isBucket(this.containingItems[1]) && FluidContainerRegistry.isFilledContainer(this.containingItems[1]))
 						{
 							final int amount = this.containingItems[1].stackSize;
 							this.containingItems[1] = new ItemStack(Item.bucketEmpty, amount);
-						} else
+						}
+						else
 						{
 							this.containingItems[1].stackSize--;
 
@@ -120,7 +122,8 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectricBlock im
 								foundFuelable = true;
 								break;
 							}
-						} else if (pad != null && pad instanceof IFuelable)
+						}
+						else if (pad != null && pad instanceof IFuelable)
 						{
 							this.attachedFuelable = (IFuelable) pad;
 							foundFuelable = true;
@@ -174,7 +177,8 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectricBlock im
 				var3 = this.containingItems[par1];
 				this.containingItems[par1] = null;
 				return var3;
-			} else
+			}
+			else
 			{
 				var3 = this.containingItems[par1].splitStack(par2);
 
@@ -185,7 +189,8 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectricBlock im
 
 				return var3;
 			}
-		} else
+		}
+		else
 		{
 			return null;
 		}
@@ -199,7 +204,8 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectricBlock im
 			final ItemStack var2 = this.containingItems[par1];
 			this.containingItems[par1] = null;
 			return var2;
-		} else
+		}
+		else
 		{
 			return null;
 		}

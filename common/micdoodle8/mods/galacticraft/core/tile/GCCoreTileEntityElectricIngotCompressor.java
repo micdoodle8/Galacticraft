@@ -66,11 +66,13 @@ public class GCCoreTileEntityElectricIngotCompressor extends GCCoreTileEntityEle
 						this.compressItems();
 						updateInv = true;
 					}
-				} else
+				}
+				else
 				{
 					this.processTicks = 0;
 				}
-			} else
+			}
+			else
 			{
 				this.processTicks = 0;
 			}
@@ -133,7 +135,8 @@ public class GCCoreTileEntityElectricIngotCompressor extends GCCoreTileEntityEle
 		{
 			this.compressIntoSlot(1);
 			this.compressIntoSlot(2);
-		} else
+		}
+		else
 		{
 			this.compressIntoSlot(2);
 			this.compressIntoSlot(1);
@@ -149,7 +152,8 @@ public class GCCoreTileEntityElectricIngotCompressor extends GCCoreTileEntityEle
 			if (this.containingItems[slot] == null)
 			{
 				this.containingItems[slot] = resultItemStack.copy();
-			} else if (this.containingItems[slot].isItemEqual(resultItemStack))
+			}
+			else if (this.containingItems[slot].isItemEqual(resultItemStack))
 			{
 				if (this.containingItems[slot].stackSize + resultItemStack.stackSize > 64)
 				{
@@ -193,7 +197,8 @@ public class GCCoreTileEntityElectricIngotCompressor extends GCCoreTileEntityEle
 			if (var5 >= 0 && var5 < this.containingItems.length)
 			{
 				this.containingItems[var5] = ItemStack.loadItemStackFromNBT(var4);
-			} else if (var5 < this.containingItems.length + this.compressingCraftMatrix.getSizeInventory())
+			}
+			else if (var5 < this.containingItems.length + this.compressingCraftMatrix.getSizeInventory())
 			{
 				this.compressingCraftMatrix.setInventorySlotContents(var5 - this.containingItems.length, ItemStack.loadItemStackFromNBT(var4));
 			}
@@ -267,7 +272,8 @@ public class GCCoreTileEntityElectricIngotCompressor extends GCCoreTileEntityEle
 				var3 = this.containingItems[par1];
 				this.containingItems[par1] = null;
 				return var3;
-			} else
+			}
+			else
 			{
 				var3 = this.containingItems[par1].splitStack(par2);
 
@@ -278,7 +284,8 @@ public class GCCoreTileEntityElectricIngotCompressor extends GCCoreTileEntityEle
 
 				return var3;
 			}
-		} else
+		}
+		else
 		{
 			return null;
 		}
@@ -297,7 +304,8 @@ public class GCCoreTileEntityElectricIngotCompressor extends GCCoreTileEntityEle
 			ItemStack var2 = this.containingItems[par1];
 			this.containingItems[par1] = null;
 			return var2;
-		} else
+		}
+		else
 		{
 			return null;
 		}
@@ -309,7 +317,8 @@ public class GCCoreTileEntityElectricIngotCompressor extends GCCoreTileEntityEle
 		if (par1 >= this.containingItems.length)
 		{
 			this.compressingCraftMatrix.setInventorySlotContents(par1 - this.containingItems.length, par2ItemStack);
-		} else
+		}
+		else
 		{
 			this.containingItems[par1] = par2ItemStack;
 

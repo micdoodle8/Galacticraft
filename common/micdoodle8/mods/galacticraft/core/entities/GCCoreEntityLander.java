@@ -170,12 +170,14 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
 					}
 
 					this.setWaitForPlayer(false);
-				} else
+				}
+				else
 				{
 					this.motionX = this.motionY = this.motionZ = 0.0D;
 					this.riddenByEntity.motionX = this.riddenByEntity.motionY = this.riddenByEntity.motionZ = 0;
 				}
-			} else
+			}
+			else
 			{
 				this.motionX = this.motionY = this.motionZ = 0.0D;
 			}
@@ -224,7 +226,8 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
 					if (isCanister)
 					{
 						this.containedItems[this.containedItems.length - 1] = new ItemStack(GCCoreItems.fuelCanister, 1, GCCoreItems.fuelCanister.getMaxDamage() - amountToFill);
-					} else
+					}
+					else
 					{
 						this.containedItems[this.containedItems.length - 1] = FluidContainerRegistry.fillFluidContainer(liquid, this.containedItems[this.containedItems.length - 1]);
 					}
@@ -244,7 +247,8 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
 		if (this.onGround)
 		{
 			this.motionX = this.motionY = this.motionZ = 0.0D;
-		} else
+		}
+		else
 		{
 			if (this.worldObj.isRemote)
 			{
@@ -492,7 +496,8 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
 		if (this.isDead || var1.equals(DamageSource.cactus) || this.riddenByEntity != null)
 		{
 			return true;
-		} else
+		}
+		else
 		{
 			this.rockDirection = -this.rockDirection;
 			this.timeSinceHit = 10;
@@ -548,12 +553,14 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
 		{
 			GCCoreUtil.openParachestInv((EntityPlayerMP) var1, this);
 			return true;
-		} else if (var1 instanceof EntityPlayerMP)
+		}
+		else if (var1 instanceof EntityPlayerMP)
 		{
 			((EntityPlayerMP) var1).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.ZOOM_CAMERA, new Object[] { 0 }));
 			var1.mountEntity(null);
 			return true;
-		} else
+		}
+		else
 		{
 			return true;
 		}
@@ -577,7 +584,8 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
 			this.setWaitForPlayer(dataStream.readBoolean());
 
 			this.onGround = dataStream.readBoolean();
-		} else
+		}
+		else
 		{
 			this.motionX = dataStream.readDouble() / 8000.0D;
 			this.motionY = dataStream.readDouble() / 8000.0D;
@@ -601,7 +609,8 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
 			list.add(this.onGround);
 
 			return list;
-		} else
+		}
+		else
 		{
 			list.add(this.motionX * 8000.0D);
 			list.add(this.motionY * 8000.0D);

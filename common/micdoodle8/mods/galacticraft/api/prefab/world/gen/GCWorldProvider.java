@@ -55,7 +55,8 @@ public abstract class GCWorldProvider extends WorldProvider implements IGalactic
 			Class<? extends GCWorldChunkManager> chunkManagerClass = this.getWorldChunkManagerClass();
 			Constructor<? extends GCWorldChunkManager> c = chunkManagerClass.getConstructor(World.class, Long.class, Boolean.class);
 			this.worldChunkMgr = c.newInstance(this.worldObj, this.worldObj.getSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled());
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -109,7 +110,8 @@ public abstract class GCWorldProvider extends WorldProvider implements IGalactic
 			Constructor<? extends GCChunkProvider> c = chunkProviderClass.getConstructor(World.class, Long.class, Boolean.class);
 			GCChunkProvider o = c.newInstance(this.worldObj, this.worldObj.getSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled());
 			return o;
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}

@@ -92,7 +92,8 @@ public class CircuitFabricatorRecipeHandler extends TemplateRecipeHandler
 			{
 				this.arecipes.add(new CachedCircuitRecipe(irecipe));
 			}
-		} else
+		}
+		else
 		{
 			super.loadCraftingRecipes(outputId, results);
 		}

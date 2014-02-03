@@ -65,7 +65,8 @@ public class GCCoreBlockSapling extends BlockSapling
 			if ((var6 & 8) == 0)
 			{
 				par1World.setBlockMetadataWithNotify(par2, par3, par4, var6 | 8, 3);
-			} else
+			}
+			else
 			{
 				this.growTree(par1World, par2, par3, par4, par5Random);
 			}
@@ -84,7 +85,8 @@ public class GCCoreBlockSapling extends BlockSapling
 		if (var6 == 1)
 		{
 			var7 = new GCCoreWorldGenTaiga2(true);
-		} else if (var6 == 2)
+		}
+		else if (var6 == 2)
 		{
 			var7 = new GCCoreWorldGenForest(true);
 		}
@@ -100,7 +102,8 @@ public class GCCoreBlockSapling extends BlockSapling
 			par1World.setBlock(par2 + var8 + 1, par3, par4 + var9, 0, 0, 3);
 			par1World.setBlock(par2 + var8, par3, par4 + var9 + 1, 0, 0, 3);
 			par1World.setBlock(par2 + var8 + 1, par3, par4 + var9 + 1, 0, 0, 3);
-		} else
+		}
+		else
 		{
 			par1World.setBlock(par2, par3, par4, 0, 0, 3);
 		}
@@ -113,7 +116,8 @@ public class GCCoreBlockSapling extends BlockSapling
 				par1World.setBlock(par2 + var8 + 1, par3, par4 + var9, this.blockID, var6, 3);
 				par1World.setBlock(par2 + var8, par3, par4 + var9 + 1, this.blockID, var6, 3);
 				par1World.setBlock(par2 + var8 + 1, par3, par4 + var9 + 1, this.blockID, var6, 3);
-			} else
+			}
+			else
 			{
 				par1World.setBlock(par2, par3, par4, this.blockID, var6, 3);
 			}

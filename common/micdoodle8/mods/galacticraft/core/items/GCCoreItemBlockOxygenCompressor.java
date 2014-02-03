@@ -48,7 +48,8 @@ public class GCCoreItemBlockOxygenCompressor extends ItemBlock
 		if (itemstack.getItemDamage() >= GCCoreBlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA)
 		{
 			metadata = 1;
-		} else if (itemstack.getItemDamage() >= GCCoreBlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA)
+		}
+		else if (itemstack.getItemDamage() >= GCCoreBlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA)
 		{
 			metadata = 0;
 		}

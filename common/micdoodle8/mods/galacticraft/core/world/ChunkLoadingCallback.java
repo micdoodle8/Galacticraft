@@ -81,10 +81,12 @@ public class ChunkLoadingCallback implements LoadingCallback
 			// "OfflineKeepLoaded", true,
 			// "Set to false if you want each player's chunk loaders to unload when they log out.").getBoolean(true);
 			ChunkLoadingCallback.loadOnLogin = ChunkLoadingCallback.config.get("CHUNKLOADING", "LoadOnLogin", true, "If you don't want each player's chunks to load when they log in, set to false.").getBoolean(true);
-		} catch (final Exception e)
+		}
+		catch (final Exception e)
 		{
 			GCLog.severe("Problem loading chunkloading config (\"core.conf\")");
-		} finally
+		}
+		finally
 		{
 			if (ChunkLoadingCallback.config.hasChanged())
 			{
@@ -182,7 +184,8 @@ public class ChunkLoadingCallback implements LoadingCallback
 
 				dataStream.close();
 			}
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -257,7 +260,8 @@ public class ChunkLoadingCallback implements LoadingCallback
 					dataStream.close();
 				}
 			}
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}

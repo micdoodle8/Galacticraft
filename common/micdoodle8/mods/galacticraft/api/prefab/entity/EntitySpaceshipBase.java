@@ -127,7 +127,8 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 			if (this.isEntityInvulnerable() || this.posY > 300)
 			{
 				return false;
-			} else
+			}
+			else
 			{
 				this.rollAmplitude = 10;
 				this.setBeenAttacked();
@@ -155,7 +156,8 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
 				return true;
 			}
-		} else
+		}
+		else
 		{
 			return true;
 		}
@@ -241,7 +243,8 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 		if (this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase())
 		{
 			this.timeSinceLaunch++;
-		} else
+		}
+		else
 		{
 			this.timeSinceLaunch = 0;
 		}
@@ -307,7 +310,8 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 			{
 				this.moveEntity(this.motionX, this.motionY, this.motionZ);
 			}
-		} else
+		}
+		else
 		{
 			this.moveEntity(this.motionX, this.motionY, this.motionZ);
 		}
@@ -343,7 +347,8 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 			{
 				this.readNetworkedData(dataStream);
 			}
-		} catch (final Exception e)
+		}
+		catch (final Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -443,7 +448,8 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 			{
 				this.launchPhase = EnumLaunchPhase.UNIGNITED.getPhase();
 			}
-		} else
+		}
+		else
 		{
 			this.launchPhase = nbt.getInteger("launchPhase");
 		}

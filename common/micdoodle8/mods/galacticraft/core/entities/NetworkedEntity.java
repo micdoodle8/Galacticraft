@@ -48,7 +48,8 @@ public abstract class NetworkedEntity extends Entity implements IPacketReceiver
 		try
 		{
 			this.readNetworkedData(dataStream);
-		} catch (final Exception e)
+		}
+		catch (final Exception e)
 		{
 			e.printStackTrace();
 		}

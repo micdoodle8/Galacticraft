@@ -200,7 +200,8 @@ public class GCCoreBlockRefinery extends GCCoreBlockAdvancedTile
 		if (side == metadata + 2)
 		{
 			return this.iconFuelOutput;
-		} else if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal())
+		}
+		else if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal())
 		{
 			return this.iconOilInput;
 		}

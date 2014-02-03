@@ -85,7 +85,8 @@ public class GCCoreItemBuggy extends Item
 		if (var24 == null)
 		{
 			return par1ItemStack;
-		} else
+		}
+		else
 		{
 			final Vec3 var25 = par3EntityPlayer.getLook(var4);
 			boolean var26 = false;
@@ -112,7 +113,8 @@ public class GCCoreItemBuggy extends Item
 			if (var26)
 			{
 				return par1ItemStack;
-			} else
+			}
+			else
 			{
 				if (var24.typeOfHit == EnumMovingObjectType.TILE)
 				{

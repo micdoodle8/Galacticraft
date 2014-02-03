@@ -76,7 +76,8 @@ public class ThreadFindSeal extends Thread
 					this.world.setBlock(checkedVec.getPosition().intX(), checkedVec.getPosition().intY(), checkedVec.getPosition().intZ(), GCCoreBlocks.breatheableAir.blockID, 0, 3);
 				}
 			}
-		} else
+		}
+		else
 		{
 			this.checked.clear();
 			this.loopThroughD(this.head.clone().translate(new Vector3(0, 1, 0)));
@@ -177,7 +178,8 @@ public class ThreadFindSeal extends Thread
 						}
 					}
 				}
-			} else
+			}
+			else
 			{
 				for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
 				{

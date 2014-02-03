@@ -68,15 +68,18 @@ public class GCCoreCommandPlanetTeleport extends CommandBase
 					playerBase.mountEntity(null);
 
 					CommandBase.notifyAdmins(icommandsender, "commands.dimensionteleport", new Object[] { String.valueOf(EnumColor.GREY + "[" + playerBase.getEntityName()), "]" });
-				} else
+				}
+				else
 				{
 					throw new Exception("Could not find player with name: " + astring[0]);
 				}
-			} catch (final Exception var6)
+			}
+			catch (final Exception var6)
 			{
 				throw new CommandException(var6.getMessage(), new Object[0]);
 			}
-		} else
+		}
+		else
 		{
 			throw new WrongUsageException("Not enough command arguments! Usage: " + this.getCommandUsage(icommandsender), new Object[0]);
 		}

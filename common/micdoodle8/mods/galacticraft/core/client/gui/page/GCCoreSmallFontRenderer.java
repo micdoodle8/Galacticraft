@@ -169,7 +169,8 @@ public class GCCoreSmallFontRenderer implements ResourceManagerReloadListener
 		try
 		{
 			bufferedimage = ImageIO.read(Minecraft.getMinecraft().getResourceManager().getResource(this.field_111273_g).getInputStream());
-		} catch (IOException ioexception)
+		}
+		catch (IOException ioexception)
 		{
 			throw new RuntimeException(ioexception);
 		}
@@ -234,7 +235,8 @@ public class GCCoreSmallFontRenderer implements ResourceManagerReloadListener
 		{
 			InputStream inputstream = Minecraft.getMinecraft().getResourceManager().getResource(new ResourceLocation("font/glyph_sizes.bin")).getInputStream();
 			inputstream.read(this.glyphWidth);
-		} catch (IOException ioexception)
+		}
+		catch (IOException ioexception)
 		{
 			throw new RuntimeException(ioexception);
 		}
@@ -300,7 +302,8 @@ public class GCCoreSmallFontRenderer implements ResourceManagerReloadListener
 		if (this.glyphWidth[par1] == 0)
 		{
 			return 0.0F;
-		} else
+		}
+		else
 		{
 			int i = par1 / 256;
 			this.loadGlyphTexture(i);
@@ -360,7 +363,8 @@ public class GCCoreSmallFontRenderer implements ResourceManagerReloadListener
 		{
 			l = this.renderString(par1Str, par2 + 1, par3 + 1, par4, true);
 			l = Math.max(l, this.renderString(par1Str, par2, par3, par4, false));
-		} else
+		}
+		else
 		{
 			l = this.renderString(par1Str, par2, par3, par4, false);
 		}
@@ -417,7 +421,8 @@ public class GCCoreSmallFontRenderer implements ResourceManagerReloadListener
 					if ((b0 & 1) == 0)
 					{
 						stringbuilder.append(astring[i]);
-					} else
+					}
+					else
 					{
 						for (i1 = astring[i].length() - 1; i1 >= 0; --i1)
 						{
@@ -426,7 +431,8 @@ public class GCCoreSmallFontRenderer implements ResourceManagerReloadListener
 							if (c0 == 40)
 							{
 								c0 = 41;
-							} else if (c0 == 41)
+							}
+							else if (c0 == 41)
 							{
 								c0 = 40;
 							}
@@ -441,7 +447,8 @@ public class GCCoreSmallFontRenderer implements ResourceManagerReloadListener
 			}
 
 			return stringbuilder.toString();
-		} else
+		}
+		else
 		{
 			return par1Str;
 		}
@@ -496,22 +503,28 @@ public class GCCoreSmallFontRenderer implements ResourceManagerReloadListener
 					k = this.colorCode[j];
 					this.textColor = k;
 					GL11.glColor4f((k >> 16) / 255.0F, (k >> 8 & 255) / 255.0F, (k & 255) / 255.0F, this.alpha);
-				} else if (j == 16)
+				}
+				else if (j == 16)
 				{
 					this.randomStyle = true;
-				} else if (j == 17)
+				}
+				else if (j == 17)
 				{
 					this.boldStyle = true;
-				} else if (j == 18)
+				}
+				else if (j == 18)
 				{
 					this.strikethroughStyle = true;
-				} else if (j == 19)
+				}
+				else if (j == 19)
 				{
 					this.underlineStyle = true;
-				} else if (j == 20)
+				}
+				else if (j == 20)
 				{
 					this.italicStyle = true;
-				} else if (j == 21)
+				}
+				else if (j == 21)
 				{
 					this.randomStyle = false;
 					this.boldStyle = false;
@@ -522,7 +535,8 @@ public class GCCoreSmallFontRenderer implements ResourceManagerReloadListener
 				}
 
 				++i;
-			} else
+			}
+			else
 			{
 				j = ChatAllowedCharacters.allowedCharacters.indexOf(c0);
 
@@ -531,7 +545,8 @@ public class GCCoreSmallFontRenderer implements ResourceManagerReloadListener
 					do
 					{
 						k = this.fontRandom.nextInt(ChatAllowedCharacters.allowedCharacters.length());
-					} while (this.charWidth[j + 32] != this.charWidth[k + 32]);
+					}
+					while (this.charWidth[j + 32] != this.charWidth[k + 32]);
 
 					j = k;
 				}
@@ -633,7 +648,8 @@ public class GCCoreSmallFontRenderer implements ResourceManagerReloadListener
 		if (par1Str == null)
 		{
 			return 0;
-		} else
+		}
+		else
 		{
 			if ((par4 & -67108864) == 0)
 			{
@@ -666,7 +682,8 @@ public class GCCoreSmallFontRenderer implements ResourceManagerReloadListener
 		if (par1Str == null)
 		{
 			return 0;
-		} else
+		}
+		else
 		{
 			int i = 0;
 			boolean flag = false;
@@ -687,7 +704,8 @@ public class GCCoreSmallFontRenderer implements ResourceManagerReloadListener
 						{
 							flag = false;
 						}
-					} else
+					}
+					else
 					{
 						flag = true;
 					}
@@ -715,17 +733,20 @@ public class GCCoreSmallFontRenderer implements ResourceManagerReloadListener
 		if (par1 == 167)
 		{
 			return -1;
-		} else if (par1 == 32)
+		}
+		else if (par1 == 32)
 		{
 			return 4;
-		} else
+		}
+		else
 		{
 			int i = ChatAllowedCharacters.allowedCharacters.indexOf(par1);
 
 			if (i >= 0 && !this.unicodeFlag)
 			{
 				return this.charWidth[i + 32];
-			} else if (this.glyphWidth[par1] != 0)
+			}
+			else if (this.glyphWidth[par1] != 0)
 			{
 				int j = this.glyphWidth[par1] >>> 4;
 				int k = this.glyphWidth[par1] & 15;
@@ -738,7 +759,8 @@ public class GCCoreSmallFontRenderer implements ResourceManagerReloadListener
 
 				++k;
 				return (k - j) / 2 + 1;
-			} else
+			}
+			else
 			{
 				return 0;
 			}
@@ -780,14 +802,17 @@ public class GCCoreSmallFontRenderer implements ResourceManagerReloadListener
 					{
 						flag2 = false;
 					}
-				} else
+				}
+				else
 				{
 					flag2 = true;
 				}
-			} else if (j1 < 0)
+			}
+			else if (j1 < 0)
 			{
 				flag1 = true;
-			} else
+			}
+			else
 			{
 				j += j1;
 
@@ -805,7 +830,8 @@ public class GCCoreSmallFontRenderer implements ResourceManagerReloadListener
 			if (par3)
 			{
 				stringbuilder.insert(0, c0);
-			} else
+			}
+			else
 			{
 				stringbuilder.append(c0);
 			}
@@ -908,7 +934,8 @@ public class GCCoreSmallFontRenderer implements ResourceManagerReloadListener
 		if (par1Str.length() <= j)
 		{
 			return par1Str;
-		} else
+		}
+		else
 		{
 			String s1 = par1Str.substring(0, j);
 			char c0 = par1Str.charAt(j);
@@ -950,7 +977,8 @@ public class GCCoreSmallFontRenderer implements ResourceManagerReloadListener
 						{
 							flag = false;
 						}
-					} else
+					}
+					else
 					{
 						flag = true;
 					}
@@ -1020,7 +1048,8 @@ public class GCCoreSmallFontRenderer implements ResourceManagerReloadListener
 				if (GCCoreSmallFontRenderer.isFormatColor(c0))
 				{
 					s1 = "\u00a7" + c0;
-				} else if (GCCoreSmallFontRenderer.isFormatSpecial(c0))
+				}
+				else if (GCCoreSmallFontRenderer.isFormatSpecial(c0))
 				{
 					s1 = s1 + "\u00a7" + c0;
 				}

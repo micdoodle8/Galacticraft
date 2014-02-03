@@ -233,7 +233,8 @@ public class GCCoreTileEntityCoalGenerator extends GCCoreTileEntityUniversalElec
 				var3 = this.containingItems[par1];
 				this.containingItems[par1] = null;
 				return var3;
-			} else
+			}
+			else
 			{
 				var3 = this.containingItems[par1].splitStack(par2);
 
@@ -244,7 +245,8 @@ public class GCCoreTileEntityCoalGenerator extends GCCoreTileEntityUniversalElec
 
 				return var3;
 			}
-		} else
+		}
+		else
 		{
 			return null;
 		}
@@ -258,7 +260,8 @@ public class GCCoreTileEntityCoalGenerator extends GCCoreTileEntityUniversalElec
 			ItemStack var2 = this.containingItems[par1];
 			this.containingItems[par1] = null;
 			return var2;
-		} else
+		}
+		else
 		{
 			return null;
 		}

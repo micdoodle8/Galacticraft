@@ -83,7 +83,8 @@ public class GCMarsWorldGenTerraformTree extends WorldGenerator
 							{
 								flag = false;
 							}
-						} else
+						}
+						else
 						{
 							flag = false;
 						}
@@ -94,7 +95,8 @@ public class GCMarsWorldGenTerraformTree extends WorldGenerator
 			if (!flag)
 			{
 				return false;
-			} else
+			}
+			else
 			{
 				i1 = par1World.getBlockId(par3, par4 - 1, par5);
 
@@ -222,12 +224,14 @@ public class GCMarsWorldGenTerraformTree extends WorldGenerator
 					}
 
 					return true;
-				} else
+				}
+				else
 				{
 					return false;
 				}
 			}
-		} else
+		}
+		else
 		{
 			return false;
 		}

@@ -103,7 +103,8 @@ public class GCCoreGuiManual extends GuiScreen
 			{
 				this.currentPage = this.maxPages;
 			}
-		} else
+		}
+		else
 		{
 			if (this.currentPage >= this.maxPages)
 			{
@@ -133,10 +134,12 @@ public class GCCoreGuiManual extends GuiScreen
 					this.pageLeft = (GCCoreBookPage) clazz.newInstance();
 					this.pageLeft.init(this, 0);
 					this.pageLeft.readPageFromXML(element);
-				} catch (Exception e)
+				}
+				catch (Exception e)
 				{
 				}
-			} else
+			}
+			else
 			{
 				this.pageLeft = null;
 			}
@@ -154,14 +157,17 @@ public class GCCoreGuiManual extends GuiScreen
 					this.pageRight = (GCCoreBookPage) clazz.newInstance();
 					this.pageRight.init(this, 1);
 					this.pageRight.readPageFromXML(element);
-				} catch (Exception e)
+				}
+				catch (Exception e)
 				{
 				}
-			} else
+			}
+			else
 			{
 				this.pageLeft = null;
 			}
-		} else
+		}
+		else
 		{
 			this.pageRight = null;
 		}

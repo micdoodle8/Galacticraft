@@ -102,7 +102,8 @@ public class GCCoreTileEntityParachest extends TileEntity implements IInventory,
 				this.chestContents[par1] = null;
 				this.onInventoryChanged();
 				return itemstack;
-			} else
+			}
+			else
 			{
 				itemstack = this.chestContents[par1].splitStack(par2);
 
@@ -114,7 +115,8 @@ public class GCCoreTileEntityParachest extends TileEntity implements IInventory,
 				this.onInventoryChanged();
 				return itemstack;
 			}
-		} else
+		}
+		else
 		{
 			return null;
 		}
@@ -128,7 +130,8 @@ public class GCCoreTileEntityParachest extends TileEntity implements IInventory,
 			ItemStack itemstack = this.chestContents[par1];
 			this.chestContents[par1] = null;
 			return itemstack;
-		} else
+		}
+		else
 		{
 			return null;
 		}
@@ -275,7 +278,8 @@ public class GCCoreTileEntityParachest extends TileEntity implements IInventory,
 			if (this.numUsingPlayers > 0)
 			{
 				this.lidAngle += f;
-			} else
+			}
+			else
 			{
 				this.lidAngle -= f;
 			}
@@ -315,7 +319,8 @@ public class GCCoreTileEntityParachest extends TileEntity implements IInventory,
 					if (isCanister)
 					{
 						this.chestContents[this.chestContents.length - 1] = new ItemStack(GCCoreItems.fuelCanister, 1, GCCoreItems.fuelCanister.getMaxDamage() - amountToFill);
-					} else
+					}
+					else
 					{
 						this.chestContents[this.chestContents.length - 1] = FluidContainerRegistry.fillFluidContainer(liquid, this.chestContents[this.chestContents.length - 1]);
 					}
@@ -353,7 +358,8 @@ public class GCCoreTileEntityParachest extends TileEntity implements IInventory,
 		{
 			this.numUsingPlayers = par2;
 			return true;
-		} else
+		}
+		else
 		{
 			return super.receiveClientEvent(par1, par2);
 		}

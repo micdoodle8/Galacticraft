@@ -137,7 +137,8 @@ public abstract class GCCoreEntityAdvanced extends GCCoreEntityControllable impl
 			this.motionY = motY;
 			this.motionZ = motZ;
 			this.posRotIncrements = 5;
-		} else
+		}
+		else
 		{
 			this.setPosition(x, y, z);
 			this.setRotation(yaw, pitch);
@@ -170,7 +171,8 @@ public abstract class GCCoreEntityAdvanced extends GCCoreEntityControllable impl
 		if (this.isDead || var1.equals(DamageSource.cactus) || !this.allowDamageSource(var1))
 		{
 			return true;
-		} else
+		}
+		else
 		{
 			this.rockDirection = -this.rockDirection;
 			this.timeSinceHit = 10;
@@ -278,7 +280,8 @@ public abstract class GCCoreEntityAdvanced extends GCCoreEntityControllable impl
 		{
 			if (this.riddenByEntity instanceof EntityPlayer && FMLClientHandler.instance().getClient().thePlayer.equals(this.riddenByEntity))
 			{
-			} else
+			}
+			else
 			{
 				this.posRotIncrements = i + 5;
 				this.advancedPositionX = d;
@@ -328,7 +331,8 @@ public abstract class GCCoreEntityAdvanced extends GCCoreEntityControllable impl
 				--this.posRotIncrements;
 				this.setPosition(x, y, z);
 				this.setRotation(this.rotationYaw, this.rotationPitch);
-			} else
+			}
+			else
 			{
 				x = this.posX + this.motionX;
 				y = this.posY + this.motionY;
@@ -366,7 +370,8 @@ public abstract class GCCoreEntityAdvanced extends GCCoreEntityControllable impl
 		if (this.onGround)
 		{
 			this.tickOnGround();
-		} else
+		}
+		else
 		{
 			this.tickInAir();
 		}
@@ -419,7 +424,8 @@ public abstract class GCCoreEntityAdvanced extends GCCoreEntityControllable impl
 			{
 				this.readNetworkedData(dataStream);
 			}
-		} catch (final Exception e)
+		}
+		catch (final Exception e)
 		{
 			e.printStackTrace();
 		}

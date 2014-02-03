@@ -57,7 +57,8 @@ public class GCCoreCommandSpaceStationAddOwner extends CommandBase
 					if (playerBase.getSpaceStationDimensionID() <= 0)
 					{
 						throw new WrongUsageException("Could not find space station for your username, you need to travel there first!", new Object[0]);
-					} else
+					}
+					else
 					{
 						final GCCoreSpaceStationData data = GCCoreSpaceStationData.getStationData(playerBase.worldObj, playerBase.getSpaceStationDimensionID(), playerBase);
 
@@ -75,12 +76,14 @@ public class GCCoreCommandSpaceStationAddOwner extends CommandBase
 						playerToAdd.sendChatToPlayer(ChatMessageComponent.createFromText("You've been added to " + playerBase.username + "\'s Space Station accepted players!"));
 					}
 				}
-			} catch (final Exception var6)
+			}
+			catch (final Exception var6)
 			{
 				throw new CommandException(var6.getMessage(), new Object[0]);
 			}
 
-		} else
+		}
+		else
 		{
 			throw new WrongUsageException("Not enough command arguments! Usage: " + this.getCommandUsage(icommandsender), new Object[0]);
 		}

@@ -91,7 +91,8 @@ public class UniversalNetwork extends ElectricityNetwork
 											}
 										}
 									}
-								} else if (NetworkConfigHandler.isIndustrialCraft2Loaded() && tileEntity instanceof IEnergySink)
+								}
+								else if (NetworkConfigHandler.isIndustrialCraft2Loaded() && tileEntity instanceof IEnergySink)
 								{
 									IEnergySink electricalTile = (IEnergySink) tileEntity;
 
@@ -107,13 +108,15 @@ public class UniversalNetwork extends ElectricityNetwork
 											if (!doReceive)
 											{
 												remainingUsableEnergy -= energyToSend;
-											} else if (energyToSend > 0)
+											}
+											else if (energyToSend > 0)
 											{
 												remainingUsableEnergy -= electricalTile.injectEnergyUnits(direction, energyToSend * NetworkConfigHandler.TO_IC2_RATIO) * NetworkConfigHandler.IC2_RATIO;
 											}
 										}
 									}
-								} else if (NetworkConfigHandler.isBuildcraftLoaded() && tileEntity instanceof IPowerReceptor)
+								}
+								else if (NetworkConfigHandler.isBuildcraftLoaded() && tileEntity instanceof IPowerReceptor)
 								{
 									IPowerReceptor electricalTile = (IPowerReceptor) tileEntity;
 
@@ -132,14 +135,16 @@ public class UniversalNetwork extends ElectricityNetwork
 												if (!doReceive)
 												{
 													remainingUsableEnergy -= energyToSend;
-												} else if (energyToSend > 0)
+												}
+												else if (energyToSend > 0)
 												{
 													remainingUsableEnergy -= receiver.receiveEnergy(Type.PIPE, energyToSend * NetworkConfigHandler.TO_BC_RATIO, direction) * NetworkConfigHandler.BC3_RATIO;
 												}
 											}
 										}
 									}
-								} else if (NetworkConfigHandler.isThermalExpansionLoaded() && tileEntity instanceof IEnergyHandler)
+								}
+								else if (NetworkConfigHandler.isThermalExpansionLoaded() && tileEntity instanceof IEnergyHandler)
 								{
 									IEnergyHandler receiver = (IEnergyHandler) tileEntity;
 
@@ -163,7 +168,8 @@ public class UniversalNetwork extends ElectricityNetwork
 									}
 								}
 							}
-						} else
+						}
+						else
 						{
 							markRefresh = true;
 						}
@@ -306,15 +312,18 @@ public class UniversalNetwork extends ElectricityNetwork
 				{
 					it.remove();
 					continue;
-				} else if (((TileEntity) conductor).isInvalid() || ((TileEntity) conductor).getWorldObj() == null)
+				}
+				else if (((TileEntity) conductor).isInvalid() || ((TileEntity) conductor).getWorldObj() == null)
 				{
 					it.remove();
 					continue;
-				} else if (((TileEntity) conductor).getWorldObj().getBlockTileEntity(((TileEntity) conductor).xCoord, ((TileEntity) conductor).yCoord, ((TileEntity) conductor).zCoord) != conductor)
+				}
+				else if (((TileEntity) conductor).getWorldObj().getBlockTileEntity(((TileEntity) conductor).xCoord, ((TileEntity) conductor).yCoord, ((TileEntity) conductor).zCoord) != conductor)
 				{
 					it.remove();
 					continue;
-				} else
+				}
+				else
 				{
 					conductor.setNetwork(this);
 				}
@@ -334,7 +343,8 @@ public class UniversalNetwork extends ElectricityNetwork
 							if (this.electricalTiles.containsKey(acceptor))
 							{
 								possibleDirections = this.electricalTiles.get(acceptor);
-							} else
+							}
+							else
 							{
 								possibleDirections = new ArrayList<ForgeDirection>();
 							}
@@ -342,13 +352,16 @@ public class UniversalNetwork extends ElectricityNetwork
 							if (acceptor instanceof IElectrical && ((IElectrical) acceptor).canConnect(direction, NetworkType.POWER))
 							{
 								possibleDirections.add(direction);
-							} else if (NetworkConfigHandler.isThermalExpansionLoaded() && acceptor instanceof IEnergyHandler && ((IEnergyHandler) acceptor).canInterface(direction))
+							}
+							else if (NetworkConfigHandler.isThermalExpansionLoaded() && acceptor instanceof IEnergyHandler && ((IEnergyHandler) acceptor).canInterface(direction))
 							{
 								possibleDirections.add(direction);
-							} else if (NetworkConfigHandler.isIndustrialCraft2Loaded() && acceptor instanceof IEnergyAcceptor && ((IEnergyAcceptor) acceptor).acceptsEnergyFrom((TileEntity) conductor, direction))
+							}
+							else if (NetworkConfigHandler.isIndustrialCraft2Loaded() && acceptor instanceof IEnergyAcceptor && ((IEnergyAcceptor) acceptor).acceptsEnergyFrom((TileEntity) conductor, direction))
 							{
 								possibleDirections.add(direction);
-							} else if (NetworkConfigHandler.isBuildcraftLoaded() && acceptor instanceof IPowerReceptor && ((IPowerReceptor) acceptor).getPowerReceiver(direction) != null)
+							}
+							else if (NetworkConfigHandler.isBuildcraftLoaded() && acceptor instanceof IPowerReceptor && ((IPowerReceptor) acceptor).getPowerReceiver(direction) != null)
 							{
 								possibleDirections.add(direction);
 							}
@@ -363,7 +376,8 @@ public class UniversalNetwork extends ElectricityNetwork
 					}
 				}
 			}
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
 			FMLLog.severe("Universal Electricity: Failed to refresh conductor.");
 			e.printStackTrace();
@@ -429,7 +443,8 @@ public class UniversalNetwork extends ElectricityNetwork
 										}
 									}
 								}
-							} else
+							}
+							else
 							{
 								/**
 								 * The connections A and B are not connected

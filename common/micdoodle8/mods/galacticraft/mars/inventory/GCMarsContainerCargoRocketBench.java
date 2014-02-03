@@ -140,121 +140,141 @@ public class GCMarsContainerCargoRocketBench extends Container
 				}
 
 				var3.onSlotChange(var4, var2);
-			} else if (var2.getItem().itemID == GCCoreItems.partNoseCone.itemID && !((Slot) this.inventorySlots.get(1)).getHasStack())
+			}
+			else if (var2.getItem().itemID == GCCoreItems.partNoseCone.itemID && !((Slot) this.inventorySlots.get(1)).getHasStack())
 			{
 				if (!this.mergeItemStack(var4, 1, 2, false))
 				{
 					return null;
 				}
-			} else if (var2.getItem().itemID == GCCoreItems.heavyPlatingTier1.itemID && !((Slot) this.inventorySlots.get(2)).getHasStack())
+			}
+			else if (var2.getItem().itemID == GCCoreItems.heavyPlatingTier1.itemID && !((Slot) this.inventorySlots.get(2)).getHasStack())
 			{
 				if (!this.mergeItemStack(var4, 2, 3, false))
 				{
 					return null;
 				}
-			} else if (var2.getItem().itemID == GCCoreItems.heavyPlatingTier1.itemID && !((Slot) this.inventorySlots.get(3)).getHasStack())
+			}
+			else if (var2.getItem().itemID == GCCoreItems.heavyPlatingTier1.itemID && !((Slot) this.inventorySlots.get(3)).getHasStack())
 			{
 				if (!this.mergeItemStack(var4, 3, 4, false))
 				{
 					return null;
 				}
-			} else if (var2.getItem().itemID == GCCoreItems.heavyPlatingTier1.itemID && !((Slot) this.inventorySlots.get(4)).getHasStack())
+			}
+			else if (var2.getItem().itemID == GCCoreItems.heavyPlatingTier1.itemID && !((Slot) this.inventorySlots.get(4)).getHasStack())
 			{
 				if (!this.mergeItemStack(var4, 4, 5, false))
 				{
 					return null;
 				}
-			} else if (var2.getItem().itemID == GCCoreItems.heavyPlatingTier1.itemID && !((Slot) this.inventorySlots.get(5)).getHasStack())
+			}
+			else if (var2.getItem().itemID == GCCoreItems.heavyPlatingTier1.itemID && !((Slot) this.inventorySlots.get(5)).getHasStack())
 			{
 				if (!this.mergeItemStack(var4, 5, 6, false))
 				{
 					return null;
 				}
-			} else if (var2.getItem().itemID == GCCoreItems.heavyPlatingTier1.itemID && !((Slot) this.inventorySlots.get(6)).getHasStack())
+			}
+			else if (var2.getItem().itemID == GCCoreItems.heavyPlatingTier1.itemID && !((Slot) this.inventorySlots.get(6)).getHasStack())
 			{
 				if (!this.mergeItemStack(var4, 6, 7, false))
 				{
 					return null;
 				}
-			} else if (var2.getItem().itemID == GCCoreItems.heavyPlatingTier1.itemID && !((Slot) this.inventorySlots.get(7)).getHasStack())
+			}
+			else if (var2.getItem().itemID == GCCoreItems.heavyPlatingTier1.itemID && !((Slot) this.inventorySlots.get(7)).getHasStack())
 			{
 				if (!this.mergeItemStack(var4, 7, 8, false))
 				{
 					return null;
 				}
-			} else if (var2.getItem().itemID == GCCoreItems.heavyPlatingTier1.itemID && !((Slot) this.inventorySlots.get(8)).getHasStack())
+			}
+			else if (var2.getItem().itemID == GCCoreItems.heavyPlatingTier1.itemID && !((Slot) this.inventorySlots.get(8)).getHasStack())
 			{
 				if (!this.mergeItemStack(var4, 8, 9, false))
 				{
 					return null;
 				}
-			} else if (var2.getItem().itemID == GCCoreItems.heavyPlatingTier1.itemID && !((Slot) this.inventorySlots.get(9)).getHasStack())
+			}
+			else if (var2.getItem().itemID == GCCoreItems.heavyPlatingTier1.itemID && !((Slot) this.inventorySlots.get(9)).getHasStack())
 			{
 				if (!this.mergeItemStack(var4, 9, 10, false))
 				{
 					return null;
 				}
-			} else if (var2.getItem().itemID == GCCoreItems.partFins.itemID && !((Slot) this.inventorySlots.get(10)).getHasStack())
+			}
+			else if (var2.getItem().itemID == GCCoreItems.partFins.itemID && !((Slot) this.inventorySlots.get(10)).getHasStack())
 			{
 				if (!this.mergeItemStack(var4, 10, 11, false))
 				{
 					return null;
 				}
-			} else if (var2.getItem().itemID == GCCoreItems.partFins.itemID && !((Slot) this.inventorySlots.get(11)).getHasStack())
+			}
+			else if (var2.getItem().itemID == GCCoreItems.partFins.itemID && !((Slot) this.inventorySlots.get(11)).getHasStack())
 			{
 				if (!this.mergeItemStack(var4, 11, 12, false))
 				{
 					return null;
 				}
-			} else if (var2.getItem().itemID == GCCoreItems.rocketEngine.itemID && !((Slot) this.inventorySlots.get(12)).getHasStack())
+			}
+			else if (var2.getItem().itemID == GCCoreItems.rocketEngine.itemID && !((Slot) this.inventorySlots.get(12)).getHasStack())
 			{
 				if (!this.mergeItemStack(var4, 12, 13, false))
 				{
 					return null;
 				}
-			} else if (var2.getItem().itemID == GCCoreItems.partFins.itemID && !((Slot) this.inventorySlots.get(13)).getHasStack())
+			}
+			else if (var2.getItem().itemID == GCCoreItems.partFins.itemID && !((Slot) this.inventorySlots.get(13)).getHasStack())
 			{
 				if (!this.mergeItemStack(var4, 13, 14, false))
 				{
 					return null;
 				}
-			} else if (var2.getItem().itemID == GCCoreItems.partFins.itemID && !((Slot) this.inventorySlots.get(14)).getHasStack())
+			}
+			else if (var2.getItem().itemID == GCCoreItems.partFins.itemID && !((Slot) this.inventorySlots.get(14)).getHasStack())
 			{
 				if (!this.mergeItemStack(var4, 14, 15, false))
 				{
 					return null;
 				}
-			} else if (var2.getItem().itemID == Block.chest.blockID && !((Slot) this.inventorySlots.get(15)).getHasStack())
+			}
+			else if (var2.getItem().itemID == Block.chest.blockID && !((Slot) this.inventorySlots.get(15)).getHasStack())
 			{
 				if (!this.mergeItemStack(var4, 15, 16, false))
 				{
 					return null;
 				}
-			} else if (var2.getItem().itemID == Block.chest.blockID && !((Slot) this.inventorySlots.get(16)).getHasStack())
+			}
+			else if (var2.getItem().itemID == Block.chest.blockID && !((Slot) this.inventorySlots.get(16)).getHasStack())
 			{
 				if (!this.mergeItemStack(var4, 16, 17, false))
 				{
 					return null;
 				}
-			} else if (var2.getItem().itemID == Block.chest.blockID && !((Slot) this.inventorySlots.get(17)).getHasStack())
+			}
+			else if (var2.getItem().itemID == Block.chest.blockID && !((Slot) this.inventorySlots.get(17)).getHasStack())
 			{
 				if (!this.mergeItemStack(var4, 17, 18, false))
 				{
 					return null;
 				}
-			} else if (par1 >= 18 && par1 < 37)
+			}
+			else if (par1 >= 18 && par1 < 37)
 			{
 				if (!this.mergeItemStack(var4, 37, 46, false))
 				{
 					return null;
 				}
-			} else if (par1 >= 37 && par1 < 46)
+			}
+			else if (par1 >= 37 && par1 < 46)
 			{
 				if (!this.mergeItemStack(var4, 18, 37, false))
 				{
 					return null;
 				}
-			} else if (!this.mergeItemStack(var4, 18, 46, false))
+			}
+			else if (!this.mergeItemStack(var4, 18, 46, false))
 			{
 				return null;
 			}
@@ -262,7 +282,8 @@ public class GCMarsContainerCargoRocketBench extends Container
 			if (var4.stackSize == 0)
 			{
 				var3.putStack((ItemStack) null);
-			} else
+			}
+			else
 			{
 				var3.onSlotChanged();
 			}

@@ -93,7 +93,8 @@ public class RocketT1RecipeHandler extends TemplateRecipeHandler
 			{
 				this.arecipes.add(new CachedRocketRecipe(irecipe));
 			}
-		} else
+		}
+		else
 		{
 			super.loadCraftingRecipes(outputId, results);
 		}

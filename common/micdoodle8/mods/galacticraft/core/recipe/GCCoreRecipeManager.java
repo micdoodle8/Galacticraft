@@ -414,7 +414,8 @@ public class GCCoreRecipeManager
 			RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.BC_POWER_STONEPIPE.getMetadata()), new Object[] { "XYX", 'Y', pipePowerStone, 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4) });
 			RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.BC_POWER_GOLDPIPE.getMetadata()), new Object[] { "XYX", 'Y', pipePowerGold, 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4) });
 
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -443,7 +444,8 @@ public class GCCoreRecipeManager
 			ItemStack tinDustItemStack = (ItemStack) tinDustObject;
 			o = clazz2.getConstructor(ItemStack.class).newInstance(new ItemStack(GCCoreBlocks.blockMoon.blockID, 1, 1));
 			addRecipe.invoke(Class.forName("ic2.api.recipe.Recipes").getField("macerator").get(null), o, null, new ItemStack[] { new ItemStack(tinDustItemStack.getItem(), 2, tinDustItemStack.getItemDamage()) });
-		} catch (Throwable e)
+		}
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 		}

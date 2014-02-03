@@ -51,7 +51,8 @@ public class GCCorePacketEntityUpdate implements IGalacticraftAdvancedPacket
 
 			data.close();
 			bytes.close();
-		} catch (final Exception e)
+		}
+		catch (final Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -82,7 +83,8 @@ public class GCCorePacketEntityUpdate implements IGalacticraftAdvancedPacket
 			{
 				driveable.setPositionRotationAndMotion(stream.readDouble(), stream.readDouble(), stream.readDouble(), stream.readFloat(), stream.readFloat(), stream.readDouble(), stream.readDouble(), stream.readDouble(), stream.readBoolean());
 			}
-		} catch (final Exception e)
+		}
+		catch (final Exception e)
 		{
 			e.printStackTrace();
 		}

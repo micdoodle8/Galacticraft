@@ -30,7 +30,8 @@ public class GCMarsTileEntitySlimelingEgg extends TileEntity
 			if (this.timeToHatch > 0)
 			{
 				this.timeToHatch--;
-			} else if (this.timeToHatch == 0)
+			}
+			else if (this.timeToHatch == 0)
 			{
 				int metadata = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord) % 3;
 

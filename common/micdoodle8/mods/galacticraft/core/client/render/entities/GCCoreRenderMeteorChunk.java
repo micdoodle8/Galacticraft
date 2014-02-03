@@ -56,7 +56,8 @@ public class GCCoreRenderMeteorChunk extends Render
 		if (entity.isHot())
 		{
 			this.bindTexture(GCCoreRenderMeteorChunk.meteorChunkHotTexture);
-		} else
+		}
+		else
 		{
 			this.bindTexture(GCCoreRenderMeteorChunk.meteorChunkTexture);
 		}

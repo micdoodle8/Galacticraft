@@ -88,7 +88,8 @@ public class BuggyRecipeHandler extends TemplateRecipeHandler
 			{
 				this.arecipes.add(new CachedRocketRecipe(irecipe));
 			}
-		} else
+		}
+		else
 		{
 			super.loadCraftingRecipes(outputId, results);
 		}

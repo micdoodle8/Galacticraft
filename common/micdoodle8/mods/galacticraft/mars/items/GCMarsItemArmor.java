@@ -50,10 +50,12 @@ public class GCMarsItemArmor extends ItemArmor
 			if (stack.getItem().itemID == GCMarsItems.deshHelmet.itemID)
 			{
 				return "textures/model/armor/desh_1.png";
-			} else if (stack.getItem().itemID == GCMarsItems.deshChestplate.itemID || stack.getItem().itemID == GCMarsItems.deshBoots.itemID)
+			}
+			else if (stack.getItem().itemID == GCMarsItems.deshChestplate.itemID || stack.getItem().itemID == GCMarsItems.deshBoots.itemID)
 			{
 				return "textures/model/armor/desh_2.png";
-			} else if (stack.getItem().itemID == GCMarsItems.deshLeggings.itemID)
+			}
+			else if (stack.getItem().itemID == GCMarsItems.deshLeggings.itemID)
 			{
 				return "textures/model/armor/desh_3.png";
 			}

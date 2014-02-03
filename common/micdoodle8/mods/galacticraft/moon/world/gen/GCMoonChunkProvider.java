@@ -124,10 +124,12 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 				if (d3 < 0.0D)
 				{
 					yDev = d;
-				} else if (d3 > 1.0D)
+				}
+				else if (d3 > 1.0D)
 				{
 					yDev = d2;
-				} else
+				}
+				else
 				{
 					yDev = d + (d2 - d) * d3;
 				}
@@ -166,13 +168,15 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 					if (var16 <= 0 + this.rand.nextInt(5))
 					{
 						arrayOfIDs[index] = (short) Block.bedrock.blockID;
-					} else
+					}
+					else
 					{
 						final int var18 = arrayOfIDs[index];
 						if (var18 == 0)
 						{
 							var13 = -1;
-						} else if (var18 == this.lowerBlockID)
+						}
+						else if (var18 == this.lowerBlockID)
 						{
 							arrayOfMeta[index] = this.lowerBlockMeta;
 
@@ -184,7 +188,8 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 									var14m = 0;
 									var15 = this.lowerBlockID;
 									var15m = this.lowerBlockMeta;
-								} else if (var16 >= var5 - -16 && var16 <= var5 + 1)
+								}
+								else if (var16 >= var5 - -16 && var16 <= var5 + 1)
 								{
 									var14 = this.topBlockID;
 									var14m = this.topBlockMeta;
@@ -198,12 +203,14 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 								{
 									arrayOfIDs[index] = var14;
 									arrayOfMeta[index] = var14m;
-								} else if (var16 < var5 - 1 && var16 >= var5 - 2)
+								}
+								else if (var16 < var5 - 1 && var16 >= var5 - 2)
 								{
 									arrayOfIDs[index] = var15;
 									arrayOfMeta[index] = var15m;
 								}
-							} else if (var13 > 0)
+							}
+							else if (var13 > 0)
 							{
 								--var13;
 								arrayOfIDs[index] = var15;
@@ -387,7 +394,8 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 			monsters.add(new SpawnListEntry(GCCoreEntitySkeleton.class, 8, 2, 3));
 			monsters.add(new SpawnListEntry(GCCoreEntityCreeper.class, 8, 2, 3));
 			return monsters;
-		} else
+		}
+		else
 		{
 			return null;
 		}

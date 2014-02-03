@@ -34,10 +34,12 @@ public abstract class ItemElectric extends Item implements IItemElectric
 		if (joules <= this.getMaxElectricityStored(itemStack) / 3)
 		{
 			color = "\u00a74";
-		} else if (joules > this.getMaxElectricityStored(itemStack) * 2 / 3)
+		}
+		else if (joules > this.getMaxElectricityStored(itemStack) * 2 / 3)
 		{
 			color = "\u00a72";
-		} else
+		}
+		else
 		{
 			color = "\u00a76";
 		}
@@ -125,7 +127,8 @@ public abstract class ItemElectric extends Item implements IItemElectric
 			if (obj instanceof NBTTagDouble)
 			{
 				energyStored = (float) ((NBTTagDouble) obj).data;
-			} else if (obj instanceof NBTTagFloat)
+			}
+			else if (obj instanceof NBTTagFloat)
 			{
 				energyStored = ((NBTTagFloat) obj).data;
 			}

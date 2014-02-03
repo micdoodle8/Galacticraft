@@ -91,7 +91,8 @@ public class GCCoreBlockParachest extends BlockContainer implements ITileEntityP
 		if (par1World.isRemote)
 		{
 			return true;
-		} else
+		}
+		else
 		{
 			IInventory iinventory = this.getInventory(par1World, par2, par3, par4);
 
@@ -181,13 +182,16 @@ public class GCCoreBlockParachest extends BlockContainer implements ITileEntityP
 		if (object == null)
 		{
 			return null;
-		} else if (par1World.isBlockSolidOnSide(par2, par3 + 1, par4, ForgeDirection.DOWN))
+		}
+		else if (par1World.isBlockSolidOnSide(par2, par3 + 1, par4, ForgeDirection.DOWN))
 		{
 			return null;
-		} else if (GCCoreBlockParachest.isOcelotBlockingChest(par1World, par2, par3, par4))
+		}
+		else if (GCCoreBlockParachest.isOcelotBlockingChest(par1World, par2, par3, par4))
 		{
 			return null;
-		} else
+		}
+		else
 		{
 			return (IInventory) object;
 		}
@@ -207,7 +211,8 @@ public class GCCoreBlockParachest extends BlockContainer implements ITileEntityP
 
 			EntityOcelot entityocelot1 = (EntityOcelot) iterator.next();
 			entityocelot = entityocelot1;
-		} while (!entityocelot.isSitting());
+		}
+		while (!entityocelot.isSitting());
 
 		return true;
 	}

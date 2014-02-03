@@ -68,7 +68,8 @@ public class GCCoreWorldGenTaiga2 extends WorldGenerator
 							{
 								var10 = false;
 							}
-						} else
+						}
+						else
 						{
 							var10 = false;
 						}
@@ -79,7 +80,8 @@ public class GCCoreWorldGenTaiga2 extends WorldGenerator
 			if (!var10)
 			{
 				return false;
-			} else
+			}
+			else
 			{
 				var11 = par1World.getBlockId(par3, par4 - 1, par5);
 				var10a = par1World.getBlockMetadata(par3, par4 - 1, par5);
@@ -142,7 +144,8 @@ public class GCCoreWorldGenTaiga2 extends WorldGenerator
 								{
 									var13 = var9;
 								}
-							} else
+							}
+							else
 							{
 								++var21;
 							}
@@ -163,16 +166,19 @@ public class GCCoreWorldGenTaiga2 extends WorldGenerator
 						}
 
 						return true;
-					} else
+					}
+					else
 					{
 						return false;
 					}
-				} else
+				}
+				else
 				{
 					return false;
 				}
 			}
-		} else
+		}
+		else
 		{
 			return false;
 		}

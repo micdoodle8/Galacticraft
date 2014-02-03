@@ -38,10 +38,12 @@ public class GCMarsBlockRendererMachine implements ISimpleBlockRenderingHandler
 		if (metadata >= GCMarsBlockMachine.LAUNCH_CONTROLLER_METADATA)
 		{
 			renderBlocks.renderStandardBlock(par1Block, x, y, z);
-		} else if (metadata >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA)
+		}
+		else if (metadata >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA)
 		{
 
-		} else if (metadata >= GCMarsBlockMachine.TERRAFORMER_METADATA)
+		}
+		else if (metadata >= GCMarsBlockMachine.TERRAFORMER_METADATA)
 		{
 			renderBlocks.renderStandardBlock(par1Block, x, y, z);
 		}

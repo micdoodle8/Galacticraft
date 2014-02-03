@@ -68,11 +68,13 @@ public class GCCoreTileEntityCircuitFabricator extends GCCoreTileEntityElectricB
 						this.compressItems();
 						updateInv = true;
 					}
-				} else
+				}
+				else
 				{
 					this.processTicks = 0;
 				}
-			} else
+			}
+			else
 			{
 				this.processTicks = 0;
 			}
@@ -134,7 +136,8 @@ public class GCCoreTileEntityCircuitFabricator extends GCCoreTileEntityElectricB
 			if (this.containingItems[6] == null)
 			{
 				this.containingItems[6] = resultItemStack.copy();
-			} else if (this.containingItems[6].isItemEqual(resultItemStack))
+			}
+			else if (this.containingItems[6].isItemEqual(resultItemStack))
 			{
 				if (this.containingItems[6].stackSize + resultItemStack.stackSize > 64)
 				{
@@ -227,7 +230,8 @@ public class GCCoreTileEntityCircuitFabricator extends GCCoreTileEntityElectricB
 				var3 = this.containingItems[par1];
 				this.containingItems[par1] = null;
 				return var3;
-			} else
+			}
+			else
 			{
 				var3 = this.containingItems[par1].splitStack(par2);
 
@@ -238,7 +242,8 @@ public class GCCoreTileEntityCircuitFabricator extends GCCoreTileEntityElectricB
 
 				return var3;
 			}
-		} else
+		}
+		else
 		{
 			return null;
 		}
@@ -252,7 +257,8 @@ public class GCCoreTileEntityCircuitFabricator extends GCCoreTileEntityElectricB
 			ItemStack var2 = this.containingItems[par1];
 			this.containingItems[par1] = null;
 			return var2;
-		} else
+		}
+		else
 		{
 			return null;
 		}

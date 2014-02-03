@@ -92,7 +92,8 @@ public class GCMarsEntityCargoRocket extends EntityAutoRocket implements IRocket
 			try
 			{
 				Class.forName("icbm.api.RadarRegistry").getMethod("register", Entity.class).invoke(null, this);
-			} catch (Exception e)
+			}
+			catch (Exception e)
 			{
 				e.printStackTrace();
 			}
@@ -109,7 +110,8 @@ public class GCMarsEntityCargoRocket extends EntityAutoRocket implements IRocket
 			try
 			{
 				Class.forName("icbm.api.RadarRegistry").getMethod("unregister", Entity.class).invoke(null, this);
-			} catch (Exception e)
+			}
+			catch (Exception e)
 			{
 				e.printStackTrace();
 			}
@@ -139,7 +141,8 @@ public class GCMarsEntityCargoRocket extends EntityAutoRocket implements IRocket
 				{
 					this.motionY = -motionScalar * Math.cos((this.rotationPitch - 180) * Math.PI / 180.0D);
 				}
-			} else
+			}
+			else
 			{
 				if (this.targetVec != null)
 				{
@@ -163,7 +166,8 @@ public class GCMarsEntityCargoRocket extends EntityAutoRocket implements IRocket
 			{
 				this.removeFuel(1);
 			}
-		} else if (!this.hasValidFuel() && this.getLaunched() && !this.worldObj.isRemote)
+		}
+		else if (!this.hasValidFuel() && this.getLaunched() && !this.worldObj.isRemote)
 		{
 			if (Math.abs(Math.sin(this.timeSinceLaunch / 1000)) / 10 != 0.0)
 			{
@@ -195,7 +199,8 @@ public class GCMarsEntityCargoRocket extends EntityAutoRocket implements IRocket
 		if (this.timeUntilLaunch >= 100)
 		{
 			i = Math.abs(this.timeUntilLaunch / 100);
-		} else
+		}
+		else
 		{
 			i = 1;
 		}
@@ -211,7 +216,8 @@ public class GCMarsEntityCargoRocket extends EntityAutoRocket implements IRocket
 		if (this.rocketSoundUpdater != null && (this.launchPhase == EnumLaunchPhase.IGNITED.getPhase() || this.getLaunched()))
 		{
 			this.rocketSoundUpdater.update();
-		} else
+		}
+		else
 		{
 			if (this.rocketSoundUpdater instanceof GCCoreSoundUpdaterSpaceship)
 			{
@@ -300,12 +306,14 @@ public class GCMarsEntityCargoRocket extends EntityAutoRocket implements IRocket
 						((GCMarsEntityCargoRocket) e).landing = true;
 					}
 				}
-			} else
+			}
+			else
 			{
 				this.setPosition(this.targetVec.x + 0.5F, this.targetVec.y + 800, this.targetVec.z + 0.5F);
 				this.landing = true;
 			}
-		} else
+		}
+		else
 		{
 			this.setDead();
 		}
@@ -368,7 +376,8 @@ public class GCMarsEntityCargoRocket extends EntityAutoRocket implements IRocket
 		{
 			this.setPosition(this.targetVec.x + 0.5F, this.targetVec.y + 800, this.targetVec.z + 0.5F);
 			this.landing = true;
-		} else
+		}
+		else
 		{
 			this.setDead();
 		}

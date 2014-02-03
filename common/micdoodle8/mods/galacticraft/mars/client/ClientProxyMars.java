@@ -326,7 +326,8 @@ public class ClientProxyMars extends CommonProxyMars
 								{
 									eship.rocketSoundUpdater = new GCCoreSoundUpdaterSpaceship(FMLClientHandler.instance().getClient().sndManager, eship, FMLClientHandler.instance().getClient().thePlayer);
 								}
-							} else if (e instanceof GCMarsEntityCargoRocket)
+							}
+							else if (e instanceof GCMarsEntityCargoRocket)
 							{
 								GCMarsEntityCargoRocket eship = (GCMarsEntityCargoRocket) e;
 
@@ -369,7 +370,8 @@ public class ClientProxyMars extends CommonProxyMars
 			if (tile instanceof GCMarsTileEntityTerraformer)
 			{
 				return new GCMarsGuiTerraformer(player.inventory, (GCMarsTileEntityTerraformer) tile);
-			} else if (tile instanceof GCMarsTileEntityLaunchController)
+			}
+			else if (tile instanceof GCMarsTileEntityLaunchController)
 			{
 				return new GCMarsGuiLaunchController(player.inventory, (GCMarsTileEntityLaunchController) tile);
 			}

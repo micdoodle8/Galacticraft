@@ -184,10 +184,12 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 		if (t < 0.0)
 		{
 			return d1;
-		} else if (t > 1.0)
+		}
+		else if (t > 1.0)
 		{
 			return d2;
-		} else
+		}
+		else
 		{
 			return d1 + (d2 - d1) * t;
 		}
@@ -234,14 +236,16 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 					if (var16 <= 0 + this.rand.nextInt(5))
 					{
 						arrayOfIDs[index] = (short) Block.bedrock.blockID;
-					} else
+					}
+					else
 					{
 						final int var18 = arrayOfIDs[index];
 
 						if (var18 == 0)
 						{
 							var13 = -1;
-						} else if (var18 == this.lowerBlockID)
+						}
+						else if (var18 == this.lowerBlockID)
 						{
 							arrayOfMeta[index] = this.lowerBlockMeta;
 
@@ -253,7 +257,8 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 									var14m = 0;
 									var15 = this.lowerBlockID;
 									var15m = this.lowerBlockMeta;
-								} else if (var16 >= var5 - -16 && var16 <= var5 + 1)
+								}
+								else if (var16 >= var5 - -16 && var16 <= var5 + 1)
 								{
 									var14 = this.topBlockID;
 									var14m = this.topBlockMeta;
@@ -272,12 +277,14 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 								{
 									arrayOfIDs[index] = var14;
 									arrayOfMeta[index] = var14m;
-								} else
+								}
+								else
 								{
 									arrayOfIDs[index] = var15;
 									arrayOfMeta[index] = var15m;
 								}
-							} else if (var13 > 0)
+							}
+							else if (var13 > 0)
 							{
 								--var13;
 								arrayOfIDs[index] = var15;
@@ -447,7 +454,8 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 			monsters.add(new SpawnListEntry(GCCoreEntitySkeleton.class, 8, 2, 3));
 			monsters.add(new SpawnListEntry(GCCoreEntityCreeper.class, 8, 2, 3));
 			return monsters;
-		} else
+		}
+		else
 		{
 			return null;
 		}

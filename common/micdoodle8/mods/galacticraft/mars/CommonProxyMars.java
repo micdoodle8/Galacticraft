@@ -89,7 +89,8 @@ public class CommonProxyMars implements IGuiHandler
 			if (tile instanceof GCMarsTileEntityTerraformer)
 			{
 				return new GCMarsContainerTerraformer(player.inventory, (GCMarsTileEntityTerraformer) tile);
-			} else if (tile instanceof GCMarsTileEntityLaunchController)
+			}
+			else if (tile instanceof GCMarsTileEntityLaunchController)
 			{
 				return new GCMarsContainerLaunchController(player.inventory, (GCMarsTileEntityLaunchController) tile);
 			}

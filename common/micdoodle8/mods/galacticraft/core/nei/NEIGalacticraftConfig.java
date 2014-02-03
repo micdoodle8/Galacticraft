@@ -143,7 +143,8 @@ public class NEIGalacticraftConfig implements IConfigureNEI
 				if (x == 1 && y == 1)
 				{
 					input1.put(y * 3 + x + 4, new PositionedStack(new ItemStack(GCCoreItems.partBuggy, 1, 1), 36 + x * 18, 37 + y * 18));
-				} else
+				}
+				else
 				{
 					input1.put(y * 3 + x + 4, new PositionedStack(new ItemStack(GCCoreItems.heavyPlatingTier1), 36 + x * 18, 37 + y * 18));
 				}
@@ -274,7 +275,8 @@ public class NEIGalacticraftConfig implements IConfigureNEI
 
 					input1.put(j, new PositionedStack(stack, 21 + j % 3 * 18, 26 + j / 3 * 18));
 				}
-			} else if (rec instanceof ShapelessRecipes)
+			}
+			else if (rec instanceof ShapelessRecipes)
 			{
 				ShapelessRecipes recipe = (ShapelessRecipes) rec;
 

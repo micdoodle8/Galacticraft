@@ -56,7 +56,8 @@ public class GCCoreGuiCircuitFabricator extends GuiContainer
 		if (this.tileEntity.processTicks > 0)
 		{
 			displayText = EnumColor.BRIGHT_GREEN + "Running";
-		} else
+		}
+		else
 		{
 			displayText = EnumColor.ORANGE + "Idle";
 		}

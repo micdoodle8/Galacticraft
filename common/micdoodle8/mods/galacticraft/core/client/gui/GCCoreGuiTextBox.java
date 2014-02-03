@@ -64,17 +64,20 @@ public class GCCoreGuiTextBox extends GuiButton
 						{
 							this.text = toBeParsed;
 							this.timeBackspacePressed = System.currentTimeMillis();
-						} else
+						}
+						else
 						{
 							this.text = "";
 						}
-					} else
+					}
+					else
 					{
 						this.incorrectUseTimer = 10;
 						this.parentGui.onIntruderInteraction();
 					}
 				}
-			} else if (keyChar == 22)
+			}
+			else if (keyChar == 22)
 			{
 				String pastestring = GuiScreen.getClipboardString();
 
@@ -89,19 +92,22 @@ public class GCCoreGuiTextBox extends GuiButton
 					{
 						this.text = this.text + pastestring;
 						this.text = this.text.substring(0, Math.min(String.valueOf(this.text).length(), this.maxLength));
-					} else
+					}
+					else
 					{
 						this.incorrectUseTimer = 10;
 						this.parentGui.onIntruderInteraction();
 					}
 				}
-			} else if (this.isValid(this.text + keyChar))
+			}
+			else if (this.isValid(this.text + keyChar))
 			{
 				if (this.parentGui.canPlayerEdit(this, this.mc.thePlayer))
 				{
 					this.text = this.text + keyChar;
 					this.text = this.text.substring(0, Math.min(this.text.length(), this.maxLength));
-				} else
+				}
+				else
 				{
 					this.incorrectUseTimer = 10;
 					this.parentGui.onIntruderInteraction();
@@ -143,19 +149,22 @@ public class GCCoreGuiTextBox extends GuiButton
 						{
 							this.text = toBeParsed;
 							this.parentGui.onTextChanged(this, this.text);
-						} else
+						}
+						else
 						{
 							this.text = "";
 						}
 
 						this.timeBackspacePressed = System.currentTimeMillis();
 						this.backspacePressed++;
-					} else if (!this.parentGui.canPlayerEdit(this, this.mc.thePlayer))
+					}
+					else if (!this.parentGui.canPlayerEdit(this, this.mc.thePlayer))
 					{
 						this.incorrectUseTimer = 10;
 						this.parentGui.onIntruderInteraction();
 					}
-				} else
+				}
+				else
 				{
 					this.timeBackspacePressed = 0;
 					this.backspacePressed = 0;
@@ -176,7 +185,8 @@ public class GCCoreGuiTextBox extends GuiButton
 		try
 		{
 			return Integer.parseInt(this.text.equals("") ? "0" : this.text);
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
 			return -1;
 		}
@@ -192,15 +202,18 @@ public class GCCoreGuiTextBox extends GuiButton
 				{
 					Integer.parseInt(string);
 					return true;
-				} catch (Exception e)
+				}
+				catch (Exception e)
 				{
 					return false;
 				}
-			} else
+			}
+			else
 			{
 				return false;
 			}
-		} else
+		}
+		else
 		{
 			if (string.length() <= 0)
 			{
@@ -219,7 +232,8 @@ public class GCCoreGuiTextBox extends GuiButton
 			Gui.drawRect(this.xPosition, this.yPosition, this.xPosition + this.width, this.yPosition + this.height, 0xffA0A0A0);
 			this.isTextFocused = true;
 			return true;
-		} else
+		}
+		else
 		{
 			this.isTextFocused = false;
 			return false;

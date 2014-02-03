@@ -25,7 +25,8 @@ public abstract class GCMoonComponentVillage extends StructureComponent
 		try
 		{
 			GCMoonMapGenVillage.initiateStructures();
-		} catch (Throwable e)
+		}
+		catch (Throwable e)
 		{
 			;
 		}
@@ -112,7 +113,8 @@ public abstract class GCMoonComponentVillage extends StructureComponent
 		if (var4 == 0)
 		{
 			return -1;
-		} else
+		}
+		else
 		{
 			return var3 / var4;
 		}

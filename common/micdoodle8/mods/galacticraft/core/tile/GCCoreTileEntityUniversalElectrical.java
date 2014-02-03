@@ -217,14 +217,16 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 			if (itemStack.getItem() instanceof IItemElectric)
 			{
 				this.setEnergyStored(this.getEnergyStored() - ElectricItemHelper.chargeItem(itemStack, this.getProvide(ForgeDirection.UNKNOWN)));
-			} else if (NetworkConfigHandler.isIndustrialCraft2Loaded() && itemStack.getItem() instanceof ISpecialElectricItem)
+			}
+			else if (NetworkConfigHandler.isIndustrialCraft2Loaded() && itemStack.getItem() instanceof ISpecialElectricItem)
 			{
 				ISpecialElectricItem electricItem = (ISpecialElectricItem) itemStack.getItem();
 				IElectricItemManager manager = electricItem.getManager(itemStack);
 				float energy = Math.max(this.getProvide(ForgeDirection.UNKNOWN) * NetworkConfigHandler.IC2_RATIO, 0);
 				energy = manager.charge(itemStack, (int) (energy * NetworkConfigHandler.TO_IC2_RATIO), 0, false, false) * NetworkConfigHandler.IC2_RATIO;
 				this.provideElectricity(energy, true);
-			} else if (GCCoreCompatibilityManager.isTELoaded() && itemStack.getItem() instanceof IChargeableItem)
+			}
+			else if (GCCoreCompatibilityManager.isTELoaded() && itemStack.getItem() instanceof IChargeableItem)
 			{
 				float accepted = ((IChargeableItem) itemStack.getItem()).receiveEnergy(itemStack, this.getProvide(ForgeDirection.UNKNOWN) * NetworkConfigHandler.BC3_RATIO, true);
 				this.provideElectricity(accepted, true);
@@ -272,7 +274,8 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 						this.provideElectricity(Math.max(sendPack.getWatts() - rejectedPower, 0), true);
 						return true;
 					}
-				} else if (outputTile instanceof IElectrical)
+				}
+				else if (outputTile instanceof IElectrical)
 				{
 					float requestedEnergy = ((IElectrical) outputTile).getRequest(outputDirection.getOpposite());
 
@@ -300,7 +303,8 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 			if (itemStack.getItem() instanceof IItemElectric)
 			{
 				this.setEnergyStored(this.getEnergyStored() + ElectricItemHelper.dischargeItem(itemStack, this.getRequest(ForgeDirection.UNKNOWN)));
-			} else if (NetworkConfigHandler.isIndustrialCraft2Loaded() && itemStack.getItem() instanceof ISpecialElectricItem)
+			}
+			else if (NetworkConfigHandler.isIndustrialCraft2Loaded() && itemStack.getItem() instanceof ISpecialElectricItem)
 			{
 				ISpecialElectricItem electricItem = (ISpecialElectricItem) itemStack.getItem();
 
@@ -311,7 +315,8 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 					energy = manager.discharge(itemStack, (int) (energy * NetworkConfigHandler.TO_IC2_RATIO), 0, false, false);
 					this.receiveElectricity(energy, true);
 				}
-			} else if (GCCoreCompatibilityManager.isTELoaded() && itemStack.getItem() instanceof IChargeableItem)
+			}
+			else if (GCCoreCompatibilityManager.isTELoaded() && itemStack.getItem() instanceof IChargeableItem)
 			{
 				float given = ((IChargeableItem) itemStack.getItem()).transferEnergy(itemStack, this.getRequest(ForgeDirection.UNKNOWN) * NetworkConfigHandler.BC3_RATIO, true);
 				this.receiveElectricity(given, true);
@@ -446,7 +451,8 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 				{
 					MinecraftForge.EVENT_BUS.post((Event) o);
 				}
-			} catch (Exception e)
+			}
+			catch (Exception e)
 			{
 				e.printStackTrace();
 			}
@@ -472,7 +478,8 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 					{
 						MinecraftForge.EVENT_BUS.post((Event) o);
 					}
-				} catch (Exception e)
+				}
+				catch (Exception e)
 				{
 					e.printStackTrace();
 				}
@@ -532,7 +539,7 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 		{
 			this.bcPowerHandler = new PowerHandler((IPowerReceptor) this, Type.MACHINE);
 		}
-		
+
 		((PowerHandler) this.bcPowerHandler).configure(0, this.maxInputEnergy, 0, (int) Math.ceil(this.getMaxEnergyStored() * NetworkConfigHandler.BC3_RATIO));
 	}
 

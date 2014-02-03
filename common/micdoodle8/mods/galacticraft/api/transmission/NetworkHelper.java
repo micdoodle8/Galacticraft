@@ -98,7 +98,8 @@ public class NetworkHelper
 							return (IElectricityNetwork) ((INetworkProvider) tileEntity).getNetwork();
 						}
 					}
-				} else
+				}
+				else
 				{
 					if (((INetworkProvider) tileEntity).getNetwork() instanceof IElectricityNetwork)
 					{
@@ -126,7 +127,8 @@ public class NetworkHelper
 							return (IOxygenNetwork) ((INetworkProvider) tileEntity).getNetwork();
 						}
 					}
-				} else
+				}
+				else
 				{
 					if (((INetworkProvider) tileEntity).getNetwork() instanceof IOxygenNetwork)
 					{

@@ -56,7 +56,8 @@ public class GCCorePacketLanderUpdate implements IGalacticraftAdvancedPacket
 
 			data.close();
 			bytes.close();
-		} catch (final Exception e)
+		}
+		catch (final Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -92,7 +93,8 @@ public class GCCorePacketLanderUpdate implements IGalacticraftAdvancedPacket
 				}
 			}
 
-		} catch (final Exception e)
+		}
+		catch (final Exception e)
 		{
 			e.printStackTrace();
 		}

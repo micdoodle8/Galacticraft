@@ -80,7 +80,8 @@ public class GCCoreSlotRocketBenchResult extends Slot
 						if (this.craftMatrix.getStackInSlot(var2) == null)
 						{
 							this.craftMatrix.setInventorySlotContents(var2, var4);
-						} else
+						}
+						else
 						{
 							this.thePlayer.dropPlayerItem(var4);
 						}

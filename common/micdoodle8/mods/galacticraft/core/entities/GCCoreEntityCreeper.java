@@ -125,7 +125,8 @@ public class GCCoreEntityCreeper extends EntityCreeper implements IEntityBreatha
 					if (this.getPowered())
 					{
 						this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 12.0F, var2);
-					} else
+					}
+					else
 					{
 						this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 6.0F, var2);
 					}

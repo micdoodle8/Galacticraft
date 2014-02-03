@@ -90,7 +90,8 @@ public class GCCoreRenderSpaceship extends Render
 		if (this.modelSpaceshipObj != null)
 		{
 			this.modelSpaceshipObj.renderAll();
-		} else
+		}
+		else
 		{
 			this.modelSpaceship.render(entity, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 		}

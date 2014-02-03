@@ -437,7 +437,8 @@ public class GCCoreModelPlayer extends ModelBiped
 			this.bipedLeftLeg.rotationPointY = 9.0F;
 			this.bipedHead.rotationPointY = 1.0F;
 			this.bipedHeadwear.rotationPointY = 1.0F;
-		} else
+		}
+		else
 		{
 			this.bipedBody.rotateAngleX = 0.0F;
 			this.bipedRightLeg.rotationPointZ = 0.1F;
@@ -491,7 +492,8 @@ public class GCCoreModelPlayer extends ModelBiped
 			if (par7Entity.onGround)
 			{
 				speedModifier = 0.1162F;
-			} else
+			}
+			else
 			{
 				speedModifier = 0.1162F * 2;
 			}
@@ -563,7 +565,8 @@ public class GCCoreModelPlayer extends ModelBiped
 				this.bipedLeftLeg.rotationPointY = 9.0F;
 				this.bipedHead.rotationPointY = 1.0F;
 				this.bipedHeadwear.rotationPointY = 1.0F;
-			} else
+			}
+			else
 			{
 				this.bipedBody.rotateAngleX = 0.0F;
 				this.bipedRightLeg.rotationPointZ = 0.1F;
@@ -688,7 +691,8 @@ public class GCCoreModelPlayer extends ModelBiped
 				super.setRotationAngles(par1, par2, par3, par4, par5, par6, par7Entity);
 				return;
 			}
-		} catch (final ClassNotFoundException e1)
+		}
+		catch (final ClassNotFoundException e1)
 		{
 		}
 
@@ -721,7 +725,8 @@ public class GCCoreModelPlayer extends ModelBiped
 				Method m = c.getMethod("bipedRotationHook", ModelBiped.class, Entity.class, float.class);
 
 				m.invoke(null, this, par7Entity, par3);
-			} catch (Exception e)
+			}
+			catch (Exception e)
 			{
 				e.printStackTrace();
 			}

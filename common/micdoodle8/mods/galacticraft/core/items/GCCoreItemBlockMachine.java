@@ -52,22 +52,27 @@ public class GCCoreItemBlockMachine extends ItemBlock
 			if (itemstack.getItemDamage() >= GCCoreBlockMachine.COMPRESSOR_METADATA)
 			{
 				metadata = 3;
-			} else if (itemstack.getItemDamage() >= GCCoreBlockMachine.ELECTRIC_FURNACE_METADATA)
+			}
+			else if (itemstack.getItemDamage() >= GCCoreBlockMachine.ELECTRIC_FURNACE_METADATA)
 			{
 				metadata = 2;
-			} else if (itemstack.getItemDamage() >= GCCoreBlockMachine.STORAGE_MODULE_METADATA)
+			}
+			else if (itemstack.getItemDamage() >= GCCoreBlockMachine.STORAGE_MODULE_METADATA)
 			{
 				metadata = 1;
 			}
-		} else
+		}
+		else
 		{
 			if (itemstack.getItemDamage() >= GCCoreBlockMachine2.OXYGEN_STORAGE_MODULE_METADATA)
 			{
 				metadata = 6;
-			} else if (itemstack.getItemDamage() >= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA)
+			}
+			else if (itemstack.getItemDamage() >= GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA)
 			{
 				metadata = 5;
-			} else if (itemstack.getItemDamage() >= GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
+			}
+			else if (itemstack.getItemDamage() >= GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
 			{
 				metadata = 4;
 			}

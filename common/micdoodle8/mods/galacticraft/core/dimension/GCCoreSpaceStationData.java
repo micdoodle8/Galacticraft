@@ -60,7 +60,8 @@ public class GCCoreSpaceStationData extends WorldSavedData
 		if (nbttagcompound.hasKey("dataCompound"))
 		{
 			this.dataCompound = nbttagcompound.getCompoundTag("dataCompound");
-		} else
+		}
+		else
 		{
 			this.dataCompound = new NBTTagCompound();
 		}
@@ -109,7 +110,8 @@ public class GCCoreSpaceStationData extends WorldSavedData
 		if (DimensionManager.getProviderType(var1) != GCCoreConfigManager.idDimensionOverworldOrbit)
 		{
 			return null;
-		} else
+		}
+		else
 		{
 			final String var2 = GCCoreSpaceStationData.getSpaceStationID(var1);
 			GCCoreSpaceStationData var3 = (GCCoreSpaceStationData) var0.loadItemData(GCCoreSpaceStationData.class, var2);

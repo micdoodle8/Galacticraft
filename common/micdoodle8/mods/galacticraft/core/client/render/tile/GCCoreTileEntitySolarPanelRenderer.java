@@ -34,7 +34,8 @@ public class GCCoreTileEntitySolarPanelRenderer extends TileEntitySpecialRendere
 		if (var1.getBlockMetadata() >= GCCoreBlockSolar.ADVANCED_METADATA)
 		{
 			this.bindTexture(GCCoreTileEntitySolarPanelRenderer.solarPanelAdvTexture);
-		} else
+		}
+		else
 		{
 			this.bindTexture(GCCoreTileEntitySolarPanelRenderer.solarPanelTexture);
 		}

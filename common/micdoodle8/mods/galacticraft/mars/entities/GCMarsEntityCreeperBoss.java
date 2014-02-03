@@ -90,7 +90,8 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
 			if (this.isEntityInvulnerable())
 			{
 				return false;
-			} else if (super.attackEntityFrom(damageSource, damage))
+			}
+			else if (super.attackEntityFrom(damageSource, damage))
 			{
 				Entity entity = damageSource.getEntity();
 
@@ -102,11 +103,13 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
 					}
 
 					return true;
-				} else
+				}
+				else
 				{
 					return true;
 				}
-			} else
+			}
+			else
 			{
 				return false;
 			}
@@ -297,10 +300,12 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
 		if (this.getHealth() <= 0)
 		{
 			this.headsRemaining = 0;
-		} else if (this.getHealth() <= this.getMaxHealth() / 3.0)
+		}
+		else if (this.getHealth() <= this.getMaxHealth() / 3.0)
 		{
 			this.headsRemaining = 1;
-		} else if (this.getHealth() <= 2 * (this.getMaxHealth() / 3.0))
+		}
+		else if (this.getHealth() <= 2 * (this.getMaxHealth() / 3.0))
 		{
 			this.headsRemaining = 2;
 		}
@@ -314,7 +319,8 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
 				this.getNavigator().getPathToEntityLiving(player);
 				this.targetEntity = player;
 			}
-		} else
+		}
+		else
 		{
 			this.targetEntity = null;
 		}
@@ -374,7 +380,8 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
 		if (this.captureDrops)
 		{
 			this.capturedDrops.add(entityitem);
-		} else
+		}
+		else
 		{
 			this.worldObj.spawnEntityInWorld(entityitem);
 		}
@@ -389,7 +396,8 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
 			final ItemStack var2 = new ItemStack(Item.bow);
 			EnchantmentHelper.addRandomEnchantment(this.rand, var2, 5);
 			this.entityDropItem(var2, 0.0F);
-		} else
+		}
+		else
 		{
 			this.dropItem(Item.bow.itemID, 1);
 		}
@@ -464,7 +472,8 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
 		if (par1 <= 0)
 		{
 			return this.posX;
-		} else
+		}
+		else
 		{
 			float f = (this.renderYawOffset + 180 * (par1 - 1)) / 180.0F * (float) Math.PI;
 			float f1 = MathHelper.cos(f);
@@ -482,7 +491,8 @@ public class GCMarsEntityCreeperBoss extends EntityMob implements IEntityBreatha
 		if (par1 <= 0)
 		{
 			return this.posZ;
-		} else
+		}
+		else
 		{
 			float f = (this.renderYawOffset + 180 * (par1 - 1)) / 180.0F * (float) Math.PI;
 			float f1 = MathHelper.sin(f);

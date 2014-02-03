@@ -51,7 +51,8 @@ public class GCCorePacketSpaceStationData implements IGalacticraftAdvancedPacket
 
 			data.close();
 			bytes.close();
-		} catch (final Exception e)
+		}
+		catch (final Exception e)
 		{
 			e.printStackTrace();
 		}
