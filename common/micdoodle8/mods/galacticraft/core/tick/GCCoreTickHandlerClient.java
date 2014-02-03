@@ -463,13 +463,7 @@ public class GCCoreTickHandlerClient implements ITickHandler
 					var7 = 90;
 				}
 
-				if (GCCoreConfigManager.oxygenIndicatorLeftSide)
-				{
-					GCCoreOverlayOxygenTankIndicator.renderOxygenTankIndicatorLeft(var6, var7);
-				} else
-				{
-					GCCoreOverlayOxygenTankIndicator.renderOxygenTankIndicatorRight(var6, var7);
-				}
+				GCCoreOverlayOxygenTankIndicator.renderOxygenTankIndicator(var6, var7, !GCCoreConfigManager.oxygenIndicatorLeft, !GCCoreConfigManager.oxygenIndicatorBottom);
 			}
 
 			if (playerBaseClient != null && player.worldObj.provider instanceof IGalacticraftWorldProvider && !playerBaseClient.oxygenSetupValid && minecraft.currentScreen == null && !playerBaseClient.capabilities.isCreativeMode)
