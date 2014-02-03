@@ -33,7 +33,7 @@ public class GCCoreTileEntityAirLockController extends GCCoreTileEntityAirLock i
 	public boolean playerDistanceActivation;
 	public int playerDistanceSelection;
 	public boolean playerNameMatches;
-	public String playerToOpenFor;
+	public String playerToOpenFor = "";
 	public boolean invertSelection;
 	public boolean horizontalModeEnabled;
 	public boolean lastHorizontalModeEnabled;
