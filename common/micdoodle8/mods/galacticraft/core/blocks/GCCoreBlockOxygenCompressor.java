@@ -267,20 +267,15 @@ public class GCCoreBlockOxygenCompressor extends GCCoreBlockAdvancedTile
 	@Override
 	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
 	{
-		int id = this.idPicked(world, x, y, z);
-
-		if (id == 0)
-		{
-			return null;
-		}
-
-		Item item = Item.itemsList[id];
+		Item item = Item.itemsList[this.blockID];
 
 		if (item == null)
 		{
 			return null;
 		}
 
-		return new ItemStack(id, 1, this.damageDropped(world.getBlockMetadata(x, y, z)));
+		int metadata = this.getDamageValue(world, x, y, z);
+
+		return new ItemStack(this.blockID, 1, metadata);
 	}
 }
