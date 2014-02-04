@@ -4,6 +4,8 @@ import java.util.EnumSet;
 
 import mekanism.api.gas.Gas;
 import mekanism.api.gas.GasStack;
+import mekanism.api.gas.GasTransmission;
+import mekanism.api.gas.IGasAcceptor;
 import mekanism.api.gas.IGasHandler;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkHelper;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
@@ -258,14 +260,28 @@ public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectricBlo
 						return true;
 					}
 				}
-				else if (outputTile instanceof IGasHandler)
+				else if (NetworkConfigHandler.isMekanismLoaded())
 				{
-					if (((IGasHandler) outputTile).canReceiveGas(outputDirection.getOpposite(), (Gas)NetworkConfigHandler.gasOxygen))
+					GasStack toSend = new GasStack((Gas)NetworkConfigHandler.gasOxygen, (int) Math.floor(Math.min(this.getOxygenStored(), provide)));
+					GasTransmission.emitGasToNetwork(toSend, this, outputDirection.getOpposite());
+					
+					if (NetworkConfigHandler.isMekanismV6Loaded())
 					{
-						int toSend = (int) Math.floor(Math.min(this.getOxygenStored(), provide));
-						int acceptedOxygen = ((IGasHandler) outputTile).receiveGas(outputDirection.getOpposite(), new GasStack((Gas)NetworkConfigHandler.gasOxygen, toSend));
-						this.provideOxygen(acceptedOxygen, true);
-						return true;
+						if (outputTile instanceof IGasHandler && ((IGasHandler) outputTile).canReceiveGas(outputDirection.getOpposite(), (Gas)NetworkConfigHandler.gasOxygen))
+						{
+							int acceptedOxygen = ((IGasHandler) outputTile).receiveGas(outputDirection.getOpposite(), toSend);
+							this.provideOxygen(acceptedOxygen, true);
+							return true;
+						}
+					}
+					else if (outputTile instanceof IGasAcceptor)
+					{
+						if (((IGasAcceptor) outputTile).canReceiveGas(outputDirection.getOpposite(), (Gas)NetworkConfigHandler.gasOxygen))
+						{
+							int acceptedOxygen = toSend.amount - ((IGasAcceptor) outputTile).receiveGas(toSend);
+							this.provideOxygen(acceptedOxygen, true);
+							return true;
+						}
 					}
 				}
 			}
