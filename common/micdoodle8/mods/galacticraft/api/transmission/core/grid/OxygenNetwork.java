@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.api.transmission.core.grid;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -48,15 +49,16 @@ public class OxygenNetwork implements IOxygenNetwork
 	{
 		float remainingUsableOxygen = totalOxygen;
 
-		Set<TileEntity> avaliableOxygenTiles = this.getAcceptors();
+		Set<TileEntity> tileSet = Collections.newSetFromMap(new HashMap<TileEntity, Boolean>());
+		tileSet.addAll(this.oxygenTiles.keySet());
 
-		if (!avaliableOxygenTiles.isEmpty())
+		if (!tileSet.isEmpty())
 		{
 			final float totalOxygenRequest = this.getRequest(ignoreTiles);
 
 			if (totalOxygenRequest > 0)
 			{
-				for (TileEntity tileEntity : avaliableOxygenTiles)
+				for (TileEntity tileEntity : tileSet)
 				{
 					if (!Arrays.asList(ignoreTiles).contains(tileEntity))
 					{
@@ -89,7 +91,7 @@ public class OxygenNetwork implements IOxygenNetwork
 
 								if (gasHandler.canReceiveGas(direction, (Gas) NetworkConfigHandler.gasOxygen) && this.getTransmitters().contains(tile))
 								{
-									int oxygenToSend = (int) Math.floor(totalOxygen / avaliableOxygenTiles.size());
+									int oxygenToSend = (int) Math.floor(totalOxygen / tileSet.size());
 
 									if (oxygenToSend > 0)
 									{
@@ -108,7 +110,7 @@ public class OxygenNetwork implements IOxygenNetwork
 
 								if (gasAcceptor.canReceiveGas(direction, (Gas) NetworkConfigHandler.gasOxygen) && this.getTransmitters().contains(tile))
 								{
-									int oxygenToSend = (int) Math.floor(totalOxygen / avaliableOxygenTiles.size());
+									int oxygenToSend = (int) Math.floor(totalOxygen / tileSet.size());
 
 									if (oxygenToSend > 0)
 									{
