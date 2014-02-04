@@ -141,13 +141,31 @@ public abstract class GCCoreTileEntityOxygenTransmitter extends GCCoreTileEntity
 		return NetworkType.OXYGEN;
 	}
 
+	@RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+	public int receiveGas(ForgeDirection side, GasStack stack)
+	{
+		return stack.amount - (int) Math.floor(((IOxygenNetwork) this.getNetwork()).produce(stack.amount, this));
+	}
+
+	@RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+	public GasStack drawGas(ForgeDirection side, int amount)
+	{
+		return null;
+	}
+
+	@RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+	public boolean canDrawGas(ForgeDirection side, Gas type)
+	{
+		return false;
+	}
+
 	@RuntimeInterface(clazz = "mekanism.api.gas.IGasAcceptor", modID = "Mekanism")
 	public int receiveGas(GasStack stack)
 	{
 		return (int) Math.floor(((IOxygenNetwork) this.getNetwork()).produce(stack.amount, this));
 	}
 
-	@RuntimeInterface(clazz = "mekanism.api.gas.IGasAcceptor", modID = "Mekanism")
+	@RuntimeInterface(clazz = "mekanism.api.gas.IGasAcceptor", altClasses = { "mekanism.api.gas.IGasHandler" }, modID = "Mekanism")
 	public boolean canReceiveGas(ForgeDirection side, Gas type)
 	{
 		return type.getName().equals("oxygen");

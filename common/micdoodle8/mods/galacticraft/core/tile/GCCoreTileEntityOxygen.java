@@ -4,6 +4,7 @@ import java.util.EnumSet;
 
 import mekanism.api.gas.Gas;
 import mekanism.api.gas.GasStack;
+import mekanism.api.gas.IGasHandler;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkHelper;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
@@ -252,8 +253,18 @@ public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectricBlo
 					if (requestedEnergy > 0)
 					{
 						float toSend = Math.min(this.getOxygenStored(), provide);
-						float acceptedEnergy = ((IOxygenReceiver) outputTile).receiveOxygen(outputDirection.getOpposite(), toSend, true);
-						this.provideOxygen(acceptedEnergy, true);
+						float acceptedOxygen = ((IOxygenReceiver) outputTile).receiveOxygen(outputDirection.getOpposite(), toSend, true);
+						this.provideOxygen(acceptedOxygen, true);
+						return true;
+					}
+				}
+				else if (outputTile instanceof IGasHandler)
+				{
+					if (((IGasHandler) outputTile).canReceiveGas(outputDirection.getOpposite(), (Gas)NetworkConfigHandler.gasOxygen))
+					{
+						int toSend = (int) Math.floor(Math.min(this.getOxygenStored(), provide));
+						int acceptedOxygen = ((IGasHandler) outputTile).receiveGas(outputDirection.getOpposite(), new GasStack((Gas)NetworkConfigHandler.gasOxygen, toSend));
+						this.provideOxygen(acceptedOxygen, true);
 						return true;
 					}
 				}
