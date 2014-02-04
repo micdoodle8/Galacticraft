@@ -34,6 +34,8 @@ public class NetworkConfigHandler
 	 * by this to convert to UE
 	 */
 	public static float IC2_RATIO = 0.11256f;
+	
+	public static float MEKANISM_RATIO = 1.0F;
 
 	/**
 	 * Ratio of UE power(Kw) to Build craft(MJ) power. Multiply UE power by this
@@ -52,6 +54,8 @@ public class NetworkConfigHandler
 	 * this to convert it to IC2 power
 	 */
 	public static float TO_IC2_RATIO = 1 / NetworkConfigHandler.IC2_RATIO;
+	
+	public static float TO_MEKANISM_RATIO = 1 / MEKANISM_RATIO;
 
 	/**
 	 * Oxygen gas used when Mekanism is loaded. Always null otherwise.

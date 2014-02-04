@@ -245,4 +245,34 @@ public abstract class GCCoreTileEntityUniversalConductor extends GCCoreTileEntit
 	{
 		return 1;
 	}
+
+	@RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
+	public double transferEnergyToAcceptor(ForgeDirection side, double amount)
+	{
+		return amount - ((IElectricityNetwork) this.getNetwork()).produce(ElectricityPack.getFromWatts((float) (amount * NetworkConfigHandler.MEKANISM_RATIO), 120), true, this) * NetworkConfigHandler.TO_MEKANISM_RATIO;
+	}
+
+	@RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
+	public boolean canReceiveEnergy(ForgeDirection side)
+	{
+		return true;
+	}
+
+	@RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
+	public double getEnergy()
+	{
+		return 0;
+	}
+
+	@RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
+	public void setEnergy(double energy)
+	{
+		;
+	}
+
+	@RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
+	public double getMaxEnergy()
+	{
+		return 1;
+	}
 }
