@@ -1,0 +1,31 @@
+# Galacticraft Moon Language File = CZECH REPUBLIC CZECH
+
+# GENERAL ITEMS
+item.meteoricIronRaw.name=Nezpracované meteorické železo
+item.meteoric_iron_ingot.name=Ingot meteorického železa
+item.compressedMeteoricIron.name=Stlačené meteorické železo
+
+# FOOD
+item.cheeseCurd.name=Kousek sýra
+item.cheeseBlock.name=Sýr
+
+# TOOLS
+
+# ARMOR
+
+# BLOCKS
+tile.moonBlock.moonstone.name=Kámen
+tile.moonBlock.moondirt.name=Hlína
+tile.moonBlock.moongrass.name=Měsíční povrh
+tile.moonBlock.tinmoon.name=Cínová ruda
+tile.moonBlock.coppermoon.name=Měděná ruda
+tile.moonBlock.cheesestone.name=Sýrová ruda
+tile.moonBlock.bricks.name=Cihly
+tile.cheeseBlock.name=Blok sýra
+
+# GUI
+gui.choosePlanet.desc.moon=Obyvatelný#Žádný kyslík#Gravitace: 18%
+
+dimension.Moon.name=Měsíc
+
+itemGroup.GalacticraftMoon=Galacticraft Měsíc
