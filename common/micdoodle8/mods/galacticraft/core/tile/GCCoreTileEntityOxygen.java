@@ -282,16 +282,34 @@ public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectricBlo
 		return 0;
 	}
 
+	@RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+	public int receiveGas(ForgeDirection side, GasStack stack)
+	{
+		return (int) Math.floor(this.receiveOxygen(stack.amount, true));
+	}
+
+	@RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+	public GasStack drawGas(ForgeDirection side, int amount)
+	{
+		return new GasStack((Gas) NetworkConfigHandler.gasOxygen, (int) Math.floor(this.provideOxygen(amount, true)));
+	}
+
+	@RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+	public boolean canDrawGas(ForgeDirection side, Gas type)
+	{
+		return type.getName().equals("oxygen") && this.getOxygenOutputDirections().contains(side);
+	}
+
 	@RuntimeInterface(clazz = "mekanism.api.gas.IGasAcceptor", modID = "Mekanism")
 	public int receiveGas(GasStack stack)
 	{
 		return (int) (stack.amount - Math.floor(this.receiveOxygen(stack.amount, true)));
 	}
 
-	@RuntimeInterface(clazz = "mekanism.api.gas.IGasAcceptor", modID = "Mekanism")
+	@RuntimeInterface(clazz = "mekanism.api.gas.IGasAcceptor", altClasses = { "mekanism.api.gas.IGasHandler" }, modID = "Mekanism")
 	public boolean canReceiveGas(ForgeDirection side, Gas type)
 	{
-		return type.getName().equals("oxygen");
+		return type.getName().equals("oxygen") && this.getOxygenInputDirections().contains(side);
 	}
 
 	@RuntimeInterface(clazz = "mekanism.api.gas.ITubeConnection", modID = "Mekanism")
