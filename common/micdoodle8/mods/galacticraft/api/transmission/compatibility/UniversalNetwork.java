@@ -5,7 +5,8 @@ import ic2.api.energy.tile.IEnergySink;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -191,7 +192,10 @@ public class UniversalNetwork extends ElectricityNetwork
 	{
 		List<ElectricityPack> requests = new ArrayList<ElectricityPack>();
 
-		for (TileEntity tileEntity : new HashSet<TileEntity>(this.electricalTiles.keySet()))
+		Set<TileEntity> tileSet = Collections.newSetFromMap(new HashMap<TileEntity, Boolean>());
+		tileSet.addAll(this.electricalTiles.keySet());
+		
+		for (TileEntity tileEntity : tileSet)
 		{
 			if (Arrays.asList(ignoreTiles).contains(tileEntity))
 			{
