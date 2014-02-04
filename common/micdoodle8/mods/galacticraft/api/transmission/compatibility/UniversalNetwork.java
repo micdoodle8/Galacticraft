@@ -191,12 +191,8 @@ public class UniversalNetwork extends ElectricityNetwork
 	{
 		List<ElectricityPack> requests = new ArrayList<ElectricityPack>();
 
-		Iterator<TileEntity> it = new HashSet<TileEntity>(this.getAcceptors()).iterator();
-
-		while (it.hasNext())
+		for (TileEntity tileEntity : new HashSet<TileEntity>(this.electricalTiles.keySet()))
 		{
-			TileEntity tileEntity = it.next();
-
 			if (Arrays.asList(ignoreTiles).contains(tileEntity))
 			{
 				continue;
