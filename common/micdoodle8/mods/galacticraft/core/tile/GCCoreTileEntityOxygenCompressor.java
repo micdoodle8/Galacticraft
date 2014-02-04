@@ -31,7 +31,7 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen imp
 
 	public GCCoreTileEntityOxygenCompressor()
 	{
-		super(GCCoreTileEntityOxygenCompressor.WATTS_PER_TICK, 50, 1200, 0);
+		super(GCCoreTileEntityOxygenCompressor.WATTS_PER_TICK, 50, 1200, 16);
 	}
 
 	@Override

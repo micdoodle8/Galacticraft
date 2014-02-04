@@ -43,7 +43,7 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 
 	public GCCoreTileEntityOxygenSealer()
 	{
-		super(GCCoreTileEntityOxygenSealer.WATTS_PER_TICK, 50, 10000, 8);
+		super(GCCoreTileEntityOxygenSealer.WATTS_PER_TICK, 50, 10000, 16);
 	}
 
 	public int getFindSealChecks()

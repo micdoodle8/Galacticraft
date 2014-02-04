@@ -38,7 +38,7 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen im
 
 	public GCCoreTileEntityOxygenDistributor()
 	{
-		super(GCCoreTileEntityOxygenDistributor.WATTS_PER_TICK, 50, 6000, 10);
+		super(GCCoreTileEntityOxygenDistributor.WATTS_PER_TICK, 50, 6000, 16);
 	}
 
 	@Override
