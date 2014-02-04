@@ -113,4 +113,32 @@ public class NetworkConfigHandler
 	{
 		return Loader.isModLoaded("Mekanism");
 	}
+	
+	private static Boolean mekanismOldClassFound;
+	
+	public static boolean isMekanismV6Loaded()
+	{
+		if (!isMekanismLoaded())
+		{
+			return false;
+		}
+		
+		if (mekanismOldClassFound != null)
+		{
+			return !mekanismOldClassFound;
+		}
+		
+		try
+		{
+			Class.forName("mekanism.api.gas.IGasAcceptor");
+		}
+		catch (ClassNotFoundException e)
+		{
+			mekanismOldClassFound = false;
+			return true;
+		}
+		
+		mekanismOldClassFound = true;
+		return false;
+	}
 }
