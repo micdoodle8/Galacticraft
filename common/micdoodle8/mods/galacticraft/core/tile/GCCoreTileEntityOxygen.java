@@ -263,13 +263,14 @@ public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectricBlo
 				else if (NetworkConfigHandler.isMekanismLoaded())
 				{
 					GasStack toSend = new GasStack((Gas)NetworkConfigHandler.gasOxygen, (int) Math.floor(Math.min(this.getOxygenStored(), provide)));
-					GasTransmission.emitGasToNetwork(toSend, this, outputDirection);
+					int acceptedOxygen = GasTransmission.emitGasToNetwork(toSend, this, outputDirection);
+					this.provideOxygen(acceptedOxygen, true);
 					
 					if (NetworkConfigHandler.isMekanismV6Loaded())
 					{
 						if (outputTile instanceof IGasHandler && ((IGasHandler) outputTile).canReceiveGas(outputDirection.getOpposite(), (Gas)NetworkConfigHandler.gasOxygen))
 						{
-							int acceptedOxygen = ((IGasHandler) outputTile).receiveGas(outputDirection.getOpposite(), toSend);
+							acceptedOxygen = ((IGasHandler) outputTile).receiveGas(outputDirection.getOpposite(), toSend);
 							this.provideOxygen(acceptedOxygen, true);
 							return true;
 						}
@@ -278,7 +279,7 @@ public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectricBlo
 					{
 						if (((IGasAcceptor) outputTile).canReceiveGas(outputDirection.getOpposite(), (Gas)NetworkConfigHandler.gasOxygen))
 						{
-							int acceptedOxygen = toSend.amount - ((IGasAcceptor) outputTile).receiveGas(toSend);
+							acceptedOxygen = toSend.amount - ((IGasAcceptor) outputTile).receiveGas(toSend);
 							this.provideOxygen(acceptedOxygen, true);
 							return true;
 						}
