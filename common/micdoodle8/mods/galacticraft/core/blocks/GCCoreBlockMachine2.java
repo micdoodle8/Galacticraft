@@ -404,14 +404,7 @@ public class GCCoreBlockMachine2 extends GCCoreBlockTile
 	@Override
 	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
 	{
-		int id = this.idPicked(world, x, y, z);
-
-		if (id == 0)
-		{
-			return null;
-		}
-
-		Item item = Item.itemsList[id];
+		Item item = Item.itemsList[this.blockID];
 
 		if (item == null)
 		{
@@ -420,6 +413,6 @@ public class GCCoreBlockMachine2 extends GCCoreBlockTile
 
 		int metadata = this.getDamageValue(world, x, y, z);
 
-		return new ItemStack(id, 1, metadata);
+		return new ItemStack(this.blockID, 1, metadata);
 	}
 }

@@ -47,14 +47,16 @@ public class OxygenPressureProtocol
 					final ArrayList<Integer> l = OxygenPressureProtocol.nonPermeableBlocks.get(Integer.parseInt(split[0]));
 					l.add(Integer.parseInt(split[1]));
 					OxygenPressureProtocol.nonPermeableBlocks.put(Integer.parseInt(split[0]), l);
-				} else
+				}
+				else
 				{
 					final ArrayList<Integer> a = new ArrayList<Integer>();
 					a.add(Integer.parseInt(split[1]));
 					OxygenPressureProtocol.nonPermeableBlocks.put(Integer.parseInt(split[0]), a);
 				}
 			}
-		} catch (final Exception e)
+		}
+		catch (final Exception e)
 		{
 			System.err.println();
 			System.err.println("Error finding sealable IDs from the Galacticraft config, check that they are listed properly!");
