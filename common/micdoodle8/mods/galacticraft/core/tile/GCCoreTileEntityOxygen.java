@@ -263,7 +263,7 @@ public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectricBlo
 				else if (NetworkConfigHandler.isMekanismLoaded())
 				{
 					GasStack toSend = new GasStack((Gas)NetworkConfigHandler.gasOxygen, (int) Math.floor(Math.min(this.getOxygenStored(), provide)));
-					GasTransmission.emitGasToNetwork(toSend, this, outputDirection.getOpposite());
+					GasTransmission.emitGasToNetwork(toSend, this, outputDirection);
 					
 					if (NetworkConfigHandler.isMekanismV6Loaded())
 					{
