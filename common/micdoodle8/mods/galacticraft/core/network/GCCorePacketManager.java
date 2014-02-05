@@ -255,6 +255,12 @@ public class GCCorePacketManager implements IPacketHandler, IPacketReceiver
 				{
 					data.writeInt(((Entity) dataValue).entityId);
 				}
+				else if (dataValue instanceof Vector3)
+				{
+					data.writeDouble(((Vector3) dataValue).x);
+					data.writeDouble(((Vector3) dataValue).y);
+					data.writeDouble(((Vector3) dataValue).z);
+				}
 				else if (dataValue instanceof Collection)
 				{
 					for (Object subDataValue : (Collection<?>) dataValue)
@@ -302,6 +308,12 @@ public class GCCorePacketManager implements IPacketHandler, IPacketReceiver
 						else if (subDataValue instanceof Entity)
 						{
 							data.writeInt(((Entity) subDataValue).entityId);
+						}
+						else if (subDataValue instanceof Vector3)
+						{
+							data.writeDouble(((Vector3) subDataValue).x);
+							data.writeDouble(((Vector3) subDataValue).y);
+							data.writeDouble(((Vector3) subDataValue).z);
 						}
 					}
 				}
@@ -573,6 +585,10 @@ public class GCCorePacketManager implements IPacketHandler, IPacketReceiver
 		else if (dataValue.equals(FluidTank.class))
 		{
 			return GCCorePacketManager.readFluidTank(stream);
+		}
+		else if (dataValue.equals(Vector3.class))
+		{
+			return new Vector3(stream.readDouble(), stream.readDouble(), stream.readDouble());
 		}
 		else
 		{

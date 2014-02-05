@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 import java.util.Iterator;
 import java.util.List;
 
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.GCCoreAnnotations.NetworkedField;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockParachest;
 import micdoodle8.mods.galacticraft.core.entities.IScaleableFuelLevel;
@@ -18,19 +18,14 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet250CustomPayload;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
-
-import com.google.common.io.ByteArrayDataInput;
-
 import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.relauncher.Side;
 
 /**
  * GCCoreTileEntityParachest.java
@@ -41,9 +36,10 @@ import cpw.mods.fml.common.network.PacketDispatcher;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class GCCoreTileEntityParachest extends TileEntity implements IInventory, IPacketReceiver, IScaleableFuelLevel
+public class GCCoreTileEntityParachest extends GCCoreTileEntityAdvanced implements IInventory, IPacketReceiver, IScaleableFuelLevel
 {
 	private final int tankCapacity = 5000;
+	@NetworkedField(targetSide = Side.CLIENT)
 	public FluidTank fuelTank = new FluidTank(this.tankCapacity);
 
 	public ItemStack[] chestContents = new ItemStack[3];
@@ -55,8 +51,6 @@ public class GCCoreTileEntityParachest extends TileEntity implements IInventory,
 	public float prevLidAngle;
 
 	public int numUsingPlayers;
-
-	private int ticksSinceSync;
 
 	@Override
 	public void validate()
@@ -238,10 +232,9 @@ public class GCCoreTileEntityParachest extends TileEntity implements IInventory,
 	public void updateEntity()
 	{
 		super.updateEntity();
-		++this.ticksSinceSync;
 		float f;
 
-		if (!this.worldObj.isRemote && this.numUsingPlayers != 0 && (this.ticksSinceSync + this.xCoord + this.yCoord + this.zCoord) % 200 == 0)
+		if (!this.worldObj.isRemote && this.numUsingPlayers != 0 && (this.ticks + this.xCoord + this.yCoord + this.zCoord) % 200 == 0)
 		{
 			this.numUsingPlayers = 0;
 			f = 5.0F;
@@ -328,27 +321,12 @@ public class GCCoreTileEntityParachest extends TileEntity implements IInventory,
 					this.fuelTank.drain(amountToFill, true);
 				}
 			}
-
-			if (this.ticksSinceSync % 3 == 0)
-			{
-				GCCorePacketManager.sendPacketToClients(this.getPacket(), this.worldObj, new Vector3(this), 12);
-			}
 		}
 	}
 
 	public Packet getPacket()
 	{
 		return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluidAmount());
-	}
-
-	@Override
-	public void handlePacketData(INetworkManager network, int packetType, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput data)
-	{
-		if (this.worldObj.isRemote)
-		{
-			int fuel = data.readInt();
-			this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, fuel));
-		}
 	}
 
 	@Override
@@ -402,5 +380,23 @@ public class GCCoreTileEntityParachest extends TileEntity implements IInventory,
 	{
 		super.invalidate();
 		this.updateContainingBlockInfo();
+	}
+
+	@Override
+	public double getPacketRange()
+	{
+		return 12.0D;
+	}
+
+	@Override
+	public int getPacketCooldown()
+	{
+		return 3;
+	}
+
+	@Override
+	public boolean isNetworkedTile()
+	{
+		return true;
 	}
 }

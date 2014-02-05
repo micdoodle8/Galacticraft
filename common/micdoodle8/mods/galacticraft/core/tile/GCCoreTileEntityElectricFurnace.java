@@ -6,9 +6,8 @@ import java.util.Set;
 
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.GCCoreAnnotations.NetworkedField;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockMachine;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -17,16 +16,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.ForgeDirection;
-
-import com.google.common.io.ByteArrayDataInput;
-
-import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.network.Player;
+import cpw.mods.fml.relauncher.Side;
 
 /**
  * GCCoreTileEntityElectricFurnace.java
@@ -52,6 +44,7 @@ public class GCCoreTileEntityElectricFurnace extends GCCoreTileEntityUniversalEl
 	/**
 	 * The amount of ticks this machine has been processing.
 	 */
+	@NetworkedField(targetSide = Side.CLIENT)
 	public int processTicks = 0;
 
 	/**
@@ -114,14 +107,6 @@ public class GCCoreTileEntityElectricFurnace extends GCCoreTileEntityUniversalEl
 			{
 				this.processTicks = 0;
 			}
-
-			if (this.ticks % 3 == 0)
-			{
-				for (EntityPlayer player : this.playersUsing)
-				{
-					PacketDispatcher.sendPacketToPlayer(this.getDescriptionPacket(), (Player) player);
-				}
-			}
 		}
 	}
 
@@ -135,25 +120,6 @@ public class GCCoreTileEntityElectricFurnace extends GCCoreTileEntityUniversalEl
 		else
 		{
 			return 0;
-		}
-	}
-
-	@Override
-	public Packet getDescriptionPacket()
-	{
-		return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.processTicks);
-	}
-
-	@Override
-	public void handlePacketData(INetworkManager network, int type, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream)
-	{
-		try
-		{
-			this.processTicks = dataStream.readInt();
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
 		}
 	}
 

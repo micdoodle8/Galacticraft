@@ -4,11 +4,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.api.item.IKeyable;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.GCCoreAnnotations.NetworkedField;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockT1TreasureChest;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerServer.EnumPacketServer;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.block.Block;
@@ -19,15 +18,8 @@ import net.minecraft.inventory.InventoryLargeChest;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet250CustomPayload;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.StatCollector;
-
-import com.google.common.io.ByteArrayDataInput;
-
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
@@ -41,11 +33,9 @@ import cpw.mods.fml.relauncher.Side;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class GCCoreTileEntityTreasureChest extends TileEntity implements IInventory, IKeyable, IPacketReceiver
+public class GCCoreTileEntityTreasureChest extends GCCoreTileEntityAdvanced implements IInventory, IKeyable, IPacketReceiver
 {
 	private ItemStack[] chestContents = new ItemStack[36];
-
-	protected long ticks = 0;
 
 	/** Determines if the check for adjacent chests has taken place. */
 	public boolean adjacentChestChecked = false;
@@ -74,6 +64,7 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
 	/** Server sync counter (once per 20 ticks) */
 	private int ticksSinceSync;
 
+	@NetworkedField(targetSide = Side.CLIENT)
 	public boolean locked = true;
 
 	public int tier = 1;
@@ -464,43 +455,6 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
 				this.lidAngle = 0.0F;
 			}
 		}
-
-		if (!this.worldObj.isRemote)
-		{
-			if (this.ticks >= Long.MAX_VALUE)
-			{
-				this.ticks = 1;
-			}
-
-			this.ticks++;
-
-			if (this.ticks % 40 == 0)
-			{
-				GCCorePacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 6);
-			}
-		}
-	}
-
-	@Override
-	public Packet getDescriptionPacket()
-	{
-		return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.locked);
-	}
-
-	@Override
-	public void handlePacketData(INetworkManager network, int type, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream)
-	{
-		try
-		{
-			if (this.worldObj.isRemote)
-			{
-				this.locked = dataStream.readBoolean();
-			}
-		}
-		catch (final Exception e)
-		{
-			e.printStackTrace();
-		}
 	}
 
 	/**
@@ -618,28 +572,6 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
 					player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
 				}
 
-				GCCorePacketManager.sendPacketToClients(this.getDescriptionPacket());
-
-				if (this.adjacentChestXNeg != null)
-				{
-					GCCorePacketManager.sendPacketToClients(this.adjacentChestXNeg.getDescriptionPacket());
-				}
-
-				if (this.adjacentChestXPos != null)
-				{
-					GCCorePacketManager.sendPacketToClients(this.adjacentChestXPos.getDescriptionPacket());
-				}
-
-				if (this.adjacentChestZNeg != null)
-				{
-					GCCorePacketManager.sendPacketToClients(this.adjacentChestZNeg.getDescriptionPacket());
-				}
-
-				if (this.adjacentChestZPos != null)
-				{
-					GCCorePacketManager.sendPacketToClients(this.adjacentChestZPos.getDescriptionPacket());
-				}
-
 				return true;
 			}
 		}
@@ -666,5 +598,23 @@ public class GCCoreTileEntityTreasureChest extends TileEntity implements IInvent
 	public boolean canBreak()
 	{
 		return false;
+	}
+
+	@Override
+	public double getPacketRange()
+	{
+		return 20.0D;
+	}
+
+	@Override
+	public int getPacketCooldown()
+	{
+		return 3;
+	}
+
+	@Override
+	public boolean isNetworkedTile()
+	{
+		return true;
 	}
 }

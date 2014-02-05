@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.GCCoreAnnotations.NetworkedField;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
@@ -11,12 +12,9 @@ import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.util.AxisAlignedBB;
-
-import com.google.common.io.ByteArrayDataInput;
+import cpw.mods.fml.relauncher.Side;
 
 /**
  * GCCoreTileEntityAirLockController.java
@@ -29,16 +27,25 @@ import com.google.common.io.ByteArrayDataInput;
  */
 public class GCCoreTileEntityAirLockController extends GCCoreTileEntityAirLock implements IPacketReceiver
 {
+	@NetworkedField(targetSide = Side.CLIENT)
 	public boolean redstoneActivation;
+	@NetworkedField(targetSide = Side.CLIENT)
 	public boolean playerDistanceActivation;
+	@NetworkedField(targetSide = Side.CLIENT)
 	public int playerDistanceSelection;
+	@NetworkedField(targetSide = Side.CLIENT)
 	public boolean playerNameMatches;
+	@NetworkedField(targetSide = Side.CLIENT)
 	public String playerToOpenFor = "";
+	@NetworkedField(targetSide = Side.CLIENT)
 	public boolean invertSelection;
+	@NetworkedField(targetSide = Side.CLIENT)
 	public boolean horizontalModeEnabled;
 	public boolean lastHorizontalModeEnabled;
+	@NetworkedField(targetSide = Side.CLIENT)
 	private String ownerName = "";
 
+	@NetworkedField(targetSide = Side.CLIENT)
 	public boolean active;
 	public boolean lastActive;
 	public ArrayList<GCCoreTileEntityAirLock> otherAirLocks;
@@ -325,43 +332,6 @@ public class GCCoreTileEntityAirLockController extends GCCoreTileEntityAirLock i
 		this.active = nbt.getBoolean("active");
 		this.lastActive = nbt.getBoolean("lastActive");
 		this.horizontalModeEnabled = nbt.getBoolean("HorizontalModeEnabled");
-	}
-
-	@Override
-	public void writeToNBT(NBTTagCompound nbt)
-	{
-		super.writeToNBT(nbt);
-		nbt.setString("OwnerName", this.ownerName);
-		nbt.setBoolean("RedstoneActivation", this.redstoneActivation);
-		nbt.setBoolean("PlayerDistanceActivation", this.playerDistanceActivation);
-		nbt.setInteger("PlayerDistanceSelection", this.playerDistanceSelection);
-		nbt.setBoolean("PlayerNameMatches", this.playerNameMatches);
-		nbt.setString("PlayerToOpenFor", this.playerToOpenFor);
-		nbt.setBoolean("InvertSelection", this.invertSelection);
-		nbt.setBoolean("active", this.active);
-		nbt.setBoolean("lastActive", this.lastActive);
-		nbt.setBoolean("HorizontalModeEnabled", this.horizontalModeEnabled);
-	}
-
-	@Override
-	public void handlePacketData(INetworkManager network, int type, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput data)
-	{
-		try
-		{
-			this.active = data.readBoolean();
-			this.ownerName = data.readUTF();
-			this.redstoneActivation = data.readBoolean();
-			this.playerDistanceActivation = data.readBoolean();
-			this.playerDistanceSelection = data.readInt();
-			this.playerNameMatches = data.readBoolean();
-			this.playerToOpenFor = data.readUTF();
-			this.invertSelection = data.readBoolean();
-			this.horizontalModeEnabled = data.readBoolean();
-		}
-		catch (final Exception e)
-		{
-			e.printStackTrace();
-		}
 	}
 
 	public Packet getPacket()

@@ -7,8 +7,6 @@ import java.util.Set;
 import micdoodle8.mods.galacticraft.api.transmission.ElectricityPack;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
 import micdoodle8.mods.galacticraft.core.GCCoreAnnotations.NetworkedField;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -17,7 +15,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.packet.Packet;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
@@ -108,47 +105,8 @@ public class GCCoreTileEntityCoalGenerator extends GCCoreTileEntityUniversalElec
 			}
 
 			this.generateWatts = Math.min(Math.max(this.generateWatts, 0.0F), this.getMaxEnergyStored());
-
-			if (this.ticks % 3 == 0)
-			{
-				for (EntityPlayer player : this.playersUsing)
-				{
-					// PacketDispatcher.sendPacketToPlayer(this.getDescriptionPacket(),
-					// (Player) player);
-				}
-			}
-
-			if (this.prevGenerateWatts <= 0 && this.generateWatts > 0 || this.prevGenerateWatts > 0 && this.generateWatts <= 0)
-			{
-				// GCCorePacketManager.sendPacketToClients(this.getDescriptionPacket(),
-				// this.worldObj);
-			}
 		}
 	}
-
-	@Override
-	public Packet getDescriptionPacket()
-	{
-		return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.generateWatts, this.itemCookTime, this.getEnergyStored());
-	}
-
-	// @Override
-	// public void handlePacketData(INetworkManager network, int type,
-	// Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput
-	// dataStream)
-	// {
-	// try
-	// {
-	// if (this.worldObj.isRemote)
-	// {
-	// this.setEnergyStored(dataStream.readFloat());
-	// }
-	// }
-	// catch (Exception e)
-	// {
-	// e.printStackTrace();
-	// }
-	// }
 
 	@Override
 	public void openChest()

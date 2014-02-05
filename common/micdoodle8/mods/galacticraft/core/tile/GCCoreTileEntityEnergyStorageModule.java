@@ -5,24 +5,15 @@ import java.util.HashSet;
 import java.util.Set;
 
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockMachine;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.ForgeDirection;
-
-import com.google.common.io.ByteArrayDataInput;
-
-import cpw.mods.fml.common.network.PacketDispatcher;
 
 /**
  * GCCoreTileEntityEnergyStorageModule.java
@@ -67,33 +58,9 @@ public class GCCoreTileEntityEnergyStorageModule extends GCCoreTileEntityUnivers
 		if (!this.worldObj.isRemote)
 		{
 			this.produce();
-
-			if (this.ticks % 3 == 0)
-			{
-				PacketDispatcher.sendPacketToAllAround(this.xCoord, this.yCoord, this.zCoord, 40, this.worldObj.provider.dimensionId, this.getDescriptionPacket());
-			}
 		}
 
 		this.lastScaledEnergyLevel = this.scaledEnergyLevel;
-	}
-
-	@Override
-	public Packet getDescriptionPacket()
-	{
-		return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getEnergyStored());
-	}
-
-	@Override
-	public void handlePacketData(INetworkManager network, int type, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream)
-	{
-		try
-		{
-			this.setEnergyStored(dataStream.readFloat());
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
 	}
 
 	@Override

@@ -187,21 +187,4 @@ public class GCCoreTileEntityOxygenPipe extends GCCoreTileEntityOxygenTransmitte
 
 		par1NBTTagCompound.setByte("pipeColor", this.getColor());
 	}
-
-	@Override
-	public void handlePacketData(INetworkManager network, int packetType, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream)
-	{
-		try
-		{
-			if (this.worldObj.isRemote)
-			{
-				this.setColor(dataStream.readByte());
-				this.preLoadColor = dataStream.readByte();
-			}
-		}
-		catch (final Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
 }

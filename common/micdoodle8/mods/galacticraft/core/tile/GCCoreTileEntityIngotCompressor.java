@@ -5,8 +5,7 @@ import java.util.Set;
 
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
+import micdoodle8.mods.galacticraft.core.GCCoreAnnotations.NetworkedField;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,17 +16,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet250CustomPayload;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.StatCollector;
-
-import com.google.common.io.ByteArrayDataInput;
-
-import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.network.Player;
+import cpw.mods.fml.relauncher.Side;
 
 /**
  * GCCoreTileEntityIngotCompressor.java
@@ -38,11 +29,14 @@ import cpw.mods.fml.common.network.Player;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class GCCoreTileEntityIngotCompressor extends TileEntity implements IInventory, ISidedInventory, IPacketReceiver
+public class GCCoreTileEntityIngotCompressor extends GCCoreTileEntityAdvanced implements IInventory, ISidedInventory, IPacketReceiver
 {
 	public static final int PROCESS_TIME_REQUIRED = 200;
+	@NetworkedField(targetSide = Side.CLIENT)
 	public int processTicks = 0;
+	@NetworkedField(targetSide = Side.CLIENT)
 	public int furnaceBurnTime = 0;
+	@NetworkedField(targetSide = Side.CLIENT)
 	public int currentItemBurnTime = 0;
 	private long ticks;
 
@@ -112,14 +106,6 @@ public class GCCoreTileEntityIngotCompressor extends TileEntity implements IInve
 				updateInv = true;
 			}
 
-			if (this.ticks % 3 == 0)
-			{
-				for (EntityPlayer player : this.playersUsing)
-				{
-					PacketDispatcher.sendPacketToPlayer(this.getDescriptionPacket(), (Player) player);
-				}
-			}
-
 			if (updateInv)
 			{
 				this.onInventoryChanged();
@@ -132,27 +118,6 @@ public class GCCoreTileEntityIngotCompressor extends TileEntity implements IInve
 		}
 
 		this.ticks++;
-	}
-
-	@Override
-	public Packet getDescriptionPacket()
-	{
-		return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.processTicks, this.currentItemBurnTime, this.furnaceBurnTime);
-	}
-
-	@Override
-	public void handlePacketData(INetworkManager network, int type, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream)
-	{
-		try
-		{
-			this.processTicks = dataStream.readInt();
-			this.currentItemBurnTime = dataStream.readInt();
-			this.furnaceBurnTime = dataStream.readInt();
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
 	}
 
 	@Override
@@ -421,5 +386,23 @@ public class GCCoreTileEntityIngotCompressor extends TileEntity implements IInve
 	public boolean canExtractItem(int slotID, ItemStack par2ItemStack, int par3)
 	{
 		return slotID == 2;
+	}
+
+	@Override
+	public double getPacketRange()
+	{
+		return 12.0D;
+	}
+
+	@Override
+	public int getPacketCooldown()
+	{
+		return 3;
+	}
+
+	@Override
+	public boolean isNetworkedTile()
+	{
+		return true;
 	}
 }

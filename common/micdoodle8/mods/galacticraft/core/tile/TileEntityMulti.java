@@ -1,20 +1,13 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
+import micdoodle8.mods.galacticraft.core.GCCoreAnnotations.NetworkedField;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-
-import com.google.common.io.ByteArrayDataInput;
-
-import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.relauncher.Side;
 
 /**
  * TileEntityMulti.java
@@ -25,12 +18,12 @@ import cpw.mods.fml.common.network.PacketDispatcher;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class TileEntityMulti extends TileEntity implements IPacketReceiver
+public class TileEntityMulti extends GCCoreTileEntityAdvanced implements IPacketReceiver
 {
 	// The the position of the main block
+	@NetworkedField(targetSide = Side.CLIENT)
 	public Vector3 mainBlockPosition;
 	public String channel;
-	private long ticks;
 
 	public TileEntityMulti()
 	{
@@ -42,27 +35,6 @@ public class TileEntityMulti extends TileEntity implements IPacketReceiver
 		this.channel = channel;
 	}
 
-	@Override
-	public void updateEntity()
-	{
-		super.updateEntity();
-
-		if (!this.worldObj.isRemote && this.mainBlockPosition != null)
-		{
-			if (this.ticks >= Long.MAX_VALUE)
-			{
-				this.ticks = 0;
-			}
-
-			if (this.ticks % 50 == 0)
-			{
-				PacketDispatcher.sendPacketToAllAround(this.xCoord, this.yCoord, this.zCoord, 30, this.worldObj.provider.dimensionId, this.getDescriptionPacket());
-			}
-
-			this.ticks++;
-		}
-	}
-
 	public void setMainBlock(Vector3 mainBlock)
 	{
 		this.mainBlockPosition = mainBlock;
@@ -71,23 +43,6 @@ public class TileEntityMulti extends TileEntity implements IPacketReceiver
 		{
 			this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
 		}
-	}
-
-	@Override
-	public Packet getDescriptionPacket()
-	{
-		if (this.mainBlockPosition != null)
-		{
-			if (this.channel == null || this.channel == "" && this.getBlockType() instanceof BlockMulti)
-			{
-				this.channel = ((BlockMulti) this.getBlockType()).channel;
-			}
-
-			return GCCorePacketManager.getPacket(this.channel, this, this.mainBlockPosition.intX(), this.mainBlockPosition.intY(), this.mainBlockPosition.intZ());
-
-		}
-
-		return null;
 	}
 
 	public void onBlockRemoval()
@@ -151,15 +106,20 @@ public class TileEntityMulti extends TileEntity implements IPacketReceiver
 	}
 
 	@Override
-	public void handlePacketData(INetworkManager network, int packetType, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream)
+	public double getPacketRange()
 	{
-		try
-		{
-			this.mainBlockPosition = new Vector3(dataStream.readInt(), dataStream.readInt(), dataStream.readInt());
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
+		return 30.0D;
+	}
+
+	@Override
+	public int getPacketCooldown()
+	{
+		return 50;
+	}
+
+	@Override
+	public boolean isNetworkedTile()
+	{
+		return true;
 	}
 }

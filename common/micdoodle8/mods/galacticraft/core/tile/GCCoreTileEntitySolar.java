@@ -8,11 +8,10 @@ import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.GCCoreAnnotations.NetworkedField;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockMulti;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockSolar;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,16 +20,10 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.ForgeDirection;
-
-import com.google.common.io.ByteArrayDataInput;
-
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -47,14 +40,19 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreTileEntitySolar extends GCCoreTileEntityUniversalElectrical implements IMultiBlock, IPacketReceiver, IDisableableMachine, IInventory, ISidedInventory
 {
 	public HashSet<TileEntity> connectedTiles = new HashSet<TileEntity>();
+	@NetworkedField(targetSide = Side.CLIENT)
 	public Vector3 mainBlockPosition;
+	@NetworkedField(targetSide = Side.CLIENT)
 	public int solarStrength = 0;
 	public float targetAngle;
 	public float currentAngle;
+	@NetworkedField(targetSide = Side.CLIENT)
 	public boolean disabled = true;
+	@NetworkedField(targetSide = Side.CLIENT)
 	public int disableCooldown = 0;
 	private ItemStack[] containingItems = new ItemStack[1];
 	public static final float MAX_GENERATE_WATTS = 15.0F;
+	@NetworkedField(targetSide = Side.CLIENT)
 	public float generateWatts = 0;
 	private float ueMaxEnergy;
 
@@ -214,11 +212,6 @@ public class GCCoreTileEntitySolar extends GCCoreTileEntityUniversalElectrical i
 		}
 
 		this.produce();
-
-		if (this.ticks % 3 == 0)
-		{
-			GCCorePacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 50);
-		}
 	}
 
 	public float getGenerate()
@@ -241,30 +234,6 @@ public class GCCoreTileEntitySolar extends GCCoreTileEntityUniversalElectrical i
 	public float getSolarBoost()
 	{
 		return (float) (this.worldObj.provider instanceof ISolarLevel ? ((ISolarLevel) this.worldObj.provider).getSolarEnergyMultiplier() : 1.0F);
-	}
-
-	@Override
-	public void handlePacketData(INetworkManager network, int packetType, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream)
-	{
-		try
-		{
-			this.mainBlockPosition = new Vector3(dataStream.readInt(), dataStream.readInt(), dataStream.readInt());
-			this.solarStrength = dataStream.readInt();
-			this.setEnergyStored(dataStream.readFloat());
-			this.generateWatts = dataStream.readFloat();
-			this.disableCooldown = dataStream.readInt();
-			this.disabled = dataStream.readBoolean();
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
-
-	@Override
-	public Packet getDescriptionPacket()
-	{
-		return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.mainBlockPosition != null ? this.mainBlockPosition.intX() : 0, this.mainBlockPosition != null ? this.mainBlockPosition.intY() : 0, this.mainBlockPosition != null ? this.mainBlockPosition.intZ() : 0, this.solarStrength, this.getEnergyStored(), this.generateWatts, this.disableCooldown, this.disabled);
 	}
 
 	public void onBlockRemoval()
