@@ -578,6 +578,11 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 	@RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "ThermalExpansion")
 	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate)
 	{
+		if (!this.getElectricalInputDirections().contains(from))
+		{
+			return 0;
+		}
+		
 		return (int) Math.floor(this.receiveElectricity(maxReceive * NetworkConfigHandler.TE_RATIO, !simulate));
 	}
 
@@ -597,7 +602,12 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 	@RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "ThermalExpansion")
 	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate)
 	{
-		return (int) Math.floor(this.provideElectricity(maxExtract * NetworkConfigHandler.TE_RATIO, !simulate).getWatts());
+		if (!this.getElectricalOutputDirections().contains(from))
+		{
+			return 0;
+		}
+		
+		return (int) Math.floor(this.provideElectricity(maxExtract * NetworkConfigHandler.TE_RATIO, !simulate).getWatts() * NetworkConfigHandler.TO_TE_RATIO);
 	}
 
 	/**
@@ -616,12 +626,7 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 	@RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "ThermalExpansion")
 	public int getEnergyStored(ForgeDirection from)
 	{
-		if (!this.canInterface(from))
-		{
-			return 0;
-		}
-
-		return (int) Math.floor(this.getEnergyStored() * NetworkConfigHandler.TE_RATIO);
+		return (int) Math.floor(this.getEnergyStored() * NetworkConfigHandler.TO_TE_RATIO);
 	}
 
 	/**
@@ -630,11 +635,6 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 	@RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "ThermalExpansion")
 	public int getMaxEnergyStored(ForgeDirection from)
 	{
-		if (!this.canInterface(from))
-		{
-			return 0;
-		}
-
-		return (int) Math.floor(this.getMaxEnergyStored() * NetworkConfigHandler.TE_RATIO);
+		return (int) Math.floor(this.getMaxEnergyStored() * NetworkConfigHandler.TO_TE_RATIO);
 	}
 }
