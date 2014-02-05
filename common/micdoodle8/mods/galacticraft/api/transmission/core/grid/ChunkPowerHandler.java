@@ -1,5 +1,9 @@
 package micdoodle8.mods.galacticraft.api.transmission.core.grid;
 
+import java.util.ArrayList;
+
+import com.google.common.collect.Lists;
+
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkConnection;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
@@ -26,7 +30,10 @@ public class ChunkPowerHandler
 		{
 			try
 			{
-				for (Object o : event.getChunk().chunkTileEntityMap.values())
+				ArrayList<Object> tileList = Lists.newArrayList();
+				tileList.addAll(event.getChunk().chunkTileEntityMap.values());
+				
+				for (Object o : tileList)
 				{
 					if (o instanceof TileEntity)
 					{
