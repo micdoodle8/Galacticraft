@@ -53,6 +53,12 @@ public abstract class GCCoreTileEntityOxygenTransmitter extends GCCoreTileEntity
 		return this.network;
 	}
 
+	@Override
+	public void onNetworkChanged()
+	{
+		
+	}
+
 	protected void resetNetwork()
 	{
 		OxygenNetwork network = new OxygenNetwork();

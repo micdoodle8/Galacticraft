@@ -23,4 +23,6 @@ public interface INetworkConnection extends IConnector
 	 * Refreshes the conductor
 	 */
 	public void refresh();
+	
+	public void onNetworkChanged();
 }

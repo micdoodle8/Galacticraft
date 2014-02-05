@@ -211,7 +211,10 @@ public class OxygenNetwork implements IOxygenNetwork
 				{
 					it.remove();
 				}
-				else if (((TileEntity) transmitter).isInvalid())
+
+				transmitter.onNetworkChanged();
+				
+				if (((TileEntity) transmitter).isInvalid())
 				{
 					it.remove();
 				}

@@ -292,7 +292,7 @@ public class UniversalNetwork extends ElectricityNetwork
 	public void refresh()
 	{
 		this.electricalTiles.clear();
-
+		
 		try
 		{
 			Iterator<IConductor> it = this.getTransmitters().iterator();
@@ -306,7 +306,10 @@ public class UniversalNetwork extends ElectricityNetwork
 					it.remove();
 					continue;
 				}
-				else if (((TileEntity) conductor).isInvalid() || ((TileEntity) conductor).getWorldObj() == null)
+				
+				conductor.onNetworkChanged();
+
+				if (((TileEntity) conductor).isInvalid() || ((TileEntity) conductor).getWorldObj() == null)
 				{
 					it.remove();
 					continue;
