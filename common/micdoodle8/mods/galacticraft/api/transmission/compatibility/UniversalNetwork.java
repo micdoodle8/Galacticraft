@@ -5,11 +5,9 @@ import ic2.api.energy.tile.IEnergySink;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import micdoodle8.mods.galacticraft.api.transmission.ElectricalEvent.ElectricityProductionEvent;
 import micdoodle8.mods.galacticraft.api.transmission.ElectricalEvent.ElectricityRequestEvent;
@@ -56,9 +54,7 @@ public class UniversalNetwork extends ElectricityNetwork
 
 		if (!evt.isCanceled())
 		{
-			Set<TileEntity> avaliableEnergyTiles = this.getAcceptors();
-
-			if (!avaliableEnergyTiles.isEmpty())
+			if (!this.electricalTiles.isEmpty())
 			{
 				final float totalEnergyRequest = this.getRequest(ignoreTiles).getWatts();
 
@@ -66,7 +62,7 @@ public class UniversalNetwork extends ElectricityNetwork
 				{
 					boolean markRefresh = false;
 
-					for (TileEntity tileEntity : avaliableEnergyTiles)
+					for (TileEntity tileEntity : new HashSet<TileEntity>(this.electricalTiles.keySet()))
 					{
 						if (tileEntity != null && !tileEntity.isInvalid())
 						{
@@ -192,10 +188,7 @@ public class UniversalNetwork extends ElectricityNetwork
 	{
 		List<ElectricityPack> requests = new ArrayList<ElectricityPack>();
 
-		Set<TileEntity> tileSet = Collections.newSetFromMap(new HashMap<TileEntity, Boolean>());
-		tileSet.addAll(this.electricalTiles.keySet());
-		
-		for (TileEntity tileEntity : tileSet)
+		for (TileEntity tileEntity : new HashSet<TileEntity>(this.electricalTiles.keySet()))
 		{
 			if (Arrays.asList(ignoreTiles).contains(tileEntity))
 			{
