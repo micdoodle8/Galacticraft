@@ -137,17 +137,20 @@ public class GCCoreTileEntityOxygenPipe extends GCCoreTileEntityOxygenTransmitte
 	{
 		this.pipeColor = col;
 
-		if (this.worldObj != null && this.worldObj.isRemote)
+		if (this.worldObj != null)
 		{
-			final Vector3 thisVec = new Vector3(this);
-			this.worldObj.markBlockForRenderUpdate(thisVec.intX(), thisVec.intY(), thisVec.intZ());
+			if (this.worldObj.isRemote)
+			{
+				final Vector3 thisVec = new Vector3(this);
+				this.worldObj.markBlockForRenderUpdate(thisVec.intX(), thisVec.intY(), thisVec.intZ());
+			}
+			else
+			{
+				this.getNetwork().split(this);
+				this.resetNetwork();
+			}
 		}
 
-		if (!this.worldObj.isRemote)
-		{
-			this.getNetwork().split(this);
-			this.resetNetwork();
-		}
 	}
 
 	@Override
