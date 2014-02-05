@@ -32,6 +32,7 @@ import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 
 /**
@@ -562,19 +563,6 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 		return this.getWorldObj();
 	}
 
-	/**
-	 * Add energy to an IEnergyHandler, internal distribution is left entirely
-	 * to the IEnergyHandler.
-	 * 
-	 * @param from
-	 *            Orientation the energy is received from.
-	 * @param maxReceive
-	 *            Maximum amount of energy to receive.
-	 * @param simulate
-	 *            If TRUE, the charge will only be simulated.
-	 * @return Amount of energy that was (or would have been, if simulated)
-	 *         received.
-	 */
 	@RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "ThermalExpansion")
 	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate)
 	{
@@ -583,22 +571,11 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 			return 0;
 		}
 		
+		FMLLog.info("receiveEnergy: " + ((int) Math.floor(this.receiveElectricity(maxReceive * NetworkConfigHandler.TE_RATIO, !simulate))));
+		
 		return (int) Math.floor(this.receiveElectricity(maxReceive * NetworkConfigHandler.TE_RATIO, !simulate));
 	}
 
-	/**
-	 * Remove energy from an IEnergyHandler, internal distribution is left
-	 * entirely to the IEnergyHandler.
-	 * 
-	 * @param from
-	 *            Orientation the energy is extracted from.
-	 * @param maxExtract
-	 *            Maximum amount of energy to extract.
-	 * @param simulate
-	 *            If TRUE, the extraction will only be simulated.
-	 * @return Amount of energy that was (or would have been, if simulated)
-	 *         extracted.
-	 */
 	@RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "ThermalExpansion")
 	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate)
 	{
@@ -607,34 +584,29 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 			return 0;
 		}
 		
+		FMLLog.info("extractEnergy: " + ((int) Math.floor(this.provideElectricity(maxExtract * NetworkConfigHandler.TE_RATIO, !simulate).getWatts() * NetworkConfigHandler.TO_TE_RATIO)));
+		
 		return (int) Math.floor(this.provideElectricity(maxExtract * NetworkConfigHandler.TE_RATIO, !simulate).getWatts() * NetworkConfigHandler.TO_TE_RATIO);
 	}
 
-	/**
-	 * Returns true if the Handler functions on a given side - if a Tile Entity
-	 * can receive or send energy on a given side, this should return true.
-	 */
 	@RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "ThermalExpansion")
 	public boolean canInterface(ForgeDirection from)
 	{
+		FMLLog.info("canInterface: " + (this.getElectricalInputDirections().contains(from) || this.getElectricalOutputDirections().contains(from)));
 		return this.getElectricalInputDirections().contains(from) || this.getElectricalOutputDirections().contains(from);
 	}
 
-	/**
-	 * Returns the amount of energy currently stored.
-	 */
 	@RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "ThermalExpansion")
 	public int getEnergyStored(ForgeDirection from)
 	{
+		FMLLog.info("getEnergyStored: " + ((int) Math.floor(this.getEnergyStored() * NetworkConfigHandler.TO_TE_RATIO)));
 		return (int) Math.floor(this.getEnergyStored() * NetworkConfigHandler.TO_TE_RATIO);
 	}
 
-	/**
-	 * Returns the maximum amount of energy that can be stored.
-	 */
 	@RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "ThermalExpansion")
 	public int getMaxEnergyStored(ForgeDirection from)
 	{
+		FMLLog.info("getMaxEnergyStored: " + ((int) Math.floor(this.getMaxEnergyStored() * NetworkConfigHandler.TO_TE_RATIO)));
 		return (int) Math.floor(this.getMaxEnergyStored() * NetworkConfigHandler.TO_TE_RATIO);
 	}
 }
