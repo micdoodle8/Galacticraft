@@ -21,7 +21,7 @@ public class NetworkConfigHandler
 	 * Ratio of Build craft(MJ) power to UE power(Kw). Multiply BC3 power by
 	 * this to convert to UE
 	 */
-	public static float BC3_RATIO = 2.814f;
+	public static float BC3_RATIO = 0.04F;
 
 	/**
 	 * Ratio of Redstone Flux power to UE power(Kw). Multiply TE power by this
