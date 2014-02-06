@@ -32,7 +32,6 @@ import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 
 /**
@@ -571,8 +570,6 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 			return 0;
 		}
 		
-		FMLLog.info("receiveEnergy: " + ((int) Math.floor(this.receiveElectricity(maxReceive * NetworkConfigHandler.TE_RATIO, !simulate))));
-		
 		return (int) Math.floor(this.receiveElectricity(maxReceive * NetworkConfigHandler.TE_RATIO, !simulate));
 	}
 
@@ -584,29 +581,24 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 			return 0;
 		}
 		
-		FMLLog.info("extractEnergy: " + ((int) Math.floor(this.provideElectricity(maxExtract * NetworkConfigHandler.TE_RATIO, !simulate).getWatts() * NetworkConfigHandler.TO_TE_RATIO)));
-		
 		return (int) Math.floor(this.provideElectricity(maxExtract * NetworkConfigHandler.TE_RATIO, !simulate).getWatts() * NetworkConfigHandler.TO_TE_RATIO);
 	}
 
 	@RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "ThermalExpansion")
 	public boolean canInterface(ForgeDirection from)
 	{
-		FMLLog.info("canInterface: " + (this.getElectricalInputDirections().contains(from) || this.getElectricalOutputDirections().contains(from)));
 		return this.getElectricalInputDirections().contains(from) || this.getElectricalOutputDirections().contains(from);
 	}
 
 	@RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "ThermalExpansion")
 	public int getEnergyStored(ForgeDirection from)
 	{
-		FMLLog.info("getEnergyStored: " + ((int) Math.floor(this.getEnergyStored() * NetworkConfigHandler.TO_TE_RATIO)));
 		return (int) Math.floor(this.getEnergyStored() * NetworkConfigHandler.TO_TE_RATIO);
 	}
 
 	@RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "ThermalExpansion")
 	public int getMaxEnergyStored(ForgeDirection from)
 	{
-		FMLLog.info("getMaxEnergyStored: " + ((int) Math.floor(this.getMaxEnergyStored() * NetworkConfigHandler.TO_TE_RATIO)));
 		return (int) Math.floor(this.getMaxEnergyStored() * NetworkConfigHandler.TO_TE_RATIO);
 	}
 }
