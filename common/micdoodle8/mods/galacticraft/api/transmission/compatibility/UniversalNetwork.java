@@ -136,8 +136,11 @@ public class UniversalNetwork extends ElectricityNetwork
 								
 								if (receiver != null)
 								{
-					            	float toSend = receiver.receiveEnergy(Type.PIPE, (float) (Math.min(receiver.powerRequest(), currentSending * NetworkConfigHandler.TO_BC_RATIO)), side.getOpposite());
-					            	sent += toSend * NetworkConfigHandler.BC3_RATIO;
+									float req = receiver.powerRequest();
+									double bcToSend = currentSending * NetworkConfigHandler.TO_BC_RATIO;
+					            	float bcSent = receiver.receiveEnergy(Type.PIPE, (float) (Math.min(req, bcToSend)), side.getOpposite());
+					            	FMLLog.info("" + req + " " + bcToSend + " " + bcSent);
+					            	sent += bcSent * NetworkConfigHandler.BC3_RATIO;
 								}
 							}
 						}
