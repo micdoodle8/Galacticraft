@@ -100,7 +100,7 @@ public abstract class GCCoreTileEntityAdvanced extends TileEntity implements IPa
 			this.addExtraNetworkedData(objList);
 
 			packet = GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, objList);
-			GCCorePacketManager.sendPacketToClients(packet, this.worldObj, new Vector3(this), 12);
+			GCCorePacketManager.sendPacketToClients(packet, this.worldObj, new Vector3(this), this.getPacketRange());
 		}
 		catch (Exception e)
 		{
@@ -113,7 +113,7 @@ public abstract class GCCoreTileEntityAdvanced extends TileEntity implements IPa
 		this.fieldCacheClient = new LinkedHashSet<Field>();
 		this.fieldCacheServer = new LinkedHashSet<Field>();
 
-		for (Field field : this.getClass().getFields())
+		for (Field field : this.getClass().getDeclaredFields())
 		{
 			if (field.isAnnotationPresent(NetworkedField.class))
 			{

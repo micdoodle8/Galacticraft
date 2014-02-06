@@ -7,12 +7,9 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GCCoreAnnotations.NetworkedField;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
-import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
-import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.packet.Packet;
 import net.minecraft.util.AxisAlignedBB;
 import cpw.mods.fml.relauncher.Side;
 
@@ -25,7 +22,7 @@ import cpw.mods.fml.relauncher.Side;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class GCCoreTileEntityAirLockController extends GCCoreTileEntityAirLock implements IPacketReceiver
+public class GCCoreTileEntityAirLockController extends GCCoreTileEntityAirLock
 {
 	@NetworkedField(targetSide = Side.CLIENT)
 	public boolean redstoneActivation;
@@ -43,7 +40,7 @@ public class GCCoreTileEntityAirLockController extends GCCoreTileEntityAirLock i
 	public boolean horizontalModeEnabled;
 	public boolean lastHorizontalModeEnabled;
 	@NetworkedField(targetSide = Side.CLIENT)
-	private String ownerName = "";
+	protected String ownerName = "";
 
 	@NetworkedField(targetSide = Side.CLIENT)
 	public boolean active;
@@ -176,11 +173,6 @@ public class GCCoreTileEntityAirLockController extends GCCoreTileEntityAirLock i
 				this.lastOtherAirLocks = this.otherAirLocks;
 				this.lastProtocol = this.protocol;
 				this.lastHorizontalModeEnabled = this.horizontalModeEnabled;
-			}
-
-			if (this.ticks % 3 == 0)
-			{
-				GCCorePacketManager.sendPacketToClients(this.getPacket(), this.worldObj, new Vector3(this), 12.0D);
 			}
 		}
 	}
@@ -334,10 +326,21 @@ public class GCCoreTileEntityAirLockController extends GCCoreTileEntityAirLock i
 		this.horizontalModeEnabled = nbt.getBoolean("HorizontalModeEnabled");
 	}
 
-	public Packet getPacket()
-	{
-		return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.active, this.ownerName, this.redstoneActivation, this.playerDistanceActivation, this.playerDistanceSelection, this.playerNameMatches, this.playerToOpenFor != null ? this.playerToOpenFor : "", this.invertSelection, this.horizontalModeEnabled);
-	}
+    @Override
+    public void writeToNBT(NBTTagCompound nbt)
+    {
+        super.writeToNBT(nbt);
+        nbt.setString("OwnerName", this.ownerName);
+        nbt.setBoolean("RedstoneActivation", this.redstoneActivation);
+        nbt.setBoolean("PlayerDistanceActivation", this.playerDistanceActivation);
+        nbt.setInteger("PlayerDistanceSelection", this.playerDistanceSelection);
+        nbt.setBoolean("PlayerNameMatches", this.playerNameMatches);
+        nbt.setString("PlayerToOpenFor", this.playerToOpenFor);
+        nbt.setBoolean("InvertSelection", this.invertSelection);
+        nbt.setBoolean("active", this.active);
+        nbt.setBoolean("lastActive", this.lastActive);
+        nbt.setBoolean("HorizontalModeEnabled", this.horizontalModeEnabled);
+    }
 
 	public String getOwnerName()
 	{
@@ -347,5 +350,23 @@ public class GCCoreTileEntityAirLockController extends GCCoreTileEntityAirLock i
 	public void setOwnerName(String ownerName)
 	{
 		this.ownerName = ownerName;
+	}
+
+	@Override
+	public double getPacketRange()
+	{
+		return 20.0D;
+	}
+
+	@Override
+	public int getPacketCooldown()
+	{
+		return 3;
+	}
+
+	@Override
+	public boolean isNetworkedTile()
+	{
+		return true;
 	}
 }
