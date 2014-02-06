@@ -39,7 +39,7 @@ import cpw.mods.fml.common.FMLLog;
  */
 public class OxygenNetwork implements IOxygenNetwork
 {
-	public Map<TileEntity, ArrayList<ForgeDirection>> oxygenTiles = new HashMap<TileEntity, ArrayList<ForgeDirection>>();
+	public Map<TileEntity, ForgeDirection> oxygenTiles = new HashMap<TileEntity, ForgeDirection>();
 
 	private final Set<ITransmitter> pipes = new HashSet<ITransmitter>();
 
@@ -186,7 +186,7 @@ public class OxygenNetwork implements IOxygenNetwork
 	 *         tile
 	 */
 	@Override
-	public ArrayList<ForgeDirection> getPossibleDirections(TileEntity tile)
+	public ForgeDirection getPossibleDirections(TileEntity tile)
 	{
 		return this.oxygenTiles.containsKey(tile) ? this.oxygenTiles.get(tile) : null;
 	}
@@ -229,20 +229,7 @@ public class OxygenNetwork implements IOxygenNetwork
 
 					if (!(acceptor instanceof ITransmitter) && acceptor instanceof IConnector)
 					{
-						ArrayList<ForgeDirection> possibleDirections = null;
-
-						if (this.oxygenTiles.containsKey(acceptor))
-						{
-							possibleDirections = this.oxygenTiles.get(acceptor);
-						}
-						else
-						{
-							possibleDirections = new ArrayList<ForgeDirection>();
-						}
-
-						possibleDirections.add(ForgeDirection.getOrientation(i));
-
-						this.oxygenTiles.put(acceptor, possibleDirections);
+						this.oxygenTiles.put(acceptor, ForgeDirection.getOrientation(i));
 					}
 				}
 			}

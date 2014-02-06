@@ -53,7 +53,7 @@ public interface IGridNetwork<N, C, A>
 	 * @return The list of directions that can be connected to for the provided
 	 *         tile
 	 */
-	public ArrayList<ForgeDirection> getPossibleDirections(TileEntity tile);
+	public ForgeDirection getPossibleDirections(TileEntity tile);
 
 	/**
 	 * Creates a new network that makes up the current network and the network

@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.api.transmission.core.grid;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -22,7 +21,7 @@ import net.minecraftforge.common.ForgeDirection;
  */
 public abstract class ElectricityNetwork implements IElectricityNetwork
 {
-	public Map<TileEntity, ArrayList<ForgeDirection>> electricalTiles = new HashMap<TileEntity, ArrayList<ForgeDirection>>();
+	public Map<TileEntity, ForgeDirection> electricalTiles = new HashMap<TileEntity, ForgeDirection>();
 
 	private final Set<IConductor> conductors = new HashSet<IConductor>();
 
@@ -44,7 +43,7 @@ public abstract class ElectricityNetwork implements IElectricityNetwork
 	 *         tile
 	 */
 	@Override
-	public ArrayList<ForgeDirection> getPossibleDirections(TileEntity tile)
+	public ForgeDirection getPossibleDirections(TileEntity tile)
 	{
 		return this.electricalTiles.containsKey(tile) ? this.electricalTiles.get(tile) : null;
 	}
