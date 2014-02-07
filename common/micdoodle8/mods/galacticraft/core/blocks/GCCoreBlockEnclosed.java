@@ -402,8 +402,12 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeala
 					FMLLog.info("6 " + constructor + " " + GCCoreBlockEnclosed.getTypeFromMeta(metadata).getSubMetaValue());
 
 					constructor.setAccessible(true);
+					
+					TileEntity tile = (TileEntity) constructor.newInstance(GCCoreBlockEnclosed.getTypeFromMeta(metadata).getSubMetaValue());
 
-					return (TileEntity) constructor.newInstance((short) GCCoreBlockEnclosed.getTypeFromMeta(metadata).getSubMetaValue());
+					FMLLog.info("" + tile);
+					
+					return tile;
 				}
 				catch (Exception e)
 				{
