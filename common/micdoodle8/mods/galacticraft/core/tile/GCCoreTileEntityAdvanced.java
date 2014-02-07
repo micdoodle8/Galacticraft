@@ -113,7 +113,7 @@ public abstract class GCCoreTileEntityAdvanced extends TileEntity implements IPa
 		this.fieldCacheClient = new LinkedHashSet<Field>();
 		this.fieldCacheServer = new LinkedHashSet<Field>();
 
-		for (Field field : this.getClass().getDeclaredFields())
+		for (Field field : this.getClass().getFields())
 		{
 			if (field.isAnnotationPresent(NetworkedField.class))
 			{
