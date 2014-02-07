@@ -21,6 +21,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -375,12 +376,17 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeala
 	{
 		if (metadata == EnumEnclosedBlock.TE_CONDUIT.getMetadata())
 		{
+			FMLLog.info("1");
 			if (GCCoreCompatibilityManager.isTELoaded())
 			{
+				FMLLog.info("2");
 				try
 				{
+					FMLLog.info("3");
 					Class<?> clazz = Class.forName("thermalexpansion.block.conduit.energy.TileConduitEnergy");
+					FMLLog.info("4 " + clazz);
 					Constructor<?>[] constructors = clazz.getDeclaredConstructors();
+					FMLLog.info("5 " + constructors);
 					Constructor<?> constructor = null;
 
 					for (Constructor<?> constructor2 : constructors)
@@ -392,6 +398,8 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeala
 							break;
 						}
 					}
+					
+					FMLLog.info("6 " + constructor + " " + GCCoreBlockEnclosed.getTypeFromMeta(metadata).getSubMetaValue());
 
 					constructor.setAccessible(true);
 
