@@ -2,12 +2,12 @@ package micdoodle8.mods.galacticraft.api.transmission.core.grid;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 import mekanism.api.gas.Gas;
 import mekanism.api.gas.GasStack;
@@ -39,7 +39,7 @@ import cpw.mods.fml.common.FMLLog;
  */
 public class OxygenNetwork implements IOxygenNetwork
 {
-	public Map<TileEntity, ForgeDirection> oxygenTiles = new ConcurrentHashMap<TileEntity, ForgeDirection>();
+	public Map<TileEntity, ForgeDirection> oxygenTiles = new HashMap<TileEntity, ForgeDirection>();
 
 	private final Set<ITransmitter> pipes = new HashSet<ITransmitter>();
 
