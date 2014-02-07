@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.api.transmission.core.grid;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import net.minecraft.tileentity.TileEntity;
@@ -21,7 +21,7 @@ import net.minecraftforge.common.ForgeDirection;
  */
 public abstract class ElectricityNetwork implements IElectricityNetwork
 {
-	public Map<TileEntity, ForgeDirection> electricalTiles = new HashMap<TileEntity, ForgeDirection>();
+	public Map<TileEntity, ForgeDirection> electricalTiles = new ConcurrentHashMap<TileEntity, ForgeDirection>();
 
 	private final Set<IConductor> conductors = new HashSet<IConductor>();
 
