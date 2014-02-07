@@ -39,7 +39,8 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeala
 
 	public enum EnumEnclosedBlock
 	{
-		OXYGENPIPE(1, -1, null, "enclosed_oxygen_pipe"),
+		TE_CONDUIT(0, 2, null, "enclosed_te_conduit"),
+		OXYGEN_PIPE(1, -1, null, "enclosed_oxygen_pipe"),
 		IC2_COPPER_CABLE(2, 0, null, "enclosed_copper_cable"),
 		IC2_GOLD_CABLE(3, 3, null, "enclosed_gold_cable"),
 		IC2_HV_CABLE(4, 6, null, "enclosed_hv_cable"),
@@ -68,14 +69,14 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeala
 		ALUMINUM_WIRE_HEAVY(15, -1, null, "enclosed_heavy_aluminum_wire");
 
 		int metadata;
-		int ic2CableMeta;
+		int subMeta;
 		String pipeClass;
 		String texture;
 
-		EnumEnclosedBlock(int metadata, int ic2CableMeta, String pipeClass, String texture)
+		EnumEnclosedBlock(int metadata, int subMeta, String pipeClass, String texture)
 		{
 			this.metadata = metadata;
-			this.ic2CableMeta = ic2CableMeta;
+			this.subMeta = subMeta;
 			this.pipeClass = pipeClass;
 			this.texture = texture;
 		}
@@ -85,9 +86,9 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeala
 			return this.metadata;
 		}
 
-		public int getIC2CableMeta()
+		public int getSubMetaValue()
 		{
-			return this.ic2CableMeta;
+			return this.subMeta;
 		}
 
 		public String getPipeClass()
@@ -132,6 +133,11 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeala
 		par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.ALUMINUM_WIRE.getMetadata()));
 		par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.ALUMINUM_WIRE_HEAVY.getMetadata()));
 		par3List.add(new ItemStack(par1, 1, 1));
+		
+		if (GCCoreCompatibilityManager.isTELoaded())
+		{
+			par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.TE_CONDUIT.getMetadata()));
+		}
 
 		if (GCCoreCompatibilityManager.isIc2Loaded())
 		{
@@ -187,7 +193,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeala
 			this.enclosedIcons[EnumEnclosedBlock.values()[i].getMetadata()] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + EnumEnclosedBlock.values()[i].getTexture());
 		}
 
-		this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "" + EnumEnclosedBlock.OXYGENPIPE.getTexture());
+		this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "" + EnumEnclosedBlock.OXYGEN_PIPE.getTexture());
 	}
 
 	@Override
@@ -198,7 +204,11 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeala
 		int metadata = world.getBlockMetadata(x, y, z);
 		final TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
 
-		if (metadata > 0 && metadata <= EnumEnclosedBlock.OXYGENPIPE.getMetadata())
+		if (metadata == EnumEnclosedBlock.TE_CONDUIT.getMetadata())
+		{
+			
+		}
+		else if (metadata > 0 && metadata <= EnumEnclosedBlock.OXYGEN_PIPE.getMetadata())
 		{
 
 		}
@@ -259,7 +269,11 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeala
 		int metadata = world.getBlockMetadata(x, y, z);
 		final TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
 
-		if (metadata > 0 && metadata <= EnumEnclosedBlock.OXYGENPIPE.getMetadata())
+		if (metadata == EnumEnclosedBlock.TE_CONDUIT.getMetadata())
+		{
+			
+		}
+		else if (metadata > 0 && metadata <= EnumEnclosedBlock.OXYGEN_PIPE.getMetadata())
 		{
 
 		}
@@ -359,7 +373,37 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeala
 	@Override
 	public TileEntity createTileEntity(World world, int metadata)
 	{
-		if (metadata > 0 && metadata <= EnumEnclosedBlock.OXYGENPIPE.getMetadata())
+		if (metadata == EnumEnclosedBlock.TE_CONDUIT.getMetadata())
+		{
+			if (GCCoreCompatibilityManager.isTELoaded())
+			{
+				try
+				{
+					Class<?> clazz = Class.forName("thermalexpansion.block.conduit.energy.TileConduitEnergy");
+					Constructor<?>[] constructors = clazz.getDeclaredConstructors();
+					Constructor<?> constructor = null;
+
+					for (Constructor<?> constructor2 : constructors)
+					{
+						constructor = constructor2;
+
+						if (constructor.getGenericParameterTypes().length == 1)
+						{
+							break;
+						}
+					}
+
+					constructor.setAccessible(true);
+
+					return (TileEntity) constructor.newInstance((short) GCCoreBlockEnclosed.getTypeFromMeta(metadata).getSubMetaValue());
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+				}
+			}
+		}
+		else if (metadata > 0 && metadata <= EnumEnclosedBlock.OXYGEN_PIPE.getMetadata())
 		{
 			return new GCCoreTileEntityOxygenPipe();
 		}
@@ -385,7 +429,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeala
 
 					constructor.setAccessible(true);
 
-					return (TileEntity) constructor.newInstance((short) GCCoreBlockEnclosed.getTypeFromMeta(metadata).getIC2CableMeta());
+					return (TileEntity) constructor.newInstance((short) GCCoreBlockEnclosed.getTypeFromMeta(metadata).getSubMetaValue());
 				}
 				catch (Exception e)
 				{
