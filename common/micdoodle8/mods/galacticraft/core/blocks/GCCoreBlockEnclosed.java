@@ -21,7 +21,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -137,7 +136,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeala
 		
 		if (GCCoreCompatibilityManager.isTELoaded())
 		{
-			par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.TE_CONDUIT.getMetadata()));
+//			par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.TE_CONDUIT.getMetadata()));
 		}
 
 		if (GCCoreCompatibilityManager.isIc2Loaded())
@@ -376,44 +375,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeala
 	{
 		if (metadata == EnumEnclosedBlock.TE_CONDUIT.getMetadata())
 		{
-			FMLLog.info("1");
-			if (GCCoreCompatibilityManager.isTELoaded())
-			{
-				FMLLog.info("2");
-				try
-				{
-					FMLLog.info("3");
-					Class<?> clazz = Class.forName("thermalexpansion.block.conduit.energy.TileConduitEnergy");
-					FMLLog.info("4 " + clazz);
-					Constructor<?>[] constructors = clazz.getDeclaredConstructors();
-					FMLLog.info("5 " + constructors);
-					Constructor<?> constructor = null;
-
-					for (Constructor<?> constructor2 : constructors)
-					{
-						constructor = constructor2;
-
-						if (constructor.getGenericParameterTypes().length == 1)
-						{
-							break;
-						}
-					}
-					
-					FMLLog.info("6 " + constructor + " " + GCCoreBlockEnclosed.getTypeFromMeta(metadata).getSubMetaValue());
-
-					constructor.setAccessible(true);
-					
-					TileEntity tile = (TileEntity) constructor.newInstance(GCCoreBlockEnclosed.getTypeFromMeta(metadata).getSubMetaValue());
-
-					FMLLog.info("" + tile);
-					
-					return tile;
-				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-				}
-			}
+			
 		}
 		else if (metadata > 0 && metadata <= EnumEnclosedBlock.OXYGEN_PIPE.getMetadata())
 		{
