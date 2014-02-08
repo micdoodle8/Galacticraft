@@ -27,11 +27,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.Event;
-import thermalexpansion.api.item.IChargeableItem;
 import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
+import cofh.api.energy.IEnergyContainerItem;
 import cpw.mods.fml.relauncher.Side;
 
 /**
@@ -226,10 +226,10 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 				energy = manager.charge(itemStack, (int) (energy * NetworkConfigHandler.TO_IC2_RATIO), 0, false, false) * NetworkConfigHandler.IC2_RATIO;
 				this.provideElectricity(energy, true);
 			}
-			else if (GCCoreCompatibilityManager.isTELoaded() && itemStack.getItem() instanceof IChargeableItem)
+			else if (GCCoreCompatibilityManager.isTELoaded() && itemStack.getItem() instanceof IEnergyContainerItem)
 			{
-				float accepted = ((IChargeableItem) itemStack.getItem()).receiveEnergy(itemStack, this.getProvide(ForgeDirection.UNKNOWN) * NetworkConfigHandler.BC3_RATIO, true);
-				this.provideElectricity(accepted, true);
+				int accepted = ((IEnergyContainerItem) itemStack.getItem()).receiveEnergy(itemStack, (int) Math.floor(this.getProvide(ForgeDirection.UNKNOWN) * NetworkConfigHandler.TO_TE_RATIO), false);
+				this.provideElectricity(accepted * NetworkConfigHandler.TE_RATIO, true);
 			}
 		}
 	}
@@ -316,10 +316,10 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 					this.receiveElectricity(energy, true);
 				}
 			}
-			else if (GCCoreCompatibilityManager.isTELoaded() && itemStack.getItem() instanceof IChargeableItem)
+			else if (GCCoreCompatibilityManager.isTELoaded() && itemStack.getItem() instanceof IEnergyContainerItem)
 			{
-				float given = ((IChargeableItem) itemStack.getItem()).transferEnergy(itemStack, this.getRequest(ForgeDirection.UNKNOWN) * NetworkConfigHandler.BC3_RATIO, true);
-				this.receiveElectricity(given, true);
+				float given = ((IEnergyContainerItem) itemStack.getItem()).extractEnergy(itemStack, (int) Math.floor(this.getRequest(ForgeDirection.UNKNOWN) * NetworkConfigHandler.TO_TE_RATIO), false);
+				this.receiveElectricity(given * NetworkConfigHandler.TE_RATIO, true);
 			}
 		}
 	}
