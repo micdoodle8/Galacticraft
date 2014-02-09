@@ -84,7 +84,7 @@ public class GCMoonComponentVillageWell extends GCMoonComponentVillage
 			this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.maxY + 3, 0);
 		}
 
-		this.fillWithMetadataBlocks(par1World, par3StructureBoundingBox, 1, 0, 1, 4, 12, 4, GCCoreBlocks.decorationBlocks.blockID, 4, Block.waterMoving.blockID, 0, false);
+		this.fillWithMetadataBlocks(par1World, par3StructureBoundingBox, 1, 0, 1, 4, 12, 4, GCCoreBlocks.basicBlock.blockID, 4, Block.waterMoving.blockID, 0, false);
 		this.placeBlockAtCurrentPosition(par1World, 0, 0, 2, 12, 2, par3StructureBoundingBox);
 		this.placeBlockAtCurrentPosition(par1World, 0, 0, 3, 12, 2, par3StructureBoundingBox);
 		this.placeBlockAtCurrentPosition(par1World, 0, 0, 2, 12, 3, par3StructureBoundingBox);
@@ -97,7 +97,7 @@ public class GCMoonComponentVillageWell extends GCMoonComponentVillage
 		this.placeBlockAtCurrentPosition(par1World, Block.fence.blockID, 0, 1, 14, 4, par3StructureBoundingBox);
 		this.placeBlockAtCurrentPosition(par1World, Block.fence.blockID, 0, 4, 13, 4, par3StructureBoundingBox);
 		this.placeBlockAtCurrentPosition(par1World, Block.fence.blockID, 0, 4, 14, 4, par3StructureBoundingBox);
-		this.fillWithMetadataBlocks(par1World, par3StructureBoundingBox, 1, 15, 1, 4, 15, 4, GCCoreBlocks.decorationBlocks.blockID, 4, GCCoreBlocks.decorationBlocks.blockID, 4, false);
+		this.fillWithMetadataBlocks(par1World, par3StructureBoundingBox, 1, 15, 1, 4, 15, 4, GCCoreBlocks.basicBlock.blockID, 4, GCCoreBlocks.basicBlock.blockID, 4, false);
 
 		for (int var4 = 0; var4 <= 5; ++var4)
 		{

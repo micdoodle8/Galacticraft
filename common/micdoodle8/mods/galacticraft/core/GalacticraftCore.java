@@ -290,22 +290,22 @@ public class GalacticraftCore
 
 		if (GCCoreConfigManager.enableCopperOreGen)
 		{
-			GameRegistry.registerWorldGenerator(new GCCoreOverworldGenerator(GCCoreBlocks.decorationBlocks, 5, 24, 0, 75, 7));
+			GameRegistry.registerWorldGenerator(new GCCoreOverworldGenerator(GCCoreBlocks.basicBlock, 5, 24, 0, 75, 7));
 		}
 
 		if (GCCoreConfigManager.enableTinOreGen)
 		{
-			GameRegistry.registerWorldGenerator(new GCCoreOverworldGenerator(GCCoreBlocks.decorationBlocks, 6, 22, 0, 60, 7));
+			GameRegistry.registerWorldGenerator(new GCCoreOverworldGenerator(GCCoreBlocks.basicBlock, 6, 22, 0, 60, 7));
 		}
 
 		if (GCCoreConfigManager.enableAluminumOreGen)
 		{
-			GameRegistry.registerWorldGenerator(new GCCoreOverworldGenerator(GCCoreBlocks.decorationBlocks, 7, 18, 0, 45, 7));
+			GameRegistry.registerWorldGenerator(new GCCoreOverworldGenerator(GCCoreBlocks.basicBlock, 7, 18, 0, 45, 7));
 		}
 
 		if (GCCoreConfigManager.enableSiliconOreGen)
 		{
-			GameRegistry.registerWorldGenerator(new GCCoreOverworldGenerator(GCCoreBlocks.decorationBlocks, 8, 3, 0, 25, 7));
+			GameRegistry.registerWorldGenerator(new GCCoreOverworldGenerator(GCCoreBlocks.basicBlock, 8, 3, 0, 25, 7));
 		}
 	}
 

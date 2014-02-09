@@ -54,9 +54,9 @@ public class GCCoreRecipeManager
 	@SuppressWarnings("unchecked")
 	private static void addUniversalRecipes()
 	{
-		FurnaceRecipes.smelting().addSmelting(GCCoreBlocks.decorationBlocks.blockID, 5, new ItemStack(GCCoreItems.basicItem, 1, 3), 0.5F);
-		FurnaceRecipes.smelting().addSmelting(GCCoreBlocks.decorationBlocks.blockID, 6, new ItemStack(GCCoreItems.basicItem, 1, 4), 0.5F);
-		FurnaceRecipes.smelting().addSmelting(GCCoreBlocks.decorationBlocks.blockID, 7, new ItemStack(GCCoreItems.basicItem, 1, 5), 0.5F);
+		FurnaceRecipes.smelting().addSmelting(GCCoreBlocks.basicBlock.blockID, 5, new ItemStack(GCCoreItems.basicItem, 1, 3), 0.5F);
+		FurnaceRecipes.smelting().addSmelting(GCCoreBlocks.basicBlock.blockID, 6, new ItemStack(GCCoreItems.basicItem, 1, 4), 0.5F);
+		FurnaceRecipes.smelting().addSmelting(GCCoreBlocks.basicBlock.blockID, 7, new ItemStack(GCCoreItems.basicItem, 1, 5), 0.5F);
 		FurnaceRecipes.smelting().addSmelting(GCCoreItems.meteorChunk.itemID, 0, new ItemStack(GCCoreItems.meteorChunk.itemID, 1, 1), 0.1F);
 		FurnaceRecipes.smelting().addSmelting(GCCoreItems.meteoricIronRaw.itemID, new ItemStack(GCCoreItems.meteoricIronIngot), 1.0F);
 		FurnaceRecipes.smelting().addSmelting(GCCoreBlocks.blockMoon.blockID, 0, OreDictionary.getOres("ingotCopper").get(0), 1.0F);
@@ -257,17 +257,17 @@ public class GCCoreRecipeManager
 
 		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.parachute, 1, 0), new Object[] { "XXX", "Y Y", " Y ", 'X', GCCoreItems.canvas, 'Y', Item.silk });
 
-		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, 1), new Object[] { "XYX", 'Y', GCCoreBlocks.oxygenPipe, 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4) });
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, 1), new Object[] { "XYX", 'Y', GCCoreBlocks.oxygenPipe, 'X', new ItemStack(GCCoreBlocks.basicBlock, 1, 4) });
 
-		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, 14), new Object[] { "XYX", 'Y', new ItemStack(GCCoreBlocks.aluminumWire, 1, 0), 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4) });
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, 14), new Object[] { "XYX", 'Y', new ItemStack(GCCoreBlocks.aluminumWire, 1, 0), 'X', new ItemStack(GCCoreBlocks.basicBlock, 1, 4) });
 
-		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, 15), new Object[] { "XYX", 'Y', new ItemStack(GCCoreBlocks.aluminumWire, 1, 1), 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4) });
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, 15), new Object[] { "XYX", 'Y', new ItemStack(GCCoreBlocks.aluminumWire, 1, 1), 'X', new ItemStack(GCCoreBlocks.basicBlock, 1, 4) });
 
 		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.oxygenGear), new Object[] { " Y ", "YXY", "Y Y", 'X', GCCoreItems.oxygenConcentrator, 'Y', GCCoreBlocks.oxygenPipe });
 
-		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.decorationBlocks, 4, 3), new Object[] { "   ", " XY", "   ", 'X', new ItemStack(Block.stone, 4, 0), 'Y', "compressedTin" });
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.basicBlock, 4, 3), new Object[] { "   ", " XY", "   ", 'X', new ItemStack(Block.stone, 4, 0), 'Y', "compressedTin" });
 
-		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.decorationBlocks, 4, 4), new Object[] { "   ", " X ", " Y ", 'X', new ItemStack(Block.stone, 4, 0), 'Y', "compressedTin" });
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.basicBlock, 4, 4), new Object[] { "   ", " X ", " Y ", 'X', new ItemStack(Block.stone, 4, 0), 'Y', "compressedTin" });
 
 		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.flag, 1, 16), new Object[] { "XYY", "XYY", "X  ", 'X', GCCoreItems.flagPole, 'Y', GCCoreItems.canvas });
 
@@ -369,17 +369,17 @@ public class GCCoreRecipeManager
 
 		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.wrench), new Object[] { "  Y", " X ", "X  ", 'X', "compressedBronze", 'Y', "compressedSteel" });
 
-		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.decorationBlocks, 1, 9), new Object[] { "XXX", "XXX", "XXX", 'X', "ingotCopper" });
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.basicBlock, 1, 9), new Object[] { "XXX", "XXX", "XXX", 'X', "ingotCopper" });
 
-		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.decorationBlocks, 1, 10), new Object[] { "XXX", "XXX", "XXX", 'X', "ingotTin" });
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.basicBlock, 1, 10), new Object[] { "XXX", "XXX", "XXX", 'X', "ingotTin" });
 
-		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.decorationBlocks, 1, 11), new Object[] { "XXX", "XXX", "XXX", 'X', "ingotAluminum" });
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.basicBlock, 1, 11), new Object[] { "XXX", "XXX", "XXX", 'X', "ingotAluminum" });
 
-		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.basicItem, 9, 3), new Object[] { "X", 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 9) });
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.basicItem, 9, 3), new Object[] { "X", 'X', new ItemStack(GCCoreBlocks.basicBlock, 1, 9) });
 
-		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.basicItem, 9, 4), new Object[] { "X", 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 10) });
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.basicItem, 9, 4), new Object[] { "X", 'X', new ItemStack(GCCoreBlocks.basicBlock, 1, 10) });
 
-		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.basicItem, 9, 5), new Object[] { "X", 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 11) });
+		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.basicItem, 9, 5), new Object[] { "X", 'X', new ItemStack(GCCoreBlocks.basicBlock, 1, 11) });
 
 		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.cheeseBlock, 1), new Object[] { "YYY", "YXY", "YYY", 'X', Item.bucketMilk, 'Y', GCCoreItems.cheeseCurd });
 
@@ -407,12 +407,12 @@ public class GCCoreRecipeManager
 			Object pipePowerStone = clazz.getField("pipePowerStone").get(null);
 			Object pipePowerGold = clazz.getField("pipePowerGold").get(null);
 
-			RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.BC_ITEM_COBBLESTONEPIPE.getMetadata()), new Object[] { "XYX", 'Y', pipeItemsCobblestone, 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4) });
-			RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.BC_ITEM_STONEPIPE.getMetadata()), new Object[] { "XYX", 'Y', pipeItemsStone, 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4) });
-			RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.BC_FLUIDS_COBBLESTONEPIPE.getMetadata()), new Object[] { "XYX", 'Y', pipeFluidsCobblestone, 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4) });
-			RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.BC_FLUIDS_STONEPIPE.getMetadata()), new Object[] { "XYX", 'Y', pipeFluidsStone, 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4) });
-			RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.BC_POWER_STONEPIPE.getMetadata()), new Object[] { "XYX", 'Y', pipePowerStone, 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4) });
-			RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.BC_POWER_GOLDPIPE.getMetadata()), new Object[] { "XYX", 'Y', pipePowerGold, 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4) });
+			RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.BC_ITEM_COBBLESTONEPIPE.getMetadata()), new Object[] { "XYX", 'Y', pipeItemsCobblestone, 'X', new ItemStack(GCCoreBlocks.basicBlock, 1, 4) });
+			RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.BC_ITEM_STONEPIPE.getMetadata()), new Object[] { "XYX", 'Y', pipeItemsStone, 'X', new ItemStack(GCCoreBlocks.basicBlock, 1, 4) });
+			RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.BC_FLUIDS_COBBLESTONEPIPE.getMetadata()), new Object[] { "XYX", 'Y', pipeFluidsCobblestone, 'X', new ItemStack(GCCoreBlocks.basicBlock, 1, 4) });
+			RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.BC_FLUIDS_STONEPIPE.getMetadata()), new Object[] { "XYX", 'Y', pipeFluidsStone, 'X', new ItemStack(GCCoreBlocks.basicBlock, 1, 4) });
+			RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.BC_POWER_STONEPIPE.getMetadata()), new Object[] { "XYX", 'Y', pipePowerStone, 'X', new ItemStack(GCCoreBlocks.basicBlock, 1, 4) });
+			RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.BC_POWER_GOLDPIPE.getMetadata()), new Object[] { "XYX", 'Y', pipePowerGold, 'X', new ItemStack(GCCoreBlocks.basicBlock, 1, 4) });
 
 		}
 		catch (Exception e)
@@ -424,10 +424,10 @@ public class GCCoreRecipeManager
 	private static void addIndustrialCraft2Recipes()
 	{
 
-		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.IC2_GOLD_CABLE.getMetadata()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("insulatedGoldCableItem"), 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4) });
-		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.IC2_HV_CABLE.getMetadata()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("insulatedIronCableItem"), 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4) });
-		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.IC2_GLASS_FIBRE_CABLE.getMetadata()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("glassFiberCableItem"), 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4) });
-		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.IC2_LV_CABLE.getMetadata()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("tinCableItem"), 'X', new ItemStack(GCCoreBlocks.decorationBlocks, 1, 4) });
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.IC2_GOLD_CABLE.getMetadata()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("insulatedGoldCableItem"), 'X', new ItemStack(GCCoreBlocks.basicBlock, 1, 4) });
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.IC2_HV_CABLE.getMetadata()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("insulatedIronCableItem"), 'X', new ItemStack(GCCoreBlocks.basicBlock, 1, 4) });
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.IC2_GLASS_FIBRE_CABLE.getMetadata()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("glassFiberCableItem"), 'X', new ItemStack(GCCoreBlocks.basicBlock, 1, 4) });
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.IC2_LV_CABLE.getMetadata()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("tinCableItem"), 'X', new ItemStack(GCCoreBlocks.basicBlock, 1, 4) });
 
 		try
 		{
