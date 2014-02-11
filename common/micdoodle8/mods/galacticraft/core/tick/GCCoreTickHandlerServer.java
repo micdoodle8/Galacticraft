@@ -52,12 +52,16 @@ public class GCCoreTickHandlerServer implements ITickHandler
 			
 			if (scheduledChanges != null && !scheduledChanges.isEmpty())
 			{
-				for (Iterator<ScheduledBlockChange> it = scheduledChanges.iterator(); it.hasNext(); )
+				for (ScheduledBlockChange change : scheduledChanges)
 				{
-					ScheduledBlockChange change = it.next();
-					world.setBlock(change.getChangePosition().intX(), change.getChangePosition().intY(), change.getChangePosition().intZ(), change.getChangeID(), change.getChangeMeta(), change.getChangeFlag());
-					it.remove();
+					if (change != null && change.getChangePosition() != null)
+					{
+						world.setBlock(change.getChangePosition().intX(), change.getChangePosition().intY(), change.getChangePosition().intZ(), change.getChangeID(), change.getChangeMeta(), change.getChangeFlag());
+					}
 				}
+				
+				scheduledChanges.clear();
+				scheduledBlockChanges.remove(world.provider.dimensionId);
 			}
 
 			if (world.provider instanceof IOrbitDimension)
