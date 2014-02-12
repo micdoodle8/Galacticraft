@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.tick;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -48,7 +47,7 @@ public class GCCoreTickHandlerServer implements ITickHandler
 		{
 			final WorldServer world = (WorldServer) tickData[0];
 
-			List<ScheduledBlockChange> scheduledChanges = scheduledBlockChanges.get(world.provider.dimensionId);
+			List<ScheduledBlockChange> scheduledChanges = new ArrayList<ScheduledBlockChange>(scheduledBlockChanges.get(world.provider.dimensionId));
 			
 			if (scheduledChanges != null && !scheduledChanges.isEmpty())
 			{
@@ -60,7 +59,7 @@ public class GCCoreTickHandlerServer implements ITickHandler
 					}
 				}
 				
-				scheduledChanges.clear();
+				scheduledBlockChanges.get(world.provider.dimensionId).clear();
 				scheduledBlockChanges.remove(world.provider.dimensionId);
 			}
 
