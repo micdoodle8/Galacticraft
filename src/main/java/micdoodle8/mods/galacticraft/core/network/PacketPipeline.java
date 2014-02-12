@@ -138,7 +138,7 @@ public class PacketPipeline extends MessageToMessageCodec<FMLProxyPacket, IPacke
 
 	public void registerPackets()
 	{
-
+		this.registerPacket(PacketOpenExtendedInventory.class);
 	}
 
 	// Method to call from FMLPostInitializationEvent

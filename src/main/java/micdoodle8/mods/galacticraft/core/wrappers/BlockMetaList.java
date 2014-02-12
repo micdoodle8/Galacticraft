@@ -3,6 +3,8 @@ package micdoodle8.mods.galacticraft.core.wrappers;
 import java.util.Arrays;
 import java.util.List;
 
+import net.minecraft.block.Block;
+
 /**
  * BlockMetaList.java
  * 
@@ -14,23 +16,23 @@ import java.util.List;
  */
 public class BlockMetaList
 {
-	private Integer blockID;
+	private Block block;
 	private List<Integer> metaList;
 
-	public BlockMetaList(int blockID, Integer... metadata)
+	public BlockMetaList(Block block, Integer... metadata)
 	{
-		this(blockID, Arrays.asList(metadata));
+		this(block, Arrays.asList(metadata));
 	}
 
-	public BlockMetaList(int blockID, List<Integer> metadata)
+	public BlockMetaList(Block block, List<Integer> metadata)
 	{
-		this.blockID = blockID;
+		this.block = block;
 		this.metaList = metadata;
 	}
 
-	public int getBlockID()
+	public Block getBlock()
 	{
-		return this.blockID;
+		return this.block;
 	}
 
 	public List<Integer> getMetaList()
@@ -51,7 +53,7 @@ public class BlockMetaList
 	@Override
 	public int hashCode()
 	{
-		return this.blockID.hashCode();
+		return this.block.hashCode();
 	}
 
 	@Override
@@ -59,7 +61,7 @@ public class BlockMetaList
 	{
 		if (obj instanceof BlockMetaList)
 		{
-			return ((BlockMetaList) obj).blockID == this.blockID;
+			return ((BlockMetaList) obj).block == this.block;
 		}
 
 		return false;

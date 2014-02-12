@@ -43,7 +43,7 @@ public class GCCoreItemBlockLandingPad extends ItemBlock
 			break;
 		}
 
-		return Block.blocksList[this.getBlockID()].getUnlocalizedName() + "." + name;
+		return Block.blocksList[this.getBlock()].getUnlocalizedName() + "." + name;
 	}
 
 	@Override

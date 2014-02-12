@@ -15,6 +15,8 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import tconstruct.client.tabs.TabRegistry;
+
 /**
  * GCCoreGuiExtendedInventory.java
  *

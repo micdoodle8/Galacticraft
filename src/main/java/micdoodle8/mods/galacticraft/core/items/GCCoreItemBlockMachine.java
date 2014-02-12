@@ -46,7 +46,7 @@ public class GCCoreItemBlockMachine extends ItemBlock
 	{
 		int metadata = 0;
 
-		if (this.getBlockID() == GCCoreBlocks.machineBase.blockID)
+		if (this.getBlock() == GCCoreBlocks.machineBase.blockID)
 		{
 			if (itemstack.getItemDamage() >= GCCoreBlockMachine.COMPRESSOR_METADATA)
 			{
@@ -77,12 +77,12 @@ public class GCCoreItemBlockMachine extends ItemBlock
 			}
 		}
 
-		return Block.blocksList[this.getBlockID()].getUnlocalizedName() + "." + metadata;
+		return Block.blocksList[this.getBlock()].getUnlocalizedName() + "." + metadata;
 	}
 
 	@Override
 	public String getUnlocalizedName()
 	{
-		return Block.blocksList[this.getBlockID()].getUnlocalizedName() + ".0";
+		return Block.blocksList[this.getBlock()].getUnlocalizedName() + ".0";
 	}
 }

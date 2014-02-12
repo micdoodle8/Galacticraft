@@ -82,7 +82,7 @@ public class GCCoreItemBlockEnclosedBlock extends ItemBlock
 			break;
 		}
 
-		return Block.blocksList[this.getBlockID()].getUnlocalizedName() + "." + name;
+		return Block.blocksList[this.getBlock()].getUnlocalizedName() + "." + name;
 	}
 
 	@Override
@@ -142,7 +142,7 @@ public class GCCoreItemBlockEnclosedBlock extends ItemBlock
 			{
 				return false;
 			}
-			else if (j == 255 && Block.blocksList[this.getBlockID()].blockMaterial.isSolid())
+			else if (j == 255 && Block.blocksList[this.getBlock()].blockMaterial.isSolid())
 			{
 				return false;
 			}

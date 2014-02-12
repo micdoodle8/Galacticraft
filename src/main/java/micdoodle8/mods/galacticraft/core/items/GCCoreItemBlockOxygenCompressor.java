@@ -53,12 +53,12 @@ public class GCCoreItemBlockOxygenCompressor extends ItemBlock
 			metadata = 0;
 		}
 
-		return Block.blocksList[this.getBlockID()].getUnlocalizedName() + "." + metadata;
+		return Block.blocksList[this.getBlock()].getUnlocalizedName() + "." + metadata;
 	}
 
 	@Override
 	public String getUnlocalizedName()
 	{
-		return Block.blocksList[this.getBlockID()].getUnlocalizedName() + ".0";
+		return Block.blocksList[this.getBlock()].getUnlocalizedName() + ".0";
 	}
 }

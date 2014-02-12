@@ -25,6 +25,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.container.GuiParachest;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiRefinery;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiRocketRefill;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiSolar;
+import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiExtendedInventory;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiGalaxyMap;
 import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerSP;
@@ -47,6 +48,7 @@ import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerParachest;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRefinery;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRocketRefill;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerSolar;
+import micdoodle8.mods.galacticraft.core.proxy.ClientProxy;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAirLockController;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCargoLoader;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCargoUnloader;
@@ -220,7 +222,7 @@ public class GuiHandler implements IGuiHandler
         }
         else if (ID == GCCoreConfigManager.idGuiExtendedInventory)
         {
-//            return new GuiExtendedInventory(player, ClientProxyCore.dummyInventory); TODO
+            return new GuiExtendedInventory(player, ClientProxy.dummyInventory);
         }
         else if (ID == GCCoreConfigManager.idGuiKnowledgeBook)
         {

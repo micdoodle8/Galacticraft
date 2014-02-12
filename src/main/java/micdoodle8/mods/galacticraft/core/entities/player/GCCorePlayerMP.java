@@ -46,6 +46,7 @@ import net.minecraftforge.common.MinecraftForge;
 import com.mojang.authlib.GameProfile;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 
 /**
@@ -133,9 +134,10 @@ public class GCCorePlayerMP extends EntityPlayerMP
 	{
 		super(server, world, profile, itemInWorldManager);
 
-		if (!GalacticraftCore.playersServer.containsKey(this.username))
+		if (!GalacticraftCore.playersServer.containsKey(this.getGameProfile().getName()))
 		{
-			GalacticraftCore.playersServer.put(this.username, this);
+			FMLLog.info("ADDING PLAYER " + this.getGameProfile().getName());
+			GalacticraftCore.playersServer.put(this.getGameProfile().getName(), this);
 		}
 	}
 
@@ -183,9 +185,9 @@ public class GCCorePlayerMP extends EntityPlayerMP
 	{
 		super.onUpdate();
 
-		if (!GalacticraftCore.playersServer.containsKey(this.username) || this.tick % 360 == 0)
+		if (!GalacticraftCore.playersServer.containsKey(this.getGameProfile().getName()) || this.tick % 360 == 0)
 		{
-			GalacticraftCore.playersServer.put(this.username, this);
+			GalacticraftCore.playersServer.put(this.getGameProfile().getName(), this);
 		}
 
 		if (this.tick >= Long.MAX_VALUE)

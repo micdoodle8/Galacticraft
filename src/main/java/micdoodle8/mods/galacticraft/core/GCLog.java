@@ -1,8 +1,10 @@
 package micdoodle8.mods.galacticraft.core;
 
-import java.util.logging.Level;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
 
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
+
 
 /**
  * GCLog.java
@@ -15,13 +17,13 @@ import cpw.mods.fml.relauncher.FMLRelaunchLog;
  */
 public class GCLog
 {
-	public static void info(String message)
+	public static void info(String message, Object... data)
 	{
-		FMLRelaunchLog.log("Galacticraft", Level.INFO, message);
+        LogManager.getLogger("Galacticraft").log(Level.INFO, String.format(message, data));
 	}
 
-	public static void severe(String message)
+	public static void severe(String message, Object... data)
 	{
-		FMLRelaunchLog.log("Galacticraft", Level.SEVERE, message);
+        LogManager.getLogger("Galacticraft").log(Level.ERROR, String.format(message, data));
 	}
 }

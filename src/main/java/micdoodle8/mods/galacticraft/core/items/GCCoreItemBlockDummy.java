@@ -31,7 +31,7 @@ public class GCCoreItemBlockDummy extends ItemBlock
 	@SideOnly(Side.CLIENT)
 	public Icon getIconFromDamage(int par1)
 	{
-		return Block.blocksList[this.getBlockID()].getIcon(0, par1);
+		return Block.blocksList[this.getBlock()].getIcon(0, par1);
 	}
 
 	@Override
@@ -75,12 +75,12 @@ public class GCCoreItemBlockDummy extends ItemBlock
 			break;
 		}
 
-		return Block.blocksList[this.getBlockID()].getUnlocalizedName() + "." + blockName;
+		return Block.blocksList[this.getBlock()].getUnlocalizedName() + "." + blockName;
 	}
 
 	@Override
 	public String getUnlocalizedName()
 	{
-		return Block.blocksList[this.getBlockID()].getUnlocalizedName() + ".0";
+		return Block.blocksList[this.getBlock()].getUnlocalizedName() + ".0";
 	}
 }

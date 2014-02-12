@@ -11,7 +11,6 @@ import micdoodle8.mods.galacticraft.core.network.PacketGuiElement;
 import micdoodle8.mods.galacticraft.core.network.PacketGuiElementString;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAirLockController;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;

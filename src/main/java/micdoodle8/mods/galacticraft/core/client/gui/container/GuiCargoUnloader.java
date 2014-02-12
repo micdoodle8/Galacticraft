@@ -11,7 +11,6 @@ import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerCargoLoader;
 import micdoodle8.mods.galacticraft.core.network.PacketDisableTile;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCargoUnloader;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
-import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;

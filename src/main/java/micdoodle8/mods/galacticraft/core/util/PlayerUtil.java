@@ -62,13 +62,13 @@ public class PlayerUtil
 		{
 			final Map.Entry<String, GCCorePlayerMP> entry = it.next();
 
-			if (entry.getKey().equals(player.username))
+			if (entry.getKey().equals(player.getGameProfile().getName()))
 			{
 				return entry.getValue();
 			}
 		}
 
-		GCLog.severe("Warning: Could not find player base server instance for player " + player.username);
+		GCLog.severe("Warning: Could not find player base server instance for player " + player.getGameProfile().getName());
 
 		return null;
 	}
@@ -91,13 +91,13 @@ public class PlayerUtil
 		{
 			final Map.Entry<String, GCCorePlayerSP> entry = it.next();
 
-			if (entry.getKey() != null && entry.getKey().equals(player.username))
+			if (entry.getKey() != null && entry.getKey().equals(player.getGameProfile().getName()))
 			{
 				return entry.getValue();
 			}
 		}
 
-		GCLog.severe("Warning: Could not find player base client instance for player " + player.username);
+		GCLog.severe("Warning: Could not find player base client instance for player " + player.getGameProfile().getName());
 
 		return null;
 	}

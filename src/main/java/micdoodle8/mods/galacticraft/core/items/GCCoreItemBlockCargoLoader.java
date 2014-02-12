@@ -39,7 +39,7 @@ public class GCCoreItemBlockCargoLoader extends ItemBlock
 			name = "unloader";
 		}
 
-		return Block.blocksList[this.getBlockID()].getUnlocalizedName() + "." + name;
+		return Block.blocksList[this.getBlock()].getUnlocalizedName() + "." + name;
 	}
 
 	@Override

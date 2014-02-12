@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.network;
 
 import io.netty.buffer.ByteBuf;
 
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Collection;
 

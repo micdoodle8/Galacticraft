@@ -76,12 +76,12 @@ public class GCCoreItemBlockBase extends ItemBlock
 			name = "null";
 		}
 
-		return Block.blocksList[this.getBlockID()].getUnlocalizedName() + "." + name;
+		return Block.blocksList[this.getBlock()].getUnlocalizedName() + "." + name;
 	}
 
 	@Override
 	public String getUnlocalizedName()
 	{
-		return Block.blocksList[this.getBlockID()].getUnlocalizedName() + ".0";
+		return Block.blocksList[this.getBlock()].getUnlocalizedName() + ".0";
 	}
 }

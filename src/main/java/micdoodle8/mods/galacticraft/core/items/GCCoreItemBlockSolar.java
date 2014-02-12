@@ -33,7 +33,7 @@ public class GCCoreItemBlockSolar extends ItemBlock
 
 		String name = GCCoreBlockSolar.names[index];
 
-		return Block.blocksList[this.getBlockID()].getUnlocalizedName() + "." + name;
+		return Block.blocksList[this.getBlock()].getUnlocalizedName() + "." + name;
 	}
 
 	@Override
