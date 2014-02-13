@@ -1,16 +1,16 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import javax.swing.Icon;
-
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFuelLoader;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -28,18 +28,18 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreBlockFuelLoader extends GCCoreBlockAdvancedTile
 {
-	private Icon iconMachineSide;
-	private Icon iconInput;
-	private Icon iconFront;
-	private Icon iconFuelInput;
+	private IIcon iconMachineSide;
+	private IIcon iconInput;
+	private IIcon iconFront;
+	private IIcon iconFuelInput;
 
-	public GCCoreBlockFuelLoader(int id, String assetName)
+	public GCCoreBlockFuelLoader(String assetName)
 	{
-		super(id, Material.rock);
+		super(Material.rock);
 		this.setHardness(1.0F);
-		this.setStepSound(Block.soundMetalFootstep);
-		this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
-		this.setUnlocalizedName(assetName);
+		this.setStepSound(Block.soundTypeMetal);
+		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setBlockName(assetName);
 	}
 
 	@Override
@@ -51,12 +51,12 @@ public class GCCoreBlockFuelLoader extends GCCoreBlockAdvancedTile
 	@Override
 	public int getRenderType()
 	{
-		return GalacticraftCore.proxy.getBlockRenderID(this.blockID);
+		return GalacticraftCore.proxy.getBlockRenderID(this);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
 		this.iconInput = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_input");
 		this.iconMachineSide = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_blank");
@@ -78,7 +78,7 @@ public class GCCoreBlockFuelLoader extends GCCoreBlockAdvancedTile
 	}
 
 	@Override
-	public Icon getIcon(int side, int metadata)
+	public IIcon getIcon(int side, int metadata)
 	{
 		if (side == 0 || side == 1)
 		{
@@ -155,9 +155,9 @@ public class GCCoreBlockFuelLoader extends GCCoreBlockAdvancedTile
 		{
 			for (int dZ = -2; dZ < 3; dZ++)
 			{
-				final int id = world.getBlockId(x + dX, y, z + dZ);
+				Block block = world.getBlock(x + dX, y, z + dZ);
 
-				if (id == GCCoreBlocks.landingPadFull.blockID)
+				if (block == GCCoreBlocks.landingPadFull)
 				{
 					world.markBlockForUpdate(x + dX, y, z + dZ);
 				}
@@ -174,9 +174,9 @@ public class GCCoreBlockFuelLoader extends GCCoreBlockAdvancedTile
 		{
 			for (int dZ = -2; dZ < 3; dZ++)
 			{
-				final int id = world.getBlockId(x + dX, y, z + dZ);
+				Block block = world.getBlock(x + dX, y, z + dZ);
 
-				if (id == GCCoreBlocks.landingPadFull.blockID)
+				if (block == GCCoreBlocks.landingPadFull)
 				{
 					world.markBlockForUpdate(x + dX, y, z + dZ);
 				}

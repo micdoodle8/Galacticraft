@@ -5,6 +5,7 @@ import java.util.List;
 import javax.swing.Icon;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.proxy.ClientProxy;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -44,7 +45,7 @@ public class GCCoreItemFuelCanister extends Item
 	@SideOnly(Side.CLIENT)
 	public EnumRarity getRarity(ItemStack par1ItemStack)
 	{
-		return ClientProxyCore.galacticraftItem;
+		return ClientProxy.galacticraftItem;
 	}
 
 	@Override

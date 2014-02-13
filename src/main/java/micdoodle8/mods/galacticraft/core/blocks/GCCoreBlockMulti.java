@@ -2,15 +2,15 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.List;
 
-import javax.swing.Icon;
-
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -30,22 +30,22 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreBlockMulti extends BlockMulti implements IPartialSealableBlock
 {
-	Icon[] fakeIcons;
+	IIcon[] fakeIcons;
 
-	public GCCoreBlockMulti(int id, String assetName)
+	public GCCoreBlockMulti(String assetName)
 	{
-		super(id);
-		this.setStepSound(Block.soundMetalFootstep);
-		this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
-		this.setUnlocalizedName(assetName);
+		super();
+		this.setStepSound(Block.soundTypeMetal);
+		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setBlockName(assetName);
 		this.setResistance(1000000000000000.0F);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
-		this.fakeIcons = new Icon[4];
+		this.fakeIcons = new IIcon[4];
 		this.fakeIcons[0] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "launch_pad");
 		this.fakeIcons[1] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "workbench_nasa_top");
 		this.fakeIcons[2] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "solar_basic_0");
@@ -72,7 +72,7 @@ public class GCCoreBlockMulti extends BlockMulti implements IPartialSealableBloc
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getIcon(int par1, int par2)
+	public IIcon getIcon(int par1, int par2)
 	{
 		switch (par2)
 		{
@@ -155,8 +155,8 @@ public class GCCoreBlockMulti extends BlockMulti implements IPartialSealableBloc
 
 	public void makeFakeBlock(World worldObj, Vector3 position, Vector3 mainBlock, int meta)
 	{
-		worldObj.setBlock(position.intX(), position.intY(), position.intZ(), this.blockID, meta, 3);
-		((TileEntityMulti) worldObj.getBlockTileEntity(position.intX(), position.intY(), position.intZ())).setMainBlock(mainBlock);
+		worldObj.setBlock(position.intX(), position.intY(), position.intZ(), this, meta, 3);
+		((TileEntityMulti) worldObj.getTileEntity(position.intX(), position.intY(), position.intZ())).setMainBlock(mainBlock);
 	}
 
 	@Override

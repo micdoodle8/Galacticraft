@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import micdoodle8.mods.galacticraft.core.proxy.ClientProxy;
 import net.minecraft.block.Block;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemBlock;
@@ -18,9 +19,9 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreItemBlockBase extends ItemBlock
 {
-	public GCCoreItemBlockBase(int i)
+	public GCCoreItemBlockBase(Block block)
 	{
-		super(i);
+		super(block);
 		this.setMaxDamage(0);
 		this.setHasSubtypes(true);
 	}
@@ -35,7 +36,7 @@ public class GCCoreItemBlockBase extends ItemBlock
 	@SideOnly(Side.CLIENT)
 	public EnumRarity getRarity(ItemStack par1ItemStack)
 	{
-		return ClientProxyCore.galacticraftItem;
+		return ClientProxy.galacticraftItem;
 	}
 
 	@Override
@@ -76,12 +77,12 @@ public class GCCoreItemBlockBase extends ItemBlock
 			name = "null";
 		}
 
-		return Block.blocksList[this.getBlock()].getUnlocalizedName() + "." + name;
+		return this.field_150939_a.getUnlocalizedName() + "." + name;
 	}
 
 	@Override
 	public String getUnlocalizedName()
 	{
-		return Block.blocksList[this.getBlock()].getUnlocalizedName() + ".0";
+		return this.field_150939_a.getUnlocalizedName() + ".0";
 	}
 }

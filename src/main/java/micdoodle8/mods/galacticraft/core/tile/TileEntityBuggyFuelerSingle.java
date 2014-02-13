@@ -46,7 +46,7 @@ public class TileEntityBuggyFuelerSingle extends TileEntity
 			}
 
 			this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, GCCoreBlocks.landingPadFull.blockID, 1, 3);
-			final TileEntityBuggyFueler tile = (TileEntityBuggyFueler) this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord);
+			final TileEntityBuggyFueler tile = (TileEntityBuggyFueler) this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord);
 
 			if (tile instanceof IMultiBlock)
 			{

@@ -2,8 +2,6 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.List;
 
-import javax.swing.Icon;
-
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -13,13 +11,16 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
@@ -38,16 +39,16 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreBlockAdvancedCraftingTable extends BlockContainer implements ITileEntityProvider
 {
-	Icon[] iconBuffer;
+	IIcon[] iconBuffer;
 
-	public GCCoreBlockAdvancedCraftingTable(int id, String assetName)
+	public GCCoreBlockAdvancedCraftingTable(String assetName)
 	{
-		super(id, Material.iron);
+		super(Material.iron);
 		this.setBlockBounds(-0.3F, 0.0F, -0.3F, 1.3F, 0.5F, 1.3F);
 		this.setHardness(2.5F);
-		this.setStepSound(Block.soundMetalFootstep);
-		this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
-		this.setUnlocalizedName(assetName);
+		this.setStepSound(Block.soundTypeMetal);
+		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setBlockName(assetName);
 	}
 
 	@Override
@@ -57,9 +58,9 @@ public class GCCoreBlockAdvancedCraftingTable extends BlockContainer implements 
 	}
 
 	@Override
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
-		this.iconBuffer = new Icon[2];
+		this.iconBuffer = new IIcon[2];
 		this.iconBuffer[0] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "workbench_nasa_side");
 		this.iconBuffer[1] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "workbench_nasa_top");
 	}
@@ -67,7 +68,7 @@ public class GCCoreBlockAdvancedCraftingTable extends BlockContainer implements 
 	@Override
 	public int getRenderType()
 	{
-		return GalacticraftCore.proxy.getBlockRenderID(this.blockID);
+		return GalacticraftCore.proxy.getBlockRenderID(this);
 	}
 
 	@Override
@@ -126,9 +127,9 @@ public class GCCoreBlockAdvancedCraftingTable extends BlockContainer implements 
 			{
 				for (int k = par4 - 1; k <= par4 + 1; k++)
 				{
-					final int var5 = par1World.getBlockId(i, j, k);
+					Block var5 = par1World.getBlock(i, j, k);
 
-					if (Block.blocksList[var5] != null && !Block.blocksList[var5].blockMaterial.isReplaceable())
+					if (var5 != Blocks.air && !var5.getMaterial().isReplaceable())
 					{
 						canPlace = false;
 					}
@@ -142,7 +143,7 @@ public class GCCoreBlockAdvancedCraftingTable extends BlockContainer implements 
 	@Override
 	public void onBlockPlacedBy(World var1, int var2, int var3, int var4, EntityLivingBase var5, ItemStack var6)
 	{
-		final TileEntity var8 = var1.getBlockTileEntity(var2, var3, var4);
+		TileEntity var8 = var1.getTileEntity(var2, var3, var4);
 
 		if (var8 instanceof IMultiBlock)
 		{
@@ -153,9 +154,9 @@ public class GCCoreBlockAdvancedCraftingTable extends BlockContainer implements 
 	}
 
 	@Override
-	public void breakBlock(World var1, int var2, int var3, int var4, int var5, int var6)
+	public void breakBlock(World var1, int var2, int var3, int var4, Block var5, int var6)
 	{
-		final TileEntity var9 = var1.getBlockTileEntity(var2, var3, var4);
+		final TileEntity var9 = var1.getTileEntity(var2, var3, var4);
 
 		if (var9 instanceof IMultiBlock)
 		{
@@ -166,7 +167,7 @@ public class GCCoreBlockAdvancedCraftingTable extends BlockContainer implements 
 	}
 
 	@Override
-	public Icon getIcon(int par1, int par2)
+	public IIcon getIcon(int par1, int par2)
 	{
 		return par1 == 1 ? this.iconBuffer[1] : this.iconBuffer[0];
 	}
@@ -185,7 +186,7 @@ public class GCCoreBlockAdvancedCraftingTable extends BlockContainer implements 
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World var1)
+	public TileEntity createNewTileEntity(World var1, int metadata)
 	{
 		return new TileEntityAdvancedCraftingTable();
 	}

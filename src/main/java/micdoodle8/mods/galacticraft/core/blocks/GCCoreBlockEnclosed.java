@@ -4,8 +4,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import javax.swing.Icon;
-
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.core.GCCoreCompatibilityManager;
@@ -16,9 +14,12 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
@@ -35,7 +36,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSealableBlock, ITileEntityProvider
 {
-	private Icon[] enclosedIcons;
+	private IIcon[] enclosedIcons;
 
 	public enum EnumEnclosedBlock
 	{
@@ -115,20 +116,20 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeala
 		return null;
 	}
 
-	public GCCoreBlockEnclosed(int id, String assetName)
+	public GCCoreBlockEnclosed(String assetName)
 	{
-		super(id, Material.cloth);
+		super(Material.cloth);
 		this.setResistance(0.2F);
 		this.setHardness(0.4f);
-		this.setStepSound(Block.soundStoneFootstep);
-		this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
-		this.setUnlocalizedName(assetName);
+		this.setStepSound(Block.soundTypeStone);
+		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setBlockName(assetName);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@SideOnly(Side.CLIENT)
 	@Override
-	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
 		par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.ALUMINUM_WIRE.getMetadata()));
 		par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.ALUMINUM_WIRE_HEAVY.getMetadata()));
@@ -172,7 +173,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeala
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getIcon(int par1, int par2)
+	public IIcon getIcon(int par1, int par2)
 	{
 		return par2 >= this.enclosedIcons.length ? this.blockIcon : this.enclosedIcons[par2];
 	}
@@ -184,9 +185,9 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeala
 	}
 
 	@Override
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
-		this.enclosedIcons = new Icon[16];
+		this.enclosedIcons = new IIcon[16];
 
 		for (int i = 0; i < EnumEnclosedBlock.values().length; i++)
 		{
@@ -202,7 +203,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeala
 		super.onBlockAdded(world, x, y, z);
 
 		int metadata = world.getBlockMetadata(x, y, z);
-		final TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+		final TileEntity tileEntity = world.getTileEntity(x, y, z);
 
 		if (metadata == EnumEnclosedBlock.TE_CONDUIT.getMetadata())
 		{
@@ -262,12 +263,12 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeala
 	}
 
 	@Override
-	public void onNeighborBlockChange(World world, int x, int y, int z, int blockID)
+	public void onNeighborBlockChange(World world, int x, int y, int z, Block block)
 	{
-		super.onNeighborBlockChange(world, x, y, z, blockID);
+		super.onNeighborBlockChange(world, x, y, z, block);
 
 		int metadata = world.getBlockMetadata(x, y, z);
-		final TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+		final TileEntity tileEntity = world.getTileEntity(x, y, z);
 
 		if (metadata == EnumEnclosedBlock.TE_CONDUIT.getMetadata())
 		{
@@ -365,7 +366,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeala
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World var1)
+	public TileEntity createNewTileEntity(World var1, int metadata)
 	{
 		return null;
 	}

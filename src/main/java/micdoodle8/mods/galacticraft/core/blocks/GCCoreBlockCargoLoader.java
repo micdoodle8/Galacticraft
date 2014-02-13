@@ -2,18 +2,19 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.List;
 
-import javax.swing.Icon;
-
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCargoLoader;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCargoUnloader;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -31,35 +32,35 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreBlockCargoLoader extends GCCoreBlockAdvancedTile
 {
-	private Icon iconMachineSide;
-	private Icon iconInput;
-	private Icon iconFrontLoader;
-	private Icon iconFrontUnloader;
-	private Icon iconItemInput;
-	private Icon iconItemOutput;
+	private IIcon iconMachineSide;
+	private IIcon iconInput;
+	private IIcon iconFrontLoader;
+	private IIcon iconFrontUnloader;
+	private IIcon iconItemInput;
+	private IIcon iconItemOutput;
 
 	public static int METADATA_CARGO_LOADER = 0;
 	public static int METADATA_CARGO_UNLOADER = 4;
 
-	public GCCoreBlockCargoLoader(int id, String assetName)
+	public GCCoreBlockCargoLoader(String assetName)
 	{
-		super(id, Material.rock);
+		super(Material.rock);
 		this.setHardness(1.0F);
-		this.setStepSound(Block.soundMetalFootstep);
-		this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
-		this.setUnlocalizedName(assetName);
+		this.setStepSound(Block.soundTypeMetal);
+		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setBlockName(assetName);
 	}
 
 	@Override
 	public int getRenderType()
 	{
-		return GalacticraftCore.proxy.getBlockRenderID(this.blockID);
+		return GalacticraftCore.proxy.getBlockRenderID(this);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@SideOnly(Side.CLIENT)
 	@Override
-	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
 		par3List.add(new ItemStack(par1, 1, GCCoreBlockCargoLoader.METADATA_CARGO_LOADER));
 		par3List.add(new ItemStack(par1, 1, GCCoreBlockCargoLoader.METADATA_CARGO_UNLOADER));
@@ -76,7 +77,7 @@ public class GCCoreBlockCargoLoader extends GCCoreBlockAdvancedTile
 	{
 		super.onBlockAdded(world, x, y, z);
 
-		TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+		TileEntity tileEntity = world.getTileEntity(x, y, z);
 
 		if (tileEntity != null)
 		{
@@ -93,7 +94,7 @@ public class GCCoreBlockCargoLoader extends GCCoreBlockAdvancedTile
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
 		this.iconInput = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_input");
 		this.iconMachineSide = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_blank");
@@ -111,7 +112,7 @@ public class GCCoreBlockCargoLoader extends GCCoreBlockAdvancedTile
 	}
 
 	@Override
-	public Icon getIcon(int side, int metadata)
+	public IIcon getIcon(int side, int metadata)
 	{
 		int shiftedMeta = metadata;
 
@@ -249,9 +250,9 @@ public class GCCoreBlockCargoLoader extends GCCoreBlockAdvancedTile
 		{
 			for (int dZ = -2; dZ < 3; dZ++)
 			{
-				final int id = world.getBlockId(x + dX, y, z + dZ);
+				Block block = world.getBlock(x + dX, y, z + dZ);
 
-				if (id == GCCoreBlocks.landingPadFull.blockID)
+				if (block == GCCoreBlocks.landingPadFull)
 				{
 					world.markBlockForUpdate(x + dX, y, z + dZ);
 				}
@@ -268,9 +269,9 @@ public class GCCoreBlockCargoLoader extends GCCoreBlockAdvancedTile
 		{
 			for (int dZ = -2; dZ < 3; dZ++)
 			{
-				final int id = world.getBlockId(x + dX, y, z + dZ);
+				Block block = world.getBlock(x + dX, y, z + dZ);
 
-				if (id == GCCoreBlocks.landingPadFull.blockID)
+				if (block == GCCoreBlocks.landingPadFull)
 				{
 					world.markBlockForUpdate(x + dX, y, z + dZ);
 				}

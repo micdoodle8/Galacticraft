@@ -9,6 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -39,18 +40,18 @@ public class GCCoreBlockT1TreasureChest extends BlockContainer implements ITileE
 {
 	private final Random random = new Random();
 
-	protected GCCoreBlockT1TreasureChest(int id, String assetName)
+	protected GCCoreBlockT1TreasureChest(String assetName)
 	{
-		super(id, Material.rock);
+		super(Material.rock);
 		this.setResistance(10.0F);
-		this.setStepSound(Block.soundStoneFootstep);
-		this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
-		this.setUnlocalizedName(assetName);
+		this.setStepSound(Block.soundTypeStone);
+		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setBlockName(assetName);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
 		this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "treasure_front_single");
 	}
@@ -82,7 +83,7 @@ public class GCCoreBlockT1TreasureChest extends BlockContainer implements ITileE
 	@Override
 	public int getRenderType()
 	{
-		return GalacticraftCore.proxy.getBlockRenderID(this.blockID);
+		return GalacticraftCore.proxy.getBlockRenderID(this);
 	}
 
 	@Override
@@ -90,27 +91,27 @@ public class GCCoreBlockT1TreasureChest extends BlockContainer implements ITileE
 	{
 		super.onBlockAdded(par1World, par2, par3, par4);
 		this.unifyAdjacentChests(par1World, par2, par3, par4);
-		final int var5 = par1World.getBlockId(par2, par3, par4 - 1);
-		final int var6 = par1World.getBlockId(par2, par3, par4 + 1);
-		final int var7 = par1World.getBlockId(par2 - 1, par3, par4);
-		final int var8 = par1World.getBlockId(par2 + 1, par3, par4);
+		Block var5 = par1World.getBlock(par2, par3, par4 - 1);
+		Block var6 = par1World.getBlock(par2, par3, par4 + 1);
+		Block var7 = par1World.getBlock(par2 - 1, par3, par4);
+		Block var8 = par1World.getBlock(par2 + 1, par3, par4);
 
-		if (var5 == this.blockID)
+		if (var5 == this)
 		{
 			this.unifyAdjacentChests(par1World, par2, par3, par4 - 1);
 		}
 
-		if (var6 == this.blockID)
+		if (var6 == this)
 		{
 			this.unifyAdjacentChests(par1World, par2, par3, par4 + 1);
 		}
 
-		if (var7 == this.blockID)
+		if (var7 == this)
 		{
 			this.unifyAdjacentChests(par1World, par2 - 1, par3, par4);
 		}
 
-		if (var8 == this.blockID)
+		if (var8 == this)
 		{
 			this.unifyAdjacentChests(par1World, par2 + 1, par3, par4);
 		}
@@ -119,12 +120,12 @@ public class GCCoreBlockT1TreasureChest extends BlockContainer implements ITileE
 	@Override
 	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLiving, ItemStack stack)
 	{
-		final int var6 = par1World.getBlockId(par2, par3, par4 - 1);
-		final int var7 = par1World.getBlockId(par2, par3, par4 + 1);
-		final int var8 = par1World.getBlockId(par2 - 1, par3, par4);
-		final int var9 = par1World.getBlockId(par2 + 1, par3, par4);
+		Block var6 = par1World.getBlock(par2, par3, par4 - 1);
+		Block var7 = par1World.getBlock(par2, par3, par4 + 1);
+		Block var8 = par1World.getBlock(par2 - 1, par3, par4);
+		Block var9 = par1World.getBlock(par2 + 1, par3, par4);
 		byte var10 = 0;
-		final int var11 = MathHelper.floor_double(par5EntityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+		int var11 = MathHelper.floor_double(par5EntityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
 
 		if (var11 == 0)
 		{
@@ -146,15 +147,15 @@ public class GCCoreBlockT1TreasureChest extends BlockContainer implements ITileE
 			var10 = 4;
 		}
 
-		if (var6 != this.blockID && var7 != this.blockID && var8 != this.blockID && var9 != this.blockID)
+		if (var6 != this && var7 != this && var8 != this && var9 != this)
 		{
 			par1World.setBlockMetadataWithNotify(par2, par3, par4, var10, 3);
 		}
 		else
 		{
-			if ((var6 == this.blockID || var7 == this.blockID) && (var10 == 4 || var10 == 5))
+			if ((var6 == this || var7 == this) && (var10 == 4 || var10 == 5))
 			{
-				if (var6 == this.blockID)
+				if (var6 == this)
 				{
 					par1World.setBlockMetadataWithNotify(par2, par3, par4 - 1, var10, 3);
 				}
@@ -166,9 +167,9 @@ public class GCCoreBlockT1TreasureChest extends BlockContainer implements ITileE
 				par1World.setBlockMetadataWithNotify(par2, par3, par4, var10, 3);
 			}
 
-			if ((var8 == this.blockID || var9 == this.blockID) && (var10 == 2 || var10 == 3))
+			if ((var8 == this || var9 == this) && (var10 == 2 || var10 == 3))
 			{
-				if (var8 == this.blockID)
+				if (var8 == this)
 				{
 					par1World.setBlockMetadataWithNotify(par2 - 1, par3, par4, var10, 3);
 				}
@@ -186,47 +187,47 @@ public class GCCoreBlockT1TreasureChest extends BlockContainer implements ITileE
 	{
 		if (!par1World.isRemote)
 		{
-			final int var5 = par1World.getBlockId(par2, par3, par4 - 1);
-			final int var6 = par1World.getBlockId(par2, par3, par4 + 1);
-			final int var7 = par1World.getBlockId(par2 - 1, par3, par4);
-			final int var8 = par1World.getBlockId(par2 + 1, par3, par4);
-			int var10;
-			int var11;
+			Block var5 = par1World.getBlock(par2, par3, par4 - 1);
+			Block var6 = par1World.getBlock(par2, par3, par4 + 1);
+			Block var7 = par1World.getBlock(par2 - 1, par3, par4);
+			Block var8 = par1World.getBlock(par2 + 1, par3, par4);
+			Block var10;
+			Block var11;
 			byte var13;
 			int var14;
 
-			if (var5 != this.blockID && var6 != this.blockID)
+			if (var5 != this && var6 != this)
 			{
-				if (var7 != this.blockID && var8 != this.blockID)
+				if (var7 != this && var8 != this)
 				{
 					var13 = 3;
 
-					if (Block.opaqueCubeLookup[var5] && !Block.opaqueCubeLookup[var6])
+					if (var5.func_149730_j() && !var6.func_149730_j())
 					{
 						var13 = 3;
 					}
 
-					if (Block.opaqueCubeLookup[var6] && !Block.opaqueCubeLookup[var5])
+					if (var6.func_149730_j() && !var5.func_149730_j())
 					{
 						var13 = 2;
 					}
 
-					if (Block.opaqueCubeLookup[var7] && !Block.opaqueCubeLookup[var8])
+					if (var7.func_149730_j() && !var8.func_149730_j())
 					{
 						var13 = 5;
 					}
 
-					if (Block.opaqueCubeLookup[var8] && !Block.opaqueCubeLookup[var7])
+					if (var8.func_149730_j() && !var7.func_149730_j())
 					{
 						var13 = 4;
 					}
 				}
 				else
 				{
-					var10 = par1World.getBlockId(var7 == this.blockID ? par2 - 1 : par2 + 1, par3, par4 - 1);
-					var11 = par1World.getBlockId(var7 == this.blockID ? par2 - 1 : par2 + 1, par3, par4 + 1);
+					var10 = par1World.getBlock(var7 == this ? par2 - 1 : par2 + 1, par3, par4 - 1);
+					var11 = par1World.getBlock(var7 == this ? par2 - 1 : par2 + 1, par3, par4 + 1);
 					var13 = 3;
-					if (var7 == this.blockID)
+					if (var7 == this)
 					{
 						var14 = par1World.getBlockMetadata(par2 - 1, par3, par4);
 					}
@@ -240,12 +241,12 @@ public class GCCoreBlockT1TreasureChest extends BlockContainer implements ITileE
 						var13 = 2;
 					}
 
-					if ((Block.opaqueCubeLookup[var5] || Block.opaqueCubeLookup[var10]) && !Block.opaqueCubeLookup[var6] && !Block.opaqueCubeLookup[var11])
+					if ((var5.func_149730_j() || var10.func_149730_j()) && !var6.func_149730_j() && !var11.func_149730_j())
 					{
 						var13 = 3;
 					}
 
-					if ((Block.opaqueCubeLookup[var6] || Block.opaqueCubeLookup[var11]) && !Block.opaqueCubeLookup[var5] && !Block.opaqueCubeLookup[var10])
+					if ((var6.func_149730_j() || var11.func_149730_j()) && !var5.func_149730_j() && !var10.func_149730_j())
 					{
 						var13 = 2;
 					}
@@ -253,10 +254,10 @@ public class GCCoreBlockT1TreasureChest extends BlockContainer implements ITileE
 			}
 			else
 			{
-				var10 = par1World.getBlockId(par2 - 1, par3, var5 == this.blockID ? par4 - 1 : par4 + 1);
-				var11 = par1World.getBlockId(par2 + 1, par3, var5 == this.blockID ? par4 - 1 : par4 + 1);
+				var10 = par1World.getBlock(par2 - 1, par3, var5 == this ? par4 - 1 : par4 + 1);
+				var11 = par1World.getBlock(par2 + 1, par3, var5 == this ? par4 - 1 : par4 + 1);
 				var13 = 5;
-				if (var5 == this.blockID)
+				if (var5 == this)
 				{
 					var14 = par1World.getBlockMetadata(par2, par3, par4 - 1);
 				}
@@ -270,12 +271,12 @@ public class GCCoreBlockT1TreasureChest extends BlockContainer implements ITileE
 					var13 = 4;
 				}
 
-				if ((Block.opaqueCubeLookup[var7] || Block.opaqueCubeLookup[var10]) && !Block.opaqueCubeLookup[var8] && !Block.opaqueCubeLookup[var11])
+				if ((var7.func_149730_j() || var10.func_149730_j()) && !var8.func_149730_j() && !var11.func_149730_j())
 				{
 					var13 = 5;
 				}
 
-				if ((Block.opaqueCubeLookup[var8] || Block.opaqueCubeLookup[var11]) && !Block.opaqueCubeLookup[var7] && !Block.opaqueCubeLookup[var10])
+				if ((var8.func_149730_j() || var11.func_149730_j()) && !var7.func_149730_j() && !var10.func_149730_j())
 				{
 					var13 = 4;
 				}
@@ -290,22 +291,22 @@ public class GCCoreBlockT1TreasureChest extends BlockContainer implements ITileE
 	{
 		int var5 = 0;
 
-		if (par1World.getBlockId(par2 - 1, par3, par4) == this.blockID)
+		if (par1World.getBlock(par2 - 1, par3, par4) == this)
 		{
 			++var5;
 		}
 
-		if (par1World.getBlockId(par2 + 1, par3, par4) == this.blockID)
+		if (par1World.getBlock(par2 + 1, par3, par4) == this)
 		{
 			++var5;
 		}
 
-		if (par1World.getBlockId(par2, par3, par4 - 1) == this.blockID)
+		if (par1World.getBlock(par2, par3, par4 - 1) == this)
 		{
 			++var5;
 		}
 
-		if (par1World.getBlockId(par2, par3, par4 + 1) == this.blockID)
+		if (par1World.getBlock(par2, par3, par4 + 1) == this)
 		{
 			++var5;
 		}
@@ -315,14 +316,14 @@ public class GCCoreBlockT1TreasureChest extends BlockContainer implements ITileE
 
 	private boolean isThereANeighborChest(World par1World, int par2, int par3, int par4)
 	{
-		return par1World.getBlockId(par2, par3, par4) != this.blockID ? false : par1World.getBlockId(par2 - 1, par3, par4) == this.blockID ? true : par1World.getBlockId(par2 + 1, par3, par4) == this.blockID ? true : par1World.getBlockId(par2, par3, par4 - 1) == this.blockID ? true : par1World.getBlockId(par2, par3, par4 + 1) == this.blockID;
+		return par1World.getBlock(par2, par3, par4) != this ? false : par1World.getBlock(par2 - 1, par3, par4) == this ? true : par1World.getBlock(par2 + 1, par3, par4) == this ? true : par1World.getBlock(par2, par3, par4 - 1) == this ? true : par1World.getBlock(par2, par3, par4 + 1) == this;
 	}
 
 	@Override
-	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
+	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block par5)
 	{
 		super.onNeighborBlockChange(par1World, par2, par3, par4, par5);
-		final TileEntityTreasureChest var6 = (TileEntityTreasureChest) par1World.getBlockTileEntity(par2, par3, par4);
+		final TileEntityTreasureChest var6 = (TileEntityTreasureChest) par1World.getTileEntity(par2, par3, par4);
 
 		if (var6 != null)
 		{
@@ -331,9 +332,9 @@ public class GCCoreBlockT1TreasureChest extends BlockContainer implements ITileE
 	}
 
 	@Override
-	public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
+	public void breakBlock(World par1World, int par2, int par3, int par4, Block par5, int par6)
 	{
-		final TileEntityTreasureChest var7 = (TileEntityTreasureChest) par1World.getBlockTileEntity(par2, par3, par4);
+		final TileEntityTreasureChest var7 = (TileEntityTreasureChest) par1World.getTileEntity(par2, par3, par4);
 
 		if (var7 != null)
 		{
@@ -357,7 +358,7 @@ public class GCCoreBlockT1TreasureChest extends BlockContainer implements ITileE
 						}
 
 						var9.stackSize -= var13;
-						var14 = new EntityItem(par1World, par2 + var10, par3 + var11, par4 + var12, new ItemStack(var9.itemID, var13, var9.getItemDamage()));
+						var14 = new EntityItem(par1World, par2 + var10, par3 + var11, par4 + var12, new ItemStack(var9.getItem(), var13, var9.getItemDamage()));
 						final float var15 = 0.05F;
 						var14.motionX = (float) this.random.nextGaussian() * var15;
 						var14.motionY = (float) this.random.nextGaussian() * var15 + 0.2F;
@@ -378,13 +379,13 @@ public class GCCoreBlockT1TreasureChest extends BlockContainer implements ITileE
 	@Override
 	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
 	{
-		Object var10 = par1World.getBlockTileEntity(par2, par3, par4);
+		Object var10 = par1World.getTileEntity(par2, par3, par4);
 
 		if (var10 == null)
 		{
 			return true;
 		}
-		else if (par1World.isBlockSolidOnSide(par2, par3 + 1, par4, ForgeDirection.DOWN))
+		else if (par1World.isSideSolid(par2, par3 + 1, par4, ForgeDirection.DOWN))
 		{
 			return true;
 		}
@@ -392,42 +393,42 @@ public class GCCoreBlockT1TreasureChest extends BlockContainer implements ITileE
 		{
 			return true;
 		}
-		else if (par1World.getBlockId(par2 - 1, par3, par4) == this.blockID && (par1World.isBlockSolidOnSide(par2 - 1, par3 + 1, par4, ForgeDirection.DOWN) || GCCoreBlockT1TreasureChest.isOcelotBlockingChest(par1World, par2 - 1, par3, par4)))
+		else if (par1World.getBlock(par2 - 1, par3, par4) == this && (par1World.isSideSolid(par2 - 1, par3 + 1, par4, ForgeDirection.DOWN) || GCCoreBlockT1TreasureChest.isOcelotBlockingChest(par1World, par2 - 1, par3, par4)))
 		{
 			return true;
 		}
-		else if (par1World.getBlockId(par2 + 1, par3, par4) == this.blockID && (par1World.isBlockSolidOnSide(par2 + 1, par3 + 1, par4, ForgeDirection.DOWN) || GCCoreBlockT1TreasureChest.isOcelotBlockingChest(par1World, par2 + 1, par3, par4)))
+		else if (par1World.getBlock(par2 + 1, par3, par4) == this && (par1World.isSideSolid(par2 + 1, par3 + 1, par4, ForgeDirection.DOWN) || GCCoreBlockT1TreasureChest.isOcelotBlockingChest(par1World, par2 + 1, par3, par4)))
 		{
 			return true;
 		}
-		else if (par1World.getBlockId(par2, par3, par4 - 1) == this.blockID && (par1World.isBlockSolidOnSide(par2, par3 + 1, par4 - 1, ForgeDirection.DOWN) || GCCoreBlockT1TreasureChest.isOcelotBlockingChest(par1World, par2, par3, par4 - 1)))
+		else if (par1World.getBlock(par2, par3, par4 - 1) == this && (par1World.isSideSolid(par2, par3 + 1, par4 - 1, ForgeDirection.DOWN) || GCCoreBlockT1TreasureChest.isOcelotBlockingChest(par1World, par2, par3, par4 - 1)))
 		{
 			return true;
 		}
-		else if (par1World.getBlockId(par2, par3, par4 + 1) == this.blockID && (par1World.isBlockSolidOnSide(par2, par3 + 1, par4 + 1, ForgeDirection.DOWN) || GCCoreBlockT1TreasureChest.isOcelotBlockingChest(par1World, par2, par3, par4 + 1)))
+		else if (par1World.getBlock(par2, par3, par4 + 1) == this && (par1World.isSideSolid(par2, par3 + 1, par4 + 1, ForgeDirection.DOWN) || GCCoreBlockT1TreasureChest.isOcelotBlockingChest(par1World, par2, par3, par4 + 1)))
 		{
 			return true;
 		}
 		else
 		{
-			if (par1World.getBlockId(par2 - 1, par3, par4) == this.blockID)
+			if (par1World.getBlock(par2 - 1, par3, par4) == this)
 			{
-				var10 = new InventoryLargeChest("container.chestDouble", (TileEntityTreasureChest) par1World.getBlockTileEntity(par2 - 1, par3, par4), (IInventory) var10);
+				var10 = new InventoryLargeChest("container.chestDouble", (TileEntityTreasureChest) par1World.getTileEntity(par2 - 1, par3, par4), (IInventory) var10);
 			}
 
-			if (par1World.getBlockId(par2 + 1, par3, par4) == this.blockID)
+			if (par1World.getBlock(par2 + 1, par3, par4) == this)
 			{
-				var10 = new InventoryLargeChest("container.chestDouble", (IInventory) var10, (TileEntityTreasureChest) par1World.getBlockTileEntity(par2 + 1, par3, par4));
+				var10 = new InventoryLargeChest("container.chestDouble", (IInventory) var10, (TileEntityTreasureChest) par1World.getTileEntity(par2 + 1, par3, par4));
 			}
 
-			if (par1World.getBlockId(par2, par3, par4 - 1) == this.blockID)
+			if (par1World.getBlock(par2, par3, par4 - 1) == this)
 			{
-				var10 = new InventoryLargeChest("container.chestDouble", (TileEntityTreasureChest) par1World.getBlockTileEntity(par2, par3, par4 - 1), (IInventory) var10);
+				var10 = new InventoryLargeChest("container.chestDouble", (TileEntityTreasureChest) par1World.getTileEntity(par2, par3, par4 - 1), (IInventory) var10);
 			}
 
-			if (par1World.getBlockId(par2, par3, par4 + 1) == this.blockID)
+			if (par1World.getBlock(par2, par3, par4 + 1) == this)
 			{
-				var10 = new InventoryLargeChest("container.chestDouble", (IInventory) var10, (TileEntityTreasureChest) par1World.getBlockTileEntity(par2, par3, par4 + 1));
+				var10 = new InventoryLargeChest("container.chestDouble", (IInventory) var10, (TileEntityTreasureChest) par1World.getTileEntity(par2, par3, par4 + 1));
 			}
 
 			if (par1World.isRemote)
@@ -443,7 +444,7 @@ public class GCCoreBlockT1TreasureChest extends BlockContainer implements ITileE
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World par1World)
+	public TileEntity createNewTileEntity(World par1World, int metadata)
 	{
 		return new TileEntityTreasureChest(1);
 	}

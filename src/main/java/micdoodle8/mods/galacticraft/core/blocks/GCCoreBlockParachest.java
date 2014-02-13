@@ -9,6 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -39,13 +40,13 @@ public class GCCoreBlockParachest extends BlockContainer implements ITileEntityP
 {
 	private final Random random = new Random();
 
-	protected GCCoreBlockParachest(int id, String assetName)
+	protected GCCoreBlockParachest(String assetName)
 	{
-		super(id, Material.wood);
+		super(Material.wood);
 		this.setHardness(3.0F);
-		this.setStepSound(Block.soundWoodFootstep);
-		this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
-		this.setUnlocalizedName(assetName);
+		this.setStepSound(Block.soundTypeWood);
+		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setBlockName(assetName);
 	}
 
 	@Override
@@ -111,9 +112,9 @@ public class GCCoreBlockParachest extends BlockContainer implements ITileEntityP
 	}
 
 	@Override
-	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
+	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block par5)
 	{
-		TileEntityParachest tileentitychest = (TileEntityParachest) par1World.getBlockTileEntity(par2, par3, par4);
+		TileEntityParachest tileentitychest = (TileEntityParachest) par1World.getTileEntity(par2, par3, par4);
 
 		if (tileentitychest != null)
 		{
@@ -128,9 +129,9 @@ public class GCCoreBlockParachest extends BlockContainer implements ITileEntityP
 	}
 
 	@Override
-	public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
+	public void breakBlock(World par1World, int par2, int par3, int par4, Block par5, int par6)
 	{
-		TileEntityParachest tileentitychest = (TileEntityParachest) par1World.getBlockTileEntity(par2, par3, par4);
+		TileEntityParachest tileentitychest = (TileEntityParachest) par1World.getTileEntity(par2, par3, par4);
 
 		if (tileentitychest != null)
 		{
@@ -154,7 +155,7 @@ public class GCCoreBlockParachest extends BlockContainer implements ITileEntityP
 						}
 
 						itemstack.stackSize -= k1;
-						entityitem = new EntityItem(par1World, par2 + f, par3 + f1, par4 + f2, new ItemStack(itemstack.itemID, k1, itemstack.getItemDamage()));
+						entityitem = new EntityItem(par1World, par2 + f, par3 + f1, par4 + f2, new ItemStack(itemstack.getItem(), k1, itemstack.getItemDamage()));
 						float f3 = 0.05F;
 						entityitem.motionX = (float) this.random.nextGaussian() * f3;
 						entityitem.motionY = (float) this.random.nextGaussian() * f3 + 0.2F;
@@ -168,7 +169,7 @@ public class GCCoreBlockParachest extends BlockContainer implements ITileEntityP
 				}
 			}
 
-			par1World.func_96440_m(par2, par3, par4, par5);
+			par1World.func_147453_f(par2, par3, par4, par5);
 		}
 
 		super.breakBlock(par1World, par2, par3, par4, par5, par6);
@@ -176,13 +177,13 @@ public class GCCoreBlockParachest extends BlockContainer implements ITileEntityP
 
 	public IInventory getInventory(World par1World, int par2, int par3, int par4)
 	{
-		Object object = par1World.getBlockTileEntity(par2, par3, par4);
+		Object object = par1World.getTileEntity(par2, par3, par4);
 
 		if (object == null)
 		{
 			return null;
 		}
-		else if (par1World.isBlockSolidOnSide(par2, par3 + 1, par4, ForgeDirection.DOWN))
+		else if (par1World.isSideSolid(par2, par3 + 1, par4, ForgeDirection.DOWN))
 		{
 			return null;
 		}
@@ -217,14 +218,14 @@ public class GCCoreBlockParachest extends BlockContainer implements ITileEntityP
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World par1World)
+	public TileEntity createNewTileEntity(World par1World, int metadata)
 	{
 		return new TileEntityParachest();
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
 		this.blockIcon = par1IconRegister.registerIcon("planks_oak");
 	}

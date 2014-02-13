@@ -5,6 +5,7 @@ import java.util.List;
 import javax.swing.Icon;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.proxy.ClientProxy;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -192,6 +193,6 @@ public class GCCoreItemParachute extends Item
 	@SideOnly(Side.CLIENT)
 	public EnumRarity getRarity(ItemStack par1ItemStack)
 	{
-		return ClientProxyCore.galacticraftItem;
+		return ClientProxy.galacticraftItem;
 	}
 }

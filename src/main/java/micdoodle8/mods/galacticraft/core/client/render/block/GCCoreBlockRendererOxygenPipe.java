@@ -33,7 +33,7 @@ public class GCCoreBlockRendererOxygenPipe implements ISimpleBlockRenderingHandl
 
 	public void renderPipe(RenderBlocks renderblocks, IBlockAccess iblockaccess, Block block, int x, int y, int z)
 	{
-		final TileEntity tileEntity = iblockaccess.getBlockTileEntity(x, y, z);
+		final TileEntity tileEntity = iblockaccess.getTileEntity(x, y, z);
 
 		final float minX = 0.40F;
 		final float minY = 0.40F;

@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.items;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockMachine;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockMachine2;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.proxy.ClientProxy;
 import net.minecraft.block.Block;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemBlock;
@@ -21,9 +22,9 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreItemBlockMachine extends ItemBlock
 {
-	public GCCoreItemBlockMachine(int id)
+	public GCCoreItemBlockMachine(Block block)
 	{
-		super(id);
+		super(block);
 		this.setMaxDamage(0);
 		this.setHasSubtypes(true);
 	}
@@ -38,7 +39,7 @@ public class GCCoreItemBlockMachine extends ItemBlock
 	@SideOnly(Side.CLIENT)
 	public EnumRarity getRarity(ItemStack par1ItemStack)
 	{
-		return ClientProxyCore.galacticraftItem;
+		return ClientProxy.galacticraftItem;
 	}
 
 	@Override
@@ -46,7 +47,7 @@ public class GCCoreItemBlockMachine extends ItemBlock
 	{
 		int metadata = 0;
 
-		if (this.getBlock() == GCCoreBlocks.machineBase.blockID)
+		if (this.field_150939_a == GCCoreBlocks.machineBase)
 		{
 			if (itemstack.getItemDamage() >= GCCoreBlockMachine.COMPRESSOR_METADATA)
 			{
@@ -77,12 +78,12 @@ public class GCCoreItemBlockMachine extends ItemBlock
 			}
 		}
 
-		return Block.blocksList[this.getBlock()].getUnlocalizedName() + "." + metadata;
+		return this.field_150939_a.getUnlocalizedName() + "." + metadata;
 	}
 
 	@Override
 	public String getUnlocalizedName()
 	{
-		return Block.blocksList[this.getBlock()].getUnlocalizedName() + ".0";
+		return this.field_150939_a.getUnlocalizedName() + ".0";
 	}
 }

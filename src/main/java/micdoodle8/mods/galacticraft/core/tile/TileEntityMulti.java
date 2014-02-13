@@ -17,22 +17,10 @@ import cpw.mods.fml.relauncher.Side;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class TileEntityMulti extends TileEntityAdvanced implements IPacketReceiver
+public class TileEntityMulti extends TileEntityAdvanced
 {
-	// The the position of the main block
 	@NetworkedField(targetSide = Side.CLIENT)
 	public Vector3 mainBlockPosition;
-	public String channel;
-
-	public TileEntityMulti()
-	{
-
-	}
-
-	public TileEntityMulti(String channel)
-	{
-		this.channel = channel;
-	}
 
 	public void setMainBlock(Vector3 mainBlock)
 	{
@@ -48,7 +36,7 @@ public class TileEntityMulti extends TileEntityAdvanced implements IPacketReceiv
 	{
 		if (this.mainBlockPosition != null)
 		{
-			TileEntity tileEntity = this.worldObj.getBlockTileEntity(this.mainBlockPosition.intX(), this.mainBlockPosition.intY(), this.mainBlockPosition.intZ());
+			TileEntity tileEntity = this.worldObj.getTileEntity(this.mainBlockPosition.intX(), this.mainBlockPosition.intY(), this.mainBlockPosition.intZ());
 
 			if (tileEntity != null && tileEntity instanceof IMultiBlock)
 			{
@@ -66,7 +54,7 @@ public class TileEntityMulti extends TileEntityAdvanced implements IPacketReceiv
 	{
 		if (this.mainBlockPosition != null)
 		{
-			TileEntity tileEntity = this.worldObj.getBlockTileEntity(this.mainBlockPosition.intX(), this.mainBlockPosition.intY(), this.mainBlockPosition.intZ());
+			TileEntity tileEntity = this.worldObj.getTileEntity(this.mainBlockPosition.intX(), this.mainBlockPosition.intY(), this.mainBlockPosition.intZ());
 
 			if (tileEntity != null)
 			{
@@ -100,7 +88,7 @@ public class TileEntityMulti extends TileEntityAdvanced implements IPacketReceiv
 
 		if (this.mainBlockPosition != null)
 		{
-			nbt.setCompoundTag("mainBlockPosition", this.mainBlockPosition.writeToNBT(new NBTTagCompound()));
+			nbt.setTag("mainBlockPosition", this.mainBlockPosition.writeToNBT(new NBTTagCompound()));
 		}
 	}
 

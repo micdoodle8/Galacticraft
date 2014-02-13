@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
+import cpw.mods.fml.common.FMLLog;
 
 /**
  * PlayerUtil.java

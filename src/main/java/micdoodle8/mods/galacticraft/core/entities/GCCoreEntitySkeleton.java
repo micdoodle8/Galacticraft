@@ -16,6 +16,7 @@ import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.AchievementList;
@@ -36,7 +37,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreEntitySkeleton extends EntitySkeleton implements IEntityBreathable
 {
-	private static final ItemStack defaultHeldItem = new ItemStack(Item.bow, 1);
+	private static final ItemStack defaultHeldItem = new ItemStack(Items.bow, 1);
 
 	public GCCoreEntitySkeleton(World par1World)
 	{
@@ -56,8 +57,8 @@ public class GCCoreEntitySkeleton extends EntitySkeleton implements IEntityBreat
 	protected void applyEntityAttributes()
 	{
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(25);
-		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.35F);
+		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(25);
+		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.35F);
 	}
 
 	@Override
@@ -142,7 +143,7 @@ public class GCCoreEntitySkeleton extends EntitySkeleton implements IEntityBreat
 			if (f > 0.5F && this.rand.nextFloat() * 30.0F < (f - 0.4F) * 2.0F && this.worldObj.canBlockSeeTheSky(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)))
 			{
 				boolean flag = true;
-				ItemStack itemstack = this.getCurrentItemOrArmor(4);
+				ItemStack itemstack = this.getEquipmentInSlot(4);
 
 				if (itemstack != null)
 				{
@@ -200,9 +201,9 @@ public class GCCoreEntitySkeleton extends EntitySkeleton implements IEntityBreat
 	 * Returns the item ID for the item the mob drops on death.
 	 */
 	@Override
-	protected int getDropItemId()
+	protected Item getDropItem()
 	{
-		return Item.arrow.itemID;
+		return Items.arrow;
 	}
 
 	/**
@@ -216,14 +217,14 @@ public class GCCoreEntitySkeleton extends EntitySkeleton implements IEntityBreat
 
 		for (var4 = 0; var4 < var3; ++var4)
 		{
-			this.dropItem(Item.arrow.itemID, 1);
+			this.dropItem(Items.arrow, 1);
 		}
 
 		var3 = this.rand.nextInt(3 + par2);
 
 		for (var4 = 0; var4 < var3; ++var4)
 		{
-			this.dropItem(Item.bone.itemID, 1);
+			this.dropItem(Items.bone, 1);
 		}
 	}
 
@@ -232,13 +233,13 @@ public class GCCoreEntitySkeleton extends EntitySkeleton implements IEntityBreat
 	{
 		if (par1 > 0)
 		{
-			final ItemStack var2 = new ItemStack(Item.bow);
+			final ItemStack var2 = new ItemStack(Items.bow);
 			EnchantmentHelper.addRandomEnchantment(this.rand, var2, 5);
 			this.entityDropItem(var2, 0.0F);
 		}
 		else
 		{
-			this.dropItem(Item.bow.itemID, 1);
+			this.dropItem(Items.bow, 1);
 		}
 	}
 

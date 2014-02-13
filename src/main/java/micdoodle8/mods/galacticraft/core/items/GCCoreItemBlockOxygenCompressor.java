@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.items;
 
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockOxygenCompressor;
+import micdoodle8.mods.galacticraft.core.proxy.ClientProxy;
 import net.minecraft.block.Block;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemBlock;
@@ -19,9 +20,9 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreItemBlockOxygenCompressor extends ItemBlock
 {
-	public GCCoreItemBlockOxygenCompressor(int id)
+	public GCCoreItemBlockOxygenCompressor(Block block)
 	{
-		super(id);
+		super(block);
 		this.setMaxDamage(0);
 		this.setHasSubtypes(true);
 	}
@@ -36,7 +37,7 @@ public class GCCoreItemBlockOxygenCompressor extends ItemBlock
 	@SideOnly(Side.CLIENT)
 	public EnumRarity getRarity(ItemStack par1ItemStack)
 	{
-		return ClientProxyCore.galacticraftItem;
+		return ClientProxy.galacticraftItem;
 	}
 
 	@Override
@@ -53,12 +54,12 @@ public class GCCoreItemBlockOxygenCompressor extends ItemBlock
 			metadata = 0;
 		}
 
-		return Block.blocksList[this.getBlock()].getUnlocalizedName() + "." + metadata;
+		return this.field_150939_a.getUnlocalizedName() + "." + metadata;
 	}
 
 	@Override
 	public String getUnlocalizedName()
 	{
-		return Block.blocksList[this.getBlock()].getUnlocalizedName() + ".0";
+		return this.field_150939_a.getUnlocalizedName() + ".0";
 	}
 }

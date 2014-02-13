@@ -7,6 +7,7 @@ import javax.swing.Icon;
 import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityFlag;
+import micdoodle8.mods.galacticraft.core.proxy.ClientProxy;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
@@ -16,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -50,9 +52,9 @@ public class GCCoreItemFlag extends Item implements IHoldableItem
 	"white" }; // 16
 	public int placeProgress;
 
-	public GCCoreItemFlag(int id, String assetName)
+	public GCCoreItemFlag(String assetName)
 	{
-		super(id);
+		super();
 		this.setMaxDamage(0);
 		this.setHasSubtypes(true);
 		this.setMaxStackSize(1);
@@ -62,7 +64,7 @@ public class GCCoreItemFlag extends Item implements IHoldableItem
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
 		for (int i = 0; i < 17; i++)
 		{
@@ -77,13 +79,13 @@ public class GCCoreItemFlag extends Item implements IHoldableItem
 	}
 
 	@Override
-	public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4)
+	public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer player, int par4)
 	{
 		final int useTime = this.getMaxItemUseDuration(par1ItemStack) - par4;
 
 		boolean placed = false;
 
-		final MovingObjectPosition var12 = this.getMovingObjectPositionFromPlayer(par2World, par3EntityPlayer, true);
+		final MovingObjectPosition var12 = this.getMovingObjectPositionFromPlayer(par2World, player, true);
 
 		float var7 = useTime / 20.0F;
 		var7 = (var7 * var7 + var7 * 2.0F) / 3.0F;
@@ -93,7 +95,7 @@ public class GCCoreItemFlag extends Item implements IHoldableItem
 			var7 = 1.0F;
 		}
 
-		if (var7 == 1.0F && var12 != null && var12.typeOfHit == EnumMovingObjectType.TILE)
+		if (var7 == 1.0F && var12 != null && var12.typeOfHit == MovingObjectType.BLOCK)
 		{
 			final int x = var12.blockX;
 			final int y = var12.blockY;
@@ -101,30 +103,30 @@ public class GCCoreItemFlag extends Item implements IHoldableItem
 
 			if (!par2World.isRemote)
 			{
-				final GCCoreEntityFlag flag = new GCCoreEntityFlag(par2World, x + 0.5F, y + 1.0F, z + 0.5F, par3EntityPlayer.rotationYaw - 90F);
+				final GCCoreEntityFlag flag = new GCCoreEntityFlag(par2World, x + 0.5F, y + 1.0F, z + 0.5F, player.rotationYaw - 90F);
 
 				if (par2World.getEntitiesWithinAABB(GCCoreEntityFlag.class, AxisAlignedBB.getAABBPool().getAABB(x, y, z, x + 1, y + 3, z + 1)).isEmpty())
 				{
 					par2World.spawnEntityInWorld(flag);
 					flag.setType(par1ItemStack.getItemDamage());
-					flag.setOwner(par3EntityPlayer.username);
+					flag.setOwner(player.getGameProfile().getName());
 					placed = true;
 				}
 				else
 				{
-					par3EntityPlayer.addChatMessage(new ChatComponentText("Flag already placed here!"));
+					player.addChatMessage(new ChatComponentText("Flag already placed here!"));
 				}
 			}
 
 			if (placed)
 			{
-				final int var2 = this.getInventorySlotContainItem(par3EntityPlayer, par1ItemStack);
+				final int var2 = this.getInventorySlotContainItem(player, par1ItemStack);
 
-				if (var2 >= 0 && !par3EntityPlayer.capabilities.isCreativeMode)
+				if (var2 >= 0 && !player.capabilities.isCreativeMode)
 				{
-					if (--par3EntityPlayer.inventory.mainInventory[var2].stackSize <= 0)
+					if (--player.inventory.mainInventory[var2].stackSize <= 0)
 					{
-						par3EntityPlayer.inventory.mainInventory[var2] = null;
+						player.inventory.mainInventory[var2] = null;
 					}
 				}
 			}
@@ -180,7 +182,7 @@ public class GCCoreItemFlag extends Item implements IHoldableItem
 	@SideOnly(Side.CLIENT)
 	public EnumRarity getRarity(ItemStack par1ItemStack)
 	{
-		return ClientProxyCore.galacticraftItem;
+		return ClientProxy.galacticraftItem;
 	}
 
 	@Override

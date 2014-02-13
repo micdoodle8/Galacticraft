@@ -166,7 +166,7 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
 				{
 					if (Math.abs(x) != Math.abs(z))
 					{
-						final TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + x, this.yCoord, this.zCoord + z);
+						final TileEntity tile = this.worldObj.getTileEntity(this.xCoord + x, this.yCoord, this.zCoord + z);
 
 						if (tile != null && tile instanceof ILandingPadAttachable && ((ILandingPadAttachable) tile).canAttachToLandingPad(this.worldObj, this.xCoord, this.yCoord, this.zCoord))
 						{
@@ -212,7 +212,7 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
 	@Override
 	public boolean isBlockAttachable(IBlockAccess world, int x, int y, int z)
 	{
-		TileEntity tile = world.getBlockTileEntity(x, y, z);
+		TileEntity tile = world.getTileEntity(x, y, z);
 
 		if (tile != null && tile instanceof ILandingPadAttachable)
 		{

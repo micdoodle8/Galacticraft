@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBreakable;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -25,19 +26,19 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreBlockAirLockWall extends BlockBreakable implements IPartialSealableBlock
 {
-	public GCCoreBlockAirLockWall(int id, String assetName)
+	public GCCoreBlockAirLockWall(String assetName)
 	{
-		super(id, GalacticraftCore.ASSET_PREFIX + "oxygentile_3", Material.portal, false);
+		super(GalacticraftCore.ASSET_PREFIX + "oxygentile_3", Material.portal, false);
 		this.setTickRandomly(true);
 		this.setHardness(1000.0F);
-		this.setStepSound(Block.soundMetalFootstep);
-		this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
-		this.setUnlocalizedName(assetName);
+		this.setStepSound(Block.soundTypeMetal);
+		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setBlockName(assetName);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
 		this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "deco_aluminium_4");
 	}
@@ -48,11 +49,11 @@ public class GCCoreBlockAirLockWall extends BlockBreakable implements IPartialSe
 		float var5;
 		float var6;
 
-		int frameID = GCCoreBlocks.airLockFrame.blockID;
-		int sealID = GCCoreBlocks.airLockSeal.blockID;
+		Block frameID = GCCoreBlocks.airLockFrame;
+		Block sealID = GCCoreBlocks.airLockSeal;
 
-		int idXMin = world.getBlockId(x - 1, y, z);
-		int idXMax = world.getBlockId(x + 1, y, z);
+		Block idXMin = world.getBlock(x - 1, y, z);
+		Block idXMax = world.getBlock(x + 1, y, z);
 
 		if (idXMin != frameID && idXMax != frameID && idXMin != sealID && idXMax != sealID)
 		{
@@ -70,9 +71,9 @@ public class GCCoreBlockAirLockWall extends BlockBreakable implements IPartialSe
 				{
 					Vector3 thisVec = new Vector3(x, y, z);
 					thisVec = thisVec.modifyPositionFromSide(dir);
-					int blockID = thisVec.getBlock(world);
+					Block blockID = thisVec.getBlock(world);
 
-					if (blockID == GCCoreBlocks.airLockFrame.blockID || blockID == GCCoreBlocks.airLockSeal.blockID)
+					if (blockID == GCCoreBlocks.airLockFrame || blockID == GCCoreBlocks.airLockSeal)
 					{
 						adjacentCount++;
 					}

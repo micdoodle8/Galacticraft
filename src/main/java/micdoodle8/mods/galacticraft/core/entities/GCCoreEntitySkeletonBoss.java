@@ -31,6 +31,7 @@ import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -94,8 +95,8 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
 	protected void applyEntityAttributes()
 	{
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(150.0F * GCCoreConfigManager.dungeonBossHealthMod);
-		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.25F);
+		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(150.0F * GCCoreConfigManager.dungeonBossHealthMod);
+		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.25F);
 	}
 
 	public GCCoreEntitySkeletonBoss(World world, Vector3 vec)
@@ -273,7 +274,7 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
 				}
 			}
 
-			this.entityDropItem(new ItemStack(GCCoreItems.key.itemID, 1, 0), 0.5F);
+			this.entityDropItem(new ItemStack(GCCoreItems.key, 1, 0), 0.5F);
 
 			super.setDead();
 
@@ -443,39 +444,8 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
 			}
 		}
 
-		// if (this.ticks % 5 == 0)
-		// {
-		// PacketManager.sendPacketToClients(this.getDescriptionPacket(),
-		// this.worldObj, new Vector3(this), 100);
-		// }
-
 		super.onLivingUpdate();
 	}
-
-	// public Packet getDescriptionPacket()
-	// {
-	// return
-	// GCCoreGCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES,
-	// this, this.health);
-	// }
-	//
-	// @Override
-	// public void handlePacketData(INetworkManager network, int packetType,
-	// Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput
-	// dataStream)
-	// {
-	// try
-	// {
-	// if (this.worldObj.isRemote)
-	// {
-	// this.health = dataStream.readFloat();
-	// }
-	// }
-	// catch (final Exception e)
-	// {
-	// e.printStackTrace();
-	// }
-	// }
 
 	@Override
 	public void onDeath(DamageSource par1DamageSource)
@@ -496,9 +466,9 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
 	}
 
 	@Override
-	protected int getDropItemId()
+	protected Item getDropItem()
 	{
-		return Item.arrow.itemID;
+		return Items.arrow;
 	}
 
 	@Override
@@ -528,13 +498,13 @@ public class GCCoreEntitySkeletonBoss extends EntityMob implements IEntityBreath
 	{
 		if (par1 > 0)
 		{
-			final ItemStack var2 = new ItemStack(Item.bow);
+			final ItemStack var2 = new ItemStack(Items.bow);
 			EnchantmentHelper.addRandomEnchantment(this.rand, var2, 5);
 			this.entityDropItem(var2, 0.0F);
 		}
 		else
 		{
-			this.dropItem(Item.bow.itemID, 1);
+			this.dropItem(Items.bow, 1);
 		}
 	}
 

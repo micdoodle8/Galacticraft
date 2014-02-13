@@ -2,16 +2,16 @@ package micdoodle8.mods.galacticraft.core.items;
 
 import java.util.List;
 
-import javax.swing.Icon;
-
 import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay;
 import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay.ElectricUnit;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockAluminumWire;
+import micdoodle8.mods.galacticraft.core.proxy.ClientProxy;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -26,9 +26,9 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreItemBlockAluminumWire extends ItemBlock
 {
-	public GCCoreItemBlockAluminumWire(int id)
+	public GCCoreItemBlockAluminumWire(Block block)
 	{
-		super(id);
+		super(block);
 		this.setMaxDamage(0);
 		this.setHasSubtypes(true);
 	}
@@ -53,9 +53,9 @@ public class GCCoreItemBlockAluminumWire extends ItemBlock
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getIconFromDamage(int par1)
+	public IIcon getIconFromDamage(int par1)
 	{
-		return Block.blocksList[this.getBlock()].getIcon(0, par1);
+		return this.field_150939_a.getIcon(0, par1);
 	}
 
 	@Override
@@ -83,7 +83,7 @@ public class GCCoreItemBlockAluminumWire extends ItemBlock
 	@SideOnly(Side.CLIENT)
 	public EnumRarity getRarity(ItemStack par1ItemStack)
 	{
-		return ClientProxyCore.galacticraftItem;
+		return ClientProxy.galacticraftItem;
 	}
 
 	@Override

@@ -2,19 +2,19 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.List;
 
-import javax.swing.Icon;
-
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntitySolar;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
@@ -38,28 +38,28 @@ public class GCCoreBlockSolar extends GCCoreBlockTile
 
 	public static String[] names = { "basic", "advanced" };
 
-	private Icon[] icons = new Icon[6];
+	private IIcon[] icons = new IIcon[6];
 
-	public GCCoreBlockSolar(int id, String assetName)
+	public GCCoreBlockSolar(String assetName)
 	{
-		super(id, Material.iron);
+		super(Material.iron);
 		this.setHardness(1.0F);
-		this.setStepSound(Block.soundMetalFootstep);
-		this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
-		this.setUnlocalizedName(assetName);
+		this.setStepSound(Block.soundTypeMetal);
+		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setBlockName(assetName);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
 		par3List.add(new ItemStack(par1, 1, GCCoreBlockSolar.BASIC_METADATA));
 		par3List.add(new ItemStack(par1, 1, GCCoreBlockSolar.ADVANCED_METADATA));
 	}
 
 	@Override
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
 		this.icons[0] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "solar_basic_0");
 		this.icons[1] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "solar_basic_1");
@@ -78,7 +78,7 @@ public class GCCoreBlockSolar extends GCCoreBlockTile
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getIcon(int side, int meta)
+	public IIcon getIcon(int side, int meta)
 	{
 		if (meta >= GCCoreBlockSolar.ADVANCED_METADATA)
 		{
@@ -135,9 +135,9 @@ public class GCCoreBlockSolar extends GCCoreBlockTile
 			{
 				for (int z = -1; z <= 1; z++)
 				{
-					int blockID = world.getBlockId(x1 + (y == 2 ? x : 0), y1 + 2, z1 + (y == 2 ? z : 0));
+					Block block = world.getBlock(x1 + (y == 2 ? x : 0), y1 + 2, z1 + (y == 2 ? z : 0));
 
-					if (blockID > 0 && !Block.blocksList[blockID].isBlockReplaceable(world, x1 + x, y1 + 2, z1 + z))
+					if (block.getMaterial().isReplaceable())
 					{
 						return false;
 					}
@@ -145,7 +145,7 @@ public class GCCoreBlockSolar extends GCCoreBlockTile
 			}
 		}
 
-		return new Vector3(x1, y1, z1).clone().modifyPositionFromSide(ForgeDirection.getOrientation(side).getOpposite()).getBlock(world) != GCCoreBlocks.fakeBlock.blockID;
+		return new Vector3(x1, y1, z1).clone().modifyPositionFromSide(ForgeDirection.getOrientation(side).getOpposite()).getBlock(world) != GCCoreBlocks.fakeBlock;
 	}
 
 	@Override
@@ -181,7 +181,7 @@ public class GCCoreBlockSolar extends GCCoreBlockTile
 			world.setBlockMetadataWithNotify(x, y, z, GCCoreBlockSolar.BASIC_METADATA + change, 3);
 		}
 
-		TileEntity tile = world.getBlockTileEntity(x, y, z);
+		TileEntity tile = world.getTileEntity(x, y, z);
 
 		if (tile instanceof TileEntitySolar)
 		{
@@ -190,9 +190,9 @@ public class GCCoreBlockSolar extends GCCoreBlockTile
 	}
 
 	@Override
-	public void breakBlock(World var1, int var2, int var3, int var4, int var5, int var6)
+	public void breakBlock(World var1, int var2, int var3, int var4, Block var5, int var6)
 	{
-		final TileEntity var9 = var1.getBlockTileEntity(var2, var3, var4);
+		final TileEntity var9 = var1.getTileEntity(var2, var3, var4);
 
 		if (var9 instanceof TileEntitySolar)
 		{
@@ -258,21 +258,6 @@ public class GCCoreBlockSolar extends GCCoreBlockTile
 		{
 			return GCCoreBlockSolar.BASIC_METADATA;
 		}
-	}
-
-	@Override
-	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
-	{
-		Item item = Item.itemsList[this.blockID];
-
-		if (item == null)
-		{
-			return null;
-		}
-
-		int metadata = this.getDamageValue(world, x, y, z);
-
-		return new ItemStack(this.blockID, 1, metadata);
 	}
 
 	@Override

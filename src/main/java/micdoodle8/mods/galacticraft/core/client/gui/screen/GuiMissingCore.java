@@ -40,19 +40,19 @@ public class GuiMissingCore extends GuiScreen
     {
         this.drawDefaultBackground();
         int offset = this.height / 2 - 50;
-        this.drawCenteredString(this.fontRenderer, "MicdoodleCore not found in mods folder", this.width / 2, offset, 0xFF5555);
+        this.drawCenteredString(this.fontRendererObj, "MicdoodleCore not found in mods folder", this.width / 2, offset, 0xFF5555);
         offset += 25;
-        this.drawCenteredString(this.fontRenderer, "Galacticraft failed to load", this.width / 2, offset, 0xFF5555);
+        this.drawCenteredString(this.fontRendererObj, "Galacticraft failed to load", this.width / 2, offset, 0xFF5555);
         offset += 20;
-        this.drawCenteredString(this.fontRenderer, "Close Minecraft and install MicdoodleCore", this.width / 2, offset, 0x999999);
+        this.drawCenteredString(this.fontRendererObj, "Close Minecraft and install MicdoodleCore", this.width / 2, offset, 0x999999);
         offset += 20;
         String s = EnumChatFormatting.UNDERLINE + "Click here to open download page";
-        this.urlX = this.width / 2 - this.fontRenderer.getStringWidth(s) / 2 - 10;
+        this.urlX = this.width / 2 - this.fontRendererObj.getStringWidth(s) / 2 - 10;
         this.urlY = offset - 2;
-        this.urlWidth = this.fontRenderer.getStringWidth(s) + 20;
+        this.urlWidth = this.fontRendererObj.getStringWidth(s) + 20;
         this.urlHeight = 14;
         Gui.drawRect(this.urlX, this.urlY, this.urlX + this.urlWidth, this.urlY + this.urlHeight, GCCoreUtil.convertTo32BitColor(50, 0, 255, 0));
-        this.drawCenteredString(this.fontRenderer, s, this.width / 2, offset, 0x999999);
+        this.drawCenteredString(this.fontRendererObj, s, this.width / 2, offset, 0x999999);
     }
 
     @Override

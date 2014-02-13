@@ -4,16 +4,18 @@ import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
-import net.minecraft.block.Block;
+import micdoodle8.mods.galacticraft.core.proxy.ClientProxy;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
@@ -30,9 +32,9 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreItemBuggy extends Item
 {
-	public GCCoreItemBuggy(int id, String assetName)
+	public GCCoreItemBuggy(String assetName)
 	{
-		super(id);
+		super();
 		this.setUnlocalizedName(assetName);
 		this.setTextureName("arrow");
 	}
@@ -47,12 +49,12 @@ public class GCCoreItemBuggy extends Item
 	@SideOnly(Side.CLIENT)
 	public EnumRarity getRarity(ItemStack par1ItemStack)
 	{
-		return ClientProxyCore.galacticraftItem;
+		return ClientProxy.galacticraftItem;
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
 		for (int i = 0; i < 4; i++)
 		{
@@ -78,7 +80,7 @@ public class GCCoreItemBuggy extends Item
 		final float var20 = var14 * var16;
 		final double var21 = 5.0D;
 		final Vec3 var23 = var13.addVector(var18 * var21, var17 * var21, var20 * var21);
-		final MovingObjectPosition var24 = par2World.clip(var13, var23, true);
+		final MovingObjectPosition var24 = par2World.rayTraceBlocks(var13, var23, true);
 
 		if (var24 == null)
 		{
@@ -114,13 +116,13 @@ public class GCCoreItemBuggy extends Item
 			}
 			else
 			{
-				if (var24.typeOfHit == EnumMovingObjectType.TILE)
+				if (var24.typeOfHit == MovingObjectType.BLOCK)
 				{
 					var29 = var24.blockX;
 					int var33 = var24.blockY;
 					final int var34 = var24.blockZ;
 
-					if (par2World.getBlockId(var29, var33, var34) == Block.snow.blockID)
+					if (par2World.getBlock(var29, var33, var34) == Blocks.snow)
 					{
 						--var33;
 					}

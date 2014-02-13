@@ -114,7 +114,7 @@ public class GCCoreBlockRendererLandingPad implements ISimpleBlockRenderingHandl
 			renderBlocks.renderStandardBlock(par1Block, par2, par3, par4);
 		}
 
-		IFuelDock landingPad = (IFuelDock) var1.getBlockTileEntity(par2, par3, par4);
+		IFuelDock landingPad = (IFuelDock) var1.getTileEntity(par2, par3, par4);
 
 		// +X left
 		if (landingPad.isBlockAttachable(var1, par2 + 2, par3, par4 - 1))

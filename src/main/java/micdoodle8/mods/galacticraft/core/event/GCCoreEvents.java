@@ -76,6 +76,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreEvents
 {
+	
 	@EventHandler
 	public void onWorldSave(Save event)
 	{
@@ -111,7 +112,7 @@ public class GCCoreEvents
 	{
 		final ItemStack heldStack = event.entityPlayer.inventory.getCurrentItem();
 
-		final TileEntity tileClicked = event.entityPlayer.worldObj.getBlockTileEntity(event.x, event.y, event.z);
+		final TileEntity tileClicked = event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z);
 		final int idClicked = event.entityPlayer.worldObj.getBlockId(event.x, event.y, event.z);
 
 		if (heldStack != null)
@@ -207,8 +208,8 @@ public class GCCoreEvents
 	{
 		Class<?> buildCraftClass = null;
 
-		int bcOilID1 = -1;
-		int bcOilID2 = -1;
+		Block bcOil1 = null;
+		Block bcOil2 = null;
 		Item bcOilBucket = null;
 
 		try
@@ -221,13 +222,13 @@ public class GCCoreEvents
 					{
 						final Block block = (Block) f.get(null);
 
-						bcOilID1 = block.blockID;
+						bcOil1 = block;
 					}
 					else if (f.getName().equals("oilStill"))
 					{
 						final Block block = (Block) f.get(null);
 
-						bcOilID2 = block.blockID;
+						bcOil2 = block;
 					}
 					else if (f.getName().equals("bucketOil"))
 					{
@@ -243,9 +244,9 @@ public class GCCoreEvents
 
 		}
 
-		final int blockID = world.getBlockId(pos.blockX, pos.blockY, pos.blockZ);
+		Block blockAt = world.getBlock(pos.blockX, pos.blockY, pos.blockZ);
 
-		if ((blockID == bcOilID1 || blockID == bcOilID2 || blockID == GCCoreBlocks.crudeOilStill.blockID) && world.getBlockMetadata(pos.blockX, pos.blockY, pos.blockZ) == 0 && bcOilBucket != null)
+		if ((blockAt == bcOil1 || blockAt == bcOil2 || blockAt == GCCoreBlocks.crudeOilStill) && world.getBlockMetadata(pos.blockX, pos.blockY, pos.blockZ) == 0 && bcOilBucket != null)
 		{
 			world.setBlockToAir(pos.blockX, pos.blockY, pos.blockZ);
 
@@ -315,7 +316,7 @@ public class GCCoreEvents
 
 						if (d2 <= r2)
 						{
-							world.setBlock(bx + cx, by + cy, bz + cz, GCCoreBlocks.crudeOilStill.blockID, 0, 2);
+							world.setBlock(bx + cx, by + cy, bz + cz, GCCoreBlocks.crudeOilStill, 0, 2);
 						}
 					}
 				}

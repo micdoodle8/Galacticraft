@@ -2,14 +2,15 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.Random;
 
-import javax.swing.Icon;
-
 import micdoodle8.mods.galacticraft.api.block.IOxygenReliantBlock;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
@@ -31,29 +32,29 @@ public class GCCoreBlockUnlitTorch extends Block implements IOxygenReliantBlock
 {
 	public boolean lit;
 
-	public static Icon[] torchIcons = new Icon[2];
+	public static IIcon[] torchIcons = new IIcon[2];
 
-	protected GCCoreBlockUnlitTorch(int id, boolean lit, String assetName)
+	protected GCCoreBlockUnlitTorch(boolean lit, String assetName)
 	{
-		super(id, Material.circuits);
+		super(Material.circuits);
 		this.setTickRandomly(true);
 		this.lit = lit;
-		this.setLightValue(lit ? 0.9375F : 0.2F);
+		this.setLightLevel(lit ? 0.9375F : 0.2F);
 		this.setHardness(0.0F);
-		this.setStepSound(Block.soundWoodFootstep);
-		this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
-		this.setUnlocalizedName(assetName);
+		this.setStepSound(Block.soundTypeWood);
+		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setBlockName(assetName);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
+	public IIcon getIcon(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
 	{
-		if (this.blockID == GCCoreBlocks.unlitTorch.blockID)
+		if (this == GCCoreBlocks.unlitTorch)
 		{
 			return GCCoreBlockUnlitTorch.torchIcons[1];
 		}
-		else if (this.blockID == GCCoreBlocks.unlitTorchLit.blockID)
+		else if (this == GCCoreBlocks.unlitTorchLit)
 		{
 			return GCCoreBlockUnlitTorch.torchIcons[0];
 		}
@@ -63,14 +64,14 @@ public class GCCoreBlockUnlitTorch extends Block implements IOxygenReliantBlock
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getIcon(int par1, int par2)
+	public IIcon getIcon(int par1, int par2)
 	{
 		return GCCoreBlockUnlitTorch.torchIcons[0];
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
 		GCCoreBlockUnlitTorch.torchIcons[0] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "unlitTorchLit");
 		GCCoreBlockUnlitTorch.torchIcons[1] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "unlitTorch");
@@ -97,26 +98,26 @@ public class GCCoreBlockUnlitTorch extends Block implements IOxygenReliantBlock
 	@Override
 	public int getRenderType()
 	{
-		return GalacticraftCore.proxy.getBlockRenderID(this.blockID);
+		return GalacticraftCore.proxy.getBlockRenderID(this);
 	}
 
 	private boolean canPlaceTorchOn(World par1World, int par2, int par3, int par4)
 	{
-		if (par1World.doesBlockHaveSolidTopSurface(par2, par3, par4))
+		if (World.doesBlockHaveSolidTopSurface(par1World, par2, par3, par4))
 		{
 			return true;
 		}
 		else
 		{
-			final int var5 = par1World.getBlockId(par2, par3, par4);
-			return Block.blocksList[var5] != null && Block.blocksList[var5].canPlaceTorchOnTop(par1World, par2, par3, par4);
+			Block var5 = par1World.getBlock(par2, par3, par4);
+			return var5.canPlaceTorchOnTop(par1World, par2, par3, par4);
 		}
 	}
 
 	@Override
 	public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4)
 	{
-		return par1World.isBlockSolidOnSide(par2 - 1, par3, par4, ForgeDirection.EAST, true) || par1World.isBlockSolidOnSide(par2 + 1, par3, par4, ForgeDirection.WEST, true) || par1World.isBlockSolidOnSide(par2, par3, par4 - 1, ForgeDirection.SOUTH, true) || par1World.isBlockSolidOnSide(par2, par3, par4 + 1, ForgeDirection.NORTH, true) || this.canPlaceTorchOn(par1World, par2, par3 - 1, par4);
+		return par1World.isSideSolid(par2 - 1, par3, par4, ForgeDirection.EAST, true) || par1World.isSideSolid(par2 + 1, par3, par4, ForgeDirection.WEST, true) || par1World.isSideSolid(par2, par3, par4 - 1, ForgeDirection.SOUTH, true) || par1World.isSideSolid(par2, par3, par4 + 1, ForgeDirection.NORTH, true) || this.canPlaceTorchOn(par1World, par2, par3 - 1, par4);
 	}
 
 	@Override
@@ -129,22 +130,22 @@ public class GCCoreBlockUnlitTorch extends Block implements IOxygenReliantBlock
 			var10 = 5;
 		}
 
-		if (par5 == 2 && par1World.isBlockSolidOnSide(par2, par3, par4 + 1, ForgeDirection.NORTH, true))
+		if (par5 == 2 && par1World.isSideSolid(par2, par3, par4 + 1, ForgeDirection.NORTH, true))
 		{
 			var10 = 4;
 		}
 
-		if (par5 == 3 && par1World.isBlockSolidOnSide(par2, par3, par4 - 1, ForgeDirection.SOUTH, true))
+		if (par5 == 3 && par1World.isSideSolid(par2, par3, par4 - 1, ForgeDirection.SOUTH, true))
 		{
 			var10 = 3;
 		}
 
-		if (par5 == 4 && par1World.isBlockSolidOnSide(par2 + 1, par3, par4, ForgeDirection.WEST, true))
+		if (par5 == 4 && par1World.isSideSolid(par2 + 1, par3, par4, ForgeDirection.WEST, true))
 		{
 			var10 = 2;
 		}
 
-		if (par5 == 5 && par1World.isBlockSolidOnSide(par2 - 1, par3, par4, ForgeDirection.EAST, true))
+		if (par5 == 5 && par1World.isSideSolid(par2 - 1, par3, par4, ForgeDirection.EAST, true))
 		{
 			var10 = 1;
 		}
@@ -168,19 +169,19 @@ public class GCCoreBlockUnlitTorch extends Block implements IOxygenReliantBlock
 	{
 		if (par1World.getBlockMetadata(par2, par3, par4) == 0)
 		{
-			if (par1World.isBlockSolidOnSide(par2 - 1, par3, par4, ForgeDirection.EAST, true))
+			if (par1World.isSideSolid(par2 - 1, par3, par4, ForgeDirection.EAST, true))
 			{
 				par1World.setBlockMetadataWithNotify(par2, par3, par4, 1, 2);
 			}
-			else if (par1World.isBlockSolidOnSide(par2 + 1, par3, par4, ForgeDirection.WEST, true))
+			else if (par1World.isSideSolid(par2 + 1, par3, par4, ForgeDirection.WEST, true))
 			{
 				par1World.setBlockMetadataWithNotify(par2, par3, par4, 2, 2);
 			}
-			else if (par1World.isBlockSolidOnSide(par2, par3, par4 - 1, ForgeDirection.SOUTH, true))
+			else if (par1World.isSideSolid(par2, par3, par4 - 1, ForgeDirection.SOUTH, true))
 			{
 				par1World.setBlockMetadataWithNotify(par2, par3, par4, 3, 2);
 			}
-			else if (par1World.isBlockSolidOnSide(par2, par3, par4 + 1, ForgeDirection.NORTH, true))
+			else if (par1World.isSideSolid(par2, par3, par4 + 1, ForgeDirection.NORTH, true))
 			{
 				par1World.setBlockMetadataWithNotify(par2, par3, par4, 4, 2);
 			}
@@ -199,29 +200,29 @@ public class GCCoreBlockUnlitTorch extends Block implements IOxygenReliantBlock
 	 * neighbor blockID
 	 */
 	@Override
-	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
+	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block par5)
 	{
 		if (this.dropTorchIfCantStay(par1World, par2, par3, par4))
 		{
 			final int var6 = par1World.getBlockMetadata(par2, par3, par4);
 			boolean var7 = false;
 
-			if (!par1World.isBlockSolidOnSide(par2 - 1, par3, par4, ForgeDirection.EAST, true) && var6 == 1)
+			if (!par1World.isSideSolid(par2 - 1, par3, par4, ForgeDirection.EAST, true) && var6 == 1)
 			{
 				var7 = true;
 			}
 
-			if (!par1World.isBlockSolidOnSide(par2 + 1, par3, par4, ForgeDirection.WEST, true) && var6 == 2)
+			if (!par1World.isSideSolid(par2 + 1, par3, par4, ForgeDirection.WEST, true) && var6 == 2)
 			{
 				var7 = true;
 			}
 
-			if (!par1World.isBlockSolidOnSide(par2, par3, par4 - 1, ForgeDirection.SOUTH, true) && var6 == 3)
+			if (!par1World.isSideSolid(par2, par3, par4 - 1, ForgeDirection.SOUTH, true) && var6 == 3)
 			{
 				var7 = true;
 			}
 
-			if (!par1World.isBlockSolidOnSide(par2, par3, par4 + 1, ForgeDirection.NORTH, true) && var6 == 4)
+			if (!par1World.isSideSolid(par2, par3, par4 + 1, ForgeDirection.NORTH, true) && var6 == 4)
 			{
 				var7 = true;
 			}
@@ -234,7 +235,7 @@ public class GCCoreBlockUnlitTorch extends Block implements IOxygenReliantBlock
 			if (var7)
 			{
 				this.dropBlockAsItem(par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4), 0);
-				par1World.setBlock(par2, par3, par4, 0);
+				par1World.setBlockToAir(par2, par3, par4);
 			}
 		}
 	}
@@ -248,10 +249,10 @@ public class GCCoreBlockUnlitTorch extends Block implements IOxygenReliantBlock
 	{
 		if (!this.canPlaceBlockAt(par1World, par2, par3, par4))
 		{
-			if (par1World.getBlockId(par2, par3, par4) == this.blockID)
+			if (par1World.getBlock(par2, par3, par4) == this)
 			{
 				this.dropBlockAsItem(par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4), 0);
-				par1World.setBlock(par2, par3, par4, 0);
+				par1World.setBlockToAir(par2, par3, par4);
 			}
 
 			return false;
@@ -341,11 +342,11 @@ public class GCCoreBlockUnlitTorch extends Block implements IOxygenReliantBlock
 	{
 		if (world.provider instanceof IGalacticraftWorldProvider)
 		{
-			world.setBlock(x, y, z, GCCoreBlocks.unlitTorch.blockID, world.getBlockMetadata(x, y, z), 2);
+			world.setBlock(x, y, z, GCCoreBlocks.unlitTorch, world.getBlockMetadata(x, y, z), 2);
 		}
 		else
 		{
-			world.setBlock(x, y, z, Block.torchWood.blockID, world.getBlockMetadata(x, y, z), 2);
+			world.setBlock(x, y, z, Blocks.torch, world.getBlockMetadata(x, y, z), 2);
 		}
 	}
 
@@ -354,11 +355,11 @@ public class GCCoreBlockUnlitTorch extends Block implements IOxygenReliantBlock
 	{
 		if (world.provider instanceof IGalacticraftWorldProvider)
 		{
-			world.setBlock(x, y, z, GCCoreBlocks.unlitTorchLit.blockID, world.getBlockMetadata(x, y, z), 2);
+			world.setBlock(x, y, z, GCCoreBlocks.unlitTorchLit, world.getBlockMetadata(x, y, z), 2);
 		}
 		else
 		{
-			world.setBlock(x, y, z, Block.torchWood.blockID, world.getBlockMetadata(x, y, z), 2);
+			world.setBlock(x, y, z, Blocks.torch, world.getBlockMetadata(x, y, z), 2);
 		}
 	}
 }

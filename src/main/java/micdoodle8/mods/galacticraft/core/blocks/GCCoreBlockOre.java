@@ -18,11 +18,11 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreBlockOre extends Block
 {
-	public GCCoreBlockOre(int id, String name)
+	public GCCoreBlockOre(String name)
 	{
-		super(id, Material.rock);
-		this.setUnlocalizedName(name);
-		this.setTextureName(GalacticraftCore.ASSET_PREFIX + name);
+		super(Material.rock);
+		this.setBlockName(name);
+		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + name);
 		this.setHardness(2.0F);
 	}
 

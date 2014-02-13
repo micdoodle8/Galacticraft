@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.items;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.proxy.ClientProxy;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemSpade;
@@ -19,9 +20,9 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreItemSpade extends ItemSpade
 {
-	public GCCoreItemSpade(int id, String assetName)
+	public GCCoreItemSpade(String assetName)
 	{
-		super(id, GCCoreItems.TOOL_STEEL);
+		super(GCCoreItems.TOOL_STEEL);
 		this.setUnlocalizedName(assetName);
 		this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
 	}
@@ -36,6 +37,6 @@ public class GCCoreItemSpade extends ItemSpade
 	@SideOnly(Side.CLIENT)
 	public EnumRarity getRarity(ItemStack par1ItemStack)
 	{
-		return ClientProxyCore.galacticraftItem;
+		return ClientProxy.galacticraftItem;
 	}
 }

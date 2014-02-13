@@ -5,8 +5,8 @@ import java.util.Random;
 import micdoodle8.mods.galacticraft.core.world.gen.GCCoreWorldGenForest;
 import micdoodle8.mods.galacticraft.core.world.gen.GCCoreWorldGenTaiga2;
 import micdoodle8.mods.galacticraft.core.world.gen.GCCoreWorldGenTrees;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockSapling;
+import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import cpw.mods.fml.relauncher.Side;
@@ -23,11 +23,6 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreBlockSapling extends BlockSapling
 {
-	protected GCCoreBlockSapling(int par1)
-	{
-		super(par1);
-	}
-
 	@Override
 	@SideOnly(Side.CLIENT)
 	protected String getTextureName()
@@ -48,7 +43,7 @@ public class GCCoreBlockSapling extends BlockSapling
 			{
 				for (int j = -4; j < 5; j++)
 				{
-					if (par1World.getBlockId(par2 + i, par3 - 1, par4 + j) == Block.waterMoving.blockID || par1World.getBlockId(par2 + i, par3 - 1, par4 + j) == Block.waterStill.blockID)
+					if (par1World.getBlock(par2 + i, par3 - 1, par4 + j) == Blocks.water || par1World.getBlock(par2 + i, par3 - 1, par4 + j) == Blocks.flowing_water)
 					{
 						waterBlocksNearby++;
 					}
@@ -57,7 +52,7 @@ public class GCCoreBlockSapling extends BlockSapling
 
 			if (!(waterBlocksNearby > 3))
 			{
-				par1World.setBlock(par2, par3, par4, Block.deadBush.blockID, 0, 3);
+				par1World.setBlock(par2, par3, par4, Blocks.deadbush, 0, 3);
 			}
 
 			final int var6 = par1World.getBlockMetadata(par2, par3, par4);
@@ -68,13 +63,13 @@ public class GCCoreBlockSapling extends BlockSapling
 			}
 			else
 			{
-				this.growTree(par1World, par2, par3, par4, par5Random);
+				this.func_149879_c(par1World, par2, par3, par4, par5Random);
 			}
 		}
 	}
 
 	@Override
-	public void growTree(World par1World, int par2, int par3, int par4, Random par5Random)
+	public void func_149879_c(World par1World, int par2, int par3, int par4, Random par5Random)
 	{
 		final int var6 = par1World.getBlockMetadata(par2, par3, par4) & 3;
 		Object var7 = null;
@@ -98,28 +93,28 @@ public class GCCoreBlockSapling extends BlockSapling
 
 		if (var10)
 		{
-			par1World.setBlock(par2 + var8, par3, par4 + var9, 0, 0, 3);
-			par1World.setBlock(par2 + var8 + 1, par3, par4 + var9, 0, 0, 3);
-			par1World.setBlock(par2 + var8, par3, par4 + var9 + 1, 0, 0, 3);
-			par1World.setBlock(par2 + var8 + 1, par3, par4 + var9 + 1, 0, 0, 3);
+			par1World.setBlockToAir(par2 + var8, par3, par4 + var9);
+			par1World.setBlockToAir(par2 + var8 + 1, par3, par4 + var9);
+			par1World.setBlockToAir(par2 + var8, par3, par4 + var9 + 1);
+			par1World.setBlockToAir(par2 + var8 + 1, par3, par4 + var9 + 1);
 		}
 		else
 		{
-			par1World.setBlock(par2, par3, par4, 0, 0, 3);
+			par1World.setBlockToAir(par2, par3, par4);
 		}
 
 		if (!((WorldGenerator) var7).generate(par1World, par5Random, par2 + var8, par3, par4 + var9))
 		{
 			if (var10)
 			{
-				par1World.setBlock(par2 + var8, par3, par4 + var9, this.blockID, var6, 3);
-				par1World.setBlock(par2 + var8 + 1, par3, par4 + var9, this.blockID, var6, 3);
-				par1World.setBlock(par2 + var8, par3, par4 + var9 + 1, this.blockID, var6, 3);
-				par1World.setBlock(par2 + var8 + 1, par3, par4 + var9 + 1, this.blockID, var6, 3);
+				par1World.setBlock(par2 + var8, par3, par4 + var9, this, var6, 3);
+				par1World.setBlock(par2 + var8 + 1, par3, par4 + var9, this, var6, 3);
+				par1World.setBlock(par2 + var8, par3, par4 + var9 + 1, this, var6, 3);
+				par1World.setBlock(par2 + var8 + 1, par3, par4 + var9 + 1, this, var6, 3);
 			}
 			else
 			{
-				par1World.setBlock(par2, par3, par4, this.blockID, var6, 3);
+				par1World.setBlock(par2, par3, par4, this, var6, 3);
 			}
 		}
 	}

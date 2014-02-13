@@ -5,13 +5,16 @@ import java.util.List;
 import javax.swing.Icon;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.proxy.ClientProxy;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
@@ -30,11 +33,11 @@ public class GCCoreItemBasic extends Item
 {
 	public static final String[] names = { "solar_module_0", "solar_module_1", "rawSilicon", "ingotCopper", "ingotTin", "ingotAluminum", "compressedCopper", "compressedTin", "compressedAluminum", "compressedSteel", "compressedBronze", "compressedIron", "waferSolar", "waferBasic", "waferAdvanced", "dehydratedApple", "dehydratedCarrot", "dehydratedMelon", "dehydratedPotato", "frequencyModule" };
 
-	protected Icon[] icons = new Icon[GCCoreItemBasic.names.length];
+	protected IIcon[] icons = new IIcon[GCCoreItemBasic.names.length];
 
 	public GCCoreItemBasic(int id, String assetName)
 	{
-		super(id);
+		super();
 		this.setMaxDamage(0);
 		this.setHasSubtypes(true);
 		this.setUnlocalizedName(assetName);
@@ -51,12 +54,12 @@ public class GCCoreItemBasic extends Item
 	@SideOnly(Side.CLIENT)
 	public EnumRarity getRarity(ItemStack par1ItemStack)
 	{
-		return ClientProxyCore.galacticraftItem;
+		return ClientProxy.galacticraftItem;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister iconRegister)
+	public void registerIcons(IIconRegister iconRegister)
 	{
 		int i = 0;
 
@@ -78,7 +81,7 @@ public class GCCoreItemBasic extends Item
 	}
 
 	@Override
-	public Icon getIconFromDamage(int damage)
+	public IIcon getIconFromDamage(int damage)
 	{
 		if (this.icons.length > damage)
 		{
@@ -90,7 +93,7 @@ public class GCCoreItemBasic extends Item
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
 		for (int i = 0; i < GCCoreItemBasic.names.length; i++)
 		{
@@ -162,7 +165,7 @@ public class GCCoreItemBasic extends Item
 			--par1ItemStack.stackSize;
 			par3EntityPlayer.getFoodStats().addStats(this.getHealAmount(par1ItemStack), this.getSaturationModifier(par1ItemStack));
 			par2World.playSoundAtEntity(par3EntityPlayer, "random.burp", 0.5F, par2World.rand.nextFloat() * 0.1F + 0.9F);
-			par3EntityPlayer.dropPlayerItem(new ItemStack(GCCoreItems.canister, 1, 0));
+			par3EntityPlayer.entityDropItem(new ItemStack(GCCoreItems.canister, 1, 0), 0.0F);
 			return par1ItemStack;
 		}
 

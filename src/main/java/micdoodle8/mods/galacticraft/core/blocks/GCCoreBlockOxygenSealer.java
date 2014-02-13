@@ -1,17 +1,18 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import javax.swing.Icon;
-
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol.VecDirPair;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenSealer;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -29,18 +30,18 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreBlockOxygenSealer extends GCCoreBlockAdvancedTile
 {
-	private Icon iconMachineSide;
-	private Icon iconSealer;
-	private Icon iconInput;
-	private Icon iconOutput;
+	private IIcon iconMachineSide;
+	private IIcon iconSealer;
+	private IIcon iconInput;
+	private IIcon iconOutput;
 
-	public GCCoreBlockOxygenSealer(int id, String assetName)
+	public GCCoreBlockOxygenSealer(String assetName)
 	{
-		super(id, Material.rock);
+		super(Material.rock);
 		this.setHardness(1.0F);
-		this.setStepSound(Block.soundStoneFootstep);
-		this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
-		this.setUnlocalizedName(assetName);
+		this.setStepSound(Block.soundTypeStone);
+		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setBlockName(assetName);
 	}
 
 	@Override
@@ -52,12 +53,12 @@ public class GCCoreBlockOxygenSealer extends GCCoreBlockAdvancedTile
 	@Override
 	public int getRenderType()
 	{
-		return GalacticraftCore.proxy.getBlockRenderID(this.blockID);
+		return GalacticraftCore.proxy.getBlockRenderID(this);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
 		this.iconMachineSide = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_blank");
 		this.iconSealer = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_sealer");
@@ -102,7 +103,7 @@ public class GCCoreBlockOxygenSealer extends GCCoreBlockAdvancedTile
 	}
 
 	@Override
-	public Icon getIcon(int side, int metadata)
+	public IIcon getIcon(int side, int metadata)
 	{
 		if (side == 1)
 		{
@@ -154,9 +155,9 @@ public class GCCoreBlockOxygenSealer extends GCCoreBlockAdvancedTile
 	}
 
 	@Override
-	public void breakBlock(World world, int x, int y, int z, int par5, int par6)
+	public void breakBlock(World world, int x, int y, int z, Block par5, int par6)
 	{
-		TileEntity tile = world.getBlockTileEntity(x, y, z);
+		TileEntity tile = world.getTileEntity(x, y, z);
 
 		if (tile instanceof TileEntityOxygenSealer)
 		{
@@ -166,11 +167,11 @@ public class GCCoreBlockOxygenSealer extends GCCoreBlockAdvancedTile
 			{
 				for (VecDirPair checkedVec : sealer.threadSeal.checked)
 				{
-					int blockID = checkedVec.getPosition().getBlock(world);
+					Block block = checkedVec.getPosition().getBlock(world);
 
-					if (blockID == GCCoreBlocks.breatheableAir.blockID)
+					if (block == GCCoreBlocks.breatheableAir)
 					{
-						world.setBlock(checkedVec.getPosition().intX(), checkedVec.getPosition().intY(), checkedVec.getPosition().intZ(), 0, 0, 2);
+						world.setBlock(checkedVec.getPosition().intX(), checkedVec.getPosition().intY(), checkedVec.getPosition().intZ(), Blocks.air, 0, 2);
 					}
 				}
 			}

@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.items;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.proxy.ClientProxy;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
@@ -22,9 +23,9 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreItemOxygenTank extends Item
 {
-	public GCCoreItemOxygenTank(int id, int tier, String assetName)
+	public GCCoreItemOxygenTank(int tier, String assetName)
 	{
-		super(id);
+		super();
 		this.setMaxStackSize(1);
 		this.setMaxDamage(tier * 900);
 		this.setUnlocalizedName(assetName);
@@ -34,7 +35,7 @@ public class GCCoreItemOxygenTank extends Item
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
 		par3List.add(new ItemStack(par1, 1, 0));
 		par3List.add(new ItemStack(par1, 1, this.getMaxDamage()));
@@ -50,7 +51,7 @@ public class GCCoreItemOxygenTank extends Item
 	@SideOnly(Side.CLIENT)
 	public EnumRarity getRarity(ItemStack par1ItemStack)
 	{
-		return ClientProxyCore.galacticraftItem;
+		return ClientProxy.galacticraftItem;
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })

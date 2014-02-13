@@ -48,7 +48,7 @@ public class TileEntityLandingPadSingle extends TileEntity
 			}
 
 			this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, GCCoreBlocks.landingPadFull.blockID, 0, 3);
-			final TileEntityLandingPad tile = (TileEntityLandingPad) this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord);
+			final TileEntityLandingPad tile = (TileEntityLandingPad) this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord);
 
 			if (tile instanceof IMultiBlock)
 			{

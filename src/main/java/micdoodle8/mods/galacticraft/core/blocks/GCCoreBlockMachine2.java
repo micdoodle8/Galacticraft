@@ -3,22 +3,21 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import java.util.List;
 import java.util.Random;
 
-import javax.swing.Icon;
-
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCircuitFabricator;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCoalGenerator;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricIngotCompressor;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenStorageModule;
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -38,22 +37,22 @@ public class GCCoreBlockMachine2 extends GCCoreBlockTile
 	public static final int CIRCUIT_FABRICATOR_METADATA = 4;
 	public static final int OXYGEN_STORAGE_MODULE_METADATA = 8;
 
-	private Icon iconMachineSide;
-	private Icon iconOutput;
-	private Icon iconOxygenInput;
-	private Icon iconOxygenOutput;
+	private IIcon iconMachineSide;
+	private IIcon iconOutput;
+	private IIcon iconOxygenInput;
+	private IIcon iconOxygenOutput;
 
-	private Icon iconElectricCompressor;
-	private Icon iconCircuitFabricator;
-	private Icon[] iconOxygenStorageModule;
+	private IIcon iconElectricCompressor;
+	private IIcon iconCircuitFabricator;
+	private IIcon[] iconOxygenStorageModule;
 
-	public GCCoreBlockMachine2(int id, String assetName)
+	public GCCoreBlockMachine2(String assetName)
 	{
-		super(id, GCCoreBlocks.machine);
+		super(GCCoreBlocks.machine);
 		this.setHardness(1.0F);
-		this.setStepSound(Block.soundMetalFootstep);
-		this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
-		this.setUnlocalizedName(assetName);
+		this.setStepSound(Block.soundTypeMetal);
+		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setBlockName(assetName);
 	}
 
 	@Override
@@ -63,7 +62,7 @@ public class GCCoreBlockMachine2 extends GCCoreBlockTile
 	}
 
 	@Override
-	public void registerIcons(IconRegister iconRegister)
+	public void registerBlockIcons(IIconRegister iconRegister)
 	{
 		this.blockIcon = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine");
 		this.iconOutput = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_output");
@@ -73,7 +72,7 @@ public class GCCoreBlockMachine2 extends GCCoreBlockTile
 		this.iconMachineSide = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_side");
 		this.iconElectricCompressor = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "electric_compressor");
 		this.iconCircuitFabricator = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "circuit_fabricator");
-		this.iconOxygenStorageModule = new Icon[17];
+		this.iconOxygenStorageModule = new IIcon[17];
 
 		for (int i = 0; i < this.iconOxygenStorageModule.length; i++)
 		{
@@ -84,13 +83,13 @@ public class GCCoreBlockMachine2 extends GCCoreBlockTile
 	@Override
 	public int getRenderType()
 	{
-		return GalacticraftCore.proxy.getBlockRenderID(this.blockID);
+		return GalacticraftCore.proxy.getBlockRenderID(this);
 	}
 
 	@Override
 	public void randomDisplayTick(World par1World, int x, int y, int z, Random par5Random)
 	{
-		TileEntity tile = par1World.getBlockTileEntity(x, y, z);
+		TileEntity tile = par1World.getTileEntity(x, y, z);
 
 		if (tile instanceof TileEntityCoalGenerator)
 		{
@@ -129,14 +128,14 @@ public class GCCoreBlockMachine2 extends GCCoreBlockTile
 	}
 
 	@Override
-	public Icon getBlockTexture(IBlockAccess world, int x, int y, int z, int side)
+	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side)
 	{
 		int metadata = world.getBlockMetadata(x, y, z);
 
 		if (metadata >= GCCoreBlockMachine2.OXYGEN_STORAGE_MODULE_METADATA)
 		{
 			metadata -= GCCoreBlockMachine2.OXYGEN_STORAGE_MODULE_METADATA;
-			TileEntity tile = world.getBlockTileEntity(x, y, z);
+			TileEntity tile = world.getTileEntity(x, y, z);
 
 			if (side == 0 || side == 1)
 			{
@@ -159,11 +158,11 @@ public class GCCoreBlockMachine2 extends GCCoreBlockTile
 			return this.iconOxygenStorageModule[oxygenLevel];
 		}
 
-		return super.getBlockTexture(world, x, y, z, side);
+		return super.getIcon(world, x, y, z, side);
 	}
 
 	@Override
-	public Icon getIcon(int side, int metadata)
+	public IIcon getIcon(int side, int metadata)
 	{
 		if (side == 0 || side == 1)
 		{
@@ -358,22 +357,22 @@ public class GCCoreBlockMachine2 extends GCCoreBlockTile
 
 	public ItemStack getElectricCompressor()
 	{
-		return new ItemStack(this.blockID, 1, GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA);
+		return new ItemStack(this, 1, GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA);
 	}
 
 	public ItemStack getCircuitFabricator()
 	{
-		return new ItemStack(this.blockID, 1, GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA);
+		return new ItemStack(this, 1, GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA);
 	}
 
 	public ItemStack getOxygenStorageModule()
 	{
-		return new ItemStack(this.blockID, 1, GCCoreBlockMachine2.OXYGEN_STORAGE_MODULE_METADATA);
+		return new ItemStack(this, 1, GCCoreBlockMachine2.OXYGEN_STORAGE_MODULE_METADATA);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
 		par3List.add(this.getElectricCompressor());
 		par3List.add(this.getCircuitFabricator());
@@ -399,20 +398,5 @@ public class GCCoreBlockMachine2 extends GCCoreBlockTile
 		{
 			return 0;
 		}
-	}
-
-	@Override
-	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
-	{
-		Item item = Item.itemsList[this.blockID];
-
-		if (item == null)
-		{
-			return null;
-		}
-
-		int metadata = this.getDamageValue(world, x, y, z);
-
-		return new ItemStack(this.blockID, 1, metadata);
 	}
 }

@@ -2,17 +2,18 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.List;
 
-import javax.swing.Icon;
-
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityBuggyFuelerSingle;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPadSingle;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
@@ -29,17 +30,17 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreBlockLandingPad extends GCCoreBlockAdvancedTile implements IPartialSealableBlock
 {
-	private Icon[] icons = new Icon[3];
+	private IIcon[] icons = new IIcon[3];
 
-	public GCCoreBlockLandingPad(int id, String assetName)
+	public GCCoreBlockLandingPad(String assetName)
 	{
-		super(id, Material.iron);
+		super(Material.iron);
 		this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
 		this.setHardness(1.0F);
 		this.setResistance(10.0F);
-		this.setStepSound(Block.soundStoneFootstep);
-		this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
-		this.setUnlocalizedName(assetName);
+		this.setStepSound(Block.soundTypeStone);
+		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setBlockName(assetName);
 	}
 
 	@Override
@@ -51,7 +52,7 @@ public class GCCoreBlockLandingPad extends GCCoreBlockAdvancedTile implements IP
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
 		for (int i = 0; i < 2; i++)
 		{
@@ -60,7 +61,7 @@ public class GCCoreBlockLandingPad extends GCCoreBlockAdvancedTile implements IP
 	}
 
 	@Override
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
 		this.icons[0] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "launch_pad");
 		this.icons[1] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "buggy_fueler_blank");
@@ -70,7 +71,7 @@ public class GCCoreBlockLandingPad extends GCCoreBlockAdvancedTile implements IP
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getIcon(int par1, int par2)
+	public IIcon getIcon(int par1, int par2)
 	{
 		if (par2 < 0 || par2 > this.icons.length)
 		{
@@ -83,29 +84,29 @@ public class GCCoreBlockLandingPad extends GCCoreBlockAdvancedTile implements IP
 	@Override
 	public boolean canPlaceBlockOnSide(World par1World, int par2, int par3, int par4, int par5)
 	{
-		final int id = GCCoreBlocks.landingPad.blockID;
+		Block block = GCCoreBlocks.landingPad;
 
-		if (par1World.getBlockId(par2 + 1, par3, par4) == id && par1World.getBlockId(par2 + 2, par3, par4) == id && par1World.getBlockId(par2 + 3, par3, par4) == id)
+		if (par1World.getBlock(par2 + 1, par3, par4) == block && par1World.getBlock(par2 + 2, par3, par4) == block && par1World.getBlock(par2 + 3, par3, par4) == block)
 		{
 			return false;
 		}
 
-		if (par1World.getBlockId(par2 - 1, par3, par4) == id && par1World.getBlockId(par2 - 2, par3, par4) == id && par1World.getBlockId(par2 - 3, par3, par4) == id)
+		if (par1World.getBlock(par2 - 1, par3, par4) == block && par1World.getBlock(par2 - 2, par3, par4) == block && par1World.getBlock(par2 - 3, par3, par4) == block)
 		{
 			return false;
 		}
 
-		if (par1World.getBlockId(par2, par3, par4 + 1) == id && par1World.getBlockId(par2, par3, par4 + 2) == id && par1World.getBlockId(par2, par3, par4 + 3) == id)
+		if (par1World.getBlock(par2, par3, par4 + 1) == block && par1World.getBlock(par2, par3, par4 + 2) == block && par1World.getBlock(par2, par3, par4 + 3) == block)
 		{
 			return false;
 		}
 
-		if (par1World.getBlockId(par2, par3, par4 - 1) == id && par1World.getBlockId(par2, par3, par4 - 2) == id && par1World.getBlockId(par2, par3, par4 - 3) == id)
+		if (par1World.getBlock(par2, par3, par4 - 1) == block && par1World.getBlock(par2, par3, par4 - 2) == block && par1World.getBlock(par2, par3, par4 - 3) == block)
 		{
 			return false;
 		}
 
-		if (par1World.getBlockId(par2, par3 - 1, par4) == GCCoreBlocks.landingPad.blockID && par5 == 1)
+		if (par1World.getBlock(par2, par3 - 1, par4) == GCCoreBlocks.landingPad && par5 == 1)
 		{
 			return false;
 		}
@@ -144,7 +145,7 @@ public class GCCoreBlockLandingPad extends GCCoreBlockAdvancedTile implements IP
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world)
+	public TileEntity createNewTileEntity(World world, int metadata)
 	{
 		return null;
 	}

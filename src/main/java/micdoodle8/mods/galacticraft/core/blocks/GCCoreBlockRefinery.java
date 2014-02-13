@@ -2,12 +2,11 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.Random;
 
-import javax.swing.Icon;
-
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityRefinery;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -15,6 +14,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -34,20 +34,20 @@ public class GCCoreBlockRefinery extends GCCoreBlockAdvancedTile
 {
 	private final Random refineryRand = new Random();
 
-	private Icon iconMachineSide;
-	private Icon iconFuelOutput;
-	private Icon iconOilInput;
-	private Icon iconFront;
-	private Icon iconBack;
-	private Icon iconTop;
+	private IIcon iconMachineSide;
+	private IIcon iconFuelOutput;
+	private IIcon iconOilInput;
+	private IIcon iconFront;
+	private IIcon iconBack;
+	private IIcon iconTop;
 
-	protected GCCoreBlockRefinery(int id, String assetName)
+	protected GCCoreBlockRefinery(String assetName)
 	{
-		super(id, Material.rock);
+		super(Material.rock);
 		this.setHardness(1.0F);
-		this.setStepSound(Block.soundMetalFootstep);
-		this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
-		this.setUnlocalizedName(assetName);
+		this.setStepSound(Block.soundTypeMetal);
+		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setBlockName(assetName);
 	}
 
 	@Override
@@ -59,12 +59,12 @@ public class GCCoreBlockRefinery extends GCCoreBlockAdvancedTile
 	@Override
 	public int getRenderType()
 	{
-		return GalacticraftCore.proxy.getBlockRenderID(this.blockID);
+		return GalacticraftCore.proxy.getBlockRenderID(this);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
 		this.iconMachineSide = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_blank");
 		this.iconFuelOutput = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_fuel_input");
@@ -78,7 +78,7 @@ public class GCCoreBlockRefinery extends GCCoreBlockAdvancedTile
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random)
 	{
-		final TileEntity te = par1World.getBlockTileEntity(par2, par3, par4);
+		final TileEntity te = par1World.getTileEntity(par2, par3, par4);
 
 		if (te instanceof TileEntityRefinery)
 		{
@@ -148,9 +148,9 @@ public class GCCoreBlockRefinery extends GCCoreBlockAdvancedTile
 	}
 
 	@Override
-	public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
+	public void breakBlock(World par1World, int par2, int par3, int par4, Block par5, int par6)
 	{
-		final TileEntityRefinery var7 = (TileEntityRefinery) par1World.getBlockTileEntity(par2, par3, par4);
+		final TileEntityRefinery var7 = (TileEntityRefinery) par1World.getTileEntity(par2, par3, par4);
 
 		if (var7 != null)
 		{
@@ -174,7 +174,7 @@ public class GCCoreBlockRefinery extends GCCoreBlockAdvancedTile
 						}
 
 						var9.stackSize -= var13;
-						final EntityItem var14 = new EntityItem(par1World, par2 + var10, par3 + var11, par4 + var12, new ItemStack(var9.itemID, var13, var9.getItemDamage()));
+						final EntityItem var14 = new EntityItem(par1World, par2 + var10, par3 + var11, par4 + var12, new ItemStack(var9.getItem(), var13, var9.getItemDamage()));
 
 						if (var9.hasTagCompound())
 						{
@@ -195,7 +195,7 @@ public class GCCoreBlockRefinery extends GCCoreBlockAdvancedTile
 	}
 
 	@Override
-	public Icon getIcon(int side, int metadata)
+	public IIcon getIcon(int side, int metadata)
 	{
 		if (side == metadata + 2)
 		{

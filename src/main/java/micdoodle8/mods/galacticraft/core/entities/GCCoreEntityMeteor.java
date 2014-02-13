@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
@@ -168,9 +169,9 @@ public class GCCoreEntityMeteor extends Entity
 		{
 			if (par1MovingObjectPosition != null)
 			{
-				if (this.worldObj.getBlockId(par1MovingObjectPosition.blockX, par1MovingObjectPosition.blockY + 1, par1MovingObjectPosition.blockZ) == 0)
+				if (this.worldObj.getBlock(par1MovingObjectPosition.blockX, par1MovingObjectPosition.blockY + 1, par1MovingObjectPosition.blockZ) == Blocks.air)
 				{
-					this.worldObj.setBlock(par1MovingObjectPosition.blockX, par1MovingObjectPosition.blockY + 1, par1MovingObjectPosition.blockZ, GCCoreBlocks.fallenMeteor.blockID, 0, 3);
+					this.worldObj.setBlock(par1MovingObjectPosition.blockX, par1MovingObjectPosition.blockY + 1, par1MovingObjectPosition.blockZ, GCCoreBlocks.fallenMeteor, 0, 3);
 				}
 
 				if (par1MovingObjectPosition.entityHit != null)

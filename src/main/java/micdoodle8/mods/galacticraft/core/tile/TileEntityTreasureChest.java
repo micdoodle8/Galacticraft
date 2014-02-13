@@ -234,7 +234,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements IInve
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
 	{
-		return this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
+		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
 	}
 
 	/**
@@ -305,22 +305,22 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements IInve
 
 			if (this.func_94044_a(this.xCoord - 1, this.yCoord, this.zCoord))
 			{
-				this.adjacentChestXNeg = (TileEntityTreasureChest) this.worldObj.getBlockTileEntity(this.xCoord - 1, this.yCoord, this.zCoord);
+				this.adjacentChestXNeg = (TileEntityTreasureChest) this.worldObj.getTileEntity(this.xCoord - 1, this.yCoord, this.zCoord);
 			}
 
 			if (this.func_94044_a(this.xCoord + 1, this.yCoord, this.zCoord))
 			{
-				this.adjacentChestXPos = (TileEntityTreasureChest) this.worldObj.getBlockTileEntity(this.xCoord + 1, this.yCoord, this.zCoord);
+				this.adjacentChestXPos = (TileEntityTreasureChest) this.worldObj.getTileEntity(this.xCoord + 1, this.yCoord, this.zCoord);
 			}
 
 			if (this.func_94044_a(this.xCoord, this.yCoord, this.zCoord - 1))
 			{
-				this.adjacentChestZNeg = (TileEntityTreasureChest) this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord - 1);
+				this.adjacentChestZNeg = (TileEntityTreasureChest) this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord - 1);
 			}
 
 			if (this.func_94044_a(this.xCoord, this.yCoord, this.zCoord + 1))
 			{
-				this.adjacentChestZPos = (TileEntityTreasureChest) this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord + 1);
+				this.adjacentChestZPos = (TileEntityTreasureChest) this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord + 1);
 			}
 
 			if (this.adjacentChestZNeg != null)

@@ -1,15 +1,15 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import javax.swing.Icon;
-
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenDetector;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
@@ -26,34 +26,34 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreBlockOxygenDetector extends BlockContainer implements ITileEntityProvider
 {
-	private Icon iconSide;
-	private Icon iconTop;
+	private IIcon iconSide;
+	private IIcon iconTop;
 
-	protected GCCoreBlockOxygenDetector(int id, String assetName)
+	protected GCCoreBlockOxygenDetector(String assetName)
 	{
-		super(id, Material.iron);
+		super(Material.iron);
 		this.setHardness(1.0F);
-		this.setStepSound(Block.soundStoneFootstep);
-		this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
-		this.setUnlocalizedName(assetName);
+		this.setStepSound(Block.soundTypeStone);
+		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setBlockName(assetName);
 	}
 
 	@Override
 	public int getRenderType()
 	{
-		return GalacticraftCore.proxy.getBlockRenderID(this.blockID);
+		return GalacticraftCore.proxy.getBlockRenderID(this);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
 		this.iconTop = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_blank");
 		this.iconSide = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "detector_side");
 	}
 
 	@Override
-	public Icon getIcon(int side, int metadata)
+	public IIcon getIcon(int side, int metadata)
 	{
 		if (side == 0 || side == 1)
 		{
@@ -72,7 +72,7 @@ public class GCCoreBlockOxygenDetector extends BlockContainer implements ITileEn
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world)
+	public TileEntity createNewTileEntity(World world, int metadata)
 	{
 		return new TileEntityOxygenDetector();
 	}

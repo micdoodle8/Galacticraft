@@ -1,9 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tick;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
@@ -27,8 +25,6 @@ import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiChoosePlanet;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreWorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
-import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
-import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemSensorGlasses;
 import micdoodle8.mods.galacticraft.core.network.PacketIgniteRocket;
 import micdoodle8.mods.galacticraft.core.network.PacketRotateRocket;
@@ -49,6 +45,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProviderSurface;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
@@ -59,6 +56,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -303,17 +302,19 @@ public class GCCoreTickHandlerClient
 				GCCoreTickHandlerClient.addTabsNextTick = false;
 			}
 
-			if (minecraft.currentScreen != null && minecraft.currentScreen instanceof GuiMainMenu)
+			if (minecraft.currentScreen != null && minecraft.currentScreen instanceof GuiMainMenu && minecraft.thePlayer == null)
 			{
+				// TODO Fix players not being cleared at main menu
+				
 				GalacticraftCore.playersServer.clear();
 				GalacticraftCore.playersClient.clear();
 				playerItemData.clear();
 
-//				if (GCCoreTickHandlerClient.missingRequirementThread == null)
-//				{
-//					GCCoreTickHandlerClient.missingRequirementThread = new GCCoreThreadRequirementMissing(FMLCommonHandler.instance().getEffectiveSide());
-//					GCCoreTickHandlerClient.missingRequirementThread.start();
-//				}
+				if (GCCoreTickHandlerClient.missingRequirementThread == null)
+				{
+					GCCoreTickHandlerClient.missingRequirementThread = new GCCoreThreadRequirementMissing(FMLCommonHandler.instance().getEffectiveSide());
+					GCCoreTickHandlerClient.missingRequirementThread.start();
+				}
 			}
 
 			if (world != null && GCCoreTickHandlerClient.checkedVersion)
@@ -462,6 +463,12 @@ public class GCCoreTickHandlerClient
 
 			GCCoreTickHandlerClient.lastInvKeyPressed = invKeyPressed;
 		}
+	}
+    
+	@SubscribeEvent
+	public void entityJoined(EntityJoinWorldEvent event)
+	{
+		FMLLog.info("DONEERERER " + event.entity);
 	}
 
 	private boolean alreadyContainsBlock(int x1, int y1, int z1)

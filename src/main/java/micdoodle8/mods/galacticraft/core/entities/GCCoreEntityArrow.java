@@ -4,11 +4,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
@@ -35,7 +36,7 @@ public class GCCoreEntityArrow extends Entity
 	private int xTile = -1;
 	private int yTile = -1;
 	private int zTile = -1;
-	private int inTile = 0;
+	private Block inTile;
 	private int inData = 0;
 	private boolean inGround = false;
 
@@ -201,19 +202,20 @@ public class GCCoreEntityArrow extends Entity
 			this.prevRotationYaw = this.rotationYaw = (float) (Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
 			this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(this.motionY, var1) * 180.0D / Math.PI);
 		}
+		
 
-		final int var16 = this.worldObj.getBlockId(this.xTile, this.yTile, this.zTile);
+        Block block = this.worldObj.getBlock(this.xTile, this.yTile, this.zTile);
 
-		if (var16 > 0)
-		{
-			Block.blocksList[var16].setBlockBoundsBasedOnState(this.worldObj, this.xTile, this.yTile, this.zTile);
-			final AxisAlignedBB var2 = Block.blocksList[var16].getCollisionBoundingBoxFromPool(this.worldObj, this.xTile, this.yTile, this.zTile);
+        if (block.getMaterial() != Material.air)
+        {
+            block.setBlockBoundsBasedOnState(this.worldObj, this.xTile, this.yTile, this.zTile);
+            AxisAlignedBB axisalignedbb = block.getCollisionBoundingBoxFromPool(this.worldObj, this.xTile, this.yTile, this.zTile);
 
-			if (var2 != null && var2.isVecInside(this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ)))
-			{
-				this.inGround = true;
-			}
-		}
+            if (axisalignedbb != null && axisalignedbb.isVecInside(this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ)))
+            {
+                this.inGround = true;
+            }
+        }
 
 		if (this.arrowShake > 0)
 		{
@@ -222,11 +224,10 @@ public class GCCoreEntityArrow extends Entity
 
 		if (this.inGround)
 		{
-			final int var18 = this.worldObj.getBlockId(this.xTile, this.yTile, this.zTile);
-			final int var19 = this.worldObj.getBlockMetadata(this.xTile, this.yTile, this.zTile);
+            int j = this.worldObj.getBlockMetadata(this.xTile, this.yTile, this.zTile);
 
-			if (var18 == this.inTile && var19 == this.inData)
-			{
+            if (block == this.inTile && j == this.inData)
+            {
 				++this.ticksInGround;
 
 				if (this.ticksInGround == 1200)
@@ -249,7 +250,7 @@ public class GCCoreEntityArrow extends Entity
 			++this.ticksInAir;
 			Vec3 var17 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
 			Vec3 var3 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
-			MovingObjectPosition var4 = this.worldObj.rayTraceBlocks_do_do(var17, var3, false, true);
+			MovingObjectPosition var4 = this.worldObj.func_147447_a(var17, var3, false, true, false);
 			var17 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
 			var3 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
@@ -357,7 +358,7 @@ public class GCCoreEntityArrow extends Entity
 					this.xTile = var4.blockX;
 					this.yTile = var4.blockY;
 					this.zTile = var4.blockZ;
-					this.inTile = this.worldObj.getBlockId(this.xTile, this.yTile, this.zTile);
+                    this.inTile = block;
 					this.inData = this.worldObj.getBlockMetadata(this.xTile, this.yTile, this.zTile);
 					this.motionX = (float) (var4.hitVec.xCoord - this.posX);
 					this.motionY = (float) (var4.hitVec.yCoord - this.posY);
@@ -428,7 +429,7 @@ public class GCCoreEntityArrow extends Entity
 			this.motionZ *= var23;
 			this.motionY -= var11;
 			this.setPosition(this.posX, this.posY, this.posZ);
-			this.doBlockCollisions();
+            this.func_145775_I();
 		}
 	}
 
@@ -446,7 +447,7 @@ public class GCCoreEntityArrow extends Entity
 		par1NBTTagCompound.setShort("xTile", (short) this.xTile);
 		par1NBTTagCompound.setShort("yTile", (short) this.yTile);
 		par1NBTTagCompound.setShort("zTile", (short) this.zTile);
-		par1NBTTagCompound.setByte("inTile", (byte) this.inTile);
+		par1NBTTagCompound.setByte("inTile", (byte)Block.getIdFromBlock(this.inTile));
 		par1NBTTagCompound.setByte("inData", (byte) this.inData);
 		par1NBTTagCompound.setByte("shake", (byte) this.arrowShake);
 		par1NBTTagCompound.setByte("inGround", (byte) (this.inGround ? 1 : 0));
@@ -463,7 +464,7 @@ public class GCCoreEntityArrow extends Entity
 		this.xTile = par1NBTTagCompound.getShort("xTile");
 		this.yTile = par1NBTTagCompound.getShort("yTile");
 		this.zTile = par1NBTTagCompound.getShort("zTile");
-		this.inTile = par1NBTTagCompound.getByte("inTile") & 255;
+        this.inTile = Block.getBlockById(par1NBTTagCompound.getByte("inTile") & 255);
 		this.inData = par1NBTTagCompound.getByte("inData") & 255;
 		this.arrowShake = par1NBTTagCompound.getByte("shake") & 255;
 		this.inGround = par1NBTTagCompound.getByte("inGround") == 1;
@@ -493,7 +494,7 @@ public class GCCoreEntityArrow extends Entity
 		{
 			boolean var2 = this.canBePickedUp == 1 || this.canBePickedUp == 2 && par1EntityPlayer.capabilities.isCreativeMode;
 
-			if (this.canBePickedUp == 1 && !par1EntityPlayer.inventory.addItemStackToInventory(new ItemStack(Item.arrow, 1)))
+			if (this.canBePickedUp == 1 && !par1EntityPlayer.inventory.addItemStackToInventory(new ItemStack(Items.arrow, 1)))
 			{
 				var2 = false;
 			}

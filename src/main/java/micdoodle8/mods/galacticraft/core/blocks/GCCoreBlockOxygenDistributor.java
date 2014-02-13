@@ -1,16 +1,16 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import javax.swing.Icon;
-
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenDistributor;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -28,24 +28,24 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreBlockOxygenDistributor extends GCCoreBlockAdvancedTile
 {
-	private Icon iconMachineSide;
-	private Icon iconDistributor;
-	private Icon iconInput;
-	private Icon iconOutput;
+	private IIcon iconMachineSide;
+	private IIcon iconDistributor;
+	private IIcon iconInput;
+	private IIcon iconOutput;
 
-	public GCCoreBlockOxygenDistributor(int id, String assetName)
+	public GCCoreBlockOxygenDistributor(String assetName)
 	{
-		super(id, Material.rock);
+		super(Material.rock);
 		this.setHardness(1.0F);
-		this.setStepSound(Block.soundStoneFootstep);
-		this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
-		this.setUnlocalizedName(assetName);
+		this.setStepSound(Block.soundTypeStone);
+		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setBlockName(assetName);
 	}
 
 	@Override
 	public int getRenderType()
 	{
-		return GalacticraftCore.proxy.getBlockRenderID(this.blockID);
+		return GalacticraftCore.proxy.getBlockRenderID(this);
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class GCCoreBlockOxygenDistributor extends GCCoreBlockAdvancedTile
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
 		this.iconMachineSide = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_blank");
 		this.iconDistributor = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_distributor_fan");
@@ -101,7 +101,7 @@ public class GCCoreBlockOxygenDistributor extends GCCoreBlockAdvancedTile
 	}
 
 	@Override
-	public Icon getIcon(int side, int metadata)
+	public IIcon getIcon(int side, int metadata)
 	{
 		if (side == 0 || side == 1)
 		{

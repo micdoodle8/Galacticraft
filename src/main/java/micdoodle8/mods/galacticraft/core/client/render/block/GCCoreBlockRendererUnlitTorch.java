@@ -1,12 +1,11 @@
 package micdoodle8.mods.galacticraft.core.client.render.block;
 
-import javax.swing.Icon;
-
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockUnlitTorch;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
 import org.lwjgl.opengl.GL11;
@@ -39,7 +38,7 @@ public class GCCoreBlockRendererUnlitTorch implements ISimpleBlockRenderingHandl
 	}
 
 	@Override
-	public boolean shouldRender3DInInventory()
+	public boolean shouldRender3DInInventory(int modelId)
 	{
 		return false;
 	}
@@ -125,14 +124,14 @@ public class GCCoreBlockRendererUnlitTorch implements ISimpleBlockRenderingHandl
 		// if (par1Block instanceof GCCoreBlockUnlitTorch)
 		{
 			final Tessellator tessellator = Tessellator.instance;
-			Icon icon = renderBlocks.getBlockIconFromSideAndMetadata(par1Block, 0, 0);
+			IIcon icon = renderBlocks.getBlockIconFromSideAndMetadata(par1Block, 0, 0);
 
-			if (par1Block.blockID == GCCoreBlocks.unlitTorch.blockID)
+			if (par1Block == GCCoreBlocks.unlitTorch)
 			{
 				icon = GCCoreBlockUnlitTorch.torchIcons[1];
 			}
 
-			if (par1Block.blockID == GCCoreBlocks.unlitTorchLit.blockID)
+			if (par1Block == GCCoreBlocks.unlitTorchLit)
 			{
 				icon = GCCoreBlockUnlitTorch.torchIcons[0];
 			}

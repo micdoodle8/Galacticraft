@@ -3,15 +3,16 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import java.util.List;
 import java.util.Random;
 
-import javax.swing.Icon;
-
 import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -26,14 +27,14 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreBlock extends Block implements IDetectableResource
 {
-	Icon[] iconBuffer;
+	IIcon[] iconBuffer;
 
-	protected GCCoreBlock(int id, String assetName)
+	protected GCCoreBlock(String assetName)
 	{
-		super(id, Material.rock);
+		super(Material.rock);
 		this.setHardness(1.0F);
-		this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
-		this.setUnlocalizedName(assetName);
+		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setBlockName(assetName);
 	}
 
 	@Override
@@ -43,9 +44,9 @@ public class GCCoreBlock extends Block implements IDetectableResource
 	}
 
 	@Override
-	public void registerIcons(IconRegister iconRegister)
+	public void registerBlockIcons(IIconRegister iconRegister)
 	{
-		this.iconBuffer = new Icon[11];
+		this.iconBuffer = new IIcon[11];
 		this.iconBuffer[0] = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "deco_aluminium_2");
 		this.iconBuffer[1] = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "deco_aluminium_4");
 		this.iconBuffer[2] = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "deco_aluminium_1");
@@ -60,7 +61,7 @@ public class GCCoreBlock extends Block implements IDetectableResource
 	}
 
 	@Override
-	public Icon getIcon(int side, int meta)
+	public IIcon getIcon(int side, int meta)
 	{
 		switch (meta)
 		{
@@ -96,14 +97,14 @@ public class GCCoreBlock extends Block implements IDetectableResource
 	}
 
 	@Override
-	public int idDropped(int meta, Random random, int par3)
+	public Item getItemDropped(int meta, Random random, int fortune)
 	{
 		switch (meta)
 		{
 		case 8:
-			return GCCoreItems.basicItem.itemID;
+			return GCCoreItems.basicItem;
 		default:
-			return this.blockID;
+			return super.getItemDropped(meta, random, fortune);
 		}
 	}
 
@@ -122,7 +123,7 @@ public class GCCoreBlock extends Block implements IDetectableResource
 	@Override
 	public int quantityDropped(int meta, int fortune, Random random)
 	{
-		if (fortune > 0 && this.blockID != this.idDropped(meta, random, fortune))
+		if (fortune > 0 && Item.getItemFromBlock(this) != this.getItemDropped(meta, random, fortune))
 		{
 			int j = random.nextInt(fortune + 2) - 1;
 
@@ -142,7 +143,7 @@ public class GCCoreBlock extends Block implements IDetectableResource
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@SideOnly(Side.CLIENT)
 	@Override
-	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
 		for (int var4 = 3; var4 < 12; ++var4)
 		{

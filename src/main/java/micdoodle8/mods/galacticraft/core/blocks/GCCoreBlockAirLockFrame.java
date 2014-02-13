@@ -2,19 +2,20 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.List;
 
-import javax.swing.Icon;
-
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAirLock;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAirLockController;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -33,24 +34,24 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvancedTile
 {
 	@SideOnly(Side.CLIENT)
-	private Icon[] airLockIcons;
+	private IIcon[] airLockIcons;
 
 	public static int METADATA_AIR_LOCK_FRAME = 0;
 	public static int METADATA_AIR_LOCK_CONTROLLER = 1;
 
-	public GCCoreBlockAirLockFrame(int id, String assetName)
+	public GCCoreBlockAirLockFrame(String assetName)
 	{
-		super(id, Material.rock);
+		super(Material.rock);
 		this.setHardness(1.0F);
-		this.setStepSound(Block.soundMetalFootstep);
-		this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
-		this.setUnlocalizedName(assetName);
+		this.setStepSound(Block.soundTypeStone);
+		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setBlockName(assetName);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@SideOnly(Side.CLIENT)
 	@Override
-	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
 		par3List.add(new ItemStack(par1, 1, GCCoreBlockAirLockFrame.METADATA_AIR_LOCK_FRAME));
 		par3List.add(new ItemStack(par1, 1, GCCoreBlockAirLockFrame.METADATA_AIR_LOCK_CONTROLLER));
@@ -73,19 +74,19 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvancedTile
 	{
 		super.onBlockPlacedBy(world, x, y, z, entityLiving, itemStack);
 
-		TileEntity tile = world.getBlockTileEntity(x, y, z);
+		TileEntity tile = world.getTileEntity(x, y, z);
 
 		if (tile instanceof TileEntityAirLockController && entityLiving instanceof EntityPlayer)
 		{
-			((TileEntityAirLockController) tile).setOwnerName(((EntityPlayer) entityLiving).username);
+			((TileEntityAirLockController) tile).setOwnerName(((EntityPlayer) entityLiving).getGameProfile().getName());
 		}
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
-		this.airLockIcons = new Icon[8];
+		this.airLockIcons = new IIcon[8];
 		this.airLockIcons[0] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "airlock_off");
 		this.airLockIcons[1] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "airlock_on_1");
 		this.airLockIcons[2] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "airlock_on_2");
@@ -98,7 +99,7 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvancedTile
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getIcon(int par1, int par2)
+	public IIcon getIcon(int par1, int par2)
 	{
 		if (par2 >= GCCoreBlockAirLockFrame.METADATA_AIR_LOCK_CONTROLLER)
 		{
@@ -116,7 +117,7 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvancedTile
 	}
 
 	@Override
-	public Icon getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int side)
+	public IIcon getIcon(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int side)
 	{
 		if (par1IBlockAccess.getBlockMetadata(par2, par3, par4) >= GCCoreBlockAirLockFrame.METADATA_AIR_LOCK_CONTROLLER)
 		{
@@ -125,7 +126,7 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvancedTile
 				return this.airLockIcons[0];
 			}
 
-			TileEntity tile = par1IBlockAccess.getBlockTileEntity(par2, par3, par4);
+			TileEntity tile = par1IBlockAccess.getTileEntity(par2, par3, par4);
 
 			if (tile instanceof TileEntityAirLockController)
 			{
@@ -153,9 +154,8 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvancedTile
 				{
 					final Vector3 vector = new Vector3(par2, par3, par4);
 					Vector3 blockVec = this.modifyPositionFromSide(vector.clone(), orientation, 1);
-					Block connection = Block.blocksList[blockVec.getBlock(par1IBlockAccess)];
 
-					if (connection != null && connection.equals(GCCoreBlocks.airLockSeal))
+					if (blockVec.getBlock(par1IBlockAccess).equals(GCCoreBlocks.airLockSeal))
 					{
 						if (orientation.offsetY == -1)
 						{
@@ -208,9 +208,8 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvancedTile
 						}
 
 						blockVec = vector.clone().translate(new Vector3(orientation.offsetX, orientation.offsetY, orientation.offsetZ));
-						connection = Block.blocksList[blockVec.getBlock(par1IBlockAccess)];
 
-						if (connection != null && connection.equals(GCCoreBlocks.airLockSeal))
+						if (blockVec.getBlock(par1IBlockAccess).equals(GCCoreBlocks.airLockSeal))
 						{
 							if (orientation.offsetX == 1)
 							{
@@ -346,7 +345,7 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvancedTile
 	public boolean onMachineActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ)
 	{
 		int metadata = world.getBlockMetadata(x, y, z);
-		TileEntity tile = world.getBlockTileEntity(x, y, z);
+		TileEntity tile = world.getTileEntity(x, y, z);
 
 		if (metadata >= GCCoreBlockAirLockFrame.METADATA_AIR_LOCK_CONTROLLER && tile instanceof TileEntityAirLockController)
 		{
@@ -358,9 +357,9 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvancedTile
 	}
 
 	@Override
-	public void breakBlock(World world, int x, int y, int z, int par5, int par6)
+	public void breakBlock(World world, int x, int y, int z, Block par5, int par6)
 	{
-		TileEntity tile = world.getBlockTileEntity(x, y, z);
+		TileEntity tile = world.getTileEntity(x, y, z);
 
 		if (tile instanceof TileEntityAirLockController)
 		{

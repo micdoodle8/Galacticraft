@@ -138,7 +138,7 @@ public class OxygenNetwork implements IOxygenNetwork
 			{
 				if (!tileEntity.isInvalid())
 				{
-					if (tileEntity.worldObj.getBlockTileEntity(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord) == tileEntity)
+					if (tileEntity.worldObj.getTileEntity(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord) == tileEntity)
 					{
 						for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
 						{

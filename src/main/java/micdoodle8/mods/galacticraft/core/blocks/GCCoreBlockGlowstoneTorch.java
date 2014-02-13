@@ -10,6 +10,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * GCCoreBlockGlowstoneTorch.java
@@ -22,13 +23,13 @@ import net.minecraft.world.World;
  */
 public class GCCoreBlockGlowstoneTorch extends Block
 {
-	protected GCCoreBlockGlowstoneTorch(int id, String assetName)
+	protected GCCoreBlockGlowstoneTorch(String assetName)
 	{
-		super(id, Material.circuits);
+		super(Material.circuits);
 		this.setTickRandomly(true);
-		this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
-		this.setUnlocalizedName(assetName);
-		this.setLightValue(0.85F);
+		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setBlockName(assetName);
+		this.setLightLevel(0.85F);
 	}
 
 	@Override
@@ -58,26 +59,26 @@ public class GCCoreBlockGlowstoneTorch extends Block
 	@Override
 	public int getRenderType()
 	{
-		return GalacticraftCore.proxy.getBlockRenderID(this.blockID);
+		return GalacticraftCore.proxy.getBlockRenderID(this);
 	}
 
 	private boolean canPlaceTorchOn(World par1World, int par2, int par3, int par4)
 	{
-		if (par1World.doesBlockHaveSolidTopSurface(par2, par3, par4))
+		if (World.doesBlockHaveSolidTopSurface(par1World, par2, par3, par4))
 		{
 			return true;
 		}
 		else
 		{
-			int l = par1World.getBlockId(par2, par3, par4);
-			return Block.blocksList[l] != null && Block.blocksList[l].canPlaceTorchOnTop(par1World, par2, par3, par4);
+			Block block = par1World.getBlock(par2, par3, par4);
+			return block.canPlaceTorchOnTop(par1World, par2, par3, par4);
 		}
 	}
 
 	@Override
 	public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4)
 	{
-		return par1World.isBlockSolidOnSide(par2 - 1, par3, par4, EAST, true) || par1World.isBlockSolidOnSide(par2 + 1, par3, par4, WEST, true) || par1World.isBlockSolidOnSide(par2, par3, par4 - 1, SOUTH, true) || par1World.isBlockSolidOnSide(par2, par3, par4 + 1, NORTH, true) || this.canPlaceTorchOn(par1World, par2, par3 - 1, par4);
+		return par1World.isSideSolid(par2 - 1, par3, par4, ForgeDirection.EAST, true) || par1World.isSideSolid(par2 + 1, par3, par4, ForgeDirection.WEST, true) || par1World.isSideSolid(par2, par3, par4 - 1, ForgeDirection.SOUTH, true) || par1World.isSideSolid(par2, par3, par4 + 1, ForgeDirection.NORTH, true) || this.canPlaceTorchOn(par1World, par2, par3 - 1, par4);
 	}
 
 	@Override
@@ -90,22 +91,22 @@ public class GCCoreBlockGlowstoneTorch extends Block
 			j1 = 5;
 		}
 
-		if (par5 == 2 && par1World.isBlockSolidOnSide(par2, par3, par4 + 1, NORTH, true))
+		if (par5 == 2 && par1World.isSideSolid(par2, par3, par4 + 1, ForgeDirection.NORTH, true))
 		{
 			j1 = 4;
 		}
 
-		if (par5 == 3 && par1World.isBlockSolidOnSide(par2, par3, par4 - 1, SOUTH, true))
+		if (par5 == 3 && par1World.isSideSolid(par2, par3, par4 - 1, ForgeDirection.SOUTH, true))
 		{
 			j1 = 3;
 		}
 
-		if (par5 == 4 && par1World.isBlockSolidOnSide(par2 + 1, par3, par4, WEST, true))
+		if (par5 == 4 && par1World.isSideSolid(par2 + 1, par3, par4, ForgeDirection.WEST, true))
 		{
 			j1 = 2;
 		}
 
-		if (par5 == 5 && par1World.isBlockSolidOnSide(par2 - 1, par3, par4, EAST, true))
+		if (par5 == 5 && par1World.isSideSolid(par2 - 1, par3, par4, ForgeDirection.EAST, true))
 		{
 			j1 = 1;
 		}
@@ -129,19 +130,19 @@ public class GCCoreBlockGlowstoneTorch extends Block
 	{
 		if (par1World.getBlockMetadata(par2, par3, par4) == 0)
 		{
-			if (par1World.isBlockSolidOnSide(par2 - 1, par3, par4, EAST, true))
+			if (par1World.isSideSolid(par2 - 1, par3, par4, ForgeDirection.EAST, true))
 			{
 				par1World.setBlockMetadataWithNotify(par2, par3, par4, 1, 2);
 			}
-			else if (par1World.isBlockSolidOnSide(par2 + 1, par3, par4, WEST, true))
+			else if (par1World.isSideSolid(par2 + 1, par3, par4, ForgeDirection.WEST, true))
 			{
 				par1World.setBlockMetadataWithNotify(par2, par3, par4, 2, 2);
 			}
-			else if (par1World.isBlockSolidOnSide(par2, par3, par4 - 1, SOUTH, true))
+			else if (par1World.isSideSolid(par2, par3, par4 - 1, ForgeDirection.SOUTH, true))
 			{
 				par1World.setBlockMetadataWithNotify(par2, par3, par4, 3, 2);
 			}
-			else if (par1World.isBlockSolidOnSide(par2, par3, par4 + 1, NORTH, true))
+			else if (par1World.isSideSolid(par2, par3, par4 + 1, ForgeDirection.NORTH, true))
 			{
 				par1World.setBlockMetadataWithNotify(par2, par3, par4, 4, 2);
 			}
@@ -155,29 +156,29 @@ public class GCCoreBlockGlowstoneTorch extends Block
 	}
 
 	@Override
-	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
+	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block par5)
 	{
 		if (this.dropTorchIfCantStay(par1World, par2, par3, par4))
 		{
 			int i1 = par1World.getBlockMetadata(par2, par3, par4);
 			boolean flag = false;
 
-			if (!par1World.isBlockSolidOnSide(par2 - 1, par3, par4, EAST, true) && i1 == 1)
+			if (!par1World.isSideSolid(par2 - 1, par3, par4, ForgeDirection.EAST, true) && i1 == 1)
 			{
 				flag = true;
 			}
 
-			if (!par1World.isBlockSolidOnSide(par2 + 1, par3, par4, WEST, true) && i1 == 2)
+			if (!par1World.isSideSolid(par2 + 1, par3, par4, ForgeDirection.WEST, true) && i1 == 2)
 			{
 				flag = true;
 			}
 
-			if (!par1World.isBlockSolidOnSide(par2, par3, par4 - 1, SOUTH, true) && i1 == 3)
+			if (!par1World.isSideSolid(par2, par3, par4 - 1, ForgeDirection.SOUTH, true) && i1 == 3)
 			{
 				flag = true;
 			}
 
-			if (!par1World.isBlockSolidOnSide(par2, par3, par4 + 1, NORTH, true) && i1 == 4)
+			if (!par1World.isSideSolid(par2, par3, par4 + 1, ForgeDirection.NORTH, true) && i1 == 4)
 			{
 				flag = true;
 			}
@@ -199,7 +200,7 @@ public class GCCoreBlockGlowstoneTorch extends Block
 	{
 		if (!this.canPlaceBlockAt(par1World, par2, par3, par4))
 		{
-			if (par1World.getBlockId(par2, par3, par4) == this.blockID)
+			if (par1World.getBlock(par2, par3, par4) == this)
 			{
 				this.dropBlockAsItem(par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4), 0);
 				par1World.setBlockToAir(par2, par3, par4);

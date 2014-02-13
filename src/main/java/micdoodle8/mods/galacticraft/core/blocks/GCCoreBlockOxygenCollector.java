@@ -2,18 +2,17 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.Random;
 
-import javax.swing.Icon;
-
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenCollector;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -32,19 +31,19 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreBlockOxygenCollector extends GCCoreBlockAdvancedTile
 {
 	@SideOnly(Side.CLIENT)
-	private Icon[] collectorIcons;
+	private IIcon[] collectorIcons;
 
-	private Icon iconMachineSide;
-	private Icon iconInput;
-	private Icon iconOutput;
+	private IIcon iconMachineSide;
+	private IIcon iconInput;
+	private IIcon iconOutput;
 
-	public GCCoreBlockOxygenCollector(int id, String assetName)
+	public GCCoreBlockOxygenCollector(String assetName)
 	{
-		super(id, Material.rock);
+		super(Material.rock);
 		this.setHardness(1.0F);
-		this.setStepSound(Block.soundStoneFootstep);
-		this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
-		this.setUnlocalizedName(assetName);
+		this.setStepSound(Block.soundTypeStone);
+		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setBlockName(assetName);
 	}
 
 	@Override
@@ -56,12 +55,12 @@ public class GCCoreBlockOxygenCollector extends GCCoreBlockAdvancedTile
 	@Override
 	public int getRenderType()
 	{
-		return GalacticraftCore.proxy.getBlockRenderID(this.blockID);
+		return GalacticraftCore.proxy.getBlockRenderID(this);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
 		this.iconMachineSide = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_collector_fan");
 		this.iconInput = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_oxygen_output");
@@ -111,7 +110,7 @@ public class GCCoreBlockOxygenCollector extends GCCoreBlockAdvancedTile
 	}
 
 	@Override
-	public Icon getIcon(int side, int metadata)
+	public IIcon getIcon(int side, int metadata)
 	{
 		if (side == metadata + 2)
 		{
@@ -154,9 +153,9 @@ public class GCCoreBlockOxygenCollector extends GCCoreBlockAdvancedTile
 	@Override
 	public void randomDisplayTick(World par1World, int x, int y, int z, Random rand)
 	{
-		if (par1World.getBlockTileEntity(x, y, z) instanceof TileEntityOxygenCollector)
+		if (par1World.getTileEntity(x, y, z) instanceof TileEntityOxygenCollector)
 		{
-			if (((TileEntityOxygenCollector) par1World.getBlockTileEntity(x, y, z)).lastOxygenCollected > 1)
+			if (((TileEntityOxygenCollector) par1World.getTileEntity(x, y, z)).lastOxygenCollected > 1)
 			{
 				for (int particleCount = 0; particleCount < 10; particleCount++)
 				{
@@ -184,7 +183,7 @@ public class GCCoreBlockOxygenCollector extends GCCoreBlockAdvancedTile
 						mZ = rand.nextFloat() * 2.0F * dir;
 					}
 
-					GalacticraftCore.proxy.spawnParticle("oxygen", new Vector3(x2, y2, z2), new Vector3(mX, mY, mZ), new Vector3(0.7D, 0.7D, 1.0D));
+//					GalacticraftCore.proxy.spawnParticle("oxygen", new Vector3(x2, y2, z2), new Vector3(mX, mY, mZ), new Vector3(0.7D, 0.7D, 1.0D)); TODO Fix particles
 				}
 			}
 		}

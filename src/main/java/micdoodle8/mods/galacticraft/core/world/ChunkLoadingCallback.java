@@ -57,7 +57,7 @@ public class ChunkLoadingCallback implements LoadingCallback
 				int tileX = nbt.getInteger("ChunkLoaderTileX");
 				int tileY = nbt.getInteger("ChunkLoaderTileY");
 				int tileZ = nbt.getInteger("ChunkLoaderTileZ");
-				TileEntity tile = world.getBlockTileEntity(tileX, tileY, tileZ);
+				TileEntity tile = world.getTileEntity(tileX, tileY, tileZ);
 
 				if (tile instanceof IChunkLoader)
 				{
@@ -124,7 +124,7 @@ public class ChunkLoadingCallback implements LoadingCallback
 		ChunkCoordIntPair chunkPos = new ChunkCoordIntPair(x >> 4, z >> 4);
 		ForgeChunkManager.forceChunk(ticket, chunkPos);
 		//
-		// TileEntity tile = world.getBlockTileEntity(x, y, z);
+		// TileEntity tile = world.getTileEntity(x, y, z);
 		//
 		// if (tile instanceof IChunkLoader)
 		// {
@@ -302,7 +302,7 @@ public class ChunkLoadingCallback implements LoadingCallback
 		// World world = loader.getWorldObj();
 		//
 		// ChunkCoordinates coords = loader.getCoords();
-		// TileEntity tile = world.getBlockTileEntity(coords.posX, coords.posY,
+		// TileEntity tile = world.getTileEntity(coords.posX, coords.posY,
 		// coords.posZ);
 		//
 		// if (tile != null && tile.equals(loader))

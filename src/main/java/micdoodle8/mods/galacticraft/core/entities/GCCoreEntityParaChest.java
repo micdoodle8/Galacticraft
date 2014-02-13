@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.entities;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityParachest;
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
@@ -51,12 +52,12 @@ public class GCCoreEntityParaChest extends Entity
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound nbt)
 	{
-		final NBTTagList var2 = nbt.getTagList("Items");
+		final NBTTagList var2 = nbt.getTagList("Items", 10);
 		this.cargo = new ItemStack[27];
 
 		for (int var3 = 0; var3 < var2.tagCount(); ++var3)
 		{
-			final NBTTagCompound var4 = (NBTTagCompound) var2.tagAt(var3);
+			final NBTTagCompound var4 = (NBTTagCompound) var2.getCompoundTagAt(var3);
 			final int var5 = var4.getByte("Slot") & 255;
 
 			if (var5 >= 0 && var5 < this.cargo.length)
@@ -103,9 +104,9 @@ public class GCCoreEntityParaChest extends Entity
 					final int y = MathHelper.floor_double(this.posY);
 					final int z = MathHelper.floor_double(this.posZ);
 
-					final int id = this.worldObj.getBlockId(x, y + i, z);
+					Block block = this.worldObj.getBlock(x, y + i, z);
 
-					if (id == 0)
+					if (block.getMaterial().isReplaceable())
 					{
 						if (this.placeChest(x, y + i, z))
 						{
@@ -145,8 +146,8 @@ public class GCCoreEntityParaChest extends Entity
 
 	private boolean placeChest(int x, int y, int z)
 	{
-		this.worldObj.setBlock(x, y, z, GCCoreBlocks.parachest.blockID, 0, 3);
-		final TileEntity te = this.worldObj.getBlockTileEntity(x, y, z);
+		this.worldObj.setBlock(x, y, z, GCCoreBlocks.parachest, 0, 3);
+		final TileEntity te = this.worldObj.getTileEntity(x, y, z);
 
 		if (te instanceof TileEntityParachest && this.cargo != null)
 		{

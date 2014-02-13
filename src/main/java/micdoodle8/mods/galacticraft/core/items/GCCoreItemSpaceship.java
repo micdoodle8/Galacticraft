@@ -7,7 +7,9 @@ import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
+import micdoodle8.mods.galacticraft.core.proxy.ClientProxy;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
@@ -29,9 +31,9 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreItemSpaceship extends Item implements IHoldableItem
 {
-	public GCCoreItemSpaceship(int id, String assetName)
+	public GCCoreItemSpaceship(String assetName)
 	{
-		super(id);
+		super();
 		this.setMaxDamage(0);
 		this.setHasSubtypes(true);
 		this.setMaxStackSize(1);
@@ -64,9 +66,9 @@ public class GCCoreItemSpaceship extends Item implements IHoldableItem
 			{
 				for (int j = -1; j < 2; j++)
 				{
-					final int id = par3World.getBlockId(par4 + i, par5, par6 + j);
+					Block block = par3World.getBlock(par4 + i, par5, par6 + j);
 
-					if (id == GCCoreBlocks.landingPadFull.blockID)
+					if (block == GCCoreBlocks.landingPadFull)
 					{
 						amountOfCorrectBlocks = 9;
 
@@ -108,7 +110,7 @@ public class GCCoreItemSpaceship extends Item implements IHoldableItem
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
 		for (int i = 0; i < EnumRocketType.values().length; i++)
 		{
@@ -120,7 +122,7 @@ public class GCCoreItemSpaceship extends Item implements IHoldableItem
 	@SideOnly(Side.CLIENT)
 	public EnumRarity getRarity(ItemStack par1ItemStack)
 	{
-		return ClientProxyCore.galacticraftItem;
+		return ClientProxy.galacticraftItem;
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })

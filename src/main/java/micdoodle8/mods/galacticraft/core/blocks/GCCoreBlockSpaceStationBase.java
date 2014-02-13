@@ -1,13 +1,13 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import javax.swing.Icon;
-
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntitySpaceStationBase;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
@@ -24,14 +24,14 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreBlockSpaceStationBase extends BlockContainer implements ITileEntityProvider
 {
-	private Icon[] spaceStationIcons;
+	private IIcon[] spaceStationIcons;
 
-	public GCCoreBlockSpaceStationBase(int id, String assetName)
+	public GCCoreBlockSpaceStationBase(String assetName)
 	{
-		super(id, Material.rock);
+		super(Material.rock);
 		this.setHardness(10000.0F);
-		this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
-		this.setUnlocalizedName(assetName);
+		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setBlockName(assetName);
 	}
 
 	@Override
@@ -42,16 +42,16 @@ public class GCCoreBlockSpaceStationBase extends BlockContainer implements ITile
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
-		this.spaceStationIcons = new Icon[2];
+		this.spaceStationIcons = new IIcon[2];
 		this.spaceStationIcons[0] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "space_station_top");
 		this.spaceStationIcons[1] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "space_station_side");
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
+	public IIcon getIcon(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
 	{
 		switch (par5)
 		{
@@ -63,7 +63,7 @@ public class GCCoreBlockSpaceStationBase extends BlockContainer implements ITile
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world)
+	public TileEntity createNewTileEntity(World world, int metadata)
 	{
 		return new TileEntitySpaceStationBase();
 	}

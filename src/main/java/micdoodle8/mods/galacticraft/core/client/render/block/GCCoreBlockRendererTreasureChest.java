@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.world.IBlockAccess;
 
 import org.lwjgl.opengl.GL11;
@@ -45,12 +46,6 @@ public class GCCoreBlockRendererTreasureChest implements ISimpleBlockRenderingHa
 	}
 
 	@Override
-	public boolean shouldRender3DInInventory()
-	{
-		return true;
-	}
-
-	@Override
 	public int getRenderId()
 	{
 		return this.renderID;
@@ -60,9 +55,15 @@ public class GCCoreBlockRendererTreasureChest implements ISimpleBlockRenderingHa
 
 	public void renderChest(Block par1Block, int par2, float par3)
 	{
-		if (par1Block.blockID == GCCoreBlocks.treasureChestTier1.blockID)
+		if (par1Block == GCCoreBlocks.treasureChestTier1)
 		{
-			TileEntityRenderer.instance.renderTileEntityAt(this.chest, 0.0D, 0.0D, 0.0D, 0.0F);
+			TileEntityRendererDispatcher.instance.renderTileEntityAt(this.chest, 0.0D, 0.0D, 0.0D, 0.0F);
 		}
+	}
+
+	@Override
+	public boolean shouldRender3DInInventory(int modelId) 
+	{
+		return false;
 	}
 }

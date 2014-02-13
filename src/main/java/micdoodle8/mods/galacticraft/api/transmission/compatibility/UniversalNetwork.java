@@ -158,7 +158,7 @@ public class UniversalNetwork extends ElectricityNetwork
 
 			if (tileEntity != null && !tileEntity.isInvalid())
 			{
-				if (tileEntity.worldObj.getBlockTileEntity(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord) == tileEntity)
+				if (tileEntity.worldObj.getTileEntity(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord) == tileEntity)
 				{
 					if (tileEntity instanceof IElectrical)
 					{
@@ -275,7 +275,7 @@ public class UniversalNetwork extends ElectricityNetwork
 					it.remove();
 					continue;
 				}
-				else if (((TileEntity) conductor).getWorldObj().getBlockTileEntity(((TileEntity) conductor).xCoord, ((TileEntity) conductor).yCoord, ((TileEntity) conductor).zCoord) != conductor)
+				else if (((TileEntity) conductor).getWorldObj().getTileEntity(((TileEntity) conductor).xCoord, ((TileEntity) conductor).yCoord, ((TileEntity) conductor).zCoord) != conductor)
 				{
 					it.remove();
 					continue;

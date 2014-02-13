@@ -2,17 +2,18 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.List;
 
-import javax.swing.Icon;
-
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAluminumWire;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -29,19 +30,18 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreBlockAluminumWire extends GCCoreBlockTransmitter
 {
 	public static final String[] names = { "aluminumWire", "aluminumWireHeavy" };
-	private static Icon[] blockIcons;
+	private static IIcon[] blockIcons;
 
-	public GCCoreBlockAluminumWire(int id, String assetName)
+	public GCCoreBlockAluminumWire(String assetName)
 	{
-		super(id, Material.cloth);
-		this.setStepSound(Block.soundClothFootstep);
+		super(Material.cloth);
+		this.setStepSound(Block.soundTypeCloth);
 		this.setResistance(0.2F);
 		this.setBlockBounds(0.4F, 0.4F, 0.4F, 0.6F, 0.6F, 0.6F);
 		this.minVector = new Vector3(0.4, 0.4, 0.4);
 		this.maxVector = new Vector3(0.6, 0.6, 0.6);
-		Block.setBurnProperties(this.blockID, 30, 60);
 		this.setHardness(0.075F);
-		this.setUnlocalizedName(assetName);
+		this.setBlockName(assetName);
 	}
 
 	@Override
@@ -51,9 +51,9 @@ public class GCCoreBlockAluminumWire extends GCCoreBlockTransmitter
 	}
 
 	@Override
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
-		GCCoreBlockAluminumWire.blockIcons = new Icon[GCCoreBlockAluminumWire.names.length];
+		GCCoreBlockAluminumWire.blockIcons = new IIcon[GCCoreBlockAluminumWire.names.length];
 
 		for (int i = 0; i < GCCoreBlockAluminumWire.names.length; i++)
 		{
@@ -75,7 +75,7 @@ public class GCCoreBlockAluminumWire extends GCCoreBlockTransmitter
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getIcon(int side, int meta)
+	public IIcon getIcon(int side, int meta)
 	{
 		switch (meta)
 		{
@@ -115,7 +115,7 @@ public class GCCoreBlockAluminumWire extends GCCoreBlockTransmitter
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World var1)
+	public TileEntity createNewTileEntity(World var1, int metadata)
 	{
 		return null;
 	}
@@ -123,7 +123,7 @@ public class GCCoreBlockAluminumWire extends GCCoreBlockTransmitter
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
 		par3List.add(new ItemStack(par1, 1, 0));
 		par3List.add(new ItemStack(par1, 1, 1));

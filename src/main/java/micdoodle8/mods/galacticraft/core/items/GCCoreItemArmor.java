@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.core.items;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItems.EnumArmorIndex;
+import micdoodle8.mods.galacticraft.core.proxy.ClientProxy;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.EnumRarity;
@@ -20,12 +22,9 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreItemArmor extends ItemArmor
 {
-	private final EnumArmorMaterial material;
-
-	public GCCoreItemArmor(int id, int armorIndex, String assetSuffix)
+	public GCCoreItemArmor(int armorIndex, micdoodle8.mods.galacticraft.core.items.GCCoreItems.EnumArmorIndex type, String assetSuffix)
 	{
-		super(id, GCCoreItems.ARMOR_STEEL, GalacticraftCore.proxy.getTitaniumArmorRenderIndex(), armorIndex);
-		this.material = GCCoreItems.ARMOR_STEEL;
+		super(type.getMaterial(), GalacticraftCore.proxy.getArmorRenderID(type), armorIndex);
 		this.setUnlocalizedName("steel_" + assetSuffix);
 		this.setTextureName(GalacticraftCore.ASSET_PREFIX + "steel_" + assetSuffix);
 	}
@@ -40,23 +39,23 @@ public class GCCoreItemArmor extends ItemArmor
 	@SideOnly(Side.CLIENT)
 	public EnumRarity getRarity(ItemStack par1ItemStack)
 	{
-		return ClientProxyCore.galacticraftItem;
+		return ClientProxy.galacticraftItem;
 	}
 
 	@Override
-	public String getArmorTexture(ItemStack stack, Entity entity, int slot, int layer)
+	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type)
 	{
-		if (this.material == GCCoreItems.ARMOR_STEEL)
+		if (this.getArmorMaterial() == EnumArmorIndex.HEAVY_DUTY.getMaterial())
 		{
-			if (stack.getItem().itemID == GCCoreItems.steelHelmet.itemID)
+			if (stack.getItem() == GCCoreItems.steelHelmet)
 			{
 				return "textures/model/armor/titanium_1.png";
 			}
-			else if (stack.getItem().itemID == GCCoreItems.steelChestplate.itemID || stack.getItem().itemID == GCCoreItems.steelBoots.itemID)
+			else if (stack.getItem() == GCCoreItems.steelChestplate || stack.getItem() == GCCoreItems.steelBoots)
 			{
 				return "textures/model/armor/titanium_2.png";
 			}
-			else if (stack.getItem().itemID == GCCoreItems.steelLeggings.itemID)
+			else if (stack.getItem() == GCCoreItems.steelLeggings)
 			{
 				return "textures/model/armor/titanium_3.png";
 			}

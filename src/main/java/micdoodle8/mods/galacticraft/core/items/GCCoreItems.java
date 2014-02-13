@@ -3,9 +3,12 @@ package micdoodle8.mods.galacticraft.core.items;
 import java.util.ArrayList;
 
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.item.Item;
+import net.minecraft.item.Item.ToolMaterial;
+import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
@@ -69,10 +72,43 @@ public class GCCoreItems
 	public static Item meteoricIronRaw;
 	public static Item meteoricIronIngot;
 	public static Item cheeseBlock;
+	
+	public static enum EnumArmorIndex
+	{
+		HEAVY_DUTY("steel", 30, new int[] { 3, 8, 6, 3}, 12),
+		SENSOR_GLASSES("sensor_glasses", 200, new int[] { 0, 0, 0, 0 }, 0);
+		
+		EnumArmorIndex(String name, int durability, int[] reductionAmounts, int enchantability)
+		{
+			this.name = name;
+			this.durability = durability;
+			this.reductionAmounts = reductionAmounts;
+			this.enchantability = enchantability;
+		}
+		
+		public ArmorMaterial getMaterial()
+		{
+			if (this.material == null)
+			{
+				this.material = EnumHelper.addArmorMaterial("steel", 30, new int[] { 3, 8, 6, 3 }, 12);
+			}
+			
+			return this.material;
+		}
+		
+		public int getRenderIndex()
+		{
+			return GalacticraftCore.proxy.getArmorRenderID(this);
+		}
+		
+		private ArmorMaterial material;
+		private String name;
+		private int durability;
+		private int[] reductionAmounts;
+		private int enchantability;
+	}
 
-	public static EnumArmorMaterial ARMOR_SENSOR_GLASSES = EnumHelper.addArmorMaterial("SENSORGLASSES", 200, new int[] { 0, 0, 0, 0 }, 0);
-	public static EnumArmorMaterial ARMOR_STEEL = EnumHelper.addArmorMaterial("steel", 30, new int[] { 3, 8, 6, 3 }, 12);
-	public static EnumToolMaterial TOOL_STEEL = EnumHelper.addToolMaterial("steel", 3, 768, 5.0F, 2, 8);
+	public static ToolMaterial TOOL_STEEL = EnumHelper.addToolMaterial("steel", 3, 768, 5.0F, 2, 8);
 
 	public static ArrayList<Integer> hiddenItems = new ArrayList<Integer>();
 

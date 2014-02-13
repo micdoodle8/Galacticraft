@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.items;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.proxy.ClientProxy;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -19,9 +20,9 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreItemOxygenMask extends Item
 {
-	protected GCCoreItemOxygenMask(int id, String assetName)
+	protected GCCoreItemOxygenMask(String assetName)
 	{
-		super(id);
+		super();
 		this.setUnlocalizedName(assetName);
 		this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
 	}
@@ -36,6 +37,6 @@ public class GCCoreItemOxygenMask extends Item
 	@SideOnly(Side.CLIENT)
 	public EnumRarity getRarity(ItemStack par1ItemStack)
 	{
-		return ClientProxyCore.galacticraftItem;
+		return ClientProxy.galacticraftItem;
 	}
 }

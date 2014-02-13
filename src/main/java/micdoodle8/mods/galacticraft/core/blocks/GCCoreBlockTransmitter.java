@@ -5,9 +5,8 @@ import java.util.List;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkConnection;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -21,9 +20,9 @@ public abstract class GCCoreBlockTransmitter extends BlockContainer
 	public Vector3 minVector = new Vector3(0.3, 0.3, 0.3);
 	public Vector3 maxVector = new Vector3(0.7, 0.7, 0.7);
 
-	public GCCoreBlockTransmitter(int id, Material material)
+	public GCCoreBlockTransmitter(Material material)
 	{
-		super(id, material);
+		super(material);
 	}
 
 	/**
@@ -34,7 +33,7 @@ public abstract class GCCoreBlockTransmitter extends BlockContainer
 	{
 		super.onBlockAdded(world, x, y, z);
 
-		TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+		TileEntity tileEntity = world.getTileEntity(x, y, z);
 
 		if (tileEntity instanceof INetworkConnection)
 		{
@@ -43,14 +42,14 @@ public abstract class GCCoreBlockTransmitter extends BlockContainer
 	}
 
 	@Override
-	public void onNeighborBlockChange(World world, int x, int y, int z, int blockID)
+	public void onNeighborBlockChange(World world, int x, int y, int z, Block block)
 	{
-		super.onNeighborBlockChange(world, x, y, z, blockID);
+		super.onNeighborBlockChange(world, x, y, z, block);
 
-		TileEntity tile = world.getBlockTileEntity(x, y, z);
+		TileEntity tile = world.getTileEntity(x, y, z);
 
 		this.setBlockBoundsBasedOnState(world, x, y, z);
-		PacketDispatcher.sendPacketToAllAround(x, y, z, 10, world.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.UPDATE_WIRE_BOUNDS, new Object[] { x, y, z }));
+//		PacketDispatcher.sendPacketToAllAround(x, y, z, 10, world.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.UPDATE_WIRE_BOUNDS, new Object[] { x, y, z })); TODO Fix wire bounds
 
 		if (tile instanceof INetworkConnection)
 		{
@@ -82,7 +81,7 @@ public abstract class GCCoreBlockTransmitter extends BlockContainer
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
 	{
-		TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+		TileEntity tileEntity = world.getTileEntity(x, y, z);
 		TileEntity[] connectable = new TileEntity[6];
 
 		if (tileEntity != null)
@@ -146,7 +145,7 @@ public abstract class GCCoreBlockTransmitter extends BlockContainer
 	@Override
 	public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB axisalignedbb, List list, Entity entity)
 	{
-		TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+		TileEntity tileEntity = world.getTileEntity(x, y, z);
 		TileEntity[] connectable = new TileEntity[6];
 
 		switch (this.getNetworkType())

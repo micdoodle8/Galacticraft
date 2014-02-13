@@ -1,6 +1,9 @@
 package micdoodle8.mods.galacticraft.core.items;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlaySensorGlasses;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItems.EnumArmorIndex;
+import micdoodle8.mods.galacticraft.core.proxy.ClientProxy;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -22,9 +25,9 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreItemSensorGlasses extends ItemArmor
 {
-	public GCCoreItemSensorGlasses(int id, String assetName)
+	public GCCoreItemSensorGlasses(String assetName)
 	{
-		super(id, GCCoreItems.ARMOR_SENSOR_GLASSES, GalacticraftCore.proxy.getSensorArmorRenderIndex(), 0);
+		super(EnumArmorIndex.SENSOR_GLASSES.getMaterial(), EnumArmorIndex.SENSOR_GLASSES.getRenderIndex(), 0);
 		this.setUnlocalizedName(assetName);
 		this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
 	}
@@ -36,7 +39,7 @@ public class GCCoreItemSensorGlasses extends ItemArmor
 	}
 
 	@Override
-	public String getArmorTexture(ItemStack stack, Entity entity, int slot, int layer)
+	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type)
 	{
 		return "textures/model/armor/sensor_1.png";
 	}
@@ -45,14 +48,14 @@ public class GCCoreItemSensorGlasses extends ItemArmor
 	@SideOnly(Side.CLIENT)
 	public EnumRarity getRarity(ItemStack par1ItemStack)
 	{
-		return ClientProxyCore.galacticraftItem;
+		return ClientProxy.galacticraftItem;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void renderHelmetOverlay(ItemStack stack, EntityPlayer player, ScaledResolution resolution, float partialTicks, boolean hasScreen, int mouseX, int mouseY)
 	{
-		GCCoreOverlaySensorGlasses.renderSensorGlassesMain(stack, player, resolution, partialTicks, hasScreen, mouseX, mouseY);
-		GCCoreOverlaySensorGlasses.renderSensorGlassesValueableBlocks(stack, player, resolution, partialTicks, hasScreen, mouseX, mouseY);
+		OverlaySensorGlasses.renderSensorGlassesMain(stack, player, resolution, partialTicks, hasScreen, mouseX, mouseY);
+		OverlaySensorGlasses.renderSensorGlassesValueableBlocks(stack, player, resolution, partialTicks, hasScreen, mouseX, mouseY);
 	}
 }

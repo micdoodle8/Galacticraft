@@ -38,7 +38,7 @@ public class GCCoreSlotPlayer extends Slot
 		case 0:
 			return itemstack.getItem() instanceof GCCoreItemOxygenMask;
 		case 1:
-			return itemstack.itemID == GCCoreItems.oxygenGear.itemID;
+			return itemstack.getItem() == GCCoreItems.oxygenGear;
 		case 2:
 			return itemstack.getItem() instanceof GCCoreItemOxygenTank;
 		case 3:
@@ -46,7 +46,7 @@ public class GCCoreSlotPlayer extends Slot
 		case 4:
 			return itemstack.getItem() instanceof GCCoreItemParachute;
 		case 5:
-			return itemstack.getItem().itemID == GCCoreItems.basicItem.itemID && itemstack.getItemDamage() == 19;
+			return itemstack.getItem() == GCCoreItems.basicItem && itemstack.getItemDamage() == 19;
 		}
 
 		return super.isItemValid(itemstack);

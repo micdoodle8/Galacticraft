@@ -14,9 +14,9 @@ import net.minecraft.world.World;
  */
 public abstract class GCCoreBlockAdvanced extends Block
 {
-	public GCCoreBlockAdvanced(int id, Material material)
+	public GCCoreBlockAdvanced(Material material)
 	{
-		super(id, material);
+		super(material);
 		this.setHardness(0.6f);
 	}
 

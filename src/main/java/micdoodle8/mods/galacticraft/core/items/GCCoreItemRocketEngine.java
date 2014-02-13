@@ -2,13 +2,14 @@ package micdoodle8.mods.galacticraft.core.items;
 
 import java.util.List;
 
-import javax.swing.Icon;
-
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.proxy.ClientProxy;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -26,11 +27,11 @@ public class GCCoreItemRocketEngine extends Item
 	public static final String[] names = { "tier1engine", // 0
 	"tier1booster" }; // 1
 
-	protected Icon[] icons = new Icon[GCCoreItemRocketEngine.names.length];
+	protected IIcon[] icons = new IIcon[GCCoreItemRocketEngine.names.length];
 
-	public GCCoreItemRocketEngine(int id, String assetName)
+	public GCCoreItemRocketEngine(String assetName)
 	{
-		super(id);
+		super();
 		this.setMaxDamage(0);
 		this.setHasSubtypes(true);
 		this.setUnlocalizedName(assetName);
@@ -47,12 +48,12 @@ public class GCCoreItemRocketEngine extends Item
 	@SideOnly(Side.CLIENT)
 	public EnumRarity getRarity(ItemStack par1ItemStack)
 	{
-		return ClientProxyCore.galacticraftItem;
+		return ClientProxy.galacticraftItem;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister iconRegister)
+	public void registerIcons(IIconRegister iconRegister)
 	{
 		int i = 0;
 
@@ -69,7 +70,7 @@ public class GCCoreItemRocketEngine extends Item
 	}
 
 	@Override
-	public Icon getIconFromDamage(int damage)
+	public IIcon getIconFromDamage(int damage)
 	{
 		if (this.icons.length > damage)
 		{
@@ -81,7 +82,7 @@ public class GCCoreItemRocketEngine extends Item
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
 		for (int i = 0; i < GCCoreItemRocketEngine.names.length; i++)
 		{

@@ -2,8 +2,6 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.Random;
 
-import javax.swing.Icon;
-
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
@@ -11,8 +9,11 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityBuggyFueler;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
@@ -29,16 +30,16 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreBlockLandingPadFull extends GCCoreBlockAdvancedTile implements IPartialSealableBlock
 {
-	private Icon[] icons = new Icon[3];
+	private IIcon[] icons = new IIcon[3];
 
-	public GCCoreBlockLandingPadFull(int id, String assetName)
+	public GCCoreBlockLandingPadFull(String assetName)
 	{
-		super(id, Material.rock);
+		super(Material.rock);
 		this.setHardness(1.0F);
 		this.setResistance(10.0F);
-		this.setStepSound(Block.soundStoneFootstep);
-		this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
-		this.setUnlocalizedName(assetName);
+		this.setStepSound(Block.soundTypeStone);
+		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setBlockName(assetName);
 	}
 
 	@Override
@@ -54,9 +55,9 @@ public class GCCoreBlockLandingPadFull extends GCCoreBlockAdvancedTile implement
 	}
 
 	@Override
-	public void breakBlock(World var1, int var2, int var3, int var4, int var5, int var6)
+	public void breakBlock(World var1, int var2, int var3, int var4, Block var5, int var6)
 	{
-		final TileEntity var9 = var1.getBlockTileEntity(var2, var3, var4);
+		final TileEntity var9 = var1.getTileEntity(var2, var3, var4);
 
 		if (var9 instanceof IMultiBlock)
 		{
@@ -67,9 +68,9 @@ public class GCCoreBlockLandingPadFull extends GCCoreBlockAdvancedTile implement
 	}
 
 	@Override
-	public int idDropped(int par1, Random par2Random, int par3)
+	public Item getItemDropped(int par1, Random par2Random, int par3)
 	{
-		return GCCoreBlocks.landingPad.blockID;
+		return Item.getItemFromBlock(GCCoreBlocks.landingPad);
 	}
 
 	@Override
@@ -104,11 +105,11 @@ public class GCCoreBlockLandingPadFull extends GCCoreBlockAdvancedTile implement
 	@Override
 	public int getRenderType()
 	{
-		return GalacticraftCore.proxy.getBlockRenderID(this.blockID);
+		return GalacticraftCore.proxy.getBlockRenderID(this);
 	}
 
 	@Override
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
 		this.icons[0] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "launch_pad");
 		this.icons[1] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "buggy_fueler");
@@ -118,7 +119,7 @@ public class GCCoreBlockLandingPadFull extends GCCoreBlockAdvancedTile implement
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getIcon(int par1, int par2)
+	public IIcon getIcon(int par1, int par2)
 	{
 		switch (par2)
 		{
@@ -174,7 +175,7 @@ public class GCCoreBlockLandingPadFull extends GCCoreBlockAdvancedTile implement
 	}
 
 	@Override
-	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
+	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block par5)
 	{
 		par1World.markBlockForUpdate(par2, par3, par4);
 	}

@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.Random;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.item.EntityItem;
@@ -16,9 +17,9 @@ import net.minecraft.world.World;
  */
 public abstract class GCCoreBlockTile extends GCCoreBlockAdvanced implements ITileEntityProvider
 {
-	public GCCoreBlockTile(int id, Material material)
+	public GCCoreBlockTile(Material material)
 	{
-		super(id, material);
+		super(material);
 		this.isBlockContainer = true;
 	}
 
@@ -36,11 +37,11 @@ public abstract class GCCoreBlockTile extends GCCoreBlockAdvanced implements ITi
 	 * update, as appropriate
 	 */
 	@Override
-	public void breakBlock(World world, int x, int y, int z, int par5, int par6)
+	public void breakBlock(World world, int x, int y, int z, Block par5, int par6)
 	{
 		this.dropEntireInventory(world, x, y, z, par5, par6);
 		super.breakBlock(world, x, y, z, par5, par6);
-		world.removeBlockTileEntity(x, y, z);
+		world.removeTileEntity(x, y, z);
 	}
 
 	/**
@@ -52,7 +53,7 @@ public abstract class GCCoreBlockTile extends GCCoreBlockAdvanced implements ITi
 	public boolean onBlockEventReceived(World par1World, int par2, int par3, int par4, int par5, int par6)
 	{
 		super.onBlockEventReceived(par1World, par2, par3, par4, par5, par6);
-		TileEntity tileentity = par1World.getBlockTileEntity(par2, par3, par4);
+		TileEntity tileentity = par1World.getTileEntity(par2, par3, par4);
 		return tileentity != null ? tileentity.receiveClientEvent(par5, par6) : false;
 	}
 
@@ -60,9 +61,9 @@ public abstract class GCCoreBlockTile extends GCCoreBlockAdvanced implements ITi
 	 * Override this if you don't need it. This will eject all items out of this
 	 * machine if it has an inventory.
 	 */
-	public void dropEntireInventory(World world, int x, int y, int z, int par5, int par6)
+	public void dropEntireInventory(World world, int x, int y, int z, Block par5, int par6)
 	{
-		TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+		TileEntity tileEntity = world.getTileEntity(x, y, z);
 
 		if (tileEntity != null)
 		{
@@ -91,7 +92,7 @@ public abstract class GCCoreBlockTile extends GCCoreBlockAdvanced implements ITi
 							}
 
 							var7.stackSize -= var11;
-							EntityItem var12 = new EntityItem(world, (x + var8), (y + var9), (z + var10), new ItemStack(var7.itemID, var11, var7.getItemDamage()));
+							EntityItem var12 = new EntityItem(world, (x + var8), (y + var9), (z + var10), new ItemStack(var7.getItem(), var11, var7.getItemDamage()));
 
 							if (var7.hasTagCompound())
 							{
@@ -115,7 +116,7 @@ public abstract class GCCoreBlockTile extends GCCoreBlockAdvanced implements ITi
 	 * sensitive version of this to get the maximum optimization!
 	 */
 	@Override
-	public TileEntity createNewTileEntity(World var1)
+	public TileEntity createNewTileEntity(World var1, int metadata)
 	{
 		return null;
 	}

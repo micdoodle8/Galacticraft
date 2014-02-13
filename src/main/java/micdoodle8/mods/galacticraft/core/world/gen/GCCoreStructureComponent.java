@@ -54,7 +54,7 @@ public abstract class GCCoreStructureComponent extends StructureComponent
 		if (var7.isVecInside(var8, var9, var10) && var1.getBlockId(var8, var9, var10) != Block.mobSpawner.blockID)
 		{
 			var1.setBlock(var8, var9, var10, Block.mobSpawner.blockID, 0, 3);
-			final TileEntityMobSpawner var11 = (TileEntityMobSpawner) var1.getBlockTileEntity(var8, var9, var10);
+			final TileEntityMobSpawner var11 = (TileEntityMobSpawner) var1.getTileEntity(var8, var9, var10);
 
 			if (var11 != null)
 			{

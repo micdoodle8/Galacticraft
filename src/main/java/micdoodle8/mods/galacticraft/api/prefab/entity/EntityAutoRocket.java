@@ -127,7 +127,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 			{
 				for (int z = MathHelper.floor_double(this.posZ) - 1; z <= MathHelper.floor_double(this.posZ) + 1; z++)
 				{
-					TileEntity tile = this.worldObj.getBlockTileEntity(x, y, z);
+					TileEntity tile = this.worldObj.getTileEntity(x, y, z);
 
 					if (tile instanceof IFuelDock)
 					{
@@ -153,7 +153,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
 								if (launchController != null)
 								{
-									TileEntity tile2 = launchController.worldObj.getBlockTileEntity(launchController.xCoord, launchController.yCoord, launchController.zCoord);
+									TileEntity tile2 = launchController.worldObj.getTileEntity(launchController.xCoord, launchController.yCoord, launchController.zCoord);
 
 									try
 									{
@@ -225,7 +225,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
 				if (tile != null)
 				{
-					tile = world.getBlockTileEntity(tile.xCoord, tile.yCoord, tile.zCoord);
+					tile = world.getTileEntity(tile.xCoord, tile.yCoord, tile.zCoord);
 
 					try
 					{
@@ -349,7 +349,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 					{
 						for (ILandingPadAttachable tile : this.getLandingPad().getConnectedTiles())
 						{
-							if (this.worldObj.getBlockTileEntity(((TileEntity) tile).xCoord, ((TileEntity) tile).yCoord, ((TileEntity) tile).zCoord) != null)
+							if (this.worldObj.getTileEntity(((TileEntity) tile).xCoord, ((TileEntity) tile).yCoord, ((TileEntity) tile).zCoord) != null)
 							{
 								try
 								{
@@ -357,7 +357,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
 									try
 									{
-										controllerClass.cast(this.worldObj.getBlockTileEntity(((TileEntity) tile).xCoord, ((TileEntity) tile).yCoord, ((TileEntity) tile).zCoord));
+										controllerClass.cast(this.worldObj.getTileEntity(((TileEntity) tile).xCoord, ((TileEntity) tile).yCoord, ((TileEntity) tile).zCoord));
 									}
 									catch (ClassCastException e)
 									{
@@ -381,7 +381,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
 			if (this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase() && this.hasValidFuel())
 			{
-				if (this.landing && this.targetVec != null && this.worldObj.getBlockTileEntity(this.targetVec.intX(), this.targetVec.intY(), this.targetVec.intZ()) instanceof IFuelDock && this.posY - this.targetVec.y < 5)
+				if (this.landing && this.targetVec != null && this.worldObj.getTileEntity(this.targetVec.intX(), this.targetVec.intY(), this.targetVec.intZ()) instanceof IFuelDock && this.posY - this.targetVec.y < 5)
 				{
 					for (int x = MathHelper.floor_double(this.posX) - 1; x <= MathHelper.floor_double(this.posX) + 1; x++)
 					{
@@ -389,7 +389,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 						{
 							for (int z = MathHelper.floor_double(this.posZ) - 1; z <= MathHelper.floor_double(this.posZ) + 1; z++)
 							{
-								TileEntity tile = this.worldObj.getBlockTileEntity(x, y, z);
+								TileEntity tile = this.worldObj.getTileEntity(x, y, z);
 
 								if (tile instanceof IFuelDock)
 								{
@@ -405,7 +405,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 			{
 				for (ILandingPadAttachable tile : this.getLandingPad().getConnectedTiles())
 				{
-					if (this.worldObj.getBlockTileEntity(((TileEntity) tile).xCoord, ((TileEntity) tile).yCoord, ((TileEntity) tile).zCoord) != null && this.worldObj.getBlockTileEntity(((TileEntity) tile).xCoord, ((TileEntity) tile).yCoord, ((TileEntity) tile).zCoord) instanceof TileEntityFuelLoader)
+					if (this.worldObj.getTileEntity(((TileEntity) tile).xCoord, ((TileEntity) tile).yCoord, ((TileEntity) tile).zCoord) != null && this.worldObj.getTileEntity(((TileEntity) tile).xCoord, ((TileEntity) tile).yCoord, ((TileEntity) tile).zCoord) instanceof TileEntityFuelLoader)
 					{
 						if (tile instanceof TileEntityFuelLoader && ((TileEntityFuelLoader) tile).getEnergyStored() > 0)
 						{
@@ -464,7 +464,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
 	protected void landRocket(int x, int y, int z)
 	{
-		TileEntity tile = this.worldObj.getBlockTileEntity(x, y, z);
+		TileEntity tile = this.worldObj.getTileEntity(x, y, z);
 
 		if (tile instanceof IFuelDock)
 		{
@@ -491,7 +491,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 							{
 								if (connectedTile != null)
 								{
-									TileEntity updatedTile = this.worldObj.getBlockTileEntity(((TileEntity) connectedTile).xCoord, ((TileEntity) connectedTile).yCoord, ((TileEntity) connectedTile).zCoord);
+									TileEntity updatedTile = this.worldObj.getTileEntity(((TileEntity) connectedTile).xCoord, ((TileEntity) connectedTile).yCoord, ((TileEntity) connectedTile).zCoord);
 
 									try
 									{
@@ -625,7 +625,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 		{
 			for (int i = -3; i <= 3; i++)
 			{
-				if (this.landing && this.targetVec != null && this.worldObj.getBlockTileEntity((int) Math.floor(this.posX), (int) Math.floor(this.posY + i), (int) Math.floor(this.posZ)) instanceof IFuelDock && this.posY - this.targetVec.y < 5)
+				if (this.landing && this.targetVec != null && this.worldObj.getTileEntity((int) Math.floor(this.posX), (int) Math.floor(this.posY + i), (int) Math.floor(this.posZ)) instanceof IFuelDock && this.posY - this.targetVec.y < 5)
 				{
 					for (int x = MathHelper.floor_double(this.posX) - 1; x <= MathHelper.floor_double(this.posX) + 1; x++)
 					{
@@ -633,7 +633,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 						{
 							for (int z = MathHelper.floor_double(this.posZ) - 1; z <= MathHelper.floor_double(this.posZ) + 1; z++)
 							{
-								TileEntity tile = this.worldObj.getBlockTileEntity(x, y, z);
+								TileEntity tile = this.worldObj.getTileEntity(x, y, z);
 
 								if (tile instanceof IFuelDock)
 								{

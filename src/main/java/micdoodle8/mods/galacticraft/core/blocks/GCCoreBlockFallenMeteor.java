@@ -10,9 +10,11 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -28,14 +30,14 @@ import net.minecraft.world.World;
  */
 public class GCCoreBlockFallenMeteor extends Block implements ITileEntityProvider
 {
-	public GCCoreBlockFallenMeteor(int id, String assetName)
+	public GCCoreBlockFallenMeteor(String assetName)
 	{
-		super(id, Material.rock);
+		super(Material.rock);
 		this.setBlockBounds(0.2F, 0.2F, 0.2F, 0.8F, 0.8F, 0.8F);
 		this.setHardness(50.0F);
-		this.setStepSound(Block.soundStoneFootstep);
-		this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
-		this.setUnlocalizedName(assetName);
+		this.setStepSound(Block.soundTypeStone);
+		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setBlockName(assetName);
 	}
 
 	@Override
@@ -45,7 +47,7 @@ public class GCCoreBlockFallenMeteor extends Block implements ITileEntityProvide
 	}
 
 	@Override
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
 		this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "fallen_meteor");
 	}
@@ -53,7 +55,7 @@ public class GCCoreBlockFallenMeteor extends Block implements ITileEntityProvide
 	@Override
 	public int getRenderType()
 	{
-		return GalacticraftCore.proxy.getBlockRenderID(this.blockID);
+		return GalacticraftCore.proxy.getBlockRenderID(this);
 	}
 
 	@Override
@@ -69,15 +71,15 @@ public class GCCoreBlockFallenMeteor extends Block implements ITileEntityProvide
 	}
 
 	@Override
-	public int idDropped(int par1, Random par2Random, int par3)
+	public Item getItemDropped(int par1, Random par2Random, int par3)
 	{
-		return GCCoreItems.meteoricIronRaw.itemID;
+		return GCCoreItems.meteoricIronRaw;
 	}
 
 	@Override
 	public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity)
 	{
-		TileEntity tile = par1World.getBlockTileEntity(par2, par3, par4);
+		TileEntity tile = par1World.getTileEntity(par2, par3, par4);
 
 		if (tile instanceof TileEntityFallenMeteor)
 		{
@@ -120,13 +122,13 @@ public class GCCoreBlockFallenMeteor extends Block implements ITileEntityProvide
 	@Override
 	public void onBlockAdded(World par1World, int par2, int par3, int par4)
 	{
-		par1World.scheduleBlockUpdate(par2, par3, par4, this.blockID, this.tickRate(par1World));
+		par1World.scheduleBlockUpdate(par2, par3, par4, this, this.tickRate(par1World));
 	}
 
 	@Override
-	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
+	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block par5)
 	{
-		par1World.scheduleBlockUpdate(par2, par3, par4, this.blockID, this.tickRate(par1World));
+		par1World.scheduleBlockUpdate(par2, par3, par4, this, this.tickRate(par1World));
 	}
 
 	@Override
@@ -142,8 +144,8 @@ public class GCCoreBlockFallenMeteor extends Block implements ITileEntityProvide
 	{
 		if (GCCoreBlockFallenMeteor.canFallBelow(par1World, par2, par3 - 1, par4) && par3 >= 0)
 		{
-			int prevHeatLevel = ((TileEntityFallenMeteor) par1World.getBlockTileEntity(par2, par3, par4)).getHeatLevel();
-			par1World.setBlock(par2, par3, par4, 0, 0, 3);
+			int prevHeatLevel = ((TileEntityFallenMeteor) par1World.getTileEntity(par2, par3, par4)).getHeatLevel();
+			par1World.setBlockToAir(par2, par3, par4);
 
 			while (GCCoreBlockFallenMeteor.canFallBelow(par1World, par2, par3 - 1, par4) && par3 > 0)
 			{
@@ -152,35 +154,22 @@ public class GCCoreBlockFallenMeteor extends Block implements ITileEntityProvide
 
 			if (par3 > 0)
 			{
-				par1World.setBlock(par2, par3, par4, this.blockID, 0, 3);
-				((TileEntityFallenMeteor) par1World.getBlockTileEntity(par2, par3, par4)).setHeatLevel(prevHeatLevel);
+				par1World.setBlock(par2, par3, par4, this, 0, 3);
+				((TileEntityFallenMeteor) par1World.getTileEntity(par2, par3, par4)).setHeatLevel(prevHeatLevel);
 			}
 		}
 	}
 
 	public static boolean canFallBelow(World par0World, int par1, int par2, int par3)
 	{
-		final int var4 = par0World.getBlockId(par1, par2, par3);
-
-		if (var4 == 0)
-		{
-			return true;
-		}
-		else if (var4 == Block.fire.blockID)
-		{
-			return true;
-		}
-		else
-		{
-			final Material var5 = Block.blocksList[var4].blockMaterial;
-			return var5 == Material.water ? true : var5 == Material.lava;
-		}
+		Block var4 = par0World.getBlock(par1, par2, par3);
+		return var4.getMaterial().isReplaceable();
 	}
 
 	@Override
 	public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
 	{
-		TileEntity tile = par1IBlockAccess.getBlockTileEntity(par2, par3, par4);
+		TileEntity tile = par1IBlockAccess.getTileEntity(par2, par3, par4);
 
 		if (tile instanceof TileEntityFallenMeteor)
 		{
@@ -199,7 +188,7 @@ public class GCCoreBlockFallenMeteor extends Block implements ITileEntityProvide
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world)
+	public TileEntity createNewTileEntity(World world, int metadata)
 	{
 		return new TileEntityFallenMeteor();
 	}

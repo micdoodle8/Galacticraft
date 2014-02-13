@@ -3,9 +3,11 @@ package micdoodle8.mods.galacticraft.core.items;
 import javax.swing.Icon;
 
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityArrow;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -31,9 +33,9 @@ public class GCCoreItemBow extends Item
 	@SideOnly(Side.CLIENT)
 	private Icon[] iconArray;
 
-	public GCCoreItemBow(int id, String assetName)
+	public GCCoreItemBow(String assetName)
 	{
-		super(id);
+		super();
 		this.maxStackSize = 1;
 		this.setMaxDamage(384);
 		this.setUnlocalizedName(assetName);
@@ -54,7 +56,7 @@ public class GCCoreItemBow extends Item
 
 		final boolean flag = par3EntityPlayer.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantment.infinity.effectId, par1ItemStack) > 0;
 
-		if (flag || par3EntityPlayer.inventory.hasItem(Item.arrow.itemID))
+		if (flag || par3EntityPlayer.inventory.hasItem(Items.arrow))
 		{
 			float f = j / 20.0F;
 			f = (f * f + f * 2.0F) / 3.0F;
@@ -104,7 +106,7 @@ public class GCCoreItemBow extends Item
 			}
 			else
 			{
-				par3EntityPlayer.inventory.consumeInventoryItem(Item.arrow.itemID);
+				par3EntityPlayer.inventory.consumeInventoryItem(Items.arrow);
 			}
 
 			if (!par2World.isRemote)
@@ -142,7 +144,7 @@ public class GCCoreItemBow extends Item
 			return event.result;
 		}
 
-		if (par3EntityPlayer.capabilities.isCreativeMode || par3EntityPlayer.inventory.hasItem(Item.arrow.itemID))
+		if (par3EntityPlayer.capabilities.isCreativeMode || par3EntityPlayer.inventory.hasItem(Items.arrow))
 		{
 			par3EntityPlayer.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
 		}
@@ -158,7 +160,7 @@ public class GCCoreItemBow extends Item
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerIcons(IIconRegister par1IconRegister)
 	{
 		this.itemIcon = par1IconRegister.registerIcon("bow_standby");
 	}

@@ -2,21 +2,20 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.List;
 
-import javax.swing.Icon;
-
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenCompressor;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenDecompressor;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
@@ -36,27 +35,27 @@ public class GCCoreBlockOxygenCompressor extends GCCoreBlockAdvancedTile
 	public static final int OXYGEN_COMPRESSOR_METADATA = 0;
 	public static final int OXYGEN_DECOMPRESSOR_METADATA = 4;
 
-	private Icon iconMachineSide;
-	private Icon iconCompressor1;
-	private Icon iconCompressor2;
-	private Icon iconDecompressor;
-	private Icon iconOxygenInput;
-	private Icon iconOxygenOutput;
-	private Icon iconInput;
+	private IIcon iconMachineSide;
+	private IIcon iconCompressor1;
+	private IIcon iconCompressor2;
+	private IIcon iconDecompressor;
+	private IIcon iconOxygenInput;
+	private IIcon iconOxygenOutput;
+	private IIcon iconInput;
 
-	public GCCoreBlockOxygenCompressor(int id, boolean isActive, String assetName)
+	public GCCoreBlockOxygenCompressor(boolean isActive, String assetName)
 	{
-		super(id, Material.rock);
+		super(Material.rock);
 		this.setHardness(1.0F);
-		this.setStepSound(Block.soundStoneFootstep);
-		this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
-		this.setUnlocalizedName(assetName);
+		this.setStepSound(Block.soundTypeStone);
+		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setBlockName(assetName);
 	}
 
 	@Override
 	public int getRenderType()
 	{
-		return GalacticraftCore.proxy.getBlockRenderID(this.blockID);
+		return GalacticraftCore.proxy.getBlockRenderID(this);
 	}
 
 	@Override
@@ -67,7 +66,7 @@ public class GCCoreBlockOxygenCompressor extends GCCoreBlockAdvancedTile
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
 		this.iconMachineSide = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_blank");
 		this.iconCompressor1 = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_compressor_1");
@@ -150,7 +149,7 @@ public class GCCoreBlockOxygenCompressor extends GCCoreBlockAdvancedTile
 	}
 
 	@Override
-	public Icon getIcon(int side, int metadata)
+	public IIcon getIcon(int side, int metadata)
 	{
 		if (side == 0 || side == 1)
 		{
@@ -241,10 +240,10 @@ public class GCCoreBlockOxygenCompressor extends GCCoreBlockAdvancedTile
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
-		par3List.add(new ItemStack(this.blockID, 1, GCCoreBlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA));
-		par3List.add(new ItemStack(this.blockID, 1, GCCoreBlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA));
+		par3List.add(new ItemStack(par1, 1, GCCoreBlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA));
+		par3List.add(new ItemStack(par1, 1, GCCoreBlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA));
 	}
 
 	@Override
@@ -262,20 +261,5 @@ public class GCCoreBlockOxygenCompressor extends GCCoreBlockAdvancedTile
 		{
 			return 0;
 		}
-	}
-
-	@Override
-	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
-	{
-		Item item = Item.itemsList[this.blockID];
-
-		if (item == null)
-		{
-			return null;
-		}
-
-		int metadata = this.getDamageValue(world, x, y, z);
-
-		return new ItemStack(this.blockID, 1, metadata);
 	}
 }

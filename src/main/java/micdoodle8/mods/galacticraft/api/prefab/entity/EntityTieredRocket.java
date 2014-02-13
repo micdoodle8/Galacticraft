@@ -149,7 +149,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 		{
 			for (ILandingPadAttachable tile : this.getLandingPad().getConnectedTiles())
 			{
-				if (this.worldObj.getBlockTileEntity(((TileEntity) tile).xCoord, ((TileEntity) tile).yCoord, ((TileEntity) tile).zCoord) != null && this.worldObj.getBlockTileEntity(((TileEntity) tile).xCoord, ((TileEntity) tile).yCoord, ((TileEntity) tile).zCoord) instanceof TileEntityFuelLoader)
+				if (this.worldObj.getTileEntity(((TileEntity) tile).xCoord, ((TileEntity) tile).yCoord, ((TileEntity) tile).zCoord) != null && this.worldObj.getTileEntity(((TileEntity) tile).xCoord, ((TileEntity) tile).yCoord, ((TileEntity) tile).zCoord) instanceof TileEntityFuelLoader)
 				{
 					if (tile instanceof TileEntityFuelLoader && ((TileEntityFuelLoader) tile).getEnergyStored() > 0)
 					{

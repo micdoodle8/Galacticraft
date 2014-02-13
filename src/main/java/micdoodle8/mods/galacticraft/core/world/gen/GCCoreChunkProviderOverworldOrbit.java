@@ -6,6 +6,7 @@ import java.util.Random;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockSand;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.tileentity.TileEntity;
@@ -65,8 +66,8 @@ public class GCCoreChunkProviderOverworldOrbit extends ChunkProviderGenerate
 	public Chunk provideChunk(int par1, int par2)
 	{
 		this.rand.setSeed(par1 * 341873128712L + par2 * 132897987541L);
-		final short[] ids = new short[32768];
-		final byte[] meta = new byte[32768];
+		Block[] ids = new Block[32768];
+		byte[] meta = new byte[32768];
 
 		final Chunk var4 = new Chunk(this.worldObj, ids, meta, par1, par2);
 
@@ -92,9 +93,9 @@ public class GCCoreChunkProviderOverworldOrbit extends ChunkProviderGenerate
 		this.rand.setSeed(par2 * i1 + par3 * j1 ^ this.worldObj.getSeed());
 		if (k == 0 && l == 0)
 		{
-			this.worldObj.setBlock(k, 64, l, GCCoreBlocks.spaceStationBase.blockID, 0, 3);
+			this.worldObj.setBlock(k, 64, l, GCCoreBlocks.spaceStationBase, 0, 3);
 
-			final TileEntity var8 = this.worldObj.getBlockTileEntity(k, 64, l);
+			final TileEntity var8 = this.worldObj.getTileEntity(k, 64, l);
 
 			if (var8 instanceof IMultiBlock)
 			{

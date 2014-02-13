@@ -1,10 +1,9 @@
 package tconstruct.client.tabs;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import cpw.mods.fml.client.FMLClientHandler;
@@ -29,36 +28,14 @@ public class TabRegistry
         {
             //Values are public at runtime.
 
-            int cornerX = 0;
-            int cornerY = 0;
-            List bList = null;
-            
-        	try
-        	{
-        		Class<?> clazz = Class.forName("net.minecraft.client.gui.inventory.GuiContainer");
-        		Class<?> clazz2 = Class.forName("net.minecraft.client.gui.GuiScreen");
-        		Field f = clazz.getDeclaredField("guiLeft");
-        		f.setAccessible(true);
-        		cornerX = f.getInt(gui);
-        		f = clazz.getDeclaredField("guiTop");
-        		f.setAccessible(true);
-        		cornerY = f.getInt(gui);
-        		f = clazz2.getField("buttonList");
-        		f.setAccessible(true);
-        		bList = (List) f.get(gui);
-        	}
-        	catch (Exception e)
-        	{
-        		e.printStackTrace();
-        	}
-        	
-        	System.out.println(cornerX + " " + cornerY + " " + bList.size());
+            int cornerX = gui.guiLeft;
+            int cornerY = gui.guiTop;
+            List bList = gui.buttonList;
         	
         	bList.clear();
 
             updateTabValues(cornerX, cornerY, InventoryTabVanilla.class);
             addTabsToList(bList);
-        	System.out.println(cornerX + " " + cornerY + " " + bList.size());
         }
     }
 

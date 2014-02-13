@@ -53,7 +53,7 @@ public class AirLockProtocol
 				{
 					for (int z = -1; z <= 1; z++)
 					{
-						final TileEntity tile = this.worldObj.getBlockTileEntity(tile2.xCoord + x, tile2.yCoord + y, tile2.zCoord + z);
+						final TileEntity tile = this.worldObj.getTileEntity(tile2.xCoord + x, tile2.yCoord + y, tile2.zCoord + z);
 						new Vector3(this.head).translate(new Vector3(x, y, z));
 
 						if (!(x == 0 && y == 0 && z == 0))

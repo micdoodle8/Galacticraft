@@ -86,39 +86,15 @@ public class GCCoreInventoryExtended implements IInventory
 	}
 
 	@Override
-	public boolean isInvNameLocalized()
-	{
-		return true;
-	}
-
-	@Override
 	public int getInventoryStackLimit()
 	{
 		return 64;
 	}
 
 	@Override
-	public void onInventoryChanged()
-	{
-
-	}
-
-	@Override
 	public boolean isUseableByPlayer(EntityPlayer entityplayer)
 	{
 		return true;
-	}
-
-	@Override
-	public void openChest()
-	{
-		;
-	}
-
-	@Override
-	public void closeChest()
-	{
-		;
 	}
 
 	@Override
@@ -149,7 +125,7 @@ public class GCCoreInventoryExtended implements IInventory
 
 		for (int i = 0; i < par1NBTTagList.tagCount(); ++i)
 		{
-			final NBTTagCompound nbttagcompound = (NBTTagCompound) par1NBTTagList.tagAt(i);
+			final NBTTagCompound nbttagcompound = (NBTTagCompound) par1NBTTagList.getCompoundTagAt(i);
 			final int j = nbttagcompound.getByte("Slot") & 255;
 			final ItemStack itemstack = ItemStack.loadItemStackFromNBT(nbttagcompound);
 
@@ -169,7 +145,7 @@ public class GCCoreInventoryExtended implements IInventory
 
 		for (int i = 0; i < tagList.tagCount(); ++i)
 		{
-			final NBTTagCompound nbttagcompound = (NBTTagCompound) tagList.tagAt(i);
+			final NBTTagCompound nbttagcompound = (NBTTagCompound) tagList.getCompoundTagAt(i);
 			final int j = nbttagcompound.getByte("Slot") & 255;
 			final ItemStack itemstack = ItemStack.loadItemStackFromNBT(nbttagcompound);
 
@@ -204,5 +180,29 @@ public class GCCoreInventoryExtended implements IInventory
 		{
 			this.inventoryStacks[i] = ItemStack.copyItemStack(par1InventoryPlayer.inventoryStacks[i]);
 		}
+	}
+
+	@Override
+	public boolean hasCustomInventoryName() 
+	{
+		return true;
+	}
+
+	@Override
+	public void markDirty() 
+	{
+		
+	}
+
+	@Override
+	public void openInventory() 
+	{
+		
+	}
+
+	@Override
+	public void closeInventory() 
+	{
+		
 	}
 }

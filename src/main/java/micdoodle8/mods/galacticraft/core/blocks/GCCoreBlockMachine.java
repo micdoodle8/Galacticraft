@@ -3,22 +3,21 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import java.util.List;
 import java.util.Random;
 
-import javax.swing.Icon;
-
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCoalGenerator;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricFurnace;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityEnergyStorageModule;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityIngotCompressor;
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -39,23 +38,22 @@ public class GCCoreBlockMachine extends GCCoreBlockTile
 	public static final int ELECTRIC_FURNACE_METADATA = 8;
 	public static final int COMPRESSOR_METADATA = 12;
 
-	private Icon iconMachineSide;
-	private Icon iconInput;
-	private Icon iconOutput;
+	private IIcon iconMachineSide;
+	private IIcon iconInput;
+	private IIcon iconOutput;
 
-	private Icon iconCoalGenerator;
-	private Icon[] iconEnergyStorageModule;
-	private Icon iconElectricFurnace;
-	private Icon iconCompressor;
+	private IIcon iconCoalGenerator;
+	private IIcon[] iconEnergyStorageModule;
+	private IIcon iconElectricFurnace;
+	private IIcon iconCompressor;
 
-	public GCCoreBlockMachine(int id, String assetName)
+	public GCCoreBlockMachine(String assetName)
 	{
-		super(id, GCCoreBlocks.machine);
-		this.setUnlocalizedName("basicMachine");
+		super(GCCoreBlocks.machine);
 		this.setHardness(1.0F);
-		this.setStepSound(Block.soundMetalFootstep);
-		this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
-		this.setUnlocalizedName(assetName);
+		this.setStepSound(Block.soundTypeMetal);
+		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setBlockName(assetName);
 	}
 
 	@Override
@@ -67,11 +65,11 @@ public class GCCoreBlockMachine extends GCCoreBlockTile
 	@Override
 	public int getRenderType()
 	{
-		return GalacticraftCore.proxy.getBlockRenderID(this.blockID);
+		return GalacticraftCore.proxy.getBlockRenderID(this);
 	}
 
 	@Override
-	public void registerIcons(IconRegister iconRegister)
+	public void registerBlockIcons(IIconRegister iconRegister)
 	{
 		this.blockIcon = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine");
 		this.iconInput = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_input");
@@ -79,7 +77,7 @@ public class GCCoreBlockMachine extends GCCoreBlockTile
 
 		this.iconMachineSide = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_side");
 		this.iconCoalGenerator = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "coalGenerator");
-		this.iconEnergyStorageModule = new Icon[17];
+		this.iconEnergyStorageModule = new IIcon[17];
 
 		for (int i = 0; i < this.iconEnergyStorageModule.length; i++)
 		{
@@ -93,7 +91,7 @@ public class GCCoreBlockMachine extends GCCoreBlockTile
 	@Override
 	public void randomDisplayTick(World par1World, int x, int y, int z, Random par5Random)
 	{
-		TileEntity tile = par1World.getBlockTileEntity(x, y, z);
+		TileEntity tile = par1World.getTileEntity(x, y, z);
 
 		if (tile instanceof TileEntityCoalGenerator)
 		{
@@ -132,13 +130,13 @@ public class GCCoreBlockMachine extends GCCoreBlockTile
 	}
 
 	@Override
-	public Icon getBlockTexture(IBlockAccess world, int x, int y, int z, int side)
+	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side)
 	{
 		int metadata = world.getBlockMetadata(x, y, z);
 
 		if (metadata >= GCCoreBlockMachine.STORAGE_MODULE_METADATA && metadata < GCCoreBlockMachine.ELECTRIC_FURNACE_METADATA)
 		{
-			TileEntity tile = world.getBlockTileEntity(x, y, z);
+			TileEntity tile = world.getTileEntity(x, y, z);
 
 			metadata -= GCCoreBlockMachine.STORAGE_MODULE_METADATA;
 
@@ -172,7 +170,7 @@ public class GCCoreBlockMachine extends GCCoreBlockTile
 	}
 
 	@Override
-	public Icon getIcon(int side, int metadata)
+	public IIcon getIcon(int side, int metadata)
 	{
 		if (side == 0 || side == 1)
 		{
@@ -395,27 +393,27 @@ public class GCCoreBlockMachine extends GCCoreBlockTile
 
 	public ItemStack getCompressor()
 	{
-		return new ItemStack(this.blockID, 1, GCCoreBlockMachine.COMPRESSOR_METADATA);
+		return new ItemStack(this, 1, GCCoreBlockMachine.COMPRESSOR_METADATA);
 	}
 
 	public ItemStack getCoalGenerator()
 	{
-		return new ItemStack(this.blockID, 1, GCCoreBlockMachine.COAL_GENERATOR_METADATA);
+		return new ItemStack(this, 1, GCCoreBlockMachine.COAL_GENERATOR_METADATA);
 	}
 
 	public ItemStack getEnergyStorageModule()
 	{
-		return new ItemStack(this.blockID, 1, GCCoreBlockMachine.STORAGE_MODULE_METADATA);
+		return new ItemStack(this, 1, GCCoreBlockMachine.STORAGE_MODULE_METADATA);
 	}
 
 	public ItemStack getElectricFurnace()
 	{
-		return new ItemStack(this.blockID, 1, GCCoreBlockMachine.ELECTRIC_FURNACE_METADATA);
+		return new ItemStack(this, 1, GCCoreBlockMachine.ELECTRIC_FURNACE_METADATA);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
 		par3List.add(this.getCoalGenerator());
 		par3List.add(this.getEnergyStorageModule());
@@ -445,17 +443,8 @@ public class GCCoreBlockMachine extends GCCoreBlockTile
 	}
 
 	@Override
-	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
+	public TileEntity createNewTileEntity(World var1, int var2) 
 	{
-		Item item = Item.itemsList[this.blockID];
-
-		if (item == null)
-		{
-			return null;
-		}
-
-		int metadata = this.getDamageValue(world, x, y, z);
-
-		return new ItemStack(this.blockID, 1, metadata);
+		return null;
 	}
 }

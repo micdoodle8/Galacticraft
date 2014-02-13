@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.world.gen.GCCoreCraterSize;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSand;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.IProgressUpdate;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -79,7 +80,7 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
 		this.noiseGen7 = new Gradient(this.rand.nextLong(), 1, 0.25);
 	}
 
-	public void generateTerrain(int chunkX, int chunkZ, short[] idArray, byte[] metaArray)
+	public void generateTerrain(int chunkX, int chunkZ, Block[] idArray, byte[] metaArray)
 	{
 		this.noiseGen1.frequency = 0.015;
 		this.noiseGen2.frequency = 0.01;
@@ -111,7 +112,7 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
 				{
 					if (y < this.MID_HEIGHT + yDev)
 					{
-						idArray[this.getIndex(x, y, z)] = this.getStoneBlock().getBlockID();
+						idArray[this.getIndex(x, y, z)] = this.getStoneBlock().getBlock();
 						metaArray[this.getIndex(x, y, z)] = this.getStoneBlock().getMetadata();
 					}
 				}
@@ -153,7 +154,7 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
 		return x;
 	}
 
-	public void replaceBlocksForBiome(int par1, int par2, short[] arrayOfIDs, byte[] arrayOfMeta, BiomeGenBase[] par4ArrayOfBiomeGenBase)
+	public void replaceBlocksForBiome(int par1, int par2, Block[] arrayOfIDs, byte[] arrayOfMeta, BiomeGenBase[] par4ArrayOfBiomeGenBase)
 	{
 		final int var5 = 20;
 		final double var6 = 0.03125D;
@@ -164,9 +165,9 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
 			{
 				final int var12 = (int) (this.noiseGen4.getNoise(par1 * 16 + var8, par2 * 16 + var9) / 3.0D + 3.0D + this.rand.nextDouble() * 0.25D);
 				int var13 = -1;
-				short var14 = this.getGrassBlock().getBlockID();
+				Block var14 = this.getGrassBlock().getBlock();
 				byte var14m = this.getGrassBlock().getMetadata();
-				short var15 = this.getDirtBlock().getBlockID();
+				Block var15 = this.getDirtBlock().getBlock();
 				byte var15m = this.getDirtBlock().getMetadata();
 
 				for (int var16 = GCChunkProvider.CHUNK_SIZE_Y - 1; var16 >= 0; --var16)
@@ -175,17 +176,17 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
 
 					if (var16 <= 0 + this.rand.nextInt(5))
 					{
-						arrayOfIDs[index] = (short) Block.bedrock.blockID;
+						arrayOfIDs[index] = Blocks.bedrock;
 					}
 					else
 					{
-						final int var18 = arrayOfIDs[index];
+						Block var18 = arrayOfIDs[index];
 
-						if (var18 == 0)
+						if (var18 == Blocks.air)
 						{
 							var13 = -1;
 						}
-						else if (var18 == this.getStoneBlock().getBlockID())
+						else if (var18 == this.getStoneBlock().getBlock())
 						{
 							arrayOfMeta[index] = this.getStoneBlock().getMetadata();
 
@@ -193,22 +194,22 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
 							{
 								if (var12 <= 0)
 								{
-									var14 = 0;
+									var14 = Blocks.air;
 									var14m = 0;
-									var15 = this.getStoneBlock().getBlockID();
+									var15 = this.getStoneBlock().getBlock();
 									var15m = this.getStoneBlock().getMetadata();
 								}
 								else if (var16 >= var5 - -16 && var16 <= var5 + 1)
 								{
-									var14 = this.getGrassBlock().getBlockID();
+									var14 = this.getGrassBlock().getBlock();
 									var14m = this.getGrassBlock().getMetadata();
-									var14 = this.getDirtBlock().getBlockID();
+									var14 = this.getDirtBlock().getBlock();
 									var14m = this.getDirtBlock().getMetadata();
 								}
 
-								if (var16 < var5 && var14 == 0)
+								if (var16 < var5 && var14 == Blocks.air)
 								{
-									var14 = 0;
+									var14 = Blocks.air;
 								}
 
 								var13 = var12;
@@ -241,12 +242,12 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
 	public Chunk provideChunk(int par1, int par2)
 	{
 		this.rand.setSeed(par1 * 341873128712L + par2 * 132897987541L);
-		final short[] ids = new short[32768 * 2];
-		final byte[] meta = new byte[32768 * 2];
-		this.generateTerrain(par1, par2, ids, meta);
-		this.createCraters(par1, par2, ids, meta);
+		Block[] blocks = new Block[32768 * 2];
+		byte[] meta = new byte[32768 * 2];
+		this.generateTerrain(par1, par2, blocks, meta);
+		this.createCraters(par1, par2, blocks, meta);
 		this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, par1 * 16, par2 * 16, 16, 16);
-		this.replaceBlocksForBiome(par1, par2, ids, meta, this.biomesForGeneration);
+		this.replaceBlocksForBiome(par1, par2, blocks, meta, this.biomesForGeneration);
 
 		if (this.worldGenerators == null)
 		{
@@ -255,10 +256,10 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
 
 		for (GCCoreMapGenBaseMeta generator : this.worldGenerators)
 		{
-			generator.generate(this, this.worldObj, par1, par2, ids, meta);
+			generator.generate(this, this.worldObj, par1, par2, blocks, meta);
 		}
 
-		final Chunk var4 = new Chunk(this.worldObj, ids, meta, par1, par2);
+		final Chunk var4 = new Chunk(this.worldObj, blocks, meta, par1, par2);
 		final byte[] var5 = var4.getBiomeArray();
 
 		for (int var6 = 0; var6 < var5.length; ++var6)
@@ -270,7 +271,7 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
 		return var4;
 	}
 
-	public void createCraters(int chunkX, int chunkZ, short[] chunkArray, byte[] metaArray)
+	public void createCraters(int chunkX, int chunkZ, Block[] chunkArray, byte[] metaArray)
 	{
 		this.noiseGen5.frequency = 0.015;
 		for (int cx = chunkX - 2; cx <= chunkX + 2; cx++)
@@ -294,7 +295,7 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
 		}
 	}
 
-	public void makeCrater(int craterX, int craterZ, int chunkX, int chunkZ, int size, short[] chunkArray, byte[] metaArray)
+	public void makeCrater(int craterX, int craterZ, int chunkX, int chunkZ, int size, Block[] chunkArray, byte[] metaArray)
 	{
 		for (int x = 0; x < GCChunkProvider.CHUNK_SIZE_X; x++)
 		{
@@ -312,9 +313,9 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
 					int helper = 0;
 					for (int y = 127; y > 0; y--)
 					{
-						if (chunkArray[this.getIndex(x, y, z)] != 0 && helper <= yDev)
+						if (chunkArray[this.getIndex(x, y, z)] != Blocks.air && helper <= yDev)
 						{
-							chunkArray[this.getIndex(x, y, z)] = 0;
+							chunkArray[this.getIndex(x, y, z)] = Blocks.air;
 							metaArray[this.getIndex(x, y, z)] = 0;
 							helper++;
 						}

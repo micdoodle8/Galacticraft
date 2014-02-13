@@ -6,7 +6,9 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
@@ -26,23 +28,16 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class BlockMulti extends BlockContainer
 {
 	public String textureName = null;
-	public String channel = "";
 
-	public BlockMulti(int id)
+	public BlockMulti()
 	{
-		super(id, GCCoreBlocks.machine);
+		super(GCCoreBlocks.machine);
 		this.setHardness(0.8F);
-		this.setUnlocalizedName("multiBlock");
-	}
-
-	public BlockMulti setChannel(String channel)
-	{
-		this.channel = channel;
-		return this;
+		this.setBlockName("multiBlock");
 	}
 
 	@Override
-	public BlockMulti setTextureName(String name)
+	public BlockMulti setBlockTextureName(String name)
 	{
 		this.textureName = name;
 		return this;
@@ -50,13 +45,13 @@ public class BlockMulti extends BlockContainer
 
 	public void makeFakeBlock(World worldObj, Vector3 position, Vector3 mainBlock)
 	{
-		worldObj.setBlock(position.intX(), position.intY(), position.intZ(), this.blockID);
-		((TileEntityMulti) worldObj.getBlockTileEntity(position.intX(), position.intY(), position.intZ())).setMainBlock(mainBlock);
+		worldObj.setBlock(position.intX(), position.intY(), position.intZ(), this);
+		((TileEntityMulti) position.getTileEntity(worldObj)).setMainBlock(mainBlock);
 	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public void registerIcons(IconRegister iconRegister)
+	public void registerBlockIcons(IIconRegister iconRegister)
 	{
 		if (this.textureName != null)
 		{
@@ -64,14 +59,14 @@ public class BlockMulti extends BlockContainer
 		}
 		else
 		{
-			super.registerIcons(iconRegister);
+			super.registerBlockIcons(iconRegister);
 		}
 	}
 
 	@Override
-	public void breakBlock(World world, int x, int y, int z, int par5, int par6)
+	public void breakBlock(World world, int x, int y, int z, Block par5, int par6)
 	{
-		TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+		TileEntity tileEntity = world.getTileEntity(x, y, z);
 
 		if (tileEntity instanceof TileEntityMulti)
 		{
@@ -90,7 +85,7 @@ public class BlockMulti extends BlockContainer
 	@Override
 	public boolean onBlockActivated(World par1World, int x, int y, int z, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
 	{
-		TileEntityMulti tileEntity = (TileEntityMulti) par1World.getBlockTileEntity(x, y, z);
+		TileEntityMulti tileEntity = (TileEntityMulti) par1World.getTileEntity(x, y, z);
 		return tileEntity.onBlockActivated(par1World, x, y, z, par5EntityPlayer);
 	}
 
@@ -122,24 +117,24 @@ public class BlockMulti extends BlockContainer
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World var1)
+	public TileEntity createNewTileEntity(World var1, int meta)
 	{
-		return new TileEntityMulti(this.channel);
+		return new TileEntityMulti();
 	}
 
 	@Override
 	public ItemStack getPickBlock(MovingObjectPosition target, World par1World, int x, int y, int z)
 	{
-		TileEntity tileEntity = par1World.getBlockTileEntity(x, y, z);
+		TileEntity tileEntity = par1World.getTileEntity(x, y, z);
 		Vector3 mainBlockPosition = ((TileEntityMulti) tileEntity).mainBlockPosition;
 
 		if (mainBlockPosition != null)
 		{
-			int mainBlockID = par1World.getBlockId(mainBlockPosition.intX(), mainBlockPosition.intY(), mainBlockPosition.intZ());
+			Block mainBlockID = par1World.getBlock(mainBlockPosition.intX(), mainBlockPosition.intY(), mainBlockPosition.intZ());
 
-			if (mainBlockID > 0)
+			if (mainBlockID != Blocks.air)
 			{
-				return Block.blocksList[mainBlockID].getPickBlock(target, par1World, mainBlockPosition.intX(), mainBlockPosition.intY(), mainBlockPosition.intZ());
+				return mainBlockID.getPickBlock(target, par1World, mainBlockPosition.intX(), mainBlockPosition.intY(), mainBlockPosition.intZ());
 			}
 		}
 

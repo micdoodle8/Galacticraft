@@ -4,6 +4,7 @@ import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.proxy.ClientProxy;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
@@ -24,9 +25,8 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreItem extends Item
 {
-	public GCCoreItem(int id, String assetName)
+	public GCCoreItem(String assetName)
 	{
-		super(id);
 		this.setUnlocalizedName(assetName);
 		this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
 	}
@@ -41,7 +41,7 @@ public class GCCoreItem extends Item
 	@SideOnly(Side.CLIENT)
 	public EnumRarity getRarity(ItemStack par1ItemStack)
 	{
-		return ClientProxyCore.galacticraftItem;
+		return ClientProxy.galacticraftItem;
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -49,7 +49,7 @@ public class GCCoreItem extends Item
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
 	{
-		if (par1ItemStack != null && this.itemID == GCCoreConfigManager.idItemHeavyPlate + 256)
+		if (par1ItemStack != null && this == GCCoreItems.heavyPlatingTier1)
 		{
 			par3List.add(StatCollector.translateToLocal("item.tier1.desc"));
 		}

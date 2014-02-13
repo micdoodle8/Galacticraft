@@ -2,11 +2,11 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.Random;
 
-import javax.swing.Icon;
-
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidClassic;
@@ -25,14 +25,14 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreBlockFluid extends BlockFluidClassic
 {
-	private Icon stillIcon;
-	private Icon flowingIcon;
+	private IIcon stillIcon;
+	private IIcon flowingIcon;
 	private final String fluidName;
 	private final Fluid fluid;
 
-	public GCCoreBlockFluid(int id, Fluid fluid, String assetName)
+	public GCCoreBlockFluid(Fluid fluid, String assetName)
 	{
-		super(id, fluid, Material.water);
+		super(fluid, Material.water);
 		this.setRenderPass(1);
 		this.fluidName = assetName;
 		this.fluid = fluid;
@@ -51,14 +51,14 @@ public class GCCoreBlockFluid extends BlockFluidClassic
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getIcon(int par1, int par2)
+	public IIcon getIcon(int par1, int par2)
 	{
 		return par1 == 0 ? this.stillIcon : this.flowingIcon;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
 		this.stillIcon = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + this.fluidName + "_still");
 		this.flowingIcon = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + this.fluidName + "_flow");
@@ -81,7 +81,7 @@ public class GCCoreBlockFluid extends BlockFluidClassic
 	@Override
 	public boolean canDisplace(IBlockAccess world, int x, int y, int z)
 	{
-		if (world.getBlockMaterial(x, y, z).isLiquid())
+		if (world.getBlock(x, y, z).getMaterial().isLiquid())
 		{
 			return false;
 		}
@@ -92,7 +92,7 @@ public class GCCoreBlockFluid extends BlockFluidClassic
 	@Override
 	public boolean displaceIfPossible(World world, int x, int y, int z)
 	{
-		if (world.getBlockMaterial(x, y, z).isLiquid())
+		if (world.getBlock(x, y, z).getMaterial().isLiquid())
 		{
 			return false;
 		}
@@ -100,12 +100,12 @@ public class GCCoreBlockFluid extends BlockFluidClassic
 		return super.displaceIfPossible(world, x, y, z);
 	}
 
-	public Icon getStillIcon()
+	public IIcon getStillIcon()
 	{
 		return this.stillIcon;
 	}
 
-	public Icon getFlowingIcon()
+	public IIcon getFlowingIcon()
 	{
 		return this.flowingIcon;
 	}

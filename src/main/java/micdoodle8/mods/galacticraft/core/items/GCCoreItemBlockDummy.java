@@ -1,11 +1,11 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import javax.swing.Icon;
-
+import micdoodle8.mods.galacticraft.core.proxy.ClientProxy;
 import net.minecraft.block.Block;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -20,18 +20,18 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreItemBlockDummy extends ItemBlock
 {
-	public GCCoreItemBlockDummy(int id)
+	public GCCoreItemBlockDummy(Block block)
 	{
-		super(id);
+		super(block);
 		this.setMaxDamage(0);
 		this.setHasSubtypes(true);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getIconFromDamage(int par1)
+	public IIcon getIconFromDamage(int par1)
 	{
-		return Block.blocksList[this.getBlock()].getIcon(0, par1);
+		return this.field_150939_a.getIcon(0, par1);
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public class GCCoreItemBlockDummy extends ItemBlock
 	@SideOnly(Side.CLIENT)
 	public EnumRarity getRarity(ItemStack par1ItemStack)
 	{
-		return ClientProxyCore.galacticraftItem;
+		return ClientProxy.galacticraftItem;
 	}
 
 	@Override
@@ -75,12 +75,12 @@ public class GCCoreItemBlockDummy extends ItemBlock
 			break;
 		}
 
-		return Block.blocksList[this.getBlock()].getUnlocalizedName() + "." + blockName;
+		return this.field_150939_a.getUnlocalizedName() + "." + blockName;
 	}
 
 	@Override
 	public String getUnlocalizedName()
 	{
-		return Block.blocksList[this.getBlock()].getUnlocalizedName() + ".0";
+		return this.field_150939_a.getUnlocalizedName() + ".0";
 	}
 }

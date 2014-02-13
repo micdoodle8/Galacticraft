@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import micdoodle8.mods.galacticraft.core.proxy.ClientProxy;
 import net.minecraft.block.Block;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemBlock;
@@ -18,9 +19,9 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreItemBlockCargoLoader extends ItemBlock
 {
-	public GCCoreItemBlockCargoLoader(int id)
+	public GCCoreItemBlockCargoLoader(Block block)
 	{
-		super(id);
+		super(block);
 		this.setMaxDamage(0);
 		this.setHasSubtypes(true);
 	}
@@ -39,14 +40,14 @@ public class GCCoreItemBlockCargoLoader extends ItemBlock
 			name = "unloader";
 		}
 
-		return Block.blocksList[this.getBlock()].getUnlocalizedName() + "." + name;
+		return this.field_150939_a.getUnlocalizedName() + "." + name;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public EnumRarity getRarity(ItemStack par1ItemStack)
 	{
-		return ClientProxyCore.galacticraftItem;
+		return ClientProxy.galacticraftItem;
 	}
 
 	@Override

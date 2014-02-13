@@ -26,10 +26,11 @@ import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
-import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -207,7 +208,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 			this.setTouchedGround(true);
 		}
 
-		this.updateStep();
+//		this.updateStep(); TODO
 
 		if (this.getTeleportCooldown() > 0)
 		{
@@ -292,7 +293,8 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
 		if (this.worldObj.provider instanceof IGalacticraftWorldProvider && (this.oxygenSetupValid != this.lastOxygenSetupValid || this.tick % 100 == 0))
 		{
-			this.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.UPDATE_OXYGEN_VALIDITY, new Object[] { Boolean.valueOf(this.oxygenSetupValid) }));
+//			TODO
+//			this.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.UPDATE_OXYGEN_VALIDITY, new Object[] { Boolean.valueOf(this.oxygenSetupValid) }));
 		}
 
 		if (this.getParachute())
@@ -307,10 +309,10 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
 		if (this.worldObj.provider instanceof IGalacticraftWorldProvider || this.usingPlanetSelectionGui)
 		{
-			this.playerNetServerHandler.ticksForFloatKick = 0;
+//			this.playerNetServerHandler.ticksForFloatKick = 0; TODO find out if this still exists somewhere
 		}
 
-		this.updateSchematics();
+//		this.updateSchematics(); TODO
 
 		if (this.frequencyModuleInSlot == null && !this.receivedSoundWarning && this.tick > 0 && this.tick % 250 == 0 && this.worldObj.provider instanceof IGalacticraftWorldProvider && this.onGround)
 		{
@@ -431,12 +433,12 @@ public class GCCorePlayerMP extends EntityPlayerMP
 			final int var1 = this.inventory.getCurrentItem().stackSize;
 			final int var2 = this.inventory.getCurrentItem().getItemDamage();
 
-			if (this.inventory.getCurrentItem().getItem().itemID == Block.torchWood.blockID)
+			if (this.inventory.getCurrentItem().getItem() == Item.getItemFromBlock(Blocks.torch))
 			{
 				final ItemStack stack = new ItemStack(GCCoreBlocks.unlitTorch, var1, 0);
 				this.inventory.mainInventory[this.inventory.currentItem] = stack;
 			}
-			else if (this.inventory.getCurrentItem().getItem().itemID == Item.bow.itemID)
+			else if (this.inventory.getCurrentItem().getItem() == Items.bow)
 			{
 				final Hashtable<Integer, Enchantment> enchants = new Hashtable<Integer, Enchantment>();
 
@@ -446,8 +448,8 @@ public class GCCorePlayerMP extends EntityPlayerMP
 				{
 					for (int var7 = 0; var7 < list.tagCount(); ++var7)
 					{
-						final int enchID = Integer.valueOf(((NBTTagCompound) list.tagAt(var7)).getShort("id"));
-						final int enchLvl = Integer.valueOf(((NBTTagCompound) list.tagAt(var7)).getShort("lvl"));
+						final int enchID = Integer.valueOf(((NBTTagCompound) list.getCompoundTagAt(var7)).getShort("id"));
+						final int enchLvl = Integer.valueOf(((NBTTagCompound) list.getCompoundTagAt(var7)).getShort("lvl"));
 
 						final Enchantment e = Enchantment.enchantmentsList[enchID];
 
@@ -477,12 +479,12 @@ public class GCCorePlayerMP extends EntityPlayerMP
 			final int var1 = this.inventory.getCurrentItem().stackSize;
 			final int var2 = this.inventory.getCurrentItem().getItemDamage();
 
-			if (this.inventory.getCurrentItem().getItem().itemID == GCCoreBlocks.unlitTorch.blockID)
+			if (this.inventory.getCurrentItem().getItem() == Item.getItemFromBlock(GCCoreBlocks.unlitTorch))
 			{
-				final ItemStack stack = new ItemStack(Block.torchWood, var1, 0);
+				final ItemStack stack = new ItemStack(Blocks.torch, var1, 0);
 				this.inventory.mainInventory[this.inventory.currentItem] = stack;
 			}
-			else if (this.inventory.getCurrentItem().getItem().itemID == GCCoreItems.bowGravity.itemID)
+			else if (this.inventory.getCurrentItem().getItem() == GCCoreItems.bowGravity)
 			{
 				final Hashtable<Integer, Enchantment> enchants = new Hashtable<Integer, Enchantment>();
 
@@ -492,8 +494,8 @@ public class GCCorePlayerMP extends EntityPlayerMP
 				{
 					for (int var7 = 0; var7 < list.tagCount(); ++var7)
 					{
-						final int enchID = Integer.valueOf(((NBTTagCompound) list.tagAt(var7)).getShort("id"));
-						final int enchLvl = Integer.valueOf(((NBTTagCompound) list.tagAt(var7)).getShort("lvl"));
+						final int enchID = Integer.valueOf(((NBTTagCompound) list.getCompoundTagAt(var7)).getShort("id"));
+						final int enchLvl = Integer.valueOf(((NBTTagCompound) list.getCompoundTagAt(var7)).getShort("lvl"));
 
 						final Enchantment e = Enchantment.enchantmentsList[enchID];
 
@@ -501,7 +503,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 					}
 				}
 
-				final ItemStack stack = new ItemStack(Item.bow, var1, var2);
+				final ItemStack stack = new ItemStack(Items.bow, var1, var2);
 
 				final Iterator<Entry<Integer, Enchantment>> it = enchants.entrySet().iterator();
 
@@ -547,7 +549,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
 		//
 
-		if (this.frequencyModuleInSlot != null && this.lastFrequencyModuleInSlot == null && this.frequencyModuleInSlot.getItem().itemID == GCCoreItems.basicItem.itemID && this.frequencyModuleInSlot.getItemDamage() == 19)
+		if (this.frequencyModuleInSlot != null && this.lastFrequencyModuleInSlot == null && this.frequencyModuleInSlot.getItem() == GCCoreItems.basicItem && this.frequencyModuleInSlot.getItemDamage() == 19)
 		{
 			this.sendGearUpdatePacket(EnumModelPacket.ADD_FREQUENCY_MODULE.getIndex());
 		}
@@ -559,7 +561,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
 		//
 
-		if (this.maskInSlot != null && this.lastMaskInSlot == null && this.maskInSlot.getItem().itemID == GCCoreItems.oxMask.itemID)
+		if (this.maskInSlot != null && this.lastMaskInSlot == null && this.maskInSlot.getItem() == GCCoreItems.oxMask)
 		{
 			this.sendGearUpdatePacket(EnumModelPacket.ADDMASK.getIndex());
 		}
@@ -571,7 +573,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
 		//
 
-		if (this.gearInSlot != null && this.lastGearInSlot == null && this.gearInSlot.getItem().itemID == GCCoreItems.oxygenGear.itemID)
+		if (this.gearInSlot != null && this.lastGearInSlot == null && this.gearInSlot.getItem() == GCCoreItems.oxygenGear)
 		{
 			this.sendGearUpdatePacket(EnumModelPacket.ADDGEAR.getIndex());
 		}
@@ -585,15 +587,15 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
 		if (this.tankInSlot1 != null && this.lastTankInSlot1 == null)
 		{
-			if (this.tankInSlot1.getItem().itemID == GCCoreItems.oxTankLight.itemID)
+			if (this.tankInSlot1.getItem() == GCCoreItems.oxTankLight)
 			{
 				this.sendGearUpdatePacket(EnumModelPacket.ADDLEFTGREENTANK.getIndex());
 			}
-			else if (this.tankInSlot1.getItem().itemID == GCCoreItems.oxTankMedium.itemID)
+			else if (this.tankInSlot1.getItem() == GCCoreItems.oxTankMedium)
 			{
 				this.sendGearUpdatePacket(EnumModelPacket.ADDLEFTORANGETANK.getIndex());
 			}
-			else if (this.tankInSlot1.getItem().itemID == GCCoreItems.oxTankHeavy.itemID)
+			else if (this.tankInSlot1.getItem() == GCCoreItems.oxTankHeavy)
 			{
 				this.sendGearUpdatePacket(EnumModelPacket.ADDLEFTREDTANK.getIndex());
 			}
@@ -606,17 +608,17 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
 		if (this.tankInSlot1 != null && this.lastTankInSlot1 != null)
 		{
-			if (this.tankInSlot1.getItem().itemID != this.lastTankInSlot1.getItem().itemID)
+			if (this.tankInSlot1.getItem() != this.lastTankInSlot1.getItem())
 			{
-				if (this.tankInSlot1.getItem().itemID == GCCoreItems.oxTankLight.itemID)
+				if (this.tankInSlot1.getItem() == GCCoreItems.oxTankLight)
 				{
 					this.sendGearUpdatePacket(EnumModelPacket.ADDLEFTGREENTANK.getIndex());
 				}
-				else if (this.tankInSlot1.getItem().itemID == GCCoreItems.oxTankMedium.itemID)
+				else if (this.tankInSlot1.getItem() == GCCoreItems.oxTankMedium)
 				{
 					this.sendGearUpdatePacket(EnumModelPacket.ADDLEFTORANGETANK.getIndex());
 				}
-				else if (this.tankInSlot1.getItem().itemID == GCCoreItems.oxTankHeavy.itemID)
+				else if (this.tankInSlot1.getItem() == GCCoreItems.oxTankHeavy)
 				{
 					this.sendGearUpdatePacket(EnumModelPacket.ADDLEFTREDTANK.getIndex());
 				}
@@ -627,15 +629,15 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
 		if (this.tankInSlot2 != null && this.lastTankInSlot2 == null)
 		{
-			if (this.tankInSlot2.getItem().itemID == GCCoreItems.oxTankLight.itemID)
+			if (this.tankInSlot2.getItem() == GCCoreItems.oxTankLight)
 			{
 				this.sendGearUpdatePacket(EnumModelPacket.ADDRIGHTGREENTANK.getIndex());
 			}
-			else if (this.tankInSlot2.getItem().itemID == GCCoreItems.oxTankMedium.itemID)
+			else if (this.tankInSlot2.getItem() == GCCoreItems.oxTankMedium)
 			{
 				this.sendGearUpdatePacket(EnumModelPacket.ADDRIGHTORANGETANK.getIndex());
 			}
-			else if (this.tankInSlot2.getItem().itemID == GCCoreItems.oxTankHeavy.itemID)
+			else if (this.tankInSlot2.getItem() == GCCoreItems.oxTankHeavy)
 			{
 				this.sendGearUpdatePacket(EnumModelPacket.ADDRIGHTREDTANK.getIndex());
 			}
@@ -648,17 +650,17 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
 		if (this.tankInSlot2 != null && this.lastTankInSlot2 != null)
 		{
-			if (this.tankInSlot2.getItem().itemID != this.lastTankInSlot2.getItem().itemID)
+			if (this.tankInSlot2.getItem() != this.lastTankInSlot2.getItem())
 			{
-				if (this.tankInSlot2.getItem().itemID == GCCoreItems.oxTankLight.itemID)
+				if (this.tankInSlot2.getItem() == GCCoreItems.oxTankLight)
 				{
 					this.sendGearUpdatePacket(EnumModelPacket.ADDRIGHTGREENTANK.getIndex());
 				}
-				else if (this.tankInSlot2.getItem().itemID == GCCoreItems.oxTankMedium.itemID)
+				else if (this.tankInSlot2.getItem() == GCCoreItems.oxTankMedium)
 				{
 					this.sendGearUpdatePacket(EnumModelPacket.ADDRIGHTORANGETANK.getIndex());
 				}
-				else if (this.tankInSlot2.getItem().itemID == GCCoreItems.oxTankHeavy.itemID)
+				else if (this.tankInSlot2.getItem() == GCCoreItems.oxTankHeavy)
 				{
 					this.sendGearUpdatePacket(EnumModelPacket.ADDRIGHTREDTANK.getIndex());
 				}
@@ -828,7 +830,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 				{
 					final EntityPlayer closestPlayer = this.worldObj.getClosestPlayerToEntity(this, 100);
 
-					if (closestPlayer == null || closestPlayer.entityId <= this.entityId)
+					if (closestPlayer == null || closestPlayer.getEntityId() <= this.getEntityId())
 					{
 						int x, y, z;
 						double motX, motZ;
@@ -851,7 +853,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 				{
 					final EntityPlayer closestPlayer = this.worldObj.getClosestPlayerToEntity(this, 100);
 
-					if (closestPlayer == null || closestPlayer.entityId <= this.entityId)
+					if (closestPlayer == null || closestPlayer.getEntityId() <= this.getEntityId())
 					{
 						int x, y, z;
 						double motX, motZ;
@@ -904,12 +906,12 @@ public class GCCorePlayerMP extends EntityPlayerMP
 		this.oxygenSetupValid = this.lastOxygenSetupValid = nbt.getBoolean("OxygenSetupValid");
 
 		// Backwards compatibility
-		NBTTagList nbttaglist = nbt.getTagList("Inventory");
+		NBTTagList nbttaglist = nbt.getTagList("Inventory", 10);
 		this.getExtendedInventory().readFromNBTOld(nbttaglist);
 
 		if (nbt.hasKey("ExtendedInventoryGC"))
 		{
-			this.getExtendedInventory().readFromNBT(nbt.getTagList("ExtendedInventoryGC"));
+			this.getExtendedInventory().readFromNBT(nbt.getTagList("ExtendedInventoryGC", 10));
 		}
 
 		if (nbt.hasKey("SpaceshipTier"))
@@ -929,7 +931,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 			this.openPlanetSelectionGuiCooldown = 20;
 		}
 
-		final NBTTagList var23 = nbt.getTagList("RocketItems");
+		final NBTTagList var23 = nbt.getTagList("RocketItems", 10);
 		int length = nbt.getInteger("rocketStacksLength");
 		boolean oldInventory = false;
 
@@ -944,7 +946,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
 		for (int var3 = 0; var3 < var23.tagCount(); ++var3)
 		{
-			final NBTTagCompound var4 = (NBTTagCompound) var23.tagAt(var3);
+			final NBTTagCompound var4 = (NBTTagCompound) var23.getCompoundTagAt(var3);
 			final int var5 = var4.getByte("Slot") & 255;
 
 			if (var5 >= 0 && var5 < this.getRocketStacks().length)
@@ -968,9 +970,9 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
 		this.unlockedSchematics = new ArrayList<ISchematicPage>();
 
-		for (int i = 0; i < nbt.getTagList("Schematics").tagCount(); ++i)
+		for (int i = 0; i < nbt.getTagList("Schematics", 10).tagCount(); ++i)
 		{
-			final NBTTagCompound nbttagcompound = (NBTTagCompound) nbt.getTagList("Schematics").tagAt(i);
+			final NBTTagCompound nbttagcompound = (NBTTagCompound) nbt.getTagList("Schematics", 10).getCompoundTagAt(i);
 
 			final int j = nbttagcompound.getInteger("UnlockedPage");
 
@@ -1060,11 +1062,11 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
 	private void sendGearUpdatePacket(int gearType, int subtype)
 	{
-		final Object[] toSend = { this.username, gearType, subtype };
+		final Object[] toSend = { this.getGameProfile().getName(), gearType, subtype };
 
-		if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.username) != null)
+		if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.getGameProfile().getName()) != null)
 		{
-			PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 50, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.UPDATE_GEAR_SLOT, toSend));
+//			PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 50, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.UPDATE_GEAR_SLOT, toSend));
 		}
 	}
 

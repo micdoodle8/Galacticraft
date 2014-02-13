@@ -16,9 +16,8 @@ import net.minecraft.world.World;
 
 public abstract class ItemElectric extends Item implements IItemElectric
 {
-	public ItemElectric(int id)
+	public ItemElectric()
 	{
-		super(id);
 		this.setMaxStackSize(1);
 		this.setMaxDamage(100);
 		this.setNoRepair();
@@ -126,11 +125,11 @@ public abstract class ItemElectric extends Item implements IItemElectric
 			NBTBase obj = itemStack.getTagCompound().getTag("electricity");
 			if (obj instanceof NBTTagDouble)
 			{
-				energyStored = (float) ((NBTTagDouble) obj).data;
+				energyStored = (float) ((NBTTagDouble) obj).func_150288_h();
 			}
 			else if (obj instanceof NBTTagFloat)
 			{
-				energyStored = ((NBTTagFloat) obj).data;
+				energyStored = ((NBTTagFloat) obj).func_150288_h();
 			}
 		}
 
@@ -141,7 +140,7 @@ public abstract class ItemElectric extends Item implements IItemElectric
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
 		par3List.add(ElectricItemHelper.getUncharged(new ItemStack(this)));
 		par3List.add(ElectricItemHelper.getWithCharge(new ItemStack(this), this.getMaxElectricityStored(new ItemStack(this))));

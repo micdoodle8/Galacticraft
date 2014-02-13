@@ -1,22 +1,24 @@
 package micdoodle8.mods.galacticraft.api.prefab.core;
 
+import net.minecraft.block.Block;
+
 /**
  * Do not include this prefab class in your released mod download.
  */
 public class BlockMetaPair
 {
-	private final short blockID;
+	private final Block block;
 	private final byte metadata;
 
-	public BlockMetaPair(short blockID, byte metadata)
+	public BlockMetaPair(Block blockID, byte metadata)
 	{
-		this.blockID = blockID;
+		this.block = blockID;
 		this.metadata = metadata;
 	}
 
-	public short getBlockID()
+	public Block getBlock()
 	{
-		return this.blockID;
+		return this.block;
 	}
 
 	public byte getMetadata()

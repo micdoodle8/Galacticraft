@@ -4,12 +4,14 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.client.gui.GuiHandler;
 import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.network.PacketPipeline;
 import micdoodle8.mods.galacticraft.core.proxy.CommonProxy;
 import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerClient;
+import net.minecraft.creativetab.CreativeTabs;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -37,6 +39,8 @@ public class GalacticraftCore
     
 	public static Map<String, GCCorePlayerSP> playersClient = new HashMap<String, GCCorePlayerSP>();
 	public static Map<String, GCCorePlayerMP> playersServer = new HashMap<String, GCCorePlayerMP>();
+	
+	public static CreativeTabs galacticraftTab;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
@@ -44,12 +48,16 @@ public class GalacticraftCore
 		proxy.preInit(event);
 		
 		GCCoreConfigManager.setDefaultValues(new File(event.getModConfigurationDirectory(), GalacticraftCore.CONFIG_FILE));
+		
+		GCCoreBlocks.initBlocks();
 	}
 	
 	@EventHandler
 	public void init(FMLInitializationEvent event)
 	{
 		proxy.init(event);
+		
+		GalacticraftCore.galacticraftTab = new GCCoreCreativeTab(CreativeTabs.getNextID(), MOD_NAME, GCCoreBlocks.airLockFrame, 0);
 		
 		this.packetPipeline = new PacketPipeline();
 		this.packetPipeline.initalise();
