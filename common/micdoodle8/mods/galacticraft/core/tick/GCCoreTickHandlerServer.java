@@ -46,11 +46,13 @@ public class GCCoreTickHandlerServer implements ITickHandler
 		if (type.equals(EnumSet.of(TickType.WORLD)))
 		{
 			final WorldServer world = (WorldServer) tickData[0];
-
-			List<ScheduledBlockChange> scheduledChanges = new ArrayList<ScheduledBlockChange>(scheduledBlockChanges.get(world.provider.dimensionId));
 			
-			if (scheduledChanges != null && !scheduledChanges.isEmpty())
+			List<ScheduledBlockChange> changeList = scheduledBlockChanges.get(world.provider.dimensionId);
+			
+			if (changeList != null && !changeList.isEmpty())
 			{
+				List<ScheduledBlockChange> scheduledChanges = new ArrayList<ScheduledBlockChange>(changeList);
+				
 				for (ScheduledBlockChange change : scheduledChanges)
 				{
 					if (change != null && change.getChangePosition() != null)
