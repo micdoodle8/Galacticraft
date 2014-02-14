@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.world.gen;
 
 import java.util.Random;
 
+import net.minecraft.block.Block;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenMinable;
@@ -17,7 +18,7 @@ import net.minecraft.world.gen.feature.WorldGenMinable;
  */
 public class GCCoreWorldGenMinableMeta extends WorldGenMinable
 {
-	private final int minableBlockId;
+	private final Block minableBlockId;
 
 	private final int numberOfBlocks;
 
@@ -25,11 +26,11 @@ public class GCCoreWorldGenMinableMeta extends WorldGenMinable
 
 	private boolean usingMetadata = false;
 
-	private final int fillerID;
+	private final Block fillerID;
 
 	private final int fillerMetadata;
 
-	public GCCoreWorldGenMinableMeta(int par1, int par2, int par3, boolean par4, int id, int meta)
+	public GCCoreWorldGenMinableMeta(Block par1, int par2, int par3, boolean par4, Block id, int meta)
 	{
 		super(par1, par2);
 		this.minableBlockId = par1;
@@ -82,11 +83,11 @@ public class GCCoreWorldGenMinableMeta extends WorldGenMinable
 							{
 								final double var45 = (var44 + 0.5D - var24) / (var28 / 2.0D);
 
-								if (var39 * var39 + var42 * var42 + var45 * var45 < 1.0D && par1World.getBlockId(var38, var41, var44) == this.fillerID && par1World.getBlockMetadata(var38, var41, var44) == this.fillerMetadata && this.usingMetadata == false)
+								if (var39 * var39 + var42 * var42 + var45 * var45 < 1.0D && par1World.getBlock(var38, var41, var44) == this.fillerID && par1World.getBlockMetadata(var38, var41, var44) == this.fillerMetadata && this.usingMetadata == false)
 								{
 									par1World.setBlock(var38, var41, var44, this.minableBlockId, 0, 3);
 								}
-								else if (var39 * var39 + var42 * var42 + var45 * var45 < 1.0D && par1World.getBlockId(var38, var41, var44) == this.fillerID && par1World.getBlockMetadata(var38, var41, var44) == this.fillerMetadata && this.usingMetadata == true)
+								else if (var39 * var39 + var42 * var42 + var45 * var45 < 1.0D && par1World.getBlock(var38, var41, var44) == this.fillerID && par1World.getBlockMetadata(var38, var41, var44) == this.fillerMetadata && this.usingMetadata == true)
 								{
 									par1World.setBlock(var38, var41, var44, this.minableBlockId, this.metadata, 3);
 								}

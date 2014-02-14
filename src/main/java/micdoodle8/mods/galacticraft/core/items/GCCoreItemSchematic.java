@@ -2,17 +2,17 @@ package micdoodle8.mods.galacticraft.core.items;
 
 import java.util.List;
 
-import javax.swing.Icon;
-
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicItem;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxy;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
@@ -31,11 +31,11 @@ public class GCCoreItemSchematic extends Item implements ISchematicItem
 {
 	public static final String[] names = { "buggy", "rocketT2" }; // 15
 
-	protected Icon[] icons = new Icon[GCCoreItemSchematic.names.length];
+	protected IIcon[] icons = new IIcon[GCCoreItemSchematic.names.length];
 
-	public GCCoreItemSchematic(int itemID, String assetName)
+	public GCCoreItemSchematic(String assetName)
 	{
-		super(itemID);
+		super();
 		this.setMaxDamage(0);
 		this.setHasSubtypes(true);
 		this.setMaxStackSize(1);
@@ -51,7 +51,7 @@ public class GCCoreItemSchematic extends Item implements ISchematicItem
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
 		for (int i = 0; i < GCCoreItemSchematic.names.length; i++)
 		{
@@ -74,7 +74,7 @@ public class GCCoreItemSchematic extends Item implements ISchematicItem
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister iconRegister)
+	public void registerIcons(IIconRegister iconRegister)
 	{
 		for (int i = 0; i < this.icons.length; i++)
 		{
@@ -83,7 +83,7 @@ public class GCCoreItemSchematic extends Item implements ISchematicItem
 	}
 
 	@Override
-	public Icon getIconFromDamage(int damage)
+	public IIcon getIconFromDamage(int damage)
 	{
 		if (this.icons.length > damage)
 		{

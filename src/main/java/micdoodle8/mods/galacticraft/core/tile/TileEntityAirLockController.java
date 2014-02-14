@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import cpw.mods.fml.relauncher.Side;
@@ -112,7 +113,7 @@ public class TileEntityAirLockController extends TileEntityAirLock
 					{
 						if (this.playerNameMatches)
 						{
-							if (((EntityPlayer) o).username.equalsIgnoreCase(this.playerToOpenFor))
+							if (((EntityPlayer) o).getGameProfile().getName().equalsIgnoreCase(this.playerToOpenFor))
 							{
 								foundPlayer = true;
 								break;
@@ -183,7 +184,7 @@ public class TileEntityAirLockController extends TileEntityAirLock
 		int y = this.lastProtocol.minY + (this.lastProtocol.maxY - this.lastProtocol.minY) / 2;
 		int z = this.lastProtocol.minZ + (this.lastProtocol.maxZ - this.lastProtocol.minZ) / 2;
 
-		if (this.worldObj.getBlockId(x, y, z) != GCCoreBlocks.airLockSeal.blockID)
+		if (this.worldObj.getBlock(x, y, z) != GCCoreBlocks.airLockSeal)
 		{
 			this.worldObj.playSoundEffect(x, y, z, GalacticraftCore.ASSET_PREFIX + "player.openairlock", 1.0F, 1.0F);
 		}
@@ -196,11 +197,11 @@ public class TileEntityAirLockController extends TileEntityAirLock
 				{
 					for (z = this.protocol.minZ + 1; z <= this.protocol.maxZ - 1; z++)
 					{
-						int id = this.worldObj.getBlockId(x, y, z);
+						Block block = this.worldObj.getBlock(x, y, z);
 
-						if (id == 0 || Block.blocksList[id].isAirBlock(this.worldObj, x, y, z))
+						if (block == Blocks.air || block.isAir(this.worldObj, x, y, z))
 						{
-							this.worldObj.setBlock(x, this.protocol.minY, z, GCCoreBlocks.airLockSeal.blockID, 0, 3);
+							this.worldObj.setBlock(x, this.protocol.minY, z, GCCoreBlocks.airLockSeal, 0, 3);
 						}
 					}
 				}
@@ -214,11 +215,11 @@ public class TileEntityAirLockController extends TileEntityAirLock
 				{
 					for (y = this.protocol.minY + 1; y <= this.protocol.maxY - 1; y++)
 					{
-						int id = this.worldObj.getBlockId(x, y, z);
+						Block block = this.worldObj.getBlock(x, y, z);
 
-						if (id == 0 || Block.blocksList[id].isAirBlock(this.worldObj, x, y, z))
+						if (block == Blocks.air || block.isAir(this.worldObj, x, y, z))
 						{
-							this.worldObj.setBlock(x, y, this.protocol.minZ, GCCoreBlocks.airLockSeal.blockID, 0, 3);
+							this.worldObj.setBlock(x, y, this.protocol.minZ, GCCoreBlocks.airLockSeal, 0, 3);
 						}
 					}
 				}
@@ -229,11 +230,11 @@ public class TileEntityAirLockController extends TileEntityAirLock
 				{
 					for (y = this.protocol.minY + 1; y <= this.protocol.maxY - 1; y++)
 					{
-						int id = this.worldObj.getBlockId(x, y, z);
+						Block block = this.worldObj.getBlock(x, y, z);
 
-						if (id == 0 || Block.blocksList[id].isAirBlock(this.worldObj, x, y, z))
+						if (block == Blocks.air || block.isAir(this.worldObj, x, y, z))
 						{
-							this.worldObj.setBlock(this.protocol.minX, y, z, GCCoreBlocks.airLockSeal.blockID, 0, 3);
+							this.worldObj.setBlock(this.protocol.minX, y, z, GCCoreBlocks.airLockSeal, 0, 3);
 						}
 					}
 				}
@@ -252,7 +253,7 @@ public class TileEntityAirLockController extends TileEntityAirLock
 		int y = this.lastProtocol.minY + (this.lastProtocol.maxY - this.lastProtocol.minY) / 2;
 		int z = this.lastProtocol.minZ + (this.lastProtocol.maxZ - this.lastProtocol.minZ) / 2;
 
-		if (this.worldObj.getBlockId(x, y, z) != 0)
+		if (this.worldObj.getBlock(x, y, z) != Blocks.air)
 		{
 			this.worldObj.playSoundEffect(x, y, z, GalacticraftCore.ASSET_PREFIX + "player.closeairlock", 1.0F, 1.0F);
 		}
@@ -265,9 +266,9 @@ public class TileEntityAirLockController extends TileEntityAirLock
 				{
 					for (z = this.protocol.minZ + 1; z <= this.protocol.maxZ - 1; z++)
 					{
-						int id = this.worldObj.getBlockId(x, y, z);
+						Block block = this.worldObj.getBlock(x, y, z);
 
-						if (id == GCCoreBlocks.airLockSeal.blockID)
+						if (block == GCCoreBlocks.airLockSeal)
 						{
 							this.worldObj.setBlockToAir(x, this.protocol.minY, z);
 						}
@@ -283,9 +284,9 @@ public class TileEntityAirLockController extends TileEntityAirLock
 				{
 					for (y = this.lastProtocol.minY + 1; y <= this.lastProtocol.maxY - 1; y++)
 					{
-						int id = this.worldObj.getBlockId(x, y, z);
+						Block block = this.worldObj.getBlock(x, y, z);
 
-						if (id == GCCoreBlocks.airLockSeal.blockID)
+						if (block == GCCoreBlocks.airLockSeal)
 						{
 							this.worldObj.setBlockToAir(x, y, this.lastProtocol.minZ);
 						}
@@ -298,9 +299,9 @@ public class TileEntityAirLockController extends TileEntityAirLock
 				{
 					for (y = this.lastProtocol.minY + 1; y <= this.lastProtocol.maxY - 1; y++)
 					{
-						int id = this.worldObj.getBlockId(x, y, z);
+						Block block = this.worldObj.getBlock(x, y, z);
 
-						if (id == GCCoreBlocks.airLockSeal.blockID)
+						if (block == GCCoreBlocks.airLockSeal)
 						{
 							this.worldObj.setBlockToAir(this.lastProtocol.minX, y, z);
 						}

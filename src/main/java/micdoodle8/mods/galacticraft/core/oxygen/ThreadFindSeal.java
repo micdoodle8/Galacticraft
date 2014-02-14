@@ -11,6 +11,8 @@ import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerServer;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenSealer;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.ScheduledBlockChange;
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -71,11 +73,11 @@ public class ThreadFindSeal extends Thread
 		{
 			for (VecDirPair checkedVec : this.checked)
 			{
-				int blockID = checkedVec.getPosition().getBlock(this.world);
+				Block block = checkedVec.getPosition().getBlock(this.world);
 
-				if (this.sealed && blockID == 0)
+				if (this.sealed && block == Blocks.air)
 				{
-					GCCoreTickHandlerServer.scheduleNewBlockChange(world.provider.dimensionId, new ScheduledBlockChange(checkedVec.getPosition(), GCCoreBlocks.breatheableAir.blockID, 0, 3));
+					GCCoreTickHandlerServer.scheduleNewBlockChange(world.provider.dimensionId, new ScheduledBlockChange(checkedVec.getPosition(), GCCoreBlocks.breatheableAir, 0, 3));
 				}
 			}
 		}
@@ -86,11 +88,11 @@ public class ThreadFindSeal extends Thread
 
 			for (VecDirPair checkedVec : this.checked)
 			{
-				int blockID = checkedVec.getPosition().getBlock(this.world);
+				Block block = checkedVec.getPosition().getBlock(this.world);
 
-				if (blockID == GCCoreBlocks.breatheableAir.blockID)
+				if (block == GCCoreBlocks.breatheableAir)
 				{
-					GCCoreTickHandlerServer.scheduleNewBlockChange(world.provider.dimensionId, new ScheduledBlockChange(checkedVec.getPosition(), 0, 0, 3));
+					GCCoreTickHandlerServer.scheduleNewBlockChange(world.provider.dimensionId, new ScheduledBlockChange(checkedVec.getPosition(), Blocks.air, 0, 3));
 				}
 			}
 		}
@@ -187,7 +189,7 @@ public class ThreadFindSeal extends Thread
 				{
 					Vector3 sideVec = vec.clone().modifyPositionFromSide(dir);
 
-					if ((sideVec.getBlock(this.world) == 0 || sideVec.getBlock(this.world) == GCCoreBlocks.breatheableAir.blockID) && !this.checked(sideVec, dir))
+					if ((sideVec.getBlock(this.world) == Blocks.air || sideVec.getBlock(this.world) == GCCoreBlocks.breatheableAir) && !this.checked(sideVec, dir))
 					{
 						this.sealed = false;
 					}
@@ -236,6 +238,6 @@ public class ThreadFindSeal extends Thread
 
 	private boolean isBreathableAir(VecDirPair pair)
 	{
-		return pair.getPosition().getBlock(this.world) == GCCoreBlocks.breatheableAir.blockID;
+		return pair.getPosition().getBlock(this.world) == GCCoreBlocks.breatheableAir;
 	}
 }

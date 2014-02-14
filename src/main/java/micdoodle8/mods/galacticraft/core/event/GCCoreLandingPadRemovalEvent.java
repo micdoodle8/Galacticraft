@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.event;
 
 import net.minecraft.world.World;
+import cpw.mods.fml.common.eventhandler.Event;
 
 /**
  * GCCoreLandingPadRemovalEvent.java

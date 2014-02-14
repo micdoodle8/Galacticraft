@@ -1,11 +1,10 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import javax.swing.Icon;
-
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxy;
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -13,6 +12,7 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
@@ -33,11 +33,11 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreItemOilExtractor extends Item
 {
-	protected Icon[] icons = new Icon[5];
+	protected IIcon[] icons = new IIcon[5];
 
-	public GCCoreItemOilExtractor(int par1, String assetName)
+	public GCCoreItemOilExtractor(String assetName)
 	{
-		super(par1);
+		super();
 		this.setMaxStackSize(1);
 		this.setUnlocalizedName(assetName);
 		this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
@@ -78,9 +78,9 @@ public class GCCoreItemOilExtractor extends Item
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister iconRegister)
+	public void registerIcons(IIconRegister iconRegister)
 	{
-		this.icons = new Icon[5];
+		this.icons = new IIcon[5];
 
 		for (int i = 0; i < this.icons.length; i++)
 		{
@@ -146,7 +146,7 @@ public class GCCoreItemOilExtractor extends Item
 	}
 
 	@Override
-	public Icon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)
+	public IIcon getIIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)
 	{
 		final int count2 = useRemaining / 2;
 
@@ -176,18 +176,18 @@ public class GCCoreItemOilExtractor extends Item
 	{
 		if (par2World.isRemote)
 		{
-			this.itemIcon = this.icons[0];
+			this.itemIIcon = this.icons[0];
 		}
 	}
 
 	private boolean isOilBlock(EntityPlayer player, World world, int x, int y, int z, boolean doDrain)
 	{
-		int blockID = world.getBlockId(x, y, z);
+		Block block = world.getBlock(x, y, z);
 
-		if (blockID > 0 && Block.blocksList[blockID] instanceof IFluidBlock)
+		if (block instanceof IFluidBlock)
 		{
-			IFluidBlock fluidBlockHit = (IFluidBlock) Block.blocksList[blockID];
-			Fluid fluidHit = FluidRegistry.lookupFluidForBlock(Block.blocksList[blockID]);
+			IFluidBlock fluidBlockHit = (IFluidBlock) block;
+			Fluid fluidHit = FluidRegistry.lookupFluidForBlock(block);
 
 			if (fluidHit != null)
 			{

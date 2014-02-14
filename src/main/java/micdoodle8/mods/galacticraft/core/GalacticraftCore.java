@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.client.gui.GuiHandler;
 import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerSP;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.network.PacketPipeline;
 import micdoodle8.mods.galacticraft.core.proxy.CommonProxy;
 import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerClient;
@@ -50,6 +51,7 @@ public class GalacticraftCore
 		GCCoreConfigManager.setDefaultValues(new File(event.getModConfigurationDirectory(), GalacticraftCore.CONFIG_FILE));
 		
 		GCCoreBlocks.initBlocks();
+		GCCoreItems.initItems();
 	}
 	
 	@EventHandler

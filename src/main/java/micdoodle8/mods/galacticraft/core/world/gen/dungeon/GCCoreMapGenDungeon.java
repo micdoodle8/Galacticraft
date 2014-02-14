@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -24,7 +26,7 @@ public class GCCoreMapGenDungeon
 	public ArrayList<GCCoreDungeonRoom> treasureRooms = new ArrayList<GCCoreDungeonRoom>();
 	public ArrayList<GCCoreDungeonRoom> otherRooms = new ArrayList<GCCoreDungeonRoom>();
 
-	public final int DUNGEON_WALL_ID;
+	public final Block DUNGEON_WALL_BLOCK;
 	public final int DUNGEON_WALL_META;
 	public final int RANGE;
 	public final int HALLWAY_LENGTH;
@@ -36,16 +38,16 @@ public class GCCoreMapGenDungeon
 
 	private final ArrayList<GCCoreDungeonRoom> rooms = new ArrayList<GCCoreDungeonRoom>();
 
-	public GCCoreMapGenDungeon(int wallID, int wallMeta, int range, int hallwayLength, int hallwayHeight)
+	public GCCoreMapGenDungeon(Block wallID, int wallMeta, int range, int hallwayLength, int hallwayHeight)
 	{
-		this.DUNGEON_WALL_ID = wallID;
+		this.DUNGEON_WALL_BLOCK = wallID;
 		this.DUNGEON_WALL_META = wallMeta;
 		this.RANGE = range;
 		this.HALLWAY_LENGTH = hallwayLength;
 		this.HALLWAY_HEIGHT = hallwayHeight;
 	}
 
-	public void generateUsingArrays(World world, long seed, int x, int y, int z, int chunkX, int chunkZ, short[] blocks, byte[] metas)
+	public void generateUsingArrays(World world, long seed, int x, int y, int z, int chunkX, int chunkZ, Block[] blocks, byte[] metas)
 	{
 		final ChunkCoordinates dungeonCoords = this.getDungeonNear(seed, chunkX, chunkZ);
 		if (dungeonCoords != null)
@@ -59,7 +61,7 @@ public class GCCoreMapGenDungeon
 		this.generate(world, new Random(new Random().nextLong() * x * z * 24789), x, y, z, x, z, null, null, false);
 	}
 
-	public void generate(World world, Random rand, int x, int y, int z, int chunkX, int chunkZ, short[] blocks, byte[] metas, boolean useArrays)
+	public void generate(World world, Random rand, int x, int y, int z, int chunkX, int chunkZ, Block[] blocks, byte[] metas, boolean useArrays)
 	{
 		GCCoreMapGenDungeon.useArrays = useArrays;
 		this.worldObj = world;
@@ -315,7 +317,7 @@ public class GCCoreMapGenDungeon
 		}
 	}
 
-	private void genCorridor(GCCoreDungeonBoundingBox corridor, Random rand, int y, int cx, int cz, ForgeDirection dir, short[] blocks, byte[] metas, boolean doubleCorridor)
+	private void genCorridor(GCCoreDungeonBoundingBox corridor, Random rand, int y, int cx, int cz, ForgeDirection dir, Block[] blocks, byte[] metas, boolean doubleCorridor)
 	{
 		for (int i = corridor.minX - 1; i <= corridor.maxX + 1; i++)
 		{
@@ -409,17 +411,18 @@ public class GCCoreMapGenDungeon
 					{
 						if (flag2 != -1)
 						{
-							this.placeBlock(blocks, metas, i, j, k, cx, cz, GCCoreBlocks.unlitTorch.blockID, 0);
-							this.worldObj.scheduleBlockUpdateFromLoad(i, j, k, GCCoreBlocks.unlitTorch.blockID, 40, 0);
+							this.placeBlock(blocks, metas, i, j, k, cx, cz, GCCoreBlocks.unlitTorch, 0);
+//							this.worldObj.scheduleBlockUpdateFromLoad(i, j, k, GCCoreBlocks.unlitTorch, 40, 0);
+							this.worldObj.scheduleBlockUpdateWithPriority(i, j, k, GCCoreBlocks.unlitTorch, 40, 0);
 						}
 						else
 						{
-							this.placeBlock(blocks, metas, i, j, k, cx, cz, 0, 0);
+							this.placeBlock(blocks, metas, i, j, k, cx, cz, Blocks.air, 0);
 						}
 					}
 					else
 					{
-						this.placeBlock(blocks, metas, i, j, k, cx, cz, this.DUNGEON_WALL_ID, this.DUNGEON_WALL_META);
+						this.placeBlock(blocks, metas, i, j, k, cx, cz, this.DUNGEON_WALL_BLOCK, this.DUNGEON_WALL_META);
 					}
 				}
 			}
@@ -470,7 +473,7 @@ public class GCCoreMapGenDungeon
 		return false;
 	}
 
-	public void generateEntranceCrater(short[] blocks, byte[] meta, int x, int y, int z, int cx, int cz)
+	public void generateEntranceCrater(Block[] blocks, byte[] meta, int x, int y, int z, int cx, int cz)
 	{
 		final int range = 18;
 		for (int i = x - range; i < x + range; i++)
@@ -484,9 +487,9 @@ public class GCCoreMapGenDungeon
 				int helper = 0;
 				for (int j = 127; j > 0; j--)
 				{
-					if ((this.getBlockID(blocks, i, j - 1, k, cx, cz) != 0 || this.getBlockID(blocks, i, j, k, cx, cz) == this.DUNGEON_WALL_ID) && helper <= depth)
+					if ((this.getBlock(blocks, i, j - 1, k, cx, cz) != Blocks.air || this.getBlock(blocks, i, j, k, cx, cz) == this.DUNGEON_WALL_BLOCK) && helper <= depth)
 					{
-						this.placeBlock(blocks, meta, i, j, k, cx, cz, 0, 0);
+						this.placeBlock(blocks, meta, i, j, k, cx, cz, Blocks.air, 0);
 						helper++;
 					}
 					if (helper > depth || j <= y + 1)
@@ -515,7 +518,7 @@ public class GCCoreMapGenDungeon
 		return null;
 	}
 
-	private void placeBlock(short[] blocks, byte[] metas, int x, int y, int z, int cx, int cz, int id, int meta)
+	private void placeBlock(Block[] blocks, byte[] metas, int x, int y, int z, int cx, int cz, Block block, int meta)
 	{
 		if (GCCoreMapGenDungeon.useArrays)
 		{
@@ -528,16 +531,16 @@ public class GCCoreMapGenDungeon
 				return;
 			}
 			final int index = this.getIndex(x, y, z);
-			blocks[index] = (short) id;
+			blocks[index] = block;
 			metas[index] = (byte) meta;
 		}
 		else
 		{
-			this.worldObj.setBlock(x, y, z, id, meta, 3);
+			this.worldObj.setBlock(x, y, z, block, meta, 3);
 		}
 	}
 
-	private int getBlockID(short[] blocks, int x, int y, int z, int cx, int cz)
+	private Block getBlock(Block[] blocks, int x, int y, int z, int cx, int cz)
 	{
 		if (GCCoreMapGenDungeon.useArrays)
 		{
@@ -547,13 +550,13 @@ public class GCCoreMapGenDungeon
 			z -= cz;
 			if (x < 0 || x >= 16 || z < 0 || z >= 16)
 			{
-				return 1;
+				return Blocks.air;
 			}
 			return blocks[this.getIndex(x, y, z)];
 		}
 		else
 		{
-			return this.worldObj.getBlockId(x, y, z);
+			return this.worldObj.getBlock(x, y, z);
 		}
 	}
 

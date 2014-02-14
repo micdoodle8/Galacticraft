@@ -35,7 +35,7 @@ public class GCCoreItemBasic extends Item
 
 	protected IIcon[] icons = new IIcon[GCCoreItemBasic.names.length];
 
-	public GCCoreItemBasic(int id, String assetName)
+	public GCCoreItemBasic(String assetName)
 	{
 		super();
 		this.setMaxDamage(0);

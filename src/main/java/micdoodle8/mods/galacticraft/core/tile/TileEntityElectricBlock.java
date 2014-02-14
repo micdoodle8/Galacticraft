@@ -5,7 +5,6 @@ import java.util.EnumSet;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -197,7 +196,7 @@ public abstract class TileEntityElectricBlock extends TileEntityUniversalElectri
 	@RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = "IC2")
 	public ItemStack getWrenchDrop(EntityPlayer entityPlayer)
 	{
-		return Block.blocksList[this.getBlockType().blockID].getPickBlock(null, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+		return this.getBlockType().getPickBlock(null, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
 	}
 
 	@Override

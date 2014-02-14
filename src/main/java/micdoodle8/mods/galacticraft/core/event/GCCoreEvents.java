@@ -28,6 +28,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerSP;
+import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerClient;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
@@ -464,29 +465,29 @@ public class GCCoreEvents
 	@EventHandler
 	public void onSoundLoad(SoundLoadEvent event)
 	{
-		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "ambience/scaryscape.ogg");
-		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "ambience/singledrip1.ogg");
-		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "ambience/singledrip2.ogg");
-		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "ambience/singledrip3.ogg");
-		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "ambience/singledrip4.ogg");
-		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "ambience/singledrip5.ogg");
-		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "ambience/singledrip6.ogg");
-		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "ambience/singledrip7.ogg");
-		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "ambience/singledrip8.ogg");
-		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "entity/bossdeath.ogg");
-		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "entity/bosslaugh.ogg");
-		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "entity/bossliving.ogg");
-		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "entity/slime_death.ogg");
-		ClientProxyCore.newMusic.add(this.func_110654_c(event.manager.soundPoolMusic, GalacticraftCore.ASSET_PREFIX + "music/mars_JC.ogg"));
-		ClientProxyCore.newMusic.add(this.func_110654_c(event.manager.soundPoolMusic, GalacticraftCore.ASSET_PREFIX + "music/mimas_JC.ogg"));
-		ClientProxyCore.newMusic.add(this.func_110654_c(event.manager.soundPoolMusic, GalacticraftCore.ASSET_PREFIX + "music/orbit_JC.ogg"));
-		ClientProxyCore.newMusic.add(this.func_110654_c(event.manager.soundPoolMusic, GalacticraftCore.ASSET_PREFIX + "music/scary_ambience.ogg"));
-		ClientProxyCore.newMusic.add(this.func_110654_c(event.manager.soundPoolMusic, GalacticraftCore.ASSET_PREFIX + "music/spacerace_JC.ogg"));
-		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "player/closeairlock.ogg");
-		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "player/openairlock.ogg");
-		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "player/parachute.ogg");
-		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "player/unlockchest.ogg");
-		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "shuttle/shuttle.ogg");
+//		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "ambience/scaryscape.ogg"); TODO fix sound loading
+//		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "ambience/singledrip1.ogg");
+//		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "ambience/singledrip2.ogg");
+//		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "ambience/singledrip3.ogg");
+//		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "ambience/singledrip4.ogg");
+//		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "ambience/singledrip5.ogg");
+//		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "ambience/singledrip6.ogg");
+//		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "ambience/singledrip7.ogg");
+//		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "ambience/singledrip8.ogg");
+//		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "entity/bossdeath.ogg");
+//		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "entity/bosslaugh.ogg");
+//		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "entity/bossliving.ogg");
+//		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "entity/slime_death.ogg");
+//		ClientProxyCore.newMusic.add(this.func_110654_c(event.manager.soundPoolMusic, GalacticraftCore.ASSET_PREFIX + "music/mars_JC.ogg"));
+//		ClientProxyCore.newMusic.add(this.func_110654_c(event.manager.soundPoolMusic, GalacticraftCore.ASSET_PREFIX + "music/mimas_JC.ogg"));
+//		ClientProxyCore.newMusic.add(this.func_110654_c(event.manager.soundPoolMusic, GalacticraftCore.ASSET_PREFIX + "music/orbit_JC.ogg"));
+//		ClientProxyCore.newMusic.add(this.func_110654_c(event.manager.soundPoolMusic, GalacticraftCore.ASSET_PREFIX + "music/scary_ambience.ogg"));
+//		ClientProxyCore.newMusic.add(this.func_110654_c(event.manager.soundPoolMusic, GalacticraftCore.ASSET_PREFIX + "music/spacerace_JC.ogg"));
+//		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "player/closeairlock.ogg");
+//		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "player/openairlock.ogg");
+//		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "player/parachute.ogg");
+//		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "player/unlockchest.ogg");
+//		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "shuttle/shuttle.ogg");
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -529,9 +530,9 @@ public class GCCoreEvents
 
 		PlayerGearData gearData = null;
 
-		for (PlayerGearData gearData2 : ClientProxyCore.playerItemData)
+		for (PlayerGearData gearData2 : GCCoreTickHandlerClient.playerItemData)
 		{
-			if (gearData2.getPlayer().username.equals(player.username))
+			if (gearData2.getPlayer().getGameProfile().getName().equals(player.getGameProfile().getName()))
 			{
 				gearData = gearData2;
 				break;
@@ -555,7 +556,8 @@ public class GCCoreEvents
 			float newVolume = event.volume / Math.max(0.01F, ((IGalacticraftWorldProvider) player.worldObj.provider).getSoundVolReductionAmount());
 
 			this.soundPlayList.add(new SoundPlayEntry(event.name, event.x, event.y, event.z, newVolume));
-			event.manager.playSound(event.name, event.x, event.y, event.z, newVolume, event.pitch);
+//			event.manager.playSound(event.name, event.x, event.y, event.z, newVolume, event.pitch);
+			player.worldObj.playSound(event.x, event.y, event.z, event.name, newVolume, event.pitch, false);
 			event.result = null;
 			return;
 		}

@@ -2,14 +2,14 @@ package micdoodle8.mods.galacticraft.core.items;
 
 import java.util.List;
 
-import javax.swing.Icon;
-
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxy;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -41,11 +41,11 @@ public class GCCoreItemParachute extends Item
 	"teal", // 14
 	"yellow" }; // 15
 
-	protected Icon[] icons;
+	protected IIcon[] icons;
 
-	public GCCoreItemParachute(int id, String assetName)
+	public GCCoreItemParachute(String assetName)
 	{
-		super(id);
+		super();
 		this.setMaxDamage(0);
 		this.setHasSubtypes(true);
 		this.setMaxStackSize(1);
@@ -61,7 +61,7 @@ public class GCCoreItemParachute extends Item
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
 		for (int i = 0; i < GCCoreItemParachute.names.length; i++)
 		{
@@ -77,10 +77,10 @@ public class GCCoreItemParachute extends Item
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister iconRegister)
+	public void registerIcons(IIconRegister iconRegister)
 	{
 		int i = 0;
-		this.icons = new Icon[GCCoreItemParachute.names.length];
+		this.icons = new IIcon[GCCoreItemParachute.names.length];
 
 		for (String name : GCCoreItemParachute.names)
 		{
@@ -95,7 +95,7 @@ public class GCCoreItemParachute extends Item
 	}
 
 	@Override
-	public Icon getIconFromDamage(int damage)
+	public IIcon getIconFromDamage(int damage)
 	{
 		if (this.icons.length > damage)
 		{
@@ -107,7 +107,7 @@ public class GCCoreItemParachute extends Item
 
 	// @Override
 	// @SideOnly(Side.CLIENT)
-	// public int getIconFromDamage(int par1)
+	// public int getIIconFromDamage(int par1)
 	// {
 	// switch (par1)
 	// {

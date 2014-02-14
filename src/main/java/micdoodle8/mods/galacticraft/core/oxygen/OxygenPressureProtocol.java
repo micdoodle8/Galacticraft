@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenSealer;
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -28,13 +29,13 @@ import com.google.common.collect.Lists;
  */
 public class OxygenPressureProtocol
 {
-	public static ArrayList<Integer> vanillaPermeableBlocks = new ArrayList<Integer>();
+	public static ArrayList<Block> vanillaPermeableBlocks = new ArrayList<Block>();
 	public static Map<Integer, ArrayList<Integer>> nonPermeableBlocks = new HashMap<Integer, ArrayList<Integer>>();
 	public static final int MAX_SEAL_CHECKS = 400;
 
 	static
 	{
-		OxygenPressureProtocol.vanillaPermeableBlocks.add(Block.sponge.blockID);
+		OxygenPressureProtocol.vanillaPermeableBlocks.add(Blocks.sponge);
 
 		try
 		{
@@ -123,7 +124,7 @@ public class OxygenPressureProtocol
 		}
 
 		head.threadSeal = new ThreadFindSeal();
-		head.threadSeal.world = head.worldObj;
+		head.threadSeal.world = head.getWorldObj();
 		head.threadSeal.head = new Vector3(head);
 		head.threadSeal.checkCount = head.getFindSealChecks();
 		head.threadSeal.sealers = new ArrayList<TileEntityOxygenSealer>();

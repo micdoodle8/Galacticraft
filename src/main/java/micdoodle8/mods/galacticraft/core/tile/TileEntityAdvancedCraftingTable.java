@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockMulti;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -90,17 +91,19 @@ public class TileEntityAdvancedCraftingTable extends TileEntityMulti implements 
 						{
 							if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.05D)
 							{
-								FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, GCCoreBlocks.nasaWorkbench.blockID & 4095, GCCoreBlocks.nasaWorkbench.blockID >> 12 & 255);
+								FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, GCCoreBlocks.nasaWorkbench, Block.getIdFromBlock(GCCoreBlocks.nasaWorkbench) >> 12 & 255);
 							}
-							this.worldObj.destroyBlock(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, y == 0);
+							
+							this.worldObj.setBlockToAir(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z);
 						}
 						else if (y != 0 && y != 3)
 						{
 							if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.05D)
 							{
-								FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, GCCoreBlocks.nasaWorkbench.blockID & 4095, GCCoreBlocks.nasaWorkbench.blockID >> 12 & 255);
+								FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, GCCoreBlocks.nasaWorkbench, Block.getIdFromBlock(GCCoreBlocks.nasaWorkbench) >> 12 & 255);
 							}
-							this.worldObj.destroyBlock(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, false);
+							
+							this.worldObj.setBlockToAir(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z);
 						}
 					}
 				}

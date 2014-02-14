@@ -44,6 +44,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.play.server.S07PacketRespawn;
+import net.minecraft.network.play.server.S1DPacketEntityEffect;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
@@ -58,7 +60,6 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 
 /**
@@ -294,7 +295,7 @@ public class WorldUtil
 				{
 					final GCCoreSpaceStationData data = GCCoreSpaceStationData.getStationData(playerBase.worldObj, id, playerBase);
 
-					if (!GCCoreConfigManager.spaceStationsRequirePermission || data.getAllowedPlayers().contains(playerBase.username.toLowerCase()) || data.getAllowedPlayers().contains(playerBase.username))
+					if (!GCCoreConfigManager.spaceStationsRequirePermission || data.getAllowedPlayers().contains(playerBase.getGameProfile().getName().toLowerCase()) || data.getAllowedPlayers().contains(playerBase.getGameProfile().getName()))
 					{
 						map.put(WorldProvider.getProviderForDimension(id).getDimensionName() + "$" + data.getOwner() + "$" + data.getSpaceStationName(), WorldProvider.getProviderForDimension(id).dimensionId);
 					}
@@ -329,7 +330,7 @@ public class WorldUtil
 					{
 						if (world.getLoadedEntityList().get(j) != null && world.getLoadedEntityList().get(j) instanceof EntityPlayer)
 						{
-							list.add(((EntityPlayer) world.getLoadedEntityList().get(j)).username);
+							list.add(((EntityPlayer) world.getLoadedEntityList().get(j)).getGameProfile().getName());
 						}
 					}
 				}
@@ -534,6 +535,7 @@ public class WorldUtil
 		boolean dimChange = entity.worldObj != worldNew;
 		entity.worldObj.updateEntityWithOptionalForce(entity, false);
 		GCCorePlayerMP player = null;
+		int oldDimID = entity.worldObj.provider.dimensionId;
 
 		if (entity instanceof GCCorePlayerMP)
 		{
@@ -543,7 +545,8 @@ public class WorldUtil
 			if (dimChange)
 			{
 				player.dimension = dimID;
-				player.playerNetServerHandler.sendPacketToPlayer(new Packet9Respawn(player.dimension, (byte) player.worldObj.difficultySetting, worldNew.getWorldInfo().getTerrainType(), worldNew.getHeight(), player.theItemInWorldManager.getGameType()));
+				player.playerNetServerHandler.sendPacket(new S07PacketRespawn(player.dimension, player.worldObj.difficultySetting, player.worldObj.getWorldInfo().getTerrainType(), player.theItemInWorldManager.getGameType()));
+//				player.playerNetServerHandler.sendPacketToPlayer(new Packet9Respawn(player.dimension, (byte) player.worldObj.difficultySetting, worldNew.getWorldInfo().getTerrainType(), worldNew.getHeight(), player.theItemInWorldManager.getGameType()));
 
 				if (worldNew.provider instanceof GCCoreWorldProviderSpaceStation && WorldUtil.registeredSpaceStations.contains(player))
 				{
@@ -660,7 +663,7 @@ public class WorldUtil
 
 			player.playerNetServerHandler.setPlayerLocation(type.getPlayerSpawnLocation((WorldServer) entity.worldObj, (EntityPlayerMP) entity).x, type.getPlayerSpawnLocation((WorldServer) entity.worldObj, (EntityPlayerMP) entity).y, type.getPlayerSpawnLocation((WorldServer) entity.worldObj, (EntityPlayerMP) entity).z, entity.rotationYaw, entity.rotationPitch);
 
-			GCLog.info("Server attempting to transfer player " + player.username + " to dimension " + worldNew.provider.dimensionId);
+			GCLog.info("Server attempting to transfer player " + player.getGameProfile().getName() + " to dimension " + worldNew.provider.dimensionId);
 		}
 
 		worldNew.updateEntityWithOptionalForce(entity, false);
@@ -690,10 +693,10 @@ public class WorldUtil
 			while (var9.hasNext())
 			{
 				final PotionEffect var10 = (PotionEffect) var9.next();
-				player.playerNetServerHandler.sendPacketToPlayer(new Packet41EntityEffect(player.entityId, var10));
+				player.playerNetServerHandler.sendPacket(new S1DPacketEntityEffect(player.getEntityId(), var10));
 			}
 
-			player.playerNetServerHandler.sendPacketToPlayer(new Packet43Experience(player.experience, player.experienceTotal, player.experienceLevel));
+//			player.playerNetServerHandler.sendPacketToPlayer(new Packet43Experience(player.experience, player.experienceTotal, player.experienceLevel)); TODO Find out if this is still needed
 		}
 
 		if (entity instanceof GCCorePlayerMP)
@@ -764,7 +767,8 @@ public class WorldUtil
 
 		if (entity instanceof EntityPlayerMP)
 		{
-			GameRegistry.onPlayerChangedDimension((EntityPlayerMP) entity);
+	        FMLCommonHandler.instance().firePlayerChangedDimensionEvent((EntityPlayerMP) entity, oldDimID, dimID);
+//			GameRegistry.onPlayerChangedDimension((EntityPlayerMP) entity);
 			type.onSpaceDimensionChanged(worldNew, (EntityPlayerMP) entity, ridingRocket != null);
 		}
 
@@ -782,7 +786,7 @@ public class WorldUtil
 		if (var1 instanceof EntityPlayer)
 		{
 			final EntityPlayer var2 = (EntityPlayer) var1;
-			var2.closeScreen();
+			var2.closeScreen(); // TODO Transform access
 			var0.playerEntities.remove(var2);
 			var0.updateAllPlayersSleepingFlag();
 			final int var3 = var1.chunkCoordX;
@@ -797,7 +801,7 @@ public class WorldUtil
 			if (directlyRemove)
 			{
 				var0.loadedEntityList.remove(var1);
-				var0.onEntityRemoved(var1);
+				var0.onEntityRemoved(var1); // TODO Transform access
 			}
 		}
 
@@ -817,41 +821,34 @@ public class WorldUtil
 		return null;
 	}
 
-	public static boolean canBlockPass(World world, int id, int metadata, VecDirPair pair)
+	public static boolean canBlockPass(World world, Block block, int metadata, VecDirPair pair)
 	{
-		if (id > 0)
+		if (block.isAir(world, pair.getPosition().intX(), pair.getPosition().intY(), pair.getPosition().intZ()))
 		{
-			Block block = Block.blocksList[id];
-
-			if (id == GCCoreBlocks.breatheableAir.blockID)
-			{
-				return true;
-			}
-
-			if (OxygenPressureProtocol.vanillaPermeableBlocks.contains(id))
-			{
-				return true;
-			}
-
-			if (!block.isOpaqueCube())
-			{
-				if (block instanceof IPartialSealableBlock)
-				{
-					return !((IPartialSealableBlock) block).isSealed(world, pair.getPosition().intX(), pair.getPosition().intY(), pair.getPosition().intZ(), pair.getDirection());
-				}
-
-				if (OxygenPressureProtocol.nonPermeableBlocks.containsKey(id) && OxygenPressureProtocol.nonPermeableBlocks.get(id).contains(metadata))
-				{
-					return false;
-				}
-
-				return true;
-			}
-
-			return false;
+			return true;
 		}
 
-		return true;
+		if (OxygenPressureProtocol.vanillaPermeableBlocks.contains(block))
+		{
+			return true;
+		}
+
+		if (!block.isOpaqueCube())
+		{
+			if (block instanceof IPartialSealableBlock)
+			{
+				return !((IPartialSealableBlock) block).isSealed(world, pair.getPosition().intX(), pair.getPosition().intY(), pair.getPosition().intZ(), pair.getDirection());
+			}
+
+			if (OxygenPressureProtocol.nonPermeableBlocks.containsKey(block) && OxygenPressureProtocol.nonPermeableBlocks.get(block).contains(metadata))
+			{
+				return false;
+			}
+
+			return true;
+		}
+
+		return false;
 	}
 
 	public static boolean canBlockPass(World world, VecDirPair pair)

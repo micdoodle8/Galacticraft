@@ -4,6 +4,7 @@ import java.util.Random;
 
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -93,10 +94,10 @@ public class GCCoreOverworldGenerator implements IWorldGenerator
 							{
 								double var45 = (var44 + 0.5D - var24) / (var28 / 2.0D);
 
-								int block = par1World.getBlockId(var38, var41, var44);
-								if (var39 * var39 + var42 * var42 + var45 * var45 < 1.0D && block == Block.stone.blockID)
+								Block block = par1World.getBlock(var38, var41, var44);
+								if (var39 * var39 + var42 * var42 + var45 * var45 < 1.0D && block == Blocks.stone)
 								{
-									par1World.setBlock(var38, var41, var44, this.oreBlock.blockID, this.metadata, 2);
+									par1World.setBlock(var38, var41, var44, this.oreBlock, this.metadata, 2);
 								}
 							}
 						}

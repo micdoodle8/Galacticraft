@@ -2,15 +2,15 @@ package micdoodle8.mods.galacticraft.core.items;
 
 import java.util.List;
 
-import javax.swing.Icon;
-
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxy;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -26,11 +26,11 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreItemOilCanister extends Item
 {
-	protected Icon[] icons = new Icon[7];
+	protected IIcon[] icons = new IIcon[7];
 
-	public GCCoreItemOilCanister(int id, String assetName)
+	public GCCoreItemOilCanister(String assetName)
 	{
-		super(id);
+		super();
 		this.setMaxDamage(FluidContainerRegistry.BUCKET_VOLUME + 1);
 		this.setMaxStackSize(1);
 		this.setNoRepair();
@@ -54,7 +54,7 @@ public class GCCoreItemOilCanister extends Item
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister iconRegister)
+	public void registerIcons(IIconRegister iconRegister)
 	{
 		for (int i = 0; i < this.icons.length; i++)
 		{
@@ -79,7 +79,7 @@ public class GCCoreItemOilCanister extends Item
 	}
 
 	@Override
-	public Icon getIconFromDamage(int par1)
+	public IIcon getIconFromDamage(int par1)
 	{
 		final int damage = 6 * (int) Math.floor(par1 / this.getMaxDamage());
 
@@ -94,7 +94,7 @@ public class GCCoreItemOilCanister extends Item
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
 		par3List.add(new ItemStack(par1, 1, 1));
 		par3List.add(new ItemStack(par1, 1, this.getMaxDamage()));
@@ -112,9 +112,9 @@ public class GCCoreItemOilCanister extends Item
 	}
 
 	@Override
-	public ItemStack getContainerItemStack(ItemStack itemStack)
+	public ItemStack getContainerItem(ItemStack itemStack)
 	{
-		if (itemStack != null && itemStack.itemID == this.getContainerItem().itemID && itemStack.getItemDamage() == itemStack.getMaxDamage())
+		if (itemStack != null && itemStack.getItem() == this.getContainerItem() && itemStack.getItemDamage() == itemStack.getMaxDamage())
 		{
 			return null;
 		}

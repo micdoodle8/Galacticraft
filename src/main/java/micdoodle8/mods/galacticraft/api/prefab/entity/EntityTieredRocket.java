@@ -336,10 +336,9 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 				{
 					for (int z = MathHelper.floor_double(this.posZ) - 1; z <= MathHelper.floor_double(this.posZ) + 1; z++)
 					{
-						final int id = this.worldObj.getBlockId(x, y, z);
-						final Block block = Block.blocksList[id];
+						final Block block = this.worldObj.getBlock(x, y, z);
 
-						if (block != null && block instanceof GCCoreBlockLandingPadFull)
+						if (block instanceof GCCoreBlockLandingPadFull)
 						{
 							if (amountRemoved < 9)
 							{
@@ -379,7 +378,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 		{
 			if (!this.worldObj.isRemote)
 			{
-				final Object[] toSend = { ((EntityPlayerMP) this.riddenByEntity).username };
+				final Object[] toSend = { ((EntityPlayerMP) this.riddenByEntity).getGameProfile().getName() };
 				((EntityPlayerMP) this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.RESET_THIRD_PERSON, toSend));
 				final Object[] toSend2 = { 0 };
 				((EntityPlayerMP) par1EntityPlayer).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.ZOOM_CAMERA, toSend2));
@@ -393,7 +392,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 		{
 			if (!this.worldObj.isRemote)
 			{
-				final Object[] toSend = { par1EntityPlayer.username };
+				final Object[] toSend = { par1EntityPlayer.getGameProfile().getName() };
 				((EntityPlayerMP) par1EntityPlayer).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.MOUNT_ROCKET, toSend));
 				final Object[] toSend2 = { 1 };
 				((EntityPlayerMP) par1EntityPlayer).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.ZOOM_CAMERA, toSend2));

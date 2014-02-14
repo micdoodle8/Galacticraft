@@ -2,14 +2,14 @@ package micdoodle8.mods.galacticraft.core.items;
 
 import java.util.List;
 
-import javax.swing.Icon;
-
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxy;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -28,11 +28,11 @@ public class GCCoreItemBuggyMaterial extends Item
 	"seat", // 1
 	"storage" }; // 2
 
-	protected Icon[] icons = new Icon[256];
+	protected IIcon[] icons = new IIcon[256];
 
-	public GCCoreItemBuggyMaterial(int id, String assetName)
+	public GCCoreItemBuggyMaterial(String assetName)
 	{
-		super(id);
+		super();
 		this.setMaxStackSize(1);
 		this.setMaxDamage(0);
 		this.setHasSubtypes(true);
@@ -55,7 +55,7 @@ public class GCCoreItemBuggyMaterial extends Item
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister iconRegister)
+	public void registerIcons(IIconRegister iconRegister)
 	{
 		int i = 0;
 
@@ -72,7 +72,7 @@ public class GCCoreItemBuggyMaterial extends Item
 	}
 
 	@Override
-	public Icon getIconFromDamage(int damage)
+	public IIcon getIconFromDamage(int damage)
 	{
 		if (this.icons.length > damage)
 		{
@@ -84,7 +84,7 @@ public class GCCoreItemBuggyMaterial extends Item
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
 		for (int i = 0; i < GCCoreItemBuggyMaterial.names.length; i++)
 		{

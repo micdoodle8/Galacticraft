@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 
 import java.util.Random;
 
+import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -38,7 +39,7 @@ public abstract class GCCoreDungeonRoom
 		this.entranceDir = entranceDir;
 	}
 
-	public abstract void generate(short[] chunk, byte[] meta, int cx, int cz);
+	public abstract void generate(Block[] chunk, byte[] meta, int cx, int cz);
 
 	public abstract GCCoreDungeonBoundingBox getBoundingBox();
 
@@ -61,7 +62,7 @@ public abstract class GCCoreDungeonRoom
 		return dungeon.treasureRooms.get(rand.nextInt(dungeon.treasureRooms.size())).makeRoom(dungeon, x, y, z, dir);
 	}
 
-	protected boolean placeBlock(short[] blocks, byte[] metas, int x, int y, int z, int cx, int cz, int id, int meta)
+	protected boolean placeBlock(Block[] blocks, byte[] metas, int x, int y, int z, int cx, int cz, Block block, int meta)
 	{
 		if (GCCoreMapGenDungeon.useArrays)
 		{
@@ -74,12 +75,12 @@ public abstract class GCCoreDungeonRoom
 				return false;
 			}
 			final int index = this.getIndex(x, y, z);
-			blocks[index] = (short) id;
+			blocks[index] = block;
 			metas[index] = (byte) meta;
 		}
 		else
 		{
-			this.worldObj.setBlock(x, y, z, id, meta, 3);
+			this.worldObj.setBlock(x, y, z, block, meta, 3);
 		}
 		return true;
 	}

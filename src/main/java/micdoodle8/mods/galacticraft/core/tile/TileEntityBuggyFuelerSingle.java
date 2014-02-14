@@ -42,10 +42,10 @@ public class TileEntityBuggyFuelerSingle extends TileEntity
 			for (final TileEntity tile : attachedLaunchPads)
 			{
 				tile.invalidate();
-				tile.worldObj.setBlock(tile.xCoord, tile.yCoord, tile.zCoord, 0);
+				tile.getWorldObj().setBlockToAir(tile.xCoord, tile.yCoord, tile.zCoord);
 			}
 
-			this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, GCCoreBlocks.landingPadFull.blockID, 1, 3);
+			this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, GCCoreBlocks.landingPadFull, 1, 3);
 			final TileEntityBuggyFueler tile = (TileEntityBuggyFueler) this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord);
 
 			if (tile instanceof IMultiBlock)

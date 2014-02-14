@@ -12,6 +12,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockMulti;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -118,9 +119,10 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
 			{
 				if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.1D)
 				{
-					FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + x, thisBlock.intY(), thisBlock.intZ() + z, GCCoreBlocks.landingPad.blockID & 4095, GCCoreBlocks.landingPad.blockID >> 12 & 255);
+					FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + x, thisBlock.intY(), thisBlock.intZ() + z, GCCoreBlocks.landingPad, Block.getIdFromBlock(GCCoreBlocks.landingPad) >> 12 & 255);
 				}
-				this.worldObj.destroyBlock(thisBlock.intX() + x, thisBlock.intY(), thisBlock.intZ() + z, x == 0 && z == 0);
+				
+				this.worldObj.setBlockToAir(thisBlock.intX() + x, thisBlock.intY(), thisBlock.intZ() + z);
 			}
 		}
 

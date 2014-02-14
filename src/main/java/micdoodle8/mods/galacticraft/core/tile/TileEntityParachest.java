@@ -31,7 +31,7 @@ import cpw.mods.fml.relauncher.Side;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class TileEntityParachest extends TileEntityAdvanced implements IInventory, IPacketReceiver, IScaleableFuelLevel
+public class TileEntityParachest extends TileEntityAdvanced implements IInventory, IScaleableFuelLevel
 {
 	private final int tankCapacity = 5000;
 	@NetworkedField(targetSide = Side.CLIENT)
@@ -89,7 +89,7 @@ public class TileEntityParachest extends TileEntityAdvanced implements IInventor
 			{
 				itemstack = this.chestContents[par1];
 				this.chestContents[par1] = null;
-				this.onInventoryChanged();
+                this.markDirty();
 				return itemstack;
 			}
 			else
@@ -101,7 +101,7 @@ public class TileEntityParachest extends TileEntityAdvanced implements IInventor
 					this.chestContents[par1] = null;
 				}
 
-				this.onInventoryChanged();
+                this.markDirty();
 				return itemstack;
 			}
 		}
@@ -136,7 +136,7 @@ public class TileEntityParachest extends TileEntityAdvanced implements IInventor
 			par2ItemStack.stackSize = this.getInventoryStackLimit();
 		}
 
-		this.onInventoryChanged();
+        this.markDirty();
 	}
 
 	@Override
@@ -146,22 +146,16 @@ public class TileEntityParachest extends TileEntityAdvanced implements IInventor
 	}
 
 	@Override
-	public boolean isInvNameLocalized()
-	{
-		return true;
-	}
-
-	@Override
 	public void readFromNBT(NBTTagCompound nbt)
 	{
 		super.readFromNBT(nbt);
-		NBTTagList nbttaglist = nbt.getTagList("Items");
+		NBTTagList nbttaglist = nbt.getTagList("Items", 10);
 
 		this.chestContents = new ItemStack[nbt.getInteger("chestContentLength")];
 
 		for (int i = 0; i < nbttaglist.tagCount(); ++i)
 		{
-			NBTTagCompound nbttagcompound1 = (NBTTagCompound) nbttaglist.tagAt(i);
+			NBTTagCompound nbttagcompound1 = (NBTTagCompound) nbttaglist.getCompoundTagAt(i);
 			int j = nbttagcompound1.getByte("Slot") & 255;
 
 			if (j >= 0 && j < this.chestContents.length)
@@ -208,6 +202,38 @@ public class TileEntityParachest extends TileEntityAdvanced implements IInventor
 	public int getInventoryStackLimit()
 	{
 		return 64;
+	}
+
+	@Override
+	public boolean hasCustomInventoryName() 
+	{
+		return true;
+	}
+
+	@Override
+	public void openInventory() 
+	{
+		if (this.numUsingPlayers < 0)
+		{
+			this.numUsingPlayers = 0;
+		}
+
+		++this.numUsingPlayers;
+		this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 1, this.numUsingPlayers);
+		this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, this.getBlockType());
+		this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord - 1, this.zCoord, this.getBlockType());
+	}
+
+	@Override
+	public void closeInventory() 
+	{
+		if (this.getBlockType() != null && this.getBlockType() instanceof GCCoreBlockParachest)
+		{
+			--this.numUsingPlayers;
+			this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 1, this.numUsingPlayers);
+			this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, this.getBlockType());
+			this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord - 1, this.zCoord, this.getBlockType());
+		}
 	}
 
 	@Override
@@ -319,11 +345,6 @@ public class TileEntityParachest extends TileEntityAdvanced implements IInventor
 		}
 	}
 
-	public Packet getPacket()
-	{
-		return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluidAmount());
-	}
-
 	@Override
 	public boolean receiveClientEvent(int par1, int par2)
 	{
@@ -335,32 +356,6 @@ public class TileEntityParachest extends TileEntityAdvanced implements IInventor
 		else
 		{
 			return super.receiveClientEvent(par1, par2);
-		}
-	}
-
-	@Override
-	public void openChest()
-	{
-		if (this.numUsingPlayers < 0)
-		{
-			this.numUsingPlayers = 0;
-		}
-
-		++this.numUsingPlayers;
-		this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType().blockID, 1, this.numUsingPlayers);
-		this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, this.getBlockType().blockID);
-		this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord - 1, this.zCoord, this.getBlockType().blockID);
-	}
-
-	@Override
-	public void closeChest()
-	{
-		if (this.getBlockType() != null && this.getBlockType() instanceof GCCoreBlockParachest)
-		{
-			--this.numUsingPlayers;
-			this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType().blockID, 1, this.numUsingPlayers);
-			this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, this.getBlockType().blockID);
-			this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord - 1, this.zCoord, this.getBlockType().blockID);
 		}
 	}
 

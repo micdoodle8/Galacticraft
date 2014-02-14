@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.items;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItems.EnumToolType;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxy;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
@@ -20,9 +21,9 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreItemPickaxe extends ItemPickaxe
 {
-	public GCCoreItemPickaxe(String assetName)
+	public GCCoreItemPickaxe(EnumToolType toolType, String assetName)
 	{
-		super(GCCoreItems.TOOL_STEEL);
+		super(toolType.getMaterial());
 		this.setUnlocalizedName(assetName);
 		this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
 	}

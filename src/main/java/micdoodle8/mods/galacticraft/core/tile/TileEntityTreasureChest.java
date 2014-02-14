@@ -30,7 +30,7 @@ import cpw.mods.fml.relauncher.Side;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class TileEntityTreasureChest extends TileEntityAdvanced implements IInventory, IKeyable, IPacketReceiver
+public class TileEntityTreasureChest extends TileEntityAdvanced implements IInventory, IKeyable
 {
 	private ItemStack[] chestContents = new ItemStack[36];
 
@@ -109,7 +109,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements IInve
 			{
 				itemstack = this.chestContents[par1];
 				this.chestContents[par1] = null;
-				this.onInventoryChanged();
+				this.markDirty();
 				return itemstack;
 			}
 			else
@@ -121,7 +121,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements IInve
 					this.chestContents[par1] = null;
 				}
 
-				this.onInventoryChanged();
+				this.markDirty();
 				return itemstack;
 			}
 		}
@@ -165,7 +165,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements IInve
 			par2ItemStack.stackSize = this.getInventoryStackLimit();
 		}
 
-		this.onInventoryChanged();
+		this.markDirty();
 	}
 
 	/**
@@ -177,12 +177,12 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements IInve
 		super.readFromNBT(nbt);
 		this.locked = nbt.getBoolean("isLocked");
 		this.tier = nbt.getInteger("tier");
-		final NBTTagList nbttaglist = nbt.getTagList("Items");
+		final NBTTagList nbttaglist = nbt.getTagList("Items", 10);
 		this.chestContents = new ItemStack[this.getSizeInventory()];
 
 		for (int i = 0; i < nbttaglist.tagCount(); ++i)
 		{
-			final NBTTagCompound nbttagcompound1 = (NBTTagCompound) nbttaglist.tagAt(i);
+			final NBTTagCompound nbttagcompound1 = (NBTTagCompound) nbttaglist.getCompoundTagAt(i);
 			final int j = nbttagcompound1.getByte("Slot") & 255;
 
 			if (j >= 0 && j < this.chestContents.length)
@@ -347,7 +347,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements IInve
 
 	private boolean func_94044_a(int par1, int par2, int par3)
 	{
-		final Block block = Block.blocksList[this.worldObj.getBlockId(par1, par2, par3)];
+		Block block = this.worldObj.getBlock(par1, par2, par3);
 		return block != null && block instanceof GCCoreBlockT1TreasureChest;
 	}
 
@@ -473,7 +473,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements IInve
 	}
 
 	@Override
-	public void openChest()
+	public void openInventory()
 	{
 		if (this.numUsingPlayers < 0)
 		{
@@ -481,25 +481,25 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements IInve
 		}
 
 		++this.numUsingPlayers;
-		this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType().blockID, 1, this.numUsingPlayers);
-		this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, this.getBlockType().blockID);
-		this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord - 1, this.zCoord, this.getBlockType().blockID);
+		this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 1, this.numUsingPlayers);
+		this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, this.getBlockType());
+		this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord - 1, this.zCoord, this.getBlockType());
 	}
 
 	@Override
-	public void closeChest()
+	public void closeInventory()
 	{
 		if (this.getBlockType() != null && this.getBlockType() instanceof GCCoreBlockT1TreasureChest)
 		{
 			--this.numUsingPlayers;
-			this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType().blockID, 1, this.numUsingPlayers);
-			this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, this.getBlockType().blockID);
-			this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord - 1, this.zCoord, this.getBlockType().blockID);
+			this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 1, this.numUsingPlayers);
+			this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, this.getBlockType());
+			this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord - 1, this.zCoord, this.getBlockType());
 		}
 	}
 
 	@Override
-	public boolean isInvNameLocalized()
+	public boolean hasCustomInventoryName() 
 	{
 		return true;
 	}

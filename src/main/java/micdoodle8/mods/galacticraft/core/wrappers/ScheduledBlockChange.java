@@ -1,23 +1,24 @@
 package micdoodle8.mods.galacticraft.core.wrappers;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import net.minecraft.block.Block;
 
 public class ScheduledBlockChange
 {
 	private Vector3 changePosition;
-	private int changeID;
+	private Block changeBlock;
 	private int changeMeta;
 	private int changeFlag;
 	
-	public ScheduledBlockChange(Vector3 changePosition, int changeID, int changeMeta)
+	public ScheduledBlockChange(Vector3 changePosition, Block changeBlock, int changeMeta)
 	{
-		this(changePosition, changeID, changeMeta, 3);
+		this(changePosition, changeBlock, changeMeta, 3);
 	}
 	
-	public ScheduledBlockChange(Vector3 changePosition, int changeID, int changeMeta, int changeFlag)
+	public ScheduledBlockChange(Vector3 changePosition, Block changeBlock, int changeMeta, int changeFlag)
 	{
 		this.changePosition = changePosition;
-		this.changeID = changeID;
+		this.changeBlock = changeBlock;
 		this.changeMeta = changeMeta;
 		this.changeFlag = changeFlag;
 	}
@@ -32,14 +33,14 @@ public class ScheduledBlockChange
 		this.changePosition = changePosition;
 	}
 
-	public int getChangeID()
+	public Block getChangeBlock()
 	{
-		return changeID;
+		return changeBlock;
 	}
 
-	public void setChangeID(int changeID)
+	public void setChangeBlock(Block changeID)
 	{
-		this.changeID = changeID;
+		this.changeBlock = changeID;
 	}
 
 	public int getChangeMeta()

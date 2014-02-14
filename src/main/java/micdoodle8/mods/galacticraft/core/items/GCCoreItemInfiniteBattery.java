@@ -24,9 +24,9 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreItemInfiniteBattery extends Item implements IItemElectric
 {
-	public GCCoreItemInfiniteBattery(int id, String assetName)
+	public GCCoreItemInfiniteBattery(String assetName)
 	{
-		super(id);
+		super();
 		this.setMaxStackSize(1);
 		this.setNoRepair();
 		this.setUnlocalizedName(assetName);

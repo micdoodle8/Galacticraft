@@ -14,10 +14,11 @@ import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockLandingPad;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockMachine;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockOxygenCompressor;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockSolar;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.items.GCMoonItemBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -64,8 +65,8 @@ public class GCCoreBlocks
 	public static Block machineBase2;
 	public static Block aluminumWire;
 	public static Block glowstoneTorch;
-//	public static Block blockMoon;
-//	public static Block cheeseBlock;
+	public static Block blockMoon;
+	public static Block cheeseBlock;
 
 	public static final Material machine = new Material(MapColor.ironColor);
 
@@ -102,8 +103,8 @@ public class GCCoreBlocks
 		GCCoreBlocks.aluminumWire = new GCCoreBlockAluminumWire("aluminumWire");
 		GCCoreBlocks.machineBase2 = new GCCoreBlockMachine2("machine2");
 		GCCoreBlocks.glowstoneTorch = new GCCoreBlockGlowstoneTorch("glowstoneTorch");
-//		GCCoreBlocks.blockMoon = new GCMoonBlock();
-//		GCCoreBlocks.cheeseBlock = new GCMoonBlockCheese().setHardness(0.5F).setStepSound(Block.soundTypeStone).setBlockName("cheeseBlock");
+		GCCoreBlocks.blockMoon = new GCMoonBlock();
+		GCCoreBlocks.cheeseBlock = new GCMoonBlockCheese().setHardness(0.5F).setStepSound(Block.soundTypeStone).setBlockName("cheeseBlock");
 
 //		GCCoreUtil.registerGalacticraftBlock("rocketLaunchPad", GCCoreBlocks.landingPad, 0);
 //		GCCoreUtil.registerGalacticraftBlock("buggyFuelingPad", GCCoreBlocks.landingPad, 1);
@@ -164,14 +165,14 @@ public class GCCoreBlocks
 		GCCoreBlocks.hiddenBlocks.add(GCCoreBlocks.spaceStationBase);
 
 		OreDictionary.registerOre("oreCopper", new ItemStack(GCCoreBlocks.basicBlock, 1, 5));
-//		OreDictionary.registerOre("oreCopper", new ItemStack(GCCoreBlocks.blockMoon, 1, 0));
+		OreDictionary.registerOre("oreCopper", new ItemStack(GCCoreBlocks.blockMoon, 1, 0));
 		OreDictionary.registerOre("oreTin", new ItemStack(GCCoreBlocks.basicBlock, 1, 6));
-//		OreDictionary.registerOre("oreTin", new ItemStack(GCCoreBlocks.blockMoon, 1, 1));
+		OreDictionary.registerOre("oreTin", new ItemStack(GCCoreBlocks.blockMoon, 1, 1));
 		OreDictionary.registerOre("oreAluminum", new ItemStack(GCCoreBlocks.basicBlock, 1, 7));
 		OreDictionary.registerOre("oreAluminium", new ItemStack(GCCoreBlocks.basicBlock, 1, 7));
 		OreDictionary.registerOre("oreNaturalAluminum", new ItemStack(GCCoreBlocks.basicBlock, 1, 7));
 		OreDictionary.registerOre("oreSilicon", new ItemStack(GCCoreBlocks.basicBlock, 1, 8));
-//		OreDictionary.registerOre("oreCheese", new ItemStack(GCCoreBlocks.blockMoon, 1, 2));
+		OreDictionary.registerOre("oreCheese", new ItemStack(GCCoreBlocks.blockMoon, 1, 2));
 
 		GCCoreBlocks.setHarvestLevels();
 		GCCoreBlocks.registerBlocks();
@@ -232,7 +233,7 @@ public class GCCoreBlocks
 		GameRegistry.registerBlock(GCCoreBlocks.machineBase2, GCCoreItemBlockMachine.class, GCCoreBlocks.machineBase2.getUnlocalizedName(), GalacticraftCore.MOD_ID);
 		GameRegistry.registerBlock(GCCoreBlocks.aluminumWire, GCCoreItemBlockAluminumWire.class, GCCoreBlocks.aluminumWire.getUnlocalizedName(), GalacticraftCore.MOD_ID);
 		GameRegistry.registerBlock(GCCoreBlocks.glowstoneTorch, GCCoreItemBlock.class, GCCoreBlocks.glowstoneTorch.getUnlocalizedName(), GalacticraftCore.MOD_ID);
-//		GameRegistry.registerBlock(GCCoreBlocks.blockMoon, GCMoonItemBlock.class, GCCoreBlocks.blockMoon.getUnlocalizedName(), GalacticraftCore.MOD_ID);
-//		GameRegistry.registerBlock(GCCoreBlocks.cheeseBlock, ItemBlock.class, GCCoreBlocks.cheeseBlock.getUnlocalizedName(), GalacticraftCore.MOD_ID);
+		GameRegistry.registerBlock(GCCoreBlocks.blockMoon, GCMoonItemBlock.class, GCCoreBlocks.blockMoon.getUnlocalizedName(), GalacticraftCore.MOD_ID);
+		GameRegistry.registerBlock(GCCoreBlocks.cheeseBlock, ItemBlock.class, GCCoreBlocks.cheeseBlock.getUnlocalizedName(), GalacticraftCore.MOD_ID);
 	}
 }

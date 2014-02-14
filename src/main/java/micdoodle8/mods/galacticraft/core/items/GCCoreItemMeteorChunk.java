@@ -32,9 +32,9 @@ public class GCCoreItemMeteorChunk extends Item
 
 	public static final int METEOR_BURN_TIME = 45 * 20;
 
-	public GCCoreItemMeteorChunk(int id, String assetName)
+	public GCCoreItemMeteorChunk(String assetName)
 	{
-		super(id);
+		super();
 		this.setMaxDamage(0);
 		this.setHasSubtypes(true);
 		this.maxStackSize = 16;
@@ -95,7 +95,7 @@ public class GCCoreItemMeteorChunk extends Item
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@SideOnly(Side.CLIENT)
 	@Override
-	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
 		par3List.add(new ItemStack(par1, 1, 0));
 		par3List.add(new ItemStack(par1, 1, 1));

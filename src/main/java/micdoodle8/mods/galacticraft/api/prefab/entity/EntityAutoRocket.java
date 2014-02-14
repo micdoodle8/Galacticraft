@@ -153,7 +153,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
 								if (launchController != null)
 								{
-									TileEntity tile2 = launchController.worldObj.getTileEntity(launchController.xCoord, launchController.yCoord, launchController.zCoord);
+									TileEntity tile2 = launchController.getWorldObj().getTileEntity(launchController.xCoord, launchController.yCoord, launchController.zCoord);
 
 									try
 									{
@@ -252,9 +252,9 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 							{
 								for (int z = -2; z <= 2; z++)
 								{
-									int blockID = world.getBlockId(launchController.xCoord + x, launchController.yCoord, launchController.zCoord + z);
+									Block block = world.getBlock(launchController.xCoord + x, launchController.yCoord, launchController.zCoord + z);
 
-									if (blockID > 0 && Block.blocksList[blockID] instanceof GCCoreBlockLandingPadFull)
+									if (block instanceof GCCoreBlockLandingPadFull)
 									{
 										if (doSet)
 										{
@@ -269,7 +269,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
 							if (doSet)
 							{
-								this.targetDimension = launchController.worldObj.provider.dimensionId;
+								this.targetDimension = launchController.getWorldObj().provider.dimensionId;
 							}
 
 							if (!targetSet)
@@ -684,8 +684,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 				{
 					for (int z = MathHelper.floor_double(this.posZ) - 1; z <= MathHelper.floor_double(this.posZ) + 1; z++)
 					{
-						final int id = this.worldObj.getBlockId(x, y, z);
-						final Block block = Block.blocksList[id];
+						final Block block = this.worldObj.getBlock(x, y, z);
 
 						if (block != null && block instanceof GCCoreBlockLandingPadFull)
 						{
@@ -765,12 +764,12 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
 		if (this.getSizeInventory() > 0)
 		{
-			final NBTTagList var2 = nbt.getTagList("Items");
+			final NBTTagList var2 = nbt.getTagList("Items", 10);
 			this.cargoItems = new ItemStack[this.getSizeInventory()];
 
 			for (int var3 = 0; var3 < var2.tagCount(); ++var3)
 			{
-				final NBTTagCompound var4 = (NBTTagCompound) var2.tagAt(var3);
+				final NBTTagCompound var4 = (NBTTagCompound) var2.getCompoundTagAt(var3);
 				final int var5 = var4.getByte("Slot") & 255;
 
 				if (var5 >= 0 && var5 < this.cargoItems.length)
@@ -853,7 +852,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 		{
 			ItemStack stackAt = this.cargoItems[count];
 
-			if (stackAt != null && stackAt.itemID == stack.itemID && stackAt.getItemDamage() == stack.getItemDamage() && stackAt.stackSize < stackAt.getMaxStackSize())
+			if (stackAt != null && stackAt.getItem() == stack.getItem() && stackAt.getItemDamage() == stack.getItemDamage() && stackAt.stackSize < stackAt.getMaxStackSize())
 			{
 				if (doAdd)
 				{
@@ -901,7 +900,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 					this.cargoItems[i] = null;
 				}
 
-				return new RemovalResult(EnumCargoLoadingState.SUCCESS, new ItemStack(stackAt.itemID, 1, stackAt.getItemDamage()));
+				return new RemovalResult(EnumCargoLoadingState.SUCCESS, new ItemStack(stackAt.getItem(), 1, stackAt.getItemDamage()));
 			}
 		}
 
@@ -989,22 +988,17 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 	}
 
 	@Override
-	public void onInventoryChanged()
+	public void openInventory()
 	{
 	}
 
 	@Override
-	public void openChest()
+	public void closeInventory()
 	{
 	}
-
+	
 	@Override
-	public void closeChest()
-	{
-	}
-
-	@Override
-	public boolean isInvNameLocalized()
+	public boolean hasCustomInventoryName()
 	{
 		return true;
 	}

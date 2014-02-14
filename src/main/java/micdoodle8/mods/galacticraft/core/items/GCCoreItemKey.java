@@ -2,15 +2,15 @@ package micdoodle8.mods.galacticraft.core.items;
 
 import java.util.List;
 
-import javax.swing.Icon;
-
 import micdoodle8.mods.galacticraft.api.item.IKeyItem;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxy;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -26,11 +26,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreItemKey extends Item implements IKeyItem
 {
 	public static String[] keyTypes = new String[] { "T1" };
-	public Icon[] keyIcons = new Icon[1];
+	public IIcon[] keyIIcons = new IIcon[1];
 
-	public GCCoreItemKey(int id, String assetName)
+	public GCCoreItemKey(String assetName)
 	{
-		super(id);
+		super();
 		this.setMaxStackSize(1);
 		this.setMaxDamage(0);
 		this.setHasSubtypes(true);
@@ -59,22 +59,22 @@ public class GCCoreItemKey extends Item implements IKeyItem
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister iconRegister)
+	public void registerIcons(IIconRegister iconRegister)
 	{
 		int i = 0;
 
 		for (final String name : GCCoreItemKey.keyTypes)
 		{
-			this.keyIcons[i++] = iconRegister.registerIcon(this.getIconString() + "_" + name);
+			this.keyIIcons[i++] = iconRegister.registerIcon(this.getIconString() + "_" + name);
 		}
 	}
 
 	@Override
-	public Icon getIconFromDamage(int damage)
+	public IIcon getIconFromDamage(int damage)
 	{
-		if (this.keyIcons.length > damage)
+		if (this.keyIIcons.length > damage)
 		{
-			return this.keyIcons[damage];
+			return this.keyIIcons[damage];
 		}
 
 		return super.getIconFromDamage(damage);
@@ -82,7 +82,7 @@ public class GCCoreItemKey extends Item implements IKeyItem
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
 		for (int i = 0; i < GCCoreItemKey.keyTypes.length; i++)
 		{

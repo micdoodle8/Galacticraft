@@ -28,7 +28,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 /**
  * Do not include this prefab class in your released mod download.
  */
-public abstract class EntitySpaceshipBase extends Entity implements IPacketReceiver
+public abstract class EntitySpaceshipBase extends Entity
 {
 	public static enum EnumLaunchPhase
 	{

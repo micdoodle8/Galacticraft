@@ -6,6 +6,7 @@ import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -25,9 +26,9 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreItemWrench extends Item
 {
-	public GCCoreItemWrench(int id, String assetName)
+	public GCCoreItemWrench(String assetName)
 	{
-		super(id);
+		super();
 		this.setUnlocalizedName(assetName);
 		this.setMaxStackSize(1);
 		this.setMaxDamage(256);
@@ -81,23 +82,17 @@ public class GCCoreItemWrench extends Item
 	}
 
 	@Override
-	public boolean shouldPassSneakingClickToBlock(World world, int x, int y, int z)
-	{
-		return true;
-	}
-
-	@Override
 	public boolean onItemUseFirst(ItemStack stack, EntityPlayer entityPlayer, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
 	{
-		int blockID = world.getBlockId(x, y, z);
+		Block blockID = world.getBlock(x, y, z);
 
-		if (blockID == Block.furnaceIdle.blockID || blockID == Block.furnaceBurning.blockID || blockID == Block.dropper.blockID || blockID == Block.hopperBlock.blockID || blockID == Block.dispenser.blockID || blockID == Block.pistonBase.blockID || blockID == Block.pistonStickyBase.blockID)
+		if (blockID == Blocks.furnace || blockID == Blocks.lit_furnace || blockID == Blocks.dropper || blockID == Blocks.hopper || blockID == Blocks.dispenser || blockID == Blocks.piston || blockID == Blocks.sticky_piston)
 		{
 			int metadata = world.getBlockMetadata(x, y, z);
 
 			int[] rotationMatrix = { 1, 2, 3, 4, 5, 0 };
 
-			if (blockID == Block.furnaceIdle.blockID || blockID == Block.furnaceBurning.blockID)
+			if (blockID == Blocks.furnace || blockID == Blocks.lit_furnace)
 			{
 				rotationMatrix = ForgeDirection.ROTATION_MATRIX[0];
 			}

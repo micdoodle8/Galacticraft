@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.items;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxy;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -22,9 +23,9 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreItemKnowledgeBook extends Item
 {
-	public GCCoreItemKnowledgeBook(int id, String assetName)
+	public GCCoreItemKnowledgeBook(String assetName)
 	{
-		super(id);
+		super();
 		this.maxStackSize = 1;
 		this.setUnlocalizedName(assetName);
 		this.setTextureName("arrow");
@@ -45,7 +46,7 @@ public class GCCoreItemKnowledgeBook extends Item
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerIcons(IIconRegister par1IIconRegister)
 	{
 	}
 

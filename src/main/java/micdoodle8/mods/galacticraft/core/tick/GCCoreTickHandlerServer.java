@@ -53,7 +53,7 @@ public class GCCoreTickHandlerServer implements ITickHandler
 				for (Iterator<ScheduledBlockChange> it = scheduledChanges.iterator(); it.hasNext(); )
 				{
 					ScheduledBlockChange change = it.next();
-					world.setBlock(change.getChangePosition().intX(), change.getChangePosition().intY(), change.getChangePosition().intZ(), change.getChangeID(), change.getChangeMeta(), change.getChangeFlag());
+					world.setBlock(change.getChangePosition().intX(), change.getChangePosition().intY(), change.getChangePosition().intZ(), change.getChangeBlock(), change.getChangeMeta(), change.getChangeFlag());
 					it.remove();
 				}
 			}

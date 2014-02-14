@@ -11,6 +11,7 @@ import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenGear;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenMask;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenTank;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenDistributor;
+import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiInventory;
@@ -77,7 +78,7 @@ public class OxygenUtil
 			{
 				final TileEntityOxygenDistributor distributor = (TileEntityOxygenDistributor) o;
 
-				if (!distributor.worldObj.isRemote)
+				if (!distributor.getWorldObj().isRemote)
 				{
 					final double dist = distributor.getDistanceFromServer(avgX, avgY, avgZ);
 
@@ -109,9 +110,9 @@ public class OxygenUtil
 				{
 					for (int i2 = i1; i2 < j1; ++i2)
 					{
-						int j2 = world.getBlockId(k1, l1, i2);
+						Block j2 = world.getBlock(k1, l1, i2);
 
-						if (j2 == GCCoreBlocks.breatheableAir.blockID)
+						if (j2 == GCCoreBlocks.breatheableAir)
 						{
 							return true;
 						}

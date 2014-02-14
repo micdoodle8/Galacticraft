@@ -42,12 +42,12 @@ public class TileEntityLandingPadSingle extends TileEntity
 			for (final TileEntity tile : attachedLaunchPads)
 			{
 				tile.invalidate();
-				tile.worldObj.setBlock(tile.xCoord, tile.yCoord, tile.zCoord, 0);
+				tile.getWorldObj().setBlockToAir(tile.xCoord, tile.yCoord, tile.zCoord);
 				// ((GCCoreBlockLandingPadFull)GCCoreBlocks.landingPadFull).onBlockAdded(worldObj,
 				// tile.xCoord, tile.yCoord, tile.zCoord);
 			}
 
-			this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, GCCoreBlocks.landingPadFull.blockID, 0, 3);
+			this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, GCCoreBlocks.landingPadFull, 0, 3);
 			final TileEntityLandingPad tile = (TileEntityLandingPad) this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord);
 
 			if (tile instanceof IMultiBlock)

@@ -14,6 +14,7 @@ import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -36,7 +37,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class TileEntitySolar extends TileEntityUniversalElectrical implements IMultiBlock, IPacketReceiver, IDisableableMachine, IInventory, ISidedInventory
+public class TileEntitySolar extends TileEntityUniversalElectrical implements IMultiBlock, IDisableableMachine, IInventory, ISidedInventory
 {
 	public HashSet<TileEntity> connectedTiles = new HashSet<TileEntity>();
 	@NetworkedField(targetSide = Side.CLIENT)
@@ -113,9 +114,9 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 
 									for (int y = this.yCoord + 3; y < 256; y++)
 									{
-										int blockID = this.worldObj.getBlockId(this.xCoord + x, y, this.zCoord + z);
+										Block block = this.worldObj.getBlock(this.xCoord + x, y, this.zCoord + z);
 
-										if (blockID != 0 && Block.blocksList[blockID].isOpaqueCube())
+										if (block != Blocks.air && block.isOpaqueCube())
 										{
 											valid = false;
 											break;
@@ -136,9 +137,9 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 								{
 									Vector3 thisVec = new Vector3(this);
 									Vector3 blockAt = thisVec.clone().translate(new Vector3(x, 3, z)).clone().translate(new Vector3(d * sinA, d * cosA, 0));
-									int blockID = blockAt.getBlock(this.worldObj);
+									Block block = blockAt.getBlock(this.worldObj);
 
-									if (blockID != 0 && Block.blocksList[blockID].isOpaqueCube())
+									if (block != Blocks.air && block.isOpaqueCube())
 									{
 										valid = false;
 										break;
@@ -300,15 +301,15 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 				{
 					if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.1D)
 					{
-						FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + (y == 2 ? x : 0), thisBlock.intY() + y, thisBlock.intZ() + (y == 2 ? z : 0), GCCoreBlocks.solarPanel.blockID & 4095, GCCoreBlocks.solarPanel.blockID >> 12 & 255);
+						FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + (y == 2 ? x : 0), thisBlock.intY() + y, thisBlock.intZ() + (y == 2 ? z : 0), GCCoreBlocks.solarPanel, Block.getIdFromBlock(GCCoreBlocks.solarPanel) >> 12 & 255);
 					}
-					this.worldObj.destroyBlock(thisBlock.intX() + (y == 2 ? x : 0), thisBlock.intY() + y, thisBlock.intZ() + (y == 2 ? z : 0), false);
+					
+					this.worldObj.setBlockToAir(thisBlock.intX() + (y == 2 ? x : 0), thisBlock.intY() + y, thisBlock.intZ() + (y == 2 ? z : 0));
 				}
 			}
 		}
 
-		this.worldObj.destroyBlock(thisBlock.intX(), thisBlock.intY(), thisBlock.intZ(), true);
-		this.worldObj.setBlock(thisBlock.intX(), thisBlock.intY(), thisBlock.intZ(), 0, 0, 3);
+		this.worldObj.setBlockToAir(thisBlock.intX(), thisBlock.intY(), thisBlock.intZ());
 	}
 
 	@Override
@@ -328,12 +329,12 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 		this.setDisabled(0, nbt.getBoolean("disabled"));
 		this.disableCooldown = nbt.getInteger("disabledCooldown");
 
-		final NBTTagList var2 = nbt.getTagList("Items");
+		final NBTTagList var2 = nbt.getTagList("Items", 10);
 		this.containingItems = new ItemStack[this.getSizeInventory()];
 
 		for (int var3 = 0; var3 < var2.tagCount(); ++var3)
 		{
-			final NBTTagCompound var4 = (NBTTagCompound) var2.tagAt(var3);
+			final NBTTagCompound var4 = (NBTTagCompound) var2.getCompoundTagAt(var3);
 			final byte var5 = var4.getByte("Slot");
 
 			if (var5 >= 0 && var5 < this.containingItems.length)
@@ -350,7 +351,7 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 
 		if (this.mainBlockPosition != null)
 		{
-			nbt.setCompoundTag("mainBlockPosition", this.mainBlockPosition.writeToNBT(new NBTTagCompound()));
+			nbt.setTag("mainBlockPosition", this.mainBlockPosition.writeToNBT(new NBTTagCompound()));
 		}
 
 		nbt.setFloat("maxEnergy", this.getMaxEnergyStored());
@@ -414,12 +415,6 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 	}
 
 	@Override
-	public boolean isInvNameLocalized()
-	{
-		return true;
-	}
-
-	@Override
 	public String getInventoryName()
 	{
 		return StatCollector.translateToLocal(this.getBlockMetadata() < GCCoreBlockSolar.ADVANCED_METADATA ? "container.solarbasic.name" : "container.solaradvanced.name");
@@ -456,6 +451,24 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 	public ItemStack getStackInSlot(int par1)
 	{
 		return this.containingItems[par1];
+	}
+
+	@Override
+	public boolean hasCustomInventoryName() 
+	{
+		return true;
+	}
+
+	@Override
+	public void openInventory() 
+	{
+		
+	}
+
+	@Override
+	public void closeInventory() 
+	{
+		
 	}
 
 	@Override
@@ -525,16 +538,6 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 	public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
 	{
 		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
-	}
-
-	@Override
-	public void openChest()
-	{
-	}
-
-	@Override
-	public void closeChest()
-	{
 	}
 
 	@Override

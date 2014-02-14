@@ -1,13 +1,12 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import javax.swing.Icon;
-
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxy;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -22,9 +21,9 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GCCoreItemOxygenGear extends Item
 {
-	public GCCoreItemOxygenGear(int id, String assetName)
+	public GCCoreItemOxygenGear(String assetName)
 	{
-		super(id);
+		super();
 		this.setUnlocalizedName(assetName);
 		this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
 	}
@@ -43,7 +42,7 @@ public class GCCoreItemOxygenGear extends Item
 	}
 
 	@Override
-	public Icon getIconFromDamage(int damage)
+	public IIcon getIconFromDamage(int damage)
 	{
 		return super.getIconFromDamage(damage);
 	}
