@@ -15,6 +15,7 @@ import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockMachine;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockOxygenCompressor;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlockSolar;
 import micdoodle8.mods.galacticraft.core.items.GCMoonItemBlock;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -106,54 +107,54 @@ public class GCCoreBlocks
 		GCCoreBlocks.blockMoon = new GCMoonBlock();
 		GCCoreBlocks.cheeseBlock = new GCMoonBlockCheese().setHardness(0.5F).setStepSound(Block.soundTypeStone).setBlockName("cheeseBlock");
 
-//		GCCoreUtil.registerGalacticraftBlock("rocketLaunchPad", GCCoreBlocks.landingPad, 0);
-//		GCCoreUtil.registerGalacticraftBlock("buggyFuelingPad", GCCoreBlocks.landingPad, 1);
-//		GCCoreUtil.registerGalacticraftBlock("oxygenDistributor", GCCoreBlocks.oxygenDistributor);
-//		GCCoreUtil.registerGalacticraftBlock("oxygenCompressor", GCCoreBlocks.oxygenCompressor);
-//		GCCoreUtil.registerGalacticraftBlock("oxygenCollector", GCCoreBlocks.oxygenCollector);
-//		GCCoreUtil.registerGalacticraftBlock("refinery", GCCoreBlocks.refinery);
-//		GCCoreUtil.registerGalacticraftBlock("fuelLoader", GCCoreBlocks.fuelLoader);
-//		GCCoreUtil.registerGalacticraftBlock("oxygenSealer", GCCoreBlocks.oxygenSealer);
-//		GCCoreUtil.registerGalacticraftBlock("oxygenDetector", GCCoreBlocks.oxygenDetector);
-//		GCCoreUtil.registerGalacticraftBlock("cargoLoader", GCCoreBlocks.cargoLoader, 0);
-//		GCCoreUtil.registerGalacticraftBlock("cargoUnloader", GCCoreBlocks.cargoLoader, 4);
-//		GCCoreUtil.registerGalacticraftBlock("oxygenPipe", GCCoreBlocks.oxygenPipe);
-//		GCCoreUtil.registerGalacticraftBlock("nasaWorkbench", GCCoreBlocks.nasaWorkbench);
-//		GCCoreUtil.registerGalacticraftBlock("fallenMeteor", GCCoreBlocks.fallenMeteor);
-//		GCCoreUtil.registerGalacticraftBlock("tinDecorationBlock1", GCCoreBlocks.basicBlock, 3);
-//		GCCoreUtil.registerGalacticraftBlock("tinDecorationBlock2", GCCoreBlocks.basicBlock, 4);
-//		GCCoreUtil.registerGalacticraftBlock("airLockFrame", GCCoreBlocks.airLockFrame);
-//		GCCoreUtil.registerGalacticraftBlock("sealableCopperWire", GCCoreBlocks.sealableBlock, 0);
-//		GCCoreUtil.registerGalacticraftBlock("sealableOxygenPipe", GCCoreBlocks.sealableBlock, 1);
-//		GCCoreUtil.registerGalacticraftBlock("sealableCopperCable", GCCoreBlocks.sealableBlock, 2);
-//		GCCoreUtil.registerGalacticraftBlock("sealableGoldCable", GCCoreBlocks.sealableBlock, 3);
-//		GCCoreUtil.registerGalacticraftBlock("sealableHighVoltageCable", GCCoreBlocks.sealableBlock, 4);
-//		GCCoreUtil.registerGalacticraftBlock("sealableGlassFibreCable", GCCoreBlocks.sealableBlock, 5);
-//		GCCoreUtil.registerGalacticraftBlock("sealableLowVoltageCable", GCCoreBlocks.sealableBlock, 6);
-//		GCCoreUtil.registerGalacticraftBlock("sealableStonePipeItem", GCCoreBlocks.sealableBlock, 7);
-//		GCCoreUtil.registerGalacticraftBlock("sealableCobblestonePipeItem", GCCoreBlocks.sealableBlock, 8);
-//		GCCoreUtil.registerGalacticraftBlock("sealableStonePipeFluid", GCCoreBlocks.sealableBlock, 9);
-//		GCCoreUtil.registerGalacticraftBlock("sealableCobblestonePipeFluid", GCCoreBlocks.sealableBlock, 10);
-//		GCCoreUtil.registerGalacticraftBlock("sealableStonePipePower", GCCoreBlocks.sealableBlock, 11);
-//		GCCoreUtil.registerGalacticraftBlock("sealableGoldPipePower", GCCoreBlocks.sealableBlock, 12);
-//		GCCoreUtil.registerGalacticraftBlock("treasureChestTier1", GCCoreBlocks.treasureChestTier1);
-//		GCCoreUtil.registerGalacticraftBlock("parachest", GCCoreBlocks.parachest);
-//		GCCoreUtil.registerGalacticraftBlock("solarPanelBasic", GCCoreBlocks.solarPanel, 0);
-//		GCCoreUtil.registerGalacticraftBlock("solarPanelAdvanced", GCCoreBlocks.solarPanel, 4);
-//		GCCoreUtil.registerGalacticraftBlock("copperWire", GCCoreBlocks.aluminumWire);
-//		GCCoreUtil.registerGalacticraftBlock("coalGenerator", GCCoreBlocks.machineBase, 0);
-//		GCCoreUtil.registerGalacticraftBlock("energyStorageModule", GCCoreBlocks.machineBase, 4);
-//		GCCoreUtil.registerGalacticraftBlock("electricFurnace", GCCoreBlocks.machineBase, 8);
-//		GCCoreUtil.registerGalacticraftBlock("ingotCompressor", GCCoreBlocks.machineBase, 12);
-//		GCCoreUtil.registerGalacticraftBlock("ingotCompressorElectric", GCCoreBlocks.machineBase2, 0);
-//		GCCoreUtil.registerGalacticraftBlock("circuitFabricator", GCCoreBlocks.machineBase2, 4);
-//		GCCoreUtil.registerGalacticraftBlock("oreCopper", GCCoreBlocks.basicBlock, 5);
-//		GCCoreUtil.registerGalacticraftBlock("oreTin", GCCoreBlocks.basicBlock, 6);
-//		GCCoreUtil.registerGalacticraftBlock("oreAluminum", GCCoreBlocks.basicBlock, 7);
-//		GCCoreUtil.registerGalacticraftBlock("oreSilicon", GCCoreBlocks.basicBlock, 8);
-//		GCCoreUtil.registerGalacticraftBlock("torchGlowstone", GCCoreBlocks.glowstoneTorch);
-//		GCCoreUtil.registerGalacticraftBlock("wireAluminum", GCCoreBlocks.aluminumWire);
-//		GCCoreUtil.registerGalacticraftBlock("wireAluminumHeavy", GCCoreBlocks.aluminumWire, 1);
+		GCCoreUtil.registerGalacticraftBlock("rocketLaunchPad", GCCoreBlocks.landingPad, 0);
+		GCCoreUtil.registerGalacticraftBlock("buggyFuelingPad", GCCoreBlocks.landingPad, 1);
+		GCCoreUtil.registerGalacticraftBlock("oxygenDistributor", GCCoreBlocks.oxygenDistributor);
+		GCCoreUtil.registerGalacticraftBlock("oxygenCompressor", GCCoreBlocks.oxygenCompressor);
+		GCCoreUtil.registerGalacticraftBlock("oxygenCollector", GCCoreBlocks.oxygenCollector);
+		GCCoreUtil.registerGalacticraftBlock("refinery", GCCoreBlocks.refinery);
+		GCCoreUtil.registerGalacticraftBlock("fuelLoader", GCCoreBlocks.fuelLoader);
+		GCCoreUtil.registerGalacticraftBlock("oxygenSealer", GCCoreBlocks.oxygenSealer);
+		GCCoreUtil.registerGalacticraftBlock("oxygenDetector", GCCoreBlocks.oxygenDetector);
+		GCCoreUtil.registerGalacticraftBlock("cargoLoader", GCCoreBlocks.cargoLoader, 0);
+		GCCoreUtil.registerGalacticraftBlock("cargoUnloader", GCCoreBlocks.cargoLoader, 4);
+		GCCoreUtil.registerGalacticraftBlock("oxygenPipe", GCCoreBlocks.oxygenPipe);
+		GCCoreUtil.registerGalacticraftBlock("nasaWorkbench", GCCoreBlocks.nasaWorkbench);
+		GCCoreUtil.registerGalacticraftBlock("fallenMeteor", GCCoreBlocks.fallenMeteor);
+		GCCoreUtil.registerGalacticraftBlock("tinDecorationBlock1", GCCoreBlocks.basicBlock, 3);
+		GCCoreUtil.registerGalacticraftBlock("tinDecorationBlock2", GCCoreBlocks.basicBlock, 4);
+		GCCoreUtil.registerGalacticraftBlock("airLockFrame", GCCoreBlocks.airLockFrame);
+		GCCoreUtil.registerGalacticraftBlock("sealableCopperWire", GCCoreBlocks.sealableBlock, 0);
+		GCCoreUtil.registerGalacticraftBlock("sealableOxygenPipe", GCCoreBlocks.sealableBlock, 1);
+		GCCoreUtil.registerGalacticraftBlock("sealableCopperCable", GCCoreBlocks.sealableBlock, 2);
+		GCCoreUtil.registerGalacticraftBlock("sealableGoldCable", GCCoreBlocks.sealableBlock, 3);
+		GCCoreUtil.registerGalacticraftBlock("sealableHighVoltageCable", GCCoreBlocks.sealableBlock, 4);
+		GCCoreUtil.registerGalacticraftBlock("sealableGlassFibreCable", GCCoreBlocks.sealableBlock, 5);
+		GCCoreUtil.registerGalacticraftBlock("sealableLowVoltageCable", GCCoreBlocks.sealableBlock, 6);
+		GCCoreUtil.registerGalacticraftBlock("sealableStonePipeItem", GCCoreBlocks.sealableBlock, 7);
+		GCCoreUtil.registerGalacticraftBlock("sealableCobblestonePipeItem", GCCoreBlocks.sealableBlock, 8);
+		GCCoreUtil.registerGalacticraftBlock("sealableStonePipeFluid", GCCoreBlocks.sealableBlock, 9);
+		GCCoreUtil.registerGalacticraftBlock("sealableCobblestonePipeFluid", GCCoreBlocks.sealableBlock, 10);
+		GCCoreUtil.registerGalacticraftBlock("sealableStonePipePower", GCCoreBlocks.sealableBlock, 11);
+		GCCoreUtil.registerGalacticraftBlock("sealableGoldPipePower", GCCoreBlocks.sealableBlock, 12);
+		GCCoreUtil.registerGalacticraftBlock("treasureChestTier1", GCCoreBlocks.treasureChestTier1);
+		GCCoreUtil.registerGalacticraftBlock("parachest", GCCoreBlocks.parachest);
+		GCCoreUtil.registerGalacticraftBlock("solarPanelBasic", GCCoreBlocks.solarPanel, 0);
+		GCCoreUtil.registerGalacticraftBlock("solarPanelAdvanced", GCCoreBlocks.solarPanel, 4);
+		GCCoreUtil.registerGalacticraftBlock("copperWire", GCCoreBlocks.aluminumWire);
+		GCCoreUtil.registerGalacticraftBlock("coalGenerator", GCCoreBlocks.machineBase, 0);
+		GCCoreUtil.registerGalacticraftBlock("energyStorageModule", GCCoreBlocks.machineBase, 4);
+		GCCoreUtil.registerGalacticraftBlock("electricFurnace", GCCoreBlocks.machineBase, 8);
+		GCCoreUtil.registerGalacticraftBlock("ingotCompressor", GCCoreBlocks.machineBase, 12);
+		GCCoreUtil.registerGalacticraftBlock("ingotCompressorElectric", GCCoreBlocks.machineBase2, 0);
+		GCCoreUtil.registerGalacticraftBlock("circuitFabricator", GCCoreBlocks.machineBase2, 4);
+		GCCoreUtil.registerGalacticraftBlock("oreCopper", GCCoreBlocks.basicBlock, 5);
+		GCCoreUtil.registerGalacticraftBlock("oreTin", GCCoreBlocks.basicBlock, 6);
+		GCCoreUtil.registerGalacticraftBlock("oreAluminum", GCCoreBlocks.basicBlock, 7);
+		GCCoreUtil.registerGalacticraftBlock("oreSilicon", GCCoreBlocks.basicBlock, 8);
+		GCCoreUtil.registerGalacticraftBlock("torchGlowstone", GCCoreBlocks.glowstoneTorch);
+		GCCoreUtil.registerGalacticraftBlock("wireAluminum", GCCoreBlocks.aluminumWire);
+		GCCoreUtil.registerGalacticraftBlock("wireAluminumHeavy", GCCoreBlocks.aluminumWire, 1);
 
 		// Hide certain items from NEI
 		GCCoreBlocks.hiddenBlocks.add(GCCoreBlocks.airLockSeal);
@@ -174,32 +175,7 @@ public class GCCoreBlocks
 		OreDictionary.registerOre("oreSilicon", new ItemStack(GCCoreBlocks.basicBlock, 1, 8));
 		OreDictionary.registerOre("oreCheese", new ItemStack(GCCoreBlocks.blockMoon, 1, 2));
 
-		GCCoreBlocks.setHarvestLevels();
 		GCCoreBlocks.registerBlocks();
-	}
-
-	public static void setHarvestLevels()
-	{
-//		MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.basicBlock, 0, "pickaxe", 1);
-//		MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.basicBlock, 1, "pickaxe", 2);
-//		MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.basicBlock, 2, "pickaxe", 3);
-//		MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.fallenMeteor, "pickaxe", 3);
-//		MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.basicBlock, 5, "pickaxe", 1);
-//		MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.basicBlock, 6, "pickaxe", 1);
-//		MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.basicBlock, 7, "pickaxe", 2);
-//		MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.basicBlock, 8, "pickaxe", 2);
-//		MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.blockMoon, 0, "pickaxe", 3);
-//		MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.blockMoon, 1, "pickaxe", 3);
-//		MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.blockMoon, 2, "pickaxe", 3);
-//		MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.blockMoon, 3, "shovel", 0);
-//		MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.blockMoon, 4, "pickaxe", 2);
-//
-//		for (int num = 5; num < 14; num++)
-//		{
-//			MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.blockMoon, num, "shovel", 0);
-//		}
-//
-//		MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.blockMoon, 14, "pickaxe", 2);
 	}
 
 	public static void registerBlocks()

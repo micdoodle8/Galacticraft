@@ -13,6 +13,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketPipeline;
 import micdoodle8.mods.galacticraft.core.proxy.CommonProxy;
 import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerClient;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -40,6 +41,9 @@ public class GalacticraftCore
     
 	public static Map<String, GCCorePlayerSP> playersClient = new HashMap<String, GCCorePlayerSP>();
 	public static Map<String, GCCorePlayerMP> playersServer = new HashMap<String, GCCorePlayerMP>();
+
+	public static HashMap<String, ItemStack> itemList = new HashMap<String, ItemStack>();
+	public static HashMap<String, ItemStack> blocksList = new HashMap<String, ItemStack>();
 	
 	public static CreativeTabs galacticraftTab;
 

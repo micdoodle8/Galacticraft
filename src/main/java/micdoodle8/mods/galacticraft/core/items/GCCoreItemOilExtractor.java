@@ -91,9 +91,9 @@ public class GCCoreItemOilExtractor extends Item
 	}
 
 	@Override
-	public void onUsingItemTick(ItemStack par1ItemStack, EntityPlayer par3EntityPlayer, int count)
-	{
-		Vector3 blockHit = this.getNearestOilBlock(par3EntityPlayer);
+    public void onUsingTick(ItemStack stack, EntityPlayer player, int count)
+    {
+		Vector3 blockHit = this.getNearestOilBlock(player);
 
 		if (blockHit != null)
 		{
@@ -101,15 +101,15 @@ public class GCCoreItemOilExtractor extends Item
 			final int y = MathHelper.floor_double(blockHit.y);
 			final int z = MathHelper.floor_double(blockHit.z);
 
-			if (this.isOilBlock(par3EntityPlayer, par3EntityPlayer.worldObj, x, y, z, false))
+			if (this.isOilBlock(player, player.worldObj, x, y, z, false))
 			{
-				if (this.openCanister(par3EntityPlayer) != null)
+				if (this.openCanister(player) != null)
 				{
-					final ItemStack canister = this.openCanister(par3EntityPlayer);
+					final ItemStack canister = this.openCanister(player);
 
 					if (canister != null && count % 5 == 0 && canister.getItemDamage() > 1)
 					{
-						this.isOilBlock(par3EntityPlayer, par3EntityPlayer.worldObj, x, y, z, true);
+						this.isOilBlock(player, player.worldObj, x, y, z, true);
 						canister.setItemDamage(Math.max(canister.getItemDamage() - 200, 1));
 					}
 				}
@@ -146,7 +146,7 @@ public class GCCoreItemOilExtractor extends Item
 	}
 
 	@Override
-	public IIcon getIIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)
+	public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)
 	{
 		final int count2 = useRemaining / 2;
 
@@ -176,7 +176,7 @@ public class GCCoreItemOilExtractor extends Item
 	{
 		if (par2World.isRemote)
 		{
-			this.itemIIcon = this.icons[0];
+			this.itemIcon = this.icons[0];
 		}
 	}
 
