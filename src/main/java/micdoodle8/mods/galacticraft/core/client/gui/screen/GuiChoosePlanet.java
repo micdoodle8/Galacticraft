@@ -14,7 +14,6 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -61,10 +60,10 @@ public class GuiChoosePlanet extends GuiScreen
 
     public EntityPlayer playerToSend;
 
-    public GuiSmallButton sendButton;
+    public GuiButton sendButton;
 
-    public GuiSmallButton createSpaceStationButton;
-    public GuiSmallButton renameSpaceStationButton;
+    public GuiButton createSpaceStationButton;
+    public GuiButton renameSpaceStationButton;
     private String renameText = "";
     public long timeBackspacePressed;
     public int cursorPulse;
@@ -83,11 +82,6 @@ public class GuiChoosePlanet extends GuiScreen
     public void updateDimensionList(String[] listOfDestinations)
     {
         this.destinations = listOfDestinations;
-    }
-
-    public FontRenderer getFontRenderer()
-    {
-        return this.fontRenderer;
     }
 
     @Override
@@ -130,7 +124,7 @@ public class GuiChoosePlanet extends GuiScreen
 
     public boolean isValid(String string)
     {
-        return ChatAllowedCharacters.allowedCharacters.indexOf(string.charAt(string.length() - 1)) >= 0;
+        return ChatAllowedCharacters.isAllowedCharacter(string.charAt(string.length() - 1));
     }
 
     @SuppressWarnings("unchecked")
@@ -139,18 +133,18 @@ public class GuiChoosePlanet extends GuiScreen
     {
         if (!(this.planetSlots == null))
         {
-            this.planetSlots.func_77207_a(2, 10, 10, 10);
+            this.planetSlots.func_148122_a(2, 10, 10, 10);
         }
 
         this.planetSlots = new GuiChoosePlanetSlot(this);
 
         this.buttonList.clear();
         this.buttonList.add(new GuiTexturedButton(0, this.width - 28, 5, 22, 22, new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/map_button.png"), 22, 22));
-        this.buttonList.add(this.sendButton = new GuiSmallButton(1, this.width - 110, this.height - 26, 105, 20, StatCollector.translateToLocal("gui.button.sendtodim.name")));
+        this.buttonList.add(this.sendButton = new GuiButton(1, this.width - 110, this.height - 26, 105, 20, StatCollector.translateToLocal("gui.button.sendtodim.name")));
 
         if (this.createSpaceStationButton == null)
         {
-            this.buttonList.add(this.createSpaceStationButton = new GuiSmallButton(2, this.width / 2 - 60, 4, 120, 20, StatCollector.translateToLocal("gui.button.createsstation.name")));
+            this.buttonList.add(this.createSpaceStationButton = new GuiButton(2, this.width / 2 - 60, 4, 120, 20, StatCollector.translateToLocal("gui.button.createsstation.name")));
             this.createSpaceStationButton.enabled = true;
         }
         else
@@ -161,7 +155,7 @@ public class GuiChoosePlanet extends GuiScreen
 
         if (this.renameSpaceStationButton != null && this.destinations[this.selectedSlot].contains("$"))
         {
-            this.renameSpaceStationButton = new GuiSmallButton(3, this.width - 200, this.height - 26, 80, 20, StatCollector.translateToLocal("gui.button.rename.name"));
+            this.renameSpaceStationButton = new GuiButton(3, this.width - 200, this.height - 26, 80, 20, StatCollector.translateToLocal("gui.button.rename.name"));
             this.buttonList.add(this.renameSpaceStationButton);
         }
 
@@ -451,7 +445,7 @@ public class GuiChoosePlanet extends GuiScreen
             {
                 for (ItemStringPair pair : itemList.get(l).itemStringPairs)
                 {
-                    i1 = this.fontRenderer.getStringWidth(pair.description);
+                    i1 = this.fontRendererObj.getStringWidth(pair.description);
 
                     if (i1 > k)
                     {
@@ -506,7 +500,7 @@ public class GuiChoosePlanet extends GuiScreen
 
                     String s = pair.description;
 
-                    this.fontRenderer.drawString(s, l + (itemList.isEmpty() ? 0 : 19), stringY, itemList.get(j2).isValid ? green : red);
+                    this.fontRendererObj.drawString(s, l + (itemList.isEmpty() ? 0 : 19), stringY, itemList.get(j2).isValid ? green : red);
 
                     stringY += itemList.size() > 0 ? 16 : 14;
                 }
@@ -519,7 +513,7 @@ public class GuiChoosePlanet extends GuiScreen
                 int count = (int) (this.spaceTimer / 20 % itemList.get(j2).itemStringPairs.size());
                 ItemStringPair pair = itemList.get(j2).itemStringPairs.get(count);
 
-                GuiChoosePlanet.drawItems.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.renderEngine, pair.stack, l, stringY - 4);
+                GuiChoosePlanet.drawItems.renderItemAndEffectIntoGUI(this.fontRendererObj, this.mc.renderEngine, pair.stack, l, stringY - 4);
 
                 stringY += itemList.size() > 0 ? 16 : 14;
             }
@@ -557,7 +551,7 @@ public class GuiChoosePlanet extends GuiScreen
 
         if (this.renameSpaceStationButton == null && this.destinations[this.selectedSlot].contains("$"))
         {
-            this.renameSpaceStationButton = new GuiSmallButton(3, this.width - 200, this.height - 26, 80, 20, "Rename");
+            this.renameSpaceStationButton = new GuiButton(3, this.width - 200, this.height - 26, 80, 20, "Rename");
             this.buttonList.add(this.renameSpaceStationButton);
         }
         else if (this.renameSpaceStationButton != null && !this.destinations[this.selectedSlot].contains("$"))
@@ -601,11 +595,11 @@ public class GuiChoosePlanet extends GuiScreen
                 if (strArray[i].contains("*"))
                 {
                     strArray[i] = strArray[i].replace("*", "");
-                    this.drawCenteredString(this.fontRenderer, strArray[i], 50 + i * j, this.height - 20, 16716305);
+                    this.drawCenteredString(this.fontRendererObj, strArray[i], 50 + i * j, this.height - 20, 16716305);
                 }
                 else
                 {
-                    this.drawCenteredString(this.fontRenderer, strArray[i], 50 + i * j, this.height - 20, 16777215);
+                    this.drawCenteredString(this.fontRendererObj, strArray[i], 50 + i * j, this.height - 20, 16777215);
                 }
             }
         }
@@ -618,7 +612,7 @@ public class GuiChoosePlanet extends GuiScreen
             final int height = 20;
             Gui.drawRect(startX, startY, startX + width, startY + height, 0xffA0A0A0);
             Gui.drawRect(startX + 1, startY + 1, startX + width - 1, startY + height - 1, 0xFF000000);
-            this.drawString(this.fontRenderer, this.renameText + (this.cursorPulse / 24 % 2 == 0 && this.isTextFocused ? "_" : ""), startX + 4, startY + 5, 0xe0e0e0);
+            this.drawString(this.fontRendererObj, this.renameText + (this.cursorPulse / 24 % 2 == 0 && this.isTextFocused ? "_" : ""), startX + 4, startY + 5, 0xe0e0e0);
         }
 
         if (this.createSpaceStationButton != null)
@@ -814,7 +808,7 @@ public class GuiChoosePlanet extends GuiScreen
             }
             else
             {
-                GCLog.severe("Severe problem when trying to teleport " + this.playerToSend.username);
+                GCLog.severe("Severe problem when trying to teleport " + this.playerToSend.getGameProfile().getName());
             }
             break;
         case 2:
@@ -915,12 +909,12 @@ public class GuiChoosePlanet extends GuiScreen
         return par0GuiLanguage.destinations;
     }
 
-    static GuiSmallButton getSendButton(GuiChoosePlanet par0GuiLanguage)
+    static GuiButton getSendButton(GuiChoosePlanet par0GuiLanguage)
     {
         return par0GuiLanguage.sendButton;
     }
 
-    static GuiSmallButton getCreateSpaceStationButton(GuiChoosePlanet par0GuiLanguage)
+    static GuiButton getCreateSpaceStationButton(GuiChoosePlanet par0GuiLanguage)
     {
         return par0GuiLanguage.createSpaceStationButton;
     }

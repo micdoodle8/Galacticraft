@@ -22,6 +22,7 @@ public class GCCoreConfigManager
 	static Configuration configuration;
 
 	public static int idDimensionOverworldOrbit;
+	public static int dimensionIDMoon;
 
 	// BLOCKS
 	public static int idBlockBreatheableAir;
@@ -169,6 +170,10 @@ public class GCCoreConfigManager
 	public static boolean enableTinOreGen;
 	public static boolean enableAluminumOreGen;
 	public static boolean enableSiliconOreGen;
+	public static boolean disableCheeseMoon;
+	public static boolean disableTinMoon;
+	public static boolean disableCopperMoon;
+	public static boolean disableMoonVillageGen;
 
 	public static void setDefaultValues(File file)
 	{
@@ -181,7 +186,8 @@ public class GCCoreConfigManager
 		{
 			GCCoreConfigManager.configuration.load();
 
-			GCCoreConfigManager.idDimensionOverworldOrbit = GCCoreConfigManager.configuration.get("DIMENSIONS", "idDimensionOverworldOrbit", -27).getInt(-27);
+			GCCoreConfigManager.idDimensionOverworldOrbit = GCCoreConfigManager.configuration.get("DIMENSIONS", "Overworld Orbit Dimension ID", -27).getInt(-27);
+			GCCoreConfigManager.dimensionIDMoon = GCCoreConfigManager.configuration.get("DIMENSIONS", "Moon Dimension ID", -28).getInt(-28);
 
 			GCCoreConfigManager.idGuiRocketCraftingBench = GCCoreConfigManager.configuration.get("GUI", "idGuiRocketCraftingBench", 130).getInt(130);
 			GCCoreConfigManager.idGuiBuggyCraftingBench = GCCoreConfigManager.configuration.get("GUI", "idGuiBuggyCraftingBench", 131).getInt(131);
@@ -238,6 +244,10 @@ public class GCCoreConfigManager
 			GCCoreConfigManager.enableTinOreGen = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Enable Tin Ore Gen", true, "If this is enabled, tin ore will generate on the overworld.").getBoolean(true);
 			GCCoreConfigManager.enableAluminumOreGen = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Enable Aluminum Ore Gen", true, "If this is enabled, aluminum ore will generate on the overworld.").getBoolean(true);
 			GCCoreConfigManager.enableSiliconOreGen = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Enable Silicon Ore Gen", true, "If this is enabled, silicon ore will generate on the overworld.").getBoolean(true);
+			GCCoreConfigManager.disableCheeseMoon = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Cheese Ore Gen on Moon", false).getBoolean(false);
+			GCCoreConfigManager.disableTinMoon = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Cheese Ore Gen on Moon", false).getBoolean(false);
+			GCCoreConfigManager.disableCopperMoon = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Cheese Ore Gen on Moon", false).getBoolean(false);
+			GCCoreConfigManager.disableMoonVillageGen = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Moon Village Gen", false).getBoolean(false);
 		}
 		catch (final Exception e)
 		{

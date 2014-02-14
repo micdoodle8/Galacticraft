@@ -1,15 +1,16 @@
 package micdoodle8.mods.galacticraft.core.dimension;
 
+import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
+import micdoodle8.mods.galacticraft.api.world.SpaceWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
-import micdoodle8.mods.galacticraft.core.GCMoonConfigManager;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.world.gen.GCMoonChunkProvider;
 import micdoodle8.mods.galacticraft.core.world.gen.GCMoonWorldChunkManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
-import net.minecraft.world.WorldProvider;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import cpw.mods.fml.relauncher.Side;
@@ -24,7 +25,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class GCMoonWorldProvider extends WorldProvider implements IGalacticraftWorldProvider, ISolarLevel
+public class GCMoonWorldProvider extends SpaceWorldProvider implements IGalacticraftWorldProvider, ISolarLevel
 {
 	@Override
 	public void setDimension(int var1)
@@ -176,7 +177,7 @@ public class GCMoonWorldProvider extends WorldProvider implements IGalacticraftW
 	@Override
 	public String getSaveFolder()
 	{
-		return "DIM" + GCMoonConfigManager.dimensionIDMoon;
+		return "DIM" + GCCoreConfigManager.dimensionIDMoon;
 	}
 
 	@Override
@@ -195,12 +196,6 @@ public class GCMoonWorldProvider extends WorldProvider implements IGalacticraftW
 	public String getDimensionName()
 	{
 		return "Moon";
-	}
-
-	@Override
-	public boolean canSnowAt(int x, int y, int z)
-	{
-		return false;
 	}
 
 	@Override
@@ -267,5 +262,11 @@ public class GCMoonWorldProvider extends WorldProvider implements IGalacticraftW
 	public float getSoundVolReductionAmount()
 	{
 		return 20.0F;
+	}
+
+	@Override
+	public CelestialBody getCelestialBody() 
+	{
+		return GalacticraftCore.moonMoon;
 	}
 }

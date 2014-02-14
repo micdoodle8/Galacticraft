@@ -11,6 +11,8 @@ import java.util.Random;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.api.entity.IWorldTransferCallback;
+import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
+import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
@@ -18,18 +20,18 @@ import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.api.world.ICelestialBody;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
-import micdoodle8.mods.galacticraft.api.world.IMapObject;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.api.world.SpaceStationType;
+import micdoodle8.mods.galacticraft.api.world.SpaceWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GCLog;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreSpaceStationData;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreWorldProviderSpaceStation;
+import micdoodle8.mods.galacticraft.core.dimension.GCMoonWorldProvider;
 import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
@@ -303,28 +305,30 @@ public class WorldUtil
 			}
 		}
 
-		for (int j = 0; j < GalacticraftRegistry.getCelestialBodies().size(); j++)
-		{
-			ICelestialBody object = GalacticraftRegistry.getCelestialBodies().get(j);
+		ArrayList<CelestialBody> cBodyList = new ArrayList<CelestialBody>();
+		cBodyList.addAll(GalaxyRegistry.getRegisteredPlanets().values());
+		cBodyList.addAll(GalaxyRegistry.getRegisteredMoons().values());
 
-			if (!object.isReachable() && object.addToList())
+		for (CelestialBody body : cBodyList)
+		{
+			if (!body.getReachable())
 			{
-				map.put(object.getName() + "*", 0);
+				map.put(body.getLocalizedName() + "*", 0);
 			}
 		}
 
 		return map;
 	}
 
-	public static List<String> getPlayersOnPlanet(IMapObject planet)
+	public static List<String> getPlayersOnPlanet(CelestialBody planet)
 	{
 		final List<String> list = new ArrayList<String>();
 
 		for (final WorldServer world : DimensionManager.getWorlds())
 		{
-			if (world != null && world.provider instanceof IGalacticraftWorldProvider)
+			if (world != null && world.provider instanceof SpaceWorldProvider)
 			{
-				if (planet.getSlotRenderer().getPlanetName().toLowerCase().equals(world.provider.getDimensionName().toLowerCase()))
+				if (planet.getLocalizedName().equals(world.provider.getDimensionName()))
 				{
 					for (int j = 0; j < world.getLoadedEntityList().size(); j++)
 					{

@@ -32,15 +32,15 @@ import cpw.mods.fml.client.FMLClientHandler;
  */
 public class GCCoreKeyHandlerClient extends KeyHandler
 {
-	public static KeyBinding galaxyMap = new KeyBinding(StatCollector.translateToLocal("keybind.map.name"), Keyboard.KEY_M);
-	public static KeyBinding openSpaceshipInv = new KeyBinding(StatCollector.translateToLocal("keybind.spaceshipinv.name"), Keyboard.KEY_F);
-	public static KeyBinding toggleAdvGoggles = new KeyBinding(StatCollector.translateToLocal("keybind.sensortoggle.name"), Keyboard.KEY_K);
-	public static KeyBinding accelerateKey = new KeyBinding(StatCollector.translateToLocal("keybind.vehicleforward.name"), Keyboard.KEY_W);
-	public static KeyBinding decelerateKey = new KeyBinding(StatCollector.translateToLocal("keybind.vehiclebackward.name"), Keyboard.KEY_S);
-	public static KeyBinding leftKey = new KeyBinding(StatCollector.translateToLocal("keybind.vehicleleft.name"), Keyboard.KEY_A);
-	public static KeyBinding rightKey = new KeyBinding(StatCollector.translateToLocal("keybind.vehicleright.name"), Keyboard.KEY_D);
-	public static KeyBinding spaceKey = new KeyBinding(StatCollector.translateToLocal("keybind.vehicleup.name"), Keyboard.KEY_SPACE);
-	public static KeyBinding leftShiftKey = new KeyBinding(StatCollector.translateToLocal("keybind.vehicledown.name"), Keyboard.KEY_LSHIFT);
+	public static KeyBinding galaxyMap = new KeyBinding(StatCollector.translateToLocal("keybind.map.name"), Keyboard.KEY_M, "");
+	public static KeyBinding openSpaceshipInv = new KeyBinding(StatCollector.translateToLocal("keybind.spaceshipinv.name"), Keyboard.KEY_F, "");
+	public static KeyBinding toggleAdvGoggles = new KeyBinding(StatCollector.translateToLocal("keybind.sensortoggle.name"), Keyboard.KEY_K, "");
+	public static KeyBinding accelerateKey = new KeyBinding(StatCollector.translateToLocal("keybind.vehicleforward.name"), Keyboard.KEY_W, "");
+	public static KeyBinding decelerateKey = new KeyBinding(StatCollector.translateToLocal("keybind.vehiclebackward.name"), Keyboard.KEY_S, "");
+	public static KeyBinding leftKey = new KeyBinding(StatCollector.translateToLocal("keybind.vehicleleft.name"), Keyboard.KEY_A, "");
+	public static KeyBinding rightKey = new KeyBinding(StatCollector.translateToLocal("keybind.vehicleright.name"), Keyboard.KEY_D, "");
+	public static KeyBinding spaceKey = new KeyBinding(StatCollector.translateToLocal("keybind.vehicleup.name"), Keyboard.KEY_SPACE, "");
+	public static KeyBinding leftShiftKey = new KeyBinding(StatCollector.translateToLocal("keybind.vehicledown.name"), Keyboard.KEY_LSHIFT, "");
 
 	public GCCoreKeyHandlerClient()
 	{
@@ -72,14 +72,14 @@ public class GCCoreKeyHandlerClient extends KeyHandler
 			return;
 		}
 
-		if (kb.keyCode == GCCoreKeyHandlerClient.galaxyMap.keyCode)
+		if (kb.getKeyCode() == GCCoreKeyHandlerClient.galaxyMap.getKeyCode())
 		{
 			if (minecraft.currentScreen == null)
 			{
 				player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiGalaxyMap, minecraft.theWorld, (int) player.posX, (int) player.posY, (int) player.posZ);
 			}
 		}
-		else if (kb.keyCode == GCCoreKeyHandlerClient.openSpaceshipInv.keyCode)
+		else if (kb.getKeyCode() == GCCoreKeyHandlerClient.openSpaceshipInv.getKeyCode())
 		{
 			if (player.ridingEntity instanceof EntitySpaceshipBase || player.ridingEntity instanceof GCCoreEntityBuggy)
 			{
@@ -92,7 +92,7 @@ public class GCCoreKeyHandlerClient extends KeyHandler
 				player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiSpaceshipInventory, minecraft.theWorld, (int) player.posX, (int) player.posY, (int) player.posZ);
 			}
 		}
-		else if (kb.keyCode == GCCoreKeyHandlerClient.toggleAdvGoggles.keyCode)
+		else if (kb.getKeyCode() == GCCoreKeyHandlerClient.toggleAdvGoggles.getKeyCode())
 		{
 			if (playerBase != null)
 			{
@@ -143,7 +143,7 @@ public class GCCoreKeyHandlerClient extends KeyHandler
 		{
 			IControllableEntity entity = (IControllableEntity) entityTest;
 
-			if (kb.keyCode == minecraft.gameSettings.keyBindInventory.keyCode)
+			if (kb.getKeyCode() == minecraft.gameSettings.keyBindInventory.getKeyCode())
 			{
 				minecraft.gameSettings.keyBindInventory.pressed = false;
 				minecraft.gameSettings.keyBindInventory.pressTime = 0;
@@ -190,7 +190,7 @@ public class GCCoreKeyHandlerClient extends KeyHandler
 
 		for (final KeyBinding key : minecraft.gameSettings.keyBindings)
 		{
-			if (kb.keyCode == key.keyCode && key != kb)
+			if (kb.getKeyCode() == key.getKeyCode() && key != kb)
 			{
 				key.pressed = true;
 				key.pressTime = 1;
@@ -208,7 +208,7 @@ public class GCCoreKeyHandlerClient extends KeyHandler
 
 		for (final KeyBinding key : FMLClientHandler.instance().getClient().gameSettings.keyBindings)
 		{
-			if (kb.keyCode == key.keyCode && key != kb)
+			if (kb.getKeyCode() == key.getKeyCode() && key != kb)
 			{
 				key.pressed = false;
 			}
