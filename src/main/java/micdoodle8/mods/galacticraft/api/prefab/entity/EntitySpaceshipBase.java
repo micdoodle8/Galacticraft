@@ -9,6 +9,8 @@ import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GCCoreDamageSource;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -106,8 +108,7 @@ public abstract class EntitySpaceshipBase extends Entity
 	{
 		if (this.riddenByEntity != null && this.riddenByEntity instanceof GCCorePlayerMP)
 		{
-			final Object[] toSend2 = { 0 };
-			((EntityPlayerMP) this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.ZOOM_CAMERA, toSend2));
+			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, 0), (EntityPlayerMP)this.riddenByEntity);
 		}
 
 		super.setDead();
@@ -137,9 +138,7 @@ public abstract class EntitySpaceshipBase extends Entity
 				{
 					if (this.riddenByEntity != null)
 					{
-						final Object[] toSend2 = { 0 };
-						((EntityPlayerMP) this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.ZOOM_CAMERA, toSend2));
-
+						GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, 0), (EntityPlayerMP)this.riddenByEntity);
 						this.riddenByEntity.mountEntity(this);
 					}
 
@@ -410,7 +409,7 @@ public abstract class EntitySpaceshipBase extends Entity
 		boolean hasOldTags = false;
 
 		// Backwards compatibility:
-		if (nbt.getTags().contains("launched"))
+		if (nbt.func_150296_c().contains("launched"))
 		{
 			hasOldTags = true;
 
@@ -423,7 +422,7 @@ public abstract class EntitySpaceshipBase extends Entity
 		}
 
 		// Backwards compatibility:
-		if (nbt.getTags().contains("ignite"))
+		if (nbt.func_150296_c().contains("ignite"))
 		{
 			hasOldTags = true;
 

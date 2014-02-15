@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core;
 
-import java.awt.List;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,6 +28,7 @@ import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerClient;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -89,10 +89,13 @@ public class GalacticraftCore
 		
 		GalacticraftCore.galaxyBlockyWay = new Galaxy("blockyWay").setMapPosition(new Vector3(0.0F, 0.0F));
 		GalacticraftCore.planetOverworld = (Planet) new Planet("overworld").setParentGalaxy(GalacticraftCore.galaxyBlockyWay).setRingColorRGB(0.1F, 0.9F, 0.6F).setPhaseShift(0.75F);
+		GalacticraftCore.planetOverworld.setPlanetIcon(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/planets/overworld.png"));
 		GalacticraftCore.moonMoon = (Moon) new Moon("moon").setParentPlanet(GalacticraftCore.planetOverworld).setRelativeSize(0.2667F).setRelativeDistanceFromCenter(40F).setRelativeOrbitTime(0.01F);
 		GalacticraftCore.moonMoon.setDimensionInfo(GCCoreConfigManager.dimensionIDMoon, GCMoonWorldProvider.class);
+		GalacticraftCore.moonMoon.setPlanetIcon(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/planets/moon.png"));
 		GalaxyRegistry.registerGalaxy(GalacticraftCore.galaxyBlockyWay);
 		GalaxyRegistry.registerPlanet(GalacticraftCore.planetOverworld);
+		GalaxyRegistry.registerMoon(GalacticraftCore.moonMoon);
 		
 		GalacticraftCore.gcFluidOil = new Fluid("oil").setDensity(800).setViscosity(1500);
 		GalacticraftCore.gcFluidFuel = new Fluid("fuel").setDensity(200).setViscosity(900);

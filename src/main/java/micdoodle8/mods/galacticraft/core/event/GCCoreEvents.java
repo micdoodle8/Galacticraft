@@ -28,9 +28,10 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerSP;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerClient;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
-import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
@@ -38,6 +39,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.audio.SoundPoolEntry;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFlintAndSteel;
 import net.minecraft.item.ItemStack;
@@ -114,7 +116,7 @@ public class GCCoreEvents
 		final ItemStack heldStack = event.entityPlayer.inventory.getCurrentItem();
 
 		final TileEntity tileClicked = event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z);
-		final int idClicked = event.entityPlayer.worldObj.getBlockId(event.x, event.y, event.z);
+		final Block blockBlocked = event.entityPlayer.worldObj.getBlock(event.x, event.y, event.z);
 
 		if (heldStack != null)
 		{
@@ -149,7 +151,7 @@ public class GCCoreEvents
 			{
 				if (!event.entity.worldObj.isRemote && event.action.equals(PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK))
 				{
-					if (idClicked != Block.tnt.blockID && !OxygenUtil.isAABBInBreathableAirBlock(event.entityLiving.worldObj, new Vector3(event.x, event.y, event.z), new Vector3(event.x + 1, event.y + 1, event.z + 1)))
+					if (blockBlocked != Blocks.tnt && !OxygenUtil.isAABBInBreathableAirBlock(event.entityLiving.worldObj, new Vector3(event.x, event.y, event.z), new Vector3(event.x + 1, event.y + 1, event.z + 1)))
 					{
 						event.setCanceled(true);
 					}
@@ -337,7 +339,7 @@ public class GCCoreEvents
 
 			if (player != null && player.playerNetServerHandler != null)
 			{
-				player.playerNetServerHandler.sendPacketToPlayer(GCCorePacketSchematicList.buildSchematicListPacket(player.getUnlockedSchematics()));
+				GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SCHEMATIC_LIST, player.getUnlockedSchematics().toArray()), player);
 			}
 		}
 	}
@@ -360,7 +362,7 @@ public class GCCoreEvents
 
 		if (page != null)
 		{
-			PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.OPEN_SCHEMATIC_PAGE, new Object[] { page.getPageID() }));
+			GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_OPEN_SCHEMATIC_PAGE, page.getPageID()));
 			FMLClientHandler.instance().getClient().thePlayer.openGui(GalacticraftCore.instance, page.getGuiID(), FMLClientHandler.instance().getClient().thePlayer.worldObj, (int) FMLClientHandler.instance().getClient().thePlayer.posX, (int) FMLClientHandler.instance().getClient().thePlayer.posY, (int) FMLClientHandler.instance().getClient().thePlayer.posZ);
 		}
 	}

@@ -10,8 +10,10 @@ import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
 import micdoodle8.mods.galacticraft.core.GCLog;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiTexturedButton;
+import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerSP;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.client.gui.Gui;
@@ -495,8 +497,8 @@ public class GuiChoosePlanet extends GuiScreen
                     int count = (int) (this.spaceTimer / 20 % entry.itemStringPairs.size());
                     ItemStringPair pair = entry.itemStringPairs.get(count);
 
-                    int red = GCCoreUtil.convertTo32BitColor(255, 255, 10, 10);
-                    int green = GCCoreUtil.convertTo32BitColor(255, 10, 10, 255);
+                    int red = GCCoreUtil.to32BitColor(255, 255, 10, 10);
+                    int green = GCCoreUtil.to32BitColor(255, 10, 255, 10);
 
                     String s = pair.description;
 
@@ -798,12 +800,11 @@ public class GuiChoosePlanet extends GuiScreen
             if (par1GuiButton.enabled)
             {
                 final String dimension = this.destinations[this.selectedSlot];
-                final Object[] toSend = { dimension };
                 if (dimension.contains("$"))
                 {
                     this.mc.gameSettings.thirdPersonView = 0;
                 }
-                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.TELEPORT_ENTITY, toSend));
+    			GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_TELEPORT_ENTITY, dimension));
                 return;
             }
             else
@@ -816,7 +817,7 @@ public class GuiChoosePlanet extends GuiScreen
             if (recipe != null && par1GuiButton != null && par1GuiButton.enabled && recipe.matches(this.playerToSend, false))
             {
                 final Object[] toSend = { this.getDimensionIdFromSlot() };
-                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.BIND_SPACE_STATION_ID, toSend));
+    			GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_BIND_SPACE_STATION_ID, this.getDimensionIdFromSlot()));
                 par1GuiButton.enabled = false;
                 return;
             }
@@ -824,7 +825,7 @@ public class GuiChoosePlanet extends GuiScreen
         case 3:
             if (par1GuiButton != null && par1GuiButton.equals(this.renameSpaceStationButton))
             {
-                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.RENAME_SPACE_STATION, new Object[] { this.renameText, this.getDimensionIdFromSlot() }));
+    			GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_RENAME_SPACE_STATION, this.renameText, this.getDimensionIdFromSlot()));
                 this.renameText = "";
             }
             break;
@@ -861,11 +862,11 @@ public class GuiChoosePlanet extends GuiScreen
 
     public boolean canCreateSpaceStation()
     {
-        if (ClientProxyCore.clientSpaceStationID == 0)
+        if (((GCCorePlayerSP) this.mc.thePlayer).clientSpaceStationID == 0)
         {
             return true;
         }
-        else if (ClientProxyCore.clientSpaceStationID == -1)
+        else if (((GCCorePlayerSP) this.mc.thePlayer).clientSpaceStationID == -1)
         {
             return true;
         }
@@ -877,7 +878,7 @@ public class GuiChoosePlanet extends GuiScreen
 
     public boolean playerAlreadyCreatedDimension()
     {
-        if (ClientProxyCore.clientSpaceStationID != 0 && ClientProxyCore.clientSpaceStationID != -1)
+        if (((GCCorePlayerSP) this.mc.thePlayer).clientSpaceStationID != 0 && ((GCCorePlayerSP) this.mc.thePlayer).clientSpaceStationID != -1)
         {
             return true;
         }

@@ -2,10 +2,11 @@ package micdoodle8.mods.galacticraft.core.proxy;
 
 import micdoodle8.mods.galacticraft.core.client.gui.screen.InventoryTabGalacticraft;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryExtended;
+import micdoodle8.mods.galacticraft.core.tick.GCCoreKeyHandlerClient;
 import net.minecraft.item.EnumRarity;
-import net.minecraftforge.client.EnumHelperClient;
 import tconstruct.client.tabs.InventoryTabVanilla;
 import tconstruct.client.tabs.TabRegistry;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -32,6 +33,8 @@ public class ClientProxy extends CommonProxy
 		}
 
 		TabRegistry.registerTab(new InventoryTabGalacticraft());
+		
+		FMLCommonHandler.instance().bus().register(new GCCoreKeyHandlerClient());
 	}
 	
 	public void postInit(FMLPostInitializationEvent event)

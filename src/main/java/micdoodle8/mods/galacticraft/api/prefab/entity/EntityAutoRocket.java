@@ -1014,6 +1014,12 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 	{
 		return false;
 	}
+	
+	@Override
+	public void markDirty()
+	{
+		;
+	}
 
 	@Override
 	public void onPadDestroyed()

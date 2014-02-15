@@ -9,6 +9,9 @@ import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLanderFlameFX;
 import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.network.PacketDynamicInventory;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.client.Minecraft;
@@ -85,12 +88,12 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound nbt)
 	{
-		NBTTagList itemList = nbt.getTagList("Items");
+		NBTTagList itemList = nbt.getTagList("Items", 10);
 		this.containedItems = new ItemStack[nbt.getInteger("rocketStacksLength")];
 
 		for (int i = 0; i < itemList.tagCount(); ++i)
 		{
-			NBTTagCompound itemTag = (NBTTagCompound) itemList.tagAt(i);
+			NBTTagCompound itemTag = (NBTTagCompound) itemList.getCompoundTagAt(i);
 			int slotID = itemTag.getByte("Slot") & 255;
 
 			if (slotID >= 0 && slotID < this.containedItems.length)
@@ -263,9 +266,7 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
 				{
 					if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayerMP)
 					{
-						final Object[] toSend2 = { 0 };
-						((EntityPlayerMP) this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.ZOOM_CAMERA, toSend2));
-
+						GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, 0), ((EntityPlayerMP) this.riddenByEntity));
 						this.riddenByEntity.mountEntity(this);
 					}
 
@@ -433,9 +434,15 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
 	}
 
 	@Override
-	public boolean isInvNameLocalized()
+	public boolean hasCustomInventoryName()
 	{
 		return true;
+	}
+
+	@Override
+	public void markDirty()
+	{
+		
 	}
 
 	@Override
@@ -511,8 +518,7 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
 				{
 					if (this.riddenByEntity instanceof EntityPlayerMP)
 					{
-						final Object[] toSend2 = { 0 };
-						((EntityPlayerMP) this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.ZOOM_CAMERA, toSend2));
+						GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, 0), ((EntityPlayerMP) this.riddenByEntity));
 					}
 
 					this.riddenByEntity.mountEntity(this);
@@ -552,7 +558,7 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
 		}
 		else if (var1 instanceof EntityPlayerMP)
 		{
-			((EntityPlayerMP) var1).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.ZOOM_CAMERA, new Object[] { 0 }));
+			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, 0), ((EntityPlayerMP) var1));
 			var1.mountEntity(null);
 			return true;
 		}
@@ -572,7 +578,7 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
 			if (this.containedItems == null || this.containedItems.length == 0)
 			{
 				this.containedItems = new ItemStack[cargoLength];
-				PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.UPDATE_DYNAMIC_ENTITY_INV, new Object[] { this.entityId }));
+				GalacticraftCore.packetPipeline.sendToServer(new PacketDynamicInventory(this));
 			}
 
 			this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, dataStream.readInt()));

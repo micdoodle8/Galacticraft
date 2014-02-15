@@ -5,6 +5,8 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerBuggy;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerParachest;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -29,15 +31,6 @@ import cpw.mods.fml.relauncher.Side;
  */
 public class GCCoreUtil
 {
-//	public static int convertTo32BitColor(int a, int r, int b, int g)
-//	{
-//		a = a << 24;
-//		r = r << 16;
-//		g = g << 8;
-//
-//		return a | r | g | b;
-//	}
-	
 	public static int to32BitColor(int a, int r, int g, int b)
 	{
 		a = a << 24;
@@ -54,10 +47,10 @@ public class GCCoreUtil
 
 	public static void openBuggyInv(EntityPlayerMP player, IInventory buggyInv, int type)
 	{
-		player.incrementWindowID();
+		player.getNextWindowId();
 		player.closeContainer();
 		int id = player.currentWindowId;
-		player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.OPEN_PARACHEST_GUI, new Object[] { id, 0, 0 }));
+		GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_PARACHEST_GUI, id, 0, 0), player);
 		player.openContainer = new GCCoreContainerBuggy(player.inventory, buggyInv, type);
 		player.openContainer.windowId = id;
 		player.openContainer.addCraftingToCrafters(player);
@@ -65,10 +58,10 @@ public class GCCoreUtil
 
 	public static void openParachestInv(EntityPlayerMP player, GCCoreEntityLander landerInv)
 	{
-		player.incrementWindowID();
+		player.getNextWindowId();
 		player.closeContainer();
 		int windowId = player.currentWindowId;
-		player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.OPEN_PARACHEST_GUI, new Object[] { windowId, 1, landerInv.entityId }));
+		GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_PARACHEST_GUI, windowId, 1, landerInv.getEntityId()), player);
 		player.openContainer = new GCCoreContainerParachest(player.inventory, landerInv);
 		player.openContainer.windowId = windowId;
 		player.openContainer.addCraftingToCrafters(player);

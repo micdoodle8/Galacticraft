@@ -13,6 +13,8 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPadFull;
 import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.event.GCCoreLandingPadRemovalEvent;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
@@ -280,7 +282,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 						count++;
 					}
 
-					player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.UPDATE_DIMENSION_LIST, new Object[] { player.username, temp }));
+					GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_DIMENSION_LIST, player.getGameProfile().getName(), temp), player);
 					player.setSpaceshipTier(this.getRocketTier());
 					player.setUsingPlanetGui();
 
@@ -378,10 +380,8 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 		{
 			if (!this.worldObj.isRemote)
 			{
-				final Object[] toSend = { ((EntityPlayerMP) this.riddenByEntity).getGameProfile().getName() };
-				((EntityPlayerMP) this.riddenByEntity).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.RESET_THIRD_PERSON, toSend));
-				final Object[] toSend2 = { 0 };
-				((EntityPlayerMP) par1EntityPlayer).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.ZOOM_CAMERA, toSend2));
+				GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, ((EntityPlayerMP) this.riddenByEntity).getGameProfile().getName()), (EntityPlayerMP) par1EntityPlayer);
+				GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, 0), (EntityPlayerMP) par1EntityPlayer);
 				((GCCorePlayerMP) par1EntityPlayer).setChatCooldown(0);
 				par1EntityPlayer.mountEntity(null);
 			}
@@ -392,10 +392,8 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 		{
 			if (!this.worldObj.isRemote)
 			{
-				final Object[] toSend = { par1EntityPlayer.getGameProfile().getName() };
-				((EntityPlayerMP) par1EntityPlayer).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.MOUNT_ROCKET, toSend));
-				final Object[] toSend2 = { 1 };
-				((EntityPlayerMP) par1EntityPlayer).playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.ZOOM_CAMERA, toSend2));
+				GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_MOUNT_ROCKET, par1EntityPlayer.getGameProfile().getName()), (EntityPlayerMP) par1EntityPlayer);
+				GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, 1), (EntityPlayerMP) par1EntityPlayer);
 				((GCCorePlayerMP) par1EntityPlayer).setChatCooldown(0);
 				par1EntityPlayer.mountEntity(this);
 			}

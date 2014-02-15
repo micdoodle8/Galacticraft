@@ -8,6 +8,8 @@ import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.element.InfoRegion;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerSchematic;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -68,8 +70,7 @@ public class GuiSchematicInput extends GuiAdvancedContainer implements ISchemati
                 SchematicRegistry.flipToNextPage(this.pageIndex);
                 break;
             case 2:
-                final Object[] toSend2 = { 0 };
-                PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.UNLOCK_NEW_SCHEMATIC, toSend2));
+    			GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UNLOCK_NEW_SCHEMATIC, 0));
                 break;
             }
         }

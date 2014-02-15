@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockParachest;
 import micdoodle8.mods.galacticraft.core.entities.IScaleableFuelLevel;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerParachest;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.network.PacketDynamicInventory;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.player.EntityPlayer;
@@ -54,7 +55,7 @@ public class TileEntityParachest extends TileEntityAdvanced implements IInventor
 
 		if (this.worldObj != null && this.worldObj.isRemote)
 		{
-			PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.UPDATE_DYNAMIC_TILE_INV, new Object[] { this.xCoord, this.yCoord, this.zCoord }));
+			GalacticraftCore.packetPipeline.sendToServer(new PacketDynamicInventory(this));
 		}
 	}
 

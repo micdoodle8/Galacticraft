@@ -54,6 +54,7 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
 	public boolean lastOnGround;
 	private ResourceLocation galacticraftCape;
 	private ThreadDownloadImageData galacticraftCapeImageData;
+	public int clientSpaceStationID;
 
 	public ArrayList<ISchematicPage> unlockedSchematics = new ArrayList<ISchematicPage>();
 

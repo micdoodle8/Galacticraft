@@ -8,6 +8,8 @@ import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay.Electric
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.element.InfoRegion;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerSolar;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tile.TileEntitySolar;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
@@ -50,7 +52,7 @@ public class GuiSolar extends GuiAdvancedContainer
         switch (par1GuiButton.id)
         {
         case 0:
-            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.UPDATE_DISABLEABLE_BUTTON, new Object[] { this.solarPanel.xCoord, this.solarPanel.yCoord, this.solarPanel.zCoord, 0 }));
+			GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, this.solarPanel.xCoord, this.solarPanel.yCoord, this.solarPanel.zCoord, 0));
             break;
         }
     }
@@ -107,12 +109,12 @@ public class GuiSolar extends GuiAdvancedContainer
             return EnumColor.ORANGE + StatCollector.translateToLocal("gui.status.disabled.name");
         }
 
-        if (!this.solarPanel.worldObj.isDaytime())
+        if (!this.solarPanel.getWorldObj().isDaytime())
         {
             return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.blockedfully.name");
         }
 
-        if (this.solarPanel.worldObj.isRaining() || this.solarPanel.worldObj.isThundering())
+        if (this.solarPanel.getWorldObj().isRaining() || this.solarPanel.getWorldObj().isThundering())
         {
             return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.raining.name");
         }

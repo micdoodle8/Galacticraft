@@ -583,7 +583,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements IInve
 		{
 			if (player.worldObj.isRemote)
 			{
-				PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.ON_FAILED_CHEST_UNLOCK, new Object[] { this.getTierOfKeyRequired() }));
+				PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumSimplePacket.ON_FAILED_CHEST_UNLOCK, new Object[] { this.getTierOfKeyRequired() }));
 			}
 			return true;
 		}

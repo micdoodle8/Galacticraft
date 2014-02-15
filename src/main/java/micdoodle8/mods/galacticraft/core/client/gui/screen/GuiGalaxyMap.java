@@ -5,10 +5,10 @@ import java.util.Map;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
-import micdoodle8.mods.galacticraft.api.galaxies.Galaxy;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.Moon;
 import micdoodle8.mods.galacticraft.api.galaxies.Planet;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -29,6 +29,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -316,77 +317,14 @@ public class GuiGalaxyMap extends GuiStarBackground
         {
             if (planet.getParentGalaxy() != null)
             {
-                final int var10 = (int) (-var4 + planet.getParentGalaxy().getMapPosition().x * 10000);
-                final int var11 = (int) (-var5 + planet.getParentGalaxy().getMapPosition().y * 10000);
+                final int galaxyCenterX = (int) (-var4 + planet.getParentGalaxy().getMapPosition().x * 10000);
+                final int galaxyCenterY = (int) (-var5 + planet.getParentGalaxy().getMapPosition().y * 10000);
 
-                this.drawCircles(planet, var10 + var10, var11 + var11);
+                this.drawCircles(planet, galaxyCenterX + galaxyCenterX, galaxyCenterY + galaxyCenterY);
                 
-                var26 = 0;
-                var27 = 0;
-
-                final Map[] posMaps = this.computePlanetPos(var10, var11, planet.getRelativeDistanceFromCenter() * 750.0F, 2880);
-
-                if (posMaps[0] != null && posMaps[1] != null)
-                {
-                    if (posMaps[0].get(MathHelper.floor_float(Sys.getTime() / (720F * 1 * planet.getRelativeOrbitTime()) % 2880)) != null && posMaps[1].get(MathHelper.floor_float(Sys.getTime() / 720F % 2880)) != null)
-                    {
-                        final int x = MathHelper.floor_float((Float) posMaps[0].get(MathHelper.floor_float((planet.getPhaseShift() + Sys.getTime() / (720F * 1 * planet.getRelativeOrbitTime())) % 2880)));
-                        final int y = MathHelper.floor_float((Float) posMaps[1].get(MathHelper.floor_float((planet.getPhaseShift() + Sys.getTime() / (720F * 1 * planet.getRelativeOrbitTime())) % 2880)));
-
-                        var26 = x;
-                        var27 = y;
-                    }
-                }
-
-                var42 = var10 + var26;
-                var41 = var11 + var27;
-
-                GL11.glDisable(GL11.GL_BLEND);
-
-                GL11.glEnable(GL11.GL_DEPTH_TEST);
-
-                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-                GL11.glEnable(GL11.GL_BLEND);
-                GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-
-                int width = (int) (planet.getRelativeSize() * 15.0F + 1 / this.zoom * 3F);
-
-                if (Mouse.isButtonDown(0))
-                {
-                    final int pointerMinX = this.width / 2 - 5;
-                    final int pointerMaxX = this.width / 2 + 5;
-                    final int pointerMinY = this.height / 2 - 5;
-                    final int pointerMaxY = this.height / 2 + 5;
-                    final int planetMinX = var42 - width;
-                    final int planetMaxX = var42 + width;
-                    final int planetMinY = var41 - width;
-                    final int planetMaxY = var41 + width;
-
-                    if ((pointerMaxX >= planetMinX && pointerMinX <= planetMinX || pointerMinX <= planetMinX && pointerMaxY >= planetMaxX || pointerMinX >= planetMinX && pointerMinX <= planetMaxX) && (pointerMaxY >= planetMinY && pointerMinY <= planetMinY || pointerMinY <= planetMinY && pointerMaxY >= planetMaxY || pointerMinY >= planetMinY && pointerMinY <= planetMaxY))
-                    {
-                        if (this.zoom <= 0.2)
-                        {
-//                            if (!(thePlanet instanceof Moon))
-                            {
-                                this.selectedPlanet = planet;
-                            }
-                        }
-                        else
-                        {
-                            this.selectedPlanet = planet;
-                        }
-                    }
-                }
-
-                final Tessellator var3 = Tessellator.instance;
-
-                this.mc.renderEngine.bindTexture(planet.getPlanetIcon());
-                this.renderPlanet(0, var42, var41, planet.getRelativeSize() * 15.0F + 1 / this.zoom * 3F, var3);
+                Vector3 planetCenter = this.drawCelestialBody(planet, galaxyCenterX, galaxyCenterY);
                 
-                if (this.selectedPlanet != null && planet.equals(this.selectedPlanet))
-                {
-                    this.renderPlanet(0, var42, var41, planet.getRelativeSize() * 15.0F + 1 / this.zoom * 3F, var3);
-                }
+                FMLLog.info("" + planetCenter);
 
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
@@ -394,71 +332,11 @@ public class GuiGalaxyMap extends GuiStarBackground
                 {
                     if (moon.getParentPlanet() == planet)
                     {
-	                    int var26b = 0;
-	                    int var27b = 0;
-	
-	                    int var42b = 0;
-	                    int var41b = 0;
-	
-	                    if (moon != null)
-	                    {
-	                        final Map[] posMaps2 = this.computePlanetPos(var42, var41, moon.getRelativeDistanceFromCenter() / 2, 2880);
-	
-	                        if (posMaps2[0] != null && posMaps2[1] != null)
-	                        {
-	                            if (posMaps2[0].get(MathHelper.floor_float(Sys.getTime() / (720F * moon.getRelativeOrbitTime()) % 2880)) != null && posMaps2[1].get(MathHelper.floor_float(Sys.getTime() / 720F % 2880)) != null)
-	                            {
-	                                final int x = MathHelper.floor_float((Float) posMaps2[0].get(MathHelper.floor_float((moon.getPhaseShift() + Sys.getTime() / (720F * 1 * moon.getRelativeOrbitTime())) % 2880)));
-	                                final int y = MathHelper.floor_float((Float) posMaps2[1].get(MathHelper.floor_float((moon.getPhaseShift() + Sys.getTime() / (720F * 1 * moon.getRelativeOrbitTime())) % 2880)));
-	
-	                                var26b = x;
-	                                var27b = y;
-	                            }
-	                        }
-	
-	                        var42b = var26b;
-	                        var41b = var27b;
-	
-	                        width = (int) (moon.getRelativeSize() + 1 / this.zoom * 3F);
-	
-	                        if (Mouse.isButtonDown(0))
-	                        {
-	                            final int pointerMinX = this.width / 2 - 5;
-	                            final int pointerMaxX = this.width / 2 + 5;
-	                            final int pointerMinY = this.height / 2 - 5;
-	                            final int pointerMaxY = this.height / 2 + 5;
-	                            final int planetMinX = var42b - width;
-	                            final int planetMaxX = var42b + width;
-	                            final int planetMinY = var41b - width;
-	                            final int planetMaxY = var41b + width;
-	
-	                            if ((pointerMaxX >= planetMinX && pointerMinX <= planetMinX || pointerMinX <= planetMinX && pointerMaxY >= planetMaxX || pointerMinX >= planetMinX && pointerMinX <= planetMaxX) && (pointerMaxY >= planetMinY && pointerMinY <= planetMinY || pointerMinY <= planetMinY && pointerMaxY >= planetMaxY || pointerMinY >= planetMinY && pointerMinY <= planetMaxY))
-	                            {
-	                                this.selectedPlanet = moon;
-	                            }
-	                        }
-	
-                            this.mc.renderEngine.bindTexture(moon.getPlanetIcon());
-                            this.renderPlanet(0, var42b, var41b, (float) (moon.getRelativeSize() * 15.0F + 1 / Math.pow(this.zoom, -2)), var3);
-
-                            if (this.selectedPlanet != null && moon.equals(this.selectedPlanet))
-                            {
-                                this.renderPlanet(0, var42b, var41b, (float) (moon.getRelativeSize() * 15.0F + 1 / Math.pow(this.zoom, -2)), var3);
-	                            this.drawInfoBox(var42b, var41b, moon);
-                            }
-	                    }
+	                    this.drawCelestialBody(moon, galaxyCenterX + planetCenter.intX() / 2, galaxyCenterY + planetCenter.intY() / 2);
                     }
                 }
 
-                if (this.selectedPlanet != null && planet.equals(this.selectedPlanet))
-                {
-                    this.drawInfoBox(var42, var41, planet);
-                }
-
-                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-
                 GL11.glDepthMask(true);
-                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             }
         }
 
@@ -513,8 +391,70 @@ public class GuiGalaxyMap extends GuiStarBackground
         RenderHelper.disableStandardItemLighting();
     }
     
+    private Vector3 drawCelestialBody(CelestialBody cBody, int centerX, int centerY)
+    {
+        int var42b = 0;
+        int var41b = 0;
+
+        if (cBody != null)
+        {
+            final Map[] posMaps2 = this.computePlanetPos(centerX, centerY, cBody.getRelativeDistanceFromCenter() * (cBody instanceof Planet ? 750.0F : 0.5F), 2880);
+
+            if (posMaps2[0] != null && posMaps2[1] != null)
+            {
+                if (posMaps2[0].get(MathHelper.floor_float(Sys.getTime() / (720F * cBody.getRelativeOrbitTime()) % 2880)) != null && posMaps2[1].get(MathHelper.floor_float(Sys.getTime() / 720F % 2880)) != null)
+                {
+                    var42b = (int) Math.floor((Float) posMaps2[0].get(MathHelper.floor_float((cBody.getPhaseShift() + Sys.getTime() / (720F * 1 * cBody.getRelativeOrbitTime())) % 2880)));
+                    var41b = (int) Math.floor((Float) posMaps2[1].get(MathHelper.floor_float((cBody.getPhaseShift() + Sys.getTime() / (720F * 1 * cBody.getRelativeOrbitTime())) % 2880)));
+                }
+            }
+            
+            this.checkSelection(cBody, centerX + var42b, centerY + var41b);
+
+            if (cBody.getPlanetIcon() != null)
+            {
+                this.mc.renderEngine.bindTexture(cBody.getPlanetIcon());
+                this.renderPlanet(0, centerX + var42b, centerY + var41b, (float) (cBody.getRelativeSize() * 15.0F + 1 / Math.pow(this.zoom, -2)), Tessellator.instance);
+
+                if (this.selectedPlanet != null && cBody.equals(this.selectedPlanet))
+                {
+                    this.renderPlanet(0, centerX + var42b, centerY + var41b, (float) (cBody.getRelativeSize() * 15.0F + 1 / Math.pow(this.zoom, -2)), Tessellator.instance);
+                    this.drawInfoBox(centerX + var42b, centerY + var41b, cBody);
+                }
+            }
+        }
+        
+        return new Vector3(var42b - centerX, var41b - centerY, 0);
+    }
+    
+    private void checkSelection(CelestialBody cBody, int centerX, int centerY)
+    {
+    	if (Mouse.isButtonDown(0))
+        {
+            int width = (int) (cBody.getRelativeSize() + 1 / this.zoom * 3F);
+            final int pointerMinX = this.width / 2 - 5;
+            final int pointerMaxX = this.width / 2 + 5;
+            final int pointerMinY = this.height / 2 - 5;
+            final int pointerMaxY = this.height / 2 + 5;
+            final int planetMinX = centerX - width;
+            final int planetMaxX = centerX + width;
+            final int planetMinY = centerY - width;
+            final int planetMaxY = centerY + width;
+
+            if ((pointerMaxX >= planetMinX && pointerMinX <= planetMinX || pointerMinX <= planetMinX && pointerMaxY >= planetMaxX || pointerMinX >= planetMinX && pointerMinX <= planetMaxX) && (pointerMaxY >= planetMinY && pointerMinY <= planetMinY || pointerMinY <= planetMinY && pointerMaxY >= planetMaxY || pointerMinY >= planetMinY && pointerMinY <= planetMaxY))
+            {
+                this.selectedPlanet = cBody;
+            }
+        }
+    }
+    
     private void renderPlanet(int index, int x, int y, float slotHeight, Tessellator tessellator)
     {
+		GL11.glDisable(GL11.GL_BLEND);
+		GL11.glEnable(GL11.GL_DEPTH_TEST);
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 		tessellator.startDrawingQuads();
 		tessellator.addVertexWithUV(x + 12 - slotHeight, y - 11 + slotHeight, -90.0D, 0.0, 1.0);
 		tessellator.addVertexWithUV(x + 12, y - 11 + slotHeight, -90.0D, 1.0, 1.0);
