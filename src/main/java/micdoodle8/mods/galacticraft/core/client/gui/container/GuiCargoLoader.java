@@ -7,7 +7,7 @@ import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay;
 import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay.ElectricUnit;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.element.InfoRegion;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerCargoLoader;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerCargoLoader;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCargoLoader;
@@ -39,7 +39,7 @@ public class GuiCargoLoader extends GuiAdvancedContainer
 
     public GuiCargoLoader(InventoryPlayer par1InventoryPlayer, TileEntityCargoLoader par2TileEntityAirDistributor)
     {
-        super(new GCCoreContainerCargoLoader(par1InventoryPlayer, par2TileEntityAirDistributor));
+        super(new ContainerCargoLoader(par1InventoryPlayer, par2TileEntityAirDistributor));
         this.cargoLoader = par2TileEntityAirDistributor;
         this.ySize = 201;
     }

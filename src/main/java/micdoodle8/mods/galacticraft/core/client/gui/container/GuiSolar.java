@@ -7,7 +7,7 @@ import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay;
 import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay.ElectricUnit;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.element.InfoRegion;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerSolar;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerSolar;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tile.TileEntitySolar;
@@ -39,7 +39,7 @@ public class GuiSolar extends GuiAdvancedContainer
 
     public GuiSolar(InventoryPlayer par1InventoryPlayer, TileEntitySolar solarPanel)
     {
-        super(new GCCoreContainerSolar(par1InventoryPlayer, solarPanel));
+        super(new ContainerSolar(par1InventoryPlayer, solarPanel));
         this.solarPanel = solarPanel;
         this.ySize = 201;
         this.xSize = 176;

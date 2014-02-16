@@ -4,7 +4,6 @@ import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicResultPage;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiAirCollector;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiAirCompressor;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiAirDecompressor;
@@ -27,27 +26,27 @@ import micdoodle8.mods.galacticraft.core.client.gui.container.GuiRocketRefill;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiSolar;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiExtendedInventory;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiGalaxyMap;
-import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
-import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerSP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerCoalGenerator;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerElectricFurnace;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerAirCollector;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerAirCompressor;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerAirDecompressor;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerAirDistributor;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerAirSealer;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerCargoLoader;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerCircuitFabricator;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerElectricIngotCompressor;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerEnergyStorageModule;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerExtendedInventory;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerFuelLoader;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerIngotCompressor;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerOxygenStorageModule;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerParachest;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRefinery;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRocketRefill;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerSolar;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenCollector;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenCompressor;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenDecompressor;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenDistributor;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenSealer;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerCargoLoader;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerCircuitFabricator;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerElectricIngotCompressor;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerEnergyStorageModule;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerExtendedInventory;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerFuelLoader;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerIngotCompressor;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenStorageModule;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerParachest;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerRefinery;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerRocketFuel;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerSolar;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxy;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAirLockController;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCargoLoader;
@@ -68,6 +67,7 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenStorageModule;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityParachest;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityRefinery;
 import micdoodle8.mods.galacticraft.core.tile.TileEntitySolar;
+import micdoodle8.mods.galacticraft.core.util.GCConfigManager;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
@@ -94,7 +94,7 @@ public class GuiHandler implements IGuiHandler
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
     {
-        GCCorePlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player);
+        GCEntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player);
 
         if (playerBase == null)
         {
@@ -102,13 +102,13 @@ public class GuiHandler implements IGuiHandler
             return null;
         }
 
-        if (ID == GCCoreConfigManager.idGuiSpaceshipInventory && player.ridingEntity instanceof EntityTieredRocket)
+        if (ID == GCConfigManager.idGuiSpaceshipInventory && player.ridingEntity instanceof EntityTieredRocket)
         {
-            return new GCCoreContainerRocketRefill(player.inventory, (EntityTieredRocket) player.ridingEntity, ((EntityTieredRocket) player.ridingEntity).getType());
+            return new ContainerRocketFuel(player.inventory, (EntityTieredRocket) player.ridingEntity, ((EntityTieredRocket) player.ridingEntity).getType());
         }
-        else if (ID == GCCoreConfigManager.idGuiExtendedInventory)
+        else if (ID == GCConfigManager.idGuiExtendedInventory)
         {
-            return new GCCoreContainerExtendedInventory(player, playerBase.getExtendedInventory());
+            return new ContainerExtendedInventory(player, playerBase.getExtendedInventory());
         }
 
         TileEntity tile = world.getTileEntity(x, y, z);
@@ -117,39 +117,39 @@ public class GuiHandler implements IGuiHandler
         {
             if (tile instanceof TileEntityRefinery)
             {
-                return new GCCoreContainerRefinery(player.inventory, (TileEntityRefinery) tile);
+                return new ContainerRefinery(player.inventory, (TileEntityRefinery) tile);
             }
             else if (tile instanceof TileEntityOxygenCollector)
             {
-                return new GCCoreContainerAirCollector(player.inventory, (TileEntityOxygenCollector) tile);
+                return new ContainerOxygenCollector(player.inventory, (TileEntityOxygenCollector) tile);
             }
             else if (tile instanceof TileEntityOxygenDistributor)
             {
-                return new GCCoreContainerAirDistributor(player.inventory, (TileEntityOxygenDistributor) tile);
+                return new ContainerOxygenDistributor(player.inventory, (TileEntityOxygenDistributor) tile);
             }
             else if (tile instanceof TileEntityFuelLoader)
             {
-                return new GCCoreContainerFuelLoader(player.inventory, (TileEntityFuelLoader) tile);
+                return new ContainerFuelLoader(player.inventory, (TileEntityFuelLoader) tile);
             }
             else if (tile instanceof TileEntityOxygenSealer)
             {
-                return new GCCoreContainerAirSealer(player.inventory, (TileEntityOxygenSealer) tile);
+                return new ContainerOxygenSealer(player.inventory, (TileEntityOxygenSealer) tile);
             }
             else if (tile instanceof TileEntityCargoLoader)
             {
-                return new GCCoreContainerCargoLoader(player.inventory, (TileEntityCargoLoader) tile);
+                return new ContainerCargoLoader(player.inventory, (TileEntityCargoLoader) tile);
             }
             else if (tile instanceof TileEntityParachest)
             {
-                return new GCCoreContainerParachest(player.inventory, (TileEntityParachest) tile);
+                return new ContainerParachest(player.inventory, (TileEntityParachest) tile);
             }
             else if (tile instanceof TileEntitySolar)
             {
-                return new GCCoreContainerSolar(player.inventory, (TileEntitySolar) tile);
+                return new ContainerSolar(player.inventory, (TileEntitySolar) tile);
             }
             else if (tile instanceof TileEntityEnergyStorageModule)
             {
-                return new GCCoreContainerEnergyStorageModule(player.inventory, (TileEntityEnergyStorageModule) tile);
+                return new ContainerEnergyStorageModule(player.inventory, (TileEntityEnergyStorageModule) tile);
             }
             else if (tile instanceof TileEntityCoalGenerator)
             {
@@ -161,27 +161,27 @@ public class GuiHandler implements IGuiHandler
             }
             else if (tile instanceof TileEntityIngotCompressor)
             {
-                return new GCCoreContainerIngotCompressor(player.inventory, (TileEntityIngotCompressor) tile);
+                return new ContainerIngotCompressor(player.inventory, (TileEntityIngotCompressor) tile);
             }
             else if (tile instanceof TileEntityElectricIngotCompressor)
             {
-                return new GCCoreContainerElectricIngotCompressor(player.inventory, (TileEntityElectricIngotCompressor) tile);
+                return new ContainerElectricIngotCompressor(player.inventory, (TileEntityElectricIngotCompressor) tile);
             }
             else if (tile instanceof TileEntityCircuitFabricator)
             {
-                return new GCCoreContainerCircuitFabricator(player.inventory, (TileEntityCircuitFabricator) tile);
+                return new ContainerCircuitFabricator(player.inventory, (TileEntityCircuitFabricator) tile);
             }
             else if (tile instanceof TileEntityOxygenStorageModule)
             {
-                return new GCCoreContainerOxygenStorageModule(player.inventory, (TileEntityOxygenStorageModule) tile);
+                return new ContainerOxygenStorageModule(player.inventory, (TileEntityOxygenStorageModule) tile);
             }
             else if (tile instanceof TileEntityOxygenCompressor)
             {
-                return new GCCoreContainerAirCompressor(player.inventory, (TileEntityOxygenCompressor) tile);
+                return new ContainerOxygenCompressor(player.inventory, (TileEntityOxygenCompressor) tile);
             }
             else if (tile instanceof TileEntityOxygenDecompressor)
             {
-                return new GCCoreContainerAirDecompressor(player.inventory, (TileEntityOxygenDecompressor) tile);
+                return new ContainerOxygenDecompressor(player.inventory, (TileEntityOxygenDecompressor) tile);
             }
         }
 
@@ -212,19 +212,19 @@ public class GuiHandler implements IGuiHandler
     @SideOnly(Side.CLIENT)
     private Object getClientGuiElement(int ID, EntityPlayer player, World world, Vector3 position)
     {
-        if (ID == GCCoreConfigManager.idGuiGalaxyMap)
+        if (ID == GCConfigManager.idGuiGalaxyMap)
         {
             return new GuiGalaxyMap(player);
         }
-        else if (ID == GCCoreConfigManager.idGuiSpaceshipInventory && player.ridingEntity instanceof EntityTieredRocket)
+        else if (ID == GCConfigManager.idGuiSpaceshipInventory && player.ridingEntity instanceof EntityTieredRocket)
         {
             return new GuiRocketRefill(player.inventory, (EntityTieredRocket) player.ridingEntity, ((EntityTieredRocket) player.ridingEntity).getType());
         }
-        else if (ID == GCCoreConfigManager.idGuiExtendedInventory)
+        else if (ID == GCConfigManager.idGuiExtendedInventory)
         {
             return new GuiExtendedInventory(player, ClientProxy.dummyInventory);
         }
-        else if (ID == GCCoreConfigManager.idGuiKnowledgeBook)
+        else if (ID == GCConfigManager.idGuiKnowledgeBook)
         {
 //            return new GuiManual(new ItemStack(Blocks.stone), ClientProxyCore.materialsTest);
         }
@@ -311,7 +311,7 @@ public class GuiHandler implements IGuiHandler
             }
         }
 
-        GCCorePlayerSP playerClient = PlayerUtil.getPlayerBaseClientFromPlayer(player);
+        GCEntityClientPlayerMP playerClient = PlayerUtil.getPlayerBaseClientFromPlayer(player);
 
         if (playerClient != null)
         {

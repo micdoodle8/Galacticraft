@@ -5,13 +5,13 @@ import java.util.List;
 
 import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay;
 import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay.ElectricUnit;
-import micdoodle8.mods.galacticraft.core.GCCoreCompatibilityManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.element.InfoRegion;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerFuelLoader;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerFuelLoader;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFuelLoader;
+import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -40,7 +40,7 @@ public class GuiFuelLoader extends GuiAdvancedContainer
 
     public GuiFuelLoader(InventoryPlayer par1InventoryPlayer, TileEntityFuelLoader par2TileEntityAirDistributor)
     {
-        super(new GCCoreContainerFuelLoader(par1InventoryPlayer, par2TileEntityAirDistributor));
+        super(new ContainerFuelLoader(par1InventoryPlayer, par2TileEntityAirDistributor));
         this.fuelLoader = par2TileEntityAirDistributor;
         this.ySize = 180;
     }
@@ -71,7 +71,7 @@ public class GuiFuelLoader extends GuiAdvancedContainer
         this.infoRegions.add(new InfoRegion((this.width - this.xSize) / 2 + 50, (this.height - this.ySize) / 2 + 54, 18, 18, batterySlotDesc, this.width, this.height));
         List<String> oilSlotDesc = new ArrayList<String>();
         oilSlotDesc.add("Fuel Loader fuel input. Place");
-        oilSlotDesc.add("fuel canisters " + (GCCoreCompatibilityManager.isBCraftLoaded() ? "or fuel buckets " : "") + "into this slot");
+        oilSlotDesc.add("fuel canisters " + (CompatibilityManager.isBCraftLoaded() ? "or fuel buckets " : "") + "into this slot");
         oilSlotDesc.add("to load it into the fuel tank");
         this.infoRegions.add(new InfoRegion((this.width - this.xSize) / 2 + 6, (this.height - this.ySize) / 2 + 11, 18, 18, oilSlotDesc, this.width, this.height));
         List<String> electricityDesc = new ArrayList<String>();

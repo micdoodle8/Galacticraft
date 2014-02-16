@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core.client.gui.screen;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerExtendedInventory;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryExtended;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerExtendedInventory;
+import micdoodle8.mods.galacticraft.core.inventory.InventoryExtended;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.InventoryEffectRenderer;
@@ -34,9 +34,9 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
     private float ySize_lo_2;
     private static float rotation;
 
-    public GuiExtendedInventory(EntityPlayer entityPlayer, GCCoreInventoryExtended inventory)
+    public GuiExtendedInventory(EntityPlayer entityPlayer, InventoryExtended inventory)
     {
-        super(new GCCoreContainerExtendedInventory(entityPlayer, inventory));
+        super(new ContainerExtendedInventory(entityPlayer, inventory));
     }
 
     @Override

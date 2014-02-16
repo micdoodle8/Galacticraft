@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityCreeper;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeleton;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeletonBoss;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpider;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityZombie;
+import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedCreeper;
+import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSkeleton;
+import micdoodle8.mods.galacticraft.core.entities.EntitySkeletonBoss;
+import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider;
+import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
 import micdoodle8.mods.galacticraft.core.entities.IBoss;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -42,7 +42,7 @@ public class TileEntityDungeonSpawner extends TileEntityAdvanced
 
 	public TileEntityDungeonSpawner()
 	{
-		this(GCCoreEntitySkeletonBoss.class);
+		this(EntitySkeletonBoss.class);
 	}
 
 	public TileEntityDungeonSpawner(Class<? extends IBoss> bossClass)
@@ -139,10 +139,10 @@ public class TileEntityDungeonSpawner extends TileEntityAdvanced
 	public List<Class<? extends EntityLiving>> getDisabledCreatures()
 	{
 		List<Class<? extends EntityLiving>> list = new ArrayList<Class<? extends EntityLiving>>();
-		list.add(GCCoreEntitySkeleton.class);
-		list.add(GCCoreEntityCreeper.class);
-		list.add(GCCoreEntityZombie.class);
-		list.add(GCCoreEntitySpider.class);
+		list.add(EntityEvolvedSkeleton.class);
+		list.add(EntityEvolvedCreeper.class);
+		list.add(EntityEvolvedZombie.class);
+		list.add(EntityEvolvedSpider.class);
 		return list;
 	}
 

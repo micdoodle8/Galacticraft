@@ -3,8 +3,8 @@ package micdoodle8.mods.galacticraft.core.tile;
 import java.util.EnumSet;
 
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockOxygenCompressor;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenTank;
+import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenCompressor;
+import micdoodle8.mods.galacticraft.core.items.ItemOxygenTank;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -47,7 +47,7 @@ public class TileEntityOxygenDecompressor extends TileEntityOxygen implements II
 			{
 				ItemStack tank1 = this.containingItems[0];
 
-				if (tank1.getItem() instanceof GCCoreItemOxygenTank && tank1.getItemDamage() < tank1.getMaxDamage())
+				if (tank1.getItem() instanceof ItemOxygenTank && tank1.getItemDamage() < tank1.getMaxDamage())
 				{
 					tank1.setItemDamage(tank1.getItemDamage() + 1);
 					this.receiveOxygen(1, true);
@@ -281,7 +281,7 @@ public class TileEntityOxygenDecompressor extends TileEntityOxygen implements II
 		switch (slotID)
 		{
 		case 0:
-			return itemstack.getItem() instanceof GCCoreItemOxygenTank;
+			return itemstack.getItem() instanceof ItemOxygenTank;
 		case 1:
 			return itemstack.getItem() instanceof IItemElectric;
 		}
@@ -310,7 +310,7 @@ public class TileEntityOxygenDecompressor extends TileEntityOxygen implements II
 	@Override
 	public ForgeDirection getElectricInputDirection()
 	{
-		return ForgeDirection.getOrientation(this.getBlockMetadata() - GCCoreBlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA + 2);
+		return ForgeDirection.getOrientation(this.getBlockMetadata() - BlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA + 2);
 	}
 
 	@Override

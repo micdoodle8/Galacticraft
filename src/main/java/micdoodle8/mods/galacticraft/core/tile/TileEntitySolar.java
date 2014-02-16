@@ -8,9 +8,9 @@ import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockMulti;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockSolar;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
+import micdoodle8.mods.galacticraft.core.blocks.BlockSolar;
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -106,7 +106,7 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 					{
 						for (int z = -1; z <= 1; z++)
 						{
-							if (this.getBlockMetadata() < GCCoreBlockSolar.ADVANCED_METADATA)
+							if (this.getBlockMetadata() < BlockSolar.ADVANCED_METADATA)
 							{
 								if (this.worldObj.canBlockSeeTheSky(this.xCoord + x, this.yCoord + 2, this.zCoord + z))
 								{
@@ -162,7 +162,7 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 
 		celestialAngle %= 360;
 
-		if (this.getBlockMetadata() >= GCCoreBlockSolar.ADVANCED_METADATA)
+		if (this.getBlockMetadata() >= BlockSolar.ADVANCED_METADATA)
 		{
 			if (celestialAngle > 30 && celestialAngle < 150)
 			{
@@ -281,7 +281,7 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 
 					if (!vecToAdd.equals(placedPosition))
 					{
-						((GCCoreBlockMulti) GCCoreBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 4);
+						((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 4);
 					}
 				}
 			}
@@ -301,7 +301,7 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 				{
 					if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.1D)
 					{
-						FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + (y == 2 ? x : 0), thisBlock.intY() + y, thisBlock.intZ() + (y == 2 ? z : 0), GCCoreBlocks.solarPanel, Block.getIdFromBlock(GCCoreBlocks.solarPanel) >> 12 & 255);
+						FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + (y == 2 ? x : 0), thisBlock.intY() + y, thisBlock.intZ() + (y == 2 ? z : 0), GCBlocks.solarPanel, Block.getIdFromBlock(GCBlocks.solarPanel) >> 12 & 255);
 					}
 					
 					this.worldObj.setBlockToAir(thisBlock.intX() + (y == 2 ? x : 0), thisBlock.intY() + y, thisBlock.intZ() + (y == 2 ? z : 0));
@@ -399,9 +399,9 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 	{
 		int metadata = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
 
-		if (metadata >= GCCoreBlockSolar.ADVANCED_METADATA)
+		if (metadata >= BlockSolar.ADVANCED_METADATA)
 		{
-			metadata -= GCCoreBlockSolar.ADVANCED_METADATA;
+			metadata -= BlockSolar.ADVANCED_METADATA;
 		}
 
 		return EnumSet.of(ForgeDirection.getOrientation(metadata + 2).getOpposite(), ForgeDirection.UNKNOWN);
@@ -417,7 +417,7 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 	@Override
 	public String getInventoryName()
 	{
-		return StatCollector.translateToLocal(this.getBlockMetadata() < GCCoreBlockSolar.ADVANCED_METADATA ? "container.solarbasic.name" : "container.solaradvanced.name");
+		return StatCollector.translateToLocal(this.getBlockMetadata() < BlockSolar.ADVANCED_METADATA ? "container.solarbasic.name" : "container.solaradvanced.name");
 	}
 
 	@Override

@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockMulti;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -59,7 +59,7 @@ public class TileEntitySpaceStationBase extends TileEntityMulti implements IMult
 
 			if (!vecToAdd.equals(placedPosition))
 			{
-				((GCCoreBlockMulti) GCCoreBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 1);
+				((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 1);
 			}
 		}
 	}

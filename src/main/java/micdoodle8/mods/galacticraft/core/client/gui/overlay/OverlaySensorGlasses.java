@@ -4,8 +4,8 @@ import java.util.Iterator;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerSP;
-import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerClient;
+import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
+import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
@@ -78,7 +78,7 @@ public class OverlaySensorGlasses extends Overlay
 
     public static void renderSensorGlassesValueableBlocks(ItemStack stack, EntityPlayer player, ScaledResolution resolution, float partialTicks, boolean hasScreen, int mouseX, int mouseY)
     {
-        final Iterator<Vector3> var51 = GCCoreTickHandlerClient.valuableBlocks.iterator();
+        final Iterator<Vector3> var51 = TickHandlerClient.valuableBlocks.iterator();
         double var52;
         double var58;
         double var59;
@@ -103,7 +103,7 @@ public class OverlaySensorGlasses extends Overlay
 
             boolean var2 = false;
 
-            final GCCorePlayerSP client = PlayerUtil.getPlayerBaseClientFromPlayer(OverlaySensorGlasses.minecraft.thePlayer);
+            final GCEntityClientPlayerMP client = PlayerUtil.getPlayerBaseClientFromPlayer(OverlaySensorGlasses.minecraft.thePlayer);
 
             if (client != null)
             {

@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerOxygenStorageModule;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenStorageModule;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenStorageModule;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -31,7 +31,7 @@ public class GuiOxygenStorageModule extends GuiContainer
 
     public GuiOxygenStorageModule(InventoryPlayer par1InventoryPlayer, TileEntityOxygenStorageModule storageModule)
     {
-        super(new GCCoreContainerOxygenStorageModule(par1InventoryPlayer, storageModule));
+        super(new ContainerOxygenStorageModule(par1InventoryPlayer, storageModule));
         this.tileEntity = storageModule;
     }
 

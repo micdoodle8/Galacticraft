@@ -2,8 +2,8 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItemOilCanister;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.items.ItemOilCanister;
+import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -69,9 +69,9 @@ public class TileEntityRefinery extends TileEntityElectricBlock implements IInve
 					{
 						this.oilTank.fill(liquid, true);
 
-						if (this.containingItems[1].getItem() instanceof GCCoreItemOilCanister)
+						if (this.containingItems[1].getItem() instanceof ItemOilCanister)
 						{
-							this.containingItems[1] = new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.oilCanister.getMaxDamage());
+							this.containingItems[1] = new ItemStack(GCItems.oilCanister, 1, GCItems.oilCanister.getMaxDamage());
 						}
 						else if (FluidContainerRegistry.isBucket(this.containingItems[1]) && FluidContainerRegistry.isFilledContainer(this.containingItems[1]))
 						{
@@ -99,12 +99,12 @@ public class TileEntityRefinery extends TileEntityElectricBlock implements IInve
 				{
 					if (FluidContainerRegistry.isEmptyContainer(this.containingItems[2]))
 					{
-						boolean isCanister = this.containingItems[2].isItemEqual(new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.oilCanister.getMaxDamage()));
-						final int amountToFill = Math.min(liquid.amount, isCanister ? GCCoreItems.fuelCanister.getMaxDamage() - 1 : FluidContainerRegistry.BUCKET_VOLUME);
+						boolean isCanister = this.containingItems[2].isItemEqual(new ItemStack(GCItems.oilCanister, 1, GCItems.oilCanister.getMaxDamage()));
+						final int amountToFill = Math.min(liquid.amount, isCanister ? GCItems.fuelCanister.getMaxDamage() - 1 : FluidContainerRegistry.BUCKET_VOLUME);
 
 						if (isCanister)
 						{
-							this.containingItems[2] = new ItemStack(GCCoreItems.fuelCanister, 1, GCCoreItems.fuelCanister.getMaxDamage() - amountToFill);
+							this.containingItems[2] = new ItemStack(GCItems.fuelCanister, 1, GCItems.fuelCanister.getMaxDamage() - amountToFill);
 						}
 						else
 						{

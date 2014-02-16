@@ -11,10 +11,7 @@ public class PacketRotateRocket implements IPacket
 	private float entityPitch;
 	private float entityYaw;
 	
-	public PacketRotateRocket()
-	{
-		
-	}
+	public PacketRotateRocket() {}
 	
 	public PacketRotateRocket(Entity rotateableEntity)
 	{

@@ -6,10 +6,11 @@ import java.util.List;
 import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay;
 import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay.ElectricUnit;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.client.gui.element.InfoRegion;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerAirSealer;
-import micdoodle8.mods.galacticraft.core.network.PacketDisableTile;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenSealer;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenSealer;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import net.minecraft.block.Block;
@@ -42,7 +43,7 @@ public class GuiAirSealer extends GuiAdvancedContainer
 
     public GuiAirSealer(InventoryPlayer par1InventoryPlayer, TileEntityOxygenSealer par2TileEntityAirDistributor)
     {
-        super(new GCCoreContainerAirSealer(par1InventoryPlayer, par2TileEntityAirDistributor));
+        super(new ContainerOxygenSealer(par1InventoryPlayer, par2TileEntityAirDistributor));
         this.sealer = par2TileEntityAirDistributor;
         this.ySize = 200;
     }
@@ -53,8 +54,7 @@ public class GuiAirSealer extends GuiAdvancedContainer
         switch (par1GuiButton.id)
         {
         case 0:
-        	GalacticraftCore.packetPipeline.sendToServer(new PacketDisableTile(this.sealer.xCoord, this.sealer.yCoord, this.sealer.zCoord, !this.sealer.disabled));
-//            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.UPDATE_DISABLEABLE_BUTTON, new Object[] { this.sealer.xCoord, this.sealer.yCoord, this.sealer.zCoord, 0 }));
+        	GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, new Object[] { this.sealer.xCoord, this.sealer.yCoord, this.sealer.zCoord, 0 }));
             break;
         }
     }
@@ -112,7 +112,7 @@ public class GuiAirSealer extends GuiAdvancedContainer
     {
         Block blockAbove = this.sealer.getWorldObj().getBlock(this.sealer.xCoord, this.sealer.yCoord + 1, this.sealer.zCoord);
 
-        if (blockAbove != Blocks.air && blockAbove != GCCoreBlocks.breatheableAir)
+        if (blockAbove != Blocks.air && blockAbove != GCBlocks.breatheableAir)
         {
             return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.sealerblocked.name");
         }

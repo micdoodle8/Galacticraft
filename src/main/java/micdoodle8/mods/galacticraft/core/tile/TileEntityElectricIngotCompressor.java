@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockMachine2;
+import micdoodle8.mods.galacticraft.core.blocks.BlockMachine2;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -391,7 +391,7 @@ public class TileEntityElectricIngotCompressor extends TileEntityElectricBlock i
 	@Override
 	public ForgeDirection getElectricInputDirection()
 	{
-		return ForgeDirection.getOrientation(this.getBlockMetadata() - GCCoreBlockMachine2.ELECTRIC_COMPRESSOR_METADATA + 2);
+		return ForgeDirection.getOrientation(this.getBlockMetadata() - BlockMachine2.ELECTRIC_COMPRESSOR_METADATA + 2);
 	}
 
 	@Override

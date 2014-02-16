@@ -9,8 +9,8 @@ import micdoodle8.mods.galacticraft.api.entity.IFuelable;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockMulti;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -96,7 +96,7 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
 
 				if (!vecToAdd.equals(placedPosition))
 				{
-					((GCCoreBlockMulti) GCCoreBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 2);
+					((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 2);
 				}
 			}
 		}
@@ -113,7 +113,7 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
 			{
 				if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.1D)
 				{
-					FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + x, thisBlock.intY(), thisBlock.intZ() + z, GCCoreBlocks.landingPad, Block.getIdFromBlock(GCCoreBlocks.landingPad) >> 12 & 255);
+					FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + x, thisBlock.intY(), thisBlock.intZ() + z, GCBlocks.landingPad, Block.getIdFromBlock(GCBlocks.landingPad) >> 12 & 255);
 				}
 				
 				this.worldObj.setBlockToAir(thisBlock.intX() + x, thisBlock.intY(), thisBlock.intZ() + z);

@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.gui.overlay;
 
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.CoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import cpw.mods.fml.client.FMLClientHandler;
@@ -59,9 +59,9 @@ public class OverlayDockingRocket extends Overlay
                 String targetMotionYStr = "Target velocity: " + String.valueOf(targetMotionY);
                 String currentMotionYStr = "Current velocity: " + String.valueOf(currentMotionY);
 
-                int red = GCCoreUtil.to32BitColor(dMY > 0 ? 0 : dMotionYN, 255, 255, 255);
-                int green = GCCoreUtil.to32BitColor(dMY < 0 ? 0 : dMotionY, 255, 255, 255);
-                int grey = GCCoreUtil.to32BitColor(255, 220, 220, 220);
+                int red = CoreUtil.to32BitColor(dMY > 0 ? 0 : dMotionYN, 255, 255, 255);
+                int green = CoreUtil.to32BitColor(dMY < 0 ? 0 : dMotionY, 255, 255, 255);
+                int grey = CoreUtil.to32BitColor(255, 220, 220, 220);
 
                 if (dMY > 25)
                 {

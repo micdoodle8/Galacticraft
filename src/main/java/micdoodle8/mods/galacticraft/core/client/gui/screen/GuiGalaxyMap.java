@@ -9,9 +9,9 @@ import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.Moon;
 import micdoodle8.mods.galacticraft.api.galaxies.Planet;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.CoreUtil;
+import micdoodle8.mods.galacticraft.core.util.GCConfigManager;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
@@ -154,7 +154,7 @@ public class GuiGalaxyMap extends GuiStarBackground
             }
         }
 
-        if (GCCoreConfigManager.wasdMapMovement)
+        if (GCConfigManager.wasdMapMovement)
         {
             if (Keyboard.isKeyDown(Keyboard.KEY_W))
             {
@@ -351,10 +351,10 @@ public class GuiGalaxyMap extends GuiStarBackground
         this.mc.getTextureManager().bindTexture(GuiGalaxyMap.guiTexture);
         this.drawTexturedModalRect(this.width / 2 - 5, this.height / 2 - 5, 123, 0, 10, 10);
 
-        final int col = GCCoreUtil.to32BitColor(255, 198, 198, 198);
-        final int col2 = GCCoreUtil.to32BitColor(255, 145, 145, 145);
-        final int col3 = GCCoreUtil.to32BitColor(255, 33, 33, 33);
-        final int textCol1 = GCCoreUtil.to32BitColor(255, 133, 133, 133);
+        final int col = CoreUtil.to32BitColor(255, 198, 198, 198);
+        final int col2 = CoreUtil.to32BitColor(255, 145, 145, 145);
+        final int col3 = CoreUtil.to32BitColor(255, 33, 33, 33);
+        final int textCol1 = CoreUtil.to32BitColor(255, 133, 133, 133);
 
         Gui.drawRect(0, 0, this.width, 20, col);
         Gui.drawRect(0, this.height - 24, this.width, this.height, col);
@@ -373,7 +373,7 @@ public class GuiGalaxyMap extends GuiStarBackground
 
         if (this.selectedPlanet != null)
         {
-            final int textCol2 = GCCoreUtil.to32BitColor(255, MathHelper.floor_double(this.selectedPlanet.getRingColorR() * 255), MathHelper.floor_double(this.selectedPlanet.getRingColorG() * 255), MathHelper.floor_double(this.selectedPlanet.getRingColorB() * 255));
+            final int textCol2 = CoreUtil.to32BitColor(255, MathHelper.floor_double(this.selectedPlanet.getRingColorR() * 255), MathHelper.floor_double(this.selectedPlanet.getRingColorG() * 255), MathHelper.floor_double(this.selectedPlanet.getRingColorB() * 255));
             final int width = this.fontRendererObj.getStringWidth(this.selectedPlanet.getLocalizedName());
             Gui.drawRect(this.width / 2 - width / 2 - 4, 4, this.width / 2 + width / 2 + 4, 15, textCol1);
             this.fontRendererObj.drawString(this.selectedPlanet.getLocalizedName(), this.width / 2 - width / 2, 6, textCol2, false);
@@ -550,13 +550,13 @@ public class GuiGalaxyMap extends GuiStarBackground
     {
         // for (final IMapPlanet planet : GalacticraftCore.mapPlanets)
         {
-            this.drawGradientRect(cx + MathHelper.floor_float(planet.getRelativeSize() * 15.0F), cy - 3, cx + MathHelper.floor_float(planet.getRelativeSize() * 15.0F) + 8 * 10, cy + 10, GCCoreUtil.to32BitColor(100, 50, 50, 50), GCCoreUtil.to32BitColor(100, 50, 50, 50));
-            this.fontRendererObj.drawStringWithShadow(planet.getLocalizedName(), cx + MathHelper.floor_float(planet.getRelativeSize() * 15.0F) + 3, cy - 1, GCCoreUtil.to32BitColor(255, 200, 200, 200));
+            this.drawGradientRect(cx + MathHelper.floor_float(planet.getRelativeSize() * 15.0F), cy - 3, cx + MathHelper.floor_float(planet.getRelativeSize() * 15.0F) + 8 * 10, cy + 10, CoreUtil.to32BitColor(100, 50, 50, 50), CoreUtil.to32BitColor(100, 50, 50, 50));
+            this.fontRendererObj.drawStringWithShadow(planet.getLocalizedName(), cx + MathHelper.floor_float(planet.getRelativeSize() * 15.0F) + 3, cy - 1, CoreUtil.to32BitColor(255, 200, 200, 200));
 
             for (int i = 0; i < WorldUtil.getPlayersOnPlanet(planet).size(); i++)
             {
-                this.drawGradientRect(cx + MathHelper.floor_float(planet.getRelativeSize() * 15.0F), cy + 10 * (i + 1), cx + MathHelper.floor_float(planet.getRelativeSize() * 15.0F) + 80, cy + 10 * (i + 1) + 10, GCCoreUtil.to32BitColor(255, 50, 50, 50), GCCoreUtil.to32BitColor(255, 50, 50, 50));
-                this.fontRendererObj.drawStringWithShadow(String.valueOf(WorldUtil.getPlayersOnPlanet(planet).get(i)), cx + MathHelper.floor_float(planet.getRelativeSize() * 30.0F), cy + 1 + 10 * (i + 1), GCCoreUtil.to32BitColor(255, 220, 220, 220));
+                this.drawGradientRect(cx + MathHelper.floor_float(planet.getRelativeSize() * 15.0F), cy + 10 * (i + 1), cx + MathHelper.floor_float(planet.getRelativeSize() * 15.0F) + 80, cy + 10 * (i + 1) + 10, CoreUtil.to32BitColor(255, 50, 50, 50), CoreUtil.to32BitColor(255, 50, 50, 50));
+                this.fontRendererObj.drawStringWithShadow(String.valueOf(WorldUtil.getPlayersOnPlanet(planet).get(i)), cx + MathHelper.floor_float(planet.getRelativeSize() * 30.0F), cy + 1 + 10 * (i + 1), CoreUtil.to32BitColor(255, 220, 220, 220));
                 this.width = Math.max(this.width, String.valueOf(WorldUtil.getPlayersOnPlanet(planet).get(i)).length());
             }
         }

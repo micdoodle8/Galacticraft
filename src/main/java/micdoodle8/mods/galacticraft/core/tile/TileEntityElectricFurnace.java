@@ -6,7 +6,7 @@ import java.util.Set;
 
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockMachine;
+import micdoodle8.mods.galacticraft.core.blocks.BlockMachine;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -365,7 +365,7 @@ public class TileEntityElectricFurnace extends TileEntityUniversalElectrical imp
 	@Override
 	public EnumSet<ForgeDirection> getElectricalInputDirections()
 	{
-		return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() - GCCoreBlockMachine.ELECTRIC_FURNACE_METADATA + 2), ForgeDirection.UNKNOWN);
+		return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() - BlockMachine.ELECTRIC_FURNACE_METADATA + 2), ForgeDirection.UNKNOWN);
 	}
 
 	@Override

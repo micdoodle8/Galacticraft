@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.client.gui.container;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicResultPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerBuggyBench;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerBuggyBench;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -28,7 +28,7 @@ public class GuiSchematicBuggy extends GuiAdvancedContainer implements ISchemati
 
     public GuiSchematicBuggy(InventoryPlayer par1InventoryPlayer)
     {
-        super(new GCCoreContainerBuggyBench(par1InventoryPlayer, 0, 0, 0));
+        super(new ContainerBuggyBench(par1InventoryPlayer, 0, 0, 0));
         this.ySize = 221;
     }
 

@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 import java.util.EnumSet;
 
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenTank;
+import micdoodle8.mods.galacticraft.core.items.ItemOxygenTank;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -49,7 +49,7 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
 					{
 						ItemStack tank0 = this.containingItems[0];
 
-						if (tank0.getItem() instanceof GCCoreItemOxygenTank && tank0.getItemDamage() > 0)
+						if (tank0.getItem() instanceof ItemOxygenTank && tank0.getItemDamage() > 0)
 						{
 							tank0.setItemDamage(tank0.getItemDamage() - TileEntityOxygenCompressor.TANK_TRANSFER_SPEED);
 							this.storedOxygen -= TileEntityOxygenCompressor.TANK_TRANSFER_SPEED;
@@ -248,7 +248,7 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
 		switch (slotID)
 		{
 		case 0:
-			return itemstack.getItem() instanceof GCCoreItemOxygenTank;
+			return itemstack.getItem() instanceof ItemOxygenTank;
 		case 1:
 			return itemstack.getItem() instanceof IItemElectric;
 		}

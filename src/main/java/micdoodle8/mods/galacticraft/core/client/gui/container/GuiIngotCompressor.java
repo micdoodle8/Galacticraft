@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerIngotCompressor;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerIngotCompressor;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityIngotCompressor;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -34,7 +34,7 @@ public class GuiIngotCompressor extends GuiContainer
 
     public GuiIngotCompressor(InventoryPlayer par1InventoryPlayer, TileEntityIngotCompressor tileEntity)
     {
-        super(new GCCoreContainerIngotCompressor(par1InventoryPlayer, tileEntity));
+        super(new ContainerIngotCompressor(par1InventoryPlayer, tileEntity));
         this.tileEntity = tileEntity;
         this.ySize = 192;
     }

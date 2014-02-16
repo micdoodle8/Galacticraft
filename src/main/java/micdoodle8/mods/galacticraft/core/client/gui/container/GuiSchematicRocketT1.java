@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.client.gui.container;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicResultPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRocketBench;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerRocketBench;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -29,7 +29,7 @@ public class GuiSchematicRocketT1 extends GuiAdvancedContainer implements ISchem
 
     public GuiSchematicRocketT1(InventoryPlayer par1InventoryPlayer, int x, int y, int z)
     {
-        super(new GCCoreContainerRocketBench(par1InventoryPlayer, x, y, z));
+        super(new ContainerRocketBench(par1InventoryPlayer, x, y, z));
         this.ySize = 221;
     }
 

@@ -7,8 +7,8 @@ import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay;
 import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay.ElectricUnit;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.element.InfoRegion;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerAirDecompressor;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenTank;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenDecompressor;
+import micdoodle8.mods.galacticraft.core.items.ItemOxygenTank;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenDecompressor;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -37,7 +37,7 @@ public class GuiAirDecompressor extends GuiAdvancedContainer
 
     public GuiAirDecompressor(InventoryPlayer par1InventoryPlayer, TileEntityOxygenDecompressor par2TileEntityAirDistributor)
     {
-        super(new GCCoreContainerAirDecompressor(par1InventoryPlayer, par2TileEntityAirDistributor));
+        super(new ContainerOxygenDecompressor(par1InventoryPlayer, par2TileEntityAirDistributor));
         this.decompressor = par2TileEntityAirDistributor;
         this.ySize = 180;
     }
@@ -93,7 +93,7 @@ public class GuiAirDecompressor extends GuiAdvancedContainer
 
     private String getStatus()
     {
-        if (this.decompressor.getStackInSlot(0) == null || !(this.decompressor.getStackInSlot(0).getItem() instanceof GCCoreItemOxygenTank))
+        if (this.decompressor.getStackInSlot(0) == null || !(this.decompressor.getStackInSlot(0).getItem() instanceof ItemOxygenTank))
         {
             return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.missingtank.name");
         }

@@ -4,10 +4,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockParachest;
+import micdoodle8.mods.galacticraft.core.blocks.BlockParachest;
 import micdoodle8.mods.galacticraft.core.entities.IScaleableFuelLevel;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerParachest;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerParachest;
+import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamicInventory;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.player.EntityPlayer;
@@ -227,7 +227,7 @@ public class TileEntityParachest extends TileEntityAdvanced implements IInventor
 	@Override
 	public void closeInventory() 
 	{
-		if (this.getBlockType() != null && this.getBlockType() instanceof GCCoreBlockParachest)
+		if (this.getBlockType() != null && this.getBlockType() instanceof BlockParachest)
 		{
 			--this.numUsingPlayers;
 			this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 1, this.numUsingPlayers);
@@ -266,7 +266,7 @@ public class TileEntityParachest extends TileEntityAdvanced implements IInventor
 			{
 				EntityPlayer entityplayer = (EntityPlayer) iterator.next();
 
-				if (entityplayer.openContainer instanceof GCCoreContainerParachest)
+				if (entityplayer.openContainer instanceof ContainerParachest)
 				{
 					++this.numUsingPlayers;
 				}
@@ -327,12 +327,12 @@ public class TileEntityParachest extends TileEntityAdvanced implements IInventor
 			{
 				if (FluidContainerRegistry.isEmptyContainer(this.chestContents[this.chestContents.length - 1]))
 				{
-					boolean isCanister = this.chestContents[this.chestContents.length - 1].isItemEqual(new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.oilCanister.getMaxDamage()));
-					final int amountToFill = Math.min(liquid.amount, isCanister ? GCCoreItems.fuelCanister.getMaxDamage() - 1 : FluidContainerRegistry.BUCKET_VOLUME);
+					boolean isCanister = this.chestContents[this.chestContents.length - 1].isItemEqual(new ItemStack(GCItems.oilCanister, 1, GCItems.oilCanister.getMaxDamage()));
+					final int amountToFill = Math.min(liquid.amount, isCanister ? GCItems.fuelCanister.getMaxDamage() - 1 : FluidContainerRegistry.BUCKET_VOLUME);
 
 					if (isCanister)
 					{
-						this.chestContents[this.chestContents.length - 1] = new ItemStack(GCCoreItems.fuelCanister, 1, GCCoreItems.fuelCanister.getMaxDamage() - amountToFill);
+						this.chestContents[this.chestContents.length - 1] = new ItemStack(GCItems.fuelCanister, 1, GCItems.fuelCanister.getMaxDamage() - amountToFill);
 					}
 					else
 					{

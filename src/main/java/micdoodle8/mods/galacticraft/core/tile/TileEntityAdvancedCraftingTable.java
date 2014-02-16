@@ -1,10 +1,10 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockMulti;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.util.GCConfigManager;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -33,7 +33,7 @@ public class TileEntityAdvancedCraftingTable extends TileEntityMulti implements 
 	@Override
 	public boolean onActivated(EntityPlayer entityPlayer)
 	{
-		entityPlayer.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiRocketCraftingBench, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+		entityPlayer.openGui(GalacticraftCore.instance, GCConfigManager.idGuiRocketCraftingBench, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
 		return true;
 	}
 
@@ -56,11 +56,11 @@ public class TileEntityAdvancedCraftingTable extends TileEntityMulti implements 
 						{
 							if ((y == 0 || y == 3) && x == 0 && z == 0)
 							{
-								((GCCoreBlockMulti) GCCoreBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 3);
+								((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 3);
 							}
 							else if (y != 0 && y != 3)
 							{
-								((GCCoreBlockMulti) GCCoreBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 3);
+								((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 3);
 							}
 						}
 					}
@@ -86,7 +86,7 @@ public class TileEntityAdvancedCraftingTable extends TileEntityMulti implements 
 						{
 							if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.05D)
 							{
-								FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, GCCoreBlocks.nasaWorkbench, Block.getIdFromBlock(GCCoreBlocks.nasaWorkbench) >> 12 & 255);
+								FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, GCBlocks.nasaWorkbench, Block.getIdFromBlock(GCBlocks.nasaWorkbench) >> 12 & 255);
 							}
 							
 							this.worldObj.setBlockToAir(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z);
@@ -95,7 +95,7 @@ public class TileEntityAdvancedCraftingTable extends TileEntityMulti implements 
 						{
 							if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.05D)
 							{
-								FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, GCCoreBlocks.nasaWorkbench, Block.getIdFromBlock(GCCoreBlocks.nasaWorkbench) >> 12 & 255);
+								FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, GCBlocks.nasaWorkbench, Block.getIdFromBlock(GCBlocks.nasaWorkbench) >> 12 & 255);
 							}
 							
 							this.worldObj.setBlockToAir(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z);

@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core.client.gui.element;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.client.gui.screen.GCCoreSmallFontRenderer;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.client.gui.screen.SmallFontRenderer;
+import micdoodle8.mods.galacticraft.core.util.CoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
@@ -29,7 +29,7 @@ public class GuiDropdown extends GuiButton
     public boolean dropdownClicked;
     public String[] optionStrings;
     public int selectedOption = -1;
-    public GCCoreSmallFontRenderer font;
+    public SmallFontRenderer font;
     private IDropboxCallback parentClass;
 
     public GuiDropdown(int id, IDropboxCallback parentClass, int x, int y, String... text)
@@ -37,7 +37,7 @@ public class GuiDropdown extends GuiButton
         super(id, x, y, 13, 13, "");
         Minecraft mc = FMLClientHandler.instance().getClient();
         this.parentClass = parentClass;
-        this.font = new GCCoreSmallFontRenderer(mc.gameSettings, new ResourceLocation("textures/font/ascii.png"), mc.renderEngine, false);
+        this.font = new SmallFontRenderer(mc.gameSettings, new ResourceLocation("textures/font/ascii.png"), mc.renderEngine, false);
         this.optionStrings = text;
 
         int largestString = Integer.MIN_VALUE;
@@ -65,13 +65,13 @@ public class GuiDropdown extends GuiButton
             GL11.glTranslatef(0, 0, 200);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             this.field_146123_n = par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height;
-            Gui.drawRect(this.xPosition, this.yPosition, this.xPosition + this.width, this.yPosition + (this.dropdownClicked ? this.height * this.optionStrings.length : this.height), GCCoreUtil.to32BitColor(255, 200, 200, 200));
-            Gui.drawRect(this.xPosition + 1, this.yPosition + 1, this.xPosition + this.width - 1, this.yPosition + (this.dropdownClicked ? this.height * this.optionStrings.length : this.height) - 1, GCCoreUtil.to32BitColor(255, 0, 0, 0));
+            Gui.drawRect(this.xPosition, this.yPosition, this.xPosition + this.width, this.yPosition + (this.dropdownClicked ? this.height * this.optionStrings.length : this.height), CoreUtil.to32BitColor(255, 200, 200, 200));
+            Gui.drawRect(this.xPosition + 1, this.yPosition + 1, this.xPosition + this.width - 1, this.yPosition + (this.dropdownClicked ? this.height * this.optionStrings.length : this.height) - 1, CoreUtil.to32BitColor(255, 0, 0, 0));
 
             if (this.dropdownClicked && par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height * this.optionStrings.length)
             {
                 int hoverPos = (par3 - this.yPosition) / this.height;
-                Gui.drawRect(this.xPosition + 1, this.yPosition + this.height * hoverPos + 1, this.xPosition + this.width - 1, this.yPosition + this.height * (hoverPos + 1) - 1, GCCoreUtil.to32BitColor(255, 100, 100, 100));
+                Gui.drawRect(this.xPosition + 1, this.yPosition + this.height * hoverPos + 1, this.xPosition + this.width - 1, this.yPosition + this.height * (hoverPos + 1) - 1, CoreUtil.to32BitColor(255, 100, 100, 100));
             }
 
             this.mouseDragged(par1Minecraft, par2, par3);
@@ -80,12 +80,12 @@ public class GuiDropdown extends GuiButton
             {
                 for (int i = 0; i < this.optionStrings.length; i++)
                 {
-                    this.font.drawStringWithShadow(this.optionStrings[i], this.xPosition + this.width / 2 - this.font.getStringWidth(this.optionStrings[i]) / 2, this.yPosition + (this.height - 8) / 2 + this.height * i, GCCoreUtil.to32BitColor(255, 255, 255, 255));
+                    this.font.drawStringWithShadow(this.optionStrings[i], this.xPosition + this.width / 2 - this.font.getStringWidth(this.optionStrings[i]) / 2, this.yPosition + (this.height - 8) / 2 + this.height * i, CoreUtil.to32BitColor(255, 255, 255, 255));
                 }
             }
             else
             {
-                this.font.drawStringWithShadow(this.optionStrings[this.selectedOption], this.xPosition + this.width / 2 - this.font.getStringWidth(this.optionStrings[this.selectedOption]) / 2, this.yPosition + (this.height - 8) / 2, GCCoreUtil.to32BitColor(255, 255, 255, 255));
+                this.font.drawStringWithShadow(this.optionStrings[this.selectedOption], this.xPosition + this.width / 2 - this.font.getStringWidth(this.optionStrings[this.selectedOption]) / 2, this.yPosition + (this.height - 8) / 2, CoreUtil.to32BitColor(255, 255, 255, 255));
             }
 
             GL11.glPopMatrix();

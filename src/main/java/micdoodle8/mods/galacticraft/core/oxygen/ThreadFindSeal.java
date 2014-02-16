@@ -4,11 +4,11 @@ import java.util.HashSet;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
-import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol.VecDirPair;
-import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerServer;
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.oxygen.SealerThreadManager.VecDirPair;
+import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenSealer;
+import micdoodle8.mods.galacticraft.core.util.GCConfigManager;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.ScheduledBlockChange;
 import net.minecraft.block.Block;
@@ -77,7 +77,7 @@ public class ThreadFindSeal extends Thread
 
 				if (this.sealed && block == Blocks.air)
 				{
-					GCCoreTickHandlerServer.scheduleNewBlockChange(world.provider.dimensionId, new ScheduledBlockChange(checkedVec.getPosition(), GCCoreBlocks.breatheableAir, 0, 3));
+					TickHandlerServer.scheduleNewBlockChange(world.provider.dimensionId, new ScheduledBlockChange(checkedVec.getPosition(), GCBlocks.breatheableAir, 0, 3));
 				}
 			}
 		}
@@ -90,9 +90,9 @@ public class ThreadFindSeal extends Thread
 			{
 				Block block = checkedVec.getPosition().getBlock(this.world);
 
-				if (block == GCCoreBlocks.breatheableAir)
+				if (block == GCBlocks.breatheableAir)
 				{
-					GCCoreTickHandlerServer.scheduleNewBlockChange(world.provider.dimensionId, new ScheduledBlockChange(checkedVec.getPosition(), Blocks.air, 0, 3));
+					TickHandlerServer.scheduleNewBlockChange(world.provider.dimensionId, new ScheduledBlockChange(checkedVec.getPosition(), Blocks.air, 0, 3));
 				}
 			}
 		}
@@ -117,7 +117,7 @@ public class ThreadFindSeal extends Thread
 
 		this.looping = false;
 
-		if (GCCoreConfigManager.enableDebug)
+		if (GCConfigManager.enableDebug)
 		{
 			FMLLog.info("Oxygen Sealer Check Completed at x" + this.head.intX() + " y" + this.head.intY() + " z" + this.head.intZ());
 			FMLLog.info("   Sealed: " + this.sealed);
@@ -189,7 +189,7 @@ public class ThreadFindSeal extends Thread
 				{
 					Vector3 sideVec = vec.clone().modifyPositionFromSide(dir);
 
-					if ((sideVec.getBlock(this.world) == Blocks.air || sideVec.getBlock(this.world) == GCCoreBlocks.breatheableAir) && !this.checked(sideVec, dir))
+					if ((sideVec.getBlock(this.world) == Blocks.air || sideVec.getBlock(this.world) == GCBlocks.breatheableAir) && !this.checked(sideVec, dir))
 					{
 						this.sealed = false;
 					}
@@ -238,6 +238,6 @@ public class ThreadFindSeal extends Thread
 
 	private boolean isBreathableAir(VecDirPair pair)
 	{
-		return pair.getPosition().getBlock(this.world) == GCCoreBlocks.breatheableAir;
+		return pair.getPosition().getBlock(this.world) == GCBlocks.breatheableAir;
 	}
 }

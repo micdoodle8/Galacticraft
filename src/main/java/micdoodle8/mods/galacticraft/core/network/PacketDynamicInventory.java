@@ -19,6 +19,8 @@ public class PacketDynamicInventory implements IPacket
 	private Object[] data;
 	private ItemStack[] stacks;
 	
+	public PacketDynamicInventory() {}
+	
 	public PacketDynamicInventory(Entity entity)
 	{
 		assert entity instanceof IInventory : "Entity does not implement " + IInventory.class.getSimpleName();

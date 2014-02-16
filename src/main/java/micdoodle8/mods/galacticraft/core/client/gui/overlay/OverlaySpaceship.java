@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.gui.overlay;
 
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
-import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderSpaceship;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderTier1Rocket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.gui.ScaledResolution;
@@ -70,7 +70,7 @@ public class OverlaySpaceship extends Overlay
 
         GL11.glColor3f(1.0F, 1.0F, 1.0F);
 
-        final GCCoreRenderSpaceship spaceship = (GCCoreRenderSpaceship) RenderManager.instance.entityRenderMap.get(OverlaySpaceship.minecraft.thePlayer.ridingEntity.getClass());
+        final RenderTier1Rocket spaceship = (RenderTier1Rocket) RenderManager.instance.entityRenderMap.get(OverlaySpaceship.minecraft.thePlayer.ridingEntity.getClass());
 
         final int y1 = height / 2 + 60 - (int) Math.floor(Overlay.getPlayerPositionY(OverlaySpaceship.minecraft.thePlayer) / 10.5F);
         var1 = 2.5F;

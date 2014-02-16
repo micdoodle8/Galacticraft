@@ -8,7 +8,7 @@ import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.element.InfoRegion;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRocketRefill;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerRocketFuel;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.ResourceLocation;
@@ -46,7 +46,7 @@ public class GuiRocketRefill extends GuiAdvancedContainer
 
     public GuiRocketRefill(IInventory par1IInventory, IInventory par2IInventory, EnumRocketType rocketType)
     {
-        super(new GCCoreContainerRocketRefill(par1IInventory, par2IInventory, rocketType));
+        super(new ContainerRocketFuel(par1IInventory, par2IInventory, rocketType));
         this.upperChestInventory = par1IInventory;
         this.allowUserInput = false;
         this.ySize = rocketType.getInventorySpace() <= 3 ? 132 : 145 + rocketType.getInventorySpace() * 2;

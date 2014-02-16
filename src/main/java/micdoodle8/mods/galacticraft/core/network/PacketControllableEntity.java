@@ -9,6 +9,8 @@ public class PacketControllableEntity implements IPacket
 {
 	private int keyPressed;
 	
+	public PacketControllableEntity() {}
+	
 	public PacketControllableEntity(int keyPressed)
 	{
 		this.keyPressed = keyPressed;

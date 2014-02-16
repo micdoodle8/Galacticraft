@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui.overlay;
 
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
+import micdoodle8.mods.galacticraft.core.entities.EntityTier1Rocket;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -24,9 +24,9 @@ public class Overlay
      */
     protected static int getPlayerPositionY(EntityPlayer player)
     {
-        if (player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntityRocketT1)
+        if (player.ridingEntity != null && player.ridingEntity instanceof EntityTier1Rocket)
         {
-            return (int) Math.floor(((GCCoreEntityRocketT1) player.ridingEntity).posY);
+            return (int) Math.floor(((EntityTier1Rocket) player.ridingEntity).posY);
         }
 
         return (int) Math.floor(player.posY);

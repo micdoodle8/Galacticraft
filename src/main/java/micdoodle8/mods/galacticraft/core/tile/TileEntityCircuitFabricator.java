@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import micdoodle8.mods.galacticraft.api.recipe.CircuitFabricatorRecipes;
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockMachine2;
+import micdoodle8.mods.galacticraft.core.blocks.BlockMachine2;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.item.EntityItem;
@@ -338,7 +338,7 @@ public class TileEntityCircuitFabricator extends TileEntityElectricBlock impleme
 	@Override
 	public ForgeDirection getElectricInputDirection()
 	{
-		return ForgeDirection.getOrientation(this.getBlockMetadata() - GCCoreBlockMachine2.CIRCUIT_FABRICATOR_METADATA + 2);
+		return ForgeDirection.getOrientation(this.getBlockMetadata() - BlockMachine2.CIRCUIT_FABRICATOR_METADATA + 2);
 	}
 
 	@Override

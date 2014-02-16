@@ -11,66 +11,66 @@ import java.util.Map.Entry;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
-import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEffectHandler;
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.client.fx.EffectHandlerGC;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.InventoryTabGalacticraft;
-import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelSpaceship;
-import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererBreathableAir;
-import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererCraftingTable;
-import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererLandingPad;
-import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererMachine;
-import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererMeteor;
-import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererOxygenPipe;
-import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererTreasureChest;
-import micdoodle8.mods.galacticraft.core.client.render.block.GCCoreBlockRendererUnlitTorch;
-import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderAlienVillager;
-import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderArrow;
-import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderBuggy;
-import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderCreeper;
-import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderFlag;
-import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderLander;
-import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderMeteor;
-import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderMeteorChunk;
-import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderOxygenBubble;
-import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderParaChest;
-import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderPlayer;
-import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderSkeleton;
-import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderSkeletonBoss;
-import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderSpaceship;
-import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderSpider;
-import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderZombie;
-import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererBuggy;
-import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererFlag;
-import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererKey;
-import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererMeteorChunk;
-import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererSpaceship;
-import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererUnlitTorch;
-import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreRenderAluminumWire;
-import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityAdvancedCraftingTableRenderer;
-import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityParachestRenderer;
-import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntitySolarPanelRenderer;
-import micdoodle8.mods.galacticraft.core.client.render.tile.GCCoreTileEntityTreasureChestRenderer;
+import micdoodle8.mods.galacticraft.core.client.model.ModelTier1Rocket;
+import micdoodle8.mods.galacticraft.core.client.render.block.BlockRendererBreathableAir;
+import micdoodle8.mods.galacticraft.core.client.render.block.BlockRendererCraftingTable;
+import micdoodle8.mods.galacticraft.core.client.render.block.BlockRendererLandingPad;
+import micdoodle8.mods.galacticraft.core.client.render.block.BlockRendererMachine;
+import micdoodle8.mods.galacticraft.core.client.render.block.BlockRendererMeteor;
+import micdoodle8.mods.galacticraft.core.client.render.block.BlockRendererOxygenPipe;
+import micdoodle8.mods.galacticraft.core.client.render.block.BlockRendererTreasureChest;
+import micdoodle8.mods.galacticraft.core.client.render.block.BlockRendererUnlitTorch;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderAlienVillager;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderArrowGC;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderBuggy;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderEvolvedCreeper;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderFlag;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderLander;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderMeteor;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderMeteorChunk;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderBubble;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderParachest;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderEvolvedSkeleton;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderSkeletonBoss;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderTier1Rocket;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderEvolvedSpider;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderEvolvedZombie;
+import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererBuggy;
+import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererFlag;
+import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererKey;
+import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererMeteorChunk;
+import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererTier1Rocket;
+import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererUnlitTorch;
+import micdoodle8.mods.galacticraft.core.client.render.tile.TileEntityAluminumWireRenderer;
+import micdoodle8.mods.galacticraft.core.client.render.tile.TileEntityNasaWorkbenchRenderer;
+import micdoodle8.mods.galacticraft.core.client.render.tile.TileEntityParachestRenderer;
+import micdoodle8.mods.galacticraft.core.client.render.tile.TileEntitySolarPanelRenderer;
+import micdoodle8.mods.galacticraft.core.client.render.tile.TileEntityTreasureChestRenderer;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCCoreSounds;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityAlienVillager;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityArrow;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityCreeper;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityFlag;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityMeteor;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityMeteorChunk;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityOxygenBubble;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityParaChest;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeleton;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeletonBoss;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySpider;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityZombie;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryExtended;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItems.EnumArmorIndex;
-import micdoodle8.mods.galacticraft.core.tick.GCCoreKeyHandlerClient;
-import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerClient;
+import micdoodle8.mods.galacticraft.core.entities.EntityAlienVillager;
+import micdoodle8.mods.galacticraft.core.entities.EntityArrowGC;
+import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
+import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedCreeper;
+import micdoodle8.mods.galacticraft.core.entities.EntityFlag;
+import micdoodle8.mods.galacticraft.core.entities.EntityLander;
+import micdoodle8.mods.galacticraft.core.entities.EntityMeteor;
+import micdoodle8.mods.galacticraft.core.entities.EntityMeteorChunk;
+import micdoodle8.mods.galacticraft.core.entities.EntityBubble;
+import micdoodle8.mods.galacticraft.core.entities.EntityParachest;
+import micdoodle8.mods.galacticraft.core.entities.EntityTier1Rocket;
+import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSkeleton;
+import micdoodle8.mods.galacticraft.core.entities.EntitySkeletonBoss;
+import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider;
+import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
+import micdoodle8.mods.galacticraft.core.inventory.InventoryExtended;
+import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.core.items.GCItems.EnumArmorIndex;
+import micdoodle8.mods.galacticraft.core.tick.KeyHandlerGC;
+import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAdvancedCraftingTable;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAluminumWire;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityParachest;
@@ -106,7 +106,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 public class ClientProxy extends CommonProxy
 {
-	public static GCCoreInventoryExtended dummyInventory = new GCCoreInventoryExtended();
+	public static InventoryExtended dummyInventory = new InventoryExtended();
 
 	private static int renderIndexHeavyArmor;
 	private static int renderIndexSensorGlasses;
@@ -140,8 +140,8 @@ public class ClientProxy extends CommonProxy
 	{
 		super.init(event);
 		
-		FMLCommonHandler.instance().bus().register(new GCCoreKeyHandlerClient());
-		FMLCommonHandler.instance().bus().register(new GCCoreTickHandlerClient());
+		FMLCommonHandler.instance().bus().register(new KeyHandlerGC());
+		FMLCommonHandler.instance().bus().register(new TickHandlerClient());
 		
 		ClientProxy.registerTileEntityRenderers();
 		ClientProxy.registerBlockHandlers();
@@ -165,46 +165,46 @@ public class ClientProxy extends CommonProxy
 	@Override
 	public void spawnParticle(String particleID, Vector3 position, Vector3 motion, Vector3 color)
 	{
-		GCCoreEffectHandler.spawnParticle(particleID, position, motion, color);
+		EffectHandlerGC.spawnParticle(particleID, position, motion, color);
 	}
 	
 	public static void registerEntityRenderers()
 	{
-		RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityRocketT1.class, new GCCoreRenderSpaceship(new GCCoreModelSpaceship(), GalacticraftCore.ASSET_DOMAIN, "rocketT1"));
-		RenderingRegistry.registerEntityRenderingHandler(GCCoreEntitySpider.class, new GCCoreRenderSpider());
-		RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityZombie.class, new GCCoreRenderZombie());
-		RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityCreeper.class, new GCCoreRenderCreeper());
-		RenderingRegistry.registerEntityRenderingHandler(GCCoreEntitySkeleton.class, new GCCoreRenderSkeleton());
-		RenderingRegistry.registerEntityRenderingHandler(GCCoreEntitySkeletonBoss.class, new GCCoreRenderSkeletonBoss());
-		RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityMeteor.class, new GCCoreRenderMeteor());
-		RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityBuggy.class, new GCCoreRenderBuggy());
-		RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityMeteorChunk.class, new GCCoreRenderMeteorChunk());
-		RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityFlag.class, new GCCoreRenderFlag());
-		RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityParaChest.class, new GCCoreRenderParaChest());
-		RenderingRegistry.registerEntityRenderingHandler(EntityPlayer.class, new GCCoreRenderPlayer());
-		RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityAlienVillager.class, new GCCoreRenderAlienVillager());
-		RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityOxygenBubble.class, new GCCoreRenderOxygenBubble(0.25F, 0.25F, 1.0F));
-		RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityLander.class, new GCCoreRenderLander());
-		RenderingRegistry.registerEntityRenderingHandler(GCCoreEntityArrow.class, new GCCoreRenderArrow());
+		RenderingRegistry.registerEntityRenderingHandler(EntityTier1Rocket.class, new RenderTier1Rocket(new ModelTier1Rocket(), GalacticraftCore.ASSET_DOMAIN, "rocketT1"));
+		RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedSpider.class, new RenderEvolvedSpider());
+		RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedZombie.class, new RenderEvolvedZombie());
+		RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedCreeper.class, new RenderEvolvedCreeper());
+		RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedSkeleton.class, new RenderEvolvedSkeleton());
+		RenderingRegistry.registerEntityRenderingHandler(EntitySkeletonBoss.class, new RenderSkeletonBoss());
+		RenderingRegistry.registerEntityRenderingHandler(EntityMeteor.class, new RenderMeteor());
+		RenderingRegistry.registerEntityRenderingHandler(EntityBuggy.class, new RenderBuggy());
+		RenderingRegistry.registerEntityRenderingHandler(EntityMeteorChunk.class, new RenderMeteorChunk());
+		RenderingRegistry.registerEntityRenderingHandler(EntityFlag.class, new RenderFlag());
+		RenderingRegistry.registerEntityRenderingHandler(EntityParachest.class, new RenderParachest());
+		RenderingRegistry.registerEntityRenderingHandler(EntityPlayer.class, new RenderPlayerGC());
+		RenderingRegistry.registerEntityRenderingHandler(EntityAlienVillager.class, new RenderAlienVillager());
+		RenderingRegistry.registerEntityRenderingHandler(EntityBubble.class, new RenderBubble(0.25F, 0.25F, 1.0F));
+		RenderingRegistry.registerEntityRenderingHandler(EntityLander.class, new RenderLander());
+		RenderingRegistry.registerEntityRenderingHandler(EntityArrowGC.class, new RenderArrowGC());
 	}
 
 	public static void registerItemRenderers()
 	{
-		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(GCCoreBlocks.unlitTorch), new GCCoreItemRendererUnlitTorch());
-		MinecraftForgeClient.registerItemRenderer(GCCoreItems.rocketTier1, new GCCoreItemRendererSpaceship(new GCCoreEntityRocketT1(FMLClientHandler.instance().getClient().theWorld), new GCCoreModelSpaceship(), new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/rocketT1.png")));
-		MinecraftForgeClient.registerItemRenderer(GCCoreItems.buggy, new GCCoreItemRendererBuggy());
-		MinecraftForgeClient.registerItemRenderer(GCCoreItems.flag, new GCCoreItemRendererFlag());
-		MinecraftForgeClient.registerItemRenderer(GCCoreItems.key, new GCCoreItemRendererKey(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/treasure.png")));
-		MinecraftForgeClient.registerItemRenderer(GCCoreItems.meteorChunk, new GCCoreItemRendererMeteorChunk());
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(GCBlocks.unlitTorch), new ItemRendererUnlitTorch());
+		MinecraftForgeClient.registerItemRenderer(GCItems.rocketTier1, new ItemRendererTier1Rocket(new EntityTier1Rocket(FMLClientHandler.instance().getClient().theWorld), new ModelTier1Rocket(), new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/rocketT1.png")));
+		MinecraftForgeClient.registerItemRenderer(GCItems.buggy, new ItemRendererBuggy());
+		MinecraftForgeClient.registerItemRenderer(GCItems.flag, new ItemRendererFlag());
+		MinecraftForgeClient.registerItemRenderer(GCItems.key, new ItemRendererKey(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/treasure.png")));
+		MinecraftForgeClient.registerItemRenderer(GCItems.meteorChunk, new ItemRendererMeteorChunk());
 	}
 
 	public static void registerTileEntityRenderers()
 	{
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAluminumWire.class, new GCCoreRenderAluminumWire());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTreasureChest.class, new GCCoreTileEntityTreasureChestRenderer());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityParachest.class, new GCCoreTileEntityParachestRenderer());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAdvancedCraftingTable.class, new GCCoreTileEntityAdvancedCraftingTableRenderer());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySolar.class, new GCCoreTileEntitySolarPanelRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAluminumWire.class, new TileEntityAluminumWireRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTreasureChest.class, new TileEntityTreasureChestRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityParachest.class, new TileEntityParachestRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAdvancedCraftingTable.class, new TileEntityNasaWorkbenchRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySolar.class, new TileEntitySolarPanelRenderer());
 	}
 
 	public static void registerBlockHandlers()
@@ -217,14 +217,14 @@ public class ClientProxy extends CommonProxy
 		ClientProxy.renderIdCraftingTable = RenderingRegistry.getNextAvailableRenderId();
 		ClientProxy.renderIdLandingPad = RenderingRegistry.getNextAvailableRenderId();
 		ClientProxy.renderIdMachine = RenderingRegistry.getNextAvailableRenderId();
-		RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererTreasureChest(ClientProxy.renderIdTreasureChest));
-		RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererUnlitTorch(ClientProxy.renderIdTorchUnlit));
-		RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererBreathableAir(ClientProxy.renderIdBreathableAir));
-		RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererOxygenPipe(ClientProxy.renderIdOxygenPipe));
-		RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererMeteor(ClientProxy.renderIdMeteor));
-		RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererCraftingTable(ClientProxy.renderIdCraftingTable));
-		RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererLandingPad(ClientProxy.renderIdLandingPad));
-		RenderingRegistry.registerBlockHandler(new GCCoreBlockRendererMachine(ClientProxy.renderIdMachine));
+		RenderingRegistry.registerBlockHandler(new BlockRendererTreasureChest(ClientProxy.renderIdTreasureChest));
+		RenderingRegistry.registerBlockHandler(new BlockRendererUnlitTorch(ClientProxy.renderIdTorchUnlit));
+		RenderingRegistry.registerBlockHandler(new BlockRendererBreathableAir(ClientProxy.renderIdBreathableAir));
+		RenderingRegistry.registerBlockHandler(new BlockRendererOxygenPipe(ClientProxy.renderIdOxygenPipe));
+		RenderingRegistry.registerBlockHandler(new BlockRendererMeteor(ClientProxy.renderIdMeteor));
+		RenderingRegistry.registerBlockHandler(new BlockRendererCraftingTable(ClientProxy.renderIdCraftingTable));
+		RenderingRegistry.registerBlockHandler(new BlockRendererLandingPad(ClientProxy.renderIdLandingPad));
+		RenderingRegistry.registerBlockHandler(new BlockRendererMachine(ClientProxy.renderIdMachine));
 	}
 
 	public static void setupCapes()
@@ -293,35 +293,35 @@ public class ClientProxy extends CommonProxy
 	@Override
 	public int getBlockRenderID(Block blockID)
 	{
-		if (blockID == GCCoreBlocks.treasureChestTier1)
+		if (blockID == GCBlocks.treasureChestTier1)
 		{
 			return ClientProxy.renderIdTreasureChest;
 		}
-		else if (blockID == GCCoreBlocks.breatheableAir)
+		else if (blockID == GCBlocks.breatheableAir)
 		{
 			return ClientProxy.renderIdBreathableAir;
 		}
-		else if (blockID == GCCoreBlocks.oxygenPipe)
+		else if (blockID == GCBlocks.oxygenPipe)
 		{
 			return ClientProxy.renderIdOxygenPipe;
 		}
-		else if (blockID == GCCoreBlocks.fallenMeteor)
+		else if (blockID == GCBlocks.fallenMeteor)
 		{
 			return ClientProxy.renderIdMeteor;
 		}
-		else if (blockID == GCCoreBlocks.nasaWorkbench)
+		else if (blockID == GCBlocks.nasaWorkbench)
 		{
 			return ClientProxy.renderIdCraftingTable;
 		}
-		else if (blockID == GCCoreBlocks.landingPadFull)
+		else if (blockID == GCBlocks.landingPadFull)
 		{
 			return ClientProxy.renderIdLandingPad;
 		}
-		else if (blockID == GCCoreBlocks.unlitTorch || blockID == GCCoreBlocks.unlitTorchLit || blockID == GCCoreBlocks.glowstoneTorch)
+		else if (blockID == GCBlocks.unlitTorch || blockID == GCBlocks.unlitTorchLit || blockID == GCBlocks.glowstoneTorch)
 		{
 			return ClientProxy.renderIdTorchUnlit;
 		}
-		else if (blockID == GCCoreBlocks.fuelLoader || blockID == GCCoreBlocks.cargoLoader || blockID == GCCoreBlocks.machineBase || blockID == GCCoreBlocks.machineBase2 || blockID == GCCoreBlocks.oxygenCollector || blockID == GCCoreBlocks.oxygenCompressor || blockID == GCCoreBlocks.oxygenDetector || blockID == GCCoreBlocks.oxygenDistributor || blockID == GCCoreBlocks.oxygenSealer || blockID == GCCoreBlocks.refinery)
+		else if (blockID == GCBlocks.fuelLoader || blockID == GCBlocks.cargoLoader || blockID == GCBlocks.machineBase || blockID == GCBlocks.machineBase2 || blockID == GCBlocks.oxygenCollector || blockID == GCBlocks.oxygenCompressor || blockID == GCBlocks.oxygenDetector || blockID == GCBlocks.oxygenDistributor || blockID == GCBlocks.oxygenSealer || blockID == GCBlocks.refinery)
 		{
 			return ClientProxy.renderIdMachine;
 		}

@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.client.gui.screen;
 
 import java.net.URI;
 
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.CoreUtil;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -51,7 +51,7 @@ public class GuiMissingCore extends GuiScreen
         this.urlY = offset - 2;
         this.urlWidth = this.fontRendererObj.getStringWidth(s) + 20;
         this.urlHeight = 14;
-        Gui.drawRect(this.urlX, this.urlY, this.urlX + this.urlWidth, this.urlY + this.urlHeight, GCCoreUtil.to32BitColor(50, 0, 0, 255));
+        Gui.drawRect(this.urlX, this.urlY, this.urlX + this.urlWidth, this.urlY + this.urlHeight, CoreUtil.to32BitColor(50, 0, 0, 255));
         this.drawCenteredString(this.fontRendererObj, s, this.width / 2, offset, 0x999999);
     }
 

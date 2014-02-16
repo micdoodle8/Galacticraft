@@ -7,7 +7,7 @@ import micdoodle8.mods.galacticraft.api.recipe.ISchematicResultPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.element.InfoRegion;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerSchematic;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerSchematic;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import net.minecraft.client.gui.GuiButton;
@@ -35,7 +35,7 @@ public class GuiSchematicInput extends GuiAdvancedContainer implements ISchemati
 
     public GuiSchematicInput(InventoryPlayer par1InventoryPlayer, int x, int y, int z)
     {
-        super(new GCCoreContainerSchematic(par1InventoryPlayer, x, y, z));
+        super(new ContainerSchematic(par1InventoryPlayer, x, y, z));
     }
 
     @SuppressWarnings("unchecked")

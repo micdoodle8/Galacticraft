@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.client.gui.container;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.IScaleableFuelLevel;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerParachest;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerParachest;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -41,7 +41,7 @@ public class GuiParachest extends GuiAdvancedContainer
 
     public GuiParachest(IInventory par1IInventory, IInventory par2IInventory)
     {
-        super(new GCCoreContainerParachest(par1IInventory, par2IInventory));
+        super(new ContainerParachest(par1IInventory, par2IInventory));
         this.upperChestInventory = par1IInventory;
         this.lowerChestInventory = par2IInventory;
         this.allowUserInput = false;

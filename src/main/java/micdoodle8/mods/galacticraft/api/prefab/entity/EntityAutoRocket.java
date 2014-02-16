@@ -12,9 +12,9 @@ import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPadFull;
-import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
-import micdoodle8.mods.galacticraft.core.event.GCCoreLandingPadRemovalEvent;
+import micdoodle8.mods.galacticraft.core.blocks.BlockLandingPadFull;
+import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
+import micdoodle8.mods.galacticraft.core.event.EventLandingPadRemoval;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFuelLoader;
@@ -258,7 +258,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 								{
 									Block block = world.getBlock(launchController.xCoord + x, launchController.yCoord, launchController.zCoord + z);
 
-									if (block instanceof GCCoreBlockLandingPadFull)
+									if (block instanceof BlockLandingPadFull)
 									{
 										if (doSet)
 										{
@@ -678,10 +678,10 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
 		if (!this.worldObj.isRemote)
 		{
-			if (!(this.worldObj.provider instanceof IOrbitDimension) && this.riddenByEntity != null && this.riddenByEntity instanceof GCCorePlayerMP)
+			if (!(this.worldObj.provider instanceof IOrbitDimension) && this.riddenByEntity != null && this.riddenByEntity instanceof GCEntityPlayerMP)
 			{
-				((GCCorePlayerMP) this.riddenByEntity).setCoordsTeleportedFromX(this.riddenByEntity.posX);
-				((GCCorePlayerMP) this.riddenByEntity).setCoordsTeleportedFromZ(this.riddenByEntity.posZ);
+				((GCEntityPlayerMP) this.riddenByEntity).setCoordsTeleportedFromX(this.riddenByEntity.posX);
+				((GCEntityPlayerMP) this.riddenByEntity).setCoordsTeleportedFromZ(this.riddenByEntity.posZ);
 			}
 
 			int amountRemoved = 0;
@@ -694,11 +694,11 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 					{
 						final Block block = this.worldObj.getBlock(x, y, z);
 
-						if (block != null && block instanceof GCCoreBlockLandingPadFull)
+						if (block != null && block instanceof BlockLandingPadFull)
 						{
 							if (amountRemoved < 9)
 							{
-								GCCoreLandingPadRemovalEvent event = new GCCoreLandingPadRemovalEvent(this.worldObj, x, y, z);
+								EventLandingPadRemoval event = new EventLandingPadRemoval(this.worldObj, x, y, z);
 								MinecraftForge.EVENT_BUS.post(event);
 
 								if (event.allow)

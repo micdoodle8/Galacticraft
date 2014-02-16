@@ -7,7 +7,7 @@ import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay;
 import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay.ElectricUnit;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.element.InfoRegion;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerAirDistributor;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -36,7 +36,7 @@ public class GuiAirDistributor extends GuiAdvancedContainer
 
     public GuiAirDistributor(InventoryPlayer par1InventoryPlayer, TileEntityOxygenDistributor par2TileEntityAirDistributor)
     {
-        super(new GCCoreContainerAirDistributor(par1InventoryPlayer, par2TileEntityAirDistributor));
+        super(new ContainerOxygenDistributor(par1InventoryPlayer, par2TileEntityAirDistributor));
         this.distributor = par2TileEntityAirDistributor;
         this.ySize = 180;
     }

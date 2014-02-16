@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockMachine;
+import micdoodle8.mods.galacticraft.core.blocks.BlockMachine;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
@@ -275,13 +275,13 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 	@Override
 	public EnumSet<ForgeDirection> getElectricalInputDirections()
 	{
-		return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() - GCCoreBlockMachine.STORAGE_MODULE_METADATA + 2).getOpposite(), ForgeDirection.UNKNOWN);
+		return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() - BlockMachine.STORAGE_MODULE_METADATA + 2).getOpposite(), ForgeDirection.UNKNOWN);
 	}
 
 	@Override
 	public EnumSet<ForgeDirection> getElectricalOutputDirections()
 	{
-		return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() - GCCoreBlockMachine.STORAGE_MODULE_METADATA + 2), ForgeDirection.UNKNOWN);
+		return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() - BlockMachine.STORAGE_MODULE_METADATA + 2), ForgeDirection.UNKNOWN);
 	}
 
 	@Override

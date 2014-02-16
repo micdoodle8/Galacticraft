@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 import java.util.EnumSet;
 
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
-import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol;
+import micdoodle8.mods.galacticraft.core.oxygen.SealerThreadManager;
 import micdoodle8.mods.galacticraft.core.oxygen.ThreadFindSeal;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.player.EntityPlayer;
@@ -85,7 +85,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
 
 			if (this.ticks % 100 == 0 && this.stopSealThreadCooldown <= 0)
 			{
-				OxygenPressureProtocol.updateSealerStatus(this);
+				SealerThreadManager.updateSealerStatus(this);
 			}
 
 			this.lastDisabled = this.disabled;

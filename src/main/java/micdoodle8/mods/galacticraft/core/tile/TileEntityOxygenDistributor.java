@@ -5,7 +5,7 @@ import java.util.EnumSet;
 import micdoodle8.mods.galacticraft.api.block.IOxygenReliantBlock;
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityOxygenBubble;
+import micdoodle8.mods.galacticraft.core.entities.EntityBubble;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -34,7 +34,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 
 	private ItemStack[] containingItems = new ItemStack[1];
 
-	public GCCoreEntityOxygenBubble oxygenBubble;
+	public EntityBubble oxygenBubble;
 
 	public TileEntityOxygenDistributor()
 	{
@@ -81,7 +81,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 
 		if (this.oxygenBubble == null)
 		{
-			this.oxygenBubble = new GCCoreEntityOxygenBubble(this.worldObj, new Vector3(this), this);
+			this.oxygenBubble = new EntityBubble(this.worldObj, new Vector3(this), this);
 
 			if (!this.worldObj.isRemote)
 			{

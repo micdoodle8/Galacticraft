@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 import java.util.ArrayList;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import net.minecraft.tileentity.TileEntity;
 
 /**
@@ -45,7 +45,7 @@ public class TileEntityBuggyFuelerSingle extends TileEntity
 				tile.getWorldObj().setBlockToAir(tile.xCoord, tile.yCoord, tile.zCoord);
 			}
 
-			this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, GCCoreBlocks.landingPadFull, 1, 3);
+			this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, GCBlocks.landingPadFull, 1, 3);
 			final TileEntityBuggyFueler tile = (TileEntityBuggyFueler) this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord);
 
 			if (tile instanceof IMultiBlock)

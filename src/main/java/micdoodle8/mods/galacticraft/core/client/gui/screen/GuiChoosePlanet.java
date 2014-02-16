@@ -5,15 +5,15 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import micdoodle8.mods.galacticraft.api.event.client.GCCoreEventChoosePlanetGui.Init;
+import micdoodle8.mods.galacticraft.api.event.client.EventChoosePlanetGui.Init;
 import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
-import micdoodle8.mods.galacticraft.core.GCLog;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiTexturedButton;
-import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerSP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.CoreUtil;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.client.gui.FontRenderer;
@@ -498,8 +498,8 @@ public class GuiChoosePlanet extends GuiScreen
                     int count = (int) (this.spaceTimer / 20 % entry.itemStringPairs.size());
                     ItemStringPair pair = entry.itemStringPairs.get(count);
 
-                    int red = GCCoreUtil.to32BitColor(255, 255, 10, 10);
-                    int green = GCCoreUtil.to32BitColor(255, 10, 255, 10);
+                    int red = CoreUtil.to32BitColor(255, 255, 10, 10);
+                    int green = CoreUtil.to32BitColor(255, 10, 255, 10);
 
                     String s = pair.description;
 
@@ -863,11 +863,11 @@ public class GuiChoosePlanet extends GuiScreen
 
     public boolean canCreateSpaceStation()
     {
-        if (((GCCorePlayerSP) this.mc.thePlayer).clientSpaceStationID == 0)
+        if (((GCEntityClientPlayerMP) this.mc.thePlayer).clientSpaceStationID == 0)
         {
             return true;
         }
-        else if (((GCCorePlayerSP) this.mc.thePlayer).clientSpaceStationID == -1)
+        else if (((GCEntityClientPlayerMP) this.mc.thePlayer).clientSpaceStationID == -1)
         {
             return true;
         }
@@ -879,7 +879,7 @@ public class GuiChoosePlanet extends GuiScreen
 
     public boolean playerAlreadyCreatedDimension()
     {
-        if (((GCCorePlayerSP) this.mc.thePlayer).clientSpaceStationID != 0 && ((GCCorePlayerSP) this.mc.thePlayer).clientSpaceStationID != -1)
+        if (((GCEntityClientPlayerMP) this.mc.thePlayer).clientSpaceStationID != 0 && ((GCEntityClientPlayerMP) this.mc.thePlayer).clientSpaceStationID != -1)
         {
             return true;
         }

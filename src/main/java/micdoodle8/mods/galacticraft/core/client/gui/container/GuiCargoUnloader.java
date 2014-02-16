@@ -7,8 +7,9 @@ import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay;
 import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay.ElectricUnit;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.element.InfoRegion;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerCargoLoader;
-import micdoodle8.mods.galacticraft.core.network.PacketDisableTile;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerCargoLoader;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCargoUnloader;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import net.minecraft.client.gui.GuiButton;
@@ -38,7 +39,7 @@ public class GuiCargoUnloader extends GuiAdvancedContainer
 
     public GuiCargoUnloader(InventoryPlayer par1InventoryPlayer, TileEntityCargoUnloader par2TileEntityAirDistributor)
     {
-        super(new GCCoreContainerCargoLoader(par1InventoryPlayer, par2TileEntityAirDistributor));
+        super(new ContainerCargoLoader(par1InventoryPlayer, par2TileEntityAirDistributor));
         this.cargoUnloader = par2TileEntityAirDistributor;
         this.ySize = 201;
     }
@@ -49,8 +50,7 @@ public class GuiCargoUnloader extends GuiAdvancedContainer
         switch (par1GuiButton.id)
         {
         case 0:
-        	GalacticraftCore.packetPipeline.sendToServer(new PacketDisableTile(this.cargoUnloader.xCoord, this.cargoUnloader.yCoord, this.cargoUnloader.zCoord, !this.cargoUnloader.disabled));
-//            PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.UPDATE_DISABLEABLE_BUTTON, new Object[] { this.cargoUnloader.xCoord, this.cargoUnloader.yCoord, this.cargoUnloader.zCoord, 0 }));
+        	GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, new Object[] { this.cargoUnloader.xCoord, this.cargoUnloader.yCoord, this.cargoUnloader.zCoord, 0 }));
             break;
         }
     }

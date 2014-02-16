@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.client.gui.container;
 import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay;
 import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay.ElectricUnit;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerElectricIngotCompressor;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerElectricIngotCompressor;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricIngotCompressor;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -37,7 +37,7 @@ public class GuiElectricIngotCompressor extends GuiContainer
 
     public GuiElectricIngotCompressor(InventoryPlayer par1InventoryPlayer, TileEntityElectricIngotCompressor tileEntity)
     {
-        super(new GCCoreContainerElectricIngotCompressor(par1InventoryPlayer, tileEntity));
+        super(new ContainerElectricIngotCompressor(par1InventoryPlayer, tileEntity));
         this.tileEntity = tileEntity;
         this.ySize = 199;
     }

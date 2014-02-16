@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.client.gui.element;
 import java.util.Iterator;
 import java.util.List;
 
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.CoreUtil;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderItem;
@@ -77,7 +77,7 @@ public class InfoRegion extends Gui
         {
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             int k = this.getHoverState(this.withinRegion);
-            Gui.drawRect(this.xPosition, this.yPosition, this.xPosition + this.width, this.yPosition + this.height, GCCoreUtil.to32BitColor(100 * k, 255, 0, 0));
+            Gui.drawRect(this.xPosition, this.yPosition, this.xPosition + this.width, this.yPosition + this.height, CoreUtil.to32BitColor(100 * k, 255, 0, 0));
         }
 
         if (this.tooltipStrings != null && !this.tooltipStrings.isEmpty() && this.withinRegion)

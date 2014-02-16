@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui.element;
 
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.CoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
@@ -132,8 +132,8 @@ public class GuiTextBox extends GuiButton
 
         if (this.visible)
         {
-            Gui.drawRect(this.xPosition, this.yPosition, this.xPosition + this.width, this.yPosition + this.height, GCCoreUtil.to32BitColor(140, 140, 140, 140));
-            Gui.drawRect(this.xPosition + 1, this.yPosition + 1, this.xPosition + this.width - 1, this.yPosition + this.height - 1, GCCoreUtil.to32BitColor(255, 0, 0, 0));
+            Gui.drawRect(this.xPosition, this.yPosition, this.xPosition + this.width, this.yPosition + this.height, CoreUtil.to32BitColor(140, 140, 140, 140));
+            Gui.drawRect(this.xPosition + 1, this.yPosition + 1, this.xPosition + this.width - 1, this.yPosition + this.height - 1, CoreUtil.to32BitColor(255, 0, 0, 0));
 
             this.cursorPulse++;
 
@@ -176,7 +176,7 @@ public class GuiTextBox extends GuiButton
                 this.incorrectUseTimer--;
             }
 
-            this.drawString(this.mc.fontRenderer, this.text + (this.cursorPulse / 24 % 2 == 0 && this.isTextFocused ? "_" : ""), this.xPosition + 4, this.yPosition + this.height / 2 - 4, this.incorrectUseTimer > 0 ? GCCoreUtil.to32BitColor(255, 255, 20, 20) : this.parentGui.getTextColor(this));
+            this.drawString(this.mc.fontRenderer, this.text + (this.cursorPulse / 24 % 2 == 0 && this.isTextFocused ? "_" : ""), this.xPosition + 4, this.yPosition + this.height / 2 - 4, this.incorrectUseTimer > 0 ? CoreUtil.to32BitColor(255, 255, 20, 20) : this.parentGui.getTextColor(this));
         }
     }
 

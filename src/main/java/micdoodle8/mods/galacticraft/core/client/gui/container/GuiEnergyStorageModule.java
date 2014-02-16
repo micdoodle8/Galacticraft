@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.client.gui.container;
 import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay;
 import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay.ElectricUnit;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerEnergyStorageModule;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerEnergyStorageModule;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityEnergyStorageModule;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -33,7 +33,7 @@ public class GuiEnergyStorageModule extends GuiContainer
 
     public GuiEnergyStorageModule(InventoryPlayer par1InventoryPlayer, TileEntityEnergyStorageModule batteryBox)
     {
-        super(new GCCoreContainerEnergyStorageModule(par1InventoryPlayer, batteryBox));
+        super(new ContainerEnergyStorageModule(par1InventoryPlayer, batteryBox));
         this.tileEntity = batteryBox;
     }
 

@@ -4,7 +4,7 @@ import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockMachine2;
+import micdoodle8.mods.galacticraft.core.blocks.BlockMachine2;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -177,12 +177,12 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
 	@Override
 	public EnumSet<ForgeDirection> getOxygenInputDirections()
 	{
-		return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() - GCCoreBlockMachine2.OXYGEN_STORAGE_MODULE_METADATA + 2));
+		return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() - BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA + 2));
 	}
 
 	@Override
 	public EnumSet<ForgeDirection> getOxygenOutputDirections()
 	{
-		return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() - GCCoreBlockMachine2.OXYGEN_STORAGE_MODULE_METADATA + 2).getOpposite());
+		return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() - BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA + 2).getOpposite());
 	}
 }

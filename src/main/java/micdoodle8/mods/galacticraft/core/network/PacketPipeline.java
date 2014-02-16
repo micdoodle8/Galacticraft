@@ -12,8 +12,8 @@ import java.util.EnumMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import micdoodle8.mods.galacticraft.core.GCLog;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -142,6 +142,8 @@ public class PacketPipeline extends MessageToMessageCodec<FMLProxyPacket, IPacke
 		this.registerPacket(PacketEntityUpdate.class);
 		this.registerPacket(PacketRotateRocket.class);
 		this.registerPacket(PacketDynamic.class);
+		this.registerPacket(PacketControllableEntity.class);
+		this.registerPacket(PacketEntityUpdate.class);
 	}
 
 	// Method to call from FMLPostInitializationEvent

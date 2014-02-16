@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.client.gui.container;
 import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay;
 import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay.ElectricUnit;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerCircuitFabricator;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerCircuitFabricator;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCircuitFabricator;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricIngotCompressor;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
@@ -38,7 +38,7 @@ public class GuiCircuitFabricator extends GuiContainer
 
     public GuiCircuitFabricator(InventoryPlayer par1InventoryPlayer, TileEntityCircuitFabricator tileEntity)
     {
-        super(new GCCoreContainerCircuitFabricator(par1InventoryPlayer, tileEntity));
+        super(new ContainerCircuitFabricator(par1InventoryPlayer, tileEntity));
         this.tileEntity = tileEntity;
         this.ySize = 192;
     }

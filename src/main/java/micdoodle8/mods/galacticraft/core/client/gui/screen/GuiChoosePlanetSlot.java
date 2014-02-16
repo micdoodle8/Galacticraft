@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.client.gui.screen;
 
 import java.util.ArrayList;
 
-import micdoodle8.mods.galacticraft.api.event.client.GCCoreEventChoosePlanetGui.SlotClicked;
+import micdoodle8.mods.galacticraft.api.event.client.EventChoosePlanetGui.SlotClicked;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import net.minecraft.client.gui.GuiButton;

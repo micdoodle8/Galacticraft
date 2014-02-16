@@ -5,11 +5,11 @@ import java.util.List;
 import micdoodle8.mods.galacticraft.api.item.IBreathableArmor;
 import micdoodle8.mods.galacticraft.api.item.IBreathableArmor.EnumGearType;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
-import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenGear;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenMask;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItemOxygenTank;
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
+import micdoodle8.mods.galacticraft.core.items.ItemOxygenGear;
+import micdoodle8.mods.galacticraft.core.items.ItemOxygenMask;
+import micdoodle8.mods.galacticraft.core.items.ItemOxygenTank;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenDistributor;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiChat;
@@ -112,7 +112,7 @@ public class OxygenUtil
 					{
 						Block j2 = world.getBlock(k1, l1, i2);
 
-						if (j2 == GCCoreBlocks.breatheableAir)
+						if (j2 == GCBlocks.breatheableAir)
 						{
 							return true;
 						}
@@ -126,8 +126,8 @@ public class OxygenUtil
 
 	public static int getDrainSpacing(ItemStack tank, ItemStack tank2)
 	{
-		boolean tank1Valid = tank != null ? tank.getItem() instanceof GCCoreItemOxygenTank && tank.getMaxDamage() - tank.getItemDamage() > 0 : false;
-		boolean tank2Valid = tank2 != null ? tank2.getItem() instanceof GCCoreItemOxygenTank && tank2.getMaxDamage() - tank2.getItemDamage() > 0 : false;
+		boolean tank1Valid = tank != null ? tank.getItem() instanceof ItemOxygenTank && tank.getMaxDamage() - tank.getItemDamage() > 0 : false;
+		boolean tank2Valid = tank2 != null ? tank2.getItem() instanceof ItemOxygenTank && tank2.getMaxDamage() - tank2.getItemDamage() > 0 : false;
 
 		if (!tank1Valid && !tank2Valid)
 		{
@@ -142,7 +142,7 @@ public class OxygenUtil
 		return 18;
 	}
 
-	public static boolean hasValidOxygenSetup(GCCorePlayerMP player)
+	public static boolean hasValidOxygenSetup(GCEntityPlayerMP player)
 	{
 		boolean missingComponent = false;
 
@@ -240,13 +240,13 @@ public class OxygenUtil
 		switch (slotIndex)
 		{
 		case 0:
-			return stack.getItem() instanceof GCCoreItemOxygenMask;
+			return stack.getItem() instanceof ItemOxygenMask;
 		case 1:
-			return stack.getItem() instanceof GCCoreItemOxygenGear;
+			return stack.getItem() instanceof ItemOxygenGear;
 		case 2:
-			return stack.getItem() instanceof GCCoreItemOxygenTank;
+			return stack.getItem() instanceof ItemOxygenTank;
 		case 3:
-			return stack.getItem() instanceof GCCoreItemOxygenTank;
+			return stack.getItem() instanceof ItemOxygenTank;
 		}
 
 		return false;

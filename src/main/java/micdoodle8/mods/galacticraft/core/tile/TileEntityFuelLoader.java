@@ -5,8 +5,8 @@ import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItemFuelCanister;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.items.ItemFuelCanister;
+import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -84,9 +84,9 @@ public class TileEntityFuelLoader extends TileEntityElectricBlock implements IIn
 					{
 						this.fuelTank.fill(liquid, true);
 
-						if (this.containingItems[1].getItem() instanceof GCCoreItemFuelCanister)
+						if (this.containingItems[1].getItem() instanceof ItemFuelCanister)
 						{
-							this.containingItems[1] = new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.oilCanister.getMaxDamage());
+							this.containingItems[1] = new ItemStack(GCItems.oilCanister, 1, GCItems.oilCanister.getMaxDamage());
 						}
 						else if (FluidContainerRegistry.isBucket(this.containingItems[1]) && FluidContainerRegistry.isFilledContainer(this.containingItems[1]))
 						{

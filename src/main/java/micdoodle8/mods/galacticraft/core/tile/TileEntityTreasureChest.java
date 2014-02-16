@@ -5,7 +5,7 @@ import java.util.List;
 
 import micdoodle8.mods.galacticraft.api.item.IKeyable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockT1TreasureChest;
+import micdoodle8.mods.galacticraft.core.blocks.BlockT1TreasureChest;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
@@ -349,7 +349,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements IInve
 	private boolean func_94044_a(int par1, int par2, int par3)
 	{
 		Block block = this.worldObj.getBlock(par1, par2, par3);
-		return block != null && block instanceof GCCoreBlockT1TreasureChest;
+		return block != null && block instanceof BlockT1TreasureChest;
 	}
 
 	/**
@@ -490,7 +490,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements IInve
 	@Override
 	public void closeInventory()
 	{
-		if (this.getBlockType() != null && this.getBlockType() instanceof GCCoreBlockT1TreasureChest)
+		if (this.getBlockType() != null && this.getBlockType() instanceof BlockT1TreasureChest)
 		{
 			--this.numUsingPlayers;
 			this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 1, this.numUsingPlayers);

@@ -5,13 +5,13 @@ import java.util.List;
 
 import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay;
 import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay.ElectricUnit;
-import micdoodle8.mods.galacticraft.core.GCCoreCompatibilityManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.element.InfoRegion;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRefinery;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerRefinery;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityRefinery;
+import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -50,7 +50,7 @@ public class GuiRefinery extends GuiAdvancedContainer
 
     public GuiRefinery(InventoryPlayer par1InventoryPlayer, TileEntityRefinery tileEntity)
     {
-        super(new GCCoreContainerRefinery(par1InventoryPlayer, tileEntity));
+        super(new ContainerRefinery(par1InventoryPlayer, tileEntity));
         this.tileEntity = tileEntity;
         this.ySize = 168;
     }
@@ -87,7 +87,7 @@ public class GuiRefinery extends GuiAdvancedContainer
         this.fuelTankRegion.parentHeight = this.height;
         this.infoRegions.add(this.fuelTankRegion);
         List<String> oilSlotDesc = new ArrayList<String>();
-        oilSlotDesc.add("Refinery oil input. Place oil canisters" + (GCCoreCompatibilityManager.isBCraftLoaded() ? " or oil buckets" : ""));
+        oilSlotDesc.add("Refinery oil input. Place oil canisters" + (CompatibilityManager.isBCraftLoaded() ? " or oil buckets" : ""));
         oilSlotDesc.add("into this slot to load it into the oil tank.");
         this.infoRegions.add(new InfoRegion((this.width - this.xSize) / 2 + 6, (this.height - this.ySize) / 2 + 6, 18, 18, oilSlotDesc, this.width, this.height));
         List<String> fuelSlotDesc = new ArrayList<String>();
