@@ -304,7 +304,7 @@ public class UniversalNetwork extends ElectricityNetwork
 						{
 							boolean canConnect = false;
 							
-							if (acceptor instanceof IElectrical && ((IElectrical) acceptor).canConnect(direction, NetworkType.POWER))
+							if (acceptor instanceof IElectrical && ((IElectrical) acceptor).canConnect(direction.getOpposite(), NetworkType.POWER))
 							{
 								canConnect = true;
 							}

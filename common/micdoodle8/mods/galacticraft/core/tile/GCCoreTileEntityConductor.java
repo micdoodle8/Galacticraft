@@ -75,12 +75,13 @@ public abstract class GCCoreTileEntityConductor extends GCCoreTileEntityAdvanced
 
 				if (tileEntity != null)
 				{
-					if (tileEntity.getClass() == this.getClass() && tileEntity instanceof INetworkProvider)
+					if (tileEntity.getClass() == this.getClass() && tileEntity instanceof INetworkProvider && !this.getNetwork().equals(((INetworkProvider) tileEntity).getNetwork()))
 					{
 						this.setNetwork((IGridNetwork) this.getNetwork().merge(((INetworkProvider) tileEntity).getNetwork()));
 					}
 				}
 			}
+			
 
 			this.getNetwork().refresh();
 		}

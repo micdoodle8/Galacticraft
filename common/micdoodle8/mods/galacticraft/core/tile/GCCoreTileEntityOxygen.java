@@ -138,8 +138,16 @@ public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectricBlo
 		{
 			return false;
 		}
+		
+		switch (type)
+		{
+		case OXYGEN:
+			return this.getOxygenInputDirections().contains(direction) || this.getOxygenOutputDirections().contains(direction);
+		case POWER:
+			return super.canConnect(direction, type);
+		}
 
-		return this.getElectricalInputDirections().contains(direction) || this.getElectricalOutputDirections().contains(direction) || this.getOxygenInputDirections().contains(direction) || this.getOxygenOutputDirections().contains(direction);
+		return false;
 	}
 
 	@Override
