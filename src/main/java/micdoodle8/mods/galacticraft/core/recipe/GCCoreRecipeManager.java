@@ -418,31 +418,30 @@ public class GCCoreRecipeManager
 
 	private static void addIndustrialCraft2Recipes()
 	{
-
-		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.IC2_GOLD_CABLE.getMetadata()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("insulatedGoldCableItem"), 'X', new ItemStack(GCCoreBlocks.basicBlock, 1, 4) });
-		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.IC2_HV_CABLE.getMetadata()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("insulatedIronCableItem"), 'X', new ItemStack(GCCoreBlocks.basicBlock, 1, 4) });
-		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.IC2_GLASS_FIBRE_CABLE.getMetadata()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("glassFiberCableItem"), 'X', new ItemStack(GCCoreBlocks.basicBlock, 1, 4) });
-		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.IC2_LV_CABLE.getMetadata()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("tinCableItem"), 'X', new ItemStack(GCCoreBlocks.basicBlock, 1, 4) });
-
-		try
-		{
-			Class<?> clazz = Class.forName("ic2.core.Ic2Items");
-
-			Object copperDustObject = clazz.getField("crushedCopperOre").get(null);
-			ItemStack copperDustItemStack = (ItemStack) copperDustObject;
-			Class<?> clazz2 = Class.forName("ic2.api.recipe.RecipeInputItemStack");
-			Object o = clazz2.getConstructor(ItemStack.class).newInstance(new ItemStack(GCCoreBlocks.blockMoon, 1, 0));
-			Method addRecipe = Class.forName("ic2.api.recipe.IMachineRecipeManager").getMethod("addRecipe", Class.forName("ic2.api.recipe.IRecipeInput"), NBTTagCompound.class, ItemStack[].class);
-			addRecipe.invoke(Class.forName("ic2.api.recipe.Recipes").getField("macerator").get(null), o, null, new ItemStack[] { new ItemStack(copperDustItemStack.getItem(), 2, copperDustItemStack.getItemDamage()) });
-
-			Object tinDustObject = clazz.getField("crushedTinOre").get(null);
-			ItemStack tinDustItemStack = (ItemStack) tinDustObject;
-			o = clazz2.getConstructor(ItemStack.class).newInstance(new ItemStack(GCCoreBlocks.blockMoon, 1, 1));
-			addRecipe.invoke(Class.forName("ic2.api.recipe.Recipes").getField("macerator").get(null), o, null, new ItemStack[] { new ItemStack(tinDustItemStack.getItem(), 2, tinDustItemStack.getItemDamage()) });
-		}
-		catch (Throwable e)
-		{
-			e.printStackTrace();
-		}
+//		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.IC2_GOLD_CABLE.getMetadata()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("insulatedGoldCableItem"), 'X', new ItemStack(GCCoreBlocks.basicBlock, 1, 4) });
+//		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.IC2_HV_CABLE.getMetadata()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("insulatedIronCableItem"), 'X', new ItemStack(GCCoreBlocks.basicBlock, 1, 4) });
+//		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.IC2_GLASS_FIBRE_CABLE.getMetadata()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("glassFiberCableItem"), 'X', new ItemStack(GCCoreBlocks.basicBlock, 1, 4) });
+//		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.IC2_LV_CABLE.getMetadata()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("tinCableItem"), 'X', new ItemStack(GCCoreBlocks.basicBlock, 1, 4) });
+//
+//		try
+//		{
+//			Class<?> clazz = Class.forName("ic2.core.Ic2Items");
+//
+//			Object copperDustObject = clazz.getField("crushedCopperOre").get(null);
+//			ItemStack copperDustItemStack = (ItemStack) copperDustObject;
+//			Class<?> clazz2 = Class.forName("ic2.api.recipe.RecipeInputItemStack");
+//			Object o = clazz2.getConstructor(ItemStack.class).newInstance(new ItemStack(GCCoreBlocks.blockMoon, 1, 0));
+//			Method addRecipe = Class.forName("ic2.api.recipe.IMachineRecipeManager").getMethod("addRecipe", Class.forName("ic2.api.recipe.IRecipeInput"), NBTTagCompound.class, ItemStack[].class);
+//			addRecipe.invoke(Class.forName("ic2.api.recipe.Recipes").getField("macerator").get(null), o, null, new ItemStack[] { new ItemStack(copperDustItemStack.getItem(), 2, copperDustItemStack.getItemDamage()) });
+//
+//			Object tinDustObject = clazz.getField("crushedTinOre").get(null);
+//			ItemStack tinDustItemStack = (ItemStack) tinDustObject;
+//			o = clazz2.getConstructor(ItemStack.class).newInstance(new ItemStack(GCCoreBlocks.blockMoon, 1, 1));
+//			addRecipe.invoke(Class.forName("ic2.api.recipe.Recipes").getField("macerator").get(null), o, null, new ItemStack[] { new ItemStack(tinDustItemStack.getItem(), 2, tinDustItemStack.getItemDamage()) });
+//		}
+//		catch (Throwable e)
+//		{
+//			e.printStackTrace();
+//		} TODO IC2 recipes
 	}
 }

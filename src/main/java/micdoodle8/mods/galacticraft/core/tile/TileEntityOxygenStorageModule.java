@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockMachine2;
+import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -41,7 +42,7 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
 
 		if (this.scaledOxygenLevel != this.lastScaledOxygenLevel)
 		{
-			this.worldObj.markBlockForRenderUpdate(this.xCoord, this.yCoord, this.zCoord);
+			this.worldObj.func_147479_m(this.xCoord, this.yCoord, this.zCoord);
 		}
 
 		this.lastScaledOxygenLevel = this.scaledOxygenLevel;

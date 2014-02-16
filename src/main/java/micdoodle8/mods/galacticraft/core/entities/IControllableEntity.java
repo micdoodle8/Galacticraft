@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
-import net.minecraft.client.settings.KeyBinding;
 
 /**
  * IControllableEntity.java

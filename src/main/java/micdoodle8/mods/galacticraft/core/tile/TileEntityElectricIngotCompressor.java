@@ -26,7 +26,7 @@ import cpw.mods.fml.relauncher.Side;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class TileEntityElectricIngotCompressor extends TileEntityElectricBlock implements IInventory, ISidedInventory, IPacketReceiver
+public class TileEntityElectricIngotCompressor extends TileEntityElectricBlock implements IInventory, ISidedInventory
 {
 	public static final int PROCESS_TIME_REQUIRED = 200;
 	public static final float WATTS_PER_TICK_PER_STACK = 0.25F;
@@ -78,7 +78,7 @@ public class TileEntityElectricIngotCompressor extends TileEntityElectricBlock i
 
 			if (updateInv)
 			{
-				this.onInventoryChanged();
+				this.markDirty();
 			}
 		}
 
@@ -91,12 +91,12 @@ public class TileEntityElectricIngotCompressor extends TileEntityElectricBlock i
 	}
 
 	@Override
-	public void openChest()
+	public void openInventory()
 	{
 	}
 
 	@Override
-	public void closeChest()
+	public void closeInventory()
 	{
 	}
 
@@ -185,12 +185,12 @@ public class TileEntityElectricIngotCompressor extends TileEntityElectricBlock i
 	{
 		super.readFromNBT(par1NBTTagCompound);
 		this.processTicks = par1NBTTagCompound.getInteger("smeltingTicks");
-		NBTTagList var2 = par1NBTTagCompound.getTagList("Items");
+		NBTTagList var2 = par1NBTTagCompound.getTagList("Items", 10);
 		this.containingItems = new ItemStack[this.getSizeInventory() - this.compressingCraftMatrix.getSizeInventory()];
 
 		for (int var3 = 0; var3 < var2.tagCount(); ++var3)
 		{
-			NBTTagCompound var4 = (NBTTagCompound) var2.tagAt(var3);
+			NBTTagCompound var4 = (NBTTagCompound) var2.getCompoundTagAt(var3);
 			byte var5 = var4.getByte("Slot");
 
 			if (var5 >= 0 && var5 < this.containingItems.length)
@@ -347,7 +347,7 @@ public class TileEntityElectricIngotCompressor extends TileEntityElectricBlock i
 	}
 
 	@Override
-	public boolean isInvNameLocalized()
+	public boolean hasCustomInventoryName()
 	{
 		return true;
 	}

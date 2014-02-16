@@ -202,7 +202,7 @@ public class GCCoreModelPlayer extends ModelBiped
 		this.redOxygenTanks[1].setRotationPoint(-2F, 2F, 3.8F);
 		this.redOxygenTanks[1].mirror = true;
 
-		this.frequencyModule = AdvancedModelLoader.loadModel(new ResourceLocation("models/frequencyModule.obj"));
+		this.frequencyModule = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "models/frequencyModule.obj"));
 	}
 
 	@Override

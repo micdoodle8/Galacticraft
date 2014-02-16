@@ -38,18 +38,6 @@ public class GCMoonWorldChunkManager extends WorldChunkManager
 	}
 
 	@Override
-	public float[] getTemperatures(float[] par1ArrayOfFloat, int par2, int par3, int par4, int par5)
-	{
-		if (par1ArrayOfFloat == null || par1ArrayOfFloat.length < par4 * par5)
-		{
-			par1ArrayOfFloat = new float[par4 * par5];
-		}
-
-		Arrays.fill(par1ArrayOfFloat, 0, par4 * par5, 0);
-		return par1ArrayOfFloat;
-	}
-
-	@Override
 	public float[] getRainfall(float[] par1ArrayOfFloat, int par2, int par3, int par4, int par5)
 	{
 		if (par1ArrayOfFloat == null || par1ArrayOfFloat.length < par4 * par5)

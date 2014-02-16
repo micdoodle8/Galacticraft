@@ -57,6 +57,7 @@ import tconstruct.client.tabs.TabRegistry;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.ibm.icu.text.ChineseDateFormat.Field;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -92,6 +93,11 @@ public class GCCoreTickHandlerClient
 	public static Set<PlayerGearData> playerItemData = Sets.newHashSet();
 
 	private static GCCoreThreadRequirementMissing missingRequirementThread;
+	
+	public GCCoreTickHandlerClient()
+	{
+		FMLLog.info("NEW TICK HANDLER INSTANCE");
+	}
 
 	static
 	{
@@ -295,16 +301,6 @@ public class GCCoreTickHandlerClient
 				}
 			}
 
-			if (GCCoreTickHandlerClient.addTabsNextTick)
-			{
-				if (minecraft.currentScreen.getClass().equals(GuiInventory.class))
-				{
-					GCCoreTickHandlerClient.addTabsToInventory((GuiContainer) minecraft.currentScreen);
-				}
-
-				GCCoreTickHandlerClient.addTabsNextTick = false;
-			}
-
 			if (minecraft.currentScreen != null && minecraft.currentScreen instanceof GuiMainMenu)
 			{
 				GalacticraftCore.playersServer.clear();
@@ -469,7 +465,6 @@ public class GCCoreTickHandlerClient
 	@SubscribeEvent
 	public void entityJoined(EntityJoinWorldEvent event)
 	{
-		FMLLog.info("DONEERERER " + event.entity);
 	}
 
 	private boolean alreadyContainsBlock(int x1, int y1, int z1)
@@ -481,8 +476,10 @@ public class GCCoreTickHandlerClient
 	{
 		try
 		{
-			ObfuscationReflectionHelper.setPrivateValue(EntityRenderer.class, FMLClientHandler.instance().getClient().entityRenderer, value, 15);
-			ObfuscationReflectionHelper.setPrivateValue(EntityRenderer.class, FMLClientHandler.instance().getClient().entityRenderer, value, 16);
+			Class<?> clazz = FMLClientHandler.instance().getClient().entityRenderer.getClass();
+			java.lang.reflect.Field f = clazz.getDeclaredField("thirdPersonDistance");
+			f.setAccessible(true);
+			f.set(FMLClientHandler.instance().getClient().entityRenderer, value); // TODO Fix zoom for non-dev env
 		}
 		catch (final Exception ex)
 		{

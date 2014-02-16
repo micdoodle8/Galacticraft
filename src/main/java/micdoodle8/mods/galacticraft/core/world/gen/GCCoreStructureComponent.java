@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.world.gen;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -51,14 +52,14 @@ public abstract class GCCoreStructureComponent extends StructureComponent
 		final int var9 = this.getYWithOffset(var4);
 		final int var10 = this.getZWithOffset(var3, var5);
 
-		if (var7.isVecInside(var8, var9, var10) && var1.getBlockId(var8, var9, var10) != Block.mobSpawner.blockID)
+		if (var7.isVecInside(var8, var9, var10) && var1.getBlock(var8, var9, var10) != Blocks.mob_spawner)
 		{
-			var1.setBlock(var8, var9, var10, Block.mobSpawner.blockID, 0, 3);
+			var1.setBlock(var8, var9, var10, Blocks.mob_spawner, 0, 3);
 			final TileEntityMobSpawner var11 = (TileEntityMobSpawner) var1.getTileEntity(var8, var9, var10);
 
 			if (var11 != null)
 			{
-				var11.getSpawnerLogic().setMobID(var6);
+				var11.func_145881_a().setEntityName(var6);
 			}
 		}
 	}
@@ -144,14 +145,14 @@ public abstract class GCCoreStructureComponent extends StructureComponent
 	}
 
 	@Override
-	protected int getBlockIdAtCurrentPosition(World var1, int var2, int var3, int var4, StructureBoundingBox var5)
+	protected Block getBlockAtCurrentPosition(World var1, int var2, int var3, int var4, StructureBoundingBox var5)
 	{
-		return super.getBlockIdAtCurrentPosition(var1, var2, var3, var4, var5);
+		return super.getBlockAtCurrentPosition(var1, var2, var3, var4, var5);
 	}
 
 	@Override
-	protected void placeBlockAtCurrentPosition(World world, int blockID, int meta, int x, int y, int z, StructureBoundingBox bb)
+	protected void placeBlockAtCurrentPosition(World world, Block block, int meta, int x, int y, int z, StructureBoundingBox bb)
 	{
-		super.placeBlockAtCurrentPosition(world, blockID, meta, x, y, z, bb);
+		super.placeBlockAtCurrentPosition(world, block, meta, x, y, z, bb);
 	}
 }

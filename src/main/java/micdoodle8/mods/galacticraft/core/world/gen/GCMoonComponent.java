@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.world.gen;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
@@ -57,14 +58,14 @@ public abstract class GCMoonComponent extends StructureComponent
 		final int var10 = this.getYWithOffset(var4);
 		final int var11 = this.getZWithOffset(var3, var5);
 
-		if (var7.isVecInside(var9, var10, var11) && var1.getBlockId(var9, var10, var11) != Block.mobSpawner.blockID)
+		if (var7.isVecInside(var9, var10, var11) && var1.getBlock(var9, var10, var11) != Blocks.mob_spawner)
 		{
-			var1.setBlock(var9, var10, var11, Block.mobSpawner.blockID, 0, 3);
-			var8 = (TileEntityMobSpawner) var1.getBlockTileEntity(var9, var10, var11);
+			var1.setBlock(var9, var10, var11, Blocks.mob_spawner, 0, 3);
+			var8 = (TileEntityMobSpawner) var1.getTileEntity(var9, var10, var11);
 
 			if (var8 != null)
 			{
-				var8.getSpawnerLogic().setMobID(var6);
+				var8.func_145881_a().setEntityName(var6);
 			}
 		}
 
@@ -208,9 +209,9 @@ public abstract class GCMoonComponent extends StructureComponent
 	}
 
 	@Override
-	protected int getBlockIdAtCurrentPosition(World var1, int var2, int var3, int var4, StructureBoundingBox var5)
+	protected Block getBlockAtCurrentPosition(World var1, int var2, int var3, int var4, StructureBoundingBox var5)
 	{
-		return super.getBlockIdAtCurrentPosition(var1, var2, var3, var4, var5);
+		return super.getBlockAtCurrentPosition(var1, var2, var3, var4, var5);
 	}
 
 	/**
@@ -218,12 +219,12 @@ public abstract class GCMoonComponent extends StructureComponent
 	 * here
 	 */
 	@Override
-	protected void placeBlockAtCurrentPosition(World var1, int var2, int var3, int var4, int var5, int var6, StructureBoundingBox var7)
+	protected void placeBlockAtCurrentPosition(World var1, Block var2, int var3, int var4, int var5, int var6, StructureBoundingBox var7)
 	{
 		super.placeBlockAtCurrentPosition(var1, var2, var3, var4, var5, var6, var7);
 	}
 
-	protected void placeBlockRotated(World var1, int var2, int var3, int var4, int var5, int var6, int var7, StructureBoundingBox var8)
+	protected void placeBlockRotated(World var1, Block var2, int var3, int var4, int var5, int var6, int var7, StructureBoundingBox var8)
 	{
 		final int var9 = this.getXWithOffsetAsIfRotated(var4, var6, var7);
 		final int var10 = this.getYWithOffset(var5);
@@ -235,7 +236,7 @@ public abstract class GCMoonComponent extends StructureComponent
 		}
 	}
 
-	protected void fillBlocksRotated(World var1, StructureBoundingBox var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11)
+	protected void fillBlocksRotated(World var1, StructureBoundingBox var2, int var3, int var4, int var5, int var6, int var7, int var8, Block var9, int var10, int var11)
 	{
 		for (int var12 = var4; var12 <= var7; ++var12)
 		{
@@ -251,7 +252,7 @@ public abstract class GCMoonComponent extends StructureComponent
 
 	protected void fillAirRotated(World var1, StructureBoundingBox var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9)
 	{
-		this.fillBlocksRotated(var1, var2, var3, var4, var5, var6, var7, var8, 0, 0, var9);
+		this.fillBlocksRotated(var1, var2, var3, var4, var5, var6, var7, var8, Blocks.air, 0, var9);
 	}
 
 	protected int getStairMeta(int var1)

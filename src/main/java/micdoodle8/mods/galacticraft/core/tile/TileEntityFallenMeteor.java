@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.nbt.NBTTagCompound;
 import cpw.mods.fml.relauncher.Side;
@@ -31,7 +32,7 @@ public class TileEntityFallenMeteor extends TileEntityAdvanced implements IPacke
 
 		if (this.heatLevel % 20 == 0 && this.heatLevel != 0)
 		{
-			this.worldObj.markBlockForRenderUpdate(this.xCoord, this.yCoord, this.zCoord);
+			this.worldObj.func_147479_m(this.xCoord, this.yCoord, this.zCoord);
 		}
 	}
 

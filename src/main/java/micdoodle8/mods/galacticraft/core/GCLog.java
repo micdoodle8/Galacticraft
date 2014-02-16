@@ -3,8 +3,6 @@ package micdoodle8.mods.galacticraft.core;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 
-import cpw.mods.fml.relauncher.FMLRelaunchLog;
-
 
 /**
  * GCLog.java

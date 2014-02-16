@@ -151,14 +151,14 @@ public class GuiChoosePlanetSlot extends GuiSlot
                     str = StatCollector.translateToLocal("dimension." + str + ".name");
                 }
 
-                this.choosePlanetGui.drawCenteredString(this.choosePlanetGui.fontRendererObj, str, this.choosePlanetGui.width / 2, var3 + 3, 0xEEEEEE);
+                this.choosePlanetGui.drawCenteredString(GuiChoosePlanet.getFontRenderer(choosePlanetGui), str, this.choosePlanetGui.width / 2, var3 + 3, 0xEEEEEE);
             }
             else
             {
                 String str = GuiChoosePlanet.getDestinations(this.choosePlanetGui)[var1];
                 str = str.replace("*", "");
 
-                this.choosePlanetGui.drawCenteredString(this.choosePlanetGui.fontRendererObj, str, this.choosePlanetGui.width / 2, var3 + 3, 0xEEEEEE);
+                this.choosePlanetGui.drawCenteredString(GuiChoosePlanet.getFontRenderer(choosePlanetGui), str, this.choosePlanetGui.width / 2, var3 + 3, 0xEEEEEE);
             }
         }
         else
@@ -185,14 +185,14 @@ public class GuiChoosePlanetSlot extends GuiSlot
                     str = StatCollector.translateToLocal("dimension." + str + ".name");
                 }
 
-                this.choosePlanetGui.drawCenteredString(this.choosePlanetGui.fontRendererObj, str, this.choosePlanetGui.width / 2, var3 + 3, 0xEEEEEE);
+                this.choosePlanetGui.drawCenteredString(GuiChoosePlanet.getFontRenderer(choosePlanetGui), str, this.choosePlanetGui.width / 2, var3 + 3, 0xEEEEEE);
             }
             else
             {
                 String str = GuiChoosePlanet.getDestinations(this.choosePlanetGui)[var1];
                 str = str.replace("*", "");
 
-                this.choosePlanetGui.drawCenteredString(this.choosePlanetGui.fontRendererObj, str, this.choosePlanetGui.width / 2, var3 + 3, 0xEEEEEE);
+                this.choosePlanetGui.drawCenteredString(GuiChoosePlanet.getFontRenderer(choosePlanetGui), str, this.choosePlanetGui.width / 2, var3 + 3, 0xEEEEEE);
             }
         }
 

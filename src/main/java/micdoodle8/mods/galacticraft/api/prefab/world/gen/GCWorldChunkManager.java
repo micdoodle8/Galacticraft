@@ -79,33 +79,6 @@ public abstract class GCWorldChunkManager extends WorldChunkManager
 	}
 
 	@Override
-	public float[] getTemperatures(float[] par1ArrayOfFloat, int par2, int par3, int par4, int par5)
-	{
-		IntCache.resetIntCache();
-
-		if (par1ArrayOfFloat == null || par1ArrayOfFloat.length < par4 * par5)
-		{
-			par1ArrayOfFloat = new float[par4 * par5];
-		}
-
-		final int[] var6 = this.biomeIndexLayer.getInts(par2, par3, par4, par5);
-
-		for (int var7 = 0; var7 < par4 * par5; ++var7)
-		{
-			float var8 = BiomeGenBase.biomeList[var6[var7]].getIntTemperature() / 65536.0F;
-
-			if (var8 > 1.0F)
-			{
-				var8 = 1.0F;
-			}
-
-			par1ArrayOfFloat[var7] = var8;
-		}
-
-		return par1ArrayOfFloat;
-	}
-
-	@Override
 	public BiomeGenBase[] getBiomesForGeneration(BiomeGenBase[] par1ArrayOfBiomeGenBase, int par2, int par3, int par4, int par5)
 	{
 		IntCache.resetIntCache();
@@ -119,7 +92,7 @@ public abstract class GCWorldChunkManager extends WorldChunkManager
 
 		for (int var7 = 0; var7 < par4 * par5; ++var7)
 		{
-			par1ArrayOfBiomeGenBase[var7] = BiomeGenBase.biomeList[var6[var7]];
+			par1ArrayOfBiomeGenBase[var7] = BiomeGenBase.getBiomeGenArray()[var6[var7]];
 		}
 
 		return par1ArrayOfBiomeGenBase;
@@ -153,7 +126,7 @@ public abstract class GCWorldChunkManager extends WorldChunkManager
 
 			for (int var8 = 0; var8 < par4 * par5; ++var8)
 			{
-				par1ArrayOfBiomeGenBase[var8] = BiomeGenBase.biomeList[var7[var8]];
+				par1ArrayOfBiomeGenBase[var8] = BiomeGenBase.getBiomeGenArray()[var7[var8]];
 			}
 
 			return par1ArrayOfBiomeGenBase;
@@ -174,7 +147,7 @@ public abstract class GCWorldChunkManager extends WorldChunkManager
 
 		for (int var12 = 0; var12 < var9 * var10; ++var12)
 		{
-			final BiomeGenBase var13 = BiomeGenBase.biomeList[var11[var12]];
+			final BiomeGenBase var13 = BiomeGenBase.getBiomeGenArray()[var11[var12]];
 
 			if (!par4List.contains(var13))
 			{
@@ -203,7 +176,7 @@ public abstract class GCWorldChunkManager extends WorldChunkManager
 		{
 			final int var16 = var6 + var15 % var10 << 2;
 			final int var17 = var7 + var15 / var10 << 2;
-			final BiomeGenBase var18 = BiomeGenBase.biomeList[var12[var15]];
+			final BiomeGenBase var18 = BiomeGenBase.getBiomeGenArray()[var12[var15]];
 
 			if (par4List.contains(var18) && (var13 == null || par5Random.nextInt(var14 + 1) == 0))
 			{

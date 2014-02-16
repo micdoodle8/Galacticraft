@@ -41,10 +41,10 @@ public class GCMoonBiomeGenBase extends BiomeGenBase
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public int getBiomeGrassColor()
+    @SideOnly(Side.CLIENT)
+    public int getBiomeGrassColor(int x, int y, int z)
 	{
-		double d0 = MathHelper.clamp_float(this.getFloatTemperature(), 0.0F, 1.0F);
+		double d0 = MathHelper.clamp_float(this.getFloatTemperature(x, y, z), 0.0F, 1.0F);
 		double d1 = MathHelper.clamp_float(this.getFloatRainfall(), 0.0F, 1.0F);
 		return this.getModdedBiomeGrassColor(ColorizerGrass.getGrassColor(d0, d1));
 	}

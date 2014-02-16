@@ -203,12 +203,12 @@ public class TileEntityCargoUnloader extends TileEntityElectricBlock implements 
 	{
 		super.readFromNBT(par1NBTTagCompound);
 
-		final NBTTagList var2 = par1NBTTagCompound.getTagList("Items");
+		final NBTTagList var2 = par1NBTTagCompound.getTagList("Items", 10);
 		this.containingItems = new ItemStack[this.getSizeInventory()];
 
 		for (int var3 = 0; var3 < var2.tagCount(); ++var3)
 		{
-			final NBTTagCompound var4 = (NBTTagCompound) var2.tagAt(var3);
+			final NBTTagCompound var4 = (NBTTagCompound) var2.getCompoundTagAt(var3);
 			final byte var5 = var4.getByte("Slot");
 
 			if (var5 >= 0 && var5 < this.containingItems.length)
@@ -258,12 +258,12 @@ public class TileEntityCargoUnloader extends TileEntityElectricBlock implements 
 	}
 
 	@Override
-	public void openChest()
+	public void openInventory()
 	{
 	}
 
 	@Override
-	public void closeChest()
+	public void closeInventory()
 	{
 	}
 
@@ -300,7 +300,7 @@ public class TileEntityCargoUnloader extends TileEntityElectricBlock implements 
 	}
 
 	@Override
-	public boolean isInvNameLocalized()
+	public boolean hasCustomInventoryName()
 	{
 		return true;
 	}
@@ -350,7 +350,7 @@ public class TileEntityCargoUnloader extends TileEntityElectricBlock implements 
 		{
 			ItemStack stackAt = this.containingItems[count];
 
-			if (stackAt != null && stackAt.itemID == stack.itemID && stackAt.getItemDamage() == stack.getItemDamage() && stackAt.stackSize < stackAt.getMaxStackSize())
+			if (stackAt != null && stackAt.getItem() == stack.getItem() && stackAt.getItemDamage() == stack.getItemDamage() && stackAt.stackSize < stackAt.getMaxStackSize())
 			{
 				if (doAdd)
 				{
@@ -392,7 +392,7 @@ public class TileEntityCargoUnloader extends TileEntityElectricBlock implements 
 					this.containingItems[i] = null;
 				}
 
-				return new RemovalResult(EnumCargoLoadingState.SUCCESS, new ItemStack(stackAt.itemID, 1, stackAt.getItemDamage()));
+				return new RemovalResult(EnumCargoLoadingState.SUCCESS, new ItemStack(stackAt.getItem(), 1, stackAt.getItemDamage()));
 			}
 		}
 

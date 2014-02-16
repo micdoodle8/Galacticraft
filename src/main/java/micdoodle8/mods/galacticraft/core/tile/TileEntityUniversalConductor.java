@@ -28,9 +28,9 @@ public abstract class TileEntityUniversalConductor extends TileEntityConductor
 //		this.initBC();
 //	}
 
-//	@Override
-//	public void onNetworkChanged()
-//	{
+	@Override
+	public void onNetworkChanged()
+	{
 //		if (NetworkConfigHandler.isBuildcraftLoaded())
 //		{
 //			if (this instanceof IPowerReceptor)
@@ -38,7 +38,7 @@ public abstract class TileEntityUniversalConductor extends TileEntityConductor
 //				this.reconfigureBC();
 //			}
 //		}
-//	}
+	}
 //
 //	private void initBC()
 //	{

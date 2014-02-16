@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.client;
 
-import java.util.EnumSet;
-
 import net.minecraft.client.settings.KeyBinding;
 
 import org.lwjgl.input.Keyboard;

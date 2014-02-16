@@ -38,7 +38,7 @@ public class GCCoreContainerAirDecompressor extends Container
 			this.addSlotToContainer(new Slot(par1InventoryPlayer, var3, 8 + var3 * 18, 20 + 142));
 		}
 
-		compressor.openChest();
+		compressor.openInventory();
 	}
 
 	@Override

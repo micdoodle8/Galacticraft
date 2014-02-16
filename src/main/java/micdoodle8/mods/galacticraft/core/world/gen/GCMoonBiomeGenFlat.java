@@ -16,7 +16,6 @@ public class GCMoonBiomeGenFlat extends GCMoonBiomeGenBase
 		super(par1);
 		this.setBiomeName("moonFlat");
 		this.setColor(11111111);
-		this.minHeight = 1.5F;
-		this.maxHeight = 0.4F;
+		this.setHeight(new Height(0.4F, 1.5F));
 	}
 }

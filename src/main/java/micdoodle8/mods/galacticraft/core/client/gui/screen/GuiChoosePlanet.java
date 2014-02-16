@@ -16,6 +16,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -928,5 +929,10 @@ public class GuiChoosePlanet extends GuiScreen
     static int getSelectedDimension(GuiChoosePlanet par0GuiLanguage)
     {
         return par0GuiLanguage.selectedSlot;
+    }
+    
+    static FontRenderer getFontRenderer(GuiChoosePlanet par0GuiLanguage)
+    {
+    	return par0GuiLanguage.fontRendererObj;
     }
 }

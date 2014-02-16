@@ -21,11 +21,13 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 
 /**
@@ -70,6 +72,11 @@ public class TileEntityFuelLoader extends TileEntityElectricBlock implements IIn
 			if (this.containingItems[1] != null)
 			{
 				final FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(this.containingItems[1]);
+				
+				for (FluidContainerData fc : FluidContainerRegistry.getRegisteredFluidContainerData())
+				{
+					FMLLog.info("" + fc.filledContainer.getItem());
+				}
 
 				if (liquid != null && FluidRegistry.getFluidName(liquid).equalsIgnoreCase("Fuel"))
 				{

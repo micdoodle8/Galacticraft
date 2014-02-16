@@ -21,6 +21,11 @@ public class PacketDynamic implements IPacket
 	private Object[] data;
 	private ArrayList<Object> sendData;
 	
+	public PacketDynamic()
+	{
+		
+	}
+	
 	public PacketDynamic(Entity entity)
 	{
 		assert entity instanceof IPacketReceiver : "Entity does not implement " + IPacketReceiver.class.getSimpleName();

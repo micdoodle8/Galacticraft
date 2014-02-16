@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.util;
 
-import micdoodle8.mods.galacticraft.core.GCCoreThreadVersionCheck;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerBuggy;
@@ -45,7 +44,7 @@ public class GCCoreUtil
 		player.getNextWindowId();
 		player.closeContainer();
 		int id = player.currentWindowId;
-		GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_PARACHEST_GUI, id, 0, 0), player);
+		GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_PARACHEST_GUI, new Object[] { id, 0, 0 }), player);
 		player.openContainer = new GCCoreContainerBuggy(player.inventory, buggyInv, type);
 		player.openContainer.windowId = id;
 		player.openContainer.addCraftingToCrafters(player);
@@ -56,7 +55,7 @@ public class GCCoreUtil
 		player.getNextWindowId();
 		player.closeContainer();
 		int windowId = player.currentWindowId;
-		GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_PARACHEST_GUI, windowId, 1, landerInv.getEntityId()), player);
+		GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_PARACHEST_GUI, new Object[] { windowId, 1, landerInv.getEntityId() }), player);
 		player.openContainer = new GCCoreContainerParachest(player.inventory, landerInv);
 		player.openContainer.windowId = windowId;
 		player.openContainer.addCraftingToCrafters(player);

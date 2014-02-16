@@ -64,7 +64,7 @@ public class CircuitFabricatorRecipes
 						break;
 					}
 				}
-				else if (recipeStack.itemID != inputStack.itemID || recipeStack.getItemDamage() != inputStack.getItemDamage())
+				else if (recipeStack.getItem() != inputStack.getItem() || recipeStack.getItemDamage() != inputStack.getItemDamage())
 				{
 					found = false;
 					break;

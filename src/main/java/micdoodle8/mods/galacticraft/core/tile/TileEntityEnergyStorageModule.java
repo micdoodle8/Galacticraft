@@ -6,6 +6,7 @@ import java.util.Set;
 
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockMachine;
+import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -40,7 +41,7 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 
 		if (this.scaledEnergyLevel != this.lastScaledEnergyLevel)
 		{
-			this.worldObj.markBlockForRenderUpdate(this.xCoord, this.yCoord, this.zCoord);
+			this.worldObj.func_147479_m(this.xCoord, this.yCoord, this.zCoord);
 		}
 
 		if (!this.worldObj.isRemote)
@@ -63,12 +64,12 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 	}
 
 	@Override
-	public void openChest()
+	public void openInventory()
 	{
 	}
 
 	@Override
-	public void closeChest()
+	public void closeInventory()
 	{
 	}
 
@@ -80,12 +81,12 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 	{
 		super.readFromNBT(par1NBTTagCompound);
 
-		NBTTagList var2 = par1NBTTagCompound.getTagList("Items");
+		NBTTagList var2 = par1NBTTagCompound.getTagList("Items", 10);
 		this.containingItems = new ItemStack[this.getSizeInventory()];
 
 		for (int var3 = 0; var3 < var2.tagCount(); ++var3)
 		{
-			NBTTagCompound var4 = (NBTTagCompound) var2.tagAt(var3);
+			NBTTagCompound var4 = (NBTTagCompound) var2.getCompoundTagAt(var3);
 			byte var5 = var4.getByte("Slot");
 
 			if (var5 >= 0 && var5 < this.containingItems.length)
@@ -206,7 +207,7 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 	}
 
 	@Override
-	public boolean isInvNameLocalized()
+	public boolean hasCustomInventoryName()
 	{
 		return true;
 	}

@@ -50,14 +50,14 @@ public class GCCoreContainerRefinery extends Container
 			this.addSlotToContainer(new Slot(par1InventoryPlayer, var3, 8 + var3 * 18, 144));
 		}
 
-		tileEntity.openChest();
+		tileEntity.openInventory();
 	}
 
 	@Override
 	public void onContainerClosed(EntityPlayer entityplayer)
 	{
 		super.onContainerClosed(entityplayer);
-		this.tileEntity.closeChest();
+		this.tileEntity.closeInventory();
 	}
 
 	@Override

@@ -11,6 +11,11 @@ public class PacketRotateRocket implements IPacket
 	private float entityPitch;
 	private float entityYaw;
 	
+	public PacketRotateRocket()
+	{
+		
+	}
+	
 	public PacketRotateRocket(Entity rotateableEntity)
 	{
 		this.entityID = rotateableEntity.getEntityId();
@@ -44,7 +49,11 @@ public class PacketRotateRocket implements IPacket
 	public void handleServerSide(EntityPlayer player)
 	{
 		Entity entity = player.worldObj.getEntityByID(this.entityID);
-		entity.rotationPitch = entityPitch;
-		entity.rotationYaw = entityYaw;
+		
+		if (entity != null)
+		{
+			entity.rotationPitch = entityPitch;
+			entity.rotationYaw = entityYaw;
+		}
 	}
 }

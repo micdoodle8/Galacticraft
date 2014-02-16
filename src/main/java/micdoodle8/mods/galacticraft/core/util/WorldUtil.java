@@ -16,7 +16,6 @@ import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
-import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
@@ -612,7 +611,7 @@ public class WorldUtil
 
 			((WorldServer) ridingRocket.worldObj).getEntityTracker().removeEntityFromAllTrackingPlayers(ridingRocket);
 			ridingRocket.worldObj.loadedEntityList.remove(ridingRocket);
-			ridingRocket.worldObj.onEntityRemoved(ridingRocket); // TODO Transform access
+			ridingRocket.worldObj.onEntityRemoved(ridingRocket);
 
 			ridingRocket = (EntityAutoRocket) EntityList.createEntityFromNBT(nbt, worldNew);
 
@@ -804,7 +803,7 @@ public class WorldUtil
 		if (var1 instanceof EntityPlayer)
 		{
 			final EntityPlayer var2 = (EntityPlayer) var1;
-			var2.closeScreen(); // TODO Transform access
+			var2.closeScreen();
 			var0.playerEntities.remove(var2);
 			var0.updateAllPlayersSleepingFlag();
 			final int var3 = var1.chunkCoordX;
@@ -819,7 +818,7 @@ public class WorldUtil
 			if (directlyRemove)
 			{
 				var0.loadedEntityList.remove(var1);
-				var0.onEntityRemoved(var1); // TODO Transform access
+				var0.onEntityRemoved(var1);
 			}
 		}
 

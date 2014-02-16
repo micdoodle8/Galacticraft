@@ -5,6 +5,7 @@ import java.util.Set;
 
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
+import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -73,7 +74,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
 
 						if (this.containingItems[0].stackSize == 0)
 						{
-							this.containingItems[0] = this.containingItems[0].getItem().getContainerItemStack(this.containingItems[0]);
+							this.containingItems[0] = this.containingItems[0].getItem().getContainerItem(this.containingItems[0]);
 						}
 					}
 				}
@@ -107,7 +108,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
 
 			if (updateInv)
 			{
-				this.onInventoryChanged();
+				this.markDirty();
 			}
 		}
 
@@ -120,12 +121,12 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
 	}
 
 	@Override
-	public void openChest()
+	public void openInventory()
 	{
 	}
 
 	@Override
-	public void closeChest()
+	public void closeInventory()
 	{
 	}
 
@@ -196,12 +197,12 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
 	{
 		super.readFromNBT(par1NBTTagCompound);
 		this.processTicks = par1NBTTagCompound.getInteger("smeltingTicks");
-		NBTTagList var2 = par1NBTTagCompound.getTagList("Items");
+		NBTTagList var2 = par1NBTTagCompound.getTagList("Items", 10);
 		this.containingItems = new ItemStack[this.getSizeInventory() - this.compressingCraftMatrix.getSizeInventory()];
 
 		for (int var3 = 0; var3 < var2.tagCount(); ++var3)
 		{
-			NBTTagCompound var4 = (NBTTagCompound) var2.tagAt(var3);
+			NBTTagCompound var4 = (NBTTagCompound) var2.getCompoundTagAt(var3);
 			byte var5 = var4.getByte("Slot");
 
 			if (var5 >= 0 && var5 < this.containingItems.length)
@@ -358,7 +359,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
 	}
 
 	@Override
-	public boolean isInvNameLocalized()
+	public boolean hasCustomInventoryName()
 	{
 		return true;
 	}

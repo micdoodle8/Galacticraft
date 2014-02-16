@@ -59,7 +59,7 @@ public class NetworkHelper
 				Vector3 position = new Vector3(tileEntity);
 				position.modifyPositionFromSide(side);
 
-				TileEntity outputConductor = position.getTileEntity(tileEntity.worldObj);
+				TileEntity outputConductor = position.getTileEntity(tileEntity.getWorldObj());
 				IElectricityNetwork electricityNetwork = NetworkHelper.getElectricalNetworkFromTileEntity(outputConductor, side);
 
 				if (electricityNetwork != null)

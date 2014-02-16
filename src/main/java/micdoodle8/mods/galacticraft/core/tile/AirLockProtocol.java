@@ -38,7 +38,7 @@ public class AirLockProtocol
 	public AirLockProtocol(TileEntity head, int maxLoops)
 	{
 		this.adjacentAirLocks = new ArrayList<TileEntityAirLock>();
-		this.worldObj = head.worldObj;
+		this.worldObj = head.getWorldObj();
 		this.head = head;
 		this.maxLoops = maxLoops;
 	}

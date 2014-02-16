@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tick;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +11,8 @@ import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.ScheduledBlockChange;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.WorldServer;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.WorldTickEvent;
 
 /**
  * GCCoreTickHandlerServer.java
@@ -22,7 +23,7 @@ import net.minecraft.world.WorldServer;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class GCCoreTickHandlerServer implements ITickHandler
+public class GCCoreTickHandlerServer
 {
 	private static Map<Integer, List<ScheduledBlockChange>> scheduledBlockChanges = new ConcurrentHashMap<Integer, List<ScheduledBlockChange>>();
 	
@@ -39,66 +40,46 @@ public class GCCoreTickHandlerServer implements ITickHandler
 		scheduledBlockChanges.put(dimID, changeList);
 	}
 	
-	@Override
-	public void tickStart(EnumSet<TickType> type, Object... tickData)
+	@SubscribeEvent
+	public void onWorldTick(WorldTickEvent event)
 	{
-		if (type.equals(EnumSet.of(TickType.WORLD)))
+		final WorldServer world = (WorldServer) event.world;
+
+		List<ScheduledBlockChange> scheduledChanges = scheduledBlockChanges.get(world.provider.dimensionId);
+		
+		if (scheduledChanges != null && !scheduledChanges.isEmpty())
 		{
-			final WorldServer world = (WorldServer) tickData[0];
-
-			List<ScheduledBlockChange> scheduledChanges = scheduledBlockChanges.get(world.provider.dimensionId);
-			
-			if (scheduledChanges != null && !scheduledChanges.isEmpty())
+			for (Iterator<ScheduledBlockChange> it = scheduledChanges.iterator(); it.hasNext(); )
 			{
-				for (Iterator<ScheduledBlockChange> it = scheduledChanges.iterator(); it.hasNext(); )
-				{
-					ScheduledBlockChange change = it.next();
-					world.setBlock(change.getChangePosition().intX(), change.getChangePosition().intY(), change.getChangePosition().intZ(), change.getChangeBlock(), change.getChangeMeta(), change.getChangeFlag());
-					it.remove();
-				}
+				ScheduledBlockChange change = it.next();
+				world.setBlock(change.getChangePosition().intX(), change.getChangePosition().intY(), change.getChangePosition().intZ(), change.getChangeBlock(), change.getChangeMeta(), change.getChangeFlag());
+				it.remove();
 			}
+		}
 
-			if (world.provider instanceof IOrbitDimension)
+		if (world.provider instanceof IOrbitDimension)
+		{
+			final Object[] entityList = world.loadedEntityList.toArray();
+
+			for (final Object o : entityList)
 			{
-				final Object[] entityList = world.loadedEntityList.toArray();
-
-				for (final Object o : entityList)
+				if (o instanceof Entity)
 				{
-					if (o instanceof Entity)
+					final Entity e = (Entity) o;
+
+					if (e.worldObj.provider instanceof IOrbitDimension)
 					{
-						final Entity e = (Entity) o;
+						final IOrbitDimension dimension = (IOrbitDimension) e.worldObj.provider;
 
-						if (e.worldObj.provider instanceof IOrbitDimension)
+						if (e.posY <= dimension.getYCoordToTeleportToPlanet())
 						{
-							final IOrbitDimension dimension = (IOrbitDimension) e.worldObj.provider;
+							final Integer dim = WorldUtil.getProviderForName(dimension.getPlanetToOrbit()).dimensionId;
 
-							if (e.posY <= dimension.getYCoordToTeleportToPlanet())
-							{
-								final Integer dim = WorldUtil.getProviderForName(dimension.getPlanetToOrbit()).dimensionId;
-
-								WorldUtil.transferEntityToDimension(e, dim, world, false, null);
-							}
+							WorldUtil.transferEntityToDimension(e, dim, world, false, null);
 						}
 					}
 				}
 			}
 		}
-	}
-
-	@Override
-	public void tickEnd(EnumSet<TickType> type, Object... tickData)
-	{
-	}
-
-	@Override
-	public EnumSet<TickType> ticks()
-	{
-		return EnumSet.of(TickType.WORLD);
-	}
-
-	@Override
-	public String getLabel()
-	{
-		return "Galacticraft Core Common";
 	}
 }
