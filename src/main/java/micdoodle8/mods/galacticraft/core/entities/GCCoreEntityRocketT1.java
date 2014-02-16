@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
@@ -9,9 +8,9 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.client.sounds.GCCoreSoundUpdaterSpaceship;
 import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
@@ -25,6 +24,7 @@ import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.relauncher.Side;
 
 /**
@@ -138,7 +138,7 @@ public class GCCoreEntityRocketT1 extends EntityTieredRocket
 
 		if (!this.worldObj.isRemote)
 		{
-			PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 100, this.worldObj.provider.dimensionId, GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getNetworkedData(new ArrayList())));
+			GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 100.0D));
 		}
 	}
 
@@ -147,10 +147,10 @@ public class GCCoreEntityRocketT1 extends EntityTieredRocket
 	{
 		super.onRocketLand(x, y, z);
 
-		if (this.rocketSoundUpdater instanceof GCCoreSoundUpdaterSpaceship)
-		{
-			((GCCoreSoundUpdaterSpaceship) this.rocketSoundUpdater).stopRocketSound();
-		}
+//		if (this.rocketSoundUpdater instanceof GCCoreSoundUpdaterSpaceship)
+//		{
+//			((GCCoreSoundUpdaterSpaceship) this.rocketSoundUpdater).stopRocketSound();
+//		} TODO Fix rocket sound updater
 	}
 
 	@Override
@@ -158,7 +158,7 @@ public class GCCoreEntityRocketT1 extends EntityTieredRocket
 	{
 		final GCCorePlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player);
 
-		GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, 0), player);
+		GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, new Object[] { 0 }), player);
 
 		if (playerBase != null)
 		{
@@ -243,17 +243,17 @@ public class GCCoreEntityRocketT1 extends EntityTieredRocket
 		return false;
 	}
 
-	@RuntimeInterface(clazz = "icbm.api.IMissileLockable", modID = "ICBM|Explosion")
-	public boolean canLock(IMissile missile)
-	{
-		return true;
-	}
-
-	@RuntimeInterface(clazz = "icbm.api.IMissileLockable", modID = "ICBM|Explosion")
-	public Vector3 getPredictedPosition(int ticks)
-	{
-		return new Vector3(this);
-	}
+//	@RuntimeInterface(clazz = "icbm.api.IMissileLockable", modID = "ICBM|Explosion")
+//	public boolean canLock(IMissile missile)
+//	{
+//		return true;
+//	}
+//
+//	@RuntimeInterface(clazz = "icbm.api.IMissileLockable", modID = "ICBM|Explosion")
+//	public Vector3 getPredictedPosition(int ticks)
+//	{
+//		return new Vector3(this);
+//	} TODO Re-enable ICBM integration
 
 	@Override
 	public void onPadDestroyed()
@@ -271,23 +271,23 @@ public class GCCoreEntityRocketT1 extends EntityTieredRocket
 		return dock instanceof TileEntityLandingPad;
 	}
 
-	@RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID = "ICBM|Explosion")
-	public void destroyCraft()
-	{
-		this.setDead();
-	}
-
-	@RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID = "ICBM|Explosion")
-	public int doDamage(int damage)
-	{
-		return (int) (this.shipDamage += damage);
-	}
-
-	@RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID = "ICBM|Explosion")
-	public boolean canBeTargeted(Object entity)
-	{
-		return this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase() && this.timeSinceLaunch > 50;
-	}
+//	@RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID = "ICBM|Explosion")
+//	public void destroyCraft()
+//	{
+//		this.setDead();
+//	}
+//
+//	@RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID = "ICBM|Explosion")
+//	public int doDamage(int damage)
+//	{
+//		return (int) (this.shipDamage += damage);
+//	}
+//
+//	@RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID = "ICBM|Explosion")
+//	public boolean canBeTargeted(Object entity)
+//	{
+//		return this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase() && this.timeSinceLaunch > 50;
+//	} TODO Re-enable ICBM integration
 
 	@Override
 	public int getRocketTier()

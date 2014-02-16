@@ -10,8 +10,9 @@ import java.util.List;
 import java.util.Set;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.network.IPacket;
+import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.NetworkUtil;
+import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -27,18 +28,11 @@ import cpw.mods.fml.relauncher.Side;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public abstract class TileEntityAdvanced extends TileEntity implements IPacket
+public abstract class TileEntityAdvanced extends TileEntity implements IPacketReceiver
 {
 	protected long ticks = 0;
 	private LinkedHashSet<Field> fieldCacheClient;
 	private LinkedHashSet<Field> fieldCacheServer;
-	
-	{
-		if (this.isNetworkedTile())
-		{
-			GalacticraftCore.packetPipeline.registerPacket(this.getClass());
-		}
-	}
 
 	@Override
 	public void updateEntity()
@@ -71,44 +65,12 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacket
 
 			if (this.worldObj.isRemote && this.fieldCacheServer.size() > 0)
 			{
-				this.sendPackets();
+				GalacticraftCore.packetPipeline.sendToServer(new PacketDynamic(this));
 			}
 			else if (!this.worldObj.isRemote && this.fieldCacheClient.size() > 0)
 			{
-				this.sendPackets();
+				GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, this.getPacketRange()));
 			}
-		}
-	}
-
-	private void sendPackets()
-	{
-		try
-		{
-			Set<Field> fieldList = null;
-
-			if (this.worldObj.isRemote)
-			{
-				fieldList = this.fieldCacheServer;
-			}
-			else
-			{
-				fieldList = this.fieldCacheClient;
-			}
-
-			List<Object> objList = new ArrayList<Object>();
-
-			for (Field f : fieldList)
-			{
-				objList.add(f.get(this));
-			}
-
-			this.addExtraNetworkedData(objList);
-
-			GalacticraftCore.packetPipeline.sendToAllAround(this, new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, this.getPacketRange()));
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
 		}
 	}
 
@@ -156,13 +118,36 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacket
 	}
 
 	@Override
-	public void encodeInto(ChannelHandlerContext context, ByteBuf buffer) 
+	public void getNetworkedData(ArrayList<Object> sendData)
 	{
-		
+		Set<Field> fieldList = null;
+
+		if (this.worldObj.isRemote)
+		{
+			fieldList = this.fieldCacheServer;
+		}
+		else
+		{
+			fieldList = this.fieldCacheClient;
+		}
+
+		for (Field f : fieldList)
+		{
+			try
+			{
+				sendData.add(f.get(this));
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+
+		this.addExtraNetworkedData(sendData);
 	}
 
 	@Override
-	public void decodeInto(ChannelHandlerContext context, ByteBuf buffer) 
+	public void decodePacketdata(ByteBuf buffer)
 	{
 		if (this.fieldCacheClient == null || this.fieldCacheServer == null)
 		{
@@ -212,13 +197,7 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacket
 	}
 
 	@Override
-	public void handleClientSide(EntityPlayer player) 
-	{
-		
-	}
-
-	@Override
-	public void handleServerSide(EntityPlayer player) 
+	public void handlePacketData(Side side, EntityPlayer player)
 	{
 		
 	}

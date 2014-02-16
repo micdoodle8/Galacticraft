@@ -1,13 +1,12 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
-import javax.swing.Icon;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -47,7 +46,7 @@ public class GCCoreSlotArmor extends Slot
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getBackgroundIconIndex()
+	public IIcon getBackgroundIconIndex()
 	{
 		return ItemArmor.func_94602_b(this.armorType);
 	}

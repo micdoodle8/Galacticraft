@@ -3,9 +3,9 @@ package micdoodle8.mods.galacticraft.core.inventory;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCoalGenerator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 /**
@@ -73,7 +73,7 @@ public class ContainerCoalGenerator extends Container
 
 			if (par1 != 0)
 			{
-				if (var4.itemID == Item.coal.itemID)
+				if (var4.getItem() == Items.coal)
 				{
 					if (!this.mergeItemStack(var4, 0, 1, false))
 					{

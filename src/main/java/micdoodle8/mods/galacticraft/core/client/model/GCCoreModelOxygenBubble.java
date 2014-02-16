@@ -1,7 +1,9 @@
 package micdoodle8.mods.galacticraft.core.client.model;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 
@@ -25,7 +27,7 @@ public class GCCoreModelOxygenBubble extends ModelBase
 
 	public GCCoreModelOxygenBubble(float par1)
 	{
-		this.sphere = AdvancedModelLoader.loadModel("/assets/galacticraftcore/models/sphere.obj");
+		this.sphere = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "models/sphere.obj"));
 	}
 
 	@Override

@@ -24,7 +24,7 @@ public class GCCoreContainerParachest extends Container
 	{
 		this.lowerChestInventory = par2IInventory;
 		this.numRows = (par2IInventory.getSizeInventory() - 3) / 9;
-		par2IInventory.openChest();
+		par2IInventory.openInventory();
 		int i = (this.numRows - 4) * 18 + 19;
 		int j;
 		int k;
@@ -104,7 +104,7 @@ public class GCCoreContainerParachest extends Container
 	public void onContainerClosed(EntityPlayer par1EntityPlayer)
 	{
 		super.onContainerClosed(par1EntityPlayer);
-		this.lowerChestInventory.closeChest();
+		this.lowerChestInventory.closeInventory();
 	}
 
 	/**

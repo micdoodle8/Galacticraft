@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 import java.util.EnumSet;
 
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
+import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
 import net.minecraft.entity.player.EntityPlayer;

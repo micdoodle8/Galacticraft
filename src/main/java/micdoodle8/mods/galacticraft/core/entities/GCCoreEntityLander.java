@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
+import io.netty.buffer.ByteBuf;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,11 +11,11 @@ import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLanderFlameFX;
 import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamicInventory;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
@@ -266,7 +268,7 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
 				{
 					if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayerMP)
 					{
-						GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, 0), ((EntityPlayerMP) this.riddenByEntity));
+						GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, new Object[] { 0 }), ((EntityPlayerMP) this.riddenByEntity));
 						this.riddenByEntity.mountEntity(this);
 					}
 
@@ -329,7 +331,7 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
 	{
 		if (this.riddenByEntity == FMLClientHandler.instance().getClient().thePlayer)
 		{
-			PacketDispatcher.sendPacketToServer(GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getNetworkedData(new ArrayList<Object>())));
+			GalacticraftCore.packetPipeline.sendToServer(new PacketDynamic(this));
 		}
 	}
 
@@ -518,7 +520,7 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
 				{
 					if (this.riddenByEntity instanceof EntityPlayerMP)
 					{
-						GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, 0), ((EntityPlayerMP) this.riddenByEntity));
+						GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, new Object[] { 0 }), ((EntityPlayerMP) this.riddenByEntity));
 					}
 
 					this.riddenByEntity.mountEntity(this);
@@ -558,7 +560,7 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
 		}
 		else if (var1 instanceof EntityPlayerMP)
 		{
-			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, 0), ((EntityPlayerMP) var1));
+			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, new Object[] { 0 }), ((EntityPlayerMP) var1));
 			var1.mountEntity(null);
 			return true;
 		}
@@ -569,37 +571,7 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
 	}
 
 	@Override
-	public void readNetworkedData(ByteArrayDataInput dataStream)
-	{
-		if (this.worldObj.isRemote)
-		{
-			int cargoLength = dataStream.readInt();
-
-			if (this.containedItems == null || this.containedItems.length == 0)
-			{
-				this.containedItems = new ItemStack[cargoLength];
-				GalacticraftCore.packetPipeline.sendToServer(new PacketDynamicInventory(this));
-			}
-
-			this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, dataStream.readInt()));
-
-			this.setWaitForPlayer(dataStream.readBoolean());
-
-			this.onGround = dataStream.readBoolean();
-		}
-		else
-		{
-			this.motionX = dataStream.readDouble() / 8000.0D;
-			this.motionY = dataStream.readDouble() / 8000.0D;
-			this.motionZ = dataStream.readDouble() / 8000.0D;
-
-			this.rotationPitch = dataStream.readFloat();
-			this.rotationYaw = dataStream.readFloat();
-		}
-	}
-
-	@Override
-	public ArrayList<Object> getNetworkedData(ArrayList<Object> list)
+	public void getNetworkedData(ArrayList<Object> list)
 	{
 		if (!this.worldObj.isRemote)
 		{
@@ -609,8 +581,6 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
 			list.add(this.getWaitForPlayer());
 
 			list.add(this.onGround);
-
-			return list;
 		}
 		else
 		{
@@ -620,9 +590,42 @@ public class GCCoreEntityLander extends InventoryEntity implements IInventorySet
 
 			list.add(this.rotationPitch);
 			list.add(this.rotationYaw);
-
-			return list;
 		}
+	}
+
+	@Override
+	public void decodePacketdata(ByteBuf buffer)
+	{
+		if (this.worldObj.isRemote)
+		{
+			int cargoLength = buffer.readInt();
+
+			if (this.containedItems == null || this.containedItems.length == 0)
+			{
+				this.containedItems = new ItemStack[cargoLength];
+				GalacticraftCore.packetPipeline.sendToServer(new PacketDynamicInventory(this));
+			}
+
+			this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, buffer.readInt()));
+
+			this.setWaitForPlayer(buffer.readBoolean());
+
+			this.onGround = buffer.readBoolean();
+		}
+		else
+		{
+			this.motionX = buffer.readDouble() / 8000.0D;
+			this.motionY = buffer.readDouble() / 8000.0D;
+			this.motionZ = buffer.readDouble() / 8000.0D;
+
+			this.rotationPitch = buffer.readFloat();
+			this.rotationYaw = buffer.readFloat();
+		}
+	}
+
+	@Override
+	public void handlePacketData(Side side, EntityPlayer player)
+	{
 	}
 
 	@Override

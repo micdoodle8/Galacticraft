@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GCMoonConfigManager;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityCreeper;
@@ -354,7 +355,7 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 
 		this.dungeonGenerator.handleTileEntities(this.rand);
 
-		if (!GCMoonConfigManager.disableMoonVillageGen)
+		if (!GCCoreConfigManager.disableMoonVillageGen)
 		{
 			this.villageGenerator.generateStructuresInChunk(this.worldObj, this.rand, par2, par3);
 		}
@@ -378,7 +379,7 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 	@Override
 	public String makeString()
 	{
-		return GCMoonConfigManager.generateOtherMods ? "RandomLevelSource" : "MoonLevelSource";
+		return "MoonLevelSource";
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -403,7 +404,7 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 	@Override
 	public void recreateStructures(int par1, int par2)
 	{
-		if (!GCMoonConfigManager.disableMoonVillageGen)
+		if (!GCCoreConfigManager.disableMoonVillageGen)
 		{
 			this.villageGenerator.func_151539_a(this, this.worldObj, par1, par2, (Block[]) null);
 		}

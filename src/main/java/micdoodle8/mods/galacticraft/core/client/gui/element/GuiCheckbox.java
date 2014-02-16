@@ -39,12 +39,12 @@ public class GuiCheckbox extends GuiButton
             this.isSelected = this.parentGui.getInitiallySelected(this);
         }
 
-        if (this.drawButton)
+        if (this.visible)
         {
             par1Minecraft.getTextureManager().bindTexture(GuiCheckbox.texture);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            this.field_82253_i = par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height;
-            this.drawTexturedModalRect(this.xPosition, this.yPosition, this.isSelected ? 33 : 20, this.field_82253_i ? 24 : 37, this.width, this.height);
+            this.field_146123_n = par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height;
+            this.drawTexturedModalRect(this.xPosition, this.yPosition, this.isSelected ? 33 : 20, this.field_146123_n ? 24 : 37, this.width, this.height);
             this.mouseDragged(par1Minecraft, par2, par3);
             par1Minecraft.fontRenderer.drawString(this.displayString, this.xPosition + this.width + 3, this.yPosition + (this.height - 6) / 2, 4210752, false);
         }
@@ -53,7 +53,7 @@ public class GuiCheckbox extends GuiButton
     @Override
     public boolean mousePressed(Minecraft par1Minecraft, int par2, int par3)
     {
-        if (this.enabled && this.drawButton && par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height)
+        if (this.enabled && this.visible && par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height)
         {
             if (this.parentGui.canPlayerEdit(this, par1Minecraft.thePlayer))
             {

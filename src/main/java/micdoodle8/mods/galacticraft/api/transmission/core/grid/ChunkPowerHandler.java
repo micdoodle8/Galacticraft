@@ -9,6 +9,8 @@ import net.minecraftforge.event.world.ChunkEvent;
 
 import com.google.common.collect.Lists;
 
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+
 public class ChunkPowerHandler
 {
 	private static boolean initiated = false;
@@ -22,7 +24,7 @@ public class ChunkPowerHandler
 		}
 	}
 
-	@ForgeSubscribe
+	@SubscribeEvent
 	public void onChunkLoad(ChunkEvent.Load event)
 	{
 		if (!event.world.isRemote && event.getChunk() != null)

@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.eventhandler.Cancelable;
+import cpw.mods.fml.common.eventhandler.Event;
 
 public class ElectricalEvent extends Event
 {
@@ -23,7 +24,7 @@ public class ElectricalEvent extends Event
 		public ElectricityProduceEvent(IElectrical tileEntity)
 		{
 			this.tileEntity = tileEntity;
-			this.world = ((TileEntity) this.tileEntity).worldObj;
+			this.world = ((TileEntity) this.tileEntity).getWorldObj();
 		}
 	}
 

@@ -2,6 +2,8 @@ package micdoodle8.mods.galacticraft.api.transmission.compatibility;
 
 import java.io.File;
 
+import net.minecraftforge.common.config.Configuration;
+
 import cpw.mods.fml.common.Loader;
 
 /**
@@ -78,19 +80,19 @@ public class NetworkConfigHandler
 
 	public static void initGas()
 	{
-		if (NetworkConfigHandler.isMekanismLoaded())
-		{
-			Gas oxygen = GasRegistry.getGas("oxygen");
-
-			if (oxygen == null)
-			{
-				NetworkConfigHandler.gasOxygen = GasRegistry.register(new Gas("oxygen")).registerFluid();
-			}
-			else
-			{
-				NetworkConfigHandler.gasOxygen = oxygen;
-			}
-		}
+//		if (NetworkConfigHandler.isMekanismLoaded())
+//		{
+//			Gas oxygen = GasRegistry.getGas("oxygen");
+//
+//			if (oxygen == null)
+//			{
+//				NetworkConfigHandler.gasOxygen = GasRegistry.register(new Gas("oxygen")).registerFluid();
+//			}
+//			else
+//			{
+//				NetworkConfigHandler.gasOxygen = oxygen;
+//			}
+//		} TODO Re-implement when Mekanism is ready
 	}
 
 	/** Checks using the FML loader too see if IC2 is loaded */

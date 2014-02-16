@@ -47,13 +47,13 @@ public abstract class KeyHandler
     @SubscribeEvent
     public void onTick (ClientTickEvent event)
     {
-//        if (event.side == Side.CLIENT)
-//        {
-//            if (event.phase == Phase.START)
-//                keyTick(event.type, false);
-//            else if (event.phase == Phase.END)
-//                keyTick(event.type, true);
-//        }
+        if (event.side == Side.CLIENT)
+        {
+            if (event.phase == Phase.START)
+                keyTick(event.type, false);
+            else if (event.phase == Phase.END)
+                keyTick(event.type, true);
+        }
 
     }
 

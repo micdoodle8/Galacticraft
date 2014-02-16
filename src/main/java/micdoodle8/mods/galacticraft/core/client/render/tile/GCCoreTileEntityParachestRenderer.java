@@ -24,7 +24,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * 
  */
 @SideOnly(Side.CLIENT)
-public class TileEntityParachestRenderer extends TileEntitySpecialRenderer
+public class GCCoreTileEntityParachestRenderer extends TileEntitySpecialRenderer
 {
 	private static final ResourceLocation parachestTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/parachest.png");
 
@@ -49,7 +49,7 @@ public class TileEntityParachestRenderer extends TileEntitySpecialRenderer
 			}
 		}
 
-		this.bindTexture(TileEntityParachestRenderer.parachestTexture);
+		this.bindTexture(GCCoreTileEntityParachestRenderer.parachestTexture);
 
 		GL11.glPushMatrix();
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);

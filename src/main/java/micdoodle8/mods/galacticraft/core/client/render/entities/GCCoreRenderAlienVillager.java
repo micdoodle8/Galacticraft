@@ -43,7 +43,7 @@ public class GCCoreRenderAlienVillager extends RenderLiving
 
 	public void renderVillager(GCCoreEntityAlienVillager par1EntityVillager, double par2, double par4, double par6, float par8, float par9)
 	{
-		super.doRenderLiving(par1EntityVillager, par2, par4, par6, par8, par9);
+		super.doRender(par1EntityVillager, par2, par4, par6, par8, par9);
 	}
 
 	protected ResourceLocation func_110902_a(GCCoreEntityAlienVillager par1EntityVillager)
@@ -74,7 +74,7 @@ public class GCCoreRenderAlienVillager extends RenderLiving
 	}
 
 	@Override
-	public void doRenderLiving(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9)
+	public void doRender(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9)
 	{
 		this.renderVillager((GCCoreEntityAlienVillager) par1EntityLiving, par2, par4, par6, par8, par9);
 	}
@@ -98,7 +98,7 @@ public class GCCoreRenderAlienVillager extends RenderLiving
 	}
 
 	@Override
-	public void renderPlayer(EntityLivingBase par1EntityLivingBase, double par2, double par4, double par6, float par8, float par9)
+	public void doRender(EntityLivingBase par1EntityLivingBase, double par2, double par4, double par6, float par8, float par9)
 	{
 		this.renderVillager((GCCoreEntityAlienVillager) par1EntityLivingBase, par2, par4, par6, par8, par9);
 	}

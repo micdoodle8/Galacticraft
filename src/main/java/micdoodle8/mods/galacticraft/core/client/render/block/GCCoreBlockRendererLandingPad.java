@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.client.render.block;
 
-import javax.swing.Icon;
-
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPadFull;
 import net.minecraft.block.Block;
@@ -9,6 +7,8 @@ import net.minecraft.block.BlockHopper;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.init.Blocks;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
 import org.lwjgl.opengl.GL11;
@@ -41,7 +41,7 @@ public class GCCoreBlockRendererLandingPad implements ISimpleBlockRenderingHandl
 	}
 
 	@Override
-	public boolean shouldRender3DInInventory()
+	public boolean shouldRender3DInInventory(int modelId)
 	{
 		return true;
 	}
@@ -203,9 +203,9 @@ public class GCCoreBlockRendererLandingPad implements ISimpleBlockRenderingHandl
 		if (var1.getBlockMetadata(par2, par3, par4) == 2)
 		{
 			Tessellator tessellator = Tessellator.instance;
-			tessellator.setBrightness(Block.hopperBlock.getMixedBrightnessForBlock(var1, par2, par3, par4));
+			tessellator.setBrightness(Blocks.hopper.getMixedBrightnessForBlock(var1, par2, par3, par4));
 			float f1 = 1.0F;
-			int j1 = Block.hopperBlock.colorMultiplier(var1, par2, par3, par4);
+			int j1 = Blocks.hopper.colorMultiplier(var1, par2, par3, par4);
 			float f = (j1 >> 16 & 255) / 255.0F;
 			float f2 = (j1 >> 8 & 255) / 255.0F;
 			float f3 = (j1 & 255) / 255.0F;
@@ -224,7 +224,7 @@ public class GCCoreBlockRendererLandingPad implements ISimpleBlockRenderingHandl
 
 			renderBlocks.clearOverrideBlockTexture();
 
-			Icon icon = BlockHopper.getHopperIcon("hopper");
+			IIcon icon = BlockHopper.getHopperIcon("hopper_outside");
 			BlockHopper.getHopperIcon("hopper_inside");
 
 			f = 0.125F;
@@ -233,21 +233,21 @@ public class GCCoreBlockRendererLandingPad implements ISimpleBlockRenderingHandl
 			renderBlocks.setOverrideBlockTexture(icon);
 
 			renderBlocks.setRenderBounds(0.0D, d0, 0.0D, 1.0D, 0.9D, 1.0D);
-			renderBlocks.renderStandardBlock(Block.hopperBlock, par2, par3, par4);
+			renderBlocks.renderStandardBlock(Blocks.hopper, par2, par3, par4);
 
 			renderBlocks.setOverrideBlockTexture(((GCCoreBlockLandingPadFull) par1Block).getIcon(0, 0));
 
 			renderBlocks.setRenderBounds(-0.1D, 0.0D, -0.1D, 0.0D, 1.0D, 0.0D);
-			renderBlocks.renderStandardBlock(Block.hopperBlock, par2, par3, par4);
+			renderBlocks.renderStandardBlock(Blocks.hopper, par2, par3, par4);
 
 			renderBlocks.setRenderBounds(-0.1D, 0.0D, 1.0D, 0.0D, 1.0D, 1.1D);
-			renderBlocks.renderStandardBlock(Block.hopperBlock, par2, par3, par4);
+			renderBlocks.renderStandardBlock(Blocks.hopper, par2, par3, par4);
 
 			renderBlocks.setRenderBounds(1.0D, 0.0D, -0.1D, 1.1D, 1.0D, 0.0D);
-			renderBlocks.renderStandardBlock(Block.hopperBlock, par2, par3, par4);
+			renderBlocks.renderStandardBlock(Blocks.hopper, par2, par3, par4);
 
 			renderBlocks.setRenderBounds(1.0D, 0.0D, 1.0D, 1.1D, 1.0D, 1.1D);
-			renderBlocks.renderStandardBlock(Block.hopperBlock, par2, par3, par4);
+			renderBlocks.renderStandardBlock(Blocks.hopper, par2, par3, par4);
 
 			renderBlocks.setRenderBounds(0.0D, 0.9D, 0.0D, 1.0D, 1.0D, 1.0D);
 			renderBlocks.renderStandardBlock(par1Block, par2, par3, par4);
@@ -257,7 +257,7 @@ public class GCCoreBlockRendererLandingPad implements ISimpleBlockRenderingHandl
 			double d1 = 0.1D;
 			double d2 = 0.1D;
 			renderBlocks.setRenderBounds(d1, d2, d1, 1.0D - d1, d0 - 0.002D, 1.0D - d1);
-			renderBlocks.renderStandardBlock(Block.hopperBlock, par2, par3, par4);
+			renderBlocks.renderStandardBlock(Blocks.hopper, par2, par3, par4);
 		}
 
 		renderBlocks.clearOverrideBlockTexture();

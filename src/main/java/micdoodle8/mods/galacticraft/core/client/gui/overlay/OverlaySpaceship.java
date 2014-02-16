@@ -107,8 +107,8 @@ public class OverlaySpaceship extends Overlay
         GL11.glPopMatrix();
 
         ResourceLocation resourcelocation = AbstractClientPlayer.locationStevePng;
-        resourcelocation = AbstractClientPlayer.getLocationSkin(OverlaySpaceship.minecraft.thePlayer.username);
-        AbstractClientPlayer.getDownloadImageSkin(resourcelocation, OverlaySpaceship.minecraft.thePlayer.username);
+        resourcelocation = AbstractClientPlayer.getLocationSkin(OverlaySpaceship.minecraft.thePlayer.getGameProfile().getName());
+        AbstractClientPlayer.getDownloadImageSkin(resourcelocation, OverlaySpaceship.minecraft.thePlayer.getGameProfile().getName());
 
         FMLClientHandler.instance().getClient().renderEngine.bindTexture(resourcelocation);
 

@@ -47,11 +47,11 @@ public class OverlayLander extends Overlay
 
         if (OverlayLander.minecraft.thePlayer.ridingEntity.motionY < -2.0)
         {
-            OverlayLander.minecraft.fontRenderer.drawString(StatCollector.translateToLocal("gui.warning"), width / 4 - OverlayLander.minecraft.fontRenderer.getStringWidth(StatCollector.translateToLocal("gui.warning")) / 2, height / 8 - 20, GCCoreUtil.convertTo32BitColor(255, 255, 0, 0));
+            OverlayLander.minecraft.fontRenderer.drawString(StatCollector.translateToLocal("gui.warning"), width / 4 - OverlayLander.minecraft.fontRenderer.getStringWidth(StatCollector.translateToLocal("gui.warning")) / 2, height / 8 - 20, GCCoreUtil.to32BitColor(255, 255, 0, 0));
             final int alpha = (int) (255 * Math.sin(OverlayLander.screenTicks / 20.0F));
             final String press1 = StatCollector.translateToLocal("gui.lander.warning2");
             final String press2 = StatCollector.translateToLocal("gui.lander.warning3");
-            OverlayLander.minecraft.fontRenderer.drawString(press1 + Keyboard.getKeyName(GCCoreKeyHandlerClient.spaceKey.keyCode) + press2, width / 4 - OverlayLander.minecraft.fontRenderer.getStringWidth(press1 + Keyboard.getKeyName(GCCoreKeyHandlerClient.spaceKey.keyCode) + press2) / 2, height / 8, GCCoreUtil.convertTo32BitColor(alpha, alpha, alpha, alpha));
+            OverlayLander.minecraft.fontRenderer.drawString(press1 + Keyboard.getKeyName(GCCoreKeyHandlerClient.spaceKey.getKeyCode()) + press2, width / 4 - OverlayLander.minecraft.fontRenderer.getStringWidth(press1 + Keyboard.getKeyName(GCCoreKeyHandlerClient.spaceKey.getKeyCode()) + press2) / 2, height / 8, GCCoreUtil.to32BitColor(alpha, alpha, alpha, alpha));
         }
 
         GL11.glPopMatrix();
@@ -59,7 +59,7 @@ public class OverlayLander extends Overlay
         if (OverlayLander.minecraft.thePlayer.ridingEntity.motionY != 0.0D)
         {
             String string = StatCollector.translateToLocal("gui.lander.velocity") + ": " + Math.round(((GCCoreEntityLander) OverlayLander.minecraft.thePlayer.ridingEntity).motionY * 1000) / 100.0D + " " + StatCollector.translateToLocal("gui.lander.velocityu");
-            int color = GCCoreUtil.convertTo32BitColor(255, (int) Math.floor(Math.abs(OverlayLander.minecraft.thePlayer.ridingEntity.motionY) * 51.0D), 0, 255 - (int) Math.floor(Math.abs(OverlayLander.minecraft.thePlayer.ridingEntity.motionY) * 51.0D));
+            int color = GCCoreUtil.to32BitColor(255, (int) Math.floor(Math.abs(OverlayLander.minecraft.thePlayer.ridingEntity.motionY) * 51.0D), 255 - (int) Math.floor(Math.abs(OverlayLander.minecraft.thePlayer.ridingEntity.motionY) * 51.0D), 0);
             OverlayLander.minecraft.fontRenderer.drawString(string, width / 2 - OverlayLander.minecraft.fontRenderer.getStringWidth(string) / 2, height / 3, color);
         }
     }

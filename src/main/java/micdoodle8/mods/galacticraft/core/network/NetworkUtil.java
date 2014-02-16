@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.GCLog;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -79,6 +80,20 @@ public class NetworkUtil
 			else if (dataValue instanceof Collection)
 			{
 				encodeData(buffer, (Collection<Object>) dataValue);
+			}
+			else if (dataValue instanceof Integer[])
+			{
+				Integer[] array = (Integer[]) dataValue;
+				buffer.writeInt(array.length);
+				
+				for (int i = 0; i < array.length; i++)
+				{
+					buffer.writeInt(array[i]);
+				}
+			}
+			else
+			{
+				GCLog.info("Could not find data type to encode!");
 			}
 		}
 	}

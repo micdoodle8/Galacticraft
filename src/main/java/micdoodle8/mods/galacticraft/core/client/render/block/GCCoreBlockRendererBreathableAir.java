@@ -35,7 +35,7 @@ public class GCCoreBlockRendererBreathableAir implements ISimpleBlockRenderingHa
 	}
 
 	@Override
-	public boolean shouldRender3DInInventory()
+	public boolean shouldRender3DInInventory(int modelId)
 	{
 		return true;
 	}

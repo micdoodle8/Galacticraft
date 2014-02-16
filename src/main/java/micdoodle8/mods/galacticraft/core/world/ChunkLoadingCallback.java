@@ -23,6 +23,7 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.LoadingCallback;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
+import net.minecraftforge.common.config.Configuration;
 
 /**
  * ChunkLoadingCallback.java
@@ -272,7 +273,7 @@ public class ChunkLoadingCallback implements LoadingCallback
 	{
 		for (Entry<String, HashMap<Integer, HashSet<ChunkCoordinates>>> playerEntry : ChunkLoadingCallback.chunkLoaderList.entrySet())
 		{
-			if (player.username.equals(playerEntry.getKey()))
+			if (player.getGameProfile().getName().equals(playerEntry.getKey()))
 			{
 				for (Entry<Integer, HashSet<ChunkCoordinates>> dimensionEntry : playerEntry.getValue().entrySet())
 				{

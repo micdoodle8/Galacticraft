@@ -83,7 +83,7 @@ public class GCCoreSlotRocketBenchResult extends Slot
 						}
 						else
 						{
-							this.thePlayer.dropPlayerItem(var4);
+							this.thePlayer.entityDropItem(var4, 0.0F);
 						}
 					}
 				}

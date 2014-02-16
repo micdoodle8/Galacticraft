@@ -52,7 +52,7 @@ public class GuiFuelLoader extends GuiAdvancedContainer
         switch (par1GuiButton.id)
         {
         case 0:
-			GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, this.fuelLoader.xCoord, this.fuelLoader.yCoord, this.fuelLoader.zCoord, 0));
+			GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, new Object[] { this.fuelLoader.xCoord, this.fuelLoader.yCoord, this.fuelLoader.zCoord, 0 }));
             break;
         }
     }

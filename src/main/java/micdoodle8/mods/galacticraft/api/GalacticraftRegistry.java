@@ -20,8 +20,6 @@ public class GalacticraftRegistry
 {
 	private static Map<Class<? extends WorldProvider>, ITeleportType> teleportTypeMap = new HashMap<Class<? extends WorldProvider>, ITeleportType>();
 	private static List<SpaceStationType> spaceStations = new ArrayList<SpaceStationType>();
-	private static List<ICelestialBody> celestialBodies = new ArrayList<ICelestialBody>();
-	private static List<IGalaxy> galaxies = new ArrayList<IGalaxy>();
 	private static List<INasaWorkbenchRecipe> rocketBenchT1Recipes = new ArrayList<INasaWorkbenchRecipe>();
 	private static List<INasaWorkbenchRecipe> buggyBenchRecipes = new ArrayList<INasaWorkbenchRecipe>();
 	private static List<INasaWorkbenchRecipe> rocketBenchT2Recipes = new ArrayList<INasaWorkbenchRecipe>();

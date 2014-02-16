@@ -1,5 +1,8 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
+import io.netty.buffer.ByteBuf;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,16 +11,21 @@ import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
+import micdoodle8.mods.galacticraft.core.network.NetworkUtil;
 import micdoodle8.mods.galacticraft.core.network.PacketControllableEntity;
+import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
+import micdoodle8.mods.galacticraft.core.network.PacketEntityUpdate;
 import micdoodle8.mods.galacticraft.core.tick.GCCoreKeyHandlerClient;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityBuggyFueler;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.Packet;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
@@ -30,9 +38,9 @@ import net.minecraftforge.fluids.FluidTank;
 
 import org.lwjgl.input.Keyboard;
 
-import com.google.common.io.ByteArrayDataInput;
-
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
+import cpw.mods.fml.relauncher.Side;
 
 /**
  * GCCoreEntityBuggy.java
@@ -422,40 +430,46 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
 
 		if (this.worldObj.isRemote)
 		{
-			PacketDispatcher.sendPacketToServer(GCCorePacketEntityUpdate.buildUpdatePacket(this));
+			GalacticraftCore.packetPipeline.sendToServer(new PacketEntityUpdate(this));
 		}
 
 		if (!this.worldObj.isRemote && this.ticks % 5 == 0)
 		{
-			PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 50, this.dimension, GCCorePacketEntityUpdate.buildUpdatePacket(this));
+			GalacticraftCore.packetPipeline.sendToAllAround(new PacketEntityUpdate(this), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 50.0D));
 		}
 
 		if (!this.worldObj.isRemote && this.ticks % 5 == 0)
 		{
-			GCCorePacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 50);
+			GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 50.0D));
 		}
-	}
-
-	public Packet getDescriptionPacket()
-	{
-		return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.buggyType, this.buggyFuelTank.getFluid() != null ? this.buggyFuelTank.getFluid().amount : 0);
 	}
 
 	@Override
-	public void handlePacketData(INetworkManager network, int packetType, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream)
+	public void getNetworkedData(ArrayList<Object> sendData)
 	{
+		sendData.add(this.buggyType);
+		sendData.add(this.buggyFuelTank);
+	}
+
+	@Override
+	public void decodePacketdata(ByteBuf buffer)
+	{
+		this.buggyType = buffer.readInt();
+		
 		try
 		{
-			if (this.worldObj.isRemote)
-			{
-				this.buggyType = dataStream.readInt();
-				this.buggyFuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, dataStream.readInt()));
-			}
+			this.buggyFuelTank = NetworkUtil.readFluidTank(buffer);
 		}
-		catch (final Exception e)
+		catch (IOException e)
 		{
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void handlePacketData(Side side, EntityPlayer player)
+	{
+		;
 	}
 
 	@Override
@@ -621,7 +635,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
 				var1.addChatMessage(new ChatComponentText(Keyboard.getKeyName(GCCoreKeyHandlerClient.leftKey.getKeyCode()) + " / " + Keyboard.getKeyName(GCCoreKeyHandlerClient.rightKey.getKeyCode()) + "  - " + StatCollector.translateToLocal("gui.buggy.turn.name")));
 				var1.addChatMessage(new ChatComponentText(Keyboard.getKeyName(GCCoreKeyHandlerClient.accelerateKey.getKeyCode()) + "       - " + StatCollector.translateToLocal("gui.buggy.accel.name")));
 				var1.addChatMessage(new ChatComponentText(Keyboard.getKeyName(GCCoreKeyHandlerClient.decelerateKey.getKeyCode()) + "       - " + StatCollector.translateToLocal("gui.buggy.decel.name")));
-				var1.addChatMessage(new ChatComponentText(Keyboard.getKeyName(GCCoreKeyHandlerClient.openSpaceshipInv.getKeyCode()) + "       - " + StatCollector.translateToLocal("gui.buggy.inv.name")));
+				var1.addChatMessage(new ChatComponentText(Keyboard.getKeyName(GCCoreKeyHandlerClient.openFuelGui.getKeyCode()) + "       - " + StatCollector.translateToLocal("gui.buggy.inv.name")));
 			}
 
 			return true;
@@ -649,30 +663,23 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
 			GalacticraftCore.packetPipeline.sendToServer(new PacketControllableEntity(key));
 			return true;
 		}
+		
 		switch (key)
 		{
 		case 0: // Accelerate
-		{
 			this.speed += this.accel / 20D;
 			return true;
-		}
 		case 1: // Deccelerate
-		{
 			this.speed -= this.accel / 20D;
 			return true;
-		}
 		case 2: // Left
-		{
 			this.rotationYaw -= 0.5F * this.turnFactor;
 			this.wheelRotationZ = Math.max(-30.0F, Math.min(30.0F, this.wheelRotationZ + 0.5F));
 			return true;
-		}
 		case 3: // Right
-		{
 			this.rotationYaw += 0.5F * this.turnFactor;
 			this.wheelRotationZ = Math.max(-30.0F, Math.min(30.0F, this.wheelRotationZ - 0.5F));
 			return true;
-		}
 		}
 
 		return false;

@@ -20,7 +20,7 @@ import org.lwjgl.opengl.GL12;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class TileEntitySolarPanelRenderer extends TileEntitySpecialRenderer
+public class GCCoreTileEntitySolarPanelRenderer extends TileEntitySpecialRenderer
 {
 	private static final ResourceLocation solarPanelTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/solarPanelBasic.png");
 	private static final ResourceLocation solarPanelAdvTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/solarPanelAdvanced.png");
@@ -33,11 +33,11 @@ public class TileEntitySolarPanelRenderer extends TileEntitySpecialRenderer
 
 		if (var1.getBlockMetadata() >= GCCoreBlockSolar.ADVANCED_METADATA)
 		{
-			this.bindTexture(TileEntitySolarPanelRenderer.solarPanelAdvTexture);
+			this.bindTexture(GCCoreTileEntitySolarPanelRenderer.solarPanelAdvTexture);
 		}
 		else
 		{
-			this.bindTexture(TileEntitySolarPanelRenderer.solarPanelTexture);
+			this.bindTexture(GCCoreTileEntitySolarPanelRenderer.solarPanelTexture);
 		}
 
 		GL11.glPushMatrix();
@@ -52,8 +52,8 @@ public class TileEntitySolarPanelRenderer extends TileEntitySpecialRenderer
 		GL11.glRotatef(180.0F, 0, 0, 1);
 		GL11.glRotatef(-90.0F, 0, 1, 0);
 
-		float celestialAngle = (panel.worldObj.getCelestialAngle(1.0F) - 0.784690560F) * 360.0F;
-		float celestialAngle2 = panel.worldObj.getCelestialAngle(1.0F) * 360.0F;
+		float celestialAngle = (panel.getWorldObj().getCelestialAngle(1.0F) - 0.784690560F) * 360.0F;
+		float celestialAngle2 = panel.getWorldObj().getCelestialAngle(1.0F) * 360.0F;
 
 		GL11.glRotatef(panel.currentAngle - (celestialAngle - celestialAngle2), 1.0F, 0.0F, 0.0F);
 

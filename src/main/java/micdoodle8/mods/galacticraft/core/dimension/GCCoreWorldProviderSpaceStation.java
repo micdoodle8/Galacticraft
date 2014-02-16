@@ -188,12 +188,6 @@ public class GCCoreWorldProviderSpaceStation extends WorldProvider implements IO
 	}
 
 	@Override
-	public boolean canSnowAt(int x, int y, int z)
-	{
-		return false;
-	}
-
-	@Override
 	public boolean canBlockFreeze(int x, int y, int z, boolean byWater)
 	{
 		return false;

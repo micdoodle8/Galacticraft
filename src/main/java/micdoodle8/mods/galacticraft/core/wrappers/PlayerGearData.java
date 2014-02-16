@@ -106,7 +106,7 @@ public class PlayerGearData
 	@Override
 	public int hashCode()
 	{
-		return this.player.username.hashCode();
+		return this.player.getGameProfile().getName().hashCode();
 	}
 
 	@Override
@@ -114,7 +114,7 @@ public class PlayerGearData
 	{
 		if (obj instanceof PlayerGearData)
 		{
-			return ((PlayerGearData) obj).player.username.equals(this.player.username);
+			return ((PlayerGearData) obj).player.getGameProfile().getName().equals(this.player.getGameProfile().getName());
 		}
 
 		return false;

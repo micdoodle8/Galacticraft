@@ -60,7 +60,7 @@ public class OxygenNetwork implements IOxygenNetwork
 
 							for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
 							{
-								TileEntity tile = new Vector3(tileEntity).modifyPositionFromSide(direction).getTileEntity(tileEntity.worldObj);
+								TileEntity tile = new Vector3(tileEntity).modifyPositionFromSide(direction).getTileEntity(tileEntity.getWorldObj());
 
 								if (oxygenTile.canConnect(direction, NetworkType.OXYGEN) && this.getTransmitters().contains(tile))
 								{
@@ -73,44 +73,44 @@ public class OxygenNetwork implements IOxygenNetwork
 								}
 							}
 						}
-						else if (NetworkConfigHandler.isMekanismV6Loaded() && tileEntity instanceof IGasHandler)
-						{
-							IGasHandler gasHandler = (IGasHandler) tileEntity;
-
-							for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
-							{
-								TileEntity tile = new Vector3(tileEntity).modifyPositionFromSide(direction).getTileEntity(tileEntity.worldObj);
-
-								if (gasHandler.canReceiveGas(direction, (Gas) NetworkConfigHandler.gasOxygen) && this.getTransmitters().contains(tile))
-								{
-									int oxygenToSend = (int) Math.floor(totalOxygen / this.oxygenTiles.size());
-
-									if (oxygenToSend > 0)
-									{
-										remainingUsableOxygen -= gasHandler.receiveGas(direction, (new GasStack((Gas) NetworkConfigHandler.gasOxygen, oxygenToSend)));
-									}
-								}
-							}
-						}
-						else if (NetworkConfigHandler.isMekanismLoaded() && tileEntity instanceof IGasAcceptor)
-						{
-							IGasAcceptor gasAcceptor = (IGasAcceptor) tileEntity;
-
-							for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
-							{
-								TileEntity tile = new Vector3(tileEntity).modifyPositionFromSide(direction).getTileEntity(tileEntity.worldObj);
-
-								if (gasAcceptor.canReceiveGas(direction, (Gas) NetworkConfigHandler.gasOxygen) && this.getTransmitters().contains(tile))
-								{
-									int oxygenToSend = (int) Math.floor(totalOxygen / this.oxygenTiles.size());
-
-									if (oxygenToSend > 0)
-									{
-										remainingUsableOxygen -= gasAcceptor.receiveGas(new GasStack((Gas) NetworkConfigHandler.gasOxygen, oxygenToSend));
-									}
-								}
-							}
-						}
+//						else if (NetworkConfigHandler.isMekanismV6Loaded() && tileEntity instanceof IGasHandler)
+//						{
+//							IGasHandler gasHandler = (IGasHandler) tileEntity;
+//
+//							for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+//							{
+//								TileEntity tile = new Vector3(tileEntity).modifyPositionFromSide(direction).getTileEntity(tileEntity.worldObj);
+//
+//								if (gasHandler.canReceiveGas(direction, (Gas) NetworkConfigHandler.gasOxygen) && this.getTransmitters().contains(tile))
+//								{
+//									int oxygenToSend = (int) Math.floor(totalOxygen / this.oxygenTiles.size());
+//
+//									if (oxygenToSend > 0)
+//									{
+//										remainingUsableOxygen -= gasHandler.receiveGas(direction, (new GasStack((Gas) NetworkConfigHandler.gasOxygen, oxygenToSend)));
+//									}
+//								}
+//							}
+//						}
+//						else if (NetworkConfigHandler.isMekanismLoaded() && tileEntity instanceof IGasAcceptor)
+//						{
+//							IGasAcceptor gasAcceptor = (IGasAcceptor) tileEntity;
+//
+//							for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+//							{
+//								TileEntity tile = new Vector3(tileEntity).modifyPositionFromSide(direction).getTileEntity(tileEntity.worldObj);
+//
+//								if (gasAcceptor.canReceiveGas(direction, (Gas) NetworkConfigHandler.gasOxygen) && this.getTransmitters().contains(tile))
+//								{
+//									int oxygenToSend = (int) Math.floor(totalOxygen / this.oxygenTiles.size());
+//
+//									if (oxygenToSend > 0)
+//									{
+//										remainingUsableOxygen -= gasAcceptor.receiveGas(new GasStack((Gas) NetworkConfigHandler.gasOxygen, oxygenToSend));
+//									}
+//								}
+//							}
+//						} TODO Re-implement when APIs are ready
 					}
 				}
 			}
@@ -138,12 +138,12 @@ public class OxygenNetwork implements IOxygenNetwork
 			{
 				if (!tileEntity.isInvalid())
 				{
-					if (tileEntity.worldObj.getTileEntity(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord) == tileEntity)
+					if (tileEntity.getWorldObj().getTileEntity(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord) == tileEntity)
 					{
 						for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
 						{
 							Vector3 tileVec = new Vector3(tileEntity);
-							TileEntity tile = tileVec.modifyPositionFromSide(direction).getTileEntity(tileEntity.worldObj);
+							TileEntity tile = tileVec.modifyPositionFromSide(direction).getTileEntity(tileEntity.getWorldObj());
 
 							if (((IOxygenReceiver) tileEntity).canConnect(direction, NetworkType.OXYGEN) && this.getTransmitters().contains(tile))
 							{
@@ -279,7 +279,7 @@ public class OxygenNetwork implements IOxygenNetwork
 					{
 						if (connectedBlockA != connectedBlockB && connectedBlockB instanceof INetworkConnection)
 						{
-							Pathfinder finder = new PathfinderChecker(((TileEntity) splitPoint).worldObj, (INetworkConnection) connectedBlockB, NetworkType.OXYGEN, splitPoint);
+							Pathfinder finder = new PathfinderChecker(((TileEntity) splitPoint).getWorldObj(), (INetworkConnection) connectedBlockB, NetworkType.OXYGEN, splitPoint);
 							finder.init(new Vector3(connectedBlockA));
 
 							if (finder.results.size() > 0)
@@ -292,7 +292,7 @@ public class OxygenNetwork implements IOxygenNetwork
 
 								for (Vector3 node : finder.closedSet)
 								{
-									TileEntity nodeTile = node.getTileEntity(((TileEntity) splitPoint).worldObj);
+									TileEntity nodeTile = node.getTileEntity(((TileEntity) splitPoint).getWorldObj());
 
 									if (nodeTile instanceof INetworkProvider)
 									{
@@ -313,7 +313,7 @@ public class OxygenNetwork implements IOxygenNetwork
 
 								for (Vector3 node : finder.closedSet)
 								{
-									TileEntity nodeTile = node.getTileEntity(((TileEntity) splitPoint).worldObj);
+									TileEntity nodeTile = node.getTileEntity(((TileEntity) splitPoint).getWorldObj());
 
 									if (nodeTile instanceof INetworkProvider)
 									{

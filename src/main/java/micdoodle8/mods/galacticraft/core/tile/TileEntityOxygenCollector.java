@@ -105,7 +105,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
 						{
 							for (int z = this.zCoord - 5; z <= this.zCoord + 5; z++)
 							{
-								final Block block = Block.blocksList[this.worldObj.getBlockId(x, y, z)];
+								Block block = this.worldObj.getBlock(x, y, z);
 
 								if (block != null)
 								{
@@ -141,12 +141,12 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
 	{
 		super.readFromNBT(par1NBTTagCompound);
 
-		final NBTTagList var2 = par1NBTTagCompound.getTagList("Items");
+		final NBTTagList var2 = par1NBTTagCompound.getTagList("Items", 10);
 		this.containingItems = new ItemStack[this.getSizeInventory()];
 
 		for (int var3 = 0; var3 < var2.tagCount(); ++var3)
 		{
-			final NBTTagCompound var4 = (NBTTagCompound) var2.tagAt(var3);
+			final NBTTagCompound var4 = (NBTTagCompound) var2.getCompoundTagAt(var3);
 			final byte var5 = var4.getByte("Slot");
 
 			if (var5 >= 0 && var5 < this.containingItems.length)
@@ -265,13 +265,13 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
 	}
 
 	@Override
-	public void openChest()
+	public void openInventory()
 	{
 
 	}
 
 	@Override
-	public void closeChest()
+	public void closeInventory()
 	{
 
 	}
@@ -297,7 +297,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
 	}
 
 	@Override
-	public boolean isInvNameLocalized()
+	public boolean hasCustomInventoryName()
 	{
 		return true;
 	}

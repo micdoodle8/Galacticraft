@@ -3,25 +3,29 @@ package micdoodle8.mods.galacticraft.core.entities.player;
 import java.util.ArrayList;
 import java.util.Random;
 
-import javax.swing.Icon;
-
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.event.GCCoreEventWakePlayer;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerClient;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.client.renderer.IImageBuffer;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
 import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.stats.StatFileWriter;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Session;
 import net.minecraft.world.World;
@@ -58,13 +62,13 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
 
 	public ArrayList<ISchematicPage> unlockedSchematics = new ArrayList<ISchematicPage>();
 
-	public GCCorePlayerSP(Minecraft par1Minecraft, World par2World, Session par3Session, NetClientHandler par4NetClientHandler)
+	public GCCorePlayerSP(Minecraft par1Minecraft, World par2World, Session par3Session, NetHandlerPlayClient par4NetClientHandler, StatFileWriter statFileWriter)
 	{
-		super(par1Minecraft, par2World, par3Session, par4NetClientHandler);
+		super(par1Minecraft, par2World, par3Session, par4NetClientHandler, statFileWriter);
 
-		if (!GalacticraftCore.playersClient.containsKey(this.username))
+		if (!GalacticraftCore.playersClient.containsKey(this.getGameProfile().getName()))
 		{
-			GalacticraftCore.playersClient.put(this.username, this);
+			GalacticraftCore.playersClient.put(this.getGameProfile().getName(), this);
 		}
 	}
 
@@ -97,14 +101,15 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
 
 		if (GCCoreConfigManager.overrideCapes)
 		{
-			this.galacticraftCape = AbstractClientPlayer.getLocationCape(this.username);
-			this.galacticraftCapeImageData = GCCorePlayerSP.getImageData(this.galacticraftCape, GCCorePlayerSP.getCapeURL(this.username), null, null);
+			this.galacticraftCape = AbstractClientPlayer.getLocationCape(this.getGameProfile().getName());
+			this.galacticraftCapeImageData = GCCorePlayerSP.getImageData(this.galacticraftCape, GCCorePlayerSP.getCapeURL(this.getGameProfile().getName()), null, null);
 		}
 	}
 
 	public static String getCapeURL(String par0Str)
 	{
-		return ClientProxyCore.capeMap.get(par0Str);
+		return "";
+//		return ClientProxyCore.capeMap.get(par0Str); TODO Fix capes
 	}
 
 	private static ThreadDownloadImageData getImageData(ResourceLocation par0ResourceLocation, String par1Str, ResourceLocation par2ResourceLocation, IImageBuffer par3IImageBuffer)
@@ -174,9 +179,9 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
 
 		PlayerGearData gearData = null;
 
-		for (PlayerGearData gearData2 : ClientProxyCore.playerItemData)
+		for (PlayerGearData gearData2 : GCCoreTickHandlerClient.playerItemData)
 		{
-			if (gearData2.getPlayer().username.equals(this.username))
+			if (gearData2.getPlayer().getGameProfile().getName().equals(this.getGameProfile().getName()))
 			{
 				gearData = gearData2;
 				break;
@@ -198,7 +203,7 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
 
 		if (!this.lastUsingParachute && this.usingParachute)
 		{
-			FMLClientHandler.instance().getClient().sndManager.playSound(GalacticraftCore.ASSET_PREFIX + "player.parachute", (float) this.posX, (float) this.posY, (float) this.posZ, 0.95F + this.rand.nextFloat() * 0.1F, 1.0F);
+			FMLClientHandler.instance().getClient().getSoundHandler().playSound(new PositionedSoundRecord(new ResourceLocation(GalacticraftCore.ASSET_PREFIX + "player.parachute"), (float) this.posX, (float) this.posY, (float) this.posZ, 0.95F + this.rand.nextFloat() * 0.1F, 1.0F));
 		}
 
 		this.lastUsingParachute = this.usingParachute;
@@ -207,13 +212,13 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getItemIcon(ItemStack par1ItemStack, int par2)
+	public IIcon getItemIcon(ItemStack par1ItemStack, int par2)
 	{
-		Icon icon = super.getItemIcon(par1ItemStack, par2);
+		IIcon icon = super.getItemIcon(par1ItemStack, par2);
 
-		if (par1ItemStack.itemID == Item.fishingRod.itemID && this.fishEntity != null)
+		if (par1ItemStack.getItem() == Items.fishing_rod && this.fishEntity != null)
 		{
-			icon = Item.fishingRod.func_94597_g();
+			icon = Items.fishing_rod.func_94597_g();
 		}
 		else
 		{
@@ -222,23 +227,23 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
 				return par1ItemStack.getItem().getIcon(par1ItemStack, par2);
 			}
 
-			if (this.getItemInUse() != null && par1ItemStack.itemID == GCCoreItems.bowGravity.itemID)
+			if (this.getItemInUse() != null && par1ItemStack.getItem() == GCCoreItems.bowGravity)
 			{
 				final int j = par1ItemStack.getMaxItemUseDuration() - this.getItemInUseCount();
 
 				if (j >= 18)
 				{
-					return Item.bow.getItemIconForUseDuration(2);
+					return Items.bow.getItemIconForUseDuration(2);
 				}
 
 				if (j > 13)
 				{
-					return Item.bow.getItemIconForUseDuration(1);
+					return Items.bow.getItemIconForUseDuration(1);
 				}
 
 				if (j > 0)
 				{
-					return Item.bow.getItemIconForUseDuration(0);
+					return Items.bow.getItemIconForUseDuration(0);
 				}
 			}
 			else
@@ -257,9 +262,9 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
 	{
 		this.tick++;
 
-		if (!GalacticraftCore.playersClient.containsKey(this.username) || this.tick % 360 == 0)
+		if (!GalacticraftCore.playersClient.containsKey(this.getGameProfile().getName()) || this.tick % 360 == 0)
 		{
-			GalacticraftCore.playersClient.put(this.username, this);
+			GalacticraftCore.playersClient.put(this.getGameProfile().getName(), this);
 		}
 
 		if (this != null && this.getParachute() && !this.capabilities.isFlying && !this.handleWaterMovement())

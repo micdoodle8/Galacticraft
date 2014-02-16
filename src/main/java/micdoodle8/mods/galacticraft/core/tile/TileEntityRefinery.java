@@ -6,9 +6,9 @@ import micdoodle8.mods.galacticraft.core.items.GCCoreItemOilCanister;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -76,7 +76,7 @@ public class TileEntityRefinery extends TileEntityElectricBlock implements IInve
 						else if (FluidContainerRegistry.isBucket(this.containingItems[1]) && FluidContainerRegistry.isFilledContainer(this.containingItems[1]))
 						{
 							final int amount = this.containingItems[1].stackSize;
-							this.containingItems[1] = new ItemStack(Item.bucketEmpty, amount);
+							this.containingItems[1] = new ItemStack(Items.bucket, amount);
 						}
 						else
 						{
@@ -155,12 +155,12 @@ public class TileEntityRefinery extends TileEntityElectricBlock implements IInve
 	}
 
 	@Override
-	public void openChest()
+	public void openInventory()
 	{
 	}
 
 	@Override
-	public void closeChest()
+	public void closeInventory()
 	{
 	}
 
@@ -203,12 +203,12 @@ public class TileEntityRefinery extends TileEntityElectricBlock implements IInve
 	{
 		super.readFromNBT(nbt);
 		this.processTicks = nbt.getInteger("smeltingTicks");
-		final NBTTagList var2 = nbt.getTagList("Items");
+		final NBTTagList var2 = nbt.getTagList("Items", 10);
 		this.containingItems = new ItemStack[this.getSizeInventory()];
 
 		for (int var3 = 0; var3 < var2.tagCount(); ++var3)
 		{
-			final NBTTagCompound var4 = (NBTTagCompound) var2.tagAt(var3);
+			final NBTTagCompound var4 = (NBTTagCompound) var2.getCompoundTagAt(var3);
 			final byte var5 = var4.getByte("Slot");
 
 			if (var5 >= 0 && var5 < this.containingItems.length)
@@ -347,7 +347,7 @@ public class TileEntityRefinery extends TileEntityElectricBlock implements IInve
 	}
 
 	@Override
-	public boolean isInvNameLocalized()
+	public boolean hasCustomInventoryName()
 	{
 		return true;
 	}

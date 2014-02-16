@@ -87,7 +87,7 @@ public class GCCoreContainerBuggyBench extends Container
 
 				if (var3 != null)
 				{
-					par1EntityPlayer.dropPlayerItem(var3);
+					par1EntityPlayer.entityDropItem(var3, 0.0F);
 				}
 			}
 		}

@@ -26,7 +26,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * 
  */
 @SideOnly(Side.CLIENT)
-public class TileEntityTreasureChestRenderer extends TileEntitySpecialRenderer
+public class GCCoreTileEntityTreasureChestRenderer extends TileEntitySpecialRenderer
 {
 	private static final ResourceLocation treasureChestTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/treasure.png");
 	private static final ResourceLocation treasureLargeChestTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/treasurelarge.png");
@@ -70,12 +70,12 @@ public class TileEntityTreasureChestRenderer extends TileEntitySpecialRenderer
 			if (par1GCTileEntityTreasureChest.adjacentChestXPos == null && par1GCTileEntityTreasureChest.adjacentChestZPos == null)
 			{
 				var14 = this.chestModel;
-				this.bindTexture(TileEntityTreasureChestRenderer.treasureChestTexture);
+				this.bindTexture(GCCoreTileEntityTreasureChestRenderer.treasureChestTexture);
 			}
 			else
 			{
 				var14b = this.largeChestModel;
-				this.bindTexture(TileEntityTreasureChestRenderer.treasureLargeChestTexture);
+				this.bindTexture(GCCoreTileEntityTreasureChestRenderer.treasureLargeChestTexture);
 			}
 
 			GL11.glPushMatrix();

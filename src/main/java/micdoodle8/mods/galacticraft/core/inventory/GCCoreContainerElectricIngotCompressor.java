@@ -27,7 +27,7 @@ public class GCCoreContainerElectricIngotCompressor extends Container
 	public GCCoreContainerElectricIngotCompressor(InventoryPlayer par1InventoryPlayer, TileEntityElectricIngotCompressor tileEntity)
 	{
 		this.tileEntity = tileEntity;
-		tileEntity.compressingCraftMatrix.eventHandler = this;
+		tileEntity.compressingCraftMatrix.eventHandler = this; // Transform access
 
 		for (int x = 0; x < 3; x++)
 		{

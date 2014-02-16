@@ -29,9 +29,9 @@ public class GCCoreRenderBuggy extends Render
 	private static final ResourceLocation buggyTextureWheel = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/buggyWheels.png");
 	private static final ResourceLocation buggyTextureStorage = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/buggyStorage.png");
 
-	private final IModelCustom modelBuggy = AdvancedModelLoader.loadModel(ClientProxyCore.MODEL_DIRECTORY + "buggy.obj");
-	private final IModelCustom modelBuggyWheelRight = AdvancedModelLoader.loadModel(ClientProxyCore.MODEL_DIRECTORY + "buggyWheelRight.obj");
-	private final IModelCustom modelBuggyWheelLeft = AdvancedModelLoader.loadModel(ClientProxyCore.MODEL_DIRECTORY + "buggyWheelLeft.obj");
+	private final IModelCustom modelBuggy = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "models/buggy.obj"));
+	private final IModelCustom modelBuggyWheelRight = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "models/buggyWheelRight.obj"));
+	private final IModelCustom modelBuggyWheelLeft = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "models/buggyWheelLeft.obj"));
 
 	public GCCoreRenderBuggy()
 	{

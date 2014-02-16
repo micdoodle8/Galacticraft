@@ -59,9 +59,9 @@ public class OverlayDockingRocket extends Overlay
                 String targetMotionYStr = "Target velocity: " + String.valueOf(targetMotionY);
                 String currentMotionYStr = "Current velocity: " + String.valueOf(currentMotionY);
 
-                int red = GCCoreUtil.convertTo32BitColor(dMY > 0 ? 0 : dMotionYN, 255, 255, 255);
-                int green = GCCoreUtil.convertTo32BitColor(dMY < 0 ? 0 : dMotionY, 255, 255, 255);
-                int grey = GCCoreUtil.convertTo32BitColor(255, 220, 220, 220);
+                int red = GCCoreUtil.to32BitColor(dMY > 0 ? 0 : dMotionYN, 255, 255, 255);
+                int green = GCCoreUtil.to32BitColor(dMY < 0 ? 0 : dMotionY, 255, 255, 255);
+                int grey = GCCoreUtil.to32BitColor(255, 220, 220, 220);
 
                 if (dMY > 25)
                 {

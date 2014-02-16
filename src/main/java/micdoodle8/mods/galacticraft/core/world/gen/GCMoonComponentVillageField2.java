@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -23,10 +24,10 @@ public class GCMoonComponentVillageField2 extends GCMoonComponentVillage
 {
 	private int averageGroundLevel = -1;
 
-	private int cropTypeA;
-	private int cropTypeB;
-	private int cropTypeC;
-	private int cropTypeD;
+	private Block cropTypeA;
+	private Block cropTypeB;
+	private Block cropTypeC;
+	private Block cropTypeD;
 
 	public GCMoonComponentVillageField2()
 	{
@@ -49,10 +50,10 @@ public class GCMoonComponentVillageField2 extends GCMoonComponentVillage
 		super.func_143012_a(nbt);
 
 		nbt.setInteger("AvgGroundLevel", this.averageGroundLevel);
-		nbt.setInteger("CropTypeA", this.cropTypeA);
-		nbt.setInteger("CropTypeB", this.cropTypeB);
-		nbt.setInteger("CropTypeC", this.cropTypeC);
-		nbt.setInteger("CropTypeD", this.cropTypeD);
+		nbt.setInteger("CropTypeA", Block.getIdFromBlock(this.cropTypeA));
+		nbt.setInteger("CropTypeB", Block.getIdFromBlock(this.cropTypeB));
+		nbt.setInteger("CropTypeC", Block.getIdFromBlock(this.cropTypeC));
+		nbt.setInteger("CropTypeD", Block.getIdFromBlock(this.cropTypeD));
 	}
 
 	@Override
@@ -61,22 +62,22 @@ public class GCMoonComponentVillageField2 extends GCMoonComponentVillage
 		super.func_143011_b(nbt);
 
 		this.averageGroundLevel = nbt.getInteger("AvgGroundLevel");
-		this.cropTypeA = nbt.getInteger("CropTypeA");
-		this.cropTypeB = nbt.getInteger("CropTypeB");
-		this.cropTypeC = nbt.getInteger("CropTypeC");
-		this.cropTypeD = nbt.getInteger("CropTypeD");
+		this.cropTypeA = Block.getBlockById(nbt.getInteger("CropTypeA"));
+		this.cropTypeB = Block.getBlockById(nbt.getInteger("CropTypeB"));
+		this.cropTypeC = Block.getBlockById(nbt.getInteger("CropTypeC"));
+		this.cropTypeD = Block.getBlockById(nbt.getInteger("CropTypeD"));
 	}
 
-	private int getRandomCrop(Random par1Random)
+	private Block getRandomCrop(Random par1Random)
 	{
 		switch (par1Random.nextInt(5))
 		{
 		case 0:
-			return Block.carrot.blockID;
+			return Blocks.carrots;
 		case 1:
-			return Block.potato.blockID;
+			return Blocks.potatoes;
 		default:
-			return Block.crops.blockID;
+			return Blocks.wheat;
 		}
 	}
 
@@ -106,18 +107,18 @@ public class GCMoonComponentVillageField2 extends GCMoonComponentVillage
 			this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.maxY + 4 - 1, 0);
 		}
 
-		this.fillWithBlocks(par1World, par3StructureBoundingBox, 0, 1, 0, 12, 4, 8, 0, 0, false);
-		this.fillWithBlocks(par1World, par3StructureBoundingBox, 1, 0, 1, 2, 0, 7, Block.tilledField.blockID, Block.tilledField.blockID, false);
-		this.fillWithBlocks(par1World, par3StructureBoundingBox, 4, 0, 1, 5, 0, 7, Block.tilledField.blockID, Block.tilledField.blockID, false);
-		this.fillWithBlocks(par1World, par3StructureBoundingBox, 7, 0, 1, 8, 0, 7, Block.tilledField.blockID, Block.tilledField.blockID, false);
-		this.fillWithBlocks(par1World, par3StructureBoundingBox, 10, 0, 1, 11, 0, 7, Block.tilledField.blockID, Block.tilledField.blockID, false);
-		this.fillWithBlocks(par1World, par3StructureBoundingBox, 0, 0, 0, 0, 0, 8, Block.wood.blockID, Block.wood.blockID, false);
-		this.fillWithBlocks(par1World, par3StructureBoundingBox, 6, 0, 0, 6, 0, 8, Block.wood.blockID, Block.wood.blockID, false);
-		this.fillWithBlocks(par1World, par3StructureBoundingBox, 12, 0, 0, 12, 0, 8, Block.wood.blockID, Block.wood.blockID, false);
-		this.fillWithBlocks(par1World, par3StructureBoundingBox, 1, 0, 0, 11, 0, 0, Block.wood.blockID, Block.wood.blockID, false);
-		this.fillWithBlocks(par1World, par3StructureBoundingBox, 1, 0, 8, 11, 0, 8, Block.wood.blockID, Block.wood.blockID, false);
-		this.fillWithBlocks(par1World, par3StructureBoundingBox, 3, 0, 1, 3, 0, 7, Block.waterMoving.blockID, Block.waterMoving.blockID, false);
-		this.fillWithBlocks(par1World, par3StructureBoundingBox, 9, 0, 1, 9, 0, 7, Block.waterMoving.blockID, Block.waterMoving.blockID, false);
+		this.fillWithBlocks(par1World, par3StructureBoundingBox, 0, 1, 0, 12, 4, 8, Blocks.air, Blocks.air, false);
+		this.fillWithBlocks(par1World, par3StructureBoundingBox, 1, 0, 1, 2, 0, 7, Blocks.farmland, Blocks.farmland, false);
+		this.fillWithBlocks(par1World, par3StructureBoundingBox, 4, 0, 1, 5, 0, 7, Blocks.farmland, Blocks.farmland, false);
+		this.fillWithBlocks(par1World, par3StructureBoundingBox, 7, 0, 1, 8, 0, 7, Blocks.farmland, Blocks.farmland, false);
+		this.fillWithBlocks(par1World, par3StructureBoundingBox, 10, 0, 1, 11, 0, 7, Blocks.farmland, Blocks.farmland, false);
+		this.fillWithBlocks(par1World, par3StructureBoundingBox, 0, 0, 0, 0, 0, 8, Blocks.planks, Blocks.planks, false);
+		this.fillWithBlocks(par1World, par3StructureBoundingBox, 6, 0, 0, 6, 0, 8, Blocks.planks, Blocks.planks, false);
+		this.fillWithBlocks(par1World, par3StructureBoundingBox, 12, 0, 0, 12, 0, 8, Blocks.planks, Blocks.planks, false);
+		this.fillWithBlocks(par1World, par3StructureBoundingBox, 1, 0, 0, 11, 0, 0, Blocks.planks, Blocks.planks, false);
+		this.fillWithBlocks(par1World, par3StructureBoundingBox, 1, 0, 8, 11, 0, 8, Blocks.planks, Blocks.planks, false);
+		this.fillWithBlocks(par1World, par3StructureBoundingBox, 3, 0, 1, 3, 0, 7, Blocks.flowing_water, Blocks.flowing_water, false);
+		this.fillWithBlocks(par1World, par3StructureBoundingBox, 9, 0, 1, 9, 0, 7, Blocks.flowing_water, Blocks.flowing_water, false);
 		int i;
 
 		for (i = 1; i <= 7; ++i)
@@ -137,7 +138,7 @@ public class GCMoonComponentVillageField2 extends GCMoonComponentVillage
 			for (int j = 0; j < 13; ++j)
 			{
 				this.clearCurrentPositionBlocksUpwards(par1World, j, 4, i, par3StructureBoundingBox);
-				this.fillCurrentPositionBlocksDownwards(par1World, Block.dirt.blockID, 0, j, -1, i, par3StructureBoundingBox);
+				this.func_151554_b(par1World, Blocks.dirt, 0, j, -1, i, par3StructureBoundingBox);
 			}
 		}
 

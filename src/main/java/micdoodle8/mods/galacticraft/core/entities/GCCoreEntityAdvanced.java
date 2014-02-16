@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
+import io.netty.buffer.ByteBuf;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -8,14 +10,19 @@ import java.util.Random;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
+import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
+import micdoodle8.mods.galacticraft.core.network.PacketEntityUpdate;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
-import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.Packet;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
@@ -25,6 +32,7 @@ import com.google.common.io.ByteArrayDataInput;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -184,7 +192,7 @@ public abstract class GCCoreEntityAdvanced extends GCCoreEntityControllable impl
 				{
 					if (this.riddenByEntity instanceof EntityPlayerMP)
 					{
-						GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, 0), ((EntityPlayerMP) this.riddenByEntity));
+						GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, new Object[] { 0 }), ((EntityPlayerMP) this.riddenByEntity));
 					}
 
 					this.riddenByEntity.mountEntity(this);
@@ -233,8 +241,6 @@ public abstract class GCCoreEntityAdvanced extends GCCoreEntityControllable impl
 
 	public abstract Vector3 getMotionVec();
 
-	public abstract ArrayList<Object> getNetworkedData();
-
 	/**
 	 * @return ticks between packets being sent to client
 	 */
@@ -245,8 +251,6 @@ public abstract class GCCoreEntityAdvanced extends GCCoreEntityControllable impl
 	 *         entity
 	 */
 	public abstract double getPacketSendDistance();
-
-	public abstract void readNetworkedData(ByteArrayDataInput dataStream);
 
 	public abstract boolean allowDamageSource(DamageSource damageSource);
 
@@ -384,44 +388,23 @@ public abstract class GCCoreEntityAdvanced extends GCCoreEntityControllable impl
 
 		if (this.worldObj.isRemote)
 		{
-			PacketDispatcher.sendPacketToServer(GCCorePacketEntityUpdate.buildUpdatePacket(this));
+			GalacticraftCore.packetPipeline.sendToServer(new PacketEntityUpdate(this));
 		}
 
 		if (!this.worldObj.isRemote && this.ticksExisted % 5 == 0)
 		{
-			PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 50, this.dimension, GCCorePacketEntityUpdate.buildUpdatePacket(this));
+			GalacticraftCore.packetPipeline.sendToAllAround(new PacketEntityUpdate(this), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 50.0D));
 		}
 
 		if (!this.worldObj.isRemote && this.ticks % this.getPacketTickSpacing() == 0)
 		{
-			GCCorePacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), this.getPacketSendDistance());
+			GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, this.getPacketSendDistance()));
 		}
 
 		this.prevPosX = this.posX;
 		this.prevPosY = this.posY;
 		this.prevPosZ = this.posZ;
 		this.lastOnGround = this.onGround;
-	}
-
-	public Packet getDescriptionPacket()
-	{
-		return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getNetworkedData());
-	}
-
-	@Override
-	public void handlePacketData(INetworkManager network, int packetType, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream)
-	{
-		try
-		{
-			if (this.worldObj.isRemote)
-			{
-				this.readNetworkedData(dataStream);
-			}
-		}
-		catch (final Exception e)
-		{
-			e.printStackTrace();
-		}
 	}
 
 	@SideOnly(Side.CLIENT)

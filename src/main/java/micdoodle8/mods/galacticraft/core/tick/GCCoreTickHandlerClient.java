@@ -12,6 +12,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GCCoreThreadRequirementMissing;
+import micdoodle8.mods.galacticraft.core.GCCoreThreadVersionCheck;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.GCCoreCloudRenderer;
 import micdoodle8.mods.galacticraft.core.client.GCCoreSkyProviderOrbit;
@@ -20,11 +21,13 @@ import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlayCountdown;
 import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlayDockingRocket;
 import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlayLander;
 import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlayOxygenTankIndicator;
+import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlayOxygenWarning;
 import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlaySpaceship;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiChoosePlanet;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreWorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
+import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemSensorGlasses;
 import micdoodle8.mods.galacticraft.core.network.PacketIgniteRocket;
 import micdoodle8.mods.galacticraft.core.network.PacketRotateRocket;
@@ -82,7 +85,7 @@ public class GCCoreTickHandlerClient
 	private static boolean lastInvKeyPressed;
 	private static long tickCount;
 	public static boolean addTabsNextTick = false;
-	private static Set<Vector3> valuableBlocks = new HashSet<Vector3>();
+	public static Set<Vector3> valuableBlocks = new HashSet<Vector3>();
 	private static Set<BlockMetaList> detectableBlocks = new HashSet<BlockMetaList>();
 	public static boolean lastSpacebarDown;
 	
@@ -132,7 +135,7 @@ public class GCCoreTickHandlerClient
 		Minecraft minecraft = Minecraft.getMinecraft();
 		EntityPlayer player = minecraft.thePlayer;
 		World world = minecraft.theWorld;
-//		GCCorePlayerSP playerBaseClient = (GCCorePlayerSP) player;
+		GCCorePlayerSP playerBaseClient = (GCCorePlayerSP) player;
 		
 		if (player != null && player.ridingEntity != null && player.ridingEntity instanceof GCCoreEntityRocketT1)
 		{
@@ -203,10 +206,10 @@ public class GCCoreTickHandlerClient
 			OverlayOxygenTankIndicator.renderOxygenTankIndicator(var6, var7, !GCCoreConfigManager.oxygenIndicatorLeft, !GCCoreConfigManager.oxygenIndicatorBottom);
 		}
 
-//		if (playerBaseClient != null && player.worldObj.provider instanceof IGalacticraftWorldProvider && !playerBaseClient.oxygenSetupValid && minecraft.currentScreen == null && !playerBaseClient.capabilities.isCreativeMode)
-//		{
-//			OverlayOxygenWarning.renderOxygenWarningOverlay();
-//		} TODO
+		if (playerBaseClient != null && player.worldObj.provider instanceof IGalacticraftWorldProvider && !playerBaseClient.oxygenSetupValid && minecraft.currentScreen == null && !playerBaseClient.capabilities.isCreativeMode)
+		{
+			OverlayOxygenWarning.renderOxygenWarningOverlay();
+		}
 	}
 
     @SubscribeEvent
@@ -302,10 +305,8 @@ public class GCCoreTickHandlerClient
 				GCCoreTickHandlerClient.addTabsNextTick = false;
 			}
 
-			if (minecraft.currentScreen != null && minecraft.currentScreen instanceof GuiMainMenu && minecraft.thePlayer == null)
+			if (minecraft.currentScreen != null && minecraft.currentScreen instanceof GuiMainMenu)
 			{
-				// TODO Fix players not being cleared at main menu
-				
 				GalacticraftCore.playersServer.clear();
 				GalacticraftCore.playersClient.clear();
 				playerItemData.clear();
@@ -319,7 +320,7 @@ public class GCCoreTickHandlerClient
 
 			if (world != null && GCCoreTickHandlerClient.checkedVersion)
 			{
-//				GCCoreUtil.checkVersion(Side.CLIENT); TODO re-enable version check
+				GCCoreThreadVersionCheck.instance.start();
 				GCCoreTickHandlerClient.checkedVersion = false;
 			}
 

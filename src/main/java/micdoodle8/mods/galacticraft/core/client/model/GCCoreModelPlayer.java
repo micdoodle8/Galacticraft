@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderPlayer;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityRocketT1;
 import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerSP;
+import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerClient;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBiped;
@@ -201,7 +202,7 @@ public class GCCoreModelPlayer extends ModelBiped
 		this.redOxygenTanks[1].setRotationPoint(-2F, 2F, 3.8F);
 		this.redOxygenTanks[1].mirror = true;
 
-		this.frequencyModule = AdvancedModelLoader.loadModel("/assets/galacticraftcore/models/frequencyModule.obj");
+		this.frequencyModule = AdvancedModelLoader.loadModel(new ResourceLocation("models/frequencyModule.obj"));
 	}
 
 	@Override
@@ -209,7 +210,7 @@ public class GCCoreModelPlayer extends ModelBiped
 	{
 		final Class<?> entityClass = GCCorePlayerSP.class;
 		final Render render = RenderManager.instance.getEntityClassRenderObject(entityClass);
-		final ModelBiped modelBipedMain = ((GCCoreRenderPlayer) render).getModel();
+		final ModelBiped modelBipedMain = ((GCCoreRenderPlayer) render).modelBipedMain;
 
 		this.setRotationAngles(var2, var3, var4, var5, var6, var7, var1);
 
@@ -218,9 +219,9 @@ public class GCCoreModelPlayer extends ModelBiped
 			final EntityPlayer player = (EntityPlayer) var1;
 			PlayerGearData gearData = null;
 
-			for (PlayerGearData gearData2 : ClientProxyCore.playerItemData)
+			for (PlayerGearData gearData2 : GCCoreTickHandlerClient.playerItemData)
 			{
-				if (gearData2.getPlayer().username.equals(player.username))
+				if (gearData2.getPlayer().getGameProfile().getName().equals(player.getGameProfile().getName()))
 				{
 					gearData = gearData2;
 					break;
@@ -707,7 +708,7 @@ public class GCCoreModelPlayer extends ModelBiped
 			{
 				final GCCoreEntityRocketT1 ship = (GCCoreEntityRocketT1) e;
 
-				if (ship.riddenByEntity != null && !((EntityPlayer) ship.riddenByEntity).username.equals(player.username) && (ship.getLaunched() || ship.timeUntilLaunch < 390))
+				if (ship.riddenByEntity != null && !((EntityPlayer) ship.riddenByEntity).getGameProfile().getName().equals(player.getGameProfile().getName()) && (ship.getLaunched() || ship.timeUntilLaunch < 390))
 				{
 					this.bipedRightArm.rotateAngleZ -= (float) (Math.PI / 8) + MathHelper.sin(par3 * 0.9F) * 0.2F;
 					this.bipedRightArm.rotateAngleX = (float) Math.PI;

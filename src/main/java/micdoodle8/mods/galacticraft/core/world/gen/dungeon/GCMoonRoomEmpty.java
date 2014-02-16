@@ -70,8 +70,5 @@ public class GCMoonRoomEmpty extends GCCoreDungeonRoom
 	@Override
 	protected void handleTileEntities(Random rand)
 	{
-		// TODO Auto-generated method stub
-
 	}
-
 }

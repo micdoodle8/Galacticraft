@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.api.block.IPlantableBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirt;
 import net.minecraft.block.BlockGrass;
+import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
@@ -36,6 +37,7 @@ public class GCCoreWorldGenTaiga2 extends WorldGenerator
 
 		if (par4 >= 1 && par4 + var6 + 1 <= 256)
 		{
+			Block block;
 			int var11;
 			int var13;
 			int var15;
@@ -60,11 +62,9 @@ public class GCCoreWorldGenTaiga2 extends WorldGenerator
 					{
 						if (var11 >= 0 && var11 < 256)
 						{
-							var15 = par1World.getBlockId(var13, var11, var14);
+							block = par1World.getBlock(var13, var11, var14);
 
-							final Block block = Block.blocksList[var15];
-
-							if (var15 != 0 && block != null && !block.isLeaves(par1World, var13, var11, var14))
+							if (!block.isAir(par1World, var13, var11, var14) && !block.isLeaves(par1World, var13, var11, var14))
 							{
 								var10 = false;
 							}
@@ -83,7 +83,7 @@ public class GCCoreWorldGenTaiga2 extends WorldGenerator
 			}
 			else
 			{
-				var11 = par1World.getBlockId(par3, par4 - 1, par5);
+				block = par1World.getBlock(par3, par4 - 1, par5);
 				var10a = par1World.getBlockMetadata(par3, par4 - 1, par5);
 
 				int waterBlocksNearby = 0;
@@ -92,85 +92,76 @@ public class GCCoreWorldGenTaiga2 extends WorldGenerator
 				{
 					for (int j = -4; j < 5; j++)
 					{
-						if (par1World.getBlockId(par3 + i, par4 - 1, par5 + j) == Block.waterMoving.blockID || par1World.getBlockId(par3 + i, par4 - 1, par5 + j) == Block.waterStill.blockID)
+						if (par1World.getBlock(par3 + i, par4 - 1, par5 + j) == Blocks.flowing_water || par1World.getBlock(par3 + i, par4 - 1, par5 + j) == Blocks.water)
 						{
 							waterBlocksNearby++;
 						}
 					}
 				}
 
-				if (Block.blocksList[var11] != null)
+				final boolean flag = block instanceof IPlantableBlock || block instanceof IPlantableBlock && ((IPlantableBlock) block).isPlantable(var10a);
+				final boolean flag2 = block instanceof IPlantableBlock && waterBlocksNearby >= ((IPlantableBlock) block).requiredLiquidBlocksNearby() || block instanceof IPlantableBlock && waterBlocksNearby >= ((IPlantableBlock) block).requiredLiquidBlocksNearby();
+				final boolean flag3 = (block instanceof BlockGrass || block instanceof BlockDirt) && waterBlocksNearby >= 4;
+
+				if (flag && flag2 || flag3)
 				{
-					final boolean flag = Block.blocksList[var11] instanceof IPlantableBlock || Block.blocksList[var11] instanceof IPlantableBlock && ((IPlantableBlock) Block.blocksList[var11]).isPlantable(var10a);
-					final boolean flag2 = Block.blocksList[var11] instanceof IPlantableBlock && waterBlocksNearby >= ((IPlantableBlock) Block.blocksList[var11]).requiredLiquidBlocksNearby() || Block.blocksList[var11] instanceof IPlantableBlock && waterBlocksNearby >= ((IPlantableBlock) Block.blocksList[var11]).requiredLiquidBlocksNearby();
-					final boolean flag3 = (Block.blocksList[var11] instanceof BlockGrass || Block.blocksList[var11] instanceof BlockDirt) && waterBlocksNearby >= 4;
+					var21 = par2Random.nextInt(2);
+					var13 = 1;
+					byte var22 = 0;
+					int var17;
+					int var16;
 
-					if (flag && flag2 || flag3)
+					for (var15 = 0; var15 <= var8; ++var15)
 					{
-						var21 = par2Random.nextInt(2);
-						var13 = 1;
-						byte var22 = 0;
-						int var17;
-						int var16;
+						var16 = par4 + var6 - var15;
 
-						for (var15 = 0; var15 <= var8; ++var15)
+						for (var17 = par3 - var21; var17 <= par3 + var21; ++var17)
 						{
-							var16 = par4 + var6 - var15;
+							final int var18 = var17 - par3;
 
-							for (var17 = par3 - var21; var17 <= par3 + var21; ++var17)
+							for (int var19 = par5 - var21; var19 <= par5 + var21; ++var19)
 							{
-								final int var18 = var17 - par3;
+								final int var20 = var19 - par5;
 
-								for (int var19 = par5 - var21; var19 <= par5 + var21; ++var19)
+								block = par1World.getBlock(var17, var16, var19);
+
+								if ((Math.abs(var18) != var21 || Math.abs(var20) != var21 || var21 <= 0) && (block == null || block.canBeReplacedByLeaves(par1World, var17, var16, var19)))
 								{
-									final int var20 = var19 - par5;
-
-									final Block block = Block.blocksList[par1World.getBlockId(var17, var16, var19)];
-
-									if ((Math.abs(var18) != var21 || Math.abs(var20) != var21 || var21 <= 0) && (block == null || block.canBeReplacedByLeaves(par1World, var17, var16, var19)))
-									{
-										this.setBlockAndMetadata(par1World, var17, var16, var19, Block.leaves.blockID, 1);
-									}
+									this.setBlockAndNotifyAdequately(par1World, var17, var16, var19, Blocks.leaves, 1);
 								}
-							}
-
-							if (var21 >= var13)
-							{
-								var21 = var22;
-								var22 = 1;
-								++var13;
-
-								if (var13 > var9)
-								{
-									var13 = var9;
-								}
-							}
-							else
-							{
-								++var21;
 							}
 						}
 
-						var15 = par2Random.nextInt(3);
-
-						for (var16 = 0; var16 < var6 - var15; ++var16)
+						if (var21 >= var13)
 						{
-							var17 = par1World.getBlockId(par3, par4 + var16, par5);
+							var21 = var22;
+							var22 = 1;
+							++var13;
 
-							final Block block = Block.blocksList[var17];
-
-							if (var17 == 0 || block == null || block.isLeaves(par1World, par3, par4 + var16, par5))
+							if (var13 > var9)
 							{
-								this.setBlockAndMetadata(par1World, par3, par4 + var16, par5, Block.wood.blockID, 1);
+								var13 = var9;
 							}
 						}
+						else
+						{
+							++var21;
+						}
+					}
 
-						return true;
-					}
-					else
+					var15 = par2Random.nextInt(3);
+
+					for (var16 = 0; var16 < var6 - var15; ++var16)
 					{
-						return false;
+						block = par1World.getBlock(par3, par4 + var16, par5);
+
+						if (block.isAir(par1World, par3, par4 + var16, par5) || block.isLeaves(par1World, par3, par4 + var16, par5))
+						{
+							this.setBlockAndNotifyAdequately(par1World, par3, par4 + var16, par5, Blocks.planks, 1);
+						}
 					}
+
+					return true;
 				}
 				else
 				{

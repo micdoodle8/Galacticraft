@@ -121,7 +121,7 @@ public class GCCoreInventoryBuggyBench implements IInventory
 	}
 
 	@Override
-	public void onInventoryChanged()
+	public void markDirty()
 	{
 	}
 
@@ -132,17 +132,17 @@ public class GCCoreInventoryBuggyBench implements IInventory
 	}
 
 	@Override
-	public void openChest()
+	public void openInventory()
 	{
 	}
 
 	@Override
-	public void closeChest()
+	public void closeInventory()
 	{
 	}
 
 	@Override
-	public boolean isInvNameLocalized()
+	public boolean hasCustomInventoryName()
 	{
 		return false;
 	}

@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.proxy;
 
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems.EnumArmorIndex;
 import net.minecraft.block.Block;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -31,5 +32,15 @@ public class CommonProxy
 	public int getBlockRenderID(Block blockID)
 	{
 		return -1;
+	}
+
+	public void spawnParticle(String particleID, Vector3 position, Vector3 motion)
+	{
+		;
+	}
+
+	public void spawnParticle(String particleID, Vector3 position, Vector3 motion, Vector3 color)
+	{
+		;
 	}
 }

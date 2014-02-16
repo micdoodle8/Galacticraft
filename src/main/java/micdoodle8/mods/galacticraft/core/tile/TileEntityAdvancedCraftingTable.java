@@ -24,11 +24,6 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class TileEntityAdvancedCraftingTable extends TileEntityMulti implements IMultiBlock
 {
-	public TileEntityAdvancedCraftingTable()
-	{
-		super(GalacticraftCore.CHANNELENTITIES);
-	}
-
 	@Override
 	public void validate()
 	{

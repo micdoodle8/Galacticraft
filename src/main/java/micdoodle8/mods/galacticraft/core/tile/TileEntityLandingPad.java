@@ -37,11 +37,6 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
 	protected long ticks = 0;
 	private IDockable dockedEntity;
 
-	public TileEntityLandingPad()
-	{
-		super(GalacticraftCore.CHANNELENTITIES);
-	}
-
 	@Override
 	public void updateEntity()
 	{

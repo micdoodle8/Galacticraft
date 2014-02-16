@@ -130,10 +130,10 @@ public class GuiTextBox extends GuiButton
             this.parentGui.onTextChanged(this, this.text);
         }
 
-        if (this.drawButton)
+        if (this.visible)
         {
-            Gui.drawRect(this.xPosition, this.yPosition, this.xPosition + this.width, this.yPosition + this.height, GCCoreUtil.convertTo32BitColor(140, 140, 140, 140));
-            Gui.drawRect(this.xPosition + 1, this.yPosition + 1, this.xPosition + this.width - 1, this.yPosition + this.height - 1, GCCoreUtil.convertTo32BitColor(255, 0, 0, 0));
+            Gui.drawRect(this.xPosition, this.yPosition, this.xPosition + this.width, this.yPosition + this.height, GCCoreUtil.to32BitColor(140, 140, 140, 140));
+            Gui.drawRect(this.xPosition + 1, this.yPosition + 1, this.xPosition + this.width - 1, this.yPosition + this.height - 1, GCCoreUtil.to32BitColor(255, 0, 0, 0));
 
             this.cursorPulse++;
 
@@ -176,7 +176,7 @@ public class GuiTextBox extends GuiButton
                 this.incorrectUseTimer--;
             }
 
-            this.drawString(this.mc.fontRenderer, this.text + (this.cursorPulse / 24 % 2 == 0 && this.isTextFocused ? "_" : ""), this.xPosition + 4, this.yPosition + this.height / 2 - 4, this.incorrectUseTimer > 0 ? GCCoreUtil.convertTo32BitColor(255, 255, 20, 20) : this.parentGui.getTextColor(this));
+            this.drawString(this.mc.fontRenderer, this.text + (this.cursorPulse / 24 % 2 == 0 && this.isTextFocused ? "_" : ""), this.xPosition + 4, this.yPosition + this.height / 2 - 4, this.incorrectUseTimer > 0 ? GCCoreUtil.to32BitColor(255, 255, 20, 20) : this.parentGui.getTextColor(this));
         }
     }
 
@@ -196,7 +196,7 @@ public class GuiTextBox extends GuiButton
     {
         if (this.numericOnly)
         {
-            if (string.length() > 0 && ChatAllowedCharacters.allowedCharacters.indexOf(string.charAt(string.length() - 1)) >= 0)
+            if (string.length() > 0 && ChatAllowedCharacters.isAllowedCharacter(string.charAt(string.length() - 1)))
             {
                 try
                 {
@@ -220,7 +220,7 @@ public class GuiTextBox extends GuiButton
                 return false;
             }
 
-            return ChatAllowedCharacters.allowedCharacters.indexOf(string.charAt(string.length() - 1)) >= 0;
+            return ChatAllowedCharacters.isAllowedCharacter(string.charAt(string.length() - 1));
         }
     }
 

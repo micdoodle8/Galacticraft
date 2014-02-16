@@ -43,14 +43,14 @@ public class GCCoreItemRendererFlag implements IItemRenderer
 	private void renderFlag(ItemRenderType type, RenderBlocks render, ItemStack item, float translateX, float translateY, float translateZ)
 	{
 		GL11.glPushMatrix();
-		long var10 = this.spaceship.entityId * 493286711L;
+		long var10 = this.spaceship.getEntityId() * 493286711L;
 		var10 = var10 * var10 * 4392167121L + var10 * 98761L;
 		final float var12 = (((var10 >> 16 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
 		final float var13 = (((var10 >> 20 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
 		final float var14 = (((var10 >> 24 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
 
 		this.spaceship.setType(item.getItemDamage());
-		this.spaceship.setOwner(FMLClientHandler.instance().getClient().thePlayer.username);
+		this.spaceship.setOwner(FMLClientHandler.instance().getClient().thePlayer.getGameProfile().getName());
 
 		if (type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON)
 		{

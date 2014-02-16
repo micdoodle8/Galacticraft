@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.api.tile.IColorable;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -21,7 +22,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class TileEntityOxygenPipe extends TileEntityOxygenTransmitter implements IColorable, IPacketReceiver
+public class TileEntityOxygenPipe extends TileEntityOxygenTransmitter implements IColorable
 {
 	@NetworkedField(targetSide = Side.CLIENT)
 	private byte pipeColor = 15;
@@ -78,7 +79,7 @@ public class TileEntityOxygenPipe extends TileEntityOxygenTransmitter implements
 
 		if (this.preColorCooldown == 0 && !this.worldObj.isRemote && this.preLoadColor != -1)
 		{
-			GCCorePacketManager.sendPacketToClients(GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getColor(), this.preLoadColor));
+			GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), this.worldObj.provider.dimensionId);
 			this.preLoadColor = -1;
 			this.setColor = true;
 		}
@@ -86,7 +87,7 @@ public class TileEntityOxygenPipe extends TileEntityOxygenTransmitter implements
 		if (this.preColorCooldown == 0 && this.worldObj.isRemote && this.preLoadColor == 0)
 		{
 			final Vector3 thisVec = new Vector3(this);
-			this.worldObj.markBlockForRenderUpdate(thisVec.intX(), thisVec.intY(), thisVec.intZ());
+			this.worldObj.func_147479_m(thisVec.intX(), thisVec.intY(), thisVec.intZ());
 			this.preLoadColor = -1;
 			this.setColor = true;
 		}
@@ -120,7 +121,7 @@ public class TileEntityOxygenPipe extends TileEntityOxygenTransmitter implements
 		if (this.worldObj != null && this.worldObj.isRemote)
 		{
 			final Vector3 thisVec = new Vector3(this);
-			this.worldObj.markBlockForRenderUpdate(thisVec.intX(), thisVec.intY(), thisVec.intZ());
+			this.worldObj.func_147479_m(thisVec.intX(), thisVec.intY(), thisVec.intZ());
 		}
 	}
 
@@ -134,7 +135,7 @@ public class TileEntityOxygenPipe extends TileEntityOxygenTransmitter implements
 			if (this.worldObj.isRemote)
 			{
 				final Vector3 thisVec = new Vector3(this);
-				this.worldObj.markBlockForRenderUpdate(thisVec.intX(), thisVec.intY(), thisVec.intZ());
+				this.worldObj.func_147479_m(thisVec.intX(), thisVec.intY(), thisVec.intZ());
 			}
 			else
 			{

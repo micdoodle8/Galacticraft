@@ -6,11 +6,12 @@ import java.util.Set;
 
 import micdoodle8.mods.galacticraft.api.transmission.ElectricityPack;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
+import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -86,7 +87,7 @@ public class TileEntityCoalGenerator extends TileEntityUniversalElectrical imple
 
 			if (this.containingItems[0] != null)
 			{
-				if (this.containingItems[0].getItem().itemID == Item.coal.itemID)
+				if (this.containingItems[0].getItem() == Items.coal)
 				{
 					if (this.itemCookTime <= 0)
 					{
@@ -108,12 +109,12 @@ public class TileEntityCoalGenerator extends TileEntityUniversalElectrical imple
 	}
 
 	@Override
-	public void openChest()
+	public void openInventory()
 	{
 	}
 
 	@Override
-	public void closeChest()
+	public void closeInventory()
 	{
 	}
 
@@ -126,12 +127,12 @@ public class TileEntityCoalGenerator extends TileEntityUniversalElectrical imple
 		super.readFromNBT(par1NBTTagCompound);
 		this.itemCookTime = par1NBTTagCompound.getInteger("itemCookTime");
 		this.generateWatts = par1NBTTagCompound.getFloat("generateRate");
-		NBTTagList var2 = par1NBTTagCompound.getTagList("Items");
+		NBTTagList var2 = par1NBTTagCompound.getTagList("Items", 10);
 		this.containingItems = new ItemStack[this.getSizeInventory()];
 
 		for (int var3 = 0; var3 < var2.tagCount(); ++var3)
 		{
-			NBTTagCompound var4 = (NBTTagCompound) var2.tagAt(var3);
+			NBTTagCompound var4 = (NBTTagCompound) var2.getCompoundTagAt(var3);
 			byte var5 = var4.getByte("Slot");
 
 			if (var5 >= 0 && var5 < this.containingItems.length)
@@ -254,7 +255,7 @@ public class TileEntityCoalGenerator extends TileEntityUniversalElectrical imple
 	}
 
 	@Override
-	public boolean isInvNameLocalized()
+	public boolean hasCustomInventoryName()
 	{
 		return true;
 	}
@@ -262,7 +263,7 @@ public class TileEntityCoalGenerator extends TileEntityUniversalElectrical imple
 	@Override
 	public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
 	{
-		return itemstack.itemID == Item.coal.itemID;
+		return itemstack.getItem() == Items.coal;
 	}
 
 	@Override

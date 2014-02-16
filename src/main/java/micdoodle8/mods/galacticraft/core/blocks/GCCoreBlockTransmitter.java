@@ -5,6 +5,9 @@ import java.util.List;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkConnection;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -14,6 +17,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 
 public abstract class GCCoreBlockTransmitter extends BlockContainer
 {
@@ -49,7 +53,7 @@ public abstract class GCCoreBlockTransmitter extends BlockContainer
 		TileEntity tile = world.getTileEntity(x, y, z);
 
 		this.setBlockBoundsBasedOnState(world, x, y, z);
-//		PacketDispatcher.sendPacketToAllAround(x, y, z, 10, world.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.UPDATE_WIRE_BOUNDS, new Object[] { x, y, z })); TODO Fix wire bounds
+		GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_WIRE_BOUNDS, new Object[] { x, y, z }), new TargetPoint(world.provider.dimensionId, x, y, z, 10.0D));
 
 		if (tile instanceof INetworkConnection)
 		{

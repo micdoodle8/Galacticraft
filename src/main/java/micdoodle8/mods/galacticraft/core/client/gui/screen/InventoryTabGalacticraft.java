@@ -1,7 +1,8 @@
 package micdoodle8.mods.galacticraft.core.client.gui.screen;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.network.PacketOpenExtendedInventory;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import tconstruct.client.tabs.AbstractTab;
@@ -25,8 +26,7 @@ public class InventoryTabGalacticraft extends AbstractTab
     @Override
     public void onTabClicked()
     {
-    	GalacticraftCore.packetPipeline.sendToServer(new PacketOpenExtendedInventory());
-//        PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.OPEN_EXTENDED_INVENTORY, new Object[] {}));
+    	GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_OPEN_EXTENDED_INVENTORY, new Object[] { }));
     }
 
     @Override

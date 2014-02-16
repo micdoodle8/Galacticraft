@@ -12,6 +12,7 @@ import java.util.EnumMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import micdoodle8.mods.galacticraft.core.GCLog;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -54,13 +55,12 @@ public class PacketPipeline extends MessageToMessageCodec<FMLProxyPacket, IPacke
 	{
 		if (this.packets.size() > 256)
 		{
-			// You should log here!!
+			GCLog.info("Packet Registration failed: Too many packets registered.");
 			return false;
 		}
 
 		if (this.packets.contains(clazz))
 		{
-			// You should log here!!
 			return false;
 		}
 
@@ -138,7 +138,10 @@ public class PacketPipeline extends MessageToMessageCodec<FMLProxyPacket, IPacke
 
 	public void registerPackets()
 	{
-		this.registerPacket(PacketOpenExtendedInventory.class);
+		this.registerPacket(PacketSimple.class);
+		this.registerPacket(PacketEntityUpdate.class);
+		this.registerPacket(PacketRotateRocket.class);
+		this.registerPacket(PacketDynamic.class);
 	}
 
 	// Method to call from FMLPostInitializationEvent

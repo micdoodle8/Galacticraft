@@ -17,7 +17,7 @@ import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.init.Items;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
@@ -74,7 +74,7 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
 	protected void applyEntityAttributes()
 	{
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.5D);
+		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.5D);
 	}
 
 	/**
@@ -110,7 +110,7 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
 				if (this.field_82190_bM)
 				{
 					this.field_82190_bM = false;
-					this.villageObj.func_82683_b(5);
+					this.villageObj.setDefaultPlayerReputation(5);
 				}
 			}
 		}
@@ -134,7 +134,7 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
 
 		if (this.buyingList != null)
 		{
-			par1NBTTagCompound.setCompoundTag("Offers", this.buyingList.getRecipiesAsTags());
+			par1NBTTagCompound.setTag("Offers", this.buyingList.getRecipiesAsTags());
 		}
 	}
 
@@ -300,7 +300,7 @@ public class GCCoreEntityAlienVillager extends EntityAgeable implements IEntityB
 	{
 		par1MerchantRecipe.incrementToolUses();
 
-		if (par1MerchantRecipe.getItemToBuy().itemID == Item.emerald.itemID)
+		if (par1MerchantRecipe.getItemToBuy().getItem() == Items.emerald)
 		{
 			this.wealth += par1MerchantRecipe.getItemToBuy().stackSize;
 		}

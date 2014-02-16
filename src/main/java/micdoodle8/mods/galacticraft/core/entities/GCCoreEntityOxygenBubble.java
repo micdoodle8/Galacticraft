@@ -1,7 +1,13 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
+import io.netty.buffer.ByteBuf;
+
+import java.util.ArrayList;
+
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
+import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenDistributor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,9 +16,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-
-import com.google.common.io.ByteArrayDataInput;
-
+import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -49,11 +53,11 @@ public class GCCoreEntityOxygenBubble extends Entity implements IPacketReceiver,
 		this.ignoreFrustumCheck = true;
 	}
 
-	@Override
-	protected boolean pushOutOfBlocks(double par1, double par3, double par5)
-	{
-		return false;
-	}
+//	@Override
+//	protected boolean pushOutOfBlocks(double par1, double par3, double par5)
+//	{
+//		return false;
+//	} TODO Find out if this is still needed
 
 	@Override
 	public AxisAlignedBB getBoundingBox()
@@ -150,29 +154,25 @@ public class GCCoreEntityOxygenBubble extends Entity implements IPacketReceiver,
 
 		if (!this.worldObj.isRemote && this.ticks % 5 == 0)
 		{
-			GCCorePacketManager.sendPacketToClients(this.getDescriptionPacket(), this.worldObj, new Vector3(this), 50);
+			GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 50.0D));
 		}
-	}
-
-	public Packet getDescriptionPacket()
-	{
-		return GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.size);
 	}
 
 	@Override
-	public void handlePacketData(INetworkManager network, int packetType, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream)
+	public void getNetworkedData(ArrayList<Object> sendData)
 	{
-		try
-		{
-			if (this.worldObj.isRemote)
-			{
-				this.size = dataStream.readFloat();
-			}
-		}
-		catch (final Exception e)
-		{
-			e.printStackTrace();
-		}
+		sendData.add(this.size);
+	}
+
+	@Override
+	public void decodePacketdata(ByteBuf buffer)
+	{
+		this.size = buffer.readFloat();
+	}
+
+	@Override
+	public void handlePacketData(Side side, EntityPlayer player)
+	{
 	}
 
 	@Override
@@ -200,7 +200,7 @@ public class GCCoreEntityOxygenBubble extends Entity implements IPacketReceiver,
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound nbt)
 	{
-		if (nbt.getTags().contains("bubbleSize"))
+		if (nbt.func_150296_c().contains("bubbleSize"))
 		{
 			this.size = (float) nbt.getDouble("bubbleSize");
 		}

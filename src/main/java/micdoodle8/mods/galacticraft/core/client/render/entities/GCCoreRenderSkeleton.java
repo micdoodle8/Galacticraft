@@ -9,7 +9,7 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.Item;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -68,7 +68,7 @@ public class GCCoreRenderSkeleton extends RenderLiving
 		GL11.glRotatef(-20, 1.0F, 0.0F, 0.0F);
 		GL11.glRotatef(-20, 0.0F, 0.0F, 1.0F);
 		GL11.glScalef(0.5F, 0.5F, 0.5F);
-		this.renderManager.itemRenderer.renderItem(par1EntityLiving, new ItemStack(Item.bow), 0);
+		this.renderManager.itemRenderer.renderItem(par1EntityLiving, new ItemStack(Items.bow), 0);
 		GL11.glPopMatrix();
 
 		GL11.glPushMatrix();
@@ -78,7 +78,7 @@ public class GCCoreRenderSkeleton extends RenderLiving
 		GL11.glRotatef(-20, 1.0F, 0.0F, 0.0F);
 		GL11.glRotatef(-20, 0.0F, 0.0F, 1.0F);
 		GL11.glScalef(0.5F, 0.5F, 0.5F);
-		this.renderManager.itemRenderer.renderItem(par1EntityLiving, new ItemStack(Item.bow), 0);
+		this.renderManager.itemRenderer.renderItem(par1EntityLiving, new ItemStack(Items.bow), 0);
 		GL11.glPopMatrix();
 	}
 

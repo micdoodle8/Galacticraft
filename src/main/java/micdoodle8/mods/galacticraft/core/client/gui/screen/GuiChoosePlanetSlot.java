@@ -2,10 +2,9 @@ package micdoodle8.mods.galacticraft.core.client.gui.screen;
 
 import java.util.ArrayList;
 
-import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.event.client.GCCoreEventChoosePlanetGui.SlotClicked;
-import micdoodle8.mods.galacticraft.api.world.ICelestialBody;
-import micdoodle8.mods.galacticraft.api.world.ICelestialBodyRenderer;
+import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
+import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiSlot;
 import net.minecraft.client.renderer.Tessellator;
@@ -46,13 +45,13 @@ public class GuiChoosePlanetSlot extends GuiSlot
 
     @SuppressWarnings("unchecked")
     @Override
-    protected void elementClicked(int par1, boolean par2)
+    protected void elementClicked(int var1, boolean var2, int var3, int var4)
     {
-        if (par1 < GuiChoosePlanet.getDestinations(this.choosePlanetGui).length)
+        if (var1 < GuiChoosePlanet.getDestinations(this.choosePlanetGui).length)
         {
-            GuiChoosePlanet.setSelectedDimension(this.choosePlanetGui, par1);
+            GuiChoosePlanet.setSelectedDimension(this.choosePlanetGui, var1);
 
-            if (par1 != this.choosePlanetGui.selectedSlot)
+            if (var1 != this.choosePlanetGui.selectedSlot)
             {
                 SlotClicked event = new SlotClicked(new ArrayList<GuiButton>(), this);
                 MinecraftForge.EVENT_BUS.post(event);
@@ -81,7 +80,7 @@ public class GuiChoosePlanetSlot extends GuiSlot
     }
 
     @Override
-    protected void drawSlot(int par1, int par2, int par3, int par4, Tessellator par5Tessellator)
+    protected void drawSlot(int var1, int var2, int var3, int var4, Tessellator var5, int var6, int var7)
     {
         GL11.glPushMatrix();
         GL11.glDisable(GL11.GL_DEPTH_TEST);
@@ -89,18 +88,19 @@ public class GuiChoosePlanetSlot extends GuiSlot
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
-        GuiChoosePlanet.getDestinations(this.choosePlanetGui)[par1].toLowerCase();
-        if (this.isSelected(par1))
+        GuiChoosePlanet.getDestinations(this.choosePlanetGui)[var1].toLowerCase();
+        
+        if (this.isSelected(var1))
         {
-            for (int i = 0; i < GalacticraftRegistry.getCelestialBodies().size(); i++)
-            {
-                ICelestialBody celestialBody = GalacticraftRegistry.getCelestialBodies().get(i);
+    		ArrayList<CelestialBody> cBodyList = new ArrayList<CelestialBody>();
+    		cBodyList.addAll(GalaxyRegistry.getRegisteredPlanets().values());
+    		cBodyList.addAll(GalaxyRegistry.getRegisteredMoons().values());
 
-                if (celestialBody != null && celestialBody.getMapObject().getSlotRenderer() != null)
+    		for (CelestialBody celestialBody : cBodyList)
+    		{
+                if (celestialBody != null)
                 {
-                    ICelestialBodyRenderer renderer = celestialBody.getMapObject().getSlotRenderer();
-
-                    String str = GuiChoosePlanet.getDestinations(this.choosePlanetGui)[par1].toLowerCase();
+                    String str = GuiChoosePlanet.getDestinations(this.choosePlanetGui)[var1].toLowerCase();
 
                     if (str.contains("*"))
                     {
@@ -121,18 +121,17 @@ public class GuiChoosePlanetSlot extends GuiSlot
                         }
                     }
 
-                    if (renderer.getPlanetName().toLowerCase().equals(str))
+                    if (celestialBody.getLocalizedName().equals(str))
                     {
-                        FMLClientHandler.instance().getClient().renderEngine.bindTexture(renderer.getPlanetSprite());
-
-                        renderer.renderSlot(par1, par2 - 18, par3 + 9, par4 + 3, par5Tessellator);
+                        FMLClientHandler.instance().getClient().renderEngine.bindTexture(celestialBody.getPlanetIcon());
+                        GuiGalaxyMap.renderPlanet(var1, var2 - 18, var3 + 9, var4 + 3, var5);
                     }
                 }
             }
 
-            if (this.choosePlanetGui.isValidDestination(par1))
+            if (this.choosePlanetGui.isValidDestination(var1))
             {
-                String str = GuiChoosePlanet.getDestinations(this.choosePlanetGui)[par1];
+                String str = GuiChoosePlanet.getDestinations(this.choosePlanetGui)[var1];
 
                 if (str.contains("$"))
                 {
@@ -152,21 +151,21 @@ public class GuiChoosePlanetSlot extends GuiSlot
                     str = StatCollector.translateToLocal("dimension." + str + ".name");
                 }
 
-                this.choosePlanetGui.drawCenteredString(this.choosePlanetGui.getFontRenderer(), str, this.choosePlanetGui.width / 2, par3 + 3, 0xEEEEEE);
+                this.choosePlanetGui.drawCenteredString(this.choosePlanetGui.fontRendererObj, str, this.choosePlanetGui.width / 2, var3 + 3, 0xEEEEEE);
             }
             else
             {
-                String str = GuiChoosePlanet.getDestinations(this.choosePlanetGui)[par1];
+                String str = GuiChoosePlanet.getDestinations(this.choosePlanetGui)[var1];
                 str = str.replace("*", "");
 
-                this.choosePlanetGui.drawCenteredString(this.choosePlanetGui.getFontRenderer(), str, this.choosePlanetGui.width / 2, par3 + 3, 0xEEEEEE);
+                this.choosePlanetGui.drawCenteredString(this.choosePlanetGui.fontRendererObj, str, this.choosePlanetGui.width / 2, var3 + 3, 0xEEEEEE);
             }
         }
         else
         {
-            if (this.choosePlanetGui.isValidDestination(par1))
+            if (this.choosePlanetGui.isValidDestination(var1))
             {
-                String str = GuiChoosePlanet.getDestinations(this.choosePlanetGui)[par1];
+                String str = GuiChoosePlanet.getDestinations(this.choosePlanetGui)[var1];
 
                 if (str.contains("$"))
                 {
@@ -186,14 +185,14 @@ public class GuiChoosePlanetSlot extends GuiSlot
                     str = StatCollector.translateToLocal("dimension." + str + ".name");
                 }
 
-                this.choosePlanetGui.drawCenteredString(this.choosePlanetGui.getFontRenderer(), str, this.choosePlanetGui.width / 2, par3 + 3, 0xEEEEEE);
+                this.choosePlanetGui.drawCenteredString(this.choosePlanetGui.fontRendererObj, str, this.choosePlanetGui.width / 2, var3 + 3, 0xEEEEEE);
             }
             else
             {
-                String str = GuiChoosePlanet.getDestinations(this.choosePlanetGui)[par1];
+                String str = GuiChoosePlanet.getDestinations(this.choosePlanetGui)[var1];
                 str = str.replace("*", "");
 
-                this.choosePlanetGui.drawCenteredString(this.choosePlanetGui.getFontRenderer(), str, this.choosePlanetGui.width / 2, par3 + 3, 0xEEEEEE);
+                this.choosePlanetGui.drawCenteredString(this.choosePlanetGui.fontRendererObj, str, this.choosePlanetGui.width / 2, var3 + 3, 0xEEEEEE);
             }
         }
 

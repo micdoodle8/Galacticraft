@@ -55,7 +55,7 @@ public class GCCoreRenderCreeper extends RenderLiving
 
 	protected void updateCreeperScale(GCCoreEntityCreeper par1GCEntityCreeper, float par2)
 	{
-		float var4 = par1GCEntityCreeper.setCreeperFlashTime(par2);
+		float var4 = par1GCEntityCreeper.getCreeperFlashIntensity(par2);
 		final float var5 = 1.0F + MathHelper.sin(var4 * 100.0F) * var4 * 0.01F;
 
 		if (var4 < 0.0F)
@@ -77,7 +77,7 @@ public class GCCoreRenderCreeper extends RenderLiving
 
 	protected int updateCreeperColorMultiplier(GCCoreEntityCreeper par1GCEntityCreeper, float par2, float par3)
 	{
-		final float var5 = par1GCEntityCreeper.setCreeperFlashTime(par3);
+		final float var5 = par1GCEntityCreeper.getCreeperFlashIntensity(par3);
 
 		if ((int) (var5 * 10.0F) % 2 == 0)
 		{

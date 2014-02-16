@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.api.prefab.entity;
 
+import io.netty.buffer.ByteBuf;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -13,6 +15,8 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPadFull;
 import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.event.GCCoreLandingPadRemovalEvent;
+import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
+import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
 import net.minecraft.block.Block;
@@ -35,11 +39,14 @@ import com.google.common.io.ByteArrayDataInput;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.network.ByteBufUtils;
+import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
+import cpw.mods.fml.relauncher.Side;
 
 /**
  * Do not include this prefab class in your released mod download.
  */
-public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IDockable, IInventory
+public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IDockable, IInventory, IPacketReceiver
 {
 	public FluidTank fuelTank = new FluidTank(this.getFuelTankCapacity());
 	public int destinationFrequency = -1;
@@ -418,7 +425,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 				}
 			}
 
-			PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 60, this.worldObj.provider.dimensionId, GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getNetworkedData(new ArrayList<Object>())));
+			GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 60.0D));
 
 			this.lastStatusMessageCooldown = this.statusMessageCooldown;
 		}
@@ -553,40 +560,46 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 	}
 
 	@Override
-	public void readNetworkedData(ByteArrayDataInput dataStream)
+	public void decodePacketdata(ByteBuf buffer)
 	{
-		super.readNetworkedData(dataStream);
-		this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, dataStream.readInt()));
-		this.landing = dataStream.readBoolean();
-		this.destinationFrequency = dataStream.readInt();
+		super.decodePacketdata(buffer);
+		this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel,buffer.readInt()));
+		this.landing = buffer.readBoolean();
+		this.destinationFrequency = buffer.readInt();
 
-		if (dataStream.readBoolean())
+		if (buffer.readBoolean())
 		{
-			this.targetVec = new Vector3(dataStream.readDouble(), dataStream.readDouble(), dataStream.readDouble());
+			this.targetVec = new Vector3(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
 		}
 
-		this.motionX = dataStream.readDouble() / 8000.0D;
-		this.motionY = dataStream.readDouble() / 8000.0D;
-		this.motionZ = dataStream.readDouble() / 8000.0D;
-		this.lastMotionY = dataStream.readDouble() / 8000.0D;
-		this.lastLastMotionY = dataStream.readDouble() / 8000.0D;
+		this.motionX = buffer.readDouble() / 8000.0D;
+		this.motionY = buffer.readDouble() / 8000.0D;
+		this.motionZ = buffer.readDouble() / 8000.0D;
+		this.lastMotionY = buffer.readDouble() / 8000.0D;
+		this.lastLastMotionY = buffer.readDouble() / 8000.0D;
 
 		if (this.cargoItems == null)
 		{
 			this.cargoItems = new ItemStack[this.getSizeInventory()];
 		}
 
-		this.setWaitForPlayer(dataStream.readBoolean());
+		this.setWaitForPlayer(buffer.readBoolean());
 
-		this.statusMessage = dataStream.readUTF();
+		this.statusMessage = ByteBufUtils.readUTF8String(buffer);
 		this.statusMessage = this.statusMessage.equals("") ? null : this.statusMessage;
-		this.statusMessageCooldown = dataStream.readInt();
-		this.lastStatusMessageCooldown = dataStream.readInt();
-		this.statusValid = dataStream.readBoolean();
+		this.statusMessageCooldown = buffer.readInt();
+		this.lastStatusMessageCooldown = buffer.readInt();
+		this.statusValid = buffer.readBoolean();
 	}
 
 	@Override
-	public ArrayList<Object> getNetworkedData(ArrayList<Object> list)
+	public void handlePacketData(Side side, EntityPlayer player)
+	{
+		
+	}
+
+	@Override
+	public void getNetworkedData(ArrayList<Object> list)
 	{
 		super.getNetworkedData(list);
 
@@ -614,8 +627,6 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 		list.add(this.statusMessageCooldown);
 		list.add(this.lastStatusMessageCooldown);
 		list.add(this.statusValid);
-
-		return list;
 	}
 
 	@Override

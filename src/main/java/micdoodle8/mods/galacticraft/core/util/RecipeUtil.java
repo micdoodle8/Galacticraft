@@ -115,35 +115,4 @@ public class RecipeUtil
 	{
 		GalacticraftRegistry.addMoonBuggyRecipe(new GCCoreNasaWorkbenchRecipe(result, input));
 	}
-
-	public static ItemStack getGregtechBlock(int index, int amount, int metadata)
-	{
-		ItemStack stack = GregTech_API.getGregTechBlock(index, amount, metadata);
-
-		if (stack != null)
-		{
-			return stack;
-		}
-
-		GCLog.severe("Failed to load Gregtech block for recipe, ensure Gregtech has loaded properly");
-		return stack;
-	}
-
-	public static ItemStack getGregtechItem(int index, int amount, int metadata)
-	{
-		ItemStack stack = GregTech_API.getGregTechItem(index, index, metadata);
-
-		if (stack != null)
-		{
-			return stack;
-		}
-
-		GCLog.severe("Failed to load Gregtech item for recipe, ensure Gregtech has loaded properly");
-		return stack;
-	}
-
-	public static ItemStack getIndustrialCraftItem(String indentifier)
-	{
-		return Items.getItem(indentifier);
-	}
 }

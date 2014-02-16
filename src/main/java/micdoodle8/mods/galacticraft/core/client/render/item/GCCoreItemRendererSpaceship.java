@@ -90,7 +90,7 @@ public class GCCoreItemRendererSpaceship implements IItemRenderer
 	public void transform(ItemStack itemstack, ItemRenderType type)
 	{
 		final EntityPlayer player = FMLClientHandler.instance().getClient().thePlayer;
-		long var10 = this.spaceship.entityId * 493286711L;
+		long var10 = this.spaceship.getEntityId() * 493286711L;
 		var10 = var10 * var10 * 4392167121L + var10 * 98761L;
 		final float var12 = (((var10 >> 16 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
 		final float var13 = (((var10 >> 20 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;

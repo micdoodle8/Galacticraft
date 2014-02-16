@@ -3,11 +3,11 @@ package micdoodle8.mods.galacticraft.core.entities;
 import java.util.ArrayList;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
+import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
-
-import com.google.common.io.ByteArrayDataInput;
+import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 
 /**
  * NetworkedEntity.java
@@ -32,26 +32,10 @@ public abstract class NetworkedEntity extends Entity implements IPacketReceiver
 
 		if (!this.worldObj.isRemote)
 		{
-			PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, this.getPacketRange(), this.worldObj.provider.dimensionId, GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getNetworkedData(new ArrayList<Object>())));
+			GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, this.getPacketRange()));
+//			PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, this.getPacketRange(), this.worldObj.provider.dimensionId, GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getNetworkedData(new ArrayList<Object>())));
 		}
 	}
-
-	@Override
-	public void handlePacketData(INetworkManager network, int packetType, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream)
-	{
-		try
-		{
-			this.readNetworkedData(dataStream);
-		}
-		catch (final Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
-
-	public abstract void readNetworkedData(ByteArrayDataInput dataStream);
-
-	public abstract ArrayList<Object> getNetworkedData(ArrayList<Object> list);
 
 	public abstract double getPacketRange();
 }

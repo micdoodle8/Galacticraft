@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
@@ -36,7 +37,6 @@ import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerClient;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAirLockController;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityConductor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
@@ -59,6 +59,7 @@ import net.minecraftforge.common.DimensionManager;
 import org.lwjgl.input.Keyboard;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 
 public class PacketSimple implements IPacket
@@ -70,7 +71,7 @@ public class PacketSimple implements IPacket
 		S_TELEPORT_ENTITY(Side.SERVER, String.class),
 		S_IGNITE_ROCKET(Side.SERVER),
 		S_OPEN_SCHEMATIC_PAGE(Side.SERVER, Integer.class),
-		S_OPEN_SPACESHIP_INV(Side.SERVER, Integer.class),
+		S_OPEN_FUEL_GUI(Side.SERVER, Integer.class),
 		S_UPDATE_SHIP_YAW(Side.SERVER, Float.class),
 		S_UPDATE_SHIP_PITCH(Side.SERVER, Float.class),
 		S_SET_ENTITY_FIRE(Side.SERVER, Integer.class),
@@ -80,7 +81,6 @@ public class PacketSimple implements IPacket
 		S_UPDATE_DISABLEABLE_BUTTON(Side.SERVER, Integer.class, Integer.class, Integer.class, Integer.class),
 		S_ON_FAILED_CHEST_UNLOCK(Side.SERVER, Integer.class),
 		S_RENAME_SPACE_STATION(Side.SERVER, String.class, Integer.class),
-		S_OPEN_BUGGY_INV(Side.SERVER),
 		S_OPEN_EXTENDED_INVENTORY(Side.SERVER),
 		S_ON_ADVANCED_GUI_CLICKED_INT(Side.SERVER, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class),
 		S_ON_ADVANCED_GUI_CLICKED_STRING(Side.SERVER, Integer.class, Integer.class, Integer.class, Integer.class, String.class),
@@ -129,11 +129,25 @@ public class PacketSimple implements IPacket
 	}
 
 	private EnumSimplePacket type;
-	private Object[] data;
-
-	public PacketSimple(EnumSimplePacket packetType, Object... data)
+	private List<Object> data;
+	
+	public PacketSimple()
 	{
-		assert packetType.getDecodeClasses().length == data.length : "Simple Packet found data length different than packet type";
+		
+	}
+
+	public PacketSimple(EnumSimplePacket packetType, Object[] data)
+	{
+		this(packetType, Arrays.asList(data));
+	}
+
+	public PacketSimple(EnumSimplePacket packetType, List<Object> data)
+	{
+		if (packetType.getDecodeClasses().length != data.size())
+		{
+			GCLog.info("Simple Packet found data length different than packet type");
+		}
+		
 		this.type = packetType;
 		this.data = data;
 	}
@@ -145,7 +159,7 @@ public class PacketSimple implements IPacket
 		
 		try
 		{
-			NetworkUtil.encodeData(buffer, Arrays.asList(data));
+			NetworkUtil.encodeData(buffer, data);
 		}
 		catch (IOException e)
 		{
@@ -158,9 +172,11 @@ public class PacketSimple implements IPacket
 	{
 		this.type = EnumSimplePacket.values()[buffer.readInt()];
 		
+		FMLLog.info("" + this.type);
+		
 		if (this.type.getDecodeClasses().length > 0)
 		{
-			this.data = NetworkUtil.decodeData(this.type.getDecodeClasses(), buffer).toArray();
+			this.data = NetworkUtil.decodeData(this.type.getDecodeClasses(), buffer);
 		}
 	}
 
@@ -177,16 +193,16 @@ public class PacketSimple implements IPacket
 		switch (this.type)
 		{
 		case C_AIR_REMAINING:
-			if (String.valueOf(this.data[2]).equals(String.valueOf(FMLClientHandler.instance().getClient().thePlayer.getGameProfile().getName())))
+			if (String.valueOf(this.data.get(2)).equals(String.valueOf(FMLClientHandler.instance().getClient().thePlayer.getGameProfile().getName())))
 			{
-				GCCoreTickHandlerClient.airRemaining = (Integer) this.data[0];
-				GCCoreTickHandlerClient.airRemaining2 = (Integer) this.data[1];
+				GCCoreTickHandlerClient.airRemaining = (Integer) this.data.get(0);
+				GCCoreTickHandlerClient.airRemaining2 = (Integer) this.data.get(1);
 			}
 			break;
 		case C_UPDATE_DIMENSION_LIST:
-			if (String.valueOf(this.data[0]).equals(FMLClientHandler.instance().getClient().thePlayer.getGameProfile().getName()))
+			if (String.valueOf(this.data.get(0)).equals(FMLClientHandler.instance().getClient().thePlayer.getGameProfile().getName()))
 			{
-				final String[] destinations = ((String) this.data[1]).split("\\.");
+				final String[] destinations = ((String) this.data.get(1)).split("\\.");
 
 				if (FMLClientHandler.instance().getClient().theWorld != null && !(FMLClientHandler.instance().getClient().currentScreen instanceof GuiChoosePlanet || FMLClientHandler.instance().getClient().currentScreen instanceof GuiGalaxyMap))
 				{
@@ -209,15 +225,15 @@ public class PacketSimple implements IPacket
 			player.addChatMessage(new ChatComponentText("SPACE - Launch"));
 			player.addChatMessage(new ChatComponentText("A / D  - Turn left-right"));
 			player.addChatMessage(new ChatComponentText("W / S  - Turn up-down"));
-			player.addChatMessage(new ChatComponentText(Keyboard.getKeyName(GCCoreKeyHandlerClient.openSpaceshipInv.getKeyCode()) + "       - Inventory / Fuel"));
+			player.addChatMessage(new ChatComponentText(Keyboard.getKeyName(GCCoreKeyHandlerClient.openFuelGui.getKeyCode()) + "       - Inventory / Fuel"));
 			break;
 		case C_SPAWN_SPARK_PARTICLES:
 			int x,
 			y,
 			z;
-			x = (Integer) this.data[0];
-			y = (Integer) this.data[1];
-			z = (Integer) this.data[2];
+			x = (Integer) this.data.get(0);
+			y = (Integer) this.data.get(1);
+			z = (Integer) this.data.get(2);
 			Minecraft mc = Minecraft.getMinecraft();
 			
 			for (int i = 0; i < 4; i++)
@@ -235,11 +251,11 @@ public class PacketSimple implements IPacket
 			break;
 		case C_UPDATE_GEAR_SLOT:
 			PlayerGearData gearData = null;
-			int subtype = (Integer) this.data[2];
+			int subtype = (Integer) this.data.get(2);
 
 			for (PlayerGearData gearData2 : GCCoreTickHandlerClient.playerItemData)
 			{
-				if (gearData2.getPlayer().getGameProfile().getName().equals(this.data[0]))
+				if (gearData2.getPlayer().getGameProfile().getName().equals(this.data.get(0)))
 				{
 					gearData = gearData2;
 					break;
@@ -251,7 +267,7 @@ public class PacketSimple implements IPacket
 				gearData = new PlayerGearData(player);
 			}
 
-			switch (EnumModelPacket.values()[(Integer) this.data[1]])
+			switch (EnumModelPacket.values()[(Integer) this.data.get(1)])
 			{
 			case ADDMASK:
 				gearData.setMask(0);
@@ -341,13 +357,13 @@ public class PacketSimple implements IPacket
 			}
 			break;
 		case C_UPDATE_SPACESTATION_DATA:
-			GCCoreSpaceStationData var4 = GCCoreSpaceStationData.getMPSpaceStationData(player.worldObj, (int) this.data[0], player);
-			var4.readFromNBT((NBTTagCompound) this.data[1]);
+			GCCoreSpaceStationData var4 = GCCoreSpaceStationData.getMPSpaceStationData(player.worldObj, (int) this.data.get(0), player);
+			var4.readFromNBT((NBTTagCompound) this.data.get(1));
 			break;
 		case C_UPDATE_SPACESTATION_CLIENT_ID:
 			if (playerBaseClient != null)
 			{
-				playerBaseClient.clientSpaceStationID = (int) this.data[0];
+				playerBaseClient.clientSpaceStationID = (int) this.data.get(0);
 			}
 			break;
 		case C_UPDATE_PLANETS_LIST:
@@ -370,7 +386,7 @@ public class PacketSimple implements IPacket
 		case C_ADD_NEW_SCHEMATIC:
 			if (playerBaseClient != null)
 			{
-				final ISchematicPage page = SchematicRegistry.getMatchingRecipeForID((Integer) this.data[0]);
+				final ISchematicPage page = SchematicRegistry.getMatchingRecipeForID((Integer) this.data.get(0));
 
 				if (!playerBaseClient.unlockedSchematics.contains(page))
 				{
@@ -398,7 +414,7 @@ public class PacketSimple implements IPacket
 			}
 			break;
 		case C_ZOOM_CAMERA:
-			GCCoreTickHandlerClient.zoom((Integer) this.data[0] == 0 ? 4.0F : 15.0F);
+			GCCoreTickHandlerClient.zoom((Integer) this.data.get(0) == 0 ? 4.0F : 15.0F);
 			break;
 		case C_PLAY_SOUND_BOSS_DEATH:
 			player.playSound(GalacticraftCore.ASSET_PREFIX + "entity.bossdeath", 10.0F, 0.8F);
@@ -415,21 +431,21 @@ public class PacketSimple implements IPacket
 		case C_UPDATE_OXYGEN_VALIDITY:
 			if (playerBaseClient != null)
 			{
-				playerBaseClient.oxygenSetupValid = (Boolean) this.data[0];
+				playerBaseClient.oxygenSetupValid = (Boolean) this.data.get(0);
 			}
 			break;
 		case C_OPEN_PARACHEST_GUI:
-			switch ((Integer) this.data[1])
+			switch ((Integer) this.data.get(1))
 			{
 			case 0:
 				if (player.ridingEntity instanceof GCCoreEntityBuggy)
 				{
 					FMLClientHandler.instance().getClient().displayGuiScreen(new GuiBuggy(player.inventory, (GCCoreEntityBuggy) player.ridingEntity, ((GCCoreEntityBuggy) player.ridingEntity).getType()));
-					player.openContainer.windowId = (Integer) this.data[0];
+					player.openContainer.windowId = (Integer) this.data.get(0);
 				}
 				break;
 			case 1:
-				int entityID = (Integer) this.data[2];
+				int entityID = (Integer) this.data.get(2);
 				Entity entity = player.worldObj.getEntityByID(entityID);
 
 				if (entity != null && entity instanceof IInventorySettable)
@@ -437,12 +453,12 @@ public class PacketSimple implements IPacket
 					FMLClientHandler.instance().getClient().displayGuiScreen(new GuiParachest(player.inventory, (IInventorySettable) entity));
 				}
 
-				player.openContainer.windowId = (Integer) this.data[0];
+				player.openContainer.windowId = (Integer) this.data.get(0);
 				break;
 			}
 			break;
 		case C_UPDATE_WIRE_BOUNDS:
-			TileEntity tile = player.worldObj.getTileEntity((Integer) this.data[0], (Integer) this.data[1], (Integer) this.data[2]);
+			TileEntity tile = player.worldObj.getTileEntity((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2));
 
 			if (tile instanceof TileEntityConductor)
 			{
@@ -470,9 +486,9 @@ public class PacketSimple implements IPacket
 			{
 				try
 				{
-					final WorldProvider provider = WorldUtil.getProviderForName((String) this.data[0]);
+					final WorldProvider provider = WorldUtil.getProviderForName((String) this.data.get(0));
 					final Integer dim = provider.dimensionId;
-					GCLog.info("Found matching world name for " + (String) this.data[0]);
+					GCLog.info("Found matching world name for " + (String) this.data.get(0));
 
 					if (playerBase.worldObj instanceof WorldServer)
 					{
@@ -489,11 +505,11 @@ public class PacketSimple implements IPacket
 					}
 
 					playerBase.setTeleportCooldown(300);
-					GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_CLOSE_GUI), playerBase);
+					GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_CLOSE_GUI, new Object[] {}), playerBase);
 				}
 				catch (final Exception e)
 				{
-					GCLog.severe("Error occurred when attempting to transfer entity to dimension: " + (String) this.data[0]);
+					GCLog.severe("Error occurred when attempting to transfer entity to dimension: " + (String) this.data.get(0));
 					e.printStackTrace();
 				}
 			}
@@ -534,13 +550,20 @@ public class PacketSimple implements IPacket
 		case S_OPEN_SCHEMATIC_PAGE:
 			if (player != null)
 			{
-				final ISchematicPage page = SchematicRegistry.getMatchingRecipeForID((Integer) this.data[0]);
+				final ISchematicPage page = SchematicRegistry.getMatchingRecipeForID((Integer) this.data.get(0));
 
 				player.openGui(GalacticraftCore.instance, page.getGuiID(), player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
 			}
 			break;
-		case S_OPEN_SPACESHIP_INV:
-			player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiSpaceshipInventory, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
+		case S_OPEN_FUEL_GUI:
+			if (player.ridingEntity instanceof GCCoreEntityBuggy)
+			{
+				GCCoreUtil.openBuggyInv(playerBase, (GCCoreEntityBuggy) player.ridingEntity, ((GCCoreEntityBuggy) player.ridingEntity).getType());
+			}
+			else if (player.ridingEntity instanceof EntitySpaceshipBase)
+			{
+				player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiSpaceshipInventory, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
+			}
 			break;
 		case S_UPDATE_SHIP_YAW:
 			if (player.ridingEntity instanceof EntitySpaceshipBase)
@@ -549,7 +572,7 @@ public class PacketSimple implements IPacket
 
 				if (ship != null)
 				{
-					ship.rotationYaw = (Float) this.data[0];
+					ship.rotationYaw = (Float) this.data.get(0);
 				}
 			}
 			break;
@@ -560,12 +583,12 @@ public class PacketSimple implements IPacket
 
 				if (ship != null)
 				{
-					ship.rotationPitch = (Float) this.data[0];
+					ship.rotationPitch = (Float) this.data.get(0);
 				}
 			}
 			break;
 		case S_SET_ENTITY_FIRE:
-			Entity entity = player.worldObj.getEntityByID((int) this.data[0]);
+			Entity entity = player.worldObj.getEntityByID((int) this.data.get(0));
 			
 			if (entity instanceof EntityLiving)
 			{
@@ -573,14 +596,14 @@ public class PacketSimple implements IPacket
 			}
 			break;
 		case S_OPEN_REFINERY_GUI:
-			player.openGui(GalacticraftCore.instance, -1, player.worldObj, (Integer) this.data[0], (Integer) this.data[1], (Integer) this.data[2]);
+			player.openGui(GalacticraftCore.instance, -1, player.worldObj, (Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2));
 			break;
 		case S_BIND_SPACE_STATION_ID:
 			if (playerBase.getSpaceStationDimensionID() == -1 || playerBase.getSpaceStationDimensionID() == 0)
 			{
 				WorldUtil.bindSpaceStationToNewDimension(playerBase.worldObj, playerBase);
 
-				WorldUtil.getSpaceStationRecipe((Integer) this.data[0]).matches(playerBase, true);
+				WorldUtil.getSpaceStationRecipe((Integer) this.data.get(0)).matches(playerBase, true);
 			}
 			break;
 		case S_UNLOCK_NEW_SCHEMATIC:
@@ -606,86 +629,80 @@ public class PacketSimple implements IPacket
 						}
 
 						schematicContainer.craftMatrix.setInventorySlotContents(0, stack);
-						schematicContainer.craftMatrix.onInventoryChanged();
+						schematicContainer.craftMatrix.markDirty();
 
-						GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ADD_NEW_SCHEMATIC, page.getPageID()), playerBase);
+						GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ADD_NEW_SCHEMATIC, new Object[] { page.getPageID() }), playerBase);
 					}
 				}
 			}
 			break;
 		case S_UPDATE_DISABLEABLE_BUTTON:
-			final TileEntity tileAt = player.worldObj.getTileEntity((Integer) this.data[0], (Integer) this.data[1], (Integer) this.data[2]);
+			final TileEntity tileAt = player.worldObj.getTileEntity((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2));
 
 			if (tileAt instanceof IDisableableMachine)
 			{
 				final IDisableableMachine machine = (IDisableableMachine) tileAt;
 
-				machine.setDisabled((Integer) this.data[3], !machine.getDisabled((Integer) this.data[3]));
+				machine.setDisabled((Integer) this.data.get(3), !machine.getDisabled((Integer) this.data.get(3)));
 			}
 			break;
 		case S_ON_FAILED_CHEST_UNLOCK:
 			if (playerBase.getChatCooldown() == 0)
 			{
-				player.addChatMessage(new ChatComponentText("I'll probably need a Tier " + this.data[0] + " Dungeon key to unlock this!"));
+				player.addChatMessage(new ChatComponentText("I'll probably need a Tier " + this.data.get(0) + " Dungeon key to unlock this!"));
 				playerBase.setChatCooldown(100);
 			}
 			break;
 		case S_RENAME_SPACE_STATION:
-			final GCCoreSpaceStationData ssdata = GCCoreSpaceStationData.getStationData(playerBase.worldObj, (Integer) this.data[1], playerBase);
+			final GCCoreSpaceStationData ssdata = GCCoreSpaceStationData.getStationData(playerBase.worldObj, (Integer) this.data.get(1), playerBase);
 
 			if (ssdata != null && ssdata.getOwner().equalsIgnoreCase(player.getGameProfile().getName()))
 			{
-				ssdata.setSpaceStationName((String) this.data[0]);
+				ssdata.setSpaceStationName((String) this.data.get(0));
 				ssdata.setDirty(true);
-			}
-			break;
-		case S_OPEN_BUGGY_INV:
-			if (player.ridingEntity instanceof GCCoreEntityBuggy)
-			{
-				GCCoreUtil.openBuggyInv(playerBase, (GCCoreEntityBuggy) player.ridingEntity, ((GCCoreEntityBuggy) player.ridingEntity).getType());
 			}
 			break;
 		case S_OPEN_EXTENDED_INVENTORY:
 			player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiExtendedInventory, player.worldObj, 0, 0, 0);
 			break;
 		case S_ON_ADVANCED_GUI_CLICKED_INT:
-			TileEntity tile1 = player.worldObj.getTileEntity((Integer) this.data[1], (Integer) this.data[2], (Integer) this.data[3]);
+			TileEntity tile1 = player.worldObj.getTileEntity((Integer) this.data.get(1), (Integer) this.data.get(2), (Integer) this.data.get(3));
 
-			switch ((Integer) this.data[0])
+			switch ((Integer) this.data.get(0))
 			{
 			case 0:
 				if (tile1 instanceof TileEntityAirLockController)
 				{
 					TileEntityAirLockController launchController = (TileEntityAirLockController) tile1;
-					launchController.redstoneActivation = (Integer) this.data[4] == 1;
+					launchController.redstoneActivation = (Integer) this.data.get(4) == 1;
 				}
 				break;
 			case 1:
 				if (tile1 instanceof TileEntityAirLockController)
 				{
 					TileEntityAirLockController launchController = (TileEntityAirLockController) tile1;
-					launchController.playerDistanceActivation = (Integer) this.data[4] == 1;
+					launchController.playerDistanceActivation = (Integer) this.data.get(4) == 1;
 				}
 				break;
 			case 2:
 				if (tile1 instanceof TileEntityAirLockController)
 				{
 					TileEntityAirLockController launchController = (TileEntityAirLockController) tile1;
-					launchController.playerDistanceSelection = (Integer) this.data[4];
+					launchController.playerDistanceSelection = (Integer) this.data.get(4);
 				}
 				break;
 			case 3:
 				if (tile1 instanceof TileEntityAirLockController)
 				{
 					TileEntityAirLockController launchController = (TileEntityAirLockController) tile1;
-					launchController.playerNameMatches = (Integer) this.data[4] == 1;
+					launchController.playerNameMatches = (Integer) this.data.get(4) == 1;
 				}
 				break;
 			case 4:
 				if (tile1 instanceof TileEntityAirLockController)
 				{
 					TileEntityAirLockController launchController = (TileEntityAirLockController) tile1;
-					launchController.invertSelection = (Integer) this.data[4] == 1;
+					launchController.invertSelection = (Integer) this.data.get(4) == 1;
 				}
 				break;
 			case 5:
@@ -693,7 +710,7 @@ public class PacketSimple implements IPacket
 				{
 					TileEntityAirLockController launchController = (TileEntityAirLockController) tile1;
 					launchController.lastHorizontalModeEnabled = launchController.horizontalModeEnabled;
-					launchController.horizontalModeEnabled = (Integer) this.data[4] == 1;
+					launchController.horizontalModeEnabled = (Integer) this.data.get(4) == 1;
 				}
 				break;
 			default:
@@ -701,15 +718,15 @@ public class PacketSimple implements IPacket
 			}
 			break;
 		case S_ON_ADVANCED_GUI_CLICKED_STRING:
-			TileEntity tile2 = player.worldObj.getTileEntity((Integer) this.data[1], (Integer) this.data[2], (Integer) this.data[3]);
+			TileEntity tile2 = player.worldObj.getTileEntity((Integer) this.data.get(1), (Integer) this.data.get(2), (Integer) this.data.get(3));
 
-			switch ((Integer) this.data[0])
+			switch ((Integer) this.data.get(0))
 			{
 			case 0:
 				if (tile2 instanceof TileEntityAirLockController)
 				{
 					TileEntityAirLockController launchController = (TileEntityAirLockController) tile2;
-					launchController.playerToOpenFor = (String) this.data[4];
+					launchController.playerToOpenFor = (String) this.data.get(4);
 				}
 				break;
 			default:
@@ -717,8 +734,8 @@ public class PacketSimple implements IPacket
 			}
 			break;
 		case S_UPDATE_SHIP_MOTION_Y:
-			int entityID = (Integer) this.data[0];
-			boolean up = (Boolean) this.data[1];
+			int entityID = (Integer) this.data.get(0);
+			boolean up = (Boolean) this.data.get(1);
 
 			Entity entity2 = player.worldObj.getEntityByID(entityID);
 

@@ -12,7 +12,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.BossStatus;
 import net.minecraft.entity.boss.IBossDisplayData;
-import net.minecraft.item.Item;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -62,11 +62,11 @@ public class GCCoreRenderSkeletonBoss extends RenderLiving
 	}
 
 	@Override
-	public void doRenderLiving(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9)
+	public void doRender(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9)
 	{
 		BossStatus.setBossStatus((IBossDisplayData) par1EntityLiving, false);
 
-		super.doRenderLiving(par1EntityLiving, par2, par4, par6, par8, par9);
+		super.doRender(par1EntityLiving, par2, par4, par6, par8, par9);
 	}
 
 	@Override
@@ -81,7 +81,7 @@ public class GCCoreRenderSkeletonBoss extends RenderLiving
 			GL11.glRotatef(-20, 1.0F, 0.0F, 0.0F);
 			GL11.glRotatef(-20, 0.0F, 0.0F, 1.0F);
 			GL11.glScalef(0.7F, 0.7F, 0.7F);
-			this.renderManager.itemRenderer.renderItem(par1EntityLiving, new ItemStack(Item.bow), 0);
+			this.renderManager.itemRenderer.renderItem(par1EntityLiving, new ItemStack(Items.bow), 0);
 			GL11.glPopMatrix();
 
 			GL11.glPushMatrix();
@@ -91,7 +91,7 @@ public class GCCoreRenderSkeletonBoss extends RenderLiving
 			GL11.glRotatef(-20, 1.0F, 0.0F, 0.0F);
 			GL11.glRotatef(-20, 0.0F, 0.0F, 1.0F);
 			GL11.glScalef(0.7F, 0.7F, 0.7F);
-			this.renderManager.itemRenderer.renderItem(par1EntityLiving, new ItemStack(Item.bow), 0);
+			this.renderManager.itemRenderer.renderItem(par1EntityLiving, new ItemStack(Items.bow), 0);
 			GL11.glPopMatrix();
 		}
 	}

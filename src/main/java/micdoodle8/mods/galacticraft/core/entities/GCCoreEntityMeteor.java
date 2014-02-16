@@ -101,7 +101,7 @@ public class GCCoreEntityMeteor extends Entity
 
 		Vec3 var15 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
 		Vec3 var2 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
-		MovingObjectPosition var3 = this.worldObj.rayTraceBlocks_do_do(var15, var2, true, true);
+		MovingObjectPosition var3 = this.worldObj.func_147447_a(var15, var2, true, true, false);
 		var15 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
 		var2 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
@@ -190,7 +190,7 @@ public class GCCoreEntityMeteor extends Entity
 	{
 		if (par1Entity != null && par1Entity instanceof EntityPlayer)
 		{
-			StatCollector.translateToLocalFormatted("death." + "meteor", ((EntityPlayer) par1Entity).username + " was hit by a meteor! That's gotta hurt!");
+			StatCollector.translateToLocalFormatted("death." + "meteor", ((EntityPlayer) par1Entity).getGameProfile().getName() + " was hit by a meteor! That's gotta hurt!");
 		}
 		return new EntityDamageSourceIndirect("explosion", par0EntityMeteor, par1Entity).setProjectile();
 	}

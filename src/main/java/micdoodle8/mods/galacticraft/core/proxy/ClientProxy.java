@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.proxy;
 
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEffectHandler;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.InventoryTabGalacticraft;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryExtended;
 import micdoodle8.mods.galacticraft.core.tick.GCCoreKeyHandlerClient;
@@ -40,5 +42,17 @@ public class ClientProxy extends CommonProxy
 	public void postInit(FMLPostInitializationEvent event)
 	{
 		super.postInit(event);
+	}
+
+	@Override
+	public void spawnParticle(String particleID, Vector3 position, Vector3 motion)
+	{
+		this.spawnParticle(particleID, position, motion, new Vector3(0, 0, 0));
+	}
+
+	@Override
+	public void spawnParticle(String particleID, Vector3 position, Vector3 motion, Vector3 color)
+	{
+		GCCoreEffectHandler.spawnParticle(particleID, position, motion, color);
 	}
 }

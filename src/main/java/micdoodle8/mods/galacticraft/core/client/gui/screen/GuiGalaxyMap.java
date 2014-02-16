@@ -414,7 +414,14 @@ public class GuiGalaxyMap extends GuiStarBackground
             if (cBody.getPlanetIcon() != null)
             {
                 this.mc.renderEngine.bindTexture(cBody.getPlanetIcon());
-                this.renderPlanet(0, centerX + var42b, centerY + var41b, (float) (cBody.getRelativeSize() * 15.0F + 1 / Math.pow(this.zoom, -2)), Tessellator.instance);
+                
+        		GL11.glDisable(GL11.GL_BLEND);
+        		GL11.glEnable(GL11.GL_DEPTH_TEST);
+        		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        		GL11.glEnable(GL11.GL_BLEND);
+        		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+        		
+                GuiGalaxyMap.renderPlanet(0, centerX + var42b, centerY + var41b, (float) (cBody.getRelativeSize() * 15.0F + 1 / Math.pow(this.zoom, -2)), Tessellator.instance);
 
                 if (this.selectedPlanet != null && cBody.equals(this.selectedPlanet))
                 {
@@ -448,13 +455,8 @@ public class GuiGalaxyMap extends GuiStarBackground
         }
     }
     
-    private void renderPlanet(int index, int x, int y, float slotHeight, Tessellator tessellator)
+    public static void renderPlanet(int index, int x, int y, float slotHeight, Tessellator tessellator)
     {
-		GL11.glDisable(GL11.GL_BLEND);
-		GL11.glEnable(GL11.GL_DEPTH_TEST);
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 		tessellator.startDrawingQuads();
 		tessellator.addVertexWithUV(x + 12 - slotHeight, y - 11 + slotHeight, -90.0D, 0.0, 1.0);
 		tessellator.addVertexWithUV(x + 12, y - 11 + slotHeight, -90.0D, 1.0, 1.0);

@@ -175,13 +175,13 @@ public class GCCoreBlockFallenMeteor extends Block implements ITileEntityProvide
 		{
 			TileEntityFallenMeteor meteor = (TileEntityFallenMeteor) tile;
 
-			Vector3 col = new Vector3(198, 58, 108);
+			Vector3 col = new Vector3(198, 108, 58);
 			col.translate(200 - meteor.getScaledHeatLevel() * 200);
 			col.x = Math.min(255, col.x);
 			col.y = Math.min(255, col.y);
 			col.z = Math.min(255, col.z);
 
-			return GCCoreUtil.convertTo32BitColor(255, (byte) col.x, (byte) col.y, (byte) col.z);
+			return GCCoreUtil.to32BitColor(255, (byte) col.x, (byte) col.y, (byte) col.z);
 		}
 
 		return super.colorMultiplier(par1IBlockAccess, par2, par3, par4);

@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map.Entry;
 
 import micdoodle8.mods.galacticraft.api.event.oxygen.GCCoreOxygenSuffocationEvent;
@@ -27,7 +28,6 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
-import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
@@ -50,7 +50,6 @@ import net.minecraftforge.common.MinecraftForge;
 import com.mojang.authlib.GameProfile;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.relauncher.Side;
 
@@ -296,7 +295,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
 		if (this.worldObj.provider instanceof IGalacticraftWorldProvider && (this.oxygenSetupValid != this.lastOxygenSetupValid || this.tick % 100 == 0))
 		{
-			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_OXYGEN_VALIDITY, this.oxygenSetupValid), this);
+			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_OXYGEN_VALIDITY, new Object[] { this.oxygenSetupValid }), this);
 		}
 
 		if (this.getParachute())
@@ -537,7 +536,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 			count++;
 		}
 
-		GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_DIMENSION_LIST, this.getGameProfile().getName(), temp), this);
+		GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_DIMENSION_LIST, new Object[] { this.getGameProfile().getName(), temp }), this);
 	}
 
 	private void checkGear()
@@ -886,7 +885,18 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
 		if (this.playerNetServerHandler != null && (this.getUnlockedSchematics().size() != this.lastUnlockedSchematics.size() || this.tick % 100 == 0))
 		{
-			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SCHEMATIC_LIST, this.getUnlockedSchematics().toArray()), this);
+			Integer[] iArray = new Integer[this.getUnlockedSchematics().size()];
+			
+			for (int i = 0; i < iArray.length; i++)
+			{
+				ISchematicPage page = this.getUnlockedSchematics().get(i);
+				iArray[i] = page == null ? -2 : page.getPageID();
+			}
+			
+			List<Object> objList = new ArrayList<Object>();
+			objList.add(iArray);
+			
+			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SCHEMATIC_LIST, objList), this);
 		}
 	}
 
@@ -1051,7 +1061,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 	{
 		final float f1 = Float.valueOf(this.tankInSlot1 == null ? 0.0F : this.tankInSlot1.getMaxDamage() / 90.0F);
 		final float f2 = Float.valueOf(this.tankInSlot2 == null ? 0.0F : this.tankInSlot2.getMaxDamage() / 90.0F);
-		GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_AIR_REMAINING, (int) Math.floor(this.airRemaining / f1), (int) Math.floor(this.airRemaining2 / f2), this.getGameProfile().getName()), this);
+		GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_AIR_REMAINING, new Object[] { (int) Math.floor(this.airRemaining / f1), (int) Math.floor(this.airRemaining2 / f2), this.getGameProfile().getName() }), this);
 	}
 
 	private void sendGearUpdatePacket(int gearType)
@@ -1065,7 +1075,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
 		if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.getGameProfile().getName()) != null)
 		{
-			GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_GEAR_SLOT, this.getGameProfile().getName(), gearType, subtype), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 50.0D));
+			GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_GEAR_SLOT, new Object[] { this.getGameProfile().getName(), gearType, subtype }), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 50.0D));
 		}
 	}
 

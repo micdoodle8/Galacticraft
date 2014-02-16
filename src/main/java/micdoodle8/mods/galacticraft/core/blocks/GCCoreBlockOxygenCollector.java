@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenCollector;
 import net.minecraft.block.Block;
@@ -183,7 +184,7 @@ public class GCCoreBlockOxygenCollector extends GCCoreBlockAdvancedTile
 						mZ = rand.nextFloat() * 2.0F * dir;
 					}
 
-//					GalacticraftCore.proxy.spawnParticle("oxygen", new Vector3(x2, y2, z2), new Vector3(mX, mY, mZ), new Vector3(0.7D, 0.7D, 1.0D)); TODO Fix particles
+					GalacticraftCore.proxy.spawnParticle("oxygen", new Vector3(x2, y2, z2), new Vector3(mX, mY, mZ), new Vector3(0.7D, 0.7D, 1.0D));
 				}
 			}
 		}

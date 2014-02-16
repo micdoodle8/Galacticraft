@@ -64,7 +64,7 @@ public class GCCoreRenderFlag extends Render
 	public void renderSpaceship(GCCoreEntityFlag entity, double par2, double par4, double par6, float par8, float par9)
 	{
 		GL11.glPushMatrix();
-		long var10 = entity.entityId * 493286711L;
+		long var10 = entity.getEntityId() * 493286711L;
 		var10 = var10 * var10 * 4392167121L + var10 * 98761L;
 		final float var12 = (((var10 >> 16 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
 		final float var13 = (((var10 >> 20 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;

@@ -804,7 +804,7 @@ public class GuiChoosePlanet extends GuiScreen
                 {
                     this.mc.gameSettings.thirdPersonView = 0;
                 }
-    			GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_TELEPORT_ENTITY, dimension));
+    			GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_TELEPORT_ENTITY, new Object[] { dimension }));
                 return;
             }
             else
@@ -817,7 +817,7 @@ public class GuiChoosePlanet extends GuiScreen
             if (recipe != null && par1GuiButton != null && par1GuiButton.enabled && recipe.matches(this.playerToSend, false))
             {
                 final Object[] toSend = { this.getDimensionIdFromSlot() };
-    			GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_BIND_SPACE_STATION_ID, this.getDimensionIdFromSlot()));
+    			GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_BIND_SPACE_STATION_ID, new Object[] { this.getDimensionIdFromSlot() }));
                 par1GuiButton.enabled = false;
                 return;
             }
@@ -825,7 +825,7 @@ public class GuiChoosePlanet extends GuiScreen
         case 3:
             if (par1GuiButton != null && par1GuiButton.equals(this.renameSpaceStationButton))
             {
-    			GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_RENAME_SPACE_STATION, this.renameText, this.getDimensionIdFromSlot()));
+    			GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_RENAME_SPACE_STATION, new Object[] { this.renameText, this.getDimensionIdFromSlot() }));
                 this.renameText = "";
             }
             break;

@@ -73,7 +73,7 @@ public class GCCoreCommandSpaceStationAddOwner extends CommandBase
 
 					if (playerToAdd != null)
 					{
-						playerToAdd.addChatMessage(new ChatComponentText("You've been added to " + playerBase.username + "\'s Space Station accepted players!"));
+						playerToAdd.addChatMessage(new ChatComponentText("You've been added to " + playerBase.getCommandSenderName() + "\'s Space Station accepted players!"));
 					}
 				}
 			}

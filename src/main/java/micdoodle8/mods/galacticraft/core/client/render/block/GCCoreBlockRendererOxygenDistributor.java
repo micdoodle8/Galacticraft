@@ -131,7 +131,7 @@ public class GCCoreBlockRendererOxygenDistributor implements ISimpleBlockRenderi
 	}
 
 	@Override
-	public boolean shouldRender3DInInventory()
+	public boolean shouldRender3DInInventory(int modelId)
 	{
 		return true;
 	}

@@ -1,8 +1,6 @@
 package micdoodle8.mods.galacticraft.core.event;
 
 import java.lang.reflect.Field;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -36,7 +34,6 @@ import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.block.Block;
-import net.minecraft.client.audio.SoundPoolEntry;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -45,7 +42,6 @@ import net.minecraft.item.ItemFlintAndSteel;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -64,6 +60,7 @@ import net.minecraftforge.event.world.ChunkEvent.Load;
 import net.minecraftforge.event.world.WorldEvent.Save;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.eventhandler.Event;
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -339,7 +336,18 @@ public class GCCoreEvents
 
 			if (player != null && player.playerNetServerHandler != null)
 			{
-				GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SCHEMATIC_LIST, player.getUnlockedSchematics().toArray()), player);
+				Integer[] iArray = new Integer[player.getUnlockedSchematics().size()];
+				
+				for (int i = 0; i < iArray.length; i++)
+				{
+					ISchematicPage page = player.getUnlockedSchematics().get(i);
+					iArray[i] = page == null ? -2 : page.getPageID();
+				}
+				
+				List<Object> objList = new ArrayList<Object>();
+				objList.add(iArray);
+				
+				GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SCHEMATIC_LIST, objList), player);
 			}
 		}
 	}
@@ -362,7 +370,7 @@ public class GCCoreEvents
 
 		if (page != null)
 		{
-			GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_OPEN_SCHEMATIC_PAGE, page.getPageID()));
+			GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_OPEN_SCHEMATIC_PAGE, new Object[] { page.getPageID() }));
 			FMLClientHandler.instance().getClient().thePlayer.openGui(GalacticraftCore.instance, page.getGuiID(), FMLClientHandler.instance().getClient().thePlayer.worldObj, (int) FMLClientHandler.instance().getClient().thePlayer.posX, (int) FMLClientHandler.instance().getClient().thePlayer.posY, (int) FMLClientHandler.instance().getClient().thePlayer.posZ);
 		}
 	}
@@ -492,23 +500,23 @@ public class GCCoreEvents
 //		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "shuttle/shuttle.ogg");
 	}
 
-	@SideOnly(Side.CLIENT)
-	private SoundPoolEntry func_110654_c(SoundPool pool, String par1Str)
-	{
-		try
-		{
-			ResourceLocation resourcelocation = new ResourceLocation(par1Str);
-			String s1 = String.format("%s:%s:%s/%s", new Object[] { "mcsounddomain", resourcelocation.getResourceDomain(), "sound", resourcelocation.getResourcePath() });
-			SoundPoolProtocolHandler soundpoolprotocolhandler = new SoundPoolProtocolHandler(pool);
-			return new SoundPoolEntry(par1Str, new URL((URL) null, s1, soundpoolprotocolhandler));
-		}
-		catch (MalformedURLException e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
+//	@SideOnly(Side.CLIENT)
+//	private SoundPoolEntry func_110654_c(SoundPool pool, String par1Str)
+//	{
+//		try
+//		{
+//			ResourceLocation resourcelocation = new ResourceLocation(par1Str);
+//			String s1 = String.format("%s:%s:%s/%s", new Object[] { "mcsounddomain", resourcelocation.getResourceDomain(), "sound", resourcelocation.getResourcePath() });
+//			SoundPoolProtocolHandler soundpoolprotocolhandler = new SoundPoolProtocolHandler(pool);
+//			return new SoundPoolEntry(par1Str, new URL((URL) null, s1, soundpoolprotocolhandler));
+//		}
+//		catch (MalformedURLException e)
+//		{
+//			e.printStackTrace();
+//		}
+//
+//		return null;
+//	} TODO Fix frequency module
 
 	@SideOnly(Side.CLIENT)
 	@EventHandler
@@ -583,5 +591,13 @@ public class GCCoreEvents
 			this.y = y;
 			this.z = z;
 		}
+	}
+
+	public static class SleepCancelledEvent extends Event
+	{
+	}
+
+	public static class OrientCameraEvent extends Event
+	{
 	}
 }

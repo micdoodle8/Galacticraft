@@ -39,7 +39,7 @@ public class GCCoreSlotRefinery extends Slot
 					{
 						final Item item = (Item) f.get(null);
 
-						if (par1ItemStack.itemID == item.itemID)
+						if (par1ItemStack.getItem() == item)
 						{
 							return true;
 						}

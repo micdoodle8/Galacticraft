@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.api.prefab.entity;
 
+import io.netty.buffer.ByteBuf;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,9 +11,10 @@ import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GCCoreDamageSource;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
+import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
+import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
-import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -30,7 +33,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 /**
  * Do not include this prefab class in your released mod download.
  */
-public abstract class EntitySpaceshipBase extends Entity
+public abstract class EntitySpaceshipBase extends Entity implements IPacketReceiver
 {
 	public static enum EnumLaunchPhase
 	{
@@ -108,7 +111,7 @@ public abstract class EntitySpaceshipBase extends Entity
 	{
 		if (this.riddenByEntity != null && this.riddenByEntity instanceof GCCorePlayerMP)
 		{
-			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, 0), (EntityPlayerMP)this.riddenByEntity);
+			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, new Object[] { 0 }), (EntityPlayerMP)this.riddenByEntity);
 		}
 
 		super.setDead();
@@ -138,7 +141,7 @@ public abstract class EntitySpaceshipBase extends Entity
 				{
 					if (this.riddenByEntity != null)
 					{
-						GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, 0), (EntityPlayerMP)this.riddenByEntity);
+						GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, new Object[] { 0 }), (EntityPlayerMP)this.riddenByEntity);
 						this.riddenByEntity.mountEntity(this);
 					}
 
@@ -322,7 +325,8 @@ public abstract class EntitySpaceshipBase extends Entity
 
 		if (!this.worldObj.isRemote && this.ticks % 3 == 0)
 		{
-			PacketDispatcher.sendPacketToAllInDimension(GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getNetworkedData(new ArrayList())), this.worldObj.provider.dimensionId);
+			GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), this.worldObj.provider.dimensionId);
+//			PacketDispatcher.sendPacketToAllInDimension(GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getNetworkedData(new ArrayList())), this.worldObj.provider.dimensionId);
 		}
 	}
 
@@ -332,34 +336,18 @@ public abstract class EntitySpaceshipBase extends Entity
 	}
 
 	@Override
-	public void handlePacketData(INetworkManager network, int packetType, Packet250CustomPayload packet, EntityPlayer player, ByteArrayDataInput dataStream)
+	public void decodePacketdata(ByteBuf buffer)
 	{
-		try
-		{
-			if (this.worldObj.isRemote)
-			{
-				this.readNetworkedData(dataStream);
-			}
-		}
-		catch (final Exception e)
-		{
-			e.printStackTrace();
-		}
+		this.launchPhase = buffer.readInt();
+		this.timeSinceLaunch = buffer.readFloat();
+		this.timeUntilLaunch = buffer.readInt();
 	}
 
-	public void readNetworkedData(ByteArrayDataInput dataStream)
-	{
-		this.launchPhase = dataStream.readInt();
-		this.timeSinceLaunch = dataStream.readFloat();
-		this.timeUntilLaunch = dataStream.readInt();
-	}
-
-	public ArrayList<Object> getNetworkedData(ArrayList<Object> list)
+	public void getNetworkedData(ArrayList<Object> list)
 	{
 		list.add(this.launchPhase);
 		list.add(this.timeSinceLaunch);
 		list.add(this.timeUntilLaunch);
-		return list;
 	}
 
 	public void turnYaw(float f)

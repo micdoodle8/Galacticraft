@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.schematic;
 
 import micdoodle8.mods.galacticraft.api.recipe.SchematicPage;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
+import micdoodle8.mods.galacticraft.core.client.gui.container.GuiSchematicRocketT1;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRocketBench;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
@@ -43,7 +44,7 @@ public class GCCoreSchematicRocketT1 extends SchematicPage
 	@Override
 	public GuiScreen getResultScreen(EntityPlayer player, int x, int y, int z)
 	{
-		return new GCCoreGuiSchematicRocketT1(player.inventory, x, y, z);
+		return new GuiSchematicRocketT1(player.inventory, x, y, z);
 	}
 
 	@Override

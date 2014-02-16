@@ -5,6 +5,7 @@ import java.util.Iterator;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerSP;
+import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerClient;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
@@ -77,7 +78,7 @@ public class OverlaySensorGlasses extends Overlay
 
     public static void renderSensorGlassesValueableBlocks(ItemStack stack, EntityPlayer player, ScaledResolution resolution, float partialTicks, boolean hasScreen, int mouseX, int mouseY)
     {
-        final Iterator<Vector3> var51 = ClientProxyCore.valueableBlocks.iterator();
+        final Iterator<Vector3> var51 = GCCoreTickHandlerClient.valuableBlocks.iterator();
         double var52;
         double var58;
         double var59;
@@ -89,9 +90,9 @@ public class OverlaySensorGlasses extends Overlay
         {
             Vector3 coords = var51.next();
 
-            var52 = ClientProxyCore.playerPosX - coords.x - 0.5D;
-            var58 = ClientProxyCore.playerPosY - coords.y - 0.5D;
-            var59 = ClientProxyCore.playerPosZ - coords.z - 0.5D;
+            var52 = player.posX - coords.x - 0.5D;
+            var58 = player.posY - coords.y - 0.5D;
+            var59 = player.posZ - coords.z - 0.5D;
             var60 = (float) Math.toDegrees(Math.atan2(var52, var59));
             var20 = Math.sqrt(var52 * var52 + var58 * var58 + var59 * var59) * 0.5D;
             var21 = Math.sqrt(var52 * var52 + var59 * var59) * 0.5D;
@@ -119,9 +120,9 @@ public class OverlaySensorGlasses extends Overlay
                 {
                     GL11.glColor4f(0.0F, 255F / 255F, 198F / 255F, (float) Math.min(1.0D, Math.max(0.2D, (var20 - 1.0D) * 0.1D)));
                     FMLClientHandler.instance().getClient().renderEngine.bindTexture(OverlaySensorGlasses.indicatorTexture);
-                    GL11.glRotatef(-var60 - ClientProxyCore.playerRotationYaw + 180.0F, 0.0F, 0.0F, 1.0F);
+                    GL11.glRotatef(-var60 - player.rotationYaw + 180.0F, 0.0F, 0.0F, 1.0F);
                     GL11.glTranslated(0.0D, var2 ? -var20 * 16 : -var21 * 16, 0.0D);
-                    GL11.glRotatef(-(-var60 - ClientProxyCore.playerRotationYaw + 180.0F), 0.0F, 0.0F, 1.0F);
+                    GL11.glRotatef(-(-var60 - player.rotationYaw + 180.0F), 0.0F, 0.0F, 1.0F);
                     Overlay.drawCenteringRectangle(var6 / 2, var7 / 2, 1.0D, 8.0D, 8.0D);
                 }
             }

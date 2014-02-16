@@ -66,12 +66,12 @@ public class GCCoreSpaceStationData extends WorldSavedData
 			this.dataCompound = new NBTTagCompound();
 		}
 
-		final NBTTagList var2 = nbttagcompound.getTagList("allowedPlayers");
+		final NBTTagList var2 = nbttagcompound.getTagList("allowedPlayers", 10);
 		this.allowedPlayers = new ArrayList<String>();
 
 		for (int var3 = 0; var3 < var2.tagCount(); ++var3)
 		{
-			final NBTTagCompound var4 = (NBTTagCompound) var2.tagAt(var3);
+			final NBTTagCompound var4 = (NBTTagCompound) var2.getCompoundTagAt(var3);
 			final String var5 = var4.getString("allowedPlayer");
 
 			if (!this.allowedPlayers.contains(var5.toLowerCase()))
@@ -86,7 +86,7 @@ public class GCCoreSpaceStationData extends WorldSavedData
 	{
 		nbttagcompound.setString("owner", this.owner);
 		nbttagcompound.setString("spaceStationName", this.spaceStationName);
-		nbttagcompound.setCompoundTag("dataCompound", this.dataCompound);
+		nbttagcompound.setTag("dataCompound", this.dataCompound);
 
 		final NBTTagList var2 = new NBTTagList();
 
@@ -124,7 +124,7 @@ public class GCCoreSpaceStationData extends WorldSavedData
 
 				if (player != null)
 				{
-					var3.owner = player.username.toLowerCase();
+					var3.owner = player.getGameProfile().getName().toLowerCase();
 				}
 
 				var3.spaceStationName = var3.owner + "\'s Space Station";
@@ -132,7 +132,7 @@ public class GCCoreSpaceStationData extends WorldSavedData
 
 				if (player != null)
 				{
-					var3.allowedPlayers.add(player.username.toLowerCase());
+					var3.allowedPlayers.add(player.getGameProfile().getName().toLowerCase());
 				}
 
 				var3.markDirty();
@@ -155,7 +155,7 @@ public class GCCoreSpaceStationData extends WorldSavedData
 
 			if (player != null)
 			{
-				var3.owner = player.username.toLowerCase();
+				var3.owner = player.getGameProfile().getName().toLowerCase();
 			}
 
 			var3.spaceStationName = var3.owner + "\'s Space Station";
@@ -163,7 +163,7 @@ public class GCCoreSpaceStationData extends WorldSavedData
 
 			if (player != null)
 			{
-				var3.allowedPlayers.add(player.username.toLowerCase());
+				var3.allowedPlayers.add(player.getGameProfile().getName().toLowerCase());
 			}
 
 			var3.markDirty();

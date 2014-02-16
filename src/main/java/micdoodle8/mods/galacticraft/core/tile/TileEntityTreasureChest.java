@@ -6,7 +6,8 @@ import java.util.List;
 import micdoodle8.mods.galacticraft.api.item.IKeyable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockT1TreasureChest;
-import micdoodle8.mods.galacticraft.core.util.PacketUtil;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -583,7 +584,8 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements IInve
 		{
 			if (player.worldObj.isRemote)
 			{
-				PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumSimplePacket.ON_FAILED_CHEST_UNLOCK, new Object[] { this.getTierOfKeyRequired() }));
+				GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_FAILED_CHEST_UNLOCK, new Object[] { this.getTierOfKeyRequired() }));
+//				PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumSimplePacket.ON_FAILED_CHEST_UNLOCK, new Object[] { this.getTierOfKeyRequired() }));
 			}
 			return true;
 		}

@@ -52,7 +52,7 @@ public class GuiSolar extends GuiAdvancedContainer
         switch (par1GuiButton.id)
         {
         case 0:
-			GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, this.solarPanel.xCoord, this.solarPanel.yCoord, this.solarPanel.zCoord, 0));
+			GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, new Object[] { this.solarPanel.xCoord, this.solarPanel.yCoord, this.solarPanel.zCoord, 0 }));
             break;
         }
     }

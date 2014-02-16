@@ -52,16 +52,11 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 				{
 					for (int z = (int) Math.floor(this.zCoord - this.oxygenBubble.getSize()); z < Math.ceil(this.zCoord + this.oxygenBubble.getSize()); z++)
 					{
-						int blockID = this.worldObj.getBlockId(x, y, z);
+						Block block = this.worldObj.getBlock(x, y, z);
 
-						if (blockID > 0)
+						if (block instanceof IOxygenReliantBlock)
 						{
-							Block block = Block.blocksList[blockID];
-
-							if (block instanceof IOxygenReliantBlock)
-							{
-								((IOxygenReliantBlock) block).onOxygenRemoved(this.worldObj, x, y, z);
-							}
+							((IOxygenReliantBlock) block).onOxygenRemoved(this.worldObj, x, y, z);
 						}
 					}
 				}
@@ -116,22 +111,17 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 					{
 						for (int z = (int) Math.floor(this.zCoord - this.oxygenBubble.getSize() - 4); z < Math.ceil(this.zCoord + this.oxygenBubble.getSize() + 4); z++)
 						{
-							int blockID = this.worldObj.getBlockId(x, y, z);
+							Block block = this.worldObj.getBlock(x, y, z);
 
-							if (blockID > 0)
+							if (block instanceof IOxygenReliantBlock)
 							{
-								Block block = Block.blocksList[blockID];
-
-								if (block instanceof IOxygenReliantBlock)
+								if (this.getDistanceFromServer(x, y, z) < Math.pow(this.oxygenBubble.getSize() - 0.5D, 2))
 								{
-									if (this.getDistanceFromServer(x, y, z) < Math.pow(this.oxygenBubble.getSize() - 0.5D, 2))
-									{
-										((IOxygenReliantBlock) block).onOxygenAdded(this.worldObj, x, y, z);
-									}
-									else
-									{
-										((IOxygenReliantBlock) block).onOxygenRemoved(this.worldObj, x, y, z);
-									}
+									((IOxygenReliantBlock) block).onOxygenAdded(this.worldObj, x, y, z);
+								}
+								else
+								{
+									((IOxygenReliantBlock) block).onOxygenRemoved(this.worldObj, x, y, z);
 								}
 							}
 						}
@@ -148,12 +138,12 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 	{
 		super.readFromNBT(par1NBTTagCompound);
 
-		final NBTTagList var2 = par1NBTTagCompound.getTagList("Items");
+		final NBTTagList var2 = par1NBTTagCompound.getTagList("Items", 10);
 		this.containingItems = new ItemStack[this.getSizeInventory()];
 
 		for (int var3 = 0; var3 < var2.tagCount(); ++var3)
 		{
-			final NBTTagCompound var4 = (NBTTagCompound) var2.tagAt(var3);
+			final NBTTagCompound var4 = (NBTTagCompound) var2.getCompoundTagAt(var3);
 			final byte var5 = var4.getByte("Slot");
 
 			if (var5 >= 0 && var5 < this.containingItems.length)
@@ -292,7 +282,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 	}
 
 	@Override
-	public boolean isInvNameLocalized()
+	public boolean hasCustomInventoryName()
 	{
 		return true;
 	}
@@ -304,13 +294,13 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 	}
 
 	@Override
-	public void openChest()
+	public void openInventory()
 	{
 
 	}
 
 	@Override
-	public void closeChest()
+	public void closeInventory()
 	{
 
 	}

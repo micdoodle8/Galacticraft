@@ -18,7 +18,7 @@ import org.lwjgl.opengl.GL12;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class TileEntityAdvancedCraftingTableRenderer extends TileEntitySpecialRenderer
+public class GCCoreTileEntityAdvancedCraftingTableRenderer extends TileEntitySpecialRenderer
 {
 	private static final ResourceLocation assemblyTableTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/assembly.png");
 	public GCCoreModelAssemblyTable model = new GCCoreModelAssemblyTable();
@@ -33,7 +33,7 @@ public class TileEntityAdvancedCraftingTableRenderer extends TileEntitySpecialRe
 		GL11.glTranslatef(0.5F, 3.0F, 0.5F);
 		GL11.glScalef(1.3F, -1.3F, -1.3F);
 
-		this.bindTexture(TileEntityAdvancedCraftingTableRenderer.assemblyTableTexture);
+		this.bindTexture(GCCoreTileEntityAdvancedCraftingTableRenderer.assemblyTableTexture);
 
 		this.model.renderAll();
 
