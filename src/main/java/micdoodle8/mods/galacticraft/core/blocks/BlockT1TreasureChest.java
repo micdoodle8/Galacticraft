@@ -53,7 +53,7 @@ public class BlockT1TreasureChest extends BlockContainer implements ITileEntityP
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
-		this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "treasure_front_single");
+		this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "treasureChest");
 	}
 
 	@Override

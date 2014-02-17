@@ -35,7 +35,7 @@ public class ItemKey extends Item implements IKeyItem
 		this.setMaxDamage(0);
 		this.setHasSubtypes(true);
 		this.setUnlocalizedName(assetName);
-		this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setTextureName("arrow");
 	}
 
 	@Override
@@ -55,18 +55,6 @@ public class ItemKey extends Item implements IKeyItem
 	public EnumRarity getRarity(ItemStack par1ItemStack)
 	{
 		return ClientProxy.galacticraftItem;
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister iconRegister)
-	{
-		int i = 0;
-
-		for (final String name : ItemKey.keyTypes)
-		{
-			this.keyIIcons[i++] = iconRegister.registerIcon(this.getIconString() + "_" + name);
-		}
 	}
 
 	@Override
