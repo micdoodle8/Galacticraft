@@ -88,7 +88,7 @@ public class TileEntityAdvancedCraftingTable extends TileEntityMulti implements 
 							{
 								FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, GCBlocks.nasaWorkbench, Block.getIdFromBlock(GCBlocks.nasaWorkbench) >> 12 & 255);
 							}
-							
+
 							this.worldObj.setBlockToAir(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z);
 						}
 						else if (y != 0 && y != 3)
@@ -97,7 +97,7 @@ public class TileEntityAdvancedCraftingTable extends TileEntityMulti implements 
 							{
 								FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, GCBlocks.nasaWorkbench, Block.getIdFromBlock(GCBlocks.nasaWorkbench) >> 12 & 255);
 							}
-							
+
 							this.worldObj.setBlockToAir(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z);
 						}
 					}

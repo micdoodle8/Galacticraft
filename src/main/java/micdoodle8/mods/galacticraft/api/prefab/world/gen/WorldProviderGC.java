@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.api.prefab.world.gen;
 
 import java.lang.reflect.Constructor;
 
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.WorldProviderSpace;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;

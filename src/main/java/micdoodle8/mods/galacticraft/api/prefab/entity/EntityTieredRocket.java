@@ -214,7 +214,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 
 		boolean sendPosUpdates = this.ticks < 25 || this.launchPhase != EnumLaunchPhase.LAUNCHED.getPhase();
 		list.add(sendPosUpdates);
-		
+
 		if (sendPosUpdates)
 		{
 			list.add(this.posX * 8000.0D);

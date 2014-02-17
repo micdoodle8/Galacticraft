@@ -26,30 +26,30 @@ import cpw.mods.fml.common.gameevent.TickEvent.WorldTickEvent;
 public class TickHandlerServer
 {
 	private static Map<Integer, List<ScheduledBlockChange>> scheduledBlockChanges = new ConcurrentHashMap<Integer, List<ScheduledBlockChange>>();
-	
+
 	public static void scheduleNewBlockChange(int dimID, ScheduledBlockChange change)
 	{
-		List<ScheduledBlockChange> changeList = scheduledBlockChanges.get(dimID);
-		
+		List<ScheduledBlockChange> changeList = TickHandlerServer.scheduledBlockChanges.get(dimID);
+
 		if (changeList == null)
 		{
 			changeList = new ArrayList<ScheduledBlockChange>();
 		}
-		
+
 		changeList.add(change);
-		scheduledBlockChanges.put(dimID, changeList);
+		TickHandlerServer.scheduledBlockChanges.put(dimID, changeList);
 	}
-	
+
 	@SubscribeEvent
 	public void onWorldTick(WorldTickEvent event)
 	{
 		final WorldServer world = (WorldServer) event.world;
 
-		List<ScheduledBlockChange> scheduledChanges = scheduledBlockChanges.get(world.provider.dimensionId);
-		
+		List<ScheduledBlockChange> scheduledChanges = TickHandlerServer.scheduledBlockChanges.get(world.provider.dimensionId);
+
 		if (scheduledChanges != null && !scheduledChanges.isEmpty())
 		{
-			for (Iterator<ScheduledBlockChange> it = scheduledChanges.iterator(); it.hasNext(); )
+			for (Iterator<ScheduledBlockChange> it = scheduledChanges.iterator(); it.hasNext();)
 			{
 				ScheduledBlockChange change = it.next();
 				world.setBlock(change.getChangePosition().intX(), change.getChangePosition().intY(), change.getChangePosition().intZ(), change.getChangeBlock(), change.getChangeMeta(), change.getChangeFlag());

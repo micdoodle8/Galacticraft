@@ -33,7 +33,7 @@ public class ChunkPowerHandler
 			{
 				ArrayList<Object> tileList = Lists.newArrayList();
 				tileList.addAll(event.getChunk().chunkTileEntityMap.values());
-				
+
 				for (Object o : tileList)
 				{
 					if (o instanceof TileEntity)

@@ -202,20 +202,19 @@ public class EntityArrowGC extends Entity
 			this.prevRotationYaw = this.rotationYaw = (float) (Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
 			this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(this.motionY, var1) * 180.0D / Math.PI);
 		}
-		
 
-        Block block = this.worldObj.getBlock(this.xTile, this.yTile, this.zTile);
+		Block block = this.worldObj.getBlock(this.xTile, this.yTile, this.zTile);
 
-        if (block.getMaterial() != Material.air)
-        {
-            block.setBlockBoundsBasedOnState(this.worldObj, this.xTile, this.yTile, this.zTile);
-            AxisAlignedBB axisalignedbb = block.getCollisionBoundingBoxFromPool(this.worldObj, this.xTile, this.yTile, this.zTile);
+		if (block.getMaterial() != Material.air)
+		{
+			block.setBlockBoundsBasedOnState(this.worldObj, this.xTile, this.yTile, this.zTile);
+			AxisAlignedBB axisalignedbb = block.getCollisionBoundingBoxFromPool(this.worldObj, this.xTile, this.yTile, this.zTile);
 
-            if (axisalignedbb != null && axisalignedbb.isVecInside(this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ)))
-            {
-                this.inGround = true;
-            }
-        }
+			if (axisalignedbb != null && axisalignedbb.isVecInside(this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ)))
+			{
+				this.inGround = true;
+			}
+		}
 
 		if (this.arrowShake > 0)
 		{
@@ -224,10 +223,10 @@ public class EntityArrowGC extends Entity
 
 		if (this.inGround)
 		{
-            int j = this.worldObj.getBlockMetadata(this.xTile, this.yTile, this.zTile);
+			int j = this.worldObj.getBlockMetadata(this.xTile, this.yTile, this.zTile);
 
-            if (block == this.inTile && j == this.inData)
-            {
+			if (block == this.inTile && j == this.inData)
+			{
 				++this.ticksInGround;
 
 				if (this.ticksInGround == 1200)
@@ -358,7 +357,7 @@ public class EntityArrowGC extends Entity
 					this.xTile = var4.blockX;
 					this.yTile = var4.blockY;
 					this.zTile = var4.blockZ;
-                    this.inTile = block;
+					this.inTile = block;
 					this.inData = this.worldObj.getBlockMetadata(this.xTile, this.yTile, this.zTile);
 					this.motionX = (float) (var4.hitVec.xCoord - this.posX);
 					this.motionY = (float) (var4.hitVec.yCoord - this.posY);
@@ -429,7 +428,7 @@ public class EntityArrowGC extends Entity
 			this.motionZ *= var23;
 			this.motionY -= var11;
 			this.setPosition(this.posX, this.posY, this.posZ);
-            this.func_145775_I();
+			this.func_145775_I();
 		}
 	}
 
@@ -447,7 +446,7 @@ public class EntityArrowGC extends Entity
 		par1NBTTagCompound.setShort("xTile", (short) this.xTile);
 		par1NBTTagCompound.setShort("yTile", (short) this.yTile);
 		par1NBTTagCompound.setShort("zTile", (short) this.zTile);
-		par1NBTTagCompound.setByte("inTile", (byte)Block.getIdFromBlock(this.inTile));
+		par1NBTTagCompound.setByte("inTile", (byte) Block.getIdFromBlock(this.inTile));
 		par1NBTTagCompound.setByte("inData", (byte) this.inData);
 		par1NBTTagCompound.setByte("shake", (byte) this.arrowShake);
 		par1NBTTagCompound.setByte("inGround", (byte) (this.inGround ? 1 : 0));
@@ -464,7 +463,7 @@ public class EntityArrowGC extends Entity
 		this.xTile = par1NBTTagCompound.getShort("xTile");
 		this.yTile = par1NBTTagCompound.getShort("yTile");
 		this.zTile = par1NBTTagCompound.getShort("zTile");
-        this.inTile = Block.getBlockById(par1NBTTagCompound.getByte("inTile") & 255);
+		this.inTile = Block.getBlockById(par1NBTTagCompound.getByte("inTile") & 255);
 		this.inData = par1NBTTagCompound.getByte("inData") & 255;
 		this.arrowShake = par1NBTTagCompound.getByte("shake") & 255;
 		this.inGround = par1NBTTagCompound.getByte("inGround") == 1;

@@ -181,7 +181,7 @@ public class EntityFlag extends Entity
 	{
 		Vector3 vec = new Vector3(this.posX, this.posY, this.posZ);
 		vec = vec.translate(new Vector3(0, -1, 0));
-		final Block blockAt = vec.getBlock(worldObj);
+		final Block blockAt = vec.getBlock(this.worldObj);
 
 		if (blockAt != null)
 		{

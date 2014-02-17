@@ -291,4 +291,4 @@
 //			this.registerIngotCompressorRecipe(input1, new PositionedStack(rec.getRecipeOutput(), 140, 46));
 //		}
 //	}
-//}
+// }

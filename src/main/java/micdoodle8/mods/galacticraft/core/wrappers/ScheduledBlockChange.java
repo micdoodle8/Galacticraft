@@ -9,12 +9,12 @@ public class ScheduledBlockChange
 	private Block changeBlock;
 	private int changeMeta;
 	private int changeFlag;
-	
+
 	public ScheduledBlockChange(Vector3 changePosition, Block changeBlock, int changeMeta)
 	{
 		this(changePosition, changeBlock, changeMeta, 3);
 	}
-	
+
 	public ScheduledBlockChange(Vector3 changePosition, Block changeBlock, int changeMeta, int changeFlag)
 	{
 		this.changePosition = changePosition;
@@ -25,7 +25,7 @@ public class ScheduledBlockChange
 
 	public Vector3 getChangePosition()
 	{
-		return changePosition;
+		return this.changePosition;
 	}
 
 	public void setChangePosition(Vector3 changePosition)
@@ -35,7 +35,7 @@ public class ScheduledBlockChange
 
 	public Block getChangeBlock()
 	{
-		return changeBlock;
+		return this.changeBlock;
 	}
 
 	public void setChangeBlock(Block changeID)
@@ -45,7 +45,7 @@ public class ScheduledBlockChange
 
 	public int getChangeMeta()
 	{
-		return changeMeta;
+		return this.changeMeta;
 	}
 
 	public void setChangeMeta(int changeMeta)
@@ -55,7 +55,7 @@ public class ScheduledBlockChange
 
 	public int getChangeFlag()
 	{
-		return changeFlag;
+		return this.changeFlag;
 	}
 
 	public void setChangeFlag(int changeFlag)

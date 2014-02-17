@@ -7,7 +7,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockSand;
+import net.minecraft.block.BlockFalling;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IProgressUpdate;
@@ -84,7 +84,7 @@ public class ChunkProviderSpaceStation extends ChunkProviderGenerate
 	@Override
 	public void populate(IChunkProvider par1IChunkProvider, int par2, int par3)
 	{
-		BlockSand.fallInstantly = true;
+		BlockFalling.fallInstantly = true;
 		final int k = par2 * 16;
 		final int l = par3 * 16;
 		this.rand.setSeed(this.worldObj.getSeed());
@@ -104,7 +104,7 @@ public class ChunkProviderSpaceStation extends ChunkProviderGenerate
 
 			new WorldGenSpaceStation().generate(this.worldObj, this.rand, k - 10, 62, l - 3);
 		}
-		BlockSand.fallInstantly = false;
+		BlockFalling.fallInstantly = false;
 	}
 
 	@Override

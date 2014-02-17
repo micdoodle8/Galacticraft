@@ -122,8 +122,8 @@ public class ItemFuelCanister extends Item
 	}
 
 	@Override
-    public ItemStack getContainerItem(ItemStack itemStack)
-    {
+	public ItemStack getContainerItem(ItemStack itemStack)
+	{
 		if (itemStack != null && itemStack.getItem() == this.getContainerItem() && itemStack.getItemDamage() == itemStack.getMaxDamage())
 		{
 			return null;

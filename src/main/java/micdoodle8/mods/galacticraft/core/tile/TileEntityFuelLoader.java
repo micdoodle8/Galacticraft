@@ -5,8 +5,8 @@ import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.items.ItemFuelCanister;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.core.items.ItemFuelCanister;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -72,7 +72,7 @@ public class TileEntityFuelLoader extends TileEntityElectricBlock implements IIn
 			if (this.containingItems[1] != null)
 			{
 				final FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(this.containingItems[1]);
-				
+
 				for (FluidContainerData fc : FluidContainerRegistry.getRegisteredFluidContainerData())
 				{
 					FMLLog.info("" + fc.filledContainer.getItem());
@@ -239,7 +239,7 @@ public class TileEntityFuelLoader extends TileEntityElectricBlock implements IIn
 
 		for (int var3 = 0; var3 < var2.tagCount(); ++var3)
 		{
-			final NBTTagCompound var4 = (NBTTagCompound) var2.getCompoundTagAt(var3);
+			final NBTTagCompound var4 = var2.getCompoundTagAt(var3);
 			final byte var5 = var4.getByte("Slot");
 
 			if (var5 >= 0 && var5 < this.containingItems.length)

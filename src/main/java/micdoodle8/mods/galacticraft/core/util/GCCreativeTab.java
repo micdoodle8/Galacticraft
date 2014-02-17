@@ -34,15 +34,15 @@ public class GCCreativeTab extends CreativeTabs
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Item getTabIconItem() 
+	public Item getTabIconItem()
 	{
 		return this.itemForTab;
 	}
 
 	@Override
-    @SideOnly(Side.CLIENT)
-    public int func_151243_f()
-    {
-        return this.metaForTab;
-    }
+	@SideOnly(Side.CLIENT)
+	public int func_151243_f()
+	{
+		return this.metaForTab;
+	}
 }

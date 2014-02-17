@@ -146,10 +146,11 @@ public class EntityTier1Rocket extends EntityTieredRocket
 	{
 		super.onRocketLand(x, y, z);
 
-//		if (this.rocketSoundUpdater instanceof GCCoreSoundUpdaterSpaceship)
-//		{
-//			((GCCoreSoundUpdaterSpaceship) this.rocketSoundUpdater).stopRocketSound();
-//		} TODO Fix rocket sound updater
+		// if (this.rocketSoundUpdater instanceof GCCoreSoundUpdaterSpaceship)
+		// {
+		// ((GCCoreSoundUpdaterSpaceship)
+		// this.rocketSoundUpdater).stopRocketSound();
+		// } TODO Fix rocket sound updater
 	}
 
 	@Override
@@ -242,17 +243,19 @@ public class EntityTier1Rocket extends EntityTieredRocket
 		return false;
 	}
 
-//	@RuntimeInterface(clazz = "icbm.api.IMissileLockable", modID = "ICBM|Explosion")
-//	public boolean canLock(IMissile missile)
-//	{
-//		return true;
-//	}
-//
-//	@RuntimeInterface(clazz = "icbm.api.IMissileLockable", modID = "ICBM|Explosion")
-//	public Vector3 getPredictedPosition(int ticks)
-//	{
-//		return new Vector3(this);
-//	} TODO Re-enable ICBM integration
+	// @RuntimeInterface(clazz = "icbm.api.IMissileLockable", modID =
+	// "ICBM|Explosion")
+	// public boolean canLock(IMissile missile)
+	// {
+	// return true;
+	// }
+	//
+	// @RuntimeInterface(clazz = "icbm.api.IMissileLockable", modID =
+	// "ICBM|Explosion")
+	// public Vector3 getPredictedPosition(int ticks)
+	// {
+	// return new Vector3(this);
+	// } TODO Re-enable ICBM integration
 
 	@Override
 	public void onPadDestroyed()
@@ -270,23 +273,27 @@ public class EntityTier1Rocket extends EntityTieredRocket
 		return dock instanceof TileEntityLandingPad;
 	}
 
-//	@RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID = "ICBM|Explosion")
-//	public void destroyCraft()
-//	{
-//		this.setDead();
-//	}
-//
-//	@RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID = "ICBM|Explosion")
-//	public int doDamage(int damage)
-//	{
-//		return (int) (this.shipDamage += damage);
-//	}
-//
-//	@RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID = "ICBM|Explosion")
-//	public boolean canBeTargeted(Object entity)
-//	{
-//		return this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase() && this.timeSinceLaunch > 50;
-//	} TODO Re-enable ICBM integration
+	// @RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID =
+	// "ICBM|Explosion")
+	// public void destroyCraft()
+	// {
+	// this.setDead();
+	// }
+	//
+	// @RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID =
+	// "ICBM|Explosion")
+	// public int doDamage(int damage)
+	// {
+	// return (int) (this.shipDamage += damage);
+	// }
+	//
+	// @RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID =
+	// "ICBM|Explosion")
+	// public boolean canBeTargeted(Object entity)
+	// {
+	// return this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase() &&
+	// this.timeSinceLaunch > 50;
+	// } TODO Re-enable ICBM integration
 
 	@Override
 	public int getRocketTier()

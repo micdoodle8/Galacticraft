@@ -8,14 +8,16 @@ import net.minecraft.entity.player.EntityPlayer;
 public class PacketControllableEntity implements IPacket
 {
 	private int keyPressed;
-	
-	public PacketControllableEntity() {}
-	
+
+	public PacketControllableEntity()
+	{
+	}
+
 	public PacketControllableEntity(int keyPressed)
 	{
 		this.keyPressed = keyPressed;
 	}
-	
+
 	@Override
 	public void encodeInto(ChannelHandlerContext context, ByteBuf buffer)
 	{
@@ -31,7 +33,7 @@ public class PacketControllableEntity implements IPacket
 	@Override
 	public void handleClientSide(EntityPlayer player)
 	{
-		this.handleKeyPress(player);	
+		this.handleKeyPress(player);
 	}
 
 	@Override
@@ -39,7 +41,7 @@ public class PacketControllableEntity implements IPacket
 	{
 		this.handleKeyPress(player);
 	}
-	
+
 	private void handleKeyPress(EntityPlayer player)
 	{
 		if (player.ridingEntity != null && player.ridingEntity instanceof IControllableEntity)

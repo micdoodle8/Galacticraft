@@ -25,20 +25,20 @@ import micdoodle8.mods.galacticraft.core.client.render.block.BlockRendererTreasu
 import micdoodle8.mods.galacticraft.core.client.render.block.BlockRendererUnlitTorch;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderAlienVillager;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderArrowGC;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderBubble;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderBuggy;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderEvolvedCreeper;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderEvolvedSkeleton;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderEvolvedSpider;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderEvolvedZombie;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderFlag;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderLander;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderMeteor;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderMeteorChunk;
-import micdoodle8.mods.galacticraft.core.client.render.entities.RenderBubble;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderParachest;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC;
-import micdoodle8.mods.galacticraft.core.client.render.entities.RenderEvolvedSkeleton;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderSkeletonBoss;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderTier1Rocket;
-import micdoodle8.mods.galacticraft.core.client.render.entities.RenderEvolvedSpider;
-import micdoodle8.mods.galacticraft.core.client.render.entities.RenderEvolvedZombie;
 import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererBuggy;
 import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererFlag;
 import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererKey;
@@ -53,19 +53,19 @@ import micdoodle8.mods.galacticraft.core.client.render.tile.TileEntityTreasureCh
 import micdoodle8.mods.galacticraft.core.client.sounds.GCCoreSounds;
 import micdoodle8.mods.galacticraft.core.entities.EntityAlienVillager;
 import micdoodle8.mods.galacticraft.core.entities.EntityArrowGC;
+import micdoodle8.mods.galacticraft.core.entities.EntityBubble;
 import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedCreeper;
+import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSkeleton;
+import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider;
+import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
 import micdoodle8.mods.galacticraft.core.entities.EntityFlag;
 import micdoodle8.mods.galacticraft.core.entities.EntityLander;
 import micdoodle8.mods.galacticraft.core.entities.EntityMeteor;
 import micdoodle8.mods.galacticraft.core.entities.EntityMeteorChunk;
-import micdoodle8.mods.galacticraft.core.entities.EntityBubble;
 import micdoodle8.mods.galacticraft.core.entities.EntityParachest;
-import micdoodle8.mods.galacticraft.core.entities.EntityTier1Rocket;
-import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSkeleton;
 import micdoodle8.mods.galacticraft.core.entities.EntitySkeletonBoss;
-import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider;
-import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
+import micdoodle8.mods.galacticraft.core.entities.EntityTier1Rocket;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryExtended;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.GCItems.EnumArmorIndex;
@@ -110,8 +110,10 @@ public class ClientProxy extends CommonProxy
 
 	private static int renderIndexHeavyArmor;
 	private static int renderIndexSensorGlasses;
-	
-	public static EnumRarity galacticraftItem = EnumRarity.common;//EnumHelperClient.addRarity("GCRarity", 9, "Space");
+
+	public static EnumRarity galacticraftItem = EnumRarity.common; // EnumHelperClient.addRarity("GCRarity",
+																	// 9,
+																	// "Space");
 
 	private static int renderIdTreasureChest;
 	private static int renderIdTorchUnlit;
@@ -125,7 +127,8 @@ public class ClientProxy extends CommonProxy
 	public static Map<String, String> capeMap = new HashMap<String, String>();
 
 	private static final ResourceLocation underOilTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/misc/underoil.png");
-	
+
+	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		super.preInit(event);
@@ -135,19 +138,21 @@ public class ClientProxy extends CommonProxy
 		ClientProxy.renderIndexSensorGlasses = RenderingRegistry.addNewArmourRendererPrefix("sensor");
 		ClientProxy.renderIndexHeavyArmor = RenderingRegistry.addNewArmourRendererPrefix("titanium");
 	}
-	
+
+	@Override
 	public void init(FMLInitializationEvent event)
 	{
 		super.init(event);
-		
+
 		FMLCommonHandler.instance().bus().register(new KeyHandlerGC());
 		FMLCommonHandler.instance().bus().register(new TickHandlerClient());
-		
+
 		ClientProxy.registerTileEntityRenderers();
 		ClientProxy.registerBlockHandlers();
 		ClientProxy.setupCapes();
 	}
-	
+
+	@Override
 	public void postInit(FMLPostInitializationEvent event)
 	{
 		super.postInit(event);
@@ -167,7 +172,7 @@ public class ClientProxy extends CommonProxy
 	{
 		EffectHandlerGC.spawnParticle(particleID, position, motion, color);
 	}
-	
+
 	public static void registerEntityRenderers()
 	{
 		RenderingRegistry.registerEntityRenderingHandler(EntityTier1Rocket.class, new RenderTier1Rocket(new ModelTier1Rocket(), GalacticraftCore.ASSET_DOMAIN, "rocketT1"));
@@ -328,18 +333,18 @@ public class ClientProxy extends CommonProxy
 
 		return -1;
 	}
-	
+
 	@Override
 	public int getArmorRenderID(EnumArmorIndex type)
 	{
 		switch (type)
 		{
 		case HEAVY_DUTY:
-			return renderIndexHeavyArmor;
+			return ClientProxy.renderIndexHeavyArmor;
 		case SENSOR_GLASSES:
-			return renderIndexSensorGlasses;
+			return ClientProxy.renderIndexSensorGlasses;
 		}
-		
+
 		return -1;
 	}
 

@@ -336,16 +336,16 @@ public class GCEvents
 			if (player != null && player.playerNetServerHandler != null)
 			{
 				Integer[] iArray = new Integer[player.getUnlockedSchematics().size()];
-				
+
 				for (int i = 0; i < iArray.length; i++)
 				{
 					ISchematicPage page = player.getUnlockedSchematics().get(i);
 					iArray[i] = page == null ? -2 : page.getPageID();
 				}
-				
+
 				List<Object> objList = new ArrayList<Object>();
 				objList.add(iArray);
-				
+
 				GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SCHEMATIC_LIST, objList), player);
 			}
 		}
@@ -474,48 +474,75 @@ public class GCEvents
 	@SubscribeEvent
 	public void onSoundLoad(SoundLoadEvent event)
 	{
-//		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "ambience/scaryscape.ogg"); TODO fix sound loading
-//		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "ambience/singledrip1.ogg");
-//		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "ambience/singledrip2.ogg");
-//		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "ambience/singledrip3.ogg");
-//		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "ambience/singledrip4.ogg");
-//		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "ambience/singledrip5.ogg");
-//		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "ambience/singledrip6.ogg");
-//		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "ambience/singledrip7.ogg");
-//		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "ambience/singledrip8.ogg");
-//		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "entity/bossdeath.ogg");
-//		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "entity/bosslaugh.ogg");
-//		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "entity/bossliving.ogg");
-//		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "entity/slime_death.ogg");
-//		ClientProxyCore.newMusic.add(this.func_110654_c(event.manager.soundPoolMusic, GalacticraftCore.ASSET_PREFIX + "music/mars_JC.ogg"));
-//		ClientProxyCore.newMusic.add(this.func_110654_c(event.manager.soundPoolMusic, GalacticraftCore.ASSET_PREFIX + "music/mimas_JC.ogg"));
-//		ClientProxyCore.newMusic.add(this.func_110654_c(event.manager.soundPoolMusic, GalacticraftCore.ASSET_PREFIX + "music/orbit_JC.ogg"));
-//		ClientProxyCore.newMusic.add(this.func_110654_c(event.manager.soundPoolMusic, GalacticraftCore.ASSET_PREFIX + "music/scary_ambience.ogg"));
-//		ClientProxyCore.newMusic.add(this.func_110654_c(event.manager.soundPoolMusic, GalacticraftCore.ASSET_PREFIX + "music/spacerace_JC.ogg"));
-//		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "player/closeairlock.ogg");
-//		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "player/openairlock.ogg");
-//		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "player/parachute.ogg");
-//		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "player/unlockchest.ogg");
-//		event.manager.addSound(GalacticraftCore.ASSET_PREFIX + "shuttle/shuttle.ogg");
+		// event.manager.addSound(GalacticraftCore.ASSET_PREFIX +
+		// "ambience/scaryscape.ogg"); TODO fix sound loading
+		// event.manager.addSound(GalacticraftCore.ASSET_PREFIX +
+		// "ambience/singledrip1.ogg");
+		// event.manager.addSound(GalacticraftCore.ASSET_PREFIX +
+		// "ambience/singledrip2.ogg");
+		// event.manager.addSound(GalacticraftCore.ASSET_PREFIX +
+		// "ambience/singledrip3.ogg");
+		// event.manager.addSound(GalacticraftCore.ASSET_PREFIX +
+		// "ambience/singledrip4.ogg");
+		// event.manager.addSound(GalacticraftCore.ASSET_PREFIX +
+		// "ambience/singledrip5.ogg");
+		// event.manager.addSound(GalacticraftCore.ASSET_PREFIX +
+		// "ambience/singledrip6.ogg");
+		// event.manager.addSound(GalacticraftCore.ASSET_PREFIX +
+		// "ambience/singledrip7.ogg");
+		// event.manager.addSound(GalacticraftCore.ASSET_PREFIX +
+		// "ambience/singledrip8.ogg");
+		// event.manager.addSound(GalacticraftCore.ASSET_PREFIX +
+		// "entity/bossdeath.ogg");
+		// event.manager.addSound(GalacticraftCore.ASSET_PREFIX +
+		// "entity/bosslaugh.ogg");
+		// event.manager.addSound(GalacticraftCore.ASSET_PREFIX +
+		// "entity/bossliving.ogg");
+		// event.manager.addSound(GalacticraftCore.ASSET_PREFIX +
+		// "entity/slime_death.ogg");
+		// ClientProxyCore.newMusic.add(this.func_110654_c(event.manager.soundPoolMusic,
+		// GalacticraftCore.ASSET_PREFIX + "music/mars_JC.ogg"));
+		// ClientProxyCore.newMusic.add(this.func_110654_c(event.manager.soundPoolMusic,
+		// GalacticraftCore.ASSET_PREFIX + "music/mimas_JC.ogg"));
+		// ClientProxyCore.newMusic.add(this.func_110654_c(event.manager.soundPoolMusic,
+		// GalacticraftCore.ASSET_PREFIX + "music/orbit_JC.ogg"));
+		// ClientProxyCore.newMusic.add(this.func_110654_c(event.manager.soundPoolMusic,
+		// GalacticraftCore.ASSET_PREFIX + "music/scary_ambience.ogg"));
+		// ClientProxyCore.newMusic.add(this.func_110654_c(event.manager.soundPoolMusic,
+		// GalacticraftCore.ASSET_PREFIX + "music/spacerace_JC.ogg"));
+		// event.manager.addSound(GalacticraftCore.ASSET_PREFIX +
+		// "player/closeairlock.ogg");
+		// event.manager.addSound(GalacticraftCore.ASSET_PREFIX +
+		// "player/openairlock.ogg");
+		// event.manager.addSound(GalacticraftCore.ASSET_PREFIX +
+		// "player/parachute.ogg");
+		// event.manager.addSound(GalacticraftCore.ASSET_PREFIX +
+		// "player/unlockchest.ogg");
+		// event.manager.addSound(GalacticraftCore.ASSET_PREFIX +
+		// "shuttle/shuttle.ogg");
 	}
 
-//	@SideOnly(Side.CLIENT)
-//	private SoundPoolEntry func_110654_c(SoundPool pool, String par1Str)
-//	{
-//		try
-//		{
-//			ResourceLocation resourcelocation = new ResourceLocation(par1Str);
-//			String s1 = String.format("%s:%s:%s/%s", new Object[] { "mcsounddomain", resourcelocation.getResourceDomain(), "sound", resourcelocation.getResourcePath() });
-//			SoundPoolProtocolHandler soundpoolprotocolhandler = new SoundPoolProtocolHandler(pool);
-//			return new SoundPoolEntry(par1Str, new URL((URL) null, s1, soundpoolprotocolhandler));
-//		}
-//		catch (MalformedURLException e)
-//		{
-//			e.printStackTrace();
-//		}
-//
-//		return null;
-//	} TODO Fix frequency module
+	// @SideOnly(Side.CLIENT)
+	// private SoundPoolEntry func_110654_c(SoundPool pool, String par1Str)
+	// {
+	// try
+	// {
+	// ResourceLocation resourcelocation = new ResourceLocation(par1Str);
+	// String s1 = String.format("%s:%s:%s/%s", new Object[] { "mcsounddomain",
+	// resourcelocation.getResourceDomain(), "sound",
+	// resourcelocation.getResourcePath() });
+	// SoundPoolProtocolHandler soundpoolprotocolhandler = new
+	// SoundPoolProtocolHandler(pool);
+	// return new SoundPoolEntry(par1Str, new URL((URL) null, s1,
+	// soundpoolprotocolhandler));
+	// }
+	// catch (MalformedURLException e)
+	// {
+	// e.printStackTrace();
+	// }
+	//
+	// return null;
+	// } TODO Fix frequency module
 
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
@@ -565,7 +592,8 @@ public class GCEvents
 			float newVolume = event.volume / Math.max(0.01F, ((IGalacticraftWorldProvider) player.worldObj.provider).getSoundVolReductionAmount());
 
 			this.soundPlayList.add(new SoundPlayEntry(event.name, event.x, event.y, event.z, newVolume));
-//			event.manager.playSound(event.name, event.x, event.y, event.z, newVolume, event.pitch);
+			// event.manager.playSound(event.name, event.x, event.y, event.z,
+			// newVolume, event.pitch);
 			player.worldObj.playSound(event.x, event.y, event.z, event.name, newVolume, event.pitch, false);
 			event.result = null;
 			return;

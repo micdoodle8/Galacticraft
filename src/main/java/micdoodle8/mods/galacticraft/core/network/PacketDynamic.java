@@ -20,12 +20,12 @@ public class PacketDynamic implements IPacket
 	private int dimID;
 	private Object[] data;
 	private ArrayList<Object> sendData;
-	
+
 	public PacketDynamic()
 	{
-		
+
 	}
-	
+
 	public PacketDynamic(Entity entity)
 	{
 		assert entity instanceof IPacketReceiver : "Entity does not implement " + IPacketReceiver.class.getSimpleName();
@@ -35,7 +35,7 @@ public class PacketDynamic implements IPacket
 		this.sendData = new ArrayList<Object>();
 		((IPacketReceiver) entity).getNetworkedData(this.sendData);
 	}
-	
+
 	public PacketDynamic(TileEntity tile)
 	{
 		assert tile instanceof IPacketReceiver : "TileEntity does not implement " + IPacketReceiver.class.getSimpleName();
@@ -51,7 +51,7 @@ public class PacketDynamic implements IPacket
 	{
 		buffer.writeInt(this.type);
 		buffer.writeInt(this.dimID);
-		
+
 		switch (this.type)
 		{
 		case 0:
@@ -63,7 +63,7 @@ public class PacketDynamic implements IPacket
 			buffer.writeInt((int) this.data[2]);
 			break;
 		}
-		
+
 		try
 		{
 			NetworkUtil.encodeData(buffer, this.sendData);
@@ -79,9 +79,9 @@ public class PacketDynamic implements IPacket
 	{
 		this.type = buffer.readInt();
 		this.dimID = buffer.readInt();
-		
+
 		World world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(this.dimID);
-		
+
 		if (FMLCommonHandler.instance().getSide() == Side.CLIENT && world == null)
 		{
 			world = FMLClientHandler.instance().getClient().theWorld;
@@ -92,14 +92,14 @@ public class PacketDynamic implements IPacket
 		case 0:
 			this.data = new Object[1];
 			this.data[0] = buffer.readInt();
-			
+
 			Entity entity = world.getEntityByID((int) this.data[0]);
-			
+
 			if (entity instanceof IPacketReceiver)
 			{
 				((IPacketReceiver) entity).decodePacketdata(buffer);
 			}
-			
+
 			break;
 		case 1:
 			this.data = new Object[3];
@@ -108,12 +108,12 @@ public class PacketDynamic implements IPacket
 			this.data[2] = buffer.readInt();
 
 			TileEntity tile = world.getTileEntity((int) this.data[0], (int) this.data[1], (int) this.data[2]);
-			
+
 			if (tile instanceof IPacketReceiver)
 			{
 				((IPacketReceiver) tile).decodePacketdata(buffer);
 			}
-			
+
 			break;
 		}
 	}
@@ -129,28 +129,28 @@ public class PacketDynamic implements IPacket
 	{
 		this.handleData(Side.SERVER, player);
 	}
-	
+
 	private void handleData(Side side, EntityPlayer player)
 	{
 		switch (this.type)
 		{
 		case 0:
 			Entity entity = player.worldObj.getEntityByID((int) this.data[0]);
-			
+
 			if (entity instanceof IPacketReceiver)
 			{
 				((IPacketReceiver) entity).handlePacketData(side, player);
 			}
-			
+
 			break;
 		case 1:
 			TileEntity tile = player.worldObj.getTileEntity((int) this.data[0], (int) this.data[1], (int) this.data[2]);
-			
+
 			if (tile instanceof IPacketReceiver)
 			{
 				((IPacketReceiver) tile).handlePacketData(side, player);
 			}
-			
+
 			break;
 		}
 	}

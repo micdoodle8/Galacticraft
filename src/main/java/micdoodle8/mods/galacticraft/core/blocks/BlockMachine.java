@@ -443,7 +443,7 @@ public class BlockMachine extends BlockTile
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World var1, int var2) 
+	public TileEntity createNewTileEntity(World var1, int var2)
 	{
 		return null;
 	}

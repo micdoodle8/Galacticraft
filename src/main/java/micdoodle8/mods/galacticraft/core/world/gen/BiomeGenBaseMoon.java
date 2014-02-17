@@ -4,7 +4,6 @@ import micdoodle8.mods.galacticraft.core.util.CoreUtil;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.ColorizerGrass;
 import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraft.world.biome.BiomeGenBase.Height;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -43,8 +42,8 @@ public class BiomeGenBaseMoon extends BiomeGenBase
 	}
 
 	@Override
-    @SideOnly(Side.CLIENT)
-    public int getBiomeGrassColor(int x, int y, int z)
+	@SideOnly(Side.CLIENT)
+	public int getBiomeGrassColor(int x, int y, int z)
 	{
 		double d0 = MathHelper.clamp_float(this.getFloatTemperature(x, y, z), 0.0F, 1.0F);
 		double d1 = MathHelper.clamp_float(this.getFloatRainfall(), 0.0F, 1.0F);

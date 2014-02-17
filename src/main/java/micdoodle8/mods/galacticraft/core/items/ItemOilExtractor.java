@@ -91,8 +91,8 @@ public class ItemOilExtractor extends Item
 	}
 
 	@Override
-    public void onUsingTick(ItemStack stack, EntityPlayer player, int count)
-    {
+	public void onUsingTick(ItemStack stack, EntityPlayer player, int count)
+	{
 		Vector3 blockHit = this.getNearestOilBlock(player);
 
 		if (blockHit != null)

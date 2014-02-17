@@ -52,7 +52,7 @@ public class ThreadVersionCheck extends Thread
 			return;
 		}
 
-		while (this.count < 3 && remoteBuildVer == 0)
+		while (this.count < 3 && ThreadVersionCheck.remoteBuildVer == 0)
 		{
 			try
 			{
@@ -74,22 +74,22 @@ public class ThreadVersionCheck extends Thread
 
 						if (str2 != null && str2.length == 3)
 						{
-							remoteMajVer = Integer.parseInt(str2[0]);
-							remoteMinVer = Integer.parseInt(str2[1]);
-							remoteBuildVer = Integer.parseInt(str2[2]);
+							ThreadVersionCheck.remoteMajVer = Integer.parseInt(str2[0]);
+							ThreadVersionCheck.remoteMinVer = Integer.parseInt(str2[1]);
+							ThreadVersionCheck.remoteBuildVer = Integer.parseInt(str2[2]);
 						}
 
-						if (remoteMajVer > LOCALMAJVERSION || remoteMajVer == LOCALMAJVERSION && remoteMinVer > LOCALMINVERSION || remoteMajVer == LOCALMAJVERSION && remoteMinVer == LOCALMINVERSION && remoteBuildVer > LOCALBUILDVERSION)
+						if (ThreadVersionCheck.remoteMajVer > ThreadVersionCheck.LOCALMAJVERSION || ThreadVersionCheck.remoteMajVer == ThreadVersionCheck.LOCALMAJVERSION && ThreadVersionCheck.remoteMinVer > ThreadVersionCheck.LOCALMINVERSION || ThreadVersionCheck.remoteMajVer == ThreadVersionCheck.LOCALMAJVERSION && ThreadVersionCheck.remoteMinVer == ThreadVersionCheck.LOCALMINVERSION && ThreadVersionCheck.remoteBuildVer > ThreadVersionCheck.LOCALBUILDVERSION)
 						{
 							Thread.sleep(5000);
 
 							if (sideToCheck.equals(Side.CLIENT))
 							{
-								FMLClientHandler.instance().getClient().thePlayer.addChatMessage(new ChatComponentTranslation(EnumColor.GREY + "New " + EnumColor.DARK_AQUA + "Galacticraft" + EnumColor.GREY + " version available! v" + String.valueOf(remoteMajVer) + "." + String.valueOf(remoteMinVer) + "." + String.valueOf(remoteBuildVer) + EnumColor.DARK_BLUE + " http://micdoodle8.com/"));
+								FMLClientHandler.instance().getClient().thePlayer.addChatMessage(new ChatComponentTranslation(EnumColor.GREY + "New " + EnumColor.DARK_AQUA + "Galacticraft" + EnumColor.GREY + " version available! v" + String.valueOf(ThreadVersionCheck.remoteMajVer) + "." + String.valueOf(ThreadVersionCheck.remoteMinVer) + "." + String.valueOf(ThreadVersionCheck.remoteBuildVer) + EnumColor.DARK_BLUE + " http://micdoodle8.com/"));
 							}
 							else if (sideToCheck.equals(Side.SERVER))
 							{
-								GCLog.severe("New Galacticraft version available! v" + String.valueOf(remoteMajVer) + "." + String.valueOf(remoteMinVer) + "." + String.valueOf(remoteBuildVer) + " http://micdoodle8.com/");
+								GCLog.severe("New Galacticraft version available! v" + String.valueOf(ThreadVersionCheck.remoteMajVer) + "." + String.valueOf(ThreadVersionCheck.remoteMinVer) + "." + String.valueOf(ThreadVersionCheck.remoteBuildVer) + " http://micdoodle8.com/");
 							}
 						}
 					}
@@ -99,7 +99,7 @@ public class ThreadVersionCheck extends Thread
 			{
 			}
 
-			if (remoteBuildVer == 0)
+			if (ThreadVersionCheck.remoteBuildVer == 0)
 			{
 				try
 				{
@@ -112,7 +112,7 @@ public class ThreadVersionCheck extends Thread
 			}
 			else
 			{
-				GCLog.info(StatCollector.translateToLocal("newversion.success.name") + " " + remoteMajVer + "." + remoteMinVer + "." + remoteBuildVer);
+				GCLog.info(StatCollector.translateToLocal("newversion.success.name") + " " + ThreadVersionCheck.remoteMajVer + "." + ThreadVersionCheck.remoteMinVer + "." + ThreadVersionCheck.remoteBuildVer);
 			}
 
 			this.count++;

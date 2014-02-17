@@ -33,7 +33,7 @@ public abstract class InventoryEntity extends NetworkedEntity implements IInvent
 
 		for (int i = 0; i < itemList.tagCount(); ++i)
 		{
-			NBTTagCompound itemTag = (NBTTagCompound) itemList.getCompoundTagAt(i);
+			NBTTagCompound itemTag = itemList.getCompoundTagAt(i);
 			int slotID = itemTag.getByte("Slot") & 255;
 
 			if (slotID >= 0 && slotID < this.containedItems.length)

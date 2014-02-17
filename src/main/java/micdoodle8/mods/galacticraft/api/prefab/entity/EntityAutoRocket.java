@@ -251,8 +251,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 						{
 							boolean targetSet = false;
 
-							blockLoop:
-							for (int x = -2; x <= 2; x++)
+							blockLoop: for (int x = -2; x <= 2; x++)
 							{
 								for (int z = -2; z <= 2; z++)
 								{
@@ -560,7 +559,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 	public void decodePacketdata(ByteBuf buffer)
 	{
 		super.decodePacketdata(buffer);
-		this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel,buffer.readInt()));
+		this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, buffer.readInt()));
 		this.landing = buffer.readBoolean();
 		this.destinationFrequency = buffer.readInt();
 
@@ -592,7 +591,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 	@Override
 	public void handlePacketData(Side side, EntityPlayer player)
 	{
-		
+
 	}
 
 	@Override
@@ -777,7 +776,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
 			for (int var3 = 0; var3 < var2.tagCount(); ++var3)
 			{
-				final NBTTagCompound var4 = (NBTTagCompound) var2.getCompoundTagAt(var3);
+				final NBTTagCompound var4 = var2.getCompoundTagAt(var3);
 				final int var5 = var4.getByte("Slot") & 255;
 
 				if (var5 >= 0 && var5 < this.cargoItems.length)
@@ -1004,7 +1003,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 	public void closeInventory()
 	{
 	}
-	
+
 	@Override
 	public boolean hasCustomInventoryName()
 	{
@@ -1022,7 +1021,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 	{
 		return false;
 	}
-	
+
 	@Override
 	public void markDirty()
 	{

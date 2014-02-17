@@ -31,31 +31,34 @@ public abstract class EntityAdvanced extends Entity implements IPacket
 			GalacticraftCore.packetPipeline.registerPacket(this.getClass());
 		}
 	}
-	
+
 	public EntityAdvanced(World world)
 	{
 		super(world);
 	}
-	
+
 	/**
 	 * Whether or not this entity should be sending packets to/from server
 	 * 
 	 * @return If the entity needs network capabilities
 	 */
 	public abstract boolean isNetworkedEntity();
-	
+
 	/**
 	 * Get the amount of ticks between each packet send
 	 * 
-	 * @param side The target side.
-	 * @return The amount of ticks to wait before sending another packet to this target
+	 * @param side
+	 *            The target side.
+	 * @return The amount of ticks to wait before sending another packet to this
+	 *         target
 	 */
 	public abstract int getPacketCooldown(Side side);
 
 	/**
 	 * Add any additional data to the stream
 	 * 
-	 * @param stream The ByteBuf stream to write data into
+	 * @param stream
+	 *            The ByteBuf stream to write data into
 	 */
 	public void addExtraNetworkedData(ByteBuf stream)
 	{
@@ -65,34 +68,37 @@ public abstract class EntityAdvanced extends Entity implements IPacket
 	/**
 	 * Read any additional data from the stream
 	 * 
-	 * @param stream The ByteBuf stream to read data from
+	 * @param stream
+	 *            The ByteBuf stream to read data from
 	 */
 	public void readExtraNetworkedData(ByteBuf stream)
 	{
 
 	}
-	
+
 	/**
 	 * Called after a packet is read, only on client side.
 	 * 
-	 * @param player The player associated with the received packet
+	 * @param player
+	 *            The player associated with the received packet
 	 */
 	public abstract void onPacketClient(EntityPlayer player);
 
 	/**
 	 * Called after a packet is read, only on server side.
 	 * 
-	 * @param player The player associated with the received packet
+	 * @param player
+	 *            The player associated with the received packet
 	 */
 	public abstract void onPacketServer(EntityPlayer player);
-	
+
 	/**
 	 * Packets will be sent to all (client-side) players within this range
 	 * 
 	 * @return Maximum distance to send packets to client players
 	 */
 	public abstract double getPacketRange();
-	
+
 	@Override
 	public void onUpdate()
 	{
@@ -120,7 +126,7 @@ public abstract class EntityAdvanced extends Entity implements IPacket
 						e.printStackTrace();
 					}
 				}
-				
+
 				this.sendPackets();
 			}
 
@@ -186,14 +192,14 @@ public abstract class EntityAdvanced extends Entity implements IPacket
 			{
 				fieldList = this.fieldCacheClient;
 			}
-			
+
 			List<Object> objList = new ArrayList<Object>();
 
 			for (Field f : fieldList)
 			{
 				objList.add(f.get(this));
 			}
-			
+
 			NetworkUtil.encodeData(buffer, objList);
 
 			this.addExtraNetworkedData(buffer);

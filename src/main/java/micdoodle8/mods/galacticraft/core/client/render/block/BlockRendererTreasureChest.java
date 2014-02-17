@@ -62,7 +62,7 @@ public class BlockRendererTreasureChest implements ISimpleBlockRenderingHandler
 	}
 
 	@Override
-	public boolean shouldRender3DInInventory(int modelId) 
+	public boolean shouldRender3DInInventory(int modelId)
 	{
 		return false;
 	}

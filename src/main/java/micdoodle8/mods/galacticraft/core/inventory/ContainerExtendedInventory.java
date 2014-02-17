@@ -28,7 +28,7 @@ public class ContainerExtendedInventory extends Container
 	public ContainerExtendedInventory(EntityPlayer player, InventoryExtended extendedInventory)
 	{
 		this.thePlayer = player;
-		this.inventoryPlayer = thePlayer.inventory;
+		this.inventoryPlayer = this.thePlayer.inventory;
 		this.extendedInventory = extendedInventory;
 
 		int i;
@@ -36,39 +36,45 @@ public class ContainerExtendedInventory extends Container
 
 		for (i = 0; i < 4; ++i)
 		{
-            final int k = i;
-			this.addSlotToContainer(new Slot(thePlayer.inventory, thePlayer.inventory.getSizeInventory() - 1 - i, 61, 8 + i * 18)
-            {
-                public int getSlotStackLimit()
-                {
-                    return 1;
-                }
+			final int k = i;
+			this.addSlotToContainer(new Slot(this.thePlayer.inventory, this.thePlayer.inventory.getSizeInventory() - 1 - i, 61, 8 + i * 18)
+			{
+				@Override
+				public int getSlotStackLimit()
+				{
+					return 1;
+				}
 
-                public boolean isItemValid(ItemStack par1ItemStack)
-                {
-                    if (par1ItemStack == null) return false;
-                    return par1ItemStack.getItem().isValidArmor(par1ItemStack, k, thePlayer);
-                }
-                
-                @SideOnly(Side.CLIENT)
-                public IIcon getBackgroundIconIndex()
-                {
-                    return ItemArmor.func_94602_b(k);
-                }
-            });
+				@Override
+				public boolean isItemValid(ItemStack par1ItemStack)
+				{
+					if (par1ItemStack == null)
+					{
+						return false;
+					}
+					return par1ItemStack.getItem().isValidArmor(par1ItemStack, k, ContainerExtendedInventory.this.thePlayer);
+				}
+
+				@Override
+				@SideOnly(Side.CLIENT)
+				public IIcon getBackgroundIconIndex()
+				{
+					return ItemArmor.func_94602_b(k);
+				}
+			});
 		}
 
 		for (i = 0; i < 3; ++i)
 		{
 			for (j = 0; j < 9; ++j)
 			{
-				this.addSlotToContainer(new Slot(thePlayer.inventory, j + (i + 1) * 9, 8 + j * 18, 84 + i * 18));
+				this.addSlotToContainer(new Slot(this.thePlayer.inventory, j + (i + 1) * 9, 8 + j * 18, 84 + i * 18));
 			}
 		}
 
 		for (i = 0; i < 9; ++i)
 		{
-			this.addSlotToContainer(new Slot(thePlayer.inventory, i, 8 + i * 18, 142));
+			this.addSlotToContainer(new Slot(this.thePlayer.inventory, i, 8 + i * 18, 142));
 		}
 
 		this.addSlotToContainer(new SlotPlayerInventory(extendedInventory, 0, 106 + 19, 17));

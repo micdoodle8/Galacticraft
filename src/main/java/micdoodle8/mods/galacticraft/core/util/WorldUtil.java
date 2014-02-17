@@ -26,10 +26,10 @@ import micdoodle8.mods.galacticraft.api.world.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceStationSaveData;
-import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.items.ItemParachute;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
@@ -460,7 +460,9 @@ public class WorldUtil
 		SpaceStationSaveData data = WorldUtil.createSpaceStation(world, newID, player);
 		player.setSpaceStationDimensionID(newID);
 		GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_CLIENT_ID, new Object[] { newID }), player);
-//		player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.UPDATE_SPACESTATION_CLIENT_ID, new Object[] { newID }));
+		// player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL,
+		// EnumPacketClient.UPDATE_SPACESTATION_CLIENT_ID, new Object[] { newID
+		// }));
 		return data;
 	}
 
@@ -472,34 +474,34 @@ public class WorldUtil
 		final SpaceStationSaveData var3 = SpaceStationSaveData.getStationData(world, dimID, player);
 		return var3;
 	}
-	
+
 	public static void sendPlanetList()
 	{
 		Integer[] iArray = new Integer[WorldUtil.registeredPlanets.size()];
-		
+
 		for (int i = 0; i < iArray.length; i++)
 		{
 			iArray[i] = WorldUtil.registeredPlanets.get(i);
 		}
-		
+
 		List<Object> objList = new ArrayList<Object>();
 		objList.add(iArray);
-		
+
 		GalacticraftCore.packetPipeline.sendToAll(new PacketSimple(EnumSimplePacket.C_UPDATE_PLANETS_LIST, objList));
 	}
-	
+
 	public static void sendSpaceStationList()
 	{
 		Integer[] iArray = new Integer[WorldUtil.registeredSpaceStations.size()];
-		
+
 		for (int i = 0; i < iArray.length; i++)
 		{
 			iArray[i] = WorldUtil.registeredSpaceStations.get(i);
 		}
-		
+
 		List<Object> objList = new ArrayList<Object>();
 		objList.add(iArray);
-		
+
 		GalacticraftCore.packetPipeline.sendToAll(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_LIST, objList));
 	}
 
@@ -558,14 +560,20 @@ public class WorldUtil
 			{
 				player.dimension = dimID;
 				player.playerNetServerHandler.sendPacket(new S07PacketRespawn(player.dimension, player.worldObj.difficultySetting, player.worldObj.getWorldInfo().getTerrainType(), player.theItemInWorldManager.getGameType()));
-//				player.playerNetServerHandler.sendPacketToPlayer(new Packet9Respawn(player.dimension, (byte) player.worldObj.difficultySetting, worldNew.getWorldInfo().getTerrainType(), worldNew.getHeight(), player.theItemInWorldManager.getGameType()));
+				// player.playerNetServerHandler.sendPacketToPlayer(new
+				// Packet9Respawn(player.dimension, (byte)
+				// player.worldObj.difficultySetting,
+				// worldNew.getWorldInfo().getTerrainType(),
+				// worldNew.getHeight(),
+				// player.theItemInWorldManager.getGameType()));
 
 				if (worldNew.provider instanceof WorldProviderSpaceStation)
 				{
 					NBTTagCompound var2 = new NBTTagCompound();
 					SpaceStationSaveData.getStationData(worldNew, dimID, player).writeToNBT(var2);
 					GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_DATA, new Object[] { dimID, var2 }), player);
-//					player.playerNetServerHandler.sendPacketToPlayer(GCCorePacketSpaceStationData.buildSpaceStationDataPacket(worldNew, worldNew.provider.dimensionId, player));
+					// player.playerNetServerHandler.sendPacketToPlayer(GCCorePacketSpaceStationData.buildSpaceStationDataPacket(worldNew,
+					// worldNew.provider.dimensionId, player));
 				}
 
 				((WorldServer) entity.worldObj).getPlayerManager().removePlayer(player);
@@ -711,7 +719,9 @@ public class WorldUtil
 				player.playerNetServerHandler.sendPacket(new S1DPacketEntityEffect(player.getEntityId(), var10));
 			}
 
-//			player.playerNetServerHandler.sendPacketToPlayer(new Packet43Experience(player.experience, player.experienceTotal, player.experienceLevel)); TODO Find out if this is still needed
+			// player.playerNetServerHandler.sendPacketToPlayer(new
+			// Packet43Experience(player.experience, player.experienceTotal,
+			// player.experienceLevel)); TODO Find out if this is still needed
 		}
 
 		if (entity instanceof GCEntityPlayerMP)
@@ -782,8 +792,8 @@ public class WorldUtil
 
 		if (entity instanceof EntityPlayerMP)
 		{
-	        FMLCommonHandler.instance().firePlayerChangedDimensionEvent((EntityPlayerMP) entity, oldDimID, dimID);
-//			GameRegistry.onPlayerChangedDimension((EntityPlayerMP) entity);
+			FMLCommonHandler.instance().firePlayerChangedDimensionEvent((EntityPlayerMP) entity, oldDimID, dimID);
+			// GameRegistry.onPlayerChangedDimension((EntityPlayerMP) entity);
 			type.onSpaceDimensionChanged(worldNew, (EntityPlayerMP) entity, ridingRocket != null);
 		}
 
@@ -887,16 +897,19 @@ public class WorldUtil
 					adjacentConnections[direction.ordinal()] = tileEntity;
 				}
 			}
-//			else if (NetworkConfigHandler.isMekanismLoaded())
-//			{
-//				if (tileEntity instanceof ITubeConnection && (!(tileEntity instanceof IGasTransmitter) || TransmissionType.checkTransmissionType(tileEntity, TransmissionType.GAS, tileEntity)))
-//				{
-//					if (((ITubeConnection) tileEntity).canTubeConnect(direction))
-//					{
-//						adjacentConnections[direction.ordinal()] = tileEntity;
-//					}
-//				}
-//			} TODO Re-implement when APIs are ready
+			// else if (NetworkConfigHandler.isMekanismLoaded())
+			// {
+			// if (tileEntity instanceof ITubeConnection && (!(tileEntity
+			// instanceof IGasTransmitter) ||
+			// TransmissionType.checkTransmissionType(tileEntity,
+			// TransmissionType.GAS, tileEntity)))
+			// {
+			// if (((ITubeConnection) tileEntity).canTubeConnect(direction))
+			// {
+			// adjacentConnections[direction.ordinal()] = tileEntity;
+			// }
+			// }
+			// } TODO Re-implement when APIs are ready
 		}
 
 		return adjacentConnections;
@@ -918,42 +931,49 @@ public class WorldUtil
 					adjacentConnections[direction.ordinal()] = tileEntity;
 				}
 			}
-//			else if (NetworkConfigHandler.isIndustrialCraft2Loaded() && tileEntity instanceof IEnergyTile)
-//			{
-//				if (tileEntity instanceof IEnergyAcceptor)
-//				{
-//					if (((IEnergyAcceptor) tileEntity).acceptsEnergyFrom(tile, direction.getOpposite()))
-//					{
-//						adjacentConnections[direction.ordinal()] = tileEntity;
-//						continue;
-//					}
-//				}
-//
-//				if (tileEntity instanceof IEnergyEmitter)
-//				{
-//					if (((IEnergyEmitter) tileEntity).emitsEnergyTo(tileEntity, direction.getOpposite()))
-//					{
-//						adjacentConnections[direction.ordinal()] = tileEntity;
-//						continue;
-//					}
-//				}
-//
-//				adjacentConnections[direction.ordinal()] = tileEntity;
-//			}
-//			else if (NetworkConfigHandler.isBuildcraftLoaded() && tileEntity instanceof IPowerReceptor)
-//			{
-//				if (((IPowerReceptor) tileEntity).getPowerReceiver(direction.getOpposite()) != null)
-//				{
-//					adjacentConnections[direction.ordinal()] = tileEntity;
-//				}
-//			}
-//			else if (NetworkConfigHandler.isThermalExpansionLoaded() && tileEntity instanceof IEnergyHandler)
-//			{
-//				if (((IEnergyHandler) tileEntity).canInterface(direction.getOpposite()))
-//				{
-//					adjacentConnections[direction.ordinal()] = tileEntity;
-//				}
-//			} TODO Re-implement when APIs are ready
+			// else if (NetworkConfigHandler.isIndustrialCraft2Loaded() &&
+			// tileEntity instanceof IEnergyTile)
+			// {
+			// if (tileEntity instanceof IEnergyAcceptor)
+			// {
+			// if (((IEnergyAcceptor) tileEntity).acceptsEnergyFrom(tile,
+			// direction.getOpposite()))
+			// {
+			// adjacentConnections[direction.ordinal()] = tileEntity;
+			// continue;
+			// }
+			// }
+			//
+			// if (tileEntity instanceof IEnergyEmitter)
+			// {
+			// if (((IEnergyEmitter) tileEntity).emitsEnergyTo(tileEntity,
+			// direction.getOpposite()))
+			// {
+			// adjacentConnections[direction.ordinal()] = tileEntity;
+			// continue;
+			// }
+			// }
+			//
+			// adjacentConnections[direction.ordinal()] = tileEntity;
+			// }
+			// else if (NetworkConfigHandler.isBuildcraftLoaded() && tileEntity
+			// instanceof IPowerReceptor)
+			// {
+			// if (((IPowerReceptor)
+			// tileEntity).getPowerReceiver(direction.getOpposite()) != null)
+			// {
+			// adjacentConnections[direction.ordinal()] = tileEntity;
+			// }
+			// }
+			// else if (NetworkConfigHandler.isThermalExpansionLoaded() &&
+			// tileEntity instanceof IEnergyHandler)
+			// {
+			// if (((IEnergyHandler)
+			// tileEntity).canInterface(direction.getOpposite()))
+			// {
+			// adjacentConnections[direction.ordinal()] = tileEntity;
+			// }
+			// } TODO Re-implement when APIs are ready
 		}
 
 		return adjacentConnections;

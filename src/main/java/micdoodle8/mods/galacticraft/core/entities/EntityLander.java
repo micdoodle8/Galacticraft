@@ -92,7 +92,7 @@ public class EntityLander extends InventoryEntity implements IInventorySettable,
 
 		for (int i = 0; i < itemList.tagCount(); ++i)
 		{
-			NBTTagCompound itemTag = (NBTTagCompound) itemList.getCompoundTagAt(i);
+			NBTTagCompound itemTag = itemList.getCompoundTagAt(i);
 			int slotID = itemTag.getByte("Slot") & 255;
 
 			if (slotID >= 0 && slotID < this.containedItems.length)
@@ -265,7 +265,7 @@ public class EntityLander extends InventoryEntity implements IInventorySettable,
 				{
 					if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayerMP)
 					{
-						GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, new Object[] { 0 }), ((EntityPlayerMP) this.riddenByEntity));
+						GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, new Object[] { 0 }), (EntityPlayerMP) this.riddenByEntity);
 						this.riddenByEntity.mountEntity(this);
 					}
 
@@ -441,7 +441,7 @@ public class EntityLander extends InventoryEntity implements IInventorySettable,
 	@Override
 	public void markDirty()
 	{
-		
+
 	}
 
 	@Override
@@ -517,7 +517,7 @@ public class EntityLander extends InventoryEntity implements IInventorySettable,
 				{
 					if (this.riddenByEntity instanceof EntityPlayerMP)
 					{
-						GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, new Object[] { 0 }), ((EntityPlayerMP) this.riddenByEntity));
+						GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, new Object[] { 0 }), (EntityPlayerMP) this.riddenByEntity);
 					}
 
 					this.riddenByEntity.mountEntity(this);
@@ -557,7 +557,7 @@ public class EntityLander extends InventoryEntity implements IInventorySettable,
 		}
 		else if (var1 instanceof EntityPlayerMP)
 		{
-			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, new Object[] { 0 }), ((EntityPlayerMP) var1));
+			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, new Object[] { 0 }), (EntityPlayerMP) var1);
 			var1.mountEntity(null);
 			return true;
 		}

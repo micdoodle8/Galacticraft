@@ -183,7 +183,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements IInve
 
 		for (int i = 0; i < nbttaglist.tagCount(); ++i)
 		{
-			final NBTTagCompound nbttagcompound1 = (NBTTagCompound) nbttaglist.getCompoundTagAt(i);
+			final NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
 			final int j = nbttagcompound1.getByte("Slot") & 255;
 
 			if (j >= 0 && j < this.chestContents.length)
@@ -500,7 +500,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements IInve
 	}
 
 	@Override
-	public boolean hasCustomInventoryName() 
+	public boolean hasCustomInventoryName()
 	{
 		return true;
 	}
@@ -585,7 +585,9 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements IInve
 			if (player.worldObj.isRemote)
 			{
 				GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_FAILED_CHEST_UNLOCK, new Object[] { this.getTierOfKeyRequired() }));
-//				PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumSimplePacket.ON_FAILED_CHEST_UNLOCK, new Object[] { this.getTierOfKeyRequired() }));
+				// PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL,
+				// EnumSimplePacket.ON_FAILED_CHEST_UNLOCK, new Object[] {
+				// this.getTierOfKeyRequired() }));
 			}
 			return true;
 		}

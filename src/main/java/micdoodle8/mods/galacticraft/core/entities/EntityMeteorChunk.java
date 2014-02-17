@@ -337,13 +337,13 @@ public class EntityMeteorChunk extends Entity implements IProjectile
 
 							if (this.shootingEntity != null)
 							{
-                                EnchantmentHelper.func_151384_a(entitylivingbase, this.shootingEntity);
-                                EnchantmentHelper.func_151385_b((EntityLivingBase)this.shootingEntity, entitylivingbase);
+								EnchantmentHelper.func_151384_a(entitylivingbase, this.shootingEntity);
+								EnchantmentHelper.func_151385_b((EntityLivingBase) this.shootingEntity, entitylivingbase);
 							}
 
 							if (this.shootingEntity != null && movingobjectposition.entityHit != this.shootingEntity && movingobjectposition.entityHit instanceof EntityPlayer && this.shootingEntity instanceof EntityPlayerMP)
 							{
-                                ((EntityPlayerMP)this.shootingEntity).playerNetServerHandler.sendPacket(new S2BPacketChangeGameState(6, 0.0F));
+								((EntityPlayerMP) this.shootingEntity).playerNetServerHandler.sendPacket(new S2BPacketChangeGameState(6, 0.0F));
 							}
 						}
 
@@ -415,7 +415,7 @@ public class EntityMeteorChunk extends Entity implements IProjectile
 			this.motionZ *= f4;
 			this.motionY -= this.worldObj.provider instanceof IGalacticraftWorldProvider ? ((IGalacticraftWorldProvider) this.worldObj.provider).getGravity() - (double) f1 : (double) f1;
 			this.setPosition(this.posX, this.posY, this.posZ);
-            this.func_145775_I();
+			this.func_145775_I();
 		}
 	}
 

@@ -149,7 +149,7 @@ public class ElectricityDisplay
 					return prefix + ElectricityDisplay.roundDecimals(lowerMeasure.process(value), decimalPlaces) + " " + lowerMeasure.getName(isShort) + unitName;
 				}
 				MeasurementUnit upperMeasure = MeasurementUnit.values()[i + 1];
-				if ((lowerMeasure.isAbove(value) && upperMeasure.isBellow(value)) || lowerMeasure.value == value)
+				if (lowerMeasure.isAbove(value) && upperMeasure.isBellow(value) || lowerMeasure.value == value)
 				{
 					return prefix + ElectricityDisplay.roundDecimals(lowerMeasure.process(value), decimalPlaces) + " " + lowerMeasure.getName(isShort) + unitName;
 				}

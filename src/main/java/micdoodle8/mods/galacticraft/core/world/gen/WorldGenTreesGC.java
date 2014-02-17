@@ -201,7 +201,7 @@ public class WorldGenTreesGC extends WorldGenerator
 								for (var15 = par5 - var13; var15 <= par5 + var13; ++var15)
 								{
 									block = par1World.getBlock(var14, var11, var15);
-									
+
 									if (block != null && block.isLeaves(par1World, var14, var11, var15))
 									{
 										if (par2Random.nextInt(4) == 0 && par1World.getBlock(var14 - 1, var11, var15).isAir(par1World, var14 - 1, var11, var15))

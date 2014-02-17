@@ -21,7 +21,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import cpw.mods.fml.common.network.ByteBufUtils;
 
-public class NetworkUtil 
+public class NetworkUtil
 {
 	public static void encodeData(ByteBuf buffer, Collection<Object> sendData) throws IOException
 	{
@@ -61,11 +61,11 @@ public class NetworkUtil
 			}
 			else if (dataValue instanceof NBTTagCompound)
 			{
-				writeNBTTagCompound((NBTTagCompound) dataValue, buffer);
+				NetworkUtil.writeNBTTagCompound((NBTTagCompound) dataValue, buffer);
 			}
 			else if (dataValue instanceof FluidTank)
 			{
-				writeFluidTank((FluidTank) dataValue, buffer);
+				NetworkUtil.writeFluidTank((FluidTank) dataValue, buffer);
 			}
 			else if (dataValue instanceof Entity)
 			{
@@ -79,13 +79,13 @@ public class NetworkUtil
 			}
 			else if (dataValue instanceof Collection)
 			{
-				encodeData(buffer, (Collection<Object>) dataValue);
+				NetworkUtil.encodeData(buffer, (Collection<Object>) dataValue);
 			}
 			else if (dataValue instanceof Integer[])
 			{
 				Integer[] array = (Integer[]) dataValue;
 				buffer.writeInt(array.length);
-				
+
 				for (int i = 0; i < array.length; i++)
 				{
 					buffer.writeInt(array[i]);
@@ -101,7 +101,7 @@ public class NetworkUtil
 	public static ArrayList<Object> decodeData(Class<?>[] types, ByteBuf buffer)
 	{
 		ArrayList<Object> objList = new ArrayList<Object>();
-		
+
 		for (Class clazz : types)
 		{
 			if (clazz.equals(Integer.class))
@@ -140,7 +140,7 @@ public class NetworkUtil
 			{
 				try
 				{
-					objList.add(readNBTTagCompound(buffer));
+					objList.add(NetworkUtil.readNBTTagCompound(buffer));
 				}
 				catch (IOException e)
 				{
@@ -150,17 +150,17 @@ public class NetworkUtil
 			else if (clazz.equals(Integer[].class))
 			{
 				int size = buffer.readInt();
-				
+
 				for (int i = 0; i < size; i++)
 				{
 					objList.add(buffer.readInt());
 				}
 			}
 		}
-		
+
 		return objList;
 	}
-	
+
 	public static Object getFieldValueFromStream(Field field, ByteBuf buffer, World world) throws IOException
 	{
 		Class<?> dataValue = field.getType();
@@ -199,15 +199,15 @@ public class NetworkUtil
 		}
 		else if (dataValue.equals(NBTTagCompound.class))
 		{
-			return readNBTTagCompound(buffer);
-		} 
+			return NetworkUtil.readNBTTagCompound(buffer);
+		}
 		else if (dataValue.equals(FluidTank.class))
 		{
-			return readFluidTank(buffer);
+			return NetworkUtil.readFluidTank(buffer);
 		}
 		else if (dataValue.equals(Vector3.class))
 		{
-			return new Vector3(buffer.readDouble(), buffer.readDouble(), buffer.readDouble()); 
+			return new Vector3(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
 		}
 		else
 		{
@@ -227,73 +227,73 @@ public class NetworkUtil
 		throw new NullPointerException("Field type not found: " + field.getType().getSimpleName());
 	}
 
-    public static ItemStack readItemStack(ByteBuf buffer) throws IOException
-    {
-        ItemStack itemstack = null;
-        short itemID = buffer.readShort();
+	public static ItemStack readItemStack(ByteBuf buffer) throws IOException
+	{
+		ItemStack itemstack = null;
+		short itemID = buffer.readShort();
 
-        if (itemID >= 0)
-        {
-            byte stackSize = buffer.readByte();
-            short meta = buffer.readShort();
-            itemstack = new ItemStack(Item.getItemById(itemID), stackSize, meta);
-            itemstack.stackTagCompound = readNBTTagCompound(buffer);
-        }
+		if (itemID >= 0)
+		{
+			byte stackSize = buffer.readByte();
+			short meta = buffer.readShort();
+			itemstack = new ItemStack(Item.getItemById(itemID), stackSize, meta);
+			itemstack.stackTagCompound = NetworkUtil.readNBTTagCompound(buffer);
+		}
 
-        return itemstack;
-    }
+		return itemstack;
+	}
 
-    public static void writeItemStack(ItemStack itemStack, ByteBuf buffer) throws IOException
-    {
-        if (itemStack == null)
-        {
-            buffer.writeShort(-1);
-        }
-        else
-        {
-            buffer.writeShort(Item.getIdFromItem(itemStack.getItem()));
-            buffer.writeByte(itemStack.stackSize);
-            buffer.writeShort(itemStack.getItemDamage());
-            NBTTagCompound nbttagcompound = null;
+	public static void writeItemStack(ItemStack itemStack, ByteBuf buffer) throws IOException
+	{
+		if (itemStack == null)
+		{
+			buffer.writeShort(-1);
+		}
+		else
+		{
+			buffer.writeShort(Item.getIdFromItem(itemStack.getItem()));
+			buffer.writeByte(itemStack.stackSize);
+			buffer.writeShort(itemStack.getItemDamage());
+			NBTTagCompound nbttagcompound = null;
 
-            if (itemStack.getItem().isDamageable() || itemStack.getItem().getShareTag())
-            {
-                nbttagcompound = itemStack.stackTagCompound;
-            }
+			if (itemStack.getItem().isDamageable() || itemStack.getItem().getShareTag())
+			{
+				nbttagcompound = itemStack.stackTagCompound;
+			}
 
-            writeNBTTagCompound(nbttagcompound, buffer);
-        }
-    }
+			NetworkUtil.writeNBTTagCompound(nbttagcompound, buffer);
+		}
+	}
 
-    public static NBTTagCompound readNBTTagCompound(ByteBuf buffer) throws IOException
-    {
-        short dataLength = buffer.readShort();
+	public static NBTTagCompound readNBTTagCompound(ByteBuf buffer) throws IOException
+	{
+		short dataLength = buffer.readShort();
 
-        if (dataLength < 0)
-        {
-            return null;
-        }
-        else
-        {
-            byte[] compressedNBT = new byte[dataLength];
-            buffer.readBytes(compressedNBT);
-            return CompressedStreamTools.decompress(compressedNBT);
-        }
-    }
+		if (dataLength < 0)
+		{
+			return null;
+		}
+		else
+		{
+			byte[] compressedNBT = new byte[dataLength];
+			buffer.readBytes(compressedNBT);
+			return CompressedStreamTools.decompress(compressedNBT);
+		}
+	}
 
-    public static void writeNBTTagCompound(NBTTagCompound nbt, ByteBuf buffer) throws IOException
-    {
-        if (nbt == null)
-        {
-            buffer.writeShort(-1);
-        }
-        else
-        {
-            byte[] compressedNBT = CompressedStreamTools.compress(nbt);
-            buffer.writeShort((short)compressedNBT.length);
-            buffer.writeBytes(compressedNBT);
-        }
-    }
+	public static void writeNBTTagCompound(NBTTagCompound nbt, ByteBuf buffer) throws IOException
+	{
+		if (nbt == null)
+		{
+			buffer.writeShort(-1);
+		}
+		else
+		{
+			byte[] compressedNBT = CompressedStreamTools.compress(nbt);
+			buffer.writeShort((short) compressedNBT.length);
+			buffer.writeBytes(compressedNBT);
+		}
+	}
 
 	public static void writeFluidTank(FluidTank fluidTank, ByteBuf buffer) throws IOException
 	{

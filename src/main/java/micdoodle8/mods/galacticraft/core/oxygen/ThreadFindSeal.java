@@ -77,7 +77,7 @@ public class ThreadFindSeal extends Thread
 
 				if (this.sealed && block == Blocks.air)
 				{
-					TickHandlerServer.scheduleNewBlockChange(world.provider.dimensionId, new ScheduledBlockChange(checkedVec.getPosition(), GCBlocks.breatheableAir, 0, 3));
+					TickHandlerServer.scheduleNewBlockChange(this.world.provider.dimensionId, new ScheduledBlockChange(checkedVec.getPosition(), GCBlocks.breatheableAir, 0, 3));
 				}
 			}
 		}
@@ -92,7 +92,7 @@ public class ThreadFindSeal extends Thread
 
 				if (block == GCBlocks.breatheableAir)
 				{
-					TickHandlerServer.scheduleNewBlockChange(world.provider.dimensionId, new ScheduledBlockChange(checkedVec.getPosition(), Blocks.air, 0, 3));
+					TickHandlerServer.scheduleNewBlockChange(this.world.provider.dimensionId, new ScheduledBlockChange(checkedVec.getPosition(), Blocks.air, 0, 3));
 				}
 			}
 		}

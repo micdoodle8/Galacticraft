@@ -298,7 +298,7 @@ public class BlockMoon extends BlockAdvancedTile implements IDetectableResource,
 	}
 
 	@Override
-    public boolean canSustainPlant(IBlockAccess world, int x, int y, int z, ForgeDirection direction, IPlantable plantable)
+	public boolean canSustainPlant(IBlockAccess world, int x, int y, int z, ForgeDirection direction, IPlantable plantable)
 	{
 		final int metadata = world.getBlockMetadata(x, y, z);
 

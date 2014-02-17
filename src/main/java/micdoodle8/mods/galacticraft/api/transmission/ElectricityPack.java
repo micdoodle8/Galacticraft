@@ -66,7 +66,7 @@ public class ElectricityPack implements Cloneable
 
 		for (ElectricityPack pack : packs)
 		{
-			if (optimalPack == null || (optimalPack != null && pack.getWatts() > optimalPack.getWatts()))
+			if (optimalPack == null || optimalPack != null && pack.getWatts() > optimalPack.getWatts())
 			{
 				optimalPack = pack;
 			}
@@ -84,7 +84,7 @@ public class ElectricityPack implements Cloneable
 
 		for (ElectricityPack pack : packs)
 		{
-			if (optimalPack == null || (optimalPack != null && pack.getWatts() < optimalPack.getWatts()))
+			if (optimalPack == null || optimalPack != null && pack.getWatts() < optimalPack.getWatts())
 			{
 				optimalPack = pack;
 			}

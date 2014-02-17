@@ -24,9 +24,9 @@ import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiChoosePlanet;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiGalaxyMap;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceStationSaveData;
 import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
+import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP.EnumModelPacket;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerSchematic;
 import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
 import micdoodle8.mods.galacticraft.core.items.ItemParachute;
@@ -130,10 +130,10 @@ public class PacketSimple implements IPacket
 
 	private EnumSimplePacket type;
 	private List<Object> data;
-	
+
 	public PacketSimple()
 	{
-		
+
 	}
 
 	public PacketSimple(EnumSimplePacket packetType, Object[] data)
@@ -147,7 +147,7 @@ public class PacketSimple implements IPacket
 		{
 			GCLog.info("Simple Packet found data length different than packet type");
 		}
-		
+
 		this.type = packetType;
 		this.data = data;
 	}
@@ -156,10 +156,10 @@ public class PacketSimple implements IPacket
 	public void encodeInto(ChannelHandlerContext context, ByteBuf buffer)
 	{
 		buffer.writeInt(this.type.ordinal());
-		
+
 		try
 		{
-			NetworkUtil.encodeData(buffer, data);
+			NetworkUtil.encodeData(buffer, this.data);
 		}
 		catch (IOException e)
 		{
@@ -171,9 +171,9 @@ public class PacketSimple implements IPacket
 	public void decodeInto(ChannelHandlerContext context, ByteBuf buffer)
 	{
 		this.type = EnumSimplePacket.values()[buffer.readInt()];
-		
+
 		FMLLog.info("" + this.type);
-		
+
 		if (this.type.getDecodeClasses().length > 0)
 		{
 			this.data = NetworkUtil.decodeData(this.type.getDecodeClasses(), buffer);
@@ -184,12 +184,12 @@ public class PacketSimple implements IPacket
 	public void handleClientSide(EntityPlayer player)
 	{
 		GCEntityClientPlayerMP playerBaseClient = null;
-		
+
 		if (player instanceof GCEntityClientPlayerMP)
 		{
 			playerBaseClient = (GCEntityClientPlayerMP) player;
 		}
-		
+
 		switch (this.type)
 		{
 		case C_AIR_REMAINING:
@@ -235,13 +235,13 @@ public class PacketSimple implements IPacket
 			y = (Integer) this.data.get(1);
 			z = (Integer) this.data.get(2);
 			Minecraft mc = Minecraft.getMinecraft();
-			
+
 			for (int i = 0; i < 4; i++)
 			{
 				if (mc != null && mc.renderViewEntity != null && mc.effectRenderer != null && mc.theWorld != null)
 				{
 					final EntityFX fx = new EntityFXSparks(mc.theWorld, x - 0.15 + 0.5, y + 1.2, z + 0.15 + 0.5, mc.theWorld.rand.nextDouble() / 20 - mc.theWorld.rand.nextDouble() / 20, 0.06, mc.theWorld.rand.nextDouble() / 20 - mc.theWorld.rand.nextDouble() / 20, 1.0F);
-					
+
 					if (fx != null)
 					{
 						mc.effectRenderer.addEffect(fx);
@@ -371,7 +371,7 @@ public class PacketSimple implements IPacket
 			{
 				WorldUtil.registeredPlanets = new ArrayList<Integer>();
 			}
-			
+
 			for (Object o : this.data)
 			{
 				Integer dimID = (Integer) o;
@@ -400,7 +400,7 @@ public class PacketSimple implements IPacket
 				for (Object o : this.data)
 				{
 					Integer schematicID = (Integer) o;
-					
+
 					if (schematicID != -2)
 					{
 						Collections.sort(playerBaseClient.unlockedSchematics);
@@ -475,7 +475,7 @@ public class PacketSimple implements IPacket
 	public void handleServerSide(EntityPlayer player)
 	{
 		GCEntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player);
-		
+
 		switch (this.type)
 		{
 		case S_RESPAWN_PLAYER:
@@ -589,7 +589,7 @@ public class PacketSimple implements IPacket
 			break;
 		case S_SET_ENTITY_FIRE:
 			Entity entity = player.worldObj.getEntityByID((int) this.data.get(0));
-			
+
 			if (entity instanceof EntityLiving)
 			{
 				((EntityLiving) entity).setFire(3);

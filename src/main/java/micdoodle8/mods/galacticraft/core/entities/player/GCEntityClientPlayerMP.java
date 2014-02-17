@@ -108,7 +108,7 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 	public static String getCapeURL(String par0Str)
 	{
 		return "";
-//		return ClientProxyCore.capeMap.get(par0Str); TODO Fix capes
+		// return ClientProxyCore.capeMap.get(par0Str); TODO Fix capes
 	}
 
 	private static ThreadDownloadImageData getImageData(ResourceLocation par0ResourceLocation, String par1Str, ResourceLocation par2ResourceLocation, IImageBuffer par3IImageBuffer)

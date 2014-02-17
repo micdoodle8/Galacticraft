@@ -310,7 +310,8 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 
 		if (this.worldObj.provider instanceof IGalacticraftWorldProvider || this.usingPlanetSelectionGui)
 		{
-//			this.playerNetServerHandler.ticksForFloatKick = 0; TODO find out if this still exists somewhere
+			// this.playerNetServerHandler.ticksForFloatKick = 0; TODO find out
+			// if this still exists somewhere
 		}
 
 		this.updateSchematics();
@@ -449,8 +450,8 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 				{
 					for (int var7 = 0; var7 < list.tagCount(); ++var7)
 					{
-						final int enchID = Integer.valueOf(((NBTTagCompound) list.getCompoundTagAt(var7)).getShort("id"));
-						final int enchLvl = Integer.valueOf(((NBTTagCompound) list.getCompoundTagAt(var7)).getShort("lvl"));
+						final int enchID = Integer.valueOf(list.getCompoundTagAt(var7).getShort("id"));
+						final int enchLvl = Integer.valueOf(list.getCompoundTagAt(var7).getShort("lvl"));
 
 						final Enchantment e = Enchantment.enchantmentsList[enchID];
 
@@ -495,8 +496,8 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 				{
 					for (int var7 = 0; var7 < list.tagCount(); ++var7)
 					{
-						final int enchID = Integer.valueOf(((NBTTagCompound) list.getCompoundTagAt(var7)).getShort("id"));
-						final int enchLvl = Integer.valueOf(((NBTTagCompound) list.getCompoundTagAt(var7)).getShort("lvl"));
+						final int enchID = Integer.valueOf(list.getCompoundTagAt(var7).getShort("id"));
+						final int enchLvl = Integer.valueOf(list.getCompoundTagAt(var7).getShort("lvl"));
 
 						final Enchantment e = Enchantment.enchantmentsList[enchID];
 
@@ -886,16 +887,16 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 		if (this.playerNetServerHandler != null && (this.getUnlockedSchematics().size() != this.lastUnlockedSchematics.size() || this.tick % 100 == 0))
 		{
 			Integer[] iArray = new Integer[this.getUnlockedSchematics().size()];
-			
+
 			for (int i = 0; i < iArray.length; i++)
 			{
 				ISchematicPage page = this.getUnlockedSchematics().get(i);
 				iArray[i] = page == null ? -2 : page.getPageID();
 			}
-			
+
 			List<Object> objList = new ArrayList<Object>();
 			objList.add(iArray);
-			
+
 			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SCHEMATIC_LIST, objList), this);
 		}
 	}
@@ -958,7 +959,7 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 
 		for (int var3 = 0; var3 < var23.tagCount(); ++var3)
 		{
-			final NBTTagCompound var4 = (NBTTagCompound) var23.getCompoundTagAt(var3);
+			final NBTTagCompound var4 = var23.getCompoundTagAt(var3);
 			final int var5 = var4.getByte("Slot") & 255;
 
 			if (var5 >= 0 && var5 < this.getRocketStacks().length)
@@ -984,7 +985,7 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 
 		for (int i = 0; i < nbt.getTagList("Schematics", 10).tagCount(); ++i)
 		{
-			final NBTTagCompound nbttagcompound = (NBTTagCompound) nbt.getTagList("Schematics", 10).getCompoundTagAt(i);
+			final NBTTagCompound nbttagcompound = nbt.getTagList("Schematics", 10).getCompoundTagAt(i);
 
 			final int j = nbttagcompound.getInteger("UnlockedPage");
 
@@ -1071,7 +1072,7 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 
 	private void sendGearUpdatePacket(int gearType, int subtype)
 	{
-		final Object[] toSend = {  };
+		final Object[] toSend = {};
 
 		if (FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(this.getGameProfile().getName()) != null)
 		{

@@ -303,7 +303,7 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 					{
 						FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + (y == 2 ? x : 0), thisBlock.intY() + y, thisBlock.intZ() + (y == 2 ? z : 0), GCBlocks.solarPanel, Block.getIdFromBlock(GCBlocks.solarPanel) >> 12 & 255);
 					}
-					
+
 					this.worldObj.setBlockToAir(thisBlock.intX() + (y == 2 ? x : 0), thisBlock.intY() + y, thisBlock.intZ() + (y == 2 ? z : 0));
 				}
 			}
@@ -334,7 +334,7 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 
 		for (int var3 = 0; var3 < var2.tagCount(); ++var3)
 		{
-			final NBTTagCompound var4 = (NBTTagCompound) var2.getCompoundTagAt(var3);
+			final NBTTagCompound var4 = var2.getCompoundTagAt(var3);
 			final byte var5 = var4.getByte("Slot");
 
 			if (var5 >= 0 && var5 < this.containingItems.length)
@@ -454,21 +454,21 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 	}
 
 	@Override
-	public boolean hasCustomInventoryName() 
+	public boolean hasCustomInventoryName()
 	{
 		return true;
 	}
 
 	@Override
-	public void openInventory() 
+	public void openInventory()
 	{
-		
+
 	}
 
 	@Override
-	public void closeInventory() 
+	public void closeInventory()
 	{
-		
+
 	}
 
 	@Override

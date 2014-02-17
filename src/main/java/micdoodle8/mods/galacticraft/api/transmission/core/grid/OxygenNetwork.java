@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.Set;
 
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
-import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
 import micdoodle8.mods.galacticraft.api.transmission.core.path.Pathfinder;
 import micdoodle8.mods.galacticraft.api.transmission.core.path.PathfinderChecker;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
@@ -73,44 +72,60 @@ public class OxygenNetwork implements IOxygenNetwork
 								}
 							}
 						}
-//						else if (NetworkConfigHandler.isMekanismV6Loaded() && tileEntity instanceof IGasHandler)
-//						{
-//							IGasHandler gasHandler = (IGasHandler) tileEntity;
-//
-//							for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
-//							{
-//								TileEntity tile = new Vector3(tileEntity).modifyPositionFromSide(direction).getTileEntity(tileEntity.worldObj);
-//
-//								if (gasHandler.canReceiveGas(direction, (Gas) NetworkConfigHandler.gasOxygen) && this.getTransmitters().contains(tile))
-//								{
-//									int oxygenToSend = (int) Math.floor(totalOxygen / this.oxygenTiles.size());
-//
-//									if (oxygenToSend > 0)
-//									{
-//										remainingUsableOxygen -= gasHandler.receiveGas(direction, (new GasStack((Gas) NetworkConfigHandler.gasOxygen, oxygenToSend)));
-//									}
-//								}
-//							}
-//						}
-//						else if (NetworkConfigHandler.isMekanismLoaded() && tileEntity instanceof IGasAcceptor)
-//						{
-//							IGasAcceptor gasAcceptor = (IGasAcceptor) tileEntity;
-//
-//							for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
-//							{
-//								TileEntity tile = new Vector3(tileEntity).modifyPositionFromSide(direction).getTileEntity(tileEntity.worldObj);
-//
-//								if (gasAcceptor.canReceiveGas(direction, (Gas) NetworkConfigHandler.gasOxygen) && this.getTransmitters().contains(tile))
-//								{
-//									int oxygenToSend = (int) Math.floor(totalOxygen / this.oxygenTiles.size());
-//
-//									if (oxygenToSend > 0)
-//									{
-//										remainingUsableOxygen -= gasAcceptor.receiveGas(new GasStack((Gas) NetworkConfigHandler.gasOxygen, oxygenToSend));
-//									}
-//								}
-//							}
-//						} TODO Re-implement when APIs are ready
+						// else if (NetworkConfigHandler.isMekanismV6Loaded() &&
+						// tileEntity instanceof IGasHandler)
+						// {
+						// IGasHandler gasHandler = (IGasHandler) tileEntity;
+						//
+						// for (ForgeDirection direction :
+						// ForgeDirection.VALID_DIRECTIONS)
+						// {
+						// TileEntity tile = new
+						// Vector3(tileEntity).modifyPositionFromSide(direction).getTileEntity(tileEntity.worldObj);
+						//
+						// if (gasHandler.canReceiveGas(direction, (Gas)
+						// NetworkConfigHandler.gasOxygen) &&
+						// this.getTransmitters().contains(tile))
+						// {
+						// int oxygenToSend = (int) Math.floor(totalOxygen /
+						// this.oxygenTiles.size());
+						//
+						// if (oxygenToSend > 0)
+						// {
+						// remainingUsableOxygen -=
+						// gasHandler.receiveGas(direction, (new GasStack((Gas)
+						// NetworkConfigHandler.gasOxygen, oxygenToSend)));
+						// }
+						// }
+						// }
+						// }
+						// else if (NetworkConfigHandler.isMekanismLoaded() &&
+						// tileEntity instanceof IGasAcceptor)
+						// {
+						// IGasAcceptor gasAcceptor = (IGasAcceptor) tileEntity;
+						//
+						// for (ForgeDirection direction :
+						// ForgeDirection.VALID_DIRECTIONS)
+						// {
+						// TileEntity tile = new
+						// Vector3(tileEntity).modifyPositionFromSide(direction).getTileEntity(tileEntity.worldObj);
+						//
+						// if (gasAcceptor.canReceiveGas(direction, (Gas)
+						// NetworkConfigHandler.gasOxygen) &&
+						// this.getTransmitters().contains(tile))
+						// {
+						// int oxygenToSend = (int) Math.floor(totalOxygen /
+						// this.oxygenTiles.size());
+						//
+						// if (oxygenToSend > 0)
+						// {
+						// remainingUsableOxygen -= gasAcceptor.receiveGas(new
+						// GasStack((Gas) NetworkConfigHandler.gasOxygen,
+						// oxygenToSend));
+						// }
+						// }
+						// }
+						// } TODO Re-implement when APIs are ready
 					}
 				}
 			}
@@ -209,7 +224,7 @@ public class OxygenNetwork implements IOxygenNetwork
 				}
 
 				transmitter.onNetworkChanged();
-				
+
 				if (((TileEntity) transmitter).isInvalid())
 				{
 					it.remove();

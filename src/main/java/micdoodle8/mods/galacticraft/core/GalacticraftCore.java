@@ -24,29 +24,29 @@ import micdoodle8.mods.galacticraft.core.client.gui.GuiHandler;
 import micdoodle8.mods.galacticraft.core.command.CommandPlanetTeleport;
 import micdoodle8.mods.galacticraft.core.command.CommandSpaceStationAddOwner;
 import micdoodle8.mods.galacticraft.core.command.CommandSpaceStationRemoveOwner;
-import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.entities.EntityAlienVillager;
 import micdoodle8.mods.galacticraft.core.entities.EntityArrowGC;
+import micdoodle8.mods.galacticraft.core.entities.EntityBubble;
 import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedCreeper;
+import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSkeleton;
+import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider;
+import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
 import micdoodle8.mods.galacticraft.core.entities.EntityFlag;
 import micdoodle8.mods.galacticraft.core.entities.EntityLander;
 import micdoodle8.mods.galacticraft.core.entities.EntityMeteor;
 import micdoodle8.mods.galacticraft.core.entities.EntityMeteorChunk;
-import micdoodle8.mods.galacticraft.core.entities.EntityBubble;
 import micdoodle8.mods.galacticraft.core.entities.EntityParachest;
-import micdoodle8.mods.galacticraft.core.entities.EntityTier1Rocket;
-import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSkeleton;
 import micdoodle8.mods.galacticraft.core.entities.EntitySkeletonBoss;
-import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider;
-import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.EntityTier1Rocket;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.event.GCEvents;
+import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemBasic;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockGC;
-import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.network.PacketPipeline;
 import micdoodle8.mods.galacticraft.core.proxy.CommonProxy;
 import micdoodle8.mods.galacticraft.core.recipe.RecipeManager;
@@ -110,7 +110,6 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -124,7 +123,7 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid = GalacticraftCore.MOD_ID, name = GalacticraftCore.MOD_NAME, dependencies = "required-after:Forge@[7.0,);required-after:FML@[5.0.5,)")
-public class GalacticraftCore 
+public class GalacticraftCore
 {
 	public static final String MOD_ID = "GalacticraftCore";
 	public static final String MOD_NAME = "Galacticraft Core";
@@ -133,26 +132,26 @@ public class GalacticraftCore
 	public static final String CONFIG_FILE = "Galacticraft/core.conf";
 	public static final String POWER_CONFIG_FILE = "Galacticraft/power.conf";
 	public static final String CHUNKLOADER_CONFIG_FILE = "Galacticraft/chunkloading.conf";
-	
-    @SidedProxy(clientSide = "micdoodle8.mods.galacticraft.core.proxy.ClientProxy", serverSide = "micdoodle8.mods.galacticraft.core.proxy.CommonProxy")
+
+	@SidedProxy(clientSide = "micdoodle8.mods.galacticraft.core.proxy.ClientProxy", serverSide = "micdoodle8.mods.galacticraft.core.proxy.CommonProxy")
 	public static CommonProxy proxy;
-    @Instance(GalacticraftCore.MOD_ID)
-    public static GalacticraftCore instance;
-    public static PacketPipeline packetPipeline;
-    
+	@Instance(GalacticraftCore.MOD_ID)
+	public static GalacticraftCore instance;
+	public static PacketPipeline packetPipeline;
+
 	public static Map<String, GCEntityClientPlayerMP> playersClient = new HashMap<String, GCEntityClientPlayerMP>();
 	public static Map<String, GCEntityPlayerMP> playersServer = new HashMap<String, GCEntityPlayerMP>();
 
 	public static HashMap<String, ItemStack> itemList = new HashMap<String, ItemStack>();
 	public static HashMap<String, ItemStack> blocksList = new HashMap<String, ItemStack>();
-	
+
 	public static CreativeTabs galacticraftTab;
-	
+
 	public static Fluid gcFluidOil;
 	public static Fluid gcFluidFuel;
 	public static Fluid fluidOil;
 	public static Fluid fluidFuel;
-	
+
 	public static Galaxy galaxyBlockyWay;
 	public static Planet planetOverworld;
 	public static Planet planetMars;
@@ -161,13 +160,13 @@ public class GalacticraftCore
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		proxy.preInit(event);
+		GalacticraftCore.proxy.preInit(event);
 		MinecraftForge.EVENT_BUS.register(new GCEvents());
-		
+
 		GCConfigManager.setDefaultValues(new File(event.getModConfigurationDirectory(), GalacticraftCore.CONFIG_FILE));
 		NetworkConfigHandler.setDefaultValues(new File(event.getModConfigurationDirectory(), GalacticraftCore.POWER_CONFIG_FILE));
 		ChunkLoadingCallback.loadConfig(new File(event.getModConfigurationDirectory(), GalacticraftCore.CHUNKLOADER_CONFIG_FILE));
-		
+
 		GalacticraftCore.galaxyBlockyWay = new Galaxy("blockyWay").setMapPosition(new Vector3(0.0F, 0.0F));
 		GalacticraftCore.planetOverworld = (Planet) new Planet("overworld").setParentGalaxy(GalacticraftCore.galaxyBlockyWay).setRingColorRGB(0.1F, 0.9F, 0.6F).setPhaseShift(0.75F);
 		GalacticraftCore.planetOverworld.setPlanetIcon(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/planets/overworld.png"));
@@ -177,7 +176,7 @@ public class GalacticraftCore
 		GalaxyRegistry.registerGalaxy(GalacticraftCore.galaxyBlockyWay);
 		GalaxyRegistry.registerPlanet(GalacticraftCore.planetOverworld);
 		GalaxyRegistry.registerMoon(GalacticraftCore.moonMoon);
-		
+
 		GalacticraftCore.gcFluidOil = new Fluid("oil").setDensity(800).setViscosity(1500);
 		GalacticraftCore.gcFluidFuel = new Fluid("fuel").setDensity(200).setViscosity(900);
 		FluidRegistry.registerFluid(GalacticraftCore.gcFluidOil);
@@ -210,28 +209,28 @@ public class GalacticraftCore
 		{
 			GCBlocks.fuelStill = GalacticraftCore.fluidFuel.getBlock();
 		}
-		
+
 		GCBlocks.initBlocks();
 		GCItems.initItems();
 	}
-	
+
 	@EventHandler
 	public void init(FMLInitializationEvent event)
 	{
-		proxy.init(event);
-		GalacticraftCore.galacticraftTab = new GCCreativeTab(CreativeTabs.getNextID(), MOD_NAME, GCBlocks.airLockFrame, 0);
+		GalacticraftCore.proxy.init(event);
+		GalacticraftCore.galacticraftTab = new GCCreativeTab(CreativeTabs.getNextID(), GalacticraftCore.MOD_NAME, GCBlocks.airLockFrame, 0);
 		DimensionManager.registerProviderType(GCConfigManager.idDimensionOverworldOrbit, WorldProviderSpaceStation.class, false);
-		
-		this.packetPipeline = new PacketPipeline();
-		this.packetPipeline.initalise();
-		this.packetPipeline.postInitialise();
+
+		GalacticraftCore.packetPipeline = new PacketPipeline();
+		GalacticraftCore.packetPipeline.initalise();
+		GalacticraftCore.packetPipeline.postInitialise();
 
 		ForgeChunkManager.setForcedChunkLoadingCallback(GalacticraftCore.instance, new ChunkLoadingCallback());
-		
+
 		FMLCommonHandler.instance().bus().register(new TickHandlerServer());
-		
-		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
-		
+
+		NetworkRegistry.INSTANCE.registerGuiHandler(GalacticraftCore.instance, new GuiHandler());
+
 		for (int i = GCItems.fuelCanister.getMaxDamage() - 1; i > 0; i--)
 		{
 			FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(GalacticraftCore.fluidFuel, GCItems.fuelCanister.getMaxDamage() - i), new ItemStack(GCItems.fuelCanister, 1, i), new ItemStack(GCItems.oilCanister, 1, GCItems.fuelCanister.getMaxDamage())));
@@ -255,7 +254,7 @@ public class GalacticraftCore
 		GalacticraftRegistry.registerRocketGui(WorldProviderMoon.class, new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/moonRocketGui.png"));
 		GalacticraftRegistry.addDungeonLoot(1, new ItemStack(GCItems.schematic, 1, 0));
 		GalacticraftRegistry.addDungeonLoot(1, new ItemStack(GCItems.schematic, 1, 1));
-		
+
 		if (GCConfigManager.enableCopperOreGen)
 		{
 			GameRegistry.registerWorldGenerator(new WorldGenOverworld(GCBlocks.basicBlock, 5, 24, 0, 75, 7), 5);
@@ -276,12 +275,12 @@ public class GalacticraftCore
 			GameRegistry.registerWorldGenerator(new WorldGenOverworld(GCBlocks.basicBlock, 8, 3, 0, 25, 7), 5);
 		}
 	}
-	
+
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event)
 	{
-		proxy.postInit(event);
-		
+		GalacticraftCore.proxy.postInit(event);
+
 		ArrayList<CelestialBody> cBodyList = new ArrayList<CelestialBody>();
 		cBodyList.addAll(GalaxyRegistry.getRegisteredPlanets().values());
 		cBodyList.addAll(GalaxyRegistry.getRegisteredMoons().values());
@@ -308,7 +307,7 @@ public class GalacticraftCore
 				}
 			}
 		}
-		
+
 		// Support for the other spelling of Aluminum
 		if (OreDictionary.getOres("ingotAluminium").size() > 0 || OreDictionary.getOres("ingotNaturalAluminum").size() > 0)
 		{
@@ -361,7 +360,7 @@ public class GalacticraftCore
 		event.registerServerCommand(new CommandPlanetTeleport());
 
 		WorldUtil.registerSpaceStations(event.getServer().worldServerForDimension(0).getSaveHandler().getMapFileFromName("dummy").getParentFile());
-		
+
 		ArrayList<CelestialBody> cBodyList = new ArrayList<CelestialBody>();
 		cBodyList.addAll(GalaxyRegistry.getRegisteredPlanets().values());
 		cBodyList.addAll(GalaxyRegistry.getRegisteredMoons().values());

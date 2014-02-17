@@ -27,7 +27,8 @@ public class ContainerElectricIngotCompressor extends Container
 	public ContainerElectricIngotCompressor(InventoryPlayer par1InventoryPlayer, TileEntityElectricIngotCompressor tileEntity)
 	{
 		this.tileEntity = tileEntity;
-		tileEntity.compressingCraftMatrix.eventHandler = this; // Transform access
+		tileEntity.compressingCraftMatrix.eventHandler = this; // Transform
+																// access
 
 		for (int x = 0; x < 3; x++)
 		{

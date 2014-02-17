@@ -40,7 +40,7 @@ public class BlockBreathableAir extends BlockAir
 	}
 
 	@Override
-    public boolean isAir(IBlockAccess world, int x, int y, int z)
+	public boolean isAir(IBlockAccess world, int x, int y, int z)
 	{
 		return true;
 	}

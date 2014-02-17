@@ -87,11 +87,11 @@ public class TickHandlerClient
 	public static Set<Vector3> valuableBlocks = new HashSet<Vector3>();
 	private static Set<BlockMetaList> detectableBlocks = new HashSet<BlockMetaList>();
 	public static boolean lastSpacebarDown;
-	
+
 	public static Set<PlayerGearData> playerItemData = Sets.newHashSet();
 
 	private static ThreadRequirementMissing missingRequirementThread;
-	
+
 	public TickHandlerClient()
 	{
 		FMLLog.info("NEW TICK HANDLER INSTANCE");
@@ -99,48 +99,53 @@ public class TickHandlerClient
 
 	static
 	{
-//		for (final String s : GCCoreConfigManager.detectableIDs)
-//		{
-//			final String[] split = s.split(":");
-//			Block block = Block.getBlockById(Integer.parseInt(split[0]));
-//			List<Integer> metaList = Lists.newArrayList();
-//			metaList.add(Integer.parseInt(split[1]));
-//
-//			for (BlockMetaList blockMetaList : detectableBlocks)
-//			{
-//				if (blockMetaList.getBlock() == block)
-//				{
-//					metaList.addAll(blockMetaList.getMetaList());
-//					break;
-//				}
-//			}
-//
-//			if (!metaList.contains(0))
-//			{
-//				metaList.add(0);
-//			}
-//
-//			detectableBlocks.add(new BlockMetaList(block, metaList));
-//		}
+		// for (final String s : GCCoreConfigManager.detectableIDs)
+		// {
+		// final String[] split = s.split(":");
+		// Block block = Block.getBlockById(Integer.parseInt(split[0]));
+		// List<Integer> metaList = Lists.newArrayList();
+		// metaList.add(Integer.parseInt(split[1]));
+		//
+		// for (BlockMetaList blockMetaList : detectableBlocks)
+		// {
+		// if (blockMetaList.getBlock() == block)
+		// {
+		// metaList.addAll(blockMetaList.getMetaList());
+		// break;
+		// }
+		// }
+		//
+		// if (!metaList.contains(0))
+		// {
+		// metaList.add(0);
+		// }
+		//
+		// detectableBlocks.add(new BlockMetaList(block, metaList));
+		// }
 	}
 
-    @SubscribeEvent
+	@SubscribeEvent
 	public void onRenderTick(RenderTickEvent event)
-    {
-//		if (player != null)
-//		{
-//			ClientProxyCore.playerPosX = player.prevPosX + (player.posX - player.prevPosX) * partialTickTime;
-//			ClientProxyCore.playerPosY = player.prevPosY + (player.posY - player.prevPosY) * partialTickTime;
-//			ClientProxyCore.playerPosZ = player.prevPosZ + (player.posZ - player.prevPosZ) * partialTickTime;
-//			ClientProxyCore.playerRotationYaw = player.prevRotationYaw + (player.rotationYaw - player.prevRotationYaw) * partialTickTime;
-//			ClientProxyCore.playerRotationPitch = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * partialTickTime;
-//		}
+	{
+		// if (player != null)
+		// {
+		// ClientProxyCore.playerPosX = player.prevPosX + (player.posX -
+		// player.prevPosX) * partialTickTime;
+		// ClientProxyCore.playerPosY = player.prevPosY + (player.posY -
+		// player.prevPosY) * partialTickTime;
+		// ClientProxyCore.playerPosZ = player.prevPosZ + (player.posZ -
+		// player.prevPosZ) * partialTickTime;
+		// ClientProxyCore.playerRotationYaw = player.prevRotationYaw +
+		// (player.rotationYaw - player.prevRotationYaw) * partialTickTime;
+		// ClientProxyCore.playerRotationPitch = player.prevRotationPitch +
+		// (player.rotationPitch - player.prevRotationPitch) * partialTickTime;
+		// }
 
 		Minecraft minecraft = Minecraft.getMinecraft();
 		EntityPlayer player = minecraft.thePlayer;
 		World world = minecraft.theWorld;
 		GCEntityClientPlayerMP playerBaseClient = (GCEntityClientPlayerMP) player;
-		
+
 		if (player != null && player.ridingEntity != null && player.ridingEntity instanceof EntityTier1Rocket)
 		{
 			float f = (((EntityTier1Rocket) player.ridingEntity).timeSinceLaunch - 250F) / 175F;
@@ -216,13 +221,13 @@ public class TickHandlerClient
 		}
 	}
 
-    @SubscribeEvent
+	@SubscribeEvent
 	public void onClientTick(ClientTickEvent event)
 	{
 		Minecraft minecraft = Minecraft.getMinecraft();
 		EntityPlayer player = minecraft.thePlayer;
 		World world = minecraft.theWorld;
-		
+
 		if (event.phase == TickEvent.Phase.START)
 		{
 			if (TickHandlerClient.tickCount >= Long.MAX_VALUE)
@@ -231,12 +236,12 @@ public class TickHandlerClient
 			}
 
 			TickHandlerClient.tickCount++;
-			
+
 			if (TickHandlerClient.tickCount % 20 == 0)
 			{
 				if (player != null && player.inventory.armorItemInSlot(3) != null && player.inventory.armorItemInSlot(3).getItem() instanceof ItemSensorGlasses)
 				{
-					valuableBlocks.clear();
+					TickHandlerClient.valuableBlocks.clear();
 
 					for (int i = -4; i < 5; i++)
 					{
@@ -255,7 +260,7 @@ public class TickHandlerClient
 									int metadata = world.getBlockMetadata(x, y, z);
 									boolean isDetectable = false;
 
-									for (BlockMetaList blockMetaList : detectableBlocks)
+									for (BlockMetaList blockMetaList : TickHandlerClient.detectableBlocks)
 									{
 										if (blockMetaList.getBlock() == block && blockMetaList.getMetaList().contains(metadata))
 										{
@@ -268,20 +273,20 @@ public class TickHandlerClient
 									{
 										if (!this.alreadyContainsBlock(x, y, z))
 										{
-											valuableBlocks.add(new Vector3(x, y, z));
+											TickHandlerClient.valuableBlocks.add(new Vector3(x, y, z));
 										}
 									}
 									else if (block instanceof IDetectableResource && ((IDetectableResource) block).isValueable(metadata))
 									{
 										if (!this.alreadyContainsBlock(x, y, z))
 										{
-											valuableBlocks.add(new Vector3(x, y, z));
+											TickHandlerClient.valuableBlocks.add(new Vector3(x, y, z));
 										}
 
 										List<Integer> metaList = Lists.newArrayList();
 										metaList.add(metadata);
 
-										for (BlockMetaList blockMetaList : detectableBlocks)
+										for (BlockMetaList blockMetaList : TickHandlerClient.detectableBlocks)
 										{
 											if (blockMetaList.getBlock() == block)
 											{
@@ -290,7 +295,7 @@ public class TickHandlerClient
 											}
 										}
 
-										detectableBlocks.add(new BlockMetaList(block, metaList));
+										TickHandlerClient.detectableBlocks.add(new BlockMetaList(block, metaList));
 									}
 								}
 							}
@@ -303,7 +308,7 @@ public class TickHandlerClient
 			{
 				GalacticraftCore.playersServer.clear();
 				GalacticraftCore.playersClient.clear();
-				playerItemData.clear();
+				TickHandlerClient.playerItemData.clear();
 
 				if (TickHandlerClient.missingRequirementThread == null)
 				{
@@ -321,10 +326,13 @@ public class TickHandlerClient
 			if (player != null && player.ridingEntity != null && player.ridingEntity instanceof EntitySpaceshipBase)
 			{
 				GalacticraftCore.packetPipeline.sendToServer(new PacketRotateRocket(player.ridingEntity));
-//				final Object[] toSend = { player.ridingEntity.rotationPitch };
-//				PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.UPDATE_SHIP_PITCH, toSend));
-//				final Object[] toSend2 = { player.ridingEntity.rotationYaw };
-//				PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.UPDATE_SHIP_YAW, toSend2));
+				// final Object[] toSend = { player.ridingEntity.rotationPitch
+				// };
+				// PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL,
+				// EnumPacketServer.UPDATE_SHIP_PITCH, toSend));
+				// final Object[] toSend2 = { player.ridingEntity.rotationYaw };
+				// PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL,
+				// EnumPacketServer.UPDATE_SHIP_YAW, toSend2));
 			}
 
 			if (world != null && world.provider instanceof WorldProviderSurface)
@@ -356,21 +364,23 @@ public class TickHandlerClient
 			{
 				final EntitySpaceshipBase ship = (EntitySpaceshipBase) player.ridingEntity;
 				boolean hasChanged = false;
-				
+
 				if (minecraft.gameSettings.keyBindLeft.isPressed())
 				{
 					ship.turnYaw(-1.0F);
 					hasChanged = true;
-//					final Object[] toSend = { ship.rotationYaw };
-//					PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.UPDATE_SHIP_YAW, toSend)); 
+					// final Object[] toSend = { ship.rotationYaw };
+					// PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL,
+					// EnumPacketServer.UPDATE_SHIP_YAW, toSend));
 				}
 
 				if (minecraft.gameSettings.keyBindRight.isPressed())
 				{
 					ship.turnYaw(1.0F);
 					hasChanged = true;
-//					final Object[] toSend = { ship.rotationYaw };
-//					PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.UPDATE_SHIP_YAW, toSend));
+					// final Object[] toSend = { ship.rotationYaw };
+					// PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL,
+					// EnumPacketServer.UPDATE_SHIP_YAW, toSend));
 				}
 
 				if (minecraft.gameSettings.keyBindForward.isPressed())
@@ -379,8 +389,9 @@ public class TickHandlerClient
 					{
 						ship.turnPitch(-0.7F);
 						hasChanged = true;
-//						final Object[] toSend = { ship.rotationPitch };
-//						PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.UPDATE_SHIP_PITCH, toSend));
+						// final Object[] toSend = { ship.rotationPitch };
+						// PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL,
+						// EnumPacketServer.UPDATE_SHIP_PITCH, toSend));
 					}
 				}
 
@@ -390,11 +401,12 @@ public class TickHandlerClient
 					{
 						ship.turnPitch(0.7F);
 						hasChanged = true;
-//						final Object[] toSend = { ship.rotationPitch };
-//						PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketServer.UPDATE_SHIP_PITCH, toSend));
+						// final Object[] toSend = { ship.rotationPitch };
+						// PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL,
+						// EnumPacketServer.UPDATE_SHIP_PITCH, toSend));
 					}
 				}
-				
+
 				if (hasChanged)
 				{
 					GalacticraftCore.packetPipeline.sendToServer(new PacketRotateRocket(ship));
@@ -416,7 +428,10 @@ public class TickHandlerClient
 							if (eship.rocketSoundUpdater == null)
 							{
 								// TODO Fix Rocket sound updater
-//								eship.rocketSoundUpdater = new GCCoreSoundUpdaterSpaceship(FMLClientHandler.instance().getClient().sndManager, eship, FMLClientHandler.instance().getClient().thePlayer);
+								// eship.rocketSoundUpdater = new
+								// GCCoreSoundUpdaterSpaceship(FMLClientHandler.instance().getClient().sndManager,
+								// eship,
+								// FMLClientHandler.instance().getClient().thePlayer);
 							}
 						}
 					}
@@ -435,16 +450,16 @@ public class TickHandlerClient
 
 			if (!minecraft.gameSettings.keyBindJump.isPressed())
 			{
-				lastSpacebarDown = false;
+				TickHandlerClient.lastSpacebarDown = false;
 			}
 
-			if (player != null && player.ridingEntity != null && minecraft.gameSettings.keyBindJump.isPressed() && !lastSpacebarDown)
+			if (player != null && player.ridingEntity != null && minecraft.gameSettings.keyBindJump.isPressed() && !TickHandlerClient.lastSpacebarDown)
 			{
 				GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_IGNITE_ROCKET, new Object[] { 0 }));
-				lastSpacebarDown = true;
+				TickHandlerClient.lastSpacebarDown = true;
 			}
 		}
-		
+
 		if (event.phase == TickEvent.Phase.END)
 		{
 			boolean invKeyPressed = Keyboard.isKeyDown(minecraft.gameSettings.keyBindInventory.getKeyCode());
@@ -457,7 +472,7 @@ public class TickHandlerClient
 			TickHandlerClient.lastInvKeyPressed = invKeyPressed;
 		}
 	}
-    
+
 	@SubscribeEvent
 	public void entityJoined(EntityJoinWorldEvent event)
 	{
@@ -465,7 +480,7 @@ public class TickHandlerClient
 
 	private boolean alreadyContainsBlock(int x1, int y1, int z1)
 	{
-		return valuableBlocks.contains(new Vector3(x1, y1, z1));
+		return TickHandlerClient.valuableBlocks.contains(new Vector3(x1, y1, z1));
 	}
 
 	public static void zoom(float value)
@@ -475,7 +490,12 @@ public class TickHandlerClient
 			Class<?> clazz = FMLClientHandler.instance().getClient().entityRenderer.getClass();
 			java.lang.reflect.Field f = clazz.getDeclaredField("thirdPersonDistance");
 			f.setAccessible(true);
-			f.set(FMLClientHandler.instance().getClient().entityRenderer, value); // TODO Fix zoom for non-dev env
+			f.set(FMLClientHandler.instance().getClient().entityRenderer, value); // TODO
+																					// Fix
+																					// zoom
+																					// for
+																					// non-dev
+																					// env
 		}
 		catch (final Exception ex)
 		{

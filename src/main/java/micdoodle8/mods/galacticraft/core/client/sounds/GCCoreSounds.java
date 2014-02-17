@@ -17,16 +17,19 @@ public class GCCoreSounds
 	@SubscribeEvent
 	public void onMusicSound(PlayBackgroundMusicEvent event)
 	{
-//		final Minecraft mc = FMLClientHandler.instance().getClient();
-//
-//		if (mc.thePlayer != null && mc.thePlayer.worldObj != null && mc.thePlayer.worldObj.provider instanceof IGalacticraftWorldProvider)
-//		{
-//			final int randInt = FMLClientHandler.instance().getClient().thePlayer.worldObj.rand.nextInt(ClientProxyCore.newMusic.size() + 2);
-//
-//			if (randInt < ClientProxyCore.newMusic.size())
-//			{
-//				event.result = ClientProxyCore.newMusic.get(randInt);
-//			}
-//		} TODO Fix Music
+		// final Minecraft mc = FMLClientHandler.instance().getClient();
+		//
+		// if (mc.thePlayer != null && mc.thePlayer.worldObj != null &&
+		// mc.thePlayer.worldObj.provider instanceof IGalacticraftWorldProvider)
+		// {
+		// final int randInt =
+		// FMLClientHandler.instance().getClient().thePlayer.worldObj.rand.nextInt(ClientProxyCore.newMusic.size()
+		// + 2);
+		//
+		// if (randInt < ClientProxyCore.newMusic.size())
+		// {
+		// event.result = ClientProxyCore.newMusic.get(randInt);
+		// }
+		// } TODO Fix Music
 	}
 }

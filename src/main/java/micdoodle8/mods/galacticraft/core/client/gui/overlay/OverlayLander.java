@@ -16,9 +16,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * GCCoreOverlayLander.java
- *
+ * 
  * This file is part of the Galacticraft project
- *
+ * 
  * @author micdoodle8
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
@@ -26,41 +26,41 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class OverlayLander extends Overlay
 {
-    private static Minecraft minecraft = FMLClientHandler.instance().getClient();
+	private static Minecraft minecraft = FMLClientHandler.instance().getClient();
 
-    private static long screenTicks;
+	private static long screenTicks;
 
-    /**
-     * Render the GUI when player is in inventory
-     */
-    public static void renderLanderOverlay()
-    {
-        OverlayLander.screenTicks++;
-        final ScaledResolution scaledresolution = new ScaledResolution(OverlayLander.minecraft.gameSettings, OverlayLander.minecraft.displayWidth, OverlayLander.minecraft.displayHeight);
-        final int width = scaledresolution.getScaledWidth();
-        final int height = scaledresolution.getScaledHeight();
-        OverlayLander.minecraft.entityRenderer.setupOverlayRendering();
+	/**
+	 * Render the GUI when player is in inventory
+	 */
+	public static void renderLanderOverlay()
+	{
+		OverlayLander.screenTicks++;
+		final ScaledResolution scaledresolution = new ScaledResolution(OverlayLander.minecraft.gameSettings, OverlayLander.minecraft.displayWidth, OverlayLander.minecraft.displayHeight);
+		final int width = scaledresolution.getScaledWidth();
+		final int height = scaledresolution.getScaledHeight();
+		OverlayLander.minecraft.entityRenderer.setupOverlayRendering();
 
-        GL11.glPushMatrix();
+		GL11.glPushMatrix();
 
-        GL11.glScalef(2.0F, 2.0F, 0.0F);
+		GL11.glScalef(2.0F, 2.0F, 0.0F);
 
-        if (OverlayLander.minecraft.thePlayer.ridingEntity.motionY < -2.0)
-        {
-            OverlayLander.minecraft.fontRenderer.drawString(StatCollector.translateToLocal("gui.warning"), width / 4 - OverlayLander.minecraft.fontRenderer.getStringWidth(StatCollector.translateToLocal("gui.warning")) / 2, height / 8 - 20, CoreUtil.to32BitColor(255, 255, 0, 0));
-            final int alpha = (int) (255 * Math.sin(OverlayLander.screenTicks / 20.0F));
-            final String press1 = StatCollector.translateToLocal("gui.lander.warning2");
-            final String press2 = StatCollector.translateToLocal("gui.lander.warning3");
-            OverlayLander.minecraft.fontRenderer.drawString(press1 + Keyboard.getKeyName(KeyHandlerGC.spaceKey.getKeyCode()) + press2, width / 4 - OverlayLander.minecraft.fontRenderer.getStringWidth(press1 + Keyboard.getKeyName(KeyHandlerGC.spaceKey.getKeyCode()) + press2) / 2, height / 8, CoreUtil.to32BitColor(alpha, alpha, alpha, alpha));
-        }
+		if (OverlayLander.minecraft.thePlayer.ridingEntity.motionY < -2.0)
+		{
+			OverlayLander.minecraft.fontRenderer.drawString(StatCollector.translateToLocal("gui.warning"), width / 4 - OverlayLander.minecraft.fontRenderer.getStringWidth(StatCollector.translateToLocal("gui.warning")) / 2, height / 8 - 20, CoreUtil.to32BitColor(255, 255, 0, 0));
+			final int alpha = (int) (255 * Math.sin(OverlayLander.screenTicks / 20.0F));
+			final String press1 = StatCollector.translateToLocal("gui.lander.warning2");
+			final String press2 = StatCollector.translateToLocal("gui.lander.warning3");
+			OverlayLander.minecraft.fontRenderer.drawString(press1 + Keyboard.getKeyName(KeyHandlerGC.spaceKey.getKeyCode()) + press2, width / 4 - OverlayLander.minecraft.fontRenderer.getStringWidth(press1 + Keyboard.getKeyName(KeyHandlerGC.spaceKey.getKeyCode()) + press2) / 2, height / 8, CoreUtil.to32BitColor(alpha, alpha, alpha, alpha));
+		}
 
-        GL11.glPopMatrix();
+		GL11.glPopMatrix();
 
-        if (OverlayLander.minecraft.thePlayer.ridingEntity.motionY != 0.0D)
-        {
-            String string = StatCollector.translateToLocal("gui.lander.velocity") + ": " + Math.round(((EntityLander) OverlayLander.minecraft.thePlayer.ridingEntity).motionY * 1000) / 100.0D + " " + StatCollector.translateToLocal("gui.lander.velocityu");
-            int color = CoreUtil.to32BitColor(255, (int) Math.floor(Math.abs(OverlayLander.minecraft.thePlayer.ridingEntity.motionY) * 51.0D), 255 - (int) Math.floor(Math.abs(OverlayLander.minecraft.thePlayer.ridingEntity.motionY) * 51.0D), 0);
-            OverlayLander.minecraft.fontRenderer.drawString(string, width / 2 - OverlayLander.minecraft.fontRenderer.getStringWidth(string) / 2, height / 3, color);
-        }
-    }
+		if (OverlayLander.minecraft.thePlayer.ridingEntity.motionY != 0.0D)
+		{
+			String string = StatCollector.translateToLocal("gui.lander.velocity") + ": " + Math.round(((EntityLander) OverlayLander.minecraft.thePlayer.ridingEntity).motionY * 1000) / 100.0D + " " + StatCollector.translateToLocal("gui.lander.velocityu");
+			int color = CoreUtil.to32BitColor(255, (int) Math.floor(Math.abs(OverlayLander.minecraft.thePlayer.ridingEntity.motionY) * 51.0D), 255 - (int) Math.floor(Math.abs(OverlayLander.minecraft.thePlayer.ridingEntity.motionY) * 51.0D), 0);
+			OverlayLander.minecraft.fontRenderer.drawString(string, width / 2 - OverlayLander.minecraft.fontRenderer.getStringWidth(string) / 2, height / 3, color);
+		}
+	}
 }

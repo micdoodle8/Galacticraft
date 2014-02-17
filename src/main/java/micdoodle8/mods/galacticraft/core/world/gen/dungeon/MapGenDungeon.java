@@ -79,8 +79,7 @@ public class MapGenDungeon
 
 		for (int i = 0; i <= length; i++)
 		{
-			tryLoop:
-			for (int j = 0; j < 8; j++)
+			tryLoop: for (int j = 0; j < 8; j++)
 			{
 				int offsetX = 0;
 				int offsetZ = 0;
@@ -323,8 +322,7 @@ public class MapGenDungeon
 		{
 			for (int k = corridor.minZ - 1; k <= corridor.maxZ + 1; k++)
 			{
-				loopj:
-				for (int j = y - 1; j <= y + this.HALLWAY_HEIGHT; j++)
+				loopj: for (int j = y - 1; j <= y + this.HALLWAY_HEIGHT; j++)
 				{
 					boolean flag = false;
 					int flag2 = -1;
@@ -412,7 +410,8 @@ public class MapGenDungeon
 						if (flag2 != -1)
 						{
 							this.placeBlock(blocks, metas, i, j, k, cx, cz, GCBlocks.unlitTorch, 0);
-//							this.worldObj.scheduleBlockUpdateFromLoad(i, j, k, GCCoreBlocks.unlitTorch, 40, 0);
+							// this.worldObj.scheduleBlockUpdateFromLoad(i, j,
+							// k, GCCoreBlocks.unlitTorch, 40, 0);
 							this.worldObj.scheduleBlockUpdateWithPriority(i, j, k, GCBlocks.unlitTorch, 40, 0);
 						}
 						else

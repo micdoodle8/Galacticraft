@@ -327,21 +327,21 @@ public class TileEntityAirLockController extends TileEntityAirLock
 		this.horizontalModeEnabled = nbt.getBoolean("HorizontalModeEnabled");
 	}
 
-    @Override
-    public void writeToNBT(NBTTagCompound nbt)
-    {
-        super.writeToNBT(nbt);
-        nbt.setString("OwnerName", this.ownerName);
-        nbt.setBoolean("RedstoneActivation", this.redstoneActivation);
-        nbt.setBoolean("PlayerDistanceActivation", this.playerDistanceActivation);
-        nbt.setInteger("PlayerDistanceSelection", this.playerDistanceSelection);
-        nbt.setBoolean("PlayerNameMatches", this.playerNameMatches);
-        nbt.setString("PlayerToOpenFor", this.playerToOpenFor);
-        nbt.setBoolean("InvertSelection", this.invertSelection);
-        nbt.setBoolean("active", this.active);
-        nbt.setBoolean("lastActive", this.lastActive);
-        nbt.setBoolean("HorizontalModeEnabled", this.horizontalModeEnabled);
-    }
+	@Override
+	public void writeToNBT(NBTTagCompound nbt)
+	{
+		super.writeToNBT(nbt);
+		nbt.setString("OwnerName", this.ownerName);
+		nbt.setBoolean("RedstoneActivation", this.redstoneActivation);
+		nbt.setBoolean("PlayerDistanceActivation", this.playerDistanceActivation);
+		nbt.setInteger("PlayerDistanceSelection", this.playerDistanceSelection);
+		nbt.setBoolean("PlayerNameMatches", this.playerNameMatches);
+		nbt.setString("PlayerToOpenFor", this.playerToOpenFor);
+		nbt.setBoolean("InvertSelection", this.invertSelection);
+		nbt.setBoolean("active", this.active);
+		nbt.setBoolean("lastActive", this.lastActive);
+		nbt.setBoolean("HorizontalModeEnabled", this.horizontalModeEnabled);
+	}
 
 	public String getOwnerName()
 	{

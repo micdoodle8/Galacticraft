@@ -108,7 +108,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 	{
 		if (this.riddenByEntity != null && this.riddenByEntity instanceof GCEntityPlayerMP)
 		{
-			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, new Object[] { 0 }), (EntityPlayerMP)this.riddenByEntity);
+			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, new Object[] { 0 }), (EntityPlayerMP) this.riddenByEntity);
 		}
 
 		super.setDead();
@@ -138,7 +138,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 				{
 					if (this.riddenByEntity != null)
 					{
-						GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, new Object[] { 0 }), (EntityPlayerMP)this.riddenByEntity);
+						GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, new Object[] { 0 }), (EntityPlayerMP) this.riddenByEntity);
 						this.riddenByEntity.mountEntity(this);
 					}
 
@@ -323,7 +323,9 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 		if (!this.worldObj.isRemote && this.ticks % 3 == 0)
 		{
 			GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), this.worldObj.provider.dimensionId);
-//			PacketDispatcher.sendPacketToAllInDimension(GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, this, this.getNetworkedData(new ArrayList())), this.worldObj.provider.dimensionId);
+			// PacketDispatcher.sendPacketToAllInDimension(GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES,
+			// this, this.getNetworkedData(new ArrayList())),
+			// this.worldObj.provider.dimensionId);
 		}
 	}
 
@@ -340,6 +342,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 		this.timeUntilLaunch = buffer.readInt();
 	}
 
+	@Override
 	public void getNetworkedData(ArrayList<Object> list)
 	{
 		list.add(this.launchPhase);

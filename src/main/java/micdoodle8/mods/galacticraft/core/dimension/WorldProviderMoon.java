@@ -265,7 +265,7 @@ public class WorldProviderMoon extends WorldProviderSpace implements IGalacticra
 	}
 
 	@Override
-	public CelestialBody getCelestialBody() 
+	public CelestialBody getCelestialBody()
 	{
 		return GalacticraftCore.moonMoon;
 	}

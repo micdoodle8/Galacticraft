@@ -209,4 +209,4 @@
 //	{
 //		return "/assets/galacticraftcore/textures/gui/electric_IngotCompressor.png";
 //	}
-//}
+// }

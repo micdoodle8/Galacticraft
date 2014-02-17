@@ -48,21 +48,9 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
 		IC2_GLASS_FIBRE_CABLE(5, 9, null, "enclosed_glassfibre_cable"),
 		IC2_LV_CABLE(6, 10, null, "enclosed_lv_cable"),
 		BC_ITEM_STONEPIPE(7, -1, "PipeItemsStone", "enclosed_itempipe_stone"),
-		BC_ITEM_COBBLESTONEPIPE(
-				8,
-				-1,
-				"PipeItemsCobblestone",
-				"enclosed_itempipe_cobblestone"),
-		BC_FLUIDS_STONEPIPE(
-				9,
-				-1,
-				"PipeFluidsStone",
-				"enclosed_liquidpipe_stone"),
-		BC_FLUIDS_COBBLESTONEPIPE(
-				10,
-				-1,
-				"PipeFluidsCobblestone",
-				"enclosed_liquidpipe_cobblestone"),
+		BC_ITEM_COBBLESTONEPIPE(8, -1, "PipeItemsCobblestone", "enclosed_itempipe_cobblestone"),
+		BC_FLUIDS_STONEPIPE(9, -1, "PipeFluidsStone", "enclosed_liquidpipe_stone"),
+		BC_FLUIDS_COBBLESTONEPIPE(10, -1, "PipeFluidsCobblestone", "enclosed_liquidpipe_cobblestone"),
 		BC_POWER_STONEPIPE(11, -1, "PipePowerStone", "enclosed_powerpipe_stone"),
 		BC_POWER_GOLDPIPE(12, -1, "PipePowerGold", "enclosed_powerpipe_gold"),
 		ME_CABLE(13, -1, null, "enclosed_me_cable"),
@@ -134,10 +122,11 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
 		par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.ALUMINUM_WIRE.getMetadata()));
 		par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.ALUMINUM_WIRE_HEAVY.getMetadata()));
 		par3List.add(new ItemStack(par1, 1, 1));
-		
+
 		if (CompatibilityManager.isTELoaded())
 		{
-//			par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.TE_CONDUIT.getMetadata()));
+			// par3List.add(new ItemStack(par1, 1,
+			// EnumEnclosedBlock.TE_CONDUIT.getMetadata()));
 		}
 
 		if (CompatibilityManager.isIc2Loaded())
@@ -207,7 +196,7 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
 
 		if (metadata == EnumEnclosedBlock.TE_CONDUIT.getMetadata())
 		{
-			
+
 		}
 		else if (metadata > 0 && metadata <= EnumEnclosedBlock.OXYGEN_PIPE.getMetadata())
 		{
@@ -272,7 +261,7 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
 
 		if (metadata == EnumEnclosedBlock.TE_CONDUIT.getMetadata())
 		{
-			
+
 		}
 		else if (metadata > 0 && metadata <= EnumEnclosedBlock.OXYGEN_PIPE.getMetadata())
 		{
@@ -376,7 +365,7 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
 	{
 		if (metadata == EnumEnclosedBlock.TE_CONDUIT.getMetadata())
 		{
-			
+
 		}
 		else if (metadata > 0 && metadata <= EnumEnclosedBlock.OXYGEN_PIPE.getMetadata())
 		{

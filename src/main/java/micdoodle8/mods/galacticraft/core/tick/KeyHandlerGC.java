@@ -40,39 +40,39 @@ public class KeyHandlerGC extends KeyHandler
 	public static KeyBinding rightKey;
 	public static KeyBinding spaceKey;
 	public static KeyBinding leftShiftKey;
-    private static KeyBinding invKey;
-    private static Minecraft mc;
+	private static KeyBinding invKey;
+	private static Minecraft mc;
 
 	public KeyHandlerGC()
 	{
-		super(new KeyBinding[] { KeyHandlerGC.galaxyMap, KeyHandlerGC.openFuelGui, KeyHandlerGC.toggleAdvGoggles }, new boolean[] { false, false, false }, getVanillaKeyBindings(), new boolean[] { false, true, true, true, true, true, true });
+		super(new KeyBinding[] { KeyHandlerGC.galaxyMap, KeyHandlerGC.openFuelGui, KeyHandlerGC.toggleAdvGoggles }, new boolean[] { false, false, false }, KeyHandlerGC.getVanillaKeyBindings(), new boolean[] { false, true, true, true, true, true, true });
 	}
 
-    private static KeyBinding[] getVanillaKeyBindings ()
-    {
-        mc = Minecraft.getMinecraft();
-        invKey = mc.gameSettings.keyBindInventory;
-        accelerateKey = mc.gameSettings.keyBindForward;
-        decelerateKey = mc.gameSettings.keyBindBack;
-        leftKey = mc.gameSettings.keyBindLeft;
-        rightKey = mc.gameSettings.keyBindRight;
-        spaceKey = mc.gameSettings.keyBindJump;
-        leftShiftKey = mc.gameSettings.keyBindSneak;
-        return new KeyBinding[] { invKey, accelerateKey, decelerateKey, leftKey, rightKey, spaceKey, leftShiftKey };
-    }
+	private static KeyBinding[] getVanillaKeyBindings()
+	{
+		KeyHandlerGC.mc = Minecraft.getMinecraft();
+		KeyHandlerGC.invKey = KeyHandlerGC.mc.gameSettings.keyBindInventory;
+		KeyHandlerGC.accelerateKey = KeyHandlerGC.mc.gameSettings.keyBindForward;
+		KeyHandlerGC.decelerateKey = KeyHandlerGC.mc.gameSettings.keyBindBack;
+		KeyHandlerGC.leftKey = KeyHandlerGC.mc.gameSettings.keyBindLeft;
+		KeyHandlerGC.rightKey = KeyHandlerGC.mc.gameSettings.keyBindRight;
+		KeyHandlerGC.spaceKey = KeyHandlerGC.mc.gameSettings.keyBindJump;
+		KeyHandlerGC.leftShiftKey = KeyHandlerGC.mc.gameSettings.keyBindSneak;
+		return new KeyBinding[] { KeyHandlerGC.invKey, KeyHandlerGC.accelerateKey, KeyHandlerGC.decelerateKey, KeyHandlerGC.leftKey, KeyHandlerGC.rightKey, KeyHandlerGC.spaceKey, KeyHandlerGC.leftShiftKey };
+	}
 
 	@Override
-	public void keyDown(Type types, KeyBinding kb, boolean tickEnd, boolean isRepeat) 
+	public void keyDown(Type types, KeyBinding kb, boolean tickEnd, boolean isRepeat)
 	{
-		if (mc.thePlayer != null && tickEnd)
+		if (KeyHandlerGC.mc.thePlayer != null && tickEnd)
 		{
-			GCEntityClientPlayerMP playerBase = PlayerUtil.getPlayerBaseClientFromPlayer(mc.thePlayer);
-			
+			GCEntityClientPlayerMP playerBase = PlayerUtil.getPlayerBaseClientFromPlayer(KeyHandlerGC.mc.thePlayer);
+
 			if (kb.getKeyCode() == KeyHandlerGC.galaxyMap.getKeyCode())
 			{
-				if (mc.currentScreen == null)
+				if (KeyHandlerGC.mc.currentScreen == null)
 				{
-					mc.thePlayer.openGui(GalacticraftCore.instance, GCConfigManager.idGuiGalaxyMap, mc.theWorld, (int) mc.thePlayer.posX, (int) mc.thePlayer.posY, (int) mc.thePlayer.posZ);
+					KeyHandlerGC.mc.thePlayer.openGui(GalacticraftCore.instance, GCConfigManager.idGuiGalaxyMap, KeyHandlerGC.mc.theWorld, (int) KeyHandlerGC.mc.thePlayer.posX, (int) KeyHandlerGC.mc.thePlayer.posY, (int) KeyHandlerGC.mc.thePlayer.posZ);
 				}
 			}
 			else if (kb.getKeyCode() == KeyHandlerGC.openFuelGui.getKeyCode())
@@ -91,9 +91,9 @@ public class KeyHandlerGC extends KeyHandler
 			}
 		}
 
-		Entity entityTest = this.mc.thePlayer.ridingEntity;
+		Entity entityTest = KeyHandlerGC.mc.thePlayer.ridingEntity;
 		int keyNum = -1;
-		
+
 		if (kb == KeyHandlerGC.accelerateKey)
 		{
 			keyNum = 0;
@@ -123,9 +123,9 @@ public class KeyHandlerGC extends KeyHandler
 		{
 			IControllableEntity entity = (IControllableEntity) entityTest;
 
-			if (kb.getKeyCode() == mc.gameSettings.keyBindInventory.getKeyCode())
+			if (kb.getKeyCode() == KeyHandlerGC.mc.gameSettings.keyBindInventory.getKeyCode())
 			{
-				KeyBinding.setKeyBindState(mc.gameSettings.keyBindInventory.getKeyCode(), false);
+				KeyBinding.setKeyBindState(KeyHandlerGC.mc.gameSettings.keyBindInventory.getKeyCode(), false);
 			}
 
 			entity.pressKey(keyNum);

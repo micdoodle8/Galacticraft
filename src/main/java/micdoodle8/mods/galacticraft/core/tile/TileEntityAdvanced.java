@@ -111,7 +111,7 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
 	{
 
 	}
-	
+
 	public void initiate()
 	{
 	}
@@ -198,6 +198,6 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
 	@Override
 	public void handlePacketData(Side side, EntityPlayer player)
 	{
-		
+
 	}
 }

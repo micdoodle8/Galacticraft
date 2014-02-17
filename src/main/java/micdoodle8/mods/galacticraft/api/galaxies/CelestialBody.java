@@ -8,50 +8,50 @@ import net.minecraft.util.StatCollector;
 
 public abstract class CelestialBody
 {
-    protected final String bodyName;
-    protected String unlocalizedName;
-    
-    protected float relativeSize = 1.0F;
-    protected float relativeDistanceFromCenter = 1.0F;
-    protected float relativeOrbitTime = 1.0F;
-    protected float phaseShift = 0.0F;
-    protected int dimensionID = 0;
-    protected Class<? extends WorldProviderSpace> providerClass;
-    protected boolean autoRegisterDimension = false;
-    protected boolean isReachable = false;
-    
-    protected ResourceLocation planetIcon;
+	protected final String bodyName;
+	protected String unlocalizedName;
 
-    protected float ringColorR = 1.0F;
-    protected float ringColorG = 1.0F;
-    protected float ringColorB = 1.0F;
-    
-    public CelestialBody(String bodyName)
-    {
-        this.bodyName = bodyName.toLowerCase(Locale.ENGLISH);
-        this.unlocalizedName = bodyName;
-    }
-    
-    public abstract int getID();
-    
-    protected abstract String getUnlocalizedNamePrefix();
-    
-    public String getName()
-    {
-    	return this.bodyName;
-    }
-    
-    public String getUnlocalizedName()
-    {
-        return this.getUnlocalizedNamePrefix() + "." + this.unlocalizedName;
-    }
-    
-    public String getLocalizedName()
-    {
-        String s = this.getUnlocalizedName();
-        return s == null ? "" : StatCollector.translateToLocal(s);
-    }
-    
+	protected float relativeSize = 1.0F;
+	protected float relativeDistanceFromCenter = 1.0F;
+	protected float relativeOrbitTime = 1.0F;
+	protected float phaseShift = 0.0F;
+	protected int dimensionID = 0;
+	protected Class<? extends WorldProviderSpace> providerClass;
+	protected boolean autoRegisterDimension = false;
+	protected boolean isReachable = false;
+
+	protected ResourceLocation planetIcon;
+
+	protected float ringColorR = 1.0F;
+	protected float ringColorG = 1.0F;
+	protected float ringColorB = 1.0F;
+
+	public CelestialBody(String bodyName)
+	{
+		this.bodyName = bodyName.toLowerCase(Locale.ENGLISH);
+		this.unlocalizedName = bodyName;
+	}
+
+	public abstract int getID();
+
+	protected abstract String getUnlocalizedNamePrefix();
+
+	public String getName()
+	{
+		return this.bodyName;
+	}
+
+	public String getUnlocalizedName()
+	{
+		return this.getUnlocalizedNamePrefix() + "." + this.unlocalizedName;
+	}
+
+	public String getLocalizedName()
+	{
+		String s = this.getUnlocalizedName();
+		return s == null ? "" : StatCollector.translateToLocal(s);
+	}
+
 	/**
 	 * Used for rendering planet's location on the map.
 	 * 
@@ -108,7 +108,7 @@ public abstract class CelestialBody
 	{
 		return this.relativeOrbitTime;
 	}
-    
+
 	public CelestialBody setRelativeSize(float relativeSize)
 	{
 		this.relativeSize = relativeSize;
@@ -132,12 +132,12 @@ public abstract class CelestialBody
 		this.relativeOrbitTime = relativeOrbitTime;
 		return this;
 	}
-	
+
 	public CelestialBody setDimensionInfo(int dimID, Class<? extends WorldProviderSpace> providerClass)
 	{
 		return this.setDimensionInfo(dimID, providerClass, true);
 	}
-	
+
 	public CelestialBody setDimensionInfo(int dimID, Class<? extends WorldProviderSpace> providerClass, boolean autoRegister)
 	{
 		this.dimensionID = dimID;
@@ -146,28 +146,28 @@ public abstract class CelestialBody
 		this.autoRegisterDimension = true;
 		return this;
 	}
-	
+
 	public boolean shouldAutoRegister()
 	{
-		return autoRegisterDimension;
+		return this.autoRegisterDimension;
 	}
-	
+
 	public int getDimensionID()
 	{
-		return dimensionID;
+		return this.dimensionID;
 	}
-	
+
 	public Class<? extends WorldProviderSpace> getWorldProvider()
 	{
-		return providerClass;
+		return this.providerClass;
 	}
-	
+
 	public boolean getReachable()
 	{
 		return this.isReachable;
 	}
 
-	public CelestialBody setRingColorRGB(float ringColorR, float ringColorG, float ringColorB) 
+	public CelestialBody setRingColorRGB(float ringColorR, float ringColorG, float ringColorB)
 	{
 		this.ringColorR = ringColorR;
 		this.ringColorG = ringColorG;
@@ -175,26 +175,26 @@ public abstract class CelestialBody
 		return this;
 	}
 
-	public float getRingColorR() 
+	public float getRingColorR()
 	{
-		return ringColorR;
+		return this.ringColorR;
 	}
 
 	public float getRingColorG()
 	{
-		return ringColorG;
+		return this.ringColorG;
 	}
 
-	public float getRingColorB() 
+	public float getRingColorB()
 	{
-		return ringColorB;
+		return this.ringColorB;
 	}
-	
+
 	public ResourceLocation getPlanetIcon()
 	{
 		return this.planetIcon;
 	}
-	
+
 	public CelestialBody setPlanetIcon(ResourceLocation planetIcon)
 	{
 		this.planetIcon = planetIcon;

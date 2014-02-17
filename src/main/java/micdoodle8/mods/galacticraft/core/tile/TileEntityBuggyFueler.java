@@ -118,7 +118,7 @@ public class TileEntityBuggyFueler extends TileEntityMulti implements IMultiBloc
 				{
 					FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + x, thisBlock.intY(), thisBlock.intZ() + z, GCBlocks.landingPad, Block.getIdFromBlock(GCBlocks.landingPad) >> 12 & 255);
 				}
-				
+
 				this.worldObj.setBlockToAir(thisBlock.intX() + x, thisBlock.intY(), thisBlock.intZ() + z);
 			}
 		}

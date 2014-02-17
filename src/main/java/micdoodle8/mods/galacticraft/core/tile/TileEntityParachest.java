@@ -89,7 +89,7 @@ public class TileEntityParachest extends TileEntityAdvanced implements IInventor
 			{
 				itemstack = this.chestContents[par1];
 				this.chestContents[par1] = null;
-                this.markDirty();
+				this.markDirty();
 				return itemstack;
 			}
 			else
@@ -101,7 +101,7 @@ public class TileEntityParachest extends TileEntityAdvanced implements IInventor
 					this.chestContents[par1] = null;
 				}
 
-                this.markDirty();
+				this.markDirty();
 				return itemstack;
 			}
 		}
@@ -136,7 +136,7 @@ public class TileEntityParachest extends TileEntityAdvanced implements IInventor
 			par2ItemStack.stackSize = this.getInventoryStackLimit();
 		}
 
-        this.markDirty();
+		this.markDirty();
 	}
 
 	@Override
@@ -155,7 +155,7 @@ public class TileEntityParachest extends TileEntityAdvanced implements IInventor
 
 		for (int i = 0; i < nbttaglist.tagCount(); ++i)
 		{
-			NBTTagCompound nbttagcompound1 = (NBTTagCompound) nbttaglist.getCompoundTagAt(i);
+			NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
 			int j = nbttagcompound1.getByte("Slot") & 255;
 
 			if (j >= 0 && j < this.chestContents.length)
@@ -205,13 +205,13 @@ public class TileEntityParachest extends TileEntityAdvanced implements IInventor
 	}
 
 	@Override
-	public boolean hasCustomInventoryName() 
+	public boolean hasCustomInventoryName()
 	{
 		return true;
 	}
 
 	@Override
-	public void openInventory() 
+	public void openInventory()
 	{
 		if (this.numUsingPlayers < 0)
 		{
@@ -225,7 +225,7 @@ public class TileEntityParachest extends TileEntityAdvanced implements IInventor
 	}
 
 	@Override
-	public void closeInventory() 
+	public void closeInventory()
 	{
 		if (this.getBlockType() != null && this.getBlockType() instanceof BlockParachest)
 		{

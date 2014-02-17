@@ -453,7 +453,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
 	public void decodePacketdata(ByteBuf buffer)
 	{
 		this.buggyType = buffer.readInt();
-		
+
 		try
 		{
 			this.buggyFuelTank = NetworkUtil.readFluidTank(buffer);
@@ -485,7 +485,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
 
 		for (int var3 = 0; var3 < var2.tagCount(); ++var3)
 		{
-			final NBTTagCompound var4 = (NBTTagCompound) var2.getCompoundTagAt(var3);
+			final NBTTagCompound var4 = var2.getCompoundTagAt(var3);
 			final int var5 = var4.getByte("Slot") & 255;
 
 			if (var5 >= 0 && var5 < this.cargoItems.length)
@@ -661,7 +661,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
 			GalacticraftCore.packetPipeline.sendToServer(new PacketControllableEntity(key));
 			return true;
 		}
-		
+
 		switch (key)
 		{
 		case 0: // Accelerate

@@ -125,7 +125,7 @@ public class InventoryExtended implements IInventory
 
 		for (int i = 0; i < par1NBTTagList.tagCount(); ++i)
 		{
-			final NBTTagCompound nbttagcompound = (NBTTagCompound) par1NBTTagList.getCompoundTagAt(i);
+			final NBTTagCompound nbttagcompound = par1NBTTagList.getCompoundTagAt(i);
 			final int j = nbttagcompound.getByte("Slot") & 255;
 			final ItemStack itemstack = ItemStack.loadItemStackFromNBT(nbttagcompound);
 
@@ -145,7 +145,7 @@ public class InventoryExtended implements IInventory
 
 		for (int i = 0; i < tagList.tagCount(); ++i)
 		{
-			final NBTTagCompound nbttagcompound = (NBTTagCompound) tagList.getCompoundTagAt(i);
+			final NBTTagCompound nbttagcompound = tagList.getCompoundTagAt(i);
 			final int j = nbttagcompound.getByte("Slot") & 255;
 			final ItemStack itemstack = ItemStack.loadItemStackFromNBT(nbttagcompound);
 
@@ -183,26 +183,26 @@ public class InventoryExtended implements IInventory
 	}
 
 	@Override
-	public boolean hasCustomInventoryName() 
+	public boolean hasCustomInventoryName()
 	{
 		return true;
 	}
 
 	@Override
-	public void markDirty() 
+	public void markDirty()
 	{
-		
+
 	}
 
 	@Override
-	public void openInventory() 
+	public void openInventory()
 	{
-		
+
 	}
 
 	@Override
-	public void closeInventory() 
+	public void closeInventory()
 	{
-		
+
 	}
 }

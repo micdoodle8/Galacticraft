@@ -17,9 +17,11 @@ public class PacketEntityUpdate implements IPacket
 	private float rotationPitch;
 	private Vector3 motion;
 	private boolean onGround;
-	
-	public PacketEntityUpdate() {}
-	
+
+	public PacketEntityUpdate()
+	{
+	}
+
 	public PacketEntityUpdate(int entityID, Vector3 position, Vector2 rotation, Vector3 motion, boolean onGround)
 	{
 		this.entityID = entityID;
@@ -29,7 +31,7 @@ public class PacketEntityUpdate implements IPacket
 		this.motion = motion;
 		this.onGround = onGround;
 	}
-	
+
 	public PacketEntityUpdate(Entity entity)
 	{
 		this(entity.getEntityId(), new Vector3(entity.posX, entity.posY, entity.posZ), new Vector2(entity.rotationYaw, entity.rotationPitch), new Vector3(entity.motionX, entity.motionY, entity.motionZ), entity.onGround);
@@ -72,11 +74,11 @@ public class PacketEntityUpdate implements IPacket
 	{
 		this.setEntityData(player.worldObj);
 	}
-	
+
 	private void setEntityData(World world)
 	{
 		Entity entity = world.getEntityByID(this.entityID);
-		
+
 		if (entity instanceof EntityBuggy)
 		{
 			EntityBuggy controllable = (EntityBuggy) entity;

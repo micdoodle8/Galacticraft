@@ -82,8 +82,7 @@ public class PacketPipeline extends MessageToMessageCodec<FMLProxyPacket, IPacke
 		Class<? extends IPacket> clazz = msg.getClass();
 		if (!this.packets.contains(msg.getClass()))
 		{
-			throw new NullPointerException("No Packet Registered for: "
-					+ msg.getClass().getCanonicalName());
+			throw new NullPointerException("No Packet Registered for: " + msg.getClass().getCanonicalName());
 		}
 
 		byte discriminator = (byte) this.packets.indexOf(clazz);
@@ -102,8 +101,7 @@ public class PacketPipeline extends MessageToMessageCodec<FMLProxyPacket, IPacke
 		Class<? extends IPacket> clazz = this.packets.get(discriminator);
 		if (clazz == null)
 		{
-			throw new NullPointerException("No packet registered for discriminator: "
-					+ discriminator);
+			throw new NullPointerException("No packet registered for discriminator: " + discriminator);
 		}
 
 		IPacket pkt = clazz.newInstance();

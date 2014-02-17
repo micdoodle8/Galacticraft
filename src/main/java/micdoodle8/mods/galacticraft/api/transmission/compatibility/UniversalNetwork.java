@@ -45,7 +45,7 @@ public class UniversalNetwork extends ElectricityNetwork
 		float totalEnergy = electricity.getWatts();
 		float voltage = electricity.voltage;
 		float sent = 0.0F;
-		
+
 		if (!evt.isCanceled())
 		{
 			if (!this.electricalTiles.isEmpty())
@@ -56,7 +56,7 @@ public class UniversalNetwork extends ElectricityNetwork
 				{
 					List<Object> acceptors = Lists.newCopyOnWriteArrayList();
 					acceptors.addAll(this.electricalTiles.keySet());
-					
+
 					for (TileEntity tileEntity : ignoreTiles)
 					{
 						if (acceptors.contains(tileEntity))
@@ -64,26 +64,26 @@ public class UniversalNetwork extends ElectricityNetwork
 							acceptors.remove(tileEntity);
 						}
 					}
-					
+
 					List<Object> removeList = new ArrayList<Object>();
-					
+
 					for (Object obj : acceptors)
 					{
 						if (obj instanceof TileEntity)
 						{
 							TileEntity tileEntity = (TileEntity) obj;
-							
+
 							if (tileEntity == null || tileEntity.isInvalid())
 							{
 								removeList.add(tileEntity);
 							}
 						}
 					}
-					
+
 					acceptors.removeAll(removeList);
-					
+
 					Collections.shuffle(acceptors);
-					
+
 					int divider = acceptors.size();
 					double remaining = totalEnergy % divider;
 					double sending = (totalEnergy - remaining) / divider;
@@ -95,46 +95,69 @@ public class UniversalNetwork extends ElectricityNetwork
 							TileEntity tileEntity = (TileEntity) obj;
 							double currentSending = sending + remaining;
 							ForgeDirection side = this.electricalTiles.get(tileEntity);
-							
+
 							if (side == null)
 							{
 								continue;
 							}
-							
+
 							remaining = 0;
-							
+
 							if (tileEntity instanceof IElectrical)
 							{
 								IElectrical electricalTile = (IElectrical) tileEntity;
 								ElectricityPack electricityToSend = ElectricityPack.getFromWatts((float) currentSending, voltage);
 								sent += electricalTile.receiveElectricity(side.getOpposite(), electricityToSend, doReceive);
 							}
-//							else if (NetworkConfigHandler.isThermalExpansionLoaded() && tileEntity instanceof IEnergyHandler)
-//							{
-//								IEnergyHandler handler = (IEnergyHandler) tileEntity;
-//								int used = handler.receiveEnergy(side.getOpposite(), (int) Math.round(currentSending * NetworkConfigHandler.TO_TE_RATIO), !doReceive);
-//								sent += used * NetworkConfigHandler.TE_RATIO;
-//							}
-//							else if (NetworkConfigHandler.isIndustrialCraft2Loaded() && tileEntity instanceof IEnergySink)
-//							{
-//								IEnergySink electricalTile = (IEnergySink) tileEntity;
-//								double toSend = Math.min(currentSending, electricalTile.getMaxSafeInput() * NetworkConfigHandler.IC2_RATIO);
-//								toSend = Math.min(toSend, electricalTile.demandedEnergyUnits() * NetworkConfigHandler.IC2_RATIO);
-//								sent += (toSend - (electricalTile.injectEnergyUnits(side.getOpposite(), toSend * NetworkConfigHandler.TO_IC2_RATIO) * NetworkConfigHandler.IC2_RATIO));
-//							}
-//							else if (NetworkConfigHandler.isBuildcraftLoaded() && tileEntity instanceof IPowerReceptor)
-//							{
-//								IPowerReceptor electricalTile = (IPowerReceptor) tileEntity;
-//								PowerReceiver receiver = electricalTile.getPowerReceiver(side.getOpposite());
-//								
-//								if (receiver != null)
-//								{
-//									float req = receiver.powerRequest();
-//									double bcToSend = currentSending * NetworkConfigHandler.TO_BC_RATIO;
-//					            	float bcSent = receiver.receiveEnergy(Type.PIPE, (float) (Math.min(req, bcToSend)), side.getOpposite());
-//					            	sent += bcSent * NetworkConfigHandler.BC3_RATIO;
-//								}
-//							} TODO Re-implement when APIs are ready
+							// else if
+							// (NetworkConfigHandler.isThermalExpansionLoaded()
+							// && tileEntity instanceof IEnergyHandler)
+							// {
+							// IEnergyHandler handler = (IEnergyHandler)
+							// tileEntity;
+							// int used =
+							// handler.receiveEnergy(side.getOpposite(), (int)
+							// Math.round(currentSending *
+							// NetworkConfigHandler.TO_TE_RATIO), !doReceive);
+							// sent += used * NetworkConfigHandler.TE_RATIO;
+							// }
+							// else if
+							// (NetworkConfigHandler.isIndustrialCraft2Loaded()
+							// && tileEntity instanceof IEnergySink)
+							// {
+							// IEnergySink electricalTile = (IEnergySink)
+							// tileEntity;
+							// double toSend = Math.min(currentSending,
+							// electricalTile.getMaxSafeInput() *
+							// NetworkConfigHandler.IC2_RATIO);
+							// toSend = Math.min(toSend,
+							// electricalTile.demandedEnergyUnits() *
+							// NetworkConfigHandler.IC2_RATIO);
+							// sent += (toSend -
+							// (electricalTile.injectEnergyUnits(side.getOpposite(),
+							// toSend * NetworkConfigHandler.TO_IC2_RATIO) *
+							// NetworkConfigHandler.IC2_RATIO));
+							// }
+							// else if
+							// (NetworkConfigHandler.isBuildcraftLoaded() &&
+							// tileEntity instanceof IPowerReceptor)
+							// {
+							// IPowerReceptor electricalTile = (IPowerReceptor)
+							// tileEntity;
+							// PowerReceiver receiver =
+							// electricalTile.getPowerReceiver(side.getOpposite());
+							//
+							// if (receiver != null)
+							// {
+							// float req = receiver.powerRequest();
+							// double bcToSend = currentSending *
+							// NetworkConfigHandler.TO_BC_RATIO;
+							// float bcSent = receiver.receiveEnergy(Type.PIPE,
+							// (float) (Math.min(req, bcToSend)),
+							// side.getOpposite());
+							// sent += bcSent * NetworkConfigHandler.BC3_RATIO;
+							// }
+							// } TODO Re-implement when APIs are ready
 						}
 					}
 				}
@@ -176,69 +199,90 @@ public class UniversalNetwork extends ElectricityNetwork
 						continue;
 					}
 
-//					if (NetworkConfigHandler.isThermalExpansionLoaded() && tileEntity instanceof IEnergyHandler)
-//					{
-//						IEnergyHandler receiver = (IEnergyHandler) tileEntity;
-//
-//						for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
-//						{
-//							Vector3 tileVec = new Vector3(tileEntity);
-//							TileEntity conductor = tileVec.modifyPositionFromSide(direction).getTileEntity(tileEntity.worldObj);
-//
-//							if (receiver.canInterface(direction) && this.getTransmitters().contains(conductor))
-//							{
-//								ElectricityPack pack = ElectricityPack.getFromWatts(receiver.receiveEnergy(direction, Integer.MAX_VALUE, true) * NetworkConfigHandler.TE_RATIO, 1);
-//
-//								if (pack.getWatts() > 0)
-//								{
-//									requests.add(pack);
-//									break;
-//								}
-//							}
-//						}
-//
-//						continue;
-//					}
-//
-//					if (NetworkConfigHandler.isIndustrialCraft2Loaded() && tileEntity instanceof IEnergySink)
-//					{
-//						for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
-//						{
-//							Vector3 tileVec = new Vector3(tileEntity);
-//							TileEntity conductor = tileVec.modifyPositionFromSide(direction).getTileEntity(tileEntity.worldObj);
-//
-//							if (((IEnergySink) tileEntity).acceptsEnergyFrom(tileVec.modifyPositionFromSide(direction).getTileEntity(tileEntity.worldObj), direction) && this.getTransmitters().contains(conductor))
-//							{
-//								ElectricityPack pack = ElectricityPack.getFromWatts((float) (((IEnergySink) tileEntity).demandedEnergyUnits() * NetworkConfigHandler.IC2_RATIO), 1);
-//
-//								if (pack.getWatts() > 0)
-//								{
-//									requests.add(pack);
-//								}
-//							}
-//						}
-//
-//						continue;
-//					}
+					// if (NetworkConfigHandler.isThermalExpansionLoaded() &&
+					// tileEntity instanceof IEnergyHandler)
+					// {
+					// IEnergyHandler receiver = (IEnergyHandler) tileEntity;
+					//
+					// for (ForgeDirection direction :
+					// ForgeDirection.VALID_DIRECTIONS)
+					// {
+					// Vector3 tileVec = new Vector3(tileEntity);
+					// TileEntity conductor =
+					// tileVec.modifyPositionFromSide(direction).getTileEntity(tileEntity.worldObj);
+					//
+					// if (receiver.canInterface(direction) &&
+					// this.getTransmitters().contains(conductor))
+					// {
+					// ElectricityPack pack =
+					// ElectricityPack.getFromWatts(receiver.receiveEnergy(direction,
+					// Integer.MAX_VALUE, true) * NetworkConfigHandler.TE_RATIO,
+					// 1);
+					//
+					// if (pack.getWatts() > 0)
+					// {
+					// requests.add(pack);
+					// break;
+					// }
+					// }
+					// }
+					//
+					// continue;
+					// }
+					//
+					// if (NetworkConfigHandler.isIndustrialCraft2Loaded() &&
+					// tileEntity instanceof IEnergySink)
+					// {
+					// for (ForgeDirection direction :
+					// ForgeDirection.VALID_DIRECTIONS)
+					// {
+					// Vector3 tileVec = new Vector3(tileEntity);
+					// TileEntity conductor =
+					// tileVec.modifyPositionFromSide(direction).getTileEntity(tileEntity.worldObj);
+					//
+					// if (((IEnergySink)
+					// tileEntity).acceptsEnergyFrom(tileVec.modifyPositionFromSide(direction).getTileEntity(tileEntity.worldObj),
+					// direction) && this.getTransmitters().contains(conductor))
+					// {
+					// ElectricityPack pack =
+					// ElectricityPack.getFromWatts((float) (((IEnergySink)
+					// tileEntity).demandedEnergyUnits() *
+					// NetworkConfigHandler.IC2_RATIO), 1);
+					//
+					// if (pack.getWatts() > 0)
+					// {
+					// requests.add(pack);
+					// }
+					// }
+					// }
+					//
+					// continue;
+					// }
 
-//					if (NetworkConfigHandler.isBuildcraftLoaded() && tileEntity instanceof IPowerReceptor)
-//					{
-//						for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
-//						{
-//							if (((IPowerReceptor) tileEntity).getPowerReceiver(direction) != null)
-//							{
-//								ElectricityPack pack = ElectricityPack.getFromWatts(((IPowerReceptor) tileEntity).getPowerReceiver(direction).powerRequest() * NetworkConfigHandler.BC3_RATIO, 1);
-//
-//								if (pack.getWatts() > 0)
-//								{
-//									requests.add(pack);
-//									break;
-//								}
-//							}
-//						}
-//
-//						continue;
-//					} TODO Re-implement when APIs are ready
+					// if (NetworkConfigHandler.isBuildcraftLoaded() &&
+					// tileEntity instanceof IPowerReceptor)
+					// {
+					// for (ForgeDirection direction :
+					// ForgeDirection.VALID_DIRECTIONS)
+					// {
+					// if (((IPowerReceptor)
+					// tileEntity).getPowerReceiver(direction) != null)
+					// {
+					// ElectricityPack pack =
+					// ElectricityPack.getFromWatts(((IPowerReceptor)
+					// tileEntity).getPowerReceiver(direction).powerRequest() *
+					// NetworkConfigHandler.BC3_RATIO, 1);
+					//
+					// if (pack.getWatts() > 0)
+					// {
+					// requests.add(pack);
+					// break;
+					// }
+					// }
+					// }
+					//
+					// continue;
+					// } TODO Re-implement when APIs are ready
 				}
 			}
 		}
@@ -253,7 +297,7 @@ public class UniversalNetwork extends ElectricityNetwork
 	public void refresh()
 	{
 		this.electricalTiles.clear();
-		
+
 		try
 		{
 			Iterator<IConductor> it = this.getTransmitters().iterator();
@@ -267,7 +311,7 @@ public class UniversalNetwork extends ElectricityNetwork
 					it.remove();
 					continue;
 				}
-				
+
 				conductor.onNetworkChanged();
 
 				if (((TileEntity) conductor).isInvalid() || ((TileEntity) conductor).getWorldObj() == null)
@@ -293,26 +337,55 @@ public class UniversalNetwork extends ElectricityNetwork
 
 					if (!(acceptor instanceof IConductor))
 					{
-						if (acceptor instanceof IElectrical )// TODO Re-implement when APIs are ready || (NetworkConfigHandler.isThermalExpansionLoaded() && acceptor instanceof IEnergyHandler) || (NetworkConfigHandler.isIndustrialCraft2Loaded() && acceptor instanceof IEnergyAcceptor) || (NetworkConfigHandler.isBuildcraftLoaded() && acceptor instanceof IPowerReceptor))
+						if (acceptor instanceof IElectrical)// TODO Re-implement
+															// when APIs are
+															// ready ||
+															// (NetworkConfigHandler.isThermalExpansionLoaded()
+															// && acceptor
+															// instanceof
+															// IEnergyHandler)
+															// ||
+															// (NetworkConfigHandler.isIndustrialCraft2Loaded()
+															// && acceptor
+															// instanceof
+															// IEnergyAcceptor)
+															// ||
+															// (NetworkConfigHandler.isBuildcraftLoaded()
+															// && acceptor
+															// instanceof
+															// IPowerReceptor))
 						{
 							boolean canConnect = false;
-							
+
 							if (acceptor instanceof IElectrical && ((IElectrical) acceptor).canConnect(direction, NetworkType.POWER))
 							{
 								canConnect = true;
 							}
-//							else if (NetworkConfigHandler.isThermalExpansionLoaded() && acceptor instanceof IEnergyHandler && ((IEnergyHandler) acceptor).canInterface(direction))
-//							{
-//								canConnect = true;
-//							}
-//							else if (NetworkConfigHandler.isIndustrialCraft2Loaded() && acceptor instanceof IEnergyAcceptor && ((IEnergyAcceptor) acceptor).acceptsEnergyFrom((TileEntity) conductor, direction))
-//							{
-//								canConnect = true;
-//							}
-//							else if (NetworkConfigHandler.isBuildcraftLoaded() && acceptor instanceof IPowerReceptor && ((IPowerReceptor) acceptor).getPowerReceiver(direction) != null)
-//							{
-//								canConnect = true;
-//							}
+							// else if
+							// (NetworkConfigHandler.isThermalExpansionLoaded()
+							// && acceptor instanceof IEnergyHandler &&
+							// ((IEnergyHandler)
+							// acceptor).canInterface(direction))
+							// {
+							// canConnect = true;
+							// }
+							// else if
+							// (NetworkConfigHandler.isIndustrialCraft2Loaded()
+							// && acceptor instanceof IEnergyAcceptor &&
+							// ((IEnergyAcceptor)
+							// acceptor).acceptsEnergyFrom((TileEntity)
+							// conductor, direction))
+							// {
+							// canConnect = true;
+							// }
+							// else if
+							// (NetworkConfigHandler.isBuildcraftLoaded() &&
+							// acceptor instanceof IPowerReceptor &&
+							// ((IPowerReceptor)
+							// acceptor).getPowerReceiver(direction) != null)
+							// {
+							// canConnect = true;
+							// }
 
 							if (canConnect)
 							{
