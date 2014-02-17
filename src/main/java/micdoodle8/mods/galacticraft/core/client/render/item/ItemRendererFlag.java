@@ -25,7 +25,7 @@ import cpw.mods.fml.client.FMLClientHandler;
  */
 public class ItemRendererFlag implements IItemRenderer
 {
-	private static ResourceLocation[] flagTextures;
+	public static ResourceLocation[] flagTextures;
 
 	static
 	{

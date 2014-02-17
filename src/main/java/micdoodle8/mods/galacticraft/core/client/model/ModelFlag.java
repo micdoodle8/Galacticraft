@@ -83,10 +83,24 @@ public class ModelFlag extends ModelBase
 	{
 		super.render(entity, f, f1, f2, f3, f4, f5);
 		this.setRotationAngles(entity, f, f1, f2, f3, f4, f5);
+		this.renderPole(entity, f5);
+		this.renderFlag(entity, f5);
+		this.renderFace(entity, f5, false);
+	}
+	
+	public void renderPole(Entity entity, float f5)
+	{
 		this.base.render(f5);
 		this.pole.render(f5);
+	}
+	
+	public void renderFlag(Entity entity, float f5)
+	{
 		this.flag.render(f5);
-
+	}
+	
+	public void renderFace(Entity entity, float f5, boolean onlyFront)
+	{
 		if (((EntityFlag) entity).getType() != 0)
 		{
 			EntityFlag flag = (EntityFlag) entity;
@@ -101,10 +115,15 @@ public class ModelFlag extends ModelBase
 			FMLClientHandler.instance().getClient().renderEngine.bindTexture(resourcelocation);
 
 			GL11.glScalef(0.5F, 0.5F, 0.5F);
-			this.picSide1.render(f5);
+
 			this.picSide2.render(f5);
-			this.picSide3.render(f5);
-			this.picSide4.render(f5);
+			
+			if (!onlyFront)
+			{
+				this.picSide1.render(f5);
+				this.picSide3.render(f5);
+				this.picSide4.render(f5);
+			}
 		}
 	}
 

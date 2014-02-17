@@ -287,9 +287,13 @@ public class WorldUtil
 		{
 			if (WorldProvider.getProviderForDimension(id) != null)
 			{
-				if (WorldProvider.getProviderForDimension(id) instanceof IGalacticraftWorldProvider && !(WorldProvider.getProviderForDimension(id) instanceof IOrbitDimension) || WorldProvider.getProviderForDimension(id).dimensionId == 0)
+				if (WorldProvider.getProviderForDimension(id) instanceof IGalacticraftWorldProvider && !(WorldProvider.getProviderForDimension(id) instanceof IOrbitDimension))
 				{
 					map.put(WorldProvider.getProviderForDimension(id).getDimensionName(), WorldProvider.getProviderForDimension(id).dimensionId);
+				}
+				else if (WorldProvider.getProviderForDimension(id).dimensionId == 0)
+				{
+					map.put(GalacticraftCore.planetOverworld.getLocalizedName(), 0);
 				}
 				else if (playerBase != null && WorldProvider.getProviderForDimension(id) instanceof IOrbitDimension)
 				{
@@ -311,7 +315,7 @@ public class WorldUtil
 		{
 			if (!body.getReachable())
 			{
-				map.put(body.getLocalizedName() + "*", 0);
+				map.put(body.getLocalizedName() + "*", body.getDimensionID());
 			}
 		}
 
@@ -528,7 +532,7 @@ public class WorldUtil
 				}
 
 				final ITeleportType type = GalacticraftRegistry.getTeleportTypeForDimension(var6.provider.getClass());
-
+				
 				if (type != null)
 				{
 					return WorldUtil.teleportEntity(var6, entity, dimensionID, type, transferInv, ridingRocket);

@@ -123,6 +123,7 @@ public class GCConfigManager
 	public static int idGuiAddSchematic;
 	public static int idGuiKnowledgeBook;
 	public static int idGuiExtendedInventory;
+	public static int idGuiNewSpaceRace;
 
 	// ACHIEVEMENTS
 	public static int idAchievBase;
@@ -196,6 +197,7 @@ public class GCConfigManager
 			GCConfigManager.idGuiAddSchematic = GCConfigManager.configuration.get("GUI", "idGuiAddSchematic", 138).getInt(138);
 			GCConfigManager.idGuiKnowledgeBook = GCConfigManager.configuration.get("GUI", "idGuiKnowledgeBook", 140).getInt(140);
 			GCConfigManager.idGuiExtendedInventory = GCConfigManager.configuration.get("GUI", "idGuiExtendedInventory", 145).getInt(145);
+			GCConfigManager.idGuiNewSpaceRace = GCConfigManager.configuration.get("GUI", "idGuiNewSpaceRace", 146).getInt(146);
 
 			GCConfigManager.idSchematicRocketT1 = GCConfigManager.configuration.get("Schematic", "idSchematicRocketT1", 0).getInt(0);
 			GCConfigManager.idSchematicMoonBuggy = GCConfigManager.configuration.get("Schematic", "idSchematicMoonBuggy", 1).getInt(1);
