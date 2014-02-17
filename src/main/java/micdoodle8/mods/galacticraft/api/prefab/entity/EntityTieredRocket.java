@@ -153,7 +153,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 				{
 					if (tile instanceof TileEntityFuelLoader && ((TileEntityFuelLoader) tile).getEnergyStored() > 0)
 					{
-						if (this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase())
+						if (this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal())
 						{
 							this.setPad(null);
 						}
@@ -178,7 +178,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 			this.riddenByEntity.posZ += this.rumble / 30F;
 		}
 
-		if (this.launchPhase == EnumLaunchPhase.IGNITED.getPhase() || this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase())
+		if (this.launchPhase == EnumLaunchPhase.IGNITED.ordinal() || this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal())
 		{
 			this.performHurtAnimation();
 
@@ -212,7 +212,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 		list.add(this.rocketType != null ? this.rocketType.getIndex() : 0);
 		super.getNetworkedData(list);
 
-		boolean sendPosUpdates = this.ticks < 25 || this.launchPhase != EnumLaunchPhase.LAUNCHED.getPhase();
+		boolean sendPosUpdates = this.ticks < 25 || this.launchPhase != EnumLaunchPhase.LAUNCHED.ordinal();
 		list.add(sendPosUpdates);
 
 		if (sendPosUpdates)
@@ -368,7 +368,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 	@Override
 	public boolean interactFirst(EntityPlayer par1EntityPlayer)
 	{
-		if (this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase())
+		if (this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal())
 		{
 			return false;
 		}

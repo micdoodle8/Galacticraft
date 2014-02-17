@@ -43,7 +43,7 @@ public class PacketDynamic implements IPacket
 		this.dimID = tile.getWorldObj().provider.dimensionId;
 		this.data = new Object[] { tile.xCoord, tile.yCoord, tile.zCoord };
 		this.sendData = new ArrayList<Object>();
-		((IPacketReceiver) tile).getNetworkedData(new ArrayList<Object>(this.sendData));
+		((IPacketReceiver) tile).getNetworkedData(this.sendData);
 	}
 
 	@Override
@@ -82,7 +82,7 @@ public class PacketDynamic implements IPacket
 
 		World world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(this.dimID);
 
-		if (FMLCommonHandler.instance().getSide() == Side.CLIENT && world == null)
+		if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
 		{
 			world = FMLClientHandler.instance().getClient().theWorld;
 		}
@@ -108,7 +108,7 @@ public class PacketDynamic implements IPacket
 			this.data[2] = buffer.readInt();
 
 			TileEntity tile = world.getTileEntity((int) this.data[0], (int) this.data[1], (int) this.data[2]);
-
+			
 			if (tile instanceof IPacketReceiver)
 			{
 				((IPacketReceiver) tile).decodePacketdata(buffer);

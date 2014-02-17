@@ -60,7 +60,6 @@ import com.google.common.collect.Sets;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -91,11 +90,6 @@ public class TickHandlerClient
 	public static Set<PlayerGearData> playerItemData = Sets.newHashSet();
 
 	private static ThreadRequirementMissing missingRequirementThread;
-
-	public TickHandlerClient()
-	{
-		FMLLog.info("NEW TICK HANDLER INSTANCE");
-	}
 
 	static
 	{
@@ -191,7 +185,7 @@ public class TickHandlerClient
 			OverlayDockingRocket.renderDockingOverlay();
 		}
 
-		if (minecraft.currentScreen == null && player != null && player.ridingEntity != null && player.ridingEntity instanceof EntitySpaceshipBase && minecraft.gameSettings.thirdPersonView != 0 && !minecraft.gameSettings.hideGUI && ((EntitySpaceshipBase) minecraft.thePlayer.ridingEntity).launchPhase != EnumLaunchPhase.LAUNCHED.getPhase())
+		if (minecraft.currentScreen == null && player != null && player.ridingEntity != null && player.ridingEntity instanceof EntitySpaceshipBase && minecraft.gameSettings.thirdPersonView != 0 && !minecraft.gameSettings.hideGUI && ((EntitySpaceshipBase) minecraft.thePlayer.ridingEntity).launchPhase != EnumLaunchPhase.LAUNCHED.ordinal())
 		{
 			OverlayCountdown.renderCountdownOverlay();
 		}
@@ -447,17 +441,6 @@ public class TickHandlerClient
 			{
 				world.setRainStrength(0.0F);
 			}
-
-			if (!minecraft.gameSettings.keyBindJump.isPressed())
-			{
-				TickHandlerClient.lastSpacebarDown = false;
-			}
-
-			if (player != null && player.ridingEntity != null && minecraft.gameSettings.keyBindJump.isPressed() && !TickHandlerClient.lastSpacebarDown)
-			{
-				GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_IGNITE_ROCKET, new Object[] { 0 }));
-				TickHandlerClient.lastSpacebarDown = true;
-			}
 		}
 
 		if (event.phase == TickEvent.Phase.END)
@@ -470,6 +453,17 @@ public class TickHandlerClient
 			}
 
 			TickHandlerClient.lastInvKeyPressed = invKeyPressed;
+
+			if (!Keyboard.isKeyDown(minecraft.gameSettings.keyBindJump.getKeyCode()))
+			{
+				TickHandlerClient.lastSpacebarDown = false;
+			}
+
+			if (player != null && player.ridingEntity != null && Keyboard.isKeyDown(minecraft.gameSettings.keyBindJump.getKeyCode()) && !TickHandlerClient.lastSpacebarDown)
+			{
+				GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_IGNITE_ROCKET, new Object[] { }));
+				TickHandlerClient.lastSpacebarDown = true;
+			}
 		}
 	}
 

@@ -35,6 +35,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
@@ -92,7 +93,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
 		if (this.hasValidFuel())
 		{
-			if (this.launchPhase == EnumLaunchPhase.UNIGNITED.getPhase() && !this.worldObj.isRemote)
+			if (this.launchPhase == EnumLaunchPhase.UNIGNITED.ordinal() && !this.worldObj.isRemote)
 			{
 				if (!this.setFrequency())
 				{
@@ -382,7 +383,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 				}
 			}
 
-			if (this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase() && this.hasValidFuel())
+			if (this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal() && this.hasValidFuel())
 			{
 				if (this.landing && this.targetVec != null && this.worldObj.getTileEntity(this.targetVec.intX(), this.targetVec.intY(), this.targetVec.intZ()) instanceof IFuelDock && this.posY - this.targetVec.y < 5)
 				{
@@ -412,7 +413,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 					{
 						if (tile instanceof TileEntityFuelLoader && ((TileEntityFuelLoader) tile).getEnergyStored() > 0)
 						{
-							if (this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase())
+							if (this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal())
 							{
 								this.setPad(null);
 							}
@@ -420,8 +421,6 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 					}
 				}
 			}
-
-			GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 60.0D));
 
 			this.lastStatusMessageCooldown = this.statusMessageCooldown;
 		}
@@ -441,19 +440,22 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
 	public boolean igniteWithResult()
 	{
-		if (this.setFrequency())
+		if (this.isPlayerRocket())
 		{
 			super.ignite();
 			return true;
 		}
 		else
 		{
-			if (this.isPlayerRocket())
+			if (this.setFrequency())
 			{
 				super.ignite();
+				return true;
 			}
-
-			return false;
+			else
+			{
+				return false;
+			}
 		}
 	}
 
@@ -477,7 +479,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 			{
 				if (!this.worldObj.isRemote)
 				{
-					this.launchPhase = EnumLaunchPhase.UNIGNITED.getPhase();
+					this.setLaunchPhase(EnumLaunchPhase.UNIGNITED);
 					this.landing = false;
 					this.targetVec = null;
 					this.setPad(dock);
@@ -591,7 +593,6 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 	@Override
 	public void handlePacketData(Side side, EntityPlayer player)
 	{
-
 	}
 
 	@Override
@@ -654,7 +655,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 			}
 		}
 
-		if (this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase())
+		if (this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal())
 		{
 			super.failRocket();
 		}
@@ -1031,7 +1032,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 	@Override
 	public void onPadDestroyed()
 	{
-		if (!this.isDead && this.launchPhase != EnumLaunchPhase.LAUNCHED.getPhase())
+		if (!this.isDead && this.launchPhase != EnumLaunchPhase.LAUNCHED.ordinal())
 		{
 			this.dropShipAsItem();
 			this.setDead();

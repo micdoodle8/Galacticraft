@@ -184,7 +184,8 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
 		{
 			try
 			{
-				field.set(this, NetworkUtil.getFieldValueFromStream(field, buffer, this.worldObj));
+				Object obj = NetworkUtil.getFieldValueFromStream(field, buffer, this.worldObj);
+				field.set(this, obj);
 			}
 			catch (Exception e)
 			{

@@ -2,9 +2,9 @@ package micdoodle8.mods.galacticraft.api.galaxies;
 
 import java.util.Locale;
 
-import micdoodle8.mods.galacticraft.api.world.WorldProviderSpace;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.WorldProvider;
 
 public abstract class CelestialBody
 {
@@ -16,7 +16,7 @@ public abstract class CelestialBody
 	protected float relativeOrbitTime = 1.0F;
 	protected float phaseShift = 0.0F;
 	protected int dimensionID = 0;
-	protected Class<? extends WorldProviderSpace> providerClass;
+	protected Class<? extends WorldProvider> providerClass;
 	protected boolean autoRegisterDimension = false;
 	protected boolean isReachable = false;
 
@@ -133,17 +133,17 @@ public abstract class CelestialBody
 		return this;
 	}
 
-	public CelestialBody setDimensionInfo(int dimID, Class<? extends WorldProviderSpace> providerClass)
+	public CelestialBody setDimensionInfo(int dimID, Class<? extends WorldProvider> providerClass)
 	{
-		return this.setDimensionInfo(dimID, providerClass, true);
+		return this.setDimensionInfo(dimID, providerClass, true, true);
 	}
 
-	public CelestialBody setDimensionInfo(int dimID, Class<? extends WorldProviderSpace> providerClass, boolean autoRegister)
+	public CelestialBody setDimensionInfo(int dimID, Class<? extends WorldProvider> providerClass, boolean autoRegister, boolean isReachable)
 	{
 		this.dimensionID = dimID;
 		this.providerClass = providerClass;
-		this.isReachable = true;
-		this.autoRegisterDimension = true;
+		this.autoRegisterDimension = autoRegister;
+		this.isReachable = isReachable;
 		return this;
 	}
 
@@ -157,7 +157,7 @@ public abstract class CelestialBody
 		return this.dimensionID;
 	}
 
-	public Class<? extends WorldProviderSpace> getWorldProvider()
+	public Class<? extends WorldProvider> getWorldProvider()
 	{
 		return this.providerClass;
 	}

@@ -199,6 +199,11 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 		}
 
 		this.tick++;
+		
+		if (this.tick == 50)
+		{
+			this.openGui(GalacticraftCore.instance, GCConfigManager.idGuiNewSpaceRace, this.worldObj, (int)this.posX, (int)this.posY, (int)this.posZ);
+		}
 
 		if (this.cryogenicChamberCooldown > 0)
 		{
@@ -241,7 +246,7 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 			this.hasOpenedPlanetSelectionGui = true;
 		}
 
-		if (this.usingPlanetSelectionGui)
+		if (this.usingPlanetSelectionGui && this.tick % 20 == 0)
 		{
 			this.sendPlanetList();
 		}

@@ -24,6 +24,8 @@ import micdoodle8.mods.galacticraft.core.client.gui.GuiHandler;
 import micdoodle8.mods.galacticraft.core.command.CommandPlanetTeleport;
 import micdoodle8.mods.galacticraft.core.command.CommandSpaceStationAddOwner;
 import micdoodle8.mods.galacticraft.core.command.CommandSpaceStationRemoveOwner;
+import micdoodle8.mods.galacticraft.core.dimension.TeleportTypeOverworld;
+import micdoodle8.mods.galacticraft.core.dimension.TeleportTypeSpaceStation;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.entities.EntityAlienVillager;
@@ -99,6 +101,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldProviderSurface;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ForgeChunkManager;
@@ -170,6 +173,7 @@ public class GalacticraftCore
 		GalacticraftCore.galaxyBlockyWay = new Galaxy("blockyWay").setMapPosition(new Vector3(0.0F, 0.0F));
 		GalacticraftCore.planetOverworld = (Planet) new Planet("overworld").setParentGalaxy(GalacticraftCore.galaxyBlockyWay).setRingColorRGB(0.1F, 0.9F, 0.6F).setPhaseShift(0.75F);
 		GalacticraftCore.planetOverworld.setPlanetIcon(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/planets/overworld.png"));
+		GalacticraftCore.planetOverworld.setDimensionInfo(0, WorldProvider.class, false, true);
 		GalacticraftCore.moonMoon = (Moon) new Moon("moon").setParentPlanet(GalacticraftCore.planetOverworld).setRelativeSize(0.2667F).setRelativeDistanceFromCenter(40F).setRelativeOrbitTime(0.01F);
 		GalacticraftCore.moonMoon.setDimensionInfo(GCConfigManager.dimensionIDMoon, WorldProviderMoon.class);
 		GalacticraftCore.moonMoon.setPlanetIcon(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/planets/moon.png"));
@@ -220,6 +224,8 @@ public class GalacticraftCore
 		GalacticraftCore.proxy.init(event);
 		GalacticraftCore.galacticraftTab = new GCCreativeTab(CreativeTabs.getNextID(), GalacticraftCore.MOD_NAME, GCBlocks.airLockFrame, 0);
 		DimensionManager.registerProviderType(GCConfigManager.idDimensionOverworldOrbit, WorldProviderSpaceStation.class, false);
+		GalacticraftRegistry.registerTeleportType(WorldProviderSurface.class, new TeleportTypeOverworld());
+		GalacticraftRegistry.registerTeleportType(WorldProviderSpaceStation.class, new TeleportTypeSpaceStation());
 
 		GalacticraftCore.packetPipeline = new PacketPipeline();
 		GalacticraftCore.packetPipeline.initalise();

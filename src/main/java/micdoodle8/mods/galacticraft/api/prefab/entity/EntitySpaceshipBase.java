@@ -24,6 +24,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -34,24 +35,12 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 {
 	public static enum EnumLaunchPhase
 	{
-		UNIGNITED(1),
-		IGNITED(2),
-		LAUNCHED(3);
-
-		private int phase;
-
-		private EnumLaunchPhase(int phase)
-		{
-			this.phase = phase;
-		}
-
-		public int getPhase()
-		{
-			return this.phase;
-		}
+		UNIGNITED,
+		IGNITED,
+		LAUNCHED;
 	}
 
-	public int launchPhase = EnumLaunchPhase.UNIGNITED.getPhase();
+	public int launchPhase;
 
 	protected long ticks = 0;
 	protected double dragAir;
@@ -63,6 +52,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 	public EntitySpaceshipBase(World par1World)
 	{
 		super(par1World);
+		this.launchPhase = EnumLaunchPhase.UNIGNITED.ordinal();
 		this.preventEntitySpawning = true;
 		this.ignoreFrustumCheck = true;
 		this.renderDistanceWeight = 5.0D;
@@ -228,12 +218,12 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 			this.kill();
 		}
 
-		if (this.launchPhase == EnumLaunchPhase.UNIGNITED.getPhase())
+		if (this.launchPhase == EnumLaunchPhase.UNIGNITED.ordinal())
 		{
 			this.timeUntilLaunch = this.getPreLaunchWait();
 		}
 
-		if (this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase())
+		if (this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal())
 		{
 			this.timeSinceLaunch++;
 		}
@@ -242,7 +232,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 			this.timeSinceLaunch = 0;
 		}
 
-		if (this.timeUntilLaunch > 0 && this.launchPhase == EnumLaunchPhase.IGNITED.getPhase())
+		if (this.timeUntilLaunch > 0 && this.launchPhase == EnumLaunchPhase.IGNITED.ordinal())
 		{
 			this.timeUntilLaunch--;
 		}
@@ -266,9 +256,9 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 			}
 		}
 
-		if (this.timeUntilLaunch == 0 && this.launchPhase == EnumLaunchPhase.IGNITED.getPhase())
+		if (this.timeUntilLaunch == 0 && this.launchPhase == EnumLaunchPhase.IGNITED.ordinal())
 		{
-			this.launchPhase = EnumLaunchPhase.LAUNCHED.getPhase();
+			this.setLaunchPhase(EnumLaunchPhase.LAUNCHED);
 			this.onLaunch();
 		}
 
@@ -290,7 +280,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 			this.failRocket();
 		}
 
-		if (this.launchPhase != EnumLaunchPhase.LAUNCHED.getPhase())
+		if (this.launchPhase != EnumLaunchPhase.LAUNCHED.ordinal())
 		{
 			this.motionX = this.motionY = this.motionZ = 0.0F;
 		}
@@ -337,7 +327,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 	@Override
 	public void decodePacketdata(ByteBuf buffer)
 	{
-		this.launchPhase = buffer.readInt();
+		this.setLaunchPhase(EnumLaunchPhase.values()[buffer.readInt()]);
 		this.timeSinceLaunch = buffer.readFloat();
 		this.timeUntilLaunch = buffer.readInt();
 	}
@@ -345,6 +335,8 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 	@Override
 	public void getNetworkedData(ArrayList<Object> list)
 	{
+		if (FMLCommonHandler.instance().getEffectiveSide() != Side.SERVER)
+		new Exception().printStackTrace();
 		list.add(this.launchPhase);
 		list.add(this.timeSinceLaunch);
 		list.add(this.timeUntilLaunch);
@@ -405,7 +397,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
 			if (launched)
 			{
-				this.launchPhase = EnumLaunchPhase.LAUNCHED.getPhase();
+				this.setLaunchPhase(EnumLaunchPhase.LAUNCHED);
 			}
 		}
 
@@ -418,27 +410,27 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
 			if (ignite == 1)
 			{
-				this.launchPhase = EnumLaunchPhase.IGNITED.getPhase();
+				this.setLaunchPhase(EnumLaunchPhase.IGNITED);
 			}
 		}
 
 		// Backwards compatibility:
 		if (hasOldTags)
 		{
-			if (this.launchPhase != EnumLaunchPhase.LAUNCHED.getPhase() && this.launchPhase != EnumLaunchPhase.IGNITED.getPhase())
+			if (this.launchPhase != EnumLaunchPhase.LAUNCHED.ordinal() && this.launchPhase != EnumLaunchPhase.IGNITED.ordinal())
 			{
-				this.launchPhase = EnumLaunchPhase.UNIGNITED.getPhase();
+				this.setLaunchPhase(EnumLaunchPhase.UNIGNITED);
 			}
 		}
 		else
 		{
-			this.launchPhase = nbt.getInteger("launchPhase");
+			this.setLaunchPhase(EnumLaunchPhase.values()[nbt.getInteger("launchPhase") - 1]);
 		}
 	}
 
 	public boolean getLaunched()
 	{
-		return this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase();
+		return this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal();
 	}
 
 	public boolean canBeRidden()
@@ -448,7 +440,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
 	public void ignite()
 	{
-		this.launchPhase = EnumLaunchPhase.IGNITED.getPhase();
+		this.setLaunchPhase(EnumLaunchPhase.IGNITED);
 	}
 
 	@Override
@@ -481,5 +473,10 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 	public ResourceLocation getSpaceshipGui()
 	{
 		return GalacticraftRegistry.getResouceLocationForDimension(this.worldObj.provider.getClass());
+	}
+	
+	public void setLaunchPhase(EnumLaunchPhase phase)
+	{
+		this.launchPhase = phase.ordinal();
 	}
 }

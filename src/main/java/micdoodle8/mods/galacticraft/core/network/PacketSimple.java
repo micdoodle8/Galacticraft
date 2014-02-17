@@ -59,7 +59,6 @@ import net.minecraftforge.common.DimensionManager;
 import org.lwjgl.input.Keyboard;
 
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 
 public class PacketSimple implements IPacket
@@ -171,8 +170,6 @@ public class PacketSimple implements IPacket
 	public void decodeInto(ChannelHandlerContext context, ByteBuf buffer)
 	{
 		this.type = EnumSimplePacket.values()[buffer.readInt()];
-
-		FMLLog.info("" + this.type);
 
 		if (this.type.getDecodeClasses().length > 0)
 		{

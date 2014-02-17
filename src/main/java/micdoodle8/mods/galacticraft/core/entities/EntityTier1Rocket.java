@@ -79,7 +79,7 @@ public class EntityTier1Rocket extends EntityTieredRocket
 			i = 1;
 		}
 
-		if ((this.getLaunched() || this.launchPhase == EnumLaunchPhase.IGNITED.getPhase() && this.rand.nextInt(i) == 0) && !GCConfigManager.disableSpaceshipParticles && this.hasValidFuel())
+		if ((this.getLaunched() || this.launchPhase == EnumLaunchPhase.IGNITED.ordinal() && this.rand.nextInt(i) == 0) && !GCConfigManager.disableSpaceshipParticles && this.hasValidFuel())
 		{
 			if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
 			{
@@ -87,12 +87,12 @@ public class EntityTier1Rocket extends EntityTieredRocket
 			}
 		}
 
-		if (this.rocketSoundUpdater != null && (this.launchPhase == EnumLaunchPhase.IGNITED.getPhase() || this.getLaunched()))
+		if (this.rocketSoundUpdater != null && (this.launchPhase == EnumLaunchPhase.IGNITED.ordinal() || this.getLaunched()))
 		{
 			this.rocketSoundUpdater.update();
 		}
 
-		if (this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase() && this.hasValidFuel())
+		if (this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal() && this.hasValidFuel())
 		{
 			if (!this.landing)
 			{
@@ -133,11 +133,6 @@ public class EntityTier1Rocket extends EntityTieredRocket
 			{
 				this.motionY -= Math.abs(Math.sin(this.timeSinceLaunch / 1000)) / 20;
 			}
-		}
-
-		if (!this.worldObj.isRemote)
-		{
-			GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 100.0D));
 		}
 	}
 
@@ -260,7 +255,7 @@ public class EntityTier1Rocket extends EntityTieredRocket
 	@Override
 	public void onPadDestroyed()
 	{
-		if (!this.isDead && this.launchPhase != EnumLaunchPhase.LAUNCHED.getPhase())
+		if (!this.isDead && this.launchPhase != EnumLaunchPhase.LAUNCHED.ordinal())
 		{
 			this.dropShipAsItem();
 			this.setDead();
