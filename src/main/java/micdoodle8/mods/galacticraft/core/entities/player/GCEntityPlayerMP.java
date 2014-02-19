@@ -15,6 +15,7 @@ import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.entities.EntityLander;
 import micdoodle8.mods.galacticraft.core.entities.EntityMeteor;
@@ -29,6 +30,7 @@ import micdoodle8.mods.galacticraft.core.util.GCConfigManager;
 import micdoodle8.mods.galacticraft.core.util.GCDamageSource;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
+import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -133,6 +135,8 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 	private int cryogenicChamberCooldown;
 
 	private boolean receivedSoundWarning;
+	
+	private FlagData flagData;
 
 	public GCEntityPlayerMP(MinecraftServer server, WorldServer world, GameProfile profile, ItemInWorldManager itemInWorldManager)
 	{
@@ -202,7 +206,10 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 		
 		if (this.tick == 50)
 		{
-			this.openGui(GalacticraftCore.instance, GCConfigManager.idGuiNewSpaceRace, this.worldObj, (int)this.posX, (int)this.posY, (int)this.posZ);
+			if (SpaceRaceManager.getSpaceRaceFromPlayer(this.getGameProfile().getName()) == null)
+			{
+				GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_SPACE_RACE_GUI, new Object[] { }), this);
+			}
 		}
 
 		if (this.cryogenicChamberCooldown > 0)
@@ -1296,6 +1303,16 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 	public void setCryogenicChamberCooldown(int cryogenicChamberCooldown)
 	{
 		this.cryogenicChamberCooldown = cryogenicChamberCooldown;
+	}
+
+	public FlagData getFlagData()
+	{
+		return flagData;
+	}
+
+	public void setFlagData(FlagData flagData)
+	{
+		this.flagData = flagData;
 	}
 
 	public static enum EnumModelPacket

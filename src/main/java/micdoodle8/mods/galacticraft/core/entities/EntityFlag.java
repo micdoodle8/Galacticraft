@@ -1,7 +1,10 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
+import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.entity.Entity;
@@ -30,6 +33,7 @@ public class EntityFlag extends Entity
 	public double yPosition;
 	public double zPosition;
 	public boolean indestructable = false;
+	public FlagData flagData;
 
 	public EntityFlag(World world)
 	{
@@ -141,9 +145,9 @@ public class EntityFlag extends Entity
 	@Override
 	protected void entityInit()
 	{
-		this.dataWatcher.addObject(16, new Integer(-1));
 		this.dataWatcher.addObject(17, new String(""));
 		this.dataWatcher.addObject(18, new Float(0.0F));
+		this.dataWatcher.addObject(19, new Integer(-1));
 	}
 
 	@Override
@@ -179,6 +183,16 @@ public class EntityFlag extends Entity
 	@Override
 	public void onUpdate()
 	{
+		if (this.flagData == null)
+		{
+			SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(getOwner()); 
+			
+			if (race != null)
+			{
+				this.flagData = race.getFlagData();
+			}
+		}
+		
 		Vector3 vec = new Vector3(this.posX, this.posY, this.posZ);
 		vec = vec.translate(new Vector3(0, -1, 0));
 		final Block blockAt = vec.getBlock(this.worldObj);
@@ -206,16 +220,6 @@ public class EntityFlag extends Entity
 		return true;
 	}
 
-	public void setType(int par1)
-	{
-		this.dataWatcher.updateObject(16, Integer.valueOf(par1));
-	}
-
-	public int getType()
-	{
-		return this.dataWatcher.getWatchableObjectInt(16);
-	}
-
 	public void setOwner(String par1)
 	{
 		this.dataWatcher.updateObject(17, String.valueOf(par1));
@@ -234,5 +238,15 @@ public class EntityFlag extends Entity
 	public float getDamage()
 	{
 		return this.dataWatcher.getWatchableObjectFloat(18);
+	}
+
+	public void setType(int par1)
+	{
+		this.dataWatcher.updateObject(19, Integer.valueOf(par1));
+	}
+
+	public int getType()
+	{
+		return this.dataWatcher.getWatchableObjectInt(19);
 	}
 }

@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.model;
 
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.entities.EntityFlag;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBase;
@@ -29,6 +30,7 @@ public class ModelFlag extends ModelBase
 	ModelRenderer picSide2;
 	ModelRenderer picSide3;
 	ModelRenderer picSide4;
+	ModelRenderer[] flagMain;
 
 	public ModelFlag()
 	{
@@ -82,10 +84,19 @@ public class ModelFlag extends ModelBase
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
 		super.render(entity, f, f1, f2, f3, f4, f5);
-		this.setRotationAngles(entity, f, f1, f2, f3, f4, f5);
-		this.renderPole(entity, f5);
-		this.renderFlag(entity, f5);
-		this.renderFace(entity, f5, false);
+		
+		if (entity instanceof EntityFlag)
+		{
+			EntityFlag flag = (EntityFlag) entity;
+			this.setRotationAngles(entity, f, f1, f2, f3, f4, f5);
+			this.renderPole(flag, f5);
+			this.renderFlag(flag, f5);
+			
+			if (flag.flagData != null && flag.flagData.getHasFace())
+			{
+				this.renderFace(flag, f5, false);
+			}
+		}
 	}
 	
 	public void renderPole(Entity entity, float f5)
@@ -94,9 +105,45 @@ public class ModelFlag extends ModelBase
 		this.pole.render(f5);
 	}
 	
-	public void renderFlag(Entity entity, float f5)
+	public void renderFlag(EntityFlag entity, float f5)
 	{
-		this.flag.render(f5);
+		if (entity.flagData != null && (flagMain == null || flagMain.length != entity.flagData.getWidth() * entity.flagData.getHeight()))
+		{
+			flagMain = new ModelRenderer[entity.flagData.getWidth() * entity.flagData.getHeight()];
+
+			for (int i = 0; i < entity.flagData.getWidth(); i++)
+			{
+				for (int j = 0; j < entity.flagData.getHeight(); j++)
+				{
+					flagMain[j * entity.flagData.getWidth() + i] = new ModelRenderer(this, 86, 0);
+					flagMain[j * entity.flagData.getWidth() + i].addBox(i, j, 0.0F, 1, 1, 1);
+					flagMain[j * entity.flagData.getWidth() + i].setRotationPoint(0.5F, -16F, -0.5F);
+					flagMain[j * entity.flagData.getWidth() + i].setTextureSize(128, 64);
+					flagMain[j * entity.flagData.getWidth() + i].mirror = true;
+					this.setRotation(flagMain[j * entity.flagData.getWidth() + i], 0F, 0F, 0F);
+				}
+			}
+		}
+		
+		if (flagMain != null)
+		{
+			GL11.glPushMatrix();
+			
+			GL11.glScalef(0.41F, 0.39F, 0.41F);
+			GL11.glTranslatef(0.05F, -1.595F, 0.0F);
+			
+			for (int i = 0; i < this.flagMain.length; i++)
+			{
+				GL11.glDisable(GL11.GL_TEXTURE_2D);
+				Vector3 col = entity.flagData.getColorAt(i % entity.flagData.getWidth(), i / entity.flagData.getWidth());
+				GL11.glColor3f(col.floatX(), col.floatY(), col.floatZ());
+				this.flagMain[i].render(f5);
+				GL11.glEnable(GL11.GL_TEXTURE_2D);
+				GL11.glColor3f(1, 1, 1);
+			}
+			
+			GL11.glPopMatrix();
+		}
 	}
 	
 	public void renderFace(Entity entity, float f5, boolean onlyFront)

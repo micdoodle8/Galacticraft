@@ -1,22 +1,31 @@
 package micdoodle8.mods.galacticraft.core.client.gui.screen;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiCheckbox;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiCheckbox.ICheckBoxCallback;
 import micdoodle8.mods.galacticraft.core.client.model.ModelFlag;
 import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererFlag;
+import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.entities.EntityFlag;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.CoreUtil;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
+import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 
 public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
 {
@@ -65,6 +74,8 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
 
 	private EntityFlag dummyFlag = new EntityFlag(FMLClientHandler.instance().getClient().theWorld);
 	private ModelFlag dummyModel = new ModelFlag();
+	
+	private FlagData flagData = new FlagData(48, 32);
     
 	public GuiNewSpaceRace(EntityPlayer player)
 	{
@@ -119,6 +130,21 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
 				break;
 			}
 		}
+		else
+		{
+			for (int i = 0; i < this.flagData.getWidth(); i++)
+			{
+				for (int j = 0; j < this.flagData.getHeight(); j++)
+				{
+					this.flagData.setColorAt(i, j, new Vector3(255, 100, 100));
+				}
+			}
+			
+			this.flagData.setColorAt(0, 0, new Vector3(50, 100, 255));
+			this.flagData.setColorAt(0, this.flagData.getHeight() - 1, new Vector3(50, 100, 255));
+			this.flagData.setColorAt(this.flagData.getWidth() - 1, 0, new Vector3(50, 100, 100));
+			this.flagData.setColorAt(this.flagData.getWidth() - 1, this.flagData.getHeight() - 1, new Vector3(50, 100, 255));
+		}
 	}
 
     protected void mouseClicked(int x, int y, int clickIndex)
@@ -146,6 +172,14 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
         	}
         	else if (this.buttonDone_hover)
         	{
+        		List<Object> objList = new ArrayList<Object>();
+        		objList.add("NewTeam");
+        		objList.add(this.flagData);
+        		objList.add(new String[] { this.thePlayer.getGameProfile().getName() });
+        		GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_START_NEW_SPACE_RACE, objList));
+        		List<String> players = new ArrayList<String>();
+        		players.add(this.thePlayer.getGameProfile().getName());
+        		SpaceRaceManager.addSpaceRace(players, "NewTeam", flagData);
         		this.thePlayer.closeScreen();
         	}
         	else if (this.buttonFlag_hover)
@@ -178,20 +212,189 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
 	        	this.drawBackButton(par1, par2);
 	        	this.drawDoneButton(par1, par2);
 	        	this.drawFlagButton(par1, par2);
-	        	
 	    		String rememberStr = EnumColor.RED + "Remember: You're competing against time spent in-game before reaching space, not who gets to space first!";
 	    		int trimWidth = this.width / 4 + 65;
-	            List list = this.fontRendererObj.listFormattedStringToWidth(rememberStr, trimWidth);
-	    		this.fontRendererObj.drawSplitString(rememberStr, this.width / 2 - this.width / 3 + 7, this.height / 2 + this.height / 4 - list.size() * this.fontRendererObj.FONT_HEIGHT - 5, trimWidth, CoreUtil.to32BitColor(255, 100, 100, 100));
-	    		
+	            List list2 = this.fontRendererObj.listFormattedStringToWidth(rememberStr, trimWidth);
+	    		this.fontRendererObj.drawSplitString(rememberStr, this.width / 2 - this.width / 3 + 7, this.height / 2 + this.height / 4 - list2.size() * this.fontRendererObj.FONT_HEIGHT - 5, trimWidth, CoreUtil.to32BitColor(255, 100, 100, 100));
 	        	break;
 	        case RULES:
 				this.drawCenteredString(this.fontRendererObj, "Rules", this.width / 2, var6 - 25, 16777215);
 	        	this.drawBackButton(par1, par2);
 	        	break;
 	        case DESIGN_FLAG:
-				this.drawCenteredString(this.fontRendererObj, "Design New Flag", this.width / 2, var6 - 25, 16777215);
+				this.drawCenteredString(this.fontRendererObj, "Design New Flag", this.width / 2, var6 - 31, 16777215);
 	        	this.drawBackButton(par1, par2);
+	        	float scaleX = this.width / 130.0F;
+	        	float scaleY = this.height / 75.0F;
+	        	float baseX = this.width / 2 - (this.flagData.getWidth() * scaleX) / 2;
+	        	float baseY = this.height / 2 - (this.flagData.getHeight() * scaleY) / 2 + 3;
+	        	
+	        	for (int x = 0; x < this.flagData.getWidth(); x++)
+	        	{
+	        		for (int y = 0; y < this.flagData.getHeight(); y++)
+	        		{
+	        			Vector3 color = this.flagData.getColorAt(x, y);
+	        	        Tessellator tessellator = Tessellator.instance;
+	        	        GL11.glEnable(GL11.GL_BLEND);
+	        	        GL11.glDisable(GL11.GL_TEXTURE_2D);
+	        	        OpenGlHelper.glBlendFunc(770, 771, 1, 0);
+	        	        GL11.glColor4f(color.floatX(), color.floatY(), color.floatZ(), 1.0F);
+	        	        tessellator.startDrawingQuads();
+	        	        tessellator.addVertex((double)baseX + x * scaleX, (double)baseY + y * scaleY + scaleY / 1.1, 0.0D);
+	        	        tessellator.addVertex((double)baseX + x * scaleX + scaleX / 1.1, (double)baseY + y * scaleY + scaleY / 1.1, 0.0D);
+	        	        tessellator.addVertex((double)baseX + x * scaleX + scaleX / 1.1, (double)baseY + y * scaleY, 0.0D);
+	        	        tessellator.addVertex((double)baseX + x * scaleX, (double)baseY + y * scaleY, 0.0D);
+	        	        tessellator.draw();
+	        	        GL11.glEnable(GL11.GL_TEXTURE_2D);
+	        	        GL11.glDisable(GL11.GL_BLEND);
+	        		}
+	        	}
+	        	
+	        	float x1 = 0;
+	        	float x2 = 100;
+	        	float y1 = 0;
+	        	float y2 = 100;
+	        	GL11.glDisable(GL11.GL_TEXTURE_2D);
+	            GL11.glEnable(GL11.GL_BLEND);
+	            GL11.glDisable(GL11.GL_ALPHA_TEST);
+	            OpenGlHelper.glBlendFunc(770, 771, 1, 0);
+	            GL11.glShadeModel(GL11.GL_SMOOTH);
+	            Tessellator tessellator = Tessellator.instance;
+                
+	            tessellator.startDrawing(GL11.GL_TRIANGLE_FAN);
+	            tessellator.setColorRGBA_F(1,0,0, 1);
+	            tessellator.addVertex(100, 100, (double)this.zLevel);
+		    	
+//		    	for (int i = 0; i < 180; i++)
+//		    	{
+//		    		float x = (float) (Math.sin(i) * 100) + 100;
+//		    		float y = (float) (Math.cos(i) * 100) + 100;
+//		            tessellator.addVertex(x, y, (double)this.zLevel);
+//		    		x = (float) (Math.sin(i + 0.1F) * 100) + 100;
+//		    		y = (float) (Math.cos(i + 0.1F) * 100) + 100;
+//		            tessellator.addVertex(x, y, (double)this.zLevel);
+//		    	}
+		    	
+		    	int i;
+		    	double sections = 180;
+		    	float radius = 100.1F;
+		    	float twoPi = 2.0F * 3.14159F;
+
+//		    	tessellator.addVertex(0.0, 0.0, (double)this.zLevel); //center of triangles
+
+		    	for(i = 0; i <= sections;i++) {
+
+		    		tessellator.addVertex(radius*Math.sin(i) + 100,
+		    	               radius*Math.cos(i) + 100, (double)this.zLevel);
+		    		tessellator.addVertex(radius*Math.sin(i + 0.1F) + 100,
+		    	               radius*Math.cos(i + 0.1F) + 100, (double)this.zLevel);
+
+		    	    if(i%6 == 0)
+		    	    	tessellator.setColorRGBA_F(1.0f, 0.0f, 0.0f, 1);
+
+		    	    if (i%6 == 1)
+		    	    	tessellator.setColorRGBA_F(1.0f, 0.5f, 0.0f, 1);
+
+		    	    if (i%6 == 2)
+		    	    	tessellator.setColorRGBA_F(1.0f, 1.0f, 0.0f, 1);
+
+		    	    if (i%6 == 3)
+		    	    	tessellator.setColorRGBA_F(0.0f, 1.0f, 0.0f, 1);
+
+		    	    if (i%6 == 4)
+		    	    	tessellator.setColorRGBA_F(0.0f, 0.0f, 1.0f, 1);
+
+		    	    if (i%6 == 5)
+		    	    	tessellator.setColorRGBA_F(1.0f, 0.0f, 1.0f, 1);
+		    	}
+		    	
+//		    	for(int i = 0; i <= 180; i++) 
+//		    	{
+//		    	    if(i%6 == 0)
+//		    	    	tessellator.setColorRGBA_F(1.0f, 0.0f, 0.0f, 1);
+//
+//		    	    if (i%6 == 1)
+//		    	    	tessellator.setColorRGBA_F(1.0f, 0.5f, 0.0f, 1);
+//
+//		    	    if (i%6 == 2)
+//		    	    	tessellator.setColorRGBA_F(1.0f, 1.0f, 0.0f, 1);
+//
+//		    	    if (i%6 == 3)
+//		    	    	tessellator.setColorRGBA_F(0.0f, 1.0f, 0.0f, 1);
+//
+//		    	    if (i%6 == 4)
+//		    	    	tessellator.setColorRGBA_F(0.0f, 0.0f, 1.0f, 1);
+//
+//		    	    if (i%6 == 5)
+//		    	    	tessellator.setColorRGBA_F(1.0f, 0.0f, 1.0f, 1);
+//
+//		    	    FMLLog.info("" + (100 * Math.cos(i * (2 * Math.PI) / 6.0F) + 100));
+//		    	    
+//		            tessellator.addVertex(100 * Math.cos(i * (2 * Math.PI) / 6.0F) + 100,
+//		    	    		100 * Math.sin(i * (2 * Math.PI) / 6.0F) + 100, (double)this.zLevel);
+//		    	}
+		    	
+//	            tessellator.setColorRGBA_F(0, 0, 1, 1);
+//	            tessellator.addVertex((double)x2, (double)y1, (double)this.zLevel);
+//	            tessellator.setColorRGBA_F(0, 0, 0, 1);
+//	            tessellator.addVertex((double)x1, (double)y1, (double)this.zLevel);
+//	            tessellator.setColorRGBA_F(1, 0, 0, 1);
+//	            tessellator.addVertex((double)x1, (double)y2, (double)this.zLevel);
+//	            tessellator.setColorRGBA_F(0, 1, 0, 1);
+//	            tessellator.addVertex((double)x2, (double)y2, (double)this.zLevel);
+	            tessellator.draw();
+	            
+	            tessellator.startDrawingQuads();
+	            
+//	            int i = 0;
+//	            for (float yScale = y1; yScale < y2; yScale += (y2 - y1) / 6.0F)
+//	            {
+//		            switch (i)
+//		            {
+//		            case 0:
+//			            tessellator.setColorRGBA_F(1, 0, 0, 1);
+//		            	break;
+//		            case 1:
+//			            tessellator.setColorRGBA_F(1, 1, 1, 1);
+//		            	break;
+//		            case 2:
+//			            tessellator.setColorRGBA_F(1, 1, 1, 1);
+//		            	break;
+//		            case 3:
+//			            tessellator.setColorRGBA_F(1, 1, 1, 1);
+//		            	break;
+//		            case 4:
+//			            tessellator.setColorRGBA_F(1, 1, 1, 1);
+//		            	break;
+//		            case 5:
+//			            tessellator.setColorRGBA_F(1, 1, 1, 1);
+//		            	break;
+//		            case 6:
+//			            tessellator.setColorRGBA_F(1, 1, 1, 1);
+//		            	break;
+//		            }
+//		            
+//		            if (i % 2 == 0)
+//		            {
+//			            tessellator.addVertex((double)x2 + 30, (double)yScale, (double)this.zLevel);
+//			            tessellator.addVertex((double)x2 + 10, (double)yScale, (double)this.zLevel);
+//		            }
+//		            else
+//		            {
+//			            tessellator.addVertex((double)x2 + 10, (double)yScale + (y2 - y1) / 6.0F, (double)this.zLevel);
+//			            tessellator.addVertex((double)x2 + 30, (double)yScale + (y2 - y1) / 6.0F, (double)this.zLevel);
+//		            }
+//		            
+//		            i++;
+//	            }
+	            
+	            tessellator.draw();
+	            
+	            GL11.glShadeModel(GL11.GL_FLAT);
+	            GL11.glDisable(GL11.GL_BLEND);
+	            GL11.glEnable(GL11.GL_ALPHA_TEST);
+	            GL11.glEnable(GL11.GL_TEXTURE_2D);
+	        	
 	        	break;
 	        }
 		}
@@ -207,7 +410,9 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
         GL11.glTranslatef(0.0F, 0.0F, 1.0F);
         GL11.glScalef(1.0F, 1.0F, -1F);
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(ItemRendererFlag.flagTextures[5]);
+		this.dummyFlag.flagData = this.flagData;
 		this.dummyModel.renderFlag(this.dummyFlag, 0.0625F);
+		GL11.glColor3f(1, 1, 1);
 		this.dummyModel.renderFace(this.dummyFlag, 0.0625F, true);
 		GL11.glPopMatrix();
 

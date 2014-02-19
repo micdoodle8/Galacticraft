@@ -9,6 +9,7 @@ import java.util.Collection;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
+import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -81,6 +82,23 @@ public class NetworkUtil
 			{
 				NetworkUtil.encodeData(buffer, (Collection<Object>) dataValue);
 			}
+			else if (dataValue instanceof FlagData)
+			{
+				buffer.writeInt(((FlagData) dataValue).getWidth());
+				buffer.writeInt(((FlagData) dataValue).getHeight());
+				buffer.writeBoolean(((FlagData) dataValue).getHasFace());
+				
+				for (int i = 0; i < ((FlagData) dataValue).getWidth(); i++)
+				{
+					for (int j = 0; j < ((FlagData) dataValue).getHeight(); j++)
+					{
+						Vector3 vec = ((FlagData) dataValue).getColorAt(i, j);
+						buffer.writeByte((byte) (vec.x * 256 - 128));
+						buffer.writeByte((byte) (vec.y * 256 - 128));
+						buffer.writeByte((byte) (vec.z * 256 - 128));
+					}
+				}
+			}
 			else if (dataValue instanceof Integer[])
 			{
 				Integer[] array = (Integer[]) dataValue;
@@ -89,6 +107,16 @@ public class NetworkUtil
 				for (int i = 0; i < array.length; i++)
 				{
 					buffer.writeInt(array[i]);
+				}
+			}
+			else if (dataValue instanceof String[])
+			{
+				String[] array = (String[]) dataValue;
+				buffer.writeInt(array.length);
+
+				for (int i = 0; i < array.length; i++)
+				{
+					ByteBufUtils.writeUTF8String(buffer, array[i]);
 				}
 			}
 			else
@@ -147,6 +175,23 @@ public class NetworkUtil
 					e.printStackTrace();
 				}
 			}
+			else if (clazz.equals(FlagData.class))
+			{
+				int width = buffer.readInt();
+				int height = buffer.readInt();
+				boolean hasFace = buffer.readBoolean();
+				FlagData flagData = new FlagData(width, height);
+				
+				for (int i = 0; i < width; i++)
+				{
+					for (int j = 0; j < height; j++)
+					{
+						flagData.setColorAt(i, j, new Vector3(buffer.readByte() + 128, buffer.readByte() + 128, buffer.readByte() + 128));
+					}
+				}
+				
+				objList.add(flagData);
+			}
 			else if (clazz.equals(Integer[].class))
 			{
 				int size = buffer.readInt();
@@ -154,6 +199,15 @@ public class NetworkUtil
 				for (int i = 0; i < size; i++)
 				{
 					objList.add(buffer.readInt());
+				}
+			}
+			else if (clazz.equals(String[].class))
+			{
+				int size = buffer.readInt();
+
+				for (int i = 0; i < size; i++)
+				{
+					objList.add(ByteBufUtils.readUTF8String(buffer));
 				}
 			}
 		}

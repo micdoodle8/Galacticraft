@@ -26,6 +26,7 @@ import micdoodle8.mods.galacticraft.core.command.CommandSpaceStationAddOwner;
 import micdoodle8.mods.galacticraft.core.command.CommandSpaceStationRemoveOwner;
 import micdoodle8.mods.galacticraft.core.dimension.TeleportTypeOverworld;
 import micdoodle8.mods.galacticraft.core.dimension.TeleportTypeSpaceStation;
+import micdoodle8.mods.galacticraft.core.dimension.WorldDataSpaceRaces;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.entities.EntityAlienVillager;

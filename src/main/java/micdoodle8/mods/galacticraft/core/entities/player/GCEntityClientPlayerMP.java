@@ -265,11 +265,6 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 		{
 			GalacticraftCore.playersClient.put(this.getGameProfile().getName(), this);
 		}
-		
-		if (this.tick == 50)
-		{
-			this.openGui(GalacticraftCore.instance, GCConfigManager.idGuiNewSpaceRace, this.worldObj, (int)this.posX, (int)this.posY, (int)this.posZ);
-		}
 
 		if (this != null && this.getParachute() && !this.capabilities.isFlying && !this.handleWaterMovement())
 		{

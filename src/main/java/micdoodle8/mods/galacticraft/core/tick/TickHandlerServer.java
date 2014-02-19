@@ -7,11 +7,17 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
+import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
+import micdoodle8.mods.galacticraft.core.dimension.WorldDataSpaceRaces;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.ScheduledBlockChange;
 import net.minecraft.entity.Entity;
+import net.minecraft.village.VillageCollection;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.WorldTickEvent;
 
 /**
@@ -26,6 +32,7 @@ import cpw.mods.fml.common.gameevent.TickEvent.WorldTickEvent;
 public class TickHandlerServer
 {
 	private static Map<Integer, List<ScheduledBlockChange>> scheduledBlockChanges = new ConcurrentHashMap<Integer, List<ScheduledBlockChange>>();
+	public static WorldDataSpaceRaces spaceRaceData = null;
 
 	public static void scheduleNewBlockChange(int dimID, ScheduledBlockChange change)
 	{
@@ -38,6 +45,18 @@ public class TickHandlerServer
 
 		changeList.add(change);
 		TickHandlerServer.scheduledBlockChanges.put(dimID, changeList);
+	}
+	
+	@SubscribeEvent
+	public void onServerTick(ServerTickEvent event)
+	{
+		if (spaceRaceData == null)
+		{
+			World world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(0);
+			world.mapStorage.loadData(WorldDataSpaceRaces.class, WorldDataSpaceRaces.saveDataID);
+		}
+		
+		SpaceRaceManager.tick();
 	}
 
 	@SubscribeEvent

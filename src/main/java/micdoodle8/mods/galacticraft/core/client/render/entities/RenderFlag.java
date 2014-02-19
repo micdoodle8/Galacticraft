@@ -37,31 +37,26 @@ public class RenderFlag extends Render
 		}
 	}
 
-	protected ModelFlag modelSpaceship;
+	protected ModelFlag modelFlag;
 
 	public RenderFlag()
 	{
 		this.shadowSize = 1F;
-		this.modelSpaceship = new ModelFlag();
-	}
-
-	protected ResourceLocation func_110779_a(EntityFlag entity)
-	{
-		if (entity.getType() == -1)
-		{
-			return null;
-		}
-
-		return RenderFlag.flagTextures[entity.getType()];
+		this.modelFlag = new ModelFlag();
 	}
 
 	@Override
 	protected ResourceLocation getEntityTexture(Entity entity)
 	{
-		return this.func_110779_a((EntityFlag) entity);
+		if (((EntityFlag) entity).getType() == -1)
+		{
+			return flagTextures[0];
+		}
+
+		return RenderFlag.flagTextures[((EntityFlag) entity).getType()];
 	}
 
-	public void renderSpaceship(EntityFlag entity, double par2, double par4, double par6, float par8, float par9)
+	public void renderFlag(EntityFlag entity, double par2, double par4, double par6, float par8, float par9)
 	{
 		GL11.glPushMatrix();
 		long var10 = entity.getEntityId() * 493286711L;
@@ -77,13 +72,13 @@ public class RenderFlag extends Render
 		GL11.glRotatef(-var24, 0.0F, 0.0F, 1.0F);
 		this.bindEntityTexture(entity);
 		GL11.glScalef(-1.0F, -1.0F, 1.0F);
-		this.modelSpaceship.render(entity, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+		this.modelFlag.render(entity, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 		GL11.glPopMatrix();
 	}
 
 	@Override
 	public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
 	{
-		this.renderSpaceship((EntityFlag) par1Entity, par2, par4, par6, par8, par9);
+		this.renderFlag((EntityFlag) par1Entity, par2, par4, par6, par8, par9);
 	}
 }

@@ -6,6 +6,7 @@ import java.util.Map;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
+import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
 import net.minecraft.entity.player.EntityPlayer;
 
 /**
@@ -98,6 +99,16 @@ public class PlayerUtil
 
 		GCLog.severe("Warning: Could not find player base client instance for player " + player.getGameProfile().getName());
 
+		return null;
+	}
+	
+	public static FlagData getFlagDataFromPlayer(EntityPlayer player)
+	{
+		if (player instanceof GCEntityPlayerMP)
+		{
+			return ((GCEntityPlayerMP) player).getFlagData();
+		}
+		
 		return null;
 	}
 }
