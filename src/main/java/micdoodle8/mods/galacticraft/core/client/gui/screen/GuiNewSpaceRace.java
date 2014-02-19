@@ -3,10 +3,12 @@ package micdoodle8.mods.galacticraft.core.client.gui.screen;
 import java.util.ArrayList;
 import java.util.List;
 
+import micdoodle8.mods.galacticraft.api.vector.Vector2;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiCheckbox;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiCheckbox.ICheckBoxCallback;
+import micdoodle8.mods.galacticraft.core.client.gui.element.GuiSlider;
 import micdoodle8.mods.galacticraft.core.client.model.ModelFlag;
 import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererFlag;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
@@ -22,6 +24,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
@@ -43,6 +46,9 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
 	private GuiCheckbox checkboxCompete;
 	private GuiCheckbox checkboxUploadScore;
 	private boolean initialized;
+	private GuiSlider sliderColorR;
+	private GuiSlider sliderColorG;
+	private GuiSlider sliderColorB;
 	private EnumSpaceRaceGui currentState = EnumSpaceRaceGui.MAIN;
 
     private int buttonBack_width;
@@ -68,7 +74,13 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
     private int buttonFlag_xPosition;
     private int buttonFlag_yPosition;
     private boolean buttonFlag_hover;
-    
+
+    private Vector2 flagDesignerScale = new Vector2();
+    private float flagDesignerMinX;
+    private float flagDesignerMinY;
+    private float flagDesignerWidth;
+    private float flagDesignerHeight;
+	
     private boolean optionCompete = true;
     private boolean optionUpload = true;
 
@@ -86,6 +98,17 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
 	@Override
 	public void initGui()
 	{
+		int sliderR = 0;
+		int sliderG = 0;
+		int sliderB = 0;
+		
+		if (this.sliderColorR != null && this.sliderColorG != null && this.sliderColorR != null)
+		{
+			sliderR = this.sliderColorR.getSliderPos();
+			sliderG = this.sliderColorG.getSliderPos();
+			sliderB = this.sliderColorB.getSliderPos();
+		}
+		
 		super.initGui();
 		this.buttonList.clear();
 		
@@ -125,6 +148,21 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
 			case RULES:
 				break;
 			case DESIGN_FLAG:
+				this.sliderColorR = new GuiSlider(2, this.width / 2 + 110, this.height / 2 - 55, 8, 70, true, new Vector3(0, 0, 0), new Vector3(1, 0, 0));
+				this.sliderColorG = new GuiSlider(3, this.width / 2 + 120, this.height / 2 - 55, 8, 70, true, new Vector3(0, 0, 0), new Vector3(0, 1, 0));
+				this.sliderColorB = new GuiSlider(4, this.width / 2 + 130, this.height / 2 - 55, 8, 70, true, new Vector3(0, 0, 0), new Vector3(0, 0, 1));
+				this.sliderColorR.setSliderPos(sliderR);
+				this.sliderColorG.setSliderPos(sliderG);
+				this.sliderColorB.setSliderPos(sliderB);
+				this.buttonList.add(this.sliderColorR);
+				this.buttonList.add(this.sliderColorG);
+				this.buttonList.add(this.sliderColorB);
+				
+				this.flagDesignerScale = new Vector2(this.width / 130.0F, this.width / 130.0F);
+	        	this.flagDesignerMinX = this.width / 2 - (this.flagData.getWidth() * (float)this.flagDesignerScale.x) / 2;
+	        	this.flagDesignerMinY = this.height / 2 - (this.flagData.getHeight() * (float)this.flagDesignerScale.y) / 2 + 3;
+	        	this.flagDesignerWidth = this.flagData.getWidth() * (float)this.flagDesignerScale.x;
+	        	this.flagDesignerHeight = this.flagData.getHeight() * (float)this.flagDesignerScale.y;
 				break;
 			default:
 				break;
@@ -194,6 +232,16 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
     {
         super.updateScreen();
         ++this.ticksPassed;
+
+        int x = Mouse.getEventX() * this.width / this.mc.displayWidth;
+        int y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
+        
+        if (Mouse.isButtonDown(0) && x >= this.flagDesignerMinX && y >= this.flagDesignerMinY && x <= this.flagDesignerMinX + this.flagDesignerWidth && y <= this.flagDesignerMinY + this.flagDesignerHeight)
+    	{
+    		int unScaledX = (int)Math.floor((x - this.flagDesignerMinX) / this.flagDesignerScale.x);
+    		int unScaledY = (int)Math.floor((y - this.flagDesignerMinY) / this.flagDesignerScale.y);
+    		this.flagData.setColorAt(unScaledX, unScaledY, new Vector3(this.sliderColorR.getNormalizedValue() * 256, this.sliderColorG.getNormalizedValue() * 256, this.sliderColorB.getNormalizedValue() * 256));
+    	}
     }
     
     public void drawScreen(int par1, int par2, float par3)
@@ -204,6 +252,11 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
 		
 		if (this.initialized)
 		{
+			this.buttonBack_hover = par1 >= this.buttonBack_xPosition && par2 >= this.buttonBack_yPosition && par1 < this.buttonBack_xPosition + this.buttonBack_width && par2 < this.buttonBack_yPosition + this.buttonBack_height;
+			this.buttonRules_hover = this.currentState == EnumSpaceRaceGui.MAIN && par1 >= this.buttonRules_xPosition && par2 >= this.buttonRules_yPosition && par1 < this.buttonRules_xPosition + this.buttonRules_width && par2 < this.buttonRules_yPosition + this.buttonRules_height;
+			this.buttonDone_hover = this.currentState == EnumSpaceRaceGui.MAIN && par1 >= this.buttonDone_xPosition && par2 >= this.buttonDone_yPosition && par1 < this.buttonDone_xPosition + this.buttonDone_width && par2 < this.buttonDone_yPosition + this.buttonDone_height;
+			this.buttonFlag_hover = this.currentState == EnumSpaceRaceGui.MAIN && par1 >= this.buttonFlag_xPosition && par2 >= this.buttonFlag_yPosition && par1 < this.buttonFlag_xPosition + this.buttonFlag_width && par2 < this.buttonFlag_yPosition + this.buttonFlag_height;
+			
 	        switch (this.currentState)
 	        {
 	        case MAIN:
@@ -228,172 +281,46 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
 	        	float scaleY = this.height / 75.0F;
 	        	float baseX = this.width / 2 - (this.flagData.getWidth() * scaleX) / 2;
 	        	float baseY = this.height / 2 - (this.flagData.getHeight() * scaleY) / 2 + 3;
-	        	
+
+				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		        GL11.glDisable(GL11.GL_TEXTURE_2D);
+		        GL11.glEnable(GL11.GL_BLEND);
+		        GL11.glDisable(GL11.GL_ALPHA_TEST);
+		        OpenGlHelper.glBlendFunc(770, 771, 1, 0);
+		        GL11.glShadeModel(GL11.GL_SMOOTH);
+		        Tessellator tessellator = Tessellator.instance;
+    	        
 	        	for (int x = 0; x < this.flagData.getWidth(); x++)
 	        	{
 	        		for (int y = 0; y < this.flagData.getHeight(); y++)
 	        		{
 	        			Vector3 color = this.flagData.getColorAt(x, y);
-	        	        Tessellator tessellator = Tessellator.instance;
-	        	        GL11.glEnable(GL11.GL_BLEND);
-	        	        GL11.glDisable(GL11.GL_TEXTURE_2D);
-	        	        OpenGlHelper.glBlendFunc(770, 771, 1, 0);
 	        	        GL11.glColor4f(color.floatX(), color.floatY(), color.floatZ(), 1.0F);
 	        	        tessellator.startDrawingQuads();
-	        	        tessellator.addVertex((double)baseX + x * scaleX, (double)baseY + y * scaleY + scaleY / 1.1, 0.0D);
-	        	        tessellator.addVertex((double)baseX + x * scaleX + scaleX / 1.1, (double)baseY + y * scaleY + scaleY / 1.1, 0.0D);
-	        	        tessellator.addVertex((double)baseX + x * scaleX + scaleX / 1.1, (double)baseY + y * scaleY, 0.0D);
+	        	        tessellator.addVertex((double)baseX + x * scaleX, (double)baseY + y * scaleY + 1 * scaleY, 0.0D);
+	        	        tessellator.addVertex((double)baseX + x * scaleX + 1 * scaleX, (double)baseY + y * scaleY + 1 * scaleY, 0.0D);
+	        	        tessellator.addVertex((double)baseX + x * scaleX + 1 * scaleX, (double)baseY + y * scaleY, 0.0D);
 	        	        tessellator.addVertex((double)baseX + x * scaleX, (double)baseY + y * scaleY, 0.0D);
 	        	        tessellator.draw();
-	        	        GL11.glEnable(GL11.GL_TEXTURE_2D);
-	        	        GL11.glDisable(GL11.GL_BLEND);
 	        		}
 	        	}
-	        	
-	        	float x1 = 0;
-	        	float x2 = 100;
-	        	float y1 = 0;
-	        	float y2 = 100;
-	        	GL11.glDisable(GL11.GL_TEXTURE_2D);
-	            GL11.glEnable(GL11.GL_BLEND);
-	            GL11.glDisable(GL11.GL_ALPHA_TEST);
-	            OpenGlHelper.glBlendFunc(770, 771, 1, 0);
-	            GL11.glShadeModel(GL11.GL_SMOOTH);
-	            Tessellator tessellator = Tessellator.instance;
-                
-	            tessellator.startDrawing(GL11.GL_TRIANGLE_FAN);
-	            tessellator.setColorRGBA_F(1,0,0, 1);
-	            tessellator.addVertex(100, 100, (double)this.zLevel);
-		    	
-//		    	for (int i = 0; i < 180; i++)
-//		    	{
-//		    		float x = (float) (Math.sin(i) * 100) + 100;
-//		    		float y = (float) (Math.cos(i) * 100) + 100;
-//		            tessellator.addVertex(x, y, (double)this.zLevel);
-//		    		x = (float) (Math.sin(i + 0.1F) * 100) + 100;
-//		    		y = (float) (Math.cos(i + 0.1F) * 100) + 100;
-//		            tessellator.addVertex(x, y, (double)this.zLevel);
-//		    	}
-		    	
-		    	int i;
-		    	double sections = 180;
-		    	float radius = 100.1F;
-		    	float twoPi = 2.0F * 3.14159F;
-
-//		    	tessellator.addVertex(0.0, 0.0, (double)this.zLevel); //center of triangles
-
-		    	for(i = 0; i <= sections;i++) {
-
-		    		tessellator.addVertex(radius*Math.sin(i) + 100,
-		    	               radius*Math.cos(i) + 100, (double)this.zLevel);
-		    		tessellator.addVertex(radius*Math.sin(i + 0.1F) + 100,
-		    	               radius*Math.cos(i + 0.1F) + 100, (double)this.zLevel);
-
-		    	    if(i%6 == 0)
-		    	    	tessellator.setColorRGBA_F(1.0f, 0.0f, 0.0f, 1);
-
-		    	    if (i%6 == 1)
-		    	    	tessellator.setColorRGBA_F(1.0f, 0.5f, 0.0f, 1);
-
-		    	    if (i%6 == 2)
-		    	    	tessellator.setColorRGBA_F(1.0f, 1.0f, 0.0f, 1);
-
-		    	    if (i%6 == 3)
-		    	    	tessellator.setColorRGBA_F(0.0f, 1.0f, 0.0f, 1);
-
-		    	    if (i%6 == 4)
-		    	    	tessellator.setColorRGBA_F(0.0f, 0.0f, 1.0f, 1);
-
-		    	    if (i%6 == 5)
-		    	    	tessellator.setColorRGBA_F(1.0f, 0.0f, 1.0f, 1);
-		    	}
-		    	
-//		    	for(int i = 0; i <= 180; i++) 
-//		    	{
-//		    	    if(i%6 == 0)
-//		    	    	tessellator.setColorRGBA_F(1.0f, 0.0f, 0.0f, 1);
-//
-//		    	    if (i%6 == 1)
-//		    	    	tessellator.setColorRGBA_F(1.0f, 0.5f, 0.0f, 1);
-//
-//		    	    if (i%6 == 2)
-//		    	    	tessellator.setColorRGBA_F(1.0f, 1.0f, 0.0f, 1);
-//
-//		    	    if (i%6 == 3)
-//		    	    	tessellator.setColorRGBA_F(0.0f, 1.0f, 0.0f, 1);
-//
-//		    	    if (i%6 == 4)
-//		    	    	tessellator.setColorRGBA_F(0.0f, 0.0f, 1.0f, 1);
-//
-//		    	    if (i%6 == 5)
-//		    	    	tessellator.setColorRGBA_F(1.0f, 0.0f, 1.0f, 1);
-//
-//		    	    FMLLog.info("" + (100 * Math.cos(i * (2 * Math.PI) / 6.0F) + 100));
-//		    	    
-//		            tessellator.addVertex(100 * Math.cos(i * (2 * Math.PI) / 6.0F) + 100,
-//		    	    		100 * Math.sin(i * (2 * Math.PI) / 6.0F) + 100, (double)this.zLevel);
-//		    	}
-		    	
-//	            tessellator.setColorRGBA_F(0, 0, 1, 1);
-//	            tessellator.addVertex((double)x2, (double)y1, (double)this.zLevel);
-//	            tessellator.setColorRGBA_F(0, 0, 0, 1);
-//	            tessellator.addVertex((double)x1, (double)y1, (double)this.zLevel);
-//	            tessellator.setColorRGBA_F(1, 0, 0, 1);
-//	            tessellator.addVertex((double)x1, (double)y2, (double)this.zLevel);
-//	            tessellator.setColorRGBA_F(0, 1, 0, 1);
-//	            tessellator.addVertex((double)x2, (double)y2, (double)this.zLevel);
-	            tessellator.draw();
 	            
-	            tessellator.startDrawingQuads();
-	            
-//	            int i = 0;
-//	            for (float yScale = y1; yScale < y2; yScale += (y2 - y1) / 6.0F)
-//	            {
-//		            switch (i)
-//		            {
-//		            case 0:
-//			            tessellator.setColorRGBA_F(1, 0, 0, 1);
-//		            	break;
-//		            case 1:
-//			            tessellator.setColorRGBA_F(1, 1, 1, 1);
-//		            	break;
-//		            case 2:
-//			            tessellator.setColorRGBA_F(1, 1, 1, 1);
-//		            	break;
-//		            case 3:
-//			            tessellator.setColorRGBA_F(1, 1, 1, 1);
-//		            	break;
-//		            case 4:
-//			            tessellator.setColorRGBA_F(1, 1, 1, 1);
-//		            	break;
-//		            case 5:
-//			            tessellator.setColorRGBA_F(1, 1, 1, 1);
-//		            	break;
-//		            case 6:
-//			            tessellator.setColorRGBA_F(1, 1, 1, 1);
-//		            	break;
-//		            }
-//		            
-//		            if (i % 2 == 0)
-//		            {
-//			            tessellator.addVertex((double)x2 + 30, (double)yScale, (double)this.zLevel);
-//			            tessellator.addVertex((double)x2 + 10, (double)yScale, (double)this.zLevel);
-//		            }
-//		            else
-//		            {
-//			            tessellator.addVertex((double)x2 + 10, (double)yScale + (y2 - y1) / 6.0F, (double)this.zLevel);
-//			            tessellator.addVertex((double)x2 + 30, (double)yScale + (y2 - y1) / 6.0F, (double)this.zLevel);
-//		            }
-//		            
-//		            i++;
-//	            }
-	            
-	            tessellator.draw();
-	            
-	            GL11.glShadeModel(GL11.GL_FLAT);
-	            GL11.glDisable(GL11.GL_BLEND);
-	            GL11.glEnable(GL11.GL_ALPHA_TEST);
-	            GL11.glEnable(GL11.GL_TEXTURE_2D);
+		        tessellator.startDrawingQuads();
+		        float x1 = this.sliderColorR.xPosition;
+		        float x2 = this.sliderColorB.xPosition + this.sliderColorB.getButtonWidth();
+		        float y1 = this.sliderColorR.yPosition + this.sliderColorR.getButtonHeight() + 2;
+		        float y2 = this.sliderColorR.yPosition + this.sliderColorR.getButtonHeight() + (x2 - x1) + 2;
+		        tessellator.setColorRGBA_F(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F);
+		        tessellator.addVertex((double)x2, (double)y1, (double)this.zLevel);
+		        tessellator.addVertex((double)x1, (double)y1, (double)this.zLevel);
+		        tessellator.addVertex((double)x1, (double)y2, (double)this.zLevel);
+		        tessellator.addVertex((double)x2, (double)y2, (double)this.zLevel);
+		        tessellator.draw();
+		        
+		        GL11.glShadeModel(GL11.GL_FLAT);
+		        GL11.glDisable(GL11.GL_BLEND);
+		        GL11.glEnable(GL11.GL_ALPHA_TEST);
+		        GL11.glEnable(GL11.GL_TEXTURE_2D);
 	        	
 	        	break;
 	        }
@@ -421,8 +348,6 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
         this.drawCenteredString(this.fontRendererObj, EnumColor.ORANGE + "Customize Flag", this.buttonFlag_xPosition + this.buttonFlag_width / 2, this.buttonFlag_yPosition + this.buttonFlag_height / 2 - 5, CoreUtil.to32BitColor(255, 100, 100, 100));
         GL11.glPopMatrix();
 
-		this.buttonFlag_hover = mouseX >= this.buttonFlag_xPosition && mouseY >= this.buttonFlag_yPosition && mouseX < this.buttonFlag_xPosition + this.buttonFlag_width && mouseY < this.buttonFlag_yPosition + this.buttonFlag_height;
-		
         if (this.buttonFlag_hover)
         {
             this.drawRect(this.buttonFlag_xPosition, this.buttonFlag_yPosition, buttonFlag_xPosition + buttonFlag_width, buttonFlag_yPosition + buttonFlag_height, CoreUtil.to32BitColor(255, 50, 50, 50));
@@ -436,21 +361,18 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
     
     private void drawBackButton(int mouseX, int mouseY)
     {
-		this.buttonBack_hover = mouseX >= this.buttonBack_xPosition && mouseY >= this.buttonBack_yPosition && mouseX < this.buttonBack_xPosition + this.buttonBack_width && mouseY < this.buttonBack_yPosition + this.buttonBack_height;
         this.drawGradientRect(this.buttonBack_xPosition, this.buttonBack_yPosition, this.buttonBack_xPosition + this.buttonBack_width, this.buttonBack_yPosition + this.buttonBack_height, buttonBack_hover ? CoreUtil.to32BitColor(150, 30, 30, 30) : CoreUtil.to32BitColor(150, 10, 10, 10), buttonBack_hover ? CoreUtil.to32BitColor(250, 30, 30, 30) : CoreUtil.to32BitColor(250, 10, 10, 10));
         this.drawCenteredString(this.fontRendererObj, this.currentState == EnumSpaceRaceGui.MAIN ? "Close" : "Back", this.buttonBack_xPosition + this.buttonBack_width / 2, this.buttonBack_yPosition + this.buttonBack_height / 4, CoreUtil.to32BitColor(255, 100, 100, 100));
     }
     
     private void drawRulesButton(int mouseX, int mouseY)
     {
-		this.buttonRules_hover = mouseX >= this.buttonRules_xPosition && mouseY >= this.buttonRules_yPosition && mouseX < this.buttonRules_xPosition + this.buttonRules_width && mouseY < this.buttonRules_yPosition + this.buttonRules_height;
         this.drawGradientRect(this.buttonRules_xPosition, this.buttonRules_yPosition, this.buttonRules_xPosition + this.buttonRules_width, this.buttonRules_yPosition + this.buttonRules_height, buttonRules_hover ? CoreUtil.to32BitColor(150, 30, 30, 30) : CoreUtil.to32BitColor(150, 10, 10, 10), buttonRules_hover ? CoreUtil.to32BitColor(250, 30, 30, 30) : CoreUtil.to32BitColor(250, 10, 10, 10));
         this.drawCenteredString(this.fontRendererObj, "Rules", this.buttonRules_xPosition + this.buttonRules_width / 2, this.buttonRules_yPosition + this.buttonRules_height / 4, CoreUtil.to32BitColor(255, 100, 100, 100));
     }
     
     private void drawDoneButton(int mouseX, int mouseY)
     {
-		this.buttonDone_hover = mouseX >= this.buttonDone_xPosition && mouseY >= this.buttonDone_yPosition && mouseX < this.buttonDone_xPosition + this.buttonDone_width && mouseY < this.buttonDone_yPosition + this.buttonDone_height;
         this.drawGradientRect(this.buttonDone_xPosition, this.buttonDone_yPosition, this.buttonDone_xPosition + this.buttonDone_width, this.buttonDone_yPosition + this.buttonDone_height, buttonDone_hover ? CoreUtil.to32BitColor(150, 30, 30, 30) : CoreUtil.to32BitColor(150, 10, 10, 10), buttonDone_hover ? CoreUtil.to32BitColor(250, 30, 30, 30) : CoreUtil.to32BitColor(250, 10, 10, 10));
         this.drawCenteredString(this.fontRendererObj, "GO!", this.buttonDone_xPosition + this.buttonDone_width / 2, this.buttonDone_yPosition + this.buttonDone_height / 4, CoreUtil.to32BitColor(255, 100, 100, 100));
     }
