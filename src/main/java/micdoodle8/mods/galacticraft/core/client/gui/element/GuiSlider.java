@@ -83,9 +83,9 @@ public class GuiSlider extends GuiButton
 		}
 	}
 	
-	public void setSliderPos(int pos)
+	public void setSliderPos(float pos)
 	{
-		this.sliderPos = pos;
+		this.sliderPos = (int) Math.floor(this.height * pos);
 	}
 	
 	public int getSliderPos()

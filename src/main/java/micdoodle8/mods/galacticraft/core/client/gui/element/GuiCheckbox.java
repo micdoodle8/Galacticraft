@@ -20,15 +20,20 @@ import org.lwjgl.opengl.GL11;
 public class GuiCheckbox extends GuiButton
 {
 	protected static final ResourceLocation texture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/gui.png");
-
 	public Boolean isSelected;
-
 	private ICheckBoxCallback parentGui;
+	private int textColor;
 
 	public GuiCheckbox(int id, ICheckBoxCallback parentGui, int x, int y, String text)
 	{
+		this(id, parentGui, x, y, text, 4210752);
+	}
+
+	public GuiCheckbox(int id, ICheckBoxCallback parentGui, int x, int y, String text, int textColor)
+	{
 		super(id, x, y, 13, 13, text);
 		this.parentGui = parentGui;
+		this.textColor = textColor;
 	}
 
 	@Override
@@ -46,7 +51,7 @@ public class GuiCheckbox extends GuiButton
 			this.field_146123_n = par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height;
 			this.drawTexturedModalRect(this.xPosition, this.yPosition, this.isSelected ? 33 : 20, this.field_146123_n ? 24 : 37, this.width, this.height);
 			this.mouseDragged(par1Minecraft, par2, par3);
-			par1Minecraft.fontRenderer.drawString(this.displayString, this.xPosition + this.width + 3, this.yPosition + (this.height - 6) / 2, 4210752, false);
+			par1Minecraft.fontRenderer.drawString(this.displayString, this.xPosition + this.width + 3, this.yPosition + (this.height - 6) / 2, this.textColor, false);
 		}
 	}
 

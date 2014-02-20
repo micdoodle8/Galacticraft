@@ -1,12 +1,16 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,6 +19,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
 
 /**
  * GCCoreEntityFlag.java
@@ -183,14 +189,11 @@ public class EntityFlag extends Entity
 	@Override
 	public void onUpdate()
 	{
-		if (this.flagData == null)
+		super.onUpdate();
+		
+		if (this.flagData == null && this.ticksExisted % 20 == 0 && this.worldObj.isRemote && FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
 		{
-			SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(getOwner()); 
-			
-			if (race != null)
-			{
-				this.flagData = race.getFlagData();
-			}
+			this.updateFlagData();
 		}
 		
 		Vector3 vec = new Vector3(this.posX, this.posY, this.posZ);
@@ -212,6 +215,20 @@ public class EntityFlag extends Entity
 		this.moveEntity(this.motionX, this.motionY, this.motionZ);
 	}
 
+	private void updateFlagData()
+	{
+		SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(getOwner()); 
+		
+		if (race != null)
+		{
+			this.flagData = race.getFlagData();
+		}
+		else if (Minecraft.getMinecraft().thePlayer.getDistanceToEntity(this) < 50.0D)
+		{
+			GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_FLAG_DATA, new Object[] { this.getOwner() }));
+		}
+	}
+	
 	@Override
 	public boolean interactFirst(EntityPlayer par1EntityPlayer)
 	{

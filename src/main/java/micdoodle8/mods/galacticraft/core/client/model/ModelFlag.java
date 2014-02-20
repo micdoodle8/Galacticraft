@@ -125,12 +125,12 @@ public class ModelFlag extends ModelBase
 			}
 		}
 		
-		if (flagMain != null)
+		if (flagMain != null && entity.flagData != null)
 		{
 			GL11.glPushMatrix();
 			
-			GL11.glScalef(0.41F, 0.39F, 0.41F);
-			GL11.glTranslatef(0.05F, -1.595F, 0.0F);
+			GL11.glScalef(0.5F, 0.5F, 0.5F);
+			GL11.glTranslatef(0.0F, -1.1F, 0.0F);
 			
 			for (int i = 0; i < this.flagMain.length; i++)
 			{
@@ -148,29 +148,27 @@ public class ModelFlag extends ModelBase
 	
 	public void renderFace(Entity entity, float f5, boolean onlyFront)
 	{
-		if (((EntityFlag) entity).getType() != 0)
+		EntityFlag flag = (EntityFlag) entity;
+		ResourceLocation resourcelocation = AbstractClientPlayer.locationStevePng;
+
+		if (flag.getOwner() != null && flag.getOwner().length() > 0)
 		{
-			EntityFlag flag = (EntityFlag) entity;
-			ResourceLocation resourcelocation = AbstractClientPlayer.locationStevePng;
+			resourcelocation = AbstractClientPlayer.getLocationSkin(flag.getOwner());
+			AbstractClientPlayer.getDownloadImageSkin(resourcelocation, flag.getOwner());
+		}
 
-			if (flag.getOwner() != null && flag.getOwner().length() > 0)
-			{
-				resourcelocation = AbstractClientPlayer.getLocationSkin(flag.getOwner());
-				AbstractClientPlayer.getDownloadImageSkin(resourcelocation, flag.getOwner());
-			}
+		FMLClientHandler.instance().getClient().renderEngine.bindTexture(resourcelocation);
 
-			FMLClientHandler.instance().getClient().renderEngine.bindTexture(resourcelocation);
+		GL11.glScalef(0.5F, 0.5F, 0.25F);
+		GL11.glTranslatef(0.218F, 0.15F, 0F);
 
-			GL11.glScalef(0.5F, 0.5F, 0.5F);
-
-			this.picSide2.render(f5);
-			
-			if (!onlyFront)
-			{
-				this.picSide1.render(f5);
-				this.picSide3.render(f5);
-				this.picSide4.render(f5);
-			}
+		this.picSide2.render(f5);
+		
+		if (!onlyFront)
+		{
+			this.picSide1.render(f5);
+			this.picSide3.render(f5);
+			this.picSide4.render(f5);
 		}
 	}
 

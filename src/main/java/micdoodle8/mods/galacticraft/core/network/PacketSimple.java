@@ -22,6 +22,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.container.GuiBuggy;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiParachest;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiChoosePlanet;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiGalaxyMap;
+import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceStationSaveData;
 import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
@@ -62,6 +63,7 @@ import org.lwjgl.input.Keyboard;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class PacketSimple implements IPacket
 {
@@ -87,6 +89,7 @@ public class PacketSimple implements IPacket
 		S_ON_ADVANCED_GUI_CLICKED_STRING(Side.SERVER, Integer.class, Integer.class, Integer.class, Integer.class, String.class),
 		S_UPDATE_SHIP_MOTION_Y(Side.SERVER, Integer.class, Boolean.class),
 		S_START_NEW_SPACE_RACE(Side.SERVER, String.class, FlagData.class, String[].class),
+		S_REQUEST_FLAG_DATA(Side.SERVER, String.class),
 		// CLIENT
 		C_AIR_REMAINING(Side.CLIENT, Integer.class, Integer.class, String.class),
 		C_UPDATE_DIMENSION_LIST(Side.CLIENT, String.class, String.class),
@@ -109,7 +112,8 @@ public class PacketSimple implements IPacket
 		C_UPDATE_OXYGEN_VALIDITY(Side.CLIENT, Boolean.class),
 		C_OPEN_PARACHEST_GUI(Side.CLIENT, Integer.class, Integer.class, Integer.class),
 		C_UPDATE_WIRE_BOUNDS(Side.CLIENT, Integer.class, Integer.class, Integer.class),
-		C_OPEN_SPACE_RACE_GUI(Side.CLIENT);
+		C_OPEN_SPACE_RACE_GUI(Side.CLIENT),
+		C_UPDATE_SPACE_RACE_DATA(Side.CLIENT, String.class, FlagData.class, String[].class);
 
 		private Side targetSide;
 		private Class<?>[] decodeAs;
@@ -181,6 +185,7 @@ public class PacketSimple implements IPacket
 		}
 	}
 
+	@SideOnly(Side.CLIENT)
 	@Override
 	public void handleClientSide(EntityPlayer player)
 	{
@@ -469,6 +474,18 @@ public class PacketSimple implements IPacket
 			break;
 		case C_OPEN_SPACE_RACE_GUI:
 			player.openGui(GalacticraftCore.instance, GCConfigManager.idGuiNewSpaceRace, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
+			break;
+		case C_UPDATE_SPACE_RACE_DATA:
+			String teamName = (String)this.data.get(0);
+			FlagData flagData = (FlagData)this.data.get(1);
+			List<String> playerList = new ArrayList<String>();
+			
+			for (int i = 2; i < this.data.size(); i++)
+			{
+				playerList.add((String) this.data.get(i));
+			}
+			
+			SpaceRaceManager.addSpaceRace(playerList, teamName, flagData);
 			break;
 		default:
 			break;
@@ -761,6 +778,17 @@ public class PacketSimple implements IPacket
 			}
 			
 			SpaceRaceManager.addSpaceRace(playerList, teamName, flagData);
+		case S_REQUEST_FLAG_DATA:
+			SpaceRace spaceRace = SpaceRaceManager.getSpaceRaceFromPlayer((String) this.data.get(0));
+			
+			if (spaceRace != null)
+			{
+				List<Object> objList = new ArrayList<Object>();
+				objList.add(spaceRace.getTeamName());
+				objList.add(spaceRace.getFlagData());
+				objList.add(spaceRace.getPlayerNames().toArray(new String[spaceRace.getPlayerNames().size()]));
+				GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACE_RACE_DATA, objList), playerBase);
+			}
 		default:
 			break;
 		}

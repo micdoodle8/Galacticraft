@@ -41,7 +41,7 @@ public class KeyHandlerGC extends KeyHandler
 	public static KeyBinding spaceKey;
 	public static KeyBinding leftShiftKey;
 	private static KeyBinding invKey;
-	private static Minecraft mc;
+	private static Minecraft mc = Minecraft.getMinecraft();
 
 	public KeyHandlerGC()
 	{
@@ -50,7 +50,6 @@ public class KeyHandlerGC extends KeyHandler
 
 	private static KeyBinding[] getVanillaKeyBindings()
 	{
-		KeyHandlerGC.mc = Minecraft.getMinecraft();
 		KeyHandlerGC.invKey = KeyHandlerGC.mc.gameSettings.keyBindInventory;
 		KeyHandlerGC.accelerateKey = KeyHandlerGC.mc.gameSettings.keyBindForward;
 		KeyHandlerGC.decelerateKey = KeyHandlerGC.mc.gameSettings.keyBindBack;
@@ -91,61 +90,64 @@ public class KeyHandlerGC extends KeyHandler
 			}
 		}
 
-		Entity entityTest = KeyHandlerGC.mc.thePlayer.ridingEntity;
-		int keyNum = -1;
-
-		if (kb == KeyHandlerGC.accelerateKey)
+		if (KeyHandlerGC.mc.thePlayer != null)
 		{
-			keyNum = 0;
-		}
-		else if (kb == KeyHandlerGC.decelerateKey)
-		{
-			keyNum = 1;
-		}
-		else if (kb == KeyHandlerGC.leftKey)
-		{
-			keyNum = 2;
-		}
-		else if (kb == KeyHandlerGC.rightKey)
-		{
-			keyNum = 3;
-		}
-		else if (kb == KeyHandlerGC.spaceKey)
-		{
-			keyNum = 4;
-		}
-		else if (kb == KeyHandlerGC.leftShiftKey)
-		{
-			keyNum = 5;
-		}
-
-		if (entityTest != null && entityTest instanceof IControllableEntity && keyNum != -1)
-		{
-			IControllableEntity entity = (IControllableEntity) entityTest;
-
-			if (kb.getKeyCode() == KeyHandlerGC.mc.gameSettings.keyBindInventory.getKeyCode())
+			int keyNum = -1;
+	
+			if (kb == KeyHandlerGC.accelerateKey)
 			{
-				KeyBinding.setKeyBindState(KeyHandlerGC.mc.gameSettings.keyBindInventory.getKeyCode(), false);
+				keyNum = 0;
 			}
-
-			entity.pressKey(keyNum);
-		}
-		else if (entityTest != null && entityTest instanceof EntityAutoRocket)
-		{
-			EntityAutoRocket autoRocket = (EntityAutoRocket) entityTest;
-
-			if (autoRocket.landing)
+			else if (kb == KeyHandlerGC.decelerateKey)
 			{
-				if (kb == KeyHandlerGC.leftShiftKey)
+				keyNum = 1;
+			}
+			else if (kb == KeyHandlerGC.leftKey)
+			{
+				keyNum = 2;
+			}
+			else if (kb == KeyHandlerGC.rightKey)
+			{
+				keyNum = 3;
+			}
+			else if (kb == KeyHandlerGC.spaceKey)
+			{
+				keyNum = 4;
+			}
+			else if (kb == KeyHandlerGC.leftShiftKey)
+			{
+				keyNum = 5;
+			}
+	
+			Entity entityTest = KeyHandlerGC.mc.thePlayer.ridingEntity;
+			if (entityTest != null && entityTest instanceof IControllableEntity && keyNum != -1)
+			{
+				IControllableEntity entity = (IControllableEntity) entityTest;
+	
+				if (kb.getKeyCode() == KeyHandlerGC.mc.gameSettings.keyBindInventory.getKeyCode())
 				{
-					autoRocket.motionY -= 0.02D;
-					GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_SHIP_MOTION_Y, new Object[] { autoRocket.getEntityId(), false }));
+					KeyBinding.setKeyBindState(KeyHandlerGC.mc.gameSettings.keyBindInventory.getKeyCode(), false);
 				}
-
-				if (kb == KeyHandlerGC.spaceKey)
+	
+				entity.pressKey(keyNum);
+			}
+			else if (entityTest != null && entityTest instanceof EntityAutoRocket)
+			{
+				EntityAutoRocket autoRocket = (EntityAutoRocket) entityTest;
+	
+				if (autoRocket.landing)
 				{
-					autoRocket.motionY += 0.02D;
-					GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_SHIP_MOTION_Y, new Object[] { autoRocket.getEntityId(), true }));
+					if (kb == KeyHandlerGC.leftShiftKey)
+					{
+						autoRocket.motionY -= 0.02D;
+						GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_SHIP_MOTION_Y, new Object[] { autoRocket.getEntityId(), false }));
+					}
+	
+					if (kb == KeyHandlerGC.spaceKey)
+					{
+						autoRocket.motionY += 0.02D;
+						GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_SHIP_MOTION_Y, new Object[] { autoRocket.getEntityId(), true }));
+					}
 				}
 			}
 		}

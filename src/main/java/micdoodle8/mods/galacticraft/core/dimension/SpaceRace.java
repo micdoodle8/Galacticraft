@@ -73,6 +73,11 @@ public class SpaceRace
 		this.ticksSpent++;
 	}
 	
+	public String getTeamName()
+	{
+		return this.teamName;
+	}
+	
 	public List<String> getPlayerNames()
 	{
 		return this.playerNames;

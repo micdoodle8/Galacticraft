@@ -12,7 +12,6 @@ import micdoodle8.mods.galacticraft.core.dimension.WorldDataSpaceRaces;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.ScheduledBlockChange;
 import net.minecraft.entity.Entity;
-import net.minecraft.village.VillageCollection;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -53,7 +52,13 @@ public class TickHandlerServer
 		if (spaceRaceData == null)
 		{
 			World world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(0);
-			world.mapStorage.loadData(WorldDataSpaceRaces.class, WorldDataSpaceRaces.saveDataID);
+			spaceRaceData = (WorldDataSpaceRaces) world.mapStorage.loadData(WorldDataSpaceRaces.class, WorldDataSpaceRaces.saveDataID);
+			
+	        if (spaceRaceData == null)
+	        {
+	        	spaceRaceData = new WorldDataSpaceRaces(WorldDataSpaceRaces.saveDataID);
+	            world.mapStorage.setData(WorldDataSpaceRaces.saveDataID, this.spaceRaceData);
+	        }
 		}
 		
 		SpaceRaceManager.tick();
