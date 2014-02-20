@@ -2,6 +2,8 @@ package micdoodle8.mods.galacticraft.core.client.render.item;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.ModelFlag;
+import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
+import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.entities.EntityFlag;
 import micdoodle8.mods.galacticraft.core.items.ItemFlag;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -25,17 +27,7 @@ import cpw.mods.fml.client.FMLClientHandler;
  */
 public class ItemRendererFlag implements IItemRenderer
 {
-	public static ResourceLocation[] flagTextures;
-
-	static
-	{
-		ItemRendererFlag.flagTextures = new ResourceLocation[ItemFlag.names.length];
-
-		for (int i = 0; i < ItemFlag.names.length; i++)
-		{
-			ItemRendererFlag.flagTextures[i] = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/flag/" + ItemFlag.names[i] + ".png");
-		}
-	}
+	public static ResourceLocation flagTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/flag.png");
 
 	EntityFlag spaceship = new EntityFlag(FMLClientHandler.instance().getClient().theWorld);
 	ModelFlag modelSpaceship = new ModelFlag();
@@ -109,8 +101,15 @@ public class ItemRendererFlag implements IItemRenderer
 			GL11.glTranslatef(0, -0.6F, 0);
 		}
 
-		FMLClientHandler.instance().getClient().renderEngine.bindTexture(ItemRendererFlag.flagTextures[item.getItemDamage()]);
+		FMLClientHandler.instance().getClient().renderEngine.bindTexture(ItemRendererFlag.flagTexture);
 
+		SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(FMLClientHandler.instance().getClient().thePlayer.getGameProfile().getName()); 
+		
+		if (race != null)
+		{
+			this.spaceship.flagData = race.getFlagData();
+		}
+		
 		this.modelSpaceship.render(this.spaceship, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 		GL11.glPopMatrix();
 	}

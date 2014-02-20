@@ -25,17 +25,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class RenderFlag extends Render
 {
-	private static ResourceLocation[] flagTextures;
-
-	static
-	{
-		RenderFlag.flagTextures = new ResourceLocation[ItemFlag.names.length];
-
-		for (int i = 0; i < ItemFlag.names.length; i++)
-		{
-			RenderFlag.flagTextures[i] = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/flag/" + ItemFlag.names[i] + ".png");
-		}
-	}
+	private static ResourceLocation flagTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/flag.png");
 
 	protected ModelFlag modelFlag;
 
@@ -48,12 +38,7 @@ public class RenderFlag extends Render
 	@Override
 	protected ResourceLocation getEntityTexture(Entity entity)
 	{
-		if (((EntityFlag) entity).getType() == -1)
-		{
-			return flagTextures[0];
-		}
-
-		return RenderFlag.flagTextures[((EntityFlag) entity).getType()];
+		return RenderFlag.flagTexture;
 	}
 
 	public void renderFlag(EntityFlag entity, double par2, double par4, double par6, float par8, float par9)

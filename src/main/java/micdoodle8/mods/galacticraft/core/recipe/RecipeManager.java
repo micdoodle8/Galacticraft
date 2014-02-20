@@ -269,11 +269,6 @@ public class RecipeManager
 			CraftingManager.getInstance().addShapelessRecipe(new ItemStack(GCItems.parachute, 1, ItemParachute.getParachuteDamageValueFromDye(var2)), new Object[] { new ItemStack(Items.dye, 1, var2), new ItemStack(GCItems.parachute, 1, 0) });
 		}
 
-		for (int var2 = 0; var2 < 16; ++var2)
-		{
-			CraftingManager.getInstance().addShapelessRecipe(new ItemStack(GCItems.flag, 1, ItemFlag.getFlagDamageValueFromDye(var2)), new Object[] { new ItemStack(Items.dye, 1, var2), new ItemStack(GCItems.flag, 1, 16) });
-		}
-
 		RecipeUtil.addRecipe(new ItemStack(GCItems.partFins, 1), new Object[] { " Y ", "XYX", "X X", 'X', GCItems.heavyPlatingTier1, 'Y', "compressedSteel" });
 
 		RecipeUtil.addRecipe(new ItemStack(GCBlocks.landingPad, 9, 0), new Object[] { "YYY", "XXX", 'X', Blocks.iron_block, 'Y', "compressedIron" });
