@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.recipe;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -21,7 +20,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
@@ -41,11 +39,6 @@ public class GCCoreRecipeManager
 		if (GCCoreCompatibilityManager.isBCraftLoaded())
 		{
 			GCCoreRecipeManager.addBuildCraftCraftingRecipes();
-		}
-
-		if (GCCoreCompatibilityManager.isIc2Loaded())
-		{
-			GCCoreRecipeManager.addIndustrialCraft2Recipes();
 		}
 
 		GCCoreRecipeManager.addUniversalRecipes();
@@ -416,40 +409,6 @@ public class GCCoreRecipeManager
 
 		}
 		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
-
-	private static void addIndustrialCraft2Recipes()
-	{
-
-		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.IC2_GOLD_CABLE.getMetadata()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("insulatedGoldCableItem"), 'X', new ItemStack(GCCoreBlocks.basicBlock, 1, 4) });
-		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.IC2_HV_CABLE.getMetadata()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("insulatedIronCableItem"), 'X', new ItemStack(GCCoreBlocks.basicBlock, 1, 4) });
-		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.IC2_GLASS_FIBRE_CABLE.getMetadata()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("glassFiberCableItem"), 'X', new ItemStack(GCCoreBlocks.basicBlock, 1, 4) });
-		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.IC2_LV_CABLE.getMetadata()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("tinCableItem"), 'X', new ItemStack(GCCoreBlocks.basicBlock, 1, 4) });
-
-		try
-		{
-			Class<?> clazz = Class.forName("ic2.core.Ic2Items");
-
-			Object copperDustObject = clazz.getField("crushedCopperOre").get(null);
-			ItemStack copperDustItemStack = (ItemStack) copperDustObject;
-			Class<?> clazz2 = Class.forName("ic2.api.recipe.RecipeInputItemStack");
-			ItemStack recipeOutputStack = new ItemStack(copperDustItemStack.getItem(), 2, copperDustItemStack.getItemDamage());
-			Object recipeInputStack = clazz2.getConstructor(ItemStack.class).newInstance(new ItemStack(GCCoreBlocks.blockMoon.blockID, 1, 0));
-			Method addRecipe = Class.forName("ic2.api.recipe.IMachineRecipeManager").getMethod("addRecipe", Class.forName("ic2.api.recipe.IRecipeInput"), NBTTagCompound.class, ItemStack[].class);
-			Class<?> recipesClass = Class.forName("ic2.api.recipe.Recipes");
-			Object recipeInstance = recipesClass.getField("macerator").get(null);
-			addRecipe.invoke(recipeInstance, recipeInputStack, null, new ItemStack[] { recipeOutputStack });
-
-			Object tinDustObject = clazz.getField("crushedTinOre").get(null);
-			ItemStack tinDustItemStack = (ItemStack) tinDustObject;
-			recipeOutputStack = new ItemStack(tinDustItemStack.getItem(), 2, tinDustItemStack.getItemDamage());
-			recipeInputStack = clazz2.getConstructor(ItemStack.class).newInstance(new ItemStack(GCCoreBlocks.blockMoon.blockID, 1, 1));
-			addRecipe.invoke(recipeInstance, recipeInputStack, null, new ItemStack[] { recipeOutputStack });
-		}
-		catch (Throwable e)
 		{
 			e.printStackTrace();
 		}
