@@ -79,7 +79,7 @@ public abstract class GCCoreDungeonRoom
 		}
 		else
 		{
-			this.worldObj.setBlock(x, y, z, id, meta, 3);
+			this.worldObj.setBlock(x, y, z, id, meta, 0);
 		}
 		return true;
 	}

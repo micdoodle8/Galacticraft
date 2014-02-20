@@ -1,13 +1,14 @@
 package micdoodle8.mods.galacticraft.mars.world.gen.dungeon;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.GCCoreDungeonBoundingBox;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.GCCoreDungeonRoom;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.GCCoreMapGenDungeon;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
-import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityTreasureChest;
 import net.minecraft.block.Block;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraftforge.common.ForgeDirection;
@@ -27,7 +28,7 @@ public class GCMarsRoomTreasure extends GCCoreDungeonRoom
 	int sizeY;
 	int sizeZ;
 
-	private final ArrayList<ChunkCoordinates> chests = new ArrayList<ChunkCoordinates>();
+	private final HashSet<ChunkCoordinates> chests = new HashSet<ChunkCoordinates>();
 
 	public GCMarsRoomTreasure(GCCoreMapGenDungeon dungeon, int posX, int posY, int posZ, ForgeDirection entranceDir)
 	{
@@ -93,13 +94,16 @@ public class GCMarsRoomTreasure extends GCCoreDungeonRoom
 	{
 		if (!this.chests.isEmpty())
 		{
-			for (int i = 0; i < this.chests.size(); i++)
+			HashSet<ChunkCoordinates> removeList = new HashSet<ChunkCoordinates>();
+			
+			for (ChunkCoordinates coords : this.chests)
 			{
-				ChunkCoordinates coords = this.chests.get(i);
-				this.worldObj.setBlock(coords.posX, coords.posY, coords.posZ, GCMarsBlocks.tier2TreasureChest.blockID, 0, 3);
-				this.worldObj.setBlockTileEntity(coords.posX, coords.posY, coords.posZ, new GCMarsTileEntityTreasureChest());
-				this.chests.remove(i);
+				this.worldObj.setBlock(coords.posX, coords.posY, coords.posZ, GCCoreBlocks.treasureChestTier1.blockID, 0, 3);
+				this.worldObj.setBlockTileEntity(coords.posX, coords.posY, coords.posZ, new GCCoreTileEntityTreasureChest(1));
+				removeList.add(coords);
 			}
+			
+			this.chests.removeAll(removeList);
 		}
 	}
 }

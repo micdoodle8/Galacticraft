@@ -40,7 +40,6 @@ public abstract class GCCoreBlockTile extends GCCoreBlockAdvanced implements ITi
 	{
 		this.dropEntireInventory(world, x, y, z, par5, par6);
 		super.breakBlock(world, x, y, z, par5, par6);
-		world.removeBlockTileEntity(x, y, z);
 	}
 
 	/**

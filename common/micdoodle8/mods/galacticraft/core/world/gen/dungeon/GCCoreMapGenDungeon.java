@@ -54,9 +54,13 @@ public class GCCoreMapGenDungeon
 		}
 	}
 
-	public void generateUsingSetBlock(World world, int x, int y, int z)
+	public void generateUsingSetBlock(World world, long seed, int x, int y, int z)
 	{
-		this.generate(world, new Random(new Random().nextLong() * x * z * 24789), x, y, z, x, z, null, null, false);
+		final ChunkCoordinates dungeonCoords = this.getDungeonNear(seed, x / 16, y / 16);
+		if (dungeonCoords != null)
+		{
+			this.generate(world, new Random(seed * dungeonCoords.posX * dungeonCoords.posZ * 24789), x, y, z, x, z, null, null, false);
+		}
 	}
 
 	public void generate(World world, Random rand, int x, int y, int z, int chunkX, int chunkZ, short[] blocks, byte[] metas, boolean useArrays)
@@ -533,7 +537,7 @@ public class GCCoreMapGenDungeon
 		}
 		else
 		{
-			this.worldObj.setBlock(x, y, z, id, meta, 3);
+			this.worldObj.setBlock(x, y, z, id, meta, 0);
 		}
 	}
 

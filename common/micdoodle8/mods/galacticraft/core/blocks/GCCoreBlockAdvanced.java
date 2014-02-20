@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.lang.reflect.Method;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 /**
  * An advanced block class that is to be extended for wrenching capabilities.
  */
-public abstract class GCCoreBlockAdvanced extends Block
+public abstract class GCCoreBlockAdvanced extends BlockContainer
 {
 	public GCCoreBlockAdvanced(int id, Material material)
 	{
