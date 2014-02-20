@@ -20,7 +20,6 @@ import net.minecraft.tileentity.TileEntity;
 
 import com.google.common.io.ByteArrayDataInput;
 
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 
 /**
@@ -95,8 +94,6 @@ public abstract class GCCoreTileEntityAdvanced extends TileEntity implements IPa
 
 			for (Field f : fieldList)
 			{
-				if (this.getClass().equals(GCCoreTileEntityAirLockController.class))
-					FMLLog.info(f.getName());
 				objList.add(f.get(this));
 			}
 
