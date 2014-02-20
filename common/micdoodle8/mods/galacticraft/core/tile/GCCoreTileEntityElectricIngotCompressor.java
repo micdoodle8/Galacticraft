@@ -4,12 +4,12 @@ import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
 import micdoodle8.mods.galacticraft.core.GCCoreAnnotations.NetworkedField;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockMachine2;
+import micdoodle8.mods.galacticraft.core.inventory.PersistantInventoryCrafting;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
@@ -37,7 +37,7 @@ public class GCCoreTileEntityElectricIngotCompressor extends GCCoreTileEntityEle
 	private long ticks;
 
 	private ItemStack[] containingItems = new ItemStack[3];
-	public InventoryCrafting compressingCraftMatrix = new InventoryCrafting(null, 3, 3);
+	public PersistantInventoryCrafting compressingCraftMatrix = new PersistantInventoryCrafting(3, 3);
 
 	public GCCoreTileEntityElectricIngotCompressor()
 	{
@@ -203,6 +203,8 @@ public class GCCoreTileEntityElectricIngotCompressor extends GCCoreTileEntityEle
 				this.compressingCraftMatrix.setInventorySlotContents(var5 - this.containingItems.length, ItemStack.loadItemStackFromNBT(var4));
 			}
 		}
+		
+		this.updateInput();
 	}
 
 	@Override

@@ -2,10 +2,11 @@ package micdoodle8.mods.galacticraft.api.recipe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -132,16 +133,16 @@ public class CompressorRecipes
 		CompressorRecipes.recipes.add(new ShapelessRecipes(par1ItemStack, arraylist));
 	}
 
-	public static ItemStack findMatchingRecipe(InventoryCrafting par1InventoryCrafting, World par2World)
+	public static ItemStack findMatchingRecipe(IInventory inventory, World par2World)
 	{
 		int i = 0;
 		ItemStack itemstack = null;
 		ItemStack itemstack1 = null;
 		int j;
 
-		for (j = 0; j < par1InventoryCrafting.getSizeInventory(); ++j)
+		for (j = 0; j < inventory.getSizeInventory(); ++j)
 		{
-			ItemStack itemstack2 = par1InventoryCrafting.getStackInSlot(j);
+			ItemStack itemstack2 = inventory.getStackInSlot(j);
 
 			if (itemstack2 != null)
 			{
@@ -179,16 +180,139 @@ public class CompressorRecipes
 			for (j = 0; j < CompressorRecipes.recipes.size(); ++j)
 			{
 				IRecipe irecipe = CompressorRecipes.recipes.get(j);
-
-				if (irecipe.matches(par1InventoryCrafting, par2World))
+				
+				if (irecipe instanceof ShapedRecipes && matches((ShapedRecipes) irecipe, inventory, par2World))
 				{
-					return irecipe.getCraftingResult(par1InventoryCrafting);
+					return irecipe.getRecipeOutput().copy();
 				}
+				else if (irecipe instanceof ShapelessRecipes && matchesShapeless((ShapelessRecipes) irecipe, inventory, par2World))
+				{
+					return irecipe.getRecipeOutput().copy();
+				}				
 			}
 
 			return null;
 		}
 	}
+	
+	private static boolean matches(ShapedRecipes recipe, IInventory inventory, World par2World)
+    {
+        for (int i = 0; i <= 3 - recipe.recipeWidth; ++i)
+        {
+            for (int j = 0; j <= 3 - recipe.recipeHeight; ++j)
+            {
+                if (checkMatch(recipe, inventory, i, j, true))
+                {
+                    return true;
+                }
+
+                if (checkMatch(recipe, inventory, i, j, false))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private static boolean checkMatch(ShapedRecipes recipe, IInventory inventory, int par2, int par3, boolean par4)
+    {
+        for (int k = 0; k < 3; ++k)
+        {
+            for (int l = 0; l < 3; ++l)
+            {
+                int i1 = k - par2;
+                int j1 = l - par3;
+                ItemStack itemstack = null;
+
+                if (i1 >= 0 && j1 >= 0 && i1 < recipe.recipeWidth && j1 < recipe.recipeHeight)
+                {
+                    if (par4)
+                    {
+                        itemstack = recipe.recipeItems[recipe.recipeWidth - i1 - 1 + j1 * recipe.recipeWidth];
+                    }
+                    else
+                    {
+                        itemstack = recipe.recipeItems[i1 + j1 * recipe.recipeWidth];
+                    }
+                }
+                
+                ItemStack itemstack1 = null;
+
+                if (k >= 0 && l < 3)
+                {
+                    int k2 = k + l * 3;
+                    itemstack1 = inventory.getStackInSlot(k2);
+                }
+
+                if (itemstack1 != null || itemstack != null)
+                {
+                    if (itemstack1 == null && itemstack != null || itemstack1 != null && itemstack == null)
+                    {
+                        return false;
+                    }
+
+                    if (itemstack.itemID != itemstack1.itemID)
+                    {
+                        return false;
+                    }
+
+                    if (itemstack.getItemDamage() != 32767 && itemstack.getItemDamage() != itemstack1.getItemDamage())
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+    
+    private static boolean matchesShapeless(ShapelessRecipes recipe, IInventory inventory, World par2World)
+    {
+        @SuppressWarnings("unchecked")
+		ArrayList<ItemStack> arraylist = new ArrayList<ItemStack>(recipe.recipeItems);
+
+        for (int i = 0; i < 3; ++i)
+        {
+            for (int j = 0; j < 3; ++j)
+            {
+                ItemStack itemstack = null;
+                
+                if (j >= 0 && i < 3)
+                {
+                    int k2 = j + i * 3;
+                    itemstack = inventory.getStackInSlot(k2);
+                }
+
+                if (itemstack != null)
+                {
+                    boolean flag = false;
+                    Iterator<ItemStack> iterator = arraylist.iterator();
+
+                    while (iterator.hasNext())
+                    {
+                        ItemStack itemstack1 = (ItemStack)iterator.next();
+
+                        if (itemstack.itemID == itemstack1.itemID && (itemstack1.getItemDamage() == 32767 || itemstack.getItemDamage() == itemstack1.getItemDamage()))
+                        {
+                            flag = true;
+                            arraylist.remove(itemstack1);
+                            break;
+                        }
+                    }
+
+                    if (!flag)
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return arraylist.isEmpty();
+    }
 
 	public static List<IRecipe> getRecipeList()
 	{
