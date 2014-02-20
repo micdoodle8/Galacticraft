@@ -11,7 +11,6 @@ import micdoodle8.mods.galacticraft.core.client.gui.element.GuiCheckbox.ICheckBo
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiGradientButton;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiSlider;
 import micdoodle8.mods.galacticraft.core.client.model.ModelFlag;
-import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererFlag;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.entities.EntityFlag;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
@@ -31,7 +30,6 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 
 public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
 {
@@ -49,10 +47,17 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
 	private GuiCheckbox checkboxCompete;
 	private GuiCheckbox checkboxUploadScore;
 	private GuiCheckbox checkboxShowFace;
+	private GuiCheckbox checkboxPaintbrush;
+	private GuiCheckbox checkboxShowGrid;
+	private GuiCheckbox checkboxEraser;
+	private GuiCheckbox checkboxSelector;
+	private GuiCheckbox checkboxColorSelector;
 	private boolean initialized;
 	private GuiSlider sliderColorR;
 	private GuiSlider sliderColorG;
 	private GuiSlider sliderColorB;
+	private GuiSlider sliderBrushSize;
+	private GuiSlider sliderEraserSize;
 	private EnumSpaceRaceGui currentState = EnumSpaceRaceGui.MAIN;
     
     private int buttonFlag_width;
@@ -69,11 +74,19 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
 	
     private boolean optionCompete = true;
     private boolean optionUpload = true;
+    
+    private int selectionMinX;
+    private int selectionMaxX;
+    private int selectionMinY;
+    private int selectionMaxY;
 
 	private EntityFlag dummyFlag = new EntityFlag(FMLClientHandler.instance().getClient().theWorld);
 	private ModelFlag dummyModel = new ModelFlag();
 	
 	private FlagData flagData = new FlagData(48, 32);
+	
+	private boolean showGrid = false;
+	private boolean lastMousePressed = false;
     
 	public GuiNewSpaceRace(EntityPlayer player)
 	{
@@ -93,7 +106,6 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
 			sliderR = this.sliderColorR.getSliderPos() / (float)this.sliderColorR.getButtonHeight();
 			sliderG = this.sliderColorG.getSliderPos() / (float)this.sliderColorG.getButtonHeight();
 			sliderB = this.sliderColorB.getSliderPos() / (float)this.sliderColorB.getButtonHeight();
-			FMLLog.info("" + sliderR + " " + sliderG + " " + sliderB);
 		}
 		
 		super.initGui();
@@ -150,6 +162,21 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
 				this.buttonList.add(this.sliderColorG);
 				this.buttonList.add(this.sliderColorB);
 				this.buttonList.add(this.checkboxShowFace);
+				this.checkboxPaintbrush = new GuiCheckbox(5, this, (int) (this.flagDesignerMinX - 15), this.height / 2 - this.height / 4 + 10, 13, 13, 26, 26, 133, 0, "", 4210752, false);
+				this.checkboxEraser = new GuiCheckbox(6, this, (int) (this.flagDesignerMinX - 15), this.height / 2 - this.height / 4 + 25, 13, 13, 26, 26, 133, 52, "", 4210752, false);
+				this.checkboxSelector = new GuiCheckbox(7, this, (int) (this.flagDesignerMinX - 15), this.height / 2 - this.height / 4 + 40, 13, 13, 26, 26, 133, 78, "", 4210752, false);
+				this.checkboxColorSelector = new GuiCheckbox(8, this, (int) (this.flagDesignerMinX - 15), this.height / 2 - this.height / 4 + 55, 13, 13, 26, 26, 133, 104, "", 4210752, false);
+				this.checkboxShowGrid = new GuiCheckbox(9, this, (int) (this.flagDesignerMinX - 15), this.height / 2 - this.height / 4 + 90, 13, 13, 26, 26, 133, 26, "", 4210752, false);
+				this.sliderBrushSize = new GuiSlider(10, checkboxPaintbrush.xPosition - 40, checkboxPaintbrush.yPosition, 35, 13, false, new Vector3(0.34, 0.34, 0.34), new Vector3(0.34, 0.34, 0.34), "Brush Size");
+				this.sliderEraserSize = new GuiSlider(11, checkboxEraser.xPosition - 40, checkboxEraser.yPosition, 35, 13, false, new Vector3(0.34, 0.34, 0.34), new Vector3(0.34, 0.34, 0.34), "Eraser Size");
+				this.sliderEraserSize.visible = false;
+				this.buttonList.add(this.checkboxPaintbrush);
+				this.buttonList.add(this.checkboxShowGrid);
+				this.buttonList.add(this.checkboxEraser);
+				this.buttonList.add(this.checkboxSelector);
+				this.buttonList.add(this.checkboxColorSelector);
+				this.buttonList.add(this.sliderBrushSize);
+				this.buttonList.add(this.sliderEraserSize);
 				
 				break;
 			default:
@@ -231,11 +258,97 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
         int x = Mouse.getEventX() * this.width / this.mc.displayWidth;
         int y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
         
-        if (Mouse.isButtonDown(0) && x >= this.flagDesignerMinX && y >= this.flagDesignerMinY && x <= this.flagDesignerMinX + this.flagDesignerWidth && y <= this.flagDesignerMinY + this.flagDesignerHeight)
+        if (x >= this.flagDesignerMinX && y >= this.flagDesignerMinY && x <= this.flagDesignerMinX + this.flagDesignerWidth && y <= this.flagDesignerMinY + this.flagDesignerHeight)
     	{
     		int unScaledX = (int)Math.floor((x - this.flagDesignerMinX) / this.flagDesignerScale.x);
     		int unScaledY = (int)Math.floor((y - this.flagDesignerMinY) / this.flagDesignerScale.y);
-    		this.flagData.setColorAt(unScaledX, unScaledY, new Vector3(this.sliderColorR.getNormalizedValue() * 256, this.sliderColorG.getNormalizedValue() * 256, this.sliderColorB.getNormalizedValue() * 256));
+    		
+    		if (Mouse.isButtonDown(0))
+    		{
+        		if (this.checkboxEraser.isSelected != null && this.checkboxEraser.isSelected)
+        		{
+            		this.setColor(unScaledX, unScaledY, new Vector3(255, 255, 255), (int)Math.floor(this.sliderEraserSize.getNormalizedValue() * 10) + 1);
+        		}
+        		else if (this.checkboxColorSelector.isSelected != null && this.checkboxColorSelector.isSelected)
+        		{
+        			Vector3 colorAt = this.flagData.getColorAt(unScaledX, unScaledY);
+        			this.sliderColorR.setSliderPos(colorAt.floatX());
+        			this.sliderColorG.setSliderPos(colorAt.floatY());
+        			this.sliderColorB.setSliderPos(colorAt.floatZ());
+        		}
+        		else if (this.checkboxPaintbrush.isSelected != null && this.checkboxPaintbrush.isSelected)
+        		{
+        			if (this.selectionMaxX - selectionMinX > 1 && this.selectionMaxY - selectionMinY > 1)
+        			{
+        				if (unScaledX >= this.selectionMinX && unScaledX <= this.selectionMaxX - 1 && unScaledY >= this.selectionMinY && unScaledY <= this.selectionMaxY - 1)
+        				{
+                    		this.setColor(unScaledX, unScaledY, new Vector3(this.sliderColorR.getNormalizedValue() * 256, this.sliderColorG.getNormalizedValue() * 256, this.sliderColorB.getNormalizedValue() * 256), (int)Math.floor(this.sliderBrushSize.getNormalizedValue() * 10) + 1);
+        				}
+        			}
+        			else
+        			{
+                		this.setColor(unScaledX, unScaledY, new Vector3(this.sliderColorR.getNormalizedValue() * 256, this.sliderColorG.getNormalizedValue() * 256, this.sliderColorB.getNormalizedValue() * 256), (int)Math.floor(this.sliderBrushSize.getNormalizedValue() * 10) + 1);
+        			}
+        		}
+    		}
+    		
+    		if (!this.lastMousePressed && Mouse.isButtonDown(0) && this.checkboxSelector.isSelected != null && this.checkboxSelector.isSelected)
+    		{
+    			this.selectionMinX = unScaledX;
+    			this.selectionMinY = unScaledY;
+    		}
+    		else if (this.lastMousePressed && !Mouse.isButtonDown(0) && this.checkboxSelector.isSelected != null && this.checkboxSelector.isSelected)
+    		{
+    			this.selectionMaxX = Math.min(unScaledX + 1, this.flagData.getWidth());
+    			this.selectionMaxY = Math.min(unScaledY + 1, this.flagData.getHeight());
+    		}
+    	}
+        
+        if (this.sliderBrushSize != null && this.sliderBrushSize.visible)
+        {
+        	this.sliderBrushSize.displayString = "Brush Rad: " + ((int)Math.floor(this.sliderBrushSize.getNormalizedValue() * 10) + 1);
+        }
+        
+        if (this.sliderEraserSize != null && this.sliderEraserSize.visible)
+        {
+        	this.sliderEraserSize.displayString = "Eraser Rad: " + ((int)Math.floor(this.sliderEraserSize.getNormalizedValue() * 10) + 1);
+        }
+        
+        this.lastMousePressed = Mouse.isButtonDown(0);
+    }
+    
+    private void setColor(int unScaledX, int unScaledY, Vector3 color, int brushSize)
+    {
+		if (this.selectionMaxX - selectionMinX > 1 && this.selectionMaxY - selectionMinY > 1)
+		{
+			if (unScaledX >= this.selectionMinX && unScaledX <= this.selectionMaxX - 1 && unScaledY >= this.selectionMinY && unScaledY <= this.selectionMaxY - 1)
+			{
+        		this.setColorWithBrushSize(unScaledX, unScaledY, color, brushSize);
+			}
+		}
+		else
+		{
+    		this.setColorWithBrushSize(unScaledX, unScaledY, color, brushSize);
+		}
+    }
+    
+    private void setColorWithBrushSize(int unScaledX, int unScaledY, Vector3 color, int brushSize)
+    {
+    	for (int x = unScaledX - brushSize + 1; x < unScaledX + brushSize; x++)
+    	{
+        	for (int y = unScaledY - brushSize + 1; y < unScaledY + brushSize; y++)
+        	{
+        		if (x >= 0 && x < this.flagData.getWidth() && y >= 0 && y < this.flagData.getHeight())
+        		{
+        			float relativeX = (x + 0.5F) - (unScaledX + 0.5F);
+        			float relativeY = (y + 0.5F) - (unScaledY + 0.5F);
+        			
+            		if (Math.sqrt(relativeX * relativeX + relativeY * relativeY) <= brushSize)
+            		{
+                		this.flagData.setColorAt(x, y, color);
+            		}
+        		}
+        	}
     	}
     }
     
@@ -285,19 +398,63 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
 	        	        tessellator.draw();
 	        		}
 	        	}
+	        	
+	        	
+	        	if (this.checkboxShowGrid != null && this.checkboxShowGrid.isSelected != null && this.checkboxShowGrid.isSelected)
+	        	{
+		        	for (int x = 0; x <= this.flagData.getWidth(); x++)
+		        	{
+			        	tessellator.startDrawing(GL11.GL_LINES);
+			        	tessellator.setColorRGBA_F(0.0F, 0.0F, 0.0F, 1.0F);
+			        	tessellator.addVertex(this.flagDesignerMinX + x * this.flagDesignerScale.x, this.flagDesignerMinY, this.zLevel);
+			        	tessellator.addVertex(this.flagDesignerMinX + x * this.flagDesignerScale.x, this.flagDesignerMinY + this.flagDesignerHeight, this.zLevel);
+		        		tessellator.draw();
+		        	}
+		        	
+		        	for (int y = 0; y <= this.flagData.getHeight(); y++)
+	        		{
+			        	tessellator.startDrawing(GL11.GL_LINES);
+			        	tessellator.setColorRGBA_F(0.0F, 0.0F, 0.0F, 1.0F);
+			        	tessellator.addVertex(this.flagDesignerMinX, this.flagDesignerMinY + y * this.flagDesignerScale.y, this.zLevel);
+			        	tessellator.addVertex(this.flagDesignerMinX + this.flagDesignerWidth, this.flagDesignerMinY + y * this.flagDesignerScale.y, this.zLevel);
+		        		tessellator.draw();	
+	        		}
+	        	}
+	        	
+	        	if (!(this.lastMousePressed && this.checkboxSelector.isSelected != null && this.checkboxSelector.isSelected) && this.selectionMaxX - selectionMinX > 1 && this.selectionMaxY - selectionMinY > 1)
+	        	{
+		        	tessellator.startDrawing(GL11.GL_LINE_STRIP);
+		        	float col = (float) (Math.sin(this.ticksPassed * 0.3) * 0.4 + 0.1);
+		        	tessellator.setColorRGBA_F(col, col, col, 1.0F);
+		        	tessellator.addVertex(this.flagDesignerMinX + this.selectionMinX * this.flagDesignerScale.x, this.flagDesignerMinY + this.selectionMinY * this.flagDesignerScale.y, this.zLevel);
+		        	tessellator.addVertex(this.flagDesignerMinX + this.selectionMaxX * this.flagDesignerScale.x, this.flagDesignerMinY + this.selectionMinY * this.flagDesignerScale.y, this.zLevel);
+		        	tessellator.addVertex(this.flagDesignerMinX + this.selectionMaxX * this.flagDesignerScale.x, this.flagDesignerMinY + this.selectionMaxY * this.flagDesignerScale.y, this.zLevel);
+		        	tessellator.addVertex(this.flagDesignerMinX + this.selectionMinX * this.flagDesignerScale.x, this.flagDesignerMinY + this.selectionMaxY * this.flagDesignerScale.y, this.zLevel);
+		        	tessellator.addVertex(this.flagDesignerMinX + this.selectionMinX * this.flagDesignerScale.x, this.flagDesignerMinY + this.selectionMinY * this.flagDesignerScale.y, this.zLevel);
+	        		tessellator.draw();	
+	        	}
 	            
-		        tessellator.startDrawingQuads();
 	        	int guiRight = this.width / 2 + this.width / 3;
 	        	int guiBottom = this.height / 2 + this.height / 4;
 		        float x1 = this.sliderColorR.xPosition;
 		        float x2 = guiRight - 10;
 		        float y1 = guiBottom - 10 - (x2 - x1);
 		        float y2 = guiBottom - 10;
-		        tessellator.setColorRGBA_F(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F);
+		        
+		        tessellator.startDrawingQuads();
+		        tessellator.setColorRGBA_F(0, 0, 0, 1.0F);
 		        tessellator.addVertex((double)x2, (double)y1, (double)this.zLevel);
 		        tessellator.addVertex((double)x1, (double)y1, (double)this.zLevel);
 		        tessellator.addVertex((double)x1, (double)y2, (double)this.zLevel);
 		        tessellator.addVertex((double)x2, (double)y2, (double)this.zLevel);
+		        tessellator.draw();
+		        
+		        tessellator.startDrawingQuads();
+		        tessellator.setColorRGBA_F(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F);
+		        tessellator.addVertex((double)x2 - 1, (double)y1 + 1, (double)this.zLevel);
+		        tessellator.addVertex((double)x1 + 1, (double)y1 + 1, (double)this.zLevel);
+		        tessellator.addVertex((double)x1 + 1, (double)y2 - 1, (double)this.zLevel);
+		        tessellator.addVertex((double)x2 - 1, (double)y2 - 1, (double)this.zLevel);
 		        tessellator.draw();
 		        
 		        GL11.glShadeModel(GL11.GL_FLAT);
@@ -349,7 +506,6 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
         GL11.glScalef(28F, 28F, 28F);
         GL11.glTranslatef(0.0F, -0.215F, 1.0F);
         GL11.glScalef(1.0F, 1.0F, -1F);
-		FMLClientHandler.instance().getClient().renderEngine.bindTexture(ItemRendererFlag.flagTextures[5]);
 		this.dummyFlag.flagData = this.flagData;
 		this.dummyModel.renderFlag(this.dummyFlag, 0.0625F);
 		GL11.glColor3f(1, 1, 1);
@@ -411,6 +567,96 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
 		{
 			this.flagData.setHasFace(newSelected);
 		}
+		else if (checkbox.equals(this.checkboxEraser))
+		{
+			if (newSelected)
+			{
+				this.sliderEraserSize.visible = true;
+				
+				if (this.checkboxPaintbrush.isSelected)
+				{
+					this.sliderBrushSize.visible = false;
+					this.checkboxPaintbrush.isSelected = false;
+				}
+				else if (this.checkboxSelector.isSelected)
+				{
+					this.checkboxSelector.isSelected = false;
+				}
+				else if (this.checkboxColorSelector.isSelected)
+				{
+					this.checkboxColorSelector.isSelected = false;
+				}
+			}
+			else
+			{
+				this.sliderEraserSize.visible = false;
+			}
+		}
+		else if (checkbox.equals(this.checkboxPaintbrush))
+		{
+			if (newSelected)
+			{
+				this.sliderBrushSize.visible = true;
+				
+				if (this.checkboxEraser.isSelected)
+				{
+					this.sliderEraserSize.visible = false;
+					this.checkboxEraser.isSelected = false;
+				}
+				else if (this.checkboxSelector.isSelected)
+				{
+					this.checkboxSelector.isSelected = false;
+				}
+				else if (this.checkboxColorSelector.isSelected)
+				{
+					this.checkboxColorSelector.isSelected = false;
+				}
+			}
+			else
+			{
+				this.sliderBrushSize.visible = false;
+			}
+		}
+		else if (checkbox.equals(this.checkboxSelector))
+		{
+			if (newSelected)
+			{
+				if (this.checkboxEraser.isSelected)
+				{
+					this.sliderEraserSize.visible = false;
+					this.checkboxEraser.isSelected = false;
+				}
+				else if (this.checkboxPaintbrush.isSelected)
+				{
+					this.sliderBrushSize.visible = false;
+					this.checkboxPaintbrush.isSelected = false;
+				}
+				else if (this.checkboxColorSelector.isSelected)
+				{
+					this.checkboxColorSelector.isSelected = false;
+				}
+			}
+		}
+		else if (checkbox.equals(this.checkboxColorSelector))
+		{
+			if (newSelected)
+			{
+				if (this.checkboxEraser.isSelected)
+				{
+					this.sliderEraserSize.visible = false;
+					this.checkboxEraser.isSelected = false;
+				}
+				else if (this.checkboxPaintbrush.isSelected)
+				{
+					this.sliderBrushSize.visible = false;
+					this.checkboxPaintbrush.isSelected = false;
+				}
+				else if (this.checkboxSelector.isSelected)
+				{
+					this.checkboxSelector.isSelected = false;
+				}
+			}
+		}
 	}
 
 	@Override
@@ -433,6 +679,10 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
 		else if (checkbox.equals(this.checkboxShowFace))
 		{
 			return this.flagData.getHasFace();
+		}
+		else if (checkbox.equals(this.checkboxPaintbrush))
+		{
+			return true;
 		}
 		
 		return false;

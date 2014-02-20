@@ -143,7 +143,7 @@ public class GuiChoosePlanet extends GuiScreen
 		this.planetSlots = new GuiChoosePlanetSlot(this);
 
 		this.buttonList.clear();
-		this.buttonList.add(new GuiTexturedButton(0, this.width - 28, 5, 22, 22, new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/map_button.png"), 22, 22));
+		this.buttonList.add(new GuiTexturedButton(0, this.width - 28, 5, 22, 22, new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/buttons.png"), 22, 22));
 		this.buttonList.add(this.sendButton = new GuiButton(1, this.width - 110, this.height - 26, 105, 20, StatCollector.translateToLocal("gui.button.sendtodim.name")));
 
 		if (this.createSpaceStationButton == null)
