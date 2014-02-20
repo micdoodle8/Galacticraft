@@ -77,7 +77,7 @@ public class GCCoreBlockAirLockFrame extends GCCoreBlockAdvancedTile
 
 		if (tile instanceof GCCoreTileEntityAirLockController && entityLiving instanceof EntityPlayer)
 		{
-			((GCCoreTileEntityAirLockController) tile).setOwnerName(((EntityPlayer) entityLiving).username);
+			((GCCoreTileEntityAirLockController) tile).ownerName = ((EntityPlayer) entityLiving).username;
 		}
 	}
 

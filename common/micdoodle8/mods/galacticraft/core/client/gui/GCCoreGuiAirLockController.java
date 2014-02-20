@@ -110,12 +110,12 @@ public class GCCoreGuiAirLockController extends GuiScreen implements ICheckBoxCa
 
 		this.drawTexturedModalRect(var5 + 15, var6 + 51, 176, 0, 7, 9);
 
-		String displayString = this.controller.getOwnerName() + "\'s " + "Air Lock Controller";
+		String displayString = this.controller.ownerName + "\'s " + "Air Lock Controller";
 		this.fontRenderer.drawString(displayString, this.width / 2 - this.fontRenderer.getStringWidth(displayString) / 2, this.height / 2 - 65, 4210752);
 
 		if (this.cannotEditTimer > 0)
 		{
-			this.fontRenderer.drawString(this.controller.getOwnerName(), this.width / 2 - this.fontRenderer.getStringWidth(displayString) / 2, this.height / 2 - 56, this.cannotEditTimer % 30 < 15 ? GCCoreUtil.convertTo32BitColor(255, 255, 100, 100) : 4210752);
+			this.fontRenderer.drawString(this.controller.ownerName, this.width / 2 - this.fontRenderer.getStringWidth(displayString) / 2, this.height / 2 - 56, this.cannotEditTimer % 30 < 15 ? GCCoreUtil.convertTo32BitColor(255, 255, 100, 100) : 4210752);
 			this.cannotEditTimer--;
 		}
 
@@ -171,7 +171,7 @@ public class GCCoreGuiAirLockController extends GuiScreen implements ICheckBoxCa
 	@Override
 	public boolean canPlayerEdit(GCCoreGuiCheckbox checkbox, EntityPlayer player)
 	{
-		return player.username.equals(this.controller.getOwnerName());
+		return player.username.equals(this.controller.ownerName);
 	}
 
 	@Override
@@ -204,7 +204,7 @@ public class GCCoreGuiAirLockController extends GuiScreen implements ICheckBoxCa
 	@Override
 	public boolean canBeClickedBy(GCCoreGuiDropdown dropdown, EntityPlayer player)
 	{
-		return player.username.equals(this.controller.getOwnerName());
+		return player.username.equals(this.controller.ownerName);
 	}
 
 	@Override
@@ -226,7 +226,7 @@ public class GCCoreGuiAirLockController extends GuiScreen implements ICheckBoxCa
 	@Override
 	public boolean canPlayerEdit(GCCoreGuiTextBox textBox, EntityPlayer player)
 	{
-		return player.username.equals(this.controller.getOwnerName());
+		return player.username.equals(this.controller.ownerName);
 	}
 
 	@Override

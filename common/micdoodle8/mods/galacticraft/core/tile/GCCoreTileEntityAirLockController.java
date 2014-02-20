@@ -40,7 +40,7 @@ public class GCCoreTileEntityAirLockController extends GCCoreTileEntityAirLock
 	public boolean horizontalModeEnabled;
 	public boolean lastHorizontalModeEnabled;
 	@NetworkedField(targetSide = Side.CLIENT)
-	protected String ownerName = "";
+	public String ownerName = "";
 
 	@NetworkedField(targetSide = Side.CLIENT)
 	public boolean active;
@@ -341,16 +341,6 @@ public class GCCoreTileEntityAirLockController extends GCCoreTileEntityAirLock
         nbt.setBoolean("lastActive", this.lastActive);
         nbt.setBoolean("HorizontalModeEnabled", this.horizontalModeEnabled);
     }
-
-	public String getOwnerName()
-	{
-		return this.ownerName;
-	}
-
-	public void setOwnerName(String ownerName)
-	{
-		this.ownerName = ownerName;
-	}
 
 	@Override
 	public double getPacketRange()
