@@ -1,10 +1,11 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
-import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
 import micdoodle8.mods.galacticraft.core.GCCoreAnnotations.NetworkedField;
 import micdoodle8.mods.galacticraft.core.inventory.PersistantInventoryCrafting;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
@@ -13,7 +14,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.ShapedRecipes;
+import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntityFurnace;
@@ -152,6 +155,44 @@ public class GCCoreTileEntityIngotCompressor extends GCCoreTileEntityAdvanced im
 		}
 		int result = this.containingItems[1].stackSize + itemstack.stackSize;
 		return result <= this.getInventoryStackLimit() && result <= itemstack.getMaxStackSize();
+	}
+	
+	public static boolean isItemCompressorInput(ItemStack stack)
+	{
+		for (IRecipe recipe : CompressorRecipes.getRecipeList())
+		{
+			if (recipe instanceof ShapedRecipes)
+			{
+				for (int i = 0; i < ((ShapedRecipes) recipe).recipeItems.length; i++)
+				{
+					ItemStack itemstack1 = ((ShapedRecipes) recipe).recipeItems[i];
+					
+                    if (stack.itemID == itemstack1.itemID && (itemstack1.getItemDamage() == 32767 || stack.getItemDamage() == itemstack1.getItemDamage()))
+                    {
+                    	return true;
+                    }
+				}
+			}
+			else if (recipe instanceof ShapelessRecipes)
+			{
+		        @SuppressWarnings("unchecked")
+				ArrayList<ItemStack> arraylist = new ArrayList<ItemStack>(((ShapelessRecipes) recipe).recipeItems);
+		        
+		        Iterator<ItemStack> iterator = arraylist.iterator();
+
+                while (iterator.hasNext())
+                {
+                    ItemStack itemstack1 = (ItemStack)iterator.next();
+
+                    if (stack.itemID == itemstack1.itemID && (itemstack1.getItemDamage() == 32767 || stack.getItemDamage() == itemstack1.getItemDamage()))
+                    {
+                    	return true;
+                    }
+                }
+			}
+		}
+		
+        return false;
 	}
 
 	public void smeltItem()
@@ -369,13 +410,22 @@ public class GCCoreTileEntityIngotCompressor extends GCCoreTileEntityAdvanced im
 	@Override
 	public boolean isItemValidForSlot(int slotID, ItemStack itemStack)
 	{
-		return slotID == 1 ? FurnaceRecipes.smelting().getSmeltingResult(itemStack) != null : slotID == 0 ? itemStack.getItem() instanceof IItemElectric : false;
+		if (slotID == 0)
+		{
+			return TileEntityFurnace.getItemBurnTime(itemStack) > 0;
+		}
+		else if (slotID >= 2)
+		{
+			return isItemCompressorInput(itemStack);
+		}
+		
+		return false;
 	}
 
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side)
 	{
-		return side == 0 ? new int[] { 2 } : side == 1 ? new int[] { 0, 1 } : new int[] { 0 };
+		return side == 0 ? new int[] { 1 } : side == 1 ? new int[] { 0, 2, 3, 4, 5, 6, 7, 8, 9, 10 } : new int[] { 0, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	}
 
 	@Override
@@ -387,7 +437,7 @@ public class GCCoreTileEntityIngotCompressor extends GCCoreTileEntityAdvanced im
 	@Override
 	public boolean canExtractItem(int slotID, ItemStack par2ItemStack, int par3)
 	{
-		return slotID == 2;
+		return slotID == 1;
 	}
 
 	@Override

@@ -11,7 +11,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.StatCollector;
@@ -358,13 +357,22 @@ public class GCCoreTileEntityElectricIngotCompressor extends GCCoreTileEntityEle
 	@Override
 	public boolean isItemValidForSlot(int slotID, ItemStack itemStack)
 	{
-		return slotID == 1 ? FurnaceRecipes.smelting().getSmeltingResult(itemStack) != null : slotID == 0 ? itemStack.getItem() instanceof IItemElectric : false;
+		if (slotID == 0)
+		{
+			return itemStack.getItem() instanceof IItemElectric;
+		}
+		else if (slotID >= 3)
+		{
+			return GCCoreTileEntityIngotCompressor.isItemCompressorInput(itemStack);
+		}
+		
+		return false;
 	}
 
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side)
 	{
-		return side == 0 ? new int[] { 2 } : side == 1 ? new int[] { 0, 1 } : new int[] { 0 };
+		return side == 0 ? new int[] { 1, 2 } : side == 1 ? new int[] { 0, 3, 4, 5, 6, 7, 8, 9, 10, 11 } : new int[] { 0, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
 	}
 
 	@Override
@@ -376,7 +384,7 @@ public class GCCoreTileEntityElectricIngotCompressor extends GCCoreTileEntityEle
 	@Override
 	public boolean canExtractItem(int slotID, ItemStack par2ItemStack, int par3)
 	{
-		return slotID == 2;
+		return slotID == 1 || slotID == 2;
 	}
 
 	@Override
