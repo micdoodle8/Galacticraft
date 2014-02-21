@@ -45,7 +45,12 @@ public class GCCoreRecipeManager
 		{
 			GCCoreRecipeManager.addAppliedEnergisticsRecipes();
 		}
-
+		
+		if (GCCoreCompatibilityManager.isIc2Loaded())
+		{
+			GCCoreRecipeManager.addIndustrialCraft2Recipes();
+		}
+		
 		GCCoreRecipeManager.addUniversalRecipes();
 	}
 
@@ -433,5 +438,13 @@ public class GCCoreRecipeManager
 		{
 			e.printStackTrace();
 		}
+	}
+
+	private static void addIndustrialCraft2Recipes()
+	{
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.IC2_GOLD_CABLE.getMetadata()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("insulatedGoldCableItem"), 'X', new ItemStack(GCCoreBlocks.basicBlock, 1, 4) });
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.IC2_HV_CABLE.getMetadata()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("insulatedIronCableItem"), 'X', new ItemStack(GCCoreBlocks.basicBlock, 1, 4) });
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.IC2_GLASS_FIBRE_CABLE.getMetadata()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("glassFiberCableItem"), 'X', new ItemStack(GCCoreBlocks.basicBlock, 1, 4) });
+		RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.IC2_LV_CABLE.getMetadata()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("tinCableItem"), 'X', new ItemStack(GCCoreBlocks.basicBlock, 1, 4) });
 	}
 }
