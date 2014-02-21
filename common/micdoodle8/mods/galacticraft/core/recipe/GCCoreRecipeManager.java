@@ -40,6 +40,11 @@ public class GCCoreRecipeManager
 		{
 			GCCoreRecipeManager.addBuildCraftCraftingRecipes();
 		}
+		
+		if (GCCoreCompatibilityManager.isAppEngLoaded())
+		{
+			GCCoreRecipeManager.addAppliedEnergisticsRecipes();
+		}
 
 		GCCoreRecipeManager.addUniversalRecipes();
 	}
@@ -407,6 +412,22 @@ public class GCCoreRecipeManager
 			RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.BC_POWER_STONEPIPE.getMetadata()), new Object[] { "XYX", 'Y', pipePowerStone, 'X', new ItemStack(GCCoreBlocks.basicBlock, 1, 4) });
 			RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.BC_POWER_GOLDPIPE.getMetadata()), new Object[] { "XYX", 'Y', pipePowerGold, 'X', new ItemStack(GCCoreBlocks.basicBlock, 1, 4) });
 
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+	private static void addAppliedEnergisticsRecipes()
+	{
+		try
+		{
+			Class<?> clazz = Class.forName("appeng.api.Blocks");
+			Object objCableArray = clazz.getField("blkCable_Colored").get(null);
+			ItemStack[] cableArray = (ItemStack[]) objCableArray;
+
+			RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1, EnumEnclosedBlock.ME_CABLE.getMetadata()), new Object[] { "XYX", 'Y', new ItemStack(cableArray[0].getItem(), 1, cableArray[0].getItemDamage()), 'X', new ItemStack(GCCoreBlocks.basicBlock, 1, 4) });
 		}
 		catch (Exception e)
 		{
