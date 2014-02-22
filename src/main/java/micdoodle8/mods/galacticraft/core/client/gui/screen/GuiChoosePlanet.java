@@ -78,7 +78,6 @@ public class GuiChoosePlanet extends GuiScreen
 
 	public GuiChoosePlanet(EntityPlayer player, String[] listOfDestinations)
 	{
-		new Exception().printStackTrace();
 		this.playerToSend = player;
 		this.destinations = listOfDestinations;
 	}
