@@ -81,7 +81,6 @@ public abstract class GCCoreTileEntityConductor extends GCCoreTileEntityAdvanced
 					}
 				}
 			}
-			
 
 			this.getNetwork().refresh();
 		}

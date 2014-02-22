@@ -66,6 +66,13 @@ public class GCCoreBlockOxygenPipe extends GCCoreBlockTransmitter
 	}
 
 	@Override
+	public void onNeighborBlockChange(World world, int x, int y, int z, int blockID)
+	{
+		super.onNeighborBlockChange(world, x, y, z, blockID);
+		world.markBlockForRenderUpdate(x, y, z);
+	}
+
+	@Override
 	public CreativeTabs getCreativeTabToDisplayOn()
 	{
 		return GalacticraftCore.galacticraftTab;
@@ -75,8 +82,7 @@ public class GCCoreBlockOxygenPipe extends GCCoreBlockTransmitter
 	@SideOnly(Side.CLIENT)
 	public Icon getBlockTexture(IBlockAccess par1IBlockAccess, int x, int y, int z, int par5)
 	{
-		Vector3 thisVec = new Vector3(x, y, z);
-		thisVec = thisVec.modifyPositionFromSide(ForgeDirection.getOrientation(par5));
+		Vector3 thisVec = new Vector3(x, y, z).modifyPositionFromSide(ForgeDirection.getOrientation(par5));
 		final int idAtSide = thisVec.getBlockID(par1IBlockAccess);
 
 		final GCCoreTileEntityOxygenPipe tileEntity = (GCCoreTileEntityOxygenPipe) par1IBlockAccess.getBlockTileEntity(x, y, z);

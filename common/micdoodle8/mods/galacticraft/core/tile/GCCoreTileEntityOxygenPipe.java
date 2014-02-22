@@ -7,16 +7,10 @@ import micdoodle8.mods.galacticraft.core.GCCoreAnnotations.NetworkedField;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.ForgeDirection;
-
-import com.google.common.io.ByteArrayDataInput;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -32,9 +26,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GCCoreTileEntityOxygenPipe extends GCCoreTileEntityOxygenTransmitter implements IColorable, IPacketReceiver
 {
 	@NetworkedField(targetSide = Side.CLIENT)
-	private byte pipeColor = 15;
+	public byte pipeColor = 15;
 	@NetworkedField(targetSide = Side.CLIENT)
-	private byte preLoadColor;
+	public byte preLoadColor;
 	private byte preColorCooldown;
 	private boolean setColor = false;
 

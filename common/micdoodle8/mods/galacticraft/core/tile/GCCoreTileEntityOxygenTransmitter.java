@@ -7,7 +7,6 @@ import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfig
 import micdoodle8.mods.galacticraft.api.transmission.core.grid.IGridNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.core.grid.IOxygenNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.core.grid.OxygenNetwork;
-import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
 import micdoodle8.mods.galacticraft.api.transmission.tile.ITransmitter;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -82,17 +81,16 @@ public abstract class GCCoreTileEntityOxygenTransmitter extends GCCoreTileEntity
 			for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS)
 			{
 				TileEntity tileEntity = new Vector3(this).modifyPositionFromSide(side).getTileEntity(this.worldObj);
-
+				
 				if (tileEntity != null)
 				{
-					if (tileEntity.getClass() == this.getClass() && tileEntity instanceof INetworkProvider && tileEntity instanceof IConnector && ((IConnector) tileEntity).canConnect(side.getOpposite(), NetworkType.OXYGEN))
+					if (tileEntity.getClass() == this.getClass() && tileEntity instanceof INetworkProvider && !this.getNetwork().equals(((INetworkProvider) tileEntity).getNetwork()))
 					{
-						IGridNetwork newNetwork = (IGridNetwork) this.getNetwork().merge(((INetworkProvider) tileEntity).getNetwork());
-						this.setNetwork(newNetwork);
+						this.setNetwork((IGridNetwork) this.getNetwork().merge(((INetworkProvider) tileEntity).getNetwork()));
 					}
 				}
 			}
-
+			
 			this.getNetwork().refresh();
 		}
 	}

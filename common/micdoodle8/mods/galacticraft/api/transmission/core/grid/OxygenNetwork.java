@@ -213,10 +213,16 @@ public class OxygenNetwork implements IOxygenNetwork
 				}
 
 				transmitter.onNetworkChanged();
-				
-				if (((TileEntity) transmitter).isInvalid())
+
+				if (((TileEntity) transmitter).isInvalid() || ((TileEntity) transmitter).getWorldObj() == null)
 				{
 					it.remove();
+					continue;
+				}
+				else if (((TileEntity) transmitter).getWorldObj().getBlockTileEntity(((TileEntity) transmitter).xCoord, ((TileEntity) transmitter).yCoord, ((TileEntity) transmitter).zCoord) != transmitter)
+				{
+					it.remove();
+					continue;
 				}
 				else
 				{
@@ -327,7 +333,7 @@ public class OxygenNetwork implements IOxygenNetwork
 										}
 									}
 								}
-
+								
 								newNetwork.refresh();
 							}
 						}

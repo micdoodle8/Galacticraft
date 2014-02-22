@@ -5,8 +5,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
-import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkConnection;
+import micdoodle8.mods.galacticraft.api.transmission.tile.ITransmitter;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -35,9 +35,9 @@ public class PathfinderChecker extends Pathfinder
 					Vector3 position = currentNode.clone().modifyPositionFromSide(direction);
 					TileEntity connectedBlock = position.getTileEntity(world);
 
-					if (connectedBlock instanceof IConductor && !Arrays.asList(ignoreConnector).contains(connectedBlock))
+					if (connectedBlock instanceof ITransmitter && !Arrays.asList(ignoreConnector).contains(connectedBlock))
 					{
-						if (((IConductor) connectedBlock).canConnect(direction.getOpposite(), networkType))
+						if (((ITransmitter) connectedBlock).canConnect(direction.getOpposite(), networkType))
 						{
 							neighbors.add(position);
 						}
