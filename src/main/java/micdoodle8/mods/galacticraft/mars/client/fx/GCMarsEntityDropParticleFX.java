@@ -23,34 +23,19 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GCMarsEntityDropParticleFX extends EntityFX
 {
-	/** the material type for dropped items/blocks */
-	private final Material materialType;
-
 	/** The height of the current bob */
 	private int bobTimer;
 
-	public GCMarsEntityDropParticleFX(World par1World, double par2, double par4, double par6, Material par8Material)
+	public GCMarsEntityDropParticleFX(World par1World, double par2, double par4, double par6)
 	{
 		super(par1World, par2, par4, par6, 0.0D, 0.0D, 0.0D);
 		this.motionX = this.motionY = this.motionZ = 0.0D;
-
-		if (par8Material == GCMarsBlocks.bacterialSludge)
-		{
-			this.particleRed = 0.0F;
-			this.particleGreen = 0.0F;
-			this.particleBlue = 0.0F;
-		}
-		else
-		{
-			this.particleRed = 1.0F;
-			this.particleGreen = 0.0F;
-			this.particleBlue = 0.0F;
-		}
-
+		this.particleRed = 0.0F;
+		this.particleGreen = 0.0F;
+		this.particleBlue = 0.0F;
 		this.setParticleTextureIndex(113);
 		this.setSize(0.01F, 0.01F);
 		this.particleGravity = 0.06F;
-		this.materialType = par8Material;
 		this.bobTimer = 40;
 		this.particleMaxAge = (int) (64.0D / (Math.random() * 0.8D + 0.2D));
 		this.motionX = this.motionY = this.motionZ = 0.0D;
@@ -59,10 +44,7 @@ public class GCMarsEntityDropParticleFX extends EntityFX
 	@Override
 	public int getBrightnessForRender(float par1)
 	{
-		return /*
-				 * this.materialType == Material.water ?
-				 * super.getBrightnessForRender(par1) :
-				 */257;
+		return 257;
 	}
 
 	/**
@@ -71,10 +53,7 @@ public class GCMarsEntityDropParticleFX extends EntityFX
 	@Override
 	public float getBrightness(float par1)
 	{
-		return /*
-				 * this.materialType == Material.water ?
-				 * super.getBrightness(par1) :
-				 */1.0F;
+		return 1.0F;
 	}
 
 	/**
@@ -87,18 +66,9 @@ public class GCMarsEntityDropParticleFX extends EntityFX
 		this.prevPosY = this.posY;
 		this.prevPosZ = this.posZ;
 
-		if (this.materialType == GCMarsBlocks.bacterialSludge)
-		{
-			this.particleRed = 0.1F;
-			this.particleGreen = 0.1F;
-			this.particleBlue = 0.1F;
-		}
-		else
-		{
-			this.particleRed = 1.0F;
-			this.particleGreen = 16.0F / (40 - this.bobTimer + 16);
-			this.particleBlue = 4.0F / (40 - this.bobTimer + 8);
-		}
+		this.particleRed = 0.1F;
+		this.particleGreen = 0.1F;
+		this.particleBlue = 0.1F;
 
 		this.motionY -= this.particleGravity;
 
@@ -126,16 +96,7 @@ public class GCMarsEntityDropParticleFX extends EntityFX
 
 		if (this.onGround)
 		{
-			if (this.materialType == Material.water)
-			{
-				this.setDead();
-				this.worldObj.spawnParticle("splash", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
-			}
-			else
-			{
-				this.setParticleTextureIndex(114);
-			}
-
+			this.setParticleTextureIndex(114);
 			this.motionX *= 0.699999988079071D;
 			this.motionZ *= 0.699999988079071D;
 		}

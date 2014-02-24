@@ -175,7 +175,7 @@ public class GCMarsCaveGen extends MapGenBaseMeta
 
 									if (xfactorSq + zfactorSq < 1.0D)
 									{
-										final int coords = localY << 8 | localZ << 4 | localX;
+										final int coords = this.getIndex(localX, localY, localZ);
 
 										if (yfactor > -0.7D && xfactorSq + yfactorSq + zfactorSq < 1.0D)
 										{
@@ -243,5 +243,10 @@ public class GCMarsCaveGen extends MapGenBaseMeta
 				this.generateCaveNode(this.rand.nextLong(), par4, par5, blockIdArray, metaArray, var9, var11, var13, var19, var17, var18, 0, 0, 1.0D);
 			}
 		}
+	}
+
+	private int getIndex(int x, int y, int z)
+	{
+        return (x * 16 + z) * 256 + y;
 	}
 }

@@ -238,12 +238,6 @@ public class ChunkProviderMoon extends ChunkProviderGenerate
 
 		final Chunk var4 = new Chunk(this.worldObj, ids, meta, par1, par2);
 
-		// if (!var4.isTerrainPopulated &&
-		// GCCoreConfigManager.disableExternalModGen)
-		// {
-		// var4.isTerrainPopulated = true;
-		// }
-
 		var4.generateSkylightMap();
 		return var4;
 	}
@@ -325,7 +319,7 @@ public class ChunkProviderMoon extends ChunkProviderGenerate
 
 	private int getIndex(int x, int y, int z)
 	{
-		return y << 8 | z << 4 | x;
+        return (x * 16 + z) * 256 + y;
 	}
 
 	private double randFromPoint(int x, int z)

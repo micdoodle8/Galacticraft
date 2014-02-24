@@ -173,7 +173,7 @@ public class MapGenCavesMoon extends MapGenBaseMeta
 
 									if (xfactorSq + zfactorSq < 1.0D)
 									{
-										final int coords = localY << 8 | localZ << 4 | localX;
+										final int coords = (localX * 16 + localZ) * 256 + localY;
 
 										if (yfactor > -0.7D && xfactorSq + yfactorSq + zfactorSq < 1.0D)
 										{

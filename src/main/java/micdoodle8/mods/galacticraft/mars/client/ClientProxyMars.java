@@ -52,6 +52,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
@@ -187,7 +189,7 @@ public class ClientProxyMars extends CommonProxyMars
 			{
 				if (var1.equals("sludgeDrip"))
 				{
-					var21 = new GCMarsEntityDropParticleFX(var14.theWorld, var2, var4, var6, GCMarsBlocks.bacterialSludge);
+					var21 = new GCMarsEntityDropParticleFX(var14.theWorld, var2, var4, var6);
 				}
 			}
 
@@ -203,7 +205,29 @@ public class ClientProxyMars extends CommonProxyMars
 
 	public static boolean handleBacterialMovement(EntityPlayer player)
 	{
-		return player.worldObj.isMaterialInBB(player.boundingBox.expand(-0.10000000149011612D, -0.4000000059604645D, -0.10000000149011612D), GCMarsBlocks.bacterialSludge);
+		AxisAlignedBB axisAlignedBB = player.boundingBox.expand(-0.10000000149011612D, -0.4000000059604645D, -0.10000000149011612D);
+        int i = MathHelper.floor_double(axisAlignedBB.minX);
+        int j = MathHelper.floor_double(axisAlignedBB.maxX + 1.0D);
+        int k = MathHelper.floor_double(axisAlignedBB.minY);
+        int l = MathHelper.floor_double(axisAlignedBB.maxY + 1.0D);
+        int i1 = MathHelper.floor_double(axisAlignedBB.minZ);
+        int j1 = MathHelper.floor_double(axisAlignedBB.maxZ + 1.0D);
+
+        for (int k1 = i; k1 < j; ++k1)
+        {
+            for (int l1 = k; l1 < l; ++l1)
+            {
+                for (int i2 = i1; i2 < j1; ++i2)
+                {
+                    if (player.worldObj.getBlock(k1, l1, i2) == GCMarsBlocks.blockSludge)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
 	}
 
 	public static boolean handleLavaMovement(EntityPlayer player)

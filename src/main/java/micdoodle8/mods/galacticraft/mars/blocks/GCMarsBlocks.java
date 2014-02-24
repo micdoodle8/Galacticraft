@@ -33,8 +33,6 @@ public class GCMarsBlocks
 	public static Block creeperEgg;
 	public static Block tintedGlassPane;
 
-	public static Material bacterialSludge = new MaterialLiquid(MapColor.foliageColor);
-
 	public static void initBlocks()
 	{
 		GCMarsBlocks.marsBlock = new GCMarsBlock().setHardness(2.2F).setBlockName("mars");

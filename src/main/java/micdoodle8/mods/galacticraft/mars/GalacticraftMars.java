@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockFluid;
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockGC;
 import micdoodle8.mods.galacticraft.core.util.CoreUtil;
@@ -71,10 +72,6 @@ public class GalacticraftMars
 {
 	public static final String NAME = "Galacticraft Mars";
 	public static final String MOD_ID = "GalacticraftMars";
-	public static final String CHANNEL = "GalacticraftMars";
-	public static final String CHANNELENTITIES = "GCMarsEntities";
-
-	public static final String LANGUAGE_PATH = "/assets/galacticraftmars/lang/";
 
 	@SidedProxy(clientSide = "micdoodle8.mods.galacticraft.mars.client.ClientProxyMars", serverSide = "micdoodle8.mods.galacticraft.mars.CommonProxyMars")
 	public static CommonProxyMars proxy;
@@ -107,6 +104,10 @@ public class GalacticraftMars
 			GCMarsBlocks.blockSludge.setBlockName("bacterialsludge");
 			GameRegistry.registerBlock(GCMarsBlocks.blockSludge, ItemBlockGC.class, GCMarsBlocks.blockSludge.getUnlocalizedName(), GalacticraftMars.MOD_ID);
 			GalacticraftMars.fluidSludge.setBlock(GCMarsBlocks.blockSludge);
+		}
+		else
+		{
+			GCMarsBlocks.blockSludge = GalacticraftMars.fluidSludge.getBlock();
 		}
 
 		GCMarsBlocks.initBlocks();

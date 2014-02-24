@@ -204,7 +204,7 @@ public class GCMarsCavern
 									{
 										if (var51 > -0.7D)
 										{
-											int coords = var50 << 8 | var45 << 4 | var42;
+											int coords = this.getIndex(var42, var50, var45);
 
 											if (arrayOfIDs[coords] == GCMarsBlocks.marsBlock || arrayOfIDs[coords] == GCMarsBlocks.blockSludge || arrayOfIDs[coords] == GCMarsBlocks.vine)
 											{
@@ -235,9 +235,9 @@ public class GCMarsCavern
 									{
 										if (var51 > -0.7D)
 										{
-											int coords = var50 << 8 | var45 << 4 | var42;
-											int coordsAbove = var50 + 1 << 8 | var45 << 4 | var42;
-											int coordsBelow = var50 - 1 << 8 | var45 << 4 | var42;
+											int coords = this.getIndex(var42, var50, var45);
+											int coordsAbove = this.getIndex(var42, var50 + 1, var45);
+											int coordsBelow = this.getIndex(var42, var50 - 1, var45);
 
 											if (arrayOfIDs[coords] == Blocks.air)
 											{
@@ -247,10 +247,10 @@ public class GCMarsCavern
 
 													while (arrayOfIDs[coordsBelow] == Blocks.air)
 													{
-														arrayOfIDs[var50 + modifier << 8 | var45 << 4 | var42] = GCMarsBlocks.vine;
-														arrayOfMeta[var50 + modifier << 8 | var45 << 4 | var42] = (byte) (Math.abs(modifier) % 3);
+														arrayOfIDs[this.getIndex(var42, var50 + modifier, var45)] = GCMarsBlocks.vine;
+														arrayOfMeta[this.getIndex(var42, var50 + modifier, var45)] = (byte) (Math.abs(modifier) % 3);
 														modifier--;
-														coordsBelow = var50 - 1 + modifier << 8 | var45 << 4 | var42;
+														coordsBelow = this.getIndex(var42, var50 - 1 + modifier, var45);
 													}
 												}
 												else if (arrayOfIDs[coordsBelow] == GCMarsBlocks.marsBlock && this.rand.nextInt(200) == 0)
@@ -268,5 +268,10 @@ public class GCMarsCavern
 				}
 			}
 		}
+	}
+
+	private int getIndex(int x, int y, int z)
+	{
+        return (x * 16 + z) * 256 + y;
 	}
 }

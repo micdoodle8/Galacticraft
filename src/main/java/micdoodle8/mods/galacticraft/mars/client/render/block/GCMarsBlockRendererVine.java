@@ -85,6 +85,6 @@ public class GCMarsBlockRendererVine implements ISimpleBlockRenderingHandler
 			d2 += ((i1 >> 24 & 15L) / 15.0F - 0.5D) * 0.5D;
 		}
 
-		renderBlocks.drawCrossedSquares(renderBlocks.overrideBlockTexture, d0, d1, d2, 1.0F);
+		renderBlocks.drawCrossedSquares(par1Block.getIcon(0, var1.getBlockMetadata(par2, par3, par4)), d0, d1, d2, 1.0F);
 	}
 }
