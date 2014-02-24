@@ -46,14 +46,14 @@ public class GCMarsContainerLaunchController extends Container
 			this.addSlotToContainer(new Slot(par1InventoryPlayer, var6, 8 + var6 * 18, 185));
 		}
 
-		tileEntity.openChest();
+		tileEntity.openInventory();
 	}
 
 	@Override
 	public void onContainerClosed(EntityPlayer entityplayer)
 	{
 		super.onContainerClosed(entityplayer);
-		this.tileEntity.closeChest();
+		this.tileEntity.closeInventory();
 	}
 
 	@Override

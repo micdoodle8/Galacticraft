@@ -45,7 +45,7 @@ public class GCMarsItemBlockTintedGlassPane extends ItemBlock
 	@Override
 	public String getUnlocalizedName(ItemStack itemstack)
 	{
-		return this.field_150939_a.getUnlocalizedName() + "." + ItemDye.field_150923_a[BlockColored.func_150031_c(itemstack.getItemDamage())];
+		return this.field_150939_a.getUnlocalizedName() + "." + ItemDye.field_150921_b[BlockColored.func_150031_c(itemstack.getItemDamage())];
 	}
 
 	@Override

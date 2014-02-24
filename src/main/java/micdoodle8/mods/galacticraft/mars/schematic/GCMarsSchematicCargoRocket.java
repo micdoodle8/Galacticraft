@@ -38,7 +38,7 @@ public class GCMarsSchematicCargoRocket implements ISchematicPage
 	@Override
 	public ItemStack getRequiredItem()
 	{
-		return new ItemStack(GCMarsItems.schematic.itemID, 1, 1);
+		return new ItemStack(GCMarsItems.schematic, 1, 1);
 	}
 
 	@SideOnly(Side.CLIENT)

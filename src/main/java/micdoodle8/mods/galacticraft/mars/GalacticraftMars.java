@@ -4,17 +4,17 @@ import java.io.File;
 
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
-import micdoodle8.mods.galacticraft.api.galaxies.Moon;
 import micdoodle8.mods.galacticraft.api.galaxies.Planet;
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
+import micdoodle8.mods.galacticraft.core.blocks.BlockFluid;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.core.items.ItemBlockGC;
 import micdoodle8.mods.galacticraft.core.util.CoreUtil;
-import micdoodle8.mods.galacticraft.core.util.GCConfigManager;
 import micdoodle8.mods.galacticraft.core.util.GCCreativeTab;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
+import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlockSludge;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
 import micdoodle8.mods.galacticraft.mars.dimension.GCMarsTeleportType;
 import micdoodle8.mods.galacticraft.mars.dimension.GCMarsWorldProvider;
@@ -27,6 +27,7 @@ import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySlimeling;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySludgeling;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityTerraformBubble;
 import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
+import micdoodle8.mods.galacticraft.mars.network.PacketSimpleMars;
 import micdoodle8.mods.galacticraft.mars.recipe.GCMarsRecipeManager;
 import micdoodle8.mods.galacticraft.mars.schematic.GCMarsSchematicCargoRocket;
 import micdoodle8.mods.galacticraft.mars.schematic.GCMarsSchematicRocketT2;
@@ -65,11 +66,11 @@ import cpw.mods.fml.common.registry.GameRegistry;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-@Mod(name = GalacticraftMars.NAME, useMetadata = true, modid = GalacticraftMars.MODID, dependencies = "required-after:" + GalacticraftCore.MOD_ID + ";required-after:Forge@[7.0,);required-after:FML@[5.0.5,)")
+@Mod(name = GalacticraftMars.NAME, useMetadata = true, modid = GalacticraftMars.MOD_ID, dependencies = "required-after:" + GalacticraftCore.MOD_ID + ";required-after:Forge@[7.0,);required-after:FML@[5.0.5,)")
 public class GalacticraftMars
 {
 	public static final String NAME = "Galacticraft Mars";
-	public static final String MODID = "GalacticraftMars";
+	public static final String MOD_ID = "GalacticraftMars";
 	public static final String CHANNEL = "GalacticraftMars";
 	public static final String CHANNELENTITIES = "GCMarsEntities";
 
@@ -78,7 +79,7 @@ public class GalacticraftMars
 	@SidedProxy(clientSide = "micdoodle8.mods.galacticraft.mars.client.ClientProxyMars", serverSide = "micdoodle8.mods.galacticraft.mars.CommonProxyMars")
 	public static CommonProxyMars proxy;
 
-	@Instance(GalacticraftMars.MODID)
+	@Instance(GalacticraftMars.MOD_ID)
 	public static GalacticraftMars instance;
 
 	public static CreativeTabs galacticraftMarsTab;
@@ -88,7 +89,7 @@ public class GalacticraftMars
 	
 	public static Planet planetMars;
 
-	public static Fluid SLUDGE;
+	public static Fluid fluidSludge;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
@@ -96,12 +97,16 @@ public class GalacticraftMars
 		MinecraftForge.EVENT_BUS.register(new GCMarsEvents());
 		new GCMarsConfigManager(new File(event.getModConfigurationDirectory(), "Galacticraft/mars.conf"));
 
-		GalacticraftMars.SLUDGE = new Fluid("bacterialsludge").setViscosity(3000);
+		GalacticraftMars.fluidSludge = new Fluid("bacterialsludge").setViscosity(3000).setDensity(4500);
+		FluidRegistry.registerFluid(GalacticraftMars.fluidSludge);
 		
-		
-		if (!FluidRegistry.registerFluid(GalacticraftMars.SLUDGE))
+		if (fluidSludge.getBlock() == null)
 		{
-			GCLog.info("\"bacterialsludge\" has already been registered as a fluid, ignoring...");
+			GCMarsBlocks.blockSludge = new GCMarsBlockSludge(GalacticraftMars.fluidSludge, "bacterialsludge");
+			((BlockFluid) GCMarsBlocks.blockSludge).setQuantaPerBlock(9);
+			GCMarsBlocks.blockSludge.setBlockName("bacterialsludge");
+			GameRegistry.registerBlock(GCMarsBlocks.blockSludge, ItemBlockGC.class, GCMarsBlocks.blockSludge.getUnlocalizedName(), GalacticraftMars.MOD_ID);
+			GalacticraftMars.fluidSludge.setBlock(GCMarsBlocks.blockSludge);
 		}
 
 		GCMarsBlocks.initBlocks();
@@ -117,8 +122,10 @@ public class GalacticraftMars
 	{
 		SchematicRegistry.registerSchematicRecipe(new GCMarsSchematicRocketT2());
 		SchematicRegistry.registerSchematicRecipe(new GCMarsSchematicCargoRocket());
+		
+		GalacticraftCore.packetPipeline.registerPacket(PacketSimpleMars.class);
 
-		GalacticraftMars.galacticraftMarsTab = new GCCreativeTab(CreativeTabs.getNextID(), GalacticraftMars.MODID, GCMarsItems.spaceship, 5);
+		GalacticraftMars.galacticraftMarsTab = new GCCreativeTab(CreativeTabs.getNextID(), GalacticraftMars.MOD_ID, GCMarsItems.spaceship, 5);
 		NetworkRegistry.INSTANCE.registerGuiHandler(GalacticraftMars.instance, GalacticraftMars.proxy);
 		this.registerTileEntities();
 		this.registerCreatures();

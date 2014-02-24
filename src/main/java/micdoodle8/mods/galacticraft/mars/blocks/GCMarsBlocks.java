@@ -37,13 +37,13 @@ public class GCMarsBlocks
 
 	public static void initBlocks()
 	{
-		GCMarsBlocks.marsBlock = new GCMarsBlock(GCMarsConfigManager.idBlockMars).setHardness(2.2F).setBlockName("mars");
-		GCMarsBlocks.vine = new GCMarsBlockVine(GCMarsConfigManager.idBlockVine).setHardness(0.1F).setBlockName("cavernVines");
-		GCMarsBlocks.rock = new GCMarsBlockSlimelingEgg(GCMarsConfigManager.idBlockRock).setHardness(0.75F).setBlockName("slimelingEgg");
-		GCMarsBlocks.tier2TreasureChest = new GCMarsBlockT2TreasureChest(GCMarsConfigManager.idBlockTreasureChestT2).setHardness(2.5F).setBlockName("treasureT2");
-		GCMarsBlocks.machine = new GCMarsBlockMachine(GCMarsConfigManager.idBlockMachine).setHardness(1.8F).setBlockName("marsMachine");
-		GCMarsBlocks.creeperEgg = new GCMarsBlockCreeperEgg(GCMarsConfigManager.idBlockCreeperEgg).setHardness(-1.0F).setBlockName("creeperEgg");
-		GCMarsBlocks.tintedGlassPane = new GCMarsBlockTintedGlassPane(GCMarsConfigManager.idBlockTintedGlassPane).setHardness(0.6F).setBlockName("tintedGlassPane");
+		GCMarsBlocks.marsBlock = new GCMarsBlock().setHardness(2.2F).setBlockName("mars");
+		GCMarsBlocks.vine = new GCMarsBlockVine().setHardness(0.1F).setBlockName("cavernVines");
+		GCMarsBlocks.rock = new GCMarsBlockSlimelingEgg().setHardness(0.75F).setBlockName("slimelingEgg");
+		GCMarsBlocks.tier2TreasureChest = new GCMarsBlockT2TreasureChest().setHardness(2.5F).setBlockName("treasureT2");
+		GCMarsBlocks.machine = new GCMarsBlockMachine().setHardness(1.8F).setBlockName("marsMachine");
+		GCMarsBlocks.creeperEgg = new GCMarsBlockCreeperEgg().setHardness(-1.0F).setBlockName("creeperEgg");
+		GCMarsBlocks.tintedGlassPane = new GCMarsBlockTintedGlassPane().setHardness(0.6F).setBlockName("tintedGlassPane");
 	}
 
 //	public static void setHarvestLevels()
@@ -54,13 +54,12 @@ public class GCMarsBlocks
 
 	public static void registerBlocks()
 	{
-		GameRegistry.registerBlock(GCMarsBlocks.marsBlock, GCMarsItemBlock.class, GCMarsBlocks.marsBlock.getUnlocalizedName(), GalacticraftMars.MODID);
-		GameRegistry.registerBlock(GCMarsBlocks.blockSludge, ItemBlock.class, GCMarsBlocks.blockSludge.getUnlocalizedName(), GalacticraftMars.MODID);
-		GameRegistry.registerBlock(GCMarsBlocks.vine, ItemBlock.class, GCMarsBlocks.vine.getUnlocalizedName(), GalacticraftMars.MODID);
-		GameRegistry.registerBlock(GCMarsBlocks.rock, GCMarsItemBlockRock.class, GCMarsBlocks.rock.getUnlocalizedName(), GalacticraftMars.MODID);
-		GameRegistry.registerBlock(GCMarsBlocks.tier2TreasureChest, ItemBlock.class, GCMarsBlocks.tier2TreasureChest.getUnlocalizedName(), GalacticraftMars.MODID);
-		GameRegistry.registerBlock(GCMarsBlocks.machine, GCMarsItemBlockMachine.class, GCMarsBlocks.machine.getUnlocalizedName(), GalacticraftMars.MODID);
-		GameRegistry.registerBlock(GCMarsBlocks.creeperEgg, ItemBlock.class, GCMarsBlocks.creeperEgg.getUnlocalizedName(), GalacticraftMars.MODID);
-		GameRegistry.registerBlock(GCMarsBlocks.tintedGlassPane, GCMarsItemBlockTintedGlassPane.class, GCMarsBlocks.tintedGlassPane.getUnlocalizedName(), GalacticraftMars.MODID);
+		GameRegistry.registerBlock(GCMarsBlocks.marsBlock, GCMarsItemBlock.class, GCMarsBlocks.marsBlock.getUnlocalizedName(), GalacticraftMars.MOD_ID);
+		GameRegistry.registerBlock(GCMarsBlocks.vine, ItemBlock.class, GCMarsBlocks.vine.getUnlocalizedName(), GalacticraftMars.MOD_ID);
+		GameRegistry.registerBlock(GCMarsBlocks.rock, GCMarsItemBlockRock.class, GCMarsBlocks.rock.getUnlocalizedName(), GalacticraftMars.MOD_ID);
+		GameRegistry.registerBlock(GCMarsBlocks.tier2TreasureChest, ItemBlock.class, GCMarsBlocks.tier2TreasureChest.getUnlocalizedName(), GalacticraftMars.MOD_ID);
+		GameRegistry.registerBlock(GCMarsBlocks.machine, GCMarsItemBlockMachine.class, GCMarsBlocks.machine.getUnlocalizedName(), GalacticraftMars.MOD_ID);
+		GameRegistry.registerBlock(GCMarsBlocks.creeperEgg, ItemBlock.class, GCMarsBlocks.creeperEgg.getUnlocalizedName(), GalacticraftMars.MOD_ID);
+		GameRegistry.registerBlock(GCMarsBlocks.tintedGlassPane, GCMarsItemBlockTintedGlassPane.class, GCMarsBlocks.tintedGlassPane.getUnlocalizedName(), GalacticraftMars.MOD_ID);
 	}
 }

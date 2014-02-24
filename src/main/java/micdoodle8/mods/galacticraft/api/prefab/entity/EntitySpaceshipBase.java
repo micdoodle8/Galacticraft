@@ -377,7 +377,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound nbt)
 	{
-		nbt.setInteger("launchPhase", this.launchPhase);
+		nbt.setInteger("launchPhase", this.launchPhase + 1);
 		nbt.setInteger("timeUntilLaunch", this.timeUntilLaunch);
 	}
 

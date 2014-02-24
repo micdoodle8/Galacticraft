@@ -5,6 +5,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraftforge.common.util.EnumHelper;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
  * GCMarsItems.java
@@ -113,5 +114,24 @@ public class GCMarsItems
 		GCMarsItems.spaceship = new GCMarsItemSpaceshipTier2().setUnlocalizedName("spaceshipTier2");
 		GCMarsItems.key = new GCMarsItemKey().setUnlocalizedName("key");
 		GCMarsItems.schematic = new GCMarsItemSchematic().setUnlocalizedName("schematic");
+		
+		registerItems();
+	}
+	
+	private static void registerItems()
+	{
+		GameRegistry.registerItem(marsItemBasic, marsItemBasic.getUnlocalizedName(), GalacticraftMars.MOD_ID);
+		GameRegistry.registerItem(deshPickaxe, deshPickaxe.getUnlocalizedName(), GalacticraftMars.MOD_ID);
+		GameRegistry.registerItem(deshAxe, deshAxe.getUnlocalizedName(), GalacticraftMars.MOD_ID);
+		GameRegistry.registerItem(deshHoe, deshHoe.getUnlocalizedName(), GalacticraftMars.MOD_ID);
+		GameRegistry.registerItem(deshSpade, deshSpade.getUnlocalizedName(), GalacticraftMars.MOD_ID);
+		GameRegistry.registerItem(deshSword, deshSword.getUnlocalizedName(), GalacticraftMars.MOD_ID);
+		GameRegistry.registerItem(deshHelmet, deshHelmet.getUnlocalizedName(), GalacticraftMars.MOD_ID);
+		GameRegistry.registerItem(deshChestplate, deshChestplate.getUnlocalizedName(), GalacticraftMars.MOD_ID);
+		GameRegistry.registerItem(deshLeggings, deshLeggings.getUnlocalizedName(), GalacticraftMars.MOD_ID);
+		GameRegistry.registerItem(deshBoots, deshBoots.getUnlocalizedName(), GalacticraftMars.MOD_ID);
+		GameRegistry.registerItem(spaceship, spaceship.getUnlocalizedName(), GalacticraftMars.MOD_ID);
+		GameRegistry.registerItem(key, key.getUnlocalizedName(), GalacticraftMars.MOD_ID);
+		GameRegistry.registerItem(schematic, schematic.getUnlocalizedName(), GalacticraftMars.MOD_ID);
 	}
 }

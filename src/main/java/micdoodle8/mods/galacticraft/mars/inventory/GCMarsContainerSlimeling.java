@@ -33,7 +33,7 @@ public class GCMarsContainerSlimeling extends Container
 		GCMarsContainerSlimeling.addSlots(this, playerInventory, slimeling);
 		GCMarsContainerSlimeling.addAdditionalSlots(this, slimeling, slimeling.getCargoSlot());
 
-		this.slimelingInventory.openChest();
+		this.slimelingInventory.openInventory();
 	}
 
 	public static void addSlots(GCMarsContainerSlimeling container, InventoryPlayer playerInventory, GCMarsEntitySlimeling slimeling)
@@ -68,7 +68,7 @@ public class GCMarsContainerSlimeling extends Container
 	@SuppressWarnings("unchecked")
 	public static void addAdditionalSlots(GCMarsContainerSlimeling container, GCMarsEntitySlimeling slimeling, ItemStack stack)
 	{
-		if (stack != null && stack.getItem().itemID == GCMarsItems.marsItemBasic.itemID && stack.getItemDamage() == 4)
+		if (stack != null && stack.getItem() == GCMarsItems.marsItemBasic && stack.getItemDamage() == 4)
 		{
 			for (int var3 = 0; var3 < 3; ++var3)
 			{
@@ -86,7 +86,7 @@ public class GCMarsContainerSlimeling extends Container
 	@Override
 	public void onContainerClosed(EntityPlayer entityplayer)
 	{
-		this.slimelingInventory.closeChest();
+		this.slimelingInventory.closeInventory();
 	}
 
 	@Override

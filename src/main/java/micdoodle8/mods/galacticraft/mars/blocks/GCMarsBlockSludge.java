@@ -6,7 +6,6 @@ import java.util.Random;
 import micdoodle8.mods.galacticraft.core.blocks.BlockFluid;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySludgeling;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -35,7 +34,7 @@ public class GCMarsBlockSludge extends BlockFluid
 
 	public GCMarsBlockSludge(Fluid fluid, String assetName)
 	{
-		super(fluid, assetName);
+		super(fluid, GalacticraftMars.TEXTURE_PREFIX, assetName);
 		this.setRenderPass(1);
 		this.setLightLevel(1.0F);
 		this.needsRandomTick = true;

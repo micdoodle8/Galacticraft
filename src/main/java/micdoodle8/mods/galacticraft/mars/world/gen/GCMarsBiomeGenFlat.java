@@ -16,7 +16,6 @@ public class GCMarsBiomeGenFlat extends GCMarsBiomeGenBase
 		super(par1);
 		this.setBiomeName("marsFlat");
 		this.setColor(16711680);
-		this.minHeight = 2.5F;
-		this.maxHeight = 0.4F;
+		this.setHeight(new Height(2.5F, 0.4F));
 	}
 }

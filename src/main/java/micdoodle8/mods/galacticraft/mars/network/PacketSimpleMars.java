@@ -28,6 +28,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.tileentity.TileEntity;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -129,6 +130,7 @@ public class PacketSimpleMars implements IPacket
 		case C_OPEN_CUSTOM_GUI:
 			int entityID = 0;
 			Entity entity = null;
+			FMLLog.info("done c " + (Integer) this.data.get(1));
 
 			switch ((Integer) this.data.get(1))
 			{

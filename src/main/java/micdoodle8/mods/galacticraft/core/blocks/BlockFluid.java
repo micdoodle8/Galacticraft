@@ -27,13 +27,20 @@ public class BlockFluid extends BlockFluidClassic
 {
 	private IIcon stillIcon;
 	private IIcon flowingIcon;
+	private final String assetDomain;
 	private final String fluidName;
 	private final Fluid fluid;
 
 	public BlockFluid(Fluid fluid, String assetName)
 	{
+		this(fluid, GalacticraftCore.ASSET_PREFIX, assetName);
+	}
+
+	public BlockFluid(Fluid fluid, String assetDomain, String assetName)
+	{
 		super(fluid, Material.water);
 		this.setRenderPass(1);
+		this.assetDomain = assetDomain;
 		this.fluidName = assetName;
 		this.fluid = fluid;
 
@@ -60,8 +67,8 @@ public class BlockFluid extends BlockFluidClassic
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
-		this.stillIcon = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + this.fluidName + "_still");
-		this.flowingIcon = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + this.fluidName + "_flow");
+		this.stillIcon = par1IconRegister.registerIcon(this.assetDomain + this.fluidName + "_still");
+		this.flowingIcon = par1IconRegister.registerIcon(this.assetDomain + this.fluidName + "_flow");
 		this.fluid.setStillIcon(this.stillIcon);
 		this.fluid.setFlowingIcon(this.flowingIcon);
 	}

@@ -32,7 +32,7 @@ public class GCMarsBlockTintedGlassPane extends BlockPane implements IPartialSea
 	@SideOnly(Side.CLIENT)
 	private IIcon[] iconArray;
 
-	protected GCMarsBlockTintedGlassPane(int blockID)
+	protected GCMarsBlockTintedGlassPane()
 	{
 		super("", "", Material.glass, false);
 		String str = "tintedGlassPane";
@@ -71,7 +71,7 @@ public class GCMarsBlockTintedGlassPane extends BlockPane implements IPartialSea
 
 		for (int i = 0; i < this.iconArray.length; ++i)
 		{
-			this.iconArray[i] = par1IconRegister.registerIcon(GalacticraftMars.TEXTURE_PREFIX + this.getTextureName() + "_" + ItemDye.field_150923_a[BlockColored.func_150032_b(i)]);
+			this.iconArray[i] = par1IconRegister.registerIcon(GalacticraftMars.TEXTURE_PREFIX + this.getTextureName() + "_" + ItemDye.field_150921_b[BlockColored.func_150032_b(i)]);
 		}
 
 		this.blockIcon = this.iconArray[0];

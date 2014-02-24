@@ -45,11 +45,11 @@ public class GCMarsEntityTerraformBubble extends Entity implements ISizeable
 		this.renderDistanceWeight = 5.0D;
 	}
 
-	@Override
-	protected boolean pushOutOfBlocks(double par1, double par3, double par5)
-	{
-		return false;
-	}
+//	@Override
+//	protected boolean pushOutOfBlocks(double par1, double par3, double par5)
+//	{
+//		return false;
+//	} TODO Find out if this is still necessary
 
 	@Override
 	public AxisAlignedBB getBoundingBox()
@@ -98,7 +98,7 @@ public class GCMarsEntityTerraformBubble extends Entity implements ISizeable
 
 		super.onUpdate();
 
-		final TileEntity tileAt = this.worldObj.getBlockTileEntity(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1.0), MathHelper.floor_double(this.posZ));
+		final TileEntity tileAt = this.worldObj.getTileEntity(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1.0), MathHelper.floor_double(this.posZ));
 
 		if (tileAt instanceof GCMarsTileEntityTerraformer)
 		{

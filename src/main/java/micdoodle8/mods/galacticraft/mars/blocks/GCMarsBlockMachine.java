@@ -52,7 +52,7 @@ public class GCMarsBlockMachine extends BlockTile
 	private IIcon iconLaunchController;
 	private IIcon iconCryochamber;
 
-	public GCMarsBlockMachine(int id)
+	public GCMarsBlockMachine()
 	{
 		super(GCBlocks.machine);
 	}
