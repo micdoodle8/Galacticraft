@@ -24,7 +24,7 @@ public class ItemArmorGC extends ItemArmor
 {
 	public ItemArmorGC(int armorIndex, micdoodle8.mods.galacticraft.core.items.GCItems.EnumArmorIndex type, String assetSuffix)
 	{
-		super(type.getMaterial(), GalacticraftCore.proxy.getArmorRenderID(type), armorIndex);
+		super(type.getMaterial(), type.getRenderIndex(), armorIndex);
 		this.setUnlocalizedName("steel_" + assetSuffix);
 		this.setTextureName(GalacticraftCore.ASSET_PREFIX + "steel_" + assetSuffix);
 	}

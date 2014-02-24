@@ -158,7 +158,6 @@ public class GalacticraftCore
 
 	public static Galaxy galaxyBlockyWay;
 	public static Planet planetOverworld;
-	public static Planet planetMars;
 	public static Moon moonMoon;
 
 	@EventHandler
@@ -231,7 +230,6 @@ public class GalacticraftCore
 
 		GalacticraftCore.packetPipeline = new PacketPipeline();
 		GalacticraftCore.packetPipeline.initalise();
-		GalacticraftCore.packetPipeline.postInitialise();
 
 		ForgeChunkManager.setForcedChunkLoadingCallback(GalacticraftCore.instance, new ChunkLoadingCallback());
 
@@ -288,6 +286,7 @@ public class GalacticraftCore
 	public void postInit(FMLPostInitializationEvent event)
 	{
 		GalacticraftCore.proxy.postInit(event);
+		GalacticraftCore.packetPipeline.postInitialise();
 
 		ArrayList<CelestialBody> cBodyList = new ArrayList<CelestialBody>();
 		cBodyList.addAll(GalaxyRegistry.getRegisteredPlanets().values());

@@ -11,26 +11,22 @@ import java.util.Set;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.IPacket;
+import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.NetworkUtil;
+import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.relauncher.Side;
 
-public abstract class EntityAdvanced extends Entity implements IPacket
+public abstract class EntityAdvanced extends Entity implements IPacketReceiver
 {
 	protected long ticks = 0;
 	private LinkedHashSet<Field> fieldCacheClient;
 	private LinkedHashSet<Field> fieldCacheServer;
-
-	{
-		if (this.isNetworkedEntity())
-		{
-			GalacticraftCore.packetPipeline.registerPacket(this.getClass());
-		}
-	}
 
 	public EntityAdvanced(World world)
 	{
@@ -57,10 +53,9 @@ public abstract class EntityAdvanced extends Entity implements IPacket
 	/**
 	 * Add any additional data to the stream
 	 * 
-	 * @param stream
-	 *            The ByteBuf stream to write data into
+	 * @param networkedList List of additional data
 	 */
-	public void addExtraNetworkedData(ByteBuf stream)
+	public void addExtraNetworkedData(List<Object> networkedList)
 	{
 
 	}
@@ -127,7 +122,7 @@ public abstract class EntityAdvanced extends Entity implements IPacket
 					}
 				}
 
-				this.sendPackets();
+				GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, this.getPacketRange()));
 			}
 
 			if (this.worldObj.isRemote && this.getPacketCooldown(Side.SERVER) % this.ticks == 0)
@@ -144,7 +139,7 @@ public abstract class EntityAdvanced extends Entity implements IPacket
 					}
 				}
 
-				this.sendPackets();
+				GalacticraftCore.packetPipeline.sendToServer(new PacketDynamic(this));
 			}
 		}
 	}
@@ -172,46 +167,37 @@ public abstract class EntityAdvanced extends Entity implements IPacket
 		}
 	}
 
-	private void sendPackets()
+	@Override
+	public void getNetworkedData(ArrayList<Object> sendData)
 	{
-		GalacticraftCore.packetPipeline.sendToAllAround(this, new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, this.getPacketRange()));
+		Set<Field> fieldList = null;
+
+		if (this.worldObj.isRemote)
+		{
+			fieldList = this.fieldCacheServer;
+		}
+		else
+		{
+			fieldList = this.fieldCacheClient;
+		}
+
+		for (Field f : fieldList)
+		{
+			try
+			{
+				sendData.add(f.get(this));
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+
+		this.addExtraNetworkedData(sendData);
 	}
 
 	@Override
-	public void encodeInto(ChannelHandlerContext context, ByteBuf buffer)
-	{
-		try
-		{
-			Set<Field> fieldList = null;
-
-			if (this.worldObj.isRemote)
-			{
-				fieldList = this.fieldCacheServer;
-			}
-			else
-			{
-				fieldList = this.fieldCacheClient;
-			}
-
-			List<Object> objList = new ArrayList<Object>();
-
-			for (Field f : fieldList)
-			{
-				objList.add(f.get(this));
-			}
-
-			NetworkUtil.encodeData(buffer, objList);
-
-			this.addExtraNetworkedData(buffer);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
-
-	@Override
-	public void decodeInto(ChannelHandlerContext context, ByteBuf buffer)
+	public void decodePacketdata(ByteBuf buffer)
 	{
 		if (this.fieldCacheClient == null || this.fieldCacheServer == null)
 		{
@@ -249,7 +235,8 @@ public abstract class EntityAdvanced extends Entity implements IPacket
 		{
 			try
 			{
-				field.set(this, NetworkUtil.getFieldValueFromStream(field, buffer, this.worldObj));
+				Object obj = NetworkUtil.getFieldValueFromStream(field, buffer, this.worldObj);
+				field.set(this, obj);
 			}
 			catch (Exception e)
 			{
@@ -261,14 +248,8 @@ public abstract class EntityAdvanced extends Entity implements IPacket
 	}
 
 	@Override
-	public void handleClientSide(EntityPlayer player)
+	public void handlePacketData(Side side, EntityPlayer player)
 	{
-		this.onPacketClient(player);
-	}
 
-	@Override
-	public void handleServerSide(EntityPlayer player)
-	{
-		this.onPacketServer(player);
 	}
 }
