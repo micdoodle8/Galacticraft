@@ -9,7 +9,7 @@ import micdoodle8.mods.galacticraft.core.entities.EntityLander;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
-import micdoodle8.mods.galacticraft.core.util.GCConfigManager;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
@@ -29,7 +29,7 @@ public class TeleportTypeMoon implements ITeleportType
 	@Override
 	public boolean useParachute()
 	{
-		return GCConfigManager.disableLander;
+		return ConfigManagerCore.disableLander;
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public class TeleportTypeMoon implements ITeleportType
 	{
 		if (player instanceof GCEntityPlayerMP)
 		{
-			return new Vector3(((GCEntityPlayerMP) player).getCoordsTeleportedFromX(), GCConfigManager.disableLander ? 250.0 : 900.0, ((GCEntityPlayerMP) player).getCoordsTeleportedFromZ());
+			return new Vector3(((GCEntityPlayerMP) player).getCoordsTeleportedFromX(), ConfigManagerCore.disableLander ? 250.0 : 900.0, ((GCEntityPlayerMP) player).getCoordsTeleportedFromZ());
 		}
 
 		return null;
@@ -46,13 +46,13 @@ public class TeleportTypeMoon implements ITeleportType
 	@Override
 	public Vector3 getEntitySpawnLocation(WorldServer world, Entity entity)
 	{
-		return new Vector3(entity.posX, GCConfigManager.disableLander ? 250.0 : 900.0, entity.posZ);
+		return new Vector3(entity.posX, ConfigManagerCore.disableLander ? 250.0 : 900.0, entity.posZ);
 	}
 
 	@Override
 	public Vector3 getParaChestSpawnLocation(WorldServer world, EntityPlayerMP player, Random rand)
 	{
-		if (GCConfigManager.disableLander)
+		if (ConfigManagerCore.disableLander)
 		{
 			final double x = (rand.nextDouble() * 2 - 1.0D) * 5.0D;
 			final double z = (rand.nextDouble() * 2 - 1.0D) * 5.0D;
@@ -65,7 +65,7 @@ public class TeleportTypeMoon implements ITeleportType
 	@Override
 	public void onSpaceDimensionChanged(World newWorld, EntityPlayerMP player, boolean ridingAutoRocket)
 	{
-		if (!ridingAutoRocket && !GCConfigManager.disableLander && player instanceof GCEntityPlayerMP && ((GCEntityPlayerMP) player).getTeleportCooldown() <= 0)
+		if (!ridingAutoRocket && !ConfigManagerCore.disableLander && player instanceof GCEntityPlayerMP && ((GCEntityPlayerMP) player).getTeleportCooldown() <= 0)
 		{
 			final GCEntityPlayerMP gcPlayer = (GCEntityPlayerMP) player;
 

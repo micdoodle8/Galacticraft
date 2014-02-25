@@ -11,7 +11,7 @@ import micdoodle8.mods.galacticraft.api.galaxies.Planet;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.CoreUtil;
-import micdoodle8.mods.galacticraft.core.util.GCConfigManager;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
@@ -154,7 +154,7 @@ public class GuiGalaxyMap extends GuiStarBackground
 			}
 		}
 
-		if (GCConfigManager.wasdMapMovement)
+		if (ConfigManagerCore.wasdMapMovement)
 		{
 			if (Keyboard.isKeyDown(Keyboard.KEY_W))
 			{

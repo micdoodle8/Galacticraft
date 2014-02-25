@@ -8,7 +8,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.event.EventWakePlayer;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
-import micdoodle8.mods.galacticraft.core.util.GCConfigManager;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
@@ -98,7 +98,7 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 	{
 		super.setupCustomSkin();
 
-		if (GCConfigManager.overrideCapes)
+		if (ConfigManagerCore.overrideCapes)
 		{
 			this.galacticraftCape = AbstractClientPlayer.getLocationCape(this.getGameProfile().getName());
 			this.galacticraftCapeImageData = GCEntityClientPlayerMP.getImageData(this.galacticraftCape, GCEntityClientPlayerMP.getCapeURL(this.getGameProfile().getName()), null, null);
@@ -124,7 +124,7 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 	@Override
 	public ResourceLocation getLocationCape()
 	{
-		if (!GCConfigManager.overrideCapes || !this.getTextureCape().isTextureUploaded())
+		if (!ConfigManagerCore.overrideCapes || !this.getTextureCape().isTextureUploaded())
 		{
 			return super.getLocationCape();
 		}
@@ -135,7 +135,7 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 	@Override
 	public ThreadDownloadImageData getTextureCape()
 	{
-		if (!GCConfigManager.overrideCapes || !this.galacticraftCapeImageData.isTextureUploaded())
+		if (!ConfigManagerCore.overrideCapes || !this.galacticraftCapeImageData.isTextureUploaded())
 		{
 			return super.getTextureCape();
 		}

@@ -92,7 +92,7 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntitySpaceStationBase;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.CoreUtil;
-import micdoodle8.mods.galacticraft.core.util.GCConfigManager;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCreativeTab;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
@@ -166,7 +166,7 @@ public class GalacticraftCore
 		GalacticraftCore.proxy.preInit(event);
 		MinecraftForge.EVENT_BUS.register(new GCEvents());
 
-		GCConfigManager.setDefaultValues(new File(event.getModConfigurationDirectory(), GalacticraftCore.CONFIG_FILE));
+		ConfigManagerCore.setDefaultValues(new File(event.getModConfigurationDirectory(), GalacticraftCore.CONFIG_FILE));
 		NetworkConfigHandler.setDefaultValues(new File(event.getModConfigurationDirectory(), GalacticraftCore.POWER_CONFIG_FILE));
 		ChunkLoadingCallback.loadConfig(new File(event.getModConfigurationDirectory(), GalacticraftCore.CHUNKLOADER_CONFIG_FILE));
 
@@ -175,7 +175,7 @@ public class GalacticraftCore
 		GalacticraftCore.planetOverworld.setPlanetIcon(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/planets/overworld.png"));
 		GalacticraftCore.planetOverworld.setDimensionInfo(0, WorldProvider.class, false, true);
 		GalacticraftCore.moonMoon = (Moon) new Moon("moon").setParentPlanet(GalacticraftCore.planetOverworld).setRelativeSize(0.2667F).setRelativeDistanceFromCenter(40F).setRelativeOrbitTime(0.01F);
-		GalacticraftCore.moonMoon.setDimensionInfo(GCConfigManager.dimensionIDMoon, WorldProviderMoon.class);
+		GalacticraftCore.moonMoon.setDimensionInfo(ConfigManagerCore.dimensionIDMoon, WorldProviderMoon.class);
 		GalacticraftCore.moonMoon.setPlanetIcon(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/planets/moon.png"));
 		GalaxyRegistry.registerGalaxy(GalacticraftCore.galaxyBlockyWay);
 		GalaxyRegistry.registerPlanet(GalacticraftCore.planetOverworld);
@@ -223,7 +223,7 @@ public class GalacticraftCore
 	{
 		GalacticraftCore.proxy.init(event);
 		GalacticraftCore.galacticraftTab = new GCCreativeTab(CreativeTabs.getNextID(), GalacticraftCore.MOD_NAME, GCBlocks.airLockFrame, 0);
-		DimensionManager.registerProviderType(GCConfigManager.idDimensionOverworldOrbit, WorldProviderSpaceStation.class, false);
+		DimensionManager.registerProviderType(ConfigManagerCore.idDimensionOverworldOrbit, WorldProviderSpaceStation.class, false);
 		GalacticraftRegistry.registerTeleportType(WorldProviderSurface.class, new TeleportTypeOverworld());
 		GalacticraftRegistry.registerTeleportType(WorldProviderSpaceStation.class, new TeleportTypeSpaceStation());
 		GalacticraftRegistry.registerTeleportType(WorldProviderMoon.class, new TeleportTypeMoon());
@@ -261,22 +261,22 @@ public class GalacticraftCore
 		GalacticraftRegistry.addDungeonLoot(1, new ItemStack(GCItems.schematic, 1, 0));
 		GalacticraftRegistry.addDungeonLoot(1, new ItemStack(GCItems.schematic, 1, 1));
 
-		if (GCConfigManager.enableCopperOreGen)
+		if (ConfigManagerCore.enableCopperOreGen)
 		{
 			GameRegistry.registerWorldGenerator(new WorldGenOverworld(GCBlocks.basicBlock, 5, 24, 0, 75, 7), 5);
 		}
 
-		if (GCConfigManager.enableTinOreGen)
+		if (ConfigManagerCore.enableTinOreGen)
 		{
 			GameRegistry.registerWorldGenerator(new WorldGenOverworld(GCBlocks.basicBlock, 6, 22, 0, 60, 7), 5);
 		}
 
-		if (GCConfigManager.enableAluminumOreGen)
+		if (ConfigManagerCore.enableAluminumOreGen)
 		{
 			GameRegistry.registerWorldGenerator(new WorldGenOverworld(GCBlocks.basicBlock, 7, 18, 0, 45, 7), 5);
 		}
 
-		if (GCConfigManager.enableSiliconOreGen)
+		if (ConfigManagerCore.enableSiliconOreGen)
 		{
 			GameRegistry.registerWorldGenerator(new WorldGenOverworld(GCBlocks.basicBlock, 8, 3, 0, 25, 7), 5);
 		}
@@ -427,24 +427,24 @@ public class GalacticraftCore
 
 	public void registerCreatures()
 	{
-		CoreUtil.registerGalacticraftCreature(EntityEvolvedSpider.class, "EvolvedSpider", GCConfigManager.idEntityEvolvedSpider, 3419431, 11013646);
-		CoreUtil.registerGalacticraftCreature(EntityEvolvedZombie.class, "EvolvedZombie", GCConfigManager.idEntityEvolvedZombie, 44975, 7969893);
-		CoreUtil.registerGalacticraftCreature(EntityEvolvedCreeper.class, "EvolvedCreeper", GCConfigManager.idEntityEvolvedCreeper, 894731, 0);
-		CoreUtil.registerGalacticraftCreature(EntityEvolvedSkeleton.class, "EvolvedSkeleton", GCConfigManager.idEntityEvolvedSkeleton, 12698049, 4802889);
-		CoreUtil.registerGalacticraftCreature(EntitySkeletonBoss.class, "EvolvedSkeletonBoss", GCConfigManager.idEntityEvolvedSkeletonBoss, 12698049, 4802889);
-		CoreUtil.registerGalacticraftCreature(EntityAlienVillager.class, "AlienVillager", GCConfigManager.idEntityAlienVillager, CoreUtil.to32BitColor(255, 103, 145, 181), 12422002);
+		CoreUtil.registerGalacticraftCreature(EntityEvolvedSpider.class, "EvolvedSpider", ConfigManagerCore.idEntityEvolvedSpider, 3419431, 11013646);
+		CoreUtil.registerGalacticraftCreature(EntityEvolvedZombie.class, "EvolvedZombie", ConfigManagerCore.idEntityEvolvedZombie, 44975, 7969893);
+		CoreUtil.registerGalacticraftCreature(EntityEvolvedCreeper.class, "EvolvedCreeper", ConfigManagerCore.idEntityEvolvedCreeper, 894731, 0);
+		CoreUtil.registerGalacticraftCreature(EntityEvolvedSkeleton.class, "EvolvedSkeleton", ConfigManagerCore.idEntityEvolvedSkeleton, 12698049, 4802889);
+		CoreUtil.registerGalacticraftCreature(EntitySkeletonBoss.class, "EvolvedSkeletonBoss", ConfigManagerCore.idEntityEvolvedSkeletonBoss, 12698049, 4802889);
+		CoreUtil.registerGalacticraftCreature(EntityAlienVillager.class, "AlienVillager", ConfigManagerCore.idEntityAlienVillager, CoreUtil.to32BitColor(255, 103, 145, 181), 12422002);
 	}
 
 	public void registerOtherEntities()
 	{
-		CoreUtil.registerGalacticraftNonMobEntity(EntityTier1Rocket.class, "Spaceship", GCConfigManager.idEntitySpaceship, 150, 1, false);
-		CoreUtil.registerGalacticraftNonMobEntity(EntityArrowGC.class, "GravityArrow", GCConfigManager.idEntityAntiGravityArrow, 150, 5, true);
-		CoreUtil.registerGalacticraftNonMobEntity(EntityMeteor.class, "Meteor", GCConfigManager.idEntityMeteor, 150, 5, true);
-		CoreUtil.registerGalacticraftNonMobEntity(EntityBuggy.class, "Buggy", GCConfigManager.idEntityBuggy, 150, 5, true);
-		CoreUtil.registerGalacticraftNonMobEntity(EntityFlag.class, "Flag", GCConfigManager.idEntityFlag, 150, 5, true);
-		CoreUtil.registerGalacticraftNonMobEntity(EntityParachest.class, "ParaChest", GCConfigManager.idEntityParaChest, 150, 5, true);
-		CoreUtil.registerGalacticraftNonMobEntity(EntityBubble.class, "OxygenBubble", GCConfigManager.idEntityOxygenBubble, 150, 20, false);
-		CoreUtil.registerGalacticraftNonMobEntity(EntityLander.class, "Lander", GCConfigManager.idEntityLander, 150, 5, false);
-		CoreUtil.registerGalacticraftNonMobEntity(EntityMeteorChunk.class, "MeteorChunk", GCConfigManager.idEntityMeteorChunk, 150, 5, true);
+		CoreUtil.registerGalacticraftNonMobEntity(EntityTier1Rocket.class, "Spaceship", ConfigManagerCore.idEntitySpaceship, 150, 1, false);
+		CoreUtil.registerGalacticraftNonMobEntity(EntityArrowGC.class, "GravityArrow", ConfigManagerCore.idEntityAntiGravityArrow, 150, 5, true);
+		CoreUtil.registerGalacticraftNonMobEntity(EntityMeteor.class, "Meteor", ConfigManagerCore.idEntityMeteor, 150, 5, true);
+		CoreUtil.registerGalacticraftNonMobEntity(EntityBuggy.class, "Buggy", ConfigManagerCore.idEntityBuggy, 150, 5, true);
+		CoreUtil.registerGalacticraftNonMobEntity(EntityFlag.class, "Flag", ConfigManagerCore.idEntityFlag, 150, 5, true);
+		CoreUtil.registerGalacticraftNonMobEntity(EntityParachest.class, "ParaChest", ConfigManagerCore.idEntityParaChest, 150, 5, true);
+		CoreUtil.registerGalacticraftNonMobEntity(EntityBubble.class, "OxygenBubble", ConfigManagerCore.idEntityOxygenBubble, 150, 20, false);
+		CoreUtil.registerGalacticraftNonMobEntity(EntityLander.class, "Lander", ConfigManagerCore.idEntityLander, 150, 5, false);
+		CoreUtil.registerGalacticraftNonMobEntity(EntityMeteorChunk.class, "MeteorChunk", ConfigManagerCore.idEntityMeteorChunk, 150, 5, true);
 	}
 }

@@ -15,29 +15,32 @@ import micdoodle8.mods.galacticraft.core.items.ItemBlockGC;
 import micdoodle8.mods.galacticraft.core.util.CoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCreativeTab;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
-import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlockSludge;
-import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
-import micdoodle8.mods.galacticraft.mars.dimension.GCMarsTeleportType;
-import micdoodle8.mods.galacticraft.mars.dimension.GCMarsWorldProvider;
-import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityCargoRocket;
-import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityCreeperBoss;
-import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityLandingBalloons;
-import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityProjectileTNT;
-import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityRocketT2;
-import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySlimeling;
-import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySludgeling;
-import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityTerraformBubble;
-import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
+import micdoodle8.mods.galacticraft.mars.blocks.BlockSludge;
+import micdoodle8.mods.galacticraft.mars.blocks.MarsBlocks;
+import micdoodle8.mods.galacticraft.mars.dimension.TeleportTypeMars;
+import micdoodle8.mods.galacticraft.mars.dimension.WorldProviderMars;
+import micdoodle8.mods.galacticraft.mars.entities.EntityCargoRocket;
+import micdoodle8.mods.galacticraft.mars.entities.EntityCreeperBoss;
+import micdoodle8.mods.galacticraft.mars.entities.EntityLandingBalloons;
+import micdoodle8.mods.galacticraft.mars.entities.EntityProjectileTNT;
+import micdoodle8.mods.galacticraft.mars.entities.EntityTier2Rocket;
+import micdoodle8.mods.galacticraft.mars.entities.EntitySlimeling;
+import micdoodle8.mods.galacticraft.mars.entities.EntitySludgeling;
+import micdoodle8.mods.galacticraft.mars.entities.EntityTerraformBubble;
+import micdoodle8.mods.galacticraft.mars.items.MarsItems;
 import micdoodle8.mods.galacticraft.mars.network.PacketSimpleMars;
-import micdoodle8.mods.galacticraft.mars.recipe.GCMarsRecipeManager;
-import micdoodle8.mods.galacticraft.mars.schematic.GCMarsSchematicCargoRocket;
-import micdoodle8.mods.galacticraft.mars.schematic.GCMarsSchematicRocketT2;
-import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityCryogenicChamber;
-import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityDungeonSpawner;
-import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityLaunchController;
-import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntitySlimelingEgg;
-import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityTerraformer;
-import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityTreasureChest;
+import micdoodle8.mods.galacticraft.mars.proxy.CommonProxyMars;
+import micdoodle8.mods.galacticraft.mars.recipe.RecipeManagerMars;
+import micdoodle8.mods.galacticraft.mars.schematic.SchematicCargoRocket;
+import micdoodle8.mods.galacticraft.mars.schematic.SchematicTier2Rocket;
+import micdoodle8.mods.galacticraft.mars.tile.TileEntityCryogenicChamber;
+import micdoodle8.mods.galacticraft.mars.tile.TileEntityDungeonSpawnerMars;
+import micdoodle8.mods.galacticraft.mars.tile.TileEntityLaunchController;
+import micdoodle8.mods.galacticraft.mars.tile.TileEntitySlimelingEgg;
+import micdoodle8.mods.galacticraft.mars.tile.TileEntityTerraformer;
+import micdoodle8.mods.galacticraft.mars.tile.TileEntityTreasureChestMars;
+import micdoodle8.mods.galacticraft.mars.util.ConfigManagerMars;
+import micdoodle8.mods.galacticraft.mars.util.EventHandlerMars;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -73,7 +76,7 @@ public class GalacticraftMars
 	public static final String NAME = "Galacticraft Mars";
 	public static final String MOD_ID = "GalacticraftMars";
 
-	@SidedProxy(clientSide = "micdoodle8.mods.galacticraft.mars.client.ClientProxyMars", serverSide = "micdoodle8.mods.galacticraft.mars.CommonProxyMars")
+	@SidedProxy(clientSide = "micdoodle8.mods.galacticraft.mars.proxy.ClientProxyMars", serverSide = "micdoodle8.mods.galacticraft.mars.proxy.CommonProxyMars")
 	public static CommonProxyMars proxy;
 
 	@Instance(GalacticraftMars.MOD_ID)
@@ -91,29 +94,29 @@ public class GalacticraftMars
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		MinecraftForge.EVENT_BUS.register(new GCMarsEvents());
-		new GCMarsConfigManager(new File(event.getModConfigurationDirectory(), "Galacticraft/mars.conf"));
+		MinecraftForge.EVENT_BUS.register(new EventHandlerMars());
+		new ConfigManagerMars(new File(event.getModConfigurationDirectory(), "Galacticraft/mars.conf"));
 
 		GalacticraftMars.fluidSludge = new Fluid("bacterialsludge").setViscosity(3000).setDensity(4500);
 		FluidRegistry.registerFluid(GalacticraftMars.fluidSludge);
 		
 		if (fluidSludge.getBlock() == null)
 		{
-			GCMarsBlocks.blockSludge = new GCMarsBlockSludge(GalacticraftMars.fluidSludge, "bacterialsludge");
-			((BlockFluid) GCMarsBlocks.blockSludge).setQuantaPerBlock(9);
-			GCMarsBlocks.blockSludge.setBlockName("bacterialsludge");
-			GameRegistry.registerBlock(GCMarsBlocks.blockSludge, ItemBlockGC.class, GCMarsBlocks.blockSludge.getUnlocalizedName(), GalacticraftMars.MOD_ID);
-			GalacticraftMars.fluidSludge.setBlock(GCMarsBlocks.blockSludge);
+			MarsBlocks.blockSludge = new BlockSludge(GalacticraftMars.fluidSludge, "bacterialsludge");
+			((BlockFluid) MarsBlocks.blockSludge).setQuantaPerBlock(9);
+			MarsBlocks.blockSludge.setBlockName("bacterialsludge");
+			GameRegistry.registerBlock(MarsBlocks.blockSludge, ItemBlockGC.class, MarsBlocks.blockSludge.getUnlocalizedName(), GalacticraftMars.MOD_ID);
+			GalacticraftMars.fluidSludge.setBlock(MarsBlocks.blockSludge);
 		}
 		else
 		{
-			GCMarsBlocks.blockSludge = GalacticraftMars.fluidSludge.getBlock();
+			MarsBlocks.blockSludge = GalacticraftMars.fluidSludge.getBlock();
 		}
 
-		GCMarsBlocks.initBlocks();
-		GCMarsBlocks.registerBlocks();
+		MarsBlocks.initBlocks();
+		MarsBlocks.registerBlocks();
 
-		GCMarsItems.initItems();
+		MarsItems.initItems();
 
 		GalacticraftMars.proxy.preInit(event);
 	}
@@ -121,12 +124,12 @@ public class GalacticraftMars
 	@EventHandler
 	public void load(FMLInitializationEvent event)
 	{
-		SchematicRegistry.registerSchematicRecipe(new GCMarsSchematicRocketT2());
-		SchematicRegistry.registerSchematicRecipe(new GCMarsSchematicCargoRocket());
+		SchematicRegistry.registerSchematicRecipe(new SchematicTier2Rocket());
+		SchematicRegistry.registerSchematicRecipe(new SchematicCargoRocket());
 		
 		GalacticraftCore.packetPipeline.registerPacket(PacketSimpleMars.class);
 
-		GalacticraftMars.galacticraftMarsTab = new GCCreativeTab(CreativeTabs.getNextID(), GalacticraftMars.MOD_ID, GCMarsItems.spaceship, 5);
+		GalacticraftMars.galacticraftMarsTab = new GCCreativeTab(CreativeTabs.getNextID(), GalacticraftMars.MOD_ID, MarsItems.spaceship, 5);
 		NetworkRegistry.INSTANCE.registerGuiHandler(GalacticraftMars.instance, GalacticraftMars.proxy);
 		this.registerTileEntities();
 		this.registerCreatures();
@@ -135,16 +138,16 @@ public class GalacticraftMars
 
 		GalacticraftMars.planetMars = (Planet) new Planet("mars").setParentGalaxy(GalacticraftCore.galaxyBlockyWay).setRingColorRGB(0.67F, 0.1F, 0.1F).setPhaseShift(0.1667F).setRelativeSize(0.5319F).setRelativeDistanceFromCenter(1.52F).setRelativeOrbitTime(1.88F);
 		GalacticraftMars.planetMars.setPlanetIcon(new ResourceLocation(GalacticraftMars.ASSET_DOMAIN, "textures/gui/planets/mars.png"));
-		GalacticraftMars.planetMars.setDimensionInfo(GCMarsConfigManager.dimensionIDMars, GCMarsWorldProvider.class);
+		GalacticraftMars.planetMars.setDimensionInfo(ConfigManagerMars.dimensionIDMars, WorldProviderMars.class);
 		GalaxyRegistry.registerPlanet(GalacticraftMars.planetMars);
 		
-		GalacticraftRegistry.registerTeleportType(GCMarsWorldProvider.class, new GCMarsTeleportType());
-		GalacticraftRegistry.registerRocketGui(GCMarsWorldProvider.class, new ResourceLocation(GalacticraftMars.ASSET_DOMAIN, "textures/gui/marsRocketGui.png"));
-		GalacticraftRegistry.addDungeonLoot(2, new ItemStack(GCMarsItems.schematic, 1, 0));
-		GalacticraftRegistry.addDungeonLoot(2, new ItemStack(GCMarsItems.schematic, 1, 1));
+		GalacticraftRegistry.registerTeleportType(WorldProviderMars.class, new TeleportTypeMars());
+		GalacticraftRegistry.registerRocketGui(WorldProviderMars.class, new ResourceLocation(GalacticraftMars.ASSET_DOMAIN, "textures/gui/marsRocketGui.png"));
+		GalacticraftRegistry.addDungeonLoot(2, new ItemStack(MarsItems.schematic, 1, 0));
+		GalacticraftRegistry.addDungeonLoot(2, new ItemStack(MarsItems.schematic, 1, 1));
 
-		CompressorRecipes.addShapelessRecipe(new ItemStack(GCMarsItems.marsItemBasic, 1, 3), new ItemStack(GCItems.heavyPlatingTier1), new ItemStack(GCItems.meteoricIronIngot, 1, 1));
-		CompressorRecipes.addShapelessRecipe(new ItemStack(GCMarsItems.marsItemBasic, 1, 5), new ItemStack(GCMarsItems.marsItemBasic, 1, 2));
+		CompressorRecipes.addShapelessRecipe(new ItemStack(MarsItems.marsItemBasic, 1, 3), new ItemStack(GCItems.heavyPlatingTier1), new ItemStack(GCItems.meteoricIronIngot, 1, 1));
+		CompressorRecipes.addShapelessRecipe(new ItemStack(MarsItems.marsItemBasic, 1, 5), new ItemStack(MarsItems.marsItemBasic, 1, 2));
 	}
 
 	@EventHandler
@@ -154,28 +157,28 @@ public class GalacticraftMars
 
 	public void registerTileEntities()
 	{
-		GameRegistry.registerTileEntity(GCMarsTileEntitySlimelingEgg.class, "Slimeling Egg");
-		GameRegistry.registerTileEntity(GCMarsTileEntityTreasureChest.class, "Tier 2 Treasure Chest");
-		GameRegistry.registerTileEntity(GCMarsTileEntityTerraformer.class, "Planet Terraformer");
-		GameRegistry.registerTileEntity(GCMarsTileEntityCryogenicChamber.class, "Cryogenic Chamber");
-		GameRegistry.registerTileEntity(GCMarsTileEntityDungeonSpawner.class, "Mars Dungeon Spawner");
-		GameRegistry.registerTileEntity(GCMarsTileEntityLaunchController.class, "Launch Controller");
+		GameRegistry.registerTileEntity(TileEntitySlimelingEgg.class, "Slimeling Egg");
+		GameRegistry.registerTileEntity(TileEntityTreasureChestMars.class, "Tier 2 Treasure Chest");
+		GameRegistry.registerTileEntity(TileEntityTerraformer.class, "Planet Terraformer");
+		GameRegistry.registerTileEntity(TileEntityCryogenicChamber.class, "Cryogenic Chamber");
+		GameRegistry.registerTileEntity(TileEntityDungeonSpawnerMars.class, "Mars Dungeon Spawner");
+		GameRegistry.registerTileEntity(TileEntityLaunchController.class, "Launch Controller");
 	}
 
 	public void registerCreatures()
 	{
-		this.registerGalacticraftCreature(GCMarsEntitySludgeling.class, "Sludgeling", GCMarsConfigManager.idEntitySludgeling, CoreUtil.to32BitColor(255, 0, 50, 0), CoreUtil.to32BitColor(255, 0, 150, 0));
-		this.registerGalacticraftCreature(GCMarsEntitySlimeling.class, "Slimeling", GCMarsConfigManager.idEntitySlimeling, CoreUtil.to32BitColor(255, 0, 50, 0), CoreUtil.to32BitColor(255, 0, 150, 0));
-		this.registerGalacticraftCreature(GCMarsEntityCreeperBoss.class, "CreeperBoss", GCMarsConfigManager.idEntityCreeperBoss, CoreUtil.to32BitColor(255, 0, 50, 0), CoreUtil.to32BitColor(255, 0, 150, 0));
+		this.registerGalacticraftCreature(EntitySludgeling.class, "Sludgeling", ConfigManagerMars.idEntitySludgeling, CoreUtil.to32BitColor(255, 0, 50, 0), CoreUtil.to32BitColor(255, 0, 150, 0));
+		this.registerGalacticraftCreature(EntitySlimeling.class, "Slimeling", ConfigManagerMars.idEntitySlimeling, CoreUtil.to32BitColor(255, 0, 50, 0), CoreUtil.to32BitColor(255, 0, 150, 0));
+		this.registerGalacticraftCreature(EntityCreeperBoss.class, "CreeperBoss", ConfigManagerMars.idEntityCreeperBoss, CoreUtil.to32BitColor(255, 0, 50, 0), CoreUtil.to32BitColor(255, 0, 150, 0));
 	}
 
 	public void registerOtherEntities()
 	{
-		this.registerGalacticraftNonMobEntity(GCMarsEntityRocketT2.class, "SpaceshipT2", GCMarsConfigManager.idEntitySpaceshipTier2, 150, 1, false);
-		this.registerGalacticraftNonMobEntity(GCMarsEntityTerraformBubble.class, "TerraformBubble", GCMarsConfigManager.idEntityTerraformBubble, 150, 20, false);
-		this.registerGalacticraftNonMobEntity(GCMarsEntityProjectileTNT.class, "ProjectileTNT", GCMarsConfigManager.idEntityProjectileTNT, 150, 1, true);
-		this.registerGalacticraftNonMobEntity(GCMarsEntityLandingBalloons.class, "LandingBalloons", GCMarsConfigManager.idEntityLandingBalloons, 150, 5, true);
-		this.registerGalacticraftNonMobEntity(GCMarsEntityCargoRocket.class, "CargoRocket", GCMarsConfigManager.idEntityCargoRocket, 150, 1, false);
+		this.registerGalacticraftNonMobEntity(EntityTier2Rocket.class, "SpaceshipT2", ConfigManagerMars.idEntitySpaceshipTier2, 150, 1, false);
+		this.registerGalacticraftNonMobEntity(EntityTerraformBubble.class, "TerraformBubble", ConfigManagerMars.idEntityTerraformBubble, 150, 20, false);
+		this.registerGalacticraftNonMobEntity(EntityProjectileTNT.class, "ProjectileTNT", ConfigManagerMars.idEntityProjectileTNT, 150, 1, true);
+		this.registerGalacticraftNonMobEntity(EntityLandingBalloons.class, "LandingBalloons", ConfigManagerMars.idEntityLandingBalloons, 150, 5, true);
+		this.registerGalacticraftNonMobEntity(EntityCargoRocket.class, "CargoRocket", ConfigManagerMars.idEntityCargoRocket, 150, 1, false);
 	}
 
 	@EventHandler
@@ -183,7 +186,7 @@ public class GalacticraftMars
 	{
 		GalacticraftMars.proxy.postInit(event);
 		GalacticraftMars.proxy.registerRenderInformation();
-		GCMarsRecipeManager.loadRecipes();
+		RecipeManagerMars.loadRecipes();
 	}
 
 	public void registerGalacticraftCreature(Class<? extends Entity> var0, String var1, int id, int back, int fore)

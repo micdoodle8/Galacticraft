@@ -7,7 +7,7 @@ import java.util.Map;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenSealer;
-import micdoodle8.mods.galacticraft.core.util.GCConfigManager;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
@@ -39,7 +39,7 @@ public class SealerThreadManager
 
 		try
 		{
-			for (final String s : GCConfigManager.sealableIDs)
+			for (final String s : ConfigManagerCore.sealableIDs)
 			{
 				final String[] split = s.split(":");
 

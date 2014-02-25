@@ -37,7 +37,7 @@ import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAirLockController;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityConductor;
 import micdoodle8.mods.galacticraft.core.util.CoreUtil;
-import micdoodle8.mods.galacticraft.core.util.GCConfigManager;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
@@ -359,7 +359,7 @@ public class PacketSimple implements IPacket
 				if (!WorldUtil.registeredSpaceStations.contains(dimID))
 				{
 					WorldUtil.registeredSpaceStations.add(dimID);
-					DimensionManager.registerDimension(dimID, GCConfigManager.idDimensionOverworldOrbit);
+					DimensionManager.registerDimension(dimID, ConfigManagerCore.idDimensionOverworldOrbit);
 				}
 			}
 			break;
@@ -474,7 +474,7 @@ public class PacketSimple implements IPacket
 			}
 			break;
 		case C_OPEN_SPACE_RACE_GUI:
-			player.openGui(GalacticraftCore.instance, GCConfigManager.idGuiNewSpaceRace, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
+			player.openGui(GalacticraftCore.instance, ConfigManagerCore.idGuiNewSpaceRace, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
 			break;
 		case C_UPDATE_SPACE_RACE_DATA:
 			String teamName = (String)this.data.get(0);
@@ -584,7 +584,7 @@ public class PacketSimple implements IPacket
 			}
 			else if (player.ridingEntity instanceof EntitySpaceshipBase)
 			{
-				player.openGui(GalacticraftCore.instance, GCConfigManager.idGuiSpaceshipInventory, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
+				player.openGui(GalacticraftCore.instance, ConfigManagerCore.idGuiSpaceshipInventory, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
 			}
 			break;
 		case S_UPDATE_SHIP_YAW:
@@ -685,7 +685,7 @@ public class PacketSimple implements IPacket
 			}
 			break;
 		case S_OPEN_EXTENDED_INVENTORY:
-			player.openGui(GalacticraftCore.instance, GCConfigManager.idGuiExtendedInventory, player.worldObj, 0, 0, 0);
+			player.openGui(GalacticraftCore.instance, ConfigManagerCore.idGuiExtendedInventory, player.worldObj, 0, 0, 0);
 			break;
 		case S_ON_ADVANCED_GUI_CLICKED_INT:
 			TileEntity tile1 = player.worldObj.getTileEntity((Integer) this.data.get(1), (Integer) this.data.get(2), (Integer) this.data.get(3));

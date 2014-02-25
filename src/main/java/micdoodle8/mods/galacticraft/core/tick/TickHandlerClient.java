@@ -29,7 +29,7 @@ import micdoodle8.mods.galacticraft.core.items.ItemSensorGlasses;
 import micdoodle8.mods.galacticraft.core.network.PacketRotateRocket;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
-import micdoodle8.mods.galacticraft.core.util.GCConfigManager;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.galacticraft.core.util.ThreadRequirementMissing;
 import micdoodle8.mods.galacticraft.core.util.ThreadVersionCheck;
@@ -206,7 +206,7 @@ public class TickHandlerClient
 				var7 = 90;
 			}
 
-			OverlayOxygenTankIndicator.renderOxygenTankIndicator(var6, var7, !GCConfigManager.oxygenIndicatorLeft, !GCConfigManager.oxygenIndicatorBottom);
+			OverlayOxygenTankIndicator.renderOxygenTankIndicator(var6, var7, !ConfigManagerCore.oxygenIndicatorLeft, !ConfigManagerCore.oxygenIndicatorBottom);
 		}
 
 		if (playerBaseClient != null && player.worldObj.provider instanceof IGalacticraftWorldProvider && !playerBaseClient.oxygenSetupValid && minecraft.currentScreen == null && !playerBaseClient.capabilities.isCreativeMode)

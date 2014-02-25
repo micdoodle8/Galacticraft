@@ -4,7 +4,7 @@ import micdoodle8.mods.galacticraft.api.recipe.SchematicPage;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiSchematicBuggy;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerBuggyBench;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
-import micdoodle8.mods.galacticraft.core.util.GCConfigManager;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -26,13 +26,13 @@ public class SchematicPageMoonBuggy extends SchematicPage
 	@Override
 	public int getPageID()
 	{
-		return GCConfigManager.idSchematicMoonBuggy;
+		return ConfigManagerCore.idSchematicMoonBuggy;
 	}
 
 	@Override
 	public int getGuiID()
 	{
-		return GCConfigManager.idGuiBuggyCraftingBench;
+		return ConfigManagerCore.idGuiBuggyCraftingBench;
 	}
 
 	@Override

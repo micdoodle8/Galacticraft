@@ -23,6 +23,11 @@ public class ItemAxeGC extends ItemAxe
 {
 	public ItemAxeGC(EnumToolType type, String assetName)
 	{
+		this(type, GalacticraftCore.ASSET_PREFIX, assetName);
+	}
+	
+	public ItemAxeGC(EnumToolType type, String assetPrefix, String assetName)
+	{
 		super(type.getMaterial());
 		this.setUnlocalizedName(assetName);
 		this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);

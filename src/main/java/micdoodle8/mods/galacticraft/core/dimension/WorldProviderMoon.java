@@ -5,7 +5,7 @@ import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
 import micdoodle8.mods.galacticraft.api.world.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.util.GCConfigManager;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.world.gen.ChunkProviderMoon;
 import micdoodle8.mods.galacticraft.core.world.gen.WorldChunkManagerMoon;
 import net.minecraft.entity.Entity;
@@ -171,13 +171,13 @@ public class WorldProviderMoon extends WorldProviderSpace implements IGalacticra
 	@Override
 	public boolean canRespawnHere()
 	{
-		return !GCConfigManager.forceOverworldRespawn;
+		return !ConfigManagerCore.forceOverworldRespawn;
 	}
 
 	@Override
 	public String getSaveFolder()
 	{
-		return "DIM" + GCConfigManager.dimensionIDMoon;
+		return "DIM" + ConfigManagerCore.dimensionIDMoon;
 	}
 
 	@Override

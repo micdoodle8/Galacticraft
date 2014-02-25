@@ -13,7 +13,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
-import micdoodle8.mods.galacticraft.core.util.GCConfigManager;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -97,7 +97,7 @@ public class EntitySkeletonBoss extends EntityMob implements IEntityBreathable, 
 	protected void applyEntityAttributes()
 	{
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(150.0F * GCConfigManager.dungeonBossHealthMod);
+		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(150.0F * ConfigManagerCore.dungeonBossHealthMod);
 		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.25F);
 	}
 
@@ -325,7 +325,7 @@ public class EntitySkeletonBoss extends EntityMob implements IEntityBreathable, 
 
 		this.ticks++;
 
-		if (!this.worldObj.isRemote && this.getHealth() <= 150.0F * GCConfigManager.dungeonBossHealthMod / 2)
+		if (!this.worldObj.isRemote && this.getHealth() <= 150.0F * ConfigManagerCore.dungeonBossHealthMod / 2)
 		{
 			this.getEntityAttribute(SharedMonsterAttributes.movementSpeed);
 		}

@@ -9,7 +9,7 @@ import micdoodle8.mods.galacticraft.core.entities.IControllableEntity;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
-import micdoodle8.mods.galacticraft.core.util.GCConfigManager;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
@@ -71,7 +71,7 @@ public class KeyHandlerGC extends KeyHandler
 			{
 				if (KeyHandlerGC.mc.currentScreen == null)
 				{
-					KeyHandlerGC.mc.thePlayer.openGui(GalacticraftCore.instance, GCConfigManager.idGuiGalaxyMap, KeyHandlerGC.mc.theWorld, (int) KeyHandlerGC.mc.thePlayer.posX, (int) KeyHandlerGC.mc.thePlayer.posY, (int) KeyHandlerGC.mc.thePlayer.posZ);
+					KeyHandlerGC.mc.thePlayer.openGui(GalacticraftCore.instance, ConfigManagerCore.idGuiGalaxyMap, KeyHandlerGC.mc.theWorld, (int) KeyHandlerGC.mc.thePlayer.posX, (int) KeyHandlerGC.mc.thePlayer.posY, (int) KeyHandlerGC.mc.thePlayer.posZ);
 				}
 			}
 			else if (kb.getKeyCode() == KeyHandlerGC.openFuelGui.getKeyCode())

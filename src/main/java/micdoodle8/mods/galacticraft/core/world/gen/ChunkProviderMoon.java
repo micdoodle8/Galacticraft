@@ -11,7 +11,7 @@ import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
 import micdoodle8.mods.galacticraft.core.perlin.NoiseModule;
 import micdoodle8.mods.galacticraft.core.perlin.generator.Gradient;
-import micdoodle8.mods.galacticraft.core.util.GCConfigManager;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.MapGenDungeon;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.RoomBossMoon;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.RoomChestsMoon;
@@ -349,7 +349,7 @@ public class ChunkProviderMoon extends ChunkProviderGenerate
 
 		this.dungeonGenerator.handleTileEntities(this.rand);
 
-		if (!GCConfigManager.disableMoonVillageGen)
+		if (!ConfigManagerCore.disableMoonVillageGen)
 		{
 			this.villageGenerator.generateStructuresInChunk(this.worldObj, this.rand, par2, par3);
 		}
@@ -398,7 +398,7 @@ public class ChunkProviderMoon extends ChunkProviderGenerate
 	@Override
 	public void recreateStructures(int par1, int par2)
 	{
-		if (!GCConfigManager.disableMoonVillageGen)
+		if (!ConfigManagerCore.disableMoonVillageGen)
 		{
 			this.villageGenerator.func_151539_a(this, this.worldObj, par1, par2, (Block[]) null);
 		}

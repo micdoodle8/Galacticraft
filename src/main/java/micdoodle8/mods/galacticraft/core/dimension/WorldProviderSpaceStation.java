@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.dimension;
 import micdoodle8.mods.galacticraft.api.world.IExitHeight;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
-import micdoodle8.mods.galacticraft.core.util.GCConfigManager;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.world.gen.ChunkProviderSpaceStation;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
@@ -166,7 +166,7 @@ public class WorldProviderSpaceStation extends WorldProvider implements IOrbitDi
 	@Override
 	public boolean canRespawnHere()
 	{
-		return !GCConfigManager.forceOverworldRespawn;
+		return !ConfigManagerCore.forceOverworldRespawn;
 	}
 
 	@Override
@@ -244,7 +244,7 @@ public class WorldProviderSpaceStation extends WorldProvider implements IOrbitDi
 	@Override
 	public double getSolarEnergyMultiplier()
 	{
-		return GCConfigManager.spaceStationEnergyScalar;
+		return ConfigManagerCore.spaceStationEnergyScalar;
 	}
 
 	@Override

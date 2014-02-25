@@ -27,7 +27,7 @@ import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
-import micdoodle8.mods.galacticraft.core.util.GCConfigManager;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCDamageSource;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
@@ -263,7 +263,7 @@ public class GCEvents
 		final boolean doGen = TerrainGen.populate(event.chunkProvider, event.world, event.rand, event.chunkX, event.chunkX, event.hasVillageGenerated, PopulateChunkEvent.Populate.EventType.CUSTOM);
 		boolean doGen2 = false;
 
-		for (Integer dim : GCConfigManager.externalOilGen)
+		for (Integer dim : ConfigManagerCore.externalOilGen)
 		{
 			if (dim == event.world.provider.dimensionId)
 			{
@@ -292,7 +292,7 @@ public class GCEvents
 			return;
 		}
 
-		final double randMod = Math.min(0.5D, 0.2D * GCConfigManager.oilGenFactor);
+		final double randMod = Math.min(0.5D, 0.2D * ConfigManagerCore.oilGenFactor);
 
 		final boolean flag1 = rand.nextDouble() <= randMod;
 		final boolean flag2 = rand.nextDouble() <= randMod;

@@ -12,7 +12,7 @@ import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemFlag;
 import micdoodle8.mods.galacticraft.core.items.ItemParachute;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
-import micdoodle8.mods.galacticraft.core.util.GCConfigManager;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -200,7 +200,7 @@ public class RecipeManager
 		inputMap.put(aluminumIngots, 16);
 		inputMap.put("waferAdvanced", 1);
 		inputMap.put(Items.iron_ingot, 24);
-		GalacticraftRegistry.registerSpaceStation(new SpaceStationType(GCConfigManager.idDimensionOverworldOrbit, 0, new SpaceStationRecipe(inputMap)));
+		GalacticraftRegistry.registerSpaceStation(new SpaceStationType(ConfigManagerCore.idDimensionOverworldOrbit, 0, new SpaceStationRecipe(inputMap)));
 
 		RecipeUtil.addRecipe(new ItemStack(GCBlocks.aluminumWire, 6), new Object[] { "WWW", "CCC", "WWW", 'W', Blocks.wool, 'C', "ingotAluminum" });
 

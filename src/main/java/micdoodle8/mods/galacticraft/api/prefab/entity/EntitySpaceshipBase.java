@@ -13,7 +13,7 @@ import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
-import micdoodle8.mods.galacticraft.core.util.GCConfigManager;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCDamageSource;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -359,7 +359,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 			this.riddenByEntity.attackEntityFrom(GCDamageSource.spaceshipCrash, (int) (4.0D * 20 + 1.0D));
 		}
 
-		if (!GCConfigManager.disableSpaceshipGrief)
+		if (!ConfigManagerCore.disableSpaceshipGrief)
 		{
 			this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 5, true);
 		}

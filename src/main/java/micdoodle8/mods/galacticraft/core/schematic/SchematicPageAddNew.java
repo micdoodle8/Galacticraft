@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.schematic;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicPage;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiSchematicInput;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerSchematic;
-import micdoodle8.mods.galacticraft.core.util.GCConfigManager;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -25,13 +25,13 @@ public class SchematicPageAddNew extends SchematicPage
 	@Override
 	public int getPageID()
 	{
-		return GCConfigManager.idSchematicAddSchematic;
+		return ConfigManagerCore.idSchematicAddSchematic;
 	}
 
 	@Override
 	public int getGuiID()
 	{
-		return GCConfigManager.idGuiAddSchematic;
+		return ConfigManagerCore.idGuiAddSchematic;
 	}
 
 	@Override

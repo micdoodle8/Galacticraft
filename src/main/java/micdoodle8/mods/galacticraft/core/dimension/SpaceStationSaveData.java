@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.dimension;
 
 import java.util.ArrayList;
 
-import micdoodle8.mods.galacticraft.core.util.GCConfigManager;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -107,7 +107,7 @@ public class SpaceStationSaveData extends WorldSavedData
 
 	public static SpaceStationSaveData getStationData(World var0, int var1, EntityPlayer player)
 	{
-		if (DimensionManager.getProviderType(var1) != GCConfigManager.idDimensionOverworldOrbit)
+		if (DimensionManager.getProviderType(var1) != ConfigManagerCore.idDimensionOverworldOrbit)
 		{
 			return null;
 		}

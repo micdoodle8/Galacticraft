@@ -299,7 +299,7 @@ public class WorldUtil
 				{
 					final SpaceStationSaveData data = SpaceStationSaveData.getStationData(playerBase.worldObj, id, playerBase);
 
-					if (!GCConfigManager.spaceStationsRequirePermission || data.getAllowedPlayers().contains(playerBase.getGameProfile().getName().toLowerCase()) || data.getAllowedPlayers().contains(playerBase.getGameProfile().getName()))
+					if (!ConfigManagerCore.spaceStationsRequirePermission || data.getAllowedPlayers().contains(playerBase.getGameProfile().getName().toLowerCase()) || data.getAllowedPlayers().contains(playerBase.getGameProfile().getName()))
 					{
 						map.put(WorldProvider.getProviderForDimension(id).getDimensionName() + "$" + data.getOwner() + "$" + data.getSpaceStationName(), WorldProvider.getProviderForDimension(id).dimensionId);
 					}
@@ -386,7 +386,7 @@ public class WorldUtil
 
 		for (Integer registeredID : WorldUtil.registeredSpaceStations)
 		{
-			DimensionManager.registerDimension(registeredID.intValue(), GCConfigManager.idDimensionOverworldOrbit);
+			DimensionManager.registerDimension(registeredID.intValue(), ConfigManagerCore.idDimensionOverworldOrbit);
 		}
 	}
 
@@ -473,7 +473,7 @@ public class WorldUtil
 	public static SpaceStationSaveData createSpaceStation(World world, int dimID, GCEntityPlayerMP player)
 	{
 		WorldUtil.registeredSpaceStations.add(dimID);
-		DimensionManager.registerDimension(dimID, GCConfigManager.idDimensionOverworldOrbit);
+		DimensionManager.registerDimension(dimID, ConfigManagerCore.idDimensionOverworldOrbit);
 		WorldUtil.sendSpaceStationList();
 		final SpaceStationSaveData var3 = SpaceStationSaveData.getStationData(world, dimID, player);
 		return var3;

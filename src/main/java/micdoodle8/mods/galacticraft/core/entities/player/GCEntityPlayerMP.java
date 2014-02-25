@@ -26,7 +26,7 @@ import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
-import micdoodle8.mods.galacticraft.core.util.GCConfigManager;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCDamageSource;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
@@ -801,14 +801,14 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 			{
 				if (this.damageCounter == 0)
 				{
-					this.damageCounter = GCConfigManager.suffocationCooldown;
+					this.damageCounter = ConfigManagerCore.suffocationCooldown;
 
 					EventSuffocation suffocationEvent = new EventSuffocation.Pre(this);
 					MinecraftForge.EVENT_BUS.post(suffocationEvent);
 
 					if (!suffocationEvent.isCanceled())
 					{
-						this.attackEntityFrom(GCDamageSource.oxygenSuffocation, GCConfigManager.suffocationDamage);
+						this.attackEntityFrom(GCDamageSource.oxygenSuffocation, ConfigManagerCore.suffocationDamage);
 
 						EventSuffocation suffocationEventPost = new EventSuffocation.Post(this);
 						MinecraftForge.EVENT_BUS.post(suffocationEventPost);

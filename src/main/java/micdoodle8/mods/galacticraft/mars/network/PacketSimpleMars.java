@@ -14,12 +14,12 @@ import micdoodle8.mods.galacticraft.core.network.NetworkUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
-import micdoodle8.mods.galacticraft.mars.client.gui.GCMarsGuiCargoRocket;
-import micdoodle8.mods.galacticraft.mars.client.gui.GCMarsGuiSlimelingInventory;
-import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntityCargoRocket;
-import micdoodle8.mods.galacticraft.mars.entities.GCMarsEntitySlimeling;
-import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityLaunchController;
-import micdoodle8.mods.galacticraft.mars.util.GCMarsUtil;
+import micdoodle8.mods.galacticraft.mars.client.gui.GuiCargoRocket;
+import micdoodle8.mods.galacticraft.mars.client.gui.GuiSlimelingInventory;
+import micdoodle8.mods.galacticraft.mars.entities.EntityCargoRocket;
+import micdoodle8.mods.galacticraft.mars.entities.EntitySlimeling;
+import micdoodle8.mods.galacticraft.mars.tile.TileEntityLaunchController;
+import micdoodle8.mods.galacticraft.mars.util.MarsUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -138,9 +138,9 @@ public class PacketSimpleMars implements IPacket
 				entityID = (Integer) this.data.get(2);
 				entity = player.worldObj.getEntityByID(entityID);
 
-				if (entity != null && entity instanceof GCMarsEntitySlimeling)
+				if (entity != null && entity instanceof EntitySlimeling)
 				{
-					FMLClientHandler.instance().getClient().displayGuiScreen(new GCMarsGuiSlimelingInventory(player, (GCMarsEntitySlimeling) entity));
+					FMLClientHandler.instance().getClient().displayGuiScreen(new GuiSlimelingInventory(player, (EntitySlimeling) entity));
 				}
 
 				player.openContainer.windowId = (Integer) this.data.get(0);
@@ -149,9 +149,9 @@ public class PacketSimpleMars implements IPacket
 				entityID = (Integer) this.data.get(2);
 				entity = player.worldObj.getEntityByID(entityID);
 
-				if (entity != null && entity instanceof GCMarsEntityCargoRocket)
+				if (entity != null && entity instanceof EntityCargoRocket)
 				{
-					FMLClientHandler.instance().getClient().displayGuiScreen(new GCMarsGuiCargoRocket(player.inventory, (GCMarsEntityCargoRocket) entity));
+					FMLClientHandler.instance().getClient().displayGuiScreen(new GuiCargoRocket(player.inventory, (EntityCargoRocket) entity));
 				}
 
 				player.openContainer.windowId = (Integer) this.data.get(0);
@@ -172,9 +172,9 @@ public class PacketSimpleMars implements IPacket
 		case S_UPDATE_SLIMELING_DATA:
 			Entity entity = player.worldObj.getEntityByID((Integer) this.data.get(0));
 
-			if (entity instanceof GCMarsEntitySlimeling)
+			if (entity instanceof EntitySlimeling)
 			{
-				GCMarsEntitySlimeling slimeling = (GCMarsEntitySlimeling) entity;
+				EntitySlimeling slimeling = (EntitySlimeling) entity;
 
 				int subType = (Integer) this.data.get(1);
 
@@ -223,7 +223,7 @@ public class PacketSimpleMars implements IPacket
 				case 6:
 					if (player.getCommandSenderName().equalsIgnoreCase(slimeling.getOwnerName()) && !slimeling.worldObj.isRemote)
 					{
-						GCMarsUtil.openSlimelingInventory(playerBase, slimeling);
+						MarsUtil.openSlimelingInventory(playerBase, slimeling);
 					}
 					break;
 				}
@@ -238,44 +238,44 @@ public class PacketSimpleMars implements IPacket
 			switch ((Integer) this.data.get(0))
 			{
 			case 0:
-				if (tile instanceof GCMarsTileEntityLaunchController)
+				if (tile instanceof TileEntityLaunchController)
 				{
-					GCMarsTileEntityLaunchController launchController = (GCMarsTileEntityLaunchController) tile;
+					TileEntityLaunchController launchController = (TileEntityLaunchController) tile;
 					launchController.setFrequency((Integer) this.data.get(4));
 				}
 				break;
 			case 1:
-				if (tile instanceof GCMarsTileEntityLaunchController)
+				if (tile instanceof TileEntityLaunchController)
 				{
-					GCMarsTileEntityLaunchController launchController = (GCMarsTileEntityLaunchController) tile;
+					TileEntityLaunchController launchController = (TileEntityLaunchController) tile;
 					launchController.launchDropdownSelection = (Integer) this.data.get(4);
 				}
 				break;
 			case 2:
-				if (tile instanceof GCMarsTileEntityLaunchController)
+				if (tile instanceof TileEntityLaunchController)
 				{
-					GCMarsTileEntityLaunchController launchController = (GCMarsTileEntityLaunchController) tile;
+					TileEntityLaunchController launchController = (TileEntityLaunchController) tile;
 					launchController.setDestinationFrequency((Integer) this.data.get(4));
 				}
 				break;
 			case 3:
-				if (tile instanceof GCMarsTileEntityLaunchController)
+				if (tile instanceof TileEntityLaunchController)
 				{
-					GCMarsTileEntityLaunchController launchController = (GCMarsTileEntityLaunchController) tile;
+					TileEntityLaunchController launchController = (TileEntityLaunchController) tile;
 					launchController.launchPadRemovalDisabled = (Integer) this.data.get(4) == 1 ? true : false;
 				}
 				break;
 			case 4:
-				if (tile instanceof GCMarsTileEntityLaunchController)
+				if (tile instanceof TileEntityLaunchController)
 				{
-					GCMarsTileEntityLaunchController launchController = (GCMarsTileEntityLaunchController) tile;
+					TileEntityLaunchController launchController = (TileEntityLaunchController) tile;
 					launchController.launchSchedulingEnabled = (Integer) this.data.get(4) == 1 ? true : false;
 				}
 				break;
 			case 5:
-				if (tile instanceof GCMarsTileEntityLaunchController)
+				if (tile instanceof TileEntityLaunchController)
 				{
-					GCMarsTileEntityLaunchController launchController = (GCMarsTileEntityLaunchController) tile;
+					TileEntityLaunchController launchController = (TileEntityLaunchController) tile;
 					launchController.requiresClientUpdate = true;
 				}
 				break;
@@ -286,9 +286,9 @@ public class PacketSimpleMars implements IPacket
 		case S_UPDATE_CARGO_ROCKET_STATUS:
 			Entity entity2 = player.worldObj.getEntityByID((Integer) this.data.get(0));
 
-			if (entity2 instanceof GCMarsEntityCargoRocket)
+			if (entity2 instanceof EntityCargoRocket)
 			{
-				GCMarsEntityCargoRocket rocket = (GCMarsEntityCargoRocket) entity2;
+				EntityCargoRocket rocket = (EntityCargoRocket) entity2;
 
 				int subType = (Integer) this.data.get(1);
 

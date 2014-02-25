@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.mars.world.gen;
 
 import java.util.Random;
 
-import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
+import micdoodle8.mods.galacticraft.mars.blocks.MarsBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.MathHelper;
@@ -206,7 +206,7 @@ public class GCMarsCavern
 										{
 											int coords = this.getIndex(var42, var50, var45);
 
-											if (arrayOfIDs[coords] == GCMarsBlocks.marsBlock || arrayOfIDs[coords] == GCMarsBlocks.blockSludge || arrayOfIDs[coords] == GCMarsBlocks.vine)
+											if (arrayOfIDs[coords] == MarsBlocks.marsBlock || arrayOfIDs[coords] == MarsBlocks.blockSludge || arrayOfIDs[coords] == MarsBlocks.vine)
 											{
 												arrayOfIDs[coords] = Blocks.air;
 											}
@@ -241,21 +241,21 @@ public class GCMarsCavern
 
 											if (arrayOfIDs[coords] == Blocks.air)
 											{
-												if (arrayOfIDs[coordsAbove] == GCMarsBlocks.marsBlock && this.rand.nextInt(200) == 0)
+												if (arrayOfIDs[coordsAbove] == MarsBlocks.marsBlock && this.rand.nextInt(200) == 0)
 												{
 													int modifier = 0;
 
 													while (arrayOfIDs[coordsBelow] == Blocks.air)
 													{
-														arrayOfIDs[this.getIndex(var42, var50 + modifier, var45)] = GCMarsBlocks.vine;
+														arrayOfIDs[this.getIndex(var42, var50 + modifier, var45)] = MarsBlocks.vine;
 														arrayOfMeta[this.getIndex(var42, var50 + modifier, var45)] = (byte) (Math.abs(modifier) % 3);
 														modifier--;
 														coordsBelow = this.getIndex(var42, var50 - 1 + modifier, var45);
 													}
 												}
-												else if (arrayOfIDs[coordsBelow] == GCMarsBlocks.marsBlock && this.rand.nextInt(200) == 0)
+												else if (arrayOfIDs[coordsBelow] == MarsBlocks.marsBlock && this.rand.nextInt(200) == 0)
 												{
-													arrayOfIDs[coords] = GCMarsBlocks.blockSludge;
+													arrayOfIDs[coords] = MarsBlocks.blockSludge;
 													arrayOfMeta[coords] = 0;
 												}
 											}

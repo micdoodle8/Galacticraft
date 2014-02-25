@@ -8,7 +8,7 @@ import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.oxygen.SealerThreadManager.VecDirPair;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenSealer;
-import micdoodle8.mods.galacticraft.core.util.GCConfigManager;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.ScheduledBlockChange;
 import net.minecraft.block.Block;
@@ -117,7 +117,7 @@ public class ThreadFindSeal extends Thread
 
 		this.looping = false;
 
-		if (GCConfigManager.enableDebug)
+		if (ConfigManagerCore.enableDebug)
 		{
 			FMLLog.info("Oxygen Sealer Check Completed at x" + this.head.intX() + " y" + this.head.intY() + " z" + this.head.intZ());
 			FMLLog.info("   Sealed: " + this.sealed);

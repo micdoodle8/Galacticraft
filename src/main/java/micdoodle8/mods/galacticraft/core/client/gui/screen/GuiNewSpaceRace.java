@@ -535,8 +535,8 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
     {
         if (this.mc.theWorld != null)
         {
-        	int scaleX = Math.min(ticksPassed * 4, this.width / 3);
-        	int scaleY = Math.min(ticksPassed * 4, this.height / 4);
+        	int scaleX = Math.min(ticksPassed * 8, this.width / 3);
+        	int scaleY = Math.min(ticksPassed * 8, this.height / 4);
         	
         	if (scaleX == this.width / 3 && scaleY == this.height / 4 && !this.initialized)
         	{

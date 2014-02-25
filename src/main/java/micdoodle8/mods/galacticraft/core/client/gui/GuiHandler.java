@@ -68,7 +68,7 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenStorageModule;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityParachest;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityRefinery;
 import micdoodle8.mods.galacticraft.core.tile.TileEntitySolar;
-import micdoodle8.mods.galacticraft.core.util.GCConfigManager;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
@@ -103,11 +103,11 @@ public class GuiHandler implements IGuiHandler
 			return null;
 		}
 
-		if (ID == GCConfigManager.idGuiSpaceshipInventory && player.ridingEntity instanceof EntityTieredRocket)
+		if (ID == ConfigManagerCore.idGuiSpaceshipInventory && player.ridingEntity instanceof EntityTieredRocket)
 		{
 			return new ContainerRocketFuel(player.inventory, (EntityTieredRocket) player.ridingEntity, ((EntityTieredRocket) player.ridingEntity).getType());
 		}
-		else if (ID == GCConfigManager.idGuiExtendedInventory)
+		else if (ID == ConfigManagerCore.idGuiExtendedInventory)
 		{
 			return new ContainerExtendedInventory(player, playerBase.getExtendedInventory());
 		}
@@ -213,24 +213,24 @@ public class GuiHandler implements IGuiHandler
 	@SideOnly(Side.CLIENT)
 	private Object getClientGuiElement(int ID, EntityPlayer player, World world, Vector3 position)
 	{
-		if (ID == GCConfigManager.idGuiGalaxyMap)
+		if (ID == ConfigManagerCore.idGuiGalaxyMap)
 		{
 			return new GuiGalaxyMap(player);
 		}
-		else if (ID == GCConfigManager.idGuiSpaceshipInventory && player.ridingEntity instanceof EntityTieredRocket)
+		else if (ID == ConfigManagerCore.idGuiSpaceshipInventory && player.ridingEntity instanceof EntityTieredRocket)
 		{
 			return new GuiRocketRefill(player.inventory, (EntityTieredRocket) player.ridingEntity, ((EntityTieredRocket) player.ridingEntity).getType());
 		}
-		else if (ID == GCConfigManager.idGuiExtendedInventory)
+		else if (ID == ConfigManagerCore.idGuiExtendedInventory)
 		{
 			return new GuiExtendedInventory(player, ClientProxy.dummyInventory);
 		}
-		else if (ID == GCConfigManager.idGuiKnowledgeBook)
+		else if (ID == ConfigManagerCore.idGuiKnowledgeBook)
 		{
 			// return new GuiManual(new ItemStack(Blocks.stone),
 			// ClientProxyCore.materialsTest);
 		}
-		else if (ID == GCConfigManager.idGuiNewSpaceRace)
+		else if (ID == ConfigManagerCore.idGuiNewSpaceRace)
 		{
 			return new GuiNewSpaceRace(player);
 		}

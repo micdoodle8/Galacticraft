@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.schematic;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicPage;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiSchematicRocketT1;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerRocketBench;
-import micdoodle8.mods.galacticraft.core.util.GCConfigManager;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -25,13 +25,13 @@ public class SchematicPageTier1Rocket extends SchematicPage
 	@Override
 	public int getPageID()
 	{
-		return GCConfigManager.idSchematicRocketT1;
+		return ConfigManagerCore.idSchematicRocketT1;
 	}
 
 	@Override
 	public int getGuiID()
 	{
-		return GCConfigManager.idGuiRocketCraftingBench;
+		return ConfigManagerCore.idGuiRocketCraftingBench;
 	}
 
 	@Override
