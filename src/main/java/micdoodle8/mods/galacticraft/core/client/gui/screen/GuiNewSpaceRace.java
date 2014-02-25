@@ -267,7 +267,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
     		{
         		if (this.checkboxEraser.isSelected != null && this.checkboxEraser.isSelected)
         		{
-            		this.setColor(unScaledX, unScaledY, new Vector3(255, 255, 255), (int)Math.floor(this.sliderEraserSize.getNormalizedValue() * 10) + 1);
+            		this.setColorWithBrushSize(unScaledX, unScaledY, new Vector3(255, 255, 255), (int)Math.floor(this.sliderEraserSize.getNormalizedValue() * 10) + 1);
         		}
         		else if (this.checkboxColorSelector.isSelected != null && this.checkboxColorSelector.isSelected)
         		{
@@ -278,31 +278,53 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
         		}
         		else if (this.checkboxPaintbrush.isSelected != null && this.checkboxPaintbrush.isSelected)
         		{
-        			if (this.selectionMaxX - selectionMinX > 1 && this.selectionMaxY - selectionMinY > 1)
-        			{
-        				if (unScaledX >= this.selectionMinX && unScaledX <= this.selectionMaxX - 1 && unScaledY >= this.selectionMinY && unScaledY <= this.selectionMaxY - 1)
-        				{
-                    		this.setColor(unScaledX, unScaledY, new Vector3(this.sliderColorR.getNormalizedValue() * 256, this.sliderColorG.getNormalizedValue() * 256, this.sliderColorB.getNormalizedValue() * 256), (int)Math.floor(this.sliderBrushSize.getNormalizedValue() * 10) + 1);
-        				}
-        			}
-        			else
-        			{
-                		this.setColor(unScaledX, unScaledY, new Vector3(this.sliderColorR.getNormalizedValue() * 256, this.sliderColorG.getNormalizedValue() * 256, this.sliderColorB.getNormalizedValue() * 256), (int)Math.floor(this.sliderBrushSize.getNormalizedValue() * 10) + 1);
-        			}
+            		this.setColorWithBrushSize(unScaledX, unScaledY, new Vector3(this.sliderColorR.getNormalizedValue() * 256, this.sliderColorG.getNormalizedValue() * 256, this.sliderColorB.getNormalizedValue() * 256), (int)Math.floor(this.sliderBrushSize.getNormalizedValue() * 10) + 1);
         		}
     		}
-    		
-    		if (!this.lastMousePressed && Mouse.isButtonDown(0) && this.checkboxSelector.isSelected != null && this.checkboxSelector.isSelected)
-    		{
-    			this.selectionMinX = unScaledX;
-    			this.selectionMinY = unScaledY;
-    		}
-    		else if (this.lastMousePressed && !Mouse.isButtonDown(0) && this.checkboxSelector.isSelected != null && this.checkboxSelector.isSelected)
-    		{
-    			this.selectionMaxX = Math.min(unScaledX + 1, this.flagData.getWidth());
-    			this.selectionMaxY = Math.min(unScaledY + 1, this.flagData.getHeight());
-    		}
     	}
+		
+		if (!this.lastMousePressed && Mouse.isButtonDown(0) && this.checkboxSelector.isSelected != null && this.checkboxSelector.isSelected)
+		{
+			if (x >= this.flagDesignerMinX && y >= this.flagDesignerMinY && x <= this.flagDesignerMinX + this.flagDesignerWidth && y <= this.flagDesignerMinY + this.flagDesignerHeight)
+	    	{
+	    		int unScaledX = (int)Math.floor((x - this.flagDesignerMinX) / this.flagDesignerScale.x);
+	    		int unScaledY = (int)Math.floor((y - this.flagDesignerMinY) / this.flagDesignerScale.y);
+				this.selectionMinX = unScaledX;
+				this.selectionMinY = unScaledY;
+	    	}
+			else
+			{
+				this.selectionMinX = this.selectionMinY = -1;
+			}
+		}
+		else if (this.lastMousePressed && !Mouse.isButtonDown(0) && this.checkboxSelector.isSelected != null && this.checkboxSelector.isSelected)
+		{
+			if (selectionMinX != -1 && selectionMinY != -1 && x >= this.flagDesignerMinX && y >= this.flagDesignerMinY && x <= this.flagDesignerMinX + this.flagDesignerWidth && y <= this.flagDesignerMinY + this.flagDesignerHeight)
+	    	{
+	    		int unScaledX = (int)Math.floor((x - this.flagDesignerMinX) / this.flagDesignerScale.x);
+	    		int unScaledY = (int)Math.floor((y - this.flagDesignerMinY) / this.flagDesignerScale.y);
+				this.selectionMaxX = Math.min(unScaledX + 1, this.flagData.getWidth());
+				this.selectionMaxY = Math.min(unScaledY + 1, this.flagData.getHeight());
+				
+				if (this.selectionMinX > this.selectionMaxX)
+				{
+					int temp = this.selectionMaxX - 1;
+					this.selectionMaxX = this.selectionMinX + 1;
+					this.selectionMinX = temp;
+				}
+				
+				if (this.selectionMinY > this.selectionMaxY)
+				{
+					int temp = this.selectionMaxY - 1;
+					this.selectionMaxY = this.selectionMinY + 1;
+					this.selectionMinY = temp;
+				}
+	    	}
+			else
+			{
+				this.selectionMaxX = this.selectionMaxY = -1;
+			}
+		}
         
         if (this.sliderBrushSize != null && this.sliderBrushSize.visible)
         {
@@ -317,18 +339,18 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
         this.lastMousePressed = Mouse.isButtonDown(0);
     }
     
-    private void setColor(int unScaledX, int unScaledY, Vector3 color, int brushSize)
+    private void setColor(int unScaledX, int unScaledY, Vector3 color)
     {
-		if (this.selectionMaxX - selectionMinX > 1 && this.selectionMaxY - selectionMinY > 1)
+		if (this.selectionMaxX - selectionMinX > 0 && this.selectionMaxY - selectionMinY > 0)
 		{
 			if (unScaledX >= this.selectionMinX && unScaledX <= this.selectionMaxX - 1 && unScaledY >= this.selectionMinY && unScaledY <= this.selectionMaxY - 1)
 			{
-        		this.setColorWithBrushSize(unScaledX, unScaledY, color, brushSize);
+	    		this.flagData.setColorAt(unScaledX, unScaledY, color);
 			}
 		}
 		else
 		{
-    		this.setColorWithBrushSize(unScaledX, unScaledY, color, brushSize);
+    		this.flagData.setColorAt(unScaledX, unScaledY, color);
 		}
     }
     
@@ -345,7 +367,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
         			
             		if (Math.sqrt(relativeX * relativeX + relativeY * relativeY) <= brushSize)
             		{
-                		this.flagData.setColorAt(x, y, color);
+                		this.setColor(x, y, color);
             		}
         		}
         	}
@@ -421,7 +443,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
 	        		}
 	        	}
 	        	
-	        	if (!(this.lastMousePressed && this.checkboxSelector.isSelected != null && this.checkboxSelector.isSelected) && this.selectionMaxX - selectionMinX > 1 && this.selectionMaxY - selectionMinY > 1)
+	        	if (!(this.lastMousePressed && this.checkboxSelector.isSelected != null && this.checkboxSelector.isSelected) && this.selectionMaxX - selectionMinX > 0 && this.selectionMaxY - selectionMinY > 0)
 	        	{
 		        	tessellator.startDrawing(GL11.GL_LINE_STRIP);
 		        	float col = (float) (Math.sin(this.ticksPassed * 0.3) * 0.4 + 0.1);
