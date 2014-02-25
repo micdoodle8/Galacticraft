@@ -86,6 +86,7 @@ public class TickHandlerClient
 	public static Set<Vector3> valuableBlocks = new HashSet<Vector3>();
 	private static Set<BlockMetaList> detectableBlocks = new HashSet<BlockMetaList>();
 	public static boolean lastSpacebarDown;
+	public static boolean spaceRaceGuiScheduled = false;
 
 	public static Set<PlayerGearData> playerItemData = Sets.newHashSet();
 
@@ -121,20 +122,6 @@ public class TickHandlerClient
 	@SubscribeEvent
 	public void onRenderTick(RenderTickEvent event)
 	{
-		// if (player != null)
-		// {
-		// ClientProxyCore.playerPosX = player.prevPosX + (player.posX -
-		// player.prevPosX) * partialTickTime;
-		// ClientProxyCore.playerPosY = player.prevPosY + (player.posY -
-		// player.prevPosY) * partialTickTime;
-		// ClientProxyCore.playerPosZ = player.prevPosZ + (player.posZ -
-		// player.prevPosZ) * partialTickTime;
-		// ClientProxyCore.playerRotationYaw = player.prevRotationYaw +
-		// (player.rotationYaw - player.prevRotationYaw) * partialTickTime;
-		// ClientProxyCore.playerRotationPitch = player.prevRotationPitch +
-		// (player.rotationPitch - player.prevRotationPitch) * partialTickTime;
-		// }
-
 		Minecraft minecraft = Minecraft.getMinecraft();
 		EntityPlayer player = minecraft.thePlayer;
 		World world = minecraft.theWorld;
@@ -310,6 +297,12 @@ public class TickHandlerClient
 					TickHandlerClient.missingRequirementThread.start();
 				}
 			}
+			
+			if (world != null && spaceRaceGuiScheduled && minecraft.currentScreen == null)
+			{
+				player.openGui(GalacticraftCore.instance, ConfigManagerCore.idGuiNewSpaceRace, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
+				spaceRaceGuiScheduled = false;
+			}
 
 			if (world != null && TickHandlerClient.checkedVersion)
 			{
@@ -320,13 +313,6 @@ public class TickHandlerClient
 			if (player != null && player.ridingEntity != null && player.ridingEntity instanceof EntitySpaceshipBase)
 			{
 				GalacticraftCore.packetPipeline.sendToServer(new PacketRotateRocket(player.ridingEntity));
-				// final Object[] toSend = { player.ridingEntity.rotationPitch
-				// };
-				// PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL,
-				// EnumPacketServer.UPDATE_SHIP_PITCH, toSend));
-				// final Object[] toSend2 = { player.ridingEntity.rotationYaw };
-				// PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL,
-				// EnumPacketServer.UPDATE_SHIP_YAW, toSend2));
 			}
 
 			if (world != null && world.provider instanceof WorldProviderSurface)

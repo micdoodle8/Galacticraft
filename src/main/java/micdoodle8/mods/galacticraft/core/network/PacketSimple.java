@@ -22,6 +22,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.container.GuiBuggy;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiParachest;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiChoosePlanet;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiGalaxyMap;
+import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiNewSpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceStationSaveData;
@@ -474,7 +475,15 @@ public class PacketSimple implements IPacket
 			}
 			break;
 		case C_OPEN_SPACE_RACE_GUI:
-			player.openGui(GalacticraftCore.instance, ConfigManagerCore.idGuiNewSpaceRace, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
+			if (Minecraft.getMinecraft().currentScreen == null)
+			{
+				TickHandlerClient.spaceRaceGuiScheduled = false;
+				player.openGui(GalacticraftCore.instance, ConfigManagerCore.idGuiNewSpaceRace, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
+			}
+			else
+			{
+				TickHandlerClient.spaceRaceGuiScheduled = true;
+			}
 			break;
 		case C_UPDATE_SPACE_RACE_DATA:
 			String teamName = (String)this.data.get(0);
