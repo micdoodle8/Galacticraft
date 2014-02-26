@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.api.block.IOxygenReliantBlock;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.block.Block;
@@ -190,7 +191,10 @@ public class GCCoreBlockUnlitTorch extends Block implements IOxygenReliantBlock
 			}
 		}
 
-		this.dropTorchIfCantStay(par1World, par2, par3, par4);
+		if (dropTorchIfCantStay(par1World, par2, par3, par4))
+		{
+			this.checkOxygen(par1World, par2, par3, par4);
+		}
 	}
 
 	/**
@@ -235,6 +239,38 @@ public class GCCoreBlockUnlitTorch extends Block implements IOxygenReliantBlock
 			{
 				this.dropBlockAsItem(par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4), 0);
 				par1World.setBlock(par2, par3, par4, 0);
+			}
+			else
+			{
+				this.checkOxygen(par1World, par2, par3, par4);
+			}
+		}
+	}
+	
+	private void checkOxygen(World world, int x, int y, int z)
+	{
+		if (world.provider instanceof IGalacticraftWorldProvider)
+		{
+			boolean hasOxygen = false;
+			
+			for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+			{
+				int blockID = new Vector3(x, y, z).modifyPositionFromSide(direction).getBlockID(world);
+				
+				if (blockID == GCCoreBlocks.breatheableAir.blockID)
+				{
+					hasOxygen = true;
+					break;
+				}
+			}
+			
+			if (hasOxygen)
+			{
+				this.onOxygenAdded(world, x, y, z);
+			}
+			else
+			{
+				this.onOxygenRemoved(world, x, y, z);
 			}
 		}
 	}
