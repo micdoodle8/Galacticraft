@@ -77,11 +77,11 @@ public class OxygenUtil
 			{
 				final GCCoreTileEntityOxygenDistributor distributor = (GCCoreTileEntityOxygenDistributor) o;
 
-				if (!distributor.worldObj.isRemote)
+				if (!distributor.worldObj.isRemote && distributor.oxygenBubble != null)
 				{
 					final double dist = distributor.getDistanceFromServer(avgX, avgY, avgZ);
-
-					if (dist < distributor.storedOxygen / 600.0D * (distributor.storedOxygen / 600.0D))
+					
+					if (dist < Math.pow(distributor.oxygenBubble.getSize(), 2))
 					{
 						return true;
 					}
