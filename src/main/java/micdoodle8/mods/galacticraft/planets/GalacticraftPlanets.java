@@ -4,6 +4,7 @@ import java.io.File;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.GCCreativeTab;
+import micdoodle8.mods.galacticraft.planets.asteroids.ModuleAsteroids;
 import micdoodle8.mods.galacticraft.planets.mars.ModuleMars;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import micdoodle8.mods.galacticraft.planets.mars.proxy.CommonProxyMars;
@@ -39,6 +40,7 @@ public class GalacticraftPlanets
 	public static GalacticraftPlanets instance;
 	
 	public static IPlanetsModule moduleMars = new ModuleMars();
+	public static IPlanetsModule moduleAsteroids = new ModuleAsteroids();
 
 	public static CreativeTabs creativeTab;
 
@@ -52,6 +54,7 @@ public class GalacticraftPlanets
 	{
 		ConfigManagerPlanets.setDefaultValues(new File(event.getModConfigurationDirectory(), GalacticraftPlanets.CONFIG_FILE));
 		moduleMars.preInit(event);
+		moduleAsteroids.preInit(event);
 		GalacticraftPlanets.proxyMars.preInit(event);
 	}
 
@@ -59,6 +62,7 @@ public class GalacticraftPlanets
 	public void init(FMLInitializationEvent event)
 	{
 		moduleMars.init(event);
+		moduleAsteroids.init(event);
 		GalacticraftPlanets.proxyMars.init(event);
 		GalacticraftPlanets.creativeTab = new GCCreativeTab(CreativeTabs.getNextID(), GalacticraftPlanets.MOD_ID, MarsItems.spaceship, 5);
 	}
@@ -67,6 +71,7 @@ public class GalacticraftPlanets
 	public void postInit(FMLPostInitializationEvent event)
 	{
 		moduleMars.postInit(event);
+		moduleAsteroids.postInit(event);
 		GalacticraftPlanets.proxyMars.postInit(event);
 	}
 
@@ -74,6 +79,7 @@ public class GalacticraftPlanets
 	public void serverStarting(FMLServerStartingEvent event)
 	{
 		moduleMars.serverStarting(event);
+		moduleAsteroids.serverStarting(event);
 	}
 	
 	/**
