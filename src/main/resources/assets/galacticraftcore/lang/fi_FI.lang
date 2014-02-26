@@ -69,6 +69,10 @@ item.key.T1.name=Tason 1 tyrmän avain
 item.buggymat.wheel.name=Vaunun pyörä
 item.buggymat.seat.name=Vaunun istuin
 item.buggymat.storage.name=Vaunun säilytyslaatikko
+item.meteoricIronRaw.name=Raaka meteorimainen rauta
+item.meteoricIronIngot.name=Meteorimainen rautaharkko
+item.cheeseCurd.name=Juustomassa
+item.cheeseBlock.name=Juustokuutio
 
 # TOOLS
 item.steel_pickaxe.name=Järeä hakku
@@ -114,6 +118,14 @@ tile.cargo.loader.name=Cargo Loader
 tile.cargo.unloader.name=Cargo Unloader
 tile.landingPad.buggyFueler.name=Vaunun täyttöalusta
 tile.landingPad.cargoPad.name=Cargo Rocket Pad
+tile.moonBlock.moonstone.name=Kivi
+tile.moonBlock.moondirt.name=Multa
+tile.moonBlock.moongrass.name=Kuuturve
+tile.moonBlock.tinmoon.name=Tinamalmi
+tile.moonBlock.coppermoon.name=Kuparimalmi
+tile.moonBlock.cheesestone.name=Juustomalmi
+tile.moonBlock.bricks.name=Tiiliä
+tile.cheeseBlock.name=Juustokuutio
 
 # ENTITIES
 entity.GalacticraftCore.EvolvedSpider.name=Evolved Spider
@@ -168,6 +180,7 @@ keybind.vehicledown.name=[GC] Vehicle Down Key
 
 # CREATIVE TABS
 itemGroup.GalacticraftCore=Galacticraft
+itemGroup.GalacticraftMoon=Galacticraft Kuu
 
 # GUI
 container.cargoloader.name=Cargo Loader
@@ -231,6 +244,7 @@ gui.button.next.name=Next
 gui.button.unlockschematic.name=Unlock Schematic
 
 gui.choosePlanet.desc.overworld=Täynnä elämää#Asuttava#Painovoima: 100%
+gui.choosePlanet.desc.moon=Asuttava#Ei happea#Painovoima: 18%
 gui.warning=VAROITUS!
 gui.lander.warning2=Paina "
 gui.lander.warning3=" hidastaaksesi!

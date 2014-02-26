@@ -2,13 +2,17 @@ package micdoodle8.mods.galacticraft.core.recipe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
+import micdoodle8.mods.galacticraft.api.recipe.CircuitFabricatorRecipes;
+import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
 import micdoodle8.mods.galacticraft.api.world.SpaceStationType;
 import micdoodle8.mods.galacticraft.core.blocks.BlockEnclosed.EnumEnclosedBlock;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.core.items.ItemBasic;
 import micdoodle8.mods.galacticraft.core.items.ItemFlag;
 import micdoodle8.mods.galacticraft.core.items.ItemParachute;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
@@ -380,6 +384,60 @@ public class RecipeManager
 		CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(new ItemStack(GCItems.basicItem, 1, 18), new Object[] { new ItemStack(GCItems.canister, 1, 0), Items.potato, Items.potato }));
 
 		CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(new ItemStack(GCItems.meteorChunk, 3), new Object[] { GCItems.meteoricIronRaw }));
+		
+		for (int i = 3; i < 8; i++)
+		{
+			if (ItemBasic.names[i].contains("ingot"))
+			{
+				for (ItemStack stack : OreDictionary.getOres(ItemBasic.names[i]))
+				{
+					CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, i + 3), stack, stack);
+				}
+			}
+		}
+
+		// Support for the other spelling of Aluminum
+		if (OreDictionary.getOres("ingotAluminium").size() > 0 || OreDictionary.getOres("ingotNaturalAluminum").size() > 0)
+		{
+			List<ItemStack> aluminumIngotList = new ArrayList<ItemStack>();
+			aluminumIngotList.addAll(OreDictionary.getOres("ingotAluminium"));
+			aluminumIngotList.addAll(OreDictionary.getOres("ingotNaturalAluminum"));
+
+			for (ItemStack stack : aluminumIngotList)
+			{
+				CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 8), stack, stack);
+			}
+		}
+
+		if (OreDictionary.getOres("ingotBronze").size() > 0)
+		{
+			for (ItemStack stack : OreDictionary.getOres("ingotBronze"))
+			{
+				CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 10), stack, stack);
+			}
+		}
+
+		if (OreDictionary.getOres("ingotSteel").size() > 0)
+		{
+			for (ItemStack stack : OreDictionary.getOres("ingotSteel"))
+			{
+				CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 9), stack, stack);
+			}
+		}
+
+		CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 9), Items.coal, new ItemStack(GCItems.basicItem, 1, 11), Items.coal);
+		CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 10), new ItemStack(GCItems.basicItem, 1, 6), new ItemStack(GCItems.basicItem, 1, 7));
+
+		CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 11), Items.iron_ingot, Items.iron_ingot);
+		CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.meteoricIronIngot, 1, 1), new ItemStack(GCItems.meteoricIronIngot, 1, 0));
+
+		CompressorRecipes.addRecipe(new ItemStack(GCItems.heavyPlatingTier1, 1, 0), "XYZ", "XYZ", 'X', new ItemStack(GCItems.basicItem, 1, 9), 'Y', new ItemStack(GCItems.basicItem, 1, 8), 'Z', new ItemStack(GCItems.basicItem, 1, 10));
+
+		CircuitFabricatorRecipes.addRecipe(new ItemStack(GCItems.basicItem, 9, 12), new ItemStack[] { new ItemStack(Items.diamond), new ItemStack(GCItems.basicItem, 1, 2), new ItemStack(GCItems.basicItem, 1, 2), new ItemStack(Items.redstone), new ItemStack(Items.dye, 1, 4) });
+
+		CircuitFabricatorRecipes.addRecipe(new ItemStack(GCItems.basicItem, 3, 13), new ItemStack[] { new ItemStack(Items.diamond), new ItemStack(GCItems.basicItem, 1, 2), new ItemStack(GCItems.basicItem, 1, 2), new ItemStack(Items.redstone), new ItemStack(Blocks.redstone_torch) });
+
+		CircuitFabricatorRecipes.addRecipe(new ItemStack(GCItems.basicItem, 1, 14), new ItemStack[] { new ItemStack(Items.diamond), new ItemStack(GCItems.basicItem, 1, 2), new ItemStack(GCItems.basicItem, 1, 2), new ItemStack(Items.redstone), new ItemStack(Items.repeater) });
 	}
 
 	private static void addBuildCraftCraftingRecipes()

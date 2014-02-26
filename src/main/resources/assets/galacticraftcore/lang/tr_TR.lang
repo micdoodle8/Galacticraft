@@ -100,6 +100,11 @@ item.basicItem.dehydratedPotato.name=Susuz Patates
 item.basicItem.cannedFood.name=Uzay Yiyecekleri
 item.basicItem.frequencyModule.name=Frekans Modülü
 item.standardWrench.name=Standart İngiliz anahtarı
+item.meteoricIronRaw.name=Ham Meteorik Demir
+item.meteoric_iron_ingot.name=Meteorik Demir Külçesi
+item.compressedMeteoricIron.name=Sıkıştırılmış Meteorik Demir
+item.cheeseCurd.name=Lor Peynir
+item.cheeseBlock.name=Peynir Bloğu
 
 # TOOLS
 item.steel_pickaxe.name=Ağır Kazma
@@ -189,6 +194,14 @@ tile.gcBlockCore.aluminumBlock.name=Alüminyum Blok
 tile.fuel.name=Yakıt
 tile.oxygenCompressor.0.name=Oksijen Kompresör
 tile.oxygenCompressor.1.name=Oksijen Açıcı
+tile.moonBlock.moonstone.name=Taş
+tile.moonBlock.moondirt.name=Toprak
+tile.moonBlock.moongrass.name=Ay Toprağı
+tile.moonBlock.tinmoon.name=Kalay Cevheri
+tile.moonBlock.coppermoon.name=Bakır Cevheri
+tile.moonBlock.cheesestone.name=Peynir Cevheri
+tile.moonBlock.bricks.name=Tuğla
+tile.cheeseBlock.name=Peynir Bloğu
 
 # ENTITIES
 entity.GalacticraftCore.EvolvedSpider.name=Gelişmiş Örümcek
@@ -236,6 +249,7 @@ keybind.vehicledown.name=[GC] Araç Aşağı Tuşu
 
 # CREATIVE TABS
 itemGroup.GalacticraftCore=Galacticraft
+itemGroup.GalacticraftMoon=Galacticraft Ay
 
 # GUI
 container.cargoloader.name=Kargo Yükleyici
@@ -312,6 +326,7 @@ gui.button.enable.name=Etkin
 gui.button.disable.name=Devre Dışı
 
 gui.choosePlanet.desc.overworld=Hayat Dolu#Yaşanabilir#Yerçekimi: %100
+gui.choosePlanet.desc.moon=Yaşanabilir#Oksijen Bulunmuyor#Yerçekimi: %18
 gui.warning=UYARI!
 gui.lander.warning2=Yavaşlamak için "
 gui.lander.warning3=" tuşuna basılı tut!

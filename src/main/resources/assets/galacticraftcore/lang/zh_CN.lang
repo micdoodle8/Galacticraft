@@ -100,6 +100,11 @@ item.basicItem.dehydratedPotato.name=脱水马铃薯
 item.basicItem.cannedFood.name=罐装食物
 item.basicItem.frequencyModule.name=频率模块
 item.standardWrench.name=标准扳手
+item.meteoricIronRaw.name=生陨铁锭
+item.meteoricIronIngot.name=陨铁锭
+item.compressedMeteoricIron.name=致密陨铁
+item.cheeseCurd.name=奶酪凝乳
+item.cheeseBlock.name=奶酪块
 
 # TOOLS
 item.steel_pickaxe.name=重镐
@@ -183,6 +188,14 @@ tile.dummyblock.launchPad.name=火箭发射平台
 tile.dummyblock.nasaWorkbench.name=NASA工作台
 tile.dummyblock.solar.name=太阳能板
 tile.dummyblock.cryogenicChamber.name=低温仓
+tile.moonBlock.moonstone.name=石头
+tile.moonBlock.moondirt.name=泥土
+tile.moonBlock.moongrass.name=月面草皮
+tile.moonBlock.tinmoon.name=锡矿石
+tile.moonBlock.coppermoon.name=铜矿石
+tile.moonBlock.cheesestone.name=奶酪矿石
+tile.moonBlock.bricks.name=砖块
+tile.cheeseBlock.name=奶酪块
 
 # ENTITIES
 entity.GalacticraftCore.EvolvedSpider.name=蜘蛛(进化体)
@@ -232,6 +245,7 @@ keybind.vehicledown.name=[GC] 载具下降键
 
 # CREATIVE TABS
 itemGroup.GalacticraftCore=Galacticraft
+itemGroup.GalacticraftMoon=Galacticraft|月球
 
 # GUI
 container.cargoloader.name=货物装载器
@@ -307,6 +321,7 @@ gui.button.enable.name=开启
 gui.button.disable.name=关闭
 
 gui.choosePlanet.desc.overworld=生机勃勃#宜居#重力: 100%
+gui.choosePlanet.desc.moon=宜居#无氧气#重力: 18%
 gui.warning=警告！
 gui.lander.warning2=按下 "
 gui.lander.warning3=" 以减速！

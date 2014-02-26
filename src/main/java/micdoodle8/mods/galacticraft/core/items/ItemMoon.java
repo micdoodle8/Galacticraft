@@ -42,7 +42,7 @@ public class ItemMoon extends Item
 
 		for (String name : ItemMoon.names)
 		{
-			this.icons[i++] = iconRegister.registerIcon("galacticraftmoon:" + name);
+			this.icons[i++] = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + name);
 		}
 	}
 

@@ -17,7 +17,6 @@ public class CompatibilityManager
 	private static boolean modBCraftLoaded;
 	private static boolean modGTLoaded;
 	private static boolean modTELoaded;
-	private static boolean modAetherIILoaded;
 	private static boolean modBasicComponentsLoaded;
 	private static boolean modAppEngLoaded;
 
@@ -41,11 +40,6 @@ public class CompatibilityManager
 		if (Loader.isModLoaded("BuildCraft|Core"))
 		{
 			CompatibilityManager.modBCraftLoaded = true;
-		}
-
-		if (Loader.isModLoaded("Aether II"))
-		{
-			CompatibilityManager.modAetherIILoaded = true;
 		}
 
 		if (Loader.isModLoaded("BasicComponents"))
@@ -77,11 +71,6 @@ public class CompatibilityManager
 	public static boolean isGTLoaded()
 	{
 		return CompatibilityManager.modGTLoaded;
-	}
-
-	public static boolean isAIILoaded()
-	{
-		return CompatibilityManager.modAetherIILoaded;
 	}
 
 	public static boolean isBCLoaded()

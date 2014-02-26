@@ -17,9 +17,8 @@ import net.minecraftforge.common.config.Configuration;
  */
 public class ConfigManagerCore
 {
-	public static boolean loaded;
-
-	static Configuration configuration;
+	private static boolean loaded;
+	private static Configuration configuration;
 
 	public static int idDimensionOverworldOrbit;
 	public static int dimensionIDMoon;

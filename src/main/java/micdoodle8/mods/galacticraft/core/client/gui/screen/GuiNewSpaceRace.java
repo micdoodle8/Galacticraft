@@ -254,6 +254,11 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
     {
         super.updateScreen();
         ++this.ticksPassed;
+        
+        if (!this.initialized)
+        {
+        	return;
+        }
 
         int x = Mouse.getEventX() * this.width / this.mc.displayWidth;
         int y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;

@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -40,9 +41,9 @@ public class BlockCheese extends Block
 	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
 		this.cheeseIcons = new IIcon[3];
-		this.cheeseIcons[0] = par1IconRegister.registerIcon("galacticraftmoon:cheese_1");
-		this.cheeseIcons[1] = par1IconRegister.registerIcon("galacticraftmoon:cheese_2");
-		this.cheeseIcons[2] = par1IconRegister.registerIcon("galacticraftmoon:cheese_3");
+		this.cheeseIcons[0] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "cheese_1");
+		this.cheeseIcons[1] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "cheese_2");
+		this.cheeseIcons[2] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "cheese_3");
 	}
 
 	/**

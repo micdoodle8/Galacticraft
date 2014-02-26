@@ -33,7 +33,7 @@ public class ItemMeteoricIronRaw extends Item
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister iconRegister)
 	{
-		this.itemIcon = iconRegister.registerIcon("galacticraftmoon:" + this.iconName);
+		this.itemIcon = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + this.iconName);
 	}
 
 	@Override

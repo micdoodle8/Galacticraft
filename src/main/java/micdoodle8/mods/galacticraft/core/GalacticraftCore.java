@@ -177,9 +177,6 @@ public class GalacticraftCore
 		GalacticraftCore.moonMoon = (Moon) new Moon("moon").setParentPlanet(GalacticraftCore.planetOverworld).setRelativeSize(0.2667F).setRelativeDistanceFromCenter(40F).setRelativeOrbitTime(0.01F);
 		GalacticraftCore.moonMoon.setDimensionInfo(ConfigManagerCore.dimensionIDMoon, WorldProviderMoon.class);
 		GalacticraftCore.moonMoon.setPlanetIcon(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/planets/moon.png"));
-		GalaxyRegistry.registerGalaxy(GalacticraftCore.galaxyBlockyWay);
-		GalaxyRegistry.registerPlanet(GalacticraftCore.planetOverworld);
-		GalaxyRegistry.registerMoon(GalacticraftCore.moonMoon);
 
 		GalacticraftCore.gcFluidOil = new Fluid("oil").setDensity(800).setViscosity(1500);
 		GalacticraftCore.gcFluidFuel = new Fluid("fuel").setDensity(200).setViscosity(900);
@@ -222,11 +219,8 @@ public class GalacticraftCore
 	public void init(FMLInitializationEvent event)
 	{
 		GalacticraftCore.proxy.init(event);
-		GalacticraftCore.galacticraftTab = new GCCreativeTab(CreativeTabs.getNextID(), GalacticraftCore.MOD_NAME, GCBlocks.airLockFrame, 0);
+		GalacticraftCore.galacticraftTab = new GCCreativeTab(CreativeTabs.getNextID(), GalacticraftCore.MOD_ID, GCItems.rocketTier1, 0);
 		DimensionManager.registerProviderType(ConfigManagerCore.idDimensionOverworldOrbit, WorldProviderSpaceStation.class, false);
-		GalacticraftRegistry.registerTeleportType(WorldProviderSurface.class, new TeleportTypeOverworld());
-		GalacticraftRegistry.registerTeleportType(WorldProviderSpaceStation.class, new TeleportTypeSpaceStation());
-		GalacticraftRegistry.registerTeleportType(WorldProviderMoon.class, new TeleportTypeMoon());
 
 		GalacticraftCore.packetPipeline = new PacketPipeline();
 		GalacticraftCore.packetPipeline.initalise();
@@ -255,6 +249,14 @@ public class GalacticraftCore
 
 		this.registerCreatures();
 		this.registerOtherEntities();
+		this.registerTileEntities();
+
+		GalaxyRegistry.registerGalaxy(GalacticraftCore.galaxyBlockyWay);
+		GalaxyRegistry.registerPlanet(GalacticraftCore.planetOverworld);
+		GalaxyRegistry.registerMoon(GalacticraftCore.moonMoon);
+		GalacticraftRegistry.registerTeleportType(WorldProviderSurface.class, new TeleportTypeOverworld());
+		GalacticraftRegistry.registerTeleportType(WorldProviderSpaceStation.class, new TeleportTypeSpaceStation());
+		GalacticraftRegistry.registerTeleportType(WorldProviderMoon.class, new TeleportTypeMoon());
 		GalacticraftRegistry.registerRocketGui(WorldProviderSpaceStation.class, new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/overworldRocketGui.png"));
 		GalacticraftRegistry.registerRocketGui(WorldProviderSurface.class, new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/overworldRocketGui.png"));
 		GalacticraftRegistry.registerRocketGui(WorldProviderMoon.class, new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/moonRocketGui.png"));
@@ -301,62 +303,7 @@ public class GalacticraftCore
 		}
 
 		CompatibilityManager.checkForCompatibleMods();
-		this.registerTileEntities();
 		RecipeManager.loadRecipes();
-
-		for (int i = 3; i < 8; i++)
-		{
-			if (ItemBasic.names[i].contains("ingot"))
-			{
-				for (ItemStack stack : OreDictionary.getOres(ItemBasic.names[i]))
-				{
-					CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, i + 3), stack, stack);
-				}
-			}
-		}
-
-		// Support for the other spelling of Aluminum
-		if (OreDictionary.getOres("ingotAluminium").size() > 0 || OreDictionary.getOres("ingotNaturalAluminum").size() > 0)
-		{
-			List<ItemStack> aluminumIngotList = new ArrayList<ItemStack>();
-			aluminumIngotList.addAll(OreDictionary.getOres("ingotAluminium"));
-			aluminumIngotList.addAll(OreDictionary.getOres("ingotNaturalAluminum"));
-
-			for (ItemStack stack : aluminumIngotList)
-			{
-				CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 8), stack, stack);
-			}
-		}
-
-		if (OreDictionary.getOres("ingotBronze").size() > 0)
-		{
-			for (ItemStack stack : OreDictionary.getOres("ingotBronze"))
-			{
-				CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 10), stack, stack);
-			}
-		}
-
-		if (OreDictionary.getOres("ingotSteel").size() > 0)
-		{
-			for (ItemStack stack : OreDictionary.getOres("ingotSteel"))
-			{
-				CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 9), stack, stack);
-			}
-		}
-
-		CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 9), Items.coal, new ItemStack(GCItems.basicItem, 1, 11), Items.coal);
-		CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 10), new ItemStack(GCItems.basicItem, 1, 6), new ItemStack(GCItems.basicItem, 1, 7));
-
-		CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 11), Items.iron_ingot, Items.iron_ingot);
-		CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.meteoricIronIngot, 1, 1), new ItemStack(GCItems.meteoricIronIngot, 1, 0));
-
-		CompressorRecipes.addRecipe(new ItemStack(GCItems.heavyPlatingTier1, 1, 0), "XYZ", "XYZ", 'X', new ItemStack(GCItems.basicItem, 1, 9), 'Y', new ItemStack(GCItems.basicItem, 1, 8), 'Z', new ItemStack(GCItems.basicItem, 1, 10));
-
-		CircuitFabricatorRecipes.addRecipe(new ItemStack(GCItems.basicItem, 9, 12), new ItemStack[] { new ItemStack(Items.diamond), new ItemStack(GCItems.basicItem, 1, 2), new ItemStack(GCItems.basicItem, 1, 2), new ItemStack(Items.redstone), new ItemStack(Items.dye, 1, 4) });
-
-		CircuitFabricatorRecipes.addRecipe(new ItemStack(GCItems.basicItem, 3, 13), new ItemStack[] { new ItemStack(Items.diamond), new ItemStack(GCItems.basicItem, 1, 2), new ItemStack(GCItems.basicItem, 1, 2), new ItemStack(Items.redstone), new ItemStack(Blocks.redstone_torch) });
-
-		CircuitFabricatorRecipes.addRecipe(new ItemStack(GCItems.basicItem, 1, 14), new ItemStack[] { new ItemStack(Items.diamond), new ItemStack(GCItems.basicItem, 1, 2), new ItemStack(GCItems.basicItem, 1, 2), new ItemStack(Items.redstone), new ItemStack(Items.repeater) });
 	}
 
 	@EventHandler
@@ -390,61 +337,61 @@ public class GalacticraftCore
 
 	public void registerTileEntities()
 	{
-		GameRegistry.registerTileEntity(TileEntityTreasureChest.class, CompatibilityManager.isAIILoaded() ? "Space Treasure Chest" : "Treasure Chest");
-		GameRegistry.registerTileEntity(TileEntityOxygenDistributor.class, "Air Distributor");
-		GameRegistry.registerTileEntity(TileEntityOxygenCollector.class, "Air Collector");
-		GameRegistry.registerTileEntity(TileEntityOxygenPipe.class, "Oxygen Pipe");
-		GameRegistry.registerTileEntity(TileEntityAirLock.class, "Air Lock Frame");
-		GameRegistry.registerTileEntity(TileEntityRefinery.class, "Refinery");
-		GameRegistry.registerTileEntity(TileEntityAdvancedCraftingTable.class, "NASA Workbench");
-		GameRegistry.registerTileEntity(TileEntityOxygenCompressor.class, "Air Compressor");
-		GameRegistry.registerTileEntity(TileEntityFuelLoader.class, "Fuel Loader");
-		GameRegistry.registerTileEntity(TileEntityLandingPadSingle.class, "Landing Pad");
-		GameRegistry.registerTileEntity(TileEntityLandingPad.class, "Landing Pad Full");
-		GameRegistry.registerTileEntity(TileEntitySpaceStationBase.class, "Space Station");
-		GameRegistry.registerTileEntity(TileEntityMulti.class, "Dummy Block");
-		GameRegistry.registerTileEntity(TileEntityOxygenSealer.class, "Air Sealer");
-		GameRegistry.registerTileEntity(TileEntityDungeonSpawner.class, "Dungeon Boss Spawner");
-		GameRegistry.registerTileEntity(TileEntityOxygenDetector.class, "Oxygen Detector");
-		GameRegistry.registerTileEntity(TileEntityBuggyFueler.class, "Buggy Fueler");
-		GameRegistry.registerTileEntity(TileEntityBuggyFuelerSingle.class, "Buggy Fueler Single");
-		GameRegistry.registerTileEntity(TileEntityCargoLoader.class, "Cargo Loader");
-		GameRegistry.registerTileEntity(TileEntityCargoUnloader.class, "Cargo Unloader");
-		GameRegistry.registerTileEntity(TileEntityParachest.class, "Parachest Tile");
-		GameRegistry.registerTileEntity(TileEntitySolar.class, "Galacticraft Solar Panel");
-		GameRegistry.registerTileEntity(TileEntityEnergyStorageModule.class, "Energy Storage Module");
-		GameRegistry.registerTileEntity(TileEntityCoalGenerator.class, "Galacticraft Coal Generator");
-		GameRegistry.registerTileEntity(TileEntityElectricFurnace.class, "Galacticraft Electric Furnace");
-		GameRegistry.registerTileEntity(TileEntityAluminumWire.class, "Galacticraft Aluminum Wire");
-		GameRegistry.registerTileEntity(TileEntityFallenMeteor.class, "Fallen Meteor");
-		GameRegistry.registerTileEntity(TileEntityIngotCompressor.class, "Ingot Compressor");
-		GameRegistry.registerTileEntity(TileEntityElectricIngotCompressor.class, "Electric Ingot Compressor");
-		GameRegistry.registerTileEntity(TileEntityCircuitFabricator.class, "Circuit Fabricator");
-		GameRegistry.registerTileEntity(TileEntityAirLockController.class, "Air Lock Controller");
-		GameRegistry.registerTileEntity(TileEntityOxygenStorageModule.class, "Oxygen Storage Module");
-		GameRegistry.registerTileEntity(TileEntityOxygenDecompressor.class, "Oxygen Decompressor");
+		CoreUtil.registerTileEntity(TileEntityTreasureChest.class, "TreasureChestT1");
+		CoreUtil.registerTileEntity(TileEntityOxygenDistributor.class, "OxygenDistributor");
+		CoreUtil.registerTileEntity(TileEntityOxygenCollector.class, "OxygenCollector");
+		CoreUtil.registerTileEntity(TileEntityOxygenPipe.class, "OxygenPipe");
+		CoreUtil.registerTileEntity(TileEntityAirLock.class, "AirlockFrame");
+		CoreUtil.registerTileEntity(TileEntityRefinery.class, "OilRefinery");
+		CoreUtil.registerTileEntity(TileEntityAdvancedCraftingTable.class, "NASAWorkbench");
+		CoreUtil.registerTileEntity(TileEntityOxygenCompressor.class, "OxygenCompressor");
+		CoreUtil.registerTileEntity(TileEntityFuelLoader.class, "RocketFuelLoader");
+		CoreUtil.registerTileEntity(TileEntityLandingPadSingle.class, "RocketLandingPad");
+		CoreUtil.registerTileEntity(TileEntityLandingPad.class, "RocketLandingPadFull");
+		CoreUtil.registerTileEntity(TileEntitySpaceStationBase.class, "SpaceStationBase");
+		CoreUtil.registerTileEntity(TileEntityMulti.class, "DummyBlock");
+		CoreUtil.registerTileEntity(TileEntityOxygenSealer.class, "OxygenSealer");
+		CoreUtil.registerTileEntity(TileEntityDungeonSpawner.class, "DungeonSpawnerMoon");
+		CoreUtil.registerTileEntity(TileEntityOxygenDetector.class, "OxygenDetector");
+		CoreUtil.registerTileEntity(TileEntityBuggyFueler.class, "BuggyFuelPad");
+		CoreUtil.registerTileEntity(TileEntityBuggyFuelerSingle.class, "BuggyFuelerPadSingle");
+		CoreUtil.registerTileEntity(TileEntityCargoLoader.class, "RocketCargoLoader");
+		CoreUtil.registerTileEntity(TileEntityCargoUnloader.class, "RocketCargoUnloader");
+		CoreUtil.registerTileEntity(TileEntityParachest.class, "ParachestTile");
+		CoreUtil.registerTileEntity(TileEntitySolar.class, "SolarPanel");
+		CoreUtil.registerTileEntity(TileEntityEnergyStorageModule.class, "EnergyStorageModule");
+		CoreUtil.registerTileEntity(TileEntityCoalGenerator.class, "CoalGenerator");
+		CoreUtil.registerTileEntity(TileEntityElectricFurnace.class, "ElectricFurnace");
+		CoreUtil.registerTileEntity(TileEntityAluminumWire.class, "AluminumWire");
+		CoreUtil.registerTileEntity(TileEntityFallenMeteor.class, "FallenMeteor");
+		CoreUtil.registerTileEntity(TileEntityIngotCompressor.class, "IngotCompressor");
+		CoreUtil.registerTileEntity(TileEntityElectricIngotCompressor.class, "ElectricIngotCompressor");
+		CoreUtil.registerTileEntity(TileEntityCircuitFabricator.class, "CircuitFabricator");
+		CoreUtil.registerTileEntity(TileEntityAirLockController.class, "AirlockController");
+		CoreUtil.registerTileEntity(TileEntityOxygenStorageModule.class, "OxygenStorageModule");
+		CoreUtil.registerTileEntity(TileEntityOxygenDecompressor.class, "OxygenDecompressor");
 	}
 
 	public void registerCreatures()
 	{
-		CoreUtil.registerGalacticraftCreature(EntityEvolvedSpider.class, "EvolvedSpider", ConfigManagerCore.idEntityEvolvedSpider, 3419431, 11013646);
-		CoreUtil.registerGalacticraftCreature(EntityEvolvedZombie.class, "EvolvedZombie", ConfigManagerCore.idEntityEvolvedZombie, 44975, 7969893);
-		CoreUtil.registerGalacticraftCreature(EntityEvolvedCreeper.class, "EvolvedCreeper", ConfigManagerCore.idEntityEvolvedCreeper, 894731, 0);
-		CoreUtil.registerGalacticraftCreature(EntityEvolvedSkeleton.class, "EvolvedSkeleton", ConfigManagerCore.idEntityEvolvedSkeleton, 12698049, 4802889);
-		CoreUtil.registerGalacticraftCreature(EntitySkeletonBoss.class, "EvolvedSkeletonBoss", ConfigManagerCore.idEntityEvolvedSkeletonBoss, 12698049, 4802889);
-		CoreUtil.registerGalacticraftCreature(EntityAlienVillager.class, "AlienVillager", ConfigManagerCore.idEntityAlienVillager, CoreUtil.to32BitColor(255, 103, 145, 181), 12422002);
+		CoreUtil.registerCreature(EntityEvolvedSpider.class, "EvolvedSpider", ConfigManagerCore.idEntityEvolvedSpider, 3419431, 11013646);
+		CoreUtil.registerCreature(EntityEvolvedZombie.class, "EvolvedZombie", ConfigManagerCore.idEntityEvolvedZombie, 44975, 7969893);
+		CoreUtil.registerCreature(EntityEvolvedCreeper.class, "EvolvedCreeper", ConfigManagerCore.idEntityEvolvedCreeper, 894731, 0);
+		CoreUtil.registerCreature(EntityEvolvedSkeleton.class, "EvolvedSkeleton", ConfigManagerCore.idEntityEvolvedSkeleton, 12698049, 4802889);
+		CoreUtil.registerCreature(EntitySkeletonBoss.class, "EvolvedSkeletonBoss", ConfigManagerCore.idEntityEvolvedSkeletonBoss, 12698049, 4802889);
+		CoreUtil.registerCreature(EntityAlienVillager.class, "AlienVillager", ConfigManagerCore.idEntityAlienVillager, CoreUtil.to32BitColor(255, 103, 145, 181), 12422002);
 	}
 
 	public void registerOtherEntities()
 	{
-		CoreUtil.registerGalacticraftNonMobEntity(EntityTier1Rocket.class, "Spaceship", ConfigManagerCore.idEntitySpaceship, 150, 1, false);
-		CoreUtil.registerGalacticraftNonMobEntity(EntityArrowGC.class, "GravityArrow", ConfigManagerCore.idEntityAntiGravityArrow, 150, 5, true);
-		CoreUtil.registerGalacticraftNonMobEntity(EntityMeteor.class, "Meteor", ConfigManagerCore.idEntityMeteor, 150, 5, true);
-		CoreUtil.registerGalacticraftNonMobEntity(EntityBuggy.class, "Buggy", ConfigManagerCore.idEntityBuggy, 150, 5, true);
-		CoreUtil.registerGalacticraftNonMobEntity(EntityFlag.class, "Flag", ConfigManagerCore.idEntityFlag, 150, 5, true);
-		CoreUtil.registerGalacticraftNonMobEntity(EntityParachest.class, "ParaChest", ConfigManagerCore.idEntityParaChest, 150, 5, true);
-		CoreUtil.registerGalacticraftNonMobEntity(EntityBubble.class, "OxygenBubble", ConfigManagerCore.idEntityOxygenBubble, 150, 20, false);
-		CoreUtil.registerGalacticraftNonMobEntity(EntityLander.class, "Lander", ConfigManagerCore.idEntityLander, 150, 5, false);
-		CoreUtil.registerGalacticraftNonMobEntity(EntityMeteorChunk.class, "MeteorChunk", ConfigManagerCore.idEntityMeteorChunk, 150, 5, true);
+		CoreUtil.registerNonMobEntity(EntityTier1Rocket.class, "Spaceship", ConfigManagerCore.idEntitySpaceship, 150, 1, false);
+		CoreUtil.registerNonMobEntity(EntityArrowGC.class, "GravityArrow", ConfigManagerCore.idEntityAntiGravityArrow, 150, 5, true);
+		CoreUtil.registerNonMobEntity(EntityMeteor.class, "Meteor", ConfigManagerCore.idEntityMeteor, 150, 5, true);
+		CoreUtil.registerNonMobEntity(EntityBuggy.class, "Buggy", ConfigManagerCore.idEntityBuggy, 150, 5, true);
+		CoreUtil.registerNonMobEntity(EntityFlag.class, "Flag", ConfigManagerCore.idEntityFlag, 150, 5, true);
+		CoreUtil.registerNonMobEntity(EntityParachest.class, "ParaChest", ConfigManagerCore.idEntityParaChest, 150, 5, true);
+		CoreUtil.registerNonMobEntity(EntityBubble.class, "OxygenBubble", ConfigManagerCore.idEntityOxygenBubble, 150, 20, false);
+		CoreUtil.registerNonMobEntity(EntityLander.class, "Lander", ConfigManagerCore.idEntityLander, 150, 5, false);
+		CoreUtil.registerNonMobEntity(EntityMeteorChunk.class, "MeteorChunk", ConfigManagerCore.idEntityMeteorChunk, 150, 5, true);
 	}
 }

@@ -74,6 +74,10 @@ item.key.T1.name=Tier 1 Dungeon Key
 item.buggymat.wheel.name=Buggy Wheel
 item.buggymat.seat.name=Buggy Seat
 item.buggymat.storage.name=Buggy Storage Box
+item.meteoricIronRaw.name=Fer météorique brut
+item.meteoricIronIngot.name=Lingot de Fer météorique
+item.cheeseCurd.name=Caillé
+item.cheeseBlock.name=Bloc de fromage
 
 # TOOLS
 item.titaniumPick.name=Pioche en titane
@@ -125,6 +129,14 @@ tile.cargo.loader.name=Cargo Loader
 tile.cargo.unloader.name=Cargo Unloader
 tile.landingPad.buggyFueler.name=Buggy Fueling Pad
 tile.landingPad.cargoPad.name=Cargo Rocket Pad
+tile.moonBlock.moonstone.name=Roche Lunaire
+tile.moonBlock.moondirt.name=Terre Lunaire
+tile.moonBlock.moongrass.name=Herbe Lunaire
+tile.moonBlock.tinmoon.name=Minerai d'étain
+tile.moonBlock.coppermoon.name=Minerai de cuivre
+tile.moonBlock.cheesestone.name=Minerai de fromage
+tile.moonBlock.bricks.name=Brique
+tile.cheeseBlock.name=Bloc de fromage
 
 # ENTITIES
 entity.GalacticraftCore.EvolvedSpider.name=Evolved Spider
@@ -179,6 +191,7 @@ keybind.vehicledown.name=[GC] Vehicle Down Key
 
 # CREATIVE TABS
 itemGroup.GalacticraftCore=Galacticraft
+itemGroup.GalacticraftMoon=Lune Galacticraft
 
 # GUI
 container.cargoloader.name=Cargo Loader
@@ -242,6 +255,7 @@ gui.button.next.name=Next
 gui.button.unlockschematic.name=Unlock Schematic
 
 gui.choosePlanet.desc.overworld=Plein de vie#Habitable#Pesanteur: 100%
+gui.choosePlanet.desc.moon=Habitable#Pas d'oxygène#Gravité: 18%
 gui.warning=WARNING!
 gui.lander.warning2=Hold "
 gui.lander.warning3=" to slow down!

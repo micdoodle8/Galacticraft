@@ -100,6 +100,11 @@ item.basicItem.dehydratedPotato.name=Dehydrované rajče
 item.basicItem.cannedFood.name=Jídlo v plechovce
 item.basicItem.frequencyModule.name=Frekvenční modul
 item.standardWrench.name=Standardní klíč
+item.meteoricIronRaw.name=Nezpracované meteorické železo
+item.meteoric_iron_ingot.name=Ingot meteorického železa
+item.compressedMeteoricIron.name=Stlačené meteorické železo
+item.cheeseCurd.name=Kousek sýra
+item.cheeseBlock.name=Sýr
 
 # TOOLS
 item.steel_pickaxe.name=Zesílený krumpáč
@@ -189,6 +194,14 @@ tile.gcBlockCore.aluminumBlock.name=Hliníkový block
 tile.fuel.name=Palivo
 tile.oxygenCompressor.0.name=Kyslíkový kompresor
 tile.oxygenCompressor.1.name=Kyslíkový dekompresor
+tile.moonBlock.moonstone.name=Kámen
+tile.moonBlock.moondirt.name=Hlína
+tile.moonBlock.moongrass.name=Měsíční povrh
+tile.moonBlock.tinmoon.name=Cínová ruda
+tile.moonBlock.coppermoon.name=Měděná ruda
+tile.moonBlock.cheesestone.name=Sýrová ruda
+tile.moonBlock.bricks.name=Cihly
+tile.cheeseBlock.name=Blok sýra
 
 # ENTITIES
 entity.GalacticraftCore.EvolvedSpider.name=Vyvinutý pavouk
@@ -236,6 +249,7 @@ keybind.vehicledown.name=[GC] Jízda dolu
 
 # CREATIVE TABS
 itemGroup.GalacticraftCore=Galacticraft
+itemGroup.GalacticraftMoon=Galacticraft Měsíc
 
 # GUI
 container.cargoloader.name=Nakladač
@@ -312,6 +326,7 @@ gui.button.enable.name=Zapnout
 gui.button.disable.name=Vypnout
 
 gui.choosePlanet.desc.overworld=Plná života#Obyvatelná#Gravitace: 100%
+gui.choosePlanet.desc.moon=Obyvatelný#Žádný kyslík#Gravitace: 18%
 gui.warning=Varování!
 gui.lander.warning2=Zastav "
 gui.lander.warning3=" zpomal!

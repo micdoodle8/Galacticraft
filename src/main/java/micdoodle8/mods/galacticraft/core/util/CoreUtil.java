@@ -8,16 +8,13 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
-import cpw.mods.fml.common.FMLCommonHandler;
+import net.minecraft.tileentity.TileEntity;
 import cpw.mods.fml.common.registry.EntityRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
-import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
  * GCCoreUtil.java
@@ -61,26 +58,36 @@ public class CoreUtil
 		player.openContainer.addCraftingToCrafters(player);
 	}
 
-	public static void registerGalacticraftCreature(Class<? extends Entity> var0, String var1, int id, int back, int fore)
-	{
-		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
-		{
-			LanguageRegistry.instance().addStringLocalization("entity." + var1 + ".name", StatCollector.translateToLocal("entity.GalacticraftCore." + var1 + ".name"));
-		}
+    public static void registerTileEntity(Class<? extends TileEntity> tileEntityClass, String id)
+    {
+    	registerTileEntity(GalacticraftCore.MOD_ID, tileEntityClass, id);
+    }
 
-		EntityRegistry.registerGlobalEntityID(var0, var1, id, back, fore);
-		EntityRegistry.registerModEntity(var0, var1, id, GalacticraftCore.instance, 80, 3, true);
+    public static void registerTileEntity(String modID, Class<? extends TileEntity> tileEntityClass, String id)
+    {
+    	GameRegistry.registerTileEntity(tileEntityClass, modID + ":" + id);
+    }
+
+	public static void registerCreature(Class<? extends Entity> entityClass, String entityName, int entityID, int eggColorBack, int eggColorFront)
+	{
+		registerCreature(GalacticraftCore.instance, entityClass, entityName, entityID, eggColorBack, eggColorFront);
 	}
 
-	public static void registerGalacticraftNonMobEntity(Class<? extends Entity> var0, String var1, int id, int trackingDistance, int updateFreq, boolean sendVel)
+	public static void registerCreature(Object modInstance, Class<? extends Entity> entityClass, String entityName, int entityID, int eggColorBack, int eggColorFront)
 	{
-		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
-		{
-			LanguageRegistry.instance().addStringLocalization("entity." + var1 + ".name", StatCollector.translateToLocal("entity.GalacticraftCore." + var1 + ".name"));
-		}
+		EntityRegistry.registerGlobalEntityID(entityClass, entityName, entityID, eggColorBack, eggColorFront);
+		EntityRegistry.registerModEntity(entityClass, entityName, entityID, modInstance, 80, 3, true);
+	}
 
-		EntityList.addMapping(var0, var1, id);
-		EntityRegistry.registerModEntity(var0, var1, id, GalacticraftCore.instance, trackingDistance, updateFreq, sendVel);
+	public static void registerNonMobEntity(Class<? extends Entity> entityClass, String entityName, int entityID, int trackingDistance, int updateFreq, boolean sendVel)
+	{
+		registerNonMobEntity(GalacticraftCore.instance, entityClass, entityName, entityID, trackingDistance, updateFreq, sendVel);
+	}
+
+	public static void registerNonMobEntity(Object modInstance, Class<? extends Entity> entityClass, String entityName, int entityID, int trackingDistance, int updateFreq, boolean sendVel)
+	{
+		EntityRegistry.registerGlobalEntityID(entityClass, entityName, entityID);
+		EntityRegistry.registerModEntity(entityClass, entityName, entityID, GalacticraftCore.instance, trackingDistance, updateFreq, sendVel);
 	}
 
 	public static void registerGalacticraftItem(String key, Item item)

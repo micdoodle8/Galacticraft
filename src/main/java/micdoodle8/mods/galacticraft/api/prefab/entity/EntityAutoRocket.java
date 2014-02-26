@@ -141,7 +141,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 						try
 						{
 							TileEntity launchController = null;
-							Class<?> controllerClass = Class.forName("micdoodle8.mods.galacticraft.mars.tile.EntityLaunchController");
+							Class<?> controllerClass = Class.forName("micdoodle8.mods.galacticraft.planets.mars.tile.EntityLaunchController");
 
 							for (ILandingPadAttachable connectedTile : dock.getConnectedTiles())
 							{
@@ -234,7 +234,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
 					try
 					{
-						Class<?> controllerClass = Class.forName("micdoodle8.mods.galacticraft.mars.tile.TileEntityLaunchController");
+						Class<?> controllerClass = Class.forName("micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityLaunchController");
 
 						try
 						{
@@ -357,7 +357,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 							{
 								try
 								{
-									Class<?> controllerClass = Class.forName("micdoodle8.mods.galacticraft.mars.tile.TileEntityLaunchController");
+									Class<?> controllerClass = Class.forName("micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityLaunchController");
 
 									try
 									{
@@ -490,7 +490,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
 						try
 						{
-							Class<?> controllerClass = Class.forName("micdoodle8.mods.galacticraft.mars.tile.TileEntityLaunchController");
+							Class<?> controllerClass = Class.forName("micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityLaunchController");
 
 							for (ILandingPadAttachable connectedTile : connectedTiles)
 							{

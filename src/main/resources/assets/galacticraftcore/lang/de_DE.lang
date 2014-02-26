@@ -100,6 +100,11 @@ item.basicItem.dehydratedPotato.name=Dehydrierte Kartoffel
 item.basicItem.cannedFood.name=Dose mit Nahrung
 item.basicItem.frequencyModule.name=Frequenzmodul
 item.standardWrench.name=Standard-Schraubenschlüssel
+item.meteoricIronRaw.name=Rohes Meteorisches Eisen
+item.meteoric_iron_ingot.name=Meteorischer Eisenbarren
+item.compressedMeteoricIron.name=Gepresstes Meteorisches Eisen
+item.cheeseCurd.name=Quark
+item.cheeseBlock.name=Käseblock
 
 # TOOLS
 item.steel_pickaxe.name=Stahlspitzhacke
@@ -189,6 +194,14 @@ tile.gcBlockCore.aluminumBlock.name=Aluminiumblock
 tile.fuel.name=Treibstoff
 tile.oxygenCompressor.0.name=Sauerstoffkompressor
 tile.oxygenCompressor.1.name=Sauerstoffdekompressor
+tile.moonBlock.moonstone.name=Stein
+tile.moonBlock.moondirt.name=Erde
+tile.moonBlock.moongrass.name=Mondrasen
+tile.moonBlock.tinmoon.name=Zinnerz
+tile.moonBlock.coppermoon.name=Kupfererz
+tile.moonBlock.cheesestone.name=Käseerz
+tile.moonBlock.bricks.name=Ziegel
+tile.cheeseBlock.name=Käseblock
 
 # ENTITIES
 entity.GalacticraftCore.EvolvedSpider.name=Entwickelte Spinne
@@ -236,6 +249,7 @@ keybind.vehicledown.name=[GC] Vehikel-Runter-Taste
 
 # CREATIVE TABS
 itemGroup.GalacticraftCore=Galacticraft
+itemGroup.GalacticraftMoon=Galacticraft Mond
 
 # GUI
 container.cargoloader.name=Cargo-Lader
@@ -312,6 +326,7 @@ gui.button.enable.name=Aktiviere
 gui.button.disable.name=Deaktiviere
 
 gui.choosePlanet.desc.overworld=Bewohnt#Bewohnbar#Gravitation: 100%
+gui.choosePlanet.desc.moon=Bewohnbar#Kein Sauerstoff#Schwerkraft: 18%
 gui.warning=WARNUNG!
 gui.lander.warning2=Halte "
 gui.lander.warning3=" um zu verlangsamen!

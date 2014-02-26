@@ -100,6 +100,11 @@ item.basicItem.dehydratedPotato.name=Дегидратированный карт
 item.basicItem.cannedFood.name=Консервированная еда
 item.basicItem.frequencyModule.name=Частотный модуль
 item.standardWrench.name=Обычный гаечный ключ
+item.meteoricIronRaw.name=Необработанное метеоритное железо
+item.meteoric_iron_ingot.name=Слиток метеоритного железа
+item.compressedMeteoricIron.name=Сжатое метеоритное железо
+item.cheeseCurd.name=Сырок
+item.cheeseBlock.name=Блок сыра
 
 # TOOLS
 item.steel_pickaxe.name=Кирка со сверхпрочным покрытием
@@ -175,6 +180,14 @@ tile.aluminumWireHeavy.name=Толстый алюминиевый провод
 tile.glowstoneTorch.name=Факел из светящегося камня
 tile.enclosed.aluminumWire.name=Замаскированный алюминиевый провод
 tile.enclosed.aluminumWireHeavy.name=Замаскированный толстый алюминиевый провод
+tile.moonBlock.moonstone.name=Лунный камень
+tile.moonBlock.moondirt.name=Лунный грунт
+tile.moonBlock.moongrass.name=Лунный дерн
+tile.moonBlock.tinmoon.name=Оловянная руда
+tile.moonBlock.coppermoon.name=Медная руда
+tile.moonBlock.cheesestone.name=Сырная руда
+tile.moonBlock.bricks.name=Кирпичи
+tile.cheeseBlock.name=Блок сыра
 
 # ENTITIES
 entity.GalacticraftCore.EvolvedSpider.name=Эволюционировавший паук
@@ -224,6 +237,7 @@ keybind.vehicledown.name=[GC] "Вниз" для техники
 
 # CREATIVE TABS
 itemGroup.GalacticraftCore=Galacticraft
+itemGroup.GalacticraftMoon=Galacticraft Луна
 
 # GUI
 container.cargoloader.name=Загрузчик
@@ -299,6 +313,7 @@ gui.button.enable.name=Включить
 gui.button.disable.name=Выключить
 
 gui.choosePlanet.desc.overworld=Полна жизни#Обитаема#Гравитация: 100%
+gui.choosePlanet.desc.moon=Обитаема#Кислород отсутствует#Гравитация: 18%
 gui.warning=ОПАСНОСТЬ!
 gui.lander.warning2=Зажмите "
 gui.lander.warning3=", чтобы замедлить падение!
