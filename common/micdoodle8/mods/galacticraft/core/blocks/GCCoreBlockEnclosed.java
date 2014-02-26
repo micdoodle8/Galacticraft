@@ -6,6 +6,7 @@ import java.util.List;
 
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
+import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkConnection;
 import micdoodle8.mods.galacticraft.core.GCCoreCompatibilityManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAluminumWire;
@@ -132,7 +133,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeala
 	{
 		par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.ALUMINUM_WIRE.getMetadata()));
 		par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.ALUMINUM_WIRE_HEAVY.getMetadata()));
-		par3List.add(new ItemStack(par1, 1, 1));
+		par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.OXYGEN_PIPE.getMetadata()));
 		
 		if (GCCoreCompatibilityManager.isTELoaded())
 		{
@@ -210,7 +211,10 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeala
 		}
 		else if (metadata > 0 && metadata <= EnumEnclosedBlock.OXYGEN_PIPE.getMetadata())
 		{
-
+			if (tileEntity instanceof INetworkConnection)
+			{
+				((INetworkConnection) tileEntity).refresh();
+			}
 		}
 		else if (metadata <= EnumEnclosedBlock.IC2_LV_CABLE.getMetadata())
 		{
@@ -275,7 +279,10 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeala
 		}
 		else if (metadata > 0 && metadata <= EnumEnclosedBlock.OXYGEN_PIPE.getMetadata())
 		{
-
+			if (tileEntity instanceof INetworkConnection)
+			{
+				((INetworkConnection) tileEntity).refresh();
+			}
 		}
 		else if (metadata <= EnumEnclosedBlock.IC2_LV_CABLE.getMetadata())
 		{
