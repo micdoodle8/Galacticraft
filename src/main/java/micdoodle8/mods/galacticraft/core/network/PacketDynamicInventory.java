@@ -57,12 +57,12 @@ public class PacketDynamicInventory implements IPacket
 		switch (this.type)
 		{
 		case 0:
-			buffer.writeInt((int) this.data[0]);
+			buffer.writeInt((Integer) this.data[0]);
 			break;
 		case 1:
-			buffer.writeInt((int) this.data[0]);
-			buffer.writeInt((int) this.data[1]);
-			buffer.writeInt((int) this.data[2]);
+			buffer.writeInt((Integer) this.data[0]);
+			buffer.writeInt((Integer) this.data[1]);
+			buffer.writeInt((Integer) this.data[2]);
 			break;
 		}
 
@@ -132,7 +132,7 @@ public class PacketDynamicInventory implements IPacket
 		switch (this.type)
 		{
 		case 0:
-			Entity entity = world.getEntityByID((int) this.data[0]);
+			Entity entity = world.getEntityByID((Integer) this.data[0]);
 
 			if (entity instanceof IInventorySettable)
 			{
@@ -141,7 +141,7 @@ public class PacketDynamicInventory implements IPacket
 
 			break;
 		case 1:
-			TileEntity tile = world.getTileEntity((int) this.data[0], (int) this.data[1], (int) this.data[2]);
+			TileEntity tile = world.getTileEntity((Integer) this.data[0], (Integer) this.data[1], (Integer) this.data[2]);
 
 			if (tile instanceof IInventorySettable)
 			{

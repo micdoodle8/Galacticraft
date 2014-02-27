@@ -365,13 +365,13 @@ public class PacketSimple implements IPacket
 			}
 			break;
 		case C_UPDATE_SPACESTATION_DATA:
-			SpaceStationSaveData var4 = SpaceStationSaveData.getMPSpaceStationData(player.worldObj, (int) this.data.get(0), player);
+			SpaceStationSaveData var4 = SpaceStationSaveData.getMPSpaceStationData(player.worldObj, (Integer) this.data.get(0), player);
 			var4.readFromNBT((NBTTagCompound) this.data.get(1));
 			break;
 		case C_UPDATE_SPACESTATION_CLIENT_ID:
 			if (playerBaseClient != null)
 			{
-				playerBaseClient.clientSpaceStationID = (int) this.data.get(0);
+				playerBaseClient.clientSpaceStationID = (Integer) this.data.get(0);
 			}
 			break;
 		case C_UPDATE_PLANETS_LIST:
@@ -619,7 +619,7 @@ public class PacketSimple implements IPacket
 			}
 			break;
 		case S_SET_ENTITY_FIRE:
-			Entity entity = player.worldObj.getEntityByID((int) this.data.get(0));
+			Entity entity = player.worldObj.getEntityByID((Integer) this.data.get(0));
 
 			if (entity instanceof EntityLiving)
 			{
