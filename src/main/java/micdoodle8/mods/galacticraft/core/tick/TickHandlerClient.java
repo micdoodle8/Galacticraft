@@ -12,6 +12,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.CloudRenderer;
+import micdoodle8.mods.galacticraft.core.client.SkyProviderMoon;
 import micdoodle8.mods.galacticraft.core.client.SkyProviderOrbit;
 import micdoodle8.mods.galacticraft.core.client.SkyProviderOverworld;
 import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlayCountdown;
@@ -21,6 +22,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlayOxygenTankInd
 import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlayOxygenWarning;
 import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlaySpaceship;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiChoosePlanet;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.entities.EntityLander;
 import micdoodle8.mods.galacticraft.core.entities.EntityTier1Rocket;
@@ -332,6 +334,19 @@ public class TickHandlerClient
 				if (world.provider.getSkyRenderer() == null)
 				{
 					world.provider.setSkyRenderer(new SkyProviderOrbit(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/planets/overworld.png"), true, true));
+				}
+
+				if (world.provider.getCloudRenderer() == null)
+				{
+					world.provider.setCloudRenderer(new CloudRenderer());
+				}
+			}
+
+			if (world != null && world.provider instanceof WorldProviderMoon)
+			{
+				if (world.provider.getSkyRenderer() == null)
+				{
+					world.provider.setSkyRenderer(new SkyProviderMoon());
 				}
 
 				if (world.provider.getCloudRenderer() == null)

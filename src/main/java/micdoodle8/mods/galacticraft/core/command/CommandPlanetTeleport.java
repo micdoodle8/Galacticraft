@@ -14,6 +14,7 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
+import cpw.mods.fml.common.FMLLog;
 
 /**
  * GCCoreCommandPlanetTeleport.java
@@ -41,6 +42,7 @@ public class CommandPlanetTeleport extends CommandBase
 	@Override
 	public void processCommand(ICommandSender icommandsender, String[] astring)
 	{
+		FMLLog.info("DONE!");
 		GCEntityPlayerMP playerBase = null;
 
 		if (astring.length > 0)
@@ -48,6 +50,7 @@ public class CommandPlanetTeleport extends CommandBase
 			try
 			{
 				playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(astring[0]);
+				FMLLog.info("DONE2! " + playerBase);
 
 				if (playerBase != null)
 				{
@@ -62,10 +65,12 @@ public class CommandPlanetTeleport extends CommandBase
 						count++;
 					}
 
+					FMLLog.info("DONE3! " + temp);
 					GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_DIMENSION_LIST, new Object[] { playerBase.getGameProfile().getName(), temp }), playerBase);
 					playerBase.setSpaceshipTier(Integer.MAX_VALUE);
 					playerBase.setUsingPlanetGui();
 					playerBase.mountEntity(null);
+					FMLLog.info("DONE4!");
 
 					CommandBase.notifyAdmins(icommandsender, "commands.dimensionteleport", new Object[] { String.valueOf(EnumColor.GREY + "[" + playerBase.getCommandSenderName()), "]" });
 				}

@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.core.client.render.entities.RenderTier1Rocke
 import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererKey;
 import micdoodle8.mods.galacticraft.planets.ConfigManagerPlanets;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
+import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.client.SkyProviderMars;
 import micdoodle8.mods.galacticraft.planets.mars.client.fx.EntityFXDropPatricle;
@@ -63,7 +64,6 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -92,7 +92,6 @@ public class ClientProxyMars extends CommonProxyMars
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		FMLLog.info("PROXY 1");
 	}
 
 	@Override
@@ -267,7 +266,7 @@ public class ClientProxyMars extends CommonProxyMars
 
 			if (world != null)
 			{
-				if (world.provider instanceof WorldProviderMars)
+				if (world.provider instanceof WorldProviderMars || world.provider instanceof WorldProviderAsteroids)
 				{
 					if (world.provider.getSkyRenderer() == null)
 					{

@@ -288,48 +288,51 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
     		}
     	}
 		
-		if (!this.lastMousePressed && Mouse.isButtonDown(0) && this.checkboxSelector.isSelected != null && this.checkboxSelector.isSelected)
-		{
-			if (x >= this.flagDesignerMinX && y >= this.flagDesignerMinY && x <= this.flagDesignerMinX + this.flagDesignerWidth && y <= this.flagDesignerMinY + this.flagDesignerHeight)
-	    	{
-	    		int unScaledX = (int)Math.floor((x - this.flagDesignerMinX) / this.flagDesignerScale.x);
-	    		int unScaledY = (int)Math.floor((y - this.flagDesignerMinY) / this.flagDesignerScale.y);
-				this.selectionMinX = unScaledX;
-				this.selectionMinY = unScaledY;
-	    	}
-			else
-			{
-				this.selectionMinX = this.selectionMinY = -1;
-			}
-		}
-		else if (this.lastMousePressed && !Mouse.isButtonDown(0) && this.checkboxSelector.isSelected != null && this.checkboxSelector.isSelected)
-		{
-			if (selectionMinX != -1 && selectionMinY != -1 && x >= this.flagDesignerMinX && y >= this.flagDesignerMinY && x <= this.flagDesignerMinX + this.flagDesignerWidth && y <= this.flagDesignerMinY + this.flagDesignerHeight)
-	    	{
-	    		int unScaledX = (int)Math.floor((x - this.flagDesignerMinX) / this.flagDesignerScale.x);
-	    		int unScaledY = (int)Math.floor((y - this.flagDesignerMinY) / this.flagDesignerScale.y);
-				this.selectionMaxX = Math.min(unScaledX + 1, this.flagData.getWidth());
-				this.selectionMaxY = Math.min(unScaledY + 1, this.flagData.getHeight());
-				
-				if (this.selectionMinX > this.selectionMaxX)
-				{
-					int temp = this.selectionMaxX - 1;
-					this.selectionMaxX = this.selectionMinX + 1;
-					this.selectionMinX = temp;
-				}
-				
-				if (this.selectionMinY > this.selectionMaxY)
-				{
-					int temp = this.selectionMaxY - 1;
-					this.selectionMaxY = this.selectionMinY + 1;
-					this.selectionMinY = temp;
-				}
-	    	}
-			else
-			{
-				this.selectionMaxX = this.selectionMaxY = -1;
-			}
-		}
+        if (this.checkboxSelector != null)
+        {
+    		if (!this.lastMousePressed && Mouse.isButtonDown(0) && this.checkboxSelector.isSelected != null && this.checkboxSelector.isSelected)
+    		{
+    			if (x >= this.flagDesignerMinX && y >= this.flagDesignerMinY && x <= this.flagDesignerMinX + this.flagDesignerWidth && y <= this.flagDesignerMinY + this.flagDesignerHeight)
+    	    	{
+    	    		int unScaledX = (int)Math.floor((x - this.flagDesignerMinX) / this.flagDesignerScale.x);
+    	    		int unScaledY = (int)Math.floor((y - this.flagDesignerMinY) / this.flagDesignerScale.y);
+    				this.selectionMinX = unScaledX;
+    				this.selectionMinY = unScaledY;
+    	    	}
+    			else
+    			{
+    				this.selectionMinX = this.selectionMinY = -1;
+    			}
+    		}
+    		else if (this.lastMousePressed && !Mouse.isButtonDown(0) && this.checkboxSelector.isSelected != null && this.checkboxSelector.isSelected)
+    		{
+    			if (selectionMinX != -1 && selectionMinY != -1 && x >= this.flagDesignerMinX && y >= this.flagDesignerMinY && x <= this.flagDesignerMinX + this.flagDesignerWidth && y <= this.flagDesignerMinY + this.flagDesignerHeight)
+    	    	{
+    	    		int unScaledX = (int)Math.floor((x - this.flagDesignerMinX) / this.flagDesignerScale.x);
+    	    		int unScaledY = (int)Math.floor((y - this.flagDesignerMinY) / this.flagDesignerScale.y);
+    				this.selectionMaxX = Math.min(unScaledX + 1, this.flagData.getWidth());
+    				this.selectionMaxY = Math.min(unScaledY + 1, this.flagData.getHeight());
+    				
+    				if (this.selectionMinX > this.selectionMaxX)
+    				{
+    					int temp = this.selectionMaxX - 1;
+    					this.selectionMaxX = this.selectionMinX + 1;
+    					this.selectionMinX = temp;
+    				}
+    				
+    				if (this.selectionMinY > this.selectionMaxY)
+    				{
+    					int temp = this.selectionMaxY - 1;
+    					this.selectionMaxY = this.selectionMinY + 1;
+    					this.selectionMinY = temp;
+    				}
+    	    	}
+    			else
+    			{
+    				this.selectionMaxX = this.selectionMaxY = -1;
+    			}
+    		}
+        }
         
         if (this.sliderBrushSize != null && this.sliderBrushSize.visible)
         {

@@ -24,6 +24,7 @@ public class ConfigManagerPlanets
 
 	// DIMENSIONS
 	public static int dimensionIDMars;
+	public static int dimensionIDAsteroids;
 
 	// BLOCKS
 	public static int idBlockMars;
@@ -89,6 +90,7 @@ public class ConfigManagerPlanets
 			ConfigManagerPlanets.configuration.load();
 
 			ConfigManagerPlanets.dimensionIDMars = ConfigManagerPlanets.configuration.get("Dimensions", "Mars Dimension ID", -29).getInt(-29);
+			ConfigManagerPlanets.dimensionIDAsteroids = ConfigManagerPlanets.configuration.get("Dimensions", "Asteroids Dimension ID", -30).getInt(-30);
 
 			ConfigManagerPlanets.idEntityCreeperBoss = ConfigManagerPlanets.configuration.get("Entities", "idEntityCreeperBoss", 171).getInt(171);
 			ConfigManagerPlanets.idEntityProjectileTNT = ConfigManagerPlanets.configuration.get("Entities", "idEntityProjectileTNT", 172).getInt(172);

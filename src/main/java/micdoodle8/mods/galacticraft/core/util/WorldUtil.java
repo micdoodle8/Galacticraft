@@ -38,7 +38,6 @@ import micdoodle8.mods.galacticraft.core.oxygen.SealerThreadManager.VecDirPair;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -77,7 +76,7 @@ public class WorldUtil
 	public static List<Integer> registeredPlanets;
 	public static List<String> registeredPlanetNames;
 
-	public static double getGravityForEntity(EntityLivingBase eLiving)
+	public static double getGravityForEntity(Entity eLiving)
 	{
 		if (eLiving.worldObj.provider instanceof IGalacticraftWorldProvider)
 		{
@@ -114,23 +113,11 @@ public class WorldUtil
 		if (e.worldObj.provider instanceof IGalacticraftWorldProvider)
 		{
 			final IGalacticraftWorldProvider customProvider = (IGalacticraftWorldProvider) e.worldObj.provider;
-			return 0.03999999910593033D - (customProvider instanceof IOrbitDimension ? 0.05999999910593033D : customProvider.getGravity()) / 1.75D;
+			return Math.max(0.08D - customProvider.getGravity() - 0.01F, 0.001F);
 		}
 		else
 		{
 			return 0.03999999910593033D;
-		}
-	}
-
-	public static double getItemGravity2(EntityItem e)
-	{
-		if (e.worldObj.provider instanceof IGalacticraftWorldProvider)
-		{
-			return 1.0D;
-		}
-		else
-		{
-			return 0.9800000190734863D;
 		}
 	}
 

@@ -66,12 +66,12 @@ tile.tintedGlassPane.black.name=Black Tinted Glass Pane
 # GUI
 gui.choosePlanet.desc.mars=Habitable#No Oxygen#Gravity: 38%
 item.deshPickSlime.description.name=Can harvest Slimeling eggs
+planet.asteroids=Asteroids
+planet.mars=Mars
 
 gui.desc.reinforcedPlateT2.name=Tier 2
 
 itemGroup.GalacticraftPlanets=Galacticraft Planets
-
-dimension.Mars.name=Mars
 
 # Schematics
 schematic.rocketT3.name=Tier 3 Rocket

@@ -2,8 +2,8 @@ package micdoodle8.mods.galacticraft.core.entities;
 
 import java.util.List;
 
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -413,7 +413,7 @@ public class EntityMeteorChunk extends Entity implements IProjectile
 			this.motionX *= f4;
 			this.motionY *= f4;
 			this.motionZ *= f4;
-			this.motionY -= this.worldObj.provider instanceof IGalacticraftWorldProvider ? ((IGalacticraftWorldProvider) this.worldObj.provider).getGravity() - (double) f1 : (double) f1;
+			this.motionY -= WorldUtil.getGravityForEntity(this);
 			this.setPosition(this.posX, this.posY, this.posZ);
 			this.func_145775_I();
 		}
