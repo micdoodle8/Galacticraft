@@ -66,12 +66,12 @@ tile.tintedGlassPane.black.name=Schwarz getönte Glasscheibe
 # GUI
 gui.choosePlanet.desc.mars=Bewohnbar#Kein SauerstoffSchwerkraft: 38%
 item.deshPickSlime.description.name=Kann Schleimling-Eier ernten
+planet.asteroids=Asteroiden
+planet.mars=Mars
 
 gui.desc.reinforcedPlateT2.name=Stufe 2
 
 itemGroup.GalacticraftMars=Galacticraft Mars
-
-dimension.Mars.name=Mars
 
 # Schematics
 schematic.rocketT3.name=Stufe-3-Rakete
