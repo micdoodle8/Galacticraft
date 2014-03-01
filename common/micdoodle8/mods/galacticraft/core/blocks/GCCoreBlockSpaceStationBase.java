@@ -1,11 +1,15 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntitySpaceStationBase;
+import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
@@ -66,5 +70,18 @@ public class GCCoreBlockSpaceStationBase extends BlockContainer implements ITile
 	public TileEntity createNewTileEntity(World world)
 	{
 		return new GCCoreTileEntitySpaceStationBase();
+	}
+
+	@Override
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLiving, ItemStack itemStack)
+	{
+		super.onBlockPlacedBy(world, x, y, z, entityLiving, itemStack);
+		
+		TileEntity tile = world.getBlockTileEntity(x, y, z);
+
+		if (tile instanceof IMultiBlock)
+		{
+			((IMultiBlock) tile).onCreate(new Vector3(x, y, z));
+		}
 	}
 }
