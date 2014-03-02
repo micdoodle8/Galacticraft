@@ -1,0 +1,347 @@
+# Galacticraft Core Language File = BRITISH WELSH
+
+# GENERAL ITEMS
+item.oxygenTankLightFull.name=Tank Ocsigen golau
+item.oxygenTankLightEmpty.name=Gwag Tanc Ocsigen Golau
+item.oxygenTankMedFull.name=Tank Ocsigen Canolig
+item.oxygenTankMedEmpty.name=Gwag Tanc Ocsigen Canolig
+item.oxygenTankHeavyFull.name=Tank Ocsigen trwm
+item.oxygenTankHeavyEmpty.name=Gwag Tanc Ocsigen trwm
+item.oxygenMask.name=Mwgwd ocsigen
+item.spaceship.name=Haen 1 Rocket
+item.sensorGlasses.name=Glasses synhwyrydd
+item.canister.tin.name=Tun gall
+item.canister.copper.name=Copr gall
+item.airVent.name=Vent ocsigen
+item.airFan.name=Fan ocsigen
+item.oxygenConcentrator.name=Crynodyddion ocsigen
+item.heavyPlating.name=Plât trwm-Dyletswydd
+item.engine.tier1engine.name=Haen 1 Rocket Engine
+item.engine.tier1booster.name=Haen 1 Booster
+item.rocketFins.name=Ffindir roced
+item.noseCone.name=Cone trwyn
+item.sensorLens.name=synhwyrydd Lens
+item.oxygenGear.name=Gear ocsigen
+item.flag.american.name=Baner America
+item.flag.black.name=Baner du
+item.flag.blue.name=Baner Las Golau
+item.flag.green.name=Baner Lime
+item.flag.brown.name=Baner Brown
+item.flag.darkblue.name=Baner las
+item.flag.darkgray.name=Baner Gray
+item.flag.darkgreen.name=Baner Werdd
+item.flag.gray.name=Baner Gray Golau
+item.flag.magenta.name=Baner Magenta
+item.flag.orange.name=Baner Orange
+item.flag.pink.name=Baner pinc
+item.flag.purple.name=Baner porffor
+item.flag.red.name=Baner Goch
+item.flag.teal.name=Baner cyan
+item.flag.yellow.name=Baner felen
+item.flag.white.name=Baner
+item.parachute_plain.name=Parasiwt
+item.parachute_black.name=Du Parasiwt
+item.parachute_blue.name=Blue Light Parasiwt
+item.parachute_lime.name=Lime Parasiwt
+item.parachute_brown.name=Brown Parasiwt
+item.parachute_darkblue.name=Blue Parasiwt
+item.parachute_darkgray.name=Gray Parasiwt
+item.parachute_darkgreen.name=Green Parasiwt
+item.parachute_gray.name=Light Gray Parasiwt
+item.parachute_magenta.name=Magenta Parasiwt
+item.parachute_orange.name=Orange Parasiwt
+item.parachute_pink.name=Pinc Parasiwt
+item.parachute_purple.name=Porffor Parasiwt
+item.parachute_red.name=Red Parasiwt
+item.parachute_teal.name=Gwyrddlas Parasiwt
+item.parachute_yellow.name=Parasiwt melyn
+item.steelPole.name=dur Pole
+item.canvas.name=Gynfas
+item.buggy.name=Bygi
+item.emptyLiquidCanister.name=Gwag Liquid canister
+item.oilCanisterPartial.name=Llenwi Rhannol Canister Olew
+item.fuelCanisterPartial.name=Canister Tanwydd Llenwi Rhannol
+item.oilCanister.name=Llenwi Olew canister
+item.fuelCanister.name=Canister Tanwydd Llenwi
+item.oilExtractor.name=Symudol Olew Echdynnu
+item.schematic.name=NASA Fainc Sgematig
+item.fuel.name=Tanwydd Rocket
+item.key.T1.name=Haen 1 Dungeon Allweddol
+item.buggymat.wheel.name=bygi Olwyn
+item.buggymat.seat.name=Bygi Sedd
+item.buggymat.storage.name=Bygi Blwch Storio
+item.basicItem.solar_module_0.name=Modiwl Solar Sengl
+item.basicItem.solar_module_1.name=Panel Solar llawn
+item.basicItem.ingotCopper.name=Copr Ingot
+item.basicItem.ingotTin.name=Tun Ingot
+item.basicItem.ingotAluminum.name=Alwminiwm Ingot
+item.basicItem.ingotSteel.name=Steel Ingot
+item.basicItem.ingotBronze.name=Efydd Ingot
+item.basicItem.compressedCopper.name=Copr cywasgedig
+item.basicItem.compressedTin.name=Tun cywasgedig
+item.basicItem.compressedAluminum.name=Alwminiwm cywasgedig
+item.basicItem.compressedSteel.name=Steel cywasgedig
+item.basicItem.compressedBronze.name=Efydd cywasgedig
+item.basicItem.compressedIron.name=Haearn cywasgedig
+item.basicItem.waferSolar.name=Blue Solar Wafer
+item.basicItem.waferBasic.name=Basic Wafer
+item.basicItem.waferAdvanced.name=Advanced Wafer
+item.basicItem.rawSilicon.name=Raw Silicon
+item.tier1.desc=Haen 1
+item.battery.name=Batri
+item.infiniteBattery.name=Batri ddiddiwedd
+item.meteorChunk.name=Throwable Meteor Chunk
+item.meteorChunkHot.name=Throwable Meteor Chunk
+item.hotDescription.name=Poeth
+item.basicItem.dehydratedApple.name=Apple Dadhydradedig
+item.basicItem.dehydratedCarrot.name = Dadhydradedig Moron
+item.basicItem.dehydratedMelon.name = Melon Dadhydradedig
+item.basicItem.dehydratedPotato.name = Dadhydradedig Tatws
+item.basicItem.cannedFood.name = Can Bwyd
+item.basicItem.frequencyModule.name = Modiwl Amlder
+item.standardWrench.name = Safon Wrench
+
+# OFFER
+item.steel_pickaxe.name = Dyletswydd trwm pickaxe
+item.steel_axe.name = Axe Dyletswydd trwm
+item.steel_hoe.name = trwm Dyletswydd Hoe
+item.steel_shovel.name = Dyletswydd trwm Rhaw
+item.steel_sword.name = Dyletswydd trwm Cleddyf
+
+# ARMOR
+item.steel_helmet.name = Dyletswydd trwm Helmed
+item.steel_chestplate.name = Dyletswydd trwm Chestplate
+item.steel_leggings.name = Leggings Dyletswydd trwm
+item.steel_boots.name = Boots Dyletswydd trwm
+
+# BLOCIAU
+tile.treasureChest.name = Treasure Chest
+tile.landingPad.landingPad.name = Roced Pad Lansio
+tile.landingPadFull.name = Roced Pad Lansio
+tile.unlitTorch.name = Torch
+tile.unlitTorchLit.name = Torch
+tile.distributor.name = Bubble Ocsigen Ddosbarthu
+tile.oxygenPipe.name = Ocsigen Pipe
+tile.oxygenCollector.name = Ocsigen Casglwr
+tile.fallenMeteor.name = Trig Meteor
+tile.rocketWorkbench.name = NASA Workbench
+tile.gcBlockCore.decoblock1.name = Tin Addurno Bloc
+tile.gcBlockCore.decoblock2.name = Tin Addurno Bloc
+tile.gcBlockCore.oreCopper.name = Copr Mwyn
+tile.gcBlockCore.oreTin.name = Mwyn Tun
+tile.gcBlockCore.oreAluminum.name = Alwminiwm Mwyn
+tile.gcBlockCore.oreSilicon.name = Silicon Mwyn
+tile.airLockFrame.name = Awyr Lock Ffrâm
+tile.airLockSeal.name = Awyr Lock Seal
+tile.crudeOilStill.name = Olew crai
+tile.crudeOilMoving.name = Olew crai
+tile.refinery.name = Purfa
+tile.fuelLoader.name = Tanwydd Loader
+tile.sapling2.oak.name = Oak Glasbren
+tile.sapling2.spruce.name = sbriws Glasbren
+tile.sapling2.birch.name = Birch Glasbren
+tile.sapling2.jungle.name = Jungle Glasbren
+tile.sealer.name = Ocsigen Sealer
+tile.enclosed.oxygenPipe.name = gellir eu selio Pipe Ocsigen
+tile.oxygenDetector.name = Synhwyrydd Ocsigen
+tile.cargo.loader.name = Cargo Loader
+tile.cargo.unloader.name = Cargo Unloader
+tile.landingPad.buggyFueler.name = Bygi Tanio Pad
+Pad Roced tile.landingPad.cargoPad.name = Cargo
+tile.enclosed.copperCable.name = gellir eu selio Copr Cable
+tile.enclosed.goldCable.name = gellir eu selio Aur Cable
+tile.enclosed.hvCable.name = gellir eu selio HV Cable
+tile.enclosed.glassFibreCable.name = gellir eu selio Ffeibr Gwydr Cable
+tile.enclosed.lvCable.name = gellir eu selio Cable Ultra - isel ar hyn o bryd
+tile.enclosed.PipeItemsCobblestone.name = gellir eu selio Cobblestone Cludiant Pipe
+tile.enclosed.PipeItemsStone.name = gellir eu selio Stone Cludiant Pipe
+tile.enclosed.PipeFluidsCobblestone.name = gellir eu selio Pipe Cobblestone dal dwr
+tile.enclosed.PipeFluidsStone.name = gellir eu selio Stone Pipe dal dwr
+tile.enclosed.PipePowerStone.name = gellir eu selio Stone ddargludol Pipe
+tile.enclosed.PipePowerGold.name = gellir eu selio Golden ddargludol Pipe
+tile.solar.basic.name = Panel Solar Sylfaenol
+tile.solar.advanced.name = Panel Solar Uwch
+tile.parachest.name = Parachest
+tile.oreCopper.name = Copr Mwyn
+tile.oreTin.name = Mwyn Tun
+tile.machine.0.name = Glo Generator
+tile.machine.1.name = Storio Modiwl Ynni
+tile.machine.2.name = Electric Ffwrnais
+tile.machine.3.name = Cywasgydd
+tile.machine2.4.name = Electric Cywasgydd
+tile.machine2.5.name = Cylchdaith Ffabrigeiddiwr
+tile.machine2.6.name = Storio Ocsigen Modiwl
+tile.aluminumWire.name = Alwminiwm Wire
+tile.aluminumWireHeavy.name = Wire Alwminiwm trwm
+tile.glowstoneTorch.name = Glowstone Torch
+tile.enclosed.aluminumWire.name = gellir eu selio Alwminiwm Wire
+tile.enclosed.aluminumWireHeavy.name = gellir eu selio trwm Alwminiwm Wire
+tile.enclosed.meCable.name = gellir eu selio ME Cable
+tile.airLockController.name = Awyr Lock Rheolwr
+tile.dummyblock.spaceStationBase.name = Gofod Gorsaf Sylfaen
+tile.dummyblock.launchPad.name = Roced Pad Lansio
+tile.dummyblock.nasaWorkbench.name = NASA Workbench
+tile.dummyblock.solar.name = Panel Solar
+tile.dummyblock.cryogenicChamber.name = cryogenig Siambr
+tile.gcBlockCore.copperBlock.name = Bloc Copr
+tile.gcBlockCore.tinBlock.name = Bloc Tin
+tile.gcBlockCore.aluminumBlock.name = Alwminiwm Bloc
+tile.fuel.name = Tanwydd
+tile.oxygenCompressor.0.name = Ocsigen Cywasgydd
+tile.oxygenCompressor.1.name = Ocsigen Decompressor
+
+# ENDIDAU
+entity.GalacticraftCore.EvolvedSpider.name = esblygu Spider
+entity.GalacticraftCore.EvolvedZombie.name = esblygu Zombie
+entity.GalacticraftCore.EvolvedCreeper.name = esblygu Dringwr Bach
+entity.GalacticraftCore.EvolvedSkeleton.name = esblygu Sgerbwd
+entity.GalacticraftCore.EvolvedSkeletonBoss.name = esblygu Sgerbwd Boss
+entity.GalacticraftCore.AlienVillager.name = Pentrefwr Alien
+entity.GalacticraftCore.Spaceship.name = Haen 1 Roced
+entity.GalacticraftCore.GravityArrow.name = Arrow
+entity.GalacticraftCore.Meteor.name = Meteor
+entity.GalacticraftCore.Buggy.name = Buggy
+entity.GalacticraftCore.Flag.name = Flag
+entity.GalacticraftCore.ParaChest.name = Parachest
+entity.GalacticraftCore.OxygenBubble.name = Ocsigen Bubble
+entity.GalacticraftCore.Lander.name = Gofod Lander
+
+# schematics
+schematic.moonbuggy.name = Moon Buggy
+schematic.rocketT1.name = Haen 1 Roced
+schematic.rocketT2.name = Haen 2 Roced
+
+# NEGESEUON MARWOLAETH
+death.attack.spaceshipExplosion = % 1 $ s yn roced malfunctioned !
+death.attack.spaceshipExplosionB = % 1 $ s marw mewn damwain llong ofod anffodus !
+death.attack.oxygenSuffocation = % 1 $ s rhedeg allan o ocsigen !
+
+# galaethau
+galaxy.blockyway.name = Y Ffordd blocky
+
+# ARALL
+newversion.failed.name = Galacticraft Wedi methu diweddaru'r siec ! Ceisio eto mewn 15 eiliad
+newversion.success.name = Galacticraft fersiwn o bell o hyd :
+
+# bysellrhwymiadau
+keybind.map.name = [ GC ] Galaxy Map
+keybind.spaceshipinv.name = [ GC ] Rhestr llong ofod Agored
+keybind.sensortoggle.name = [ GC ] Toggle Synhwyrydd Gogls Modd
+keybind.vehicleforward.name = [ GC ] Cerbyd Ymlaen Allweddol
+keybind.vehiclebackward.name = [ GC ] Cerbyd YnÔl Allweddol
+keybind.vehicleleft.name = [ GC ] Cerbyd Chwith Allweddol
+keybind.vehicleright.name = [ GC ] Cerbyd Hawl Allweddol
+keybind.vehicleup.name = [ GC ] Cerbyd Up Allweddol
+keybind.vehicledown.name = [ GC ] Cerbyd Down Allweddol
+
+# TABS CREADIGOL
+itemGroup.GalacticraftCore = Galacticraft
+
+# GUI
+container.cargoloader.name = Cargo Loader
+container.cargounloader.name = Cargo Unloader
+container.fuelloader.name = Loader Tanwydd
+container.oxygencollector.name = Ocsigen Casglwr
+container.oxygencompressor.name = Ocsigen Cywasgydd
+container.oxygendistributor.name = Ocsigen Ddosbarthu
+container.oxygensealer.name = Ocsigen Sealer
+container.parachest.name = Para - frest
+container.refinery.name = Purfa
+container.treasurechest.name = Treasure Chest
+container.lander.name = Gofod Lander
+container.spaceship.name = Haen 1 Roced
+container.solarbasic.name = Panel Solar Sylfaenol
+container.solaradvanced.name = Panel Solar Uwch
+container.oxygendecompressor.name = Ocsigen Decompressor
+
+gui.message.out.name = Allan
+gui.message.in.name = Yn
+gui.message.status.name = Statws
+gui.message.oxoutput.name = Allbwn Ocsigen
+gui.message.oxinput.name = Ocsigen Mewnbwn
+gui.message.fuel.name = Tanwydd
+gui.message.full.name = amser
+gui.message.page.name = Tudalen
+gui.message.addnewsch.name = Ychwanegu New Sgematig
+gui.message.generating.name = Cynhyrchu
+gui.message.environment.name = Hwb Amgylcheddol
+
+gui.status.active.name = Actif
+gui.status.missingleaves.name = Dim digon Blociau Leaf
+gui.status.missingpower.name = Dim digon Power
+gui.status.missingoxygen.name = Dim digon Ocsigen
+gui.status.missingtank.name = Naddo Tanc Ocsigen Dilys
+gui.status.fulltank.name = Ocsigen Tank Llawn
+gui.status.unsealed.name = Heb ei selio
+gui.status.sealed.name = selio
+gui.status.unknown.name = Anhysbys
+gui.status.disabled.name = Anabl
+gui.status.nofuel.name = Naddo Tanwydd i'w Lwytho !
+gui.status.noitems.name = Dim eitemau i'w Lwytho !
+gui.status.notargetload.name = Dim Targed i'w Lwytho Into !
+gui.status.notargetunload.name = Naddo targed ar Dadlwytho !
+gui.status.noinvtarget.name = Naddo Rhestr ar Targed !
+gui.status.targetfull.name = Cerbyd Mae'r targed yn llawn !
+gui.status.targetempty.name = Cerbydau Targed yn Wag !
+gui.status.ready.name = Barod
+gui.status.refining.name = Mireinio
+gui.status.idle.name = Idle
+gui.status.nooil.name = Naddo Olew
+gui.status.raining.name = Raining
+gui.status.blockedpartial.name = Sul Rhannol Gweladwy
+gui.status.blockedfully.name = Haul Ddim yn Gweladwy
+gui.status.collectingenergy.name = Casglu Ynni
+Vent gui.status.sealerblocked.name = Allbwn blocio !
+
+gui.button.enableseal.name = Galluogi Sêl
+gui.button.disableseal.name = Analluogi Seal
+Eitemau gui.button.loaditems.name = Llwytho
+gui.button.stoploading.name = Stop Llwytho
+gui.button.unloaditems.name = Dadlwytho Eitemau
+gui.button.stopunloading.name = Stop Dadlwytho
+gui.button.createsstation.name = Creu Orsaf Ofod
+gui.button.sendtodim.name = Anfon at DIMENSION
+gui.button.rename.name = Rename
+gui.button.loadfuel.name = Llwytho Tanwydd
+gui.button.refine.name = Mireinio
+gui.button.back.name = Yn ôl
+gui.button.next.name = Nesaf
+gui.button.unlockschematic.name = Datglo Sgematig
+gui.button.stoprefine.name = Stop Mireinio
+gui.button.enable.name = Galluogi
+gui.button.disable.name = Analluogi
+
+gui.choosePlanet.desc.overworld = Llawn Bywyd # cyfanheddol # Disgyrchiant : 100 %
+gui.warning = RHYBUDD !
+gui.lander.warning2 = Hold "
+gui.lander.warning3 = " i arafu i lawr !
+gui.lander.velocity = Cyflymder Mynediad
+gui.lander.velocityu = m / s
+Setup gui.oxygen.warning = Ocsigen yn annilys !
+gui.sensor.advanced = Uwch Ddelw
+gui.sensor.advancedon = AR
+gui.sensor.advancedoff = OFF
+gui.chooseplanet.cannotcreate1.name = Methu creu Gofod
+gui.chooseplanet.cannotcreate2.name = Orsaf yma!
+gui.chooseplanet.alreadycreated1.name = Orsaf Ofod Eisoes
+gui.chooseplanet.alreadycreated2.name = Crëwyd !
+
+gui.galaxymap.movemap.name = ASWD - Symud Map
+gui.galaxymap.zoom.name = Llygoden Olwyn - Zoom
+gui.galaxymap.select.name = Llygoden 1 - Dewiswch Planet
+gui.galaxymap.exit.name = Esc - Map Ymadael
+
+gui.buggy.turn.name = Trowch i'r chwith - dde
+gui.buggy.accel.name = Accelerate
+gui.buggy.decel.name = arafu
+gui.buggy.inv.name = Rhestr / Tanwydd
+
+# DIMENSION
+dimension.Overworld.name = overworld
+dimension.Moon.name = Moon
+dimension.Sun.name = Sun
+
+# gorchmynion
+commands.dimensionteleport = % s fe'i anfonwyd i mewn i'r atmosffer % s
+
+# < />
