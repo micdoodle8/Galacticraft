@@ -149,7 +149,7 @@ public abstract class GCCoreTileEntityElectricBlock extends GCCoreTileEntityUniv
 	@RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = "IC2")
 	public boolean wrenchCanSetFacing(EntityPlayer entityPlayer, int side)
 	{
-		return true;
+		return false;
 	}
 
 	@RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = "IC2")
@@ -161,32 +161,13 @@ public abstract class GCCoreTileEntityElectricBlock extends GCCoreTileEntityUniv
 	@RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = "IC2")
 	public void setFacing(short facing)
 	{
-		int change = 0;
-
-		// Re-orient the block
-		switch (this.getFacing())
-		{
-		case 0:
-			change = 3;
-			break;
-		case 3:
-			change = 1;
-			break;
-		case 1:
-			change = 2;
-			break;
-		case 2:
-			change = 0;
-			break;
-		}
-
-		this.worldObj.setBlockMetadataWithNotify(MathHelper.floor_double(this.xCoord), MathHelper.floor_double(this.yCoord), MathHelper.floor_double(this.zCoord), change, 3);
+		;
 	}
 
 	@RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = "IC2")
 	public boolean wrenchCanRemove(EntityPlayer entityPlayer)
 	{
-		return true;
+		return false;
 	}
 
 	@RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = "IC2")
