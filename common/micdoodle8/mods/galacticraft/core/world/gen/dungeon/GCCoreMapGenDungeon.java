@@ -438,6 +438,8 @@ public class GCCoreMapGenDungeon
 		{
 			room.handleTileEntities(rand);
 		}
+		
+		this.rooms.clear();
 	}
 
 	protected boolean canGenDungeonAtCoords(long worldSeed, int i, int j)

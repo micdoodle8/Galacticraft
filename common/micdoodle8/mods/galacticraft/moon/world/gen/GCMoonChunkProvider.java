@@ -68,7 +68,7 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 		this.dungeonGenerator.otherRooms.add(new GCMoonRoomEmpty(null, 0, 0, 0, ForgeDirection.UNKNOWN));
 		this.dungeonGenerator.otherRooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
 		this.dungeonGenerator.otherRooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-		this.dungeonGenerator.otherRooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+		this.dungeonGenerator.otherRooms.add(new GCMoonRoomChests(null, 0, 0, 0, ForgeDirection.UNKNOWN));
 		this.dungeonGenerator.otherRooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
 		this.dungeonGenerator.otherRooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
 		this.dungeonGenerator.otherRooms.add(new GCMoonRoomSpawner(null, 0, 0, 0, ForgeDirection.UNKNOWN));
