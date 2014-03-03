@@ -26,12 +26,15 @@ import cpw.mods.fml.client.FMLClientHandler;
 public class ItemRendererGrappleGun implements IItemRenderer
 {
 	private static final ResourceLocation gunTexture = new ResourceLocation(GalacticraftPlanets.ASSET_DOMAIN, "textures/model/grapplegun.png");
+	private static final ResourceLocation grappleTexture = new ResourceLocation(GalacticraftPlanets.ASSET_DOMAIN, "textures/model/grapple.png");
 
-	private IModelCustom model;
+	private IModelCustom modelGrappleGun;
+	private IModelCustom modelGrapple;
 
-	public ItemRendererGrappleGun(IModelCustom model)
+	public ItemRendererGrappleGun(IModelCustom modelGrappleGun, IModelCustom modelGrapple)
 	{
-		this.model = model;
+		this.modelGrappleGun = modelGrappleGun;
+		this.modelGrapple = modelGrapple;
 	}
 
 	private void renderGrappleGun(ItemRenderType type, RenderBlocks render, ItemStack item, float translateX, float translateY, float translateZ)
@@ -41,7 +44,14 @@ public class ItemRendererGrappleGun implements IItemRenderer
 		this.transform(type);
 
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(ItemRendererGrappleGun.gunTexture);
-		this.model.renderAll();
+		this.modelGrappleGun.renderAll();
+
+		GL11.glRotatef(30, 1, 0, 0);
+		GL11.glScalef(-1F, -1F, 1);
+		GL11.glTranslatef(-0.4F, 0.0F, 0.0F);
+		
+		FMLClientHandler.instance().getClient().renderEngine.bindTexture(ItemRendererGrappleGun.grappleTexture);
+		this.modelGrapple.renderAll();
 		GL11.glPopMatrix();
 	}
 
@@ -71,12 +81,9 @@ public class ItemRendererGrappleGun implements IItemRenderer
 
 		if (type == ItemRenderType.INVENTORY || type == ItemRenderType.ENTITY)
 		{
-//			GL11.glTranslatef(0, -0.55F, 0);
-
 			if (type == ItemRenderType.INVENTORY)
 			{
-				GL11.glScalef(1.85F, 1.85F, 1.85F);
-				GL11.glTranslatef(0.0F, 0.0F, 0.33F);
+				GL11.glScalef(1.25F, 1.25F, 1.25F);
 				GL11.glRotatef(170, 1, 0, 0);
 				GL11.glRotatef(95, 0, 1, 0);
 				GL11.glRotatef(0F, 0, 0, 1);

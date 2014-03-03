@@ -51,7 +51,8 @@ public class ClientProxyAsteroids extends CommonProxyAsteroids
 	public void postInit(FMLPostInitializationEvent event)
 	{
 		IModelCustom grappleGunModel = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftPlanets.ASSET_DOMAIN, "models/grapplegun.obj"));
-		MinecraftForgeClient.registerItemRenderer(AsteroidsItems.itemGrapple, new ItemRendererGrappleGun(grappleGunModel));
+		IModelCustom grappleModel = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftPlanets.ASSET_DOMAIN, "models/grapple.obj"));
+		MinecraftForgeClient.registerItemRenderer(AsteroidsItems.itemGrapple, new ItemRendererGrappleGun(grappleGunModel, grappleModel));
 	}
 
 	@Override

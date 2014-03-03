@@ -17,6 +17,7 @@ import micdoodle8.mods.galacticraft.planets.mars.client.gui.GuiCargoRocket;
 import micdoodle8.mods.galacticraft.planets.mars.client.gui.GuiSlimelingInventory;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntityCargoRocket;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
+import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityCryogenicChamber;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityLaunchController;
 import micdoodle8.mods.galacticraft.planets.mars.util.MarsUtil;
 import net.minecraft.entity.Entity;
@@ -39,7 +40,8 @@ public class PacketSimpleMars implements IPacket
 		S_UPDATE_ADVANCED_GUI(Side.SERVER, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class),
 		S_UPDATE_CARGO_ROCKET_STATUS(Side.SERVER, Integer.class, Integer.class),
 		// CLIENT
-		C_OPEN_CUSTOM_GUI(Side.CLIENT, Integer.class, Integer.class, Integer.class);
+		C_OPEN_CUSTOM_GUI(Side.CLIENT, Integer.class, Integer.class, Integer.class),
+		C_BEGIN_CRYOGENIC_SLEEP(Side.CLIENT, Integer.class, Integer.class, Integer.class);
 
 		private Side targetSide;
 		private Class<?>[] decodeAs;
@@ -153,6 +155,13 @@ public class PacketSimpleMars implements IPacket
 
 				player.openContainer.windowId = (Integer) this.data.get(0);
 				break;
+			}
+		case C_BEGIN_CRYOGENIC_SLEEP:
+			TileEntity tile = player.worldObj.getTileEntity((Integer)this.data.get(0), (Integer)this.data.get(1), (Integer)this.data.get(2));
+			
+			if (tile instanceof TileEntityCryogenicChamber)
+			{
+				((TileEntityCryogenicChamber) tile).sleepInBedAt(player, (Integer)this.data.get(0), (Integer)this.data.get(1), (Integer)this.data.get(2));
 			}
 		default:
 			break;

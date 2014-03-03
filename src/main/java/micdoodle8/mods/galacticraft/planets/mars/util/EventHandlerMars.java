@@ -38,6 +38,7 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -173,35 +174,44 @@ public class EventHandlerMars
 			int x = MathHelper.floor_double(entity.posX);
 			int y = MathHelper.floor_double(entity.posY);
 			int z = MathHelper.floor_double(entity.posZ);
-			Block block = Minecraft.getMinecraft().theWorld.getBlock(x, y, z);
-			TileEntity tile = Minecraft.getMinecraft().theWorld.getTileEntity(x, y, z);
+			TileEntity tile = Minecraft.getMinecraft().theWorld.getTileEntity(x, y - 2, z);
 
 			if (tile instanceof TileEntityCryogenicChamber)
 			{
-				int var12 = block.getBedDirection(Minecraft.getMinecraft().theWorld, x, y, z);
-				GL11.glRotatef(-var12 * 90, 0.0F, 1.0F, 0.0F);
+//				GL11.glRotatef(-var12 * 90, 0.0F, 1.0F, 0.0F);
 
 				float rotation = 0.0F;
+				
+				//((TileEntityCryogenicChamber) tile).ticks % 360
+				
+				FMLLog.info("gg " + entity.getBedOrientationInDegrees());
 
 				switch (tile.getBlockMetadata() - BlockMachineMars.CRYOGENIC_CHAMBER_METADATA)
 				{
 				case 0:
-					rotation = 270.0F;
+					GL11.glRotatef(180, 0.0F, 1.0F, 0.0F);
+					GL11.glRotatef(50, 1.0F, 0.0F, 0.0F);
+					GL11.glTranslatef(-0.4F, -0.5F, 1.1F);
+					GL11.glRotatef(270, 0.0F, 1.0F, 0.0F);
 					break;
 				case 1:
-					rotation = 90.0F;
+					GL11.glRotatef(180, 0.0F, 1.0F, 0.0F);
+					GL11.glRotatef(50, 1.0F, 0.0F, 0.0F);
+					GL11.glTranslatef(0, -0.5F, 1.1F);
 					break;
 				case 2:
-					rotation = 180.0F;
+					GL11.glRotatef(180, 0.0F, 1.0F, 0.0F);
+					GL11.glRotatef(50, 1.0F, 0.0F, 0.0F);
+					GL11.glTranslatef(0, -0.5F, 1.1F);
+					GL11.glRotatef(180, 0.0F, 1.0F, 0.0F);
 					break;
 				case 3:
-					rotation = 0.0F;
+					GL11.glRotatef(180, 0.0F, 1.0F, 0.0F);
+					GL11.glRotatef(50, 1.0F, 0.0F, 0.0F);
+					GL11.glTranslatef(0.0F, -0.5F, 0.9F);
+//					GL11.glRotatef(90, 0.0F, 1.0F, 0.0F);
 					break;
 				}
-
-				GL11.glRotatef(rotation, 0.0F, 1.0F, 0.0F);
-
-				GL11.glTranslatef(0, -1, 0);
 			}
 		}
 	}

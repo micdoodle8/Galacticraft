@@ -27,6 +27,7 @@ import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Loader;
 
 /**
@@ -204,6 +205,7 @@ public class ModelPlayerGC extends ModelBiped
 
 		this.frequencyModule = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "models/frequencyModule.obj"));
 	}
+	
 
 	@Override
 	public void render(Entity var1, float var2, float var3, float var4, float var5, float var6, float var7)

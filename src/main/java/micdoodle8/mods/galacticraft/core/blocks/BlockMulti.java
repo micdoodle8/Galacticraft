@@ -8,9 +8,11 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockBed;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -256,5 +258,48 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock
 		}
 
 		return null;
+	}
+	
+    public int getBedDirection(IBlockAccess world, int x, int y, int z)
+    {
+		TileEntity tileEntity = world.getTileEntity(x, y, z);
+		Vector3 mainBlockPosition = ((TileEntityMulti) tileEntity).mainBlockPosition;
+		
+		if (mainBlockPosition != null)
+		{
+			return mainBlockPosition.getBlock(world).getBedDirection(world, mainBlockPosition.intX(), mainBlockPosition.intY(), mainBlockPosition.intZ());
+		}
+		
+        return BlockBed.getDirection(world.getBlockMetadata(x,  y, z));
+    }
+
+	@Override
+	public boolean isBed(IBlockAccess world, int x, int y, int z, EntityLivingBase player)
+	{
+		TileEntity tileEntity = world.getTileEntity(x, y, z);
+		Vector3 mainBlockPosition = ((TileEntityMulti) tileEntity).mainBlockPosition;
+		
+		if (mainBlockPosition != null)
+		{
+			return mainBlockPosition.getBlock(world).isBed(world, mainBlockPosition.intX(), mainBlockPosition.intY(), mainBlockPosition.intZ(), player);
+		}
+		
+		return super.isBed(world, x, y, z, player);
+	}
+
+	@Override
+	public void setBedOccupied(IBlockAccess world, int x, int y, int z, EntityPlayer player, boolean occupied)
+	{
+		TileEntity tileEntity = world.getTileEntity(x, y, z);
+		Vector3 mainBlockPosition = ((TileEntityMulti) tileEntity).mainBlockPosition;
+		
+		if (mainBlockPosition != null)
+		{
+			mainBlockPosition.getBlock(world).setBedOccupied(world, mainBlockPosition.intX(), mainBlockPosition.intY(), mainBlockPosition.intZ(), player, occupied);
+		}
+		else
+		{
+			super.setBedOccupied(world, x, y, z, player, occupied);
+		}
 	}
 }

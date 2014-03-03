@@ -2,6 +2,8 @@ package micdoodle8.mods.galacticraft.planets.mars.blocks;
 
 import java.util.List;
 
+import cpw.mods.fml.common.FMLLog;
+
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTile;
@@ -458,4 +460,24 @@ public class BlockMachineMars extends BlockTile
 
 		return null;
 	}
+	
+    public int getBedDirection(IBlockAccess world, int x, int y, int z)
+    {
+		switch (world.getBlockMetadata(x, y, z) - BlockMachineMars.CRYOGENIC_CHAMBER_METADATA)
+		{
+		case 0:
+			FMLLog.info("0 a");
+			return 3;
+		case 1:
+			FMLLog.info("1 a " + new Vector3(x, y, z));
+			return 2;
+		case 2:
+			FMLLog.info("2");
+			return 3;
+		case 3:
+			return 4;
+		}
+		
+		return 0;
+    }
 }
