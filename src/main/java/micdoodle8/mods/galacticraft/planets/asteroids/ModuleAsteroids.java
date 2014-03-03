@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.planets.ConfigManagerPlanets;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets.IPlanetsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.TeleportTypeAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
+import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -20,6 +21,7 @@ public class ModuleAsteroids implements IPlanetsModule
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
+		AsteroidsItems.initItems();
 	}
 
 	@Override

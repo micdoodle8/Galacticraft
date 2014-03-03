@@ -5,6 +5,7 @@ import java.io.File;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.GCCreativeTab;
 import micdoodle8.mods.galacticraft.planets.asteroids.ModuleAsteroids;
+import micdoodle8.mods.galacticraft.planets.asteroids.proxy.CommonProxyAsteroids;
 import micdoodle8.mods.galacticraft.planets.mars.ModuleMars;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import micdoodle8.mods.galacticraft.planets.mars.proxy.CommonProxyMars;
@@ -36,6 +37,9 @@ public class GalacticraftPlanets
 	@SidedProxy(clientSide = "micdoodle8.mods.galacticraft.planets.mars.proxy.ClientProxyMars", serverSide = "micdoodle8.mods.galacticraft.planets.mars.proxy.CommonProxyMars")
 	public static CommonProxyMars proxyMars;
 
+	@SidedProxy(clientSide = "micdoodle8.mods.galacticraft.planets.asteroids.proxy.ClientProxyAsteroids", serverSide = "micdoodle8.mods.galacticraft.planets.asteroids.proxy.CommonProxyAsteroids")
+	public static CommonProxyAsteroids proxyAsteroids;
+
 	@Instance(GalacticraftPlanets.MOD_ID)
 	public static GalacticraftPlanets instance;
 	
@@ -56,6 +60,7 @@ public class GalacticraftPlanets
 		moduleMars.preInit(event);
 		moduleAsteroids.preInit(event);
 		GalacticraftPlanets.proxyMars.preInit(event);
+		GalacticraftPlanets.proxyAsteroids.preInit(event);
 	}
 
 	@EventHandler
@@ -64,6 +69,7 @@ public class GalacticraftPlanets
 		moduleMars.init(event);
 		moduleAsteroids.init(event);
 		GalacticraftPlanets.proxyMars.init(event);
+		GalacticraftPlanets.proxyAsteroids.init(event);
 		GalacticraftPlanets.creativeTab = new GCCreativeTab(CreativeTabs.getNextID(), GalacticraftPlanets.MOD_ID, MarsItems.spaceship, 5);
 	}
 
@@ -73,6 +79,7 @@ public class GalacticraftPlanets
 		moduleMars.postInit(event);
 		moduleAsteroids.postInit(event);
 		GalacticraftPlanets.proxyMars.postInit(event);
+		GalacticraftPlanets.proxyAsteroids.postInit(event);
 	}
 
 	@EventHandler
