@@ -55,41 +55,6 @@ public class GCCoreTileEntityOxygenDecompressor extends GCCoreTileEntityOxygen i
 			}
 
 			this.produceOxygen();
-
-			// int gasToSend = Math.min(this.storedOxygen,
-			// GCCoreTileEntityOxygenDecompressor.OUTPUT_PER_TICK);
-			// GasStack toSend = new GasStack(GalacticraftCore.gasOxygen,
-			// gasToSend);
-			// this.storedOxygen -= GasTransmission.emitGasToNetwork(toSend,
-			// this, this.getOxygenOutputDirection());
-			//
-			// Vector3 thisVec = new Vector3(this);
-			// TileEntity tileEntity =
-			// thisVec.modifyPositionFromSide(this.getOxygenOutputDirection()).getTileEntity(this.worldObj);
-			//
-			// if (tileEntity instanceof IGasAcceptor)
-			// {
-			// if (((IGasAcceptor)
-			// tileEntity).canReceiveGas(this.getOxygenOutputDirection().getOpposite(),
-			// GalacticraftCore.gasOxygen))
-			// {
-			// double sendingGas = 0;
-			//
-			// if (this.storedOxygen >=
-			// GCCoreTileEntityOxygenDecompressor.OUTPUT_PER_TICK)
-			// {
-			// sendingGas = GCCoreTileEntityOxygenDecompressor.OUTPUT_PER_TICK;
-			// }
-			// else
-			// {
-			// sendingGas = this.storedOxygen;
-			// }
-			//
-			// this.storedOxygen -= sendingGas - ((IGasAcceptor)
-			// tileEntity).receiveGas(new GasStack(GalacticraftCore.gasOxygen,
-			// (int) Math.floor(sendingGas)));
-			// }
-			// }
 		}
 	}
 
@@ -247,7 +212,7 @@ public class GCCoreTileEntityOxygenDecompressor extends GCCoreTileEntityOxygen i
 			switch (slotID)
 			{
 			case 0:
-				return itemstack.getItemDamage() > 1;
+				return itemstack.getItemDamage() < itemstack.getMaxDamage();
 			case 1:
 				return ((IItemElectric) itemstack.getItem()).getElectricityStored(itemstack) > 0;
 			default:
@@ -265,9 +230,9 @@ public class GCCoreTileEntityOxygenDecompressor extends GCCoreTileEntityOxygen i
 			switch (slotID)
 			{
 			case 0:
-				return itemstack.getItemDamage() == 0;
+				return itemstack.getItemDamage() == itemstack.getMaxDamage();
 			case 1:
-				return ((IItemElectric) itemstack.getItem()).getElectricityStored(itemstack) <= 0 || !this.shouldPullEnergy();
+				return ((IItemElectric) itemstack.getItem()).getElectricityStored(itemstack) <= 0;
 			default:
 				return false;
 			}

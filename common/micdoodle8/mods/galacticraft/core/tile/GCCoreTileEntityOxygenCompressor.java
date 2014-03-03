@@ -234,7 +234,7 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen imp
 			case 0:
 				return itemstack.getItemDamage() == 0;
 			case 1:
-				return ((IItemElectric) itemstack.getItem()).getElectricityStored(itemstack) <= 0 || !this.shouldPullEnergy();
+				return ((IItemElectric) itemstack.getItem()).getElectricityStored(itemstack) <= 0;
 			default:
 				return false;
 			}
