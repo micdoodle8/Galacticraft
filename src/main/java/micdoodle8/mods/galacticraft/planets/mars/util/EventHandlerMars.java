@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.event.EventLandingPadRemoval;
 import micdoodle8.mods.galacticraft.core.event.EventWakePlayer;
 import micdoodle8.mods.galacticraft.core.event.GCEvents.OrientCameraEvent;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.dimension.WorldProviderMars;
@@ -37,8 +38,8 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -127,8 +128,8 @@ public class EventHandlerMars
 	public void onPlayerRotate(RotatePlayerEvent event)
 	{
 		ChunkCoordinates c = event.entityPlayer.playerLocation;
-		Block block = event.entityPlayer.worldObj.getBlock(c.posX, c.posY, c.posZ);
-		int metadata = event.entityPlayer.worldObj.getBlockMetadata(c.posX, c.posY, c.posZ);
+		Block block = event.entityPlayer.worldObj.getBlock(c.posX, c.posY - 2, c.posZ);
+		int metadata = event.entityPlayer.worldObj.getBlockMetadata(c.posX, c.posY - 2, c.posZ);
 
 		if (block == MarsBlocks.machine && metadata >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA)
 		{
@@ -174,42 +175,45 @@ public class EventHandlerMars
 			int x = MathHelper.floor_double(entity.posX);
 			int y = MathHelper.floor_double(entity.posY);
 			int z = MathHelper.floor_double(entity.posZ);
-			TileEntity tile = Minecraft.getMinecraft().theWorld.getTileEntity(x, y - 2, z);
+			TileEntity tile = Minecraft.getMinecraft().theWorld.getTileEntity(x, y - 1, z);
+			
+			if (tile != null && tile.getClass().equals(TileEntityMulti.class))
+			{
+				tile = ((TileEntityMulti) tile).mainBlockPosition.getTileEntity(FMLClientHandler.instance().getClient().theWorld);
+			}
 
 			if (tile instanceof TileEntityCryogenicChamber)
 			{
-//				GL11.glRotatef(-var12 * 90, 0.0F, 1.0F, 0.0F);
-
-				float rotation = 0.0F;
-				
-				//((TileEntityCryogenicChamber) tile).ticks % 360
-				
-				FMLLog.info("gg " + entity.getBedOrientationInDegrees());
+				entity.rotationPitch = 0;
 
 				switch (tile.getBlockMetadata() - BlockMachineMars.CRYOGENIC_CHAMBER_METADATA)
 				{
 				case 0:
 					GL11.glRotatef(180, 0.0F, 1.0F, 0.0F);
-					GL11.glRotatef(50, 1.0F, 0.0F, 0.0F);
-					GL11.glTranslatef(-0.4F, -0.5F, 1.1F);
+					GL11.glTranslatef(-0.4F, -0.5F, 4.1F);
 					GL11.glRotatef(270, 0.0F, 1.0F, 0.0F);
+					entity.rotationYaw = 0;
+					entity.rotationYawHead = 320;
 					break;
 				case 1:
 					GL11.glRotatef(180, 0.0F, 1.0F, 0.0F);
-					GL11.glRotatef(50, 1.0F, 0.0F, 0.0F);
-					GL11.glTranslatef(0, -0.5F, 1.1F);
+					GL11.glTranslatef(0, -0.5F, 4.1F);
+					GL11.glRotatef(90, 0.0F, 1.0F, 0.0F);
+					entity.rotationYaw = 0;
+					entity.rotationYawHead = 45;
 					break;
 				case 2:
 					GL11.glRotatef(180, 0.0F, 1.0F, 0.0F);
-					GL11.glRotatef(50, 1.0F, 0.0F, 0.0F);
-					GL11.glTranslatef(0, -0.5F, 1.1F);
+					GL11.glTranslatef(0, -0.5F, 4.1F);
 					GL11.glRotatef(180, 0.0F, 1.0F, 0.0F);
+					entity.rotationYaw = 0;
+					entity.rotationYawHead = 45;
 					break;
 				case 3:
 					GL11.glRotatef(180, 0.0F, 1.0F, 0.0F);
-					GL11.glRotatef(50, 1.0F, 0.0F, 0.0F);
-					GL11.glTranslatef(0.0F, -0.5F, 0.9F);
-//					GL11.glRotatef(90, 0.0F, 1.0F, 0.0F);
+					GL11.glTranslatef(0.0F, -0.5F, 4.1F);
+					entity.rotationYaw = 0;
+					entity.rotationYawHead = 335;
 					break;
 				}
 			}

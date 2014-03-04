@@ -7,7 +7,6 @@ import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
-import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars.EnumSimplePacketMars;
@@ -21,7 +20,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChunkCoordinates;
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -85,7 +83,7 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
 
 			if (((GCEntityPlayerMP) entityPlayer).getCryogenicChamberCooldown() > 0)
 			{
-//				return EnumStatus.NOT_POSSIBLE_NOW;
+				return EnumStatus.NOT_POSSIBLE_NOW;
 			}
 		}
 
@@ -94,38 +92,11 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
 			entityPlayer.mountEntity((Entity) null);
 		}
 
-		entityPlayer.setPosition(this.xCoord + 0.5F, this.yCoord + 2.0F, this.zCoord + 0.5F);
-
-//		switch (this.getBlockMetadata() - BlockMachineMars.CRYOGENIC_CHAMBER_METADATA)
-//		{
-//		case 0:
-//			FMLLog.info("0 DONE");
-//			entityPlayer.rotationPitch = 0.0F;
-//			entityPlayer.rotationYaw = 1.0F;
-//			entityPlayer.rotationYawHead = 0.0F;
-//			break;
-//		case 1:
-//			FMLLog.info("1");
-//			entityPlayer.rotationPitch = 0.0F;
-//			entityPlayer.rotationYaw = 180.0F;
-//			entityPlayer.rotationYawHead = 0.0F;
-//			break;
-//		case 2:
-//			FMLLog.info("2");
-//			entityPlayer.rotationPitch = 0.0F;
-//			entityPlayer.rotationYaw = 180.0F;
-//			entityPlayer.rotationYawHead = 0.0F;
-//			break;
-//		case 3:
-//			FMLLog.info("3");
-//			entityPlayer.rotationPitch = 0.0F;
-//			entityPlayer.rotationYawHead = 231.0F;
-//			break;
-//		}
+		entityPlayer.setPosition(this.xCoord + 0.5F, this.yCoord + 1.9F, this.zCoord + 0.5F);
 
 		entityPlayer.sleeping = true;
 		entityPlayer.sleepTimer = 0;
-		entityPlayer.playerLocation = new ChunkCoordinates(par1, par2, par3);
+		entityPlayer.playerLocation = new ChunkCoordinates(this.xCoord, this.yCoord, this.zCoord);
 		entityPlayer.motionX = entityPlayer.motionZ = entityPlayer.motionY = 0.0D;
 
 		if (!this.worldObj.isRemote)

@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
+import org.lwjgl.opengl.GL11;
+
 import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.RenderPlayer;
@@ -295,7 +297,7 @@ public class RenderPlayerGC extends RenderPlayer
 
 			if (event.shouldRotate == null || event.shouldRotate == true)
 			{
-				super.rotateCorpse(par1AbstractClientPlayer, par2, par3, par4);
+	            GL11.glRotatef(par1AbstractClientPlayer.getBedOrientationInDegrees(), 0.0F, 1.0F, 0.0F);
 			}
 		}
 		else
