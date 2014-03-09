@@ -49,3 +49,4 @@ atomicpichu:capeRainbow
 Pig_Rider273:capeMagenta
 so2ro:capeOrange
 SportsFan10:capeBlue
+TheDestroyer4000:capeRainbow
