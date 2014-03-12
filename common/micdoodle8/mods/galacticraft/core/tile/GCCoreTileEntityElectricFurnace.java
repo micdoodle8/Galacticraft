@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,45 +28,27 @@ import cpw.mods.fml.relauncher.Side;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class GCCoreTileEntityElectricFurnace extends GCCoreTileEntityUniversalElectrical implements IElectrical, IInventory, ISidedInventory, IPacketReceiver
+public class GCCoreTileEntityElectricFurnace extends GCCoreTileEntityElectricBlock implements IElectrical, IInventory, ISidedInventory, IPacketReceiver
 {
-	/**
-	 * The amount of watts required every TICK.
-	 */
 	public static final float WATTS_PER_TICK = 0.2f;
-
-	/**
-	 * The amount of processing time required.
-	 */
 	public static final int PROCESS_TIME_REQUIRED = 130;
 
-	/**
-	 * The amount of ticks this machine has been processing.
-	 */
 	@NetworkedField(targetSide = Side.CLIENT)
 	public int processTicks = 0;
 
-	/**
-	 * The ItemStacks that hold the items currently being used in the battery
-	 * box
-	 */
 	private ItemStack[] containingItems = new ItemStack[11];
-
-	/**
-	 * The amount of players using the electric furnace.
-	 */
 	public final Set<EntityPlayer> playersUsing = new HashSet<EntityPlayer>();
 
+	public GCCoreTileEntityElectricFurnace()
+	{
+		super(WATTS_PER_TICK, 50);
+	}
+	
 	@Override
 	public void updateEntity()
 	{
 		super.updateEntity();
 
-		this.discharge(this.containingItems[0]);
-
-		/**
-		 * Attempts to smelt an item.
-		 */
 		if (!this.worldObj.isRemote)
 		{
 			if (this.canProcess())
@@ -81,10 +62,7 @@ public class GCCoreTileEntityElectricFurnace extends GCCoreTileEntityUniversalEl
 					else if (this.processTicks > 0)
 					{
 						this.processTicks--;
-
-						/**
-						 * Process the item when the process timer is done.
-						 */
+						
 						if (this.processTicks < 1)
 						{
 							this.smeltItem();
@@ -107,19 +85,6 @@ public class GCCoreTileEntityElectricFurnace extends GCCoreTileEntityUniversalEl
 			{
 				this.processTicks = 0;
 			}
-		}
-	}
-
-	@Override
-	public float getRequest(ForgeDirection direction)
-	{
-		if (this.canProcess())
-		{
-			return GCCoreTileEntityElectricFurnace.WATTS_PER_TICK;
-		}
-		else
-		{
-			return 0;
 		}
 	}
 
@@ -364,26 +329,26 @@ public class GCCoreTileEntityElectricFurnace extends GCCoreTileEntityUniversalEl
 	}
 
 	@Override
-	public EnumSet<ForgeDirection> getElectricalInputDirections()
+	public boolean shouldPullEnergy()
 	{
-		return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() - GCCoreBlockMachine.ELECTRIC_FURNACE_METADATA + 2), ForgeDirection.UNKNOWN);
+		return this.getEnergyStored() <= this.getMaxEnergyStored() - this.ueWattsPerTick;
 	}
 
 	@Override
-	public EnumSet<ForgeDirection> getElectricalOutputDirections()
+	public boolean shouldUseEnergy()
 	{
-		return EnumSet.noneOf(ForgeDirection.class);
+		return this.processTicks > 0;
 	}
 
 	@Override
-	public float getProvide(ForgeDirection direction)
+	public ForgeDirection getElectricInputDirection()
 	{
-		return 0;
+		return ForgeDirection.getOrientation(this.getBlockMetadata() - GCCoreBlockMachine.ELECTRIC_FURNACE_METADATA + 2);
 	}
 
 	@Override
-	public float getMaxEnergyStored()
+	public ItemStack getBatteryInSlot()
 	{
-		return GCCoreTileEntityElectricFurnace.WATTS_PER_TICK;
+		return this.containingItems[0];
 	}
 }

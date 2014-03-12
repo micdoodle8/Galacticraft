@@ -48,22 +48,20 @@ public class GCCoreGuiElectricFurnace extends GuiContainer
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
 	{
 		this.fontRenderer.drawString(this.tileEntity.getInvName(), 45, 6, 4210752);
-		this.fontRenderer.drawString("Smelting:", 10, 28, 4210752);
-		this.fontRenderer.drawString("Battery:", 10, 53, 4210752);
 		String displayText = "";
 
 		if (this.tileEntity.processTicks > 0)
 		{
-			displayText = "Smelting";
+			displayText = "Running";
 		}
 		else
 		{
 			displayText = "Idle";
 		}
 
-		this.fontRenderer.drawString("Status: " + displayText, 82, 45, 4210752);
-		this.fontRenderer.drawString(ElectricityDisplay.getDisplay(GCCoreTileEntityElectricFurnace.WATTS_PER_TICK * 20, ElectricUnit.WATT), 82, 56, 4210752);
-		this.fontRenderer.drawString("Voltage: " + (int) (this.tileEntity.getVoltage() * 1000.0F), 82, 68, 4210752);
+		this.fontRenderer.drawString("Status: " + displayText, 97, 45, 4210752);
+		this.fontRenderer.drawString(ElectricityDisplay.getDisplay(GCCoreTileEntityElectricFurnace.WATTS_PER_TICK * 20, ElectricUnit.WATT), 97, 56, 4210752);
+		this.fontRenderer.drawString("Voltage: " + (int) (this.tileEntity.getVoltage() * 1000.0F), 97, 68, 4210752);
 		this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 
@@ -80,11 +78,19 @@ public class GCCoreGuiElectricFurnace extends GuiContainer
 		this.containerWidth = (this.width - this.xSize) / 2;
 		this.containerHeight = (this.height - this.ySize) / 2;
 		this.drawTexturedModalRect(this.containerWidth, this.containerHeight, 0, 0, this.xSize, this.ySize);
+		int scale;
 
 		if (this.tileEntity.processTicks > 0)
 		{
-			int scale = (int) ((double) this.tileEntity.processTicks / (double) GCCoreTileEntityElectricFurnace.PROCESS_TIME_REQUIRED * 23);
-			this.drawTexturedModalRect(this.containerWidth + 77, this.containerHeight + 24, 176, 0, 23 - scale, 20);
+			scale = (int) ((double) this.tileEntity.processTicks / (double) GCCoreTileEntityElectricFurnace.PROCESS_TIME_REQUIRED * 23);
+			this.drawTexturedModalRect(this.containerWidth + 78, this.containerHeight + 24, 176, 0, 23 - scale, 15);
+		}
+
+		if (this.tileEntity.getEnergyStored() > 0)
+		{
+			scale = this.tileEntity.getScaledElecticalLevel(54);
+			this.drawTexturedModalRect(this.containerWidth + 40, this.containerHeight + 53, 176, 15, scale, 7);
+			this.drawTexturedModalRect(this.containerWidth + 26, this.containerHeight + 52, 176, 22, 11, 10);
 		}
 	}
 }

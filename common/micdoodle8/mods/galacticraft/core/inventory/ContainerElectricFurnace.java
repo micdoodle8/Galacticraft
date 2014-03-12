@@ -28,13 +28,13 @@ public class ContainerElectricFurnace extends Container
 		this.tileEntity = tileEntity;
 
 		// Electric Input Slot
-		this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 55, 49, IItemElectric.class));
+		this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 8, 49, IItemElectric.class));
 
 		// To be smelted
-		this.addSlotToContainer(new Slot(tileEntity, 1, 55, 25));
+		this.addSlotToContainer(new Slot(tileEntity, 1, 56, 25));
 
 		// Smelting result
-		this.addSlotToContainer(new SlotFurnace(par1InventoryPlayer.player, tileEntity, 2, 108, 25));
+		this.addSlotToContainer(new SlotFurnace(par1InventoryPlayer.player, tileEntity, 2, 109, 25));
 		int var3;
 
 		for (var3 = 0; var3 < 3; ++var3)
