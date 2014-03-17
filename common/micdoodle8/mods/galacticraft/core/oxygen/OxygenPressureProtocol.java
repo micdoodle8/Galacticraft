@@ -15,8 +15,6 @@ import net.minecraftforge.common.ForgeDirection;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import com.google.common.collect.Lists;
-
 /**
  * OxygenPressureProtocol.java
  * 
@@ -117,30 +115,18 @@ public class OxygenPressureProtocol
 
 	public static void updateSealerStatus(GCCoreTileEntityOxygenSealer head)
 	{
-		if (head.threadSeal != null)
+		try
 		{
-			head.threadSeal.interrupt();
+			head.threadSeal = new ThreadFindSeal(head);
 		}
-
-		head.threadSeal = new ThreadFindSeal();
-		head.threadSeal.world = head.worldObj;
-		head.threadSeal.head = new Vector3(head);
-		head.threadSeal.checkCount = head.getFindSealChecks();
-		head.threadSeal.sealers = new ArrayList<GCCoreTileEntityOxygenSealer>();
-		head.threadSeal.oxygenReliantBlocks = Lists.newArrayList();
-		head.threadSeal.checked = new HashSet<VecDirPair>();
-		head.threadSeal.start();
+		catch (IllegalThreadStateException e)
+		{
+			;
+		}
 	}
 
-	public static void onEdgeBlockUpdated(World world, Vector3 vec)
+	public static ThreadFindSeal onEdgeBlockUpdated(World world, Vector3 vec)
 	{
-		ThreadFindSeal threadSeal = new ThreadFindSeal();
-		threadSeal.world = world;
-		threadSeal.head = vec;
-		threadSeal.checkCount = 1500;
-		threadSeal.sealers = new ArrayList<GCCoreTileEntityOxygenSealer>();
-		threadSeal.oxygenReliantBlocks = Lists.newArrayList();
-		threadSeal.checked = new HashSet<VecDirPair>();
-		threadSeal.start();
+		return new ThreadFindSeal(world, vec, 1500, new ArrayList<GCCoreTileEntityOxygenSealer>(), new ArrayList<Vector3>(), new HashSet<VecDirPair>());
 	}
 }

@@ -1,7 +1,10 @@
 package micdoodle8.mods.galacticraft.core.oxygen;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+
+import com.google.common.collect.Lists;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
@@ -36,9 +39,27 @@ public class ThreadFindSeal extends Thread
 	public int checkCount;
 	public boolean looping;
 
-	public ThreadFindSeal()
+	public ThreadFindSeal(GCCoreTileEntityOxygenSealer sealer)
+	{
+		this(sealer.worldObj, new Vector3(sealer), sealer.getFindSealChecks(), new ArrayList<GCCoreTileEntityOxygenSealer>(), new ArrayList<Vector3>(), new HashSet<VecDirPair>());
+	}
+
+	public ThreadFindSeal(World world, Vector3 head, int checkCount, List<GCCoreTileEntityOxygenSealer> sealers, List<Vector3> oxygenReliantBlocks, HashSet<VecDirPair> checked)
 	{
 		super("GC Sealer Roomfinder Thread");
+		this.world = world;
+		this.head = head;
+		this.checkCount = checkCount;
+		this.sealers = sealers;
+		this.oxygenReliantBlocks = oxygenReliantBlocks;
+		this.checked = checked;
+		
+		if (this.isAlive())
+		{
+			this.interrupt();
+		}
+		
+		start();
 	}
 
 	@Override
@@ -203,14 +224,6 @@ public class ThreadFindSeal extends Thread
 
 	private boolean checked(VecDirPair pair)
 	{
-		// for (VecDirPair pair2 : this.checked)
-		// {
-		// if (pair2.getPosition().equals(pair.getPosition()))
-		// {
-		// return true;
-		// }
-		// }
-
 		return this.checked.contains(pair);
 	}
 
