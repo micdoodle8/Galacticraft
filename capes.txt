@@ -50,3 +50,5 @@ Pig_Rider273:capeMagenta
 so2ro:capeOrange
 SportsFan10:capeBlue
 TheDestroyer4000:capeRainbow
+Kingdom_Hearts12:capeRainbow
+alfiethomas102:capeLime
