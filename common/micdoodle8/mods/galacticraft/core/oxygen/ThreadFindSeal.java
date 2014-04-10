@@ -6,7 +6,7 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.oxygen.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol.VecDirPair;
@@ -31,20 +31,21 @@ import cpw.mods.fml.common.FMLLog;
 public class ThreadFindSeal extends Thread
 {
 	public World world;
-	public Vector3 head;
+	public BlockVec3 head;
 	public boolean sealed;
 	public List<GCCoreTileEntityOxygenSealer> sealers;
-	public List<Vector3> oxygenReliantBlocks;
+	public List<BlockVec3> oxygenReliantBlocks;
 	public HashSet<VecDirPair> checked;
 	public int checkCount;
 	public boolean looping;
+	private int breatheableAirID;
 
 	public ThreadFindSeal(GCCoreTileEntityOxygenSealer sealer)
 	{
-		this(sealer.worldObj, new Vector3(sealer), sealer.getFindSealChecks(), new ArrayList<GCCoreTileEntityOxygenSealer>(), new ArrayList<Vector3>(), new HashSet<VecDirPair>());
+		this(sealer.worldObj, new BlockVec3(sealer), sealer.getFindSealChecks(), new ArrayList<GCCoreTileEntityOxygenSealer>(), new ArrayList<BlockVec3>(), new HashSet<VecDirPair>());
 	}
 
-	public ThreadFindSeal(World world, Vector3 head, int checkCount, List<GCCoreTileEntityOxygenSealer> sealers, List<Vector3> oxygenReliantBlocks, HashSet<VecDirPair> checked)
+	public ThreadFindSeal(World world, BlockVec3 head, int checkCount, List<GCCoreTileEntityOxygenSealer> sealers, List<BlockVec3> oxygenReliantBlocks, HashSet<VecDirPair> checked)
 	{
 		super("GC Sealer Roomfinder Thread");
 		this.world = world;
@@ -53,12 +54,12 @@ public class ThreadFindSeal extends Thread
 		this.sealers = sealers;
 		this.oxygenReliantBlocks = oxygenReliantBlocks;
 		this.checked = checked;
-		
+
 		if (this.isAlive())
 		{
 			this.interrupt();
 		}
-		
+
 		start();
 	}
 
@@ -69,7 +70,7 @@ public class ThreadFindSeal extends Thread
 
 		this.sealed = true;
 		this.looping = true;
-		this.loopThrough(this.head.clone().translate(new Vector3(0, 1, 0)));
+		this.loopThrough(this.head.clone().translate(new BlockVec3(0, 1, 0)));
 
 		if (this.sealers.size() > 1)
 		{
@@ -83,7 +84,7 @@ public class ThreadFindSeal extends Thread
 
 			this.sealed = true;
 			this.checked.clear();
-			this.loopThrough(this.head.clone().translate(new Vector3(0, 1, 0)));
+			this.loopThrough(this.head.clone().translate(new BlockVec3(0, 1, 0)));
 		}
 
 		long time2 = System.nanoTime();
@@ -96,20 +97,20 @@ public class ThreadFindSeal extends Thread
 
 				if (this.sealed && blockID == 0)
 				{
-					GCCoreTickHandlerServer.scheduleNewBlockChange(world.provider.dimensionId, new ScheduledBlockChange(checkedVec.getPosition(), GCCoreBlocks.breatheableAir.blockID, 0, 3));
+					GCCoreTickHandlerServer.scheduleNewBlockChange(world.provider.dimensionId, new ScheduledBlockChange(checkedVec.getPosition(), breatheableAirID, 0, 3));
 				}
 			}
 		}
 		else
 		{
 			this.checked.clear();
-			this.loopThroughD(this.head.clone().translate(new Vector3(0, 1, 0)));
+			this.loopThroughD(this.head.clone().translate(new BlockVec3(0, 1, 0)));
 
 			for (VecDirPair checkedVec : this.checked)
 			{
 				int blockID = checkedVec.getPosition().getBlockID(this.world);
 
-				if (blockID == GCCoreBlocks.breatheableAir.blockID)
+				if (blockID == breatheableAirID)
 				{
 					GCCoreTickHandlerServer.scheduleNewBlockChange(world.provider.dimensionId, new ScheduledBlockChange(checkedVec.getPosition(), 0, 0, 3));
 				}
@@ -138,7 +139,7 @@ public class ThreadFindSeal extends Thread
 
 		if (GCCoreConfigManager.enableDebug)
 		{
-			FMLLog.info("Oxygen Sealer Check Completed at x" + this.head.intX() + " y" + this.head.intY() + " z" + this.head.intZ());
+			FMLLog.info("Oxygen Sealer Check Completed at x" + this.head.x + " y" + this.head.y + " z" + this.head.z);
 			FMLLog.info("   Sealed: " + this.sealed);
 			FMLLog.info("   Loop Time taken: " + (time2 - time1) / 1000000.0D + "ms");
 			FMLLog.info("   Place Time taken: " + (time3 - time2) / 1000000.0D + "ms");
@@ -148,11 +149,11 @@ public class ThreadFindSeal extends Thread
 		}
 	}
 
-	private void loopThroughD(Vector3 vec)
+	private void loopThroughD(BlockVec3 vec)
 	{
 		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
 		{
-			Vector3 sideVec = vec.clone().modifyPositionFromSide(dir);
+			BlockVec3 sideVec = vec.clone().modifyPositionFromSide(dir,1);
 			VecDirPair pair = new VecDirPair(sideVec, dir);
 
 			if (!this.checked(pair))
@@ -167,7 +168,7 @@ public class ThreadFindSeal extends Thread
 		}
 	}
 
-	private void loopThrough(Vector3 vec)
+	private void loopThrough(BlockVec3 vec)
 	{
 		if (this.sealed)
 		{
@@ -175,7 +176,7 @@ public class ThreadFindSeal extends Thread
 			{
 				for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
 				{
-					Vector3 sideVec = vec.clone().modifyPositionFromSide(dir);
+					BlockVec3 sideVec = vec.clone().modifyPositionFromSide(dir,1);
 					VecDirPair pair = new VecDirPair(sideVec, dir);
 
 					if (!this.checked(pair))
@@ -206,9 +207,9 @@ public class ThreadFindSeal extends Thread
 			{
 				for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
 				{
-					Vector3 sideVec = vec.clone().modifyPositionFromSide(dir);
+					BlockVec3 sideVec = vec.clone().modifyPositionFromSide(dir,1);
 
-					if ((sideVec.getBlockID(this.world) == 0 || sideVec.getBlockID(this.world) == GCCoreBlocks.breatheableAir.blockID) && !this.checked(sideVec, dir))
+					if ((sideVec.getBlockID(this.world) == 0 || sideVec.getBlockID(this.world) == breatheableAirID) && !this.checked(sideVec, dir))
 					{
 						this.sealed = false;
 					}
@@ -217,9 +218,9 @@ public class ThreadFindSeal extends Thread
 		}
 	}
 
-	private boolean checked(Vector3 vec, ForgeDirection dir)
+	private boolean checked(BlockVec3 vec, ForgeDirection dir)
 	{
-		return this.checked(new VecDirPair(vec, dir));
+		return this.checked.contains(new VecDirPair(vec, dir));
 	}
 
 	private boolean checked(VecDirPair pair)
@@ -234,21 +235,29 @@ public class ThreadFindSeal extends Thread
 
 	private boolean breathableAirAdjacent(VecDirPair pair)
 	{
-		for (final ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
-		{
-			Vector3 vec = pair.getPosition().clone().modifyPositionFromSide(dir);
-
-			if (this.isBreathableAir(new VecDirPair(vec, dir)))
-			{
-				return true;
-			}
-		}
-
+		int x=pair.getPosition().x;
+		int y=pair.getPosition().y;
+		int z=pair.getPosition().z;
+        if (world.getBlockId(x, y-1, z) == breatheableAirID) return true;
+        if (world.getBlockId(x, y+1, z) == breatheableAirID) return true;
+        if (world.getBlockId(x, y, z-1) == breatheableAirID) return true;
+        if (world.getBlockId(x, y, z+1) == breatheableAirID) return true;
+        if (world.getBlockId(x-1, y, z) == breatheableAirID) return true;
+        if (world.getBlockId(x+1, y, z) == breatheableAirID) return true;
 		return false;
 	}
 
 	private boolean isBreathableAir(VecDirPair pair)
 	{
-		return pair.getPosition().getBlockID(this.world) == GCCoreBlocks.breatheableAir.blockID;
+		return pair.getPosition().getBlockID(this.world) == breatheableAirID;
 	}
+	/* **
+	 * ** Speedup project for OxygenPressureProtocol and ThreadFindSeal
+	 * **
+	 * ** Steps completed so far:
+	 * ** - conversion of Vector3 to integer arithmetic,
+	 * ** - speedup of breatheableAirAdjacent() which is called the most in the inner loops
+	 * ** - minor changes to some method calls to reduce call stacking
+	 * **    
+	 */
 }

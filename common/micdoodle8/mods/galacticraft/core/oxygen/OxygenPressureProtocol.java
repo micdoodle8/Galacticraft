@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.oxygen.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenSealer;
 import net.minecraft.block.Block;
@@ -14,6 +14,8 @@ import net.minecraftforge.common.ForgeDirection;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+
+import com.google.common.collect.Lists;
 
 /**
  * OxygenPressureProtocol.java
@@ -65,16 +67,16 @@ public class OxygenPressureProtocol
 
 	public static class VecDirPair
 	{
-		private final Vector3 position;
+		private final BlockVec3 position;
 		private final ForgeDirection direction;
 
-		public VecDirPair(Vector3 position, ForgeDirection direction)
+		public VecDirPair(BlockVec3 position, ForgeDirection direction)
 		{
 			this.position = position;
 			this.direction = direction;
 		}
 
-		public Vector3 getPosition()
+		public BlockVec3 getPosition()
 		{
 			return this.position;
 		}
@@ -113,6 +115,7 @@ public class OxygenPressureProtocol
 		}
 	}
 
+
 	public static void updateSealerStatus(GCCoreTileEntityOxygenSealer head)
 	{
 		try
@@ -125,8 +128,8 @@ public class OxygenPressureProtocol
 		}
 	}
 
-	public static ThreadFindSeal onEdgeBlockUpdated(World world, Vector3 vec)
+	public static ThreadFindSeal onEdgeBlockUpdated(World world, BlockVec3 vec)
 	{
-		return new ThreadFindSeal(world, vec, 1500, new ArrayList<GCCoreTileEntityOxygenSealer>(), new ArrayList<Vector3>(), new HashSet<VecDirPair>());
+		return new ThreadFindSeal(world, vec, 1500, new ArrayList<GCCoreTileEntityOxygenSealer>(), new ArrayList<BlockVec3>(), new HashSet<VecDirPair>());
 	}
 }
