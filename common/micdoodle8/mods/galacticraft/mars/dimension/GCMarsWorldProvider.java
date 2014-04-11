@@ -53,7 +53,7 @@ public class GCMarsWorldProvider extends WorldProvider implements IGalacticraftW
 	@Override
 	public void registerWorldChunkManager()
 	{
-		this.worldChunkMgr = new GCMarsWorldChunkManager(this.worldObj, 0F);
+		this.worldChunkMgr = new GCMarsWorldChunkManager();
 	}
 
 	@SideOnly(Side.CLIENT)
