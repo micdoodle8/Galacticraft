@@ -1,10 +1,9 @@
 package micdoodle8.mods.galacticraft.core.oxygen;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-
-import com.google.common.collect.Lists;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
@@ -38,12 +37,14 @@ public class ThreadFindSeal extends Thread
 	public HashSet<VecDirPair> checked;
 	public int checkCount;
 	public boolean looping;
+	private HashMap<Vector3, GCCoreTileEntityOxygenSealer> sealersAround = new HashMap<Vector3, GCCoreTileEntityOxygenSealer>();
 
 	public ThreadFindSeal(GCCoreTileEntityOxygenSealer sealer)
 	{
 		this(sealer.worldObj, new Vector3(sealer), sealer.getFindSealChecks(), new ArrayList<GCCoreTileEntityOxygenSealer>(), new ArrayList<Vector3>(), new HashSet<VecDirPair>());
 	}
 
+	@SuppressWarnings("unchecked")
 	public ThreadFindSeal(World world, Vector3 head, int checkCount, List<GCCoreTileEntityOxygenSealer> sealers, List<Vector3> oxygenReliantBlocks, HashSet<VecDirPair> checked)
 	{
 		super("GC Sealer Roomfinder Thread");
@@ -57,6 +58,14 @@ public class ThreadFindSeal extends Thread
 		if (this.isAlive())
 		{
 			this.interrupt();
+		}
+		
+		for (TileEntity tile : new ArrayList<TileEntity>(world.loadedTileEntityList))
+		{
+			if (tile instanceof GCCoreTileEntityOxygenSealer && tile.getDistanceFrom(head.intX(), head.intY(), head.intZ()) < 2048 * 2048)
+			{
+				this.sealersAround.put(new Vector3(tile.xCoord, tile.yCoord, tile.zCoord), (GCCoreTileEntityOxygenSealer) tile);
+			}
 		}
 		
 		start();
@@ -116,7 +125,7 @@ public class ThreadFindSeal extends Thread
 			}
 		}
 
-		TileEntity headTile = this.head.getTileEntity(this.world);
+		TileEntity headTile = this.sealersAround.get(this.head);
 
 		if (headTile instanceof GCCoreTileEntityOxygenSealer)
 		{
@@ -188,7 +197,7 @@ public class ThreadFindSeal extends Thread
 							this.loopThrough(sideVec);
 						}
 
-						TileEntity tileAtVec = sideVec.getTileEntity(this.world);
+						TileEntity tileAtVec = this.sealersAround.get(sideVec);
 
 						if (tileAtVec != null && tileAtVec instanceof GCCoreTileEntityOxygenSealer && !this.sealers.contains(tileAtVec))
 						{
