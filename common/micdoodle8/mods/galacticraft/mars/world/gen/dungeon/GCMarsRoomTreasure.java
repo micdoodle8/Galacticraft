@@ -3,12 +3,11 @@ package micdoodle8.mods.galacticraft.mars.world.gen.dungeon;
 import java.util.HashSet;
 import java.util.Random;
 
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.GCCoreDungeonBoundingBox;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.GCCoreDungeonRoom;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.GCCoreMapGenDungeon;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
+import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityTreasureChest;
 import net.minecraft.block.Block;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraftforge.common.ForgeDirection;
@@ -98,8 +97,8 @@ public class GCMarsRoomTreasure extends GCCoreDungeonRoom
 			
 			for (ChunkCoordinates coords : this.chests)
 			{
-				this.worldObj.setBlock(coords.posX, coords.posY, coords.posZ, GCCoreBlocks.treasureChestTier1.blockID, 0, 3);
-				this.worldObj.setBlockTileEntity(coords.posX, coords.posY, coords.posZ, new GCCoreTileEntityTreasureChest(1));
+				this.worldObj.setBlock(coords.posX, coords.posY, coords.posZ, GCMarsBlocks.tier2TreasureChest.blockID, 0, 3);
+				this.worldObj.setBlockTileEntity(coords.posX, coords.posY, coords.posZ, new GCMarsTileEntityTreasureChest());
 				removeList.add(coords);
 			}
 			
