@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
-import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityIngotCompressor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -9,7 +8,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotFurnace;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.tileentity.TileEntityFurnace;
 
 /**
  * GCCoreContainerIngotCompressor.java
@@ -95,46 +94,35 @@ public class GCCoreContainerIngotCompressor extends Container
 			ItemStack var4 = var3.getStack();
 			var2 = var4.copy();
 
-			if (par1 == 2)
+			if (par1 <= 10)
 			{
-				if (!this.mergeItemStack(var4, 3, 39, true))
+				if (!this.mergeItemStack(var4, 11, 38, true))
 				{
 					return null;
 				}
 
 				var3.onSlotChange(var4, var2);
 			}
-			else if (par1 != 1 && par1 != 0)
+			else
 			{
-				if (var4.getItem() instanceof IItemElectric)
+				if (TileEntityFurnace.getItemBurnTime(var4) > 0)
 				{
-					if (!this.mergeItemStack(var4, 0, 1, false))
+					if (!this.mergeItemStack(var4, 9, 10, false))
 					{
 						return null;
 					}
 				}
-				else if (FurnaceRecipes.smelting().getSmeltingResult(var4) != null)
+				else if (par1 < 38)
 				{
-					if (!this.mergeItemStack(var4, 1, 2, false))
+					if (!this.mergeItemStack(var4, 0, 9, false) && !this.mergeItemStack(var4, 38, 47, false))
 					{
 						return null;
 					}
 				}
-				else if (par1 >= 3 && par1 < 30)
-				{
-					if (!this.mergeItemStack(var4, 30, 39, false))
-					{
-						return null;
-					}
-				}
-				else if (par1 >= 30 && par1 < 39 && !this.mergeItemStack(var4, 3, 30, false))
+				else if (par1 >= 38 && par1 < 47 && !this.mergeItemStack(var4, 11, 38, false))
 				{
 					return null;
 				}
-			}
-			else if (!this.mergeItemStack(var4, 3, 39, false))
-			{
-				return null;
 			}
 
 			if (var4.stackSize == 0)
