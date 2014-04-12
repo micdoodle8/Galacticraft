@@ -4,6 +4,7 @@ import java.util.Random;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.oxygen.BlockVec3;
 import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -140,7 +141,7 @@ public class GCCoreBlockBreathableAir extends Block
 	{
 		if (idBroken != 0 && idBroken != GCCoreBlocks.breatheableAir.blockID)
 		{
-			OxygenPressureProtocol.onEdgeBlockUpdated(world, new Vector3(x, y, z));
+			OxygenPressureProtocol.onEdgeBlockUpdated(world, new BlockVec3(x, y, z));
 		}
 	}
 }
