@@ -84,6 +84,7 @@ public class ThreadFindSeal extends Thread
 
 		this.sealed = true;
 		this.looping = true;
+		this.checked.add(this.head);
 		currentLayer.add(this.head.clone());
 		doLayer();
 
@@ -99,6 +100,7 @@ public class ThreadFindSeal extends Thread
 
 			this.sealed = true;
 			this.checked.clear();
+			this.checked.add(this.head);
 			currentLayer.clear();
 			currentLayer.add(this.head.clone());
 			doLayer();
