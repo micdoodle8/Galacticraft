@@ -115,7 +115,7 @@ public class GCCoreGuiAirLockController extends GuiScreen implements ICheckBoxCa
 
 		if (this.cannotEditTimer > 0)
 		{
-			this.fontRenderer.drawString(this.controller.ownerName, this.width / 2 - this.fontRenderer.getStringWidth(displayString) / 2, this.height / 2 - 56, this.cannotEditTimer % 30 < 15 ? GCCoreUtil.convertTo32BitColor(255, 255, 100, 100) : 4210752);
+			this.fontRenderer.drawString(this.controller.ownerName, this.width / 2 - this.fontRenderer.getStringWidth(displayString) / 2, this.height / 2 - 65, this.cannotEditTimer % 30 < 15 ? GCCoreUtil.convertTo32BitColor(255, 255, 100, 100) : 4210752);
 			this.cannotEditTimer--;
 		}
 

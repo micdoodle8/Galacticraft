@@ -412,14 +412,22 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
 			this.radarDishRotation.z = Math.cos(this.ticks * 0.1) * 50.0F;
 		}
 
-		if (Math.abs(this.motionX * this.motionZ) > 0.000001)
+		if (!this.worldObj.isRemote && Math.abs(this.motionX * this.motionZ) > 0.000001)
 		{
 			double d = this.motionX * this.motionX + this.motionZ * this.motionZ;
-
-			if (d != 0 && !this.worldObj.isRemote && d != 0 && this.ticks % MathHelper.floor_double(2 / d) == 0)
+			
+			if (d == 0)
+			{
+				d += 0.0001F;
+			}
+			
+			int speedMod = MathHelper.floor_double(2 / d);
+			
+			if (speedMod == 0 || this.ticks % speedMod == 0)
 			{
 				this.removeFuel(1);
 			}
+
 		}
 
 		this.prevPosX = this.posX;

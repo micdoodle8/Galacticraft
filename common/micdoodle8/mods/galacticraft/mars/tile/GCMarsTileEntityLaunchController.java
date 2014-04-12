@@ -10,7 +10,6 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
 import micdoodle8.mods.galacticraft.core.GCCoreAnnotations.NetworkedField;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPadFull;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
-import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectricBlock;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
@@ -48,7 +47,7 @@ import cpw.mods.fml.relauncher.Side;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectricBlock implements IChunkLoader, IElectrical, IInventory, ISidedInventory, IPacketReceiver, ILandingPadAttachable
+public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectricBlock implements IChunkLoader, IElectrical, IInventory, ISidedInventory, ILandingPadAttachable
 {
 	public static final float WATTS_PER_TICK = 0.05000001f;
 	private ItemStack[] containingItems = new ItemStack[1];
@@ -61,7 +60,7 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectricBl
 	@NetworkedField(targetSide = Side.CLIENT)
 	public int destFrequency = -1;
 	@NetworkedField(targetSide = Side.CLIENT)
-	private String ownerName;
+	public String ownerName = "";
 	@NetworkedField(targetSide = Side.CLIENT)
 	public boolean frequencyValid;
 	@NetworkedField(targetSide = Side.CLIENT)

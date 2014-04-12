@@ -71,6 +71,8 @@ item.key.T1.name=Tier 1 Dungeon Key
 item.buggymat.wheel.name=Buggy Wheel
 item.buggymat.seat.name=Buggy Seat
 item.buggymat.storage.name=Buggy Storage Box
+item.basicItem.ingotAluminum.name=Aluminium Ingot
+item.basicItem.compressedAluminum.name=Compressed Aluminium
 
 # TOOLS
 item.steel_pickaxe.name=Heavy Duty Pickaxe
@@ -97,6 +99,7 @@ tile.fallenMeteor.name=Fallen Meteor
 tile.rocketWorkbench.name=Rocket Crafting Table
 tile.decorationblock.decoblock1.name=Tin Decoration Block
 tile.decorationblock.decoblock2.name=Tin Decoration Block
+tile.gcBlockCore.oreAluminum.name=Aluminium Ore
 tile.airLockFrame.name=Air Lock Frame
 tile.airLockSeal.name=Air Lock Seal
 tile.crudeOilStill.name=Crude Oil
@@ -116,6 +119,11 @@ tile.cargo.loader.name=Cargo Loader
 tile.cargo.unloader.name=Cargo Unloader
 tile.landingPad.buggyFueler.name=Buggy Fueling Pad
 tile.landingPad.cargoPad.name=Cargo Rocket Pad
+tile.aluminumWire.name=Aluminium Wire
+tile.aluminumWireHeavy.name=Heavy Aluminium Wire
+tile.enclosed.aluminumWire.name=Sealable Aluminium Wire
+tile.enclosed.aluminumWireHeavy.name=Sealable Heavy Aluminium Wire
+tile.gcBlockCore.aluminumBlock.name=Aluminium Block
 
 # ENTITIES
 entity.GalacticraftCore.EvolvedSpider.name=Evolved Spider
