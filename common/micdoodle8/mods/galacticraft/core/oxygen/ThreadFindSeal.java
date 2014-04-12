@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.oxygen;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.oxygen.BlockVec3;
@@ -41,7 +42,8 @@ public class ThreadFindSeal extends Thread
 	private HashMap<BlockVec3, GCCoreTileEntityOxygenSealer> sealersAround = new HashMap<BlockVec3, GCCoreTileEntityOxygenSealer>();
 	private int breatheableAirID;
 	private int oxygenSealerID;
-
+	private List<BlockVec3> currentLayer = new LinkedList();
+	
 	public ThreadFindSeal(GCCoreTileEntityOxygenSealer sealer)
 	{
 		this(sealer.worldObj, new BlockVec3(sealer), sealer.getFindSealChecks(), new ArrayList<GCCoreTileEntityOxygenSealer>(), new ArrayList<BlockVec3>(), new HashSet<BlockVec3>());
@@ -82,7 +84,8 @@ public class ThreadFindSeal extends Thread
 
 		this.sealed = true;
 		this.looping = true;
-		this.loopThrough(this.head.clone().translate(new BlockVec3(0, 1, 0)),ForgeDirection.UNKNOWN);
+		currentLayer.add(this.head.clone());
+		doLayer();
 
 		if (this.sealers.size() > 1)
 		{
@@ -96,7 +99,9 @@ public class ThreadFindSeal extends Thread
 
 			this.sealed = true;
 			this.checked.clear();
-			this.loopThrough(this.head.clone().translate(new BlockVec3(0, 1, 0)),ForgeDirection.UNKNOWN);
+			currentLayer.clear();
+			currentLayer.add(this.head.clone());
+			doLayer();
 		}
 
 		long time2 = System.nanoTime();
@@ -181,28 +186,30 @@ public class ThreadFindSeal extends Thread
 		}
 	}
 
-	private void loopThrough(BlockVec3 vec, ForgeDirection dirIn)
+	private void doLayer()
 	{
-		//if (this.sealed)
-		//{
-			if (this.checkCount > 0)
-			{
+		List<BlockVec3> nextLayer = new LinkedList();
+		
+		LAYERLOOP:
+		for(BlockVec3 vec:currentLayer)
+		{
 				for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
 				{
-					if (dir==dirIn) continue;
 					BlockVec3 sideVec = vec.modifyPositionFromSide(dir,1);
 					//VecDirPair pair = new VecDirPair(sideVec, dir);
 
 					if (!this.checked.contains(sideVec))
 					{
+						if (this.checkCount > 0)
+						{
 						this.checkCount--;
 						this.checked.add(sideVec);
 						
 						int id=sideVec.getBlockID(this.world);
 						if (id==0 || id==breatheableAirID || WorldUtil.canBlockPass(this.world, id, sideVec.getBlockMetadata(this.world), new VecDirPair(sideVec, dir)))
 						{
-							this.loopThrough(sideVec,dir.getOpposite());
-						}
+							nextLayer.add(sideVec);
+						} else
 	
 						if (id == oxygenSealerID)
 						{
@@ -213,28 +220,27 @@ public class ThreadFindSeal extends Thread
 								 if (!this.sealers.contains(sealer)) this.sealers.add(sealer);
 							}
 						}
-					}
-				}
-			}
-			else
-			if (this.sealed)
-			{
-				for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
-				{
-					if (dir==dirIn) continue;
-					BlockVec3 sideVec = vec.modifyPositionFromSide(dir,1);
-
-					if (!this.checked.contains(sideVec))
-					{
-						int id=sideVec.getBlockID(this.world);
-						if (id == 0 || id == breatheableAirID || WorldUtil.canBlockPass(this.world, id, sideVec.getBlockMetadata(this.world), new VecDirPair(sideVec, dir)))
+						}
+						else
+						if (this.sealed)
 						{
-							this.sealed = false;
-							break;
+							int id=sideVec.getBlockID(this.world);
+							if (id == 0 || id == breatheableAirID || WorldUtil.canBlockPass(this.world, id, sideVec.getBlockMetadata(this.world), new VecDirPair(sideVec, dir)))
+							{
+								this.sealed = false;
+								break LAYERLOOP;
+							}
 						}
 					}
 				}
-			}
+		}
+		
+		//Is there a further layer of air/permeable blocks to test?
+		if (this.sealed && nextLayer.size()>0)
+		{	
+			currentLayer=nextLayer;
+			doLayer();
+		}
 	}
 
 	private boolean breathableAirAdjacent(BlockVec3 vec)
