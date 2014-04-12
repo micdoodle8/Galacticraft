@@ -7,6 +7,7 @@ import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.oxygen.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockOxygenSealer;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol.VecDirPair;
 import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerServer;
@@ -39,6 +40,7 @@ public class ThreadFindSeal extends Thread
 	public boolean looping;
 	private HashMap<BlockVec3, GCCoreTileEntityOxygenSealer> sealersAround = new HashMap<BlockVec3, GCCoreTileEntityOxygenSealer>();
 	private int breatheableAirID;
+	private int oxygenSealerID;
 
 	public ThreadFindSeal(GCCoreTileEntityOxygenSealer sealer)
 	{
@@ -55,6 +57,8 @@ public class ThreadFindSeal extends Thread
 		this.sealers = sealers;
 		this.oxygenReliantBlocks = oxygenReliantBlocks;
 		this.checked = checked;
+		this.breatheableAirID = GCCoreBlocks.breatheableAir.blockID;
+		this.oxygenSealerID = GCCoreBlocks.oxygenSealer.blockID;
 
 		if (this.isAlive())
 		{
@@ -162,7 +166,7 @@ public class ThreadFindSeal extends Thread
 		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
 		{
 			if (dir==dirIn) continue;
-			BlockVec3 sideVec = vec.clone().modifyPositionFromSide(dir,1);
+			BlockVec3 sideVec = vec.modifyPositionFromSide(dir,1);
 			//VecDirPair pair = new VecDirPair(sideVec, dir);
 
 			if (!this.checked.contains(sideVec))
@@ -179,14 +183,14 @@ public class ThreadFindSeal extends Thread
 
 	private void loopThrough(BlockVec3 vec, ForgeDirection dirIn)
 	{
-		if (this.sealed)
-		{
+		//if (this.sealed)
+		//{
 			if (this.checkCount > 0)
 			{
 				for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
 				{
 					if (dir==dirIn) continue;
-					BlockVec3 sideVec = vec.clone().modifyPositionFromSide(dir,1);
+					BlockVec3 sideVec = vec.modifyPositionFromSide(dir,1);
 					//VecDirPair pair = new VecDirPair(sideVec, dir);
 
 					if (!this.checked.contains(sideVec))
@@ -199,38 +203,38 @@ public class ThreadFindSeal extends Thread
 						{
 							this.loopThrough(sideVec,dir.getOpposite());
 						}
-
-						TileEntity tileAtVec = this.sealersAround.get(sideVec);
-
-						if (tileAtVec instanceof GCCoreTileEntityOxygenSealer)
+	
+						if (id == oxygenSealerID)
 						{
-							GCCoreTileEntityOxygenSealer sealer = (GCCoreTileEntityOxygenSealer) tileAtVec;
-
-							if (sealer.active)
+							GCCoreTileEntityOxygenSealer sealer = this.sealersAround.get(sideVec);
+	
+							if (sealer!=null && sealer.active)
 							{
-								 if (!this.sealers.contains(tileAtVec)) this.sealers.add(sealer);
+								 if (!this.sealers.contains(sealer)) this.sealers.add(sealer);
 							}
 						}
 					}
 				}
 			}
 			else
+			if (this.sealed)
 			{
 				for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
 				{
 					if (dir==dirIn) continue;
-					BlockVec3 sideVec = vec.clone().modifyPositionFromSide(dir,1);
+					BlockVec3 sideVec = vec.modifyPositionFromSide(dir,1);
 
-					int id=sideVec.getBlockID(this.world);
-					//This is the bugfix: adding check for canBlockPass (this is testing the extremities of the sealable area for a good seal)
-					if ((id == 0 || id == breatheableAirID || WorldUtil.canBlockPass(this.world, id, sideVec.getBlockMetadata(this.world), new VecDirPair(sideVec, dir))) && !this.checked.contains(new VecDirPair(sideVec, dir)))
+					if (!this.checked.contains(sideVec))
 					{
-						this.sealed = false;
-						break;
+						int id=sideVec.getBlockID(this.world);
+						if (id == 0 || id == breatheableAirID || WorldUtil.canBlockPass(this.world, id, sideVec.getBlockMetadata(this.world), new VecDirPair(sideVec, dir)))
+						{
+							this.sealed = false;
+							break;
+						}
 					}
 				}
 			}
-		}
 	}
 
 	private boolean breathableAirAdjacent(BlockVec3 vec)

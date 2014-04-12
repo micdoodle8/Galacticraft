@@ -103,34 +103,34 @@ public class BlockVec3 implements Cloneable
 		
 		public BlockVec3 modifyPositionFromSide(ForgeDirection side, int amount)
 		{
+			BlockVec3 vec = new BlockVec3(x,y,z);
 			switch (side.ordinal())
 			{
 				case 0:
-					this.y -= amount;
+					vec.y -= amount;
 					break;
 				case 1:
-					this.y += amount;
+					vec.y += amount;
 					break;
 				case 2:
-					this.z -= amount;
+					vec.z -= amount;
 					break;
 				case 3:
-					this.z += amount;
+					vec.z += amount;
 					break;
 				case 4:
-					this.x -= amount;
+					vec.x -= amount;
 					break;
 				case 5:
-					this.x += amount;
+					vec.x += amount;
 					break;
 			}
-			return this;
+			return vec;
 		}
 
 		public BlockVec3 modifyPositionFromSide(ForgeDirection side)
 		{
-			this.modifyPositionFromSide(side, 1);
-			return this;
+			return this.modifyPositionFromSide(side, 1);
 		}
 
 
