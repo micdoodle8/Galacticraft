@@ -434,12 +434,11 @@ public class GCCoreMapGenDungeon
 	{
 		final ArrayList<GCCoreDungeonRoom> rooms = new ArrayList<GCCoreDungeonRoom>();
 		rooms.addAll(this.rooms);
+		this.rooms.clear();
 		for (final GCCoreDungeonRoom room : rooms)
 		{
 			room.handleTileEntities(rand);
 		}
-		
-		this.rooms.clear();
 	}
 
 	protected boolean canGenDungeonAtCoords(long worldSeed, int i, int j)
