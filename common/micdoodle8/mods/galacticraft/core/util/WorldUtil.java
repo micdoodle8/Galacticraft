@@ -836,44 +836,32 @@ public class WorldUtil
 
 	public static boolean canBlockPass(World world, int id, int metadata, VecDirPair pair)
 	{
-		if (id > 0)
-		{
-			Block block = Block.blocksList[id];
-
-			if (id == GCCoreBlocks.breatheableAir.blockID)
-			{
-				return true;
-			}
-
+		//if (id>0)
+		//{
 			if (OxygenPressureProtocol.vanillaPermeableBlocks.contains(id))
 			{
 				return true;
 			}
-
+	
+			Block block = Block.blocksList[id];
+	
 			if (!block.isOpaqueCube())
 			{
 				if (block instanceof IPartialSealableBlock)
 				{
 					return !((IPartialSealableBlock) block).isSealed(world, pair.getPosition().intX(), pair.getPosition().intY(), pair.getPosition().intZ(), pair.getDirection());
 				}
-
+	
 				if (OxygenPressureProtocol.nonPermeableBlocks.containsKey(id) && OxygenPressureProtocol.nonPermeableBlocks.get(id).contains(metadata))
 				{
 					return false;
 				}
-
+	
 				return true;
 			}
-
+	
 			return false;
-		}
-
-		return true;
-	}
-
-	public static boolean canBlockPass(World world, VecDirPair pair)
-	{
-		return WorldUtil.canBlockPass(world, pair.getPosition().getBlockID(world), pair.getPosition().getBlockMetadata(world), pair);
+		//}
 	}
 
 	public static TileEntity[] getAdjacentOxygenConnections(TileEntity tile)
