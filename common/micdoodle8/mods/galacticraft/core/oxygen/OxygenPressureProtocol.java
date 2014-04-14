@@ -81,6 +81,6 @@ public class OxygenPressureProtocol
 
 	public static ThreadFindSeal onEdgeBlockUpdated(World world, BlockVec3 vec)
 	{
-		return new ThreadFindSeal(world, vec, 1500, new ArrayList<GCCoreTileEntityOxygenSealer>());
+		return new ThreadFindSeal(world, vec, 2000, new ArrayList<GCCoreTileEntityOxygenSealer>());
 	}
 }
