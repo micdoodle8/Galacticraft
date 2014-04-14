@@ -45,7 +45,6 @@ import micdoodle8.mods.galacticraft.core.network.GCCorePacketDimensionListSpaceS
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumPacketClient;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketSpaceStationData;
 import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol;
-import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol.VecDirPair;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -832,36 +831,6 @@ public class WorldUtil
 		}
 
 		return null;
-	}
-
-	public static boolean canBlockPass(World world, int id, int metadata, VecDirPair pair)
-	{
-		//if (id>0)
-		//{
-			if (OxygenPressureProtocol.vanillaPermeableBlocks.contains(id))
-			{
-				return true;
-			}
-	
-			Block block = Block.blocksList[id];
-	
-			if (!block.isOpaqueCube())
-			{
-				if (block instanceof IPartialSealableBlock)
-				{
-					return !((IPartialSealableBlock) block).isSealed(world, pair.getPosition().intX(), pair.getPosition().intY(), pair.getPosition().intZ(), pair.getDirection());
-				}
-	
-				if (OxygenPressureProtocol.nonPermeableBlocks.containsKey(id) && OxygenPressureProtocol.nonPermeableBlocks.get(id).contains(metadata))
-				{
-					return false;
-				}
-	
-				return true;
-			}
-	
-			return false;
-		//}
 	}
 
 	public static TileEntity[] getAdjacentOxygenConnections(TileEntity tile)

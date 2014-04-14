@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.oxygen.BlockVec3;
-import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol.VecDirPair;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenSealer;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -157,6 +156,9 @@ public class GCCoreBlockOxygenSealer extends GCCoreBlockAdvancedTile
 	@Override
 	public void breakBlock(World world, int x, int y, int z, int par5, int par6)
 	{
+		//This is unnecessary as it will be picked up by OxygenPressureProtocol.onEdgeBlockUpdated anyhow
+		//Also don't want to clear all the breatheableAir if there are still working sealers in the space
+		/*
 		TileEntity tile = world.getBlockTileEntity(x, y, z);
 
 		if (tile instanceof GCCoreTileEntityOxygenSealer)
@@ -175,7 +177,7 @@ public class GCCoreBlockOxygenSealer extends GCCoreBlockAdvancedTile
 					}
 				}
 			}
-		}
+		}*/
 
 		super.breakBlock(world, x, y, z, par5, par6);
 	}

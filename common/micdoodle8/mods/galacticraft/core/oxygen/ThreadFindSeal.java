@@ -1,20 +1,22 @@
 package micdoodle8.mods.galacticraft.core.oxygen;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
+import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.core.oxygen.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockOxygenSealer;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
-import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol.VecDirPair;
 import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerServer;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenSealer;
-import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.ScheduledBlockChange;
+import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
@@ -33,32 +35,39 @@ public class ThreadFindSeal extends Thread
 {
 	public World world;
 	public BlockVec3 head;
-	public boolean sealed;
+	public AtomicBoolean sealedFinal = new AtomicBoolean();
+	private boolean sealed;
 	public List<GCCoreTileEntityOxygenSealer> sealers;
 	public List<BlockVec3> oxygenReliantBlocks;
 	public HashSet<BlockVec3> checked;
 	public int checkCount;
-	public boolean looping;
+	public static AtomicBoolean anylooping = new AtomicBoolean();
+	public AtomicBoolean looping = new AtomicBoolean();
 	private HashMap<BlockVec3, GCCoreTileEntityOxygenSealer> sealersAround = new HashMap<BlockVec3, GCCoreTileEntityOxygenSealer>();
 	private int breatheableAirID;
 	private int oxygenSealerID;
 	private List<BlockVec3> currentLayer = new LinkedList();
+	private List<BlockVec3> nextLayer;
+	private List<BlockVec3> airToReplace = new LinkedList();
+	private List<BlockVec3> breatheableToReplace = new LinkedList();
+	private List<GCCoreTileEntityOxygenSealer> otherSealers = new LinkedList();
 	
 	public ThreadFindSeal(GCCoreTileEntityOxygenSealer sealer)
 	{
-		this(sealer.worldObj, new BlockVec3(sealer), sealer.getFindSealChecks(), new ArrayList<GCCoreTileEntityOxygenSealer>(), new ArrayList<BlockVec3>(), new HashSet<BlockVec3>());
+		this(sealer.worldObj, new BlockVec3(sealer).translate(0,1,0), sealer.getFindSealChecks(), new ArrayList<GCCoreTileEntityOxygenSealer>(Arrays.asList(sealer)));
 	}
 
 	@SuppressWarnings("unchecked")
-	public ThreadFindSeal(World world, BlockVec3 head, int checkCount, List<GCCoreTileEntityOxygenSealer> sealers, List<BlockVec3> oxygenReliantBlocks, HashSet<BlockVec3> checked)
+	public ThreadFindSeal(World world, BlockVec3 head, int checkCount, List<GCCoreTileEntityOxygenSealer> sealers)
 	{
 		super("GC Sealer Roomfinder Thread");
+		this.anylooping.set(true);
 		this.world = world;
 		this.head = head;
 		this.checkCount = checkCount;
 		this.sealers = sealers;
-		this.oxygenReliantBlocks = oxygenReliantBlocks;
-		this.checked = checked;
+		this.oxygenReliantBlocks = new ArrayList<BlockVec3>();
+		this.checked = new HashSet<BlockVec3>();
 		this.breatheableAirID = GCCoreBlocks.breatheableAir.blockID;
 		this.oxygenSealerID = GCCoreBlocks.oxygenSealer.blockID;
 
@@ -74,6 +83,8 @@ public class ThreadFindSeal extends Thread
 				this.sealersAround.put(new BlockVec3(tile.xCoord, tile.yCoord, tile.zCoord), (GCCoreTileEntityOxygenSealer) tile);
 			}
 		}
+
+		this.looping.set(true);
 		start();
 	}
 
@@ -83,81 +94,123 @@ public class ThreadFindSeal extends Thread
 		long time1 = System.nanoTime();
 
 		this.sealed = true;
-		this.looping = true;
 		this.checked.add(this.head);
-		currentLayer.add(this.head.clone());
-		doLayer();
-
-		if (this.sealers.size() > 1)
+		currentLayer.clear();
+		nextLayer = new LinkedList();
+		airToReplace.clear();
+		if (checkCount > 0)
 		{
-			this.checkCount = 0;
-
-			for (int i = 0; i < this.sealers.size(); i++)
-			{
-				GCCoreTileEntityOxygenSealer sealer = this.sealers.get(i);
-				this.checkCount += sealer.getFindSealChecks();
-			}
-
-			this.sealed = true;
-			this.checked.clear();
-			this.checked.add(this.head);
-			currentLayer.clear();
-			currentLayer.add(this.head.clone());
-			doLayer();
+			currentLayer.add(head.clone());
+			if (head.x < -29990000 || head.z < -29990000 || head.x >= 29990000 || head.z >= 29990000)
+				doLayerNearMapEdge();
+			else
+				doLayer();
 		}
-
+		else this.sealed = false;
+	
 		long time2 = System.nanoTime();
-
+		
 		if (this.sealed)
 		{
-			for (BlockVec3 checkedVec : this.checked)
+			if (!airToReplace.isEmpty())
 			{
-				int blockID = checkedVec.getBlockID(this.world);
-
-				if (blockID == 0)
+				List<ScheduledBlockChange> changeList = new LinkedList<ScheduledBlockChange>();
+				//Note: it is faster to use a LinkedList than an ArrayList when adding a lot of small elements to a list
+				for (BlockVec3 checkedVec : airToReplace)
 				{
-					GCCoreTickHandlerServer.scheduleNewBlockChange(world.provider.dimensionId, new ScheduledBlockChange(checkedVec, breatheableAirID, 0, 3));
+					changeList.add(new ScheduledBlockChange(checkedVec.clone(), breatheableAirID, 0, 3));
 				}
+				GCCoreTickHandlerServer.scheduleNewBlockChange(world.provider.dimensionId, changeList);
 			}
 		}
 		else
 		{
 			this.checked.clear();
-			this.loopThroughD(this.head.clone().translate(new BlockVec3(0, 1, 0)),ForgeDirection.UNKNOWN);
-
-			for (BlockVec3 checkedVec : this.checked)
+			this.breatheableToReplace.clear();
+			this.otherSealers.clear();
+			//loopThroughD will mark breatheableAir blocks for change as it finds them, also searches for unchecked sealers
+			currentLayer.clear();
+			currentLayer.add(this.head.clone());
+			nextLayer = new LinkedList();
+			this.loopThroughD();
+			
+			if (!otherSealers.isEmpty())
 			{
-				int blockID = checkedVec.getBlockID(this.world);
-
-				if (blockID == breatheableAirID)
+			//OtherSealers will have members if the space to be made unbreathable actually still has an unchecked sealer in it
+				List<GCCoreTileEntityOxygenSealer> sealersDone = sealers;
+				for (GCCoreTileEntityOxygenSealer otherSealer : otherSealers)
 				{
-					GCCoreTickHandlerServer.scheduleNewBlockChange(world.provider.dimensionId, new ScheduledBlockChange(checkedVec, 0, 0, 3));
+					//If it hasn't already been counted, need to check the other sealer immediately in case it can keep the space sealed
+					if (!sealersDone.contains(otherSealer) && otherSealer.getFindSealChecks()>0)
+					{
+						BlockVec3 newhead = new BlockVec3(otherSealer).translate(0,1,0);
+						this.sealed = true;
+						this.checkCount=otherSealer.getFindSealChecks();
+						this.sealers = new LinkedList();
+						this.checked.clear();
+						this.checked.add(newhead);
+						currentLayer.clear();
+						nextLayer = new LinkedList();
+						airToReplace.clear();
+						currentLayer.add(newhead.clone());
+						if (newhead.x < -29990000 || newhead.z < -29990000 || newhead.x >= 29990000 || newhead.z >= 29990000)
+							doLayerNearMapEdge();
+						else
+							doLayer();
+
+						//If found a sealer which can still seal the space, it should take over as head
+						if (this.sealed)
+						{
+							if (GCCoreConfigManager.enableDebug) FMLLog.info("Oxygen Sealer replacing head at x" + this.head.x + " y" + (this.head.y-1) + " z" + this.head.z);
+							GCCoreTileEntityOxygenSealer oldHead = sealersDone.get(0);
+							if (!sealers.contains(oldHead)) sealers.add(oldHead);
+							this.head=newhead.clone();
+							otherSealer.threadSeal=this;
+							otherSealer.stopSealThreadCooldown=50;
+							break;
+						}
+					}
+					//Restore sealers to what it was, if this search did not result in a seal
+					this.sealers=sealersDone;
 				}
+			}
+						
+			if (this.sealed == false && !breatheableToReplace.isEmpty())
+			{
+				List<ScheduledBlockChange> changeList = new LinkedList<ScheduledBlockChange>();
+				//Note: a LinkedList is faster than an ArrayList when adding a lot of small elements to a list 
+				for (BlockVec3 checkedVec : breatheableToReplace)
+				{
+					changeList.add(new ScheduledBlockChange(checkedVec.clone(), 0, 0, 3));
+				}
+				GCCoreTickHandlerServer.scheduleNewBlockChange(world.provider.dimensionId, changeList);
 			}
 		}
 
-		TileEntity headTile = this.sealersAround.get(this.head);
+		//Set any sealers found which are not the head sealer, not to run their own seal checks for a while
+		//(The player can control which is the head sealer in a space by enabling just that one and disabling all the others)
+		GCCoreTileEntityOxygenSealer headSealer = this.sealersAround.get(this.head.translate(0,-1,0));
 
-		if (headTile instanceof GCCoreTileEntityOxygenSealer)
+		for (GCCoreTileEntityOxygenSealer sealer : this.sealers)
 		{
-			GCCoreTileEntityOxygenSealer headSealer = (GCCoreTileEntityOxygenSealer) headTile;
-
-			for (GCCoreTileEntityOxygenSealer sealer : this.sealers)
+			//Sealers which are not the head sealer: put them on cooldown so the inactive ones don't start their own threads and so unseal this volume
+			//and update threadSeal reference of all sealers found (even the inactive ones)
+			if (sealer != headSealer && headSealer != null)
 			{
-				if (sealer != null && headSealer != sealer && headSealer.stopSealThreadCooldown <= sealer.stopSealThreadCooldown)
-				{
-					sealer.threadSeal = this;
-					sealer.stopSealThreadCooldown = 100;
-				}
+				sealer.threadSeal = this;
+				sealer.stopSealThreadCooldown = headSealer.stopSealThreadCooldown+51;
 			}
 		}
+		
+		//Help the Java garbage collector by clearing big data structures which are no longer needed 
+		this.airToReplace.clear();
+		this.breatheableToReplace.clear();
 
-		long time3 = System.nanoTime();
-
-		this.looping = false;
+		this.looping.set(false);
 
 		if (GCCoreConfigManager.enableDebug)
 		{
+			long time3 = System.nanoTime();
 			FMLLog.info("Oxygen Sealer Check Completed at x" + this.head.x + " y" + this.head.y + " z" + this.head.z);
 			FMLLog.info("   Sealed: " + this.sealed);
 			FMLLog.info("   Loop Time taken: " + (time2 - time1) / 1000000.0D + "ms");
@@ -166,108 +219,235 @@ public class ThreadFindSeal extends Thread
 			FMLLog.info("   Found: " + this.sealers.size() + " sealers");
 			FMLLog.info("   Looped through: " + this.checked.size() + " blocks");
 		}
+		this.checked.clear();
+		this.sealedFinal.set(sealed);
+		this.anylooping.set(false);
 	}
 
-	private void loopThroughD(BlockVec3 vec, ForgeDirection dirIn)
+	private void loopThroughD()
 	{
-		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+		while (currentLayer.size()>0)
 		{
-			if (dir==dirIn) continue;
-			BlockVec3 sideVec = vec.modifyPositionFromSide(dir,1);
-			//VecDirPair pair = new VecDirPair(sideVec, dir);
-
-			if (!this.checked.contains(sideVec))
+			for(BlockVec3 vec:currentLayer)
 			{
-				this.checked.add(sideVec);
-
-				if (this.breathableAirAdjacent(sideVec))
+				for (int side = 0; side<6; side++)
 				{
-					this.loopThroughD(sideVec,dir.getOpposite());
+					BlockVec3 sideVec = vec.newVecSide(side);
+
+					if (!this.checked.contains(sideVec))
+					{
+						this.checked.add(sideVec);
+						int id=sideVec.getBlockID(this.world);
+						if (id == breatheableAirID)
+						{
+							breatheableToReplace.add(sideVec);
+							//Only follow paths with adjacent breatheableAir blocks - this now can't jump through walls etc
+							nextLayer.add(sideVec);
+						}
+						else if (id == oxygenSealerID)
+						{
+							GCCoreTileEntityOxygenSealer sealer = this.sealersAround.get(sideVec);
+							if (sealer!=null)
+							{
+								if (!this.sealers.contains(sealer))
+								{	
+									this.otherSealers.add(sealer);
+								}
+							}
+						}
+					}
 				}
 			}
+			
+			//Set up the next layer as current layer for the while loop
+			currentLayer=nextLayer;
+			nextLayer = new LinkedList();
 		}
 	}
 
 	private void doLayer()
 	{
-		List<BlockVec3> nextLayer = new LinkedList();
-		
 		LAYERLOOP:
-		for(BlockVec3 vec:currentLayer)
-		{
-				for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+		while (this.sealed && currentLayer.size()>0)
+		{	
+			for(BlockVec3 vec:currentLayer)
+			{
+				for (int side = 0; side<6; side++)
 				{
-					BlockVec3 sideVec = vec.modifyPositionFromSide(dir,1);
-					//VecDirPair pair = new VecDirPair(sideVec, dir);
+					//The sides 0 to 5 correspond with the ForgeDirections but saves a bit of time not to call ForgeDirection
+					BlockVec3 sideVec = vec.newVecSide(side);
 
 					if (!this.checked.contains(sideVec))
 					{
 						if (this.checkCount > 0)
 						{
-						this.checkCount--;
-						this.checked.add(sideVec);
-						
-						int id=sideVec.getBlockID(this.world);
-						if (id==0 || id==breatheableAirID || WorldUtil.canBlockPass(this.world, id, sideVec.getBlockMetadata(this.world), new VecDirPair(sideVec, dir)))
-						{
-							nextLayer.add(sideVec);
-						} else
-	
-						if (id == oxygenSealerID)
-						{
-							GCCoreTileEntityOxygenSealer sealer = this.sealersAround.get(sideVec);
-	
-							if (sealer!=null && sealer.active)
+							this.checkCount--;
+							this.checked.add(sideVec);
+
+							int id=sideVec.getBlockIDsafe(this.world);
+							//NB getBlockIDsafe will return -1, not 0, if the y coordinates are out of bounds - so this won't keep iterating into the void or the stratosphere
+							if (id==0)
 							{
-								 if (!this.sealers.contains(sealer)) this.sealers.add(sealer);
+								nextLayer.add(sideVec);
+								airToReplace.add(sideVec);
+								//Using airToReplace will save time later on in run(), if the volume is sealed
+								//More importantly, if the volume is sealed and has no blocks with id==0
+								//(i.e. a stable sealed volume) then it will save a lot of time later in the thread
 							}
-						}
-						}
-						else
-						if (this.sealed)
-						{
-							int id=sideVec.getBlockID(this.world);
-							if (id == 0 || id == breatheableAirID || WorldUtil.canBlockPass(this.world, id, sideVec.getBlockMetadata(this.world), new VecDirPair(sideVec, dir)))
+							else if (id==-1)
 							{
+								//Broken through to the void or the stratosphere (above y==255) - set unsealed and abort
+								checkCount=0;
 								this.sealed = false;
 								break LAYERLOOP;
 							}
+							else if (id==breatheableAirID || canBlockPassAir(id, sideVec, side))
+							{
+								nextLayer.add(sideVec);
+							}
+							else if (id == oxygenSealerID)
+							{
+								GCCoreTileEntityOxygenSealer sealer = this.sealersAround.get(sideVec);
+
+								if (sealer!=null)
+								{
+									if (!this.sealers.contains(sealer))
+									{	
+										this.sealers.add(sealer);
+										this.checkCount += sealer.getFindSealChecks();
+									}
+								}
+							}
 						}
+						else
+							if (this.sealed)
+							{
+								int id=sideVec.getBlockIDsafe(this.world);
+								//id == -1 means the void or height y>255, both of which are unsealed obviously
+								if (id == 0 || id == breatheableAirID || id == -1 || canBlockPassAir(id, sideVec, side))
+								{
+									this.sealed = false;
+									break LAYERLOOP;
+								}
+							}
 					}
 				}
-		}
-		
-		//Is there a further layer of air/permeable blocks to test?
-		if (this.sealed && nextLayer.size()>0)
-		{	
+			}
+
+			//Is there a further layer of air/permeable blocks to test?
 			currentLayer=nextLayer;
-			doLayer();
+			nextLayer = new LinkedList();
 		}
 	}
-
-	private boolean breathableAirAdjacent(BlockVec3 vec)
+	
+	private void doLayerNearMapEdge()
 	{
-		int x=vec.x;
-		int y=vec.y;
-		int z=vec.z;
-        if (world.getBlockId(x, y-1, z) == breatheableAirID) return true;
-        if (world.getBlockId(x, y+1, z) == breatheableAirID) return true;
-        if (world.getBlockId(x, y, z-1) == breatheableAirID) return true;
-        if (world.getBlockId(x, y, z+1) == breatheableAirID) return true;
-        if (world.getBlockId(x-1, y, z) == breatheableAirID) return true;
-        if (world.getBlockId(x+1, y, z) == breatheableAirID) return true;
+		LAYERLOOPNME:
+		while (this.sealed && currentLayer.size()>0)
+		{	
+			for(BlockVec3 vec:currentLayer)
+			{
+				for (int side = 0; side<6; side++)
+				{
+					//The sides 0 to 5 correspond with the ForgeDirections but saves a bit of time not to call ForgeDirection
+					BlockVec3 sideVec = vec.newVecSide(side);
+
+					if (!this.checked.contains(sideVec))
+					{
+						if (this.checkCount > 0)
+						{
+							this.checkCount--;
+							this.checked.add(sideVec);
+
+							int id=sideVec.getBlockID(this.world);  //This is a slower operation as it involves map edge checks
+							//NB getBlockID will return -1, not 0, if any of the coordinates are out of bounds - so this won't keep iterating into the void or the stratosphere or off the map edge
+							if (id==0)
+							{
+								nextLayer.add(sideVec);
+								airToReplace.add(sideVec);
+								//This will save time later on in run(), if the volume is sealed
+								//More importantly, if the volume is sealed and has no blocks with id==0
+								//(i.e. a stable sealed volume) then it will save a lot of time later in run()
+							}
+							else if (id==-1)
+							{
+								//We've hit the void or the stratosphere or the world edge - abort
+								checkCount=0;
+								this.sealed = false;
+								break LAYERLOOPNME;
+							}
+							else if (id==breatheableAirID || canBlockPassAir(id, sideVec, side))
+							{
+								nextLayer.add(sideVec);
+							}
+							else if (id == oxygenSealerID)
+							{
+								GCCoreTileEntityOxygenSealer sealer = this.sealersAround.get(sideVec);
+
+								if (sealer!=null)
+								{
+									if (!this.sealers.contains(sealer))
+									{	
+										this.sealers.add(sealer);
+										this.checkCount += sealer.getFindSealChecks();
+									}
+								}
+							}
+						}
+						else
+							if (this.sealed)
+							{
+								int id=sideVec.getBlockID(this.world);
+								//id == -1 means the void or height y>255, both of which are unsealed obviously
+								if (id == 0 || id == breatheableAirID || id == -1 || canBlockPassAir(id, sideVec, side))
+								{
+									this.sealed = false;
+									break LAYERLOOPNME;
+								}
+							}
+					}
+				}
+			}
+
+			//Is there a further layer of air/permeable blocks to test?
+			currentLayer=nextLayer;
+			nextLayer = new LinkedList();
+		}
+	}
+	
+	private boolean canBlockPassAir(int id, BlockVec3 vec, int side)
+	{
+		if (OxygenPressureProtocol.vanillaPermeableBlocks.contains(id))
+		{
+			return true;
+		}
+
+		Block block = Block.blocksList[id];
+
+		if (!block.isOpaqueCube())  //Note this will NPE if id==0, so don't call this with id==0
+		{
+			if (block instanceof IPartialSealableBlock)
+			{
+				if (((IPartialSealableBlock) block).isSealed(world, vec.x, vec.y, vec.z, ForgeDirection.getOrientation(side)))
+				{
+					//If a partial block checks as solid, allow it to be tested again from other directions
+					//This won't cause an endless loop, because the block won't be included in nextLayer if it checks as solid
+					this.checked.remove(vec);
+					this.checkCount--;
+					return false;
+				}
+				return true;
+			}
+
+			if (OxygenPressureProtocol.nonPermeableBlocks.containsKey(id) && OxygenPressureProtocol.nonPermeableBlocks.get(id).contains(vec.getBlockMetadata(this.world)))
+			{
+				return false;
+			}
+
+			return true;
+		}
+
 		return false;
 	}
-	/* **
-	 * ** Speedup project for OxygenPressureProtocol and ThreadFindSeal
-	 * **
-	 * ** Steps completed so far:
-	 * ** - conversion of Vector3 to integer arithmetic,
-	 * ** - speedup of breatheableAirAdjacent() which is called the most in the inner loops
-	 * ** - minor changes to some method calls to reduce call stacking
-	 * ** - more changes to checked() to reduce call stacking
-	 * ** - remove some unnecessary double testing in if() statements
-	 * ** - loopThrough now doesn't go backwards down the direction it came in on (small change which makes quite a difference)
-	 * ** 
-	 */
+
 }

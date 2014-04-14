@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
+import micdoodle8.mods.galacticraft.core.oxygen.BlockVec3;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.ScheduledBlockChange;
 import net.minecraft.entity.Entity;
@@ -40,6 +41,19 @@ public class GCCoreTickHandlerServer implements ITickHandler
 		scheduledBlockChanges.put(dimID, changeList);
 	}
 	
+	public static void scheduleNewBlockChange(int dimID, List<ScheduledBlockChange> changeAdd)
+	{
+		List<ScheduledBlockChange> changeList = scheduledBlockChanges.get(dimID);
+		
+		if (changeList == null)
+		{
+			changeList = new ArrayList<ScheduledBlockChange>();
+		}
+		
+		changeList.addAll(changeAdd);
+		scheduledBlockChanges.put(dimID, changeList);
+	}
+	
 	@Override
 	public void tickStart(EnumSet<TickType> type, Object... tickData)
 	{
@@ -57,7 +71,7 @@ public class GCCoreTickHandlerServer implements ITickHandler
 				{
 					if (change != null && change.getChangePosition() != null)
 					{
-						world.setBlock(change.getChangePosition().intX(), change.getChangePosition().intY(), change.getChangePosition().intZ(), change.getChangeID(), change.getChangeMeta(), change.getChangeFlag());
+						world.setBlock(change.getChangePosition().x, change.getChangePosition().y, change.getChangePosition().z, change.getChangeID(), change.getChangeMeta(), change.getChangeFlag());
 					}
 				}
 				

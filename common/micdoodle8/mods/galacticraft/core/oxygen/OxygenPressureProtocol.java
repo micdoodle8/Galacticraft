@@ -3,6 +3,8 @@ package micdoodle8.mods.galacticraft.core.oxygen;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import micdoodle8.mods.galacticraft.core.oxygen.BlockVec3;
@@ -65,57 +67,6 @@ public class OxygenPressureProtocol
 		}
 	}
 
-	public static class VecDirPair
-	{
-		private final BlockVec3 position;
-		private final ForgeDirection direction;
-
-		public VecDirPair(BlockVec3 position, ForgeDirection direction)
-		{
-			this.position = position;
-			this.direction = direction;
-		}
-
-		public BlockVec3 getPosition()
-		{
-			return this.position;
-		}
-
-		public ForgeDirection getDirection()
-		{
-			return this.direction;
-		}
-
-		@Override
-		public int hashCode()
-		{
-			return new HashCodeBuilder().append(this.position.x).append(this.position.y).append(this.position.z).hashCode();
-		}
-
-		@Override
-		public boolean equals(Object other)
-		{
-			if (other == null)
-			{
-				return false;
-			}
-
-			if (other == this)
-			{
-				return true;
-			}
-
-			if (other instanceof VecDirPair)
-			{
-				VecDirPair otherPair = (VecDirPair) other;
-				return new EqualsBuilder().append(this.position.x, otherPair.position.x).append(this.position.y, otherPair.position.y).append(this.position.z, otherPair.position.z).isEquals();
-			}
-
-			return false;
-		}
-	}
-
-
 	public static void updateSealerStatus(GCCoreTileEntityOxygenSealer head)
 	{
 		try
@@ -130,6 +81,6 @@ public class OxygenPressureProtocol
 
 	public static ThreadFindSeal onEdgeBlockUpdated(World world, BlockVec3 vec)
 	{
-		return new ThreadFindSeal(world, vec, 1500, new ArrayList<GCCoreTileEntityOxygenSealer>(), new ArrayList<BlockVec3>(), new HashSet<BlockVec3>());
+		return new ThreadFindSeal(world, vec, 1500, new ArrayList<GCCoreTileEntityOxygenSealer>());
 	}
 }

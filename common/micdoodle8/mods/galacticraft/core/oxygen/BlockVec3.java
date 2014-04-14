@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.oxygen;
 
+import net.minecraft.crash.CrashReport;
+import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -7,9 +9,11 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.ReportedException;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.ForgeDirection;
 
 
@@ -30,6 +34,9 @@ public class BlockVec3 implements Cloneable
 		public int x;
 		public int y;
 		public int z;
+		private Chunk chunkCached;
+		private int chunkCacheX=1876000;  //outside the world edge
+		private int chunkCacheZ=1876000;  //outside the world edge
 
 		public BlockVec3()
 		{
@@ -66,9 +73,70 @@ public class BlockVec3 implements Cloneable
 			return new BlockVec3(this.x, this.y, this.z);
 		}
 
-		public int getBlockID(IBlockAccess world)
+		public int getBlockID(World world)
 		{
-			return world.getBlockId(this.x, this.y, this.z);
+			if (y < 0 || y >= 256 || x < -30000000 || z < -30000000 || x >= 30000000 || z >= 30000000)
+				return -1;
+
+			int chunkx = x >> 4;
+			int chunkz = z >> 4;
+			try
+			{
+				//In a typical inner loop, 80% of the time consecutive calls to this will be within the same chunk
+				if (chunkCacheX==chunkx && chunkCacheZ==chunkz && chunkCached.isChunkLoaded)
+				{
+					return chunkCached.getBlockID(x & 15, y, z & 15);
+				}
+				else
+				{
+					Chunk chunk = null;
+					chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
+					chunkCached = chunk;
+					chunkCacheX = chunkx;
+					chunkCacheZ = chunkz;
+					return chunk.getBlockID(x & 15, y, z & 15);
+				}
+			}
+			catch (Throwable throwable)
+			{
+				CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Oxygen Sealer thread: Exception getting block type in world");
+				CrashReportCategory crashreportcategory = crashreport.makeCategory("Requested block coordinates");
+				crashreportcategory.addCrashSection("Location", CrashReportCategory.getLocationInfo(x, y, z));
+				throw new ReportedException(crashreport);
+			}
+		}
+
+		public int getBlockIDsafe(World world)
+		{
+			if (y < 0 || y >= 256)
+				return -1;
+
+			int chunkx = x >> 4;
+			int chunkz = z >> 4;
+			try
+			{
+				//In a typical inner loop, 80% of the time consecutive calls to this will be within the same chunk
+				if (chunkCacheX==chunkx && chunkCacheZ==chunkz && chunkCached.isChunkLoaded)
+				{
+					return chunkCached.getBlockID(x & 15, y, z & 15);
+				}
+				else
+				{
+					Chunk chunk = null;
+					chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
+					chunkCached = chunk;
+					chunkCacheX = chunkx;
+					chunkCacheZ = chunkz;
+					return chunk.getBlockID(x & 15, y, z & 15);
+				}
+			}
+			catch (Throwable throwable)
+			{
+				CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Oxygen Sealer thread: Exception getting block type in world");
+				CrashReportCategory crashreportcategory = crashreport.makeCategory("Requested block coordinates");
+				crashreportcategory.addCrashSection("Location", CrashReportCategory.getLocationInfo(x, y, z));
+				throw new ReportedException(crashreport);
+			}
 		}
 
 		public BlockVec3 add(BlockVec3 par1)
@@ -84,6 +152,14 @@ public class BlockVec3 implements Cloneable
 			this.x += par1.x;
 			this.y += par1.y;
 			this.z += par1.z;
+			return this;
+		}
+
+		public BlockVec3 translate(int par1x, int par1y, int par1z)
+		{
+			this.x += par1x;
+			this.y += par1y;
+			this.z += par1z;
 			return this;
 		}
 
@@ -103,26 +179,52 @@ public class BlockVec3 implements Cloneable
 		
 		public BlockVec3 modifyPositionFromSide(ForgeDirection side, int amount)
 		{
-			BlockVec3 vec = new BlockVec3(x,y,z);
 			switch (side.ordinal())
 			{
 				case 0:
-					vec.y -= amount;
+					this.y -= amount;
 					break;
 				case 1:
-					vec.y += amount;
+					this.y += amount;
 					break;
 				case 2:
-					vec.z -= amount;
+					this.z -= amount;
 					break;
 				case 3:
-					vec.z += amount;
+					this.z += amount;
 					break;
 				case 4:
-					vec.x -= amount;
+					this.x -= amount;
 					break;
 				case 5:
-					vec.x += amount;
+					this.x += amount;
+					break;
+			}
+			return this;
+		}
+
+		public BlockVec3 newVecSide(int side)
+		{
+			BlockVec3 vec = new BlockVec3(x,y,z);
+			switch (side)
+			{
+				case 0:
+					vec.y--;
+					break;
+				case 1:
+					vec.y++;
+					break;
+				case 2:
+					vec.z--;
+					break;
+				case 3:
+					vec.z++;
+					break;
+				case 4:
+					vec.x--;
+					break;
+				case 5:
+					vec.x++;
 					break;
 			}
 			return vec;

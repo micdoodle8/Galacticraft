@@ -40,6 +40,9 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 	public int stopSealThreadCooldown;
 	@NetworkedField(targetSide = Side.CLIENT)
 	public boolean calculatingSealed;
+	private static int countEntities = 0;
+	private static int countTemp = 0;
+	private static long ticksSave = 0L;
 
 	public GCCoreTileEntityOxygenSealer()
 	{
@@ -63,17 +66,6 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 
 		if (!this.worldObj.isRemote)
 		{
-			if (this.stopSealThreadCooldown > 0)
-			{
-				this.stopSealThreadCooldown--;
-			}
-
-			if (this.threadSeal != null)
-			{
-				this.sealed = this.threadSeal.sealed;
-				this.calculatingSealed = this.threadSeal.looping;
-			}
-
 			if (this.storedOxygen >= 1 && this.getEnergyStored() > 0 && !this.disabled)
 			{
 				this.active = true;
@@ -83,13 +75,35 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 				this.active = false;
 			}
 
-			if (this.ticks % 100 == 0 && this.stopSealThreadCooldown <= 0)
+			if (this.threadSeal != null)
 			{
+				this.sealed = this.threadSeal.sealedFinal.get() && this.active;
+				this.calculatingSealed = this.threadSeal.looping.get() && this.active;
+			}
+
+			
+			if (stopSealThreadCooldown > 0)
+				stopSealThreadCooldown --;
+			//UpdateSealerStatus on the later of cooldown reaching 0 or any busy ThreadFindSeal finishing
+			//Sealers which are already checked by another head sealer will have had their cooldown reset so will always be skipped
+			else if(ThreadFindSeal.anylooping.get()==false)
+			{
+				stopSealThreadCooldown = 50 + countEntities;  //This puts any Sealer which is updated to the back of the queue for updates
 				OxygenPressureProtocol.updateSealerStatus(this);
 			}
 
 			this.lastDisabled = this.disabled;
 			this.lastSealed = this.sealed;
+
+			//Some code to count the number of Oxygen Sealers being updated, tick by tick - needed for queueing
+			if (this.ticks==this.ticksSave)
+				countTemp++;
+			else
+			{
+				ticksSave = this.ticks;
+				countEntities = countTemp;
+				countTemp = 1;
+			}
 		}
 	}
 
