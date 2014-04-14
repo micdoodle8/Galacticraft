@@ -374,10 +374,12 @@ public class GCCoreEvents
 	private static ISchematicPage getNextSchematic(int currentIndex)
 	{
 		final HashMap<Integer, Integer> idList = new HashMap<Integer, Integer>();
+		
+		GCCorePlayerSP player = PlayerUtil.getPlayerBaseClientFromPlayer(FMLClientHandler.instance().getClient().thePlayer, false);
 
-		for (int i = 0; i < PlayerUtil.getPlayerBaseClientFromPlayer(FMLClientHandler.instance().getClient().thePlayer).unlockedSchematics.size(); i++)
+		for (int i = 0; i < player.unlockedSchematics.size(); i++)
 		{
-			idList.put(i, PlayerUtil.getPlayerBaseClientFromPlayer(FMLClientHandler.instance().getClient().thePlayer).unlockedSchematics.get(i).getPageID());
+			idList.put(i, player.unlockedSchematics.get(i).getPageID());
 		}
 
 		final SortedSet<Integer> keys = new TreeSet<Integer>(idList.keySet());
@@ -390,9 +392,9 @@ public class GCCoreEvents
 
 			if (page.getPageID() == currentIndex)
 			{
-				if (count + 1 < PlayerUtil.getPlayerBaseClientFromPlayer(FMLClientHandler.instance().getClient().thePlayer).unlockedSchematics.size())
+				if (count + 1 < player.unlockedSchematics.size())
 				{
-					return PlayerUtil.getPlayerBaseClientFromPlayer(FMLClientHandler.instance().getClient().thePlayer).unlockedSchematics.get(count + 1);
+					return player.unlockedSchematics.get(count + 1);
 				}
 				else
 				{
@@ -408,10 +410,12 @@ public class GCCoreEvents
 	private static ISchematicPage getLastSchematic(int currentIndex)
 	{
 		final HashMap<Integer, Integer> idList = new HashMap<Integer, Integer>();
+		
+		GCCorePlayerSP player = PlayerUtil.getPlayerBaseClientFromPlayer(FMLClientHandler.instance().getClient().thePlayer, false);
 
-		for (int i = 0; i < PlayerUtil.getPlayerBaseClientFromPlayer(FMLClientHandler.instance().getClient().thePlayer).unlockedSchematics.size(); i++)
+		for (int i = 0; i < player.unlockedSchematics.size(); i++)
 		{
-			idList.put(i, PlayerUtil.getPlayerBaseClientFromPlayer(FMLClientHandler.instance().getClient().thePlayer).unlockedSchematics.get(i).getPageID());
+			idList.put(i, player.unlockedSchematics.get(i).getPageID());
 		}
 
 		final SortedSet<Integer> keys = new TreeSet<Integer>(idList.keySet());
@@ -426,7 +430,7 @@ public class GCCoreEvents
 			{
 				if (count - 1 >= 0)
 				{
-					return PlayerUtil.getPlayerBaseClientFromPlayer(FMLClientHandler.instance().getClient().thePlayer).unlockedSchematics.get(count - 1);
+					return player.unlockedSchematics.get(count - 1);
 				}
 				else
 				{

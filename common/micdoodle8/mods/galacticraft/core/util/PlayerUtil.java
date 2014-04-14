@@ -20,7 +20,7 @@ import net.minecraft.entity.player.EntityPlayer;
  */
 public class PlayerUtil
 {
-	public static GCCorePlayerMP getPlayerBaseServerFromPlayerUsername(String username)
+	public static GCCorePlayerMP getPlayerBaseServerFromPlayerUsername(String username, boolean ignoreCase)
 	{
 		if (GalacticraftCore.playersServer.isEmpty())
 		{
@@ -33,7 +33,7 @@ public class PlayerUtil
 		{
 			Map.Entry<String, GCCorePlayerMP> entry = it.next();
 
-			if (entry.getKey().equals(username))
+			if (entry.getKey().equals(username) || (ignoreCase && entry.getKey().equalsIgnoreCase(username)))
 			{
 				return entry.getValue();
 			}
@@ -44,7 +44,7 @@ public class PlayerUtil
 		return null;
 	}
 
-	public static GCCorePlayerMP getPlayerBaseServerFromPlayer(EntityPlayer player)
+	public static GCCorePlayerMP getPlayerBaseServerFromPlayer(EntityPlayer player, boolean ignoreCase)
 	{
 		if (player == null)
 		{
@@ -62,7 +62,7 @@ public class PlayerUtil
 		{
 			final Map.Entry<String, GCCorePlayerMP> entry = it.next();
 
-			if (entry.getKey().equals(player.username))
+			if (entry.getKey().equals(player.username) || (ignoreCase && entry.getKey().equalsIgnoreCase(player.username)))
 			{
 				return entry.getValue();
 			}
@@ -73,7 +73,7 @@ public class PlayerUtil
 		return null;
 	}
 
-	public static GCCorePlayerSP getPlayerBaseClientFromPlayer(EntityPlayer player)
+	public static GCCorePlayerSP getPlayerBaseClientFromPlayer(EntityPlayer player, boolean ignoreCase)
 	{
 		if (player == null)
 		{
@@ -91,7 +91,7 @@ public class PlayerUtil
 		{
 			final Map.Entry<String, GCCorePlayerSP> entry = it.next();
 
-			if (entry.getKey() != null && entry.getKey().equals(player.username))
+			if (entry.getKey().equals(player.username) || (ignoreCase && entry.getKey().equalsIgnoreCase(player.username)))
 			{
 				return entry.getValue();
 			}

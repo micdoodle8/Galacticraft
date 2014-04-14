@@ -160,7 +160,7 @@ public class GCCoreEntityRocketT1 extends EntityTieredRocket
 	@Override
 	public void onTeleport(EntityPlayerMP player)
 	{
-		final GCCorePlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player);
+		final GCCorePlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player, false);
 
 		player.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.ZOOM_CAMERA, new Object[] { 0 }));
 

@@ -140,7 +140,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
 		final int packetType = PacketUtil.readPacketID(data);
 
 		final EntityPlayerMP player = (EntityPlayerMP) p;
-		final GCCorePlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player);
+		final GCCorePlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player, false);
 
 		Object[] packetReadout = null;
 		EnumPacketServer packetInfo = EnumPacketServer.values()[packetType];

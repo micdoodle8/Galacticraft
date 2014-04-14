@@ -69,7 +69,7 @@ public class GCCoreKeyHandlerClient extends KeyHandler
 			return;
 		}
 
-		final GCCorePlayerSP playerBase = PlayerUtil.getPlayerBaseClientFromPlayer(player);
+		final GCCorePlayerSP playerBase = PlayerUtil.getPlayerBaseClientFromPlayer(player, false);
 
 		if (minecraft.currentScreen != null || tickEnd)
 		{

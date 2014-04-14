@@ -370,7 +370,7 @@ public class GCCoreTickHandlerClient implements ITickHandler
 
 		final EntityPlayerSP player = minecraft.thePlayer;
 
-		final GCCorePlayerSP playerBaseClient = PlayerUtil.getPlayerBaseClientFromPlayer(player);
+		final GCCorePlayerSP playerBaseClient = PlayerUtil.getPlayerBaseClientFromPlayer(player, false);
 
 		if (player != null && player.inventory.armorItemInSlot(3) != null)
 		{

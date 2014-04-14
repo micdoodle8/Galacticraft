@@ -103,7 +103,7 @@ public class GCCoreOverlaySensorGlasses extends GCCoreOverlay
 
 			boolean var2 = false;
 
-			final GCCorePlayerSP client = PlayerUtil.getPlayerBaseClientFromPlayer(GCCoreOverlaySensorGlasses.minecraft.thePlayer);
+			final GCCorePlayerSP client = PlayerUtil.getPlayerBaseClientFromPlayer(GCCoreOverlaySensorGlasses.minecraft.thePlayer, false);
 
 			if (client != null)
 			{

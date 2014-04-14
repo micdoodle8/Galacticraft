@@ -143,7 +143,7 @@ public class GCCorePacketHandlerClient implements IPacketHandler
 
 		if (player != null)
 		{
-			playerBaseClient = PlayerUtil.getPlayerBaseClientFromPlayer(player);
+			playerBaseClient = PlayerUtil.getPlayerBaseClientFromPlayer(player, false);
 		}
 
 		EnumPacketClient packetType = EnumPacketClient.values()[PacketUtil.readPacketID(data)];

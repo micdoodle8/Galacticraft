@@ -50,7 +50,7 @@ public class GCCoreCommandSpaceStationRemoveOwner extends CommandBase
 
 			try
 			{
-				playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(icommandsender.getCommandSenderName());
+				playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(icommandsender.getCommandSenderName(), false);
 
 				if (playerBase != null)
 				{

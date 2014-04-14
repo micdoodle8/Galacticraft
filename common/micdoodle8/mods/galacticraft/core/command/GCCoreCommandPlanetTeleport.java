@@ -47,7 +47,7 @@ public class GCCoreCommandPlanetTeleport extends CommandBase
 		{
 			try
 			{
-				playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(astring[0]);
+				playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(astring[0], true);
 
 				if (playerBase != null)
 				{

@@ -626,7 +626,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 
 		if (this.createSpaceStationButton != null)
 		{
-			PlayerUtil.getPlayerBaseClientFromPlayer(this.playerToSend);
+			PlayerUtil.getPlayerBaseClientFromPlayer(this.playerToSend, false);
 
 			if (par1 >= this.createSpaceStationButton.xPosition && par2 >= this.createSpaceStationButton.yPosition && par1 < this.createSpaceStationButton.xPosition + 120 && par2 < this.createSpaceStationButton.yPosition + 20)
 			{

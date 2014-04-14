@@ -50,7 +50,7 @@ public class GCCoreCommandSpaceStationAddOwner extends CommandBase
 
 			try
 			{
-				playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(icommandsender.getCommandSenderName());
+				playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(icommandsender.getCommandSenderName(), true);
 
 				if (playerBase != null)
 				{
@@ -69,7 +69,7 @@ public class GCCoreCommandSpaceStationAddOwner extends CommandBase
 						}
 					}
 
-					final GCCorePlayerMP playerToAdd = PlayerUtil.getPlayerBaseServerFromPlayerUsername(var3);
+					final GCCorePlayerMP playerToAdd = PlayerUtil.getPlayerBaseServerFromPlayerUsername(var3, true);
 
 					if (playerToAdd != null)
 					{

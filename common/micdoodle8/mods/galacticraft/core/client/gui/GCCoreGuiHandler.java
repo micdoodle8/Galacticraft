@@ -74,7 +74,7 @@ public class GCCoreGuiHandler implements IGuiHandler
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
 	{
-		GCCorePlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player);
+		GCCorePlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player, false);
 
 		if (playerBase == null)
 		{
@@ -291,7 +291,7 @@ public class GCCoreGuiHandler implements IGuiHandler
 			}
 		}
 
-		GCCorePlayerSP playerClient = PlayerUtil.getPlayerBaseClientFromPlayer(player);
+		GCCorePlayerSP playerClient = PlayerUtil.getPlayerBaseClientFromPlayer(player, false);
 
 		if (playerClient != null)
 		{
