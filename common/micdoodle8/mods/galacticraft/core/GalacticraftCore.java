@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +20,7 @@ import micdoodle8.mods.galacticraft.api.world.IPlanet;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockFluid;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiHandler;
+import micdoodle8.mods.galacticraft.core.command.GCCoreCommandKeepDim;
 import micdoodle8.mods.galacticraft.core.command.GCCoreCommandPlanetTeleport;
 import micdoodle8.mods.galacticraft.core.command.GCCoreCommandSpaceStationAddOwner;
 import micdoodle8.mods.galacticraft.core.command.GCCoreCommandSpaceStationRemoveOwner;
@@ -253,6 +255,7 @@ public class GalacticraftCore
 		GalacticraftRegistry.registerCelestialBody(GalacticraftCore.sun);
 		GalacticraftRegistry.registerGalaxy(GalacticraftCore.galaxyMilkyWay);
 		DimensionManager.registerProviderType(GCCoreConfigManager.idDimensionOverworldOrbit, GCCoreWorldProviderSpaceStation.class, false);
+		DimensionManager.registerProviderType(GCCoreConfigManager.idDimensionOverworldOrbitStatic, GCCoreWorldProviderSpaceStation.class, true);
 		GalacticraftCore.proxy.init(event);
 		GalacticraftRegistry.registerTeleportType(WorldProviderSurface.class, new GCCoreOverworldTeleportType());
 		GalacticraftRegistry.registerTeleportType(GCCoreWorldProviderSpaceStation.class, new GCCoreOrbitTeleportType());
@@ -316,7 +319,8 @@ public class GalacticraftCore
 		{
 			if (celestialBody.autoRegister())
 			{
-				DimensionManager.registerProviderType(celestialBody.getDimensionID(), celestialBody.getWorldProvider(), false);
+				int id = Arrays.binarySearch(GCCoreConfigManager.staticLoadDimensions, celestialBody.getDimensionID());
+				DimensionManager.registerProviderType(celestialBody.getDimensionID(), celestialBody.getWorldProvider(), id < 0);
 			}
 		}
 
@@ -402,6 +406,7 @@ public class GalacticraftCore
 		event.registerServerCommand(new GCCoreCommandSpaceStationAddOwner());
 		event.registerServerCommand(new GCCoreCommandSpaceStationRemoveOwner());
 		event.registerServerCommand(new GCCoreCommandPlanetTeleport());
+		event.registerServerCommand(new GCCoreCommandKeepDim());
 
 		WorldUtil.registerSpaceStations(event.getServer().worldServerForDimension(0).getSaveHandler().getMapFileFromName("dummy").getParentFile());
 
@@ -409,7 +414,12 @@ public class GalacticraftCore
 		{
 			if (celestialBody.autoRegister())
 			{
+				int id = Arrays.binarySearch(GCCoreConfigManager.staticLoadDimensions, celestialBody.getDimensionID());
 				WorldUtil.registerPlanet(celestialBody.getDimensionID(), true);
+				if (id >= 0)
+				{
+					FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(celestialBody.getDimensionID());
+				}
 			}
 		}
 	}

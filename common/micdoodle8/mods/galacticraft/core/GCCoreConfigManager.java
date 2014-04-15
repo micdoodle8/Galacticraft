@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core;
 
 import java.io.File;
+import java.util.Arrays;
 
 import net.minecraft.block.Block;
 import net.minecraftforge.common.Configuration;
@@ -21,6 +22,7 @@ public class GCCoreConfigManager
 	static Configuration configuration;
 
 	public static int idDimensionOverworldOrbit;
+	public static int idDimensionOverworldOrbitStatic;
 
 	// BLOCKS
 	public static int idBlockBreatheableAir;
@@ -168,6 +170,7 @@ public class GCCoreConfigManager
 	public static boolean enableTinOreGen;
 	public static boolean enableAluminumOreGen;
 	public static boolean enableSiliconOreGen;
+	public static int[] staticLoadDimensions = {};
 
 	public static void setDefaultValues(File file)
 	{
@@ -181,7 +184,10 @@ public class GCCoreConfigManager
 			GCCoreConfigManager.configuration.load();
 
 			GCCoreConfigManager.idDimensionOverworldOrbit = GCCoreConfigManager.configuration.get("DIMENSIONS", "idDimensionOverworldOrbit", -27).getInt(-27);
-
+			GCCoreConfigManager.idDimensionOverworldOrbitStatic = GCCoreConfigManager.configuration.get("DIMENSIONS", "idDimensionOverworldOrbitStatic", -26, "Static Space Station ID").getInt(-26);
+			GCCoreConfigManager.staticLoadDimensions = GCCoreConfigManager.configuration.get("DIMENSIONS", "Static Loaded Dimensions", staticLoadDimensions, "IDs to load at startup, and keep loaded until server stops. Can be added via /gckeeploaded").getIntList();
+			System.out.println("asd " + GCCoreConfigManager.configuration.get("DIMENSIONS", "Static Loaded Dimensions", staticLoadDimensions, "IDs to load at startup, and keep loaded until server stops. Can be added via /gckeepdim").getIntList().length);
+			
 			GCCoreConfigManager.idBlockBreatheableAir = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockCoreBreatheableAir", 3350).getInt(3350);
 			GCCoreConfigManager.idBlockLandingPad = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockLandingPad", 3351).getInt(3351);
 			GCCoreConfigManager.idBlockLandingPadFull = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockLandingPadFull", 3352).getInt(3352);
@@ -331,5 +337,44 @@ public class GCCoreConfigManager
 
 			GCCoreConfigManager.loaded = true;
 		}
+	}
+	
+	public static boolean setLoaded(int newID)
+	{
+		boolean found = false;
+		
+		for (int i = 0; i < GCCoreConfigManager.staticLoadDimensions.length; i++)
+		{
+			if (GCCoreConfigManager.staticLoadDimensions[i] == newID)
+			{
+				found = true;
+				break;
+			}
+		}
+		
+		if (!found)
+		{
+			int[] oldIDs = GCCoreConfigManager.staticLoadDimensions;
+			GCCoreConfigManager.staticLoadDimensions = new int[GCCoreConfigManager.staticLoadDimensions.length + 1];
+			
+			for (int i = 0; i < oldIDs.length; i++)
+			{
+				GCCoreConfigManager.staticLoadDimensions[i] = oldIDs[i];
+			}
+			
+			GCCoreConfigManager.staticLoadDimensions[GCCoreConfigManager.staticLoadDimensions.length - 1] = newID;
+			String[] values = new String[GCCoreConfigManager.staticLoadDimensions.length];
+			Arrays.sort(GCCoreConfigManager.staticLoadDimensions);
+			
+			for (int i = 0; i < values.length; i++)
+			{
+				values[i] = String.valueOf(GCCoreConfigManager.staticLoadDimensions[i]);
+			}
+			
+			GCCoreConfigManager.configuration.get("DIMENSIONS", "Static Loaded Dimensions", staticLoadDimensions, "IDs to load at startup, and keep loaded until server stops. Can be added via /gckeeploaded").set(values);
+			GCCoreConfigManager.configuration.save();
+		}
+		
+		return !found;
 	}
 }

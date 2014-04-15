@@ -3,9 +3,11 @@ package micdoodle8.mods.galacticraft.core.network;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 
+import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
@@ -41,7 +43,10 @@ public class GCCorePacketDimensionListSpaceStations implements IGalacticraftAdva
 			while (var3.hasNext())
 			{
 				final Integer var4 = (Integer) var3.next();
-				data.writeInt(var4.intValue());
+				int dimID = var4.intValue();
+				data.writeInt(dimID);
+				int id = Arrays.binarySearch(GCCoreConfigManager.staticLoadDimensions, dimID);
+				data.writeBoolean(id >= 0);
 			}
 
 			packet.data = bytes.toByteArray();

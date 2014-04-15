@@ -338,11 +338,12 @@ public class GCCorePacketHandlerClient implements IPacketHandler
 				for (int var2 = 0; var2 < var1; ++var2)
 				{
 					final int var3 = data.readInt();
+					boolean staticDim = data.readBoolean();
 
 					if (!WorldUtil.registeredSpaceStations.contains(Integer.valueOf(var3)))
 					{
 						WorldUtil.registeredSpaceStations.add(Integer.valueOf(var3));
-						DimensionManager.registerDimension(var3, GCCoreConfigManager.idDimensionOverworldOrbit);
+						DimensionManager.registerDimension(var3, staticDim ? GCCoreConfigManager.idDimensionOverworldOrbitStatic : GCCoreConfigManager.idDimensionOverworldOrbit);
 					}
 				}
 			}

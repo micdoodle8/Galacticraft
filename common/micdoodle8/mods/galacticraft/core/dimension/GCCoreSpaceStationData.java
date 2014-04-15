@@ -107,7 +107,8 @@ public class GCCoreSpaceStationData extends WorldSavedData
 
 	public static GCCoreSpaceStationData getStationData(World var0, int var1, EntityPlayer player)
 	{
-		if (DimensionManager.getProviderType(var1) != GCCoreConfigManager.idDimensionOverworldOrbit)
+		int providerType = DimensionManager.getProviderType(var1);
+		if (providerType != GCCoreConfigManager.idDimensionOverworldOrbit && providerType != GCCoreConfigManager.idDimensionOverworldOrbitStatic)
 		{
 			return null;
 		}

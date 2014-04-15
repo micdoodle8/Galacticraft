@@ -6,6 +6,7 @@ import ic2.api.energy.tile.IEnergyTile;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -16,7 +17,6 @@ import mekanism.api.gas.IGasTransmitter;
 import mekanism.api.gas.ITubeConnection;
 import mekanism.api.transmitters.TransmissionType;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
-import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.api.entity.IWorldTransferCallback;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
@@ -44,9 +44,7 @@ import micdoodle8.mods.galacticraft.core.network.GCCorePacketDimensionListPlanet
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketDimensionListSpaceStations;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumPacketClient;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketSpaceStationData;
-import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol;
 import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -395,7 +393,17 @@ public class WorldUtil
 
 		for (Integer registeredID : WorldUtil.registeredSpaceStations)
 		{
-			DimensionManager.registerDimension(registeredID.intValue(), GCCoreConfigManager.idDimensionOverworldOrbit);
+			int id = Arrays.binarySearch(GCCoreConfigManager.staticLoadDimensions, registeredID.intValue());
+			
+			if (id >= 0)
+			{
+				DimensionManager.registerDimension(registeredID.intValue(), GCCoreConfigManager.idDimensionOverworldOrbitStatic);
+				FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(registeredID.intValue());
+			}
+			else
+			{
+				DimensionManager.registerDimension(registeredID.intValue(), GCCoreConfigManager.idDimensionOverworldOrbit);
+			}
 		}
 	}
 
@@ -479,7 +487,16 @@ public class WorldUtil
 	public static GCCoreSpaceStationData createSpaceStation(World world, int dimID, GCCorePlayerMP player)
 	{
 		WorldUtil.registeredSpaceStations.add(dimID);
-		DimensionManager.registerDimension(dimID, GCCoreConfigManager.idDimensionOverworldOrbit);
+		int id = Arrays.binarySearch(GCCoreConfigManager.staticLoadDimensions, dimID);
+		
+		if (id >= 0)
+		{
+			DimensionManager.registerDimension(dimID, GCCoreConfigManager.idDimensionOverworldOrbitStatic);
+		}
+		else
+		{
+			DimensionManager.registerDimension(dimID, GCCoreConfigManager.idDimensionOverworldOrbit);
+		}
 
 		final MinecraftServer var2 = FMLCommonHandler.instance().getMinecraftServerInstance();
 
