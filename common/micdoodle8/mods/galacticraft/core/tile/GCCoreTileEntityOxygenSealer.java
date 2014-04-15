@@ -4,6 +4,7 @@ import java.util.EnumSet;
 
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
 import micdoodle8.mods.galacticraft.core.GCCoreAnnotations.NetworkedField;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol;
 import micdoodle8.mods.galacticraft.core.oxygen.ThreadFindSeal;
 import net.minecraft.entity.player.EntityPlayer;
@@ -55,7 +56,13 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 		{
 			return 0;
 		}
-
+		int blockAbove = this.worldObj.getBlockId(this.xCoord, this.yCoord + 1, this.zCoord);
+		if (blockAbove != 0 && blockAbove != GCCoreBlocks.breatheableAir.blockID)
+		{
+			//The vent is blocked
+			return 0;
+		}
+		
 		return 1250;
 	}
 

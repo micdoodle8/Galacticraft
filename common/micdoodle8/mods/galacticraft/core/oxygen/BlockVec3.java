@@ -239,9 +239,8 @@ public class BlockVec3 implements Cloneable
 		@Override
 		public int hashCode()
 		{
-			//Note: this is now copying the same hashCode calculation as in VecDirPair
-			//It's a fairly weak hashCode - for example, increasing z by 37 will have the same hashCode as increasing y by 1 
-			return ((17*37+x)*37+y)*37+z;//(this.x + "Y" + this.y + "Z" + this.z + "posit").hashCode();
+			//Upgraded hashCode calculation from the one in VecDirPair to something a bit stronger and faster
+			return ((y*379+x)*373+z)*7;
 		}
 
 		@Override
