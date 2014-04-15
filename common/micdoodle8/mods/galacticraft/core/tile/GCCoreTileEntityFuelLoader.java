@@ -3,11 +3,11 @@ package micdoodle8.mods.galacticraft.core.tile;
 import micdoodle8.mods.galacticraft.api.entity.IFuelable;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GCCoreAnnotations.NetworkedField;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemFuelCanister;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.oxygen.BlockVec3;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -101,41 +101,29 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectricBlock im
 
 			if (this.ticks % 100 == 0)
 			{
-				boolean foundFuelable = false;
+				this.attachedFuelable = null;
 
-				for (final ForgeDirection dir : ForgeDirection.values())
+				for (final ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
 				{
-					if (dir != ForgeDirection.UNKNOWN)
+					final TileEntity pad = new BlockVec3(this).modifyPositionFromSide(dir,1).getTileEntity(this.worldObj);
+
+					if (pad instanceof TileEntityMulti)
 					{
-						Vector3 vecAt = new Vector3(this);
-						vecAt = vecAt.modifyPositionFromSide(dir);
+						final TileEntity mainTile = ((TileEntityMulti) pad).mainBlockPosition.getTileEntity(this.worldObj);
 
-						final TileEntity pad = vecAt.getTileEntity(this.worldObj);
-
-						if (pad != null && pad instanceof TileEntityMulti)
+						if (mainTile instanceof IFuelable)
 						{
-							final TileEntity mainTile = ((TileEntityMulti) pad).mainBlockPosition.getTileEntity(this.worldObj);
-
-							if (mainTile != null && mainTile instanceof IFuelable)
-							{
-								this.attachedFuelable = (IFuelable) mainTile;
-								foundFuelable = true;
-								break;
-							}
-						}
-						else if (pad != null && pad instanceof IFuelable)
-						{
-							this.attachedFuelable = (IFuelable) pad;
-							foundFuelable = true;
+							this.attachedFuelable = (IFuelable) mainTile;
 							break;
 						}
 					}
+					else if (pad instanceof IFuelable)
+					{
+						this.attachedFuelable = (IFuelable) pad;
+						break;
+					}
 				}
 
-				if (!foundFuelable)
-				{
-					this.attachedFuelable = null;
-				}
 			}
 
 			if (this.fuelTank != null && this.fuelTank.getFluid() != null && this.fuelTank.getFluid().amount > 0)
