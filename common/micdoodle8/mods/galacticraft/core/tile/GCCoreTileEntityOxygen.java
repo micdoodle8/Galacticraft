@@ -13,9 +13,9 @@ import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfig
 import micdoodle8.mods.galacticraft.api.transmission.core.grid.IOxygenNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IOxygenReceiver;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IOxygenStorage;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GCCoreAnnotations.NetworkedField;
 import micdoodle8.mods.galacticraft.core.GCCoreAnnotations.RuntimeInterface;
+import micdoodle8.mods.galacticraft.core.oxygen.BlockVec3;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
@@ -234,13 +234,11 @@ public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectricBlo
 
 	public boolean produceOxygen(ForgeDirection outputDirection)
 	{
-		if (!this.worldObj.isRemote && outputDirection != null && outputDirection != ForgeDirection.UNKNOWN)
-		{
 			float provide = this.getOxygenProvide(outputDirection);
 
 			if (provide > 0)
 			{
-				TileEntity outputTile = new Vector3(this).modifyPositionFromSide(outputDirection).getTileEntity(this.worldObj);
+				TileEntity outputTile = new BlockVec3(this).modifyPositionFromSide(outputDirection).getTileEntity(this.worldObj);
 				IOxygenNetwork outputNetwork = NetworkHelper.getOxygenNetworkFromTileEntity(outputTile, outputDirection);
 
 				if (outputNetwork != null)
@@ -294,7 +292,6 @@ public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectricBlo
 					}
 				}
 			}
-		}
 
 		return false;
 	}
