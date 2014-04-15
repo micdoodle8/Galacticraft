@@ -22,20 +22,21 @@ public class PlayerUtil
 {
 	public static GCCorePlayerMP getPlayerBaseServerFromPlayerUsername(String username, boolean ignoreCase)
 	{
-		if (GalacticraftCore.playersServer.isEmpty())
+		GCCorePlayerMP thePlayer = GalacticraftCore.playersServer.get(username);
+		if (thePlayer!=null) return thePlayer;
+
+		if (ignoreCase)
 		{
-			// new EmptyStackException().printStackTrace();
-		}
-
-		final Iterator<Map.Entry<String, GCCorePlayerMP>> it = GalacticraftCore.playersServer.entrySet().iterator();
-
-		while (it.hasNext())
-		{
-			Map.Entry<String, GCCorePlayerMP> entry = it.next();
-
-			if (entry.getKey().equals(username) || (ignoreCase && entry.getKey().equalsIgnoreCase(username)))
+			final Iterator<Map.Entry<String, GCCorePlayerMP>> it = GalacticraftCore.playersServer.entrySet().iterator();
+	
+			while (it.hasNext())
 			{
-				return entry.getValue();
+				Map.Entry<String, GCCorePlayerMP> entry = it.next();
+	
+				if (entry.getKey().equalsIgnoreCase(username))
+				{
+					return entry.getValue();
+				}
 			}
 		}
 
@@ -51,20 +52,21 @@ public class PlayerUtil
 			return null;
 		}
 
-		if (GalacticraftCore.playersServer.isEmpty())
+		GCCorePlayerMP thePlayer = GalacticraftCore.playersServer.get(player.username);
+		if (thePlayer!=null) return thePlayer;
+
+		if (ignoreCase)
 		{
-			// new EmptyStackException().printStackTrace();
-		}
-
-		final Iterator<Map.Entry<String, GCCorePlayerMP>> it = GalacticraftCore.playersServer.entrySet().iterator();
-
-		while (it.hasNext())
-		{
-			final Map.Entry<String, GCCorePlayerMP> entry = it.next();
-
-			if (entry.getKey().equals(player.username) || (ignoreCase && entry.getKey().equalsIgnoreCase(player.username)))
+			final Iterator<Map.Entry<String, GCCorePlayerMP>> it = GalacticraftCore.playersServer.entrySet().iterator();
+	
+			while (it.hasNext())
 			{
-				return entry.getValue();
+				Map.Entry<String, GCCorePlayerMP> entry = it.next();
+	
+				if (entry.getKey().equalsIgnoreCase(player.username))
+				{
+					return entry.getValue();
+				}
 			}
 		}
 
@@ -85,15 +87,21 @@ public class PlayerUtil
 			return null;
 		}
 
-		final Iterator<Map.Entry<String, GCCorePlayerSP>> it = GalacticraftCore.playersClient.entrySet().iterator();
+		GCCorePlayerSP thePlayer = GalacticraftCore.playersClient.get(player.username);
+		if (thePlayer!=null) return thePlayer;
 
-		while (it.hasNext())
+		if (ignoreCase)
 		{
-			final Map.Entry<String, GCCorePlayerSP> entry = it.next();
-
-			if (entry.getKey().equals(player.username) || (ignoreCase && entry.getKey().equalsIgnoreCase(player.username)))
+			final Iterator<Map.Entry<String, GCCorePlayerSP>> it = GalacticraftCore.playersClient.entrySet().iterator();
+	
+			while (it.hasNext())
 			{
-				return entry.getValue();
+				Map.Entry<String, GCCorePlayerSP> entry = it.next();
+	
+				if (entry.getKey().equalsIgnoreCase(player.username))
+				{
+					return entry.getValue();
+				}
 			}
 		}
 
