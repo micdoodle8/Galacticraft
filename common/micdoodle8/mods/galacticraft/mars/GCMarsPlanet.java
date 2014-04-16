@@ -68,4 +68,10 @@ public class GCMarsPlanet implements IPlanet
 	{
 		return GCMarsConfigManager.dimensionIDMars;
 	}
+
+	@Override
+	public boolean forceStaticLoad()
+	{
+		return true;
+	}
 }

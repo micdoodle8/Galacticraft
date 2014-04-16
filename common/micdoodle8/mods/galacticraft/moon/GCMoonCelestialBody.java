@@ -68,4 +68,10 @@ public class GCMoonCelestialBody implements IMoon
 	{
 		return GCMoonConfigManager.dimensionIDMoon;
 	}
+
+	@Override
+	public boolean forceStaticLoad()
+	{
+		return true;
+	}
 }

@@ -64,4 +64,10 @@ public class GCCorePlanetSun implements IPlanet
 	{
 		return -1;
 	}
+
+	@Override
+	public boolean forceStaticLoad()
+	{
+		return false;
+	}
 }

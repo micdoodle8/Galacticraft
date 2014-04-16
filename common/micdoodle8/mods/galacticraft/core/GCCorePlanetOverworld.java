@@ -66,4 +66,10 @@ public class GCCorePlanetOverworld implements IPlanet
 	{
 		return 0;
 	}
+
+	@Override
+	public boolean forceStaticLoad()
+	{
+		return false;
+	}
 }

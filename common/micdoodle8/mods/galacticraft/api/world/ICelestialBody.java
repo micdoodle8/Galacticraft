@@ -62,4 +62,11 @@ public interface ICelestialBody
 	 *         reachable.
 	 */
 	public int getDimensionID();
+	
+	/**
+	 * Whether or not to override /GCKeepDim command.
+	 * 
+	 * @return Load this dimension at server startup and keep loaded if true.
+	 */
+	public boolean forceStaticLoad();
 }

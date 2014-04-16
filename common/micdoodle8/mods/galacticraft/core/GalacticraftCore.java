@@ -320,7 +320,7 @@ public class GalacticraftCore
 			if (celestialBody.autoRegister())
 			{
 				int id = Arrays.binarySearch(GCCoreConfigManager.staticLoadDimensions, celestialBody.getDimensionID());
-				DimensionManager.registerProviderType(celestialBody.getDimensionID(), celestialBody.getWorldProvider(), id < 0);
+				DimensionManager.registerProviderType(celestialBody.getDimensionID(), celestialBody.getWorldProvider(), celestialBody.forceStaticLoad() || id < 0);
 			}
 		}
 
