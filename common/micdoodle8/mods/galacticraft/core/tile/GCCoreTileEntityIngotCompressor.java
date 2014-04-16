@@ -156,43 +156,41 @@ public class GCCoreTileEntityIngotCompressor extends GCCoreTileEntityAdvanced im
 		int result = this.containingItems[1].stackSize + itemstack.stackSize;
 		return result <= this.getInventoryStackLimit() && result <= itemstack.getMaxStackSize();
 	}
-	
+
 	public static boolean isItemCompressorInput(ItemStack stack)
 	{
 		for (IRecipe recipe : CompressorRecipes.getRecipeList())
 		{
 			if (recipe instanceof ShapedRecipes)
 			{
-				for (int i = 0; i < ((ShapedRecipes) recipe).recipeItems.length; i++)
+				for (ItemStack itemstack1 : ((ShapedRecipes) recipe).recipeItems)
 				{
-					ItemStack itemstack1 = ((ShapedRecipes) recipe).recipeItems[i];
-					
-                    if (stack.itemID == itemstack1.itemID && (itemstack1.getItemDamage() == 32767 || stack.getItemDamage() == itemstack1.getItemDamage()))
-                    {
-                    	return true;
-                    }
+					if (stack.itemID == itemstack1.itemID && (itemstack1.getItemDamage() == 32767 || stack.getItemDamage() == itemstack1.getItemDamage()))
+					{
+						return true;
+					}
 				}
 			}
 			else if (recipe instanceof ShapelessRecipes)
 			{
-		        @SuppressWarnings("unchecked")
+				@SuppressWarnings("unchecked")
 				ArrayList<ItemStack> arraylist = new ArrayList<ItemStack>(((ShapelessRecipes) recipe).recipeItems);
-		        
-		        Iterator<ItemStack> iterator = arraylist.iterator();
 
-                while (iterator.hasNext())
-                {
-                    ItemStack itemstack1 = (ItemStack)iterator.next();
+				Iterator<ItemStack> iterator = arraylist.iterator();
 
-                    if (stack.itemID == itemstack1.itemID && (itemstack1.getItemDamage() == 32767 || stack.getItemDamage() == itemstack1.getItemDamage()))
-                    {
-                    	return true;
-                    }
-                }
+				while (iterator.hasNext())
+				{
+					ItemStack itemstack1 = iterator.next();
+
+					if (stack.itemID == itemstack1.itemID && (itemstack1.getItemDamage() == 32767 || stack.getItemDamage() == itemstack1.getItemDamage()))
+					{
+						return true;
+					}
+				}
 			}
 		}
-		
-        return false;
+
+		return false;
 	}
 
 	public void smeltItem()
@@ -255,7 +253,7 @@ public class GCCoreTileEntityIngotCompressor extends GCCoreTileEntityAdvanced im
 				this.compressingCraftMatrix.setInventorySlotContents(var5 - this.containingItems.length, ItemStack.loadItemStackFromNBT(var4));
 			}
 		}
-		
+
 		this.updateInput();
 	}
 
@@ -416,9 +414,9 @@ public class GCCoreTileEntityIngotCompressor extends GCCoreTileEntityAdvanced im
 		}
 		else if (slotID >= 2)
 		{
-			return isItemCompressorInput(itemStack);
+			return GCCoreTileEntityIngotCompressor.isItemCompressorInput(itemStack);
 		}
-		
+
 		return false;
 	}
 

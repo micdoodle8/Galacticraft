@@ -70,7 +70,7 @@ public class GCMoonRoomTreasure extends GCCoreDungeonRoom
 		}
 		final int hx = (this.posX + this.posX + this.sizeX) / 2;
 		final int hz = (this.posZ + this.posZ + this.sizeZ) / 2;
-		
+
 		if (this.placeBlock(chunk, meta, hx, this.posY, hz, cx, cz, GCCoreBlocks.treasureChestTier1.blockID, 0))
 		{
 			this.chests.add(new ChunkCoordinates(hx, this.posY, hz));
@@ -95,14 +95,14 @@ public class GCMoonRoomTreasure extends GCCoreDungeonRoom
 		if (!this.chests.isEmpty())
 		{
 			HashSet<ChunkCoordinates> removeList = new HashSet<ChunkCoordinates>();
-			
+
 			for (ChunkCoordinates coords : this.chests)
 			{
 				this.worldObj.setBlock(coords.posX, coords.posY, coords.posZ, GCCoreBlocks.treasureChestTier1.blockID, 0, 3);
 				this.worldObj.setBlockTileEntity(coords.posX, coords.posY, coords.posZ, new GCCoreTileEntityTreasureChest(1));
 				removeList.add(coords);
 			}
-			
+
 			this.chests.removeAll(removeList);
 		}
 	}

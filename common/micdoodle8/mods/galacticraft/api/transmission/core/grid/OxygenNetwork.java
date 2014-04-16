@@ -333,7 +333,7 @@ public class OxygenNetwork implements IOxygenNetwork
 										}
 									}
 								}
-								
+
 								newNetwork.refresh();
 							}
 						}

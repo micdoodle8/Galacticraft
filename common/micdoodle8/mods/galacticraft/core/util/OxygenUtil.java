@@ -80,7 +80,7 @@ public class OxygenUtil
 				if (!distributor.worldObj.isRemote && distributor.oxygenBubble != null)
 				{
 					final double dist = distributor.getDistanceFromServer(avgX, avgY, avgZ);
-					
+
 					if (dist < Math.pow(distributor.oxygenBubble.getSize(), 2))
 					{
 						return true;

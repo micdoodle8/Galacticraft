@@ -99,29 +99,29 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
 
 		if (ClientProxyCore.capeMap.containsKey(this.username))
 		{
-			this.galacticraftCape = getLocationCape2(this.username);
-			this.galacticraftCapeImageData = getDownloadImage(this.galacticraftCape, GCCorePlayerSP.getCapeURL(this.username), null, null);
+			this.galacticraftCape = GCCorePlayerSP.getLocationCape2(this.username);
+			this.galacticraftCapeImageData = GCCorePlayerSP.getDownloadImage(this.galacticraftCape, GCCorePlayerSP.getCapeURL(this.username), null, null);
 		}
 	}
 
-    public static ResourceLocation getLocationCape2(String par0Str)
-    {
-        return new ResourceLocation("cloaksGC/" + StringUtils.stripControlCodes(par0Str));
-    }
+	public static ResourceLocation getLocationCape2(String par0Str)
+	{
+		return new ResourceLocation("cloaksGC/" + StringUtils.stripControlCodes(par0Str));
+	}
 
-    private static ThreadDownloadImageData getDownloadImage(ResourceLocation par0ResourceLocation, String par1Str, ResourceLocation par2ResourceLocation, IImageBuffer par3IImageBuffer)
-    {
-        TextureManager texturemanager = Minecraft.getMinecraft().getTextureManager();
-        Object object = texturemanager.getTexture(par0ResourceLocation);
+	private static ThreadDownloadImageData getDownloadImage(ResourceLocation par0ResourceLocation, String par1Str, ResourceLocation par2ResourceLocation, IImageBuffer par3IImageBuffer)
+	{
+		TextureManager texturemanager = Minecraft.getMinecraft().getTextureManager();
+		Object object = texturemanager.getTexture(par0ResourceLocation);
 
-        if (object == null)
-        {
-            object = new ThreadDownloadImageData(par1Str, par2ResourceLocation, par3IImageBuffer);
-            texturemanager.loadTexture(par0ResourceLocation, (TextureObject)object);
-        }
+		if (object == null)
+		{
+			object = new ThreadDownloadImageData(par1Str, par2ResourceLocation, par3IImageBuffer);
+			texturemanager.loadTexture(par0ResourceLocation, (TextureObject) object);
+		}
 
-        return (ThreadDownloadImageData)object;
-    }
+		return (ThreadDownloadImageData) object;
+	}
 
 	public static String getCapeURL(String par0Str)
 	{
@@ -146,7 +146,7 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
 		{
 			return this.galacticraftCapeImageData;
 		}
-		
+
 		return super.getTextureCape();
 	}
 

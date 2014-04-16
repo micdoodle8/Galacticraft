@@ -18,6 +18,7 @@ import net.minecraftforge.common.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+@SuppressWarnings({ "unchecked", "rawtypes" })
 public abstract class GCCoreTileEntityOxygenTransmitter extends GCCoreTileEntityAdvanced implements ITransmitter
 {
 	private IGridNetwork network;
@@ -55,7 +56,7 @@ public abstract class GCCoreTileEntityOxygenTransmitter extends GCCoreTileEntity
 	@Override
 	public void onNetworkChanged()
 	{
-		
+
 	}
 
 	protected void resetNetwork()
@@ -81,7 +82,7 @@ public abstract class GCCoreTileEntityOxygenTransmitter extends GCCoreTileEntity
 			for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS)
 			{
 				TileEntity tileEntity = new Vector3(this).modifyPositionFromSide(side).getTileEntity(this.worldObj);
-				
+
 				if (tileEntity != null)
 				{
 					if (tileEntity.getClass() == this.getClass() && tileEntity instanceof INetworkProvider && !this.getNetwork().equals(((INetworkProvider) tileEntity).getNetwork()))
@@ -90,7 +91,7 @@ public abstract class GCCoreTileEntityOxygenTransmitter extends GCCoreTileEntity
 					}
 				}
 			}
-			
+
 			this.getNetwork().refresh();
 		}
 	}

@@ -52,7 +52,7 @@ public class UniversalNetwork extends ElectricityNetwork
 		float totalEnergy = electricity.getWatts();
 		float voltage = electricity.voltage;
 		float sent = 0.0F;
-		
+
 		if (!evt.isCanceled())
 		{
 			if (!this.electricalTiles.isEmpty())
@@ -63,7 +63,7 @@ public class UniversalNetwork extends ElectricityNetwork
 				{
 					List<Object> acceptors = Lists.newCopyOnWriteArrayList();
 					acceptors.addAll(this.electricalTiles.keySet());
-					
+
 					for (TileEntity tileEntity : ignoreTiles)
 					{
 						if (acceptors.contains(tileEntity))
@@ -71,26 +71,26 @@ public class UniversalNetwork extends ElectricityNetwork
 							acceptors.remove(tileEntity);
 						}
 					}
-					
+
 					List<Object> removeList = new ArrayList<Object>();
-					
+
 					for (Object obj : acceptors)
 					{
 						if (obj instanceof TileEntity)
 						{
 							TileEntity tileEntity = (TileEntity) obj;
-							
+
 							if (tileEntity == null || tileEntity.isInvalid())
 							{
 								removeList.add(tileEntity);
 							}
 						}
 					}
-					
+
 					acceptors.removeAll(removeList);
-					
+
 					Collections.shuffle(acceptors);
-					
+
 					int divider = acceptors.size();
 					double remaining = totalEnergy % divider;
 					double sending = (totalEnergy - remaining) / divider;
@@ -102,14 +102,14 @@ public class UniversalNetwork extends ElectricityNetwork
 							TileEntity tileEntity = (TileEntity) obj;
 							double currentSending = sending + remaining;
 							ForgeDirection side = this.electricalTiles.get(tileEntity);
-							
+
 							if (side == null)
 							{
 								continue;
 							}
-							
+
 							remaining = 0;
-							
+
 							if (tileEntity instanceof IElectrical)
 							{
 								IElectrical electricalTile = (IElectrical) tileEntity;
@@ -133,13 +133,13 @@ public class UniversalNetwork extends ElectricityNetwork
 							{
 								IPowerReceptor electricalTile = (IPowerReceptor) tileEntity;
 								PowerReceiver receiver = electricalTile.getPowerReceiver(side.getOpposite());
-								
+
 								if (receiver != null)
 								{
 									float req = receiver.powerRequest();
 									double bcToSend = currentSending * NetworkConfigHandler.TO_BC_RATIO;
-					            	float bcSent = receiver.receiveEnergy(Type.PIPE, (float) (Math.min(req, bcToSend)), side.getOpposite());
-					            	sent += bcSent * NetworkConfigHandler.BC3_RATIO;
+									float bcSent = receiver.receiveEnergy(Type.PIPE, (float) (Math.min(req, bcToSend)), side.getOpposite());
+									sent += bcSent * NetworkConfigHandler.BC3_RATIO;
 								}
 							}
 						}
@@ -260,7 +260,7 @@ public class UniversalNetwork extends ElectricityNetwork
 	public void refresh()
 	{
 		this.electricalTiles.clear();
-		
+
 		try
 		{
 			Iterator<IConductor> it = this.getTransmitters().iterator();
@@ -274,7 +274,7 @@ public class UniversalNetwork extends ElectricityNetwork
 					it.remove();
 					continue;
 				}
-				
+
 				conductor.onNetworkChanged();
 
 				if (((TileEntity) conductor).isInvalid() || ((TileEntity) conductor).getWorldObj() == null)
@@ -303,7 +303,7 @@ public class UniversalNetwork extends ElectricityNetwork
 						if (acceptor instanceof IElectrical || (NetworkConfigHandler.isThermalExpansionLoaded() && acceptor instanceof IEnergyHandler) || (NetworkConfigHandler.isIndustrialCraft2Loaded() && acceptor instanceof IEnergyAcceptor) || (NetworkConfigHandler.isBuildcraftLoaded() && acceptor instanceof IPowerReceptor))
 						{
 							boolean canConnect = false;
-							
+
 							if (acceptor instanceof IElectrical && ((IElectrical) acceptor).canConnect(direction.getOpposite(), NetworkType.POWER))
 							{
 								canConnect = true;

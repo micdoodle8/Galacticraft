@@ -138,7 +138,7 @@ public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectricBlo
 		{
 			return false;
 		}
-		
+
 		switch (type)
 		{
 		case OXYGEN:
@@ -234,64 +234,64 @@ public abstract class GCCoreTileEntityOxygen extends GCCoreTileEntityElectricBlo
 
 	public boolean produceOxygen(ForgeDirection outputDirection)
 	{
-			float provide = this.getOxygenProvide(outputDirection);
+		float provide = this.getOxygenProvide(outputDirection);
 
-			if (provide > 0)
+		if (provide > 0)
+		{
+			TileEntity outputTile = new BlockVec3(this).modifyPositionFromSide(outputDirection).getTileEntity(this.worldObj);
+			IOxygenNetwork outputNetwork = NetworkHelper.getOxygenNetworkFromTileEntity(outputTile, outputDirection);
+
+			if (outputNetwork != null)
 			{
-				TileEntity outputTile = new BlockVec3(this).modifyPositionFromSide(outputDirection).getTileEntity(this.worldObj);
-				IOxygenNetwork outputNetwork = NetworkHelper.getOxygenNetworkFromTileEntity(outputTile, outputDirection);
+				float powerRequest = outputNetwork.getRequest(this);
 
-				if (outputNetwork != null)
+				if (powerRequest > 0)
 				{
-					float powerRequest = outputNetwork.getRequest(this);
+					float toSend = Math.min(this.getOxygenStored(), provide);
+					float rejectedPower = outputNetwork.produce(toSend, this);
 
-					if (powerRequest > 0)
-					{
-						float toSend = Math.min(this.getOxygenStored(), provide);
-						float rejectedPower = outputNetwork.produce(toSend, this);
-
-						this.provideOxygen(Math.max(toSend - rejectedPower, 0), true);
-						return true;
-					}
+					this.provideOxygen(Math.max(toSend - rejectedPower, 0), true);
+					return true;
 				}
-				else if (outputTile instanceof IOxygenReceiver)
-				{
-					float requestedEnergy = ((IOxygenReceiver) outputTile).getOxygenRequest(outputDirection.getOpposite());
+			}
+			else if (outputTile instanceof IOxygenReceiver)
+			{
+				float requestedEnergy = ((IOxygenReceiver) outputTile).getOxygenRequest(outputDirection.getOpposite());
 
-					if (requestedEnergy > 0)
+				if (requestedEnergy > 0)
+				{
+					float toSend = Math.min(this.getOxygenStored(), provide);
+					float acceptedOxygen = ((IOxygenReceiver) outputTile).receiveOxygen(outputDirection.getOpposite(), toSend, true);
+					this.provideOxygen(acceptedOxygen, true);
+					return true;
+				}
+			}
+			else if (NetworkConfigHandler.isMekanismLoaded())
+			{
+				GasStack toSend = new GasStack((Gas) NetworkConfigHandler.gasOxygen, (int) Math.floor(Math.min(this.getOxygenStored(), provide)));
+				int acceptedOxygen = GasTransmission.emitGasToNetwork(toSend, this, outputDirection);
+				this.provideOxygen(acceptedOxygen, true);
+
+				if (NetworkConfigHandler.isMekanismV6Loaded())
+				{
+					if (outputTile instanceof IGasHandler && ((IGasHandler) outputTile).canReceiveGas(outputDirection.getOpposite(), (Gas) NetworkConfigHandler.gasOxygen))
 					{
-						float toSend = Math.min(this.getOxygenStored(), provide);
-						float acceptedOxygen = ((IOxygenReceiver) outputTile).receiveOxygen(outputDirection.getOpposite(), toSend, true);
+						acceptedOxygen = ((IGasHandler) outputTile).receiveGas(outputDirection.getOpposite(), toSend);
 						this.provideOxygen(acceptedOxygen, true);
 						return true;
 					}
 				}
-				else if (NetworkConfigHandler.isMekanismLoaded())
+				else if (outputTile instanceof IGasAcceptor)
 				{
-					GasStack toSend = new GasStack((Gas)NetworkConfigHandler.gasOxygen, (int) Math.floor(Math.min(this.getOxygenStored(), provide)));
-					int acceptedOxygen = GasTransmission.emitGasToNetwork(toSend, this, outputDirection);
-					this.provideOxygen(acceptedOxygen, true);
-					
-					if (NetworkConfigHandler.isMekanismV6Loaded())
+					if (((IGasAcceptor) outputTile).canReceiveGas(outputDirection.getOpposite(), (Gas) NetworkConfigHandler.gasOxygen))
 					{
-						if (outputTile instanceof IGasHandler && ((IGasHandler) outputTile).canReceiveGas(outputDirection.getOpposite(), (Gas)NetworkConfigHandler.gasOxygen))
-						{
-							acceptedOxygen = ((IGasHandler) outputTile).receiveGas(outputDirection.getOpposite(), toSend);
-							this.provideOxygen(acceptedOxygen, true);
-							return true;
-						}
-					}
-					else if (outputTile instanceof IGasAcceptor)
-					{
-						if (((IGasAcceptor) outputTile).canReceiveGas(outputDirection.getOpposite(), (Gas)NetworkConfigHandler.gasOxygen))
-						{
-							acceptedOxygen = toSend.amount - ((IGasAcceptor) outputTile).receiveGas(toSend);
-							this.provideOxygen(acceptedOxygen, true);
-							return true;
-						}
+						acceptedOxygen = toSend.amount - ((IGasAcceptor) outputTile).receiveGas(toSend);
+						this.provideOxygen(acceptedOxygen, true);
+						return true;
 					}
 				}
 			}
+		}
 
 		return false;
 	}

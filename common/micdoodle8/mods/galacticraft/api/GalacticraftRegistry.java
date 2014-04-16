@@ -112,7 +112,6 @@ public class GalacticraftRegistry
 			dungeonStacks = GalacticraftRegistry.dungeonLootMap.get(tier);
 			dungeonStacks.add(loot);
 		}
-		
 		else
 		{
 			dungeonStacks = new ArrayList<ItemStack>();

@@ -94,14 +94,14 @@ public class GCMarsRoomTreasure extends GCCoreDungeonRoom
 		if (!this.chests.isEmpty())
 		{
 			HashSet<ChunkCoordinates> removeList = new HashSet<ChunkCoordinates>();
-			
+
 			for (ChunkCoordinates coords : this.chests)
 			{
 				this.worldObj.setBlock(coords.posX, coords.posY, coords.posZ, GCMarsBlocks.tier2TreasureChest.blockID, 0, 3);
 				this.worldObj.setBlockTileEntity(coords.posX, coords.posY, coords.posZ, new GCMarsTileEntityTreasureChest());
 				removeList.add(coords);
 			}
-			
+
 			this.chests.removeAll(removeList);
 		}
 	}

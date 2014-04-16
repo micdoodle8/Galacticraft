@@ -569,7 +569,7 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 		{
 			return 0;
 		}
-		
+
 		return (int) Math.floor(this.receiveElectricity(maxReceive * NetworkConfigHandler.TE_RATIO, !simulate));
 	}
 
@@ -580,7 +580,7 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 		{
 			return 0;
 		}
-		
+
 		return (int) Math.floor(this.provideElectricity(maxExtract * NetworkConfigHandler.TE_RATIO, !simulate).getWatts() * NetworkConfigHandler.TO_TE_RATIO);
 	}
 

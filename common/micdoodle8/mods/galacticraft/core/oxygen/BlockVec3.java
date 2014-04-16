@@ -5,17 +5,11 @@ import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ReportedException;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.ForgeDirection;
-
 
 /* Think this BlockVec3 is confusing with galacticraft.api.vector.Vector3?
  * 
@@ -31,300 +25,304 @@ import net.minecraftforge.common.ForgeDirection;
  */
 public class BlockVec3 implements Cloneable
 {
-		public int x;
-		public int y;
-		public int z;
-		private Chunk chunkCached;
-		private int chunkCacheX=1876000;  //outside the world edge
-		private int chunkCacheZ=1876000;  //outside the world edge
+	public int x;
+	public int y;
+	public int z;
+	private Chunk chunkCached;
+	private int chunkCacheX = 1876000; // outside the world edge
+	private int chunkCacheZ = 1876000; // outside the world edge
 
-		public BlockVec3()
+	public BlockVec3()
+	{
+		this(0, 0, 0);
+	}
+
+	public BlockVec3(int x, int y, int z)
+	{
+		this.x = x;
+		this.y = y;
+		this.z = z;
+	}
+
+	public BlockVec3(Entity par1)
+	{
+		this.x = (int) Math.floor(par1.posX);
+		this.y = (int) Math.floor(par1.posY);
+		this.z = (int) Math.floor(par1.posZ);
+	}
+
+	public BlockVec3(TileEntity par1)
+	{
+		this.x = par1.xCoord;
+		this.y = par1.yCoord;
+		this.z = par1.zCoord;
+	}
+
+	/**
+	 * Makes a new copy of this Vector. Prevents variable referencing problems.
+	 */
+	@Override
+	public BlockVec3 clone()
+	{
+		return new BlockVec3(this.x, this.y, this.z);
+	}
+
+	public int getBlockID(World world)
+	{
+		if (this.y < 0 || this.y >= 256 || this.x < -30000000 || this.z < -30000000 || this.x >= 30000000 || this.z >= 30000000)
 		{
-			this(0, 0, 0);
+			return -1;
 		}
 
-		public BlockVec3(int x, int y, int z)
+		int chunkx = this.x >> 4;
+		int chunkz = this.z >> 4;
+		try
 		{
-			this.x = x;
-			this.y = y;
-			this.z = z;
-		}
-
-		public BlockVec3(Entity par1)
-		{
-			this.x = (int) Math.floor(par1.posX);
-			this.y = (int) Math.floor(par1.posY);
-			this.z = (int) Math.floor(par1.posZ);
-		}
-
-		public BlockVec3(TileEntity par1)
-		{
-			this.x = par1.xCoord;
-			this.y = par1.yCoord;
-			this.z = par1.zCoord;
-		}
-		
-		/**
-		 * Makes a new copy of this Vector. Prevents variable referencing problems.
-		 */
-		@Override
-		public BlockVec3 clone()
-		{
-			return new BlockVec3(this.x, this.y, this.z);
-		}
-
-		public int getBlockID(World world)
-		{
-			if (y < 0 || y >= 256 || x < -30000000 || z < -30000000 || x >= 30000000 || z >= 30000000)
-				return -1;
-
-			int chunkx = x >> 4;
-			int chunkz = z >> 4;
-			try
+			// In a typical inner loop, 80% of the time consecutive calls to
+			// this will be within the same chunk
+			if (this.chunkCacheX == chunkx && this.chunkCacheZ == chunkz && this.chunkCached.isChunkLoaded)
 			{
-				//In a typical inner loop, 80% of the time consecutive calls to this will be within the same chunk
-				if (chunkCacheX==chunkx && chunkCacheZ==chunkz && chunkCached.isChunkLoaded)
-				{
-					return chunkCached.getBlockID(x & 15, y, z & 15);
-				}
-				else
-				{
-					Chunk chunk = null;
-					chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
-					chunkCached = chunk;
-					chunkCacheX = chunkx;
-					chunkCacheZ = chunkz;
-					return chunk.getBlockID(x & 15, y, z & 15);
-				}
+				return this.chunkCached.getBlockID(this.x & 15, this.y, this.z & 15);
 			}
-			catch (Throwable throwable)
+			else
 			{
-				CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Oxygen Sealer thread: Exception getting block type in world");
-				CrashReportCategory crashreportcategory = crashreport.makeCategory("Requested block coordinates");
-				crashreportcategory.addCrashSection("Location", CrashReportCategory.getLocationInfo(x, y, z));
-				throw new ReportedException(crashreport);
+				Chunk chunk = null;
+				chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
+				this.chunkCached = chunk;
+				this.chunkCacheX = chunkx;
+				this.chunkCacheZ = chunkz;
+				return chunk.getBlockID(this.x & 15, this.y, this.z & 15);
 			}
 		}
-
-		public int getBlockIDsafe(World world)
+		catch (Throwable throwable)
 		{
-			if (y < 0 || y >= 256)
-				return -1;
+			CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Oxygen Sealer thread: Exception getting block type in world");
+			CrashReportCategory crashreportcategory = crashreport.makeCategory("Requested block coordinates");
+			crashreportcategory.addCrashSection("Location", CrashReportCategory.getLocationInfo(this.x, this.y, this.z));
+			throw new ReportedException(crashreport);
+		}
+	}
 
-			int chunkx = x >> 4;
-			int chunkz = z >> 4;
-			try
+	public int getBlockIDsafe(World world)
+	{
+		if (this.y < 0 || this.y >= 256)
+		{
+			return -1;
+		}
+
+		int chunkx = this.x >> 4;
+		int chunkz = this.z >> 4;
+		try
+		{
+			// In a typical inner loop, 80% of the time consecutive calls to
+			// this will be within the same chunk
+			if (this.chunkCacheX == chunkx && this.chunkCacheZ == chunkz && this.chunkCached.isChunkLoaded)
 			{
-				//In a typical inner loop, 80% of the time consecutive calls to this will be within the same chunk
-				if (chunkCacheX==chunkx && chunkCacheZ==chunkz && chunkCached.isChunkLoaded)
-				{
-					return chunkCached.getBlockID(x & 15, y, z & 15);
-				}
-				else
-				{
-					Chunk chunk = null;
-					chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
-					chunkCached = chunk;
-					chunkCacheX = chunkx;
-					chunkCacheZ = chunkz;
-					return chunk.getBlockID(x & 15, y, z & 15);
-				}
+				return this.chunkCached.getBlockID(this.x & 15, this.y, this.z & 15);
 			}
-			catch (Throwable throwable)
+			else
 			{
-				CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Oxygen Sealer thread: Exception getting block type in world");
-				CrashReportCategory crashreportcategory = crashreport.makeCategory("Requested block coordinates");
-				crashreportcategory.addCrashSection("Location", CrashReportCategory.getLocationInfo(x, y, z));
-				throw new ReportedException(crashreport);
+				Chunk chunk = null;
+				chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
+				this.chunkCached = chunk;
+				this.chunkCacheX = chunkx;
+				this.chunkCacheZ = chunkz;
+				return chunk.getBlockID(this.x & 15, this.y, this.z & 15);
 			}
 		}
-
-		public BlockVec3 add(BlockVec3 par1)
+		catch (Throwable throwable)
 		{
-			this.x += par1.x;
-			this.y += par1.y;
-			this.z += par1.z;
-			return this;
+			CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Oxygen Sealer thread: Exception getting block type in world");
+			CrashReportCategory crashreportcategory = crashreport.makeCategory("Requested block coordinates");
+			crashreportcategory.addCrashSection("Location", CrashReportCategory.getLocationInfo(this.x, this.y, this.z));
+			throw new ReportedException(crashreport);
+		}
+	}
+
+	public BlockVec3 add(BlockVec3 par1)
+	{
+		this.x += par1.x;
+		this.y += par1.y;
+		this.z += par1.z;
+		return this;
+	}
+
+	public BlockVec3 translate(BlockVec3 par1)
+	{
+		this.x += par1.x;
+		this.y += par1.y;
+		this.z += par1.z;
+		return this;
+	}
+
+	public BlockVec3 translate(int par1x, int par1y, int par1z)
+	{
+		this.x += par1x;
+		this.y += par1y;
+		this.z += par1z;
+		return this;
+	}
+
+	public static BlockVec3 add(BlockVec3 par1, BlockVec3 a)
+	{
+		return new BlockVec3(par1.x + a.x, par1.y + a.y, par1.z + a.z);
+	}
+
+	public BlockVec3 subtract(BlockVec3 par1)
+	{
+		this.x = this.x -= par1.x;
+		this.y = this.y -= par1.y;
+		this.z = this.z -= par1.z;
+
+		return this;
+	}
+
+	public BlockVec3 modifyPositionFromSide(ForgeDirection side, int amount)
+	{
+		switch (side.ordinal())
+		{
+		case 0:
+			this.y -= amount;
+			break;
+		case 1:
+			this.y += amount;
+			break;
+		case 2:
+			this.z -= amount;
+			break;
+		case 3:
+			this.z += amount;
+			break;
+		case 4:
+			this.x -= amount;
+			break;
+		case 5:
+			this.x += amount;
+			break;
+		}
+		return this;
+	}
+
+	public BlockVec3 newVecSide(int side)
+	{
+		BlockVec3 vec = new BlockVec3(this.x, this.y, this.z);
+		switch (side)
+		{
+		case 0:
+			vec.y--;
+			break;
+		case 1:
+			vec.y++;
+			break;
+		case 2:
+			vec.z--;
+			break;
+		case 3:
+			vec.z++;
+			break;
+		case 4:
+			vec.x--;
+			break;
+		case 5:
+			vec.x++;
+			break;
+		}
+		return vec;
+	}
+
+	public BlockVec3 modifyPositionFromSide(ForgeDirection side)
+	{
+		return this.modifyPositionFromSide(side, 1);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		// Upgraded hashCode calculation from the one in VecDirPair to something
+		// a bit stronger and faster
+		return ((this.y * 379 + this.x) * 373 + this.z) * 7;
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if (o instanceof BlockVec3)
+		{
+			BlockVec3 vector = (BlockVec3) o;
+			return this.x == vector.x && this.y == vector.y && this.z == vector.z;
 		}
 
-		public BlockVec3 translate(BlockVec3 par1)
-		{
-			this.x += par1.x;
-			this.y += par1.y;
-			this.z += par1.z;
-			return this;
-		}
+		return false;
+	}
 
-		public BlockVec3 translate(int par1x, int par1y, int par1z)
-		{
-			this.x += par1x;
-			this.y += par1y;
-			this.z += par1z;
-			return this;
-		}
+	@Override
+	public String toString()
+	{
+		return "BlockVec3 [" + this.x + "," + this.y + "," + this.z + "]";
+	}
 
-		public static BlockVec3 add(BlockVec3 par1, BlockVec3 a)
-		{
-			return new BlockVec3(par1.x+a.x,par1.y+a.y,par1.z+a.z);
-		}
-		
-		public BlockVec3 subtract(BlockVec3 par1)
-		{
-			this.x = this.x -= par1.x;
-			this.y = this.y -= par1.y;
-			this.z = this.z -= par1.z;
-			
-			return this;
-		}
-		
-		public BlockVec3 modifyPositionFromSide(ForgeDirection side, int amount)
-		{
-			switch (side.ordinal())
-			{
-				case 0:
-					this.y -= amount;
-					break;
-				case 1:
-					this.y += amount;
-					break;
-				case 2:
-					this.z -= amount;
-					break;
-				case 3:
-					this.z += amount;
-					break;
-				case 4:
-					this.x -= amount;
-					break;
-				case 5:
-					this.x += amount;
-					break;
-			}
-			return this;
-		}
+	public TileEntity getTileEntity(IBlockAccess world)
+	{
+		return world.getBlockTileEntity(this.x, this.y, this.z);
+	}
 
-		public BlockVec3 newVecSide(int side)
-		{
-			BlockVec3 vec = new BlockVec3(x,y,z);
-			switch (side)
-			{
-				case 0:
-					vec.y--;
-					break;
-				case 1:
-					vec.y++;
-					break;
-				case 2:
-					vec.z--;
-					break;
-				case 3:
-					vec.z++;
-					break;
-				case 4:
-					vec.x--;
-					break;
-				case 5:
-					vec.x++;
-					break;
-			}
-			return vec;
-		}
+	public int getBlockMetadata(IBlockAccess world)
+	{
+		return world.getBlockMetadata(this.x, this.y, this.z);
+	}
 
-		public BlockVec3 modifyPositionFromSide(ForgeDirection side)
-		{
-			return this.modifyPositionFromSide(side, 1);
-		}
+	public static BlockVec3 readFromNBT(NBTTagCompound nbtCompound)
+	{
+		BlockVec3 tempVector = new BlockVec3();
+		tempVector.x = (int) Math.floor(nbtCompound.getDouble("x"));
+		tempVector.y = (int) Math.floor(nbtCompound.getDouble("y"));
+		tempVector.z = (int) Math.floor(nbtCompound.getDouble("z"));
+		return tempVector;
+	}
 
+	public int distanceTo(BlockVec3 vector)
+	{
+		int var2 = vector.x - this.x;
+		int var4 = vector.y - this.y;
+		int var6 = vector.z - this.z;
+		return (int) Math.floor(Math.sqrt(var2 * var2 + var4 * var4 + var6 * var6));
+	}
 
-		@Override
-		public int hashCode()
-		{
-			//Upgraded hashCode calculation from the one in VecDirPair to something a bit stronger and faster
-			return ((y*379+x)*373+z)*7;
-		}
+	public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
+	{
+		par1NBTTagCompound.setDouble("x", this.x);
+		par1NBTTagCompound.setDouble("y", this.y);
+		par1NBTTagCompound.setDouble("z", this.z);
+		return par1NBTTagCompound;
+	}
 
-		@Override
-		public boolean equals(Object o)
-		{
-			if (o instanceof BlockVec3)
-			{
-				BlockVec3 vector = (BlockVec3) o;
-				return this.x == vector.x && this.y == vector.y && this.z == vector.z;
-			}
+	public double getMagnitude()
+	{
+		return Math.sqrt(this.getMagnitudeSquared());
+	}
 
-			return false;
-		}
+	public int getMagnitudeSquared()
+	{
+		return this.x * this.x + this.y * this.y + this.z * this.z;
+	}
 
-		@Override
-		public String toString()
-		{
-			return "BlockVec3 [" + this.x + "," + this.y + "," + this.z + "]";
-		}
-		
-		public TileEntity getTileEntity(IBlockAccess world)
-		{
-			return world.getBlockTileEntity(this.x, this.y, this.z);
-		}
+	public void setBlock(World worldObj, int blockID)
+	{
+		worldObj.setBlock(this.x, this.y, this.z, blockID, 0, 3);
+	}
 
-		public int getBlockMetadata(IBlockAccess world)
-		{
-			return world.getBlockMetadata(this.x, this.y, this.z);
-		}
+	public int intX()
+	{
+		return this.x;
+	}
 
+	public int intY()
+	{
+		return this.x;
+	}
 
-		
-		public static BlockVec3 readFromNBT(NBTTagCompound nbtCompound)
-		{
-			BlockVec3 tempVector = new BlockVec3();
-			tempVector.x = (int) Math.floor(nbtCompound.getDouble("x"));
-			tempVector.y = (int) Math.floor(nbtCompound.getDouble("y"));
-			tempVector.z = (int) Math.floor(nbtCompound.getDouble("z"));
-			return tempVector;
-		}
-
-		public int distanceTo(BlockVec3 vector)
-		{
-			int var2 = vector.x - this.x;
-			int var4 = vector.y - this.y;
-			int var6 = vector.z - this.z;
-			return (int) Math.floor(Math.sqrt(var2 * var2 + var4 * var4 + var6 * var6));		}
-		
-
-		public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
-		{
-			par1NBTTagCompound.setDouble("x", (double) this.x);
-			par1NBTTagCompound.setDouble("y", (double) this.y);
-			par1NBTTagCompound.setDouble("z", (double) this.z);
-			return par1NBTTagCompound;
-		}
-
-		public double getMagnitude()
-		{
-			return Math.sqrt((double) this.getMagnitudeSquared());
-		}
-
-		public int getMagnitudeSquared()
-		{
-			return x * x + y * y + z * z;
-		}
-
-		public void setBlock(World worldObj, int blockID)
-		{
-			worldObj.setBlock(x,y,z,blockID,0,3);
-		}
-		
-		public int intX()
-		{
-			return x;
-		}
-
-		public int intY()
-		{
-			return x;
-		}
-
-		public int intZ()
-		{
-			return x;
-		}
+	public int intZ()
+	{
+		return this.x;
+	}
 }

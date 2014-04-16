@@ -76,7 +76,7 @@ public class GCCoreBlockSpaceStationBase extends BlockContainer implements ITile
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLiving, ItemStack itemStack)
 	{
 		super.onBlockPlacedBy(world, x, y, z, entityLiving, itemStack);
-		
+
 		TileEntity tile = world.getBlockTileEntity(x, y, z);
 
 		if (tile instanceof IMultiBlock)

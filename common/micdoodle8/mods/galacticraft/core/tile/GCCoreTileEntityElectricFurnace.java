@@ -41,9 +41,9 @@ public class GCCoreTileEntityElectricFurnace extends GCCoreTileEntityElectricBlo
 
 	public GCCoreTileEntityElectricFurnace()
 	{
-		super(WATTS_PER_TICK, 50);
+		super(GCCoreTileEntityElectricFurnace.WATTS_PER_TICK, 50);
 	}
-	
+
 	@Override
 	public void updateEntity()
 	{
@@ -62,7 +62,7 @@ public class GCCoreTileEntityElectricFurnace extends GCCoreTileEntityElectricBlo
 					else if (this.processTicks > 0)
 					{
 						this.processTicks--;
-						
+
 						if (this.processTicks < 1)
 						{
 							this.smeltItem();

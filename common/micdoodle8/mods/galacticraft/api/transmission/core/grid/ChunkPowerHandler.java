@@ -2,13 +2,13 @@ package micdoodle8.mods.galacticraft.api.transmission.core.grid;
 
 import java.util.ArrayList;
 
-import com.google.common.collect.Lists;
-
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkConnection;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.world.ChunkEvent;
+
+import com.google.common.collect.Lists;
 
 public class ChunkPowerHandler
 {
@@ -23,6 +23,7 @@ public class ChunkPowerHandler
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@ForgeSubscribe
 	public void onChunkLoad(ChunkEvent.Load event)
 	{
@@ -32,7 +33,7 @@ public class ChunkPowerHandler
 			{
 				ArrayList<Object> tileList = Lists.newArrayList();
 				tileList.addAll(event.getChunk().chunkTileEntityMap.values());
-				
+
 				for (Object o : tileList)
 				{
 					if (o instanceof TileEntity)

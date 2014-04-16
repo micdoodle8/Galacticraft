@@ -105,7 +105,7 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectricBlock im
 
 				for (final ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
 				{
-					final TileEntity pad = new BlockVec3(this).modifyPositionFromSide(dir,1).getTileEntity(this.worldObj);
+					final TileEntity pad = new BlockVec3(this).modifyPositionFromSide(dir, 1).getTileEntity(this.worldObj);
 
 					if (pad instanceof TileEntityMulti)
 					{

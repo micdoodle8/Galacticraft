@@ -202,7 +202,7 @@ public class GCCoreTileEntityElectricIngotCompressor extends GCCoreTileEntityEle
 				this.compressingCraftMatrix.setInventorySlotContents(var5 - this.containingItems.length, ItemStack.loadItemStackFromNBT(var4));
 			}
 		}
-		
+
 		this.updateInput();
 	}
 
@@ -365,7 +365,7 @@ public class GCCoreTileEntityElectricIngotCompressor extends GCCoreTileEntityEle
 		{
 			return GCCoreTileEntityIngotCompressor.isItemCompressorInput(itemStack);
 		}
-		
+
 		return false;
 	}
 

@@ -34,7 +34,7 @@ public class NetworkConfigHandler
 	 * by this to convert to UE
 	 */
 	public static float IC2_RATIO = 0.11256f;
-	
+
 	public static float MEKANISM_RATIO = 1.0F;
 
 	/**
@@ -54,8 +54,8 @@ public class NetworkConfigHandler
 	 * this to convert it to IC2 power
 	 */
 	public static float TO_IC2_RATIO = 1 / NetworkConfigHandler.IC2_RATIO;
-	
-	public static float TO_MEKANISM_RATIO = 1 / MEKANISM_RATIO;
+
+	public static float TO_MEKANISM_RATIO = 1 / NetworkConfigHandler.MEKANISM_RATIO;
 
 	/**
 	 * Oxygen gas used when Mekanism is loaded. Always null otherwise.
@@ -117,32 +117,32 @@ public class NetworkConfigHandler
 	{
 		return Loader.isModLoaded("Mekanism");
 	}
-	
+
 	private static Boolean mekanismOldClassFound;
-	
+
 	public static boolean isMekanismV6Loaded()
 	{
-		if (!isMekanismLoaded())
+		if (!NetworkConfigHandler.isMekanismLoaded())
 		{
 			return false;
 		}
-		
-		if (mekanismOldClassFound != null)
+
+		if (NetworkConfigHandler.mekanismOldClassFound != null)
 		{
-			return !mekanismOldClassFound;
+			return !NetworkConfigHandler.mekanismOldClassFound;
 		}
-		
+
 		try
 		{
 			Class.forName("mekanism.api.gas.IGasAcceptor");
 		}
 		catch (ClassNotFoundException e)
 		{
-			mekanismOldClassFound = false;
+			NetworkConfigHandler.mekanismOldClassFound = false;
 			return true;
 		}
-		
-		mekanismOldClassFound = true;
+
+		NetworkConfigHandler.mekanismOldClassFound = true;
 		return false;
 	}
 }

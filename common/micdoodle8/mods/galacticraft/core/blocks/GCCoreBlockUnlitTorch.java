@@ -191,7 +191,7 @@ public class GCCoreBlockUnlitTorch extends Block implements IOxygenReliantBlock
 			}
 		}
 
-		if (dropTorchIfCantStay(par1World, par2, par3, par4))
+		if (this.dropTorchIfCantStay(par1World, par2, par3, par4))
 		{
 			this.checkOxygen(par1World, par2, par3, par4);
 		}
@@ -246,24 +246,24 @@ public class GCCoreBlockUnlitTorch extends Block implements IOxygenReliantBlock
 			}
 		}
 	}
-	
+
 	private void checkOxygen(World world, int x, int y, int z)
 	{
 		if (world.provider instanceof IGalacticraftWorldProvider)
 		{
 			boolean hasOxygen = false;
-			
+
 			for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
 			{
 				int blockID = new Vector3(x, y, z).modifyPositionFromSide(direction).getBlockID(world);
-				
+
 				if (blockID == GCCoreBlocks.breatheableAir.blockID)
 				{
 					hasOxygen = true;
 					break;
 				}
 			}
-			
+
 			if (hasOxygen)
 			{
 				this.onOxygenAdded(world, x, y, z);

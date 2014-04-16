@@ -187,7 +187,7 @@ public abstract class GCCoreTileEntityUniversalConductor extends GCCoreTileEntit
 	{
 		return Integer.MAX_VALUE;
 	}
-	
+
 	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
 	public boolean acceptsEnergyFrom(TileEntity emitter, ForgeDirection direction)
 	{
@@ -204,10 +204,10 @@ public abstract class GCCoreTileEntityUniversalConductor extends GCCoreTileEntit
 		{
 			return null;
 		}
-		
+
 		return ((PowerHandler) this.powerHandler).getPowerReceiver();
 	}
-	
+
 	private void reconfigureBC()
 	{
 		float requiredEnergy = ((IElectricityNetwork) this.getNetwork()).getRequest(this).getWatts() * NetworkConfigHandler.TO_BC_RATIO;
@@ -225,7 +225,7 @@ public abstract class GCCoreTileEntityUniversalConductor extends GCCoreTileEntit
 				((IElectricityNetwork) this.getNetwork()).produce(pack, true, this);
 			}
 		}
-		
+
 		((PowerHandler) this.powerHandler).setEnergy(0.0F);
 		this.reconfigureBC();
 	}
@@ -267,7 +267,7 @@ public abstract class GCCoreTileEntityUniversalConductor extends GCCoreTileEntit
 		{
 			return 0;
 		}
-		
+
 		return (int) Math.floor(((IElectricityNetwork) this.getNetwork()).getRequest(this).getWatts() * NetworkConfigHandler.TO_TE_RATIO);
 	}
 
@@ -278,7 +278,7 @@ public abstract class GCCoreTileEntityUniversalConductor extends GCCoreTileEntit
 		{
 			return 0;
 		}
-		
+
 		return amount - ((IElectricityNetwork) this.getNetwork()).produce(ElectricityPack.getFromWatts((float) (amount * NetworkConfigHandler.MEKANISM_RATIO), 120), true, this) * NetworkConfigHandler.TO_MEKANISM_RATIO;
 	}
 
@@ -289,7 +289,7 @@ public abstract class GCCoreTileEntityUniversalConductor extends GCCoreTileEntit
 		{
 			return false;
 		}
-		
+
 		return ((IElectricityNetwork) this.getNetwork()).getRequest(this).getWatts() > 0.0F;
 	}
 

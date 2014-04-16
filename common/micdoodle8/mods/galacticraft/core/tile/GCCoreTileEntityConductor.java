@@ -19,6 +19,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * @author Calclavia
  * 
  */
+@SuppressWarnings({ "unchecked", "rawtypes" })
 public abstract class GCCoreTileEntityConductor extends GCCoreTileEntityAdvanced implements IConductor
 {
 	private IGridNetwork network;

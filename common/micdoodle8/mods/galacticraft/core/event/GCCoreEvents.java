@@ -374,7 +374,7 @@ public class GCCoreEvents
 	private static ISchematicPage getNextSchematic(int currentIndex)
 	{
 		final HashMap<Integer, Integer> idList = new HashMap<Integer, Integer>();
-		
+
 		GCCorePlayerSP player = PlayerUtil.getPlayerBaseClientFromPlayer(FMLClientHandler.instance().getClient().thePlayer, false);
 
 		for (int i = 0; i < player.unlockedSchematics.size(); i++)
@@ -410,7 +410,7 @@ public class GCCoreEvents
 	private static ISchematicPage getLastSchematic(int currentIndex)
 	{
 		final HashMap<Integer, Integer> idList = new HashMap<Integer, Integer>();
-		
+
 		GCCorePlayerSP player = PlayerUtil.getPlayerBaseClientFromPlayer(FMLClientHandler.instance().getClient().thePlayer, false);
 
 		for (int i = 0; i < player.unlockedSchematics.size(); i++)

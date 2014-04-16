@@ -62,7 +62,7 @@ public interface ICelestialBody
 	 *         reachable.
 	 */
 	public int getDimensionID();
-	
+
 	/**
 	 * Whether or not to override /GCKeepDim command.
 	 * 

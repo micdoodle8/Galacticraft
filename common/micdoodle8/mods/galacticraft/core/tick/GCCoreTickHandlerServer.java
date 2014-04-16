@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
-import micdoodle8.mods.galacticraft.core.oxygen.BlockVec3;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.ScheduledBlockChange;
 import net.minecraft.entity.Entity;
@@ -27,46 +26,46 @@ import cpw.mods.fml.common.TickType;
 public class GCCoreTickHandlerServer implements ITickHandler
 {
 	private static Map<Integer, List<ScheduledBlockChange>> scheduledBlockChanges = new ConcurrentHashMap<Integer, List<ScheduledBlockChange>>();
-	
+
 	public static void scheduleNewBlockChange(int dimID, ScheduledBlockChange change)
 	{
-		List<ScheduledBlockChange> changeList = scheduledBlockChanges.get(dimID);
-		
+		List<ScheduledBlockChange> changeList = GCCoreTickHandlerServer.scheduledBlockChanges.get(dimID);
+
 		if (changeList == null)
 		{
 			changeList = new ArrayList<ScheduledBlockChange>();
 		}
-		
+
 		changeList.add(change);
-		scheduledBlockChanges.put(dimID, changeList);
+		GCCoreTickHandlerServer.scheduledBlockChanges.put(dimID, changeList);
 	}
-	
+
 	public static void scheduleNewBlockChange(int dimID, List<ScheduledBlockChange> changeAdd)
 	{
-		List<ScheduledBlockChange> changeList = scheduledBlockChanges.get(dimID);
-		
+		List<ScheduledBlockChange> changeList = GCCoreTickHandlerServer.scheduledBlockChanges.get(dimID);
+
 		if (changeList == null)
 		{
 			changeList = new ArrayList<ScheduledBlockChange>();
 		}
-		
+
 		changeList.addAll(changeAdd);
-		scheduledBlockChanges.put(dimID, changeList);
+		GCCoreTickHandlerServer.scheduledBlockChanges.put(dimID, changeList);
 	}
-	
+
 	@Override
 	public void tickStart(EnumSet<TickType> type, Object... tickData)
 	{
 		if (type.equals(EnumSet.of(TickType.WORLD)))
 		{
 			final WorldServer world = (WorldServer) tickData[0];
-			
-			List<ScheduledBlockChange> changeList = scheduledBlockChanges.get(world.provider.dimensionId);
-			
+
+			List<ScheduledBlockChange> changeList = GCCoreTickHandlerServer.scheduledBlockChanges.get(world.provider.dimensionId);
+
 			if (changeList != null && !changeList.isEmpty())
 			{
 				List<ScheduledBlockChange> scheduledChanges = new ArrayList<ScheduledBlockChange>(changeList);
-				
+
 				for (ScheduledBlockChange change : scheduledChanges)
 				{
 					if (change != null && change.getChangePosition() != null)
@@ -74,9 +73,9 @@ public class GCCoreTickHandlerServer implements ITickHandler
 						world.setBlock(change.getChangePosition().x, change.getChangePosition().y, change.getChangePosition().z, change.getChangeID(), change.getChangeMeta(), change.getChangeFlag());
 					}
 				}
-				
-				scheduledBlockChanges.get(world.provider.dimensionId).clear();
-				scheduledBlockChanges.remove(world.provider.dimensionId);
+
+				GCCoreTickHandlerServer.scheduledBlockChanges.get(world.provider.dimensionId).clear();
+				GCCoreTickHandlerServer.scheduledBlockChanges.remove(world.provider.dimensionId);
 			}
 
 			if (world.provider instanceof IOrbitDimension)

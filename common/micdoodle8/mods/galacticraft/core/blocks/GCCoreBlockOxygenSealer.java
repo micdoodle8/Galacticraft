@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.oxygen.BlockVec3;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenSealer;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -156,28 +155,25 @@ public class GCCoreBlockOxygenSealer extends GCCoreBlockAdvancedTile
 	@Override
 	public void breakBlock(World world, int x, int y, int z, int par5, int par6)
 	{
-		//This is unnecessary as it will be picked up by OxygenPressureProtocol.onEdgeBlockUpdated anyhow
-		//Also don't want to clear all the breatheableAir if there are still working sealers in the space
+		// This is unnecessary as it will be picked up by
+		// OxygenPressureProtocol.onEdgeBlockUpdated anyhow
+		// Also don't want to clear all the breatheableAir if there are still
+		// working sealers in the space
 		/*
-		TileEntity tile = world.getBlockTileEntity(x, y, z);
-
-		if (tile instanceof GCCoreTileEntityOxygenSealer)
-		{
-			GCCoreTileEntityOxygenSealer sealer = (GCCoreTileEntityOxygenSealer) tile;
-
-			if (sealer.threadSeal != null && sealer.threadSeal.sealed)
-			{
-				for (BlockVec3 checkedVec : sealer.threadSeal.checked)
-				{
-					int blockID = checkedVec.getBlockID(world);
-
-					if (blockID == GCCoreBlocks.breatheableAir.blockID)
-					{
-						world.setBlock(checkedVec.x, checkedVec.y, checkedVec.z, 0, 0, 2);
-					}
-				}
-			}
-		}*/
+		 * TileEntity tile = world.getBlockTileEntity(x, y, z);
+		 * 
+		 * if (tile instanceof GCCoreTileEntityOxygenSealer) {
+		 * GCCoreTileEntityOxygenSealer sealer = (GCCoreTileEntityOxygenSealer)
+		 * tile;
+		 * 
+		 * if (sealer.threadSeal != null && sealer.threadSeal.sealed) { for
+		 * (BlockVec3 checkedVec : sealer.threadSeal.checked) { int blockID =
+		 * checkedVec.getBlockID(world);
+		 * 
+		 * if (blockID == GCCoreBlocks.breatheableAir.blockID) {
+		 * world.setBlock(checkedVec.x, checkedVec.y, checkedVec.z, 0, 0, 2); }
+		 * } } }
+		 */
 
 		super.breakBlock(world, x, y, z, par5, par6);
 	}

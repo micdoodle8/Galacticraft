@@ -126,6 +126,7 @@ public class GCCoreTileEntityOxygenPipe extends GCCoreTileEntityOxygenTransmitte
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void setColor(byte col)
 	{

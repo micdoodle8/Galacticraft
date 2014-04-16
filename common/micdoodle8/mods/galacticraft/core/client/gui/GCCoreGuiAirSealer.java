@@ -113,7 +113,7 @@ public class GCCoreGuiAirSealer extends GCCoreGuiContainer
 	{
 		int blockAbove = this.sealer.worldObj.getBlockId(this.sealer.xCoord, this.sealer.yCoord + 1, this.sealer.zCoord);
 
-		if (blockAbove != 0 && blockAbove != GCCoreBlocks.breatheableAir.blockID && !OxygenPressureProtocol.canBlockPassAir(this.sealer.worldObj,blockAbove,new BlockVec3(this.sealer.xCoord, this.sealer.yCoord + 1, this.sealer.zCoord),0))
+		if (blockAbove != 0 && blockAbove != GCCoreBlocks.breatheableAir.blockID && !OxygenPressureProtocol.canBlockPassAir(this.sealer.worldObj, blockAbove, new BlockVec3(this.sealer.xCoord, this.sealer.yCoord + 1, this.sealer.zCoord), 0))
 		{
 			return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.sealerblocked.name");
 		}
@@ -137,7 +137,7 @@ public class GCCoreGuiAirSealer extends GCCoreGuiContainer
 		{
 			return EnumColor.ORANGE + "Checking seal...";
 		}
-		
+
 		int threadCooldown = this.sealer.getScaledThreadCooldown(25);
 
 		if (threadCooldown < 15)
@@ -149,7 +149,7 @@ public class GCCoreGuiAirSealer extends GCCoreGuiContainer
 				{
 					elipsis += ".";
 				}
-				
+
 				return EnumColor.ORANGE + "Check Starting" + elipsis;
 			}
 			else
@@ -167,7 +167,7 @@ public class GCCoreGuiAirSealer extends GCCoreGuiContainer
 			{
 				return EnumColor.DARK_GREEN + StatCollector.translateToLocal("gui.status.sealed.name");
 			}
-		}			
+		}
 	}
 
 	@Override

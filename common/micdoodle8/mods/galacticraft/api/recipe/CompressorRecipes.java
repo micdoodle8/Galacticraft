@@ -180,139 +180,139 @@ public class CompressorRecipes
 			for (j = 0; j < CompressorRecipes.recipes.size(); ++j)
 			{
 				IRecipe irecipe = CompressorRecipes.recipes.get(j);
-				
-				if (irecipe instanceof ShapedRecipes && matches((ShapedRecipes) irecipe, inventory, par2World))
+
+				if (irecipe instanceof ShapedRecipes && CompressorRecipes.matches((ShapedRecipes) irecipe, inventory, par2World))
 				{
 					return irecipe.getRecipeOutput().copy();
 				}
-				else if (irecipe instanceof ShapelessRecipes && matchesShapeless((ShapelessRecipes) irecipe, inventory, par2World))
+				else if (irecipe instanceof ShapelessRecipes && CompressorRecipes.matchesShapeless((ShapelessRecipes) irecipe, inventory, par2World))
 				{
 					return irecipe.getRecipeOutput().copy();
-				}				
+				}
 			}
 
 			return null;
 		}
 	}
-	
+
 	private static boolean matches(ShapedRecipes recipe, IInventory inventory, World par2World)
-    {
-        for (int i = 0; i <= 3 - recipe.recipeWidth; ++i)
-        {
-            for (int j = 0; j <= 3 - recipe.recipeHeight; ++j)
-            {
-                if (checkMatch(recipe, inventory, i, j, true))
-                {
-                    return true;
-                }
+	{
+		for (int i = 0; i <= 3 - recipe.recipeWidth; ++i)
+		{
+			for (int j = 0; j <= 3 - recipe.recipeHeight; ++j)
+			{
+				if (CompressorRecipes.checkMatch(recipe, inventory, i, j, true))
+				{
+					return true;
+				}
 
-                if (checkMatch(recipe, inventory, i, j, false))
-                {
-                    return true;
-                }
-            }
-        }
+				if (CompressorRecipes.checkMatch(recipe, inventory, i, j, false))
+				{
+					return true;
+				}
+			}
+		}
 
-        return false;
-    }
+		return false;
+	}
 
-    private static boolean checkMatch(ShapedRecipes recipe, IInventory inventory, int par2, int par3, boolean par4)
-    {
-        for (int k = 0; k < 3; ++k)
-        {
-            for (int l = 0; l < 3; ++l)
-            {
-                int i1 = k - par2;
-                int j1 = l - par3;
-                ItemStack itemstack = null;
+	private static boolean checkMatch(ShapedRecipes recipe, IInventory inventory, int par2, int par3, boolean par4)
+	{
+		for (int k = 0; k < 3; ++k)
+		{
+			for (int l = 0; l < 3; ++l)
+			{
+				int i1 = k - par2;
+				int j1 = l - par3;
+				ItemStack itemstack = null;
 
-                if (i1 >= 0 && j1 >= 0 && i1 < recipe.recipeWidth && j1 < recipe.recipeHeight)
-                {
-                    if (par4)
-                    {
-                        itemstack = recipe.recipeItems[recipe.recipeWidth - i1 - 1 + j1 * recipe.recipeWidth];
-                    }
-                    else
-                    {
-                        itemstack = recipe.recipeItems[i1 + j1 * recipe.recipeWidth];
-                    }
-                }
-                
-                ItemStack itemstack1 = null;
+				if (i1 >= 0 && j1 >= 0 && i1 < recipe.recipeWidth && j1 < recipe.recipeHeight)
+				{
+					if (par4)
+					{
+						itemstack = recipe.recipeItems[recipe.recipeWidth - i1 - 1 + j1 * recipe.recipeWidth];
+					}
+					else
+					{
+						itemstack = recipe.recipeItems[i1 + j1 * recipe.recipeWidth];
+					}
+				}
 
-                if (k >= 0 && l < 3)
-                {
-                    int k2 = k + l * 3;
-                    itemstack1 = inventory.getStackInSlot(k2);
-                }
+				ItemStack itemstack1 = null;
 
-                if (itemstack1 != null || itemstack != null)
-                {
-                    if (itemstack1 == null && itemstack != null || itemstack1 != null && itemstack == null)
-                    {
-                        return false;
-                    }
+				if (k >= 0 && l < 3)
+				{
+					int k2 = k + l * 3;
+					itemstack1 = inventory.getStackInSlot(k2);
+				}
 
-                    if (itemstack.itemID != itemstack1.itemID)
-                    {
-                        return false;
-                    }
+				if (itemstack1 != null || itemstack != null)
+				{
+					if (itemstack1 == null && itemstack != null || itemstack1 != null && itemstack == null)
+					{
+						return false;
+					}
 
-                    if (itemstack.getItemDamage() != 32767 && itemstack.getItemDamage() != itemstack1.getItemDamage())
-                    {
-                        return false;
-                    }
-                }
-            }
-        }
+					if (itemstack.itemID != itemstack1.itemID)
+					{
+						return false;
+					}
 
-        return true;
-    }
-    
-    private static boolean matchesShapeless(ShapelessRecipes recipe, IInventory inventory, World par2World)
-    {
-        @SuppressWarnings("unchecked")
+					if (itemstack.getItemDamage() != 32767 && itemstack.getItemDamage() != itemstack1.getItemDamage())
+					{
+						return false;
+					}
+				}
+			}
+		}
+
+		return true;
+	}
+
+	private static boolean matchesShapeless(ShapelessRecipes recipe, IInventory inventory, World par2World)
+	{
+		@SuppressWarnings("unchecked")
 		ArrayList<ItemStack> arraylist = new ArrayList<ItemStack>(recipe.recipeItems);
 
-        for (int i = 0; i < 3; ++i)
-        {
-            for (int j = 0; j < 3; ++j)
-            {
-                ItemStack itemstack = null;
-                
-                if (j >= 0 && i < 3)
-                {
-                    int k2 = j + i * 3;
-                    itemstack = inventory.getStackInSlot(k2);
-                }
+		for (int i = 0; i < 3; ++i)
+		{
+			for (int j = 0; j < 3; ++j)
+			{
+				ItemStack itemstack = null;
 
-                if (itemstack != null)
-                {
-                    boolean flag = false;
-                    Iterator<ItemStack> iterator = arraylist.iterator();
+				if (j >= 0 && i < 3)
+				{
+					int k2 = j + i * 3;
+					itemstack = inventory.getStackInSlot(k2);
+				}
 
-                    while (iterator.hasNext())
-                    {
-                        ItemStack itemstack1 = (ItemStack)iterator.next();
+				if (itemstack != null)
+				{
+					boolean flag = false;
+					Iterator<ItemStack> iterator = arraylist.iterator();
 
-                        if (itemstack.itemID == itemstack1.itemID && (itemstack1.getItemDamage() == 32767 || itemstack.getItemDamage() == itemstack1.getItemDamage()))
-                        {
-                            flag = true;
-                            arraylist.remove(itemstack1);
-                            break;
-                        }
-                    }
+					while (iterator.hasNext())
+					{
+						ItemStack itemstack1 = iterator.next();
 
-                    if (!flag)
-                    {
-                        return false;
-                    }
-                }
-            }
-        }
+						if (itemstack.itemID == itemstack1.itemID && (itemstack1.getItemDamage() == 32767 || itemstack.getItemDamage() == itemstack1.getItemDamage()))
+						{
+							flag = true;
+							arraylist.remove(itemstack1);
+							break;
+						}
+					}
 
-        return arraylist.isEmpty();
-    }
+					if (!flag)
+					{
+						return false;
+					}
+				}
+			}
+		}
+
+		return arraylist.isEmpty();
+	}
 
 	public static List<IRecipe> getRecipeList()
 	{

@@ -40,17 +40,17 @@ public class GCCoreRecipeManager
 		{
 			GCCoreRecipeManager.addBuildCraftCraftingRecipes();
 		}
-		
+
 		if (GCCoreCompatibilityManager.isAppEngLoaded())
 		{
 			GCCoreRecipeManager.addAppliedEnergisticsRecipes();
 		}
-		
+
 		if (GCCoreCompatibilityManager.isIc2Loaded())
 		{
 			GCCoreRecipeManager.addIndustrialCraft2Recipes();
 		}
-		
+
 		GCCoreRecipeManager.addUniversalRecipes();
 	}
 

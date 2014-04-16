@@ -25,7 +25,7 @@ public class GCCoreAnnotations
 		String clazz();
 
 		String modID();
-		
+
 		String[] altClasses() default {};
 	}
 

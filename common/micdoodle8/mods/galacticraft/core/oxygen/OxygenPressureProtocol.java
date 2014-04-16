@@ -75,8 +75,8 @@ public class OxygenPressureProtocol
 	{
 		return new ThreadFindSeal(world, vec, 2000, new ArrayList<GCCoreTileEntityOxygenSealer>());
 	}
-		
-	//Note this will NPE if id==0, so don't call this with id==0
+
+	// Note this will NPE if id==0, so don't call this with id==0
 	public static boolean canBlockPassAir(World world, int id, BlockVec3 vec, int side)
 	{
 		if (OxygenPressureProtocol.vanillaPermeableBlocks.contains(id))
@@ -86,7 +86,7 @@ public class OxygenPressureProtocol
 
 		Block block = Block.blocksList[id];
 
-		if (!block.isOpaqueCube())  
+		if (!block.isOpaqueCube())
 		{
 			if (block instanceof IPartialSealableBlock)
 			{

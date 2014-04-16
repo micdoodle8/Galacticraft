@@ -25,12 +25,12 @@ public class GCCoreCommandKeepDim extends CommandBase
 	{
 		return "/" + this.getCommandName();
 	}
-	
+
 	@Override
-    public int getRequiredPermissionLevel()
-    {
-        return 2;
-    }
+	public int getRequiredPermissionLevel()
+	{
+		return 2;
+	}
 
 	@Override
 	public String getCommandName()
@@ -42,7 +42,7 @@ public class GCCoreCommandKeepDim extends CommandBase
 	public void processCommand(ICommandSender icommandsender, String[] astring)
 	{
 		GCCorePlayerMP playerBase = null;
-		
+
 		if (astring.length > 1)
 		{
 			throw new WrongUsageException("Not enough command arguments! Usage: " + this.getCommandUsage(icommandsender), new Object[0]);
@@ -56,16 +56,16 @@ public class GCCoreCommandKeepDim extends CommandBase
 				if (playerBase != null)
 				{
 					int dimID;
-					
+
 					if (astring.length == 0)
 					{
 						dimID = playerBase.dimension;
 					}
 					else
 					{
-						dimID = parseInt(icommandsender, astring[0]);
+						dimID = CommandBase.parseInt(icommandsender, astring[0]);
 					}
-					
+
 					if (GCCoreConfigManager.setLoaded(dimID))
 					{
 						playerBase.sendChatToPlayer(ChatMessageComponent.createFromText("[GCKeepLoaded] Successfully set dimension " + dimID + " to load staticly"));

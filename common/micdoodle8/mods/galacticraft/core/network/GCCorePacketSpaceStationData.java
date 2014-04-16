@@ -3,9 +3,7 @@ package micdoodle8.mods.galacticraft.core.network;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.util.Arrays;
 
-import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreSpaceStationData;
 import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;

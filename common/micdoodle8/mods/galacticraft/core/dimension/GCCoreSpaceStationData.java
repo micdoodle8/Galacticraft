@@ -139,11 +139,11 @@ public class GCCoreSpaceStationData extends WorldSavedData
 				var3.markDirty();
 			}
 
-			if (var3.getSpaceStationName().replace(" ","").isEmpty())
-            {	
+			if (var3.getSpaceStationName().replace(" ", "").isEmpty())
+			{
 				var3.setSpaceStationName(var3.owner + "\'s Space Station");
-            	var3.markDirty();
-            }
+				var3.markDirty();
+			}
 
 			return var3;
 		}
@@ -176,12 +176,12 @@ public class GCCoreSpaceStationData extends WorldSavedData
 			var3.markDirty();
 		}
 
-		if (var3.getSpaceStationName().replace(" ","").isEmpty())
-        {	
+		if (var3.getSpaceStationName().replace(" ", "").isEmpty())
+		{
 			var3.setSpaceStationName(var3.owner + "\'s Space Station");
-        	var3.markDirty();
-        }
-		
+			var3.markDirty();
+		}
+
 		return var3;
 	}
 

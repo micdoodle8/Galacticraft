@@ -95,7 +95,8 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityOxygen impl
 			// }
 			// }
 
-			//The later calculations are more efficient if power is a float, so there are fewer casts
+			// The later calculations are more efficient if power is a float, so
+			// there are fewer casts
 			float power = 0;
 			int breatheableAirID = GCCoreBlocks.breatheableAir.blockID;
 
@@ -103,40 +104,57 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityOxygen impl
 			{
 				if (this.worldObj.provider instanceof IGalacticraftWorldProvider)
 				{
-					//Pre-test to see if close to the map edges, so code doesn't have to continually test for map edges inside the loop
-					if (xCoord>-29999995 && xCoord<2999995 && zCoord>-29999995 && zCoord<29999995)
+					// Pre-test to see if close to the map edges, so code
+					// doesn't have to continually test for map edges inside the
+					// loop
+					if (this.xCoord > -29999995 && this.xCoord < 2999995 && this.zCoord > -29999995 && this.zCoord < 29999995)
 					{
-						//Test the y coordinates, so code doesn't have to keep testing that either
-						int miny = this.yCoord-5;
-						int maxy = this.yCoord+5;
-						if (miny<0) miny = 0;
-						if (maxy>=worldObj.getHeight()) maxy=worldObj.getHeight()-1;
-						
-						//Loop the x and the z first, so the y loop will be at fixed (x,z) coordinates meaning fixed chunk coordinates
+						// Test the y coordinates, so code doesn't have to keep
+						// testing that either
+						int miny = this.yCoord - 5;
+						int maxy = this.yCoord + 5;
+						if (miny < 0)
+						{
+							miny = 0;
+						}
+						if (maxy >= this.worldObj.getHeight())
+						{
+							maxy = this.worldObj.getHeight() - 1;
+						}
+
+						// Loop the x and the z first, so the y loop will be at
+						// fixed (x,z) coordinates meaning fixed chunk
+						// coordinates
 						for (int x = this.xCoord - 5; x <= this.xCoord + 5; x++)
 						{
 							int chunkx = x >> 4;
 							int intrachunkx = x & 15;
-							//Preload the first chunk for the z loop - there can be a maximum of 2 chunks in the z loop
-							int chunkz = (this.zCoord - 5)>>4;
-							Chunk chunk = worldObj.getChunkFromChunkCoords(chunkx, chunkz);
+							// Preload the first chunk for the z loop - there
+							// can be a maximum of 2 chunks in the z loop
+							int chunkz = (this.zCoord - 5) >> 4;
+							Chunk chunk = this.worldObj.getChunkFromChunkCoords(chunkx, chunkz);
 							for (int z = this.zCoord - 5; z <= this.zCoord + 5; z++)
 							{
-								if ((z>>4)!=chunkz) 
-								{	
-									//moved across z chunk boundary into a new chunk, so load the new chunk
-									chunkz=z>>4;
-									chunk = worldObj.getChunkFromChunkCoords(chunkx, chunkz);
+								if ((z >> 4) != chunkz)
+								{
+									// moved across z chunk boundary into a new
+									// chunk, so load the new chunk
+									chunkz = z >> 4;
+									chunk = this.worldObj.getChunkFromChunkCoords(chunkx, chunkz);
 								}
 								for (int y = miny; y <= maxy; y++)
 								{
-									//chunk.getBlockID is like world.getBlockId but faster - needs to be given intra-chunk coordinates though 
+									// chunk.getBlockID is like world.getBlockId
+									// but faster - needs to be given
+									// intra-chunk coordinates though
 									final int blockID = chunk.getBlockID(intrachunkx, y, z & 15);
-									//Test for the two most common blocks (air and breatheable air) without looking up in the blocksList
+									// Test for the two most common blocks (air
+									// and breatheable air) without looking up
+									// in the blocksList
 									if (blockID != 0 && blockID != breatheableAirID)
 									{
 										final Block block = Block.blocksList[blockID];
-	
+
 										if (block.isLeaves(this.worldObj, x, y, z) || block instanceof IPlantable && ((IPlantable) block).getPlantType(this.worldObj, x, y, z) == EnumPlantType.Crop)
 										{
 											power += 0.075F;

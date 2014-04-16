@@ -134,10 +134,11 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeala
 		par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.ALUMINUM_WIRE.getMetadata()));
 		par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.ALUMINUM_WIRE_HEAVY.getMetadata()));
 		par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.OXYGEN_PIPE.getMetadata()));
-		
+
 		if (GCCoreCompatibilityManager.isTELoaded())
 		{
-//			par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.TE_CONDUIT.getMetadata()));
+			// par3List.add(new ItemStack(par1, 1,
+			// EnumEnclosedBlock.TE_CONDUIT.getMetadata()));
 		}
 
 		if (GCCoreCompatibilityManager.isIc2Loaded())
@@ -207,7 +208,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeala
 
 		if (metadata == EnumEnclosedBlock.TE_CONDUIT.getMetadata())
 		{
-			
+
 		}
 		else if (metadata > 0 && metadata <= EnumEnclosedBlock.OXYGEN_PIPE.getMetadata())
 		{
@@ -275,7 +276,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeala
 
 		if (metadata == EnumEnclosedBlock.TE_CONDUIT.getMetadata())
 		{
-			
+
 		}
 		else if (metadata > 0 && metadata <= EnumEnclosedBlock.OXYGEN_PIPE.getMetadata())
 		{
@@ -382,7 +383,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeala
 	{
 		if (metadata == EnumEnclosedBlock.TE_CONDUIT.getMetadata())
 		{
-			
+
 		}
 		else if (metadata > 0 && metadata <= EnumEnclosedBlock.OXYGEN_PIPE.getMetadata())
 		{

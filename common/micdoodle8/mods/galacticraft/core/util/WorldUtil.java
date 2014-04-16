@@ -394,7 +394,7 @@ public class WorldUtil
 		for (Integer registeredID : WorldUtil.registeredSpaceStations)
 		{
 			int id = Arrays.binarySearch(GCCoreConfigManager.staticLoadDimensions, registeredID.intValue());
-			
+
 			if (id >= 0)
 			{
 				DimensionManager.registerDimension(registeredID.intValue(), GCCoreConfigManager.idDimensionOverworldOrbitStatic);
@@ -488,7 +488,7 @@ public class WorldUtil
 	{
 		WorldUtil.registeredSpaceStations.add(dimID);
 		int id = Arrays.binarySearch(GCCoreConfigManager.staticLoadDimensions, dimID);
-		
+
 		if (id >= 0)
 		{
 			DimensionManager.registerDimension(dimID, GCCoreConfigManager.idDimensionOverworldOrbitStatic);

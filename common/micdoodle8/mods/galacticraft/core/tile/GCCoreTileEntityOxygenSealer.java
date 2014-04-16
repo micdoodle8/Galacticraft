@@ -2,14 +2,12 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import java.util.EnumSet;
 
-import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
 import micdoodle8.mods.galacticraft.core.GCCoreAnnotations.NetworkedField;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.oxygen.BlockVec3;
 import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol;
 import micdoodle8.mods.galacticraft.core.oxygen.ThreadFindSeal;
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -59,7 +57,10 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 
 	public int getScaledThreadCooldown(int i)
 	{
-		if (this.active) return Math.min(i, (int) Math.floor(stopSealThreadCooldown * i / (double)threadCooldownTotal));
+		if (this.active)
+		{
+			return Math.min(i, (int) Math.floor(this.stopSealThreadCooldown * i / (double) this.threadCooldownTotal));
+		}
 		return 0;
 	}
 
@@ -70,12 +71,12 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 			return 0;
 		}
 		int blockAbove = this.worldObj.getBlockId(this.xCoord, this.yCoord + 1, this.zCoord);
-		if (blockAbove != 0 && blockAbove != GCCoreBlocks.breatheableAir.blockID && !OxygenPressureProtocol.canBlockPassAir(this.worldObj,blockAbove,new BlockVec3(this.xCoord, this.yCoord + 1, this.zCoord),0))
+		if (blockAbove != 0 && blockAbove != GCCoreBlocks.breatheableAir.blockID && !OxygenPressureProtocol.canBlockPassAir(this.worldObj, blockAbove, new BlockVec3(this.xCoord, this.yCoord + 1, this.zCoord), 0))
 		{
-			//The vent is blocked
+			// The vent is blocked
 			return 0;
 		}
-		
+
 		return 1250;
 	}
 
@@ -100,28 +101,45 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 				this.sealed = this.threadSeal.sealedFinal.get() && this.active;
 				this.calculatingSealed = this.threadSeal.looping.get() && this.active;
 			}
-			
-			if (stopSealThreadCooldown > 0)
-				stopSealThreadCooldown --;
-			//UpdateSealerStatus on the later of cooldown reaching 0 or any busy ThreadFindSeal finishing
-			//Sealers which are already checked by another head sealer will have had their cooldown reset so will always be skipped
-			else if(ThreadFindSeal.anylooping.get()==false)
+
+			if (this.stopSealThreadCooldown > 0)
 			{
-				threadCooldownTotal = stopSealThreadCooldown = 50 + countEntities;  //This puts any Sealer which is updated to the back of the queue for updates
+				this.stopSealThreadCooldown--;
+			}
+			else if (ThreadFindSeal.anylooping.get() == false)
+			{
+				this.threadCooldownTotal = this.stopSealThreadCooldown = 50 + GCCoreTileEntityOxygenSealer.countEntities; // This
+																															// puts
+																															// any
+																															// Sealer
+																															// which
+																															// is
+																															// updated
+																															// to
+																															// the
+																															// back
+																															// of
+																															// the
+																															// queue
+																															// for
+																															// updates
 				OxygenPressureProtocol.updateSealerStatus(this);
 			}
 
 			this.lastDisabled = this.disabled;
 			this.lastSealed = this.sealed;
 
-			//Some code to count the number of Oxygen Sealers being updated, tick by tick - needed for queueing
-			if (this.ticks==GCCoreTileEntityOxygenSealer.ticksSave)
-				countTemp++;
+			// Some code to count the number of Oxygen Sealers being updated,
+			// tick by tick - needed for queueing
+			if (this.ticks == GCCoreTileEntityOxygenSealer.ticksSave)
+			{
+				GCCoreTileEntityOxygenSealer.countTemp++;
+			}
 			else
 			{
-				ticksSave = this.ticks;
-				countEntities = countTemp;
-				countTemp = 1;
+				GCCoreTileEntityOxygenSealer.ticksSave = this.ticks;
+				GCCoreTileEntityOxygenSealer.countEntities = GCCoreTileEntityOxygenSealer.countTemp;
+				GCCoreTileEntityOxygenSealer.countTemp = 1;
 			}
 		}
 	}

@@ -131,6 +131,7 @@ public class RecipeUtil
 		return stack;
 	}
 
+	@SuppressWarnings("deprecation")
 	public static ItemStack getGregtechItem(int index, int amount, int metadata)
 	{
 		ItemStack stack = GregTech_API.getGregTechItem(index, index, metadata);

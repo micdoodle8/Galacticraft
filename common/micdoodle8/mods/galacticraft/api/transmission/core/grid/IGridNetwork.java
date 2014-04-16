@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.api.transmission.core.grid;
 
-import java.util.ArrayList;
 import java.util.Set;
 
 import net.minecraft.tileentity.TileEntity;

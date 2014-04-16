@@ -185,7 +185,7 @@ public class GCCoreConfigManager
 
 			GCCoreConfigManager.idDimensionOverworldOrbit = GCCoreConfigManager.configuration.get("DIMENSIONS", "idDimensionOverworldOrbit", -27).getInt(-27);
 			GCCoreConfigManager.idDimensionOverworldOrbitStatic = GCCoreConfigManager.configuration.get("DIMENSIONS", "idDimensionOverworldOrbitStatic", -26, "Static Space Station ID").getInt(-26);
-			GCCoreConfigManager.staticLoadDimensions = GCCoreConfigManager.configuration.get("DIMENSIONS", "Static Loaded Dimensions", staticLoadDimensions, "IDs to load at startup, and keep loaded until server stops. Can be added via /gckeeploaded").getIntList();
+			GCCoreConfigManager.staticLoadDimensions = GCCoreConfigManager.configuration.get("DIMENSIONS", "Static Loaded Dimensions", GCCoreConfigManager.staticLoadDimensions, "IDs to load at startup, and keep loaded until server stops. Can be added via /gckeeploaded").getIntList();
 
 			GCCoreConfigManager.idBlockBreatheableAir = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockCoreBreatheableAir", 3350).getInt(3350);
 			GCCoreConfigManager.idBlockLandingPad = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockLandingPad", 3351).getInt(3351);
@@ -337,43 +337,43 @@ public class GCCoreConfigManager
 			GCCoreConfigManager.loaded = true;
 		}
 	}
-	
+
 	public static boolean setLoaded(int newID)
 	{
 		boolean found = false;
-		
-		for (int i = 0; i < GCCoreConfigManager.staticLoadDimensions.length; i++)
+
+		for (int staticLoadDimension : GCCoreConfigManager.staticLoadDimensions)
 		{
-			if (GCCoreConfigManager.staticLoadDimensions[i] == newID)
+			if (staticLoadDimension == newID)
 			{
 				found = true;
 				break;
 			}
 		}
-		
+
 		if (!found)
 		{
 			int[] oldIDs = GCCoreConfigManager.staticLoadDimensions;
 			GCCoreConfigManager.staticLoadDimensions = new int[GCCoreConfigManager.staticLoadDimensions.length + 1];
-			
+
 			for (int i = 0; i < oldIDs.length; i++)
 			{
 				GCCoreConfigManager.staticLoadDimensions[i] = oldIDs[i];
 			}
-			
+
 			GCCoreConfigManager.staticLoadDimensions[GCCoreConfigManager.staticLoadDimensions.length - 1] = newID;
 			String[] values = new String[GCCoreConfigManager.staticLoadDimensions.length];
 			Arrays.sort(GCCoreConfigManager.staticLoadDimensions);
-			
+
 			for (int i = 0; i < values.length; i++)
 			{
 				values[i] = String.valueOf(GCCoreConfigManager.staticLoadDimensions[i]);
 			}
-			
-			GCCoreConfigManager.configuration.get("DIMENSIONS", "Static Loaded Dimensions", staticLoadDimensions, "IDs to load at startup, and keep loaded until server stops. Can be added via /gckeeploaded").set(values);
+
+			GCCoreConfigManager.configuration.get("DIMENSIONS", "Static Loaded Dimensions", GCCoreConfigManager.staticLoadDimensions, "IDs to load at startup, and keep loaded until server stops. Can be added via /gckeeploaded").set(values);
 			GCCoreConfigManager.configuration.save();
 		}
-		
+
 		return !found;
 	}
 }
