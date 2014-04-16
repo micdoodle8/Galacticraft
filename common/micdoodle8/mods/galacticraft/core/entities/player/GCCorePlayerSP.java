@@ -11,12 +11,12 @@ import micdoodle8.mods.galacticraft.core.event.GCCoreEventWakePlayer;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.multiplayer.NetClientHandler;
 import net.minecraft.client.renderer.IImageBuffer;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
 import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.client.renderer.texture.TextureObject;
 import net.minecraft.entity.player.EnumStatus;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -26,6 +26,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.Icon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Session;
+import net.minecraft.util.StringUtils;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.client.FMLClientHandler;
@@ -96,48 +97,57 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
 	{
 		super.setupCustomSkin();
 
-		if (GCCoreConfigManager.overrideCapes)
+		if (ClientProxyCore.capeMap.containsKey(this.username))
 		{
-			this.galacticraftCape = AbstractClientPlayer.getLocationCape(this.username);
-			this.galacticraftCapeImageData = GCCorePlayerSP.getImageData(this.galacticraftCape, GCCorePlayerSP.getCapeURL(this.username), null, null);
+			this.galacticraftCape = getLocationCape2(this.username);
+			this.galacticraftCapeImageData = getDownloadImage(this.galacticraftCape, GCCorePlayerSP.getCapeURL(this.username), null, null);
 		}
 	}
+
+    public static ResourceLocation getLocationCape2(String par0Str)
+    {
+        return new ResourceLocation("cloaksGC/" + StringUtils.stripControlCodes(par0Str));
+    }
+
+    private static ThreadDownloadImageData getDownloadImage(ResourceLocation par0ResourceLocation, String par1Str, ResourceLocation par2ResourceLocation, IImageBuffer par3IImageBuffer)
+    {
+        TextureManager texturemanager = Minecraft.getMinecraft().getTextureManager();
+        Object object = texturemanager.getTexture(par0ResourceLocation);
+
+        if (object == null)
+        {
+            object = new ThreadDownloadImageData(par1Str, par2ResourceLocation, par3IImageBuffer);
+            texturemanager.loadTexture(par0ResourceLocation, (TextureObject)object);
+        }
+
+        return (ThreadDownloadImageData)object;
+    }
 
 	public static String getCapeURL(String par0Str)
 	{
 		return ClientProxyCore.capeMap.get(par0Str);
 	}
 
-	private static ThreadDownloadImageData getImageData(ResourceLocation par0ResourceLocation, String par1Str, ResourceLocation par2ResourceLocation, IImageBuffer par3IImageBuffer)
-	{
-		TextureManager texturemanager = Minecraft.getMinecraft().getTextureManager();
-
-		ThreadDownloadImageData object = new ThreadDownloadImageData(par1Str, par2ResourceLocation, par3IImageBuffer);
-		texturemanager.loadTexture(par0ResourceLocation, object);
-
-		return object;
-	}
-
 	@Override
 	public ResourceLocation getLocationCape()
 	{
-		if (!GCCoreConfigManager.overrideCapes || !this.getTextureCape().isTextureUploaded())
+		if ((GCCoreConfigManager.overrideCapes || !super.getTextureCape().isTextureUploaded()) && this.galacticraftCape != null)
 		{
-			return super.getLocationCape();
+			return this.galacticraftCape;
 		}
 
-		return this.galacticraftCape;
+		return super.getLocationCape();
 	}
 
 	@Override
 	public ThreadDownloadImageData getTextureCape()
 	{
-		if (!GCCoreConfigManager.overrideCapes || !this.galacticraftCapeImageData.isTextureUploaded())
+		if ((GCCoreConfigManager.overrideCapes || !super.getTextureCape().isTextureUploaded()) && this.galacticraftCape != null)
 		{
-			return super.getTextureCape();
+			return this.galacticraftCapeImageData;
 		}
-
-		return this.galacticraftCapeImageData;
+		
+		return super.getTextureCape();
 	}
 
 	@Override
