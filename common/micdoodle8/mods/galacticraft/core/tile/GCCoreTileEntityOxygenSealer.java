@@ -107,7 +107,7 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 			//Sealers which are already checked by another head sealer will have had their cooldown reset so will always be skipped
 			else if(ThreadFindSeal.anylooping.get()==false)
 			{
-				threadCooldownTotal = stopSealThreadCooldown = 150 + countEntities;  //This puts any Sealer which is updated to the back of the queue for updates
+				threadCooldownTotal = stopSealThreadCooldown = 50 + countEntities;  //This puts any Sealer which is updated to the back of the queue for updates
 				OxygenPressureProtocol.updateSealerStatus(this);
 			}
 
