@@ -38,6 +38,7 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 	public static final float WATTS_PER_TICK = 0.2F;
 	public boolean lastDisabled = false;
 
+	@NetworkedField(targetSide = Side.CLIENT)
 	public boolean active;
 	private ItemStack[] containingItems = new ItemStack[1];
 	public ThreadFindSeal threadSeal;
