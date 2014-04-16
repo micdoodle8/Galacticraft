@@ -66,8 +66,6 @@ public class GCCoreCommandKeepDim extends CommandBase
 						dimID = parseInt(icommandsender, astring[0]);
 					}
 					
-					System.out.println(dimID);
-					
 					if (GCCoreConfigManager.setLoaded(dimID))
 					{
 						playerBase.sendChatToPlayer(ChatMessageComponent.createFromText("[GCKeepDim] Successfully set dimension " + dimID + " to load staticly"));

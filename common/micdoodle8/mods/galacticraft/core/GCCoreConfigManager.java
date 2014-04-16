@@ -186,8 +186,7 @@ public class GCCoreConfigManager
 			GCCoreConfigManager.idDimensionOverworldOrbit = GCCoreConfigManager.configuration.get("DIMENSIONS", "idDimensionOverworldOrbit", -27).getInt(-27);
 			GCCoreConfigManager.idDimensionOverworldOrbitStatic = GCCoreConfigManager.configuration.get("DIMENSIONS", "idDimensionOverworldOrbitStatic", -26, "Static Space Station ID").getInt(-26);
 			GCCoreConfigManager.staticLoadDimensions = GCCoreConfigManager.configuration.get("DIMENSIONS", "Static Loaded Dimensions", staticLoadDimensions, "IDs to load at startup, and keep loaded until server stops. Can be added via /gckeeploaded").getIntList();
-			System.out.println("asd " + GCCoreConfigManager.configuration.get("DIMENSIONS", "Static Loaded Dimensions", staticLoadDimensions, "IDs to load at startup, and keep loaded until server stops. Can be added via /gckeepdim").getIntList().length);
-			
+
 			GCCoreConfigManager.idBlockBreatheableAir = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockCoreBreatheableAir", 3350).getInt(3350);
 			GCCoreConfigManager.idBlockLandingPad = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockLandingPad", 3351).getInt(3351);
 			GCCoreConfigManager.idBlockLandingPadFull = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_BLOCK, "idBlockLandingPadFull", 3352).getInt(3352);
