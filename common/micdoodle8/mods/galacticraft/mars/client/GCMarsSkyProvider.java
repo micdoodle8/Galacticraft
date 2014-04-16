@@ -137,6 +137,14 @@ public class GCMarsSkyProvider extends IRenderHandler
 			var20 = gcProvider.getStarBrightness(partialTicks);
 		}
 
+		if (var20 > 0.0F)
+		{
+			GL11.glDisable(GL11.GL_TEXTURE_2D);
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, var20);
+			GL11.glCallList(this.starGLCallList);
+			GL11.glEnable(GL11.GL_TEXTURE_2D);
+		}
+
 		GL11.glPushMatrix();
 
 		GL11.glDisable(GL11.GL_BLEND);
@@ -161,14 +169,6 @@ public class GCMarsSkyProvider extends IRenderHandler
 		GL11.glEnable(GL11.GL_ALPHA_TEST);
 		GL11.glEnable(GL11.GL_FOG);
 		GL11.glPopMatrix();
-
-		if (var20 > 0.0F)
-		{
-			GL11.glDisable(GL11.GL_TEXTURE_2D);
-			GL11.glColor4f(1.0F, 1.0F, 1.0F, var20);
-			GL11.glCallList(this.starGLCallList);
-			GL11.glEnable(GL11.GL_TEXTURE_2D);
-		}
 
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
