@@ -593,7 +593,7 @@ public class GCCoreGuiChoosePlanet extends GuiScreen
 		// StatCollector.translateToLocal("gui.choosePlanet.desc.overworld");
 		// }
 
-		if (str != null)
+		if (str != null && !str.contains("space station"))
 		{
 			final String[] strArray = str.split("#");
 
