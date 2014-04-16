@@ -16,6 +16,7 @@ import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GCCoreDamageSource;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.command.GCCoreCommandGCInv;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityLander;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityMeteor;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityParaChest;
@@ -912,6 +913,11 @@ public class GCCorePlayerMP extends EntityPlayerMP
 			this.getExtendedInventory().readFromNBT(nbt.getTagList("ExtendedInventoryGC"));
 		}
 
+		//Added for GCInv command - if tried to load an offline player's inventory, load it now
+		//(if there was no offline load, then the dontload flag in doLoad() will make sure nothing happens)
+		ItemStack[] saveinv = GCCoreCommandGCInv.getSaveData(this.username.toLowerCase());
+		if (saveinv!=null) GCCoreCommandGCInv.doLoad(this);
+		        
 		if (nbt.hasKey("SpaceshipTier"))
 		{
 			this.setSpaceshipTier(nbt.getInteger("SpaceshipTier"));

@@ -20,6 +20,7 @@ import micdoodle8.mods.galacticraft.api.world.IPlanet;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockFluid;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiHandler;
+import micdoodle8.mods.galacticraft.core.command.GCCoreCommandGCInv;
 import micdoodle8.mods.galacticraft.core.command.GCCoreCommandKeepDim;
 import micdoodle8.mods.galacticraft.core.command.GCCoreCommandPlanetTeleport;
 import micdoodle8.mods.galacticraft.core.command.GCCoreCommandSpaceStationAddOwner;
@@ -407,6 +408,7 @@ public class GalacticraftCore
 		event.registerServerCommand(new GCCoreCommandSpaceStationRemoveOwner());
 		event.registerServerCommand(new GCCoreCommandPlanetTeleport());
 		event.registerServerCommand(new GCCoreCommandKeepDim());
+		event.registerServerCommand(new GCCoreCommandGCInv());
 
 		WorldUtil.registerSpaceStations(event.getServer().worldServerForDimension(0).getSaveHandler().getMapFileFromName("dummy").getParentFile());
 
