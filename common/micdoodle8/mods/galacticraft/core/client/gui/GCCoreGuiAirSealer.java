@@ -135,15 +135,37 @@ public class GCCoreGuiAirSealer extends GCCoreGuiContainer
 		{
 			return EnumColor.ORANGE + "Checking seal...";
 		}
+		
+		int threadCooldown = this.sealer.getScaledThreadCooldown(25);
 
-		if (!this.sealer.sealed)
+		if (threadCooldown < 15)
 		{
-			return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.unsealed.name");
+			if (threadCooldown < 4)
+			{
+				String elipsis = "";
+				for (int i = 0; i < (23 - threadCooldown) % 4; i++)
+				{
+					elipsis += ".";
+				}
+				
+				return EnumColor.ORANGE + "Check Starting" + elipsis;
+			}
+			else
+			{
+				return EnumColor.ORANGE + "Check Pending";
+			}
 		}
 		else
 		{
-			return EnumColor.DARK_GREEN + StatCollector.translateToLocal("gui.status.sealed.name");
-		}
+			if (!this.sealer.sealed)
+			{
+				return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.unsealed.name");
+			}
+			else
+			{
+				return EnumColor.DARK_GREEN + StatCollector.translateToLocal("gui.status.sealed.name");
+			}
+		}			
 	}
 
 	@Override
@@ -171,6 +193,12 @@ public class GCCoreGuiAirSealer extends GCCoreGuiContainer
 			this.drawTexturedModalRect(var5 + 113, var6 + 24, 197, 7, Math.min(scale, 54), 7);
 			scale = this.sealer.getScaledElecticalLevel(54);
 			this.drawTexturedModalRect(var5 + 113, var6 + 37, 197, 0, Math.min(scale, 54), 7);
+			scale = 25 - this.sealer.getScaledThreadCooldown(25);
+			this.drawTexturedModalRect(var5 + 148, var6 + 60, 176, 14, 10, 27);
+			if (scale != 0)
+			{
+				this.drawTexturedModalRect(var5 + 149, var6 + 61 + scale, 186, 14, 8, 25 - scale);
+			}
 
 			if (this.sealer.getEnergyStored() > 0)
 			{

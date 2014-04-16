@@ -38,7 +38,10 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 	public boolean active;
 	private ItemStack[] containingItems = new ItemStack[1];
 	public ThreadFindSeal threadSeal;
+	@NetworkedField(targetSide = Side.CLIENT)
 	public int stopSealThreadCooldown;
+	@NetworkedField(targetSide = Side.CLIENT)
+	public int threadCooldownTotal;
 	@NetworkedField(targetSide = Side.CLIENT)
 	public boolean calculatingSealed;
 	private static int countEntities = 0;
@@ -48,6 +51,11 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 	public GCCoreTileEntityOxygenSealer()
 	{
 		super(GCCoreTileEntityOxygenSealer.WATTS_PER_TICK, 50, 10000, 16);
+	}
+
+	public int getScaledThreadCooldown(int i)
+	{
+		return Math.min(i, (int) Math.floor(stopSealThreadCooldown * i / (double)threadCooldownTotal));
 	}
 
 	public int getFindSealChecks()
@@ -87,7 +95,11 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 				this.sealed = this.threadSeal.sealedFinal.get() && this.active;
 				this.calculatingSealed = this.threadSeal.looping.get() && this.active;
 			}
-
+			
+			if (!this.active)
+			{
+				this.stopSealThreadCooldown = 0;
+			}
 			
 			if (stopSealThreadCooldown > 0)
 				stopSealThreadCooldown --;
@@ -95,7 +107,7 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 			//Sealers which are already checked by another head sealer will have had their cooldown reset so will always be skipped
 			else if(ThreadFindSeal.anylooping.get()==false)
 			{
-				stopSealThreadCooldown = 50 + countEntities;  //This puts any Sealer which is updated to the back of the queue for updates
+				threadCooldownTotal = stopSealThreadCooldown = 150 + countEntities;  //This puts any Sealer which is updated to the back of the queue for updates
 				OxygenPressureProtocol.updateSealerStatus(this);
 			}
 
@@ -103,7 +115,7 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 			this.lastSealed = this.sealed;
 
 			//Some code to count the number of Oxygen Sealers being updated, tick by tick - needed for queueing
-			if (this.ticks==this.ticksSave)
+			if (this.ticks==GCCoreTileEntityOxygenSealer.ticksSave)
 				countTemp++;
 			else
 			{
