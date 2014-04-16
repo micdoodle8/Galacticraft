@@ -38,6 +38,7 @@ public class ThreadFindSeal extends Thread
 	public List<GCCoreTileEntityOxygenSealer> sealers;
 	public List<BlockVec3> oxygenReliantBlocks;
 	public HashSet<BlockVec3> checked;
+	public HashSet<BlockVec3> partiallySealableChecked;
 	public int checkCount;
 	public static AtomicBoolean anylooping = new AtomicBoolean();
 	public AtomicBoolean looping = new AtomicBoolean();
@@ -66,6 +67,7 @@ public class ThreadFindSeal extends Thread
 		this.sealers = sealers;
 		this.oxygenReliantBlocks = new ArrayList<BlockVec3>();
 		this.checked = new HashSet<BlockVec3>();
+		this.partiallySealableChecked = new HashSet<BlockVec3>();
 		this.breatheableAirID = GCCoreBlocks.breatheableAir.blockID;
 		this.oxygenSealerID = GCCoreBlocks.oxygenSealer.blockID;
 
@@ -145,6 +147,7 @@ public class ThreadFindSeal extends Thread
 						this.sealed = true;
 						this.checkCount=otherSealer.getFindSealChecks();
 						this.sealers = new LinkedList();
+						this.sealers.add(otherSealer);
 						this.checked.clear();
 						this.checked.add(newhead);
 						currentLayer.clear();
@@ -270,6 +273,7 @@ public class ThreadFindSeal extends Thread
 		{	
 			for(BlockVec3 vec:currentLayer)
 			{
+				if (partiallySealableChecked.isEmpty() || !partiallySealableChecked.contains(vec))
 				for (int side = 0; side<6; side++)
 				{
 					//The sides 0 to 5 correspond with the ForgeDirections but saves a bit of time not to call ForgeDirection
@@ -329,6 +333,66 @@ public class ThreadFindSeal extends Thread
 								}
 							}
 					}
+				} else //special case: repeat all the same code for a partially sealable block
+				{
+					Block block = Block.blocksList[vec.getBlockIDsafe(this.world)];
+					if (block instanceof IPartialSealableBlock)
+					{	
+						IPartialSealableBlock partialBlock = (IPartialSealableBlock) block;
+						for (int side = 0; side<6; side++)
+						{
+							if (!partialBlock.isSealed(world, vec.x, vec.y, vec.z, ForgeDirection.getOrientation(side ^ 1))) //opposite side, testing issealed from inside out 
+							{
+							BlockVec3 sideVec = vec.newVecSide(side);
+							if (!this.checked.contains(sideVec))
+							{
+								if (this.checkCount > 0)
+								{
+									this.checkCount--;
+									this.checked.add(sideVec);
+									int id=sideVec.getBlockIDsafe(this.world);
+									if (id==0)
+									{
+										nextLayer.add(sideVec);
+										airToReplace.add(sideVec);
+									}
+									else if (id==-1)
+									{
+										checkCount=0;
+										this.sealed = false;
+										break LAYERLOOP;
+									}
+									else if (id==breatheableAirID || canBlockPassAir(id, sideVec, side))
+									{
+										nextLayer.add(sideVec);
+									}
+									else if (id == oxygenSealerID)
+									{
+										GCCoreTileEntityOxygenSealer sealer = this.sealersAround.get(sideVec);
+										if (sealer!=null)
+										{
+											if (!this.sealers.contains(sealer))
+											{	
+												this.sealers.add(sealer);
+												this.checkCount += sealer.getFindSealChecks();
+											}
+										}
+									}
+								}
+								else
+									if (this.sealed)
+									{
+										int id=sideVec.getBlockIDsafe(this.world);
+										if (id == 0 || id == breatheableAirID || id == -1 || canBlockPassAir(id, sideVec, side))
+										{
+											this.sealed = false;
+											break LAYERLOOP;
+										}
+									}
+								}
+							}
+						}
+					} 
 				}
 			}
 
@@ -434,6 +498,7 @@ public class ThreadFindSeal extends Thread
 					this.checkCount--;
 					return false;
 				}
+				partiallySealableChecked.add(vec);
 				return true;
 			}
 

@@ -2,11 +2,14 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import java.util.EnumSet;
 
+import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
 import micdoodle8.mods.galacticraft.core.GCCoreAnnotations.NetworkedField;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.oxygen.BlockVec3;
 import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol;
 import micdoodle8.mods.galacticraft.core.oxygen.ThreadFindSeal;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -55,7 +58,8 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 
 	public int getScaledThreadCooldown(int i)
 	{
-		return Math.min(i, (int) Math.floor(stopSealThreadCooldown * i / (double)threadCooldownTotal));
+		if (this.active) return Math.min(i, (int) Math.floor(stopSealThreadCooldown * i / (double)threadCooldownTotal));
+		return 0;
 	}
 
 	public int getFindSealChecks()
@@ -65,7 +69,7 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 			return 0;
 		}
 		int blockAbove = this.worldObj.getBlockId(this.xCoord, this.yCoord + 1, this.zCoord);
-		if (blockAbove != 0 && blockAbove != GCCoreBlocks.breatheableAir.blockID)
+		if (blockAbove != 0 && blockAbove != GCCoreBlocks.breatheableAir.blockID && !OxygenPressureProtocol.canBlockPassAir(this.worldObj,blockAbove,new BlockVec3(this.xCoord, this.yCoord + 1, this.zCoord),0))
 		{
 			//The vent is blocked
 			return 0;
@@ -94,11 +98,6 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 			{
 				this.sealed = this.threadSeal.sealedFinal.get() && this.active;
 				this.calculatingSealed = this.threadSeal.looping.get() && this.active;
-			}
-			
-			if (!this.active)
-			{
-				this.stopSealThreadCooldown = 0;
 			}
 			
 			if (stopSealThreadCooldown > 0)

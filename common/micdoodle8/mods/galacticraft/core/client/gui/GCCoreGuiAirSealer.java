@@ -9,6 +9,8 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerAirSealer;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerServer.EnumPacketServer;
+import micdoodle8.mods.galacticraft.core.oxygen.BlockVec3;
+import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenSealer;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
@@ -111,7 +113,7 @@ public class GCCoreGuiAirSealer extends GCCoreGuiContainer
 	{
 		int blockAbove = this.sealer.worldObj.getBlockId(this.sealer.xCoord, this.sealer.yCoord + 1, this.sealer.zCoord);
 
-		if (blockAbove != 0 && blockAbove != GCCoreBlocks.breatheableAir.blockID)
+		if (blockAbove != 0 && blockAbove != GCCoreBlocks.breatheableAir.blockID && !OxygenPressureProtocol.canBlockPassAir(this.sealer.worldObj,blockAbove,new BlockVec3(this.sealer.xCoord, this.sealer.yCoord + 1, this.sealer.zCoord),0))
 		{
 			return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.sealerblocked.name");
 		}

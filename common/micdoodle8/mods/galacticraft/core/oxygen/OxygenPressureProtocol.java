@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenSealer;
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 
 /**
  * OxygenPressureProtocol.java
@@ -72,5 +74,37 @@ public class OxygenPressureProtocol
 	public static ThreadFindSeal onEdgeBlockUpdated(World world, BlockVec3 vec)
 	{
 		return new ThreadFindSeal(world, vec, 2000, new ArrayList<GCCoreTileEntityOxygenSealer>());
+	}
+		
+	//Note this will NPE if id==0, so don't call this with id==0
+	public static boolean canBlockPassAir(World world, int id, BlockVec3 vec, int side)
+	{
+		if (OxygenPressureProtocol.vanillaPermeableBlocks.contains(id))
+		{
+			return true;
+		}
+
+		Block block = Block.blocksList[id];
+
+		if (!block.isOpaqueCube())  
+		{
+			if (block instanceof IPartialSealableBlock)
+			{
+				if (((IPartialSealableBlock) block).isSealed(world, vec.x, vec.y, vec.z, ForgeDirection.getOrientation(side)))
+				{
+					return false;
+				}
+				return true;
+			}
+
+			if (OxygenPressureProtocol.nonPermeableBlocks.containsKey(id) && OxygenPressureProtocol.nonPermeableBlocks.get(id).contains(vec.getBlockMetadata(world)))
+			{
+				return false;
+			}
+
+			return true;
+		}
+
+		return false;
 	}
 }
