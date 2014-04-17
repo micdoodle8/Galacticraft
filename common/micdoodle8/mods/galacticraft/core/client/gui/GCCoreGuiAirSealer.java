@@ -113,7 +113,7 @@ public class GCCoreGuiAirSealer extends GCCoreGuiContainer
 	{
 		int blockAbove = this.sealer.worldObj.getBlockId(this.sealer.xCoord, this.sealer.yCoord + 1, this.sealer.zCoord);
 
-		if (blockAbove != 0 && blockAbove != GCCoreBlocks.breatheableAir.blockID && !OxygenPressureProtocol.canBlockPassAir(this.sealer.worldObj, blockAbove, new BlockVec3(this.sealer.xCoord, this.sealer.yCoord + 1, this.sealer.zCoord), 0))
+		if (blockAbove != 0 && blockAbove != GCCoreBlocks.breatheableAir.blockID && !OxygenPressureProtocol.canBlockPassAir(this.sealer.worldObj, blockAbove, new BlockVec3(this.sealer.xCoord, this.sealer.yCoord + 1, this.sealer.zCoord), 1))
 		{
 			return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.sealerblocked.name");
 		}

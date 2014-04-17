@@ -8,6 +8,8 @@ import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenSealer;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockFarmland;
+import net.minecraft.block.BlockHalfSlab;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 
@@ -90,19 +92,31 @@ public class OxygenPressureProtocol
 		{
 			if (block instanceof IPartialSealableBlock)
 			{
-				if (((IPartialSealableBlock) block).isSealed(world, vec.x, vec.y, vec.z, ForgeDirection.getOrientation(side)))
-				{
-					return false;
-				}
-				return true;
+				return !(((IPartialSealableBlock) block).isSealed(world, vec.x, vec.y, vec.z, ForgeDirection.getOrientation(side)));
 			}
 
+			//Solid but non-opaque blocks, for example glass
 			if (OxygenPressureProtocol.nonPermeableBlocks.containsKey(id) && OxygenPressureProtocol.nonPermeableBlocks.get(id).contains(vec.getBlockMetadata(world)))
 			{
 				return false;
 			}
 
-			return true;
+			//Half slab seals on the top side or the bottom side according to its metadata
+			if (block instanceof BlockHalfSlab)
+	        {
+	            return !((side == 0 && (vec.getBlockMetadata(world) & 8) == 8) || (side == 1 && (vec.getBlockMetadata(world) & 8) == 0));
+	        }
+	        
+			//Farmland only seals on the solid underside
+			if (block instanceof BlockFarmland)
+	        {
+	            return side!=1;
+	        }
+
+			//General case - this should cover any block which correctly implements isBlockSolidOnSide
+			//including most modded blocks - Forge microblocks in particular is covered by this.
+			// ### Any exceptions in mods should implement the IPartialSealableBlock interface ###
+			return !block.isBlockSolidOnSide(world, vec.x, vec.y, vec.z, ForgeDirection.getOrientation(side ^ 1));
 		}
 
 		return false;

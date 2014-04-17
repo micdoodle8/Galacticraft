@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.oxygen.BlockVec3;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.ScheduledBlockChange;
 import net.minecraft.entity.Entity;
@@ -26,7 +28,8 @@ import cpw.mods.fml.common.TickType;
 public class GCCoreTickHandlerServer implements ITickHandler
 {
 	private static Map<Integer, List<ScheduledBlockChange>> scheduledBlockChanges = new ConcurrentHashMap<Integer, List<ScheduledBlockChange>>();
-
+	private static Map<Integer, List<BlockVec3>> scheduledTorchUpdates = new ConcurrentHashMap<Integer, List<BlockVec3>>();
+	
 	public static void scheduleNewBlockChange(int dimID, ScheduledBlockChange change)
 	{
 		List<ScheduledBlockChange> changeList = GCCoreTickHandlerServer.scheduledBlockChanges.get(dimID);
@@ -53,6 +56,19 @@ public class GCCoreTickHandlerServer implements ITickHandler
 		GCCoreTickHandlerServer.scheduledBlockChanges.put(dimID, changeList);
 	}
 
+	public static void scheduleNewTorchUpdate(int dimID, List<BlockVec3> torches)
+	{
+		List<BlockVec3> updateList = GCCoreTickHandlerServer.scheduledTorchUpdates.get(dimID);
+
+		if (updateList == null)
+		{
+			updateList = new ArrayList<BlockVec3>();
+		}
+
+		updateList.addAll(torches);
+		GCCoreTickHandlerServer.scheduledTorchUpdates.put(dimID, updateList);
+	}
+
 	@Override
 	public void tickStart(EnumSet<TickType> type, Object... tickData)
 	{
@@ -76,6 +92,23 @@ public class GCCoreTickHandlerServer implements ITickHandler
 
 				GCCoreTickHandlerServer.scheduledBlockChanges.get(world.provider.dimensionId).clear();
 				GCCoreTickHandlerServer.scheduledBlockChanges.remove(world.provider.dimensionId);
+			}
+
+			List<BlockVec3> torchList = GCCoreTickHandlerServer.scheduledTorchUpdates.get(world.provider.dimensionId);
+			
+			if (torchList != null && !torchList.isEmpty())
+			{
+				for (BlockVec3 torch : torchList)
+				{
+					if (torch != null)
+					{
+						world.scheduleBlockUpdate(torch.x, torch.y, torch.z, GCCoreBlocks.unlitTorch.blockID, 10 + world.rand.nextInt(40));
+					}
+				}
+
+				GCCoreTickHandlerServer.scheduledTorchUpdates.get(world.provider.dimensionId).clear();
+				GCCoreTickHandlerServer.scheduledTorchUpdates.remove(world.provider.dimensionId);
+				
 			}
 
 			if (world.provider instanceof IOrbitDimension)

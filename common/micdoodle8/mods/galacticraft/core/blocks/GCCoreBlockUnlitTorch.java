@@ -161,7 +161,8 @@ public class GCCoreBlockUnlitTorch extends Block implements IOxygenReliantBlock
 		if (par1World.getBlockMetadata(par2, par3, par4) == 0)
 		{
 			this.onBlockAdded(par1World, par2, par3, par4);
-		}
+		} else
+			this.checkOxygen(par1World, par2, par3, par4);		
 	}
 
 	@Override

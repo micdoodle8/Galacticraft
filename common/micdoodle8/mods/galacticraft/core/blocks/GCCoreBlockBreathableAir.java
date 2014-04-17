@@ -138,7 +138,9 @@ public class GCCoreBlockBreathableAir extends Block
 	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, int idBroken)
 	{
-		if (idBroken != 0 && idBroken != GCCoreBlocks.breatheableAir.blockID)
+		//Do nothing if an air neighbour was replaced (probably because replacing with breatheableAir)
+		//but do a check if replacing breatheableAir as that could be dividing a sealed space
+		if (idBroken != 0) 
 		{
 			OxygenPressureProtocol.onEdgeBlockUpdated(world, new BlockVec3(x, y, z));
 		}

@@ -172,7 +172,7 @@ public class GCCoreBlockMulti extends BlockMulti implements IPartialSealableBloc
 
 		if (metadata == 4)
 		{
-			return direction == ForgeDirection.UP || direction == ForgeDirection.DOWN;
+			return direction == ForgeDirection.UP;
 		}
 
 		return true;
