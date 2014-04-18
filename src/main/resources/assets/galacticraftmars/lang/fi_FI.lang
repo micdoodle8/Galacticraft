@@ -1,0 +1,63 @@
+# Galacticraft Mars Language File = FINLAND FINNISH
+
+
+# GENERAL ITEMS
+item.reinfocedBucket.name=Vahvistettu ämpäri
+item.reinfocedBucketMilk.name=Vahvistettu maitoämpäri
+item.reinfocedBucketWater.name=Vahvistettu vesiämpäri
+item.reinfocedBucketLava.name=Vahvistettu laavaämpäri
+item.reinfocedBucketSludge.name=Vahvistettu bakteeriliejuämpäri
+item.rawDesh.name=Puhdistamaton desh
+item.deshStick.name=Desh-tikku
+item.heavyBoots.name=Painavat kengät
+item.ingotQuandrium.name=Quandrium-harkko
+item.ingotDesh.name=Desh-harkko
+item.jetpack.name=Rakettireppu
+
+
+# TOOLS
+item.deshPick.name=Desh-hakku
+item.deshAxe.name=Desh-kirves
+item.deshHoe.name=Desh-kuokka
+item.deshSpade.name=Desh-lapio
+item.deshSword.name=Desh-miekka
+item.planetStonePick.name=Kivihakku
+item.planetStoneAxe.name=Kivikirves
+item.planetStoneHoe.name=Kivikuokka
+item.planetStoneSpade.name=Kivilapio
+item.planetStoneSword.name=Kivimiekka
+item.quandriumPick.name=Quandrium-hakku
+item.quandriumAxe.name=Quandrium-kirves
+item.quandriumHoe.name=Quandrium-kuokka
+item.quandriumSpade.name=Quandrium-lapio
+item.quandriumSword.name=Quandrium-miekka
+
+
+# ARMOR
+item.deshHelmet.name=Desh-kypärä
+item.deshChestplate.name=Desh-haarniska
+item.deshLeggings.name=Desh-housut
+item.deshBoots.name=Desh-kengät
+item.deshHelmetBreathable.name=Desh-kypärä happinaamarilla
+item.quandriumHelmet.name=Quandrium-kypärä
+item.quandriumChestplate.name=Quandrium-haarniska
+item.quandriumLeggings.name=Quandrium-housut
+item.quandriumBoots.name=Quandrium-kengät
+item.quandriumHelmetBreathable.name=Quandrium-kypärä happinaamarilla
+
+
+# BLOCKS
+tile.mars.deshmars.name=Desh-malmi
+tile.mars.coppermars.name=Kuparimalmi
+tile.mars.tinmars.name=Tinamalmi
+tile.mars.marscobblestone.name=Mukulakivi
+tile.mars.marsstone.name=Kivi
+tile.mars.marsdirt.name=Multa
+tile.mars.marsgrass.name=Ruoho
+tile.mars.marsdeco.name=Sisustuskuutio
+tile.mars.marsdungeon.name=Vankityrmän seinä
+
+
+# GUI
+gui.choosePlanet.desc.mars=Asuttava#Ei happea#Painovoima: 38%
+

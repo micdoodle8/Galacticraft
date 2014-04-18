@@ -1,0 +1,17 @@
+See API-Usage.txt first!
+
+If you are using prefabs, you are most likely creating an addon.
+
+With other API classes as exceptions, you should, under no circumstances, be including prefabs in your mod/addon.
+Users running Galacticraft will experience no issues using your addon, and including prefabs is more likely to cause issues.
+To tell FML to load Galacticraft before your addon, simply add the following snippet of code to your @Mod annotation:
+
+dependencies = "required-after:GalacticraftCore;"
+
+You should also, never be modifying/editing these prefabs.
+
+You can copy/paste code as you wish, see licensing information on the github repo.
+
+You can extend classes, which is what most are designed for.
+
+... But you should never be including prefabs!!!

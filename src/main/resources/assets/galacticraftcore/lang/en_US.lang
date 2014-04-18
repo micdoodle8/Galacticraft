@@ -1,0 +1,347 @@
+# Galacticraft Core Language File = UNITED STATES ENGLISH
+
+# GENERAL ITEMS
+item.oxygenTankLightFull.name=Light Oxygen Tank
+item.oxygenTankLightEmpty.name=Empty Light Oxygen Tank
+item.oxygenTankMedFull.name=Medium Oxygen Tank
+item.oxygenTankMedEmpty.name=Empty Medium Oxygen Tank
+item.oxygenTankHeavyFull.name=Heavy Oxygen Tank
+item.oxygenTankHeavyEmpty.name=Empty Heavy Oxygen Tank
+item.oxygenMask.name=Oxygen Mask
+item.spaceship.name=Tier 1 Rocket
+item.sensorGlasses.name=Sensor Glasses
+item.canister.tin.name=Tin Canister
+item.canister.copper.name=Copper Canister
+item.airVent.name=Oxygen Vent
+item.airFan.name=Oxygen Fan
+item.oxygenConcentrator.name=Oxygen Concentrator
+item.heavyPlating.name=Heavy-Duty Plate
+item.engine.tier1engine.name=Tier 1 Rocket Engine
+item.engine.tier1booster.name=Tier 1 Booster
+item.rocketFins.name=Rocket Fins
+item.noseCone.name=Nose Cone
+item.sensorLens.name=Sensor Lens
+item.oxygenGear.name=Oxygen Gear
+item.flag.american.name=American Flag
+item.flag.black.name=Black Flag
+item.flag.blue.name=Light Blue Flag
+item.flag.green.name=Lime Flag
+item.flag.brown.name=Brown Flag
+item.flag.darkblue.name=Blue Flag
+item.flag.darkgray.name=Gray Flag
+item.flag.darkgreen.name=Green Flag
+item.flag.gray.name=Light Gray Flag
+item.flag.magenta.name=Magenta Flag
+item.flag.orange.name=Orange Flag
+item.flag.pink.name=Pink Flag
+item.flag.purple.name=Purple Flag
+item.flag.red.name=Red Flag
+item.flag.teal.name=Cyan Flag
+item.flag.yellow.name=Yellow Flag
+item.flag.white.name=Flag
+item.parachute_plain.name=Parachute
+item.parachute_black.name=Black Parachute
+item.parachute_blue.name=Light Blue Parachute
+item.parachute_lime.name=Lime Parachute
+item.parachute_brown.name=Brown Parachute
+item.parachute_darkblue.name=Blue Parachute
+item.parachute_darkgray.name=Gray Parachute
+item.parachute_darkgreen.name=Green Parachute
+item.parachute_gray.name=Light Gray Parachute
+item.parachute_magenta.name=Magenta Parachute
+item.parachute_orange.name=Orange Parachute
+item.parachute_pink.name=Pink Parachute
+item.parachute_purple.name=Purple Parachute
+item.parachute_red.name=Red Parachute
+item.parachute_teal.name=Cyan Parachute
+item.parachute_yellow.name=Yellow Parachute
+item.steelPole.name=Steel Pole
+item.canvas.name=Canvas
+item.buggy.name=Buggy
+item.emptyLiquidCanister.name=Empty Liquid Canister
+item.oilCanisterPartial.name=Partially Filled Oil Canister
+item.fuelCanisterPartial.name=Partially Filled Fuel Canister
+item.oilCanister.name=Filled Oil Canister
+item.fuelCanister.name=Filled Fuel Canister
+item.oilExtractor.name=Portable Oil Extractor
+item.schematic.name=NASA Workbench Schematic
+item.fuel.name=Rocket Fuel
+item.key.T1.name=Tier 1 Dungeon Key
+item.buggymat.wheel.name=Buggy Wheel
+item.buggymat.seat.name=Buggy Seat
+item.buggymat.storage.name=Buggy Storage Box
+item.basicItem.solar_module_0.name=Single Solar Module
+item.basicItem.solar_module_1.name=Full Solar Panel
+item.basicItem.ingotCopper.name=Copper Ingot
+item.basicItem.ingotTin.name=Tin Ingot
+item.basicItem.ingotAluminum.name=Aluminum Ingot
+item.basicItem.ingotSteel.name=Steel Ingot
+item.basicItem.ingotBronze.name=Bronze Ingot
+item.basicItem.compressedCopper.name=Compressed Copper
+item.basicItem.compressedTin.name=Compressed Tin
+item.basicItem.compressedAluminum.name=Compressed Aluminum
+item.basicItem.compressedSteel.name=Compressed Steel
+item.basicItem.compressedBronze.name=Compressed Bronze
+item.basicItem.compressedIron.name=Compressed Iron
+item.basicItem.waferSolar.name=Blue Solar Wafer
+item.basicItem.waferBasic.name=Basic Wafer
+item.basicItem.waferAdvanced.name=Advanced Wafer
+item.basicItem.rawSilicon.name=Raw Silicon
+item.tier1.desc=Tier 1
+item.battery.name=Battery
+item.infiniteBattery.name=Infinite Battery
+item.meteorChunk.name=Throwable Meteor Chunk
+item.meteorChunkHot.name=Throwable Meteor Chunk
+item.hotDescription.name=Hot
+item.basicItem.dehydratedApple.name=Dehydrated Apple
+item.basicItem.dehydratedCarrot.name=Dehydrated Carrot
+item.basicItem.dehydratedMelon.name=Dehydrated Melon
+item.basicItem.dehydratedPotato.name=Dehydrated Potato
+item.basicItem.cannedFood.name=Can of Food
+item.basicItem.frequencyModule.name=Frequency Module
+item.standardWrench.name=Standard Wrench
+
+# TOOLS
+item.steel_pickaxe.name=Heavy Duty Pickaxe
+item.steel_axe.name=Heavy Duty Axe
+item.steel_hoe.name=Heavy Duty Hoe
+item.steel_shovel.name=Heavy Duty Shovel
+item.steel_sword.name=Heavy Duty Sword
+
+# ARMOR
+item.steel_helmet.name=Heavy Duty Helmet
+item.steel_chestplate.name=Heavy Duty Chestplate
+item.steel_leggings.name=Heavy Duty Leggings
+item.steel_boots.name=Heavy Duty Boots
+
+# BLOCKS
+tile.treasureChest.name=Treasure Chest
+tile.landingPad.landingPad.name=Rocket Launch Pad
+tile.landingPadFull.name=Rocket Launch Pad
+tile.unlitTorch.name=Torch
+tile.unlitTorchLit.name=Torch
+tile.distributor.name=Oxygen Bubble Distributor
+tile.oxygenPipe.name=Oxygen Pipe
+tile.oxygenCollector.name=Oxygen Collector
+tile.fallenMeteor.name=Fallen Meteor
+tile.rocketWorkbench.name=NASA Workbench
+tile.gcBlockCore.decoblock1.name=Tin Decoration Block
+tile.gcBlockCore.decoblock2.name=Tin Decoration Block
+tile.gcBlockCore.oreCopper.name=Copper Ore
+tile.gcBlockCore.oreTin.name=Tin Ore
+tile.gcBlockCore.oreAluminum.name=Aluminum Ore
+tile.gcBlockCore.oreSilicon.name=Silicon Ore
+tile.airLockFrame.name=Air Lock Frame
+tile.airLockSeal.name=Air Lock Seal
+tile.crudeOilStill.name=Crude Oil
+tile.crudeOilMoving.name=Crude Oil
+tile.refinery.name=Refinery
+tile.fuelLoader.name=Fuel Loader
+tile.sapling2.oak.name=Oak Sapling
+tile.sapling2.spruce.name=Spruce Sapling
+tile.sapling2.birch.name=Birch Sapling
+tile.sapling2.jungle.name=Jungle Sapling
+tile.sealer.name=Oxygen Sealer
+tile.enclosed.oxygenPipe.name=Sealable Oxygen Pipe
+tile.oxygenDetector.name=Oxygen Detector
+tile.cargo.loader.name=Cargo Loader
+tile.cargo.unloader.name=Cargo Unloader
+tile.landingPad.buggyFueler.name=Buggy Fueling Pad
+tile.landingPad.cargoPad.name=Cargo Rocket Pad
+tile.enclosed.copperCable.name=Sealable Copper Cable
+tile.enclosed.goldCable.name=Sealable Gold Cable
+tile.enclosed.hvCable.name=Sealable HV Cable
+tile.enclosed.glassFibreCable.name=Sealable Glass Fibre Cable
+tile.enclosed.lvCable.name=Sealable Ultra-Low-Current Cable
+tile.enclosed.PipeItemsCobblestone.name=Sealable Cobblestone Transport Pipe
+tile.enclosed.PipeItemsStone.name=Sealable Stone Transport Pipe
+tile.enclosed.PipeFluidsCobblestone.name=Sealable Cobblestone Waterproof Pipe
+tile.enclosed.PipeFluidsStone.name=Sealable Stone Waterproof Pipe
+tile.enclosed.PipePowerStone.name=Sealable Stone Conductive Pipe
+tile.enclosed.PipePowerGold.name=Sealable Golden Conductive Pipe
+tile.solar.basic.name=Basic Solar Panel
+tile.solar.advanced.name=Advanced Solar Panel
+tile.parachest.name=Parachest
+tile.oreCopper.name=Copper Ore
+tile.oreTin.name=Tin Ore
+tile.machine.0.name=Coal Generator
+tile.machine.1.name=Energy Storage Module
+tile.machine.2.name=Electric Furnace
+tile.machine.3.name=Compressor
+tile.machine2.4.name=Electric Compressor
+tile.machine2.5.name=Circuit Fabricator
+tile.machine2.6.name=Oxygen Storage Module
+tile.aluminumWire.name=Aluminum Wire
+tile.aluminumWireHeavy.name=Heavy Aluminum Wire
+tile.glowstoneTorch.name=Glowstone Torch
+tile.enclosed.aluminumWire.name=Sealable Aluminum Wire
+tile.enclosed.aluminumWireHeavy.name=Sealable Heavy Aluminum Wire
+tile.enclosed.meCable.name=Sealable ME Cable
+tile.airLockController.name=Air Lock Controller
+tile.dummyblock.spaceStationBase.name=Space Station Base
+tile.dummyblock.launchPad.name=Rocket Launch Pad
+tile.dummyblock.nasaWorkbench.name=NASA Workbench
+tile.dummyblock.solar.name=Solar Panel
+tile.dummyblock.cryogenicChamber.name=Cryogenic Chamber
+tile.gcBlockCore.copperBlock.name=Copper Block
+tile.gcBlockCore.tinBlock.name=Tin Block
+tile.gcBlockCore.aluminumBlock.name=Aluminum Block
+tile.fuel.name=Fuel
+tile.oxygenCompressor.0.name=Oxygen Compressor
+tile.oxygenCompressor.1.name=Oxygen Decompressor
+
+# ENTITIES
+entity.GalacticraftCore.EvolvedSpider.name=Evolved Spider
+entity.GalacticraftCore.EvolvedZombie.name=Evolved Zombie
+entity.GalacticraftCore.EvolvedCreeper.name=Evolved Creeper
+entity.GalacticraftCore.EvolvedSkeleton.name=Evolved Skeleton
+entity.GalacticraftCore.EvolvedSkeletonBoss.name=Evolved Skeleton Boss
+entity.GalacticraftCore.AlienVillager.name=Alien Villager
+entity.GalacticraftCore.Spaceship.name=Tier 1 Rocket
+entity.GalacticraftCore.GravityArrow.name=Arrow
+entity.GalacticraftCore.Meteor.name=Meteor
+entity.GalacticraftCore.Buggy.name=Buggy
+entity.GalacticraftCore.Flag.name=Flag
+entity.GalacticraftCore.ParaChest.name=Parachest
+entity.GalacticraftCore.OxygenBubble.name=Oxygen Bubble
+entity.GalacticraftCore.Lander.name=Space Lander
+
+# Schematics
+schematic.moonbuggy.name=Moon Buggy
+schematic.rocketT1.name=Tier 1 Rocket
+schematic.rocketT2.name=Tier 2 Rocket
+
+# DEATH MESSAGES
+death.attack.spaceshipExplosion=%1$s's rocket malfunctioned!
+death.attack.spaceshipExplosionB=%1$s died in an unfortunate spaceship accident!
+death.attack.oxygenSuffocation=%1$s ran out of oxygen!
+
+# GALAXIES
+galaxy.blockyway.name=The Blocky Way
+
+# OTHER
+newversion.failed.name=Galacticraft update check failed! Trying again in 15 seconds
+newversion.success.name=Galacticraft remote version found:
+
+# KEYBINDINGS
+keybind.map.name=[GC] Galaxy Map
+keybind.spaceshipinv.name=[GC] Open Spaceship Inventory
+keybind.sensortoggle.name=[GC] Toggle Sensor Goggles Mode
+keybind.vehicleforward.name=[GC] Vehicle Forward Key
+keybind.vehiclebackward.name=[GC] Vehicle Backward Key
+keybind.vehicleleft.name=[GC] Vehicle Left Key
+keybind.vehicleright.name=[GC] Vehicle Right Key
+keybind.vehicleup.name=[GC] Vehicle Up Key
+keybind.vehicledown.name=[GC] Vehicle Down Key
+
+# CREATIVE TABS
+itemGroup.GalacticraftCore=Galacticraft
+
+# GUI
+container.cargoloader.name=Cargo Loader
+container.cargounloader.name=Cargo Unloader
+container.fuelloader.name=Fuel Loader
+container.oxygencollector.name=Oxygen Collector
+container.oxygencompressor.name=Oxygen Compressor
+container.oxygendistributor.name=Oxygen Distributor
+container.oxygensealer.name=Oxygen Sealer
+container.parachest.name=Para-chest
+container.refinery.name=Refinery
+container.treasurechest.name=Treasure Chest
+container.lander.name=Space Lander
+container.spaceship.name=Tier 1 Rocket
+container.solarbasic.name=Basic Solar Panel
+container.solaradvanced.name=Advanced Solar Panel
+container.oxygendecompressor.name=Oxygen Decompressor
+
+gui.message.out.name=Out
+gui.message.in.name=In
+gui.message.status.name=Status
+gui.message.oxoutput.name=Oxygen Output
+gui.message.oxinput.name=Oxygen Input
+gui.message.fuel.name=Fuel
+gui.message.full.name=full
+gui.message.page.name=Page
+gui.message.addnewsch.name=Add New Schematic
+gui.message.generating.name=Generating
+gui.message.environment.name=Environmental Boost
+
+gui.status.active.name=Active
+gui.status.missingleaves.name=Not Enough Leaf Blocks
+gui.status.missingpower.name=Not Enough Power
+gui.status.missingoxygen.name=Not Enough Oxygen
+gui.status.missingtank.name=No Valid Oxygen Tank
+gui.status.fulltank.name=Oxygen Tank Full
+gui.status.unsealed.name=Area Too Big / Unsealed
+gui.status.sealed.name=Sealed
+gui.status.unknown.name=Unknown
+gui.status.disabled.name=Disabled
+gui.status.nofuel.name=No Fuel to Load!
+gui.status.noitems.name=No Items to Load!
+gui.status.notargetload.name=No Target to Load Into!
+gui.status.notargetunload.name=No Target to Unload!
+gui.status.noinvtarget.name=No Inventory on Target!
+gui.status.targetfull.name=Target Vehicle is Full!
+gui.status.targetempty.name=Target Vehicle is Empty!
+gui.status.ready.name=Ready
+gui.status.refining.name=Refining
+gui.status.idle.name=Idle
+gui.status.nooil.name=No Oil
+gui.status.raining.name=Raining
+gui.status.blockedpartial.name=Sun Partially Visible
+gui.status.blockedfully.name=Sun is Not Visible
+gui.status.collectingenergy.name=Collecting Energy
+gui.status.sealerblocked.name=Output Vent Blocked!
+
+gui.button.enableseal.name=Enable Seal
+gui.button.disableseal.name=Disable Seal
+gui.button.loaditems.name=Load Items
+gui.button.stoploading.name=Stop Loading
+gui.button.unloaditems.name=Unload Items
+gui.button.stopunloading.name=Stop Unloading
+gui.button.createsstation.name=Create Space Station
+gui.button.sendtodim.name=Send to Dimension
+gui.button.rename.name=Rename
+gui.button.loadfuel.name=Load Fuel
+gui.button.refine.name=Refine
+gui.button.back.name=Back
+gui.button.next.name=Next
+gui.button.unlockschematic.name=Unlock Schematic
+gui.button.stoprefine.name=Stop Refining
+gui.button.enable.name=Enable
+gui.button.disable.name=Disable
+
+gui.choosePlanet.desc.overworld=Full of Life#Habitable#Gravity: 100%
+gui.warning=WARNING!
+gui.lander.warning2=Hold "
+gui.lander.warning3=" to slow down!
+gui.lander.velocity=Entry Velocity
+gui.lander.velocityu=m/s
+gui.oxygen.warning=Oxygen Setup is Invalid!
+gui.sensor.advanced=Advanced Mode
+gui.sensor.advancedon=ON
+gui.sensor.advancedoff=OFF
+gui.chooseplanet.cannotcreate1.name=Cannot create Space
+gui.chooseplanet.cannotcreate2.name=Station here!
+gui.chooseplanet.alreadycreated1.name=Space Station Already
+gui.chooseplanet.alreadycreated2.name=Created!
+
+gui.galaxymap.movemap.name=ASWD - Move Map
+gui.galaxymap.zoom.name=Mouse Wheel - Zoom
+gui.galaxymap.select.name=Mouse 1 - Select Planet
+gui.galaxymap.exit.name=Esc - Exit Map
+
+gui.buggy.turn.name=Turn left-right
+gui.buggy.accel.name=Accelerate
+gui.buggy.decel.name=Decelerate
+gui.buggy.inv.name=Inventory / Fuel
+
+# DIMENSIONS
+dimension.Overworld.name=Overworld
+dimension.Moon.name=Moon
+dimension.Sun.name=Sun
+
+# COMMANDS
+commands.dimensionteleport=%s was sent into the atmosphere%s
+
+# </file>

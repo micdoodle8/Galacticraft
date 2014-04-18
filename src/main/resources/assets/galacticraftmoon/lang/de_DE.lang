@@ -1,0 +1,31 @@
+﻿# Galacticraft Moon Language File = GERMANY GERMAN
+
+# GENERAL ITEMS
+item.meteoricIronRaw.name=Rohes Meteorisches Eisen
+item.meteoric_iron_ingot.name=Meteorischer Eisenbarren
+item.compressedMeteoricIron.name=Gepresstes Meteorisches Eisen
+
+# FOOD
+item.cheeseCurd.name=Quark
+item.cheeseBlock.name=Käseblock
+
+# TOOLS
+
+# ARMOR
+
+# BLOCKS
+tile.moonBlock.moonstone.name=Stein
+tile.moonBlock.moondirt.name=Erde
+tile.moonBlock.moongrass.name=Mondrasen
+tile.moonBlock.tinmoon.name=Zinnerz
+tile.moonBlock.coppermoon.name=Kupfererz
+tile.moonBlock.cheesestone.name=Käseerz
+tile.moonBlock.bricks.name=Ziegel
+tile.cheeseBlock.name=Käseblock
+
+# GUI
+gui.choosePlanet.desc.moon=Bewohnbar#Kein Sauerstoff#Schwerkraft: 18%
+
+dimension.Moon.name=Mond
+
+itemGroup.GalacticraftMoon=Galacticraft Mond

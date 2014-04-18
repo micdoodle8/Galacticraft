@@ -1,0 +1,31 @@
+# Galacticraft Moon Language File = UNITED STATES ENGLISH
+
+# GENERAL ITEMS
+item.meteoricIronRaw.name=Raw Meteoric Iron
+item.meteoric_iron_ingot.name=Meteoric Iron Ingot
+item.compressedMeteoricIron.name=Compressed Meteoric Iron
+
+# FOOD
+item.cheeseCurd.name=Cheese Curd
+item.cheeseBlock.name=Block of Cheese
+
+# TOOLS
+
+# ARMOR
+
+# BLOCKS
+tile.moonBlock.moonstone.name=Stone
+tile.moonBlock.moondirt.name=Dirt
+tile.moonBlock.moongrass.name=Moon Turf
+tile.moonBlock.tinmoon.name=Tin Ore
+tile.moonBlock.coppermoon.name=Copper Ore
+tile.moonBlock.cheesestone.name=Cheese Ore
+tile.moonBlock.bricks.name=Bricks
+tile.cheeseBlock.name=Block of Cheese
+
+# GUI
+gui.choosePlanet.desc.moon=Habitable#No Oxygen#Gravity: 18%
+
+dimension.Moon.name=Moon
+
+itemGroup.GalacticraftMoon=Galacticraft Moon

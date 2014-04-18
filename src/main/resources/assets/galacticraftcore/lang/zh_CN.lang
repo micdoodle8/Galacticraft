@@ -1,0 +1,348 @@
+# Galacticraft Core Language File = SIMPLIFIED CHINESE
+
+# GENERAL ITEMS
+item.oxygenTankLightFull.name=轻型氧气罐
+item.oxygenTankLightEmpty.name=轻型氧气罐(空)
+item.oxygenTankMedFull.name=中型氧气罐
+item.oxygenTankMedEmpty.name=中型氧气罐(空)
+item.oxygenTankHeavyFull.name=重型氧气罐
+item.oxygenTankHeavyEmpty.name=重型氧气罐(空)
+item.oxygenMask.name=氧气面罩
+item.spaceship.name=火箭 等级1
+item.sensorGlasses.name=探测眼镜
+item.canister.tin.name=锡罐
+item.canister.copper.name=铜罐
+item.airVent.name=排气孔
+item.airFan.name=排气扇
+item.oxygenConcentrator.name=氧浓缩器
+item.heavyPlating.name=重型防护板
+item.engine.tier1engine.name=火箭引擎 等级1
+item.engine.tier1booster.name=助推器 等级1
+item.rocketFins.name=火箭尾鳍
+item.noseCone.name=鼻锥
+item.sensorLens.name=探测镜片
+item.oxygenGear.name=供氧设备
+item.flag.american.name=美国国旗
+item.flag.black.name=黑色旗帜
+item.flag.blue.name=浅蓝色旗帜
+item.flag.green.name=柠檬色旗帜
+item.flag.brown.name=棕色旗帜
+item.flag.darkblue.name=蓝色旗帜
+item.flag.darkgray.name=灰色旗帜
+item.flag.darkgreen.name=绿色旗帜
+item.flag.gray.name=浅灰色旗帜
+item.flag.magenta.name=品红色旗帜
+item.flag.orange.name=橙色旗帜
+item.flag.pink.name=粉色旗帜
+item.flag.purple.name=紫色旗帜
+item.flag.red.name=红色旗帜
+item.flag.teal.name=青色旗帜
+item.flag.yellow.name=黄色旗帜
+item.flag.white.name=旗帜
+item.parachute_plain.name=降落伞
+item.parachute_black.name=黑色降落伞
+item.parachute_blue.name=浅蓝色降落伞
+item.parachute_green.name=柠檬色降落伞
+item.parachute_brown.name=棕色降落伞
+item.parachute_darkblue.name=蓝色降落伞
+item.parachute_darkgray.name=灰色降落伞
+item.parachute_darkgreen.name=绿色降落伞
+item.parachute_gray.name=浅灰色降落伞
+item.parachute_magenta.name=品红色降落伞
+item.parachute_orange.name=橙色降落伞
+item.parachute_pink.name=粉色降落伞
+item.parachute_purple.name=紫色降落伞
+item.parachute_red.name=红色降落伞
+item.parachute_teal.name=青色降落伞
+item.parachute_yellow.name=黄色降落伞
+item.steelPole.name=钢杆
+item.canvas.name=帆布
+item.buggy.name=星球车
+item.emptyLiquidCanister.name=液体罐(空)
+item.oilCanisterPartial.name=石油罐(半满)
+item.fuelCanisterPartial.name=燃油罐(半满)
+item.oilCanister.name=石油罐(满)
+item.fuelCanister.name=燃油罐(满)
+item.oilExtractor.name=便携取油器
+item.schematic.name=NASA工作台图纸
+item.fuel.name=火箭燃料
+item.key.T1.name=地牢钥匙(1级)
+item.buggymat.wheel.name=星球车车轮
+item.buggymat.seat.name=星球车座椅
+item.buggymat.storage.name=星球车存储箱
+item.basicItem.solar_module_0.name=单体太阳能模块
+item.basicItem.solar_module_1.name=全载太阳能模块
+item.basicItem.ingotCopper.name=铜锭
+item.basicItem.ingotTin.name=锡锭
+item.basicItem.ingotAluminum.name=铝锭
+item.basicItem.ingotSteel.name=钢锭
+item.basicItem.ingotBronze.name=青铜锭
+item.basicItem.compressedCopper.name=致密铜
+item.basicItem.compressedTin.name=致密锡
+item.basicItem.compressedAluminum.name=致密铝
+item.basicItem.compressedSteel.name=致密钢
+item.basicItem.compressedBronze.name=致密青铜
+item.basicItem.compressedIron.name=致密铁
+item.basicItem.waferSolar.name=蓝色太阳能晶圆
+item.basicItem.waferBasic.name=基础晶圆
+item.basicItem.waferAdvanced.name=高级晶圆
+item.basicItem.rawSilicon.name=生硅
+item.tier1.desc=一阶
+item.battery.name=电池
+item.infiniteBattery.name=无限电池
+item.meteorChunk.name=可投掷流星碎片
+item.meteorChunkHot.name=可投掷流星碎片
+item.hotDescription.name=炙热
+item.basicItem.dehydratedApple.name=脱水苹果
+item.basicItem.dehydratedCarrot.name=脱水胡萝卜
+item.basicItem.dehydratedMelon.name=脱水西瓜
+item.basicItem.dehydratedPotato.name=脱水马铃薯
+item.basicItem.cannedFood.name=罐装食物
+item.basicItem.frequencyModule.name=频率模块
+item.standardWrench.name=标准扳手
+
+# TOOLS
+item.steel_pickaxe.name=重镐
+item.steel_axe.name=重斧
+item.steel_hoe.name=重锄
+item.steel_shovel.name=重锹
+item.steel_sword.name=重剑
+
+# ARMOR
+item.steel_helmet.name=重型头盔
+item.steel_chestplate.name=重型胸甲
+item.steel_leggings.name=重型护腿
+item.steel_boots.name=重型靴子
+
+# BLOCKS
+tile.treasureChest.name=珍品箱
+tile.landingPad.landingPad.name=火箭发射平台
+tile.landingPadFull.name=火箭发射平台
+tile.unlitTorch.name=火把
+tile.unlitTorchLit.name=火把
+tile.distributor.name=氧气分配器
+tile.oxygenPipe.name=氧气管道
+tile.oxygenCollector.name=氧气收集器
+tile.fallenMeteor.name=陨石
+tile.rocketWorkbench.name=NASA工作台
+tile.gcBlockCore.decoblock1.name=装饰锡块
+tile.gcBlockCore.decoblock2.name=装饰锡块
+tile.gcBlockCore.oreCopper.name=铜矿石
+tile.gcBlockCore.oreTin.name=锡矿石
+tile.gcBlockCore.oreAluminum.name=铝矿石
+tile.gcBlockCore.oreSilicon.name=硅矿石
+tile.airLockFrame.name=气密框架
+tile.airLockSeal.name=气密闸
+tile.crudeOilStill.name=原油
+tile.crudeOilMoving.name=原油
+tile.refinery.name=精炼机
+tile.fuelLoader.name=燃料注入器
+tile.sapling2.oak.name=橡树树苗
+tile.sapling2.spruce.name=云杉树苗
+tile.sapling2.birch.name=桦木树苗
+tile.sapling2.jungle.name=丛林树苗
+tile.sealer.name=氧气密封器
+tile.enclosed.oxygenPipe.name=可密封氧气管道
+tile.oxygenDetector.name=氧气探测器
+tile.cargo.loader.name=货物加载器
+tile.cargo.unloader.name=货物卸载器
+tile.landingPad.buggyFueler.name=星球车燃料注入器
+tile.landingPad.cargoPad.name=货物火箭平台
+tile.enclosed.copperCable.name=可密封铜质线缆
+tile.enclosed.goldCable.name=可密封金质线缆
+tile.enclosed.hvCable.name=可密封高压线缆
+tile.enclosed.glassFibreCable.name=可密封玻璃纤维线缆
+tile.enclosed.lvCable.name=可密封超低压线缆
+tile.enclosed.PipeItemsCobblestone.name=可密封圆石管道
+tile.enclosed.PipeItemsStone.name=可密封石头管道
+tile.enclosed.PipeFluidsCobblestone.name=可密封圆石防水管道
+tile.enclosed.PipeFluidsStone.name=可密封石头防水管道
+tile.enclosed.PipePowerStone.name=可密封石头能量管道
+tile.enclosed.PipePowerGold.name=可密封金质能量管道
+tile.solar.basic.name=基础太阳能板
+tile.solar.advanced.name=高级太阳能板
+tile.parachest.name=伞降箱
+tile.oreCopper.name=铜矿石
+tile.oreTin.name=锡矿石
+tile.machine.0.name=燃煤发电机
+tile.machine.1.name=能量存储模块
+tile.machine.2.name=电炉
+tile.machine.3.name=压缩机
+tile.machine2.4.name=电动压缩机
+tile.machine2.5.name=元件制造台
+tile.machine2.6.name=储氧模块
+tile.aluminumWire.name=铝线
+tile.aluminumWireHeavy.name=重质铝线
+tile.glowstoneTorch.name=萤石火把
+tile.enclosed.aluminumWire.name=可密封铝线
+tile.enclosed.aluminumWireHeavy.name=可密封重质铝线
+tile.enclosed.meCable.name=可密封ME线缆
+tile.airLockController.name=气闸控制器
+tile.dummyblock.spaceStationBase.name=空间站基板
+tile.dummyblock.launchPad.name=火箭发射平台
+tile.dummyblock.nasaWorkbench.name=NASA工作台
+tile.dummyblock.solar.name=太阳能板
+tile.dummyblock.cryogenicChamber.name=低温仓
+tile.gcBlockCore.copperBlock.name=铜块
+tile.gcBlockCore.tinBlock.name=锡块
+tile.gcBlockCore.aluminumBlock.name=铝块
+tile.fuel.name=燃料
+tile.oxygenCompressor.0.name=氧气压缩机
+tile.oxygenCompressor.1.name=氧气解压机
+
+
+# ENTITIES
+entity.GalacticraftCore.EvolvedSpider.name=蜘蛛(进化体)
+entity.GalacticraftCore.EvolvedZombie.name=僵尸(进化体)
+entity.GalacticraftCore.EvolvedCreeper.name=爬行者(进化体)
+entity.GalacticraftCore.EvolvedSkeleton.name=骷髅(进化体)
+entity.GalacticraftCore.EvolvedSkeletonBoss.name=骷髅王(进化体)
+entity.GalacticraftCore.AlienVillager.name=外星村民
+entity.GalacticraftCore.Spaceship.name=火箭(1级)
+entity.GalacticraftCore.GravityArrow.name=箭
+entity.GalacticraftCore.Meteor.name=陨石
+entity.GalacticraftCore.Buggy.name=星球车
+entity.GalacticraftCore.Flag.name=旗帜
+entity.GalacticraftCore.ParaChest.name=伞降箱
+entity.GalacticraftCore.OxygenBubble.name=氧气气氛
+entity.GalacticraftCore.Lander.name=登陆舱
+
+# Schematics
+schematic.moonbuggy.name=探月车
+schematic.rocketT1.name=火箭(1级)
+schematic.rocketT2.name=火箭(2级)
+
+# DEATH MESSAGES
+death.spaceshipExplosion=%1$s的火箭出故障了!
+death.spaceshipExplosionB=%1$s不走运地丧生于一次太空事故!
+death.oxygenSuffocation=%1$s因氧气消耗殆尽而死!
+
+# GALAXIES
+galaxy.blockyway.name=方块银河
+
+# OTHER
+newversion.failed.name=Galacticraft新版本检查失败! 15秒后重试
+newversion.success.name=发现Galacticraft远程版本:
+
+# KEYBINDINGS
+keybind.map.name=[GC] 星系地图
+keybind.spaceshipinv.name=[GC] 打开飞船仓库
+keybind.sensortoggle.name=[GC] 切换传感器护目镜模式
+keybind.vehicleforward.name=[GC] 载具前进键
+keybind.vehiclebackward.name=[GC] 载具后退键
+keybind.vehicleleft.name=[GC] 载具左转键
+keybind.vehicleright.name=[GC] 载具右转键
+keybind.vehicleup.name=[GC] 载具上升键
+keybind.vehicledown.name=[GC] 载具下降键
+
+# CREATIVE TABS
+itemGroup.GalacticraftCore=Galacticraft
+
+# GUI
+container.cargoloader.name=货物装载器
+container.cargounloader.name=货物卸载器
+container.fuelloader.name=燃料注入器
+container.oxygencollector.name=氧气收集器
+container.oxygencompressor.name=氧气压缩机
+container.oxygendistributor.name=氧气分配器
+container.oxygensealer.name=气密装置
+container.parachest.name=伞降箱
+container.refinery.name=精炼器
+container.treasurechest.name=珍品箱
+container.lander.name=登陆舱
+container.spaceship.name=一阶火箭
+container.solarbasic.name=基础太阳能板
+container.solaradvanced.name=高级太阳能板
+container.oxygendecompressor.name=氧气解压机
+
+gui.message.out.name=输出
+gui.message.in.name=输入
+gui.message.status.name=状态
+gui.message.oxoutput.name=氧气输出
+gui.message.oxinput.name=氧气输入
+gui.message.fuel.name=燃料
+gui.message.full.name=满
+gui.message.page.name=页
+gui.message.addnewsch.name=新增设计图
+gui.message.generating.name=生成中
+gui.message.environment.name=环境促进
+
+gui.status.active.name=活动的
+gui.status.missingleaves.name=树叶不足
+gui.status.missingpower.name=能量不足
+gui.status.missingoxygen.name=氧气不足
+gui.status.missingtank.name=没有可用的氧气罐
+gui.status.fulltank.name=氧气罐满
+gui.status.unsealed.name=未密封的
+gui.status.sealed.name=密封的
+gui.status.unknown.name=未知
+gui.status.disabled.name=禁用的
+gui.status.nofuel.name=无燃料可用!
+gui.status.noitems.name=无物品可加载!
+gui.status.notargetload.name=无效加载目标!
+gui.status.notargetunload.name=无效卸载目标!
+gui.status.noinvtarget.name=目标无物品栏!
+gui.status.targetfull.name=目标载具已满!
+gui.status.targetempty.name=目标载具已空!
+gui.status.ready.name=准备就绪
+gui.status.refining.name=精炼中
+gui.status.idle.name=空闲
+gui.status.nooil.name=无油料
+gui.status.raining.name=下雨中
+gui.status.blockedpartial.name=阳光粒子效果可视
+gui.status.blockedfully.name=阳光粒子效果不可视
+gui.status.collectingenergy.name=收集能量
+gui.status.sealerblocked.name=输出口堵塞!
+
+gui.button.enableseal.name=密闭启动
+gui.button.disableseal.name=禁用密闭
+gui.button.loaditems.name=载入物品
+gui.button.stoploading.name=停止载入
+gui.button.unloaditems.name=卸载物品
+gui.button.stopunloading.name=停止卸载
+gui.button.createsstation.name=创建空间站
+gui.button.sendtodim.name=传送到维度
+gui.button.rename.name=重命名
+gui.button.loadfuel.name=加载燃料
+gui.button.refine.name=精炼
+gui.button.back.name=返回
+gui.button.next.name=下一个
+gui.button.unlockschematic.name=解锁设计图
+gui.button.stoprefine.name=停止精炼
+gui.button.enable.name=开启
+gui.button.disable.name=关闭
+
+gui.choosePlanet.desc.overworld=生机勃勃#宜居#重力: 100%
+gui.warning=警告！
+gui.lander.warning2=按下 "
+gui.lander.warning3=" 以减速！
+gui.lander.velocity=登陆速度
+gui.lander.velocityu=米/秒
+gui.oxygen.warning=氧气装置配置无效！
+gui.sensor.advanced=高级模式
+gui.sensor.advancedon=开
+gui.sensor.advancedoff=关
+gui.chooseplanet.cannotcreate1.name=无法创建空间
+gui.chooseplanet.cannotcreate2.name=空间站在此!
+gui.chooseplanet.alreadycreated1.name=空间站已经
+gui.chooseplanet.alreadycreated2.name=创建!
+
+gui.galaxymap.movemap.name=ASWD - 移动地图
+gui.galaxymap.zoom.name=鼠标滚轮 - 缩放
+gui.galaxymap.select.name=鼠标左键 - 选择星球
+gui.galaxymap.exit.name=Esc - 退出地图
+
+gui.buggy.turn.name=左转-右转
+gui.buggy.accel.name=加速
+gui.buggy.decel.name=减速
+gui.buggy.inv.name=物品栏/燃料
+
+# DIMENSIONS
+dimension.Overworld.name=主世界(地球)
+dimension.Moon.name=月球
+dimension.Sun.name=太阳
+
+# COMMANDS
+commands.dimensionteleport=%s被传送到%s附近.
+
+# </file>

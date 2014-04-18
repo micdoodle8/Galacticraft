@@ -1,0 +1,8 @@
+All credits to Calclavia and the rest of the Universal Electricity development team on this code.
+
+Most of this code is adapted from Universal Electricity.
+
+This code is meant for internal use in Galacticraft and NOT meant to be used as a general purpose electricity library.
+
+http://calclavia.com/
+http://universalelectricity.com/
