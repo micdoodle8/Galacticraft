@@ -46,9 +46,10 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 	public int threadCooldownTotal;
 	@NetworkedField(targetSide = Side.CLIENT)
 	public boolean calculatingSealed;
-	private static int countEntities = 0;
+	public static int countEntities = 0;
 	private static int countTemp = 0;
 	private static long ticksSave = 0L;
+	private static boolean sealerCheckedThisTick = false;
 
 	public GCCoreTileEntityOxygenSealer()
 	{
@@ -87,48 +88,6 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 
 		if (!this.worldObj.isRemote)
 		{
-			if (this.storedOxygen >= 1 && this.getEnergyStored() > 0 && !this.disabled)
-			{
-				this.active = true;
-			}
-			else
-			{
-				this.active = false;
-			}
-
-			if (this.threadSeal != null)
-			{
-				this.sealed = this.threadSeal.sealedFinal.get() && this.active;
-				this.calculatingSealed = this.threadSeal.looping.get() && this.active;
-			}
-
-			if (this.stopSealThreadCooldown > 0)
-			{
-				this.stopSealThreadCooldown--;
-			}
-			else if (ThreadFindSeal.anylooping.get() == false)
-			{
-				this.threadCooldownTotal = this.stopSealThreadCooldown = 50 + GCCoreTileEntityOxygenSealer.countEntities; // This
-																															// puts
-																															// any
-																															// Sealer
-																															// which
-																															// is
-																															// updated
-																															// to
-																															// the
-																															// back
-																															// of
-																															// the
-																															// queue
-																															// for
-																															// updates
-				OxygenPressureProtocol.updateSealerStatus(this);
-			}
-
-			this.lastDisabled = this.disabled;
-			this.lastSealed = this.sealed;
-
 			// Some code to count the number of Oxygen Sealers being updated,
 			// tick by tick - needed for queueing
 			if (this.ticks == GCCoreTileEntityOxygenSealer.ticksSave)
@@ -140,7 +99,38 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 				GCCoreTileEntityOxygenSealer.ticksSave = this.ticks;
 				GCCoreTileEntityOxygenSealer.countEntities = GCCoreTileEntityOxygenSealer.countTemp;
 				GCCoreTileEntityOxygenSealer.countTemp = 1;
+				GCCoreTileEntityOxygenSealer.sealerCheckedThisTick = false;
 			}
+
+			if (this.storedOxygen >= 1 && this.energyStored > 0 && !this.disabled)
+			{
+				this.active = true;
+			}
+			else
+			{
+				this.active = false;
+			}
+
+			if (this.threadSeal != null)
+			{
+				this.sealed = this.active && this.threadSeal.sealedFinal.get();
+				this.calculatingSealed = this.active && this.threadSeal.looping.get();
+			}
+
+			if (this.stopSealThreadCooldown > 0)
+			{
+				this.stopSealThreadCooldown--;
+			}
+			else if (GCCoreTileEntityOxygenSealer.sealerCheckedThisTick == false)
+			{
+				// This puts any Sealer which is updated to the back of the queue for updates
+				this.threadCooldownTotal = this.stopSealThreadCooldown = 75 + GCCoreTileEntityOxygenSealer.countEntities;
+				GCCoreTileEntityOxygenSealer.sealerCheckedThisTick = true;
+				OxygenPressureProtocol.updateSealerStatus(this);
+			}
+
+			this.lastDisabled = this.disabled;
+			this.lastSealed = this.sealed;
 		}
 	}
 

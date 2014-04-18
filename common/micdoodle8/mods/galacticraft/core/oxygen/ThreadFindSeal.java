@@ -35,7 +35,7 @@ import cpw.mods.fml.common.FMLLog;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class ThreadFindSeal extends Thread
+public class ThreadFindSeal //extends Thread
 {
 	public World world;
 	public BlockVec3 head;
@@ -46,7 +46,7 @@ public class ThreadFindSeal extends Thread
 	public HashSet<BlockVec3> checked;
 	public HashSet<BlockVec3> partiallySealableChecked;
 	public int checkCount;
-	public static AtomicBoolean anylooping = new AtomicBoolean();
+	//public static AtomicBoolean anylooping = new AtomicBoolean();
 	public AtomicBoolean looping = new AtomicBoolean();
 	private HashMap<BlockVec3, GCCoreTileEntityOxygenSealer> sealersAround = new HashMap<BlockVec3, GCCoreTileEntityOxygenSealer>();
 	private int breatheableAirID;
@@ -66,8 +66,8 @@ public class ThreadFindSeal extends Thread
 	@SuppressWarnings("unchecked")
 	public ThreadFindSeal(World world, BlockVec3 head, int checkCount, List<GCCoreTileEntityOxygenSealer> sealers)
 	{
-		super("GC Sealer Roomfinder Thread");
-		ThreadFindSeal.anylooping.set(true);
+		//super("GC Sealer Roomfinder Thread");
+		//ThreadFindSeal.anylooping.set(true);
 		this.world = world;
 		this.head = head;
 		this.checkCount = checkCount;
@@ -81,10 +81,11 @@ public class ThreadFindSeal extends Thread
 		//If called by a sealer test the head block and include it in partiallySealableChecked if required
 		if (!sealers.isEmpty() && checkCount>0) testBlockPassAirFirst(head, 1);
 
+		/*
 		if (this.isAlive())
 		{
 			this.interrupt();
-		}
+		}*/
 
 		for (TileEntity tile : new ArrayList<TileEntity>(world.loadedTileEntityList))
 		{
@@ -95,12 +96,13 @@ public class ThreadFindSeal extends Thread
 		}
 
 		this.looping.set(true);
+		/*
 		this.start();
 	}
 
 	@Override
 	public void run()
-	{
+	{	*/
 		long time1 = System.nanoTime();
 
 		this.sealed = true;
@@ -216,7 +218,7 @@ public class ThreadFindSeal extends Thread
 							}
 							this.head = newhead.clone();
 							otherSealer.threadSeal = this;
-							otherSealer.stopSealThreadCooldown = 50;
+							otherSealer.stopSealThreadCooldown = 75+GCCoreTileEntityOxygenSealer.countEntities;
 							break;
 						}
 					}
@@ -291,7 +293,7 @@ public class ThreadFindSeal extends Thread
 		}
 		this.checked.clear();
 		this.sealedFinal.set(this.sealed);
-		ThreadFindSeal.anylooping.set(false);
+		//ThreadFindSeal.anylooping.set(false);
 	}
 
 	private void loopThroughD()
