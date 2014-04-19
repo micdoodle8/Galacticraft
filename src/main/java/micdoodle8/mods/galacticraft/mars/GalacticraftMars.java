@@ -89,15 +89,17 @@ public class GalacticraftMars
 		MinecraftForge.EVENT_BUS.register(new GCMarsEvents());
 		new GCMarsConfigManager(new File(event.getModConfigurationDirectory(), "Galacticraft/mars.conf"));
 
-		GCMarsBlocks.initBlocks();
-		GCMarsBlocks.registerBlocks();
-		GCMarsBlocks.setHarvestLevels();
-
-		GalacticraftMars.SLUDGE = new Fluid("bacterialsludge").setBlock(GCMarsBlocks.blockSludge).setViscosity(3000);
+		GalacticraftMars.SLUDGE = new Fluid("bacterialsludge").setViscosity(3000);
 		if (!FluidRegistry.registerFluid(GalacticraftMars.SLUDGE))
 		{
 			GCLog.info("\"bacterialsludge\" has already been registered as a fluid, ignoring...");
 		}
+
+		GCMarsBlocks.initBlocks();
+		GCMarsBlocks.registerBlocks();
+		GCMarsBlocks.setHarvestLevels();
+		
+		GalacticraftMars.SLUDGE.setBlock(GCMarsBlocks.blockSludge);
 
 		GCMarsItems.initItems();
 

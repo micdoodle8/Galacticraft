@@ -326,7 +326,7 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
 
 	private int getIndex(int x, int y, int z)
 	{
-		return y << 8 | z << 4 | x;
+		return (x * 16 + z) * 256 + y;
 	}
 
 	private double randFromPoint(int x, int z)

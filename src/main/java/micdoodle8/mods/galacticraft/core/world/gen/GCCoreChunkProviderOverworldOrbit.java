@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -9,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSand;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IProgressUpdate;
 import net.minecraft.world.World;
@@ -67,6 +69,7 @@ public class GCCoreChunkProviderOverworldOrbit extends ChunkProviderGenerate
 	{
 		this.rand.setSeed(par1 * 341873128712L + par2 * 132897987541L);
 		final Block[] ids = new Block[32768];
+		Arrays.fill(ids, Blocks.air);
 		final byte[] meta = new byte[32768];
 
 		final Chunk var4 = new Chunk(this.worldObj, ids, meta, par1, par2);

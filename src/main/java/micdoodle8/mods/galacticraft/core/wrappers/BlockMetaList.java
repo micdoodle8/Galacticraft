@@ -16,7 +16,7 @@ import net.minecraft.block.Block;
  */
 public class BlockMetaList
 {
-	private Block blockID;
+	private Block block;
 	private List<Integer> metaList;
 
 	public BlockMetaList(Block blockID, Integer... metadata)
@@ -26,13 +26,13 @@ public class BlockMetaList
 
 	public BlockMetaList(Block blockID, List<Integer> metadata)
 	{
-		this.blockID = blockID;
+		this.block = blockID;
 		this.metaList = metadata;
 	}
 
 	public Block getBlock()
 	{
-		return this.blockID;
+		return this.block;
 	}
 
 	public List<Integer> getMetaList()
@@ -53,7 +53,7 @@ public class BlockMetaList
 	@Override
 	public int hashCode()
 	{
-		return this.hashCode();
+		return this.block.hashCode();
 	}
 
 	@Override

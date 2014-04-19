@@ -98,7 +98,6 @@ import net.minecraft.item.Item;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.client.EnumHelperClient;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
@@ -143,6 +142,8 @@ public class ClientProxyCore extends CommonProxyCore
 	private static int renderIdLandingPad;
 	private static int renderIdMachine;
 
+	public static FootprintRenderer footprintRenderer = new FootprintRenderer();
+
 	private static int renderIndexHeavyArmor;
 	private static int renderIndexSensorGlasses;
 
@@ -164,7 +165,7 @@ public class ClientProxyCore extends CommonProxyCore
 
 	public static ArrayList<SoundPoolEntry> newMusic = new ArrayList<SoundPoolEntry>();
 
-	public static EnumRarity galacticraftItem = EnumHelperClient.addRarity("GCRarity", 9, "Space");
+	public static EnumRarity galacticraftItem = EnumRarity.common;//EnumHelperClient.addRarity("GCRarity", 9, "Space");
 
 	public static Map<String, String> capeMap = new HashMap<String, String>();
 
@@ -500,5 +501,10 @@ public class ClientProxyCore extends CommonProxyCore
 		{
 			return false;
 		}
+	}
+
+	public static void renderFootprints(float partialTicks)
+	{
+		footprintRenderer.renderFootprints(FMLClientHandler.instance().getClient().thePlayer, partialTicks);
 	}
 }

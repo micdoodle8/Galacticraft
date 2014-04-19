@@ -42,7 +42,7 @@ public class FootprintRenderer
         float f9 = 1.0F;
         
         float f10 = 0.4F;
-        
+
         for (int i = 0; i < footprints.size(); i++)
         {
         	GL11.glPushMatrix();

@@ -566,7 +566,7 @@ public class GCCoreMapGenDungeon
 
 	private int getIndex(int x, int y, int z)
 	{
-		return y << 8 | z << 4 | x;
+        return (x * 16 + z) * 256 + y;
 	}
 
 	private ForgeDirection randDir(Random rand)

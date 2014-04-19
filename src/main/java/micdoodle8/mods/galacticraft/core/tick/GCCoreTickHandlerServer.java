@@ -1,15 +1,24 @@
 package micdoodle8.mods.galacticraft.core.tick;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
+import micdoodle8.mods.galacticraft.core.dimension.WorldDataSpaceRaces;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
+import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import micdoodle8.mods.galacticraft.core.wrappers.ScheduledBlockChange;
 import net.minecraft.entity.Entity;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
@@ -27,7 +36,23 @@ import cpw.mods.fml.common.gameevent.TickEvent.WorldTickEvent;
 public class GCCoreTickHandlerServer
 {
 	private static Map<Integer, List<ScheduledBlockChange>> scheduledBlockChanges = new ConcurrentHashMap<Integer, List<ScheduledBlockChange>>();
+	private static Map<Integer, List<Footprint>> footprintList = new HashMap<Integer, List<Footprint>>();
+	public static WorldDataSpaceRaces spaceRaceData = null;
+	private long tickCount;
+	
+	public static void addFootprint(Footprint print, int dimID)
+	{
+		List<Footprint> footprints = GCCoreTickHandlerServer.footprintList.get(dimID);
 
+		if (footprints == null)
+		{
+			footprints = new ArrayList<Footprint>();
+		}
+
+		footprints.add(print);
+		footprintList.put(dimID, footprints);
+	}
+	
 	public static void scheduleNewBlockChange(int dimID, ScheduledBlockChange change)
 	{
 		List<ScheduledBlockChange> changeList = GCCoreTickHandlerServer.scheduledBlockChanges.get(dimID);
@@ -59,7 +84,56 @@ public class GCCoreTickHandlerServer
 	{
 		if (event.phase == Phase.START)
 		{
-			
+			if (spaceRaceData == null)
+			{
+				World world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(0);
+				spaceRaceData = (WorldDataSpaceRaces) world.mapStorage.loadData(WorldDataSpaceRaces.class, WorldDataSpaceRaces.saveDataID);
+
+		        if (spaceRaceData == null)
+		        {
+		        	spaceRaceData = new WorldDataSpaceRaces(WorldDataSpaceRaces.saveDataID);
+		            world.mapStorage.setData(WorldDataSpaceRaces.saveDataID, this.spaceRaceData);
+		        }
+			}
+
+			SpaceRaceManager.tick();
+
+			if (tickCount % 100 == 0)
+			{
+				WorldServer[] worlds = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers;
+
+				for (int i = 0; i < worlds.length; i++)
+				{
+					List<Footprint> footprints = footprintList.get(worlds[i].provider.dimensionId);
+
+					if (footprints != null)
+					{
+						List<Footprint> toRemove = new ArrayList<Footprint>();
+
+						for (int j = 0; j < footprints.size(); j++)
+						{
+							footprints.get(j).age += 100;
+
+							if (footprints.get(j).age >= Footprint.MAX_AGE)
+							{
+								toRemove.add(footprints.get(j));
+							}
+						}
+
+						footprints.removeAll(toRemove);
+						footprintList.put(worlds[i].provider.dimensionId, footprints);	
+
+						GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_FOOTPRINT_LIST, new Object[] { footprints.toArray(new Footprint[footprints.size()]) }), worlds[i].provider.dimensionId);
+					}
+				}
+			}
+
+			tickCount++;
+
+			if (tickCount >= Long.MAX_VALUE)
+			{
+				tickCount = 0;
+			}
 		}
 	}
 

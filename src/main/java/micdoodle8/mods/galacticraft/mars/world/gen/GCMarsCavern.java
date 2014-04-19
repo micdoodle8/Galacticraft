@@ -235,9 +235,9 @@ public class GCMarsCavern
 									{
 										if (var51 > -0.7D)
 										{
-											int coords = var50 << 8 | var45 << 4 | var42;
-											int coordsAbove = var50 + 1 << 8 | var45 << 4 | var42;
-											int coordsBelow = var50 - 1 << 8 | var45 << 4 | var42;
+											int coords = (var42 * 16 + var45) * 256 + var50;
+											int coordsAbove = (var42 * 16 + var45) * 256 + var50 + 1;
+											int coordsBelow = (var42 * 16 + var45) * 256 + var50 - 1;
 
 											if (arrayOfIDs[coords] == Blocks.air)
 											{

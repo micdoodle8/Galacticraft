@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.moon.world.gen;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -228,8 +229,9 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 	public Chunk provideChunk(int par1, int par2)
 	{
 		this.rand.setSeed(par1 * 341873128712L + par2 * 132897987541L);
-		final Block[] ids = new Block[32768 * 2];
-		final byte[] meta = new byte[32768 * 2];
+		final Block[] ids = new Block[16 * 16 * 256];
+		final byte[] meta = new byte[16 * 16 * 256];
+		Arrays.fill(ids, Blocks.air);
 		this.generateTerrain(par1, par2, ids, meta);
 		this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, par1 * 16, par2 * 16, 16, 16);
 		this.createCraters(par1, par2, ids, meta);
@@ -326,7 +328,7 @@ public class GCMoonChunkProvider extends ChunkProviderGenerate
 
 	private int getIndex(int x, int y, int z)
 	{
-		return y << 8 | z << 4 | x;
+        return (x * 16 + z) * 256 + y;
 	}
 
 	private double randFromPoint(int x, int z)

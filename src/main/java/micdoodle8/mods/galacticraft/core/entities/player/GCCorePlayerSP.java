@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.event.GCCoreEventWakePlayer;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
+import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.entity.EntityClientPlayerMP;
@@ -21,12 +24,14 @@ import net.minecraft.stats.StatFileWriter;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Session;
 import net.minecraft.util.StringUtils;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 
 /**
  * GCCorePlayerSP.java
@@ -52,6 +57,9 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
 	public boolean lastOnGround;
 	private ResourceLocation galacticraftCape;
 	private ThreadDownloadImageData galacticraftCapeImageData;
+
+	private double distanceSinceLastStep;
+	private int lastStep;
 
 	public ArrayList<ISchematicPage> unlockedSchematics = new ArrayList<ISchematicPage>();
 
@@ -168,6 +176,58 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
 
 		super.onLivingUpdate();
 
+//		// If the player is on the moon, not airbourne and not riding anything
+//		if (this.worldObj != null && this.worldObj.provider instanceof GCMoonWorldProvider && this.onGround && this.ridingEntity == null)
+//		{
+//			int iPosX = (int)Math.floor(this.posX);
+//			int iPosY = (int)Math.floor(this.posY - 2);
+//			int iPosZ = (int)Math.floor(this.posZ);
+//			
+//			// If the block below is the moon block
+//			if (this.worldObj.getBlock(iPosX, iPosY, iPosZ) == GCCoreBlocks.blockMoon)
+//			{
+//				// And is the correct metadata (moon turf)
+//				if (this.worldObj.getBlockMetadata(iPosX, iPosY, iPosZ) == 5)
+//				{
+//					// If it has been long enough since the last step
+//					if (this.distanceSinceLastStep > 0.09)
+//					{
+//						Vector3 pos = new Vector3(this);
+//						// Set the footprint position to the block below and add random number to stop z-fighting
+//						pos.y = MathHelper.floor_double(this.posY - 1) + this.rand.nextFloat() / 100.0F;
+//						
+//						// Adjust footprint to left or right depending on step count
+//						switch (this.lastStep)
+//						{
+//						case 0:
+//							pos.translate(new Vector3(Math.sin(Math.toRadians(-this.rotationYaw + 90)) * 0.25, 0, Math.cos(Math.toRadians(-this.rotationYaw + 90)) * 0.25));
+//							break;
+//						case 1:
+//							pos.translate(new Vector3(Math.sin(Math.toRadians(-this.rotationYaw - 90)) * 0.25, 0, Math.cos(Math.toRadians(-this.rotationYaw - 90)) * 0.25));
+//							break;
+//						}
+//						
+//						ClientProxyCore.footprintRenderer.addFootprint(pos, this.rotationYaw);
+//						
+//						// Increment and cap step counter at 1
+//						this.lastStep++;
+//						this.lastStep %= 2;
+//						this.distanceSinceLastStep = 0;
+//					}
+//					else
+//					{
+//						double motionSqrd = (this.motionX * this.motionX + this.motionZ * this.motionZ);
+//						
+//						// Even when the player is still, motion isn't exactly zero
+//						if (motionSqrd > 0.001)
+//						{
+//							this.distanceSinceLastStep += motionSqrd;
+//						}
+//					}
+//				}
+//			}
+//		}
+		
 		if (!this.onGround && this.lastOnGround)
 		{
 			this.touchedGround = true;
@@ -209,6 +269,64 @@ public class GCCorePlayerSP extends EntityClientPlayerMP
 
 		this.lastUsingParachute = this.usingParachute;
 		this.lastOnGround = this.onGround;
+	}
+
+	@Override
+    public void moveEntity(double par1, double par3, double par5)
+    {
+    	super.moveEntity(par1, par3, par5);
+    	this.updateFeet(par1, par5);
+    }
+
+	private void updateFeet(double motionX, double motionZ)
+	{
+		double motionSqrd = (motionX * motionX + motionZ * motionZ);
+		
+		// If the player is on the moon, not airbourne and not riding anything
+		if (motionSqrd > 0.001 && this.worldObj != null && this.worldObj.provider instanceof GCMoonWorldProvider && this.ridingEntity == null)
+		{
+			int iPosX = (int)Math.floor(this.posX);
+			int iPosY = (int)Math.floor(this.posY - 2);
+			int iPosZ = (int)Math.floor(this.posZ);
+			
+			// If the block below is the moon block
+			if (this.worldObj.getBlock(iPosX, iPosY, iPosZ) == GCCoreBlocks.blockMoon)
+			{
+				// And is the correct metadata (moon turf)
+				if (this.worldObj.getBlockMetadata(iPosX, iPosY, iPosZ) == 5)
+				{
+					// If it has been long enough since the last step
+					if (this.distanceSinceLastStep > 0.35)
+					{
+						Vector3 pos = new Vector3(this);
+						// Set the footprint position to the block below and add random number to stop z-fighting
+						pos.y = MathHelper.floor_double(this.posY - 1) + this.rand.nextFloat() / 100.0F;
+						
+						// Adjust footprint to left or right depending on step count
+						switch (this.lastStep)
+						{
+						case 0:
+							pos.translate(new Vector3(Math.sin(Math.toRadians(-this.rotationYaw + 90)) * 0.25, 0, Math.cos(Math.toRadians(-this.rotationYaw + 90)) * 0.25));
+							break;
+						case 1:
+							pos.translate(new Vector3(Math.sin(Math.toRadians(-this.rotationYaw - 90)) * 0.25, 0, Math.cos(Math.toRadians(-this.rotationYaw - 90)) * 0.25));
+							break;
+						}
+						
+						ClientProxyCore.footprintRenderer.addFootprint(pos, this.rotationYaw); 
+						
+						// Increment and cap step counter at 1
+						this.lastStep++;
+						this.lastStep %= 2;
+						this.distanceSinceLastStep = 0;
+					}
+					else
+					{
+						this.distanceSinceLastStep += motionSqrd;
+					}
+				}
+			}
+		}
 	}
 
 	@Override

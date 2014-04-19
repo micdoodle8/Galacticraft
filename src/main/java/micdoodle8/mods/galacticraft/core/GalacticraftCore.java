@@ -257,6 +257,9 @@ public class GalacticraftCore
 		GalacticraftRegistry.registerTeleportType(WorldProviderSurface.class, new GCCoreOverworldTeleportType());
 		GalacticraftRegistry.registerTeleportType(GCCoreWorldProviderSpaceStation.class, new GCCoreOrbitTeleportType());
 
+		GalacticraftCore.packetPipeline = new PacketPipeline();
+		GalacticraftCore.packetPipeline.initalise();
+
 		ForgeChunkManager.setForcedChunkLoadingCallback(GalacticraftCore.instance, new ChunkLoadingCallback());
 //		GameRegistry.registerPlayerTracker(new PlayerTracker()); TODO
 
