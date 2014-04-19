@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.mars.entities;
 
-import icbm.api.IMissile;
+import calclavia.api.icbm.IMissile;
 
 import java.util.ArrayList;
 
@@ -236,13 +236,13 @@ public class GCMarsEntityRocketT2 extends EntityTieredRocket
 		super.readEntityFromNBT(par1NBTTagCompound);
 	}
 
-	@RuntimeInterface(clazz = "icbm.api.IMissileLockable", modID = "ICBM|Explosion")
+	@RuntimeInterface(clazz = "calclavia.api.icbm.IMissileLockable", modID = "ICBM|Explosion")
 	public boolean canLock(IMissile missile)
 	{
 		return true;
 	}
 
-	@RuntimeInterface(clazz = "icbm.api.IMissileLockable", modID = "ICBM|Explosion")
+	@RuntimeInterface(clazz = "calclavia.api.icbm.IMissileLockable", modID = "ICBM|Explosion")
 	public Vector3 getPredictedPosition(int ticks)
 	{
 		return new Vector3(this);
@@ -264,20 +264,20 @@ public class GCMarsEntityRocketT2 extends EntityTieredRocket
 		return dock instanceof GCCoreTileEntityLandingPad;
 	}
 
-	@RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID = "ICBM|Explosion")
+	@RuntimeInterface(clazz = "calclavia.api.icbm.sentry.IAATarget", modID = "ICBM|Explosion")
 	public void destroyCraft()
 	{
 		this.setDead();
 	}
 
-	@RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID = "ICBM|Explosion")
+	@RuntimeInterface(clazz = "calclavia.api.icbm.sentry.IAATarget", modID = "ICBM|Explosion")
 	public int doDamage(int damage)
 	{
 		this.shipDamage += damage;
 		return damage;
 	}
 
-	@RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID = "ICBM|Explosion")
+	@RuntimeInterface(clazz = "calclavia.api.icbm.sentry.IAATarget", modID = "ICBM|Explosion")
 	public boolean canBeTargeted(Object entity)
 	{
 		return this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase() && this.timeSinceLaunch > 50;

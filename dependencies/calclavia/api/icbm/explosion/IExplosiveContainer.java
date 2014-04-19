@@ -1,4 +1,4 @@
-package icbm.api.explosion;
+package calclavia.api.icbm.explosion;
 
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -7,7 +7,6 @@ import net.minecraft.nbt.NBTTagCompound;
  * entities etc.
  * 
  * @author Calclavia
- * 
  */
 public interface IExplosiveContainer
 {
