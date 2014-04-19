@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.mars.inventory;
 
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreSlotRocketBenchResult;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.inventory.SlotRocketBenchResult;
+import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.mars.util.RecipeUtilMars;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -33,7 +33,7 @@ public class GCMarsContainerRocketBenchT2 extends Container
 	{
 		final int change = 27;
 		this.worldObj = par1InventoryPlayer.player.worldObj;
-		this.addSlotToContainer(new GCCoreSlotRocketBenchResult(par1InventoryPlayer.player, this.craftMatrix, this.craftResult, 0, 142, 18 + 69 + change));
+		this.addSlotToContainer(new SlotRocketBenchResult(par1InventoryPlayer.player, this.craftMatrix, this.craftResult, 0, 142, 18 + 69 + change));
 		int var6;
 		int var7;
 
@@ -140,98 +140,98 @@ public class GCMarsContainerRocketBenchT2 extends Container
 
 				var3.onSlotChange(var4, var2);
 			}
-			else if (var2.getItem() == GCCoreItems.partNoseCone && !((Slot) this.inventorySlots.get(1)).getHasStack())
+			else if (var2.getItem() == GCItems.partNoseCone && !((Slot) this.inventorySlots.get(1)).getHasStack())
 			{
 				if (!this.mergeItemStack(var4, 1, 2, false))
 				{
 					return null;
 				}
 			}
-			else if (var2.getItem() == GCCoreItems.heavyPlatingTier1 && !((Slot) this.inventorySlots.get(2)).getHasStack())
+			else if (var2.getItem() == GCItems.heavyPlatingTier1 && !((Slot) this.inventorySlots.get(2)).getHasStack())
 			{
 				if (!this.mergeItemStack(var4, 2, 3, false))
 				{
 					return null;
 				}
 			}
-			else if (var2.getItem() == GCCoreItems.heavyPlatingTier1 && !((Slot) this.inventorySlots.get(3)).getHasStack())
+			else if (var2.getItem() == GCItems.heavyPlatingTier1 && !((Slot) this.inventorySlots.get(3)).getHasStack())
 			{
 				if (!this.mergeItemStack(var4, 3, 4, false))
 				{
 					return null;
 				}
 			}
-			else if (var2.getItem() == GCCoreItems.heavyPlatingTier1 && !((Slot) this.inventorySlots.get(4)).getHasStack())
+			else if (var2.getItem() == GCItems.heavyPlatingTier1 && !((Slot) this.inventorySlots.get(4)).getHasStack())
 			{
 				if (!this.mergeItemStack(var4, 4, 5, false))
 				{
 					return null;
 				}
 			}
-			else if (var2.getItem() == GCCoreItems.heavyPlatingTier1 && !((Slot) this.inventorySlots.get(5)).getHasStack())
+			else if (var2.getItem() == GCItems.heavyPlatingTier1 && !((Slot) this.inventorySlots.get(5)).getHasStack())
 			{
 				if (!this.mergeItemStack(var4, 5, 6, false))
 				{
 					return null;
 				}
 			}
-			else if (var2.getItem() == GCCoreItems.heavyPlatingTier1 && !((Slot) this.inventorySlots.get(6)).getHasStack())
+			else if (var2.getItem() == GCItems.heavyPlatingTier1 && !((Slot) this.inventorySlots.get(6)).getHasStack())
 			{
 				if (!this.mergeItemStack(var4, 6, 7, false))
 				{
 					return null;
 				}
 			}
-			else if (var2.getItem() == GCCoreItems.heavyPlatingTier1 && !((Slot) this.inventorySlots.get(7)).getHasStack())
+			else if (var2.getItem() == GCItems.heavyPlatingTier1 && !((Slot) this.inventorySlots.get(7)).getHasStack())
 			{
 				if (!this.mergeItemStack(var4, 7, 8, false))
 				{
 					return null;
 				}
 			}
-			else if (var2.getItem() == GCCoreItems.heavyPlatingTier1 && !((Slot) this.inventorySlots.get(8)).getHasStack())
+			else if (var2.getItem() == GCItems.heavyPlatingTier1 && !((Slot) this.inventorySlots.get(8)).getHasStack())
 			{
 				if (!this.mergeItemStack(var4, 8, 9, false))
 				{
 					return null;
 				}
 			}
-			else if (var2.getItem() == GCCoreItems.heavyPlatingTier1 && !((Slot) this.inventorySlots.get(9)).getHasStack())
+			else if (var2.getItem() == GCItems.heavyPlatingTier1 && !((Slot) this.inventorySlots.get(9)).getHasStack())
 			{
 				if (!this.mergeItemStack(var4, 9, 10, false))
 				{
 					return null;
 				}
 			}
-			else if (var2.getItem() == GCCoreItems.partFins && !((Slot) this.inventorySlots.get(10)).getHasStack())
+			else if (var2.getItem() == GCItems.partFins && !((Slot) this.inventorySlots.get(10)).getHasStack())
 			{
 				if (!this.mergeItemStack(var4, 10, 11, false))
 				{
 					return null;
 				}
 			}
-			else if (var2.getItem() == GCCoreItems.partFins && !((Slot) this.inventorySlots.get(11)).getHasStack())
+			else if (var2.getItem() == GCItems.partFins && !((Slot) this.inventorySlots.get(11)).getHasStack())
 			{
 				if (!this.mergeItemStack(var4, 11, 12, false))
 				{
 					return null;
 				}
 			}
-			else if (var2.getItem() == GCCoreItems.rocketEngine && !((Slot) this.inventorySlots.get(12)).getHasStack())
+			else if (var2.getItem() == GCItems.rocketEngine && !((Slot) this.inventorySlots.get(12)).getHasStack())
 			{
 				if (!this.mergeItemStack(var4, 12, 13, false))
 				{
 					return null;
 				}
 			}
-			else if (var2.getItem() == GCCoreItems.partFins && !((Slot) this.inventorySlots.get(13)).getHasStack())
+			else if (var2.getItem() == GCItems.partFins && !((Slot) this.inventorySlots.get(13)).getHasStack())
 			{
 				if (!this.mergeItemStack(var4, 13, 14, false))
 				{
 					return null;
 				}
 			}
-			else if (var2.getItem() == GCCoreItems.partFins && !((Slot) this.inventorySlots.get(14)).getHasStack())
+			else if (var2.getItem() == GCItems.partFins && !((Slot) this.inventorySlots.get(14)).getHasStack())
 			{
 				if (!this.mergeItemStack(var4, 14, 15, false))
 				{

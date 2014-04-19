@@ -3,9 +3,9 @@ package micdoodle8.mods.galacticraft.mars.world.gen.dungeon;
 import java.util.HashSet;
 import java.util.Random;
 
-import micdoodle8.mods.galacticraft.core.world.gen.dungeon.GCCoreDungeonBoundingBox;
-import micdoodle8.mods.galacticraft.core.world.gen.dungeon.GCCoreDungeonRoom;
-import micdoodle8.mods.galacticraft.core.world.gen.dungeon.GCCoreMapGenDungeon;
+import micdoodle8.mods.galacticraft.core.world.gen.dungeon.DungeonBoundingBox;
+import micdoodle8.mods.galacticraft.core.world.gen.dungeon.DungeonRoom;
+import micdoodle8.mods.galacticraft.core.world.gen.dungeon.MapGenDungeon;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityTreasureChest;
 import net.minecraft.block.Block;
@@ -22,7 +22,7 @@ import net.minecraftforge.common.util.ForgeDirection;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class GCMarsRoomTreasure extends GCCoreDungeonRoom
+public class GCMarsRoomTreasure extends DungeonRoom
 {
 	int sizeX;
 	int sizeY;
@@ -30,7 +30,7 @@ public class GCMarsRoomTreasure extends GCCoreDungeonRoom
 
 	private final HashSet<ChunkCoordinates> chests = new HashSet<ChunkCoordinates>();
 
-	public GCMarsRoomTreasure(GCCoreMapGenDungeon dungeon, int posX, int posY, int posZ, ForgeDirection entranceDir)
+	public GCMarsRoomTreasure(MapGenDungeon dungeon, int posX, int posY, int posZ, ForgeDirection entranceDir)
 	{
 		super(dungeon, posX, posY, posZ, entranceDir);
 		if (this.worldObj != null)
@@ -78,13 +78,13 @@ public class GCMarsRoomTreasure extends GCCoreDungeonRoom
 	}
 
 	@Override
-	public GCCoreDungeonBoundingBox getBoundingBox()
+	public DungeonBoundingBox getBoundingBox()
 	{
-		return new GCCoreDungeonBoundingBox(this.posX, this.posZ, this.posX + this.sizeX, this.posZ + this.sizeZ);
+		return new DungeonBoundingBox(this.posX, this.posZ, this.posX + this.sizeX, this.posZ + this.sizeZ);
 	}
 
 	@Override
-	protected GCCoreDungeonRoom makeRoom(GCCoreMapGenDungeon dungeon, int x, int y, int z, ForgeDirection dir)
+	protected DungeonRoom makeRoom(MapGenDungeon dungeon, int x, int y, int z, ForgeDirection dir)
 	{
 		return new GCMarsRoomTreasure(dungeon, x, y, z, dir);
 	}

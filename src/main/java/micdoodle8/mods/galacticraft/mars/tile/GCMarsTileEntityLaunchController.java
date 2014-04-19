@@ -7,18 +7,18 @@ import java.util.List;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
-import micdoodle8.mods.galacticraft.core.GCCoreAnnotations.NetworkedField;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPadFull;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectricBlock;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
+import micdoodle8.mods.galacticraft.core.blocks.BlockLandingPadFull;
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricBlock;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
 import micdoodle8.mods.galacticraft.core.world.IChunkLoader;
 import micdoodle8.mods.galacticraft.mars.GCMarsConfigManager;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlockMachine;
 import micdoodle8.mods.galacticraft.mars.network.PacketSimpleMars;
 import micdoodle8.mods.galacticraft.mars.network.PacketSimpleMars.EnumSimplePacketMars;
+import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -47,7 +47,7 @@ import cpw.mods.fml.relauncher.Side;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectricBlock implements IChunkLoader, IElectrical, IInventory, ISidedInventory, ILandingPadAttachable
+public class GCMarsTileEntityLaunchController extends TileEntityElectricBlock implements IChunkLoader, IElectrical, IInventory, ISidedInventory, ILandingPadAttachable
 {
 	public static final float WATTS_PER_TICK = 0.05000001f;
 	private ItemStack[] containingItems = new ItemStack[1];
@@ -105,7 +105,7 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectricBl
 						ChunkCoordinates coords = this.connectedPads.get(i);
 						Block block = this.worldObj.getBlock(coords.posX, coords.posY, coords.posZ);
 
-						if (block != GCCoreBlocks.landingPadFull)
+						if (block != GCBlocks.landingPadFull)
 						{
 							this.connectedPads.remove(i);
 							ForgeChunkManager.unforceChunk(this.chunkLoadTicket, new ChunkCoordIntPair(coords.posX >> 4, coords.posZ >> 4));
@@ -172,7 +172,7 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectricBl
 				{
 					Block blockID = this.worldObj.getBlock(this.xCoord + x, this.yCoord, this.zCoord + z);
 
-					if (blockID instanceof GCCoreBlockLandingPadFull)
+					if (blockID instanceof BlockLandingPadFull)
 					{
 						if (this.xCoord + x >> 4 != this.xCoord >> 4 || this.zCoord + z >> 4 != this.zCoord >> 4)
 						{
@@ -461,7 +461,7 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectricBl
 	{
 		TileEntity tile = world.getTileEntity(x, y, z);
 
-		return tile instanceof GCCoreTileEntityLandingPad;
+		return tile instanceof TileEntityLandingPad;
 	}
 
 	public void setFrequency(int frequency)

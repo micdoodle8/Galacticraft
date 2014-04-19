@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.mars.items;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicItem;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItemSchematic;
+import micdoodle8.mods.galacticraft.core.items.ItemSchematic;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -25,7 +25,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class GCMarsItemSchematic extends GCCoreItemSchematic implements ISchematicItem
+public class GCMarsItemSchematic extends ItemSchematic implements ISchematicItem
 {
 	protected IIcon[] icons = new IIcon[1];
 

@@ -2,9 +2,9 @@ package micdoodle8.mods.galacticraft.mars.tile;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockMulti;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
-import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
+import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlockMachine;
@@ -62,11 +62,11 @@ public class GCMarsTileEntityCryogenicChamber extends TileEntityMulti implements
 		switch (enumstatus)
 		{
 		case OK:
-            ((GCCorePlayerMP) entityPlayer).playerNetServerHandler.setPlayerLocation(entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ, entityPlayer.rotationYaw, entityPlayer.rotationPitch);
-            GalacticraftCore.packetPipeline.sendTo(new PacketSimpleMars(EnumSimplePacketMars.C_BEGIN_CRYOGENIC_SLEEP, new Object[] { this.xCoord, this.yCoord, this.zCoord }), ((GCCorePlayerMP) entityPlayer));
+            ((GCEntityPlayerMP) entityPlayer).playerNetServerHandler.setPlayerLocation(entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ, entityPlayer.rotationYaw, entityPlayer.rotationPitch);
+            GalacticraftCore.packetPipeline.sendTo(new PacketSimpleMars(EnumSimplePacketMars.C_BEGIN_CRYOGENIC_SLEEP, new Object[] { this.xCoord, this.yCoord, this.zCoord }), ((GCEntityPlayerMP) entityPlayer));
 			return true;
 		case NOT_POSSIBLE_NOW:
-			entityPlayer.addChatMessage(new ChatComponentText("I can't use this for another " + ((GCCorePlayerMP) entityPlayer).getCryogenicChamberCooldown() / 20 + " seconds"));
+			entityPlayer.addChatMessage(new ChatComponentText("I can't use this for another " + ((GCEntityPlayerMP) entityPlayer).getCryogenicChamberCooldown() / 20 + " seconds"));
 			return false;
 		default:
 			return false;
@@ -87,7 +87,7 @@ public class GCMarsTileEntityCryogenicChamber extends TileEntityMulti implements
 				return EnumStatus.NOT_POSSIBLE_HERE;
 			}
 
-			if (((GCCorePlayerMP) entityPlayer).getCryogenicChamberCooldown() > 0)
+			if (((GCEntityPlayerMP) entityPlayer).getCryogenicChamberCooldown() > 0)
 			{
 				return EnumStatus.NOT_POSSIBLE_NOW;
 			}
@@ -173,7 +173,7 @@ public class GCMarsTileEntityCryogenicChamber extends TileEntityMulti implements
 
 					if (!vecToAdd.equals(placedPosition))
 					{
-						((GCCoreBlockMulti) GCCoreBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 5);
+						((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 5);
 					}
 				}
 			}

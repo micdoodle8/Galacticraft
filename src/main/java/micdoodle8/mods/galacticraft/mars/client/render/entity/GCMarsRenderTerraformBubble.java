@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.mars.client.render.entity;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelOxygenBubble;
+import micdoodle8.mods.galacticraft.core.client.model.ModelBubble;
 import micdoodle8.mods.galacticraft.mars.entities.EntityTerraformBubble;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
@@ -27,7 +27,7 @@ public class GCMarsRenderTerraformBubble extends Render
 {
 	private static final ResourceLocation bubbleTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/bubble.png");
 
-	private final GCCoreModelOxygenBubble bubbleModel = new GCCoreModelOxygenBubble();
+	private final ModelBubble bubbleModel = new ModelBubble();
 
 	@Override
 	protected ResourceLocation getEntityTexture(Entity par1Entity)

@@ -12,12 +12,12 @@ import micdoodle8.mods.galacticraft.api.entity.IWorldTransferCallback;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPadFull;
-import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
-import micdoodle8.mods.galacticraft.core.event.GCCoreLandingPadRemovalEvent;
+import micdoodle8.mods.galacticraft.core.blocks.BlockLandingPadFull;
+import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
+import micdoodle8.mods.galacticraft.core.event.EventLandingPadRemoval;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -150,9 +150,9 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 		{
 			for (ILandingPadAttachable tile : this.getLandingPad().getConnectedTiles())
 			{
-				if (this.worldObj.getTileEntity(((TileEntity) tile).xCoord, ((TileEntity) tile).yCoord, ((TileEntity) tile).zCoord) != null && this.worldObj.getTileEntity(((TileEntity) tile).xCoord, ((TileEntity) tile).yCoord, ((TileEntity) tile).zCoord) instanceof GCCoreTileEntityFuelLoader)
+				if (this.worldObj.getTileEntity(((TileEntity) tile).xCoord, ((TileEntity) tile).yCoord, ((TileEntity) tile).zCoord) != null && this.worldObj.getTileEntity(((TileEntity) tile).xCoord, ((TileEntity) tile).yCoord, ((TileEntity) tile).zCoord) instanceof TileEntityFuelLoader)
 				{
-					if (tile instanceof GCCoreTileEntityFuelLoader && ((GCCoreTileEntityFuelLoader) tile).getEnergyStored() > 0)
+					if (tile instanceof TileEntityFuelLoader && ((TileEntityFuelLoader) tile).getEnergyStored() > 0)
 					{
 						if (this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase())
 						{
@@ -270,9 +270,9 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 		{
 			if (this.riddenByEntity != null)
 			{
-				if (this.riddenByEntity instanceof GCCorePlayerMP)
+				if (this.riddenByEntity instanceof GCEntityPlayerMP)
 				{
-					GCCorePlayerMP player = (GCCorePlayerMP) this.riddenByEntity;
+					GCEntityPlayerMP player = (GCEntityPlayerMP) this.riddenByEntity;
 
 					HashMap<String, Integer> map = WorldUtil.getArrayOfPossibleDimensions(WorldUtil.getPossibleDimensionsForSpaceshipTier(this.getRocketTier()), player);
 
@@ -327,10 +327,10 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 
 		if (!this.worldObj.isRemote)
 		{
-			if (!(this.worldObj.provider instanceof IOrbitDimension) && this.riddenByEntity != null && this.riddenByEntity instanceof GCCorePlayerMP)
+			if (!(this.worldObj.provider instanceof IOrbitDimension) && this.riddenByEntity != null && this.riddenByEntity instanceof GCEntityPlayerMP)
 			{
-				((GCCorePlayerMP) this.riddenByEntity).setCoordsTeleportedFromX(this.riddenByEntity.posX);
-				((GCCorePlayerMP) this.riddenByEntity).setCoordsTeleportedFromZ(this.riddenByEntity.posZ);
+				((GCEntityPlayerMP) this.riddenByEntity).setCoordsTeleportedFromX(this.riddenByEntity.posX);
+				((GCEntityPlayerMP) this.riddenByEntity).setCoordsTeleportedFromZ(this.riddenByEntity.posZ);
 			}
 
 			int amountRemoved = 0;
@@ -343,11 +343,11 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 					{
 						final Block block = this.worldObj.getBlock(x, y, z);
 
-						if (block instanceof GCCoreBlockLandingPadFull)
+						if (block instanceof BlockLandingPadFull)
 						{
 							if (amountRemoved < 9)
 							{
-								GCCoreLandingPadRemovalEvent event = new GCCoreLandingPadRemovalEvent(this.worldObj, x, y, z);
+								EventLandingPadRemoval event = new EventLandingPadRemoval(this.worldObj, x, y, z);
 								MinecraftForge.EVENT_BUS.post(event);
 
 								if (event.allow)
@@ -379,25 +379,25 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 			return false;
 		}
 
-		if (this.riddenByEntity != null && this.riddenByEntity instanceof GCCorePlayerMP)
+		if (this.riddenByEntity != null && this.riddenByEntity instanceof GCEntityPlayerMP)
 		{
 			if (!this.worldObj.isRemote)
 			{
 				GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, new Object[] { ((EntityPlayerMP) this.riddenByEntity).getGameProfile().getName() }), (EntityPlayerMP) par1EntityPlayer);
 				GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, new Object[] { 0 }), (EntityPlayerMP) par1EntityPlayer);
-				((GCCorePlayerMP) par1EntityPlayer).setChatCooldown(0);
+				((GCEntityPlayerMP) par1EntityPlayer).setChatCooldown(0);
 				par1EntityPlayer.mountEntity(null);
 			}
 
 			return true;
 		}
-		else if (par1EntityPlayer instanceof GCCorePlayerMP)
+		else if (par1EntityPlayer instanceof GCEntityPlayerMP)
 		{
 			if (!this.worldObj.isRemote)
 			{
 				GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_MOUNT_ROCKET, new Object[] { par1EntityPlayer.getGameProfile().getName() }), (EntityPlayerMP) par1EntityPlayer);
 				GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, new Object[] { 1 }), (EntityPlayerMP) par1EntityPlayer);
-				((GCCorePlayerMP) par1EntityPlayer).setChatCooldown(0);
+				((GCEntityPlayerMP) par1EntityPlayer).setChatCooldown(0);
 				par1EntityPlayer.mountEntity(this);
 			}
 

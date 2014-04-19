@@ -4,12 +4,12 @@ import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket.EnumAutoL
 import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay;
 import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay.ElectricUnit;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiCheckbox;
-import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiCheckbox.ICheckBoxCallback;
-import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiDropdown;
-import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiDropdown.IDropboxCallback;
-import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiTextBox;
-import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiTextBox.ITextBoxCallback;
+import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementCheckbox;
+import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementDropdown;
+import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementTextBox;
+import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementCheckbox.ICheckBoxCallback;
+import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementDropdown.IDropboxCallback;
+import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementTextBox.ITextBoxCallback;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
@@ -45,11 +45,11 @@ public class GCMarsGuiLaunchController extends GuiContainer implements IDropboxC
 	private GCMarsTileEntityLaunchController launchController;
 
 	private GuiButton enableControllerButton;
-	private GCCoreGuiCheckbox enablePadRemovalButton;
-	private GCCoreGuiCheckbox launchWhenCheckbox;
-	private GCCoreGuiDropdown dropdownTest;
-	private GCCoreGuiTextBox frequency;
-	private GCCoreGuiTextBox destinationFrequency;
+	private GuiElementCheckbox enablePadRemovalButton;
+	private GuiElementCheckbox launchWhenCheckbox;
+	private GuiElementDropdown dropdownTest;
+	private GuiElementTextBox frequency;
+	private GuiElementTextBox destinationFrequency;
 
 	private int cannotEditTimer;
 
@@ -128,11 +128,11 @@ public class GCMarsGuiLaunchController extends GuiContainer implements IDropboxC
 		final int var5 = (this.width - this.xSize) / 2;
 		final int var6 = (this.height - this.ySize) / 2;
 		this.enableControllerButton = new GuiButton(0, var5 + 70 + 124 - 72, var6 + 16, 48, 20, "Enable");
-		this.enablePadRemovalButton = new GCCoreGuiCheckbox(1, this, this.width / 2 - 78, var6 + 59, "Remove Pad");
-		this.launchWhenCheckbox = new GCCoreGuiCheckbox(2, this, this.width / 2 - 78, var6 + 77, "Launch when: ");
-		this.dropdownTest = new GCCoreGuiDropdown(3, this, var5 + 95, var6 + 77, EnumAutoLaunch.CARGO_IS_UNLOADED.getTitle(), EnumAutoLaunch.CARGO_IS_FULL.getTitle(), EnumAutoLaunch.ROCKET_IS_FUELED.getTitle(), EnumAutoLaunch.INSTANT.getTitle(), EnumAutoLaunch.TIME_10_SECONDS.getTitle(), EnumAutoLaunch.TIME_30_SECONDS.getTitle(), EnumAutoLaunch.TIME_1_MINUTE.getTitle(), EnumAutoLaunch.REDSTONE_SIGNAL.getTitle());
-		this.frequency = new GCCoreGuiTextBox(4, this, var5 + 66, var6 + 16, 48, 20, "", true, 6);
-		this.destinationFrequency = new GCCoreGuiTextBox(5, this, var5 + 122, var6 + 16 + 22, 48, 20, "", true, 6);
+		this.enablePadRemovalButton = new GuiElementCheckbox(1, this, this.width / 2 - 78, var6 + 59, "Remove Pad");
+		this.launchWhenCheckbox = new GuiElementCheckbox(2, this, this.width / 2 - 78, var6 + 77, "Launch when: ");
+		this.dropdownTest = new GuiElementDropdown(3, this, var5 + 95, var6 + 77, EnumAutoLaunch.CARGO_IS_UNLOADED.getTitle(), EnumAutoLaunch.CARGO_IS_FULL.getTitle(), EnumAutoLaunch.ROCKET_IS_FUELED.getTitle(), EnumAutoLaunch.INSTANT.getTitle(), EnumAutoLaunch.TIME_10_SECONDS.getTitle(), EnumAutoLaunch.TIME_30_SECONDS.getTitle(), EnumAutoLaunch.TIME_1_MINUTE.getTitle(), EnumAutoLaunch.REDSTONE_SIGNAL.getTitle());
+		this.frequency = new GuiElementTextBox(4, this, var5 + 66, var6 + 16, 48, 20, "", true, 6);
+		this.destinationFrequency = new GuiElementTextBox(5, this, var5 + 122, var6 + 16 + 22, 48, 20, "", true, 6);
 		this.buttonList.add(this.enableControllerButton);
 		this.buttonList.add(this.enablePadRemovalButton);
 		this.buttonList.add(this.launchWhenCheckbox);
@@ -233,7 +233,7 @@ public class GCMarsGuiLaunchController extends GuiContainer implements IDropboxC
 	}
 
 	@Override
-	public boolean canBeClickedBy(GCCoreGuiDropdown dropdown, EntityPlayer player)
+	public boolean canBeClickedBy(GuiElementDropdown dropdown, EntityPlayer player)
 	{
 		if (dropdown.equals(this.dropdownTest))
 		{
@@ -244,7 +244,7 @@ public class GCMarsGuiLaunchController extends GuiContainer implements IDropboxC
 	}
 
 	@Override
-	public void onSelectionChanged(GCCoreGuiDropdown dropdown, int selection)
+	public void onSelectionChanged(GuiElementDropdown dropdown, int selection)
 	{
 		if (dropdown.equals(this.dropdownTest))
 		{
@@ -254,7 +254,7 @@ public class GCMarsGuiLaunchController extends GuiContainer implements IDropboxC
 	}
 
 	@Override
-	public int getInitialSelection(GCCoreGuiDropdown dropdown)
+	public int getInitialSelection(GuiElementDropdown dropdown)
 	{
 		if (dropdown.equals(this.dropdownTest))
 		{
@@ -265,13 +265,13 @@ public class GCMarsGuiLaunchController extends GuiContainer implements IDropboxC
 	}
 
 	@Override
-	public boolean canPlayerEdit(GCCoreGuiTextBox textBox, EntityPlayer player)
+	public boolean canPlayerEdit(GuiElementTextBox textBox, EntityPlayer player)
 	{
 		return player.getGameProfile().getName().equals(this.launchController.getOwnerName());
 	}
 
 	@Override
-	public void onTextChanged(GCCoreGuiTextBox textBox, String newText)
+	public void onTextChanged(GuiElementTextBox textBox, String newText)
 	{
 		if (textBox.equals(this.frequency))
 		{
@@ -286,7 +286,7 @@ public class GCMarsGuiLaunchController extends GuiContainer implements IDropboxC
 	}
 
 	@Override
-	public String getInitialText(GCCoreGuiTextBox textBox)
+	public String getInitialText(GuiElementTextBox textBox)
 	{
 		if (textBox.equals(this.frequency))
 		{
@@ -301,7 +301,7 @@ public class GCMarsGuiLaunchController extends GuiContainer implements IDropboxC
 	}
 
 	@Override
-	public int getTextColor(GCCoreGuiTextBox textBox)
+	public int getTextColor(GuiElementTextBox textBox)
 	{
 		if (textBox.equals(this.frequency))
 		{
@@ -316,7 +316,7 @@ public class GCMarsGuiLaunchController extends GuiContainer implements IDropboxC
 	}
 
 	@Override
-	public void onSelectionChanged(GCCoreGuiCheckbox checkbox, boolean newSelected)
+	public void onSelectionChanged(GuiElementCheckbox checkbox, boolean newSelected)
 	{
 		if (checkbox.equals(this.enablePadRemovalButton))
 		{
@@ -331,13 +331,13 @@ public class GCMarsGuiLaunchController extends GuiContainer implements IDropboxC
 	}
 
 	@Override
-	public boolean canPlayerEdit(GCCoreGuiCheckbox checkbox, EntityPlayer player)
+	public boolean canPlayerEdit(GuiElementCheckbox checkbox, EntityPlayer player)
 	{
 		return player.getGameProfile().getName().equals(this.launchController.getOwnerName());
 	}
 
 	@Override
-	public boolean getInitiallySelected(GCCoreGuiCheckbox checkbox)
+	public boolean getInitiallySelected(GuiElementCheckbox checkbox)
 	{
 		if (checkbox.equals(this.enablePadRemovalButton))
 		{

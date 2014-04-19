@@ -5,11 +5,9 @@ import java.util.HashMap;
 
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
-import micdoodle8.mods.galacticraft.core.GCLog;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryBuggyBench;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreInventoryRocketBench;
-import micdoodle8.mods.galacticraft.core.recipe.GCCoreNasaWorkbenchRecipe;
-import net.minecraft.init.Items;
+import micdoodle8.mods.galacticraft.core.inventory.InventoryBuggyBench;
+import micdoodle8.mods.galacticraft.core.inventory.InventoryRocketBench;
+import micdoodle8.mods.galacticraft.core.recipe.NasaWorkbenchRecipe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -25,7 +23,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
  */
 public class RecipeUtil
 {
-	public static ItemStack findMatchingBuggy(GCCoreInventoryBuggyBench benchStacks)
+	public static ItemStack findMatchingBuggy(InventoryBuggyBench benchStacks)
 	{
 		for (INasaWorkbenchRecipe recipe : GalacticraftRegistry.getBuggyBenchRecipes())
 		{
@@ -38,7 +36,7 @@ public class RecipeUtil
 		return null;
 	}
 
-	public static ItemStack findMatchingSpaceshipRecipe(GCCoreInventoryRocketBench inventoryRocketBench)
+	public static ItemStack findMatchingSpaceshipRecipe(InventoryRocketBench inventoryRocketBench)
 	{
 		for (INasaWorkbenchRecipe recipe : GalacticraftRegistry.getRocketT1Recipes())
 		{
@@ -108,11 +106,11 @@ public class RecipeUtil
 
 	public static void addRocketBenchRecipe(ItemStack result, HashMap<Integer, ItemStack> input)
 	{
-		GalacticraftRegistry.addT1RocketRecipe(new GCCoreNasaWorkbenchRecipe(result, input));
+		GalacticraftRegistry.addT1RocketRecipe(new NasaWorkbenchRecipe(result, input));
 	}
 
 	public static void addBuggyBenchRecipe(ItemStack result, HashMap<Integer, ItemStack> input)
 	{
-		GalacticraftRegistry.addMoonBuggyRecipe(new GCCoreNasaWorkbenchRecipe(result, input));
+		GalacticraftRegistry.addMoonBuggyRecipe(new NasaWorkbenchRecipe(result, input));
 	}
 }

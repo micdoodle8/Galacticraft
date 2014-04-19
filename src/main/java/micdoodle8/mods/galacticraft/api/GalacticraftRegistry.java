@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
-import micdoodle8.mods.galacticraft.api.world.ICelestialBody;
-import micdoodle8.mods.galacticraft.api.world.IGalaxy;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.api.world.SpaceStationType;
 import net.minecraft.item.ItemStack;
@@ -20,8 +18,6 @@ public class GalacticraftRegistry
 {
 	private static Map<Class<? extends WorldProvider>, ITeleportType> teleportTypeMap = new HashMap<Class<? extends WorldProvider>, ITeleportType>();
 	private static List<SpaceStationType> spaceStations = new ArrayList<SpaceStationType>();
-	private static List<ICelestialBody> celestialBodies = new ArrayList<ICelestialBody>();
-	private static List<IGalaxy> galaxies = new ArrayList<IGalaxy>();
 	private static List<INasaWorkbenchRecipe> rocketBenchT1Recipes = new ArrayList<INasaWorkbenchRecipe>();
 	private static List<INasaWorkbenchRecipe> buggyBenchRecipes = new ArrayList<INasaWorkbenchRecipe>();
 	private static List<INasaWorkbenchRecipe> rocketBenchT2Recipes = new ArrayList<INasaWorkbenchRecipe>();
@@ -44,35 +40,6 @@ public class GalacticraftRegistry
 		if (!GalacticraftRegistry.teleportTypeMap.containsKey(clazz))
 		{
 			GalacticraftRegistry.teleportTypeMap.put(clazz, type);
-		}
-	}
-
-	/**
-	 * Register a Galacticraft Body. See @IPlanet and @IMoon
-	 * 
-	 * @param body
-	 *            celestial body object. Must implement IPlanet or IMoon to
-	 *            function as intended
-	 */
-	public static void registerCelestialBody(ICelestialBody body)
-	{
-		if (!GalacticraftRegistry.celestialBodies.contains(body))
-		{
-			GalacticraftRegistry.celestialBodies.add(body);
-		}
-	}
-
-	/**
-	 * Register a new Galaxy. This is not fully implemented yet.
-	 * 
-	 * @param galaxy
-	 *            the Galaxy object to add to the list of all galaxies
-	 */
-	public static void registerGalaxy(IGalaxy galaxy)
-	{
-		if (!GalacticraftRegistry.galaxies.contains(galaxy))
-		{
-			GalacticraftRegistry.galaxies.add(galaxy);
 		}
 	}
 
@@ -159,16 +126,6 @@ public class GalacticraftRegistry
 	public static List<SpaceStationType> getSpaceStationData()
 	{
 		return GalacticraftRegistry.spaceStations;
-	}
-
-	public static List<ICelestialBody> getCelestialBodies()
-	{
-		return GalacticraftRegistry.celestialBodies;
-	}
-
-	public static List<IGalaxy> getGalaxyList()
-	{
-		return GalacticraftRegistry.galaxies;
 	}
 
 	public static List<INasaWorkbenchRecipe> getRocketT1Recipes()

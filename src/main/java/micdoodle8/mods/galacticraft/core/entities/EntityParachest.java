@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityParachest;
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityParaChest;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -146,12 +146,12 @@ public class EntityParachest extends Entity
 
 	private boolean placeChest(int x, int y, int z)
 	{
-		this.worldObj.setBlock(x, y, z, GCCoreBlocks.parachest, 0, 3);
+		this.worldObj.setBlock(x, y, z, GCBlocks.parachest, 0, 3);
 		final TileEntity te = this.worldObj.getTileEntity(x, y, z);
 
-		if (te instanceof GCCoreTileEntityParachest && this.cargo != null)
+		if (te instanceof TileEntityParaChest && this.cargo != null)
 		{
-			final GCCoreTileEntityParachest chest = (GCCoreTileEntityParachest) te;
+			final TileEntityParaChest chest = (TileEntityParaChest) te;
 
 			chest.chestContents = new ItemStack[this.cargo.length + 1];
 

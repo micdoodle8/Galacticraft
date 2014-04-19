@@ -7,10 +7,10 @@ import java.util.List;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLanderFlameFX;
-import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
+import micdoodle8.mods.galacticraft.core.client.fx.EntityFXLanderFlame;
+import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamicInventory;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
@@ -65,7 +65,7 @@ public class EntityLander extends InventoryEntity implements IInventorySettable,
 		this.isImmuneToFire = true;
 	}
 
-	public EntityLander(GCCorePlayerMP player)
+	public EntityLander(GCEntityPlayerMP player)
 	{
 		this(player.worldObj);
 
@@ -218,12 +218,12 @@ public class EntityLander extends InventoryEntity implements IInventorySettable,
 			{
 				if (FluidContainerRegistry.isEmptyContainer(this.containedItems[this.containedItems.length - 1]))
 				{
-					boolean isCanister = this.containedItems[this.containedItems.length - 1].isItemEqual(new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.oilCanister.getMaxDamage()));
-					final int amountToFill = Math.min(liquid.amount, isCanister ? GCCoreItems.fuelCanister.getMaxDamage() - 1 : FluidContainerRegistry.BUCKET_VOLUME);
+					boolean isCanister = this.containedItems[this.containedItems.length - 1].isItemEqual(new ItemStack(GCItems.oilCanister, 1, GCItems.oilCanister.getMaxDamage()));
+					final int amountToFill = Math.min(liquid.amount, isCanister ? GCItems.fuelCanister.getMaxDamage() - 1 : FluidContainerRegistry.BUCKET_VOLUME);
 
 					if (isCanister)
 					{
-						this.containedItems[this.containedItems.length - 1] = new ItemStack(GCCoreItems.fuelCanister, 1, GCCoreItems.fuelCanister.getMaxDamage() - amountToFill);
+						this.containedItems[this.containedItems.length - 1] = new ItemStack(GCItems.fuelCanister, 1, GCItems.fuelCanister.getMaxDamage() - amountToFill);
 					}
 					else
 					{
@@ -304,10 +304,10 @@ public class EntityLander extends InventoryEntity implements IInventorySettable,
 		Vector3 vec3 = new Vector3(this).translate(new Vector3(0.4 * Math.cos(angle3) * Math.cos(pitch), 0.5, 0.4 * Math.sin(angle3) * Math.cos(pitch)));
 		Vector3 vec4 = new Vector3(this).translate(new Vector3(0.4 * Math.cos(angle4) * Math.cos(pitch), 0.5, 0.4 * Math.sin(angle4) * Math.cos(pitch)));
 
-		this.spawnParticle(new GCCoreEntityLanderFlameFX(this.worldObj, vec1.x, vec1.y, vec1.z, x1, y1, z1));
-		this.spawnParticle(new GCCoreEntityLanderFlameFX(this.worldObj, vec2.x, vec2.y, vec2.z, x1, y1, z1));
-		this.spawnParticle(new GCCoreEntityLanderFlameFX(this.worldObj, vec3.x, vec3.y, vec3.z, x1, y1, z1));
-		this.spawnParticle(new GCCoreEntityLanderFlameFX(this.worldObj, vec4.x, vec4.y, vec4.z, x1, y1, z1));
+		this.spawnParticle(new EntityFXLanderFlame(this.worldObj, vec1.x, vec1.y, vec1.z, x1, y1, z1));
+		this.spawnParticle(new EntityFXLanderFlame(this.worldObj, vec2.x, vec2.y, vec2.z, x1, y1, z1));
+		this.spawnParticle(new EntityFXLanderFlame(this.worldObj, vec3.x, vec3.y, vec3.z, x1, y1, z1));
+		this.spawnParticle(new EntityFXLanderFlame(this.worldObj, vec4.x, vec4.y, vec4.z, x1, y1, z1));
 	}
 
 	@SideOnly(Side.CLIENT)

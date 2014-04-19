@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.network;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
@@ -29,12 +29,12 @@ public class ConnectionEvents
 	{
 		ChunkLoadingCallback.onPlayerLogin(event.player);
 		
-		if (event.player instanceof GCCorePlayerMP)
+		if (event.player instanceof GCEntityPlayerMP)
 		{
 			FMLLog.info("SENT TO PLAYER ON LOGIN");
 			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_PLANETS_LIST, WorldUtil.getPlanetList()), (EntityPlayerMP) event.player);
 			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_LIST, WorldUtil.getSpaceStationList()), (EntityPlayerMP) event.player);
-			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_CLIENT_ID, new Object[] { ((GCCorePlayerMP) event.player).getSpaceStationDimensionID() }), (EntityPlayerMP) event.player);
+			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_CLIENT_ID, new Object[] { ((GCEntityPlayerMP) event.player).getSpaceStationDimensionID() }), (EntityPlayerMP) event.player);
 		}
 	}
 	

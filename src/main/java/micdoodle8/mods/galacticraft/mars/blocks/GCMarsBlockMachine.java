@@ -4,8 +4,8 @@ import java.util.List;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockTile;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.world.IChunkLoader;
 import micdoodle8.mods.galacticraft.mars.GCMarsConfigManager;
@@ -39,7 +39,7 @@ import net.minecraftforge.common.util.ForgeDirection;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class GCMarsBlockMachine extends GCCoreBlockTile
+public class GCMarsBlockMachine extends BlockTileGC
 {
 	public static final int TERRAFORMER_METADATA = 0;
 	public static final int CRYOGENIC_CHAMBER_METADATA = 4;
@@ -54,7 +54,7 @@ public class GCMarsBlockMachine extends GCCoreBlockTile
 
 	public GCMarsBlockMachine()
 	{
-		super(GCCoreBlocks.machine);
+		super(GCBlocks.machine);
 	}
 
 	@Override
@@ -222,7 +222,7 @@ public class GCMarsBlockMachine extends GCCoreBlockTile
 				{
 					final Block id = world.getBlock(x + dX, y, z + dZ);
 
-					if (id == GCCoreBlocks.landingPadFull)
+					if (id == GCBlocks.landingPadFull)
 					{
 						world.markBlockForUpdate(x + dX, y, z + dZ);
 					}
@@ -351,7 +351,7 @@ public class GCMarsBlockMachine extends GCCoreBlockTile
 				{
 					final Block id = world.getBlock(x + dX, y, z + dZ);
 
-					if (id == GCCoreBlocks.landingPadFull)
+					if (id == GCBlocks.landingPadFull)
 					{
 						world.markBlockForUpdate(x + dX, y, z + dZ);
 					}

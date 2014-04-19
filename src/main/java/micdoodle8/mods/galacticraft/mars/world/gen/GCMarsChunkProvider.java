@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.core.perlin.generator.Gradient;
-import micdoodle8.mods.galacticraft.core.world.gen.GCCoreCraterSize;
-import micdoodle8.mods.galacticraft.core.world.gen.dungeon.GCCoreMapGenDungeon;
+import micdoodle8.mods.galacticraft.core.world.gen.EnumCraterSize;
+import micdoodle8.mods.galacticraft.core.world.gen.dungeon.MapGenDungeon;
 import micdoodle8.mods.galacticraft.mars.GCMarsConfigManager;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
 import micdoodle8.mods.galacticraft.mars.world.gen.dungeon.GCMarsRoomBoss;
@@ -65,7 +65,7 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 	private final GCMarsCavern caveGenerator = new GCMarsCavern();
 	private final GCMarsCaveGen caveGenerator2 = new GCMarsCaveGen();
 
-	private final GCCoreMapGenDungeon dungeonGenerator = new GCCoreMapGenDungeon(GCMarsBlocks.marsBlock, 7, 8, 16, 6);
+	private final MapGenDungeon dungeonGenerator = new MapGenDungeon(GCMarsBlocks.marsBlock, 7, 8, 16, 6);
 
 	{
 		this.dungeonGenerator.otherRooms.add(new GCMarsRoomEmpty(null, 0, 0, 0, ForgeDirection.UNKNOWN));
@@ -338,7 +338,7 @@ public class GCMarsChunkProvider extends ChunkProviderGenerate
 						if (Math.abs(this.randFromPoint(cx * 16 + x, (cz * 16 + z) * 1000)) < this.noiseGen5.getNoise(cx * 16 + x, cz * 16 + z) / GCMarsChunkProvider.CRATER_PROB)
 						{
 							final Random random = new Random(cx * 16 + x + (cz * 16 + z) * 5000);
-							final GCCoreCraterSize cSize = GCCoreCraterSize.sizeArray[random.nextInt(GCCoreCraterSize.sizeArray.length)];
+							final EnumCraterSize cSize = EnumCraterSize.sizeArray[random.nextInt(EnumCraterSize.sizeArray.length)];
 							final int size = random.nextInt(cSize.MAX_SIZE - cSize.MIN_SIZE) + cSize.MIN_SIZE + 15;
 							this.makeCrater(cx * 16 + x, cz * 16 + z, chunkX * 16, chunkZ * 16, size, chunkArray, metaArray);
 						}

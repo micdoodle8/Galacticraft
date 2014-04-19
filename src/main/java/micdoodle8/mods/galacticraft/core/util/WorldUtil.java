@@ -10,30 +10,29 @@ import java.util.Random;
 
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.entity.IWorldTransferCallback;
+import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
+import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.api.world.ICelestialBody;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
-import micdoodle8.mods.galacticraft.api.world.IMapObject;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.api.world.SpaceStationType;
-import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
-import micdoodle8.mods.galacticraft.core.GCLog;
+import micdoodle8.mods.galacticraft.api.world.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
-import micdoodle8.mods.galacticraft.core.dimension.GCCoreSpaceStationData;
-import micdoodle8.mods.galacticraft.core.dimension.GCCoreWorldProviderSpaceStation;
-import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
-import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerSP;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItemParachute;
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
+import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
+import micdoodle8.mods.galacticraft.core.items.ItemParaChute;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
-import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.item.EntityItem;
@@ -82,13 +81,13 @@ public class WorldUtil
 
 			if (entity instanceof EntityPlayer)
 			{
-				if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT && entity instanceof GCCorePlayerSP)
+				if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT && entity instanceof GCEntityClientPlayerMP)
 				{
-					return ((GCCorePlayerSP) entity).touchedGround ? 0.08D - customProvider.getGravity() : 0.08D;
+					return ((GCEntityClientPlayerMP) entity).touchedGround ? 0.08D - customProvider.getGravity() : 0.08D;
 				}
-				else if (entity instanceof GCCorePlayerMP)
+				else if (entity instanceof GCEntityPlayerMP)
 				{
-					return ((GCCorePlayerMP) entity).isTouchedGround() ? 0.08D - customProvider.getGravity() : 0.08D;
+					return ((GCEntityPlayerMP) entity).isTouchedGround() ? 0.08D - customProvider.getGravity() : 0.08D;
 				}
 				else
 				{
@@ -133,7 +132,7 @@ public class WorldUtil
 
 	public static Vector3 getWorldColor(World world)
 	{
-		if (world.provider instanceof GCMoonWorldProvider)
+		if (world.provider instanceof WorldProviderMoon)
 		{
 			float f1 = world.getCelestialAngle(1);
 			float f2 = 1.0F - (MathHelper.cos(f1 * (float) Math.PI * 2.0F) * 2.0F + 0.25F);
@@ -276,7 +275,7 @@ public class WorldUtil
 		return temp;
 	}
 
-	public static HashMap<String, Integer> getArrayOfPossibleDimensions(List<Integer> ids, GCCorePlayerMP playerBase)
+	public static HashMap<String, Integer> getArrayOfPossibleDimensions(List<Integer> ids, GCEntityPlayerMP playerBase)
 	{
 		final HashMap<String, Integer> map = new HashMap<String, Integer>();
 
@@ -290,9 +289,9 @@ public class WorldUtil
 				}
 				else if (playerBase != null && WorldProvider.getProviderForDimension(id) instanceof IOrbitDimension)
 				{
-					final GCCoreSpaceStationData data = GCCoreSpaceStationData.getStationData(playerBase.worldObj, id, playerBase);
+					final SpaceStationWorldData data = SpaceStationWorldData.getStationData(playerBase.worldObj, id, playerBase);
 
-					if (!GCCoreConfigManager.spaceStationsRequirePermission || data.getAllowedPlayers().contains(playerBase.getGameProfile().getName().toLowerCase()) || data.getAllowedPlayers().contains(playerBase.getGameProfile().getName()))
+					if (!ConfigManagerCore.spaceStationsRequirePermission || data.getAllowedPlayers().contains(playerBase.getGameProfile().getName().toLowerCase()) || data.getAllowedPlayers().contains(playerBase.getGameProfile().getName()))
 					{
 						map.put(WorldProvider.getProviderForDimension(id).getDimensionName() + "$" + data.getOwner() + "$" + data.getSpaceStationName(), WorldProvider.getProviderForDimension(id).dimensionId);
 					}
@@ -300,28 +299,30 @@ public class WorldUtil
 			}
 		}
 
-		for (int j = 0; j < GalacticraftRegistry.getCelestialBodies().size(); j++)
-		{
-			ICelestialBody object = GalacticraftRegistry.getCelestialBodies().get(j);
+		ArrayList<CelestialBody> cBodyList = new ArrayList<CelestialBody>();
+		cBodyList.addAll(GalaxyRegistry.getRegisteredPlanets().values());
+		cBodyList.addAll(GalaxyRegistry.getRegisteredMoons().values());
 
-			if (!object.isReachable() && object.addToList())
+		for (CelestialBody body : cBodyList)
+		{
+			if (!body.getReachable())
 			{
-				map.put(object.getName() + "*", 0);
+				map.put(body.getLocalizedName() + "*", body.getDimensionID());
 			}
 		}
 
 		return map;
 	}
 
-	public static List<String> getPlayersOnPlanet(IMapObject planet)
+	public static List<String> getPlayersOnPlanet(CelestialBody planet)
 	{
 		final List<String> list = new ArrayList<String>();
 
 		for (final WorldServer world : DimensionManager.getWorlds())
 		{
-			if (world != null && world.provider instanceof IGalacticraftWorldProvider)
+			if (world != null && world.provider instanceof WorldProviderSpace)
 			{
-				if (planet.getSlotRenderer().getPlanetName().toLowerCase().equals(world.provider.getDimensionName().toLowerCase()))
+				if (planet.getLocalizedName().equals(world.provider.getDimensionName()))
 				{
 					for (int j = 0; j < world.getLoadedEntityList().size(); j++)
 					{
@@ -377,16 +378,16 @@ public class WorldUtil
 
 		for (Integer registeredID : WorldUtil.registeredSpaceStations)
 		{
-			int id = Arrays.binarySearch(GCCoreConfigManager.staticLoadDimensions, registeredID.intValue());
+			int id = Arrays.binarySearch(ConfigManagerCore.staticLoadDimensions, registeredID.intValue());
 
 			if (id >= 0)
 			{
-				DimensionManager.registerDimension(registeredID.intValue(), GCCoreConfigManager.idDimensionOverworldOrbitStatic);
+				DimensionManager.registerDimension(registeredID.intValue(), ConfigManagerCore.idDimensionOverworldOrbitStatic);
 				FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(registeredID.intValue());
 			}
 			else
 			{
-				DimensionManager.registerDimension(registeredID.intValue(), GCCoreConfigManager.idDimensionOverworldOrbit);
+				DimensionManager.registerDimension(registeredID.intValue(), ConfigManagerCore.idDimensionOverworldOrbit);
 			}
 		}
 	}
@@ -459,31 +460,31 @@ public class WorldUtil
 		return finalArray;
 	}
 
-	public static GCCoreSpaceStationData bindSpaceStationToNewDimension(World world, GCCorePlayerMP player)
+	public static SpaceStationWorldData bindSpaceStationToNewDimension(World world, GCEntityPlayerMP player)
 	{
 		int newID = DimensionManager.getNextFreeDimId();
-		GCCoreSpaceStationData data = WorldUtil.createSpaceStation(world, newID, player);
+		SpaceStationWorldData data = WorldUtil.createSpaceStation(world, newID, player);
 		player.setSpaceStationDimensionID(newID);
 		GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_CLIENT_ID, new Object[] { newID }), player);
 		return data;
 	}
 
-	public static GCCoreSpaceStationData createSpaceStation(World world, int dimID, GCCorePlayerMP player)
+	public static SpaceStationWorldData createSpaceStation(World world, int dimID, GCEntityPlayerMP player)
 	{
 		WorldUtil.registeredSpaceStations.add(dimID);
-		int id = Arrays.binarySearch(GCCoreConfigManager.staticLoadDimensions, dimID);
+		int id = Arrays.binarySearch(ConfigManagerCore.staticLoadDimensions, dimID);
 
 		if (id >= 0)
 		{
-			DimensionManager.registerDimension(dimID, GCCoreConfigManager.idDimensionOverworldOrbitStatic);
+			DimensionManager.registerDimension(dimID, ConfigManagerCore.idDimensionOverworldOrbitStatic);
 		}
 		else
 		{
-			DimensionManager.registerDimension(dimID, GCCoreConfigManager.idDimensionOverworldOrbit);
+			DimensionManager.registerDimension(dimID, ConfigManagerCore.idDimensionOverworldOrbit);
 		}
 
 		GalacticraftCore.packetPipeline.sendToAll(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_LIST, WorldUtil.getSpaceStationList()));
-		final GCCoreSpaceStationData var3 = GCCoreSpaceStationData.getStationData(world, dimID, player);
+		final SpaceStationWorldData var3 = SpaceStationWorldData.getStationData(world, dimID, player);
 		return var3;
 	}
 
@@ -530,12 +531,12 @@ public class WorldUtil
 
 		boolean dimChange = entity.worldObj != worldNew;
 		entity.worldObj.updateEntityWithOptionalForce(entity, false);
-		GCCorePlayerMP player = null;
+		GCEntityPlayerMP player = null;
 		int oldDimID = entity.worldObj.provider.dimensionId;
 
-		if (entity instanceof GCCorePlayerMP)
+		if (entity instanceof GCEntityPlayerMP)
 		{
-			player = (GCCorePlayerMP) entity;
+			player = (GCEntityPlayerMP) entity;
 			player.closeScreen();
 
 			if (dimChange)
@@ -543,10 +544,10 @@ public class WorldUtil
 				player.dimension = dimID;
 				player.playerNetServerHandler.sendPacket(new S07PacketRespawn(player.dimension, player.worldObj.difficultySetting, player.worldObj.getWorldInfo().getTerrainType(), player.theItemInWorldManager.getGameType()));
 
-				if (worldNew.provider instanceof GCCoreWorldProviderSpaceStation && WorldUtil.registeredSpaceStations.contains(player))
+				if (worldNew.provider instanceof WorldProviderOrbit && WorldUtil.registeredSpaceStations.contains(player))
 				{
 					NBTTagCompound var2 = new NBTTagCompound();
-					GCCoreSpaceStationData.getStationData(worldNew, dimID, player).writeToNBT(var2);
+					SpaceStationWorldData.getStationData(worldNew, dimID, player).writeToNBT(var2);
 					GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_DATA, new Object[] { dimID, var2 }), player);
 				}
 
@@ -572,7 +573,7 @@ public class WorldUtil
 		{
 			if (entity instanceof EntityPlayerMP)
 			{
-				player = (GCCorePlayerMP) entity;
+				player = (GCEntityPlayerMP) entity;
 				entity.setLocationAndAngles(type.getPlayerSpawnLocation((WorldServer) entity.worldObj, player).x, type.getPlayerSpawnLocation((WorldServer) entity.worldObj, player).y, type.getPlayerSpawnLocation((WorldServer) entity.worldObj, player).z, entity.rotationYaw, entity.rotationPitch);
 				micdoodle8.mods.galacticraft.api.vector.Vector3 spawnPos = type.getPlayerSpawnLocation((WorldServer) entity.worldObj, (EntityPlayerMP) entity);
 				ChunkCoordIntPair pair = worldNew.getChunkFromChunkCoords(spawnPos.intX(), spawnPos.intZ()).getChunkCoordIntPair();
@@ -649,9 +650,9 @@ public class WorldUtil
 			}
 		}
 
-		if (entity instanceof GCCorePlayerMP)
+		if (entity instanceof GCEntityPlayerMP)
 		{
-			player = (GCCorePlayerMP) entity;
+			player = (GCEntityPlayerMP) entity;
 
 			if (dimChange)
 			{
@@ -665,11 +666,11 @@ public class WorldUtil
 
 		worldNew.updateEntityWithOptionalForce(entity, false);
 
-		if (entity instanceof GCCorePlayerMP)
+		if (entity instanceof GCEntityPlayerMP)
 		{
-			player = (GCCorePlayerMP) entity;
+			player = (GCEntityPlayerMP) entity;
 
-			if (ridingRocket == null && type.useParachute() && player.getExtendedInventory().getStackInSlot(4) != null && player.getExtendedInventory().getStackInSlot(4).getItem() instanceof GCCoreItemParachute)
+			if (ridingRocket == null && type.useParachute() && player.getExtendedInventory().getStackInSlot(4) != null && player.getExtendedInventory().getStackInSlot(4).getItem() instanceof ItemParaChute)
 			{
 				player.setUsingParachute(true);
 			}
@@ -679,9 +680,9 @@ public class WorldUtil
 			}
 		}
 
-		if (entity instanceof GCCorePlayerMP && dimChange)
+		if (entity instanceof GCEntityPlayerMP && dimChange)
 		{
-			player = (GCCorePlayerMP) entity;
+			player = (GCEntityPlayerMP) entity;
 			player.theItemInWorldManager.setWorld((WorldServer) worldNew);
 			player.mcServer.getConfigurationManager().updateTimeAndWeatherForPlayer(player, (WorldServer) worldNew);
 			player.mcServer.getConfigurationManager().syncPlayerInventory(player);
@@ -696,7 +697,7 @@ public class WorldUtil
 //			player.playerNetServerHandler.sendPacketToPlayer(new Packet43Experience(player.experience, player.experienceTotal, player.experienceLevel));
 		}
 
-		if (entity instanceof GCCorePlayerMP)
+		if (entity instanceof GCEntityPlayerMP)
 		{
 			micdoodle8.mods.galacticraft.api.vector.Vector3 spawnPos = null;
 
@@ -712,9 +713,9 @@ public class WorldUtil
 			}
 		}
 
-		if (entity instanceof GCCorePlayerMP)
+		if (entity instanceof GCEntityPlayerMP)
 		{
-			player = (GCCorePlayerMP) entity;
+			player = (GCEntityPlayerMP) entity;
 
 			if (player.getRocketStacks() != null && player.getRocketStacks().length > 0)
 			{
@@ -733,7 +734,7 @@ public class WorldUtil
 							}
 							else if (stack == player.getRocketStacks().length - 2)
 							{
-								player.getRocketStacks()[stack] = new ItemStack(GCCoreBlocks.landingPad, 9, 0);
+								player.getRocketStacks()[stack] = new ItemStack(GCBlocks.landingPad, 9, 0);
 							}
 						}
 					}

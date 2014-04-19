@@ -5,11 +5,11 @@ import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore.OrientCameraEvent;
-import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderPlayer.RotatePlayerEvent;
-import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
-import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerSP;
-import micdoodle8.mods.galacticraft.core.event.GCCoreEventWakePlayer;
-import micdoodle8.mods.galacticraft.core.event.GCCoreLandingPadRemovalEvent;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC.RotatePlayerEvent;
+import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
+import micdoodle8.mods.galacticraft.core.event.EventWakePlayer;
+import micdoodle8.mods.galacticraft.core.event.EventLandingPadRemoval;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlockMachine;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
 import micdoodle8.mods.galacticraft.mars.dimension.GCMarsWorldProvider;
@@ -88,7 +88,7 @@ public class GCMarsEvents
 	}
 
 	@SubscribeEvent
-	public void onPlayerWakeUp(GCCoreEventWakePlayer event)
+	public void onPlayerWakeUp(EventWakePlayer event)
 	{
 		ChunkCoordinates c = event.entityPlayer.playerLocation;
 		Block blockID = event.entityPlayer.worldObj.getBlock(c.posX, c.posY, c.posZ);
@@ -100,7 +100,7 @@ public class GCMarsEvents
 			{
 				event.result = EnumStatus.NOT_POSSIBLE_HERE;
 
-				if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT && event.bypassed && event.entityPlayer instanceof GCCorePlayerSP)
+				if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT && event.bypassed && event.entityPlayer instanceof GCEntityClientPlayerMP)
 				{
 					GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_WAKE_PLAYER, new Object[] {}));
 				}
@@ -110,7 +110,7 @@ public class GCMarsEvents
 				if (!event.entityPlayer.worldObj.isRemote)
 				{
 					event.entityPlayer.heal(5.0F);
-					((GCCorePlayerMP) event.entityPlayer).setCryogenicChamberCooldown(6000);
+					((GCEntityPlayerMP) event.entityPlayer).setCryogenicChamberCooldown(6000);
 
 					for (WorldServer worldServer : MinecraftServer.getServer().worldServers)
 					{
@@ -207,7 +207,7 @@ public class GCMarsEvents
 	}
 
 	@SubscribeEvent
-	public void onLandingPadRemoved(GCCoreLandingPadRemovalEvent event)
+	public void onLandingPadRemoved(EventLandingPadRemoval event)
 	{
 		TileEntity tile = event.world.getTileEntity(event.x, event.y, event.z);
 

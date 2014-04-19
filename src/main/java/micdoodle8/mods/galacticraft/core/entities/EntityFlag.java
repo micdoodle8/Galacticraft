@@ -4,7 +4,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
@@ -183,7 +183,7 @@ public class EntityFlag extends Entity
 
 	public void dropItemStack()
 	{
-		this.entityDropItem(new ItemStack(GCCoreItems.flag, 1, this.getType()), 0.0F);
+		this.entityDropItem(new ItemStack(GCItems.flag, 1, this.getType()), 0.0F);
 	}
 
 	@Override

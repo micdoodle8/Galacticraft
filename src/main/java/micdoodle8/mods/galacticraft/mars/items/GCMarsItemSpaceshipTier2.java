@@ -8,8 +8,8 @@ import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
-import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import micdoodle8.mods.galacticraft.mars.entities.EntityCargoRocket;
@@ -79,7 +79,7 @@ public class GCMarsItemSpaceshipTier2 extends Item implements IHoldableItem
 				{
 					final Block id = par3World.getBlock(par4 + i, par5, par6 + j);
 
-					if (id == GCCoreBlocks.landingPadFull)
+					if (id == GCBlocks.landingPadFull)
 					{
 						amountOfCorrectBlocks = 9;
 

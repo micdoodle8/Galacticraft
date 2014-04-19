@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.mars.blocks;
 import java.util.Iterator;
 import java.util.Random;
 
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityTreasureChest;
 import net.minecraft.block.Block;
@@ -323,7 +323,7 @@ public class GCMarsBlockT2TreasureChest extends BlockContainer implements ITileE
 	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block par5)
 	{
 		super.onNeighborBlockChange(par1World, par2, par3, par4, par5);
-		final GCCoreTileEntityTreasureChest var6 = (GCCoreTileEntityTreasureChest) par1World.getTileEntity(par2, par3, par4);
+		final TileEntityTreasureChest var6 = (TileEntityTreasureChest) par1World.getTileEntity(par2, par3, par4);
 
 		if (var6 != null)
 		{
@@ -334,7 +334,7 @@ public class GCMarsBlockT2TreasureChest extends BlockContainer implements ITileE
 	@Override
 	public void breakBlock(World par1World, int par2, int par3, int par4, Block par5, int par6)
 	{
-		final GCCoreTileEntityTreasureChest var7 = (GCCoreTileEntityTreasureChest) par1World.getTileEntity(par2, par3, par4);
+		final TileEntityTreasureChest var7 = (TileEntityTreasureChest) par1World.getTileEntity(par2, par3, par4);
 
 		if (var7 != null)
 		{
@@ -416,22 +416,22 @@ public class GCMarsBlockT2TreasureChest extends BlockContainer implements ITileE
 		{
 			if (par1World.getBlock(par2 - 1, par3, par4) == this)
 			{
-				var10 = new InventoryLargeChest("container.chestDouble", (GCCoreTileEntityTreasureChest) par1World.getTileEntity(par2 - 1, par3, par4), (IInventory) var10);
+				var10 = new InventoryLargeChest("container.chestDouble", (TileEntityTreasureChest) par1World.getTileEntity(par2 - 1, par3, par4), (IInventory) var10);
 			}
 
 			if (par1World.getBlock(par2 + 1, par3, par4) == this)
 			{
-				var10 = new InventoryLargeChest("container.chestDouble", (IInventory) var10, (GCCoreTileEntityTreasureChest) par1World.getTileEntity(par2 + 1, par3, par4));
+				var10 = new InventoryLargeChest("container.chestDouble", (IInventory) var10, (TileEntityTreasureChest) par1World.getTileEntity(par2 + 1, par3, par4));
 			}
 
 			if (par1World.getBlock(par2, par3, par4 - 1) == this)
 			{
-				var10 = new InventoryLargeChest("container.chestDouble", (GCCoreTileEntityTreasureChest) par1World.getTileEntity(par2, par3, par4 - 1), (IInventory) var10);
+				var10 = new InventoryLargeChest("container.chestDouble", (TileEntityTreasureChest) par1World.getTileEntity(par2, par3, par4 - 1), (IInventory) var10);
 			}
 
 			if (par1World.getBlock(par2, par3, par4 + 1) == this)
 			{
-				var10 = new InventoryLargeChest("container.chestDouble", (IInventory) var10, (GCCoreTileEntityTreasureChest) par1World.getTileEntity(par2, par3, par4 + 1));
+				var10 = new InventoryLargeChest("container.chestDouble", (IInventory) var10, (TileEntityTreasureChest) par1World.getTileEntity(par2, par3, par4 + 1));
 			}
 
 			if (par1World.isRemote)

@@ -8,7 +8,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDistributor;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenDistributor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -34,9 +34,9 @@ public class EntityBubble extends Entity implements IPacketReceiver, ISizeable
 	private float size;
 	protected long ticks = 0;
 
-	public GCCoreTileEntityOxygenDistributor distributor;
+	public TileEntityOxygenDistributor distributor;
 
-	public EntityBubble(World world, Vector3 mainBlockVec, GCCoreTileEntityOxygenDistributor distributor)
+	public EntityBubble(World world, Vector3 mainBlockVec, TileEntityOxygenDistributor distributor)
 	{
 		this(world);
 		this.posX = mainBlockVec.x + 0.5D;
@@ -108,9 +108,9 @@ public class EntityBubble extends Entity implements IPacketReceiver, ISizeable
 
 		final TileEntity tileAt = this.worldObj.getTileEntity(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1.0), MathHelper.floor_double(this.posZ));
 
-		if (tileAt instanceof GCCoreTileEntityOxygenDistributor)
+		if (tileAt instanceof TileEntityOxygenDistributor)
 		{
-			this.distributor = (GCCoreTileEntityOxygenDistributor) tileAt;
+			this.distributor = (TileEntityOxygenDistributor) tileAt;
 		}
 
 		if (this.distributor != null && (this.distributor.oxygenBubble == null || this.distributor.oxygenBubble.equals(this)) && !this.worldObj.isRemote)

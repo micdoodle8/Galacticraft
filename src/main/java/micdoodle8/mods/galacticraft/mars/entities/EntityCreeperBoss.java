@@ -6,14 +6,14 @@ import java.util.Random;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.EntityAIArrowAttack;
 import micdoodle8.mods.galacticraft.core.entities.IBoss;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityDungeonSpawner;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -57,7 +57,7 @@ import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 public class EntityCreeperBoss extends EntityMob implements IEntityBreathable, IBossDisplayData, IRangedAttackMob, IBoss
 {
 	protected long ticks = 0;
-	private GCCoreTileEntityDungeonSpawner spawner;
+	private TileEntityDungeonSpawner spawner;
 
 	public int headsRemaining = 3;
 	public Entity targetEntity;
@@ -123,7 +123,7 @@ public class EntityCreeperBoss extends EntityMob implements IEntityBreathable, I
 	protected void applyEntityAttributes()
 	{
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(200.0F * GCCoreConfigManager.dungeonBossHealthMod);
+		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(200.0F * ConfigManagerCore.dungeonBossHealthMod);
 		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.05F);
 	}
 
@@ -232,7 +232,7 @@ public class EntityCreeperBoss extends EntityMob implements IEntityBreathable, I
 
 			for (final TileEntity tile : (List<TileEntity>) this.worldObj.loadedTileEntityList)
 			{
-				if (tile instanceof GCCoreTileEntityTreasureChest)
+				if (tile instanceof TileEntityTreasureChest)
 				{
 					final double d3 = tile.xCoord + 0.5D - this.posX;
 					final double d4 = tile.yCoord + 0.5D - this.posY;
@@ -241,23 +241,23 @@ public class EntityCreeperBoss extends EntityMob implements IEntityBreathable, I
 
 					if (dSq < Math.pow(100.0D, 2))
 					{
-						if (!((GCCoreTileEntityTreasureChest) tile).locked)
+						if (!((TileEntityTreasureChest) tile).locked)
 						{
-							((GCCoreTileEntityTreasureChest) tile).locked = true;
+							((TileEntityTreasureChest) tile).locked = true;
 						}
 
-						for (int k = 0; k < ((GCCoreTileEntityTreasureChest) tile).getSizeInventory(); k++)
+						for (int k = 0; k < ((TileEntityTreasureChest) tile).getSizeInventory(); k++)
 						{
-							((GCCoreTileEntityTreasureChest) tile).setInventorySlotContents(k, null);
+							((TileEntityTreasureChest) tile).setInventorySlotContents(k, null);
 						}
 
 						ChestGenHooks info = ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST);
 
 						// Generate twice, since it's an extra special chest
-						WeightedRandomChestContent.generateChestContents(this.rand, info.getItems(this.rand), (GCCoreTileEntityTreasureChest) tile, info.getCount(this.rand));
-						WeightedRandomChestContent.generateChestContents(this.rand, info.getItems(this.rand), (GCCoreTileEntityTreasureChest) tile, info.getCount(this.rand));
+						WeightedRandomChestContent.generateChestContents(this.rand, info.getItems(this.rand), (TileEntityTreasureChest) tile, info.getCount(this.rand));
+						WeightedRandomChestContent.generateChestContents(this.rand, info.getItems(this.rand), (TileEntityTreasureChest) tile, info.getCount(this.rand));
 
-						((GCCoreTileEntityTreasureChest) tile).setInventorySlotContents(this.rand.nextInt(((GCCoreTileEntityTreasureChest) tile).getSizeInventory()), this.getGuaranteedLoot(this.rand));
+						((TileEntityTreasureChest) tile).setInventorySlotContents(this.rand.nextInt(((TileEntityTreasureChest) tile).getSizeInventory()), this.getGuaranteedLoot(this.rand));
 
 						break;
 					}
@@ -517,7 +517,7 @@ public class EntityCreeperBoss extends EntityMob implements IEntityBreathable, I
 	}
 
 	@Override
-	public void onBossSpawned(GCCoreTileEntityDungeonSpawner spawner)
+	public void onBossSpawned(TileEntityDungeonSpawner spawner)
 	{
 		this.spawner = spawner;
 	}

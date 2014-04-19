@@ -10,11 +10,11 @@ import java.util.Random;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.client.fx.GCCoreEntityLanderFlameFX;
+import micdoodle8.mods.galacticraft.core.client.fx.EntityFXLanderFlame;
 import micdoodle8.mods.galacticraft.core.entities.IScaleableFuelLevel;
-import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamicInventory;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
@@ -54,7 +54,7 @@ public class EntityLandingBalloons extends EntityAdvancedMotion implements IInve
 	float turnFactor = 0.2F;
 	public ItemStack[] chestContents = new ItemStack[0];
 	public int numUsingPlayers;
-	public GCCorePlayerMP playerSpawnedIn;
+	public GCEntityPlayerMP playerSpawnedIn;
 	private int groundHitCount;
 	private float rotationPitchSpeed;
 	private float rotationYawSpeed;
@@ -80,7 +80,7 @@ public class EntityLandingBalloons extends EntityAdvancedMotion implements IInve
 		this.setPosition(var2, var4 + this.yOffset, var6);
 	}
 
-	public EntityLandingBalloons(GCCorePlayerMP player)
+	public EntityLandingBalloons(GCEntityPlayerMP player)
 	{
 		this(player.worldObj, player.posX, player.posY, player.posZ);
 		this.playerSpawnedIn = player;
@@ -135,12 +135,12 @@ public class EntityLandingBalloons extends EntityAdvancedMotion implements IInve
 			{
 				if (FluidContainerRegistry.isEmptyContainer(this.chestContents[this.chestContents.length - 1]))
 				{
-					boolean isCanister = this.chestContents[this.chestContents.length - 1].isItemEqual(new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.oilCanister.getMaxDamage()));
-					final int amountToFill = Math.min(liquid.amount, isCanister ? GCCoreItems.fuelCanister.getMaxDamage() - 1 : FluidContainerRegistry.BUCKET_VOLUME);
+					boolean isCanister = this.chestContents[this.chestContents.length - 1].isItemEqual(new ItemStack(GCItems.oilCanister, 1, GCItems.oilCanister.getMaxDamage()));
+					final int amountToFill = Math.min(liquid.amount, isCanister ? GCItems.fuelCanister.getMaxDamage() - 1 : FluidContainerRegistry.BUCKET_VOLUME);
 
 					if (isCanister)
 					{
-						this.chestContents[this.chestContents.length - 1] = new ItemStack(GCCoreItems.fuelCanister, 1, GCCoreItems.fuelCanister.getMaxDamage() - amountToFill);
+						this.chestContents[this.chestContents.length - 1] = new ItemStack(GCItems.fuelCanister, 1, GCItems.fuelCanister.getMaxDamage() - amountToFill);
 					}
 					else
 					{
@@ -439,7 +439,7 @@ public class EntityLandingBalloons extends EntityAdvancedMotion implements IInve
 	@Override
 	public EntityFX getParticle(Random rand, double x, double y, double z, double motX, double motY, double motZ)
 	{
-		return new GCCoreEntityLanderFlameFX(this.worldObj, x, y, z, motX, motY, motZ);
+		return new EntityFXLanderFlame(this.worldObj, x, y, z, motX, motY, motZ);
 	}
 
 	@Override

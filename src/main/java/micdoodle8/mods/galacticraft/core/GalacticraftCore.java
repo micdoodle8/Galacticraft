@@ -4,30 +4,31 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
-import micdoodle8.mods.galacticraft.api.recipe.CircuitFabricatorRecipes;
-import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
+import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
+import micdoodle8.mods.galacticraft.api.galaxies.Galaxy;
+import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
+import micdoodle8.mods.galacticraft.api.galaxies.Moon;
+import micdoodle8.mods.galacticraft.api.galaxies.Planet;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
 import micdoodle8.mods.galacticraft.api.transmission.core.grid.ChunkPowerHandler;
-import micdoodle8.mods.galacticraft.api.world.ICelestialBody;
-import micdoodle8.mods.galacticraft.api.world.IGalaxy;
-import micdoodle8.mods.galacticraft.api.world.IMoon;
-import micdoodle8.mods.galacticraft.api.world.IPlanet;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockFluid;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
-import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiHandler;
-import micdoodle8.mods.galacticraft.core.command.GCCoreCommandGCInv;
-import micdoodle8.mods.galacticraft.core.command.GCCoreCommandKeepDim;
-import micdoodle8.mods.galacticraft.core.command.GCCoreCommandPlanetTeleport;
-import micdoodle8.mods.galacticraft.core.command.GCCoreCommandSpaceStationAddOwner;
-import micdoodle8.mods.galacticraft.core.command.GCCoreCommandSpaceStationRemoveOwner;
-import micdoodle8.mods.galacticraft.core.dimension.GCCoreOrbitTeleportType;
-import micdoodle8.mods.galacticraft.core.dimension.GCCoreOverworldTeleportType;
-import micdoodle8.mods.galacticraft.core.dimension.GCCoreWorldProviderSpaceStation;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.blocks.BlockFluidGC;
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.client.gui.GuiHandler;
+import micdoodle8.mods.galacticraft.core.command.CommandGCInv;
+import micdoodle8.mods.galacticraft.core.command.CommandKeepDim;
+import micdoodle8.mods.galacticraft.core.command.CommandPlanetTeleport;
+import micdoodle8.mods.galacticraft.core.command.CommandSpaceStationAddOwner;
+import micdoodle8.mods.galacticraft.core.command.CommandSpaceStationRemoveOwner;
+import micdoodle8.mods.galacticraft.core.dimension.TeleportTypeMoon;
+import micdoodle8.mods.galacticraft.core.dimension.TeleportTypeOrbit;
+import micdoodle8.mods.galacticraft.core.dimension.TeleportTypeOverworld;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.entities.EntityAlienVillager;
 import micdoodle8.mods.galacticraft.core.entities.EntityBubble;
 import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
@@ -38,67 +39,68 @@ import micdoodle8.mods.galacticraft.core.entities.EntityMeteorChunk;
 import micdoodle8.mods.galacticraft.core.entities.EntityParachest;
 import micdoodle8.mods.galacticraft.core.entities.EntitySkeletonBoss;
 import micdoodle8.mods.galacticraft.core.entities.EntityTier1Rocket;
-import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
-import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerSP;
-import micdoodle8.mods.galacticraft.core.event.GCCoreEvents;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItemBasic;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItemBlock;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
+import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
+import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.core.items.ItemBlockGC;
 import micdoodle8.mods.galacticraft.core.network.PacketPipeline;
-import micdoodle8.mods.galacticraft.core.recipe.GCCoreRecipeManager;
-import micdoodle8.mods.galacticraft.core.schematic.GCCoreSchematicAdd;
-import micdoodle8.mods.galacticraft.core.schematic.GCCoreSchematicMoonBuggy;
-import micdoodle8.mods.galacticraft.core.schematic.GCCoreSchematicRocketT1;
-import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerServer;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAdvancedCraftingTable;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAirLock;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAirLockController;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityAluminumWire;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBuggyFueler;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBuggyFuelerSingle;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoLoader;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCargoUnloader;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCircuitFabricator;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCoalGenerator;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityDungeonSpawner;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectricFurnace;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectricIngotCompressor;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityEnergyStorageModule;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFallenMeteor;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityIngotCompressor;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPadSingle;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCollector;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCompressor;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDecompressor;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDetector;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenDistributor;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenPipe;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenSealer;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenStorageModule;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityParachest;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityRefinery;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntitySolar;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntitySpaceStationBase;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
+import micdoodle8.mods.galacticraft.core.proxy.CommonProxyCore;
+import micdoodle8.mods.galacticraft.core.recipe.RecipeManagerGC;
+import micdoodle8.mods.galacticraft.core.schematic.SchematicAdd;
+import micdoodle8.mods.galacticraft.core.schematic.SchematicMoonBuggy;
+import micdoodle8.mods.galacticraft.core.schematic.SchematicRocketT1;
+import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityAirLock;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityAirLockController;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityAluminumWire;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityBuggyFueler;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityBuggyFuelerSingle;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityCargoLoader;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityCargoUnloader;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityCircuitFabricator;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityCoalGenerator;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricFurnace;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricIngotCompressor;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityEnergyStorageModule;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityFallenMeteor;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityFuelLoader;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityIngotCompressor;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPadSingle;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityNasaWorkbench;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenCollector;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenCompressor;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenDecompressor;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenDetector;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenDistributor;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenPipe;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenSealer;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenStorageModule;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityParaChest;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityRefinery;
+import micdoodle8.mods.galacticraft.core.tile.TileEntitySolar;
+import micdoodle8.mods.galacticraft.core.tile.TileEntitySpaceStationBase;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
+import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.CreativeTabGC;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.ThreadRequirementMissing;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
-import micdoodle8.mods.galacticraft.core.world.gen.GCCoreOverworldGenerator;
-import micdoodle8.mods.galacticraft.moon.GalacticraftMoon;
-import micdoodle8.mods.galacticraft.moon.dimension.GCMoonWorldProvider;
+import micdoodle8.mods.galacticraft.core.world.gen.OverworldGenerator;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldProviderSurface;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ForgeChunkManager;
@@ -108,7 +110,6 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -157,17 +158,16 @@ public class GalacticraftCore
 
 	public static PacketPipeline packetPipeline;
 	
-	private static GCCoreThreadRequirementMissing missingRequirementThread;
+	private static ThreadRequirementMissing missingRequirementThread;
 
-	public static Map<String, GCCorePlayerSP> playersClient = new HashMap<String, GCCorePlayerSP>();
-	public static Map<String, GCCorePlayerMP> playersServer = new HashMap<String, GCCorePlayerMP>();
-
-	public static List<IPlanet> mapPlanets = new ArrayList<IPlanet>();
-	public static HashMap<IPlanet, ArrayList<IMoon>> mapMoons = new HashMap<IPlanet, ArrayList<IMoon>>();
+	public static Map<String, GCEntityClientPlayerMP> playersClient = new HashMap<String, GCEntityClientPlayerMP>();
+	public static Map<String, GCEntityPlayerMP> playersServer = new HashMap<String, GCEntityPlayerMP>();
 
 	public static CreativeTabs galacticraftTab;
 
-	public static final IGalaxy galaxyMilkyWay = new GCCoreGalaxyBlockyWay();
+	public static Galaxy galaxyBlockyWay;
+	public static Planet planetOverworld;
+	public static Moon moonMoon;
 
 	public static final String FILE_PATH = "/micdoodle8/mods/galacticraft/core/";
 	public static final String CLIENT_PATH = "client/";
@@ -183,9 +183,6 @@ public class GalacticraftCore
 
 	public static boolean setSpaceStationRecipe = false;
 
-	public static GCCorePlanetOverworld overworld;
-	public static GCCorePlanetSun sun;
-
 	public static Fluid gcFluidOil;
 	public static Fluid gcFluidFuel;
 	public static Fluid fluidOil;
@@ -197,11 +194,10 @@ public class GalacticraftCore
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		GalacticraftMoon.preLoad(event);
-		MinecraftForge.EVENT_BUS.register(new GCCoreEvents());
+		MinecraftForge.EVENT_BUS.register(new EventHandlerGC());
 		GalacticraftCore.proxy.preInit(event);
 
-		GCCoreConfigManager.setDefaultValues(new File(event.getModConfigurationDirectory(), GalacticraftCore.CONFIG_FILE));
+		ConfigManagerCore.setDefaultValues(new File(event.getModConfigurationDirectory(), GalacticraftCore.CONFIG_FILE));
 		NetworkConfigHandler.setDefaultValues(new File(event.getModConfigurationDirectory(), GalacticraftCore.POWER_CONFIG_FILE));
 		ChunkLoadingCallback.loadConfig(new File(event.getModConfigurationDirectory(), GalacticraftCore.CHUNKLOADER_CONFIG_FILE));
 
@@ -214,174 +210,128 @@ public class GalacticraftCore
 
 		if (GalacticraftCore.fluidOil.getBlock() == null)
 		{
-			GCCoreBlocks.crudeOilStill = new GCCoreBlockFluid(GalacticraftCore.fluidOil, "oil");
-			((GCCoreBlockFluid) GCCoreBlocks.crudeOilStill).setQuantaPerBlock(3);
-			GCCoreBlocks.crudeOilStill.setBlockName("crudeOilStill");
-			GameRegistry.registerBlock(GCCoreBlocks.crudeOilStill, GCCoreItemBlock.class, GCCoreBlocks.crudeOilStill.getUnlocalizedName(), GalacticraftCore.MODID);
-			GalacticraftCore.fluidOil.setBlock(GCCoreBlocks.crudeOilStill);
+			GCBlocks.crudeOilStill = new BlockFluidGC(GalacticraftCore.fluidOil, "oil");
+			((BlockFluidGC) GCBlocks.crudeOilStill).setQuantaPerBlock(3);
+			GCBlocks.crudeOilStill.setBlockName("crudeOilStill");
+			GameRegistry.registerBlock(GCBlocks.crudeOilStill, ItemBlockGC.class, GCBlocks.crudeOilStill.getUnlocalizedName(), GalacticraftCore.MODID);
+			GalacticraftCore.fluidOil.setBlock(GCBlocks.crudeOilStill);
 		}
 		else
 		{
-			GCCoreBlocks.crudeOilStill = GalacticraftCore.fluidOil.getBlock();
+			GCBlocks.crudeOilStill = GalacticraftCore.fluidOil.getBlock();
 		}
 
 		if (GalacticraftCore.fluidFuel.getBlock() == null)
 		{
-			GCCoreBlocks.fuelStill = new GCCoreBlockFluid(GalacticraftCore.fluidFuel, "fuel");
-			((GCCoreBlockFluid) GCCoreBlocks.fuelStill).setQuantaPerBlock(6);
-			GCCoreBlocks.fuelStill.setBlockName("fuel");
-			GameRegistry.registerBlock(GCCoreBlocks.fuelStill, GCCoreItemBlock.class, GCCoreBlocks.fuelStill.getUnlocalizedName(), GalacticraftCore.MODID);
-			GalacticraftCore.fluidFuel.setBlock(GCCoreBlocks.fuelStill);
+			GCBlocks.fuelStill = new BlockFluidGC(GalacticraftCore.fluidFuel, "fuel");
+			((BlockFluidGC) GCBlocks.fuelStill).setQuantaPerBlock(6);
+			GCBlocks.fuelStill.setBlockName("fuel");
+			GameRegistry.registerBlock(GCBlocks.fuelStill, ItemBlockGC.class, GCBlocks.fuelStill.getUnlocalizedName(), GalacticraftCore.MODID);
+			GalacticraftCore.fluidFuel.setBlock(GCBlocks.fuelStill);
 		}
 		else
 		{
-			GCCoreBlocks.fuelStill = GalacticraftCore.fluidFuel.getBlock();
+			GCBlocks.fuelStill = GalacticraftCore.fluidFuel.getBlock();
 		}
 
-		GCCoreBlocks.initBlocks();
-		GCCoreItems.initItems();
+		GCBlocks.initBlocks();
+		GCItems.initItems();
 	}
 
 	@EventHandler
 	public void init(FMLInitializationEvent event)
 	{
-		GalacticraftCore.galacticraftTab = new GCCoreCreativeTab(CreativeTabs.getNextID(), GalacticraftCore.CHANNEL, GCCoreItems.rocketTier1, 0);
-		GalacticraftCore.overworld = new GCCorePlanetOverworld();
-		GalacticraftRegistry.registerCelestialBody(GalacticraftCore.overworld);
-		GalacticraftCore.sun = new GCCorePlanetSun();
-		GalacticraftRegistry.registerCelestialBody(GalacticraftCore.sun);
-		GalacticraftRegistry.registerGalaxy(GalacticraftCore.galaxyMilkyWay);
-		DimensionManager.registerProviderType(GCCoreConfigManager.idDimensionOverworldOrbit, GCCoreWorldProviderSpaceStation.class, false);
-		DimensionManager.registerProviderType(GCCoreConfigManager.idDimensionOverworldOrbitStatic, GCCoreWorldProviderSpaceStation.class, true);
+		GalacticraftCore.galacticraftTab = new CreativeTabGC(CreativeTabs.getNextID(), GalacticraftCore.CHANNEL, GCItems.rocketTier1, 0);
 		GalacticraftCore.proxy.init(event);
-		GalacticraftRegistry.registerTeleportType(WorldProviderSurface.class, new GCCoreOverworldTeleportType());
-		GalacticraftRegistry.registerTeleportType(GCCoreWorldProviderSpaceStation.class, new GCCoreOrbitTeleportType());
 
 		GalacticraftCore.packetPipeline = new PacketPipeline();
 		GalacticraftCore.packetPipeline.initalise();
+		
+		GalacticraftCore.galaxyBlockyWay = new Galaxy("blockyWay").setMapPosition(new Vector3(0.0F, 0.0F));
+		GalacticraftCore.planetOverworld = (Planet) new Planet("overworld").setParentGalaxy(GalacticraftCore.galaxyBlockyWay).setRingColorRGB(0.1F, 0.9F, 0.6F).setPhaseShift(0.75F);
+		GalacticraftCore.planetOverworld.setPlanetIcon(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/planets/overworld.png"));
+		GalacticraftCore.planetOverworld.setDimensionInfo(0, WorldProvider.class, false, true);
+		GalacticraftCore.moonMoon = (Moon) new Moon("moon").setParentPlanet(GalacticraftCore.planetOverworld).setRelativeSize(0.2667F).setRelativeDistanceFromCenter(40F).setRelativeOrbitTime(0.01F);
+		GalacticraftCore.moonMoon.setDimensionInfo(ConfigManagerCore.idDimensionMoon, WorldProviderMoon.class);
+		GalacticraftCore.moonMoon.setPlanetIcon(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/planets/moon.png"));
 
 		ForgeChunkManager.setForcedChunkLoadingCallback(GalacticraftCore.instance, new ChunkLoadingCallback());
-//		GameRegistry.registerPlayerTracker(new PlayerTracker()); TODO
 
-		GalacticraftMoon.load(event);
-
-		for (int i = GCCoreItems.fuelCanister.getMaxDamage() - 1; i > 0; i--)
+		for (int i = GCItems.fuelCanister.getMaxDamage() - 1; i > 0; i--)
 		{
-			FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(GalacticraftCore.fluidFuel, GCCoreItems.fuelCanister.getMaxDamage() - i), new ItemStack(GCCoreItems.fuelCanister, 1, i), new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.fuelCanister.getMaxDamage())));
+			FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(GalacticraftCore.fluidFuel, GCItems.fuelCanister.getMaxDamage() - i), new ItemStack(GCItems.fuelCanister, 1, i), new ItemStack(GCItems.oilCanister, 1, GCItems.fuelCanister.getMaxDamage())));
 		}
 
-		for (int i = GCCoreItems.oilCanister.getMaxDamage() - 1; i > 0; i--)
+		for (int i = GCItems.oilCanister.getMaxDamage() - 1; i > 0; i--)
 		{
-			FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(GalacticraftCore.fluidOil, GCCoreItems.oilCanister.getMaxDamage() - i), new ItemStack(GCCoreItems.oilCanister, 1, i), new ItemStack(GCCoreItems.oilCanister, 1, GCCoreItems.fuelCanister.getMaxDamage())));
+			FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(GalacticraftCore.fluidOil, GCItems.oilCanister.getMaxDamage() - i), new ItemStack(GCItems.oilCanister, 1, i), new ItemStack(GCItems.oilCanister, 1, GCItems.fuelCanister.getMaxDamage())));
 		}
 
-		SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicRocketT1());
-		SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicMoonBuggy());
-		SchematicRegistry.registerSchematicRecipe(new GCCoreSchematicAdd());
+		SchematicRegistry.registerSchematicRecipe(new SchematicRocketT1());
+		SchematicRegistry.registerSchematicRecipe(new SchematicMoonBuggy());
+		SchematicRegistry.registerSchematicRecipe(new SchematicAdd());
 		ChunkPowerHandler.initiate();
 		NetworkConfigHandler.initGas();
 
 		this.registerCreatures();
 		this.registerOtherEntities();
-		GalacticraftRegistry.registerRocketGui(GCCoreWorldProviderSpaceStation.class, new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/overworldRocketGui.png"));
+		this.registerTileEntities();
+
+		GalaxyRegistry.registerGalaxy(GalacticraftCore.galaxyBlockyWay);
+		GalaxyRegistry.registerPlanet(GalacticraftCore.planetOverworld);
+		GalaxyRegistry.registerMoon(GalacticraftCore.moonMoon);
+		GalacticraftRegistry.registerTeleportType(WorldProviderSurface.class, new TeleportTypeOverworld());
+		GalacticraftRegistry.registerTeleportType(WorldProviderOrbit.class, new TeleportTypeOrbit());
+		GalacticraftRegistry.registerTeleportType(WorldProviderMoon.class, new TeleportTypeMoon());
+		GalacticraftRegistry.registerRocketGui(WorldProviderOrbit.class, new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/overworldRocketGui.png"));
 		GalacticraftRegistry.registerRocketGui(WorldProviderSurface.class, new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/overworldRocketGui.png"));
-		GalacticraftRegistry.registerRocketGui(GCMoonWorldProvider.class, new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/moonRocketGui.png"));
-		GalacticraftRegistry.addDungeonLoot(1, new ItemStack(GCCoreItems.schematic, 1, 0));
-		GalacticraftRegistry.addDungeonLoot(1, new ItemStack(GCCoreItems.schematic, 1, 1));
+		GalacticraftRegistry.registerRocketGui(WorldProviderMoon.class, new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/moonRocketGui.png"));
+		GalacticraftRegistry.addDungeonLoot(1, new ItemStack(GCItems.schematic, 1, 0));
+		GalacticraftRegistry.addDungeonLoot(1, new ItemStack(GCItems.schematic, 1, 1));
 
-		if (GCCoreConfigManager.enableCopperOreGen)
+		if (ConfigManagerCore.enableCopperOreGen)
 		{
-			GameRegistry.registerWorldGenerator(new GCCoreOverworldGenerator(GCCoreBlocks.basicBlock, 5, 24, 0, 75, 7), 4);
+			GameRegistry.registerWorldGenerator(new OverworldGenerator(GCBlocks.basicBlock, 5, 24, 0, 75, 7), 4);
 		}
 
-		if (GCCoreConfigManager.enableTinOreGen)
+		if (ConfigManagerCore.enableTinOreGen)
 		{
-			GameRegistry.registerWorldGenerator(new GCCoreOverworldGenerator(GCCoreBlocks.basicBlock, 6, 22, 0, 60, 7), 4);
+			GameRegistry.registerWorldGenerator(new OverworldGenerator(GCBlocks.basicBlock, 6, 22, 0, 60, 7), 4);
 		}
 
-		if (GCCoreConfigManager.enableAluminumOreGen)
+		if (ConfigManagerCore.enableAluminumOreGen)
 		{
-			GameRegistry.registerWorldGenerator(new GCCoreOverworldGenerator(GCCoreBlocks.basicBlock, 7, 18, 0, 45, 7), 4);
+			GameRegistry.registerWorldGenerator(new OverworldGenerator(GCBlocks.basicBlock, 7, 18, 0, 45, 7), 4);
 		}
 
-		if (GCCoreConfigManager.enableSiliconOreGen)
+		if (ConfigManagerCore.enableSiliconOreGen)
 		{
-			GameRegistry.registerWorldGenerator(new GCCoreOverworldGenerator(GCCoreBlocks.basicBlock, 8, 3, 0, 25, 7), 4);
+			GameRegistry.registerWorldGenerator(new OverworldGenerator(GCBlocks.basicBlock, 8, 3, 0, 25, 7), 4);
 		}
 	}
 
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event)
 	{
-		for (ICelestialBody celestialBody : GalacticraftRegistry.getCelestialBodies())
-		{
-			if (celestialBody.autoRegister())
-			{
-				int id = Arrays.binarySearch(GCCoreConfigManager.staticLoadDimensions, celestialBody.getDimensionID());
-				DimensionManager.registerProviderType(celestialBody.getDimensionID(), celestialBody.getWorldProvider(), celestialBody.forceStaticLoad() || id < 0);
-			}
-		}
-
-		GCCoreCompatibilityManager.checkForCompatibleMods();
-		this.registerTileEntities();
-		GCCoreRecipeManager.loadRecipes();
-		NetworkRegistry.INSTANCE.registerGuiHandler(GalacticraftCore.instance, new GCCoreGuiHandler());
 		GalacticraftCore.proxy.postInit(event);
-		GalacticraftCore.proxy.registerRenderInformation();
-
-		for (int i = 3; i < 8; i++)
+		GalacticraftCore.packetPipeline.postInitialise();
+		
+		ArrayList<CelestialBody> cBodyList = new ArrayList<CelestialBody>();
+		cBodyList.addAll(GalaxyRegistry.getRegisteredPlanets().values());
+		cBodyList.addAll(GalaxyRegistry.getRegisteredMoons().values());
+		
+		for (CelestialBody body : cBodyList)
 		{
-			if (GCCoreItemBasic.names[i].contains("ingot"))
+			if (body.shouldAutoRegister())
 			{
-				for (ItemStack stack : OreDictionary.getOres(GCCoreItemBasic.names[i]))
-				{
-					CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, i + 3), stack, stack);
-				}
+				int id = Arrays.binarySearch(ConfigManagerCore.staticLoadDimensions, body.getDimensionID());
+				DimensionManager.registerProviderType(body.getDimensionID(), body.getWorldProvider(), body.getForceStaticLoad() || id < 0);
 			}
 		}
 
-		// Support for the other spelling of Aluminum
-		if (OreDictionary.getOres("ingotAluminium").size() > 0 || OreDictionary.getOres("ingotNaturalAluminum").size() > 0)
-		{
-			List<ItemStack> aluminumIngotList = new ArrayList<ItemStack>();
-			aluminumIngotList.addAll(OreDictionary.getOres("ingotAluminium"));
-			aluminumIngotList.addAll(OreDictionary.getOres("ingotNaturalAluminum"));
-
-			for (ItemStack stack : aluminumIngotList)
-			{
-				CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, 8), stack, stack);
-			}
-		}
-
-		if (OreDictionary.getOres("ingotBronze").size() > 0)
-		{
-			for (ItemStack stack : OreDictionary.getOres("ingotBronze"))
-			{
-				CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, 10), stack, stack);
-			}
-		}
-
-		if (OreDictionary.getOres("ingotSteel").size() > 0)
-		{
-			for (ItemStack stack : OreDictionary.getOres("ingotSteel"))
-			{
-				CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, 9), stack, stack);
-			}
-		}
-
-		CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, 9), Items.coal, new ItemStack(GCCoreItems.basicItem, 1, 11), Items.coal);
-		CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, 10), new ItemStack(GCCoreItems.basicItem, 1, 6), new ItemStack(GCCoreItems.basicItem, 1, 7));
-
-		CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, 11), Items.iron_ingot, Items.iron_ingot);
-		CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.meteoricIronIngot, 1, 1), new ItemStack(GCCoreItems.meteoricIronIngot, 1, 0));
-
-		CompressorRecipes.addRecipe(new ItemStack(GCCoreItems.heavyPlatingTier1, 1, 0), "XYZ", "XYZ", 'X', new ItemStack(GCCoreItems.basicItem, 1, 9), 'Y', new ItemStack(GCCoreItems.basicItem, 1, 8), 'Z', new ItemStack(GCCoreItems.basicItem, 1, 10));
-
-		CircuitFabricatorRecipes.addRecipe(new ItemStack(GCCoreItems.basicItem, 9, 12), new ItemStack[] { new ItemStack(Items.diamond), new ItemStack(GCCoreItems.basicItem, 1, 2), new ItemStack(GCCoreItems.basicItem, 1, 2), new ItemStack(Items.redstone), new ItemStack(Items.dye, 1, 4) });
-
-		CircuitFabricatorRecipes.addRecipe(new ItemStack(GCCoreItems.basicItem, 3, 13), new ItemStack[] { new ItemStack(Items.diamond), new ItemStack(GCCoreItems.basicItem, 1, 2), new ItemStack(GCCoreItems.basicItem, 1, 2), new ItemStack(Items.redstone), new ItemStack(Blocks.redstone_torch) });
-
-		CircuitFabricatorRecipes.addRecipe(new ItemStack(GCCoreItems.basicItem, 1, 14), new ItemStack[] { new ItemStack(Items.diamond), new ItemStack(GCCoreItems.basicItem, 1, 2), new ItemStack(GCCoreItems.basicItem, 1, 2), new ItemStack(Items.redstone), new ItemStack(Items.repeater) });
+		CompatibilityManager.checkForCompatibleMods();
+		RecipeManagerGC.loadRecipes();
+		NetworkRegistry.INSTANCE.registerGuiHandler(GalacticraftCore.instance, new GuiHandler());
 	}
 
 	@EventHandler
@@ -389,34 +339,38 @@ public class GalacticraftCore
 	{
 		if (GalacticraftCore.missingRequirementThread == null)
 		{
-			GalacticraftCore.missingRequirementThread = new GCCoreThreadRequirementMissing(FMLCommonHandler.instance().getEffectiveSide());
+			GalacticraftCore.missingRequirementThread = new ThreadRequirementMissing(FMLCommonHandler.instance().getEffectiveSide());
 			GalacticraftCore.missingRequirementThread.start();
 		}
 
 		GCCoreUtil.checkVersion(Side.SERVER);
-		FMLCommonHandler.instance().bus().register(new GCCoreTickHandlerServer());
+		FMLCommonHandler.instance().bus().register(new TickHandlerServer());
 	}
 
 	@EventHandler
 	public void serverStarting(FMLServerStartingEvent event)
 	{
-		event.registerServerCommand(new GCCoreCommandSpaceStationAddOwner());
-		event.registerServerCommand(new GCCoreCommandSpaceStationRemoveOwner());
-		event.registerServerCommand(new GCCoreCommandPlanetTeleport());
-		event.registerServerCommand(new GCCoreCommandKeepDim());
-		event.registerServerCommand(new GCCoreCommandGCInv());
+		event.registerServerCommand(new CommandSpaceStationAddOwner());
+		event.registerServerCommand(new CommandSpaceStationRemoveOwner());
+		event.registerServerCommand(new CommandPlanetTeleport());
+		event.registerServerCommand(new CommandKeepDim());
+		event.registerServerCommand(new CommandGCInv());
 
 		WorldUtil.registerSpaceStations(event.getServer().worldServerForDimension(0).getSaveHandler().getMapFileFromName("dummy").getParentFile());
 
-		for (ICelestialBody celestialBody : GalacticraftRegistry.getCelestialBodies())
+		ArrayList<CelestialBody> cBodyList = new ArrayList<CelestialBody>();
+		cBodyList.addAll(GalaxyRegistry.getRegisteredPlanets().values());
+		cBodyList.addAll(GalaxyRegistry.getRegisteredMoons().values());
+		
+		for (CelestialBody body : cBodyList)
 		{
-			if (celestialBody.autoRegister())
+			if (body.shouldAutoRegister())
 			{
-				int id = Arrays.binarySearch(GCCoreConfigManager.staticLoadDimensions, celestialBody.getDimensionID());
-				WorldUtil.registerPlanet(celestialBody.getDimensionID(), true);
+				int id = Arrays.binarySearch(ConfigManagerCore.staticLoadDimensions, body.getDimensionID());
+				WorldUtil.registerPlanet(body.getDimensionID(), true);
 				if (id >= 0)
 				{
-					FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(celestialBody.getDimensionID());
+					FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(body.getDimensionID());
 				}
 			}
 		}
@@ -431,62 +385,62 @@ public class GalacticraftCore
 
 	public void registerTileEntities()
 	{
-		GameRegistry.registerTileEntity(GCCoreTileEntityTreasureChest.class, GCCoreCompatibilityManager.isAIILoaded() ? "Space Treasure Chest" : "Treasure Chest");
-		GameRegistry.registerTileEntity(GCCoreTileEntityOxygenDistributor.class, "Air Distributor");
-		GameRegistry.registerTileEntity(GCCoreTileEntityOxygenCollector.class, "Air Collector");
-		GameRegistry.registerTileEntity(GCCoreTileEntityOxygenPipe.class, "Oxygen Pipe");
-		GameRegistry.registerTileEntity(GCCoreTileEntityAirLock.class, "Air Lock Frame");
-		GameRegistry.registerTileEntity(GCCoreTileEntityRefinery.class, "Refinery");
-		GameRegistry.registerTileEntity(GCCoreTileEntityAdvancedCraftingTable.class, "NASA Workbench");
-		GameRegistry.registerTileEntity(GCCoreTileEntityOxygenCompressor.class, "Air Compressor");
-		GameRegistry.registerTileEntity(GCCoreTileEntityFuelLoader.class, "Fuel Loader");
-		GameRegistry.registerTileEntity(GCCoreTileEntityLandingPadSingle.class, "Landing Pad");
-		GameRegistry.registerTileEntity(GCCoreTileEntityLandingPad.class, "Landing Pad Full");
-		GameRegistry.registerTileEntity(GCCoreTileEntitySpaceStationBase.class, "Space Station");
+		GameRegistry.registerTileEntity(TileEntityTreasureChest.class, CompatibilityManager.isAIILoaded() ? "Space Treasure Chest" : "Treasure Chest");
+		GameRegistry.registerTileEntity(TileEntityOxygenDistributor.class, "Air Distributor");
+		GameRegistry.registerTileEntity(TileEntityOxygenCollector.class, "Air Collector");
+		GameRegistry.registerTileEntity(TileEntityOxygenPipe.class, "Oxygen Pipe");
+		GameRegistry.registerTileEntity(TileEntityAirLock.class, "Air Lock Frame");
+		GameRegistry.registerTileEntity(TileEntityRefinery.class, "Refinery");
+		GameRegistry.registerTileEntity(TileEntityNasaWorkbench.class, "NASA Workbench");
+		GameRegistry.registerTileEntity(TileEntityOxygenCompressor.class, "Air Compressor");
+		GameRegistry.registerTileEntity(TileEntityFuelLoader.class, "Fuel Loader");
+		GameRegistry.registerTileEntity(TileEntityLandingPadSingle.class, "Landing Pad");
+		GameRegistry.registerTileEntity(TileEntityLandingPad.class, "Landing Pad Full");
+		GameRegistry.registerTileEntity(TileEntitySpaceStationBase.class, "Space Station");
 		GameRegistry.registerTileEntity(TileEntityMulti.class, "Dummy Block");
-		GameRegistry.registerTileEntity(GCCoreTileEntityOxygenSealer.class, "Air Sealer");
-		GameRegistry.registerTileEntity(GCCoreTileEntityDungeonSpawner.class, "Dungeon Boss Spawner");
-		GameRegistry.registerTileEntity(GCCoreTileEntityOxygenDetector.class, "Oxygen Detector");
-		GameRegistry.registerTileEntity(GCCoreTileEntityBuggyFueler.class, "Buggy Fueler");
-		GameRegistry.registerTileEntity(GCCoreTileEntityBuggyFuelerSingle.class, "Buggy Fueler Single");
-		GameRegistry.registerTileEntity(GCCoreTileEntityCargoLoader.class, "Cargo Loader");
-		GameRegistry.registerTileEntity(GCCoreTileEntityCargoUnloader.class, "Cargo Unloader");
-		GameRegistry.registerTileEntity(GCCoreTileEntityParachest.class, "Parachest Tile");
-		GameRegistry.registerTileEntity(GCCoreTileEntitySolar.class, "Galacticraft Solar Panel");
-		GameRegistry.registerTileEntity(GCCoreTileEntityEnergyStorageModule.class, "Energy Storage Module");
-		GameRegistry.registerTileEntity(GCCoreTileEntityCoalGenerator.class, "Galacticraft Coal Generator");
-		GameRegistry.registerTileEntity(GCCoreTileEntityElectricFurnace.class, "Galacticraft Electric Furnace");
-		GameRegistry.registerTileEntity(GCCoreTileEntityAluminumWire.class, "Galacticraft Aluminum Wire");
-		GameRegistry.registerTileEntity(GCCoreTileEntityFallenMeteor.class, "Fallen Meteor");
-		GameRegistry.registerTileEntity(GCCoreTileEntityIngotCompressor.class, "Ingot Compressor");
-		GameRegistry.registerTileEntity(GCCoreTileEntityElectricIngotCompressor.class, "Electric Ingot Compressor");
-		GameRegistry.registerTileEntity(GCCoreTileEntityCircuitFabricator.class, "Circuit Fabricator");
-		GameRegistry.registerTileEntity(GCCoreTileEntityAirLockController.class, "Air Lock Controller");
-		GameRegistry.registerTileEntity(GCCoreTileEntityOxygenStorageModule.class, "Oxygen Storage Module");
-		GameRegistry.registerTileEntity(GCCoreTileEntityOxygenDecompressor.class, "Oxygen Decompressor");
+		GameRegistry.registerTileEntity(TileEntityOxygenSealer.class, "Air Sealer");
+		GameRegistry.registerTileEntity(TileEntityDungeonSpawner.class, "Dungeon Boss Spawner");
+		GameRegistry.registerTileEntity(TileEntityOxygenDetector.class, "Oxygen Detector");
+		GameRegistry.registerTileEntity(TileEntityBuggyFueler.class, "Buggy Fueler");
+		GameRegistry.registerTileEntity(TileEntityBuggyFuelerSingle.class, "Buggy Fueler Single");
+		GameRegistry.registerTileEntity(TileEntityCargoLoader.class, "Cargo Loader");
+		GameRegistry.registerTileEntity(TileEntityCargoUnloader.class, "Cargo Unloader");
+		GameRegistry.registerTileEntity(TileEntityParaChest.class, "Parachest Tile");
+		GameRegistry.registerTileEntity(TileEntitySolar.class, "Galacticraft Solar Panel");
+		GameRegistry.registerTileEntity(TileEntityEnergyStorageModule.class, "Energy Storage Module");
+		GameRegistry.registerTileEntity(TileEntityCoalGenerator.class, "Galacticraft Coal Generator");
+		GameRegistry.registerTileEntity(TileEntityElectricFurnace.class, "Galacticraft Electric Furnace");
+		GameRegistry.registerTileEntity(TileEntityAluminumWire.class, "Galacticraft Aluminum Wire");
+		GameRegistry.registerTileEntity(TileEntityFallenMeteor.class, "Fallen Meteor");
+		GameRegistry.registerTileEntity(TileEntityIngotCompressor.class, "Ingot Compressor");
+		GameRegistry.registerTileEntity(TileEntityElectricIngotCompressor.class, "Electric Ingot Compressor");
+		GameRegistry.registerTileEntity(TileEntityCircuitFabricator.class, "Circuit Fabricator");
+		GameRegistry.registerTileEntity(TileEntityAirLockController.class, "Air Lock Controller");
+		GameRegistry.registerTileEntity(TileEntityOxygenStorageModule.class, "Oxygen Storage Module");
+		GameRegistry.registerTileEntity(TileEntityOxygenDecompressor.class, "Oxygen Decompressor");
 	}
 
 	public void registerCreatures()
 	{
-		GCCoreUtil.registerGalacticraftCreature(EntitySpider.class, "EvolvedSpider", GCCoreConfigManager.idEntityEvolvedSpider, 3419431, 11013646);
-		GCCoreUtil.registerGalacticraftCreature(EntityZombie.class, "EvolvedZombie", GCCoreConfigManager.idEntityEvolvedZombie, 44975, 7969893);
-		GCCoreUtil.registerGalacticraftCreature(EntityCreeper.class, "EvolvedCreeper", GCCoreConfigManager.idEntityEvolvedCreeper, 894731, 0);
-		GCCoreUtil.registerGalacticraftCreature(EntitySkeleton.class, "EvolvedSkeleton", GCCoreConfigManager.idEntityEvolvedSkeleton, 12698049, 4802889);
-		GCCoreUtil.registerGalacticraftCreature(EntitySkeletonBoss.class, "EvolvedSkeletonBoss", GCCoreConfigManager.idEntityEvolvedSkeletonBoss, 12698049, 4802889);
-		GCCoreUtil.registerGalacticraftCreature(EntityAlienVillager.class, "AlienVillager", GCCoreConfigManager.idEntityAlienVillager, GCCoreUtil.convertTo32BitColor(255, 103, 181, 145), 12422002);
+		GCCoreUtil.registerGalacticraftCreature(EntitySpider.class, "EvolvedSpider", ConfigManagerCore.idEntityEvolvedSpider, 3419431, 11013646);
+		GCCoreUtil.registerGalacticraftCreature(EntityZombie.class, "EvolvedZombie", ConfigManagerCore.idEntityEvolvedZombie, 44975, 7969893);
+		GCCoreUtil.registerGalacticraftCreature(EntityCreeper.class, "EvolvedCreeper", ConfigManagerCore.idEntityEvolvedCreeper, 894731, 0);
+		GCCoreUtil.registerGalacticraftCreature(EntitySkeleton.class, "EvolvedSkeleton", ConfigManagerCore.idEntityEvolvedSkeleton, 12698049, 4802889);
+		GCCoreUtil.registerGalacticraftCreature(EntitySkeletonBoss.class, "EvolvedSkeletonBoss", ConfigManagerCore.idEntityEvolvedSkeletonBoss, 12698049, 4802889);
+		GCCoreUtil.registerGalacticraftCreature(EntityAlienVillager.class, "AlienVillager", ConfigManagerCore.idEntityAlienVillager, GCCoreUtil.convertTo32BitColor(255, 103, 181, 145), 12422002);
 	}
 
 	public void registerOtherEntities()
 	{
-		GCCoreUtil.registerGalacticraftNonMobEntity(EntityTier1Rocket.class, "Spaceship", GCCoreConfigManager.idEntitySpaceship, 150, 1, false);
-		GCCoreUtil.registerGalacticraftNonMobEntity(EntityArrow.class, "GravityArrow", GCCoreConfigManager.idEntityAntiGravityArrow, 150, 5, true);
-		GCCoreUtil.registerGalacticraftNonMobEntity(EntityMeteor.class, "Meteor", GCCoreConfigManager.idEntityMeteor, 150, 5, true);
-		GCCoreUtil.registerGalacticraftNonMobEntity(EntityBuggy.class, "Buggy", GCCoreConfigManager.idEntityBuggy, 150, 5, true);
-		GCCoreUtil.registerGalacticraftNonMobEntity(EntityFlag.class, "Flag", GCCoreConfigManager.idEntityFlag, 150, 5, true);
-		GCCoreUtil.registerGalacticraftNonMobEntity(EntityParachest.class, "ParaChest", GCCoreConfigManager.idEntityParaChest, 150, 5, true);
-		GCCoreUtil.registerGalacticraftNonMobEntity(EntityBubble.class, "OxygenBubble", GCCoreConfigManager.idEntityOxygenBubble, 150, 20, false);
-		GCCoreUtil.registerGalacticraftNonMobEntity(EntityLander.class, "Lander", GCCoreConfigManager.idEntityLander, 150, 5, false);
-		GCCoreUtil.registerGalacticraftNonMobEntity(EntityMeteorChunk.class, "MeteorChunk", GCCoreConfigManager.idEntityMeteorChunk, 150, 5, true);
+		GCCoreUtil.registerGalacticraftNonMobEntity(EntityTier1Rocket.class, "Spaceship", ConfigManagerCore.idEntitySpaceship, 150, 1, false);
+		GCCoreUtil.registerGalacticraftNonMobEntity(EntityArrow.class, "GravityArrow", ConfigManagerCore.idEntityAntiGravityArrow, 150, 5, true);
+		GCCoreUtil.registerGalacticraftNonMobEntity(EntityMeteor.class, "Meteor", ConfigManagerCore.idEntityMeteor, 150, 5, true);
+		GCCoreUtil.registerGalacticraftNonMobEntity(EntityBuggy.class, "Buggy", ConfigManagerCore.idEntityBuggy, 150, 5, true);
+		GCCoreUtil.registerGalacticraftNonMobEntity(EntityFlag.class, "Flag", ConfigManagerCore.idEntityFlag, 150, 5, true);
+		GCCoreUtil.registerGalacticraftNonMobEntity(EntityParachest.class, "ParaChest", ConfigManagerCore.idEntityParaChest, 150, 5, true);
+		GCCoreUtil.registerGalacticraftNonMobEntity(EntityBubble.class, "OxygenBubble", ConfigManagerCore.idEntityOxygenBubble, 150, 20, false);
+		GCCoreUtil.registerGalacticraftNonMobEntity(EntityLander.class, "Lander", ConfigManagerCore.idEntityLander, 150, 5, false);
+		GCCoreUtil.registerGalacticraftNonMobEntity(EntityMeteorChunk.class, "MeteorChunk", ConfigManagerCore.idEntityMeteorChunk, 150, 5, true);
 	}
 
 	public static class SleepCancelledEvent extends Event

@@ -7,11 +7,11 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import micdoodle8.mods.galacticraft.core.GCLog;
-import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
-import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerSP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
 import micdoodle8.mods.galacticraft.core.network.IPacket;
 import micdoodle8.mods.galacticraft.core.network.NetworkUtil;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.mars.client.gui.GCMarsGuiCargoRocket;
 import micdoodle8.mods.galacticraft.mars.client.gui.GCMarsGuiSlimelingInventory;
@@ -117,11 +117,11 @@ public class PacketSimpleMars implements IPacket
 	@Override
 	public void handleClientSide(EntityPlayer player)
 	{
-		GCCorePlayerSP playerBaseClient = null;
+		GCEntityClientPlayerMP playerBaseClient = null;
 
-		if (player instanceof GCCorePlayerSP)
+		if (player instanceof GCEntityClientPlayerMP)
 		{
-			playerBaseClient = (GCCorePlayerSP) player;
+			playerBaseClient = (GCEntityClientPlayerMP) player;
 		}
 
 		switch (this.type)
@@ -171,7 +171,7 @@ public class PacketSimpleMars implements IPacket
 	@Override
 	public void handleServerSide(EntityPlayer player)
 	{
-		GCCorePlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player, false);
+		GCEntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player, false);
 
 		switch (this.type)
 		{

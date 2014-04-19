@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.mars.client.render.tile;
 
-import micdoodle8.mods.galacticraft.core.client.model.block.GCCoreModelTreasureChest;
-import micdoodle8.mods.galacticraft.core.client.model.block.GCCoreModelTreasureChestLarge;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityTreasureChest;
+import micdoodle8.mods.galacticraft.core.client.model.block.ModelTreasureChest;
+import micdoodle8.mods.galacticraft.core.client.model.block.ModelTreasureChestLarge;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlockT2TreasureChest;
 import net.minecraft.block.Block;
@@ -31,10 +31,10 @@ public class GCMarsTileEntityTreasureChestRenderer extends TileEntitySpecialRend
 	private static final ResourceLocation treasureChestTexture = new ResourceLocation(GalacticraftMars.TEXTURE_DOMAIN, "textures/model/treasure.png");
 	private static final ResourceLocation treasureLargeChestTexture = new ResourceLocation(GalacticraftMars.TEXTURE_DOMAIN, "textures/model/treasurelarge.png");
 
-	private final GCCoreModelTreasureChest chestModel = new GCCoreModelTreasureChest();
-	private final GCCoreModelTreasureChestLarge largeChestModel = new GCCoreModelTreasureChestLarge();
+	private final ModelTreasureChest chestModel = new ModelTreasureChest();
+	private final ModelTreasureChestLarge largeChestModel = new ModelTreasureChestLarge();
 
-	public void renderGCTileEntityTreasureChestAt(GCCoreTileEntityTreasureChest par1GCTileEntityTreasureChest, double par2, double par4, double par6, float par8)
+	public void renderGCTileEntityTreasureChestAt(TileEntityTreasureChest par1GCTileEntityTreasureChest, double par2, double par4, double par6, float par8)
 	{
 		int var9;
 
@@ -58,8 +58,8 @@ public class GCMarsTileEntityTreasureChestRenderer extends TileEntitySpecialRend
 
 		if (par1GCTileEntityTreasureChest.adjacentChestZNeg == null && par1GCTileEntityTreasureChest.adjacentChestXNeg == null)
 		{
-			GCCoreModelTreasureChest var14 = null;
-			GCCoreModelTreasureChestLarge var14b = null;
+			ModelTreasureChest var14 = null;
+			ModelTreasureChestLarge var14b = null;
 
 			if (par1GCTileEntityTreasureChest.adjacentChestXPos == null && par1GCTileEntityTreasureChest.adjacentChestZPos == null)
 			{
@@ -160,6 +160,6 @@ public class GCMarsTileEntityTreasureChestRenderer extends TileEntitySpecialRend
 	@Override
 	public void renderTileEntityAt(TileEntity par1TileEntity, double par2, double par4, double par6, float par8)
 	{
-		this.renderGCTileEntityTreasureChestAt((GCCoreTileEntityTreasureChest) par1TileEntity, par2, par4, par6, par8);
+		this.renderGCTileEntityTreasureChestAt((TileEntityTreasureChest) par1TileEntity, par2, par4, par6, par8);
 	}
 }

@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.mars.entities;
 
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import micdoodle8.mods.galacticraft.mars.inventory.GCMarsInventorySlimeling;
 import net.minecraft.entity.Entity;
@@ -397,12 +397,12 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
 					}
 					else
 					{
-						if (par1EntityPlayer instanceof GCCorePlayerMP)
+						if (par1EntityPlayer instanceof GCEntityPlayerMP)
 						{
-							if (((GCCorePlayerMP) par1EntityPlayer).getChatCooldown() == 0)
+							if (((GCEntityPlayerMP) par1EntityPlayer).getChatCooldown() == 0)
 							{
 								par1EntityPlayer.addChatMessage(new ChatComponentText("This isn't my Slimeling!"));
-								((GCCorePlayerMP) par1EntityPlayer).setChatCooldown(100);
+								((GCEntityPlayerMP) par1EntityPlayer).setChatCooldown(100);
 							}
 						}
 					}

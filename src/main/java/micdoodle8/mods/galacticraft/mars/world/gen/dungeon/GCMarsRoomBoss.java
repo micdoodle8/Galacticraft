@@ -3,10 +3,10 @@ package micdoodle8.mods.galacticraft.mars.world.gen.dungeon;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityDungeonSpawner;
-import micdoodle8.mods.galacticraft.core.world.gen.dungeon.GCCoreDungeonBoundingBox;
-import micdoodle8.mods.galacticraft.core.world.gen.dungeon.GCCoreDungeonRoom;
-import micdoodle8.mods.galacticraft.core.world.gen.dungeon.GCCoreMapGenDungeon;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
+import micdoodle8.mods.galacticraft.core.world.gen.dungeon.DungeonBoundingBox;
+import micdoodle8.mods.galacticraft.core.world.gen.dungeon.DungeonRoom;
+import micdoodle8.mods.galacticraft.core.world.gen.dungeon.MapGenDungeon;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
 import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityDungeonSpawner;
 import net.minecraft.block.Block;
@@ -24,7 +24,7 @@ import net.minecraftforge.common.util.ForgeDirection;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class GCMarsRoomBoss extends GCCoreDungeonRoom
+public class GCMarsRoomBoss extends DungeonRoom
 {
 	public int sizeX;
 	public int sizeY;
@@ -32,7 +32,7 @@ public class GCMarsRoomBoss extends GCCoreDungeonRoom
 	Random rand;
 	ChunkCoordinates spawnerCoords;
 
-	public GCMarsRoomBoss(GCCoreMapGenDungeon dungeon, int posX, int posY, int posZ, ForgeDirection entranceDir)
+	public GCMarsRoomBoss(MapGenDungeon dungeon, int posX, int posY, int posZ, ForgeDirection entranceDir)
 	{
 		super(dungeon, posX, posY, posZ, entranceDir);
 		if (this.worldObj != null)
@@ -82,13 +82,13 @@ public class GCMarsRoomBoss extends GCCoreDungeonRoom
 	}
 
 	@Override
-	public GCCoreDungeonBoundingBox getBoundingBox()
+	public DungeonBoundingBox getBoundingBox()
 	{
-		return new GCCoreDungeonBoundingBox(this.posX, this.posZ, this.posX + this.sizeX, this.posZ + this.sizeZ);
+		return new DungeonBoundingBox(this.posX, this.posZ, this.posX + this.sizeX, this.posZ + this.sizeZ);
 	}
 
 	@Override
-	protected GCCoreDungeonRoom makeRoom(GCCoreMapGenDungeon dungeon, int x, int y, int z, ForgeDirection dir)
+	protected DungeonRoom makeRoom(MapGenDungeon dungeon, int x, int y, int z, ForgeDirection dir)
 	{
 		return new GCMarsRoomBoss(dungeon, x, y, z, dir);
 	}
@@ -107,13 +107,13 @@ public class GCMarsRoomBoss extends GCCoreDungeonRoom
 
 		if (tile == null || !(tile instanceof GCMarsTileEntityDungeonSpawner))
 		{
-			GCCoreTileEntityDungeonSpawner spawner = new GCMarsTileEntityDungeonSpawner();
+			TileEntityDungeonSpawner spawner = new GCMarsTileEntityDungeonSpawner();
 			spawner.setRoom(new Vector3(this.posX, this.posY, this.posZ), new Vector3(this.sizeX, this.sizeY, this.sizeZ));
 			this.worldObj.setTileEntity(this.spawnerCoords.posX, this.spawnerCoords.posY, this.spawnerCoords.posZ, spawner);
 		}
-		else if (tile instanceof GCCoreTileEntityDungeonSpawner)
+		else if (tile instanceof TileEntityDungeonSpawner)
 		{
-			((GCCoreTileEntityDungeonSpawner) tile).setRoom(new Vector3(this.posX, this.posY, this.posZ), new Vector3(this.sizeX, this.sizeY, this.sizeZ));
+			((TileEntityDungeonSpawner) tile).setRoom(new Vector3(this.posX, this.posY, this.posZ), new Vector3(this.sizeX, this.sizeY, this.sizeZ));
 		}
 	}
 

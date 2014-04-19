@@ -4,11 +4,11 @@ import java.util.HashMap;
 
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerParachest;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRocketRefill;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerParaChest;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerRocketInventory;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
-import micdoodle8.mods.galacticraft.core.recipe.GCCoreNasaWorkbenchRecipe;
+import micdoodle8.mods.galacticraft.core.recipe.NasaWorkbenchRecipe;
 import micdoodle8.mods.galacticraft.mars.entities.EntityCargoRocket;
 import micdoodle8.mods.galacticraft.mars.entities.EntityLandingBalloons;
 import micdoodle8.mods.galacticraft.mars.entities.EntitySlimeling;
@@ -31,12 +31,12 @@ public class GCMarsUtil
 {
 	public static void addRocketBenchT2Recipe(ItemStack result, HashMap<Integer, ItemStack> input)
 	{
-		GalacticraftRegistry.addT2RocketRecipe(new GCCoreNasaWorkbenchRecipe(result, input));
+		GalacticraftRegistry.addT2RocketRecipe(new NasaWorkbenchRecipe(result, input));
 	}
 
 	public static void adCargoRocketRecipe(ItemStack result, HashMap<Integer, ItemStack> input)
 	{
-		GalacticraftRegistry.addCargoRocketRecipe(new GCCoreNasaWorkbenchRecipe(result, input));
+		GalacticraftRegistry.addCargoRocketRecipe(new NasaWorkbenchRecipe(result, input));
 	}
 
 	public static void openParachestInventory(EntityPlayerMP player, EntityLandingBalloons landerInv)
@@ -45,7 +45,7 @@ public class GCMarsUtil
 		player.closeContainer();
 		int windowId = player.currentWindowId;
 		GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_PARACHEST_GUI, new Object[] { windowId, 1, landerInv.getEntityId() }), player);
-		player.openContainer = new GCCoreContainerParachest(player.inventory, landerInv);
+		player.openContainer = new ContainerParaChest(player.inventory, landerInv);
 		player.openContainer.windowId = windowId;
 		player.openContainer.addCraftingToCrafters(player);
 	}
@@ -67,7 +67,7 @@ public class GCMarsUtil
 		player.closeContainer();
 		int windowId = player.currentWindowId;
 		GalacticraftCore.packetPipeline.sendTo(new PacketSimpleMars(EnumSimplePacketMars.C_OPEN_CUSTOM_GUI, new Object[] { windowId, 1, rocket.getEntityId() }), player);
-		player.openContainer = new GCCoreContainerRocketRefill(player.inventory, rocket, rocket.rocketType);
+		player.openContainer = new ContainerRocketInventory(player.inventory, rocket, rocket.rocketType);
 		player.openContainer.windowId = windowId;
 		player.openContainer.addCraftingToCrafters(player);
 	}

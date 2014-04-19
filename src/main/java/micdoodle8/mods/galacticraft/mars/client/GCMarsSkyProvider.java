@@ -2,8 +2,8 @@ package micdoodle8.mods.galacticraft.mars.client;
 
 import java.util.Random;
 
-import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import micdoodle8.mods.galacticraft.mars.dimension.GCMarsWorldProvider;
 import net.minecraft.client.Minecraft;
@@ -268,7 +268,7 @@ public class GCMarsSkyProvider extends IRenderHandler
 		final Tessellator var2 = Tessellator.instance;
 		var2.startDrawingQuads();
 
-		for (int var3 = 0; var3 < (GCCoreConfigManager.moreStars ? 35000 : 6000); ++var3)
+		for (int var3 = 0; var3 < (ConfigManagerCore.moreStars ? 35000 : 6000); ++var3)
 		{
 			double var4 = var1.nextFloat() * 2.0F - 1.0F;
 			double var6 = var1.nextFloat() * 2.0F - 1.0F;
@@ -282,9 +282,9 @@ public class GCMarsSkyProvider extends IRenderHandler
 				var4 *= var12;
 				var6 *= var12;
 				var8 *= var12;
-				final double var14 = var4 * (GCCoreConfigManager.moreStars ? var1.nextDouble() * 150D + 130D : 100.0D);
-				final double var16 = var6 * (GCCoreConfigManager.moreStars ? var1.nextDouble() * 150D + 130D : 100.0D);
-				final double var18 = var8 * (GCCoreConfigManager.moreStars ? var1.nextDouble() * 150D + 130D : 100.0D);
+				final double var14 = var4 * (ConfigManagerCore.moreStars ? var1.nextDouble() * 150D + 130D : 100.0D);
+				final double var16 = var6 * (ConfigManagerCore.moreStars ? var1.nextDouble() * 150D + 130D : 100.0D);
+				final double var18 = var8 * (ConfigManagerCore.moreStars ? var1.nextDouble() * 150D + 130D : 100.0D);
 				final double var20 = Math.atan2(var4, var8);
 				final double var22 = Math.sin(var20);
 				final double var24 = Math.cos(var20);

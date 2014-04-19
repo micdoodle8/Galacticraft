@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityDungeonSpawner;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
 import micdoodle8.mods.galacticraft.mars.entities.EntityCreeperBoss;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -21,7 +21,7 @@ import net.minecraft.entity.monster.EntityZombie;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class GCMarsTileEntityDungeonSpawner extends GCCoreTileEntityDungeonSpawner
+public class GCMarsTileEntityDungeonSpawner extends TileEntityDungeonSpawner
 {
 	public GCMarsTileEntityDungeonSpawner()
 	{

@@ -12,11 +12,11 @@ import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPadFull;
-import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
-import micdoodle8.mods.galacticraft.core.event.GCCoreLandingPadRemovalEvent;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
+import micdoodle8.mods.galacticraft.core.blocks.BlockLandingPadFull;
+import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
+import micdoodle8.mods.galacticraft.core.event.EventLandingPadRemoval;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityFuelLoader;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -256,7 +256,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 								{
 									Block block = world.getBlock(launchController.xCoord + x, launchController.yCoord, launchController.zCoord + z);
 
-									if (block != Blocks.air && block instanceof GCCoreBlockLandingPadFull)
+									if (block != Blocks.air && block instanceof BlockLandingPadFull)
 									{
 										if (doSet)
 										{
@@ -407,9 +407,9 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 			{
 				for (ILandingPadAttachable tile : this.getLandingPad().getConnectedTiles())
 				{
-					if (this.worldObj.getTileEntity(((TileEntity) tile).xCoord, ((TileEntity) tile).yCoord, ((TileEntity) tile).zCoord) != null && this.worldObj.getTileEntity(((TileEntity) tile).xCoord, ((TileEntity) tile).yCoord, ((TileEntity) tile).zCoord) instanceof GCCoreTileEntityFuelLoader)
+					if (this.worldObj.getTileEntity(((TileEntity) tile).xCoord, ((TileEntity) tile).yCoord, ((TileEntity) tile).zCoord) != null && this.worldObj.getTileEntity(((TileEntity) tile).xCoord, ((TileEntity) tile).yCoord, ((TileEntity) tile).zCoord) instanceof TileEntityFuelLoader)
 					{
-						if (tile instanceof GCCoreTileEntityFuelLoader && ((GCCoreTileEntityFuelLoader) tile).getEnergyStored() > 0)
+						if (tile instanceof TileEntityFuelLoader && ((TileEntityFuelLoader) tile).getEnergyStored() > 0)
 						{
 							if (this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase())
 							{
@@ -673,10 +673,10 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
 		if (!this.worldObj.isRemote)
 		{
-			if (!(this.worldObj.provider instanceof IOrbitDimension) && this.riddenByEntity != null && this.riddenByEntity instanceof GCCorePlayerMP)
+			if (!(this.worldObj.provider instanceof IOrbitDimension) && this.riddenByEntity != null && this.riddenByEntity instanceof GCEntityPlayerMP)
 			{
-				((GCCorePlayerMP) this.riddenByEntity).setCoordsTeleportedFromX(this.riddenByEntity.posX);
-				((GCCorePlayerMP) this.riddenByEntity).setCoordsTeleportedFromZ(this.riddenByEntity.posZ);
+				((GCEntityPlayerMP) this.riddenByEntity).setCoordsTeleportedFromX(this.riddenByEntity.posX);
+				((GCEntityPlayerMP) this.riddenByEntity).setCoordsTeleportedFromZ(this.riddenByEntity.posZ);
 			}
 
 			int amountRemoved = 0;
@@ -689,11 +689,11 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 					{
 						final Block block = this.worldObj.getBlock(x, y, z);
 
-						if (block != null && block instanceof GCCoreBlockLandingPadFull)
+						if (block != null && block instanceof BlockLandingPadFull)
 						{
 							if (amountRemoved < 9)
 							{
-								GCCoreLandingPadRemovalEvent event = new GCCoreLandingPadRemovalEvent(this.worldObj, x, y, z);
+								EventLandingPadRemoval event = new EventLandingPadRemoval(this.worldObj, x, y, z);
 								MinecraftForge.EVENT_BUS.post(event);
 
 								if (event.allow)
@@ -833,7 +833,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 	@Override
 	public boolean isDockValid(IFuelDock dock)
 	{
-		return dock instanceof GCCoreTileEntityLandingPad;
+		return dock instanceof TileEntityLandingPad;
 	}
 
 	@Override

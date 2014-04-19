@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.mars.schematic;
 
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.mars.GCMarsConfigManager;
 import micdoodle8.mods.galacticraft.mars.client.gui.GCMarsGuiSchematicRocketT2;
 import micdoodle8.mods.galacticraft.mars.inventory.GCMarsContainerRocketBenchT2;
@@ -38,7 +38,7 @@ public class GCMarsSchematicRocketT2 implements ISchematicPage
 	@Override
 	public ItemStack getRequiredItem()
 	{
-		return new ItemStack(GCCoreItems.schematic, 1, 1);
+		return new ItemStack(GCItems.schematic, 1, 1);
 	}
 
 	@SideOnly(Side.CLIENT)

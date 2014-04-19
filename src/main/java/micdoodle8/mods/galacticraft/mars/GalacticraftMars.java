@@ -3,13 +3,15 @@ package micdoodle8.mods.galacticraft.mars;
 import java.io.File;
 
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
+import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
+import micdoodle8.mods.galacticraft.api.galaxies.Planet;
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
-import micdoodle8.mods.galacticraft.core.GCCoreCreativeTab;
-import micdoodle8.mods.galacticraft.core.GCLog;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.core.util.CreativeTabGC;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
 import micdoodle8.mods.galacticraft.mars.dimension.GCMarsTeleportType;
 import micdoodle8.mods.galacticraft.mars.dimension.GCMarsWorldProvider;
@@ -76,13 +78,15 @@ public class GalacticraftMars
 	@Instance(GalacticraftMars.MODID)
 	public static GalacticraftMars instance;
 
-	public static GCCoreCreativeTab galacticraftMarsTab;
+	public static CreativeTabGC galacticraftMarsTab;
 
 	public static final String TEXTURE_DOMAIN = "galacticraftmars";
 	public static final String TEXTURE_PREFIX = GalacticraftMars.TEXTURE_DOMAIN + ":";
 
 	public static Fluid SLUDGE;
 
+	public static Planet planetMars;
+	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
@@ -112,20 +116,26 @@ public class GalacticraftMars
 		SchematicRegistry.registerSchematicRecipe(new GCMarsSchematicRocketT2());
 		SchematicRegistry.registerSchematicRecipe(new GCMarsSchematicCargoRocket());
 
-		GalacticraftMars.galacticraftMarsTab = new GCCoreCreativeTab(CreativeTabs.getNextID(), GalacticraftMars.MODID, GCMarsItems.spaceship, 5);
+		GalacticraftMars.galacticraftMarsTab = new CreativeTabGC(CreativeTabs.getNextID(), GalacticraftMars.MODID, GCMarsItems.spaceship, 5);
 		NetworkRegistry.INSTANCE.registerGuiHandler(GalacticraftMars.instance, GalacticraftMars.proxy);
+		
 		this.registerTileEntities();
 		this.registerCreatures();
 		this.registerOtherEntities();
+		
 		GalacticraftMars.proxy.init(event);
 
+		GalacticraftMars.planetMars = (Planet) new Planet("mars").setParentGalaxy(GalacticraftCore.galaxyBlockyWay).setRingColorRGB(0.67F, 0.1F, 0.1F).setPhaseShift(0.1667F).setRelativeSize(0.5319F).setRelativeDistanceFromCenter(1.52F).setRelativeOrbitTime(1.88F);
+		GalacticraftMars.planetMars.setPlanetIcon(new ResourceLocation(GalacticraftMars.TEXTURE_DOMAIN, "textures/gui/planets/mars.png"));
+		GalacticraftMars.planetMars.setDimensionInfo(GCMarsConfigManager.dimensionIDMars, GCMarsWorldProvider.class);
+
+		GalaxyRegistry.registerPlanet(GalacticraftMars.planetMars);
 		GalacticraftRegistry.registerTeleportType(GCMarsWorldProvider.class, new GCMarsTeleportType());
-		GalacticraftRegistry.registerCelestialBody(new GCMarsPlanet());
 		GalacticraftRegistry.registerRocketGui(GCMarsWorldProvider.class, new ResourceLocation(GalacticraftMars.TEXTURE_DOMAIN, "textures/gui/marsRocketGui.png"));
 		GalacticraftRegistry.addDungeonLoot(2, new ItemStack(GCMarsItems.schematic, 1, 0));
 		GalacticraftRegistry.addDungeonLoot(2, new ItemStack(GCMarsItems.schematic, 1, 1));
 
-		CompressorRecipes.addShapelessRecipe(new ItemStack(GCMarsItems.marsItemBasic, 1, 3), new ItemStack(GCCoreItems.heavyPlatingTier1), new ItemStack(GCCoreItems.meteoricIronIngot, 1, 1));
+		CompressorRecipes.addShapelessRecipe(new ItemStack(GCMarsItems.marsItemBasic, 1, 3), new ItemStack(GCItems.heavyPlatingTier1), new ItemStack(GCItems.meteoricIronIngot, 1, 1));
 		CompressorRecipes.addShapelessRecipe(new ItemStack(GCMarsItems.marsItemBasic, 1, 5), new ItemStack(GCMarsItems.marsItemBasic, 1, 2));
 	}
 

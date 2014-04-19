@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.mars.client.render.item;
 
 import micdoodle8.mods.galacticraft.api.entity.IRocketType.EnumRocketType;
-import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererSpaceship;
+import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererTier1Rocket;
 import micdoodle8.mods.galacticraft.core.entities.EntityTier1Rocket;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import micdoodle8.mods.galacticraft.mars.client.model.GCMarsModelSpaceshipTier2;
@@ -27,7 +27,7 @@ import cpw.mods.fml.client.FMLClientHandler;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class GCMarsItemRendererSpaceshipT2 extends GCCoreItemRendererSpaceship
+public class GCMarsItemRendererSpaceshipT2 extends ItemRendererTier1Rocket
 {
 	private static final ResourceLocation cargoRocketTexture = new ResourceLocation(GalacticraftMars.TEXTURE_DOMAIN, "textures/model/cargoRocket.png");
 	private IModelCustom cargoRocketModel;
@@ -65,7 +65,7 @@ public class GCMarsItemRendererSpaceshipT2 extends GCCoreItemRendererSpaceship
 			if (EnumRocketType.values()[index].getInventorySpace() > 3)
 			{
 				final ModelChest modelChest = this.chestModel;
-				FMLClientHandler.instance().getClient().renderEngine.bindTexture(GCCoreItemRendererSpaceship.chestTexture);
+				FMLClientHandler.instance().getClient().renderEngine.bindTexture(ItemRendererTier1Rocket.chestTexture);
 
 				GL11.glPushMatrix();
 				GL11.glDisable(GL11.GL_DEPTH_TEST);

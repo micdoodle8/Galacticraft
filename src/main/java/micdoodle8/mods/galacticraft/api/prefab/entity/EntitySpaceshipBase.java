@@ -7,14 +7,14 @@ import java.util.List;
 
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.world.IExitHeight;
-import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
-import micdoodle8.mods.galacticraft.core.GCCoreDamageSource;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.DamageSourceGC;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -107,7 +107,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 	@Override
 	public void setDead()
 	{
-		if (this.riddenByEntity != null && this.riddenByEntity instanceof GCCorePlayerMP)
+		if (this.riddenByEntity != null && this.riddenByEntity instanceof GCEntityPlayerMP)
 		{
 			final Object[] toSend2 = { 0 };
 			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, new Object[] { 0 }), (EntityPlayerMP) this.riddenByEntity);
@@ -366,10 +366,10 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 	{
 		if (this.riddenByEntity != null)
 		{
-			this.riddenByEntity.attackEntityFrom(GCCoreDamageSource.spaceshipCrash, (int) (4.0D * 20 + 1.0D));
+			this.riddenByEntity.attackEntityFrom(DamageSourceGC.spaceshipCrash, (int) (4.0D * 20 + 1.0D));
 		}
 
-		if (!GCCoreConfigManager.disableSpaceshipGrief)
+		if (!ConfigManagerCore.disableSpaceshipGrief)
 		{
 			this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 5, true);
 		}

@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.mars.items;
 
-import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;

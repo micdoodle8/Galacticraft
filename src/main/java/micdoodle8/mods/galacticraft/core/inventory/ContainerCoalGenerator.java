@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCoalGenerator;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityCoalGenerator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
@@ -19,9 +19,9 @@ import net.minecraft.item.ItemStack;
  */
 public class ContainerCoalGenerator extends Container
 {
-	private GCCoreTileEntityCoalGenerator tileEntity;
+	private TileEntityCoalGenerator tileEntity;
 
-	public ContainerCoalGenerator(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityCoalGenerator tileEntity)
+	public ContainerCoalGenerator(InventoryPlayer par1InventoryPlayer, TileEntityCoalGenerator tileEntity)
 	{
 		this.tileEntity = tileEntity;
 		this.addSlotToContainer(new Slot(tileEntity, 0, 33, 34));

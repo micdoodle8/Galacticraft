@@ -41,7 +41,7 @@ public class GCInvSaveData extends WorldSavedData
 						}
 					}
 				}
-				GCCoreCommandGCInv.savedata.put(name.toLowerCase(), saveinv);
+				CommandGCInv.savedata.put(name.toLowerCase(), saveinv);
 			}
 		}
 	}
@@ -49,10 +49,10 @@ public class GCInvSaveData extends WorldSavedData
 	@Override
 	public void writeToNBT(NBTTagCompound toSave)
 	{
-		for (String name : GCCoreCommandGCInv.savedata.keySet())
+		for (String name : CommandGCInv.savedata.keySet())
 		{
 			NBTTagList par1NBTTagList = new NBTTagList();
-			ItemStack[] saveinv = GCCoreCommandGCInv.savedata.get(name);
+			ItemStack[] saveinv = CommandGCInv.savedata.get(name);
 
 			for (int i = 0; i < 6; i++)
 			{

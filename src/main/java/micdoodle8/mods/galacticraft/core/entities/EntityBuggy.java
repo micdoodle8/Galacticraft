@@ -10,14 +10,14 @@ import micdoodle8.mods.galacticraft.api.entity.IDockable;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.NetworkUtil;
 import micdoodle8.mods.galacticraft.core.network.PacketControllableEntity;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.network.PacketEntityUpdate;
-import micdoodle8.mods.galacticraft.core.tick.GCCoreKeyHandlerClient;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityBuggyFueler;
+import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityBuggyFueler;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -264,7 +264,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
 	public List<ItemStack> getItemsDropped()
 	{
 		final List<ItemStack> items = new ArrayList<ItemStack>();
-		items.add(new ItemStack(GCCoreItems.buggy, 1, this.buggyType));
+		items.add(new ItemStack(GCItems.buggy, 1, this.buggyType));
 
 		for (ItemStack item : this.cargoItems)
 		{
@@ -630,10 +630,10 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
 		{
 			if (this.riddenByEntity == null)
 			{
-				var1.addChatMessage(new ChatComponentText(Keyboard.getKeyName(GCCoreKeyHandlerClient.leftKey.getKeyCode()) + " / " + Keyboard.getKeyName(GCCoreKeyHandlerClient.rightKey.getKeyCode()) + "  - " + StatCollector.translateToLocal("gui.buggy.turn.name")));
-				var1.addChatMessage(new ChatComponentText(Keyboard.getKeyName(GCCoreKeyHandlerClient.accelerateKey.getKeyCode()) + "       - " + StatCollector.translateToLocal("gui.buggy.accel.name")));
-				var1.addChatMessage(new ChatComponentText(Keyboard.getKeyName(GCCoreKeyHandlerClient.decelerateKey.getKeyCode()) + "       - " + StatCollector.translateToLocal("gui.buggy.decel.name")));
-				var1.addChatMessage(new ChatComponentText(Keyboard.getKeyName(GCCoreKeyHandlerClient.openFuelGui.getKeyCode()) + "       - " + StatCollector.translateToLocal("gui.buggy.inv.name")));
+				var1.addChatMessage(new ChatComponentText(Keyboard.getKeyName(KeyHandlerClient.leftKey.getKeyCode()) + " / " + Keyboard.getKeyName(KeyHandlerClient.rightKey.getKeyCode()) + "  - " + StatCollector.translateToLocal("gui.buggy.turn.name")));
+				var1.addChatMessage(new ChatComponentText(Keyboard.getKeyName(KeyHandlerClient.accelerateKey.getKeyCode()) + "       - " + StatCollector.translateToLocal("gui.buggy.accel.name")));
+				var1.addChatMessage(new ChatComponentText(Keyboard.getKeyName(KeyHandlerClient.decelerateKey.getKeyCode()) + "       - " + StatCollector.translateToLocal("gui.buggy.decel.name")));
+				var1.addChatMessage(new ChatComponentText(Keyboard.getKeyName(KeyHandlerClient.openFuelGui.getKeyCode()) + "       - " + StatCollector.translateToLocal("gui.buggy.inv.name")));
 			}
 
 			return true;
@@ -796,7 +796,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
 	@Override
 	public boolean isDockValid(IFuelDock dock)
 	{
-		return dock instanceof GCCoreTileEntityBuggyFueler;
+		return dock instanceof TileEntityBuggyFueler;
 	}
 
 	@Override

@@ -6,9 +6,9 @@ import java.util.List;
 import micdoodle8.mods.galacticraft.api.entity.IRocketType.EnumRocketType;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase.EnumLaunchPhase;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.client.gui.GCCoreGuiContainer;
-import micdoodle8.mods.galacticraft.core.client.gui.GCCoreInfoRegion;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerRocketRefill;
+import micdoodle8.mods.galacticraft.core.client.gui.container.GuiContainerGC;
+import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerRocketInventory;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.mars.entities.EntityCargoRocket;
 import micdoodle8.mods.galacticraft.mars.network.PacketSimpleMars;
@@ -33,7 +33,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * 
  */
 @SideOnly(Side.CLIENT)
-public class GCMarsGuiCargoRocket extends GCCoreGuiContainer
+public class GCMarsGuiCargoRocket extends GuiContainerGC
 {
 	private static ResourceLocation[] rocketTextures = new ResourceLocation[4];
 
@@ -57,7 +57,7 @@ public class GCMarsGuiCargoRocket extends GCCoreGuiContainer
 
 	public GCMarsGuiCargoRocket(IInventory par1IInventory, EntityCargoRocket rocket, EnumRocketType rocketType)
 	{
-		super(new GCCoreContainerRocketRefill(par1IInventory, rocket, rocketType));
+		super(new ContainerRocketInventory(par1IInventory, rocket, rocketType));
 		this.upperChestInventory = par1IInventory;
 		this.rocket = rocket;
 		this.allowUserInput = false;
@@ -90,7 +90,7 @@ public class GCMarsGuiCargoRocket extends GCCoreGuiContainer
 		List<String> oxygenDesc = new ArrayList<String>();
 		oxygenDesc.add("Rocket fuel tank. Requires");
 		oxygenDesc.add("fuel loader to fill");
-		this.infoRegions.add(new GCCoreInfoRegion((this.width - this.xSize) / 2 + (this.rocket.rocketType.getInventorySpace() == 2 ? 70 : 71), (this.height - this.ySize) / 2 + 6, 36, 40, oxygenDesc, this.width, this.height));
+		this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + (this.rocket.rocketType.getInventorySpace() == 2 ? 70 : 71), (this.height - this.ySize) / 2 + 6, 36, 40, oxygenDesc, this.width, this.height));
 	}
 
 	@Override

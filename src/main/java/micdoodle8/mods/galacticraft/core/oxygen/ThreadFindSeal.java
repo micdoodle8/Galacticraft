@@ -9,10 +9,10 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
-import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
-import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerServer;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenSealer;
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenSealer;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.wrappers.ScheduledBlockChange;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -36,29 +36,29 @@ public class ThreadFindSeal extends Thread
 	public BlockVec3 head;
 	public AtomicBoolean sealedFinal = new AtomicBoolean();
 	private boolean sealed;
-	public List<GCCoreTileEntityOxygenSealer> sealers;
+	public List<TileEntityOxygenSealer> sealers;
 	public List<BlockVec3> oxygenReliantBlocks;
 	public HashSet<BlockVec3> checked;
 	public HashSet<BlockVec3> partiallySealableChecked;
 	public int checkCount;
 	public static AtomicBoolean anylooping = new AtomicBoolean();
 	public AtomicBoolean looping = new AtomicBoolean();
-	private HashMap<BlockVec3, GCCoreTileEntityOxygenSealer> sealersAround = new HashMap<BlockVec3, GCCoreTileEntityOxygenSealer>();
+	private HashMap<BlockVec3, TileEntityOxygenSealer> sealersAround = new HashMap<BlockVec3, TileEntityOxygenSealer>();
 	private Block breatheableAirID;
 	private Block oxygenSealerID;
 	private List<BlockVec3> currentLayer = new LinkedList<BlockVec3>();
 	private List<BlockVec3> nextLayer;
 	private List<BlockVec3> airToReplace = new LinkedList<BlockVec3>();
 	private List<BlockVec3> breatheableToReplace = new LinkedList<BlockVec3>();
-	private List<GCCoreTileEntityOxygenSealer> otherSealers = new LinkedList<GCCoreTileEntityOxygenSealer>();
+	private List<TileEntityOxygenSealer> otherSealers = new LinkedList<TileEntityOxygenSealer>();
 
-	public ThreadFindSeal(GCCoreTileEntityOxygenSealer sealer)
+	public ThreadFindSeal(TileEntityOxygenSealer sealer)
 	{
-		this(sealer.getWorldObj(), new BlockVec3(sealer).translate(0, 1, 0), sealer.getFindSealChecks(), new ArrayList<GCCoreTileEntityOxygenSealer>(Arrays.asList(sealer)));
+		this(sealer.getWorldObj(), new BlockVec3(sealer).translate(0, 1, 0), sealer.getFindSealChecks(), new ArrayList<TileEntityOxygenSealer>(Arrays.asList(sealer)));
 	}
 
 	@SuppressWarnings("unchecked")
-	public ThreadFindSeal(World world, BlockVec3 head, int checkCount, List<GCCoreTileEntityOxygenSealer> sealers)
+	public ThreadFindSeal(World world, BlockVec3 head, int checkCount, List<TileEntityOxygenSealer> sealers)
 	{
 		super("GC Sealer Roomfinder Thread");
 		ThreadFindSeal.anylooping.set(true);
@@ -69,8 +69,8 @@ public class ThreadFindSeal extends Thread
 		this.oxygenReliantBlocks = new ArrayList<BlockVec3>();
 		this.checked = new HashSet<BlockVec3>();
 		this.partiallySealableChecked = new HashSet<BlockVec3>();
-		this.breatheableAirID = GCCoreBlocks.breatheableAir;
-		this.oxygenSealerID = GCCoreBlocks.oxygenSealer;
+		this.breatheableAirID = GCBlocks.breatheableAir;
+		this.oxygenSealerID = GCBlocks.oxygenSealer;
 
 		if (this.isAlive())
 		{
@@ -79,9 +79,9 @@ public class ThreadFindSeal extends Thread
 
 		for (TileEntity tile : new ArrayList<TileEntity>(world.loadedTileEntityList))
 		{
-			if (tile instanceof GCCoreTileEntityOxygenSealer && tile.getDistanceFrom(head.x, head.y, head.z) < 2048 * 2048)
+			if (tile instanceof TileEntityOxygenSealer && tile.getDistanceFrom(head.x, head.y, head.z) < 2048 * 2048)
 			{
-				this.sealersAround.put(new BlockVec3(tile.xCoord, tile.yCoord, tile.zCoord), (GCCoreTileEntityOxygenSealer) tile);
+				this.sealersAround.put(new BlockVec3(tile.xCoord, tile.yCoord, tile.zCoord), (TileEntityOxygenSealer) tile);
 			}
 		}
 
@@ -129,7 +129,7 @@ public class ThreadFindSeal extends Thread
 				{
 					changeList.add(new ScheduledBlockChange(checkedVec.clone(), this.breatheableAirID, 0, 3));
 				}
-				GCCoreTickHandlerServer.scheduleNewBlockChange(this.world.provider.dimensionId, changeList);
+				TickHandlerServer.scheduleNewBlockChange(this.world.provider.dimensionId, changeList);
 			}
 		}
 		else
@@ -148,8 +148,8 @@ public class ThreadFindSeal extends Thread
 			{
 				// OtherSealers will have members if the space to be made
 				// unbreathable actually still has an unchecked sealer in it
-				List<GCCoreTileEntityOxygenSealer> sealersDone = this.sealers;
-				for (GCCoreTileEntityOxygenSealer otherSealer : this.otherSealers)
+				List<TileEntityOxygenSealer> sealersDone = this.sealers;
+				for (TileEntityOxygenSealer otherSealer : this.otherSealers)
 				{
 					// If it hasn't already been counted, need to check the
 					// other sealer immediately in case it can keep the space
@@ -159,7 +159,7 @@ public class ThreadFindSeal extends Thread
 						BlockVec3 newhead = new BlockVec3(otherSealer).translate(0, 1, 0);
 						this.sealed = true;
 						this.checkCount = otherSealer.getFindSealChecks();
-						this.sealers = new LinkedList<GCCoreTileEntityOxygenSealer>();
+						this.sealers = new LinkedList<TileEntityOxygenSealer>();
 						this.sealers.add(otherSealer);
 						this.checked.clear();
 						this.checked.add(newhead);
@@ -180,11 +180,11 @@ public class ThreadFindSeal extends Thread
 						// should take over as head
 						if (this.sealed)
 						{
-							if (GCCoreConfigManager.enableDebug)
+							if (ConfigManagerCore.enableDebug)
 							{
 								FMLLog.info("Oxygen Sealer replacing head at x" + this.head.x + " y" + (this.head.y - 1) + " z" + this.head.z);
 							}
-							GCCoreTileEntityOxygenSealer oldHead = sealersDone.get(0);
+							TileEntityOxygenSealer oldHead = sealersDone.get(0);
 							if (!this.sealers.contains(oldHead))
 							{
 								this.sealers.add(oldHead);
@@ -210,7 +210,7 @@ public class ThreadFindSeal extends Thread
 				{
 					changeList.add(new ScheduledBlockChange(checkedVec.clone(), Blocks.air, 0, 3));
 				}
-				GCCoreTickHandlerServer.scheduleNewBlockChange(this.world.provider.dimensionId, changeList);
+				TickHandlerServer.scheduleNewBlockChange(this.world.provider.dimensionId, changeList);
 			}
 		}
 
@@ -218,9 +218,9 @@ public class ThreadFindSeal extends Thread
 		// own seal checks for a while
 		// (The player can control which is the head sealer in a space by
 		// enabling just that one and disabling all the others)
-		GCCoreTileEntityOxygenSealer headSealer = this.sealersAround.get(this.head.translate(0, -1, 0));
+		TileEntityOxygenSealer headSealer = this.sealersAround.get(this.head.translate(0, -1, 0));
 
-		for (GCCoreTileEntityOxygenSealer sealer : this.sealers)
+		for (TileEntityOxygenSealer sealer : this.sealers)
 		{
 			// Sealers which are not the head sealer: put them on cooldown so
 			// the inactive ones don't start their own threads and so unseal
@@ -241,7 +241,7 @@ public class ThreadFindSeal extends Thread
 
 		this.looping.set(false);
 
-		if (GCCoreConfigManager.enableDebug)
+		if (ConfigManagerCore.enableDebug)
 		{
 			long time3 = System.nanoTime();
 			FMLLog.info("Oxygen Sealer Check Completed at x" + this.head.x + " y" + this.head.y + " z" + this.head.z);
@@ -280,7 +280,7 @@ public class ThreadFindSeal extends Thread
 						}
 						else if (id == this.oxygenSealerID)
 						{
-							GCCoreTileEntityOxygenSealer sealer = this.sealersAround.get(sideVec);
+							TileEntityOxygenSealer sealer = this.sealersAround.get(sideVec);
 							if (sealer != null)
 							{
 								if (!this.sealers.contains(sealer))
@@ -353,7 +353,7 @@ public class ThreadFindSeal extends Thread
 								}
 								else if (id == this.oxygenSealerID)
 								{
-									GCCoreTileEntityOxygenSealer sealer = this.sealersAround.get(sideVec);
+									TileEntityOxygenSealer sealer = this.sealersAround.get(sideVec);
 
 									if (sealer != null)
 									{
@@ -422,7 +422,7 @@ public class ThreadFindSeal extends Thread
 										}
 										else if (id == this.oxygenSealerID)
 										{
-											GCCoreTileEntityOxygenSealer sealer = this.sealersAround.get(sideVec);
+											TileEntityOxygenSealer sealer = this.sealersAround.get(sideVec);
 											if (sealer != null)
 											{
 												if (!this.sealers.contains(sealer))
@@ -513,7 +513,7 @@ public class ThreadFindSeal extends Thread
 							}
 							else if (id == this.oxygenSealerID)
 							{
-								GCCoreTileEntityOxygenSealer sealer = this.sealersAround.get(sideVec);
+								TileEntityOxygenSealer sealer = this.sealersAround.get(sideVec);
 
 								if (sealer != null)
 								{

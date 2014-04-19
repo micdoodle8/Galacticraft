@@ -4,12 +4,12 @@ import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
-import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
 import net.minecraft.entity.player.EntityPlayer;
@@ -87,7 +87,7 @@ public class EntityTier2Rocket extends EntityTieredRocket
 			i = 1;
 		}
 
-		if ((this.getLaunched() || this.launchPhase == EnumLaunchPhase.IGNITED.ordinal() && this.rand.nextInt(i) == 0) && !GCCoreConfigManager.disableSpaceshipParticles && this.hasValidFuel())
+		if ((this.getLaunched() || this.launchPhase == EnumLaunchPhase.IGNITED.ordinal() && this.rand.nextInt(i) == 0) && !ConfigManagerCore.disableSpaceshipParticles && this.hasValidFuel())
 		{
 			if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
 			{
@@ -147,7 +147,7 @@ public class EntityTier2Rocket extends EntityTieredRocket
 	@Override
 	public void onTeleport(EntityPlayerMP player)
 	{
-		GCCorePlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player, false);
+		GCEntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player, false);
 
 		GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, new Object[] { 0 }));
 
@@ -248,7 +248,7 @@ public class EntityTier2Rocket extends EntityTieredRocket
 	@Override
 	public boolean isDockValid(IFuelDock dock)
 	{
-		return dock instanceof GCCoreTileEntityLandingPad;
+		return dock instanceof TileEntityLandingPad;
 	}
 
 //	@RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID = "ICBM|Explosion")

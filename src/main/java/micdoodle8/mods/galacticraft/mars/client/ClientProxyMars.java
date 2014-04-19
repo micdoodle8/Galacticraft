@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.mars.client;
 
-import micdoodle8.mods.galacticraft.core.client.GCCoreCloudRenderer;
-import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderOxygenBubble;
-import micdoodle8.mods.galacticraft.core.client.render.entities.GCCoreRenderSpaceship;
-import micdoodle8.mods.galacticraft.core.client.render.item.GCCoreItemRendererKey;
+import micdoodle8.mods.galacticraft.core.client.CloudRenderer;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderBubble;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderTier1Rocket;
+import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererKey;
 import micdoodle8.mods.galacticraft.mars.CommonProxyMars;
 import micdoodle8.mods.galacticraft.mars.GCMarsConfigManager;
 import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
@@ -120,15 +120,15 @@ public class ClientProxyMars extends CommonProxyMars
 		RenderingRegistry.registerEntityRenderingHandler(EntitySludgeling.class, new GCMarsRenderSludgeling());
 		RenderingRegistry.registerEntityRenderingHandler(EntitySlimeling.class, new GCMarsRenderSlimeling());
 		RenderingRegistry.registerEntityRenderingHandler(EntityCreeperBoss.class, new GCMarsRenderCreeperBoss());
-		RenderingRegistry.registerEntityRenderingHandler(EntityTier2Rocket.class, new GCCoreRenderSpaceship(new GCMarsModelSpaceshipTier2(), GalacticraftMars.TEXTURE_DOMAIN, "rocketT2"));
-		RenderingRegistry.registerEntityRenderingHandler(EntityTerraformBubble.class, new GCCoreRenderOxygenBubble(0.25F, 1.0F, 0.25F));
+		RenderingRegistry.registerEntityRenderingHandler(EntityTier2Rocket.class, new RenderTier1Rocket(new GCMarsModelSpaceshipTier2(), GalacticraftMars.TEXTURE_DOMAIN, "rocketT2"));
+		RenderingRegistry.registerEntityRenderingHandler(EntityTerraformBubble.class, new RenderBubble(0.25F, 1.0F, 0.25F));
 		RenderingRegistry.registerEntityRenderingHandler(EntityProjectileTNT.class, new GCMarsRenderProjectileTNT());
 		RenderingRegistry.registerEntityRenderingHandler(EntityLandingBalloons.class, new GCMarsRenderLandingBalloons());
 		RenderingRegistry.registerEntityRenderingHandler(EntityLandingBalloons.class, new GCMarsRenderLandingBalloons());
 		RenderingRegistry.registerEntityRenderingHandler(EntityCargoRocket.class, new GCMarsRenderCargoRocket(cargoRocketModel));
 		RenderingRegistry.addNewArmourRendererPrefix("desh");
 		MinecraftForgeClient.registerItemRenderer(GCMarsItems.spaceship, new GCMarsItemRendererSpaceshipT2(cargoRocketModel));
-		MinecraftForgeClient.registerItemRenderer(GCMarsItems.key, new GCCoreItemRendererKey(new ResourceLocation(GalacticraftMars.TEXTURE_DOMAIN, "textures/model/treasure.png")));
+		MinecraftForgeClient.registerItemRenderer(GCMarsItems.key, new ItemRendererKey(new ResourceLocation(GalacticraftMars.TEXTURE_DOMAIN, "textures/model/treasure.png")));
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(GCMarsBlocks.machine), new GCMarsItemRendererMachine(chamberModel));
 	}
 
@@ -248,7 +248,7 @@ public class ClientProxyMars extends CommonProxyMars
 
 					if (world.provider.getCloudRenderer() == null)
 					{
-						world.provider.setCloudRenderer(new GCCoreCloudRenderer());
+						world.provider.setCloudRenderer(new CloudRenderer());
 					}
 				}
 

@@ -17,7 +17,7 @@ import net.minecraft.world.World;
  */
 public class AirLockProtocol
 {
-	ArrayList<GCCoreTileEntityAirLock> adjacentAirLocks;
+	ArrayList<TileEntityAirLock> adjacentAirLocks;
 	private final World worldObj;
 	private final TileEntity head;
 	private final int maxLoops;
@@ -37,7 +37,7 @@ public class AirLockProtocol
 
 	public AirLockProtocol(TileEntity head, int maxLoops)
 	{
-		this.adjacentAirLocks = new ArrayList<GCCoreTileEntityAirLock>();
+		this.adjacentAirLocks = new ArrayList<TileEntityAirLock>();
 		this.worldObj = head.getWorldObj();
 		this.head = head;
 		this.maxLoops = maxLoops;
@@ -58,16 +58,16 @@ public class AirLockProtocol
 
 						if (!(x == 0 && y == 0 && z == 0))
 						{
-							if (tile != null && tile instanceof GCCoreTileEntityAirLock && !this.adjacentAirLocks.contains(tile))
+							if (tile != null && tile instanceof TileEntityAirLock && !this.adjacentAirLocks.contains(tile))
 							{
 								if (this.horizontal && tile.yCoord == this.head.yCoord)
 								{
-									this.adjacentAirLocks.add((GCCoreTileEntityAirLock) tile);
+									this.adjacentAirLocks.add((TileEntityAirLock) tile);
 									this.loopThrough(tile, loops - 1);
 								}
 								else if (!this.horizontal && tile.xCoord == this.head.xCoord || tile.zCoord == this.head.zCoord)
 								{
-									this.adjacentAirLocks.add((GCCoreTileEntityAirLock) tile);
+									this.adjacentAirLocks.add((TileEntityAirLock) tile);
 									this.loopThrough(tile, loops - 1);
 								}
 							}
@@ -79,24 +79,24 @@ public class AirLockProtocol
 	}
 
 	@Deprecated
-	public ArrayList<GCCoreTileEntityAirLock> calculate()
+	public ArrayList<TileEntityAirLock> calculate()
 	{
 		return this.calculate(false);
 	}
 
-	public ArrayList<GCCoreTileEntityAirLock> calculate(boolean horizontal)
+	public ArrayList<TileEntityAirLock> calculate(boolean horizontal)
 	{
 		if (this.worldObj.isRemote)
 		{
 			return null;
 		}
 
-		this.adjacentAirLocks = new ArrayList<GCCoreTileEntityAirLock>();
+		this.adjacentAirLocks = new ArrayList<TileEntityAirLock>();
 
 		this.horizontal = horizontal;
 		this.loopThrough(this.head, this.maxLoops);
 
-		for (final GCCoreTileEntityAirLock airLock : this.adjacentAirLocks)
+		for (final TileEntityAirLock airLock : this.adjacentAirLocks)
 		{
 			final Vector3 vecAt = new Vector3(airLock);
 
@@ -147,7 +147,7 @@ public class AirLockProtocol
 		{
 			final TileEntity tileAt = new Vector3(this.minX, y, this.minZ).getTileEntity(this.worldObj);
 
-			if (tileAt instanceof GCCoreTileEntityAirLock)
+			if (tileAt instanceof TileEntityAirLock)
 			{
 				this.airLocksVerticalMin++;
 			}
@@ -157,7 +157,7 @@ public class AirLockProtocol
 		{
 			final TileEntity tileAt = new Vector3(this.maxX, y, this.maxZ).getTileEntity(this.worldObj);
 
-			if (tileAt instanceof GCCoreTileEntityAirLock)
+			if (tileAt instanceof TileEntityAirLock)
 			{
 				this.airLocksVerticalMax++;
 			}
@@ -169,7 +169,7 @@ public class AirLockProtocol
 			{
 				final TileEntity tileAt = new Vector3(x, this.maxY, this.maxZ).getTileEntity(this.worldObj);
 
-				if (tileAt instanceof GCCoreTileEntityAirLock)
+				if (tileAt instanceof TileEntityAirLock)
 				{
 					this.airLocksHorizontalMax++;
 				}
@@ -179,7 +179,7 @@ public class AirLockProtocol
 			{
 				final TileEntity tileAt = new Vector3(x, this.minY, this.maxZ).getTileEntity(this.worldObj);
 
-				if (tileAt instanceof GCCoreTileEntityAirLock)
+				if (tileAt instanceof TileEntityAirLock)
 				{
 					this.airLocksHorizontalMin++;
 				}
@@ -191,7 +191,7 @@ public class AirLockProtocol
 			{
 				final TileEntity tileAt = new Vector3(this.maxX, this.maxY, z).getTileEntity(this.worldObj);
 
-				if (tileAt instanceof GCCoreTileEntityAirLock)
+				if (tileAt instanceof TileEntityAirLock)
 				{
 					this.airLocksHorizontalMax++;
 				}
@@ -201,7 +201,7 @@ public class AirLockProtocol
 			{
 				final TileEntity tileAt = new Vector3(this.maxX, this.minY, z).getTileEntity(this.worldObj);
 
-				if (tileAt instanceof GCCoreTileEntityAirLock)
+				if (tileAt instanceof TileEntityAirLock)
 				{
 					this.airLocksHorizontalMin++;
 				}

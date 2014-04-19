@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
-import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenSealer;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenSealer;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
@@ -33,7 +33,7 @@ public class OxygenPressureProtocol
 
 		try
 		{
-			for (final String s : GCCoreConfigManager.sealableIDs)
+			for (final String s : ConfigManagerCore.sealableIDs)
 			{
 				final String[] split = s.split(":");
 
@@ -60,7 +60,7 @@ public class OxygenPressureProtocol
 		}
 	}
 
-	public static void updateSealerStatus(GCCoreTileEntityOxygenSealer head)
+	public static void updateSealerStatus(TileEntityOxygenSealer head)
 	{
 		try
 		{
@@ -74,7 +74,7 @@ public class OxygenPressureProtocol
 
 	public static ThreadFindSeal onEdgeBlockUpdated(World world, BlockVec3 vec)
 	{
-		return new ThreadFindSeal(world, vec, 2000, new ArrayList<GCCoreTileEntityOxygenSealer>());
+		return new ThreadFindSeal(world, vec, 2000, new ArrayList<TileEntityOxygenSealer>());
 	}
 
 	// Note this will NPE if id==0, so don't call this with id==0

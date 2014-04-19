@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.mars.inventory;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
+import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
@@ -68,7 +68,7 @@ public class GCMarsSlotRocketBenchT2 extends Slot
 		switch (this.index)
 		{
 		case 1:
-			return par1ItemStack.getItem() == GCCoreItems.partNoseCone ? true : false;
+			return par1ItemStack.getItem() == GCItems.partNoseCone ? true : false;
 		case 2:
 			return par1ItemStack.getItem() == GCMarsItems.marsItemBasic && par1ItemStack.getItemDamage() == 3 ? true : false;
 		case 3:
@@ -90,19 +90,19 @@ public class GCMarsSlotRocketBenchT2 extends Slot
 		case 11:
 			return par1ItemStack.getItem() == GCMarsItems.marsItemBasic && par1ItemStack.getItemDamage() == 3 ? true : false;
 		case 12:
-			return par1ItemStack.getItem() == GCCoreItems.rocketEngine && par1ItemStack.getItemDamage() == 1 ? true : false;
+			return par1ItemStack.getItem() == GCItems.rocketEngine && par1ItemStack.getItemDamage() == 1 ? true : false;
 		case 13:
-			return par1ItemStack.getItem() == GCCoreItems.partFins ? true : false;
+			return par1ItemStack.getItem() == GCItems.partFins ? true : false;
 		case 14:
-			return par1ItemStack.getItem() == GCCoreItems.partFins ? true : false;
+			return par1ItemStack.getItem() == GCItems.partFins ? true : false;
 		case 15:
-			return par1ItemStack.getItem() == GCCoreItems.rocketEngine && par1ItemStack.getItemDamage() == 0 ? true : false;
+			return par1ItemStack.getItem() == GCItems.rocketEngine && par1ItemStack.getItemDamage() == 0 ? true : false;
 		case 16:
-			return par1ItemStack.getItem() == GCCoreItems.rocketEngine && par1ItemStack.getItemDamage() == 1 ? true : false;
+			return par1ItemStack.getItem() == GCItems.rocketEngine && par1ItemStack.getItemDamage() == 1 ? true : false;
 		case 17:
-			return par1ItemStack.getItem() == GCCoreItems.partFins ? true : false;
+			return par1ItemStack.getItem() == GCItems.partFins ? true : false;
 		case 18:
-			return par1ItemStack.getItem() == GCCoreItems.partFins ? true : false;
+			return par1ItemStack.getItem() == GCItems.partFins ? true : false;
 		case 19:
 			return true;
 		case 20:

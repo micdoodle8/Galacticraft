@@ -1,10 +1,9 @@
 package micdoodle8.mods.galacticraft.core.util;
 
-import micdoodle8.mods.galacticraft.core.GCCoreThreadVersionCheck;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.EntityLander;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerBuggy;
-import micdoodle8.mods.galacticraft.core.inventory.GCCoreContainerParachest;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerBuggy;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerParaChest;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import net.minecraft.block.Block;
@@ -51,7 +50,7 @@ public class GCCoreUtil
 
 	public static void checkVersion(Side side)
 	{
-		GCCoreThreadVersionCheck.startCheck(side);
+		ThreadVersionCheck.startCheck(side);
 	}
 
 	public static void openBuggyInv(EntityPlayerMP player, IInventory buggyInv, int type)
@@ -60,7 +59,7 @@ public class GCCoreUtil
 		player.closeContainer();
 		int id = player.currentWindowId;
 		GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_PARACHEST_GUI, new Object[] { id, 0, 0 }), player);
-		player.openContainer = new GCCoreContainerBuggy(player.inventory, buggyInv, type);
+		player.openContainer = new ContainerBuggy(player.inventory, buggyInv, type);
 		player.openContainer.windowId = id;
 		player.openContainer.addCraftingToCrafters(player);
 	}
@@ -71,7 +70,7 @@ public class GCCoreUtil
 		player.closeContainer();
 		int windowId = player.currentWindowId;
 		GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_PARACHEST_GUI, new Object[] { windowId, 1, landerInv.getEntityId() }), player);
-		player.openContainer = new GCCoreContainerParachest(player.inventory, landerInv);
+		player.openContainer = new ContainerParaChest(player.inventory, landerInv);
 		player.openContainer.windowId = windowId;
 		player.openContainer.addCraftingToCrafters(player);
 	}

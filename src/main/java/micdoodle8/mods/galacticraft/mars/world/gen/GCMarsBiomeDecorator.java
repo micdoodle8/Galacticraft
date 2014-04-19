@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.mars.world.gen;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.api.event.wgen.GCCoreEventPopulate;
-import micdoodle8.mods.galacticraft.core.world.gen.GCCoreWorldGenMinableMeta;
+import micdoodle8.mods.galacticraft.core.world.gen.WorldGenMinableMeta;
 import micdoodle8.mods.galacticraft.mars.blocks.GCMarsBlocks;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
@@ -34,11 +34,11 @@ public class GCMarsBiomeDecorator
 
 	public GCMarsBiomeDecorator()
 	{
-		this.copperGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.marsBlock, 4, 0, true, GCMarsBlocks.marsBlock, 9);
-		this.tinGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.marsBlock, 4, 1, true, GCMarsBlocks.marsBlock, 9);
-		this.deshGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.marsBlock, 4, 2, true, GCMarsBlocks.marsBlock, 9);
-		this.ironGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.marsBlock, 8, 3, true, GCMarsBlocks.marsBlock, 9);
-		this.dirtGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.marsBlock, 32, 6, true, GCMarsBlocks.marsBlock, 9);
+		this.copperGen = new WorldGenMinableMeta(GCMarsBlocks.marsBlock, 4, 0, true, GCMarsBlocks.marsBlock, 9);
+		this.tinGen = new WorldGenMinableMeta(GCMarsBlocks.marsBlock, 4, 1, true, GCMarsBlocks.marsBlock, 9);
+		this.deshGen = new WorldGenMinableMeta(GCMarsBlocks.marsBlock, 4, 2, true, GCMarsBlocks.marsBlock, 9);
+		this.ironGen = new WorldGenMinableMeta(GCMarsBlocks.marsBlock, 8, 3, true, GCMarsBlocks.marsBlock, 9);
+		this.dirtGen = new WorldGenMinableMeta(GCMarsBlocks.marsBlock, 32, 6, true, GCMarsBlocks.marsBlock, 9);
 	}
 
 	public void decorate(World world, Random random, int chunkX, int chunkZ)

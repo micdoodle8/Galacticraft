@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectricFurnace;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricFurnace;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -21,9 +21,9 @@ import net.minecraft.item.crafting.FurnaceRecipes;
  */
 public class ContainerElectricFurnace extends Container
 {
-	private GCCoreTileEntityElectricFurnace tileEntity;
+	private TileEntityElectricFurnace tileEntity;
 
-	public ContainerElectricFurnace(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityElectricFurnace tileEntity)
+	public ContainerElectricFurnace(InventoryPlayer par1InventoryPlayer, TileEntityElectricFurnace tileEntity)
 	{
 		this.tileEntity = tileEntity;
 
