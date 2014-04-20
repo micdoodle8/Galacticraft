@@ -28,9 +28,11 @@ public class BlockVec3 implements Cloneable
 	public int x;
 	public int y;
 	public int z;
-	private Chunk chunkCached;
-	private int chunkCacheX = 1876000; // outside the world edge
-	private int chunkCacheZ = 1876000; // outside the world edge
+	public boolean[] sideDone = {false,false,false,false,false,false};
+	private static Chunk chunkCached;
+	private static int chunkCacheX = 1876000; // outside the world edge
+	private static int chunkCacheZ = 1876000; // outside the world edge
+	
 
 	public BlockVec3()
 	{
@@ -80,17 +82,17 @@ public class BlockVec3 implements Cloneable
 		{
 			// In a typical inner loop, 80% of the time consecutive calls to
 			// this will be within the same chunk
-			if (this.chunkCacheX == chunkx && this.chunkCacheZ == chunkz && this.chunkCached.isChunkLoaded)
+			if (BlockVec3.chunkCacheX == chunkx && BlockVec3.chunkCacheZ == chunkz && BlockVec3.chunkCached.isChunkLoaded)
 			{
-				return this.chunkCached.getBlockID(this.x & 15, this.y, this.z & 15);
+				return BlockVec3.chunkCached.getBlockID(this.x & 15, this.y, this.z & 15);
 			}
 			else
 			{
 				Chunk chunk = null;
 				chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
-				this.chunkCached = chunk;
-				this.chunkCacheX = chunkx;
-				this.chunkCacheZ = chunkz;
+				BlockVec3.chunkCached = chunk;
+				BlockVec3.chunkCacheX = chunkx;
+				BlockVec3.chunkCacheZ = chunkz;
 				return chunk.getBlockID(this.x & 15, this.y, this.z & 15);
 			}
 		}
@@ -116,17 +118,17 @@ public class BlockVec3 implements Cloneable
 		{
 			// In a typical inner loop, 80% of the time consecutive calls to
 			// this will be within the same chunk
-			if (this.chunkCacheX == chunkx && this.chunkCacheZ == chunkz && this.chunkCached.isChunkLoaded)
+			if (BlockVec3.chunkCacheX == chunkx && BlockVec3.chunkCacheZ == chunkz && BlockVec3.chunkCached.isChunkLoaded)
 			{
-				return this.chunkCached.getBlockID(this.x & 15, this.y, this.z & 15);
+				return BlockVec3.chunkCached.getBlockID(this.x & 15, this.y, this.z & 15);
 			}
 			else
 			{
 				Chunk chunk = null;
 				chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
-				this.chunkCached = chunk;
-				this.chunkCacheX = chunkx;
-				this.chunkCacheZ = chunkz;
+				BlockVec3.chunkCached = chunk;
+				BlockVec3.chunkCacheX = chunkx;
+				BlockVec3.chunkCacheZ = chunkz;
 				return chunk.getBlockID(this.x & 15, this.y, this.z & 15);
 			}
 		}
@@ -206,6 +208,7 @@ public class BlockVec3 implements Cloneable
 	public BlockVec3 newVecSide(int side)
 	{
 		BlockVec3 vec = new BlockVec3(this.x, this.y, this.z);
+		vec.sideDone[side ^ 1]=true;
 		switch (side)
 		{
 		case 0:
@@ -324,5 +327,10 @@ public class BlockVec3 implements Cloneable
 	public int intZ()
 	{
 		return this.x;
+	}
+	
+	public void setSideDone(int side)
+	{
+		sideDone[side]=true;
 	}
 }

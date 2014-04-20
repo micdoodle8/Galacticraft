@@ -19,8 +19,16 @@ import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerServer;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenSealer;
 import micdoodle8.mods.galacticraft.core.wrappers.ScheduledBlockChange;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockEnchantmentTable;
 import net.minecraft.block.BlockFarmland;
+import net.minecraft.block.BlockFluid;
+import net.minecraft.block.BlockGlass;
+import net.minecraft.block.BlockGravel;
 import net.minecraft.block.BlockHalfSlab;
+import net.minecraft.block.BlockLeavesBase;
+import net.minecraft.block.BlockPistonBase;
+import net.minecraft.block.BlockSponge;
+import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
@@ -42,15 +50,14 @@ public class ThreadFindSeal //extends Thread
 	public AtomicBoolean sealedFinal = new AtomicBoolean();
 	private boolean sealed;
 	public List<GCCoreTileEntityOxygenSealer> sealers;
-	public List<BlockVec3> oxygenReliantBlocks;
+	//public List<BlockVec3> oxygenReliantBlocks;
 	public HashSet<BlockVec3> checked;
-	public HashSet<BlockVec3> partiallySealableChecked;
 	public int checkCount;
 	//public static AtomicBoolean anylooping = new AtomicBoolean();
 	public AtomicBoolean looping = new AtomicBoolean();
 	private HashMap<BlockVec3, GCCoreTileEntityOxygenSealer> sealersAround = new HashMap<BlockVec3, GCCoreTileEntityOxygenSealer>();
-	private int breatheableAirID;
-	private int oxygenSealerID;
+	private static int breatheableAirID;
+	private static  int oxygenSealerID;
 	private List<BlockVec3> currentLayer = new LinkedList<BlockVec3>();
 	private List<BlockVec3> nextLayer;
 	private List<BlockVec3> airToReplace = new LinkedList<BlockVec3>();
@@ -58,6 +65,11 @@ public class ThreadFindSeal //extends Thread
 	private List<GCCoreTileEntityOxygenSealer> otherSealers = new LinkedList<GCCoreTileEntityOxygenSealer>();
 	private List<BlockVec3> torchesToUpdate = new LinkedList<BlockVec3>();
 
+	static{
+		ThreadFindSeal.breatheableAirID = GCCoreBlocks.breatheableAir.blockID;
+		ThreadFindSeal.oxygenSealerID = GCCoreBlocks.oxygenSealer.blockID;
+	}
+	
 	public ThreadFindSeal(GCCoreTileEntityOxygenSealer sealer)
 	{
 		this(sealer.worldObj, new BlockVec3(sealer).translate(0, 1, 0), sealer.getFindSealChecks(), new ArrayList<GCCoreTileEntityOxygenSealer>(Arrays.asList(sealer)));
@@ -72,14 +84,20 @@ public class ThreadFindSeal //extends Thread
 		this.head = head;
 		this.checkCount = checkCount;
 		this.sealers = sealers;
-		this.oxygenReliantBlocks = new ArrayList<BlockVec3>();
+		//this.oxygenReliantBlocks = new ArrayList<BlockVec3>();
 		this.checked = new HashSet<BlockVec3>();
-		this.partiallySealableChecked = new HashSet<BlockVec3>();
-		this.breatheableAirID = GCCoreBlocks.breatheableAir.blockID;
-		this.oxygenSealerID = GCCoreBlocks.oxygenSealer.blockID;
 
 		//If called by a sealer test the head block and include it in partiallySealableChecked if required
-		if (!sealers.isEmpty() && checkCount>0) testBlockPassAirFirst(head, 1);
+		if (!sealers.isEmpty() && checkCount>0)
+		{	
+			int id = head.getBlockID(this.world);
+			if (id>0 && id!=ThreadFindSeal.breatheableAirID)
+			{
+				canBlockPassAirCheck(id, this.head, 1);
+				//reset the checkCount as canBlockPassAirCheck might have changed it
+				this.checkCount = checkCount;
+			}
+		}
 
 		/*
 		if (this.isAlive())
@@ -116,10 +134,12 @@ public class ThreadFindSeal //extends Thread
 			this.currentLayer.add(this.head.clone());
 			if (this.head.x < -29990000 || this.head.z < -29990000 || this.head.x >= 29990000 || this.head.z >= 29990000)
 			{
+				if (this.sealers.size()>0 && head.getBlockID(world)==0) this.airToReplace.add(this.head);
 				this.doLayerNearMapEdge();
 			}
 			else
 			{
+				if (this.sealers.size()>0 && head.getBlockIDsafe(world)==0) this.airToReplace.add(this.head);
 				this.doLayer();
 			}
 		}
@@ -143,7 +163,7 @@ public class ThreadFindSeal //extends Thread
 				for (BlockVec3 checkedVec : this.airToReplace)
 				{
 					//No block update for performance reasons; deal with unlit torches separately
-					changeList.add(new ScheduledBlockChange(checkedVec.clone(), this.breatheableAirID, 0, 2));
+					changeList.add(new ScheduledBlockChange(checkedVec.clone(), ThreadFindSeal.breatheableAirID, 0, 2));
 				}
 				GCCoreTickHandlerServer.scheduleNewBlockChange(this.world.provider.dimensionId, changeList);
 
@@ -230,7 +250,7 @@ public class ThreadFindSeal //extends Thread
 
 			if (this.sealed == false)
 			{
-				if (head.getBlockID(world)==breatheableAirID) this.breatheableToReplace.add(head);
+				if (head.getBlockID(world)==ThreadFindSeal.breatheableAirID) this.breatheableToReplace.add(head);
 				if(!this.breatheableToReplace.isEmpty())
 				{
 					List<ScheduledBlockChange> changeList = new LinkedList<ScheduledBlockChange>();
@@ -259,6 +279,9 @@ public class ThreadFindSeal //extends Thread
 		// enabling just that one and disabling all the others)
 		GCCoreTileEntityOxygenSealer headSealer = this.sealersAround.get(this.head.translate(0, -1, 0));
 
+		// If it is sealed, cooldown can be extended as frequent checks are not needed
+		if (headSealer != null) headSealer.stopSealThreadCooldown += 75;
+		
 		for (GCCoreTileEntityOxygenSealer sealer : this.sealers)
 		{
 			// Sealers which are not the head sealer: put them on cooldown so
@@ -302,25 +325,23 @@ public class ThreadFindSeal //extends Thread
 		{
 			for (BlockVec3 vec : this.currentLayer)
 			{
-				if (this.partiallySealableChecked.isEmpty() || !this.partiallySealableChecked.contains(vec))
-				{
-				
 				for (int side = 0; side < 6; side++)
 				{
+					if (vec.sideDone[side]) continue;
 					BlockVec3 sideVec = vec.newVecSide(side);
 
 					if (!this.checked.contains(sideVec))
 					{
 						this.checked.add(sideVec);
 						int id = sideVec.getBlockID(this.world);
-						if (id == this.breatheableAirID)
+						if (id == ThreadFindSeal.breatheableAirID)
 						{
 							this.breatheableToReplace.add(sideVec);
 							// Only follow paths with adjacent breatheableAir
 							// blocks - this now can't jump through walls etc
 							this.nextLayer.add(sideVec);
 						}
-						else if (id == this.oxygenSealerID)
+						else if (id == ThreadFindSeal.oxygenSealerID)
 						{
 							GCCoreTileEntityOxygenSealer sealer = this.sealersAround.get(sideVec);
 							if (sealer != null)
@@ -338,48 +359,8 @@ public class ThreadFindSeal //extends Thread
 						}
 					}
 				}
-			} else
-				// special case: repeat all the same code 
-				// for a partially sealable block
-				{
-					int partialBlockID = vec.getBlockIDsafe(this.world);
-						for (int side = 0; side < 6; side++)
-						{
-							if (partialBlockID > 0 && OxygenPressureProtocol.canBlockPassAir(this.world,partialBlockID, vec, side ^ 1))
-							{
-								BlockVec3 sideVec = vec.newVecSide(side);
-
-								if (!this.checked.contains(sideVec))
-								{
-									this.checked.add(sideVec);
-									int id = sideVec.getBlockID(this.world);
-									if (id == this.breatheableAirID)
-									{
-										this.breatheableToReplace.add(sideVec);
-										this.nextLayer.add(sideVec);
-									}
-									else if (id == this.oxygenSealerID)
-									{
-										GCCoreTileEntityOxygenSealer sealer = this.sealersAround.get(sideVec);
-										if (sealer != null)
-										{
-											if (!this.sealers.contains(sealer))
-											{
-												this.otherSealers.add(sealer);
-											}
-										}
-									}
-									else if (id>0 && this.canBlockPassAirCheck(id, sideVec, side))
-									{
-										this.nextLayer.add(sideVec);
-									}
-								}
-							}
-						}
-					this.partiallySealableChecked.remove(vec);
-				}
 			}
-
+			
 			// Set up the next layer as current layer for the while loop
 			this.currentLayer = this.nextLayer;
 			this.nextLayer = new LinkedList<BlockVec3>();
@@ -393,10 +374,11 @@ public class ThreadFindSeal //extends Thread
 		{
 			for (BlockVec3 vec : this.currentLayer)
 			{
-				if (this.partiallySealableChecked.isEmpty() || !this.partiallySealableChecked.contains(vec))
-				{
 					for (int side = 0; side < 6; side++)
 					{
+						//Skip the side which this was entered from
+						//This is also used to skip looking on the solid sides of partially sealable blocks
+						if (vec.sideDone[side]) continue;
 						// The sides 0 to 5 correspond with the ForgeDirections
 						// but saves a bit of time not to call ForgeDirection
 						BlockVec3 sideVec = vec.newVecSide(side);
@@ -413,7 +395,12 @@ public class ThreadFindSeal //extends Thread
 								// the y coordinates are out of bounds - so this
 								// won't keep iterating into the void or the
 								// stratosphere
-								if (id == 0)
+								if (id == ThreadFindSeal.breatheableAirID)
+								// The most likely case
+								{
+									this.nextLayer.add(sideVec);
+								}	
+								else if (id == 0)
 								{
 									this.nextLayer.add(sideVec);
 									this.airToReplace.add(sideVec);
@@ -434,11 +421,11 @@ public class ThreadFindSeal //extends Thread
 									this.sealed = false;
 									break LAYERLOOP;
 								}
-								else if (id == this.breatheableAirID || this.canBlockPassAirCheck(id, sideVec, side))
+								else if (this.canBlockPassAirCheck(id, sideVec, side))
 								{
 									this.nextLayer.add(sideVec);
 								}
-								else if (id == this.oxygenSealerID)
+								else if (id == ThreadFindSeal.oxygenSealerID)
 								{
 									GCCoreTileEntityOxygenSealer sealer = this.sealersAround.get(sideVec);
 
@@ -457,7 +444,7 @@ public class ThreadFindSeal //extends Thread
 								int id = sideVec.getBlockIDsafe(this.world);
 								// id == -1 means the void or height y>255, both
 								// of which are unsealed obviously
-								if (id == 0 || id == this.breatheableAirID || id == -1 || this.canBlockPassAirCheck(id, sideVec, side))
+								if (id == 0 || id == ThreadFindSeal.breatheableAirID || id == -1 || this.canBlockPassAirCheck(id, sideVec, side))
 								{
 									this.sealed = false;
 									break LAYERLOOP;
@@ -466,67 +453,6 @@ public class ThreadFindSeal //extends Thread
 						}
 					}
 				}
-				else
-				// special case: repeat all the same code 
-				// for a partially sealable block
-				{
-					int partialBlockID = vec.getBlockIDsafe(this.world);
-						for (int side = 0; side < 6; side++)
-						{
-							// Only explore the unsealed sides (testing issealed from inside out)
-							if (partialBlockID > 0 && OxygenPressureProtocol.canBlockPassAir(this.world,partialBlockID, vec, side ^ 1))
-							{
-								BlockVec3 sideVec = vec.newVecSide(side);
-								if (!this.checked.contains(sideVec))
-								{
-									if (this.checkCount > 0)
-									{
-										this.checkCount--;
-										this.checked.add(sideVec);
-										int id = sideVec.getBlockIDsafe(this.world);
-										if (id == 0)
-										{
-											this.nextLayer.add(sideVec);
-											this.airToReplace.add(sideVec);
-										}
-										else if (id == -1)
-										{
-											this.checkCount = 0;
-											this.sealed = false;
-											break LAYERLOOP;
-										}
-										else if (id == this.breatheableAirID || this.canBlockPassAirCheck(id, sideVec, side))
-										{
-											this.nextLayer.add(sideVec);
-										}
-										else if (id == this.oxygenSealerID)
-										{
-											GCCoreTileEntityOxygenSealer sealer = this.sealersAround.get(sideVec);
-											if (sealer != null)
-											{
-												if (!this.sealers.contains(sealer))
-												{
-													this.sealers.add(sealer);
-													this.checkCount += sealer.getFindSealChecks();
-												}
-											}
-										}
-									}
-									else if (this.sealed)
-									{
-										int id = sideVec.getBlockIDsafe(this.world);
-										if (id == 0 || id == this.breatheableAirID || id == -1 || this.canBlockPassAirCheck(id, sideVec, side))
-										{
-											this.sealed = false;
-											break LAYERLOOP;
-										}
-									}
-								}
-							}
-						}
-					this.partiallySealableChecked.remove(vec);
-				}
-			}
 
 			// Is there a further layer of air/permeable blocks to test?
 			this.currentLayer = this.nextLayer;
@@ -541,12 +467,11 @@ public class ThreadFindSeal //extends Thread
 		{
 			for (BlockVec3 vec : this.currentLayer)
 			{
-				if (this.partiallySealableChecked.isEmpty() || !this.partiallySealableChecked.contains(vec))
-				{
 				for (int side = 0; side < 6; side++)
 				{
 					// The sides 0 to 5 correspond with the ForgeDirections but
 					// saves a bit of time not to call ForgeDirection
+					if (vec.sideDone[side]) continue;
 					BlockVec3 sideVec = vec.newVecSide(side);
 
 					if (!this.checked.contains(sideVec))
@@ -582,11 +507,11 @@ public class ThreadFindSeal //extends Thread
 								this.sealed = false;
 								break LAYERLOOPNME;
 							}
-							else if (id == this.breatheableAirID || this.canBlockPassAirCheck(id, sideVec, side))
+							else if (id == ThreadFindSeal.breatheableAirID || this.canBlockPassAirCheck(id, sideVec, side))
 							{
 								this.nextLayer.add(sideVec);
 							}
-							else if (id == this.oxygenSealerID)
+							else if (id == ThreadFindSeal.oxygenSealerID)
 							{
 								GCCoreTileEntityOxygenSealer sealer = this.sealersAround.get(sideVec);
 
@@ -605,7 +530,7 @@ public class ThreadFindSeal //extends Thread
 							int id = sideVec.getBlockID(this.world);
 							// id == -1 means the void or height y>255, both of
 							// which are unsealed obviously
-							if (id == 0 || id == this.breatheableAirID || id == -1 || this.canBlockPassAirCheck(id, sideVec, side))
+							if (id == 0 || id == ThreadFindSeal.breatheableAirID || id == -1 || this.canBlockPassAirCheck(id, sideVec, side))
 							{
 								this.sealed = false;
 								break LAYERLOOPNME;
@@ -613,67 +538,7 @@ public class ThreadFindSeal //extends Thread
 						}
 					}
 				}
-			}	else
-				// special case: repeat all the same code 
-				// for a partially sealable block
-				{
-				int partialBlockID = vec.getBlockID(this.world);
-				for (int side = 0; side < 6; side++)
-				{
-					// Only explore the unsealed sides (testing issealed from inside out)
-					if (OxygenPressureProtocol.canBlockPassAir(this.world,partialBlockID, vec, side ^ 1))
-					{
-						BlockVec3 sideVec = vec.newVecSide(side);
-						if (!this.checked.contains(sideVec))
-						{
-							if (this.checkCount > 0)
-							{
-								this.checkCount--;
-								this.checked.add(sideVec);
-								int id = sideVec.getBlockID(this.world);
-								if (id == 0)
-								{
-									this.nextLayer.add(sideVec);
-									this.airToReplace.add(sideVec);
-								}
-								else if (id == -1)
-								{
-									this.checkCount = 0;
-									this.sealed = false;
-									break LAYERLOOPNME;
-								}
-								else if (id == this.breatheableAirID || this.canBlockPassAirCheck(id, sideVec, side))
-								{
-									this.nextLayer.add(sideVec);
-								}
-								else if (id == this.oxygenSealerID)
-								{
-									GCCoreTileEntityOxygenSealer sealer = this.sealersAround.get(sideVec);
-									if (sealer != null)
-									{
-										if (!this.sealers.contains(sealer))
-										{
-											this.sealers.add(sealer);
-											this.checkCount += sealer.getFindSealChecks();
-										}
-									}
-								}
-							}
-							else if (this.sealed)
-							{
-								int id = sideVec.getBlockID(this.world);
-								if (id == 0 || id == this.breatheableAirID || id == -1 || this.canBlockPassAirCheck(id, sideVec, side))
-								{
-									this.sealed = false;
-									break LAYERLOOPNME;
-								}
-							}
-						}
-					}
-				}
-				}
 			}
-
 			// Is there a further layer of air/permeable blocks to test?
 			this.currentLayer = this.nextLayer;
 			this.nextLayer = new LinkedList<BlockVec3>();
@@ -683,159 +548,148 @@ public class ThreadFindSeal //extends Thread
 	// Note this will NPE if id==0, so don't call this with id==0
 	private boolean canBlockPassAirCheck(int id, BlockVec3 vec, int side)
 	{
-		if (OxygenPressureProtocol.vanillaPermeableBlocks.contains(id))
+		Block block = Block.blocksList[id];
+
+		//Check leaves first, because their isOpaqueCube() test depends on graphics settings
+		//(See net.minecraft.block.BlockLeaves.isOpaqueCube()!)
+		if (block instanceof BlockLeavesBase)
 		{
 			return true;
 		}
-
-		Block block = Block.blocksList[id];
-
-		if (!block.isOpaqueCube()) 
+		
+		if (block.isOpaqueCube()) 
 		{
-			if (block instanceof IPartialSealableBlock)
+			//Gravel, wool and sponge are porous
+			if (block instanceof BlockGravel || block.blockMaterial == Material.cloth || block instanceof BlockSponge)
 			{
-				if (((IPartialSealableBlock) block).isSealed(this.world, vec.x, vec.y, vec.z, ForgeDirection.getOrientation(side)))
-				{
-					// If a partial block checks as solid, allow it to be tested
-					// again from other directions
-					// This won't cause an endless loop, because the block won't
-					// be included in nextLayer if it checks as solid
-					this.checked.remove(vec);
-					this.checkCount--;
-					return false;
-				}
-				this.partiallySealableChecked.add(vec);
 				return true;
 			}
+			
+			return false;
+		}
+		
+		if (block instanceof BlockGlass)
+		{
+			return false;
+		}
 
-			if (block instanceof GCCoreBlockUnlitTorch)
-			{
-				torchesToUpdate.add(vec);
-				return true;
-			}
+		//Solid but non-opaque blocks, for example special glass
+		if (OxygenPressureProtocol.nonPermeableBlocks.containsKey(id) && OxygenPressureProtocol.nonPermeableBlocks.get(id).contains(vec.getBlockMetadata(this.world)))
+		{
+			return false;
+		}
 
-			//Solid but non-opaque blocks, for example glass
-			if (OxygenPressureProtocol.nonPermeableBlocks.containsKey(id) && OxygenPressureProtocol.nonPermeableBlocks.get(id).contains(vec.getBlockMetadata(this.world)))
+		if (block instanceof IPartialSealableBlock)
+		{
+			IPartialSealableBlock blockPartial = (IPartialSealableBlock) block; 
+			if (blockPartial.isSealed(this.world, vec.x, vec.y, vec.z, ForgeDirection.getOrientation(side)))
 			{
+				// If a partial block checks as solid, allow it to be tested
+				// again from other directions
+				// This won't cause an endless loop, because the block won't
+				// be included in nextLayer if it checks as solid
+				this.checked.remove(vec);
+				this.checkCount--;
 				return false;
 			}
 
-			//Half slab seals on the top side or the bottom side according to its metadata
-			if (block instanceof BlockHalfSlab)
-	        {
-	            //Looking down onto a top slap or looking up onto a bottom slab
-				if ((side == 0 && (vec.getBlockMetadata(this.world) & 8) == 8) || (side == 1 && (vec.getBlockMetadata(this.world) & 8) == 0))
-	            {
-	            	//Sealed from that solid side but allow other sides still to be checked
-	    			this.checked.remove(vec);
-	    			this.checkCount--;
-	    			return false;		
-	            }
-	            //Not sealed
-				this.partiallySealableChecked.add(vec);
-				return true;            	
-
-	        }
-	        
-			//Farmland only seals on the solid underside
-			if (block instanceof BlockFarmland)
-	        {
-	            if (side==1)
-	            {
-	    			//Sealed from the underside but allow other sides still to be checked
-	            	this.checked.remove(vec);
-	    			this.checkCount--;
-	    			return false;		
-	            }
-	            //Not sealed
-				this.partiallySealableChecked.add(vec);
-				return true;            		            	            
-	        }
-
-			//General case - this should cover any block which correctly implements isBlockSolidOnSide
-			//including most modded blocks - Forge microblocks in particular is covered by this.
-			// ### Any exceptions in mods should implement the IPartialSealableBlock interface ###
-			if (block.isBlockSolidOnSide(this.world, vec.x, vec.y, vec.z, ForgeDirection.getOrientation(side ^ 1)))
+			//Find the solid sides so they don't get iterated into, when doing the next layer
+			for (int i=0;i<6;i++)
 			{
-				//Sealed from that side but allow other sides still to be checked
-				this.checked.remove(vec);
-				this.checkCount--;
-				return false;		
+				if (i==side) continue;
+				if (blockPartial.isSealed(this.world, vec.x, vec.y, vec.z, ForgeDirection.getOrientation(i)))
+				{
+					vec.setSideDone(i ^ 1);
+				}
 			}
-			//Not solid on side, so this is not sealed
-			this.partiallySealableChecked.add(vec);
 			return true;
 		}
 
-		return false;
-	}
-
-	private void testBlockPassAirFirst(BlockVec3 vec, int side)
-	{
-		int id = vec.getBlockID(this.world);
-		if (id==0 || id==breatheableAirID) return;
-				
-		if (OxygenPressureProtocol.vanillaPermeableBlocks.contains(id))
+		if (block instanceof GCCoreBlockUnlitTorch)
 		{
-			return;
+			torchesToUpdate.add(vec);
+			return true;
 		}
 
-		Block block = Block.blocksList[id];
+		//Half slab seals on the top side or the bottom side according to its metadata
+		if (block instanceof BlockHalfSlab)
+        {
+            boolean isTopSlab = (vec.getBlockMetadata(this.world) & 8) == 8;
+			//Looking down onto a top slab or looking up onto a bottom slab
+			if ((side == 0 && isTopSlab) || (side == 1 && !isTopSlab))
+            {
+            	//Sealed from that solid side but allow other sides still to be checked
+    			this.checked.remove(vec);
+    			this.checkCount--;
+    			return false;		
+            }
+            //Not sealed
+			vec.setSideDone(isTopSlab ? 1:0);
+			return true;            	
+        }
+        
+		//Farmland etc only seals on the solid underside
+		if (block instanceof BlockFarmland || block instanceof BlockEnchantmentTable || block instanceof BlockFluid)
+        {
+            if (side==1)
+            {
+    			//Sealed from the underside but allow other sides still to be checked
+            	this.checked.remove(vec);
+    			this.checkCount--;
+    			return false;		
+            }
+            //Not sealed
+			vec.setSideDone(0);
+			return true;            		            	            
+        }
 
-		if (!block.isOpaqueCube()) 
+		if (block instanceof BlockPistonBase)
 		{
-			if (block instanceof IPartialSealableBlock)
+			BlockPistonBase piston = (BlockPistonBase)block;
+			int meta = vec.getBlockMetadata(this.world);
+			if (piston.isExtended(meta))
 			{
-				if (!((IPartialSealableBlock) block).isSealed(this.world, vec.x, vec.y, vec.z, ForgeDirection.getOrientation(side)))
+				int facing = piston.getOrientation(meta);
+				if (side==facing)
 				{
-					this.partiallySealableChecked.add(vec);
+					this.checked.remove(vec);
+					this.checkCount--;
+					return false;		
 				}
-				return;
+				vec.setSideDone(facing ^ 1);
+				return true;
 			}
-
-			if (block instanceof GCCoreBlockUnlitTorch)
-			{
-				torchesToUpdate.add(vec);
-				return;
-			}
-			
-			//Solid but non-opaque blocks, for example glass
-			if (OxygenPressureProtocol.nonPermeableBlocks.containsKey(id) && OxygenPressureProtocol.nonPermeableBlocks.get(id).contains(vec.getBlockMetadata(this.world)))
-			{
-				return;
-			}
-
-			//Half slab seals on the top side or the bottom side according to its metadata
-			if (block instanceof BlockHalfSlab)
-	        {
-				if (!((side == 0 && (vec.getBlockMetadata(this.world) & 8) == 8) || (side == 1 && (vec.getBlockMetadata(this.world) & 8) == 0)))
-	            {
-					this.partiallySealableChecked.add(vec);		
-	            }		
-				return;            	
-
-	        }
-	        
-			//Farmland only seals on the solid underside
-			if (block instanceof BlockFarmland)
-	        {
-	            if (side!=1)
-	            {
-	            	this.partiallySealableChecked.add(vec);		
-	            }
-				return;            		            	            
-	        }
-
-			//General case - this should cover any block which correctly implements isBlockSolidOnSide
-			//including most modded blocks - Forge microblocks in particular is covered by this.
-			// ### Any exceptions in mods should implement the IPartialSealableBlock interface ###
-			if (!block.isBlockSolidOnSide(this.world, vec.x, vec.y, vec.z, ForgeDirection.getOrientation(side ^ 1)))
-			{
-				this.partiallySealableChecked.add(vec);		
-			}
-			return;
+			return false;
 		}
-
-		return;
+		
+		//General case - this should cover any block which correctly implements isBlockSolidOnSide
+		//including most modded blocks - Forge microblocks in particular is covered by this.
+		// ### Any exceptions in mods should implement the IPartialSealableBlock interface ###
+		if (block.isBlockSolidOnSide(this.world, vec.x, vec.y, vec.z, ForgeDirection.getOrientation(side ^ 1)))
+		{
+			//Solid on all sides
+			if (block.isBlockNormalCube(this.world, vec.x, vec.y, vec.z)) return false;
+			//Sealed from this side but allow other sides still to be checked
+			this.checked.remove(vec);
+			this.checkCount--;
+			return false;		
+		}
+		
+		//Easy case: airblock, return without checking other sides
+		if (block.isAirBlock(this.world, vec.x, vec.y, vec.z)) return true;
+		
+		//Not solid on that side.
+		//Look to see if there is any other side which is solid in which case a check will not be needed next time
+		for (int i=0;i<6;i++)
+		{
+			if (i==(side ^ 1)) continue;
+			if (block.isBlockSolidOnSide(this.world, vec.x, vec.y, vec.z, ForgeDirection.getOrientation(i)))
+			{
+				vec.setSideDone(i);
+			}
+		}
+			
+		//Not solid from this side, so this is not sealed
+		return true;
 	}
 }

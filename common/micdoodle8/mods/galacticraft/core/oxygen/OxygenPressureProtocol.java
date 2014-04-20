@@ -8,8 +8,16 @@ import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenSealer;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockEnchantmentTable;
 import net.minecraft.block.BlockFarmland;
+import net.minecraft.block.BlockFluid;
+import net.minecraft.block.BlockGlass;
+import net.minecraft.block.BlockGravel;
 import net.minecraft.block.BlockHalfSlab;
+import net.minecraft.block.BlockLeavesBase;
+import net.minecraft.block.BlockPistonBase;
+import net.minecraft.block.BlockSponge;
+import net.minecraft.block.material.Material;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 
@@ -24,14 +32,10 @@ import net.minecraftforge.common.ForgeDirection;
  */
 public class OxygenPressureProtocol
 {
-	public static ArrayList<Integer> vanillaPermeableBlocks = new ArrayList<Integer>();
 	public static Map<Integer, ArrayList<Integer>> nonPermeableBlocks = new HashMap<Integer, ArrayList<Integer>>();
-	public static final int MAX_SEAL_CHECKS = 400;
 
 	static
 	{
-		OxygenPressureProtocol.vanillaPermeableBlocks.add(Block.sponge.blockID);
-
 		try
 		{
 			for (final String s : GCCoreConfigManager.sealableIDs)
@@ -81,44 +85,68 @@ public class OxygenPressureProtocol
 	// Note this will NPE if id==0, so don't call this with id==0
 	public static boolean canBlockPassAir(World world, int id, BlockVec3 vec, int side)
 	{
-		if (OxygenPressureProtocol.vanillaPermeableBlocks.contains(id))
+		Block block = Block.blocksList[id];
+
+		//Check leaves first, because their isOpaqueCube() test depends on graphics settings
+		//(See net.minecraft.block.BlockLeaves.isOpaqueCube()!)
+		if (block instanceof BlockLeavesBase)
 		{
 			return true;
 		}
-
-		Block block = Block.blocksList[id];
-
-		if (!block.isOpaqueCube())
+		
+		if (block.isOpaqueCube())
 		{
-			if (block instanceof IPartialSealableBlock)
+			if (block instanceof BlockGravel || block.blockMaterial == Material.cloth || block instanceof BlockSponge)
 			{
-				return !(((IPartialSealableBlock) block).isSealed(world, vec.x, vec.y, vec.z, ForgeDirection.getOrientation(side)));
+				return true;
 			}
-
-			//Solid but non-opaque blocks, for example glass
-			if (OxygenPressureProtocol.nonPermeableBlocks.containsKey(id) && OxygenPressureProtocol.nonPermeableBlocks.get(id).contains(vec.getBlockMetadata(world)))
-			{
-				return false;
-			}
-
-			//Half slab seals on the top side or the bottom side according to its metadata
-			if (block instanceof BlockHalfSlab)
-	        {
-	            return !((side == 0 && (vec.getBlockMetadata(world) & 8) == 8) || (side == 1 && (vec.getBlockMetadata(world) & 8) == 0));
-	        }
-	        
-			//Farmland only seals on the solid underside
-			if (block instanceof BlockFarmland)
-	        {
-	            return side!=1;
-	        }
-
-			//General case - this should cover any block which correctly implements isBlockSolidOnSide
-			//including most modded blocks - Forge microblocks in particular is covered by this.
-			// ### Any exceptions in mods should implement the IPartialSealableBlock interface ###
-			return !block.isBlockSolidOnSide(world, vec.x, vec.y, vec.z, ForgeDirection.getOrientation(side ^ 1));
+			
+			return false;
+		}
+		
+		if (block instanceof BlockGlass)
+		{
+			return false;
 		}
 
-		return false;
+		if (block instanceof IPartialSealableBlock)
+		{
+			return !(((IPartialSealableBlock) block).isSealed(world, vec.x, vec.y, vec.z, ForgeDirection.getOrientation(side)));
+		}
+
+		//Solid but non-opaque blocks, for example glass
+		if (OxygenPressureProtocol.nonPermeableBlocks.containsKey(id) && OxygenPressureProtocol.nonPermeableBlocks.get(id).contains(vec.getBlockMetadata(world)))
+		{
+			return false;
+		}
+
+		//Half slab seals on the top side or the bottom side according to its metadata
+		if (block instanceof BlockHalfSlab)
+        {
+            return !((side == 0 && (vec.getBlockMetadata(world) & 8) == 8) || (side == 1 && (vec.getBlockMetadata(world) & 8) == 0));
+        }
+        
+		//Farmland etc only seals on the solid underside
+		if (block instanceof BlockFarmland || block instanceof BlockEnchantmentTable || block instanceof BlockFluid)
+        {
+            return side!=1;
+        }
+		
+		if (block instanceof BlockPistonBase)
+		{
+			BlockPistonBase piston = (BlockPistonBase)block;
+			int meta = vec.getBlockMetadata(world);
+			if (piston.isExtended(meta))
+			{
+				int facing = piston.getOrientation(meta);
+				return (side!=facing);
+			}
+			return false;
+		}
+
+		//General case - this should cover any block which correctly implements isBlockSolidOnSide
+		//including most modded blocks - Forge microblocks in particular is covered by this.
+		// ### Any exceptions in mods should implement the IPartialSealableBlock interface ###
+		return !block.isBlockSolidOnSide(world, vec.x, vec.y, vec.z, ForgeDirection.getOrientation(side ^ 1));
 	}
 }
