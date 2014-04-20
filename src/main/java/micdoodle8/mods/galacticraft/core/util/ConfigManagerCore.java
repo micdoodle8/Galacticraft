@@ -103,10 +103,11 @@ public class ConfigManagerCore
 		{
 			ConfigManagerCore.configuration.load();
 
+			ConfigManagerCore.idDimensionMoon = ConfigManagerCore.configuration.get("Dimensions", "idDimensionMoon", -28).getInt(-28);
 			ConfigManagerCore.idDimensionOverworldOrbit = ConfigManagerCore.configuration.get("DIMENSIONS", "idDimensionOverworldOrbit", -27).getInt(-27);
 			ConfigManagerCore.idDimensionOverworldOrbitStatic = ConfigManagerCore.configuration.get("DIMENSIONS", "idDimensionOverworldOrbitStatic", -26, "Static Space Station ID").getInt(-26);
 			ConfigManagerCore.staticLoadDimensions = ConfigManagerCore.configuration.get("DIMENSIONS", "Static Loaded Dimensions", ConfigManagerCore.staticLoadDimensions, "IDs to load at startup, and keep loaded until server stops. Can be added via /gckeeploaded").getIntList();
-
+			
 			ConfigManagerCore.idGuiRocketCraftingBench = ConfigManagerCore.configuration.get("GUI", "idGuiRocketCraftingBench", 130).getInt(130);
 			ConfigManagerCore.idGuiBuggyCraftingBench = ConfigManagerCore.configuration.get("GUI", "idGuiBuggyCraftingBench", 131).getInt(131);
 			ConfigManagerCore.idGuiGalaxyMap = ConfigManagerCore.configuration.get("GUI", "idGuiGalaxyMap", 132).getInt(132);

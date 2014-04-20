@@ -63,7 +63,7 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock
 		{
 			try
 			{
-				Class<?> c = Class.forName("micdoodle8.mods.galacticraft.planets.GalacticraftPlanets");
+				Class<?> c = Class.forName("micdoodle8.mods.galacticraft.planets.mars.MarsModule");
 				String texturePrefix = (String) c.getField("TEXTURE_PREFIX").get(null);
 				this.fakeIcons[3] = par1IconRegister.registerIcon(texturePrefix + "cryoDummy");
 			}
