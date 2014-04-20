@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
-import icbm.api.IMissile;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +25,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import calclavia.api.icbm.IMissile;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
@@ -247,13 +246,13 @@ public class GCCoreEntityRocketT1 extends EntityTieredRocket
 		return false;
 	}
 
-	@RuntimeInterface(clazz = "icbm.api.IMissileLockable", modID = "ICBM|Explosion")
+	@RuntimeInterface(clazz = "calclavia.api.icbm.IMissileLockable", modID = "ICBM|Explosion")
 	public boolean canLock(IMissile missile)
 	{
 		return true;
 	}
 
-	@RuntimeInterface(clazz = "icbm.api.IMissileLockable", modID = "ICBM|Explosion")
+	@RuntimeInterface(clazz = "calclavia.api.icbm.IMissileLockable", modID = "ICBM|Explosion")
 	public Vector3 getPredictedPosition(int ticks)
 	{
 		return new Vector3(this);
@@ -275,19 +274,19 @@ public class GCCoreEntityRocketT1 extends EntityTieredRocket
 		return dock instanceof GCCoreTileEntityLandingPad;
 	}
 
-	@RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID = "ICBM|Explosion")
+	@RuntimeInterface(clazz = "calclavia.api.icbm.sentry.IAATarget", modID = "ICBM|Explosion")
 	public void destroyCraft()
 	{
 		this.setDead();
 	}
 
-	@RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID = "ICBM|Explosion")
+	@RuntimeInterface(clazz = "calclavia.api.icbm.sentry.IAATarget", modID = "ICBM|Explosion")
 	public int doDamage(int damage)
 	{
 		return (int) (this.shipDamage += damage);
 	}
 
-	@RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID = "ICBM|Explosion")
+	@RuntimeInterface(clazz = "calclavia.api.icbm.sentry.IAATarget", modID = "ICBM|Explosion")
 	public boolean canBeTargeted(Object entity)
 	{
 		return this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase() && this.timeSinceLaunch > 50;

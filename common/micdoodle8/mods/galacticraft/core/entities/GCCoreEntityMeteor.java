@@ -61,7 +61,7 @@ public class GCCoreEntityMeteor extends Entity
 		{
 			try
 			{
-				Class.forName("icbm.api.RadarRegistry").getMethod("unregister", Entity.class).invoke(null, this);
+				Class.forName("calclavia.api.icbm.RadarRegistry").getMethod("unregister", Entity.class).invoke(null, this);
 			}
 			catch (Exception e)
 			{
@@ -84,7 +84,7 @@ public class GCCoreEntityMeteor extends Entity
 		{
 			try
 			{
-				Class.forName("icbm.api.RadarRegistry").getMethod("register", Entity.class).invoke(null, this);
+				Class.forName("calclavia.api.icbm.RadarRegistry").getMethod("register", Entity.class).invoke(null, this);
 				this.radarSet = true;
 			}
 			catch (Exception e)
