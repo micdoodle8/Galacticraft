@@ -27,21 +27,21 @@ import micdoodle8.mods.galacticraft.core.client.render.block.BlockRendererNasaWo
 import micdoodle8.mods.galacticraft.core.client.render.block.BlockRendererOxygenPipe;
 import micdoodle8.mods.galacticraft.core.client.render.block.BlockRendererTreasureChest;
 import micdoodle8.mods.galacticraft.core.client.render.block.BlockRendererUnlitTorch;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderAlienVillager;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderBubble;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderBuggy;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderEvolvedCreeper;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderEvolvedSkeleton;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderEvolvedSkeletonBoss;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderEvolvedSpider;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderEvolvedZombie;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderFlag;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderLander;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderMeteor;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderMeteorChunk;
-import micdoodle8.mods.galacticraft.core.client.render.entities.RenderBubble;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderParaChest;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC;
-import micdoodle8.mods.galacticraft.core.client.render.entities.RenderEvolvedSkeleton;
-import micdoodle8.mods.galacticraft.core.client.render.entities.RenderEvolvedSkeletonBoss;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderTier1Rocket;
-import micdoodle8.mods.galacticraft.core.client.render.entities.RenderEvolvedSpider;
-import micdoodle8.mods.galacticraft.core.client.render.entities.RenderEvolvedZombie;
-import micdoodle8.mods.galacticraft.core.client.render.entities.RenderAlienVillager;
 import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererBuggy;
 import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererFlag;
 import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererKey;
@@ -49,6 +49,8 @@ import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererMeteorCh
 import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererTier1Rocket;
 import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererUnlitTorch;
 import micdoodle8.mods.galacticraft.core.client.render.tile.TileEntityAluminumWireRenderer;
+import micdoodle8.mods.galacticraft.core.client.render.tile.TileEntityBeamReceiverRenderer;
+import micdoodle8.mods.galacticraft.core.client.render.tile.TileEntityBeamReflectorRenderer;
 import micdoodle8.mods.galacticraft.core.client.render.tile.TileEntityNasaWorkbenchRenderer;
 import micdoodle8.mods.galacticraft.core.client.render.tile.TileEntityParachestRenderer;
 import micdoodle8.mods.galacticraft.core.client.render.tile.TileEntitySolarPanelRenderer;
@@ -72,8 +74,10 @@ import micdoodle8.mods.galacticraft.core.inventory.InventoryExtended;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityNasaWorkbench;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAluminumWire;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityBeamReceiver;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityBeamReflector;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityNasaWorkbench;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityParaChest;
 import micdoodle8.mods.galacticraft.core.tile.TileEntitySolar;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
@@ -233,6 +237,8 @@ public class ClientProxyCore extends CommonProxyCore
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityParaChest.class, new TileEntityParachestRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityNasaWorkbench.class, new TileEntityNasaWorkbenchRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySolar.class, new TileEntitySolarPanelRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBeamReflector.class, new TileEntityBeamReflectorRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBeamReceiver.class, new TileEntityBeamReceiverRenderer());
 	}
 
 	public static void registerBlockHandlers()

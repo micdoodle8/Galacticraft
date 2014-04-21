@@ -73,6 +73,8 @@ public abstract class TileEntityUniversalConductor extends TileEntityConductor
 	@Override
 	public void updateEntity()
 	{
+		super.updateEntity();
+		
 		if (!this.isAddedToEnergyNet)
 		{
 			if (!this.worldObj.isRemote)

@@ -3,13 +3,13 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import java.util.ArrayList;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.items.ItemBlockGC;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockAirLock;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockAluminumWire;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockBase;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockCargoLoader;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDummy;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockEnclosed;
+import micdoodle8.mods.galacticraft.core.items.ItemBlockGC;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockLandingPad;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockMachine;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockMoon;
@@ -68,6 +68,8 @@ public class GCBlocks
 	public static Block glowstoneTorch;
 	public static Block blockMoon;
 	public static Block cheeseBlock;
+	public static Block beamReflector;
+	public static Block beamReceiver;
 
 	public static final Material machine = new Material(MapColor.ironColor);
 
@@ -106,6 +108,8 @@ public class GCBlocks
 		GCBlocks.glowstoneTorch = new BlockGlowstoneTorch("glowstoneTorch");
 		GCBlocks.blockMoon = new BlockBasicMoon();
 		GCBlocks.cheeseBlock = new BlockCheese();
+		GCBlocks.beamReflector = new BlockBeamReflector("beamReflector");
+		GCBlocks.beamReceiver = new BlockBeamReceiver("beamReceiver");
 
 		GCCoreUtil.registerGalacticraftBlock("rocketLaunchPad", GCBlocks.landingPad, 0);
 		GCCoreUtil.registerGalacticraftBlock("buggyFuelingPad", GCBlocks.landingPad, 1);
@@ -155,6 +159,8 @@ public class GCBlocks
 		GCCoreUtil.registerGalacticraftBlock("torchGlowstone", GCBlocks.glowstoneTorch);
 		GCCoreUtil.registerGalacticraftBlock("wireAluminum", GCBlocks.aluminumWire);
 		GCCoreUtil.registerGalacticraftBlock("wireAluminumHeavy", GCBlocks.aluminumWire, 1);
+		GCCoreUtil.registerGalacticraftBlock("beamReflector", GCBlocks.beamReflector);
+		GCCoreUtil.registerGalacticraftBlock("beamReceiver", GCBlocks.beamReceiver);
 
 		// Hide certain items from NEI
 		GCBlocks.hiddenBlocks.add(Block.getIdFromBlock(GCBlocks.airLockSeal));
@@ -236,5 +242,7 @@ public class GCBlocks
 		GameRegistry.registerBlock(GCBlocks.glowstoneTorch, ItemBlockGC.class, GCBlocks.glowstoneTorch.getUnlocalizedName(), GalacticraftCore.MODID);
 		GameRegistry.registerBlock(GCBlocks.blockMoon, ItemBlockMoon.class, GCBlocks.blockMoon.getUnlocalizedName(), GalacticraftCore.MODID);
 		GameRegistry.registerBlock(GCBlocks.cheeseBlock, ItemBlock.class, GCBlocks.cheeseBlock.getUnlocalizedName(), GalacticraftCore.MODID);
+		GameRegistry.registerBlock(GCBlocks.beamReflector, ItemBlock.class, GCBlocks.beamReflector.getUnlocalizedName(), GalacticraftCore.MODID);
+		GameRegistry.registerBlock(GCBlocks.beamReceiver, ItemBlock.class, GCBlocks.beamReceiver.getUnlocalizedName(), GalacticraftCore.MODID);
 	}
 }

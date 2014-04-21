@@ -54,6 +54,8 @@ import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAirLock;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAirLockController;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAluminumWire;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityBeamReceiver;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityBeamReflector;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityBuggyFueler;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityBuggyFuelerSingle;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCargoLoader;
@@ -420,6 +422,8 @@ public class GalacticraftCore
 		GameRegistry.registerTileEntity(TileEntityAirLockController.class, "Air Lock Controller");
 		GameRegistry.registerTileEntity(TileEntityOxygenStorageModule.class, "Oxygen Storage Module");
 		GameRegistry.registerTileEntity(TileEntityOxygenDecompressor.class, "Oxygen Decompressor");
+		GameRegistry.registerTileEntity(TileEntityBeamReflector.class, "Beam Reflector");
+		GameRegistry.registerTileEntity(TileEntityBeamReceiver.class, "Beam Receiver");
 	}
 
 	public void registerCreatures()

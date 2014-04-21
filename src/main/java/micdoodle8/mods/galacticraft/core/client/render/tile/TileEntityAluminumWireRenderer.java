@@ -48,63 +48,6 @@ public class TileEntityAluminumWireRenderer extends TileEntitySpecialRenderer
 
 		TileEntity[] adjecentConnections = WorldUtil.getAdjacentPowerConnections(tileEntity);
 
-		// for (byte i = 0; i < 6; i++)
-		// {
-		// ForgeDirection side = ForgeDirection.getOrientation(i);
-		// Vector3 tileVec = new Vector3(tileEntity);
-		// TileEntity adjacentTile =
-		// tileVec.modifyPositionFromSide(side).getTileEntity(tileEntity.worldObj);
-		//
-		// if (adjacentTile instanceof IConnector)
-		// {
-		// if (((IConnector) adjacentTile).canConnect(side.getOpposite()))
-		// {
-		// adjecentConnections.add(adjacentTile);
-		// }
-		// else
-		// {
-		// adjecentConnections.add(null);
-		// }
-		// }
-		// else if (PowerConfigHandler.isIndustrialCraft2Loaded() &&
-		// adjacentTile instanceof IEnergyTile)
-		// {
-		// if (adjacentTile instanceof IEnergyAcceptor)
-		// {
-		// if (((IEnergyAcceptor) adjacentTile).acceptsEnergyFrom(tileEntity,
-		// side.getOpposite()))
-		// {
-		// adjecentConnections.add(adjacentTile);
-		// }
-		// else
-		// {
-		// if (adjacentTile instanceof IEnergySource && ((IEnergyEmitter)
-		// adjacentTile).emitsEnergyTo(tileEntity, side.getOpposite()))
-		// {
-		// adjecentConnections.add(adjacentTile);
-		// }
-		// else
-		// {
-		// adjecentConnections.add(null);
-		// }
-		// }
-		// }
-		// else
-		// {
-		// adjecentConnections.add(adjacentTile);
-		// }
-		// }
-		// else if (PowerConfigHandler.isBuildcraftLoaded() && adjacentTile
-		// instanceof IPowerReceptor)
-		// {
-		// adjecentConnections.add(adjacentTile);
-		// }
-		// else
-		// {
-		// adjecentConnections.add(null);
-		// }
-		// }
-
 		int metadata = tileEntity.getWorldObj().getBlockMetadata(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
 
 		IModelCustom model = null;
