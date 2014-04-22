@@ -5,12 +5,10 @@ import java.util.List;
 import micdoodle8.mods.galacticraft.api.item.IKeyItem;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -26,7 +24,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ItemKey extends Item implements IKeyItem
 {
 	public static String[] keyTypes = new String[] { "T1" };
-	public IIcon[] keyIcons = new IIcon[1];
 
 	public ItemKey(String assetName)
 	{
@@ -35,7 +32,7 @@ public class ItemKey extends Item implements IKeyItem
 		this.setMaxDamage(0);
 		this.setHasSubtypes(true);
 		this.setUnlocalizedName(assetName);
-		this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setTextureName("arrow");
 	}
 
 	@Override
@@ -55,29 +52,6 @@ public class ItemKey extends Item implements IKeyItem
 	public EnumRarity getRarity(ItemStack par1ItemStack)
 	{
 		return ClientProxyCore.galacticraftItem;
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister iconRegister)
-	{
-		int i = 0;
-
-		for (final String name : ItemKey.keyTypes)
-		{
-			this.keyIcons[i++] = iconRegister.registerIcon(this.getIconString() + "_" + name);
-		}
-	}
-
-	@Override
-	public IIcon getIconFromDamage(int damage)
-	{
-		if (this.keyIcons.length > damage)
-		{
-			return this.keyIcons[damage];
-		}
-
-		return super.getIconFromDamage(damage);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
