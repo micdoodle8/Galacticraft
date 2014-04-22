@@ -377,7 +377,6 @@ public class Vector3 implements Cloneable
 	/**
 	 * Static versions of a lot of functions
 	 */
-	@Deprecated
 	public static Vector3 subtract(Vector3 par1, Vector3 par2)
 	{
 		return new Vector3(par1.x - par2.x, par1.y - par2.y, par1.z - par2.z);

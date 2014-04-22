@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityBeamReflector;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -19,6 +20,7 @@ public class BlockBeamReflector extends BlockTileGC
 	{
 		super(Material.iron);
 		this.setBlockName(assetName);
+		this.setBlockTextureName("stone");
 	}
 
 	@Override
@@ -73,5 +75,18 @@ public class BlockBeamReflector extends BlockTileGC
 	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
 		par3List.add(new ItemStack(par1, 1, 0));
+	}
+
+	@Override
+	public boolean onMachineActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ)
+	{
+		TileEntity tile = world.getTileEntity(x, y, z);
+		
+		if (tile instanceof TileEntityBeamReflector)
+		{
+			return ((TileEntityBeamReflector) tile).onMachineActivated(world, x, y, z, entityPlayer, side, hitX, hitY, hitZ);
+		}
+		
+		return false;
 	}
 }

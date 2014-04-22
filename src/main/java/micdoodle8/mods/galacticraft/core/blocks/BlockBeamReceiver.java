@@ -19,6 +19,7 @@ public class BlockBeamReceiver extends BlockTileGC
 	{
 		super(Material.iron);
 		this.setBlockName(assetName);
+		this.setBlockTextureName("stone");
 	}
 
 	@Override

@@ -120,6 +120,18 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
 	public void getNetworkedData(ArrayList<Object> sendData)
 	{
 		Set<Field> fieldList = null;
+		
+		if (this.fieldCacheClient == null || this.fieldCacheServer == null)
+		{
+			try
+			{
+				this.initFieldCache();
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
 
 		if (this.worldObj.isRemote)
 		{

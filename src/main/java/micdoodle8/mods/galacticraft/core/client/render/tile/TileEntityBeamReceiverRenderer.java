@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.client.render.tile;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityBeamReceiver;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityBeamReceiver.ReceiverMode;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
@@ -40,11 +41,6 @@ public class TileEntityBeamReceiverRenderer extends TileEntitySpecialRenderer
 
 	public void renderModelAt(TileEntityBeamReceiver tileEntity, double d, double d1, double d2, float f)
 	{
-		if (tileEntity.attachedTile == null)
-		{
-			return;
-		}
-		
 		// Texture file
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TileEntityBeamReceiverRenderer.beamTexture);
 		
@@ -58,11 +54,11 @@ public class TileEntityBeamReceiverRenderer extends TileEntitySpecialRenderer
 		switch (tileEntity.facing)
 		{
 		case DOWN:
-			GL11.glTranslatef(-0.7F, -0.15F, 0.0F);
+			GL11.glTranslatef(0.7F, -0.15F, 0.0F);
 			GL11.glRotatef(90, 0, 0, 1);
 			break;
 		case UP:
-			GL11.glTranslatef(-0.7F, -0.15F, 0.0F);
+			GL11.glTranslatef(-0.7F, 1.3F, 0.0F);
 			GL11.glRotatef(-90, 0, 0, 1);
 			break;
 		case EAST:
@@ -81,23 +77,41 @@ public class TileEntityBeamReceiverRenderer extends TileEntitySpecialRenderer
 			GL11.glTranslatef(0.0F, -0.15F, -0.7F);
 			GL11.glRotatef(270, 0, 1, 0);
 			break;
+		default:
+			break;
 		}
 		
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		model.renderPart("Main");
-		GL11.glColor3f(0.0F, 0.8F, 0.0F);
+		
+		if (tileEntity.modeReceive == ReceiverMode.RECEIVE)
+		{
+			GL11.glColor3f(0.0F, 0.8F, 0.0F);
+		}
+		else if (tileEntity.modeReceive == ReceiverMode.EXTRACT)
+		{
+			GL11.glColor3f(0.6F, 0.0F, 0.0F);
+		}
+		else
+		{
+			GL11.glColor3f(0.1F, 0.1F, 0.1F);
+		}
+		
         GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL11.GL_LIGHTING);
+//        GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_CULL_FACE);
 		model.renderPart("Receiver");
-        GL11.glEnable(GL11.GL_LIGHTING);
+//        GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glEnable(GL11.GL_CULL_FACE);
 		float dX = 0.34772F;
 		float dY = 0.75097F;
 		float dZ = 0.0F;
 		GL11.glTranslatef(dX, dY, dZ);
-		GL11.glRotatef(-tileEntity.ticks * 50, 1, 0, 0);
+		if (tileEntity.modeReceive != ReceiverMode.UNDEFINED)
+		{
+			GL11.glRotatef(-tileEntity.ticks * 50, 1, 0, 0);
+		}
 		GL11.glTranslatef(-dX, -dY, -dZ);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		model.renderPart("Ring");

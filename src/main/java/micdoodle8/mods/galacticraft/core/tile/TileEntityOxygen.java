@@ -8,7 +8,7 @@ import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfig
 import micdoodle8.mods.galacticraft.api.transmission.core.grid.IOxygenNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IOxygenReceiver;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IOxygenStorage;
-import micdoodle8.mods.galacticraft.core.oxygen.BlockVec3;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;

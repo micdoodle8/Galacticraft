@@ -16,6 +16,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.client.FootprintRenderer;
+import micdoodle8.mods.galacticraft.core.client.NetworkRenderer;
 import micdoodle8.mods.galacticraft.core.client.fx.EffectHandler;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.InventoryTabGalacticraft;
 import micdoodle8.mods.galacticraft.core.client.model.ModelRocketTier1;
@@ -465,5 +466,6 @@ public class ClientProxyCore extends CommonProxyCore
 	public static void renderFootprints(float partialTicks)
 	{
 		footprintRenderer.renderFootprints(FMLClientHandler.instance().getClient().thePlayer, partialTicks);
+		NetworkRenderer.renderNetworks(FMLClientHandler.instance().getClient().theWorld, partialTicks);
 	}
 }
