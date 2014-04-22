@@ -111,12 +111,6 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 				this.active = false;
 			}
 
-			if (this.threadSeal != null)
-			{
-				this.sealed = this.active && this.threadSeal.sealedFinal.get();
-				this.calculatingSealed = this.active && this.threadSeal.looping.get();
-			}
-
 			if (this.stopSealThreadCooldown > 0)
 			{
 				this.stopSealThreadCooldown--;
@@ -127,6 +121,12 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 				this.threadCooldownTotal = this.stopSealThreadCooldown = 75 + GCCoreTileEntityOxygenSealer.countEntities;
 				GCCoreTileEntityOxygenSealer.sealerCheckedThisTick = true;
 				OxygenPressureProtocol.updateSealerStatus(this);
+			}
+
+			if (this.threadSeal != null)
+			{
+				this.sealed = this.active && this.threadSeal.sealedFinal.get();
+				this.calculatingSealed = this.active && this.threadSeal.looping.get();
 			}
 
 			this.lastDisabled = this.disabled;
