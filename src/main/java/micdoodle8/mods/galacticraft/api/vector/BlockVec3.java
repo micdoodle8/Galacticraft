@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.core.oxygen;
+package micdoodle8.mods.galacticraft.api.vector;
 
 import net.minecraft.block.Block;
 import net.minecraft.crash.CrashReport;
