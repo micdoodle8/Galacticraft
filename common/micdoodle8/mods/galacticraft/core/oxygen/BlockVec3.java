@@ -1,5 +1,8 @@
 package micdoodle8.mods.galacticraft.core.oxygen;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.Entity;
@@ -69,6 +72,13 @@ public class BlockVec3 implements Cloneable
 		return new BlockVec3(this.x, this.y, this.z);
 	}
 
+	/**
+	 * Get block ID at the BlockVec3 coordinates.
+	 * 
+	 * @param world
+	 * @return the block ID, or -1 if the y-coordinate is less than 0 or greater than 256 or the x or z is outside the Minecraft worldmap. 
+	 * Returns -2 if the coordinates being checked are in an unloaded chunk
+	 */
 	public int getBlockID(World world)
 	{
 		if (this.y < 0 || this.y >= 256 || this.x < -30000000 || this.z < -30000000 || this.x >= 30000000 || this.z >= 30000000)
@@ -80,21 +90,26 @@ public class BlockVec3 implements Cloneable
 		int chunkz = this.z >> 4;
 		try
 		{
-			// In a typical inner loop, 80% of the time consecutive calls to
-			// this will be within the same chunk
-			if (BlockVec3.chunkCacheX == chunkx && BlockVec3.chunkCacheZ == chunkz && BlockVec3.chunkCached.isChunkLoaded)
+			if (world.getChunkProvider().chunkExists(chunkx,chunkz))
 			{
-				return BlockVec3.chunkCached.getBlockID(this.x & 15, this.y, this.z & 15);
+				// In a typical inner loop, 80% of the time consecutive calls to
+				// this will be within the same chunk
+				if (BlockVec3.chunkCacheX == chunkx && BlockVec3.chunkCacheZ == chunkz && BlockVec3.chunkCached.isChunkLoaded)
+				{
+					return BlockVec3.chunkCached.getBlockID(this.x & 15, this.y, this.z & 15);
+				}
+				else
+				{
+					Chunk chunk = null;
+					chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
+					BlockVec3.chunkCached = chunk;
+					BlockVec3.chunkCacheX = chunkx;
+					BlockVec3.chunkCacheZ = chunkz;
+					return chunk.getBlockID(this.x & 15, this.y, this.z & 15);
+				}
 			}
-			else
-			{
-				Chunk chunk = null;
-				chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
-				BlockVec3.chunkCached = chunk;
-				BlockVec3.chunkCacheX = chunkx;
-				BlockVec3.chunkCacheZ = chunkz;
-				return chunk.getBlockID(this.x & 15, this.y, this.z & 15);
-			}
+			//Chunk doesn't exist - meaning, it is not loaded
+			return -2;
 		}
 		catch (Throwable throwable)
 		{
@@ -105,6 +120,13 @@ public class BlockVec3 implements Cloneable
 		}
 	}
 
+	/**
+	 * Get block ID at the BlockVec3 coordinates.
+	 * Only call this 'safe' version if x and z coordinates are within the Minecraft world map (-30m to +30m)
+	 * @param world
+	 * @return the block ID, or -1 if the y-coordinate is less than 0 or greater than 256. 
+	 * Returns -2 if the coordinates being checked are in an unloaded chunk
+	 */
 	public int getBlockIDsafe(World world)
 	{
 		if (this.y < 0 || this.y >= 256)
@@ -116,21 +138,26 @@ public class BlockVec3 implements Cloneable
 		int chunkz = this.z >> 4;
 		try
 		{
-			// In a typical inner loop, 80% of the time consecutive calls to
-			// this will be within the same chunk
-			if (BlockVec3.chunkCacheX == chunkx && BlockVec3.chunkCacheZ == chunkz && BlockVec3.chunkCached.isChunkLoaded)
+			if (world.getChunkProvider().chunkExists(chunkx,chunkz))
 			{
-				return BlockVec3.chunkCached.getBlockID(this.x & 15, this.y, this.z & 15);
+				// In a typical inner loop, 80% of the time consecutive calls to
+				// this will be within the same chunk
+				if (BlockVec3.chunkCacheX == chunkx && BlockVec3.chunkCacheZ == chunkz && BlockVec3.chunkCached.isChunkLoaded)
+				{
+					return BlockVec3.chunkCached.getBlockID(this.x & 15, this.y, this.z & 15);
+				}
+				else
+				{
+					Chunk chunk = null;
+					chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
+					BlockVec3.chunkCached = chunk;
+					BlockVec3.chunkCacheX = chunkx;
+					BlockVec3.chunkCacheZ = chunkz;
+					return chunk.getBlockID(this.x & 15, this.y, this.z & 15);
+				}
 			}
-			else
-			{
-				Chunk chunk = null;
-				chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
-				BlockVec3.chunkCached = chunk;
-				BlockVec3.chunkCacheX = chunkx;
-				BlockVec3.chunkCacheZ = chunkz;
-				return chunk.getBlockID(this.x & 15, this.y, this.z & 15);
-			}
+			//Chunk doesn't exist - meaning, it is not loaded
+			return -2;
 		}
 		catch (Throwable throwable)
 		{

@@ -334,6 +334,7 @@ public class ThreadFindSeal //extends Thread
 					{
 						this.checked.add(sideVec);
 						int id = sideVec.getBlockID(this.world);
+
 						if (id == ThreadFindSeal.breatheableAirID)
 						{
 							this.breatheableToReplace.add(sideVec);
@@ -391,35 +392,31 @@ public class ThreadFindSeal //extends Thread
 								this.checked.add(sideVec);
 
 								int id = sideVec.getBlockIDsafe(this.world);
-								// NB getBlockIDsafe will return -1, not 0, if
-								// the y coordinates are out of bounds - so this
-								// won't keep iterating into the void or the
-								// stratosphere
 								if (id == ThreadFindSeal.breatheableAirID)
 								// The most likely case
 								{
 									this.nextLayer.add(sideVec);
 								}	
-								else if (id == 0)
+								else if (id <= 0)
 								{
-									this.nextLayer.add(sideVec);
-									this.airToReplace.add(sideVec);
-									// Using airToReplace will save time later
-									// on in run(), if the volume is sealed
-									// More importantly, if the volume is sealed
-									// and has no blocks with id==0
-									// (i.e. a stable sealed volume) then it
-									// will save a lot of time later in the
-									// thread
-								}
-								else if (id == -1)
-								{
-									// Broken through to the void or the
-									// stratosphere (above y==255) - set
-									// unsealed and abort
-									this.checkCount = 0;
-									this.sealed = false;
-									break LAYERLOOP;
+									if (id == -1)
+									{
+										// Broken through to the void or the
+										// stratosphere (above y==255) - set
+										// unsealed and abort
+										this.checkCount = 0;
+										this.sealed = false;
+										break LAYERLOOP;
+									}
+									if (id == 0)
+									{
+										//id==0 is air
+										this.nextLayer.add(sideVec);
+										this.airToReplace.add(sideVec);								
+									}
+									// The other possibility is id==-2
+									// Meaning it has encountered an unloaded chunk
+									// Simply treat it as solid: do nothing.
 								}
 								else if (this.canBlockPassAirCheck(id, sideVec, side))
 								{
@@ -442,9 +439,19 @@ public class ThreadFindSeal //extends Thread
 							else if (this.sealed)
 							{
 								int id = sideVec.getBlockIDsafe(this.world);
-								// id == -1 means the void or height y>255, both
-								// of which are unsealed obviously
-								if (id == 0 || id == ThreadFindSeal.breatheableAirID || id == -1 || this.canBlockPassAirCheck(id, sideVec, side))
+								if (id <= 0)
+								{
+									//id==0 is air, id==-1 means the void or height y>255
+									//id==-2 means unloaded chunk: treat as solid
+									if (id>=-1)
+									{
+										// Air or the void are unsealed obviously
+										this.sealed = false;
+										break LAYERLOOP;
+									}
+								} else
+								//If there is breatheable air or an unsealed block here, that is also unsealed
+								if (id == ThreadFindSeal.breatheableAirID || this.canBlockPassAirCheck(id, sideVec, side))
 								{
 									this.sealed = false;
 									break LAYERLOOP;
@@ -484,28 +491,32 @@ public class ThreadFindSeal //extends Thread
 							// This is a slower operation as it involves
 							// map edge checks
 							int id = sideVec.getBlockID(this.world); 
-							// NB getBlockID will return -1, not 0, if any of
-							// the coordinates are out of bounds - so this won't
-							// keep iterating into the void or the stratosphere
-							// or off the map edge
-							if (id == 0)
+							
+							if (id == ThreadFindSeal.breatheableAirID)
+							// The most likely case
 							{
 								this.nextLayer.add(sideVec);
-								this.airToReplace.add(sideVec);
-								// This will save time later on in run(), if the
-								// volume is sealed
-								// More importantly, if the volume is sealed and
-								// has no blocks with id==0
-								// (i.e. a stable sealed volume) then it will
-								// save a lot of time later in run()
-							}
-							else if (id == -1)
+							}	
+							else if (id <= 0)
 							{
-								// We've hit the void or the stratosphere or the
-								// world edge - abort
-								this.checkCount = 0;
-								this.sealed = false;
-								break LAYERLOOPNME;
+								if (id == -1)
+								{
+									// Broken through to the void or the
+									// stratosphere (above y==255) - set
+									// unsealed and abort
+									this.checkCount = 0;
+									this.sealed = false;
+									break LAYERLOOPNME;
+								}
+								if (id == 0)
+								{
+									//id==0 is air
+									this.nextLayer.add(sideVec);
+									this.airToReplace.add(sideVec);								
+								}
+								// The other possibility is id==-2
+								// Meaning it has encountered an unloaded chunk
+								// Simply treat it as solid: do nothing.
 							}
 							else if (id == ThreadFindSeal.breatheableAirID || this.canBlockPassAirCheck(id, sideVec, side))
 							{
@@ -528,9 +539,19 @@ public class ThreadFindSeal //extends Thread
 						else if (this.sealed)
 						{
 							int id = sideVec.getBlockID(this.world);
-							// id == -1 means the void or height y>255, both of
-							// which are unsealed obviously
-							if (id == 0 || id == ThreadFindSeal.breatheableAirID || id == -1 || this.canBlockPassAirCheck(id, sideVec, side))
+							if (id <= 0)
+							{
+								//id==0 is air, id==-1 means the void or height y>255
+								//id==-2 means unloaded chunk: treat as solid
+								if (id>=-1)
+								{
+									// Air or the void are unsealed obviously
+									this.sealed = false;
+									break LAYERLOOPNME;
+								}
+							} else
+							//If there is breatheable air or an unsealed block here, that is also unsealed
+							if (id == ThreadFindSeal.breatheableAirID || this.canBlockPassAirCheck(id, sideVec, side))
 							{
 								this.sealed = false;
 								break LAYERLOOPNME;
