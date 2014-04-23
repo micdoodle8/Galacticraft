@@ -427,21 +427,22 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
 	private void checkCurrentItem()
 	{
-		if (this.worldObj.provider instanceof IGalacticraftWorldProvider && this.inventory.getCurrentItem() != null)
+		ItemStack theCurrentItem = this.inventory.getCurrentItem();
+		if (this.worldObj.provider instanceof IGalacticraftWorldProvider && theCurrentItem != null)
 		{
-			final int var1 = this.inventory.getCurrentItem().stackSize;
-			final int var2 = this.inventory.getCurrentItem().getItemDamage();
+			final int var1 = theCurrentItem.stackSize;
+			final int var2 = theCurrentItem.getItemDamage();
 
-			if (this.inventory.getCurrentItem().getItem().itemID == Block.torchWood.blockID)
+			if (theCurrentItem.getItem().itemID == Block.torchWood.blockID)
 			{
 				final ItemStack stack = new ItemStack(GCCoreBlocks.unlitTorch, var1, 0);
 				this.inventory.mainInventory[this.inventory.currentItem] = stack;
 			}
-			else if (this.inventory.getCurrentItem().getItem().itemID == Item.bow.itemID)
+			else if (theCurrentItem.getItem().itemID == Item.bow.itemID)
 			{
-				final Hashtable<Integer, Enchantment> enchants = new Hashtable<Integer, Enchantment>();
+				final Hashtable<Enchantment, Integer> enchants = new Hashtable<Enchantment, Integer>();
 
-				final NBTTagList list = this.inventory.getCurrentItem().getEnchantmentTagList();
+				final NBTTagList list = theCurrentItem.getEnchantmentTagList();
 
 				if (list != null)
 				{
@@ -452,42 +453,53 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
 						final Enchantment e = Enchantment.enchantmentsList[enchID];
 
-						enchants.put(enchLvl, e);
+						enchants.put(e, enchLvl);
 					}
 				}
 
 				final ItemStack stack = new ItemStack(GCCoreItems.bowGravity, var1, var2);
 
-				final Iterator<Entry<Integer, Enchantment>> it = enchants.entrySet().iterator();
+				final Iterator<Entry<Enchantment, Integer>> it = enchants.entrySet().iterator();
 
 				while (it.hasNext())
 				{
-					final Entry<Integer, Enchantment> entry = it.next();
+					final Entry<Enchantment, Integer> entry = it.next();
 
 					if (entry.getKey() != null && entry.getValue() != null)
 					{
-						stack.addEnchantment(entry.getValue(), entry.getKey());
+						stack.addEnchantment(entry.getKey(), entry.getValue());
 					}
 				}
 
+				//Transfer any cherished name
+				if (theCurrentItem.stackTagCompound != null && theCurrentItem.stackTagCompound.hasKey("display"))
+		        {
+		            NBTTagCompound nbttagcompound = theCurrentItem.stackTagCompound.getCompoundTag("display");
+
+		            if (nbttagcompound.hasKey("Name"))
+		            {
+		            	stack.setItemName(nbttagcompound.getString("Name"));
+		            }
+		        }
+				
 				this.inventory.mainInventory[this.inventory.currentItem] = stack;
 			}
 		}
-		else if (!(this.worldObj.provider instanceof IGalacticraftWorldProvider) && this.inventory.getCurrentItem() != null)
+		else if (!(this.worldObj.provider instanceof IGalacticraftWorldProvider) && theCurrentItem != null)
 		{
-			final int var1 = this.inventory.getCurrentItem().stackSize;
-			final int var2 = this.inventory.getCurrentItem().getItemDamage();
+			final int var1 = theCurrentItem.stackSize;
+			final int var2 = theCurrentItem.getItemDamage();
 
-			if (this.inventory.getCurrentItem().getItem().itemID == GCCoreBlocks.unlitTorch.blockID)
+			if (theCurrentItem.getItem().itemID == GCCoreBlocks.unlitTorch.blockID)
 			{
 				final ItemStack stack = new ItemStack(Block.torchWood, var1, 0);
 				this.inventory.mainInventory[this.inventory.currentItem] = stack;
 			}
-			else if (this.inventory.getCurrentItem().getItem().itemID == GCCoreItems.bowGravity.itemID)
+			else if (theCurrentItem.getItem().itemID == GCCoreItems.bowGravity.itemID)
 			{
-				final Hashtable<Integer, Enchantment> enchants = new Hashtable<Integer, Enchantment>();
+				final Hashtable<Enchantment, Integer> enchants = new Hashtable<Enchantment, Integer>();
 
-				final NBTTagList list = this.inventory.getCurrentItem().getEnchantmentTagList();
+				final NBTTagList list = theCurrentItem.getEnchantmentTagList();
 
 				if (list != null)
 				{
@@ -498,23 +510,34 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
 						final Enchantment e = Enchantment.enchantmentsList[enchID];
 
-						enchants.put(enchLvl, e);
+						enchants.put(e, enchLvl);
 					}
 				}
 
 				final ItemStack stack = new ItemStack(Item.bow, var1, var2);
 
-				final Iterator<Entry<Integer, Enchantment>> it = enchants.entrySet().iterator();
+				final Iterator<Entry<Enchantment, Integer>> it = enchants.entrySet().iterator();
 
 				while (it.hasNext())
 				{
-					final Entry<Integer, Enchantment> entry = it.next();
+					final Entry<Enchantment, Integer> entry = it.next();
 
 					if (entry.getKey() != null && entry.getValue() != null)
 					{
-						stack.addEnchantment(entry.getValue(), entry.getKey());
+						stack.addEnchantment(entry.getKey(), entry.getValue());
 					}
 				}
+
+				//Transfer any cherished name
+				if (theCurrentItem.stackTagCompound != null && theCurrentItem.stackTagCompound.hasKey("display"))
+		        {
+		            NBTTagCompound nbttagcompound = theCurrentItem.stackTagCompound.getCompoundTag("display");
+
+		            if (nbttagcompound.hasKey("Name"))
+		            {
+		            	stack.setItemName(nbttagcompound.getString("Name"));
+		            }
+		        }
 
 				this.inventory.mainInventory[this.inventory.currentItem] = stack;
 			}
