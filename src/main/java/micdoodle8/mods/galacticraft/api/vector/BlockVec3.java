@@ -300,9 +300,9 @@ public class BlockVec3 implements Cloneable
 	public static BlockVec3 readFromNBT(NBTTagCompound nbtCompound)
 	{
 		BlockVec3 tempVector = new BlockVec3();
-		tempVector.x = (int) Math.floor(nbtCompound.getDouble("x"));
-		tempVector.y = (int) Math.floor(nbtCompound.getDouble("y"));
-		tempVector.z = (int) Math.floor(nbtCompound.getDouble("z"));
+		tempVector.x = (int) Math.floor(nbtCompound.getInteger("x"));
+		tempVector.y = (int) Math.floor(nbtCompound.getInteger("y"));
+		tempVector.z = (int) Math.floor(nbtCompound.getInteger("z"));
 		return tempVector;
 	}
 
@@ -316,9 +316,9 @@ public class BlockVec3 implements Cloneable
 
 	public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
 	{
-		par1NBTTagCompound.setDouble("x", this.x);
-		par1NBTTagCompound.setDouble("y", this.y);
-		par1NBTTagCompound.setDouble("z", this.z);
+		par1NBTTagCompound.setInteger("x", this.x);
+		par1NBTTagCompound.setInteger("y", this.y);
+		par1NBTTagCompound.setInteger("z", this.z);
 		return par1NBTTagCompound;
 	}
 
