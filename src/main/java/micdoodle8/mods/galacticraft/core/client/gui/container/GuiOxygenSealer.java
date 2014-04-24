@@ -114,7 +114,7 @@ public class GuiOxygenSealer extends GuiContainerGC
 	{
 		Block blockAbove = this.sealer.getWorldObj().getBlock(this.sealer.xCoord, this.sealer.yCoord + 1, this.sealer.zCoord);
 
-		if (blockAbove != Blocks.air && blockAbove != GCBlocks.breatheableAir && !OxygenPressureProtocol.canBlockPassAir(this.sealer.getWorldObj(), Block.getIdFromBlock(blockAbove), new BlockVec3(this.sealer.xCoord, this.sealer.yCoord + 1, this.sealer.zCoord), 0))
+		if (blockAbove != Blocks.air && blockAbove != GCBlocks.breatheableAir && !OxygenPressureProtocol.canBlockPassAir(this.sealer.getWorldObj(), blockAbove, new BlockVec3(this.sealer.xCoord, this.sealer.yCoord + 1, this.sealer.zCoord), 1))
 		{
 			return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.sealerblocked.name");
 		}

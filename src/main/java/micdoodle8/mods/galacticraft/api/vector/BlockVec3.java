@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.Entity;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ReportedException;
@@ -12,26 +13,25 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.ForgeDirection;
 
-/* Think this BlockVec3 is confusing with galacticraft.api.vector.Vector3?
+/* BlockVec3 is similar to galacticraft.api.vector.Vector3?
  * 
- * For speed, in 95% of cases Galacticraft code could be using integer arithmetic not doubles,
- * for block coordinates, to avoid massive unnecessary type conversion between integers and doubles.
+ * But for speed it uses integer arithmetic not doubles, for block coordinates
+ * This reduces unnecessary type conversion between integers and doubles and back again.
  * (Minecraft block coordinates are always integers, only entity coordinates are doubles.)
  * 
- * Most of Galacticraft could therefore be adapted to use this BlockVec3 instead.
- * To avoid a big diff, the methods here are as similar as possible to those in Vector3.
- *  (Though really, calls like vector3.intX() ought to be replaced by vector3.x, for maximum speed)
- *  
- * Note also when writing NBT data BlockVec3 writes and reads its coordinates as doubles, for 100% file and network compatibility with prior code.
+ * Note also when writing NBT data BlockVec3 writes and reads its coordinates as doubles,
+ * for 100% save-file compatibility with prior code using Vector3.
  */
 public class BlockVec3 implements Cloneable
 {
 	public int x;
 	public int y;
 	public int z;
-	private Chunk chunkCached;
-	private int chunkCacheX = 1876000; // outside the world edge
-	private int chunkCacheZ = 1876000; // outside the world edge
+	public boolean[] sideDone = {false,false,false,false,false,false};
+	private static Chunk chunkCached;
+	private static int chunkCacheX = 1876000; // outside the world edge
+	private static int chunkCacheZ = 1876000; // outside the world edge
+	
 
 	public BlockVec3()
 	{
@@ -68,6 +68,13 @@ public class BlockVec3 implements Cloneable
 		return new BlockVec3(this.x, this.y, this.z);
 	}
 
+	/**
+	 * Get block ID at the BlockVec3 coordinates.
+	 * 
+	 * @param world
+	 * @return the block ID, or -1 if the y-coordinate is less than 0 or greater than 256 or the x or z is outside the Minecraft worldmap. 
+	 * Returns -2 if the coordinates being checked are in an unloaded chunk
+	 */
 	public Block getBlockID(World world)
 	{
 		if (this.y < 0 || this.y >= 256 || this.x < -30000000 || this.z < -30000000 || this.x >= 30000000 || this.z >= 30000000)
@@ -79,21 +86,26 @@ public class BlockVec3 implements Cloneable
 		int chunkz = this.z >> 4;
 		try
 		{
-			// In a typical inner loop, 80% of the time consecutive calls to
-			// this will be within the same chunk
-			if (this.chunkCacheX == chunkx && this.chunkCacheZ == chunkz && this.chunkCached.isChunkLoaded)
+			if (world.getChunkProvider().chunkExists(chunkx,chunkz))
 			{
-				return this.chunkCached.getBlock(this.x & 15, this.y, this.z & 15);
+				// In a typical inner loop, 80% of the time consecutive calls to
+				// this will be within the same chunk
+				if (BlockVec3.chunkCacheX == chunkx && BlockVec3.chunkCacheZ == chunkz && BlockVec3.chunkCached.isChunkLoaded)
+				{
+					return BlockVec3.chunkCached.getBlock(this.x & 15, this.y, this.z & 15);
+				}
+				else
+				{
+					Chunk chunk = null;
+					chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
+					BlockVec3.chunkCached = chunk;
+					BlockVec3.chunkCacheX = chunkx;
+					BlockVec3.chunkCacheZ = chunkz;
+					return chunk.getBlock(this.x & 15, this.y, this.z & 15);
+				}
 			}
-			else
-			{
-				Chunk chunk = null;
-				chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
-				this.chunkCached = chunk;
-				this.chunkCacheX = chunkx;
-				this.chunkCacheZ = chunkz;
-				return chunk.getBlock(this.x & 15, this.y, this.z & 15);
-			}
+			//Chunk doesn't exist - meaning, it is not loaded
+			return Blocks.bedrock;
 		}
 		catch (Throwable throwable)
 		{
@@ -104,6 +116,13 @@ public class BlockVec3 implements Cloneable
 		}
 	}
 
+	/**
+	 * Get block ID at the BlockVec3 coordinates.
+	 * Only call this 'safe' version if x and z coordinates are within the Minecraft world map (-30m to +30m)
+	 * @param world
+	 * @return the block ID, or -1 if the y-coordinate is less than 0 or greater than 256. 
+	 * Returns -2 if the coordinates being checked are in an unloaded chunk
+	 */
 	public Block getBlockIDsafe(World world)
 	{
 		if (this.y < 0 || this.y >= 256)
@@ -115,21 +134,26 @@ public class BlockVec3 implements Cloneable
 		int chunkz = this.z >> 4;
 		try
 		{
-			// In a typical inner loop, 80% of the time consecutive calls to
-			// this will be within the same chunk
-			if (this.chunkCacheX == chunkx && this.chunkCacheZ == chunkz && this.chunkCached.isChunkLoaded)
+			if (world.getChunkProvider().chunkExists(chunkx,chunkz))
 			{
-				return this.chunkCached.getBlock(this.x & 15, this.y, this.z & 15);
+				// In a typical inner loop, 80% of the time consecutive calls to
+				// this will be within the same chunk
+				if (BlockVec3.chunkCacheX == chunkx && BlockVec3.chunkCacheZ == chunkz && BlockVec3.chunkCached.isChunkLoaded)
+				{
+					return BlockVec3.chunkCached.getBlock(this.x & 15, this.y, this.z & 15);
+				}
+				else
+				{
+					Chunk chunk = null;
+					chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
+					BlockVec3.chunkCached = chunk;
+					BlockVec3.chunkCacheX = chunkx;
+					BlockVec3.chunkCacheZ = chunkz;
+					return chunk.getBlock(this.x & 15, this.y, this.z & 15);
+				}
 			}
-			else
-			{
-				Chunk chunk = null;
-				chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
-				this.chunkCached = chunk;
-				this.chunkCacheX = chunkx;
-				this.chunkCacheZ = chunkz;
-				return chunk.getBlock(this.x & 15, this.y, this.z & 15);
-			}
+			//Chunk doesn't exist - meaning, it is not loaded
+			return Blocks.bedrock;
 		}
 		catch (Throwable throwable)
 		{
@@ -207,6 +231,7 @@ public class BlockVec3 implements Cloneable
 	public BlockVec3 newVecSide(int side)
 	{
 		BlockVec3 vec = new BlockVec3(this.x, this.y, this.z);
+		vec.sideDone[side ^ 1]=true;
 		switch (side)
 		{
 		case 0:
@@ -330,5 +355,10 @@ public class BlockVec3 implements Cloneable
 	public int intZ()
 	{
 		return this.x;
+	}
+	
+	public void setSideDone(int side)
+	{
+		sideDone[side]=true;
 	}
 }

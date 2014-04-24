@@ -48,9 +48,10 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
 	public int threadCooldownTotal;
 	@NetworkedField(targetSide = Side.CLIENT)
 	public boolean calculatingSealed;
-	private static int countEntities = 0;
+	public static int countEntities = 0;
 	private static int countTemp = 0;
 	private static long ticksSave = 0L;
+	private static boolean sealerCheckedThisTick = false;
 
 	public TileEntityOxygenSealer()
 	{
@@ -73,7 +74,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
 			return 0;
 		}
 		Block blockAbove = this.worldObj.getBlock(this.xCoord, this.yCoord + 1, this.zCoord);
-		if (blockAbove != Blocks.air && blockAbove != GCBlocks.breatheableAir && !OxygenPressureProtocol.canBlockPassAir(this.worldObj, Block.getIdFromBlock(blockAbove), new BlockVec3(this.xCoord, this.yCoord + 1, this.zCoord), 0))
+		if (blockAbove != Blocks.air && blockAbove != GCBlocks.breatheableAir && !OxygenPressureProtocol.canBlockPassAir(this.worldObj, blockAbove, new BlockVec3(this.xCoord, this.yCoord + 1, this.zCoord), 1))
 		{
 			// The vent is blocked
 			return 0;
@@ -89,48 +90,6 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
 
 		if (!this.worldObj.isRemote)
 		{
-			if (this.storedOxygen >= 1 && this.getEnergyStoredGC() > 0 && !this.disabled)
-			{
-				this.active = true;
-			}
-			else
-			{
-				this.active = false;
-			}
-
-			if (this.threadSeal != null)
-			{
-				this.sealed = this.threadSeal.sealedFinal.get() && this.active;
-				this.calculatingSealed = this.threadSeal.looping.get() && this.active;
-			}
-
-			if (this.stopSealThreadCooldown > 0)
-			{
-				this.stopSealThreadCooldown--;
-			}
-			else if (ThreadFindSeal.anylooping.get() == false)
-			{
-				this.threadCooldownTotal = this.stopSealThreadCooldown = 50 + TileEntityOxygenSealer.countEntities; // This
-																															// puts
-																															// any
-																															// Sealer
-																															// which
-																															// is
-																															// updated
-																															// to
-																															// the
-																															// back
-																															// of
-																															// the
-																															// queue
-																															// for
-																															// updates
-				OxygenPressureProtocol.updateSealerStatus(this);
-			}
-
-			this.lastDisabled = this.disabled;
-			this.lastSealed = this.sealed;
-
 			// Some code to count the number of Oxygen Sealers being updated,
 			// tick by tick - needed for queueing
 			if (this.ticks == TileEntityOxygenSealer.ticksSave)
@@ -142,7 +101,38 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
 				TileEntityOxygenSealer.ticksSave = this.ticks;
 				TileEntityOxygenSealer.countEntities = TileEntityOxygenSealer.countTemp;
 				TileEntityOxygenSealer.countTemp = 1;
+				TileEntityOxygenSealer.sealerCheckedThisTick = false;
 			}
+
+			if (this.storedOxygen >= 1 && this.getEnergyStoredGC() > 0 && !this.disabled)
+			{
+				this.active = true;
+			}
+			else
+			{
+				this.active = false;
+			}
+
+			if (this.stopSealThreadCooldown > 0)
+			{
+				this.stopSealThreadCooldown--;
+			}
+			else if (TileEntityOxygenSealer.sealerCheckedThisTick == false)
+			{
+				// This puts any Sealer which is updated to the back of the queue for updates
+				this.threadCooldownTotal = this.stopSealThreadCooldown = 75 + TileEntityOxygenSealer.countEntities;
+				TileEntityOxygenSealer.sealerCheckedThisTick = true;
+				OxygenPressureProtocol.updateSealerStatus(this);
+			}
+
+			if (this.threadSeal != null)
+			{
+				this.sealed = this.active && this.threadSeal.sealedFinal.get();
+				this.calculatingSealed = this.active && this.threadSeal.looping.get();
+			}
+
+			this.lastDisabled = this.disabled;
+			this.lastSealed = this.sealed;
 		}
 	}
 

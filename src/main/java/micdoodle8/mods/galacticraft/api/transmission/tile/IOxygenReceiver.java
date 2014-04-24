@@ -3,50 +3,49 @@ package micdoodle8.mods.galacticraft.api.transmission.tile;
 import net.minecraftforge.common.util.ForgeDirection;
 
 /**
- * Applied to all TileEntities that can interact with electricity.
+ * Applied to all TileEntities that can interact with oxygen.
  * 
- * @author Calclavia, King_Lemming
  * 
  */
 public interface IOxygenReceiver extends IConnector
 {
+	public abstract boolean shouldPullOxygen();
+	
 	/**
-	 * Adds electricity to an block. Returns the quantity of electricity that
-	 * was accepted. This should always return 0 if the block cannot be
-	 * externally charged.
+	 * Adds oxygen reception to a tile entity. Returns the quantity of oxygen that
+	 * was accepted. This should always return 0 if the block cannot receive oxygen.
 	 * 
 	 * @param from
-	 *            Orientation the electricity is sent in from.
+	 *            Orientation the oxygen is sent in from.
 	 * @param receive
-	 *            Maximum amount of electricity to be sent into the block.
+	 *            Maximum amount of oxygen to be sent into the block.
 	 * @param doReceive
-	 *            If false, the charge will only be simulated.
-	 * @return Amount of energy that was accepted by the block.
+	 *            If false, the transfer will only be simulated.
+	 * @return Amount of oxygen that was accepted by the block.
 	 */
 	public float receiveOxygen(ForgeDirection from, float receive, boolean doReceive);
 
 	/**
-	 * Adds electricity to an block. Returns the ElectricityPack, the
-	 * electricity provided. This should always return null if the block cannot
-	 * be externally discharged.
+	 * Adds oxygen provision to a block. Returns the quantity of oxygen provided.
+	 * This should always return 0 if the tile entity cannot provide oxygen.
 	 * 
 	 * @param from
-	 *            Orientation the electricity is requested from.
+	 *            Orientation the oxygen is requested from.
 	 * @param request
-	 *            Maximum amount of energy to be sent into the block.
-	 * @param doReceive
-	 *            If false, the charge will only be simulated.
-	 * @return Amount of energy that was given out by the block.
+	 *            Maximum amount of oxygen to be pushed out of the block.
+	 * @param doProvide
+	 *            If false, the transfer will only be simulated.
+	 * @return Amount of oxygen that was given out by the block.
 	 */
 	public float provideOxygen(ForgeDirection from, float request, boolean doProvide);
 
 	/**
-	 * @return How much energy does this TileEntity want?
+	 * @return How much oxygen does this TileEntity want?
 	 */
 	public float getOxygenRequest(ForgeDirection direction);
 
 	/**
-	 * @return How much energy does this TileEntity want to provide?
+	 * @return How much oxygen does this TileEntity want to provide?
 	 */
 	public float getOxygenProvide(ForgeDirection direction);
 

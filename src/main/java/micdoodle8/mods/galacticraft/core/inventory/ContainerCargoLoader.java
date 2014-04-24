@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricBlock;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -19,8 +20,11 @@ import net.minecraft.item.ItemStack;
  */
 public class ContainerCargoLoader extends Container
 {
+	private TileEntityElectricBlock tileEntity;
+
 	public ContainerCargoLoader(InventoryPlayer par1InventoryPlayer, IInventory cargoLoader)
 	{
+		tileEntity = (TileEntityElectricBlock) cargoLoader;
 		this.addSlotToContainer(new SlotSpecific(cargoLoader, 0, 10, 27, IItemElectric.class));
 
 		int var6;
@@ -53,7 +57,7 @@ public class ContainerCargoLoader extends Container
 	@Override
 	public boolean canInteractWith(EntityPlayer var1)
 	{
-		return true;
+		return tileEntity.isUseableByPlayer(var1);
 	}
 
 	@Override

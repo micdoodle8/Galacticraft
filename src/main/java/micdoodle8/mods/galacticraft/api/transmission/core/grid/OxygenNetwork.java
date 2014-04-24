@@ -19,6 +19,7 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IOxygenReceiver;
 import micdoodle8.mods.galacticraft.api.transmission.tile.ITransmitter;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.FMLLog;
@@ -50,25 +51,29 @@ public class OxygenNetwork implements IOxygenNetwork
 
 			if (totalOxygenRequest > 0)
 			{
+				List <TileEntity> ignoreTilesList = Arrays.asList(ignoreTiles); 
 				for (TileEntity tileEntity : new HashSet<TileEntity>(this.oxygenTiles.keySet()))
 				{
-					if (!Arrays.asList(ignoreTiles).contains(tileEntity))
+					if (!ignoreTilesList.contains(tileEntity))
 					{
 						if (tileEntity instanceof IOxygenReceiver)
 						{
 							IOxygenReceiver oxygenTile = (IOxygenReceiver) tileEntity;
 
-							for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+							if (oxygenTile.shouldPullOxygen())
 							{
-								TileEntity tile = new Vector3(tileEntity).modifyPositionFromSide(direction).getTileEntity(tileEntity.getWorldObj());
-
-								if (oxygenTile.canConnect(direction, NetworkType.OXYGEN) && this.getTransmitters().contains(tile))
+								for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
 								{
-									float oxygenToSend = totalOxygen * (oxygenTile.getOxygenRequest(direction) / totalOxygenRequest);
-
-									if (oxygenToSend > 0)
+									TileEntity tile = new BlockVec3(tileEntity).modifyPositionFromSide(direction,1).getTileEntity(tileEntity.getWorldObj());
+	
+									if (oxygenTile.canConnect(direction, NetworkType.OXYGEN) && this.pipes.contains(tile))
 									{
-										remainingUsableOxygen -= ((IOxygenReceiver) tileEntity).receiveOxygen(direction, oxygenToSend, true);
+										float oxygenToSend = Math.max(totalOxygen,totalOxygen * (oxygenTile.getOxygenRequest(direction) / totalOxygenRequest));
+	
+										if (oxygenToSend > 0)
+										{
+											remainingUsableOxygen -= oxygenTile.receiveOxygen(direction, oxygenToSend, true);
+										}
 									}
 								}
 							}
@@ -127,14 +132,15 @@ public class OxygenNetwork implements IOxygenNetwork
 	{
 		List<Float> requests = new ArrayList<Float>();
 
+		List <TileEntity> ignoreTilesList = Arrays.asList(ignoreTiles);
 		for (TileEntity tileEntity : new HashSet<TileEntity>(this.oxygenTiles.keySet()))
 		{
-			if (Arrays.asList(ignoreTiles).contains(tileEntity))
+			if (ignoreTilesList.contains(tileEntity))
 			{
 				continue;
 			}
 
-			if (tileEntity instanceof IOxygenReceiver)
+			if (tileEntity instanceof IOxygenReceiver && ((IOxygenReceiver)tileEntity).shouldPullOxygen())
 			{
 				if (!tileEntity.isInvalid())
 				{
@@ -142,10 +148,10 @@ public class OxygenNetwork implements IOxygenNetwork
 					{
 						for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
 						{
-							Vector3 tileVec = new Vector3(tileEntity);
-							TileEntity tile = tileVec.modifyPositionFromSide(direction).getTileEntity(tileEntity.getWorldObj());
+							BlockVec3 tileVec = new BlockVec3(tileEntity);
+							TileEntity tile = tileVec.modifyPositionFromSide(direction,1).getTileEntity(tileEntity.getWorldObj());
 
-							if (((IOxygenReceiver) tileEntity).canConnect(direction, NetworkType.OXYGEN) && this.getTransmitters().contains(tile))
+							if (((IOxygenReceiver) tileEntity).canConnect(direction, NetworkType.OXYGEN) && this.pipes.contains(tile))
 							{
 								requests.add(((IOxygenReceiver) tileEntity).getOxygenRequest(direction));
 								continue;
@@ -163,7 +169,7 @@ public class OxygenNetwork implements IOxygenNetwork
 			total += f;
 		}
 
-		return total / requests.size();
+		return total;
 	}
 
 	/**
@@ -255,8 +261,8 @@ public class OxygenNetwork implements IOxygenNetwork
 		if (network != null && network != this)
 		{
 			OxygenNetwork newNetwork = new OxygenNetwork();
-			newNetwork.getTransmitters().addAll(this.getTransmitters());
-			newNetwork.getTransmitters().addAll(network.getTransmitters());
+			newNetwork.pipes.addAll(this.pipes);
+			newNetwork.pipes.addAll(network.getTransmitters());
 			newNetwork.refresh();
 			return newNetwork;
 		}
@@ -269,7 +275,7 @@ public class OxygenNetwork implements IOxygenNetwork
 	{
 		if (splitPoint instanceof TileEntity)
 		{
-			this.getTransmitters().remove(splitPoint);
+			this.pipes.remove(splitPoint);
 
 			/**
 			 * Loop through the connected blocks and attempt to see if there are

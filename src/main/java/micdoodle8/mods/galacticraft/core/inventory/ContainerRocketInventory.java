@@ -97,7 +97,7 @@ public class ContainerRocketInventory extends Container
 	@Override
 	public boolean canInteractWith(EntityPlayer par1EntityPlayer)
 	{
-		return this.lowerChestInventory.isUseableByPlayer(par1EntityPlayer);
+		return this.spaceshipInv.isUseableByPlayer(par1EntityPlayer);
 	}
 
 	@Override

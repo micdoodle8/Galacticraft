@@ -386,10 +386,11 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 
 	private void checkCurrentItem()
 	{
-		if (this.worldObj.provider instanceof IGalacticraftWorldProvider && this.inventory.getCurrentItem() != null)
+		ItemStack theCurrentItem = this.inventory.getCurrentItem();
+		if (this.worldObj.provider instanceof IGalacticraftWorldProvider && theCurrentItem != null)
 		{
-			final int var1 = this.inventory.getCurrentItem().stackSize;
-			final int var2 = this.inventory.getCurrentItem().getItemDamage();
+			final int var1 = theCurrentItem.stackSize;
+			final int var2 = theCurrentItem.getItemDamage();
 
 			if (this.inventory.getCurrentItem().getItem() == Item.getItemFromBlock(Blocks.torch))
 			{
@@ -397,10 +398,10 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 				this.inventory.mainInventory[this.inventory.currentItem] = stack;
 			}
 		}
-		else if (!(this.worldObj.provider instanceof IGalacticraftWorldProvider) && this.inventory.getCurrentItem() != null)
+		else if (!(this.worldObj.provider instanceof IGalacticraftWorldProvider) && theCurrentItem != null)
 		{
-			final int var1 = this.inventory.getCurrentItem().stackSize;
-			final int var2 = this.inventory.getCurrentItem().getItemDamage();
+			final int var1 = theCurrentItem.stackSize;
+			final int var2 = theCurrentItem.getItemDamage();
 
 			if (this.inventory.getCurrentItem().getItem() == Item.getItemFromBlock(GCBlocks.unlitTorch))
 			{

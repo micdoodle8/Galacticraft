@@ -195,6 +195,6 @@ public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSe
 	@Override
 	public boolean isSealed(World world, int x, int y, int z, ForgeDirection direction)
 	{
-		return direction == ForgeDirection.UP || direction == ForgeDirection.DOWN;
+		return direction == ForgeDirection.UP;
 	}
 }

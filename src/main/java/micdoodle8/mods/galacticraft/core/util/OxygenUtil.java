@@ -96,19 +96,19 @@ public class OxygenUtil
 	public static boolean isInOxygenBlock(World world, AxisAlignedBB bb)
 	{
 		int i = MathHelper.floor_double(bb.minX);
-		int j = MathHelper.floor_double(bb.maxX + 1.0D);
+		int j = MathHelper.floor_double(bb.maxX);
 		int k = MathHelper.floor_double(bb.minY);
-		int l = MathHelper.floor_double(bb.maxY + 1.0D);
+		int l = MathHelper.floor_double(bb.maxY);
 		int i1 = MathHelper.floor_double(bb.minZ);
-		int j1 = MathHelper.floor_double(bb.maxZ + 1.0D);
+		int j1 = MathHelper.floor_double(bb.maxZ);
 
 		if (world.checkChunksExist(i, k, i1, j, l, j1))
 		{
-			for (int k1 = i; k1 < j; ++k1)
+			for (int k1 = i; k1 <= j; ++k1)
 			{
-				for (int l1 = k; l1 < l; ++l1)
+				for (int l1 = k; l1 <= l; ++l1)
 				{
-					for (int i2 = i1; i2 < j1; ++i2)
+					for (int i2 = i1; i2 <= j1; ++i2)
 					{
 						Block j2 = world.getBlock(k1, l1, i2);
 

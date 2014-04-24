@@ -17,12 +17,12 @@ import net.minecraft.item.ItemStack;
  */
 public class ContainerParaChest extends Container
 {
-	private IInventory lowerChestInventory;
+	private IInventory parachestInventory;
 	public int numRows;
 
 	public ContainerParaChest(IInventory par1IInventory, IInventory par2IInventory)
 	{
-		this.lowerChestInventory = par2IInventory;
+		this.parachestInventory = par2IInventory;
 		this.numRows = (par2IInventory.getSizeInventory() - 3) / 9;
 		par2IInventory.openInventory();
 		int i = (this.numRows - 4) * 18 + 19;
@@ -58,7 +58,7 @@ public class ContainerParaChest extends Container
 	@Override
 	public boolean canInteractWith(EntityPlayer par1EntityPlayer)
 	{
-		return this.lowerChestInventory.isUseableByPlayer(par1EntityPlayer);
+		return this.parachestInventory.isUseableByPlayer(par1EntityPlayer);
 	}
 
 	@Override
@@ -72,14 +72,14 @@ public class ContainerParaChest extends Container
 			ItemStack itemstack1 = slot.getStack();
 			itemstack = itemstack1.copy();
 
-			if (par2 < this.lowerChestInventory.getSizeInventory())
+			if (par2 < this.parachestInventory.getSizeInventory())
 			{
 				if (!this.mergeItemStack(itemstack1, this.numRows * 9 + 3, this.inventorySlots.size(), true))
 				{
 					return null;
 				}
 			}
-			else if (!this.mergeItemStack(itemstack1, 0, this.lowerChestInventory.getSizeInventory(), false))
+			else if (!this.mergeItemStack(itemstack1, 0, this.parachestInventory.getSizeInventory(), false))
 			{
 				return null;
 			}
@@ -104,14 +104,14 @@ public class ContainerParaChest extends Container
 	public void onContainerClosed(EntityPlayer par1EntityPlayer)
 	{
 		super.onContainerClosed(par1EntityPlayer);
-		this.lowerChestInventory.closeInventory();
+		this.parachestInventory.closeInventory();
 	}
 
 	/**
 	 * Return this chest container's lower chest inventory.
 	 */
-	public IInventory getLowerChestInventory()
+	public IInventory getparachestInventory()
 	{
-		return this.lowerChestInventory;
+		return this.parachestInventory;
 	}
 }

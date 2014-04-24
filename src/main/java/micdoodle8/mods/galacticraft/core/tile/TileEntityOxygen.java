@@ -46,8 +46,6 @@ public abstract class TileEntityOxygen extends TileEntityElectricBlock implement
 		return (int) Math.floor((this.getOxygenStored() * scale) / (this.getMaxOxygenStored() - this.oxygenPerTick));
 	}
 
-	public abstract boolean shouldPullOxygen();
-
 	public abstract boolean shouldUseOxygen();
 
 	public int getCappedScaledOxygenLevel(int scale)

@@ -19,9 +19,12 @@ import net.minecraft.item.ItemStack;
  */
 public class ContainerSolar extends Container
 {
-	public ContainerSolar(InventoryPlayer par1InventoryPlayer, TileEntitySolar fuelLoader)
+	private TileEntitySolar tileEntity;
+	
+	public ContainerSolar(InventoryPlayer par1InventoryPlayer, TileEntitySolar solarGen)
 	{
-		this.addSlotToContainer(new SlotSpecific(fuelLoader, 0, 152, 83, IItemElectric.class));
+		this.tileEntity = solarGen;
+		this.addSlotToContainer(new SlotSpecific(solarGen, 0, 152, 83, IItemElectric.class));
 
 		int var6;
 		int var7;
@@ -45,7 +48,7 @@ public class ContainerSolar extends Container
 	@Override
 	public boolean canInteractWith(EntityPlayer var1)
 	{
-		return true;
+		return this.tileEntity.isUseableByPlayer(var1);
 	}
 
 	@Override

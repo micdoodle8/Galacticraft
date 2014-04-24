@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFuelLoader;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricBlock;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -19,8 +20,11 @@ import net.minecraft.item.ItemStack;
  */
 public class ContainerFuelLoader extends Container
 {
+	private TileEntityElectricBlock tileEntity;
+
 	public ContainerFuelLoader(InventoryPlayer par1InventoryPlayer, TileEntityFuelLoader fuelLoader)
 	{
+		tileEntity = fuelLoader;
 		this.addSlotToContainer(new SlotSpecific(fuelLoader, 0, 51, 55, IItemElectric.class));
 		this.addSlotToContainer(new Slot(fuelLoader, 1, 7, 12));
 
@@ -46,7 +50,7 @@ public class ContainerFuelLoader extends Container
 	@Override
 	public boolean canInteractWith(EntityPlayer var1)
 	{
-		return true;
+		return tileEntity.isUseableByPlayer(var1);
 	}
 
 	@Override

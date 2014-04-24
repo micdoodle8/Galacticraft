@@ -175,7 +175,7 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock
 
 		if (metadata == 4)
 		{
-			return direction == ForgeDirection.UP || direction == ForgeDirection.DOWN;
+			return direction == ForgeDirection.UP;
 		}
 
 		return true;
