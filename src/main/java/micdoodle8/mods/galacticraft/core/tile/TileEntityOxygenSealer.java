@@ -35,7 +35,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
 	public boolean sealed;
 	public boolean lastSealed = false;
 
-	public static final float WATTS_PER_TICK = 0.2F;
+	public static final int WATTS_PER_TICK = 1;
 	public boolean lastDisabled = false;
 
 	@NetworkedField(targetSide = Side.CLIENT)
@@ -68,7 +68,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
 
 	public int getFindSealChecks()
 	{
-		if (!this.active || this.storedOxygen < this.oxygenPerTick || this.getEnergyStored() <= 0.0F)
+		if (!this.active || this.storedOxygen < this.oxygenPerTick || this.getEnergyStoredGC() <= 0.0F)
 		{
 			return 0;
 		}
@@ -89,7 +89,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
 
 		if (!this.worldObj.isRemote)
 		{
-			if (this.storedOxygen >= 1 && this.getEnergyStored() > 0 && !this.disabled)
+			if (this.storedOxygen >= 1 && this.getEnergyStoredGC() > 0 && !this.disabled)
 			{
 				this.active = true;
 			}
@@ -319,7 +319,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
 	@Override
 	public boolean shouldPullEnergy()
 	{
-		return this.getEnergyStored() <= this.getMaxEnergyStored() - this.ueWattsPerTick;
+		return this.getEnergyStoredGC() < this.getMaxEnergyStoredGC();
 	}
 
 	@Override
@@ -343,7 +343,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
 	@Override
 	public boolean shouldPullOxygen()
 	{
-		return this.getEnergyStored() > 0;
+		return this.getEnergyStoredGC() > 0;
 	}
 
 	@Override

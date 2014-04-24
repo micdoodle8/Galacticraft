@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import java.util.EnumSet;
 
+import micdoodle8.mods.galacticraft.api.power.EnergySource.EnergySourceAdjacent;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkHelper;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
@@ -33,7 +34,7 @@ public abstract class TileEntityOxygen extends TileEntityElectricBlock implement
 	public float lastStoredOxygen;
 	public static int timeSinceOxygenRequest;
 
-	public TileEntityOxygen(float wattsPerTick, float maxEnergy, float maxOxygen, float oxygenPerTick)
+	public TileEntityOxygen(int wattsPerTick, int maxEnergy, float maxOxygen, float oxygenPerTick)
 	{
 		super(wattsPerTick, maxEnergy);
 		this.maxOxygen = maxOxygen;
@@ -138,7 +139,8 @@ public abstract class TileEntityOxygen extends TileEntityElectricBlock implement
 		case OXYGEN:
 			return this.getOxygenInputDirections().contains(direction) || this.getOxygenOutputDirections().contains(direction);
 		case POWER:
-			return super.canConnect(direction, type);
+			return this.nodeAvailable(new EnergySourceAdjacent(direction));
+//			return super.canConnect(direction, type);
 		}
 
 		return false;
@@ -184,11 +186,6 @@ public abstract class TileEntityOxygen extends TileEntityElectricBlock implement
 	{
 		if (this.getOxygenOutputDirections().contains(from))
 		{
-			if (!doProvide)
-			{
-				return this.getProvide(from);
-			}
-
 			return this.provideOxygen(request, doProvide);
 		}
 

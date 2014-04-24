@@ -44,7 +44,7 @@ public class TileEntityFuelLoader extends TileEntityElectricBlock implements IIn
 	public FluidTank fuelTank = new FluidTank(this.tankCapacity);
 
 	private ItemStack[] containingItems = new ItemStack[2];
-	public static final float WATTS_PER_TICK = 0.25F;
+	public static final int WATTS_PER_TICK = 1;
 
 	public IFuelable attachedFuelable;
 
@@ -130,7 +130,7 @@ public class TileEntityFuelLoader extends TileEntityElectricBlock implements IIn
 			{
 				final FluidStack liquid = new FluidStack(GalacticraftCore.fluidFuel, 2);
 
-				if (this.attachedFuelable != null && this.getEnergyStored() > 0 && !this.disabled)
+				if (this.attachedFuelable != null && this.getEnergyStoredGC() > 0 && !this.disabled)
 				{
 					if (liquid != null)
 					{
@@ -372,7 +372,7 @@ public class TileEntityFuelLoader extends TileEntityElectricBlock implements IIn
 	@Override
 	public boolean shouldPullEnergy()
 	{
-		return this.getEnergyStored() <= this.getMaxEnergyStored() - this.ueWattsPerTick;
+		return this.getEnergyStoredGC() < this.getMaxEnergyStoredGC();
 	}
 
 	@Override

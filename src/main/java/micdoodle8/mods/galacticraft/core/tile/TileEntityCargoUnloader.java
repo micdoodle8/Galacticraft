@@ -31,7 +31,7 @@ import cpw.mods.fml.relauncher.Side;
 public class TileEntityCargoUnloader extends TileEntityElectricBlock implements IInventory, ISidedInventory, ILandingPadAttachable
 {
 	private ItemStack[] containingItems = new ItemStack[15];
-	public static final float WATTS_PER_TICK = 0.075F;
+	public static final int WATTS_PER_TICK = 1;
 	@NetworkedField(targetSide = Side.CLIENT)
 	public boolean targetEmpty;
 	@NetworkedField(targetSide = Side.CLIENT)
@@ -71,7 +71,7 @@ public class TileEntityCargoUnloader extends TileEntityElectricBlock implements 
 
 					this.targetEmpty = state == EnumCargoLoadingState.EMPTY;
 
-					if (this.ticks % 15 == 0 && state == EnumCargoLoadingState.SUCCESS && !this.disabled && this.getEnergyStored() > 0)
+					if (this.ticks % 15 == 0 && state == EnumCargoLoadingState.SUCCESS && !this.disabled && this.getEnergyStoredGC() > 0)
 					{
 						this.addCargo(this.attachedFuelable.removeCargo(true).resultStack, true);
 					}
@@ -321,7 +321,7 @@ public class TileEntityCargoUnloader extends TileEntityElectricBlock implements 
 	@Override
 	public boolean shouldPullEnergy()
 	{
-		return this.getEnergyStored() <= this.getMaxEnergyStored() - this.ueWattsPerTick;
+		return this.getEnergyStoredGC() < this.getMaxEnergyStoredGC();
 	}
 
 	@Override

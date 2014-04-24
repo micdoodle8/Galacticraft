@@ -60,7 +60,7 @@ public class GuiOxygenDistributor extends GuiContainerGC
 		this.infoRegions.add(this.oxygenInfoRegion);
 		List<String> electricityDesc = new ArrayList<String>();
 		electricityDesc.add("Electrical Storage");
-		electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.distributor.getEnergyStored()) + " / " + (int) Math.floor(this.distributor.getMaxEnergyStored())));
+		electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.distributor.getEnergyStoredGC()) + " / " + (int) Math.floor(this.distributor.getMaxEnergyStoredGC())));
 		this.electricInfoRegion.tooltipStrings = electricityDesc;
 		this.electricInfoRegion.xPosition = (this.width - this.xSize) / 2 + 112;
 		this.electricInfoRegion.yPosition = (this.height - this.ySize) / 2 + 37;
@@ -79,16 +79,16 @@ public class GuiOxygenDistributor extends GuiContainerGC
 		this.fontRendererObj.drawString(status, this.xSize / 2 - this.fontRendererObj.getStringWidth(status) / 2, 50, 4210752);
 		status = "Oxygen Use: " + this.distributor.oxygenPerTick * 20 + "/s";
 		this.fontRendererObj.drawString(status, this.xSize / 2 - this.fontRendererObj.getStringWidth(status) / 2, 60, 4210752);
-		status = ElectricityDisplay.getDisplay(this.distributor.ueWattsPerTick * 20, ElectricUnit.WATT);
-		this.fontRendererObj.drawString(status, this.xSize / 2 - this.fontRendererObj.getStringWidth(status) / 2, 70, 4210752);
-		status = ElectricityDisplay.getDisplay(this.distributor.getVoltage(), ElectricUnit.VOLTAGE);
-		this.fontRendererObj.drawString(status, this.xSize / 2 - this.fontRendererObj.getStringWidth(status) / 2, 80, 4210752);
+//		status = ElectricityDisplay.getDisplay(this.distributor.ueWattsPerTick * 20, ElectricUnit.WATT);
+//		this.fontRendererObj.drawString(status, this.xSize / 2 - this.fontRendererObj.getStringWidth(status) / 2, 70, 4210752);
+//		status = ElectricityDisplay.getDisplay(this.distributor.getVoltage(), ElectricUnit.VOLTAGE);
+//		this.fontRendererObj.drawString(status, this.xSize / 2 - this.fontRendererObj.getStringWidth(status) / 2, 80, 4210752);
 		this.fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 90 + 3, 4210752);
 	}
 
 	private String getStatus()
 	{
-		if (this.distributor.getEnergyStored() == 0)
+		if (this.distributor.getEnergyStoredGC() == 0)
 		{
 			return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.missingpower.name");
 		}
@@ -117,7 +117,7 @@ public class GuiOxygenDistributor extends GuiContainerGC
 			scale = this.distributor.getScaledElecticalLevel(54);
 			this.drawTexturedModalRect(var5 + 113, var6 + 38, 197, 0, Math.min(scale, 54), 7);
 
-			if (this.distributor.getEnergyStored() > 0)
+			if (this.distributor.getEnergyStoredGC() > 0)
 			{
 				this.drawTexturedModalRect(var5 + 99, var6 + 37, 176, 0, 11, 10);
 			}
@@ -134,7 +134,7 @@ public class GuiOxygenDistributor extends GuiContainerGC
 
 			List<String> electricityDesc = new ArrayList<String>();
 			electricityDesc.add("Electrical Storage");
-			electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.distributor.getEnergyStored()) + " / " + (int) Math.floor(this.distributor.getMaxEnergyStored())));
+			electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.distributor.getEnergyStoredGC()) + " / " + (int) Math.floor(this.distributor.getMaxEnergyStoredGC())));
 			this.electricInfoRegion.tooltipStrings = electricityDesc;
 		}
 	}

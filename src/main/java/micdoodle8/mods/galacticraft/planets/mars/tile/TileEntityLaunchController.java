@@ -47,9 +47,9 @@ import cpw.mods.fml.relauncher.Side;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class TileEntityLaunchController extends TileEntityElectricBlock implements IChunkLoader, IElectrical, IInventory, ISidedInventory, ILandingPadAttachable
+public class TileEntityLaunchController extends TileEntityElectricBlock implements IChunkLoader, IInventory, ISidedInventory, ILandingPadAttachable
 {
-	public static final float WATTS_PER_TICK = 0.05000001f;
+	public static final int WATTS_PER_TICK = 1;
 	private ItemStack[] containingItems = new ItemStack[1];
 	@NetworkedField(targetSide = Side.CLIENT)
 	public boolean launchPadRemovalDisabled = true;
@@ -394,15 +394,9 @@ public class TileEntityLaunchController extends TileEntityElectricBlock implemen
 	}
 
 	@Override
-	public float getProvide(ForgeDirection direction)
-	{
-		return 0;
-	}
-
-	@Override
 	public boolean shouldPullEnergy()
 	{
-		return this.getEnergyStored() <= this.getMaxEnergyStored() - this.ueWattsPerTick;
+		return this.getEnergyStoredGC() < this.getMaxEnergyStoredGC();
 	}
 
 	@Override
@@ -548,6 +542,6 @@ public class TileEntityLaunchController extends TileEntityElectricBlock implemen
 
 	public boolean validFrequency()
 	{
-		return !this.getDisabled(0) && this.getEnergyStored() > 0 && this.frequencyValid && this.destFrequencyValid;
+		return !this.getDisabled(0) && this.getEnergyStoredGC() > 0 && this.frequencyValid && this.destFrequencyValid;
 	}
 }

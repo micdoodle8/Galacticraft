@@ -68,7 +68,7 @@ public class GuiCircuitFabricator extends GuiContainer
 		this.fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 93, 4210752);
 		str = ElectricityDisplay.getDisplay(TileEntityElectricIngotCompressor.WATTS_PER_TICK_PER_STACK * 20, ElectricUnit.WATT);
 		this.fontRendererObj.drawString(str, 5, 42, 4210752);
-		str = ElectricityDisplay.getDisplay(this.tileEntity.getVoltage(), ElectricUnit.VOLTAGE);
+//		str = ElectricityDisplay.getDisplay(this.tileEntity.getVoltage(), ElectricUnit.VOLTAGE);
 		this.fontRendererObj.drawString(str, 5, 52, 4210752);
 	}
 
@@ -94,7 +94,7 @@ public class GuiCircuitFabricator extends GuiContainer
 			this.drawTexturedModalRect(this.containerWidth + 88, this.containerHeight + 20, 176, 17 + this.tileEntity.processTicks % 9 / 3 * 10, scale, 10);
 		}
 
-		if (this.tileEntity.getEnergyStored() > 0)
+		if (this.tileEntity.getEnergyStoredGC() > 0)
 		{
 			scale = this.tileEntity.getScaledElecticalLevel(54);
 			this.drawTexturedModalRect(this.containerWidth + 116 - 98, this.containerHeight + 89, 176, 0, scale, 7);

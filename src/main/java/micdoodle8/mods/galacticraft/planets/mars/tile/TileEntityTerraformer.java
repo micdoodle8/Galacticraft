@@ -47,7 +47,7 @@ public class TileEntityTerraformer extends TileEntityElectricBlock implements II
 	public FluidTank waterTank = new FluidTank(this.tankCapacity);
 	public boolean active;
 	public boolean lastActive;
-	public static final float WATTS_PER_TICK = 0.2F;
+	public static final int WATTS_PER_TICK = 1;
 	private ItemStack[] containingItems = new ItemStack[14];
 	@NetworkedField(targetSide = Side.CLIENT)
 	public EntityTerraformBubble terraformBubble;
@@ -136,7 +136,7 @@ public class TileEntityTerraformer extends TileEntityElectricBlock implements II
 				}
 			}
 
-			if (this.terraformBubble.getSize() == this.MAX_SIZE && this.getEnergyStored() > 0 && this.getFirstBonemealStack() != null && this.waterTank.getFluid() != null && this.waterTank.getFluid().amount > 0)
+			if (this.terraformBubble.getSize() == this.MAX_SIZE && this.getEnergyStoredGC() > 0 && this.getFirstBonemealStack() != null && this.waterTank.getFluid() != null && this.waterTank.getFluid().amount > 0)
 			{
 				this.active = true;
 			}
@@ -250,7 +250,7 @@ public class TileEntityTerraformer extends TileEntityElectricBlock implements II
 			this.grassBlocksListSize = this.grassBlockList.size();
 		}
 
-		if (this.getEnergyStored() > 0.0F && (!this.grassDisabled || !this.treesDisabled))
+		if (this.getEnergyStoredGC() > 0.0F && (!this.grassDisabled || !this.treesDisabled))
 		{
 			this.size = (float) Math.min(Math.max(0, this.size + 0.1F), this.MAX_SIZE);
 		}
@@ -564,7 +564,7 @@ public class TileEntityTerraformer extends TileEntityElectricBlock implements II
 	@Override
 	public boolean shouldPullEnergy()
 	{
-		return this.getEnergyStored() <= this.getMaxEnergyStored() - this.ueWattsPerTick;
+		return this.getEnergyStoredGC() < this.getMaxEnergyStoredGC();
 	}
 
 	@Override

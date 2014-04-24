@@ -31,13 +31,20 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 	public final Set<EntityPlayer> playersUsing = new HashSet<EntityPlayer>();
 	public int scaledEnergyLevel;
 	public int lastScaledEnergyLevel;
+	
+	public TileEntityEnergyStorageModule()
+	{
+		super();
+		this.storage.setCapacity(500000);
+		this.storage.setMaxTransfer(2000);
+	}
 
 	@Override
 	public void updateEntity()
 	{
 		super.updateEntity();
 
-		this.scaledEnergyLevel = (int) Math.floor(this.getEnergyStored() * 16 / this.getMaxEnergyStored());
+		this.scaledEnergyLevel = (int) Math.floor(this.getEnergyStoredGC() * 16 / this.getMaxEnergyStoredGC());
 
 		if (this.scaledEnergyLevel != this.lastScaledEnergyLevel)
 		{
@@ -49,11 +56,6 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 			this.recharge(this.containingItems[0]);
 			this.discharge(this.containingItems[1]);
 		}
-
-		/**
-		 * Gradually lose energy.
-		 */
-		this.setEnergyStored(this.getEnergyStored() - 0.00005f);
 
 		if (!this.worldObj.isRemote)
 		{
@@ -252,7 +254,7 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 			}
 			else if (slotID == 1)
 			{
-				return ((IItemElectric) itemstack.getItem()).getElectricityStored(itemstack) <= 0 || this.getEnergyStored() >= this.getMaxEnergyStored();
+				return ((IItemElectric) itemstack.getItem()).getElectricityStored(itemstack) <= 0 || this.getEnergyStoredGC() >= this.getMaxEnergyStoredGC();
 			}
 		}
 
@@ -260,17 +262,17 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 
 	}
 
-	@Override
-	public float getRequest(ForgeDirection direction)
-	{
-		return this.getElectricalInputDirections().contains(direction) ? this.getMaxEnergyStored() - this.getEnergyStored() : 0;
-	}
-
-	@Override
-	public float getProvide(ForgeDirection direction)
-	{
-		return this.getElectricalOutputDirections().contains(direction) ? Math.min(1.3F, this.getEnergyStored()) : 0;
-	}
+//	@Override
+//	public float getRequest(ForgeDirection direction)
+//	{
+//		return this.getElectricalInputDirections().contains(direction) ? this.getMaxEnergyStored() - this.getEnergyStored() : 0;
+//	}
+//
+//	@Override
+//	public float getProvide(ForgeDirection direction)
+//	{
+//		return this.getElectricalOutputDirections().contains(direction) ? Math.min(1.3F, this.getEnergyStored()) : 0;
+//	}
 
 	@Override
 	public EnumSet<ForgeDirection> getElectricalInputDirections()
@@ -284,9 +286,9 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 		return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() - BlockMachine.STORAGE_MODULE_METADATA + 2), ForgeDirection.UNKNOWN);
 	}
 
-	@Override
-	public float getMaxEnergyStored()
-	{
-		return 2500;
-	}
+//	@Override
+//	public float getMaxEnergyStored()
+//	{
+//		return 2500;
+//	}
 }

@@ -1,14 +1,12 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.gui;
 
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket.EnumAutoLaunch;
-import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay;
-import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay.ElectricUnit;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementCheckbox;
-import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementDropdown;
-import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementTextBox;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementCheckbox.ICheckBoxCallback;
+import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementDropdown;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementDropdown.IDropboxCallback;
+import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementTextBox;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementTextBox.ITextBoxCallback;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
@@ -182,10 +180,10 @@ public class GuiLaunchController extends GuiContainer implements IDropboxCallbac
 		this.fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, 115, 4210752);
 		displayString = this.getStatus();
 		this.fontRendererObj.drawSplitString(displayString, 60 - this.fontRendererObj.getStringWidth(displayString) / 2, 94, 60, 4210752);
-		displayString = ElectricityDisplay.getDisplay(this.launchController.ueWattsPerTick * 20, ElectricUnit.WATT);
-		this.fontRendererObj.drawString(displayString, this.xSize - 26 - this.fontRendererObj.getStringWidth(displayString), 94, 4210752);
-		displayString = ElectricityDisplay.getDisplay(this.launchController.getVoltage(), ElectricUnit.VOLTAGE);
-		this.fontRendererObj.drawString(displayString, this.xSize - 26 - this.fontRendererObj.getStringWidth(displayString), 104, 4210752);
+//		displayString = ElectricityDisplay.getDisplay(this.launchController.ueWattsPerTick * 20, ElectricUnit.WATT);
+//		this.fontRendererObj.drawString(displayString, this.xSize - 26 - this.fontRendererObj.getStringWidth(displayString), 94, 4210752);
+//		displayString = ElectricityDisplay.getDisplay(this.launchController.getVoltage(), ElectricUnit.VOLTAGE);
+//		this.fontRendererObj.drawString(displayString, this.xSize - 26 - this.fontRendererObj.getStringWidth(displayString), 104, 4210752);
 		this.fontRendererObj.drawString("Frequency:", 7, 22, 4210752);
 		this.fontRendererObj.drawString("Destination Frequency:", 7, 44, 4210752);
 
@@ -198,7 +196,7 @@ public class GuiLaunchController extends GuiContainer implements IDropboxCallbac
 			return EnumColor.RED + "Invalid Frequency";
 		}
 
-		if (this.launchController.getEnergyStored() <= 0.0F)
+		if (this.launchController.getEnergyStoredGC() <= 0.0F)
 		{
 			return EnumColor.RED + "Not Enough Energy";
 		}
@@ -223,7 +221,7 @@ public class GuiLaunchController extends GuiContainer implements IDropboxCallbac
 
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-		if (this.launchController.getEnergyStored() > 0)
+		if (this.launchController.getEnergyStoredGC() > 0)
 		{
 			int scale = this.launchController.getScaledElecticalLevel(54);
 			this.drawTexturedModalRect(var5 + 99, var6 + 114, 176, 0, Math.min(scale, 54), 7);

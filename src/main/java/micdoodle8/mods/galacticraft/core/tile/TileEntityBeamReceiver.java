@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.power.EnergySource;
+import micdoodle8.mods.galacticraft.api.power.EnergySource.EnergySourceAdjacent;
 import micdoodle8.mods.galacticraft.api.power.EnergySource.EnergySourceWireless;
 import micdoodle8.mods.galacticraft.api.power.IEnergyHandlerGC;
 import micdoodle8.mods.galacticraft.api.power.ILaserNode;
@@ -53,8 +54,9 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 			if (tile instanceof TileEntityUniversalElectrical)
 			{
 				TileEntityUniversalElectrical electricalTile = (TileEntityUniversalElectrical) tile;
-				int toSend = (int)Math.floor(electricalTile.getEnergyStored());
-				electricalTile.provideElectricity(this.target.receiveEnergyGC(new EnergySourceWireless(Lists.newArrayList((ILaserNode)this)), toSend, false), true);
+				EnergySourceAdjacent source = new EnergySourceAdjacent(this.facing.getOpposite());
+				int toSend = electricalTile.getEnergyStoredGC(source);
+				electricalTile.extractEnergyGC(source, this.target.receiveEnergyGC(new EnergySourceWireless(Lists.newArrayList((ILaserNode)this)), toSend, false), false);
 			}
 		}
 		
@@ -65,7 +67,8 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 			if (tile instanceof TileEntityUniversalElectrical)
 			{
 				TileEntityUniversalElectrical electricalTile = (TileEntityUniversalElectrical) tile;
-				this.storage.extractEnergyGC((int) electricalTile.receiveElectricity(this.storage.getEnergyStoredGC(), true), false);
+				EnergySourceAdjacent source = new EnergySourceAdjacent(this.facing.getOpposite());
+				this.storage.extractEnergyGC((int) electricalTile.receiveEnergyGC(source, this.storage.getEnergyStoredGC(), false), false);
 			}
 		}
 	}

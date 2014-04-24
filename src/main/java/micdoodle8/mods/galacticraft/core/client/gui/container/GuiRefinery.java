@@ -97,7 +97,7 @@ public class GuiRefinery extends GuiContainerGC
 		this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 152, (this.height - this.ySize) / 2 + 6, 18, 18, fuelSlotDesc, this.width, this.height));
 		List<String> electricityDesc = new ArrayList<String>();
 		electricityDesc.add("Electrical Storage");
-		electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.tileEntity.getEnergyStored()) + " / " + (int) Math.floor(this.tileEntity.getMaxEnergyStored())));
+		electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.tileEntity.getEnergyStoredGC()) + " / " + (int) Math.floor(this.tileEntity.getMaxEnergyStoredGC())));
 		this.electricInfoRegion.tooltipStrings = electricityDesc;
 		this.electricInfoRegion.xPosition = (this.width - this.xSize) / 2 + 62;
 		this.electricInfoRegion.yPosition = (this.height - this.ySize) / 2 + 16;
@@ -145,8 +145,8 @@ public class GuiRefinery extends GuiContainerGC
 		this.buttonDisable.enabled = this.tileEntity.disableCooldown == 0;
 		this.buttonDisable.displayString = this.tileEntity.processTicks == 0 ? StatCollector.translateToLocal("gui.button.refine.name") : StatCollector.translateToLocal("gui.button.stoprefine.name");
 		this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.message.status.name") + ": " + displayText, 72, 45 + 23 + yOffset, 4210752);
-		this.fontRendererObj.drawString(ElectricityDisplay.getDisplay(this.tileEntity.ueWattsPerTick * 20, ElectricUnit.WATT), 72, 56 + 23 + yOffset, 4210752);
-		this.fontRendererObj.drawString(ElectricityDisplay.getDisplay(this.tileEntity.getVoltage(), ElectricUnit.VOLTAGE), 72, 68 + 23 + yOffset, 4210752);
+//		this.fontRendererObj.drawString(ElectricityDisplay.getDisplay(this.tileEntity.ueWattsPerTick * 20, ElectricUnit.WATT), 72, 56 + 23 + yOffset, 4210752);
+//		this.fontRendererObj.drawString(ElectricityDisplay.getDisplay(this.tileEntity.getVoltage(), ElectricUnit.VOLTAGE), 72, 68 + 23 + yOffset, 4210752);
 		this.fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 118 + 2 + 23, 4210752);
 	}
 
@@ -182,10 +182,10 @@ public class GuiRefinery extends GuiContainerGC
 
 		List<String> electricityDesc = new ArrayList<String>();
 		electricityDesc.add("Electrical Storage");
-		electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.tileEntity.getEnergyStored()) + " / " + (int) Math.floor(this.tileEntity.getMaxEnergyStored())));
+		electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.tileEntity.getEnergyStoredGC()) + " / " + (int) Math.floor(this.tileEntity.getMaxEnergyStoredGC())));
 		this.electricInfoRegion.tooltipStrings = electricityDesc;
 
-		if (this.tileEntity.getEnergyStored() > 0)
+		if (this.tileEntity.getEnergyStoredGC() > 0)
 		{
 			this.drawTexturedModalRect(this.containerWidth + 49, this.containerHeight + 16, 208, 0, 11, 10);
 		}

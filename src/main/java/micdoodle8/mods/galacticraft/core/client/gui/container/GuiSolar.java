@@ -63,7 +63,7 @@ public class GuiSolar extends GuiContainerGC
 		super.initGui();
 		List<String> electricityDesc = new ArrayList<String>();
 		electricityDesc.add("Electrical Storage");
-		electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.solarPanel.getEnergyStored()) + " / " + (int) Math.floor(this.solarPanel.getMaxEnergyStored())));
+		electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.solarPanel.getEnergyStoredGC()) + " / " + (int) Math.floor(this.solarPanel.getMaxEnergyStoredGC())));
 		this.electricInfoRegion.tooltipStrings = electricityDesc;
 		this.electricInfoRegion.xPosition = (this.width - this.xSize) / 2 + 96;
 		this.electricInfoRegion.yPosition = (this.height - this.ySize) / 2 + 24;
@@ -96,8 +96,8 @@ public class GuiSolar extends GuiContainerGC
 		float boost = Math.round((this.solarPanel.getSolarBoost() - 1) * 1000) / 10.0F;
 		displayString = StatCollector.translateToLocal("gui.message.environment.name") + ": " + boost + "%";
 		this.fontRendererObj.drawString(displayString, this.xSize / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, 56 + 23 - 46 + offsetY, 4210752);
-		displayString = ElectricityDisplay.getDisplay(this.solarPanel.getVoltage(), ElectricUnit.VOLTAGE);
-		this.fontRendererObj.drawString(displayString, this.xSize / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, 68 + 23 - 46 + offsetY, 4210752);
+//		displayString = ElectricityDisplay.getDisplay(this.solarPanel.getVoltage(), ElectricUnit.VOLTAGE);
+//		this.fontRendererObj.drawString(displayString, this.xSize / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, 68 + 23 - 46 + offsetY, 4210752);
 		this.fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 90, 4210752);
 	}
 
@@ -147,10 +147,10 @@ public class GuiSolar extends GuiContainerGC
 
 		List<String> electricityDesc = new ArrayList<String>();
 		electricityDesc.add("Electrical Storage");
-		electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.solarPanel.getEnergyStored()) + " / " + (int) Math.floor(this.solarPanel.getMaxEnergyStored())));
+		electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.solarPanel.getEnergyStoredGC()) + " / " + (int) Math.floor(this.solarPanel.getMaxEnergyStoredGC())));
 		this.electricInfoRegion.tooltipStrings = electricityDesc;
 
-		if (this.solarPanel.getEnergyStored() > 0)
+		if (this.solarPanel.getEnergyStoredGC() > 0)
 		{
 			this.drawTexturedModalRect(var5 + 83, var6 + 24, 176, 0, 11, 10);
 		}

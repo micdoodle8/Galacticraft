@@ -4,8 +4,6 @@ import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
-import micdoodle8.mods.galacticraft.api.transmission.ElectricityPack;
-import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,7 +26,7 @@ import cpw.mods.fml.relauncher.Side;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class TileEntityCoalGenerator extends TileEntityUniversalElectrical implements IElectrical, IInventory, ISidedInventory, IPacketReceiver
+public class TileEntityCoalGenerator extends TileEntityUniversalElectrical implements IInventory, ISidedInventory, IPacketReceiver
 {
 	/**
 	 * Maximum amount of energy needed to generate electricity
@@ -48,7 +46,7 @@ public class TileEntityCoalGenerator extends TileEntityUniversalElectrical imple
 	public float prevGenerateWatts = 0;
 
 	@NetworkedField(targetSide = Side.CLIENT)
-	public float generateWatts = 0;
+	public int generateWatts = 0;
 
 	/**
 	 * The number of ticks that a fresh copy of the currently-burning item would
@@ -63,11 +61,18 @@ public class TileEntityCoalGenerator extends TileEntityUniversalElectrical imple
 	private ItemStack[] containingItems = new ItemStack[1];
 
 	public final Set<EntityPlayer> playersUsing = new HashSet<EntityPlayer>();
+	
+	public TileEntityCoalGenerator()
+	{
+		super();
+		this.storage.setCapacity(0);
+		this.storage.setMaxTransfer(0);
+	}
 
 	@Override
 	public void updateEntity()
 	{
-		this.setEnergyStored(this.generateWatts);
+		this.receiveEnergyGC(null, this.generateWatts, false);
 
 		super.updateEntity();
 
@@ -79,9 +84,9 @@ public class TileEntityCoalGenerator extends TileEntityUniversalElectrical imple
 			{
 				this.itemCookTime--;
 
-				if (this.getEnergyStored() < this.getMaxEnergyStored())
+				if (this.getEnergyStoredGC() < this.getMaxEnergyStoredGC())
 				{
-					this.generateWatts = Math.min(this.generateWatts + Math.min(this.generateWatts * 0.000005F + TileEntityCoalGenerator.BASE_ACCELERATION, 0.005F), TileEntityCoalGenerator.MAX_GENERATE_WATTS);
+					this.generateWatts = (int) Math.floor(Math.min(this.generateWatts + Math.min(this.generateWatts * 0.000005F + TileEntityCoalGenerator.BASE_ACCELERATION, 0.005F), TileEntityCoalGenerator.MAX_GENERATE_WATTS));
 				}
 			}
 
@@ -101,10 +106,10 @@ public class TileEntityCoalGenerator extends TileEntityUniversalElectrical imple
 
 			if (this.itemCookTime <= 0)
 			{
-				this.generateWatts = Math.max(this.generateWatts - 0.008F, 0);
+				this.generateWatts = (int) Math.floor(Math.max(this.generateWatts - 0.008F, 0));
 			}
 
-			this.generateWatts = Math.min(Math.max(this.generateWatts, 0.0F), this.getMaxEnergyStored());
+			this.generateWatts = (int) Math.floor(Math.min(Math.max(this.generateWatts, 0.0F), this.getMaxEnergyStoredGC()));
 		}
 	}
 
@@ -126,7 +131,7 @@ public class TileEntityCoalGenerator extends TileEntityUniversalElectrical imple
 	{
 		super.readFromNBT(par1NBTTagCompound);
 		this.itemCookTime = par1NBTTagCompound.getInteger("itemCookTime");
-		this.generateWatts = par1NBTTagCompound.getFloat("generateRate");
+		this.generateWatts = par1NBTTagCompound.getInteger("generateRateInt");
 		NBTTagList var2 = par1NBTTagCompound.getTagList("Items", 10);
 		this.containingItems = new ItemStack[this.getSizeInventory()];
 
@@ -285,24 +290,6 @@ public class TileEntityCoalGenerator extends TileEntityUniversalElectrical imple
 	}
 
 	@Override
-	public float receiveElectricity(ForgeDirection from, ElectricityPack electricityPack, boolean doReceive)
-	{
-		return 0;
-	}
-
-	@Override
-	public float getRequest(ForgeDirection direction)
-	{
-		return 0;
-	}
-
-	@Override
-	public float getProvide(ForgeDirection direction)
-	{
-		return this.generateWatts < TileEntityCoalGenerator.MIN_GENERATE_WATTS ? 0 : this.generateWatts;
-	}
-
-	@Override
 	public EnumSet<ForgeDirection> getElectricalInputDirections()
 	{
 		return EnumSet.noneOf(ForgeDirection.class);
@@ -312,11 +299,5 @@ public class TileEntityCoalGenerator extends TileEntityUniversalElectrical imple
 	public EnumSet<ForgeDirection> getElectricalOutputDirections()
 	{
 		return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() + 2));
-	}
-
-	@Override
-	public float getMaxEnergyStored()
-	{
-		return TileEntityCoalGenerator.MAX_GENERATE_WATTS;
 	}
 }

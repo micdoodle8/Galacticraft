@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
-import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
@@ -28,9 +27,9 @@ import cpw.mods.fml.relauncher.Side;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class TileEntityElectricFurnace extends TileEntityElectricBlock implements IElectrical, IInventory, ISidedInventory, IPacketReceiver
+public class TileEntityElectricFurnace extends TileEntityElectricBlock implements IInventory, ISidedInventory, IPacketReceiver
 {
-	public static final float WATTS_PER_TICK = 0.2f;
+	public static final int WATTS_PER_TICK = 1;
 	public static final int PROCESS_TIME_REQUIRED = 130;
 
 	@NetworkedField(targetSide = Side.CLIENT)
@@ -53,7 +52,7 @@ public class TileEntityElectricFurnace extends TileEntityElectricBlock implement
 		{
 			if (this.canProcess())
 			{
-				if (this.getEnergyStored() >= TileEntityElectricFurnace.WATTS_PER_TICK)
+				if (this.getEnergyStoredGC() >= TileEntityElectricFurnace.WATTS_PER_TICK)
 				{
 					if (this.processTicks == 0)
 					{
@@ -78,8 +77,6 @@ public class TileEntityElectricFurnace extends TileEntityElectricBlock implement
 				{
 					this.processTicks = 0;
 				}
-
-				this.setEnergyStored(this.getEnergyStored() - TileEntityElectricFurnace.WATTS_PER_TICK);
 			}
 			else
 			{
@@ -331,7 +328,7 @@ public class TileEntityElectricFurnace extends TileEntityElectricBlock implement
 	@Override
 	public boolean shouldPullEnergy()
 	{
-		return this.getEnergyStored() <= this.getMaxEnergyStored() - this.ueWattsPerTick;
+		return this.getEnergyStoredGC() < this.getMaxEnergyStoredGC();
 	}
 
 	@Override

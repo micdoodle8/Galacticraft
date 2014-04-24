@@ -40,7 +40,7 @@ public class TileEntityRefinery extends TileEntityElectricBlock implements IInve
 	@NetworkedField(targetSide = Side.CLIENT)
 	public FluidTank fuelTank = new FluidTank(this.tankCapacity);
 
-	public static final float WATTS_PER_TICK = 0.4F;
+	public static final int WATTS_PER_TICK = 1;
 	public static final int PROCESS_TIME_REQUIRED = 2;
 	public static final int OUTPUT_PER_SECOND = 1;
 	@NetworkedField(targetSide = Side.CLIENT)
@@ -176,7 +176,7 @@ public class TileEntityRefinery extends TileEntityElectricBlock implements IInve
 			return false;
 		}
 
-		if (this.getEnergyStored() == 0)
+		if (this.getEnergyStoredGC() == 0)
 		{
 			return false;
 		}
@@ -423,7 +423,7 @@ public class TileEntityRefinery extends TileEntityElectricBlock implements IInve
 	@Override
 	public boolean shouldPullEnergy()
 	{
-		return this.getEnergyStored() <= this.getMaxEnergyStored() - this.ueWattsPerTick;
+		return this.getEnergyStoredGC() < this.getMaxEnergyStoredGC();
 	}
 
 	@Override

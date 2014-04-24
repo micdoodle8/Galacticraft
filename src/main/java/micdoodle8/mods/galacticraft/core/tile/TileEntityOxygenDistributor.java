@@ -30,7 +30,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 	public boolean active;
 	public boolean lastActive;
 
-	public static final float WATTS_PER_TICK = 0.2F;
+	public static final int WATTS_PER_TICK = 1;
 
 	private ItemStack[] containingItems = new ItemStack[1];
 
@@ -91,7 +91,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 
 		if (!this.worldObj.isRemote)
 		{
-			if (this.oxygenBubble.getSize() >= 1 && this.getEnergyStored() > 0)
+			if (this.oxygenBubble.getSize() >= 1 && this.getEnergyStoredGC() > 0)
 			{
 				this.active = true;
 			}
@@ -308,7 +308,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 	@Override
 	public boolean shouldPullEnergy()
 	{
-		return this.getEnergyStored() <= this.getMaxEnergyStored() - this.ueWattsPerTick;
+		return this.getEnergyStoredGC() < this.getMaxEnergyStoredGC();
 	}
 
 	@Override
@@ -332,7 +332,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 	@Override
 	public boolean shouldPullOxygen()
 	{
-		return this.getEnergyStored() > 0;
+		return this.getEnergyStoredGC() > 0;
 	}
 
 	@Override

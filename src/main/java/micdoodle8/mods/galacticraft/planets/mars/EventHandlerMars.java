@@ -228,7 +228,7 @@ public class EventHandlerMars
 
 			if (launchController != null)
 			{
-				if (!launchController.getDisabled(0) && launchController.getEnergyStored() > 0.0F)
+				if (!launchController.getDisabled(0) && launchController.getEnergyStoredGC() > 0.0F)
 				{
 					event.allow = !launchController.launchPadRemovalDisabled;
 				}

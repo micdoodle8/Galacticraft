@@ -33,7 +33,7 @@ import cpw.mods.fml.relauncher.Side;
 public class TileEntityOxygenCollector extends TileEntityOxygen implements IInventory, ISidedInventory
 {
 	public boolean active;
-	public static final float WATTS_PER_TICK = 0.2F;
+	public static final int WATTS_PER_TICK = 1;
 	public static final int OUTPUT_PER_TICK = 100;
 	@NetworkedField(targetSide = Side.CLIENT)
 	public float lastOxygenCollected;
@@ -100,7 +100,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
 			// there are fewer casts
 			float power = 0;
 
-			if (this.getEnergyStored() > 0)
+			if (this.getEnergyStoredGC() > 0)
 			{
 				if (this.worldObj.provider instanceof IGalacticraftWorldProvider)
 				{
@@ -356,7 +356,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
 	@Override
 	public boolean shouldPullEnergy()
 	{
-		return this.getEnergyStored() <= this.getMaxEnergyStored() - this.ueWattsPerTick;
+		return this.getEnergyStoredGC() < this.getMaxEnergyStoredGC();
 	}
 
 	@Override

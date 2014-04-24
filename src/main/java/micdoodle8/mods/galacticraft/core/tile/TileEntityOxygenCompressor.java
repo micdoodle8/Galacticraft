@@ -26,7 +26,7 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
 {
 	private ItemStack[] containingItems = new ItemStack[2];
 
-	public static final float WATTS_PER_TICK = 0.2F;
+	public static final int WATTS_PER_TICK = 1;
 	public static final int TANK_TRANSFER_SPEED = 1;
 
 	public TileEntityOxygenCompressor()
@@ -41,7 +41,7 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
 
 		if (!this.worldObj.isRemote)
 		{
-			if (this.storedOxygen > 0 && this.getEnergyStored() > 0)
+			if (this.storedOxygen > 0 && this.getEnergyStoredGC() > 0)
 			{
 				if (!this.worldObj.isRemote)
 				{
@@ -265,7 +265,7 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
 	@Override
 	public boolean shouldPullEnergy()
 	{
-		return this.getEnergyStored() <= this.getMaxEnergyStored() - this.ueWattsPerTick;
+		return this.getEnergyStoredGC() < this.getMaxEnergyStoredGC();
 	}
 
 	@Override
@@ -289,7 +289,7 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
 	@Override
 	public boolean shouldPullOxygen()
 	{
-		return this.getEnergyStored() > 0;
+		return this.getEnergyStoredGC() > 0;
 	}
 
 	@Override

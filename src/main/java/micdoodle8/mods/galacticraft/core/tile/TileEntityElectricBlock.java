@@ -24,8 +24,8 @@ import cpw.mods.fml.relauncher.Side;
  */
 public abstract class TileEntityElectricBlock extends TileEntityUniversalElectrical implements IPacketReceiver, IDisableableMachine
 {
-	public float ueWattsPerTick;
-	private final float ueMaxEnergy;
+//	public float ueWattsPerTick;
+//	private final float ueMaxEnergy;
 
 	@NetworkedField(targetSide = Side.CLIENT)
 	public boolean disabled = true;
@@ -40,10 +40,14 @@ public abstract class TileEntityElectricBlock extends TileEntityUniversalElectri
 
 	public abstract ItemStack getBatteryInSlot();
 
-	public TileEntityElectricBlock(float ueWattsPerTick, float maxEnergy)
+	public TileEntityElectricBlock(int ueWattsPerTick, int maxEnergy)
 	{
-		this.ueMaxEnergy = maxEnergy;
-		this.ueWattsPerTick = ueWattsPerTick;
+		super();
+		this.storage.setMaxReceive(ueWattsPerTick);
+		this.storage.setMaxExtract(0);
+		this.storage.setCapacity(maxEnergy);
+//		this.ueMaxEnergy = maxEnergy;
+//		this.ueWattsPerTick = ueWattsPerTick;
 
 		/*
 		 * if (PowerFramework.currentFramework != null) { this.bcPowerProvider =
@@ -52,40 +56,40 @@ public abstract class TileEntityElectricBlock extends TileEntityUniversalElectri
 		 */
 	}
 
-	@Override
-	public float getMaxEnergyStored()
-	{
-		return this.ueMaxEnergy;
-	}
+//	@Override
+//	public float getMaxEnergyStored()
+//	{
+//		return this.ueMaxEnergy;
+//	}
 
 	public int getScaledElecticalLevel(int i)
 	{
-		return (int) Math.floor(this.getEnergyStored() * i / (this.getMaxEnergyStored() - this.ueWattsPerTick));
+		return (int) Math.floor(this.getEnergyStoredGC(null) * i / this.getMaxEnergyStoredGC(null));
 	}
 
-	@Override
-	public float getRequest(ForgeDirection direction)
-	{
-		if (this.shouldPullEnergy())
-		{
-			return this.ueWattsPerTick * 2;
-		}
-		else
-		{
-			return 0;
-		}
-	}
-
-	@Override
-	public float getProvide(ForgeDirection direction)
-	{
-		return 0;
-	}
+//	@Override
+//	public float getRequest(ForgeDirection direction)
+//	{
+//		if (this.shouldPullEnergy())
+//		{
+//			return this.ueWattsPerTick * 2;
+//		}
+//		else
+//		{
+//			return 0;
+//		}
+//	}
+//
+//	@Override
+//	public float getProvide(ForgeDirection direction)
+//	{
+//		return 0;
+//	}
 
 	@Override
 	public void updateEntity()
 	{
-		if (this.shouldPullEnergy() && this.getEnergyStored() < this.getMaxEnergyStored() && this.getBatteryInSlot() != null && this.getElectricInputDirection() != null)
+		if (this.shouldPullEnergy() && this.getEnergyStoredGC(null) < this.getMaxEnergyStoredGC(null) && this.getBatteryInSlot() != null && this.getElectricInputDirection() != null)
 		{
 			if (!this.worldObj.isRemote)
 			{
@@ -99,7 +103,7 @@ public abstract class TileEntityElectricBlock extends TileEntityUniversalElectri
 
 		if (!this.worldObj.isRemote && this.shouldUseEnergy())
 		{
-			this.setEnergyStored(this.getEnergyStored() - this.ueWattsPerTick);
+			this.storage.extractEnergyGC(this.storage.getMaxExtract(), false);
 		}
 
 		super.updateEntity();

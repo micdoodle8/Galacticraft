@@ -75,6 +75,11 @@ public class EnergyStorage implements IEnergyStorageGC
 	{
 		this.maxExtract = maxExtract;
 	}
+	
+	public void setEnergyStored(int energy)
+	{
+		this.energy = Math.max(0, Math.min(energy, capacity));
+	}
 
 	public int getMaxReceive() 
 	{

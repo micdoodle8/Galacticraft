@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.tile.EnergyStorage;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
@@ -60,6 +61,14 @@ public class NetworkUtil
 			else if (dataValue instanceof Long)
 			{
 				buffer.writeLong((Long) dataValue);
+			}
+			else if (dataValue instanceof EnergyStorage)
+			{
+				EnergyStorage storage = (EnergyStorage) dataValue;
+				buffer.writeInt(storage.getCapacityGC());
+				buffer.writeInt(storage.getMaxReceive());
+				buffer.writeInt(storage.getMaxExtract());
+				buffer.writeInt(storage.getEnergyStoredGC());
 			}
 			else if (dataValue instanceof NBTTagCompound)
 			{
@@ -179,6 +188,12 @@ public class NetworkUtil
 			{
 				objList.add(buffer.readLong());
 			}
+			else if (clazz.equals(EnergyStorage.class))
+			{
+				EnergyStorage storage = new EnergyStorage(buffer.readInt(), buffer.readInt(), buffer.readInt());
+				storage.setEnergyStored(buffer.readInt());
+				objList.add(storage);
+			}
 			else if (clazz.equals(NBTTagCompound.class))
 			{
 				try
@@ -287,6 +302,12 @@ public class NetworkUtil
 		else if (dataValue.equals(Vector3.class))
 		{
 			return new Vector3(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
+		}
+		else if (dataValue.equals(EnergyStorage.class))
+		{
+			EnergyStorage storage = new EnergyStorage(buffer.readInt(), buffer.readInt(), buffer.readInt());
+			storage.setEnergyStored(buffer.readInt());
+			return storage;
 		}
 		else
 		{

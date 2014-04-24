@@ -31,7 +31,7 @@ import cpw.mods.fml.relauncher.Side;
 public class TileEntityCircuitFabricator extends TileEntityElectricBlock implements IInventory, ISidedInventory, IPacketReceiver
 {
 	public static final int PROCESS_TIME_REQUIRED = 300;
-	public static final float WATTS_PER_TICK_PER_STACK = 0.20F;
+	public static final int WATTS_PER_TICK_PER_STACK = 1;
 	@NetworkedField(targetSide = Side.CLIENT)
 	public int processTicks = 0;
 	private ItemStack producingStack = null;
@@ -55,7 +55,7 @@ public class TileEntityCircuitFabricator extends TileEntityElectricBlock impleme
 		{
 			boolean updateInv = false;
 
-			if (this.getEnergyStored() > 0.0F)
+			if (this.getEnergyStoredGC() > 0.0F)
 			{
 				if (this.canCompress())
 				{
@@ -326,7 +326,7 @@ public class TileEntityCircuitFabricator extends TileEntityElectricBlock impleme
 	@Override
 	public boolean shouldPullEnergy()
 	{
-		return this.getEnergyStored() <= this.getMaxEnergyStored() - this.ueWattsPerTick;
+		return this.getEnergyStoredGC() < this.getMaxEnergyStoredGC();
 	}
 
 	@Override

@@ -52,19 +52,20 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 	@NetworkedField(targetSide = Side.CLIENT)
 	public int disableCooldown = 0;
 	private ItemStack[] containingItems = new ItemStack[1];
-	public static final float MAX_GENERATE_WATTS = 15.0F;
+	public static final int MAX_GENERATE_WATTS = 1000;
 	@NetworkedField(targetSide = Side.CLIENT)
-	public float generateWatts = 0;
-	private float ueMaxEnergy;
+	public int generateWatts = 0;
 
 	public TileEntitySolar()
 	{
 		this(0);
 	}
 
-	public TileEntitySolar(float maxEnergy)
+	public TileEntitySolar(int maxEnergy)
 	{
-		this.ueMaxEnergy = maxEnergy;
+		this.storage.setCapacity(maxEnergy);
+		this.storage.setMaxExtract(1300);
+		this.storage.setMaxReceive(MAX_GENERATE_WATTS);
 	}
 
 	public void setMainBlock(Vector3 mainBlock)
@@ -80,7 +81,7 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 	@Override
 	public void updateEntity()
 	{
-		this.setEnergyStored(this.getEnergyStored() + this.generateWatts);
+		this.receiveEnergyGC(null, this.generateWatts, false);		
 
 		super.updateEntity();
 
@@ -204,22 +205,22 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 		{
 			if (this.getGenerate() > 0.0F)
 			{
-				this.generateWatts = Math.min(Math.max(this.getGenerate(), 0), TileEntitySolar.MAX_GENERATE_WATTS) / 20.0F;
+				this.generateWatts = (int) (Math.min(Math.max(this.getGenerate(), 0), TileEntitySolar.MAX_GENERATE_WATTS));
 			}
 			else
 			{
-				this.generateWatts = 0.0F;
+				this.generateWatts = 0;
 			}
 		}
 
 		this.produce();
 	}
 
-	public float getGenerate()
+	public int getGenerate()
 	{
 		if (this.getDisabled(0))
 		{
-			return 0.0F;
+			return 0;
 		}
 
 		float angle = this.worldObj.getCelestialAngle(1.0F) - 0.784690560F < 0 ? 1.0F - 0.784690560F : -0.784690560F;
@@ -229,7 +230,7 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 
 		float difference = (180.0F - Math.abs(this.currentAngle % 180 - celestialAngle)) / 180.0F;
 
-		return 1 / 1000.0F * difference * difference * (this.solarStrength * (Math.abs(difference) * 500.0F)) * this.getSolarBoost();
+		return (int) Math.floor(1 / 100.0F * difference * difference * (this.solarStrength * (Math.abs(difference) * 500.0F)) * this.getSolarBoost());
 	}
 
 	public float getSolarBoost()
@@ -318,12 +319,6 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 	{
 		super.readFromNBT(nbt);
 		this.mainBlockPosition = new Vector3(nbt.getCompoundTag("mainBlockPosition"));
-		this.ueMaxEnergy = nbt.getFloat("maxEnergy");
-
-		if (this.ueMaxEnergy > 1000.0F)
-		{
-			this.ueMaxEnergy /= 1000.0F;
-		}
 
 		this.currentAngle = nbt.getFloat("currentAngle");
 		this.targetAngle = nbt.getFloat("targetAngle");
@@ -355,7 +350,7 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 			nbt.setTag("mainBlockPosition", this.mainBlockPosition.writeToNBT(new NBTTagCompound()));
 		}
 
-		nbt.setFloat("maxEnergy", this.getMaxEnergyStored());
+		nbt.setFloat("maxEnergy", this.getMaxEnergyStoredGC());
 		nbt.setFloat("currentAngle", this.currentAngle);
 		nbt.setFloat("targetAngle", this.targetAngle);
 		nbt.setInteger("disabledCooldown", this.disableCooldown);
@@ -375,18 +370,6 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 		}
 
 		nbt.setTag("Items", list);
-	}
-
-	@Override
-	public float getRequest(ForgeDirection direction)
-	{
-		return 0;
-	}
-
-	@Override
-	public float getProvide(ForgeDirection direction)
-	{
-		return this.getElectricalOutputDirections().contains(direction) ? Math.min(Math.max(this.getEnergyStored(), 0), 1300) : 0;
 	}
 
 	@Override
@@ -445,7 +428,7 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 
 	public int getScaledElecticalLevel(int i)
 	{
-		return (int) Math.floor(this.getEnergyStored() * i / this.getMaxEnergyStored());
+		return (int) Math.floor(this.getEnergyStoredGC() * i / this.getMaxEnergyStoredGC());
 	}
 
 	@Override
@@ -561,11 +544,5 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 	public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
 	{
 		return slotID == 0 ? itemstack.getItem() instanceof IItemElectric : false;
-	}
-
-	@Override
-	public float getMaxEnergyStored()
-	{
-		return this.ueMaxEnergy;
 	}
 }

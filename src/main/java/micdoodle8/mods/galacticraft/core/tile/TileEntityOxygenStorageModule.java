@@ -31,6 +31,8 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
 	public TileEntityOxygenStorageModule()
 	{
 		super(0, 0, 60000, 16);
+		this.storage.setCapacity(0);
+		this.storage.setMaxTransfer(0);
 	}
 
 	@Override
@@ -103,18 +105,6 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
 	}
 
 	@Override
-	public float getRequest(ForgeDirection direction)
-	{
-		return 0;
-	}
-
-	@Override
-	public float getProvide(ForgeDirection direction)
-	{
-		return 0;
-	}
-
-	@Override
 	public EnumSet<ForgeDirection> getElectricalInputDirections()
 	{
 		return EnumSet.noneOf(ForgeDirection.class);
@@ -124,12 +114,6 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
 	public EnumSet<ForgeDirection> getElectricalOutputDirections()
 	{
 		return EnumSet.noneOf(ForgeDirection.class);
-	}
-
-	@Override
-	public float getMaxEnergyStored()
-	{
-		return 0;
 	}
 
 	@Override

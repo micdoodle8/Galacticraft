@@ -129,7 +129,7 @@ public class EntityBubble extends Entity implements IPacketReceiver, ISizeable
 
 		if (!this.worldObj.isRemote && this.distributor != null)
 		{
-			if (this.distributor.getEnergyStored() > 0.0F && this.distributor.storedOxygen > this.distributor.oxygenPerTick)
+			if (this.distributor.getEnergyStoredGC() > 0.0F && this.distributor.storedOxygen > this.distributor.oxygenPerTick)
 			{
 				this.size += 0.01F;
 			}

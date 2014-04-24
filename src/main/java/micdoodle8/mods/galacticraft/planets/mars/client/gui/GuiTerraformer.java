@@ -100,13 +100,13 @@ public class GuiTerraformer extends GuiContainer
 		this.fontRendererObj.drawString(displayString, this.xSize / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, 5, 4210752);
 		this.fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, 135, 4210752);
 		this.fontRendererObj.drawSplitString(this.getStatus(), 105, 24, this.xSize - 105, 4210752);
-		this.fontRendererObj.drawString(ElectricityDisplay.getDisplay(this.terraformer.ueWattsPerTick * 20, ElectricUnit.WATT), 105, 56, 4210752);
-		this.fontRendererObj.drawString(ElectricityDisplay.getDisplay(this.terraformer.getVoltage(), ElectricUnit.VOLTAGE), 105, 68, 4210752);
+//		this.fontRendererObj.drawString(ElectricityDisplay.getDisplay(this.terraformer.ueWattsPerTick * 20, ElectricUnit.WATT), 105, 56, 4210752);
+//		this.fontRendererObj.drawString(ElectricityDisplay.getDisplay(this.terraformer.getVoltage(), ElectricUnit.VOLTAGE), 105, 68, 4210752);
 	}
 
 	private String getStatus()
 	{
-		if (this.terraformer.getEnergyStored() <= 0.0F)
+		if (this.terraformer.getEnergyStoredGC() <= 0.0F)
 		{
 			return EnumColor.RED + "Not Enough Energy";
 		}

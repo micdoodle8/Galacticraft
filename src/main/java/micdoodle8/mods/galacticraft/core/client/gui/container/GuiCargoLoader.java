@@ -62,7 +62,7 @@ public class GuiCargoLoader extends GuiContainerGC
 		super.initGui();
 		List<String> electricityDesc = new ArrayList<String>();
 		electricityDesc.add("Electrical Storage");
-		electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.cargoLoader.getEnergyStored()) + " / " + (int) Math.floor(this.cargoLoader.getMaxEnergyStored())));
+		electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.cargoLoader.getEnergyStoredGC()) + " / " + (int) Math.floor(this.cargoLoader.getMaxEnergyStoredGC())));
 		this.electricInfoRegion.tooltipStrings = electricityDesc;
 		this.electricInfoRegion.xPosition = (this.width - this.xSize) / 2 + 107;
 		this.electricInfoRegion.yPosition = (this.height - this.ySize) / 2 + 101;
@@ -86,7 +86,6 @@ public class GuiCargoLoader extends GuiContainerGC
 		this.buttonLoadItems.displayString = !this.cargoLoader.getDisabled(0) ? StatCollector.translateToLocal("gui.button.stoploading.name") : StatCollector.translateToLocal("gui.button.loaditems.name");
 		this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.message.status.name") + ": " + this.getStatus(), 28 + offsetX, 45 + 23 - 46 + offsetY, 4210752);
 		this.fontRendererObj.drawString(ElectricityDisplay.getDisplay(TileEntityCargoLoader.WATTS_PER_TICK * 20, ElectricUnit.WATT), 28 + offsetX, 56 + 23 - 46 + offsetY, 4210752);
-		this.fontRendererObj.drawString(ElectricityDisplay.getDisplay(this.cargoLoader.getVoltage(), ElectricUnit.VOLTAGE), 28 + offsetX, 68 + 23 - 46 + offsetY, 4210752);
 		this.fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 90, 4210752);
 	}
 
@@ -112,7 +111,7 @@ public class GuiCargoLoader extends GuiContainerGC
 			return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.targetfull.name");
 		}
 
-		if (this.cargoLoader.getStackInSlot(0) == null && this.cargoLoader.getEnergyStored() == 0)
+		if (this.cargoLoader.getStackInSlot(0) == null && this.cargoLoader.getEnergyStoredGC() == 0)
 		{
 			return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.missingpower.name");
 		}
@@ -122,7 +121,7 @@ public class GuiCargoLoader extends GuiContainerGC
 			return EnumColor.ORANGE + StatCollector.translateToLocal("gui.status.ready.name");
 		}
 
-		if (this.cargoLoader.getEnergyStored() > 0)
+		if (this.cargoLoader.getEnergyStoredGC() > 0)
 		{
 			return EnumColor.DARK_GREEN + StatCollector.translateToLocal("gui.status.active.name");
 		}
@@ -141,10 +140,10 @@ public class GuiCargoLoader extends GuiContainerGC
 
 		List<String> electricityDesc = new ArrayList<String>();
 		electricityDesc.add("Electrical Storage");
-		electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.cargoLoader.getEnergyStored()) + " / " + (int) Math.floor(this.cargoLoader.getMaxEnergyStored())));
+		electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.cargoLoader.getEnergyStoredGC()) + " / " + (int) Math.floor(this.cargoLoader.getMaxEnergyStoredGC())));
 		this.electricInfoRegion.tooltipStrings = electricityDesc;
 
-		if (this.cargoLoader.getEnergyStored() > 0)
+		if (this.cargoLoader.getEnergyStoredGC() > 0)
 		{
 			this.drawTexturedModalRect(var5 + 94, var6 + 101, 176, 0, 11, 10);
 		}

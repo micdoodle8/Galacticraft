@@ -76,7 +76,7 @@ public class GuiFuelLoader extends GuiContainerGC
 		this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 6, (this.height - this.ySize) / 2 + 11, 18, 18, oilSlotDesc, this.width, this.height));
 		List<String> electricityDesc = new ArrayList<String>();
 		electricityDesc.add("Electrical Storage");
-		electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.fuelLoader.getEnergyStored()) + " / " + (int) Math.floor(this.fuelLoader.getMaxEnergyStored())));
+		electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.fuelLoader.getEnergyStoredGC()) + " / " + (int) Math.floor(this.fuelLoader.getMaxEnergyStoredGC())));
 		this.electricInfoRegion.tooltipStrings = electricityDesc;
 		this.electricInfoRegion.xPosition = (this.width - this.xSize) / 2 + 112;
 		this.electricInfoRegion.yPosition = (this.height - this.ySize) / 2 + 65;
@@ -94,7 +94,7 @@ public class GuiFuelLoader extends GuiContainerGC
 		this.buttonLoadFuel.displayString = !this.fuelLoader.getDisabled(0) ? StatCollector.translateToLocal("gui.button.stoploading.name") : StatCollector.translateToLocal("gui.button.loadfuel.name");
 		this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.message.status.name") + ": " + this.getStatus(), 28, 45 + 23 - 46, 4210752);
 		this.fontRendererObj.drawString(ElectricityDisplay.getDisplay(TileEntityFuelLoader.WATTS_PER_TICK * 20, ElectricUnit.WATT), 28, 56 + 23 - 46, 4210752);
-		this.fontRendererObj.drawString(ElectricityDisplay.getDisplay(this.fuelLoader.getVoltage(), ElectricUnit.VOLTAGE), 28, 68 + 23 - 46, 4210752);
+//		this.fontRendererObj.drawString(ElectricityDisplay.getDisplay(this.fuelLoader.getVoltage(), ElectricUnit.VOLTAGE), 28, 68 + 23 - 46, 4210752);
 		this.fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 118 + 2 + 11, 4210752);
 	}
 
@@ -105,7 +105,7 @@ public class GuiFuelLoader extends GuiContainerGC
 			return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.nofuel.name");
 		}
 
-		if (this.fuelLoader.getStackInSlot(0) == null && this.fuelLoader.getEnergyStored() == 0)
+		if (this.fuelLoader.getStackInSlot(0) == null && this.fuelLoader.getEnergyStoredGC() == 0)
 		{
 			return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.missingpower.name");
 		}
@@ -115,7 +115,7 @@ public class GuiFuelLoader extends GuiContainerGC
 			return EnumColor.ORANGE + StatCollector.translateToLocal("gui.status.ready.name");
 		}
 
-		if (this.fuelLoader.getEnergyStored() > 0)
+		if (this.fuelLoader.getEnergyStoredGC() > 0)
 		{
 			return EnumColor.DARK_GREEN + StatCollector.translateToLocal("gui.status.active.name");
 		}
@@ -137,10 +137,10 @@ public class GuiFuelLoader extends GuiContainerGC
 
 		List<String> electricityDesc = new ArrayList<String>();
 		electricityDesc.add("Electrical Storage");
-		electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.fuelLoader.getEnergyStored()) + " / " + (int) Math.floor(this.fuelLoader.getMaxEnergyStored())));
+		electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.fuelLoader.getEnergyStoredGC()) + " / " + (int) Math.floor(this.fuelLoader.getMaxEnergyStoredGC())));
 		this.electricInfoRegion.tooltipStrings = electricityDesc;
 
-		if (this.fuelLoader.getEnergyStored() > 0)
+		if (this.fuelLoader.getEnergyStoredGC() > 0)
 		{
 			this.drawTexturedModalRect(var5 + 99, var6 + 65, 192, 7, 11, 10);
 		}

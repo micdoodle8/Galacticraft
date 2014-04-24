@@ -45,13 +45,13 @@ public class GuiEnergyStorageModule extends GuiContainer
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
 	{
 		this.fontRendererObj.drawString(this.tileEntity.getInventoryName(), this.xSize / 2 - this.fontRendererObj.getStringWidth(this.tileEntity.getInventoryName()) / 2, 6, 4210752);
-		String displayJoules = ElectricityDisplay.getDisplayShort(this.tileEntity.getEnergyStored(), ElectricUnit.JOULES) + " of";
-		String displayMaxJoules = ElectricityDisplay.getDisplay(this.tileEntity.getMaxEnergyStored(), ElectricUnit.JOULES);
-		String displayVoltage = "Voltage: " + (int) (this.tileEntity.getVoltage() * 1000.0F);
+		String displayJoules = ElectricityDisplay.getDisplayShort(this.tileEntity.getEnergyStoredGC(), ElectricUnit.JOULES) + " of";
+		String displayMaxJoules = ElectricityDisplay.getDisplay(this.tileEntity.getMaxEnergyStoredGC(), ElectricUnit.JOULES);
+//		String displayVoltage = "Voltage: " + (int) (this.tileEntity.getVoltage() * 1000.0F);
 
 		this.fontRendererObj.drawString(displayJoules, 122 - this.fontRendererObj.getStringWidth(displayJoules) / 2, 30, 4210752);
 		this.fontRendererObj.drawString(displayMaxJoules, 122 - this.fontRendererObj.getStringWidth(displayMaxJoules) / 2, 40, 4210752);
-		this.fontRendererObj.drawString(displayVoltage, 122 - this.fontRendererObj.getStringWidth(displayVoltage) / 2, 60, 4210752);
+//		this.fontRendererObj.drawString(displayVoltage, 122 - this.fontRendererObj.getStringWidth(displayVoltage) / 2, 60, 4210752);
 		this.fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 
@@ -70,7 +70,7 @@ public class GuiEnergyStorageModule extends GuiContainer
 		// Background energy bar
 		this.drawTexturedModalRect(containerWidth, containerHeight, 0, 0, this.xSize, this.ySize);
 		// Foreground energy bar
-		int scale = (int) (this.tileEntity.getEnergyStored() / this.tileEntity.getMaxEnergyStored() * 72);
+		int scale = (int) (this.tileEntity.getEnergyStoredGC() / this.tileEntity.getMaxEnergyStoredGC() * 72);
 		this.drawTexturedModalRect(containerWidth + 87, containerHeight + 52, 176, 0, scale, 3);
 	}
 }

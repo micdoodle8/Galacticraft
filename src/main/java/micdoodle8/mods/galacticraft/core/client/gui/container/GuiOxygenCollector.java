@@ -73,7 +73,7 @@ public class GuiOxygenCollector extends GuiContainerGC
 		this.fontRendererObj.drawString(status, this.xSize / 2 - this.fontRendererObj.getStringWidth(status) / 2, 60, 4210752);
 		status = ElectricityDisplay.getDisplay(TileEntityOxygenCollector.WATTS_PER_TICK * 20, ElectricUnit.WATT);
 		this.fontRendererObj.drawString(status, this.xSize / 2 - this.fontRendererObj.getStringWidth(status) / 2, 70, 4210752);
-		status = ElectricityDisplay.getDisplay(this.collector.getVoltage(), ElectricUnit.VOLTAGE);
+//		status = ElectricityDisplay.getDisplay(this.collector.getVoltage(), ElectricUnit.VOLTAGE);
 		this.fontRendererObj.drawString(status, this.xSize / 2 - this.fontRendererObj.getStringWidth(status) / 2, 80, 4210752);
 		this.fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 90 + 2, 4210752);
 	}
@@ -81,7 +81,7 @@ public class GuiOxygenCollector extends GuiContainerGC
 	private String getStatus()
 	{
 
-		if (this.collector.getEnergyStored() == 0)
+		if (this.collector.getEnergyStoredGC() == 0)
 		{
 			return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.missingpower.name");
 		}
@@ -110,7 +110,7 @@ public class GuiOxygenCollector extends GuiContainerGC
 			scale = this.collector.getScaledElecticalLevel(54);
 			this.drawTexturedModalRect(var5 + 113, var6 + 38, 197, 0, Math.min(scale, 54), 7);
 
-			if (this.collector.getEnergyStored() > 0)
+			if (this.collector.getEnergyStoredGC() > 0)
 			{
 				this.drawTexturedModalRect(var5 + 99, var6 + 37, 176, 0, 11, 10);
 			}
@@ -127,7 +127,7 @@ public class GuiOxygenCollector extends GuiContainerGC
 
 			List<String> electricityDesc = new ArrayList<String>();
 			electricityDesc.add("Electrical Storage");
-			electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.collector.getEnergyStored()) + " / " + (int) Math.floor(this.collector.getMaxEnergyStored())));
+			electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.collector.getEnergyStoredGC()) + " / " + (int) Math.floor(this.collector.getMaxEnergyStoredGC())));
 			this.electricInfoRegion.tooltipStrings = electricityDesc;
 		}
 	}

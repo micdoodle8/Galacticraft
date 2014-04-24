@@ -65,8 +65,8 @@ public class GuiCoalGenerator extends GuiContainer
 		}
 
 		this.fontRendererObj.drawString(displayText, 122 - this.fontRendererObj.getStringWidth(displayText) / 2, 45, 4210752);
-		displayText = "Voltage: " + (int) (this.tileEntity.getVoltage() * 1000.0F);
-		this.fontRendererObj.drawString(displayText, 122 - this.fontRendererObj.getStringWidth(displayText) / 2, 60, 4210752);
+//		displayText = "Voltage: " + (int) (this.tileEntity.getVoltage() * 1000.0F);
+//		this.fontRendererObj.drawString(displayText, 122 - this.fontRendererObj.getStringWidth(displayText) / 2, 60, 4210752);
 		this.fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 

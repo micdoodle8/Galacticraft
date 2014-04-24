@@ -67,7 +67,7 @@ public class GuiElectricIngotCompressor extends GuiContainer
 		this.fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 93, 4210752);
 		str = ElectricityDisplay.getDisplay(TileEntityElectricIngotCompressor.WATTS_PER_TICK_PER_STACK * 20, ElectricUnit.WATT);
 		this.fontRendererObj.drawString(str, 120 - this.fontRendererObj.getStringWidth(str) / 2, 85, 4210752);
-		str = ElectricityDisplay.getDisplay(this.tileEntity.getVoltage(), ElectricUnit.VOLTAGE);
+//		str = ElectricityDisplay.getDisplay(this.tileEntity.getVoltage(), ElectricUnit.VOLTAGE);
 		this.fontRendererObj.drawString(str, 120 - this.fontRendererObj.getStringWidth(str) / 2, 95, 4210752);
 	}
 
@@ -93,7 +93,7 @@ public class GuiElectricIngotCompressor extends GuiContainer
 			this.drawTexturedModalRect(this.containerWidth + 77, this.containerHeight + 38, 176, 13, scale, 17);
 		}
 
-		if (this.tileEntity.getEnergyStored() > 0)
+		if (this.tileEntity.getEnergyStoredGC() > 0)
 		{
 			scale = this.tileEntity.getScaledElecticalLevel(54);
 			this.drawTexturedModalRect(this.containerWidth + 116 - 98, this.containerHeight + 96, 176, 30, scale, 7);
