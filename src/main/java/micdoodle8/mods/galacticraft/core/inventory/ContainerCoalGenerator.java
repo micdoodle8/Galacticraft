@@ -39,15 +39,12 @@ public class ContainerCoalGenerator extends Container
 		{
 			this.addSlotToContainer(new Slot(par1InventoryPlayer, var3, 8 + var3 * 18, 142));
 		}
-
-		tileEntity.playersUsing.add(par1InventoryPlayer.player);
 	}
 
 	@Override
 	public void onContainerClosed(EntityPlayer entityplayer)
 	{
 		super.onContainerClosed(entityplayer);
-		this.tileEntity.playersUsing.remove(entityplayer);
 	}
 
 	@Override

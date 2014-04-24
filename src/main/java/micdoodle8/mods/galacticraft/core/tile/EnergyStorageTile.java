@@ -12,7 +12,7 @@ import cpw.mods.fml.relauncher.Side;
 public abstract class EnergyStorageTile extends TileEntityAdvanced implements IEnergyHandlerGC
 {
 	@NetworkedField(targetSide = Side.CLIENT)
-	public EnergyStorage storage = new EnergyStorage(50, 1);
+	public EnergyStorage storage = new EnergyStorage(50, 1000000);
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {

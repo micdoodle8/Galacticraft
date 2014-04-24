@@ -68,7 +68,8 @@ public class TileEntityTerraformer extends TileEntityElectricBlock implements II
 
 	public TileEntityTerraformer()
 	{
-		super(TileEntityTerraformer.WATTS_PER_TICK, 50);
+		this.storage.setMaxExtract(200);
+		this.storage.setCapacity(50000);
 	}
 
 	public int getScaledWaterLevel(int i)

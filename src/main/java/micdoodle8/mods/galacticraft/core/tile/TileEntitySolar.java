@@ -42,8 +42,6 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 {
 	public HashSet<TileEntity> connectedTiles = new HashSet<TileEntity>();
 	@NetworkedField(targetSide = Side.CLIENT)
-	public Vector3 mainBlockPosition;
-	@NetworkedField(targetSide = Side.CLIENT)
 	public int solarStrength = 0;
 	public float targetAngle;
 	public float currentAngle;
@@ -55,6 +53,7 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 	public static final int MAX_GENERATE_WATTS = 1000;
 	@NetworkedField(targetSide = Side.CLIENT)
 	public int generateWatts = 0;
+	public int capacityDynamic;
 
 	public TileEntitySolar()
 	{
@@ -63,25 +62,20 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 
 	public TileEntitySolar(int maxEnergy)
 	{
-		this.storage.setCapacity(maxEnergy);
+		this.capacityDynamic = maxEnergy;
 		this.storage.setMaxExtract(1300);
 		this.storage.setMaxReceive(MAX_GENERATE_WATTS);
-	}
-
-	public void setMainBlock(Vector3 mainBlock)
-	{
-		this.mainBlockPosition = mainBlock;
-
-		if (!this.worldObj.isRemote)
-		{
-			this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-		}
 	}
 
 	@Override
 	public void updateEntity()
 	{
-		this.receiveEnergyGC(null, this.generateWatts, false);		
+		if (this.storage.getCapacityGC() == 0)
+		{
+			this.storage.setCapacity(capacityDynamic);
+		}
+		
+		this.receiveEnergyGC(null, this.generateWatts, false);
 
 		super.updateEntity();
 
@@ -108,7 +102,7 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 					{
 						for (int z = -1; z <= 1; z++)
 						{
-							if (this.getBlockMetadata() < BlockSolar.ADVANCED_METADATA)
+							if (this.isAdvancedSolar())
 							{
 								if (this.worldObj.canBlockSeeTheSky(this.xCoord + x, this.yCoord + 2, this.zCoord + z))
 								{
@@ -163,8 +157,19 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 		float celestialAngle = (this.worldObj.getCelestialAngle(1.0F) + angle) * 360.0F;
 
 		celestialAngle %= 360;
-
-		if (this.getBlockMetadata() >= BlockSolar.ADVANCED_METADATA)
+		
+		if (this.isAdvancedSolar())
+		{
+			if (!this.worldObj.isDaytime() || this.worldObj.isRaining() || this.worldObj.isThundering())
+			{
+				this.targetAngle = 77.5F + 180.0F;
+			}
+			else
+			{
+				this.targetAngle = 77.5F;
+			}
+		}
+		else
 		{
 			if (celestialAngle > 30 && celestialAngle < 150)
 			{
@@ -183,17 +188,6 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 			else if (celestialAngle > 150)
 			{
 				this.targetAngle = 150;
-			}
-		}
-		else
-		{
-			if (!this.worldObj.isDaytime() || this.worldObj.isRaining() || this.worldObj.isThundering())
-			{
-				this.targetAngle = 77.5F + 180.0F;
-			}
-			else
-			{
-				this.targetAngle = 77.5F;
 			}
 		}
 
@@ -238,24 +232,6 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 		return (float) (this.worldObj.provider instanceof ISolarLevel ? ((ISolarLevel) this.worldObj.provider).getSolarEnergyMultiplier() : 1.0F);
 	}
 
-	public void onBlockRemoval()
-	{
-		if (this.mainBlockPosition != null)
-		{
-			TileEntity tileEntity = this.worldObj.getTileEntity(this.mainBlockPosition.intX(), this.mainBlockPosition.intY(), this.mainBlockPosition.intZ());
-
-			if (tileEntity != null && tileEntity instanceof IMultiBlock)
-			{
-				IMultiBlock mainBlock = (IMultiBlock) tileEntity;
-
-				if (mainBlock != null)
-				{
-					mainBlock.onDestroy(this);
-				}
-			}
-		}
-	}
-
 	@Override
 	public boolean onActivated(EntityPlayer entityPlayer)
 	{
@@ -271,8 +247,6 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 	@Override
 	public void onCreate(Vector3 placedPosition)
 	{
-		this.mainBlockPosition = placedPosition;
-
 		for (int y = 1; y <= 2; y++)
 		{
 			for (int x = -1; x < 2; x++)
@@ -318,8 +292,7 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 	public void readFromNBT(NBTTagCompound nbt)
 	{
 		super.readFromNBT(nbt);
-		this.mainBlockPosition = new Vector3(nbt.getCompoundTag("mainBlockPosition"));
-
+		this.capacityDynamic = nbt.getInteger("capacityDynamic");
 		this.currentAngle = nbt.getFloat("currentAngle");
 		this.targetAngle = nbt.getFloat("targetAngle");
 		this.setDisabled(0, nbt.getBoolean("disabled"));
@@ -344,12 +317,7 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 	public void writeToNBT(NBTTagCompound nbt)
 	{
 		super.writeToNBT(nbt);
-
-		if (this.mainBlockPosition != null)
-		{
-			nbt.setTag("mainBlockPosition", this.mainBlockPosition.writeToNBT(new NBTTagCompound()));
-		}
-
+		nbt.setInteger("capacityDynamic", capacityDynamic);
 		nbt.setFloat("maxEnergy", this.getMaxEnergyStoredGC());
 		nbt.setFloat("currentAngle", this.currentAngle);
 		nbt.setFloat("targetAngle", this.targetAngle);
@@ -383,7 +351,7 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 	{
 		int metadata = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
 
-		if (metadata >= BlockSolar.ADVANCED_METADATA)
+		if (!this.isAdvancedSolar())
 		{
 			metadata -= BlockSolar.ADVANCED_METADATA;
 		}
@@ -407,7 +375,7 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 	@Override
 	public String getInventoryName()
 	{
-		return StatCollector.translateToLocal(this.getBlockMetadata() < BlockSolar.ADVANCED_METADATA ? "container.solarbasic.name" : "container.solaradvanced.name");
+		return StatCollector.translateToLocal(this.isAdvancedSolar() ? "container.solarbasic.name" : "container.solaradvanced.name");
 	}
 
 	@Override
@@ -544,5 +512,10 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 	public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
 	{
 		return slotID == 0 ? itemstack.getItem() instanceof IItemElectric : false;
+	}
+	
+	public boolean isAdvancedSolar()
+	{
+		return this.getBlockMetadata() < BlockSolar.ADVANCED_METADATA;
 	}
 }

@@ -33,7 +33,9 @@ public class TileEntityOxygenDecompressor extends TileEntityOxygen implements II
 
 	public TileEntityOxygenDecompressor()
 	{
-		super(TileEntityOxygenDecompressor.WATTS_PER_TICK, 50, 1200, 0);
+		super(1200, 0);
+		this.storage.setMaxExtract(200);
+		this.storage.setCapacity(50000);
 	}
 
 	@Override

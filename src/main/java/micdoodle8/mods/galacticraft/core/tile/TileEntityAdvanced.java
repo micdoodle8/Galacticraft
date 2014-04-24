@@ -201,6 +201,7 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
 			}
 			catch (Exception e)
 			{
+				System.err.println("Error reading dynamic packet in " + this.getClass().getSimpleName());
 				e.printStackTrace();
 			}
 		}

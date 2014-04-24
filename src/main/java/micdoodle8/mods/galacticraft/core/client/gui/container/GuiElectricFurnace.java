@@ -60,7 +60,7 @@ public class GuiElectricFurnace extends GuiContainer
 		}
 
 		this.fontRendererObj.drawString("Status: " + displayText, 97, 45, 4210752);
-		this.fontRendererObj.drawString(ElectricityDisplay.getDisplay(TileEntityElectricFurnace.WATTS_PER_TICK * 20, ElectricUnit.WATT), 97, 56, 4210752);
+		this.fontRendererObj.drawString("" + tileEntity.storage.getMaxExtract(), 97, 56, 4210752);
 //		this.fontRendererObj.drawString("Voltage: " + (int) (this.tileEntity.getVoltage() * 1000.0F), 97, 68, 4210752);
 		this.fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}

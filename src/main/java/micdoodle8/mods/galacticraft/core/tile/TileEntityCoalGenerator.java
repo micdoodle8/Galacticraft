@@ -28,21 +28,11 @@ import cpw.mods.fml.relauncher.Side;
  */
 public class TileEntityCoalGenerator extends TileEntityUniversalElectrical implements IInventory, ISidedInventory, IPacketReceiver
 {
-	/**
-	 * Maximum amount of energy needed to generate electricity
-	 */
-	public static final float MAX_GENERATE_WATTS = 0.5f;
+	public static final int MAX_GENERATE_WATTS = 500;
+	public static final int MIN_GENERATE_WATTS = 100;
 
-	/**
-	 * Amount of heat the coal generator needs before generating electricity.
-	 */
-	public static final float MIN_GENERATE_WATTS = 0.1f;
-
-	private static final float BASE_ACCELERATION = 0.0003f;
-
-	/**
-	 * Per second
-	 */
+	private static final float BASE_ACCELERATION = 0.3f;
+	
 	public float prevGenerateWatts = 0;
 
 	@NetworkedField(targetSide = Side.CLIENT)
@@ -59,14 +49,11 @@ public class TileEntityCoalGenerator extends TileEntityUniversalElectrical imple
 	 * box
 	 */
 	private ItemStack[] containingItems = new ItemStack[1];
-
-	public final Set<EntityPlayer> playersUsing = new HashSet<EntityPlayer>();
 	
 	public TileEntityCoalGenerator()
 	{
-		super();
-		this.storage.setCapacity(0);
-		this.storage.setMaxTransfer(0);
+		this.storage.setCapacity(50000);
+		this.storage.setMaxTransfer(MAX_GENERATE_WATTS);
 	}
 
 	@Override
@@ -78,15 +65,13 @@ public class TileEntityCoalGenerator extends TileEntityUniversalElectrical imple
 
 		if (!this.worldObj.isRemote)
 		{
-			this.prevGenerateWatts = this.generateWatts;
-
 			if (this.itemCookTime > 0)
 			{
 				this.itemCookTime--;
 
 				if (this.getEnergyStoredGC() < this.getMaxEnergyStoredGC())
 				{
-					this.generateWatts = (int) Math.floor(Math.min(this.generateWatts + Math.min(this.generateWatts * 0.000005F + TileEntityCoalGenerator.BASE_ACCELERATION, 0.005F), TileEntityCoalGenerator.MAX_GENERATE_WATTS));
+					this.generateWatts = (int) Math.floor(Math.min(this.generateWatts + Math.min(this.generateWatts * 0.005F + TileEntityCoalGenerator.BASE_ACCELERATION, 0.005F), TileEntityCoalGenerator.MAX_GENERATE_WATTS));
 				}
 			}
 
@@ -106,7 +91,7 @@ public class TileEntityCoalGenerator extends TileEntityUniversalElectrical imple
 
 			if (this.itemCookTime <= 0)
 			{
-				this.generateWatts = (int) Math.floor(Math.max(this.generateWatts - 0.008F, 0));
+				this.generateWatts = (int) Math.floor(Math.max(this.generateWatts - 8, 0));
 			}
 
 			this.generateWatts = (int) Math.floor(Math.min(Math.max(this.generateWatts, 0.0F), this.getMaxEnergyStoredGC()));

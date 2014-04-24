@@ -34,9 +34,8 @@ public abstract class TileEntityOxygen extends TileEntityElectricBlock implement
 	public float lastStoredOxygen;
 	public static int timeSinceOxygenRequest;
 
-	public TileEntityOxygen(int wattsPerTick, int maxEnergy, float maxOxygen, float oxygenPerTick)
+	public TileEntityOxygen(float maxOxygen, float oxygenPerTick)
 	{
-		super(wattsPerTick, maxEnergy);
 		this.maxOxygen = maxOxygen;
 		this.oxygenPerTick = oxygenPerTick;
 	}

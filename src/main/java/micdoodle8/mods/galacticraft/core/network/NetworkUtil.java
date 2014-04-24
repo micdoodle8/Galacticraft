@@ -305,7 +305,10 @@ public class NetworkUtil
 		}
 		else if (dataValue.equals(EnergyStorage.class))
 		{
-			EnergyStorage storage = new EnergyStorage(buffer.readInt(), buffer.readInt(), buffer.readInt());
+			int capacity = buffer.readInt();
+			int maxReceive = buffer.readInt();
+			int maxExtract = buffer.readInt();
+			EnergyStorage storage = new EnergyStorage(capacity, maxReceive, maxExtract);
 			storage.setEnergyStored(buffer.readInt());
 			return storage;
 		}

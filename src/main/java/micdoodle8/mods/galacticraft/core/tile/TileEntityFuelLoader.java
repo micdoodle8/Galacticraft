@@ -44,13 +44,13 @@ public class TileEntityFuelLoader extends TileEntityElectricBlock implements IIn
 	public FluidTank fuelTank = new FluidTank(this.tankCapacity);
 
 	private ItemStack[] containingItems = new ItemStack[2];
-	public static final int WATTS_PER_TICK = 1;
 
 	public IFuelable attachedFuelable;
 
 	public TileEntityFuelLoader()
 	{
-		super(TileEntityFuelLoader.WATTS_PER_TICK, 50);
+		this.storage.setMaxExtract(250);
+		this.storage.setCapacity(50000);
 	}
 
 	public int getScaledFuelLevel(int i)

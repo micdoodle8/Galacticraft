@@ -70,21 +70,25 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 	public int produce(boolean simulate)
 	{
 		int amountProduced = 0;
-		EnumSet<ForgeDirection> outputDirections = this.getElectricalOutputDirections();
-		outputDirections.remove(ForgeDirection.UNKNOWN);
 		
-		for (ForgeDirection direction : outputDirections)
+		if (!this.worldObj.isRemote)
 		{
-			BlockVec3 adjacentBlockVec = new BlockVec3(this).add(new BlockVec3(direction.offsetX, direction.offsetY, direction.offsetZ));
+			EnumSet<ForgeDirection> outputDirections = this.getElectricalOutputDirections();
+			outputDirections.remove(ForgeDirection.UNKNOWN);
 			
-			if (adjacentBlockVec.blockExists(this.worldObj))
+			for (ForgeDirection direction : outputDirections)
 			{
-				TileEntity tileAdj = adjacentBlockVec.getTileEntity(this.worldObj);
+				BlockVec3 adjacentBlockVec = new BlockVec3(this).add(new BlockVec3(direction.offsetX, direction.offsetY, direction.offsetZ));
 				
-				if (tileAdj instanceof IEnergyHandlerGC)
+				if (adjacentBlockVec.blockExists(this.worldObj))
 				{
-					EnergySourceAdjacent source = new EnergySourceAdjacent(direction.getOpposite());
-					amountProduced += ((IEnergyHandlerGC) tileAdj).receiveEnergyGC(source, (this.getEnergyStoredGC() - amountProduced) / outputDirections.size(), simulate);
+					TileEntity tileAdj = adjacentBlockVec.getTileEntity(this.worldObj);
+					
+					if (tileAdj instanceof IEnergyHandlerGC)
+					{
+						EnergySourceAdjacent source = new EnergySourceAdjacent(direction.getOpposite());
+						amountProduced += ((IEnergyHandlerGC) tileAdj).receiveEnergyGC(source, (this.getEnergyStoredGC() - amountProduced) / outputDirections.size(), simulate);
+					}
 				}
 			}
 		}

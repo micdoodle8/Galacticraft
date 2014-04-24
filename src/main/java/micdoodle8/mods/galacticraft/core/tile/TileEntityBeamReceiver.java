@@ -55,7 +55,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 			{
 				TileEntityUniversalElectrical electricalTile = (TileEntityUniversalElectrical) tile;
 				EnergySourceAdjacent source = new EnergySourceAdjacent(this.facing.getOpposite());
-				int toSend = electricalTile.getEnergyStoredGC(source);
+				int toSend = electricalTile.storage.getMaxExtract();
 				electricalTile.extractEnergyGC(source, this.target.receiveEnergyGC(new EnergySourceWireless(Lists.newArrayList((ILaserNode)this)), toSend, false), false);
 			}
 		}

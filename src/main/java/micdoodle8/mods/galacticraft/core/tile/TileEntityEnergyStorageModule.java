@@ -34,9 +34,8 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 	
 	public TileEntityEnergyStorageModule()
 	{
-		super();
 		this.storage.setCapacity(500000);
-		this.storage.setMaxTransfer(2000);
+		this.storage.setMaxTransfer(100);
 	}
 
 	@Override

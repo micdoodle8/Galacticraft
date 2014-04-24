@@ -31,7 +31,6 @@ import cpw.mods.fml.relauncher.Side;
 public class TileEntityCargoLoader extends TileEntityElectricBlock implements IInventory, ISidedInventory, ILandingPadAttachable
 {
 	private ItemStack[] containingItems = new ItemStack[15];
-	public static final int WATTS_PER_TICK = 1;
 	public boolean outOfItems;
 	@NetworkedField(targetSide = Side.CLIENT)
 	public boolean targetFull;
@@ -44,7 +43,8 @@ public class TileEntityCargoLoader extends TileEntityElectricBlock implements II
 
 	public TileEntityCargoLoader()
 	{
-		super(TileEntityCargoLoader.WATTS_PER_TICK, 50);
+		this.storage.setMaxExtract(75);
+		this.storage.setCapacity(50000);
 	}
 
 	@Override

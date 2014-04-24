@@ -40,21 +40,20 @@ public abstract class TileEntityElectricBlock extends TileEntityUniversalElectri
 
 	public abstract ItemStack getBatteryInSlot();
 
-	public TileEntityElectricBlock(int ueWattsPerTick, int maxEnergy)
-	{
-		super();
-		this.storage.setMaxReceive(ueWattsPerTick);
-		this.storage.setMaxExtract(0);
-		this.storage.setCapacity(maxEnergy);
-//		this.ueMaxEnergy = maxEnergy;
-//		this.ueWattsPerTick = ueWattsPerTick;
-
-		/*
-		 * if (PowerFramework.currentFramework != null) { this.bcPowerProvider =
-		 * new GCCoreLinkedPowerProvider(this);
-		 * this.bcPowerProvider.configure(20, 1, 10, 10, 1000); }
-		 */
-	}
+//	public TileEntityElectricBlock()
+//	{
+//		this.storage.setMaxReceive(ueWattsPerTick);
+//		this.storage.setMaxExtract(0);
+//		this.storage.setCapacity(maxEnergy);
+////		this.ueMaxEnergy = maxEnergy;
+////		this.ueWattsPerTick = ueWattsPerTick;
+//
+//		/*
+//		 * if (PowerFramework.currentFramework != null) { this.bcPowerProvider =
+//		 * new GCCoreLinkedPowerProvider(this);
+//		 * this.bcPowerProvider.configure(20, 1, 10, 10, 1000); }
+//		 */
+//	}
 
 //	@Override
 //	public float getMaxEnergyStored()

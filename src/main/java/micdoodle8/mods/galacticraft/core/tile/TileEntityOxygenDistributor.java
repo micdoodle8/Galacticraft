@@ -38,7 +38,9 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 
 	public TileEntityOxygenDistributor()
 	{
-		super(TileEntityOxygenDistributor.WATTS_PER_TICK, 50, 6000, 8);
+		super(6000, 8);
+		this.storage.setMaxExtract(200);
+		this.storage.setCapacity(50000);
 	}
 
 	@Override

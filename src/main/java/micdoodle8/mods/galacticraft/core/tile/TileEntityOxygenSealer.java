@@ -18,6 +18,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 
 /**
@@ -55,7 +56,9 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
 
 	public TileEntityOxygenSealer()
 	{
-		super(TileEntityOxygenSealer.WATTS_PER_TICK, 50, 10000, 16);
+		super(10000, 16);
+		this.storage.setMaxExtract(200);
+		this.storage.setCapacity(50000);
 	}
 
 	public int getScaledThreadCooldown(int i)
@@ -87,6 +90,8 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
 	public void updateEntity()
 	{
 		super.updateEntity();
+		
+		FMLLog.info("" + this.getEnergyStoredGC());
 
 		if (!this.worldObj.isRemote)
 		{

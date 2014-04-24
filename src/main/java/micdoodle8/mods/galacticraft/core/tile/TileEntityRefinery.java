@@ -40,7 +40,6 @@ public class TileEntityRefinery extends TileEntityElectricBlock implements IInve
 	@NetworkedField(targetSide = Side.CLIENT)
 	public FluidTank fuelTank = new FluidTank(this.tankCapacity);
 
-	public static final int WATTS_PER_TICK = 1;
 	public static final int PROCESS_TIME_REQUIRED = 2;
 	public static final int OUTPUT_PER_SECOND = 1;
 	@NetworkedField(targetSide = Side.CLIENT)
@@ -49,7 +48,8 @@ public class TileEntityRefinery extends TileEntityElectricBlock implements IInve
 
 	public TileEntityRefinery()
 	{
-		super(TileEntityRefinery.WATTS_PER_TICK, 50);
+		this.storage.setMaxExtract(400);
+		this.storage.setCapacity(50000);
 	}
 
 	@Override

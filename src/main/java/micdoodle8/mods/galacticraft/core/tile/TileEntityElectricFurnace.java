@@ -29,7 +29,6 @@ import cpw.mods.fml.relauncher.Side;
  */
 public class TileEntityElectricFurnace extends TileEntityElectricBlock implements IInventory, ISidedInventory, IPacketReceiver
 {
-	public static final int WATTS_PER_TICK = 1;
 	public static final int PROCESS_TIME_REQUIRED = 130;
 
 	@NetworkedField(targetSide = Side.CLIENT)
@@ -40,7 +39,8 @@ public class TileEntityElectricFurnace extends TileEntityElectricBlock implement
 
 	public TileEntityElectricFurnace()
 	{
-		super(TileEntityElectricFurnace.WATTS_PER_TICK, 50);
+		this.storage.setMaxExtract(200);
+		this.storage.setCapacity(50000);
 	}
 
 	@Override
@@ -52,7 +52,7 @@ public class TileEntityElectricFurnace extends TileEntityElectricBlock implement
 		{
 			if (this.canProcess())
 			{
-				if (this.getEnergyStoredGC() >= TileEntityElectricFurnace.WATTS_PER_TICK)
+				if (this.getEnergyStoredGC() >= 0)
 				{
 					if (this.processTicks == 0)
 					{
@@ -67,6 +67,8 @@ public class TileEntityElectricFurnace extends TileEntityElectricBlock implement
 							this.smeltItem();
 							this.processTicks = 0;
 						}
+						
+						this.storage.extractEnergyGC(this.storage.getMaxExtract(), false);
 					}
 					else
 					{

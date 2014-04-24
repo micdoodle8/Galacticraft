@@ -6,7 +6,6 @@ import java.util.List;
 
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
-import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockLandingPadFull;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
@@ -73,7 +72,8 @@ public class TileEntityLaunchController extends TileEntityElectricBlock implemen
 
 	public TileEntityLaunchController()
 	{
-		super(TileEntityLaunchController.WATTS_PER_TICK, 50);
+		this.storage.setMaxExtract(50);
+		this.storage.setCapacity(50000);
 	}
 
 	@Override

@@ -29,7 +29,6 @@ import cpw.mods.fml.relauncher.Side;
 public class TileEntityElectricIngotCompressor extends TileEntityElectricBlock implements IInventory, ISidedInventory, IPacketReceiver
 {
 	public static final int PROCESS_TIME_REQUIRED = 200;
-	public static final int WATTS_PER_TICK_PER_STACK = 1;
 	@NetworkedField(targetSide = Side.CLIENT)
 	public int processTicks = 0;
 	private ItemStack producingStack = null;
@@ -40,7 +39,8 @@ public class TileEntityElectricIngotCompressor extends TileEntityElectricBlock i
 
 	public TileEntityElectricIngotCompressor()
 	{
-		super(TileEntityElectricIngotCompressor.WATTS_PER_TICK_PER_STACK, 50);
+		this.storage.setMaxExtract(250);
+		this.storage.setCapacity(50000);
 	}
 
 	@Override
