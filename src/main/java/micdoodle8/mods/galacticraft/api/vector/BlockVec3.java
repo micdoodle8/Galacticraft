@@ -312,6 +312,11 @@ public class BlockVec3 implements Cloneable
 		worldObj.setBlock(this.x, this.y, this.z, block, 0, 3);
 	}
 
+	public boolean blockExists(World world)
+	{
+		return world.blockExists(this.x, this.y, this.z);
+	}
+	
 	public int intX()
 	{
 		return this.x;
