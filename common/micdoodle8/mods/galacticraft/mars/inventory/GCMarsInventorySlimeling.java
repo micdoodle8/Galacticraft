@@ -190,7 +190,7 @@ public class GCMarsInventorySlimeling implements IInventory
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
 	{
-		return true;
+		return this.slimeling.isDead ? false : par1EntityPlayer.getDistanceSqToEntity(this.slimeling) <= 64.0D;
 	}
 
 	@Override

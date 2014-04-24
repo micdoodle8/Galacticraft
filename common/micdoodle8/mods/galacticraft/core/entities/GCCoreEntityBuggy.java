@@ -612,7 +612,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer var1)
 	{
-		return true;
+		return this.isDead ? false : var1.getDistanceSqToEntity(this) <= 64.0D;
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
+import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityElectricBlock;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenCompressor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -18,10 +20,13 @@ import net.minecraft.item.ItemStack;
  */
 public class GCCoreContainerAirCompressor extends Container
 {
+	private GCCoreTileEntityElectricBlock tileEntity;
+
 	public GCCoreContainerAirCompressor(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityOxygenCompressor compressor)
 	{
+		tileEntity = compressor;
 		this.addSlotToContainer(new Slot(compressor, 0, 133, 71));
-		this.addSlotToContainer(new Slot(compressor, 1, 32, 27));
+		this.addSlotToContainer(new SlotSpecific(compressor, 1, 32, 27, IItemElectric.class));
 
 		int var3;
 
@@ -44,7 +49,7 @@ public class GCCoreContainerAirCompressor extends Container
 	@Override
 	public boolean canInteractWith(EntityPlayer var1)
 	{
-		return true;
+		return this.tileEntity.isUseableByPlayer(var1);
 	}
 
 	@Override
