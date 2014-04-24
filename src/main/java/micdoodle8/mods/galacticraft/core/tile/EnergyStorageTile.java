@@ -7,7 +7,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public abstract class EnergyStorageTile extends TileEntityAdvanced
 {
-	protected EnergyStorage storage = new EnergyStorage(32000);
+	protected EnergyStorage storage = new EnergyStorage(50, 1);
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {

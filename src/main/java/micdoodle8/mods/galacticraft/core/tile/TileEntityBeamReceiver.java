@@ -1,11 +1,14 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.power.EnergySource;
+import micdoodle8.mods.galacticraft.api.power.EnergySource.EnergySourceWireless;
 import micdoodle8.mods.galacticraft.api.power.IEnergyHandlerGC;
 import micdoodle8.mods.galacticraft.api.power.ILaserNode;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.google.common.collect.Lists;
 
 public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEnergyHandlerGC, ILaserNode
 {
@@ -17,7 +20,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 	}
 	
 	public ForgeDirection facing = ForgeDirection.UNKNOWN;
-	private EnergyStorage storage = new EnergyStorage(Integer.MAX_VALUE);
+	private EnergyStorage storage = new EnergyStorage(Integer.MAX_VALUE, 1);
 	public ReceiverMode modeReceive = ReceiverMode.UNDEFINED;
 	public Vector3 color = new Vector3(0, 1, 0);
 	
@@ -40,6 +43,29 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 					this.setFacing(dir);
 					break;
 				}
+			}
+		}
+		
+		if (this.target != null && this.modeReceive == ReceiverMode.EXTRACT && this.facing != ForgeDirection.UNKNOWN)
+		{
+			TileEntity tile = this.getAttachedTile();
+			
+			if (tile instanceof TileEntityUniversalElectrical)
+			{
+				TileEntityUniversalElectrical electricalTile = (TileEntityUniversalElectrical) tile;
+				int toSend = (int)Math.floor(electricalTile.getEnergyStored());
+				electricalTile.provideElectricity(this.target.receiveEnergyGC(new EnergySourceWireless(Lists.newArrayList((ILaserNode)this)), toSend, false), true);
+			}
+		}
+		
+		if (this.modeReceive == ReceiverMode.RECEIVE && this.storage.getEnergyStoredGC() > 0)
+		{
+			TileEntity tile = this.getAttachedTile();
+			
+			if (tile instanceof TileEntityUniversalElectrical)
+			{
+				TileEntityUniversalElectrical electricalTile = (TileEntityUniversalElectrical) tile;
+				this.storage.extractEnergyGC((int) electricalTile.receiveElectricity(this.storage.getEnergyStoredGC(), true), false);
 			}
 		}
 	}
@@ -109,6 +135,11 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 	@Override
 	public int receiveEnergyGC(EnergySource from, int amount, boolean simulate) 
 	{
+		if (this.modeReceive != ReceiverMode.RECEIVE)
+		{
+			return 0;
+		}
+		
 		TileEntity tile = this.getAttachedTile();
 		
 		if (this.facing == ForgeDirection.UNKNOWN)
@@ -118,20 +149,25 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 		
 		int received = this.storage.receiveEnergyGC(amount, simulate);
 		
-		if (received < amount)
-		{
-			if (tile instanceof EnergyStorageTile)
-			{
-				received += ((EnergyStorageTile) tile).storage.receiveEnergyGC(amount - received, simulate);
-			}
-		}
+//		if (received < amount)
+//		{
+//			if (tile instanceof EnergyStorageTile)
+//			{
+//				received += ((EnergyStorageTile) tile).storage.receiveEnergyGC(amount - received, simulate);
+//			}
+//		}
 		
-		return 0;
+		return received;
 	}
 
 	@Override
 	public int extractEnergyGC(EnergySource from, int amount, boolean simulate) 
 	{
+		if (this.modeReceive != ReceiverMode.EXTRACT)
+		{
+			return 0;
+		}
+		
 		TileEntity tile = this.getAttachedTile();
 		
 		if (this.facing == ForgeDirection.UNKNOWN)
