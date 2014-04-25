@@ -15,11 +15,11 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockLandingPadFull;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.event.EventLandingPadRemoval;
+import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -41,7 +41,7 @@ import cpw.mods.fml.relauncher.Side;
 /**
  * Do not include this prefab class in your released mod download.
  */
-public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IDockable, IInventory
+public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IDockable, IInventory, IPacketReceiver
 {
 	public FluidTank fuelTank = new FluidTank(this.getFuelTankCapacity());
 	public int destinationFrequency = -1;
@@ -90,7 +90,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
 		if (this.hasValidFuel())
 		{
-			if (this.launchPhase == EnumLaunchPhase.UNIGNITED.getPhase() && !this.worldObj.isRemote)
+			if (this.launchPhase == EnumLaunchPhase.UNIGNITED.ordinal() && !this.worldObj.isRemote)
 			{
 				if (!this.setFrequency())
 				{
@@ -138,7 +138,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 						try
 						{
 							TileEntity launchController = null;
-							Class<?> controllerClass = Class.forName("micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityLaunchController");
+							Class<?> controllerClass = Class.forName("micdoodle8.mods.galacticraft.planets.mars.tile.EntityLaunchController");
 
 							for (ILandingPadAttachable connectedTile : dock.getConnectedTiles())
 							{
@@ -231,7 +231,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
 					try
 					{
-						Class<?> controllerClass = Class.forName("micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityLaunchController");
+						Class<?> controllerClass = Class.forName("micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityLaunchController");
 
 						try
 						{
@@ -249,14 +249,13 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 						{
 							boolean targetSet = false;
 
-							blockLoop:
-							for (int x = -2; x <= 2; x++)
+							blockLoop: for (int x = -2; x <= 2; x++)
 							{
 								for (int z = -2; z <= 2; z++)
 								{
 									Block block = world.getBlock(launchController.xCoord + x, launchController.yCoord, launchController.zCoord + z);
 
-									if (block != Blocks.air && block instanceof BlockLandingPadFull)
+									if (block instanceof BlockLandingPadFull)
 									{
 										if (doSet)
 										{
@@ -355,7 +354,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 							{
 								try
 								{
-									Class<?> controllerClass = Class.forName("micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityLaunchController");
+									Class<?> controllerClass = Class.forName("micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityLaunchController");
 
 									try
 									{
@@ -381,7 +380,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 				}
 			}
 
-			if (this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase() && this.hasValidFuel())
+			if (this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal() && this.hasValidFuel())
 			{
 				if (this.landing && this.targetVec != null && this.worldObj.getTileEntity(this.targetVec.intX(), this.targetVec.intY(), this.targetVec.intZ()) instanceof IFuelDock && this.posY - this.targetVec.y < 5)
 				{
@@ -411,7 +410,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 					{
 						if (tile instanceof TileEntityFuelLoader && ((TileEntityFuelLoader) tile).getEnergyStoredGC() > 0)
 						{
-							if (this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase())
+							if (this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal())
 							{
 								this.setPad(null);
 							}
@@ -438,19 +437,22 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
 	public boolean igniteWithResult()
 	{
-		if (this.setFrequency())
+		if (this.isPlayerRocket())
 		{
 			super.ignite();
 			return true;
 		}
 		else
 		{
-			if (this.isPlayerRocket())
+			if (this.setFrequency())
 			{
 				super.ignite();
+				return true;
 			}
-
-			return false;
+			else
+			{
+				return false;
+			}
 		}
 	}
 
@@ -474,7 +476,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 			{
 				if (!this.worldObj.isRemote)
 				{
-					this.launchPhase = EnumLaunchPhase.UNIGNITED.getPhase();
+					this.setLaunchPhase(EnumLaunchPhase.UNIGNITED);
 					this.landing = false;
 					this.targetVec = null;
 					this.setPad(dock);
@@ -485,7 +487,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
 						try
 						{
-							Class<?> controllerClass = Class.forName("micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityLaunchController");
+							Class<?> controllerClass = Class.forName("micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityLaunchController");
 
 							for (ILandingPadAttachable connectedTile : connectedTiles)
 							{
@@ -650,7 +652,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 			}
 		}
 
-		if (this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase())
+		if (this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal())
 		{
 			super.failRocket();
 		}
@@ -772,7 +774,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
 			for (int var3 = 0; var3 < var2.tagCount(); ++var3)
 			{
-				final NBTTagCompound var4 = (NBTTagCompound) var2.getCompoundTagAt(var3);
+				final NBTTagCompound var4 = var2.getCompoundTagAt(var3);
 				final int var5 = var4.getByte("Slot") & 255;
 
 				if (var5 >= 0 && var5 < this.cargoItems.length)
@@ -855,7 +857,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 		{
 			ItemStack stackAt = this.cargoItems[count];
 
-			if (stackAt != null && stackAt == stack && stackAt.getItemDamage() == stack.getItemDamage() && stackAt.stackSize < stackAt.getMaxStackSize())
+			if (stackAt != null && stackAt.getItem() == stack.getItem() && stackAt.getItemDamage() == stack.getItemDamage() && stackAt.stackSize < stackAt.getMaxStackSize())
 			{
 				if (doAdd)
 				{
@@ -991,11 +993,6 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 	}
 
 	@Override
-	public void markDirty()
-	{
-	}
-
-	@Override
 	public void openInventory()
 	{
 	}
@@ -1024,9 +1021,15 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 	}
 
 	@Override
+	public void markDirty()
+	{
+		;
+	}
+
+	@Override
 	public void onPadDestroyed()
 	{
-		if (!this.isDead && this.launchPhase != EnumLaunchPhase.LAUNCHED.getPhase())
+		if (!this.isDead && this.launchPhase != EnumLaunchPhase.LAUNCHED.ordinal())
 		{
 			this.dropShipAsItem();
 			this.setDead();

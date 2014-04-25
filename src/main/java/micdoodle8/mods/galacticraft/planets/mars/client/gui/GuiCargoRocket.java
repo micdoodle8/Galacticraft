@@ -122,7 +122,7 @@ public class GuiCargoRocket extends GuiContainerGC
 			spltString[0] = EnumColor.YELLOW + "Waiting for";
 			spltString[1] = EnumColor.YELLOW + "ignition";
 
-			if (this.rocket.launchPhase != EnumLaunchPhase.UNIGNITED.getPhase())
+			if (this.rocket.launchPhase != EnumLaunchPhase.UNIGNITED.ordinal())
 			{
 				spltString = new String[2];
 				spltString[0] = EnumColor.YELLOW + "Already";

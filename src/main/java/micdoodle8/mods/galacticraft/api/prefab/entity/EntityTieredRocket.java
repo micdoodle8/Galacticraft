@@ -32,7 +32,6 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.relauncher.Side;
 
 /**
  * Do not include this prefab class in your released mod download.
@@ -64,7 +63,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 		{
 			try
 			{
-				Class.forName("calclavia.api.icbm.RadarRegistry").getMethod("register", Entity.class).invoke(null, this);
+				Class.forName("icbm.api.RadarRegistry").getMethod("register", Entity.class).invoke(null, this);
 			}
 			catch (Exception e)
 			{
@@ -82,7 +81,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 		{
 			try
 			{
-				Class.forName("calclavia.api.icbm.RadarRegistry").getMethod("unregister", Entity.class).invoke(null, this);
+				Class.forName("icbm.api.RadarRegistry").getMethod("unregister", Entity.class).invoke(null, this);
 			}
 			catch (Exception e)
 			{
@@ -154,7 +153,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 				{
 					if (tile instanceof TileEntityFuelLoader && ((TileEntityFuelLoader) tile).getEnergyStoredGC() > 0)
 					{
-						if (this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase())
+						if (this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal())
 						{
 							this.setPad(null);
 						}
@@ -179,7 +178,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 			this.riddenByEntity.posZ += this.rumble / 30F;
 		}
 
-		if (this.launchPhase == EnumLaunchPhase.IGNITED.getPhase() || this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase())
+		if (this.launchPhase == EnumLaunchPhase.IGNITED.ordinal() || this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal())
 		{
 			this.performHurtAnimation();
 
@@ -222,11 +221,6 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 			list.add(this.posY * 8000.0D);
 			list.add(this.posZ * 8000.0D);
 		}
-	}
-
-	@Override
-	public void handlePacketData(Side side, EntityPlayer player)
-	{
 	}
 
 	@Override
@@ -374,7 +368,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 	@Override
 	public boolean interactFirst(EntityPlayer par1EntityPlayer)
 	{
-		if (this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase())
+		if (this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal())
 		{
 			return false;
 		}
