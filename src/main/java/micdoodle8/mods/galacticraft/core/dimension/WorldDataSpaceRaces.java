@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.dimension;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
-import cpw.mods.fml.common.FMLLog;
 
 public class WorldDataSpaceRaces extends WorldSavedData
 {
@@ -18,14 +17,12 @@ public class WorldDataSpaceRaces extends WorldSavedData
 	@Override
 	public void readFromNBT(NBTTagCompound nbt)
 	{
-		FMLLog.info("READING");
 		SpaceRaceManager.loadSpaceRaces(nbt);
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbt)
 	{
-		FMLLog.info("WRITING");
 		SpaceRaceManager.saveSpaceRaces(nbt);
 	}
 	

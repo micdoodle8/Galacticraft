@@ -29,7 +29,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -323,8 +322,6 @@ public class GuiGalaxyMap extends GuiStarBackground
 				this.drawCircles(planet, galaxyCenterX + galaxyCenterX, galaxyCenterY + galaxyCenterY);
 
 				Vector3 planetCenter = this.drawCelestialBody(planet, galaxyCenterX, galaxyCenterY);
-
-				FMLLog.info("" + planetCenter);
 
 				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 

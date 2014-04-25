@@ -113,7 +113,6 @@ import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -369,7 +368,6 @@ public class GalacticraftCore
 		{
 			if (body.shouldAutoRegister())
 			{
-				FMLLog.info("body " + body + " " + body.getLocalizedName() + " " + body.getDimensionID());
 				int id = Arrays.binarySearch(ConfigManagerCore.staticLoadDimensions, body.getDimensionID());
 				WorldUtil.registerPlanet(body.getDimensionID(), true);
 				if (id >= 0)
