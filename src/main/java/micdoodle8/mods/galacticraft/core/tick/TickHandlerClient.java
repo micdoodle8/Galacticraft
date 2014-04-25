@@ -86,6 +86,7 @@ public class TickHandlerClient
 	private static boolean lastInvKeyPressed;
 	private static long tickCount;
 	public static boolean addTabsNextTick = false;
+	public static boolean spaceRaceGuiScheduled = false;
 
 	private static ThreadRequirementMissing missingRequirementThread;
 
@@ -314,6 +315,12 @@ public class TickHandlerClient
 					TickHandlerClient.missingRequirementThread = new ThreadRequirementMissing(FMLCommonHandler.instance().getEffectiveSide());
 					TickHandlerClient.missingRequirementThread.start();
 				}
+			}
+
+			if (world != null && spaceRaceGuiScheduled && minecraft.currentScreen == null)
+			{
+				player.openGui(GalacticraftCore.instance, ConfigManagerCore.idGuiNewSpaceRace, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
+				spaceRaceGuiScheduled = false;
 			}
 
 			if (world != null && TickHandlerClient.checkedVersion)

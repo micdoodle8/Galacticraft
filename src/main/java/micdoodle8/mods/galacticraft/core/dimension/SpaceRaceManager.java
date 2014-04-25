@@ -2,6 +2,8 @@ package micdoodle8.mods.galacticraft.core.dimension;
 
 import java.util.List;
 
+import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
+import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -26,22 +28,27 @@ public class SpaceRaceManager
 			SpaceRace race = spaceRaceList.get(i);
 			boolean playerOnline = false;
 			
-			nameLoop:
-			for (String str : race.getPlayerNames())
+			for (int j = 0; j < MinecraftServer.getServer().getConfigurationManager().playerEntityList.size(); j++)
 			{
-				for (int j = 0; j < MinecraftServer.getServer().getConfigurationManager().playerEntityList.size(); j++)
+				Object o = MinecraftServer.getServer().getConfigurationManager().playerEntityList.get(j);
+				
+				if (o instanceof EntityPlayer)
 				{
-					Object o = MinecraftServer.getServer().getConfigurationManager().playerEntityList.get(j);
+					EntityPlayer player = (EntityPlayer)o;
 					
-					if (o instanceof EntityPlayer)
+					if (race.getPlayerNames().contains(player.getGameProfile().getName()))
 					{
-						EntityPlayer player = (EntityPlayer)o;
+						CelestialBody body = GalaxyRegistry.getCelestialBodyFromDimensionID(player.worldObj.provider.dimensionId);
 						
-						if (player.getGameProfile().getName().equals(str))
+						if (body != null)
 						{
-							playerOnline = true;
-							break nameLoop;
+							if (!race.getCelestialBodyStatusList().containsKey(body))
+							{
+								race.setCelestialBodyReached(body);
+							}
 						}
+						
+						playerOnline = true;
 					}
 				}
 			}

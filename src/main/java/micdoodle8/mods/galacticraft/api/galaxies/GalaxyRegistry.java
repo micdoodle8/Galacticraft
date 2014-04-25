@@ -27,6 +27,48 @@ public class GalaxyRegistry
 	static BiMap<String, Integer> planetIDs = HashBiMap.create();
 	static HashMap<String, Moon> moons = Maps.newHashMap();
 	static BiMap<String, Integer> moonIDs = HashBiMap.create();
+	
+	public static CelestialBody getCelestialBodyFromDimensionID(int dimensionID)
+	{
+		for (Planet planet : planets.values())
+		{
+			if (planet.getDimensionID() == dimensionID)
+			{
+				return planet;
+			}
+		}
+		
+		for (Moon moon : moons.values())
+		{
+			if (moon.getDimensionID() == dimensionID)
+			{
+				return moon;
+			}
+		}
+		
+		return null;
+	}
+	
+	public static CelestialBody getCelestialBodyFromUnlocalizedName(String unlocalizedName)
+	{
+		for (Planet planet : planets.values())
+		{
+			if (planet.getUnlocalizedName() == unlocalizedName)
+			{
+				return planet;
+			}
+		}
+		
+		for (Moon moon : moons.values())
+		{
+			if (moon.getUnlocalizedName() == unlocalizedName)
+			{
+				return moon;
+			}
+		}
+		
+		return null;
+	}
 
 	public static boolean registerGalaxy(Galaxy galaxy)
 	{

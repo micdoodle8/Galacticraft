@@ -26,6 +26,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.container.GuiRefinery;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiRocketInventory;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiSolar;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiGalaxyMap;
+import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiNewSpaceRace;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerCargoLoader;
@@ -227,6 +228,10 @@ public class GuiHandler implements IGuiHandler
 		else if (ID == ConfigManagerCore.idGuiKnowledgeBook)
 		{
 //			return new GCCoreGuiManual(new ItemStack(Block.stone), ClientProxyCore.materialsTest);
+		}
+		else if (ID == ConfigManagerCore.idGuiNewSpaceRace)
+		{
+			return new GuiNewSpaceRace(player);
 		}
 
 		TileEntity tile = world.getTileEntity(position.intX(), position.intY(), position.intZ());

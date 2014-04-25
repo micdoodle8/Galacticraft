@@ -225,9 +225,6 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
         		objList.add(this.flagData);
         		objList.add(new String[] { this.thePlayer.getGameProfile().getName() });
         		GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_START_NEW_SPACE_RACE, objList));
-        		List<String> players = new ArrayList<String>();
-        		players.add(this.thePlayer.getGameProfile().getName());
-        		SpaceRaceManager.addSpaceRace(players, "NewTeam", flagData);
         		this.thePlayer.closeScreen();
     		}
     		break;

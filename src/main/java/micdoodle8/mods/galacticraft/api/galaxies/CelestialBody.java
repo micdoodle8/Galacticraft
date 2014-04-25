@@ -6,6 +6,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.WorldProvider;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+
 public abstract class CelestialBody
 {
 	protected final String bodyName;
@@ -211,5 +213,22 @@ public abstract class CelestialBody
 	{
 		this.forceStaticLoad = force;
 		return this;
+	}
+	
+	@Override
+	public int hashCode()
+	{
+		return this.getUnlocalizedName().hashCode();
+	}
+	
+	@Override
+	public boolean equals(Object other)
+	{
+		if (other instanceof CelestialBody)
+		{
+			return new EqualsBuilder().append(this.getUnlocalizedName(), ((CelestialBody) other).getUnlocalizedName()).isEquals();
+		}
+		
+		return false;
 	}
 }

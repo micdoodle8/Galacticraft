@@ -475,17 +475,17 @@ public class PacketSimple implements IPacket
 				player.worldObj.getBlock(tile.xCoord, tile.yCoord, tile.zCoord).setBlockBoundsBasedOnState(player.worldObj, tile.xCoord, tile.yCoord, tile.zCoord);
 			}
 			break;
-//		case C_OPEN_SPACE_RACE_GUI:
-//			if (Minecraft.getMinecraft().currentScreen == null)
-//			{
-//				GCCoreTickHandlerClient.spaceRaceGuiScheduled = false;
-//				player.openGui(GalacticraftCore.instance, GCCoreConfigManager.idGuiNewSpaceRace, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
-//			}
-//			else
-//			{
-//				GCCoreTickHandlerClient.spaceRaceGuiScheduled = true;
-//			}
-//			break;
+		case C_OPEN_SPACE_RACE_GUI:
+			if (Minecraft.getMinecraft().currentScreen == null)
+			{
+				TickHandlerClient.spaceRaceGuiScheduled = false;
+				player.openGui(GalacticraftCore.instance, ConfigManagerCore.idGuiNewSpaceRace, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
+			}
+			else
+			{
+				TickHandlerClient.spaceRaceGuiScheduled = true;
+			}
+			break;
 		case C_UPDATE_SPACE_RACE_DATA:
 			String teamName = (String)this.data.get(0);
 			FlagData flagData = (FlagData)this.data.get(1);
