@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.dimension;
 import micdoodle8.mods.galacticraft.api.world.IExitHeight;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
+import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.world.gen.ChunkProviderOrbit;
 import net.minecraft.entity.Entity;
@@ -26,6 +27,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension, ISolarLevel, IExitHeight
 {
 	public int spaceStationDimensionID;
+	//Used to decide whether to render this as a rotating spacestation - set true for now, for testing purposes
+	public boolean doSpinning = true;
+	private float spinAngularVelocity = 0.015708F; 
 
 	@Override
 	public void setDimension(int var1)
@@ -275,5 +279,25 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 	public float getSoundVolReductionAmount()
 	{
 		return 50.0F;
+	}
+	
+	public void spinUpdate(GCEntityPlayerMP p)
+	{
+		/*IN DEVELOPMENT
+		 * if (p.isAirBorne && p.posY > 70D)
+		{
+			//TODO maybe need to test to make sure posX and posZ are not large (outside sight range of SS)
+			double angle;
+			if (p.posX==0D) angle = (p.posZ >0) ? Math.PI/2 : -Math.PI/2;
+			else angle = Math.atan(p.posZ/p.posX);
+			if (p.posX<0D) angle += Math.PI;
+			angle += this.spinAngularVelocity;
+			double radius = Math.sqrt(p.posX*p.posX + p.posZ*p.posZ);
+			p.posX = radius * Math.cos(angle);
+			p.posZ = radius * Math.sin(angle);
+			
+			p.cameraYaw+=this.spinAngularVelocity;
+		}
+		*/
 	}
 }

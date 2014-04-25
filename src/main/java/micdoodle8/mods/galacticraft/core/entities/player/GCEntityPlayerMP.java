@@ -17,6 +17,7 @@ import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.command.CommandGCInv;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.entities.EntityLander;
 import micdoodle8.mods.galacticraft.core.entities.EntityMeteor;
 import micdoodle8.mods.galacticraft.core.entities.EntityParachest;
@@ -70,7 +71,7 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 	private int airRemaining;
 	private int airRemaining2;
 
-	private long tick;
+	private int tick;
 
 	private int damageCounter;
 
@@ -163,11 +164,11 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 		{
 			if (keepInv)
 			{
-				this.getExtendedInventory().copyInventory(((GCEntityPlayerMP) par1EntityPlayer).extendedInventory);
+				this.extendedInventory.copyInventory(((GCEntityPlayerMP) par1EntityPlayer).extendedInventory);
 			}
 			else if (this.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory"))
 			{
-				this.getExtendedInventory().copyInventory(((GCEntityPlayerMP) par1EntityPlayer).extendedInventory);
+				this.extendedInventory.copyInventory(((GCEntityPlayerMP) par1EntityPlayer).extendedInventory);
 			}
 
 			this.setSpaceStationDimensionID(((GCEntityPlayerMP) par1EntityPlayer).getSpaceStationDimensionID());
@@ -195,7 +196,7 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 			GalacticraftCore.playersServer.put(this.getGameProfile().getName(), this);
 		}
 
-		if (this.tick >= Long.MAX_VALUE)
+		if (this.tick == Integer.MAX_VALUE)
 		{
 			this.tick = 0;
 		}
@@ -220,34 +221,39 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 			this.setTouchedGround(true);
 		}
 
-		if (this.getTeleportCooldown() > 0)
+		if (this.teleportCooldown > 0)
 		{
-			this.setTeleportCooldown(this.getTeleportCooldown() - 1);
+			this.teleportCooldown--;
 		}
 
-		if (this.getChatCooldown() > 0)
+		if (this.chatCooldown > 0)
 		{
-			this.setChatCooldown(this.getChatCooldown() - 1);
+			this.chatCooldown--;
 		}
 
 		if (this.openPlanetSelectionGuiCooldown > 0)
 		{
 			this.openPlanetSelectionGuiCooldown--;
+
+			if (this.openPlanetSelectionGuiCooldown == 1 && !this.hasOpenedPlanetSelectionGui)
+			{
+				this.sendPlanetList();
+				this.setUsingPlanetGui();
+				this.hasOpenedPlanetSelectionGui = true;
+			}
 		}
 
-		if (this.getParachute())
+		if (this.usingParachute)
 		{
 			this.fallDistance = 0.0F;
+			if (this.onGround)
+			{
+				this.sendGearUpdatePacket(EnumModelPacket.REMOVE_PARACHUTE.getIndex());
+				this.setUsingParachute(false);
+			}
 		}
 
 		this.checkCurrentItem();
-
-		if (!this.hasOpenedPlanetSelectionGui && this.openPlanetSelectionGuiCooldown == 1)
-		{
-			this.sendPlanetList();
-			this.setUsingPlanetGui();
-			this.hasOpenedPlanetSelectionGui = true;
-		}
 
 		if (this.usingPlanetSelectionGui)
 		{
@@ -264,37 +270,31 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 			this.sendAirRemainingPacket();
 		}
 
-		if (this.onGround && this.getParachute())
-		{
-			this.sendGearUpdatePacket(EnumModelPacket.REMOVE_PARACHUTE.getIndex());
-			this.setUsingParachute(false);
-		}
-
 		this.checkGear();
 
-		if (this.getChestSpawnCooldown() > 0)
+		if (this.chestSpawnCooldown > 0)
 		{
-			this.setChestSpawnCooldown(this.getChestSpawnCooldown() - 1);
-		}
+			this.chestSpawnCooldown--;
 
-		if (this.getChestSpawnCooldown() == 180)
-		{
-			if (this.getChestSpawnVector() != null)
+			if (this.chestSpawnCooldown == 180)
 			{
-				EntityParachest chest = new EntityParachest(this.worldObj, this.getRocketStacks(), this.getFuelLevel());
-
-				chest.setPosition(this.getChestSpawnVector().x, this.getChestSpawnVector().y, this.getChestSpawnVector().z);
-
-				if (!this.worldObj.isRemote)
+				if (this.getChestSpawnVector() != null)
 				{
-					this.worldObj.spawnEntityInWorld(chest);
+					EntityParachest chest = new EntityParachest(this.worldObj, this.getRocketStacks(), this.getFuelLevel());
+
+					chest.setPosition(this.getChestSpawnVector().x, this.getChestSpawnVector().y, this.getChestSpawnVector().z);
+
+					if (!this.worldObj.isRemote)
+					{
+						this.worldObj.spawnEntityInWorld(chest);
+					}
 				}
 			}
 		}
 
 		//
 
-		if (this.getLaunchAttempts() > 0 && this.ridingEntity == null)
+		if (this.launchAttempts > 0 && this.ridingEntity == null)
 		{
 			this.setLaunchAttempts(0);
 		}
@@ -306,31 +306,28 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_OXYGEN_VALIDITY, new Object[] { this.oxygenSetupValid }), this);
 		}
 
-		if (this.getParachute())
-		{
-			if (this.onGround)
-			{
-				this.setUsingParachute(false);
-			}
-		}
-
 		this.throwMeteors();
 
 		if (this.worldObj.provider instanceof IGalacticraftWorldProvider || this.usingPlanetSelectionGui)
 		{
 //			this.playerNetServerHandler.ticksForFloatKick = 0;
-		}
+			
+			if (this.worldObj.provider instanceof WorldProviderOrbit && ((WorldProviderOrbit) this.worldObj.provider).doSpinning)
+			{
+				((WorldProviderOrbit) this.worldObj.provider).spinUpdate(this);
+			}
+		}	
 
 		this.updateSchematics();
 
-		if (this.frequencyModuleInSlot == null && !this.receivedSoundWarning && this.tick > 0 && this.tick % 250 == 0 && this.worldObj.provider instanceof IGalacticraftWorldProvider && this.onGround)
+		if (this.tick % 250 == 0 && this.frequencyModuleInSlot == null && !this.receivedSoundWarning && this.worldObj.provider instanceof IGalacticraftWorldProvider && this.onGround && this.tick > 0)
 		{
 			this.addChatMessage(new ChatComponentText(EnumColor.YELLOW + "I'll probably need a " + EnumColor.AQUA + GCItems.basicItem.getItemStackDisplayName(new ItemStack(GCItems.basicItem, 1, 19)) + EnumColor.YELLOW + " if I want to hear properly here."));
 			this.receivedSoundWarning = true;
 		}
 
 		this.lastOxygenSetupValid = this.oxygenSetupValid;
-		this.lastUnlockedSchematics = this.getUnlockedSchematics();
+		this.lastUnlockedSchematics = this.unlockedSchematics;
 
 		this.lastOnGround = this.onGround;
 	}
@@ -438,75 +435,57 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 
 	private void checkGear()
 	{
-		this.maskInSlot = this.getExtendedInventory().getStackInSlot(0);
-		this.gearInSlot = this.getExtendedInventory().getStackInSlot(1);
-		this.tankInSlot1 = this.getExtendedInventory().getStackInSlot(2);
-		this.tankInSlot2 = this.getExtendedInventory().getStackInSlot(3);
-		this.parachuteInSlot = this.getExtendedInventory().getStackInSlot(4);
-		this.frequencyModuleInSlot = this.getExtendedInventory().getStackInSlot(5);
+		this.maskInSlot = this.extendedInventory.getStackInSlot(0);
+		this.gearInSlot = this.extendedInventory.getStackInSlot(1);
+		this.tankInSlot1 = this.extendedInventory.getStackInSlot(2);
+		this.tankInSlot2 = this.extendedInventory.getStackInSlot(3);
+		this.parachuteInSlot = this.extendedInventory.getStackInSlot(4);
+		this.frequencyModuleInSlot = this.extendedInventory.getStackInSlot(5);
 
 		//
 
-		if (this.frequencyModuleInSlot != null && this.lastFrequencyModuleInSlot == null && this.frequencyModuleInSlot.getItem() == GCItems.basicItem && this.frequencyModuleInSlot.getItemDamage() == 19)
+		if (this.frequencyModuleInSlot != this.lastFrequencyModuleInSlot)
 		{
-			this.sendGearUpdatePacket(EnumModelPacket.ADD_FREQUENCY_MODULE.getIndex());
-		}
+			if (this.frequencyModuleInSlot == null)
+				this.sendGearUpdatePacket(EnumModelPacket.REMOVE_FREQUENCY_MODULE.getIndex());
+			else if (this.frequencyModuleInSlot.getItem() == GCItems.basicItem && this.frequencyModuleInSlot.getItemDamage() == 19 && this.lastFrequencyModuleInSlot == null)
+				this.sendGearUpdatePacket(EnumModelPacket.ADD_FREQUENCY_MODULE.getIndex());
 
-		if (this.frequencyModuleInSlot == null && this.lastFrequencyModuleInSlot != null)
-		{
-			this.sendGearUpdatePacket(EnumModelPacket.REMOVE_FREQUENCY_MODULE.getIndex());
-		}
-
-		//
-
-		if (this.maskInSlot != null && this.lastMaskInSlot == null && this.maskInSlot.getItem() == GCItems.oxMask)
-		{
-			this.sendGearUpdatePacket(EnumModelPacket.ADDMASK.getIndex());
-		}
-
-		if (this.maskInSlot == null && this.lastMaskInSlot != null)
-		{
-			this.sendGearUpdatePacket(EnumModelPacket.REMOVEMASK.getIndex());
+			this.lastFrequencyModuleInSlot = this.frequencyModuleInSlot;
 		}
 
 		//
 
-		if (this.gearInSlot != null && this.lastGearInSlot == null && this.gearInSlot.getItem() == GCItems.oxygenGear)
+		if (this.maskInSlot != this.lastMaskInSlot)
 		{
-			this.sendGearUpdatePacket(EnumModelPacket.ADDGEAR.getIndex());
-		}
-
-		if (this.gearInSlot == null && this.lastGearInSlot != null)
-		{
-			this.sendGearUpdatePacket(EnumModelPacket.REMOVEGEAR.getIndex());
+			if (this.maskInSlot == null)
+				this.sendGearUpdatePacket(EnumModelPacket.REMOVEMASK.getIndex());
+			else if (this.maskInSlot.getItem() == GCItems.oxMask && this.lastMaskInSlot == null)
+				this.sendGearUpdatePacket(EnumModelPacket.ADDMASK.getIndex());
+			
+			this.lastMaskInSlot = this.maskInSlot;
 		}
 
 		//
 
-		if (this.tankInSlot1 != null && this.lastTankInSlot1 == null)
+		if (this.gearInSlot != this.lastGearInSlot)
 		{
-			if (this.tankInSlot1.getItem() == GCItems.oxTankLight)
-			{
-				this.sendGearUpdatePacket(EnumModelPacket.ADDLEFTGREENTANK.getIndex());
-			}
-			else if (this.tankInSlot1.getItem() == GCItems.oxTankMedium)
-			{
-				this.sendGearUpdatePacket(EnumModelPacket.ADDLEFTORANGETANK.getIndex());
-			}
-			else if (this.tankInSlot1.getItem() == GCItems.oxTankHeavy)
-			{
-				this.sendGearUpdatePacket(EnumModelPacket.ADDLEFTREDTANK.getIndex());
-			}
+			if (this.gearInSlot == null)
+				this.sendGearUpdatePacket(EnumModelPacket.REMOVEGEAR.getIndex());
+			else if (this.gearInSlot.getItem() == GCItems.oxygenGear && this.lastGearInSlot == null)
+				this.sendGearUpdatePacket(EnumModelPacket.ADDGEAR.getIndex());
+			
+			this.lastGearInSlot = this.gearInSlot;
 		}
 
-		if (this.tankInSlot1 == null && this.lastTankInSlot1 != null)
-		{
-			this.sendGearUpdatePacket(EnumModelPacket.REMOVE_LEFT_TANK.getIndex());
-		}
+		//
 
-		if (this.tankInSlot1 != null && this.lastTankInSlot1 != null)
+		if (this.tankInSlot1 != this.lastTankInSlot1)
 		{
-			if (this.tankInSlot1.getItem() != this.lastTankInSlot1.getItem())
+			if (this.tankInSlot1 == null) 
+				this.sendGearUpdatePacket(EnumModelPacket.REMOVE_LEFT_TANK.getIndex());
+	
+			else if (this.lastTankInSlot1 == null)
 			{
 				if (this.tankInSlot1.getItem() == GCItems.oxTankLight)
 				{
@@ -521,34 +500,34 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 					this.sendGearUpdatePacket(EnumModelPacket.ADDLEFTREDTANK.getIndex());
 				}
 			}
+			//if the else is reached then both tankInSlot and lastTankInSlot are non-null
+			else if (this.tankInSlot1.getItem() != this.lastTankInSlot1.getItem())
+			{
+				if (this.tankInSlot1.getItem() == GCItems.oxTankLight)
+				{
+					this.sendGearUpdatePacket(EnumModelPacket.ADDLEFTGREENTANK.getIndex());
+				}
+				else if (this.tankInSlot1.getItem() == GCItems.oxTankMedium)
+				{
+					this.sendGearUpdatePacket(EnumModelPacket.ADDLEFTORANGETANK.getIndex());
+				}
+				else if (this.tankInSlot1.getItem() == GCItems.oxTankHeavy)
+				{
+					this.sendGearUpdatePacket(EnumModelPacket.ADDLEFTREDTANK.getIndex());
+				}
+			}
+			
+			this.lastTankInSlot1 = this.tankInSlot1;
 		}
 
 		//
 
-		if (this.tankInSlot2 != null && this.lastTankInSlot2 == null)
+		if (this.tankInSlot2 != this.lastTankInSlot2)
 		{
-			if (this.tankInSlot2.getItem() == GCItems.oxTankLight)
-			{
-				this.sendGearUpdatePacket(EnumModelPacket.ADDRIGHTGREENTANK.getIndex());
-			}
-			else if (this.tankInSlot2.getItem() == GCItems.oxTankMedium)
-			{
-				this.sendGearUpdatePacket(EnumModelPacket.ADDRIGHTORANGETANK.getIndex());
-			}
-			else if (this.tankInSlot2.getItem() == GCItems.oxTankHeavy)
-			{
-				this.sendGearUpdatePacket(EnumModelPacket.ADDRIGHTREDTANK.getIndex());
-			}
-		}
-
-		if (this.tankInSlot2 == null && this.lastTankInSlot2 != null)
-		{
-			this.sendGearUpdatePacket(EnumModelPacket.REMOVE_RIGHT_TANK.getIndex());
-		}
-
-		if (this.tankInSlot2 != null && this.lastTankInSlot2 != null)
-		{
-			if (this.tankInSlot2.getItem() != this.lastTankInSlot2.getItem())
+			if (this.tankInSlot2 == null) 
+				this.sendGearUpdatePacket(EnumModelPacket.REMOVE_RIGHT_TANK.getIndex());
+	
+			else if (this.lastTankInSlot2 == null)
 			{
 				if (this.tankInSlot2.getItem() == GCItems.oxTankLight)
 				{
@@ -563,38 +542,49 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 					this.sendGearUpdatePacket(EnumModelPacket.ADDRIGHTREDTANK.getIndex());
 				}
 			}
+			//if the else is reached then both tankInSlot and lastTankInSlot are non-null
+			else if (this.tankInSlot2.getItem() != this.lastTankInSlot2.getItem())
+			{
+				if (this.tankInSlot2.getItem() == GCItems.oxTankLight)
+				{
+					this.sendGearUpdatePacket(EnumModelPacket.ADDRIGHTGREENTANK.getIndex());
+				}
+				else if (this.tankInSlot2.getItem() == GCItems.oxTankMedium)
+				{
+					this.sendGearUpdatePacket(EnumModelPacket.ADDRIGHTORANGETANK.getIndex());
+				}
+				else if (this.tankInSlot2.getItem() == GCItems.oxTankHeavy)
+				{
+					this.sendGearUpdatePacket(EnumModelPacket.ADDRIGHTREDTANK.getIndex());
+				}
+			}
+			
+			this.lastTankInSlot2 = this.tankInSlot2;
 		}
 
-		if (this.getParachute() && this.parachuteInSlot == null && this.lastParachuteInSlot != null)
+		if (this.parachuteInSlot != this.lastParachuteInSlot)
 		{
-			this.sendGearUpdatePacket(EnumModelPacket.REMOVE_PARACHUTE.getIndex());
-		}
-
-		if (this.getParachute() && this.parachuteInSlot != null && this.lastParachuteInSlot == null)
-		{
-			this.sendGearUpdatePacket(EnumModelPacket.ADD_PARACHUTE.getIndex());
-		}
-
-		if (this.parachuteInSlot != null && this.lastParachuteInSlot != null)
-		{
-			if (this.parachuteInSlot.getItemDamage() != this.lastParachuteInSlot.getItemDamage())
+			if (this.parachuteInSlot == null)
+			{
+				if (this.usingParachute) this.sendGearUpdatePacket(EnumModelPacket.REMOVE_PARACHUTE.getIndex());
+			}
+			else if (this.lastParachuteInSlot == null)
+			{
+				if (this.usingParachute) this.sendGearUpdatePacket(EnumModelPacket.ADD_PARACHUTE.getIndex());
+			}
+			else if (this.parachuteInSlot.getItemDamage() != this.lastParachuteInSlot.getItemDamage())
 			{
 				this.sendGearUpdatePacket(EnumModelPacket.ADD_PARACHUTE.getIndex());
 			}
+			
+			this.lastParachuteInSlot = this.parachuteInSlot;
 		}
-
-		this.lastMaskInSlot = this.getExtendedInventory().getStackInSlot(0);
-		this.lastGearInSlot = this.getExtendedInventory().getStackInSlot(1);
-		this.lastTankInSlot1 = this.getExtendedInventory().getStackInSlot(2);
-		this.lastTankInSlot2 = this.getExtendedInventory().getStackInSlot(3);
-		this.lastParachuteInSlot = this.getExtendedInventory().getStackInSlot(4);
-		this.lastFrequencyModuleInSlot = this.getExtendedInventory().getStackInSlot(5);
 	}
 
 	private void checkOxygen()
 	{
-		final ItemStack tankInSlot = this.getExtendedInventory().getStackInSlot(2);
-		final ItemStack tankInSlot2 = this.getExtendedInventory().getStackInSlot(3);
+		final ItemStack tankInSlot = this.extendedInventory.getStackInSlot(2);
+		final ItemStack tankInSlot2 = this.extendedInventory.getStackInSlot(3);
 
 		final int drainSpacing = OxygenUtil.getDrainSpacing(tankInSlot, tankInSlot2);
 
@@ -722,9 +712,9 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 		{
 			if (((IGalacticraftWorldProvider) this.worldObj.provider).getMeteorFrequency() > 0)
 			{
-				final double f = ((IGalacticraftWorldProvider) this.worldObj.provider).getMeteorFrequency();
+				final int f = (int) (((IGalacticraftWorldProvider) this.worldObj.provider).getMeteorFrequency() * 1000D);
 
-				if (this.worldObj.rand.nextInt(MathHelper.floor_double(f * 1000)) == 0)
+				if (this.worldObj.rand.nextInt(f) == 0)
 				{
 					final EntityPlayer closestPlayer = this.worldObj.getClosestPlayerToEntity(this, 100);
 
@@ -747,7 +737,7 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 					}
 				}
 
-				if (this.worldObj.rand.nextInt(MathHelper.floor_double(f * 3000)) == 0)
+				if (this.worldObj.rand.nextInt(f * 3) == 0)
 				{
 					final EntityPlayer closestPlayer = this.worldObj.getClosestPlayerToEntity(this, 100);
 
@@ -816,11 +806,11 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 
 		// Backwards compatibility
 		NBTTagList nbttaglist = nbt.getTagList("Inventory", 10);
-		this.getExtendedInventory().readFromNBTOld(nbttaglist);
+		this.extendedInventory.readFromNBTOld(nbttaglist);
 
 		if (nbt.hasKey("ExtendedInventoryGC"))
 		{
-			this.getExtendedInventory().readFromNBT(nbt.getTagList("ExtendedInventoryGC", 10));
+			this.extendedInventory.readFromNBT(nbt.getTagList("ExtendedInventoryGC", 10));
 		}
 
 		// Added for GCInv command - if tried to load an offline player's
@@ -913,7 +903,7 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 	@Override
 	public void writeEntityToNBT(NBTTagCompound nbt)
 	{
-		nbt.setTag("ExtendedInventoryGC", this.getExtendedInventory().writeToNBT(new NBTTagList()));
+		nbt.setTag("ExtendedInventoryGC", this.extendedInventory.writeToNBT(new NBTTagList()));
 		nbt.setInteger("playerAirRemaining", this.airRemaining);
 		nbt.setInteger("damageCounter", this.damageCounter);
 		nbt.setBoolean("OxygenSetupValid", this.oxygenSetupValid);
