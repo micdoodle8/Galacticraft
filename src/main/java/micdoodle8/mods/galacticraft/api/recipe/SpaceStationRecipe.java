@@ -181,7 +181,7 @@ public class SpaceStationRecipe
 
 	public static boolean checkItemEquals(ItemStack target, ItemStack input)
 	{
-		return target == input && (target.getItemDamage() == OreDictionary.WILDCARD_VALUE || target.getItemDamage() == input.getItemDamage());
+		return target.getItem() == input.getItem() && (target.getItemDamage() == OreDictionary.WILDCARD_VALUE || target.getItemDamage() == input.getItemDamage());
 	}
 
 	/**

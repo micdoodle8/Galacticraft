@@ -661,6 +661,7 @@ public class GuiChoosePlanet extends GuiScreen
 						for (int x = 0; x < this.playerToSend.inventory.getSizeInventory(); x++)
 						{
 							final ItemStack slot = this.playerToSend.inventory.getStackInSlot(x);
+							
 
 							if (slot != null)
 							{

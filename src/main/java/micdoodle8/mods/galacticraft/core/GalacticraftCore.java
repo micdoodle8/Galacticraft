@@ -282,6 +282,8 @@ public class GalacticraftCore
 		GalaxyRegistry.registerGalaxy(GalacticraftCore.galaxyBlockyWay);
 		GalaxyRegistry.registerPlanet(GalacticraftCore.planetOverworld);
 		GalaxyRegistry.registerMoon(GalacticraftCore.moonMoon);
+		DimensionManager.registerProviderType(ConfigManagerCore.idDimensionOverworldOrbit, WorldProviderOrbit.class, false);
+		DimensionManager.registerProviderType(ConfigManagerCore.idDimensionOverworldOrbitStatic, WorldProviderOrbit.class, true);
 		GalacticraftRegistry.registerTeleportType(WorldProviderSurface.class, new TeleportTypeOverworld());
 		GalacticraftRegistry.registerTeleportType(WorldProviderOrbit.class, new TeleportTypeOrbit());
 		GalacticraftRegistry.registerTeleportType(WorldProviderMoon.class, new TeleportTypeMoon());
