@@ -533,6 +533,12 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectricBlock i
 	}
 
 	@Override
+	public boolean isUseableByPlayer(EntityPlayer entityplayer)
+	{
+		return this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && entityplayer.getDistanceSq(this.xCoord+0.5D, this.yCoord+0.5D, this.zCoord+0.5D) <= 64.0D;
+	}
+
+	@Override
 	public boolean isInvNameLocalized()
 	{
 		return true;
