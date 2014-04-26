@@ -118,7 +118,7 @@ public class GCCoreBlockEnclosed extends BlockContainer implements IPartialSeala
 
 	public GCCoreBlockEnclosed(int id, String assetName)
 	{
-		super(id, Material.cloth);
+		super(id, Material.clay);
 		this.setResistance(0.2F);
 		this.setHardness(0.4f);
 		this.setStepSound(Block.soundStoneFootstep);
