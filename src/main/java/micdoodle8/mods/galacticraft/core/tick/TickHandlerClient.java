@@ -352,6 +352,7 @@ public class TickHandlerClient
 					if (world.provider.getSkyRenderer() == null)
 					{
 						world.provider.setSkyRenderer(new SkyProviderOrbit(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/planets/overworld.png"), true, true));
+						((SkyProviderOrbit)world.provider.getSkyRenderer()).spinDeltaPerTick = ((WorldProviderOrbit)world.provider).getSpinRate();
 					}
 	
 					if (world.provider.getCloudRenderer() == null)

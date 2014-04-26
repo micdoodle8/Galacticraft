@@ -3,15 +3,19 @@ package micdoodle8.mods.galacticraft.core.dimension;
 import micdoodle8.mods.galacticraft.api.world.IExitHeight;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
+import micdoodle8.mods.galacticraft.core.client.SkyProviderOrbit;
+import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.world.gen.ChunkProviderOrbit;
 import net.minecraft.entity.Entity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraftforge.client.IRenderHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -20,7 +24,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * 
  * This file is part of the Galacticraft project
  * 
- * @author micdoodle8
+ * @author micdoodle8, radfast
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
@@ -29,8 +33,10 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 	public int spaceStationDimensionID;
 	//Used to decide whether to render this as a rotating spacestation - set true for now, for testing purposes
 	public boolean doSpinning = true;
-	private float spinAngularVelocity = 0.015708F; 
-
+	private float angularVelocityRadians = 0.005F;
+	private float skyAngularVelocity = (float) (this.angularVelocityRadians * 180 / Math.PI);
+	private int counti=0;
+	
 	@Override
 	public void setDimension(int var1)
 	{
@@ -281,23 +287,43 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 		return 50.0F;
 	}
 	
-	public void spinUpdate(GCEntityPlayerMP p)
+	public void spinUpdate(GCEntityClientPlayerMP p)
 	{
-		/*IN DEVELOPMENT
-		 * if (p.isAirBorne && p.posY > 70D)
+		if (p.posY > 71D)
 		{
 			//TODO maybe need to test to make sure posX and posZ are not large (outside sight range of SS)
 			double angle;
 			if (p.posX==0D) angle = (p.posZ >0) ? Math.PI/2 : -Math.PI/2;
 			else angle = Math.atan(p.posZ/p.posX);
 			if (p.posX<0D) angle += Math.PI;
-			angle += this.spinAngularVelocity;
-			double radius = Math.sqrt(p.posX*p.posX + p.posZ*p.posZ);
-			p.posX = radius * Math.cos(angle);
-			p.posZ = radius * Math.sin(angle);
+			angle += this.angularVelocityRadians/3D;
+			double arc = Math.sqrt(p.posX*p.posX + p.posZ*p.posZ)*this.angularVelocityRadians;
+			double offsetX = - arc * Math.sin(angle);
+			double offsetZ = arc * Math.cos(angle);
+			p.posX += offsetX;
+			p.posZ += offsetZ;
+			p.boundingBox.offset(offsetX, 0.0D, offsetZ);
 			
-			p.cameraYaw+=this.spinAngularVelocity;
+			p.rotationYaw += this.skyAngularVelocity;
+			while (p.rotationYaw > 360F) p.rotationYaw -= 360F;	
 		}
-		*/
+	}
+	
+	public float getSpinRate()
+	{
+		return this.skyAngularVelocity;
+	}
+	
+	/**
+	 * Sets the spin rate for the dimension in radians per tick 
+	 * For example, 0.031415 would be 1/200 revolution per tick
+	 * So that would be 1 revolution every 10 seconds 
+	 */
+	public void setSpinRate(float angle)
+	{
+		this.angularVelocityRadians = angle;
+		this.skyAngularVelocity = angle * 180F / 3.1415927F;
+		IRenderHandler sky = this.getSkyRenderer();
+		if (sky instanceof SkyProviderOrbit) ((SkyProviderOrbit)sky).spinDeltaPerTick = angle;
 	}
 }

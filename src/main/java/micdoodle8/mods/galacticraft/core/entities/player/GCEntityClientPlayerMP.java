@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.event.EventWakePlayer;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
@@ -163,6 +164,11 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 	@Override
 	public void onLivingUpdate()
 	{
+		if (this.worldObj.provider instanceof WorldProviderOrbit && ((WorldProviderOrbit) this.worldObj.provider).doSpinning)
+		{
+			((WorldProviderOrbit) this.worldObj.provider).spinUpdate(this);
+		}
+		
 		if (this.boundingBox != null && this.boundingBoxBefore == null)
 		{
 			this.boundingBoxBefore = this.boundingBox;

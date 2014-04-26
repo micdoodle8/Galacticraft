@@ -260,6 +260,11 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 			this.sendPlanetList();
 		}
 
+/*		if (this.worldObj.provider instanceof IGalacticraftWorldProvider || this.usingPlanetSelectionGui)
+		{
+			this.playerNetServerHandler.ticksForFloatKick = 0;
+		}	
+*/		
 		if (this.damageCounter > 0)
 		{
 			this.damageCounter--;
@@ -308,16 +313,6 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 
 		this.throwMeteors();
 
-		if (this.worldObj.provider instanceof IGalacticraftWorldProvider || this.usingPlanetSelectionGui)
-		{
-//			this.playerNetServerHandler.ticksForFloatKick = 0;
-			
-			if (this.worldObj.provider instanceof WorldProviderOrbit && ((WorldProviderOrbit) this.worldObj.provider).doSpinning)
-			{
-				((WorldProviderOrbit) this.worldObj.provider).spinUpdate(this);
-			}
-		}	
-
 		this.updateSchematics();
 
 		if (this.tick % 250 == 0 && this.frequencyModuleInSlot == null && !this.receivedSoundWarning && this.worldObj.provider instanceof IGalacticraftWorldProvider && this.onGround && this.tick > 0)
@@ -344,11 +339,11 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 		double motionSqrd = (motionX * motionX + motionZ * motionZ);
 		
 		// If the player is on the moon, not airbourne and not riding anything
-		if (motionSqrd > 0.001 && this.worldObj != null && this.worldObj.provider instanceof WorldProviderMoon && this.ridingEntity == null)
+		if (this.worldObj.provider instanceof WorldProviderMoon && motionSqrd > 0.001D && this.ridingEntity == null)
 		{
-			int iPosX = (int)Math.floor(this.posX);
-			int iPosY = (int)Math.floor(this.posY - 1);
-			int iPosZ = (int)Math.floor(this.posZ);
+			int iPosX = MathHelper.floor_double(this.posX);
+			int iPosY = MathHelper.floor_double(this.posY)-1;
+			int iPosZ = MathHelper.floor_double(this.posZ);
 			
 			// If the block below is the moon block
 			if (this.worldObj.getBlock(iPosX, iPosY, iPosZ) == GCBlocks.blockMoon)
@@ -357,20 +352,22 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 				if (this.worldObj.getBlockMetadata(iPosX, iPosY, iPosZ) == 5)
 				{
 					// If it has been long enough since the last step
-					if (this.distanceSinceLastStep > 0.35)
+					if (this.distanceSinceLastStep > 0.35D)
 					{
 						Vector3 pos = new Vector3(this);
 						// Set the footprint position to the block below and add random number to stop z-fighting
-						pos.y = MathHelper.floor_double(this.posY - 1) + this.rand.nextFloat() / 100.0F;
+						pos.y = MathHelper.floor_double(this.posY - 1D) + this.rand.nextFloat() / 100.0F;
 						
 						// Adjust footprint to left or right depending on step count
 						switch (this.lastStep)
 						{
 						case 0:
-							pos.translate(new Vector3(Math.sin(Math.toRadians(-this.rotationYaw + 90)) * 0.25, 0, Math.cos(Math.toRadians(-this.rotationYaw + 90)) * 0.25));
+							float a = (-this.rotationYaw + 90F)/57.295779513F;
+							pos.translate(new Vector3(MathHelper.sin(a) * 0.25F, 0, MathHelper.cos(a) * 0.25F));
 							break;
 						case 1:
-							pos.translate(new Vector3(Math.sin(Math.toRadians(-this.rotationYaw - 90)) * 0.25, 0, Math.cos(Math.toRadians(-this.rotationYaw - 90)) * 0.25));
+							a = (-this.rotationYaw - 90F)/57.295779513F;
+							pos.translate(new Vector3(MathHelper.sin(a) * 0.25, 0, MathHelper.cos(a) * 0.25));
 							break;
 						}
 						
@@ -958,7 +955,7 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 	{
 		final float f1 = Float.valueOf(this.tankInSlot1 == null ? 0.0F : this.tankInSlot1.getMaxDamage() / 90.0F);
 		final float f2 = Float.valueOf(this.tankInSlot2 == null ? 0.0F : this.tankInSlot2.getMaxDamage() / 90.0F);
-		GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_AIR_REMAINING, new Object[] { (int) Math.floor(this.airRemaining / f1), (int) Math.floor(this.airRemaining2 / f2), this.getGameProfile().getName() }), this);
+		GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_AIR_REMAINING, new Object[] { MathHelper.floor_float(this.airRemaining / f1), MathHelper.floor_float(this.airRemaining2 / f2), this.getGameProfile().getName() }), this);
 	}
 
 	private void sendGearUpdatePacket(int gearType)

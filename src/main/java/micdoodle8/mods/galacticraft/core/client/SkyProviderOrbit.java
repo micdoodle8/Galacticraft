@@ -37,6 +37,10 @@ public class SkyProviderOrbit extends IRenderHandler
 	private final ResourceLocation planetToRender;
 	private final boolean renderMoon;
 	private final boolean renderSun;
+	private float spinAngle = 0;
+	public float spinDeltaPerTick = 0;
+	private float prevPartialTicks = 0;
+	private long prevTick;
 
 	public SkyProviderOrbit(ResourceLocation planet, boolean renderMoon, boolean renderSun)
 	{
@@ -187,6 +191,18 @@ public class SkyProviderOrbit extends IRenderHandler
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, var8);
 		GL11.glTranslatef(var9, var10, var11);
 		GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
+
+		//Code for rendering spinning spacestations
+		float deltaTick = partialTicks - this.prevPartialTicks;
+		//while (deltaTick < 0F) deltaTick += 1.0F;
+		this.prevPartialTicks = partialTicks;
+		long curTick = this.minecraft.theWorld.getTotalWorldTime();
+		int tickDiff = (int) (curTick - this.prevTick);
+		this.prevTick = curTick;
+		if (tickDiff > 0 && tickDiff < 20) deltaTick += (float)tickDiff;
+		this.spinAngle = this.spinAngle - this.spinDeltaPerTick * deltaTick;
+		while (this.spinAngle < -180F) this.spinAngle+=360F;
+		GL11.glRotatef(this.spinAngle, 0.0F, 1.0F, 0.0F);
 
 		GL11.glRotatef(this.minecraft.theWorld.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
 		if (this.renderSun)
