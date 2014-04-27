@@ -119,7 +119,7 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
 
 	public BlockEnclosed(String assetName)
 	{
-		super(Material.cloth);
+		super(Material.clay);
 		this.setResistance(0.2F);
 		this.setHardness(0.4f);
 		this.setStepSound(Block.soundTypeStone);

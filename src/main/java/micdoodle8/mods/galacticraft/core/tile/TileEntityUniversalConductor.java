@@ -230,7 +230,9 @@ public abstract class TileEntityUniversalConductor extends TileEntityConductor
 //	@RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "ThermalExpansion")
 //	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate)
 //	{
-//		return maxReceive - (int) Math.floor(((IElectricityNetwork) this.getNetwork()).produce(ElectricityPack.getFromWatts(maxReceive * NetworkConfigHandler.TE_RATIO, 120), !simulate, this) * NetworkConfigHandler.TO_TE_RATIO);
+//		ElectricityPack totalEnergyPack = ElectricityPack.getFromWatts(maxReceive * NetworkConfigHandler.TE_RATIO, 120);
+//		float sent = (totalEnergyPack.getWatts() - ((IElectricityNetwork) this.getNetwork()).produce(totalEnergyPack, !simulate, this));
+//		return MathHelper.floor_float(sent * NetworkConfigHandler.TO_TE_RATIO);
 //	}
 //
 //	@RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "ThermalExpansion")

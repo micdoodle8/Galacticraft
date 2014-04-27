@@ -341,6 +341,12 @@ public class TileEntityRefinery extends TileEntityElectricBlock implements IInve
 	}
 
 	@Override
+	public boolean isUseableByPlayer(EntityPlayer entityplayer)
+	{
+		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && entityplayer.getDistanceSq(this.xCoord+0.5D, this.yCoord+0.5D, this.zCoord+0.5D) <= 64.0D;
+	}
+
+	@Override
 	public boolean hasCustomInventoryName()
 	{
 		return true;
