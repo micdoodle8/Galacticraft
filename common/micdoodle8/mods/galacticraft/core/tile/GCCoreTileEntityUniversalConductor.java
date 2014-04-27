@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GCCoreAnnotations.RuntimeInterface;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
@@ -239,7 +240,9 @@ public abstract class GCCoreTileEntityUniversalConductor extends GCCoreTileEntit
 	@RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "ThermalExpansion")
 	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate)
 	{
-		return maxReceive - (int) Math.floor(((IElectricityNetwork) this.getNetwork()).produce(ElectricityPack.getFromWatts(maxReceive * NetworkConfigHandler.TE_RATIO, 120), !simulate, this) * NetworkConfigHandler.TO_TE_RATIO);
+		ElectricityPack totalEnergyPack = ElectricityPack.getFromWatts(maxReceive * NetworkConfigHandler.TE_RATIO, 120);
+		float sent = (totalEnergyPack.getWatts() - ((IElectricityNetwork) this.getNetwork()).produce(totalEnergyPack, !simulate, this));
+		return MathHelper.floor_float(sent * NetworkConfigHandler.TO_TE_RATIO);
 	}
 
 	@RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "ThermalExpansion")

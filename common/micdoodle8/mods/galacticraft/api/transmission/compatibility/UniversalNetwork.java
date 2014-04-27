@@ -119,8 +119,8 @@ public class UniversalNetwork extends ElectricityNetwork
 							else if (NetworkConfigHandler.isThermalExpansionLoaded() && tileEntity instanceof IEnergyHandler)
 							{
 								IEnergyHandler handler = (IEnergyHandler) tileEntity;
-								int used = handler.receiveEnergy(side.getOpposite(), (int) Math.round(currentSending * NetworkConfigHandler.TO_TE_RATIO), !doReceive);
-								sent += used * NetworkConfigHandler.TE_RATIO;
+								int currentSendinginRF = (currentSending >= Integer.MAX_VALUE / NetworkConfigHandler.TO_TE_RATIO) ? Integer.MAX_VALUE : (int) (currentSending * NetworkConfigHandler.TO_TE_RATIO);
+								sent += handler.receiveEnergy(side.getOpposite(), currentSendinginRF, !doReceive) * NetworkConfigHandler.TE_RATIO;
 							}
 							else if (NetworkConfigHandler.isIndustrialCraft2Loaded() && tileEntity instanceof IEnergySink)
 							{
