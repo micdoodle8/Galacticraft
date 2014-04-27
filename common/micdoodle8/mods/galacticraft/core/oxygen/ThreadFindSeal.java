@@ -13,6 +13,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
+import micdoodle8.mods.galacticraft.core.GCLog;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockUnlitTorch;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerServer;
@@ -571,6 +572,11 @@ public class ThreadFindSeal //extends Thread
 	{
 		Block block = Block.blocksList[id];
 
+		if (block == null)
+		{
+			GCLog.info("**** Please report to mod author: BlockPassAirCheck block ID "+id+" was null ****");
+			return true;
+		}
 		//Check leaves first, because their isOpaqueCube() test depends on graphics settings
 		//(See net.minecraft.block.BlockLeaves.isOpaqueCube()!)
 		if (block instanceof BlockLeavesBase)
