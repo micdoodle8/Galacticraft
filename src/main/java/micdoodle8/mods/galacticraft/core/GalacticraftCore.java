@@ -450,12 +450,4 @@ public class GalacticraftCore
 		GCCoreUtil.registerGalacticraftNonMobEntity(EntityLander.class, "Lander", ConfigManagerCore.idEntityLander, 150, 5, false);
 		GCCoreUtil.registerGalacticraftNonMobEntity(EntityMeteorChunk.class, "MeteorChunk", ConfigManagerCore.idEntityMeteorChunk, 150, 5, true);
 	}
-
-	public static class SleepCancelledEvent extends Event
-	{
-	}
-
-	public static class OrientCameraEvent extends Event
-	{
-	}
 }

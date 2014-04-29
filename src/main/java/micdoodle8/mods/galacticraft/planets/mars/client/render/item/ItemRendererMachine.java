@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.render.item;
 
-import micdoodle8.mods.galacticraft.core.entities.EntityTier1Rocket;
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -10,7 +10,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.model.IModelCustom;
 
-import org.lwjgl.Sys;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
@@ -44,8 +43,15 @@ public class ItemRendererMachine implements IItemRenderer
 
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(ItemRendererMachine.chamberTexture0);
 		this.model.renderPart("Main_Cylinder");
-		FMLClientHandler.instance().getClient().renderEngine.bindTexture(ItemRendererMachine.chamberTexture1);
+		
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GL11.glColor4f(0.1F, 0.6F, 0.5F, 0.4F);
+		
 		this.model.renderPart("Shield_Torus");
+		
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL11.glPopMatrix();
 	}
 
@@ -58,13 +64,8 @@ public class ItemRendererMachine implements IItemRenderer
 			GL11.glRotatef(70, 1.0F, 0, 0);
 			GL11.glRotatef(-10, 0.0F, 1, 0);
 			GL11.glRotatef(50, 0.0F, 1, 1);
-			GL11.glScalef(5.2F, 5.2F, 5.2F);
+			GL11.glScalef(3.8F, 4.1F, 3.8F);
 			GL11.glTranslatef(0.25F, 1.2F, 0F);
-
-			if (player != null && player.ridingEntity != null && player.ridingEntity instanceof EntityTier1Rocket)
-			{
-				GL11.glScalef(0.0F, 0.0F, 0.0F);
-			}
 		}
 
 		if (type == ItemRenderType.EQUIPPED_FIRST_PERSON)
@@ -74,30 +75,22 @@ public class ItemRendererMachine implements IItemRenderer
 			GL11.glRotatef(45, 0, 1, 0);
 			GL11.glRotatef(90, 1, 0, 0);
 			GL11.glTranslatef(5.5F, 7.0F, -8.5F);
-			GL11.glScalef(8.2F, 8.2F, 8.2F);
-
-			if (player != null && player.ridingEntity != null && player.ridingEntity instanceof EntityTier1Rocket)
-			{
-				GL11.glScalef(0.0F, 0.0F, 0.0F);
-			}
+			GL11.glScalef(6.2F, 8.2F, 6.2F);
 		}
 
 		GL11.glScalef(-0.4F, -0.4F, 0.4F);
 
 		if (type == ItemRenderType.INVENTORY || type == ItemRenderType.ENTITY)
 		{
-			GL11.glTranslatef(0, -0.55F, 0);
-
 			if (type == ItemRenderType.INVENTORY)
 			{
-				GL11.glTranslatef(0, -1.2F, 0);
+				GL11.glTranslatef(0, -1.9F, 0);
 				GL11.glScalef(0.7F, 0.6F, 0.7F);
-				GL11.glRotatef(Sys.getTime() / 90F % 360F, 0F, 1F, 0F);
+				GL11.glRotatef(225F, 0F, 1F, 0F);
 			}
 			else
 			{
 				GL11.glTranslatef(0, -3.9F, 0);
-				GL11.glRotatef(Sys.getTime() / 90F % 360F, 0F, 1F, 0F);
 			}
 
 			GL11.glScalef(1.3F, 1.3F, 1.3F);

@@ -11,6 +11,7 @@ import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.event.EventWakePlayer;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityAdvanced;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.client.Minecraft;
@@ -32,6 +33,8 @@ import net.minecraft.util.StringUtils;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * GCCorePlayerSP.java
@@ -353,6 +356,41 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 
 		super.onUpdate();
 	}
+
+	@Override
+    @SideOnly(Side.CLIENT)
+    public float getBedOrientationInDegrees()
+    {
+        if (this.playerLocation != null)
+        {
+            int x = playerLocation.posX;
+            int y = playerLocation.posY;
+            int z = playerLocation.posZ;
+            
+            if (worldObj.getTileEntity(x, y, z) instanceof TileEntityAdvanced)
+            {
+                int j = worldObj.getBlock(x, y, z).getBedDirection(worldObj, x, y, z);
+
+                switch (worldObj.getBlockMetadata(x, y, z) - 4)
+                {
+                    case 0:
+                        return 90.0F;
+                    case 1:
+                        return 270.0F;
+                    case 2:
+                        return 180.0F;
+                    case 3:
+                        return 0.0F;
+                }
+            }
+            else
+            {
+            	return super.getBedOrientationInDegrees();
+            }
+        }
+
+        return super.getBedOrientationInDegrees();
+    }
 
 	public void setUsingGoggles(boolean b)
 	{

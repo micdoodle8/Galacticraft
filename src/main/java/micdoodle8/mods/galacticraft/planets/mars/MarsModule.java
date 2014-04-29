@@ -29,6 +29,7 @@ import micdoodle8.mods.galacticraft.planets.mars.entities.EntityTier2Rocket;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerLaunchController;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerTerraformer;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
+import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
 import micdoodle8.mods.galacticraft.planets.mars.recipe.RecipeManagerMars;
 import micdoodle8.mods.galacticraft.planets.mars.schematic.SchematicCargoRocket;
 import micdoodle8.mods.galacticraft.planets.mars.schematic.SchematicTier2Rocket;
@@ -106,6 +107,8 @@ public class MarsModule implements IPlanetsModule
 		SchematicRegistry.registerSchematicRecipe(new SchematicTier2Rocket());
 		SchematicRegistry.registerSchematicRecipe(new SchematicCargoRocket());
 
+		GalacticraftCore.packetPipeline.registerPacket(PacketSimpleMars.class);
+		
 		MarsModule.galacticraftMarsTab = new CreativeTabGC(CreativeTabs.getNextID(), GalacticraftPlanets.MODID, MarsItems.spaceship, 5);
 		
 		this.registerTileEntities();

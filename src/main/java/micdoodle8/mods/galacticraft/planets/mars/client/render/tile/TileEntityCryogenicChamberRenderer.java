@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.render.tile;
 
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityCryogenicChamber;
@@ -58,14 +59,22 @@ public class TileEntityCryogenicChamberRenderer extends TileEntitySpecialRendere
 			rotation = 90.0F;
 			break;
 		}
-
+		
+		GL11.glScalef(0.5F, 0.6F, 0.5F);
 		GL11.glRotatef(rotation, 0, 1, 0);
 		GL11.glTranslatef(-0.5F, 0.0F, 0.0F);
 
 		this.bindTexture(TileEntityCryogenicChamberRenderer.chamberTexture0);
 		this.model.renderPart("Main_Cylinder");
-		this.bindTexture(TileEntityCryogenicChamberRenderer.chamberTexture1);
+		
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GL11.glColor4f(0.1F, 0.6F, 0.5F, 0.4F);
+		
 		this.model.renderPart("Shield_Torus");
+		
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
 
 		GL11.glPopMatrix();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
