@@ -468,4 +468,17 @@ public class ClientProxyCore extends CommonProxyCore
 		footprintRenderer.renderFootprints(FMLClientHandler.instance().getClient().thePlayer, partialTicks);
 		NetworkRenderer.renderNetworks(FMLClientHandler.instance().getClient().theWorld, partialTicks);
 	}
+	
+	@Override
+	public World getWorldForID(int dimensionID)
+	{
+		World world = FMLClientHandler.instance().getClient().theWorld;
+		
+		if (world.provider.dimensionId == dimensionID)
+		{
+			return world;
+		}
+		
+		return null;
+	}
 }

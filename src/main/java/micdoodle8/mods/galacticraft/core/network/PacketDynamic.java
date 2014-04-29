@@ -6,12 +6,12 @@ import io.netty.channel.ChannelHandlerContext;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 
 public class PacketDynamic implements IPacket
@@ -80,15 +80,11 @@ public class PacketDynamic implements IPacket
 		this.type = buffer.readInt();
 		this.dimID = buffer.readInt();
 
-		World world = null;
-
-		if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
+		World world = GalacticraftCore.proxy.getWorldForID(dimID);
+		
+		if (world == null)
 		{
-			world = FMLClientHandler.instance().getClient().theWorld;
-		}
-		else
-		{
-			world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(this.dimID);
+			FMLLog.severe("Failed to get world for dimension ID: " + dimID);
 		}
 
 		switch (this.type)
