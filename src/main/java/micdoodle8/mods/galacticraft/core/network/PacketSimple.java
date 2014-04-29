@@ -26,6 +26,7 @@ import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
 import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
+import micdoodle8.mods.galacticraft.core.entities.EntityFlag;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP.EnumModelPacket;
@@ -68,6 +69,7 @@ import org.lwjgl.input.Keyboard;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -532,7 +534,22 @@ public class PacketSimple extends Packet implements IPacket
 			
 			for (int i = 2; i < this.data.size(); i++)
 			{
-				playerList.add((String) this.data.get(i));
+				String playerName = (String) this.data.get(i);
+				playerList.add(playerName);
+				
+				SpaceRace previousData = SpaceRaceManager.getSpaceRaceFromPlayer(playerName);
+				if (previousData != null)
+				{
+					for (Object entity : player.worldObj.loadedEntityList)
+					{
+						if (entity instanceof EntityFlag && ((EntityFlag) entity).flagData == previousData.getFlagData())
+						{
+							((EntityFlag) entity).flagData = null;
+						}
+					}
+					
+					SpaceRaceManager.removeSpaceRace(previousData);
+				}
 			}
 			
 			SpaceRaceManager.addSpaceRace(playerList, teamName, flagData);
@@ -834,18 +851,21 @@ public class PacketSimple extends Packet implements IPacket
 				playerList.add((String) this.data.get(i));
 			}
 			
-			SpaceRaceManager.addSpaceRace(playerList, teamName, flagData);
-		case S_REQUEST_FLAG_DATA:
-			SpaceRace spaceRace = SpaceRaceManager.getSpaceRaceFromPlayer((String) this.data.get(0));
-			
-			if (spaceRace != null)
+			SpaceRace previousData = SpaceRaceManager.getSpaceRaceFromPlayer(player.getGameProfile().getName());
+						
+			if (previousData != null)
 			{
-				List<Object> objList = new ArrayList<Object>();
-				objList.add(spaceRace.getTeamName());
-				objList.add(spaceRace.getFlagData());
-				objList.add(spaceRace.getPlayerNames().toArray(new String[spaceRace.getPlayerNames().size()]));
-				GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACE_RACE_DATA, objList), playerBase);
+				SpaceRaceManager.removeSpaceRace(previousData);
 			}
+			
+			SpaceRaceManager.addSpaceRace(playerList, teamName, flagData);
+			
+			if (previousData != null)
+			{
+				SpaceRaceManager.sendSpaceRaceData(playerBase, playerBase.getGameProfile().getName());
+			}
+		case S_REQUEST_FLAG_DATA:
+			SpaceRaceManager.sendSpaceRaceData(playerBase, (String) this.data.get(0));
 		default:
 			break;
 		}

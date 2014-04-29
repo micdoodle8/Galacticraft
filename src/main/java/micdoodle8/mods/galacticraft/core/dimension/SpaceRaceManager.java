@@ -1,11 +1,16 @@
 package micdoodle8.mods.galacticraft.core.dimension;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
@@ -19,6 +24,11 @@ public class SpaceRaceManager
 	public static void addSpaceRace(List<String> playerNames, String teamName, FlagData flagData)
 	{
 		spaceRaceList.add(new SpaceRace(playerNames, teamName, flagData));
+	}
+	
+	public static void removeSpaceRace(SpaceRace race)
+	{
+		spaceRaceList.remove(race);
 	}
 	
 	public static void tick()
@@ -101,5 +111,19 @@ public class SpaceRaceManager
 		}
 		
 		return null;
+	}
+	
+	public static void sendSpaceRaceData(EntityPlayerMP toPlayer, String racePlayer)
+	{
+		SpaceRace spaceRace = SpaceRaceManager.getSpaceRaceFromPlayer(racePlayer);
+		
+		if (spaceRace != null)
+		{
+			List<Object> objList = new ArrayList<Object>();
+			objList.add(spaceRace.getTeamName());
+			objList.add(spaceRace.getFlagData());
+			objList.add(spaceRace.getPlayerNames().toArray(new String[spaceRace.getPlayerNames().size()]));
+			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACE_RACE_DATA, objList), toPlayer);
+		}
 	}
 }
