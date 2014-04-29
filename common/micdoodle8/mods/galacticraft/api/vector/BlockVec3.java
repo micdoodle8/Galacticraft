@@ -1,7 +1,4 @@
-package micdoodle8.mods.galacticraft.core.oxygen;
-
-import java.util.LinkedList;
-import java.util.List;
+package micdoodle8.mods.galacticraft.api.vector;
 
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;

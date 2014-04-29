@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenSealer;
 import net.minecraft.block.Block;

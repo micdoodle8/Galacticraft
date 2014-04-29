@@ -2,8 +2,8 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.oxygen.BlockVec3;
 import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
