@@ -129,8 +129,8 @@ public class GuiLaunchController extends GuiContainer implements IDropboxCallbac
 		this.enablePadRemovalButton = new GuiElementCheckbox(1, this, this.width / 2 - 78, var6 + 59, "Remove Pad");
 		this.launchWhenCheckbox = new GuiElementCheckbox(2, this, this.width / 2 - 78, var6 + 77, "Launch when: ");
 		this.dropdownTest = new GuiElementDropdown(3, this, var5 + 95, var6 + 77, EnumAutoLaunch.CARGO_IS_UNLOADED.getTitle(), EnumAutoLaunch.CARGO_IS_FULL.getTitle(), EnumAutoLaunch.ROCKET_IS_FUELED.getTitle(), EnumAutoLaunch.INSTANT.getTitle(), EnumAutoLaunch.TIME_10_SECONDS.getTitle(), EnumAutoLaunch.TIME_30_SECONDS.getTitle(), EnumAutoLaunch.TIME_1_MINUTE.getTitle(), EnumAutoLaunch.REDSTONE_SIGNAL.getTitle());
-		this.frequency = new GuiElementTextBox(4, this, var5 + 66, var6 + 16, 48, 20, "", true, 6);
-		this.destinationFrequency = new GuiElementTextBox(5, this, var5 + 122, var6 + 16 + 22, 48, 20, "", true, 6);
+		this.frequency = new GuiElementTextBox(4, this, var5 + 66, var6 + 16, 48, 20, "", true, 6, false);
+		this.destinationFrequency = new GuiElementTextBox(5, this, var5 + 122, var6 + 16 + 22, 48, 20, "", true, 6, false);
 		this.buttonList.add(this.enableControllerButton);
 		this.buttonList.add(this.enablePadRemovalButton);
 		this.buttonList.add(this.launchWhenCheckbox);

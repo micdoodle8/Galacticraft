@@ -10,12 +10,12 @@ import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementCheckbox;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementCheckbox.ICheckBoxCallback;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementGradientButton;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementSlider;
+import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementTextBox;
+import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementTextBox.ITextBoxCallback;
 import micdoodle8.mods.galacticraft.core.client.model.ModelFlag;
-import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.entities.EntityFlag;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
-import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -31,7 +31,7 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
 
-public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
+public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITextBoxCallback
 {
 	protected static final ResourceLocation texture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/gui.png");
 	
@@ -44,14 +44,15 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
 	
     private int ticksPassed;
     private EntityPlayer thePlayer;
-	private GuiElementCheckbox checkboxCompete;
-	private GuiElementCheckbox checkboxUploadScore;
+//	private GuiElementCheckbox checkboxCompete;
+//	private GuiElementCheckbox checkboxUploadScore;
 	private GuiElementCheckbox checkboxShowFace;
 	private GuiElementCheckbox checkboxPaintbrush;
 	private GuiElementCheckbox checkboxShowGrid;
 	private GuiElementCheckbox checkboxEraser;
 	private GuiElementCheckbox checkboxSelector;
 	private GuiElementCheckbox checkboxColorSelector;
+	private GuiElementTextBox textBoxRename;
 	private boolean initialized;
 	private GuiElementSlider sliderColorR;
 	private GuiElementSlider sliderColorG;
@@ -59,6 +60,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
 	private GuiElementSlider sliderBrushSize;
 	private GuiElementSlider sliderEraserSize;
 	private EnumSpaceRaceGui currentState = EnumSpaceRaceGui.MAIN;
+	public String teamName = "";
     
     private int buttonFlag_width;
     private int buttonFlag_height;
@@ -116,22 +118,27 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
 			final int var5 = (this.width - this.width / 4) / 2;
 			final int var6 = (this.height - this.height / 4) / 2;
 
-			this.buttonFlag_width = 78;
-			this.buttonFlag_height = 31;
-			this.buttonFlag_xPosition = this.width / 2 - buttonFlag_width / 2 + 50;
-			this.buttonFlag_yPosition = this.height / 2 - buttonFlag_height / 2 + 3;
+			this.buttonFlag_width = 81;
+			this.buttonFlag_height = 58;
+			this.buttonFlag_xPosition = this.width / 2 - buttonFlag_width / 2;
+			this.buttonFlag_yPosition = this.height / 2 - this.height / 3 + 10;
 			
 			this.buttonList.add(new GuiElementGradientButton(0, this.width / 2 - this.width / 3 + 15, this.height / 2 - this.height / 4 - 15, 50, 15, this.currentState == EnumSpaceRaceGui.MAIN ? "Close" : "Back"));
 			
 			switch (this.currentState)
 			{
 			case MAIN:
-				this.checkboxCompete = new GuiElementCheckbox(1, this, this.width / 2 - 125, var6 - 10, "Compete against other players on this world?", GCCoreUtil.to32BitColor(255, 240, 240, 240));
-				this.checkboxUploadScore = new GuiElementCheckbox(2, this, this.width / 2 - 125, var6 + 5, "Upload score to Galacticraft website?", GCCoreUtil.to32BitColor(255, 240, 240, 240));
-				this.buttonList.add(new GuiElementGradientButton(3, this.width / 2 + this.width / 3 - 125, this.height / 2 + this.height / 4 - 25, 50, 15, "Rules"));
-				this.buttonList.add(new GuiElementGradientButton(4, this.width / 2 + this.width / 3 - 65, this.height / 2 + this.height / 4 - 25, 50, 15, "Done"));
-				this.buttonList.add(this.checkboxCompete);
-				this.buttonList.add(this.checkboxUploadScore);
+//				this.checkboxCompete = new GuiElementCheckbox(1, this, this.width / 2 - 125, var6 - 10, "Compete against other players on this world?", GCCoreUtil.to32BitColor(255, 240, 240, 240));
+//				this.checkboxUploadScore = new GuiElementCheckbox(2, this, this.width / 2 - 125, var6 + 5, "Upload score to Galacticraft website?", GCCoreUtil.to32BitColor(255, 240, 240, 240));
+//				this.buttonList.add(new GuiElementGradientButton(3, this.width / 2 + this.width / 3 - 125, this.height / 2 + this.height / 4 - 25, 50, 15, "Rules"));
+//				this.buttonList.add(this.checkboxCompete);
+//				this.buttonList.add(this.checkboxUploadScore);
+				this.textBoxRename = new GuiElementTextBox(1, this, this.width / 2 - 75, this.buttonFlag_yPosition + this.buttonFlag_height + 10, 150, 16, "Rename Team", false, 25, true);
+				this.buttonList.add(this.textBoxRename);
+				this.buttonList.add(new GuiElementGradientButton(4, this.width / 2 - 120, this.textBoxRename.yPosition + this.height / 10, 100, this.height / 10, "Add Player(s)"));
+				this.buttonList.add(new GuiElementGradientButton(4, this.width / 2 - 120, this.textBoxRename.yPosition + this.height / 10 + this.height / 10 + this.height / 50, 100, this.height / 10, "Remove Player(s)"));
+				this.buttonList.add(new GuiElementGradientButton(4, this.width / 2 + 20, this.textBoxRename.yPosition + this.height / 10, 100, this.height / 10, "View Server Stats"));
+				this.buttonList.add(new GuiElementGradientButton(4, this.width / 2 + 20, this.textBoxRename.yPosition + this.height / 10 + this.height / 10 + this.height / 50, 100, this.height / 10, "View Global Stats"));
 				break;
 			case RULES:
 				break;
@@ -194,6 +201,17 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
 			}
 		}
 	}
+
+	@Override
+	protected void keyTyped(char keyChar, int keyID)
+	{
+		if (this.textBoxRename != null && this.textBoxRename.keyTyped(keyChar, keyID))
+		{
+			return;
+		}
+
+		super.keyTyped(keyChar, keyID);
+	}
 	
     protected void actionPerformed(GuiButton buttonClicked) 
     {
@@ -202,7 +220,12 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
     	case 0:
     		if (this.currentState == EnumSpaceRaceGui.MAIN)
     		{
-    			this.thePlayer.closeScreen();
+        		List<Object> objList = new ArrayList<Object>();
+        		objList.add(this.teamName);
+        		objList.add(this.flagData);
+        		objList.add(new String[] { this.thePlayer.getGameProfile().getName() });
+        		GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_START_NEW_SPACE_RACE, objList));
+        		this.thePlayer.closeScreen();
     		}
     		else
     		{
@@ -210,24 +233,18 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
         		this.initGui();
     		}
     		break;
-    	case 3:
-    		if (this.currentState == EnumSpaceRaceGui.MAIN)
-    		{
-        		this.currentState = EnumSpaceRaceGui.RULES;
-        		this.initGui();
-    		}
-    		break;
-    	case 4:
-    		if (this.currentState == EnumSpaceRaceGui.MAIN)
-    		{
-        		List<Object> objList = new ArrayList<Object>();
-        		objList.add("NewTeam");
-        		objList.add(this.flagData);
-        		objList.add(new String[] { this.thePlayer.getGameProfile().getName() });
-        		GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_START_NEW_SPACE_RACE, objList));
-        		this.thePlayer.closeScreen();
-    		}
-    		break;
+//    	case 3:
+//    		if (this.currentState == EnumSpaceRaceGui.MAIN)
+//    		{
+//        		this.currentState = EnumSpaceRaceGui.RULES;
+//        		this.initGui();
+//    		}
+//    		break;
+//    	case 4:
+//    		if (this.currentState == EnumSpaceRaceGui.MAIN)
+//    		{
+//    		}
+//    		break;
 		default:
 			break;
     	}
@@ -252,93 +269,101 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
         super.updateScreen();
         ++this.ticksPassed;
         
+        if (this.textBoxRename != null && !this.textBoxRename.isTextFocused && (this.teamName == null || this.teamName.isEmpty()))
+        {
+        	this.textBoxRename.text = "Rename Team";
+        }
+        
         if (!this.initialized)
         {
         	return;
         }
 
-        int x = Mouse.getEventX() * this.width / this.mc.displayWidth;
-        int y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
-        
-        if (x >= this.flagDesignerMinX && y >= this.flagDesignerMinY && x <= this.flagDesignerMinX + this.flagDesignerWidth && y <= this.flagDesignerMinY + this.flagDesignerHeight)
-    	{
-    		int unScaledX = (int)Math.floor((x - this.flagDesignerMinX) / this.flagDesignerScale.x);
-    		int unScaledY = (int)Math.floor((y - this.flagDesignerMinY) / this.flagDesignerScale.y);
+        if (this.currentState == EnumSpaceRaceGui.DESIGN_FLAG)
+        {
+            int x = Mouse.getEventX() * this.width / this.mc.displayWidth;
+            int y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
+            
+            if (x >= this.flagDesignerMinX && y >= this.flagDesignerMinY && x <= this.flagDesignerMinX + this.flagDesignerWidth && y <= this.flagDesignerMinY + this.flagDesignerHeight)
+        	{
+        		int unScaledX = (int)Math.floor((x - this.flagDesignerMinX) / this.flagDesignerScale.x);
+        		int unScaledY = (int)Math.floor((y - this.flagDesignerMinY) / this.flagDesignerScale.y);
+        		
+        		if (Mouse.isButtonDown(0))
+        		{
+            		if (this.checkboxEraser.isSelected != null && this.checkboxEraser.isSelected)
+            		{
+                		this.setColorWithBrushSize(unScaledX, unScaledY, new Vector3(255, 255, 255), (int)Math.floor(this.sliderEraserSize.getNormalizedValue() * 10) + 1);
+            		}
+            		else if (this.checkboxColorSelector.isSelected != null && this.checkboxColorSelector.isSelected)
+            		{
+            			Vector3 colorAt = this.flagData.getColorAt(unScaledX, unScaledY);
+            			this.sliderColorR.setSliderPos(colorAt.floatX());
+            			this.sliderColorG.setSliderPos(colorAt.floatY());
+            			this.sliderColorB.setSliderPos(colorAt.floatZ());
+            		}
+            		else if (this.checkboxPaintbrush.isSelected != null && this.checkboxPaintbrush.isSelected)
+            		{
+                		this.setColorWithBrushSize(unScaledX, unScaledY, new Vector3(this.sliderColorR.getNormalizedValue() * 256, this.sliderColorG.getNormalizedValue() * 256, this.sliderColorB.getNormalizedValue() * 256), (int)Math.floor(this.sliderBrushSize.getNormalizedValue() * 10) + 1);
+            		}
+        		}
+        	}
     		
-    		if (Mouse.isButtonDown(0))
-    		{
-        		if (this.checkboxEraser.isSelected != null && this.checkboxEraser.isSelected)
+            if (this.checkboxSelector != null)
+            {
+        		if (!this.lastMousePressed && Mouse.isButtonDown(0) && this.checkboxSelector.isSelected != null && this.checkboxSelector.isSelected)
         		{
-            		this.setColorWithBrushSize(unScaledX, unScaledY, new Vector3(255, 255, 255), (int)Math.floor(this.sliderEraserSize.getNormalizedValue() * 10) + 1);
+        			if (x >= this.flagDesignerMinX && y >= this.flagDesignerMinY && x <= this.flagDesignerMinX + this.flagDesignerWidth && y <= this.flagDesignerMinY + this.flagDesignerHeight)
+        	    	{
+        	    		int unScaledX = (int)Math.floor((x - this.flagDesignerMinX) / this.flagDesignerScale.x);
+        	    		int unScaledY = (int)Math.floor((y - this.flagDesignerMinY) / this.flagDesignerScale.y);
+        				this.selectionMinX = unScaledX;
+        				this.selectionMinY = unScaledY;
+        	    	}
+        			else
+        			{
+        				this.selectionMinX = this.selectionMinY = -1;
+        			}
         		}
-        		else if (this.checkboxColorSelector.isSelected != null && this.checkboxColorSelector.isSelected)
+        		else if (this.lastMousePressed && !Mouse.isButtonDown(0) && this.checkboxSelector.isSelected != null && this.checkboxSelector.isSelected)
         		{
-        			Vector3 colorAt = this.flagData.getColorAt(unScaledX, unScaledY);
-        			this.sliderColorR.setSliderPos(colorAt.floatX());
-        			this.sliderColorG.setSliderPos(colorAt.floatY());
-        			this.sliderColorB.setSliderPos(colorAt.floatZ());
+        			if (selectionMinX != -1 && selectionMinY != -1 && x >= this.flagDesignerMinX && y >= this.flagDesignerMinY && x <= this.flagDesignerMinX + this.flagDesignerWidth && y <= this.flagDesignerMinY + this.flagDesignerHeight)
+        	    	{
+        	    		int unScaledX = (int)Math.floor((x - this.flagDesignerMinX) / this.flagDesignerScale.x);
+        	    		int unScaledY = (int)Math.floor((y - this.flagDesignerMinY) / this.flagDesignerScale.y);
+        				this.selectionMaxX = Math.min(unScaledX + 1, this.flagData.getWidth());
+        				this.selectionMaxY = Math.min(unScaledY + 1, this.flagData.getHeight());
+        				
+        				if (this.selectionMinX > this.selectionMaxX)
+        				{
+        					int temp = this.selectionMaxX - 1;
+        					this.selectionMaxX = this.selectionMinX + 1;
+        					this.selectionMinX = temp;
+        				}
+        				
+        				if (this.selectionMinY > this.selectionMaxY)
+        				{
+        					int temp = this.selectionMaxY - 1;
+        					this.selectionMaxY = this.selectionMinY + 1;
+        					this.selectionMinY = temp;
+        				}
+        	    	}
+        			else
+        			{
+        				this.selectionMaxX = this.selectionMaxY = -1;
+        			}
         		}
-        		else if (this.checkboxPaintbrush.isSelected != null && this.checkboxPaintbrush.isSelected)
-        		{
-            		this.setColorWithBrushSize(unScaledX, unScaledY, new Vector3(this.sliderColorR.getNormalizedValue() * 256, this.sliderColorG.getNormalizedValue() * 256, this.sliderColorB.getNormalizedValue() * 256), (int)Math.floor(this.sliderBrushSize.getNormalizedValue() * 10) + 1);
-        		}
-    		}
-    	}
-		
-        if (this.checkboxSelector != null)
-        {
-    		if (!this.lastMousePressed && Mouse.isButtonDown(0) && this.checkboxSelector.isSelected != null && this.checkboxSelector.isSelected)
-    		{
-    			if (x >= this.flagDesignerMinX && y >= this.flagDesignerMinY && x <= this.flagDesignerMinX + this.flagDesignerWidth && y <= this.flagDesignerMinY + this.flagDesignerHeight)
-    	    	{
-    	    		int unScaledX = (int)Math.floor((x - this.flagDesignerMinX) / this.flagDesignerScale.x);
-    	    		int unScaledY = (int)Math.floor((y - this.flagDesignerMinY) / this.flagDesignerScale.y);
-    				this.selectionMinX = unScaledX;
-    				this.selectionMinY = unScaledY;
-    	    	}
-    			else
-    			{
-    				this.selectionMinX = this.selectionMinY = -1;
-    			}
-    		}
-    		else if (this.lastMousePressed && !Mouse.isButtonDown(0) && this.checkboxSelector.isSelected != null && this.checkboxSelector.isSelected)
-    		{
-    			if (selectionMinX != -1 && selectionMinY != -1 && x >= this.flagDesignerMinX && y >= this.flagDesignerMinY && x <= this.flagDesignerMinX + this.flagDesignerWidth && y <= this.flagDesignerMinY + this.flagDesignerHeight)
-    	    	{
-    	    		int unScaledX = (int)Math.floor((x - this.flagDesignerMinX) / this.flagDesignerScale.x);
-    	    		int unScaledY = (int)Math.floor((y - this.flagDesignerMinY) / this.flagDesignerScale.y);
-    				this.selectionMaxX = Math.min(unScaledX + 1, this.flagData.getWidth());
-    				this.selectionMaxY = Math.min(unScaledY + 1, this.flagData.getHeight());
-    				
-    				if (this.selectionMinX > this.selectionMaxX)
-    				{
-    					int temp = this.selectionMaxX - 1;
-    					this.selectionMaxX = this.selectionMinX + 1;
-    					this.selectionMinX = temp;
-    				}
-    				
-    				if (this.selectionMinY > this.selectionMaxY)
-    				{
-    					int temp = this.selectionMaxY - 1;
-    					this.selectionMaxY = this.selectionMinY + 1;
-    					this.selectionMinY = temp;
-    				}
-    	    	}
-    			else
-    			{
-    				this.selectionMaxX = this.selectionMaxY = -1;
-    			}
-    		}
-        }
-        
-        if (this.sliderBrushSize != null && this.sliderBrushSize.visible)
-        {
-        	this.sliderBrushSize.displayString = "Brush Rad: " + ((int)Math.floor(this.sliderBrushSize.getNormalizedValue() * 10) + 1);
-        }
-        
-        if (this.sliderEraserSize != null && this.sliderEraserSize.visible)
-        {
-        	this.sliderEraserSize.displayString = "Eraser Rad: " + ((int)Math.floor(this.sliderEraserSize.getNormalizedValue() * 10) + 1);
+            }
+            
+            if (this.sliderBrushSize != null && this.sliderBrushSize.visible)
+            {
+            	this.sliderBrushSize.displayString = "Brush Rad: " + ((int)Math.floor(this.sliderBrushSize.getNormalizedValue() * 10) + 1);
+            }
+            
+            if (this.sliderEraserSize != null && this.sliderEraserSize.visible)
+            {
+            	this.sliderEraserSize.displayString = "Eraser Rad: " + ((int)Math.floor(this.sliderEraserSize.getNormalizedValue() * 10) + 1);
+            }
         }
         
         this.lastMousePressed = Mouse.isButtonDown(0);
@@ -392,12 +417,12 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
 	        switch (this.currentState)
 	        {
 	        case MAIN:
-				this.drawCenteredString(this.fontRendererObj, "New Space Race", this.width / 2, var6 - 25, 16777215);
+				this.drawCenteredString(this.fontRendererObj, "Space Race Manager", this.width / 2, this.height / 2 - this.height / 3 - 15, 16777215);
 	        	this.drawFlagButton(par1, par2);
-	    		String rememberStr = EnumColor.RED + "Remember: You're competing against time spent in-game before reaching space, not who gets to space first!";
-	    		int trimWidth = this.width / 4 + 65;
-	            List list2 = this.fontRendererObj.listFormattedStringToWidth(rememberStr, trimWidth);
-	    		this.fontRendererObj.drawSplitString(rememberStr, this.width / 2 - this.width / 3 + 7, this.height / 2 + this.height / 4 - list2.size() * this.fontRendererObj.FONT_HEIGHT - 5, trimWidth, GCCoreUtil.to32BitColor(255, 100, 100, 100));
+//	    		String rememberStr = EnumColor.RED + "Remember: You're competing against time spent in-game before reaching space, not who gets to space first!";
+//	    		int trimWidth = this.width / 4 + 65;
+//	            List list2 = this.fontRendererObj.listFormattedStringToWidth(rememberStr, trimWidth);
+//	    		this.fontRendererObj.drawSplitString(rememberStr, this.width / 2 - this.width / 3 + 7, this.height / 2 + this.height / 4 - list2.size() * this.fontRendererObj.FONT_HEIGHT - 5, trimWidth, GCCoreUtil.to32BitColor(255, 100, 100, 100));
 	        	break;
 	        case RULES:
 				this.drawCenteredString(this.fontRendererObj, "Rules", this.width / 2, var6 - 25, 16777215);
@@ -529,9 +554,9 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
     private void drawFlagButton(int mouseX, int mouseY)
     {
 		GL11.glPushMatrix();
-        GL11.glTranslatef(this.buttonFlag_xPosition + this.buttonFlag_width / 2 - 22, this.buttonFlag_yPosition + this.buttonFlag_height / 2 + 22, -2.0F + zLevel);
-        GL11.glScalef(28F, 28F, 28F);
-        GL11.glTranslatef(0.0F, -0.215F, 1.0F);
+        GL11.glTranslatef(this.buttonFlag_xPosition + 2.9F, this.buttonFlag_yPosition + this.buttonFlag_height + 1 - 4, 0);
+        GL11.glScalef(49.0F, 47.5F, 1F);
+//        GL11.glTranslatef(0.0F, -0.215F, 1.0F);
         GL11.glScalef(1.0F, 1.0F, -1F);
 		this.dummyFlag.flagData = this.flagData;
 		this.dummyModel.renderFlag(this.dummyFlag, 0.0625F);
@@ -544,7 +569,8 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
 
 		GL11.glPushMatrix();
         GL11.glTranslatef(0.0F, 0.0F, 500.0F);
-        this.drawCenteredString(this.fontRendererObj, "Customize Flag", this.buttonFlag_xPosition + this.buttonFlag_width / 2, this.buttonFlag_yPosition + this.buttonFlag_height / 2 - 5, GCCoreUtil.to32BitColor(255, 250, 250, 250));
+        int color = this.buttonFlag_hover ? 170 : 100;
+        this.fontRendererObj.drawString("Customize Flag", this.buttonFlag_xPosition + this.buttonFlag_width / 2 - this.fontRendererObj.getStringWidth("Customize Flag") / 2, this.buttonFlag_yPosition + this.buttonFlag_height / 2 - 5, GCCoreUtil.to32BitColor(255, color, color, color), this.buttonFlag_hover);
         GL11.glPopMatrix();
 
         if (this.buttonFlag_hover)
@@ -562,10 +588,10 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
     {
         if (this.mc.theWorld != null)
         {
-        	int scaleX = Math.min(ticksPassed * 8, this.width / 3);
-        	int scaleY = Math.min(ticksPassed * 8, this.height / 4);
+        	int scaleX = Math.min(ticksPassed * 14, this.width / 3);
+        	int scaleY = Math.min(ticksPassed * 14, this.height / 3);
         	
-        	if (scaleX == this.width / 3 && scaleY == this.height / 4 && !this.initialized)
+        	if (scaleX == this.width / 3 && scaleY == this.height / 3 && !this.initialized)
         	{
         		this.initialized = true;
         		this.initGui();
@@ -582,15 +608,15 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
 	@Override
 	public void onSelectionChanged(GuiElementCheckbox checkbox, boolean newSelected)
 	{
-		if (checkbox.equals(this.checkboxCompete))
-		{
-			this.optionCompete = newSelected;
-		}
-		else if (checkbox.equals(this.checkboxUploadScore))
-		{
-			this.optionUpload = newSelected;
-		}
-		else if (checkbox.equals(this.checkboxShowFace))
+//		if (checkbox.equals(this.checkboxCompete))
+//		{
+//			this.optionCompete = newSelected;
+//		}
+//		else if (checkbox.equals(this.checkboxUploadScore))
+//		{
+//			this.optionUpload = newSelected;
+//		}
+		if (checkbox.equals(this.checkboxShowFace))
 		{
 			this.flagData.setHasFace(newSelected);
 		}
@@ -695,15 +721,15 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
 	@Override
 	public boolean getInitiallySelected(GuiElementCheckbox checkbox)
 	{
-		if (checkbox.equals(this.checkboxCompete))
-		{
-			return this.optionCompete;
-		}
-		else if (checkbox.equals(this.checkboxUploadScore))
-		{
-			return this.optionUpload;
-		}
-		else if (checkbox.equals(this.checkboxShowFace))
+//		if (checkbox.equals(this.checkboxCompete))
+//		{
+//			return this.optionCompete;
+//		}
+//		else if (checkbox.equals(this.checkboxUploadScore))
+//		{
+//			return this.optionUpload;
+//		}
+		if (checkbox.equals(this.checkboxShowFace))
 		{
 			return this.flagData.getHasFace();
 		}
@@ -719,5 +745,29 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback
 	public void onIntruderInteraction()
 	{
 		;
+	}
+
+	@Override
+	public boolean canPlayerEdit(GuiElementTextBox textBox, EntityPlayer player) 
+	{
+		return true;
+	}
+
+	@Override
+	public void onTextChanged(GuiElementTextBox textBox, String newText) 
+	{
+		this.teamName = newText;
+	}
+
+	@Override
+	public String getInitialText(GuiElementTextBox textBox) 
+	{
+		return teamName;
+	}
+
+	@Override
+	public int getTextColor(GuiElementTextBox textBox) 
+	{
+		return GCCoreUtil.to32BitColor(255, 255, 255, 255);
 	}
 }

@@ -20,6 +20,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlayOxygenTanks;
 import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlayOxygenWarning;
 import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlayRocket;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiChoosePlanet;
+import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiNewSpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.entities.EntityLander;
@@ -40,12 +41,16 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiIngameMenu;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.EntityRenderer;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.MathHelper;
@@ -53,6 +58,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldProviderSurface;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import tconstruct.client.tabs.TabRegistry;
@@ -126,6 +132,40 @@ public class TickHandlerClient
 
 		if (event.phase == Phase.END)
 		{
+			if (minecraft.currentScreen instanceof GuiIngameMenu)
+			{
+		        int i = Mouse.getEventX() * minecraft.currentScreen.width / minecraft.displayWidth;
+		        int j = minecraft.currentScreen.height - Mouse.getEventY() * minecraft.currentScreen.height / minecraft.displayHeight - 1;
+		        
+		        int k = Mouse.getEventButton();
+
+		        if (Minecraft.isRunningOnMac && k == 0 && (Keyboard.isKeyDown(29) || Keyboard.isKeyDown(157)))
+		        {
+		            k = 1;
+		        }
+		        
+		        int deltaColor = 0;		        
+		        
+		        if (i > minecraft.currentScreen.width - 100 && j > minecraft.currentScreen.height - 35)
+		        {
+		        	deltaColor = 20;
+		        	
+		        	if (k == 0)
+		        	{
+		                if (Mouse.getEventButtonState())
+		                {
+		                	minecraft.displayGuiScreen(new GuiNewSpaceRace(playerBaseClient));
+		                }
+		        	}
+		        }
+		        
+				this.drawGradientRect(minecraft.currentScreen.width - 100, minecraft.currentScreen.height - 35, minecraft.currentScreen.width, minecraft.currentScreen.height, GCCoreUtil.to32BitColor(150, 10 + deltaColor, 10 + deltaColor, 10 + deltaColor), GCCoreUtil.to32BitColor(250, 10 + deltaColor, 10 + deltaColor, 10 + deltaColor));
+				minecraft.fontRenderer.drawString("Space Race", minecraft.currentScreen.width - 50 - minecraft.fontRenderer.getStringWidth("Space Race") / 2, minecraft.currentScreen.height - 26, GCCoreUtil.to32BitColor(255, 240, 240, 240));
+				minecraft.fontRenderer.drawString("Manager", minecraft.currentScreen.width - 50 - minecraft.fontRenderer.getStringWidth("Manager") / 2, minecraft.currentScreen.height - 16, GCCoreUtil.to32BitColor(255, 240, 240, 240));
+		        Gui.drawRect(minecraft.currentScreen.width - 100, minecraft.currentScreen.height - 35, minecraft.currentScreen.width - 99, minecraft.currentScreen.height, GCCoreUtil.to32BitColor(255, 0, 0, 0));
+		        Gui.drawRect(minecraft.currentScreen.width - 100, minecraft.currentScreen.height - 35, minecraft.currentScreen.width, minecraft.currentScreen.height - 34, GCCoreUtil.to32BitColor(255, 0, 0, 0));
+			}
+			
 			if (player != null)
 			{
 				ClientProxyCore.playerPosX = player.prevPosX + (player.posX - player.prevPosX) * event.renderTickTime;
@@ -504,4 +544,34 @@ public class TickHandlerClient
 			TabRegistry.addTabsToInventory(gui);
 		}
 	}
+	
+    private void drawGradientRect(int par1, int par2, int par3, int par4, int par5, int par6)
+    {
+        float f = (float)(par5 >> 24 & 255) / 255.0F;
+        float f1 = (float)(par5 >> 16 & 255) / 255.0F;
+        float f2 = (float)(par5 >> 8 & 255) / 255.0F;
+        float f3 = (float)(par5 & 255) / 255.0F;
+        float f4 = (float)(par6 >> 24 & 255) / 255.0F;
+        float f5 = (float)(par6 >> 16 & 255) / 255.0F;
+        float f6 = (float)(par6 >> 8 & 255) / 255.0F;
+        float f7 = (float)(par6 & 255) / 255.0F;
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glDisable(GL11.GL_ALPHA_TEST);
+        OpenGlHelper.glBlendFunc(770, 771, 1, 0);
+        GL11.glShadeModel(GL11.GL_SMOOTH);
+        Tessellator tessellator = Tessellator.instance;
+        tessellator.startDrawingQuads();
+        tessellator.setColorRGBA_F(f1, f2, f3, f);
+        tessellator.addVertex((double)par3, (double)par2, 0.0D);
+        tessellator.addVertex((double)par1, (double)par2, 0.0D);
+        tessellator.setColorRGBA_F(f5, f6, f7, f4);
+        tessellator.addVertex((double)par1, (double)par4, 0.0D);
+        tessellator.addVertex((double)par3, (double)par4, 0.0D);
+        tessellator.draw();
+        GL11.glShadeModel(GL11.GL_FLAT);
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glEnable(GL11.GL_ALPHA_TEST);
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+    }
 }

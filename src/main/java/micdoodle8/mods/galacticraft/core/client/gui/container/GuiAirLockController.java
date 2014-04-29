@@ -59,7 +59,7 @@ public class GuiAirLockController extends GuiScreen implements ICheckBoxCallback
 		this.checkboxPlayerDistance = new GuiElementCheckbox(1, this, this.width / 2 - 78, var6 + 33, "Player is within: ");
 		this.dropdownPlayerDistance = new GuiElementDropdown(2, this, var5 + 105, var6 + 34, "1 Meter", "2 Meters", "5 Meters", "10 Meters");
 		this.checkboxOpenForPlayer = new GuiElementCheckbox(3, this, this.width / 2 - 62, var6 + 49, "Player name is: ");
-		this.textBoxPlayerToOpenFor = new GuiElementTextBox(4, this, this.width / 2 - 55, var6 + 64, 110, 15, "", false, 16);
+		this.textBoxPlayerToOpenFor = new GuiElementTextBox(4, this, this.width / 2 - 55, var6 + 64, 110, 15, "", false, 16, false);
 		this.checkboxInvertSelection = new GuiElementCheckbox(5, this, this.width / 2 - 78, var6 + 80, "Invert Selection");
 		this.checkboxHorizontalMode = new GuiElementCheckbox(6, this, this.width / 2 - 78, var6 + 96, "Horizontal Mode");
 		this.buttonList.add(this.checkboxRedstoneSignal);

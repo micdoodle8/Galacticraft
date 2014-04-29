@@ -25,6 +25,7 @@ public class GuiElementTextBox extends GuiButton
 {
 	public String text;
 	public boolean numericOnly;
+	public boolean centered;
 	private int maxLength;
 
 	public long timeBackspacePressed;
@@ -37,12 +38,13 @@ public class GuiElementTextBox extends GuiButton
 
 	private Minecraft mc = FMLClientHandler.instance().getClient();
 
-	public GuiElementTextBox(int id, ITextBoxCallback parentGui, int x, int y, int width, int height, String initialText, boolean numericOnly, int maxLength)
+	public GuiElementTextBox(int id, ITextBoxCallback parentGui, int x, int y, int width, int height, String initialText, boolean numericOnly, int maxLength, boolean centered)
 	{
 		super(id, x, y, width, height, initialText);
 		this.parentGui = parentGui;
 		this.numericOnly = numericOnly;
 		this.maxLength = maxLength;
+		this.centered = centered;
 	}
 
 	/**
@@ -176,7 +178,14 @@ public class GuiElementTextBox extends GuiButton
 				this.incorrectUseTimer--;
 			}
 
-			this.drawString(this.mc.fontRenderer, this.text + (this.cursorPulse / 24 % 2 == 0 && this.isTextFocused ? "_" : ""), this.xPosition + 4, this.yPosition + this.height / 2 - 4, this.incorrectUseTimer > 0 ? GCCoreUtil.to32BitColor(255, 255, 20, 20) : this.parentGui.getTextColor(this));
+			int xPos = this.xPosition + 4;
+			
+			if (this.centered)
+			{
+				xPos = this.xPosition + this.width / 2 - this.mc.fontRenderer.getStringWidth(text) / 2;
+ 			}
+			
+			this.drawString(this.mc.fontRenderer, this.text + (this.cursorPulse / 24 % 2 == 0 && this.isTextFocused ? "_" : ""), xPos, this.yPosition + this.height / 2 - 4, this.incorrectUseTimer > 0 ? GCCoreUtil.to32BitColor(255, 255, 20, 20) : this.parentGui.getTextColor(this));
 		}
 	}
 
@@ -231,6 +240,8 @@ public class GuiElementTextBox extends GuiButton
 		{
 			Gui.drawRect(this.xPosition, this.yPosition, this.xPosition + this.width, this.yPosition + this.height, 0xffA0A0A0);
 			this.isTextFocused = true;
+			this.text = this.parentGui.getInitialText(this);
+			this.parentGui.onTextChanged(this, this.text);
 			return true;
 		}
 		else
