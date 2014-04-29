@@ -53,6 +53,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.INetHandler;
+import net.minecraft.network.Packet;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.S07PacketRespawn;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
@@ -64,10 +67,11 @@ import net.minecraftforge.common.DimensionManager;
 import org.lwjgl.input.Keyboard;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class PacketSimple implements IPacket
+public class PacketSimple extends Packet implements IPacket
 {
 	public static enum EnumSimplePacket
 	{
@@ -354,14 +358,33 @@ public class PacketSimple implements IPacket
 				WorldUtil.registeredSpaceStations = new ArrayList<Integer>();
 			}
 
-			for (Object o : this.data)
+			if (this.data.size() > 0)
 			{
-				Integer dimID = (Integer) o;
-
-				if (!WorldUtil.registeredSpaceStations.contains(dimID))
+				if (this.data.get(0) instanceof Integer)
 				{
-					WorldUtil.registeredSpaceStations.add(dimID);
-					DimensionManager.registerDimension(dimID, ConfigManagerCore.idDimensionOverworldOrbit);
+					for (Object o : this.data)
+					{
+						Integer dimID = (Integer)o;
+						
+						if (!WorldUtil.registeredSpaceStations.contains(dimID))
+						{
+							WorldUtil.registeredSpaceStations.add(dimID);
+							DimensionManager.registerDimension(dimID, ConfigManagerCore.idDimensionOverworldOrbit);
+						}
+					}
+				}
+				else if (this.data.get(0) instanceof Integer[])
+				{
+					for (Object o : (Integer[])this.data.get(0))
+					{
+						Integer dimID = (Integer)o;
+						
+						if (!WorldUtil.registeredSpaceStations.contains(dimID))
+						{
+							WorldUtil.registeredSpaceStations.add(dimID);
+							DimensionManager.registerDimension(dimID, ConfigManagerCore.idDimensionOverworldOrbit);
+						}
+					}
 				}
 			}
 			break;
@@ -370,10 +393,7 @@ public class PacketSimple implements IPacket
 			var4.readFromNBT((NBTTagCompound) this.data.get(1));
 			break;
 		case C_UPDATE_SPACESTATION_CLIENT_ID:
-//			if (playerBaseClient != null)
-			{
-				ClientProxyCore.clientSpaceStationID = (Integer) this.data.get(0);
-			}
+			ClientProxyCore.clientSpaceStationID = (Integer) this.data.get(0);
 			break;
 		case C_UPDATE_PLANETS_LIST:
 			if (WorldUtil.registeredPlanets == null)
@@ -381,14 +401,33 @@ public class PacketSimple implements IPacket
 				WorldUtil.registeredPlanets = new ArrayList<Integer>();
 			}
 
-			for (Object o : this.data)
+			if (this.data.size() > 0)
 			{
-				Integer dimID = (Integer) o;
-
-				if (!WorldUtil.registeredPlanets.contains(dimID))
+				if (this.data.get(0) instanceof Integer)
 				{
-					WorldUtil.registeredPlanets.add(dimID);
-					DimensionManager.registerDimension(dimID, dimID);
+					for (Object o : this.data)
+					{
+						Integer dimID = (Integer)o;
+						
+						if (!WorldUtil.registeredPlanets.contains(dimID))
+						{
+							WorldUtil.registeredPlanets.add(dimID);
+							DimensionManager.registerDimension(dimID, dimID);
+						}
+					}
+				}
+				else if (this.data.get(0) instanceof Integer[])
+				{
+					for (Object o : (Integer[])this.data.get(0))
+					{
+						Integer dimID = (Integer)o;
+						
+						if (!WorldUtil.registeredPlanets.contains(dimID))
+						{
+							WorldUtil.registeredPlanets.add(dimID);
+							DimensionManager.registerDimension(dimID, dimID);
+						}
+					}
 				}
 			}
 			break;
@@ -811,4 +850,42 @@ public class PacketSimple implements IPacket
 			break;
 		}
 	}
+	
+	/*
+	 * 
+	 * BEGIN "net.minecraft.network.Packet" IMPLEMENTATION
+	 * 
+	 * This is for handling server->client packets before the player has joined the world
+	 * 
+	 */
+
+	@Override
+	public void readPacketData(PacketBuffer var1) throws IOException 
+	{
+		this.decodeInto(null, var1);
+	}
+
+	@Override
+	public void writePacketData(PacketBuffer var1) throws IOException 
+	{
+		this.encodeInto(null, var1);
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void processPacket(INetHandler var1)
+	{
+		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+		{
+			this.handleClientSide(FMLClientHandler.instance().getClientPlayerEntity());
+		}
+	}
+	
+	/*
+	 * 
+	 * END "net.minecraft.network.Packet" IMPLEMENTATION
+	 * 
+	 * This is for handling server->client packets before the player has joined the world
+	 * 
+	 */
 }

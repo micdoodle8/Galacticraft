@@ -6,6 +6,8 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.network.EnumConnectionState;
+import net.minecraft.network.NetHandlerPlayServer;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
@@ -16,6 +18,12 @@ import cpw.mods.fml.common.network.FMLNetworkEvent.ServerConnectionFromClientEve
 public class ConnectionEvents 
 {
 	private static boolean clientConnected = false;
+	
+	static
+	{
+		EnumConnectionState.field_150761_f.put(PacketSimple.class, EnumConnectionState.PLAY);
+		EnumConnectionState.PLAY.field_150770_i.put(2515, PacketSimple.class);
+	}
 	
 	@SubscribeEvent
 	public void onPlayerLogout(PlayerLoggedOutEvent event)
@@ -30,8 +38,6 @@ public class ConnectionEvents
 		
 		if (event.player instanceof GCEntityPlayerMP)
 		{
-			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_PLANETS_LIST, WorldUtil.getPlanetList()), (EntityPlayerMP) event.player);
-			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_LIST, WorldUtil.getSpaceStationList()), (EntityPlayerMP) event.player);
 			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_CLIENT_ID, new Object[] { ((GCEntityPlayerMP) event.player).getSpaceStationDimensionID() }), (EntityPlayerMP) event.player);
 		}
 	}
@@ -39,7 +45,8 @@ public class ConnectionEvents
 	@SubscribeEvent
 	public void onConnectionReceived(ServerConnectionFromClientEvent event)
 	{
-		// TODO See if this is still needed.
+		((NetHandlerPlayServer) event.handler).sendPacket(new PacketSimple(EnumSimplePacket.C_UPDATE_PLANETS_LIST, WorldUtil.getPlanetList()));
+		((NetHandlerPlayServer) event.handler).sendPacket(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_LIST, WorldUtil.getSpaceStationList()));
 	}
 	
 	@SubscribeEvent
