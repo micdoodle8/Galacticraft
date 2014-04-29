@@ -152,9 +152,9 @@ public class MarsModule implements IPlanetsModule
 
 	public void registerCreatures()
 	{
-		this.registerGalacticraftCreature(EntitySludgeling.class, "Sludgeling", ConfigManagerMars.idEntitySludgeling, GCCoreUtil.convertTo32BitColor(255, 0, 0, 50), GCCoreUtil.convertTo32BitColor(255, 0, 0, 150));
-		this.registerGalacticraftCreature(EntitySlimeling.class, "Slimeling", ConfigManagerMars.idEntitySlimeling, GCCoreUtil.convertTo32BitColor(255, 0, 0, 50), GCCoreUtil.convertTo32BitColor(255, 0, 0, 150));
-		this.registerGalacticraftCreature(EntityCreeperBoss.class, "CreeperBoss", ConfigManagerMars.idEntityCreeperBoss, GCCoreUtil.convertTo32BitColor(255, 0, 0, 50), GCCoreUtil.convertTo32BitColor(255, 0, 0, 150));
+		this.registerGalacticraftCreature(EntitySludgeling.class, "Sludgeling", ConfigManagerMars.idEntitySludgeling, GCCoreUtil.to32BitColor(255, 0, 50, 0), GCCoreUtil.to32BitColor(255, 0, 150, 0));
+		this.registerGalacticraftCreature(EntitySlimeling.class, "Slimeling", ConfigManagerMars.idEntitySlimeling, GCCoreUtil.to32BitColor(255, 0, 50, 0), GCCoreUtil.to32BitColor(255, 0, 150, 0));
+		this.registerGalacticraftCreature(EntityCreeperBoss.class, "CreeperBoss", ConfigManagerMars.idEntityCreeperBoss, GCCoreUtil.to32BitColor(255, 0, 50, 0), GCCoreUtil.to32BitColor(255, 0, 150, 0));
 	}
 
 	public void registerOtherEntities()

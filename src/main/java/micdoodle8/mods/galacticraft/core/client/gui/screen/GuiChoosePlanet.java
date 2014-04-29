@@ -503,8 +503,8 @@ public class GuiChoosePlanet extends GuiScreen
 					int count = (int) (this.spaceTimer / 20 % entry.itemStringPairs.size());
 					ItemStringPair pair = entry.itemStringPairs.get(count);
 
-					int red = GCCoreUtil.convertTo32BitColor(255, 255, 10, 10);
-					int green = GCCoreUtil.convertTo32BitColor(255, 10, 10, 255);
+					int red = GCCoreUtil.to32BitColor(255, 255, 10, 10);
+					int green = GCCoreUtil.to32BitColor(255, 10, 255, 10);
 
 					String s = pair.description;
 

@@ -77,7 +77,7 @@ public class GuiElementInfoRegion extends Gui
 		{
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			int k = this.getHoverState(this.withinRegion);
-			Gui.drawRect(this.xPosition, this.yPosition, this.xPosition + this.width, this.yPosition + this.height, GCCoreUtil.convertTo32BitColor(100 * k, 255, 0, 0));
+			Gui.drawRect(this.xPosition, this.yPosition, this.xPosition + this.width, this.yPosition + this.height, GCCoreUtil.to32BitColor(100 * k, 255, 0, 0));
 		}
 
 		if (this.tooltipStrings != null && !this.tooltipStrings.isEmpty() && this.withinRegion)

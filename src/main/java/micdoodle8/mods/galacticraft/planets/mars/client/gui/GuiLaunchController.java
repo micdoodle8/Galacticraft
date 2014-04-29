@@ -173,7 +173,7 @@ public class GuiLaunchController extends GuiContainer implements IDropboxCallbac
 
 		if (this.cannotEditTimer > 0)
 		{
-			this.fontRendererObj.drawString(this.launchController.getOwnerName(), this.xSize / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, 5, this.cannotEditTimer % 30 < 15 ? GCCoreUtil.convertTo32BitColor(255, 255, 100, 100) : 4210752);
+			this.fontRendererObj.drawString(this.launchController.getOwnerName(), this.xSize / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, 5, this.cannotEditTimer % 30 < 15 ? GCCoreUtil.to32BitColor(255, 255, 100, 100) : 4210752);
 			this.cannotEditTimer--;
 		}
 
@@ -303,11 +303,11 @@ public class GuiLaunchController extends GuiContainer implements IDropboxCallbac
 	{
 		if (textBox.equals(this.frequency))
 		{
-			return this.launchController.frequencyValid ? GCCoreUtil.convertTo32BitColor(255, 20, 20, 255) : GCCoreUtil.convertTo32BitColor(255, 255, 25, 25);
+			return this.launchController.frequencyValid ? GCCoreUtil.to32BitColor(255, 20, 255, 20) : GCCoreUtil.to32BitColor(255, 255, 25, 25);
 		}
 		else if (textBox.equals(this.destinationFrequency))
 		{
-			return this.launchController.destFrequencyValid ? GCCoreUtil.convertTo32BitColor(255, 20, 20, 255) : GCCoreUtil.convertTo32BitColor(255, 255, 25, 25);
+			return this.launchController.destFrequencyValid ? GCCoreUtil.to32BitColor(255, 20, 255, 20) : GCCoreUtil.to32BitColor(255, 255, 25, 25);
 		}
 
 		return 0;

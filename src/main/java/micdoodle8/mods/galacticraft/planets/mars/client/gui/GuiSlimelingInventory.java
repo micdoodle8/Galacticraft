@@ -149,11 +149,11 @@ public class GuiSlimelingInventory extends GuiContainer
 		this.drawTexturedModalRect(var5 + this.xSize - 15, var6 + 22, 185, 0, 9, 9);
 		this.drawTexturedModalRect(var5 + this.xSize - 15, var6 + 35, 194, 0, 9, 9);
 		String str = "" + Math.round(this.slimeling.getColorRed() * 1000) / 10.0F + "% ";
-		this.drawString(this.fontRendererObj, str, var5 + this.xSize - 15 - this.fontRendererObj.getStringWidth(str), var6 + 10, GCCoreUtil.convertTo32BitColor(255, 255, 0, 0));
+		this.drawString(this.fontRendererObj, str, var5 + this.xSize - 15 - this.fontRendererObj.getStringWidth(str), var6 + 10, GCCoreUtil.to32BitColor(255, 255, 0, 0));
 		str = "" + Math.round(this.slimeling.getColorGreen() * 1000) / 10.0F + "% ";
-		this.drawString(this.fontRendererObj, str, var5 + this.xSize - 15 - this.fontRendererObj.getStringWidth(str), var6 + 23, GCCoreUtil.convertTo32BitColor(255, 0, 0, 255));
+		this.drawString(this.fontRendererObj, str, var5 + this.xSize - 15 - this.fontRendererObj.getStringWidth(str), var6 + 23, GCCoreUtil.to32BitColor(255, 0, 255, 0));
 		str = "" + Math.round(this.slimeling.getColorBlue() * 1000) / 10.0F + "% ";
-		this.drawString(this.fontRendererObj, str, var5 + this.xSize - 15 - this.fontRendererObj.getStringWidth(str), var6 + 36, GCCoreUtil.convertTo32BitColor(255, 0, 255, 0));
+		this.drawString(this.fontRendererObj, str, var5 + this.xSize - 15 - this.fontRendererObj.getStringWidth(str), var6 + 36, GCCoreUtil.to32BitColor(255, 0, 0, 255));
 
 		this.mc.renderEngine.bindTexture(GuiSlimelingInventory.slimelingPanelGui);
 		GL11.glColor3f(1.0F, 1.0F, 1.0F);

@@ -132,8 +132,8 @@ public class GuiElementTextBox extends GuiButton
 
 		if (this.visible)
 		{
-			Gui.drawRect(this.xPosition, this.yPosition, this.xPosition + this.width, this.yPosition + this.height, GCCoreUtil.convertTo32BitColor(140, 140, 140, 140));
-			Gui.drawRect(this.xPosition + 1, this.yPosition + 1, this.xPosition + this.width - 1, this.yPosition + this.height - 1, GCCoreUtil.convertTo32BitColor(255, 0, 0, 0));
+			Gui.drawRect(this.xPosition, this.yPosition, this.xPosition + this.width, this.yPosition + this.height, GCCoreUtil.to32BitColor(140, 140, 140, 140));
+			Gui.drawRect(this.xPosition + 1, this.yPosition + 1, this.xPosition + this.width - 1, this.yPosition + this.height - 1, GCCoreUtil.to32BitColor(255, 0, 0, 0));
 
 			this.cursorPulse++;
 

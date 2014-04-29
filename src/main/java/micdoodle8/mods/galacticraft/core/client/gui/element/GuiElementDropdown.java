@@ -65,13 +65,13 @@ public class GuiElementDropdown extends GuiButton
 			GL11.glTranslatef(0, 0, 200);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			this.field_146123_n = par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height;
-			Gui.drawRect(this.xPosition, this.yPosition, this.xPosition + this.width, this.yPosition + (this.dropdownClicked ? this.height * this.optionStrings.length : this.height), GCCoreUtil.convertTo32BitColor(255, 200, 200, 200));
-			Gui.drawRect(this.xPosition + 1, this.yPosition + 1, this.xPosition + this.width - 1, this.yPosition + (this.dropdownClicked ? this.height * this.optionStrings.length : this.height) - 1, GCCoreUtil.convertTo32BitColor(255, 0, 0, 0));
+			Gui.drawRect(this.xPosition, this.yPosition, this.xPosition + this.width, this.yPosition + (this.dropdownClicked ? this.height * this.optionStrings.length : this.height), GCCoreUtil.to32BitColor(255, 200, 200, 200));
+			Gui.drawRect(this.xPosition + 1, this.yPosition + 1, this.xPosition + this.width - 1, this.yPosition + (this.dropdownClicked ? this.height * this.optionStrings.length : this.height) - 1, GCCoreUtil.to32BitColor(255, 0, 0, 0));
 
 			if (this.dropdownClicked && par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height * this.optionStrings.length)
 			{
 				int hoverPos = (par3 - this.yPosition) / this.height;
-				Gui.drawRect(this.xPosition + 1, this.yPosition + this.height * hoverPos + 1, this.xPosition + this.width - 1, this.yPosition + this.height * (hoverPos + 1) - 1, GCCoreUtil.convertTo32BitColor(255, 100, 100, 100));
+				Gui.drawRect(this.xPosition + 1, this.yPosition + this.height * hoverPos + 1, this.xPosition + this.width - 1, this.yPosition + this.height * (hoverPos + 1) - 1, GCCoreUtil.to32BitColor(255, 100, 100, 100));
 			}
 
 			this.mouseDragged(par1Minecraft, par2, par3);
@@ -80,12 +80,12 @@ public class GuiElementDropdown extends GuiButton
 			{
 				for (int i = 0; i < this.optionStrings.length; i++)
 				{
-					this.font.drawStringWithShadow(this.optionStrings[i], this.xPosition + this.width / 2 - this.font.getStringWidth(this.optionStrings[i]) / 2, this.yPosition + (this.height - 8) / 2 + this.height * i, GCCoreUtil.convertTo32BitColor(255, 255, 255, 255));
+					this.font.drawStringWithShadow(this.optionStrings[i], this.xPosition + this.width / 2 - this.font.getStringWidth(this.optionStrings[i]) / 2, this.yPosition + (this.height - 8) / 2 + this.height * i, GCCoreUtil.to32BitColor(255, 255, 255, 255));
 				}
 			}
 			else
 			{
-				this.font.drawStringWithShadow(this.optionStrings[this.selectedOption], this.xPosition + this.width / 2 - this.font.getStringWidth(this.optionStrings[this.selectedOption]) / 2, this.yPosition + (this.height - 8) / 2, GCCoreUtil.convertTo32BitColor(255, 255, 255, 255));
+				this.font.drawStringWithShadow(this.optionStrings[this.selectedOption], this.xPosition + this.width / 2 - this.font.getStringWidth(this.optionStrings[this.selectedOption]) / 2, this.yPosition + (this.height - 8) / 2, GCCoreUtil.to32BitColor(255, 255, 255, 255));
 			}
 
 			GL11.glPopMatrix();

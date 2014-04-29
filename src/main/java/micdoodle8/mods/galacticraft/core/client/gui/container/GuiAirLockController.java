@@ -117,7 +117,7 @@ public class GuiAirLockController extends GuiScreen implements ICheckBoxCallback
 
 		if (this.cannotEditTimer > 0)
 		{
-			this.fontRendererObj.drawString(this.controller.ownerName, this.width / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, this.height / 2 - 65, this.cannotEditTimer % 30 < 15 ? GCCoreUtil.convertTo32BitColor(255, 255, 100, 100) : 4210752);
+			this.fontRendererObj.drawString(this.controller.ownerName, this.width / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, this.height / 2 - 65, this.cannotEditTimer % 30 < 15 ? GCCoreUtil.to32BitColor(255, 255, 100, 100) : 4210752);
 			this.cannotEditTimer--;
 		}
 
@@ -280,7 +280,7 @@ public class GuiAirLockController extends GuiScreen implements ICheckBoxCallback
 	@Override
 	public int getTextColor(GuiElementTextBox textBox)
 	{
-		return GCCoreUtil.convertTo32BitColor(255, 200, 200, 200);
+		return GCCoreUtil.to32BitColor(255, 200, 200, 200);
 	}
 
 	@Override
