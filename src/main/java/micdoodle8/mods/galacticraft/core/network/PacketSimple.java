@@ -875,6 +875,11 @@ public class PacketSimple extends Packet implements IPacket
 	@Override
 	public void processPacket(INetHandler var1)
 	{
+		if (type != EnumSimplePacket.C_UPDATE_SPACESTATION_LIST && type != EnumSimplePacket.C_UPDATE_PLANETS_LIST)
+		{
+			return;
+		}
+		
 		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
 		{
 			this.handleClientSide(FMLClientHandler.instance().getClientPlayerEntity());
