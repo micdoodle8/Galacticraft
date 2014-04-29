@@ -119,6 +119,7 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
@@ -311,6 +312,8 @@ public class GalacticraftCore
 		{
 			GameRegistry.registerWorldGenerator(new GCCoreOverworldGenerator(GCCoreBlocks.basicBlock, 8, 3, 0, 25, 7));
 		}
+		
+		FMLInterModComms.sendMessage("OpenBlocks", "donateUrl", "http://www.patreon.com/micdoodle8");
 	}
 
 	@EventHandler
