@@ -29,7 +29,7 @@ public class CommandPlanetTeleport extends CommandBase
 	@Override
 	public String getCommandUsage(ICommandSender var1)
 	{
-		return "/" + this.getCommandName() + " [player]";
+		return "/" + this.getCommandName() + " <player>";
 	}
 
 	@Override
@@ -43,11 +43,18 @@ public class CommandPlanetTeleport extends CommandBase
 	{
 		GCEntityPlayerMP playerBase = null;
 
-		if (astring.length > 0)
+		if (astring.length < 2)
 		{
 			try
 			{
-				playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(astring[0], true);
+				if (astring.length == 1)
+				{
+					playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(astring[0], true);
+				}
+				else
+				{
+					playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(icommandsender.getCommandSenderName(), true);
+				}
 
 				if (playerBase != null)
 				{
