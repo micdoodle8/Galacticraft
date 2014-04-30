@@ -73,7 +73,7 @@ public class GCBlocks
 
 	public static final Material machine = new Material(MapColor.ironColor);
 
-	public static ArrayList<Integer> hiddenBlocks = new ArrayList<Integer>();
+	public static ArrayList<Block> hiddenBlocks = new ArrayList<Block>();
 
 	public static void initBlocks()
 	{
@@ -163,13 +163,13 @@ public class GCBlocks
 		GCCoreUtil.registerGalacticraftBlock("beamReceiver", GCBlocks.beamReceiver);
 
 		// Hide certain items from NEI
-		GCBlocks.hiddenBlocks.add(Block.getIdFromBlock(GCBlocks.airLockSeal));
-		GCBlocks.hiddenBlocks.add(Block.getIdFromBlock(GCBlocks.breatheableAir));
-		GCBlocks.hiddenBlocks.add(Block.getIdFromBlock(GCBlocks.unlitTorch));
-		GCBlocks.hiddenBlocks.add(Block.getIdFromBlock(GCBlocks.unlitTorchLit));
-		GCBlocks.hiddenBlocks.add(Block.getIdFromBlock(GCBlocks.landingPadFull));
-		GCBlocks.hiddenBlocks.add(Block.getIdFromBlock(GCBlocks.fakeBlock));
-		GCBlocks.hiddenBlocks.add(Block.getIdFromBlock(GCBlocks.spaceStationBase));
+		GCBlocks.hiddenBlocks.add(GCBlocks.airLockSeal);
+		GCBlocks.hiddenBlocks.add(GCBlocks.breatheableAir);
+		GCBlocks.hiddenBlocks.add(GCBlocks.unlitTorch);
+		GCBlocks.hiddenBlocks.add(GCBlocks.unlitTorchLit);
+		GCBlocks.hiddenBlocks.add(GCBlocks.landingPadFull);
+		GCBlocks.hiddenBlocks.add(GCBlocks.fakeBlock);
+		GCBlocks.hiddenBlocks.add(GCBlocks.spaceStationBase);
 
 		OreDictionary.registerOre("oreCopper", new ItemStack(GCBlocks.basicBlock, 1, 5));
 		OreDictionary.registerOre("oreCopper", new ItemStack(GCBlocks.blockMoon, 1, 0));
