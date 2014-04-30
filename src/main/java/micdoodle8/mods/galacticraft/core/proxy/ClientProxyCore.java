@@ -8,6 +8,7 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -139,6 +140,8 @@ public class ClientProxyCore extends CommonProxyCore
 	private static int renderIdMachine;
 
 	public static FootprintRenderer footprintRenderer = new FootprintRenderer();
+	
+	public static List<String> flagRequestsSent = new ArrayList<String>();
 
 	private static int renderIndexHeavyArmor;
 	private static int renderIndexSensorGlasses;

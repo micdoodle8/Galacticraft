@@ -69,7 +69,6 @@ import org.lwjgl.input.Keyboard;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -535,6 +534,7 @@ public class PacketSimple extends Packet implements IPacket
 			for (int i = 2; i < this.data.size(); i++)
 			{
 				String playerName = (String) this.data.get(i);
+				ClientProxyCore.flagRequestsSent.remove(playerName);
 				playerList.add(playerName);
 				
 				SpaceRace previousData = SpaceRaceManager.getSpaceRaceFromPlayer(playerName);
