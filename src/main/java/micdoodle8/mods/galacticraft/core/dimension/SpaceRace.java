@@ -123,6 +123,16 @@ public class SpaceRace
 		this.flagData = flagData;
 	}
 	
+	public void setTeamName(String teamName)
+	{
+		this.teamName = teamName;
+	}
+	
+	public void setPlayerNames(List<String> playerNames)
+	{
+		this.playerNames = playerNames;
+	}
+	
 	public Map<CelestialBody, Integer> getCelestialBodyStatusList()
 	{
 		return ImmutableMap.copyOf(celestialBodyStatusList);

@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.wrappers;
 
+import java.util.Arrays;
+
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -15,6 +17,17 @@ public class FlagData
 		this.height = height;
 		this.width = width;
 		this.color = new byte[width][height][3];
+		
+		for (int i = 0; i < width; i++)
+		{
+			for (int j = 0; j < height; j++)
+			{
+				this.color[i][j][0] = 127;
+				this.color[i][j][1] = 127;
+				this.color[i][j][2] = 127;
+			}
+		}
+		
 		this.hasFace = false;
 	}
 

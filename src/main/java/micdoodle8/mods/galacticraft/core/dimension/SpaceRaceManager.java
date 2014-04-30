@@ -15,11 +15,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
 public class SpaceRaceManager
 {
-	private static List<SpaceRace> spaceRaceList = Lists.newArrayList();
+	private static final List<SpaceRace> spaceRaceList = Lists.newArrayList();
 	
 	public static void addSpaceRace(List<String> playerNames, String teamName, FlagData flagData)
 	{
@@ -125,5 +126,10 @@ public class SpaceRaceManager
 			objList.add(spaceRace.getPlayerNames().toArray(new String[spaceRace.getPlayerNames().size()]));
 			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACE_RACE_DATA, objList), toPlayer);
 		}
+	}
+	
+	public static ImmutableList<SpaceRace> getSpaceRaceList()
+	{
+		return ImmutableList.copyOf(new ArrayList<SpaceRace>(spaceRaceList));
 	}
 }

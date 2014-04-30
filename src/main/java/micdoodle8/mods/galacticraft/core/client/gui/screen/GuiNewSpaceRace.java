@@ -13,6 +13,8 @@ import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementSlider;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementTextBox;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementTextBox.ITextBoxCallback;
 import micdoodle8.mods.galacticraft.core.client.model.ModelFlag;
+import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
+import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.entities.EntityFlag;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
@@ -85,14 +87,26 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
 	private EntityFlag dummyFlag = new EntityFlag(FMLClientHandler.instance().getClient().theWorld);
 	private ModelFlag dummyModel = new ModelFlag();
 	
-	private FlagData flagData = new FlagData(48, 32);
+	private FlagData flagData;
 	
 	private boolean showGrid = false;
 	private boolean lastMousePressed = false;
+	private boolean hasExitedMain = false;
     
 	public GuiNewSpaceRace(EntityPlayer player)
 	{
 		this.thePlayer = player;
+		
+		SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(player.getGameProfile().getName());
+		
+		if (race != null)
+		{
+			this.flagData = race.getFlagData();
+		}
+		else
+		{
+			this.flagData = new FlagData(48, 32);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -192,15 +206,21 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
 		}
 		else
 		{
-			for (int i = 0; i < this.flagData.getWidth(); i++)
-			{
-				for (int j = 0; j < this.flagData.getHeight(); j++)
-				{
-					this.flagData.setColorAt(i, j, new Vector3(255, 255, 255));
-				}
-			}
+//			for (int i = 0; i < this.flagData.getWidth(); i++)
+//			{
+//				for (int j = 0; j < this.flagData.getHeight(); j++)
+//				{
+//					this.flagData.setColorAt(i, j, new Vector3(255, 255, 255));
+//				}
+//			}
 		}
 	}
+	
+	@Override
+    public void onGuiClosed() 
+    {
+		this.exitCurrentScreen(false);
+    }
 
 	@Override
 	protected void keyTyped(char keyChar, int keyID)
@@ -209,8 +229,29 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
 		{
 			return;
 		}
-
+		
 		super.keyTyped(keyChar, keyID);
+	}
+	
+	private void exitCurrentScreen(boolean close)
+	{
+		if (this.currentState == EnumSpaceRaceGui.MAIN)
+		{
+    		List<Object> objList = new ArrayList<Object>();
+    		objList.add(this.teamName);
+    		objList.add(this.flagData);
+    		objList.add(new String[] { this.thePlayer.getGameProfile().getName() });
+    		GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_START_NEW_SPACE_RACE, objList));
+    		if (close)
+    		{
+    			thePlayer.closeScreen();
+    		}
+		}
+		else
+		{
+    		this.currentState = EnumSpaceRaceGui.MAIN;
+    		this.initGui();
+		}
 	}
 	
     protected void actionPerformed(GuiButton buttonClicked) 
@@ -218,20 +259,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
     	switch (buttonClicked.id)
     	{
     	case 0:
-    		if (this.currentState == EnumSpaceRaceGui.MAIN)
-    		{
-        		List<Object> objList = new ArrayList<Object>();
-        		objList.add(this.teamName);
-        		objList.add(this.flagData);
-        		objList.add(new String[] { this.thePlayer.getGameProfile().getName() });
-        		GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_START_NEW_SPACE_RACE, objList));
-        		this.thePlayer.closeScreen();
-    		}
-    		else
-    		{
-        		this.currentState = EnumSpaceRaceGui.MAIN;
-        		this.initGui();
-    		}
+    		this.exitCurrentScreen(true);
     		break;
 //    	case 3:
 //    		if (this.currentState == EnumSpaceRaceGui.MAIN)
