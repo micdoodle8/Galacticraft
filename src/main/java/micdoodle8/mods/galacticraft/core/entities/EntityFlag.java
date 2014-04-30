@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
+import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
@@ -34,7 +35,6 @@ import cpw.mods.fml.relauncher.Side;
 public class EntityFlag extends Entity
 {
 	public EntityLiving entityPlacedBy;
-	public int facingDirection;
 	public double xPosition;
 	public double yPosition;
 	public double zPosition;
@@ -49,10 +49,10 @@ public class EntityFlag extends Entity
 		this.ignoreFrustumCheck = true;
 	}
 
-	public EntityFlag(World par1World, double x, double y, double z, float dir)
+	public EntityFlag(World par1World, double x, double y, double z, int dir)
 	{
 		this(par1World);
-		this.setDirection(dir);
+		this.setFacingAngle(dir);
 		this.setPosition(x, y, z);
 		this.xPosition = x;
 		this.yPosition = y;
@@ -96,11 +96,6 @@ public class EntityFlag extends Entity
 		{
 			return true;
 		}
-	}
-
-	public void setDirection(float par1)
-	{
-		this.prevRotationYaw = this.rotationYaw = par1;
 	}
 
 	public void setIndestructable()
@@ -154,6 +149,7 @@ public class EntityFlag extends Entity
 		this.dataWatcher.addObject(17, new String(""));
 		this.dataWatcher.addObject(18, new Float(0.0F));
 		this.dataWatcher.addObject(19, new Integer(-1));
+		this.dataWatcher.addObject(20, new Integer(-1));
 	}
 
 	@Override
@@ -166,7 +162,7 @@ public class EntityFlag extends Entity
 		this.xPosition = par1NBTTagCompound.getDouble("TileX");
 		this.yPosition = par1NBTTagCompound.getDouble("TileY");
 		this.zPosition = par1NBTTagCompound.getDouble("TileZ");
-		this.setDirection(this.facingDirection);
+		this.setFacingAngle(par1NBTTagCompound.getInteger("AngleI"));
 	}
 
 	@Override
@@ -175,7 +171,7 @@ public class EntityFlag extends Entity
 		par1NBTTagCompound.setString("Owner", String.valueOf(this.getOwner()));
 		par1NBTTagCompound.setInteger("Type", Integer.valueOf(this.getType()));
 		par1NBTTagCompound.setBoolean("Indestructable", this.indestructable);
-		par1NBTTagCompound.setByte("Direction", (byte) this.facingDirection);
+		par1NBTTagCompound.setInteger("AngleI", this.getFacingAngle());
 		par1NBTTagCompound.setDouble("TileX", this.xPosition);
 		par1NBTTagCompound.setDouble("TileY", this.yPosition);
 		par1NBTTagCompound.setDouble("TileZ", this.zPosition);
@@ -223,16 +219,20 @@ public class EntityFlag extends Entity
 		{
 			this.flagData = race.getFlagData();
 		}
-		else if (Minecraft.getMinecraft().thePlayer.getDistanceToEntity(this) < 50.0D)
+		else if (!ClientProxyCore.flagRequestsSent.contains(getOwner()) && Minecraft.getMinecraft().thePlayer.getDistanceToEntity(this) < 50.0D)
 		{
 			GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_FLAG_DATA, new Object[] { this.getOwner() }));
+			ClientProxyCore.flagRequestsSent.add(getOwner());
 		}
 	}
 	
 	@Override
 	public boolean interactFirst(EntityPlayer par1EntityPlayer)
 	{
-		this.setDirection(this.rotationYaw + 3F);
+		if (!this.worldObj.isRemote)
+		{
+			this.setFacingAngle(this.getFacingAngle() + 3);
+		}
 
 		return true;
 	}
@@ -265,5 +265,15 @@ public class EntityFlag extends Entity
 	public int getType()
 	{
 		return this.dataWatcher.getWatchableObjectInt(19);
+	}
+
+	public void setFacingAngle(int par1)
+	{
+		this.dataWatcher.updateObject(20, Integer.valueOf(par1));
+	}
+
+	public int getFacingAngle()
+	{
+		return this.dataWatcher.getWatchableObjectInt(20);
 	}
 }

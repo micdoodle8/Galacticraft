@@ -102,7 +102,7 @@ public class ItemFlag extends Item implements IHoldableItem
 
 			if (!par2World.isRemote)
 			{
-				final EntityFlag flag = new EntityFlag(par2World, x + 0.5F, y + 1.0F, z + 0.5F, par3EntityPlayer.rotationYaw - 90F);
+				final EntityFlag flag = new EntityFlag(par2World, x + 0.5F, y + 1.0F, z + 0.5F, (int) (par3EntityPlayer.rotationYaw - 90));
 
 				if (par2World.getEntitiesWithinAABB(EntityFlag.class, AxisAlignedBB.getAABBPool().getAABB(x, y, z, x + 1, y + 3, z + 1)).isEmpty())
 				{
