@@ -2,6 +2,8 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -205,7 +207,7 @@ public class BlockCheese extends Block
 	@Override
 	public boolean canBlockStay(World par1World, int par2, int par3, int par4)
 	{
-		return par1World.getBlock(par2, par3, par4).getMaterial().isSolid();
+		return par1World.getBlock(par2, par3 - 1, par4).getMaterial().isSolid();
 	}
 
 	/**
@@ -231,5 +233,19 @@ public class BlockCheese extends Block
     public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
     {
 		return new ItemStack(Items.cake);
+	}
+	
+	@Override
+	public int onBlockPlaced(World par1World, int x, int y, int z, int par5, float par6, float par7, float par8, int par9)
+	{
+	if (par1World.provider instanceof WorldProviderOrbit)
+	{
+		BlockVec3 baseBlock = new BlockVec3(x, y, z);
+		WorldProviderOrbit worldOrbital = (WorldProviderOrbit) par1World.provider;
+		worldOrbital.addThruster(new BlockVec3(x,y,z), true);
+		worldOrbital.checkSS(baseBlock);
+		worldOrbital.updateSpinSpeed();
+	}
+	return 6-par5;
 	}
 }

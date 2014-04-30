@@ -70,6 +70,7 @@ public class GCBlocks
 	public static Block cheeseBlock;
 	public static Block beamReflector;
 	public static Block beamReceiver;
+	public static Block spinThruster;
 
 	public static final Material machine = new Material(MapColor.ironColor);
 
@@ -110,6 +111,7 @@ public class GCBlocks
 		GCBlocks.cheeseBlock = new BlockCheese();
 		GCBlocks.beamReflector = new BlockBeamReflector("beamReflector");
 		GCBlocks.beamReceiver = new BlockBeamReceiver("beamReceiver");
+		GCBlocks.beamReceiver = new BlockSpinThruster("spinThruster");
 
 		GCCoreUtil.registerGalacticraftBlock("rocketLaunchPad", GCBlocks.landingPad, 0);
 		GCCoreUtil.registerGalacticraftBlock("buggyFuelingPad", GCBlocks.landingPad, 1);
@@ -161,7 +163,8 @@ public class GCBlocks
 		GCCoreUtil.registerGalacticraftBlock("wireAluminumHeavy", GCBlocks.aluminumWire, 1);
 		GCCoreUtil.registerGalacticraftBlock("beamReflector", GCBlocks.beamReflector);
 		GCCoreUtil.registerGalacticraftBlock("beamReceiver", GCBlocks.beamReceiver);
-
+		GCCoreUtil.registerGalacticraftBlock("spinThruster", GCBlocks.spinThruster);
+		
 		// Hide certain items from NEI
 		GCBlocks.hiddenBlocks.add(GCBlocks.airLockSeal);
 		GCBlocks.hiddenBlocks.add(GCBlocks.breatheableAir);
@@ -244,5 +247,5 @@ public class GCBlocks
 		GameRegistry.registerBlock(GCBlocks.cheeseBlock, ItemBlock.class, GCBlocks.cheeseBlock.getUnlocalizedName(), GalacticraftCore.MODID);
 		GameRegistry.registerBlock(GCBlocks.beamReflector, ItemBlock.class, GCBlocks.beamReflector.getUnlocalizedName(), GalacticraftCore.MODID);
 		GameRegistry.registerBlock(GCBlocks.beamReceiver, ItemBlock.class, GCBlocks.beamReceiver.getUnlocalizedName(), GalacticraftCore.MODID);
-	}
+		GameRegistry.registerBlock(GCBlocks.spinThruster, ItemBlockGC.class, GCBlocks.spinThruster.getUnlocalizedName(), GalacticraftCore.MODID);	}
 }
