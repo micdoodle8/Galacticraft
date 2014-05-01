@@ -204,7 +204,7 @@ public class MapGenCavernMars
 									{
 										if (var51 > -0.7D)
 										{
-											int coords = var50 << 8 | var45 << 4 | var42;
+											int coords = (var42 * 16 + var45) * 256 + var50;
 
 											if (arrayOfIDs[coords] == MarsBlocks.marsBlock || arrayOfIDs[coords] == MarsBlocks.blockSludge || arrayOfIDs[coords] == MarsBlocks.vine)
 											{
