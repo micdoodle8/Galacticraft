@@ -187,7 +187,7 @@ public class EntityFlag extends Entity
 	{
 		super.onUpdate();
 		
-		if (this.flagData == null && this.ticksExisted % 20 == 0 && this.worldObj.isRemote && FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+		if ((this.ticksExisted - 1) % 20 == 0 && this.worldObj.isRemote && FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
 		{
 			this.updateFlagData();
 		}
