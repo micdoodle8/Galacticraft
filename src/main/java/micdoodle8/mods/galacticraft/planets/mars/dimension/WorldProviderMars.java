@@ -1,14 +1,16 @@
 package micdoodle8.mods.galacticraft.planets.mars.dimension;
 
+import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.api.world.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars;
+import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.world.gen.ChunkProviderMars;
 import micdoodle8.mods.galacticraft.planets.mars.world.gen.WorldChunkManagerMars;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
-import net.minecraft.world.WorldProvider;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import cpw.mods.fml.relauncher.Side;
@@ -23,7 +25,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class WorldProviderMars extends WorldProvider implements IGalacticraftWorldProvider
+public class WorldProviderMars extends WorldProviderSpace implements IGalacticraftWorldProvider
 {
 	@Override
 	public void setDimension(int var1)
@@ -118,6 +120,8 @@ public class WorldProviderMars extends WorldProvider implements IGalacticraftWor
 		this.worldObj.getWorldInfo().setRaining(false);
 		this.worldObj.getWorldInfo().setThunderTime(0);
 		this.worldObj.getWorldInfo().setThundering(false);
+    	this.worldObj.rainingStrength = 0.0F;
+    	this.worldObj.thunderingStrength = 0.0F;
 	}
 
 	@Override
@@ -244,5 +248,11 @@ public class WorldProviderMars extends WorldProvider implements IGalacticraftWor
 	public float getSoundVolReductionAmount()
 	{
 		return 10.0F;
+	}
+
+	@Override
+	public CelestialBody getCelestialBody()
+	{
+		return MarsModule.planetMars;
 	}
 }

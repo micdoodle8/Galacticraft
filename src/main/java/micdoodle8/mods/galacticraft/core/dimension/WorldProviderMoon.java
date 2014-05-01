@@ -132,10 +132,7 @@ public class WorldProviderMoon extends WorldProviderSpace implements IGalacticra
 	@Override
 	public void updateWeather()
 	{
-		this.worldObj.getWorldInfo().setRainTime(0);
-		this.worldObj.getWorldInfo().setRaining(false);
-		this.worldObj.getWorldInfo().setThunderTime(0);
-		this.worldObj.getWorldInfo().setThundering(false);
+		super.updateWeather();
 	}
 
 	@Override

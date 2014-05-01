@@ -3,11 +3,11 @@ package micdoodle8.mods.galacticraft.api.prefab.world.gen;
 import java.lang.reflect.Constructor;
 
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.api.world.WorldProviderSpace;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldProvider;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import cpw.mods.fml.relauncher.Side;
@@ -16,7 +16,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 /**
  * Do not include this prefab class in your released mod download.
  */
-public abstract class GCWorldProvider extends WorldProvider implements IGalacticraftWorldProvider
+public abstract class GCWorldProvider extends WorldProviderSpace implements IGalacticraftWorldProvider
 {
 	public abstract Class<? extends GCChunkProvider> getChunkProviderClass();
 
@@ -120,15 +120,6 @@ public abstract class GCWorldProvider extends WorldProvider implements IGalactic
 	}
 
 	@Override
-	public void updateWeather()
-	{
-		this.worldObj.getWorldInfo().setRainTime(0);
-		this.worldObj.getWorldInfo().setRaining(false);
-		this.worldObj.getWorldInfo().setThunderTime(0);
-		this.worldObj.getWorldInfo().setThundering(false);
-	}
-
-	@Override
 	public boolean isSkyColored()
 	{
 		return true;
@@ -145,12 +136,6 @@ public abstract class GCWorldProvider extends WorldProvider implements IGalactic
 	{
 		return 44;
 	}
-
-//	@Override
-//	public boolean canSnowAt(int x, int y, int z)
-//	{
-//		return false;
-//	}
 
 	@Override
 	public boolean canBlockFreeze(int x, int y, int z, boolean byWater)
