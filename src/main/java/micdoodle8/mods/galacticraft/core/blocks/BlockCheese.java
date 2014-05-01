@@ -234,18 +234,4 @@ public class BlockCheese extends Block
     {
 		return new ItemStack(Items.cake);
 	}
-	
-	@Override
-	public int onBlockPlaced(World par1World, int x, int y, int z, int par5, float par6, float par7, float par8, int par9)
-	{
-	if (par1World.provider instanceof WorldProviderOrbit)
-	{
-		BlockVec3 baseBlock = new BlockVec3(x, y, z);
-		WorldProviderOrbit worldOrbital = (WorldProviderOrbit) par1World.provider;
-		worldOrbital.addThruster(new BlockVec3(x,y,z), true);
-		worldOrbital.checkSS(baseBlock);
-		worldOrbital.updateSpinSpeed();
-	}
-	return 6-par5;
-	}
 }

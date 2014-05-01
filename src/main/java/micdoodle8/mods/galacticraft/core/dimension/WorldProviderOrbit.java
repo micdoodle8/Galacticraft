@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.api.world.IExitHeight;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.BlockSpinThruster;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.client.SkyProviderOrbit;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
@@ -69,14 +70,12 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 	private int ssBoundsMaxZ;
 	private int ssBoundsMinZ;
 	
-	private HashSet<BlockVec3> thrustersPlus = new HashSet();
-	private HashSet<BlockVec3> thrustersMinus = new HashSet();
+	private LinkedList<BlockVec3> thrustersPlus = new LinkedList();
+	private LinkedList<BlockVec3> thrustersMinus = new LinkedList();
 	private BlockVec3 oneSSBlock;
 	//private HashSet<BlockVec3> stationBlocks = new HashSet();
 
 	private HashSet<BlockVec3> checked = new HashSet<BlockVec3>();
-	private List<BlockVec3> currentLayer = new LinkedList<BlockVec3>();
-	private List<BlockVec3> nextLayer;
 	
 	private float artificialG;		
 	//Used to make continuous particles + thrust sounds at the spin thrusters in this dimension
@@ -200,8 +199,6 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 				this.readFromNBT(this.savefile.datacompound);
 				System.out.println("Loading data from save: "+this.savefile.datacompound.getFloat("omegaSky"));
 				this.dataNotLoaded = false;
-				
-				//TODO: send packet to clients in this dimension
 			}
 			
 			boolean updateNeeded = true;
@@ -387,12 +384,17 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 		if (p.boundingBox.maxX >= this.ssBoundsMinX && p.boundingBox.minX <= this.ssBoundsMaxX && p.boundingBox.maxY >= this.ssBoundsMinY && p.boundingBox.minY <= this.ssBoundsMaxY && p.boundingBox.maxZ >= this.ssBoundsMinZ && p.boundingBox.minZ <= this.ssBoundsMaxZ)
 		{
 			//Player is somewhere within the space station boundaries
-			//TODO is there a better check for feet are touching ground?  this doesn't seem to work
-			if (p.onGround)
+
+			//This is an "on the ground" check
+			int playerFeetOnY = MathHelper.floor_double(p.boundingBox.minY-0.001D);  
+			Block b = this.worldObj.getBlock(MathHelper.floor_double(p.posX), playerFeetOnY, MathHelper.floor_double(p.posX));
+			double blockYmax = b.getBlockBoundsMaxY() + playerFeetOnY;
+			if (p.boundingBox.minY - blockYmax < 0.001D)
+
 				freefall = false;
 			else
 			{
-				//First check if the players bounding box is in any non-vacuum block (including torches etc)
+				//Check if the player's bounding box is in the same block coordinates as any non-vacuum block (including torches etc)
 				//If so, it's assumed the player has something close enough to grab onto, so is not in freefall
 				//Note: breatheable air here means the player is definitely not in freefall
 				BLOCKCHECK:
@@ -411,7 +413,7 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 			if (freefall)
 			{
 				//If that check didn't produce a result, see if the player is inside the walls
-				//TODO: could apply special weightless movement here - the player is inside the walls,  not touching them, and in a vacuum
+				//TODO: could apply special weightless movement here like Coriolis force - the player is inside the walls,  not touching them, and in a vacuum
 				int quadrant = 0;
 				double xd = p.posX - this.massCentreX;
 				double zd = p.posZ - this.massCentreZ;
@@ -476,8 +478,8 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 		}
 		if (freefall)
 		{
-			//TODO because player is in free-fall here maybe disable some movement or special flight mode?
-			//Could start tumbling the player
+			//TODO because player is in free-fall here maybe disable deceleration or special flight mode?
+			//Arm and leg movements could start tumbling the player?
 			//Player may run out of oxygen - that will kill the player eventually if can't get back to SS
 			//Maybe player needs a 'suicide' button if floating helplessly in space and with no tether
 			//Could auto-kill + respawn the player if floats too far away (config option whether to lose items or not)
@@ -577,14 +579,31 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 		}
 	}
 
-	public boolean checkSS(BlockVec3 baseBlock)
+	/**
+	 * This will check all blocks which are in contact with each other to find the shape of the spacestation.
+	 * It also finds the centre of mass (to rotate around) and the moment of inertia (how easy/hard this is to rotate).
+	 * 
+	 * If placingThruster is true, it will return false if the thruster (at baseBlock) is not in contact
+	 * with the "existing" spacestation - so the player cannot place thrusters on outlying disconnected blocks and expect them to have an effect.
+	 * 
+	 * Note: this check will briefly load, server-side, all chunks which have spacestation blocks in them or 1 block adjacent to those.
+	 *  
+	 * @param baseBlock
+	 * @return
+	 */
+	public boolean checkSS(BlockVec3 baseBlock, boolean placingThruster)
 	{
 		// Find contiguous blocks using an algorithm like the oxygen sealer one
-		this.currentLayer.clear();
+		List<BlockVec3> currentLayer = new LinkedList<BlockVec3>();
+		List<BlockVec3> nextLayer = new LinkedList<BlockVec3>();
+		List<BlockVec3> foundThrusters = new LinkedList<BlockVec3>();;
+
+		if (this.oneSSBlock == null || oneSSBlock.getBlockID(this.worldObj)==Blocks.air)
+			this.oneSSBlock = baseBlock.clone();
+		
 		this.checked.clear();
-		this.currentLayer.add(baseBlock.clone());
-		this.checked.add(baseBlock.clone());
-		this.nextLayer = new LinkedList<BlockVec3>();
+		currentLayer.add(this.oneSSBlock.clone());
+		this.checked.add(this.oneSSBlock.clone());
 
 		float thismass = 0.1F;  //Mass of a thruster
 		float thismassCentreX = 0.1F * baseBlock.x;
@@ -598,9 +617,9 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 		int thisssBoundsMaxZ = baseBlock.z;
 		int thisssBoundsMinZ = baseBlock.z;
 		
-		while (this.currentLayer.size() > 0)
+		while (currentLayer.size() > 0)
 		{
-			for (BlockVec3 vec : this.currentLayer)
+			for (BlockVec3 vec : currentLayer)
 			{
 				if (vec.x < thisssBoundsMinX) thisssBoundsMinX = vec.x;
 				if (vec.y < thisssBoundsMinY) thisssBoundsMinY = vec.y;
@@ -620,7 +639,7 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 						if (!this.checked.contains(sideVec))
 						{
 							this.checked.add(sideVec);
-							this.nextLayer.add(sideVec);
+							nextLayer.add(sideVec);
 							float m = 1.0F;
 							//Liquids have a mass of 1, stone, metal blocks etc will be heavier 
 							if (!(b instanceof BlockLiquid))
@@ -639,30 +658,53 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 							thismassCentreY += m * sideVec.y;
 							thismassCentreZ += m * sideVec.z;
 							thismass += m;
-							thismoment += m * (sideVec.x * sideVec.x + sideVec.z * sideVec.z); 
+							thismoment += m * (sideVec.x * sideVec.x + sideVec.z * sideVec.z);
+							if (b instanceof BlockSpinThruster) foundThrusters.add(sideVec);
 						}
 					}
 				}
 			}
 			
-			this.currentLayer = this.nextLayer;
-			this.nextLayer = new LinkedList<BlockVec3>();
+			currentLayer = nextLayer;
+			nextLayer = new LinkedList<BlockVec3>();
 		}
 
-		if (this.oneSSBlock == null)
-			this.oneSSBlock = baseBlock.clone();
-		
-		if (!this.checked.contains(oneSSBlock))
+		if (placingThruster && !foundThrusters.contains(baseBlock))
 		{
-			//The thruster was not placed on the existing contiguous spacestation: it must be.
-			this.thrustersPlus.remove(baseBlock);
-			this.thrustersMinus.remove(baseBlock);
-			System.out.println("Returning false: oneSSBlock was "+oneSSBlock.x+","+oneSSBlock.y+","+oneSSBlock.z);
+			if (foundThrusters.size()>0)
+			{
+				//The thruster was not placed on the existing contiguous spacestation: it must be.
+				this.thrustersPlus.remove(baseBlock);
+				this.thrustersMinus.remove(baseBlock);
+				System.out.println("Returning false: oneSSBlock was "+oneSSBlock.x+","+oneSSBlock.y+","+oneSSBlock.z);
+				return false;
+			}
+			
+			//No thruster on the original space station - so assume the player made new station and start check again
+			//This offers players a reset option: just remove all thrusters from original station then starting adding to new one
+			//(This first check prevents an infinite loop)
+			if (!baseBlock.equals(this.oneSSBlock))
+			{
+				this.oneSSBlock = baseBlock.clone();
+				if (oneSSBlock.getBlockID(this.worldObj)!=Blocks.air) return this.checkSS(baseBlock, true);
+			}
+			
 			return false;
+
 		}
 
-		//TODO: Offer players a station reset option so they can move it way out?  Auto-reset when there are no thrusters?
-
+		// Update thruster lists based on what was found
+		this.thrustersPlus.clear();
+		this.thrustersMinus.clear();
+		for (BlockVec3 thruster : foundThrusters)
+		{
+			int facing = thruster.getBlockMetadata(this.worldObj) & 8;
+			if (facing == 0)
+				thrustersPlus.add(thruster.clone());
+			else
+				thrustersMinus.add(thruster.clone());
+		}
+		
 		// Calculate centre of mass
 		this.mass = thismass;
 		
@@ -708,6 +750,8 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 		objList.add(Integer.valueOf(this.ssBoundsMaxZ));
 		GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_STATION_BOX, objList), this.spaceStationDimensionID);
 
+		this.updateSpinSpeed();
+		
 		return true;
 	}
 
@@ -720,7 +764,6 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 			
 			for(BlockVec3 thruster : thrustersPlus)
 			{
-				//TODO check the block is still a thruster
 				float xx = (float)thruster.x - this.massCentreX;
 				float zz = (float)thruster.z - this.massCentreZ;
 				netTorque+= MathHelper.sqrt_float(xx*xx+zz*zz);
@@ -728,7 +771,6 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 			}
 			for(BlockVec3 thruster : thrustersMinus)
 			{
-				//TODO check the block is still a thruster
 				float xx = thruster.x - this.massCentreX;
 				float zz = thruster.z - this.massCentreZ;
 				netTorque-= MathHelper.sqrt_float(xx*xx+zz*zz);
@@ -751,7 +793,8 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 				float maxRx = Math.max(this.ssBoundsMaxX - this.massCentreX, this.massCentreX - this.ssBoundsMinX);
 				float maxRz = Math.max(this.ssBoundsMaxZ - this.massCentreZ, this.massCentreZ - this.ssBoundsMinZ);
 				float maxR = Math.max(maxRx, maxRz);
-				this.angularVelocityTarget = MathHelper.sqrt_float(WorldProviderOrbit.GFORCE / maxR);
+				this.angularVelocityTarget = MathHelper.sqrt_float(WorldProviderOrbit.GFORCE / maxR) / 2;
+				//The divide by 2 is not scientific but is a Minecraft factor as everything happens more quickly
 				float spinCap = 0.00125F * countThrusters;
 				//Do not make it spin too fast or players might get dizzy
 				//Also make it so players need minimum 4 thrusters for best spin
@@ -784,47 +827,6 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 		this.skyAngularVelocity = nbt.getFloat("omegaSky");
 		this.angularVelocityTarget = nbt.getFloat("omegaTarget");
 		this.angularVelocityAccel = nbt.getFloat("omegaAcc");
-		this.momentOfInertia = nbt.getFloat("MOI");
-		this.massCentreX = nbt.getFloat("centreX");
-		this.massCentreY = nbt.getFloat("centreY");
-		this.massCentreZ = nbt.getFloat("centreZ");
-		this.mass = nbt.getFloat("mass");
-		this.ssBoundsMaxX = nbt.getInteger("maxX");
-		this.ssBoundsMinX = nbt.getInteger("minX");
-		this.ssBoundsMaxY = nbt.getInteger("maxY");
-		this.ssBoundsMinY = nbt.getInteger("minY");
-		this.ssBoundsMaxZ = nbt.getInteger("maxZ");
-		this.ssBoundsMinZ = nbt.getInteger("minZ");
-
-		this.thrustersPlus.clear();
-		NBTTagList tPlus = nbt.getTagList("tPlus", 10);
-		if (tPlus.tagCount() > 0)
-		{
-			for (int j = 0; j < tPlus.tagCount(); j++)
-			{
-				NBTTagCompound tag1 = tPlus.getCompoundTagAt(j);
-				
-				if (tag1 instanceof NBTTagCompound)
-				{
-					this.thrustersPlus.add(BlockVec3.readFromNBT((NBTTagCompound) tag1));
-				}
-			}
-		}
-
-		this.thrustersMinus.clear();
-		NBTTagList tMinus = nbt.getTagList("tMinus", 10);
-		if (tMinus.tagCount() > 0)
-		{
-			for (int j = 0; j < tMinus.tagCount(); j++)
-			{
-				NBTTagCompound tag1 = tMinus.getCompoundTagAt(j);
-				
-				if (tag1 instanceof NBTTagCompound)
-				{
-					this.thrustersMinus.add(BlockVec3.readFromNBT((NBTTagCompound) tag1));
-				}
-			}
-		}
 
 		NBTTagCompound oneBlock = (NBTTagCompound) nbt.getTag("oneBlock");
 		if (oneBlock!=null)
@@ -832,7 +834,8 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 		else
 			this.oneSSBlock = null;
 
-		setSpinCentre(this.massCentreX, this.massCentreZ);
+		//A lot of the data can be refreshed by checkSS
+		this.checkSS(oneSSBlock, false);
 		
 		//Send packets to clients in this dimension
 		List<Object> objList = new ArrayList<Object>();
@@ -862,36 +865,6 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 		 nbt.setFloat("omegaSky", this.skyAngularVelocity);
 		 nbt.setFloat("omegaTarget", this.angularVelocityTarget);
 		 nbt.setFloat("omegaAcc", this.angularVelocityAccel);
-		 nbt.setFloat("MOI", this.momentOfInertia);
-		 nbt.setFloat("centreX", this.massCentreX);
-		 nbt.setFloat("centreY", this.massCentreY);
-		 nbt.setFloat("centreZ", this.massCentreZ);
-		 nbt.setFloat("mass", this.mass);
-		 nbt.setInteger("maxX", this.ssBoundsMaxX);
-		 nbt.setInteger("minX", this.ssBoundsMinX);
-		 nbt.setInteger("maxY", this.ssBoundsMaxY);
-		 nbt.setInteger("minY", this.ssBoundsMinY);
-		 nbt.setInteger("maxZ", this.ssBoundsMaxZ);
-		 nbt.setInteger("minZ", this.ssBoundsMinZ);
-		
-		NBTTagList tPlus = new NBTTagList();
-		for(BlockVec3 thruster : this.thrustersPlus)
-		{
-			NBTTagCompound thrust = new NBTTagCompound();
-			thruster.writeToNBT(thrust);
-			tPlus.appendTag(thrust);
-		}
-		nbt.setTag("tPlus", tPlus);
-
-		NBTTagList tMinus = new NBTTagList();
-		for(BlockVec3 thruster : this.thrustersMinus)
-		{
-			NBTTagCompound thrust = new NBTTagCompound();
-			thruster.writeToNBT(thrust);
-			tMinus.appendTag(thrust);
-		}
-		nbt.setTag("tMinus", tMinus);
-
 		if (this.oneSSBlock != null)
 		{
 			NBTTagCompound oneBlock = new NBTTagCompound();
@@ -900,8 +873,12 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 		}
 	}
 
-	//TODO will this still work with other mods / plugins teleports (e.g. Bukkit)? See WorldUtil.teleportEntity()
-	//Call this when client first login/transfer to this dimension
+	/** Call this when player first login/transfer to this dimension
+	 *
+	 * TODO how can this code be called by other mods / plugins with teleports (e.g. Bukkit)? See WorldUtil.teleportEntity()
+	 * 
+	 * @param player
+	 */
 	public void sendPacketsToClient(EntityPlayerMP player)
 	{
 		List<Object> objList = new ArrayList<Object>();
@@ -925,4 +902,5 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 	}
 
 	//TODO Occasional call to checkSS to update centre of mass etc (in case the player has been building)
+	//TODO Move other entities which are in freefall, especially mobs
 }

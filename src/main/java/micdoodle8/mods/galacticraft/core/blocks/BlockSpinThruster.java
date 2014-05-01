@@ -110,40 +110,40 @@ public class BlockSpinThruster extends BlockAdvanced
 	public int onBlockPlaced(World par1World, int x, int y, int z, int par5, float par6, float par7, float par8, int par9)
 	{
 		int var10 = par9;
-		BlockVec3 baseBlock = null;
+		BlockVec3 baseBlock = new BlockVec3(x, y, z);
+		boolean placeable = false;
 
 		if (par5 == 2 && isBlockSolidOnSide(par1World, x, y, z + 1, ForgeDirection.NORTH, true))
 		{
-			baseBlock = new BlockVec3(x, y, z+1);
+			placeable = true;
 			var10 = 4;
 		}
 
 		if (par5 == 3 && isBlockSolidOnSide(par1World, x, y, z - 1, ForgeDirection.SOUTH, true))
 		{
-			baseBlock = new BlockVec3(x, y, z-1);
+			placeable = true;
 			var10 = 3;
 		}
 
 		if (par5 == 4 && isBlockSolidOnSide(par1World, x + 1, y, z, ForgeDirection.WEST, true))
 		{
-			baseBlock = new BlockVec3(x+1, y, z);
+			placeable = true;
 			var10 = 2;
 		}
 
 		if (par5 == 5 && isBlockSolidOnSide(par1World, x - 1, y, z, ForgeDirection.EAST, true))
 		{
-			baseBlock = new BlockVec3(x-1, y, z);
+			placeable = true;
 			var10 = 1;
 		}
 
-		if (baseBlock != null && !par1World.isRemote)
+		if (placeable && !par1World.isRemote)
 		{
 			if (par1World.provider instanceof WorldProviderOrbit)
 			{
 				WorldProviderOrbit worldOrbital = (WorldProviderOrbit) par1World.provider;
-				worldOrbital.addThruster(new BlockVec3(x,y,z), true);
-				if (worldOrbital.checkSS(baseBlock))
-					worldOrbital.updateSpinSpeed();
+				//worldOrbital.addThruster(new BlockVec3(x,y,z), true);
+				worldOrbital.checkSS(baseBlock, true);
 			}
 		}
 		
@@ -259,7 +259,7 @@ public class BlockSpinThruster extends BlockAdvanced
 	public MovingObjectPosition collisionRayTrace(World par1World, int x, int y, int z, Vec3 par5Vec3, Vec3 par6Vec3)
 	{
 		final int var7 = par1World.getBlockMetadata(x, y, z) & 7;
-		float var8 = 0.15F;
+		float var8 = 0.3F;
 
 		if (var7 == 1)
 		{
@@ -356,7 +356,9 @@ public class BlockSpinThruster extends BlockAdvanced
 			if (world.provider instanceof WorldProviderOrbit)
 			{
 				WorldProviderOrbit worldOrbital = (WorldProviderOrbit) world.provider;
-				worldOrbital.removeThruster(new BlockVec3(x,y,z), facing == 0);
+				BlockVec3 baseBlock = new BlockVec3(x,y,z);
+				worldOrbital.removeThruster(baseBlock, facing == 0);
+				worldOrbital.updateSpinSpeed();
 			}
 		}
 	}
