@@ -237,6 +237,7 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 			}
 			
 			//Update entity positions if in freefall
+			if (this.angularVelocityRadians!=0F)
 			for(Object obj : this.worldObj.loadedEntityList)
 			{
 				Entity e = (Entity) obj;
@@ -446,11 +447,10 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 			//Player is somewhere within the space station boundaries
 
 			//This is an "on the ground" check
-			int playerFeetOnY = MathHelper.floor_double(p.boundingBox.minY-0.001D);  
+			int playerFeetOnY = (int)(p.boundingBox.minY-0.001D);  
 			Block b = this.worldObj.getBlock(MathHelper.floor_double(p.posX), playerFeetOnY, MathHelper.floor_double(p.posX));
 			double blockYmax = b.getBlockBoundsMaxY() + playerFeetOnY;
-			if (p.boundingBox.minY - blockYmax < 0.001D)
-
+			if (b!=Blocks.air && p.boundingBox.minY - blockYmax < 0.001D)
 				freefall = false;
 			else
 			{
@@ -541,7 +541,7 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 							}
 			}
 		}
-		if (freefall)
+		if (freefall && this.angularVelocityRadians!=0F)
 		{
 			//TODO because player is in free-fall here maybe disable deceleration or special flight mode?
 			//Arm and leg movements could start tumbling the player?
@@ -664,23 +664,28 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 		List<BlockVec3> foundThrusters = new LinkedList<BlockVec3>();;
 
 		if (this.oneSSBlock == null || oneSSBlock.getBlockID(this.worldObj)==Blocks.air)
-			this.oneSSBlock = baseBlock.clone();
+		{	
+			if (baseBlock != null)
+				this.oneSSBlock = baseBlock.clone();
+			else
+				this.oneSSBlock = new BlockVec3(0,64,0);
+		}
 		
 		this.checked.clear();
 		currentLayer.add(this.oneSSBlock.clone());
 		this.checked.add(this.oneSSBlock.clone());
 
 		float thismass = 0.1F;  //Mass of a thruster
-		float thismassCentreX = 0.1F * baseBlock.x;
-		float thismassCentreY = 0.1F * baseBlock.y;
-		float thismassCentreZ = 0.1F * baseBlock.z;
+		float thismassCentreX = 0.1F * this.oneSSBlock.x;
+		float thismassCentreY = 0.1F * this.oneSSBlock.y;
+		float thismassCentreZ = 0.1F * this.oneSSBlock.z;
 		float thismoment = 0F;
-		int thisssBoundsMaxX = baseBlock.x;
-		int thisssBoundsMinX = baseBlock.x;
-		int thisssBoundsMaxY = baseBlock.y;
-		int thisssBoundsMinY = baseBlock.y;
-		int thisssBoundsMaxZ = baseBlock.z;
-		int thisssBoundsMinZ = baseBlock.z;
+		int thisssBoundsMaxX = this.oneSSBlock.x;
+		int thisssBoundsMinX = this.oneSSBlock.x;
+		int thisssBoundsMaxY = this.oneSSBlock.y;
+		int thisssBoundsMinY = this.oneSSBlock.y;
+		int thisssBoundsMaxZ = this.oneSSBlock.z;
+		int thisssBoundsMinZ = this.oneSSBlock.z;
 		
 		while (currentLayer.size() > 0)
 		{
