@@ -22,6 +22,10 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityFallingBlock;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -231,6 +235,62 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 				objList.add(Boolean.valueOf(this.thrustersFiring));
 				GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_STATION_SPIN, objList), this.spaceStationDimensionID);
 			}
+			
+			//Update entity positions if in freefall
+			for(Object obj : this.worldObj.loadedEntityList)
+			{
+				Entity e = (Entity) obj;
+				if ((e instanceof EntityItem || e instanceof EntityLivingBase || e instanceof EntityTNTPrimed || e instanceof EntityFallingBlock) && !e.onGround)
+				{
+					boolean freefall = true;
+					if (e.boundingBox.maxX >= this.ssBoundsMinX && e.boundingBox.minX <= this.ssBoundsMaxX && e.boundingBox.maxY >= this.ssBoundsMinY && e.boundingBox.minY <= this.ssBoundsMaxY && e.boundingBox.maxZ >= this.ssBoundsMinZ && e.boundingBox.minZ <= this.ssBoundsMaxZ)
+					{
+						//Entity is somewhere within the space station boundaries
+
+						//Check if the entity's bounding box is in the same block coordinates as any non-vacuum block (including torches etc)
+						//If so, it's assumed the entity has something close enough to catch onto, so is not in freefall
+						//Note: breatheable air here means the entity is definitely not in freefall
+						int xx = MathHelper.floor_double(e.boundingBox.maxX);
+						int ym = MathHelper.floor_double(e.boundingBox.minY);
+						int yy = MathHelper.floor_double(e.boundingBox.maxY);
+						int zm = MathHelper.floor_double(e.boundingBox.minZ);
+						int zz = MathHelper.floor_double(e.boundingBox.maxZ);
+						BLOCKCHECK:
+						for (int x = MathHelper.floor_double(e.boundingBox.minX); x<=xx; x++)
+							for (int y = ym; y<=yy; y++)
+								for (int z = zm; z<=zz; z++)
+								{
+									if (this.worldObj.getBlock(x, y, z) != Blocks.air)
+									{
+										freefall = false;
+										break BLOCKCHECK;
+									}
+								}
+					}
+					if (freefall)
+					{
+						float angle;
+						double xx = e.posX-this.spinCentreX;
+						double zz = e.posZ-this.spinCentreZ;
+						double arc = Math.sqrt(xx*xx + zz*zz);
+						if (xx == 0D) angle = (zz > 0) ? 3.141592536F/2 : -3.141592536F/2;
+						else angle = (float)Math.atan(zz/xx);
+						if (xx < 0D) angle += 3.141592536F;
+						angle += this.angularVelocityRadians/3F;
+						arc = arc*this.angularVelocityRadians;
+						double offsetX = - arc * MathHelper.sin(angle);
+						double offsetZ = arc * MathHelper.cos(angle);
+						e.posX += offsetX;
+						e.posZ += offsetZ;
+						e.boundingBox.offset(offsetX, 0.0D, offsetZ);
+						//TODO check for block collisions here - if so move the entity appropriately and apply fall damage
+						//Moving the entity = slide along / down
+						
+						e.rotationYaw += this.skyAngularVelocity;
+						while (e.rotationYaw > 360F) e.rotationYaw -= 360F;	
+					}
+				}
+		 	}
 		}
 	}
 
@@ -397,10 +457,15 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 				//Check if the player's bounding box is in the same block coordinates as any non-vacuum block (including torches etc)
 				//If so, it's assumed the player has something close enough to grab onto, so is not in freefall
 				//Note: breatheable air here means the player is definitely not in freefall
+				int xx = MathHelper.floor_double(p.boundingBox.maxX);
+				int ym = MathHelper.floor_double(p.boundingBox.minY);
+				int yy = MathHelper.floor_double(p.boundingBox.maxY);
+				int zm = MathHelper.floor_double(p.boundingBox.minZ);
+				int zz = MathHelper.floor_double(p.boundingBox.maxZ);
 				BLOCKCHECK:
-				for (int x = MathHelper.floor_double(p.boundingBox.minX); x<=MathHelper.floor_double(p.boundingBox.maxX); x++)
-					for (int y = MathHelper.floor_double(p.boundingBox.minY); y<=MathHelper.floor_double(p.boundingBox.maxY); y++)
-						for (int z = MathHelper.floor_double(p.boundingBox.minZ); z<=MathHelper.floor_double(p.boundingBox.maxZ); z++)
+					for (int x = MathHelper.floor_double(p.boundingBox.minX); x<=xx; x++)
+						for (int y = ym; y<=yy; y++)
+							for (int z = zm; z<=zz; z++)
 						{
 							if (this.worldObj.getBlock(x, y, z) != Blocks.air)
 							{
@@ -902,5 +967,4 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 	}
 
 	//TODO Occasional call to checkSS to update centre of mass etc (in case the player has been building)
-	//TODO Move other entities which are in freefall, especially mobs
 }
