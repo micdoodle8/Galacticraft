@@ -16,6 +16,7 @@ import micdoodle8.mods.galacticraft.core.network.NetworkUtil;
 import micdoodle8.mods.galacticraft.core.network.PacketControllableEntity;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.network.PacketEntityUpdate;
+import micdoodle8.mods.galacticraft.core.network.PacketEntityUpdate.IEntityFullSync;
 import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityBuggyFueler;
 import net.minecraft.client.model.ModelBase;
@@ -50,7 +51,7 @@ import cpw.mods.fml.relauncher.Side;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, IDockable, IControllableEntity
+public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, IDockable, IControllableEntity, IEntityFullSync
 {
 	private final int tankCapacity = 1000;
 	public FluidTank buggyFuelTank = new FluidTank(this.tankCapacity);
@@ -173,6 +174,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
 		}
 	}
 
+	@Override
 	public void setPositionRotationAndMotion(double x, double y, double z, float yaw, float pitch, double motX, double motY, double motZ, boolean onGround)
 	{
 		if (this.worldObj.isRemote)

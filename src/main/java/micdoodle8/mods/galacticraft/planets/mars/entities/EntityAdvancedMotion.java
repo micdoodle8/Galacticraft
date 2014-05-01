@@ -15,6 +15,7 @@ import micdoodle8.mods.galacticraft.core.entities.InventoryEntity;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.network.PacketEntityUpdate;
+import micdoodle8.mods.galacticraft.core.network.PacketEntityUpdate.IEntityFullSync;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import net.minecraft.client.Minecraft;
@@ -41,7 +42,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public abstract class EntityAdvancedMotion extends InventoryEntity implements IPacketReceiver, IControllableEntity
+public abstract class EntityAdvancedMotion extends InventoryEntity implements IPacketReceiver, IControllableEntity, IEntityFullSync
 {
 	protected long ticks = 0;
 
@@ -121,6 +122,7 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IP
 		}
 	}
 
+	@Override
 	public void setPositionRotationAndMotion(double x, double y, double z, float yaw, float pitch, double motX, double motY, double motZ, boolean onGround)
 	{
 		if (this.worldObj.isRemote)

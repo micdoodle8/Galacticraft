@@ -79,10 +79,15 @@ public class PacketEntityUpdate implements IPacket
 	{
 		Entity entity = world.getEntityByID(this.entityID);
 
-		if (entity instanceof EntityBuggy)
+		if (entity instanceof IEntityFullSync)
 		{
-			EntityBuggy controllable = (EntityBuggy) entity;
+			IEntityFullSync controllable = (IEntityFullSync) entity;
 			controllable.setPositionRotationAndMotion(this.position.x, this.position.y, this.position.z, this.rotationYaw, this.rotationPitch, this.motion.x, this.motion.y, this.motion.z, this.onGround);
 		}
+	}
+	
+	public interface IEntityFullSync
+	{
+		public void setPositionRotationAndMotion(double x, double y, double z, float yaw, float pitch, double motX, double motY, double motZ, boolean onGround);
 	}
 }

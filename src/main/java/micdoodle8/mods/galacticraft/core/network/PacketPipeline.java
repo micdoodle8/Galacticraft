@@ -66,7 +66,7 @@ public class PacketPipeline extends MessageToMessageCodec<FMLProxyPacket, IPacke
 
 		if (this.isPostInitialised)
 		{
-			// You should log here!!
+			GCLog.severe("Packet Registration failed: Already post-initialized!");
 			return false;
 		}
 
@@ -137,7 +137,6 @@ public class PacketPipeline extends MessageToMessageCodec<FMLProxyPacket, IPacke
 	public void registerPackets()
 	{
 		this.registerPacket(PacketSimple.class);
-		this.registerPacket(PacketEntityUpdate.class);
 		this.registerPacket(PacketRotateRocket.class);
 		this.registerPacket(PacketDynamic.class);
 		this.registerPacket(PacketControllableEntity.class);
