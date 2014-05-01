@@ -11,6 +11,7 @@ import micdoodle8.mods.galacticraft.core.client.fx.EntityFXLanderFlame;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamicInventory;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
@@ -45,7 +46,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class EntityLander extends InventoryEntity implements IInventorySettable, IScaleableFuelLevel, IControllableEntity
+public class EntityLander extends InventoryEntity implements IInventorySettable, IScaleableFuelLevel, IControllableEntity, IPacketReceiver
 {
 	private final int tankCapacity = 5000;
 	public FluidTank fuelTank = new FluidTank(this.tankCapacity);

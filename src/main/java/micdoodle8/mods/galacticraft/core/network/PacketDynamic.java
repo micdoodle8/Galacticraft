@@ -9,8 +9,10 @@ import java.util.ArrayList;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 
@@ -81,6 +83,11 @@ public class PacketDynamic implements IPacket
 		this.dimID = buffer.readInt();
 
 		World world = GalacticraftCore.proxy.getWorldForID(dimID);
+		
+		if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER)
+		{
+			world = MinecraftServer.getServer().worldServerForDimension(dimID);
+		}
 		
 		if (world == null)
 		{
