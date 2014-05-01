@@ -212,6 +212,7 @@ public class OxygenNetwork implements IOxygenNetwork
 				if (transmitter == null)
 				{
 					it.remove();
+					continue;
 				}
 
 				transmitter.onNetworkChanged();

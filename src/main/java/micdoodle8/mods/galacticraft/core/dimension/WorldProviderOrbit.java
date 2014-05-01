@@ -238,7 +238,6 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 			}
 			
 			//Update entity positions if in freefall
-			if (this.angularVelocityRadians!=0F)
 			for(Object obj : this.worldObj.loadedEntityList)
 			{
 				Entity e = (Entity) obj;
@@ -252,13 +251,13 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 						//Check if the entity's bounding box is in the same block coordinates as any non-vacuum block (including torches etc)
 						//If so, it's assumed the entity has something close enough to catch onto, so is not in freefall
 						//Note: breatheable air here means the entity is definitely not in freefall
-						int xx = MathHelper.floor_double(e.boundingBox.maxX);
+						int xmx = MathHelper.floor_double(e.boundingBox.maxX);
 						int ym = MathHelper.floor_double(e.boundingBox.minY);
 						int yy = MathHelper.floor_double(e.boundingBox.maxY);
 						int zm = MathHelper.floor_double(e.boundingBox.minZ);
 						int zz = MathHelper.floor_double(e.boundingBox.maxZ);
 						BLOCKCHECK:
-						for (int x = MathHelper.floor_double(e.boundingBox.minX); x<=xx; x++)
+						for (int x = MathHelper.floor_double(e.boundingBox.minX); x<=xmx; x++)
 							for (int y = ym; y<=yy; y++)
 								for (int z = zm; z<=zz; z++)
 								{
@@ -273,24 +272,27 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 					if (freefall)
 					{
 						//Do the rotation
-						float angle;
-						double xx = e.posX-this.spinCentreX;
-						double zz = e.posZ-this.spinCentreZ;
-						double arc = Math.sqrt(xx*xx + zz*zz);
-						if (xx == 0D) angle = (zz > 0) ? 3.141592536F/2 : -3.141592536F/2;
-						else angle = (float)Math.atan(zz/xx);
-						if (xx < 0D) angle += 3.141592536F;
-						angle += this.angularVelocityRadians/3F;
-						arc = arc*this.angularVelocityRadians;
-						double offsetX = - arc * MathHelper.sin(angle);
-						double offsetZ = arc * MathHelper.cos(angle);
-						e.posX += offsetX;
-						e.posZ += offsetZ;
-						e.boundingBox.offset(offsetX, 0.0D, offsetZ);
-						//TODO check for block collisions here - if so move the entity appropriately and apply fall damage
-						//Moving the entity = slide along / down		
-						e.rotationYaw += this.skyAngularVelocity;
-						while (e.rotationYaw > 360F) e.rotationYaw -= 360F;
+						if (this.angularVelocityRadians!=0F)
+						{
+							float angle;
+							final double xx = e.posX-this.spinCentreX;
+							final double zz = e.posZ-this.spinCentreZ;
+							double arc = Math.sqrt(xx*xx + zz*zz);
+							if (xx == 0D) angle = (zz > 0) ? 3.141592536F/2 : -3.141592536F/2;
+							else angle = (float)Math.atan(zz/xx);
+							if (xx < 0D) angle += 3.141592536F;
+							angle += this.angularVelocityRadians/3F;
+							arc = arc*this.angularVelocityRadians;
+							final double offsetX = - arc * MathHelper.sin(angle);
+							final double offsetZ = arc * MathHelper.cos(angle);
+							e.posX += offsetX;
+							e.posZ += offsetZ;
+							e.boundingBox.offset(offsetX, 0.0D, offsetZ);
+							//TODO check for block collisions here - if so move the entity appropriately and apply fall damage
+							//Moving the entity = slide along / down		
+							e.rotationYaw += this.skyAngularVelocity;
+							while (e.rotationYaw > 360F) e.rotationYaw -= 360F;
+						}
 						
 						//Undo deceleration  :)
 						if (e instanceof EntityLivingBase)
@@ -475,13 +477,13 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 				//Check if the player's bounding box is in the same block coordinates as any non-vacuum block (including torches etc)
 				//If so, it's assumed the player has something close enough to grab onto, so is not in freefall
 				//Note: breatheable air here means the player is definitely not in freefall
-				int xx = MathHelper.floor_double(p.boundingBox.maxX);
+				int xmx = MathHelper.floor_double(p.boundingBox.maxX);
 				int ym = MathHelper.floor_double(p.boundingBox.minY);
 				int yy = MathHelper.floor_double(p.boundingBox.maxY);
 				int zm = MathHelper.floor_double(p.boundingBox.minZ);
 				int zz = MathHelper.floor_double(p.boundingBox.maxZ);
 				BLOCKCHECK:
-					for (int x = MathHelper.floor_double(p.boundingBox.minX); x<=xx; x++)
+					for (int x = MathHelper.floor_double(p.boundingBox.minX); x<=xmx; x++)
 						for (int y = ym; y<=yy; y++)
 							for (int z = zm; z<=zz; z++)
 						{
@@ -559,37 +561,34 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 							}
 			}
 		}
-		if (freefall && this.angularVelocityRadians!=0F)
+		if (freefall)
 		{
-			//TODO because player is in free-fall here maybe disable deceleration or special flight mode?
-			//Arm and leg movements could start tumbling the player?
-			//Player may run out of oxygen - that will kill the player eventually if can't get back to SS
-			//Maybe player needs a 'suicide' button if floating helplessly in space and with no tether
-			//Could auto-kill + respawn the player if floats too far away (config option whether to lose items or not)
-			//But we want players to be able to enjoy the view of the spinning space station from the outside
-			
-			//TODO maybe need to test to make sure xx and zz are not too large (outside sight range of SS)
-			//TODO think about server + network load (loading/unloading chunks) when movement is rapid
-			//Maybe reduce chunkloading radius?
-			float angle;
-			double xx = p.posX-this.spinCentreX;
-			double zz = p.posZ-this.spinCentreZ;
-			double arc = Math.sqrt(xx*xx + zz*zz);
-			if (xx == 0D) angle = (zz > 0) ? 3.141592536F/2 : -3.141592536F/2;
-			else angle = (float)Math.atan(zz/xx);
-			if (xx < 0D) angle += 3.141592536F;
-			angle += this.angularVelocityRadians/3F;
-			arc = arc*this.angularVelocityRadians;
-			double offsetX = - arc * MathHelper.sin(angle);
-			double offsetZ = arc * MathHelper.cos(angle);
-			p.posX += offsetX;
-			p.posZ += offsetZ;
-			p.boundingBox.offset(offsetX, 0.0D, offsetZ);
-			//TODO check for block collisions here - if so move the player appropriately and apply fall damage
-			//Moving the player = slide along / down
-			
-			p.rotationYaw += this.skyAngularVelocity;
-			while (p.rotationYaw > 360F) p.rotationYaw -= 360F;	
+			//Do spinning
+			if (this.angularVelocityRadians!=0F)
+			{
+				//TODO maybe need to test to make sure xx and zz are not too large (outside sight range of SS)
+				//TODO think about server + network load (loading/unloading chunks) when movement is rapid
+				//Maybe reduce chunkloading radius?
+				float angle;
+				final double xx = p.posX-this.spinCentreX;
+				final double zz = p.posZ-this.spinCentreZ;
+				double arc = Math.sqrt(xx*xx + zz*zz);
+				if (xx == 0D) angle = (zz > 0) ? 3.141592536F/2 : -3.141592536F/2;
+				else angle = (float)Math.atan(zz/xx);
+				if (xx < 0D) angle += 3.141592536F;
+				angle += this.angularVelocityRadians/3F;
+				arc = arc*this.angularVelocityRadians;
+				final double offsetX = - arc * MathHelper.sin(angle);
+				final double offsetZ = arc * MathHelper.cos(angle);
+				p.posX += offsetX;
+				p.posZ += offsetZ;
+				p.boundingBox.offset(offsetX, 0.0D, offsetZ);
+				//TODO check for block collisions here - if so move the player appropriately and apply fall damage
+				//Moving the player = slide along / down
+				
+				p.rotationYaw += this.skyAngularVelocity;
+				while (p.rotationYaw > 360F) p.rotationYaw -= 360F;
+			}
 
 			//Reverse effects of deceleration
 			p.motionX /= 0.91F;
@@ -599,6 +598,15 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 			if (p.motionX < -1.2F) p.motionX = -1.2F;
 			if (p.motionZ > 1.2F) p.motionZ = 1.2F;
 			if (p.motionZ < -1.2F) p.motionZ = -1.2F;
+
+			//TODO: Think about endless drift?
+			//Player may run out of oxygen - that will kill the player eventually if can't get back to SS
+			//Maybe player needs a 'suicide' button if floating helplessly in space and with no tether
+			//Could auto-kill + respawn the player if floats too far away (config option whether to lose items or not)
+			//But we want players to be able to enjoy the view of the spinning space station from the outside
+			
+			//TODO: Fix arm and leg movements so they don't move in freefall
+			//Arm and leg movements could start tumbling the player?
 		}
 	}
 	
@@ -688,7 +696,7 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 		// Find contiguous blocks using an algorithm like the oxygen sealer one
 		List<BlockVec3> currentLayer = new LinkedList<BlockVec3>();
 		List<BlockVec3> nextLayer = new LinkedList<BlockVec3>();
-		List<BlockVec3> foundThrusters = new LinkedList<BlockVec3>();;
+		final List<BlockVec3> foundThrusters = new LinkedList<BlockVec3>();;
 
 		if (this.oneSSBlock == null || oneSSBlock.getBlockID(this.worldObj)==Blocks.air)
 		{	
@@ -701,6 +709,8 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 		this.checked.clear();
 		currentLayer.add(this.oneSSBlock.clone());
 		this.checked.add(this.oneSSBlock.clone());
+		Block bStart = this.oneSSBlock.getBlockID(this.worldObj);
+		if (bStart instanceof BlockSpinThruster) foundThrusters.add(this.oneSSBlock);
 
 		float thismass = 0.1F;  //Mass of a thruster
 		float thismassCentreX = 0.1F * this.oneSSBlock.x;
@@ -780,7 +790,7 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 			//No thruster on the original space station - so assume the player made new station and start check again
 			//This offers players a reset option: just remove all thrusters from original station then starting adding to new one
 			//(This first check prevents an infinite loop)
-			if (!baseBlock.equals(this.oneSSBlock))
+			if (!this.oneSSBlock.equals(baseBlock))
 			{
 				this.oneSSBlock = baseBlock.clone();
 				if (oneSSBlock.getBlockID(this.worldObj)!=Blocks.air) return this.checkSS(baseBlock, true);
@@ -808,7 +818,7 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 		this.massCentreX = thismassCentreX / thismass + 0.5F;
 		this.massCentreY = thismassCentreY / thismass + 0.5F;
 		this.massCentreZ = thismassCentreZ / thismass + 0.5F;
-		System.out.println("(X,Z) = "+this.massCentreX+","+this.massCentreZ);
+		//System.out.println("(X,Z) = "+this.massCentreX+","+this.massCentreZ);
 
 		setSpinCentre(this.massCentreX, this.massCentreZ);
 		
@@ -911,7 +921,6 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 			} else
 			{
 				this.writeToNBT(this.savefile.datacompound);
-				System.out.println(this.savefile.datacompound.getFloat("omegaSky"));
 				this.savefile.markDirty();
 			}
 		}
