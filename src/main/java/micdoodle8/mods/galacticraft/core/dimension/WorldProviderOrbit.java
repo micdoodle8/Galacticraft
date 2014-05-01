@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.dimension;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -9,12 +10,15 @@ import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.world.IExitHeight;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.client.SkyProviderOrbit;
 import micdoodle8.mods.galacticraft.core.command.CommandGCInv;
 import micdoodle8.mods.galacticraft.core.command.GCInvSaveData;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.oxygen.ThreadFindSeal;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenSealer;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
@@ -24,6 +28,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -205,31 +210,36 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 				
 				//TODO: send packet to clients in this dimension
 			}
-		}
 			
-		if (this.angularVelocityTarget < this.angularVelocityRadians)
-		{
-			float newAngle = this.angularVelocityRadians - this.angularVelocityAccel;
-			if (newAngle < this.angularVelocityTarget) newAngle = this.angularVelocityTarget;
-			setSpinRate(newAngle);
-			this.thrustersFiring = true;
-		} else if (this.angularVelocityTarget > this.angularVelocityRadians)
-		{
-			float newAngle = this.angularVelocityRadians + this.angularVelocityAccel;
-			if (newAngle > this.angularVelocityTarget) newAngle = this.angularVelocityTarget;
-			setSpinRate(newAngle);
-			this.thrustersFiring = true;
-		} else this.thrustersFiring = false;
-	
-		if (!this.worldObj.isRemote)
-		{
+			boolean updateNeeded = true;
+			if (this.angularVelocityTarget < this.angularVelocityRadians)
+			{
+				float newAngle = this.angularVelocityRadians - this.angularVelocityAccel;
+				if (newAngle < this.angularVelocityTarget) newAngle = this.angularVelocityTarget;
+				setSpinRate(newAngle);
+				this.thrustersFiring = true;
+			} else if (this.angularVelocityTarget > this.angularVelocityRadians)
+			{
+				float newAngle = this.angularVelocityRadians + this.angularVelocityAccel;
+				if (newAngle > this.angularVelocityTarget) newAngle = this.angularVelocityTarget;
+				setSpinRate(newAngle);
+				this.thrustersFiring = true;
+			} else
 			if (this.thrustersFiring)
 			{
+				this.thrustersFiring = false;
+			} else
+				updateNeeded = false;
+	
+			if (updateNeeded)
+			{
 				this.writeToNBT(this.savefile.datacompound);
-				System.out.println(this.savefile.datacompound.getFloat("omegaSky"));
 				this.savefile.markDirty();
 				
-				//TODO: send packet to clients in this dimension
+				List<Object> objList = new ArrayList<Object>();
+				objList.add(Float.valueOf(this.angularVelocityRadians));
+				objList.add(Boolean.valueOf(this.thrustersFiring));
+				GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_STATION_SPIN, objList), this.spaceStationDimensionID);
 			}
 		}
 	}
@@ -315,7 +325,7 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 	@Override
 	public float getGravity()
 	{
-		return 0.079F;//0.073F;
+		return 0.078F;//0.073F;
 	}
 
 	@Override
@@ -523,10 +533,29 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 		if (sky instanceof SkyProviderOrbit) ((SkyProviderOrbit)sky).spinDeltaPerTick = this.skyAngularVelocity;
 	}
 	
+	public void setSpinRate(float angle, boolean firing)
+	{
+		this.angularVelocityRadians = angle;
+		this.skyAngularVelocity = angle * 180F / 3.1415927F;
+		IRenderHandler sky = this.getSkyRenderer();
+		if (sky instanceof SkyProviderOrbit) ((SkyProviderOrbit)sky).spinDeltaPerTick = this.skyAngularVelocity;
+		this.thrustersFiring = firing;
+	}
+	
 	public void setSpinCentre(double x, double z)
 	{
 		this.spinCentreX = x;
 		this.spinCentreZ = z;
+	}
+	
+	public void setSpinBox(int mx, int xx, int my, int yy, int mz, int zz)
+	{
+		this.ssBoundsMinX = mx;
+		this.ssBoundsMaxX = xx;
+		this.ssBoundsMinY = my;
+		this.ssBoundsMaxY = yy;
+		this.ssBoundsMinZ = mz;
+		this.ssBoundsMaxZ = zz;
 	}
 
 	public void addThruster(BlockVec3 thruster, boolean positive)
@@ -635,7 +664,7 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 			//The thruster was not placed on the existing contiguous spacestation: it must be.
 			this.thrustersPlus.remove(baseBlock);
 			this.thrustersMinus.remove(baseBlock);
-			System.out.println("Returning false");
+			System.out.println("Returning false: oneSSBlock was "+oneSSBlock.x+","+oneSSBlock.y+","+oneSSBlock.z);
 			return false;
 		}
 
@@ -671,6 +700,21 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 		
 		System.out.println("MoI = "+this.momentOfInertia+" CoMx = "+this.massCentreX+" CoMz = "+this.massCentreZ);
 
+		//Send packets to clients in this dimension			
+		List<Object> objList = new ArrayList<Object>();
+		objList.add(Double.valueOf(this.spinCentreX));
+		objList.add(Double.valueOf(this.spinCentreZ));
+		GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_STATION_DATA, objList), this.spaceStationDimensionID);
+
+		objList = new ArrayList<Object>();
+		objList.add(Integer.valueOf(this.ssBoundsMinX));
+		objList.add(Integer.valueOf(this.ssBoundsMaxX));
+		objList.add(Integer.valueOf(this.ssBoundsMinY));
+		objList.add(Integer.valueOf(this.ssBoundsMaxY));
+		objList.add(Integer.valueOf(this.ssBoundsMinZ));
+		objList.add(Integer.valueOf(this.ssBoundsMaxZ));
+		GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_STATION_BOX, objList), this.spaceStationDimensionID);
+
 		return true;
 	}
 
@@ -683,6 +727,7 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 			
 			for(BlockVec3 thruster : thrustersPlus)
 			{
+				//TODO check the block is still a thruster
 				float xx = (float)thruster.x - this.massCentreX;
 				float zz = (float)thruster.z - this.massCentreZ;
 				netTorque+= MathHelper.sqrt_float(xx*xx+zz*zz);
@@ -690,6 +735,7 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 			}
 			for(BlockVec3 thruster : thrustersMinus)
 			{
+				//TODO check the block is still a thruster
 				float xx = thruster.x - this.massCentreX;
 				float zz = thruster.z - this.massCentreZ;
 				netTorque-= MathHelper.sqrt_float(xx*xx+zz*zz);
@@ -735,8 +781,6 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 				System.out.println(this.savefile.datacompound.getFloat("omegaSky"));
 				this.savefile.markDirty();
 			}
-			
-			//TODO: send packet to clients in this dimension
 		}
 	}
 	
@@ -796,6 +840,26 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 			this.oneSSBlock = null;
 
 		setSpinCentre(this.massCentreX, this.massCentreZ);
+		
+		//Send packets to clients in this dimension
+		List<Object> objList = new ArrayList<Object>();
+		objList.add(Float.valueOf(this.angularVelocityRadians));
+		objList.add(Boolean.valueOf(this.thrustersFiring));
+		GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_STATION_SPIN, objList), this.spaceStationDimensionID);
+		
+		objList = new ArrayList<Object>();
+		objList.add(Double.valueOf(this.spinCentreX));
+		objList.add(Double.valueOf(this.spinCentreZ));
+		GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_STATION_DATA, objList), this.spaceStationDimensionID);
+
+		objList = new ArrayList<Object>();
+		objList.add(Integer.valueOf(this.ssBoundsMinX));
+		objList.add(Integer.valueOf(this.ssBoundsMaxX));
+		objList.add(Integer.valueOf(this.ssBoundsMinY));
+		objList.add(Integer.valueOf(this.ssBoundsMaxY));
+		objList.add(Integer.valueOf(this.ssBoundsMinZ));
+		objList.add(Integer.valueOf(this.ssBoundsMaxZ));
+		GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_STATION_BOX, objList), this.spaceStationDimensionID);
 	}
 
 	public void writeToNBT(NBTTagCompound nbt)
@@ -843,6 +907,29 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 		}
 	}
 
-	//TODO Need to send station NBT data server->client when client login
-	//TODO Generally check if if world.isRemote is needed
+	//TODO will this still work with other mods / plugins teleports (e.g. Bukkit)? See WorldUtil.teleportEntity()
+	//Call this when client first login/transfer to this dimension
+	public void sendPacketsToClient(EntityPlayerMP player)
+	{
+		List<Object> objList = new ArrayList<Object>();
+		objList.add(Float.valueOf(this.angularVelocityRadians));
+		objList.add(Boolean.valueOf(this.thrustersFiring));
+		GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_STATION_SPIN, objList), player);
+		
+		objList = new ArrayList<Object>();
+		objList.add(Double.valueOf(this.spinCentreX));
+		objList.add(Double.valueOf(this.spinCentreZ));
+		GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_STATION_DATA, objList), player);
+
+		objList = new ArrayList<Object>();
+		objList.add(Integer.valueOf(this.ssBoundsMinX));
+		objList.add(Integer.valueOf(this.ssBoundsMaxX));
+		objList.add(Integer.valueOf(this.ssBoundsMinY));
+		objList.add(Integer.valueOf(this.ssBoundsMaxY));
+		objList.add(Integer.valueOf(this.ssBoundsMinZ));
+		objList.add(Integer.valueOf(this.ssBoundsMaxZ));
+		GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_STATION_BOX, objList), player);
+	}
+
+	//TODO Occasional call to checkSS to update centre of mass etc (in case the player has been building)
 }

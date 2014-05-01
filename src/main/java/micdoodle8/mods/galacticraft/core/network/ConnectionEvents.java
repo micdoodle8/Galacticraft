@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.network;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
@@ -39,6 +40,11 @@ public class ConnectionEvents
 		if (event.player instanceof GCEntityPlayerMP)
 		{
 			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_CLIENT_ID, new Object[] { ((GCEntityPlayerMP) event.player).getSpaceStationDimensionID() }), (EntityPlayerMP) event.player);
+		}
+		
+		if (event.player.worldObj.provider instanceof WorldProviderOrbit && event.player instanceof EntityPlayerMP)
+		{
+			((WorldProviderOrbit)event.player.worldObj.provider).sendPacketsToClient((EntityPlayerMP) event.player);
 		}
 	}
 	

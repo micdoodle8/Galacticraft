@@ -544,11 +544,15 @@ public class WorldUtil
 				player.dimension = dimID;
 				player.playerNetServerHandler.sendPacket(new S07PacketRespawn(player.dimension, player.worldObj.difficultySetting, player.worldObj.getWorldInfo().getTerrainType(), player.theItemInWorldManager.getGameType()));
 
-				if (worldNew.provider instanceof WorldProviderOrbit && WorldUtil.registeredSpaceStations.contains(player))
+				if (worldNew.provider instanceof WorldProviderOrbit)
 				{
-					NBTTagCompound var2 = new NBTTagCompound();
-					SpaceStationWorldData.getStationData(worldNew, dimID, player).writeToNBT(var2);
-					GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_DATA, new Object[] { dimID, var2 }), player);
+					((WorldProviderOrbit)worldNew.provider).sendPacketsToClient(player);
+					if (WorldUtil.registeredSpaceStations.contains(player))
+					{
+						NBTTagCompound var2 = new NBTTagCompound();
+						SpaceStationWorldData.getStationData(worldNew, dimID, player).writeToNBT(var2);
+						GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_DATA, new Object[] { dimID, var2 }), player);
+					}
 				}
 
 				((WorldServer) entity.worldObj).getPlayerManager().removePlayer(player);

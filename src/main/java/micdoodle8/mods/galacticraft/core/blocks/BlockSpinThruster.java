@@ -9,7 +9,6 @@ import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAluminumWire;
-import micdoodle8.mods.galacticraft.core.tile.TileEntitySpinThruster;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -137,7 +136,7 @@ public class BlockSpinThruster extends BlockAdvanced
 			var10 = 1;
 		}
 
-		if (baseBlock != null)
+		if (baseBlock != null && !par1World.isRemote)
 		{
 			if (par1World.provider instanceof WorldProviderOrbit)
 			{
@@ -334,7 +333,7 @@ public class BlockSpinThruster extends BlockAdvanced
 		final int change = facing ^ 8;
 
 		world.setBlockMetadataWithNotify(x, y, z, change, 3);
-		if (world.provider instanceof WorldProviderOrbit)
+		if (world.provider instanceof WorldProviderOrbit && !world.isRemote)
 		{
 			WorldProviderOrbit worldOrbital = (WorldProviderOrbit) world.provider;
 			worldOrbital.addThruster(new BlockVec3(x,y,z), change == 0);
@@ -351,11 +350,14 @@ public class BlockSpinThruster extends BlockAdvanced
 	@Override
 	public void onBlockPreDestroy(World world, int x, int y, int z, int metadata)
 	{
-		final int facing = metadata & 8;
-		if (world.provider instanceof WorldProviderOrbit)
+		if (!world.isRemote)
 		{
-			WorldProviderOrbit worldOrbital = (WorldProviderOrbit) world.provider;
-			worldOrbital.removeThruster(new BlockVec3(x,y,z), facing == 0);
+			final int facing = metadata & 8;
+			if (world.provider instanceof WorldProviderOrbit)
+			{
+				WorldProviderOrbit worldOrbital = (WorldProviderOrbit) world.provider;
+				worldOrbital.removeThruster(new BlockVec3(x,y,z), facing == 0);
+			}
 		}
 	}
 

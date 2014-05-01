@@ -111,7 +111,7 @@ public class GCBlocks
 		GCBlocks.cheeseBlock = new BlockCheese();
 		GCBlocks.beamReflector = new BlockBeamReflector("beamReflector");
 		GCBlocks.beamReceiver = new BlockBeamReceiver("beamReceiver");
-		GCBlocks.beamReceiver = new BlockSpinThruster("spinThruster");
+		GCBlocks.spinThruster = new BlockSpinThruster("spinThruster");
 
 		GCCoreUtil.registerGalacticraftBlock("rocketLaunchPad", GCBlocks.landingPad, 0);
 		GCCoreUtil.registerGalacticraftBlock("buggyFuelingPad", GCBlocks.landingPad, 1);

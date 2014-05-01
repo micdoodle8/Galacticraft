@@ -25,6 +25,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiGalaxyMap;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
 import micdoodle8.mods.galacticraft.core.entities.EntityFlag;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
@@ -121,7 +122,10 @@ public class PacketSimple extends Packet implements IPacket
 		C_UPDATE_WIRE_BOUNDS(Side.CLIENT, Integer.class, Integer.class, Integer.class),
 		C_OPEN_SPACE_RACE_GUI(Side.CLIENT),
 		C_UPDATE_SPACE_RACE_DATA(Side.CLIENT, String.class, FlagData.class, String[].class),
-		C_UPDATE_FOOTPRINT_LIST(Side.CLIENT, Footprint[].class);
+		C_UPDATE_FOOTPRINT_LIST(Side.CLIENT, Footprint[].class),
+		C_UPDATE_STATION_SPIN(Side.CLIENT, Float.class, Boolean.class),
+		C_UPDATE_STATION_DATA(Side.CLIENT, Double.class, Double.class),
+		C_UPDATE_STATION_BOX(Side.CLIENT, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class);
 
 		private Side targetSide;
 		private Class<?>[] decodeAs;
@@ -561,6 +565,34 @@ public class PacketSimple extends Packet implements IPacket
 				Footprint print = (Footprint) this.data.get(i);
 				ClientProxyCore.footprintRenderer.addFootprint(print);
 			}
+			break;
+		case C_UPDATE_STATION_SPIN:
+			if (playerBaseClient != null)
+			{
+				if (playerBaseClient.worldObj.provider instanceof WorldProviderOrbit)
+				{
+					((WorldProviderOrbit)playerBaseClient.worldObj.provider).setSpinRate((Float)this.data.get(0),(Boolean)this.data.get(1));
+				}
+			}
+			break;
+		case C_UPDATE_STATION_DATA:
+			if (playerBaseClient != null)
+			{
+				if (playerBaseClient.worldObj.provider instanceof WorldProviderOrbit)
+				{
+					((WorldProviderOrbit)playerBaseClient.worldObj.provider).setSpinCentre((Double)this.data.get(0),(Double)this.data.get(1));
+				}
+			}
+			break;
+		case C_UPDATE_STATION_BOX:
+			if (playerBaseClient != null)
+			{
+				if (playerBaseClient.worldObj.provider instanceof WorldProviderOrbit)
+				{
+					((WorldProviderOrbit)playerBaseClient.worldObj.provider).setSpinBox((Integer)this.data.get(0),(Integer)this.data.get(1),(Integer)this.data.get(2),(Integer)this.data.get(3),(Integer)this.data.get(4),(Integer)this.data.get(5));
+				}
+			}
+			break;
 		default:
 			break;
 		}
@@ -864,6 +896,7 @@ public class PacketSimple extends Packet implements IPacket
 			{
 				SpaceRaceManager.sendSpaceRaceData(playerBase, playerBase.getGameProfile().getName());
 			}
+			break;
 		case S_REQUEST_FLAG_DATA:
 			SpaceRaceManager.sendSpaceRaceData(playerBase, (String) this.data.get(0));
 		default:
