@@ -899,6 +899,7 @@ public class PacketSimple extends Packet implements IPacket
 			break;
 		case S_REQUEST_FLAG_DATA:
 			SpaceRaceManager.sendSpaceRaceData(playerBase, (String) this.data.get(0));
+			break;
 		default:
 			break;
 		}
