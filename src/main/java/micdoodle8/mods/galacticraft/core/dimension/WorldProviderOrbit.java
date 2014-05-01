@@ -22,6 +22,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityFlying;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityFallingBlock;
 import net.minecraft.entity.item.EntityItem;
@@ -268,8 +269,10 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 									}
 								}
 					}
+
 					if (freefall)
 					{
+						//Do the rotation
 						float angle;
 						double xx = e.posX-this.spinCentreX;
 						double zz = e.posZ-this.spinCentreZ;
@@ -285,10 +288,25 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 						e.posZ += offsetZ;
 						e.boundingBox.offset(offsetX, 0.0D, offsetZ);
 						//TODO check for block collisions here - if so move the entity appropriately and apply fall damage
-						//Moving the entity = slide along / down
-						
+						//Moving the entity = slide along / down		
 						e.rotationYaw += this.skyAngularVelocity;
-						while (e.rotationYaw > 360F) e.rotationYaw -= 360F;	
+						while (e.rotationYaw > 360F) e.rotationYaw -= 360F;
+						
+						//Undo deceleration  :)
+						if (e instanceof EntityLivingBase)
+						{
+							e.motionX /= 0.91F;
+							e.motionZ /= 0.91F;
+							if (e instanceof EntityFlying)
+								e.motionY /= 0.91F;
+							else
+								e.motionY /= 0.9800000190734863D;
+						} else
+						{
+							e.motionX /= 0.9800000190734863D;
+							e.motionY /= 0.9800000190734863D;
+							e.motionZ /= 0.9800000190734863D;
+						}
 					}
 				}
 		 	}
@@ -572,6 +590,15 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 			
 			p.rotationYaw += this.skyAngularVelocity;
 			while (p.rotationYaw > 360F) p.rotationYaw -= 360F;	
+
+			//Reverse effects of deceleration
+			p.motionX /= 0.91F;
+			p.motionZ /= 0.91F;
+			p.motionY /= 0.9800000190734863D;
+			if (p.motionX > 1.2F) p.motionX = 1.2F;
+			if (p.motionX < -1.2F) p.motionX = -1.2F;
+			if (p.motionZ > 1.2F) p.motionZ = 1.2F;
+			if (p.motionZ < -1.2F) p.motionZ = -1.2F;
 		}
 	}
 	
