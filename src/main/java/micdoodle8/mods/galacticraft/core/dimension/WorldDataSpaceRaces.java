@@ -6,7 +6,7 @@ import net.minecraft.world.WorldSavedData;
 
 public class WorldDataSpaceRaces extends WorldSavedData
 {
-	public static final String saveDataID = "GCFlagData";
+	public static final String saveDataID = "GCSpaceRaceData";
 	private NBTTagCompound dataCompound;
 	
 	public WorldDataSpaceRaces(String id)
