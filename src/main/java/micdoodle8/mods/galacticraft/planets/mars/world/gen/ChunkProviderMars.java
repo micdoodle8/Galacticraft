@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedCreeper;
+import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSkeleton;
+import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider;
+import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
 import micdoodle8.mods.galacticraft.core.perlin.generator.Gradient;
 import micdoodle8.mods.galacticraft.core.world.gen.EnumCraterSize;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.MapGenDungeon;
@@ -17,10 +21,6 @@ import micdoodle8.mods.galacticraft.planets.mars.world.gen.dungeon.RoomTreasureM
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSand;
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.EntitySpider;
-import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.IProgressUpdate;
 import net.minecraft.world.World;
@@ -450,10 +450,10 @@ public class ChunkProviderMars extends ChunkProviderGenerate
 		if (par1EnumCreatureType == EnumCreatureType.monster)
 		{
 			final List monsters = new ArrayList();
-			monsters.add(new SpawnListEntry(EntityZombie.class, 8, 2, 3));
-			monsters.add(new SpawnListEntry(EntitySpider.class, 8, 2, 3));
-			monsters.add(new SpawnListEntry(EntitySkeleton.class, 8, 2, 3));
-			monsters.add(new SpawnListEntry(EntityCreeper.class, 8, 2, 3));
+			monsters.add(new SpawnListEntry(EntityEvolvedZombie.class, 8, 2, 3));
+			monsters.add(new SpawnListEntry(EntityEvolvedSpider.class, 8, 2, 3));
+			monsters.add(new SpawnListEntry(EntityEvolvedSkeleton.class, 8, 2, 3));
+			monsters.add(new SpawnListEntry(EntityEvolvedCreeper.class, 8, 2, 3));
 			return monsters;
 		}
 		else

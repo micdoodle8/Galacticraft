@@ -9,7 +9,6 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -41,15 +40,10 @@ public class RenderEvolvedZombie extends RenderLiving
 		super(new ModelEvolvedZombie(), 1.0F);
 	}
 
-	protected ResourceLocation func_110779_a(EntityZombie par1EntityArrow)
-	{
-		return RenderEvolvedZombie.zombieTexture;
-	}
-
 	@Override
 	protected ResourceLocation getEntityTexture(Entity par1Entity)
 	{
-		return this.func_110779_a((EntityZombie) par1Entity);
+		return RenderEvolvedZombie.zombieTexture;
 	}
 
 	@Override
