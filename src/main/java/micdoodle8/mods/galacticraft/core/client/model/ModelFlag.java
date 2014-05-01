@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.model;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.entities.EntityFlag;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBase;
@@ -90,7 +91,7 @@ public class ModelFlag extends ModelBase
 			EntityFlag flag = (EntityFlag) entity;
 			this.setRotationAngles(entity, f, f1, f2, f3, f4, f5);
 			this.renderPole(flag, f5);
-			this.renderFlag(flag, f5);
+			this.renderFlag(flag, f5, flag.ticksExisted);
 			
 			if (flag.flagData != null && flag.flagData.getHasFace())
 			{
@@ -105,7 +106,7 @@ public class ModelFlag extends ModelBase
 		this.pole.render(f5);
 	}
 	
-	public void renderFlag(EntityFlag entity, float f5)
+	public void renderFlag(EntityFlag entity, float f5, float ticks)
 	{
 		if (entity.flagData != null && (flagMain == null || flagMain.length != entity.flagData.getWidth() * entity.flagData.getHeight()))
 		{
@@ -134,12 +135,17 @@ public class ModelFlag extends ModelBase
 			
 			for (int i = 0; i < this.flagMain.length; i++)
 			{
+				int xPos = i % entity.flagData.getWidth();
+				GL11.glPushMatrix();
+				float offset = (float)(Math.sin(ticks / 2.0F + xPos * 50 + 3) / 25.0F) * xPos / (entity.worldObj.provider instanceof IGalacticraftWorldProvider ? 100.0F : 30.0F);
+				GL11.glTranslatef(0, offset, offset);
 				GL11.glDisable(GL11.GL_TEXTURE_2D);
 				Vector3 col = entity.flagData.getColorAt(i % entity.flagData.getWidth(), i / entity.flagData.getWidth());
 				GL11.glColor3f(col.floatX(), col.floatY(), col.floatZ());
 				this.flagMain[i].render(f5);
 				GL11.glEnable(GL11.GL_TEXTURE_2D);
 				GL11.glColor3f(1, 1, 1);
+				GL11.glPopMatrix();
 			}
 			
 			GL11.glPopMatrix();
