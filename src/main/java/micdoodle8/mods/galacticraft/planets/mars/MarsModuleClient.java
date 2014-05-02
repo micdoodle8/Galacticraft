@@ -45,6 +45,7 @@ import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityLaunchController
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityTerraformer;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityTreasureChestMars;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.particle.EntityDropParticleFX;
@@ -209,7 +210,7 @@ public class MarsModuleClient implements IPlanetsModuleClient
 			{
 				if (particleID.equals("sludgeDrip"))
 				{
-					particle = new EntityDropParticleFX(mc.theWorld, position.x, position.y, position.z, MarsBlocks.bacterialSludge);
+					particle = new EntityDropParticleFX(mc.theWorld, position.x, position.y, position.z, Material.water);
 				}
 			}
 

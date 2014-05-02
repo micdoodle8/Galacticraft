@@ -57,9 +57,9 @@ public class BlockSludge extends BlockFluidClassic
 		super.onEntityCollidedWithBlock(world, x, y, z, entity);
 	}
 
-	public BlockSludge(Material par2Material)
+	public BlockSludge()
 	{
-		super(MarsModule.SLUDGE, par2Material);
+		super(MarsModule.SLUDGE, Material.water);
 		this.setQuantaPerBlock(9);
 		this.setRenderPass(1);
 		this.setLightLevel(1.0F);

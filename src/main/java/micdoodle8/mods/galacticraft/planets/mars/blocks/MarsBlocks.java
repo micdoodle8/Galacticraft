@@ -1,15 +1,11 @@
 package micdoodle8.mods.galacticraft.planets.mars.blocks;
 
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
-import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
-import micdoodle8.mods.galacticraft.planets.mars.items.ItemBlockMars;
-import micdoodle8.mods.galacticraft.planets.mars.items.ItemBlockMachine;
 import micdoodle8.mods.galacticraft.planets.mars.items.ItemBlockEgg;
+import micdoodle8.mods.galacticraft.planets.mars.items.ItemBlockMachine;
+import micdoodle8.mods.galacticraft.planets.mars.items.ItemBlockMars;
 import micdoodle8.mods.galacticraft.planets.mars.items.ItemBlockTintedGlassPane;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.MapColor;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.material.MaterialLiquid;
 import net.minecraft.item.ItemBlock;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -33,12 +29,10 @@ public class MarsBlocks
 	public static Block creeperEgg;
 	public static Block tintedGlassPane;
 
-	public static Material bacterialSludge = new MaterialLiquid(MapColor.foliageColor);
-
 	public static void initBlocks()
 	{
 		MarsBlocks.marsBlock = new BlockBasicMars().setHardness(2.2F).setBlockName("mars");
-		MarsBlocks.blockSludge = new BlockSludge(MarsBlocks.bacterialSludge).setBlockName("sludge");
+		MarsBlocks.blockSludge = new BlockSludge().setBlockName("sludge");
 		MarsBlocks.vine = new BlockCavernousVine().setHardness(0.1F).setBlockName("cavernVines");
 		MarsBlocks.rock = new BlockSlimelingEgg().setHardness(0.75F).setBlockName("slimelingEgg");
 		MarsBlocks.tier2TreasureChest = new BlockTier2TreasureChest().setHardness(2.5F).setBlockName("treasureT2");
