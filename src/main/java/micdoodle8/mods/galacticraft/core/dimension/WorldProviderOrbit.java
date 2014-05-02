@@ -600,12 +600,12 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 				p.rotationYaw += this.skyAngularVelocity;
 				while (p.rotationYaw > 360F) p.rotationYaw -= 360F;
 
-				//Just started freefall - give some impulse
+/*				//Just started freefall - give some impulse
 				if (!p.inFreefall && p.inFreefallFirstCheck)
 				{
 					p.motionX += offsetX * 0.91F;
 					p.motionZ += offsetZ * 0.91F;
-				}
+				}*/
 			}
 
 			//Reverse effects of deceleration
