@@ -914,13 +914,13 @@ public class PacketSimple extends Packet implements IPacket
 	 */
 
 	@Override
-	public void readPacketData(PacketBuffer var1) throws IOException 
+	public void readPacketData(PacketBuffer var1)
 	{
 		this.decodeInto(null, var1);
 	}
 
 	@Override
-	public void writePacketData(PacketBuffer var1) throws IOException 
+	public void writePacketData(PacketBuffer var1)
 	{
 		this.encodeInto(null, var1);
 	}
