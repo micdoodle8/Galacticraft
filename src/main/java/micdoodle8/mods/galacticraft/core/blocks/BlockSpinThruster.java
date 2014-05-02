@@ -110,43 +110,27 @@ public class BlockSpinThruster extends BlockAdvanced
 	public int onBlockPlaced(World par1World, int x, int y, int z, int par5, float par6, float par7, float par8, int par9)
 	{
 		int var10 = par9;
-		BlockVec3 baseBlock = new BlockVec3(x, y, z);
-		boolean placeable = false;
 
 		if (par5 == 2 && isBlockSolidOnSide(par1World, x, y, z + 1, ForgeDirection.NORTH, true))
 		{
-			placeable = true;
 			var10 = 4;
 		}
 
 		if (par5 == 3 && isBlockSolidOnSide(par1World, x, y, z - 1, ForgeDirection.SOUTH, true))
 		{
-			placeable = true;
 			var10 = 3;
 		}
 
 		if (par5 == 4 && isBlockSolidOnSide(par1World, x + 1, y, z, ForgeDirection.WEST, true))
 		{
-			placeable = true;
 			var10 = 2;
 		}
 
 		if (par5 == 5 && isBlockSolidOnSide(par1World, x - 1, y, z, ForgeDirection.EAST, true))
 		{
-			placeable = true;
 			var10 = 1;
 		}
 
-		if (placeable && !par1World.isRemote)
-		{
-			if (par1World.provider instanceof WorldProviderOrbit)
-			{
-				WorldProviderOrbit worldOrbital = (WorldProviderOrbit) par1World.provider;
-				//worldOrbital.addThruster(new BlockVec3(x,y,z), true);
-				worldOrbital.checkSS(baseBlock, true);
-			}
-		}
-		
 		return var10;
 	}
 
@@ -164,27 +148,57 @@ public class BlockSpinThruster extends BlockAdvanced
 	@Override
 	public void onBlockAdded(World par1World, int x, int y, int z)
 	{
-		if (par1World.getBlockMetadata(x, y, z) == 0)
+		int metadata = par1World.getBlockMetadata(x, y, z); 
+		if (metadata == 0)
 		{
 			if (isBlockSolidOnSide(par1World, x - 1, y, z, ForgeDirection.EAST, true))
 			{
-				par1World.setBlockMetadataWithNotify(x, y, z, 1, 2);
+				metadata = 1;
+				par1World.setBlockMetadataWithNotify(x, y, z, metadata, 2);
 			}
 			else if (isBlockSolidOnSide(par1World, x + 1, y, z, ForgeDirection.WEST, true))
 			{
-				par1World.setBlockMetadataWithNotify(x, y, z, 2, 2);
+				metadata = 2;
+				par1World.setBlockMetadataWithNotify(x, y, z, metadata, 2);
 			}
 			else if (isBlockSolidOnSide(par1World, x, y, z - 1, ForgeDirection.SOUTH, true))
 			{
-				par1World.setBlockMetadataWithNotify(x, y, z, 3, 2);
+				metadata = 3;
+				par1World.setBlockMetadataWithNotify(x, y, z, metadata, 2);
 			}
 			else if (isBlockSolidOnSide(par1World, x, y, z + 1, ForgeDirection.NORTH, true))
 			{
-				par1World.setBlockMetadataWithNotify(x, y, z, 4, 2);
+				metadata = 4;
+				par1World.setBlockMetadataWithNotify(x, y, z, metadata, 2);
 			}
 		}
 
-		this.dropTorchIfCantStay(par1World, x, y, z);
+		BlockVec3 baseBlock;
+		switch (metadata) {
+		case 1:
+			baseBlock = new BlockVec3(x - 1, y, z);
+			break;
+		case 2:
+			baseBlock = new BlockVec3(x + 1, y, z);
+			break;
+		case 3:
+			baseBlock = new BlockVec3(x, y, z - 1);
+			break;
+		case 4:
+			baseBlock = new BlockVec3(x, y, z + 1);
+			break;
+		default:
+			this.dropTorchIfCantStay(par1World, x, y, z);
+			return;
+		}
+
+		if (!par1World.isRemote)
+		{
+			if (par1World.provider instanceof WorldProviderOrbit)
+			{
+				((WorldProviderOrbit) par1World.provider).checkSS(baseBlock, true);
+			}
+		}
 	}
 
 	/**

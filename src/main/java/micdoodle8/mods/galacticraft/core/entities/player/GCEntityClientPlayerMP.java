@@ -63,6 +63,8 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 
 	private double distanceSinceLastStep;
 	private int lastStep;
+	public boolean inFreefall;
+	public boolean inFreefallFirstCheck;
 
 	public ArrayList<ISchematicPage> unlockedSchematics = new ArrayList<ISchematicPage>();
 
@@ -183,6 +185,7 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 		}
 
 		super.onLivingUpdate();
+		if (this.inFreefall) this.limbSwing -= this.limbSwingAmount; 
 
 //		// If the player is on the moon, not airbourne and not riding anything
 //		if (this.worldObj != null && this.worldObj.provider instanceof GCMoonWorldProvider && this.onGround && this.ridingEntity == null)

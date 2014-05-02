@@ -69,13 +69,56 @@ public class BlockVec3 implements Cloneable
 	}
 
 	/**
-	 * Get block ID at the BlockVec3 coordinates.
+	 * Get block ID at the BlockVec3 coordinates, with a forced chunk load if the coordinates are unloaded.
 	 * 
 	 * @param world
-	 * @return the block ID, or -1 if the y-coordinate is less than 0 or greater than 256 or the x or z is outside the Minecraft worldmap. 
-	 * Returns -2 if the coordinates being checked are in an unloaded chunk
+	 * @return the block ID, or null if the y-coordinate is less than 0 or greater than 256 or the x or z is outside the Minecraft worldmap. 
+	 * Returns Blocks.bedrock if the coordinates being checked are in an unloaded chunk
 	 */
 	public Block getBlockID(World world)
+	{
+		if (this.y < 0 || this.y >= 256 || this.x < -30000000 || this.z < -30000000 || this.x >= 30000000 || this.z >= 30000000)
+		{
+			return null;
+		}
+
+		int chunkx = this.x >> 4;
+		int chunkz = this.z >> 4;
+		try
+		{
+			// In a typical inner loop, 80% of the time consecutive calls to
+			// this will be within the same chunk
+			if (BlockVec3.chunkCacheX == chunkx && BlockVec3.chunkCacheZ == chunkz && BlockVec3.chunkCached.isChunkLoaded)
+			{
+				return BlockVec3.chunkCached.getBlock(this.x & 15, this.y, this.z & 15);
+			}
+			else
+			{
+				Chunk chunk = null;
+				chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
+				BlockVec3.chunkCached = chunk;
+				BlockVec3.chunkCacheX = chunkx;
+				BlockVec3.chunkCacheZ = chunkz;
+				return chunk.getBlock(this.x & 15, this.y, this.z & 15);
+			}
+		}
+		catch (Throwable throwable)
+		{
+			CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Oxygen Sealer thread: Exception getting block type in world");
+			CrashReportCategory crashreportcategory = crashreport.makeCategory("Requested block coordinates");
+			crashreportcategory.addCrashSection("Location", CrashReportCategory.getLocationInfo(this.x, this.y, this.z));
+			throw new ReportedException(crashreport);
+		}
+	}
+
+	/**
+	 * Get block ID at the BlockVec3 coordinates without forcing a chunk load.
+	 * 
+	 * @param world
+	 * @return the block ID, or null if the y-coordinate is less than 0 or greater than 256 or the x or z is outside the Minecraft worldmap. 
+	 * Returns Blocks.bedrock if the coordinates being checked are in an unloaded chunk
+	 */
+	public Block getBlockID_noChunkLoad(World world)
 	{
 		if (this.y < 0 || this.y >= 256 || this.x < -30000000 || this.z < -30000000 || this.x >= 30000000 || this.z >= 30000000)
 		{
@@ -117,13 +160,13 @@ public class BlockVec3 implements Cloneable
 	}
 
 	/**
-	 * Get block ID at the BlockVec3 coordinates.
+	 * Get block ID at the BlockVec3 coordinates without forcing a chunk load.
 	 * Only call this 'safe' version if x and z coordinates are within the Minecraft world map (-30m to +30m)
 	 * @param world
-	 * @return the block ID, or -1 if the y-coordinate is less than 0 or greater than 256. 
-	 * Returns -2 if the coordinates being checked are in an unloaded chunk
+	 * @return the block ID, or null if the y-coordinate is less than 0 or greater than 256. 
+	 * Returns Blocks.bedrock if the coordinates being checked are in an unloaded chunk
 	 */
-	public Block getBlockIDsafe(World world)
+	public Block getBlockIDsafe_noChunkLoad(World world)
 	{
 		if (this.y < 0 || this.y >= 256)
 		{

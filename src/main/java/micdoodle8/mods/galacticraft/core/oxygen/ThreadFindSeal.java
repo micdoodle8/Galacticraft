@@ -89,7 +89,7 @@ public class ThreadFindSeal //extends Thread
 		//If called by a sealer test the head block and include it in partiallySealableChecked if required
 		if (!sealers.isEmpty() && checkCount>0)
 		{	
-			Block id = head.getBlockID(this.world);
+			Block id = head.getBlockID_noChunkLoad(this.world);
 			if (id!=Blocks.air && id!=ThreadFindSeal.breatheableAirID)
 			{
 				canBlockPassAirCheck(id, this.head, 1);
@@ -133,12 +133,12 @@ public class ThreadFindSeal //extends Thread
 			this.currentLayer.add(this.head.clone());
 			if (this.head.x < -29990000 || this.head.z < -29990000 || this.head.x >= 29990000 || this.head.z >= 29990000)
 			{
-				if (this.sealers.size()>0 && head.getBlockID(world)==Blocks.air) this.airToReplace.add(this.head);
+				if (this.sealers.size()>0 && head.getBlockID_noChunkLoad(world)==Blocks.air) this.airToReplace.add(this.head);
 				this.doLayerNearMapEdge();
 			}
 			else
 			{
-				if (this.sealers.size()>0 && head.getBlockIDsafe(world)==Blocks.air) this.airToReplace.add(this.head);
+				if (this.sealers.size()>0 && head.getBlockIDsafe_noChunkLoad(world)==Blocks.air) this.airToReplace.add(this.head);
 				this.doLayer();
 			}
 		}
@@ -249,7 +249,7 @@ public class ThreadFindSeal //extends Thread
 
 			if (this.sealed == false)
 			{
-				if (head.getBlockID(world)==ThreadFindSeal.breatheableAirID) this.breatheableToReplace.add(head);
+				if (head.getBlockID_noChunkLoad(world)==ThreadFindSeal.breatheableAirID) this.breatheableToReplace.add(head);
 				if(!this.breatheableToReplace.isEmpty())
 				{
 					List<ScheduledBlockChange> changeList = new LinkedList<ScheduledBlockChange>();
@@ -332,7 +332,7 @@ public class ThreadFindSeal //extends Thread
 					if (!this.checked.contains(sideVec))
 					{
 						this.checked.add(sideVec);
-						Block id = sideVec.getBlockID(this.world);
+						Block id = sideVec.getBlockID_noChunkLoad(this.world);
 						if (id == ThreadFindSeal.breatheableAirID)
 						{
 							this.breatheableToReplace.add(sideVec);
@@ -389,7 +389,7 @@ public class ThreadFindSeal //extends Thread
 								this.checkCount--;
 								this.checked.add(sideVec);
 
-								Block id = sideVec.getBlockIDsafe(this.world);
+								Block id = sideVec.getBlockIDsafe_noChunkLoad(this.world);
 								if (id == ThreadFindSeal.breatheableAirID)
 								// The most likely case
 								{
@@ -432,7 +432,7 @@ public class ThreadFindSeal //extends Thread
 							}
 							else if (this.sealed)
 							{
-								Block id = sideVec.getBlockIDsafe(this.world);
+								Block id = sideVec.getBlockIDsafe_noChunkLoad(this.world);
 								// id == null means the void or height y>255, both
 								// of which are unsealed obviously
 								if (id == null || id == Blocks.air || id == this.breatheableAirID || id == null || this.canBlockPassAirCheck(id, sideVec, side))
@@ -474,7 +474,7 @@ public class ThreadFindSeal //extends Thread
 
 							// This is a slower operation as it involves
 							// map edge checks
-							Block id = sideVec.getBlockID(this.world); 
+							Block id = sideVec.getBlockID_noChunkLoad(this.world); 
 							
 							if (id == ThreadFindSeal.breatheableAirID)
 							// The most likely case
@@ -518,7 +518,7 @@ public class ThreadFindSeal //extends Thread
 						}
 						else if (this.sealed)
 						{
-							Block id = sideVec.getBlockID(this.world);
+							Block id = sideVec.getBlockID_noChunkLoad(this.world);
 							// id == null means the void or height y>255, both of
 							// which are unsealed obviously
 							if (id == null || id == Blocks.air || id == this.breatheableAirID || id == null || this.canBlockPassAirCheck(id, sideVec, side))

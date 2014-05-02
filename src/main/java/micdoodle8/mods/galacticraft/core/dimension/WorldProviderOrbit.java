@@ -27,6 +27,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityFallingBlock;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityTNTPrimed;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -88,6 +89,7 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 	//see: BlockSpinThruster.randomDisplayTick()
 	public boolean thrustersFiring = false;
 	private boolean dataNotLoaded = true;
+	private List<Entity> loadedEntities = new LinkedList();
 	
 	@Override
 	public void setDimension(int var1)
@@ -238,10 +240,11 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 			}
 			
 			//Update entity positions if in freefall
-			for(Object obj : this.worldObj.loadedEntityList)
+			this.loadedEntities.clear();
+			this.loadedEntities.addAll(this.worldObj.loadedEntityList);
+			for(Entity e : this.loadedEntities)
 			{
-				Entity e = (Entity) obj;
-				if ((e instanceof EntityItem || e instanceof EntityLivingBase || e instanceof EntityTNTPrimed || e instanceof EntityFallingBlock) && !e.onGround)
+				if ((e instanceof EntityItem || (e instanceof EntityLivingBase && !(e instanceof EntityPlayer)) || e instanceof EntityTNTPrimed || e instanceof EntityFallingBlock) && !e.onGround)
 				{
 					boolean freefall = true;
 					if (e.boundingBox.maxX >= this.ssBoundsMinX && e.boundingBox.minX <= this.ssBoundsMaxX && e.boundingBox.maxY >= this.ssBoundsMinY && e.boundingBox.minY <= this.ssBoundsMaxY && e.boundingBox.maxZ >= this.ssBoundsMinZ && e.boundingBox.minZ <= this.ssBoundsMaxZ)
@@ -251,17 +254,17 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 						//Check if the entity's bounding box is in the same block coordinates as any non-vacuum block (including torches etc)
 						//If so, it's assumed the entity has something close enough to catch onto, so is not in freefall
 						//Note: breatheable air here means the entity is definitely not in freefall
-						int xmx = MathHelper.floor_double(e.boundingBox.maxX);
-						int ym = MathHelper.floor_double(e.boundingBox.minY);
-						int yy = MathHelper.floor_double(e.boundingBox.maxY);
-						int zm = MathHelper.floor_double(e.boundingBox.minZ);
-						int zz = MathHelper.floor_double(e.boundingBox.maxZ);
+						int xmx = MathHelper.floor_double(e.boundingBox.maxX + 0.2D);
+						int ym = MathHelper.floor_double(e.boundingBox.minY - 0.1D);
+						int yy = MathHelper.floor_double(e.boundingBox.maxY + 0.1D);
+						int zm = MathHelper.floor_double(e.boundingBox.minZ - 0.2D);
+						int zz = MathHelper.floor_double(e.boundingBox.maxZ + 0.2D);
 						BLOCKCHECK:
-						for (int x = MathHelper.floor_double(e.boundingBox.minX); x<=xmx; x++)
+						for (int x = MathHelper.floor_double(e.boundingBox.minX - 0.2D); x<=xmx; x++)
 							for (int y = ym; y<=yy; y++)
 								for (int z = zm; z<=zz; z++)
 								{
-									if (this.worldObj.getBlock(x, y, z) != Blocks.air)
+									if (this.worldObj.blockExists(x, y, z) && this.worldObj.getBlock(x, y, z) != Blocks.air)
 									{
 										freefall = false;
 										break BLOCKCHECK;
@@ -287,6 +290,11 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 							final double offsetZ = arc * MathHelper.cos(angle);
 							e.posX += offsetX;
 							e.posZ += offsetZ;
+							
+							//Rotated into an unloaded chunk (probably also drifted out to there): byebye
+							if (!(this.worldObj.blockExists(MathHelper.floor_double(e.posX), 64, MathHelper.floor_double(e.posZ))))
+								e.setDead();
+							
 							e.boundingBox.offset(offsetX, 0.0D, offsetZ);
 							//TODO check for block collisions here - if so move the entity appropriately and apply fall damage
 							//Moving the entity = slide along / down		
@@ -294,7 +302,7 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 							while (e.rotationYaw > 360F) e.rotationYaw -= 360F;
 						}
 						
-						//Undo deceleration  :)
+						//Undo deceleration
 						if (e instanceof EntityLivingBase)
 						{
 							e.motionX /= 0.91F;
@@ -472,6 +480,7 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 			double blockYmax = b.getBlockBoundsMaxY() + playerFeetOnY;
 			if (b!=Blocks.air && p.boundingBox.minY - blockYmax < 0.001D)
 				freefall = false;
+
 			else
 			{
 				//Check if the player's bounding box is in the same block coordinates as any non-vacuum block (including torches etc)
@@ -495,13 +504,14 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 						}
 			}
 
+			/*
 			if (freefall)
 			{
 				//If that check didn't produce a result, see if the player is inside the walls
 				//TODO: could apply special weightless movement here like Coriolis force - the player is inside the walls,  not touching them, and in a vacuum
 				int quadrant = 0;
-				double xd = p.posX - this.massCentreX;
-				double zd = p.posZ - this.massCentreZ;
+				double xd = p.posX - this.spinCentreX;
+				double zd = p.posZ - this.spinCentreZ;
 				if (xd<0)
 				{
 					if (xd<-Math.abs(zd))
@@ -559,8 +569,9 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 								freefall = false;
 								break BLOCKCHECK0;
 							}
-			}
+			}*/
 		}
+		
 		if (freefall)
 		{
 			//Do spinning
@@ -588,6 +599,13 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 				
 				p.rotationYaw += this.skyAngularVelocity;
 				while (p.rotationYaw > 360F) p.rotationYaw -= 360F;
+
+				//Just started freefall - give some impulse
+				if (!p.inFreefall && p.inFreefallFirstCheck)
+				{
+					p.motionX += offsetX * 0.91F;
+					p.motionZ += offsetZ * 0.91F;
+				}
 			}
 
 			//Reverse effects of deceleration
@@ -604,10 +622,49 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 			//Maybe player needs a 'suicide' button if floating helplessly in space and with no tether
 			//Could auto-kill + respawn the player if floats too far away (config option whether to lose items or not)
 			//But we want players to be able to enjoy the view of the spinning space station from the outside
-			
-			//TODO: Fix arm and leg movements so they don't move in freefall
 			//Arm and leg movements could start tumbling the player?
 		}
+		else
+		//Artificial gravity
+		{
+			int quadrant = 0;
+			double xd = p.posX - this.spinCentreX;
+			double zd = p.posZ - this.spinCentreZ;
+			double accel = Math.sqrt(xd*xd + zd*zd) * this.angularVelocityRadians * this.angularVelocityRadians * 4D;
+			
+			if (xd<0)
+			{
+				if (xd<-Math.abs(zd))
+				{
+					quadrant = 2;
+				} else
+					quadrant = (zd<0) ? 3 : 1;
+			} else
+				if (xd>Math.abs(zd))
+				{
+					quadrant = 0;
+				} else
+					quadrant = (zd<0) ? 3 : 1;
+			
+			switch (quadrant)
+			{
+			case 0:
+				p.motionX += accel;
+				break;
+			case 1:
+				p.motionZ += accel;
+				break;
+			case 2:
+				p.motionX -= accel;
+				break;
+			case 3:
+			default:
+				p.motionZ -= accel;
+			}			
+		}
+		
+		p.inFreefall = freefall;
+		p.inFreefallFirstCheck = true;
 	}
 	
 	public float getSpinRate()
@@ -641,6 +698,7 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 	{
 		this.spinCentreX = x;
 		this.spinCentreZ = z;
+		if (this.worldObj.isRemote) System.out.println("Clientside update to spin centre: "+x+","+z);
 	}
 	
 	public void setSpinBox(int mx, int xx, int my, int yy, int mz, int zz)
@@ -693,11 +751,6 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 	 */
 	public boolean checkSS(BlockVec3 baseBlock, boolean placingThruster)
 	{
-		// Find contiguous blocks using an algorithm like the oxygen sealer one
-		List<BlockVec3> currentLayer = new LinkedList<BlockVec3>();
-		List<BlockVec3> nextLayer = new LinkedList<BlockVec3>();
-		final List<BlockVec3> foundThrusters = new LinkedList<BlockVec3>();;
-
 		if (this.oneSSBlock == null || oneSSBlock.getBlockID(this.worldObj)==Blocks.air)
 		{	
 			if (baseBlock != null)
@@ -706,6 +759,11 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 				this.oneSSBlock = new BlockVec3(0,64,0);
 		}
 		
+		// Find contiguous blocks using an algorithm like the oxygen sealer one
+		List<BlockVec3> currentLayer = new LinkedList<BlockVec3>();
+		List<BlockVec3> nextLayer = new LinkedList<BlockVec3>();
+		final List<BlockVec3> foundThrusters = new LinkedList<BlockVec3>();;
+
 		this.checked.clear();
 		currentLayer.add(this.oneSSBlock.clone());
 		this.checked.add(this.oneSSBlock.clone());
@@ -740,13 +798,18 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 					if (vec.sideDone[side]) continue;
 					BlockVec3 sideVec = vec.newVecSide(side);
 
-					Block b = sideVec.getBlockID(this.worldObj);
-					if (b != Blocks.air && b != GCBlocks.breatheableAir && b != null)
+					if (!this.checked.contains(sideVec))
 					{
-						if (!this.checked.contains(sideVec))
+						this.checked.add(sideVec);
+						Block b = sideVec.getBlockID(this.worldObj);
+						if (b != Blocks.air && b != GCBlocks.breatheableAir && b != null)
 						{
-							this.checked.add(sideVec);
 							nextLayer.add(sideVec);
+							if (bStart == Blocks.air)
+							{	
+								this.oneSSBlock = sideVec.clone();
+								bStart = b;
+							}
 							float m = 1.0F;
 							//Liquids have a mass of 1, stone, metal blocks etc will be heavier 
 							if (!(b instanceof BlockLiquid))
@@ -775,15 +838,13 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 			currentLayer = nextLayer;
 			nextLayer = new LinkedList<BlockVec3>();
 		}
-
-		if (placingThruster && !foundThrusters.contains(baseBlock))
+		
+		if (placingThruster && !this.checked.contains(baseBlock))
 		{
 			if (foundThrusters.size()>0)
 			{
-				//The thruster was not placed on the existing contiguous spacestation: it must be.
-				this.thrustersPlus.remove(baseBlock);
-				this.thrustersMinus.remove(baseBlock);
-				System.out.println("Returning false: oneSSBlock was "+oneSSBlock.x+","+oneSSBlock.y+","+oneSSBlock.z);
+				//The thruster was not placed on the existing contiguous space station: it must be.
+				System.out.println("Returning false: oneSSBlock was "+oneSSBlock.x+","+oneSSBlock.y+","+oneSSBlock.z+" - baseBlock was "+baseBlock.x+","+baseBlock.y+","+baseBlock.z+" - found "+foundThrusters.size());
 				return false;
 			}
 			
@@ -893,20 +954,26 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 				if (countThrusters > 4)
 					countThrusters = 4;
 				
-				//TODO: increase this above 20F in release versions so everything happens more slowly 
-				this.angularVelocityAccel = netTorque / this.momentOfInertia / 20F;
-				if (this.angularVelocityAccel < 0) this.angularVelocityAccel = -this.angularVelocityAccel;
-				
 				float maxRx = Math.max(this.ssBoundsMaxX - this.massCentreX, this.massCentreX - this.ssBoundsMinX);
 				float maxRz = Math.max(this.ssBoundsMaxZ - this.massCentreZ, this.massCentreZ - this.ssBoundsMinZ);
 				float maxR = Math.max(maxRx, maxRz);
 				this.angularVelocityTarget = MathHelper.sqrt_float(WorldProviderOrbit.GFORCE / maxR) / 2;
 				//The divide by 2 is not scientific but is a Minecraft factor as everything happens more quickly
 				float spinCap = 0.00125F * countThrusters;
+
+				//TODO: increase this above 20F in release versions so everything happens more slowly 
+				this.angularVelocityAccel = netTorque / this.momentOfInertia / 20F;
+				if (this.angularVelocityAccel < 0)
+				{
+					this.angularVelocityAccel = -this.angularVelocityAccel;
+					this.angularVelocityTarget = -this.angularVelocityTarget;
+					if (this.angularVelocityTarget < -spinCap) this.angularVelocityTarget = -spinCap;
+				}
+				else
 				//Do not make it spin too fast or players might get dizzy
 				//Also make it so players need minimum 4 thrusters for best spin
-				if (this.angularVelocityTarget > spinCap) this.angularVelocityTarget = spinCap;
-				if (this.angularVelocityTarget < -spinCap) this.angularVelocityTarget = -spinCap;
+					if (this.angularVelocityTarget > spinCap) this.angularVelocityTarget = spinCap;
+
 				System.out.println("MaxR = "+maxR+" Angular vel = "+this.angularVelocityTarget+" Angular accel = "+this.angularVelocityAccel);
 			}
 		}
