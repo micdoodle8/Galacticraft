@@ -32,6 +32,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.WorldProvider;
@@ -571,9 +572,11 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 							}
 			}*/
 		}
-		
+
+		boolean doGravity = true;
 		if (freefall)
 		{
+			doGravity = false;
 			//Do spinning
 			if (this.angularVelocityRadians!=0F)
 			{
@@ -589,14 +592,40 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 				if (xx < 0D) angle += 3.141592536F;
 				angle += this.angularVelocityRadians/3F;
 				arc = arc*this.angularVelocityRadians;
-				final double offsetX = - arc * MathHelper.sin(angle);
-				final double offsetZ = arc * MathHelper.cos(angle);
-				p.posX += offsetX;
-				p.posZ += offsetZ;
-				p.boundingBox.offset(offsetX, 0.0D, offsetZ);
-				//TODO check for block collisions here - if so move the player appropriately and apply fall damage
-				//Moving the player = slide along / down
-				
+				double offsetX = - arc * MathHelper.sin(angle);
+				double offsetZ = arc * MathHelper.cos(angle);
+
+				//Check for block collisions here - if so move the player appropriately
+				//First check that there are no existing collisions where the player is now (TODO: bounce the player away)
+				if (this.worldObj.getCollidingBoundingBoxes(p, p.boundingBox).size() == 0)
+				{
+					//Now check for collisions in the new direction and if there are some, try reducing the movement
+					int collisions = 0;
+					do
+					{	
+						List<AxisAlignedBB> list = this.worldObj.getCollidingBoundingBoxes(p, p.boundingBox.addCoord(offsetX, 0.0D, offsetZ));
+						collisions = list.size();
+						if (collisions > 0)
+						{
+							if (!doGravity)
+							{
+								p.motionX += -offsetX;
+								p.motionZ += -offsetZ;
+							}
+							offsetX /= 2D;
+							offsetZ /= 2D;
+							if (offsetX < 0.01D && offsetX > -0.01D) offsetX = 0D;
+							if (offsetZ < 0.01D && offsetZ > -0.01D) offsetZ = 0D;
+							doGravity = true;
+							
+						}
+					} while (collisions > 0);
+					
+					p.posX += offsetX;
+					p.posZ += offsetZ;
+					p.boundingBox.offset(offsetX, 0.0D, offsetZ);
+				}
+							
 				p.rotationYaw += this.skyAngularVelocity;
 				while (p.rotationYaw > 360F) p.rotationYaw -= 360F;
 
@@ -624,8 +653,9 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 			//But we want players to be able to enjoy the view of the spinning space station from the outside
 			//Arm and leg movements could start tumbling the player?
 		}
-		else
+		
 		//Artificial gravity
+		if (doGravity)
 		{
 			int quadrant = 0;
 			double xd = p.posX - this.spinCentreX;
