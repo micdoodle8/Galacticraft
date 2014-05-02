@@ -17,6 +17,15 @@ buildscript {
 
 apply plugin: 'forge' // Add forge dependency
 
+sourceSets.main {
+    java {
+        srcDirs = ['src/main/java', 'dependencies/main/java']
+    }
+    resources {
+        srcDirs = ['src/main/resources', 'dependencies/main/resources']
+    }
+}
+
 version = "1.7.2-" + System.getenv().BUILD_NUMBER?.toInteger() // Set the version number
 group= "micdoodle8.mods.galacticraft"
 archivesBaseName = "GalacticraftCore"
@@ -24,27 +33,6 @@ archivesBaseName = "GalacticraftCore"
 minecraft {
     version = "1.7.2-10.12.1.1060" // Forge version
     assetDir = "eclipse/assets" // This is where forge will download Minecraft assets
-}
-
-// Configure source folders
-sourceSets
-{
-	main
-	{
-		java
-		{
-			// Set the source directory and also include dependencies
-			srcDir 'src'
-			include 'dependencies'
-		}
-		
-		resources
-		{
-			// Set the resource directory and also include dependency resources
-			srcDir 'src/main/resources'
-			include 'dependencies/main/resources'
-		}
-	}
 }
 
 processResources
