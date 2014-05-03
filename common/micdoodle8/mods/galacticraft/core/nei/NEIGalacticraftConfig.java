@@ -5,6 +5,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
+import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
@@ -17,6 +18,7 @@ import net.minecraft.item.crafting.ShapelessRecipes;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
+import codechicken.nei.api.ItemInfo;
 
 /**
  * NEIGalacticraftConfig.java
@@ -53,6 +55,7 @@ public class NEIGalacticraftConfig implements IConfigureNEI
 		API.registerUsageHandler(new IngotCompressorRecipeHandler());
 		API.registerRecipeHandler(new ElectricIngotCompressorRecipeHandler());
 		API.registerUsageHandler(new ElectricIngotCompressorRecipeHandler());
+        API.registerHighlightIdentifier(GCCoreConfigManager.idBlockDecorationBlock, new GCNEIHighlightHandler());
 	}
 
 	@Override
