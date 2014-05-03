@@ -247,10 +247,10 @@ public class MapGenCavernMars
 
 													while (arrayOfIDs[coordsBelow] == Blocks.air)
 													{
-														arrayOfIDs[var50 + modifier << 8 | var45 << 4 | var42] = MarsBlocks.vine;
-														arrayOfMeta[var50 + modifier << 8 | var45 << 4 | var42] = (byte) (Math.abs(modifier) % 3);
+														arrayOfIDs[coordsBelow] = MarsBlocks.vine;
+														arrayOfMeta[coordsBelow] = (byte) (Math.abs(modifier) % 3);
 														modifier--;
-														coordsBelow = var50 - 1 + modifier << 8 | var45 << 4 | var42;
+														coordsBelow = (var42 * 16 + var45) * 256 + var50 - 1 + modifier;
 													}
 												}
 												else if (arrayOfIDs[coordsBelow] == MarsBlocks.marsBlock && this.rand.nextInt(200) == 0)
