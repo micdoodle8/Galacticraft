@@ -27,10 +27,6 @@ public class ModelFlag extends ModelBase
 	ModelRenderer base;
 	ModelRenderer pole;
 	ModelRenderer flag;
-	ModelRenderer picSide1;
-	ModelRenderer picSide2;
-	ModelRenderer picSide3;
-	ModelRenderer picSide4;
 	ModelRenderer[] flagMain;
 
 	public ModelFlag()
@@ -55,30 +51,6 @@ public class ModelFlag extends ModelBase
 		this.flag.setTextureSize(128, 64);
 		this.flag.mirror = true;
 		this.setRotation(this.flag, 0F, 0F, 0F);
-		this.picSide1 = new ModelRenderer(this, 16, 16);
-		this.picSide1.addBox(0F, 0F, 0F, 16, 16, 0);
-		this.picSide1.setRotationPoint(29F, -28F, 1.1F);
-		this.picSide1.setTextureSize(128, 64);
-		this.picSide1.mirror = true;
-		this.setRotation(this.picSide1, 0F, 0F, 0F);
-		this.picSide2 = new ModelRenderer(this, 16, 16);
-		this.picSide2.addBox(0F, 0F, 0F, 16, 16, 0);
-		this.picSide2.setRotationPoint(13F, -28F, -1.1F);
-		this.picSide2.setTextureSize(128, 64);
-		this.picSide2.mirror = false;
-		this.setRotation(this.picSide2, 0F, 0F, 0F);
-		this.picSide3 = new ModelRenderer(this, 80, 16);
-		this.picSide3.addBox(0F, 0F, 0F, 16, 16, 0);
-		this.picSide3.setRotationPoint(29F, -28F, 1.11F);
-		this.picSide3.setTextureSize(128, 64);
-		this.picSide3.mirror = true;
-		this.setRotation(this.picSide3, 0F, 0F, 0F);
-		this.picSide4 = new ModelRenderer(this, 80, 16);
-		this.picSide4.addBox(0F, 0F, 0F, 16, 16, 0);
-		this.picSide4.setRotationPoint(13F, -28F, -1.11F);
-		this.picSide4.setTextureSize(128, 64);
-		this.picSide4.mirror = false;
-		this.setRotation(this.picSide4, 0F, 0F, 0F);
 	}
 
 	@Override
@@ -89,14 +61,8 @@ public class ModelFlag extends ModelBase
 		if (entity instanceof EntityFlag)
 		{
 			EntityFlag flag = (EntityFlag) entity;
-			this.setRotationAngles(entity, f, f1, f2, f3, f4, f5);
 			this.renderPole(flag, f5);
 			this.renderFlag(flag, f5, flag.ticksExisted);
-			
-			if (flag.flagData != null && flag.flagData.getHasFace())
-			{
-				this.renderFace(flag, f5, false);
-			}
 		}
 	}
 	
@@ -151,44 +117,11 @@ public class ModelFlag extends ModelBase
 			GL11.glPopMatrix();
 		}
 	}
-	
-	public void renderFace(Entity entity, float f5, boolean onlyFront)
-	{
-		EntityFlag flag = (EntityFlag) entity;
-		ResourceLocation resourcelocation = AbstractClientPlayer.locationStevePng;
-
-		if (flag.getOwner() != null && flag.getOwner().length() > 0)
-		{
-			resourcelocation = AbstractClientPlayer.getLocationSkin(flag.getOwner());
-			AbstractClientPlayer.getDownloadImageSkin(resourcelocation, flag.getOwner());
-		}
-
-		FMLClientHandler.instance().getClient().renderEngine.bindTexture(resourcelocation);
-
-		GL11.glScalef(0.5F, 0.5F, 0.25F);
-		GL11.glTranslatef(0.218F, 0.15F, 0F);
-
-		this.picSide2.render(f5);
-		
-		if (!onlyFront)
-		{
-			this.picSide1.render(f5);
-			this.picSide3.render(f5);
-			this.picSide4.render(f5);
-		}
-	}
 
 	private void setRotation(ModelRenderer model, float x, float y, float z)
 	{
 		model.rotateAngleX = x;
 		model.rotateAngleY = y;
 		model.rotateAngleZ = z;
-	}
-
-	public void setRotationAngles(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
-	{
-		super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-		this.picSide1.rotateAngleY = (float) Math.PI;
-		this.picSide3.rotateAngleY = (float) Math.PI;
 	}
 }

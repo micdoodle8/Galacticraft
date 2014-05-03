@@ -96,7 +96,6 @@ public class NetworkUtil
 			{
 				buffer.writeInt(((FlagData) dataValue).getWidth());
 				buffer.writeInt(((FlagData) dataValue).getHeight());
-				buffer.writeBoolean(((FlagData) dataValue).getHasFace());
 				
 				for (int i = 0; i < ((FlagData) dataValue).getWidth(); i++)
 				{
@@ -211,7 +210,6 @@ public class NetworkUtil
 				int height = buffer.readInt();
 				boolean hasFace = buffer.readBoolean();
 				FlagData flagData = new FlagData(width, height);
-				flagData.setHasFace(hasFace);
 				
 				for (int i = 0; i < width; i++)
 				{

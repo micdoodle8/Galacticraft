@@ -10,7 +10,6 @@ public class FlagData
 	private int height;
 	private int width;
 	private byte[][][] color;
-	private boolean hasFace;
 	
 	public FlagData(int width, int height)
 	{
@@ -27,8 +26,6 @@ public class FlagData
 				this.color[i][j][2] = 127;
 			}
 		}
-		
-		this.hasFace = false;
 	}
 
 	public int getHeight()
@@ -83,16 +80,6 @@ public class FlagData
 		this.color[posX][posY][1] = (byte) (colorVec.intY() - 128);
 		this.color[posX][posY][2] = (byte) (colorVec.intZ() - 128);
 	}
-
-	public boolean getHasFace()
-	{
-		return hasFace;
-	}
-
-	public void setHasFace(boolean hasFace)
-	{
-		this.hasFace = hasFace;
-	}
 	
 	public static FlagData readFlagData(NBTTagCompound nbt)
 	{
@@ -100,8 +87,6 @@ public class FlagData
 		int height = nbt.getInteger("FlagHeight");
 		
 		FlagData flagData = new FlagData(width, height);
-		
-		flagData.hasFace = nbt.getBoolean("HasFace");
 		
 		for (int i = 0; i < flagData.width; i++)
 		{
@@ -120,7 +105,6 @@ public class FlagData
 	{
 		nbt.setInteger("FlagWidth", this.width);
 		nbt.setInteger("FlagHeight", this.height);
-		nbt.setBoolean("HasFace", this.hasFace);
 		
 		for (int i = 0; i < this.width; i++)
 		{

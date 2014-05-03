@@ -48,7 +48,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
     private EntityPlayer thePlayer;
 //	private GuiElementCheckbox checkboxCompete;
 //	private GuiElementCheckbox checkboxUploadScore;
-	private GuiElementCheckbox checkboxShowFace;
+//	private GuiElementCheckbox checkboxShowFace;
 	private GuiElementCheckbox checkboxPaintbrush;
 	private GuiElementCheckbox checkboxShowGrid;
 	private GuiElementCheckbox checkboxEraser;
@@ -75,9 +75,6 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
     private float flagDesignerMinY;
     private float flagDesignerWidth;
     private float flagDesignerHeight;
-	
-    private boolean optionCompete = true;
-    private boolean optionUpload = true;
     
     private int selectionMinX;
     private int selectionMaxX;
@@ -175,14 +172,14 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
 				this.sliderColorR = new GuiElementSlider(1, flagDesignerRight + 10, guiTop + 10, availWidth, height, true, new Vector3(0, 0, 0), new Vector3(1, 0, 0));
 				this.sliderColorG = new GuiElementSlider(2, flagDesignerRight + 11 + availWidth, guiTop + 10, availWidth, height, true, new Vector3(0, 0, 0), new Vector3(0, 1, 0));
 				this.sliderColorB = new GuiElementSlider(3, flagDesignerRight + 12 + availWidth * 2, guiTop + 10, availWidth, height, true, new Vector3(0, 0, 0), new Vector3(0, 0, 1));
-				this.checkboxShowFace = new GuiElementCheckbox(4, this, this.width / 2 - this.width / 3 + 2, this.height / 2 + this.height / 4 - 16, "Show Face");
+//				this.checkboxShowFace = new GuiElementCheckbox(4, this, this.width / 2 - this.width / 3 + 2, this.height / 2 + this.height / 4 - 16, "Show Face");
 				this.sliderColorR.setSliderPos(sliderR);
 				this.sliderColorG.setSliderPos(sliderG);
 				this.sliderColorB.setSliderPos(sliderB);
 				this.buttonList.add(this.sliderColorR);
 				this.buttonList.add(this.sliderColorG);
 				this.buttonList.add(this.sliderColorB);
-				this.buttonList.add(this.checkboxShowFace);
+//				this.buttonList.add(this.checkboxShowFace);
 				this.checkboxPaintbrush = new GuiElementCheckbox(5, this, (int) (this.flagDesignerMinX - 15), this.height / 2 - this.height / 4 + 10, 13, 13, 26, 26, 133, 0, "", 4210752, false);
 				this.checkboxEraser = new GuiElementCheckbox(6, this, (int) (this.flagDesignerMinX - 15), this.height / 2 - this.height / 4 + 25, 13, 13, 26, 26, 133, 52, "", 4210752, false);
 				this.checkboxSelector = new GuiElementCheckbox(7, this, (int) (this.flagDesignerMinX - 15), this.height / 2 - this.height / 4 + 40, 13, 13, 26, 26, 133, 78, "", 4210752, false);
@@ -281,15 +278,6 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
     protected void mouseClicked(int x, int y, int clickIndex)
     {
     	super.mouseClicked(x, y, clickIndex);
-    	
-        if (clickIndex == 0)
-        {
-        	if (this.buttonFlag_hover)
-        	{
-        		this.currentState = EnumSpaceRaceGui.DESIGN_FLAG;
-        		this.initGui();
-        	}
-        }
     }
 
     public void updateScreen()
@@ -392,6 +380,17 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
             {
             	this.sliderEraserSize.displayString = "Eraser Rad: " + ((int)Math.floor(this.sliderEraserSize.getNormalizedValue() * 10) + 1);
             }
+        }
+        else if (currentState == EnumSpaceRaceGui.MAIN)
+        {
+        	if (this.lastMousePressed && !Mouse.isButtonDown(0))
+        	{
+            	if (this.buttonFlag_hover)
+            	{
+            		this.currentState = EnumSpaceRaceGui.DESIGN_FLAG;
+            		this.initGui();
+            	}
+        	}
         }
         
         this.lastMousePressed = Mouse.isButtonDown(0);
@@ -541,36 +540,6 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
 		        GL11.glDisable(GL11.GL_BLEND);
 		        GL11.glEnable(GL11.GL_ALPHA_TEST);
 		        GL11.glEnable(GL11.GL_TEXTURE_2D);
-
-		        if (this.flagData.getHasFace())
-		        {
-		        	float oldZLevel = this.zLevel;
-		        	this.zLevel += 1;
-					ResourceLocation resourcelocation = AbstractClientPlayer.locationStevePng;
-
-					resourcelocation = AbstractClientPlayer.getLocationSkin(this.thePlayer.getGameProfile().getName());
-					AbstractClientPlayer.getDownloadImageSkin(resourcelocation, this.thePlayer.getGameProfile().getName());
-
-					FMLClientHandler.instance().getClient().renderEngine.bindTexture(resourcelocation);
-					GL11.glColor3f(1.0F, 1.0F, 1.0F);
-					float width = (float) (this.flagDesignerScale.x * 16);
-					float height = (float) (this.flagDesignerScale.y * 16);
-					float minX = this.flagDesignerMinX + this.flagDesignerWidth / 2.0F - width / 2;
-					float minY = this.flagDesignerMinY + this.flagDesignerHeight / 2.0F - height / 2;
-					float u = 32;
-					float v = 64;
-					float uW = 32F;
-					float vH = 64F;
-			        float f = 0.00390625F;
-			        float f1 = 0.00390625F;
-			        tessellator.startDrawingQuads();
-			        tessellator.addVertexWithUV((double)(minX + 0), (double)(minY + height), (double)this.zLevel, (double)((float)(u + 0) * f), (double)((float)(v + vH) * f1));
-			        tessellator.addVertexWithUV((double)(minX + width), (double)(minY + height), (double)this.zLevel, (double)((float)(u + uW) * f), (double)((float)(v + vH) * f1));
-			        tessellator.addVertexWithUV((double)(minX + width), (double)(minY + 0), (double)this.zLevel, (double)((float)(u + uW) * f), (double)((float)(v + 0) * f1));
-			        tessellator.addVertexWithUV((double)(minX + 0), (double)(minY + 0), (double)this.zLevel, (double)((float)(u + 0) * f), (double)((float)(v + 0) * f1));
-			        tessellator.draw();
-					this.zLevel = oldZLevel;
-		        }
 	        	
 	        	break;
 	        }
@@ -589,10 +558,6 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
 		this.dummyFlag.flagData = this.flagData;
 		this.dummyModel.renderFlag(this.dummyFlag, 0.0625F, this.ticksPassed);
 		GL11.glColor3f(1, 1, 1);
-		if (this.flagData.getHasFace())
-		{
-			this.dummyModel.renderFace(this.dummyFlag, 0.0625F, true);
-		}
 		GL11.glPopMatrix();
 
 		GL11.glPushMatrix();
@@ -644,11 +609,11 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
 //		{
 //			this.optionUpload = newSelected;
 //		}
-		if (checkbox.equals(this.checkboxShowFace))
-		{
-			this.flagData.setHasFace(newSelected);
-		}
-		else if (checkbox.equals(this.checkboxEraser))
+//		if (checkbox.equals(this.checkboxShowFace))
+//		{
+//			this.flagData.setHasFace(newSelected);
+//		}
+		if (checkbox.equals(this.checkboxEraser))
 		{
 			if (newSelected)
 			{
@@ -757,11 +722,11 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
 //		{
 //			return this.optionUpload;
 //		}
-		if (checkbox.equals(this.checkboxShowFace))
-		{
-			return this.flagData.getHasFace();
-		}
-		else if (checkbox.equals(this.checkboxPaintbrush))
+//		if (checkbox.equals(this.checkboxShowFace))
+//		{
+//			return this.flagData.getHasFace();
+//		}
+		if (checkbox.equals(this.checkboxPaintbrush))
 		{
 			return true;
 		}
