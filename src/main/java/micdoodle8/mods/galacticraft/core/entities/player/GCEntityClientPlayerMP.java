@@ -3,8 +3,6 @@ package micdoodle8.mods.galacticraft.core.entities.player;
 import java.util.ArrayList;
 import java.util.Random;
 
-import org.lwjgl.opengl.GL11;
-
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -37,6 +35,9 @@ import net.minecraft.util.Session;
 import net.minecraft.util.StringUtils;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+
+import org.lwjgl.opengl.GL11;
+
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -71,7 +72,7 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 	public boolean inFreefall;
 	public boolean inFreefallFirstCheck;
 
-	public Gravity gdir;
+	public Gravity gdir = Gravity.down;
     public float gravityTurnRate;
     public float gravityTurnRatePrev;
     public float gravityTurnVecX;
@@ -298,7 +299,7 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 		this.lastOnGround = this.onGround;
 
 		ItemStack gs = this.inventory.getStackInSlot(0);
-		if (gs.getItem() instanceof ItemBlockLandingPad)
+		if (gs != null && gs.getItem() instanceof ItemBlockLandingPad)
 		{
 			if (gs.stackSize <=6) setGravity(Gravity.GDirections[gs.stackSize - 1]);
 		}
