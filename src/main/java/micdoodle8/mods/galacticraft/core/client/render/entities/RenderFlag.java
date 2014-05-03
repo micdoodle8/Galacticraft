@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.client.render.entities;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.ModelFlag;
 import micdoodle8.mods.galacticraft.core.entities.EntityFlag;
-import micdoodle8.mods.galacticraft.core.items.ItemFlag;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
@@ -25,35 +24,20 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class RenderFlag extends Render
 {
-	private static ResourceLocation[] flagTextures;
+	public static ResourceLocation flagTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/flag.png");
 
-	static
-	{
-		RenderFlag.flagTextures = new ResourceLocation[ItemFlag.names.length];
-
-		for (int i = 0; i < ItemFlag.names.length; i++)
-		{
-			RenderFlag.flagTextures[i] = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/flag/" + ItemFlag.names[i] + ".png");
-		}
-	}
-
-	protected ModelFlag modelSpaceship;
+	protected ModelFlag modelFlag;
 
 	public RenderFlag()
 	{
 		this.shadowSize = 1F;
-		this.modelSpaceship = new ModelFlag();
+		this.modelFlag = new ModelFlag();
 	}
 
 	@Override
 	protected ResourceLocation getEntityTexture(Entity entity)
 	{
-		if (((EntityFlag) entity).getType() == -1)
-		{
-			return null;
-		}
-
-		return RenderFlag.flagTextures[((EntityFlag) entity).getType()];
+		return flagTexture;
 	}
 
 	public void renderFlag(EntityFlag entity, double par2, double par4, double par6, float par8, float par9)
@@ -70,7 +54,7 @@ public class RenderFlag extends Render
 		GL11.glRotatef(180.0F - entity.getFacingAngle(), 0.0F, 1.0F, 0.0F);
 		this.bindEntityTexture(entity);
 		GL11.glScalef(-1.0F, -1.0F, 1.0F);
-		this.modelSpaceship.render(entity, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+		this.modelFlag.render(entity, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 		GL11.glPopMatrix();
 	}
 

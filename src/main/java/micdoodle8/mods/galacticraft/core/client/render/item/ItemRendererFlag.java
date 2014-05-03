@@ -1,13 +1,12 @@
 package micdoodle8.mods.galacticraft.core.client.render.item;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.ModelFlag;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderFlag;
 import micdoodle8.mods.galacticraft.core.entities.EntityFlag;
-import micdoodle8.mods.galacticraft.core.items.ItemFlag;
+import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
@@ -25,32 +24,28 @@ import cpw.mods.fml.client.FMLClientHandler;
  */
 public class ItemRendererFlag implements IItemRenderer
 {
-	private static ResourceLocation[] flagTextures;
-
-	static
-	{
-		ItemRendererFlag.flagTextures = new ResourceLocation[ItemFlag.names.length];
-
-		for (int i = 0; i < ItemFlag.names.length; i++)
-		{
-			ItemRendererFlag.flagTextures[i] = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/flag/" + ItemFlag.names[i] + ".png");
-		}
-	}
-
-	EntityFlag spaceship = new EntityFlag(FMLClientHandler.instance().getClient().theWorld);
-	ModelFlag modelSpaceship = new ModelFlag();
+	private EntityFlag entityFlagDummy = new EntityFlag(FMLClientHandler.instance().getClient().theWorld);
+	private ModelFlag modelFlag = new ModelFlag();
+    private int ticksRendered;
 
 	private void renderFlag(ItemRenderType type, RenderBlocks render, ItemStack item, float translateX, float translateY, float translateZ)
 	{
 		GL11.glPushMatrix();
-		long var10 = this.spaceship.getEntityId() * 493286711L;
+		long var10 = this.entityFlagDummy.getEntityId() * 493286711L;
 		var10 = var10 * var10 * 4392167121L + var10 * 98761L;
 		final float var12 = (((var10 >> 16 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
 		final float var13 = (((var10 >> 20 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
 		final float var14 = (((var10 >> 24 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
 
-		this.spaceship.setType(item.getItemDamage());
-		this.spaceship.setOwner(FMLClientHandler.instance().getClient().thePlayer.getGameProfile().getName());
+		this.entityFlagDummy.worldObj = FMLClientHandler.instance().getClient().theWorld;
+		this.entityFlagDummy.ticksExisted = ticksRendered;
+		this.entityFlagDummy.setType(item.getItemDamage());
+		this.entityFlagDummy.setOwner(FMLClientHandler.instance().getClient().thePlayer.getGameProfile().getName());
+		
+		if (ticksRendered % 60 == 0)
+		{
+			this.entityFlagDummy.flagData = ClientUtil.updateFlagData(this.entityFlagDummy.getOwner(), true);
+		}
 
 		if (type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON)
 		{
@@ -109,9 +104,9 @@ public class ItemRendererFlag implements IItemRenderer
 			GL11.glTranslatef(0, -0.6F, 0);
 		}
 
-		FMLClientHandler.instance().getClient().renderEngine.bindTexture(ItemRendererFlag.flagTextures[item.getItemDamage()]);
+		FMLClientHandler.instance().getClient().renderEngine.bindTexture(RenderFlag.flagTexture);
 
-		this.modelSpaceship.render(this.spaceship, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+		this.modelFlag.render(this.entityFlagDummy, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 		GL11.glPopMatrix();
 	}
 
@@ -154,6 +149,7 @@ public class ItemRendererFlag implements IItemRenderer
 			break;
 		case INVENTORY:
 			this.renderFlag(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
+			ticksRendered++;
 			break;
 		case ENTITY:
 			this.renderFlag(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
