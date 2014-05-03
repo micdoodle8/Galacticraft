@@ -3,6 +3,8 @@ package micdoodle8.mods.galacticraft.core.entities.player;
 import java.util.ArrayList;
 import java.util.Random;
 
+import org.lwjgl.opengl.GL11;
+
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -10,6 +12,7 @@ import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.event.EventWakePlayer;
+import micdoodle8.mods.galacticraft.core.items.ItemBlockLandingPad;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAdvanced;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
@@ -22,6 +25,8 @@ import net.minecraft.client.renderer.IImageBuffer;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
 import net.minecraft.client.renderer.texture.ITextureObject;
 import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatFileWriter;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
@@ -65,6 +70,14 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 	private int lastStep;
 	public boolean inFreefall;
 	public boolean inFreefallFirstCheck;
+
+	public Gravity gdir;
+    public float gravityTurnRate;
+    public float gravityTurnRatePrev;
+    public float gravityTurnVecX;
+    public float gravityTurnVecY;
+    public float gravityTurnVecZ;
+    public float gravityTurnYaw;
 
 	public ArrayList<ISchematicPage> unlockedSchematics = new ArrayList<ISchematicPage>();
 
@@ -283,7 +296,13 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 
 		this.lastUsingParachute = this.usingParachute;
 		this.lastOnGround = this.onGround;
-	}
+
+		ItemStack gs = this.inventory.getStackInSlot(0);
+		if (gs.getItem() instanceof ItemBlockLandingPad)
+		{
+			if (gs.stackSize <=6) setGravity(Gravity.GDirections[gs.stackSize - 1]);
+		}
+}
 
 	@Override
     public void moveEntity(double par1, double par3, double par5)
@@ -443,5 +462,223 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 	public int getThirdPersonView()
 	{
 		return this.thirdPersonView;
+	}
+	
+	public void setGravity(Gravity newGravity)
+	{
+		if (this.gdir == newGravity) return;
+		this.gravityTurnRatePrev = (this.gravityTurnRate = 0.0F);
+		float turnSpeed = 0.05F;
+		this.gravityTurnVecX = 0.0F;
+		this.gravityTurnVecY = 0.0F;
+		this.gravityTurnVecZ = 0.0F;
+		this.gravityTurnYaw = 0.0F;
+
+		switch (this.gdir.intValue) {
+		case 1:
+			switch (newGravity.intValue)
+			{
+			case 1:
+				break;
+			case 2:
+				this.gravityTurnVecX = -2.0F;
+				break;
+			case 3:
+				this.gravityTurnVecY = -1.0F;
+				this.gravityTurnYaw = -90.0F;
+				break;
+			case 4:
+				this.gravityTurnVecY = 1.0F;
+				this.gravityTurnYaw = 90.0F;
+				break;
+			case 5:
+				this.gravityTurnVecX = 1.0F;
+				break;
+			case 6:
+				this.gravityTurnVecX = -1.0F;
+			}
+
+			break;
+		case 2:
+			switch (newGravity.intValue) {
+			case 1:
+				this.gravityTurnVecX = -2.0F;
+				break;
+			case 2:
+				break;
+			case 3:
+				this.gravityTurnVecY = 1.0F;
+				this.gravityTurnYaw = 90.0F;
+				break;
+			case 4:
+				this.gravityTurnVecY = -1.0F;
+				this.gravityTurnYaw = -90.0F;
+				break;
+			case 5:
+				this.gravityTurnVecX = -1.0F;
+				break;
+			case 6:
+				this.gravityTurnVecX = 1.0F;
+			}
+
+			break;
+		case 3:
+			switch (newGravity.intValue) {
+			case 1:
+				this.gravityTurnVecY = 1.0F;
+				this.gravityTurnYaw = 90.0F;
+				break;
+			case 2:
+				this.gravityTurnVecY = -1.0F;
+				this.gravityTurnYaw = -90.0F;
+				break;
+			case 3:
+				break;
+			case 4:
+				this.gravityTurnVecZ = -2.0F;
+				break;
+			case 5:
+				this.gravityTurnVecZ = -1.0F;
+				this.gravityTurnYaw = -180.0F;
+				break;
+			case 6:
+				this.gravityTurnVecZ = 1.0F;
+			}
+
+			break;
+		case 4:
+			switch (newGravity.intValue) {
+			case 1:
+				this.gravityTurnVecY = -1.0F;
+				this.gravityTurnYaw = -90.0F;
+				break;
+			case 2:
+				this.gravityTurnVecY = 1.0F;
+				this.gravityTurnYaw = 90.0F;
+				break;
+			case 3:
+				this.gravityTurnVecZ = -2.0F;
+				break;
+			case 4:
+				break;
+			case 5:
+				this.gravityTurnVecZ = 1.0F;
+				this.gravityTurnYaw = -180.0F;
+				break;
+			case 6:
+				this.gravityTurnVecZ = -1.0F;
+			}
+
+			break;
+		case 5:
+			switch (newGravity.intValue) {
+			case 1:
+				this.gravityTurnVecX = -1.0F;
+				break;
+			case 2:
+				this.gravityTurnVecX = 1.0F;
+				break;
+			case 3:
+				this.gravityTurnVecZ = 1.0F;
+				this.gravityTurnYaw = 180.0F;
+				break;
+			case 4:
+				this.gravityTurnVecZ = -1.0F;
+				this.gravityTurnYaw = 180.0F;
+				break;
+			case 5:
+				break;
+			case 6:
+				this.gravityTurnVecX = -2.0F;
+			}
+
+			break;
+		case 6:
+			switch (newGravity.intValue) {
+			case 1:
+				this.gravityTurnVecX = 1.0F;
+				break;
+			case 2:
+				this.gravityTurnVecX = -1.0F;
+				break;
+			case 3:
+				this.gravityTurnVecZ = -1.0F;
+				break;
+			case 4:
+				this.gravityTurnVecZ = 1.0F;
+				break;
+			case 5:
+				this.gravityTurnVecX = -2.0F;
+			case 6: } break;
+		}
+
+		this.gdir = newGravity;
+	}
+
+	public static enum Gravity
+	{
+		down(0, 1.0F, 0.0F, 0.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F),
+		up(1, 1.0F, 0.0F, 0.0F, -1.0F, 0.0F, -1.0F, 0.0F, 0.0F, -1.0F, 0.0F, 0.0F, 1.0F, 0.0F), 
+		west(2, 0.0F, -1.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.5F, 1.0F, 0.0F, 0.0F, -1.0F, 1.0F, 0.0F),
+		east(3, 0.0F, 1.0F, -1.0F, 0.0F, 0.0F, 0.0F, -0.5F, -1.0F, 0.0F, 0.0F, 1.0F, 1.0F, 0.0F), 
+		south(4, 1.0F, 0.0F, 0.0F, 0.0F, -1.0F, 0.5F, 0.0F, 0.0F, 0.0F, -1.0F, 0.0F, 1.0F, 1.0F),
+		north(5, 1.0F, 0.0F, 0.0F, 0.0F, 1.0F, -0.5F, 0.0F, 0.0F, 0.0F, 1.0F, 0.0F, 1.0F, -1.0F); 
+ 
+		public int intValue;
+		public float pitchGravityX;
+		public float pitchGravityY;
+		public float yawGravityX;
+		public float yawGravityY;
+		public float yawGravityZ;
+		public float thetaX;
+		public float thetaZ;
+		public float sneakVecX;
+		public float sneakVecY;
+		public float sneakVecZ;
+		public float eyeVecX;
+		public float eyeVecY;
+		public float eyeVecZ;
+		public static Gravity[] GDirections = { down, up, west, east, south, north };
+
+		private Gravity(int value, float pitchX, float pitchY, float yawX, float yawY, float yawZ, float thetaX, float thetaZ, float sneakX, float sneakY, float sneakZ, float eyeX, float eyeY, float eyeZ)
+		{
+			this.intValue = value;
+			this.pitchGravityX = pitchX;
+			this.pitchGravityY = pitchY;
+			this.yawGravityX = yawX;
+			this.yawGravityY = yawY;
+			this.yawGravityZ = yawZ;
+			this.thetaX = thetaX;
+			this.thetaZ = thetaZ;
+			this.sneakVecX = sneakX;
+			this.sneakVecY = sneakY;
+			this.sneakVecZ = sneakZ;
+			this.eyeVecX = eyeX;
+			this.eyeVecY = eyeY;
+			this.eyeVecZ = eyeZ;
+		}
+	}
+
+	public void reOrientCamera(float par1)
+	{
+		EntityLivingBase entityLivingBase = this.mc.renderViewEntity;
+		float pitch = entityLivingBase.prevRotationPitch + (entityLivingBase.rotationPitch - entityLivingBase.prevRotationPitch) * par1;
+		float yaw = entityLivingBase.prevRotationYaw + (entityLivingBase.rotationYaw - entityLivingBase.prevRotationYaw) * par1 + 180.0F;
+
+		GL11.glRotatef(180.0F * gdir.thetaX, 1.0F, 0.0F, 0.0F);
+		GL11.glRotatef(180.0F * gdir.thetaZ, 0.0F, 0.0F, 1.0F);
+		GL11.glRotatef(pitch * gdir.pitchGravityX, 1.0F, 0.0F, 0.0F);
+		GL11.glRotatef(pitch * gdir.pitchGravityY, 0.0F, 1.0F, 0.0F);
+		GL11.glRotatef(yaw * gdir.yawGravityX, 1.0F, 0.0F, 0.0F);
+		GL11.glRotatef(yaw * gdir.yawGravityY, 0.0F, 1.0F, 0.0F);
+		GL11.glRotatef(yaw * gdir.yawGravityZ, 0.0F, 0.0F, 1.0F);
+
+		GL11.glTranslatef(entityLivingBase.ySize * gdir.sneakVecX, entityLivingBase.ySize * gdir.sneakVecY, entityLivingBase.ySize * gdir.sneakVecZ);
+
+		float eyeHeightChange = entityLivingBase.yOffset - entityLivingBase.width / 2.0F;
+		GL11.glTranslatef(eyeHeightChange * gdir.eyeVecX, eyeHeightChange * gdir.eyeVecY, eyeHeightChange * gdir.eyeVecZ);
+
+		if (gravityTurnRate < 1.0F)
+			GL11.glRotatef(90.0F * (gravityTurnRatePrev + (gravityTurnRate - gravityTurnRatePrev) * par1), gravityTurnVecX, gravityTurnVecY, gravityTurnVecZ);
 	}
 }
