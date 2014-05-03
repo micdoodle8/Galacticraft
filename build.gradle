@@ -1,3 +1,8 @@
+
+def versionMajor = 3
+def versionMinor = 0
+def versionRev = 0
+
 buildscript {
     repositories {
         mavenCentral()
@@ -26,9 +31,13 @@ sourceSets.main {
     }
 }
 
-version = "1.7.2-" + System.getenv().BUILD_NUMBER?.toInteger() // Set the version number
+def versionBuild = 0
+if (System.getenv("BUILD_NUMBER") != null)
+    versionBuild = System.getenv("BUILD_NUMBER")
+	
+version = "${versionMajor}.${versionMinor}.${versionRev}.${versionBuild}" // Set the version number
 group= "micdoodle8.mods.galacticraft"
-archivesBaseName = "GalacticraftCore"
+archivesBaseName = "GalacticraftCoreAll"
 	
 minecraft {
     version = "1.7.2-10.12.1.1060" // Forge version
@@ -75,49 +84,61 @@ ext.planetsFiles = ['micdoodle8/mods/galacticraft/planets/**',
 ext.micdoodleCoreFiles = ['**/micdoodlecore_at.cfg',
 					'micdoodle8/mods/miccore/**']
 
+
+ext.coreJar = "build/libs/" + archivesBaseName + "-" + version + ".jar"
+
 // Configure the main jar
 jar
 {
 	// Add necessary files, remove unnecessary ones.
 	includes.addAll(project.ext.coreFiles)
-	excludes.addAll(project.ext.dependencies)
-	excludes.addAll(project.ext.planetsFiles)
-	excludes.addAll(project.ext.micdoodleCoreFiles)
+	includes.addAll(project.ext.dependencies)
+	includes.addAll(project.ext.planetsFiles)
+	includes.addAll(project.ext.micdoodleCoreFiles)
 }
 
-// Add a new task for creating the planets jar
-task planetsJar(type: Jar) {
+task packCoreJar(type: Jar, dependsOn: "reobf") {
+	// Jar will always be updated
+	outputs.upToDateWhen {false}
+	// Set the jar's base name
+	baseName = "GalacticraftCore"
+	
+	from(zipTree(project.ext.coreJar)) {
+		// Add necessary files, remove unnecessary ones.
+		includes.addAll(project.ext.coreFiles)
+		excludes.addAll(project.ext.planetsFiles)
+		excludes.addAll(project.ext.dependencies)
+		excludes.addAll(project.ext.micdoodleCoreFiles)
+	}
+}
+
+task packPlanetsJar(type: Jar, dependsOn: "reobf") {
 	// Jar will always be updated
 	outputs.upToDateWhen {false}
 	// Set the jar's base name
 	baseName = "Galacticraft-Planets"
 	
-	from(sourceSets.main.output) {
+	from(zipTree(project.ext.coreJar)) {
 		// Add necessary files, remove unnecessary ones.
 		includes.addAll(project.ext.planetsFiles)
-		excludes.addAll(project.ext.dependencies)
 		excludes.addAll(project.ext.coreFiles)
+		excludes.addAll(project.ext.dependencies)
 		excludes.addAll(project.ext.micdoodleCoreFiles)
 	}
-	
-	println 'Created GalacticraftPlanets Jar'
 }
 
-// Add a new task for creating the MicdoodleCore jar
-task micCoreJar(type: Jar) {
+task packMicCoreJar(type: Jar, dependsOn: "reobf") {
 	// Jar will always be updated
 	outputs.upToDateWhen {false}
 	// Set the jar's base name
 	baseName = "MicdoodleCore"
 	
-	from(sourceSets.main.output) {
+	from(zipTree(project.ext.coreJar)) {
 		// Add necessary files, remove unnecessary ones.
 		includes.addAll(project.ext.micdoodleCoreFiles)
-		excludes.addAll(project.ext.dependencies)
 		excludes.addAll(project.ext.planetsFiles)
 		excludes.addAll(project.ext.coreFiles)
-		// Remove empty directories
-		excludes.addAll(['assets', 'micdoodle8/mods/galacticraft'])
+		excludes.addAll(project.ext.dependencies)
 	}
 	
 	// Configure manifest attributes
@@ -127,11 +148,8 @@ task micCoreJar(type: Jar) {
 		attributes.put("FMLCorePlugin", "micdoodle8.mods.miccore.MicdoodlePlugin")
 		attributes.put("AccessTransformer", "micdoodlecore_at.cfg")
 	}
-	
-	println 'Created MicdoodleCore Jar'
 }
 
-reobf { 
-	reobf planetsJar
-	reobf micCoreJar 
+task cleanOldJar(type: Delete, dependsOn: "packMicCoreJar") {
+	delete project.ext.coreJar
 }
