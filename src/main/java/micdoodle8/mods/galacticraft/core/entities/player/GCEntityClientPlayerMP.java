@@ -185,7 +185,10 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 		}
 
 		super.onLivingUpdate();
-		if (this.inFreefall) this.limbSwing -= this.limbSwingAmount; 
+		if (this.inFreefall)
+		{	this.limbSwing -= this.limbSwingAmount;
+			this.limbSwingAmount = this.prevLimbSwingAmount;
+		}
 
 //		// If the player is on the moon, not airbourne and not riding anything
 //		if (this.worldObj != null && this.worldObj.provider instanceof GCMoonWorldProvider && this.onGround && this.ridingEntity == null)

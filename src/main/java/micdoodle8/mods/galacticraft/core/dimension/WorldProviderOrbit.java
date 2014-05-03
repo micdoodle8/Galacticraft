@@ -209,114 +209,126 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 				this.dataNotLoaded = false;
 			}
 			
-			boolean updateNeeded = true;
-			if (this.angularVelocityTarget < this.angularVelocityRadians)
+			if (this.doSpinning)
 			{
-				float newAngle = this.angularVelocityRadians - this.angularVelocityAccel;
-				if (newAngle < this.angularVelocityTarget) newAngle = this.angularVelocityTarget;
-				setSpinRate(newAngle);
-				this.thrustersFiring = true;
-			} else if (this.angularVelocityTarget > this.angularVelocityRadians)
-			{
-				float newAngle = this.angularVelocityRadians + this.angularVelocityAccel;
-				if (newAngle > this.angularVelocityTarget) newAngle = this.angularVelocityTarget;
-				setSpinRate(newAngle);
-				this.thrustersFiring = true;
-			} else
-			if (this.thrustersFiring)
-			{
-				this.thrustersFiring = false;
-			} else
-				updateNeeded = false;
-	
-			if (updateNeeded)
-			{
-				this.writeToNBT(this.savefile.datacompound);
-				this.savefile.markDirty();
-				
-				List<Object> objList = new ArrayList<Object>();
-				objList.add(Float.valueOf(this.angularVelocityRadians));
-				objList.add(Boolean.valueOf(this.thrustersFiring));
-				GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_STATION_SPIN, objList), this.spaceStationDimensionID);
-			}
-			
-			//Update entity positions if in freefall
-			this.loadedEntities.clear();
-			this.loadedEntities.addAll(this.worldObj.loadedEntityList);
-			for(Entity e : this.loadedEntities)
-			{
-				if ((e instanceof EntityItem || (e instanceof EntityLivingBase && !(e instanceof EntityPlayer)) || e instanceof EntityTNTPrimed || e instanceof EntityFallingBlock) && !e.onGround)
+				boolean updateNeeded = true;
+				if (this.angularVelocityTarget < this.angularVelocityRadians)
 				{
-					boolean freefall = true;
-					if (e.boundingBox.maxX >= this.ssBoundsMinX && e.boundingBox.minX <= this.ssBoundsMaxX && e.boundingBox.maxY >= this.ssBoundsMinY && e.boundingBox.minY <= this.ssBoundsMaxY && e.boundingBox.maxZ >= this.ssBoundsMinZ && e.boundingBox.minZ <= this.ssBoundsMaxZ)
+					float newAngle = this.angularVelocityRadians - this.angularVelocityAccel;
+					if (newAngle < this.angularVelocityTarget) newAngle = this.angularVelocityTarget;
+					setSpinRate(newAngle);
+					this.thrustersFiring = true;
+				} else if (this.angularVelocityTarget > this.angularVelocityRadians)
+				{
+					float newAngle = this.angularVelocityRadians + this.angularVelocityAccel;
+					if (newAngle > this.angularVelocityTarget) newAngle = this.angularVelocityTarget;
+					setSpinRate(newAngle);
+					this.thrustersFiring = true;
+				} else
+				if (this.thrustersFiring)
+				{
+					this.thrustersFiring = false;
+				} else
+					updateNeeded = false;
+		
+				if (updateNeeded)
+				{
+					this.writeToNBT(this.savefile.datacompound);
+					this.savefile.markDirty();
+					
+					List<Object> objList = new ArrayList<Object>();
+					objList.add(Float.valueOf(this.angularVelocityRadians));
+					objList.add(Boolean.valueOf(this.thrustersFiring));
+					GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_STATION_SPIN, objList), this.spaceStationDimensionID);
+				}
+				
+				//Update entity positions if in freefall
+				this.loadedEntities.clear();
+				this.loadedEntities.addAll(this.worldObj.loadedEntityList);
+				for(Entity e : this.loadedEntities)
+				{
+					if ((e instanceof EntityItem || (e instanceof EntityLivingBase && !(e instanceof EntityPlayer)) || e instanceof EntityTNTPrimed || e instanceof EntityFallingBlock) && !e.onGround)
 					{
-						//Entity is somewhere within the space station boundaries
-
-						//Check if the entity's bounding box is in the same block coordinates as any non-vacuum block (including torches etc)
-						//If so, it's assumed the entity has something close enough to catch onto, so is not in freefall
-						//Note: breatheable air here means the entity is definitely not in freefall
-						int xmx = MathHelper.floor_double(e.boundingBox.maxX + 0.2D);
-						int ym = MathHelper.floor_double(e.boundingBox.minY - 0.1D);
-						int yy = MathHelper.floor_double(e.boundingBox.maxY + 0.1D);
-						int zm = MathHelper.floor_double(e.boundingBox.minZ - 0.2D);
-						int zz = MathHelper.floor_double(e.boundingBox.maxZ + 0.2D);
-						BLOCKCHECK:
-						for (int x = MathHelper.floor_double(e.boundingBox.minX - 0.2D); x<=xmx; x++)
-							for (int y = ym; y<=yy; y++)
-								for (int z = zm; z<=zz; z++)
-								{
-									if (this.worldObj.blockExists(x, y, z) && this.worldObj.getBlock(x, y, z) != Blocks.air)
+						boolean freefall = true;
+						if (e.boundingBox.maxX >= this.ssBoundsMinX && e.boundingBox.minX <= this.ssBoundsMaxX && e.boundingBox.maxY >= this.ssBoundsMinY && e.boundingBox.minY <= this.ssBoundsMaxY && e.boundingBox.maxZ >= this.ssBoundsMinZ && e.boundingBox.minZ <= this.ssBoundsMaxZ)
+						{
+							//Entity is somewhere within the space station boundaries
+	
+							//Check if the entity's bounding box is in the same block coordinates as any non-vacuum block (including torches etc)
+							//If so, it's assumed the entity has something close enough to catch onto, so is not in freefall
+							//Note: breatheable air here means the entity is definitely not in freefall
+							int xmx = MathHelper.floor_double(e.boundingBox.maxX + 0.2D);
+							int ym = MathHelper.floor_double(e.boundingBox.minY - 0.1D);
+							int yy = MathHelper.floor_double(e.boundingBox.maxY + 0.1D);
+							int zm = MathHelper.floor_double(e.boundingBox.minZ - 0.2D);
+							int zz = MathHelper.floor_double(e.boundingBox.maxZ + 0.2D);
+							BLOCKCHECK:
+							for (int x = MathHelper.floor_double(e.boundingBox.minX - 0.2D); x<=xmx; x++)
+								for (int y = ym; y<=yy; y++)
+									for (int z = zm; z<=zz; z++)
 									{
-										freefall = false;
-										break BLOCKCHECK;
+										if (this.worldObj.blockExists(x, y, z) && this.worldObj.getBlock(x, y, z) != Blocks.air)
+										{
+											freefall = false;
+											break BLOCKCHECK;
+										}
 									}
-								}
-					}
-
-					if (freefall)
-					{
-						//Do the rotation
-						if (this.angularVelocityRadians!=0F)
-						{
-							float angle;
-							final double xx = e.posX-this.spinCentreX;
-							final double zz = e.posZ-this.spinCentreZ;
-							double arc = Math.sqrt(xx*xx + zz*zz);
-							if (xx == 0D) angle = (zz > 0) ? 3.141592536F/2 : -3.141592536F/2;
-							else angle = (float)Math.atan(zz/xx);
-							if (xx < 0D) angle += 3.141592536F;
-							angle += this.angularVelocityRadians/3F;
-							arc = arc*this.angularVelocityRadians;
-							final double offsetX = - arc * MathHelper.sin(angle);
-							final double offsetZ = arc * MathHelper.cos(angle);
-							e.posX += offsetX;
-							e.posZ += offsetZ;
-							
-							//Rotated into an unloaded chunk (probably also drifted out to there): byebye
-							if (!(this.worldObj.blockExists(MathHelper.floor_double(e.posX), 64, MathHelper.floor_double(e.posZ))))
-								e.setDead();
-							
-							e.boundingBox.offset(offsetX, 0.0D, offsetZ);
-							//TODO check for block collisions here - if so move the entity appropriately and apply fall damage
-							//Moving the entity = slide along / down		
-							e.rotationYaw += this.skyAngularVelocity;
-							while (e.rotationYaw > 360F) e.rotationYaw -= 360F;
 						}
-						
-						//Undo deceleration
-						if (e instanceof EntityLivingBase)
+	
+						if (freefall)
 						{
-							e.motionX /= 0.91F;
-							e.motionZ /= 0.91F;
-							if (e instanceof EntityFlying)
-								e.motionY /= 0.91F;
-							else
+							//Do the rotation
+							if (this.angularVelocityRadians!=0F)
+							{
+								float angle;
+								final double xx = e.posX-this.spinCentreX;
+								final double zz = e.posZ-this.spinCentreZ;
+								double arc = Math.sqrt(xx*xx + zz*zz);
+								if (xx == 0D) angle = (zz > 0) ? 3.141592536F/2 : -3.141592536F/2;
+								else angle = (float)Math.atan(zz/xx);
+								if (xx < 0D) angle += 3.141592536F;
+								angle += this.angularVelocityRadians/3F;
+								arc = arc*this.angularVelocityRadians;
+								final double offsetX = - arc * MathHelper.sin(angle);
+								final double offsetZ = arc * MathHelper.cos(angle);
+								e.posX += offsetX;
+								e.posZ += offsetZ;
+								e.lastTickPosX += offsetX;
+								e.lastTickPosZ += offsetZ;
+								
+								//Rotated into an unloaded chunk (probably also drifted out to there): byebye
+								if (!(this.worldObj.blockExists(MathHelper.floor_double(e.posX), 64, MathHelper.floor_double(e.posZ))))
+									e.setDead();
+								
+								e.boundingBox.offset(offsetX, 0.0D, offsetZ);
+								//TODO check for block collisions here - if so move the entity appropriately and apply fall damage
+								//Moving the entity = slide along / down		
+								e.rotationYaw += this.skyAngularVelocity;
+								while (e.rotationYaw > 360F) e.rotationYaw -= 360F;
+							}
+							
+							//Undo deceleration
+							if (e instanceof EntityLivingBase)
+							{
+								e.motionX /= 0.91F;
+								e.motionZ /= 0.91F;
+								if (e instanceof EntityFlying)
+									e.motionY /= 0.91F;
+								else if (e instanceof EntityFallingBlock)
+								{
+									e.motionY /= 0.9800000190734863D;
+									//e.motionY += 0.03999999910593033D;
+									//e.posY += 0.03999999910593033D;
+									//e.lastTickPosY += 0.03999999910593033D;
+								}
+								else
+									e.motionY /= 0.9800000190734863D;
+							} else
+							{
+								e.motionX /= 0.9800000190734863D;
 								e.motionY /= 0.9800000190734863D;
-						} else
-						{
-							e.motionX /= 0.9800000190734863D;
-							e.motionY /= 0.9800000190734863D;
-							e.motionZ /= 0.9800000190734863D;
+								e.motionZ /= 0.9800000190734863D;
+							}
 						}
 					}
 				}
@@ -470,6 +482,7 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 	
 	public void spinUpdate(GCEntityClientPlayerMP p)
 	{
+		if (!this.doSpinning) return;
 		boolean freefall = true;
 		if (p.boundingBox.maxX >= this.ssBoundsMinX && p.boundingBox.minX <= this.ssBoundsMaxX && p.boundingBox.maxY >= this.ssBoundsMinY && p.boundingBox.minY <= this.ssBoundsMaxY && p.boundingBox.maxZ >= this.ssBoundsMinZ && p.boundingBox.minZ <= this.ssBoundsMaxZ)
 		{
