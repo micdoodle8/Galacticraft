@@ -64,6 +64,7 @@ public class NEIGalacticraftConfig implements IConfigureNEI
 		API.registerUsageHandler(new IngotCompressorRecipeHandler());
 		API.registerRecipeHandler(new ElectricIngotCompressorRecipeHandler());
 		API.registerUsageHandler(new ElectricIngotCompressorRecipeHandler());
+		API.registerHighlightIdentifier(GCBlocks.basicBlock, new GCNEIHighlightHandler());
 	}
 
 	@Override
