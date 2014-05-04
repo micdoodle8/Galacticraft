@@ -1,4 +1,4 @@
-# Galacticraft Core Language File = Russia Russian
+# Galacticraft Core Language File = RUSSIA RUSSIAN
 
 # GENERAL ITEMS
 item.oxygenTankLightFull.name=Малый кислородный баллон
@@ -117,6 +117,7 @@ item.steel_boots.name=Ботинки со сверхпрочным покрыт�
 # BLOCKS
 tile.treasureChest.name=Сундук с сокровищами
 tile.landingPad.landingPad.name=Взлётная площадка
+tile.landingPadFull.name=Взлётная площадка
 tile.unlitTorch.name=Факел
 tile.unlitTorchLit.name=Факел
 tile.distributor.name=Распределитель кислородных пузырей
@@ -130,13 +131,12 @@ tile.gcBlockCore.oreCopper.name=Медная руда
 tile.gcBlockCore.oreTin.name=Оловянная руда
 tile.gcBlockCore.oreAluminum.name=Алюминиевая руда
 tile.gcBlockCore.oreSilicon.name=Кремниевая руда
-tile.airLockFrame.name=Каркас воздушного шлюза
+tile.airLockFrame.name=Рамка воздушного шлюза
 tile.airLockSeal.name=Уплотнитель воздушного шлюза
 tile.crudeOilStill.name=Неочищенная нефть
 tile.crudeOilMoving.name=Неочищенная нефть
 tile.refinery.name=Очистительный завод
 tile.fuelLoader.name=Загрузчик топлива
-tile.oxygenCompressor.name=Кислородный компрессор
 tile.sapling2.oak.name=Саженец дуба
 tile.sapling2.spruce.name=Саженец сосны
 tile.sapling2.birch.name=Саженец берёзы
@@ -165,16 +165,30 @@ tile.parachest.name=Сундук с парашютом
 tile.oreCopper.name=Медная руда
 tile.oreTin.name=Оловянная руда
 tile.machine.0.name=Генератор угля
-tile.machine.1.name=Аккумуляторный ящик
+tile.machine.1.name=Модуль хранения энергии
 tile.machine.2.name=Электропечь
 tile.machine.3.name=Компрессор
 tile.machine2.4.name=Электрический компрессор
 tile.machine2.5.name=Производитель микросхем
+tile.machine2.6.name=Модуль хранения кислорода
 tile.aluminumWire.name=Алюминиевый провод
 tile.aluminumWireHeavy.name=Толстый алюминиевый провод
 tile.glowstoneTorch.name=Факел из светящегося камня
 tile.enclosed.aluminumWire.name=Замаскированный алюминиевый провод
 tile.enclosed.aluminumWireHeavy.name=Замаскированный толстый алюминиевый провод
+tile.enclosed.meCable.name=Замаскированный МЭ провод
+tile.airLockController.name=Контроллер воздушного шлюза
+tile.dummyblock.spaceStationBase.name=Основание космической станции
+tile.dummyblock.launchPad.name=Взлётная площадка
+tile.dummyblock.nasaWorkbench.name=Верстак NASA
+tile.dummyblock.solar.name=Солнечная панель
+tile.dummyblock.cryogenicChamber.name=Криогенная камера
+tile.gcBlockCore.copperBlock.name=Медный блок
+tile.gcBlockCore.tinBlock.name=Оловянный блок
+tile.gcBlockCore.aluminumBlock.name=Алюминиевый блок
+tile.fuel.name=Топливо
+tile.oxygenCompressor.0.name=Кислородный компрессор
+tile.oxygenCompressor.1.name=Кислородный декомпрессор
 
 # ENTITIES
 entity.GalacticraftCore.EvolvedSpider.name=Эволюционировавший паук
@@ -206,8 +220,6 @@ death.attack.oxygenSuffocation=%1$s задохнулся в космосе!
 galaxy.blockyway.name=Блочный путь
 
 # OTHER
-newversion.message1.name=\u00a77Доступна новая версия \u00a73Galacticraft! v
-newversion.message2.name=Доступна новая версия Galacticraft! v
 newversion.failed.name=Проверка обновлений для Galacticraft провалилась! Следующая попытка через 15 секунд.
 newversion.success.name=Найдена новая версия Galacticraft:
 
@@ -240,6 +252,7 @@ container.lander.name=Посадочный модуль
 container.spaceship.name=Ракета Tier 1
 container.solarbasic.name=Базовая солнечная панель
 container.solaradvanced.name=Продвинутая солнечная панель
+container.oxygendecompressor.name=Кислородный декомпрессор
 
 gui.message.out.name=Выход
 gui.message.in.name=Вход
@@ -250,8 +263,8 @@ gui.message.fuel.name=Топливо
 gui.message.full.name=осталось
 gui.message.page.name=Страница
 gui.message.addnewsch.name=Добавить новую схему
-gui.message.generating.name=Generating
-gui.message.environment.name=Environmental Boost
+gui.message.generating.name=Генерация
+gui.message.environment.name=Ускорение окружающей среды
 
 gui.status.active.name=Активно
 gui.status.missingleaves.name=Отсутствуют блоки листвы
