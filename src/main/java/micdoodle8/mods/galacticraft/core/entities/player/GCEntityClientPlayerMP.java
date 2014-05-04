@@ -663,9 +663,16 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 	public void reOrientCamera(float par1)
 	{
 		EntityLivingBase entityLivingBase = this.mc.renderViewEntity;
+		float f1 = entityLivingBase.yOffset - 1.62F;
 		float pitch = entityLivingBase.prevRotationPitch + (entityLivingBase.rotationPitch - entityLivingBase.prevRotationPitch) * par1;
 		float yaw = entityLivingBase.prevRotationYaw + (entityLivingBase.rotationYaw - entityLivingBase.prevRotationYaw) * par1 + 180.0F;
-
+		float eyeHeightChange = entityLivingBase.yOffset - entityLivingBase.width / 2.0F;
+		
+        GL11.glTranslatef(0.0F, -f1, 0.0F);
+        GL11.glRotatef(-yaw, 0.0F, 1.0F, 0.0F);
+        GL11.glRotatef(-pitch, 1.0F, 0.0F, 0.0F);
+        GL11.glTranslatef(0.0F, 0.0F, 0.1F);
+		        
 		GL11.glRotatef(180.0F * gdir.thetaX, 1.0F, 0.0F, 0.0F);
 		GL11.glRotatef(180.0F * gdir.thetaZ, 0.0F, 0.0F, 1.0F);
 		GL11.glRotatef(pitch * gdir.pitchGravityX, 1.0F, 0.0F, 0.0F);
@@ -676,10 +683,16 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 
 		GL11.glTranslatef(entityLivingBase.ySize * gdir.sneakVecX, entityLivingBase.ySize * gdir.sneakVecY, entityLivingBase.ySize * gdir.sneakVecZ);
 
-		float eyeHeightChange = entityLivingBase.yOffset - entityLivingBase.width / 2.0F;
 		GL11.glTranslatef(eyeHeightChange * gdir.eyeVecX, eyeHeightChange * gdir.eyeVecY, eyeHeightChange * gdir.eyeVecZ);
 
 		if (gravityTurnRate < 1.0F)
 			GL11.glRotatef(90.0F * (gravityTurnRatePrev + (gravityTurnRate - gravityTurnRatePrev) * par1), gravityTurnVecX, gravityTurnVecY, gravityTurnVecZ);
+		
+		//omit this for interesting 3P views
+        //GL11.glTranslatef(0.0F, 0.0F, -0.1F);
+        //GL11.glRotatef(pitch, 1.0F, 0.0F, 0.0F);
+        //GL11.glRotatef(yaw, 0.0F, 1.0F, 0.0F);
+        //GL11.glTranslatef(0.0F, f1, 0.0F);
+
 	}
 }
