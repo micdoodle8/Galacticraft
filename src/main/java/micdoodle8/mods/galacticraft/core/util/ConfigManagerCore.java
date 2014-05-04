@@ -40,6 +40,7 @@ public class ConfigManagerCore
 	public static int idGuiKnowledgeBook;
 	public static int idGuiExtendedInventory;
 	public static int idGuiNewSpaceRace;
+	public static int idGuiJoinSpaceRace;
 
 	// ACHIEVEMENTS
 	public static int idAchievBase;
@@ -117,6 +118,7 @@ public class ConfigManagerCore
 			ConfigManagerCore.idGuiKnowledgeBook = ConfigManagerCore.configuration.get("GUI", "idGuiKnowledgeBook", 140).getInt(140);
 			ConfigManagerCore.idGuiExtendedInventory = ConfigManagerCore.configuration.get("GUI", "idGuiExtendedInventory", 145).getInt(145);
 			ConfigManagerCore.idGuiNewSpaceRace = ConfigManagerCore.configuration.get("GUI", "idGuiNewSpaceRace", 146).getInt(146);
+			ConfigManagerCore.idGuiJoinSpaceRace = ConfigManagerCore.configuration.get("GUI", "idGuiJoinSpaceRace", 147).getInt(147);
 
 			ConfigManagerCore.idSchematicRocketT1 = ConfigManagerCore.configuration.get("Schematic", "idSchematicRocketT1", 0).getInt(0);
 			ConfigManagerCore.idSchematicMoonBuggy = ConfigManagerCore.configuration.get("Schematic", "idSchematicMoonBuggy", 1).getInt(1);

@@ -22,9 +22,11 @@ public class SpaceRaceManager
 {
 	private static final List<SpaceRace> spaceRaceList = Lists.newArrayList();
 	
-	public static void addSpaceRace(List<String> playerNames, String teamName, FlagData flagData)
+	public static SpaceRace addSpaceRace(List<String> playerNames, String teamName, FlagData flagData)
 	{
-		spaceRaceList.add(new SpaceRace(playerNames, teamName, flagData));
+		SpaceRace spaceRace = new SpaceRace(playerNames, teamName, flagData);
+		spaceRaceList.add(spaceRace);
+		return spaceRace;
 	}
 	
 	public static void removeSpaceRace(SpaceRace race)
@@ -114,13 +116,27 @@ public class SpaceRaceManager
 		return null;
 	}
 	
-	public static void sendSpaceRaceData(EntityPlayerMP toPlayer, String racePlayer)
+	public static SpaceRace getSpaceRaceFromID(int teamID)
 	{
-		SpaceRace spaceRace = SpaceRaceManager.getSpaceRaceFromPlayer(racePlayer);
+		for (int i = 0; i < spaceRaceList.size(); i++)
+		{
+			SpaceRace race = spaceRaceList.get(i);
+			
+			if (race.getSpaceRaceID() == teamID)
+			{
+				return race;
+			}
+		}
 		
+		return null;
+	}
+	
+	public static void sendSpaceRaceData(EntityPlayerMP toPlayer, SpaceRace spaceRace)
+	{
 		if (spaceRace != null)
 		{
 			List<Object> objList = new ArrayList<Object>();
+			objList.add(spaceRace.getSpaceRaceID());
 			objList.add(spaceRace.getTeamName());
 			objList.add(spaceRace.getFlagData());
 			objList.add(spaceRace.getPlayerNames().toArray(new String[spaceRace.getPlayerNames().size()]));

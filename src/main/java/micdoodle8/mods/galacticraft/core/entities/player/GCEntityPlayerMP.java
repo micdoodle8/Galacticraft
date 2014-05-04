@@ -103,6 +103,8 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 	private ItemStack lastTankInSlot2;
 
 	private int launchAttempts = 0;
+    
+    public int spaceRaceInviteTeamID;
 
 	private boolean usingPlanetSelectionGui;
 

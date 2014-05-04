@@ -26,6 +26,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.container.GuiRefinery;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiRocketInventory;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiSolar;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiGalaxyMap;
+import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiJoinSpaceRace;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiNewSpaceRace;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
@@ -213,6 +214,8 @@ public class GuiHandler implements IGuiHandler
 	@SideOnly(Side.CLIENT)
 	private Object getClientGuiElement(int ID, EntityPlayer player, World world, Vector3 position)
 	{
+		GCEntityClientPlayerMP playerClient = PlayerUtil.getPlayerBaseClientFromPlayer(player, false);
+		
 		if (ID == ConfigManagerCore.idGuiGalaxyMap)
 		{
 			return new GuiGalaxyMap(player);
@@ -232,6 +235,10 @@ public class GuiHandler implements IGuiHandler
 		else if (ID == ConfigManagerCore.idGuiNewSpaceRace)
 		{
 			return new GuiNewSpaceRace(player);
+		}
+		else if (ID == ConfigManagerCore.idGuiJoinSpaceRace)
+		{
+			return new GuiJoinSpaceRace(playerClient);
 		}
 
 		TileEntity tile = world.getTileEntity(position.intX(), position.intY(), position.intZ());
@@ -315,8 +322,6 @@ public class GuiHandler implements IGuiHandler
 				return new GuiOxygenDecompressor(player.inventory, (TileEntityOxygenDecompressor) tile);
 			}
 		}
-
-		GCEntityClientPlayerMP playerClient = PlayerUtil.getPlayerBaseClientFromPlayer(player, false);
 
 		if (playerClient != null)
 		{

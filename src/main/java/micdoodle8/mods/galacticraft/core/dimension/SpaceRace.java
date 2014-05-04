@@ -17,7 +17,9 @@ import com.google.common.collect.Lists;
 
 public class SpaceRace
 {
+	private static int lastSpaceRaceID = 0;
 	private String owner;
+	private int spaceRaceID;
 	private List<String> playerNames = Lists.newArrayList();
 	private String teamName;
 	private FlagData flagData;
@@ -33,6 +35,7 @@ public class SpaceRace
 		this.teamName = teamName;
 		this.ticksSpent = 0;
 		this.flagData = flagData;
+		this.spaceRaceID = ++lastSpaceRaceID;
 		
 		for (int i = 0; i < flagData.getWidth(); i++)
 		{
@@ -46,6 +49,7 @@ public class SpaceRace
 	public void loadFromNBT(NBTTagCompound nbt)
 	{
 		this.teamName = nbt.getString("TeamName");
+		this.spaceRaceID = nbt.getInteger("SpaceRaceID");
 		this.ticksSpent = nbt.getInteger("TicksSpent");
 		this.flagData = FlagData.readFlagData(nbt);
 		
@@ -73,6 +77,7 @@ public class SpaceRace
 	public void saveToNBT(NBTTagCompound nbt)
 	{
 		nbt.setString("TeamName", this.teamName);
+		nbt.setInteger("SpaceRaceID", this.spaceRaceID);
 		nbt.setLong("TicksSpent", this.ticksSpent);
 		this.flagData.saveFlagData(nbt);
 		
@@ -131,6 +136,16 @@ public class SpaceRace
 	public void setPlayerNames(List<String> playerNames)
 	{
 		this.playerNames = playerNames;
+	}
+	
+	public void setSpaceRaceID(int raceID)
+	{
+		this.spaceRaceID = raceID;
+	}
+	
+	public int getSpaceRaceID()
+	{
+		return this.spaceRaceID;
 	}
 	
 	public Map<CelestialBody, Integer> getCelestialBodyStatusList()

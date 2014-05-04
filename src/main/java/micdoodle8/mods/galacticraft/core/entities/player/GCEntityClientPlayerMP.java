@@ -79,6 +79,8 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
     public float gravityTurnVecY;
     public float gravityTurnVecZ;
     public float gravityTurnYaw;
+    
+    public int spaceRaceInviteTeamID;
 
 	public ArrayList<ISchematicPage> unlockedSchematics = new ArrayList<ISchematicPage>();
 

@@ -20,7 +20,6 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
-import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -63,6 +62,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
 	private GuiElementSlider sliderEraserSize;
 	private EnumSpaceRaceGui currentState = EnumSpaceRaceGui.MAIN;
 	public String teamName = "";
+	public int teamID = 0;
     
     private int buttonFlag_width;
     private int buttonFlag_height;
@@ -99,6 +99,8 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
 		if (race != null)
 		{
 			this.flagData = race.getFlagData();
+			this.teamName = race.getTeamName();
+			this.teamID = race.getSpaceRaceID();
 		}
 		else
 		{
@@ -147,9 +149,9 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
 				this.textBoxRename = new GuiElementTextBox(1, this, this.width / 2 - 75, this.buttonFlag_yPosition + this.buttonFlag_height + 10, 150, 16, "Rename Team", false, 25, true);
 				this.buttonList.add(this.textBoxRename);
 				this.buttonList.add(new GuiElementGradientButton(4, this.width / 2 - 120, this.textBoxRename.yPosition + this.height / 10, 100, this.height / 10, "Add Player(s)"));
-				this.buttonList.add(new GuiElementGradientButton(4, this.width / 2 - 120, this.textBoxRename.yPosition + this.height / 10 + this.height / 10 + this.height / 50, 100, this.height / 10, "Remove Player(s)"));
-				this.buttonList.add(new GuiElementGradientButton(4, this.width / 2 + 20, this.textBoxRename.yPosition + this.height / 10, 100, this.height / 10, "View Server Stats"));
-				this.buttonList.add(new GuiElementGradientButton(4, this.width / 2 + 20, this.textBoxRename.yPosition + this.height / 10 + this.height / 10 + this.height / 50, 100, this.height / 10, "View Global Stats"));
+				this.buttonList.add(new GuiElementGradientButton(5, this.width / 2 - 120, this.textBoxRename.yPosition + this.height / 10 + this.height / 10 + this.height / 50, 100, this.height / 10, "Remove Player(s)"));
+				this.buttonList.add(new GuiElementGradientButton(6, this.width / 2 + 20, this.textBoxRename.yPosition + this.height / 10, 100, this.height / 10, "View Server Stats"));
+				this.buttonList.add(new GuiElementGradientButton(7, this.width / 2 + 20, this.textBoxRename.yPosition + this.height / 10 + this.height / 10 + this.height / 50, 100, this.height / 10, "View Global Stats"));
 				break;
 			case RULES:
 				break;
@@ -235,6 +237,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
 		if (this.currentState == EnumSpaceRaceGui.MAIN)
 		{
     		List<Object> objList = new ArrayList<Object>();
+    		objList.add(this.teamID);
     		objList.add(this.teamName);
     		objList.add(this.flagData);
     		objList.add(new String[] { this.thePlayer.getGameProfile().getName() });
@@ -270,6 +273,14 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
 //    		{
 //    		}
 //    		break;
+    	case 4:
+    		String playerToInvite = "Player220";
+    		SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(thePlayer.getGameProfile().getName());
+    		if (race != null)
+    		{
+        		GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_INVITE_RACE_PLAYER, new Object[] { playerToInvite, race.getSpaceRaceID() }));
+    		}
+    		break;
 		default:
 			break;
     	}

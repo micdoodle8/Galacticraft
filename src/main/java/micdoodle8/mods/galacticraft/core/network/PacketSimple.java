@@ -27,7 +27,6 @@ import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
-import micdoodle8.mods.galacticraft.core.entities.EntityFlag;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP.EnumModelPacket;
@@ -40,6 +39,7 @@ import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAirLockController;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityConductor;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
@@ -61,6 +61,8 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.S07PacketRespawn;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatStyle;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
@@ -96,8 +98,9 @@ public class PacketSimple extends Packet implements IPacket
 		S_ON_ADVANCED_GUI_CLICKED_INT(Side.SERVER, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class),
 		S_ON_ADVANCED_GUI_CLICKED_STRING(Side.SERVER, Integer.class, Integer.class, Integer.class, Integer.class, String.class),
 		S_UPDATE_SHIP_MOTION_Y(Side.SERVER, Integer.class, Boolean.class),
-		S_START_NEW_SPACE_RACE(Side.SERVER, String.class, FlagData.class, String[].class),
+		S_START_NEW_SPACE_RACE(Side.SERVER, Integer.class, String.class, FlagData.class, String[].class),
 		S_REQUEST_FLAG_DATA(Side.SERVER, String.class),
+		S_INVITE_RACE_PLAYER(Side.SERVER, String.class, Integer.class),
 		// CLIENT
 		C_AIR_REMAINING(Side.CLIENT, Integer.class, Integer.class, String.class),
 		C_UPDATE_DIMENSION_LIST(Side.CLIENT, String.class, String.class),
@@ -121,7 +124,8 @@ public class PacketSimple extends Packet implements IPacket
 		C_OPEN_PARACHEST_GUI(Side.CLIENT, Integer.class, Integer.class, Integer.class),
 		C_UPDATE_WIRE_BOUNDS(Side.CLIENT, Integer.class, Integer.class, Integer.class),
 		C_OPEN_SPACE_RACE_GUI(Side.CLIENT),
-		C_UPDATE_SPACE_RACE_DATA(Side.CLIENT, String.class, FlagData.class, String[].class),
+		C_UPDATE_SPACE_RACE_DATA(Side.CLIENT, Integer.class, String.class, FlagData.class, String[].class),
+		C_OPEN_JOIN_RACE_GUI(Side.CLIENT, Integer.class),
 		C_UPDATE_FOOTPRINT_LIST(Side.CLIENT, Footprint[].class),
 		C_UPDATE_STATION_SPIN(Side.CLIENT, Float.class, Boolean.class),
 		C_UPDATE_STATION_DATA(Side.CLIENT, Double.class, Double.class),
@@ -531,32 +535,38 @@ public class PacketSimple extends Packet implements IPacket
 			}
 			break;
 		case C_UPDATE_SPACE_RACE_DATA:
-			String teamName = (String)this.data.get(0);
-			FlagData flagData = (FlagData)this.data.get(1);
+			Integer teamID = (Integer)this.data.get(0);
+			String teamName = (String)this.data.get(1);
+			FlagData flagData = (FlagData)this.data.get(2);
 			List<String> playerList = new ArrayList<String>();
 			
-			for (int i = 2; i < this.data.size(); i++)
+			for (int i = 3; i < this.data.size(); i++)
 			{
 				String playerName = (String) this.data.get(i);
 				ClientProxyCore.flagRequestsSent.remove(playerName);
 				playerList.add(playerName);
 				
-				SpaceRace previousData = SpaceRaceManager.getSpaceRaceFromPlayer(playerName);
-				if (previousData != null)
+				SpaceRace previousData = null;
+				// Remove all space races matching player names
+				while ((previousData = SpaceRaceManager.getSpaceRaceFromPlayer(playerName)) != null)
 				{
-					for (Object entity : player.worldObj.loadedEntityList)
-					{
-						if (entity instanceof EntityFlag && ((EntityFlag) entity).flagData == previousData.getFlagData())
-						{
-							((EntityFlag) entity).flagData = null;
-						}
-					}
-					
 					SpaceRaceManager.removeSpaceRace(previousData);
 				}
 			}
 			
-			SpaceRaceManager.addSpaceRace(playerList, teamName, flagData);
+			SpaceRace spaceRace = null;
+			// Remove all space races matching the team ID
+			while ((spaceRace = SpaceRaceManager.getSpaceRaceFromID(teamID)) != null)
+			{
+				SpaceRaceManager.removeSpaceRace(spaceRace);
+			}
+			
+			SpaceRace race = SpaceRaceManager.addSpaceRace(playerList, teamName, flagData);
+			race.setSpaceRaceID(teamID);
+			break;
+		case C_OPEN_JOIN_RACE_GUI:
+			playerBaseClient.spaceRaceInviteTeamID = (Integer) data.get(0);
+			player.openGui(GalacticraftCore.instance, ConfigManagerCore.idGuiJoinSpaceRace, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
 			break;
 		case C_UPDATE_FOOTPRINT_LIST:
 			ClientProxyCore.footprintRenderer.footprints.clear();
@@ -874,11 +884,12 @@ public class PacketSimple extends Packet implements IPacket
 
 			break;
 		case S_START_NEW_SPACE_RACE:
-			String teamName = (String)this.data.get(0);
-			FlagData flagData = (FlagData)this.data.get(1);
+			Integer teamID = (Integer)this.data.get(0);
+			String teamName = (String)this.data.get(1);
+			FlagData flagData = (FlagData)this.data.get(2);
 			List<String> playerList = new ArrayList<String>();
 			
-			for (int i = 2; i < this.data.size(); i++)
+			for (int i = 3; i < this.data.size(); i++)
 			{
 				playerList.add((String) this.data.get(i));
 			}
@@ -890,15 +901,53 @@ public class PacketSimple extends Packet implements IPacket
 				SpaceRaceManager.removeSpaceRace(previousData);
 			}
 			
-			SpaceRaceManager.addSpaceRace(playerList, teamName, flagData);
+			if (teamID > 0)
+			{
+				previousData = SpaceRaceManager.getSpaceRaceFromID(teamID);
+				
+				if (previousData != null)
+				{
+					SpaceRaceManager.removeSpaceRace(previousData);
+				}
+			}
+			
+			SpaceRace newRace = SpaceRaceManager.addSpaceRace(playerList, teamName, flagData);
+			
+			if (teamID > 0)
+			{
+				newRace.setSpaceRaceID(teamID);
+			}
 			
 			if (previousData != null)
 			{
-				SpaceRaceManager.sendSpaceRaceData(playerBase, playerBase.getGameProfile().getName());
+				SpaceRaceManager.sendSpaceRaceData(playerBase, SpaceRaceManager.getSpaceRaceFromPlayer(playerBase.getGameProfile().getName()));
 			}
 			break;
 		case S_REQUEST_FLAG_DATA:
-			SpaceRaceManager.sendSpaceRaceData(playerBase, (String) this.data.get(0));
+			SpaceRaceManager.sendSpaceRaceData(playerBase, SpaceRaceManager.getSpaceRaceFromPlayer((String) this.data.get(0)));
+			break;
+		case S_INVITE_RACE_PLAYER:
+			GCEntityPlayerMP playerInvited = PlayerUtil.getPlayerBaseServerFromPlayerUsername((String) this.data.get(0), true);
+			if (playerInvited != null)
+			{
+				Integer teamInvitedTo = (Integer) this.data.get(1);
+				SpaceRace race = SpaceRaceManager.getSpaceRaceFromID(teamInvitedTo);
+				
+				if (race != null)
+				{
+					playerInvited.spaceRaceInviteTeamID = teamInvitedTo;
+					String dA = EnumColor.DARK_AQUA.code;
+					String bG = EnumColor.BRIGHT_GREEN.code;
+					String dB = EnumColor.PURPLE.code;
+					String teamNameTotal = "";
+					String[] teamNameSplit = race.getTeamName().split(" ");
+					for (String teamNamePart : teamNameSplit)
+					{
+						teamNameTotal = teamNameTotal.concat(dB + teamNamePart + " ");
+					}
+					playerInvited.addChatMessage(new ChatComponentText("Received Space Race Team Invite from " + bG + player.getGameProfile().getName() + dA + ". To join " + teamNameTotal + dA + "use command " + EnumColor.AQUA + "/joinrace").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.DARK_AQUA)));
+				}
+			}
 			break;
 		default:
 			break;
