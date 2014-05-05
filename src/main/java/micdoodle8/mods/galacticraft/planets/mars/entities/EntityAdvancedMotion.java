@@ -187,12 +187,6 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IP
 			{
 				if (this.riddenByEntity != null)
 				{
-					if (this.riddenByEntity instanceof EntityPlayerMP)
-					{
-						final Object[] toSend2 = { 0 };
-						GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, new Object[] { 0 }), ((EntityPlayerMP) this.riddenByEntity));
-					}
-
 					this.riddenByEntity.mountEntity(this);
 
 					return false;

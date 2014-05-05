@@ -152,8 +152,6 @@ public class EntityTier1Rocket extends EntityTieredRocket
 	{
 		final GCEntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player, false);
 
-		GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, new Object[] { 0 }), player);
-
 		if (playerBase != null)
 		{
 			if (this.cargoItems == null || this.cargoItems.length == 0)
@@ -299,5 +297,17 @@ public class EntityTier1Rocket extends EntityTieredRocket
 	public int getFuelTankCapacity()
 	{
 		return 1000;
+	}
+
+	@Override
+	public float getCameraZoom() 
+	{
+		return 15.0F;
+	}
+
+	@Override
+	public boolean defaultThirdPerson() 
+	{
+		return true;
 	}
 }

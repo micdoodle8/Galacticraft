@@ -94,17 +94,6 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 	}
 
 	@Override
-	public void setDead()
-	{
-		if (this.riddenByEntity != null && this.riddenByEntity instanceof GCEntityPlayerMP)
-		{
-			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, new Object[] { 0 }), (EntityPlayerMP) this.riddenByEntity);
-		}
-
-		super.setDead();
-	}
-
-	@Override
 	public boolean attackEntityFrom(DamageSource par1DamageSource, float par2)
 	{
 		if (!this.worldObj.isRemote && !this.isDead)
@@ -128,7 +117,6 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 				{
 					if (this.riddenByEntity != null)
 					{
-						GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, new Object[] { 0 }), (EntityPlayerMP) this.riddenByEntity);
 						this.riddenByEntity.mountEntity(this);
 					}
 

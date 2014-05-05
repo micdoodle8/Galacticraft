@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.entities.player;
 import java.util.ArrayList;
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -12,6 +13,7 @@ import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.event.EventWakePlayer;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockLandingPad;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAdvanced;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
@@ -39,6 +41,7 @@ import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -71,6 +74,7 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 	private int lastStep;
 	public boolean inFreefall;
 	public boolean inFreefallFirstCheck;
+	public boolean lastRidingCameraZoomEntity;
 
 	public Gravity gdir = Gravity.down;
     public float gravityTurnRate;
@@ -206,57 +210,23 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 			this.limbSwingAmount = this.prevLimbSwingAmount;
 		}
 
-//		// If the player is on the moon, not airbourne and not riding anything
-//		if (this.worldObj != null && this.worldObj.provider instanceof GCMoonWorldProvider && this.onGround && this.ridingEntity == null)
-//		{
-//			int iPosX = (int)Math.floor(this.posX);
-//			int iPosY = (int)Math.floor(this.posY - 2);
-//			int iPosZ = (int)Math.floor(this.posZ);
-//			
-//			// If the block below is the moon block
-//			if (this.worldObj.getBlock(iPosX, iPosY, iPosZ) == GCCoreBlocks.blockMoon)
-//			{
-//				// And is the correct metadata (moon turf)
-//				if (this.worldObj.getBlockMetadata(iPosX, iPosY, iPosZ) == 5)
-//				{
-//					// If it has been long enough since the last step
-//					if (this.distanceSinceLastStep > 0.09)
-//					{
-//						Vector3 pos = new Vector3(this);
-//						// Set the footprint position to the block below and add random number to stop z-fighting
-//						pos.y = MathHelper.floor_double(this.posY - 1) + this.rand.nextFloat() / 100.0F;
-//						
-//						// Adjust footprint to left or right depending on step count
-//						switch (this.lastStep)
-//						{
-//						case 0:
-//							pos.translate(new Vector3(Math.sin(Math.toRadians(-this.rotationYaw + 90)) * 0.25, 0, Math.cos(Math.toRadians(-this.rotationYaw + 90)) * 0.25));
-//							break;
-//						case 1:
-//							pos.translate(new Vector3(Math.sin(Math.toRadians(-this.rotationYaw - 90)) * 0.25, 0, Math.cos(Math.toRadians(-this.rotationYaw - 90)) * 0.25));
-//							break;
-//						}
-//						
-//						ClientProxyCore.footprintRenderer.addFootprint(pos, this.rotationYaw);
-//						
-//						// Increment and cap step counter at 1
-//						this.lastStep++;
-//						this.lastStep %= 2;
-//						this.distanceSinceLastStep = 0;
-//					}
-//					else
-//					{
-//						double motionSqrd = (this.motionX * this.motionX + this.motionZ * this.motionZ);
-//						
-//						// Even when the player is still, motion isn't exactly zero
-//						if (motionSqrd > 0.001)
-//						{
-//							this.distanceSinceLastStep += motionSqrd;
-//						}
-//					}
-//				}
-//			}
-//		}
+		boolean ridingThirdPersonEntity = (this.ridingEntity instanceof ICameraZoomEntity && ((ICameraZoomEntity) this.ridingEntity).defaultThirdPerson());
+		
+		if (ridingThirdPersonEntity && !this.lastRidingCameraZoomEntity)
+		{
+			FMLClientHandler.instance().getClient().gameSettings.thirdPersonView = 1;
+		}
+		
+		if (this.ridingEntity != null && this.ridingEntity instanceof ICameraZoomEntity)
+		{
+			TickHandlerClient.zoom(((ICameraZoomEntity) this.ridingEntity).getCameraZoom());
+		}
+		else
+		{
+			TickHandlerClient.zoom(4.0F);
+		}
+		
+		this.lastRidingCameraZoomEntity = ridingThirdPersonEntity;
 		
 		if (!this.onGround && this.lastOnGround)
 		{

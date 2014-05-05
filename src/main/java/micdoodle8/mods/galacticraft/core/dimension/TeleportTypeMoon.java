@@ -86,8 +86,6 @@ public class TeleportTypeMoon implements ITeleportType
 				newWorld.spawnEntityInWorld(lander);
 			}
 
-			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, new Object[] { 1 }), gcPlayer);
-
 			gcPlayer.setTeleportCooldown(10);
 		}
 	}

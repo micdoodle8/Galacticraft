@@ -359,7 +359,6 @@ public class EntityLandingBalloons extends EntityAdvancedMotion implements IInve
 		}
 		else if (var1 instanceof EntityPlayerMP)
 		{
-			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, new Object[] { 0 }), (EntityPlayerMP) var1);
 			var1.mountEntity(null);
 			return true;
 		}

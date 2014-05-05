@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import org.lwjgl.input.Keyboard;
+
+import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import micdoodle8.mods.galacticraft.api.entity.IDockable;
 import micdoodle8.mods.galacticraft.api.entity.IRocketType;
 import micdoodle8.mods.galacticraft.api.entity.IWorldTransferCallback;
@@ -17,6 +20,7 @@ import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.event.EventLandingPadRemoval;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
+import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.block.Block;
@@ -26,6 +30,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -36,7 +41,7 @@ import cpw.mods.fml.common.Loader;
 /**
  * Do not include this prefab class in your released mod download.
  */
-public abstract class EntityTieredRocket extends EntityAutoRocket implements IRocketType, IDockable, IInventory, IWorldTransferCallback
+public abstract class EntityTieredRocket extends EntityAutoRocket implements IRocketType, IDockable, IInventory, IWorldTransferCallback, ICameraZoomEntity
 {
 	public EnumRocketType rocketType;
 	public float rumble;
@@ -378,7 +383,6 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 			if (!this.worldObj.isRemote)
 			{
 				GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, new Object[] { ((EntityPlayerMP) this.riddenByEntity).getGameProfile().getName() }), (EntityPlayerMP) par1EntityPlayer);
-				GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, new Object[] { 0 }), (EntityPlayerMP) par1EntityPlayer);
 				((GCEntityPlayerMP) par1EntityPlayer).setChatCooldown(0);
 				par1EntityPlayer.mountEntity(null);
 			}
@@ -389,8 +393,10 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 		{
 			if (!this.worldObj.isRemote)
 			{
-				GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_MOUNT_ROCKET, new Object[] { par1EntityPlayer.getGameProfile().getName() }), (EntityPlayerMP) par1EntityPlayer);
-				GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, new Object[] { 1 }), (EntityPlayerMP) par1EntityPlayer);
+				par1EntityPlayer.addChatMessage(new ChatComponentText("SPACE - Launch"));
+				par1EntityPlayer.addChatMessage(new ChatComponentText("A / D  - Turn left-right"));
+				par1EntityPlayer.addChatMessage(new ChatComponentText("W / S  - Turn up-down"));
+				par1EntityPlayer.addChatMessage(new ChatComponentText(Keyboard.getKeyName(KeyHandlerClient.openFuelGui.getKeyCode()) + "       - Inventory / Fuel"));
 				((GCEntityPlayerMP) par1EntityPlayer).setChatCooldown(0);
 				par1EntityPlayer.mountEntity(this);
 			}

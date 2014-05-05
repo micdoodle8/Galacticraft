@@ -5,6 +5,7 @@ import io.netty.buffer.ByteBuf;
 import java.util.ArrayList;
 import java.util.List;
 
+import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.fx.EntityFXLanderFlame;
@@ -14,8 +15,6 @@ import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamicInventory;
-import micdoodle8.mods.galacticraft.core.network.PacketSimple;
-import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
@@ -46,7 +45,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class EntityLander extends InventoryEntity implements IInventorySettable, IScaleableFuelLevel, IControllableEntity, IPacketReceiver
+public class EntityLander extends InventoryEntity implements IInventorySettable, IScaleableFuelLevel, IControllableEntity, IPacketReceiver, ICameraZoomEntity
 {
 	private final int tankCapacity = 5000;
 	public FluidTank fuelTank = new FluidTank(this.tankCapacity);
@@ -266,7 +265,6 @@ public class EntityLander extends InventoryEntity implements IInventorySettable,
 				{
 					if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayerMP)
 					{
-						GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, new Object[] { 0 }), (EntityPlayerMP) this.riddenByEntity);
 						this.riddenByEntity.mountEntity(this);
 					}
 
@@ -516,11 +514,6 @@ public class EntityLander extends InventoryEntity implements IInventorySettable,
 			{
 				if (this.riddenByEntity != null)
 				{
-					if (this.riddenByEntity instanceof EntityPlayerMP)
-					{
-						GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, new Object[] { 0 }), (EntityPlayerMP) this.riddenByEntity);
-					}
-
 					this.riddenByEntity.mountEntity(this);
 
 					return false;
@@ -558,7 +551,6 @@ public class EntityLander extends InventoryEntity implements IInventorySettable,
 		}
 		else if (var1 instanceof EntityPlayerMP)
 		{
-			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, new Object[] { 0 }), (EntityPlayerMP) var1);
 			var1.mountEntity(null);
 			return true;
 		}
@@ -666,5 +658,17 @@ public class EntityLander extends InventoryEntity implements IInventorySettable,
 		}
 
 		return items;
+	}
+
+	@Override
+	public float getCameraZoom() 
+	{
+		return 15.0F;
+	}
+
+	@Override
+	public boolean defaultThirdPerson() 
+	{
+		return true;
 	}
 }

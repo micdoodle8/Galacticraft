@@ -104,7 +104,6 @@ public class PacketSimple extends Packet implements IPacket
 		// CLIENT
 		C_AIR_REMAINING(Side.CLIENT, Integer.class, Integer.class, String.class),
 		C_UPDATE_DIMENSION_LIST(Side.CLIENT, String.class, String.class),
-		C_MOUNT_ROCKET(Side.CLIENT, String.class),
 		C_SPAWN_SPARK_PARTICLES(Side.CLIENT, Integer.class, Integer.class, Integer.class),
 		C_UPDATE_GEAR_SLOT(Side.CLIENT, String.class, Integer.class, Integer.class),
 		C_CLOSE_GUI(Side.CLIENT),
@@ -115,7 +114,6 @@ public class PacketSimple extends Packet implements IPacket
 		C_UPDATE_PLANETS_LIST(Side.CLIENT, Integer[].class),
 		C_ADD_NEW_SCHEMATIC(Side.CLIENT, Integer.class),
 		C_UPDATE_SCHEMATIC_LIST(Side.CLIENT, Integer[].class),
-		C_ZOOM_CAMERA(Side.CLIENT, Integer.class),
 		C_PLAY_SOUND_BOSS_DEATH(Side.CLIENT),
 		C_PLAY_SOUND_EXPLODE(Side.CLIENT),
 		C_PLAY_SOUND_BOSS_LAUGH(Side.CLIENT),
@@ -235,19 +233,6 @@ public class PacketSimple extends Packet implements IPacket
 					((GuiChoosePlanet) FMLClientHandler.instance().getClient().currentScreen).updateDimensionList(destinations);
 				}
 			}
-			break;
-		case C_MOUNT_ROCKET:
-			if (playerBaseClient != null)
-			{
-				playerBaseClient.setThirdPersonView(FMLClientHandler.instance().getClient().gameSettings.thirdPersonView);
-			}
-
-			FMLClientHandler.instance().getClient().gameSettings.thirdPersonView = 1;
-
-			player.addChatMessage(new ChatComponentText("SPACE - Launch"));
-			player.addChatMessage(new ChatComponentText("A / D  - Turn left-right"));
-			player.addChatMessage(new ChatComponentText("W / S  - Turn up-down"));
-			player.addChatMessage(new ChatComponentText(Keyboard.getKeyName(KeyHandlerClient.openFuelGui.getKeyCode()) + "       - Inventory / Fuel"));
 			break;
 		case C_SPAWN_SPARK_PARTICLES:
 			int x,
@@ -469,9 +454,6 @@ public class PacketSimple extends Packet implements IPacket
 					}
 				}
 			}
-			break;
-		case C_ZOOM_CAMERA:
-			TickHandlerClient.zoom((Integer) this.data.get(0) == 0 ? 4.0F : 15.0F);
 			break;
 		case C_PLAY_SOUND_BOSS_DEATH:
 			player.playSound(GalacticraftCore.ASSET_PREFIX + "entity.bossdeath", 10.0F, 0.8F);
