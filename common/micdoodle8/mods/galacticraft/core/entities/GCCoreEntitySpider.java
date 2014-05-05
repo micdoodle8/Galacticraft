@@ -58,12 +58,6 @@ public class GCCoreEntitySpider extends EntitySpider implements IEntityBreathabl
 		}
 	}
 
-	@Override
-	public void fall(float var1)
-	{
-		;
-	}
-
 	/**
 	 * Returns the Y offset from the entity's position for any entity riding
 	 * this one.

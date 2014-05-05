@@ -66,12 +66,6 @@ public class GCCoreEntitySkeleton extends EntitySkeleton implements IEntityBreat
 		super.onUpdate();
 	}
 
-	@Override
-	public void fall(float var1)
-	{
-		;
-	}
-
 	/**
 	 * Returns true if the newer Entity AI code should be run
 	 */

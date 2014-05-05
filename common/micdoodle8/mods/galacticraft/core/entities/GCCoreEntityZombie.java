@@ -76,12 +76,6 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
 	}
 
 	@Override
-	public void fall(float var1)
-	{
-		;
-	}
-
-	@Override
 	protected void entityInit()
 	{
 		super.entityInit();

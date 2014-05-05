@@ -139,12 +139,6 @@ public class GCCoreEntityCreeper extends EntityCreeper implements IEntityBreatha
 		super.onUpdate();
 	}
 
-	@Override
-	public void fall(float var1)
-	{
-		;
-	}
-
 	/**
 	 * Returns the sound this mob makes when it is hurt.
 	 */
