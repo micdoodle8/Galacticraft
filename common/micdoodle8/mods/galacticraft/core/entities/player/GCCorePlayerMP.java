@@ -736,7 +736,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 
 			if (drainSpacing > 0)
 			{
-				if (this.tick % drainSpacing == 0 && !OxygenUtil.isAABBInBreathableAirBlock(this))
+				if (this.tick % drainSpacing == 0 && !OxygenUtil.isAABBInBreathableAirBlock(this) && !usingPlanetSelectionGui)
 				{
 					if (tankInSlot != null && tankInSlot.getMaxDamage() - tankInSlot.getItemDamage() > 0)
 					{
