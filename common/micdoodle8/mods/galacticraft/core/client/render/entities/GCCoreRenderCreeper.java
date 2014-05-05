@@ -7,7 +7,7 @@ import micdoodle8.mods.galacticraft.core.items.GCCoreItemSensorGlasses;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.entity.RenderLiving;
+import net.minecraft.client.renderer.entity.RenderCreeper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -30,7 +30,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * 
  */
 @SideOnly(Side.CLIENT)
-public class GCCoreRenderCreeper extends RenderLiving
+public class GCCoreRenderCreeper extends RenderCreeper
 {
 	private static final ResourceLocation creeperTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/creeper.png");
 	private static final ResourceLocation powerTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/power.png");
@@ -39,7 +39,8 @@ public class GCCoreRenderCreeper extends RenderLiving
 
 	public GCCoreRenderCreeper()
 	{
-		super(new GCCoreModelCreeper(), 0.5F);
+		super();
+		this.mainModel = new GCCoreModelCreeper();
 	}
 
 	protected ResourceLocation func_110779_a(GCCoreEntityCreeper par1EntityArrow)
@@ -148,7 +149,7 @@ public class GCCoreRenderCreeper extends RenderLiving
 			}
 		}
 
-		return -1;
+		return super.renderCreeperPassModel(par1GCEntityCreeper, par2, par3);
 	}
 
 	protected int func_77061_b(GCCoreEntityCreeper par1GCEntityCreeper, int par2, float par3)

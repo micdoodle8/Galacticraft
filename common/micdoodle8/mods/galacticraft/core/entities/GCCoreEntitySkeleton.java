@@ -109,7 +109,7 @@ public class GCCoreEntitySkeleton extends EntitySkeleton implements IEntityBreat
 	 */
 	public ItemStack getHeldItem()
 	{
-		return GCCoreEntitySkeleton.defaultHeldItem;
+		return null;
 	}
 
 	/**

@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.model;
 
-import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
@@ -14,7 +14,7 @@ import net.minecraft.util.MathHelper;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class GCCoreModelZombie extends ModelBase
+public class GCCoreModelZombie extends ModelBiped
 {
 	ModelRenderer leftOxygenTank;
 	ModelRenderer rightOxygenTank;
@@ -203,7 +203,7 @@ public class GCCoreModelZombie extends ModelBase
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
-		super.render(entity, f, f1, f2, f3, f4, f5);
+//		super.render(entity, f, f1, f2, f3, f4, f5);
 		this.setRotationAngles(f, f1, f2, f3, f4, f5);
 		this.leftOxygenTank.render(f5);
 		this.rightOxygenTank.render(f5);

@@ -6,8 +6,10 @@ import micdoodle8.mods.galacticraft.core.entities.GCCoreEntitySkeleton;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItemSensorGlasses;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.renderer.entity.RenderLiving;
+import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -29,7 +31,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * 
  */
 @SideOnly(Side.CLIENT)
-public class GCCoreRenderSkeleton extends RenderLiving
+public class GCCoreRenderSkeleton extends RenderBiped
 {
 	private static final ResourceLocation skeletonTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/skeleton.png");
 	private static final ResourceLocation powerTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/power.png");
@@ -80,11 +82,19 @@ public class GCCoreRenderSkeleton extends RenderLiving
 		GL11.glScalef(0.5F, 0.5F, 0.5F);
 		this.renderManager.itemRenderer.renderItem(par1EntityLiving, new ItemStack(Item.bow), 0);
 		GL11.glPopMatrix();
+	
+		super.renderEquippedItems(par1EntityLiving, par2);
 	}
+
+    public void doRenderLiving(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9)
+    {
+        super.doRenderLiving(par1EntityLiving, par2, par4, par6, par8, par9);
+        this.field_82423_g.aimedBow = this.field_82425_h.aimedBow = this.modelBipedMain.aimedBow = true;
+    }
 
 	@Override
 	protected int shouldRenderPass(EntityLivingBase par1EntityLiving, int par2, float par3)
-	{
+	{		
 		final Minecraft minecraft = FMLClientHandler.instance().getClient();
 
 		final EntityPlayerSP player = minecraft.thePlayer;
@@ -128,6 +138,6 @@ public class GCCoreRenderSkeleton extends RenderLiving
 			}
 		}
 
-		return -1;
+		return super.shouldRenderPass(par1EntityLiving, par2, par3);
 	}
 }
