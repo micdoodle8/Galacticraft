@@ -133,7 +133,7 @@ public class GCCoreContainerRocketBench extends Container
 
 			if (par1 <= 17)
 			{
-				if (!this.mergeItemStack(var4, 18, 46, false))
+				if (!this.mergeItemStack(var4, 18, 54, false))
 				{
 					return null;
 				}
@@ -259,21 +259,21 @@ public class GCCoreContainerRocketBench extends Container
 					return null;
 				}
 			}
-			else if (par1 >= 18 && par1 < 37)
+			else if (par1 >= 18 && par1 < 45)
 			{
-				if (!this.mergeItemStack(var4, 37, 46, false))
+				if (!this.mergeItemStack(var4, 45, 54, false))
 				{
 					return null;
 				}
 			}
-			else if (par1 >= 37 && par1 < 46)
+			else if (par1 >= 45 && par1 < 54)
 			{
-				if (!this.mergeItemStack(var4, 18, 37, false))
+				if (!this.mergeItemStack(var4, 18, 45, false))
 				{
 					return null;
 				}
 			}
-			else if (!this.mergeItemStack(var4, 18, 46, false))
+			else if (!this.mergeItemStack(var4, 18, 54, false))
 			{
 				return null;
 			}
