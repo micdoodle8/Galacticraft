@@ -34,15 +34,6 @@ public class GCCoreModelZombie extends ModelBiped
 	ModelRenderer tubeRight6;
 	ModelRenderer tubeLeft8;
 	ModelRenderer oxygenMask;
-	ModelRenderer bipedHead;
-	ModelRenderer bipedHeadwear;
-	ModelRenderer bipedBody;
-	ModelRenderer bipedRightArm;
-	ModelRenderer bipedLeftArm;
-	ModelRenderer bipedRightLeg;
-	ModelRenderer bipedLeftLeg;
-	ModelRenderer bipedEars;
-	ModelRenderer bipedCloak;
 
 	public GCCoreModelZombie()
 	{

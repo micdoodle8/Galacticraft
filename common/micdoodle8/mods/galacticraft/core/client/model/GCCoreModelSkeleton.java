@@ -33,15 +33,6 @@ public class GCCoreModelSkeleton extends ModelBiped
 	ModelRenderer tubeLeft7;
 	ModelRenderer tubeRight6;
 	ModelRenderer oxygenMask;
-	ModelRenderer bipedHead;
-	ModelRenderer bipedHeadwear;
-	ModelRenderer bipedBody;
-	ModelRenderer bipedRightArm;
-	ModelRenderer bipedLeftArm;
-	ModelRenderer bipedRightLeg;
-	ModelRenderer bipedLeftLeg;
-	ModelRenderer bipedEars;
-	ModelRenderer bipedCloak;
 
 	public boolean aimedBow;
 
