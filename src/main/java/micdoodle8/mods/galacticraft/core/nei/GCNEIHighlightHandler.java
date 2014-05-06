@@ -57,6 +57,10 @@ public class GCNEIHighlightHandler implements IHighlightHandler
         {
         	return new ItemStack(GCBlocks.basicBlock, 1, 8);
         }  
+        if (meta == 2 && b == GCBlocks.blockMoon)
+        {
+        	return new ItemStack(GCBlocks.blockMoon, 1, 2);
+        }  
     	return null;
     }
 }
