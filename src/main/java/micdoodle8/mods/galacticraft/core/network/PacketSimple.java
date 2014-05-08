@@ -34,7 +34,6 @@ import micdoodle8.mods.galacticraft.core.inventory.ContainerSchematic;
 import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
 import micdoodle8.mods.galacticraft.core.items.ItemParaChute;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
-import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAirLockController;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityConductor;
@@ -67,9 +66,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
-
-import org.lwjgl.input.Keyboard;
-
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -527,24 +523,11 @@ public class PacketSimple extends Packet implements IPacket
 				String playerName = (String) this.data.get(i);
 				ClientProxyCore.flagRequestsSent.remove(playerName);
 				playerList.add(playerName);
-				
-				SpaceRace previousData = null;
-				// Remove all space races matching player names
-				while ((previousData = SpaceRaceManager.getSpaceRaceFromPlayer(playerName)) != null)
-				{
-					SpaceRaceManager.removeSpaceRace(previousData);
-				}
 			}
 			
-			SpaceRace spaceRace = null;
-			// Remove all space races matching the team ID
-			while ((spaceRace = SpaceRaceManager.getSpaceRaceFromID(teamID)) != null)
-			{
-				SpaceRaceManager.removeSpaceRace(spaceRace);
-			}
-			
-			SpaceRace race = SpaceRaceManager.addSpaceRace(playerList, teamName, flagData);
+			SpaceRace race = new SpaceRace(playerList, teamName, flagData);
 			race.setSpaceRaceID(teamID);
+			SpaceRaceManager.addSpaceRace(race);
 			break;
 		case C_OPEN_JOIN_RACE_GUI:
 			playerBaseClient.spaceRaceInviteTeamID = (Integer) data.get(0);

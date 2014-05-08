@@ -157,4 +157,20 @@ public class SpaceRace
 	{
 		celestialBodyStatusList.put(body, this.ticksSpent);
 	}
+	
+	@Override
+	public int hashCode()
+	{
+		return spaceRaceID;
+	}
+	
+	public boolean equals(Object other)
+	{
+		if (other instanceof SpaceRace)
+		{
+			return ((SpaceRace) other).getSpaceRaceID() == this.getSpaceRaceID();
+		}
+		
+		return false;
+	}
 }

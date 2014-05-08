@@ -1,7 +1,9 @@
 package micdoodle8.mods.galacticraft.core.dimension;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
@@ -15,30 +17,37 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
+
+import cpw.mods.fml.common.FMLLog;
 
 public class SpaceRaceManager
 {
-	private static final List<SpaceRace> spaceRaceList = Lists.newArrayList();
+	private static final Set<SpaceRace> spaceRaces = Sets.newHashSet();
 	
 	public static SpaceRace addSpaceRace(List<String> playerNames, String teamName, FlagData flagData)
 	{
 		SpaceRace spaceRace = new SpaceRace(playerNames, teamName, flagData);
-		spaceRaceList.add(spaceRace);
+		spaceRaces.add(spaceRace);
+		return spaceRace;
+	}
+	
+	public static SpaceRace addSpaceRace(SpaceRace spaceRace)
+	{
+		spaceRaces.add(spaceRace);
 		return spaceRace;
 	}
 	
 	public static void removeSpaceRace(SpaceRace race)
 	{
-		spaceRaceList.remove(race);
+		spaceRaces.remove(race);
 	}
 	
 	public static void tick()
 	{
-		for (int i = 0; i < spaceRaceList.size(); i++)
+		for (SpaceRace race : spaceRaces)
 		{
-			SpaceRace race = spaceRaceList.get(i);
 			boolean playerOnline = false;
 			
 			for (int j = 0; j < MinecraftServer.getServer().getConfigurationManager().playerEntityList.size(); j++)
@@ -82,7 +91,7 @@ public class SpaceRaceManager
 			NBTTagCompound nbt2 = tagList.getCompoundTagAt(i);
 			SpaceRace race = new SpaceRace();
 			race.loadFromNBT(nbt2);
-			spaceRaceList.add(race);
+			spaceRaces.add(race);
 		}
 	}
 	
@@ -90,10 +99,9 @@ public class SpaceRaceManager
 	{
 		NBTTagList tagList = new NBTTagList();
 		
-		for (int i = 0; i < spaceRaceList.size(); i++)
+		for (SpaceRace race : spaceRaces)
 		{
 			NBTTagCompound nbt2 = new NBTTagCompound();
-			SpaceRace race = spaceRaceList.get(i);
 			race.saveToNBT(nbt2);
 			tagList.appendTag(nbt2);
 		}
@@ -103,10 +111,8 @@ public class SpaceRaceManager
 	
 	public static SpaceRace getSpaceRaceFromPlayer(String username)
 	{
-		for (int i = 0; i < spaceRaceList.size(); i++)
-		{
-			SpaceRace race = spaceRaceList.get(i);
-			
+		for (SpaceRace race : spaceRaces)
+		{			
 			if (race.getPlayerNames().contains(username))
 			{
 				return race;
@@ -118,10 +124,8 @@ public class SpaceRaceManager
 	
 	public static SpaceRace getSpaceRaceFromID(int teamID)
 	{
-		for (int i = 0; i < spaceRaceList.size(); i++)
+		for (SpaceRace race : spaceRaces)
 		{
-			SpaceRace race = spaceRaceList.get(i);
-			
 			if (race.getSpaceRaceID() == teamID)
 			{
 				return race;
@@ -144,8 +148,8 @@ public class SpaceRaceManager
 		}
 	}
 	
-	public static ImmutableList<SpaceRace> getSpaceRaceList()
+	public static ImmutableSet<SpaceRace> getSpaceRaces()
 	{
-		return ImmutableList.copyOf(new ArrayList<SpaceRace>(spaceRaceList));
+		return ImmutableSet.copyOf(new HashSet<SpaceRace>(spaceRaces));
 	}
 }
