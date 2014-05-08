@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -58,6 +59,7 @@ import micdoodle8.mods.galacticraft.core.client.render.tile.TileEntityParachestR
 import micdoodle8.mods.galacticraft.core.client.render.tile.TileEntitySolarPanelRenderer;
 import micdoodle8.mods.galacticraft.core.client.render.tile.TileEntityTreasureChestRenderer;
 import micdoodle8.mods.galacticraft.core.client.sounds.SoundHandler;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.entities.EntityAlienVillager;
 import micdoodle8.mods.galacticraft.core.entities.EntityBubble;
 import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
@@ -86,14 +88,20 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntitySolar;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.wrappers.BlockMetaList;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
+import micdoodle8.mods.galacticraft.planets.mars.dimension.WorldProviderMars;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundPoolEntry;
+import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -102,6 +110,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.IFluidBlock;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.w3c.dom.Document;
 
@@ -139,7 +148,7 @@ public class ClientProxyCore extends CommonProxyCore
 	private static int renderIdCraftingTable;
 	private static int renderIdLandingPad;
 	private static int renderIdMachine;
-
+	
 	public static FootprintRenderer footprintRenderer = new FootprintRenderer();
 	
 	public static List<String> flagRequestsSent = new ArrayList<String>();
@@ -174,10 +183,16 @@ public class ClientProxyCore extends CommonProxyCore
 
 	private static final ResourceLocation underOilTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/misc/underoil.png");
 
+	private static float numbers[] = {1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1};
+	private static FloatBuffer scaleup = BufferUtils.createFloatBuffer(16 * Float.SIZE);
+	//private static int playerList;
+	
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		MinecraftForge.EVENT_BUS.register(new SoundHandler());
+    	ClientProxyCore.scaleup.put(numbers, 0, 16);
+    	
+    	MinecraftForge.EVENT_BUS.register(new SoundHandler());
 
 		ClientProxyCore.renderIndexSensorGlasses = RenderingRegistry.addNewArmourRendererPrefix("sensor");
 		ClientProxyCore.renderIndexHeavyArmor = RenderingRegistry.addNewArmourRendererPrefix("titanium");
@@ -198,6 +213,8 @@ public class ClientProxyCore extends CommonProxyCore
 		ClientProxyCore.registerInventoryTabs();
 		ClientProxyCore.registerEntityRenderers();
 		ClientProxyCore.registerItemRenderers();
+		
+		//ClientProxyCore.playerList = GLAllocation.generateDisplayLists(1);
 	}
 
 	public static void registerEntityRenderers()
@@ -488,6 +505,126 @@ public class ClientProxyCore extends CommonProxyCore
 	
 	public static void orientCamera(float partialTicks)
 	{
-		((GCEntityClientPlayerMP) FMLClientHandler.instance().getClient().thePlayer).reOrientCamera(partialTicks);
+		GCEntityClientPlayerMP p = (GCEntityClientPlayerMP) FMLClientHandler.instance().getClient().thePlayer; 
+		p.reOrientCamera(partialTicks);
+		ClientProxyCore.adjustRenderCamera();
 	}
+
+	public static void adjustRenderCamera()
+	{
+		GCEntityClientPlayerMP p = (GCEntityClientPlayerMP) FMLClientHandler.instance().getClient().thePlayer;
+		
+        float globalRadius = 10000F;
+    	int terrainHeight = Integer.MAX_VALUE;
+    	if (p.worldObj.provider instanceof WorldProviderMoon)
+    	{
+    		//See what a small moon looks like, for demo purposes
+    		globalRadius = 300F;
+    		terrainHeight = 64;
+    	}
+
+        if (p.posY>=terrainHeight)
+        {
+    		double globalArc = globalRadius / 57.2957795D;
+            
+        	int pX = MathHelper.floor_double(p.posX / 16D);
+        	int pZ = MathHelper.floor_double(p.posZ / 16D);
+        	
+        	pX = pX << 4;
+        	pZ = pZ << 4;
+        	
+        	double DX = p.posX - pX;
+        	double DZ = p.posZ - pZ;
+        	float theta = (float) MathHelper.wrapAngleTo180_double((8 - DX)/ globalArc);
+	    	float phi = (float) MathHelper.wrapAngleTo180_double((8 - DZ)/ globalArc);
+	    	if (theta < 0) theta += 360F;
+	    	if (phi < 0) phi += 360F;
+	    	if (theta>0) GL11.glRotatef(theta,0,0,-1);
+	    	if (phi>0) GL11.glRotatef(phi,1,0,0);
+        }
+    }
+	
+	public static void setupGLTranslation(float chunkX, float chunkY, float chunkZ, WorldRenderer rend)
+	{
+        GL11.glCallList(rend.glRenderList + 3);
+	}
+	
+    public static void setPosition(int par1, int par2, int par3, WorldRenderer rend)
+    {
+        if (par1 != rend.posX || par2 != rend.posY || par3 != rend.posZ)
+        {
+            rend.setDontDraw();
+            rend.posX = par1;
+            rend.posY = par2;
+            rend.posZ = par3;
+            rend.posXPlus = par1 + 8;
+            rend.posYPlus = par2 + 8;
+            rend.posZPlus = par3 + 8;
+            rend.posXClip = par1 & 1023;
+            rend.posYClip = par2;
+            rend.posZClip = par3 & 1023;
+            rend.posXMinus = par1 - rend.posXClip;
+            rend.posYMinus = par2 - rend.posYClip;
+            rend.posZMinus = par3 - rend.posZClip;
+            float f = 6.0F;
+            rend.rendererBoundingBox = AxisAlignedBB.getBoundingBox((double)((float)par1 - f), (double)((float)par2 - f), (double)((float)par3 - f), (double)((float)(par1 + 16) + f), (double)((float)(par2 + 16) + f), (double)((float)(par3 + 16) + f));
+            GL11.glNewList(rend.glRenderList + 2, GL11.GL_COMPILE);
+            GL11.glCallList(rend.glRenderList + 3);
+            GL11.glTranslatef(-(float)rend.posXClip, -(float)rend.posYClip, -(float)rend.posZClip);
+            RenderItem.renderAABB(AxisAlignedBB.getAABBPool().getAABB((double)((float)rend.posXClip - f), (double)((float)rend.posYClip - f), (double)((float)rend.posZClip - f), (double)((float)(rend.posXClip + 16) + f), (double)((float)(rend.posYClip + 16) + f), (double)((float)(rend.posZClip + 16) + f)));
+            GL11.glEndList();
+            rend.markDirty();
+        }
+
+        GL11.glNewList(rend.glRenderList + 3, GL11.GL_COMPILE);
+ 
+        EntityLivingBase entitylivingbase = FMLClientHandler.instance().getClient().renderViewEntity;
+
+        float globalRadius = 10000F;
+    	int terrainHeight = Integer.MAX_VALUE;
+
+    	if (entitylivingbase != null)
+    	{
+	    	if (rend.worldObj.provider instanceof WorldProviderMoon)
+	    	{
+	    		//See what a small moon looks like, for demo purposes
+	    		globalRadius = 300F;
+	    		terrainHeight = 64;
+	    	}
+	   	
+	        if(entitylivingbase.posY>=terrainHeight)
+	        {
+	    		double globalArc = globalRadius / 57.2957795D;
+	    		globalRadius -= 64F;
+	            
+	        	int pX = MathHelper.floor_double(entitylivingbase.posX / 16D);
+	        	int pZ = MathHelper.floor_double(entitylivingbase.posZ / 16D);
+	        	
+	        	int intDX = rend.posX - (pX << 4);
+	        	int intDZ = rend.posZ - (pZ << 4);
+	        	
+	        	int intClipX = rend.posXClip - intDX;
+	        	int intClipZ = rend.posZClip - intDZ;
+	
+	        	float theta = (float) MathHelper.wrapAngleTo180_double(intDX / globalArc);
+	        	float phi = (float) MathHelper.wrapAngleTo180_double(intDZ / globalArc);
+	        	if (theta < 0) theta += 360F;
+	        	if (phi < 0) phi += 360F;
+	        	GL11.glTranslatef(intClipX+8, -globalRadius, intClipZ+8);
+	        	if (theta>0) GL11.glRotatef(theta,0,0,-1);
+	        	if (phi>0) GL11.glRotatef(phi,1,0,0);
+	        	GL11.glTranslatef(-8, (float)rend.posYClip+globalRadius, -8);
+	        	float scale = (rend.posY + 16 + globalRadius) / (64 + globalRadius);
+	        	ClientProxyCore.scaleup.rewind();
+	        	ClientProxyCore.scaleup.put(scale);
+	        	ClientProxyCore.scaleup.position(10);
+	        	ClientProxyCore.scaleup.put(scale);
+	        	ClientProxyCore.scaleup.rewind();
+	        	GL11.glMultMatrix(ClientProxyCore.scaleup);
+	        	GL11.glTranslatef(-8F * (scale - 1F), 0, -8F * (scale - 1F));
+	        } else
+	        	GL11.glTranslatef((float)rend.posXClip, (float)rend.posYClip, (float)rend.posZClip);
+	    }
+        GL11.glEndList();
+    }
 }
