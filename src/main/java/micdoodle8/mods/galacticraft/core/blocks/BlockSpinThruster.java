@@ -2,13 +2,10 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.Random;
 
-import micdoodle8.mods.galacticraft.api.block.IOxygenReliantBlock;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityAluminumWire;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityThruster;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -22,6 +19,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -131,7 +129,7 @@ public class BlockSpinThruster extends BlockAdvanced
 			var10 = 1;
 		}
 
-		return var10;
+		return 0;
 	}
 
 	@Override
@@ -149,27 +147,29 @@ public class BlockSpinThruster extends BlockAdvanced
 	public void onBlockAdded(World par1World, int x, int y, int z)
 	{
 		int metadata = par1World.getBlockMetadata(x, y, z); 
+		TileEntityThruster tile = (TileEntityThruster)par1World.getTileEntity(x, y, z);
+		
 		if (metadata == 0)
 		{
 			if (isBlockSolidOnSide(par1World, x - 1, y, z, ForgeDirection.EAST, true))
 			{
 				metadata = 1;
-				par1World.setBlockMetadataWithNotify(x, y, z, metadata, 2);
+				par1World.setBlockMetadataWithNotify(x, y, z, metadata, 3);
 			}
 			else if (isBlockSolidOnSide(par1World, x + 1, y, z, ForgeDirection.WEST, true))
 			{
 				metadata = 2;
-				par1World.setBlockMetadataWithNotify(x, y, z, metadata, 2);
+				par1World.setBlockMetadataWithNotify(x, y, z, metadata, 3);
 			}
 			else if (isBlockSolidOnSide(par1World, x, y, z - 1, ForgeDirection.SOUTH, true))
 			{
 				metadata = 3;
-				par1World.setBlockMetadataWithNotify(x, y, z, metadata, 2);
+				par1World.setBlockMetadataWithNotify(x, y, z, metadata, 3);
 			}
 			else if (isBlockSolidOnSide(par1World, x, y, z + 1, ForgeDirection.NORTH, true))
 			{
 				metadata = 4;
-				par1World.setBlockMetadataWithNotify(x, y, z, metadata, 2);
+				par1World.setBlockMetadataWithNotify(x, y, z, metadata, 3);
 			}
 		}
 
@@ -356,9 +356,9 @@ public class BlockSpinThruster extends BlockAdvanced
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World var1, int var2) {
-		// TODO Auto-generated method stub
-		return null;
+	public TileEntity createNewTileEntity(World world, int meta) 
+	{
+		return new TileEntityThruster();
 	}
 	
 	@Override

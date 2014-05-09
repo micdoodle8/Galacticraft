@@ -15,6 +15,7 @@ import micdoodle8.mods.galacticraft.core.items.ItemBlockMachine;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockMoon;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockOxygenCompressor;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockSolar;
+import micdoodle8.mods.galacticraft.core.items.ItemBlockThruster;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
@@ -247,5 +248,5 @@ public class GCBlocks
 		GameRegistry.registerBlock(GCBlocks.cheeseBlock, ItemBlock.class, GCBlocks.cheeseBlock.getUnlocalizedName(), GalacticraftCore.MODID);
 		GameRegistry.registerBlock(GCBlocks.beamReflector, ItemBlock.class, GCBlocks.beamReflector.getUnlocalizedName(), GalacticraftCore.MODID);
 		GameRegistry.registerBlock(GCBlocks.beamReceiver, ItemBlock.class, GCBlocks.beamReceiver.getUnlocalizedName(), GalacticraftCore.MODID);
-		GameRegistry.registerBlock(GCBlocks.spinThruster, ItemBlockGC.class, GCBlocks.spinThruster.getUnlocalizedName(), GalacticraftCore.MODID);	}
+		GameRegistry.registerBlock(GCBlocks.spinThruster, ItemBlockThruster.class, GCBlocks.spinThruster.getUnlocalizedName(), GalacticraftCore.MODID);	}
 }
