@@ -515,32 +515,30 @@ public class ClientProxyCore extends CommonProxyCore
 		GCEntityClientPlayerMP p = (GCEntityClientPlayerMP) FMLClientHandler.instance().getClient().thePlayer;
 		
         float globalRadius = 10000F;
-    	int terrainHeight = Integer.MAX_VALUE;
+    	float terrainHeight = Integer.MAX_VALUE;
     	if (p.worldObj.provider instanceof WorldProviderMoon)
     	{
     		//See what a small moon looks like, for demo purposes
     		globalRadius = 300F;
-    		terrainHeight = 64;
+    		terrainHeight = 64F;
     	}
 
         if (p.posY>=terrainHeight)
         {
     		double globalArc = globalRadius / 57.2957795D;
             
-        	int pX = MathHelper.floor_double(p.posX / 16D);
-        	int pZ = MathHelper.floor_double(p.posZ / 16D);
-        	
-        	pX = pX << 4;
-        	pZ = pZ << 4;
-        	
+        	int pX = MathHelper.floor_double(p.posX / 16D) << 4;
+        	int pZ = MathHelper.floor_double(p.posZ / 16D) << 4;
         	double DX = p.posX - pX;
         	double DZ = p.posZ - pZ;
         	float theta = (float) MathHelper.wrapAngleTo180_double((8 - DX)/ globalArc);
 	    	float phi = (float) MathHelper.wrapAngleTo180_double((8 - DZ)/ globalArc);
 	    	if (theta < 0) theta += 360F;
 	    	if (phi < 0) phi += 360F;
+        	GL11.glTranslatef(0, terrainHeight-(float)p.posY, 0);
 	    	if (theta>0) GL11.glRotatef(theta,0,0,-1);
 	    	if (phi>0) GL11.glRotatef(phi,1,0,0);
+        	GL11.glTranslatef(0, (float)p.posY-terrainHeight, 0);
         }
     }
 	
@@ -581,7 +579,7 @@ public class ClientProxyCore extends CommonProxyCore
         EntityLivingBase entitylivingbase = FMLClientHandler.instance().getClient().renderViewEntity;
 
         float globalRadius = 10000F;
-    	int terrainHeight = Integer.MAX_VALUE;
+    	float terrainHeight = Integer.MAX_VALUE;
 
     	if (entitylivingbase != null)
     	{
@@ -589,13 +587,13 @@ public class ClientProxyCore extends CommonProxyCore
 	    	{
 	    		//See what a small moon looks like, for demo purposes
 	    		globalRadius = 300F;
-	    		terrainHeight = 64;
+	    		terrainHeight = 64F;
 	    	}
 	   	
 	        if(entitylivingbase.posY>=terrainHeight)
 	        {
 	    		double globalArc = globalRadius / 57.2957795D;
-	    		globalRadius -= 64F;
+	    		globalRadius -= terrainHeight;
 	            
 	        	int pX = MathHelper.floor_double(entitylivingbase.posX / 16D);
 	        	int pZ = MathHelper.floor_double(entitylivingbase.posZ / 16D);
@@ -614,7 +612,7 @@ public class ClientProxyCore extends CommonProxyCore
 	        	if (theta>0) GL11.glRotatef(theta,0,0,-1);
 	        	if (phi>0) GL11.glRotatef(phi,1,0,0);
 	        	GL11.glTranslatef(-8, (float)rend.posYClip+globalRadius, -8);
-	        	float scale = (rend.posY + 16 + globalRadius) / (64 + globalRadius);
+	        	float scale = (rend.posY + 16 + globalRadius) / (terrainHeight + globalRadius);
 	        	ClientProxyCore.scaleup.rewind();
 	        	ClientProxyCore.scaleup.put(scale);
 	        	ClientProxyCore.scaleup.position(10);
