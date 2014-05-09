@@ -175,6 +175,10 @@ public class GCBlocks
 		GCBlocks.hiddenBlocks.add(GCBlocks.fakeBlock);
 		GCBlocks.hiddenBlocks.add(GCBlocks.spaceStationBase);
 
+		// Register blocks before register ores, so that the ItemStack picks up the correct item
+		GCBlocks.registerBlocks();
+		GCBlocks.setHarvestLevels();
+
 		OreDictionary.registerOre("oreCopper", new ItemStack(GCBlocks.basicBlock, 1, 5));
 		OreDictionary.registerOre("oreCopper", new ItemStack(GCBlocks.blockMoon, 1, 0));
 		OreDictionary.registerOre("oreTin", new ItemStack(GCBlocks.basicBlock, 1, 6));
@@ -184,9 +188,6 @@ public class GCBlocks
 		OreDictionary.registerOre("oreNaturalAluminum", new ItemStack(GCBlocks.basicBlock, 1, 7));
 		OreDictionary.registerOre("oreSilicon", new ItemStack(GCBlocks.basicBlock, 1, 8));
 		OreDictionary.registerOre("oreCheese", new ItemStack(GCBlocks.blockMoon, 1, 2));
-
-		GCBlocks.setHarvestLevels();
-		GCBlocks.registerBlocks();
 	}
 
 	public static void setHarvestLevels()

@@ -271,7 +271,7 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 		this.lastOnGround = this.onGround;
 
 		ItemStack gs = this.inventory.getStackInSlot(0);
-		if (gs != null && gs.getItem() instanceof ItemBlockLandingPad)
+		if (gs != null && gs.getItem() instanceof ItemBlockLandingPad && this.worldObj.provider instanceof WorldProviderOrbit)
 		{
 			if (gs.stackSize <=6) setGravity(Gravity.GDirections[gs.stackSize - 1]);
 		}
