@@ -91,6 +91,7 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityParaChest;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityRefinery;
 import micdoodle8.mods.galacticraft.core.tile.TileEntitySolar;
 import micdoodle8.mods.galacticraft.core.tile.TileEntitySpaceStationBase;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityThruster;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
@@ -430,6 +431,7 @@ public class GalacticraftCore
 		GameRegistry.registerTileEntity(TileEntityOxygenDecompressor.class, "Oxygen Decompressor");
 		GameRegistry.registerTileEntity(TileEntityBeamReflector.class, "Beam Reflector");
 		GameRegistry.registerTileEntity(TileEntityBeamReceiver.class, "Beam Receiver");
+		GameRegistry.registerTileEntity(TileEntityThruster.class, "Space Station Thruster");
 	}
 
 	public void registerCreatures()

@@ -49,6 +49,7 @@ import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererBuggy;
 import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererFlag;
 import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererKey;
 import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererMeteorChunk;
+import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererThruster;
 import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererTier1Rocket;
 import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererUnlitTorch;
 import micdoodle8.mods.galacticraft.core.client.render.tile.TileEntityAluminumWireRenderer;
@@ -57,6 +58,7 @@ import micdoodle8.mods.galacticraft.core.client.render.tile.TileEntityBeamReflec
 import micdoodle8.mods.galacticraft.core.client.render.tile.TileEntityNasaWorkbenchRenderer;
 import micdoodle8.mods.galacticraft.core.client.render.tile.TileEntityParachestRenderer;
 import micdoodle8.mods.galacticraft.core.client.render.tile.TileEntitySolarPanelRenderer;
+import micdoodle8.mods.galacticraft.core.client.render.tile.TileEntityThrusterRenderer;
 import micdoodle8.mods.galacticraft.core.client.render.tile.TileEntityTreasureChestRenderer;
 import micdoodle8.mods.galacticraft.core.client.sounds.SoundHandler;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
@@ -85,14 +87,13 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityBeamReflector;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityNasaWorkbench;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityParaChest;
 import micdoodle8.mods.galacticraft.core.tile.TileEntitySolar;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityThruster;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.wrappers.BlockMetaList;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
-import micdoodle8.mods.galacticraft.planets.mars.dimension.WorldProviderMars;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundPoolEntry;
-import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.entity.RenderItem;
@@ -244,6 +245,7 @@ public class ClientProxyCore extends CommonProxyCore
 		MinecraftForgeClient.registerItemRenderer(GCItems.flag, new ItemRendererFlag());
 		MinecraftForgeClient.registerItemRenderer(GCItems.key, new ItemRendererKey(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/treasure.png")));
 		MinecraftForgeClient.registerItemRenderer(GCItems.meteorChunk, new ItemRendererMeteorChunk());
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(GCBlocks.spinThruster), new ItemRendererThruster());
 	}
 
 	public static void registerHandlers()
@@ -261,6 +263,7 @@ public class ClientProxyCore extends CommonProxyCore
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySolar.class, new TileEntitySolarPanelRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBeamReflector.class, new TileEntityBeamReflectorRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBeamReceiver.class, new TileEntityBeamReceiverRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityThruster.class, new TileEntityThrusterRenderer());
 	}
 
 	public static void registerBlockHandlers()
