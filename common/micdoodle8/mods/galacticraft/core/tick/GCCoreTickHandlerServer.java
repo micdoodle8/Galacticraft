@@ -69,6 +69,20 @@ public class GCCoreTickHandlerServer implements ITickHandler
 		GCCoreTickHandlerServer.scheduledTorchUpdates.put(dimID, updateList);
 	}
 
+	public static boolean scheduledForChange(int dimID, BlockVec3 test)
+	{
+		List<ScheduledBlockChange> changeList = GCCoreTickHandlerServer.scheduledBlockChanges.get(dimID);
+
+		if (changeList != null)
+		{
+			for (ScheduledBlockChange change : changeList)
+			{
+				if (test.equals(change.getChangePosition())) return true;
+			}
+		}
+		return false;
+	}
+
 	@Override
 	public void tickStart(EnumSet<TickType> type, Object... tickData)
 	{
@@ -90,7 +104,7 @@ public class GCCoreTickHandlerServer implements ITickHandler
 					}
 				}
 
-				GCCoreTickHandlerServer.scheduledBlockChanges.get(world.provider.dimensionId).clear();
+				changeList.clear();
 				GCCoreTickHandlerServer.scheduledBlockChanges.remove(world.provider.dimensionId);
 			}
 
@@ -106,7 +120,7 @@ public class GCCoreTickHandlerServer implements ITickHandler
 					}
 				}
 
-				GCCoreTickHandlerServer.scheduledTorchUpdates.get(world.provider.dimensionId).clear();
+				torchList.clear();
 				GCCoreTickHandlerServer.scheduledTorchUpdates.remove(world.provider.dimensionId);
 				
 			}
