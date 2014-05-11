@@ -308,15 +308,15 @@ public class UniversalNetwork extends ElectricityNetwork
 							{
 								canConnect = true;
 							}
-							else if (NetworkConfigHandler.isThermalExpansionLoaded() && acceptor instanceof IEnergyHandler && ((IEnergyHandler) acceptor).canInterface(direction))
+							else if (NetworkConfigHandler.isThermalExpansionLoaded() && acceptor instanceof IEnergyHandler && ((IEnergyHandler) acceptor).canInterface(direction.getOpposite()))
 							{
 								canConnect = true;
 							}
-							else if (NetworkConfigHandler.isIndustrialCraft2Loaded() && acceptor instanceof IEnergyAcceptor && ((IEnergyAcceptor) acceptor).acceptsEnergyFrom((TileEntity) conductor, direction))
+							else if (NetworkConfigHandler.isIndustrialCraft2Loaded() && acceptor instanceof IEnergyAcceptor && ((IEnergyAcceptor) acceptor).acceptsEnergyFrom((TileEntity) conductor, direction.getOpposite()))
 							{
 								canConnect = true;
 							}
-							else if (NetworkConfigHandler.isBuildcraftLoaded() && acceptor instanceof IPowerReceptor && ((IPowerReceptor) acceptor).getPowerReceiver(direction) != null)
+							else if (NetworkConfigHandler.isBuildcraftLoaded() && acceptor instanceof IPowerReceptor && ((IPowerReceptor) acceptor).getPowerReceiver(direction.getOpposite()) != null)
 							{
 								canConnect = true;
 							}
