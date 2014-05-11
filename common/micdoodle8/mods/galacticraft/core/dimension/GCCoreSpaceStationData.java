@@ -54,7 +54,7 @@ public class GCCoreSpaceStationData extends WorldSavedData
 	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound)
 	{
-		this.owner = nbttagcompound.getString("owner").toLowerCase();
+		this.owner = nbttagcompound.getString("owner").toLowerCase().replace(".", "");
 		this.spaceStationName = nbttagcompound.getString("spaceStationName");
 
 		if (nbttagcompound.hasKey("dataCompound"))
@@ -125,7 +125,7 @@ public class GCCoreSpaceStationData extends WorldSavedData
 
 				if (player != null)
 				{
-					var3.owner = player.username.toLowerCase();
+					var3.owner = player.username.toLowerCase().replace(".", "");
 				}
 
 				var3.spaceStationName = var3.owner + "\'s Space Station";
@@ -162,7 +162,7 @@ public class GCCoreSpaceStationData extends WorldSavedData
 
 			if (player != null)
 			{
-				var3.owner = player.username.toLowerCase();
+				var3.owner = player.username.toLowerCase().replace(".", "");
 			}
 
 			var3.spaceStationName = var3.owner + "\'s Space Station";
