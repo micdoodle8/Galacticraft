@@ -40,7 +40,7 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityOxygen impl
 
 	public GCCoreTileEntityOxygenCollector()
 	{
-		super(GCCoreTileEntityOxygenCollector.WATTS_PER_TICK, 50, 1200, 0);
+		super(GCCoreTileEntityOxygenCollector.WATTS_PER_TICK, 50, 6000, 0);
 	}
 
 	@Override
@@ -96,7 +96,9 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityOxygen impl
 			// }
 
 			//Approximately once every 40 ticks, search out oxygen producing blocks
-			if (this.getEnergyStored() > 0 && this.worldObj.rand.nextInt(40) == 0)
+			if (this.worldObj.rand.nextInt(10) == 0)
+			{
+				if (this.getEnergyStored() > 0) 
 			{
 				// The later calculations are more efficient if power is a float, so
 				// there are fewer casts
@@ -158,7 +160,7 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityOxygen impl
 
 										if (block.isLeaves(this.worldObj, x, y, z) || block instanceof IPlantable && ((IPlantable) block).getPlantType(this.worldObj, x, y, z) == EnumPlantType.Crop)
 										{
-											power += 0.75F * 40F;
+											power += 0.075F * 10F;
 										}
 									}
 								}
@@ -168,18 +170,19 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityOxygen impl
 				}
 				else
 				{
-					power = 9.3F * 40F;
+					power = 9.3F * 10F;
 				}
 
 				power = (float) Math.floor(power);
 
-				this.lastOxygenCollected = power;
+				this.lastOxygenCollected = power / 10F;
 
 				this.storedOxygen = (int) Math.max(Math.min(this.storedOxygen + power, this.maxOxygen), 0);
 			}
 			else
 			{
 				this.lastOxygenCollected = 0;
+			}
 			}
 		}
 	}
