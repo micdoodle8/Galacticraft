@@ -95,15 +95,16 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityOxygen impl
 			// }
 			// }
 
-			// The later calculations are more efficient if power is a float, so
-			// there are fewer casts
-			float power = 0;
-			int breatheableAirID = GCCoreBlocks.breatheableAir.blockID;
-
-			if (this.getEnergyStored() > 0)
+			//Approximately once every 40 ticks, search out oxygen producing blocks
+			if (this.getEnergyStored() > 0 && this.worldObj.rand.nextInt(40) == 0)
 			{
+				// The later calculations are more efficient if power is a float, so
+				// there are fewer casts
+				float power = 0;
 				if (this.worldObj.provider instanceof IGalacticraftWorldProvider)
 				{
+					int breatheableAirID = GCCoreBlocks.breatheableAir.blockID;
+
 					// Pre-test to see if close to the map edges, so code
 					// doesn't have to continually test for map edges inside the
 					// loop
@@ -157,7 +158,7 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityOxygen impl
 
 										if (block.isLeaves(this.worldObj, x, y, z) || block instanceof IPlantable && ((IPlantable) block).getPlantType(this.worldObj, x, y, z) == EnumPlantType.Crop)
 										{
-											power += 0.075F;
+											power += 0.75F * 40F;
 										}
 									}
 								}
@@ -167,7 +168,7 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityOxygen impl
 				}
 				else
 				{
-					power = 9.3F;
+					power = 9.3F * 40F;
 				}
 
 				power = (float) Math.floor(power);
