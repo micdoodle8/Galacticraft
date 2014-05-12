@@ -21,7 +21,8 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 public class GalacticraftPlanets
 {
 	public static final String NAME = "Galacticraft Planets";
-	public static final String MODID = "GalacticraftPlanets";
+	// Sadly, this has to stay as GalacticraftMars for backwards compatibility
+	public static final String MODID = "GalacticraftMars";
 
 	@Instance(GalacticraftPlanets.MODID)
 	public static GalacticraftPlanets instance;
