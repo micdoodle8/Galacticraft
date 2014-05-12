@@ -247,7 +247,6 @@ public class SkyProviderOverworld extends IRenderHandler
 		var23.addVertexWithUV(var10, 0, var10, 1.0F, 1.0F);
 		var23.addVertexWithUV(var10, 0, -var10, 1.0F, 0.0F);
 		var23.addVertexWithUV(-var10, 0, -var10, 0.0F, 0.0F);
-		var23.addVertexWithUV(-var10, -50, -var10, 0.0F, 0.0F);
 		var23.draw();
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GL11.glPopMatrix();
