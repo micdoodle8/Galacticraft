@@ -39,22 +39,11 @@ public class NetworkRenderer
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_CULL_FACE);
 		
-		float distance = 0.15F;
-		
 		for (TileEntityBeamOutput tileEntity : nodes)
 		{
 			if (tileEntity.getTarget() == null)
 			{
 				continue;
-			}
-			
-			if (tileEntity instanceof TileEntityBeamReflector)
-			{
-				distance = 0.15F;
-			}
-			else
-			{
-				distance = 0.0F;
 			}
 			
 			GL11.glPushMatrix();
@@ -68,9 +57,9 @@ public class NetworkRenderer
             float posX = (float)((tileEntity.xCoord) - interpPosX);
             float posY = (float)((tileEntity.yCoord) - interpPosY);
             float posZ = (float)((tileEntity.zCoord) - interpPosZ);
-			GL11.glTranslatef(posX + 0.5F, posY, posZ + 0.5F);
+			GL11.glTranslatef(posX, posY, posZ);
 			
-			GL11.glTranslatef(0, outputPoint.floatY() - tileEntity.yCoord, 0);
+			GL11.glTranslatef(outputPoint.floatX() - tileEntity.xCoord, outputPoint.floatY() - tileEntity.yCoord, outputPoint.floatZ() - tileEntity.zCoord);
 			GL11.glRotatef(tileEntity.yaw + 180, 0, 1, 0);
 			GL11.glRotatef(-tileEntity.pitch, 1, 0, 0);
 			GL11.glRotatef(tileEntity.ticks * 10, 0, 0, 1);
@@ -80,8 +69,8 @@ public class NetworkRenderer
 			
 			for (ForgeDirection dir : ForgeDirection.values())
 			{
-				tess.addVertex(dir.offsetX / 40.0F, dir.offsetY / 40.0F, distance + dir.offsetZ / 40.0F);
-				tess.addVertex(dir.offsetX / 40.0F, dir.offsetY / 40.0F, distance + directionLength + dir.offsetZ / 40.0F);
+				tess.addVertex(dir.offsetX / 40.0F, dir.offsetY / 40.0F, dir.offsetZ / 40.0F);
+				tess.addVertex(dir.offsetX / 40.0F, dir.offsetY / 40.0F, directionLength + dir.offsetZ / 40.0F);
 			}
 			
 			tess.draw();
