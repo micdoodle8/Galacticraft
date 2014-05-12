@@ -51,7 +51,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 	private IFuelDock landingPad;
 	public boolean landing;
 	public EnumAutoLaunch autoLaunchSetting;
-	private static boolean marsLoaded = Loader.isModLoaded("GalacticraftMars");
+	private static boolean marsLoaded = Loader.isModLoaded("GalacticraftPlanets");
 
 	public int autoLaunchCountdown;
 	public String statusMessage;
@@ -138,7 +138,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 						try
 						{
 							TileEntity launchController = null;
-							Class<?> controllerClass = Class.forName("micdoodle8.mods.galacticraft.planets.mars.tile.EntityLaunchController");
+							Class<?> controllerClass = Class.forName("micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityLaunchController");
 
 							for (ILandingPadAttachable connectedTile : dock.getConnectedTiles())
 							{
