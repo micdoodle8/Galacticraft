@@ -5,15 +5,19 @@ import java.util.LinkedList;
 import micdoodle8.mods.galacticraft.api.power.ILaserNode;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
 
 public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements ILaserNode
 {
 	public LinkedList<ILaserNode> nodeList = new LinkedList<ILaserNode>();
-	public ILaserNode target;
+	@NetworkedField(targetSide = Side.CLIENT)
+	public BlockVec3 targetVec = BlockVec3.INVALID_VECTOR;
 	public float pitch;
 	public float yaw;
 
@@ -22,7 +26,7 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
 	{
 		super.updateEntity();
 		
-		if (this.target == null)
+		if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER && this.targetVec.equals(BlockVec3.INVALID_VECTOR))
 		{
 			this.initiateReflector();
 		}
@@ -101,7 +105,7 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
 			}
 		}
 		
-		this.target = this.nodeList.peekFirst();
+		this.setTarget(this.nodeList.peekFirst());
 	}
 
 	@Override
@@ -172,22 +176,22 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
 			}
 		}
 		
-		if (node == this.target)
+		if (new BlockVec3(node.getTile()).equals(this.targetVec))
 		{
 			if (index == 0)
 			{
 				if (this.nodeList.size() > 1)
 				{
-					this.target = this.nodeList.get(index + 1);
+					this.setTarget(this.nodeList.get(index + 1));
 				}
 				else
 				{
-					this.target = null;
+					this.setTarget(null);
 				}
 			}
 			else
 			{
-				this.target = this.nodeList.get(index - 1);
+				this.setTarget(this.nodeList.get(index - 1));
 			}
 		}
 		
@@ -199,9 +203,9 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
 
 	public void updateOrientation()
 	{
-		if (this.target != null)
+		if (this.getTarget() != null)
 		{
-			Vector3 direction = Vector3.subtract(this.getOutputPoint(false), this.target.getInputPoint()).normalize();
+			Vector3 direction = Vector3.subtract(this.getOutputPoint(false), this.getTarget().getInputPoint()).normalize();
 			this.pitch = (float) -Vector3.getAngle(new Vector3(-direction.x, -direction.y, -direction.z), new Vector3(0, 1, 0)) * (float)(180.0F / Math.PI) + 90;
 			this.yaw = (float) -(Math.atan2(direction.z, direction.x) * (float)(180.0F / Math.PI)) + 90;
 		}
@@ -239,7 +243,7 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
 			
 			for (int i = 0; i < nodeList.size(); i++)
 			{
-				if (new BlockVec3(this.nodeList.get(i).getTile()).equals(new BlockVec3(this.target.getTile())))
+				if (new BlockVec3(this.nodeList.get(i).getTile()).equals(new BlockVec3(this.getTarget().getTile())))
 				{
 					index = i;
 					break;
@@ -255,7 +259,7 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
 			{
 				index++;
 				index %= this.nodeList.size();
-				this.target = this.nodeList.get(index);
+				this.setTarget(this.nodeList.get(index));
 				return true;
 			}
 		}
@@ -266,6 +270,30 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
 	@Override
 	public ILaserNode getTarget() 
 	{
-		return this.target;
+		if (!this.targetVec.equals(BlockVec3.INVALID_VECTOR))
+		{
+			TileEntity tileAtTarget = this.worldObj.getTileEntity(this.targetVec.x, this.targetVec.y, this.targetVec.z);
+			
+			if (tileAtTarget != null && tileAtTarget instanceof ILaserNode)
+			{
+				return (ILaserNode) tileAtTarget;
+			}
+			
+			return null;
+		}
+		
+		return null;
+	}
+	
+	public void setTarget(ILaserNode target)
+	{
+		if (target != null)
+		{
+			this.targetVec = new BlockVec3(target.getTile());
+		}
+		else
+		{
+			this.targetVec = BlockVec3.INVALID_VECTOR;
+		}
 	}
 }
