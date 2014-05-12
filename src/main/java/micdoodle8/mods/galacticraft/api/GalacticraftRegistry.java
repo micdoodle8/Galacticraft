@@ -6,11 +6,13 @@ import java.util.List;
 import java.util.Map;
 
 import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.api.world.SpaceStationType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldProvider;
+import net.minecraft.world.WorldProviderSurface;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -110,6 +112,8 @@ public class GalacticraftRegistry
 
 	public static ITeleportType getTeleportTypeForDimension(Class<? extends WorldProvider> clazz)
 	{
+		if (!clazz.isInstance(IGalacticraftWorldProvider.class))
+			clazz = WorldProviderSurface.class;
 		return GalacticraftRegistry.teleportTypeMap.get(clazz);
 	}
 

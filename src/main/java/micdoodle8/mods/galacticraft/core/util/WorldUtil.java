@@ -508,6 +508,7 @@ public class WorldUtil
 				if (var6 == null)
 				{
 					System.err.println("Cannot Transfer Entity to Dimension: Could not get World for Dimension " + dimensionID);
+					return null;
 				}
 
 				final ITeleportType type = GalacticraftRegistry.getTeleportTypeForDimension(var6.provider.getClass());

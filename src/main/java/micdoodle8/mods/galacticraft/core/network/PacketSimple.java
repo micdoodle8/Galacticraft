@@ -590,7 +590,7 @@ public class PacketSimple extends Packet implements IPacket
 				{
 					final WorldProvider provider = WorldUtil.getProviderForName((String) this.data.get(0));
 					final Integer dim = provider.dimensionId;
-					GCLog.info("Found matching world name for " + (String) this.data.get(0));
+					GCLog.info("Found matching world ("+dim.toString()+") for name: " + (String) this.data.get(0));
 
 					if (playerBase.worldObj instanceof WorldServer)
 					{
