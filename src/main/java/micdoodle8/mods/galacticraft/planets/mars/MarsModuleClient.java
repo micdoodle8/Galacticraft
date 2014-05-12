@@ -15,11 +15,11 @@ import micdoodle8.mods.galacticraft.planets.mars.client.gui.GuiSlimeling;
 import micdoodle8.mods.galacticraft.planets.mars.client.gui.GuiSlimelingFeed;
 import micdoodle8.mods.galacticraft.planets.mars.client.gui.GuiTerraformer;
 import micdoodle8.mods.galacticraft.planets.mars.client.model.ModelTier2Rocket;
-import micdoodle8.mods.galacticraft.planets.mars.client.render.block.BlockRendererMachine;
-import micdoodle8.mods.galacticraft.planets.mars.client.render.block.BlockRendererEgg;
-import micdoodle8.mods.galacticraft.planets.mars.client.render.block.BlockRendererTintedGlassPane;
-import micdoodle8.mods.galacticraft.planets.mars.client.render.block.BlockRendererTier2TreasureChest;
 import micdoodle8.mods.galacticraft.planets.mars.client.render.block.BlockRendererCavernousVines;
+import micdoodle8.mods.galacticraft.planets.mars.client.render.block.BlockRendererEgg;
+import micdoodle8.mods.galacticraft.planets.mars.client.render.block.BlockRendererMachine;
+import micdoodle8.mods.galacticraft.planets.mars.client.render.block.BlockRendererTier2TreasureChest;
+import micdoodle8.mods.galacticraft.planets.mars.client.render.block.BlockRendererTintedGlassPane;
 import micdoodle8.mods.galacticraft.planets.mars.client.render.entity.RenderCargoRocket;
 import micdoodle8.mods.galacticraft.planets.mars.client.render.entity.RenderCreeperBoss;
 import micdoodle8.mods.galacticraft.planets.mars.client.render.entity.RenderLandingBalloons;
@@ -140,7 +140,9 @@ public class MarsModuleClient implements IPlanetsModuleClient
 	@Override
 	public void getGuiIDs(List<Integer> idList) 
 	{
-		
+		idList.add(ConfigManagerMars.idGuiCargoRocketCraftingBench);
+		idList.add(ConfigManagerMars.idGuiMachine);
+		idList.add(ConfigManagerMars.idGuiRocketCraftingBenchT2);
 	}
 
 	@Override
