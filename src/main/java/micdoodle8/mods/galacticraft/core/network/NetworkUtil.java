@@ -7,6 +7,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.tile.EnergyStorage;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
@@ -87,6 +88,12 @@ public class NetworkUtil
 				buffer.writeDouble(((Vector3) dataValue).x);
 				buffer.writeDouble(((Vector3) dataValue).y);
 				buffer.writeDouble(((Vector3) dataValue).z);
+			}
+			else if (dataValue instanceof BlockVec3)
+			{
+				buffer.writeInt(((BlockVec3) dataValue).x);
+				buffer.writeInt(((BlockVec3) dataValue).y);
+				buffer.writeInt(((BlockVec3) dataValue).z);
 			}
 			else if (dataValue instanceof Collection)
 			{
@@ -204,6 +211,10 @@ public class NetworkUtil
 					e.printStackTrace();
 				}
 			}
+			else if (clazz.equals(BlockVec3.class))
+			{
+				objList.add(new BlockVec3(buffer.readInt(), buffer.readInt(), buffer.readInt()));
+			}
 			else if (clazz.equals(FlagData.class))
 			{
 				int width = buffer.readInt();
@@ -299,6 +310,10 @@ public class NetworkUtil
 		else if (dataValue.equals(Vector3.class))
 		{
 			return new Vector3(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
+		}
+		else if (dataValue.equals(BlockVec3.class))
+		{
+			return new BlockVec3(buffer.readInt(), buffer.readInt(), buffer.readInt());
 		}
 		else if (dataValue.equals(EnergyStorage.class))
 		{
