@@ -50,6 +50,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -109,7 +110,7 @@ public class MarsModule implements IPlanetsModule
 
 		GalacticraftCore.packetPipeline.registerPacket(PacketSimpleMars.class);
 		
-		MarsModule.galacticraftMarsTab = new CreativeTabGC(CreativeTabs.getNextID(), GalacticraftPlanets.MODID, MarsItems.spaceship, 5);
+		MarsModule.galacticraftMarsTab = new CreativeTabGC(CreativeTabs.getNextID(), "GalacticraftMars", MarsItems.spaceship, 5);
 		
 		this.registerTileEntities();
 		this.registerCreatures();
