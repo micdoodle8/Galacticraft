@@ -1,11 +1,13 @@
 package micdoodle8.mods.galacticraft.mars.items;
 
 import micdoodle8.mods.galacticraft.mars.GCMarsConfigManager;
+import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
 import net.minecraft.item.EnumArmorMaterial;
 import net.minecraft.item.EnumToolMaterial;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.EnumHelper;
 import net.minecraftforge.common.MinecraftForge;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
  * GCMarsItems.java
@@ -50,6 +52,8 @@ public class GCMarsItems
 		GCMarsItems.spaceship = new GCMarsItemSpaceshipTier2(GCMarsConfigManager.idItemSpaceshipTier2).setUnlocalizedName("spaceshipTier2");
 		GCMarsItems.key = new GCMarsItemKey(GCMarsConfigManager.idItemKeyT2).setUnlocalizedName("key");
 		GCMarsItems.schematic = new GCMarsItemSchematic(GCMarsConfigManager.idItemSchematicMars).setUnlocalizedName("schematic");
+		
+		registerItems();
 	}
 
 	public static void registerHarvestLevels()
@@ -57,5 +61,27 @@ public class GCMarsItems
 		MinecraftForge.setToolClass(GCMarsItems.deshPickaxe, "pickaxe", 4);
 		MinecraftForge.setToolClass(GCMarsItems.deshAxe, "axe", 4);
 		MinecraftForge.setToolClass(GCMarsItems.deshSpade, "shovel", 4);
+	}
+	
+	private static void registerItems()
+	{
+		registerItem(marsItemBasic);
+		registerItem(deshPickaxe);
+		registerItem(deshAxe);
+		registerItem(deshHoe);
+		registerItem(deshSpade);
+		registerItem(deshSword);
+		registerItem(deshHelmet);
+		registerItem(deshChestplate);
+		registerItem(deshLeggings);
+		registerItem(deshBoots);
+		registerItem(spaceship);
+		registerItem(key);
+		registerItem(schematic);
+	}
+	
+	private static void registerItem(Item item)
+	{
+		GameRegistry.registerItem(item, item.getUnlocalizedName(), GalacticraftMars.MODID);
 	}
 }

@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.items;
 import java.util.ArrayList;
 
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.moon.GCMoonConfigManager;
@@ -17,6 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.EnumHelper;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
  * GCCoreItems.java
@@ -257,6 +259,8 @@ public class GCCoreItems
 
 		OreDictionary.registerOre("plateMeteoricIron", new ItemStack(GCCoreItems.meteoricIronIngot, 1, 1));
 		OreDictionary.registerOre("ingotMeteoricIron", new ItemStack(GCCoreItems.meteoricIronIngot, 1, 0));
+		
+		registerItems();
 	}
 
 	public static void registerHarvestLevels()
@@ -264,5 +268,59 @@ public class GCCoreItems
 		MinecraftForge.setToolClass(GCCoreItems.steelPickaxe, "pickaxe", 4);
 		MinecraftForge.setToolClass(GCCoreItems.steelAxe, "axe", 4);
 		MinecraftForge.setToolClass(GCCoreItems.steelSpade, "shovel", 4);
+	}
+
+	public static void registerItems()
+	{
+		registerItem(rocketTier1);
+		registerItem(oxMask);
+		registerItem(oxygenGear);
+		registerItem(oxTankLight);
+		registerItem(oxTankMedium);
+		registerItem(oxTankHeavy);
+		registerItem(sensorLens);
+		registerItem(sensorGlasses);
+		registerItem(steelPickaxe);
+		registerItem(steelAxe);
+		registerItem(steelHoe);
+		registerItem(steelSpade);
+		registerItem(steelSword);
+		registerItem(steelHelmet);
+		registerItem(steelChestplate);
+		registerItem(steelLeggings);
+		registerItem(steelBoots);
+		registerItem(canister);
+		registerItem(oxygenVent);
+		registerItem(oxygenFan);
+		registerItem(oxygenConcentrator);
+		registerItem(rocketEngine);
+		registerItem(heavyPlatingTier1);
+		registerItem(partNoseCone);
+		registerItem(partFins);
+		registerItem(flagPole);
+		registerItem(canvas);
+		registerItem(oilCanister);
+		registerItem(fuelCanister);
+		registerItem(oilExtractor);
+		registerItem(schematic);
+		registerItem(key);
+		registerItem(partBuggy);
+		registerItem(buggy);
+		registerItem(basicItem);
+		registerItem(battery);
+		registerItem(infiniteBatery);
+		registerItem(meteorChunk);
+		registerItem(wrench);
+		registerItem(cheeseCurd);
+		registerItem(meteoricIronRaw);
+		registerItem(meteoricIronIngot);
+		registerItem(cheeseBlock);
+		registerItem(flag);
+		registerItem(parachute);
+	}
+	
+	private static void registerItem(Item item)
+	{
+		GameRegistry.registerItem(item, item.getUnlocalizedName(), GalacticraftCore.MODID);
 	}
 }
