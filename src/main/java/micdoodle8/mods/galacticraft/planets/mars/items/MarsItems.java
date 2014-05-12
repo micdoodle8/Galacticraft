@@ -1,9 +1,11 @@
 package micdoodle8.mods.galacticraft.planets.mars.items;
 
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraftforge.common.util.EnumHelper;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
  * GCMarsItems.java
@@ -48,6 +50,8 @@ public class MarsItems
 		MarsItems.spaceship = new ItemTier2Rocket().setUnlocalizedName("spaceshipTier2");
 		MarsItems.key = new ItemKeyMars().setUnlocalizedName("key");
 		MarsItems.schematic = new ItemSchematicTier2().setUnlocalizedName("schematic");
+		
+		registerItems();
 	}
 
 	public static void registerHarvestLevels()
@@ -55,5 +59,27 @@ public class MarsItems
 //		MinecraftForge.setToolClass(GCMarsItems.deshPickaxe, "pickaxe", 4);
 //		MinecraftForge.setToolClass(GCMarsItems.deshAxe, "axe", 4);
 //		MinecraftForge.setToolClass(GCMarsItems.deshSpade, "shovel", 4); TODO Fix harvest levels
+	}
+	
+	private static void registerItems()
+	{
+		registerItem(marsItemBasic);
+		registerItem(deshPickaxe);
+		registerItem(deshAxe);
+		registerItem(deshHoe);
+		registerItem(deshSpade);
+		registerItem(deshSword);
+		registerItem(deshHelmet);
+		registerItem(deshChestplate);
+		registerItem(deshLeggings);
+		registerItem(deshBoots);
+		registerItem(spaceship);
+		registerItem(key);
+		registerItem(schematic);
+	}
+	
+	private static void registerItem(Item item)
+	{
+		GameRegistry.registerItem(item, item.getUnlocalizedName(), GalacticraftPlanets.MODID);
 	}
 }
