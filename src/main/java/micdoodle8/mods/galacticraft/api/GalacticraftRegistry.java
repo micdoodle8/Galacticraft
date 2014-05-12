@@ -155,6 +155,8 @@ public class GalacticraftRegistry
 	@SideOnly(Side.CLIENT)
 	public static ResourceLocation getResouceLocationForDimension(Class<? extends WorldProvider> clazz)
 	{
+		if (!clazz.isInstance(IGalacticraftWorldProvider.class))
+			clazz = WorldProviderSurface.class;
 		return GalacticraftRegistry.rocketGuiMap.get(clazz);
 	}
 
