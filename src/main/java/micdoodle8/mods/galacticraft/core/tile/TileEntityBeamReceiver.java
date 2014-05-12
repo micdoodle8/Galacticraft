@@ -6,10 +6,14 @@ import micdoodle8.mods.galacticraft.api.power.EnergySource.EnergySourceWireless;
 import micdoodle8.mods.galacticraft.api.power.IEnergyHandlerGC;
 import micdoodle8.mods.galacticraft.api.power.ILaserNode;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.miccore.Annotations.NetworkedField;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.collect.Lists;
+
+import cpw.mods.fml.relauncher.Side;
 
 public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEnergyHandlerGC, ILaserNode
 {
@@ -20,54 +24,46 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 		UNDEFINED
 	}
 	
-	public ForgeDirection facing = ForgeDirection.UNKNOWN;
+	@NetworkedField(targetSide = Side.CLIENT)
+	public int facing = ForgeDirection.UNKNOWN.ordinal();
+	private int preLoadFacing = -1;
 	private EnergyStorage storage = new EnergyStorage(Integer.MAX_VALUE, 1);
-	public ReceiverMode modeReceive = ReceiverMode.UNDEFINED;
+	@NetworkedField(targetSide = Side.CLIENT)
+	public int modeReceive = ReceiverMode.UNDEFINED.ordinal();
 	public Vector3 color = new Vector3(0, 1, 0);
 	
 	@Override
 	public void updateEntity()
 	{
 		super.updateEntity();
-		
-		if (facing == ForgeDirection.UNKNOWN)
+
+		if (this.preLoadFacing != -1)
 		{
-			Vector3 thisVec = new Vector3(this);
-			
-			for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
-			{
-				Vector3 sideVec = thisVec.clone().translate(new Vector3(dir));
-				TileEntity tile = sideVec.getTileEntity(this.worldObj);
-				
-				if (tile != null && tile instanceof TileEntityUniversalElectrical)
-				{
-					this.setFacing(dir);
-					break;
-				}
-			}
+			this.setFacing(ForgeDirection.getOrientation(this.preLoadFacing));
+			this.preLoadFacing = -1;
 		}
 		
-		if (this.target != null && this.modeReceive == ReceiverMode.EXTRACT && this.facing != ForgeDirection.UNKNOWN)
+		if (this.getTarget() != null && this.modeReceive == ReceiverMode.EXTRACT.ordinal() && this.facing != ForgeDirection.UNKNOWN.ordinal())
 		{
 			TileEntity tile = this.getAttachedTile();
 			
 			if (tile instanceof TileEntityUniversalElectrical)
 			{
 				TileEntityUniversalElectrical electricalTile = (TileEntityUniversalElectrical) tile;
-				EnergySourceAdjacent source = new EnergySourceAdjacent(this.facing.getOpposite());
+				EnergySourceAdjacent source = new EnergySourceAdjacent(ForgeDirection.getOrientation(this.facing).getOpposite());
 				int toSend = electricalTile.storage.getMaxExtract();
-				electricalTile.extractEnergyGC(source, this.target.receiveEnergyGC(new EnergySourceWireless(Lists.newArrayList((ILaserNode)this)), toSend, false), false);
+				electricalTile.extractEnergyGC(source, this.getTarget().receiveEnergyGC(new EnergySourceWireless(Lists.newArrayList((ILaserNode)this)), toSend, false), false);
 			}
 		}
 		
-		if (this.modeReceive == ReceiverMode.RECEIVE && this.storage.getEnergyStoredGC() > 0)
+		if (this.modeReceive == ReceiverMode.RECEIVE.ordinal() && this.storage.getEnergyStoredGC() > 0)
 		{
 			TileEntity tile = this.getAttachedTile();
 			
 			if (tile instanceof TileEntityUniversalElectrical)
 			{
 				TileEntityUniversalElectrical electricalTile = (TileEntityUniversalElectrical) tile;
-				EnergySourceAdjacent source = new EnergySourceAdjacent(this.facing.getOpposite());
+				EnergySourceAdjacent source = new EnergySourceAdjacent(ForgeDirection.getOrientation(this.facing).getOpposite());
 				this.storage.extractEnergyGC((int) electricalTile.receiveEnergyGC(source, this.storage.getEnergyStoredGC(), false), false);
 			}
 		}
@@ -95,6 +91,10 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 	public Vector3 getInputPoint() 
 	{
 		Vector3 headVec = new Vector3(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5);
+		ForgeDirection facingDir = ForgeDirection.getOrientation(this.facing);
+		headVec.x += facingDir.offsetX * 0.1F;
+		headVec.y += facingDir.offsetY * 0.1F;
+		headVec.z += facingDir.offsetZ * 0.1F;
 		return headVec;
 	}
 
@@ -102,6 +102,10 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 	public Vector3 getOutputPoint(boolean offset) 
 	{
 		Vector3 headVec = new Vector3(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5);
+		ForgeDirection facingDir = ForgeDirection.getOrientation(this.facing);
+		headVec.x += facingDir.offsetX * 0.1F;
+		headVec.y += facingDir.offsetY * 0.1F;
+		headVec.z += facingDir.offsetZ * 0.1F;
 		return headVec;
 	}
 
@@ -113,12 +117,12 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 	
 	public TileEntity getAttachedTile()
 	{
-		if (facing == ForgeDirection.UNKNOWN)
+		if (facing == ForgeDirection.UNKNOWN.ordinal())
 		{
 			return null;
 		}
 		
-		TileEntity tile = new Vector3(this).translate(new Vector3(facing)).getTileEntity(this.worldObj);
+		TileEntity tile = new Vector3(this).translate(new Vector3(ForgeDirection.getOrientation(facing))).getTileEntity(this.worldObj);
 		
 		if (tile == null || tile.isInvalid())
 		{
@@ -138,14 +142,14 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 	@Override
 	public int receiveEnergyGC(EnergySource from, int amount, boolean simulate) 
 	{
-		if (this.modeReceive != ReceiverMode.RECEIVE)
+		if (this.modeReceive != ReceiverMode.RECEIVE.ordinal())
 		{
 			return 0;
 		}
 		
 		TileEntity tile = this.getAttachedTile();
 		
-		if (this.facing == ForgeDirection.UNKNOWN)
+		if (this.facing == ForgeDirection.UNKNOWN.ordinal())
 		{
 			return 0;
 		}
@@ -166,14 +170,14 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 	@Override
 	public int extractEnergyGC(EnergySource from, int amount, boolean simulate) 
 	{
-		if (this.modeReceive != ReceiverMode.EXTRACT)
+		if (this.modeReceive != ReceiverMode.EXTRACT.ordinal())
 		{
 			return 0;
 		}
 		
 		TileEntity tile = this.getAttachedTile();
 		
-		if (this.facing == ForgeDirection.UNKNOWN)
+		if (this.facing == ForgeDirection.UNKNOWN.ordinal())
 		{
 			return 0;
 		}
@@ -196,7 +200,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 	{
 		TileEntity tile = this.getAttachedTile();
 		
-		if (this.facing == ForgeDirection.UNKNOWN)
+		if (this.facing == ForgeDirection.UNKNOWN.ordinal())
 		{
 			return 0;
 		}
@@ -209,7 +213,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 	{
 		TileEntity tile = this.getAttachedTile();
 		
-		if (this.facing == ForgeDirection.UNKNOWN)
+		if (this.facing == ForgeDirection.UNKNOWN.ordinal())
 		{
 			return 0;
 		}
@@ -222,7 +226,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 	{
 		TileEntity tile = this.getAttachedTile();
 		
-		if (this.facing == ForgeDirection.UNKNOWN)
+		if (this.facing == ForgeDirection.UNKNOWN.ordinal())
 		{
 			return false;
 		}
@@ -230,13 +234,13 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 		return true;
 	}
 	
-	private void setFacing(ForgeDirection newDirection)
+	public void setFacing(ForgeDirection newDirection)
 	{
-		if (newDirection != this.facing)
+		if (newDirection.ordinal() != this.facing)
 		{
 			if (newDirection == ForgeDirection.UNKNOWN)
 			{
-				this.modeReceive = ReceiverMode.UNDEFINED;
+				this.modeReceive = ReceiverMode.UNDEFINED.ordinal();
 			}
 			else
 			{
@@ -244,7 +248,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 				
 				if (tile == null)
 				{
-					this.modeReceive = ReceiverMode.UNDEFINED;
+					this.modeReceive = ReceiverMode.UNDEFINED.ordinal();
 				}
 				else if (tile instanceof EnergyStorageTile)
 				{
@@ -252,23 +256,23 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 					
 					if (mode != null)
 					{
-						this.modeReceive = mode;
+						this.modeReceive = mode.ordinal();
 					}
 					else
 					{
-						this.modeReceive = ReceiverMode.UNDEFINED;
+						this.modeReceive = ReceiverMode.UNDEFINED.ordinal();
 					}
 				}
 			}
 		}
 		
-		this.facing = newDirection;
+		this.facing = newDirection.ordinal();
 	}
 
 	@Override
 	public boolean canConnectTo(ILaserNode laserNode) 
 	{
-		return this.modeReceive != ReceiverMode.UNDEFINED && this.color.equals(laserNode.getColor());
+		return this.modeReceive != ReceiverMode.UNDEFINED.ordinal() && this.color.equals(laserNode.getColor());
 	}
 
 	@Override
@@ -280,11 +284,23 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 	@Override
 	public ILaserNode getTarget() 
 	{
-		if (this.modeReceive == ReceiverMode.EXTRACT)
+		if (this.modeReceive == ReceiverMode.EXTRACT.ordinal())
 		{
 			return super.getTarget();
 		}
 		
 		return null;
 	}
+
+    public void readFromNBT(NBTTagCompound nbt)
+    {
+    	super.readFromNBT(nbt);
+    	this.preLoadFacing = nbt.getInteger("FacingSide");
+    }
+
+    public void writeToNBT(NBTTagCompound nbt)
+    {
+    	super.writeToNBT(nbt);
+    	nbt.setInteger("FacingSide", this.facing);
+    }
 }
