@@ -103,6 +103,7 @@ public class GCCoreGuiExtendedInventory extends InventoryEffectRenderer
 		float f2 = par0Minecraft.thePlayer.renderYawOffset;
 		float f3 = par0Minecraft.thePlayer.rotationYaw;
 		float f4 = par0Minecraft.thePlayer.rotationPitch;
+		float f5 = par0Minecraft.thePlayer.rotationYawHead;
 		par4 -= 19;
 		GL11.glRotatef(135.0F, 0.0F, 1.0F, 0.0F);
 		RenderHelper.enableStandardItemLighting();
@@ -119,6 +120,7 @@ public class GCCoreGuiExtendedInventory extends InventoryEffectRenderer
 		par0Minecraft.thePlayer.renderYawOffset = f2;
 		par0Minecraft.thePlayer.rotationYaw = f3;
 		par0Minecraft.thePlayer.rotationPitch = f4;
+		par0Minecraft.thePlayer.rotationYawHead = f5;
 		GL11.glPopMatrix();
 		RenderHelper.disableStandardItemLighting();
 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
