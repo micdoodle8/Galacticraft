@@ -204,4 +204,10 @@ public class GCCoreBlockFallenMeteor extends Block implements ITileEntityProvide
 	{
 		return new GCCoreTileEntityFallenMeteor();
 	}
+	
+	@Override
+	public boolean canSilkHarvest()
+	{
+		return true;
+	}
 }
