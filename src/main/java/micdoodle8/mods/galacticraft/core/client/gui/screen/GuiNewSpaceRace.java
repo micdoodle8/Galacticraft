@@ -163,7 +163,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
 				this.gradientListAddPlayers = new GuiElementGradientList(xPos0, yPos0, xPos1 - xPos0, yPos1 - yPos0);
 				break;
 			case REMOVE_PLAYER:
-				this.buttonList.add(new GuiElementGradientButton(2, this.width / 2 - this.width / 3 + 7, this.height / 2 + this.height / 4 - 15, 64, 15, "Remove Player"));
+				this.buttonList.add(new GuiElementGradientButton(2, this.width / 2 - this.width / 3 + 7, this.height / 2 + this.height / 4 - 15, 64, 15, "Remove"));
 				int xPos0b = ((GuiElementGradientButton) this.buttonList.get(0)).xPosition + ((GuiElementGradientButton) this.buttonList.get(0)).getButtonWidth() + 10;
 				int xPos1b = this.width / 2 + this.width / 3 - 10;
 				int yPos0b = this.height / 2 - this.height / 3 + 10;
@@ -283,6 +283,18 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
             		}
         		}
     		}
+    		else if (this.currentState == EnumSpaceRaceGui.REMOVE_PLAYER)
+    		{
+        		ListElement playerToRemove = this.gradientListRemovePlayers.getSelectedElement();
+        		if (playerToRemove != null)
+        		{
+            		SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(thePlayer.getGameProfile().getName());
+            		if (race != null)
+            		{
+                		GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REMOVE_RACE_PLAYER, new Object[] { playerToRemove.value, race.getSpaceRaceID() }));
+            		}
+        		}
+    		}
     		break;
     	case 3:
     		if (this.currentState == EnumSpaceRaceGui.MAIN)
@@ -354,9 +366,30 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
         	this.gradientListAddPlayers.updateListContents(playerNames);
         }
         
+        if (this.gradientListRemovePlayers != null && this.ticksPassed % 20 == 0)
+        {
+        	List<ListElement> playerNames = new ArrayList<ListElement>();
+        	for (int i = 0; i < this.spaceRaceData.getPlayerNames().size(); i++)
+        	{
+        		String playerName = this.spaceRaceData.getPlayerNames().get(i);
+        		
+//        		if (!playerName.equals(mc.thePlayer.getGameProfile().getName()))
+        		{
+        			playerNames.add(new ListElement(playerName, GCCoreUtil.to32BitColor(255, 190, 190, 190)));
+        		}
+        	}
+        	
+        	this.gradientListRemovePlayers.updateListContents(playerNames);
+        }
+        
         if (this.currentState == EnumSpaceRaceGui.ADD_PLAYER && this.gradientListAddPlayers != null)
         {
         	this.gradientListAddPlayers.update();
+        }
+        
+        if (this.currentState == EnumSpaceRaceGui.REMOVE_PLAYER && this.gradientListRemovePlayers != null)
+        {
+        	this.gradientListRemovePlayers.update();
         }
         
         if (!this.initialized)
@@ -641,6 +674,11 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
         if (this.currentState == EnumSpaceRaceGui.ADD_PLAYER && this.gradientListAddPlayers != null)
         {
         	this.gradientListAddPlayers.draw(par1, par2);
+        }
+        
+        if (this.currentState == EnumSpaceRaceGui.REMOVE_PLAYER && this.gradientListRemovePlayers != null)
+        {
+        	this.gradientListRemovePlayers.draw(par1, par2);
         }
     }
     

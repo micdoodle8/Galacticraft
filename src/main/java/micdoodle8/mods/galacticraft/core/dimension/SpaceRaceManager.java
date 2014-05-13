@@ -20,8 +20,6 @@ import net.minecraft.server.MinecraftServer;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 
-import cpw.mods.fml.common.FMLLog;
-
 public class SpaceRaceManager
 {
 	private static final Set<SpaceRace> spaceRaces = Sets.newHashSet();
@@ -29,12 +27,14 @@ public class SpaceRaceManager
 	public static SpaceRace addSpaceRace(List<String> playerNames, String teamName, FlagData flagData)
 	{
 		SpaceRace spaceRace = new SpaceRace(playerNames, teamName, flagData);
+		spaceRaces.remove(spaceRace);
 		spaceRaces.add(spaceRace);
 		return spaceRace;
 	}
 	
 	public static SpaceRace addSpaceRace(SpaceRace spaceRace)
 	{
+		spaceRaces.remove(spaceRace);
 		spaceRaces.add(spaceRace);
 		return spaceRace;
 	}
@@ -144,7 +144,31 @@ public class SpaceRaceManager
 			objList.add(spaceRace.getTeamName());
 			objList.add(spaceRace.getFlagData());
 			objList.add(spaceRace.getPlayerNames().toArray(new String[spaceRace.getPlayerNames().size()]));
-			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACE_RACE_DATA, objList), toPlayer);
+			
+			for (Object o : objList)
+			{
+				
+				if (o instanceof String[])
+				{
+					for (String s : (String[])o)
+					{
+						System.out.println(s);
+					}
+				}
+				else
+				{
+					System.out.println(o);
+				}
+			}
+			
+			if (toPlayer != null)
+			{
+				GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACE_RACE_DATA, objList), toPlayer);
+			}
+			else
+			{
+				GalacticraftCore.packetPipeline.sendToAll(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACE_RACE_DATA, objList));
+			}
 		}
 	}
 	

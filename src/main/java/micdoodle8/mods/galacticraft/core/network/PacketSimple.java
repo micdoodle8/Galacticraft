@@ -51,6 +51,7 @@ import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -58,6 +59,7 @@ import net.minecraft.network.INetHandler;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.S07PacketRespawn;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatStyle;
@@ -97,6 +99,8 @@ public class PacketSimple extends Packet implements IPacket
 		S_START_NEW_SPACE_RACE(Side.SERVER, Integer.class, String.class, FlagData.class, String[].class),
 		S_REQUEST_FLAG_DATA(Side.SERVER, String.class),
 		S_INVITE_RACE_PLAYER(Side.SERVER, String.class, Integer.class),
+		S_REMOVE_RACE_PLAYER(Side.SERVER, String.class, Integer.class),
+		S_ADD_RACE_PLAYER(Side.SERVER, String.class, Integer.class),
 		// CLIENT
 		C_AIR_REMAINING(Side.CLIENT, Integer.class, Integer.class, String.class),
 		C_UPDATE_DIMENSION_LIST(Side.CLIENT, String.class, String.class),
@@ -859,33 +863,20 @@ public class PacketSimple extends Packet implements IPacket
 				playerList.add((String) this.data.get(i));
 			}
 			
-			SpaceRace previousData = SpaceRaceManager.getSpaceRaceFromPlayer(player.getGameProfile().getName());
-						
-			if (previousData != null)
-			{
-				SpaceRaceManager.removeSpaceRace(previousData);
-			}
-			
-			if (teamID > 0)
-			{
-				previousData = SpaceRaceManager.getSpaceRaceFromID(teamID);
-				
-				if (previousData != null)
-				{
-					SpaceRaceManager.removeSpaceRace(previousData);
-				}
-			}
-			
-			SpaceRace newRace = SpaceRaceManager.addSpaceRace(playerList, teamName, flagData);
+			boolean previousData = SpaceRaceManager.getSpaceRaceFromID(teamID) != null;
+
+			SpaceRace newRace = new SpaceRace(playerList, teamName, flagData);
 			
 			if (teamID > 0)
 			{
 				newRace.setSpaceRaceID(teamID);
 			}
 			
-			if (previousData != null)
+			SpaceRaceManager.addSpaceRace(newRace);
+			
+			if (previousData)
 			{
-				SpaceRaceManager.sendSpaceRaceData(playerBase, SpaceRaceManager.getSpaceRaceFromPlayer(playerBase.getGameProfile().getName()));
+				SpaceRaceManager.sendSpaceRaceData(null, SpaceRaceManager.getSpaceRaceFromPlayer(playerBase.getGameProfile().getName()));
 			}
 			break;
 		case S_REQUEST_FLAG_DATA:
@@ -911,6 +902,49 @@ public class PacketSimple extends Packet implements IPacket
 						teamNameTotal = teamNameTotal.concat(dB + teamNamePart + " ");
 					}
 					playerInvited.addChatMessage(new ChatComponentText("Received Space Race Team Invite from " + bG + player.getGameProfile().getName() + dA + ". To join " + teamNameTotal + dA + "use command " + EnumColor.AQUA + "/joinrace").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.DARK_AQUA)));
+				}
+			}
+			break;
+		case S_REMOVE_RACE_PLAYER:
+			Integer teamInvitedTo = (Integer) this.data.get(1);
+			SpaceRace race = SpaceRaceManager.getSpaceRaceFromID(teamInvitedTo);
+			
+			if (race != null)
+			{
+				String playerToRemove = (String) this.data.get(0);
+				
+				if (!race.getPlayerNames().remove(playerToRemove))
+				{
+					player.addChatMessage(new ChatComponentText("Could not find player with name: " + playerToRemove));
+				}
+			}
+			break;
+		case S_ADD_RACE_PLAYER:
+			Integer teamToAddPlayer = (Integer) this.data.get(1);
+			SpaceRace spaceRaceToAddPlayer = SpaceRaceManager.getSpaceRaceFromID(teamToAddPlayer);
+			
+			if (spaceRaceToAddPlayer != null)
+			{
+				String playerToAdd = (String) this.data.get(0);
+				
+				if (!spaceRaceToAddPlayer.getPlayerNames().contains(playerToAdd))
+				{
+					spaceRaceToAddPlayer.getPlayerNames().add(playerToAdd);
+					SpaceRaceManager.sendSpaceRaceData(null, spaceRaceToAddPlayer);
+					
+					for (String member : spaceRaceToAddPlayer.getPlayerNames())
+					{
+						EntityPlayerMP memberObj = MinecraftServer.getServer().getConfigurationManager().getPlayerForUsername(member);
+						
+						if (memberObj != null)
+						{
+							memberObj.addChatMessage(new ChatComponentText(EnumColor.BRIGHT_GREEN + playerToAdd + EnumColor.DARK_AQUA + " has joined the Space Race!").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.DARK_AQUA)));
+						}
+					}
+				}
+				else
+				{
+					player.addChatMessage(new ChatComponentText("You are already a part of this space race!").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.DARK_RED)));
 				}
 			}
 			break;

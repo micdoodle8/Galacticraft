@@ -158,6 +158,11 @@ public class SpaceRace
 		celestialBodyStatusList.put(body, this.ticksSpent);
 	}
 	
+	public int getTicksSpent()
+	{
+		return ticksSpent;
+	}
+	
 	@Override
 	public int hashCode()
 	{
