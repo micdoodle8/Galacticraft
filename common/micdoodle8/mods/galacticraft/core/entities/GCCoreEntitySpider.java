@@ -65,7 +65,7 @@ public class GCCoreEntitySpider extends EntitySpider implements IEntityBreathabl
 	@Override
 	public double getMountedYOffset()
 	{
-		return this.height * 0.75D - 0.5D;
+		return this.height * 0.75D - 0.1D;
 	}
 
 	/**
@@ -255,7 +255,7 @@ public class GCCoreEntitySpider extends EntitySpider implements IEntityBreathabl
 
 		if (this.worldObj.rand.nextInt(100) == 0)
 		{
-			EntitySkeleton entityskeleton = new EntitySkeleton(this.worldObj);
+			GCCoreEntitySkeleton entityskeleton = new GCCoreEntitySkeleton(this.worldObj);
 			entityskeleton.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
 			entityskeleton.onSpawnWithEgg((EntityLivingData) null);
 			this.worldObj.spawnEntityInWorld(entityskeleton);
