@@ -18,7 +18,6 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkConnection;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IOxygenReceiver;
 import micdoodle8.mods.galacticraft.api.transmission.tile.ITransmitter;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -293,7 +292,7 @@ public class OxygenNetwork implements IOxygenNetwork
 						if (connectedBlockA != connectedBlockB && connectedBlockB instanceof INetworkConnection)
 						{
 							Pathfinder finder = new PathfinderChecker(((TileEntity) splitPoint).getWorldObj(), (INetworkConnection) connectedBlockB, NetworkType.OXYGEN, splitPoint);
-							finder.init(new Vector3(connectedBlockA));
+							finder.init(new BlockVec3(connectedBlockA));
 
 							if (finder.results.size() > 0)
 							{
@@ -303,7 +302,7 @@ public class OxygenNetwork implements IOxygenNetwork
 								 * connection into one network.
 								 */
 
-								for (Vector3 node : finder.closedSet)
+								for (BlockVec3 node : finder.closedSet)
 								{
 									TileEntity nodeTile = node.getTileEntity(((TileEntity) splitPoint).getWorldObj());
 
@@ -324,7 +323,7 @@ public class OxygenNetwork implements IOxygenNetwork
 								 */
 								IOxygenNetwork newNetwork = new OxygenNetwork();
 
-								for (Vector3 node : finder.closedSet)
+								for (BlockVec3 node : finder.closedSet)
 								{
 									TileEntity nodeTile = node.getTileEntity(((TileEntity) splitPoint).getWorldObj());
 

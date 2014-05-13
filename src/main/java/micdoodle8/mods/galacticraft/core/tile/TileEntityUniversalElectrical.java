@@ -5,9 +5,12 @@ import java.util.EnumSet;
 
 import micdoodle8.mods.galacticraft.api.power.EnergySource.EnergySourceAdjacent;
 import micdoodle8.mods.galacticraft.api.power.IEnergyHandlerGC;
+import micdoodle8.mods.galacticraft.api.transmission.ElectricityPack;
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
+import micdoodle8.mods.galacticraft.api.transmission.core.grid.IElectricityNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.core.item.ElectricItemHelper;
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
+import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityBeamReceiver.ReceiverMode;
 import net.minecraft.item.ItemStack;
@@ -84,7 +87,17 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 				{
 					TileEntity tileAdj = adjacentBlockVec.getTileEntity(this.worldObj);
 					
-					if (tileAdj instanceof IEnergyHandlerGC)
+					if (tileAdj instanceof IConductor)
+					{
+						IElectricityNetwork network = (IElectricityNetwork) ((IConductor) tileAdj).getNetwork();
+						if (network != null)
+						{
+							//TODO: Get rid of electricityPack, yuck
+							ElectricityPack electricityPack = ElectricityPack.getFromWatts(this.getEnergyStoredGC() - amountProduced, 120);
+							amountProduced += network.produce(electricityPack, true, this);
+						}
+					}
+					else if (tileAdj instanceof IEnergyHandlerGC)
 					{
 						EnergySourceAdjacent source = new EnergySourceAdjacent(direction.getOpposite());
 						amountProduced += ((IEnergyHandlerGC) tileAdj).receiveEnergyGC(source, (this.getEnergyStoredGC() - amountProduced) / outputDirections.size(), simulate);

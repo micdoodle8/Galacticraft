@@ -7,7 +7,7 @@ import java.util.Set;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkConnection;
 import micdoodle8.mods.galacticraft.api.transmission.tile.ITransmitter;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -25,14 +25,14 @@ public class PathfinderChecker extends Pathfinder
 		super(new IPathCallBack()
 		{
 			@Override
-			public Set<Vector3> getConnectedNodes(Pathfinder finder, Vector3 currentNode)
+			public Set<BlockVec3> getConnectedNodes(Pathfinder finder, BlockVec3 currentNode)
 			{
-				Set<Vector3> neighbors = new HashSet<Vector3>();
+				Set<BlockVec3> neighbors = new HashSet<BlockVec3>();
 
 				for (int i = 0; i < 6; i++)
 				{
 					ForgeDirection direction = ForgeDirection.getOrientation(i);
-					Vector3 position = currentNode.clone().modifyPositionFromSide(direction);
+					BlockVec3 position = currentNode.clone().modifyPositionFromSide(direction);
 					TileEntity connectedBlock = position.getTileEntity(world);
 
 					if (connectedBlock instanceof ITransmitter && !Arrays.asList(ignoreConnector).contains(connectedBlock))
@@ -48,7 +48,7 @@ public class PathfinderChecker extends Pathfinder
 			}
 
 			@Override
-			public boolean onSearch(Pathfinder finder, Vector3 node)
+			public boolean onSearch(Pathfinder finder, BlockVec3 node)
 			{
 				if (node.getTileEntity(world) == targetConnector)
 				{

@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.api.transmission.core.path;
 
 import java.util.Set;
 
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 
 public interface IPathCallBack
@@ -14,7 +15,7 @@ public interface IPathCallBack
 	 * @return A set of nodes connected to the currentNode. Essentially one
 	 *         should return a set of neighboring nodes.
 	 */
-	public Set<Vector3> getConnectedNodes(Pathfinder finder, Vector3 currentNode);
+	public Set<BlockVec3> getConnectedNodes(Pathfinder finder, BlockVec3 currentNode);
 
 	/**
 	 * Called when looping through nodes.
@@ -25,5 +26,5 @@ public interface IPathCallBack
 	 *            - The node being searched.
 	 * @return True to stop the path finding operation.
 	 */
-	public boolean onSearch(Pathfinder finder, Vector3 node);
+	public boolean onSearch(Pathfinder finder, BlockVec3 node);
 }

@@ -3,13 +3,16 @@ package micdoodle8.mods.galacticraft.core.tile;
 import micdoodle8.mods.galacticraft.api.power.EnergySource;
 import micdoodle8.mods.galacticraft.api.power.EnergySource.EnergySourceAdjacent;
 import micdoodle8.mods.galacticraft.api.power.IEnergyHandlerGC;
+import micdoodle8.mods.galacticraft.api.transmission.ElectricityPack;
+import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
+import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityBeamReceiver.ReceiverMode;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 
-public abstract class EnergyStorageTile extends TileEntityAdvanced implements IEnergyHandlerGC
+public abstract class EnergyStorageTile extends TileEntityAdvanced implements IEnergyHandlerGC, IElectrical
 {
 	@NetworkedField(targetSide = Side.CLIENT)
 	public EnergyStorage storage = new EnergyStorage(50, 1000000);
@@ -73,5 +76,42 @@ public abstract class EnergyStorageTile extends TileEntityAdvanced implements IE
 	public int getMaxEnergyStoredGC()
 	{
 		return this.getMaxEnergyStoredGC(null);
+	}
+
+	@Override
+	public boolean canConnect(ForgeDirection direction, NetworkType type) {
+		return false;
+	}
+
+	//Five methods for compatibility with basic electricity
+	@Override
+	public float receiveElectricity(ForgeDirection from, ElectricityPack receive, boolean doReceive)
+	{
+		int energyAccepted = storage.receiveEnergyGC((int)receive.getWatts(), !doReceive);
+		return (float)energyAccepted;
+	}
+
+	@Override
+	public ElectricityPack provideElectricity(ForgeDirection from, ElectricityPack request, boolean doProvide)
+	{
+		int energyProvided = storage.extractEnergyGC((int)request.getWatts(), !doProvide);
+		return ElectricityPack.getFromWatts(energyProvided, 120);
+	}
+
+	@Override
+	public float getRequest(ForgeDirection direction)
+	{
+		return getMaxEnergyStoredGC() - getEnergyStoredGC();
+	}
+
+	@Override
+	public float getProvide(ForgeDirection direction)
+	{
+		return 0;
+	}
+
+	@Override
+	public float getVoltage() {
+		return 120F;
 	}
 }

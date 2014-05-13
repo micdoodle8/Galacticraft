@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.api.transmission.core.path;
 import java.util.HashSet;
 import java.util.Set;
 
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 
 /**
  * A class that allows flexible pathfinding for different positions. Compared to
@@ -23,13 +23,13 @@ public class Pathfinder
 	/**
 	 * A list of nodes that the pathfinder already went through.
 	 */
-	public Set<Vector3> closedSet;
+	public Set<BlockVec3> closedSet;
 
 	/**
 	 * The resulted path found by the pathfinder. Could be null if no path was
 	 * found.
 	 */
-	public Set<Vector3> results;
+	public Set<BlockVec3> results;
 
 	public Pathfinder(IPathCallBack callBack)
 	{
@@ -40,7 +40,7 @@ public class Pathfinder
 	/**
 	 * @return True on success finding, false on failure.
 	 */
-	public boolean findNodes(Vector3 currentNode)
+	public boolean findNodes(BlockVec3 currentNode)
 	{
 		this.closedSet.add(currentNode);
 
@@ -49,7 +49,7 @@ public class Pathfinder
 			return false;
 		}
 
-		for (Vector3 node : this.callBackCheck.getConnectedNodes(this, currentNode))
+		for (BlockVec3 node : this.callBackCheck.getConnectedNodes(this, currentNode))
 		{
 			if (!this.closedSet.contains(node))
 			{
@@ -66,7 +66,7 @@ public class Pathfinder
 	/**
 	 * Called to execute the pathfinding operation.
 	 */
-	public Pathfinder init(Vector3 startNode)
+	public Pathfinder init(BlockVec3 startNode)
 	{
 		this.findNodes(startNode);
 		return this;
@@ -74,8 +74,8 @@ public class Pathfinder
 
 	public Pathfinder reset()
 	{
-		this.closedSet = new HashSet<Vector3>();
-		this.results = new HashSet<Vector3>();
+		this.closedSet = new HashSet<BlockVec3>();
+		this.results = new HashSet<BlockVec3>();
 		return this;
 	}
 }

@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
+import micdoodle8.mods.galacticraft.api.power.IEnergyHandlerGC;
 import micdoodle8.mods.galacticraft.api.transmission.ElectricalEvent.ElectricityProductionEvent;
 import micdoodle8.mods.galacticraft.api.transmission.ElectricalEvent.ElectricityRequestEvent;
 import micdoodle8.mods.galacticraft.api.transmission.ElectricityPack;
@@ -16,10 +17,11 @@ import micdoodle8.mods.galacticraft.api.transmission.core.grid.IElectricityNetwo
 import micdoodle8.mods.galacticraft.api.transmission.core.path.Pathfinder;
 import micdoodle8.mods.galacticraft.api.transmission.core.path.PathfinderChecker;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
+import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkConnection;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -164,7 +166,7 @@ public class UniversalNetwork extends ElectricityNetwork
 					{
 						for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
 						{
-							Vector3 tileVec = new Vector3(tileEntity);
+							BlockVec3 tileVec = new BlockVec3(tileEntity);
 							TileEntity tile = tileVec.modifyPositionFromSide(direction).getTileEntity(tileEntity.getWorldObj());
 
 							if (((IElectrical) tileEntity).canConnect(direction, NetworkType.POWER) && this.getTransmitters().contains(tile))
@@ -293,6 +295,13 @@ public class UniversalNetwork extends ElectricityNetwork
 
 					if (!(acceptor instanceof IConductor))
 					{
+						/*if (acceptor instanceof IConnector)
+						{
+							if (((IConnector) acceptor).canConnect(direction.getOpposite(), NetworkType.POWER))
+							{
+								this.electricalTiles.put(acceptor, direction);
+							}
+						}*/
 						if (acceptor instanceof IElectrical)// || (NetworkConfigHandler.isThermalExpansionLoaded() && acceptor instanceof IEnergyHandler) || (NetworkConfigHandler.isIndustrialCraft2Loaded() && acceptor instanceof IEnergyAcceptor) || (NetworkConfigHandler.isBuildcraftLoaded() && acceptor instanceof IPowerReceptor))
 						{
 							boolean canConnect = false;
@@ -367,7 +376,7 @@ public class UniversalNetwork extends ElectricityNetwork
 						if (connectedBlockA != connectedBlockB && connectedBlockB instanceof INetworkConnection)
 						{
 							Pathfinder finder = new PathfinderChecker(((TileEntity) splitPoint).getWorldObj(), (INetworkConnection) connectedBlockB, NetworkType.POWER, splitPoint);
-							finder.init(new Vector3(connectedBlockA));
+							finder.init(new BlockVec3(connectedBlockA));
 
 							if (finder.results.size() > 0)
 							{
@@ -377,7 +386,7 @@ public class UniversalNetwork extends ElectricityNetwork
 								 * connection into one network.
 								 */
 
-								for (Vector3 node : finder.closedSet)
+								for (BlockVec3 node : finder.closedSet)
 								{
 									TileEntity nodeTile = node.getTileEntity(((TileEntity) splitPoint).getWorldObj());
 
@@ -398,7 +407,7 @@ public class UniversalNetwork extends ElectricityNetwork
 								 */
 								IElectricityNetwork newNetwork = new UniversalNetwork();
 
-								for (Vector3 node : finder.closedSet)
+								for (BlockVec3 node : finder.closedSet)
 								{
 									TileEntity nodeTile = node.getTileEntity(((TileEntity) splitPoint).getWorldObj());
 
