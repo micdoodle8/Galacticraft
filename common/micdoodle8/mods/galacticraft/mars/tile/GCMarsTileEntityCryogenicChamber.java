@@ -224,6 +224,31 @@ public class GCMarsTileEntityCryogenicChamber extends TileEntityMulti implements
 			break;
 		}
 
+		int fakeBlockCount = 0;
+		for (int x = x1; x <= x2; x++)
+		{
+			for (int z = z1; z <= z2; z++)
+			{
+				for (int y = 0; y < 4; y++)
+				{
+					if (x == 0 && y == 0 && z == 0)
+					{
+						continue;
+					}
+					
+					if (this.worldObj.getBlockId(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z) == GCCoreBlocks.fakeBlock.blockID)
+					{
+						fakeBlockCount++;
+					}
+				}
+			}
+		}
+		
+		if (fakeBlockCount == 0)
+		{
+			return;
+		}
+
 		for (int x = x1; x <= x2; x++)
 		{
 			for (int z = z1; z <= z2; z++)
