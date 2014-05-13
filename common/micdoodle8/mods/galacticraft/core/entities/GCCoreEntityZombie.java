@@ -19,6 +19,7 @@ import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityVillager;
@@ -373,7 +374,7 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
 				return;
 			}
 
-			final EntityZombie entityzombie = new EntityZombie(this.worldObj);
+			final GCCoreEntityZombie entityzombie = new GCCoreEntityZombie(this.worldObj);
 			entityzombie.copyLocationAndAnglesFrom(par1EntityLiving);
 			this.worldObj.removeEntity(par1EntityLiving);
 			entityzombie.onSpawnWithEgg((EntityLivingData) null);
@@ -561,5 +562,10 @@ public class GCCoreEntityZombie extends EntityZombie implements IEntityBreathabl
 	public boolean canBreath()
 	{
 		return true;
+	}
+	
+	public Attribute getReinforcementsAttribute()
+	{
+		return field_110186_bp;
 	}
 }
