@@ -2,7 +2,10 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import java.util.EnumSet;
 
+import micdoodle8.mods.galacticraft.api.power.EnergySource.EnergySourceAdjacent;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
+import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
+import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
@@ -22,7 +25,7 @@ import cpw.mods.fml.relauncher.Side;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public abstract class TileEntityElectricBlock extends TileEntityUniversalElectrical implements IPacketReceiver, IDisableableMachine
+public abstract class TileEntityElectricBlock extends TileEntityUniversalElectrical implements IPacketReceiver, IDisableableMachine, IConnector
 {
 //	public float ueWattsPerTick;
 //	private final float ueMaxEnergy;
@@ -198,5 +201,15 @@ public abstract class TileEntityElectricBlock extends TileEntityUniversalElectri
 	public boolean isUseableByPlayer(EntityPlayer entityplayer)
 	{
 		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && entityplayer.getDistanceSq(this.xCoord+0.5D, this.yCoord+0.5D, this.zCoord+0.5D) <= 64.0D;
+	}
+	
+	public boolean canConnect(ForgeDirection direction, NetworkType type)
+	{
+		if (direction == null || direction.equals(ForgeDirection.UNKNOWN) || type != NetworkType.POWER)
+		{
+			return false;
+		}
+
+		return direction == getElectricInputDirection();
 	}
 }

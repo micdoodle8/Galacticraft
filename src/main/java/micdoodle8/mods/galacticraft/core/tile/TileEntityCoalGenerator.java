@@ -4,6 +4,9 @@ import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
+import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
+import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
+import micdoodle8.mods.galacticraft.core.blocks.BlockSolar;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,7 +29,7 @@ import cpw.mods.fml.relauncher.Side;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class TileEntityCoalGenerator extends TileEntityUniversalElectrical implements IInventory, ISidedInventory, IPacketReceiver
+public class TileEntityCoalGenerator extends TileEntityUniversalElectrical implements IInventory, ISidedInventory, IPacketReceiver, IConnector
 {
 	public static final int MAX_GENERATE_WATTS = 500;
 	public static final int MIN_GENERATE_WATTS = 100;
@@ -284,5 +287,16 @@ public class TileEntityCoalGenerator extends TileEntityUniversalElectrical imple
 	public EnumSet<ForgeDirection> getElectricalOutputDirections()
 	{
 		return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() + 2));
+	}
+	
+	
+	public boolean canConnect(ForgeDirection direction, NetworkType type)
+	{
+		if (direction == null || direction.equals(ForgeDirection.UNKNOWN) || type != NetworkType.POWER)
+		{
+			return false;
+		}
+
+		return direction == ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
 	}
 }

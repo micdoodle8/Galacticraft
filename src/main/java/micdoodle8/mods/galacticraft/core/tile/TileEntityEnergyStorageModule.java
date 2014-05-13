@@ -4,8 +4,11 @@ import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
+import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
+import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine;
+import micdoodle8.mods.galacticraft.core.blocks.BlockSolar;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
@@ -24,7 +27,7 @@ import net.minecraftforge.common.util.ForgeDirection;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical implements IPacketReceiver, ISidedInventory
+public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical implements IPacketReceiver, ISidedInventory, IConnector
 {
 	private ItemStack[] containingItems = new ItemStack[2];
 
@@ -285,9 +288,22 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 		return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() - BlockMachine.STORAGE_MODULE_METADATA + 2), ForgeDirection.UNKNOWN);
 	}
 
+	public boolean canConnect(ForgeDirection direction, NetworkType type)
+	{
+		if (direction == null || direction.equals(ForgeDirection.UNKNOWN) || type != NetworkType.POWER)
+		{
+			return false;
+		}
+
+		int metadata = this.getBlockMetadata() - BlockMachine.STORAGE_MODULE_METADATA;
+
+		return direction == ForgeDirection.getOrientation(metadata + 2);
+	}
+
 //	@Override
 //	public float getMaxEnergyStored()
 //	{
 //		return 2500;
 //	}
+	
 }

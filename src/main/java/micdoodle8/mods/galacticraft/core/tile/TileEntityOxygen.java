@@ -136,8 +136,8 @@ public abstract class TileEntityOxygen extends TileEntityElectricBlock implement
 		case OXYGEN:
 			return this.getOxygenInputDirections().contains(direction) || this.getOxygenOutputDirections().contains(direction);
 		case POWER:
-			return this.nodeAvailable(new EnergySourceAdjacent(direction));
-//			return super.canConnect(direction, type);
+//			return this.nodeAvailable(new EnergySourceAdjacent(direction));
+			return super.canConnect(direction, type);
 		}
 
 		return false;
