@@ -8,28 +8,20 @@ import micdoodle8.mods.galacticraft.api.entity.IDockable;
 import micdoodle8.mods.galacticraft.api.entity.IRocketType;
 import micdoodle8.mods.galacticraft.api.entity.IWorldTransferCallback;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
-import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPadFull;
-import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
-import micdoodle8.mods.galacticraft.core.event.GCCoreLandingPadRemovalEvent;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumPacketClient;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.util.PacketUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.MinecraftForge;
 
 import com.google.common.io.ByteArrayDataInput;
 
@@ -322,52 +314,6 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 	public void onLaunch()
 	{
 		super.onLaunch();
-
-		if (!this.worldObj.isRemote)
-		{
-			if (!(this.worldObj.provider instanceof IOrbitDimension) && this.riddenByEntity != null && this.riddenByEntity instanceof GCCorePlayerMP)
-			{
-				((GCCorePlayerMP) this.riddenByEntity).setCoordsTeleportedFromX(this.riddenByEntity.posX);
-				((GCCorePlayerMP) this.riddenByEntity).setCoordsTeleportedFromZ(this.riddenByEntity.posZ);
-			}
-
-			int amountRemoved = 0;
-
-			PADSEARCH:
-			for (int x = MathHelper.floor_double(this.posX) - 1; x <= MathHelper.floor_double(this.posX) + 1; x++)
-			{
-				for (int y = MathHelper.floor_double(this.posY) - 3; y <= MathHelper.floor_double(this.posY) + 1; y++)
-				{
-					for (int z = MathHelper.floor_double(this.posZ) - 1; z <= MathHelper.floor_double(this.posZ) + 1; z++)
-					{
-						final int id = this.worldObj.getBlockId(x, y, z);
-						final Block block = Block.blocksList[id];
-
-						if (block != null && block instanceof GCCoreBlockLandingPadFull)
-						{
-							if (amountRemoved < 9)
-							{
-								GCCoreLandingPadRemovalEvent event = new GCCoreLandingPadRemovalEvent(this.worldObj, x, y, z);
-								MinecraftForge.EVENT_BUS.post(event);
-
-								if (event.allow)
-								{
-									this.worldObj.setBlockToAir(x, y, z);
-									amountRemoved = 9;
-								}
-								break PADSEARCH;
-							}
-						}
-					}
-				}
-			}
-			
-			//Set the player's launchpad item for return on landing - or null if launchpads not removed
-			if (this.riddenByEntity != null && this.riddenByEntity instanceof GCCorePlayerMP)
-				((GCCorePlayerMP) this.riddenByEntity).setLaunchpadStack((amountRemoved == 9) ? new ItemStack(GCCoreBlocks.landingPad, 9, 0) : null);
-			
-			this.playSound("random.pop", 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-		}
 	}
 
 	@Override
