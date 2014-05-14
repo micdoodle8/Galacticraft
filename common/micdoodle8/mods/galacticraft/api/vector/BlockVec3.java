@@ -237,22 +237,22 @@ public class BlockVec3 implements Cloneable
 		{
 		case 0:
 			vec.y--;
-			break;
+			return vec;
 		case 1:
 			vec.y++;
-			break;
+			return vec;
 		case 2:
 			vec.z--;
-			break;
+			return vec;
 		case 3:
 			vec.z++;
-			break;
+			return vec;
 		case 4:
 			vec.x--;
-			break;
+			return vec;
 		case 5:
 			vec.x++;
-			break;
+			return vec;
 		}
 		return vec;
 	}
