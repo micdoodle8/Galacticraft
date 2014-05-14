@@ -134,13 +134,15 @@ public class GCCoreTickHandlerServer implements ITickHandler
 				{
 					if (torch != null)
 					{
-						world.scheduleBlockUpdate(torch.x, torch.y, torch.z, GCCoreBlocks.unlitTorch.blockID, 10 + world.rand.nextInt(40));
+						if (world.getBlockId(torch.x, torch.y, torch.z) == GCCoreBlocks.unlitTorch.blockID)
+							world.scheduleBlockUpdateWithPriority(torch.x, torch.y, torch.z, GCCoreBlocks.unlitTorch.blockID, 2 + world.rand.nextInt(30), 0);
+						else if (world.getBlockId(torch.x, torch.y, torch.z) == GCCoreBlocks.unlitTorchLit.blockID)
+							world.scheduleBlockUpdateWithPriority(torch.x, torch.y, torch.z, GCCoreBlocks.unlitTorchLit.blockID, 2 + world.rand.nextInt(30), 0);
 					}
 				}
 
 				torchList.clear();
 				GCCoreTickHandlerServer.scheduledTorchUpdates.remove(world.provider.dimensionId);
-				
 			}
 
 			if (world.provider instanceof IOrbitDimension)
