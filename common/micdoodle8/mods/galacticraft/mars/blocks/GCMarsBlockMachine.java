@@ -190,7 +190,11 @@ public class GCMarsBlockMachine extends GCCoreBlockTile
 			{
 				if (entityLiving instanceof EntityPlayer)
 				{
-					((EntityPlayer) entityLiving).addChatMessage(EnumColor.RED + "Not enough room!");
+					if (!world.isRemote)
+					{
+						((EntityPlayer) entityLiving).addChatMessage(EnumColor.RED + "Not enough room!");
+					}
+					
 					world.setBlockToAir(x, y, z);
 					((EntityPlayer) entityLiving).inventory.addItemStackToInventory(new ItemStack(GCMarsBlocks.machine, 1, CRYOGENIC_CHAMBER_METADATA));
 					return;
