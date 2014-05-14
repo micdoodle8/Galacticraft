@@ -186,9 +186,10 @@ public class GCCoreTickHandlerServer implements ITickHandler
 			{
 				for (BlockVec3 edgeBlock : edgesList)
 				{
-					if (edgeBlock != null)
+					if (edgeBlock != null && !checkedThisTick.contains(edgeBlock)) 
 					{
-						if (checkedThisTick.contains(edgeBlock)) continue;
+						if (GCCoreTickHandlerServer.scheduledForChange(world.provider.dimensionId, edgeBlock)) continue;
+
 						ThreadFindSeal done = new ThreadFindSeal(world, edgeBlock, 2000, new ArrayList<GCCoreTileEntityOxygenSealer>());
 						checkedThisTick.addAll(done.checked);
 					}

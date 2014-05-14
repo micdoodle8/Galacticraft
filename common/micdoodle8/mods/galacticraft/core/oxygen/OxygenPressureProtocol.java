@@ -81,7 +81,8 @@ public class OxygenPressureProtocol
 
 	public static void onEdgeBlockUpdated(World world, BlockVec3 vec)
 	{
-		GCCoreTickHandlerServer.scheduleNewEdgeCheck(world.provider.dimensionId, vec);
+		if (GCCoreConfigManager.enableSealerEdgeChecks)
+			GCCoreTickHandlerServer.scheduleNewEdgeCheck(world.provider.dimensionId, vec);
 	}
 
 	// Note this will NPE if id==0, so don't call this with id==0
