@@ -7,6 +7,7 @@ import java.util.Map;
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
+import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerServer;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenSealer;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEnchantmentTable;
@@ -33,8 +34,8 @@ import net.minecraftforge.common.ForgeDirection;
  */
 public class OxygenPressureProtocol
 {
-	public static Map<Integer, ArrayList<Integer>> nonPermeableBlocks = new HashMap<Integer, ArrayList<Integer>>();
-
+	public final static Map<Integer, ArrayList<Integer>> nonPermeableBlocks = new HashMap<Integer, ArrayList<Integer>>(); 
+	
 	static
 	{
 		try
@@ -78,9 +79,9 @@ public class OxygenPressureProtocol
 		}
 	}
 
-	public static ThreadFindSeal onEdgeBlockUpdated(World world, BlockVec3 vec)
+	public static void onEdgeBlockUpdated(World world, BlockVec3 vec)
 	{
-		return new ThreadFindSeal(world, vec, 2000, new ArrayList<GCCoreTileEntityOxygenSealer>());
+		GCCoreTickHandlerServer.scheduleNewEdgeCheck(world.provider.dimensionId, vec);
 	}
 
 	// Note this will NPE if id==0, so don't call this with id==0

@@ -50,6 +50,7 @@ public class ThreadFindSeal //extends Thread
 	private boolean sealed;
 	public List<GCCoreTileEntityOxygenSealer> sealers;
 	public HashSet<BlockVec3> checked;
+	private HashSet<BlockVec3> rechecked;
 	public int checkCount;
 	//public static AtomicBoolean anylooping = new AtomicBoolean();
 	public AtomicBoolean looping = new AtomicBoolean();
@@ -128,22 +129,22 @@ public class ThreadFindSeal //extends Thread
 		long time1 = System.nanoTime();
 
 		this.sealed = true;
-		this.checked.add(this.head);
+		this.checked.add(this.head.clone());
 		this.currentLayer.clear();
 		this.nextLayer = new LinkedList<BlockVec3>();
 		this.airToReplace.clear();
 		this.torchesToUpdate.clear();
 		if (this.checkCount > 0)
 		{
-			this.currentLayer.add(this.head.clone());
+			this.currentLayer.add(this.head);
 			if (this.head.x < -29990000 || this.head.z < -29990000 || this.head.x >= 29990000 || this.head.z >= 29990000)
 			{
-				if (this.sealers.size()>0 && head.getBlockID(world)==0) this.airToReplace.add(this.head);
+				if (this.sealers.size()>0 && head.getBlockID(world)==0) this.airToReplace.add(this.head.clone());
 				this.doLayerNearMapEdge();
 			}
 			else
 			{
-				if (this.sealers.size()>0 && head.getBlockIDsafe(world)==0) this.airToReplace.add(this.head);
+				if (this.sealers.size()>0 && head.getBlockIDsafe(world)==0) this.airToReplace.add(this.head.clone());
 				this.doLayer();
 			}
 		}
@@ -181,13 +182,13 @@ public class ThreadFindSeal //extends Thread
 		}
 		else
 		{
-			this.checked.clear();
+			this.rechecked = new HashSet<BlockVec3>();
 			this.breatheableToReplace.clear();
 			this.otherSealers.clear();
 			// loopThroughD will mark breatheableAir blocks for change as it
 			// finds them, also searches for unchecked sealers
 			this.currentLayer.clear();
-			this.currentLayer.add(this.head.clone());
+			this.currentLayer.add(this.head);
 			this.nextLayer = new LinkedList<BlockVec3>();
 			this.torchesToUpdate.clear();
 			if (this.head.x < -29990000 || this.head.z < -29990000 || this.head.x >= 29990000 || this.head.z >= 29990000)
@@ -204,6 +205,7 @@ public class ThreadFindSeal //extends Thread
 				// OtherSealers will have members if the space to be made
 				// unbreathable actually still has an unchecked sealer in it
 				List<GCCoreTileEntityOxygenSealer> sealersSave = this.sealers;
+				HashSet<BlockVec3> checkedSave = this.checked;
 				List<GCCoreTileEntityOxygenSealer> sealersDone = new ArrayList();
 				sealersDone.addAll(this.sealers);
 				for (GCCoreTileEntityOxygenSealer otherSealer : this.otherSealers)
@@ -258,10 +260,14 @@ public class ThreadFindSeal //extends Thread
 							sealersDone.addAll(this.sealers);
 						}
 					}
-					// Restore sealers to what it was, if this search did not
-					// result in a seal
-					this.sealers = sealersSave;
 				}
+				
+				// Restore sealers to what it was, if this search did not
+				// result in a seal
+				if (this.sealed == false)
+					this.sealers = sealersSave;
+				
+				this.checked = checkedSave;
 			}
 
 			if (this.sealed == false)
@@ -293,7 +299,7 @@ public class ThreadFindSeal //extends Thread
 		// own seal checks for a while
 		// (The player can control which is the head sealer in a space by
 		// enabling just that one and disabling all the others)
-		GCCoreTileEntityOxygenSealer headSealer = this.sealersAround.get(this.head.translate(0, -1, 0));
+		GCCoreTileEntityOxygenSealer headSealer = this.sealersAround.get(this.head.clone().translate(0, -1, 0));
 
 		// If it is sealed, cooldown can be extended as frequent checks are not needed
 		if (headSealer != null) headSealer.stopSealThreadCooldown += 75;
@@ -330,7 +336,7 @@ public class ThreadFindSeal //extends Thread
 			FMLLog.info("   Found: " + this.sealers.size() + " sealers");
 			FMLLog.info("   Looped through: " + this.checked.size() + " blocks");
 		}
-		this.checked.clear();
+
 		this.sealedFinal.set(this.sealed);
 		//ThreadFindSeal.anylooping.set(false);
 	}
@@ -346,9 +352,9 @@ public class ThreadFindSeal //extends Thread
 					if (vec.sideDone[side]) continue;
 					BlockVec3 sideVec = vec.newVecSide(side);
 
-					if (!this.checked.contains(sideVec))
+					if (!this.rechecked.contains(sideVec))
 					{
-						this.checked.add(sideVec);
+						this.rechecked.add(sideVec);
 						int id = sideVec.getBlockIDsafe(this.world);
 
 						if (id == ThreadFindSeal.breatheableAirID)
@@ -395,9 +401,9 @@ public class ThreadFindSeal //extends Thread
 					if (vec.sideDone[side]) continue;
 					BlockVec3 sideVec = vec.newVecSide(side);
 
-					if (!this.checked.contains(sideVec))
+					if (!this.rechecked.contains(sideVec))
 					{
-						this.checked.add(sideVec);
+						this.rechecked.add(sideVec);
 						int id = sideVec.getBlockID(this.world);
 
 						if (id == ThreadFindSeal.breatheableAirID)

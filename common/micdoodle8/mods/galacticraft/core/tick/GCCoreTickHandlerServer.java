@@ -2,13 +2,19 @@ package micdoodle8.mods.galacticraft.core.tick;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
+import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol;
+import micdoodle8.mods.galacticraft.core.oxygen.ThreadFindSeal;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityOxygenSealer;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.ScheduledBlockChange;
 import net.minecraft.entity.Entity;
@@ -27,16 +33,17 @@ import cpw.mods.fml.common.TickType;
  */
 public class GCCoreTickHandlerServer implements ITickHandler
 {
-	private static Map<Integer, List<ScheduledBlockChange>> scheduledBlockChanges = new ConcurrentHashMap<Integer, List<ScheduledBlockChange>>();
-	private static Map<Integer, List<BlockVec3>> scheduledTorchUpdates = new ConcurrentHashMap<Integer, List<BlockVec3>>();
+	private static Map<Integer, CopyOnWriteArrayList<ScheduledBlockChange>> scheduledBlockChanges = new ConcurrentHashMap<Integer, CopyOnWriteArrayList<ScheduledBlockChange>>();
+	private static Map<Integer, CopyOnWriteArrayList<BlockVec3>> scheduledTorchUpdates = new ConcurrentHashMap<Integer, CopyOnWriteArrayList<BlockVec3>>();
+	private static Map<Integer, List<BlockVec3>> edgeChecks = new HashMap<Integer, List<BlockVec3>>();
 	
 	public static void scheduleNewBlockChange(int dimID, ScheduledBlockChange change)
 	{
-		List<ScheduledBlockChange> changeList = GCCoreTickHandlerServer.scheduledBlockChanges.get(dimID);
-
+		CopyOnWriteArrayList<ScheduledBlockChange> changeList = GCCoreTickHandlerServer.scheduledBlockChanges.get(dimID);
+		
 		if (changeList == null)
 		{
-			changeList = new ArrayList<ScheduledBlockChange>();
+			changeList = new CopyOnWriteArrayList<ScheduledBlockChange>();
 		}
 
 		changeList.add(change);
@@ -45,11 +52,11 @@ public class GCCoreTickHandlerServer implements ITickHandler
 
 	public static void scheduleNewBlockChange(int dimID, List<ScheduledBlockChange> changeAdd)
 	{
-		List<ScheduledBlockChange> changeList = GCCoreTickHandlerServer.scheduledBlockChanges.get(dimID);
+		CopyOnWriteArrayList<ScheduledBlockChange> changeList = GCCoreTickHandlerServer.scheduledBlockChanges.get(dimID);
 
 		if (changeList == null)
 		{
-			changeList = new ArrayList<ScheduledBlockChange>();
+			changeList = new CopyOnWriteArrayList<ScheduledBlockChange>();
 		}
 
 		changeList.addAll(changeAdd);
@@ -58,20 +65,33 @@ public class GCCoreTickHandlerServer implements ITickHandler
 
 	public static void scheduleNewTorchUpdate(int dimID, List<BlockVec3> torches)
 	{
-		List<BlockVec3> updateList = GCCoreTickHandlerServer.scheduledTorchUpdates.get(dimID);
+		CopyOnWriteArrayList<BlockVec3> updateList = GCCoreTickHandlerServer.scheduledTorchUpdates.get(dimID);
 
 		if (updateList == null)
 		{
-			updateList = new ArrayList<BlockVec3>();
+			updateList = new CopyOnWriteArrayList<BlockVec3>();
 		}
 
 		updateList.addAll(torches);
 		GCCoreTickHandlerServer.scheduledTorchUpdates.put(dimID, updateList);
 	}
 
+	public static void scheduleNewEdgeCheck(int dimID, BlockVec3 edgeBlock)
+	{
+		List<BlockVec3> updateList = GCCoreTickHandlerServer.edgeChecks.get(dimID);
+
+		if (updateList == null)
+		{
+			updateList = new ArrayList<BlockVec3>();
+		}
+
+		updateList.add(edgeBlock);
+		GCCoreTickHandlerServer.edgeChecks.put(dimID, updateList);
+	}
+
 	public static boolean scheduledForChange(int dimID, BlockVec3 test)
 	{
-		List<ScheduledBlockChange> changeList = GCCoreTickHandlerServer.scheduledBlockChanges.get(dimID);
+		CopyOnWriteArrayList<ScheduledBlockChange> changeList = GCCoreTickHandlerServer.scheduledBlockChanges.get(dimID);
 
 		if (changeList != null)
 		{
@@ -90,13 +110,11 @@ public class GCCoreTickHandlerServer implements ITickHandler
 		{
 			final WorldServer world = (WorldServer) tickData[0];
 
-			List<ScheduledBlockChange> changeList = GCCoreTickHandlerServer.scheduledBlockChanges.get(world.provider.dimensionId);
+			CopyOnWriteArrayList<ScheduledBlockChange> changeList = GCCoreTickHandlerServer.scheduledBlockChanges.get(world.provider.dimensionId);
 
 			if (changeList != null && !changeList.isEmpty())
 			{
-				List<ScheduledBlockChange> scheduledChanges = new ArrayList<ScheduledBlockChange>(changeList);
-
-				for (ScheduledBlockChange change : scheduledChanges)
+				for (ScheduledBlockChange change : changeList)
 				{
 					if (change != null && change.getChangePosition() != null)
 					{
@@ -108,7 +126,7 @@ public class GCCoreTickHandlerServer implements ITickHandler
 				GCCoreTickHandlerServer.scheduledBlockChanges.remove(world.provider.dimensionId);
 			}
 
-			List<BlockVec3> torchList = GCCoreTickHandlerServer.scheduledTorchUpdates.get(world.provider.dimensionId);
+			CopyOnWriteArrayList<BlockVec3> torchList = GCCoreTickHandlerServer.scheduledTorchUpdates.get(world.provider.dimensionId);
 			
 			if (torchList != null && !torchList.isEmpty())
 			{
@@ -155,6 +173,29 @@ public class GCCoreTickHandlerServer implements ITickHandler
 	@Override
 	public void tickEnd(EnumSet<TickType> type, Object... tickData)
 	{
+		if (type.equals(EnumSet.of(TickType.WORLD)))
+		{
+			final WorldServer world = (WorldServer) tickData[0];
+
+			List<BlockVec3> edgesList = GCCoreTickHandlerServer.edgeChecks.get(world.provider.dimensionId);
+			final HashSet<BlockVec3> checkedThisTick = new HashSet();
+			
+			if (edgesList != null && !edgesList.isEmpty())
+			{
+				for (BlockVec3 edgeBlock : edgesList)
+				{
+					if (edgeBlock != null)
+					{
+						if (checkedThisTick.contains(edgeBlock)) continue;
+						ThreadFindSeal done = new ThreadFindSeal(world, edgeBlock, 2000, new ArrayList<GCCoreTileEntityOxygenSealer>());
+						checkedThisTick.addAll(done.checked);
+					}
+				}
+	
+				edgesList.clear();
+				GCCoreTickHandlerServer.edgeChecks.remove(world.provider.dimensionId);
+			}
+		}
 	}
 
 	@Override
