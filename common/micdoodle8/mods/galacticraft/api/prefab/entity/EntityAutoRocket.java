@@ -11,6 +11,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockLandingPadFull;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.event.GCCoreLandingPadRemovalEvent;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
@@ -680,6 +681,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
 			int amountRemoved = 0;
 
+			PADSEARCH:
 			for (int x = MathHelper.floor_double(this.posX) - 1; x <= MathHelper.floor_double(this.posX) + 1; x++)
 			{
 				for (int y = MathHelper.floor_double(this.posY) - 3; y <= MathHelper.floor_double(this.posY) + 1; y++)
@@ -701,12 +703,17 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 									this.worldObj.setBlockToAir(x, y, z);
 									amountRemoved = 9;
 								}
+								break PADSEARCH;
 							}
 						}
 					}
 				}
 			}
 
+			//Set the player's launchpad item for return on landing - or null if launchpads not removed
+			if (this.riddenByEntity != null && this.riddenByEntity instanceof GCCorePlayerMP)
+				((GCCorePlayerMP) this.riddenByEntity).setLaunchpadStack((amountRemoved == 9) ? new ItemStack(GCCoreBlocks.landingPad, 9, 0) : null);
+			
 			this.playSound("random.pop", 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
 		}
 	}

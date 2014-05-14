@@ -77,6 +77,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 	private int rocketType;
 	private int fuelLevel;
 	private Item rocketItem;
+	private ItemStack launchpadStack;
 
 	private boolean usingParachute;
 
@@ -1020,6 +1021,16 @@ public class GCCorePlayerMP extends EntityPlayerMP
 			this.receivedSoundWarning = nbt.getBoolean("ReceivedSoundWarning");
 		}
 
+		if (nbt.hasKey("LaunchpadStack"))
+		{
+			this.launchpadStack = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("LaunchpadStack"));
+			if (this.launchpadStack.stackSize == 0) this.launchpadStack = null;
+		}
+		else
+			// for backwards compatibility with saves which don't have this tag - players can't lose launchpads
+			this.launchpadStack = new ItemStack(GCCoreBlocks.landingPad, 9, 0);
+
+
 		super.readEntityFromNBT(nbt);
 	}
 
@@ -1070,6 +1081,11 @@ public class GCCorePlayerMP extends EntityPlayerMP
 		}
 
 		nbt.setTag("RocketItems", var2);
+		final NBTTagCompound var4 = new NBTTagCompound();
+		if (this.launchpadStack != null)
+			nbt.setTag("LaunchpadStack", this.launchpadStack.writeToNBT(var4));
+		else 
+			nbt.setTag("LaunchpadStack", var4); 
 
 		nbt.setInteger("CryogenicChamberCooldown", this.cryogenicChamberCooldown);
 		nbt.setBoolean("ReceivedSoundWarning", this.receivedSoundWarning);
@@ -1303,6 +1319,16 @@ public class GCCorePlayerMP extends EntityPlayerMP
 	public void setRocketItem(Item rocketItem)
 	{
 		this.rocketItem = rocketItem;
+	}
+
+	public ItemStack getLaunchpadStack()
+	{
+		return this.launchpadStack;
+	}
+
+	public void setLaunchpadStack(ItemStack i)
+	{
+		this.launchpadStack = i;
 	}
 
 	public int getCryogenicChamberCooldown()

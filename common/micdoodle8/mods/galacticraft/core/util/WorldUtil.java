@@ -766,7 +766,8 @@ public class WorldUtil
 							}
 							else if (stack == player.getRocketStacks().length - 2)
 							{
-								player.getRocketStacks()[stack] = new ItemStack(GCCoreBlocks.landingPad, 9, 0);
+								player.getRocketStacks()[stack] = player.getLaunchpadStack();
+								player.setLaunchpadStack(null);
 							}
 						}
 					}
