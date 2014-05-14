@@ -1024,7 +1024,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 		if (nbt.hasKey("LaunchpadStack"))
 		{
 			this.launchpadStack = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("LaunchpadStack"));
-			if (this.launchpadStack.stackSize == 0) this.launchpadStack = null;
+			if (this.launchpadStack != null && this.launchpadStack.stackSize == 0) this.launchpadStack = null;
 		}
 		else
 			// for backwards compatibility with saves which don't have this tag - players can't lose launchpads
