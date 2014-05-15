@@ -387,7 +387,6 @@ public class ThreadFindSeal
 
 						if (!checkedLocal.contains(sideVec))
 						{
-							checkedLocal.add(sideVec);
 							int id = sideVec.getBlockIDsafe(this.world);
 
 							if (id == breatheableAirID)
@@ -396,22 +395,32 @@ public class ThreadFindSeal
 								// Only follow paths with adjacent breatheableAir
 								// blocks - this now can't jump through walls etc
 								nextLayer.add(sideVec);
+								checkedLocal.add(sideVec);
 							}
 							else if (id == oxygenSealerID)
 							{
 								GCCoreTileEntityOxygenSealer sealer = this.sealersAround.get(sideVec);
-								if (sealer != null)
+								
+								if (sealer != null && !this.sealers.contains(sealer))
 								{
-									if (!this.sealers.contains(sealer))
+									if (side == 0)
 									{
+										//Accessing the vent side of the sealer, so add it
 										this.otherSealers.add(sealer);
+										checkedLocal.add(sideVec);
 									}
-								}
+									//if side is not 0, do not add to checked so can be rechecked from other sides
+								} else
+									checkedLocal.add(sideVec);
 							}
-							else if (id>0 && this.canBlockPassAirCheck(id, sideVec, side))
+							else
 							{
-								//Look outbound through partially sealable blocks in case there is breatheableAir to clear beyond
-								nextLayer.add(sideVec);
+								checkedLocal.add(sideVec);
+								if (id>0 && this.canBlockPassAirCheck(id, sideVec, side))
+								{
+									//Look outbound through partially sealable blocks in case there is breatheableAir to clear beyond
+									nextLayer.add(sideVec);
+								}
 							}
 						}
 					}
@@ -444,7 +453,6 @@ public class ThreadFindSeal
 
 					if (!checkedLocal.contains(sideVec))
 					{
-						checkedLocal.add(sideVec);
 						int id = sideVec.getBlockID(this.world);
 
 						if (id == breatheableAirID)
@@ -453,22 +461,32 @@ public class ThreadFindSeal
 							// Only follow paths with adjacent breatheableAir
 							// blocks - this now can't jump through walls etc
 							nextLayer.add(sideVec);
+							checkedLocal.add(sideVec);
 						}
 						else if (id == oxygenSealerID)
 						{
 							GCCoreTileEntityOxygenSealer sealer = this.sealersAround.get(sideVec);
-							if (sealer != null)
+						
+							if (sealer != null && !this.sealers.contains(sealer))
 							{
-								if (!this.sealers.contains(sealer))
+								if (side == 0)
 								{
+									//Accessing the vent side of the sealer, so add it
 									this.otherSealers.add(sealer);
+									checkedLocal.add(sideVec);
 								}
-							}
+								//if side is not 0, do not add to checked so can be rechecked from other sides
+							} else
+								checkedLocal.add(sideVec);
 						}
-						else if (id>0 && this.canBlockPassAirCheck(id, sideVec, side))
+						else
 						{
-							//Look outbound through partially sealable blocks in case there is breatheableAir to clear beyond
-							nextLayer.add(sideVec);
+							checkedLocal.add(sideVec);
+							if (id>0 && this.canBlockPassAirCheck(id, sideVec, side))
+							{
+								//Look outbound through partially sealable blocks in case there is breatheableAir to clear beyond
+								nextLayer.add(sideVec);
+							}
 						}
 					}
 				}
@@ -547,13 +565,15 @@ public class ThreadFindSeal
 								{
 									GCCoreTileEntityOxygenSealer sealer = this.sealersAround.get(sideVec);
 
-									if (sealer != null)
+									if (sealer != null && !this.sealers.contains(sealer))
 									{
-										if (!this.sealers.contains(sealer))
+										if (side == 0)
 										{
 											this.sealers.add(sealer);
 											this.checkCount += sealer.getFindSealChecks();
-										}
+										} else
+											//Allow this sealer to be checked from other sides
+											checkedLocal.remove(sideVec);
 									}
 								}
 							}
@@ -655,13 +675,15 @@ public class ThreadFindSeal
 							{
 								GCCoreTileEntityOxygenSealer sealer = this.sealersAround.get(sideVec);
 
-								if (sealer != null)
+								if (sealer != null && !this.sealers.contains(sealer))
 								{
-									if (!this.sealers.contains(sealer))
+									if (side == 0)
 									{
 										this.sealers.add(sealer);
 										this.checkCount += sealer.getFindSealChecks();
-									}
+									} else
+										//Allow this sealer to be checked from other sides
+										checkedLocal.remove(sideVec);
 								}
 							}
 						}
