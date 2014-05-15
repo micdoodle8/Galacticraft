@@ -33,6 +33,7 @@ import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.items.ItemParaChute;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
+import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.item.EntityItem;
@@ -57,6 +58,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * WorldUtil.java
@@ -132,26 +134,32 @@ public class WorldUtil
 
 	public static Vector3 getWorldColor(World world)
 	{
+		return new Vector3(1, 1, 1);
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public static float getWorldBrightness(WorldClient world)
+	{
 		if (world.provider instanceof WorldProviderMoon)
 		{
-			float f1 = world.getCelestialAngle(1);
-			float f2 = 1.0F - (MathHelper.cos(f1 * (float) Math.PI * 2.0F) * 2.0F + 0.25F);
+	        float f1 = world.getCelestialAngle(1.0F);
+	        float f2 = 1.0F - (MathHelper.cos(f1 * (float)Math.PI * 2.0F) * 2.0F + 0.2F);
 
-			if (f2 < 0.0F)
-			{
-				f2 = 0.0F;
-			}
+	        if (f2 < 0.0F)
+	        {
+	            f2 = 0.0F;
+	        }
 
-			if (f2 > 1.0F)
-			{
-				f2 = 1.0F;
-			}
+	        if (f2 > 1.0F)
+	        {
+	            f2 = 1.0F;
+	        }
 
-			double d = 1.0 - f2 * f2 * 0.7;
-			return new Vector3(d, d, d);
+	        f2 = 1.0F - f2;
+	        return f2 * 0.8F;
 		}
-
-		return new Vector3(1, 1, 1);
+		
+		return world.getSunBrightness(1.0F);
 	}
 
 	public static float getColorRed(World world)
