@@ -9,7 +9,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.dimension.WorldDataSpaceRaces;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
@@ -186,7 +185,7 @@ public class TickHandlerServer
 				{
 					if (torch != null)
 					{
-						world.scheduleBlockUpdate(torch.x, torch.y, torch.z, GCBlocks.unlitTorch, 10 + world.rand.nextInt(40));
+						world.scheduleBlockUpdate(torch.x, torch.y, torch.z, world.getBlock(torch.x, torch.y, torch.z), 10 + world.rand.nextInt(40));
 					}
 				}
 
