@@ -70,7 +70,7 @@ public class GCMarsItemBlockMachine extends ItemBlock implements IHoldableItem
 	{
 		ItemStack currentStack = player.getCurrentEquippedItem();
 
-		if (currentStack != null && currentStack.getItemDamage() >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA)
+		if (currentStack != null && currentStack.getItemDamage() >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA && currentStack.getItemDamage() < GCMarsBlockMachine.LAUNCH_CONTROLLER_METADATA)
 		{
 			return true;
 		}
@@ -83,7 +83,7 @@ public class GCMarsItemBlockMachine extends ItemBlock implements IHoldableItem
 	{
 		ItemStack currentStack = player.getCurrentEquippedItem();
 
-		if (currentStack != null && currentStack.getItemDamage() >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA)
+		if (currentStack != null && currentStack.getItemDamage() >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA && currentStack.getItemDamage() < GCMarsBlockMachine.LAUNCH_CONTROLLER_METADATA)
 		{
 			return true;
 		}

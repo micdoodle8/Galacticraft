@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.items;
 
 import java.util.List;
 
+import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityBuggy;
@@ -30,7 +31,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class GCCoreItemBuggy extends Item
+public class GCCoreItemBuggy extends Item implements IHoldableItem
 {
 	public GCCoreItemBuggy(int id, String assetName)
 	{
@@ -159,5 +160,23 @@ public class GCCoreItemBuggy extends Item
 		{
 			par2List.add("Storage Space: " + par1ItemStack.getItemDamage() * 18);
 		}
+	}
+
+	@Override
+	public boolean shouldHoldLeftHandUp(EntityPlayer player)
+	{
+		return true;
+	}
+
+	@Override
+	public boolean shouldHoldRightHandUp(EntityPlayer player)
+	{
+		return true;
+	}
+
+	@Override
+	public boolean shouldCrouch(EntityPlayer player)
+	{
+		return true;
 	}
 }
