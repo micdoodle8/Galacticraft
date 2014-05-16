@@ -269,7 +269,7 @@ public class GCCoreTileEntityEnergyStorageModule extends GCCoreTileEntityUnivers
 	@Override
 	public float getProvide(ForgeDirection direction)
 	{
-		return this.getElectricalOutputDirections().contains(direction) ? Math.min(1.3F, this.getEnergyStored()) : 0;
+		return this.getElectricalOutputDirections().contains(direction) ? Math.min(12F, this.getEnergyStored()) : 0;
 	}
 
 	@Override
@@ -287,6 +287,6 @@ public class GCCoreTileEntityEnergyStorageModule extends GCCoreTileEntityUnivers
 	@Override
 	public float getMaxEnergyStored()
 	{
-		return 2500;
+		return 2500F;
 	}
 }
