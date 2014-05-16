@@ -28,6 +28,7 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkConnection;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.GCLog;
 import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
@@ -262,46 +263,59 @@ public class UniversalNetwork extends ElectricityNetwork
 			int divider = acceptors.size();
 			double remaining = this.totalEnergy % divider;
 			double sending = (this.totalEnergy - remaining) / divider;
+			float sentToAcceptor;
 
 			for (TileEntity tileEntity : acceptors)
 			{
 				double currentSending = sending + remaining;
 				ForgeDirection sideFrom = this.availableAcceptorDirections.get(tileEntity);
 
-				remaining = 0;
+				remaining = 0D;
 
 				if (tileEntity instanceof IElectrical)
 				{
-					IElectrical electricalTile = (IElectrical) tileEntity;
 					ElectricityPack electricityToSend = ElectricityPack.getFromWatts((float) currentSending, 120F);
-					sent += electricalTile.receiveElectricity(sideFrom, electricityToSend, true);
+					sentToAcceptor = ((IElectrical) tileEntity).receiveElectricity(sideFrom, electricityToSend, true);
 				}
 				else if (isTELoaded && tileEntity instanceof IEnergyHandler)
 				{
 					IEnergyHandler handler = (IEnergyHandler) tileEntity;
 					int currentSendinginRF = (currentSending >= Integer.MAX_VALUE / NetworkConfigHandler.TO_TE_RATIO) ? Integer.MAX_VALUE : (int) (currentSending * NetworkConfigHandler.TO_TE_RATIO);
-					sent += handler.receiveEnergy(sideFrom, currentSendinginRF, false) * NetworkConfigHandler.TE_RATIO;
+					sentToAcceptor = handler.receiveEnergy(sideFrom, currentSendinginRF, false) * NetworkConfigHandler.TE_RATIO;
 				}
 				else if (isIC2Loaded && tileEntity instanceof IEnergySink)
 				{
 					IEnergySink electricalTile = (IEnergySink) tileEntity;
-					double toSend = Math.min(currentSending, electricalTile.getMaxSafeInput() * NetworkConfigHandler.IC2_RATIO);
-					toSend = Math.min(toSend, electricalTile.demandedEnergyUnits() * NetworkConfigHandler.IC2_RATIO);
-					sent += (toSend - (electricalTile.injectEnergyUnits(sideFrom, toSend * NetworkConfigHandler.TO_IC2_RATIO) * NetworkConfigHandler.IC2_RATIO));
+					double toSendIC2 = Math.min(currentSending * NetworkConfigHandler.TO_IC2_RATIO, electricalTile.getMaxSafeInput());
+					toSendIC2 = Math.min(toSendIC2, electricalTile.demandedEnergyUnits());
+					sentToAcceptor = (float) (toSendIC2 - electricalTile.injectEnergyUnits(sideFrom, toSendIC2)) * NetworkConfigHandler.IC2_RATIO;
 				}
 				else if (isBCLoaded && tileEntity instanceof IPowerReceptor)
 				{
-					IPowerReceptor electricalTile = (IPowerReceptor) tileEntity;
-					PowerReceiver receiver = electricalTile.getPowerReceiver(sideFrom);
+					PowerReceiver receiver = ((IPowerReceptor) tileEntity).getPowerReceiver(sideFrom);
 
 					if (receiver != null)
 					{
 						float req = receiver.powerRequest();
-						double bcToSend = currentSending * NetworkConfigHandler.TO_BC_RATIO;
-						float bcSent = receiver.receiveEnergy(Type.PIPE, (float) (Math.min(req, bcToSend)), sideFrom);
-						sent += bcSent * NetworkConfigHandler.BC3_RATIO;
-					}
+						float bcToSend = (float) currentSending * NetworkConfigHandler.TO_BC_RATIO;
+						sentToAcceptor = receiver.receiveEnergy(Type.PIPE, Math.min(req, bcToSend), sideFrom) * NetworkConfigHandler.BC3_RATIO;
+					} else sentToAcceptor = 0F;
 				}
+				else sentToAcceptor = 0F;
+				
+				if (sentToAcceptor / currentSending > 1.00001D)
+				{	
+					GCLog.info("Energy network: acceptor took too much energy, offered "+currentSending+", took "+sentToAcceptor+". "+tileEntity.toString());
+					sentToAcceptor = (float) currentSending;
+				}
+				else
+				{
+					//Offer the surplus energy to the next acceptor (this is a bit random as it depends on the order)
+					remaining = currentSending - sentToAcceptor;
+					if (remaining < 0D) remaining = 0D; 
+				}
+				
+				sent += sentToAcceptor;
 			}
 		}
 
