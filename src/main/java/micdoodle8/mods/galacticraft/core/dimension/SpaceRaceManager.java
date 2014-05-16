@@ -8,14 +8,20 @@ import java.util.Set;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
+import micdoodle8.mods.galacticraft.core.util.EnumColor;
+import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatStyle;
+import net.minecraft.util.EnumChatFormatting;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
@@ -23,14 +29,6 @@ import com.google.common.collect.Sets;
 public class SpaceRaceManager
 {
 	private static final Set<SpaceRace> spaceRaces = Sets.newHashSet();
-	
-	public static SpaceRace addSpaceRace(List<String> playerNames, String teamName, FlagData flagData)
-	{
-		SpaceRace spaceRace = new SpaceRace(playerNames, teamName, flagData);
-		spaceRaces.remove(spaceRace);
-		spaceRaces.add(spaceRace);
-		return spaceRace;
-	}
 	
 	public static SpaceRace addSpaceRace(SpaceRace spaceRace)
 	{
@@ -112,7 +110,7 @@ public class SpaceRaceManager
 	public static SpaceRace getSpaceRaceFromPlayer(String username)
 	{
 		for (SpaceRace race : spaceRaces)
-		{			
+		{
 			if (race.getPlayerNames().contains(username))
 			{
 				return race;
@@ -175,5 +173,29 @@ public class SpaceRaceManager
 	public static ImmutableSet<SpaceRace> getSpaceRaces()
 	{
 		return ImmutableSet.copyOf(new HashSet<SpaceRace>(spaceRaces));
+	}
+	
+	public static void onPlayerRemoval(String player, SpaceRace race)
+	{
+		for (String member : race.getPlayerNames())
+		{
+			EntityPlayerMP memberObj = MinecraftServer.getServer().getConfigurationManager().getPlayerForUsername(member);
+			
+			if (memberObj != null)
+			{
+				memberObj.addChatMessage(new ChatComponentText(EnumColor.RED + player + EnumColor.DARK_AQUA + " has been removed from the Space Race.").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.DARK_AQUA)));
+			}
+		}
+		
+		List<String> playerList = new ArrayList<String>();
+		playerList.add(player);
+		SpaceRace newRace = SpaceRaceManager.addSpaceRace(new SpaceRace(playerList, "Unnamed Team", new FlagData(48, 32)));
+		GCEntityPlayerMP playerToRemove = PlayerUtil.getPlayerBaseServerFromPlayerUsername(player, true);
+		
+		if (playerToRemove != null)
+		{
+			SpaceRaceManager.sendSpaceRaceData(playerToRemove, newRace);
+			SpaceRaceManager.sendSpaceRaceData(playerToRemove, race);
+		}
 	}
 }

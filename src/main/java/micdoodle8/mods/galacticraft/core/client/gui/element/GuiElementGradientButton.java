@@ -26,7 +26,18 @@ public class GuiElementGradientButton extends GuiButton
             GL11.glEnable(GL11.GL_BLEND);
             OpenGlHelper.glBlendFunc(770, 771, 1, 0);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            this.drawGradientRect(this.xPosition, this.yPosition, this.xPosition + this.width, this.yPosition + this.height, this.field_146123_n ? GCCoreUtil.to32BitColor(150, 30, 30, 30) : GCCoreUtil.to32BitColor(150, 10, 10, 10), this.field_146123_n ? GCCoreUtil.to32BitColor(250, 30, 30, 30) : GCCoreUtil.to32BitColor(250, 10, 10, 10));
+            int color = GCCoreUtil.to32BitColor(150, 10, 10, 10);
+            
+            if (!enabled)
+            {
+            	color = GCCoreUtil.to32BitColor(150, 30, 30, 30);
+            }
+            else if (field_146123_n)
+            {
+            	color = GCCoreUtil.to32BitColor(150, 30, 30, 30);
+            }
+            
+            this.drawGradientRect(this.xPosition, this.yPosition, this.xPosition + this.width, this.yPosition + this.height, color, color);
             this.mouseDragged(p_146112_1_, p_146112_2_, p_146112_3_);
             int l = 14737632;
 

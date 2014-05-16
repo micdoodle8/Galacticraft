@@ -324,9 +324,9 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
             	this.sendSpaceRaceData();
             	this.hasDataChanged = false;
         	}
-        	else
+        	else if (!this.hasDataChanged)
         	{
-        		SpaceRaceManager.addSpaceRace(this.spaceRaceData);
+        		updateSpaceRaceData();
         	}
         }
         
@@ -345,7 +345,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
         	}
         }
         
-        if (this.gradientListAddPlayers != null && this.ticksPassed % 20 == 0)
+        if (this.currentState == EnumSpaceRaceGui.ADD_PLAYER && this.gradientListAddPlayers != null && this.ticksPassed % 20 == 0)
         {
         	List<ListElement> playerNames = new ArrayList<ListElement>();
         	for (int i = 0; i < thePlayer.worldObj.playerEntities.size(); i++)
@@ -364,22 +364,42 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
         	}
         	
         	this.gradientListAddPlayers.updateListContents(playerNames);
+        	
+        	if (this.buttonList.size() >= 2)
+        	{
+            	if (this.gradientListAddPlayers.getSelectedElement() != null)
+            	{
+            		((GuiElementGradientButton) this.buttonList.get(1)).enabled = true;
+            	}
+            	else
+            	{
+            		((GuiElementGradientButton) this.buttonList.get(1)).enabled = false;
+            	}
+        	}
         }
         
-        if (this.gradientListRemovePlayers != null && this.ticksPassed % 20 == 0)
+        if (this.currentState == EnumSpaceRaceGui.REMOVE_PLAYER && this.gradientListRemovePlayers != null && this.ticksPassed % 20 == 0)
         {
         	List<ListElement> playerNames = new ArrayList<ListElement>();
-        	for (int i = 0; i < this.spaceRaceData.getPlayerNames().size(); i++)
+        	for (int i = 1; i < this.spaceRaceData.getPlayerNames().size(); i++)
         	{
         		String playerName = this.spaceRaceData.getPlayerNames().get(i);
-        		
-//        		if (!playerName.equals(mc.thePlayer.getGameProfile().getName()))
-        		{
-        			playerNames.add(new ListElement(playerName, GCCoreUtil.to32BitColor(255, 190, 190, 190)));
-        		}
+    			playerNames.add(new ListElement(playerName, GCCoreUtil.to32BitColor(255, 190, 190, 190)));
         	}
         	
         	this.gradientListRemovePlayers.updateListContents(playerNames);
+        	
+        	if (this.buttonList.size() >= 2)
+        	{
+            	if (this.gradientListRemovePlayers.getSelectedElement() != null)
+            	{
+            		((GuiElementGradientButton) this.buttonList.get(1)).enabled = true;
+            	}
+            	else
+            	{
+            		((GuiElementGradientButton) this.buttonList.get(1)).enabled = false;
+            	}
+        	}
         }
         
         if (this.currentState == EnumSpaceRaceGui.ADD_PLAYER && this.gradientListAddPlayers != null)
@@ -542,7 +562,12 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
     	
     	if (race != null && !this.hasDataChanged)
     	{
+    		this.spaceRaceData = race;
     		
+    		if (!this.textBoxRename.text.equals(race.getTeamName()))
+    		{
+    			this.textBoxRename.text = race.getTeamName();
+    		}
     	}
     }
     
@@ -552,7 +577,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
 		objList.add(this.spaceRaceData.getSpaceRaceID());
 		objList.add(this.spaceRaceData.getTeamName());
 		objList.add(this.spaceRaceData.getFlagData());
-		objList.add(new String[] { this.thePlayer.getGameProfile().getName() });
+		objList.add(this.spaceRaceData.getPlayerNames().toArray(new String[this.spaceRaceData.getPlayerNames().size()]));
 		GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_START_NEW_SPACE_RACE, objList));
     }
     

@@ -108,6 +108,7 @@ public class GuiJoinSpaceRace extends GuiScreen implements ICheckBoxCallback, IT
     		break;
     	case 1:
     		GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ADD_RACE_PLAYER, new Object[] { thePlayer.getGameProfile().getName(), this.spaceRaceData.getSpaceRaceID() }));
+			thePlayer.closeScreen();
     		break;
 		default:
 			break;

@@ -528,7 +528,7 @@ public class PacketSimple extends Packet implements IPacket
 				ClientProxyCore.flagRequestsSent.remove(playerName);
 				playerList.add(playerName);
 			}
-			
+
 			SpaceRace race = new SpaceRace(playerList, teamName, flagData);
 			race.setSpaceRaceID(teamID);
 			SpaceRaceManager.addSpaceRace(race);
@@ -917,6 +917,10 @@ public class PacketSimple extends Packet implements IPacket
 				{
 					player.addChatMessage(new ChatComponentText("Could not find player with name: " + playerToRemove));
 				}
+				else
+				{
+					SpaceRaceManager.onPlayerRemoval(playerToRemove, race);
+				}
 			}
 			break;
 		case S_ADD_RACE_PLAYER:
@@ -929,6 +933,12 @@ public class PacketSimple extends Packet implements IPacket
 				
 				if (!spaceRaceToAddPlayer.getPlayerNames().contains(playerToAdd))
 				{
+					SpaceRace oldRace = null;
+					while ((oldRace = SpaceRaceManager.getSpaceRaceFromPlayer(playerToAdd)) != null)
+					{
+						SpaceRaceManager.removeSpaceRace(oldRace);
+					}
+					
 					spaceRaceToAddPlayer.getPlayerNames().add(playerToAdd);
 					SpaceRaceManager.sendSpaceRaceData(null, spaceRaceToAddPlayer);
 					
