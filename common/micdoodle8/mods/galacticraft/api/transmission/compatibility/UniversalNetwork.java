@@ -266,8 +266,6 @@ public class UniversalNetwork extends ElectricityNetwork
 
 			for (TileEntity tileEntity : acceptors)
 			{
-				System.out.println("Tick end total:"+this.totalEnergy+" sent:"+sent+" Trying acceptor at "+tileEntity.xCoord+","+tileEntity.yCoord+","+tileEntity.zCoord);
-				
 				double currentSending = sending + remaining;
 				ForgeDirection sideFrom = this.availableAcceptorDirections.get(tileEntity);
 
@@ -347,15 +345,19 @@ public class UniversalNetwork extends ElectricityNetwork
 		}
 	}
 
-	public void refreshAcceptors()
+	private void refreshAcceptors()
 	{
 		this.possibleAcceptors.clear();
 		this.acceptorDirections.clear();
 
 		this.refresh();
-		
+
 		try
 		{
+			boolean isTELoaded = NetworkConfigHandler.isThermalExpansionLoaded();
+			boolean isIC2Loaded = NetworkConfigHandler.isIndustrialCraft2Loaded();
+			boolean isBCLoaded = NetworkConfigHandler.isBuildcraftLoaded();
+			
 			for(IConductor conductor : this.getTransmitters())
 			{	
 				TileEntity[] adjacentConnections = conductor.getAdjacentConnections(); 
@@ -376,7 +378,7 @@ public class UniversalNetwork extends ElectricityNetwork
 								acceptorDirections.add(sideFrom);
 							}
 						}
-						else if (NetworkConfigHandler.isThermalExpansionLoaded() && acceptor instanceof IEnergyHandler)
+						else if (isTELoaded && acceptor instanceof IEnergyHandler)
 						{
 							if (((IEnergyHandler) acceptor).canInterface(sideFrom))
 							{
@@ -384,7 +386,7 @@ public class UniversalNetwork extends ElectricityNetwork
 								acceptorDirections.add(sideFrom);
 							}
 						}
-						else if (NetworkConfigHandler.isIndustrialCraft2Loaded() && acceptor instanceof IEnergyAcceptor)
+						else if (isIC2Loaded && acceptor instanceof IEnergyAcceptor)
 						{
 							if(((IEnergyAcceptor)acceptor).acceptsEnergyFrom((TileEntity) conductor, sideFrom))
 							{
@@ -392,7 +394,7 @@ public class UniversalNetwork extends ElectricityNetwork
 								acceptorDirections.add(sideFrom);
 							}
 						}
-						else if (NetworkConfigHandler.isBuildcraftLoaded() && acceptor instanceof IPowerReceptor)
+						else if (isBCLoaded && acceptor instanceof IPowerReceptor)
 						{
 							if (((IPowerReceptor) acceptor).getPowerReceiver(sideFrom) != null)
 							{
