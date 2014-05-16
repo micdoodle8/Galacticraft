@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import micdoodle8.mods.galacticraft.api.transmission.compatibility.UniversalNetwork;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
@@ -36,6 +38,7 @@ public class GCCoreTickHandlerServer implements ITickHandler
 	private static Map<Integer, CopyOnWriteArrayList<ScheduledBlockChange>> scheduledBlockChanges = new ConcurrentHashMap<Integer, CopyOnWriteArrayList<ScheduledBlockChange>>();
 	private static Map<Integer, CopyOnWriteArrayList<BlockVec3>> scheduledTorchUpdates = new ConcurrentHashMap<Integer, CopyOnWriteArrayList<BlockVec3>>();
 	private static Map<Integer, List<BlockVec3>> edgeChecks = new HashMap<Integer, List<BlockVec3>>();
+	private static LinkedList<UniversalNetwork> networkTicks = new LinkedList<UniversalNetwork>();
 	
 	public static void scheduleNewBlockChange(int dimID, ScheduledBlockChange change)
 	{
@@ -102,10 +105,17 @@ public class GCCoreTickHandlerServer implements ITickHandler
 		}
 		return false;
 	}
+	
+	public static void scheduleNetworkTick(UniversalNetwork grid)
+	{
+		GCCoreTickHandlerServer.networkTicks.add(grid);
+	}
 
 	@Override
 	public void tickStart(EnumSet<TickType> type, Object... tickData)
 	{
+		UniversalNetwork.tickCount++;
+		
 		if (type.equals(EnumSet.of(TickType.WORLD)))
 		{
 			final WorldServer world = (WorldServer) tickData[0];
@@ -175,6 +185,12 @@ public class GCCoreTickHandlerServer implements ITickHandler
 	@Override
 	public void tickEnd(EnumSet<TickType> type, Object... tickData)
 	{
+		for (UniversalNetwork grid : GCCoreTickHandlerServer.networkTicks)
+		{
+			grid.tickEnd();
+		}
+		GCCoreTickHandlerServer.networkTicks.clear();
+		
 		if (type.equals(EnumSet.of(TickType.WORLD)))
 		{
 			final WorldServer world = (WorldServer) tickData[0];
