@@ -5,6 +5,8 @@ import micdoodle8.mods.galacticraft.core.client.render.entities.RenderFlag;
 import micdoodle8.mods.galacticraft.core.entities.EntityFlag;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.client.IItemRenderer;
@@ -26,9 +28,8 @@ public class ItemRendererFlag implements IItemRenderer
 {
 	private EntityFlag entityFlagDummy = new EntityFlag(FMLClientHandler.instance().getClient().theWorld);
 	private ModelFlag modelFlag = new ModelFlag();
-    private int ticksRendered;
 
-	private void renderFlag(ItemRenderType type, RenderBlocks render, ItemStack item, float translateX, float translateY, float translateZ)
+	private void renderFlag(ItemRenderType type, RenderBlocks render, ItemStack item, float translateX, float translateY, float translateZ, Object... data)
 	{
 		GL11.glPushMatrix();
 		long var10 = this.entityFlagDummy.getEntityId() * 493286711L;
@@ -38,13 +39,33 @@ public class ItemRendererFlag implements IItemRenderer
 		final float var14 = (((var10 >> 24 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
 
 		this.entityFlagDummy.worldObj = FMLClientHandler.instance().getClient().theWorld;
-		this.entityFlagDummy.ticksExisted = ticksRendered;
+		this.entityFlagDummy.ticksExisted = (int) FMLClientHandler.instance().getWorldClient().getTotalWorldTime();
 		this.entityFlagDummy.setType(item.getItemDamage());
-		this.entityFlagDummy.setOwner(FMLClientHandler.instance().getClient().thePlayer.getGameProfile().getName());
 		
-		if (ticksRendered % 60 == 0)
+		if (type == ItemRenderType.EQUIPPED)
 		{
-			this.entityFlagDummy.flagData = ClientUtil.updateFlagData(this.entityFlagDummy.getOwner(), true);
+			EntityLivingBase entityHolding = (EntityLivingBase) data[1];
+			
+			if (entityHolding instanceof EntityPlayer)
+			{
+				String playerName = ((EntityPlayer) entityHolding).getGameProfile().getName();
+				
+				if (!playerName.equals(this.entityFlagDummy.getOwner()))
+				{
+					this.entityFlagDummy.setOwner(playerName);
+					this.entityFlagDummy.flagData = ClientUtil.updateFlagData(this.entityFlagDummy.getOwner(), true);
+				}
+			}
+		}
+		else
+		{
+			String playerName = FMLClientHandler.instance().getClient().thePlayer.getGameProfile().getName();
+			
+			if (!playerName.equals(this.entityFlagDummy.getOwner()) || this.entityFlagDummy.ticksExisted % 100 == 0)
+			{
+				this.entityFlagDummy.setOwner(playerName);
+				this.entityFlagDummy.flagData = ClientUtil.updateFlagData(this.entityFlagDummy.getOwner(), true);
+			}
 		}
 
 		if (type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON)
@@ -142,17 +163,16 @@ public class ItemRendererFlag implements IItemRenderer
 		switch (type)
 		{
 		case EQUIPPED:
-			this.renderFlag(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
+			this.renderFlag(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f, data);
 			break;
 		case EQUIPPED_FIRST_PERSON:
-			this.renderFlag(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
+			this.renderFlag(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f, data);
 			break;
 		case INVENTORY:
-			this.renderFlag(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
-			ticksRendered++;
+			this.renderFlag(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f, data);
 			break;
 		case ENTITY:
-			this.renderFlag(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
+			this.renderFlag(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f, data);
 			break;
 		default:
 		}
