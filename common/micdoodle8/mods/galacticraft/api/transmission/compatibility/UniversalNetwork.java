@@ -328,9 +328,13 @@ public class UniversalNetwork extends ElectricityNetwork
 				}
 				else sentToAcceptor = 0F;
 				
-				if (sentToAcceptor / currentSending > 1.00001D)
+				if (sentToAcceptor / currentSending > 1.00002D)
 				{	
-					FMLLog.info("Energy network: acceptor took too much energy, offered "+currentSending+", took "+sentToAcceptor+". "+tileEntity.toString());
+					if (!this.spamstop)
+					{
+						FMLLog.info("Energy network: acceptor took too much energy, offered "+currentSending+", took "+sentToAcceptor+". "+tileEntity.toString());
+						this.spamstop = true;
+					}
 					sentToAcceptor = (float) currentSending;
 				}
 				else
@@ -344,6 +348,8 @@ public class UniversalNetwork extends ElectricityNetwork
 			}
 		}
 
+		if (this.tickCount % 200 == 0) this.spamstop = false;
+		
 		float returnvalue = sent;
 		if (returnvalue > this.totalEnergy) returnvalue = this.totalEnergy;
 		if (returnvalue < 0F) returnvalue = 0F;
