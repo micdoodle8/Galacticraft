@@ -52,7 +52,7 @@ public abstract class GCCoreTileEntityUniversalConductor extends GCCoreTileEntit
 			if (this instanceof IPowerReceptor)
 			{
 				this.powerHandler = new PowerHandler((IPowerReceptor) this, Type.PIPE);
-				this.reconfigureBC();
+				//this.reconfigureBC();  //This is not wanted when the tileEntity is first created as the tileEntity has no x,y,z coords yet
 				((PowerHandler) this.powerHandler).configurePowerPerdition(0, 0);
 			}
 		}
