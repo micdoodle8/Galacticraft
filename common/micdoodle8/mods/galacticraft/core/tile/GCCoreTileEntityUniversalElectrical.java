@@ -50,6 +50,7 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 	public float maxInputEnergy = 100;
 	@NetworkedField(targetSide = Side.CLIENT)
 	public float energyStored = 0;
+	private float IC2surplus = 0F;
 
 	@Override
 	public double getPacketRange()
@@ -492,7 +493,21 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
 	public double demandedEnergyUnits()
 	{
-		return Math.ceil(this.getRequest(ForgeDirection.UNKNOWN) * NetworkConfigHandler.TO_IC2_RATIO);
+		if (this.IC2surplus < 0.001F)
+		{
+			this.IC2surplus = 0F;
+			return Math.ceil(this.getRequest(ForgeDirection.UNKNOWN) * NetworkConfigHandler.TO_IC2_RATIO);
+		}
+
+		ElectricityPack toSend = ElectricityPack.getFromWatts(IC2surplus, this.getVoltage());
+		float received = this.receiveElectricity(ForgeDirection.UNKNOWN, toSend, true);
+		IC2surplus -= received;
+		if (this.IC2surplus < 0.001F)
+		{
+			this.IC2surplus = 0F;
+			return Math.ceil(this.getRequest(ForgeDirection.UNKNOWN) * NetworkConfigHandler.TO_IC2_RATIO);
+		}
+		return 0D;  
 	}
 
 	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
@@ -503,6 +518,9 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 			float convertedEnergy = (float) amount * NetworkConfigHandler.IC2_RATIO;
 			ElectricityPack toSend = ElectricityPack.getFromWatts(convertedEnergy, this.getVoltage());
 			float receive = this.receiveElectricity(direction, toSend, true);
+
+			if (convertedEnergy > receive) this.IC2surplus = convertedEnergy - receive;
+			else this.IC2surplus = 0F;
 
 			// Return the difference, since injectEnergy returns left over
 			// energy, and
