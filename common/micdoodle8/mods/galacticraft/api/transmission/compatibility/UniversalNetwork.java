@@ -30,6 +30,7 @@ import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GCLog;
 import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerServer;
+import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityUniversalConductor;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
@@ -67,22 +68,22 @@ public class UniversalNetwork extends ElectricityNetwork
 	private boolean spamstop = false;
 	
 	/*
-	 * possibleAcceptors is all the acceptors connected to this network
-	 * acceptorDirections is the directions of those connections (from the point of view of the acceptor tile)
+	 * connectedAcceptors is all the acceptors connected to this network
+	 * connectedDirections is the directions of those connections (from the point of view of the acceptor tile)
 	 *   Note: each position in those two linked lists matches
-	 *         so, an acceptor connected on two sides will be in possibleAcceptors twice 
+	 *         so, an acceptor connected on two sides will be in connectedAcceptors twice 
 	 */
-	private List<TileEntity> possibleAcceptors = new LinkedList<TileEntity>();
-	private List<ForgeDirection> acceptorDirections = new LinkedList<ForgeDirection>();
+	private List<TileEntity> connectedAcceptors = new LinkedList<TileEntity>();
+	private List<ForgeDirection> connectedDirections = new LinkedList<ForgeDirection>();
 	
 	/*
 	 *  availableAcceptors is the acceptors which can receive energy (this tick)
-	 *  availableAcceptorDirections is a map of those acceptors and the directions they will receive from (from the point of view of the acceptor tile)
+	 *  availableconnectedDirections is a map of those acceptors and the directions they will receive from (from the point of view of the acceptor tile)
 	 *    Note: each acceptor will only be included once in these collections
 	 *          (there is no point trying to put power into a machine twice from two different sides)
 	 */
 	private Set<TileEntity> availableAcceptors = new HashSet<TileEntity>();
-	private Map<TileEntity, ForgeDirection> availableAcceptorDirections = new HashMap<TileEntity, ForgeDirection>();
+	private Map<TileEntity, ForgeDirection> availableconnectedDirections = new HashMap<TileEntity, ForgeDirection>();
 	
 	private Map<TileEntity,Float> energyRequests = new HashMap<TileEntity,Float>();
 	private List<TileEntity> ignoreAcceptors = new LinkedList<TileEntity>();
@@ -92,11 +93,20 @@ public class UniversalNetwork extends ElectricityNetwork
 	{
 		if (UniversalNetwork.tickCount!=this.tickDone)
 		{	
+			this.tickDone = UniversalNetwork.tickCount;
 			//Start the new tick - initialise everything
 			doTickStartCalc(ignoreTiles);
-			this.tickDone = UniversalNetwork.tickCount;
+			
+			if (NetworkConfigHandler.isBuildcraftLoaded())
+			{
+				for (IConductor wire : this.getTransmitters())
+				{
+					//This will call getRequest() but that's no problem, on the second call it will just return the totalRequested
+					if (wire instanceof GCCoreTileEntityUniversalConductor) ((GCCoreTileEntityUniversalConductor) wire).reconfigureBC();
+				}
+			}
 		}
-		return ElectricityPack.getFromWatts(totalRequested, 120F);
+		return ElectricityPack.getFromWatts(this.totalRequested, 120F);
 	}
 	
 	@Override
@@ -113,9 +123,9 @@ public class UniversalNetwork extends ElectricityNetwork
 			{
 				if (UniversalNetwork.tickCount!=this.tickDone)
 				{	
+					this.tickDone = UniversalNetwork.tickCount;
 					//Start the new tick - initialise everything
 					doTickStartCalc(ignoreTiles);
-					this.tickDone = UniversalNetwork.tickCount;
 				}
 		
 				if (!this.doneScheduled)
@@ -128,15 +138,15 @@ public class UniversalNetwork extends ElectricityNetwork
 				
 				//On a regular mid-tick produce(), just figure out how much is totalEnergy this tick and return the used amount
 				//This will return 0 if totalRequested is 0 - for example a network with no acceptors
-				float availpre = this.totalEnergy;
+				float totalEnergyLast = this.totalEnergy;
 				
 				//Add the energy for distribution by this grid later this tick
 				//Note: totalEnergy cannot exceed totalRequested
-				if (doReceive) this.totalEnergy += Math.min(energyToProduce, this.totalRequested - availpre);
+				if (doReceive) this.totalEnergy += Math.min(energyToProduce, this.totalRequested - totalEnergyLast);
 				
-				if (this.totalRequested >= availpre + energyToProduce) return 0F; //All the electricity will be used
-				if (availpre >= this.totalRequested) return energyToProduce; //None of the electricity will be used
-				return availpre + energyToProduce - this.totalRequested; //Some of the electricity will be used
+				if (this.totalRequested >= totalEnergyLast + energyToProduce) return 0F; //All the electricity will be used
+				if (totalEnergyLast >= this.totalRequested) return energyToProduce; //None of the electricity will be used
+				return totalEnergyLast + energyToProduce - this.totalRequested; //Some of the electricity will be used
 			}
 		}
 		return energyToProduce;
@@ -164,7 +174,7 @@ public class UniversalNetwork extends ElectricityNetwork
 		if (this.getTransmitters().size() == 0) return;
 		
 		this.availableAcceptors.clear();
-		this.availableAcceptorDirections.clear();
+		this.availableconnectedDirections.clear();
 		this.energyRequests.clear();
 		this.totalRequested = 0.0F;
 		this.ignoreAcceptors.clear();
@@ -175,11 +185,11 @@ public class UniversalNetwork extends ElectricityNetwork
 		boolean isIC2Loaded = NetworkConfigHandler.isIndustrialCraft2Loaded();
 		boolean isBCLoaded = NetworkConfigHandler.isBuildcraftLoaded();
 
-		if(!this.possibleAcceptors.isEmpty())
+		if(!this.connectedAcceptors.isEmpty())
 		{
 			float e;
-			final Iterator<ForgeDirection> acceptorDirection = this.acceptorDirections.iterator();
-			for(TileEntity acceptor : this.possibleAcceptors)
+			final Iterator<ForgeDirection> acceptorDirection = this.connectedDirections.iterator();
+			for(TileEntity acceptor : this.connectedAcceptors)
 			{
 				//This tries all sides of the acceptor which are connected (see refreshAcceptors())
 				ForgeDirection sideFrom = acceptorDirection.next();
@@ -209,7 +219,7 @@ public class UniversalNetwork extends ElectricityNetwork
 					if (e > 0.0F)
 					{
 						this.availableAcceptors.add(acceptor);
-						this.availableAcceptorDirections.put(acceptor,sideFrom);
+						this.availableconnectedDirections.put(acceptor,sideFrom);
 						this.energyRequests.put(acceptor,Float.valueOf(e));
 						this.totalRequested += e;
 					}
@@ -220,7 +230,7 @@ public class UniversalNetwork extends ElectricityNetwork
 		ElectricityPack mergedPack = new ElectricityPack(totalRequested, 1);
 		ElectricityRequestEvent evt = new ElectricityRequestEvent(this, mergedPack, ignoreTiles);
 		MinecraftForge.EVENT_BUS.post(evt);
-		totalRequested = mergedPack.getWatts();
+		this.totalRequested = mergedPack.getWatts();
 	}
 
 	private float doProduce()
@@ -268,7 +278,7 @@ public class UniversalNetwork extends ElectricityNetwork
 			for (TileEntity tileEntity : acceptors)
 			{
 				double currentSending = sending + remaining;
-				ForgeDirection sideFrom = this.availableAcceptorDirections.get(tileEntity);
+				ForgeDirection sideFrom = this.availableconnectedDirections.get(tileEntity);
 
 				remaining = 0D;
 
@@ -339,8 +349,6 @@ public class UniversalNetwork extends ElectricityNetwork
 				continue;
 			}
 
-			conductor.onNetworkChanged();
-
 			if (((TileEntity) conductor).isInvalid() || ((TileEntity) conductor).getWorldObj() == null)
 			{
 				it.remove();
@@ -353,6 +361,7 @@ public class UniversalNetwork extends ElectricityNetwork
 			}
 			else
 			{
+				conductor.onNetworkChanged();
 				conductor.setNetwork(this);
 			}
 		}
@@ -360,8 +369,8 @@ public class UniversalNetwork extends ElectricityNetwork
 
 	private void refreshAcceptors()
 	{
-		this.possibleAcceptors.clear();
-		this.acceptorDirections.clear();
+		this.connectedAcceptors.clear();
+		this.connectedDirections.clear();
 
 		this.refresh();
 
@@ -387,32 +396,32 @@ public class UniversalNetwork extends ElectricityNetwork
 						{
 							if (((IElectrical) acceptor).canConnect(sideFrom, NetworkType.POWER))
 							{
-								possibleAcceptors.add(acceptor);
-								acceptorDirections.add(sideFrom);
+								this.connectedAcceptors.add(acceptor);
+								this.connectedDirections.add(sideFrom);
 							}
 						}
 						else if (isTELoaded && acceptor instanceof IEnergyHandler)
 						{
 							if (((IEnergyHandler) acceptor).canInterface(sideFrom))
 							{
-								possibleAcceptors.add(acceptor);
-								acceptorDirections.add(sideFrom);
+								this.connectedAcceptors.add(acceptor);
+								this.connectedDirections.add(sideFrom);
 							}
 						}
 						else if (isIC2Loaded && acceptor instanceof IEnergyAcceptor)
 						{
 							if(((IEnergyAcceptor)acceptor).acceptsEnergyFrom((TileEntity) conductor, sideFrom))
 							{
-								possibleAcceptors.add(acceptor);
-								acceptorDirections.add(sideFrom);
+								this.connectedAcceptors.add(acceptor);
+								this.connectedDirections.add(sideFrom);
 							}
 						}
 						else if (isBCLoaded && acceptor instanceof IPowerReceptor)
 						{
 							if (((IPowerReceptor) acceptor).getPowerReceiver(sideFrom) != null)
 							{
-								possibleAcceptors.add(acceptor);
-								acceptorDirections.add(sideFrom);
+								this.connectedAcceptors.add(acceptor);
+								this.connectedDirections.add(sideFrom);
 							}
 						}
 					}
@@ -519,6 +528,6 @@ public class UniversalNetwork extends ElectricityNetwork
 	@Override
 	public String toString()
 	{
-		return "EnergyNetwork[" + this.hashCode() + "|Wires:" + this.getTransmitters().size() + "|Acceptors:" + this.possibleAcceptors.size() + "]";
+		return "EnergyNetwork[" + this.hashCode() + "|Wires:" + this.getTransmitters().size() + "|Acceptors:" + this.connectedAcceptors.size() + "]";
 	}
 }

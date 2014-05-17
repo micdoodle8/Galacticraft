@@ -43,13 +43,6 @@ public abstract class GCCoreTileEntityUniversalConductor extends GCCoreTileEntit
 	@Override
 	public void onNetworkChanged()
 	{
-		if (NetworkConfigHandler.isBuildcraftLoaded())
-		{
-			if (this instanceof IPowerReceptor)
-			{
-				this.reconfigureBC();
-			}
-		}
 	}
 
 	private void initBC()
@@ -209,7 +202,7 @@ public abstract class GCCoreTileEntityUniversalConductor extends GCCoreTileEntit
 		return ((PowerHandler) this.powerHandler).getPowerReceiver();
 	}
 
-	private void reconfigureBC()
+	public void reconfigureBC()
 	{
 		float requiredEnergy = ((IElectricityNetwork) this.getNetwork()).getRequest(this).getWatts() * NetworkConfigHandler.TO_BC_RATIO;
 		((PowerHandler) this.powerHandler).configure(1, requiredEnergy, 0, requiredEnergy);
