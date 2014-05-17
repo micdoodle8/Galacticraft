@@ -82,7 +82,7 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 	@Override
 	public float receiveElectricity(ForgeDirection from, ElectricityPack receive, boolean doReceive)
 	{
-		if (this.getElectricalInputDirections().contains(from))
+		if (from == ForgeDirection.UNKNOWN || this.getElectricalInputDirections().contains(from))
 		{
 			if (!doReceive)
 			{
@@ -92,7 +92,7 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 			return this.receiveElectricity(receive, doReceive);
 		}
 
-		return 0;
+		return 0F;
 	}
 
 	@Override
@@ -498,9 +498,9 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
 	public double injectEnergyUnits(ForgeDirection direction, double amount)
 	{
-		if (this.getElectricalInputDirections().contains(direction))
+		if (direction == ForgeDirection.UNKNOWN || this.getElectricalInputDirections().contains(direction))
 		{
-			float convertedEnergy = (float) (amount * NetworkConfigHandler.IC2_RATIO);
+			float convertedEnergy = (float) amount * NetworkConfigHandler.IC2_RATIO;
 			ElectricityPack toSend = ElectricityPack.getFromWatts(convertedEnergy, this.getVoltage());
 			float receive = this.receiveElectricity(direction, toSend, true);
 
