@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import mekanism.api.energy.IStrictEnergyAcceptor;
 import micdoodle8.mods.galacticraft.api.transmission.ElectricalEvent.ElectricityProductionEvent;
 import micdoodle8.mods.galacticraft.api.transmission.ElectricalEvent.ElectricityRequestEvent;
 import micdoodle8.mods.galacticraft.api.transmission.ElectricityPack;
@@ -199,6 +200,7 @@ public class UniversalNetwork extends ElectricityNetwork
 		boolean isTELoaded = NetworkConfigHandler.isThermalExpansionLoaded();
 		boolean isIC2Loaded = NetworkConfigHandler.isIndustrialCraft2Loaded();
 		boolean isBCLoaded = NetworkConfigHandler.isBuildcraftLoaded();
+		boolean isMekLoaded = NetworkConfigHandler.isMekanismLoaded();
 
 		if(!this.connectedAcceptors.isEmpty())
 		{
@@ -229,6 +231,10 @@ public class UniversalNetwork extends ElectricityNetwork
 					else if (isBCLoaded && acceptor instanceof IPowerReceptor)
 					{
 						e = ((IPowerReceptor) acceptor).getPowerReceiver(sideFrom).powerRequest() * NetworkConfigHandler.BC3_RATIO;
+					}
+					else if (isMekLoaded && acceptor instanceof IStrictEnergyAcceptor)
+					{
+						e = (float) ((((IStrictEnergyAcceptor) acceptor).getMaxEnergy() - ((IStrictEnergyAcceptor) acceptor).getEnergy()) * NetworkConfigHandler.MEKANISM_RATIO);
 					}
 					
 					if (e > 0.0F)
@@ -280,6 +286,7 @@ public class UniversalNetwork extends ElectricityNetwork
 			boolean isTELoaded = NetworkConfigHandler.isThermalExpansionLoaded();
 			boolean isIC2Loaded = NetworkConfigHandler.isIndustrialCraft2Loaded();
 			boolean isBCLoaded = NetworkConfigHandler.isBuildcraftLoaded();
+			boolean isMekLoaded = NetworkConfigHandler.isMekanismLoaded();
 			
 			ArrayList<TileEntity> acceptors = new ArrayList();
 			acceptors.addAll(this.availableAcceptors);
@@ -325,6 +332,12 @@ public class UniversalNetwork extends ElectricityNetwork
 						float bcToSend = (float) currentSending * NetworkConfigHandler.TO_BC_RATIO;
 						sentToAcceptor = receiver.receiveEnergy(Type.PIPE, Math.min(req, bcToSend), sideFrom) * NetworkConfigHandler.BC3_RATIO;
 					} else sentToAcceptor = 0F;
+				}
+				else if (isMekLoaded && tileEntity instanceof IStrictEnergyAcceptor)
+				{
+					IStrictEnergyAcceptor receiver = (IStrictEnergyAcceptor) tileEntity;
+					double mekToSend = currentSending * NetworkConfigHandler.TO_MEKANISM_RATIO;
+					sentToAcceptor = (float) receiver.transferEnergyToAcceptor(sideFrom, mekToSend);
 				}
 				else sentToAcceptor = 0F;
 				
@@ -404,6 +417,7 @@ public class UniversalNetwork extends ElectricityNetwork
 			boolean isTELoaded = NetworkConfigHandler.isThermalExpansionLoaded();
 			boolean isIC2Loaded = NetworkConfigHandler.isIndustrialCraft2Loaded();
 			boolean isBCLoaded = NetworkConfigHandler.isBuildcraftLoaded();
+			boolean isMekLoaded = NetworkConfigHandler.isMekanismLoaded();
 			
 			for(IConductor conductor : this.getTransmitters())
 			{	
@@ -444,6 +458,14 @@ public class UniversalNetwork extends ElectricityNetwork
 						else if (isBCLoaded && acceptor instanceof IPowerReceptor)
 						{
 							if (((IPowerReceptor) acceptor).getPowerReceiver(sideFrom) != null)
+							{
+								this.connectedAcceptors.add(acceptor);
+								this.connectedDirections.add(sideFrom);
+							}
+						}
+						else if (isMekLoaded && acceptor instanceof IStrictEnergyAcceptor)
+						{
+							if (((IStrictEnergyAcceptor) acceptor).canReceiveEnergy(sideFrom))
 							{
 								this.connectedAcceptors.add(acceptor);
 								this.connectedDirections.add(sideFrom);
