@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
+import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.UniversalNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.core.grid.IGridNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
@@ -78,12 +79,17 @@ public abstract class GCCoreTileEntityConductor extends GCCoreTileEntityAdvanced
 				{
 					if (tileEntity.getClass() == this.getClass() && tileEntity instanceof INetworkProvider && !this.getNetwork().equals(((INetworkProvider) tileEntity).getNetwork()))
 					{
-						this.setNetwork((IGridNetwork) this.getNetwork().merge(((INetworkProvider) tileEntity).getNetwork()));
+						this.getNetwork().merge(((INetworkProvider) tileEntity).getNetwork());
 					}
 				}
 			}
 
 			this.getNetwork().refresh();
+			
+			if (NetworkConfigHandler.isBuildcraftLoaded())
+			{
+				if (this instanceof GCCoreTileEntityUniversalConductor) ((GCCoreTileEntityUniversalConductor) this).reconfigureBC();
+			}
 		}
 	}
 

@@ -28,6 +28,7 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkConnection;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
 import buildcraft.api.power.IPowerReceptor;
@@ -346,7 +347,7 @@ public class UniversalNetwork extends ElectricityNetwork
 		float returnvalue = sent;
 		if (returnvalue > this.totalEnergy) returnvalue = this.totalEnergy;
 		if (returnvalue < 0F) returnvalue = 0F;
-		return sent;
+		return returnvalue;
 	}
 
 	@Override
@@ -363,20 +364,24 @@ public class UniversalNetwork extends ElectricityNetwork
 				continue;
 			}
 
-			if (((TileEntity) conductor).isInvalid() || ((TileEntity) conductor).getWorldObj() == null)
+			TileEntity tile = (TileEntity) conductor; 
+			World world = tile.getWorldObj(); 
+			if (tile.isInvalid() || world == null)
 			{
 				it.remove();
 				continue;
 			}
-			else if (((TileEntity) conductor).getWorldObj().getBlockTileEntity(((TileEntity) conductor).xCoord, ((TileEntity) conductor).yCoord, ((TileEntity) conductor).zCoord) != conductor)
+			
+			if (conductor != world.getBlockTileEntity(tile.xCoord, tile.yCoord, tile.zCoord))
 			{
 				it.remove();
 				continue;
 			}
-			else
+
+			if (conductor.getNetwork() != this)
 			{
-				conductor.onNetworkChanged();
 				conductor.setNetwork(this);
+				conductor.onNetworkChanged();
 			}
 		}
 	}
