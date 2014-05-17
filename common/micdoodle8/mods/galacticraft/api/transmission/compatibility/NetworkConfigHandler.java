@@ -74,9 +74,11 @@ public class NetworkConfigHandler
 		NetworkConfigHandler.IC2_RATIO = (float) NetworkConfigHandler.config.get("Compatiblity", "IndustrialCraft Conversion Ratio", NetworkConfigHandler.IC2_RATIO).getDouble(NetworkConfigHandler.IC2_RATIO);
 		NetworkConfigHandler.TE_RATIO = (float) NetworkConfigHandler.config.get("Compatiblity", "Thermal Expansion Conversion Ratio", NetworkConfigHandler.TE_RATIO).getDouble(NetworkConfigHandler.TE_RATIO);
 		NetworkConfigHandler.BC3_RATIO = (float) NetworkConfigHandler.config.get("Compatiblity", "BuildCraft Conversion Ratio", NetworkConfigHandler.BC3_RATIO).getDouble(NetworkConfigHandler.BC3_RATIO);
+		NetworkConfigHandler.MEKANISM_RATIO = (float) NetworkConfigHandler.config.get("Compatiblity", "Mekanism Conversion Ratio", NetworkConfigHandler.MEKANISM_RATIO).getDouble(NetworkConfigHandler.MEKANISM_RATIO);
 		NetworkConfigHandler.TO_IC2_RATIO = 1 / NetworkConfigHandler.IC2_RATIO;
 		NetworkConfigHandler.TO_BC_RATIO = 1 / NetworkConfigHandler.BC3_RATIO;
 		NetworkConfigHandler.TO_TE_RATIO = 1 / NetworkConfigHandler.TE_RATIO;
+		NetworkConfigHandler.TO_MEKANISM_RATIO = 1 / NetworkConfigHandler.MEKANISM_RATIO;
 		NetworkConfigHandler.config.save();
 	}
 
