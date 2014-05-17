@@ -4,11 +4,15 @@ import java.util.EnumSet;
 import java.util.HashSet;
 
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
+import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
+import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
 import micdoodle8.mods.galacticraft.core.GCCoreAnnotations.NetworkedField;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockMachine;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockMulti;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockSolar;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
@@ -385,7 +389,18 @@ public class GCCoreTileEntitySolar extends GCCoreTileEntityUniversalElectrical i
 	@Override
 	public float getProvide(ForgeDirection direction)
 	{
-		return this.getElectricalOutputDirections().contains(direction) ? Math.min(Math.max(this.getEnergyStored(), 0), 1300) : 0;
+		if (direction == ForgeDirection.UNKNOWN && NetworkConfigHandler.isIndustrialCraft2Loaded())
+		{
+			BlockVec3 vec = new BlockVec3(this).modifyPositionFromSide(ForgeDirection.getOrientation(this.getBlockMetadata() - GCCoreBlockMachine.STORAGE_MODULE_METADATA + 2), 1);
+			TileEntity tile = vec.getTileEntity(this.worldObj);
+			if (tile instanceof IConductor)
+				//No power provide to IC2 mod if it's a Galacticraft wire on the output.  Galacticraft network will provide the power.
+				return 0.0F;
+			else
+				return Math.min(Math.max(this.getEnergyStored(), 0F), 1300F);
+		}
+		
+		return this.getElectricalOutputDirections().contains(direction) ? Math.min(Math.max(this.getEnergyStored(), 0F), 1300F) : 0F;
 	}
 
 	@Override
