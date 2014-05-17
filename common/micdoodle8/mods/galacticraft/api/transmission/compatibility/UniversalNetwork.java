@@ -26,11 +26,7 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkConnection;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
-import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.GCLog;
-import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerServer;
-import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityUniversalConductor;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
@@ -38,9 +34,6 @@ import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
 import cofh.api.energy.IEnergyHandler;
-
-import com.google.common.collect.Lists;
-
 import cpw.mods.fml.common.FMLLog;
 
 /**
@@ -99,10 +92,22 @@ public class UniversalNetwork extends ElectricityNetwork
 			
 			if (NetworkConfigHandler.isBuildcraftLoaded())
 			{
-				for (IConductor wire : this.getTransmitters())
+				try
 				{
-					//This will call getRequest() but that's no problem, on the second call it will just return the totalRequested
-					if (wire instanceof GCCoreTileEntityUniversalConductor) ((GCCoreTileEntityUniversalConductor) wire).reconfigureBC();
+					Class<?> clazz = Class.forName("micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityUniversalConductor");
+
+					for (IConductor wire : this.getTransmitters())
+					{
+						if (clazz.isInstance(wire))
+						{
+							//This will call getRequest() but that's no problem, on the second call it will just return the totalRequested
+							clazz.getMethod("reconfigureBC").invoke(wire);
+						}
+					}
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
 				}
 			}
 		}
@@ -130,7 +135,16 @@ public class UniversalNetwork extends ElectricityNetwork
 		
 				if (!this.doneScheduled)
 				{
-					GCCoreTickHandlerServer.scheduleNetworkTick(this);
+					try
+					{
+						Class<?> clazz = Class.forName("micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerServer");
+						clazz.getMethod("scheduleNetworkTick", getClass()).invoke(null, this);
+					}
+					catch (Exception e)
+					{
+						e.printStackTrace();
+					}
+					
 					this.doneScheduled = true;
 				}
 		
@@ -315,7 +329,7 @@ public class UniversalNetwork extends ElectricityNetwork
 				
 				if (sentToAcceptor / currentSending > 1.00001D)
 				{	
-					GCLog.info("Energy network: acceptor took too much energy, offered "+currentSending+", took "+sentToAcceptor+". "+tileEntity.toString());
+					FMLLog.info("Energy network: acceptor took too much energy, offered "+currentSending+", took "+sentToAcceptor+". "+tileEntity.toString());
 					sentToAcceptor = (float) currentSending;
 				}
 				else
