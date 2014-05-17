@@ -134,7 +134,7 @@ public class UniversalNetwork extends ElectricityNetwork
 					doTickStartCalc(ignoreTiles);
 				}
 		
-				if (!this.doneScheduled)
+				if (!this.doneScheduled && this.totalRequested > 0.0F)
 				{
 					try
 					{
@@ -463,12 +463,23 @@ public class UniversalNetwork extends ElectricityNetwork
 			newNetwork.getTransmitters().addAll(this.getTransmitters());
 			newNetwork.getTransmitters().addAll(network.getTransmitters());
 			newNetwork.refresh();
+			this.destroy();
+			((UniversalNetwork) network).destroy();
 			return newNetwork;
 		}
 
 		return null;
 	}
 
+	private void destroy()
+	{
+		this.getTransmitters().clear();
+		this.connectedAcceptors.clear();
+		this.availableAcceptors.clear();
+		this.totalEnergy = 0F;
+		this.totalRequested = 0F;
+	}
+	
 	@Override
 	public void split(IConductor splitPoint)
 	{
