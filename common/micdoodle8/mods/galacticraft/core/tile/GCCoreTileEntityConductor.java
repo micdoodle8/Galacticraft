@@ -7,7 +7,7 @@ import micdoodle8.mods.galacticraft.api.transmission.core.grid.IGridNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.ForgeDirection;
@@ -70,21 +70,21 @@ public abstract class GCCoreTileEntityConductor extends GCCoreTileEntityAdvanced
 		{
 			this.adjacentConnections = null;
 
+			this.getNetwork().refresh();
+
 			for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS)
 			{
-				Vector3 thisVec = new Vector3(this);
-				TileEntity tileEntity = thisVec.modifyPositionFromSide(side).getTileEntity(this.worldObj);
+				BlockVec3 thisVec = new BlockVec3(this);
+				TileEntity tileEntity = thisVec.getTileEntityOnSide(this.worldObj, side);
 
 				if (tileEntity != null)
 				{
 					if (tileEntity.getClass() == this.getClass() && tileEntity instanceof INetworkProvider && !this.getNetwork().equals(((INetworkProvider) tileEntity).getNetwork()))
 					{
-						this.getNetwork().merge(((INetworkProvider) tileEntity).getNetwork());
+						((INetworkProvider) tileEntity).getNetwork().merge(this.getNetwork());
 					}
 				}
 			}
-
-			this.getNetwork().refresh();
 			
 			if (NetworkConfigHandler.isBuildcraftLoaded())
 			{
@@ -103,11 +103,11 @@ public abstract class GCCoreTileEntityConductor extends GCCoreTileEntityAdvanced
 		{
 			this.adjacentConnections = new TileEntity[6];
 
-			for (byte i = 0; i < 6; i++)
+			BlockVec3 thisVec = new BlockVec3(this);
+			for (int i = 0; i < 6; i++)
 			{
 				ForgeDirection side = ForgeDirection.getOrientation(i);
-				Vector3 thisVec = new Vector3(this);
-				TileEntity tileEntity = thisVec.modifyPositionFromSide(side).getTileEntity(this.worldObj);
+				TileEntity tileEntity = thisVec.getTileEntityOnSide(this.worldObj, side);
 
 				if (tileEntity instanceof IConnector)
 				{

@@ -384,8 +384,9 @@ public class UniversalNetwork extends ElectricityNetwork
 			}
 
 			TileEntity tile = (TileEntity) conductor; 
-			World world = tile.getWorldObj(); 
-			if (tile.isInvalid() || world == null)
+			World world = tile.getWorldObj();
+			//Remove any conductors in unloaded chunks
+			if (tile.isInvalid() || world == null || !world.blockExists(tile.xCoord, tile.yCoord, tile.zCoord))
 			{
 				it.remove();
 				continue;
@@ -418,8 +419,12 @@ public class UniversalNetwork extends ElectricityNetwork
 			boolean isIC2Loaded = NetworkConfigHandler.isIndustrialCraft2Loaded();
 			boolean isBCLoaded = NetworkConfigHandler.isBuildcraftLoaded();
 			boolean isMekLoaded = NetworkConfigHandler.isMekanismLoaded();
-			
-			for(IConductor conductor : this.getTransmitters())
+
+			LinkedList<IConductor> conductors = new LinkedList();
+			conductors.addAll(this.getTransmitters());
+			//This prevents concurrent modifications if something in the loop causes chunk loading
+			//(Chunk loading can change the network if new conductors are found)
+			for(IConductor conductor : conductors)
 			{	
 				TileEntity[] adjacentConnections = conductor.getAdjacentConnections(); 
 				for (int i = 0; i < adjacentConnections.length; i++)
@@ -487,16 +492,12 @@ public class UniversalNetwork extends ElectricityNetwork
 	{
 		if (network != null && network != this)
 		{
-			UniversalNetwork newNetwork = new UniversalNetwork();
-			newNetwork.getTransmitters().addAll(this.getTransmitters());
-			newNetwork.getTransmitters().addAll(network.getTransmitters());
-			newNetwork.refresh();
-			this.destroy();
+			this.getTransmitters().addAll(network.getTransmitters());
+			this.refresh();
 			((UniversalNetwork) network).destroy();
-			return newNetwork;
 		}
 
-		return null;
+		return this;
 	}
 
 	private void destroy()
@@ -506,6 +507,16 @@ public class UniversalNetwork extends ElectricityNetwork
 		this.availableAcceptors.clear();
 		this.totalEnergy = 0F;
 		this.totalRequested = 0F;
+		try
+		{
+			Class<?> clazz = Class.forName("micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerServer");
+			clazz.getMethod("removeNetworkTick", getClass()).invoke(null, this);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
 	}
 	
 	@Override

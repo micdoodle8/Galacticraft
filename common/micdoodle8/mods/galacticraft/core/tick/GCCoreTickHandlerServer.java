@@ -111,6 +111,11 @@ public class GCCoreTickHandlerServer implements ITickHandler
 		GCCoreTickHandlerServer.networkTicks.add(grid);
 	}
 
+	public static void removeNetworkTick(UniversalNetwork grid)
+	{
+		GCCoreTickHandlerServer.networkTicks.remove(grid);
+	}
+
 	@Override
 	public void tickStart(EnumSet<TickType> type, Object... tickData)
 	{

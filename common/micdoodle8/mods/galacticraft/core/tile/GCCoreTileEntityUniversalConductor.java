@@ -1,12 +1,19 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import ic2.api.energy.tile.IEnergyAcceptor;
+import ic2.api.energy.tile.IEnergyEmitter;
+import ic2.api.energy.tile.IEnergyTile;
+
 import java.lang.reflect.Constructor;
 
+import cofh.api.energy.IEnergyHandler;
+import mekanism.api.energy.IStrictEnergyAcceptor;
 import micdoodle8.mods.galacticraft.api.transmission.ElectricityPack;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
 import micdoodle8.mods.galacticraft.api.transmission.core.grid.IElectricityNetwork;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GCCoreAnnotations.RuntimeInterface;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.tileentity.TileEntity;
@@ -61,12 +68,7 @@ public abstract class GCCoreTileEntityUniversalConductor extends GCCoreTileEntit
 	@Override
 	public TileEntity[] getAdjacentConnections()
 	{
-		if (this.adjacentConnections == null)
-		{
-			this.adjacentConnections = WorldUtil.getAdjacentPowerConnections(this);
-		}
-
-		return this.adjacentConnections;
+		return WorldUtil.getAdjacentPowerConnections(this);
 	}
 
 	@Override
@@ -171,9 +173,10 @@ public abstract class GCCoreTileEntityUniversalConductor extends GCCoreTileEntit
 	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
 	public double injectEnergyUnits(ForgeDirection directionFrom, double amount)
 	{
-		TileEntity tile = new Vector3(this).modifyPositionFromSide(directionFrom).getTileEntity(this.worldObj);
+		TileEntity tile = new BlockVec3(this).getTileEntityOnSide(this.worldObj, directionFrom);
 		ElectricityPack pack = ElectricityPack.getFromWatts((float) (amount * NetworkConfigHandler.IC2_RATIO), 120);
-		return ((IElectricityNetwork) this.getNetwork()).produce(pack, true, this, tile) * NetworkConfigHandler.TO_IC2_RATIO;
+		double returnvalue = ((IElectricityNetwork) this.getNetwork()).produce(pack, true, this, tile) * NetworkConfigHandler.TO_IC2_RATIO;
+		return returnvalue;
 	}
 
 	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")

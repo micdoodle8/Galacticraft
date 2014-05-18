@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import mekanism.api.energy.IStrictEnergyAcceptor;
 import mekanism.api.gas.IGasTransmitter;
 import mekanism.api.gas.ITubeConnection;
 import mekanism.api.transmitters.TransmissionType;
@@ -24,6 +25,7 @@ import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.ICelestialBody;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
@@ -855,10 +857,12 @@ public class WorldUtil
 	{
 		TileEntity[] adjacentConnections = new TileEntity[ForgeDirection.VALID_DIRECTIONS.length];
 
+		boolean isMekLoaded = NetworkConfigHandler.isMekanismLoaded();
+		
+		BlockVec3 thisVec = new BlockVec3(tile);
 		for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
 		{
-			Vector3 tileVec = new Vector3(tile);
-			TileEntity tileEntity = tileVec.modifyPositionFromSide(direction).getTileEntity(tile.worldObj);
+			TileEntity tileEntity = thisVec.getTileEntityOnSide(tile.worldObj, direction);
 
 			if (tileEntity instanceof IConnector)
 			{
@@ -867,7 +871,7 @@ public class WorldUtil
 					adjacentConnections[direction.ordinal()] = tileEntity;
 				}
 			}
-			else if (NetworkConfigHandler.isMekanismLoaded())
+			else if (isMekLoaded)
 			{
 				if (tileEntity instanceof ITubeConnection && (!(tileEntity instanceof IGasTransmitter) || TransmissionType.checkTransmissionType(tileEntity, TransmissionType.GAS, tileEntity)))
 				{
@@ -881,15 +885,20 @@ public class WorldUtil
 
 		return adjacentConnections;
 	}
-
+	
 	public static TileEntity[] getAdjacentPowerConnections(TileEntity tile)
 	{
-		TileEntity[] adjacentConnections = new TileEntity[ForgeDirection.VALID_DIRECTIONS.length];
+		TileEntity[] adjacentConnections = new TileEntity[6];
 
+		boolean isMekLoaded = NetworkConfigHandler.isMekanismLoaded();
+		boolean isTELoaded = NetworkConfigHandler.isThermalExpansionLoaded();
+		boolean isIC2Loaded = NetworkConfigHandler.isIndustrialCraft2Loaded();
+		boolean isBCLoaded = NetworkConfigHandler.isBuildcraftLoaded();
+
+		BlockVec3 thisVec = new BlockVec3(tile);
 		for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
 		{
-			Vector3 tileVec = new Vector3(tile);
-			TileEntity tileEntity = tileVec.modifyPositionFromSide(direction).getTileEntity(tile.worldObj);
+			TileEntity tileEntity = thisVec.getTileEntityOnSide(tile.worldObj, direction);
 
 			if (tileEntity instanceof IConnector)
 			{
@@ -898,7 +907,21 @@ public class WorldUtil
 					adjacentConnections[direction.ordinal()] = tileEntity;
 				}
 			}
-			else if (NetworkConfigHandler.isIndustrialCraft2Loaded() && tileEntity instanceof IEnergyTile)
+			else if (isMekLoaded && tileEntity instanceof IStrictEnergyAcceptor)
+			{
+				if (((IStrictEnergyAcceptor) tileEntity).canReceiveEnergy(direction.getOpposite()))
+				{
+					adjacentConnections[direction.ordinal()] = tileEntity;
+				}
+			}
+			else if (isTELoaded && tileEntity instanceof IEnergyHandler)
+			{
+				if (((IEnergyHandler) tileEntity).canInterface(direction.getOpposite()))
+				{
+					adjacentConnections[direction.ordinal()] = tileEntity;
+				}
+			}
+			else if (isIC2Loaded && tileEntity instanceof IEnergyTile)
 			{
 				if (tileEntity instanceof IEnergyAcceptor)
 				{
@@ -920,16 +943,9 @@ public class WorldUtil
 
 				adjacentConnections[direction.ordinal()] = tileEntity;
 			}
-			else if (NetworkConfigHandler.isBuildcraftLoaded() && tileEntity instanceof IPowerReceptor)
+			else if (isBCLoaded && tileEntity instanceof IPowerReceptor)
 			{
 				if (((IPowerReceptor) tileEntity).getPowerReceiver(direction.getOpposite()) != null)
-				{
-					adjacentConnections[direction.ordinal()] = tileEntity;
-				}
-			}
-			else if (NetworkConfigHandler.isThermalExpansionLoaded() && tileEntity instanceof IEnergyHandler)
-			{
-				if (((IEnergyHandler) tileEntity).canInterface(direction.getOpposite()))
 				{
 					adjacentConnections[direction.ordinal()] = tileEntity;
 				}

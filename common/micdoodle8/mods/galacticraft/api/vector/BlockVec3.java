@@ -293,6 +293,38 @@ public class BlockVec3 implements Cloneable
 		return world.getBlockTileEntity(this.x, this.y, this.z);
 	}
 
+	public TileEntity getTileEntityOnSide(World world, ForgeDirection side)
+	{
+		int x = this.x;
+		int y = this.y;
+		int z = this.z;
+		switch (side.ordinal())
+		{
+		case 0:
+			y--;
+			break;
+		case 1:
+			y++;
+			break;
+		case 2:
+			z--;
+			break;
+		case 3:
+			z++;
+			break;
+		case 4:
+			x--;
+			break;
+		case 5:
+			x++;
+			break;
+		}
+		if (world.blockExists(x, y, z))
+			return world.getBlockTileEntity(x, y, z);
+		else
+			return null;
+	}
+
 	public int getBlockMetadata(IBlockAccess world)
 	{
 		return world.getBlockMetadata(this.x, this.y, this.z);
