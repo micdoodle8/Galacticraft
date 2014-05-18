@@ -34,6 +34,7 @@ public abstract class GCCoreTileEntityUniversalConductor extends GCCoreTileEntit
 	protected boolean isAddedToEnergyNet;
 	public Object powerHandler;
 	public float buildcraftBuffer = NetworkConfigHandler.BC3_RATIO * 50;
+	private float IC2surplusJoules = 0F;
 
 	public GCCoreTileEntityUniversalConductor()
 	{
@@ -90,6 +91,7 @@ public abstract class GCCoreTileEntityUniversalConductor extends GCCoreTileEntit
 	@Override
 	public void invalidate()
 	{
+		this.IC2surplusJoules = 0F;
 		this.unloadTileIC2();
 		super.invalidate();
 	}
@@ -160,16 +162,34 @@ public abstract class GCCoreTileEntityUniversalConductor extends GCCoreTileEntit
 			return 0.0;
 		}
 
-		return ((IElectricityNetwork) this.getNetwork()).getRequest(this).getWatts() * NetworkConfigHandler.TO_IC2_RATIO;
+		if (this.IC2surplusJoules < 0.001F)
+		{
+			this.IC2surplusJoules = 0F;
+			return ((IElectricityNetwork) this.getNetwork()).getRequest(this).getWatts() * NetworkConfigHandler.TO_IC2_RATIO;
+		}
+		
+		ElectricityPack toSend = ElectricityPack.getFromWatts(IC2surplusJoules, 120F);
+		this.IC2surplusJoules = ((IElectricityNetwork) this.getNetwork()).produce(toSend, true, this);
+		if (this.IC2surplusJoules < 0.001F)
+		{
+			this.IC2surplusJoules = 0F;
+			return ((IElectricityNetwork) this.getNetwork()).getRequest(this).getWatts() * NetworkConfigHandler.TO_IC2_RATIO;
+		}
+		return 0D;
 	}
 
 	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
 	public double injectEnergyUnits(ForgeDirection directionFrom, double amount)
 	{
 		TileEntity tile = new BlockVec3(this).getTileEntityOnSide(this.worldObj, directionFrom);
-		ElectricityPack pack = ElectricityPack.getFromWatts((float) (amount * NetworkConfigHandler.IC2_RATIO), 120);
-		double returnvalue = ((IElectricityNetwork) this.getNetwork()).produce(pack, true, this, tile) * NetworkConfigHandler.TO_IC2_RATIO;
-		return returnvalue;
+		float convertedEnergy = (float) amount * NetworkConfigHandler.IC2_RATIO;
+		ElectricityPack pack = ElectricityPack.getFromWatts(convertedEnergy, 120F);
+		float surplus = ((IElectricityNetwork) this.getNetwork()).produce(pack, true, this, tile);
+
+		if (surplus >= 0.001F) this.IC2surplusJoules = surplus;
+		else this.IC2surplusJoules = 0F;
+
+		return Math.round(this.IC2surplusJoules * NetworkConfigHandler.TO_IC2_RATIO);
 	}
 
 	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")

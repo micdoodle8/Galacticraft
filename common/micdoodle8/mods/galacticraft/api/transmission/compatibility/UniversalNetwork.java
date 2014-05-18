@@ -113,7 +113,7 @@ public class UniversalNetwork extends ElectricityNetwork
 				}
 			}
 		}
-		return ElectricityPack.getFromWatts(this.totalRequested, 120F);
+		return ElectricityPack.getFromWatts(this.totalRequested - this.totalEnergy, 120F);
 	}
 	
 	@Override
