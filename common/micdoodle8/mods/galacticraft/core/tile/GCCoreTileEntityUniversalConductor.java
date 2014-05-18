@@ -1,18 +1,11 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import ic2.api.energy.tile.IEnergyAcceptor;
-import ic2.api.energy.tile.IEnergyEmitter;
-import ic2.api.energy.tile.IEnergyTile;
-
 import java.lang.reflect.Constructor;
 
-import cofh.api.energy.IEnergyHandler;
-import mekanism.api.energy.IStrictEnergyAcceptor;
 import micdoodle8.mods.galacticraft.api.transmission.ElectricityPack;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
 import micdoodle8.mods.galacticraft.api.transmission.core.grid.IElectricityNetwork;
-import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GCCoreAnnotations.RuntimeInterface;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;

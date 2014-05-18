@@ -492,9 +492,22 @@ public class UniversalNetwork extends ElectricityNetwork
 	{
 		if (network != null && network != this)
 		{
-			this.getTransmitters().addAll(network.getTransmitters());
-			this.refresh();
-			((UniversalNetwork) network).destroy();
+			Set<IConductor> thisNetwork = this.getTransmitters();
+			Set<IConductor> thatNetwork = network.getTransmitters();
+			if (thisNetwork.size() >= thatNetwork.size())
+			{
+				thisNetwork.addAll(thatNetwork);
+				this.refresh();
+				if (network instanceof UniversalNetwork) ((UniversalNetwork) network).destroy();
+				return this;
+			}
+			else
+			{
+				thatNetwork.addAll(thisNetwork);
+				network.refresh();
+				this.destroy();
+				return network;
+			}
 		}
 
 		return this;
