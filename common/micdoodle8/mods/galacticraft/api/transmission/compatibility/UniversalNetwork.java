@@ -220,6 +220,10 @@ public class UniversalNetwork extends ElectricityNetwork
 					{
 						e = ((IElectrical) acceptor).getRequest(sideFrom);
 					}
+					else if (isMekLoaded && acceptor instanceof IStrictEnergyAcceptor)
+					{
+						e = (float) ((((IStrictEnergyAcceptor) acceptor).getMaxEnergy() - ((IStrictEnergyAcceptor) acceptor).getEnergy()) * NetworkConfigHandler.MEKANISM_RATIO);
+					}
 					else if (isTELoaded && acceptor instanceof IEnergyHandler)
 					{
 						e = ((IEnergyHandler) acceptor).receiveEnergy(sideFrom, Integer.MAX_VALUE, true) * NetworkConfigHandler.TE_RATIO;
@@ -231,10 +235,6 @@ public class UniversalNetwork extends ElectricityNetwork
 					else if (isBCLoaded && acceptor instanceof IPowerReceptor)
 					{
 						e = ((IPowerReceptor) acceptor).getPowerReceiver(sideFrom).powerRequest() * NetworkConfigHandler.BC3_RATIO;
-					}
-					else if (isMekLoaded && acceptor instanceof IStrictEnergyAcceptor)
-					{
-						e = (float) ((((IStrictEnergyAcceptor) acceptor).getMaxEnergy() - ((IStrictEnergyAcceptor) acceptor).getEnergy()) * NetworkConfigHandler.MEKANISM_RATIO);
 					}
 					
 					if (e > 0.0F)
@@ -309,6 +309,12 @@ public class UniversalNetwork extends ElectricityNetwork
 					ElectricityPack electricityToSend = ElectricityPack.getFromWatts((float) currentSending, 120F);
 					sentToAcceptor = ((IElectrical) tileEntity).receiveElectricity(sideFrom, electricityToSend, true);
 				}
+				else if (isMekLoaded && tileEntity instanceof IStrictEnergyAcceptor)
+				{
+					IStrictEnergyAcceptor receiver = (IStrictEnergyAcceptor) tileEntity;
+					double mekToSend = currentSending * NetworkConfigHandler.TO_MEKANISM_RATIO;
+					sentToAcceptor = (float) receiver.transferEnergyToAcceptor(sideFrom, mekToSend);
+				}
 				else if (isTELoaded && tileEntity instanceof IEnergyHandler)
 				{
 					IEnergyHandler handler = (IEnergyHandler) tileEntity;
@@ -332,12 +338,6 @@ public class UniversalNetwork extends ElectricityNetwork
 						float bcToSend = (float) currentSending * NetworkConfigHandler.TO_BC_RATIO;
 						sentToAcceptor = receiver.receiveEnergy(Type.PIPE, Math.min(req, bcToSend), sideFrom) * NetworkConfigHandler.BC3_RATIO;
 					} else sentToAcceptor = 0F;
-				}
-				else if (isMekLoaded && tileEntity instanceof IStrictEnergyAcceptor)
-				{
-					IStrictEnergyAcceptor receiver = (IStrictEnergyAcceptor) tileEntity;
-					double mekToSend = currentSending * NetworkConfigHandler.TO_MEKANISM_RATIO;
-					sentToAcceptor = (float) receiver.transferEnergyToAcceptor(sideFrom, mekToSend);
 				}
 				else sentToAcceptor = 0F;
 				
@@ -439,6 +439,14 @@ public class UniversalNetwork extends ElectricityNetwork
 								this.connectedDirections.add(sideFrom);
 							}
 						}
+						else if (isMekLoaded && acceptor instanceof IStrictEnergyAcceptor)
+						{
+							if (((IStrictEnergyAcceptor) acceptor).canReceiveEnergy(sideFrom))
+							{
+								this.connectedAcceptors.add(acceptor);
+								this.connectedDirections.add(sideFrom);
+							}
+						}
 						else if (isTELoaded && acceptor instanceof IEnergyHandler)
 						{
 							if (((IEnergyHandler) acceptor).canInterface(sideFrom))
@@ -458,14 +466,6 @@ public class UniversalNetwork extends ElectricityNetwork
 						else if (isBCLoaded && acceptor instanceof IPowerReceptor)
 						{
 							if (((IPowerReceptor) acceptor).getPowerReceiver(sideFrom) != null)
-							{
-								this.connectedAcceptors.add(acceptor);
-								this.connectedDirections.add(sideFrom);
-							}
-						}
-						else if (isMekLoaded && acceptor instanceof IStrictEnergyAcceptor)
-						{
-							if (((IStrictEnergyAcceptor) acceptor).canReceiveEnergy(sideFrom))
 							{
 								this.connectedAcceptors.add(acceptor);
 								this.connectedDirections.add(sideFrom);
