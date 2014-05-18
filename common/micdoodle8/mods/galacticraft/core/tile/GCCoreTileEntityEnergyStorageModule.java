@@ -281,9 +281,10 @@ public class GCCoreTileEntityEnergyStorageModule extends GCCoreTileEntityUnivers
 				//No power provide to IC2 mod if it's a Galacticraft wire on the output.  Galacticraft network will provide the power.
 				return 0.0F;
 			else
-				return Math.min(12F, this.getEnergyStored());
+				return Math.min(3.75F, this.getEnergyStored());
 		}
-		return this.getElectricalOutputDirections().contains(direction) ? Math.min(12F, this.getEnergyStored()) : 0.0F;
+		//3.75kJ per tick = 75kW
+		return this.getElectricalOutputDirections().contains(direction) ? Math.min(3.75F, this.getEnergyStored()) : 0.0F;
 	}
 
 	@Override

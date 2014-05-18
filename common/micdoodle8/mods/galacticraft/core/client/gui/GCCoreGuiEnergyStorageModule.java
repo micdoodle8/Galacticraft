@@ -47,7 +47,7 @@ public class GCCoreGuiEnergyStorageModule extends GuiContainer
 		this.fontRenderer.drawString(this.tileEntity.getInvName(), this.xSize / 2 - this.fontRenderer.getStringWidth(this.tileEntity.getInvName()) / 2, 6, 4210752);
 		String displayMJ = ElectricityDisplay.roundDecimals(this.tileEntity.getEnergyStored()/1000F, 2) + " of " + ElectricityDisplay.getDisplayShort(this.tileEntity.getMaxEnergyStored(), ElectricUnit.JOULES);
 		String displayVoltage = "Voltage: " + (int) (this.tileEntity.getVoltage() * 1000.0F)+"V";
-		String displayOutput = "Max output: 12kW";
+		String displayOutput = "Max output: 75kW";
 
 		this.fontRenderer.drawString(displayMJ, 122 - this.fontRenderer.getStringWidth(displayMJ) / 2, 30, 4210752);
 		this.fontRenderer.drawString(displayVoltage, 122 - this.fontRenderer.getStringWidth(displayVoltage) / 2, 40, 4210752);
