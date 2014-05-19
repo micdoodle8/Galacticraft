@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets;
 
+import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModuleClient;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModuleClient;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -12,6 +13,7 @@ public class PlanetsProxyClient extends PlanetsProxy
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		GalacticraftPlanets.clientModules.put(GalacticraftPlanets.MODULE_KEY_MARS, new MarsModuleClient());
+		GalacticraftPlanets.clientModules.put(GalacticraftPlanets.MODULE_KEY_ASTEROIDS, new AsteroidsModuleClient());
 		
 		super.preInit(event);
 		

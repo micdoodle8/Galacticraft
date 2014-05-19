@@ -5,6 +5,7 @@ import java.util.Map;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import net.minecraft.block.Block;
 import cpw.mods.fml.common.Mod;
@@ -31,6 +32,7 @@ public class GalacticraftPlanets
 	public static Map<String, IPlanetsModuleClient> clientModules = new HashMap<String, IPlanetsModuleClient>();
 	
 	public static final String MODULE_KEY_MARS = "MarsModule";
+	public static final String MODULE_KEY_ASTEROIDS = "AsteroidsModule";
 
 	@SidedProxy(clientSide = "micdoodle8.mods.galacticraft.planets.PlanetsProxyClient", serverSide = "micdoodle8.mods.galacticraft.planets.PlanetsProxy")
 	public static PlanetsProxy proxy;
@@ -39,6 +41,7 @@ public class GalacticraftPlanets
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		commonModules.put(MODULE_KEY_MARS, new MarsModule());
+		commonModules.put(MODULE_KEY_ASTEROIDS, new AsteroidsModule());
 		proxy.preInit(event);
 	}
 
