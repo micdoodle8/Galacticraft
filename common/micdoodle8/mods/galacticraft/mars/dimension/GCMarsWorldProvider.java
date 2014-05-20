@@ -112,13 +112,15 @@ public class GCMarsWorldProvider extends WorldProvider implements IGalacticraftW
 	}
 
 	@Override
-	public void updateWeather()
-	{
+    public void updateWeather()
+    {
 		this.worldObj.getWorldInfo().setRainTime(0);
 		this.worldObj.getWorldInfo().setRaining(false);
 		this.worldObj.getWorldInfo().setThunderTime(0);
 		this.worldObj.getWorldInfo().setThundering(false);
-	}
+    	this.worldObj.rainingStrength = 0.0F;
+    	this.worldObj.thunderingStrength = 0.0F;
+    }
 
 	@Override
 	public boolean isSkyColored()
