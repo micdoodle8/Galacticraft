@@ -1,10 +1,15 @@
 package micdoodle8.mods.galacticraft.core;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraftforge.common.Configuration;
+
+import com.google.common.primitives.Ints;
 
 /**
  * GCCoreConfigManager.java
@@ -379,5 +384,44 @@ public class GCCoreConfigManager
 		}
 
 		return !found;
+	}
+
+	public static boolean setUnloaded(int idToRemove)
+	{
+		int foundCount = 0;
+
+		for (int staticLoadDimension : GCCoreConfigManager.staticLoadDimensions)
+		{
+			if (staticLoadDimension == idToRemove)
+			{
+				foundCount++;
+			}
+		}
+
+		if (foundCount > 0)
+		{
+			List<Integer> idArray = new ArrayList<Integer>(Ints.asList(GCCoreConfigManager.staticLoadDimensions));
+			idArray.removeAll(Collections.singleton((Integer)idToRemove));
+						
+			GCCoreConfigManager.staticLoadDimensions = new int[idArray.size()];
+			
+			for (int i = 0; i < idArray.size(); i++)
+			{
+				GCCoreConfigManager.staticLoadDimensions[i] = idArray.get(i);
+			}
+
+			String[] values = new String[GCCoreConfigManager.staticLoadDimensions.length];
+			Arrays.sort(GCCoreConfigManager.staticLoadDimensions);
+
+			for (int i = 0; i < values.length; i++)
+			{
+				values[i] = String.valueOf(GCCoreConfigManager.staticLoadDimensions[i]);
+			}
+
+			GCCoreConfigManager.configuration.get("DIMENSIONS", "Static Loaded Dimensions", GCCoreConfigManager.staticLoadDimensions, "IDs to load at startup, and keep loaded until server stops. Can be added via /gckeeploaded").set(values);
+			GCCoreConfigManager.configuration.save();
+		}
+
+		return foundCount > 0;
 	}
 }

@@ -72,7 +72,14 @@ public class GCCoreCommandKeepDim extends CommandBase
 					}
 					else
 					{
-						playerBase.sendChatToPlayer(ChatMessageComponent.createFromText("[GCKeepLoaded] Dimension " + dimID + " is already set as static!"));
+						if (GCCoreConfigManager.setUnloaded(dimID))
+						{
+							playerBase.sendChatToPlayer(ChatMessageComponent.createFromText("[GCKeepLoaded] Successfully set dimension " + dimID + " to not load staticly"));
+						}
+						else
+						{
+							playerBase.sendChatToPlayer(ChatMessageComponent.createFromText("[GCKeepLoaded] Failed to set dimension as not static"));
+						}
 					}
 				}
 			}
