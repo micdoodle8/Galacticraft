@@ -81,7 +81,7 @@ public class GCCoreEntityBuggy extends GCCoreEntityControllable implements IInve
 	public GCCoreEntityBuggy(World var1)
 	{
 		super(var1);
-		this.setSize(0.98F, 0.7F);
+		this.setSize(0.98F, 1.7F);
 		this.yOffset = 2.5F;
 		this.fuel = 0;
 		this.currentDamage = 18;
