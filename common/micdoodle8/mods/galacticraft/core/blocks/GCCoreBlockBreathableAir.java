@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol;
 import net.minecraft.block.Block;
+import net.minecraft.block.StepSound;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
@@ -29,6 +30,7 @@ public class GCCoreBlockBreathableAir extends Block
 		this.setHardness(0.0F);
 		this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
 		this.setUnlocalizedName(assetName);
+		this.setStepSound(new StepSound("sand", 0.0F, 1.0F));
 	}
 
 	@Override
