@@ -422,6 +422,8 @@ public class GCMarsEntitySlimeling extends EntityTameable implements IEntityBrea
 					GalacticraftMars.proxy.opengSlimelingGui(this, 0);
 				}
 			}
+			
+			return true;
 		}
 		else if (itemstack != null && itemstack.itemID == Item.slimeBall.itemID)
 		{
