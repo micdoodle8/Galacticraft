@@ -65,6 +65,19 @@ public class GCMoonBlock extends GCCoreBlockAdvancedTile implements IDetectableR
 	}
 
 	@Override
+    public boolean isBlockNormalCube(World world, int x, int y, int z)
+    {
+		if (world.getBlockMetadata(x, y, z) == 15)
+		{
+			return false;
+		}
+		else
+		{
+			return super.isBlockNormalCube(world, x, y, z);
+		}
+    }
+
+	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
 	{
 		if (world.getBlockMetadata(x, y, z) == 15)
@@ -73,6 +86,7 @@ public class GCMoonBlock extends GCCoreBlockAdvancedTile implements IDetectableR
 		}
 		else
 		{
+			this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 			super.setBlockBoundsBasedOnState(world, x, y, z);
 		}
 	}
@@ -89,6 +103,7 @@ public class GCMoonBlock extends GCCoreBlockAdvancedTile implements IDetectableR
 		}
 		else
 		{
+			this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 			super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, list, entity);
 		}
 	}

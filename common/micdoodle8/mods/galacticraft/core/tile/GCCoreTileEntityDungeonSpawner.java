@@ -58,7 +58,7 @@ public class GCCoreTileEntityDungeonSpawner extends GCCoreTileEntityAdvanced
 		
 		if (this.roomCoords == null)
 		{
-			this.roomCoords = new Vector3(this);
+			return;
 		}
 
 		if (!this.worldObj.isRemote)
