@@ -32,6 +32,7 @@ import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
 import cofh.api.energy.IEnergyContainerItem;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 
 /**
@@ -583,6 +584,7 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 	@RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "ThermalExpansion")
 	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate)
 	{
+		FMLLog.info("Attempting Receive: am=" + maxReceive + " conv=" + (maxReceive * NetworkConfigHandler.TE_RATIO) + " side=" + this.getElectricalInputDirections().contains(from));
 		if (!this.getElectricalInputDirections().contains(from))
 		{
 			return 0;
@@ -594,6 +596,7 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 	@RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "ThermalExpansion")
 	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate)
 	{
+		FMLLog.info("Attempting Extract: am=" + maxExtract + " conv=" + (maxExtract * NetworkConfigHandler.TE_RATIO) + " side=" + this.getElectricalOutputDirections().contains(from));
 		if (!this.getElectricalOutputDirections().contains(from))
 		{
 			return 0;
