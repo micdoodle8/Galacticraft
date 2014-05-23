@@ -33,7 +33,6 @@ import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
 import cofh.api.energy.IEnergyContainerItem;
 import cofh.api.energy.IEnergyHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 
 /**
@@ -247,7 +246,7 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 				{
 					if (!this.produceUE(outputDirection))
 					{
-						this.produceBuildCraft(outputDirection);
+						this.produceExternal(outputDirection);
 					}
 				}
 			}
@@ -369,7 +368,7 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 		}
 	}
 
-	public boolean produceBuildCraft(ForgeDirection outputDirection)
+	public boolean produceExternal(ForgeDirection outputDirection)
 	{
 		if (!this.worldObj.isRemote && outputDirection != null && outputDirection != ForgeDirection.UNKNOWN)
 		{
@@ -386,6 +385,7 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 						int teProvide = (int) Math.floor(provide * NetworkConfigHandler.TO_TE_RATIO);
 						int energyUsed = Math.min(((IEnergyHandler) adjacentEntity).receiveEnergy(outputDirection.getOpposite(), teProvide, false), teProvide);
 						this.provideElectricity(energyUsed * NetworkConfigHandler.TE_RATIO, true);
+						return true;
 					}
 				}
 				
@@ -595,7 +595,6 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 	@RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "ThermalExpansion")
 	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate)
 	{
-		FMLLog.info("Attempting Receive: am=" + maxReceive + " conv=" + (maxReceive * NetworkConfigHandler.TE_RATIO) + " side=" + this.getElectricalInputDirections().contains(from));
 		if (!this.getElectricalInputDirections().contains(from))
 		{
 			return 0;
@@ -607,7 +606,6 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 	@RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "ThermalExpansion")
 	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate)
 	{
-		FMLLog.info("Attempting Extract: am=" + maxExtract + " conv=" + (maxExtract * NetworkConfigHandler.TE_RATIO) + " side=" + this.getElectricalOutputDirections().contains(from));
 		if (!this.getElectricalOutputDirections().contains(from))
 		{
 			return 0;
