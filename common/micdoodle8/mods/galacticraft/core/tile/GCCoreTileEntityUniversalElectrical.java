@@ -32,6 +32,7 @@ import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
 import cofh.api.energy.IEnergyContainerItem;
+import cofh.api.energy.IEnergyHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 
@@ -376,13 +377,23 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 
 			if (this.getEnergyStored() >= provide && provide > 0)
 			{
+				TileEntity adjacentEntity = new Vector3(this).modifyPositionFromSide(outputDirection).getTileEntity(this.worldObj);
+				
+				if (NetworkConfigHandler.isThermalExpansionLoaded())
+				{
+					if (adjacentEntity instanceof IEnergyHandler)
+					{
+						int teProvide = (int) Math.floor(provide * NetworkConfigHandler.TO_TE_RATIO);
+						int energyUsed = Math.min(((IEnergyHandler) adjacentEntity).receiveEnergy(outputDirection.getOpposite(), teProvide, false), teProvide);
+						this.provideElectricity(energyUsed * NetworkConfigHandler.TE_RATIO, true);
+					}
+				}
+				
 				if (NetworkConfigHandler.isBuildcraftLoaded())
 				{
-					TileEntity tileEntity = new Vector3(this).modifyPositionFromSide(outputDirection).getTileEntity(this.worldObj);
-
-					if (tileEntity instanceof IPowerReceptor)
+					if (adjacentEntity instanceof IPowerReceptor)
 					{
-						PowerReceiver receiver = ((IPowerReceptor) tileEntity).getPowerReceiver(outputDirection.getOpposite());
+						PowerReceiver receiver = ((IPowerReceptor) adjacentEntity).getPowerReceiver(outputDirection.getOpposite());
 
 						if (receiver != null)
 						{
