@@ -401,7 +401,7 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 							{
 								float bc3Provide = provide * NetworkConfigHandler.TO_BC_RATIO;
 								float energyUsed = Math.min(receiver.receiveEnergy(Type.MACHINE, bc3Provide, outputDirection.getOpposite()), bc3Provide);
-								this.provideElectricity(energyUsed * NetworkConfigHandler.TO_BC_RATIO, true);
+								this.provideElectricity(energyUsed * NetworkConfigHandler.BC3_RATIO, true);
 							}
 						}
 
