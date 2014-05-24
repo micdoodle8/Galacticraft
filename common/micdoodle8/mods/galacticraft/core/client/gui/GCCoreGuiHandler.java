@@ -119,6 +119,10 @@ public class GCCoreGuiHandler implements IGuiHandler
 			{
 				return new GCCoreContainerCargoLoader(player.inventory, (GCCoreTileEntityCargoLoader) tile);
 			}
+			else if (tile instanceof GCCoreTileEntityCargoUnloader)
+			{
+				return new GCCoreContainerCargoLoader(player.inventory, (GCCoreTileEntityCargoUnloader) tile);
+			}
 			else if (tile instanceof GCCoreTileEntityParachest)
 			{
 				return new GCCoreContainerParachest(player.inventory, (GCCoreTileEntityParachest) tile);
