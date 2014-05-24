@@ -255,4 +255,10 @@ public class WorldProviderMars extends WorldProviderSpace implements IGalacticra
 	{
 		return MarsModule.planetMars;
 	}
+
+	@Override
+	public boolean hasBreathableAtmosphere()
+	{
+		return true;
+	}
 }

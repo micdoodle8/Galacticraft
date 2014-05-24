@@ -272,4 +272,10 @@ public class WorldProviderMoon extends WorldProviderSpace implements IGalacticra
 	{
 		return GalacticraftCore.moonMoon;
 	}
+
+	@Override
+	public boolean hasBreathableAtmosphere()
+	{
+		return true;
+	}
 }

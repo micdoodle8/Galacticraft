@@ -58,4 +58,11 @@ public interface IGalacticraftWorldProvider
 	 *         careful with the values you choose!
 	 */
 	public float getSoundVolReductionAmount();
+	
+	/**
+	 * Whether or not the atmopshere of this dimension is valid for players to breathe
+	 * 
+	 * @return True if players can breathe here, False if not.
+	 */
+	public boolean hasBreathableAtmosphere();
 }
