@@ -189,7 +189,7 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 	@Override
 	public void onLivingUpdate()
 	{
-		if (this.worldObj.provider instanceof WorldProviderOrbit && ((WorldProviderOrbit) this.worldObj.provider).doSpinning)
+		if (this.worldObj.provider instanceof WorldProviderOrbit)
 		{
 			((WorldProviderOrbit) this.worldObj.provider).spinUpdate(this);
 		}

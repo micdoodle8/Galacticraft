@@ -91,6 +91,9 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 	public boolean thrustersFiring = false;
 	private boolean dataNotLoaded = true;
 	private List<Entity> loadedEntities = new LinkedList();
+	private double pPrevMotionX=0D;
+	private double pPrevMotionY=0D;
+	private double pPrevMotionZ=0D;
 	
 	@Override
 	public void setDimension(int var1)
@@ -417,7 +420,13 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 	@Override
 	public float getGravity()
 	{
-		return 0.078F;//0.073F;
+		return 0.075F;//0.073F;
+	}
+
+	@Override
+	public boolean hasBreathableAtmosphere()
+	{
+		return false;
 	}
 
 	@Override
@@ -482,7 +491,6 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 	
 	public void spinUpdate(GCEntityClientPlayerMP p)
 	{
-		if (!this.doSpinning) return;
 		boolean freefall = true;
 		if (p.boundingBox.maxX >= this.ssBoundsMinX && p.boundingBox.minX <= this.ssBoundsMaxX && p.boundingBox.maxY >= this.ssBoundsMinY && p.boundingBox.minY <= this.ssBoundsMaxY && p.boundingBox.maxZ >= this.ssBoundsMinZ && p.boundingBox.minZ <= this.ssBoundsMaxZ)
 		{
@@ -591,7 +599,7 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 		{
 			doGravity = false;
 			//Do spinning
-			if (this.angularVelocityRadians!=0F)
+			if (this.doSpinning && this.angularVelocityRadians!=0F)
 			{
 				//TODO maybe need to test to make sure xx and zz are not too large (outside sight range of SS)
 				//TODO think about server + network load (loading/unloading chunks) when movement is rapid
@@ -654,11 +662,41 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 			p.motionX /= 0.91F;
 			p.motionZ /= 0.91F;
 			p.motionY /= 0.9800000190734863D;
+			if (!p.capabilities.isCreativeMode)
+			{
+				double dx = p.motionX - this.pPrevMotionX;
+				double dy = p.motionY - this.pPrevMotionY;
+				double dz = p.motionZ - this.pPrevMotionZ;
+				p.motionX -= dx*0.96D;
+				p.motionZ -= dz*0.96D;
+	            //if (p.capabilities.isFlying)
+	            {
+					p.motionY -= dy*0.9D;
+	            }
+	            //else
+	            {
+	            	if (p.movementInput.sneak)
+	                {
+	                    p.motionY -= 0.025D;
+	                }
+
+	                if (p.movementInput.jump)
+	                {
+	                    p.motionY += 0.025D;
+	                }
+	            }
+
+				if (p.motionX > 0.7F) p.motionX = 0.7F;
+				if (p.motionX < -0.7F) p.motionX = -0.7F;
+				if (p.motionZ > 0.7F) p.motionZ = 0.7F;
+				if (p.motionZ < -0.7F) p.motionZ = -0.7F;
+			} else
+			{
 			if (p.motionX > 1.2F) p.motionX = 1.2F;
 			if (p.motionX < -1.2F) p.motionX = -1.2F;
 			if (p.motionZ > 1.2F) p.motionZ = 1.2F;
 			if (p.motionZ < -1.2F) p.motionZ = -1.2F;
-
+			}
 			//TODO: Think about endless drift?
 			//Player may run out of oxygen - that will kill the player eventually if can't get back to SS
 			//Maybe player needs a 'suicide' button if floating helplessly in space and with no tether
@@ -666,6 +704,12 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 			//But we want players to be able to enjoy the view of the spinning space station from the outside
 			//Arm and leg movements could start tumbling the player?
 		}
+		else
+            if (p.movementInput.jump)
+            {
+                p.motionY += 0.2D;
+            }
+
 		
 		//Artificial gravity
 		if (doGravity)
@@ -708,6 +752,9 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 		
 		p.inFreefall = freefall;
 		p.inFreefallFirstCheck = true;
+		this.pPrevMotionX = p.motionX;
+		this.pPrevMotionY = p.motionY;
+		this.pPrevMotionZ = p.motionZ;
 	}
 	
 	public float getSpinRate()
@@ -1038,7 +1085,7 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 	
 	public void readFromNBT(NBTTagCompound nbt)
 	{
-		this.doSpinning = nbt.getBoolean("doSpinning");
+		this.doSpinning = true;//nbt.getBoolean("doSpinning");
 		this.angularVelocityRadians = nbt.getFloat("omegaRad");
 		this.skyAngularVelocity = nbt.getFloat("omegaSky");
 		this.angularVelocityTarget = nbt.getFloat("omegaTarget");
@@ -1115,12 +1162,6 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 		objList.add(Integer.valueOf(this.ssBoundsMinZ));
 		objList.add(Integer.valueOf(this.ssBoundsMaxZ));
 		GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_STATION_BOX, objList), player);
-	}
-
-	@Override
-	public boolean hasBreathableAtmosphere()
-	{
-		return true;
 	}
 
 	//TODO Occasional call to checkSS to update centre of mass etc (in case the player has been building)

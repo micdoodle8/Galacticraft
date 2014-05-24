@@ -276,6 +276,6 @@ public class WorldProviderMoon extends WorldProviderSpace implements IGalacticra
 	@Override
 	public boolean hasBreathableAtmosphere()
 	{
-		return true;
+		return false;
 	}
 }
