@@ -33,7 +33,6 @@ import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
 import cofh.api.energy.IEnergyContainerItem;
 import cofh.api.energy.IEnergyHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 
 /**
@@ -401,9 +400,7 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 							if (receiver.powerRequest() > 0)
 							{
 								float bc3Provide = provide * NetworkConfigHandler.TO_BC_RATIO;
-								FMLLog.info("BC3 Request: " + receiver.powerRequest() + " Provide: " + bc3Provide);
 								float energyUsed = Math.min(receiver.receiveEnergy(Type.MACHINE, bc3Provide, outputDirection.getOpposite()), bc3Provide);
-								FMLLog.info("\tUsed: " + energyUsed + " Converted: " + (energyUsed * NetworkConfigHandler.BC3_RATIO));
 								this.provideElectricity(energyUsed * NetworkConfigHandler.BC3_RATIO, true);
 							}
 						}
