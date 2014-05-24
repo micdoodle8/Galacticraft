@@ -91,11 +91,11 @@ public class UniversalNetwork extends ElectricityNetwork
 			//Start the new tick - initialise everything
 			doTickStartCalc(ignoreTiles);
 			
-			if (NetworkConfigHandler.isBuildcraftLoaded())
+/*			if (NetworkConfigHandler.isBuildcraftLoaded())
 			{
 				try
 				{
-					Class<?> clazz = Class.forName("micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityUniversalConductor");
+					Class<?> clazz = Class.forName("micdoodle8.mods.galacticraft.core.tile.TileEntityUniversalConductor");
 
 					for (IConductor wire : this.getTransmitters())
 					{
@@ -110,7 +110,7 @@ public class UniversalNetwork extends ElectricityNetwork
 				{
 					e.printStackTrace();
 				}
-			}
+			}*/
 		}
 		return ElectricityPack.getFromWatts(this.totalRequested - this.totalEnergy, 120F);
 	}
@@ -138,7 +138,7 @@ public class UniversalNetwork extends ElectricityNetwork
 				{
 					try
 					{
-						Class<?> clazz = Class.forName("micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerServer");
+						Class<?> clazz = Class.forName("micdoodle8.mods.galacticraft.core.tick.TickHandlerServer");
 						clazz.getMethod("scheduleNetworkTick", getClass()).invoke(null, this);
 					}
 					catch (Exception e)
@@ -521,7 +521,7 @@ public class UniversalNetwork extends ElectricityNetwork
 		this.totalRequested = 0F;
 		try
 		{
-			Class<?> clazz = Class.forName("micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerServer");
+			Class<?> clazz = Class.forName("micdoodle8.mods.galacticraft.core.tick.TickHandlerServer");
 			clazz.getMethod("removeNetworkTick", getClass()).invoke(null, this);
 		}
 		catch (Exception e)

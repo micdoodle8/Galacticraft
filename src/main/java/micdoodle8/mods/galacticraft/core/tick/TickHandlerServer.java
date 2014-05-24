@@ -130,6 +130,11 @@ public class TickHandlerServer
 		return false;
 	}
 	
+	public static void removeNetworkTick(UniversalNetwork grid)
+	{
+		TickHandlerServer.networkTicks.remove(grid);
+	}
+
 	@SubscribeEvent
 	public void onServerTick(ServerTickEvent event)
 	{

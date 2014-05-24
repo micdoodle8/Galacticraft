@@ -21,7 +21,8 @@ public abstract class TileEntityUniversalConductor extends TileEntityConductor
 {
 	protected boolean isAddedToEnergyNet;
 	public Object powerHandler;
-	public float buildcraftBuffer = NetworkConfigHandler.BC3_RATIO * 50;
+//	public float buildcraftBuffer = NetworkConfigHandler.BC3_RATIO * 50;
+//	private float IC2surplusJoules = 0F;
 
 	public TileEntityUniversalConductor()
 	{
@@ -31,13 +32,6 @@ public abstract class TileEntityUniversalConductor extends TileEntityConductor
 	@Override
 	public void onNetworkChanged()
 	{
-		if (NetworkConfigHandler.isBuildcraftLoaded())
-		{
-//			if (this instanceof IPowerReceptor)
-//			{
-//				this.reconfigureBC();
-//			}
-		}
 	}
 
 	private void initBC()
@@ -47,7 +41,6 @@ public abstract class TileEntityUniversalConductor extends TileEntityConductor
 //			if (this instanceof IPowerReceptor)
 //			{
 //				this.powerHandler = new PowerHandler((IPowerReceptor) this, Type.PIPE);
-//				this.reconfigureBC();
 //				((PowerHandler) this.powerHandler).configurePowerPerdition(0, 0);
 //			}
 		}
@@ -56,12 +49,7 @@ public abstract class TileEntityUniversalConductor extends TileEntityConductor
 	@Override
 	public TileEntity[] getAdjacentConnections()
 	{
-		if (this.adjacentConnections == null)
-		{
-			this.adjacentConnections = WorldUtil.getAdjacentPowerConnections(this);
-		}
-
-		return this.adjacentConnections;
+		return WorldUtil.getAdjacentPowerConnections(this);
 	}
 
 	@Override
@@ -92,6 +80,7 @@ public abstract class TileEntityUniversalConductor extends TileEntityConductor
 	@Override
 	public void invalidate()
 	{
+//		this.IC2surplusJoules = 0F;
 		this.unloadTileIC2();
 		super.invalidate();
 	}
@@ -162,15 +151,34 @@ public abstract class TileEntityUniversalConductor extends TileEntityConductor
 //			return 0.0;
 //		}
 //
-//		return ((IElectricityNetwork) this.getNetwork()).getRequest(this).getWatts() * NetworkConfigHandler.TO_IC2_RATIO;
+//		if (this.IC2surplusJoules < 0.001F)
+//		{
+//			this.IC2surplusJoules = 0F;
+//			return ((IElectricityNetwork) this.getNetwork()).getRequest(this).getWatts() * NetworkConfigHandler.TO_IC2_RATIO;
+//		}
+//		
+//		ElectricityPack toSend = ElectricityPack.getFromWatts(IC2surplusJoules, 120F);
+//		this.IC2surplusJoules = ((IElectricityNetwork) this.getNetwork()).produce(toSend, true, this);
+//		if (this.IC2surplusJoules < 0.001F)
+//		{
+//			this.IC2surplusJoules = 0F;
+//			return ((IElectricityNetwork) this.getNetwork()).getRequest(this).getWatts() * NetworkConfigHandler.TO_IC2_RATIO;
+//		}
+//		return 0D;
 //	}
 //
 //	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
 //	public double injectEnergyUnits(ForgeDirection directionFrom, double amount)
 //	{
-//		TileEntity tile = new Vector3(this).modifyPositionFromSide(directionFrom).getTileEntity(this.worldObj);
-//		ElectricityPack pack = ElectricityPack.getFromWatts((float) (amount * NetworkConfigHandler.IC2_RATIO), 120);
-//		return ((IElectricityNetwork) this.getNetwork()).produce(pack, true, this, tile) * NetworkConfigHandler.TO_IC2_RATIO;
+//		TileEntity tile = new BlockVec3(this).getTileEntityOnSide(this.worldObj, directionFrom);
+//		float convertedEnergy = (float) amount * NetworkConfigHandler.IC2_RATIO;
+//		ElectricityPack pack = ElectricityPack.getFromWatts(convertedEnergy, 120F);
+//		float surplus = ((IElectricityNetwork) this.getNetwork()).produce(pack, true, this, tile);
+//
+//		if (surplus >= 0.001F) this.IC2surplusJoules = surplus;
+//		else this.IC2surplusJoules = 0F;
+//
+//		return Math.round(this.IC2surplusJoules * NetworkConfigHandler.TO_IC2_RATIO);
 //	}
 //
 //	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
@@ -199,7 +207,7 @@ public abstract class TileEntityUniversalConductor extends TileEntityConductor
 //		return ((PowerHandler) this.powerHandler).getPowerReceiver();
 //	}
 //
-//	private void reconfigureBC()
+//	public void reconfigureBC()
 //	{
 //		float requiredEnergy = ((IElectricityNetwork) this.getNetwork()).getRequest(this).getWatts() * NetworkConfigHandler.TO_BC_RATIO;
 //		((PowerHandler) this.powerHandler).configure(1, requiredEnergy, 0, requiredEnergy);

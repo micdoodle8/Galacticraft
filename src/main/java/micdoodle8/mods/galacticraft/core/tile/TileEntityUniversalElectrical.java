@@ -36,6 +36,7 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 //	public float maxInputEnergy = 100;
 //	@NetworkedField(targetSide = Side.CLIENT)
 //	public float energyStored = 0;
+//	private float IC2surplus = 0F;
 
 	@Override
 	public double getPacketRange()
@@ -112,7 +113,7 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 //	@Override
 //	public float receiveElectricity(ForgeDirection from, ElectricityPack receive, boolean doReceive)
 //	{
-//		if (this.getElectricalInputDirections().contains(from))
+//		if (from == ForgeDirection.UNKNOWN || this.getElectricalInputDirections().contains(from))
 //		{
 //			if (!doReceive)
 //			{
@@ -122,7 +123,7 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 //			return this.receiveElectricity(receive, doReceive);
 //		}
 //
-//		return 0;
+//		return 0F;
 //	}
 
 //	@Override
@@ -273,7 +274,7 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 //				{
 //					if (!this.produceUE(outputDirection))
 //					{
-//						this.produceBuildCraft(outputDirection);
+//						this.produceExternal(outputDirection);
 //					}
 //				}
 //			}
@@ -395,7 +396,7 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 		}
 	}
 
-//	public boolean produceBuildCraft(ForgeDirection outputDirection)
+//	public boolean produceExternal(ForgeDirection outputDirection)
 //	{
 //		if (!this.worldObj.isRemote && outputDirection != null && outputDirection != ForgeDirection.UNKNOWN)
 //		{
@@ -403,13 +404,24 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 //
 //			if (this.getEnergyStored() >= provide && provide > 0)
 //			{
+//				TileEntity adjacentEntity = new Vector3(this).modifyPositionFromSide(outputDirection).getTileEntity(this.worldObj);
+//			
+//				if (NetworkConfigHandler.isThermalExpansionLoaded())
+//				{
+//					if (adjacentEntity instanceof IEnergyHandler)
+//					{
+//						int teProvide = (int) Math.floor(provide * NetworkConfigHandler.TO_TE_RATIO);
+//						int energyUsed = Math.min(((IEnergyHandler) adjacentEntity).receiveEnergy(outputDirection.getOpposite(), teProvide, false), teProvide);
+//						this.provideElectricity(energyUsed * NetworkConfigHandler.TE_RATIO, true);
+//						return true;
+//					}
+//				}
+//		
 ////				if (NetworkConfigHandler.isBuildcraftLoaded())
 ////				{
-////					TileEntity tileEntity = new Vector3(this).modifyPositionFromSide(outputDirection).getTileEntity(this.worldObj);
-////
-////					if (tileEntity instanceof IPowerReceptor)
+////					if (adjacentEntity instanceof IPowerReceptor)
 ////					{
-////						PowerReceiver receiver = ((IPowerReceptor) tileEntity).getPowerReceiver(outputDirection.getOpposite());
+////						PowerReceiver receiver = ((IPowerReceptor) adjacentEntity).getPowerReceiver(outputDirection.getOpposite());
 ////
 ////						if (receiver != null)
 ////						{
@@ -417,7 +429,7 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 ////							{
 ////								float bc3Provide = provide * NetworkConfigHandler.TO_BC_RATIO;
 ////								float energyUsed = Math.min(receiver.receiveEnergy(Type.MACHINE, bc3Provide, outputDirection.getOpposite()), bc3Provide);
-////								this.provideElectricity(energyUsed * NetworkConfigHandler.TO_BC_RATIO, true);
+////								this.provideElectricity(energyUsed * NetworkConfigHandler.BC3_RATIO, true);
 ////							}
 ////						}
 ////
@@ -521,17 +533,34 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 //	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
 //	public double demandedEnergyUnits()
 //	{
-//		return Math.ceil(this.getRequest(ForgeDirection.UNKNOWN) * NetworkConfigHandler.TO_IC2_RATIO);
+//		if (this.IC2surplus < 0.001F)
+//		{
+//			this.IC2surplus = 0F;
+//			return Math.ceil(this.getRequest(ForgeDirection.UNKNOWN) * NetworkConfigHandler.TO_IC2_RATIO);
+//		}
+//	
+//		ElectricityPack toSend = ElectricityPack.getFromWatts(IC2surplus, this.getVoltage());
+//		float received = this.receiveElectricity(ForgeDirection.UNKNOWN, toSend, true);
+//		IC2surplus -= received;
+//		if (this.IC2surplus < 0.001F)
+//		{
+//			this.IC2surplus = 0F;
+//			return Math.ceil(this.getRequest(ForgeDirection.UNKNOWN) * NetworkConfigHandler.TO_IC2_RATIO);
+//		}
+//		return 0D; 
 //	}
 //
 //	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
 //	public double injectEnergyUnits(ForgeDirection direction, double amount)
 //	{
-//		if (this.getElectricalInputDirections().contains(direction))
+//		if (direction == ForgeDirection.UNKNOWN || this.getElectricalInputDirections().contains(direction))
 //		{
-//			float convertedEnergy = (float) (amount * NetworkConfigHandler.IC2_RATIO);
+//			float convertedEnergy = (float) amount * NetworkConfigHandler.IC2_RATIO;
 //			ElectricityPack toSend = ElectricityPack.getFromWatts(convertedEnergy, this.getVoltage());
 //			float receive = this.receiveElectricity(direction, toSend, true);
+//
+//			if (convertedEnergy > receive) this.IC2surplus = convertedEnergy - receive;
+//			else this.IC2surplus = 0F;
 //
 //			// Return the difference, since injectEnergy returns left over
 //			// energy, and
@@ -630,7 +659,42 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 //	{
 //		return (int) Math.floor(this.getMaxEnergyStored() * NetworkConfigHandler.TO_TE_RATIO);
 //	}
+/*
+	@RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
+	public double transferEnergyToAcceptor(ForgeDirection from, double amount)
+	{
+		if (!this.getElectricalInputDirections().contains(from))
+		{
+			return 0;
+		}
 
+		return (int) Math.floor(this.receiveElectricity((float)amount * NetworkConfigHandler.MEKANISM_RATIO, true));
+	}
+
+	@RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
+	public boolean canReceiveEnergy(ForgeDirection side)
+	{
+		return this.getElectricalInputDirections().contains(side) || this.getElectricalOutputDirections().contains(side);
+	}
+
+	@RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
+	public double getEnergy()
+	{
+		return this.getEnergyStored() * NetworkConfigHandler.TO_MEKANISM_RATIO;
+	}
+
+	@RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
+	public void setEnergy(double energy)
+	{
+		this.setEnergyStored((float) (energy * NetworkConfigHandler.MEKANISM_RATIO));
+	}
+
+	@RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
+	public double getMaxEnergy()
+	{
+		return this.getMaxEnergyStored() * NetworkConfigHandler.MEKANISM_RATIO;
+	}*/
+	
 	@Override
 	public ReceiverMode getModeFromDirection(ForgeDirection direction) 
 	{

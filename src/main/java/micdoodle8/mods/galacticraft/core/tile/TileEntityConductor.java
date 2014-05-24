@@ -72,9 +72,9 @@ public abstract class TileEntityConductor extends TileEntityAdvanced implements 
 
 			this.getNetwork().refresh();
 
+			BlockVec3 thisVec = new BlockVec3(this);
 			for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS)
 			{
-				BlockVec3 thisVec = new BlockVec3(this);
 				TileEntity tileEntity = thisVec.getTileEntityOnSide(this.worldObj, side);
 
 				if (tileEntity != null)
