@@ -273,13 +273,13 @@ public class GCCoreTileEntityCargoLoader extends GCCoreTileEntityElectricBlock i
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side)
 	{
-		return side == ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite().ordinal() ? new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 } : new int[] {};
+		return side != this.getBlockMetadata() + 2 ? new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 } : new int[] {};
 	}
 
 	@Override
 	public boolean canInsertItem(int slotID, ItemStack itemstack, int side)
 	{
-		if (side == ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite().ordinal())
+		if (side != this.getBlockMetadata() + 2)
 		{
 			if (slotID == 0)
 			{
