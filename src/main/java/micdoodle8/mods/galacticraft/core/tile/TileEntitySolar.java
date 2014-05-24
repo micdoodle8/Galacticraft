@@ -342,6 +342,29 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 		nbt.setTag("Items", list);
 	}
 
+	/*@Override
+	public float getRequest(ForgeDirection direction)
+	{
+		return 0;
+	}
+
+	@Override
+	public float getProvide(ForgeDirection direction)
+	{
+		if (direction == ForgeDirection.UNKNOWN && NetworkConfigHandler.isIndustrialCraft2Loaded())
+		{
+			BlockVec3 vec = new BlockVec3(this).modifyPositionFromSide(ForgeDirection.getOrientation(this.getBlockMetadata() - GCCoreBlockMachine.STORAGE_MODULE_METADATA + 2), 1);
+			TileEntity tile = vec.getTileEntity(this.worldObj);
+			if (tile instanceof IConductor)
+				//No power provide to IC2 mod if it's a Galacticraft wire on the output.  Galacticraft network will provide the power.
+				return 0.0F;
+			else
+				return Math.min(Math.max(this.getEnergyStored(), 0F), 1300F);
+		}
+		
+		return this.getElectricalOutputDirections().contains(direction) ? Math.min(Math.max(this.getEnergyStored(), 0F), 1300F) : 0F;
+	}*/
+
 	@Override
 	public EnumSet<ForgeDirection> getElectricalInputDirections()
 	{

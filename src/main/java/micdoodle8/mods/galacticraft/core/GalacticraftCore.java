@@ -450,7 +450,7 @@ public class GalacticraftCore
 		GCCoreUtil.registerGalacticraftNonMobEntity(EntityArrow.class, "GravityArrow", ConfigManagerCore.idEntityAntiGravityArrow, 150, 5, true);
 		GCCoreUtil.registerGalacticraftNonMobEntity(EntityMeteor.class, "Meteor", ConfigManagerCore.idEntityMeteor, 150, 5, true);
 		GCCoreUtil.registerGalacticraftNonMobEntity(EntityBuggy.class, "Buggy", ConfigManagerCore.idEntityBuggy, 150, 5, true);
-		GCCoreUtil.registerGalacticraftNonMobEntity(EntityFlag.class, "Flag", ConfigManagerCore.idEntityFlag, 150, 5, true);
+		GCCoreUtil.registerGalacticraftNonMobEntity(EntityFlag.class, "GCFlag", ConfigManagerCore.idEntityFlag, 150, 5, true);
 		GCCoreUtil.registerGalacticraftNonMobEntity(EntityParachest.class, "ParaChest", ConfigManagerCore.idEntityParaChest, 150, 5, true);
 		GCCoreUtil.registerGalacticraftNonMobEntity(EntityBubble.class, "OxygenBubble", ConfigManagerCore.idEntityOxygenBubble, 150, 20, false);
 		GCCoreUtil.registerGalacticraftNonMobEntity(EntityLander.class, "Lander", ConfigManagerCore.idEntityLander, 150, 5, false);

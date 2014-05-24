@@ -41,9 +41,13 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
 
 	public TileEntityOxygenCollector()
 	{
+<<<<<<< HEAD:src/main/java/micdoodle8/mods/galacticraft/core/tile/TileEntityOxygenCollector.java
 		super(1200, 0);
 		this.storage.setMaxExtract(200);
 		this.storage.setCapacity(50000);
+=======
+		super(GCCoreTileEntityOxygenCollector.WATTS_PER_TICK, 50, 6000, 0);
+>>>>>>> 58f48f8b7e9a89c745a63e4440ff91be6c07e9bf:common/micdoodle8/mods/galacticraft/core/tile/GCCoreTileEntityOxygenCollector.java
 	}
 
 	@Override
@@ -98,14 +102,26 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
 			// }
 			// }
 
+<<<<<<< HEAD:src/main/java/micdoodle8/mods/galacticraft/core/tile/TileEntityOxygenCollector.java
 			// The later calculations are more efficient if power is a float, so
 			// there are fewer casts
 			float power = 0;
 
 			if (this.getEnergyStoredGC() > 0)
+=======
+			//Approximately once every 40 ticks, search out oxygen producing blocks
+			if (this.worldObj.rand.nextInt(10) == 0)
 			{
+				if (this.getEnergyStored() > 0) 
+>>>>>>> 58f48f8b7e9a89c745a63e4440ff91be6c07e9bf:common/micdoodle8/mods/galacticraft/core/tile/GCCoreTileEntityOxygenCollector.java
+			{
+				// The later calculations are more efficient if power is a float, so
+				// there are fewer casts
+				float power = 0;
 				if (this.worldObj.provider instanceof IGalacticraftWorldProvider)
 				{
+					int breatheableAirID = GCCoreBlocks.breatheableAir.blockID;
+
 					// Pre-test to see if close to the map edges, so code
 					// doesn't have to continually test for map edges inside the
 					// loop
@@ -157,7 +173,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
 									{
 										if (block.isLeaves(this.worldObj, x, y, z) || block instanceof IPlantable && ((IPlantable) block).getPlantType(this.worldObj, x, y, z) == EnumPlantType.Crop)
 										{
-											power += 0.075F;
+											power += 0.075F * 10F;
 										}
 									}
 								}
@@ -167,18 +183,19 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
 				}
 				else
 				{
-					power = 9.3F;
+					power = 9.3F * 10F;
 				}
 
 				power = (float) Math.floor(power);
 
-				this.lastOxygenCollected = power;
+				this.lastOxygenCollected = power / 10F;
 
 				this.storedOxygen = (int) Math.max(Math.min(this.storedOxygen + power, this.maxOxygen), 0);
 			}
 			else
 			{
 				this.lastOxygenCollected = 0;
+			}
 			}
 		}
 	}

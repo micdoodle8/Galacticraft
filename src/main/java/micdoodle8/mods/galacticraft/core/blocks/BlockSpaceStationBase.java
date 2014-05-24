@@ -51,19 +51,40 @@ public class BlockSpaceStationBase extends BlockContainer implements ITileEntity
 		this.spaceStationIcons = new IIcon[2];
 		this.spaceStationIcons[0] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "space_station_top");
 		this.spaceStationIcons[1] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "space_station_side");
+		this.blockIcon = this.spaceStationIcons[0];
 	}
+<<<<<<< HEAD:src/main/java/micdoodle8/mods/galacticraft/core/blocks/BlockSpaceStationBase.java
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
 	{
 		switch (par5)
+=======
+	
+    public Icon getIcon(int par1, int par2)
+    {
+		switch (par1)
+>>>>>>> 58f48f8b7e9a89c745a63e4440ff91be6c07e9bf:common/micdoodle8/mods/galacticraft/core/blocks/GCCoreBlockSpaceStationBase.java
 		{
 		case 1:
 			return this.spaceStationIcons[0];
 		default:
 			return this.spaceStationIcons[1];
 		}
+    }
+
+	@Override
+	public void breakBlock(World var1, int var2, int var3, int var4, int var5, int var6)
+	{
+		final TileEntity tileAt = var1.getBlockTileEntity(var2, var3, var4);
+
+		if (tileAt instanceof IMultiBlock)
+		{
+			((IMultiBlock) tileAt).onDestroy(tileAt);
+		}
+
+		super.breakBlock(var1, var2, var3, var4, var5, var6);
 	}
 
 	@Override

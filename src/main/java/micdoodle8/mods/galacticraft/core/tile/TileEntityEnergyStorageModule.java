@@ -9,12 +9,14 @@ import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine;
 import micdoodle8.mods.galacticraft.core.blocks.BlockSolar;
+//import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -264,17 +266,28 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 
 	}
 
-//	@Override
-//	public float getRequest(ForgeDirection direction)
-//	{
-//		return this.getElectricalInputDirections().contains(direction) ? this.getMaxEnergyStored() - this.getEnergyStored() : 0;
-//	}
-//
-//	@Override
-//	public float getProvide(ForgeDirection direction)
-//	{
-//		return this.getElectricalOutputDirections().contains(direction) ? Math.min(1.3F, this.getEnergyStored()) : 0;
-//	}
+	/*@Override
+	public float getRequest(ForgeDirection direction)
+	{
+		return this.getElectricalInputDirections().contains(direction) ? this.getMaxEnergyStored() - this.getEnergyStored() : 0;
+	}
+
+	@Override
+	public float getProvide(ForgeDirection direction)
+	{
+		if (direction == ForgeDirection.UNKNOWN && NetworkConfigHandler.isIndustrialCraft2Loaded())
+		{
+			BlockVec3 vec = new BlockVec3(this).modifyPositionFromSide(ForgeDirection.getOrientation(this.getBlockMetadata() - GCCoreBlockMachine.STORAGE_MODULE_METADATA + 2), 1);
+			TileEntity tile = vec.getTileEntity(this.worldObj);
+			if (tile instanceof IConductor)
+				//No power provide to IC2 mod if it's a Galacticraft wire on the output.  Galacticraft network will provide the power.
+				return 0.0F;
+			else
+				return Math.min(3.75F, this.getEnergyStored());
+		}
+		//3.75kJ per tick = 75kW
+		return this.getElectricalOutputDirections().contains(direction) ? Math.min(3.75F, this.getEnergyStored()) : 0.0F;
+	}*/
 
 	@Override
 	public EnumSet<ForgeDirection> getElectricalInputDirections()
@@ -303,7 +316,7 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 //	@Override
 //	public float getMaxEnergyStored()
 //	{
-//		return 2500;
+//		return 2500F;
 //	}
 	
 }

@@ -212,46 +212,57 @@ public class ModelPlayerGC extends ModelBiped
 		final Render render = RenderManager.instance.getEntityClassRenderObject(entityClass);
 		final ModelBiped modelBipedMain = ((RenderPlayerGC) render).getModel();
 
-		this.setRotationAngles(var2, var3, var4, var5, var6, var7, var1);
+		this.usingParachute = false;
+		this.wearingMask = false;
+		this.wearingGear = false;
+		this.wearingLeftTankGreen = false;
+		this.wearingLeftTankOrange = false;
+		this.wearingLeftTankRed = false;
+		this.wearingRightTankGreen = false;
+		this.wearingRightTankOrange = false;
+		this.wearingRightTankRed = false;
+		this.wearingFrequencyModule = false;
+		
+		final EntityPlayer player = (EntityPlayer) var1;
+		PlayerGearData gearData = null;
 
-		if (var1 instanceof AbstractClientPlayer && this.equals(modelBipedMain))
+		for (PlayerGearData gearData2 : ClientProxyCore.playerItemData)
 		{
-			final EntityPlayer player = (EntityPlayer) var1;
-			PlayerGearData gearData = null;
-
-			for (PlayerGearData gearData2 : ClientProxyCore.playerItemData)
+			if (gearData2.getPlayer().username.equals(player.username))
 			{
+<<<<<<< HEAD:src/main/java/micdoodle8/mods/galacticraft/core/client/model/ModelPlayerGC.java
 				if (gearData2.getPlayer().getGameProfile().getName().equals(player.getGameProfile().getName()))
 				{
 					gearData = gearData2;
 					break;
 				}
+=======
+				gearData = gearData2;
+				break;
+>>>>>>> 58f48f8b7e9a89c745a63e4440ff91be6c07e9bf:common/micdoodle8/mods/galacticraft/core/client/model/GCCoreModelPlayer.java
 			}
+		}
+		
+		if (gearData != null)
+		{
+			this.usingParachute = gearData.getParachute() != null;
+			this.wearingMask = gearData.getMask() > -1;
+			this.wearingGear = gearData.getGear() > -1;
+			this.wearingLeftTankGreen = gearData.getLeftTank() == 0;
+			this.wearingLeftTankOrange = gearData.getLeftTank() == 1;
+			this.wearingLeftTankRed = gearData.getLeftTank() == 2;
+			this.wearingRightTankGreen = gearData.getRightTank() == 0;
+			this.wearingRightTankOrange = gearData.getRightTank() == 1;
+			this.wearingRightTankRed = gearData.getRightTank() == 2;
+			this.wearingFrequencyModule = gearData.getFrequencyModule() > -1;
+		}
 
-			this.usingParachute = false;
-			this.wearingMask = false;
-			this.wearingGear = false;
-			this.wearingLeftTankGreen = false;
-			this.wearingLeftTankOrange = false;
-			this.wearingLeftTankRed = false;
-			this.wearingRightTankGreen = false;
-			this.wearingRightTankOrange = false;
-			this.wearingRightTankRed = false;
-			this.wearingFrequencyModule = false;
+		this.setRotationAngles(var2, var3, var4, var5, var6, var7, var1);
 
+		if (var1 instanceof AbstractClientPlayer && this.equals(modelBipedMain))
+		{
 			if (gearData != null)
 			{
-				this.usingParachute = gearData.getParachute() != null;
-				this.wearingMask = gearData.getMask() > -1;
-				this.wearingGear = gearData.getGear() > -1;
-				this.wearingLeftTankGreen = gearData.getLeftTank() == 0;
-				this.wearingLeftTankOrange = gearData.getLeftTank() == 1;
-				this.wearingLeftTankRed = gearData.getLeftTank() == 2;
-				this.wearingRightTankGreen = gearData.getRightTank() == 0;
-				this.wearingRightTankOrange = gearData.getRightTank() == 1;
-				this.wearingRightTankRed = gearData.getRightTank() == 2;
-				this.wearingFrequencyModule = gearData.getFrequencyModule() > -1;
-
 				if (this.wearingMask)
 				{
 					FMLClientHandler.instance().getClient().renderEngine.bindTexture(ModelPlayerGC.oxygenMaskTexture);

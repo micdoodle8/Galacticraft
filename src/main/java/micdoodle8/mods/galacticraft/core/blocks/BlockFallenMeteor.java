@@ -206,4 +206,10 @@ public class BlockFallenMeteor extends Block implements ITileEntityProvider
 	{
 		return new TileEntityFallenMeteor();
 	}
+	
+	@Override
+	public boolean canSilkHarvest()
+	{
+		return true;
+	}
 }

@@ -1,14 +1,19 @@
 package micdoodle8.mods.galacticraft.core.util;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.common.config.Configuration;
 
+import com.google.common.primitives.Ints;
+
 /**
- * GCCoreConfigManager.java
+ * ConfigManagerCore.java
  * 
  * This file is part of the Galacticraft project
  * 
@@ -93,6 +98,8 @@ public class ConfigManagerCore
 	public static boolean disableTinMoon;
 	public static boolean disableCopperMoon;
 	public static boolean disableMoonVillageGen;
+	public static boolean enableSealerMultithreading;
+	public static boolean enableSealerEdgeChecks;
 
 	public static void setDefaultValues(File file)
 	{
@@ -163,6 +170,8 @@ public class ConfigManagerCore
 			ConfigManagerCore.externalOilGen = ConfigManagerCore.configuration.get(Configuration.CATEGORY_GENERAL, "Oil gen in external dimensions", new int[] { 0 }, "List of non-galacticraft dimension IDs to generate oil in").getIntList();
 			ConfigManagerCore.forceOverworldRespawn = ConfigManagerCore.configuration.get(Configuration.CATEGORY_GENERAL, "Force Overworld Spawn", false, "By default, you will respawn on galacticraft dimensions if you die. If you set this to true, you will respawn back on earth.").getBoolean(false);
 			ConfigManagerCore.enableDebug = ConfigManagerCore.configuration.get(Configuration.CATEGORY_GENERAL, "Enable Debug Messages", false, "If this is enabled, debug messages will appear in the console. This is useful for finding bugs in the mod.").getBoolean(false);
+			ConfigManagerCore.enableSealerMultithreading = ConfigManagerCore.configuration.get(Configuration.CATEGORY_GENERAL, "Enable Sealer Multithreading", false, "(Experimental) If this is enabled, Oxygen Sealers seal checks will run in a separate thread - faster but there may be block deletions or other severe artifacts.").getBoolean(false);
+			ConfigManagerCore.enableSealerEdgeChecks = ConfigManagerCore.configuration.get(Configuration.CATEGORY_GENERAL, "Enable Sealed edge checks", true, "If this is enabled, areas sealed by Oxygen Sealers will run a seal check when the player breaks or places a block (or on block updates).  This should be enabled for a 100% accurate sealed status is accurate, but can be disabled on servers for performance reasons.").getBoolean(true);
 			ConfigManagerCore.enableCopperOreGen = ConfigManagerCore.configuration.get(Configuration.CATEGORY_GENERAL, "Enable Copper Ore Gen", true, "If this is enabled, copper ore will generate on the overworld.").getBoolean(true);
 			ConfigManagerCore.enableTinOreGen = ConfigManagerCore.configuration.get(Configuration.CATEGORY_GENERAL, "Enable Tin Ore Gen", true, "If this is enabled, tin ore will generate on the overworld.").getBoolean(true);
 			ConfigManagerCore.enableAluminumOreGen = ConfigManagerCore.configuration.get(Configuration.CATEGORY_GENERAL, "Enable Aluminum Ore Gen", true, "If this is enabled, aluminum ore will generate on the overworld.").getBoolean(true);
@@ -224,5 +233,44 @@ public class ConfigManagerCore
 		}
 
 		return !found;
+	}
+	
+	public static boolean setUnloaded(int idToRemove)
+	{
+		int foundCount = 0;
+
+		for (int staticLoadDimension : ConfigManagerCore.staticLoadDimensions)
+		{
+			if (staticLoadDimension == idToRemove)
+			{
+				foundCount++;
+			}
+		}
+
+		if (foundCount > 0)
+		{
+			List<Integer> idArray = new ArrayList<Integer>(Ints.asList(ConfigManagerCore.staticLoadDimensions));
+			idArray.removeAll(Collections.singleton((Integer)idToRemove));
+
+			ConfigManagerCore.staticLoadDimensions = new int[idArray.size()];
+
+			for (int i = 0; i < idArray.size(); i++)
+			{
+				ConfigManagerCore.staticLoadDimensions[i] = idArray.get(i);
+			}
+
+			String[] values = new String[ConfigManagerCore.staticLoadDimensions.length];
+			Arrays.sort(ConfigManagerCore.staticLoadDimensions);
+
+			for (int i = 0; i < values.length; i++)
+			{
+				values[i] = String.valueOf(ConfigManagerCore.staticLoadDimensions[i]);
+			}
+
+			ConfigManagerCore.configuration.get("DIMENSIONS", "Static Loaded Dimensions", ConfigManagerCore.staticLoadDimensions, "IDs to load at startup, and keep loaded until server stops. Can be added via /gckeeploaded").set(values);
+			ConfigManagerCore.configuration.save();
+		}
+
+		return foundCount > 0;
 	}
 }

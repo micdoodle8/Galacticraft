@@ -22,7 +22,7 @@ public class InventoryRocketBench implements IInventory
 
 	public InventoryRocketBench(Container par1Container)
 	{
-		final int var4 = 20;
+		final int var4 = 18;
 		this.stackList = new ItemStack[var4];
 		this.eventHandler = par1Container;
 		this.inventoryWidth = 5;
@@ -45,6 +45,7 @@ public class InventoryRocketBench implements IInventory
 		if (par1 >= 0 && par1 < this.inventoryWidth)
 		{
 			final int var3 = par1 + par2 * this.inventoryWidth;
+			if (var3>=18) return null;
 			return this.getStackInSlot(var3);
 		}
 		else

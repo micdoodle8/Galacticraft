@@ -6,7 +6,7 @@ import micdoodle8.mods.galacticraft.core.items.ItemSensorGlasses;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.entity.RenderLiving;
+import net.minecraft.client.renderer.entity.RenderCreeper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityCreeper;
@@ -30,7 +30,11 @@ import cpw.mods.fml.relauncher.SideOnly;
  * 
  */
 @SideOnly(Side.CLIENT)
+<<<<<<< HEAD:src/main/java/micdoodle8/mods/galacticraft/core/client/render/entities/RenderEvolvedCreeper.java
 public class RenderEvolvedCreeper extends RenderLiving
+=======
+public class GCCoreRenderCreeper extends RenderCreeper
+>>>>>>> 58f48f8b7e9a89c745a63e4440ff91be6c07e9bf:common/micdoodle8/mods/galacticraft/core/client/render/entities/GCCoreRenderCreeper.java
 {
 	private static final ResourceLocation creeperTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/creeper.png");
 	private static final ResourceLocation powerTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/power.png");
@@ -39,7 +43,12 @@ public class RenderEvolvedCreeper extends RenderLiving
 
 	public RenderEvolvedCreeper()
 	{
+<<<<<<< HEAD:src/main/java/micdoodle8/mods/galacticraft/core/client/render/entities/RenderEvolvedCreeper.java
 		super(new ModelEvolvedCreeper(), 0.5F);
+=======
+		super();
+		this.mainModel = new GCCoreModelCreeper();
+>>>>>>> 58f48f8b7e9a89c745a63e4440ff91be6c07e9bf:common/micdoodle8/mods/galacticraft/core/client/render/entities/GCCoreRenderCreeper.java
 	}
 
 	protected ResourceLocation func_110779_a(EntityCreeper par1EntityArrow)
@@ -148,7 +157,7 @@ public class RenderEvolvedCreeper extends RenderLiving
 			}
 		}
 
-		return -1;
+		return super.renderCreeperPassModel(par1GCEntityCreeper, par2, par3);
 	}
 
 	protected int func_77061_b(EntityCreeper par1GCEntityCreeper, int par2, float par3)

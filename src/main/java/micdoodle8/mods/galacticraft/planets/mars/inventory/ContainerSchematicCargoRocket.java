@@ -133,15 +133,17 @@ public class ContainerSchematicCargoRocket extends Container
 			final ItemStack var4 = var3.getStack();
 			var2 = var4.copy();
 
-			if (par1 <= 17)
+			boolean done = false;
+			if (par1 <= 16)
 			{
-				if (!this.mergeItemStack(var4, 18, 46, false))
+				if (!this.mergeItemStack(var4, 17, 53, false))
 				{
 					return null;
 				}
 
 				var3.onSlotChange(var4, var2);
 			}
+<<<<<<< HEAD:src/main/java/micdoodle8/mods/galacticraft/planets/mars/inventory/ContainerSchematicCargoRocket.java
 			else if (var2.getItem() == GCItems.partNoseCone && !((Slot) this.inventorySlots.get(1)).getHasStack())
 			{
 				if (!this.mergeItemStack(var4, 1, 2, false))
@@ -269,15 +271,66 @@ public class ContainerSchematicCargoRocket extends Container
 				}
 			}
 			else if (par1 >= 37 && par1 < 46)
+=======
+			else
+>>>>>>> 58f48f8b7e9a89c745a63e4440ff91be6c07e9bf:common/micdoodle8/mods/galacticraft/mars/inventory/GCMarsContainerCargoRocketBench.java
 			{
-				if (!this.mergeItemStack(var4, 18, 37, false))
+				for (int i = 1; i < 14; i++)
 				{
-					return null;
+					Slot testSlot = (Slot) this.inventorySlots.get(i); 
+					if (!testSlot.getHasStack() && testSlot.isItemValid(var2))
+					{
+						if (!this.mergeItemStack(var4, i, i+1, false))
+						{
+							return null;
+						}
+						done = true;
+						break;
+					}
 				}
-			}
-			else if (!this.mergeItemStack(var4, 18, 46, false))
-			{
-				return null;
+				
+				if (!done)
+				{
+					if (var2.getItem().itemID == Block.chest.blockID && !((Slot) this.inventorySlots.get(14)).getHasStack())
+					{
+						if (!this.mergeItemStack(var4, 14, 15, false))
+						{
+							return null;
+						}
+					}
+					else if (var2.getItem().itemID == Block.chest.blockID && !((Slot) this.inventorySlots.get(15)).getHasStack())
+					{
+						if (!this.mergeItemStack(var4, 15, 16, false))
+						{
+							return null;
+						}
+					}
+					else if (var2.getItem().itemID == Block.chest.blockID && !((Slot) this.inventorySlots.get(16)).getHasStack())
+					{
+						if (!this.mergeItemStack(var4, 16, 17, false))
+						{
+							return null;
+						}
+					}
+					else if (par1 >= 17 && par1 < 44)
+					{
+						if (!this.mergeItemStack(var4, 44, 53, false))
+						{
+							return null;
+						}
+					}
+					else if (par1 >= 44 && par1 < 53)
+					{
+						if (!this.mergeItemStack(var4, 17, 44, false))
+						{
+							return null;
+						}
+					}
+					else if (!this.mergeItemStack(var4, 17, 53, false))
+					{
+						return null;
+					}
+				}
 			}
 
 			if (var4.stackSize == 0)

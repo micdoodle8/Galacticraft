@@ -6,7 +6,11 @@ import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
+<<<<<<< HEAD:src/main/java/micdoodle8/mods/galacticraft/core/blocks/BlockNasaWorkbench.java
 import micdoodle8.mods.galacticraft.core.tile.TileEntityNasaWorkbench;
+=======
+import micdoodle8.mods.galacticraft.core.util.EnumColor;
+>>>>>>> 58f48f8b7e9a89c745a63e4440ff91be6c07e9bf:common/micdoodle8/mods/galacticraft/core/blocks/GCCoreBlockAdvancedCraftingTable.java
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
@@ -117,25 +121,56 @@ public class BlockNasaWorkbench extends BlockContainer implements ITileEntityPro
 	}
 
 	@Override
-	public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4)
+	public boolean canPlaceBlockAt(World par1World, int x0, int y0, int z0)
 	{
-		boolean canPlace = true;
+		return true;
+	}
 
-		for (int i = par2 - 1; i <= par2 + 1; i++)
+	@Override
+	public void onBlockPlacedBy(World world, int x0, int y0, int z0, EntityLivingBase entity, ItemStack var6)
+	{
+		final TileEntity var8 = world.getBlockTileEntity(x0, y0, z0);
+		
+		boolean validSpot = true;
+
+		for (int x = -1; x < 2; x++)
 		{
-			for (int j = par3; j <= par3 + 4; j++)
+			for (int y = 0; y < 4; y++)
 			{
-				for (int k = par4 - 1; k <= par4 + 1; k++)
+				for (int z = -1; z < 2; z++)
 				{
+<<<<<<< HEAD:src/main/java/micdoodle8/mods/galacticraft/core/blocks/BlockNasaWorkbench.java
 					final Block var5 = par1World.getBlock(i, j, k);
 
 					if (var5 != Blocks.air && !var5.getMaterial().isReplaceable())
+=======
+					if (!(x == 0 && y == 0 && z == 0))
+>>>>>>> 58f48f8b7e9a89c745a63e4440ff91be6c07e9bf:common/micdoodle8/mods/galacticraft/core/blocks/GCCoreBlockAdvancedCraftingTable.java
 					{
-						canPlace = false;
+						if (Math.abs(x) != 1 || Math.abs(z) != 1)
+						{
+							final int blockID = world.getBlockId(x0 + x, y0 + y, z0 + z);
+							
+							if ((y == 0 || y == 3) && x == 0 && z == 0)
+							{
+								if (Block.blocksList[blockID] != null && !Block.blocksList[blockID].blockMaterial.isReplaceable())
+								{
+									validSpot = false;
+								}
+							}
+							else if (y != 0 && y != 3)
+							{
+								if (Block.blocksList[blockID] != null && !Block.blocksList[blockID].blockMaterial.isReplaceable())
+								{
+									validSpot = false;
+								}
+							}
+						}
 					}
 				}
 			}
 		}
+<<<<<<< HEAD:src/main/java/micdoodle8/mods/galacticraft/core/blocks/BlockNasaWorkbench.java
 
 		return canPlace;
 	}
@@ -144,26 +179,78 @@ public class BlockNasaWorkbench extends BlockContainer implements ITileEntityPro
 	public void onBlockPlacedBy(World var1, int var2, int var3, int var4, EntityLivingBase var5, ItemStack var6)
 	{
 		final TileEntity var8 = var1.getTileEntity(var2, var3, var4);
+=======
+		
+		if (!validSpot)
+		{
+			world.setBlockToAir(x0, y0, z0);
+			
+			if (!world.isRemote && entity instanceof EntityPlayer)
+			{
+				((EntityPlayer) entity).addChatMessage(EnumColor.RED + "Not enough room!");
+			}
+			
+			return;
+		}
+>>>>>>> 58f48f8b7e9a89c745a63e4440ff91be6c07e9bf:common/micdoodle8/mods/galacticraft/core/blocks/GCCoreBlockAdvancedCraftingTable.java
 
 		if (var8 instanceof IMultiBlock)
 		{
-			((IMultiBlock) var8).onCreate(new Vector3(var2, var3, var4));
+			((IMultiBlock) var8).onCreate(new Vector3(x0, y0, z0));
 		}
 
-		super.onBlockPlacedBy(var1, var2, var3, var4, var5, var6);
+		super.onBlockPlacedBy(world, x0, y0, z0, entity, var6);
 	}
 
 	@Override
+<<<<<<< HEAD:src/main/java/micdoodle8/mods/galacticraft/core/blocks/BlockNasaWorkbench.java
 	public void breakBlock(World var1, int var2, int var3, int var4, Block var5, int var6)
 	{
 		final TileEntity var9 = var1.getTileEntity(var2, var3, var4);
+=======
+	public void breakBlock(World world, int x0, int y0, int z0, int var5, int var6)
+	{
+		final TileEntity var9 = world.getBlockTileEntity(x0, y0, z0);
+		
+		int fakeBlockCount = 0;
 
-		if (var9 instanceof IMultiBlock)
+		for (int x = -1; x < 2; x++)
+		{
+			for (int y = 0; y < 4; y++)
+			{
+				for (int z = -1; z < 2; z++)
+				{
+					if (!(x == 0 && y == 0 && z == 0))
+					{
+						if (Math.abs(x) != 1 || Math.abs(z) != 1)
+						{
+							if ((y == 0 || y == 3) && x == 0 && z == 0)
+							{
+								if (world.getBlockId(x0 + x, y0 + y, z0 + z) == GCCoreBlocks.fakeBlock.blockID)
+								{
+									fakeBlockCount++;
+								}
+							}
+							else if (y != 0 && y != 3)
+							{
+								if (world.getBlockId(x0 + x, y0 + y, z0 + z) == GCCoreBlocks.fakeBlock.blockID)
+								{
+									fakeBlockCount++;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+>>>>>>> 58f48f8b7e9a89c745a63e4440ff91be6c07e9bf:common/micdoodle8/mods/galacticraft/core/blocks/GCCoreBlockAdvancedCraftingTable.java
+
+		if (fakeBlockCount > 0 && var9 instanceof IMultiBlock)
 		{
 			((IMultiBlock) var9).onDestroy(var9);
 		}
 
-		super.breakBlock(var1, var2, var3, var4, var5, var6);
+		super.breakBlock(world, x0, y0, z0, var5, var6);
 	}
 
 	@Override

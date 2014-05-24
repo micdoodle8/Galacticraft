@@ -4,9 +4,19 @@ import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
+<<<<<<< HEAD:src/main/java/micdoodle8/mods/galacticraft/core/tile/TileEntityCoalGenerator.java
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.core.blocks.BlockSolar;
+=======
+import micdoodle8.mods.galacticraft.api.transmission.ElectricityPack;
+import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
+import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
+import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.core.GCCoreAnnotations.NetworkedField;
+import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockMachine;
+>>>>>>> 58f48f8b7e9a89c745a63e4440ff91be6c07e9bf:common/micdoodle8/mods/galacticraft/core/tile/GCCoreTileEntityCoalGenerator.java
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,6 +26,7 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
@@ -278,6 +289,36 @@ public class TileEntityCoalGenerator extends TileEntityUniversalElectrical imple
 	}
 
 	@Override
+<<<<<<< HEAD:src/main/java/micdoodle8/mods/galacticraft/core/tile/TileEntityCoalGenerator.java
+=======
+	public float receiveElectricity(ForgeDirection from, ElectricityPack electricityPack, boolean doReceive)
+	{
+		return 0;
+	}
+
+	@Override
+	public float getRequest(ForgeDirection direction)
+	{
+		return 0;
+	}
+
+	@Override
+	public float getProvide(ForgeDirection direction)
+	{
+		if (direction == ForgeDirection.UNKNOWN && NetworkConfigHandler.isIndustrialCraft2Loaded())
+		{
+			BlockVec3 vec = new BlockVec3(this).modifyPositionFromSide(ForgeDirection.getOrientation(this.getBlockMetadata() - GCCoreBlockMachine.STORAGE_MODULE_METADATA + 2), 1);
+			TileEntity tile = vec.getTileEntity(this.worldObj);
+			if (tile instanceof IConductor)
+				//No power provide to IC2 mod if it's a Galacticraft wire on the output.  Galacticraft network will provide the power.
+				return 0.0F;
+		}
+
+		return this.generateWatts < GCCoreTileEntityCoalGenerator.MIN_GENERATE_WATTS ? 0F : this.generateWatts;
+	}
+
+	@Override
+>>>>>>> 58f48f8b7e9a89c745a63e4440ff91be6c07e9bf:common/micdoodle8/mods/galacticraft/core/tile/GCCoreTileEntityCoalGenerator.java
 	public EnumSet<ForgeDirection> getElectricalInputDirections()
 	{
 		return EnumSet.noneOf(ForgeDirection.class);

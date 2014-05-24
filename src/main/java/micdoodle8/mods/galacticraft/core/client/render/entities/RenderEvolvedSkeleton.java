@@ -5,8 +5,9 @@ import micdoodle8.mods.galacticraft.core.client.model.ModelEvolvedSkeleton;
 import micdoodle8.mods.galacticraft.core.items.ItemSensorGlasses;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.renderer.entity.RenderLiving;
+import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.init.Items;
@@ -29,7 +30,11 @@ import cpw.mods.fml.relauncher.SideOnly;
  * 
  */
 @SideOnly(Side.CLIENT)
+<<<<<<< HEAD:src/main/java/micdoodle8/mods/galacticraft/core/client/render/entities/RenderEvolvedSkeleton.java
 public class RenderEvolvedSkeleton extends RenderLiving
+=======
+public class GCCoreRenderSkeleton extends RenderBiped
+>>>>>>> 58f48f8b7e9a89c745a63e4440ff91be6c07e9bf:common/micdoodle8/mods/galacticraft/core/client/render/entities/GCCoreRenderSkeleton.java
 {
 	private static final ResourceLocation skeletonTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/skeleton.png");
 	private static final ResourceLocation powerTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/power.png");
@@ -80,11 +85,19 @@ public class RenderEvolvedSkeleton extends RenderLiving
 		GL11.glScalef(0.5F, 0.5F, 0.5F);
 		this.renderManager.itemRenderer.renderItem(par1EntityLiving, new ItemStack(Items.bow), 0);
 		GL11.glPopMatrix();
+	
+		super.renderEquippedItems(par1EntityLiving, par2);
 	}
+
+    public void doRenderLiving(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9)
+    {
+        super.doRenderLiving(par1EntityLiving, par2, par4, par6, par8, par9);
+        this.field_82423_g.aimedBow = this.field_82425_h.aimedBow = this.modelBipedMain.aimedBow = true;
+    }
 
 	@Override
 	protected int shouldRenderPass(EntityLivingBase par1EntityLiving, int par2, float par3)
-	{
+	{		
 		final Minecraft minecraft = FMLClientHandler.instance().getClient();
 
 		final EntityPlayerSP player = minecraft.thePlayer;
@@ -128,6 +141,6 @@ public class RenderEvolvedSkeleton extends RenderLiving
 			}
 		}
 
-		return -1;
+		return super.shouldRenderPass(par1EntityLiving, par2, par3);
 	}
 }

@@ -116,7 +116,7 @@ public class StructureComponentVillageHouse extends StructureComponentVillage
 			this.placeBlockAtCurrentPosition(par1World, GCBlocks.basicBlock, 4, 1, yLevel, 5, par3StructureBoundingBox);
 			this.placeBlockAtCurrentPosition(par1World, GCBlocks.basicBlock, 4, 1, yLevel, 6, par3StructureBoundingBox);
 			this.placeBlockAtCurrentPosition(par1World, GCBlocks.basicBlock, 4, 1, yLevel, 7, par3StructureBoundingBox);
-			this.placeBlockAtCurrentPosition(par1World, yLevel == 0 || yLevel == 1 ? GCBlocks.basicBlock : Blocks.air, 4, 1, yLevel, 8, par3StructureBoundingBox);
+			this.placeBlockAtCurrentPosition(par1World, yLevel <= 1 ? GCBlocks.basicBlock : Blocks.air, 4, 1, yLevel, 8, par3StructureBoundingBox);
 			this.placeBlockAtCurrentPosition(par1World, GCBlocks.basicBlock, 4, 1, yLevel, 9, par3StructureBoundingBox);
 			this.placeBlockAtCurrentPosition(par1World, GCBlocks.basicBlock, 4, 1, yLevel, 10, par3StructureBoundingBox);
 			this.placeBlockAtCurrentPosition(par1World, GCBlocks.basicBlock, 4, 1, yLevel, 11, par3StructureBoundingBox);
@@ -129,7 +129,7 @@ public class StructureComponentVillageHouse extends StructureComponentVillage
 			this.placeBlockAtCurrentPosition(par1World, GCBlocks.basicBlock, 4, 5, yLevel, 15, par3StructureBoundingBox);
 			this.placeBlockAtCurrentPosition(par1World, GCBlocks.basicBlock, 4, 6, yLevel, 15, par3StructureBoundingBox);
 			this.placeBlockAtCurrentPosition(par1World, GCBlocks.basicBlock, 4, 7, yLevel, 15, par3StructureBoundingBox);
-			this.placeBlockAtCurrentPosition(par1World, yLevel == 0 || yLevel == 1 ? GCBlocks.basicBlock : Blocks.air, 4, 8, yLevel, 15, par3StructureBoundingBox);
+			this.placeBlockAtCurrentPosition(par1World, yLevel <= 1 ? GCBlocks.basicBlock : Blocks.air, 4, 8, yLevel, 15, par3StructureBoundingBox);
 			this.placeBlockAtCurrentPosition(par1World, GCBlocks.basicBlock, 4, 9, yLevel, 15, par3StructureBoundingBox);
 			this.placeBlockAtCurrentPosition(par1World, GCBlocks.basicBlock, 4, 10, yLevel, 15, par3StructureBoundingBox);
 			this.placeBlockAtCurrentPosition(par1World, GCBlocks.basicBlock, 4, 11, yLevel, 15, par3StructureBoundingBox);
@@ -142,7 +142,7 @@ public class StructureComponentVillageHouse extends StructureComponentVillage
 			this.placeBlockAtCurrentPosition(par1World, GCBlocks.basicBlock, 4, 15, yLevel, 11, par3StructureBoundingBox);
 			this.placeBlockAtCurrentPosition(par1World, GCBlocks.basicBlock, 4, 15, yLevel, 10, par3StructureBoundingBox);
 			this.placeBlockAtCurrentPosition(par1World, GCBlocks.basicBlock, 4, 15, yLevel, 9, par3StructureBoundingBox);
-			this.placeBlockAtCurrentPosition(par1World, yLevel == 0 || yLevel == 1 ? GCBlocks.basicBlock : Blocks.air, 4, 15, yLevel, 8, par3StructureBoundingBox);
+			this.placeBlockAtCurrentPosition(par1World, yLevel <= 1 ? GCBlocks.basicBlock : Blocks.air, 4, 15, yLevel, 8, par3StructureBoundingBox);
 			this.placeBlockAtCurrentPosition(par1World, GCBlocks.basicBlock, 4, 15, yLevel, 7, par3StructureBoundingBox);
 			this.placeBlockAtCurrentPosition(par1World, GCBlocks.basicBlock, 4, 15, yLevel, 6, par3StructureBoundingBox);
 			this.placeBlockAtCurrentPosition(par1World, GCBlocks.basicBlock, 4, 15, yLevel, 5, par3StructureBoundingBox);
@@ -155,7 +155,7 @@ public class StructureComponentVillageHouse extends StructureComponentVillage
 			this.placeBlockAtCurrentPosition(par1World, GCBlocks.basicBlock, 4, 11, yLevel, 1, par3StructureBoundingBox);
 			this.placeBlockAtCurrentPosition(par1World, GCBlocks.basicBlock, 4, 10, yLevel, 1, par3StructureBoundingBox);
 			this.placeBlockAtCurrentPosition(par1World, GCBlocks.basicBlock, 4, 9, yLevel, 1, par3StructureBoundingBox);
-			this.placeBlockAtCurrentPosition(par1World, yLevel == 0 || yLevel == 1 ? GCBlocks.basicBlock : Blocks.air, 4, 8, yLevel, 1, par3StructureBoundingBox);
+			this.placeBlockAtCurrentPosition(par1World, yLevel <= 1 ? GCBlocks.basicBlock : Blocks.air, 4, 8, yLevel, 1, par3StructureBoundingBox);
 			this.placeBlockAtCurrentPosition(par1World, GCBlocks.basicBlock, 4, 7, yLevel, 1, par3StructureBoundingBox);
 			this.placeBlockAtCurrentPosition(par1World, GCBlocks.basicBlock, 4, 6, yLevel, 1, par3StructureBoundingBox);
 			this.placeBlockAtCurrentPosition(par1World, GCBlocks.basicBlock, 4, 5, yLevel, 1, par3StructureBoundingBox);
@@ -211,10 +211,10 @@ public class StructureComponentVillageHouse extends StructureComponentVillage
 		this.placeBlockAtCurrentPosition(par1World, GCBlocks.basicBlock, 4, 6, yLevel, 1, par3StructureBoundingBox);
 		this.placeBlockAtCurrentPosition(par1World, GCBlocks.basicBlock, 4, 5, yLevel, 1, par3StructureBoundingBox);
 
-		this.placeBlockAtCurrentPosition(par1World, GCBlocks.unlitTorch, 15, 8, yLevel, 2, par3StructureBoundingBox);
-		this.placeBlockAtCurrentPosition(par1World, GCBlocks.unlitTorch, 15, 14, yLevel, 8, par3StructureBoundingBox);
-		this.placeBlockAtCurrentPosition(par1World, GCBlocks.unlitTorch, 15, 8, yLevel, 14, par3StructureBoundingBox);
-		this.placeBlockAtCurrentPosition(par1World, GCBlocks.unlitTorch, 15, 2, yLevel, 8, par3StructureBoundingBox);
+		this.placeBlockAtCurrentPosition(par1World, GCBlocks.glowstoneTorch, 0, 8, yLevel, 2, par3StructureBoundingBox);
+		this.placeBlockAtCurrentPosition(par1World, GCBlocks.glowstoneTorch, 0, 14, yLevel, 8, par3StructureBoundingBox);
+		this.placeBlockAtCurrentPosition(par1World, GCBlocks.glowstoneTorch, 0, 8, yLevel, 14, par3StructureBoundingBox);
+		this.placeBlockAtCurrentPosition(par1World, GCBlocks.glowstoneTorch, 0, 2, yLevel, 8, par3StructureBoundingBox);
 
 		yLevel = 5;
 

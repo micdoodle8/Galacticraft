@@ -6,7 +6,8 @@ import micdoodle8.mods.galacticraft.core.items.ItemSensorGlasses;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.entity.RenderLiving;
+import net.minecraft.client.model.ModelZombie;
+import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -28,7 +29,11 @@ import cpw.mods.fml.relauncher.SideOnly;
  * 
  */
 @SideOnly(Side.CLIENT)
+<<<<<<< HEAD:src/main/java/micdoodle8/mods/galacticraft/core/client/render/entities/RenderEvolvedZombie.java
 public class RenderEvolvedZombie extends RenderLiving
+=======
+public class GCCoreRenderZombie extends RenderBiped
+>>>>>>> 58f48f8b7e9a89c745a63e4440ff91be6c07e9bf:common/micdoodle8/mods/galacticraft/core/client/render/entities/GCCoreRenderZombie.java
 {
 	private static final ResourceLocation zombieTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/zombie.png");
 	private static final ResourceLocation powerTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/power.png");
@@ -37,7 +42,23 @@ public class RenderEvolvedZombie extends RenderLiving
 
 	public RenderEvolvedZombie()
 	{
+<<<<<<< HEAD:src/main/java/micdoodle8/mods/galacticraft/core/client/render/entities/RenderEvolvedZombie.java
 		super(new ModelEvolvedZombie(), 1.0F);
+=======
+		super(new GCCoreModelZombie(), 0.5F);
+	}
+
+	@Override
+    protected void func_82421_b()
+    {
+        this.field_82423_g = new ModelZombie(1.0F, true);
+        this.field_82425_h = new ModelZombie(0.5F, true);
+    }
+
+	protected ResourceLocation func_110779_a(GCCoreEntityZombie par1EntityArrow)
+	{
+		return GCCoreRenderZombie.zombieTexture;
+>>>>>>> 58f48f8b7e9a89c745a63e4440ff91be6c07e9bf:common/micdoodle8/mods/galacticraft/core/client/render/entities/GCCoreRenderZombie.java
 	}
 
 	@Override
@@ -97,6 +118,6 @@ public class RenderEvolvedZombie extends RenderLiving
 			}
 		}
 
-		return -1;
+		return super.shouldRenderPass(par1EntityLiving, par2, par2);
 	}
 }

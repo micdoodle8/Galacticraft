@@ -262,50 +262,55 @@ public class GCItems
 
 	public static void registerItems()
 	{
-		GameRegistry.registerItem(GCItems.rocketTier1, GCItems.rocketTier1.getUnlocalizedName(), GalacticraftCore.MODID);
-		GameRegistry.registerItem(GCItems.oxMask, GCItems.oxMask.getUnlocalizedName(), GalacticraftCore.MODID);
-		GameRegistry.registerItem(GCItems.oxygenGear, GCItems.oxygenGear.getUnlocalizedName(), GalacticraftCore.MODID);
-		GameRegistry.registerItem(GCItems.oxTankLight, GCItems.oxTankLight.getUnlocalizedName(), GalacticraftCore.MODID);
-		GameRegistry.registerItem(GCItems.oxTankMedium, GCItems.oxTankMedium.getUnlocalizedName(), GalacticraftCore.MODID);
-		GameRegistry.registerItem(GCItems.oxTankHeavy, GCItems.oxTankHeavy.getUnlocalizedName(), GalacticraftCore.MODID);
-		GameRegistry.registerItem(GCItems.sensorLens, GCItems.sensorLens.getUnlocalizedName(), GalacticraftCore.MODID);
-		GameRegistry.registerItem(GCItems.sensorGlasses, GCItems.sensorGlasses.getUnlocalizedName(), GalacticraftCore.MODID);
-		GameRegistry.registerItem(GCItems.steelPickaxe, GCItems.steelPickaxe.getUnlocalizedName(), GalacticraftCore.MODID);
-		GameRegistry.registerItem(GCItems.steelAxe, GCItems.steelAxe.getUnlocalizedName(), GalacticraftCore.MODID);
-		GameRegistry.registerItem(GCItems.steelHoe, GCItems.steelHoe.getUnlocalizedName(), GalacticraftCore.MODID);
-		GameRegistry.registerItem(GCItems.steelSpade, GCItems.steelSpade.getUnlocalizedName(), GalacticraftCore.MODID);
-		GameRegistry.registerItem(GCItems.steelSword, GCItems.steelSword.getUnlocalizedName(), GalacticraftCore.MODID);
-		GameRegistry.registerItem(GCItems.steelHelmet, GCItems.steelHelmet.getUnlocalizedName(), GalacticraftCore.MODID);
-		GameRegistry.registerItem(GCItems.steelChestplate, GCItems.steelChestplate.getUnlocalizedName(), GalacticraftCore.MODID);
-		GameRegistry.registerItem(GCItems.steelLeggings, GCItems.steelLeggings.getUnlocalizedName(), GalacticraftCore.MODID);
-		GameRegistry.registerItem(GCItems.steelBoots, GCItems.steelBoots.getUnlocalizedName(), GalacticraftCore.MODID);
-		GameRegistry.registerItem(GCItems.canister, GCItems.canister.getUnlocalizedName(), GalacticraftCore.MODID);
-		GameRegistry.registerItem(GCItems.oxygenVent, GCItems.oxygenVent.getUnlocalizedName(), GalacticraftCore.MODID);
-		GameRegistry.registerItem(GCItems.oxygenFan, GCItems.oxygenFan.getUnlocalizedName(), GalacticraftCore.MODID);
-		GameRegistry.registerItem(GCItems.oxygenConcentrator, GCItems.oxygenConcentrator.getUnlocalizedName(), GalacticraftCore.MODID);
-		GameRegistry.registerItem(GCItems.rocketEngine, GCItems.rocketEngine.getUnlocalizedName(), GalacticraftCore.MODID);
-		GameRegistry.registerItem(GCItems.heavyPlatingTier1, GCItems.heavyPlatingTier1.getUnlocalizedName(), GalacticraftCore.MODID);
-		GameRegistry.registerItem(GCItems.partNoseCone, GCItems.partNoseCone.getUnlocalizedName(), GalacticraftCore.MODID);
-		GameRegistry.registerItem(GCItems.partFins, GCItems.partFins.getUnlocalizedName(), GalacticraftCore.MODID);
-		GameRegistry.registerItem(GCItems.flagPole, GCItems.flagPole.getUnlocalizedName(), GalacticraftCore.MODID);
-		GameRegistry.registerItem(GCItems.canvas, GCItems.canvas.getUnlocalizedName(), GalacticraftCore.MODID);
-		GameRegistry.registerItem(GCItems.oilCanister, GCItems.oilCanister.getUnlocalizedName(), GalacticraftCore.MODID);
-		GameRegistry.registerItem(GCItems.fuelCanister, GCItems.fuelCanister.getUnlocalizedName(), GalacticraftCore.MODID);
-		GameRegistry.registerItem(GCItems.oilExtractor, GCItems.oilExtractor.getUnlocalizedName(), GalacticraftCore.MODID);
-		GameRegistry.registerItem(GCItems.schematic, GCItems.schematic.getUnlocalizedName(), GalacticraftCore.MODID);
-		GameRegistry.registerItem(GCItems.key, GCItems.key.getUnlocalizedName(), GalacticraftCore.MODID);
-		GameRegistry.registerItem(GCItems.partBuggy, GCItems.partBuggy.getUnlocalizedName(), GalacticraftCore.MODID);
-		GameRegistry.registerItem(GCItems.buggy, GCItems.buggy.getUnlocalizedName(), GalacticraftCore.MODID);
-		GameRegistry.registerItem(GCItems.basicItem, GCItems.basicItem.getUnlocalizedName(), GalacticraftCore.MODID);
-		GameRegistry.registerItem(GCItems.battery, GCItems.battery.getUnlocalizedName(), GalacticraftCore.MODID);
-		GameRegistry.registerItem(GCItems.infiniteBatery, GCItems.infiniteBatery.getUnlocalizedName(), GalacticraftCore.MODID);
-		GameRegistry.registerItem(GCItems.meteorChunk, GCItems.meteorChunk.getUnlocalizedName(), GalacticraftCore.MODID);
-		GameRegistry.registerItem(GCItems.wrench, GCItems.wrench.getUnlocalizedName(), GalacticraftCore.MODID);
-		GameRegistry.registerItem(GCItems.cheeseCurd, GCItems.cheeseCurd.getUnlocalizedName(), GalacticraftCore.MODID);
-		GameRegistry.registerItem(GCItems.meteoricIronRaw, GCItems.meteoricIronRaw.getUnlocalizedName(), GalacticraftCore.MODID);
-		GameRegistry.registerItem(GCItems.meteoricIronIngot, GCItems.meteoricIronIngot.getUnlocalizedName(), GalacticraftCore.MODID);
-		GameRegistry.registerItem(GCItems.cheeseBlock, GCItems.cheeseBlock.getUnlocalizedName(), GalacticraftCore.MODID);
-		GameRegistry.registerItem(GCItems.flag, GCItems.flag.getUnlocalizedName(), GalacticraftCore.MODID);
-		GameRegistry.registerItem(GCItems.parachute, GCItems.parachute.getUnlocalizedName(), GalacticraftCore.MODID);
+		registerItem(GCItems.rocketTier1);
+		registerItem(GCItems.oxMask);
+		registerItem(GCItems.oxygenGear);
+		registerItem(GCItems.oxTankLight);
+		registerItem(GCItems.oxTankMedium);
+		registerItem(GCItems.oxTankHeavy);
+		registerItem(GCItems.sensorLens);
+		registerItem(GCItems.sensorGlasses);
+		registerItem(GCItems.steelPickaxe);
+		registerItem(GCItems.steelAxe);
+		registerItem(GCItems.steelHoe);
+		registerItem(GCItems.steelSpade);
+		registerItem(GCItems.steelSword);
+		registerItem(GCItems.steelHelmet);
+		registerItem(GCItems.steelChestplate);
+		registerItem(GCItems.steelLeggings);
+		registerItem(GCItems.steelBoots);
+		registerItem(GCItems.canister);
+		registerItem(GCItems.oxygenVent);
+		registerItem(GCItems.oxygenFan);
+		registerItem(GCItems.oxygenConcentrator);
+		registerItem(GCItems.rocketEngine);
+		registerItem(GCItems.heavyPlatingTier1);
+		registerItem(GCItems.partNoseCone);
+		registerItem(GCItems.partFins);
+		registerItem(GCItems.flagPole);
+		registerItem(GCItems.canvas);
+		registerItem(GCItems.oilCanister);
+		registerItem(GCItems.fuelCanister);
+		registerItem(GCItems.oilExtractor);
+		registerItem(GCItems.schematic);
+		registerItem(GCItems.key);
+		registerItem(GCItems.partBuggy);
+		registerItem(GCItems.buggy);
+		registerItem(GCItems.basicItem);
+		registerItem(GCItems.battery);
+		registerItem(GCItems.infiniteBatery);
+		registerItem(GCItems.meteorChunk);
+		registerItem(GCItems.wrench);
+		registerItem(GCItems.cheeseCurd);
+		registerItem(GCItems.meteoricIronRaw);
+		registerItem(GCItems.meteoricIronIngot);
+		registerItem(GCItems.cheeseBlock);
+		registerItem(GCItems.flag);
+		registerItem(GCItems.parachute);
+	}
+
+	private static void registerItem(Item item)
+	{
+		GameRegistry.registerItem(item, item.getUnlocalizedName(), GalacticraftCore.MODID);
 	}
 }

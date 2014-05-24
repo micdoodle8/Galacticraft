@@ -43,6 +43,20 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class BlockBasicMars extends Block implements IDetectableResource, IPlantableBlock, ITileEntityProvider, ITerraformableBlock
 {
+/*Metadata:
+  	0 = "coppermars"
+	1 = "tinmars"
+	2 = "deshmars"
+	3 = "ironmars"
+	4 = "marscobblestone"
+	5 = "marsgrass"
+	6 = "marsdirt"
+	7 = "marsdungeon";  (brick)
+	8 = "marsdeco"  (desh decoration block)
+	9 = "marsstone"
+	10 = mars dungeon spawner
+*/
+	
 	@SideOnly(Side.CLIENT)
 	private IIcon[] marsBlockIcons;
 
@@ -303,4 +317,12 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
 	{
 		return world.getBlockMetadata(x, y, z) == 5 && world.getBlock(x, y + 1, z) == Blocks.air;
 	}
+	
+	
+	@Override
+    public boolean canSilkHarvest(World world, EntityPlayer player, int x, int y, int z, int metadata)
+    {
+        if (metadata < 10) return true;
+        return false;
+    }
 }

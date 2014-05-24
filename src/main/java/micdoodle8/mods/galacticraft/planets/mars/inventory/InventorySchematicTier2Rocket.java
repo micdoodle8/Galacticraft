@@ -22,7 +22,7 @@ public class InventorySchematicTier2Rocket implements IInventory
 
 	public InventorySchematicTier2Rocket(Container par1Container)
 	{
-		this.stackList = new ItemStack[24];
+		this.stackList = new ItemStack[22];
 		this.eventHandler = par1Container;
 		this.inventoryWidth = 5;
 	}
@@ -44,6 +44,7 @@ public class InventorySchematicTier2Rocket implements IInventory
 		if (par1 >= 0 && par1 < this.inventoryWidth)
 		{
 			final int var3 = par1 + par2 * this.inventoryWidth;
+			if (var3 >= 22) return null;
 			return this.getStackInSlot(var3);
 		}
 		else

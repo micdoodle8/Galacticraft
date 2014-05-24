@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.core.client.model;
 
-import net.minecraft.client.model.ModelBase;
+import org.lwjgl.opengl.GL11;
+
+import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
@@ -14,7 +16,11 @@ import net.minecraft.util.MathHelper;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
+<<<<<<< HEAD:src/main/java/micdoodle8/mods/galacticraft/core/client/model/ModelEvolvedZombie.java
 public class ModelEvolvedZombie extends ModelBase
+=======
+public class GCCoreModelZombie extends ModelBiped
+>>>>>>> 58f48f8b7e9a89c745a63e4440ff91be6c07e9bf:common/micdoodle8/mods/galacticraft/core/client/model/GCCoreModelZombie.java
 {
 	ModelRenderer leftOxygenTank;
 	ModelRenderer rightOxygenTank;
@@ -34,15 +40,6 @@ public class ModelEvolvedZombie extends ModelBase
 	ModelRenderer tubeRight6;
 	ModelRenderer tubeLeft8;
 	ModelRenderer oxygenMask;
-	ModelRenderer bipedHead;
-	ModelRenderer bipedHeadwear;
-	ModelRenderer bipedBody;
-	ModelRenderer bipedRightArm;
-	ModelRenderer bipedLeftArm;
-	ModelRenderer bipedRightLeg;
-	ModelRenderer bipedLeftLeg;
-	ModelRenderer bipedEars;
-	ModelRenderer bipedCloak;
 
 	public ModelEvolvedZombie()
 	{
@@ -203,33 +200,74 @@ public class ModelEvolvedZombie extends ModelBase
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
-		super.render(entity, f, f1, f2, f3, f4, f5);
+//		super.render(entity, f, f1, f2, f3, f4, f5);
 		this.setRotationAngles(f, f1, f2, f3, f4, f5);
-		this.leftOxygenTank.render(f5);
-		this.rightOxygenTank.render(f5);
-		this.tubeRight2.render(f5);
-		this.tubeLeft1.render(f5);
-		this.tubeRight3.render(f5);
-		this.tubeRight4.render(f5);
-		this.tubeRight5.render(f5);
-		this.tubeLeft6.render(f5);
-		this.tubeRight7.render(f5);
-		this.tubeRight1.render(f5);
-		this.tubeLeft2.render(f5);
-		this.tubeLeft3.render(f5);
-		this.tubeLeft4.render(f5);
-		this.tubeLeft5.render(f5);
-		this.tubeLeft7.render(f5);
-		this.tubeRight6.render(f5);
-		this.tubeLeft8.render(f5);
-		this.oxygenMask.render(f5);
-		this.bipedHead.render(f5);
-		this.bipedBody.render(f5);
-		this.bipedRightArm.render(f5);
-		this.bipedLeftArm.render(f5);
-		this.bipedRightLeg.render(f5);
-		this.bipedLeftLeg.render(f5);
-		this.bipedHeadwear.render(f5);
+		
+        if (this.isChild)
+        {
+            float f6 = 2.0F;
+            GL11.glPushMatrix();
+            GL11.glScalef(1.5F / f6, 1.5F / f6, 1.5F / f6);
+            GL11.glTranslatef(0.0F, 16.0F * f5, 0.0F);
+            this.bipedHead.render(f5);
+    		this.oxygenMask.render(f5);
+            GL11.glPopMatrix();
+            GL11.glPushMatrix();
+            GL11.glScalef(1.0F / f6, 1.0F / f6, 1.0F / f6);
+            GL11.glTranslatef(0.0F, 24.0F * f5, 0.0F);
+    		this.leftOxygenTank.render(f5);
+    		this.rightOxygenTank.render(f5);
+    		this.tubeRight2.render(f5);
+    		this.tubeLeft1.render(f5);
+    		this.tubeRight3.render(f5);
+    		this.tubeRight4.render(f5);
+    		this.tubeRight5.render(f5);
+    		this.tubeLeft6.render(f5);
+    		this.tubeRight7.render(f5);
+    		this.tubeRight1.render(f5);
+    		this.tubeLeft2.render(f5);
+    		this.tubeLeft3.render(f5);
+    		this.tubeLeft4.render(f5);
+    		this.tubeLeft5.render(f5);
+    		this.tubeLeft7.render(f5);
+    		this.tubeRight6.render(f5);
+    		this.tubeLeft8.render(f5);
+            this.bipedBody.render(f5);
+            this.bipedRightArm.render(f5);
+            this.bipedLeftArm.render(f5);
+            this.bipedRightLeg.render(f5);
+            this.bipedLeftLeg.render(f5);
+            this.bipedHeadwear.render(f5);
+            GL11.glPopMatrix();
+        }
+        else
+        {
+    		this.leftOxygenTank.render(f5);
+    		this.rightOxygenTank.render(f5);
+    		this.tubeRight2.render(f5);
+    		this.tubeLeft1.render(f5);
+    		this.tubeRight3.render(f5);
+    		this.tubeRight4.render(f5);
+    		this.tubeRight5.render(f5);
+    		this.tubeLeft6.render(f5);
+    		this.tubeRight7.render(f5);
+    		this.tubeRight1.render(f5);
+    		this.tubeLeft2.render(f5);
+    		this.tubeLeft3.render(f5);
+    		this.tubeLeft4.render(f5);
+    		this.tubeLeft5.render(f5);
+    		this.tubeLeft7.render(f5);
+    		this.tubeRight6.render(f5);
+    		this.tubeLeft8.render(f5);
+    		this.oxygenMask.render(f5);
+    		this.bipedHead.render(f5);
+    		this.bipedBody.render(f5);
+    		this.bipedRightArm.render(f5);
+    		this.bipedLeftArm.render(f5);
+    		this.bipedRightLeg.render(f5);
+    		this.bipedLeftLeg.render(f5);
+    		this.bipedHeadwear.render(f5);
+        }
 	}
 
 	private void setRotation(ModelRenderer model, float x, float y, float z)

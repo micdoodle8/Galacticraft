@@ -45,13 +45,13 @@ public class GuiEnergyStorageModule extends GuiContainer
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
 	{
 		this.fontRendererObj.drawString(this.tileEntity.getInventoryName(), this.xSize / 2 - this.fontRendererObj.getStringWidth(this.tileEntity.getInventoryName()) / 2, 6, 4210752);
-		String displayJoules = ElectricityDisplay.getDisplayShort(this.tileEntity.getEnergyStoredGC(), ElectricUnit.JOULES) + " of";
-		String displayMaxJoules = ElectricityDisplay.getDisplay(this.tileEntity.getMaxEnergyStoredGC(), ElectricUnit.JOULES);
-//		String displayVoltage = "Voltage: " + (int) (this.tileEntity.getVoltage() * 1000.0F);
+		String displayMJ = ElectricityDisplay.roundDecimals(this.tileEntity.getEnergyStoredGC()/1000F, 2) + " of " + ElectricityDisplay.getDisplayShort(this.tileEntity.getMaxEnergyStoredGC(), ElectricUnit.JOULES);
+		//String displayVoltage = "Voltage: " + (int) (this.tileEntity.getVoltage() * 1000.0F)+"V";
+		String displayOutput = "Max output: 75kW";
 
-		this.fontRendererObj.drawString(displayJoules, 122 - this.fontRendererObj.getStringWidth(displayJoules) / 2, 30, 4210752);
-		this.fontRendererObj.drawString(displayMaxJoules, 122 - this.fontRendererObj.getStringWidth(displayMaxJoules) / 2, 40, 4210752);
-//		this.fontRendererObj.drawString(displayVoltage, 122 - this.fontRendererObj.getStringWidth(displayVoltage) / 2, 60, 4210752);
+		this.fontRendererObj.drawString(displayMJ, 122 - this.fontRendererObj.getStringWidth(displayMJ) / 2, 30, 4210752);
+		//this.fontRendererObj.drawString(displayVoltage, 122 - this.fontRendererObj.getStringWidth(displayVoltage) / 2, 40, 4210752);
+		this.fontRendererObj.drawString(displayOutput, 122 - this.fontRendererObj.getStringWidth(displayOutput) / 2, 60, 4210752);
 		this.fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 

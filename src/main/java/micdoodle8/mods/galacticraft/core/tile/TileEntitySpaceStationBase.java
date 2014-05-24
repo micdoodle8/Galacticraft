@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
@@ -75,5 +76,9 @@ public class TileEntitySpaceStationBase extends TileEntityMulti implements IMult
 	@Override
 	public void onDestroy(TileEntity callingBlock)
 	{
+		for (int y = 0; y < 3; y++)
+		{
+			this.worldObj.destroyBlock(this.xCoord, this.yCoord + y, this.zCoord, false);
+		}
 	}
 }

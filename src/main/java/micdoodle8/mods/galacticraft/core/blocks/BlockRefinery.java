@@ -126,13 +126,13 @@ public class BlockRefinery extends BlockAdvancedTile
 		case 0:
 			change = 3;
 			break;
-		case 1:
+		case 3:
 			change = 1;
 			break;
-		case 2:
+		case 1:
 			change = 2;
 			break;
-		case 3:
+		case 2:
 			change = 0;
 			break;
 		}

@@ -55,6 +55,11 @@ public class TileEntityDungeonSpawner extends TileEntityAdvanced
 	public void updateEntity()
 	{
 		super.updateEntity();
+		
+		if (this.roomCoords == null)
+		{
+			return;
+		}
 
 		if (!this.worldObj.isRemote)
 		{

@@ -141,6 +141,10 @@ public class GuiHandler implements IGuiHandler
 			{
 				return new ContainerCargoLoader(player.inventory, (TileEntityCargoLoader) tile);
 			}
+			else if (tile instanceof TileEntityCargoUnloader)
+			{
+				return new ContainerCargoLoader(player.inventory, (TileEntityCargoUnloader) tile);
+			}
 			else if (tile instanceof TileEntityParaChest)
 			{
 				return new ContainerParaChest(player.inventory, (TileEntityParaChest) tile);

@@ -1,26 +1,27 @@
 package micdoodle8.mods.galacticraft.api.vector;
 
-import net.minecraft.block.Block;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.Entity;
-import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ReportedException;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.common.ForgeDirection;
 
-/* BlockVec3 is similar to galacticraft.api.vector.Vector3?
+/* Think this BlockVec3 is confusing with galacticraft.api.vector.Vector3?
  * 
- * But for speed it uses integer arithmetic not doubles, for block coordinates
- * This reduces unnecessary type conversion between integers and doubles and back again.
+ * For speed, in 95% of cases Galacticraft code could be using integer arithmetic not doubles,
+ * for block coordinates, to avoid massive unnecessary type conversion between integers and doubles.
  * (Minecraft block coordinates are always integers, only entity coordinates are doubles.)
  * 
- * Note also when writing NBT data BlockVec3 writes and reads its coordinates as doubles,
- * for 100% save-file compatibility with prior code using Vector3.
+ * Most of Galacticraft could therefore be adapted to use this BlockVec3 instead.
+ * To avoid a big diff, the methods here are as similar as possible to those in Vector3.
+ *  (Though really, calls like vector3.intX() ought to be replaced by vector3.x, for maximum speed)
+ *  
+ * Note also when writing NBT data BlockVec3 writes and reads its coordinates as doubles, for 100% file and network compatibility with prior code.
  */
 public class BlockVec3 implements Cloneable
 {
@@ -31,8 +32,7 @@ public class BlockVec3 implements Cloneable
 	private static Chunk chunkCached;
 	private static int chunkCacheX = 1876000; // outside the world edge
 	private static int chunkCacheZ = 1876000; // outside the world edge
-	// INVALID_VECTOR is used in cases where a null vector cannot be used
-	public static final BlockVec3 INVALID_VECTOR = new BlockVec3(-1, -1, -1);
+	
 
 	public BlockVec3()
 	{
@@ -70,60 +70,17 @@ public class BlockVec3 implements Cloneable
 	}
 
 	/**
-	 * Get block ID at the BlockVec3 coordinates, with a forced chunk load if the coordinates are unloaded.
+	 * Get block ID at the BlockVec3 coordinates.
 	 * 
 	 * @param world
-	 * @return the block ID, or null if the y-coordinate is less than 0 or greater than 256 or the x or z is outside the Minecraft worldmap. 
-	 * Returns Blocks.bedrock if the coordinates being checked are in an unloaded chunk
+	 * @return the block ID, or -1 if the y-coordinate is less than 0 or greater than 256 or the x or z is outside the Minecraft worldmap. 
+	 * Returns -2 if the coordinates being checked are in an unloaded chunk
 	 */
-	public Block getBlockID(World world)
+	public int getBlockID(World world)
 	{
 		if (this.y < 0 || this.y >= 256 || this.x < -30000000 || this.z < -30000000 || this.x >= 30000000 || this.z >= 30000000)
 		{
-			return null;
-		}
-
-		int chunkx = this.x >> 4;
-		int chunkz = this.z >> 4;
-		try
-		{
-			// In a typical inner loop, 80% of the time consecutive calls to
-			// this will be within the same chunk
-			if (BlockVec3.chunkCacheX == chunkx && BlockVec3.chunkCacheZ == chunkz && BlockVec3.chunkCached.isChunkLoaded)
-			{
-				return BlockVec3.chunkCached.getBlock(this.x & 15, this.y, this.z & 15);
-			}
-			else
-			{
-				Chunk chunk = null;
-				chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
-				BlockVec3.chunkCached = chunk;
-				BlockVec3.chunkCacheX = chunkx;
-				BlockVec3.chunkCacheZ = chunkz;
-				return chunk.getBlock(this.x & 15, this.y, this.z & 15);
-			}
-		}
-		catch (Throwable throwable)
-		{
-			CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Oxygen Sealer thread: Exception getting block type in world");
-			CrashReportCategory crashreportcategory = crashreport.makeCategory("Requested block coordinates");
-			crashreportcategory.addCrashSection("Location", CrashReportCategory.getLocationInfo(this.x, this.y, this.z));
-			throw new ReportedException(crashreport);
-		}
-	}
-
-	/**
-	 * Get block ID at the BlockVec3 coordinates without forcing a chunk load.
-	 * 
-	 * @param world
-	 * @return the block ID, or null if the y-coordinate is less than 0 or greater than 256 or the x or z is outside the Minecraft worldmap. 
-	 * Returns Blocks.bedrock if the coordinates being checked are in an unloaded chunk
-	 */
-	public Block getBlockID_noChunkLoad(World world)
-	{
-		if (this.y < 0 || this.y >= 256 || this.x < -30000000 || this.z < -30000000 || this.x >= 30000000 || this.z >= 30000000)
-		{
-			return null;
+			return -1;
 		}
 
 		int chunkx = this.x >> 4;
@@ -136,7 +93,7 @@ public class BlockVec3 implements Cloneable
 				// this will be within the same chunk
 				if (BlockVec3.chunkCacheX == chunkx && BlockVec3.chunkCacheZ == chunkz && BlockVec3.chunkCached.isChunkLoaded)
 				{
-					return BlockVec3.chunkCached.getBlock(this.x & 15, this.y, this.z & 15);
+					return BlockVec3.chunkCached.getBlockID(this.x & 15, this.y, this.z & 15);
 				}
 				else
 				{
@@ -145,11 +102,11 @@ public class BlockVec3 implements Cloneable
 					BlockVec3.chunkCached = chunk;
 					BlockVec3.chunkCacheX = chunkx;
 					BlockVec3.chunkCacheZ = chunkz;
-					return chunk.getBlock(this.x & 15, this.y, this.z & 15);
+					return chunk.getBlockID(this.x & 15, this.y, this.z & 15);
 				}
 			}
 			//Chunk doesn't exist - meaning, it is not loaded
-			return Blocks.bedrock;
+			return -2;
 		}
 		catch (Throwable throwable)
 		{
@@ -161,17 +118,17 @@ public class BlockVec3 implements Cloneable
 	}
 
 	/**
-	 * Get block ID at the BlockVec3 coordinates without forcing a chunk load.
+	 * Get block ID at the BlockVec3 coordinates.
 	 * Only call this 'safe' version if x and z coordinates are within the Minecraft world map (-30m to +30m)
 	 * @param world
-	 * @return the block ID, or null if the y-coordinate is less than 0 or greater than 256. 
-	 * Returns Blocks.bedrock if the coordinates being checked are in an unloaded chunk
+	 * @return the block ID, or -1 if the y-coordinate is less than 0 or greater than 256. 
+	 * Returns -2 if the coordinates being checked are in an unloaded chunk
 	 */
-	public Block getBlockIDsafe_noChunkLoad(World world)
+	public int getBlockIDsafe(World world)
 	{
 		if (this.y < 0 || this.y >= 256)
 		{
-			return null;
+			return -1;
 		}
 
 		int chunkx = this.x >> 4;
@@ -184,7 +141,7 @@ public class BlockVec3 implements Cloneable
 				// this will be within the same chunk
 				if (BlockVec3.chunkCacheX == chunkx && BlockVec3.chunkCacheZ == chunkz && BlockVec3.chunkCached.isChunkLoaded)
 				{
-					return BlockVec3.chunkCached.getBlock(this.x & 15, this.y, this.z & 15);
+					return BlockVec3.chunkCached.getBlockID(this.x & 15, this.y, this.z & 15);
 				}
 				else
 				{
@@ -193,11 +150,11 @@ public class BlockVec3 implements Cloneable
 					BlockVec3.chunkCached = chunk;
 					BlockVec3.chunkCacheX = chunkx;
 					BlockVec3.chunkCacheZ = chunkz;
-					return chunk.getBlock(this.x & 15, this.y, this.z & 15);
+					return chunk.getBlockID(this.x & 15, this.y, this.z & 15);
 				}
 			}
 			//Chunk doesn't exist - meaning, it is not loaded
-			return Blocks.bedrock;
+			return -2;
 		}
 		catch (Throwable throwable)
 		{
@@ -280,22 +237,22 @@ public class BlockVec3 implements Cloneable
 		{
 		case 0:
 			vec.y--;
-			break;
+			return vec;
 		case 1:
 			vec.y++;
-			break;
+			return vec;
 		case 2:
 			vec.z--;
-			break;
+			return vec;
 		case 3:
 			vec.z++;
-			break;
+			return vec;
 		case 4:
 			vec.x--;
-			break;
+			return vec;
 		case 5:
 			vec.x++;
-			break;
+			return vec;
 		}
 		return vec;
 	}
@@ -333,7 +290,7 @@ public class BlockVec3 implements Cloneable
 
 	public TileEntity getTileEntity(IBlockAccess world)
 	{
-		return world.getTileEntity(this.x, this.y, this.z);
+		return world.getBlockTileEntity(this.x, this.y, this.z);
 	}
 
 	public TileEntity getTileEntityOnSide(World world, ForgeDirection side)
@@ -363,7 +320,7 @@ public class BlockVec3 implements Cloneable
 			break;
 		}
 		if (world.blockExists(x, y, z))
-			return world.getTileEntity(x, y, z);
+			return world.getBlockTileEntity(x, y, z);
 		else
 			return null;
 	}
@@ -376,9 +333,9 @@ public class BlockVec3 implements Cloneable
 	public static BlockVec3 readFromNBT(NBTTagCompound nbtCompound)
 	{
 		BlockVec3 tempVector = new BlockVec3();
-		tempVector.x = (int) Math.floor(nbtCompound.getInteger("x"));
-		tempVector.y = (int) Math.floor(nbtCompound.getInteger("y"));
-		tempVector.z = (int) Math.floor(nbtCompound.getInteger("z"));
+		tempVector.x = (int) Math.floor(nbtCompound.getDouble("x"));
+		tempVector.y = (int) Math.floor(nbtCompound.getDouble("y"));
+		tempVector.z = (int) Math.floor(nbtCompound.getDouble("z"));
 		return tempVector;
 	}
 
@@ -392,9 +349,9 @@ public class BlockVec3 implements Cloneable
 
 	public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
 	{
-		par1NBTTagCompound.setInteger("x", this.x);
-		par1NBTTagCompound.setInteger("y", this.y);
-		par1NBTTagCompound.setInteger("z", this.z);
+		par1NBTTagCompound.setDouble("x", this.x);
+		par1NBTTagCompound.setDouble("y", this.y);
+		par1NBTTagCompound.setDouble("z", this.z);
 		return par1NBTTagCompound;
 	}
 
@@ -408,16 +365,11 @@ public class BlockVec3 implements Cloneable
 		return this.x * this.x + this.y * this.y + this.z * this.z;
 	}
 
-	public void setBlock(World worldObj, Block block)
+	public void setBlock(World worldObj, int blockID)
 	{
-		worldObj.setBlock(this.x, this.y, this.z, block, 0, 3);
+		worldObj.setBlock(this.x, this.y, this.z, blockID, 0, 3);
 	}
 
-	public boolean blockExists(World world)
-	{
-		return world.blockExists(this.x, this.y, this.z);
-	}
-	
 	public int intX()
 	{
 		return this.x;

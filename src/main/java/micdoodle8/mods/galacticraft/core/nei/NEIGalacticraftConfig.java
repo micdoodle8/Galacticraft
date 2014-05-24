@@ -19,6 +19,7 @@ import net.minecraft.item.crafting.ShapelessRecipes;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
+import codechicken.nei.api.ItemInfo;
 
 /**
  * NEIGalacticraftConfig.java
