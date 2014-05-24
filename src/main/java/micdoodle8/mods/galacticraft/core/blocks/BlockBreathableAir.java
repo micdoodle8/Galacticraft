@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockAir;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -23,27 +24,14 @@ import net.minecraft.world.World;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class BlockBreathableAir extends Block
+public class BlockBreathableAir extends BlockAir
 {
 	public BlockBreathableAir(String assetName)
 	{
-		super(Material.air);
 		this.setResistance(1000.0F);
 		this.setHardness(0.0F);
 		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
 		this.setBlockName(assetName);
-	}
-
-	@Override
-	public boolean isOpaqueCube()
-	{
-		return false;
-	}
-
-	@Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World var1, int var2, int var3, int var4)
-	{
-		return null;
 	}
 
 	@Override
@@ -58,11 +46,6 @@ public class BlockBreathableAir extends Block
 		return true;
 	}
 
-	@Override
-	public boolean canCollideCheck(int var1, boolean var2)
-	{
-		return false;
-	}
 
 	@Override
 	public int getRenderBlockPass()
