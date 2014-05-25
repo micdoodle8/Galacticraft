@@ -41,13 +41,9 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
 
 	public TileEntityOxygenCollector()
 	{
-<<<<<<< HEAD:src/main/java/micdoodle8/mods/galacticraft/core/tile/TileEntityOxygenCollector.java
 		super(1200, 0);
 		this.storage.setMaxExtract(200);
 		this.storage.setCapacity(50000);
-=======
-		super(GCCoreTileEntityOxygenCollector.WATTS_PER_TICK, 50, 6000, 0);
->>>>>>> 58f48f8b7e9a89c745a63e4440ff91be6c07e9bf:common/micdoodle8/mods/galacticraft/core/tile/GCCoreTileEntityOxygenCollector.java
 	}
 
 	@Override
@@ -102,26 +98,16 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
 			// }
 			// }
 
-<<<<<<< HEAD:src/main/java/micdoodle8/mods/galacticraft/core/tile/TileEntityOxygenCollector.java
-			// The later calculations are more efficient if power is a float, so
-			// there are fewer casts
-			float power = 0;
-
-			if (this.getEnergyStoredGC() > 0)
-=======
 			//Approximately once every 40 ticks, search out oxygen producing blocks
 			if (this.worldObj.rand.nextInt(10) == 0)
 			{
-				if (this.getEnergyStored() > 0) 
->>>>>>> 58f48f8b7e9a89c745a63e4440ff91be6c07e9bf:common/micdoodle8/mods/galacticraft/core/tile/GCCoreTileEntityOxygenCollector.java
+				if (this.getEnergyStoredGC() > 0) 
 			{
 				// The later calculations are more efficient if power is a float, so
 				// there are fewer casts
 				float power = 0;
 				if (this.worldObj.provider instanceof IGalacticraftWorldProvider)
 				{
-					int breatheableAirID = GCCoreBlocks.breatheableAir.blockID;
-
 					// Pre-test to see if close to the map edges, so code
 					// doesn't have to continually test for map edges inside the
 					// loop

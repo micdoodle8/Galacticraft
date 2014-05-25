@@ -31,11 +31,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-<<<<<<< HEAD:src/main/java/micdoodle8/mods/galacticraft/core/items/ItemBuggy.java
-public class ItemBuggy extends Item
-=======
-public class GCCoreItemBuggy extends Item implements IHoldableItem
->>>>>>> 58f48f8b7e9a89c745a63e4440ff91be6c07e9bf:common/micdoodle8/mods/galacticraft/core/items/GCCoreItemBuggy.java
+public class ItemBuggy extends Item implements IHoldableItem
 {
 	public ItemBuggy(String assetName)
 	{

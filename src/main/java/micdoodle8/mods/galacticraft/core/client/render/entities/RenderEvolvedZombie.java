@@ -29,11 +29,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * 
  */
 @SideOnly(Side.CLIENT)
-<<<<<<< HEAD:src/main/java/micdoodle8/mods/galacticraft/core/client/render/entities/RenderEvolvedZombie.java
-public class RenderEvolvedZombie extends RenderLiving
-=======
-public class GCCoreRenderZombie extends RenderBiped
->>>>>>> 58f48f8b7e9a89c745a63e4440ff91be6c07e9bf:common/micdoodle8/mods/galacticraft/core/client/render/entities/GCCoreRenderZombie.java
+public class RenderEvolvedZombie extends RenderBiped
 {
 	private static final ResourceLocation zombieTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/zombie.png");
 	private static final ResourceLocation powerTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/power.png");
@@ -42,10 +38,7 @@ public class GCCoreRenderZombie extends RenderBiped
 
 	public RenderEvolvedZombie()
 	{
-<<<<<<< HEAD:src/main/java/micdoodle8/mods/galacticraft/core/client/render/entities/RenderEvolvedZombie.java
-		super(new ModelEvolvedZombie(), 1.0F);
-=======
-		super(new GCCoreModelZombie(), 0.5F);
+		super(new ModelEvolvedZombie(), 0.5F);
 	}
 
 	@Override
@@ -54,12 +47,6 @@ public class GCCoreRenderZombie extends RenderBiped
         this.field_82423_g = new ModelZombie(1.0F, true);
         this.field_82425_h = new ModelZombie(0.5F, true);
     }
-
-	protected ResourceLocation func_110779_a(GCCoreEntityZombie par1EntityArrow)
-	{
-		return GCCoreRenderZombie.zombieTexture;
->>>>>>> 58f48f8b7e9a89c745a63e4440ff91be6c07e9bf:common/micdoodle8/mods/galacticraft/core/client/render/entities/GCCoreRenderZombie.java
-	}
 
 	@Override
 	protected ResourceLocation getEntityTexture(Entity par1Entity)

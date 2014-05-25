@@ -12,6 +12,7 @@ import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -63,5 +64,10 @@ public class EntityEvolvedZombie extends EntityZombie implements IEntityBreathab
 	public boolean canBreath()
 	{
 		return true;
+	}
+	
+	public IAttribute getReinforcementsAttribute()
+	{
+		return field_110186_bp;
 	}
 }

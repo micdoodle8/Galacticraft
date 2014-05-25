@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.tile.TileEntitySpaceStationBase;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -12,7 +13,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -53,19 +53,11 @@ public class BlockSpaceStationBase extends BlockContainer implements ITileEntity
 		this.spaceStationIcons[1] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "space_station_side");
 		this.blockIcon = this.spaceStationIcons[0];
 	}
-<<<<<<< HEAD:src/main/java/micdoodle8/mods/galacticraft/core/blocks/BlockSpaceStationBase.java
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public IIcon getIcon(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
-	{
-		switch (par5)
-=======
-	
-    public Icon getIcon(int par1, int par2)
+    public IIcon getIcon(int par1, int par2)
     {
 		switch (par1)
->>>>>>> 58f48f8b7e9a89c745a63e4440ff91be6c07e9bf:common/micdoodle8/mods/galacticraft/core/blocks/GCCoreBlockSpaceStationBase.java
 		{
 		case 1:
 			return this.spaceStationIcons[0];
@@ -75,9 +67,9 @@ public class BlockSpaceStationBase extends BlockContainer implements ITileEntity
     }
 
 	@Override
-	public void breakBlock(World var1, int var2, int var3, int var4, int var5, int var6)
+	public void breakBlock(World var1, int var2, int var3, int var4, Block var5, int var6)
 	{
-		final TileEntity tileAt = var1.getBlockTileEntity(var2, var3, var4);
+		final TileEntity tileAt = var1.getTileEntity(var2, var3, var4);
 
 		if (tileAt instanceof IMultiBlock)
 		{

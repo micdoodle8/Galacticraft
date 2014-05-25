@@ -1,10 +1,7 @@
 package micdoodle8.mods.galacticraft.core.wrappers;
 
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-<<<<<<< HEAD:src/main/java/micdoodle8/mods/galacticraft/core/wrappers/ScheduledBlockChange.java
 import net.minecraft.block.Block;
-=======
->>>>>>> 58f48f8b7e9a89c745a63e4440ff91be6c07e9bf:common/micdoodle8/mods/galacticraft/core/wrappers/ScheduledBlockChange.java
 
 public class ScheduledBlockChange
 {

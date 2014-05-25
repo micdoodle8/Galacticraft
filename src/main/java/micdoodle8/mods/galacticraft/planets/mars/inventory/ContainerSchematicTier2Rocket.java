@@ -141,137 +141,7 @@ public class ContainerSchematicTier2Rocket extends Container
 
 				var3.onSlotChange(var4, var2);
 			}
-<<<<<<< HEAD:src/main/java/micdoodle8/mods/galacticraft/planets/mars/inventory/ContainerSchematicTier2Rocket.java
-			else if (var2.getItem() == GCItems.partNoseCone && !((Slot) this.inventorySlots.get(1)).getHasStack())
-			{
-				if (!this.mergeItemStack(var4, 1, 2, false))
-				{
-					return null;
-				}
-			}
-			else if (var2.getItem() == GCItems.heavyPlatingTier1 && !((Slot) this.inventorySlots.get(2)).getHasStack())
-			{
-				if (!this.mergeItemStack(var4, 2, 3, false))
-				{
-					return null;
-				}
-			}
-			else if (var2.getItem() == GCItems.heavyPlatingTier1 && !((Slot) this.inventorySlots.get(3)).getHasStack())
-			{
-				if (!this.mergeItemStack(var4, 3, 4, false))
-				{
-					return null;
-				}
-			}
-			else if (var2.getItem() == GCItems.heavyPlatingTier1 && !((Slot) this.inventorySlots.get(4)).getHasStack())
-			{
-				if (!this.mergeItemStack(var4, 4, 5, false))
-				{
-					return null;
-				}
-			}
-			else if (var2.getItem() == GCItems.heavyPlatingTier1 && !((Slot) this.inventorySlots.get(5)).getHasStack())
-			{
-				if (!this.mergeItemStack(var4, 5, 6, false))
-				{
-					return null;
-				}
-			}
-			else if (var2.getItem() == GCItems.heavyPlatingTier1 && !((Slot) this.inventorySlots.get(6)).getHasStack())
-			{
-				if (!this.mergeItemStack(var4, 6, 7, false))
-				{
-					return null;
-				}
-			}
-			else if (var2.getItem() == GCItems.heavyPlatingTier1 && !((Slot) this.inventorySlots.get(7)).getHasStack())
-			{
-				if (!this.mergeItemStack(var4, 7, 8, false))
-				{
-					return null;
-				}
-			}
-			else if (var2.getItem() == GCItems.heavyPlatingTier1 && !((Slot) this.inventorySlots.get(8)).getHasStack())
-			{
-				if (!this.mergeItemStack(var4, 8, 9, false))
-				{
-					return null;
-				}
-			}
-			else if (var2.getItem() == GCItems.heavyPlatingTier1 && !((Slot) this.inventorySlots.get(9)).getHasStack())
-			{
-				if (!this.mergeItemStack(var4, 9, 10, false))
-				{
-					return null;
-				}
-			}
-			else if (var2.getItem() == GCItems.partFins && !((Slot) this.inventorySlots.get(10)).getHasStack())
-			{
-				if (!this.mergeItemStack(var4, 10, 11, false))
-				{
-					return null;
-				}
-			}
-			else if (var2.getItem() == GCItems.partFins && !((Slot) this.inventorySlots.get(11)).getHasStack())
-			{
-				if (!this.mergeItemStack(var4, 11, 12, false))
-				{
-					return null;
-				}
-			}
-			else if (var2.getItem() == GCItems.rocketEngine && !((Slot) this.inventorySlots.get(12)).getHasStack())
-			{
-				if (!this.mergeItemStack(var4, 12, 13, false))
-				{
-					return null;
-				}
-			}
-			else if (var2.getItem() == GCItems.partFins && !((Slot) this.inventorySlots.get(13)).getHasStack())
-			{
-				if (!this.mergeItemStack(var4, 13, 14, false))
-				{
-					return null;
-				}
-			}
-			else if (var2.getItem() == GCItems.partFins && !((Slot) this.inventorySlots.get(14)).getHasStack())
-			{
-				if (!this.mergeItemStack(var4, 14, 15, false))
-				{
-					return null;
-				}
-			}
-			else if (var2.getItem() == Item.getItemFromBlock(Blocks.chest) && !((Slot) this.inventorySlots.get(15)).getHasStack())
-			{
-				if (!this.mergeItemStack(var4, 15, 16, false))
-				{
-					return null;
-				}
-			}
-			else if (var2.getItem() == Item.getItemFromBlock(Blocks.chest) && !((Slot) this.inventorySlots.get(16)).getHasStack())
-			{
-				if (!this.mergeItemStack(var4, 16, 17, false))
-				{
-					return null;
-				}
-			}
-			else if (var2.getItem() == Item.getItemFromBlock(Blocks.chest) && !((Slot) this.inventorySlots.get(17)).getHasStack())
-			{
-				if (!this.mergeItemStack(var4, 17, 18, false))
-				{
-					return null;
-				}
-			}
-			else if (par1 >= 18 && par1 < 37)
-			{
-				if (!this.mergeItemStack(var4, 37, 46, false))
-				{
-					return null;
-				}
-			}
-			else if (par1 >= 37 && par1 < 46)
-=======
 			else
->>>>>>> 58f48f8b7e9a89c745a63e4440ff91be6c07e9bf:common/micdoodle8/mods/galacticraft/mars/inventory/GCMarsContainerRocketBenchT2.java
 			{
 				for (int i = 1; i < 19; i++)
 				{
@@ -289,21 +159,21 @@ public class ContainerSchematicTier2Rocket extends Container
 				
 				if (!done)
 				{
-					if (var2.getItem().itemID == Block.chest.blockID && !((Slot) this.inventorySlots.get(19)).getHasStack())
+					if (var2.getItem() == Item.getItemFromBlock(Blocks.chest) && !((Slot) this.inventorySlots.get(19)).getHasStack())
 					{
 						if (!this.mergeItemStack(var4, 19, 20, false))
 						{
 							return null;
 						}
 					}
-					else if (var2.getItem().itemID == Block.chest.blockID && !((Slot) this.inventorySlots.get(20)).getHasStack())
+					else if (var2.getItem() == Item.getItemFromBlock(Blocks.chest) && !((Slot) this.inventorySlots.get(20)).getHasStack())
 					{
 						if (!this.mergeItemStack(var4, 20, 21, false))
 						{
 							return null;
 						}
 					}
-					else if (var2.getItem().itemID == Block.chest.blockID && !((Slot) this.inventorySlots.get(21)).getHasStack())
+					else if (var2.getItem() == Item.getItemFromBlock(Blocks.chest) && !((Slot) this.inventorySlots.get(21)).getHasStack())
 					{
 						if (!this.mergeItemStack(var4, 21, 22, false))
 						{

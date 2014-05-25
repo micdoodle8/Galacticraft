@@ -30,11 +30,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * 
  */
 @SideOnly(Side.CLIENT)
-<<<<<<< HEAD:src/main/java/micdoodle8/mods/galacticraft/core/client/render/entities/RenderEvolvedSkeleton.java
-public class RenderEvolvedSkeleton extends RenderLiving
-=======
-public class GCCoreRenderSkeleton extends RenderBiped
->>>>>>> 58f48f8b7e9a89c745a63e4440ff91be6c07e9bf:common/micdoodle8/mods/galacticraft/core/client/render/entities/GCCoreRenderSkeleton.java
+public class RenderEvolvedSkeleton extends RenderBiped
 {
 	private static final ResourceLocation skeletonTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/skeleton.png");
 	private static final ResourceLocation powerTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/power.png");
@@ -89,9 +85,10 @@ public class GCCoreRenderSkeleton extends RenderBiped
 		super.renderEquippedItems(par1EntityLiving, par2);
 	}
 
-    public void doRenderLiving(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9)
+	@Override
+    public void doRender(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9)
     {
-        super.doRenderLiving(par1EntityLiving, par2, par4, par6, par8, par9);
+        super.doRender(par1EntityLiving, par2, par4, par6, par8, par9);
         this.field_82423_g.aimedBow = this.field_82425_h.aimedBow = this.modelBipedMain.aimedBow = true;
     }
 

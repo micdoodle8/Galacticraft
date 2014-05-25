@@ -114,21 +114,6 @@ public class WorldProviderMars extends WorldProviderSpace implements IGalacticra
 	}
 
 	@Override
-    public void updateWeather()
-    {
-		this.worldObj.getWorldInfo().setRainTime(0);
-		this.worldObj.getWorldInfo().setRaining(false);
-		this.worldObj.getWorldInfo().setThunderTime(0);
-		this.worldObj.getWorldInfo().setThundering(false);
-    	this.worldObj.rainingStrength = 0.0F;
-    	this.worldObj.thunderingStrength = 0.0F;
-<<<<<<< HEAD:src/main/java/micdoodle8/mods/galacticraft/planets/mars/dimension/WorldProviderMars.java
-	}
-=======
-    }
->>>>>>> 58f48f8b7e9a89c745a63e4440ff91be6c07e9bf:common/micdoodle8/mods/galacticraft/mars/dimension/GCMarsWorldProvider.java
-
-	@Override
 	public boolean isSkyColored()
 	{
 		return true;

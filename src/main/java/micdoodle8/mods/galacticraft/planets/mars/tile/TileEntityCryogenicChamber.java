@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars.EnumSimplePacketMars;
@@ -140,18 +141,39 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
 	{
 		final Vector3 thisBlock = new Vector3(this);
 
-		for (int y = 0; y < 3; y++)
+		int x1 = 0;
+		int x2 = 0;
+		int z1 = 0;
+		int z2 = 0;
+
+		switch (this.getBlockMetadata() - BlockMachineMars.CRYOGENIC_CHAMBER_METADATA)
 		{
-			if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.5D)
-			{
-				FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX(), thisBlock.intY() + y, thisBlock.intZ(), MarsBlocks.machine, Block.getIdFromBlock(MarsBlocks.machine) >> 12 & 255);
-			}
-			
-			this.worldObj.setBlockToAir(thisBlock.intX(), thisBlock.intY() + y, thisBlock.intZ());
+		case 0:
+			x1 = 0;
+			x2 = 0;
+			z1 = -1;
+			z2 = 1;
+			break;
+		case 1:
+			x1 = 0;
+			x2 = 0;
+			z1 = -1;
+			z2 = 1;
+			break;
+		case 2:
+			x1 = -1;
+			x2 = 1;
+			z1 = 0;
+			z2 = 0;
+			break;
+		case 3:
+			x1 = -1;
+			x2 = 1;
+			z1 = 0;
+			z2 = 0;
+			break;
 		}
-		
-<<<<
-//This code was modified in 1.6 branch but not clear where it goes
+
 		int fakeBlockCount = 0;
 		for (int x = x1; x <= x2; x++)
 		{
@@ -163,8 +185,8 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
 					{
 						continue;
 					}
-		
-					if (this.worldObj.getBlockId(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z) == GCCoreBlocks.fakeBlock.blockID)
+					
+					if (this.worldObj.getBlock(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z) == GCBlocks.fakeBlock)
 					{
 						fakeBlockCount++;
 					}
@@ -176,7 +198,21 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
 		{
 			return;
 		}
->>>>
+
+		for (int x = x1; x <= x2; x++)
+		{
+			for (int z = z1; z <= z2; z++)
+			{
+				for (int y = 0; y < 4; y++)
+				{
+					if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.1D)
+					{
+						FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, MarsBlocks.machine, Block.getIdFromBlock(MarsBlocks.machine) >> 12 & 255);
+					}
+					this.worldObj.func_147480_a(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, x == 0 && z == 0);
+				}
+			}
+		}
 	}
 
 	@Override

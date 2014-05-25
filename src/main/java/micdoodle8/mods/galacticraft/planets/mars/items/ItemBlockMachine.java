@@ -69,12 +69,8 @@ public class ItemBlockMachine extends ItemBlock implements IHoldableItem
 	public boolean shouldHoldLeftHandUp(EntityPlayer player)
 	{
 		ItemStack currentStack = player.getCurrentEquippedItem();
-
-<<<<<<< HEAD:src/main/java/micdoodle8/mods/galacticraft/planets/mars/items/ItemBlockMachine.java
-		if (currentStack != null && currentStack.getItemDamage() >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA)
-=======
-		if (currentStack != null && currentStack.getItemDamage() >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA && currentStack.getItemDamage() < GCMarsBlockMachine.LAUNCH_CONTROLLER_METADATA)
->>>>>>> 58f48f8b7e9a89c745a63e4440ff91be6c07e9bf:common/micdoodle8/mods/galacticraft/mars/items/GCMarsItemBlockMachine.java
+		
+		if (currentStack != null && currentStack.getItemDamage() >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA && currentStack.getItemDamage() < BlockMachineMars.LAUNCH_CONTROLLER_METADATA)
 		{
 			return true;
 		}
@@ -87,11 +83,7 @@ public class ItemBlockMachine extends ItemBlock implements IHoldableItem
 	{
 		ItemStack currentStack = player.getCurrentEquippedItem();
 
-<<<<<<< HEAD:src/main/java/micdoodle8/mods/galacticraft/planets/mars/items/ItemBlockMachine.java
-		if (currentStack != null && currentStack.getItemDamage() >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA)
-=======
-		if (currentStack != null && currentStack.getItemDamage() >= GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA && currentStack.getItemDamage() < GCMarsBlockMachine.LAUNCH_CONTROLLER_METADATA)
->>>>>>> 58f48f8b7e9a89c745a63e4440ff91be6c07e9bf:common/micdoodle8/mods/galacticraft/mars/items/GCMarsItemBlockMachine.java
+		if (currentStack != null && currentStack.getItemDamage() >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA && currentStack.getItemDamage() < BlockMachineMars.LAUNCH_CONTROLLER_METADATA)
 		{
 			return true;
 		}

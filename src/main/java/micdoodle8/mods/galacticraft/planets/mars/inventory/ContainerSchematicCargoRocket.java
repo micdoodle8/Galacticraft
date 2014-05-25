@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.mars.inventory;
 
 import micdoodle8.mods.galacticraft.core.inventory.SlotRocketBenchResult;
-import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.planets.mars.util.RecipeUtilMars;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
@@ -143,137 +143,7 @@ public class ContainerSchematicCargoRocket extends Container
 
 				var3.onSlotChange(var4, var2);
 			}
-<<<<<<< HEAD:src/main/java/micdoodle8/mods/galacticraft/planets/mars/inventory/ContainerSchematicCargoRocket.java
-			else if (var2.getItem() == GCItems.partNoseCone && !((Slot) this.inventorySlots.get(1)).getHasStack())
-			{
-				if (!this.mergeItemStack(var4, 1, 2, false))
-				{
-					return null;
-				}
-			}
-			else if (var2.getItem() == GCItems.heavyPlatingTier1 && !((Slot) this.inventorySlots.get(2)).getHasStack())
-			{
-				if (!this.mergeItemStack(var4, 2, 3, false))
-				{
-					return null;
-				}
-			}
-			else if (var2.getItem() == GCItems.heavyPlatingTier1 && !((Slot) this.inventorySlots.get(3)).getHasStack())
-			{
-				if (!this.mergeItemStack(var4, 3, 4, false))
-				{
-					return null;
-				}
-			}
-			else if (var2.getItem() == GCItems.heavyPlatingTier1 && !((Slot) this.inventorySlots.get(4)).getHasStack())
-			{
-				if (!this.mergeItemStack(var4, 4, 5, false))
-				{
-					return null;
-				}
-			}
-			else if (var2.getItem() == GCItems.heavyPlatingTier1 && !((Slot) this.inventorySlots.get(5)).getHasStack())
-			{
-				if (!this.mergeItemStack(var4, 5, 6, false))
-				{
-					return null;
-				}
-			}
-			else if (var2.getItem() == GCItems.heavyPlatingTier1 && !((Slot) this.inventorySlots.get(6)).getHasStack())
-			{
-				if (!this.mergeItemStack(var4, 6, 7, false))
-				{
-					return null;
-				}
-			}
-			else if (var2.getItem() == GCItems.heavyPlatingTier1 && !((Slot) this.inventorySlots.get(7)).getHasStack())
-			{
-				if (!this.mergeItemStack(var4, 7, 8, false))
-				{
-					return null;
-				}
-			}
-			else if (var2.getItem() == GCItems.heavyPlatingTier1 && !((Slot) this.inventorySlots.get(8)).getHasStack())
-			{
-				if (!this.mergeItemStack(var4, 8, 9, false))
-				{
-					return null;
-				}
-			}
-			else if (var2.getItem() == GCItems.heavyPlatingTier1 && !((Slot) this.inventorySlots.get(9)).getHasStack())
-			{
-				if (!this.mergeItemStack(var4, 9, 10, false))
-				{
-					return null;
-				}
-			}
-			else if (var2.getItem() == GCItems.partFins && !((Slot) this.inventorySlots.get(10)).getHasStack())
-			{
-				if (!this.mergeItemStack(var4, 10, 11, false))
-				{
-					return null;
-				}
-			}
-			else if (var2.getItem() == GCItems.partFins && !((Slot) this.inventorySlots.get(11)).getHasStack())
-			{
-				if (!this.mergeItemStack(var4, 11, 12, false))
-				{
-					return null;
-				}
-			}
-			else if (var2.getItem() == GCItems.rocketEngine && !((Slot) this.inventorySlots.get(12)).getHasStack())
-			{
-				if (!this.mergeItemStack(var4, 12, 13, false))
-				{
-					return null;
-				}
-			}
-			else if (var2.getItem() == GCItems.partFins && !((Slot) this.inventorySlots.get(13)).getHasStack())
-			{
-				if (!this.mergeItemStack(var4, 13, 14, false))
-				{
-					return null;
-				}
-			}
-			else if (var2.getItem() == GCItems.partFins && !((Slot) this.inventorySlots.get(14)).getHasStack())
-			{
-				if (!this.mergeItemStack(var4, 14, 15, false))
-				{
-					return null;
-				}
-			}
-			else if (var2.getItem() == Item.getItemFromBlock(Blocks.chest) && !((Slot) this.inventorySlots.get(15)).getHasStack())
-			{
-				if (!this.mergeItemStack(var4, 15, 16, false))
-				{
-					return null;
-				}
-			}
-			else if (var2.getItem() == Item.getItemFromBlock(Blocks.chest) && !((Slot) this.inventorySlots.get(16)).getHasStack())
-			{
-				if (!this.mergeItemStack(var4, 16, 17, false))
-				{
-					return null;
-				}
-			}
-			else if (var2.getItem() == Item.getItemFromBlock(Blocks.chest) && !((Slot) this.inventorySlots.get(17)).getHasStack())
-			{
-				if (!this.mergeItemStack(var4, 17, 18, false))
-				{
-					return null;
-				}
-			}
-			else if (par1 >= 18 && par1 < 37)
-			{
-				if (!this.mergeItemStack(var4, 37, 46, false))
-				{
-					return null;
-				}
-			}
-			else if (par1 >= 37 && par1 < 46)
-=======
 			else
->>>>>>> 58f48f8b7e9a89c745a63e4440ff91be6c07e9bf:common/micdoodle8/mods/galacticraft/mars/inventory/GCMarsContainerCargoRocketBench.java
 			{
 				for (int i = 1; i < 14; i++)
 				{
@@ -291,21 +161,21 @@ public class ContainerSchematicCargoRocket extends Container
 				
 				if (!done)
 				{
-					if (var2.getItem().itemID == Block.chest.blockID && !((Slot) this.inventorySlots.get(14)).getHasStack())
+					if (var2.getItem() == Item.getItemFromBlock(Blocks.chest) && !((Slot) this.inventorySlots.get(14)).getHasStack())
 					{
 						if (!this.mergeItemStack(var4, 14, 15, false))
 						{
 							return null;
 						}
 					}
-					else if (var2.getItem().itemID == Block.chest.blockID && !((Slot) this.inventorySlots.get(15)).getHasStack())
+					else if (var2.getItem() == Item.getItemFromBlock(Blocks.chest) && !((Slot) this.inventorySlots.get(15)).getHasStack())
 					{
 						if (!this.mergeItemStack(var4, 15, 16, false))
 						{
 							return null;
 						}
 					}
-					else if (var2.getItem().itemID == Block.chest.blockID && !((Slot) this.inventorySlots.get(16)).getHasStack())
+					else if (var2.getItem() == Item.getItemFromBlock(Blocks.chest) && !((Slot) this.inventorySlots.get(16)).getHasStack())
 					{
 						if (!this.mergeItemStack(var4, 16, 17, false))
 						{

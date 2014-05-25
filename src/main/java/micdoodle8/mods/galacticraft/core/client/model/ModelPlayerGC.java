@@ -228,18 +228,10 @@ public class ModelPlayerGC extends ModelBiped
 
 		for (PlayerGearData gearData2 : ClientProxyCore.playerItemData)
 		{
-			if (gearData2.getPlayer().username.equals(player.username))
+			if (gearData2.getPlayer().getGameProfile().getName().equals(player.getGameProfile().getName()))
 			{
-<<<<<<< HEAD:src/main/java/micdoodle8/mods/galacticraft/core/client/model/ModelPlayerGC.java
-				if (gearData2.getPlayer().getGameProfile().getName().equals(player.getGameProfile().getName()))
-				{
-					gearData = gearData2;
-					break;
-				}
-=======
 				gearData = gearData2;
 				break;
->>>>>>> 58f48f8b7e9a89c745a63e4440ff91be6c07e9bf:common/micdoodle8/mods/galacticraft/core/client/model/GCCoreModelPlayer.java
 			}
 		}
 		

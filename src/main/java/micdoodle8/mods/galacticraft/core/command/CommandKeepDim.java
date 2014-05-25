@@ -72,18 +72,14 @@ public class CommandKeepDim extends CommandBase
 					}
 					else
 					{
-<<<<<<< HEAD:src/main/java/micdoodle8/mods/galacticraft/core/command/CommandKeepDim.java
-						playerBase.addChatMessage(new ChatComponentText("[GCKeepLoaded] Dimension " + dimID + " is already set as static!"));
-=======
-						if (GCCoreConfigManager.setUnloaded(dimID))
+						if (ConfigManagerCore.setUnloaded(dimID))
 						{
-							playerBase.sendChatToPlayer(ChatMessageComponent.createFromText("[GCKeepLoaded] Successfully set dimension " + dimID + " to not load staticly"));
+							playerBase.addChatMessage(new ChatComponentText("[GCKeepLoaded] Successfully set dimension " + dimID + " to not load staticly"));
 						}
 						else
 						{
-							playerBase.sendChatToPlayer(ChatMessageComponent.createFromText("[GCKeepLoaded] Failed to set dimension as not static"));
+							playerBase.addChatMessage(new ChatComponentText("[GCKeepLoaded] Failed to set dimension as not static"));
 						}
->>>>>>> 58f48f8b7e9a89c745a63e4440ff91be6c07e9bf:common/micdoodle8/mods/galacticraft/core/command/GCCoreCommandKeepDim.java
 					}
 				}
 			}

@@ -3,14 +3,12 @@ package micdoodle8.mods.galacticraft.planets.mars.blocks;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.world.IChunkLoader;
-<<<<<<< HEAD:src/main/java/micdoodle8/mods/galacticraft/planets/mars/blocks/BlockMachineMars.java
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
@@ -19,21 +17,13 @@ import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityLaunchController
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityTerraformer;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
-=======
-import micdoodle8.mods.galacticraft.mars.GCMarsConfigManager;
-import micdoodle8.mods.galacticraft.mars.GalacticraftMars;
-import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityCryogenicChamber;
-import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityLaunchController;
-import micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityTerraformer;
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IconRegister;
->>>>>>> 58f48f8b7e9a89c745a63e4440ff91be6c07e9bf:common/micdoodle8/mods/galacticraft/mars/blocks/GCMarsBlockMachine.java
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
@@ -203,11 +193,11 @@ public class BlockMachineMars extends BlockTileGC
 				{
 					if (!world.isRemote)
 					{
-						((EntityPlayer) entityLiving).addChatMessage(EnumColor.RED + "Not enough room!");
+						((EntityPlayer) entityLiving).addChatMessage(new ChatComponentText(EnumColor.RED + "Not enough room!"));
 					}
 					
 					world.setBlockToAir(x, y, z);
-					((EntityPlayer) entityLiving).inventory.addItemStackToInventory(new ItemStack(GCMarsBlocks.machine, 1, CRYOGENIC_CHAMBER_METADATA));
+					((EntityPlayer) entityLiving).inventory.addItemStackToInventory(new ItemStack(Item.getItemFromBlock(MarsBlocks.machine), 1, CRYOGENIC_CHAMBER_METADATA));
 					return;
 				}
 			}
@@ -228,13 +218,9 @@ public class BlockMachineMars extends BlockTileGC
 					change = 0;
 					break;
 				}
-
-<<<<<<< HEAD:src/main/java/micdoodle8/mods/galacticraft/planets/mars/blocks/BlockMachineMars.java
-			world.setBlockMetadataWithNotify(x, y, z, BlockMachineMars.CRYOGENIC_CHAMBER_METADATA + change, 3);
-=======
-				world.setBlockMetadataWithNotify(x, y, z, GCMarsBlockMachine.CRYOGENIC_CHAMBER_METADATA + change, 3);
+				
+				world.setBlockMetadataWithNotify(x, y, z, BlockMachineMars.CRYOGENIC_CHAMBER_METADATA + change, 3);
 			}
->>>>>>> 58f48f8b7e9a89c745a63e4440ff91be6c07e9bf:common/micdoodle8/mods/galacticraft/mars/blocks/GCMarsBlockMachine.java
 		}
 		else
 		{
@@ -479,15 +465,15 @@ public class BlockMachineMars extends BlockTileGC
 			{
 				for (int y = 0; y < 4; y++)
 				{
-					final int idAt = world.getBlockId(x0 + x, y0 + y, z0 + z);
+					Block blockAt = world.getBlock(x0 + x, y0 + y, z0 + z);
 					int metaAt = world.getBlockMetadata(x0 + x, y0 + y, z0 + z);
 					
-					if (x == 0 && y == 0 && z == 0 && idAt == GCMarsBlocks.machine.blockID && metaAt >= CRYOGENIC_CHAMBER_METADATA && metaAt < LAUNCH_CONTROLLER_METADATA)
+					if (x == 0 && y == 0 && z == 0 && blockAt == MarsBlocks.machine && metaAt >= CRYOGENIC_CHAMBER_METADATA && metaAt < LAUNCH_CONTROLLER_METADATA)
 					{
 						continue;
 					}
 
-					if (Block.blocksList[idAt] != null && !Block.blocksList[idAt].blockMaterial.isReplaceable())
+					if (!blockAt.getMaterial().isReplaceable())
 					{
 						return false;
 					}

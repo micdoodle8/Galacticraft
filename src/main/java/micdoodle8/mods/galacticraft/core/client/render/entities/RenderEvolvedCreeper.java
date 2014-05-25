@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.client.render.entities;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.ModelEvolvedCreeper;
+import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedCreeper;
 import micdoodle8.mods.galacticraft.core.items.ItemSensorGlasses;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -30,11 +31,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * 
  */
 @SideOnly(Side.CLIENT)
-<<<<<<< HEAD:src/main/java/micdoodle8/mods/galacticraft/core/client/render/entities/RenderEvolvedCreeper.java
-public class RenderEvolvedCreeper extends RenderLiving
-=======
-public class GCCoreRenderCreeper extends RenderCreeper
->>>>>>> 58f48f8b7e9a89c745a63e4440ff91be6c07e9bf:common/micdoodle8/mods/galacticraft/core/client/render/entities/GCCoreRenderCreeper.java
+public class RenderEvolvedCreeper extends RenderCreeper
 {
 	private static final ResourceLocation creeperTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/creeper.png");
 	private static final ResourceLocation powerTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/power.png");
@@ -43,12 +40,8 @@ public class GCCoreRenderCreeper extends RenderCreeper
 
 	public RenderEvolvedCreeper()
 	{
-<<<<<<< HEAD:src/main/java/micdoodle8/mods/galacticraft/core/client/render/entities/RenderEvolvedCreeper.java
-		super(new ModelEvolvedCreeper(), 0.5F);
-=======
 		super();
-		this.mainModel = new GCCoreModelCreeper();
->>>>>>> 58f48f8b7e9a89c745a63e4440ff91be6c07e9bf:common/micdoodle8/mods/galacticraft/core/client/render/entities/GCCoreRenderCreeper.java
+		this.mainModel = new ModelEvolvedCreeper();
 	}
 
 	protected ResourceLocation func_110779_a(EntityCreeper par1EntityArrow)
@@ -113,8 +106,27 @@ public class GCCoreRenderCreeper extends RenderCreeper
 		}
 	}
 
-	protected int renderCreeperPassModel(EntityCreeper par1GCEntityCreeper, int par2, float par3)
+	protected int func_77061_b(EntityCreeper par1GCEntityCreeper, int par2, float par3)
 	{
+		return -1;
+	}
+
+	@Override
+	protected void preRenderCallback(EntityLivingBase par1EntityLiving, float par2)
+	{
+		this.updateCreeperScale((EntityCreeper) par1EntityLiving, par2);
+	}
+
+	@Override
+	protected int getColorMultiplier(EntityLivingBase par1EntityLiving, float par2, float par3)
+	{
+		return this.updateCreeperColorMultiplier((EntityCreeper) par1EntityLiving, par2, par3);
+	}
+
+	@Override
+	protected int shouldRenderPass(EntityLivingBase par1EntityLiving, int par2, float par3)
+	{
+		EntityEvolvedCreeper creeper = (EntityEvolvedCreeper) par1EntityLiving;
 		final Minecraft minecraft = FMLClientHandler.instance().getClient();
 
 		final EntityPlayerSP player = minecraft.thePlayer;
@@ -130,7 +142,7 @@ public class GCCoreRenderCreeper extends RenderCreeper
 		{
 			if (par2 == 1)
 			{
-				final float var4 = par1GCEntityCreeper.ticksExisted * 2 + par3;
+				final float var4 = creeper.ticksExisted * 2 + par3;
 				this.bindTexture(RenderEvolvedCreeper.powerTexture);
 				GL11.glMatrixMode(GL11.GL_TEXTURE);
 				GL11.glLoadIdentity();
@@ -157,30 +169,7 @@ public class GCCoreRenderCreeper extends RenderCreeper
 			}
 		}
 
-		return super.renderCreeperPassModel(par1GCEntityCreeper, par2, par3);
-	}
-
-	protected int func_77061_b(EntityCreeper par1GCEntityCreeper, int par2, float par3)
-	{
-		return -1;
-	}
-
-	@Override
-	protected void preRenderCallback(EntityLivingBase par1EntityLiving, float par2)
-	{
-		this.updateCreeperScale((EntityCreeper) par1EntityLiving, par2);
-	}
-
-	@Override
-	protected int getColorMultiplier(EntityLivingBase par1EntityLiving, float par2, float par3)
-	{
-		return this.updateCreeperColorMultiplier((EntityCreeper) par1EntityLiving, par2, par3);
-	}
-
-	@Override
-	protected int shouldRenderPass(EntityLivingBase par1EntityLiving, int par2, float par3)
-	{
-		return this.renderCreeperPassModel((EntityCreeper) par1EntityLiving, par2, par3);
+		return super.shouldRenderPass(creeper, par2, par3);
 	}
 
 	@Override

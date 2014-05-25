@@ -149,28 +149,10 @@ public abstract class BlockTransmitter extends BlockContainer
 	@Override
 	public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB axisalignedbb, List list, Entity entity)
 	{
-<<<<<<< HEAD:src/main/java/micdoodle8/mods/galacticraft/core/blocks/BlockTransmitter.java
-		TileEntity tileEntity = world.getTileEntity(x, y, z);
-		TileEntity[] connectable = new TileEntity[6];
-
-		switch (this.getNetworkType())
-		{
-		case OXYGEN:
-			connectable = WorldUtil.getAdjacentOxygenConnections(tileEntity);
-			break;
-		case POWER:
-			connectable = WorldUtil.getAdjacentPowerConnections(tileEntity);
-			break;
-		default:
-			break;
-		}
-
-=======
->>>>>>> 58f48f8b7e9a89c745a63e4440ff91be6c07e9bf:common/micdoodle8/mods/galacticraft/core/blocks/GCCoreBlockTransmitter.java
 		this.setBlockBounds((float) this.minVector.x, (float) this.minVector.y, (float) this.minVector.z, (float) this.maxVector.x, (float) this.maxVector.y, (float) this.maxVector.z);
 		super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, list, entity);
 
-		TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+		TileEntity tileEntity = world.getTileEntity(x, y, z);
 		if (tileEntity != null)
 		{
 			TileEntity[] connectable;

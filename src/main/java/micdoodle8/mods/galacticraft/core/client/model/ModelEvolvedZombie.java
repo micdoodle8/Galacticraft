@@ -1,11 +1,11 @@
 package micdoodle8.mods.galacticraft.core.client.model;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
+
+import org.lwjgl.opengl.GL11;
 
 /**
  * GCCoreModelZombie.java
@@ -16,11 +16,7 @@ import net.minecraft.util.MathHelper;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-<<<<<<< HEAD:src/main/java/micdoodle8/mods/galacticraft/core/client/model/ModelEvolvedZombie.java
-public class ModelEvolvedZombie extends ModelBase
-=======
-public class GCCoreModelZombie extends ModelBiped
->>>>>>> 58f48f8b7e9a89c745a63e4440ff91be6c07e9bf:common/micdoodle8/mods/galacticraft/core/client/model/GCCoreModelZombie.java
+public class ModelEvolvedZombie extends ModelBiped
 {
 	ModelRenderer leftOxygenTank;
 	ModelRenderer rightOxygenTank;
