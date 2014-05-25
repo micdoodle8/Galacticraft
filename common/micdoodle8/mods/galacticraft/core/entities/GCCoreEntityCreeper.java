@@ -140,24 +140,6 @@ public class GCCoreEntityCreeper extends EntityCreeper implements IEntityBreatha
 	}
 
 	/**
-	 * Returns the sound this mob makes when it is hurt.
-	 */
-	@Override
-	protected String getHurtSound()
-	{
-		return "mob.creeper";
-	}
-
-	/**
-	 * Returns the sound this mob makes on death.
-	 */
-	@Override
-	protected String getDeathSound()
-	{
-		return "mob.creeperdeath";
-	}
-
-	/**
 	 * Called when the mob's health reaches 0.
 	 */
 	@Override

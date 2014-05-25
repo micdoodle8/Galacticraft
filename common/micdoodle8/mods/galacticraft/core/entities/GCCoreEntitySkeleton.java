@@ -75,33 +75,6 @@ public class GCCoreEntitySkeleton extends EntitySkeleton implements IEntityBreat
 		return true;
 	}
 
-	/**
-	 * Returns the sound this mob makes while it's alive.
-	 */
-	@Override
-	protected String getLivingSound()
-	{
-		return "mob.skeleton";
-	}
-
-	/**
-	 * Returns the sound this mob makes when it is hurt.
-	 */
-	@Override
-	protected String getHurtSound()
-	{
-		return "mob.skeletonhurt";
-	}
-
-	/**
-	 * Returns the sound this mob makes on death.
-	 */
-	@Override
-	protected String getDeathSound()
-	{
-		return "mob.skeletonhurt";
-	}
-
 	@Override
 	@SideOnly(Side.CLIENT)
 	/**
