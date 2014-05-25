@@ -137,7 +137,7 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 									BlockVec3 blockAt = blockVec.clone().translate((int) (d * sinA), (int) (d * cosA), 0);
 									Block block = blockAt.getBlock(this.worldObj);
 
-									if (block.isOpaqueCube())
+									if (block != Blocks.air && block.isOpaqueCube())
 									{
 										valid = false;
 										break;
