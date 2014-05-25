@@ -129,6 +129,11 @@ public class TickHandlerServer
 		}
 		return false;
 	}
+
+	public static void scheduleNetworkTick(UniversalNetwork grid)
+	{
+		TickHandlerServer.networkTicks.add(grid);
+	}
 	
 	public static void removeNetworkTick(UniversalNetwork grid)
 	{
@@ -190,6 +195,16 @@ public class TickHandlerServer
 			{
 				tickCount = 0;
 			}
+			
+			UniversalNetwork.tickCount++;
+		}
+		else if (event.phase == Phase.END)
+		{
+			for (UniversalNetwork grid : TickHandlerServer.networkTicks)
+			{
+				grid.tickEnd();
+			}
+			TickHandlerServer.networkTicks.clear();
 		}
 	}
 
@@ -260,20 +275,9 @@ public class TickHandlerServer
 				}
 			}
 		}
-	}
-	
-	@Override
-	public void tickEnd(EnumSet<TickType> type, Object... tickData)
-	{
-		for (UniversalNetwork grid : TickHandlerServer.networkTicks)
+		else if (event.phase == Phase.END)
 		{
-			grid.tickEnd();
-		}
-		TickHandlerServer.networkTicks.clear();
-		
-		if (type.equals(EnumSet.of(TickType.WORLD)))
-		{
-			final WorldServer world = (WorldServer) tickData[0];
+			final WorldServer world = (WorldServer) event.world;
 
 			List<BlockVec3> edgesList = TickHandlerServer.edgeChecks.get(world.provider.dimensionId);
 			final HashSet<BlockVec3> checkedThisTick = new HashSet();
