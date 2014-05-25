@@ -41,7 +41,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
 
 	public TileEntityOxygenCollector()
 	{
-		super(1200, 0);
+		super(6000, 0);
 		this.storage.setMaxExtract(200);
 		this.storage.setCapacity(50000);
 	}
