@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,7 +22,7 @@ public class TileEntityMulti extends TileEntityAdvanced implements IPacketReceiv
 {
 	// The the position of the main block
 	@NetworkedField(targetSide = Side.CLIENT)
-	public Vector3 mainBlockPosition;
+	public BlockVec3 mainBlockPosition;
 	public String channel;
 
 	public TileEntityMulti()
@@ -35,7 +35,7 @@ public class TileEntityMulti extends TileEntityAdvanced implements IPacketReceiv
 		this.channel = channel;
 	}
 
-	public void setMainBlock(Vector3 mainBlock)
+	public void setMainBlock(BlockVec3 mainBlock)
 	{
 		this.mainBlockPosition = mainBlock;
 
@@ -88,7 +88,7 @@ public class TileEntityMulti extends TileEntityAdvanced implements IPacketReceiv
 	public void readFromNBT(NBTTagCompound nbt)
 	{
 		super.readFromNBT(nbt);
-		this.mainBlockPosition = new Vector3(nbt.getCompoundTag("mainBlockPosition"));
+		this.mainBlockPosition = new BlockVec3(nbt.getCompoundTag("mainBlockPosition"));
 	}
 
 	/**

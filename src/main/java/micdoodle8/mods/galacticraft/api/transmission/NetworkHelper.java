@@ -8,7 +8,7 @@ import micdoodle8.mods.galacticraft.api.transmission.core.grid.IElectricityNetwo
 import micdoodle8.mods.galacticraft.api.transmission.core.grid.IOxygenNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -52,14 +52,12 @@ public class NetworkHelper
 	{
 		final Set<IElectricityNetwork> connectedNetworks = new HashSet<IElectricityNetwork>();
 
+		BlockVec3 tileVec = new BlockVec3(tileEntity);
 		for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS)
 		{
 			if (approachingDirection.contains(side))
 			{
-				Vector3 position = new Vector3(tileEntity);
-				position.modifyPositionFromSide(side);
-
-				TileEntity outputConductor = position.getTileEntity(tileEntity.getWorldObj());
+				TileEntity outputConductor = tileVec.getTileEntityOnSide(tileEntity.getWorldObj(), side);
 				IElectricityNetwork electricityNetwork = NetworkHelper.getElectricalNetworkFromTileEntity(outputConductor, side);
 
 				if (electricityNetwork != null)

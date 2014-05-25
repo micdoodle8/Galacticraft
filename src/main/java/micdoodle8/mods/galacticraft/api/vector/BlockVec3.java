@@ -158,6 +158,12 @@ public class BlockVec3 implements Cloneable
 		}
 	}
 
+
+	public Block getBlock(IBlockAccess par1iBlockAccess)
+	{
+		return par1iBlockAccess.getBlock(this.x, this.y, this.z);
+	}
+	
 	/**
 	 * Get block ID at the BlockVec3 coordinates without forcing a chunk load.
 	 * Only call this 'safe' version if x and z coordinates are within the Minecraft world map (-30m to +30m)
@@ -359,6 +365,42 @@ public class BlockVec3 implements Cloneable
 		case 5:
 			x++;
 			break;
+		default:
+			return null;
+		}
+		if (world.blockExists(x, y, z))
+			return world.getTileEntity(x, y, z);
+		else
+			return null;
+	}
+
+	public TileEntity getTileEntityOnSide(World world, int side)
+	{
+		int x = this.x;
+		int y = this.y;
+		int z = this.z;
+		switch (side)
+		{
+		case 0:
+			y--;
+			break;
+		case 1:
+			y++;
+			break;
+		case 2:
+			z--;
+			break;
+		case 3:
+			z++;
+			break;
+		case 4:
+			x--;
+			break;
+		case 5:
+			x++;
+			break;
+		default:
+			return null;
 		}
 		if (world.blockExists(x, y, z))
 			return world.getTileEntity(x, y, z);
@@ -394,6 +436,13 @@ public class BlockVec3 implements Cloneable
 		par1NBTTagCompound.setInteger("y", this.y);
 		par1NBTTagCompound.setInteger("z", this.z);
 		return par1NBTTagCompound;
+	}
+
+	public BlockVec3(NBTTagCompound par1NBTTagCompound)
+	{
+		this.x = par1NBTTagCompound.getInteger("x");
+		this.y = par1NBTTagCompound.getInteger("y");
+		this.z = par1NBTTagCompound.getInteger("z");
 	}
 
 	public double getMagnitude()

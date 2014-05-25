@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.List;
 
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntitySolar;
 import net.minecraft.block.Block;
@@ -146,7 +146,7 @@ public class BlockSolar extends BlockTileGC
 			}
 		}
 
-		return new Vector3(x1, y1, z1).clone().modifyPositionFromSide(ForgeDirection.getOrientation(side).getOpposite()).getBlock(world) != GCBlocks.fakeBlock;
+		return new BlockVec3(x1, y1, z1).newVecSide(side ^ 1).getBlock(world) != GCBlocks.fakeBlock;
 	}
 
 	@Override
@@ -186,7 +186,7 @@ public class BlockSolar extends BlockTileGC
 
 		if (tile instanceof TileEntitySolar)
 		{
-			((TileEntitySolar) tile).onCreate(new Vector3(x, y, z));
+			((TileEntitySolar) tile).onCreate(new BlockVec3(x, y, z));
 		}
 	}
 

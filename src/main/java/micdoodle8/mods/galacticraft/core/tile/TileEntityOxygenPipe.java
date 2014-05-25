@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.tile.IColorable;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
@@ -34,7 +34,7 @@ public class TileEntityOxygenPipe extends TileEntityOxygenTransmitter implements
 	@Override
 	public boolean canConnect(ForgeDirection direction, NetworkType type)
 	{
-		TileEntity adjacentTile = new Vector3(this).modifyPositionFromSide(direction).getTileEntity(this.worldObj);
+		TileEntity adjacentTile = new BlockVec3(this).getTileEntityOnSide(this.worldObj, direction);
 
 		if (type == NetworkType.OXYGEN)
 		{
@@ -111,8 +111,8 @@ public class TileEntityOxygenPipe extends TileEntityOxygenTransmitter implements
 
 		if (this.worldObj != null && this.worldObj.isRemote)
 		{
-			final Vector3 thisVec = new Vector3(this);
-			this.worldObj.func_147479_m(thisVec.intX(), thisVec.intY(), thisVec.intZ());
+			final BlockVec3 thisVec = new BlockVec3(this);
+			this.worldObj.func_147479_m(thisVec.x, thisVec.y, thisVec.z);
 		}
 	}
 
@@ -126,8 +126,8 @@ public class TileEntityOxygenPipe extends TileEntityOxygenTransmitter implements
 		{
 			if (this.worldObj.isRemote)
 			{
-				final Vector3 thisVec = new Vector3(this);
-				this.worldObj.func_147479_m(thisVec.intX(), thisVec.intY(), thisVec.intZ());
+				final BlockVec3 thisVec = new BlockVec3(this);
+				this.worldObj.func_147479_m(thisVec.x, thisVec.y, thisVec.z);
 			}
 			else
 			{

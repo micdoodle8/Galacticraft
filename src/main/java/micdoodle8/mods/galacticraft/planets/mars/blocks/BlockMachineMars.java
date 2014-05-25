@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.planets.mars.blocks;
 
 import java.util.List;
 
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
@@ -231,7 +231,7 @@ public class BlockMachineMars extends BlockTileGC
 
 		if (var8 instanceof IMultiBlock)
 		{
-			((IMultiBlock) var8).onCreate(new Vector3(x, y, z));
+			((IMultiBlock) var8).onCreate(new BlockVec3(x, y, z));
 		}
 
 		if (metadata >= BlockMachineMars.LAUNCH_CONTROLLER_METADATA)

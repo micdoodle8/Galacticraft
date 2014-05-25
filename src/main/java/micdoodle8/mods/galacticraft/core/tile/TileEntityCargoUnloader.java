@@ -5,7 +5,7 @@ import micdoodle8.mods.galacticraft.api.entity.ICargoEntity.EnumCargoLoadingStat
 import micdoodle8.mods.galacticraft.api.entity.ICargoEntity.RemovalResult;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -98,11 +98,8 @@ public class TileEntityCargoUnloader extends TileEntityElectricBlock implements 
 		{
 			if (dir != ForgeDirection.UNKNOWN)
 			{
-				Vector3 vecAt = new Vector3(this);
-				vecAt = vecAt.modifyPositionFromSide(dir);
-
-				final TileEntity pad = vecAt.getTileEntity(this.worldObj);
-
+				final TileEntity pad = new BlockVec3(this).getTileEntityOnSide(this.worldObj, dir);
+				
 				if (pad != null && pad instanceof TileEntityMulti)
 				{
 					final TileEntity mainTile = ((TileEntityMulti) pad).mainBlockPosition.getTileEntity(this.worldObj);

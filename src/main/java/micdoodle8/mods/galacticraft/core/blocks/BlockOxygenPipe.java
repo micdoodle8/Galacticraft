@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.api.tile.IColorable;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenPipe;
@@ -81,7 +82,7 @@ public class BlockOxygenPipe extends BlockTransmitter
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(IBlockAccess par1IBlockAccess, int x, int y, int z, int par5)
 	{
-		Vector3 thisVec = new Vector3(x, y, z).modifyPositionFromSide(ForgeDirection.getOrientation(par5));
+		BlockVec3 thisVec = new BlockVec3(x, y, z).modifyPositionFromSide(ForgeDirection.getOrientation(par5));
 		final Block blockAt = thisVec.getBlock(par1IBlockAccess);
 
 		final TileEntityOxygenPipe tileEntity = (TileEntityOxygenPipe) par1IBlockAccess.getTileEntity(x, y, z);
@@ -131,11 +132,10 @@ public class BlockOxygenPipe extends BlockTransmitter
 
 //					GCCorePacketManager.sendPacketToClients(GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, tileEntity, tileEntity.getColor(), (byte) -1)); TODO Fix pipe color
 
+					BlockVec3 tileVec = new BlockVec3(tileEntity);
 					for (final ForgeDirection dir : ForgeDirection.values())
 					{
-						Vector3 vec = new Vector3(tileEntity);
-						vec = vec.modifyPositionFromSide(dir);
-						final TileEntity tileAt = vec.getTileEntity(tileEntity.getWorldObj());
+						final TileEntity tileAt = tileVec.getTileEntityOnSide(tileEntity.getWorldObj(), dir);
 
 						if (tileAt != null && tileAt instanceof IColorable)
 						{

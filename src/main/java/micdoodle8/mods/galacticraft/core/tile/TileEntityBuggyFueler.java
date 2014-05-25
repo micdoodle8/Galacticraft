@@ -8,7 +8,7 @@ import micdoodle8.mods.galacticraft.api.entity.IDockable;
 import micdoodle8.mods.galacticraft.api.entity.IFuelable;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
@@ -93,7 +93,7 @@ public class TileEntityBuggyFueler extends TileEntityMulti implements IMultiBloc
 	}
 
 	@Override
-	public void onCreate(Vector3 placedPosition)
+	public void onCreate(BlockVec3 placedPosition)
 	{
 		this.mainBlockPosition = placedPosition;
 
@@ -101,7 +101,7 @@ public class TileEntityBuggyFueler extends TileEntityMulti implements IMultiBloc
 		{
 			for (int z = -1; z < 2; z++)
 			{
-				final Vector3 vecToAdd = new Vector3(placedPosition.x + x, placedPosition.y, placedPosition.z + z);
+				final BlockVec3 vecToAdd = new BlockVec3(placedPosition.x + x, placedPosition.y, placedPosition.z + z);
 
 				if (!vecToAdd.equals(placedPosition))
 				{
@@ -114,7 +114,7 @@ public class TileEntityBuggyFueler extends TileEntityMulti implements IMultiBloc
 	@Override
 	public void onDestroy(TileEntity callingBlock)
 	{
-		final Vector3 thisBlock = new Vector3(this);
+		final BlockVec3 thisBlock = new BlockVec3(this);
 
 		for (int x = -1; x < 2; x++)
 		{
@@ -122,10 +122,10 @@ public class TileEntityBuggyFueler extends TileEntityMulti implements IMultiBloc
 			{
 				if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.1D)
 				{
-					FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + x, thisBlock.intY(), thisBlock.intZ() + z, GCBlocks.landingPad, Block.getIdFromBlock(GCBlocks.landingPad) >> 12 & 255);
+					FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.x + x, thisBlock.y, thisBlock.z + z, GCBlocks.landingPad, Block.getIdFromBlock(GCBlocks.landingPad) >> 12 & 255);
 				}
 
-				this.worldObj.setBlockToAir(thisBlock.intX() + x, thisBlock.intY(), thisBlock.intZ() + z);
+				this.worldObj.setBlockToAir(thisBlock.x + x, thisBlock.y, thisBlock.z + z);
 			}
 		}
 

@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars.tile;
 
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
@@ -121,13 +121,13 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
 	}
 
 	@Override
-	public void onCreate(Vector3 placedPosition)
+	public void onCreate(BlockVec3 placedPosition)
 	{
 		this.mainBlockPosition = placedPosition;
 
 		for (int y = 0; y < 3; y++)
 		{
-			final Vector3 vecToAdd = new Vector3(placedPosition.x, placedPosition.y + y, placedPosition.z);
+			final BlockVec3 vecToAdd = new BlockVec3(placedPosition.x, placedPosition.y + y, placedPosition.z);
 
 			if (!vecToAdd.equals(placedPosition))
 			{
@@ -139,7 +139,7 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
 	@Override
 	public void onDestroy(TileEntity callingBlock)
 	{
-		final Vector3 thisBlock = new Vector3(this);
+		final BlockVec3 thisBlock = new BlockVec3(this);
 
 		int x1 = 0;
 		int x2 = 0;
@@ -186,7 +186,7 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
 						continue;
 					}
 					
-					if (this.worldObj.getBlock(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z) == GCBlocks.fakeBlock)
+					if (this.worldObj.getBlock(thisBlock.x + x, thisBlock.y + y, thisBlock.z + z) == GCBlocks.fakeBlock)
 					{
 						fakeBlockCount++;
 					}
@@ -209,7 +209,7 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
 					{
 						FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, MarsBlocks.machine, Block.getIdFromBlock(MarsBlocks.machine) >> 12 & 255);
 					}
-					this.worldObj.func_147480_a(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, x == 0 && z == 0);
+					this.worldObj.func_147480_a(thisBlock.x + x, thisBlock.y + y, thisBlock.z + z, x == 0 && z == 0);
 				}
 			}
 		}

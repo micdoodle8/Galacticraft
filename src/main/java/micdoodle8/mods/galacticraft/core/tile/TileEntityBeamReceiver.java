@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.api.power.EnergySource.EnergySourceAdjacent;
 import micdoodle8.mods.galacticraft.api.power.EnergySource.EnergySourceWireless;
 import micdoodle8.mods.galacticraft.api.power.IEnergyHandlerGC;
 import micdoodle8.mods.galacticraft.api.power.ILaserNode;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.nbt.NBTTagCompound;
@@ -122,7 +123,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 			return null;
 		}
 		
-		TileEntity tile = new Vector3(this).translate(new Vector3(ForgeDirection.getOrientation(facing))).getTileEntity(this.worldObj);
+		TileEntity tile = new BlockVec3(this).getTileEntityOnSide(this.worldObj, facing);
 		
 		if (tile == null || tile.isInvalid())
 		{
@@ -131,9 +132,10 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 
 		if (tile instanceof EnergyStorageTile)
 		{
-			this.storage.setCapacity(((EnergyStorageTile) tile).storage.getCapacityGC());
-			this.storage.setMaxReceive(((EnergyStorageTile) tile).storage.getMaxReceive());
-			this.storage.setMaxExtract(((EnergyStorageTile) tile).storage.getMaxExtract());
+			EnergyStorage attachedStorage = ((EnergyStorageTile) tile).storage; 
+			this.storage.setCapacity(attachedStorage.getCapacityGC());
+			this.storage.setMaxReceive(attachedStorage.getMaxReceive());
+			this.storage.setMaxExtract(attachedStorage.getMaxExtract());
 		}
 		
 		return tile;

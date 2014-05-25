@@ -80,14 +80,13 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 			EnumSet<ForgeDirection> outputDirections = this.getElectricalOutputDirections();
 			outputDirections.remove(ForgeDirection.UNKNOWN);
 			
+			BlockVec3 thisVec = new BlockVec3(this);
 			for (ForgeDirection direction : outputDirections)
 			{
-				BlockVec3 adjacentBlockVec = new BlockVec3(this).add(new BlockVec3(direction.offsetX, direction.offsetY, direction.offsetZ));
+				TileEntity tileAdj = thisVec.getTileEntityOnSide(this.worldObj, direction);
 				
-				if (adjacentBlockVec.blockExists(this.worldObj))
+				if (tileAdj != null)
 				{
-					TileEntity tileAdj = adjacentBlockVec.getTileEntity(this.worldObj);
-					
 					if (tileAdj instanceof IConductor)
 					{
 						IElectricityNetwork network = (IElectricityNetwork) ((IConductor) tileAdj).getNetwork();

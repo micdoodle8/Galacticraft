@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
@@ -58,13 +57,13 @@ public class TileEntitySpaceStationBase extends TileEntityMulti implements IMult
 	}
 
 	@Override
-	public void onCreate(Vector3 placedPosition)
+	public void onCreate(BlockVec3 placedPosition)
 	{
 		this.mainBlockPosition = placedPosition;
 
 		for (int y = 1; y < 3; y++)
 		{
-			final Vector3 vecToAdd = new Vector3(placedPosition.x, placedPosition.y + y, placedPosition.z);
+			final BlockVec3 vecToAdd = new BlockVec3(placedPosition.x, placedPosition.y + y, placedPosition.z);
 
 			if (!vecToAdd.equals(placedPosition))
 			{

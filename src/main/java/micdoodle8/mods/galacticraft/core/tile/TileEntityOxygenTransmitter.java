@@ -5,7 +5,7 @@ import micdoodle8.mods.galacticraft.api.transmission.core.grid.IGridNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.core.grid.OxygenNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
 import micdoodle8.mods.galacticraft.api.transmission.tile.ITransmitter;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -76,7 +76,7 @@ public abstract class TileEntityOxygenTransmitter extends TileEntityAdvanced imp
 
 			for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS)
 			{
-				TileEntity tileEntity = new Vector3(this).modifyPositionFromSide(side).getTileEntity(this.worldObj);
+				TileEntity tileEntity = new BlockVec3(this).getTileEntityOnSide(this.worldObj, side);
 
 				if (tileEntity != null)
 				{

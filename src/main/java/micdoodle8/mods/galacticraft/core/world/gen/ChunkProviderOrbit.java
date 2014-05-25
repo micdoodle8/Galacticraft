@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import net.minecraft.block.Block;
@@ -102,7 +102,7 @@ public class ChunkProviderOrbit extends ChunkProviderGenerate
 
 			if (var8 instanceof IMultiBlock)
 			{
-				((IMultiBlock) var8).onCreate(new Vector3(k, 64, l));
+				((IMultiBlock) var8).onCreate(new BlockVec3(k, 64, l));
 			}
 
 			new WorldGenSpaceStation().generate(this.worldObj, this.rand, k - 10, 62, l - 3);

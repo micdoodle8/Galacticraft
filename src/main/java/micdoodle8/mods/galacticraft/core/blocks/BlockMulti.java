@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
 import net.minecraft.block.Block;
@@ -156,7 +156,7 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock
 		return false;
 	}
 
-	public void makeFakeBlock(World worldObj, Vector3 position, Vector3 mainBlock, int meta)
+	public void makeFakeBlock(World worldObj, BlockVec3 position, BlockVec3 mainBlock, int meta)
 	{
 		worldObj.setBlock(position.intX(), position.intY(), position.intZ(), this, meta, 3);
 		((TileEntityMulti) worldObj.getTileEntity(position.intX(), position.intY(), position.intZ())).setMainBlock(mainBlock);
@@ -245,15 +245,15 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock
 	public ItemStack getPickBlock(MovingObjectPosition target, World par1World, int x, int y, int z)
 	{
 		TileEntity tileEntity = par1World.getTileEntity(x, y, z);
-		Vector3 mainBlockPosition = ((TileEntityMulti) tileEntity).mainBlockPosition;
+		BlockVec3 mainBlockPosition = ((TileEntityMulti) tileEntity).mainBlockPosition;
 
 		if (mainBlockPosition != null)
 		{
-			Block mainBlockID = par1World.getBlock(mainBlockPosition.intX(), mainBlockPosition.intY(), mainBlockPosition.intZ());
+			Block mainBlockID = par1World.getBlock(mainBlockPosition.x, mainBlockPosition.y, mainBlockPosition.z);
 
 			if (mainBlockID != Blocks.air)
 			{
-				return mainBlockID.getPickBlock(target, par1World, mainBlockPosition.intX(), mainBlockPosition.intY(), mainBlockPosition.intZ());
+				return mainBlockID.getPickBlock(target, par1World, mainBlockPosition.x, mainBlockPosition.y, mainBlockPosition.z);
 			}
 		}
 
@@ -263,11 +263,11 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock
     public int getBedDirection(IBlockAccess world, int x, int y, int z)
     {
 		TileEntity tileEntity = world.getTileEntity(x, y, z);
-		Vector3 mainBlockPosition = ((TileEntityMulti) tileEntity).mainBlockPosition;
+		BlockVec3 mainBlockPosition = ((TileEntityMulti) tileEntity).mainBlockPosition;
 		
 		if (mainBlockPosition != null)
 		{
-			return mainBlockPosition.getBlock(world).getBedDirection(world, mainBlockPosition.intX(), mainBlockPosition.intY(), mainBlockPosition.intZ());
+			return mainBlockPosition.getBlock(world).getBedDirection(world, mainBlockPosition.x, mainBlockPosition.y, mainBlockPosition.z);
 		}
 		
         return BlockBed.getDirection(world.getBlockMetadata(x,  y, z));
@@ -277,11 +277,11 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock
 	public boolean isBed(IBlockAccess world, int x, int y, int z, EntityLivingBase player)
 	{
 		TileEntity tileEntity = world.getTileEntity(x, y, z);
-		Vector3 mainBlockPosition = ((TileEntityMulti) tileEntity).mainBlockPosition;
+		BlockVec3 mainBlockPosition = ((TileEntityMulti) tileEntity).mainBlockPosition;
 		
 		if (mainBlockPosition != null)
 		{
-			return mainBlockPosition.getBlock(world).isBed(world, mainBlockPosition.intX(), mainBlockPosition.intY(), mainBlockPosition.intZ(), player);
+			return mainBlockPosition.getBlock(world).isBed(world, mainBlockPosition.x, mainBlockPosition.y, mainBlockPosition.z, player);
 		}
 		
 		return super.isBed(world, x, y, z, player);
@@ -291,11 +291,11 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock
 	public void setBedOccupied(IBlockAccess world, int x, int y, int z, EntityPlayer player, boolean occupied)
 	{
 		TileEntity tileEntity = world.getTileEntity(x, y, z);
-		Vector3 mainBlockPosition = ((TileEntityMulti) tileEntity).mainBlockPosition;
+		BlockVec3 mainBlockPosition = ((TileEntityMulti) tileEntity).mainBlockPosition;
 		
 		if (mainBlockPosition != null)
 		{
-			mainBlockPosition.getBlock(world).setBedOccupied(world, mainBlockPosition.intX(), mainBlockPosition.intY(), mainBlockPosition.intZ(), player, occupied);
+			mainBlockPosition.getBlock(world).setBedOccupied(world, mainBlockPosition.x, mainBlockPosition.y, mainBlockPosition.z, player, occupied);
 		}
 		else
 		{

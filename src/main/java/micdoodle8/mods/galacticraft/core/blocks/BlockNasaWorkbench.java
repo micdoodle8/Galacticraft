@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityNasaWorkbench;
@@ -176,7 +176,7 @@ public class BlockNasaWorkbench extends BlockContainer implements ITileEntityPro
 	
 		if (var8 instanceof IMultiBlock)
 		{
-			((IMultiBlock) var8).onCreate(new Vector3(x0, y0, z0));
+			((IMultiBlock) var8).onCreate(new BlockVec3(x0, y0, z0));
 		}
 	
 		super.onBlockPlacedBy(world, x0, y0, z0, entity, var6);

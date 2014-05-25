@@ -7,7 +7,7 @@ import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
@@ -131,13 +131,13 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 							{
 								boolean valid = true;
 
+								BlockVec3 blockVec = new BlockVec3(this).translate(x, 3, z);
 								for (double d = 0.0D; d < distance; d++)
 								{
-									Vector3 thisVec = new Vector3(this);
-									Vector3 blockAt = thisVec.clone().translate(new Vector3(x, 3, z)).clone().translate(new Vector3(d * sinA, d * cosA, 0));
+									BlockVec3 blockAt = blockVec.clone().translate((int) (d * sinA), (int) (d * cosA), 0);
 									Block block = blockAt.getBlock(this.worldObj);
 
-									if (block != Blocks.air && block.isOpaqueCube())
+									if (block.isOpaqueCube())
 									{
 										valid = false;
 										break;
@@ -247,7 +247,7 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 	}
 
 	@Override
-	public void onCreate(Vector3 placedPosition)
+	public void onCreate(BlockVec3 placedPosition)
 	{
 		for (int y = 1; y <= 2; y++)
 		{
@@ -255,7 +255,7 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 			{
 				for (int z = -1; z < 2; z++)
 				{
-					final Vector3 vecToAdd = new Vector3(placedPosition.x + (y == 2 ? x : 0), placedPosition.y + y, placedPosition.z + (y == 2 ? z : 0));
+					final BlockVec3 vecToAdd = new BlockVec3(placedPosition.x + (y == 2 ? x : 0), placedPosition.y + y, placedPosition.z + (y == 2 ? z : 0));
 
 					if (!vecToAdd.equals(placedPosition))
 					{
@@ -269,7 +269,7 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 	@Override
 	public void onDestroy(TileEntity callingBlock)
 	{
-		final Vector3 thisBlock = new Vector3(this);
+		final BlockVec3 thisBlock = new BlockVec3(this);
 
 		for (int y = 1; y <= 2; y++)
 		{

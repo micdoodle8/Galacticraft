@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import java.util.ArrayList;
 
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
@@ -27,7 +27,7 @@ public class TileEntityLandingPadSingle extends TileEntity
 		{
 			for (int z = this.zCoord - 1; z < this.zCoord + 2; z++)
 			{
-				final Vector3 vector = new Vector3(x, this.yCoord, z);
+				final BlockVec3 vector = new BlockVec3(x, this.yCoord, z);
 
 				final TileEntity tile = vector.getTileEntity(this.worldObj);
 
@@ -53,7 +53,7 @@ public class TileEntityLandingPadSingle extends TileEntity
 
 			if (tile instanceof IMultiBlock)
 			{
-				((IMultiBlock) tile).onCreate(new Vector3(this.xCoord, this.yCoord, this.zCoord));
+				((IMultiBlock) tile).onCreate(new BlockVec3(this.xCoord, this.yCoord, this.zCoord));
 			}
 		}
 	}
