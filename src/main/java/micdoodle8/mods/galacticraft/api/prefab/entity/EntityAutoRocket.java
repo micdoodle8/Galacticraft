@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.api.entity.IDockable;
+import micdoodle8.mods.galacticraft.api.entity.ICargoEntity.EnumCargoLoadingState;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -865,14 +866,38 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 			ItemStack stackAt = this.cargoItems[count];
 
 			if (stackAt != null && stackAt.getItem() == stack.getItem() && stackAt.getItemDamage() == stack.getItemDamage() && stackAt.stackSize < stackAt.getMaxStackSize())
-			{
-				if (doAdd)
+				if (stackAt.stackSize + stack.stackSize <= stackAt.getMaxStackSize())
 				{
-					this.cargoItems[count].stackSize += stack.stackSize;
-				}
+					if (doAdd)
+					{
+						this.cargoItems[count].stackSize += stack.stackSize;
+						this.markDirty();
+					}
+	
+					return EnumCargoLoadingState.SUCCESS;
+				} else
+				{
+					//Part of the stack can fill this slot but there will be some left over
+					int origSize = stackAt.stackSize;
+					int surplus = origSize + stack.stackSize - stackAt.getMaxStackSize();
 
-				return EnumCargoLoadingState.SUCCESS;
-			}
+					if (doAdd)
+					{
+						this.cargoItems[count].stackSize = stackAt.getMaxStackSize();
+						this.markDirty();
+					}
+					
+					stack.stackSize = surplus;
+					if (this.addCargo(stack, doAdd) == EnumCargoLoadingState.SUCCESS)
+						return EnumCargoLoadingState.SUCCESS;
+					
+					this.cargoItems[count].stackSize = origSize;
+					if (this.autoLaunchSetting == EnumAutoLaunch.CARGO_IS_FULL)
+					{
+						this.autoLaunch();
+					}
+					return EnumCargoLoadingState.FULL;			
+				}
 		}
 
 		for (count = 0; count < this.cargoItems.length - 2; count++)
@@ -884,6 +909,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 				if (doAdd)
 				{
 					this.cargoItems[count] = stack;
+					this.markDirty();
 				}
 
 				return EnumCargoLoadingState.SUCCESS;
@@ -912,6 +938,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 					this.cargoItems[i] = null;
 				}
 
+				if (doRemove) this.markDirty();
 				return new RemovalResult(EnumCargoLoadingState.SUCCESS, new ItemStack(stackAt.getItem(), 1, stackAt.getItemDamage()));
 			}
 		}

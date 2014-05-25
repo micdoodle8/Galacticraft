@@ -152,6 +152,7 @@ public class TileEntityCargoUnloader extends TileEntityElectricBlock implements 
 			{
 				var3 = this.containingItems[par1];
 				this.containingItems[par1] = null;
+				this.markDirty();
 				return var3;
 			}
 			else
@@ -161,6 +162,7 @@ public class TileEntityCargoUnloader extends TileEntityElectricBlock implements 
 				if (this.containingItems[par1].stackSize == 0)
 				{
 					this.containingItems[par1] = null;
+					this.markDirty();
 				}
 
 				return var3;
@@ -179,6 +181,7 @@ public class TileEntityCargoUnloader extends TileEntityElectricBlock implements 
 		{
 			final ItemStack var2 = this.containingItems[par1];
 			this.containingItems[par1] = null;
+			this.markDirty();
 			return var2;
 		}
 		else
@@ -196,6 +199,8 @@ public class TileEntityCargoUnloader extends TileEntityElectricBlock implements 
 		{
 			par2ItemStack.stackSize = this.getInventoryStackLimit();
 		}
+		
+		this.markDirty();
 	}
 
 	@Override
@@ -350,15 +355,35 @@ public class TileEntityCargoUnloader extends TileEntityElectricBlock implements 
 		{
 			ItemStack stackAt = this.containingItems[count];
 
-			if (stackAt != null && stackAt == stack && stackAt.getItemDamage() == stack.getItemDamage() && stackAt.stackSize < stackAt.getMaxStackSize())
-			{
-				if (doAdd)
+			if (stackAt != null && stackAt.getItem() == stack.getItem() && stackAt.getItemDamage() == stack.getItemDamage() && stackAt.stackSize < stackAt.getMaxStackSize())
+				if (stackAt.stackSize + stack.stackSize <= stackAt.getMaxStackSize())
 				{
-					this.containingItems[count].stackSize += stack.stackSize;
-				}
+					if (doAdd)
+					{
+						this.containingItems[count].stackSize += stack.stackSize;
+						this.markDirty();
+					}
+	
+					return EnumCargoLoadingState.SUCCESS;
+				} else
+				{
+					//Part of the stack can fill this slot but there will be some left over
+					int origSize = stackAt.stackSize;
+					int surplus = origSize + stack.stackSize - stackAt.getMaxStackSize();
 
-				return EnumCargoLoadingState.SUCCESS;
-			}
+					if (doAdd)
+					{
+						this.containingItems[count].stackSize = stackAt.getMaxStackSize();
+						this.markDirty();
+					}
+					
+					stack.stackSize = surplus;
+					if (this.addCargo(stack, doAdd) == EnumCargoLoadingState.SUCCESS)
+						return EnumCargoLoadingState.SUCCESS;
+					
+					this.containingItems[count].stackSize = origSize;
+					return EnumCargoLoadingState.FULL;			
+				}
 		}
 
 		for (count = 1; count < this.containingItems.length; count++)
@@ -370,6 +395,7 @@ public class TileEntityCargoUnloader extends TileEntityElectricBlock implements 
 				if (doAdd)
 				{
 					this.containingItems[count] = stack;
+					this.markDirty();
 				}
 
 				return EnumCargoLoadingState.SUCCESS;
@@ -392,6 +418,7 @@ public class TileEntityCargoUnloader extends TileEntityElectricBlock implements 
 					this.containingItems[i] = null;
 				}
 
+				if (doRemove) this.markDirty();
 				return new RemovalResult(EnumCargoLoadingState.SUCCESS, new ItemStack(stackAt.getItem(), 1, stackAt.getItemDamage()));
 			}
 		}

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.api.entity.IDockable;
+import micdoodle8.mods.galacticraft.api.entity.ICargoEntity.EnumCargoLoadingState;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -728,14 +729,34 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
 			ItemStack stackAt = this.cargoItems[count];
 
 			if (stackAt != null && stackAt.getItem() == stack.getItem() && stackAt.getItemDamage() == stack.getItemDamage() && stackAt.stackSize < stackAt.getMaxStackSize())
-			{
-				if (doAdd)
+				if (stackAt.stackSize + stack.stackSize <= stackAt.getMaxStackSize())
 				{
-					this.cargoItems[count].stackSize += stack.stackSize;
-				}
+					if (doAdd)
+					{
+						this.cargoItems[count].stackSize += stack.stackSize;
+						this.markDirty();
+					}
+	
+					return EnumCargoLoadingState.SUCCESS;
+				} else
+				{
+					//Part of the stack can fill this slot but there will be some left over
+					int origSize = stackAt.stackSize;
+					int surplus = origSize + stack.stackSize - stackAt.getMaxStackSize();
 
-				return EnumCargoLoadingState.SUCCESS;
-			}
+					if (doAdd)
+					{
+						this.cargoItems[count].stackSize = stackAt.getMaxStackSize();
+						this.markDirty();
+					}
+					
+					stack.stackSize = surplus;
+					if (this.addCargo(stack, doAdd) == EnumCargoLoadingState.SUCCESS)
+						return EnumCargoLoadingState.SUCCESS;
+					
+					this.cargoItems[count].stackSize = origSize;
+					return EnumCargoLoadingState.FULL;			
+				}
 		}
 
 		for (count = 0; count < this.cargoItems.length; count++)
@@ -747,6 +768,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
 				if (doAdd)
 				{
 					this.cargoItems[count] = stack;
+					this.markDirty();
 				}
 
 				return EnumCargoLoadingState.SUCCESS;
@@ -770,6 +792,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
 					this.cargoItems[i] = null;
 				}
 
+				if (doRemove) this.markDirty();
 				return new RemovalResult(EnumCargoLoadingState.SUCCESS, new ItemStack(stackAt.getItem(), 1, stackAt.getItemDamage()));
 			}
 		}
