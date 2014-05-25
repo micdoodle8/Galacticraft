@@ -19,8 +19,6 @@ import net.minecraftforge.common.util.ForgeDirection;
  * This reduces unnecessary type conversion between integers and doubles and back again.
  * (Minecraft block coordinates are always integers, only entity coordinates are doubles.)
  * 
- * Note also when writing NBT data BlockVec3 writes and reads its coordinates as doubles,
- * for 100% save-file compatibility with prior code using Vector3.
  */
 public class BlockVec3 implements Cloneable
 {
@@ -280,22 +278,22 @@ public class BlockVec3 implements Cloneable
 		{
 		case 0:
 			vec.y--;
-			break;
+			return vec;
 		case 1:
 			vec.y++;
-			break;
+			return vec;
 		case 2:
 			vec.z--;
-			break;
+			return vec;
 		case 3:
 			vec.z++;
-			break;
+			return vec;
 		case 4:
 			vec.x--;
-			break;
+			return vec;
 		case 5:
 			vec.x++;
-			break;
+			return vec;
 		}
 		return vec;
 	}
