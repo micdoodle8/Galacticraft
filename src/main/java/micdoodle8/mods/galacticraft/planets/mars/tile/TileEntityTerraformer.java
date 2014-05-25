@@ -581,15 +581,15 @@ public class TileEntityTerraformer extends TileEntityElectricBlock implements II
 		ItemStack stack2 = this.getFirstSaplingStack();
 		ItemStack stack3 = this.getFirstSeedStack();
 		networkedList.add(stack1 == null ? -1 : this.getSelectiveStack(2, 6));
-		networkedList.add(stack1 == null ? -1 : stack1);
+		networkedList.add(stack1 == null ? -1 : Item.getIdFromItem(stack1.getItem()));
 		networkedList.add(stack1 == null ? -1 : stack1.stackSize);
 		networkedList.add(stack1 == null ? -1 : stack1.getItemDamage());
 		networkedList.add(stack2 == null ? -1 : this.getSelectiveStack(6, 4));
-		networkedList.add(stack2 == null ? -1 : stack2);
+		networkedList.add(stack2 == null ? -1 : Item.getIdFromItem(stack2.getItem()));
 		networkedList.add(stack2 == null ? -1 : stack2.stackSize);
 		networkedList.add(stack2 == null ? -1 : stack2.getItemDamage());
 		networkedList.add(stack3 == null ? -1 : this.getSelectiveStack(10, 14));
-		networkedList.add(stack3 == null ? -1 : stack3);
+		networkedList.add(stack3 == null ? -1 : Item.getIdFromItem(stack3.getItem()));
 		networkedList.add(stack3 == null ? -1 : stack3.stackSize);
 		networkedList.add(stack3 == null ? -1 : stack3.getItemDamage());
 	}

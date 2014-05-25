@@ -182,7 +182,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
 				{
 					ItemStack itemstack1 = iterator.next();
 
-					if (stack == itemstack1 && (itemstack1.getItemDamage() == 32767 || stack.getItemDamage() == itemstack1.getItemDamage()))
+					if (stack.getItem() == itemstack1.getItem() && (itemstack1.getItemDamage() == 32767 || stack.getItemDamage() == itemstack1.getItemDamage()))
 					{
 						return true;
 					}
