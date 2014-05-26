@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAluminumWire;
 import net.minecraft.block.Block;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -27,7 +28,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class BlockAluminumWire extends BlockTransmitter
+public class BlockAluminumWire extends BlockTransmitter implements ITileEntityProvider
 {
 	public static final String[] names = { "aluminumWire", "aluminumWireHeavy" };
 	private static IIcon[] blockIcons;
@@ -101,7 +102,7 @@ public class BlockAluminumWire extends BlockTransmitter
 	}
 
 	@Override
-	public TileEntity createTileEntity(World world, int metadata)
+	public TileEntity createNewTileEntity(World world, int metadata)
 	{
 		switch (metadata)
 		{
@@ -112,12 +113,6 @@ public class BlockAluminumWire extends BlockTransmitter
 		default:
 			return null;
 		}
-	}
-
-	@Override
-	public TileEntity createNewTileEntity(World world, int meta)
-	{
-		return null;
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })

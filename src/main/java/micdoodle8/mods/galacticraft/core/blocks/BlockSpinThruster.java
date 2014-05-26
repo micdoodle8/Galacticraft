@@ -32,7 +32,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class BlockSpinThruster extends BlockAdvanced
+public class BlockSpinThruster extends BlockAdvanced implements ITileEntityProvider
 {
 	public static IIcon thrusterIcon;
 

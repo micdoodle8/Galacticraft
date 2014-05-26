@@ -374,13 +374,7 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta)
-	{
-		return null;
-	}
-
-	@Override
-	public TileEntity createTileEntity(World world, int metadata)
+	public TileEntity createNewTileEntity(World world, int metadata)
 	{
 		if (metadata == EnumEnclosedBlock.TE_CONDUIT.getMetadata())
 		{

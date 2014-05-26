@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
 import net.minecraft.block.BlockContainer;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -37,7 +38,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class BlockMulti extends BlockContainer implements IPartialSealableBlock
+public class BlockMulti extends BlockContainer implements IPartialSealableBlock, ITileEntityProvider
 {
 	private IIcon[] fakeIcons;
 
@@ -239,18 +240,6 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock
 	public TileEntity createNewTileEntity(World var1, int meta)
 	{
 		return new TileEntityMulti();
-	}
-
-	@Override
-	public TileEntity createTileEntity(World var1, int meta)
-	{
-		return new TileEntityMulti();
-	}
-
-	@Override
-	public boolean hasTileEntity(int metadata)
-	{
-		return true;
 	}
 
 	@Override
