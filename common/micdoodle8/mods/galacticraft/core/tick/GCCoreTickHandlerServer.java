@@ -190,11 +190,18 @@ public class GCCoreTickHandlerServer implements ITickHandler
 	@Override
 	public void tickEnd(EnumSet<TickType> type, Object... tickData)
 	{
-		for (UniversalNetwork grid : GCCoreTickHandlerServer.networkTicks)
+		int maxPasses = 10;
+		while (!GCCoreTickHandlerServer.networkTicks.isEmpty())
 		{
-			grid.tickEnd();
+			LinkedList<UniversalNetwork> pass = new LinkedList();
+			pass.addAll(GCCoreTickHandlerServer.networkTicks);
+			GCCoreTickHandlerServer.networkTicks.clear();		
+			for (UniversalNetwork grid : pass)
+			{
+				grid.tickEnd();
+			}
+			if (--maxPasses<=0) break;
 		}
-		GCCoreTickHandlerServer.networkTicks.clear();
 		
 		if (type.equals(EnumSet.of(TickType.WORLD)))
 		{
