@@ -178,6 +178,7 @@ public class GCCoreConfigManager
 	public static int[] staticLoadDimensions = {};
 	public static boolean enableSealerMultithreading;
 	public static boolean enableSealerEdgeChecks;
+	public static boolean alternateCanisterRecipe;
 
 	public static void setDefaultValues(File file)
 	{
@@ -331,6 +332,7 @@ public class GCCoreConfigManager
 			GCCoreConfigManager.enableTinOreGen = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Enable Tin Ore Gen", true, "If this is enabled, tin ore will generate on the overworld.").getBoolean(true);
 			GCCoreConfigManager.enableAluminumOreGen = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Enable Aluminum Ore Gen", true, "If this is enabled, aluminum ore will generate on the overworld.").getBoolean(true);
 			GCCoreConfigManager.enableSiliconOreGen = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Enable Silicon Ore Gen", true, "If this is enabled, silicon ore will generate on the overworld.").getBoolean(true);
+			GCCoreConfigManager.alternateCanisterRecipe = GCCoreConfigManager.configuration.get(Configuration.CATEGORY_GENERAL, "Alternate recipe for canisters", false, "Enable this if the standard canister recipe causes a conflict.").getBoolean(false);
 		}
 		catch (final Exception e)
 		{
