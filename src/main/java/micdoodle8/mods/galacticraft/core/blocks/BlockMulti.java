@@ -158,8 +158,8 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock
 
 	public void makeFakeBlock(World worldObj, BlockVec3 position, BlockVec3 mainBlock, int meta)
 	{
-		worldObj.setBlock(position.intX(), position.intY(), position.intZ(), this, meta, 3);
-		((TileEntityMulti) worldObj.getTileEntity(position.intX(), position.intY(), position.intZ())).setMainBlock(mainBlock);
+		worldObj.setBlock(position.x, position.y, position.z, this, meta, 3);
+		((TileEntityMulti) worldObj.getTileEntity(position.x, position.y, position.z)).setMainBlock(mainBlock);
 	}
 
 	@Override
@@ -239,6 +239,18 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock
 	public TileEntity createNewTileEntity(World var1, int meta)
 	{
 		return new TileEntityMulti();
+	}
+
+	@Override
+	public TileEntity createTileEntity(World var1, int meta)
+	{
+		return new TileEntityMulti();
+	}
+
+	@Override
+	public boolean hasTileEntity(int metadata)
+	{
+		return true;
 	}
 
 	@Override
