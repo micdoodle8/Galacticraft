@@ -662,32 +662,34 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 			p.motionX /= 0.91F;
 			p.motionZ /= 0.91F;
 			p.motionY /= 0.9800000190734863D;
+			
+			//Do freefall motion
 			if (!p.capabilities.isCreativeMode)
 			{
 				double dx = p.motionX - this.pPrevMotionX;
 				double dy = p.motionY - this.pPrevMotionY;
 				double dz = p.motionZ - this.pPrevMotionZ;
-				p.motionX -= dx*0.96D;
-				p.motionZ -= dz*0.96D;
-	            //if (p.capabilities.isFlying)
-	            {
-					p.motionY -= dy*0.9D;
-	            }
-	            //else
-	            {
-	            	if (p.movementInput.sneak)
-	                {
-	                    p.motionY -= 0.025D;
-	                }
+				p.motionX -= dx*0.94D;
+				p.motionZ -= dz*0.94D;
 
-	                if (p.movementInput.jump)
-	                {
-	                    p.motionY += 0.025D;
-	                }
-	            }
+				//if (p.capabilities.isFlying)
+				///Undo whatever vanilla tried to do to our y motion
+				p.motionY -= dy;
+
+	            if (p.movementInput.sneak)
+                {
+                    p.motionY -= 0.0015D;
+                }
+
+                if (p.movementInput.jump)
+                {
+                    p.motionY += 0.0015D;
+                }
 
 				if (p.motionX > 0.7F) p.motionX = 0.7F;
 				if (p.motionX < -0.7F) p.motionX = -0.7F;
+				if (p.motionY > 0.7F) p.motionY = 0.7F;
+				if (p.motionY < -0.7F) p.motionY = -0.7F;
 				if (p.motionZ > 0.7F) p.motionZ = 0.7F;
 				if (p.motionZ < -0.7F) p.motionZ = -0.7F;
 			} else
@@ -705,11 +707,16 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 			//Arm and leg movements could start tumbling the player?
 		}
 		else
-            if (p.movementInput.jump)
+		{   if (p.movementInput.jump)
             {
-                p.motionY += 0.2D;
-            }
-
+                if (p.onGround) p.motionY += 0.15D;
+                else p.motionY += 0.01D;
+            } else
+	        if (p.movementInput.sneak)
+	        {
+	            if (!p.onGround) p.motionY -= 0.01D;
+	        }
+		}
 		
 		//Artificial gravity
 		if (doGravity)
