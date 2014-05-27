@@ -1,0 +1,147 @@
+package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
+
+import java.util.List;
+import java.util.Random;
+
+import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
+import micdoodle8.mods.galacticraft.api.block.IPlantableBlock;
+import micdoodle8.mods.galacticraft.api.block.ITerraformableBlock;
+import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.common.util.ForgeDirection;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
+/**
+ * BlockBasicAsteroids.java
+ * 
+ * This file is part of the Galacticraft project
+ * 
+ * @author micdoodle8
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * 
+ */
+public class BlockBasicAsteroids extends Block implements IDetectableResource, IPlantableBlock, ITerraformableBlock
+{
+	@SideOnly(Side.CLIENT)
+	private IIcon[] blockIcons;
+
+	public BlockBasicAsteroids(String assetName)
+	{
+		super(Material.rock);
+		this.blockHardness = 3.0F;
+		this.setBlockName(assetName);
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerBlockIcons(IIconRegister par1IconRegister)
+	{
+		this.blockIcons = new IIcon[3];
+		this.blockIcons[0] = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_DOMAIN + "asteroid0");
+		this.blockIcons[1] = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_DOMAIN + "asteroid1");
+		this.blockIcons[2] = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_DOMAIN + "asteroid2");
+		this.blockIcon = this.blockIcons[0];
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public CreativeTabs getCreativeTabToDisplayOn()
+	{
+		return AsteroidsModule.asteroidsTab;
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public IIcon getIcon(int side, int meta)
+	{
+		if (meta < 0 || meta >= this.blockIcons.length)
+		{
+			return this.blockIcon;
+		}
+		
+		return this.blockIcons[meta];
+	}
+
+	@Override
+	public Item getItemDropped(int meta, Random random, int par3)
+	{
+		switch (meta)
+		{
+		default:
+			return null;
+		}
+	}
+
+	@Override
+	public int damageDropped(int meta)
+	{
+		return meta;
+	}
+
+	@Override
+	public int quantityDropped(int meta, int fortune, Random random)
+	{
+		switch (meta)
+		{
+		default:
+			return 1;
+		}
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+	{
+		int var4;
+
+		for (var4 = 0; var4 < this.blockIcons.length; ++var4)
+		{
+			par3List.add(new ItemStack(par1, 1, var4));
+		}
+	}
+
+	@Override
+	public boolean isValueable(int metadata)
+	{
+		switch (metadata)
+		{
+		default:
+			return false;
+		}
+	}
+
+	@Override
+    public boolean canSustainPlant(IBlockAccess world, int x, int y, int z, ForgeDirection direction, IPlantable plantable)
+	{
+		return false;
+	}
+
+	@Override
+	public int requiredLiquidBlocksNearby()
+	{
+		return 4;
+	}
+
+	@Override
+	public boolean isPlantable(int metadata)
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isTerraformable(World world, int x, int y, int z)
+	{
+		return false;
+	}
+}
