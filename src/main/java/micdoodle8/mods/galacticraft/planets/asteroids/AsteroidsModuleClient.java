@@ -8,10 +8,12 @@ import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.block.BlockRendererWalkway;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.entity.RenderSmallAsteroid;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntitySmallAsteroid;
+import micdoodle8.mods.galacticraft.planets.asteroids.tick.AsteroidsEventHandlerClient;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -33,6 +35,7 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
 	{
 		AsteroidsModuleClient.walkwayRenderID = RenderingRegistry.getNextAvailableRenderId();
 		RenderingRegistry.registerBlockHandler(new BlockRendererWalkway(AsteroidsModuleClient.walkwayRenderID));
+		FMLCommonHandler.instance().bus().register(new AsteroidsEventHandlerClient());
 	}
 
 	@Override

@@ -3,12 +3,17 @@ package micdoodle8.mods.galacticraft.planets.asteroids;
 import java.io.File;
 import java.util.List;
 
+import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
+import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
+import micdoodle8.mods.galacticraft.api.galaxies.Planet;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.CreativeTabGC;
 import micdoodle8.mods.galacticraft.planets.IPlanetsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
+import micdoodle8.mods.galacticraft.planets.asteroids.dimension.TeleportTypeAsteroids;
+import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntitySmallAsteroid;
 import micdoodle8.mods.galacticraft.planets.asteroids.util.AsteroidsUtil;
-import micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -21,6 +26,8 @@ import cpw.mods.fml.relauncher.Side;
 
 public class AsteroidsModule implements IPlanetsModule
 {
+	public static Planet planetAsteroids;
+	
 	public static CreativeTabGC asteroidsTab;
 
 	public static final String ASSET_PREFIX = "galacticraftasteroids";
@@ -39,6 +46,12 @@ public class AsteroidsModule implements IPlanetsModule
 	{
 		AsteroidsModule.asteroidsTab = new CreativeTabGC(CreativeTabs.getNextID(), "GalacticraftAsteroids", Item.getItemFromBlock(AsteroidBlocks.blockWalkway), 0);
 		this.registerEntities();
+
+		AsteroidsModule.planetAsteroids = (Planet) new Planet("asteroids").setParentGalaxy(GalacticraftCore.galaxyBlockyWay);
+		AsteroidsModule.planetAsteroids.setDimensionInfo(ConfigManagerAsteroids.dimensionIDAsteroids, WorldProviderAsteroids.class);
+		
+		GalaxyRegistry.registerPlanet(AsteroidsModule.planetAsteroids);
+		GalacticraftRegistry.registerTeleportType(WorldProviderAsteroids.class, new TeleportTypeAsteroids());
 	}
 
 	@Override
