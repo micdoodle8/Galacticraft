@@ -11,7 +11,7 @@ import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
 import micdoodle8.mods.galacticraft.core.perlin.NoiseModule;
 import micdoodle8.mods.galacticraft.core.perlin.generator.Billowed;
 import micdoodle8.mods.galacticraft.core.perlin.generator.Gradient;
-import micdoodle8.mods.galacticraft.planets.ConfigManagerPlanets;
+import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSand;
 import net.minecraft.entity.EnumCreatureType;
@@ -23,6 +23,7 @@ import net.minecraft.world.biome.BiomeGenBase.SpawnListEntry;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderGenerate;
+import cpw.mods.fml.common.FMLLog;
 
 /**
  * GCMarsChunkProvider.java
@@ -35,8 +36,10 @@ import net.minecraft.world.gen.ChunkProviderGenerate;
  */
 public class ChunkProviderAsteroids extends ChunkProviderGenerate
 {
-	final Block ASTEROID_STONE = Blocks.stone;
-	final byte ASTEROID_STONE_META = 0;
+	final Block ASTEROID_STONE = AsteroidBlocks.blockBasic;
+	final byte ASTEROID_STONE_META_0 = 0;
+	final byte ASTEROID_STONE_META_1 = 1;
+	final byte ASTEROID_STONE_META_2 = 2;
 
 	private final Random rand;
 
@@ -86,13 +89,13 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 	private static final double SKEW_OTHER_AXIS = .06;
 	private static final double SKEW_SAME_AXIS = .005;
 	
-	private static final int MIN_ASTEROID_Y = 36;
-	private static final int MAX_ASTEROID_Y = CHUNK_SIZE_Y - 36;
+	private static final int MIN_ASTEROID_Y = 48;
+	private static final int MAX_ASTEROID_Y = CHUNK_SIZE_Y - 48;
 	
-	private static final int ASTEROID_CHANCE = 600; //About 1 / n chance per XZ pair
+	private static final int ASTEROID_CHANCE = 1000; //About 1 / n chance per XZ pair
 	
-	private static final int ASTEROID_CORE_CHANCE = 100; //1 / n chance per asteroid
-	private static final int ASTEROID_SHELL_CHANCE = 100; //1 / n chance per asteroid
+	private static final int ASTEROID_CORE_CHANCE = 2; //1 / n chance per asteroid
+	private static final int ASTEROID_SHELL_CHANCE = 2; //1 / n chance per asteroid
 	
 	private static final int MIN_BLOCKS_PER_CHUNK = 50;
 	private static final int MAX_BLOCKS_PER_CHUNK = 200;
@@ -127,19 +130,34 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 		this.asteroidSkewZ.frequencyZ = 0.005;
 		
 		this.coreHandler = new SpecialAsteroidBlockHandler();
-		this.coreHandler.addBlock(new SpecialAsteroidBlock(this.ASTEROID_STONE, this.ASTEROID_STONE_META, 1, .3));
+		this.coreHandler.addBlock(new SpecialAsteroidBlock(this.ASTEROID_STONE, this.ASTEROID_STONE_META_2, 1, .3));
+		this.coreHandler.addBlock(new SpecialAsteroidBlock(this.ASTEROID_STONE, this.ASTEROID_STONE_META_0, 1, .15));
 		this.shellHandler = new SpecialAsteroidBlockHandler();
-		this.shellHandler.addBlock(new SpecialAsteroidBlock(this.ASTEROID_STONE, this.ASTEROID_STONE_META, 1, .15));
+		this.shellHandler.addBlock(new SpecialAsteroidBlock(this.ASTEROID_STONE, this.ASTEROID_STONE_META_1, 5, .15));
+		this.shellHandler.addBlock(new SpecialAsteroidBlock(Blocks.ice, (byte) 0, 1, .15));
 	}
 
 	public void generateTerrain(int chunkX, int chunkZ, Block[] idArray, byte[] metaArray)
 	{
+		final Random random = new Random();
+
+		double distanceFromCenter = 0;
+		
+		if (chunkZ != 0)
+		{
+			distanceFromCenter = 4 / (double)Math.abs(chunkZ);
+		}
+		else
+		{
+			distanceFromCenter = 4;
+		}
+		
 		for(int i = chunkX - 3; i < chunkX + 3; i++) {
 			for(int k = chunkZ - 3; k < chunkZ + 3; k++) {
 				for(int x = 0; x < CHUNK_SIZE_X; x++) {
 					for(int z = 0; z < CHUNK_SIZE_Z; z++) {
-						if(Math.abs(this.randFromPoint(x + i * 16, z + k * 16)) < (this.asteroidDensity.getNoise(x + i * 16, z + k * 16) + .4) / this.ASTEROID_CHANCE) {
-							final Random random = new Random(i * 16 + x + (k * 16 + z) * 3067);
+						if(Math.abs(this.randFromPoint(x + i * 16, z + k * 16)) < ((this.asteroidDensity.getNoise(x + i * 16, z + k * 16) + .4)) / this.ASTEROID_CHANCE) {
+							random.setSeed(i * 16 + x + (k * 16 + z) * 3067);
 							int y = random.nextInt(this.MAX_ASTEROID_Y - this.MIN_ASTEROID_Y) + this.MIN_ASTEROID_Y;
 							int size = random.nextInt(this.MAX_ASTEROID_RADIUS - this.MIN_ASTEROID_RADIUS) + this.MIN_ASTEROID_RADIUS;
 							generateAsteroid(random, x + i * 16, y, z + k * 16, chunkX * 16, chunkZ * 16, size, idArray, metaArray);
@@ -148,19 +166,23 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 				}
 			}
 		}
-
-		final double density = this.asteroidDensity.getNoise(chunkX * 16, chunkZ * 16) * + .4;
-		double numOfBlocks = ((this.clamp(this.randFromPoint(chunkX, chunkZ), .4, 1)) * (this.MAX_BLOCKS_PER_CHUNK - this.MAX_BLOCKS_PER_CHUNK)) + this.MIN_BLOCKS_PER_CHUNK;
-		numOfBlocks *= density;
-		for(int i = 0; i < numOfBlocks; i++) {
-			int x = rand.nextInt(this.CHUNK_SIZE_X);
-			int y = rand.nextInt(this.CHUNK_SIZE_Y - this.RANDOM_BLOCK_FADE_SIZE * 2) + this.RANDOM_BLOCK_FADE_SIZE;
-			if(rand.nextInt(this.FADE_BLOCK_CHANCE) == 0) {
-				y = rand.nextInt(this.CHUNK_SIZE_Y);
+		
+		if (distanceFromCenter >= 1)
+		{
+			double density = this.asteroidDensity.getNoise(chunkX * 16, chunkZ * 16) * + .4;
+			density *= distanceFromCenter;
+			double numOfBlocks = ((this.clamp(this.randFromPoint(chunkX, chunkZ), .4, 1)) * (this.MAX_BLOCKS_PER_CHUNK - this.MAX_BLOCKS_PER_CHUNK)) + this.MIN_BLOCKS_PER_CHUNK;
+			numOfBlocks *= density;
+			for(int i = 0; i < numOfBlocks; i++) {
+				int x = rand.nextInt(this.CHUNK_SIZE_X);
+				int y = rand.nextInt(this.CHUNK_SIZE_Y - this.RANDOM_BLOCK_FADE_SIZE * 2) + this.RANDOM_BLOCK_FADE_SIZE;
+				if(rand.nextInt(this.FADE_BLOCK_CHANCE) == 0) {
+					y = rand.nextInt(this.CHUNK_SIZE_Y);
+				}
+				int z = rand.nextInt(this.CHUNK_SIZE_Z);
+				idArray[this.getIndex(x, y, z)] = this.ASTEROID_STONE;
+				metaArray[this.getIndex(x, y, z)] = this.ASTEROID_STONE_META_1;
 			}
-			int z = rand.nextInt(this.CHUNK_SIZE_Z);
-			idArray[this.getIndex(x, y, z)] = this.ASTEROID_STONE;
-			metaArray[this.getIndex(x, y, z)] = this.ASTEROID_STONE_META;
 		}
 	}
 	
@@ -203,7 +225,7 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 							metaArray[this.getIndex(x, y, z)] = shell.meta;
 						} else {
 							idArray[this.getIndex(x, y, z)] = this.ASTEROID_STONE;
-							metaArray[this.getIndex(x, y, z)] = this.ASTEROID_STONE_META;
+							metaArray[this.getIndex(x, y, z)] = this.ASTEROID_STONE_META_1;
 						}
 					}
 				}
@@ -331,7 +353,7 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 	@Override
 	public String makeString()
 	{
-		return ConfigManagerPlanets.generateOtherMods ? "RandomLevelSource" : "MarsLevelSource";
+		return "RandomLevelSource";
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
