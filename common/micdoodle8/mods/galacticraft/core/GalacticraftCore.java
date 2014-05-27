@@ -13,6 +13,7 @@ import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
 import micdoodle8.mods.galacticraft.api.transmission.core.grid.ChunkPowerHandler;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.world.ICelestialBody;
 import micdoodle8.mods.galacticraft.api.world.IGalaxy;
 import micdoodle8.mods.galacticraft.api.world.IMoon;
@@ -388,6 +389,9 @@ public class GalacticraftCore
 		CircuitFabricatorRecipes.addRecipe(new ItemStack(GCCoreItems.basicItem, 3, 13), new ItemStack[] { new ItemStack(Item.diamond), new ItemStack(GCCoreItems.basicItem, 1, 2), new ItemStack(GCCoreItems.basicItem, 1, 2), new ItemStack(Item.redstone), new ItemStack(Block.torchRedstoneActive) });
 
 		CircuitFabricatorRecipes.addRecipe(new ItemStack(GCCoreItems.basicItem, 1, 14), new ItemStack[] { new ItemStack(Item.diamond), new ItemStack(GCCoreItems.basicItem, 1, 2), new ItemStack(GCCoreItems.basicItem, 1, 2), new ItemStack(Item.redstone), new ItemStack(Item.redstoneRepeater) });
+		
+		TickRegistry.registerTickHandler(new GCCoreTickHandlerServer(), Side.SERVER);
+		NetworkRegistry.instance().registerChannel(new GCCorePacketHandlerServer(), GalacticraftCore.CHANNEL, Side.SERVER);
 	}
 
 	@EventHandler
@@ -400,8 +404,6 @@ public class GalacticraftCore
 		}
 
 		GCCoreUtil.checkVersion(Side.SERVER);
-		TickRegistry.registerTickHandler(new GCCoreTickHandlerServer(), Side.SERVER);
-		NetworkRegistry.instance().registerChannel(new GCCorePacketHandlerServer(), GalacticraftCore.CHANNEL, Side.SERVER);
 	}
 
 	@EventHandler
@@ -427,6 +429,8 @@ public class GalacticraftCore
 				}
 			}
 		}
+		
+		BlockVec3.chunkCacheDim = Integer.MAX_VALUE;
 	}
 
 	@EventHandler

@@ -131,9 +131,13 @@ public class GCCoreTickHandlerServer implements ITickHandler
 			{
 				for (ScheduledBlockChange change : changeList)
 				{
-					if (change != null && change.getChangePosition() != null)
+					if (change != null)
 					{
-						world.setBlock(change.getChangePosition().x, change.getChangePosition().y, change.getChangePosition().z, change.getChangeID(), change.getChangeMeta(), change.getChangeFlag());
+						BlockVec3 changePosition = change.getChangePosition();
+						if (changePosition != null)
+						{
+							world.setBlock(changePosition.x, changePosition.y, changePosition.z, change.getChangeID(), change.getChangeMeta(), 2);
+						}
 					}
 				}
 

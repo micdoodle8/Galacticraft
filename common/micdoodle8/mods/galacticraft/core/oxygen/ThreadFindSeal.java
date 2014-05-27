@@ -11,7 +11,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
-import micdoodle8.mods.galacticraft.core.GCLog;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlockUnlitTorch;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.tick.GCCoreTickHandlerServer;
@@ -181,7 +180,7 @@ public class ThreadFindSeal
 				for (BlockVec3 checkedVec : this.airToReplace)
 				{
 					//No block update for performance reasons; deal with unlit torches separately
-					changeList.add(new ScheduledBlockChange(checkedVec.clone(), breatheableAirID, 0, 2));
+					changeList.add(new ScheduledBlockChange(checkedVec.clone(), breatheableAirID, 0));
 				}
 				GCCoreTickHandlerServer.scheduleNewBlockChange(this.world.provider.dimensionId, changeList);
 
@@ -293,7 +292,7 @@ public class ThreadFindSeal
 						int breatheableAirID = GCCoreBlocks.breatheableAir.blockID;
 						for (BlockVec3 airVec : this.airToReplace)
 						{
-							changeList.add(new ScheduledBlockChange(airVec.clone(), breatheableAirID, 0, 2));
+							changeList.add(new ScheduledBlockChange(airVec.clone(), breatheableAirID, 0));
 						}
 						GCCoreTickHandlerServer.scheduleNewBlockChange(this.world.provider.dimensionId, changeList);
 
@@ -314,7 +313,7 @@ public class ThreadFindSeal
 					List<ScheduledBlockChange> changeList = new LinkedList<ScheduledBlockChange>();
 					for (BlockVec3 checkedVec : this.breatheableToReplace)
 					{
-						changeList.add(new ScheduledBlockChange(checkedVec.clone(), 0, 0, 2));
+						changeList.add(new ScheduledBlockChange(checkedVec.clone(), 0, 0));
 					}
 					GCCoreTickHandlerServer.scheduleNewBlockChange(this.world.provider.dimensionId, changeList);
 
@@ -724,7 +723,7 @@ public class ThreadFindSeal
 
 		if (block == null)
 		{
-			GCLog.info("**** Please report to mod author: BlockPassAirCheck block ID "+id+" was null ****");
+			FMLLog.info("**** Please report to mod author: BlockPassAirCheck block ID "+id+" was null ****");
 			return true;
 		}
 		//Check leaves first, because their isOpaqueCube() test depends on graphics settings
