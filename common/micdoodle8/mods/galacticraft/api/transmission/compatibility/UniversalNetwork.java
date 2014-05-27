@@ -57,8 +57,9 @@ public class UniversalNetwork extends ElectricityNetwork
 	
 	public static int tickCount = 0;
 	private int tickDone = -1;
-	private float totalRequested = 0;
-	private float totalEnergy = 0;
+	private float totalRequested = 0F;
+	private float totalEnergy = 0F;
+	private float totalSent = 0F;
 	private boolean doneScheduled = false;
 	private boolean spamstop = false;
 	
@@ -113,7 +114,7 @@ public class UniversalNetwork extends ElectricityNetwork
 				}
 			}
 		}
-		return ElectricityPack.getFromWatts(this.totalRequested - this.totalEnergy, 120F);
+		return ElectricityPack.getFromWatts(this.totalRequested - this.totalEnergy - this.totalSent, 120F);
 	}
 	
 	@Override
@@ -175,16 +176,17 @@ public class UniversalNetwork extends ElectricityNetwork
 		//Finish the last tick if there was some to send and something to receive it
 		if (this.totalEnergy > 0F && this.totalRequested > 0F)
 		{
-			float joulesTransmitted = doProduce();
-			if (joulesTransmitted < this.totalEnergy)
+			this.totalSent = doProduce();
+			if (this.totalSent < this.totalEnergy)
 				//Any spare energy left is retained for the next tick
-				this.totalEnergy -= joulesTransmitted;
+				this.totalEnergy -= this.totalSent;
 			else totalEnergy = 0F;
 		} else totalEnergy = 0F;	
 	}
 
 	private void doTickStartCalc(TileEntity... ignoreTiles)
 	{
+		this.totalSent = 0F;
 		refreshAcceptors();
 		 
 		if (this.getTransmitters().size() == 0) return;
@@ -341,7 +343,7 @@ public class UniversalNetwork extends ElectricityNetwork
 				}
 				else sentToAcceptor = 0F;
 				
-				if (sentToAcceptor / currentSending > 1.00002D)
+				if (sentToAcceptor / currentSending > 1.002D && sentToAcceptor > 1F)
 				{	
 					if (!this.spamstop)
 					{
