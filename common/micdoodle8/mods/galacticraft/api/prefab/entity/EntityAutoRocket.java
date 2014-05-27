@@ -475,78 +475,72 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
 			if (this.isDockValid(dock))
 			{
-				if (!this.worldObj.isRemote)
-				{
-					this.launchPhase = EnumLaunchPhase.UNIGNITED.getPhase();
-					this.landing = false;
-					this.targetVec = null;
-					this.setPad(dock);
-
-					if (EntityAutoRocket.marsLoaded)
-					{
-						HashSet<ILandingPadAttachable> connectedTiles = dock.getConnectedTiles();
-
-						try
-						{
-							Class<?> controllerClass = Class.forName("micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityLaunchController");
-
-							for (ILandingPadAttachable connectedTile : connectedTiles)
-							{
-								if (connectedTile != null)
-								{
-									TileEntity updatedTile = this.worldObj.getBlockTileEntity(((TileEntity) connectedTile).xCoord, ((TileEntity) connectedTile).yCoord, ((TileEntity) connectedTile).zCoord);
-
-									try
-									{
-										controllerClass.cast(updatedTile);
-									}
-									catch (ClassCastException e)
-									{
-										continue;
-									}
-
-									Boolean autoLaunchEnabled = controllerClass.getField("launchSchedulingEnabled").getBoolean(updatedTile);
-
-									if (autoLaunchEnabled)
-									{
-										this.autoLaunchSetting = EnumAutoLaunch.values()[controllerClass.getField("launchDropdownSelection").getInt(updatedTile)];
-									}
-
-									if (this.autoLaunchSetting != null)
-									{
-										switch (this.autoLaunchSetting)
-										{
-										case INSTANT:
-											this.autoLaunch();
-											break;
-										case TIME_10_SECONDS:
-											this.autoLaunchCountdown = 200;
-											break;
-										case TIME_30_SECONDS:
-											this.autoLaunchCountdown = 600;
-											break;
-										case TIME_1_MINUTE:
-											this.autoLaunchCountdown = 1200;
-											break;
-										default:
-											break;
-										}
-									}
-
-									break;
-								}
-							}
-						}
-						catch (Exception e)
-						{
-							e.printStackTrace();
-						}
-					}
-				}
-
 				this.onRocketLand(x, y, z);
 				return;
 			}
+		}
+	}
+	
+	private void updateControllerSettings(IFuelDock dock)
+	{
+		HashSet<ILandingPadAttachable> connectedTiles = dock.getConnectedTiles();
+
+		try
+		{
+			Class<?> controllerClass = Class.forName("micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityLaunchController");
+
+			for (ILandingPadAttachable connectedTile : connectedTiles)
+			{
+				if (connectedTile != null)
+				{
+					TileEntity updatedTile = this.worldObj.getBlockTileEntity(((TileEntity) connectedTile).xCoord, ((TileEntity) connectedTile).yCoord, ((TileEntity) connectedTile).zCoord);
+
+					try
+					{
+						controllerClass.cast(updatedTile);
+					}
+					catch (ClassCastException e)
+					{
+						continue;
+					}
+
+					Boolean autoLaunchEnabled = controllerClass.getField("launchSchedulingEnabled").getBoolean(updatedTile);
+
+					if (autoLaunchEnabled)
+					{
+						this.autoLaunchSetting = EnumAutoLaunch.values()[controllerClass.getField("launchDropdownSelection").getInt(updatedTile)];
+					}	
+					else
+						this.autoLaunchSetting = null;
+
+					if (this.autoLaunchSetting != null)
+					{
+						switch (this.autoLaunchSetting)
+						{
+						case INSTANT:
+							this.autoLaunch();
+							break;
+						case TIME_10_SECONDS:
+							this.autoLaunchCountdown = 200;
+							break;
+						case TIME_30_SECONDS:
+							this.autoLaunchCountdown = 600;
+							break;
+						case TIME_1_MINUTE:
+							this.autoLaunchCountdown = 1200;
+							break;
+						default:
+							break;
+						}
+					}
+
+					break;
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
 		}
 	}
 
@@ -840,7 +834,25 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 	@Override
 	public boolean isDockValid(IFuelDock dock)
 	{
-		return dock instanceof GCCoreTileEntityLandingPad;
+		//Called either when a rocket lands or when one is placed
+		if (dock instanceof GCCoreTileEntityLandingPad)
+		{
+			if (!this.worldObj.isRemote)
+			{
+				this.launchPhase = EnumLaunchPhase.UNIGNITED.getPhase();
+				this.landing = false;
+				this.targetVec = null;
+				this.setPad(dock);
+
+				if (EntityAutoRocket.marsLoaded)
+				{
+					this.updateControllerSettings(dock);
+				}
+			}
+			
+			return true;
+		}
+		return false;
 	}
 
 	@Override
