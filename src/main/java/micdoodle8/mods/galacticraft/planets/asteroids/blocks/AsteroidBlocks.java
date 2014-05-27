@@ -12,6 +12,7 @@ public class AsteroidBlocks
 	public static Block blockWalkwayWire;
 	public static Block blockWalkwayOxygenPipe;
 	public static Block blockBasic;
+	public static Block machineFrame;
 	
 	public static void initBlocks()
 	{
@@ -19,6 +20,7 @@ public class AsteroidBlocks
 		blockWalkwayWire = new BlockWalkway("walkwayWire");
 		blockWalkwayOxygenPipe = new BlockWalkway("walkwayOxygenPipe");
 		blockBasic = new BlockBasicAsteroids("asteroidsBlock");
+		machineFrame = new BlockMachineFrame("machineFrameOld");
 	}
 
 	public static void registerBlocks()
@@ -27,5 +29,6 @@ public class AsteroidBlocks
 		GameRegistry.registerBlock(AsteroidBlocks.blockWalkwayWire, ItemBlockGC.class, AsteroidBlocks.blockWalkwayWire.getUnlocalizedName(), GalacticraftPlanets.MODID);
 		GameRegistry.registerBlock(AsteroidBlocks.blockWalkwayOxygenPipe, ItemBlockGC.class, AsteroidBlocks.blockWalkwayOxygenPipe.getUnlocalizedName(), GalacticraftPlanets.MODID);
 		GameRegistry.registerBlock(AsteroidBlocks.blockBasic, ItemBlockAsteroids.class, AsteroidBlocks.blockBasic.getUnlocalizedName(), GalacticraftPlanets.MODID);
+		GameRegistry.registerBlock(AsteroidBlocks.machineFrame, ItemBlockGC.class, AsteroidBlocks.machineFrame.getUnlocalizedName(), GalacticraftPlanets.MODID);
 	}
 }
