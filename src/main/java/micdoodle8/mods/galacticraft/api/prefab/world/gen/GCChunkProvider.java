@@ -82,13 +82,13 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
 
 	public void generateTerrain(int chunkX, int chunkZ, Block[] idArray, byte[] metaArray)
 	{
-		this.noiseGen1.frequency = 0.015;
-		this.noiseGen2.frequency = 0.01;
-		this.noiseGen3.frequency = 0.01;
-		this.noiseGen4.frequency = 0.01;
-		this.noiseGen5.frequency = 0.01;
-		this.noiseGen6.frequency = 0.001;
-		this.noiseGen7.frequency = 0.005;
+		this.noiseGen1.setFrequency(0.015);
+		this.noiseGen2.setFrequency(0.01);
+		this.noiseGen3.setFrequency(0.01);
+		this.noiseGen4.setFrequency(0.01);
+		this.noiseGen5.setFrequency(0.01);
+		this.noiseGen6.setFrequency(0.001);
+		this.noiseGen7.setFrequency(0.005);
 
 		for (int x = 0; x < GCChunkProvider.CHUNK_SIZE_X; x++)
 		{
@@ -158,7 +158,7 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
 	{
 		final int var5 = 20;
 		final double var6 = 0.03125D;
-		this.noiseGen4.frequency = var6 * 2;
+		this.noiseGen4.setFrequency(var6 * 2);
 		for (int var8 = 0; var8 < 16; ++var8)
 		{
 			for (int var9 = 0; var9 < 16; ++var9)
@@ -268,7 +268,7 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
 
 	public void createCraters(int chunkX, int chunkZ, Block[] chunkArray, byte[] metaArray)
 	{
-		this.noiseGen5.frequency = 0.015;
+		this.noiseGen5.setFrequency(0.015);
 		for (int cx = chunkX - 2; cx <= chunkX + 2; cx++)
 		{
 			for (int cz = chunkZ - 2; cz <= chunkZ + 2; cz++)

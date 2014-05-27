@@ -37,14 +37,22 @@ public class Billowed extends NoiseModule
 	@Override
 	public double getNoise(double i)
 	{
-		return this.getNoise(i, 0.0D);
+		i *= this.frequencyX;
+		double val = 0;
+		double curAmplitude = this.amplitude;
+		for(int n = 0; n < this.numOctaves; n++) {
+			val += Math.abs(this.noiseGen.noise2d(i + this.offsetX, this.offsetY) * curAmplitude);
+			i *= 2;
+			curAmplitude *= this.persistance;
+		}
+		return val;
 	}
 
 	@Override
 	public double getNoise(double i, double j)
 	{
-		i *= this.frequency;
-		j *= this.frequency;
+		i *= this.frequencyX;
+		j *= this.frequencyY;
 		double val = 0;
 		double curAmplitude = this.amplitude;
 		for (int n = 0; n < this.numOctaves; n++)
@@ -60,9 +68,9 @@ public class Billowed extends NoiseModule
 	@Override
 	public double getNoise(double i, double j, double k)
 	{
-		i *= this.frequency;
-		j *= this.frequency;
-		k *= this.frequency;
+		i *= this.frequencyX;
+		j *= this.frequencyY;
+		k *= this.frequencyZ;
 		double val = 0;
 		for (int n = 0; n < this.numOctaves; n++)
 		{

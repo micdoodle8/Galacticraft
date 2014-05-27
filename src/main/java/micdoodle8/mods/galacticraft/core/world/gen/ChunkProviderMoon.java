@@ -106,10 +106,10 @@ public class ChunkProviderMoon extends ChunkProviderGenerate
 
 	public void generateTerrain(int chunkX, int chunkZ, Block[] idArray, byte[] metaArray)
 	{
-		this.noiseGen1.frequency = 0.0125;
-		this.noiseGen2.frequency = 0.015;
-		this.noiseGen3.frequency = 0.01;
-		this.noiseGen4.frequency = 0.02;
+		this.noiseGen1.setFrequency(0.0125);
+		this.noiseGen2.setFrequency(0.015);
+		this.noiseGen3.setFrequency(0.01);
+		this.noiseGen4.setFrequency(0.02);
 
 		for (int x = 0; x < ChunkProviderMoon.CHUNK_SIZE_X; x++)
 		{

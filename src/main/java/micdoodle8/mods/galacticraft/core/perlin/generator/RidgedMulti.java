@@ -21,7 +21,6 @@ public class RidgedMulti extends NoiseModule
 	private final double offsetY;
 	private final double offsetZ;
 	private final int numOctaves;
-	private final double[] spectralWeights = new double[32];
 
 	public RidgedMulti(long seed, int nOctaves)
 	{
@@ -31,26 +30,44 @@ public class RidgedMulti extends NoiseModule
 		this.offsetY = rand.nextDouble() / 2 + 0.01D;
 		this.offsetZ = rand.nextDouble() / 2 + 0.01D;
 		this.noiseGen = new FishyNoise(seed);
-		final double h = 1.0;
-		for (int i = 0; i < 32; i++)
-		{
-			this.spectralWeights[i] = Math.pow(this.frequency, -h);
-			this.frequency *= 2;
-		}
-		this.frequency = 1.0;
 	}
 
 	@Override
 	public double getNoise(double i)
 	{
-		return this.getNoise(i, 0.0D);
+		i *= this.frequencyX;
+		double val = 0;
+		double weight = 1.0;
+		final double offset = 1.0;
+		final double gain = 2.0;
+		for(int n = 0; n < this.numOctaves; n++) {
+			double noise = this.absolute(this.noiseGen.noise2d(i + this.offsetX, this.offsetY));
+			noise = offset - noise;
+			noise *= noise;
+			noise *= weight;
+			
+			weight = noise * gain;
+			
+			if(weight > 1D) {
+				weight = 1D;
+			}
+			
+			if(weight < 0D) {
+				weight = 0D;
+			}
+			
+			val += noise;
+			
+			i *= 2;
+		}
+		return val;
 	}
 
 	@Override
 	public double getNoise(double i, double j)
 	{
-		i *= this.frequency;
-		j *= this.frequency;
+		i *= this.frequencyX;
+		j *= this.frequencyY;
 		double val = 0;
 		double weight = 1.0;
 		final double offset = 1.0;
@@ -74,7 +91,7 @@ public class RidgedMulti extends NoiseModule
 				weight = 0D;
 			}
 
-			val += noise * this.spectralWeights[n];
+			val += noise;
 
 			i *= 2;
 			j *= 2;
@@ -85,9 +102,9 @@ public class RidgedMulti extends NoiseModule
 	@Override
 	public double getNoise(double i, double j, double k)
 	{
-		i *= this.frequency;
-		j *= this.frequency;
-		k *= this.frequency;
+		i *= this.frequencyX;
+		j *= this.frequencyY;
+		k *= this.frequencyZ;
 		double val = 0;
 		double weight = 1.0;
 		final double offset = 1.0;
@@ -111,7 +128,7 @@ public class RidgedMulti extends NoiseModule
 				weight = 0D;
 			}
 
-			val += noise * this.spectralWeights[n];
+			val += noise;
 
 			i *= 2;
 			j *= 2;
