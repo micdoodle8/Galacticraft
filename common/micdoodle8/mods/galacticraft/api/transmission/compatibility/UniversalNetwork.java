@@ -54,10 +54,12 @@ public class UniversalNetwork extends ElectricityNetwork
 	 * 
 	 *   After: the inner loop runs 80 times - part of it is in doTickStartCalc() at/near the tick start, and part of it is in doProduce() at the end of the tick
 	 */
+	private final static float ENERGYSTORAGELEVEL = 3750F;
 	
 	public static int tickCount = 0;
 	private int tickDone = -1;
 	private float totalRequested = 0F;
+	private float totalStorageExcess = 0F;
 	private float totalEnergy = 0F;
 	private float totalSent = 0F;
 	private boolean doneScheduled = false;
@@ -174,14 +176,22 @@ public class UniversalNetwork extends ElectricityNetwork
 		this.doneScheduled = false;
 		
 		//Finish the last tick if there was some to send and something to receive it
-		if (this.totalEnergy > 0F && this.totalRequested > 0F)
+		if (this.totalEnergy > 0F)
 		{
-			this.totalSent = doProduce();
-			if (this.totalSent < this.totalEnergy)
-				//Any spare energy left is retained for the next tick
-				this.totalEnergy -= this.totalSent;
-			else totalEnergy = 0F;
-		} else totalEnergy = 0F;	
+			//Call doTickStartCalc a second time in case anything has updated meanwhile
+			TileEntity[] ignoretiles = new TileEntity[ignoreAcceptors.size()];
+			this.doTickStartCalc(ignoreAcceptors.toArray(ignoretiles));
+			
+			if (this.totalRequested > 0F)
+			{
+				this.totalSent = doProduce();
+				if (this.totalSent < this.totalEnergy)
+					//Any spare energy left is retained for the next tick
+					this.totalEnergy -= this.totalSent;
+				else totalEnergy = 0F;
+			}
+		}
+		else totalEnergy = 0F;	
 	}
 
 	private void doTickStartCalc(TileEntity... ignoreTiles)
@@ -195,6 +205,7 @@ public class UniversalNetwork extends ElectricityNetwork
 		this.availableconnectedDirections.clear();
 		this.energyRequests.clear();
 		this.totalRequested = 0.0F;
+		this.totalStorageExcess = 0F;
 		this.ignoreAcceptors.clear();
 		
 		List<TileEntity> ignored = Arrays.asList(ignoreTiles);
@@ -245,12 +256,14 @@ public class UniversalNetwork extends ElectricityNetwork
 						this.availableconnectedDirections.put(acceptor,sideFrom);
 						this.energyRequests.put(acceptor,Float.valueOf(e));
 						this.totalRequested += e;
+						if (e > ENERGYSTORAGELEVEL) this.totalStorageExcess += (e - ENERGYSTORAGELEVEL);
 					}
 				}
 			}
 		}
 			
-		ElectricityPack mergedPack = new ElectricityPack(totalRequested, 1);
+		//Finally, allow a Forge event to change the total requested
+		ElectricityPack mergedPack = new ElectricityPack(this.totalRequested, 1);
 		ElectricityRequestEvent evt = new ElectricityRequestEvent(this, mergedPack, ignoreTiles);
 		MinecraftForge.EVENT_BUS.post(evt);
 		this.totalRequested = mergedPack.getWatts();
@@ -262,53 +275,61 @@ public class UniversalNetwork extends ElectricityNetwork
 
 		if (!this.availableAcceptors.isEmpty())
 		{
-			//Detect loops, e.g. storage unit output connected to input
-			for (TileEntity tileEntity : this.ignoreAcceptors)
-			{
-				if (this.availableAcceptors.contains(tileEntity))
-				{
-					this.availableAcceptors.remove(tileEntity);
-				}
-			}
-
-			//Detect any changes which have happened since the availableAcceptors list was compiled earlier this tick
-			List<Object> removeList = new ArrayList<Object>();
-			for (TileEntity tileEntity : this.availableAcceptors)
-			{
-				if (tileEntity == null || tileEntity.isInvalid() || tileEntity != tileEntity.worldObj.getBlockTileEntity(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord))
-				{
-					removeList.add(tileEntity);
-				}
-			}
-			this.availableAcceptors.removeAll(removeList);
-		}
-
-		if (!this.availableAcceptors.isEmpty())
-		{
 			boolean isTELoaded = NetworkConfigHandler.isThermalExpansionLoaded();
 			boolean isIC2Loaded = NetworkConfigHandler.isIndustrialCraft2Loaded();
 			boolean isBCLoaded = NetworkConfigHandler.isBuildcraftLoaded();
 			boolean isMekLoaded = NetworkConfigHandler.isMekanismLoaded();
 			
-			ArrayList<TileEntity> acceptors = new ArrayList();
-			acceptors.addAll(this.availableAcceptors);
-			Collections.shuffle(acceptors);
-
-			int divider = acceptors.size();
-			double remaining = this.totalEnergy % divider;
-			double sending = (this.totalEnergy - remaining) / divider;
+			float totalNeeded = this.totalRequested;
+			float energyAvailable = this.totalEnergy;
+			float reducor = 1.0F;
+			float energyStorageReducor = 1.0F;
+			 
+			if (totalNeeded > energyAvailable)
+			{	
+				//If not enough energy, try reducing what goes into energy storage (if any)
+				totalNeeded -= this.totalStorageExcess;
+				//If there's still not enough, put the minimum into energy storage (if any) and, anyhow, reduce everything proportionately
+				if (totalNeeded > energyAvailable)
+				{	
+					energyStorageReducor = 0F;
+					reducor = energyAvailable / totalNeeded;
+				}
+				else
+				{
+					//Energyavailable exceeds the total needed but only if storage does not fill all in one go - this is a common situation
+					energyStorageReducor = (energyAvailable - totalNeeded)/this.totalStorageExcess;
+				}
+			}
+			 
+			float currentSending;
 			float sentToAcceptor;
 
-			for (TileEntity tileEntity : acceptors)
+			for (TileEntity tileEntity : availableAcceptors)
 			{
-				double currentSending = sending + remaining;
-				ForgeDirection sideFrom = this.availableconnectedDirections.get(tileEntity);
+				//Exit the loop if there is no energy left at all (should normally not happen, should be some even for the last acceptor)
+				if (sent >= energyAvailable) break;
 
-				remaining = 0D;
+				//The base case is to give each acceptor what it is requesting
+				currentSending = this.energyRequests.get(tileEntity);
+				
+				//If it's an energy store, we may need to damp it down if energyStorageReducor is less than 1
+				if (currentSending > this.ENERGYSTORAGELEVEL)
+				{
+					currentSending = this.ENERGYSTORAGELEVEL + (currentSending - this.ENERGYSTORAGELEVEL) * energyStorageReducor;
+				}
+
+				//Reduce everything proportionately if there is not enough energy for all needs
+				currentSending *= reducor;
+
+				if (currentSending > energyAvailable - sent)
+					currentSending = energyAvailable - sent;
+				
+				ForgeDirection sideFrom = this.availableconnectedDirections.get(tileEntity);
 
 				if (tileEntity instanceof IElectrical)
 				{
-					ElectricityPack electricityToSend = ElectricityPack.getFromWatts((float) currentSending, 120F);
+					ElectricityPack electricityToSend = ElectricityPack.getFromWatts(currentSending, 120F);
 					sentToAcceptor = ((IElectrical) tileEntity).receiveElectricity(sideFrom, electricityToSend, true);
 				}
 				else if (isMekLoaded && tileEntity instanceof IStrictEnergyAcceptor)
@@ -337,7 +358,7 @@ public class UniversalNetwork extends ElectricityNetwork
 					if (receiver != null)
 					{
 						float req = receiver.powerRequest();
-						float bcToSend = (float) currentSending * NetworkConfigHandler.TO_BC_RATIO;
+						float bcToSend = currentSending * NetworkConfigHandler.TO_BC_RATIO;
 						sentToAcceptor = receiver.receiveEnergy(Type.PIPE, Math.min(req, bcToSend), sideFrom) * NetworkConfigHandler.BC3_RATIO;
 					} else sentToAcceptor = 0F;
 				}
@@ -350,13 +371,7 @@ public class UniversalNetwork extends ElectricityNetwork
 						FMLLog.info("Energy network: acceptor took too much energy, offered "+currentSending+", took "+sentToAcceptor+". "+tileEntity.toString());
 						this.spamstop = true;
 					}
-					sentToAcceptor = (float) currentSending;
-				}
-				else
-				{
-					//Offer the surplus energy to the next acceptor (this is a bit random as it depends on the order)
-					remaining = currentSending - sentToAcceptor;
-					if (remaining < 0D) remaining = 0D; 
+					sentToAcceptor = currentSending;
 				}
 				
 				sent += sentToAcceptor;
@@ -433,7 +448,7 @@ public class UniversalNetwork extends ElectricityNetwork
 				{
 					TileEntity acceptor = adjacentConnections[i];
 
-					if (acceptor != null && !(acceptor instanceof IConductor))
+					if (acceptor != null && !(acceptor instanceof IConductor) && !acceptor.isInvalid())
 					{
 						// The direction 'sideFrom' is from the perspective of the acceptor, that's more useful than the conductor's perspective
 						ForgeDirection sideFrom = ForgeDirection.getOrientation(i).getOpposite();
