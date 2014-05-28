@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityThruster;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
@@ -40,7 +41,7 @@ public class BlockSpinThruster extends BlockAdvanced
 		super(Material.circuits);
 		this.setHardness(0.1F);
 		this.setStepSound(Block.soundTypeWood);
-		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setBlockTextureName("stone");
 		this.setBlockName(assetName);
 	}
 	
@@ -49,26 +50,26 @@ public class BlockSpinThruster extends BlockAdvanced
 		return world.getBlock(x, y, z).isSideSolid(world, x, y, z, direction);
 	}
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public IIcon getIcon(IBlockAccess par1IBlockAccess, int x, int y, int z, int par5)
-	{
-		return BlockSpinThruster.thrusterIcon;
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public IIcon getIcon(int par1, int x)
-	{
-		return BlockSpinThruster.thrusterIcon;
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister par1IconRegister)
-	{
-		BlockSpinThruster.thrusterIcon = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "spinThruster");
-	}
+//	@Override
+//	@SideOnly(Side.CLIENT)
+//	public IIcon getIcon(IBlockAccess par1IBlockAccess, int x, int y, int z, int par5)
+//	{
+//		return BlockSpinThruster.thrusterIcon;
+//	}
+//
+//	@Override
+//	@SideOnly(Side.CLIENT)
+//	public IIcon getIcon(int par1, int x)
+//	{
+//		return BlockSpinThruster.thrusterIcon;
+//	}
+//
+//	@Override
+//	@SideOnly(Side.CLIENT)
+//	public void registerBlockIcons(IIconRegister par1IconRegister)
+//	{
+//		BlockSpinThruster.thrusterIcon = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "spinThruster");
+//	}
 
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int x, int y, int z)
@@ -376,5 +377,9 @@ public class BlockSpinThruster extends BlockAdvanced
 		}
 	}
 
-
+	@Override
+	public CreativeTabs getCreativeTabToDisplayOn()
+	{
+		return GalacticraftCore.galacticraftTab;
+	}
 }
