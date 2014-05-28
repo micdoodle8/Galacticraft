@@ -41,7 +41,7 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen imp
 
 		if (!this.worldObj.isRemote)
 		{
-			if (this.storedOxygen > 0 && this.getEnergyStored() > 0)
+			if (this.storedOxygen > 0 && this.hasEnoughEnergyToRun)
 			{
 				if (!this.worldObj.isRemote)
 				{
@@ -263,12 +263,6 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen imp
 	}
 
 	@Override
-	public boolean shouldPullEnergy()
-	{
-		return this.getEnergyStored() <= this.getMaxEnergyStored() - this.ueWattsPerTick;
-	}
-
-	@Override
 	public boolean shouldUseEnergy()
 	{
 		return GCCoreTileEntityOxygen.timeSinceOxygenRequest > 0 && this.getStackInSlot(0) != null;
@@ -289,7 +283,7 @@ public class GCCoreTileEntityOxygenCompressor extends GCCoreTileEntityOxygen imp
 	@Override
 	public boolean shouldPullOxygen()
 	{
-		return this.getEnergyStored() > 0;
+		return this.hasEnoughEnergyToRun;
 	}
 
 	@Override

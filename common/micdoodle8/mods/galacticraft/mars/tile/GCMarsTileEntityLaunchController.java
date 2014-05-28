@@ -400,12 +400,6 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectricBl
 	}
 
 	@Override
-	public boolean shouldPullEnergy()
-	{
-		return this.getEnergyStored() <= this.getMaxEnergyStored() - this.ueWattsPerTick;
-	}
-
-	@Override
 	public boolean shouldUseEnergy()
 	{
 		return !this.getDisabled(0);
@@ -548,6 +542,6 @@ public class GCMarsTileEntityLaunchController extends GCCoreTileEntityElectricBl
 
 	public boolean validFrequency()
 	{
-		return !this.getDisabled(0) && this.getEnergyStored() > 0 && this.frequencyValid && this.destFrequencyValid;
+		return !this.getDisabled(0) && this.hasEnoughEnergyToRun && this.frequencyValid && this.destFrequencyValid;
 	}
 }

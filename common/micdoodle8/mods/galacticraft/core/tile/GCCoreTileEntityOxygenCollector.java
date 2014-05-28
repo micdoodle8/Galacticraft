@@ -98,7 +98,7 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityOxygen impl
 			//Approximately once every 40 ticks, search out oxygen producing blocks
 			if (this.worldObj.rand.nextInt(10) == 0)
 			{
-				if (this.getEnergyStored() > 0) 
+				if (this.hasEnoughEnergyToRun) 
 			{
 				// The later calculations are more efficient if power is a float, so
 				// there are fewer casts
@@ -357,12 +357,6 @@ public class GCCoreTileEntityOxygenCollector extends GCCoreTileEntityOxygen impl
 	public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
 	{
 		return slotID == 0 ? itemstack.getItem() instanceof IItemElectric : false;
-	}
-
-	@Override
-	public boolean shouldPullEnergy()
-	{
-		return this.getEnergyStored() <= this.getMaxEnergyStored() - this.ueWattsPerTick;
 	}
 
 	@Override

@@ -130,7 +130,7 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectricBlock im
 			{
 				final FluidStack liquid = new FluidStack(GalacticraftCore.fluidFuel, 2);
 
-				if (this.attachedFuelable != null && this.getEnergyStored() > 0 && !this.disabled)
+				if (this.attachedFuelable != null && this.hasEnoughEnergyToRun && !this.disabled)
 				{
 					if (liquid != null)
 					{
@@ -367,12 +367,6 @@ public class GCCoreTileEntityFuelLoader extends GCCoreTileEntityElectricBlock im
 	public FluidTankInfo[] getTankInfo(ForgeDirection from)
 	{
 		return new FluidTankInfo[] { new FluidTankInfo(this.fuelTank) };
-	}
-
-	@Override
-	public boolean shouldPullEnergy()
-	{
-		return this.getEnergyStored() <= this.getMaxEnergyStored() - this.ueWattsPerTick;
 	}
 
 	@Override

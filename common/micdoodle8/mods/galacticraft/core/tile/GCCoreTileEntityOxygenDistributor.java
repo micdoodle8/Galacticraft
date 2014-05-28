@@ -96,7 +96,7 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen im
 
 		if (!this.worldObj.isRemote)
 		{
-			if (this.oxygenBubble.getSize() >= 1 && this.getEnergyStored() > 0)
+			if (this.oxygenBubble.getSize() >= 1 && this.hasEnoughEnergyToRun)
 			{
 				this.active = true;
 			}
@@ -316,12 +316,6 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen im
 	}
 
 	@Override
-	public boolean shouldPullEnergy()
-	{
-		return this.getEnergyStored() <= this.getMaxEnergyStored() - this.ueWattsPerTick;
-	}
-
-	@Override
 	public boolean shouldUseEnergy()
 	{
 		return GCCoreTileEntityOxygen.timeSinceOxygenRequest > 0;
@@ -342,7 +336,7 @@ public class GCCoreTileEntityOxygenDistributor extends GCCoreTileEntityOxygen im
 	@Override
 	public boolean shouldPullOxygen()
 	{
-		return this.getEnergyStored() > 0;
+		return this.hasEnoughEnergyToRun;
 	}
 
 	@Override

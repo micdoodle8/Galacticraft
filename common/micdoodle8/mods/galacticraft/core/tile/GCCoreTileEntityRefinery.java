@@ -116,7 +116,7 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectricBlock impl
 				}
 			}
 
-			if (this.canProcess())
+			if (this.canProcess() && this.hasEnoughEnergyToRun)
 			{
 				if (this.processTicks == 0)
 				{
@@ -172,11 +172,6 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectricBlock impl
 		}
 
 		if (this.getDisabled(0))
-		{
-			return false;
-		}
-
-		if (this.getEnergyStored() == 0)
 		{
 			return false;
 		}
@@ -418,12 +413,6 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectricBlock impl
 		}
 
 		return false;
-	}
-
-	@Override
-	public boolean shouldPullEnergy()
-	{
-		return this.getEnergyStored() <= this.getMaxEnergyStored() - this.ueWattsPerTick;
 	}
 
 	@Override

@@ -135,7 +135,7 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectricBlock i
 				}
 			}
 
-			if (this.terraformBubble.getSize() == this.MAX_SIZE && this.getEnergyStored() > 0 && this.getFirstBonemealStack() != null && this.waterTank.getFluid() != null && this.waterTank.getFluid().amount > 0)
+			if (this.terraformBubble.getSize() == this.MAX_SIZE && this.hasEnoughEnergyToRun && this.getFirstBonemealStack() != null && this.waterTank.getFluid() != null && this.waterTank.getFluid().amount > 0)
 			{
 				this.active = true;
 			}
@@ -251,7 +251,7 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectricBlock i
 			this.grassBlocksListSize = this.grassBlockList.size();
 		}
 
-		if (this.getEnergyStored() > 0.0F && (!this.grassDisabled || !this.treesDisabled))
+		if (this.hasEnoughEnergyToRun && (!this.grassDisabled || !this.treesDisabled))
 		{
 			this.size = (float) Math.min(Math.max(0, this.size + 0.1F), this.MAX_SIZE);
 		}
@@ -560,12 +560,6 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectricBlock i
 	public void closeChest()
 	{
 
-	}
-
-	@Override
-	public boolean shouldPullEnergy()
-	{
-		return this.getEnergyStored() <= this.getMaxEnergyStored() - this.ueWattsPerTick;
 	}
 
 	@Override

@@ -32,8 +32,12 @@ public abstract class GCCoreTileEntityElectricBlock extends GCCoreTileEntityUniv
 	public boolean disabled = true;
 	@NetworkedField(targetSide = Side.CLIENT)
 	public int disableCooldown = 0;
+	public boolean hasEnoughEnergyToRun = false;
 
-	public abstract boolean shouldPullEnergy();
+	public boolean shouldPullEnergy()
+	{
+		return this.shouldUseEnergy() || this.getEnergyStored() < this.ueMaxEnergy;
+	}
 
 	public abstract boolean shouldUseEnergy();
 
@@ -69,7 +73,7 @@ public abstract class GCCoreTileEntityElectricBlock extends GCCoreTileEntityUniv
 	{
 		if (this.shouldPullEnergy())
 		{
-			return this.ueWattsPerTick * 3;
+			return Math.max(this.ueWattsPerTick * 3, this.getMaxEnergyStored() - this.getEnergyStored());
 		}
 		else
 		{
@@ -86,21 +90,19 @@ public abstract class GCCoreTileEntityElectricBlock extends GCCoreTileEntityUniv
 	@Override
 	public void updateEntity()
 	{
-		if (this.shouldPullEnergy() && this.getEnergyStored() < this.getMaxEnergyStored() && this.getBatteryInSlot() != null && this.getElectricInputDirection() != null)
+		if (!this.worldObj.isRemote)
 		{
-			if (!this.worldObj.isRemote)
+			if (this.shouldPullEnergy() && this.getEnergyStored() < this.getMaxEnergyStored() && this.getBatteryInSlot() != null && this.getElectricInputDirection() != null)
 			{
 				this.discharge(this.getBatteryInSlot());
 			}
-			// this.receiveElectricity(this.getElectricInputDirection(),
-			// ElectricityPack.getFromWatts(ElectricItemHelper.dischargeItem(this.getBatteryInSlot(),
-			// this.getRequest(ForgeDirection.UNKNOWN)), this.getVoltage()),
-			// true);
-		}
-
-		if (!this.worldObj.isRemote && this.shouldUseEnergy())
-		{
-			this.setEnergyStored(this.getEnergyStored() - this.ueWattsPerTick);
+	
+			this.hasEnoughEnergyToRun = false;
+			if (this.shouldUseEnergy() && this.getEnergyStored() > this.ueWattsPerTick)
+			{
+				this.hasEnoughEnergyToRun = true;
+				this.setEnergyStored(this.getEnergyStored() - this.ueWattsPerTick);
+			}
 		}
 
 		super.updateEntity();

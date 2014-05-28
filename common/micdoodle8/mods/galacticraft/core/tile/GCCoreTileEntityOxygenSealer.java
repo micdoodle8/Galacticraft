@@ -67,7 +67,7 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 
 	public int getFindSealChecks()
 	{
-		if (!this.active || this.storedOxygen < this.oxygenPerTick || this.getEnergyStored() <= 0.0F)
+		if (!this.active || this.storedOxygen < this.oxygenPerTick || !this.hasEnoughEnergyToRun)
 		{
 			return 0;
 		}
@@ -102,7 +102,7 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 				GCCoreTileEntityOxygenSealer.sealerCheckedThisTick = false;
 			}
 
-			if (this.storedOxygen >= 1 && this.energyStored > 0 && !this.disabled)
+			if (this.storedOxygen >= 1 && this.hasEnoughEnergyToRun && !this.disabled)
 			{
 				this.active = true;
 			}
@@ -305,12 +305,6 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 	}
 
 	@Override
-	public boolean shouldPullEnergy()
-	{
-		return this.getEnergyStored() <= this.getMaxEnergyStored() - this.ueWattsPerTick;
-	}
-
-	@Override
 	public boolean shouldUseEnergy()
 	{
 		return GCCoreTileEntityOxygen.timeSinceOxygenRequest > 0 && !this.getDisabled(0);
@@ -331,7 +325,7 @@ public class GCCoreTileEntityOxygenSealer extends GCCoreTileEntityOxygen impleme
 	@Override
 	public boolean shouldPullOxygen()
 	{
-		return this.getEnergyStored() > 0;
+		return this.hasEnoughEnergyToRun;
 	}
 
 	@Override

@@ -52,7 +52,7 @@ public class GCCoreTileEntityElectricIngotCompressor extends GCCoreTileEntityEle
 		{
 			boolean updateInv = false;
 
-			if (this.getEnergyStored() > 0.0F)
+			if (this.hasEnoughEnergyToRun)
 			{
 				if (this.canCompress())
 				{
@@ -385,12 +385,6 @@ public class GCCoreTileEntityElectricIngotCompressor extends GCCoreTileEntityEle
 	public boolean canExtractItem(int slotID, ItemStack par2ItemStack, int par3)
 	{
 		return slotID == 1 || slotID == 2;
-	}
-
-	@Override
-	public boolean shouldPullEnergy()
-	{
-		return this.getEnergyStored() <= this.getMaxEnergyStored() - this.ueWattsPerTick;
 	}
 
 	@Override

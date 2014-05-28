@@ -53,7 +53,7 @@ public class GCCoreTileEntityElectricFurnace extends GCCoreTileEntityElectricBlo
 		{
 			if (this.canProcess())
 			{
-				if (this.getEnergyStored() >= GCCoreTileEntityElectricFurnace.WATTS_PER_TICK)
+				if (this.hasEnoughEnergyToRun)
 				{
 					if (this.processTicks == 0)
 					{
@@ -74,8 +74,6 @@ public class GCCoreTileEntityElectricFurnace extends GCCoreTileEntityElectricBlo
 						this.processTicks = 0;
 					}
 				}
-
-				this.setEnergyStored(this.getEnergyStored() - GCCoreTileEntityElectricFurnace.WATTS_PER_TICK);
 			}
 			else
 			{
@@ -325,15 +323,9 @@ public class GCCoreTileEntityElectricFurnace extends GCCoreTileEntityElectricBlo
 	}
 
 	@Override
-	public boolean shouldPullEnergy()
-	{
-		return this.getEnergyStored() <= this.getMaxEnergyStored() - this.ueWattsPerTick;
-	}
-
-	@Override
 	public boolean shouldUseEnergy()
 	{
-		return this.processTicks > 0;
+		return this.canProcess();
 	}
 
 	@Override

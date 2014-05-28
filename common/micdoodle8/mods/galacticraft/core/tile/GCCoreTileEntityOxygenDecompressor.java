@@ -43,7 +43,7 @@ public class GCCoreTileEntityOxygenDecompressor extends GCCoreTileEntityOxygen i
 
 		if (!this.worldObj.isRemote)
 		{
-			if (this.containingItems[0] != null && this.getEnergyStored() > 0.0F && this.getOxygenStored() < this.getMaxOxygenStored())
+			if (this.containingItems[0] != null && this.hasEnoughEnergyToRun && this.getOxygenStored() < this.getMaxOxygenStored())
 			{
 				ItemStack tank1 = this.containingItems[0];
 
@@ -258,12 +258,6 @@ public class GCCoreTileEntityOxygenDecompressor extends GCCoreTileEntityOxygen i
 	public boolean isInvNameLocalized()
 	{
 		return true;
-	}
-
-	@Override
-	public boolean shouldPullEnergy()
-	{
-		return this.getEnergyStored() <= this.getMaxEnergyStored() - this.ueWattsPerTick;
 	}
 
 	@Override

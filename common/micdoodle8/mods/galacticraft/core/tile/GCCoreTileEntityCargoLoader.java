@@ -74,7 +74,7 @@ public class GCCoreTileEntityCargoLoader extends GCCoreTileEntityElectricBlock i
 					this.targetNoInventory = state == EnumCargoLoadingState.NOINVENTORY;
 					this.noTarget = state == EnumCargoLoadingState.NOTARGET;
 
-					if (this.ticks % 15 == 0 && state == EnumCargoLoadingState.SUCCESS && !this.disabled && this.getEnergyStored() > 0)
+					if (this.ticks % 15 == 0 && state == EnumCargoLoadingState.SUCCESS && !this.disabled && this.hasEnoughEnergyToRun)
 					{
 						this.attachedFuelable.addCargo(this.removeCargo(true).resultStack, true);
 					}
@@ -317,12 +317,6 @@ public class GCCoreTileEntityCargoLoader extends GCCoreTileEntityElectricBlock i
 		{
 			return true;
 		}
-	}
-
-	@Override
-	public boolean shouldPullEnergy()
-	{
-		return this.getEnergyStored() <= this.getMaxEnergyStored() - this.ueWattsPerTick;
 	}
 
 	@Override
