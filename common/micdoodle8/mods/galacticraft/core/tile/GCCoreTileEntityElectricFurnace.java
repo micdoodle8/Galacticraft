@@ -74,10 +74,6 @@ public class GCCoreTileEntityElectricFurnace extends GCCoreTileEntityElectricBlo
 						this.processTicks = 0;
 					}
 				}
-				else
-				{
-					this.processTicks = 0;
-				}
 
 				this.setEnergyStored(this.getEnergyStored() - GCCoreTileEntityElectricFurnace.WATTS_PER_TICK);
 			}

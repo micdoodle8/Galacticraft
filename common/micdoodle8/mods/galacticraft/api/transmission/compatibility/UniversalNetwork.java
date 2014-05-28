@@ -54,8 +54,6 @@ public class UniversalNetwork extends ElectricityNetwork
 	 * 
 	 *   After: the inner loop runs 80 times - part of it is in doTickStartCalc() at/near the tick start, and part of it is in doProduce() at the end of the tick
 	 */
-	private final static float ENERGYSTORAGELEVEL = 3750F;
-	
 	public static int tickCount = 0;
 	private int tickDone = -1;
 	private float totalRequested = 0F;
@@ -85,6 +83,9 @@ public class UniversalNetwork extends ElectricityNetwork
 	
 	private Map<TileEntity,Float> energyRequests = new HashMap<TileEntity,Float>();
 	private List<TileEntity> ignoreAcceptors = new LinkedList<TileEntity>();
+	
+	//This is the energy per tick corresponding to 12kW 
+	private final static float ENERGYSTORAGELEVEL = 0.6F;
 	
 	@Override
 	public ElectricityPack getRequest(TileEntity... ignoreTiles)
@@ -280,28 +281,28 @@ public class UniversalNetwork extends ElectricityNetwork
 			boolean isBCLoaded = NetworkConfigHandler.isBuildcraftLoaded();
 			boolean isMekLoaded = NetworkConfigHandler.isMekanismLoaded();
 			
-			float totalNeeded = this.totalRequested;
+			float energyNeeded = this.totalRequested;
 			float energyAvailable = this.totalEnergy;
 			float reducor = 1.0F;
 			float energyStorageReducor = 1.0F;
 			 
-			if (totalNeeded > energyAvailable)
+			if (energyNeeded > energyAvailable)
 			{	
 				//If not enough energy, try reducing what goes into energy storage (if any)
-				totalNeeded -= this.totalStorageExcess;
+				energyNeeded -= this.totalStorageExcess;
 				//If there's still not enough, put the minimum into energy storage (if any) and, anyhow, reduce everything proportionately
-				if (totalNeeded > energyAvailable)
+				if (energyNeeded > energyAvailable)
 				{	
 					energyStorageReducor = 0F;
-					reducor = energyAvailable / totalNeeded;
+					reducor = energyAvailable / energyNeeded;
 				}
 				else
 				{
 					//Energyavailable exceeds the total needed but only if storage does not fill all in one go - this is a common situation
-					energyStorageReducor = (energyAvailable - totalNeeded)/this.totalStorageExcess;
+					energyStorageReducor = (energyAvailable - energyNeeded)/this.totalStorageExcess;
 				}
 			}
-			 
+			
 			float currentSending;
 			float sentToAcceptor;
 
@@ -364,7 +365,7 @@ public class UniversalNetwork extends ElectricityNetwork
 				}
 				else sentToAcceptor = 0F;
 				
-				if (sentToAcceptor / currentSending > 1.002D && sentToAcceptor > 1F)
+				if (sentToAcceptor / currentSending > 1.002F && sentToAcceptor > 0.001F)
 				{	
 					if (!this.spamstop)
 					{
