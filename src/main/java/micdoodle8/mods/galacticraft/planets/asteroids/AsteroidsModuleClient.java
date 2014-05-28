@@ -6,12 +6,20 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.planets.IPlanetsModuleClient;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.block.BlockRendererWalkway;
+import micdoodle8.mods.galacticraft.planets.asteroids.client.render.entity.RenderGrapple;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.entity.RenderSmallAsteroid;
+import micdoodle8.mods.galacticraft.planets.asteroids.client.render.item.ItemRendererGrappleGun;
+import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityGrapple;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntitySmallAsteroid;
+import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.asteroids.tick.AsteroidsEventHandlerClient;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.client.model.AdvancedModelLoader;
+import net.minecraftforge.client.model.IModelCustom;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -42,6 +50,9 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
 	public void postInit(FMLPostInitializationEvent event) 
 	{
 		RenderingRegistry.registerEntityRenderingHandler(EntitySmallAsteroid.class, new RenderSmallAsteroid());
+		RenderingRegistry.registerEntityRenderingHandler(EntityGrapple.class, new RenderGrapple());
+		IModelCustom grappleModel = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/grapple.obj"));
+		MinecraftForgeClient.registerItemRenderer(AsteroidsItems.itemGrapple, new ItemRendererGrappleGun(grappleModel));
 	}
 
 	@Override

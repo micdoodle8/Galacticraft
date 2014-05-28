@@ -12,7 +12,9 @@ import micdoodle8.mods.galacticraft.planets.IPlanetsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.TeleportTypeAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
+import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityGrapple;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntitySmallAsteroid;
+import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.asteroids.util.AsteroidsUtil;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -39,6 +41,7 @@ public class AsteroidsModule implements IPlanetsModule
 		new ConfigManagerAsteroids(new File(event.getModConfigurationDirectory(), "Galacticraft/asteroids.conf"));
 		AsteroidBlocks.initBlocks();
 		AsteroidBlocks.registerBlocks();
+		AsteroidsItems.initItems();
 	}
 
 	@Override
@@ -93,6 +96,7 @@ public class AsteroidsModule implements IPlanetsModule
 	private void registerNonMobEntities()
 	{
 		AsteroidsUtil.registerAsteroidsNonMobEntity(EntitySmallAsteroid.class, "SmallAsteroid", ConfigManagerAsteroids.idEntitySmallAsteroid, 150, 1, true);
+		AsteroidsUtil.registerAsteroidsNonMobEntity(EntityGrapple.class, "GrappleHookGC", ConfigManagerAsteroids.idEntityGrappleHook, 150, 1, true);
 	}
 	
 	private void registerTileEntities()
