@@ -18,7 +18,6 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.client.FootprintRenderer;
-import micdoodle8.mods.galacticraft.core.client.NetworkRenderer;
 import micdoodle8.mods.galacticraft.core.client.fx.EffectHandler;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.InventoryTabGalacticraft;
 import micdoodle8.mods.galacticraft.core.client.model.ModelRocketTier1;
@@ -53,8 +52,6 @@ import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererThruster
 import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererTier1Rocket;
 import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererUnlitTorch;
 import micdoodle8.mods.galacticraft.core.client.render.tile.TileEntityAluminumWireRenderer;
-import micdoodle8.mods.galacticraft.core.client.render.tile.TileEntityBeamReceiverRenderer;
-import micdoodle8.mods.galacticraft.core.client.render.tile.TileEntityBeamReflectorRenderer;
 import micdoodle8.mods.galacticraft.core.client.render.tile.TileEntityNasaWorkbenchRenderer;
 import micdoodle8.mods.galacticraft.core.client.render.tile.TileEntityParachestRenderer;
 import micdoodle8.mods.galacticraft.core.client.render.tile.TileEntitySolarPanelRenderer;
@@ -82,14 +79,11 @@ import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAluminumWire;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityBeamReceiver;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityBeamReflector;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityNasaWorkbench;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityParaChest;
 import micdoodle8.mods.galacticraft.core.tile.TileEntitySolar;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityThruster;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
-import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.wrappers.BlockMetaList;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.block.Block;
@@ -97,13 +91,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundPoolEntry;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -130,6 +122,7 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.eventhandler.Event;
 
 /**
  * ClientProxyCore.java
@@ -266,8 +259,6 @@ public class ClientProxyCore extends CommonProxyCore
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityParaChest.class, new TileEntityParachestRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityNasaWorkbench.class, new TileEntityNasaWorkbenchRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySolar.class, new TileEntitySolarPanelRenderer());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBeamReflector.class, new TileEntityBeamReflectorRenderer());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBeamReceiver.class, new TileEntityBeamReceiverRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityThruster.class, new TileEntityThrusterRenderer());
 	}
 
@@ -495,7 +486,17 @@ public class ClientProxyCore extends CommonProxyCore
 	public static void renderFootprints(float partialTicks)
 	{
 		footprintRenderer.renderFootprints(FMLClientHandler.instance().getClient().thePlayer, partialTicks);
-		NetworkRenderer.renderNetworks(FMLClientHandler.instance().getClient().theWorld, partialTicks);
+		MinecraftForge.EVENT_BUS.post(new EventSpecialRender(partialTicks));
+	}
+	
+	public static class EventSpecialRender extends Event
+	{
+		public final float partialTicks;
+		
+		public EventSpecialRender(float partialTicks)
+		{
+			this.partialTicks = partialTicks;
+		}
 	}
 	
 	@Override

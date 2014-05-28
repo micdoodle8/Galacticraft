@@ -1,8 +1,8 @@
-package micdoodle8.mods.galacticraft.core.client.render.tile;
+package micdoodle8.mods.galacticraft.planets.asteroids.client.render.tile;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityBeamReceiver;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityBeamReceiver.ReceiverMode;
+import micdoodle8.mods.galacticraft.core.tile.ReceiverMode;
+import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReceiver;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
@@ -29,21 +29,18 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class TileEntityBeamReceiverRenderer extends TileEntitySpecialRenderer
 {
-	private static final ResourceLocation beamTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/misc/underoil.png");
-
-	public final IModelCustom model;
-	public final IModelCustom model2;
+	public static final ResourceLocation receiverTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/misc/underoil.png");
+	public static IModelCustom receiverModel;
 
 	public TileEntityBeamReceiverRenderer()
 	{
-		this.model = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "models/receiver.obj"));
-		this.model2 = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "models/receiver.obj"));
+		receiverModel = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "models/receiver.obj"));
 	}
 
 	public void renderModelAt(TileEntityBeamReceiver tileEntity, double d, double d1, double d2, float f)
 	{
 		// Texture file
-		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TileEntityBeamReceiverRenderer.beamTexture);
+		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TileEntityBeamReceiverRenderer.receiverTexture);
 		
 		Tessellator tess = Tessellator.instance;
 		
@@ -84,7 +81,7 @@ public class TileEntityBeamReceiverRenderer extends TileEntitySpecialRenderer
 		}
 		
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		model.renderPart("Main");
+		receiverModel.renderPart("Main");
 		
 		if (tileEntity.modeReceive == ReceiverMode.RECEIVE.ordinal())
 		{
@@ -100,10 +97,8 @@ public class TileEntityBeamReceiverRenderer extends TileEntitySpecialRenderer
 		}
 		
         GL11.glDisable(GL11.GL_TEXTURE_2D);
-//        GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_CULL_FACE);
-		model.renderPart("Receiver");
-//        GL11.glEnable(GL11.GL_LIGHTING);
+		receiverModel.renderPart("Receiver");
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glEnable(GL11.GL_CULL_FACE);
 		float dX = 0.34772F;
@@ -116,7 +111,7 @@ public class TileEntityBeamReceiverRenderer extends TileEntitySpecialRenderer
 		}
 		GL11.glTranslatef(-dX, -dY, -dZ);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		model.renderPart("Ring");
+		receiverModel.renderPart("Ring");
 
 		GL11.glPopMatrix();
 	}

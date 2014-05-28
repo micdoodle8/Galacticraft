@@ -1,11 +1,13 @@
-package micdoodle8.mods.galacticraft.core.blocks;
+package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
 import micdoodle8.mods.galacticraft.core.tile.EnergyStorageTile;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityBeamReceiver;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
+import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
+import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReceiver;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -31,7 +33,7 @@ public class BlockBeamReceiver extends BlockTileGC
 	@Override
 	public CreativeTabs getCreativeTabToDisplayOn()
 	{
-		return GalacticraftCore.galacticraftTab;
+		return AsteroidsModule.asteroidsTab;
 	}
 
 	@Override

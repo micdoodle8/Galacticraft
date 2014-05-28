@@ -15,6 +15,8 @@ import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAst
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityGrapple;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntitySmallAsteroid;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
+import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReceiver;
+import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReflector;
 import micdoodle8.mods.galacticraft.planets.asteroids.util.AsteroidsUtil;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,6 +26,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 
 public class AsteroidsModule implements IPlanetsModule
@@ -101,6 +104,7 @@ public class AsteroidsModule implements IPlanetsModule
 	
 	private void registerTileEntities()
 	{
-		
+		GameRegistry.registerTileEntity(TileEntityBeamReflector.class, "Beam Reflector");
+		GameRegistry.registerTileEntity(TileEntityBeamReceiver.class, "Beam Receiver");
 	}
 }

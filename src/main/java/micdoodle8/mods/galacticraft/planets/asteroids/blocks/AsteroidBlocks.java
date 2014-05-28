@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockGC;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemBlockAsteroids;
@@ -13,6 +14,8 @@ public class AsteroidBlocks
 	public static Block blockWalkwayOxygenPipe;
 	public static Block blockBasic;
 	public static Block machineFrame;
+	public static Block beamReflector;
+	public static Block beamReceiver;
 	
 	public static void initBlocks()
 	{
@@ -21,6 +24,8 @@ public class AsteroidBlocks
 		blockWalkwayOxygenPipe = new BlockWalkway("walkwayOxygenPipe");
 		blockBasic = new BlockBasicAsteroids("asteroidsBlock");
 		machineFrame = new BlockMachineFrame("machineFrameOld");
+		beamReflector = new BlockBeamReflector("beamReflector");
+		beamReceiver = new BlockBeamReceiver("beamReceiver");
 	}
 
 	public static void registerBlocks()
@@ -30,5 +35,7 @@ public class AsteroidBlocks
 		GameRegistry.registerBlock(AsteroidBlocks.blockWalkwayOxygenPipe, ItemBlockGC.class, AsteroidBlocks.blockWalkwayOxygenPipe.getUnlocalizedName(), GalacticraftPlanets.MODID);
 		GameRegistry.registerBlock(AsteroidBlocks.blockBasic, ItemBlockAsteroids.class, AsteroidBlocks.blockBasic.getUnlocalizedName(), GalacticraftPlanets.MODID);
 		GameRegistry.registerBlock(AsteroidBlocks.machineFrame, ItemBlockGC.class, AsteroidBlocks.machineFrame.getUnlocalizedName(), GalacticraftPlanets.MODID);
+		GameRegistry.registerBlock(AsteroidBlocks.beamReflector, ItemBlockGC.class, AsteroidBlocks.beamReflector.getUnlocalizedName(), GalacticraftCore.MODID);
+		GameRegistry.registerBlock(AsteroidBlocks.beamReceiver, ItemBlockGC.class, AsteroidBlocks.beamReceiver.getUnlocalizedName(), GalacticraftCore.MODID);
 	}
 }

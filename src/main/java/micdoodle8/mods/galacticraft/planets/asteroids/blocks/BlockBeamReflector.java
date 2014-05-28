@@ -1,9 +1,11 @@
-package micdoodle8.mods.galacticraft.core.blocks;
+package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityBeamReflector;
+import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
+import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
+import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReflector;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,7 +28,7 @@ public class BlockBeamReflector extends BlockTileGC
 	@Override
 	public CreativeTabs getCreativeTabToDisplayOn()
 	{
-		return GalacticraftCore.galacticraftTab;
+		return AsteroidsModule.asteroidsTab;
 	}
 
 	@Override

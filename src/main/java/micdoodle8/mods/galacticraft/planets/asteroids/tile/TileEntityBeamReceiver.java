@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.core.tile;
+package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 
 import micdoodle8.mods.galacticraft.api.power.EnergySource;
 import micdoodle8.mods.galacticraft.api.power.EnergySource.EnergySourceAdjacent;
@@ -7,6 +7,10 @@ import micdoodle8.mods.galacticraft.api.power.IEnergyHandlerGC;
 import micdoodle8.mods.galacticraft.api.power.ILaserNode;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.tile.EnergyStorage;
+import micdoodle8.mods.galacticraft.core.tile.EnergyStorageTile;
+import micdoodle8.mods.galacticraft.core.tile.ReceiverMode;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityUniversalElectrical;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -18,13 +22,6 @@ import cpw.mods.fml.relauncher.Side;
 
 public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEnergyHandlerGC, ILaserNode
 {
-	public enum ReceiverMode
-	{
-		EXTRACT,
-		RECEIVE,
-		UNDEFINED
-	}
-	
 	@NetworkedField(targetSide = Side.CLIENT)
 	public int facing = ForgeDirection.UNKNOWN.ordinal();
 	private int preLoadFacing = -1;
