@@ -62,8 +62,8 @@ public class GCCoreRecipeManager
 		FurnaceRecipes.smelting().addSmelting(GCCoreBlocks.basicBlock.blockID, 7, new ItemStack(GCCoreItems.basicItem, 1, 5), 0.5F);
 		FurnaceRecipes.smelting().addSmelting(GCCoreItems.meteorChunk.itemID, 0, new ItemStack(GCCoreItems.meteorChunk.itemID, 1, 1), 0.1F);
 		FurnaceRecipes.smelting().addSmelting(GCCoreItems.meteoricIronRaw.itemID, new ItemStack(GCCoreItems.meteoricIronIngot), 1.0F);
-		FurnaceRecipes.smelting().addSmelting(GCCoreBlocks.blockMoon.blockID, 0, OreDictionary.getOres("ingotCopper").get(0), 1.0F);
-		FurnaceRecipes.smelting().addSmelting(GCCoreBlocks.blockMoon.blockID, 1, OreDictionary.getOres("ingotTin").get(0), 1.0F);
+		FurnaceRecipes.smelting().addSmelting(GCCoreBlocks.blockMoon.blockID, 0, new ItemStack(GCCoreItems.basicItem, 1, 3), 1.0F);
+		FurnaceRecipes.smelting().addSmelting(GCCoreBlocks.blockMoon.blockID, 1, new ItemStack(GCCoreItems.basicItem, 1, 4), 1.0F);
 		FurnaceRecipes.smelting().addSmelting(GCCoreBlocks.blockMoon.blockID, 2, new ItemStack(GCCoreItems.cheeseCurd), 1.0F);
 
 		RecipeUtil.addRecipe(new ItemStack(GCCoreItems.rocketEngine, 1, 1), new Object[] { "ZYZ", "ZWZ", "XVX", 'V', GCCoreItems.oxygenVent, 'W', new ItemStack(GCCoreItems.canister, 1, 0), 'X', GCCoreItems.heavyPlatingTier1, 'Y', new ItemStack(Block.cloth, 1, 4), 'Z', new ItemStack(GCCoreItems.meteoricIronIngot, 1, 1) });
