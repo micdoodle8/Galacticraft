@@ -97,12 +97,11 @@ public abstract class GCCoreTileEntityElectricBlock extends GCCoreTileEntityUniv
 				this.discharge(this.getBatteryInSlot());
 			}
 	
-			this.hasEnoughEnergyToRun = false;
-			if (this.shouldUseEnergy() && this.getEnergyStored() > this.ueWattsPerTick)
+			if (this.getEnergyStored() > this.ueWattsPerTick)
 			{
 				this.hasEnoughEnergyToRun = true;
-				this.setEnergyStored(this.getEnergyStored() - this.ueWattsPerTick);
-			}
+				if (this.shouldUseEnergy()) this.setEnergyStored(this.getEnergyStored() - this.ueWattsPerTick);
+			} else this.hasEnoughEnergyToRun = false;
 		}
 
 		super.updateEntity();

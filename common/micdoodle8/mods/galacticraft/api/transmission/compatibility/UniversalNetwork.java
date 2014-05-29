@@ -322,7 +322,7 @@ public class UniversalNetwork extends ElectricityNetwork
 
 				//Reduce everything proportionately if there is not enough energy for all needs
 				currentSending *= reducor;
-
+				
 				if (currentSending > energyAvailable - sent)
 					currentSending = energyAvailable - sent;
 				
@@ -364,7 +364,7 @@ public class UniversalNetwork extends ElectricityNetwork
 					} else sentToAcceptor = 0F;
 				}
 				else sentToAcceptor = 0F;
-				
+
 				if (sentToAcceptor / currentSending > 1.002F && sentToAcceptor > 0.001F)
 				{	
 					if (!this.spamstop)
