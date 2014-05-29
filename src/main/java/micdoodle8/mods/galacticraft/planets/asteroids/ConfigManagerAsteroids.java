@@ -29,6 +29,7 @@ public class ConfigManagerAsteroids
 	// ENTITIES
 	public static int idEntitySmallAsteroid;
 	public static int idEntityGrappleHook;
+	public static int idEntityTier3Rocket;
 
 	// GUI
 
@@ -46,6 +47,7 @@ public class ConfigManagerAsteroids
 
 			ConfigManagerAsteroids.idEntitySmallAsteroid = ConfigManagerAsteroids.configuration.get("Entities", "idEntitySmallAsteroid", 180).getInt(180);
 			ConfigManagerAsteroids.idEntityGrappleHook = ConfigManagerAsteroids.configuration.get("Entities", "idEntityGrappleHook", 181).getInt(181);
+			ConfigManagerAsteroids.idEntityTier3Rocket = ConfigManagerAsteroids.configuration.get("Entities", "idEntityTier3Rocket", 182).getInt(182);
 		}
 		catch (final Exception e)
 		{

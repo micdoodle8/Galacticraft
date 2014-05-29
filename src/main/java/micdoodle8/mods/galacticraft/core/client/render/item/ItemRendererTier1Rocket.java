@@ -143,7 +143,7 @@ public class ItemRendererTier1Rocket implements IItemRenderer
 
 			GL11.glScalef(1.3F, 1.3F, 1.3F);
 			GL11.glTranslatef(0, -0.6F, 0);
-			GL11.glRotatef(Sys.getTime() / 90F % 360F, 0F, 1F, 0F);
+			GL11.glRotatef(Sys.getTime() / 30F % 360F, 0F, 1F, 0F);
 		}
 	}
 

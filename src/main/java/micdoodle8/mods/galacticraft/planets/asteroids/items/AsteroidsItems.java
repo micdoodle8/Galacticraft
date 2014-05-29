@@ -7,10 +7,12 @@ import cpw.mods.fml.common.registry.GameRegistry;
 public class AsteroidsItems
 {
 	public static Item itemGrapple;
+	public static Item itemTier3Rocket;
 	
 	public static void initItems()
 	{
 		AsteroidsItems.itemGrapple = new ItemGrappleHook("grapple");
+		AsteroidsItems.itemTier3Rocket = new ItemTier3Rocket("itemTier3Rocket");
 		
 		AsteroidsItems.registerItems();
 	}
@@ -18,5 +20,6 @@ public class AsteroidsItems
 	private static void registerItems()
 	{
 		GameRegistry.registerItem(AsteroidsItems.itemGrapple, AsteroidsItems.itemGrapple.getUnlocalizedName(), GalacticraftPlanets.MODID);
+		GameRegistry.registerItem(AsteroidsItems.itemTier3Rocket, AsteroidsItems.itemTier3Rocket.getUnlocalizedName(), GalacticraftPlanets.MODID);
 	}
 }

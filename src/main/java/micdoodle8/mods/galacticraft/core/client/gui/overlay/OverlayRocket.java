@@ -7,6 +7,7 @@ import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -70,7 +71,7 @@ public class OverlayRocket extends Overlay
 
 		GL11.glColor3f(1.0F, 1.0F, 1.0F);
 
-		final RenderTier1Rocket spaceship = (RenderTier1Rocket) RenderManager.instance.entityRenderMap.get(OverlayRocket.minecraft.thePlayer.ridingEntity.getClass());
+		Render spaceshipRender = (Render) RenderManager.instance.entityRenderMap.get(OverlayRocket.minecraft.thePlayer.ridingEntity.getClass());
 
 		final int y1 = height / 2 + 60 - (int) Math.floor(Overlay.getPlayerPositionY(OverlayRocket.minecraft.thePlayer) / 10.5F);
 		var1 = 2.5F;
@@ -97,7 +98,7 @@ public class OverlayRocket extends Overlay
 
 		try
 		{
-			spaceship.renderSpaceship((EntitySpaceshipBase) OverlayRocket.minecraft.thePlayer.ridingEntity.getClass().getConstructor(World.class).newInstance(OverlayRocket.minecraft.thePlayer.worldObj), 0, 0, 0, 0, 0);
+			spaceshipRender.doRender((EntitySpaceshipBase) OverlayRocket.minecraft.thePlayer.ridingEntity.getClass().getConstructor(World.class).newInstance(OverlayRocket.minecraft.thePlayer.worldObj), 0, 0, 0, 0, 0);
 		}
 		catch (Exception e)
 		{
