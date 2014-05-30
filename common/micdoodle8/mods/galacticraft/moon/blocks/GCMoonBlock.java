@@ -21,7 +21,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.IPlantable;
@@ -53,14 +52,22 @@ public class GCMoonBlock extends GCCoreBlockAdvancedTile implements IDetectableR
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
 	{
-		this.setBlockBoundsBasedOnState(world, x, y, z);
+		if (world.getBlockMetadata(x, y, z) == 15)
+		{
+	        return AxisAlignedBB.getAABBPool().getAABB(x, y, z, x, y, z);
+		}
+		
 		return super.getCollisionBoundingBoxFromPool(world, x, y, z);
 	}
 
 	@Override
 	public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z)
 	{
-		this.setBlockBoundsBasedOnState(world, x, y, z);
+		if (world.getBlockMetadata(x, y, z) == 15)
+		{
+	        return AxisAlignedBB.getAABBPool().getAABB(x, y, z, x, y, z);
+		}
+		
 		return super.getSelectedBoundingBoxFromPool(world, x, y, z);
 	}
 
@@ -76,37 +83,6 @@ public class GCMoonBlock extends GCCoreBlockAdvancedTile implements IDetectableR
 			return super.isBlockNormalCube(world, x, y, z);
 		}
     }
-
-	@Override
-	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
-	{
-		if (world.getBlockMetadata(x, y, z) == 15)
-		{
-			this.setBlockBounds(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
-		}
-		else
-		{
-			this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-			super.setBlockBoundsBasedOnState(world, x, y, z);
-		}
-	}
-
-	@SuppressWarnings("rawtypes")
-	@Override
-	public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB axisalignedbb, List list, Entity entity)
-	{
-		if (world.getBlockMetadata(x, y, z) == 15)
-		{
-			this.setBlockBounds(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
-			super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, list, entity);
-			this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-		}
-		else
-		{
-			this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-			super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, list, entity);
-		}
-	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
