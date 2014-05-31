@@ -166,7 +166,7 @@ public class GalacticraftMars
 	}
 
 	@EventHandler
-	public void postLoad(FMLPostInitializationEvent event)
+	public void postInit(FMLPostInitializationEvent event)
 	{
 		GalacticraftMars.proxy.postInit(event);
 		GalacticraftMars.proxy.registerRenderInformation();

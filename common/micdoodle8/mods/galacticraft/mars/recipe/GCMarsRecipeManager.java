@@ -36,7 +36,6 @@ public class GCMarsRecipeManager
 	{
 		OreDictionary.registerOre("ingotDesh", new ItemStack(GCMarsItems.marsItemBasic, 1, 2));
 		OreDictionary.registerOre("plateDesh", new ItemStack(GCMarsItems.marsItemBasic, 1, 5));
-		OreDictionary.registerOre("plateHeavyT2", new ItemStack(GCMarsItems.marsItemBasic, 1, 3));
 
 		RecipeUtil.addRecipe(new ItemStack(GCMarsItems.deshBoots), new Object[] { "X X", "X X", 'X', new ItemStack(GCMarsItems.marsItemBasic, 1, 2) });
 
@@ -44,7 +43,7 @@ public class GCMarsRecipeManager
 
 		RecipeUtil.addRecipe(new ItemStack(GCMarsBlocks.machine, 1, 0), new Object[] { "XWX", "XZX", "WVW", 'V', GCCoreItems.oxygenConcentrator, 'W', "plateDesh", 'X', "ingotDesh", 'Z', new ItemStack(GCCoreItems.canister) });
 
-		RecipeUtil.addRecipe(new ItemStack(GCMarsBlocks.machine, 1, 4), new Object[] { "XYX", "XZX", "XYX", 'X', "plateDesh", 'Y', "plateHeavyT2", 'Z', Item.bed });
+		RecipeUtil.addRecipe(new ItemStack(GCMarsBlocks.machine, 1, 4), new Object[] { "XYX", "XZX", "XYX", 'X', "plateDesh", 'Y', new ItemStack(GCMarsItems.marsItemBasic, 1, 3), 'Z', Item.bed });
 
 		RecipeUtil.addRecipe(new ItemStack(GCMarsItems.marsItemBasic, 1, 1), new Object[] { "X", "X", 'X', "ingotDesh" });
 
@@ -80,8 +79,8 @@ public class GCMarsRecipeManager
 		// Smelting
 		FurnaceRecipes.smelting().addSmelting(GCMarsItems.marsItemBasic.itemID, 0, new ItemStack(GCMarsItems.marsItemBasic, 1, 2), 0.2F);
 		FurnaceRecipes.smelting().addSmelting(GCMarsBlocks.marsBlock.blockID, 4, new ItemStack(GCMarsBlocks.marsBlock, 1, 9), 0.0F);
-		FurnaceRecipes.smelting().addSmelting(GCMarsBlocks.marsBlock.blockID, 0, OreDictionary.getOres("ingotCopper").get(0), 1.0F);
-		FurnaceRecipes.smelting().addSmelting(GCMarsBlocks.marsBlock.blockID, 1, OreDictionary.getOres("ingotTin").get(0), 1.0F);
+		FurnaceRecipes.smelting().addSmelting(GCMarsBlocks.marsBlock.blockID, 0, new ItemStack(GCCoreItems.basicItem, 1, 3), 1.0F);
+		FurnaceRecipes.smelting().addSmelting(GCMarsBlocks.marsBlock.blockID, 1, new ItemStack(GCCoreItems.basicItem, 1, 4), 1.0F);
 		FurnaceRecipes.smelting().addSmelting(GCMarsBlocks.marsBlock.blockID, 2, new ItemStack(GCMarsItems.marsItemBasic, 1, 2), 0.2F);
 		FurnaceRecipes.smelting().addSmelting(GCMarsBlocks.marsBlock.blockID, 3, new ItemStack(Item.ingotIron), 0.2F);
 
