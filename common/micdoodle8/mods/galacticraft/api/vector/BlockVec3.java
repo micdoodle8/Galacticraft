@@ -30,6 +30,7 @@ public class BlockVec3 implements Cloneable
 	public int z;
 	public boolean[] sideDone = {false,false,false,false,false,false};
 	private static Chunk chunkCached;
+	public static int chunkCacheDim = Integer.MAX_VALUE;
 	private static int chunkCacheX = 1876000; // outside the world edge
 	private static int chunkCacheZ = 1876000; // outside the world edge
 	
@@ -91,7 +92,7 @@ public class BlockVec3 implements Cloneable
 			{
 				// In a typical inner loop, 80% of the time consecutive calls to
 				// this will be within the same chunk
-				if (BlockVec3.chunkCacheX == chunkx && BlockVec3.chunkCacheZ == chunkz && BlockVec3.chunkCached.isChunkLoaded)
+				if (BlockVec3.chunkCacheX == chunkx && BlockVec3.chunkCacheZ == chunkz && BlockVec3.chunkCacheDim == world.provider.dimensionId && BlockVec3.chunkCached.isChunkLoaded)
 				{
 					return BlockVec3.chunkCached.getBlockID(this.x & 15, this.y, this.z & 15);
 				}
@@ -100,6 +101,7 @@ public class BlockVec3 implements Cloneable
 					Chunk chunk = null;
 					chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
 					BlockVec3.chunkCached = chunk;
+					BlockVec3.chunkCacheDim = world.provider.dimensionId;
 					BlockVec3.chunkCacheX = chunkx;
 					BlockVec3.chunkCacheZ = chunkz;
 					return chunk.getBlockID(this.x & 15, this.y, this.z & 15);
@@ -139,7 +141,7 @@ public class BlockVec3 implements Cloneable
 			{
 				// In a typical inner loop, 80% of the time consecutive calls to
 				// this will be within the same chunk
-				if (BlockVec3.chunkCacheX == chunkx && BlockVec3.chunkCacheZ == chunkz && BlockVec3.chunkCached.isChunkLoaded)
+				if (BlockVec3.chunkCacheX == chunkx && BlockVec3.chunkCacheZ == chunkz && BlockVec3.chunkCacheDim == world.provider.dimensionId  && BlockVec3.chunkCached.isChunkLoaded)
 				{
 					return BlockVec3.chunkCached.getBlockID(this.x & 15, this.y, this.z & 15);
 				}
@@ -148,6 +150,7 @@ public class BlockVec3 implements Cloneable
 					Chunk chunk = null;
 					chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
 					BlockVec3.chunkCached = chunk;
+					BlockVec3.chunkCacheDim = world.provider.dimensionId;
 					BlockVec3.chunkCacheX = chunkx;
 					BlockVec3.chunkCacheZ = chunkz;
 					return chunk.getBlockID(this.x & 15, this.y, this.z & 15);

@@ -52,7 +52,7 @@ public class TileEntityElectricIngotCompressor extends TileEntityElectricBlock i
 		{
 			boolean updateInv = false;
 
-			if (this.getEnergyStoredGC() > 0.0F)
+			if (this.hasEnoughEnergyToRun)
 			{
 				if (this.canCompress())
 				{
@@ -385,12 +385,6 @@ public class TileEntityElectricIngotCompressor extends TileEntityElectricBlock i
 	public boolean canExtractItem(int slotID, ItemStack par2ItemStack, int par3)
 	{
 		return slotID == 1 || slotID == 2;
-	}
-
-	@Override
-	public boolean shouldPullEnergy()
-	{
-		return this.getEnergyStoredGC() < this.getMaxEnergyStoredGC();
 	}
 
 	@Override

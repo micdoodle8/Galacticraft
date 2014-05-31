@@ -131,14 +131,14 @@ public class MarsModule implements IPlanetsModule
 	}
 
 	@Override
-	public void serverStarting(FMLServerStartingEvent event)
-	{
-	}
-
-	@Override
 	public void postInit(FMLPostInitializationEvent event)
 	{
 		RecipeManagerMars.loadRecipes();
+	}
+
+	@Override
+	public void serverStarting(FMLServerStartingEvent event)
+	{
 	}
 
 	public void registerTileEntities()

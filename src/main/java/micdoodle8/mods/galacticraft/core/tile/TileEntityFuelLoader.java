@@ -130,7 +130,7 @@ public class TileEntityFuelLoader extends TileEntityElectricBlock implements IIn
 			{
 				final FluidStack liquid = new FluidStack(GalacticraftCore.fluidFuel, 2);
 
-				if (this.attachedFuelable != null && this.getEnergyStoredGC() > 0 && !this.disabled)
+				if (this.attachedFuelable != null && this.hasEnoughEnergyToRun && !this.disabled)
 				{
 					if (liquid != null)
 					{
@@ -367,12 +367,6 @@ public class TileEntityFuelLoader extends TileEntityElectricBlock implements IIn
 	public FluidTankInfo[] getTankInfo(ForgeDirection from)
 	{
 		return new FluidTankInfo[] { new FluidTankInfo(this.fuelTank) };
-	}
-
-	@Override
-	public boolean shouldPullEnergy()
-	{
-		return this.getEnergyStoredGC() < this.getMaxEnergyStoredGC();
 	}
 
 	@Override

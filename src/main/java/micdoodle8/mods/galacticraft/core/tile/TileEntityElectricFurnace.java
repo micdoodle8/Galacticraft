@@ -52,7 +52,7 @@ public class TileEntityElectricFurnace extends TileEntityElectricBlock implement
 		{
 			if (this.canProcess())
 			{
-				if (this.getEnergyStoredGC() >= 0)
+				if (this.hasEnoughEnergyToRun)
 				{
 					if (this.processTicks == 0)
 					{
@@ -67,17 +67,11 @@ public class TileEntityElectricFurnace extends TileEntityElectricBlock implement
 							this.smeltItem();
 							this.processTicks = 0;
 						}
-						
-						this.storage.extractEnergyGC(this.storage.getMaxExtract(), false);
 					}
 					else
 					{
 						this.processTicks = 0;
 					}
-				}
-				else
-				{
-					this.processTicks = 0;
 				}
 			}
 			else
@@ -328,15 +322,9 @@ public class TileEntityElectricFurnace extends TileEntityElectricBlock implement
 	}
 
 	@Override
-	public boolean shouldPullEnergy()
-	{
-		return this.getEnergyStoredGC() < this.getMaxEnergyStoredGC();
-	}
-
-	@Override
 	public boolean shouldUseEnergy()
 	{
-		return this.processTicks > 0;
+		return this.canProcess();
 	}
 
 	@Override

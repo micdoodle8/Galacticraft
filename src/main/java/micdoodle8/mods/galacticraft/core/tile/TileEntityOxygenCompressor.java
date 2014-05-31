@@ -43,7 +43,7 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
 
 		if (!this.worldObj.isRemote)
 		{
-			if (this.storedOxygen > 0 && this.getEnergyStoredGC() > 0)
+			if (this.storedOxygen > 0 && this.hasEnoughEnergyToRun)
 			{
 				if (!this.worldObj.isRemote)
 				{
@@ -265,12 +265,6 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
 	}
 
 	@Override
-	public boolean shouldPullEnergy()
-	{
-		return this.getEnergyStoredGC() < this.getMaxEnergyStoredGC();
-	}
-
-	@Override
 	public boolean shouldUseEnergy()
 	{
 		return TileEntityOxygen.timeSinceOxygenRequest > 0 && this.getStackInSlot(0) != null;
@@ -291,7 +285,7 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
 	@Override
 	public boolean shouldPullOxygen()
 	{
-		return this.getEnergyStoredGC() > 0;
+		return this.hasEnoughEnergyToRun;
 	}
 
 	@Override

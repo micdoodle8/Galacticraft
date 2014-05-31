@@ -33,7 +33,7 @@ public class NetworkConfigHandler
 	 */
 	public static float IC2_RATIO = 0.11256f;
 
-	public static float MEKANISM_RATIO = 1.0F;
+	public static float MEKANISM_RATIO = 0.0016F;
 
 	/**
 	 * Ratio of UE power(Kw) to Build craft(MJ) power. Multiply UE power by this

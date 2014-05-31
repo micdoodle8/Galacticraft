@@ -183,7 +183,7 @@ public class ThreadFindSeal
 				for (BlockVec3 checkedVec : this.airToReplace)
 				{
 					//No block update for performance reasons; deal with unlit torches separately
-					changeList.add(new ScheduledBlockChange(checkedVec.clone(), breatheableAirID, 0, 2));
+					changeList.add(new ScheduledBlockChange(checkedVec.clone(), breatheableAirID, 0));
 				}
 				TickHandlerServer.scheduleNewBlockChange(this.world.provider.dimensionId, changeList);
 
@@ -295,7 +295,7 @@ public class ThreadFindSeal
 						Block breatheableAirID = GCBlocks.breatheableAir;
 						for (BlockVec3 airVec : this.airToReplace)
 						{
-							changeList.add(new ScheduledBlockChange(airVec.clone(), breatheableAirID, 0, 2));
+							changeList.add(new ScheduledBlockChange(airVec.clone(), breatheableAirID, 0));
 						}
 						TickHandlerServer.scheduleNewBlockChange(this.world.provider.dimensionId, changeList);
 
@@ -316,7 +316,7 @@ public class ThreadFindSeal
 					List<ScheduledBlockChange> changeList = new LinkedList<ScheduledBlockChange>();
 					for (BlockVec3 checkedVec : this.breatheableToReplace)
 					{
-						changeList.add(new ScheduledBlockChange(checkedVec.clone(), Blocks.air, 0, 2));
+						changeList.add(new ScheduledBlockChange(checkedVec.clone(), Blocks.air, 0));
 					}
 					TickHandlerServer.scheduleNewBlockChange(this.world.provider.dimensionId, changeList);
 

@@ -101,87 +101,87 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
 			//Approximately once every 40 ticks, search out oxygen producing blocks
 			if (this.worldObj.rand.nextInt(10) == 0)
 			{
-				if (this.getEnergyStoredGC() > 0) 
-			{
-				// The later calculations are more efficient if power is a float, so
-				// there are fewer casts
-				float power = 0;
-				if (this.worldObj.provider instanceof IGalacticraftWorldProvider)
+				if (this.hasEnoughEnergyToRun) 
 				{
-					// Pre-test to see if close to the map edges, so code
-					// doesn't have to continually test for map edges inside the
-					// loop
-					if (this.xCoord > -29999995 && this.xCoord < 2999995 && this.zCoord > -29999995 && this.zCoord < 29999995)
+					// The later calculations are more efficient if power is a float, so
+					// there are fewer casts
+					float power = 0;
+					if (this.worldObj.provider instanceof IGalacticraftWorldProvider)
 					{
-						// Test the y coordinates, so code doesn't have to keep
-						// testing that either
-						int miny = this.yCoord - 5;
-						int maxy = this.yCoord + 5;
-						if (miny < 0)
+						// Pre-test to see if close to the map edges, so code
+						// doesn't have to continually test for map edges inside the
+						// loop
+						if (this.xCoord > -29999995 && this.xCoord < 2999995 && this.zCoord > -29999995 && this.zCoord < 29999995)
 						{
-							miny = 0;
-						}
-						if (maxy >= this.worldObj.getHeight())
-						{
-							maxy = this.worldObj.getHeight() - 1;
-						}
-
-						// Loop the x and the z first, so the y loop will be at
-						// fixed (x,z) coordinates meaning fixed chunk
-						// coordinates
-						for (int x = this.xCoord - 5; x <= this.xCoord + 5; x++)
-						{
-							int chunkx = x >> 4;
-							int intrachunkx = x & 15;
-							// Preload the first chunk for the z loop - there
-							// can be a maximum of 2 chunks in the z loop
-							int chunkz = (this.zCoord - 5) >> 4;
-							Chunk chunk = this.worldObj.getChunkFromChunkCoords(chunkx, chunkz);
-							for (int z = this.zCoord - 5; z <= this.zCoord + 5; z++)
+							// Test the y coordinates, so code doesn't have to keep
+							// testing that either
+							int miny = this.yCoord - 5;
+							int maxy = this.yCoord + 5;
+							if (miny < 0)
 							{
-								if ((z >> 4) != chunkz)
+								miny = 0;
+							}
+							if (maxy >= this.worldObj.getHeight())
+							{
+								maxy = this.worldObj.getHeight() - 1;
+							}
+	
+							// Loop the x and the z first, so the y loop will be at
+							// fixed (x,z) coordinates meaning fixed chunk
+							// coordinates
+							for (int x = this.xCoord - 5; x <= this.xCoord + 5; x++)
+							{
+								int chunkx = x >> 4;
+								int intrachunkx = x & 15;
+								// Preload the first chunk for the z loop - there
+								// can be a maximum of 2 chunks in the z loop
+								int chunkz = (this.zCoord - 5) >> 4;
+								Chunk chunk = this.worldObj.getChunkFromChunkCoords(chunkx, chunkz);
+								for (int z = this.zCoord - 5; z <= this.zCoord + 5; z++)
 								{
-									// moved across z chunk boundary into a new
-									// chunk, so load the new chunk
-									chunkz = z >> 4;
-									chunk = this.worldObj.getChunkFromChunkCoords(chunkx, chunkz);
-								}
-								for (int y = miny; y <= maxy; y++)
-								{
-									// chunk.getBlockID is like world.getBlock
-									// but faster - needs to be given
-									// intra-chunk coordinates though
-									final Block block = chunk.getBlock(intrachunkx, y, z & 15);
-									// Test for the two most common blocks (air
-									// and breatheable air) without looking up
-									// in the blocksList
-									if (block != Blocks.air && block != GCBlocks.breatheableAir)
+									if ((z >> 4) != chunkz)
 									{
-										if (block.isLeaves(this.worldObj, x, y, z) || block instanceof IPlantable && ((IPlantable) block).getPlantType(this.worldObj, x, y, z) == EnumPlantType.Crop)
+										// moved across z chunk boundary into a new
+										// chunk, so load the new chunk
+										chunkz = z >> 4;
+										chunk = this.worldObj.getChunkFromChunkCoords(chunkx, chunkz);
+									}
+									for (int y = miny; y <= maxy; y++)
+									{
+										// chunk.getBlockID is like world.getBlock
+										// but faster - needs to be given
+										// intra-chunk coordinates though
+										final Block block = chunk.getBlock(intrachunkx, y, z & 15);
+										// Test for the two most common blocks (air
+										// and breatheable air) without looking up
+										// in the blocksList
+										if (block != Blocks.air && block != GCBlocks.breatheableAir)
 										{
-											power += 0.075F * 10F;
+											if (block.isLeaves(this.worldObj, x, y, z) || block instanceof IPlantable && ((IPlantable) block).getPlantType(this.worldObj, x, y, z) == EnumPlantType.Crop)
+											{
+												power += 0.075F * 10F;
+											}
 										}
 									}
 								}
 							}
 						}
 					}
+					else
+					{
+						power = 9.3F * 10F;
+					}
+	
+					power = (float) Math.floor(power);
+	
+					this.lastOxygenCollected = power / 10F;
+	
+					this.storedOxygen = (int) Math.max(Math.min(this.storedOxygen + power, this.maxOxygen), 0);
 				}
 				else
 				{
-					power = 9.3F * 10F;
+					this.lastOxygenCollected = 0;
 				}
-
-				power = (float) Math.floor(power);
-
-				this.lastOxygenCollected = power / 10F;
-
-				this.storedOxygen = (int) Math.max(Math.min(this.storedOxygen + power, this.maxOxygen), 0);
-			}
-			else
-			{
-				this.lastOxygenCollected = 0;
-			}
 			}
 		}
 	}
@@ -356,12 +356,6 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
 	public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
 	{
 		return slotID == 0 ? itemstack.getItem() instanceof IItemElectric : false;
-	}
-
-	@Override
-	public boolean shouldPullEnergy()
-	{
-		return this.getEnergyStoredGC() < this.getMaxEnergyStoredGC();
 	}
 
 	@Override

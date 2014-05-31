@@ -116,7 +116,7 @@ public class TileEntityRefinery extends TileEntityElectricBlock implements IInve
 				}
 			}
 
-			if (this.canProcess())
+			if (this.canProcess() && this.hasEnoughEnergyToRun)
 			{
 				if (this.processTicks == 0)
 				{
@@ -172,11 +172,6 @@ public class TileEntityRefinery extends TileEntityElectricBlock implements IInve
 		}
 
 		if (this.getDisabled(0))
-		{
-			return false;
-		}
-
-		if (this.getEnergyStoredGC() == 0)
 		{
 			return false;
 		}
@@ -418,12 +413,6 @@ public class TileEntityRefinery extends TileEntityElectricBlock implements IInve
 		}
 
 		return false;
-	}
-
-	@Override
-	public boolean shouldPullEnergy()
-	{
-		return this.getEnergyStoredGC() < this.getMaxEnergyStoredGC();
 	}
 
 	@Override

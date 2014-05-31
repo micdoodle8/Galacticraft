@@ -59,8 +59,8 @@ public class RecipeManagerGC
 		FurnaceRecipes.smelting().func_151394_a(new ItemStack(GCBlocks.basicBlock, 7), new ItemStack(GCItems.basicItem, 1, 5), 0.5F);
 		FurnaceRecipes.smelting().func_151394_a(new ItemStack(GCItems.meteorChunk, 0), new ItemStack(GCItems.meteorChunk, 1, 1), 0.1F);
 		FurnaceRecipes.smelting().func_151396_a(GCItems.meteoricIronRaw, new ItemStack(GCItems.meteoricIronIngot), 1.0F);
-		FurnaceRecipes.smelting().func_151394_a(new ItemStack(GCBlocks.blockMoon, 0), OreDictionary.getOres("ingotCopper").get(0), 1.0F);
-		FurnaceRecipes.smelting().func_151394_a(new ItemStack(GCBlocks.blockMoon, 1), OreDictionary.getOres("ingotTin").get(0), 1.0F);
+		FurnaceRecipes.smelting().func_151394_a(new ItemStack(GCBlocks.blockMoon, 0), new ItemStack(GCItems.basicItem, 1, 3), 1.0F);
+		FurnaceRecipes.smelting().func_151394_a(new ItemStack(GCBlocks.blockMoon, 1), new ItemStack(GCItems.basicItem, 1, 4), 1.0F);
 		FurnaceRecipes.smelting().func_151394_a(new ItemStack(GCBlocks.blockMoon, 2), new ItemStack(GCItems.cheeseCurd), 1.0F);
 
 		RecipeUtil.addRecipe(new ItemStack(GCItems.rocketEngine, 1, 1), new Object[] { "ZYZ", "ZWZ", "XVX", 'V', GCItems.oxygenVent, 'W', new ItemStack(GCItems.canister, 1, 0), 'X', GCItems.heavyPlatingTier1, 'Y', new ItemStack(Blocks.wool, 1, 4), 'Z', new ItemStack(GCItems.meteoricIronIngot, 1, 1) });
@@ -243,9 +243,16 @@ public class RecipeManagerGC
 
 		RecipeUtil.addRecipe(new ItemStack(GCItems.sensorLens, 1), new Object[] { "ZXZ", "XYX", "ZXZ", 'X', Blocks.glass_pane, 'Y', new ItemStack(GCItems.meteoricIronIngot, 1, 1), 'Z', Items.redstone });
 
-		RecipeUtil.addRecipe(new ItemStack(GCItems.canister, 2, 0), new Object[] { "X X", "X X", "XXX", 'X', "ingotTin" });
-
-		RecipeUtil.addRecipe(new ItemStack(GCItems.canister, 2, 1), new Object[] { "X X", "X X", "XXX", 'X', "ingotCopper" });
+		if (!ConfigManagerCore.alternateCanisterRecipe)
+		{
+			RecipeUtil.addRecipe(new ItemStack(GCItems.canister, 2, 0), new Object[] { "X X", "X X", "XXX", 'X', "ingotTin" });
+			RecipeUtil.addRecipe(new ItemStack(GCItems.canister, 2, 1), new Object[] { "X X", "X X", "XXX", 'X', "ingotCopper" });
+		}
+		else
+		{
+			RecipeUtil.addRecipe(new ItemStack(GCItems.canister, 2, 0), new Object[] { "XXX", "X  ", "XXX", 'X', "ingotTin" });
+			RecipeUtil.addRecipe(new ItemStack(GCItems.canister, 2, 1), new Object[] { "XXX", "X  ", "XXX", 'X', "ingotCopper" });
+		}
 
 		RecipeUtil.addRecipe(new ItemStack(GCItems.oxMask, 1), new Object[] { "XXX", "XYX", "XXX", 'X', Blocks.glass_pane, 'Y', Items.iron_helmet });
 

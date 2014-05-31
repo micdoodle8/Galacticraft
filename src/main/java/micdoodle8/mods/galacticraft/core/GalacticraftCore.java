@@ -15,6 +15,7 @@ import micdoodle8.mods.galacticraft.api.galaxies.Planet;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
 import micdoodle8.mods.galacticraft.api.transmission.core.grid.ChunkPowerHandler;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.blocks.BlockFluidGC;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
@@ -340,6 +341,7 @@ public class GalacticraftCore
 		CompatibilityManager.checkForCompatibleMods();
 		RecipeManagerGC.loadRecipes();
 		NetworkRegistry.INSTANCE.registerGuiHandler(GalacticraftCore.instance, new GuiHandler());
+		FMLCommonHandler.instance().bus().register(new TickHandlerServer());
 	}
 
 	@EventHandler
@@ -352,7 +354,8 @@ public class GalacticraftCore
 		}
 
 		GCCoreUtil.checkVersion(Side.SERVER);
-		FMLCommonHandler.instance().bus().register(new TickHandlerServer());
+		TickHandlerServer.restart();
+		BlockVec3.chunkCacheDim = Integer.MAX_VALUE;
 	}
 
 	@EventHandler

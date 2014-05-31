@@ -45,7 +45,7 @@ public class TileEntityOxygenDecompressor extends TileEntityOxygen implements II
 
 		if (!this.worldObj.isRemote)
 		{
-			if (this.containingItems[0] != null && this.getEnergyStoredGC() > 0.0F && this.getOxygenStored() < this.getMaxOxygenStored())
+			if (this.containingItems[0] != null && this.hasEnoughEnergyToRun && this.getOxygenStored() < this.getMaxOxygenStored())
 			{
 				ItemStack tank1 = this.containingItems[0];
 
@@ -260,12 +260,6 @@ public class TileEntityOxygenDecompressor extends TileEntityOxygen implements II
 	public boolean hasCustomInventoryName()
 	{
 		return true;
-	}
-
-	@Override
-	public boolean shouldPullEnergy()
-	{
-		return this.getEnergyStoredGC() < this.getMaxEnergyStoredGC();
 	}
 
 	@Override

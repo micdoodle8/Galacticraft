@@ -71,7 +71,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
 
 	public int getFindSealChecks()
 	{
-		if (!this.active || this.storedOxygen < this.oxygenPerTick || this.getEnergyStoredGC() <= 0.0F)
+		if (!this.active || this.storedOxygen < this.oxygenPerTick || !this.hasEnoughEnergyToRun)
 		{
 			return 0;
 		}
@@ -106,7 +106,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
 				TileEntityOxygenSealer.sealerCheckedThisTick = false;
 			}
 
-			if (this.storedOxygen >= 1 && this.getEnergyStoredGC() > 0 && !this.disabled)
+			if (this.storedOxygen >= 1 && this.hasEnoughEnergyToRun && !this.disabled)
 			{
 				this.active = true;
 			}
@@ -309,12 +309,6 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
 	}
 
 	@Override
-	public boolean shouldPullEnergy()
-	{
-		return this.getEnergyStoredGC() < this.getMaxEnergyStoredGC();
-	}
-
-	@Override
 	public boolean shouldUseEnergy()
 	{
 		return TileEntityOxygen.timeSinceOxygenRequest > 0 && !this.getDisabled(0);
@@ -335,7 +329,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
 	@Override
 	public boolean shouldPullOxygen()
 	{
-		return this.getEnergyStoredGC() > 0;
+		return this.hasEnoughEnergyToRun;
 	}
 
 	@Override

@@ -27,15 +27,19 @@ import cpw.mods.fml.relauncher.Side;
  */
 public abstract class TileEntityElectricBlock extends TileEntityUniversalElectrical implements IPacketReceiver, IDisableableMachine, IConnector
 {
-//	public float ueWattsPerTick;
+//	public int energyPerTick = 200;
 //	private final float ueMaxEnergy;
 
 	@NetworkedField(targetSide = Side.CLIENT)
 	public boolean disabled = true;
 	@NetworkedField(targetSide = Side.CLIENT)
 	public int disableCooldown = 0;
+	public boolean hasEnoughEnergyToRun = false;
 
-	public abstract boolean shouldPullEnergy();
+	public boolean shouldPullEnergy()
+	{
+		return this.shouldUseEnergy() || this.getEnergyStoredGC(null) < this.getMaxEnergyStoredGC();
+	}
 
 	public abstract boolean shouldUseEnergy();
 
@@ -67,6 +71,7 @@ public abstract class TileEntityElectricBlock extends TileEntityUniversalElectri
 	public int getScaledElecticalLevel(int i)
 	{
 		return (int) Math.floor(this.getEnergyStoredGC(null) * i / this.getMaxEnergyStoredGC(null));
+			//- this.ueWattsPerTick;
 	}
 
 //	@Override
@@ -91,21 +96,22 @@ public abstract class TileEntityElectricBlock extends TileEntityUniversalElectri
 	@Override
 	public void updateEntity()
 	{
-		if (this.shouldPullEnergy() && this.getEnergyStoredGC(null) < this.getMaxEnergyStoredGC(null) && this.getBatteryInSlot() != null && this.getElectricInputDirection() != null)
+		if (!this.worldObj.isRemote)
 		{
-			if (!this.worldObj.isRemote)
+			if (this.shouldPullEnergy() && this.getEnergyStoredGC(null) < this.getMaxEnergyStoredGC(null) && this.getBatteryInSlot() != null && this.getElectricInputDirection() != null)
 			{
 				this.discharge(this.getBatteryInSlot());
+				// this.receiveElectricity(this.getElectricInputDirection(),
+				// ElectricityPack.getFromWatts(ElectricItemHelper.dischargeItem(this.getBatteryInSlot(),
+				// this.getRequest(ForgeDirection.UNKNOWN)), this.getVoltage()),
+				// true);
 			}
-			// this.receiveElectricity(this.getElectricInputDirection(),
-			// ElectricityPack.getFromWatts(ElectricItemHelper.dischargeItem(this.getBatteryInSlot(),
-			// this.getRequest(ForgeDirection.UNKNOWN)), this.getVoltage()),
-			// true);
-		}
-
-		if (!this.worldObj.isRemote && this.shouldUseEnergy())
-		{
-			this.storage.extractEnergyGC(this.storage.getMaxExtract(), false);
+	
+			if (this.getEnergyStoredGC(null) > this.storage.getMaxExtract())
+			{
+				this.hasEnoughEnergyToRun = true;
+				if (this.shouldUseEnergy()) this.storage.extractEnergyGC(this.storage.getMaxExtract(), false);
+			} else this.hasEnoughEnergyToRun = false;
 		}
 
 		super.updateEntity();

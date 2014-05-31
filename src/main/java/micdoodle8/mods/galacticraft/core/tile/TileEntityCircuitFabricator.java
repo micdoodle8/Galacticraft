@@ -55,7 +55,7 @@ public class TileEntityCircuitFabricator extends TileEntityElectricBlock impleme
 		{
 			boolean updateInv = false;
 
-			if (this.getEnergyStoredGC() > 0.0F)
+			if (this.hasEnoughEnergyToRun)
 			{
 				if (this.canCompress())
 				{
@@ -321,12 +321,6 @@ public class TileEntityCircuitFabricator extends TileEntityElectricBlock impleme
 	public boolean canExtractItem(int slotID, ItemStack par2ItemStack, int par3)
 	{
 		return slotID == 2;
-	}
-
-	@Override
-	public boolean shouldPullEnergy()
-	{
-		return this.getEnergyStoredGC() < this.getMaxEnergyStoredGC();
 	}
 
 	@Override

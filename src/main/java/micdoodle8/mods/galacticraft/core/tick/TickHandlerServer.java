@@ -49,7 +49,18 @@ public class TickHandlerServer
 	private static LinkedList<UniversalNetwork> networkTicks = new LinkedList<UniversalNetwork>();
 	private static Map<Integer, List<Footprint>> footprintList = new HashMap<Integer, List<Footprint>>();
 	public static WorldDataSpaceRaces spaceRaceData = null;
-	private long tickCount;
+	private static long tickCount;
+	
+	public static void restart()
+	{
+		TickHandlerServer.scheduledBlockChanges.clear();
+		TickHandlerServer.scheduledTorchUpdates.clear();
+		TickHandlerServer.edgeChecks.clear();
+		TickHandlerServer.networkTicks.clear();
+		TickHandlerServer.footprintList.clear();
+		TickHandlerServer.spaceRaceData = null;
+		TickHandlerServer.tickCount = 0L;
+	}
 	
 	public static void addFootprint(Footprint print, int dimID)
 	{
@@ -200,11 +211,19 @@ public class TickHandlerServer
 		}
 		else if (event.phase == Phase.END)
 		{
-			for (UniversalNetwork grid : TickHandlerServer.networkTicks)
+			int maxPasses = 10;
+			while (!TickHandlerServer.networkTicks.isEmpty())
 			{
-				grid.tickEnd();
+				LinkedList<UniversalNetwork> pass = new LinkedList();
+				pass.addAll(TickHandlerServer.networkTicks);
+				TickHandlerServer.networkTicks.clear();		
+				for (UniversalNetwork grid : pass)
+				{
+					grid.tickEnd();
+				}
+
+				if (--maxPasses<=0) break;
 			}
-			TickHandlerServer.networkTicks.clear();
 		}
 	}
 
@@ -221,9 +240,13 @@ public class TickHandlerServer
 			{
 				for (ScheduledBlockChange change : changeList)
 				{
-					if (change != null && change.getChangePosition() != null)
+					if (change != null)
 					{
-						world.setBlock(change.getChangePosition().x, change.getChangePosition().y, change.getChangePosition().z, change.getChangeID(), change.getChangeMeta(), change.getChangeFlag());
+						BlockVec3 changePosition = change.getChangePosition();
+						if (changePosition != null)
+						{
+							world.setBlock(changePosition.x, changePosition.y, changePosition.z, change.getChangeID(), change.getChangeMeta(), 2);
+						}
 					}
 				}
 

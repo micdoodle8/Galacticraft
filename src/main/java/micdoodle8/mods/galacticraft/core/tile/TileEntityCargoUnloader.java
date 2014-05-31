@@ -71,7 +71,7 @@ public class TileEntityCargoUnloader extends TileEntityElectricBlock implements 
 
 					this.targetEmpty = state == EnumCargoLoadingState.EMPTY;
 
-					if (this.ticks % 15 == 0 && state == EnumCargoLoadingState.SUCCESS && !this.disabled && this.getEnergyStoredGC() > 0)
+					if (this.ticks % 15 == 0 && state == EnumCargoLoadingState.SUCCESS && !this.disabled && this.hasEnoughEnergyToRun)
 					{
 						this.addCargo(this.attachedFuelable.removeCargo(true).resultStack, true);
 					}
@@ -318,12 +318,6 @@ public class TileEntityCargoUnloader extends TileEntityElectricBlock implements 
 		{
 			return true;
 		}
-	}
-
-	@Override
-	public boolean shouldPullEnergy()
-	{
-		return this.getEnergyStoredGC() < this.getMaxEnergyStoredGC();
 	}
 
 	@Override

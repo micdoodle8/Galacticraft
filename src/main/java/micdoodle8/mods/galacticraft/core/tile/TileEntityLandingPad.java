@@ -51,26 +51,28 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
 		{
 			final List<?> list = this.worldObj.getEntitiesWithinAABB(IFuelable.class, AxisAlignedBB.getAABBPool().getAABB(this.xCoord - 0.5D, this.yCoord, this.zCoord - 0.5D, this.xCoord + 0.5D, this.yCoord + 2.0D, this.zCoord + 0.5D));
 
-			boolean changed = false;
+			boolean docked = false;
 
 			for (final Object o : list)
 			{
 				if (o != null && o instanceof IDockable && !this.worldObj.isRemote)
 				{
+					docked = true;
+
 					final IDockable fuelable = (IDockable) o;
 
-					if (fuelable.isDockValid(this))
+					if (fuelable != this.dockedEntity && fuelable.isDockValid(this))
 					{
 						this.dockedEntity = fuelable;
 
 						this.dockedEntity.setPad(this);
-
-						changed = true;
 					}
+					
+					break;
 				}
 			}
 
-			if (!changed)
+			if (!docked)
 			{
 				this.dockedEntity = null;
 			}

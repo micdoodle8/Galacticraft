@@ -93,7 +93,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 
 		if (!this.worldObj.isRemote)
 		{
-			if (this.oxygenBubble.getSize() >= 1 && this.getEnergyStoredGC() > 0)
+			if (this.oxygenBubble.getSize() >= 1 && this.hasEnoughEnergyToRun)
 			{
 				this.active = true;
 			}
@@ -308,12 +308,6 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 	}
 
 	@Override
-	public boolean shouldPullEnergy()
-	{
-		return this.getEnergyStoredGC() < this.getMaxEnergyStoredGC();
-	}
-
-	@Override
 	public boolean shouldUseEnergy()
 	{
 		return TileEntityOxygen.timeSinceOxygenRequest > 0;
@@ -334,7 +328,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 	@Override
 	public boolean shouldPullOxygen()
 	{
-		return this.getEnergyStoredGC() > 0;
+		return this.hasEnoughEnergyToRun;
 	}
 
 	@Override

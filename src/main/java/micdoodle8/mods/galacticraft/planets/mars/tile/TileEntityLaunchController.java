@@ -394,12 +394,6 @@ public class TileEntityLaunchController extends TileEntityElectricBlock implemen
 	}
 
 	@Override
-	public boolean shouldPullEnergy()
-	{
-		return this.getEnergyStoredGC() < this.getMaxEnergyStoredGC();
-	}
-
-	@Override
 	public boolean shouldUseEnergy()
 	{
 		return !this.getDisabled(0);
@@ -542,6 +536,6 @@ public class TileEntityLaunchController extends TileEntityElectricBlock implemen
 
 	public boolean validFrequency()
 	{
-		return !this.getDisabled(0) && this.getEnergyStoredGC() > 0 && this.frequencyValid && this.destFrequencyValid;
+		return !this.getDisabled(0) && this.hasEnoughEnergyToRun && this.frequencyValid && this.destFrequencyValid;
 	}
 }
