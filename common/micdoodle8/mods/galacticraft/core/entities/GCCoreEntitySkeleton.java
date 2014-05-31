@@ -76,7 +76,6 @@ public class GCCoreEntitySkeleton extends EntitySkeleton implements IEntityBreat
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
 	/**
 	 * Returns the item that this EntityLiving is holding, if any.
 	 */
