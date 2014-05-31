@@ -317,6 +317,7 @@ public class GCCoreItems
 		registerItem(cheeseBlock);
 		registerItem(flag);
 		registerItem(parachute);
+		registerItem(knowledgeBook);
 	}
 	
 	private static void registerItem(Item item)
