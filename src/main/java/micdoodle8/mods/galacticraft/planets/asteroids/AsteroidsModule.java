@@ -7,7 +7,6 @@ import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.Planet;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.CreativeTabGC;
 import micdoodle8.mods.galacticraft.planets.IPlanetsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
@@ -22,7 +21,6 @@ import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReflect
 import micdoodle8.mods.galacticraft.planets.asteroids.util.AsteroidsUtil;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -52,7 +50,7 @@ public class AsteroidsModule implements IPlanetsModule
 	@Override
 	public void init(FMLInitializationEvent event)
 	{
-		AsteroidsModule.asteroidsTab = new CreativeTabGC(CreativeTabs.getNextID(), "GalacticraftAsteroids", Item.getItemFromBlock(AsteroidBlocks.blockWalkway), 0);
+		AsteroidsModule.asteroidsTab = new CreativeTabGC(CreativeTabs.getNextID(), "GalacticraftAsteroids", AsteroidsItems.itemTier3Rocket, 0);
 		this.registerEntities();
 
 		AsteroidsModule.planetAsteroids = (Planet) new Planet("asteroids").setParentGalaxy(GalacticraftCore.galaxyBlockyWay);
