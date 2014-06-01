@@ -32,6 +32,7 @@ public class FootprintRenderer
 		GL11.glDepthMask(true);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glDisable(GL11.GL_CULL_FACE);
 
         GL11.glEnable(GL11.GL_BLEND);
         OpenGlHelper.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
@@ -42,6 +43,7 @@ public class FootprintRenderer
         float f9 = 1.0F;
         
         float f10 = 0.4F;
+        GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
 
         for (int i = 0; i < footprints.size(); i++)
         {
@@ -72,7 +74,7 @@ public class FootprintRenderer
         }
 
         GL11.glDisable(GL11.GL_BLEND);
-        GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
+        GL11.glEnable(GL11.GL_CULL_FACE);
         GL11.glPopMatrix();
 	}
 	
