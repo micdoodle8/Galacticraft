@@ -10,6 +10,7 @@ import net.minecraftforge.client.model.IModelCustom;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -63,12 +64,11 @@ public class RenderTier3Rocket extends Render
 	{
 		GL11.glPushMatrix();
 		final float var24 = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * par9 + 180;
-		final float var25 = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * par9;
+		final float var25 = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * par9 + 45;
 
 		GL11.glTranslatef((float) par2, (float) par4 - 0.4F, (float) par6);
 		GL11.glRotatef(180.0F - par8, 0.0F, 1.0F, 0.0F);
 		GL11.glRotatef(-var24, 0.0F, 0.0F, 1.0F);
-		GL11.glRotatef(-var25, 0.0F, 1.0F, 0.0F);
 		final float var28 = entity.rollAmplitude - par9;
 		float var30 = entity.shipDamage - par9;
 
@@ -90,7 +90,26 @@ public class RenderTier3Rocket extends Render
 
 		if (this.modelSpaceshipObj != null)
 		{
-			this.modelSpaceshipObj.renderAll();
+			this.modelSpaceshipObj.renderOnly("Boosters", "Rocket");
+			GL11.glColor3f(0, 0.0F, 1.0F);
+			this.modelSpaceshipObj.renderPart("NoseCone");
+			
+			if (((FMLClientHandler.instance().getClient().thePlayer.ticksExisted / 10) % 2) < 1)
+			{
+				GL11.glColor3f(1, 0, 0);
+			}
+			else
+			{
+				GL11.glColor3f(0, 1, 0);
+			}
+			
+			GL11.glDisable(GL11.GL_TEXTURE_2D);
+			GL11.glDisable(GL11.GL_LIGHTING);
+			this.modelSpaceshipObj.renderPart("Cube");
+			GL11.glEnable(GL11.GL_TEXTURE_2D);
+			GL11.glEnable(GL11.GL_LIGHTING);
+			
+			GL11.glColor3f(1, 1, 1);
 		}
 		else
 		{

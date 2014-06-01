@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.api.entity.IRocketType.EnumRocketType;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.EntityTier1Rocket;
+import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import net.minecraft.client.model.ModelChest;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.entity.RenderItem;
@@ -36,7 +37,7 @@ public class ItemRendererTier3Rocket implements IItemRenderer
 
 	protected static RenderItem drawItems = new RenderItem();
 
-	protected ResourceLocation texture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/misc/underoil.png");
+	protected ResourceLocation texture = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/model/tier3rocket.png");
 
 	public ItemRendererTier3Rocket(IModelCustom model)
 	{
@@ -105,7 +106,7 @@ public class ItemRendererTier3Rocket implements IItemRenderer
 
 		if (type == ItemRenderType.EQUIPPED_FIRST_PERSON)
 		{
-			GL11.glTranslatef(-0.5F, 4.2F, 0F);
+			GL11.glTranslatef(2.5F, 5.9F, 1F);
 			GL11.glRotatef(28, 0.0F, 0, 1);
 			GL11.glRotatef(50 + 180, 0.0F, 1, 0);
 			GL11.glRotatef(73, 1.0F, 0, 0);
@@ -137,7 +138,7 @@ public class ItemRendererTier3Rocket implements IItemRenderer
 
 			GL11.glScalef(1.3F, 1.3F, 1.3F);
 			GL11.glTranslatef(0, -0.6F, 0);
-			GL11.glRotatef(Sys.getTime() / 30F % 360F, 0F, 1F, 0F);
+			GL11.glRotatef(Sys.getTime() / 30F % 360F + 45, 0F, 1F, 0F);
 		}
 		
 		GL11.glRotatef(180, 0, 0, 1);
