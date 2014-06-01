@@ -170,6 +170,9 @@ public class GCCoreBlocks
 		GCCoreBlocks.hiddenBlocks.add(GCCoreBlocks.fakeBlock.blockID);
 		GCCoreBlocks.hiddenBlocks.add(GCCoreBlocks.spaceStationBase.blockID);
 
+		GCCoreBlocks.setHarvestLevels();
+		GCCoreBlocks.registerBlocks();
+
 		OreDictionary.registerOre("oreCopper", new ItemStack(GCCoreBlocks.basicBlock, 1, 5));
 		OreDictionary.registerOre("oreCopper", new ItemStack(GCCoreBlocks.blockMoon, 1, 0));
 		OreDictionary.registerOre("oreTin", new ItemStack(GCCoreBlocks.basicBlock, 1, 6));
@@ -179,9 +182,6 @@ public class GCCoreBlocks
 		OreDictionary.registerOre("oreNaturalAluminum", new ItemStack(GCCoreBlocks.basicBlock, 1, 7));
 		OreDictionary.registerOre("oreSilicon", new ItemStack(GCCoreBlocks.basicBlock, 1, 8));
 		OreDictionary.registerOre("oreCheese", new ItemStack(GCCoreBlocks.blockMoon, 1, 2));
-
-		GCCoreBlocks.setHarvestLevels();
-		GCCoreBlocks.registerBlocks();
 	}
 
 	public static void setHarvestLevels()
