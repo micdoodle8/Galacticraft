@@ -343,7 +343,10 @@ public class GCCorePacketHandlerClient implements IPacketHandler
 					if (!WorldUtil.registeredSpaceStations.contains(Integer.valueOf(var3)))
 					{
 						WorldUtil.registeredSpaceStations.add(Integer.valueOf(var3));
-						DimensionManager.registerDimension(var3, staticDim ? GCCoreConfigManager.idDimensionOverworldOrbitStatic : GCCoreConfigManager.idDimensionOverworldOrbit);
+						if (!DimensionManager.isDimensionRegistered(var3))
+							DimensionManager.registerDimension(var3, staticDim ? GCCoreConfigManager.idDimensionOverworldOrbitStatic : GCCoreConfigManager.idDimensionOverworldOrbit);
+						else
+							GCLog.severe("Dimension already registered on client: unable to register space station dimension "+var3);
 					}
 				}
 			}
