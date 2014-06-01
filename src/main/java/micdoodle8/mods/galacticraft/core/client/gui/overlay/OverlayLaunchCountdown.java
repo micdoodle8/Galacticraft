@@ -27,6 +27,7 @@ public class OverlayLaunchCountdown extends Overlay
 
 	public static void renderCountdownOverlay()
 	{
+		GL11.glDisable(GL11.GL_LIGHTING);
 		int count = ((EntitySpaceshipBase) OverlayLaunchCountdown.minecraft.thePlayer.ridingEntity).timeUntilLaunch / 2;
 
 		count = Math.round(count / 10);
@@ -52,5 +53,6 @@ public class OverlayLaunchCountdown extends Overlay
 		}
 
 		GL11.glPopMatrix();
+		GL11.glEnable(GL11.GL_LIGHTING);
 	}
 }

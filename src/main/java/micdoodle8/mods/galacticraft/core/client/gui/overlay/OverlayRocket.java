@@ -113,6 +113,7 @@ public class OverlayRocket extends Overlay
 
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(resourcelocation);
 
+		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glTranslatef(0F, 0F, 60F);
 
 		var9.startDrawingQuads();
@@ -130,5 +131,6 @@ public class OverlayRocket extends Overlay
 		var9.draw();
 
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GL11.glEnable(GL11.GL_LIGHTING);
 	}
 }
