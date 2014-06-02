@@ -326,13 +326,18 @@ public class GCCorePacketHandlerClient implements IPacketHandler
 		case UNUSED_6:
 			break;
 		case UPDATE_SPACESTATION_LIST:
-			if (WorldUtil.registeredSpaceStations == null)
-			{
-				WorldUtil.registeredSpaceStations = new ArrayList<Integer>();
-			}
-
 			try
 			{
+				if (WorldUtil.registeredSpaceStations != null)
+				{
+					for (Integer registeredID : WorldUtil.registeredSpaceStations)
+					{
+						DimensionManager.unregisterDimension(registeredID);
+					}
+				}
+					
+				WorldUtil.registeredSpaceStations = new ArrayList<Integer>();
+
 				final int var1 = data.readInt();
 
 				for (int var2 = 0; var2 < var1; ++var2)
@@ -350,7 +355,7 @@ public class GCCorePacketHandlerClient implements IPacketHandler
 					}
 				}
 			}
-			catch (final IOException e)
+			catch (final Exception e)
 			{
 				e.printStackTrace();
 			}
@@ -386,13 +391,18 @@ public class GCCorePacketHandlerClient implements IPacketHandler
 			ClientProxyCore.clientSpaceStationID = (Integer) packetReadout[0];
 			break;
 		case UPDATE_PLANETS_LIST:
-			if (WorldUtil.registeredPlanets == null)
-			{
-				WorldUtil.registeredPlanets = new ArrayList<Integer>();
-			}
-
 			try
 			{
+				if (WorldUtil.registeredPlanets != null)
+				{
+					for (Integer registeredID : WorldUtil.registeredPlanets)
+					{
+						DimensionManager.unregisterDimension(registeredID);
+					}
+				}
+	
+				WorldUtil.registeredPlanets = new ArrayList<Integer>();
+			
 				final int var1 = data.readInt();
 
 				for (int var2 = 0; var2 < var1; ++var2)
@@ -406,7 +416,7 @@ public class GCCorePacketHandlerClient implements IPacketHandler
 					}
 				}
 			}
-			catch (final IOException e)
+			catch (final Exception e)
 			{
 				e.printStackTrace();
 			}
