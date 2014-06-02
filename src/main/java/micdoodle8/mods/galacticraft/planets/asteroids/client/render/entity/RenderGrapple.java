@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client.render.entity;
 
-import micdoodle8.mods.galacticraft.planets.asteroids.client.render.item.ItemRendererGrappleGun;
+import micdoodle8.mods.galacticraft.planets.asteroids.client.render.item.ItemRendererGrappleHook;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityGrapple;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
@@ -58,14 +58,14 @@ public class RenderGrapple extends Render
         GL11.glRotatef(grapple.prevRotationPitch + (grapple.rotationPitch - grapple.prevRotationPitch) * partialTicks - 180, 0.0F, 0.0F, 1.0F);
         GL11.glRotatef(grapple.prevRotationRoll + (grapple.rotationRoll - grapple.prevRotationRoll) * partialTicks, 1.0F, 0.0F, 0.0F);
         this.bindEntityTexture(grapple);
-        ItemRendererGrappleGun.modelGrapple.renderAll();
+        ItemRendererGrappleHook.modelGrapple.renderAll();
         
         GL11.glPopMatrix();
     }
 
     protected ResourceLocation getEntityTexture(EntityGrapple grapple)
     {
-        return ItemRendererGrappleGun.grappleTexture;
+        return ItemRendererGrappleHook.grappleTexture;
     }
 
     protected ResourceLocation getEntityTexture(Entity entity)

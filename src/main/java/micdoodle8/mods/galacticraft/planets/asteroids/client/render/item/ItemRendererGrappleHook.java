@@ -17,7 +17,7 @@ import org.lwjgl.opengl.GL12;
 import cpw.mods.fml.client.FMLClientHandler;
 
 /**
- * GCMarsItemRendererMachine.java
+ * ItemRendererGrappleGun.java
  * 
  * This file is part of the Galacticraft project
  * 
@@ -25,13 +25,13 @@ import cpw.mods.fml.client.FMLClientHandler;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class ItemRendererGrappleGun implements IItemRenderer
+public class ItemRendererGrappleHook implements IItemRenderer
 {
 	public static final ResourceLocation grappleTexture = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/model/grapple.png");
 
 	public static IModelCustom modelGrapple;
 
-	public ItemRendererGrappleGun(IModelCustom modelGrapple)
+	public ItemRendererGrappleHook(IModelCustom modelGrapple)
 	{
 		this.modelGrapple = modelGrapple;
 	}
@@ -53,7 +53,7 @@ public class ItemRendererGrappleGun implements IItemRenderer
 		GL11.glPushMatrix();
 		this.transform(type);
 		
-		FMLClientHandler.instance().getClient().renderEngine.bindTexture(ItemRendererGrappleGun.grappleTexture);
+		FMLClientHandler.instance().getClient().renderEngine.bindTexture(ItemRendererGrappleHook.grappleTexture);
 		this.modelGrapple.renderAll();
 		GL11.glPopMatrix();
 	}
