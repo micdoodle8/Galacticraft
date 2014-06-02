@@ -215,6 +215,10 @@ public class NetworkUtil
 			{
 				objList.add(new BlockVec3(buffer.readInt(), buffer.readInt(), buffer.readInt()));
 			}
+			else if (clazz.equals(Vector3.class))
+			{
+				objList.add(new Vector3(buffer.readDouble(), buffer.readDouble(), buffer.readDouble()));
+			}
 			else if (clazz.equals(FlagData.class))
 			{
 				int width = buffer.readInt();
