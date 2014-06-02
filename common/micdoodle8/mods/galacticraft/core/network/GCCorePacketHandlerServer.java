@@ -301,7 +301,7 @@ public class GCCorePacketHandlerServer implements IPacketHandler
 			}
 			break;
 		case BIND_SPACE_STATION_ID:
-			if (playerBase.getSpaceStationDimensionID() == -1 || playerBase.getSpaceStationDimensionID() == 0 && !GCCoreConfigManager.disableSpaceStationCreation)
+			if ((playerBase.getSpaceStationDimensionID() == -1 || playerBase.getSpaceStationDimensionID() == 0) && !GCCoreConfigManager.disableSpaceStationCreation)
 			{
 				WorldUtil.bindSpaceStationToNewDimension(playerBase.worldObj, playerBase);
 
