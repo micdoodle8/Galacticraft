@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client.render.entity;
 
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
@@ -91,7 +93,8 @@ public class RenderTier3Rocket extends Render
 		if (this.modelSpaceshipObj != null)
 		{
 			this.modelSpaceshipObj.renderOnly("Boosters", "Rocket");
-			GL11.glColor3f(0, 0.0F, 1.0F);
+			Vector3 teamColor = ClientUtil.updateTeamColor(FMLClientHandler.instance().getClient().thePlayer.getCommandSenderName(), true);
+			GL11.glColor3f(teamColor.floatX(), teamColor.floatY(), teamColor.floatZ());
 			this.modelSpaceshipObj.renderPart("NoseCone");
 			
 			if (((FMLClientHandler.instance().getClient().thePlayer.ticksExisted / 10) % 2) < 1)
