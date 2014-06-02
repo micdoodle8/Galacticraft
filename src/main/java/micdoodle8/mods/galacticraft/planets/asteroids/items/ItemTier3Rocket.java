@@ -91,8 +91,9 @@ public class ItemTier3Rocket extends Item implements IHoldableItem
 
 			if (amountOfCorrectBlocks == 9)
 			{
-				EntityTier3Rocket rocket = new EntityTier3Rocket(par3World, centerX, centerY + 4.5D, centerZ, EnumRocketType.values()[par1ItemStack.getItemDamage()]);
+				EntityTier3Rocket rocket = new EntityTier3Rocket(par3World, centerX, centerY + 4.3D, centerZ, EnumRocketType.values()[par1ItemStack.getItemDamage()]);
 
+				rocket.rotationYaw += 45;
 				par3World.spawnEntityInWorld(rocket);
 
 				if (!par2EntityPlayer.capabilities.isCreativeMode)
