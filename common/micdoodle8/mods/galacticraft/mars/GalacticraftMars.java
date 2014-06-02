@@ -66,7 +66,7 @@ import cpw.mods.fml.relauncher.Side;
  * 
  */
 @Mod(name = GalacticraftMars.NAME, version = GalacticraftCore.LOCALMAJVERSION + "." + GalacticraftCore.LOCALMINVERSION + "." + GalacticraftCore.LOCALBUILDVERSION, useMetadata = true, modid = GalacticraftMars.MODID, dependencies = "required-after:" + GalacticraftCore.MODID + ";")
-@NetworkMod(channels = { GalacticraftMars.CHANNEL }, clientSideRequired = true, serverSideRequired = false, connectionHandler = GCCoreConnectionHandler.class, packetHandler = GCCorePacketManager.class)
+@NetworkMod(channels = { GalacticraftMars.CHANNEL }, clientSideRequired = true, serverSideRequired = false, packetHandler = GCCorePacketManager.class)
 public class GalacticraftMars
 {
 	public static final String NAME = "Galacticraft Mars";
