@@ -310,7 +310,7 @@ public class WorldUtil
 				{
 					final GCCoreSpaceStationData data = GCCoreSpaceStationData.getStationData(playerBase.worldObj, id, playerBase);
 
-					if (!GCCoreConfigManager.spaceStationsRequirePermission || data.getAllowedPlayers().contains(playerBase.username.toLowerCase()) || data.getAllowedPlayers().contains(playerBase.username))
+					if (!GCCoreConfigManager.spaceStationsRequirePermission || data.getAllowedPlayers().contains(playerBase.username.toLowerCase()) || data.getAllowedPlayers().contains(playerBase.username) || playerBase.mcServer.getConfigurationManager().isPlayerOpped(playerBase.username))
 					{
 						map.put(WorldProvider.getProviderForDimension(id).getDimensionName() + "$" + data.getOwner() + "$" + data.getSpaceStationName(), WorldProvider.getProviderForDimension(id).dimensionId);
 					}
