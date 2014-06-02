@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector2;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementCheckbox;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementCheckbox.ICheckBoxCallback;
@@ -72,7 +73,7 @@ public class GuiJoinSpaceRace extends GuiScreen implements ICheckBoxCallback, IT
 		{
 			List<String> playerList = new ArrayList<String>();
 			playerList.add(player.getGameProfile().getName());
-			this.spaceRaceData = new SpaceRace(playerList, "Unnamed Team", new FlagData(48, 32));
+			this.spaceRaceData = new SpaceRace(playerList, "Unnamed Team", new FlagData(48, 32), new Vector3(1, 1, 1));
 		}
 	}
 

@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.util;
 
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
@@ -20,6 +21,23 @@ public class ClientUtil
 		if (race != null)
 		{
 			return race.getFlagData();
+		}
+		else if (!ClientProxyCore.flagRequestsSent.contains(playerName) && sendPacket)
+		{
+			GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_FLAG_DATA, new Object[] { playerName }));
+			ClientProxyCore.flagRequestsSent.add(playerName);
+		}
+		
+		return null;
+	}
+	
+	public static Vector3 updateTeamColor(String playerName, boolean sendPacket)
+	{
+		SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(playerName); 
+		
+		if (race != null)
+		{
+			return race.getTeamColor();
 		}
 		else if (!ClientProxyCore.flagRequestsSent.contains(playerName) && sendPacket)
 		{

@@ -15,6 +15,7 @@ import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.fx.EntityFXSparks;
@@ -96,7 +97,7 @@ public class PacketSimple extends Packet implements IPacket
 		S_ON_ADVANCED_GUI_CLICKED_INT(Side.SERVER, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class),
 		S_ON_ADVANCED_GUI_CLICKED_STRING(Side.SERVER, Integer.class, Integer.class, Integer.class, Integer.class, String.class),
 		S_UPDATE_SHIP_MOTION_Y(Side.SERVER, Integer.class, Boolean.class),
-		S_START_NEW_SPACE_RACE(Side.SERVER, Integer.class, String.class, FlagData.class, String[].class),
+		S_START_NEW_SPACE_RACE(Side.SERVER, Integer.class, String.class, FlagData.class, Vector3.class, String[].class),
 		S_REQUEST_FLAG_DATA(Side.SERVER, String.class),
 		S_INVITE_RACE_PLAYER(Side.SERVER, String.class, Integer.class),
 		S_REMOVE_RACE_PLAYER(Side.SERVER, String.class, Integer.class),
@@ -122,7 +123,7 @@ public class PacketSimple extends Packet implements IPacket
 		C_OPEN_PARACHEST_GUI(Side.CLIENT, Integer.class, Integer.class, Integer.class),
 		C_UPDATE_WIRE_BOUNDS(Side.CLIENT, Integer.class, Integer.class, Integer.class),
 		C_OPEN_SPACE_RACE_GUI(Side.CLIENT),
-		C_UPDATE_SPACE_RACE_DATA(Side.CLIENT, Integer.class, String.class, FlagData.class, String[].class),
+		C_UPDATE_SPACE_RACE_DATA(Side.CLIENT, Integer.class, String.class, FlagData.class, Vector3.class, String[].class),
 		C_OPEN_JOIN_RACE_GUI(Side.CLIENT, Integer.class),
 		C_UPDATE_FOOTPRINT_LIST(Side.CLIENT, Footprint[].class),
 		C_UPDATE_STATION_SPIN(Side.CLIENT, Float.class, Boolean.class),
@@ -193,9 +194,17 @@ public class PacketSimple extends Packet implements IPacket
 	{
 		this.type = EnumSimplePacket.values()[buffer.readInt()];
 
-		if (this.type.getDecodeClasses().length > 0)
+		try
 		{
-			this.data = NetworkUtil.decodeData(this.type.getDecodeClasses(), buffer);
+			if (this.type.getDecodeClasses().length > 0)
+			{
+				this.data = NetworkUtil.decodeData(this.type.getDecodeClasses(), buffer);
+			}
+		}
+		catch (Exception e)
+		{
+			System.err.println("[Galacticraft] Error handling simple packet type: " + this.type.toString() + " " + buffer.toString());
+			throw e;
 		}
 	}
 
@@ -520,16 +529,17 @@ public class PacketSimple extends Packet implements IPacket
 			Integer teamID = (Integer)this.data.get(0);
 			String teamName = (String)this.data.get(1);
 			FlagData flagData = (FlagData)this.data.get(2);
+			Vector3 teamColor = (Vector3)this.data.get(3);
 			List<String> playerList = new ArrayList<String>();
 			
-			for (int i = 3; i < this.data.size(); i++)
+			for (int i = 4; i < this.data.size(); i++)
 			{
 				String playerName = (String) this.data.get(i);
 				ClientProxyCore.flagRequestsSent.remove(playerName);
 				playerList.add(playerName);
 			}
 
-			SpaceRace race = new SpaceRace(playerList, teamName, flagData);
+			SpaceRace race = new SpaceRace(playerList, teamName, flagData, teamColor);
 			race.setSpaceRaceID(teamID);
 			SpaceRaceManager.addSpaceRace(race);
 			break;
@@ -856,16 +866,17 @@ public class PacketSimple extends Packet implements IPacket
 			Integer teamID = (Integer)this.data.get(0);
 			String teamName = (String)this.data.get(1);
 			FlagData flagData = (FlagData)this.data.get(2);
+			Vector3 teamColor = (Vector3)this.data.get(3);
 			List<String> playerList = new ArrayList<String>();
 			
-			for (int i = 3; i < this.data.size(); i++)
+			for (int i = 4; i < this.data.size(); i++)
 			{
 				playerList.add((String) this.data.get(i));
 			}
 			
 			boolean previousData = SpaceRaceManager.getSpaceRaceFromID(teamID) != null;
 
-			SpaceRace newRace = new SpaceRace(playerList, teamName, flagData);
+			SpaceRace newRace = new SpaceRace(playerList, teamName, flagData, teamColor);
 			
 			if (teamID > 0)
 			{
