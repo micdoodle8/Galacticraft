@@ -563,7 +563,8 @@ public class WorldUtil
 				if (worldNew.provider instanceof WorldProviderOrbit)
 				{
 					((WorldProviderOrbit)worldNew.provider).sendPacketsToClient(player);
-					if (WorldUtil.registeredSpaceStations.contains(player))
+					if (WorldUtil.registeredSpaceStations.contains(dimID))
+					//TODO This has never been effective before due to the earlier bug - what does it actually do?
 					{
 						NBTTagCompound var2 = new NBTTagCompound();
 						SpaceStationWorldData.getStationData(worldNew, dimID, player).writeToNBT(var2);
@@ -594,8 +595,8 @@ public class WorldUtil
 			if (entity instanceof EntityPlayerMP)
 			{
 				player = (GCEntityPlayerMP) entity;
-				entity.setLocationAndAngles(type.getPlayerSpawnLocation((WorldServer) entity.worldObj, player).x, type.getPlayerSpawnLocation((WorldServer) entity.worldObj, player).y, type.getPlayerSpawnLocation((WorldServer) entity.worldObj, player).z, entity.rotationYaw, entity.rotationPitch);
-				micdoodle8.mods.galacticraft.api.vector.Vector3 spawnPos = type.getPlayerSpawnLocation((WorldServer) entity.worldObj, (EntityPlayerMP) entity);
+				micdoodle8.mods.galacticraft.api.vector.Vector3 spawnPos = type.getPlayerSpawnLocation((WorldServer) entity.worldObj, player);
+				entity.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
 				ChunkCoordIntPair pair = worldNew.getChunkFromChunkCoords(spawnPos.intX(), spawnPos.intZ()).getChunkCoordIntPair();
 				((WorldServer) worldNew).theChunkProviderServer.loadChunk(pair.chunkXPos, pair.chunkZPos);
 

@@ -112,7 +112,7 @@ public class GalacticraftRegistry
 
 	public static ITeleportType getTeleportTypeForDimension(Class<? extends WorldProvider> clazz)
 	{
-		if (!clazz.isInstance(IGalacticraftWorldProvider.class))
+		if (!IGalacticraftWorldProvider.class.isAssignableFrom(clazz))
 			clazz = WorldProviderSurface.class;
 		return GalacticraftRegistry.teleportTypeMap.get(clazz);
 	}
@@ -155,7 +155,7 @@ public class GalacticraftRegistry
 	@SideOnly(Side.CLIENT)
 	public static ResourceLocation getResouceLocationForDimension(Class<? extends WorldProvider> clazz)
 	{
-		if (!clazz.isInstance(IGalacticraftWorldProvider.class))
+		if (!IGalacticraftWorldProvider.class.isAssignableFrom(clazz))
 			clazz = WorldProviderSurface.class;
 		return GalacticraftRegistry.rocketGuiMap.get(clazz);
 	}
