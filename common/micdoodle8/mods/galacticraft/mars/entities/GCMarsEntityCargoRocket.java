@@ -164,6 +164,10 @@ public class GCMarsEntityCargoRocket extends EntityAutoRocket implements IRocket
 			if (this.timeSinceLaunch % MathHelper.floor_double(3 * (1 / multiplier)) == 0)
 			{
 				this.removeFuel(1);
+				if (!this.hasValidFuel() && this.rocketSoundUpdater instanceof GCCoreSoundUpdaterSpaceship)
+				{
+					((GCCoreSoundUpdaterSpaceship) this.rocketSoundUpdater).stopRocketSound();
+				}
 			}
 		}
 		else if (!this.hasValidFuel() && this.getLaunched() && !this.worldObj.isRemote)
