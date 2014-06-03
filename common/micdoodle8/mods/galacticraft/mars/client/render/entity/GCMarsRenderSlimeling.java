@@ -99,21 +99,21 @@ public class GCMarsRenderSlimeling extends RenderLiving
 		if (!mc.gameSettings.hideGUI && !par1EntityLivingBase.isInvisible() && (mc.currentScreen == null || !((mc.currentScreen instanceof GCMarsGuiSlimeling || mc.currentScreen instanceof GCMarsGuiSlimelingInventory) && GCMarsGuiSlimeling.renderingOnGui)))
 		{
 			this.renderLivingLabel(par1EntityLivingBase, ((GCMarsEntitySlimeling) par1EntityLivingBase).getName(), par2, par4 + 0.33, par6, 64);
-			double health = Math.floor(((GCMarsEntitySlimeling) par1EntityLivingBase).getHealth());
-			double maxHealth = Math.floor(((GCMarsEntitySlimeling) par1EntityLivingBase).getMaxHealth());
+			double health = ((GCMarsEntitySlimeling) par1EntityLivingBase).getHealth();
+			double maxHealth = ((GCMarsEntitySlimeling) par1EntityLivingBase).getMaxHealth();
 			double difference = health / maxHealth;
 
 			if (difference < 0.33333)
 			{
-				this.renderLivingLabelWithColor(par1EntityLivingBase, "" + (int) Math.floor(health) + " / " + (int) Math.floor(maxHealth), par2, par4, par6, 64, 1, 0, 0);
+				this.renderLivingLabelWithColor(par1EntityLivingBase, "" + (int) Math.ceil(health) + " / " + (int) Math.ceil(maxHealth), par2, par4, par6, 64, 1, 0, 0);
 			}
 			else if (difference < 0.66666)
 			{
-				this.renderLivingLabelWithColor(par1EntityLivingBase, "" + (int) Math.floor(health) + " / " + (int) Math.floor(maxHealth), par2, par4, par6, 64, 1, 1, 0);
+				this.renderLivingLabelWithColor(par1EntityLivingBase, "" + (int) Math.ceil(health-0.5D) + " / " + (int) Math.ceil(maxHealth), par2, par4, par6, 64, 1, 1, 0);
 			}
 			else
 			{
-				this.renderLivingLabelWithColor(par1EntityLivingBase, "" + (int) Math.floor(health) + " / " + (int) Math.floor(maxHealth), par2, par4, par6, 64, 0, 1, 0);
+				this.renderLivingLabelWithColor(par1EntityLivingBase, "" + (int) Math.ceil(health-0.5D) + " / " + (int) Math.ceil(maxHealth), par2, par4, par6, 64, 0, 1, 0);
 			}
 		}
 
