@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.entities;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.entities.ISizeable;
+import micdoodle8.mods.galacticraft.core.entities.IBubble;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityTerraformer;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
@@ -21,7 +21,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class EntityTerraformBubble extends Entity implements ISizeable
+public class EntityTerraformBubble extends Entity implements IBubble
 {
 	protected long ticks = 0;
 
@@ -169,5 +169,11 @@ public class EntityTerraformBubble extends Entity implements ISizeable
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound nbttagcompound)
 	{
+	}
+
+	@Override
+	public boolean shouldRender()
+	{
+		return true;
 	}
 }

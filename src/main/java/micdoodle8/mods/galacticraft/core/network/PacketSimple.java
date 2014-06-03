@@ -38,6 +38,7 @@ import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAirLockController;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityConductor;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -827,6 +828,13 @@ public class PacketSimple extends Packet implements IPacket
 					TileEntityAirLockController launchController = (TileEntityAirLockController) tile1;
 					launchController.lastHorizontalModeEnabled = launchController.horizontalModeEnabled;
 					launchController.horizontalModeEnabled = (Integer) this.data.get(4) == 1;
+				}
+				break;
+			case 6:
+				if (tile1 instanceof TileEntityOxygenDistributor)
+				{
+					TileEntityOxygenDistributor distributor = (TileEntityOxygenDistributor) tile1;
+					distributor.oxygenBubble.setShouldRender((Integer) this.data.get(4) == 1);
 				}
 				break;
 			default:

@@ -3,21 +3,26 @@ package micdoodle8.mods.galacticraft.core.client.gui.container;
 import java.util.ArrayList;
 import java.util.List;
 
-import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay;
-import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay.ElectricUnit;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementCheckbox;
+import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementCheckbox.ICheckBoxCallback;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenDistributor;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.common.FMLLog;
+
 /**
- * GCCoreGuiAirDistributor.java
+ * GuiOxygenDistributor.java
  * 
  * This file is part of the Galacticraft project
  * 
@@ -25,7 +30,7 @@ import org.lwjgl.opengl.GL11;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class GuiOxygenDistributor extends GuiContainerGC
+public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCallback
 {
 	private static final ResourceLocation distributorTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/oxygen.png");
 
@@ -34,6 +39,8 @@ public class GuiOxygenDistributor extends GuiContainerGC
 	private GuiElementInfoRegion oxygenInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 112, (this.height - this.ySize) / 2 + 24, 56, 9, new ArrayList<String>(), this.width, this.height);
 	private GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 112, (this.height - this.ySize) / 2 + 37, 56, 9, new ArrayList<String>(), this.width, this.height);
 
+	private GuiElementCheckbox checkboxRenderBubble;
+	
 	public GuiOxygenDistributor(InventoryPlayer par1InventoryPlayer, TileEntityOxygenDistributor par2TileEntityAirDistributor)
 	{
 		super(new ContainerOxygenDistributor(par1InventoryPlayer, par2TileEntityAirDistributor));
@@ -45,6 +52,8 @@ public class GuiOxygenDistributor extends GuiContainerGC
 	public void initGui()
 	{
 		super.initGui();
+		final int var5 = (this.width - this.xSize) / 2;
+		final int var6 = (this.height - this.ySize) / 2;
 		List<String> batterySlotDesc = new ArrayList<String>();
 		batterySlotDesc.add("Distributor battery slot, place battery here");
 		batterySlotDesc.add("if not using a connected power source");
@@ -67,6 +76,8 @@ public class GuiOxygenDistributor extends GuiContainerGC
 		this.electricInfoRegion.parentWidth = this.width;
 		this.electricInfoRegion.parentHeight = this.height;
 		this.infoRegions.add(this.electricInfoRegion);
+		this.checkboxRenderBubble = new GuiElementCheckbox(0, this, var5 + 85, var6 + 87, "Bubble Visible");
+		this.buttonList.add(this.checkboxRenderBubble);
 	}
 
 	@Override
@@ -136,6 +147,34 @@ public class GuiOxygenDistributor extends GuiContainerGC
 			electricityDesc.add("Electrical Storage");
 			electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.distributor.getEnergyStoredGC()) + " / " + (int) Math.floor(this.distributor.getMaxEnergyStoredGC())));
 			this.electricInfoRegion.tooltipStrings = electricityDesc;
+
+			FMLLog.info("" + this.distributor.oxygenBubble.shouldRender());
+			this.checkboxRenderBubble.isSelected = this.distributor.oxygenBubble.shouldRender();
 		}
+	}
+
+	@Override
+	public void onSelectionChanged(GuiElementCheckbox checkbox, boolean newSelected)
+	{
+		this.distributor.oxygenBubble.setShouldRender(newSelected);
+		GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_INT, new Object[] { 6, this.distributor.xCoord, this.distributor.yCoord, this.distributor.zCoord, newSelected ? 1 : 0 }));
+	}
+
+	@Override
+	public boolean canPlayerEdit(GuiElementCheckbox checkbox, EntityPlayer player)
+	{
+		return true;
+	}
+
+	@Override
+	public boolean getInitiallySelected(GuiElementCheckbox checkbox)
+	{
+		return this.distributor.oxygenBubble.shouldRender();
+	}
+
+	@Override
+	public void onIntruderInteraction()
+	{
+		;
 	}
 }

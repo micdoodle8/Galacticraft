@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 /**
- * ISizeable.java
+ * IBubble.java
  * 
  * This file is part of the Galacticraft project
  * 
@@ -9,7 +9,9 @@ package micdoodle8.mods.galacticraft.core.entities;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public interface ISizeable
+public interface IBubble
 {
 	public float getSize();
+	
+	public boolean shouldRender();
 }
