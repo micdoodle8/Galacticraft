@@ -302,7 +302,7 @@ public abstract class GCCoreTileEntityUniversalConductor extends GCCoreTileEntit
 			return false;
 		}
 
-		return ((IElectricityNetwork) this.getNetwork()).getRequest(this).getWatts() > 0.0F;
+		return true;
 	}
 
 	@RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
@@ -320,6 +320,10 @@ public abstract class GCCoreTileEntityUniversalConductor extends GCCoreTileEntit
 	@RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
 	public double getMaxEnergy()
 	{
-		return 1;
+		if (this.getNetwork() == null)
+		{
+			return 0;
+		}
+		return ((IElectricityNetwork) this.getNetwork()).getRequest(this).getWatts() * NetworkConfigHandler.TO_MEKANISM_RATIO;
 	}
 }
