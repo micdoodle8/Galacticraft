@@ -105,7 +105,7 @@ public abstract class EntityAdvanced extends Entity implements IPacketReceiver
 
 		if (this.isNetworkedEntity())
 		{
-			if (!this.worldObj.isRemote && this.getPacketCooldown(Side.CLIENT) % this.ticks == 0)
+			if (!this.worldObj.isRemote && this.ticks % this.getPacketCooldown(Side.CLIENT) == 0)
 			{
 				if (this.fieldCacheClient == null)
 				{
@@ -122,7 +122,7 @@ public abstract class EntityAdvanced extends Entity implements IPacketReceiver
 				GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, this.getPacketRange()));
 			}
 
-			if (this.worldObj.isRemote && this.getPacketCooldown(Side.SERVER) % this.ticks == 0)
+			if (this.worldObj.isRemote && this.ticks % this.getPacketCooldown(Side.SERVER) == 0)
 			{
 				if (this.fieldCacheServer == null)
 				{
