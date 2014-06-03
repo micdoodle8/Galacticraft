@@ -275,9 +275,12 @@ public class SkyProviderOrbit extends IRenderHandler
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 
 		GL11.glPopMatrix();
+		
+		GL11.glEnable(GL11.GL_ALPHA_TEST);
 
 		GL11.glColor3f(0.0F, 0.0F, 0.0F);
 
+		/* This all does nothing!
 		double var25 = 0.0D;
 
 		// if (this.minecraft.thePlayer.ridingEntity != null)
@@ -332,6 +335,7 @@ public class SkyProviderOrbit extends IRenderHandler
 		GL11.glPushMatrix();
 		GL11.glTranslatef(0.0F, -((float) (var25 - 16.0D)), 0.0F);
 		GL11.glPopMatrix();
+		*/
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL11.glDepthMask(true);
 	}
