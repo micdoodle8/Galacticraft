@@ -750,9 +750,13 @@ public class ThreadFindSeal
 		}
 
 		//Solid but non-opaque blocks, for example special glass
-		if (OxygenPressureProtocol.nonPermeableBlocks.containsKey(id) && OxygenPressureProtocol.nonPermeableBlocks.get(id).contains(vec.getBlockMetadata(this.world)))
-		{
-			return false;
+		if (OxygenPressureProtocol.nonPermeableBlocks.containsKey(id))
+		{	
+			ArrayList<Integer> metaList = OxygenPressureProtocol.nonPermeableBlocks.get(id);
+			if (metaList.contains(Integer.valueOf(-1)) ||  metaList.contains(vec.getBlockMetadata(this.world)))
+			{
+				return false;
+			}
 		}
 
 		if (block instanceof IPartialSealableBlock)
