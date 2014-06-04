@@ -226,11 +226,6 @@ public class GCCorePlayerMP extends EntityPlayerMP
 			this.openPlanetSelectionGuiCooldown--;
 		}
 
-		if (this.getParachute())
-		{
-			this.fallDistance = 0.0F;
-		}
-
 		this.checkCurrentItem();
 
 		if (!this.hasOpenedPlanetSelectionGui && this.openPlanetSelectionGuiCooldown == 1)
@@ -255,10 +250,14 @@ public class GCCorePlayerMP extends EntityPlayerMP
 			this.sendAirRemainingPacket();
 		}
 
-		if (this.onGround && this.getParachute())
+		if (this.usingParachute)
 		{
-			this.sendGearUpdatePacket(EnumModelPacket.REMOVE_PARACHUTE.getIndex());
-			this.setUsingParachute(false);
+			if (this.lastParachuteInSlot != null) this.fallDistance = 0.0F;
+
+			if (this.onGround)
+			{
+				this.setUsingParachute(false);
+			}
 		}
 
 		this.checkGear();
@@ -295,14 +294,6 @@ public class GCCorePlayerMP extends EntityPlayerMP
 		if (this.worldObj.provider instanceof IGalacticraftWorldProvider && (this.oxygenSetupValid != this.lastOxygenSetupValid || this.tick % 100 == 0))
 		{
 			this.playerNetServerHandler.sendPacketToPlayer(PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.UPDATE_OXYGEN_VALIDITY, new Object[] { Boolean.valueOf(this.oxygenSetupValid) }));
-		}
-
-		if (this.getParachute())
-		{
-			if (this.onGround)
-			{
-				this.setUsingParachute(false);
-			}
 		}
 
 		this.throwMeteors();
@@ -690,12 +681,12 @@ public class GCCorePlayerMP extends EntityPlayerMP
 			}
 		}
 
-		if (this.getParachute() && this.parachuteInSlot == null && this.lastParachuteInSlot != null)
+		if (this.usingParachute && this.parachuteInSlot == null && this.lastParachuteInSlot != null)
 		{
 			this.sendGearUpdatePacket(EnumModelPacket.REMOVE_PARACHUTE.getIndex());
 		}
 
-		if (this.getParachute() && this.parachuteInSlot != null && this.lastParachuteInSlot == null)
+		if (this.usingParachute && this.parachuteInSlot != null && this.lastParachuteInSlot == null)
 		{
 			this.sendGearUpdatePacket(EnumModelPacket.ADD_PARACHUTE.getIndex());
 		}
@@ -708,12 +699,12 @@ public class GCCorePlayerMP extends EntityPlayerMP
 			}
 		}
 
-		this.lastMaskInSlot = this.getExtendedInventory().getStackInSlot(0);
-		this.lastGearInSlot = this.getExtendedInventory().getStackInSlot(1);
-		this.lastTankInSlot1 = this.getExtendedInventory().getStackInSlot(2);
-		this.lastTankInSlot2 = this.getExtendedInventory().getStackInSlot(3);
-		this.lastParachuteInSlot = this.getExtendedInventory().getStackInSlot(4);
-		this.lastFrequencyModuleInSlot = this.getExtendedInventory().getStackInSlot(5);
+		this.lastMaskInSlot = this.maskInSlot;
+		this.lastGearInSlot = this.gearInSlot;
+		this.lastTankInSlot1 = this.tankInSlot1;
+		this.lastTankInSlot2 = this.tankInSlot2;
+		this.lastParachuteInSlot = this.parachuteInSlot;
+		this.lastFrequencyModuleInSlot = this.frequencyModuleInSlot;
 	}
 
 	private void checkOxygen()
