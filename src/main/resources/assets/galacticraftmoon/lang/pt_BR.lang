@@ -1,0 +1,31 @@
+# Galacticraft Moon Language File = BRAZIL PORTUGUESE
+
+# GENERAL ITEMS
+item.meteoricIronRaw.name=Minério de Ferro Meteórico
+item.meteoric_iron_ingot.name=Barra de Ferro Meteórico
+item.compressedMeteoricIron.name=Ferro Meteórico Comprimido
+
+# FOOD
+item.cheeseCurd.name=Grão de Queijo
+item.cheeseBlock.name=Bloco de Queijo
+
+# TOOLS
+
+# ARMOR
+
+# BLOCKS
+tile.moonBlock.moonstone.name=Pedra Lunar
+tile.moonBlock.moondirt.name=Terra Lunar
+tile.moonBlock.moongrass.name=Turfa Lunar
+tile.moonBlock.tinmoon.name=Minério de Estanho
+tile.moonBlock.coppermoon.name=Minério de Cobre
+tile.moonBlock.cheesestone.name=Minério de Queijo
+tile.moonBlock.bricks.name=Tijolos Lunares
+tile.cheeseBlock.name=Bloco de Queijo
+
+# GUI
+gui.choosePlanet.desc.moon=Habitável#Sem Oxigênio#Gravidade: 18%
+
+dimension.Moon.name=Lua
+
+itemGroup.GalacticraftMoon=Galacticraft - Lua

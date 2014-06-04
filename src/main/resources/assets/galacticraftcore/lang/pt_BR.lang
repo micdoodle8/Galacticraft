@@ -1,0 +1,347 @@
+# Galacticraft Core Language File = BRAZIL PORTUGUESE
+
+# GENERAL ITEMS
+item.oxygenTankLightFull.name=Tanque de Oxigênio Leve
+item.oxygenTankLightEmpty.name=Tanque de Oxigênio Leve Vazio
+item.oxygenTankMedFull.name=Oxigênio Tanque Médio
+item.oxygenTankMedEmpty.name=Oxigênio Tanque Médio Vazio
+item.oxygenTankHeavyFull.name=Oxigênio Tanque Pesado
+item.oxygenTankHeavyEmpty.name=Oxigênio Tanque Pesado Vazio
+item.oxygenMask.name=Máscara de Oxigênio
+item.spaceship.name=Foguete - Nível 1
+item.sensorGlasses.name=Óculos Sensores
+item.canister.tin.name=Lata de Estanho
+item.canister.copper.name=Lata de Cobre
+item.airVent.name=Respirador
+item.airFan.name=Ventilador
+item.oxygenConcentrator.name=Concentrator de Oxigênio
+item.heavyPlating.name=Blindagem Pesada
+item.engine.tier1engine.name=Motor de Foguete - Nível 1
+item.engine.tier1booster.name=Motor de Foguete auxiliar - Nível 1
+item.rocketFins.name=Aleta de Foguete
+item.noseCone.name=Nariz de Foguete
+item.sensorLens.name=Lentes Sensoras
+item.oxygenGear.name=Equipamento de Oxigênio
+item.flag.american.name=Bandeira Norte-Americana
+item.flag.black.name=Bandeira Preta
+item.flag.blue.name=Bandeira Azul-Clara
+item.flag.green.name=Bandeira Verde-Limão
+item.flag.brown.name=Bandeira Marrom
+item.flag.darkblue.name=Bandeira Azul
+item.flag.darkgray.name=Bandeira Cinza
+item.flag.darkgreen.name=Bandeira Verde
+item.flag.gray.name=Bandeira Cinza-Clara
+item.flag.magenta.name=Bandeira Magenta
+item.flag.orange.name=Bandeira Laranja
+item.flag.pink.name=Bandeira Rosa
+item.flag.purple.name=Bandeira Púrpura
+item.flag.red.name=Bandeira Vermelha
+item.flag.teal.name=Bandeira Ciana
+item.flag.yellow.name=Bandeira Amarela
+item.flag.white.name=Bandeira
+item.parachute_plain.name=Paraquedas
+item.parachute_black.name=Paraquedas Preto
+item.parachute_blue.name=Paraquedas Azul-Claro
+item.parachute_lime.name=Paraquedas Verde-Limão
+item.parachute_brown.name=Paraquedas Marrom
+item.parachute_darkblue.name=Paraquedas Azul
+item.parachute_darkgray.name=Paraquedas Cinza
+item.parachute_darkgreen.name=Paraquedas Verde
+item.parachute_gray.name=Paraquedas Cinza-Claro 
+item.parachute_magenta.name=Paraquedas Magenta
+item.parachute_orange.name=Paraquedas Laranja
+item.parachute_pink.name=Paraquedas Rosa
+item.parachute_purple.name=Paraquedas Púrpura
+item.parachute_red.name=Paraquedas Vermelho
+item.parachute_teal.name=Paraquedas Ciano
+item.parachute_yellow.name=Paraquedas Amarelo
+item.steelPole.name=Mastro de Bandeira
+item.canvas.name=Tecido
+item.buggy.name=Buggy
+item.emptyLiquidCanister.name=Lata para Líquidos Vazia
+item.oilCanisterPartial.name=Lata de Óleo Semi-Cheia
+item.fuelCanisterPartial.name=Lata de Combustível Semi-Cheia
+item.oilCanister.name=Lata de Óleo Cheia
+item.fuelCanister.name=Lata de Combustível Cheia
+item.oilExtractor.name=Extrator Portátil de Petróleo
+item.schematic.name=Projeto para Mesa de Trabalho NASA
+item.fuel.name=Combustível de Foguete
+item.key.T1.name=Chave de Calabouço - Nível 1
+item.buggymat.wheel.name=Roda de Buggy
+item.buggymat.seat.name=Assento de Buggy
+item.buggymat.storage.name=Bauleto para Buggy
+item.basicItem.solar_module_0.name=Módulo Solar
+item.basicItem.solar_module_1.name=Painel Solar Completo
+item.basicItem.ingotCopper.name=Barra de Cobre
+item.basicItem.ingotTin.name=Barra de Estanho
+item.basicItem.ingotAluminum.name=Barra de Alumínio
+item.basicItem.ingotSteel.name=Barra de Aço
+item.basicItem.ingotBronze.name=Barra de Bronze
+item.basicItem.compressedCopper.name=Cobre Compressado
+item.basicItem.compressedTin.name=Estanho Compressado
+item.basicItem.compressedAluminum.name=Alumínio Compressado
+item.basicItem.compressedSteel.name=Aço Compressado
+item.basicItem.compressedBronze.name=Bronze Compressado
+item.basicItem.compressedIron.name=Ferro Compressado
+item.basicItem.waferSolar.name=Wafer Solar Azul
+item.basicItem.waferBasic.name=Wafer Básico
+item.basicItem.waferAdvanced.name=Wafer Avançado
+item.basicItem.rawSilicon.name=Silício Bruto
+item.tier1.desc=Nível 1
+item.battery.name=Bateria
+item.infiniteBattery.name=Bateria Infinita
+item.meteorChunk.name=Pedaço de Meteoro Jogável
+item.meteorChunkHot.name=Pedaço de Meteoro Jogável
+item.hotDescription.name=Quente
+item.basicItem.dehydratedApple.name=Maçã Desidratada
+item.basicItem.dehydratedCarrot.name=Cenoura Desidratada
+item.basicItem.dehydratedMelon.name=Melancia Desidratada
+item.basicItem.dehydratedPotato.name=Batata Desidratada
+item.basicItem.cannedFood.name=Lata de Comida
+item.basicItem.frequencyModule.name=Módulo de Frequência
+item.standardWrench.name=Chave Inglesa Padrão
+
+# TOOLS
+item.steel_pickaxe.name=Picareta para Trabalho Pesado
+item.steel_axe.name=Machado para Trabalho Pesado
+item.steel_hoe.name=Enxada para Trabalho Pesado
+item.steel_shovel.name=Pá para Trabalho Pesado
+item.steel_sword.name=Espada para Trabalho Pesado
+
+# ARMOR
+item.steel_helmet.name=Elmo para Trabalho Pesado
+item.steel_chestplate.name=Peitoral para Trabalho Pesado
+item.steel_leggings.name=Perneiras para Trabalho Pesado
+item.steel_boots.name=Botas para Trabalho Pesado
+
+# BLOCKS
+tile.treasureChest.name=Baú de Tesouro
+tile.landingPad.landingPad.name=Base para Lançamento de Foguetes
+tile.landingPadFull.name=Base para Abastecimento de Buggy
+tile.unlitTorch.name=Tocha
+tile.unlitTorchLit.name=Tocha
+tile.distributor.name=Distribuidor de Bolha de Oxigênio
+tile.oxygenPipe.name=Cano de Oxigênio
+tile.oxygenCollector.name=Coletor de Oxigênio
+tile.fallenMeteor.name=Meteorito
+tile.rocketWorkbench.name=Bancada de Trabalho NASA
+tile.gcBlockCore.decoblock1.name=Bloco de Estanho de Decorativo
+tile.gcBlockCore.decoblock2.name=Bloco de Estanho de Decorativo
+tile.gcBlockCore.oreCopper.name=Minério de Cobre
+tile.gcBlockCore.oreTin.name=Minério de Estanho
+tile.gcBlockCore.oreAluminum.name=Minério Alumínio
+tile.gcBlockCore.oreSilicon.name=Minério de Silício
+tile.airLockFrame.name=Quadro de Porta Pressurizada
+tile.airLockSeal.name=Porta Pressurizada
+tile.crudeOilStill.name=Óleo Cru
+tile.crudeOilMoving.name=Óleo Cru
+tile.refinery.name=Refinaria
+tile.fuelLoader.name=Carregador de Combustível
+tile.sapling2.oak.name=Muda de Carvalho
+tile.sapling2.spruce.name=Muda de Pinheiro
+tile.sapling2.birch.name=Muda de Eucalipto
+tile.sapling2.jungle.name=Muda de Árvore da Selva
+tile.sealer.name=Selador de Oxigênio
+tile.enclosed.oxygenPipe.name=Cano de Oxigênio Selável
+tile.oxygenDetector.name=Detector de Oxigênio
+tile.cargo.loader.name=Carregador de Carga
+tile.cargo.unloader.name=Descarregador de Carga
+tile.landingPad.buggyFueler.name=Base de Carregador de Combustível
+tile.landingPad.cargoPad.name=Base de Foguete de Carga
+tile.enclosed.copperCable.name=Cabo de Cobre Selável
+tile.enclosed.goldCable.name=Cabo de Ouro Selável
+tile.enclosed.hvCable.name=Cabo AV Selável
+tile.enclosed.glassFibreCable.name=Cabo de Fibra Óptica Selável
+tile.enclosed.lvCable.name=Cabo de Corrente Ultra-Baixa Selável
+tile.enclosed.PipeItemsCobblestone.name=Cano de Transporte de Pedregulho Selável
+tile.enclosed.PipeItemsStone.name=Cano de Transporte de Pedra Selável
+tile.enclosed.PipeFluidsCobblestone.name=Cano Impermeável para Pedregulhos Selável
+tile.enclosed.PipeFluidsStone.name=Cano Impermeável para Pedra Selável
+tile.enclosed.PipePowerStone.name=Cano Condutor de Pedra Selável
+tile.enclosed.PipePowerGold.name=Cano Condutor de Ouro Selável
+tile.solar.basic.name=Painel Solar Básico
+tile.solar.advanced.name=Painel Solar Avançado
+tile.parachest.name=Para-baú
+tile.oreCopper.name=Minério de Cobre
+tile.oreTin.name=Minério de Estanho
+tile.machine.0.name=Gerador à Carvão
+tile.machine.1.name=Módulo de Armazenamento de Energia
+tile.machine.2.name=Fornalha Elétrica
+tile.machine.3.name=Compressor
+tile.machine2.4.name=Compressor Elétrico
+tile.machine2.5.name=Fabricador de Circuitos
+tile.machine2.6.name=Módulo de Armazenamento de Oxigênio
+tile.aluminumWire.name=Cabo de Alumínio
+tile.aluminumWireHeavy.name=Cabo de Alumínio Pesado
+tile.glowstoneTorch.name=Tocha de Pedra Luminosa
+tile.enclosed.aluminumWire.name=Cabo de Alumínio Selável
+tile.enclosed.aluminumWireHeavy.name=Cabo de Alumínio Pesado Selável
+tile.enclosed.meCable.name=Cabo ME Selável
+tile.airLockController.name=Controle de Porta Pressurizada
+tile.dummyblock.spaceStationBase.name=Base da Estação Espacial
+tile.dummyblock.launchPad.name=Base para Lançamento de Foguetes
+tile.dummyblock.nasaWorkbench.name=Bancada de Trabalho NASA
+tile.dummyblock.solar.name=Painel Solar
+tile.dummyblock.cryogenicChamber.name=Câmara Criogênica
+tile.gcBlockCore.copperBlock.name=Bloco de Cobre
+tile.gcBlockCore.tinBlock.name=Bloco de Estanho
+tile.gcBlockCore.aluminumBlock.name=Bloco de Alumínio
+tile.fuel.name=Combustível
+tile.oxygenCompressor.0.name=Compressor de Oxigênio
+tile.oxygenCompressor.1.name=Descompressor de Oxigênio
+
+# ENTITIES
+entity.GalacticraftCore.EvolvedSpider.name=Aranha Evoluída
+entity.GalacticraftCore.EvolvedZombie.name=Zumbi Evoluído
+entity.GalacticraftCore.EvolvedCreeper.name=Creeper Evoluído
+entity.GalacticraftCore.EvolvedSkeleton.name=Esqueleto Evoluído
+entity.GalacticraftCore.EvolvedSkeletonBoss.name=Esqueleto-Chefe Evoluído
+entity.GalacticraftCore.AlienVillager.name=Aldeão Alienígena
+entity.GalacticraftCore.Spaceship.name=Foguete - Nível 1
+entity.GalacticraftCore.GravityArrow.name=Flecha
+entity.GalacticraftCore.Meteor.name=Meteoro
+entity.GalacticraftCore.Buggy.name=Buggy
+entity.GalacticraftCore.Flag.name=Bandeira
+entity.GalacticraftCore.ParaChest.name=Para-baú
+entity.GalacticraftCore.OxygenBubble.name=Bolha de Oxigênio
+entity.GalacticraftCore.Lander.name=Módulo Espacial
+
+# Schematics
+schematic.moonbuggy.name=Buggy
+schematic.rocketT1.name=Foguete - Nível 1
+schematic.rocketT2.name=Foguete - Nível 2
+
+# DEATH MESSAGES
+death.attack.spaceshipExplosion=Foguete de %1$s está com defeito!
+death.attack.spaceshipExplosionB=%1$s morreu lamentavelmente num acidente espacial!
+death.attack.oxygenSuffocation=%1$s ficou sem oxigênio!
+
+# GALAXIES
+galaxy.blockyway.name=Via Bloquítica
+
+# OTHER
+newversion.failed.name=Verificação de atualização do Galacticraft falhou! Tentando de novo em 15 segundos
+newversion.success.name=Versão on-line do Galacticraft encontrado:
+
+# KEYBINDINGS
+keybind.map.name=[GC] Mapa da Galáxia 
+keybind.spaceshipinv.name=[GC] Abrir Inventário da Nave 
+keybind.sensortoggle.name=[GC] Alternar Modos do Óculos Sensores
+keybind.vehicleforward.name=[GC] Tecla Mover Veículo para Frente
+keybind.vehiclebackward.name=[GC] Tecla Mover Veículo para Trás
+keybind.vehicleleft.name=[GC] Tecla Mover Veículo para Esquerda
+keybind.vehicleright.name=[GC] Tecla Mover Veículo para Direita
+keybind.vehicleup.name=[GC] Tecla Mover Veículo para Cima
+keybind.vehicledown.name=[GC] Tecla Mover Veículo para Baixo
+
+# CREATIVE TABS
+itemGroup.GalacticraftCore=Galacticraft
+
+# GUI
+container.cargoloader.name=Carregador de Carga
+container.cargounloader.name=Descarregador de Carga
+container.fuelloader.name=Carregador de Combustível
+container.oxygencollector.name=Coletor de Oxigênio
+container.oxygencompressor.name=Compressor de Oxigênio
+container.oxygendistributor.name=Distribuidor de Oxigênio
+container.oxygensealer.name=Selador de Oxigênio
+container.parachest.name=Para-baú
+container.refinery.name=Refinaria
+container.treasurechest.name=Baú de Tesouro
+container.lander.name=Módulo Espacial
+container.spaceship.name=Foguete - Nível 1
+container.solarbasic.name=Painel Solar Básico
+container.solaradvanced.name=Painel Solar Avançado
+container.oxygendecompressor.name=Descompressor de Oxigênio
+
+gui.message.out.name=Saída
+gui.message.in.name=Entrada
+gui.message.status.name=Status
+gui.message.oxoutput.name=Saída de Oxigênio
+gui.message.oxinput.name=Entrada de Oxigênio
+gui.message.fuel.name=Combustível
+gui.message.full.name=cheio
+gui.message.page.name=Página
+gui.message.addnewsch.name=Adicionar Novo Esquemático
+gui.message.generating.name=Gerando
+gui.message.environment.name=Bônus Ambiental
+
+gui.status.active.name=Ativo
+gui.status.missingleaves.name=Folhas Insuficientes
+gui.status.missingpower.name=Energia Insuficiente
+gui.status.missingoxygen.name=Oxigênio Insuficiente
+gui.status.missingtank.name=Sem Tanque de Oxigênio Válido
+gui.status.fulltank.name=Tanque Oxigênio Cheio
+gui.status.unsealed.name=Não-Selado
+gui.status.sealed.name=Selado
+gui.status.unknown.name=Desconhecido
+gui.status.disabled.name=Desabilitado
+gui.status.nofuel.name=Sem Combustível a Carregar!
+gui.status.noitems.name=Sem Itens a Carregar!
+gui.status.notargetload.name=Sem Receptor a Ser Carregado!
+gui.status.notargetunload.name=Sem Receptor a Ser Descarregado!
+gui.status.noinvtarget.name=Não Há Inventário no Receptor!
+gui.status.targetfull.name=Veículo Receptor Está Cheio!
+gui.status.targetempty.name=Veículo Receptor Está Vazio!
+gui.status.ready.name=Pronto
+gui.status.refining.name=Refinando
+gui.status.idle.name=Em Espera
+gui.status.nooil.name=Sem Óleo
+gui.status.raining.name=Chuva
+gui.status.blockedpartial.name=Sol Parcialmente Visível
+gui.status.blockedfully.name=Sol Não Está Visível
+gui.status.collectingenergy.name=Coletando Energia
+gui.status.sealerblocked.name=Saída de Ar Bloqueada!
+
+gui.button.enableseal.name=Habilitar Selador
+gui.button.disableseal.name=Desabilitar Selador
+gui.button.loaditems.name=Carregar Itens
+gui.button.stoploading.name=Parar Carregamento
+gui.button.unloaditems.name=Descarregar Itens
+gui.button.stopunloading.name=Parar Descarregamento
+gui.button.createsstation.name=Criar Estação Espacial
+gui.button.sendtodim.name=Enviar para Dimensão
+gui.button.rename.name=Renomear
+gui.button.loadfuel.name=Carregar Combustível
+gui.button.refine.name=Refinar
+gui.button.back.name=Volta
+gui.button.next.name=Avança
+gui.button.unlockschematic.name=Destravar Esquemático
+gui.button.stoprefine.name=Parar Refino
+gui.button.enable.name=Habilitar
+gui.button.disable.name=Desabilitar
+
+gui.choosePlanet.desc.overworld=Pleno de Vida#Habitável#Gravity: 100%
+gui.warning=ATENÇÃO!
+gui.lander.warning2=Pressione "
+gui.lander.warning3=" para desacelerar!
+gui.lander.velocity=Velocidade de Entrada
+gui.lander.velocityu=m/s
+gui.oxygen.warning=Sistema de Oxigênio Inválido!
+gui.sensor.advanced=Modo Avançado
+gui.sensor.advancedon=LIGADO
+gui.sensor.advancedoff=DESLIGADO
+gui.chooseplanet.cannotcreate1.name=Não dá para criar uma
+gui.chooseplanet.cannotcreate2.name=Estação Espacial aqui!
+gui.chooseplanet.alreadycreated1.name=Estação Espacial
+gui.chooseplanet.alreadycreated2.name=já criada!
+
+gui.galaxymap.movemap.name=ASWD - Move o mapa
+gui.galaxymap.zoom.name=Mouse Wheel - Zoom
+gui.galaxymap.select.name=Mouse 1 - Seleciona planeta
+gui.galaxymap.exit.name=Esc - Sair do mapa
+
+gui.buggy.turn.name=Mover para os lados
+gui.buggy.accel.name=Acelerar
+gui.buggy.decel.name=Desacelerar
+gui.buggy.inv.name=Inventário / Combustível
+
+# DIMENSIONS
+dimension.Overworld.name=Mundo Principal
+dimension.Moon.name=Lua
+dimension.Sun.name=Sol
+
+# COMMANDS
+commands.dimensionteleport=%s foi enviado para a atmosfera%s
+
+# </file>
