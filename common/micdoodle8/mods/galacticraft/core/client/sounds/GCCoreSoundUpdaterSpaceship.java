@@ -63,7 +63,7 @@ public class GCCoreSoundUpdaterSpaceship implements IUpdatePlayerListBox
 			this.theSoundManager.stopEntitySound(this.thePlayer);
 		}
 
-		if (this.minecartIsDead || !this.silent && this.minecartMoveSoundVolume == 0.0F && this.minecartRideSoundVolume == 0.0F)
+		if (this.soundStopped || this.minecartIsDead || !this.silent && this.minecartMoveSoundVolume == 0.0F && this.minecartRideSoundVolume == 0.0F)
 		{
 			if (!var3)
 			{
@@ -83,7 +83,7 @@ public class GCCoreSoundUpdaterSpaceship implements IUpdatePlayerListBox
 			}
 		}
 
-		if (this.theSoundManager != null && this.theMinecart != null && this.theMinecart.posY < 250 && this.minecartMoveSoundVolume > 0.0F)
+		else if (this.theSoundManager != null && this.theMinecart != null && this.theMinecart.posY < 250 && this.minecartMoveSoundVolume > 0.0F)
 		{
 			this.theSoundManager.playEntitySound(GalacticraftCore.ASSET_PREFIX + "shuttle.shuttle", this.theMinecart, 5.0F, this.minecartSoundPitch, false);
 			this.silent = false;

@@ -302,20 +302,16 @@ public class GCCoreTickHandlerClient implements ITickHandler
 
 			if (world != null)
 			{
-				for (int i = 0; i < world.loadedEntityList.size(); i++)
+				List entityList = world.loadedEntityList;
+				for (int i = entityList.size() - 1; i >= 0; i--)
 				{
-					final Entity e = (Entity) world.loadedEntityList.get(i);
-
-					if (e != null)
+					if (entityList.get(i) instanceof GCCoreEntityRocketT1)
 					{
-						if (e instanceof GCCoreEntityRocketT1)
-						{
-							final GCCoreEntityRocketT1 eship = (GCCoreEntityRocketT1) e;
+						final GCCoreEntityRocketT1 eship = (GCCoreEntityRocketT1) entityList.get(i);
 
-							if (eship.rocketSoundUpdater == null)
-							{
-								eship.rocketSoundUpdater = new GCCoreSoundUpdaterSpaceship(FMLClientHandler.instance().getClient().sndManager, eship, FMLClientHandler.instance().getClient().thePlayer);
-							}
+						if (eship.rocketSoundUpdater == null)
+						{
+							eship.rocketSoundUpdater = new GCCoreSoundUpdaterSpaceship(FMLClientHandler.instance().getClient().sndManager, eship, FMLClientHandler.instance().getClient().thePlayer);
 						}
 					}
 				}
