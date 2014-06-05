@@ -148,7 +148,6 @@ public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCal
 			electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.distributor.getEnergyStoredGC()) + " / " + (int) Math.floor(this.distributor.getMaxEnergyStoredGC())));
 			this.electricInfoRegion.tooltipStrings = electricityDesc;
 
-			FMLLog.info("" + this.distributor.oxygenBubble.shouldRender());
 			this.checkboxRenderBubble.isSelected = this.distributor.oxygenBubble.shouldRender();
 		}
 	}

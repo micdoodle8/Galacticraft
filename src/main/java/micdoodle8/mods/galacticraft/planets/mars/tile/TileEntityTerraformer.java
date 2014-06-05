@@ -9,6 +9,8 @@ import micdoodle8.mods.galacticraft.api.block.ITerraformableBlock;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.entities.IBubble;
+import micdoodle8.mods.galacticraft.core.entities.IBubbleProvider;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricBlock;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntityTerraformBubble;
 import micdoodle8.mods.galacticraft.planets.mars.world.gen.WorldGenTerraformTree;
@@ -40,7 +42,7 @@ import cpw.mods.fml.relauncher.Side;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * 
  */
-public class TileEntityTerraformer extends TileEntityElectricBlock implements IInventory, ISidedInventory, IDisableableMachine
+public class TileEntityTerraformer extends TileEntityElectricBlock implements IInventory, ISidedInventory, IDisableableMachine, IBubbleProvider
 {
 	private final int tankCapacity = 2000;
 	@NetworkedField(targetSide = Side.CLIENT)
@@ -659,5 +661,22 @@ public class TileEntityTerraformer extends TileEntityElectricBlock implements II
 		}
 
 		return false;
+	}
+
+	@Override
+	public IBubble getBubble()
+	{
+		return this.terraformBubble;
+	}
+
+	@Override
+	public void setBubbleVisible(boolean shouldRender)
+	{
+		if (this.terraformBubble == null)
+		{
+			return;
+		}
+		
+		this.terraformBubble.setShouldRender(shouldRender);
 	}
 }

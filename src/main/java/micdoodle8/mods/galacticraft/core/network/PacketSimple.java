@@ -28,6 +28,7 @@ import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
+import micdoodle8.mods.galacticraft.core.entities.IBubbleProvider;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP.EnumModelPacket;
@@ -831,10 +832,10 @@ public class PacketSimple extends Packet implements IPacket
 				}
 				break;
 			case 6:
-				if (tile1 instanceof TileEntityOxygenDistributor)
+				if (tile1 instanceof IBubbleProvider)
 				{
-					TileEntityOxygenDistributor distributor = (TileEntityOxygenDistributor) tile1;
-					distributor.oxygenBubble.setShouldRender((Integer) this.data.get(4) == 1);
+					IBubbleProvider distributor = (IBubbleProvider) tile1;
+					distributor.setBubbleVisible((Integer) this.data.get(4) == 1);
 				}
 				break;
 			default:
