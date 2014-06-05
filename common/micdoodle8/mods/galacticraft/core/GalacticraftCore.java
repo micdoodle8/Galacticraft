@@ -336,7 +336,7 @@ public class GalacticraftCore
 		GalacticraftCore.proxy.postInit(event);
 		GalacticraftCore.proxy.registerRenderInformation();
 
-		for (int i = 3; i < 8; i++)
+		for (int i = 3; i < 6; i++)
 		{
 			if (GCCoreItemBasic.names[i].contains("ingot"))
 			{
@@ -353,8 +353,8 @@ public class GalacticraftCore
 			List<ItemStack> aluminumIngotList = new ArrayList<ItemStack>();
 			aluminumIngotList.addAll(OreDictionary.getOres("ingotAluminium"));
 			aluminumIngotList.addAll(OreDictionary.getOres("ingotNaturalAluminum"));
-			if (OreDictionary.getOres("ingotAluminium").size() > 0) OreDictionary.registerOre("ingotAluminium", new ItemStack(GCCoreItems.basicItem, 1, 8));
-			if (OreDictionary.getOres("ingotNaturalAluminum").size() > 0) OreDictionary.registerOre("ingotNaturalAluminum", new ItemStack(GCCoreItems.basicItem, 1, 8));
+			if (OreDictionary.getOres("ingotAluminium").size() > 0) OreDictionary.registerOre("ingotAluminium", new ItemStack(GCCoreItems.basicItem, 1, 5));
+			if (OreDictionary.getOres("ingotNaturalAluminum").size() > 0) OreDictionary.registerOre("ingotNaturalAluminum", new ItemStack(GCCoreItems.basicItem, 1, 5));
 
 			for (ItemStack stack : aluminumIngotList)
 			{
@@ -368,7 +368,6 @@ public class GalacticraftCore
 			{
 				CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, 10), stack, stack);
 			}
-			OreDictionary.registerOre("ingotBronze", new ItemStack(GCCoreItems.basicItem, 1, 10));
 		}
 
 		if (OreDictionary.getOres("ingotSteel").size() > 0)
@@ -377,7 +376,6 @@ public class GalacticraftCore
 			{
 				CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, 9), stack, stack);
 			}
-			OreDictionary.registerOre("ingotSteel", new ItemStack(GCCoreItems.basicItem, 1, 9));
 		}
 
 		CompressorRecipes.addShapelessRecipe(new ItemStack(GCCoreItems.basicItem, 1, 9), Item.coal, new ItemStack(GCCoreItems.basicItem, 1, 11), Item.coal);
