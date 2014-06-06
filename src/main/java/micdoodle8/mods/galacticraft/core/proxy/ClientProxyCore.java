@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
@@ -84,11 +85,14 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityParaChest;
 import micdoodle8.mods.galacticraft.core.tile.TileEntitySolar;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityThruster;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
+import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.BlockMetaList;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundPoolEntry;
+import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.entity.Entity;
@@ -99,7 +103,9 @@ import net.minecraft.item.Item;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldProvider;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.IFluidBlock;
@@ -123,6 +129,9 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.Event;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.Phase;
+import cpw.mods.fml.common.gameevent.TickEvent.RenderTickEvent;
 
 /**
  * ClientProxyCore.java
@@ -250,6 +259,7 @@ public class ClientProxyCore extends CommonProxyCore
 	{
 		FMLCommonHandler.instance().bus().register(new TickHandlerClient());
 		FMLCommonHandler.instance().bus().register(new KeyHandlerClient());
+		MinecraftForge.EVENT_BUS.register(new ClientProxyCore());
 	}
 
 	public static void registerTileEntityRenderers()
@@ -510,6 +520,81 @@ public class ClientProxyCore extends CommonProxyCore
 		}
 		
 		return null;
+	}
+	
+	@SubscribeEvent
+	public void onRenderPlayerPre(RenderPlayerEvent.Pre event)
+	{
+		GL11.glPushMatrix();
+		
+		final Minecraft minecraft = FMLClientHandler.instance().getClient();
+		final EntityPlayer player = event.entityPlayer;
+		final WorldProvider provider = minecraft.theWorld.provider;
+
+		if (player.ridingEntity instanceof EntityAutoRocket)
+		{
+			EntityAutoRocket entity = (EntityAutoRocket) player.ridingEntity;
+			float anglePitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * event.partialRenderTick;
+			float angleYaw = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * event.partialRenderTick;
+			GL11.glRotatef(-angleYaw, 0.0F, 1.0F, 0.0F);
+			GL11.glRotatef(anglePitch, 0.0F, 0.0F, 1.0F);
+		}
+
+		//Gravity - freefall - jetpack changes in player model orientation can go here
+	}
+		
+	@SubscribeEvent
+	public void onRenderPlayerPost(RenderPlayerEvent.Post event)
+	{
+		GL11.glPopMatrix();
+	}
+
+	public static void adjustRenderPos(Entity entity, double offsetX, double offsetY, double offsetZ)
+	{
+		final Minecraft minecraft = FMLClientHandler.instance().getClient();
+		final EntityPlayerSP player = minecraft.thePlayer;
+		final WorldProvider provider = minecraft.theWorld.provider;
+		if (provider instanceof WorldProviderMoon)
+		{
+    		ClientProxyCore.globalRadius = 300F;
+    		ClientProxyCore.terrainHeight = 64F;
+	    	if (player.posY > ClientProxyCore.terrainHeight + 8F)
+	    	{
+	    		double globalArc = ClientProxyCore.globalRadius / 57.2957795D;
+	    		float globeRadius = ClientProxyCore.globalRadius - ClientProxyCore.terrainHeight;
+	            
+	        	int pX = MathHelper.floor_double(player.posX / 16D) << 4;
+	        	int pZ = MathHelper.floor_double(player.posZ / 16D) << 4;
+
+	        	int eX = MathHelper.floor_double((entity.posX) / 16D) << 4;
+	        	int eZ = MathHelper.floor_double((entity.posZ) / 16D) << 4;
+
+	        	double DX = player.posX - pX;
+	        	double DZ = player.posZ - pZ;
+
+	        	double intDX = (eX - pX - DX)/2;  //(int) event.x;//
+	        	double intDZ = (eZ - pZ - DZ)/2;  //(int) event.z;//
+	
+	        	float theta = (float) MathHelper.wrapAngleTo180_double(intDX / globalArc);
+	        	float phi = (float) MathHelper.wrapAngleTo180_double(intDZ / globalArc);
+	        	if (theta < 0) theta += 360F;
+	        	if (phi < 0) phi += 360F;
+	        	GL11.glTranslatef(-(float)intDX, -(float)(entity.posY)-globeRadius, -(float)intDZ);
+	        	if (theta>0) GL11.glRotatef(theta,0,0,-1);
+	        	if (phi>0) GL11.glRotatef(phi,1,0,0);
+	        	GL11.glTranslatef(0, (float)(entity.posY)+globeRadius, 0);
+/*
+	        	float theta2 = (float) MathHelper.wrapAngleTo180_double((8 - DX)/ globalArc);
+		    	float phi2 = (float) MathHelper.wrapAngleTo180_double((8 - DZ)/ globalArc);
+		    	if (theta2 < 0) theta2 += 360F;
+		    	if (phi2 < 0) phi2 += 360F;
+	        	GL11.glTranslatef(0, ClientProxyCore.terrainHeight-(float)player.posY, 0);
+		    	if (theta2>0) GL11.glRotatef(theta,0,0,-1);
+		    	if (phi2>0) GL11.glRotatef(phi,1,0,0);
+	        	GL11.glTranslatef(0, (float)player.posY-ClientProxyCore.terrainHeight, 0);
+*/
+	    	}
+		}
 	}
 	
 	public static void orientCamera(float partialTicks)
