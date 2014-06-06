@@ -206,7 +206,7 @@ public class PacketSimple extends Packet implements IPacket
 		catch (Exception e)
 		{
 			System.err.println("[Galacticraft] Error handling simple packet type: " + this.type.toString() + " " + buffer.toString());
-			throw e;
+			e.printStackTrace();
 		}
 	}
 
