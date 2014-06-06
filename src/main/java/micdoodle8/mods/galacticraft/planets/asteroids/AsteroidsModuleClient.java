@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.planets.asteroids;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.planets.IPlanetsModuleClient;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.block.BlockRendererWalkway;
@@ -13,6 +12,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.client.render.entity.Rende
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.item.ItemRendererBeamReceiver;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.item.ItemRendererBeamReflector;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.item.ItemRendererGrappleHook;
+import micdoodle8.mods.galacticraft.planets.asteroids.client.render.item.ItemRendererThermalArmor;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.item.ItemRendererTier3Rocket;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.tile.TileEntityBeamReceiverRenderer;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.tile.TileEntityBeamReflectorRenderer;
@@ -72,6 +72,7 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AsteroidBlocks.beamReceiver), new ItemRendererBeamReceiver());
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AsteroidBlocks.beamReflector), new ItemRendererBeamReflector());
 		MinecraftForgeClient.registerItemRenderer(AsteroidsItems.itemTier3Rocket, new ItemRendererTier3Rocket(rocketModel));
+		MinecraftForgeClient.registerItemRenderer(AsteroidsItems.itemThermalPadding, new ItemRendererThermalArmor());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBeamReflector.class, new TileEntityBeamReflectorRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBeamReceiver.class, new TileEntityBeamReceiverRenderer());
 	}
