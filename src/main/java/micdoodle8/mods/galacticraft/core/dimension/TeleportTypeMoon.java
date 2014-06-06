@@ -4,11 +4,8 @@ import java.util.Random;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.EntityLander;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
-import micdoodle8.mods.galacticraft.core.network.PacketSimple;
-import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -37,7 +34,7 @@ public class TeleportTypeMoon implements ITeleportType
 	{
 		if (player instanceof GCEntityPlayerMP)
 		{
-			return new Vector3(((GCEntityPlayerMP) player).getCoordsTeleportedFromX(), ConfigManagerCore.disableLander ? 250.0 : 900.0, ((GCEntityPlayerMP) player).getCoordsTeleportedFromZ());
+			return new Vector3(((GCEntityPlayerMP) player).getPlayerStats().coordsTeleportedFromX, ConfigManagerCore.disableLander ? 250.0 : 900.0, ((GCEntityPlayerMP) player).getPlayerStats().coordsTeleportedFromZ);
 		}
 
 		return null;
@@ -65,7 +62,7 @@ public class TeleportTypeMoon implements ITeleportType
 	@Override
 	public void onSpaceDimensionChanged(World newWorld, EntityPlayerMP player, boolean ridingAutoRocket)
 	{
-		if (!ridingAutoRocket && !ConfigManagerCore.disableLander && player instanceof GCEntityPlayerMP && ((GCEntityPlayerMP) player).getTeleportCooldown() <= 0)
+		if (!ridingAutoRocket && !ConfigManagerCore.disableLander && player instanceof GCEntityPlayerMP && ((GCEntityPlayerMP) player).getPlayerStats().teleportCooldown <= 0)
 		{
 			final GCEntityPlayerMP gcPlayer = (GCEntityPlayerMP) player;
 
@@ -86,7 +83,7 @@ public class TeleportTypeMoon implements ITeleportType
 				newWorld.spawnEntityInWorld(lander);
 			}
 
-			gcPlayer.setTeleportCooldown(10);
+			gcPlayer.getPlayerStats().teleportCooldown = 10;
 		}
 	}
 }

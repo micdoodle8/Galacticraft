@@ -70,7 +70,7 @@ public class CommandPlanetTeleport extends CommandBase
 					}
 
 					GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_DIMENSION_LIST, new Object[] { playerBase.getGameProfile().getName(), temp }), playerBase);
-					playerBase.setSpaceshipTier(Integer.MAX_VALUE);
+					playerBase.getPlayerStats().spaceshipTier = Integer.MAX_VALUE;
 					playerBase.setUsingPlanetGui();
 					playerBase.mountEntity(null);
 

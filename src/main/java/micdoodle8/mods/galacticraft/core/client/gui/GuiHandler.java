@@ -110,7 +110,7 @@ public class GuiHandler implements IGuiHandler
 		}
 		else if (ID == ConfigManagerCore.idGuiExtendedInventory)
 		{
-			return new ContainerExtendedInventory(player, playerBase.getExtendedInventory());
+			return new ContainerExtendedInventory(player, playerBase.getPlayerStats().extendedInventory);
 		}
 
 		TileEntity tile = world.getTileEntity(x, y, z);
@@ -191,7 +191,7 @@ public class GuiHandler implements IGuiHandler
 			}
 		}
 
-		for (ISchematicPage page : playerBase.getUnlockedSchematics())
+		for (ISchematicPage page : playerBase.getPlayerStats().unlockedSchematics)
 		{
 			if (ID == page.getGuiID())
 			{

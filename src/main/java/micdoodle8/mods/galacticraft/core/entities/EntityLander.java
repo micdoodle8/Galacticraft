@@ -69,12 +69,12 @@ public class EntityLander extends InventoryEntity implements IInventorySettable,
 	{
 		this(player.worldObj);
 
-		this.containedItems = new ItemStack[player.getRocketStacks().length + 1];
-		this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, player.getFuelLevel()));
+		this.containedItems = new ItemStack[player.getPlayerStats().rocketStacks.length + 1];
+		this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, player.getPlayerStats().fuelLevel));
 
-		for (int i = 0; i < player.getRocketStacks().length; i++)
+		for (int i = 0; i < player.getPlayerStats().rocketStacks.length; i++)
 		{
-			this.containedItems[i] = player.getRocketStacks()[i];
+			this.containedItems[i] = player.getPlayerStats().rocketStacks[i];
 		}
 	}
 

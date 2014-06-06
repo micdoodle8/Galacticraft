@@ -326,18 +326,18 @@ public class EventHandlerGC
 	{
 		GCEntityPlayerMP player = (GCEntityPlayerMP) event.player;
 
-		if (!player.getUnlockedSchematics().contains(event.page))
+		if (!player.getPlayerStats().unlockedSchematics.contains(event.page))
 		{
-			player.getUnlockedSchematics().add(event.page);
-			Collections.sort(player.getUnlockedSchematics());
+			player.getPlayerStats().unlockedSchematics.add(event.page);
+			Collections.sort(player.getPlayerStats().unlockedSchematics);
 
 			if (player != null && player.playerNetServerHandler != null)
 			{
-				Integer[] iArray = new Integer[player.getUnlockedSchematics().size()];
+				Integer[] iArray = new Integer[player.getPlayerStats().unlockedSchematics.size()];
 
 				for (int i = 0; i < iArray.length; i++)
 				{
-					ISchematicPage page = player.getUnlockedSchematics().get(i);
+					ISchematicPage page = player.getPlayerStats().unlockedSchematics.get(i);
 					iArray[i] = page == null ? -2 : page.getPageID();
 				}
 
@@ -451,14 +451,14 @@ public class EventHandlerGC
 		{
 			if (!event.entityLiving.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory"))
 			{
-				for (int i = 0; i < ((GCEntityPlayerMP) event.entityLiving).getExtendedInventory().getSizeInventory(); i++)
+				for (int i = 0; i < ((GCEntityPlayerMP) event.entityLiving).getPlayerStats().extendedInventory.getSizeInventory(); i++)
 				{
-					ItemStack stack = ((GCEntityPlayerMP) event.entityLiving).getExtendedInventory().getStackInSlot(i);
+					ItemStack stack = ((GCEntityPlayerMP) event.entityLiving).getPlayerStats().extendedInventory.getStackInSlot(i);
 
 					if (stack != null)
 					{
 						((GCEntityPlayerMP) event.entityLiving).dropPlayerItemWithRandomChoice(stack, true);
-						((GCEntityPlayerMP) event.entityLiving).getExtendedInventory().setInventorySlotContents(i, null);
+						((GCEntityPlayerMP) event.entityLiving).getPlayerStats().extendedInventory.setInventorySlotContents(i, null);
 					}
 				}
 			}

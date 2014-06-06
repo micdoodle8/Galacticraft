@@ -85,12 +85,12 @@ public class EntityLandingBalloons extends EntityAdvancedMotion implements IInve
 		this(player.worldObj, player.posX, player.posY, player.posZ);
 		this.playerSpawnedIn = player;
 
-		this.chestContents = new ItemStack[player.getRocketStacks().length + 1];
-		this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, player.getFuelLevel()));
+		this.chestContents = new ItemStack[player.getPlayerStats().rocketStacks.length + 1];
+		this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, player.getPlayerStats().fuelLevel));
 
-		for (int i = 0; i < player.getRocketStacks().length; i++)
+		for (int i = 0; i < player.getPlayerStats().rocketStacks.length; i++)
 		{
-			this.chestContents[i] = player.getRocketStacks()[i];
+			this.chestContents[i] = player.getPlayerStats().rocketStacks[i];
 		}
 	}
 

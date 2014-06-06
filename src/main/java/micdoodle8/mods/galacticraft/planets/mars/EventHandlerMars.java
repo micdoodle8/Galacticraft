@@ -112,7 +112,7 @@ public class EventHandlerMars
 				if (!event.entityPlayer.worldObj.isRemote)
 				{
 					event.entityPlayer.heal(5.0F);
-					((GCEntityPlayerMP) event.entityPlayer).setCryogenicChamberCooldown(6000);
+					((GCEntityPlayerMP) event.entityPlayer).getPlayerStats().cryogenicChamberCooldown = 6000;
 
 					for (WorldServer worldServer : MinecraftServer.getServer().worldServers)
 					{

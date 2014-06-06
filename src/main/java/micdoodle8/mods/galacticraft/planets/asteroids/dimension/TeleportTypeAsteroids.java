@@ -4,12 +4,8 @@ import java.util.Random;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
-import micdoodle8.mods.galacticraft.core.network.PacketSimple;
-import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
-import micdoodle8.mods.galacticraft.planets.mars.entities.EntityLandingBalloons;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
@@ -37,7 +33,7 @@ public class TeleportTypeAsteroids implements ITeleportType
 	{
 		if (player instanceof GCEntityPlayerMP)
 		{
-			return new Vector3(((GCEntityPlayerMP) player).getCoordsTeleportedFromX(), 310, ((GCEntityPlayerMP) player).getCoordsTeleportedFromZ());
+			return new Vector3(((GCEntityPlayerMP) player).getPlayerStats().coordsTeleportedFromX, 310, ((GCEntityPlayerMP) player).getPlayerStats().coordsTeleportedFromZ);
 		}
 
 		return null;

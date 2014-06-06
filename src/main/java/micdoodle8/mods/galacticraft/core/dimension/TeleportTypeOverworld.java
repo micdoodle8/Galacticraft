@@ -32,7 +32,7 @@ public class TeleportTypeOverworld implements ITeleportType
 	{
 		if (player instanceof GCEntityPlayerMP)
 		{
-			return new Vector3(((GCEntityPlayerMP) player).getCoordsTeleportedFromX(), 250.0, ((GCEntityPlayerMP) player).getCoordsTeleportedFromZ());
+			return new Vector3(((GCEntityPlayerMP) player).getPlayerStats().coordsTeleportedFromX, 250.0, ((GCEntityPlayerMP) player).getPlayerStats().coordsTeleportedFromZ);
 		}
 
 		return null;

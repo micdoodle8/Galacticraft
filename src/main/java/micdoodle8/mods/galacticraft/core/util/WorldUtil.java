@@ -8,11 +8,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-//import mekanism.api.energy.IStrictEnergyAcceptor;
-//import mekanism.api.gas.IGasTransmitter;
-//import mekanism.api.gas.ITubeConnection;
-//import mekanism.api.transmitters.TransmissionType;
-
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.entity.IWorldTransferCallback;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
@@ -21,7 +16,6 @@ import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
-import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -31,7 +25,6 @@ import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.api.world.SpaceStationType;
 import micdoodle8.mods.galacticraft.api.world.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
@@ -66,6 +59,10 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+//import mekanism.api.energy.IStrictEnergyAcceptor;
+//import mekanism.api.gas.IGasTransmitter;
+//import mekanism.api.gas.ITubeConnection;
+//import mekanism.api.transmitters.TransmissionType;
 
 /**
  * WorldUtil.java
@@ -96,7 +93,7 @@ public class WorldUtil
 				}
 				else if (entity instanceof GCEntityPlayerMP)
 				{
-					return ((GCEntityPlayerMP) entity).isTouchedGround() ? 0.08D - customProvider.getGravity() : 0.08D;
+					return ((GCEntityPlayerMP) entity).getPlayerStats().touchedGround ? 0.08D - customProvider.getGravity() : 0.08D;
 				}
 				else
 				{
@@ -479,7 +476,7 @@ public class WorldUtil
 	{
 		int newID = DimensionManager.getNextFreeDimId();
 		SpaceStationWorldData data = WorldUtil.createSpaceStation(world, newID, player);
-		player.setSpaceStationDimensionID(newID);
+		player.getPlayerStats().spaceStationDimensionID = newID;
 		GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_CLIENT_ID, new Object[] { newID }), player);
 		return data;
 	}
@@ -691,7 +688,7 @@ public class WorldUtil
 		{
 			player = (GCEntityPlayerMP) entity;
 
-			if (ridingRocket == null && type.useParachute() && player.getExtendedInventory().getStackInSlot(4) != null && player.getExtendedInventory().getStackInSlot(4).getItem() instanceof ItemParaChute)
+			if (ridingRocket == null && type.useParachute() && player.getPlayerStats().extendedInventory.getStackInSlot(4) != null && player.getPlayerStats().extendedInventory.getStackInSlot(4).getItem() instanceof ItemParaChute)
 			{
 				player.setUsingParachute(true);
 			}
@@ -738,39 +735,39 @@ public class WorldUtil
 		{
 			player = (GCEntityPlayerMP) entity;
 
-			if (player.getRocketStacks() != null && player.getRocketStacks().length > 0)
+			if (player.getPlayerStats().rocketStacks != null && player.getPlayerStats().rocketStacks.length > 0)
 			{
-				for (int stack = 0; stack < player.getRocketStacks().length; stack++)
+				for (int stack = 0; stack < player.getPlayerStats().rocketStacks.length; stack++)
 				{
 					if (transferInv)
 					{
-						if (player.getRocketStacks()[stack] == null)
+						if (player.getPlayerStats().rocketStacks[stack] == null)
 						{
-							if (stack == player.getRocketStacks().length - 1)
+							if (stack == player.getPlayerStats().rocketStacks.length - 1)
 							{
-								if (player.getRocketItem() != null)
+								if (player.getPlayerStats().rocketItem != null)
 								{
-									player.getRocketStacks()[stack] = new ItemStack(player.getRocketItem(), 1, player.getRocketType());
+									player.getPlayerStats().rocketStacks[stack] = new ItemStack(player.getPlayerStats().rocketItem, 1, player.getPlayerStats().rocketType);
 								}
 							}
-							else if (stack == player.getRocketStacks().length - 2)
+							else if (stack == player.getPlayerStats().rocketStacks.length - 2)
 							{
-								player.getRocketStacks()[stack] = player.getLaunchpadStack();
-								player.setLaunchpadStack(null);
+								player.getPlayerStats().rocketStacks[stack] = player.getPlayerStats().launchpadStack;
+								player.getPlayerStats().launchpadStack = null;
 							}
 						}
 					}
 					else
 					{
-						player.getRocketStacks()[stack] = null;
+						player.getPlayerStats().rocketStacks[stack] = null;
 					}
 				}
 			}
 
-			if (transferInv && player.getChestSpawnCooldown() == 0)
+			if (transferInv && player.getPlayerStats().chestSpawnCooldown == 0)
 			{
-				player.setChestSpawnVector(type.getParaChestSpawnLocation((WorldServer) entity.worldObj, player, new Random()));
-				player.setChestSpawnCooldown(200);
+				player.getPlayerStats().chestSpawnVector = type.getParaChestSpawnLocation((WorldServer) entity.worldObj, player, new Random());
+				player.getPlayerStats().chestSpawnCooldown = 200;
 			}
 		}
 

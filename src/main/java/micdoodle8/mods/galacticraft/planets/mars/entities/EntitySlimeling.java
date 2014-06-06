@@ -400,10 +400,10 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
 					{
 						if (par1EntityPlayer instanceof GCEntityPlayerMP)
 						{
-							if (((GCEntityPlayerMP) par1EntityPlayer).getChatCooldown() == 0)
+							if (((GCEntityPlayerMP) par1EntityPlayer).getPlayerStats().chatCooldown == 0)
 							{
 								par1EntityPlayer.addChatMessage(new ChatComponentText("This isn't my Slimeling!"));
-								((GCEntityPlayerMP) par1EntityPlayer).setChatCooldown(100);
+								((GCEntityPlayerMP) par1EntityPlayer).getPlayerStats().chatCooldown = 100;
 							}
 						}
 					}

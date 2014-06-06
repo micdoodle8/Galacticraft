@@ -47,6 +47,7 @@ import micdoodle8.mods.galacticraft.core.entities.EntitySkeletonBoss;
 import micdoodle8.mods.galacticraft.core.entities.EntityTier1Rocket;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockGC;
@@ -199,6 +200,9 @@ public class GalacticraftCore
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		MinecraftForge.EVENT_BUS.register(new EventHandlerGC());
+		GCPlayerHandler handler = new GCPlayerHandler();
+		MinecraftForge.EVENT_BUS.register(handler);
+		FMLCommonHandler.instance().bus().register(handler);
 		GalacticraftCore.proxy.preInit(event);
 
 		ConfigManagerCore.setDefaultValues(new File(event.getModConfigurationDirectory(), GalacticraftCore.CONFIG_FILE));

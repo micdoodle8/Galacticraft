@@ -686,8 +686,8 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 		{
 			if (!(this.worldObj.provider instanceof IOrbitDimension) && this.riddenByEntity != null && this.riddenByEntity instanceof GCEntityPlayerMP)
 			{
-				((GCEntityPlayerMP) this.riddenByEntity).setCoordsTeleportedFromX(this.riddenByEntity.posX);
-				((GCEntityPlayerMP) this.riddenByEntity).setCoordsTeleportedFromZ(this.riddenByEntity.posZ);
+				((GCEntityPlayerMP) this.riddenByEntity).getPlayerStats().coordsTeleportedFromX = this.riddenByEntity.posX;
+				((GCEntityPlayerMP) this.riddenByEntity).getPlayerStats().coordsTeleportedFromZ = this.riddenByEntity.posZ;
 			}
 
 			int amountRemoved = 0;
@@ -722,7 +722,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
 			//Set the player's launchpad item for return on landing - or null if launchpads not removed
 			if (this.riddenByEntity != null && this.riddenByEntity instanceof GCEntityPlayerMP)
-				((GCEntityPlayerMP) this.riddenByEntity).setLaunchpadStack((amountRemoved == 9) ? new ItemStack(GCBlocks.landingPad, 9, 0) : null);
+				((GCEntityPlayerMP) this.riddenByEntity).getPlayerStats().launchpadStack = (amountRemoved == 9) ? new ItemStack(GCBlocks.landingPad, 9, 0) : null;
 			
 			this.playSound("random.pop", 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
 		}

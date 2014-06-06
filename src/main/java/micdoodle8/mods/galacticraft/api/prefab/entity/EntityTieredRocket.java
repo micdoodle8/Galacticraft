@@ -280,7 +280,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 					}
 
 					GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_DIMENSION_LIST, new Object[] { player.getGameProfile().getName(), temp }), player);
-					player.setSpaceshipTier(this.getRocketTier());
+					player.getPlayerStats().spaceshipTier = this.getRocketTier();
 					player.setUsingPlanetGui();
 
 					this.onTeleport(player);
@@ -339,7 +339,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 			if (!this.worldObj.isRemote)
 			{
 				GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, new Object[] { ((EntityPlayerMP) this.riddenByEntity).getGameProfile().getName() }), (EntityPlayerMP) par1EntityPlayer);
-				((GCEntityPlayerMP) par1EntityPlayer).setChatCooldown(0);
+				((GCEntityPlayerMP) par1EntityPlayer).getPlayerStats().chatCooldown = 0;
 				par1EntityPlayer.mountEntity(null);
 			}
 
@@ -353,7 +353,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 				par1EntityPlayer.addChatMessage(new ChatComponentText("A / D  - Turn left-right"));
 				par1EntityPlayer.addChatMessage(new ChatComponentText("W / S  - Turn up-down"));
 				par1EntityPlayer.addChatMessage(new ChatComponentText(Keyboard.getKeyName(KeyHandlerClient.openFuelGui.getKeyCode()) + "       - Inventory / Fuel"));
-				((GCEntityPlayerMP) par1EntityPlayer).setChatCooldown(0);
+				((GCEntityPlayerMP) par1EntityPlayer).getPlayerStats().chatCooldown = 0;
 				par1EntityPlayer.mountEntity(this);
 			}
 

@@ -156,16 +156,16 @@ public class EntityTier1Rocket extends EntityTieredRocket
 		{
 			if (this.cargoItems == null || this.cargoItems.length == 0)
 			{
-				playerBase.setRocketStacks(new ItemStack[9]);
+				playerBase.getPlayerStats().rocketStacks = new ItemStack[9];
 			}
 			else
 			{
-				playerBase.setRocketStacks(this.cargoItems);
+				playerBase.getPlayerStats().rocketStacks = this.cargoItems;
 			}
 
-			playerBase.setRocketType(this.rocketType.getIndex());
-			playerBase.setRocketItem(GCItems.rocketTier1);
-			playerBase.setFuelLevel(this.fuelTank.getFluidAmount());
+			playerBase.getPlayerStats().rocketType = this.rocketType.getIndex();
+			playerBase.getPlayerStats().rocketItem = GCItems.rocketTier1;
+			playerBase.getPlayerStats().fuelLevel = this.fuelTank.getFluidAmount();
 		}
 	}
 

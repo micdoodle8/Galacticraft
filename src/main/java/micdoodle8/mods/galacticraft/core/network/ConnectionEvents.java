@@ -39,7 +39,7 @@ public class ConnectionEvents
 		
 		if (event.player instanceof GCEntityPlayerMP)
 		{
-			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_CLIENT_ID, new Object[] { ((GCEntityPlayerMP) event.player).getSpaceStationDimensionID() }), (EntityPlayerMP) event.player);
+			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_CLIENT_ID, new Object[] { ((GCEntityPlayerMP) event.player).getPlayerStats().spaceStationDimensionID }), (EntityPlayerMP) event.player);
 		}
 		
 		if (event.player.worldObj.provider instanceof WorldProviderOrbit && event.player instanceof EntityPlayerMP)

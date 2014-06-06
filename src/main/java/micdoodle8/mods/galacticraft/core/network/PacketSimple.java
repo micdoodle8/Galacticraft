@@ -39,7 +39,6 @@ import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAirLockController;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityConductor;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -622,7 +621,7 @@ public class PacketSimple extends Packet implements IPacket
 						}
 					}
 
-					playerBase.setTeleportCooldown(300);
+					playerBase.getPlayerStats().teleportCooldown = 300;
 					GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_CLOSE_GUI, new Object[] {}), playerBase);
 				}
 				catch (final Exception e)
@@ -643,25 +642,25 @@ public class PacketSimple extends Packet implements IPacket
 
 					if (playerBase != null)
 					{
-						stack2 = playerBase.getExtendedInventory().getStackInSlot(4);
+						stack2 = playerBase.getPlayerStats().extendedInventory.getStackInSlot(4);
 					}
 
-					if (stack2 != null && stack2.getItem() instanceof ItemParaChute || playerBase != null && playerBase.getLaunchAttempts() > 0)
+					if (stack2 != null && stack2.getItem() instanceof ItemParaChute || playerBase != null && playerBase.getPlayerStats().launchAttempts > 0)
 					{
 						ship.igniteCheckingCooldown();
-						playerBase.setLaunchAttempts(0);
+						playerBase.getPlayerStats().launchAttempts = 0;
 					}
-					else if (playerBase.getChatCooldown() == 0 && playerBase.getLaunchAttempts() == 0)
+					else if (playerBase.getPlayerStats().chatCooldown == 0 && playerBase.getPlayerStats().launchAttempts == 0)
 					{
 						player.addChatMessage(new ChatComponentText("I don't have a parachute! If I press launch again, there's no going back!"));
-						playerBase.setChatCooldown(250);
-						playerBase.setLaunchAttempts(1);
+						playerBase.getPlayerStats().chatCooldown = 250;
+						playerBase.getPlayerStats().launchAttempts = 1;
 					}
 				}
-				else if (playerBase.getChatCooldown() == 0)
+				else if (playerBase.getPlayerStats().chatCooldown == 0)
 				{
 					player.addChatMessage(new ChatComponentText("I'll need to load in some rocket fuel first!"));
-					playerBase.setChatCooldown(250);
+					playerBase.getPlayerStats().chatCooldown = 250;
 				}
 			}
 			break;
@@ -717,7 +716,7 @@ public class PacketSimple extends Packet implements IPacket
 			player.openGui(GalacticraftCore.instance, -1, player.worldObj, (Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2));
 			break;
 		case S_BIND_SPACE_STATION_ID:
-			if (playerBase.getSpaceStationDimensionID() == -1 || playerBase.getSpaceStationDimensionID() == 0)
+			if (playerBase.getPlayerStats().spaceStationDimensionID == -1 || playerBase.getPlayerStats().spaceStationDimensionID == 0)
 			{
 				WorldUtil.bindSpaceStationToNewDimension(playerBase.worldObj, playerBase);
 
@@ -765,10 +764,10 @@ public class PacketSimple extends Packet implements IPacket
 			}
 			break;
 		case S_ON_FAILED_CHEST_UNLOCK:
-			if (playerBase.getChatCooldown() == 0)
+			if (playerBase.getPlayerStats().chatCooldown == 0)
 			{
 				player.addChatMessage(new ChatComponentText("I'll probably need a Tier " + this.data.get(0) + " Dungeon key to unlock this!"));
-				playerBase.setChatCooldown(100);
+				playerBase.getPlayerStats().chatCooldown = 100;
 			}
 			break;
 		case S_RENAME_SPACE_STATION:
@@ -911,7 +910,7 @@ public class PacketSimple extends Packet implements IPacket
 				
 				if (race != null)
 				{
-					playerInvited.spaceRaceInviteTeamID = teamInvitedTo;
+					playerInvited.getPlayerStats().spaceRaceInviteTeamID = teamInvitedTo;
 					String dA = EnumColor.DARK_AQUA.code;
 					String bG = EnumColor.BRIGHT_GREEN.code;
 					String dB = EnumColor.PURPLE.code;
