@@ -557,7 +557,7 @@ public class ClientProxyCore extends CommonProxyCore
 		{
     		ClientProxyCore.globalRadius = 300F;
     		ClientProxyCore.terrainHeight = 64F;
-	    	if (player.posY > ClientProxyCore.terrainHeight + 8F)
+	    	if (player.posY > ClientProxyCore.terrainHeight + 8F && player.ridingEntity != entity)
 	    	{
 	    		double globalArc = ClientProxyCore.globalRadius / 57.2957795D;
 	    		float globeRadius = ClientProxyCore.globalRadius - ClientProxyCore.terrainHeight;
