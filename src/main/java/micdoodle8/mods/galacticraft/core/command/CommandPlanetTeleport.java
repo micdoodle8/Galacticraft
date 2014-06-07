@@ -71,7 +71,7 @@ public class CommandPlanetTeleport extends CommandBase
 
 					GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_DIMENSION_LIST, new Object[] { playerBase.getGameProfile().getName(), temp }), playerBase);
 					playerBase.getPlayerStats().spaceshipTier = Integer.MAX_VALUE;
-					playerBase.setUsingPlanetGui();
+					playerBase.getPlayerStats().usingPlanetSelectionGui = true;
 					playerBase.mountEntity(null);
 
 					CommandBase.notifyAdmins(icommandsender, "commands.dimensionteleport", new Object[] { String.valueOf(EnumColor.GREY + "[" + playerBase.getCommandSenderName()), "]" });

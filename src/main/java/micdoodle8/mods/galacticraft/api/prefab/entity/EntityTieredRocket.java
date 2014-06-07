@@ -281,7 +281,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 
 					GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_DIMENSION_LIST, new Object[] { player.getGameProfile().getName(), temp }), player);
 					player.getPlayerStats().spaceshipTier = this.getRocketTier();
-					player.setUsingPlanetGui();
+					player.getPlayerStats().usingPlanetSelectionGui = true;
 
 					this.onTeleport(player);
 					player.mountEntity(this);

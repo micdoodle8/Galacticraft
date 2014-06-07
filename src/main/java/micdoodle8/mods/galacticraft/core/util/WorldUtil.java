@@ -572,7 +572,7 @@ public class WorldUtil
 				((WorldServer) entity.worldObj).getPlayerManager().removePlayer(player);
 			}
 
-			player.setNotUsingPlanetGui();
+			player.getPlayerStats().usingPlanetSelectionGui = false;
 		}
 
 		if (dimChange)

@@ -64,19 +64,6 @@ public class GCEntityPlayerMP extends EntityPlayerMP
     public GCEntityPlayerMP(MinecraftServer server, WorldServer world, GameProfile profile, ItemInWorldManager itemInWorldManager)
 	{
 		super(server, world, profile, itemInWorldManager);
-
-		if (!GalacticraftCore.playersServer.containsKey(this.getGameProfile().getName()))
-		{
-			GalacticraftCore.playersServer.put(this.getGameProfile().getName(), this);
-		}
-	}
-
-	@Override
-	public void onDeath(DamageSource damageSource)
-	{
-		GalacticraftCore.playersServer.remove(this);
-
-		super.onDeath(damageSource);
 	}
 
 	@Override
@@ -88,153 +75,6 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 		{
 			this.getPlayerStats().copyFrom(((GCEntityPlayerMP) oldPlayer).getPlayerStats(), keepInv || this.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory"));
 		}
-	}
-
-	@Override
-	protected void fall(float par1)
-	{
-		if (this.ridingEntity instanceof EntityAutoRocket || this.ridingEntity instanceof EntityLander)
-		{
-			return;
-		}
-
-		super.fall(par1);
-	}
-
-	@Override
-	public void onUpdate()
-	{
-		super.onUpdate();
-		
-		int tick = this.ticksExisted - 1;
-
-		if (!GalacticraftCore.playersServer.containsKey(this.getGameProfile().getName()) || tick % 360 == 0)
-		{
-			GalacticraftCore.playersServer.put(this.getGameProfile().getName(), this);
-		}
-
-		if (tick == 10)
-		{
-			if (SpaceRaceManager.getSpaceRaceFromPlayer(this.getGameProfile().getName()) == null)
-			{
-				GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_SPACE_RACE_GUI, new Object[] { }), this);
-			}
-		}
-
-		if (this.getPlayerStats().cryogenicChamberCooldown > 0)
-		{
-			this.getPlayerStats().cryogenicChamberCooldown--;
-		}
-
-		if (!this.onGround && this.getPlayerStats().lastOnGround)
-		{
-			this.getPlayerStats().touchedGround = true;
-		}
-
-		if (this.getPlayerStats().teleportCooldown > 0)
-		{
-			this.getPlayerStats().teleportCooldown--;
-		}
-
-		if (this.getPlayerStats().chatCooldown > 0)
-		{
-			this.getPlayerStats().chatCooldown--;
-		}
-
-		if (this.getPlayerStats().openPlanetSelectionGuiCooldown > 0)
-		{
-			this.getPlayerStats().openPlanetSelectionGuiCooldown--;
-
-			if (this.getPlayerStats().openPlanetSelectionGuiCooldown == 1 && !this.getPlayerStats().hasOpenedPlanetSelectionGui)
-			{
-				this.sendPlanetList();
-				this.setUsingPlanetGui();
-				this.getPlayerStats().hasOpenedPlanetSelectionGui = true;
-			}
-		}
-
-		if (this.getPlayerStats().usingParachute)
-		{
-			this.fallDistance = 0.0F;
-			if (this.onGround)
-			{
-				this.sendGearUpdatePacket(EnumModelPacket.REMOVE_PARACHUTE.getIndex());
-				this.setUsingParachute(false);
-			}
-		}
-
-		this.checkCurrentItem();
-
-		if (this.getPlayerStats().usingPlanetSelectionGui)
-		{
-			this.sendPlanetList();
-		}
-
-/*		if (this.worldObj.provider instanceof IGalacticraftWorldProvider || this.usingPlanetSelectionGui)
-		{
-			this.playerNetServerHandler.ticksForFloatKick = 0;
-		}	
-*/		
-		if (this.getPlayerStats().damageCounter > 0)
-		{
-			this.getPlayerStats().damageCounter--;
-		}
-
-		if (tick % 30 == 0 && this.worldObj.provider instanceof IGalacticraftWorldProvider)
-		{
-			this.sendAirRemainingPacket();
-		}
-
-		this.checkGear();
-
-		if (this.getPlayerStats().chestSpawnCooldown > 0)
-		{
-			this.getPlayerStats().chestSpawnCooldown--;
-
-			if (this.getPlayerStats().chestSpawnCooldown == 180)
-			{
-				if (this.getPlayerStats().chestSpawnVector != null)
-				{
-					EntityParachest chest = new EntityParachest(this.worldObj, this.getPlayerStats().rocketStacks, this.getPlayerStats().fuelLevel);
-
-					chest.setPosition(this.getPlayerStats().chestSpawnVector.x, this.getPlayerStats().chestSpawnVector.y, this.getPlayerStats().chestSpawnVector.z);
-
-					if (!this.worldObj.isRemote)
-					{
-						this.worldObj.spawnEntityInWorld(chest);
-					}
-				}
-			}
-		}
-
-		//
-
-		if (this.getPlayerStats().launchAttempts > 0 && this.ridingEntity == null)
-		{
-			this.getPlayerStats().launchAttempts = 0;
-		}
-
-		this.checkOxygen();
-
-		if (this.worldObj.provider instanceof IGalacticraftWorldProvider && (this.getPlayerStats().oxygenSetupValid != this.getPlayerStats().lastOxygenSetupValid || tick % 100 == 0))
-		{
-			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_OXYGEN_VALIDITY, new Object[] { this.getPlayerStats().oxygenSetupValid }), this);
-		}
-
-		this.throwMeteors();
-
-		this.updateSchematics();
-
-		if (tick % 250 == 0 && this.getPlayerStats().frequencyModuleInSlot == null && !this.getPlayerStats().receivedSoundWarning && this.worldObj.provider instanceof IGalacticraftWorldProvider && this.onGround && tick > 0)
-		{
-			this.addChatMessage(new ChatComponentText(EnumColor.YELLOW + "I'll probably need a " + EnumColor.AQUA + GCItems.basicItem.getItemStackDisplayName(new ItemStack(GCItems.basicItem, 1, 19)) + EnumColor.YELLOW + " if I want to hear properly here."));
-			this.getPlayerStats().receivedSoundWarning = true;
-		}
-
-		this.getPlayerStats().lastOxygenSetupValid = this.getPlayerStats().oxygenSetupValid;
-		this.getPlayerStats().lastUnlockedSchematics = this.getPlayerStats().unlockedSchematics;
-
-		this.getPlayerStats().lastOnGround = this.onGround;
 	}
 
 	@Override
@@ -297,7 +137,7 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 		}
 	}
 
-	private void checkCurrentItem()
+	protected void checkCurrentItem()
 	{
 		ItemStack theCurrentItem = this.inventory.getCurrentItem();
 		if (this.worldObj.provider instanceof IGalacticraftWorldProvider && theCurrentItem != null)
@@ -324,7 +164,7 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 		}
 	}
 
-	private void sendPlanetList()
+	protected void sendPlanetList()
 	{
 		HashMap<String, Integer> map = WorldUtil.getArrayOfPossibleDimensions(WorldUtil.getPossibleDimensionsForSpaceshipTier(this.getPlayerStats().spaceshipTier), this);
 
@@ -340,7 +180,7 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 		GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_DIMENSION_LIST, new Object[] { this.getGameProfile().getName(), temp }), this);
 	}
 
-	private void checkGear()
+	protected void checkGear()
 	{
 		this.getPlayerStats().maskInSlot = this.getPlayerStats().extendedInventory.getStackInSlot(0);
 		this.getPlayerStats().gearInSlot = this.getPlayerStats().extendedInventory.getStackInSlot(1);
@@ -488,7 +328,7 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 		}
 	}
 
-	private void checkOxygen()
+	protected void checkOxygen()
 	{
 		final ItemStack tankInSlot = this.getPlayerStats().extendedInventory.getStackInSlot(2);
 		final ItemStack tankInSlot2 = this.getPlayerStats().extendedInventory.getStackInSlot(3);
@@ -613,7 +453,7 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 		}
 	}
 
-	private void throwMeteors()
+	protected void throwMeteors()
 	{
 		if (this.worldObj.provider instanceof IGalacticraftWorldProvider && FMLCommonHandler.instance().getEffectiveSide() != Side.CLIENT)
 		{
@@ -670,7 +510,7 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 		}
 	}
 
-	private void updateSchematics()
+	protected void updateSchematics()
 	{
 		SchematicRegistry.addUnlockedPage(this, SchematicRegistry.getMatchingRecipeForID(0));
 		SchematicRegistry.addUnlockedPage(this, SchematicRegistry.getMatchingRecipeForID(Integer.MAX_VALUE));
@@ -694,24 +534,14 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 		}
 	}
 
-	public void setUsingPlanetGui()
-	{
-		this.getPlayerStats().usingPlanetSelectionGui = true;
-	}
-
-	public void setNotUsingPlanetGui()
-	{
-		this.getPlayerStats().usingPlanetSelectionGui = false;
-	}
-
-	private void sendAirRemainingPacket()
+	protected void sendAirRemainingPacket()
 	{
 		final float f1 = Float.valueOf(this.getPlayerStats().tankInSlot1 == null ? 0.0F : this.getPlayerStats().tankInSlot1.getMaxDamage() / 90.0F);
 		final float f2 = Float.valueOf(this.getPlayerStats().tankInSlot2 == null ? 0.0F : this.getPlayerStats().tankInSlot2.getMaxDamage() / 90.0F);
 		GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_AIR_REMAINING, new Object[] { MathHelper.floor_float(this.getPlayerStats().airRemaining / f1), MathHelper.floor_float(this.getPlayerStats().airRemaining2 / f2), this.getGameProfile().getName() }), this);
 	}
 
-	private void sendGearUpdatePacket(int gearType)
+	protected void sendGearUpdatePacket(int gearType)
 	{
 		this.sendGearUpdatePacket(gearType, -1);
 	}
@@ -798,7 +628,7 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 			this.index = index;
 		}
 
-		private int getIndex()
+		int getIndex()
 		{
 			return this.index;
 		}
