@@ -1,16 +1,16 @@
-# Galacticraft Mars Language File = BRAZIL PORTUGUESE
+# Galacticraft Mars Language File = PORTUGAL PORTUGUESE
 
 # GENERAL ITEMS
 item.rawDesh.name=Desh Bruto
 item.deshStick.name=Graveto de Desh
 item.ingotDesh.name=Barra de Desh
-item.spaceshipTier2.t2Rocket.name=Foguete - Nível 2
+item.spaceshipTier2.t2Rocket.name=Foguetão - Nível 2
 item.reinforcedPlateT2.name=Blindagem Pesada
 item.tier2.desc=Nível 2
 item.slimelingCargo.name=Mochila-Inventário para Slimeling
 item.key.T2.name=Chave de Calabouço - Nível 2
-item.compressedDesh.name=Desh Comprimido
-item.spaceshipTier2.cargoRocket.name=Foguete de Carga
+item.compressedDesh.name=Desh Prensado
+item.spaceshipTier2.cargoRocket.name=Foguetão de Carga
 
 # TOOLS
 item.deshPick.name=Picareta de Desh
@@ -20,7 +20,7 @@ item.deshSpade.name=Pá de Desh
 item.deshSword.name=Espada de Desh
 
 # ARMOR
-item.deshHelmet.name=Elmo de Desh
+item.deshHelmet.name=Capacete de Desh
 item.deshChestplate.name=Peitoral de Desh
 item.deshLeggings.name=Perneiras de Desh
 item.deshBoots.name=Botas de Desh 
@@ -30,18 +30,18 @@ tile.mars.deshmars.name=Minério de Desh
 tile.mars.coppermars.name=Minério de Cobre
 tile.mars.tinmars.name=Minério de Estanho
 tile.mars.ironmars.name=Minério de Ferro
-tile.mars.marscobblestone.name=Pedregulho
+tile.mars.marscobblestone.name=Empedrado
 tile.mars.marsstone.name=Pedra Marciana
 tile.mars.marsdirt.name=Rocha Sub-Superficial Marciana
 tile.mars.marsgrass.name=Rocha Superficial Marciana
 tile.mars.marsdeco.name=Bloco de Desh
-tile.mars.marsdungeon.name=Parede de Calabouço Marciano
+tile.mars.marsdungeon.name=Tijolos Lunares Dungeon Wall
 tile.treasureT2.name=Baú de Tesouro - Nível 2
 tile.slimelingEgg.redEgg.name=Ovo de Slimeling Vermelho
 tile.slimelingEgg.blueEgg.name=Ovo de Slimeling Azul
 tile.slimelingEgg.yellowEgg.name=Ovo de Slimeling Amarelo
 tile.marsMachine.0.name=Terraformador
-tile.marsMachine.1.name=Câmara Criogênica
+tile.marsMachine.1.name=Câmara Criogénica
 tile.marsMachine.2.name=Controle de Lançamentos
 tile.sludge.name=Lodo Bacterial
 tile.creeperEgg.name=Ovo de Creeper
@@ -64,7 +64,7 @@ tile.tintedGlassPane.red.name=Painel de Vidro Vermelho
 tile.tintedGlassPane.black.name=Painel de Vidro Preto
 
 # GUI
-gui.choosePlanet.desc.mars=Habitável#Sem Oxigênio#Gravidade: 38%
+gui.choosePlanet.desc.mars=Habitável#Sem Oxigénio#Gravidade: 38%
 item.deshPickSlime.description.name=Pode-se colher ovos de Slimeling
 
 gui.desc.reinforcedPlateT2.name=Nível 2
@@ -74,8 +74,8 @@ itemGroup.GalacticraftMars=Galacticraft - Marte
 dimension.Mars.name=Marte
 
 # Schematics
-schematic.rocketT3.name=Foguete - Nível 3
-schematic.cargoRocket.name=Foguete de Carga Automático
+schematic.rocketT3.name=Foguetão - Nível 3
+schematic.cargoRocket.name=Foguetão de Carga Automático
 
 # Entity
 entity.Sludgeling.name=Sludgeling

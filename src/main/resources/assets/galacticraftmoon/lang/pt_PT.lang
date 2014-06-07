@@ -1,4 +1,4 @@
-# Galacticraft Moon Language File = BRAZIL PORTUGUESE
+# Galacticraft Moon Language File = PORTUGAL PORTUGUESE
 
 # GENERAL ITEMS
 item.meteoricIronRaw.name=Minério de Ferro Meteórico
@@ -24,7 +24,7 @@ tile.moonBlock.bricks.name=Tijolos Lunares
 tile.cheeseBlock.name=Bloco de Queijo
 
 # GUI
-gui.choosePlanet.desc.moon=Habitável#Sem Oxigênio#Gravidade: 18%
+gui.choosePlanet.desc.moon=Habitável#Sem Oxigénio#Gravidade: 18%
 
 dimension.Moon.name=Lua
 
