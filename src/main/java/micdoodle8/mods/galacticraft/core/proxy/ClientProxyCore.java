@@ -553,6 +553,7 @@ public class ClientProxyCore extends CommonProxyCore
 
 	public static void adjustRenderPos(Entity entity, double offsetX, double offsetY, double offsetZ)
 	{
+		GL11.glPushMatrix();
 		final Minecraft minecraft = FMLClientHandler.instance().getClient();
 		final EntityPlayerSP player = minecraft.thePlayer;
 		final WorldProvider provider = minecraft.theWorld.provider;
