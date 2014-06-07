@@ -258,6 +258,9 @@ public class ClientProxyCore extends CommonProxyCore
 	{
 		FMLCommonHandler.instance().bus().register(new TickHandlerClient());
 		FMLCommonHandler.instance().bus().register(new KeyHandlerClient());
+		ClientRegistry.registerKeyBinding(KeyHandlerClient.galaxyMap);
+		ClientRegistry.registerKeyBinding(KeyHandlerClient.openFuelGui);
+		ClientRegistry.registerKeyBinding(KeyHandlerClient.toggleAdvGoggles);
 		MinecraftForge.EVENT_BUS.register(new ClientProxyCore());
 	}
 
