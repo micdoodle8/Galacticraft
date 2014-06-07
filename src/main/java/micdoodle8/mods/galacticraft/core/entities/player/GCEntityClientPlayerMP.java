@@ -91,11 +91,6 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
     public GCEntityClientPlayerMP(Minecraft minecraft, World world, Session session, NetHandlerPlayClient netHandler, StatFileWriter statFileWriter)
 	{
 		super(minecraft, world, session, netHandler, statFileWriter);
-
-		if (!GalacticraftCore.playersClient.containsKey(this.getGameProfile().getName()))
-		{
-			GalacticraftCore.playersClient.put(this.getGameProfile().getName(), this);
-		}
 	}
 
 	@Override
@@ -181,8 +176,6 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 	@Override
 	public void onDeath(DamageSource var1)
 	{
-		GalacticraftCore.playersClient.remove(this);
-
 		super.onDeath(var1);
 	}
 
@@ -339,11 +332,6 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 	public void onUpdate()
 	{
 		this.tick++;
-
-		if (!GalacticraftCore.playersClient.containsKey(this.getGameProfile().getName()) || this.tick % 360 == 0)
-		{
-			GalacticraftCore.playersClient.put(this.getGameProfile().getName(), this);
-		}
 
 		if (this != null && this.getParachute() && !this.capabilities.isFlying && !this.handleWaterMovement())
 		{

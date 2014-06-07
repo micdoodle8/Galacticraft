@@ -1,12 +1,14 @@
 package micdoodle8.mods.galacticraft.core.util;
 
 import java.util.Iterator;
-import java.util.Map;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.server.MinecraftServer;
+import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * PlayerUtil.java
@@ -20,25 +22,32 @@ import net.minecraft.entity.player.EntityPlayer;
 public class PlayerUtil
 {
 	public static GCEntityPlayerMP getPlayerBaseServerFromPlayerUsername(String username, boolean ignoreCase)
-	{
-		GCEntityPlayerMP thePlayer = GalacticraftCore.playersServer.get(username);
-		if (thePlayer != null)
+	{		
+		MinecraftServer server = MinecraftServer.getServer();
+		
+		if (server != null)
 		{
-			return thePlayer;
-		}
-
-		if (ignoreCase)
-		{
-			final Iterator<Map.Entry<String, GCEntityPlayerMP>> it = GalacticraftCore.playersServer.entrySet().iterator();
-
-			while (it.hasNext())
+			if (ignoreCase)
 			{
-				Map.Entry<String, GCEntityPlayerMP> entry = it.next();
+				return (GCEntityPlayerMP) server.getConfigurationManager().getPlayerForUsername(username);
+			}
+			else
+			{
+				Iterator iterator = server.getConfigurationManager().playerEntityList.iterator();
+		        GCEntityPlayerMP entityplayermp;
 
-				if (entry.getKey().equalsIgnoreCase(username))
-				{
-					return entry.getValue();
-				}
+		        do
+		        {
+		            if (!iterator.hasNext())
+		            {
+		                return null;
+		            }
+
+		            entityplayermp = (GCEntityPlayerMP)iterator.next();
+		        }
+		        while (!entityplayermp.getCommandSenderName().equalsIgnoreCase(username));
+
+		        return entityplayermp;
 			}
 		}
 
@@ -53,68 +62,25 @@ public class PlayerUtil
 		{
 			return null;
 		}
-
-		GCEntityPlayerMP thePlayer = GalacticraftCore.playersServer.get(player.getGameProfile().getName());
-		if (thePlayer != null)
+		
+		if (player instanceof GCEntityPlayerMP)
 		{
-			return thePlayer;
+			return (GCEntityPlayerMP) player;
 		}
 
-		if (ignoreCase)
-		{
-			final Iterator<Map.Entry<String, GCEntityPlayerMP>> it = GalacticraftCore.playersServer.entrySet().iterator();
-
-			while (it.hasNext())
-			{
-				Map.Entry<String, GCEntityPlayerMP> entry = it.next();
-
-				if (entry.getKey().equalsIgnoreCase(player.getGameProfile().getName()))
-				{
-					return entry.getValue();
-				}
-			}
-		}
-
-		GCLog.severe("Warning: Could not find player base server instance for player " + player.getGameProfile().getName());
-
-		return null;
+		return getPlayerBaseServerFromPlayerUsername(player.getCommandSenderName(), ignoreCase);
 	}
 
+	@SideOnly(Side.CLIENT)
 	public static GCEntityClientPlayerMP getPlayerBaseClientFromPlayer(EntityPlayer player, boolean ignoreCase)
 	{
-		if (player == null)
+		GCEntityClientPlayerMP clientPlayer = (GCEntityClientPlayerMP) FMLClientHandler.instance().getClientPlayerEntity();
+		
+		if (clientPlayer == null && player != null)
 		{
-			return null;
+			GCLog.severe("Warning: Could not find player base client instance for player " + player.getGameProfile().getName());
 		}
 
-		if (GalacticraftCore.playersClient.isEmpty())
-		{
-			return null;
-		}
-
-		GCEntityClientPlayerMP thePlayer = GalacticraftCore.playersClient.get(player.getGameProfile().getName());
-		if (thePlayer != null)
-		{
-			return thePlayer;
-		}
-
-		if (ignoreCase)
-		{
-			final Iterator<Map.Entry<String, GCEntityClientPlayerMP>> it = GalacticraftCore.playersClient.entrySet().iterator();
-
-			while (it.hasNext())
-			{
-				Map.Entry<String, GCEntityClientPlayerMP> entry = it.next();
-
-				if (entry.getKey().equalsIgnoreCase(player.getGameProfile().getName()))
-				{
-					return entry.getValue();
-				}
-			}
-		}
-
-		GCLog.severe("Warning: Could not find player base client instance for player " + player.getGameProfile().getName());
-
-		return null;
+		return clientPlayer;
 	}
 }

@@ -165,9 +165,6 @@ public class GalacticraftCore
 	
 	private static ThreadRequirementMissing missingRequirementThread;
 
-	public static Map<String, GCEntityClientPlayerMP> playersClient = new HashMap<String, GCEntityClientPlayerMP>();
-	public static Map<String, GCEntityPlayerMP> playersServer = new HashMap<String, GCEntityPlayerMP>();
-
 	public static CreativeTabs galacticraftTab;
 
 	public static Galaxy galaxyBlockyWay;

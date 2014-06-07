@@ -344,8 +344,6 @@ public class TickHandlerClient
 
 			if (minecraft.currentScreen != null && minecraft.currentScreen instanceof GuiMainMenu)
 			{
-				GalacticraftCore.playersServer.clear();
-				GalacticraftCore.playersClient.clear();
 				ClientProxyCore.playerItemData.clear();
 
 				if (TickHandlerClient.missingRequirementThread == null)
