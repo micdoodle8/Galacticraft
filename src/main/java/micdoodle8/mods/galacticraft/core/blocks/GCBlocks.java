@@ -37,6 +37,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 public class GCBlocks
 {
 	public static Block breatheableAir;
+	public static Block brightAir;
 	public static Block treasureChestTier1;
 	public static Block landingPad;
 	public static Block unlitTorch;
@@ -78,6 +79,7 @@ public class GCBlocks
 	public static void initBlocks()
 	{
 		GCBlocks.breatheableAir = new BlockBreathableAir("breatheableAir");
+		GCBlocks.brightAir = new BlockBrightAir("brightAir");
 		GCBlocks.treasureChestTier1 = new BlockT1TreasureChest("treasureChest");
 		GCBlocks.landingPad = new BlockLandingPad("landingPad");
 		GCBlocks.landingPadFull = new BlockLandingPadFull("landingPadFull");
@@ -163,6 +165,7 @@ public class GCBlocks
 		// Hide certain items from NEI
 		GCBlocks.hiddenBlocks.add(GCBlocks.airLockSeal);
 		GCBlocks.hiddenBlocks.add(GCBlocks.breatheableAir);
+		GCBlocks.hiddenBlocks.add(GCBlocks.brightAir);
 		GCBlocks.hiddenBlocks.add(GCBlocks.unlitTorch);
 		GCBlocks.hiddenBlocks.add(GCBlocks.unlitTorchLit);
 		GCBlocks.hiddenBlocks.add(GCBlocks.landingPadFull);
@@ -216,6 +219,7 @@ public class GCBlocks
 		GameRegistry.registerBlock(GCBlocks.unlitTorch, ItemBlockGC.class, GCBlocks.unlitTorch.getUnlocalizedName(), GalacticraftCore.MODID);
 		GameRegistry.registerBlock(GCBlocks.unlitTorchLit, ItemBlockGC.class, GCBlocks.unlitTorchLit.getUnlocalizedName(), GalacticraftCore.MODID);
 		GameRegistry.registerBlock(GCBlocks.breatheableAir, ItemBlockGC.class, GCBlocks.breatheableAir.getUnlocalizedName(), GalacticraftCore.MODID);
+		GameRegistry.registerBlock(GCBlocks.brightAir, ItemBlockGC.class, GCBlocks.brightAir.getUnlocalizedName(), GalacticraftCore.MODID);
 		GameRegistry.registerBlock(GCBlocks.oxygenDistributor, ItemBlockGC.class, GCBlocks.oxygenDistributor.getUnlocalizedName(), GalacticraftCore.MODID);
 		GameRegistry.registerBlock(GCBlocks.oxygenPipe, ItemBlockGC.class, GCBlocks.oxygenPipe.getUnlocalizedName(), GalacticraftCore.MODID);
 		GameRegistry.registerBlock(GCBlocks.oxygenCollector, ItemBlockGC.class, GCBlocks.oxygenCollector.getUnlocalizedName(), GalacticraftCore.MODID);
