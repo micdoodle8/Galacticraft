@@ -2,6 +2,9 @@ package micdoodle8.mods.galacticraft.core.proxy;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.network.INetHandler;
+import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -67,5 +70,17 @@ public class CommonProxyCore
 	public World getWorldForID(int dimensionID)
 	{
 		return FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(dimensionID);
+	}
+	
+	public EntityPlayer getPlayerFromNetHandler(INetHandler handler) 
+	{
+		if (handler instanceof NetHandlerPlayServer)
+		{
+			return ((NetHandlerPlayServer) handler).playerEntity;
+		} 
+		else 
+		{
+			return null;
+		}
 	}
 }

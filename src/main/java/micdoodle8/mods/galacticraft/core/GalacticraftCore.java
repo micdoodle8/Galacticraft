@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
 
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
@@ -45,14 +44,12 @@ import micdoodle8.mods.galacticraft.core.entities.EntityMeteorChunk;
 import micdoodle8.mods.galacticraft.core.entities.EntityParachest;
 import micdoodle8.mods.galacticraft.core.entities.EntitySkeletonBoss;
 import micdoodle8.mods.galacticraft.core.entities.EntityTier1Rocket;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockGC;
 import micdoodle8.mods.galacticraft.core.network.ConnectionEvents;
-import micdoodle8.mods.galacticraft.core.network.PacketPipeline;
+import micdoodle8.mods.galacticraft.core.network.GalacticraftChannelHandler;
 import micdoodle8.mods.galacticraft.core.proxy.CommonProxyCore;
 import micdoodle8.mods.galacticraft.core.recipe.RecipeManagerGC;
 import micdoodle8.mods.galacticraft.core.schematic.SchematicAdd;
@@ -161,7 +158,7 @@ public class GalacticraftCore
 	@Instance(GalacticraftCore.MODID)
 	public static GalacticraftCore instance;
 
-	public static PacketPipeline packetPipeline;
+	public static GalacticraftChannelHandler packetPipeline;
 	
 	private static ThreadRequirementMissing missingRequirementThread;
 
@@ -249,8 +246,7 @@ public class GalacticraftCore
 		GalacticraftCore.galacticraftTab = new CreativeTabGC(CreativeTabs.getNextID(), GalacticraftCore.CHANNEL, GCItems.rocketTier1, 0);
 		GalacticraftCore.proxy.init(event);
 
-		GalacticraftCore.packetPipeline = new PacketPipeline();
-		GalacticraftCore.packetPipeline.initalise();
+		GalacticraftCore.packetPipeline = GalacticraftChannelHandler.init();
 		
 		GalacticraftCore.galaxyBlockyWay = new Galaxy("blockyWay").setMapPosition(new Vector3(0.0F, 0.0F));
 		GalacticraftCore.planetOverworld = (Planet) new Planet("overworld").setParentGalaxy(GalacticraftCore.galaxyBlockyWay).setRingColorRGB(0.1F, 0.9F, 0.6F).setPhaseShift(0.75F);
@@ -324,7 +320,6 @@ public class GalacticraftCore
 	public void postInit(FMLPostInitializationEvent event)
 	{
 		GalacticraftCore.proxy.postInit(event);
-		GalacticraftCore.packetPipeline.postInitialise();
 		
 		ArrayList<CelestialBody> cBodyList = new ArrayList<CelestialBody>();
 		cBodyList.addAll(GalaxyRegistry.getRegisteredPlanets().values());

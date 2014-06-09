@@ -98,6 +98,8 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
+import net.minecraft.network.INetHandler;
+import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -726,4 +728,17 @@ public class ClientProxyCore extends CommonProxyCore
 	    	ClientProxyCore.lastY = y;
     	}
     }
+	
+    @Override
+	public EntityPlayer getPlayerFromNetHandler(INetHandler handler) 
+	{
+		if (handler instanceof NetHandlerPlayServer)
+		{
+			return ((NetHandlerPlayServer) handler).playerEntity;
+		} 
+		else 
+		{
+			return FMLClientHandler.instance().getClientPlayerEntity();
+		}
+	}
 }
