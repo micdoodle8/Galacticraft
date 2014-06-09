@@ -25,6 +25,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
@@ -324,5 +325,15 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
     {
         if (metadata < 10) return true;
         return false;
+    }
+	
+	@Override
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
+    {
+		int metadata = world.getBlockMetadata(x,  y,  z);
+		if (metadata == 2) return new ItemStack(Item.getItemFromBlock(this), 1, metadata);
+		if (metadata == 10) return null;
+		
+		return super.getPickBlock(target, world, x, y, z);
     }
 }

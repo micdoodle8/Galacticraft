@@ -13,6 +13,8 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -156,4 +158,13 @@ public class BlockBasic extends Block implements IDetectableResource
 	{
 		return metadata >= 5 && metadata <= 8;
 	}
+	
+	@Override
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
+    {
+		int metadata = world.getBlockMetadata(x,  y,  z);
+		if (metadata == 8) return new ItemStack(Item.getItemFromBlock(this), 1, metadata);
+		
+		return super.getPickBlock(target, world, x, y, z);
+    }
 }

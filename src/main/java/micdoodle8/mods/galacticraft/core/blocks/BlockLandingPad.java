@@ -155,4 +155,10 @@ public class BlockLandingPad extends BlockAdvancedTile implements IPartialSealab
 	{
 		return direction == ForgeDirection.UP;
 	}
+	
+	@Override
+	public int damageDropped(int meta)
+	{
+		return meta;
+	}
 }
