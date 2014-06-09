@@ -45,7 +45,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GuiGalaxyMap extends GuiStarBackground
 {
 	private static final ResourceLocation guiTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/gui.png");
-
+    private static final ResourceLocation vanillaSun = new ResourceLocation("textures/environment/sun.png");
+	
 	private static int guiMapMinX;
 
 	private static int guiMapMinY;
@@ -311,7 +312,9 @@ public class GuiGalaxyMap extends GuiStarBackground
 		int var41;
 
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-
+		
+		this.renderSun(488-var4-var4, -488-var5-var5);
+		
 		for (Planet planet : GalaxyRegistry.getRegisteredPlanets().values())
 		{
 			if (planet.getParentGalaxy() != null)
@@ -418,11 +421,11 @@ public class GuiGalaxyMap extends GuiStarBackground
 				GL11.glEnable(GL11.GL_BLEND);
 				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 
-				GuiGalaxyMap.renderPlanet(0, centerX + var42b, centerY + var41b, (float) (cBody.getRelativeSize() * 15.0F + 1 / Math.pow(this.zoom, -2)), Tessellator.instance);
+				GuiGalaxyMap.renderPlanet(0, centerX + var42b, centerY + var41b, (float) (cBody.getRelativeSize() * 40.0F + 1 / Math.pow(this.zoom, -2)), Tessellator.instance);
 
 				if (this.selectedPlanet != null && cBody.equals(this.selectedPlanet))
 				{
-					GuiGalaxyMap.renderPlanet(0, centerX + var42b, centerY + var41b, (float) (cBody.getRelativeSize() * 15.0F + 1 / Math.pow(this.zoom, -2)), Tessellator.instance);
+					GuiGalaxyMap.renderPlanet(0, centerX + var42b, centerY + var41b, (float) (cBody.getRelativeSize() * 40.0F + 1 / Math.pow(this.zoom, -2)), Tessellator.instance);
 					this.drawInfoBox(centerX + var42b, centerY + var41b, cBody);
 				}
 			}
@@ -452,6 +455,19 @@ public class GuiGalaxyMap extends GuiStarBackground
 		}
 	}
 
+	public void renderSun(int x, int y)
+	{
+		this.mc.renderEngine.bindTexture(vanillaSun);
+
+		GL11.glDisable(GL11.GL_BLEND);
+		GL11.glEnable(GL11.GL_DEPTH_TEST);
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+
+		GuiGalaxyMap.renderPlanet(0, x, y, (float) (1000.0F + 1 / Math.pow(this.zoom, -2)), Tessellator.instance);
+	}
+	
 	public static void renderPlanet(int index, int x, int y, float slotHeight, Tessellator tessellator)
 	{
 		tessellator.startDrawingQuads();
