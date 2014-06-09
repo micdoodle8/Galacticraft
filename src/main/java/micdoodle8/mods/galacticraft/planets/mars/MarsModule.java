@@ -107,7 +107,7 @@ public class MarsModule implements IPlanetsModule
 		SchematicRegistry.registerSchematicRecipe(new SchematicTier2Rocket());
 		SchematicRegistry.registerSchematicRecipe(new SchematicCargoRocket());
 
-		GalacticraftCore.packetPipeline.addDiscriminator(5, PacketSimpleMars.class);
+		GalacticraftCore.packetPipeline.addDiscriminator(6, PacketSimpleMars.class);
 		
 		MarsModule.galacticraftMarsTab = new CreativeTabGC(CreativeTabs.getNextID(), "GalacticraftMars", MarsItems.spaceship, 5);
 		

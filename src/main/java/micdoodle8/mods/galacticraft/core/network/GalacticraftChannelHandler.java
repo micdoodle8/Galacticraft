@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.network;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 
 import java.util.EnumMap;
@@ -25,6 +24,7 @@ public class GalacticraftChannelHandler extends FMLIndexedMessageToMessageCodec<
 		addDiscriminator(2, PacketDynamic.class);
 		addDiscriminator(3, PacketControllableEntity.class);
 		addDiscriminator(4, PacketEntityUpdate.class);
+		addDiscriminator(5, PacketDynamicInventory.class);
 	}
 	
 	public static GalacticraftChannelHandler init()
