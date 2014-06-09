@@ -84,7 +84,6 @@ public class GCCoreUtil
 			LanguageRegistry.instance().addStringLocalization("entity." + var1 + ".name", StatCollector.translateToLocal("entity.GalacticraftCore." + var1 + ".name"));
 		}
 
-		EntityList.addMapping(var0, var1, id);
 		EntityRegistry.registerModEntity(var0, var1, id, GalacticraftCore.instance, trackingDistance, updateFreq, sendVel);
 	}
 
