@@ -6,14 +6,15 @@ package micdoodle8.mods.galacticraft.planets.mars.nei;
 //import java.util.Map.Entry;
 //import java.util.Set;
 //
-//import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import codechicken.nei.api.API;
 //import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
-//import micdoodle8.mods.galacticraft.mars.items.GCMarsItems;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 //import net.minecraft.block.Block;
 //import net.minecraft.item.ItemStack;
 //import codechicken.nei.PositionedStack;
 //import codechicken.nei.api.API;
-//import codechicken.nei.api.IConfigureNEI;
+import codechicken.nei.api.IConfigureNEI;
 //
 ///**
 // * NEIGalacticraftMarsConfig.java
@@ -24,32 +25,33 @@ package micdoodle8.mods.galacticraft.planets.mars.nei;
 // * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
 // * 
 // */
-//public class NEIGalacticraftMarsConfig implements IConfigureNEI
-//{
+public class NEIGalacticraftMarsConfig implements IConfigureNEI
+{
 //	private static HashMap<ArrayList<PositionedStack>, PositionedStack> rocketBenchRecipes = new HashMap<ArrayList<PositionedStack>, PositionedStack>();
 //	private static HashMap<ArrayList<PositionedStack>, PositionedStack> cargoBenchRecipes = new HashMap<ArrayList<PositionedStack>, PositionedStack>();
 //
-//	@Override
-//	public void loadConfig()
-//	{
+	@Override
+	public void loadConfig()
+	{
 //		this.registerRecipes();
 //		API.registerRecipeHandler(new RocketT2RecipeHandler());
 //		API.registerUsageHandler(new RocketT2RecipeHandler());
 //		API.registerRecipeHandler(new CargoRocketRecipeHandler());
 //		API.registerUsageHandler(new CargoRocketRecipeHandler());
-//	}
-//
-//	@Override
-//	public String getName()
-//	{
-//		return "Galacticraft Mars NEI Plugin";
-//	}
-//
-//	@Override
-//	public String getVersion()
-//	{
-//		return GalacticraftCore.LOCALMAJVERSION + "." + GalacticraftCore.LOCALMINVERSION + "." + GalacticraftCore.LOCALBUILDVERSION;
-//	}
+		API.registerHighlightIdentifier(MarsBlocks.marsBlock, new GCMarsNEIHighlightHandler());
+	}
+
+	@Override
+	public String getName()
+	{
+		return "Galacticraft Mars NEI Plugin";
+	}
+
+	@Override
+	public String getVersion()
+	{
+		return GalacticraftCore.LOCALMAJVERSION + "." + GalacticraftCore.LOCALMINVERSION + "." + GalacticraftCore.LOCALBUILDVERSION;
+	}
 //
 //	public void registerRocketBenchRecipe(ArrayList<PositionedStack> input, PositionedStack output)
 //	{
@@ -178,4 +180,4 @@ package micdoodle8.mods.galacticraft.planets.mars.nei;
 //		input2.add(new PositionedStack(new ItemStack(Block.chest), 90 + 2 * 26, -7 + changey));
 //		this.registerCargoBenchRecipe(input2, new PositionedStack(new ItemStack(GCMarsItems.spaceship, 1, 13), 139, 77 + changey));
 //	}
-//}
+}
