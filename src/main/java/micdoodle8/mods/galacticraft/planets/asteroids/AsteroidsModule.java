@@ -15,6 +15,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAst
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityGrapple;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntitySmallAsteroid;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityTier3Rocket;
+import micdoodle8.mods.galacticraft.planets.asteroids.entities.player.AsteroidsPlayerHandler;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReceiver;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReflector;
@@ -22,6 +23,8 @@ import micdoodle8.mods.galacticraft.planets.asteroids.util.AsteroidsUtil;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -42,6 +45,9 @@ public class AsteroidsModule implements IPlanetsModule
 	public void preInit(FMLPreInitializationEvent event) 
 	{
 		new ConfigManagerAsteroids(new File(event.getModConfigurationDirectory(), "Galacticraft/asteroids.conf"));
+		AsteroidsPlayerHandler playerHandler = new AsteroidsPlayerHandler();
+		MinecraftForge.EVENT_BUS.register(playerHandler);
+		FMLCommonHandler.instance().bus().register(playerHandler);
 		AsteroidBlocks.initBlocks();
 		AsteroidBlocks.registerBlocks();
 		AsteroidsItems.initItems();
