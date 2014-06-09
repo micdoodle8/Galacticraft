@@ -1,8 +1,6 @@
 package micdoodle8.mods.galacticraft.api.transmission.compatibility;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -16,7 +14,6 @@ import java.util.Set;
 //import buildcraft.api.power.PowerHandler.Type;
 //import cofh.api.energy.IEnergyHandler;
 //import mekanism.api.energy.IStrictEnergyAcceptor;
-import micdoodle8.mods.galacticraft.api.power.IEnergyHandlerGC;
 import micdoodle8.mods.galacticraft.api.transmission.ElectricalEvent.ElectricityProductionEvent;
 import micdoodle8.mods.galacticraft.api.transmission.ElectricalEvent.ElectricityRequestEvent;
 import micdoodle8.mods.galacticraft.api.transmission.ElectricityPack;
@@ -26,7 +23,6 @@ import micdoodle8.mods.galacticraft.api.transmission.core.grid.IElectricityNetwo
 import micdoodle8.mods.galacticraft.api.transmission.core.path.Pathfinder;
 import micdoodle8.mods.galacticraft.api.transmission.core.path.PathfinderChecker;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
-import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkConnection;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;

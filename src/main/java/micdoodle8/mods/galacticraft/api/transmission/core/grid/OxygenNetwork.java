@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.Set;
 
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
-import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
 import micdoodle8.mods.galacticraft.api.transmission.core.path.Pathfinder;
 import micdoodle8.mods.galacticraft.api.transmission.core.path.PathfinderChecker;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;

@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.api.entity.IDockable;
-import micdoodle8.mods.galacticraft.api.entity.ICargoEntity.EnumCargoLoadingState;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
