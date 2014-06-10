@@ -33,7 +33,7 @@ public class RecipeUtil
 		{
 			if (recipe.matches(benchStacks))
 			{
-				return new ItemStack(recipe.getRecipeOutput().getItem(), 1);
+				return recipe.getRecipeOutput();
 			}
 		}
 
@@ -46,7 +46,7 @@ public class RecipeUtil
 		{
 			if (recipe.matches(inventoryRocketBench))
 			{
-				return new ItemStack(recipe.getRecipeOutput().getItem(), 1);
+				return recipe.getRecipeOutput();
 			}
 		}
 
