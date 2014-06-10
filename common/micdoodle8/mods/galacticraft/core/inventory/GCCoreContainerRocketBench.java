@@ -192,11 +192,9 @@ public class GCCoreContainerRocketBench extends Container
 
 			if (var4.stackSize == 0)
 			{
+				if (par1 == 0) var3.onPickupFromSlot(par1EntityPlayer, var4);
 				var3.putStack((ItemStack) null);
-			}
-			else
-			{
-				var3.onSlotChanged();
+				return var2;
 			}
 
 			if (var4.stackSize == var2.stackSize)
@@ -205,6 +203,7 @@ public class GCCoreContainerRocketBench extends Container
 			}
 
 			var3.onPickupFromSlot(par1EntityPlayer, var4);
+			if (par1 == 0) var3.onSlotChanged();
 		}
 
 		return var2;

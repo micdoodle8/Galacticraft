@@ -139,7 +139,7 @@ public class GCCoreContainerBuggyBench extends Container
 				{
 					for (int j = 1; j < 20; j ++)
 					{
-						if (((Slot) this.inventorySlots.get(par1)).isItemValid(var4))
+						if (((Slot) this.inventorySlots.get(j)).isItemValid(var4))
 							this.mergeOneItem(var4, j, j+1, false);
 					}
 				}
@@ -166,16 +166,13 @@ public class GCCoreContainerBuggyBench extends Container
 			{
 				slot.putStack((ItemStack) null);
 			}
-			else
-			{
-				slot.onSlotChanged();
-			}
 
 			if (var4.stackSize == var2.stackSize)
 			{
 				return null;
 			}
 
+			slot.onSlotChanged();
 			slot.onPickupFromSlot(par1EntityPlayer, var4);
 		}
 
