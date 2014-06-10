@@ -571,43 +571,11 @@ public class GCMarsTileEntityTerraformer extends GCCoreTileEntityElectricBlock i
 	@Override
 	public void addExtraNetworkedData(List<Object> networkedList)
 	{
-		ItemStack stack1 = this.getFirstBonemealStack();
-		ItemStack stack2 = this.getFirstSaplingStack();
-		ItemStack stack3 = this.getFirstSeedStack();
-		networkedList.add(stack1 == null ? -1 : this.getSelectiveStack(2, 6));
-		networkedList.add(stack1 == null ? -1 : stack1.itemID);
-		networkedList.add(stack1 == null ? -1 : stack1.stackSize);
-		networkedList.add(stack1 == null ? -1 : stack1.getItemDamage());
-		networkedList.add(stack2 == null ? -1 : this.getSelectiveStack(6, 4));
-		networkedList.add(stack2 == null ? -1 : stack2.itemID);
-		networkedList.add(stack2 == null ? -1 : stack2.stackSize);
-		networkedList.add(stack2 == null ? -1 : stack2.getItemDamage());
-		networkedList.add(stack3 == null ? -1 : this.getSelectiveStack(10, 14));
-		networkedList.add(stack3 == null ? -1 : stack3.itemID);
-		networkedList.add(stack3 == null ? -1 : stack3.stackSize);
-		networkedList.add(stack3 == null ? -1 : stack3.getItemDamage());
 	}
 
 	@Override
 	public void readExtraNetworkedData(ByteArrayDataInput dataStream)
 	{
-		int firstStack = -1;
-		int itemID = -1;
-		int stackSize = -1;
-		int stackMetadata = -1;
-
-		for (int i = 0; i < 3; i++)
-		{
-			firstStack = dataStream.readInt();
-			itemID = dataStream.readInt();
-			stackSize = dataStream.readInt();
-			stackMetadata = dataStream.readInt();
-
-			if (firstStack != -1)
-			{
-				this.containingItems[firstStack] = new ItemStack(itemID, stackSize, stackMetadata);
-			}
-		}
 	}
 
 	@Override
