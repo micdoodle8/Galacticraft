@@ -138,7 +138,7 @@ public class GCMarsGuiTerraformer extends GuiContainer
 			return EnumColor.RED + "Not Enough Saplings";
 		}
 
-		if (this.terraformer.terraformBubble.getSize() < this.terraformer.MAX_SIZE)
+		if (this.terraformer.terraformBubble.getSize() < this.terraformer.MAX_SIZE - 0.5)
 		{
 			return EnumColor.YELLOW + "Bubble Expanding";
 		}
