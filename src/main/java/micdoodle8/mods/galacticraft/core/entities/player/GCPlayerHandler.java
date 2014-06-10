@@ -117,41 +117,44 @@ public class GCPlayerHandler
 			}
 		}
 
-		if (player.getPlayerStats().cryogenicChamberCooldown > 0)
+		//This will speed things up a little
+		final GCPlayerStats GCPlayer = player.getPlayerStats();
+		
+		if (GCPlayer.cryogenicChamberCooldown > 0)
 		{
-			player.getPlayerStats().cryogenicChamberCooldown--;
+			GCPlayer.cryogenicChamberCooldown--;
 		}
 
-		if (!player.onGround && player.getPlayerStats().lastOnGround)
+		if (!player.onGround && GCPlayer.lastOnGround)
 		{
-			player.getPlayerStats().touchedGround = true;
+			GCPlayer.touchedGround = true;
 		}
 
-		if (player.getPlayerStats().teleportCooldown > 0)
+		if (GCPlayer.teleportCooldown > 0)
 		{
-			player.getPlayerStats().teleportCooldown--;
+			GCPlayer.teleportCooldown--;
 		}
 
-		if (player.getPlayerStats().chatCooldown > 0)
+		if (GCPlayer.chatCooldown > 0)
 		{
-			player.getPlayerStats().chatCooldown--;
+			GCPlayer.chatCooldown--;
 		}
 
-		if (player.getPlayerStats().openPlanetSelectionGuiCooldown > 0)
+		if (GCPlayer.openPlanetSelectionGuiCooldown > 0)
 		{
-			player.getPlayerStats().openPlanetSelectionGuiCooldown--;
+			GCPlayer.openPlanetSelectionGuiCooldown--;
 
-			if (player.getPlayerStats().openPlanetSelectionGuiCooldown == 1 && !player.getPlayerStats().hasOpenedPlanetSelectionGui)
+			if (GCPlayer.openPlanetSelectionGuiCooldown == 1 && !GCPlayer.hasOpenedPlanetSelectionGui)
 			{
 				player.sendPlanetList();
-				player.getPlayerStats().usingPlanetSelectionGui = true;
-				player.getPlayerStats().hasOpenedPlanetSelectionGui = true;
+				GCPlayer.usingPlanetSelectionGui = true;
+				GCPlayer.hasOpenedPlanetSelectionGui = true;
 			}
 		}
 
-		if (player.getPlayerStats().usingParachute)
+		if (GCPlayer.usingParachute)
 		{
-			if (player.getPlayerStats().lastParachuteInSlot != null) player.fallDistance = 0.0F;
+			if (GCPlayer.lastParachuteInSlot != null) player.fallDistance = 0.0F;
 			if (player.onGround)
 			{
 				player.setUsingParachute(false);
@@ -160,7 +163,7 @@ public class GCPlayerHandler
 
 		player.checkCurrentItem();
 
-		if (player.getPlayerStats().usingPlanetSelectionGui)
+		if (GCPlayer.usingPlanetSelectionGui)
 		{
 			player.sendPlanetList();
 		}
@@ -170,9 +173,9 @@ public class GCPlayerHandler
 			player.playerNetServerHandler.ticksForFloatKick = 0;
 		}	
 */		
-		if (player.getPlayerStats().damageCounter > 0)
+		if (GCPlayer.damageCounter > 0)
 		{
-			player.getPlayerStats().damageCounter--;
+			GCPlayer.damageCounter--;
 		}
 
 		if (tick % 30 == 0 && player.worldObj.provider instanceof IGalacticraftWorldProvider)
@@ -182,17 +185,17 @@ public class GCPlayerHandler
 
 		player.checkGear();
 
-		if (player.getPlayerStats().chestSpawnCooldown > 0)
+		if (GCPlayer.chestSpawnCooldown > 0)
 		{
-			player.getPlayerStats().chestSpawnCooldown--;
+			GCPlayer.chestSpawnCooldown--;
 
-			if (player.getPlayerStats().chestSpawnCooldown == 180)
+			if (GCPlayer.chestSpawnCooldown == 180)
 			{
-				if (player.getPlayerStats().chestSpawnVector != null)
+				if (GCPlayer.chestSpawnVector != null)
 				{
-					EntityParachest chest = new EntityParachest(player.worldObj, player.getPlayerStats().rocketStacks, player.getPlayerStats().fuelLevel);
+					EntityParachest chest = new EntityParachest(player.worldObj, GCPlayer.rocketStacks, GCPlayer.fuelLevel);
 
-					chest.setPosition(player.getPlayerStats().chestSpawnVector.x, player.getPlayerStats().chestSpawnVector.y, player.getPlayerStats().chestSpawnVector.z);
+					chest.setPosition(GCPlayer.chestSpawnVector.x, GCPlayer.chestSpawnVector.y, GCPlayer.chestSpawnVector.z);
 
 					if (!player.worldObj.isRemote)
 					{
@@ -204,31 +207,31 @@ public class GCPlayerHandler
 
 		//
 
-		if (player.getPlayerStats().launchAttempts > 0 && player.ridingEntity == null)
+		if (GCPlayer.launchAttempts > 0 && player.ridingEntity == null)
 		{
-			player.getPlayerStats().launchAttempts = 0;
+			GCPlayer.launchAttempts = 0;
 		}
 
 		player.checkOxygen();
 
-		if (player.worldObj.provider instanceof IGalacticraftWorldProvider && (player.getPlayerStats().oxygenSetupValid != player.getPlayerStats().lastOxygenSetupValid || tick % 100 == 0))
+		if (player.worldObj.provider instanceof IGalacticraftWorldProvider && (GCPlayer.oxygenSetupValid != GCPlayer.lastOxygenSetupValid || tick % 100 == 0))
 		{
-			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_OXYGEN_VALIDITY, new Object[] { player.getPlayerStats().oxygenSetupValid }), player);
+			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_OXYGEN_VALIDITY, new Object[] { GCPlayer.oxygenSetupValid }), player);
 		}
 
 		player.throwMeteors();
 
 		player.updateSchematics();
 
-		if (tick % 250 == 0 && player.getPlayerStats().frequencyModuleInSlot == null && !player.getPlayerStats().receivedSoundWarning && player.worldObj.provider instanceof IGalacticraftWorldProvider && player.onGround && tick > 0)
+		if (tick % 250 == 0 && GCPlayer.frequencyModuleInSlot == null && !GCPlayer.receivedSoundWarning && player.worldObj.provider instanceof IGalacticraftWorldProvider && player.onGround && tick > 0)
 		{
 			player.addChatMessage(new ChatComponentText(EnumColor.YELLOW + "I'll probably need a " + EnumColor.AQUA + GCItems.basicItem.getItemStackDisplayName(new ItemStack(GCItems.basicItem, 1, 19)) + EnumColor.YELLOW + " if I want to hear properly here."));
-			player.getPlayerStats().receivedSoundWarning = true;
+			GCPlayer.receivedSoundWarning = true;
 		}
 
-		player.getPlayerStats().lastOxygenSetupValid = player.getPlayerStats().oxygenSetupValid;
-		player.getPlayerStats().lastUnlockedSchematics = player.getPlayerStats().unlockedSchematics;
+		GCPlayer.lastOxygenSetupValid = GCPlayer.oxygenSetupValid;
+		GCPlayer.lastUnlockedSchematics = GCPlayer.unlockedSchematics;
 
-		player.getPlayerStats().lastOnGround = player.onGround;
+		GCPlayer.lastOnGround = player.onGround;
 	}
 }
