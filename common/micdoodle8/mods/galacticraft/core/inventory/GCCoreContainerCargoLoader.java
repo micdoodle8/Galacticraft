@@ -81,7 +81,14 @@ public class GCCoreContainerCargoLoader extends Container
 			}
 			else
 			{
-				if (par2 < 42)
+				if (var5.getItem() instanceof IItemElectric)
+				{
+					if (!this.mergeItemStack(var5, 0, 1, false))
+					{
+						return null;
+					}
+				}
+				else if (par2 < 42)
 				{
 					if (!this.mergeItemStack(var5, 1, 15, false) && !this.mergeItemStack(var5, 42, 51, false))
 					{

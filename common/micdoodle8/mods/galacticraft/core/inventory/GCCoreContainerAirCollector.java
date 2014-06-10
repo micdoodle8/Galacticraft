@@ -22,10 +22,10 @@ public class GCCoreContainerAirCollector extends Container
 {
 	private GCCoreTileEntityElectricBlock tileEntity;
 	
-	public GCCoreContainerAirCollector(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityOxygenCollector distributor)
+	public GCCoreContainerAirCollector(InventoryPlayer par1InventoryPlayer, GCCoreTileEntityOxygenCollector collector)
 	{
-		tileEntity = distributor;
-		this.addSlotToContainer(new SlotSpecific(distributor, 0, 32, 27, IItemElectric.class));
+		tileEntity = collector;
+		this.addSlotToContainer(new SlotSpecific(collector, 0, 32, 27, IItemElectric.class));
 
 		int var6;
 		int var7;
@@ -53,38 +53,68 @@ public class GCCoreContainerAirCollector extends Container
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
+	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
 	{
-		ItemStack var3 = null;
-		final Slot var4 = (Slot) this.inventorySlots.get(par2);
+		ItemStack var2 = null;
+		final Slot slot = (Slot) this.inventorySlots.get(par1);
+		final int b = this.inventorySlots.size();
 
-		if (var4 != null && var4.getHasStack())
+		if (slot != null && slot.getHasStack())
 		{
-			final ItemStack var5 = var4.getStack();
-			var3 = var5.copy();
+			final ItemStack stack = slot.getStack();
+			var2 = stack.copy();
 
-			if (par2 < 27)
+			if (par1 == 0)
 			{
-				if (!this.mergeItemStack(var5, 27, this.inventorySlots.size(), true))
+				if (!this.mergeItemStack(stack, b - 36, b, true))
 				{
 					return null;
 				}
+
+				slot.onSlotChange(stack, var2);
 			}
-			else if (!this.mergeItemStack(var5, 0, 27, false))
+			else
+			{
+				if (stack.getItem() instanceof IItemElectric)
+				{
+					if (!this.mergeItemStack(stack, 0, 1, false))
+					{
+						return null;
+					}
+				}
+				else
+				{
+					if (par1 < b - 9)
+					{
+						if (!this.mergeItemStack(stack, b - 9, b, false))
+						{
+							return null;
+						}
+					}
+					else if (!this.mergeItemStack(stack, b - 36, b - 9, false))
+					{
+						return null;
+					}
+				}
+			}
+
+			if (stack.stackSize == 0)
+			{
+				slot.putStack((ItemStack) null);
+			}
+			else
+			{
+				slot.onSlotChanged();
+			}
+
+			if (stack.stackSize == var2.stackSize)
 			{
 				return null;
 			}
 
-			if (var5.stackSize == 0)
-			{
-				var4.putStack((ItemStack) null);
-			}
-			else
-			{
-				var4.onSlotChanged();
-			}
+			slot.onPickupFromSlot(par1EntityPlayer, stack);
 		}
 
-		return var3;
+		return var2;
 	}
 }

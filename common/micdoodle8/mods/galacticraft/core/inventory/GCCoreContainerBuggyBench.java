@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
+import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -7,6 +8,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
@@ -83,11 +85,11 @@ public class GCCoreContainerBuggyBench extends Container
 		{
 			for (int var2 = 1; var2 < 18; ++var2)
 			{
-				final ItemStack var3 = this.craftMatrix.getStackInSlotOnClosing(var2);
+				final ItemStack slot = this.craftMatrix.getStackInSlotOnClosing(var2);
 
-				if (var3 != null)
+				if (slot != null)
 				{
-					par1EntityPlayer.dropPlayerItem(var3);
+					par1EntityPlayer.dropPlayerItem(slot);
 				}
 			}
 		}
@@ -113,48 +115,60 @@ public class GCCoreContainerBuggyBench extends Container
 	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
 	{
 		ItemStack var2 = null;
-		final Slot var3 = (Slot) this.inventorySlots.get(par1);
+		final Slot slot = (Slot) this.inventorySlots.get(par1);
+		final int b = this.inventorySlots.size();
 
-		if (var3 != null && var3.getHasStack())
+		if (slot != null && slot.getHasStack())
 		{
-			final ItemStack var4 = var3.getStack();
+			final ItemStack var4 = slot.getStack();
 			var2 = var4.copy();
 
-			if (par1 == 0)
+			if (par1 < b - 36)
 			{
-				if (!this.mergeItemStack(var4, 11, 46, true))
+				if (!this.mergeItemStack(var4, b - 36, b, true))
 				{
 					return null;
 				}
 
-				var3.onSlotChange(var4, var2);
+				slot.onSlotChange(var4, var2);
 			}
-			else if (par1 >= 10 && par1 < 37)
+			else
 			{
-				if (!this.mergeItemStack(var4, 37, 46, false))
+				int i = var4.getItem().itemID;
+				if (i == GCCoreItems.heavyPlatingTier1.itemID || i == GCCoreItems.partBuggy.itemID)
 				{
-					return null;
+					for (int j = 1; j < 20; j ++)
+					{
+						if (((Slot) this.inventorySlots.get(par1)).isItemValid(var4))
+							this.mergeItemStack(var4, j, j+1, false);
+					}
 				}
-			}
-			else if (par1 >= 37 && par1 < 46)
-			{
-				if (!this.mergeItemStack(var4, 11, 37, false))
+				else
 				{
-					return null;
+					if (par1 < b - 9)
+					{
+						if (!this.mergeItemStack(var4, b - 9, b, false))
+						{
+							return null;
+						}
+					}
+					else
+					{
+						if (!this.mergeItemStack(var4, b - 36, b - 9, false))
+						{
+							return null;
+						}
+					}
 				}
-			}
-			else if (!this.mergeItemStack(var4, 11, 46, false))
-			{
-				return null;
 			}
 
 			if (var4.stackSize == 0)
 			{
-				var3.putStack((ItemStack) null);
+				slot.putStack((ItemStack) null);
 			}
 			else
 			{
-				var3.onSlotChanged();
+				slot.onSlotChanged();
 			}
 
 			if (var4.stackSize == var2.stackSize)
@@ -162,7 +176,7 @@ public class GCCoreContainerBuggyBench extends Container
 				return null;
 			}
 
-			var3.onPickupFromSlot(par1EntityPlayer, var4);
+			slot.onPickupFromSlot(par1EntityPlayer, var4);
 		}
 
 		return var2;

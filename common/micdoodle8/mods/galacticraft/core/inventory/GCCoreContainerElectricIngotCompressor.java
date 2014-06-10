@@ -95,7 +95,7 @@ public class GCCoreContainerElectricIngotCompressor extends Container
 
 			if (par1 <= 11)
 			{
-				if (!this.mergeItemStack(var4, 12, 39, true))
+				if (!this.mergeItemStack(var4, 12, 48, true))
 				{
 					return null;
 				}
@@ -118,7 +118,7 @@ public class GCCoreContainerElectricIngotCompressor extends Container
 						return null;
 					}
 				}
-				else if (par1 >= 39 && par1 < 48 && !this.mergeItemStack(var4, 12, 39, false))
+				else if (!this.mergeItemStack(var4, 0, 9, false) && !this.mergeItemStack(var4, 12, 39, false))
 				{
 					return null;
 				}

@@ -68,6 +68,7 @@ public class GCCoreContainerEnergyStorageModule extends Container
 	{
 		ItemStack returnStack = null;
 		Slot slot = (Slot) this.inventorySlots.get(slotID);
+		final int b = this.inventorySlots.size();
 
 		if (slot != null && slot.getHasStack())
 		{
@@ -82,7 +83,10 @@ public class GCCoreContainerEnergyStorageModule extends Container
 					{
 						if (!this.mergeItemStack(itemStack, 1, 2, false))
 						{
-							return null;
+							if (((IItemElectric) itemStack.getItem()).getElectricityStored(itemStack) < ((IItemElectric) itemStack.getItem()).getMaxElectricityStored(itemStack) && !this.mergeItemStack(itemStack, 0, 1, false))
+							{
+								return null;
+							}
 						}
 					}
 					else
@@ -93,13 +97,22 @@ public class GCCoreContainerEnergyStorageModule extends Container
 						}
 					}
 				}
-
-				else if (slotID >= 30 && slotID < 38 && !this.mergeItemStack(itemStack, 3, 30, false))
+				else
 				{
-					return null;
+					if (slotID < b - 9)
+					{
+						if (!this.mergeItemStack(itemStack, b - 9, b, false))
+						{
+							return null;
+						}
+					}
+					else if (!this.mergeItemStack(itemStack, b - 36, b - 9, false))
+					{
+						return null;
+					}
 				}
 			}
-			else if (!this.mergeItemStack(itemStack, 3, 38, false))
+			else if (!this.mergeItemStack(itemStack, 2, 38, false))
 			{
 				return null;
 			}

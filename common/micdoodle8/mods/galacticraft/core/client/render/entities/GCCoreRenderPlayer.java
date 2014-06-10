@@ -2,6 +2,8 @@ package micdoodle8.mods.galacticraft.core.client.render.entities;
 
 import static net.minecraftforge.client.IItemRenderer.ItemRenderType.EQUIPPED;
 import static net.minecraftforge.client.IItemRenderer.ItemRendererHelper.BLOCK_3D;
+import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
+import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.client.model.GCCoreModelPlayer;
 import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import net.minecraft.block.Block;
@@ -10,6 +12,7 @@ import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.tileentity.TileEntitySkullRenderer;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -57,6 +60,32 @@ public class GCCoreRenderPlayer extends RenderPlayer
 			return;
 		}
 
+		//rotate render of player who is in a spaceship
+		Entity riddenEntity = par1AbstractClientPlayer.ridingEntity;
+		if (riddenEntity instanceof EntityAutoRocket)
+		{
+			EntitySpaceshipBase entity = (EntitySpaceshipBase) riddenEntity; 
+			final float var24 = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * par2;
+			final float var25 = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * par2;
+	
+			GL11.glRotatef(-var24, 0.0F, 0.0F, 1.0F);
+			GL11.glRotatef(-var25, 0.0F, 1.0F, 0.0F);
+			/*final float var28 = entity.rollAmplitude - par2;
+			float var30 = entity.shipDamage - par2;
+	
+			if (var30 < 0.0F)
+			{
+				var30 = 0.0F;
+			}
+	
+			if (var28 > 0.0F)
+			{
+				final float i = entity.getLaunched() ? (5 - MathHelper.floor_double(entity.timeUntilLaunch / 85)) / 10F : 0.3F;
+				GL11.glRotatef(MathHelper.sin(var28) * var28 * i * par2, 1.0F, 0.0F, 0.0F);
+				GL11.glRotatef(MathHelper.sin(var28) * var28 * i * par2, 1.0F, 0.0F, 1.0F);
+			}*/
+		}
+		
 		float f1 = 1.0F;
 		GL11.glColor3f(f1, f1, f1);
 		super.renderArrowsStuckInEntity(par1AbstractClientPlayer, par2);

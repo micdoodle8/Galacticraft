@@ -46,7 +46,7 @@ public class GCCoreSoundUpdaterSpaceship implements IUpdatePlayerListBox
 	@Override
 	public void update()
 	{
-		boolean var1 = false;
+		boolean refreshedSoundPos = false;
 		final boolean var2 = this.playerSPRidingMinecart;
 		final boolean var3 = this.minecartIsDead;
 		final boolean var4 = this.minecartIsMoving;
@@ -83,11 +83,13 @@ public class GCCoreSoundUpdaterSpaceship implements IUpdatePlayerListBox
 			}
 		}
 
-		else if (this.theSoundManager != null && this.theMinecart != null && this.theMinecart.posY < 250 && this.minecartMoveSoundVolume > 0.0F)
+		else if (this.theSoundManager != null && this.theMinecart.posY < 500D && this.minecartMoveSoundVolume > 0.0F)
 		{
-			this.theSoundManager.playEntitySound(GalacticraftCore.ASSET_PREFIX + "shuttle.shuttle", this.theMinecart, 5.0F, this.minecartSoundPitch, false);
+			float theVolume = 5.0F;
+			if (this.theMinecart.posY > 250D) theVolume *= ((550D - this.theMinecart.posY) / 300D);
+			this.theSoundManager.playEntitySound(GalacticraftCore.ASSET_PREFIX + "shuttle.shuttle", this.theMinecart, theVolume, this.minecartSoundPitch, false);
 			this.silent = false;
-			var1 = true;
+			refreshedSoundPos = true;
 		}
 
 		if (this.theMinecart.timeUntilLaunch <= this.theMinecart.getPreLaunchWait())
@@ -110,7 +112,7 @@ public class GCCoreSoundUpdaterSpaceship implements IUpdatePlayerListBox
 			var10 = MathHelper.clamp_float(var10 * 2.0F, 0.0F, 1.0F);
 			this.minecartMoveSoundVolume = 0.0F + var10 * 6.7F;
 
-			if (this.theMinecart.posY > 1000)
+			if (this.theMinecart.posY > 1000D)
 			{
 				this.minecartMoveSoundVolume = 0F;
 				this.minecartRideSoundVolume = 0F;
@@ -141,9 +143,9 @@ public class GCCoreSoundUpdaterSpaceship implements IUpdatePlayerListBox
 			}
 		}
 
-		if (!var1)
+		if (!refreshedSoundPos)
 		{
-			this.theSoundManager.updateSoundLocation(this.theMinecart);
+			this.theSoundManager.updateSoundLocation(this.theMinecart, this.theMinecart);
 
 			if (this.playerSPRidingMinecart)
 			{

@@ -66,6 +66,7 @@ public class GCCoreContainerParachest extends Container
 	{
 		ItemStack itemstack = null;
 		Slot slot = (Slot) this.inventorySlots.get(par2);
+		final int b = this.inventorySlots.size();
 
 		if (slot != null && slot.getHasStack())
 		{
@@ -74,7 +75,7 @@ public class GCCoreContainerParachest extends Container
 
 			if (par2 < this.parachestInventory.getSizeInventory())
 			{
-				if (!this.mergeItemStack(itemstack1, this.numRows * 9 + 3, this.inventorySlots.size(), true))
+				if (!this.mergeItemStack(itemstack1, b - 36, b, true))
 				{
 					return null;
 				}

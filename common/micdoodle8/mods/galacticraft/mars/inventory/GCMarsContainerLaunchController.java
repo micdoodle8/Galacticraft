@@ -66,70 +66,63 @@ public class GCMarsContainerLaunchController extends Container
 	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
 	{
 		ItemStack var2 = null;
-		final Slot var3 = (Slot) this.inventorySlots.get(par1);
+		final Slot slot = (Slot) this.inventorySlots.get(par1);
+		final int b = this.inventorySlots.size();
 
-		if (var3 != null && var3.getHasStack())
+		if (slot != null && slot.getHasStack())
 		{
-			final ItemStack var4 = var3.getStack();
-			var2 = var4.copy();
+			final ItemStack stack = slot.getStack();
+			var2 = stack.copy();
 
-			if (par1 == 2)
+			if (par1 == 0)
 			{
-				if (!this.mergeItemStack(var4, 3, 39, true))
+				if (!this.mergeItemStack(stack, b - 36, b, true))
 				{
 					return null;
 				}
 
-				var3.onSlotChange(var4, var2);
-			}
-			else if (par1 != 1 && par1 != 0)
-			{
-				if (var4.getItem() instanceof IItemElectric)
-				{
-					if (!this.mergeItemStack(var4, 0, 1, false))
-					{
-						return null;
-					}
-				}
-				else if (FluidContainerRegistry.isContainer(var4) || FluidContainerRegistry.containsFluid(var4, FluidRegistry.getFluidStack("fuel", 1)))
-				{
-					if (!this.mergeItemStack(var4, 1, 2, false))
-					{
-						return null;
-					}
-				}
-				else if (par1 >= 3 && par1 < 30)
-				{
-					if (!this.mergeItemStack(var4, 30, 39, false))
-					{
-						return null;
-					}
-				}
-				else if (par1 >= 30 && par1 < 39 && !this.mergeItemStack(var4, 3, 30, false))
-				{
-					return null;
-				}
-			}
-			else if (!this.mergeItemStack(var4, 3, 39, false))
-			{
-				return null;
-			}
-
-			if (var4.stackSize == 0)
-			{
-				var3.putStack((ItemStack) null);
+				slot.onSlotChange(stack, var2);
 			}
 			else
 			{
-				var3.onSlotChanged();
+				if (stack.getItem() instanceof IItemElectric)
+				{
+					if (!this.mergeItemStack(stack, 0, 1, false))
+					{
+						return null;
+					}
+				}
+				else
+				{
+					if (par1 < b - 9)
+					{
+						if (!this.mergeItemStack(stack, b - 9, b, false))
+						{
+							return null;
+						}
+					}
+					else if (!this.mergeItemStack(stack, b - 36, b - 9, false))
+					{
+						return null;
+					}
+				}
 			}
 
-			if (var4.stackSize == var2.stackSize)
+			if (stack.stackSize == 0)
+			{
+				slot.putStack((ItemStack) null);
+			}
+			else
+			{
+				slot.onSlotChanged();
+			}
+
+			if (stack.stackSize == var2.stackSize)
 			{
 				return null;
 			}
 
-			var3.onPickupFromSlot(par1EntityPlayer, var4);
+			slot.onPickupFromSlot(par1EntityPlayer, stack);
 		}
 
 		return var2;
