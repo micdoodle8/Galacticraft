@@ -476,12 +476,12 @@ public class BlockVec3 implements Cloneable
 
 	public int intY()
 	{
-		return this.x;
+		return this.y;
 	}
 
 	public int intZ()
 	{
-		return this.x;
+		return this.z;
 	}
 	
 	public void setSideDone(int side)
