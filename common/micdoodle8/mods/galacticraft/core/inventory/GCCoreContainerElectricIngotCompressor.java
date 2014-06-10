@@ -100,7 +100,7 @@ public class GCCoreContainerElectricIngotCompressor extends Container
 					return null;
 				}
 
-				var3.onSlotChange(var4, var2);
+				if (par1 == 1 || par1 == 2) var3.onSlotChange(var4, var2);
 			}
 			else
 			{

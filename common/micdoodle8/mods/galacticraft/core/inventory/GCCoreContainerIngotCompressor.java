@@ -101,7 +101,7 @@ public class GCCoreContainerIngotCompressor extends Container
 					return null;
 				}
 
-				slot.onSlotChange(var4, var2);
+				if (par1 == 1) slot.onSlotChange(var4, var2);
 			}
 			else
 			{

@@ -138,7 +138,7 @@ public class GCCoreContainerRocketBench extends Container
 					return null;
 				}
 
-				var3.onSlotChange(var4, var2);
+				if (par1 == 0) var3.onSlotChange(var4, var2);
 			}
 			else if (var2.getItem().itemID == GCCoreItems.partNoseCone.itemID && !((Slot) this.inventorySlots.get(1)).getHasStack())
 			{

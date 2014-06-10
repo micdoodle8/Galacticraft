@@ -89,7 +89,7 @@ public class GCCoreContainerRefinery extends Container
 					return null;
 				}
 
-				slot.onSlotChange(var4, var2);
+				if (par1 == 2) slot.onSlotChange(var4, var2);
 			}
 			else
 			{

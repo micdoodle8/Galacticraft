@@ -77,7 +77,6 @@ public class GCCoreContainerCargoLoader extends Container
 				{
 					return null;
 				}
-				slot.onSlotChange(var5, var3);
 			}
 			else
 			{

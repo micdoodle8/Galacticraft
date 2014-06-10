@@ -1,13 +1,20 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import micdoodle8.mods.galacticraft.api.item.GCItems;
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityCircuitFabricator;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotFurnace;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 
@@ -32,34 +39,35 @@ public class GCCoreContainerCircuitFabricator extends Container
 		this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 6, 69, IItemElectric.class));
 
 		// Diamond
-		this.addSlotToContainer(new Slot(tileEntity, 1, 15, 17));
+		this.addSlotToContainer(new SlotSpecific(tileEntity, 1, 15, 17, new ItemStack(Item.diamond, 1, 0)));
 
 		// Silicon
-		this.addSlotToContainer(new Slot(tileEntity, 2, 74, 46));
-		this.addSlotToContainer(new Slot(tileEntity, 3, 74, 64));
+		this.addSlotToContainer(new SlotSpecific(tileEntity, 2, 74, 46, new ItemStack(GCCoreItems.basicItem, 1, 2)));
+		this.addSlotToContainer(new SlotSpecific(tileEntity, 3, 74, 64, new ItemStack(GCCoreItems.basicItem, 1, 2)));
 
 		// Redstone
-		this.addSlotToContainer(new Slot(tileEntity, 4, 122, 46));
+		this.addSlotToContainer(new SlotSpecific(tileEntity, 4, 122, 46, new ItemStack(Item.redstone, 1, 0)));
 
 		// Optional
-		this.addSlotToContainer(new Slot(tileEntity, 5, 145, 20));
+		ItemStack stacks[] = {new ItemStack(Item.dyePowder, 1, 4),  new ItemStack(Item.redstoneRepeater.itemID, 1, 0), new ItemStack(Block.torchRedstoneActive)};
+		this.addSlotToContainer(new SlotSpecific(tileEntity, 5, 145, 20, stacks));
 
 		// Smelting result
 		this.addSlotToContainer(new SlotFurnace(playerInv.player, tileEntity, 6, 152, 86));
 
-		int var3;
+		int slot;
 
-		for (var3 = 0; var3 < 3; ++var3)
+		for (slot = 0; slot < 3; ++slot)
 		{
 			for (int var4 = 0; var4 < 9; ++var4)
 			{
-				this.addSlotToContainer(new Slot(playerInv, var4 + var3 * 9 + 9, 8 + var4 * 18, 110 + var3 * 18));
+				this.addSlotToContainer(new Slot(playerInv, var4 + slot * 9 + 9, 8 + var4 * 18, 110 + slot * 18));
 			}
 		}
 
-		for (var3 = 0; var3 < 9; ++var3)
+		for (slot = 0; slot < 9; ++slot)
 		{
-			this.addSlotToContainer(new Slot(playerInv, var3, 8 + var3 * 18, 168));
+			this.addSlotToContainer(new Slot(playerInv, slot, 8 + slot * 18, 168));
 		}
 	}
 
@@ -83,62 +91,67 @@ public class GCCoreContainerCircuitFabricator extends Container
 	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
 	{
 		ItemStack var2 = null;
-		Slot var3 = (Slot) this.inventorySlots.get(par1);
+		Slot slot = (Slot) this.inventorySlots.get(par1);
+		final int b = this.inventorySlots.size();
 
-		if (var3 != null && var3.getHasStack())
+		if (slot != null && slot.getHasStack())
 		{
-			ItemStack var4 = var3.getStack();
+			ItemStack var4 = slot.getStack();
 			var2 = var4.copy();
 
-			if (par1 == 2)
+			if (par1 < b - 36)
 			{
-				if (!this.mergeItemStack(var4, 3, 39, true))
-				{
+				if (!this.mergeItemStack(var4, b - 36, b, true))
 					return null;
-				}
 
-				var3.onSlotChange(var4, var2);
+				if (par1 == 6) slot.onSlotChange(var4, var2);
 			}
-			else if (par1 != 1 && par1 != 0)
+			else
 			{
-				if (var4.getItem() instanceof IItemElectric)
+				Item i = var4.getItem();
+				if (i instanceof IItemElectric)
 				{
 					if (!this.mergeItemStack(var4, 0, 1, false))
-					{
 						return null;
-					}
 				}
-				else if (FurnaceRecipes.smelting().getSmeltingResult(var4) != null)
+				else if (i.itemID == Item.diamond.itemID)
 				{
 					if (!this.mergeItemStack(var4, 1, 2, false))
-					{
 						return null;
-					}
 				}
-				else if (par1 >= 3 && par1 < 30)
+				else if (i.itemID == GCCoreItems.basicItem.itemID && i.getDamage(var4) == 2)
 				{
-					if (!this.mergeItemStack(var4, 30, 39, false))
-					{
+					if (!this.mergeItemStack(var4, 2, 4, false))
 						return null;
-					}
 				}
-				else if (par1 >= 30 && par1 < 39 && !this.mergeItemStack(var4, 3, 30, false))
+				else if (i.itemID == Item.redstone.itemID)
+				{
+					if (!this.mergeItemStack(var4, 4, 5, false))
+						return null;
+				}
+				else if (i.itemID == Item.redstoneRepeater.itemID || i.itemID == new ItemStack(Block.torchRedstoneActive).getItem().itemID || i.itemID == Item.dyePowder.itemID && i.getDamage(var4) == 4)
+				{
+					if (!this.mergeItemStack(var4, 5, 6, false))
+						return null;
+				}
+				else if (par1 < b - 9)
+				{
+					if (!this.mergeItemStack(var4, b - 9, b, false))
+						return null;
+				}
+				else if (!this.mergeItemStack(var4, b - 36, b - 9, false))
 				{
 					return null;
 				}
-			}
-			else if (!this.mergeItemStack(var4, 3, 39, false))
-			{
-				return null;
 			}
 
 			if (var4.stackSize == 0)
 			{
-				var3.putStack((ItemStack) null);
+				slot.putStack((ItemStack) null);
 			}
 			else
 			{
-				var3.onSlotChanged();
+				slot.onSlotChanged();
 			}
 
 			if (var4.stackSize == var2.stackSize)
@@ -146,7 +159,7 @@ public class GCCoreContainerCircuitFabricator extends Container
 				return null;
 			}
 
-			var3.onPickupFromSlot(par1EntityPlayer, var4);
+			slot.onPickupFromSlot(par1EntityPlayer, var4);
 		}
 
 		return var2;

@@ -69,8 +69,6 @@ public class GCCoreContainerSolar extends Container
 				{
 					return null;
 				}
-
-				slot.onSlotChange(stack, var2);
 			}
 			else
 			{

@@ -70,8 +70,6 @@ public class GCCoreContainerAirDistributor extends Container
 				{
 					return null;
 				}
-
-				slot.onSlotChange(stack, var2);
 			}
 			else
 			{

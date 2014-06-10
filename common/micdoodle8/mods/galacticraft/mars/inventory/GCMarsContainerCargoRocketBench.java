@@ -140,7 +140,7 @@ public class GCMarsContainerCargoRocketBench extends Container
 					return null;
 				}
 
-				var3.onSlotChange(var4, var2);
+				if (par1 == 0) var3.onSlotChange(var4, var2);
 			}
 			else
 			{

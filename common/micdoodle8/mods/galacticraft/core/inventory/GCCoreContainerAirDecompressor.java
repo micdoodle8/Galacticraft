@@ -69,8 +69,6 @@ public class GCCoreContainerAirDecompressor extends Container
 			{
 				if (!this.mergeItemStack(stack, b - 36, b, true))
 					return null;
-
-				slot.onSlotChange(stack, var2);
 			}
 			else
 			{

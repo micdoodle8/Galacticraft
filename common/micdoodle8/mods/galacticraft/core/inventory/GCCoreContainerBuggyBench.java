@@ -130,7 +130,7 @@ public class GCCoreContainerBuggyBench extends Container
 					return null;
 				}
 
-				slot.onSlotChange(var4, var2);
+				if (par1 == 0) slot.onSlotChange(var4, var2);
 			}
 			else
 			{
