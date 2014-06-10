@@ -72,7 +72,7 @@ public class BlockMachineFrame extends Block
 		switch (meta)
 		{
 		default:
-			return null;
+			return super.getItemDropped(meta, random, par3);
 		}
 	}
 
@@ -109,11 +109,5 @@ public class BlockMachineFrame extends Block
 		{
 			par3List.add(new ItemStack(par1, 1, var4));
 		}
-	}
-
-	@Override
-    public boolean canSustainPlant(IBlockAccess world, int x, int y, int z, ForgeDirection direction, IPlantable plantable)
-	{
-		return false;
 	}
 }
