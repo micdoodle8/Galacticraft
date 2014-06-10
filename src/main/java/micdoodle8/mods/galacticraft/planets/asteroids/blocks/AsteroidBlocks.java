@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockGC;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemBlockAsteroids;
+import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemBlockShortRangeTelepad;
 import net.minecraft.block.Block;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -16,6 +17,7 @@ public class AsteroidBlocks
 	public static Block machineFrame;
 	public static Block beamReflector;
 	public static Block beamReceiver;
+	public static Block shortRangeTelepad;
 	
 	public static void initBlocks()
 	{
@@ -26,6 +28,7 @@ public class AsteroidBlocks
 		machineFrame = new BlockMachineFrame("machineFrameOld");
 		beamReflector = new BlockBeamReflector("beamReflector");
 		beamReceiver = new BlockBeamReceiver("beamReceiver");
+		shortRangeTelepad = new BlockShortRangeTelepad("telepadShort");
 	}
 
 	public static void registerBlocks()
@@ -37,5 +40,6 @@ public class AsteroidBlocks
 		GameRegistry.registerBlock(AsteroidBlocks.machineFrame, ItemBlockGC.class, AsteroidBlocks.machineFrame.getUnlocalizedName(), GalacticraftPlanets.MODID);
 		GameRegistry.registerBlock(AsteroidBlocks.beamReflector, ItemBlockGC.class, AsteroidBlocks.beamReflector.getUnlocalizedName(), GalacticraftCore.MODID);
 		GameRegistry.registerBlock(AsteroidBlocks.beamReceiver, ItemBlockGC.class, AsteroidBlocks.beamReceiver.getUnlocalizedName(), GalacticraftCore.MODID);
+		GameRegistry.registerBlock(AsteroidBlocks.shortRangeTelepad, ItemBlockShortRangeTelepad.class, AsteroidBlocks.shortRangeTelepad.getUnlocalizedName(), GalacticraftCore.MODID);
 	}
 }
