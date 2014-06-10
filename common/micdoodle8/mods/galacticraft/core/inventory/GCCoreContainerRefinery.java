@@ -110,7 +110,7 @@ public class GCCoreContainerRefinery extends Container
 							return null;
 						}
 					}
-					else if (FluidContainerRegistry.isEmptyContainer(var4) || (liquid != null && FluidRegistry.getFluidName(liquid).equalsIgnoreCase("Fuel")))
+					else if (FluidContainerRegistry.isEmptyContainer(var4))
 					{
 						if (!this.mergeItemStack(var4, 2, 3, false))
 						{

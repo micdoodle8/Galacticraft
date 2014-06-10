@@ -140,121 +140,37 @@ public class GCCoreContainerRocketBench extends Container
 
 				if (par1 == 0) var3.onSlotChange(var4, var2);
 			}
-			else if (var2.getItem().itemID == GCCoreItems.partNoseCone.itemID && !((Slot) this.inventorySlots.get(1)).getHasStack())
+			else if (var2.getItem().itemID == GCCoreItems.partNoseCone.itemID)
 			{
-				if (!this.mergeItemStack(var4, 1, 2, false))
+				if (!this.mergeOneItem(var4, 1, 2, false))
 				{
 					return null;
 				}
 			}
-			else if (var2.getItem().itemID == GCCoreItems.heavyPlatingTier1.itemID && !((Slot) this.inventorySlots.get(2)).getHasStack())
+			else if (var2.getItem().itemID == GCCoreItems.heavyPlatingTier1.itemID)
 			{
-				if (!this.mergeItemStack(var4, 2, 3, false))
+				if (!this.mergeOneItem(var4, 2, 10, false))
 				{
 					return null;
 				}
 			}
-			else if (var2.getItem().itemID == GCCoreItems.heavyPlatingTier1.itemID && !((Slot) this.inventorySlots.get(3)).getHasStack())
+			else if (var2.getItem().itemID == GCCoreItems.partFins.itemID)
 			{
-				if (!this.mergeItemStack(var4, 3, 4, false))
+				if (!this.mergeOneItem(var4, 10, 12, false) && !this.mergeOneItem(var4, 13, 15, false) )
 				{
 					return null;
 				}
 			}
-			else if (var2.getItem().itemID == GCCoreItems.heavyPlatingTier1.itemID && !((Slot) this.inventorySlots.get(4)).getHasStack())
+			else if (var2.getItem().itemID == GCCoreItems.rocketEngine.itemID)
 			{
-				if (!this.mergeItemStack(var4, 4, 5, false))
+				if (!this.mergeOneItem(var4, 12, 13, false))
 				{
 					return null;
 				}
 			}
-			else if (var2.getItem().itemID == GCCoreItems.heavyPlatingTier1.itemID && !((Slot) this.inventorySlots.get(5)).getHasStack())
+			else if (var2.getItem().itemID == Block.chest.blockID)
 			{
-				if (!this.mergeItemStack(var4, 5, 6, false))
-				{
-					return null;
-				}
-			}
-			else if (var2.getItem().itemID == GCCoreItems.heavyPlatingTier1.itemID && !((Slot) this.inventorySlots.get(6)).getHasStack())
-			{
-				if (!this.mergeItemStack(var4, 6, 7, false))
-				{
-					return null;
-				}
-			}
-			else if (var2.getItem().itemID == GCCoreItems.heavyPlatingTier1.itemID && !((Slot) this.inventorySlots.get(7)).getHasStack())
-			{
-				if (!this.mergeItemStack(var4, 7, 8, false))
-				{
-					return null;
-				}
-			}
-			else if (var2.getItem().itemID == GCCoreItems.heavyPlatingTier1.itemID && !((Slot) this.inventorySlots.get(8)).getHasStack())
-			{
-				if (!this.mergeItemStack(var4, 8, 9, false))
-				{
-					return null;
-				}
-			}
-			else if (var2.getItem().itemID == GCCoreItems.heavyPlatingTier1.itemID && !((Slot) this.inventorySlots.get(9)).getHasStack())
-			{
-				if (!this.mergeItemStack(var4, 9, 10, false))
-				{
-					return null;
-				}
-			}
-			else if (var2.getItem().itemID == GCCoreItems.partFins.itemID && !((Slot) this.inventorySlots.get(10)).getHasStack())
-			{
-				if (!this.mergeItemStack(var4, 10, 11, false))
-				{
-					return null;
-				}
-			}
-			else if (var2.getItem().itemID == GCCoreItems.partFins.itemID && !((Slot) this.inventorySlots.get(11)).getHasStack())
-			{
-				if (!this.mergeItemStack(var4, 11, 12, false))
-				{
-					return null;
-				}
-			}
-			else if (var2.getItem().itemID == GCCoreItems.rocketEngine.itemID && !((Slot) this.inventorySlots.get(12)).getHasStack())
-			{
-				if (!this.mergeItemStack(var4, 12, 13, false))
-				{
-					return null;
-				}
-			}
-			else if (var2.getItem().itemID == GCCoreItems.partFins.itemID && !((Slot) this.inventorySlots.get(13)).getHasStack())
-			{
-				if (!this.mergeItemStack(var4, 13, 14, false))
-				{
-					return null;
-				}
-			}
-			else if (var2.getItem().itemID == GCCoreItems.partFins.itemID && !((Slot) this.inventorySlots.get(14)).getHasStack())
-			{
-				if (!this.mergeItemStack(var4, 14, 15, false))
-				{
-					return null;
-				}
-			}
-			else if (var2.getItem().itemID == Block.chest.blockID && !((Slot) this.inventorySlots.get(15)).getHasStack())
-			{
-				if (!this.mergeItemStack(var4, 15, 16, false))
-				{
-					return null;
-				}
-			}
-			else if (var2.getItem().itemID == Block.chest.blockID && !((Slot) this.inventorySlots.get(16)).getHasStack())
-			{
-				if (!this.mergeItemStack(var4, 16, 17, false))
-				{
-					return null;
-				}
-			}
-			else if (var2.getItem().itemID == Block.chest.blockID && !((Slot) this.inventorySlots.get(17)).getHasStack())
-			{
-				if (!this.mergeItemStack(var4, 17, 18, false))
+				if (!this.mergeOneItem(var4, 15, 18, false))
 				{
 					return null;
 				}
@@ -272,10 +188,6 @@ public class GCCoreContainerRocketBench extends Container
 				{
 					return null;
 				}
-			}
-			else if (!this.mergeItemStack(var4, 18, 54, false))
-			{
-				return null;
 			}
 
 			if (var4.stackSize == 0)
@@ -297,4 +209,33 @@ public class GCCoreContainerRocketBench extends Container
 
 		return var2;
 	}
+
+    protected boolean mergeOneItem(ItemStack par1ItemStack, int par2, int par3, boolean par4)
+    {
+        boolean flag1 = false;
+        if (par1ItemStack.stackSize > 0)
+        {
+            Slot slot;
+            ItemStack slotStack;
+
+            for (int k = par2; k < par3; k++)
+            {
+                slot = (Slot)this.inventorySlots.get(k);
+                slotStack = slot.getStack();
+
+                if (slotStack == null)
+                {
+                    ItemStack stackOneItem = par1ItemStack.copy();
+                    stackOneItem.stackSize = 1;
+                    par1ItemStack.stackSize--;
+                	slot.putStack(stackOneItem);
+                    slot.onSlotChanged();
+                    flag1 = true;
+                    break;
+                }
+            }
+        }
+
+        return flag1;
+    }
 }

@@ -126,7 +126,7 @@ public class GCMarsContainerTerraformer extends Container
 					if (!this.mergeItemStack(var4, 0, 1, false))
 						return null;
 				}
-				else if (var4.getItem().itemID == Item.dyePowder.itemID)
+				else if (var4.getItem().itemID == Item.dyePowder.itemID && var4.getItemDamage() == 15)
 				{
 					if (!this.mergeItemStack(var4, 2, 6, false))
 						return null;

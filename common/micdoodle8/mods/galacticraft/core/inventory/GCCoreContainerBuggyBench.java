@@ -140,7 +140,7 @@ public class GCCoreContainerBuggyBench extends Container
 					for (int j = 1; j < 20; j ++)
 					{
 						if (((Slot) this.inventorySlots.get(par1)).isItemValid(var4))
-							this.mergeItemStack(var4, j, j+1, false);
+							this.mergeOneItem(var4, j, j+1, false);
 					}
 				}
 				else
@@ -181,4 +181,34 @@ public class GCCoreContainerBuggyBench extends Container
 
 		return var2;
 	}
+	
+
+    protected boolean mergeOneItem(ItemStack par1ItemStack, int par2, int par3, boolean par4)
+    {
+        boolean flag1 = false;
+        if (par1ItemStack.stackSize > 0)
+        {
+            Slot slot;
+            ItemStack slotStack;
+
+            for (int k = par2; k < par3; k++)
+            {
+                slot = (Slot)this.inventorySlots.get(k);
+                slotStack = slot.getStack();
+
+                if (slotStack == null)
+                {
+                    ItemStack stackOneItem = par1ItemStack.copy();
+                    stackOneItem.stackSize = 1;
+                    par1ItemStack.stackSize--;
+                	slot.putStack(stackOneItem);
+                    slot.onSlotChanged();
+                    flag1 = true;
+                    break;
+                }
+            }
+        }
+
+        return flag1;
+    }
 }
