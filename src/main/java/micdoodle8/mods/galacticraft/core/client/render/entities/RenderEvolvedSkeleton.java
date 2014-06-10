@@ -36,10 +36,23 @@ public class RenderEvolvedSkeleton extends RenderBiped
 	private static final ResourceLocation powerTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/power.png");
 
 	private final ModelEvolvedSkeleton model = new ModelEvolvedSkeleton(0.2F);
+	private static int isBG2Loaded = 0;
 
 	public RenderEvolvedSkeleton()
 	{
 		super(new ModelEvolvedSkeleton(), 1.0F);
+
+		//Compatibility with BattleGear2
+		try
+		{
+			Class<?> clazz = Class.forName("mods.battlegear2.MobHookContainerClass");
+
+			//accessing this: public static final int Skell_Arrow_Datawatcher = 25;
+			RenderEvolvedSkeleton.isBG2Loaded = clazz.getField("Skell_Arrow_Datawatcher").getInt(null);
+		}
+		catch (Exception e)
+		{
+		}
 	}
 
 	protected ResourceLocation func_110779_a(EntitySkeleton par1EntityArrow)
@@ -62,6 +75,12 @@ public class RenderEvolvedSkeleton extends RenderBiped
 	@Override
 	protected void renderEquippedItems(EntityLivingBase par1EntityLiving, float par2)
 	{
+		if (isBG2Loaded > 0)
+		{
+			if (par1EntityLiving.getDataWatcher().getWatchedObject(RenderEvolvedSkeleton.isBG2Loaded) == null)
+				par1EntityLiving.getDataWatcher().addObject(RenderEvolvedSkeleton.isBG2Loaded, Byte.valueOf((byte)-1));
+		}
+		
 		GL11.glPushMatrix();
 		GL11.glTranslatef(-0.3F, -0.3F, -0.6F);
 		GL11.glTranslatef(0.1F, 0.0F, 0.0F);

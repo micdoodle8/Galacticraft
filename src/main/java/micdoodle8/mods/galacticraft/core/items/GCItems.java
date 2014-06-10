@@ -307,6 +307,7 @@ public class GCItems
 		registerItem(GCItems.cheeseBlock);
 		registerItem(GCItems.flag);
 		registerItem(GCItems.parachute);
+		registerItem(GCItems.knowledgeBook);
 	}
 
 	private static void registerItem(Item item)

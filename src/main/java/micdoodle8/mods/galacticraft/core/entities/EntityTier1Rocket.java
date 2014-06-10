@@ -124,6 +124,11 @@ public class EntityTier1Rocket extends EntityTieredRocket
 			if (this.timeSinceLaunch % MathHelper.floor_double(3 * (1 / multiplier)) == 0)
 			{
 				this.removeFuel(1);
+				/*TO: fix soundupdater (see below)
+				if (!this.hasValidFuel() && this.rocketSoundUpdater instanceof GCCoreSoundUpdaterSpaceship)
+				{
+					((GCCoreSoundUpdaterSpaceship) this.rocketSoundUpdater).stopRocketSound();
+				}*/
 			}
 		}
 		else if (!this.hasValidFuel() && this.getLaunched() && !this.worldObj.isRemote)

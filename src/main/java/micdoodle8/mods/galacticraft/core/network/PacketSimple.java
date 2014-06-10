@@ -357,41 +357,58 @@ public class PacketSimple extends Packet implements IPacket
 			}
 			break;
 		case C_UPDATE_SPACESTATION_LIST:
-			if (WorldUtil.registeredSpaceStations == null)
+			try
 			{
+				if (WorldUtil.registeredSpaceStations != null)
+				{
+					for (Integer registeredID : WorldUtil.registeredSpaceStations)
+					{
+						DimensionManager.unregisterDimension(registeredID);
+					}
+				}
 				WorldUtil.registeredSpaceStations = new ArrayList<Integer>();
-			}
-
-			if (this.data.size() > 0)
-			{
-				if (this.data.get(0) instanceof Integer)
+				
+				if (this.data.size() > 0)
 				{
-					for (Object o : this.data)
+					if (this.data.get(0) instanceof Integer)
 					{
-						Integer dimID = (Integer)o;
-						
-						if (!WorldUtil.registeredSpaceStations.contains(dimID))
+						for (Object o : this.data)
 						{
-							WorldUtil.registeredSpaceStations.add(dimID);
-							DimensionManager.registerDimension(dimID, ConfigManagerCore.idDimensionOverworldOrbit);
+							Integer dimID = (Integer)o;
+							
+							if (!WorldUtil.registeredSpaceStations.contains(dimID))
+							{
+								WorldUtil.registeredSpaceStations.add(dimID);
+								if (!DimensionManager.isDimensionRegistered(dimID))
+									DimensionManager.registerDimension(dimID, ConfigManagerCore.idDimensionOverworldOrbit);
+								else
+									GCLog.severe("Dimension already registered on client: unable to register space station dimension "+dimID);
+							}
+						}
+					}
+					else if (this.data.get(0) instanceof Integer[])
+					{
+						for (Object o : (Integer[])this.data.get(0))
+						{
+							Integer dimID = (Integer)o;
+							
+							if (!WorldUtil.registeredSpaceStations.contains(dimID))
+							{
+								WorldUtil.registeredSpaceStations.add(dimID);
+								if (!DimensionManager.isDimensionRegistered(dimID))
+									DimensionManager.registerDimension(dimID, ConfigManagerCore.idDimensionOverworldOrbit);
+								else
+									GCLog.severe("Dimension already registered on client: unable to register space station dimension "+dimID);
+							}
 						}
 					}
 				}
-				else if (this.data.get(0) instanceof Integer[])
-				{
-					for (Object o : (Integer[])this.data.get(0))
-					{
-						Integer dimID = (Integer)o;
-						
-						if (!WorldUtil.registeredSpaceStations.contains(dimID))
-						{
-							WorldUtil.registeredSpaceStations.add(dimID);
-							DimensionManager.registerDimension(dimID, ConfigManagerCore.idDimensionOverworldOrbit);
-						}
-					}
-				}
+				break;
 			}
-			break;
+			catch (final Exception e)
+ 			{
+ 				e.printStackTrace();
+ 			}
 		case C_UPDATE_SPACESTATION_DATA:
 			SpaceStationWorldData var4 = SpaceStationWorldData.getMPSpaceStationData(player.worldObj, (Integer) this.data.get(0), player);
 			var4.readFromNBT((NBTTagCompound) this.data.get(1));
@@ -400,41 +417,52 @@ public class PacketSimple extends Packet implements IPacket
 			ClientProxyCore.clientSpaceStationID = (Integer) this.data.get(0);
 			break;
 		case C_UPDATE_PLANETS_LIST:
-			if (WorldUtil.registeredPlanets == null)
+			try
 			{
+				if (WorldUtil.registeredPlanets != null)
+				{
+					for (Integer registeredID : WorldUtil.registeredPlanets)
+					{
+						DimensionManager.unregisterDimension(registeredID);
+					}
+				}	
 				WorldUtil.registeredPlanets = new ArrayList<Integer>();
-			}
-
-			if (this.data.size() > 0)
-			{
-				if (this.data.get(0) instanceof Integer)
+	
+				if (this.data.size() > 0)
 				{
-					for (Object o : this.data)
+					if (this.data.get(0) instanceof Integer)
 					{
-						Integer dimID = (Integer)o;
-						
-						if (!WorldUtil.registeredPlanets.contains(dimID))
+						for (Object o : this.data)
 						{
-							WorldUtil.registeredPlanets.add(dimID);
-							DimensionManager.registerDimension(dimID, dimID);
+							Integer dimID = (Integer)o;
+							
+							if (!WorldUtil.registeredPlanets.contains(dimID))
+							{
+								WorldUtil.registeredPlanets.add(dimID);
+								DimensionManager.registerDimension(dimID, dimID);
+							}
+						}
+					}
+					else if (this.data.get(0) instanceof Integer[])
+					{
+						for (Object o : (Integer[])this.data.get(0))
+						{
+							Integer dimID = (Integer)o;
+							
+							if (!WorldUtil.registeredPlanets.contains(dimID))
+							{
+								WorldUtil.registeredPlanets.add(dimID);
+								DimensionManager.registerDimension(dimID, dimID);
+							}
 						}
 					}
 				}
-				else if (this.data.get(0) instanceof Integer[])
-				{
-					for (Object o : (Integer[])this.data.get(0))
-					{
-						Integer dimID = (Integer)o;
-						
-						if (!WorldUtil.registeredPlanets.contains(dimID))
-						{
-							WorldUtil.registeredPlanets.add(dimID);
-							DimensionManager.registerDimension(dimID, dimID);
-						}
-					}
-				}
+				break;
 			}
-			break;
+			catch (final Exception e)
+ 			{
+ 				e.printStackTrace();
+ 			}
 		case C_ADD_NEW_SCHEMATIC:
 			if (playerBaseClient != null)
 			{
@@ -716,7 +744,7 @@ public class PacketSimple extends Packet implements IPacket
 			player.openGui(GalacticraftCore.instance, -1, player.worldObj, (Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2));
 			break;
 		case S_BIND_SPACE_STATION_ID:
-			if (playerBase.getPlayerStats().spaceStationDimensionID == -1 || playerBase.getPlayerStats().spaceStationDimensionID == 0)
+			if ((playerBase.getPlayerStats().spaceStationDimensionID == -1 || playerBase.getPlayerStats().spaceStationDimensionID == 0) && !ConfigManagerCore.disableSpaceStationCreation)
 			{
 				WorldUtil.bindSpaceStationToNewDimension(playerBase.worldObj, playerBase);
 

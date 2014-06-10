@@ -151,10 +151,9 @@ public class GCPlayerHandler
 
 		if (player.getPlayerStats().usingParachute)
 		{
-			player.fallDistance = 0.0F;
+			if (player.getPlayerStats().lastParachuteInSlot != null) player.fallDistance = 0.0F;
 			if (player.onGround)
 			{
-				player.sendGearUpdatePacket(EnumModelPacket.REMOVE_PARACHUTE.getIndex());
 				player.setUsingParachute(false);
 			}
 		}

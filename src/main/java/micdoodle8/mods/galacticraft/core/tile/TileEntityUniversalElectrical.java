@@ -626,7 +626,7 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 //			return 0;
 //		}
 //
-//		return (int) Math.floor(this.receiveElectricity(maxReceive * NetworkConfigHandler.TE_RATIO, !simulate));
+//		return (int) Math.floor(this.receiveElectricity(maxReceive * NetworkConfigHandler.TE_RATIO, !simulate)* NetworkConfigHandler.TO_TE_RATIO);
 //	}
 //
 //	@RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "ThermalExpansion")
@@ -666,7 +666,7 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 			return 0;
 		}
 
-		return (int) Math.floor(this.receiveElectricity((float)amount * NetworkConfigHandler.MEKANISM_RATIO, true));
+		return this.receiveElectricity((float)amount * NetworkConfigHandler.MEKANISM_RATIO, true) * NetworkConfigHandler.TO_MEKANISM_RATIO;
 	}
 
 	@RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
@@ -690,7 +690,7 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 	@RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
 	public double getMaxEnergy()
 	{
-		return this.getMaxEnergyStored() * NetworkConfigHandler.MEKANISM_RATIO;
+		return this.getMaxEnergyStored() * NetworkConfigHandler.TO_MEKANISM_RATIO;
 	}*/
 	
 	@Override

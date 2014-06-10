@@ -39,32 +39,44 @@ public class OxygenPressureProtocol
 
 	static
 	{
-		try
+		for (final String s : ConfigManagerCore.sealableIDs)
 		{
-			for (final String s : ConfigManagerCore.sealableIDs)
+			try
 			{
 				final String[] split = s.split(":");
+				Block b = Block.getBlockById(Integer.parseInt(split[0]));
 
-				if (OxygenPressureProtocol.nonPermeableBlocks.containsKey(Block.getBlockById(Integer.parseInt(split[0]))))
+				if (OxygenPressureProtocol.nonPermeableBlocks.containsKey(b))
 				{
-					final ArrayList<Integer> l = OxygenPressureProtocol.nonPermeableBlocks.get(Block.getBlockById(Integer.parseInt(split[0])));
-					l.add(Integer.parseInt(split[1]));
-					OxygenPressureProtocol.nonPermeableBlocks.put(Block.getBlockById(Integer.parseInt(split[0])), l);
+					final ArrayList<Integer> list = OxygenPressureProtocol.nonPermeableBlocks.get(b);
+					if (split.length > 1)
+					{
+						list.add(Integer.parseInt(split[1]));
+					}
+					else
+					{
+						list.add(Integer.valueOf(-1));
+					}
+					OxygenPressureProtocol.nonPermeableBlocks.put(b, list);
 				}
 				else
 				{
 					final ArrayList<Integer> a = new ArrayList<Integer>();
-					a.add(Integer.parseInt(split[1]));
-					OxygenPressureProtocol.nonPermeableBlocks.put(Block.getBlockById(Integer.parseInt(split[0])), a);
+					if (split.length > 1)
+					{
+						a.add(Integer.parseInt(split[1]));
+					}
+					else
+					{
+						a.add(Integer.valueOf(-1));
+					}
+					OxygenPressureProtocol.nonPermeableBlocks.put(b, a);
 				}
 			}
-		}
-		catch (final Exception e)
-		{
-			System.err.println();
-			System.err.println("Error finding sealable IDs from the Galacticraft config, check that they are listed properly!");
-			System.err.println();
-			e.printStackTrace();
+			catch (final Exception e)
+			{
+				System.err.println("Galacticraft config External Sealable IDs: error parsing '"+s+"'  Must be in the form ID#:Metadata");
+			}
 		}
 	}
 
@@ -116,10 +128,14 @@ public class OxygenPressureProtocol
 			return !(((IPartialSealableBlock) block).isSealed(world, vec.x, vec.y, vec.z, ForgeDirection.getOrientation(side)));
 		}
 
-		//Solid but non-opaque blocks, for example glass
-		if (OxygenPressureProtocol.nonPermeableBlocks.containsKey(block) && OxygenPressureProtocol.nonPermeableBlocks.get(block).contains(vec.getBlockMetadata(world)))
+		//Solid but non-opaque blocks, for example special glass
+		if (OxygenPressureProtocol.nonPermeableBlocks.containsKey(block))
 		{
-			return false;
+			ArrayList<Integer> metaList = OxygenPressureProtocol.nonPermeableBlocks.get(block);
+			if (metaList.contains(Integer.valueOf(-1)) ||  metaList.contains(vec.getBlockMetadata(world)))
+			{
+				return false;
+			}
 		}
 
 		//Half slab seals on the top side or the bottom side according to its metadata

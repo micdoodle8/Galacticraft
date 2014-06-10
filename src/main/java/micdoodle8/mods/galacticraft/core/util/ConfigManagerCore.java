@@ -80,6 +80,7 @@ public class ConfigManagerCore
 	public static double oilGenFactor;
 	public static boolean disableLeafDecay;
 	public static boolean spaceStationsRequirePermission;
+	public static boolean disableSpaceStationCreation;
 	public static boolean overrideCapes;
 	public static double spaceStationEnergyScalar;
 	public static boolean disableLander;
@@ -161,6 +162,7 @@ public class ConfigManagerCore
 			ConfigManagerCore.oxygenIndicatorBottom = ConfigManagerCore.configuration.get(Configuration.CATEGORY_GENERAL, "Minimap Bottom", false, "If true, this will move the Oxygen Indicator to the bottom. You can combine this with \"Minimap Left\"").getBoolean(false);
 			ConfigManagerCore.disableLeafDecay = ConfigManagerCore.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Oxygen Collector Leaf Decay", false, "If set to true, Oxygen Collectors will not consume leaf blocks.").getBoolean(false);
 			ConfigManagerCore.spaceStationsRequirePermission = ConfigManagerCore.configuration.get(Configuration.CATEGORY_GENERAL, "Space Stations Require Permission", true, "While true, space stations require you to invite other players using /ssinvite <playername>").getBoolean(true);
+			ConfigManagerCore.disableSpaceStationCreation = ConfigManagerCore.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Space Station creation", false, "If set to true on a server, players will be completely unable to create space stations.").getBoolean(false);
 			ConfigManagerCore.overrideCapes = ConfigManagerCore.configuration.get(Configuration.CATEGORY_GENERAL, "Override Capes", true, "By default, Galacticraft will override capes with the mod's donor cape. Set to false to disable.").getBoolean(true);
 			ConfigManagerCore.spaceStationEnergyScalar = ConfigManagerCore.configuration.get(Configuration.CATEGORY_GENERAL, "Space Station Solar Energy Multiplier", 2.0, "If Mekanism is installed, solar panels will work (default 2x) more effective on space stations.").getDouble(2.0);
 			ConfigManagerCore.sealableIDs = ConfigManagerCore.configuration.get(Configuration.CATEGORY_GENERAL, "External Sealable IDs", new String[] { String.valueOf(Block.getIdFromBlock(Blocks.glass_pane) + ":0") }, "List IDs of non-opaque blocks from other mods (for example, special types of glass) that the Oxygen Sealer should recognize as solid seals. Format is ID:METADATA").getStringList();
