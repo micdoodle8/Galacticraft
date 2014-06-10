@@ -454,15 +454,12 @@ public class TickHandlerClient
 
 			if (world != null)
 			{
-				for (int i = 0; i < world.loadedEntityList.size(); i++)
+				List entityList = world.loadedEntityList;
+				for (int i = entityList.size() - 1; i >= 0; i--)
 				{
-					final Entity e = (Entity) world.loadedEntityList.get(i);
-
-					if (e != null)
-					{
-						if (e instanceof EntityTier1Rocket)
+						if (entityList.get(i) instanceof EntityTier1Rocket)
 						{
-							final EntityTier1Rocket eship = (EntityTier1Rocket) e;
+							final EntityTier1Rocket eship = (EntityTier1Rocket) entityList.get(i);
 
 							if (eship.rocketSoundUpdater == null)
 							{
@@ -470,7 +467,6 @@ public class TickHandlerClient
 //								eship.rocketSoundUpdater = new GCCoreSoundUpdaterSpaceship(FMLClientHandler.instance().getClient().sndManager, eship, FMLClientHandler.instance().getClient().thePlayer);
 							}
 						}
-					}
 				}
 			}
 
