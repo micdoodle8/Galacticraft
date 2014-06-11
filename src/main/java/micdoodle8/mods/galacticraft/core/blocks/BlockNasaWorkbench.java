@@ -144,14 +144,14 @@ public class BlockNasaWorkbench extends BlockContainer implements ITileEntityPro
 							
 							if ((y == 0 || y == 3) && x == 0 && z == 0)
 							{
-								if (blockAt.getMaterial().isReplaceable())
+								if (!blockAt.getMaterial().isReplaceable())
 								{
 									validSpot = false;
 								}
 							}
 							else if (y != 0 && y != 3)
 							{
-								if (blockAt.getMaterial().isReplaceable())
+								if (!blockAt.getMaterial().isReplaceable())
 								{
 									validSpot = false;
 								}
