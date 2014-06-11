@@ -96,12 +96,7 @@ public class TileEntityElectricFurnace extends TileEntityElectricBlock implement
 	 */
 	public boolean canProcess()
 	{
-		if (FurnaceRecipes.smelting().getSmeltingResult(this.containingItems[1]) == null)
-		{
-			return false;
-		}
-
-		if (this.containingItems[1] == null)
+		if (this.containingItems[1] == null || FurnaceRecipes.smelting().getSmeltingResult(this.containingItems[1]) == null)
 		{
 			return false;
 		}
@@ -297,7 +292,7 @@ public class TileEntityElectricFurnace extends TileEntityElectricBlock implement
 	@Override
 	public boolean isItemValidForSlot(int slotID, ItemStack itemStack)
 	{
-		return slotID == 1 ? FurnaceRecipes.smelting().getSmeltingResult(itemStack) != null : slotID == 0 ? itemStack.getItem() instanceof IItemElectric : false;
+		return slotID == 1 ? (itemStack != null && FurnaceRecipes.smelting().getSmeltingResult(itemStack) != null) : slotID == 0 ? itemStack.getItem() instanceof IItemElectric : false;
 	}
 
 	/**
