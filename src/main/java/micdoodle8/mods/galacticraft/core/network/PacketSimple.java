@@ -221,6 +221,7 @@ public class PacketSimple extends Packet implements IPacket
 		{
 			playerBaseClient = (GCEntityClientPlayerMP) player;
 		}
+		else return;
 
 		switch (this.type)
 		{
@@ -353,10 +354,7 @@ public class PacketSimple extends Packet implements IPacket
 			FMLClientHandler.instance().getClient().displayGuiScreen(null);
 			break;
 		case C_RESET_THIRD_PERSON:
-			if (playerBaseClient != null)
-			{
-				FMLClientHandler.instance().getClient().gameSettings.thirdPersonView = playerBaseClient.getThirdPersonView();
-			}
+			FMLClientHandler.instance().getClient().gameSettings.thirdPersonView = playerBaseClient.getThirdPersonView();
 			break;
 		case C_UPDATE_SPACESTATION_LIST:
 			try
@@ -466,31 +464,24 @@ public class PacketSimple extends Packet implements IPacket
  				e.printStackTrace();
  			}
 		case C_ADD_NEW_SCHEMATIC:
-			if (playerBaseClient != null)
+			final ISchematicPage page = SchematicRegistry.getMatchingRecipeForID((Integer) this.data.get(0));
+			if (!playerBaseClient.unlockedSchematics.contains(page))
 			{
-				final ISchematicPage page = SchematicRegistry.getMatchingRecipeForID((Integer) this.data.get(0));
-
-				if (!playerBaseClient.unlockedSchematics.contains(page))
-				{
-					playerBaseClient.unlockedSchematics.add(page);
-				}
+				playerBaseClient.unlockedSchematics.add(page);
 			}
 			break;
 		case C_UPDATE_SCHEMATIC_LIST:
-			if (playerBaseClient != null)
+			for (Object o : this.data)
 			{
-				for (Object o : this.data)
+				Integer schematicID = (Integer) o;
+
+				if (schematicID != -2)
 				{
-					Integer schematicID = (Integer) o;
+					Collections.sort(playerBaseClient.unlockedSchematics);
 
-					if (schematicID != -2)
+					if (!playerBaseClient.unlockedSchematics.contains(SchematicRegistry.getMatchingRecipeForID(Integer.valueOf(schematicID))))
 					{
-						Collections.sort(playerBaseClient.unlockedSchematics);
-
-						if (!playerBaseClient.unlockedSchematics.contains(SchematicRegistry.getMatchingRecipeForID(Integer.valueOf(schematicID))))
-						{
-							playerBaseClient.unlockedSchematics.add(SchematicRegistry.getMatchingRecipeForID(Integer.valueOf(schematicID)));
-						}
+						playerBaseClient.unlockedSchematics.add(SchematicRegistry.getMatchingRecipeForID(Integer.valueOf(schematicID)));
 					}
 				}
 			}
@@ -508,10 +499,7 @@ public class PacketSimple extends Packet implements IPacket
 			player.playSound("random.bow", 10.0F, 0.2F);
 			break;
 		case C_UPDATE_OXYGEN_VALIDITY:
-			if (playerBaseClient != null)
-			{
-				playerBaseClient.oxygenSetupValid = (Boolean) this.data.get(0);
-			}
+			playerBaseClient.oxygenSetupValid = (Boolean) this.data.get(0);
 			break;
 		case C_OPEN_PARACHEST_GUI:
 			switch ((Integer) this.data.get(1))
@@ -587,30 +575,21 @@ public class PacketSimple extends Packet implements IPacket
 			}
 			break;
 		case C_UPDATE_STATION_SPIN:
-			if (playerBaseClient != null)
+			if (playerBaseClient.worldObj.provider instanceof WorldProviderOrbit)
 			{
-				if (playerBaseClient.worldObj.provider instanceof WorldProviderOrbit)
-				{
-					((WorldProviderOrbit)playerBaseClient.worldObj.provider).setSpinRate((Float)this.data.get(0),(Boolean)this.data.get(1));
-				}
+				((WorldProviderOrbit)playerBaseClient.worldObj.provider).setSpinRate((Float)this.data.get(0),(Boolean)this.data.get(1));
 			}
 			break;
 		case C_UPDATE_STATION_DATA:
-			if (playerBaseClient != null)
+			if (playerBaseClient.worldObj.provider instanceof WorldProviderOrbit)
 			{
-				if (playerBaseClient.worldObj.provider instanceof WorldProviderOrbit)
-				{
-					((WorldProviderOrbit)playerBaseClient.worldObj.provider).setSpinCentre((Double)this.data.get(0),(Double)this.data.get(1));
-				}
+				((WorldProviderOrbit)playerBaseClient.worldObj.provider).setSpinCentre((Double)this.data.get(0),(Double)this.data.get(1));
 			}
 			break;
 		case C_UPDATE_STATION_BOX:
-			if (playerBaseClient != null)
+			if (playerBaseClient.worldObj.provider instanceof WorldProviderOrbit)
 			{
-				if (playerBaseClient.worldObj.provider instanceof WorldProviderOrbit)
-				{
-					((WorldProviderOrbit)playerBaseClient.worldObj.provider).setSpinBox((Integer)this.data.get(0),(Integer)this.data.get(1),(Integer)this.data.get(2),(Integer)this.data.get(3),(Integer)this.data.get(4),(Integer)this.data.get(5));
-				}
+				((WorldProviderOrbit)playerBaseClient.worldObj.provider).setSpinBox((Integer)this.data.get(0),(Integer)this.data.get(1),(Integer)this.data.get(2),(Integer)this.data.get(3),(Integer)this.data.get(4),(Integer)this.data.get(5));
 			}
 			break;
 		default:
@@ -622,6 +601,7 @@ public class PacketSimple extends Packet implements IPacket
 	public void handleServerSide(EntityPlayer player)
 	{
 		GCEntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player, false);
+		if (playerBase == null) return;
 
 		switch (this.type)
 		{
@@ -629,36 +609,33 @@ public class PacketSimple extends Packet implements IPacket
 			playerBase.playerNetServerHandler.sendPacket(new S07PacketRespawn(player.dimension, player.worldObj.difficultySetting, player.worldObj.getWorldInfo().getTerrainType(), playerBase.theItemInWorldManager.getGameType()));
 			break;
 		case S_TELEPORT_ENTITY:
-			if (playerBase != null)
+			try
 			{
-				try
-				{
-					final WorldProvider provider = WorldUtil.getProviderForName((String) this.data.get(0));
-					final Integer dim = provider.dimensionId;
-					GCLog.info("Found matching world ("+dim.toString()+") for name: " + (String) this.data.get(0));
+				final WorldProvider provider = WorldUtil.getProviderForName((String) this.data.get(0));
+				final Integer dim = provider.dimensionId;
+				GCLog.info("Found matching world ("+dim.toString()+") for name: " + (String) this.data.get(0));
 
-					if (playerBase.worldObj instanceof WorldServer)
+				if (playerBase.worldObj instanceof WorldServer)
+				{
+					final WorldServer world = (WorldServer) playerBase.worldObj;
+
+					if (provider instanceof IOrbitDimension)
 					{
-						final WorldServer world = (WorldServer) playerBase.worldObj;
-
-						if (provider instanceof IOrbitDimension)
-						{
-							WorldUtil.transferEntityToDimension(playerBase, dim, world);
-						}
-						else
-						{
-							WorldUtil.transferEntityToDimension(playerBase, dim, world);
-						}
+						WorldUtil.transferEntityToDimension(playerBase, dim, world);
 					}
+					else
+					{
+						WorldUtil.transferEntityToDimension(playerBase, dim, world);
+					}
+				}
 
-					playerBase.getPlayerStats().teleportCooldown = 300;
-					GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_CLOSE_GUI, new Object[] {}), playerBase);
-				}
-				catch (final Exception e)
-				{
-					GCLog.severe("Error occurred when attempting to transfer entity to dimension: " + (String) this.data.get(0));
-					e.printStackTrace();
-				}
+				playerBase.getPlayerStats().teleportCooldown = 300;
+				GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_CLOSE_GUI, new Object[] {}), playerBase);
+			}
+			catch (final Exception e)
+			{
+				GCLog.severe("Error occurred when attempting to transfer entity to dimension: " + (String) this.data.get(0));
+				e.printStackTrace();
 			}
 			break;
 		case S_IGNITE_ROCKET:
@@ -668,14 +645,9 @@ public class PacketSimple extends Packet implements IPacket
 
 				if (ship.hasValidFuel())
 				{
-					ItemStack stack2 = null;
+					ItemStack stack2 = playerBase.getPlayerStats().extendedInventory.getStackInSlot(4);
 
-					if (playerBase != null)
-					{
-						stack2 = playerBase.getPlayerStats().extendedInventory.getStackInSlot(4);
-					}
-
-					if (stack2 != null && stack2.getItem() instanceof ItemParaChute || playerBase != null && playerBase.getPlayerStats().launchAttempts > 0)
+					if (stack2 != null && stack2.getItem() instanceof ItemParaChute || playerBase.getPlayerStats().launchAttempts > 0)
 					{
 						ship.igniteCheckingCooldown();
 						playerBase.getPlayerStats().launchAttempts = 0;
