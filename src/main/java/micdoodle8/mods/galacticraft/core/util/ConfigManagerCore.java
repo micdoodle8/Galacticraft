@@ -36,17 +36,6 @@ public class ConfigManagerCore
 	public static int idSchematicMoonBuggy;
 	public static int idSchematicAddSchematic;
 
-	// GUI
-	public static int idGuiRocketCraftingBench;
-	public static int idGuiBuggyCraftingBench;
-	public static int idGuiGalaxyMap;
-	public static int idGuiSpaceshipInventory;
-	public static int idGuiAddSchematic;
-	public static int idGuiKnowledgeBook;
-	public static int idGuiExtendedInventory;
-	public static int idGuiNewSpaceRace;
-	public static int idGuiJoinSpaceRace;
-
 	// ACHIEVEMENTS
 	public static int idAchievBase;
 
@@ -119,16 +108,6 @@ public class ConfigManagerCore
 			ConfigManagerCore.idDimensionOverworldOrbitStatic = ConfigManagerCore.configuration.get("DIMENSIONS", "idDimensionOverworldOrbitStatic", -26, "Static Space Station ID").getInt(-26);
 			ConfigManagerCore.staticLoadDimensions = ConfigManagerCore.configuration.get("DIMENSIONS", "Static Loaded Dimensions", ConfigManagerCore.staticLoadDimensions, "IDs to load at startup, and keep loaded until server stops. Can be added via /gckeeploaded").getIntList();
 			
-			ConfigManagerCore.idGuiRocketCraftingBench = ConfigManagerCore.configuration.get("GUI", "idGuiRocketCraftingBench", 130).getInt(130);
-			ConfigManagerCore.idGuiBuggyCraftingBench = ConfigManagerCore.configuration.get("GUI", "idGuiBuggyCraftingBench", 131).getInt(131);
-			ConfigManagerCore.idGuiGalaxyMap = ConfigManagerCore.configuration.get("GUI", "idGuiGalaxyMap", 132).getInt(132);
-			ConfigManagerCore.idGuiSpaceshipInventory = ConfigManagerCore.configuration.get("GUI", "idGuiSpaceshipInventory", 133).getInt(133);
-			ConfigManagerCore.idGuiAddSchematic = ConfigManagerCore.configuration.get("GUI", "idGuiAddSchematic", 138).getInt(138);
-			ConfigManagerCore.idGuiKnowledgeBook = ConfigManagerCore.configuration.get("GUI", "idGuiKnowledgeBook", 140).getInt(140);
-			ConfigManagerCore.idGuiExtendedInventory = ConfigManagerCore.configuration.get("GUI", "idGuiExtendedInventory", 145).getInt(145);
-			ConfigManagerCore.idGuiNewSpaceRace = ConfigManagerCore.configuration.get("GUI", "idGuiNewSpaceRace", 146).getInt(146);
-			ConfigManagerCore.idGuiJoinSpaceRace = ConfigManagerCore.configuration.get("GUI", "idGuiJoinSpaceRace", 147).getInt(147);
-
 			ConfigManagerCore.idSchematicRocketT1 = ConfigManagerCore.configuration.get("Schematic", "idSchematicRocketT1", 0).getInt(0);
 			ConfigManagerCore.idSchematicMoonBuggy = ConfigManagerCore.configuration.get("Schematic", "idSchematicMoonBuggy", 1).getInt(1);
 			ConfigManagerCore.idSchematicAddSchematic = ConfigManagerCore.configuration.get("Schematic", "idSchematicAddSchematic", Integer.MAX_VALUE).getInt(Integer.MAX_VALUE);

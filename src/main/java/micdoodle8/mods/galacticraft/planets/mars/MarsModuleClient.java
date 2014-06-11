@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.core.client.CloudRenderer;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderBubble;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderTier1Rocket;
 import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererKey;
+import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
 import micdoodle8.mods.galacticraft.planets.IPlanetsModuleClient;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.client.SkyProviderMars;
@@ -140,9 +141,7 @@ public class MarsModuleClient implements IPlanetsModuleClient
 	@Override
 	public void getGuiIDs(List<Integer> idList) 
 	{
-		idList.add(ConfigManagerMars.idGuiCargoRocketCraftingBench);
-		idList.add(ConfigManagerMars.idGuiMachine);
-		idList.add(ConfigManagerMars.idGuiRocketCraftingBenchT2);
+		idList.add(GuiIdsPlanets.MACHINE_MARS);
 	}
 
 	@Override
@@ -152,7 +151,7 @@ public class MarsModuleClient implements IPlanetsModuleClient
 		{
 			TileEntity tile = world.getTileEntity(x, y, z);
 
-			if (ID == ConfigManagerMars.idGuiMachine)
+			if (ID == GuiIdsPlanets.MACHINE_MARS)
 			{
 				if (tile instanceof TileEntityTerraformer)
 				{

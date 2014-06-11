@@ -19,6 +19,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.fx.EntityFXSparks;
+import micdoodle8.mods.galacticraft.core.client.gui.GuiIdsCore;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiBuggy;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiParaChest;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiChoosePlanet;
@@ -168,7 +169,8 @@ public class PacketSimple extends Packet implements IPacket
 	{
 		if (packetType.getDecodeClasses().length != data.size())
 		{
-			GCLog.info("Simple Packet found data length different than packet type");
+			GCLog.info("Simple Packet Core found data length different than packet type");
+			new RuntimeException().printStackTrace();
 		}
 
 		this.type = packetType;
@@ -547,7 +549,7 @@ public class PacketSimple extends Packet implements IPacket
 			if (Minecraft.getMinecraft().currentScreen == null)
 			{
 				TickHandlerClient.spaceRaceGuiScheduled = false;
-				player.openGui(GalacticraftCore.instance, ConfigManagerCore.idGuiNewSpaceRace, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
+				player.openGui(GalacticraftCore.instance, GuiIdsCore.SPACE_RACE_START, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
 			}
 			else
 			{
@@ -574,7 +576,7 @@ public class PacketSimple extends Packet implements IPacket
 			break;
 		case C_OPEN_JOIN_RACE_GUI:
 			playerBaseClient.spaceRaceInviteTeamID = (Integer) data.get(0);
-			player.openGui(GalacticraftCore.instance, ConfigManagerCore.idGuiJoinSpaceRace, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
+			player.openGui(GalacticraftCore.instance, GuiIdsCore.SPACE_RACE_JOIN, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
 			break;
 		case C_UPDATE_FOOTPRINT_LIST:
 			ClientProxyCore.footprintRenderer.footprints.clear();
@@ -707,7 +709,7 @@ public class PacketSimple extends Packet implements IPacket
 			}
 			else if (player.ridingEntity instanceof EntitySpaceshipBase)
 			{
-				player.openGui(GalacticraftCore.instance, ConfigManagerCore.idGuiSpaceshipInventory, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
+				player.openGui(GalacticraftCore.instance, GuiIdsCore.ROCKET_INVENTORY, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
 			}
 			break;
 		case S_UPDATE_SHIP_YAW:
@@ -808,7 +810,7 @@ public class PacketSimple extends Packet implements IPacket
 			}
 			break;
 		case S_OPEN_EXTENDED_INVENTORY:
-			player.openGui(GalacticraftCore.instance, ConfigManagerCore.idGuiExtendedInventory, player.worldObj, 0, 0, 0);
+			player.openGui(GalacticraftCore.instance, GuiIdsCore.EXTENDED_INVENTORY, player.worldObj, 0, 0, 0);
 			break;
 		case S_ON_ADVANCED_GUI_CLICKED_INT:
 			TileEntity tile1 = player.worldObj.getTileEntity((Integer) this.data.get(1), (Integer) this.data.get(2), (Integer) this.data.get(3));

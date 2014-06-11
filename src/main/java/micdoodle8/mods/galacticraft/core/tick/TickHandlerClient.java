@@ -13,6 +13,7 @@ import micdoodle8.mods.galacticraft.core.client.CloudRenderer;
 import micdoodle8.mods.galacticraft.core.client.SkyProviderMoon;
 import micdoodle8.mods.galacticraft.core.client.SkyProviderOrbit;
 import micdoodle8.mods.galacticraft.core.client.SkyProviderOverworld;
+import micdoodle8.mods.galacticraft.core.client.gui.GuiIdsCore;
 import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlayDockingRocket;
 import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlayLander;
 import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlayLaunchCountdown;
@@ -355,7 +356,7 @@ public class TickHandlerClient
 
 			if (world != null && spaceRaceGuiScheduled && minecraft.currentScreen == null)
 			{
-				player.openGui(GalacticraftCore.instance, ConfigManagerCore.idGuiNewSpaceRace, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
+				player.openGui(GalacticraftCore.instance, GuiIdsCore.SPACE_RACE_START, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
 				spaceRaceGuiScheduled = false;
 			}
 

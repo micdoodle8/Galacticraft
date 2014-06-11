@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.schematic;
 
 import micdoodle8.mods.galacticraft.api.recipe.SchematicPage;
+import micdoodle8.mods.galacticraft.core.client.gui.GuiIdsCore;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiSchematicTier1Rocket;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerSchematicTier1Rocket;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
@@ -31,7 +32,7 @@ public class SchematicRocketT1 extends SchematicPage
 	@Override
 	public int getGuiID()
 	{
-		return ConfigManagerCore.idGuiRocketCraftingBench;
+		return GuiIdsCore.NASA_WORKBENCH_ROCKET;
 	}
 
 	@Override

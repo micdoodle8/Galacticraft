@@ -14,6 +14,7 @@ import micdoodle8.mods.galacticraft.core.util.CreativeTabGC;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
+import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
 import micdoodle8.mods.galacticraft.planets.IPlanetsModule;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.dimension.TeleportTypeMars;
@@ -181,9 +182,7 @@ public class MarsModule implements IPlanetsModule
 	@Override
 	public void getGuiIDs(List<Integer> idList) 
 	{
-		idList.add(ConfigManagerMars.idGuiCargoRocketCraftingBench);
-		idList.add(ConfigManagerMars.idGuiMachine);
-		idList.add(ConfigManagerMars.idGuiRocketCraftingBenchT2);
+		idList.add(GuiIdsPlanets.MACHINE_MARS);
 	}
 
 	@Override
@@ -193,7 +192,7 @@ public class MarsModule implements IPlanetsModule
 		{
 			TileEntity tile = world.getTileEntity(x, y, z);
 
-			if (ID == ConfigManagerMars.idGuiMachine)
+			if (ID == GuiIdsPlanets.MACHINE_MARS)
 			{
 				if (tile instanceof TileEntityTerraformer)
 				{

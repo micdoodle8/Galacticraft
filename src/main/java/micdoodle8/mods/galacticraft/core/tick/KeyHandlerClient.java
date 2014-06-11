@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.KeyHandler;
+import micdoodle8.mods.galacticraft.core.client.gui.GuiIdsCore;
 import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
 import micdoodle8.mods.galacticraft.core.entities.IControllableEntity;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
@@ -71,7 +72,7 @@ public class KeyHandlerClient extends KeyHandler
 			{
 				if (KeyHandlerClient.mc.currentScreen == null)
 				{
-					KeyHandlerClient.mc.thePlayer.openGui(GalacticraftCore.instance, ConfigManagerCore.idGuiGalaxyMap, KeyHandlerClient.mc.theWorld, (int) KeyHandlerClient.mc.thePlayer.posX, (int) KeyHandlerClient.mc.thePlayer.posY, (int) KeyHandlerClient.mc.thePlayer.posZ);
+					KeyHandlerClient.mc.thePlayer.openGui(GalacticraftCore.instance, GuiIdsCore.GALAXY_MAP, KeyHandlerClient.mc.theWorld, (int) KeyHandlerClient.mc.thePlayer.posX, (int) KeyHandlerClient.mc.thePlayer.posY, (int) KeyHandlerClient.mc.thePlayer.posZ);
 				}
 			}
 			else if (kb.getKeyCode() == KeyHandlerClient.openFuelGui.getKeyCode())

@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.schematic;
 
 import micdoodle8.mods.galacticraft.api.recipe.SchematicPage;
+import micdoodle8.mods.galacticraft.core.client.gui.GuiIdsCore;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiSchematicBuggy;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerBuggyBench;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
@@ -32,7 +33,7 @@ public class SchematicMoonBuggy extends SchematicPage
 	@Override
 	public int getGuiID()
 	{
-		return ConfigManagerCore.idGuiBuggyCraftingBench;
+		return GuiIdsCore.NASA_WORKBENCH_BUGGY;
 	}
 
 	@Override

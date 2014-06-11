@@ -4,13 +4,12 @@ import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
-import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.client.gui.GuiIdsCore;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -39,7 +38,7 @@ public class TileEntityNasaWorkbench extends TileEntityMulti implements IMultiBl
 	@Override
 	public boolean onActivated(EntityPlayer entityPlayer)
 	{
-		entityPlayer.openGui(GalacticraftCore.instance, ConfigManagerCore.idGuiRocketCraftingBench, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+		entityPlayer.openGui(GalacticraftCore.instance, GuiIdsCore.NASA_WORKBENCH_ROCKET, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
 		return true;
 	}
 

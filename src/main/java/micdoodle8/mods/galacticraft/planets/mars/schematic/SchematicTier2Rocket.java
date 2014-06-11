@@ -2,6 +2,8 @@ package micdoodle8.mods.galacticraft.planets.mars.schematic;
 
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
+import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars;
 import micdoodle8.mods.galacticraft.planets.mars.client.gui.GuiSchematicTier2Rocket;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerSchematicTier2Rocket;
@@ -32,7 +34,7 @@ public class SchematicTier2Rocket implements ISchematicPage
 	@Override
 	public int getGuiID()
 	{
-		return ConfigManagerMars.idGuiRocketCraftingBenchT2;
+		return GuiIdsPlanets.NASA_WORKBENCH_TIER_2_ROCKET + GalacticraftPlanets.MODID.hashCode();
 	}
 
 	@Override

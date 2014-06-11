@@ -60,7 +60,6 @@ public class GCItems
 	public static Item schematic;
 	public static Item key;
 	public static Item partBuggy;
-	public static Item knowledgeBook;
 	public static Item basicItem;
 	public static Item battery;
 	public static Item infiniteBatery;
@@ -115,7 +114,6 @@ public class GCItems
 		GCItems.schematic = new ItemSchematic("schematic");
 		GCItems.key = new ItemKey("key");
 		GCItems.partBuggy = new ItemBuggyMaterial("buggymat");
-		GCItems.knowledgeBook = new ItemKnowledgeBook("knowledgeBook");
 		GCItems.basicItem = new ItemBasic("basicItem");
 		GCItems.battery = new ItemBattery("battery");
 		GCItems.infiniteBatery = new ItemBatteryInfinite("infiniteBattery");
@@ -125,8 +123,6 @@ public class GCItems
 		GCItems.cheeseBlock = new ItemBlockCheese(GCBlocks.cheeseBlock, "cheeseBlock");
 		GCItems.meteoricIronRaw = new ItemMeteoricIron("meteoricIronRaw");
 		GCItems.meteoricIronIngot = new ItemMoon("meteoricIronIngot");
-
-		GCItems.hiddenItems.add(GCItems.knowledgeBook);
 
 		GCItems.registerHarvestLevels();
 
@@ -307,7 +303,6 @@ public class GCItems
 		registerItem(GCItems.cheeseBlock);
 		registerItem(GCItems.flag);
 		registerItem(GCItems.parachute);
-		registerItem(GCItems.knowledgeBook);
 	}
 
 	private static void registerItem(Item item)

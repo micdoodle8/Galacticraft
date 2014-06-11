@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.world.IChunkLoader;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
+import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityCryogenicChamber;
@@ -314,7 +315,7 @@ public class BlockMachineMars extends BlockTileGC
 
 		if (metadata >= BlockMachineMars.LAUNCH_CONTROLLER_METADATA)
 		{
-			par5EntityPlayer.openGui(GalacticraftPlanets.instance, ConfigManagerMars.idGuiMachine, world, x, y, z);
+			par5EntityPlayer.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_MARS, world, x, y, z);
 			return true;
 		}
 		else if (metadata >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA)
@@ -324,7 +325,7 @@ public class BlockMachineMars extends BlockTileGC
 		}
 		else
 		{
-			par5EntityPlayer.openGui(GalacticraftPlanets.instance, ConfigManagerMars.idGuiMachine, world, x, y, z);
+			par5EntityPlayer.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_MARS, world, x, y, z);
 			return true;
 		}
 	}
