@@ -28,6 +28,7 @@ public class ItemRendererThermalArmor implements IItemRenderer
 	private void renderThermalArmor(ItemRenderType type, RenderBlocks render, ItemStack item, float translateX, float translateY, float translateZ)
 	{
 		GL11.glPushMatrix();
+		GL11.glEnable(GL11.GL_BLEND);
 
 		for (int i = 0; i < 2; i++)
 		{
@@ -39,13 +40,13 @@ public class ItemRendererThermalArmor implements IItemRenderer
 				float r = (float)Math.max(Math.cos(time), 0.0F);
 				float b = (float)Math.max(Math.cos(time) * -1, 0.0F);
 				
-				if (r <= 0.75 && b <= 0.75)
+				if (r <= 0.6 && b <= 0.6)
 				{
 					r = 0.0F;
 					b = 0.0F;
 				}
 				
-				GL11.glColor4f(r, 0.0F, b, r + b);
+				GL11.glColor4f(r, b / 2.0F, b, r + b / 1.5F);
 			}
 			
 	        IIcon iicon = FMLClientHandler.instance().getClientPlayerEntity().getItemIcon(item, i);
