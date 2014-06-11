@@ -5,13 +5,14 @@ import io.netty.channel.ChannelHandlerContext;
 
 import java.io.IOException;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 
 public class PacketDynamicInventory implements IPacket
 {
@@ -118,21 +119,12 @@ public class PacketDynamicInventory implements IPacket
 	@Override
 	public void handleClientSide(EntityPlayer player)
 	{
-		this.handleData(player.worldObj);
-	}
-
-	@Override
-	public void handleServerSide(EntityPlayer player)
-	{
-		this.handleData(player.worldObj);
-	}
-
-	private void handleData(World world)
-	{
+		if (player.worldObj == null) return;
+		
 		switch (this.type)
 		{
 		case 0:
-			Entity entity = world.getEntityByID((Integer) this.data[0]);
+			Entity entity = player.worldObj.getEntityByID((Integer) this.data[0]);
 
 			if (entity instanceof IInventorySettable)
 			{
@@ -141,11 +133,37 @@ public class PacketDynamicInventory implements IPacket
 
 			break;
 		case 1:
-			TileEntity tile = world.getTileEntity((Integer) this.data[0], (Integer) this.data[1], (Integer) this.data[2]);
+			TileEntity tile = player.worldObj.getTileEntity((Integer) this.data[0], (Integer) this.data[1], (Integer) this.data[2]);
 
 			if (tile instanceof IInventorySettable)
 			{
 				this.setInventoryStacks((IInventorySettable) tile);
+			}
+
+			break;
+		}
+	}
+
+	@Override
+	public void handleServerSide(EntityPlayer player)
+	{
+		switch (this.type)
+		{
+		case 0:
+			Entity entity = player.worldObj.getEntityByID((Integer) this.data[0]);
+
+			if (entity instanceof IInventorySettable)
+			{
+				GalacticraftCore.packetPipeline.sendTo(new PacketDynamicInventory(entity), (EntityPlayerMP) player);
+			}
+
+			break;
+		case 1:
+			TileEntity tile = player.worldObj.getTileEntity((Integer) this.data[0], (Integer) this.data[1], (Integer) this.data[2]);
+
+			if (tile instanceof IInventorySettable)
+			{
+				GalacticraftCore.packetPipeline.sendTo(new PacketDynamicInventory(tile), (EntityPlayerMP) player);
 			}
 
 			break;
