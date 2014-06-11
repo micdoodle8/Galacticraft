@@ -53,7 +53,7 @@ public class GuiParaChest extends GuiContainerGC
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
 	{
 		this.fontRendererObj.drawString(this.lowerChestInventory.getInventoryName(), 8, 6, 4210752);
-		this.fontRendererObj.drawString(this.upperChestInventory.hasCustomInventoryName() ? this.upperChestInventory.getInventoryName() : StatCollector.translateToLocal(this.upperChestInventory.getInventoryName()), 8, this.ySize - 103 + 2, 4210752);
+		this.fontRendererObj.drawString(this.upperChestInventory.hasCustomInventoryName() ? this.upperChestInventory.getInventoryName() : StatCollector.translateToLocal(this.upperChestInventory.getInventoryName()), 8, this.ySize - 103 + (this.inventorySlots == 3 ? 2 : 4), 4210752);
 	}
 
 	@Override
