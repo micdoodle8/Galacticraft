@@ -17,7 +17,7 @@ import net.minecraft.nbt.NBTTagList;
  */
 public class InventoryExtended implements IInventory
 {
-	public ItemStack[] inventoryStacks = new ItemStack[6];
+	public ItemStack[] inventoryStacks = new ItemStack[10];
 
 	@Override
 	public int getSizeInventory()
@@ -145,7 +145,7 @@ public class InventoryExtended implements IInventory
 	// Backwards compatibility for old inventory
 	public void readFromNBTOld(NBTTagList par1NBTTagList)
 	{
-		this.inventoryStacks = new ItemStack[6];
+		this.inventoryStacks = new ItemStack[10];
 
 		for (int i = 0; i < par1NBTTagList.tagCount(); ++i)
 		{
@@ -165,7 +165,7 @@ public class InventoryExtended implements IInventory
 
 	public void readFromNBT(NBTTagList tagList)
 	{
-		this.inventoryStacks = new ItemStack[6];
+		this.inventoryStacks = new ItemStack[10];
 
 		for (int i = 0; i < tagList.tagCount(); ++i)
 		{
