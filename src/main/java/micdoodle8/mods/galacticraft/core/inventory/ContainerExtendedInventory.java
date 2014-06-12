@@ -5,7 +5,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import cpw.mods.fml.common.Loader;
 
 /**
  * GCCoreContainerExtendedInventory.java
@@ -53,13 +52,10 @@ public class ContainerExtendedInventory extends Container
 		this.addSlotToContainer(new SlotExtendedInventory(extendedInventory, 3, 106 + 19 + 9, 53));
 		this.addSlotToContainer(new SlotExtendedInventory(extendedInventory, 4, 124 + 19, 17));
 		this.addSlotToContainer(new SlotExtendedInventory(extendedInventory, 5, 106 + 1, 17));
-		
-		if (Loader.isModLoaded("GalacticraftMars"))
+
+		for (i = 0; i < 4; ++i)
 		{
-			for (i = 0; i < 4; ++i)
-			{
-				this.addSlotToContainer(new SlotExtendedInventory(extendedInventory, 6 + i, 79, 8 + i * 18));
-			}
+			this.addSlotToContainer(new SlotExtendedInventory(extendedInventory, 6 + i, 79, 8 + i * 18));
 		}
 	}
 
