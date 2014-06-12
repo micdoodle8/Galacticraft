@@ -34,7 +34,7 @@ public class TileEntityArclamp extends TileEntity
 	{
 		super.updateEntity();
 
-		if (!this.worldObj.isRemote)
+		if (!this.worldObj.isRemote && this.isActive)
 		{
 			if (this.thisAABB == null)
 			{
@@ -63,12 +63,12 @@ public class TileEntityArclamp extends TileEntity
 				}
 			}
 			
-			if (this.ticks % 100 == 0 && this.isActive)
+			if (this.ticks % 100 == 0)
 			{
 				this.lightArea();
 			}
 
-			if (this.isActive && this.worldObj.rand.nextInt(20)==0)
+			if (this.worldObj.rand.nextInt(20)==0)
 			{
 	            List<Entity> moblist = this.worldObj.getEntitiesWithinAABBExcludingEntity(null, this.thisAABB, IMob.mobSelector);
 	            
@@ -109,9 +109,10 @@ public class TileEntityArclamp extends TileEntity
 	@Override
 	public void validate()
 	{
-		this.isActive = true;
 		this.thisPos = Vec3.createVectorHelper(this.xCoord+0.5D, this.yCoord+0.5D, this.zCoord+0.5D);
 		this.ticks = 0;
+		this.thisAABB = null;
+		this.isActive = true;
 	}
 	
 	@Override
@@ -184,6 +185,7 @@ public class TileEntityArclamp extends TileEntity
 		}
 	}
 	
+	@Override
     public void readFromNBT(NBTTagCompound nbt)
     {
 		super.readFromNBT(nbt);
@@ -203,6 +205,7 @@ public class TileEntityArclamp extends TileEntity
 		}
 	}
     
+	@Override
     public void writeToNBT(NBTTagCompound nbt)
     {
 		super.writeToNBT(nbt);
