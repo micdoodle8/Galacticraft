@@ -215,7 +215,7 @@ public class GCPlayerStats implements IExtendedEntityProperties
 
 		for (int var3 = 0; var3 < var23.tagCount(); ++var3)
 		{
-			final NBTTagCompound var4 = (NBTTagCompound) var23.getCompoundTagAt(var3);
+			final NBTTagCompound var4 = var23.getCompoundTagAt(var3);
 			final int var5 = var4.getByte("Slot") & 255;
 
 			if (var5 >= 0 && var5 < this.rocketStacks.length)
@@ -241,7 +241,7 @@ public class GCPlayerStats implements IExtendedEntityProperties
 
 		for (int i = 0; i < nbt.getTagList("Schematics", 10).tagCount(); ++i)
 		{
-			final NBTTagCompound nbttagcompound = (NBTTagCompound) nbt.getTagList("Schematics", 10).getCompoundTagAt(i);
+			final NBTTagCompound nbttagcompound = nbt.getTagList("Schematics", 10).getCompoundTagAt(i);
 
 			final int j = nbttagcompound.getInteger("UnlockedPage");
 

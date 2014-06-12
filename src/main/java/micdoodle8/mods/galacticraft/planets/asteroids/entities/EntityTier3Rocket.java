@@ -164,7 +164,7 @@ public class EntityTier3Rocket extends EntityTieredRocket
 		{
 			if (this.cargoItems == null || this.cargoItems.length == 0)
 			{
-				playerBase.getPlayerStats().rocketStacks = new ItemStack[3];
+				playerBase.getPlayerStats().rocketStacks = new ItemStack[2];
 			}
 			else
 			{

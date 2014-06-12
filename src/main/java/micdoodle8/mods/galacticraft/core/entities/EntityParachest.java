@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
+import java.util.Arrays;
+
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityParaChest;
@@ -34,9 +36,14 @@ public class EntityParachest extends Entity
 	public EntityParachest(World world, ItemStack[] cargo, int fuelLevel)
 	{
 		this(world);
-		this.cargo = cargo;
+		this.cargo = cargo.clone();
 		this.placedChest = false;
 		this.fuelLevel = fuelLevel;
+		if ((cargo.length-2)%18!=0)
+		{
+			System.out.println("Strange EntityParachest inventory size "+cargo.length);
+			this.fuelLevel = 1/0;
+		}
 	}
 
 	public EntityParachest(World world)

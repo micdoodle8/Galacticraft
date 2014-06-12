@@ -77,6 +77,11 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
 	@Override
 	public void setSizeInventory(int size)
 	{
+		if ((size-3)%18!=0)
+		{
+			System.out.println("Strange TileEntityParachest inventory size received from server "+size);
+			size = 1/0;
+		}
 		this.chestContents = new ItemStack[size];
 	}
 
