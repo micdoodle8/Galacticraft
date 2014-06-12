@@ -201,7 +201,7 @@ public class TileEntityArclamp extends TileEntity
     
     public void writeToNBT(NBTTagCompound nbt)
     {
-		super.readFromNBT(nbt);
+		super.writeToNBT(nbt);
 		
 		NBTTagList airBlocks = new NBTTagList();
 
