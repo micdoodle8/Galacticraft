@@ -676,26 +676,60 @@ public class ClientProxyCore extends CommonProxyCore
 	        	int intDX = rend.posX - (pX << 4);
 	        	int intDZ = rend.posZ - (pZ << 4);
 	        	
-	        	int intClipX = rend.posXClip - intDX;
-	        	int intClipZ = rend.posZClip - intDZ;
-	
-	        	float theta = (float) MathHelper.wrapAngleTo180_double(intDX / globalArc);
-	        	float phi = (float) MathHelper.wrapAngleTo180_double(intDZ / globalArc);
-	        	if (theta < 0) theta += 360F;
-	        	if (phi < 0) phi += 360F;
-	        	GL11.glTranslatef(intClipX+8, -globeRadius, intClipZ+8);
-	        	if (theta>0) GL11.glRotatef(theta,0,0,-1);
-	        	if (phi>0) GL11.glRotatef(phi,1,0,0);
-	        	GL11.glTranslatef(-8, (float)rend.posYClip+globeRadius, -8);
-	        	float scale = (rend.posY + 15 + globeRadius) / ClientProxyCore.globalRadius;
-	        	ClientProxyCore.scaleup.rewind();
-	        	ClientProxyCore.scaleup.put(scale);
-	        	ClientProxyCore.scaleup.position(10);
-	        	ClientProxyCore.scaleup.put(scale);
-	        	ClientProxyCore.scaleup.rewind();
-	        	GL11.glMultMatrix(ClientProxyCore.scaleup);
-	        	GL11.glTranslatef(-8F * (scale - 1F), 0, -8F * (scale - 1F));
-	            GL11.glTranslatef(-(float)rend.posXClip, -(float)rend.posYClip, -(float)rend.posZClip);
+	        	if (Math.abs(intDX) > 16 || Math.abs(intDZ) > 16)
+	        	{
+	        		int dX = 0;
+	        		int dZ = 0;
+	        		
+		        	if (intDX > 0)
+		        	{
+		        		dX = -16;
+		        		intDX -= 16;
+		        	}
+		        	else if (intDX < 0)
+		        	{
+		        		dX = 16;
+		        		intDX += 16;
+		        	}
+		        	
+		        	if (intDZ > 0)
+		        	{
+		        		dZ = -16;
+		        		intDZ -= 16;
+		        	}
+		        	else if (intDZ < 0)
+		        	{
+		        		dZ = 16;
+		        		intDZ += 16;
+		        	}
+		        	
+		        	int intClipX = rend.posXClip - intDX;
+		        	int intClipZ = rend.posZClip - intDZ;
+		        	
+		        	float theta = (float) MathHelper.wrapAngleTo180_double(intDX / globalArc);
+		        	float phi = (float) MathHelper.wrapAngleTo180_double(intDZ / globalArc);
+		        	if (theta < 0) theta += 360F;
+		        	if (phi < 0) phi += 360F;
+		        	GL11.glTranslatef(intClipX+8, -globeRadius + 8, intClipZ+8);
+		        	if (theta>0) GL11.glRotatef(theta,0,0,-1);
+		        	if (phi>0) GL11.glRotatef(phi,1,0,0);
+		        	GL11.glTranslatef(-8, (float)rend.posYClip+globeRadius - 8, -8);
+		        	float scale = (rend.posY + 15 + globeRadius) / ClientProxyCore.globalRadius;
+		        	
+		        	if (intDX == 0 || intDZ == 0)
+		        	{
+		        		scale *= 1.01F;
+		        	}
+		        	
+		        	ClientProxyCore.scaleup.rewind();
+		        	ClientProxyCore.scaleup.put(scale);
+		        	ClientProxyCore.scaleup.position(10);
+		        	ClientProxyCore.scaleup.put(scale);
+		        	ClientProxyCore.scaleup.rewind();
+		        	GL11.glMultMatrix(ClientProxyCore.scaleup);
+		        	GL11.glTranslatef(-8F * (scale - 1F), 0, -8F * (scale - 1F));
+		            GL11.glTranslatef(-(float)rend.posXClip, -(float)rend.posYClip, -(float)rend.posZClip);
+	        	}
 	        }
 	    	else ClientProxyCore.smallMoonActive = false;
 	    }
