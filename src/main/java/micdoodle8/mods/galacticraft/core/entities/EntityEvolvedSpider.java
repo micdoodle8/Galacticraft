@@ -35,4 +35,10 @@ public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathab
 	{
 		return true;
 	}
+	
+	@Override
+    protected boolean isAIEnabled()
+    {
+        return true;
+    }
 }

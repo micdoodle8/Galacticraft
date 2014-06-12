@@ -73,7 +73,7 @@ public class BlockVec3 implements Cloneable
 	 * 
 	 * @param world
 	 * @return the block ID, or null if the y-coordinate is less than 0 or greater than 256 or the x or z is outside the Minecraft worldmap. 
-	 * Returns Blocks.bedrock if the coordinates being checked are in an unloaded chunk
+	 * 
 	 */
 	public Block getBlockID(World world)
 	{

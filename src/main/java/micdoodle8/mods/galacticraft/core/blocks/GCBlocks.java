@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockAirLock;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockAluminumWire;
+import micdoodle8.mods.galacticraft.core.items.ItemBlockArclamp;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockBase;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockCargoLoader;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDummy;
@@ -38,6 +39,7 @@ public class GCBlocks
 {
 	public static Block breatheableAir;
 	public static Block brightAir;
+	public static Block brightLamp;
 	public static Block treasureChestTier1;
 	public static Block landingPad;
 	public static Block unlitTorch;
@@ -80,6 +82,7 @@ public class GCBlocks
 	{
 		GCBlocks.breatheableAir = new BlockBreathableAir("breatheableAir");
 		GCBlocks.brightAir = new BlockBrightAir("brightAir");
+		GCBlocks.brightLamp = new BlockBrightLamp("arclamp");
 		GCBlocks.treasureChestTier1 = new BlockT1TreasureChest("treasureChest");
 		GCBlocks.landingPad = new BlockLandingPad("landingPad");
 		GCBlocks.landingPadFull = new BlockLandingPadFull("landingPadFull");
@@ -161,6 +164,7 @@ public class GCBlocks
 		GCCoreUtil.registerGalacticraftBlock("wireAluminum", GCBlocks.aluminumWire);
 		GCCoreUtil.registerGalacticraftBlock("wireAluminumHeavy", GCBlocks.aluminumWire, 1);
 		GCCoreUtil.registerGalacticraftBlock("spinThruster", GCBlocks.spinThruster);
+		GCCoreUtil.registerGalacticraftBlock("arclamp", GCBlocks.brightLamp);
 		
 		// Hide certain items from NEI
 		GCBlocks.hiddenBlocks.add(GCBlocks.airLockSeal);
@@ -245,5 +249,6 @@ public class GCBlocks
 		GameRegistry.registerBlock(GCBlocks.glowstoneTorch, ItemBlockGC.class, GCBlocks.glowstoneTorch.getUnlocalizedName());
 		GameRegistry.registerBlock(GCBlocks.blockMoon, ItemBlockMoon.class, GCBlocks.blockMoon.getUnlocalizedName());
 		GameRegistry.registerBlock(GCBlocks.cheeseBlock, ItemBlock.class, GCBlocks.cheeseBlock.getUnlocalizedName());
-		GameRegistry.registerBlock(GCBlocks.spinThruster, ItemBlockThruster.class, GCBlocks.spinThruster.getUnlocalizedName());	}
+		GameRegistry.registerBlock(GCBlocks.spinThruster, ItemBlockThruster.class, GCBlocks.spinThruster.getUnlocalizedName());
+		GameRegistry.registerBlock(GCBlocks.brightLamp, ItemBlockArclamp.class, GCBlocks.brightLamp.getUnlocalizedName()); }
 }
