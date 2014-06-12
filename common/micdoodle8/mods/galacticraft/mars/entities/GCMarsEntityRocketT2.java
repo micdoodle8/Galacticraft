@@ -172,7 +172,7 @@ public class GCMarsEntityRocketT2 extends EntityTieredRocket
 		{
 			if (this.cargoItems == null || this.cargoItems.length == 0)
 			{
-				playerBase.setRocketStacks(new ItemStack[3]);
+				playerBase.setRocketStacks(new ItemStack[2]);
 			}
 			else
 			{

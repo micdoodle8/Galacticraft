@@ -36,6 +36,8 @@ public class GCCoreEntityParaChest extends Entity
 		this.cargo = cargo;
 		this.placedChest = false;
 		this.fuelLevel = fuelLevel;
+		if ((cargo.length-2)%18!=0)
+			System.out.println("[GC] Warning: strange cargo size "+cargo.length+" for Parachest.");
 	}
 
 	public GCCoreEntityParaChest(World world)
