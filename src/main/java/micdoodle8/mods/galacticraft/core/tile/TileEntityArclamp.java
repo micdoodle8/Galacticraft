@@ -36,6 +36,33 @@ public class TileEntityArclamp extends TileEntity
 
 		if (!this.worldObj.isRemote)
 		{
+			if (this.thisAABB == null)
+			{
+				int meta = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
+				switch (meta)
+				{
+				case 1:
+					this.sideRear = 4; //West
+					this.thisAABB = AxisAlignedBB.getBoundingBox(this.xCoord - 8, this.yCoord - 20, this.zCoord - 20, this.xCoord + 20, this.yCoord + 20, this.zCoord + 20);
+					break;
+				case 2:
+					this.sideRear = 5; //East
+					this.thisAABB = AxisAlignedBB.getBoundingBox(this.xCoord - 20, this.yCoord - 20, this.zCoord - 20, this.xCoord + 8, this.yCoord + 20, this.zCoord + 20);
+					break;
+				case 3:
+					this.sideRear = 2; //North
+					this.thisAABB = AxisAlignedBB.getBoundingBox(this.xCoord - 20, this.yCoord - 20, this.zCoord - 8, this.xCoord + 20, this.yCoord + 20, this.zCoord + 20);
+					break;
+				case 4:
+					this.sideRear = 3; //South
+					this.thisAABB = AxisAlignedBB.getBoundingBox(this.xCoord - 20, this.yCoord - 20, this.zCoord - 20, this.xCoord + 20, this.yCoord + 20, this.zCoord + 8);
+					break;
+				default:
+					this.sideRear = 0; //Down
+					this.thisAABB = AxisAlignedBB.getBoundingBox(this.xCoord - 20, this.yCoord - 8, this.zCoord - 20, this.xCoord + 20, this.yCoord + 20, this.zCoord + 20);
+				}
+			}
+			
 			if (this.ticks % 100 == 0 && this.isActive)
 			{
 				this.lightArea();
@@ -82,29 +109,6 @@ public class TileEntityArclamp extends TileEntity
 	@Override
 	public void validate()
 	{
-		int meta = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
-		switch (meta)
-		{
-		case 1:
-			this.sideRear = 4; //West
-			this.thisAABB = AxisAlignedBB.getBoundingBox(this.xCoord - 8, this.yCoord - 20, this.zCoord - 20, this.xCoord + 20, this.yCoord + 20, this.zCoord + 20);
-			break;
-		case 2:
-			this.sideRear = 5; //East
-			this.thisAABB = AxisAlignedBB.getBoundingBox(this.xCoord - 20, this.yCoord - 20, this.zCoord - 20, this.xCoord + 8, this.yCoord + 20, this.zCoord + 20);
-			break;
-		case 3:
-			this.sideRear = 2; //North
-			this.thisAABB = AxisAlignedBB.getBoundingBox(this.xCoord - 20, this.yCoord - 20, this.zCoord - 8, this.xCoord + 20, this.yCoord + 20, this.zCoord + 20);
-			break;
-		case 4:
-			this.sideRear = 3; //South
-			this.thisAABB = AxisAlignedBB.getBoundingBox(this.xCoord - 20, this.yCoord - 20, this.zCoord - 20, this.xCoord + 20, this.yCoord + 20, this.zCoord + 8);
-			break;
-		default:
-			this.sideRear = 0; //Down
-			this.thisAABB = AxisAlignedBB.getBoundingBox(this.xCoord - 20, this.yCoord - 8, this.zCoord - 20, this.xCoord + 20, this.yCoord + 20, this.zCoord + 20);
-		}
 		this.isActive = true;
 		this.thisPos = Vec3.createVectorHelper(this.xCoord+0.5D, this.yCoord+0.5D, this.zCoord+0.5D);
 		this.ticks = 0;
