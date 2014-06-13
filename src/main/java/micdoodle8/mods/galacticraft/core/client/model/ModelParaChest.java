@@ -6,15 +6,8 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
 import cpw.mods.fml.client.FMLClientHandler;
 
-/**
- * GCCoreModelParaChest.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class ModelParaChest extends ModelChest
 {
 	private static final ResourceLocation grayParachuteTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/parachute/gray.png");

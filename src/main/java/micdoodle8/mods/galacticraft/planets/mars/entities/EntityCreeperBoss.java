@@ -45,15 +45,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ChestGenHooks;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 
-/**
- * EntityCreeperBoss.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class EntityCreeperBoss extends EntityMob implements IEntityBreathable, IBossDisplayData, IRangedAttackMob, IBoss
 {
 	protected long ticks = 0;

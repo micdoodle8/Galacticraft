@@ -13,15 +13,8 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
-/**
- * GCCoreTileEntityOxygenCompressor.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInventory, ISidedInventory
 {
 	private ItemStack[] containingItems = new ItemStack[2];

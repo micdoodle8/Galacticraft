@@ -23,15 +23,8 @@ import net.minecraft.util.StatCollector;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 
-/**
- * GCCoreTileEntityTreasureChest.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class TileEntityTreasureChest extends TileEntityAdvanced implements IInventory, IKeyable, IPacketReceiver
 {
 	private ItemStack[] chestContents = new ItemStack[36];

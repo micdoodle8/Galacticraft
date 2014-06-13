@@ -22,15 +22,8 @@ import net.minecraftforge.fluids.IFluidBlock;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-/**
- * GCCoreItemOilExtractor.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class ItemOilExtractor extends Item
 {
 	protected IIcon[] icons = new IIcon[5];

@@ -20,15 +20,8 @@ import codechicken.nei.PositionedStack;
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 
-/**
- * NEIGalacticraftConfig.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class NEIGalacticraftConfig implements IConfigureNEI
 {
 	private static HashMap<HashMap<Integer, PositionedStack>, PositionedStack> rocketBenchRecipes = new HashMap<HashMap<Integer, PositionedStack>, PositionedStack>();

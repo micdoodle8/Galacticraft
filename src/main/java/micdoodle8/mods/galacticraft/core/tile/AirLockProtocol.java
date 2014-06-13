@@ -6,15 +6,8 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-/**
- * AirLockProtocol.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class AirLockProtocol
 {
 	ArrayList<TileEntityAirLock> adjacentAirLocks;

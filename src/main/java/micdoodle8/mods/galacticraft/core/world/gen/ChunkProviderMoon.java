@@ -33,15 +33,8 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderGenerate;
 import net.minecraftforge.common.util.ForgeDirection;
 
-/**
- * GCMoonChunkProvider.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class ChunkProviderMoon extends ChunkProviderGenerate
 {
 	final Block topBlockID = GCBlocks.blockMoon;

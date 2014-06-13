@@ -17,7 +17,7 @@ import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import codechicken.nei.api.IConfigureNEI;
 //
 ///**
-// * NEIGalacticraftMarsConfig.java
+
 // * 
 // * This file is part of the Galacticraft project
 // * 

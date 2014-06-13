@@ -11,15 +11,8 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.gen.layer.IntCache;
 
-/**
- * GCMarsWorldChunkManager.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class WorldChunkManagerMars extends WorldChunkManager
 {
 	private final BiomeCache biomeCache;

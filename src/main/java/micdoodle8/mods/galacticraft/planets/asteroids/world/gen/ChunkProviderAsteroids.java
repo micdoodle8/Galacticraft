@@ -25,15 +25,8 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderGenerate;
 import cpw.mods.fml.common.FMLLog;
 
-/**
- * GCMarsChunkProvider.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class ChunkProviderAsteroids extends ChunkProviderGenerate
 {
 	final Block ASTEROID_STONE = AsteroidBlocks.blockBasic;

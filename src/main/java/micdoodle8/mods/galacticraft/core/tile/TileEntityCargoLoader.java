@@ -19,15 +19,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 
-/**
- * GCCoreTileEntityCargoLoader.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class TileEntityCargoLoader extends TileEntityElectricBlock implements IInventory, ISidedInventory, ILandingPadAttachable
 {
 	private ItemStack[] containingItems = new ItemStack[15];

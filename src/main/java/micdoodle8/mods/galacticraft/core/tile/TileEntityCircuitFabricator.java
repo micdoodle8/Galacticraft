@@ -19,15 +19,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 
-/**
- * GCCoreTileEntityCircuitFabricator.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class TileEntityCircuitFabricator extends TileEntityElectricBlock implements IInventory, ISidedInventory, IPacketReceiver
 {
 	public static final int PROCESS_TIME_REQUIRED = 300;

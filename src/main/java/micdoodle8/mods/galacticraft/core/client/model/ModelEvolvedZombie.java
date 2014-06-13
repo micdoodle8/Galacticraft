@@ -7,15 +7,8 @@ import net.minecraft.util.MathHelper;
 
 import org.lwjgl.opengl.GL11;
 
-/**
- * GCCoreModelZombie.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class ModelEvolvedZombie extends ModelBiped
 {
 	ModelRenderer leftOxygenTank;

@@ -10,15 +10,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 import net.minecraftforge.common.DimensionManager;
 
-/**
- * GCCoreSpaceStationData.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class SpaceStationWorldData extends WorldSavedData
 {
 	private String spaceStationName = "NoName";

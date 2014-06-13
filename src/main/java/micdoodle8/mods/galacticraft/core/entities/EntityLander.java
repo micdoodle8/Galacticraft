@@ -36,15 +36,8 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-/**
- * EntityLander.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class EntityLander extends InventoryEntity implements IInventorySettable, IScaleableFuelLevel, IControllableEntity, IPacketReceiver, ICameraZoomEntity
 {
 	private final int tankCapacity = 5000;

@@ -5,15 +5,8 @@ import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.nbt.NBTTagCompound;
 import cpw.mods.fml.relauncher.Side;
 
-/**
- * GCCoreTileEntityFallenMeteor.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class TileEntityFallenMeteor extends TileEntityAdvanced implements IPacketReceiver
 {
 	public static final int MAX_HEAT_LEVEL = 5000;

@@ -14,15 +14,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import cpw.mods.fml.relauncher.Side;
 
-/**
- * GCCoreTileEntityAirLockController.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class TileEntityAirLockController extends TileEntityAirLock
 {
 	@NetworkedField(targetSide = Side.CLIENT)

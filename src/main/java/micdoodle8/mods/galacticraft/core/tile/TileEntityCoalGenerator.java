@@ -23,15 +23,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 
-/**
- * GCCoreTileEntityCoalGenerator.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class TileEntityCoalGenerator extends TileEntityUniversalElectrical implements IInventory, ISidedInventory, IPacketReceiver, IConnector
 {
 	public static final int MAX_GENERATE_WATTS = 500;

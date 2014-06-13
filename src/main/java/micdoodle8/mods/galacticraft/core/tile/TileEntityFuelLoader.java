@@ -28,15 +28,8 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import cpw.mods.fml.relauncher.Side;
 
-/**
- * GCCoreTileEntityFuelLoader.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class TileEntityFuelLoader extends TileEntityElectricBlock implements IInventory, ISidedInventory, IFluidHandler, ILandingPadAttachable
 {
 	private final int tankCapacity = 12000;

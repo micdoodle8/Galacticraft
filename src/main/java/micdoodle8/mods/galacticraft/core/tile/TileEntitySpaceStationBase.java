@@ -8,15 +8,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
-/**
- * GCCoreTileEntitySpaceStationBase.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class TileEntitySpaceStationBase extends TileEntityMulti implements IMultiBlock
 {
 	public String ownerUsername = "bobby";

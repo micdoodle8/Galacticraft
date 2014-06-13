@@ -13,15 +13,8 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
 
-/**
- * GCCoreItemRendererBuggy.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class ItemRendererBuggy implements IItemRenderer
 {
 	private static final ResourceLocation buggyTextureBody = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/buggyMain.png");

@@ -10,15 +10,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-/**
- * GCCoreBlockBreathableAir.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class BlockBrightAir extends BlockAir
 {
 	public BlockBrightAir(String assetName)

@@ -20,15 +20,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
-/**
- * GCCoreTileEntityEnergyStorageModule.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical implements IPacketReceiver, ISidedInventory, IConnector
 {
 	private ItemStack[] containingItems = new ItemStack[2];

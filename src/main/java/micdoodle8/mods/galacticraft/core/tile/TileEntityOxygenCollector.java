@@ -21,15 +21,8 @@ import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 
-/**
- * GCCoreTileEntityOxygenCollector.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class TileEntityOxygenCollector extends TileEntityOxygen implements IInventory, ISidedInventory
 {
 	public boolean active;

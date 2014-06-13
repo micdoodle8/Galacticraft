@@ -5,15 +5,8 @@ import net.minecraft.entity.player.EntityPlayer.EnumStatus;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import cpw.mods.fml.common.eventhandler.Cancelable;
 
-/**
- * GCCoreEventWakePlayer.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 @Cancelable
 public class EventWakePlayer extends PlayerEvent
 {

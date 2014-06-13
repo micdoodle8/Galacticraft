@@ -23,15 +23,8 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import cpw.mods.fml.relauncher.Side;
 
-/**
- * GCCoreTileEntityRefinery.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class TileEntityRefinery extends TileEntityElectricBlock implements IInventory, ISidedInventory, IFluidHandler
 {
 	private final int tankCapacity = 24000;

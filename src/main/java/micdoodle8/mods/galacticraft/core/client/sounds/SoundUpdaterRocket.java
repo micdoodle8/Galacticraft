@@ -9,7 +9,7 @@ package micdoodle8.mods.galacticraft.core.client.sounds;
 //import net.minecraft.util.MathHelper;
 //
 ///**
-// * GCCoreSoundUpdaterSpaceship.java
+
 // * 
 // * This file is part of the Galacticraft project
 // * 

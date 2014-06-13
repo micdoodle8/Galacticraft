@@ -12,15 +12,8 @@ import net.minecraftforge.common.config.Configuration;
 
 import com.google.common.primitives.Ints;
 
-/**
- * ConfigManagerCore.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class ConfigManagerCore
 {
 	public static boolean loaded;

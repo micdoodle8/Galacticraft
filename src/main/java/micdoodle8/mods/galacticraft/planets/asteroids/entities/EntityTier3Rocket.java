@@ -22,15 +22,8 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 
-/**
- * EntityTier3Rocket.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class EntityTier3Rocket extends EntityTieredRocket
 {
 	public IUpdatePlayerListBox rocketSoundUpdater;

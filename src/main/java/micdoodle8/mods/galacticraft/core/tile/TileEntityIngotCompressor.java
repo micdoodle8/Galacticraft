@@ -23,15 +23,8 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.StatCollector;
 import cpw.mods.fml.relauncher.Side;
 
-/**
- * GCCoreTileEntityIngotCompressor.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class TileEntityIngotCompressor extends TileEntityAdvanced implements IInventory, ISidedInventory, IPacketReceiver
 {
 	public static final int PROCESS_TIME_REQUIRED = 200;

@@ -19,15 +19,8 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.eventhandler.Event;
 
-/**
- * GCCoreTileEntityUniversalElectrical.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //implements IElectrical, IElectricalStorage
 {
 	protected boolean isAddedToEnergyNet;

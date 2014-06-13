@@ -21,15 +21,8 @@ import org.lwjgl.input.Keyboard;
 
 import cpw.mods.fml.common.gameevent.TickEvent.Type;
 
-/**
- * GCCoreKeyHandlerClient.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class KeyHandlerClient extends KeyHandler
 {
 	public static KeyBinding galaxyMap = new KeyBinding(StatCollector.translateToLocal("keybind.map.name"), Keyboard.KEY_M, "Galacticraft");

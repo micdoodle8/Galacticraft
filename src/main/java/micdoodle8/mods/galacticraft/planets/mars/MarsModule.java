@@ -59,15 +59,8 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 
-/**
- * GalacticraftMars.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class MarsModule implements IPlanetsModule
 {
 	public static final String LANGUAGE_PATH = "/assets/galacticraftmars/lang/";

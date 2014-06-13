@@ -5,15 +5,8 @@ import java.util.Random;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 
-/**
- * GCCoreMapGenBase.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class MapGenBaseGC
 {
 	/** The number of Chunks to gen-check in any given direction. */

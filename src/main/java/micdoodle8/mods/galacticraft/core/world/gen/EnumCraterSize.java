@@ -1,14 +1,5 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
-/**
- * GCCoreCraterSize.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author fishtaco567
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
 public enum EnumCraterSize
 {
 	SMALL(8, 12, 14),

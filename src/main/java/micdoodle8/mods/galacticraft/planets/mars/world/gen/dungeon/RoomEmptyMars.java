@@ -9,15 +9,8 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.common.util.ForgeDirection;
 
-/**
- * GCMarsRoomEmpty.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class RoomEmptyMars extends DungeonRoom
 {
 	int sizeX;

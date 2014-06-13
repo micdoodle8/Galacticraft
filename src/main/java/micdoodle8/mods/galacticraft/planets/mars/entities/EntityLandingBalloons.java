@@ -34,15 +34,8 @@ import net.minecraftforge.fluids.FluidTank;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-/**
- * EntityLandingBalloons.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class EntityLandingBalloons extends EntityAdvancedMotion implements IInventorySettable, IPacketReceiver, IScaleableFuelLevel
 {
 	private final int tankCapacity = 5000;
