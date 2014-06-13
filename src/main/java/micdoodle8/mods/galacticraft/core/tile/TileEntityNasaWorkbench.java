@@ -17,17 +17,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class TileEntityNasaWorkbench extends TileEntityMulti implements IMultiBlock
 {
-	public TileEntityNasaWorkbench()
-	{
-		super(GalacticraftCore.CHANNELENTITIES);
-	}
-
-	@Override
-	public void validate()
-	{
-		super.validate();
-	}
-
 	@Override
 	public boolean onActivated(EntityPlayer entityPlayer)
 	{

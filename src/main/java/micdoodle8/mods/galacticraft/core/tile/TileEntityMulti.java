@@ -16,17 +16,6 @@ public class TileEntityMulti extends TileEntityAdvanced implements IPacketReceiv
 	// The the position of the main block
 	@NetworkedField(targetSide = Side.CLIENT)
 	public BlockVec3 mainBlockPosition;
-	public String channel;
-
-	public TileEntityMulti()
-	{
-
-	}
-
-	public TileEntityMulti(String channel)
-	{
-		this.channel = channel;
-	}
 
 	public void setMainBlock(BlockVec3 mainBlock)
 	{

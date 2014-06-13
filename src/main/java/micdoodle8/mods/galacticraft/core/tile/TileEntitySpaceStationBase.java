@@ -14,11 +14,6 @@ public class TileEntitySpaceStationBase extends TileEntityMulti implements IMult
 {
 	public String ownerUsername = "bobby";
 
-	public TileEntitySpaceStationBase()
-	{
-		super(GalacticraftCore.CHANNELENTITIES);
-	}
-
 	@Override
 	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
 	{

@@ -28,11 +28,6 @@ public class TileEntityBuggyFueler extends TileEntityMulti implements IMultiBloc
 	protected long ticks = 0;
 	private IDockable dockedEntity;
 
-	public TileEntityBuggyFueler()
-	{
-		super(GalacticraftCore.CHANNELENTITIES);
-	}
-
 	@Override
 	public void updateEntity()
 	{

@@ -134,8 +134,6 @@ public class GalacticraftCore
 {
 	public static final String NAME = "Galacticraft Core";
 	public static final String MODID = "GalacticraftCore";
-	public static final String CHANNEL = "GalacticraftCore";
-	public static final String CHANNELENTITIES = "GCCoreEntities";
 
 	public static final int LOCALMAJVERSION = 3;
 	public static final int LOCALMINVERSION = 0;
@@ -235,7 +233,7 @@ public class GalacticraftCore
 	@EventHandler
 	public void init(FMLInitializationEvent event)
 	{
-		GalacticraftCore.galacticraftTab = new CreativeTabGC(CreativeTabs.getNextID(), GalacticraftCore.CHANNEL, GCItems.rocketTier1, 0);
+		GalacticraftCore.galacticraftTab = new CreativeTabGC(CreativeTabs.getNextID(), GalacticraftCore.MODID, GCItems.rocketTier1, 0);
 		GalacticraftCore.proxy.init(event);
 
 		GalacticraftCore.packetPipeline = GalacticraftChannelHandler.init();
