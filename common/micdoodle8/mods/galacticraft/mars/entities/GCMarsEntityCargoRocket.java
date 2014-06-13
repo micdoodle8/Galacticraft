@@ -8,7 +8,6 @@ import micdoodle8.mods.galacticraft.api.entity.IWorldTransferCallback;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
-import micdoodle8.mods.galacticraft.core.GCCoreAnnotations.RuntimeInterface;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCCoreSoundUpdaterSpaceship;
@@ -25,7 +24,6 @@ import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import calclavia.api.icbm.IMissile;
 
 import com.google.common.io.ByteArrayDataInput;
 
@@ -82,39 +80,9 @@ public class GCMarsEntityCargoRocket extends EntityAutoRocket implements IRocket
 	}
 
 	@Override
-	protected void entityInit()
-	{
-		super.entityInit();
-
-		if (Loader.isModLoaded("ICBM|Explosion"))
-		{
-			try
-			{
-				Class.forName("calclavia.api.icbm.RadarRegistry").getMethod("register", Entity.class).invoke(null, this);
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
-		}
-	}
-
-	@Override
 	public void setDead()
 	{
 		super.setDead();
-
-		if (Loader.isModLoaded("ICBM|Explosion"))
-		{
-			try
-			{
-				Class.forName("calclavia.api.icbm.RadarRegistry").getMethod("unregister", Entity.class).invoke(null, this);
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
-		}
 
 		if (this.rocketSoundUpdater != null)
 		{
@@ -414,36 +382,6 @@ public class GCMarsEntityCargoRocket extends EntityAutoRocket implements IRocket
 		super.getItemsDropped(droppedItemList);
 		droppedItemList.add(new ItemStack(GCMarsItems.spaceship, 1, this.rocketType.getIndex() + 10));
 		return droppedItemList;
-	}
-
-	@RuntimeInterface(clazz = "calclavia.api.icbm.IMissileLockable", modID = "ICBM|Explosion")
-	public boolean canLock(IMissile missile)
-	{
-		return true;
-	}
-
-	@RuntimeInterface(clazz = "calclavia.api.icbm.IMissileLockable", modID = "ICBM|Explosion")
-	public Vector3 getPredictedPosition(int ticks)
-	{
-		return new Vector3(this);
-	}
-
-	@RuntimeInterface(clazz = "calclavia.api.icbm.sentry.IAATarget", modID = "ICBM|Explosion")
-	public void destroyCraft()
-	{
-		this.setDead();
-	}
-
-	@RuntimeInterface(clazz = "calclavia.api.icbm.sentry.IAATarget", modID = "ICBM|Explosion")
-	public int doDamage(int damage)
-	{
-		return (int) (this.shipDamage += damage);
-	}
-
-	@RuntimeInterface(clazz = "calclavia.api.icbm.sentry.IAATarget", modID = "ICBM|Explosion")
-	public boolean canBeTargeted(Object entity)
-	{
-		return this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase() && this.timeSinceLaunch > 50;
 	}
 
 	@Override

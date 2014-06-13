@@ -49,42 +49,6 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 		super(world, posX, posY, posZ);
 	}
 
-	@Override
-	protected void entityInit()
-	{
-		super.entityInit();
-
-		if (Loader.isModLoaded("ICBM|Explosion"))
-		{
-			try
-			{
-				Class.forName("calclavia.api.icbm.RadarRegistry").getMethod("register", Entity.class).invoke(null, this);
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
-		}
-	}
-
-	@Override
-	public void setDead()
-	{
-		super.setDead();
-
-		if (Loader.isModLoaded("ICBM|Explosion"))
-		{
-			try
-			{
-				Class.forName("calclavia.api.icbm.RadarRegistry").getMethod("unregister", Entity.class).invoke(null, this);
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
-		}
-	}
-
 	public void igniteCheckingCooldown()
 	{
 		if (!this.worldObj.isRemote && this.launchCooldown <= 0)

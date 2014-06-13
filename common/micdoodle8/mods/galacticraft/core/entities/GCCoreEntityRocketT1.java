@@ -7,7 +7,6 @@ import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
-import micdoodle8.mods.galacticraft.core.GCCoreAnnotations.RuntimeInterface;
 import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCCoreSoundUpdaterSpaceship;
@@ -25,7 +24,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import calclavia.api.icbm.IMissile;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
@@ -250,18 +248,6 @@ public class GCCoreEntityRocketT1 extends EntityTieredRocket
 		return false;
 	}
 
-	@RuntimeInterface(clazz = "calclavia.api.icbm.IMissileLockable", modID = "ICBM|Explosion")
-	public boolean canLock(IMissile missile)
-	{
-		return true;
-	}
-
-	@RuntimeInterface(clazz = "calclavia.api.icbm.IMissileLockable", modID = "ICBM|Explosion")
-	public Vector3 getPredictedPosition(int ticks)
-	{
-		return new Vector3(this);
-	}
-
 	@Override
 	public void onPadDestroyed()
 	{
@@ -276,24 +262,6 @@ public class GCCoreEntityRocketT1 extends EntityTieredRocket
 	public boolean isDockValid(IFuelDock dock)
 	{
 		return dock instanceof GCCoreTileEntityLandingPad;
-	}
-
-	@RuntimeInterface(clazz = "calclavia.api.icbm.sentry.IAATarget", modID = "ICBM|Explosion")
-	public void destroyCraft()
-	{
-		this.setDead();
-	}
-
-	@RuntimeInterface(clazz = "calclavia.api.icbm.sentry.IAATarget", modID = "ICBM|Explosion")
-	public int doDamage(int damage)
-	{
-		return (int) (this.shipDamage += damage);
-	}
-
-	@RuntimeInterface(clazz = "calclavia.api.icbm.sentry.IAATarget", modID = "ICBM|Explosion")
-	public boolean canBeTargeted(Object entity)
-	{
-		return this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase() && this.timeSinceLaunch > 50;
 	}
 
 	@Override

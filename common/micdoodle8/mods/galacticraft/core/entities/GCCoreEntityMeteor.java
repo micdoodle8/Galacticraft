@@ -17,7 +17,6 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.StatCollector;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.Loader;
 
 /**
  * GCCoreEntityMeteor.java
@@ -32,7 +31,6 @@ public class GCCoreEntityMeteor extends Entity
 {
 	public EntityLiving shootingEntity;
 	public int size;
-	public boolean radarSet;
 
 	public GCCoreEntityMeteor(World world)
 	{
@@ -53,24 +51,6 @@ public class GCCoreEntityMeteor extends Entity
 	}
 
 	@Override
-	public void setDead()
-	{
-		super.setDead();
-
-		if (this.radarSet && Loader.isModLoaded("ICBM|Explosion"))
-		{
-			try
-			{
-				Class.forName("calclavia.api.icbm.RadarRegistry").getMethod("unregister", Entity.class).invoke(null, this);
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
-		}
-	}
-
-	@Override
 	public void onUpdate()
 	{
 		this.setRotation(this.rotationYaw + 2F, this.rotationPitch + 2F);
@@ -79,19 +59,6 @@ public class GCCoreEntityMeteor extends Entity
 		this.prevPosZ = this.posZ;
 		this.motionY -= 0.03999999910593033D;
 		this.moveEntity(this.motionX, this.motionY, this.motionZ);
-
-		if (!this.radarSet && this.posY <= 100 && Loader.isModLoaded("ICBM|Explosion"))
-		{
-			try
-			{
-				Class.forName("calclavia.api.icbm.RadarRegistry").getMethod("register", Entity.class).invoke(null, this);
-				this.radarSet = true;
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
-		}
 
 		if (this.worldObj.isRemote)
 		{
