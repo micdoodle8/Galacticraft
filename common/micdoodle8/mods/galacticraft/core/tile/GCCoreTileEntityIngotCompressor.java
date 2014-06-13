@@ -65,19 +65,20 @@ public class GCCoreTileEntityIngotCompressor extends GCCoreTileEntityAdvanced im
 
 			if (this.furnaceBurnTime == 0 && this.canSmelt())
 			{
-				this.currentItemBurnTime = this.furnaceBurnTime = TileEntityFurnace.getItemBurnTime(this.containingItems[0]);
+				ItemStack fuel = this.containingItems[0];
+				this.currentItemBurnTime = this.furnaceBurnTime = TileEntityFurnace.getItemBurnTime(fuel);
 
 				if (this.furnaceBurnTime > 0)
 				{
 					updateInv = true;
 
-					if (this.containingItems[0] != null)
+					if (fuel != null)
 					{
-						--this.containingItems[0].stackSize;
+						--fuel.stackSize;
 
-						if (this.containingItems[0].stackSize == 0)
+						if (fuel.stackSize == 0)
 						{
-							this.containingItems[0] = this.containingItems[0].getItem().getContainerItemStack(this.containingItems[0]);
+							this.containingItems[0] = fuel.getItem().getContainerItemStack(fuel);
 						}
 					}
 				}
@@ -228,6 +229,7 @@ public class GCCoreTileEntityIngotCompressor extends GCCoreTileEntityAdvanced im
 			{
 				this.compressingCraftMatrix.decrStackSize(i, 1);
 			}
+			this.updateInput();
 		}
 	}
 
@@ -312,7 +314,9 @@ public class GCCoreTileEntityIngotCompressor extends GCCoreTileEntityAdvanced im
 	{
 		if (par1 >= this.containingItems.length)
 		{
-			return this.compressingCraftMatrix.decrStackSize(par1 - this.containingItems.length, par2);
+			ItemStack result = this.compressingCraftMatrix.decrStackSize(par1 - this.containingItems.length, par2);
+			if (result != null) this.updateInput();
+			return result;
 		}
 
 		if (this.containingItems[par1] != null)
@@ -369,6 +373,7 @@ public class GCCoreTileEntityIngotCompressor extends GCCoreTileEntityAdvanced im
 		if (par1 >= this.containingItems.length)
 		{
 			this.compressingCraftMatrix.setInventorySlotContents(par1 - this.containingItems.length, par2ItemStack);
+			this.updateInput();
 		}
 		else
 		{
