@@ -137,9 +137,9 @@ public class GalacticraftCore
 	public static final String CHANNEL = "GalacticraftCore";
 	public static final String CHANNELENTITIES = "GCCoreEntities";
 
-	public static final int LOCALMAJVERSION = 2;
+	public static final int LOCALMAJVERSION = 3;
 	public static final int LOCALMINVERSION = 0;
-	public static final int LOCALBUILDVERSION = 13;
+	public static final int LOCALBUILDVERSION = 0;
 	public static int remoteMajVer;
 	public static int remoteMinVer;
 	public static int remoteBuildVer;
