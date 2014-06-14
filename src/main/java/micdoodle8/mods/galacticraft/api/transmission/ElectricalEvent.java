@@ -9,12 +9,6 @@ import cpw.mods.fml.common.eventhandler.Event;
 
 public class ElectricalEvent extends Event
 {
-	/**
-	 * Call this to have your TileEntity produce power into the network.
-	 * 
-	 * @author Calclavia
-	 * 
-	 */
 	@Cancelable
 	public static class ElectricityProduceEvent extends ElectricalEvent
 	{
@@ -31,38 +25,31 @@ public class ElectricalEvent extends Event
 	public static class NetworkEvent extends ElectricalEvent
 	{
 		public final IElectricityNetwork network;
-		public ElectricityPack electricityPack;
+		public int energy;
 		public TileEntity[] ignoreTiles;
 
-		public NetworkEvent(IElectricityNetwork network, ElectricityPack electricityPack, TileEntity... ignoreTiles)
+		public NetworkEvent(IElectricityNetwork network, int energy, TileEntity... ignoreTiles)
 		{
 			this.network = network;
-			this.electricityPack = electricityPack;
+			this.energy = energy;
 			this.ignoreTiles = ignoreTiles;
 		}
 	}
-
-	/**
-	 * Internal Events. These events are fired when something happens in the
-	 * network.
-	 * 
-	 * @author Calclavia
-	 * 
-	 */
+	
 	@Cancelable
 	public static class ElectricityProductionEvent extends NetworkEvent
 	{
-		public ElectricityProductionEvent(IElectricityNetwork network, ElectricityPack electricityPack, TileEntity... ignoreTiles)
+		public ElectricityProductionEvent(IElectricityNetwork network, int energy, TileEntity... ignoreTiles)
 		{
-			super(network, electricityPack, ignoreTiles);
+			super(network, energy, ignoreTiles);
 		}
 	}
 
 	public static class ElectricityRequestEvent extends NetworkEvent
 	{
-		public ElectricityRequestEvent(IElectricityNetwork network, ElectricityPack electricityPack, TileEntity... ignoreTiles)
+		public ElectricityRequestEvent(IElectricityNetwork network, int energy, TileEntity... ignoreTiles)
 		{
-			super(network, electricityPack, ignoreTiles);
+			super(network, energy, ignoreTiles);
 		}
 	}
 
