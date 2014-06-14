@@ -16,6 +16,7 @@ import java.util.Set;
 //import mekanism.api.energy.IStrictEnergyAcceptor;
 import micdoodle8.mods.galacticraft.api.transmission.ElectricalEvent.ElectricityProductionEvent;
 import micdoodle8.mods.galacticraft.api.transmission.ElectricalEvent.ElectricityRequestEvent;
+import micdoodle8.mods.galacticraft.api.transmission.ElectricityPack;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.core.grid.ElectricityNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.core.grid.IElectricityNetwork;
@@ -50,10 +51,10 @@ public class UniversalNetwork extends ElectricityNetwork
 	 */
 	public static int tickCount = 0;
 	private int tickDone = -1;
-	private int totalRequested = 0;
-	private int totalStorageExcess = 0;
-	private int totalEnergy = 0;
-	private int totalSent = 0;
+	private float totalRequested = 0F;
+	private float totalStorageExcess = 0F;
+	private float totalEnergy = 0F;
+	private float totalSent = 0F;
 	private boolean doneScheduled = false;
 	private boolean spamstop = false;
 	
@@ -75,14 +76,14 @@ public class UniversalNetwork extends ElectricityNetwork
 	private Set<TileEntity> availableAcceptors = new HashSet<TileEntity>();
 	private Map<TileEntity, ForgeDirection> availableconnectedDirections = new HashMap<TileEntity, ForgeDirection>();
 	
-	private Map<TileEntity,Integer> energyRequests = new HashMap<TileEntity,Integer>();
+	private Map<TileEntity,Float> energyRequests = new HashMap<TileEntity,Float>();
 	private List<TileEntity> ignoreAcceptors = new LinkedList<TileEntity>();
 	
 	//This is the energy per tick corresponding to 12kW 
-	private final static int ENERGYSTORAGELEVEL = 600;
+	private final static float ENERGYSTORAGELEVEL = 0.6F;
 	
 	@Override
-	public int getRequest(TileEntity... ignoreTiles)
+	public ElectricityPack getRequest(TileEntity... ignoreTiles)
 	{
 		if (UniversalNetwork.tickCount!=this.tickDone)
 		{	
@@ -111,15 +112,17 @@ public class UniversalNetwork extends ElectricityNetwork
 				}
 			}*/
 		}
-		return this.totalRequested - this.totalEnergy - this.totalSent;
+		return ElectricityPack.getFromWatts(this.totalRequested - this.totalEnergy - this.totalSent, 120F);
 	}
 	
 	@Override
-	public int produce(int energy, boolean doReceive, TileEntity... ignoreTiles)
+	public float produce(ElectricityPack electricity, boolean doReceive, TileEntity... ignoreTiles)
 	{
-		if (energy > 0)
+		float energyToProduce = electricity.getWatts();
+
+		if (energyToProduce > 0F)
 		{
-			ElectricityProductionEvent evt = new ElectricityProductionEvent(this, energy, ignoreTiles);
+			ElectricityProductionEvent evt = new ElectricityProductionEvent(this, electricity, ignoreTiles);
 			MinecraftForge.EVENT_BUS.post(evt);
 			
 			if (!evt.isCanceled())
@@ -131,7 +134,7 @@ public class UniversalNetwork extends ElectricityNetwork
 					doTickStartCalc(ignoreTiles);
 				}
 		
-				if (!this.doneScheduled && this.totalRequested > 0.0)
+				if (!this.doneScheduled && this.totalRequested > 0.0F)
 				{
 					try
 					{
@@ -150,18 +153,18 @@ public class UniversalNetwork extends ElectricityNetwork
 				
 				//On a regular mid-tick produce(), just figure out how much is totalEnergy this tick and return the used amount
 				//This will return 0 if totalRequested is 0 - for example a network with no acceptors
-				int totalEnergyLast = this.totalEnergy;
+				float totalEnergyLast = this.totalEnergy;
 				
 				//Add the energy for distribution by this grid later this tick
 				//Note: totalEnergy cannot exceed totalRequested
-				if (doReceive) this.totalEnergy += Math.min(energy, this.totalRequested - totalEnergyLast);
+				if (doReceive) this.totalEnergy += Math.min(energyToProduce, this.totalRequested - totalEnergyLast);
 				
-				if (this.totalRequested >= totalEnergyLast + energy) return 0; //All the electricity will be used
-				if (totalEnergyLast >= this.totalRequested) return energy; //None of the electricity will be used
-				return totalEnergyLast + energy - this.totalRequested; //Some of the electricity will be used
+				if (this.totalRequested >= totalEnergyLast + energyToProduce) return 0F; //All the electricity will be used
+				if (totalEnergyLast >= this.totalRequested) return energyToProduce; //None of the electricity will be used
+				return totalEnergyLast + energyToProduce - this.totalRequested; //Some of the electricity will be used
 			}
 		}
-		return energy;
+		return energyToProduce;
 	}
 
 	public void tickEnd()
@@ -169,27 +172,27 @@ public class UniversalNetwork extends ElectricityNetwork
 		this.doneScheduled = false;
 		
 		//Finish the last tick if there was some to send and something to receive it
-		if (this.totalEnergy > 0)
+		if (this.totalEnergy > 0F)
 		{
 			//Call doTickStartCalc a second time in case anything has updated meanwhile
 			TileEntity[] ignoretiles = new TileEntity[ignoreAcceptors.size()];
 			this.doTickStartCalc(ignoreAcceptors.toArray(ignoretiles));
 			
-			if (this.totalRequested > 0)
+			if (this.totalRequested > 0F)
 			{
 				this.totalSent = doProduce();
 				if (this.totalSent < this.totalEnergy)
 					//Any spare energy left is retained for the next tick
 					this.totalEnergy -= this.totalSent;
-				else totalEnergy = 0;
+				else totalEnergy = 0F;
 			}
 		}
-		else totalEnergy = 0;	
+		else totalEnergy = 0F;	
 	}
 
 	private void doTickStartCalc(TileEntity... ignoreTiles)
 	{
-		this.totalSent = 0;
+		this.totalSent = 0F;
 		refreshAcceptors();
 		 
 		if (this.getTransmitters().size() == 0) return;
@@ -197,8 +200,8 @@ public class UniversalNetwork extends ElectricityNetwork
 		this.availableAcceptors.clear();
 		this.availableconnectedDirections.clear();
 		this.energyRequests.clear();
-		this.totalRequested = 0;
-		this.totalStorageExcess = 0;
+		this.totalRequested = 0.0F;
+		this.totalStorageExcess = 0F;
 		this.ignoreAcceptors.clear();
 		
 		List<TileEntity> ignored = Arrays.asList(ignoreTiles);
@@ -210,7 +213,7 @@ public class UniversalNetwork extends ElectricityNetwork
 
 		if(!this.connectedAcceptors.isEmpty())
 		{
-			int e;
+			float e;
 			final Iterator<ForgeDirection> acceptorDirection = this.connectedDirections.iterator();
 			for(TileEntity acceptor : this.connectedAcceptors)
 			{
@@ -220,7 +223,7 @@ public class UniversalNetwork extends ElectricityNetwork
 				//But the grid will only put energy into the acceptor from one side - once it's in availableAcceptors
 				if(!ignored.contains(acceptor) && !this.availableAcceptors.contains(acceptor))
 				{
-					e = 0;					
+					e = 0.0F;					
 
 					if (acceptor instanceof IElectrical)
 					{
@@ -243,11 +246,11 @@ public class UniversalNetwork extends ElectricityNetwork
 						e = ((IPowerReceptor) acceptor).getPowerReceiver(sideFrom).powerRequest() * NetworkConfigHandler.BC3_RATIO;
 					}*/
 					
-					if (e > 0.0)
+					if (e > 0.0F)
 					{
 						this.availableAcceptors.add(acceptor);
 						this.availableconnectedDirections.put(acceptor,sideFrom);
-						this.energyRequests.put(acceptor,Integer.valueOf(e));
+						this.energyRequests.put(acceptor,Float.valueOf(e));
 						this.totalRequested += e;
 						if (e > ENERGYSTORAGELEVEL) this.totalStorageExcess += (e - ENERGYSTORAGELEVEL);
 					}
@@ -256,14 +259,15 @@ public class UniversalNetwork extends ElectricityNetwork
 		}
 			
 		//Finally, allow a Forge event to change the total requested
-		ElectricityRequestEvent evt = new ElectricityRequestEvent(this, this.totalRequested, ignoreTiles);
+		ElectricityPack mergedPack = new ElectricityPack(this.totalRequested, 1);
+		ElectricityRequestEvent evt = new ElectricityRequestEvent(this, mergedPack, ignoreTiles);
 		MinecraftForge.EVENT_BUS.post(evt);
-		this.totalRequested = evt.energy;
+		this.totalRequested = mergedPack.getWatts();
 	}
 
-	private int doProduce()
+	private float doProduce()
 	{
-		int sent = 0;
+		float sent = 0.0F;
 
 		if (!this.availableAcceptors.isEmpty())
 		{
@@ -272,10 +276,10 @@ public class UniversalNetwork extends ElectricityNetwork
 			//boolean isBCLoaded = NetworkConfigHandler.isBuildcraftLoaded();
 			//boolean isMekLoaded = NetworkConfigHandler.isMekanismLoaded();
 			
-			int energyNeeded = this.totalRequested;
-			int energyAvailable = this.totalEnergy;
-			int reducor = 1;
-			int energyStorageReducor = 1;
+			float energyNeeded = this.totalRequested;
+			float energyAvailable = this.totalEnergy;
+			float reducor = 1.0F;
+			float energyStorageReducor = 1.0F;
 			 
 			if (energyNeeded > energyAvailable)
 			{	
@@ -284,7 +288,7 @@ public class UniversalNetwork extends ElectricityNetwork
 				//If there's still not enough, put the minimum into energy storage (if any) and, anyhow, reduce everything proportionately
 				if (energyNeeded > energyAvailable)
 				{	
-					energyStorageReducor = 0;
+					energyStorageReducor = 0F;
 					reducor = energyAvailable / energyNeeded;
 				}
 				else
@@ -294,8 +298,8 @@ public class UniversalNetwork extends ElectricityNetwork
 				}
 			}
 			
-			int currentSending;
-			int sentToAcceptor;
+			float currentSending;
+			float sentToAcceptor;
 
 			for (TileEntity tileEntity : availableAcceptors)
 			{
@@ -321,7 +325,8 @@ public class UniversalNetwork extends ElectricityNetwork
 
 				if (tileEntity instanceof IElectrical)
 				{
-					sentToAcceptor = ((IElectrical) tileEntity).receiveElectricity(sideFrom, currentSending, true);
+					ElectricityPack electricityToSend = ElectricityPack.getFromWatts(currentSending, 120F);
+					sentToAcceptor = ((IElectrical) tileEntity).receiveElectricity(sideFrom, electricityToSend, true);
 				}
 				/*else if (isMekLoaded && tileEntity instanceof IStrictEnergyAcceptor)
 				{
@@ -351,11 +356,11 @@ public class UniversalNetwork extends ElectricityNetwork
 						float req = receiver.powerRequest();
 						float bcToSend = currentSending * NetworkConfigHandler.TO_BC_RATIO;
 						sentToAcceptor = receiver.receiveEnergy(Type.PIPE, Math.min(req, bcToSend), sideFrom) * NetworkConfigHandler.BC3_RATIO;
-					} else sentToAcceptor = 0;
+					} else sentToAcceptor = 0F;
 				}*/
-				else sentToAcceptor = 0;
+				else sentToAcceptor = 0F;
 
-				if (currentSending != 0 && sentToAcceptor / currentSending > 1.002F && sentToAcceptor > 0.001F)
+				if (sentToAcceptor / currentSending > 1.002F && sentToAcceptor > 0.001F)
 				{	
 					if (!this.spamstop)
 					{
@@ -371,9 +376,9 @@ public class UniversalNetwork extends ElectricityNetwork
 
 		if (this.tickCount % 200 == 0) this.spamstop = false;
 		
-		int returnvalue = sent;
+		float returnvalue = sent;
 		if (returnvalue > this.totalEnergy) returnvalue = this.totalEnergy;
-		if (returnvalue < 0) returnvalue = 0;
+		if (returnvalue < 0F) returnvalue = 0F;
 		return returnvalue;
 	}
 
@@ -526,8 +531,8 @@ public class UniversalNetwork extends ElectricityNetwork
 		this.getTransmitters().clear();
 		this.connectedAcceptors.clear();
 		this.availableAcceptors.clear();
-		this.totalEnergy = 0;
-		this.totalRequested = 0;
+		this.totalEnergy = 0F;
+		this.totalRequested = 0F;
 		try
 		{
 			Class<?> clazz = Class.forName("micdoodle8.mods.galacticraft.core.tick.TickHandlerServer");

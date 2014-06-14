@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 import micdoodle8.mods.galacticraft.api.power.EnergySource;
 import micdoodle8.mods.galacticraft.api.power.EnergySource.EnergySourceAdjacent;
 import micdoodle8.mods.galacticraft.api.power.IEnergyHandlerGC;
+import micdoodle8.mods.galacticraft.api.transmission.ElectricityPack;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
@@ -83,26 +84,33 @@ public abstract class EnergyStorageTile extends TileEntityAdvanced implements IE
 
 	//Five methods for compatibility with basic electricity
 	@Override
-	public int receiveElectricity(ForgeDirection from, int receive, boolean doReceive)
+	public float receiveElectricity(ForgeDirection from, ElectricityPack receive, boolean doReceive)
 	{
-		return storage.receiveEnergyGC(receive, !doReceive);
+		int energyAccepted = storage.receiveEnergyGC((int)receive.getWatts(), !doReceive);
+		return (float)energyAccepted;
 	}
 
 	@Override
-	public int provideElectricity(ForgeDirection from, int request, boolean doProvide)
+	public ElectricityPack provideElectricity(ForgeDirection from, ElectricityPack request, boolean doProvide)
 	{
-		return storage.extractEnergyGC(request, !doProvide);
+		int energyProvided = storage.extractEnergyGC((int)request.getWatts(), !doProvide);
+		return ElectricityPack.getFromWatts(energyProvided, 120);
 	}
 
 	@Override
-	public int getRequest(ForgeDirection direction)
+	public float getRequest(ForgeDirection direction)
 	{
 		return getMaxEnergyStoredGC() - getEnergyStoredGC();
 	}
 
 	@Override
-	public int getProvide(ForgeDirection direction)
+	public float getProvide(ForgeDirection direction)
 	{
 		return 0;
+	}
+
+	@Override
+	public float getVoltage() {
+		return 120F;
 	}
 }

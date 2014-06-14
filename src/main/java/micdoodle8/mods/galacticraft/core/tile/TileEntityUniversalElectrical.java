@@ -5,6 +5,7 @@ import java.util.EnumSet;
 
 import micdoodle8.mods.galacticraft.api.power.EnergySource.EnergySourceAdjacent;
 import micdoodle8.mods.galacticraft.api.power.IEnergyHandlerGC;
+import micdoodle8.mods.galacticraft.api.transmission.ElectricityPack;
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
 import micdoodle8.mods.galacticraft.api.transmission.core.grid.IElectricityNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.core.item.ElectricItemHelper;
@@ -83,7 +84,9 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 						IElectricityNetwork network = (IElectricityNetwork) ((IConductor) tileAdj).getNetwork();
 						if (network != null)
 						{
-							amountProduced += network.produce(this.getEnergyStoredGC() - amountProduced, true, this);
+							//TODO: Get rid of electricityPack, yuck
+							ElectricityPack electricityPack = ElectricityPack.getFromWatts(this.getEnergyStoredGC() - amountProduced, 120);
+							amountProduced += network.produce(electricityPack, true, this);
 						}
 					}
 					else if (tileAdj instanceof IEnergyHandlerGC)

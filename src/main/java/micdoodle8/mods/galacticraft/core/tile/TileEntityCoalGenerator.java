@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import java.util.EnumSet;
 
+import micdoodle8.mods.galacticraft.api.transmission.ElectricityPack;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
@@ -273,19 +274,19 @@ public class TileEntityCoalGenerator extends TileEntityUniversalElectrical imple
 	}
 
 	@Override
-	public int receiveElectricity(ForgeDirection from, int energy, boolean doReceive)
+	public float receiveElectricity(ForgeDirection from, ElectricityPack electricityPack, boolean doReceive)
 	{
 		return 0;
 	}
 
 	@Override
-	public int getRequest(ForgeDirection direction)
+	public float getRequest(ForgeDirection direction)
 	{
 		return 0;
 	}
 
 	@Override
-	public int getProvide(ForgeDirection direction)
+	public float getProvide(ForgeDirection direction)
 	{
 		if (direction == ForgeDirection.UNKNOWN && NetworkConfigHandler.isIndustrialCraft2Loaded())
 		{
@@ -293,10 +294,10 @@ public class TileEntityCoalGenerator extends TileEntityUniversalElectrical imple
 			TileEntity tile = vec.getTileEntity(this.worldObj);
 			if (tile instanceof IConductor)
 				//No power provide to IC2 mod if it's a Galacticraft wire on the output.  Galacticraft network will provide the power.
-				return 0;
+				return 0.0F;
 		}
 
-		return this.generateWatts < MIN_GENERATE_WATTS ? 0 : this.generateWatts;
+		return this.generateWatts < MIN_GENERATE_WATTS ? 0F : this.generateWatts;
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.api.transmission.core.grid;
 
+import micdoodle8.mods.galacticraft.api.transmission.ElectricityPack;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import net.minecraft.tileentity.TileEntity;
 
@@ -16,7 +17,7 @@ public interface IElectricityNetwork extends IGridNetwork<IElectricityNetwork, I
 	 * 
 	 * @return Rejected energy in Joules.
 	 */
-	public int produce(int energy, boolean doReceive, TileEntity... ignoreTiles);
+	public float produce(ElectricityPack electricityPack, boolean doReceive, TileEntity... ignoreTiles);
 
 	/**
 	 * Gets the total amount of electricity requested/needed in the electricity
@@ -25,7 +26,7 @@ public interface IElectricityNetwork extends IGridNetwork<IElectricityNetwork, I
 	 * @param ignoreTiles
 	 *            The TileEntities to ignore during this calculation (optional).
 	 */
-	public int getRequest(TileEntity... ignoreTiles);
+	public ElectricityPack getRequest(TileEntity... ignoreTiles);
 
 	/**
 	 * @return The total amount of resistance of this electrical network. In
