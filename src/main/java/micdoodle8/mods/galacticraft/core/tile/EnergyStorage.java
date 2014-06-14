@@ -5,22 +5,22 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class EnergyStorage implements IEnergyStorageGC 
 {
-	protected int energy;
-	protected int capacity;
-	protected int maxReceive;
-	protected int maxExtract;
+	protected float energy;
+	protected float capacity;
+	protected float maxReceive;
+	protected float maxExtract;
 
-	public EnergyStorage(int capacity) 
+	public EnergyStorage(float capacity) 
 	{
 		this(capacity, capacity, capacity);
 	}
 
-	public EnergyStorage(int capacity, int maxTransfer) 
+	public EnergyStorage(float capacity, float maxTransfer) 
 	{
 		this(capacity, maxTransfer, maxTransfer);
 	}
 
-	public EnergyStorage(int capacity, int maxReceive, int maxExtract) 
+	public EnergyStorage(float capacity, float maxReceive, float maxExtract) 
 	{
 		this.capacity = capacity;
 		this.maxReceive = maxReceive;
@@ -29,7 +29,7 @@ public class EnergyStorage implements IEnergyStorageGC
 
 	public EnergyStorage readFromNBT(NBTTagCompound nbt) 
 	{
-		this.energy = nbt.getInteger("Energy");
+		this.energy = nbt.getFloat("EnergyF");
 
 		if (energy > capacity) 
 		{
@@ -46,11 +46,11 @@ public class EnergyStorage implements IEnergyStorageGC
 			energy = 0;
 		}
 		
-		nbt.setInteger("Energy", energy);
+		nbt.setFloat("EnergyF", energy);
 		return nbt;
 	}
 
-	public void setCapacity(int capacity) 
+	public void setCapacity(float capacity) 
 	{
 		this.capacity = capacity;
 
@@ -60,41 +60,41 @@ public class EnergyStorage implements IEnergyStorageGC
 		}
 	}
 
-	public void setMaxTransfer(int maxTransfer) 
+	public void setMaxTransfer(float maxTransfer) 
 	{
 		setMaxReceive(maxTransfer);
 		setMaxExtract(maxTransfer);
 	}
 
-	public void setMaxReceive(int maxReceive) 
+	public void setMaxReceive(float maxReceive) 
 	{
 		this.maxReceive = maxReceive;
 	}
 
-	public void setMaxExtract(int maxExtract) 
+	public void setMaxExtract(float maxExtract) 
 	{
 		this.maxExtract = maxExtract;
 	}
 	
-	public void setEnergyStored(int energy)
+	public void setEnergyStored(float energy)
 	{
 		this.energy = Math.max(0, Math.min(energy, capacity));
 	}
 
-	public int getMaxReceive() 
+	public float getMaxReceive() 
 	{
 		return maxReceive;
 	}
 
-	public int getMaxExtract() 
+	public float getMaxExtract() 
 	{
 		return maxExtract;
 	}
 
 	@Override
-	public int receiveEnergyGC(int maxReceive, boolean simulate) 
+	public float receiveEnergyGC(float maxReceive, boolean simulate) 
 	{
-		int energyReceived = Math.min(capacity - energy, Math.min(this.maxReceive, maxReceive));
+		float energyReceived = Math.min(capacity - energy, Math.min(this.maxReceive, maxReceive));
 
 		if (!simulate) 
 		{
@@ -105,9 +105,9 @@ public class EnergyStorage implements IEnergyStorageGC
 	}
 
 	@Override
-	public int extractEnergyGC(int maxExtract, boolean simulate) 
+	public float extractEnergyGC(float maxExtract, boolean simulate) 
 	{
-		int energyExtracted = Math.min(energy, Math.min(this.maxExtract, maxExtract));
+		float energyExtracted = Math.min(energy, Math.min(this.maxExtract, maxExtract));
 
 		if (!simulate) 
 		{
@@ -118,13 +118,13 @@ public class EnergyStorage implements IEnergyStorageGC
 	}
 
 	@Override
-	public int getEnergyStoredGC() 
+	public float getEnergyStoredGC() 
 	{
 		return energy;
 	}
 
 	@Override
-	public int getCapacityGC() 
+	public float getCapacityGC() 
 	{
 		return capacity;
 	}

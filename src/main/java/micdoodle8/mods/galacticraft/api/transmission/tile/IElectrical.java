@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.api.transmission.tile;
 
-import micdoodle8.mods.galacticraft.api.transmission.ElectricityPack;
 import net.minecraftforge.common.util.ForgeDirection;
 
 /**
@@ -24,7 +23,7 @@ public interface IElectrical extends IConnector
 	 *            If false, the charge will only be simulated.
 	 * @return Amount of energy that was accepted by the block.
 	 */
-	public float receiveElectricity(ForgeDirection from, ElectricityPack receive, boolean doReceive);
+	public float receiveElectricity(ForgeDirection from, float receive, boolean doReceive);
 
 	/**
 	 * Adds electricity to an block. Returns the ElectricityPack, the
@@ -39,7 +38,7 @@ public interface IElectrical extends IConnector
 	 *            If false, the charge will only be simulated.
 	 * @return Amount of energy that was given out by the block.
 	 */
-	public ElectricityPack provideElectricity(ForgeDirection from, ElectricityPack request, boolean doProvide);
+	public float provideElectricity(ForgeDirection from, float request, boolean doProvide);
 
 	/**
 	 * @return How much energy does this TileEntity want?

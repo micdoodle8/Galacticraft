@@ -31,13 +31,13 @@ public class ElectricalEvent extends Event
 	public static class NetworkEvent extends ElectricalEvent
 	{
 		public final IElectricityNetwork network;
-		public ElectricityPack electricityPack;
+		public float energy;
 		public TileEntity[] ignoreTiles;
 
-		public NetworkEvent(IElectricityNetwork network, ElectricityPack electricityPack, TileEntity... ignoreTiles)
+		public NetworkEvent(IElectricityNetwork network, float energy, TileEntity... ignoreTiles)
 		{
 			this.network = network;
-			this.electricityPack = electricityPack;
+			this.energy = energy;
 			this.ignoreTiles = ignoreTiles;
 		}
 	}
@@ -52,17 +52,17 @@ public class ElectricalEvent extends Event
 	@Cancelable
 	public static class ElectricityProductionEvent extends NetworkEvent
 	{
-		public ElectricityProductionEvent(IElectricityNetwork network, ElectricityPack electricityPack, TileEntity... ignoreTiles)
+		public ElectricityProductionEvent(IElectricityNetwork network, float energy, TileEntity... ignoreTiles)
 		{
-			super(network, electricityPack, ignoreTiles);
+			super(network, energy, ignoreTiles);
 		}
 	}
 
 	public static class ElectricityRequestEvent extends NetworkEvent
 	{
-		public ElectricityRequestEvent(IElectricityNetwork network, ElectricityPack electricityPack, TileEntity... ignoreTiles)
+		public ElectricityRequestEvent(IElectricityNetwork network, float energy, TileEntity... ignoreTiles)
 		{
-			super(network, electricityPack, ignoreTiles);
+			super(network, energy, ignoreTiles);
 		}
 	}
 

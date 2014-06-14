@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import java.util.EnumSet;
 
-import micdoodle8.mods.galacticraft.api.transmission.ElectricityPack;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
@@ -274,7 +273,7 @@ public class TileEntityCoalGenerator extends TileEntityUniversalElectrical imple
 	}
 
 	@Override
-	public float receiveElectricity(ForgeDirection from, ElectricityPack electricityPack, boolean doReceive)
+	public float receiveElectricity(ForgeDirection from, float energy, boolean doReceive)
 	{
 		return 0;
 	}

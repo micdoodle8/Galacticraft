@@ -49,7 +49,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 			{
 				TileEntityUniversalElectrical electricalTile = (TileEntityUniversalElectrical) tile;
 				EnergySourceAdjacent source = new EnergySourceAdjacent(ForgeDirection.getOrientation(this.facing).getOpposite());
-				int toSend = electricalTile.storage.getMaxExtract();
+				float toSend = electricalTile.storage.getMaxExtract();
 				electricalTile.extractEnergyGC(source, this.getTarget().receiveEnergyGC(new EnergySourceWireless(Lists.newArrayList((ILaserNode)this)), toSend, false), false);
 			}
 		}
@@ -139,7 +139,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 	}
 
 	@Override
-	public int receiveEnergyGC(EnergySource from, int amount, boolean simulate) 
+	public float receiveEnergyGC(EnergySource from, float amount, boolean simulate) 
 	{
 		if (this.modeReceive != ReceiverMode.RECEIVE.ordinal())
 		{
@@ -153,7 +153,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 			return 0;
 		}
 		
-		int received = this.storage.receiveEnergyGC(amount, simulate);
+		float received = this.storage.receiveEnergyGC(amount, simulate);
 		
 //		if (received < amount)
 //		{
@@ -167,7 +167,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 	}
 
 	@Override
-	public int extractEnergyGC(EnergySource from, int amount, boolean simulate) 
+	public float extractEnergyGC(EnergySource from, float amount, boolean simulate) 
 	{
 		if (this.modeReceive != ReceiverMode.EXTRACT.ordinal())
 		{
@@ -181,7 +181,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 			return 0;
 		}
 		
-		int extracted = this.storage.extractEnergyGC(amount, simulate);
+		float extracted = this.storage.extractEnergyGC(amount, simulate);
 		
 		if (extracted < amount)
 		{
@@ -195,7 +195,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 	}
 
 	@Override
-	public int getEnergyStoredGC(EnergySource from) 
+	public float getEnergyStoredGC(EnergySource from) 
 	{
 		TileEntity tile = this.getAttachedTile();
 		
@@ -208,7 +208,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 	}
 
 	@Override
-	public int getMaxEnergyStoredGC(EnergySource from) 
+	public float getMaxEnergyStoredGC(EnergySource from) 
 	{
 		TileEntity tile = this.getAttachedTile();
 		

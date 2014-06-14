@@ -66,10 +66,10 @@ public class NetworkUtil
 			else if (dataValue instanceof EnergyStorage)
 			{
 				EnergyStorage storage = (EnergyStorage) dataValue;
-				buffer.writeInt(storage.getCapacityGC());
-				buffer.writeInt(storage.getMaxReceive());
-				buffer.writeInt(storage.getMaxExtract());
-				buffer.writeInt(storage.getEnergyStoredGC());
+				buffer.writeFloat(storage.getCapacityGC());
+				buffer.writeFloat(storage.getMaxReceive());
+				buffer.writeFloat(storage.getMaxExtract());
+				buffer.writeFloat(storage.getEnergyStoredGC());
 			}
 			else if (dataValue instanceof NBTTagCompound)
 			{
@@ -196,8 +196,8 @@ public class NetworkUtil
 			}
 			else if (clazz.equals(EnergyStorage.class))
 			{
-				EnergyStorage storage = new EnergyStorage(buffer.readInt(), buffer.readInt(), buffer.readInt());
-				storage.setEnergyStored(buffer.readInt());
+				EnergyStorage storage = new EnergyStorage(buffer.readFloat(), buffer.readFloat(), buffer.readFloat());
+				storage.setEnergyStored(buffer.readFloat());
 				objList.add(storage);
 			}
 			else if (clazz.equals(NBTTagCompound.class))
@@ -321,11 +321,11 @@ public class NetworkUtil
 		}
 		else if (dataValue.equals(EnergyStorage.class))
 		{
-			int capacity = buffer.readInt();
-			int maxReceive = buffer.readInt();
-			int maxExtract = buffer.readInt();
+			float capacity = buffer.readFloat();
+			float maxReceive = buffer.readFloat();
+			float maxExtract = buffer.readFloat();
 			EnergyStorage storage = new EnergyStorage(capacity, maxReceive, maxExtract);
-			storage.setEnergyStored(buffer.readInt());
+			storage.setEnergyStored(buffer.readFloat());
 			return storage;
 		}
 		else

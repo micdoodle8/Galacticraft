@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.tile;
 import micdoodle8.mods.galacticraft.api.power.EnergySource;
 import micdoodle8.mods.galacticraft.api.power.EnergySource.EnergySourceAdjacent;
 import micdoodle8.mods.galacticraft.api.power.IEnergyHandlerGC;
-import micdoodle8.mods.galacticraft.api.transmission.ElectricityPack;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
@@ -33,13 +32,13 @@ public abstract class EnergyStorageTile extends TileEntityAdvanced implements IE
 	public abstract ReceiverMode getModeFromDirection(ForgeDirection direction);
 
 	@Override
-	public int receiveEnergyGC(EnergySource from, int amount, boolean simulate) 
+	public float receiveEnergyGC(EnergySource from, float amount, boolean simulate) 
 	{
 		return storage.receiveEnergyGC(amount, simulate);
 	}
 
 	@Override
-	public int extractEnergyGC(EnergySource from, int amount, boolean simulate) 
+	public float extractEnergyGC(EnergySource from, float amount, boolean simulate) 
 	{
 		return storage.extractEnergyGC(amount, simulate);
 	}
@@ -56,23 +55,23 @@ public abstract class EnergyStorageTile extends TileEntityAdvanced implements IE
 	}
 
 	@Override
-	public int getEnergyStoredGC(EnergySource from) 
+	public float getEnergyStoredGC(EnergySource from) 
 	{
 		return storage.getEnergyStoredGC();
 	}
 	
-	public int getEnergyStoredGC()
+	public float getEnergyStoredGC()
 	{
 		return this.getEnergyStoredGC(null);
 	}
 
 	@Override
-	public int getMaxEnergyStoredGC(EnergySource from)
+	public float getMaxEnergyStoredGC(EnergySource from)
 	{
 		return storage.getCapacityGC();
 	}
 	
-	public int getMaxEnergyStoredGC()
+	public float getMaxEnergyStoredGC()
 	{
 		return this.getMaxEnergyStoredGC(null);
 	}
@@ -84,17 +83,15 @@ public abstract class EnergyStorageTile extends TileEntityAdvanced implements IE
 
 	//Five methods for compatibility with basic electricity
 	@Override
-	public float receiveElectricity(ForgeDirection from, ElectricityPack receive, boolean doReceive)
+	public float receiveElectricity(ForgeDirection from, float receive, boolean doReceive)
 	{
-		int energyAccepted = storage.receiveEnergyGC((int)receive.getWatts(), !doReceive);
-		return (float)energyAccepted;
+		return storage.receiveEnergyGC(receive, !doReceive);
 	}
 
 	@Override
-	public ElectricityPack provideElectricity(ForgeDirection from, ElectricityPack request, boolean doProvide)
+	public float provideElectricity(ForgeDirection from, float request, boolean doProvide)
 	{
-		int energyProvided = storage.extractEnergyGC((int)request.getWatts(), !doProvide);
-		return ElectricityPack.getFromWatts(energyProvided, 120);
+		return storage.extractEnergyGC(request, !doProvide);
 	}
 
 	@Override
