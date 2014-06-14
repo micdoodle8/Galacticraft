@@ -10,10 +10,10 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCargoLoader;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
@@ -52,8 +52,8 @@ public class GuiCargoLoader extends GuiContainerGC
 	{
 		super.initGui();
 		List<String> electricityDesc = new ArrayList<String>();
-		electricityDesc.add("Electrical Storage");
-		electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.cargoLoader.getEnergyStoredGC()) + " / " + (int) Math.floor(this.cargoLoader.getMaxEnergyStoredGC())));
+		electricityDesc.add(GCCoreUtil.translate("gui.energyStorage.desc.0"));
+		electricityDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.energyStorage.desc.1") + ((int) Math.floor(this.cargoLoader.getEnergyStoredGC()) + " / " + (int) Math.floor(this.cargoLoader.getMaxEnergyStoredGC())));
 		this.electricInfoRegion.tooltipStrings = electricityDesc;
 		this.electricInfoRegion.xPosition = (this.width - this.xSize) / 2 + 107;
 		this.electricInfoRegion.yPosition = (this.height - this.ySize) / 2 + 101;
@@ -61,10 +61,10 @@ public class GuiCargoLoader extends GuiContainerGC
 		this.electricInfoRegion.parentHeight = this.height;
 		this.infoRegions.add(this.electricInfoRegion);
 		List<String> batterySlotDesc = new ArrayList<String>();
-		batterySlotDesc.add("Cargo Loader battery slot, place battery here");
-		batterySlotDesc.add("if not using a connected power source");
+		batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.0"));
+		batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.1"));
 		this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 9, (this.height - this.ySize) / 2 + 26, 18, 18, batterySlotDesc, this.width, this.height));
-		this.buttonList.add(this.buttonLoadItems = new GuiButton(0, this.width / 2 - 1, this.height / 2 - 23, 76, 20, StatCollector.translateToLocal("gui.button.loaditems.name")));
+		this.buttonList.add(this.buttonLoadItems = new GuiButton(0, this.width / 2 - 1, this.height / 2 - 23, 76, 20, GCCoreUtil.translate("gui.button.loaditems.name")));
 	}
 
 	@Override
@@ -74,50 +74,50 @@ public class GuiCargoLoader extends GuiContainerGC
 		int offsetY = 45;
 		this.fontRendererObj.drawString(this.cargoLoader.getInventoryName(), 60, 12, 4210752);
 		this.buttonLoadItems.enabled = this.cargoLoader.disableCooldown == 0;
-		this.buttonLoadItems.displayString = !this.cargoLoader.getDisabled(0) ? StatCollector.translateToLocal("gui.button.stoploading.name") : StatCollector.translateToLocal("gui.button.loaditems.name");
-		this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.message.status.name") + ": " + this.getStatus(), 28 + offsetX, 45 + 23 - 46 + offsetY, 4210752);
+		this.buttonLoadItems.displayString = !this.cargoLoader.getDisabled(0) ? GCCoreUtil.translate("gui.button.stoploading.name") : GCCoreUtil.translate("gui.button.loaditems.name");
+		this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.status.name") + ": " + this.getStatus(), 28 + offsetX, 45 + 23 - 46 + offsetY, 4210752);
 		this.fontRendererObj.drawString("" + this.cargoLoader.storage.getMaxExtract(), 28 + offsetX, 56 + 23 - 46 + offsetY, 4210752);
-		this.fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 90, 4210752);
+		this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 90, 4210752);
 	}
 
 	private String getStatus()
 	{
 		if (this.cargoLoader.outOfItems)
 		{
-			return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.noitems.name");
+			return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.noitems.name");
 		}
 
 		if (this.cargoLoader.noTarget)
 		{
-			return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.notargetload.name");
+			return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.notargetload.name");
 		}
 
 		if (this.cargoLoader.targetNoInventory)
 		{
-			return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.noinvtarget.name");
+			return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.noinvtarget.name");
 		}
 
 		if (this.cargoLoader.targetFull)
 		{
-			return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.targetfull.name");
+			return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.targetfull.name");
 		}
 
 		if (this.cargoLoader.getStackInSlot(0) == null && this.cargoLoader.getEnergyStoredGC() == 0)
 		{
-			return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.missingpower.name");
+			return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.missingpower.name");
 		}
 
 		if (this.cargoLoader.getDisabled(0))
 		{
-			return EnumColor.ORANGE + StatCollector.translateToLocal("gui.status.ready.name");
+			return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.ready.name");
 		}
 
 		if (this.cargoLoader.getEnergyStoredGC() > 0)
 		{
-			return EnumColor.DARK_GREEN + StatCollector.translateToLocal("gui.status.active.name");
+			return EnumColor.DARK_GREEN + GCCoreUtil.translate("gui.status.active.name");
 		}
 
-		return EnumColor.ORANGE + StatCollector.translateToLocal("gui.status.ready.name");
+		return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.ready.name");
 	}
 
 	@Override
@@ -130,8 +130,8 @@ public class GuiCargoLoader extends GuiContainerGC
 		this.drawTexturedModalRect(var5, var6 + 5, 0, 0, this.xSize, this.ySize);
 
 		List<String> electricityDesc = new ArrayList<String>();
-		electricityDesc.add("Electrical Storage");
-		electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.cargoLoader.getEnergyStoredGC()) + " / " + (int) Math.floor(this.cargoLoader.getMaxEnergyStoredGC())));
+		electricityDesc.add(GCCoreUtil.translate("gui.energyStorage.desc.0"));
+		electricityDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.energyStorage.desc.1") + ((int) Math.floor(this.cargoLoader.getEnergyStoredGC()) + " / " + (int) Math.floor(this.cargoLoader.getMaxEnergyStoredGC())));
 		this.electricInfoRegion.tooltipStrings = electricityDesc;
 
 		if (this.cargoLoader.getEnergyStoredGC() > 0)

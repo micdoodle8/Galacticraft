@@ -8,7 +8,6 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -63,7 +62,7 @@ public class GCCoreUtil
 	{
 		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
 		{
-			LanguageRegistry.instance().addStringLocalization("entity." + var1 + ".name", StatCollector.translateToLocal("entity.GalacticraftCore." + var1 + ".name"));
+			LanguageRegistry.instance().addStringLocalization("entity." + var1 + ".name", GCCoreUtil.translate("entity.GalacticraftCore." + var1 + ".name"));
 		}
 
 		EntityRegistry.registerGlobalEntityID(var0, var1, id, back, fore);
@@ -74,7 +73,7 @@ public class GCCoreUtil
 	{
 		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
 		{
-			LanguageRegistry.instance().addStringLocalization("entity." + var1 + ".name", StatCollector.translateToLocal("entity.GalacticraftCore." + var1 + ".name"));
+			LanguageRegistry.instance().addStringLocalization("entity." + var1 + ".name", GCCoreUtil.translate("entity.GalacticraftCore." + var1 + ".name"));
 		}
 
 		EntityRegistry.registerModEntity(var0, var1, id, GalacticraftCore.instance, trackingDistance, updateFreq, sendVel);
@@ -108,5 +107,15 @@ public class GCCoreUtil
 	public static void registerGalacticraftBlock(String key, ItemStack stack)
 	{
 		GalacticraftCore.blocksList.put(key, stack);
+	}
+	
+	public static String translate(String key)
+	{
+		return StatCollector.translateToLocal(key);
+	}
+	
+	public static String translateWithFormat(String key, Object... values)
+	{
+		return StatCollector.translateToLocalFormatted(key, values);
 	}
 }

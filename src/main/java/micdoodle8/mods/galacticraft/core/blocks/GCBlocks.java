@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.ArrayList;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockAirLock;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockAluminumWire;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockArclamp;

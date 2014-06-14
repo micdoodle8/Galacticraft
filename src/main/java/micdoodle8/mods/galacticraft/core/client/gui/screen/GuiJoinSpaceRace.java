@@ -140,10 +140,10 @@ public class GuiJoinSpaceRace extends GuiScreen implements ICheckBoxCallback, IT
 		
 		if (this.initialized)
 		{
-			this.drawCenteredString(this.fontRendererObj, "Join Space Race", this.width / 2, this.height / 2 - this.height / 3 - 15, 16777215);
+			this.drawCenteredString(this.fontRendererObj, GCCoreUtil.translate("gui.spaceRace.join.title.name"), this.width / 2, this.height / 2 - this.height / 3 - 15, 16777215);
         	this.drawFlagButton(par1, par2);
-			this.drawCenteredString(this.fontRendererObj, "Owner: " + this.spaceRaceData.getPlayerNames().get(0), this.width / 2, (int) (this.buttonFlag_yPosition + this.buttonFlag_height + 25), GCCoreUtil.to32BitColor(255, 150, 150, 150));
-			this.drawCenteredString(this.fontRendererObj, this.spaceRaceData.getPlayerNames().size() + " members", this.width / 2, (int) (this.buttonFlag_yPosition + this.buttonFlag_height + 40), GCCoreUtil.to32BitColor(255, 150, 150, 150));
+			this.drawCenteredString(this.fontRendererObj, GCCoreUtil.translate("gui.spaceRace.join.owner.name") + ": " + this.spaceRaceData.getPlayerNames().get(0), this.width / 2, (int) (this.buttonFlag_yPosition + this.buttonFlag_height + 25), GCCoreUtil.to32BitColor(255, 150, 150, 150));
+			this.drawCenteredString(this.fontRendererObj, GCCoreUtil.translateWithFormat("gui.spaceRace.join.memberCount.name", this.spaceRaceData.getPlayerNames().size()), this.width / 2, (int) (this.buttonFlag_yPosition + this.buttonFlag_height + 40), GCCoreUtil.to32BitColor(255, 150, 150, 150));
         	GL11.glPushMatrix();
         	GL11.glTranslatef(this.width / 2, (int) (this.buttonFlag_yPosition + this.buttonFlag_height + 5) + FMLClientHandler.instance().getClient().fontRenderer.FONT_HEIGHT / 2, 0);
         	GL11.glScalef(1.5F, 1.5F, 1.0F);

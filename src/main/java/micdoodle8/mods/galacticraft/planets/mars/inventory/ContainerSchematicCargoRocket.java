@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.planets.mars.inventory;
 
 import micdoodle8.mods.galacticraft.core.inventory.SlotRocketBenchResult;
 import micdoodle8.mods.galacticraft.planets.mars.util.RecipeUtilMars;
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;

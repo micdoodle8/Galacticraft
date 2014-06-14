@@ -8,9 +8,9 @@ import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion
 import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerBuggy;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
@@ -49,24 +49,24 @@ public class GuiBuggy extends GuiContainerGC
 	{
 		super.initGui();
 		List<String> oxygenDesc = new ArrayList<String>();
-		oxygenDesc.add("Buggy fuel tank. Requires");
-		oxygenDesc.add("fuel loader to fill");
+		oxygenDesc.add(GCCoreUtil.translate("gui.fuelTank.desc.0"));
+		oxygenDesc.add(GCCoreUtil.translate("gui.fuelTank.desc.1"));
 		this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 71, (this.height - this.ySize) / 2 + 6, 36, 40, oxygenDesc, this.width, this.height));
 	}
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
 	{
-		this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.message.fuel.name"), 8, 2 + 3, 4210752);
+		this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.fuel.name"), 8, 2 + 3, 4210752);
 
-		this.fontRendererObj.drawString(StatCollector.translateToLocal(this.upperChestInventory.getInventoryName()), 8, this.type == 0 ? 50 : 39, 4210752);
+		this.fontRendererObj.drawString(GCCoreUtil.translate(this.upperChestInventory.getInventoryName()), 8, this.type == 0 ? 50 : 39, 4210752);
 
 		if (this.mc.thePlayer != null && this.mc.thePlayer.ridingEntity != null && this.mc.thePlayer.ridingEntity instanceof EntityBuggy)
 		{
-			this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.message.fuel.name") + ":", 125, 15 + 3, 4210752);
+			this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.fuel.name") + ":", 125, 15 + 3, 4210752);
 			final double percentage = ((EntityBuggy) this.mc.thePlayer.ridingEntity).getScaledFuelLevel(100);
 			final String color = percentage > 80.0D ? EnumColor.BRIGHT_GREEN.code : percentage > 40.0D ? EnumColor.ORANGE.code : EnumColor.RED.code;
-			final String str = percentage + "% " + StatCollector.translateToLocal("gui.message.full.name");
+			final String str = percentage + "% " + GCCoreUtil.translate("gui.message.full.name");
 			this.fontRendererObj.drawString(color + str, 117 - str.length() / 2, 20 + 8, 4210752);
 		}
 	}

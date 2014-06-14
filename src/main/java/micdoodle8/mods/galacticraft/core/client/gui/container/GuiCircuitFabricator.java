@@ -4,10 +4,10 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerCircuitFabricator;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCircuitFabricator;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
@@ -45,17 +45,17 @@ public class GuiCircuitFabricator extends GuiContainer
 
 		if (this.tileEntity.processTicks > 0)
 		{
-			displayText = EnumColor.BRIGHT_GREEN + "Running";
+			displayText = EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.running.name");
 		}
 		else
 		{
-			displayText = EnumColor.ORANGE + "Idle";
+			displayText = EnumColor.ORANGE + GCCoreUtil.translate("gui.status.idle.name");
 		}
 
-		String str = "Status:";
+		String str = GCCoreUtil.translate("gui.message.status.name") + ":";
 		this.fontRendererObj.drawString(str, 115 - this.fontRendererObj.getStringWidth(str) / 2, 80, 4210752);
 		this.fontRendererObj.drawString(displayText, 115 - this.fontRendererObj.getStringWidth(displayText) / 2, 90, 4210752);
-		this.fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 93, 4210752);
+		this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 93, 4210752);
 		str = "" + tileEntity.storage.getMaxExtract();
 		this.fontRendererObj.drawString(str, 5, 42, 4210752);
 //		str = ElectricityDisplay.getDisplay(this.tileEntity.getVoltage(), ElectricUnit.VOLTAGE);

@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import micdoodle8.mods.galacticraft.api.event.client.GCCoreEventChoosePlanetGui.SlotClicked;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiSlot;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.MinecraftForge;
 
 import org.lwjgl.opengl.GL11;
@@ -53,10 +53,10 @@ public class GuiChoosePlanetSlot extends GuiSlot
 			}
 		}
 
-		GuiChoosePlanet.getSendButton(this.choosePlanetGui).displayString = StatCollector.translateToLocal("gui.button.sendtodim.name");
+		GuiChoosePlanet.getSendButton(this.choosePlanetGui).displayString = GCCoreUtil.translate("gui.button.sendtodim.name");
 		GuiChoosePlanet.getSendButton(this.choosePlanetGui).enabled = this.choosePlanetGui.isValidDestination(this.choosePlanetGui.selectedSlot);
 
-		GuiChoosePlanet.getCreateSpaceStationButton(this.choosePlanetGui).displayString = StatCollector.translateToLocal("gui.button.createsstation.name");
+		GuiChoosePlanet.getCreateSpaceStationButton(this.choosePlanetGui).displayString = GCCoreUtil.translate("gui.button.createsstation.name");
 		GuiChoosePlanet.getCreateSpaceStationButton(this.choosePlanetGui).enabled = this.choosePlanetGui.canCreateSpaceStation();
 	}
 
@@ -145,7 +145,7 @@ public class GuiChoosePlanetSlot extends GuiSlot
 				}
 				else
 				{
-					str = StatCollector.translateToLocal("dimension." + str + ".name");
+					str = GCCoreUtil.translate("dimension." + str + ".name");
 				}
 
 				this.choosePlanetGui.drawCenteredString(GuiChoosePlanet.getFontRenderer(this.choosePlanetGui), str, this.choosePlanetGui.width / 2, var3 + 3, 0xEEEEEE);
@@ -179,7 +179,7 @@ public class GuiChoosePlanetSlot extends GuiSlot
 				}
 				else
 				{
-					str = StatCollector.translateToLocal("dimension." + str + ".name");
+					str = GCCoreUtil.translate("dimension." + str + ".name");
 				}
 
 				this.choosePlanetGui.drawCenteredString(GuiChoosePlanet.getFontRenderer(this.choosePlanetGui), str, this.choosePlanetGui.width / 2, var3 + 3, 0xEEEEEE);

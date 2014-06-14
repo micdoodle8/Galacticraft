@@ -4,12 +4,12 @@ import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -44,7 +44,7 @@ public class ItemBase extends Item
 	{
 		if (par1ItemStack != null && this == GCItems.heavyPlatingTier1)
 		{
-			par3List.add(StatCollector.translateToLocal("item.tier1.desc"));
+			par3List.add(GCCoreUtil.translate("item.tier1.desc"));
 		}
 	}
 }

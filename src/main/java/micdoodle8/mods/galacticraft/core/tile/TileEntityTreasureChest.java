@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockT1TreasureChest;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,7 +20,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.StatCollector;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 
@@ -513,7 +513,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements IInve
 	@Override
 	public String getInventoryName()
 	{
-		return FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT ? StatCollector.translateToLocal("container.treasurechest.name") : StatCollector.translateToLocal("container.treasurechest.name");
+		return FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT ? GCCoreUtil.translate("container.treasurechest.name") : GCCoreUtil.translate("container.treasurechest.name");
 	}
 
 	@Override

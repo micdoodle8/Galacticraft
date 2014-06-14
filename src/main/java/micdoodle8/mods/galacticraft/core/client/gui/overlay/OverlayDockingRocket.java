@@ -41,16 +41,16 @@ public class OverlayDockingRocket extends Overlay
 				String dYStr = String.valueOf(dY);
 				String dZStr = String.valueOf(dZ);
 
-				String warning = "Press SPACE to decelerate";
-				String warning2 = "Press LEFT SHIFT to accelerate";
+				String warning = GCCoreUtil.translateWithFormat("gui.dockingRocket.warning.name.0", minecraft.gameSettings.keyBindJump.getKeyDescription());
+				String warning2 = GCCoreUtil.translateWithFormat("gui.dockingRocket.warning.name.1", minecraft.gameSettings.keyBindSneak.getKeyDescription());
 
 				double targetMotionY = Math.round(Math.max((rocket.posY - rocket.targetVec.y) / -100.0D, -0.9D) * 100.0D) / 100.0D;
 				double currentMotionY = Math.round(rocket.motionY * 100.0D) / 100.0D;
 				double dMY = Math.floor((targetMotionY - currentMotionY) * 300);
 				int dMotionY = (int) Math.max(1, Math.min(255, dMY));
 				int dMotionYN = (int) Math.max(1, Math.min(255, -dMY));
-				String targetMotionYStr = "Target velocity: " + String.valueOf(targetMotionY);
-				String currentMotionYStr = "Current velocity: " + String.valueOf(currentMotionY);
+				String targetMotionYStr = GCCoreUtil.translate("gui.dockingRocket.targetVel.name") + ": " + String.valueOf(targetMotionY);
+				String currentMotionYStr = GCCoreUtil.translate("gui.dockingRocket.currentVel.name") + ": " + String.valueOf(currentMotionY);
 
 				int red = GCCoreUtil.to32BitColor(dMY > 0 ? 0 : dMotionYN, 255, 255, 255);
 				int green = GCCoreUtil.to32BitColor(dMY < 0 ? 0 : dMotionY, 255, 255, 255);
@@ -69,7 +69,7 @@ public class OverlayDockingRocket extends Overlay
 				OverlayDockingRocket.minecraft.fontRenderer.drawString(targetMotionYStr, width - OverlayDockingRocket.minecraft.fontRenderer.getStringWidth(targetMotionYStr) - 50, height / 3 + 50, grey);
 				OverlayDockingRocket.minecraft.fontRenderer.drawString(currentMotionYStr, width - OverlayDockingRocket.minecraft.fontRenderer.getStringWidth(currentMotionYStr) - 50, height / 3 + 35, grey);
 
-				OverlayDockingRocket.minecraft.fontRenderer.drawString("Distance from Target", 50, height / 3 + 15, grey);
+				OverlayDockingRocket.minecraft.fontRenderer.drawString(GCCoreUtil.translate("gui.dockingRocket.distanceFrom.name"), 50, height / 3 + 15, grey);
 				OverlayDockingRocket.minecraft.fontRenderer.drawString("X: " + dXStr, 50, height / 3 + 35, Math.abs(dX) > 15 ? red : grey);
 				OverlayDockingRocket.minecraft.fontRenderer.drawString("Y: " + dYStr, 50, height / 3 + 45, Math.abs(dY) > 50 || Math.abs(dY) < 1.9 ? grey : OverlayDockingRocket.screenTicks / 10 % 2 == 0 ? red : grey);
 				OverlayDockingRocket.minecraft.fontRenderer.drawString("Z: " + dZStr, 50, height / 3 + 55, Math.abs(dZ) > 15 ? red : grey);

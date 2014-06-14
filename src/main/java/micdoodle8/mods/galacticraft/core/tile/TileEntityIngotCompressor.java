@@ -8,6 +8,7 @@ import java.util.Set;
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.core.inventory.PersistantInventoryCrafting;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,7 +21,6 @@ import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.util.StatCollector;
 import cpw.mods.fml.relauncher.Side;
 
 
@@ -377,7 +377,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
 	@Override
 	public String getInventoryName()
 	{
-		return StatCollector.translateToLocal("tile.machine.3.name");
+		return GCCoreUtil.translate("tile.machine.3.name");
 	}
 
 	@Override

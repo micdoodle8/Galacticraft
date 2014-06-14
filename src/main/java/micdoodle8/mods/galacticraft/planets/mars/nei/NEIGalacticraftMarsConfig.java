@@ -7,9 +7,9 @@ package micdoodle8.mods.galacticraft.planets.mars.nei;
 //import java.util.Set;
 //
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import codechicken.nei.api.API;
 //import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
+import codechicken.nei.api.API;
 //import net.minecraft.block.Block;
 //import net.minecraft.item.ItemStack;
 //import codechicken.nei.PositionedStack;

@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import java.util.List;
-
 import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.EntityFlag;

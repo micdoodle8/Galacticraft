@@ -5,10 +5,10 @@ import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay.Electric
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerCoalGenerator;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCoalGenerator;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
@@ -41,16 +41,16 @@ public class GuiCoalGenerator extends GuiContainer
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
 	{
 		this.fontRendererObj.drawString(this.tileEntity.getInventoryName(), 55, 6, 4210752);
-		String displayText = "Generating";
+		String displayText = GCCoreUtil.translate("gui.status.generating.name");
 		this.fontRendererObj.drawString(displayText, 122 - this.fontRendererObj.getStringWidth(displayText) / 2, 33, 4210752);
 
 		if (this.tileEntity.generateWatts <= 0)
 		{
-			displayText = "Not Generating";
+			displayText = GCCoreUtil.translate("gui.status.notGenerating.name");
 		}
 		else if (this.tileEntity.generateWatts < TileEntityCoalGenerator.MIN_GENERATE_WATTS)
 		{
-			displayText = "Hull Heat: " + (int) (this.tileEntity.generateWatts / TileEntityCoalGenerator.MIN_GENERATE_WATTS * 100) + "%";
+			displayText = GCCoreUtil.translate("gui.status.hullHeat.name") + ": " + (int) (this.tileEntity.generateWatts / TileEntityCoalGenerator.MIN_GENERATE_WATTS * 100) + "%";
 		}
 		else
 		{
@@ -60,7 +60,7 @@ public class GuiCoalGenerator extends GuiContainer
 		this.fontRendererObj.drawString(displayText, 122 - this.fontRendererObj.getStringWidth(displayText) / 2, 45, 4210752);
 //		displayText = "Voltage: " + (int) (this.tileEntity.getVoltage() * 1000.0F);
 //		this.fontRendererObj.drawString(displayText, 122 - this.fontRendererObj.getStringWidth(displayText) / 2, 60, 4210752);
-		this.fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
+		this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 
 	/**

@@ -359,10 +359,12 @@ public class GuiGalaxyMap extends GuiStarBackground
 		Gui.drawRect(10, 20, 12, this.height - 24, col3);
 		Gui.drawRect(this.width - 12, 0 + 20, this.width - 10, this.height - 24, col2);
 
-		this.fontRendererObj.drawString("ASWD - Move Map", 5, 1, textCol1, false);
-		this.fontRendererObj.drawString("Mouse Wheel - Zoom", 5, 10, textCol1, false);
-		this.fontRendererObj.drawString("Mouse 1 - Select Planet", this.width - this.fontRendererObj.getStringWidth("Mouse 1 - Select Planet") - 5, 1, textCol1, false);
-		this.fontRendererObj.drawString("Esc - Exit Map", this.width - this.fontRendererObj.getStringWidth("Esc - Exit Map") - 5, 10, textCol1, false);
+		this.fontRendererObj.drawString(GCCoreUtil.translate("gui.galaxymap.movemap.name"), 5, 1, textCol1, false);
+		this.fontRendererObj.drawString(GCCoreUtil.translate("gui.galaxymap.zoom.name"), 5, 10, textCol1, false);
+		String message = GCCoreUtil.translate("gui.galaxymap.select.name");
+		this.fontRendererObj.drawString(message, this.width - this.fontRendererObj.getStringWidth(message) - 5, 1, textCol1, false);
+		message = GCCoreUtil.translate("gui.galaxymap.exit.name");
+		this.fontRendererObj.drawString(GCCoreUtil.translate(message), this.width - this.fontRendererObj.getStringWidth(message) - 5, 10, textCol1, false);
 
 		if (this.selectedPlanet != null)
 		{
@@ -373,7 +375,8 @@ public class GuiGalaxyMap extends GuiStarBackground
 
 			if (this.selectedPlanet instanceof Moon)
 			{
-				this.fontRendererObj.drawString("Moon of " + ((Moon) this.selectedPlanet).getParentPlanet().getLocalizedName(), this.width / 2 - width / 2 + width + 10, 6, textCol2, false);
+				message = GCCoreUtil.translateWithFormat("gui.galaxymap.moonOf.name", ((Moon) this.selectedPlanet).getParentPlanet().getLocalizedName());
+				this.fontRendererObj.drawString(message, this.width / 2 - width / 2 + width + 10, 6, textCol2, false);
 			}
 		}
 

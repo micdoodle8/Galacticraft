@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -151,7 +152,7 @@ public class ItemBuggy extends Item implements IHoldableItem
 	{
 		if (par1ItemStack.getItemDamage() != 0)
 		{
-			par2List.add("Storage Space: " + par1ItemStack.getItemDamage() * 18);
+			par2List.add(GCCoreUtil.translate("gui.buggy.storageSpace") + ": " + par1ItemStack.getItemDamage() * 18);
 		}
 	}
 

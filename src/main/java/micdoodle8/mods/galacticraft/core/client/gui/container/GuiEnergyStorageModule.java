@@ -5,10 +5,10 @@ import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay.Electric
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerEnergyStorageModule;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityEnergyStorageModule;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
@@ -45,7 +45,7 @@ public class GuiEnergyStorageModule extends GuiContainer
 		this.fontRendererObj.drawString(displayMJ, 122 - this.fontRendererObj.getStringWidth(displayMJ) / 2, 30, 4210752);
 		//this.fontRendererObj.drawString(displayVoltage, 122 - this.fontRendererObj.getStringWidth(displayVoltage) / 2, 40, 4210752);
 		this.fontRendererObj.drawString(displayOutput, 122 - this.fontRendererObj.getStringWidth(displayOutput) / 2, 60, 4210752);
-		this.fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
+		this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 
 	/**

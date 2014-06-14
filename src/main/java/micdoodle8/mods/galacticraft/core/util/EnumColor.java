@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.util;
 
-import net.minecraft.util.StatCollector;
 
 /**
  * Simple color enum for adding colors to in-game GUI strings of text.
@@ -44,7 +43,7 @@ public enum EnumColor
 
 	public String getLocalizedName()
 	{
-		return StatCollector.translateToLocal("color." + this.unlocalizedName);
+		return GCCoreUtil.translate("color." + this.unlocalizedName);
 	}
 
 	public String getName()

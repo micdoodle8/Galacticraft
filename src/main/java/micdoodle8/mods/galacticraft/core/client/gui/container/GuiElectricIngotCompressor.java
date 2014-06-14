@@ -4,10 +4,10 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerElectricIngotCompressor;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricIngotCompressor;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
@@ -41,21 +41,20 @@ public class GuiElectricIngotCompressor extends GuiContainer
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
 	{
 		this.fontRendererObj.drawString(this.tileEntity.getInventoryName(), 10, 6, 4210752);
-		String displayText = "Battery:";
-		this.fontRendererObj.drawString(displayText, 50 - this.fontRendererObj.getStringWidth(displayText), 77, 4210752);
+		String displayText;
 
 		if (this.tileEntity.processTicks > 0)
 		{
-			displayText = EnumColor.BRIGHT_GREEN + "Running";
+			displayText = EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.running.name");
 		}
 		else
 		{
-			displayText = EnumColor.ORANGE + "Idle";
+			displayText = EnumColor.ORANGE + GCCoreUtil.translate("gui.status.idle.name");
 		}
 
-		String str = "Status: " + displayText;
+		String str = GCCoreUtil.translate("gui.message.status.name") + ": " + displayText;
 		this.fontRendererObj.drawString(str, 120 - this.fontRendererObj.getStringWidth(str) / 2, 75, 4210752);
-		this.fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 93, 4210752);
+		this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 93, 4210752);
 		str = "" + tileEntity.storage.getMaxExtract();
 		this.fontRendererObj.drawString(str, 120 - this.fontRendererObj.getStringWidth(str) / 2, 85, 4210752);
 //		str = ElectricityDisplay.getDisplay(this.tileEntity.getVoltage(), ElectricUnit.VOLTAGE);

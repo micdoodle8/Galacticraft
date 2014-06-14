@@ -8,16 +8,14 @@ import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine;
-import micdoodle8.mods.galacticraft.core.blocks.BlockSolar;
 //import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 
@@ -190,7 +188,7 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 	@Override
 	public String getInventoryName()
 	{
-		return StatCollector.translateToLocal("tile.machine.1.name");
+		return GCCoreUtil.translate("tile.machine.1.name");
 	}
 
 	@Override

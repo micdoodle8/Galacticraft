@@ -3,8 +3,6 @@ package micdoodle8.mods.galacticraft.core.client.gui.container;
 import java.util.ArrayList;
 import java.util.List;
 
-import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay;
-import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay.ElectricUnit;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerRefinery;
@@ -13,10 +11,10 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityRefinery;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
@@ -54,10 +52,11 @@ public class GuiRefinery extends GuiContainerGC
 	{
 		super.initGui();
 		List<String> oilTankDesc = new ArrayList<String>();
-		oilTankDesc.add("The refinery oil tank");
+		oilTankDesc.add(GCCoreUtil.translate("gui.oilTank.desc.0"));
+		oilTankDesc.add(GCCoreUtil.translate("gui.oilTank.desc.1"));
 		int oilLevel = this.tileEntity.oilTank != null && this.tileEntity.oilTank.getFluid() != null ? this.tileEntity.oilTank.getFluid().amount : 0;
 		int oilCapacity = this.tileEntity.oilTank != null ? this.tileEntity.oilTank.getCapacity() : 0;
-		oilTankDesc.add(EnumColor.YELLOW + "Oil: " + oilLevel + " / " + oilCapacity);
+		oilTankDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.message.oil.name") + ": " + oilLevel + " / " + oilCapacity);
 		this.oilTankRegion.tooltipStrings = oilTankDesc;
 		this.oilTankRegion.xPosition = (this.width - this.xSize) / 2 + 7;
 		this.oilTankRegion.yPosition = (this.height - this.ySize) / 2 + 28;
@@ -65,39 +64,35 @@ public class GuiRefinery extends GuiContainerGC
 		this.oilTankRegion.parentHeight = this.height;
 		this.infoRegions.add(this.oilTankRegion);
 		List<String> batterySlotDesc = new ArrayList<String>();
-		batterySlotDesc.add("Refinery battery slot, place battery here");
-		batterySlotDesc.add("if not using a connected power source");
+		batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.0"));
+		batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.1"));
 		this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 49, (this.height - this.ySize) / 2 + 50, 18, 18, batterySlotDesc, this.width, this.height));
 		List<String> fuelTankDesc = new ArrayList<String>();
-		fuelTankDesc.add("The refinery fuel tank");
+		fuelTankDesc.add(GCCoreUtil.translate("gui.fuelTank.desc.4"));
 		int fuelLevel = this.tileEntity.fuelTank != null && this.tileEntity.fuelTank.getFluid() != null ? this.tileEntity.fuelTank.getFluid().amount : 0;
 		int fuelCapacity = this.tileEntity.fuelTank != null ? this.tileEntity.fuelTank.getCapacity() : 0;
-		fuelTankDesc.add(EnumColor.YELLOW + "Fuel: " + fuelLevel + " / " + fuelCapacity);
+		fuelTankDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.message.fuel.name") + ": " + fuelLevel + " / " + fuelCapacity);
 		this.fuelTankRegion.tooltipStrings = fuelTankDesc;
 		this.fuelTankRegion.xPosition = (this.width - this.xSize) / 2 + 153;
 		this.fuelTankRegion.yPosition = (this.height - this.ySize) / 2 + 28;
 		this.fuelTankRegion.parentWidth = this.width;
 		this.fuelTankRegion.parentHeight = this.height;
 		this.infoRegions.add(this.fuelTankRegion);
-		List<String> oilSlotDesc = new ArrayList<String>();
-		oilSlotDesc.add("Refinery oil input. Place oil canisters" + (CompatibilityManager.isBCraftLoaded() ? " or oil buckets" : ""));
-		oilSlotDesc.add("into this slot to load it into the oil tank.");
-		this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 6, (this.height - this.ySize) / 2 + 6, 18, 18, oilSlotDesc, this.width, this.height));
 		List<String> fuelSlotDesc = new ArrayList<String>();
-		fuelSlotDesc.add("Refinery fuel output. Place empty liquid");
-		fuelSlotDesc.add("canisters into this slot to fill them");
-		fuelSlotDesc.add("from the fuel tank.");
+		fuelSlotDesc.add(GCCoreUtil.translate("gui.fuelOutput.desc.0"));
+		fuelSlotDesc.add(GCCoreUtil.translate("gui.fuelOutput.desc.1"));
+		fuelSlotDesc.add(GCCoreUtil.translate("gui.fuelOutput.desc.2"));
 		this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 152, (this.height - this.ySize) / 2 + 6, 18, 18, fuelSlotDesc, this.width, this.height));
 		List<String> electricityDesc = new ArrayList<String>();
-		electricityDesc.add("Electrical Storage");
-		electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.tileEntity.getEnergyStoredGC()) + " / " + (int) Math.floor(this.tileEntity.getMaxEnergyStoredGC())));
+		electricityDesc.add(GCCoreUtil.translate("gui.energyStorage.desc.0"));
+		electricityDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.energyStorage.desc.1") + ((int) Math.floor(this.tileEntity.getEnergyStoredGC()) + " / " + (int) Math.floor(this.tileEntity.getMaxEnergyStoredGC())));
 		this.electricInfoRegion.tooltipStrings = electricityDesc;
 		this.electricInfoRegion.xPosition = (this.width - this.xSize) / 2 + 62;
 		this.electricInfoRegion.yPosition = (this.height - this.ySize) / 2 + 16;
 		this.electricInfoRegion.parentWidth = this.width;
 		this.electricInfoRegion.parentHeight = this.height;
 		this.infoRegions.add(this.electricInfoRegion);
-		this.buttonList.add(this.buttonDisable = new GuiButton(0, this.width / 2 - 39, this.height / 2 - 56, 76, 20, StatCollector.translateToLocal("gui.button.refine.name")));
+		this.buttonList.add(this.buttonDisable = new GuiButton(0, this.width / 2 - 39, this.height / 2 - 56, 76, 20, GCCoreUtil.translate("gui.button.refine.name")));
 	}
 
 	@Override
@@ -120,27 +115,27 @@ public class GuiRefinery extends GuiContainerGC
 
 		if (this.tileEntity.oilTank.getFluid() == null || this.tileEntity.oilTank.getFluidAmount() == 0)
 		{
-			displayText = EnumColor.RED + StatCollector.translateToLocal("gui.status.nooil.name");
+			displayText = EnumColor.RED + GCCoreUtil.translate("gui.status.nooil.name");
 		}
 		else if (this.tileEntity.oilTank.getFluidAmount() > 0 && this.tileEntity.disabled)
 		{
-			displayText = EnumColor.ORANGE + StatCollector.translateToLocal("gui.status.ready.name");
+			displayText = EnumColor.ORANGE + GCCoreUtil.translate("gui.status.ready.name");
 		}
 		else if (this.tileEntity.canProcess())
 		{
-			displayText = EnumColor.BRIGHT_GREEN + StatCollector.translateToLocal("gui.status.refining.name");
+			displayText = EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.refining.name");
 		}
 		else
 		{
-			displayText = EnumColor.RED + StatCollector.translateToLocal("gui.status.unknown.name");
+			displayText = EnumColor.RED + GCCoreUtil.translate("gui.status.unknown.name");
 		}
 
 		this.buttonDisable.enabled = this.tileEntity.disableCooldown == 0;
-		this.buttonDisable.displayString = this.tileEntity.processTicks == 0 ? StatCollector.translateToLocal("gui.button.refine.name") : StatCollector.translateToLocal("gui.button.stoprefine.name");
-		this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.message.status.name") + ": " + displayText, 72, 45 + 23 + yOffset, 4210752);
+		this.buttonDisable.displayString = this.tileEntity.processTicks == 0 ? GCCoreUtil.translate("gui.button.refine.name") : GCCoreUtil.translate("gui.button.stoprefine.name");
+		this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.status.name") + ": " + displayText, 72, 45 + 23 + yOffset, 4210752);
 //		this.fontRendererObj.drawString(ElectricityDisplay.getDisplay(this.tileEntity.ueWattsPerTick * 20, ElectricUnit.WATT), 72, 56 + 23 + yOffset, 4210752);
 //		this.fontRendererObj.drawString(ElectricityDisplay.getDisplay(this.tileEntity.getVoltage(), ElectricUnit.VOLTAGE), 72, 68 + 23 + yOffset, 4210752);
-		this.fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 118 + 2 + 23, 4210752);
+		this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 118 + 2 + 23, 4210752);
 	}
 
 	@Override
@@ -160,22 +155,23 @@ public class GuiRefinery extends GuiContainerGC
 		this.drawTexturedModalRect((this.width - this.xSize) / 2 + 153, (this.height - this.ySize) / 2 + 17 + 49 - displayInt, 176 + 16, 38 - displayInt, 16, displayInt);
 
 		List<String> oilTankDesc = new ArrayList<String>();
-		oilTankDesc.add("The refinery oil tank");
+		oilTankDesc.add(GCCoreUtil.translate("gui.oilTank.desc.0"));
+		oilTankDesc.add(GCCoreUtil.translate("gui.oilTank.desc.1"));
 		int oilLevel = this.tileEntity.oilTank != null && this.tileEntity.oilTank.getFluid() != null ? this.tileEntity.oilTank.getFluid().amount : 0;
 		int oilCapacity = this.tileEntity.oilTank != null ? this.tileEntity.oilTank.getCapacity() : 0;
-		oilTankDesc.add(EnumColor.YELLOW + "Oil: " + oilLevel + " / " + oilCapacity);
+		oilTankDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.message.oil.name") + ": " + oilLevel + " / " + oilCapacity);
 		this.oilTankRegion.tooltipStrings = oilTankDesc;
 
 		List<String> fuelTankDesc = new ArrayList<String>();
-		fuelTankDesc.add("The refinery fuel tank");
+		fuelTankDesc.add(GCCoreUtil.translate("gui.fuelTank.desc.4"));
 		int fuelLevel = this.tileEntity.fuelTank != null && this.tileEntity.fuelTank.getFluid() != null ? this.tileEntity.fuelTank.getFluid().amount : 0;
 		int fuelCapacity = this.tileEntity.fuelTank != null ? this.tileEntity.fuelTank.getCapacity() : 0;
-		fuelTankDesc.add(EnumColor.YELLOW + "Fuel: " + fuelLevel + " / " + fuelCapacity);
+		fuelTankDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.message.fuel.name") + ": " + fuelLevel + " / " + fuelCapacity);
 		this.fuelTankRegion.tooltipStrings = fuelTankDesc;
 
 		List<String> electricityDesc = new ArrayList<String>();
-		electricityDesc.add("Electrical Storage");
-		electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.tileEntity.getEnergyStoredGC()) + " / " + (int) Math.floor(this.tileEntity.getMaxEnergyStoredGC())));
+		electricityDesc.add(GCCoreUtil.translate("gui.energyStorage.desc.0"));
+		electricityDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.energyStorage.desc.1") + ((int) Math.floor(this.tileEntity.getEnergyStoredGC()) + " / " + (int) Math.floor(this.tileEntity.getMaxEnergyStoredGC())));
 		this.electricInfoRegion.tooltipStrings = electricityDesc;
 
 		if (this.tileEntity.getEnergyStoredGC() > 0)

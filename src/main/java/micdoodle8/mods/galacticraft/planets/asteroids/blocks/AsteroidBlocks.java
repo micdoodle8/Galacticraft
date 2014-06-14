@@ -1,8 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockGC;
-import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemBlockAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemBlockShortRangeTelepad;
 import net.minecraft.block.Block;

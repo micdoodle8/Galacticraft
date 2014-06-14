@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
-import java.util.Arrays;
-
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityParaChest;
