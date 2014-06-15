@@ -830,7 +830,7 @@ public class GuiChoosePlanet extends GuiScreen
 		}
 	}
 
-	private int getDimensionIdFromSlot()
+	public int getDimensionIdFromSlot()
 	{
 		String dimension = this.destinations[this.selectedSlot];
 		dimension = dimension.replace("*", "");

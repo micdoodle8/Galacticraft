@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.api.event.client.GCCoreEventChoosePlanetGui.
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiSlot;
 import net.minecraft.client.renderer.Tessellator;
@@ -57,7 +58,7 @@ public class GuiChoosePlanetSlot extends GuiSlot
 		GuiChoosePlanet.getSendButton(this.choosePlanetGui).enabled = this.choosePlanetGui.isValidDestination(this.choosePlanetGui.selectedSlot);
 
 		GuiChoosePlanet.getCreateSpaceStationButton(this.choosePlanetGui).displayString = GCCoreUtil.translate("gui.button.createsstation.name");
-		GuiChoosePlanet.getCreateSpaceStationButton(this.choosePlanetGui).enabled = this.choosePlanetGui.canCreateSpaceStation();
+		GuiChoosePlanet.getCreateSpaceStationButton(this.choosePlanetGui).enabled = this.choosePlanetGui.canCreateSpaceStation() && WorldUtil.getSpaceStationRecipe(this.choosePlanetGui.getDimensionIdFromSlot()) != null;;
 	}
 
 	@Override
