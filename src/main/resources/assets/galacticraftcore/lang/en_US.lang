@@ -434,6 +434,8 @@ gui.spaceRace.join.memberCount.name=%d members
 dimension.Overworld.name=Overworld
 dimension.Moon.name=Moon
 dimension.Sun.name=Sun
+planet.overworld=Overworld
+moon.moon=Moon
 
 # COMMANDS
 commands.dimensionteleport=%s was sent into the atmosphere%s

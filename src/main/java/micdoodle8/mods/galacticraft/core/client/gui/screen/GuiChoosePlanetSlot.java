@@ -83,12 +83,12 @@ public class GuiChoosePlanetSlot extends GuiSlot
 		GL11.glDisable(GL11.GL_ALPHA_TEST);
 		GuiChoosePlanet.getDestinations(this.choosePlanetGui)[var1].toLowerCase();
 
+		ArrayList<CelestialBody> cBodyList = new ArrayList<CelestialBody>();
+		cBodyList.addAll(GalaxyRegistry.getRegisteredPlanets().values());
+		cBodyList.addAll(GalaxyRegistry.getRegisteredMoons().values());
+		
 		if (this.isSelected(var1))
 		{
-			ArrayList<CelestialBody> cBodyList = new ArrayList<CelestialBody>();
-			cBodyList.addAll(GalaxyRegistry.getRegisteredPlanets().values());
-			cBodyList.addAll(GalaxyRegistry.getRegisteredMoons().values());
-
 			for (CelestialBody celestialBody : cBodyList)
 			{
 				if (celestialBody != null)
@@ -145,7 +145,16 @@ public class GuiChoosePlanetSlot extends GuiSlot
 				}
 				else
 				{
-					str = GCCoreUtil.translate("dimension." + str + ".name");
+					for (CelestialBody celestialBody : cBodyList)
+					{
+						if (celestialBody != null)
+						{
+							if (celestialBody.getName().equalsIgnoreCase(str))
+							{
+								str = celestialBody.getLocalizedName();
+							}
+						}
+					}
 				}
 
 				this.choosePlanetGui.drawCenteredString(GuiChoosePlanet.getFontRenderer(this.choosePlanetGui), str, this.choosePlanetGui.width / 2, var3 + 3, 0xEEEEEE);
@@ -179,7 +188,16 @@ public class GuiChoosePlanetSlot extends GuiSlot
 				}
 				else
 				{
-					str = GCCoreUtil.translate("dimension." + str + ".name");
+					for (CelestialBody celestialBody : cBodyList)
+					{
+						if (celestialBody != null)
+						{
+							if (celestialBody.getName().equalsIgnoreCase(str))
+							{
+								str = celestialBody.getLocalizedName();
+							}
+						}
+					}
 				}
 
 				this.choosePlanetGui.drawCenteredString(GuiChoosePlanet.getFontRenderer(this.choosePlanetGui), str, this.choosePlanetGui.width / 2, var3 + 3, 0xEEEEEE);
