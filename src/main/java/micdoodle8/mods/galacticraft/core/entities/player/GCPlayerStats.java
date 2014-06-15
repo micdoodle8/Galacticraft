@@ -32,7 +32,7 @@ public class GCPlayerStats implements IExtendedEntityProperties
 
 	// temporary data while player is in planet selection GUI
 	public int spaceshipTier = 1;
-	public ItemStack[] rocketStacks = new ItemStack[9];
+	public ItemStack[] rocketStacks = new ItemStack[2];
 	public int rocketType;
 	public int fuelLevel;
 	public Item rocketItem;
