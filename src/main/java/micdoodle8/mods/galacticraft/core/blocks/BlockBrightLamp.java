@@ -16,12 +16,15 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockBrightLamp extends BlockAdvanced
 {
 	public static IIcon icon;
 
+	//Metadata: bits 0-2 are the side of the base plate using standard side convention (0-5)
+	//			bits 4-5 are the orientation (which will be relative to that side)
+	//			      default orientation 0 = facing down  (if side > 1)
+	
 	protected BlockBrightLamp(String assetName)
 	{
 		super(Material.glass);
@@ -32,11 +35,6 @@ public class BlockBrightLamp extends BlockAdvanced
 		this.setLightLevel(1.0F);
 	}
 	
-	private static boolean isBlockSolidOnSide(World world, int x, int y, int z, ForgeDirection direction, boolean nope)
-	{
-		return world.getBlock(x, y, z).isSideSolid(world, x, y, z, direction);
-	}
-
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int x, int y, int z)
 	{
@@ -64,38 +62,23 @@ public class BlockBrightLamp extends BlockAdvanced
 	@Override
 	public boolean canPlaceBlockAt(World par1World, int x, int y, int z)
 	{
-		return isBlockSolidOnSide(par1World, x - 1, y, z, ForgeDirection.EAST, true) 
-				|| isBlockSolidOnSide(par1World, x + 1, y, z, ForgeDirection.WEST, true) 
-				|| isBlockSolidOnSide(par1World, x, y, z - 1, ForgeDirection.SOUTH, true) 
-				|| isBlockSolidOnSide(par1World, x, y, z + 1, ForgeDirection.NORTH, true); 
+		BlockVec3 thisvec = new BlockVec3(x, y, z);
+		for (int i = 0; i < 6; i++)
+		{
+			if (thisvec.blockOnSideHasSolidFace(par1World, i)) return true;
+		}
+		return false;
 	}
 
 	@Override
-	public int onBlockPlaced(World par1World, int x, int y, int z, int par5, float par6, float par7, float par8, int par9)
+	public int onBlockPlaced(World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metaOld)
 	{
-		int var10 = par9;
-
-		if (par5 == 2 && isBlockSolidOnSide(par1World, x, y, z + 1, ForgeDirection.NORTH, true))
-		{
-			var10 = 4;
-		}
-
-		if (par5 == 3 && isBlockSolidOnSide(par1World, x, y, z - 1, ForgeDirection.SOUTH, true))
-		{
-			var10 = 3;
-		}
-
-		if (par5 == 4 && isBlockSolidOnSide(par1World, x + 1, y, z, ForgeDirection.WEST, true))
-		{
-			var10 = 2;
-		}
-
-		if (par5 == 5 && isBlockSolidOnSide(par1World, x - 1, y, z, ForgeDirection.EAST, true))
-		{
-			var10 = 1;
-		}
-
-		return 0;
+		BlockVec3 thisvec = new BlockVec3(x, y, z);
+		
+		if (thisvec.blockOnSideHasSolidFace(world, side ^ 1))
+			return side ^ 1;
+	
+		return metaOld;
 	}
 
 	@Override
@@ -112,50 +95,6 @@ public class BlockBrightLamp extends BlockAdvanced
 	@Override
 	public void onBlockAdded(World par1World, int x, int y, int z)
 	{
-		int metadata = par1World.getBlockMetadata(x, y, z); 
-		
-		if (metadata == 0)
-		{
-			if (isBlockSolidOnSide(par1World, x - 1, y, z, ForgeDirection.EAST, true))
-			{
-				metadata = 1;
-				par1World.setBlockMetadataWithNotify(x, y, z, metadata, 3);
-			}
-			else if (isBlockSolidOnSide(par1World, x + 1, y, z, ForgeDirection.WEST, true))
-			{
-				metadata = 2;
-				par1World.setBlockMetadataWithNotify(x, y, z, metadata, 3);
-			}
-			else if (isBlockSolidOnSide(par1World, x, y, z - 1, ForgeDirection.SOUTH, true))
-			{
-				metadata = 3;
-				par1World.setBlockMetadataWithNotify(x, y, z, metadata, 3);
-			}
-			else if (isBlockSolidOnSide(par1World, x, y, z + 1, ForgeDirection.NORTH, true))
-			{
-				metadata = 4;
-				par1World.setBlockMetadataWithNotify(x, y, z, metadata, 3);
-			}
-		}
-
-		BlockVec3 baseBlock;
-		switch (metadata) {
-		case 1:
-			baseBlock = new BlockVec3(x - 1, y, z);
-			break;
-		case 2:
-			baseBlock = new BlockVec3(x + 1, y, z);
-			break;
-		case 3:
-			baseBlock = new BlockVec3(x, y, z - 1);
-			break;
-		case 4:
-			baseBlock = new BlockVec3(x, y, z + 1);
-			break;
-		default:
-			this.dropTorchIfCantStay(par1World, x, y, z);
-			return;
-		}
 	}
 
 	/**
@@ -166,60 +105,15 @@ public class BlockBrightLamp extends BlockAdvanced
 	@Override
 	public void onNeighborBlockChange(World par1World, int x, int y, int z, Block par5)
 	{
-		if (this.dropTorchIfCantStay(par1World, x, y, z))
-		{
-			final int var6 = par1World.getBlockMetadata(x, y, z);
-			boolean var7 = false;
+		final int side = par1World.getBlockMetadata(x, y, z) & 15;
 
-			if (!isBlockSolidOnSide(par1World, x - 1, y, z, ForgeDirection.EAST, true) && var6 == 1)
-			{
-				var7 = true;
-			}
-
-			if (!isBlockSolidOnSide(par1World, x + 1, y, z, ForgeDirection.WEST, true) && var6 == 2)
-			{
-				var7 = true;
-			}
-
-			if (!isBlockSolidOnSide(par1World, x, y, z - 1, ForgeDirection.SOUTH, true) && var6 == 3)
-			{
-				var7 = true;
-			}
-
-			if (!isBlockSolidOnSide(par1World, x, y, z + 1, ForgeDirection.NORTH, true) && var6 == 4)
-			{
-				var7 = true;
-			}
-
-			if (var7)
-			{
-				this.dropBlockAsItem(par1World, x, y, z, par1World.getBlockMetadata(x, y, z), 0);
-				par1World.setBlock(x, y, z, Blocks.air);
-			}
-		}
-	}
-
-	/**
-	 * Tests if the block can remain at its current location and will drop as an
-	 * item if it is unable to stay. Returns True if it can stay and False if it
-	 * drops. Args: world, x, y, z
-	 */
-	private boolean dropTorchIfCantStay(World par1World, int x, int y, int z)
-	{
-		if (!this.canPlaceBlockAt(par1World, x, y, z))
-		{
-			if (par1World.getBlock(x, y, z) == this)
-			{
-				this.dropBlockAsItem(par1World, x, y, z, par1World.getBlockMetadata(x, y, z), 0);
-				par1World.setBlock(x, y, z, Blocks.air);
-			}
-
-			return false;
-		}
-		else
-		{
-			return true;
-		}
+		BlockVec3 thisvec = new BlockVec3(x, y, z);
+		
+		if (thisvec.blockOnSideHasSolidFace(par1World, side))
+			return;
+	
+		this.dropBlockAsItem(par1World, x, y, z, 0, 0);
+		par1World.setBlock(x, y, z, Blocks.air);
 	}
 
 	/**
@@ -260,12 +154,16 @@ public class BlockBrightLamp extends BlockAdvanced
 	@Override
 	public boolean onUseWrench(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ)
 	{
-		//TODO - make sure throughout that Metadata bits 0,1 govern placement (side), bit 3 orientation
 		final int metadata = world.getBlockMetadata(x, y, z);
-		final int facing = metadata & 8;
-		final int change = facing ^ 8;
+		final int metaside = metadata & 15;
+		int facing = (metadata >> 4) - 2;
+		if (facing < 0) facing = 1 - facing;
+		if (facing > 3) facing = 0;
+		//facing sequence: 0 - 3 - 1 - 2
 
-		world.setBlockMetadataWithNotify(x, y, z, change, 3);
+		world.setBlockMetadataWithNotify(x, y, z, metaside + (facing << 4), 3);
+		TileEntity tile = world.getTileEntity(x, y, z);
+		if (tile instanceof TileEntityArclamp) ((TileEntityArclamp)tile).facingChanged();
 		return true;
 	}
 

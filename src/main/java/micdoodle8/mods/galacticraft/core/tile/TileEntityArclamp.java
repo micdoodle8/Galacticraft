@@ -24,6 +24,7 @@ public class TileEntityArclamp extends TileEntity
 {
 	private int ticks = 0;
 	private int sideRear = 0;
+	private int facing = 0;
 	private HashSet<BlockVec3> airToRestore = new HashSet();
 	private boolean isActive = false;
 	private AxisAlignedBB thisAABB;
@@ -33,37 +34,58 @@ public class TileEntityArclamp extends TileEntity
 	public void updateEntity()
 	{
 		super.updateEntity();
+		
+		boolean firstTick = false;
 
 		if (!this.worldObj.isRemote && this.isActive)
 		{
 			if (this.thisAABB == null)
 			{
-				int meta = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
-				switch (meta)
+				firstTick = true;
+				int side = this.getBlockMetadata();
+				int metaFacing = side >> 4;
+				side = side & 15;
+				switch (side)
 				{
+				case 0:
+					this.sideRear = side; //Down
+					this.facing = metaFacing + 2;
+					this.thisAABB = AxisAlignedBB.getBoundingBox(this.xCoord - 20, this.yCoord - 8, this.zCoord - 20, this.xCoord + 20, this.yCoord + 20, this.zCoord + 20);
+					break;
 				case 1:
-					this.sideRear = 4; //West
-					this.thisAABB = AxisAlignedBB.getBoundingBox(this.xCoord - 8, this.yCoord - 20, this.zCoord - 20, this.xCoord + 20, this.yCoord + 20, this.zCoord + 20);
+					this.sideRear = side; //Up
+					this.facing = metaFacing + 2;
+					this.thisAABB = AxisAlignedBB.getBoundingBox(this.xCoord - 20, this.yCoord - 20, this.zCoord - 20, this.xCoord + 20, this.yCoord + 8, this.zCoord + 20);
 					break;
 				case 2:
-					this.sideRear = 5; //East
-					this.thisAABB = AxisAlignedBB.getBoundingBox(this.xCoord - 20, this.yCoord - 20, this.zCoord - 20, this.xCoord + 8, this.yCoord + 20, this.zCoord + 20);
-					break;
-				case 3:
-					this.sideRear = 2; //North
+					this.sideRear = side; //North
+					this.facing = metaFacing;
+					if (metaFacing > 1) this.facing= 7 - metaFacing;
 					this.thisAABB = AxisAlignedBB.getBoundingBox(this.xCoord - 20, this.yCoord - 20, this.zCoord - 8, this.xCoord + 20, this.yCoord + 20, this.zCoord + 20);
 					break;
-				case 4:
-					this.sideRear = 3; //South
+				case 3:
+					this.sideRear = side; //South
+					this.facing = metaFacing;
+					if (metaFacing > 1) this.facing+=2;
 					this.thisAABB = AxisAlignedBB.getBoundingBox(this.xCoord - 20, this.yCoord - 20, this.zCoord - 20, this.xCoord + 20, this.yCoord + 20, this.zCoord + 8);
 					break;
+				case 4:
+					this.sideRear = side; //West
+					this.facing = metaFacing;
+					this.thisAABB = AxisAlignedBB.getBoundingBox(this.xCoord - 8, this.yCoord - 20, this.zCoord - 20, this.xCoord + 20, this.yCoord + 20, this.zCoord + 20);
+					break;
+				case 5:
+					this.sideRear = side; //East
+					this.facing = metaFacing;
+					if (metaFacing > 1) this.facing= 5 - metaFacing;
+					this.thisAABB = AxisAlignedBB.getBoundingBox(this.xCoord - 20, this.yCoord - 20, this.zCoord - 20, this.xCoord + 8, this.yCoord + 20, this.zCoord + 20);
+					break;
 				default:
-					this.sideRear = 0; //Down
-					this.thisAABB = AxisAlignedBB.getBoundingBox(this.xCoord - 20, this.yCoord - 8, this.zCoord - 20, this.xCoord + 20, this.yCoord + 20, this.zCoord + 20);
+					return;						
 				}
 			}
 			
-			if (this.ticks % 100 == 0)
+			if (firstTick || this.ticks % 100 == 0)
 			{
 				this.lightArea();
 			}
@@ -140,12 +162,21 @@ public class TileEntityArclamp extends TileEntity
 		LinkedList<BlockVec3> currentLayer = new LinkedList();
 		LinkedList<BlockVec3> nextLayer = new LinkedList();
 		BlockVec3 thisvec = new BlockVec3(this);
-		for (int side = 0; side < 6; side++) thisvec.sideDone[side]= true;
-		thisvec.sideDone[sideRear ^ 1] = false;
 		currentLayer.add(thisvec);
 		World world = this.worldObj;
+		int sideskip1 = this.sideRear;
+		int sideskip2 = this.facing ^ 1;
+		for (int i = 0; i < 6; i++)
+		{
+			if (i!=sideskip1 && i!=sideskip2 && i!=(sideskip1 ^ 1) && i!=(sideskip2 ^ 1))
+			{	
+				BlockVec3 onEitherSide = thisvec.newVecSide(i); 
+				if (onEitherSide.getBlockIDsafe_noChunkLoad(world).getLightOpacity() < 15)
+					currentLayer.add(onEitherSide);		
+			}
+		}
 
-		for (int count = 0; count < 11; count ++)
+		for (int count = 0; count < 14; count ++)
 		{
 			int side;
 			for (BlockVec3 vec : currentLayer)
@@ -155,7 +186,7 @@ public class TileEntityArclamp extends TileEntity
 				{
 					//Skip the side which this was entered from
 					//and never go 'backwards'
-					if (side != this.sideRear && !vec.sideDone[side])
+					if (side != sideskip1 && side != sideskip2 && !vec.sideDone[side])
 					{
 						BlockVec3 sideVec = vec.newVecSide(side);
 
@@ -221,4 +252,18 @@ public class TileEntityArclamp extends TileEntity
 		nbt.setTag("AirBlocks", airBlocks);
     }
     
+	public void facingChanged()
+	{
+		if (!this.worldObj.isRemote)
+		{
+			this.thisAABB = null;
+			Block brightAir = GCBlocks.brightAir;
+			for (BlockVec3 vec : this.airToRestore)
+			{
+				if (vec.getBlock(this.worldObj) == brightAir)
+					vec.setBlock(this.worldObj, Blocks.air);
+			}
+			this.airToRestore.clear();
+		}
+	}
 }
