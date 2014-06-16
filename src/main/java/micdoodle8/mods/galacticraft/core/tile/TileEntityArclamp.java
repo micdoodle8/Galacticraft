@@ -24,11 +24,12 @@ public class TileEntityArclamp extends TileEntity
 {
 	private int ticks = 0;
 	private int sideRear = 0;
-	private int facing = 0;
+	public int facing = 0;
 	private HashSet<BlockVec3> airToRestore = new HashSet();
 	private boolean isActive = false;
 	private AxisAlignedBB thisAABB;
 	private Vec3 thisPos;
+	private int facingSide = 0;
 	
 	@Override
 	public void updateEntity()
@@ -43,41 +44,39 @@ public class TileEntityArclamp extends TileEntity
 			{
 				firstTick = true;
 				int side = this.getBlockMetadata();
-				int metaFacing = side >> 4;
-				side = side & 15;
 				switch (side)
 				{
 				case 0:
 					this.sideRear = side; //Down
-					this.facing = metaFacing + 2;
+					this.facingSide = this.facing + 2;
 					this.thisAABB = AxisAlignedBB.getBoundingBox(this.xCoord - 20, this.yCoord - 8, this.zCoord - 20, this.xCoord + 20, this.yCoord + 20, this.zCoord + 20);
 					break;
 				case 1:
 					this.sideRear = side; //Up
-					this.facing = metaFacing + 2;
+					this.facingSide = this.facing + 2;
 					this.thisAABB = AxisAlignedBB.getBoundingBox(this.xCoord - 20, this.yCoord - 20, this.zCoord - 20, this.xCoord + 20, this.yCoord + 8, this.zCoord + 20);
 					break;
 				case 2:
 					this.sideRear = side; //North
-					this.facing = metaFacing;
-					if (metaFacing > 1) this.facing= 7 - metaFacing;
+					this.facingSide = this.facing;
+					if (this.facing > 1) this.facingSide= 7 - this.facing;
 					this.thisAABB = AxisAlignedBB.getBoundingBox(this.xCoord - 20, this.yCoord - 20, this.zCoord - 8, this.xCoord + 20, this.yCoord + 20, this.zCoord + 20);
 					break;
 				case 3:
 					this.sideRear = side; //South
-					this.facing = metaFacing;
-					if (metaFacing > 1) this.facing+=2;
+					this.facingSide = this.facing;
+					if (this.facing > 1) this.facingSide+=2;
 					this.thisAABB = AxisAlignedBB.getBoundingBox(this.xCoord - 20, this.yCoord - 20, this.zCoord - 20, this.xCoord + 20, this.yCoord + 20, this.zCoord + 8);
 					break;
 				case 4:
 					this.sideRear = side; //West
-					this.facing = metaFacing;
+					this.facingSide = this.facing;
 					this.thisAABB = AxisAlignedBB.getBoundingBox(this.xCoord - 8, this.yCoord - 20, this.zCoord - 20, this.xCoord + 20, this.yCoord + 20, this.zCoord + 20);
 					break;
 				case 5:
 					this.sideRear = side; //East
-					this.facing = metaFacing;
-					if (metaFacing > 1) this.facing= 5 - metaFacing;
+					this.facingSide = this.facing;
+					if (this.facing > 1) this.facingSide= 5 - this.facing;
 					this.thisAABB = AxisAlignedBB.getBoundingBox(this.xCoord - 20, this.yCoord - 20, this.zCoord - 20, this.xCoord + 8, this.yCoord + 20, this.zCoord + 20);
 					break;
 				default:
@@ -165,18 +164,30 @@ public class TileEntityArclamp extends TileEntity
 		currentLayer.add(thisvec);
 		World world = this.worldObj;
 		int sideskip1 = this.sideRear;
-		int sideskip2 = this.facing ^ 1;
+		int sideskip2 = this.facingSide ^ 1;
 		for (int i = 0; i < 6; i++)
 		{
 			if (i!=sideskip1 && i!=sideskip2 && i!=(sideskip1 ^ 1) && i!=(sideskip2 ^ 1))
 			{	
 				BlockVec3 onEitherSide = thisvec.newVecSide(i); 
 				if (onEitherSide.getBlockIDsafe_noChunkLoad(world).getLightOpacity() < 15)
-					currentLayer.add(onEitherSide);		
+				{
+					currentLayer.add(onEitherSide);
+				}
+			}
+		}
+		BlockVec3 inFront = new BlockVec3(this);
+		System.out.println("Arclamp: facing = "+facingSide+" other = "+(sideskip1 ^ 1));
+		for (int i = 0; i< 5; i++)
+		{
+			inFront = inFront.newVecSide(this.facingSide).newVecSide(sideskip1 ^ 1);
+			if (inFront.getBlockIDsafe_noChunkLoad(world).getLightOpacity() < 15)
+			{
+				currentLayer.add(inFront);
 			}
 		}
 
-		for (int count = 0; count < 14; count ++)
+		for (int count = 0; count < 13; count ++)
 		{
 			int side;
 			for (BlockVec3 vec : currentLayer)
@@ -200,7 +211,7 @@ public class TileEntityArclamp extends TileEntity
 								nextLayer.add(sideVec);
 								if (b == air)
 								{	
-									sideVec.setBlock(world, brightAir);
+									world.setBlock(sideVec.x, sideVec.y, sideVec.z, brightAir, 0, 2);
 									this.airToRestore.add(sideVec);
 								}
 								//if (id == breatheableAirID)						
@@ -220,6 +231,8 @@ public class TileEntityArclamp extends TileEntity
     public void readFromNBT(NBTTagCompound nbt)
     {
 		super.readFromNBT(nbt);
+		
+		this.facing = nbt.getInteger("Facing");
 		
 		this.airToRestore.clear();
 		NBTTagList airBlocks = nbt.getTagList("AirBlocks", 10);
@@ -241,6 +254,8 @@ public class TileEntityArclamp extends TileEntity
     {
 		super.writeToNBT(nbt);
 		
+		nbt.setInteger("Facing", this.facing);
+		
 		NBTTagList airBlocks = new NBTTagList();
 
 		for (BlockVec3 vec : this.airToRestore)
@@ -254,6 +269,10 @@ public class TileEntityArclamp extends TileEntity
     
 	public void facingChanged()
 	{
+		this.facing -= 2;
+		if (this.facing < 0) this.facing = 1 - this.facing;
+		//facing sequence: 0 - 3 - 1 - 2
+
 		if (!this.worldObj.isRemote)
 		{
 			this.thisAABB = null;
