@@ -7,6 +7,7 @@ import java.util.List;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockAir;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.ai.RandomPositionGenerator;
@@ -187,17 +188,18 @@ public class TileEntityArclamp extends TileEntity
 			}
 		}
 
-		for (int count = 0; count < 13; count ++)
+		for (int count = 0; count < 14; count ++)
 		{
 			int side;
 			for (BlockVec3 vec : currentLayer)
 			{
 				side = 0;
+				boolean allAir = true;
 				do
 				{
 					//Skip the side which this was entered from
 					//and never go 'backwards'
-					if (side != sideskip1 && side != sideskip2 && !vec.sideDone[side])
+					if (!vec.sideDone[side])
 					{
 						BlockVec3 sideVec = vec.newVecSide(side);
 
@@ -206,20 +208,31 @@ public class TileEntityArclamp extends TileEntity
 							checked.add(sideVec);
 
 							Block b = sideVec.getBlockIDsafe_noChunkLoad(world);
-							if (b.getLightOpacity(world, sideVec.x, sideVec.y, sideVec.z) == 0)
+							if (b instanceof BlockAir)
 							{
-								nextLayer.add(sideVec);
-								if (b == air)
-								{	
-									world.setBlock(sideVec.x, sideVec.y, sideVec.z, brightAir, 0, 2);
-									this.airToRestore.add(sideVec);
-								}
-								//if (id == breatheableAirID)						
+								if (side != sideskip1 && side != sideskip2) nextLayer.add(sideVec);
+							}
+							else
+							{	
+								allAir = false;
+								if (b.getLightOpacity(world, sideVec.x, sideVec.y, sideVec.z) == 0)
+									if (side != sideskip1 && side != sideskip2) nextLayer.add(sideVec);	
 							}
 						}
 					}
 					side++;
 				} while (side < 6);
+				
+				if (!allAir) 
+				{	
+					Block id = vec.getBlockIDsafe_noChunkLoad(world);
+					if (id instanceof BlockAir)
+					{
+						//if (id == breatheableAirID)  TODO
+						world.setBlock(vec.x, vec.y, vec.z, brightAir, 0, 2);
+						this.airToRestore.add(vec);
+					}
+				}
 			}
 			currentLayer = nextLayer;
 			nextLayer = new LinkedList<BlockVec3>();
