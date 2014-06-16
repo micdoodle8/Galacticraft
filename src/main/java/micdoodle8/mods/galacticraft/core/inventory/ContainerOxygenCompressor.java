@@ -1,23 +1,16 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
-import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenCompressor;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricBlock;
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricBlock;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenCompressor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-/**
- * GCCoreContainerAirCompressor.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class ContainerOxygenCompressor extends Container
 {
 	private TileEntityElectricBlock tileEntity;

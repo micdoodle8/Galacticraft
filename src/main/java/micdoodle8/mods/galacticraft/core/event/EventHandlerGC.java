@@ -14,6 +14,7 @@ import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.api.event.oxygen.GCCoreOxygenSuffocationEvent;
 import micdoodle8.mods.galacticraft.api.item.IKeyItem;
 import micdoodle8.mods.galacticraft.api.item.IKeyable;
+import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicEvent.FlipPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicEvent.Unlock;
@@ -23,6 +24,7 @@ import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
+import micdoodle8.mods.galacticraft.core.entities.EntityLander;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
@@ -63,15 +65,8 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-/**
- * GCCoreEvents.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class EventHandlerGC
 {
 	@SubscribeEvent
@@ -98,6 +93,17 @@ public class EventHandlerGC
 	@SubscribeEvent
 	public void onEntityFall(LivingFallEvent event)
 	{
+		if (event.entityLiving instanceof EntityPlayer)
+		{
+			EntityPlayer player = (EntityPlayer) event.entityLiving;
+			if (player.ridingEntity instanceof EntityAutoRocket || player.ridingEntity instanceof EntityLander)
+			{
+				event.distance = 0.0F;
+				event.setCanceled(true);
+				return;
+			}
+		}
+		
 		if (event.entityLiving.worldObj.provider instanceof IGalacticraftWorldProvider)
 		{
 			event.distance *= ((IGalacticraftWorldProvider) event.entityLiving.worldObj.provider).getFallDamageModifier();
@@ -326,18 +332,18 @@ public class EventHandlerGC
 	{
 		GCEntityPlayerMP player = (GCEntityPlayerMP) event.player;
 
-		if (!player.getUnlockedSchematics().contains(event.page))
+		if (!player.getPlayerStats().unlockedSchematics.contains(event.page))
 		{
-			player.getUnlockedSchematics().add(event.page);
-			Collections.sort(player.getUnlockedSchematics());
+			player.getPlayerStats().unlockedSchematics.add(event.page);
+			Collections.sort(player.getPlayerStats().unlockedSchematics);
 
 			if (player != null && player.playerNetServerHandler != null)
 			{
-				Integer[] iArray = new Integer[player.getUnlockedSchematics().size()];
+				Integer[] iArray = new Integer[player.getPlayerStats().unlockedSchematics.size()];
 
 				for (int i = 0; i < iArray.length; i++)
 				{
-					ISchematicPage page = player.getUnlockedSchematics().get(i);
+					ISchematicPage page = player.getPlayerStats().unlockedSchematics.get(i);
 					iArray[i] = page == null ? -2 : page.getPageID();
 				}
 
@@ -451,14 +457,14 @@ public class EventHandlerGC
 		{
 			if (!event.entityLiving.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory"))
 			{
-				for (int i = 0; i < ((GCEntityPlayerMP) event.entityLiving).getExtendedInventory().getSizeInventory(); i++)
+				for (int i = 0; i < ((GCEntityPlayerMP) event.entityLiving).getPlayerStats().extendedInventory.getSizeInventory(); i++)
 				{
-					ItemStack stack = ((GCEntityPlayerMP) event.entityLiving).getExtendedInventory().getStackInSlot(i);
+					ItemStack stack = ((GCEntityPlayerMP) event.entityLiving).getPlayerStats().extendedInventory.getStackInSlot(i);
 
 					if (stack != null)
 					{
 						((GCEntityPlayerMP) event.entityLiving).dropPlayerItemWithRandomChoice(stack, true);
-						((GCEntityPlayerMP) event.entityLiving).getExtendedInventory().setInventorySlotContents(i, null);
+						((GCEntityPlayerMP) event.entityLiving).getPlayerStats().extendedInventory.setInventorySlotContents(i, null);
 					}
 				}
 			}

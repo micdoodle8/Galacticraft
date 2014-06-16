@@ -1,30 +1,17 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
-/**
- * GCCoreTileEntitySpaceStationBase.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class TileEntitySpaceStationBase extends TileEntityMulti implements IMultiBlock
 {
 	public String ownerUsername = "bobby";
-
-	public TileEntitySpaceStationBase()
-	{
-		super(GalacticraftCore.CHANNELENTITIES);
-	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound par1NBTTagCompound)

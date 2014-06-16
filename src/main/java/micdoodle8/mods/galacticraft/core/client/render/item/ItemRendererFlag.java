@@ -15,15 +15,8 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
 
-/**
- * GCCoreItemRendererFlag.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class ItemRendererFlag implements IItemRenderer
 {
 	private EntityFlag entityFlagDummy = new EntityFlag(FMLClientHandler.instance().getClient().theWorld);

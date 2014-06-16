@@ -16,15 +16,8 @@ import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
-/**
- * EntityCreeper.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class EntityEvolvedCreeper extends EntityCreeper implements IEntityBreathable
 {
 	int timeSinceIgnited2;

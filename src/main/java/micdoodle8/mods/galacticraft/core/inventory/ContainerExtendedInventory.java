@@ -6,15 +6,8 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-/**
- * GCCoreContainerExtendedInventory.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class ContainerExtendedInventory extends Container
 {
 	public InventoryPlayer inventoryPlayer;
@@ -52,6 +45,11 @@ public class ContainerExtendedInventory extends Container
 		this.addSlotToContainer(new SlotExtendedInventory(extendedInventory, 3, 106 + 19 + 9, 53));
 		this.addSlotToContainer(new SlotExtendedInventory(extendedInventory, 4, 124 + 19, 17));
 		this.addSlotToContainer(new SlotExtendedInventory(extendedInventory, 5, 106 + 1, 17));
+
+		for (i = 0; i < 4; ++i)
+		{
+			this.addSlotToContainer(new SlotExtendedInventory(extendedInventory, 6 + i, 79, 8 + i * 18));
+		}
 	}
 
 	@Override

@@ -4,24 +4,17 @@ import java.util.EnumSet;
 
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
 import micdoodle8.mods.galacticraft.core.items.ItemOxygenTank;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
-/**
- * GCCoreTileEntityOxygenCompressor.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInventory, ISidedInventory
 {
 	private ItemStack[] containingItems = new ItemStack[2];
@@ -175,7 +168,7 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
 	@Override
 	public String getInventoryName()
 	{
-		return StatCollector.translateToLocal("container.oxygencompressor.name");
+		return GCCoreUtil.translate("container.oxygencompressor.name");
 	}
 
 	@Override

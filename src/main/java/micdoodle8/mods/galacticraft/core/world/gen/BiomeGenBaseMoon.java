@@ -2,15 +2,8 @@ package micdoodle8.mods.galacticraft.core.world.gen;
 
 import net.minecraft.world.biome.BiomeGenBase;
 
-/**
- * GCMoonBiomeGenBase.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class BiomeGenBaseMoon extends BiomeGenBase
 {
 	public static final BiomeGenBase moonFlat = new BiomeGenFlatMoon(102).setBiomeName("moon");

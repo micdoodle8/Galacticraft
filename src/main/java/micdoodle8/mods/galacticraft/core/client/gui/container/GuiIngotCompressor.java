@@ -3,25 +3,18 @@ package micdoodle8.mods.galacticraft.core.client.gui.container;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerIngotCompressor;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityIngotCompressor;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-/**
- * GCCoreGuiIngotCompressor.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 @SideOnly(Side.CLIENT)
 public class GuiIngotCompressor extends GuiContainer
 {
@@ -47,23 +40,23 @@ public class GuiIngotCompressor extends GuiContainer
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
 	{
 		this.fontRendererObj.drawString(this.tileEntity.getInventoryName(), 10, 6, 4210752);
-		String displayText = "Fuel:";
+		String displayText = GCCoreUtil.translate("gui.message.fuel.name") + ":";
 		this.fontRendererObj.drawString(displayText, 50 - this.fontRendererObj.getStringWidth(displayText), 79, 4210752);
 
 		if (this.tileEntity.processTicks > 0)
 		{
-			displayText = "Compressing";
+			displayText = GCCoreUtil.translate("gui.status.compressing.name");
 		}
 		else
 		{
-			displayText = "Idle";
+			displayText = GCCoreUtil.translate("gui.status.idle.name");
 		}
 
-		String str = "Status:";
-		this.fontRendererObj.drawString("Status:", 120 - this.fontRendererObj.getStringWidth(str) / 2, 70, 4210752);
+		String str = GCCoreUtil.translate("gui.message.status.name") + ":";
+		this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.status.name") + ":", 120 - this.fontRendererObj.getStringWidth(str) / 2, 70, 4210752);
 		str = displayText;
 		this.fontRendererObj.drawString(displayText, 120 - this.fontRendererObj.getStringWidth(str) / 2, 80, 4210752);
-		this.fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
+		this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 
 	/**

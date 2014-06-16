@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import java.util.EnumSet;
 
-import micdoodle8.mods.galacticraft.api.transmission.ElectricityPack;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
@@ -10,6 +9,7 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -19,19 +19,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 
-/**
- * GCCoreTileEntityCoalGenerator.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class TileEntityCoalGenerator extends TileEntityUniversalElectrical implements IInventory, ISidedInventory, IPacketReceiver, IConnector
 {
 	public static final int MAX_GENERATE_WATTS = 500;
@@ -235,7 +227,7 @@ public class TileEntityCoalGenerator extends TileEntityUniversalElectrical imple
 	@Override
 	public String getInventoryName()
 	{
-		return StatCollector.translateToLocal("tile.machine.0.name");
+		return GCCoreUtil.translate("tile.machine.0.name");
 	}
 
 	@Override
@@ -281,7 +273,7 @@ public class TileEntityCoalGenerator extends TileEntityUniversalElectrical imple
 	}
 
 	@Override
-	public float receiveElectricity(ForgeDirection from, ElectricityPack electricityPack, boolean doReceive)
+	public float receiveElectricity(ForgeDirection from, float energy, boolean doReceive)
 	{
 		return 0;
 	}

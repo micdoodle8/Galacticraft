@@ -16,15 +16,8 @@ import org.lwjgl.opengl.GL12;
 
 import cpw.mods.fml.client.FMLClientHandler;
 
-/**
- * ItemRendererGrappleGun.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class ItemRendererGrappleHook implements IItemRenderer
 {
 	public static final ResourceLocation grappleTexture = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/model/grapple.png");

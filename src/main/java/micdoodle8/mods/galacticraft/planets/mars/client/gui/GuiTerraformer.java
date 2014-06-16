@@ -1,32 +1,26 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.gui;
 
-import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay;
-import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay.ElectricUnit;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementCheckbox;
+import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementCheckbox.ICheckBoxCallback;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerTerraformer;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityTerraformer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
-/**
- * GCMarsGuiTerraformer.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
-public class GuiTerraformer extends GuiContainer
+
+
+public class GuiTerraformer extends GuiContainer implements ICheckBoxCallback
 {
 	private static final ResourceLocation terraformerGui = new ResourceLocation(MarsModule.TEXTURE_DOMAIN, "textures/gui/terraformer.png");
 
@@ -34,11 +28,12 @@ public class GuiTerraformer extends GuiContainer
 
 	private GuiButton enableTreesButton;
 	private GuiButton enableGrassButton;
+	private GuiElementCheckbox checkboxRenderBubble;
 
 	public GuiTerraformer(InventoryPlayer par1InventoryPlayer, TileEntityTerraformer terraformer)
 	{
 		super(new ContainerTerraformer(par1InventoryPlayer, terraformer));
-		this.ySize = 228;
+		this.ySize = 237;
 		this.terraformer = terraformer;
 	}
 
@@ -74,6 +69,8 @@ public class GuiTerraformer extends GuiContainer
 		this.enableGrassButton = new GuiButton(1, var5 + 98, var6 + 109, 72, 20, "Enable Grass");
 		this.buttonList.add(this.enableTreesButton);
 		this.buttonList.add(this.enableGrassButton);
+		this.checkboxRenderBubble = new GuiElementCheckbox(0, this, var5 + 85, var6 + 132, "Bubble Visible");
+		this.buttonList.add(this.checkboxRenderBubble);
 	}
 
 	@Override
@@ -98,7 +95,7 @@ public class GuiTerraformer extends GuiContainer
 	{
 		String displayString = "Terraformer";
 		this.fontRendererObj.drawString(displayString, this.xSize / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, 5, 4210752);
-		this.fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, 135, 4210752);
+		this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, 144, 4210752);
 		this.fontRendererObj.drawSplitString(this.getStatus(), 105, 24, this.xSize - 105, 4210752);
 //		this.fontRendererObj.drawString(ElectricityDisplay.getDisplay(this.terraformer.ueWattsPerTick * 20, ElectricUnit.WATT), 105, 56, 4210752);
 //		this.fontRendererObj.drawString(ElectricityDisplay.getDisplay(this.terraformer.getVoltage(), ElectricUnit.VOLTAGE), 105, 68, 4210752);
@@ -168,5 +165,31 @@ public class GuiTerraformer extends GuiContainer
 
 		int fuelLevel = this.terraformer.getScaledWaterLevel(26);
 		this.drawTexturedModalRect((this.width - this.xSize) / 2 + 56, (this.height - this.ySize) / 2 + 17 + 27 - fuelLevel, 176, 26 - fuelLevel, 39, fuelLevel);
+		this.checkboxRenderBubble.isSelected = this.terraformer.getBubble().shouldRender();
+	}
+
+	@Override
+	public void onSelectionChanged(GuiElementCheckbox checkbox, boolean newSelected)
+	{
+		this.terraformer.terraformBubble.setShouldRender(newSelected);
+		GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_INT, new Object[] { 6, this.terraformer.xCoord, this.terraformer.yCoord, this.terraformer.zCoord, newSelected ? 1 : 0 }));
+	}
+
+	@Override
+	public boolean canPlayerEdit(GuiElementCheckbox checkbox, EntityPlayer player)
+	{
+		return true;
+	}
+
+	@Override
+	public boolean getInitiallySelected(GuiElementCheckbox checkbox)
+	{
+		return this.terraformer.terraformBubble.shouldRender();
+	}
+
+	@Override
+	public void onIntruderInteraction()
+	{
+		;
 	}
 }

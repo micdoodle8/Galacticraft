@@ -11,23 +11,18 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-/**
- * GCCoreBlockLandingPadFull.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSealableBlock
 {
 	private IIcon[] icons = new IIcon[3];
@@ -197,4 +192,10 @@ public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSe
 	{
 		return direction == ForgeDirection.UP;
 	}
+	
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
+    {
+		int metadata = world.getBlockMetadata(x,  y,  z);
+		return new ItemStack(Item.getItemFromBlock(GCBlocks.landingPad), 1, metadata);
+    }
 }

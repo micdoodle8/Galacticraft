@@ -10,39 +10,29 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockUnlitTorch;
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenSealer;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.wrappers.ScheduledBlockChange;
 import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockEnchantmentTable;
 import net.minecraft.block.BlockFarmland;
-import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.BlockGlass;
 import net.minecraft.block.BlockGravel;
-import net.minecraft.block.BlockSlab;
 import net.minecraft.block.BlockLeavesBase;
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.BlockPistonBase;
+import net.minecraft.block.BlockSlab;
 import net.minecraft.block.BlockSponge;
 import net.minecraft.block.material.Material;
+import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.FMLLog;
 
-/**
- * ThreadFindSeal.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8, radfast
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
 public class ThreadFindSeal
 {
 	public AtomicBoolean sealedFinal = new AtomicBoolean();
@@ -726,9 +716,13 @@ public class ThreadFindSeal
 		}
 
 		//Solid but non-opaque blocks, for example special glass
-		if (OxygenPressureProtocol.nonPermeableBlocks.containsKey(block) && OxygenPressureProtocol.nonPermeableBlocks.get(block).contains(vec.getBlockMetadata(this.world)))
-		{
-			return false;
+		if (OxygenPressureProtocol.nonPermeableBlocks.containsKey(block))
+		{	
+			ArrayList<Integer> metaList = OxygenPressureProtocol.nonPermeableBlocks.get(block);
+			if (metaList.contains(Integer.valueOf(-1)) ||  metaList.contains(vec.getBlockMetadata(this.world)))
+			{
+				return false;
+			}
 		}
 
 		if (block instanceof IPartialSealableBlock)

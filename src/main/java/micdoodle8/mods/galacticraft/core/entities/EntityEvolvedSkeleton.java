@@ -17,15 +17,8 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-/**
- * EntitySkeleton.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBreathable
 {
 	private static final ItemStack defaultHeldItem = new ItemStack(Items.bow, 1);

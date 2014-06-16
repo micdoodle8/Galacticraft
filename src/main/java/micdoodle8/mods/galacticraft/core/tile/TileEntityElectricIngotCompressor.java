@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine2;
 import micdoodle8.mods.galacticraft.core.inventory.PersistantInventoryCrafting;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,19 +14,11 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 
-/**
- * GCCoreTileEntityElectricIngotCompressor.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class TileEntityElectricIngotCompressor extends TileEntityElectricBlock implements IInventory, ISidedInventory, IPacketReceiver
 {
 	public static final int PROCESS_TIME_REQUIRED = 200;
@@ -333,7 +326,7 @@ public class TileEntityElectricIngotCompressor extends TileEntityElectricBlock i
 	@Override
 	public String getInventoryName()
 	{
-		return StatCollector.translateToLocal("tile.machine2.4.name");
+		return GCCoreUtil.translate("tile.machine2.4.name");
 	}
 
 	@Override

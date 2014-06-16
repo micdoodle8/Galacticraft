@@ -9,15 +9,8 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.util.ChatComponentText;
 
-/**
- * GCCoreCommandSpaceStationAddOwner.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class CommandSpaceStationAddOwner extends CommandBase
 {
 	@Override
@@ -54,13 +47,13 @@ public class CommandSpaceStationAddOwner extends CommandBase
 
 				if (playerBase != null)
 				{
-					if (playerBase.getSpaceStationDimensionID() <= 0)
+					if (playerBase.getPlayerStats().spaceStationDimensionID <= 0)
 					{
 						throw new WrongUsageException("Could not find space station for your username, you need to travel there first!", new Object[0]);
 					}
 					else
 					{
-						final SpaceStationWorldData data = SpaceStationWorldData.getStationData(playerBase.worldObj, playerBase.getSpaceStationDimensionID(), playerBase);
+						final SpaceStationWorldData data = SpaceStationWorldData.getStationData(playerBase.worldObj, playerBase.getPlayerStats().spaceStationDimensionID, playerBase);
 
 						if (!data.getAllowedPlayers().contains(var3.toLowerCase()))
 						{

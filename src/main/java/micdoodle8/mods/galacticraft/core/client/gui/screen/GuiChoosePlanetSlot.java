@@ -5,10 +5,11 @@ import java.util.ArrayList;
 import micdoodle8.mods.galacticraft.api.event.client.GCCoreEventChoosePlanetGui.SlotClicked;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiSlot;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.MinecraftForge;
 
 import org.lwjgl.opengl.GL11;
@@ -17,15 +18,8 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-/**
- * GCCoreGuiChoosePlanetSlot.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 @SideOnly(Side.CLIENT)
 public class GuiChoosePlanetSlot extends GuiSlot
 {
@@ -60,11 +54,11 @@ public class GuiChoosePlanetSlot extends GuiSlot
 			}
 		}
 
-		GuiChoosePlanet.getSendButton(this.choosePlanetGui).displayString = StatCollector.translateToLocal("gui.button.sendtodim.name");
+		GuiChoosePlanet.getSendButton(this.choosePlanetGui).displayString = GCCoreUtil.translate("gui.button.sendtodim.name");
 		GuiChoosePlanet.getSendButton(this.choosePlanetGui).enabled = this.choosePlanetGui.isValidDestination(this.choosePlanetGui.selectedSlot);
 
-		GuiChoosePlanet.getCreateSpaceStationButton(this.choosePlanetGui).displayString = StatCollector.translateToLocal("gui.button.createsstation.name");
-		GuiChoosePlanet.getCreateSpaceStationButton(this.choosePlanetGui).enabled = this.choosePlanetGui.canCreateSpaceStation();
+		GuiChoosePlanet.getCreateSpaceStationButton(this.choosePlanetGui).displayString = GCCoreUtil.translate("gui.button.createsstation.name");
+		GuiChoosePlanet.getCreateSpaceStationButton(this.choosePlanetGui).enabled = this.choosePlanetGui.canCreateSpaceStation() && WorldUtil.getSpaceStationRecipe(this.choosePlanetGui.getDimensionIdFromSlot()) != null;;
 	}
 
 	@Override
@@ -90,12 +84,12 @@ public class GuiChoosePlanetSlot extends GuiSlot
 		GL11.glDisable(GL11.GL_ALPHA_TEST);
 		GuiChoosePlanet.getDestinations(this.choosePlanetGui)[var1].toLowerCase();
 
+		ArrayList<CelestialBody> cBodyList = new ArrayList<CelestialBody>();
+		cBodyList.addAll(GalaxyRegistry.getRegisteredPlanets().values());
+		cBodyList.addAll(GalaxyRegistry.getRegisteredMoons().values());
+		
 		if (this.isSelected(var1))
 		{
-			ArrayList<CelestialBody> cBodyList = new ArrayList<CelestialBody>();
-			cBodyList.addAll(GalaxyRegistry.getRegisteredPlanets().values());
-			cBodyList.addAll(GalaxyRegistry.getRegisteredMoons().values());
-
 			for (CelestialBody celestialBody : cBodyList)
 			{
 				if (celestialBody != null)
@@ -121,10 +115,14 @@ public class GuiChoosePlanetSlot extends GuiSlot
 						}
 					}
 
-					if (celestialBody.getLocalizedName().equals(str))
+					if (celestialBody.getName().equalsIgnoreCase(str))
 					{
-						FMLClientHandler.instance().getClient().renderEngine.bindTexture(celestialBody.getPlanetIcon());
-						GuiGalaxyMap.renderPlanet(var1, var2 - 18, var3 + 9, var4 + 3, var5);
+						if (celestialBody.getPlanetIcon() != null)
+						{
+							FMLClientHandler.instance().getClient().renderEngine.bindTexture(celestialBody.getPlanetIcon());
+							GuiGalaxyMap.renderPlanet(var1, var2 - 18, var3 + 9, var4 + 3, var5);
+						}
+						else System.out.println("No celestial body icon found for "+str);
 					}
 				}
 			}
@@ -148,7 +146,16 @@ public class GuiChoosePlanetSlot extends GuiSlot
 				}
 				else
 				{
-					str = StatCollector.translateToLocal("dimension." + str + ".name");
+					for (CelestialBody celestialBody : cBodyList)
+					{
+						if (celestialBody != null)
+						{
+							if (celestialBody.getName().equalsIgnoreCase(str))
+							{
+								str = celestialBody.getLocalizedName();
+							}
+						}
+					}
 				}
 
 				this.choosePlanetGui.drawCenteredString(GuiChoosePlanet.getFontRenderer(this.choosePlanetGui), str, this.choosePlanetGui.width / 2, var3 + 3, 0xEEEEEE);
@@ -182,7 +189,16 @@ public class GuiChoosePlanetSlot extends GuiSlot
 				}
 				else
 				{
-					str = StatCollector.translateToLocal("dimension." + str + ".name");
+					for (CelestialBody celestialBody : cBodyList)
+					{
+						if (celestialBody != null)
+						{
+							if (celestialBody.getName().equalsIgnoreCase(str))
+							{
+								str = celestialBody.getLocalizedName();
+							}
+						}
+					}
 				}
 
 				this.choosePlanetGui.drawCenteredString(GuiChoosePlanet.getFontRenderer(this.choosePlanetGui), str, this.choosePlanetGui.width / 2, var3 + 3, 0xEEEEEE);

@@ -14,6 +14,7 @@ import micdoodle8.mods.galacticraft.core.util.CreativeTabGC;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
+import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
 import micdoodle8.mods.galacticraft.planets.IPlanetsModule;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.dimension.TeleportTypeMars;
@@ -50,7 +51,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -59,15 +59,8 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 
-/**
- * GalacticraftMars.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class MarsModule implements IPlanetsModule
 {
 	public static final String LANGUAGE_PATH = "/assets/galacticraftmars/lang/";
@@ -108,7 +101,7 @@ public class MarsModule implements IPlanetsModule
 		SchematicRegistry.registerSchematicRecipe(new SchematicTier2Rocket());
 		SchematicRegistry.registerSchematicRecipe(new SchematicCargoRocket());
 
-		GalacticraftCore.packetPipeline.registerPacket(PacketSimpleMars.class);
+		GalacticraftCore.packetPipeline.addDiscriminator(6, PacketSimpleMars.class);
 		
 		MarsModule.galacticraftMarsTab = new CreativeTabGC(CreativeTabs.getNextID(), "GalacticraftMars", MarsItems.spaceship, 5);
 		
@@ -182,9 +175,7 @@ public class MarsModule implements IPlanetsModule
 	@Override
 	public void getGuiIDs(List<Integer> idList) 
 	{
-		idList.add(ConfigManagerMars.idGuiCargoRocketCraftingBench);
-		idList.add(ConfigManagerMars.idGuiMachine);
-		idList.add(ConfigManagerMars.idGuiRocketCraftingBenchT2);
+		idList.add(GuiIdsPlanets.MACHINE_MARS);
 	}
 
 	@Override
@@ -194,7 +185,7 @@ public class MarsModule implements IPlanetsModule
 		{
 			TileEntity tile = world.getTileEntity(x, y, z);
 
-			if (ID == ConfigManagerMars.idGuiMachine)
+			if (ID == GuiIdsPlanets.MACHINE_MARS)
 			{
 				if (tile instanceof TileEntityTerraformer)
 				{

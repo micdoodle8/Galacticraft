@@ -13,15 +13,8 @@ import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-/**
- * GCCoreItems.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class GCItems
 {
 	public static Item oxTankLight;
@@ -60,7 +53,6 @@ public class GCItems
 	public static Item schematic;
 	public static Item key;
 	public static Item partBuggy;
-	public static Item knowledgeBook;
 	public static Item basicItem;
 	public static Item battery;
 	public static Item infiniteBatery;
@@ -115,7 +107,6 @@ public class GCItems
 		GCItems.schematic = new ItemSchematic("schematic");
 		GCItems.key = new ItemKey("key");
 		GCItems.partBuggy = new ItemBuggyMaterial("buggymat");
-		GCItems.knowledgeBook = new ItemKnowledgeBook("knowledgeBook");
 		GCItems.basicItem = new ItemBasic("basicItem");
 		GCItems.battery = new ItemBattery("battery");
 		GCItems.infiniteBatery = new ItemBatteryInfinite("infiniteBattery");
@@ -125,8 +116,6 @@ public class GCItems
 		GCItems.cheeseBlock = new ItemBlockCheese(GCBlocks.cheeseBlock, "cheeseBlock");
 		GCItems.meteoricIronRaw = new ItemMeteoricIron("meteoricIronRaw");
 		GCItems.meteoricIronIngot = new ItemMoon("meteoricIronIngot");
-
-		GCItems.hiddenItems.add(GCItems.knowledgeBook);
 
 		GCItems.registerHarvestLevels();
 

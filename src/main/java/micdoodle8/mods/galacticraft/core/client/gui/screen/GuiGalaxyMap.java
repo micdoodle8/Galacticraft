@@ -32,20 +32,14 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-/**
- * GCCoreGuiGalaxyMap.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 @SideOnly(Side.CLIENT)
 public class GuiGalaxyMap extends GuiStarBackground
 {
 	private static final ResourceLocation guiTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/gui.png");
-
+    private static final ResourceLocation vanillaSun = new ResourceLocation("textures/environment/sun.png");
+	
 	private static int guiMapMinX;
 
 	private static int guiMapMinY;
@@ -311,7 +305,9 @@ public class GuiGalaxyMap extends GuiStarBackground
 		int var41;
 
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-
+		
+		this.renderSun(488-var4-var4, -488-var5-var5);
+		
 		for (Planet planet : GalaxyRegistry.getRegisteredPlanets().values())
 		{
 			if (planet.getParentGalaxy() != null)
@@ -363,10 +359,12 @@ public class GuiGalaxyMap extends GuiStarBackground
 		Gui.drawRect(10, 20, 12, this.height - 24, col3);
 		Gui.drawRect(this.width - 12, 0 + 20, this.width - 10, this.height - 24, col2);
 
-		this.fontRendererObj.drawString("ASWD - Move Map", 5, 1, textCol1, false);
-		this.fontRendererObj.drawString("Mouse Wheel - Zoom", 5, 10, textCol1, false);
-		this.fontRendererObj.drawString("Mouse 1 - Select Planet", this.width - this.fontRendererObj.getStringWidth("Mouse 1 - Select Planet") - 5, 1, textCol1, false);
-		this.fontRendererObj.drawString("Esc - Exit Map", this.width - this.fontRendererObj.getStringWidth("Esc - Exit Map") - 5, 10, textCol1, false);
+		this.fontRendererObj.drawString(GCCoreUtil.translate("gui.galaxymap.movemap.name"), 5, 1, textCol1, false);
+		this.fontRendererObj.drawString(GCCoreUtil.translate("gui.galaxymap.zoom.name"), 5, 10, textCol1, false);
+		String message = GCCoreUtil.translate("gui.galaxymap.select.name");
+		this.fontRendererObj.drawString(message, this.width - this.fontRendererObj.getStringWidth(message) - 5, 1, textCol1, false);
+		message = GCCoreUtil.translate("gui.galaxymap.exit.name");
+		this.fontRendererObj.drawString(GCCoreUtil.translate(message), this.width - this.fontRendererObj.getStringWidth(message) - 5, 10, textCol1, false);
 
 		if (this.selectedPlanet != null)
 		{
@@ -377,7 +375,8 @@ public class GuiGalaxyMap extends GuiStarBackground
 
 			if (this.selectedPlanet instanceof Moon)
 			{
-				this.fontRendererObj.drawString("Moon of " + ((Moon) this.selectedPlanet).getParentPlanet().getLocalizedName(), this.width / 2 - width / 2 + width + 10, 6, textCol2, false);
+				message = GCCoreUtil.translateWithFormat("gui.galaxymap.moonOf.name", ((Moon) this.selectedPlanet).getParentPlanet().getLocalizedName());
+				this.fontRendererObj.drawString(message, this.width / 2 - width / 2 + width + 10, 6, textCol2, false);
 			}
 		}
 
@@ -418,11 +417,11 @@ public class GuiGalaxyMap extends GuiStarBackground
 				GL11.glEnable(GL11.GL_BLEND);
 				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 
-				GuiGalaxyMap.renderPlanet(0, centerX + var42b, centerY + var41b, (float) (cBody.getRelativeSize() * 15.0F + 1 / Math.pow(this.zoom, -2)), Tessellator.instance);
+				GuiGalaxyMap.renderPlanet(0, centerX + var42b, centerY + var41b, (float) (cBody.getRelativeSize() * 40.0F + 1 / Math.pow(this.zoom, -2)), Tessellator.instance);
 
 				if (this.selectedPlanet != null && cBody.equals(this.selectedPlanet))
 				{
-					GuiGalaxyMap.renderPlanet(0, centerX + var42b, centerY + var41b, (float) (cBody.getRelativeSize() * 15.0F + 1 / Math.pow(this.zoom, -2)), Tessellator.instance);
+					GuiGalaxyMap.renderPlanet(0, centerX + var42b, centerY + var41b, (float) (cBody.getRelativeSize() * 40.0F + 1 / Math.pow(this.zoom, -2)), Tessellator.instance);
 					this.drawInfoBox(centerX + var42b, centerY + var41b, cBody);
 				}
 			}
@@ -452,6 +451,19 @@ public class GuiGalaxyMap extends GuiStarBackground
 		}
 	}
 
+	public void renderSun(int x, int y)
+	{
+		this.mc.renderEngine.bindTexture(vanillaSun);
+
+		GL11.glDisable(GL11.GL_BLEND);
+		GL11.glEnable(GL11.GL_DEPTH_TEST);
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+
+		GuiGalaxyMap.renderPlanet(0, x, y, (float) (1000.0F + 1 / Math.pow(this.zoom, -2)), Tessellator.instance);
+	}
+	
 	public static void renderPlanet(int index, int x, int y, float slotHeight, Tessellator tessellator)
 	{
 		tessellator.startDrawingQuads();

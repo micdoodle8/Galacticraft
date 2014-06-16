@@ -8,15 +8,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.eventhandler.Event;
 
-/**
- * GCCoreTileEntityUniversalConductor.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public abstract class TileEntityUniversalConductor extends TileEntityConductor
 {
 	protected boolean isAddedToEnergyNet;
@@ -291,7 +284,7 @@ public abstract class TileEntityUniversalConductor extends TileEntityConductor
 //			return false;
 //		}
 //
-//		return ((IElectricityNetwork) this.getNetwork()).getRequest(this).getWatts() > 0.0F;
+//		return true;
 //	}
 //
 //	@RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
@@ -309,6 +302,10 @@ public abstract class TileEntityUniversalConductor extends TileEntityConductor
 //	@RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
 //	public double getMaxEnergy()
 //	{
-//		return 1;
+//		if (this.getNetwork() == null)
+//		{
+//			return 0;
+//		}
+//		return ((IElectricityNetwork) this.getNetwork()).getRequest(this).getWatts() * NetworkConfigHandler.TO_MEKANISM_RATIO;
 //	}
 }

@@ -7,16 +7,10 @@ import micdoodle8.mods.galacticraft.core.items.ItemParaChute;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import cpw.mods.fml.common.Loader;
 
-/**
- * GCCoreSlotPlayer.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class SlotExtendedInventory extends Slot
 {
 	public SlotExtendedInventory(IInventory par2IInventory, int par3, int par4, int par5)
@@ -47,8 +41,39 @@ public class SlotExtendedInventory extends Slot
 			return itemstack.getItem() instanceof ItemParaChute;
 		case 5:
 			return itemstack.getItem() == GCItems.basicItem && itemstack.getItemDamage() == 19;
+		case 6:
+			return thermalArmorSlotValid(itemstack, 0);
+		case 7:
+			return thermalArmorSlotValid(itemstack, 1);
+		case 8:
+			return thermalArmorSlotValid(itemstack, 2);
+		case 9:
+			return thermalArmorSlotValid(itemstack, 3);
 		}
 
 		return super.isItemValid(itemstack);
+	}
+	
+	public boolean thermalArmorSlotValid(ItemStack stack, int slotIndex)
+	{
+		if (Loader.isModLoaded("GalacticraftMars"))
+		{
+			try
+			{
+				Class<?> clazz = Class.forName("micdoodle8.mods.galacticraft.planets.asteroids.items.ItemThermalPadding");
+				
+				if (clazz.isInstance(stack.getItem()))
+				{
+					return stack.getItemDamage() == slotIndex;
+				}				
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+				return false;
+			}
+		}
+		
+		return false;
 	}
 }

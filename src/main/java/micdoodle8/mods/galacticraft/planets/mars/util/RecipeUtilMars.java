@@ -6,15 +6,8 @@ import micdoodle8.mods.galacticraft.planets.mars.inventory.InventorySchematicCar
 import micdoodle8.mods.galacticraft.planets.mars.inventory.InventorySchematicTier2Rocket;
 import net.minecraft.item.ItemStack;
 
-/**
- * RecipeUtilMars.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class RecipeUtilMars
 {
 	public static ItemStack findMatchingSpaceshipT2Recipe(InventorySchematicTier2Rocket inventoryRocketBench)

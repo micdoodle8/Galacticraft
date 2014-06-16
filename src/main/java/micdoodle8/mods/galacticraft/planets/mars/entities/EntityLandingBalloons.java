@@ -17,8 +17,6 @@ import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamicInventory;
-import micdoodle8.mods.galacticraft.core.network.PacketSimple;
-import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.planets.mars.util.MarsUtil;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.player.EntityPlayer;
@@ -34,15 +32,8 @@ import net.minecraftforge.fluids.FluidTank;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-/**
- * EntityLandingBalloons.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class EntityLandingBalloons extends EntityAdvancedMotion implements IInventorySettable, IPacketReceiver, IScaleableFuelLevel
 {
 	private final int tankCapacity = 5000;
@@ -85,12 +76,12 @@ public class EntityLandingBalloons extends EntityAdvancedMotion implements IInve
 		this(player.worldObj, player.posX, player.posY, player.posZ);
 		this.playerSpawnedIn = player;
 
-		this.chestContents = new ItemStack[player.getRocketStacks().length + 1];
-		this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, player.getFuelLevel()));
+		this.chestContents = new ItemStack[player.getPlayerStats().rocketStacks.length + 1];
+		this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, player.getPlayerStats().fuelLevel));
 
-		for (int i = 0; i < player.getRocketStacks().length; i++)
+		for (int i = 0; i < player.getPlayerStats().rocketStacks.length; i++)
 		{
-			this.chestContents[i] = player.getRocketStacks()[i];
+			this.chestContents[i] = player.getPlayerStats().rocketStacks[i];
 		}
 	}
 

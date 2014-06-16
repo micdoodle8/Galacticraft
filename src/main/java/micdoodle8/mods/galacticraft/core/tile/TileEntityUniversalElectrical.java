@@ -5,7 +5,6 @@ import java.util.EnumSet;
 
 import micdoodle8.mods.galacticraft.api.power.EnergySource.EnergySourceAdjacent;
 import micdoodle8.mods.galacticraft.api.power.IEnergyHandlerGC;
-import micdoodle8.mods.galacticraft.api.transmission.ElectricityPack;
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
 import micdoodle8.mods.galacticraft.api.transmission.core.grid.IElectricityNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.core.item.ElectricItemHelper;
@@ -19,15 +18,8 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.eventhandler.Event;
 
-/**
- * GCCoreTileEntityUniversalElectrical.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //implements IElectrical, IElectricalStorage
 {
 	protected boolean isAddedToEnergyNet;
@@ -92,8 +84,7 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 						if (network != null)
 						{
 							//TODO: Get rid of electricityPack, yuck
-							ElectricityPack electricityPack = ElectricityPack.getFromWatts(this.getEnergyStoredGC() - amountProduced, 120);
-							amountProduced += network.produce(electricityPack, true, this);
+							amountProduced += network.produce(this.getEnergyStoredGC() - amountProduced, true, this);
 						}
 					}
 					else if (tileAdj instanceof IEnergyHandlerGC)
@@ -626,7 +617,7 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 //			return 0;
 //		}
 //
-//		return (int) Math.floor(this.receiveElectricity(maxReceive * NetworkConfigHandler.TE_RATIO, !simulate));
+//		return (int) Math.floor(this.receiveElectricity(maxReceive * NetworkConfigHandler.TE_RATIO, !simulate)* NetworkConfigHandler.TO_TE_RATIO);
 //	}
 //
 //	@RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "ThermalExpansion")
@@ -666,7 +657,7 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 			return 0;
 		}
 
-		return (int) Math.floor(this.receiveElectricity((float)amount * NetworkConfigHandler.MEKANISM_RATIO, true));
+		return this.receiveElectricity((float)amount * NetworkConfigHandler.MEKANISM_RATIO, true) * NetworkConfigHandler.TO_MEKANISM_RATIO;
 	}
 
 	@RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
@@ -690,7 +681,7 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 	@RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
 	public double getMaxEnergy()
 	{
-		return this.getMaxEnergyStored() * NetworkConfigHandler.MEKANISM_RATIO;
+		return this.getMaxEnergyStored() * NetworkConfigHandler.TO_MEKANISM_RATIO;
 	}*/
 	
 	@Override

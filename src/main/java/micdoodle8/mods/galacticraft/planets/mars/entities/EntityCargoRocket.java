@@ -29,15 +29,8 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 
-/**
- * EntityCargoRocket.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, IInventory, IWorldTransferCallback
 {
 	public EnumRocketType rocketType;
@@ -160,6 +153,11 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
 			if (this.timeSinceLaunch % MathHelper.floor_double(3 * (1 / multiplier)) == 0)
 			{
 				this.removeFuel(1);
+				/*TO: fix soundupdater (see below)
+				if (!this.hasValidFuel() && this.rocketSoundUpdater instanceof GCCoreSoundUpdaterSpaceship)
+				{
+					((GCCoreSoundUpdaterSpaceship) this.rocketSoundUpdater).stopRocketSound();
+				}*/
 			}
 		}
 		else if (!this.hasValidFuel() && this.getLaunched() && !this.worldObj.isRemote)

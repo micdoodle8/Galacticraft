@@ -25,15 +25,8 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
-/**
- * GCCoreRecipeManager.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class RecipeManagerGC
 {
 	public static void loadRecipes()
@@ -55,13 +48,13 @@ public class RecipeManagerGC
 	private static void addUniversalRecipes()
 	{
 		FurnaceRecipes.smelting().func_151394_a(new ItemStack(GCBlocks.basicBlock, 1, 5), new ItemStack(GCItems.basicItem, 1, 3), 0.5F);
-		FurnaceRecipes.smelting().func_151394_a(new ItemStack(GCBlocks.basicBlock, 6), new ItemStack(GCItems.basicItem, 1, 4), 0.5F);
-		FurnaceRecipes.smelting().func_151394_a(new ItemStack(GCBlocks.basicBlock, 7), new ItemStack(GCItems.basicItem, 1, 5), 0.5F);
-		FurnaceRecipes.smelting().func_151394_a(new ItemStack(GCItems.meteorChunk, 0), new ItemStack(GCItems.meteorChunk, 1, 1), 0.1F);
+		FurnaceRecipes.smelting().func_151394_a(new ItemStack(GCBlocks.basicBlock, 1, 6), new ItemStack(GCItems.basicItem, 1, 4), 0.5F);
+		FurnaceRecipes.smelting().func_151394_a(new ItemStack(GCBlocks.basicBlock, 1, 7), new ItemStack(GCItems.basicItem, 1, 5), 0.5F);
+		FurnaceRecipes.smelting().func_151394_a(new ItemStack(GCItems.meteorChunk, 1, 0), new ItemStack(GCItems.meteorChunk, 1, 1), 0.1F);
 		FurnaceRecipes.smelting().func_151396_a(GCItems.meteoricIronRaw, new ItemStack(GCItems.meteoricIronIngot), 1.0F);
-		FurnaceRecipes.smelting().func_151394_a(new ItemStack(GCBlocks.blockMoon, 0), new ItemStack(GCItems.basicItem, 1, 3), 1.0F);
-		FurnaceRecipes.smelting().func_151394_a(new ItemStack(GCBlocks.blockMoon, 1), new ItemStack(GCItems.basicItem, 1, 4), 1.0F);
-		FurnaceRecipes.smelting().func_151394_a(new ItemStack(GCBlocks.blockMoon, 2), new ItemStack(GCItems.cheeseCurd), 1.0F);
+		FurnaceRecipes.smelting().func_151394_a(new ItemStack(GCBlocks.blockMoon, 1, 0), new ItemStack(GCItems.basicItem, 1, 3), 1.0F);
+		FurnaceRecipes.smelting().func_151394_a(new ItemStack(GCBlocks.blockMoon, 1, 1), new ItemStack(GCItems.basicItem, 1, 4), 1.0F);
+		FurnaceRecipes.smelting().func_151394_a(new ItemStack(GCBlocks.blockMoon, 1, 2), new ItemStack(GCItems.cheeseCurd), 1.0F);
 
 		RecipeUtil.addRecipe(new ItemStack(GCItems.rocketEngine, 1, 1), new Object[] { "ZYZ", "ZWZ", "XVX", 'V', GCItems.oxygenVent, 'W', new ItemStack(GCItems.canister, 1, 0), 'X', GCItems.heavyPlatingTier1, 'Y', new ItemStack(Blocks.wool, 1, 4), 'Z', new ItemStack(GCItems.meteoricIronIngot, 1, 1) });
 

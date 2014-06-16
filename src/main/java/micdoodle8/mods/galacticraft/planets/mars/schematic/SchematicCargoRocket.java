@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.mars.schematic;
 
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
+import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars;
 import micdoodle8.mods.galacticraft.planets.mars.client.gui.GuiSchematicCargoRocket;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerSchematicCargoRocket;
@@ -12,15 +14,8 @@ import net.minecraft.item.ItemStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-/**
- * GCMarsSchematicCargoRocket.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class SchematicCargoRocket implements ISchematicPage
 {
 	@Override
@@ -32,7 +27,7 @@ public class SchematicCargoRocket implements ISchematicPage
 	@Override
 	public int getGuiID()
 	{
-		return ConfigManagerMars.idGuiCargoRocketCraftingBench;
+		return GuiIdsPlanets.NASA_WORKBENCH_CARGO_ROCKET + GalacticraftPlanets.MODID.hashCode();
 	}
 
 	@Override

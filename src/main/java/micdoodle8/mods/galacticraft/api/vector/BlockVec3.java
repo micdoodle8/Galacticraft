@@ -73,7 +73,7 @@ public class BlockVec3 implements Cloneable
 	 * 
 	 * @param world
 	 * @return the block ID, or null if the y-coordinate is less than 0 or greater than 256 or the x or z is outside the Minecraft worldmap. 
-	 * Returns Blocks.bedrock if the coordinates being checked are in an unloaded chunk
+	 * 
 	 */
 	public Block getBlockID(World world)
 	{
@@ -339,11 +339,17 @@ public class BlockVec3 implements Cloneable
 		return "BlockVec3 [" + this.x + "," + this.y + "," + this.z + "]";
 	}
 
+	/**
+	 * This will load the chunk.
+	 */
 	public TileEntity getTileEntity(IBlockAccess world)
 	{
 		return world.getTileEntity(this.x, this.y, this.z);
 	}
 
+	/**
+	 * No chunk load: returns null if chunk to side is unloaded
+	 */
 	public TileEntity getTileEntityOnSide(World world, ForgeDirection side)
 	{
 		int x = this.x;
@@ -378,6 +384,9 @@ public class BlockVec3 implements Cloneable
 			return null;
 	}
 
+	/**
+	 * No chunk load: returns null if chunk to side is unloaded
+	 */
 	public TileEntity getTileEntityOnSide(World world, int side)
 	{
 		int x = this.x;
@@ -408,6 +417,77 @@ public class BlockVec3 implements Cloneable
 		}
 		if (world.blockExists(x, y, z))
 			return world.getTileEntity(x, y, z);
+		else
+			return null;
+	}
+
+	/**
+	 * This will load the chunk to the side.
+	 */
+	public boolean blockOnSideHasSolidFace(World world, int side)
+	{
+		int x = this.x;
+		int y = this.y;
+		int z = this.z;
+		switch (side)
+		{
+		case 0:
+			y--;
+			break;
+		case 1:
+			y++;
+			break;
+		case 2:
+			z--;
+			break;
+		case 3:
+			z++;
+			break;
+		case 4:
+			x--;
+			break;
+		case 5:
+			x++;
+			break;
+		default:
+			return false;
+		}
+		return world.getBlock(x, y, z).isSideSolid(world, x, y, z, ForgeDirection.getOrientation(side ^ 1));
+	}
+
+	/**
+	 * No chunk load: returns null if chunk is unloaded
+	 */
+	public Block getBlockOnSide(World world, int side)
+	{
+		int x = this.x;
+		int y = this.y;
+		int z = this.z;
+		switch (side)
+		{
+		case 0:
+			y--;
+			break;
+		case 1:
+			y++;
+			break;
+		case 2:
+			z--;
+			break;
+		case 3:
+			z++;
+			break;
+		case 4:
+			x--;
+			break;
+		case 5:
+			x++;
+			break;
+		default:
+			return null;
+		}
+		if (world.blockExists(x, y, z))
+			return world.getBlock(x, y, z);
 		else
 			return null;
 	}
@@ -476,12 +556,12 @@ public class BlockVec3 implements Cloneable
 
 	public int intY()
 	{
-		return this.x;
+		return this.y;
 	}
 
 	public int intZ()
 	{
-		return this.x;
+		return this.z;
 	}
 	
 	public void setSideDone(int side)

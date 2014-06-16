@@ -6,15 +6,6 @@ import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-/**
- * GCCoreDungeonRoom.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author fishtaco567
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
 public abstract class DungeonRoom
 {
 	public final MapGenDungeon dungeonInstance;

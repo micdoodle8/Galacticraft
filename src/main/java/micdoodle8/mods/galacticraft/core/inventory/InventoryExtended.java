@@ -6,18 +6,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
-/**
- * GCCoreInventoryExtended.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class InventoryExtended implements IInventory
 {
-	public ItemStack[] inventoryStacks = new ItemStack[6];
+	public ItemStack[] inventoryStacks = new ItemStack[10];
 
 	@Override
 	public int getSizeInventory()
@@ -145,7 +138,7 @@ public class InventoryExtended implements IInventory
 	// Backwards compatibility for old inventory
 	public void readFromNBTOld(NBTTagList par1NBTTagList)
 	{
-		this.inventoryStacks = new ItemStack[6];
+		this.inventoryStacks = new ItemStack[10];
 
 		for (int i = 0; i < par1NBTTagList.tagCount(); ++i)
 		{
@@ -165,7 +158,7 @@ public class InventoryExtended implements IInventory
 
 	public void readFromNBT(NBTTagList tagList)
 	{
-		this.inventoryStacks = new ItemStack[6];
+		this.inventoryStacks = new ItemStack[10];
 
 		for (int i = 0; i < tagList.tagCount(); ++i)
 		{

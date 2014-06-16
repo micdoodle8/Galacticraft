@@ -10,15 +10,8 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotFurnace;
 import net.minecraft.item.ItemStack;
 
-/**
- * GCCoreContainerElectricIngotCompressor.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class ContainerElectricIngotCompressor extends Container
 {
 	private TileEntityElectricIngotCompressor tileEntity;

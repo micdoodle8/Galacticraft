@@ -8,15 +8,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureStart;
 
-/**
- * GCMoonStructureVillageStart.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class StructureVillageStartMoon extends StructureStart
 {
 	public StructureVillageStartMoon()

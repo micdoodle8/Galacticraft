@@ -8,15 +8,8 @@ import org.apache.logging.log4j.Level;
 
 import cpw.mods.fml.common.FMLLog;
 
-/**
- * GCMarsConfigManager.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class ConfigManagerMars
 {
 	public static boolean loaded;
@@ -45,11 +38,6 @@ public class ConfigManagerMars
 	public static int idEntityLandingBalloons;
 	public static int idEntityCargoRocket;
 
-	// GUI
-	public static int idGuiRocketCraftingBenchT2;
-	public static int idGuiMachine;
-	public static int idGuiCargoRocketCraftingBench;
-
 	// SCHEMATIC
 	public static int idSchematicRocketT2;
 	public static int idSchematicCargoRocket;
@@ -74,10 +62,6 @@ public class ConfigManagerMars
 			ConfigManagerMars.idEntityTerraformBubble = ConfigManagerMars.configuration.get("Entities", "idEntityTerraformBubble", 176).getInt(176);
 			ConfigManagerMars.idEntityLandingBalloons = ConfigManagerMars.configuration.get("Entities", "idEntityLandingBalloons", 177).getInt(177);
 			ConfigManagerMars.idEntityCargoRocket = ConfigManagerMars.configuration.get("Entities", "idEntityCargoRocket", 178).getInt(178);
-
-			ConfigManagerMars.idGuiRocketCraftingBenchT2 = ConfigManagerMars.configuration.get("GUI", "idGuiRocketCraftingBenchT2", 143).getInt(143);
-			ConfigManagerMars.idGuiMachine = ConfigManagerMars.configuration.get("GUI", "idGuiMachine", 146).getInt(146);
-			ConfigManagerMars.idGuiCargoRocketCraftingBench = ConfigManagerMars.configuration.get("GUI", "idGuiCargoRocketCraftingBench", 147).getInt(147);
 
 			ConfigManagerMars.idSchematicRocketT2 = ConfigManagerMars.configuration.get("Schematic", "idSchematicRocketT2", 2).getInt(2);
 			ConfigManagerMars.idSchematicCargoRocket = ConfigManagerMars.configuration.get("Schematic", "idSchematicCargoRocket", 3).getInt(3);

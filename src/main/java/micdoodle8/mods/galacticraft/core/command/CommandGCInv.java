@@ -68,14 +68,14 @@ public class CommandGCInv extends CommandBase
 
 					if (astring[0].equalsIgnoreCase("drop"))
 					{
-						InventoryExtended gcInventory = thePlayer.getExtendedInventory();
+						InventoryExtended gcInventory = thePlayer.getPlayerStats().extendedInventory;
 						gcInventory.dropExtendedItems(thePlayer);
 					}
 					else
 
 					if (astring[0].equalsIgnoreCase("save"))
 					{
-						InventoryExtended gcInventory = thePlayer.getExtendedInventory();
+						InventoryExtended gcInventory = thePlayer.getPlayerStats().extendedInventory;
 						ItemStack[] saveinv = new ItemStack[gcInventory.getSizeInventory()];
 						for (int i = 0; i < gcInventory.getSizeInventory(); i++)
 						{
@@ -106,7 +106,7 @@ public class CommandGCInv extends CommandBase
 
 					if (astring[0].equalsIgnoreCase("clear"))
 					{
-						InventoryExtended gcInventory = thePlayer.getExtendedInventory();
+						InventoryExtended gcInventory = thePlayer.getPlayerStats().extendedInventory;
 						for (int i = 0; i < gcInventory.getSizeInventory(); i++)
 						{
 							gcInventory.setInventorySlotContents(i, null);
@@ -176,7 +176,7 @@ public class CommandGCInv extends CommandBase
 		// auto-restore on a server restart.
 		{
 			ItemStack[] saveinv = CommandGCInv.savedata.get(theName);
-			InventoryExtended gcInventory = thePlayer.getExtendedInventory();
+			InventoryExtended gcInventory = thePlayer.getPlayerStats().extendedInventory;
 			for (int i = 0; i < gcInventory.getSizeInventory(); i++)
 			{
 				gcInventory.setInventorySlotContents(i, saveinv[i]);

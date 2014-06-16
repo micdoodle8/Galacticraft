@@ -12,24 +12,15 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.common.FMLLog;
 
-/**
- * GuiOxygenDistributor.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
 public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCallback
 {
 	private static final ResourceLocation distributorTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/oxygen.png");
@@ -55,12 +46,12 @@ public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCal
 		final int var5 = (this.width - this.xSize) / 2;
 		final int var6 = (this.height - this.ySize) / 2;
 		List<String> batterySlotDesc = new ArrayList<String>();
-		batterySlotDesc.add("Distributor battery slot, place battery here");
-		batterySlotDesc.add("if not using a connected power source");
+		batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.0"));
+		batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.1"));
 		this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 31, (this.height - this.ySize) / 2 + 26, 18, 18, batterySlotDesc, this.width, this.height));
 		List<String> oxygenDesc = new ArrayList<String>();
-		oxygenDesc.add("Oxygen Storage");
-		oxygenDesc.add(EnumColor.YELLOW + "Oxygen: " + ((int) Math.floor(this.distributor.storedOxygen) + " / " + (int) Math.floor(this.distributor.maxOxygen)));
+		oxygenDesc.add(GCCoreUtil.translate("gui.oxygenStorage.desc.0"));
+		oxygenDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.oxygenStorage.desc.1") + ": " + ((int) Math.floor(this.distributor.storedOxygen) + " / " + (int) Math.floor(this.distributor.maxOxygen)));
 		this.oxygenInfoRegion.tooltipStrings = oxygenDesc;
 		this.oxygenInfoRegion.xPosition = (this.width - this.xSize) / 2 + 112;
 		this.oxygenInfoRegion.yPosition = (this.height - this.ySize) / 2 + 24;
@@ -68,8 +59,8 @@ public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCal
 		this.oxygenInfoRegion.parentHeight = this.height;
 		this.infoRegions.add(this.oxygenInfoRegion);
 		List<String> electricityDesc = new ArrayList<String>();
-		electricityDesc.add("Electrical Storage");
-		electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.distributor.getEnergyStoredGC()) + " / " + (int) Math.floor(this.distributor.getMaxEnergyStoredGC())));
+		electricityDesc.add(GCCoreUtil.translate("gui.energyStorage.desc.0"));
+		electricityDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.energyStorage.desc.1") + ((int) Math.floor(this.distributor.getEnergyStoredGC()) + " / " + (int) Math.floor(this.distributor.getMaxEnergyStoredGC())));
 		this.electricInfoRegion.tooltipStrings = electricityDesc;
 		this.electricInfoRegion.xPosition = (this.width - this.xSize) / 2 + 112;
 		this.electricInfoRegion.yPosition = (this.height - this.ySize) / 2 + 37;
@@ -84,9 +75,9 @@ public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCal
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
 	{
 		this.fontRendererObj.drawString(this.distributor.getInventoryName(), 8, 10, 4210752);
-		this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.message.in.name") + ":", 87, 26, 4210752);
-		this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.message.in.name") + ":", 87, 38, 4210752);
-		String status = StatCollector.translateToLocal("gui.message.status.name") + ": " + this.getStatus();
+		this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.in.name") + ":", 87, 26, 4210752);
+		this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.in.name") + ":", 87, 38, 4210752);
+		String status = GCCoreUtil.translate("gui.message.status.name") + ": " + this.getStatus();
 		this.fontRendererObj.drawString(status, this.xSize / 2 - this.fontRendererObj.getStringWidth(status) / 2, 50, 4210752);
 		status = "Oxygen Use: " + this.distributor.oxygenPerTick * 20 + "/s";
 		this.fontRendererObj.drawString(status, this.xSize / 2 - this.fontRendererObj.getStringWidth(status) / 2, 60, 4210752);
@@ -94,22 +85,22 @@ public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCal
 //		this.fontRendererObj.drawString(status, this.xSize / 2 - this.fontRendererObj.getStringWidth(status) / 2, 70, 4210752);
 //		status = ElectricityDisplay.getDisplay(this.distributor.getVoltage(), ElectricUnit.VOLTAGE);
 //		this.fontRendererObj.drawString(status, this.xSize / 2 - this.fontRendererObj.getStringWidth(status) / 2, 80, 4210752);
-		this.fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 90 + 3, 4210752);
+		this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 90 + 3, 4210752);
 	}
 
 	private String getStatus()
 	{
 		if (this.distributor.getEnergyStoredGC() == 0)
 		{
-			return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.missingpower.name");
+			return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.missingpower.name");
 		}
 
 		if (this.distributor.storedOxygen < this.distributor.oxygenPerTick)
 		{
-			return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.missingoxygen.name");
+			return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.missingoxygen.name");
 		}
 
-		return EnumColor.DARK_GREEN + StatCollector.translateToLocal("gui.status.active.name");
+		return EnumColor.DARK_GREEN + GCCoreUtil.translate("gui.status.active.name");
 	}
 
 	@Override
@@ -139,16 +130,15 @@ public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCal
 			}
 
 			List<String> oxygenDesc = new ArrayList<String>();
-			oxygenDesc.add("Oxygen Storage");
-			oxygenDesc.add(EnumColor.YELLOW + "Oxygen: " + ((int) Math.floor(this.distributor.storedOxygen) + " / " + (int) Math.floor(this.distributor.maxOxygen)));
+			oxygenDesc.add(GCCoreUtil.translate("gui.oxygenStorage.desc.0"));
+			oxygenDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.oxygenStorage.desc.1") + ": " + ((int) Math.floor(this.distributor.storedOxygen) + " / " + (int) Math.floor(this.distributor.maxOxygen)));
 			this.oxygenInfoRegion.tooltipStrings = oxygenDesc;
 
 			List<String> electricityDesc = new ArrayList<String>();
-			electricityDesc.add("Electrical Storage");
-			electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.distributor.getEnergyStoredGC()) + " / " + (int) Math.floor(this.distributor.getMaxEnergyStoredGC())));
+			electricityDesc.add(GCCoreUtil.translate("gui.energyStorage.desc.0"));
+			electricityDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.energyStorage.desc.1") + ((int) Math.floor(this.distributor.getEnergyStoredGC()) + " / " + (int) Math.floor(this.distributor.getMaxEnergyStoredGC())));
 			this.electricInfoRegion.tooltipStrings = electricityDesc;
 
-			FMLLog.info("" + this.distributor.oxygenBubble.shouldRender());
 			this.checkboxRenderBubble.isSelected = this.distributor.oxygenBubble.shouldRender();
 		}
 	}

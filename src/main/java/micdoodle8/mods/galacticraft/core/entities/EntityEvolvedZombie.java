@@ -18,15 +18,8 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
-/**
- * EntityZombie.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class EntityEvolvedZombie extends EntityZombie implements IEntityBreathable
 {
 	private int conversionTime = 0;

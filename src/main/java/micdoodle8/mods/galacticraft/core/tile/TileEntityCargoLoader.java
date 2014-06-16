@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.api.entity.ICargoEntity.RemovalResult;
 import micdoodle8.mods.galacticraft.api.power.IItemElectric;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -14,20 +15,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 
-/**
- * GCCoreTileEntityCargoLoader.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class TileEntityCargoLoader extends TileEntityElectricBlock implements IInventory, ISidedInventory, ILandingPadAttachable
 {
 	private ItemStack[] containingItems = new ItemStack[15];
@@ -245,7 +238,7 @@ public class TileEntityCargoLoader extends TileEntityElectricBlock implements II
 	@Override
 	public String getInventoryName()
 	{
-		return StatCollector.translateToLocal("container.cargoloader.name");
+		return GCCoreUtil.translate("container.cargoloader.name");
 	}
 
 	@Override

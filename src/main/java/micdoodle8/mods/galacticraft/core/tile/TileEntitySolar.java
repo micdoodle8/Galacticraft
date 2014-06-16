@@ -14,6 +14,7 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
 import micdoodle8.mods.galacticraft.core.blocks.BlockSolar;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,21 +26,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-/**
- * GCCoreTileEntitySolar.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class TileEntitySolar extends TileEntityUniversalElectrical implements IMultiBlock, IPacketReceiver, IDisableableMachine, IInventory, ISidedInventory, IConnector
 {
 	public HashSet<TileEntity> connectedTiles = new HashSet<TileEntity>();
@@ -400,7 +393,7 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 	@Override
 	public String getInventoryName()
 	{
-		return StatCollector.translateToLocal(this.isAdvancedSolar() ? "container.solarbasic.name" : "container.solaradvanced.name");
+		return GCCoreUtil.translate(this.isAdvancedSolar() ? "container.solarbasic.name" : "container.solaradvanced.name");
 	}
 
 	@Override

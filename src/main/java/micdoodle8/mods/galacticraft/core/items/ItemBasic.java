@@ -5,6 +5,7 @@ import java.util.List;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,20 +14,12 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-/**
- * GCCoreItemBasic.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class ItemBasic extends Item
 {
 	public static final String[] names = { "solar_module_0", "solar_module_1", "rawSilicon", "ingotCopper", "ingotTin", "ingotAluminum", "compressedCopper", "compressedTin", "compressedAluminum", "compressedSteel", "compressedBronze", "compressedIron", "waferSolar", "waferBasic", "waferAdvanced", "dehydratedApple", "dehydratedCarrot", "dehydratedMelon", "dehydratedPotato", "frequencyModule" };
@@ -112,12 +105,12 @@ public class ItemBasic extends Item
 	{
 		if (par1ItemStack.getItemDamage() > 14 && par1ItemStack.getItemDamage() < 19)
 		{
-			par3List.add(EnumColor.BRIGHT_GREEN + StatCollector.translateToLocal(this.getUnlocalizedName() + "." + ItemBasic.names[par1ItemStack.getItemDamage()] + ".name"));
+			par3List.add(EnumColor.BRIGHT_GREEN + GCCoreUtil.translate(this.getUnlocalizedName() + "." + ItemBasic.names[par1ItemStack.getItemDamage()] + ".name"));
 		}
 		else if (par1ItemStack.getItemDamage() == 19)
 		{
-			par3List.add(EnumColor.AQUA + "Can receive weak sound");
-			par3List.add(EnumColor.AQUA + "waves and distant signals");
+			par3List.add(EnumColor.AQUA + GCCoreUtil.translate("gui.frequencyModule.desc.0"));
+			par3List.add(EnumColor.AQUA + GCCoreUtil.translate("gui.frequencyModule.desc.1"));
 		}
 	}
 

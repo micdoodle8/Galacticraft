@@ -11,6 +11,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntityCargoRocket;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntityTier2Rocket;
@@ -26,15 +27,8 @@ import net.minecraftforge.fluids.FluidStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-/**
- * GCMarsItemSpaceshipTier2.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class ItemTier2Rocket extends Item implements IHoldableItem
 {
 	public ItemTier2Rocket()
@@ -173,12 +167,12 @@ public class ItemTier2Rocket extends Item implements IHoldableItem
 
 		if (type.getPreFueled())
 		{
-			par2List.add(EnumColor.RED + "\u00a7o" + "Creative Only");
+			par2List.add(EnumColor.RED + "\u00a7o" + GCCoreUtil.translate("gui.creativeOnly.desc"));
 		}
 
 		if (par1ItemStack.getItemDamage() >= 10)
 		{
-			par2List.add(EnumColor.AQUA + "Requires Launch Controller");
+			par2List.add(EnumColor.AQUA + GCCoreUtil.translate("gui.requiresController.desc"));
 		}
 	}
 

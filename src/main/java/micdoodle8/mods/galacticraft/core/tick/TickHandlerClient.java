@@ -13,6 +13,7 @@ import micdoodle8.mods.galacticraft.core.client.CloudRenderer;
 import micdoodle8.mods.galacticraft.core.client.SkyProviderMoon;
 import micdoodle8.mods.galacticraft.core.client.SkyProviderOrbit;
 import micdoodle8.mods.galacticraft.core.client.SkyProviderOverworld;
+import micdoodle8.mods.galacticraft.core.client.gui.GuiIdsCore;
 import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlayDockingRocket;
 import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlayLander;
 import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlayLaunchCountdown;
@@ -50,7 +51,6 @@ import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
@@ -73,15 +73,8 @@ import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.common.gameevent.TickEvent.RenderTickEvent;
 import cpw.mods.fml.relauncher.Side;
 
-/**
- * GCCoreTickHandlerClient.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class TickHandlerClient
 {
 	public static int airRemaining;
@@ -344,8 +337,6 @@ public class TickHandlerClient
 
 			if (minecraft.currentScreen != null && minecraft.currentScreen instanceof GuiMainMenu)
 			{
-				GalacticraftCore.playersServer.clear();
-				GalacticraftCore.playersClient.clear();
 				ClientProxyCore.playerItemData.clear();
 
 				if (TickHandlerClient.missingRequirementThread == null)
@@ -357,7 +348,7 @@ public class TickHandlerClient
 
 			if (world != null && spaceRaceGuiScheduled && minecraft.currentScreen == null)
 			{
-				player.openGui(GalacticraftCore.instance, ConfigManagerCore.idGuiNewSpaceRace, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
+				player.openGui(GalacticraftCore.instance, GuiIdsCore.SPACE_RACE_START, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
 				spaceRaceGuiScheduled = false;
 			}
 
@@ -456,15 +447,12 @@ public class TickHandlerClient
 
 			if (world != null)
 			{
-				for (int i = 0; i < world.loadedEntityList.size(); i++)
+				List entityList = world.loadedEntityList;
+				for (int i = entityList.size() - 1; i >= 0; i--)
 				{
-					final Entity e = (Entity) world.loadedEntityList.get(i);
-
-					if (e != null)
-					{
-						if (e instanceof EntityTier1Rocket)
+						if (entityList.get(i) instanceof EntityTier1Rocket)
 						{
-							final EntityTier1Rocket eship = (EntityTier1Rocket) e;
+							final EntityTier1Rocket eship = (EntityTier1Rocket) entityList.get(i);
 
 							if (eship.rocketSoundUpdater == null)
 							{
@@ -472,7 +460,6 @@ public class TickHandlerClient
 //								eship.rocketSoundUpdater = new GCCoreSoundUpdaterSpaceship(FMLClientHandler.instance().getClient().sndManager, eship, FMLClientHandler.instance().getClient().thePlayer);
 							}
 						}
-					}
 				}
 			}
 

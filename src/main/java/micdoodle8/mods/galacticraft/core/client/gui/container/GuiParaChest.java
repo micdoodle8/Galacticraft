@@ -3,24 +3,17 @@ package micdoodle8.mods.galacticraft.core.client.gui.container;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.IScaleableFuelLevel;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerParaChest;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-/**
- * GCCoreGuiParachest.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 @SideOnly(Side.CLIENT)
 public class GuiParaChest extends GuiContainerGC
 {
@@ -53,7 +46,7 @@ public class GuiParaChest extends GuiContainerGC
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
 	{
 		this.fontRendererObj.drawString(this.lowerChestInventory.getInventoryName(), 8, 6, 4210752);
-		this.fontRendererObj.drawString(this.upperChestInventory.hasCustomInventoryName() ? this.upperChestInventory.getInventoryName() : StatCollector.translateToLocal(this.upperChestInventory.getInventoryName()), 8, this.ySize - 103 + 2, 4210752);
+		this.fontRendererObj.drawString(this.upperChestInventory.hasCustomInventoryName() ? this.upperChestInventory.getInventoryName() : GCCoreUtil.translate(this.upperChestInventory.getInventoryName()), 8, this.ySize - 103 + (this.inventorySlots == 3 ? 2 : 4), 4210752);
 	}
 
 	@Override

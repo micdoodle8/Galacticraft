@@ -11,15 +11,8 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-/**
- * GCCoreGuiMissingCore.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 @SideOnly(Side.CLIENT)
 public class GuiMissingCore extends GuiScreen
 {
@@ -40,13 +33,13 @@ public class GuiMissingCore extends GuiScreen
 	{
 		this.drawDefaultBackground();
 		int offset = this.height / 2 - 50;
-		this.drawCenteredString(this.fontRendererObj, "MicdoodleCore not found in mods folder", this.width / 2, offset, 0xFF5555);
+		this.drawCenteredString(this.fontRendererObj, GCCoreUtil.translate("gui.missingCore.name.0"), this.width / 2, offset, 0xFF5555);
 		offset += 25;
-		this.drawCenteredString(this.fontRendererObj, "Galacticraft failed to load", this.width / 2, offset, 0xFF5555);
+		this.drawCenteredString(this.fontRendererObj, GCCoreUtil.translate("gui.missingCore.name.1"), this.width / 2, offset, 0xFF5555);
 		offset += 20;
-		this.drawCenteredString(this.fontRendererObj, "Close Minecraft and install MicdoodleCore", this.width / 2, offset, 0x999999);
+		this.drawCenteredString(this.fontRendererObj, GCCoreUtil.translate("gui.missingCore.name.2"), this.width / 2, offset, 0x999999);
 		offset += 20;
-		String s = EnumChatFormatting.UNDERLINE + "Click here to open download page";
+		String s = EnumChatFormatting.UNDERLINE + GCCoreUtil.translate("gui.missingCore.name.3");
 		this.urlX = this.width / 2 - this.fontRendererObj.getStringWidth(s) / 2 - 10;
 		this.urlY = offset - 2;
 		this.urlWidth = this.fontRendererObj.getStringWidth(s) + 20;

@@ -11,21 +11,11 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.common.IPlantable;
-import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-/**
- * BlockMachineFrame.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class BlockMachineFrame extends Block
 {
 	@SideOnly(Side.CLIENT)
@@ -72,7 +62,7 @@ public class BlockMachineFrame extends Block
 		switch (meta)
 		{
 		default:
-			return null;
+			return super.getItemDropped(meta, random, par3);
 		}
 	}
 
@@ -109,11 +99,5 @@ public class BlockMachineFrame extends Block
 		{
 			par3List.add(new ItemStack(par1, 1, var4));
 		}
-	}
-
-	@Override
-    public boolean canSustainPlant(IBlockAccess world, int x, int y, int z, ForgeDirection direction, IPlantable plantable)
-	{
-		return false;
 	}
 }

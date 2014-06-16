@@ -1,29 +1,20 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
-import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay;
-import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay.ElectricUnit;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerElectricFurnace;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricFurnace;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-/**
- * GCCoreGuiElectricFurnace.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 @SideOnly(Side.CLIENT)
 public class GuiElectricFurnace extends GuiContainer
 {
@@ -52,17 +43,17 @@ public class GuiElectricFurnace extends GuiContainer
 
 		if (this.tileEntity.processTicks > 0)
 		{
-			displayText = "Running";
+			displayText = GCCoreUtil.translate("gui.status.running.name");
 		}
 		else
 		{
-			displayText = "Idle";
+			displayText = GCCoreUtil.translate("gui.status.idle.name");
 		}
 
-		this.fontRendererObj.drawString("Status: " + displayText, 97, 45, 4210752);
+		this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.status.name") + ": " + displayText, 97, 45, 4210752);
 		this.fontRendererObj.drawString("" + tileEntity.storage.getMaxExtract(), 97, 56, 4210752);
 //		this.fontRendererObj.drawString("Voltage: " + (int) (this.tileEntity.getVoltage() * 1000.0F), 97, 68, 4210752);
-		this.fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
+		this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 
 	/**

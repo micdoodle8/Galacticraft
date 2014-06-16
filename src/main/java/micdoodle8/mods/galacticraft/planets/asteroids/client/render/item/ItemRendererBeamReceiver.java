@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client.render.item;
 
-import micdoodle8.mods.galacticraft.core.tile.ReceiverMode;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.tile.TileEntityBeamReceiverRenderer;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,15 +11,8 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
 
-/**
- * ItemRendererBeamReceiver.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class ItemRendererBeamReceiver implements IItemRenderer
 {
 	private void renderBeamReceiver(ItemRenderType type, RenderBlocks render, ItemStack item, float translateX, float translateY, float translateZ)

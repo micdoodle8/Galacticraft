@@ -5,7 +5,6 @@ import java.util.List;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamOutput;
-import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReflector;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.World;

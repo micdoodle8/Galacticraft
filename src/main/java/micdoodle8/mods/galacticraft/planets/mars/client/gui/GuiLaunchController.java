@@ -23,19 +23,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
-/**
- * GCMarsGuiLaunchController.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class GuiLaunchController extends GuiContainer implements IDropboxCallback, ITextBoxCallback, ICheckBoxCallback
 {
 	private static final ResourceLocation launchControllerGui = new ResourceLocation(MarsModule.TEXTURE_DOMAIN, "textures/gui/launchController.png");
@@ -177,7 +169,7 @@ public class GuiLaunchController extends GuiContainer implements IDropboxCallbac
 			this.cannotEditTimer--;
 		}
 
-		this.fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, 115, 4210752);
+		this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, 115, 4210752);
 		displayString = this.getStatus();
 		this.fontRendererObj.drawSplitString(displayString, 60 - this.fontRendererObj.getStringWidth(displayString) / 2, 94, 60, 4210752);
 //		displayString = ElectricityDisplay.getDisplay(this.launchController.ueWattsPerTick * 20, ElectricUnit.WATT);

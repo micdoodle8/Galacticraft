@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemOilCanister;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -12,7 +13,6 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -23,15 +23,8 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import cpw.mods.fml.relauncher.Side;
 
-/**
- * GCCoreTileEntityRefinery.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class TileEntityRefinery extends TileEntityElectricBlock implements IInventory, ISidedInventory, IFluidHandler
 {
 	private final int tankCapacity = 24000;
@@ -326,7 +319,7 @@ public class TileEntityRefinery extends TileEntityElectricBlock implements IInve
 	@Override
 	public String getInventoryName()
 	{
-		return StatCollector.translateToLocal("container.refinery.name");
+		return GCCoreUtil.translate("container.refinery.name");
 	}
 
 	@Override

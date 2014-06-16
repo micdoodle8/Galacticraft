@@ -18,15 +18,8 @@ import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
-/**
- * EntitySludgeling.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class EntitySludgeling extends EntityMob implements IEntityBreathable
 {
 	public EntitySludgeling(World par1World)

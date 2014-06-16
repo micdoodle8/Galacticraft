@@ -11,6 +11,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -29,15 +30,8 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-/**
- * BlockMulti.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class BlockMulti extends BlockContainer implements IPartialSealableBlock, ITileEntityProvider
 {
 	private IIcon[] fakeIcons;
@@ -114,6 +108,10 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
 		{
 			this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
 		}
+		else if (meta == 6)
+		{
+			this.setBlockBounds(0.0F, 0.55F, 0.0F, 1.0F, 1.0F, 1.0F);
+		}
 		else
 		{
 			this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
@@ -129,6 +127,11 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
 		if (meta == 2)
 		{
 			this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
+			super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, list, entity);
+		}
+		else if (meta == 6)
+		{
+			this.setBlockBounds(0.0F, 0.55F, 0.0F, 1.0F, 1.0F, 1.0F);
 			super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, list, entity);
 		}
 		else
@@ -303,4 +306,40 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
 			super.setBedOccupied(world, x, y, z, player, occupied);
 		}
 	}
+
+	@Override
+    @SideOnly(Side.CLIENT)
+    public boolean addHitEffects(World worldObj, MovingObjectPosition target, EffectRenderer effectRenderer)
+    {
+    	if (worldObj.getBlockMetadata(target.blockX, target.blockY, target.blockZ) == 6)
+    	{
+    		return true;
+    	}
+
+		TileEntity tileEntity = worldObj.getTileEntity(target.blockX, target.blockY, target.blockZ);
+
+		if (tileEntity instanceof TileEntityMulti)
+		{
+			BlockVec3 mainBlockPosition = ((TileEntityMulti) tileEntity).mainBlockPosition;
+			
+			if (mainBlockPosition != null)
+			{
+				effectRenderer.addBlockHitEffects(mainBlockPosition.x, mainBlockPosition.y, mainBlockPosition.z, target);
+			}
+		}
+    	
+        return super.addHitEffects(worldObj, target, effectRenderer);
+    }
+
+	@Override
+    @SideOnly(Side.CLIENT)
+    public boolean addDestroyEffects(World world, int x, int y, int z, int meta, EffectRenderer effectRenderer)
+    {
+    	if (world.getBlockMetadata(x, y, z) == 6)
+    	{
+    		return true;
+    	}
+    	
+        return super.addDestroyEffects(world, x, y, z, meta, effectRenderer);
+    }
 }

@@ -7,32 +7,25 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockParaChest;
 import micdoodle8.mods.galacticraft.core.entities.IScaleableFuelLevel;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerParaChest;
+import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamicInventory;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import cpw.mods.fml.relauncher.Side;
 
-/**
- * GCCoreTileEntityParachest.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
-public class TileEntityParaChest extends TileEntityAdvanced implements IInventory, IPacketReceiver, IScaleableFuelLevel
+
+
+public class TileEntityParaChest extends TileEntityAdvanced implements IInventorySettable, IPacketReceiver, IScaleableFuelLevel
 {
 	private final int tankCapacity = 5000;
 	@NetworkedField(targetSide = Side.CLIENT)
@@ -55,6 +48,7 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
 
 		if (this.worldObj != null && this.worldObj.isRemote)
 		{
+			//Request size + contents information from server
 			GalacticraftCore.packetPipeline.sendToServer(new PacketDynamicInventory(this));
 		}
 	}
@@ -71,6 +65,14 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
 	public int getSizeInventory()
 	{
 		return this.chestContents.length;
+	}
+
+	@Override
+	public void setSizeInventory(int size)
+	{
+		if ((size-3)%18!=0)
+			System.out.println("Strange TileEntityParachest inventory size received from server "+size);
+		this.chestContents = new ItemStack[size];
 	}
 
 	@Override
@@ -143,7 +145,7 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
 	@Override
 	public String getInventoryName()
 	{
-		return StatCollector.translateToLocal("container.parachest.name");
+		return GCCoreUtil.translate("container.parachest.name");
 	}
 
 	@Override
@@ -162,7 +164,7 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
 
 		for (int i = 0; i < nbttaglist.tagCount(); ++i)
 		{
-			NBTTagCompound nbttagcompound1 = (NBTTagCompound) nbttaglist.getCompoundTagAt(i);
+			NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
 			int j = nbttagcompound1.getByte("Slot") & 255;
 
 			if (j >= 0 && j < this.chestContents.length)

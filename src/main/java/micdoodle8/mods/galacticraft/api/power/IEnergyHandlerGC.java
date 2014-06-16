@@ -12,7 +12,7 @@ public interface IEnergyHandlerGC
 	 * @param simulate If true, the transfer will only be simulated.
 	 * @return The amount of energy that was successfully received (or would have been, if simulated).
 	 */
-	public int receiveEnergyGC(EnergySource from, int amount, boolean simulate);
+	public float receiveEnergyGC(EnergySource from, float amount, boolean simulate);
 
 	/**
 	 * Remove energy, transferring it to an external source
@@ -22,7 +22,7 @@ public interface IEnergyHandlerGC
 	 * @param simulate If true, the transfer will only be simulated.
 	 * @return The amount of energy that was successfully extracted (or would have been, if simulated).
 	 */
-	public int extractEnergyGC(EnergySource from, int amount, boolean simulate);
+	public float extractEnergyGC(EnergySource from, float amount, boolean simulate);
 	
 	/**
 	 * Returns true if the handler can interface with the provided energy source
@@ -32,10 +32,10 @@ public interface IEnergyHandlerGC
 	/**
 	 * Returns the amount of energy stored in this handler available to the provided source
 	 */
-	public int getEnergyStoredGC(EnergySource from);
+	public float getEnergyStoredGC(EnergySource from);
 	
 	/**
 	 * Returns the maximum amount of energy stored in this handler available to the provided source
 	 */
-	public int getMaxEnergyStoredGC(EnergySource from);
+	public float getMaxEnergyStoredGC(EnergySource from);
 }

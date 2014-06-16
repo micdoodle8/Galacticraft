@@ -10,21 +10,14 @@ import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion
 import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenCollector;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenCollector;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
-/**
- * GCCoreGuiAirCollector.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class GuiOxygenCollector extends GuiContainerGC
 {
 	private static final ResourceLocation collectorTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/oxygen.png");
@@ -46,8 +39,8 @@ public class GuiOxygenCollector extends GuiContainerGC
 	{
 		super.initGui();
 		List<String> batterySlotDesc = new ArrayList<String>();
-		batterySlotDesc.add("Collector battery slot, place battery here");
-		batterySlotDesc.add("if not using a connected power source");
+		batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.0"));
+		batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.1"));
 		this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 31, (this.height - this.ySize) / 2 + 26, 18, 18, batterySlotDesc, this.width, this.height));
 		this.oxygenInfoRegion.xPosition = (this.width - this.xSize) / 2 + 112;
 		this.oxygenInfoRegion.yPosition = (this.height - this.ySize) / 2 + 24;
@@ -65,17 +58,17 @@ public class GuiOxygenCollector extends GuiContainerGC
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
 	{
 		this.fontRendererObj.drawString(this.collector.getInventoryName(), 8, 10, 4210752);
-		this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.message.out.name") + ":", 81, 25, 4210752);
-		this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.message.in.name") + ":", 87, 37, 4210752);
-		String status = StatCollector.translateToLocal("gui.message.status.name") + ": " + this.getStatus();
+		this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.out.name") + ":", 81, 25, 4210752);
+		this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.in.name") + ":", 87, 37, 4210752);
+		String status = GCCoreUtil.translate("gui.message.status.name") + ": " + this.getStatus();
 		this.fontRendererObj.drawString(status, this.xSize / 2 - this.fontRendererObj.getStringWidth(status) / 2, 50, 4210752);
-		status = "Collecting: " + (int) Math.min(this.collector.lastOxygenCollected, TileEntityOxygenCollector.OUTPUT_PER_TICK) * 20 + "/s";
+		status = GCCoreUtil.translate("gui.status.collecting.name") + ": " + (int) Math.min(this.collector.lastOxygenCollected, TileEntityOxygenCollector.OUTPUT_PER_TICK) * 20 + "/s";
 		this.fontRendererObj.drawString(status, this.xSize / 2 - this.fontRendererObj.getStringWidth(status) / 2, 60, 4210752);
 		status = ElectricityDisplay.getDisplay(TileEntityOxygenCollector.WATTS_PER_TICK * 20, ElectricUnit.WATT);
 		this.fontRendererObj.drawString(status, this.xSize / 2 - this.fontRendererObj.getStringWidth(status) / 2, 70, 4210752);
 //		status = ElectricityDisplay.getDisplay(this.collector.getVoltage(), ElectricUnit.VOLTAGE);
 		this.fontRendererObj.drawString(status, this.xSize / 2 - this.fontRendererObj.getStringWidth(status) / 2, 80, 4210752);
-		this.fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 90 + 2, 4210752);
+		this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 90 + 2, 4210752);
 	}
 
 	private String getStatus()
@@ -83,15 +76,15 @@ public class GuiOxygenCollector extends GuiContainerGC
 
 		if (this.collector.getEnergyStoredGC() == 0)
 		{
-			return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.missingpower.name");
+			return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.missingpower.name");
 		}
 
 		if (this.collector.lastOxygenCollected <= 0.0F)
 		{
-			return EnumColor.DARK_RED + StatCollector.translateToLocal("gui.status.missingleaves.name");
+			return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.missingleaves.name");
 		}
 
-		return EnumColor.DARK_GREEN + StatCollector.translateToLocal("gui.status.active.name");
+		return EnumColor.DARK_GREEN + GCCoreUtil.translate("gui.status.active.name");
 	}
 
 	@Override
@@ -121,13 +114,13 @@ public class GuiOxygenCollector extends GuiContainerGC
 			}
 
 			List<String> oxygenDesc = new ArrayList<String>();
-			oxygenDesc.add("Oxygen Storage");
-			oxygenDesc.add(EnumColor.YELLOW + "Oxygen: " + ((int) Math.floor(this.collector.storedOxygen) + " / " + (int) Math.floor(this.collector.maxOxygen)));
+			oxygenDesc.add(GCCoreUtil.translate("gui.oxygenStorage.desc.0"));
+			oxygenDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.oxygenStorage.desc.1") + ": " + ((int) Math.floor(this.collector.storedOxygen) + " / " + (int) Math.floor(this.collector.maxOxygen)));
 			this.oxygenInfoRegion.tooltipStrings = oxygenDesc;
 
 			List<String> electricityDesc = new ArrayList<String>();
-			electricityDesc.add("Electrical Storage");
-			electricityDesc.add(EnumColor.YELLOW + "Energy: " + ((int) Math.floor(this.collector.getEnergyStoredGC()) + " / " + (int) Math.floor(this.collector.getMaxEnergyStoredGC())));
+			electricityDesc.add(GCCoreUtil.translate("gui.energyStorage.desc.0"));
+			electricityDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.energyStorage.desc.1") + ((int) Math.floor(this.collector.getEnergyStoredGC()) + " / " + (int) Math.floor(this.collector.getMaxEnergyStoredGC())));
 			this.electricInfoRegion.tooltipStrings = electricityDesc;
 		}
 	}

@@ -87,7 +87,7 @@ public class TileEntityBeamReflector extends TileEntityBeamOutput implements ILa
 	}
 
 	@Override
-	public int receiveEnergyGC(EnergySource from, int amount, boolean simulate) 
+	public float receiveEnergyGC(EnergySource from, float amount, boolean simulate) 
 	{
 		if (this.getTarget() != null)
 		{
@@ -112,7 +112,7 @@ public class TileEntityBeamReflector extends TileEntityBeamOutput implements ILa
 	}
 
 	@Override
-	public int extractEnergyGC(EnergySource from, int amount, boolean simulate) 
+	public float extractEnergyGC(EnergySource from, float amount, boolean simulate) 
 	{
 		return 0;
 	}
@@ -124,13 +124,13 @@ public class TileEntityBeamReflector extends TileEntityBeamOutput implements ILa
 	}
 
 	@Override
-	public int getEnergyStoredGC(EnergySource from) 
+	public float getEnergyStoredGC(EnergySource from) 
 	{
 		return this.storage.getEnergyStoredGC();
 	}
 
 	@Override
-	public int getMaxEnergyStoredGC(EnergySource from) 
+	public float getMaxEnergyStoredGC(EnergySource from) 
 	{
 		return this.storage.getCapacityGC();
 	}

@@ -6,15 +6,8 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-/**
- * GCCoreSlotTankRefill.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class SlotTankRefill extends Slot
 {
 	public SlotTankRefill(IInventory par3IInventory, int par4, int par5, int par6)

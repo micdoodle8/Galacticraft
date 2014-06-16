@@ -3,15 +3,8 @@ package micdoodle8.mods.galacticraft.core.client.model.block;
 import net.minecraft.client.model.ModelLargeChest;
 import net.minecraft.client.model.ModelRenderer;
 
-/**
- * GCCoreModelTreasureChestLarge.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class ModelTreasureChestLarge extends ModelLargeChest
 {
 	public ModelRenderer keyParts[] = new ModelRenderer[6];

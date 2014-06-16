@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.mars.blocks;
 
-import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.items.ItemBlockEgg;
 import micdoodle8.mods.galacticraft.planets.mars.items.ItemBlockMachine;
 import micdoodle8.mods.galacticraft.planets.mars.items.ItemBlockMars;
@@ -9,15 +8,8 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-/**
- * GCMarsBlocks.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class MarsBlocks
 {
 	public static Block marsBlock;
@@ -49,13 +41,13 @@ public class MarsBlocks
 
 	public static void registerBlocks()
 	{
-		GameRegistry.registerBlock(MarsBlocks.marsBlock, ItemBlockMars.class, MarsBlocks.marsBlock.getUnlocalizedName(), GalacticraftPlanets.MODID);
-		GameRegistry.registerBlock(MarsBlocks.blockSludge, ItemBlock.class, MarsBlocks.blockSludge.getUnlocalizedName(), GalacticraftPlanets.MODID);
-		GameRegistry.registerBlock(MarsBlocks.vine, ItemBlock.class, MarsBlocks.vine.getUnlocalizedName(), GalacticraftPlanets.MODID);
-		GameRegistry.registerBlock(MarsBlocks.rock, ItemBlockEgg.class, MarsBlocks.rock.getUnlocalizedName(), GalacticraftPlanets.MODID);
-		GameRegistry.registerBlock(MarsBlocks.tier2TreasureChest, ItemBlock.class, MarsBlocks.tier2TreasureChest.getUnlocalizedName(), GalacticraftPlanets.MODID);
-		GameRegistry.registerBlock(MarsBlocks.machine, ItemBlockMachine.class, MarsBlocks.machine.getUnlocalizedName(), GalacticraftPlanets.MODID);
-		GameRegistry.registerBlock(MarsBlocks.creeperEgg, ItemBlock.class, MarsBlocks.creeperEgg.getUnlocalizedName(), GalacticraftPlanets.MODID);
-		GameRegistry.registerBlock(MarsBlocks.tintedGlassPane, ItemBlockTintedGlassPane.class, MarsBlocks.tintedGlassPane.getUnlocalizedName(), GalacticraftPlanets.MODID);
+		GameRegistry.registerBlock(MarsBlocks.marsBlock, ItemBlockMars.class, MarsBlocks.marsBlock.getUnlocalizedName());
+		GameRegistry.registerBlock(MarsBlocks.blockSludge, ItemBlock.class, MarsBlocks.blockSludge.getUnlocalizedName());
+		GameRegistry.registerBlock(MarsBlocks.vine, ItemBlock.class, MarsBlocks.vine.getUnlocalizedName());
+		GameRegistry.registerBlock(MarsBlocks.rock, ItemBlockEgg.class, MarsBlocks.rock.getUnlocalizedName());
+		GameRegistry.registerBlock(MarsBlocks.tier2TreasureChest, ItemBlock.class, MarsBlocks.tier2TreasureChest.getUnlocalizedName());
+		GameRegistry.registerBlock(MarsBlocks.machine, ItemBlockMachine.class, MarsBlocks.machine.getUnlocalizedName());
+		GameRegistry.registerBlock(MarsBlocks.creeperEgg, ItemBlock.class, MarsBlocks.creeperEgg.getUnlocalizedName());
+		GameRegistry.registerBlock(MarsBlocks.tintedGlassPane, ItemBlockTintedGlassPane.class, MarsBlocks.tintedGlassPane.getUnlocalizedName());
 	}
 }

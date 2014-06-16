@@ -24,15 +24,8 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-/**
- * GCMarsTileEntityCryogenicChamber.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class TileEntityCryogenicChamber extends TileEntityMulti implements IMultiBlock
 {
 	public boolean isOccupied;
@@ -61,7 +54,7 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
             GalacticraftCore.packetPipeline.sendTo(new PacketSimpleMars(EnumSimplePacketMars.C_BEGIN_CRYOGENIC_SLEEP, new Object[] { this.xCoord, this.yCoord, this.zCoord }), ((GCEntityPlayerMP) entityPlayer));
 			return true;
 		case NOT_POSSIBLE_NOW:
-			entityPlayer.addChatMessage(new ChatComponentTranslation("I can't use this for another " + ((GCEntityPlayerMP) entityPlayer).getCryogenicChamberCooldown() / 20 + " seconds"));
+			entityPlayer.addChatMessage(new ChatComponentTranslation("I can't use this for another " + ((GCEntityPlayerMP) entityPlayer).getPlayerStats().cryogenicChamberCooldown / 20 + " seconds"));
 			return false;
 		default:
 			return false;
@@ -82,7 +75,7 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
 				return EnumStatus.NOT_POSSIBLE_HERE;
 			}
 
-			if (((GCEntityPlayerMP) entityPlayer).getCryogenicChamberCooldown() > 0)
+			if (((GCEntityPlayerMP) entityPlayer).getPlayerStats().cryogenicChamberCooldown > 0)
 			{
 				return EnumStatus.NOT_POSSIBLE_NOW;
 			}

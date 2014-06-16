@@ -16,15 +16,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 
-/**
- * GCMarsContainerTerraformer.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class ContainerTerraformer extends Container
 {
 	private final TileEntityTerraformer tileEntity;
@@ -70,13 +63,13 @@ public class ContainerTerraformer extends Container
 		{
 			for (var7 = 0; var7 < 9; ++var7)
 			{
-				this.addSlotToContainer(new Slot(par1InventoryPlayer, var7 + var6 * 9 + 9, 8 + var7 * 18, 146 + var6 * 18));
+				this.addSlotToContainer(new Slot(par1InventoryPlayer, var7 + var6 * 9 + 9, 8 + var7 * 18, 155 + var6 * 18));
 			}
 		}
 
 		for (var6 = 0; var6 < 9; ++var6)
 		{
-			this.addSlotToContainer(new Slot(par1InventoryPlayer, var6, 8 + var6 * 18, 204));
+			this.addSlotToContainer(new Slot(par1InventoryPlayer, var6, 8 + var6 * 18, 213));
 		}
 
 		tileEntity.openInventory();

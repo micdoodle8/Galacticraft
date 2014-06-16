@@ -1,14 +1,17 @@
 package micdoodle8.mods.galacticraft.api.entity;
 
+import net.minecraft.util.StatCollector;
+
+
 public interface IRocketType
 {
 	public static enum EnumRocketType
 	{
 		DEFAULT(0, "", false, 2),
-		INVENTORY27(1, "Storage Space: 18", false, 20),
-		INVENTORY36(2, "Storage Space: 36", false, 38),
-		INVENTORY54(3, "Storage Space: 54", false, 56),
-		PREFUELED(4, "Pre-fueled", true, 2);
+		INVENTORY27(1, StatCollector.translateToLocal("gui.rocketType.0"), false, 20),
+		INVENTORY36(2, StatCollector.translateToLocal("gui.rocketType.1"), false, 38),
+		INVENTORY54(3, StatCollector.translateToLocal("gui.rocketType.2"), false, 56),
+		PREFUELED(4, StatCollector.translateToLocal("gui.rocketType.3"), true, 2);
 
 		private int index;
 		private String tooltip;

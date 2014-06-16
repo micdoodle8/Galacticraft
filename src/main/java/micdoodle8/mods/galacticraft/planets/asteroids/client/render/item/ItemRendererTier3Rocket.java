@@ -1,8 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client.render.item;
 
 import micdoodle8.mods.galacticraft.api.entity.IRocketType.EnumRocketType;
-import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.EntityTier1Rocket;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import net.minecraft.client.model.ModelChest;
@@ -19,15 +17,8 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
 
-/**
- * ItemRendererTier3Rocket.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class ItemRendererTier3Rocket implements IItemRenderer
 {
 	protected static final ResourceLocation chestTexture = new ResourceLocation("textures/entity/chest/normal.png");

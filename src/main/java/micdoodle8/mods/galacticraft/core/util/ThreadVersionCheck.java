@@ -7,20 +7,12 @@ import java.net.URL;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.StatCollector;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 
-/**
- * GCCoreThreadVersionCheck.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class ThreadVersionCheck extends Thread
 {
 	public static ThreadVersionCheck instance = new ThreadVersionCheck();
@@ -98,7 +90,7 @@ public class ThreadVersionCheck extends Thread
 			{
 				try
 				{
-					GCLog.severe(StatCollector.translateToLocal("newversion.failed.name"));
+					GCLog.severe(GCCoreUtil.translate("newversion.failed.name"));
 					Thread.sleep(15000);
 				}
 				catch (final InterruptedException e)
@@ -107,7 +99,7 @@ public class ThreadVersionCheck extends Thread
 			}
 			else
 			{
-				GCLog.info(StatCollector.translateToLocal("newversion.success.name") + " " + GalacticraftCore.remoteMajVer + "." + GalacticraftCore.remoteMinVer + "." + GalacticraftCore.remoteBuildVer);
+				GCLog.info(GCCoreUtil.translate("newversion.success.name") + " " + GalacticraftCore.remoteMajVer + "." + GalacticraftCore.remoteMinVer + "." + GalacticraftCore.remoteBuildVer);
 			}
 
 			this.count++;

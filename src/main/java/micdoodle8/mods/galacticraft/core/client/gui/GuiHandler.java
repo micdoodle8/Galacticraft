@@ -69,7 +69,6 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenStorageModule;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityParaChest;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityRefinery;
 import micdoodle8.mods.galacticraft.core.tile.TileEntitySolar;
-import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
@@ -82,15 +81,8 @@ import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-/**
- * GCCoreGuiHandler.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class GuiHandler implements IGuiHandler
 {
 	@Override
@@ -104,13 +96,13 @@ public class GuiHandler implements IGuiHandler
 			return null;
 		}
 
-		if (ID == ConfigManagerCore.idGuiSpaceshipInventory && player.ridingEntity instanceof EntityTieredRocket)
+		if (ID == GuiIdsCore.ROCKET_INVENTORY && player.ridingEntity instanceof EntityTieredRocket)
 		{
 			return new ContainerRocketInventory(player.inventory, (EntityTieredRocket) player.ridingEntity, ((EntityTieredRocket) player.ridingEntity).getType());
 		}
-		else if (ID == ConfigManagerCore.idGuiExtendedInventory)
+		else if (ID == GuiIdsCore.EXTENDED_INVENTORY)
 		{
-			return new ContainerExtendedInventory(player, playerBase.getExtendedInventory());
+			return new ContainerExtendedInventory(player, playerBase.getPlayerStats().extendedInventory);
 		}
 
 		TileEntity tile = world.getTileEntity(x, y, z);
@@ -191,7 +183,7 @@ public class GuiHandler implements IGuiHandler
 			}
 		}
 
-		for (ISchematicPage page : playerBase.getUnlockedSchematics())
+		for (ISchematicPage page : playerBase.getPlayerStats().unlockedSchematics)
 		{
 			if (ID == page.getGuiID())
 			{
@@ -220,27 +212,23 @@ public class GuiHandler implements IGuiHandler
 	{
 		GCEntityClientPlayerMP playerClient = PlayerUtil.getPlayerBaseClientFromPlayer(player, false);
 		
-		if (ID == ConfigManagerCore.idGuiGalaxyMap)
+		if (ID == GuiIdsCore.GALAXY_MAP)
 		{
 			return new GuiGalaxyMap(player);
 		}
-		else if (ID == ConfigManagerCore.idGuiSpaceshipInventory && player.ridingEntity instanceof EntityTieredRocket)
+		else if (ID == GuiIdsCore.ROCKET_INVENTORY && player.ridingEntity instanceof EntityTieredRocket)
 		{
 			return new GuiRocketInventory(player.inventory, (EntityTieredRocket) player.ridingEntity, ((EntityTieredRocket) player.ridingEntity).getType());
 		}
-		else if (ID == ConfigManagerCore.idGuiExtendedInventory)
+		else if (ID == GuiIdsCore.EXTENDED_INVENTORY)
 		{
 			return new GuiExtendedInventory(player, ClientProxyCore.dummyInventory);
 		}
-		else if (ID == ConfigManagerCore.idGuiKnowledgeBook)
-		{
-//			return new GCCoreGuiManual(new ItemStack(Block.stone), ClientProxyCore.materialsTest);
-		}
-		else if (ID == ConfigManagerCore.idGuiNewSpaceRace)
+		else if (ID == GuiIdsCore.SPACE_RACE_START)
 		{
 			return new GuiNewSpaceRace(player);
 		}
-		else if (ID == ConfigManagerCore.idGuiJoinSpaceRace)
+		else if (ID == GuiIdsCore.SPACE_RACE_JOIN)
 		{
 			return new GuiJoinSpaceRace(playerClient);
 		}

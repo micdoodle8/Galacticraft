@@ -2,25 +2,18 @@ package micdoodle8.mods.galacticraft.planets.mars.client.gui;
 
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicResultPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerSchematicTier2Rocket;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
-/**
- * GCMarsGuiSchematicRocketT2.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class GuiSchematicTier2Rocket extends GuiContainer implements ISchematicResultPage
 {
 	private static final ResourceLocation tier2SchematicTexture = new ResourceLocation(MarsModule.TEXTURE_DOMAIN, "textures/gui/schematic_rocket_T2.png");
@@ -64,7 +57,7 @@ public class GuiSchematicTier2Rocket extends GuiContainer implements ISchematicR
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
 	{
 		this.fontRendererObj.drawString("Tier 2 Rocket", 7, -20 + 27, 4210752);
-		this.fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, 220 - 104 + 2 + 27, 4210752);
+		this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, 220 - 104 + 2 + 27, 4210752);
 	}
 
 	@Override

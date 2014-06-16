@@ -19,6 +19,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.fx.EntityFXSparks;
+import micdoodle8.mods.galacticraft.core.client.gui.GuiIdsCore;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiBuggy;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiParaChest;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiChoosePlanet;
@@ -28,6 +29,7 @@ import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
+import micdoodle8.mods.galacticraft.core.entities.IBubbleProvider;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP.EnumModelPacket;
@@ -38,7 +40,6 @@ import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAirLockController;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityConductor;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -168,7 +169,8 @@ public class PacketSimple extends Packet implements IPacket
 	{
 		if (packetType.getDecodeClasses().length != data.size())
 		{
-			GCLog.info("Simple Packet found data length different than packet type");
+			GCLog.info("Simple Packet Core found data length different than packet type");
+			new RuntimeException().printStackTrace();
 		}
 
 		this.type = packetType;
@@ -205,7 +207,7 @@ public class PacketSimple extends Packet implements IPacket
 		catch (Exception e)
 		{
 			System.err.println("[Galacticraft] Error handling simple packet type: " + this.type.toString() + " " + buffer.toString());
-			throw e;
+			e.printStackTrace();
 		}
 	}
 
@@ -219,6 +221,7 @@ public class PacketSimple extends Packet implements IPacket
 		{
 			playerBaseClient = (GCEntityClientPlayerMP) player;
 		}
+		else return;
 
 		switch (this.type)
 		{
@@ -351,47 +354,61 @@ public class PacketSimple extends Packet implements IPacket
 			FMLClientHandler.instance().getClient().displayGuiScreen(null);
 			break;
 		case C_RESET_THIRD_PERSON:
-			if (playerBaseClient != null)
-			{
-				FMLClientHandler.instance().getClient().gameSettings.thirdPersonView = playerBaseClient.getThirdPersonView();
-			}
+			FMLClientHandler.instance().getClient().gameSettings.thirdPersonView = playerBaseClient.getThirdPersonView();
 			break;
 		case C_UPDATE_SPACESTATION_LIST:
-			if (WorldUtil.registeredSpaceStations == null)
+			try
 			{
+				if (WorldUtil.registeredSpaceStations != null)
+				{
+					for (Integer registeredID : WorldUtil.registeredSpaceStations)
+					{
+						DimensionManager.unregisterDimension(registeredID);
+					}
+				}
 				WorldUtil.registeredSpaceStations = new ArrayList<Integer>();
-			}
-
-			if (this.data.size() > 0)
-			{
-				if (this.data.get(0) instanceof Integer)
+				
+				if (this.data.size() > 0)
 				{
-					for (Object o : this.data)
+					if (this.data.get(0) instanceof Integer)
 					{
-						Integer dimID = (Integer)o;
-						
-						if (!WorldUtil.registeredSpaceStations.contains(dimID))
+						for (Object o : this.data)
 						{
-							WorldUtil.registeredSpaceStations.add(dimID);
-							DimensionManager.registerDimension(dimID, ConfigManagerCore.idDimensionOverworldOrbit);
+							Integer dimID = (Integer)o;
+							
+							if (!WorldUtil.registeredSpaceStations.contains(dimID))
+							{
+								WorldUtil.registeredSpaceStations.add(dimID);
+								if (!DimensionManager.isDimensionRegistered(dimID))
+									DimensionManager.registerDimension(dimID, ConfigManagerCore.idDimensionOverworldOrbit);
+								else
+									GCLog.severe("Dimension already registered on client: unable to register space station dimension "+dimID);
+							}
+						}
+					}
+					else if (this.data.get(0) instanceof Integer[])
+					{
+						for (Object o : (Integer[])this.data.get(0))
+						{
+							Integer dimID = (Integer)o;
+							
+							if (!WorldUtil.registeredSpaceStations.contains(dimID))
+							{
+								WorldUtil.registeredSpaceStations.add(dimID);
+								if (!DimensionManager.isDimensionRegistered(dimID))
+									DimensionManager.registerDimension(dimID, ConfigManagerCore.idDimensionOverworldOrbit);
+								else
+									GCLog.severe("Dimension already registered on client: unable to register space station dimension "+dimID);
+							}
 						}
 					}
 				}
-				else if (this.data.get(0) instanceof Integer[])
-				{
-					for (Object o : (Integer[])this.data.get(0))
-					{
-						Integer dimID = (Integer)o;
-						
-						if (!WorldUtil.registeredSpaceStations.contains(dimID))
-						{
-							WorldUtil.registeredSpaceStations.add(dimID);
-							DimensionManager.registerDimension(dimID, ConfigManagerCore.idDimensionOverworldOrbit);
-						}
-					}
-				}
+				break;
 			}
-			break;
+			catch (final Exception e)
+ 			{
+ 				e.printStackTrace();
+ 			}
 		case C_UPDATE_SPACESTATION_DATA:
 			SpaceStationWorldData var4 = SpaceStationWorldData.getMPSpaceStationData(player.worldObj, (Integer) this.data.get(0), player);
 			var4.readFromNBT((NBTTagCompound) this.data.get(1));
@@ -400,67 +417,71 @@ public class PacketSimple extends Packet implements IPacket
 			ClientProxyCore.clientSpaceStationID = (Integer) this.data.get(0);
 			break;
 		case C_UPDATE_PLANETS_LIST:
-			if (WorldUtil.registeredPlanets == null)
+			try
 			{
+				if (WorldUtil.registeredPlanets != null)
+				{
+					for (Integer registeredID : WorldUtil.registeredPlanets)
+					{
+						DimensionManager.unregisterDimension(registeredID);
+					}
+				}	
 				WorldUtil.registeredPlanets = new ArrayList<Integer>();
-			}
-
-			if (this.data.size() > 0)
-			{
-				if (this.data.get(0) instanceof Integer)
+	
+				if (this.data.size() > 0)
 				{
-					for (Object o : this.data)
+					if (this.data.get(0) instanceof Integer)
 					{
-						Integer dimID = (Integer)o;
-						
-						if (!WorldUtil.registeredPlanets.contains(dimID))
+						for (Object o : this.data)
 						{
-							WorldUtil.registeredPlanets.add(dimID);
-							DimensionManager.registerDimension(dimID, dimID);
+							Integer dimID = (Integer)o;
+							
+							if (!WorldUtil.registeredPlanets.contains(dimID))
+							{
+								WorldUtil.registeredPlanets.add(dimID);
+								DimensionManager.registerDimension(dimID, dimID);
+							}
+						}
+					}
+					else if (this.data.get(0) instanceof Integer[])
+					{
+						for (Object o : (Integer[])this.data.get(0))
+						{
+							Integer dimID = (Integer)o;
+							
+							if (!WorldUtil.registeredPlanets.contains(dimID))
+							{
+								WorldUtil.registeredPlanets.add(dimID);
+								DimensionManager.registerDimension(dimID, dimID);
+							}
 						}
 					}
 				}
-				else if (this.data.get(0) instanceof Integer[])
-				{
-					for (Object o : (Integer[])this.data.get(0))
-					{
-						Integer dimID = (Integer)o;
-						
-						if (!WorldUtil.registeredPlanets.contains(dimID))
-						{
-							WorldUtil.registeredPlanets.add(dimID);
-							DimensionManager.registerDimension(dimID, dimID);
-						}
-					}
-				}
+				break;
 			}
-			break;
+			catch (final Exception e)
+ 			{
+ 				e.printStackTrace();
+ 			}
 		case C_ADD_NEW_SCHEMATIC:
-			if (playerBaseClient != null)
+			final ISchematicPage page = SchematicRegistry.getMatchingRecipeForID((Integer) this.data.get(0));
+			if (!playerBaseClient.unlockedSchematics.contains(page))
 			{
-				final ISchematicPage page = SchematicRegistry.getMatchingRecipeForID((Integer) this.data.get(0));
-
-				if (!playerBaseClient.unlockedSchematics.contains(page))
-				{
-					playerBaseClient.unlockedSchematics.add(page);
-				}
+				playerBaseClient.unlockedSchematics.add(page);
 			}
 			break;
 		case C_UPDATE_SCHEMATIC_LIST:
-			if (playerBaseClient != null)
+			for (Object o : this.data)
 			{
-				for (Object o : this.data)
+				Integer schematicID = (Integer) o;
+
+				if (schematicID != -2)
 				{
-					Integer schematicID = (Integer) o;
+					Collections.sort(playerBaseClient.unlockedSchematics);
 
-					if (schematicID != -2)
+					if (!playerBaseClient.unlockedSchematics.contains(SchematicRegistry.getMatchingRecipeForID(Integer.valueOf(schematicID))))
 					{
-						Collections.sort(playerBaseClient.unlockedSchematics);
-
-						if (!playerBaseClient.unlockedSchematics.contains(SchematicRegistry.getMatchingRecipeForID(Integer.valueOf(schematicID))))
-						{
-							playerBaseClient.unlockedSchematics.add(SchematicRegistry.getMatchingRecipeForID(Integer.valueOf(schematicID)));
-						}
+						playerBaseClient.unlockedSchematics.add(SchematicRegistry.getMatchingRecipeForID(Integer.valueOf(schematicID)));
 					}
 				}
 			}
@@ -478,10 +499,7 @@ public class PacketSimple extends Packet implements IPacket
 			player.playSound("random.bow", 10.0F, 0.2F);
 			break;
 		case C_UPDATE_OXYGEN_VALIDITY:
-			if (playerBaseClient != null)
-			{
-				playerBaseClient.oxygenSetupValid = (Boolean) this.data.get(0);
-			}
+			playerBaseClient.oxygenSetupValid = (Boolean) this.data.get(0);
 			break;
 		case C_OPEN_PARACHEST_GUI:
 			switch ((Integer) this.data.get(1))
@@ -519,7 +537,7 @@ public class PacketSimple extends Packet implements IPacket
 			if (Minecraft.getMinecraft().currentScreen == null)
 			{
 				TickHandlerClient.spaceRaceGuiScheduled = false;
-				player.openGui(GalacticraftCore.instance, ConfigManagerCore.idGuiNewSpaceRace, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
+				player.openGui(GalacticraftCore.instance, GuiIdsCore.SPACE_RACE_START, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
 			}
 			else
 			{
@@ -546,7 +564,7 @@ public class PacketSimple extends Packet implements IPacket
 			break;
 		case C_OPEN_JOIN_RACE_GUI:
 			playerBaseClient.spaceRaceInviteTeamID = (Integer) data.get(0);
-			player.openGui(GalacticraftCore.instance, ConfigManagerCore.idGuiJoinSpaceRace, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
+			player.openGui(GalacticraftCore.instance, GuiIdsCore.SPACE_RACE_JOIN, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
 			break;
 		case C_UPDATE_FOOTPRINT_LIST:
 			ClientProxyCore.footprintRenderer.footprints.clear();
@@ -557,30 +575,21 @@ public class PacketSimple extends Packet implements IPacket
 			}
 			break;
 		case C_UPDATE_STATION_SPIN:
-			if (playerBaseClient != null)
+			if (playerBaseClient.worldObj.provider instanceof WorldProviderOrbit)
 			{
-				if (playerBaseClient.worldObj.provider instanceof WorldProviderOrbit)
-				{
-					((WorldProviderOrbit)playerBaseClient.worldObj.provider).setSpinRate((Float)this.data.get(0),(Boolean)this.data.get(1));
-				}
+				((WorldProviderOrbit)playerBaseClient.worldObj.provider).setSpinRate((Float)this.data.get(0),(Boolean)this.data.get(1));
 			}
 			break;
 		case C_UPDATE_STATION_DATA:
-			if (playerBaseClient != null)
+			if (playerBaseClient.worldObj.provider instanceof WorldProviderOrbit)
 			{
-				if (playerBaseClient.worldObj.provider instanceof WorldProviderOrbit)
-				{
-					((WorldProviderOrbit)playerBaseClient.worldObj.provider).setSpinCentre((Double)this.data.get(0),(Double)this.data.get(1));
-				}
+				((WorldProviderOrbit)playerBaseClient.worldObj.provider).setSpinCentre((Double)this.data.get(0),(Double)this.data.get(1));
 			}
 			break;
 		case C_UPDATE_STATION_BOX:
-			if (playerBaseClient != null)
+			if (playerBaseClient.worldObj.provider instanceof WorldProviderOrbit)
 			{
-				if (playerBaseClient.worldObj.provider instanceof WorldProviderOrbit)
-				{
-					((WorldProviderOrbit)playerBaseClient.worldObj.provider).setSpinBox((Integer)this.data.get(0),(Integer)this.data.get(1),(Integer)this.data.get(2),(Integer)this.data.get(3),(Integer)this.data.get(4),(Integer)this.data.get(5));
-				}
+				((WorldProviderOrbit)playerBaseClient.worldObj.provider).setSpinBox((Integer)this.data.get(0),(Integer)this.data.get(1),(Integer)this.data.get(2),(Integer)this.data.get(3),(Integer)this.data.get(4),(Integer)this.data.get(5));
 			}
 			break;
 		default:
@@ -592,6 +601,7 @@ public class PacketSimple extends Packet implements IPacket
 	public void handleServerSide(EntityPlayer player)
 	{
 		GCEntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player, false);
+		if (playerBase == null) return;
 
 		switch (this.type)
 		{
@@ -599,36 +609,33 @@ public class PacketSimple extends Packet implements IPacket
 			playerBase.playerNetServerHandler.sendPacket(new S07PacketRespawn(player.dimension, player.worldObj.difficultySetting, player.worldObj.getWorldInfo().getTerrainType(), playerBase.theItemInWorldManager.getGameType()));
 			break;
 		case S_TELEPORT_ENTITY:
-			if (playerBase != null)
+			try
 			{
-				try
-				{
-					final WorldProvider provider = WorldUtil.getProviderForName((String) this.data.get(0));
-					final Integer dim = provider.dimensionId;
-					GCLog.info("Found matching world ("+dim.toString()+") for name: " + (String) this.data.get(0));
+				final WorldProvider provider = WorldUtil.getProviderForName((String) this.data.get(0));
+				final Integer dim = provider.dimensionId;
+				GCLog.info("Found matching world ("+dim.toString()+") for name: " + (String) this.data.get(0));
 
-					if (playerBase.worldObj instanceof WorldServer)
+				if (playerBase.worldObj instanceof WorldServer)
+				{
+					final WorldServer world = (WorldServer) playerBase.worldObj;
+
+					if (provider instanceof IOrbitDimension)
 					{
-						final WorldServer world = (WorldServer) playerBase.worldObj;
-
-						if (provider instanceof IOrbitDimension)
-						{
-							WorldUtil.transferEntityToDimension(playerBase, dim, world);
-						}
-						else
-						{
-							WorldUtil.transferEntityToDimension(playerBase, dim, world);
-						}
+						WorldUtil.transferEntityToDimension(playerBase, dim, world);
 					}
+					else
+					{
+						WorldUtil.transferEntityToDimension(playerBase, dim, world);
+					}
+				}
 
-					playerBase.setTeleportCooldown(300);
-					GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_CLOSE_GUI, new Object[] {}), playerBase);
-				}
-				catch (final Exception e)
-				{
-					GCLog.severe("Error occurred when attempting to transfer entity to dimension: " + (String) this.data.get(0));
-					e.printStackTrace();
-				}
+				playerBase.getPlayerStats().teleportCooldown = 300;
+				GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_CLOSE_GUI, new Object[] {}), playerBase);
+			}
+			catch (final Exception e)
+			{
+				GCLog.severe("Error occurred when attempting to transfer entity to dimension: " + (String) this.data.get(0));
+				e.printStackTrace();
 			}
 			break;
 		case S_IGNITE_ROCKET:
@@ -638,29 +645,24 @@ public class PacketSimple extends Packet implements IPacket
 
 				if (ship.hasValidFuel())
 				{
-					ItemStack stack2 = null;
+					ItemStack stack2 = playerBase.getPlayerStats().extendedInventory.getStackInSlot(4);
 
-					if (playerBase != null)
-					{
-						stack2 = playerBase.getExtendedInventory().getStackInSlot(4);
-					}
-
-					if (stack2 != null && stack2.getItem() instanceof ItemParaChute || playerBase != null && playerBase.getLaunchAttempts() > 0)
+					if (stack2 != null && stack2.getItem() instanceof ItemParaChute || playerBase.getPlayerStats().launchAttempts > 0)
 					{
 						ship.igniteCheckingCooldown();
-						playerBase.setLaunchAttempts(0);
+						playerBase.getPlayerStats().launchAttempts = 0;
 					}
-					else if (playerBase.getChatCooldown() == 0 && playerBase.getLaunchAttempts() == 0)
+					else if (playerBase.getPlayerStats().chatCooldown == 0 && playerBase.getPlayerStats().launchAttempts == 0)
 					{
 						player.addChatMessage(new ChatComponentText("I don't have a parachute! If I press launch again, there's no going back!"));
-						playerBase.setChatCooldown(250);
-						playerBase.setLaunchAttempts(1);
+						playerBase.getPlayerStats().chatCooldown = 250;
+						playerBase.getPlayerStats().launchAttempts = 1;
 					}
 				}
-				else if (playerBase.getChatCooldown() == 0)
+				else if (playerBase.getPlayerStats().chatCooldown == 0)
 				{
 					player.addChatMessage(new ChatComponentText("I'll need to load in some rocket fuel first!"));
-					playerBase.setChatCooldown(250);
+					playerBase.getPlayerStats().chatCooldown = 250;
 				}
 			}
 			break;
@@ -679,7 +681,7 @@ public class PacketSimple extends Packet implements IPacket
 			}
 			else if (player.ridingEntity instanceof EntitySpaceshipBase)
 			{
-				player.openGui(GalacticraftCore.instance, ConfigManagerCore.idGuiSpaceshipInventory, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
+				player.openGui(GalacticraftCore.instance, GuiIdsCore.ROCKET_INVENTORY, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
 			}
 			break;
 		case S_UPDATE_SHIP_YAW:
@@ -716,7 +718,7 @@ public class PacketSimple extends Packet implements IPacket
 			player.openGui(GalacticraftCore.instance, -1, player.worldObj, (Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2));
 			break;
 		case S_BIND_SPACE_STATION_ID:
-			if (playerBase.getSpaceStationDimensionID() == -1 || playerBase.getSpaceStationDimensionID() == 0)
+			if ((playerBase.getPlayerStats().spaceStationDimensionID == -1 || playerBase.getPlayerStats().spaceStationDimensionID == 0) && !ConfigManagerCore.disableSpaceStationCreation)
 			{
 				WorldUtil.bindSpaceStationToNewDimension(playerBase.worldObj, playerBase);
 
@@ -764,10 +766,10 @@ public class PacketSimple extends Packet implements IPacket
 			}
 			break;
 		case S_ON_FAILED_CHEST_UNLOCK:
-			if (playerBase.getChatCooldown() == 0)
+			if (playerBase.getPlayerStats().chatCooldown == 0)
 			{
 				player.addChatMessage(new ChatComponentText("I'll probably need a Tier " + this.data.get(0) + " Dungeon key to unlock this!"));
-				playerBase.setChatCooldown(100);
+				playerBase.getPlayerStats().chatCooldown = 100;
 			}
 			break;
 		case S_RENAME_SPACE_STATION:
@@ -780,7 +782,7 @@ public class PacketSimple extends Packet implements IPacket
 			}
 			break;
 		case S_OPEN_EXTENDED_INVENTORY:
-			player.openGui(GalacticraftCore.instance, ConfigManagerCore.idGuiExtendedInventory, player.worldObj, 0, 0, 0);
+			player.openGui(GalacticraftCore.instance, GuiIdsCore.EXTENDED_INVENTORY, player.worldObj, 0, 0, 0);
 			break;
 		case S_ON_ADVANCED_GUI_CLICKED_INT:
 			TileEntity tile1 = player.worldObj.getTileEntity((Integer) this.data.get(1), (Integer) this.data.get(2), (Integer) this.data.get(3));
@@ -831,10 +833,10 @@ public class PacketSimple extends Packet implements IPacket
 				}
 				break;
 			case 6:
-				if (tile1 instanceof TileEntityOxygenDistributor)
+				if (tile1 instanceof IBubbleProvider)
 				{
-					TileEntityOxygenDistributor distributor = (TileEntityOxygenDistributor) tile1;
-					distributor.oxygenBubble.setShouldRender((Integer) this.data.get(4) == 1);
+					IBubbleProvider distributor = (IBubbleProvider) tile1;
+					distributor.setBubbleVisible((Integer) this.data.get(4) == 1);
 				}
 				break;
 			default:
@@ -910,7 +912,7 @@ public class PacketSimple extends Packet implements IPacket
 				
 				if (race != null)
 				{
-					playerInvited.spaceRaceInviteTeamID = teamInvitedTo;
+					playerInvited.getPlayerStats().spaceRaceInviteTeamID = teamInvitedTo;
 					String dA = EnumColor.DARK_AQUA.code;
 					String bG = EnumColor.BRIGHT_GREEN.code;
 					String dB = EnumColor.PURPLE.code;

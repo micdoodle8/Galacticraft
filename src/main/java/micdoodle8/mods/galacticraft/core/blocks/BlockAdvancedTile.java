@@ -12,15 +12,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-/**
- * GCCoreBlockAdvanced.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
 public abstract class BlockAdvancedTile extends BlockAdvanced implements ITileEntityProvider
 {
 	public BlockAdvancedTile(Material par3Material)

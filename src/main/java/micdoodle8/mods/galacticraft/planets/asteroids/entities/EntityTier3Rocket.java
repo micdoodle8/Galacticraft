@@ -6,8 +6,6 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
-import micdoodle8.mods.galacticraft.core.network.PacketSimple;
-import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
@@ -22,15 +20,8 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 
-/**
- * EntityTier3Rocket.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class EntityTier3Rocket extends EntityTieredRocket
 {
 	public IUpdatePlayerListBox rocketSoundUpdater;
@@ -139,6 +130,11 @@ public class EntityTier3Rocket extends EntityTieredRocket
 			if (this.timeSinceLaunch % MathHelper.floor_double(2 * (1 / multiplier)) == 0)
 			{
 				this.removeFuel(1);
+				/*TO: fix soundupdater (see below)
+				if (!this.hasValidFuel() && this.rocketSoundUpdater instanceof GCCoreSoundUpdaterSpaceship)
+				{
+					((GCCoreSoundUpdaterSpaceship) this.rocketSoundUpdater).stopRocketSound();
+				}*/
 			}
 		}
 		else if (!this.hasValidFuel() && this.getLaunched() && !this.worldObj.isRemote)
@@ -159,16 +155,16 @@ public class EntityTier3Rocket extends EntityTieredRocket
 		{
 			if (this.cargoItems == null || this.cargoItems.length == 0)
 			{
-				playerBase.setRocketStacks(new ItemStack[3]);
+				playerBase.getPlayerStats().rocketStacks = new ItemStack[2];
 			}
 			else
 			{
-				playerBase.setRocketStacks(this.cargoItems);
+				playerBase.getPlayerStats().rocketStacks = this.cargoItems;
 			}
 
-			playerBase.setRocketType(this.rocketType.getIndex());
-			playerBase.setRocketItem(MarsItems.spaceship);
-			playerBase.setFuelLevel(this.fuelTank.getFluidAmount());
+			playerBase.getPlayerStats().rocketType = this.rocketType.getIndex();
+			playerBase.getPlayerStats().rocketItem = MarsItems.spaceship;
+			playerBase.getPlayerStats().fuelLevel = this.fuelTank.getFluidAmount();
 		}
 	}
 

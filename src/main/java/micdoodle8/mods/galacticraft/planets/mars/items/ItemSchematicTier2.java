@@ -5,6 +5,7 @@ import java.util.List;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicItem;
 import micdoodle8.mods.galacticraft.core.items.ItemSchematic;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -12,19 +13,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-/**
- * GCMarsItemSchematic.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class ItemSchematicTier2 extends ItemSchematic implements ISchematicItem
 {
 	protected IIcon[] icons = new IIcon[1];
@@ -86,11 +79,11 @@ public class ItemSchematicTier2 extends ItemSchematic implements ISchematicItem
 			switch (par1ItemStack.getItemDamage())
 			{
 			case 0:
-				par3List.add(StatCollector.translateToLocal("schematic.rocketT3.name"));
+				par3List.add(GCCoreUtil.translate("schematic.rocketT3.name"));
 				par3List.add(EnumColor.DARK_AQUA + "COMING SOON");
 				break;
 			case 1:
-				par3List.add(StatCollector.translateToLocal("schematic.cargoRocket.name"));
+				par3List.add(GCCoreUtil.translate("schematic.cargoRocket.name"));
 				break;
 			}
 		}

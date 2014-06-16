@@ -2,21 +2,17 @@ package micdoodle8.mods.galacticraft.core.proxy;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.network.INetHandler;
+import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
-/**
- * CommonProxyCore.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class CommonProxyCore
 {
 	public void preInit(FMLPreInitializationEvent event)
@@ -67,5 +63,17 @@ public class CommonProxyCore
 	public World getWorldForID(int dimensionID)
 	{
 		return FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(dimensionID);
+	}
+	
+	public EntityPlayer getPlayerFromNetHandler(INetHandler handler) 
+	{
+		if (handler instanceof NetHandlerPlayServer)
+		{
+			return ((NetHandlerPlayServer) handler).playerEntity;
+		} 
+		else 
+		{
+			return null;
+		}
 	}
 }

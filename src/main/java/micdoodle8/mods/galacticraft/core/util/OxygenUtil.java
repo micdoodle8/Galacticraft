@@ -22,15 +22,8 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import cpw.mods.fml.client.FMLClientHandler;
 
-/**
- * OxygenUtil.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class OxygenUtil
 {
 	public static boolean shouldDisplayTankGui(GuiScreen gui)
@@ -146,7 +139,7 @@ public class OxygenUtil
 	{
 		boolean missingComponent = false;
 
-		if (player.getExtendedInventory().getStackInSlot(0) == null || !OxygenUtil.isItemValidForPlayerTankInv(0, player.getExtendedInventory().getStackInSlot(0)))
+		if (player.getPlayerStats().extendedInventory.getStackInSlot(0) == null || !OxygenUtil.isItemValidForPlayerTankInv(0, player.getPlayerStats().extendedInventory.getStackInSlot(0)))
 		{
 			boolean handled = false;
 
@@ -172,7 +165,7 @@ public class OxygenUtil
 			}
 		}
 
-		if (player.getExtendedInventory().getStackInSlot(1) == null || !OxygenUtil.isItemValidForPlayerTankInv(1, player.getExtendedInventory().getStackInSlot(1)))
+		if (player.getPlayerStats().extendedInventory.getStackInSlot(1) == null || !OxygenUtil.isItemValidForPlayerTankInv(1, player.getPlayerStats().extendedInventory.getStackInSlot(1)))
 		{
 			boolean handled = false;
 
@@ -198,7 +191,7 @@ public class OxygenUtil
 			}
 		}
 
-		if ((player.getExtendedInventory().getStackInSlot(2) == null || !OxygenUtil.isItemValidForPlayerTankInv(2, player.getExtendedInventory().getStackInSlot(2))) && (player.getExtendedInventory().getStackInSlot(3) == null || !OxygenUtil.isItemValidForPlayerTankInv(3, player.getExtendedInventory().getStackInSlot(3))))
+		if ((player.getPlayerStats().extendedInventory.getStackInSlot(2) == null || !OxygenUtil.isItemValidForPlayerTankInv(2, player.getPlayerStats().extendedInventory.getStackInSlot(2))) && (player.getPlayerStats().extendedInventory.getStackInSlot(3) == null || !OxygenUtil.isItemValidForPlayerTankInv(3, player.getPlayerStats().extendedInventory.getStackInSlot(3))))
 		{
 			boolean handled = false;
 

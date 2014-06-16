@@ -36,15 +36,8 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-/**
- * EntityLander.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class EntityLander extends InventoryEntity implements IInventorySettable, IScaleableFuelLevel, IControllableEntity, IPacketReceiver, ICameraZoomEntity
 {
 	private final int tankCapacity = 5000;
@@ -69,12 +62,12 @@ public class EntityLander extends InventoryEntity implements IInventorySettable,
 	{
 		this(player.worldObj);
 
-		this.containedItems = new ItemStack[player.getRocketStacks().length + 1];
-		this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, player.getFuelLevel()));
+		this.containedItems = new ItemStack[player.getPlayerStats().rocketStacks.length + 1];
+		this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, player.getPlayerStats().fuelLevel));
 
-		for (int i = 0; i < player.getRocketStacks().length; i++)
+		for (int i = 0; i < player.getPlayerStats().rocketStacks.length; i++)
 		{
-			this.containedItems[i] = player.getRocketStacks()[i];
+			this.containedItems[i] = player.getPlayerStats().rocketStacks[i];
 		}
 	}
 

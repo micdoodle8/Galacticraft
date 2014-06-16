@@ -9,7 +9,7 @@ package micdoodle8.mods.galacticraft.core.client.sounds;
 //import net.minecraft.util.MathHelper;
 //
 ///**
-// * GCCoreSoundUpdaterSpaceship.java
+
 // * 
 // * This file is part of the Galacticraft project
 // * 
@@ -64,7 +64,7 @@ package micdoodle8.mods.galacticraft.core.client.sounds;
 //			this.theSoundManager.stopEntitySound(this.thePlayer);
 //		}
 //
-//		if (this.minecartIsDead || !this.silent && this.minecartMoveSoundVolume == 0.0F && this.minecartRideSoundVolume == 0.0F)
+//		if (this.soundStopped || this.minecartIsDead || !this.silent && this.minecartMoveSoundVolume == 0.0F && this.minecartRideSoundVolume == 0.0F)
 //		{
 //			if (!var3)
 //			{
@@ -84,7 +84,7 @@ package micdoodle8.mods.galacticraft.core.client.sounds;
 //			}
 //		}
 //
-//		if (this.theSoundManager != null && this.theMinecart != null && this.theMinecart.posY < 250 && this.minecartMoveSoundVolume > 0.0F)
+//		else if (this.theSoundManager != null && this.theMinecart != null && this.theMinecart.posY < 250 && this.minecartMoveSoundVolume > 0.0F)
 //		{
 //			this.theSoundManager.playEntitySound(GalacticraftCore.ASSET_PREFIX + "shuttle.shuttle", this.theMinecart, 5.0F, this.minecartSoundPitch, false);
 //			this.silent = false;

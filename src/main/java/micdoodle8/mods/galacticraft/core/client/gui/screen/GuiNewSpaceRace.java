@@ -154,20 +154,20 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
 			this.buttonTeamColor_xPosition = this.buttonFlag_xPosition + this.buttonFlag_width + 10;
 			this.buttonTeamColor_yPosition = this.buttonFlag_yPosition + this.buttonFlag_height / 2 - this.buttonTeamColor_height / 2;
 			
-			this.buttonList.add(new GuiElementGradientButton(0, this.width / 2 - this.width / 3 + 15, this.height / 2 - this.height / 4 - 15, 50, 15, this.currentState == EnumSpaceRaceGui.MAIN ? "Close" : "Back"));
+			this.buttonList.add(new GuiElementGradientButton(0, this.width / 2 - this.width / 3 + 15, this.height / 2 - this.height / 4 - 15, 50, 15, this.currentState == EnumSpaceRaceGui.MAIN ? GCCoreUtil.translate("gui.spaceRace.create.close.name") : GCCoreUtil.translate("gui.spaceRace.create.back.name")));
 			
 			switch (this.currentState)
 			{
 			case MAIN:
-				this.textBoxRename = new GuiElementTextBox(1, this, this.width / 2 - 75, this.buttonFlag_yPosition + this.buttonFlag_height + 10, 150, 16, "Rename Team", false, 25, true);
+				this.textBoxRename = new GuiElementTextBox(1, this, this.width / 2 - 75, this.buttonFlag_yPosition + this.buttonFlag_height + 10, 150, 16, GCCoreUtil.translate("gui.spaceRace.create.rename.name"), false, 25, true);
 				this.buttonList.add(this.textBoxRename);
-				this.buttonList.add(new GuiElementGradientButton(2, this.width / 2 - 120, this.textBoxRename.yPosition + this.height / 10, 100, this.height / 10, "Add Player(s)"));
-				this.buttonList.add(new GuiElementGradientButton(3, this.width / 2 - 120, this.textBoxRename.yPosition + this.height / 10 + this.height / 10 + this.height / 50, 100, this.height / 10, "Remove Player(s)"));
-				this.buttonList.add(new GuiElementGradientButton(4, this.width / 2 + 20, this.textBoxRename.yPosition + this.height / 10, 100, this.height / 10, "View Server Stats"));
-				this.buttonList.add(new GuiElementGradientButton(5, this.width / 2 + 20, this.textBoxRename.yPosition + this.height / 10 + this.height / 10 + this.height / 50, 100, this.height / 10, "View Global Stats"));
+				this.buttonList.add(new GuiElementGradientButton(2, this.width / 2 - 120, this.textBoxRename.yPosition + this.height / 10, 100, this.height / 10, GCCoreUtil.translate("gui.spaceRace.create.addPlayers.name")));
+				this.buttonList.add(new GuiElementGradientButton(3, this.width / 2 - 120, this.textBoxRename.yPosition + this.height / 10 + this.height / 10 + this.height / 50, 100, this.height / 10, GCCoreUtil.translate("gui.spaceRace.create.remPlayers.name")));
+				this.buttonList.add(new GuiElementGradientButton(4, this.width / 2 + 20, this.textBoxRename.yPosition + this.height / 10, 100, this.height / 10, GCCoreUtil.translate("gui.spaceRace.create.serverStats.name")));
+				this.buttonList.add(new GuiElementGradientButton(5, this.width / 2 + 20, this.textBoxRename.yPosition + this.height / 10 + this.height / 10 + this.height / 50, 100, this.height / 10, GCCoreUtil.translate("gui.spaceRace.create.globalStats.name")));
 				break;
 			case ADD_PLAYER:
-				this.buttonList.add(new GuiElementGradientButton(2, this.width / 2 - this.width / 3 + 7, this.height / 2 + this.height / 4 - 15, 64, 15, "Send Invite"));
+				this.buttonList.add(new GuiElementGradientButton(2, this.width / 2 - this.width / 3 + 7, this.height / 2 + this.height / 4 - 15, 64, 15, GCCoreUtil.translate("gui.spaceRace.create.sendInvite.name")));
 				int xPos0 = ((GuiElementGradientButton) this.buttonList.get(0)).xPosition + ((GuiElementGradientButton) this.buttonList.get(0)).getButtonWidth() + 10;
 				int xPos1 = this.width / 2 + this.width / 3 - 10;
 				int yPos0 = this.height / 2 - this.height / 3 + 10;
@@ -175,7 +175,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
 				this.gradientListAddPlayers = new GuiElementGradientList(xPos0, yPos0, xPos1 - xPos0, yPos1 - yPos0);
 				break;
 			case REMOVE_PLAYER:
-				this.buttonList.add(new GuiElementGradientButton(2, this.width / 2 - this.width / 3 + 7, this.height / 2 + this.height / 4 - 15, 64, 15, "Remove"));
+				this.buttonList.add(new GuiElementGradientButton(2, this.width / 2 - this.width / 3 + 7, this.height / 2 + this.height / 4 - 15, 64, 15, GCCoreUtil.translate("gui.spaceRace.create.remove.name")));
 				int xPos0b = ((GuiElementGradientButton) this.buttonList.get(0)).xPosition + ((GuiElementGradientButton) this.buttonList.get(0)).getButtonWidth() + 10;
 				int xPos1b = this.width / 2 + this.width / 3 - 10;
 				int yPos0b = this.height / 2 - this.height / 3 + 10;
@@ -212,8 +212,8 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
 				this.checkboxSelector = new GuiElementCheckbox(7, this, (int) (this.flagDesignerMinX - 15), this.height / 2 - this.height / 4 + 40, 13, 13, 26, 26, 133, 78, "", 4210752, false);
 				this.checkboxColorSelector = new GuiElementCheckbox(8, this, (int) (this.flagDesignerMinX - 15), this.height / 2 - this.height / 4 + 55, 13, 13, 26, 26, 133, 104, "", 4210752, false);
 				this.checkboxShowGrid = new GuiElementCheckbox(9, this, (int) (this.flagDesignerMinX - 15), this.height / 2 - this.height / 4 + 90, 13, 13, 26, 26, 133, 26, "", 4210752, false);
-				this.sliderBrushSize = new GuiElementSlider(10, checkboxPaintbrush.xPosition - 40, checkboxPaintbrush.yPosition, 35, 13, false, new Vector3(0.34, 0.34, 0.34), new Vector3(0.34, 0.34, 0.34), "Brush Size");
-				this.sliderEraserSize = new GuiElementSlider(11, checkboxEraser.xPosition - 40, checkboxEraser.yPosition, 35, 13, false, new Vector3(0.34, 0.34, 0.34), new Vector3(0.34, 0.34, 0.34), "Eraser Size");
+				this.sliderBrushSize = new GuiElementSlider(10, checkboxPaintbrush.xPosition - 40, checkboxPaintbrush.yPosition, 35, 13, false, new Vector3(0.34, 0.34, 0.34), new Vector3(0.34, 0.34, 0.34), GCCoreUtil.translate("gui.spaceRace.create.brushSize.name"));
+				this.sliderEraserSize = new GuiElementSlider(11, checkboxEraser.xPosition - 40, checkboxEraser.yPosition, 35, 13, false, new Vector3(0.34, 0.34, 0.34), new Vector3(0.34, 0.34, 0.34), GCCoreUtil.translate("gui.spaceRace.create.eraserSize.name"));
 				this.sliderEraserSize.visible = false;
 				this.buttonList.add(this.checkboxPaintbrush);
 				this.buttonList.add(this.checkboxShowGrid);
@@ -533,12 +533,12 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
             
             if (this.sliderBrushSize != null && this.sliderBrushSize.visible)
             {
-            	this.sliderBrushSize.displayString = "Brush Rad: " + ((int)Math.floor(this.sliderBrushSize.getNormalizedValue() * 10) + 1);
+            	this.sliderBrushSize.displayString = GCCoreUtil.translate("gui.spaceRace.create.brushRadius.name") + ": " + ((int)Math.floor(this.sliderBrushSize.getNormalizedValue() * 10) + 1);
             }
             
             if (this.sliderEraserSize != null && this.sliderEraserSize.visible)
             {
-            	this.sliderEraserSize.displayString = "Eraser Rad: " + ((int)Math.floor(this.sliderEraserSize.getNormalizedValue() * 10) + 1);
+            	this.sliderEraserSize.displayString = GCCoreUtil.translate("gui.spaceRace.create.eraserRadius.name") + ": " + ((int)Math.floor(this.sliderEraserSize.getNormalizedValue() * 10) + 1);
             }
         }
         else if (currentState == EnumSpaceRaceGui.MAIN)
@@ -640,16 +640,16 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
 	        switch (this.currentState)
 	        {
 	        case MAIN:
-				this.drawCenteredString(this.fontRendererObj, "Space Race Manager", this.width / 2, this.height / 2 - this.height / 3 - 15, 16777215);
+				this.drawCenteredString(this.fontRendererObj, GCCoreUtil.translate("gui.spaceRace.create.title.name"), this.width / 2, this.height / 2 - this.height / 3 - 15, 16777215);
 	        	this.drawFlagButton(par1, par2);
 	        	this.drawColorButton(par1, par2);
 	        	break;
 	        case ADD_PLAYER:
-				this.drawCenteredString(this.fontRendererObj, "Invite Player", this.width / 2, this.height / 2 - this.height / 3 - 15, 16777215);
-				this.drawCenteredString(this.fontRendererObj, "Note: Players must be within range! (25 blocks)", this.width / 2, this.height / 2 + this.height / 3 + 3, GCCoreUtil.to32BitColor(255, 180, 40, 40));
+				this.drawCenteredString(this.fontRendererObj, GCCoreUtil.translate("gui.spaceRace.create.invitePlayer.name"), this.width / 2, this.height / 2 - this.height / 3 - 15, 16777215);
+				this.drawCenteredString(this.fontRendererObj, GCCoreUtil.translate("gui.spaceRace.create.playerRadius.name"), this.width / 2, this.height / 2 + this.height / 3 + 3, GCCoreUtil.to32BitColor(255, 180, 40, 40));
 	        	break;
 	        case REMOVE_PLAYER:
-				this.drawCenteredString(this.fontRendererObj, "Remove Player", this.width / 2, this.height / 2 - this.height / 3 - 15, 16777215);
+				this.drawCenteredString(this.fontRendererObj, GCCoreUtil.translate("gui.spaceRace.create.removePlayer.name"), this.width / 2, this.height / 2 - this.height / 3 - 15, 16777215);
 	        	break;
 	        case DESIGN_FLAG:
 				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -811,7 +811,8 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
 		GL11.glPushMatrix();
         GL11.glTranslatef(0.0F, 0.0F, 500.0F);
         int color = this.buttonFlag_hover ? 170 : 100;
-        this.fontRendererObj.drawString("Customize Flag", this.buttonFlag_xPosition + this.buttonFlag_width / 2 - this.fontRendererObj.getStringWidth("Customize Flag") / 2, this.buttonFlag_yPosition + this.buttonFlag_height / 2 - 5, GCCoreUtil.to32BitColor(255, color, color, color), this.buttonFlag_hover);
+        String message = GCCoreUtil.translate("gui.spaceRace.create.customize.name");
+        this.fontRendererObj.drawString(message, this.buttonFlag_xPosition + this.buttonFlag_width / 2 - this.fontRendererObj.getStringWidth(message) / 2, this.buttonFlag_yPosition + this.buttonFlag_height / 2 - 5, GCCoreUtil.to32BitColor(255, color, color, color), this.buttonFlag_hover);
         GL11.glPopMatrix();
 
         if (this.buttonFlag_hover)
@@ -832,9 +833,9 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
 		GL11.glPushMatrix();
         GL11.glTranslatef(0.0F, 0.0F, 500.0F);
         int color = this.buttonTeamColor_hover ? 170 : 100;
-        this.fontRendererObj.drawString("Change", this.buttonTeamColor_xPosition + this.buttonTeamColor_width / 2 - this.fontRendererObj.getStringWidth("Change") / 2, this.buttonTeamColor_yPosition + this.buttonTeamColor_height / 2 - 13, GCCoreUtil.to32BitColor(255, color, color, color), this.buttonTeamColor_hover);
-        this.fontRendererObj.drawString("Team", this.buttonTeamColor_xPosition + this.buttonTeamColor_width / 2 - this.fontRendererObj.getStringWidth("Team") / 2, this.buttonTeamColor_yPosition + this.buttonTeamColor_height / 2 - 3, GCCoreUtil.to32BitColor(255, color, color, color), this.buttonTeamColor_hover);
-        this.fontRendererObj.drawString("Color", this.buttonTeamColor_xPosition + this.buttonTeamColor_width / 2 - this.fontRendererObj.getStringWidth("Color") / 2, this.buttonTeamColor_yPosition + this.buttonTeamColor_height / 2 + 7, GCCoreUtil.to32BitColor(255, color, color, color), this.buttonTeamColor_hover);
+        this.fontRendererObj.drawString(GCCoreUtil.translate("gui.spaceRace.create.changeColor.name.0"), this.buttonTeamColor_xPosition + this.buttonTeamColor_width / 2 - this.fontRendererObj.getStringWidth(GCCoreUtil.translate("gui.spaceRace.create.changeColor.name.0")) / 2, this.buttonTeamColor_yPosition + this.buttonTeamColor_height / 2 - 13, GCCoreUtil.to32BitColor(255, color, color, color), this.buttonTeamColor_hover);
+        this.fontRendererObj.drawString(GCCoreUtil.translate("gui.spaceRace.create.changeColor.name.1"), this.buttonTeamColor_xPosition + this.buttonTeamColor_width / 2 - this.fontRendererObj.getStringWidth(GCCoreUtil.translate("gui.spaceRace.create.changeColor.name.1")) / 2, this.buttonTeamColor_yPosition + this.buttonTeamColor_height / 2 - 3, GCCoreUtil.to32BitColor(255, color, color, color), this.buttonTeamColor_hover);
+        this.fontRendererObj.drawString(GCCoreUtil.translate("gui.spaceRace.create.changeColor.name.2"), this.buttonTeamColor_xPosition + this.buttonTeamColor_width / 2 - this.fontRendererObj.getStringWidth(GCCoreUtil.translate("gui.spaceRace.create.changeColor.name.2")) / 2, this.buttonTeamColor_yPosition + this.buttonTeamColor_height / 2 + 7, GCCoreUtil.to32BitColor(255, color, color, color), this.buttonTeamColor_hover);
         GL11.glPopMatrix();
 
         if (this.buttonTeamColor_hover)

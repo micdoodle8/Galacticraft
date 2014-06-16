@@ -29,15 +29,8 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-/**
- * GCCoreBlockAdvancedCraftingTable.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class BlockNasaWorkbench extends BlockContainer implements ITileEntityProvider
 {
 	IIcon[] iconBuffer;
@@ -144,14 +137,14 @@ public class BlockNasaWorkbench extends BlockContainer implements ITileEntityPro
 							
 							if ((y == 0 || y == 3) && x == 0 && z == 0)
 							{
-								if (blockAt.getMaterial().isReplaceable())
+								if (!blockAt.getMaterial().isReplaceable())
 								{
 									validSpot = false;
 								}
 							}
 							else if (y != 0 && y != 3)
 							{
-								if (blockAt.getMaterial().isReplaceable())
+								if (!blockAt.getMaterial().isReplaceable())
 								{
 									validSpot = false;
 								}

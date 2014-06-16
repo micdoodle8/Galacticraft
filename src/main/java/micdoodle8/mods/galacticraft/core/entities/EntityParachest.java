@@ -14,15 +14,8 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
 
-/**
- * EntityParachest.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class EntityParachest extends Entity
 {
 	public ItemStack[] cargo;
@@ -34,9 +27,14 @@ public class EntityParachest extends Entity
 	public EntityParachest(World world, ItemStack[] cargo, int fuelLevel)
 	{
 		this(world);
-		this.cargo = cargo;
+		this.cargo = cargo.clone();
 		this.placedChest = false;
 		this.fuelLevel = fuelLevel;
+		if ((cargo.length-2)%18!=0)
+		{
+			System.out.println("Strange EntityParachest inventory size "+cargo.length);
+			this.fuelLevel = 1/0;
+		}
 	}
 
 	public EntityParachest(World world)

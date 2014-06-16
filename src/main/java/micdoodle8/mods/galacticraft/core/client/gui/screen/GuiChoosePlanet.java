@@ -29,7 +29,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -40,15 +39,8 @@ import org.lwjgl.util.glu.GLU;
 
 import cpw.mods.fml.client.FMLClientHandler;
 
-/**
- * GCCoreGuiChoosePlanet.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class GuiChoosePlanet extends GuiScreen
 {
 	private long spaceTimer = 0;
@@ -148,11 +140,11 @@ public class GuiChoosePlanet extends GuiScreen
 
 		this.buttonList.clear();
 		this.buttonList.add(new GuiElementTexturedButton(0, this.width - 28, 5, 22, 22, new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/map_button.png"), 22, 22));
-		this.buttonList.add(this.sendButton = new GuiButton(1, this.width - 110, this.height - 26, 105, 20, StatCollector.translateToLocal("gui.button.sendtodim.name")));
+		this.buttonList.add(this.sendButton = new GuiButton(1, this.width - 110, this.height - 26, 105, 20, GCCoreUtil.translate("gui.button.sendtodim.name")));
 
 		if (this.createSpaceStationButton == null)
 		{
-			this.buttonList.add(this.createSpaceStationButton = new GuiButton(2, this.width / 2 - 60, 4, 120, 20, StatCollector.translateToLocal("gui.button.createsstation.name")));
+			this.buttonList.add(this.createSpaceStationButton = new GuiButton(2, this.width / 2 - 60, 4, 120, 20, GCCoreUtil.translate("gui.button.createsstation.name")));
 			this.createSpaceStationButton.enabled = true;
 		}
 		else
@@ -163,7 +155,7 @@ public class GuiChoosePlanet extends GuiScreen
 
 		if (this.renameSpaceStationButton != null && this.destinations[this.selectedSlot].contains("$"))
 		{
-			this.renameSpaceStationButton = new GuiButton(3, this.width - 200, this.height - 26, 80, 20, StatCollector.translateToLocal("gui.button.rename.name"));
+			this.renameSpaceStationButton = new GuiButton(3, this.width - 200, this.height - 26, 80, 20, GCCoreUtil.translate("gui.button.rename.name"));
 			this.buttonList.add(this.renameSpaceStationButton);
 		}
 
@@ -583,13 +575,13 @@ public class GuiChoosePlanet extends GuiScreen
 			dest = dest.replace("*", "");
 		}
 
-		str = StatCollector.translateToLocal("gui.choosePlanet.desc." + dest);
+		str = GCCoreUtil.translate("gui.choosePlanet.desc." + dest);
 
 		// if
 		// (this.destinations[this.selectedSlot].toLowerCase().equals("overworld"))
 		// {
 		// str =
-		// StatCollector.translateToLocal("gui.choosePlanet.desc.overworld");
+		// GCCoreUtil.tr("gui.choosePlanet.desc.overworld");
 		// }
 
 		if (str != null && !str.contains("space station"))
@@ -634,8 +626,8 @@ public class GuiChoosePlanet extends GuiScreen
 					HashMap<Integer, ToolTipEntry> itemList = new HashMap<Integer, ToolTipEntry>();
 					ArrayList<ItemStringPair> pairList0 = new ArrayList<ItemStringPair>();
 					ArrayList<ItemStringPair> pairList1 = new ArrayList<ItemStringPair>();
-					pairList0.add(new ItemStringPair(null, StatCollector.translateToLocal("gui.chooseplanet.alreadycreated1.name")));
-					pairList1.add(new ItemStringPair(null, "        " + StatCollector.translateToLocal("gui.chooseplanet.alreadycreated2.name")));
+					pairList0.add(new ItemStringPair(null, GCCoreUtil.translate("gui.chooseplanet.alreadycreated1.name")));
+					pairList1.add(new ItemStringPair(null, "        " + GCCoreUtil.translate("gui.chooseplanet.alreadycreated2.name")));
 					itemList.put(0, new ToolTipEntry(false, pairList0));
 					itemList.put(1, new ToolTipEntry(false, pairList1));
 					this.drawItemStackTooltip(itemList, this.createSpaceStationButton.xPosition + 115, this.createSpaceStationButton.yPosition + 15);
@@ -716,8 +708,8 @@ public class GuiChoosePlanet extends GuiScreen
 					HashMap<Integer, ToolTipEntry> itemList = new HashMap<Integer, ToolTipEntry>();
 					ArrayList<ItemStringPair> pairList0 = new ArrayList<ItemStringPair>();
 					ArrayList<ItemStringPair> pairList1 = new ArrayList<ItemStringPair>();
-					pairList0.add(new ItemStringPair(null, StatCollector.translateToLocal("gui.chooseplanet.cannotcreate1.name")));
-					pairList1.add(new ItemStringPair(null, "     " + StatCollector.translateToLocal("gui.chooseplanet.cannotcreate2.name")));
+					pairList0.add(new ItemStringPair(null, GCCoreUtil.translate("gui.chooseplanet.cannotcreate1.name")));
+					pairList1.add(new ItemStringPair(null, "     " + GCCoreUtil.translate("gui.chooseplanet.cannotcreate2.name")));
 					itemList.put(0, new ToolTipEntry(false, pairList0));
 					itemList.put(1, new ToolTipEntry(false, pairList1));
 					this.drawItemStackTooltip(itemList, this.createSpaceStationButton.xPosition + 115, this.createSpaceStationButton.yPosition + 15);
@@ -838,7 +830,7 @@ public class GuiChoosePlanet extends GuiScreen
 		}
 	}
 
-	private int getDimensionIdFromSlot()
+	public int getDimensionIdFromSlot()
 	{
 		String dimension = this.destinations[this.selectedSlot];
 		dimension = dimension.replace("*", "");

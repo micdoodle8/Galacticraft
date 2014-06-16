@@ -11,15 +11,8 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-/**
- * GCCoreTileEntitySolarPanelRenderer.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class TileEntitySolarPanelRenderer extends TileEntitySpecialRenderer
 {
 	private static final ResourceLocation solarPanelTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/solarPanelBasic.png");

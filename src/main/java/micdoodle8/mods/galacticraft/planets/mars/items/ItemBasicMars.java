@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.planets.mars.items;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -11,19 +12,11 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-/**
- * GCMarsItems.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class ItemBasicMars extends Item
 {
 	public static String[] names = { "rawDesh", "deshStick", "ingotDesh", "reinforcedPlateT2", "slimelingCargo", "compressedDesh" };
@@ -100,7 +93,7 @@ public class ItemBasicMars extends Item
 	{
 		if (par1ItemStack != null && par1ItemStack.getItemDamage() == 3)
 		{
-			par3List.add(StatCollector.translateToLocal("item.tier2.desc"));
+			par3List.add(GCCoreUtil.translate("item.tier2.desc"));
 		}
 	}
 

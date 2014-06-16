@@ -6,6 +6,7 @@ import java.util.Set;
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -14,19 +15,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 
-/**
- * GCCoreTileEntityElectricFurnace.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class TileEntityElectricFurnace extends TileEntityElectricBlock implements IInventory, ISidedInventory, IPacketReceiver
 {
 	public static final int PROCESS_TIME_REQUIRED = 130;
@@ -72,6 +65,10 @@ public class TileEntityElectricFurnace extends TileEntityElectricBlock implement
 					{
 						this.processTicks = 0;
 					}
+				} else if (processTicks > 0 && processTicks < TileEntityElectricFurnace.PROCESS_TIME_REQUIRED)
+				{
+					//Apply a "cooling down" process if the electric furnace runs out of energy while smelting
+					if (this.worldObj.rand.nextInt(4) == 0) this.processTicks++;
 				}
 			}
 			else
@@ -96,12 +93,7 @@ public class TileEntityElectricFurnace extends TileEntityElectricBlock implement
 	 */
 	public boolean canProcess()
 	{
-		if (FurnaceRecipes.smelting().getSmeltingResult(this.containingItems[1]) == null)
-		{
-			return false;
-		}
-
-		if (this.containingItems[1] == null)
+		if (this.containingItems[1] == null || FurnaceRecipes.smelting().getSmeltingResult(this.containingItems[1]) == null)
 		{
 			return false;
 		}
@@ -269,7 +261,7 @@ public class TileEntityElectricFurnace extends TileEntityElectricBlock implement
 	@Override
 	public String getInventoryName()
 	{
-		return StatCollector.translateToLocal("tile.machine.2.name");
+		return GCCoreUtil.translate("tile.machine.2.name");
 	}
 
 	@Override
@@ -297,7 +289,7 @@ public class TileEntityElectricFurnace extends TileEntityElectricBlock implement
 	@Override
 	public boolean isItemValidForSlot(int slotID, ItemStack itemStack)
 	{
-		return slotID == 1 ? FurnaceRecipes.smelting().getSmeltingResult(itemStack) != null : slotID == 0 ? itemStack.getItem() instanceof IItemElectric : false;
+		return slotID == 1 ? (itemStack != null && FurnaceRecipes.smelting().getSmeltingResult(itemStack) != null) : slotID == 0 ? itemStack.getItem() instanceof IItemElectric : false;
 	}
 
 	/**

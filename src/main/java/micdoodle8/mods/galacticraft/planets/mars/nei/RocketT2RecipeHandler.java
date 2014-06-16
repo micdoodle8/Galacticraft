@@ -13,7 +13,7 @@ package micdoodle8.mods.galacticraft.planets.mars.nei;
 //import org.lwjgl.opengl.GL11;
 //
 ///**
-// * RocketT2RecipeHandler.java
+
 // * 
 // * This file is part of the Galacticraft project
 // * 

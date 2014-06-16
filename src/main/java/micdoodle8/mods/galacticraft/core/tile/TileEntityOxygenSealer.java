@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol;
 import micdoodle8.mods.galacticraft.core.oxygen.ThreadFindSeal;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,19 +17,11 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 
-/**
- * GCCoreTileEntityOxygenSealer.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class TileEntityOxygenSealer extends TileEntityOxygen implements IInventory, ISidedInventory
 {
 	@NetworkedField(targetSide = Side.CLIENT)
@@ -251,7 +244,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
 	@Override
 	public String getInventoryName()
 	{
-		return StatCollector.translateToLocal("container.oxygensealer.name");
+		return GCCoreUtil.translate("container.oxygensealer.name");
 	}
 
 	@Override

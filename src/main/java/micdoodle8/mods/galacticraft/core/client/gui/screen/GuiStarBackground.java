@@ -11,15 +11,8 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
-/**
- * GCCoreGuiStarBackground.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public abstract class GuiStarBackground extends GuiScreen
 {
 	private static final ResourceLocation backgroundTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/stars.png");

@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import java.util.EnumSet;
 
-import micdoodle8.mods.galacticraft.api.power.EnergySource.EnergySourceAdjacent;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
@@ -16,15 +15,8 @@ import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 
-/**
- * GCCoreTileEntityElectric.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public abstract class TileEntityElectricBlock extends TileEntityUniversalElectrical implements IPacketReceiver, IDisableableMachine, IConnector
 {
 //	public int energyPerTick = 200;

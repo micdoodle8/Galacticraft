@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.api.entity.IDockable;
-import micdoodle8.mods.galacticraft.api.entity.ICargoEntity.EnumCargoLoadingState;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -20,6 +19,7 @@ import micdoodle8.mods.galacticraft.core.event.EventLandingPadRemoval;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -28,7 +28,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
@@ -686,8 +685,8 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 		{
 			if (!(this.worldObj.provider instanceof IOrbitDimension) && this.riddenByEntity != null && this.riddenByEntity instanceof GCEntityPlayerMP)
 			{
-				((GCEntityPlayerMP) this.riddenByEntity).setCoordsTeleportedFromX(this.riddenByEntity.posX);
-				((GCEntityPlayerMP) this.riddenByEntity).setCoordsTeleportedFromZ(this.riddenByEntity.posZ);
+				((GCEntityPlayerMP) this.riddenByEntity).getPlayerStats().coordsTeleportedFromX = this.riddenByEntity.posX;
+				((GCEntityPlayerMP) this.riddenByEntity).getPlayerStats().coordsTeleportedFromZ = this.riddenByEntity.posZ;
 			}
 
 			int amountRemoved = 0;
@@ -722,7 +721,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
 			//Set the player's launchpad item for return on landing - or null if launchpads not removed
 			if (this.riddenByEntity != null && this.riddenByEntity instanceof GCEntityPlayerMP)
-				((GCEntityPlayerMP) this.riddenByEntity).setLaunchpadStack((amountRemoved == 9) ? new ItemStack(GCBlocks.landingPad, 9, 0) : null);
+				((GCEntityPlayerMP) this.riddenByEntity).getPlayerStats().launchpadStack = (amountRemoved == 9) ? new ItemStack(GCBlocks.landingPad, 9, 0) : null;
 			
 			this.playSound("random.pop", 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
 		}
@@ -1042,7 +1041,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 	@Override
 	public String getInventoryName()
 	{
-		return StatCollector.translateToLocal("container.spaceship.name");
+		return GCCoreUtil.translate("container.spaceship.name");
 	}
 
 	@Override

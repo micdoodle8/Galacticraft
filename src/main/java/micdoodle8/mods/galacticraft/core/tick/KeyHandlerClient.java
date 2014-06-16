@@ -4,36 +4,29 @@ import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.KeyHandler;
+import micdoodle8.mods.galacticraft.core.client.gui.GuiIdsCore;
 import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
 import micdoodle8.mods.galacticraft.core.entities.IControllableEntity;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
-import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.StatCollector;
 
 import org.lwjgl.input.Keyboard;
 
 import cpw.mods.fml.common.gameevent.TickEvent.Type;
 
-/**
- * GCCoreKeyHandlerClient.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class KeyHandlerClient extends KeyHandler
 {
-	public static KeyBinding galaxyMap = new KeyBinding(StatCollector.translateToLocal("keybind.map.name"), Keyboard.KEY_M, "");
-	public static KeyBinding openFuelGui = new KeyBinding(StatCollector.translateToLocal("keybind.spaceshipinv.name"), Keyboard.KEY_F, "");
-	public static KeyBinding toggleAdvGoggles = new KeyBinding(StatCollector.translateToLocal("keybind.sensortoggle.name"), Keyboard.KEY_K, "");
+	public static KeyBinding galaxyMap = new KeyBinding(GCCoreUtil.translate("keybind.map.name"), Keyboard.KEY_M, "Galacticraft");
+	public static KeyBinding openFuelGui = new KeyBinding(GCCoreUtil.translate("keybind.spaceshipinv.name"), Keyboard.KEY_F, "Galacticraft");
+	public static KeyBinding toggleAdvGoggles = new KeyBinding(GCCoreUtil.translate("keybind.sensortoggle.name"), Keyboard.KEY_K, "Galacticraft");
 	public static KeyBinding accelerateKey;
 	public static KeyBinding decelerateKey;
 	public static KeyBinding leftKey;
@@ -71,7 +64,7 @@ public class KeyHandlerClient extends KeyHandler
 			{
 				if (KeyHandlerClient.mc.currentScreen == null)
 				{
-					KeyHandlerClient.mc.thePlayer.openGui(GalacticraftCore.instance, ConfigManagerCore.idGuiGalaxyMap, KeyHandlerClient.mc.theWorld, (int) KeyHandlerClient.mc.thePlayer.posX, (int) KeyHandlerClient.mc.thePlayer.posY, (int) KeyHandlerClient.mc.thePlayer.posZ);
+					KeyHandlerClient.mc.thePlayer.openGui(GalacticraftCore.instance, GuiIdsCore.GALAXY_MAP, KeyHandlerClient.mc.theWorld, (int) KeyHandlerClient.mc.thePlayer.posX, (int) KeyHandlerClient.mc.thePlayer.posY, (int) KeyHandlerClient.mc.thePlayer.posZ);
 				}
 			}
 			else if (kb.getKeyCode() == KeyHandlerClient.openFuelGui.getKeyCode())

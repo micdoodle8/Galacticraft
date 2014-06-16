@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.planets.mars.entities;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
-import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModuleClient;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.InventorySlimeling;
 import net.minecraft.entity.Entity;
@@ -44,15 +43,8 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 
-/**
- * EntitySlimeling.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class EntitySlimeling extends EntityTameable implements IEntityBreathable
 {
 	public InventorySlimeling slimelingInventory = new InventorySlimeling(this);
@@ -400,10 +392,10 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
 					{
 						if (par1EntityPlayer instanceof GCEntityPlayerMP)
 						{
-							if (((GCEntityPlayerMP) par1EntityPlayer).getChatCooldown() == 0)
+							if (((GCEntityPlayerMP) par1EntityPlayer).getPlayerStats().chatCooldown == 0)
 							{
 								par1EntityPlayer.addChatMessage(new ChatComponentText("This isn't my Slimeling!"));
-								((GCEntityPlayerMP) par1EntityPlayer).setChatCooldown(100);
+								((GCEntityPlayerMP) par1EntityPlayer).getPlayerStats().chatCooldown = 100;
 							}
 						}
 					}

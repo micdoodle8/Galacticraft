@@ -11,15 +11,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
-/**
- * GCCoreTileEntityOxygenStorageModule.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class TileEntityOxygenStorageModule extends TileEntityOxygen implements IPacketReceiver
 {
 	public final Set<EntityPlayer> playersUsing = new HashSet<EntityPlayer>();

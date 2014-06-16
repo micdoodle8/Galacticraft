@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.api.recipe.CircuitFabricatorRecipes;
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine2;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,19 +16,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 
-/**
- * GCCoreTileEntityCircuitFabricator.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class TileEntityCircuitFabricator extends TileEntityElectricBlock implements IInventory, ISidedInventory, IPacketReceiver
 {
 	public static final int PROCESS_TIME_REQUIRED = 300;
@@ -278,7 +271,7 @@ public class TileEntityCircuitFabricator extends TileEntityElectricBlock impleme
 	@Override
 	public String getInventoryName()
 	{
-		return StatCollector.translateToLocal("tile.machine2.5.name");
+		return GCCoreUtil.translate("tile.machine2.5.name");
 	}
 
 	@Override
@@ -302,7 +295,7 @@ public class TileEntityCircuitFabricator extends TileEntityElectricBlock impleme
 	@Override
 	public boolean isItemValidForSlot(int slotID, ItemStack itemStack)
 	{
-		return slotID == 1 ? FurnaceRecipes.smelting().getSmeltingResult(itemStack) != null : slotID == 0 ? itemStack.getItem() instanceof IItemElectric : false;
+		return slotID == 1 ? (itemStack != null && FurnaceRecipes.smelting().getSmeltingResult(itemStack) != null) : slotID == 0 ? itemStack.getItem() instanceof IItemElectric : false;
 	}
 
 	@Override

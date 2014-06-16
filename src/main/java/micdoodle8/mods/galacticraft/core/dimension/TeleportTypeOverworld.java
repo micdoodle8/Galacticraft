@@ -10,15 +10,8 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 
-/**
- * GCCoreOverworldTeleportType.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class TeleportTypeOverworld implements ITeleportType
 {
 	@Override
@@ -32,7 +25,7 @@ public class TeleportTypeOverworld implements ITeleportType
 	{
 		if (player instanceof GCEntityPlayerMP)
 		{
-			return new Vector3(((GCEntityPlayerMP) player).getCoordsTeleportedFromX(), 250.0, ((GCEntityPlayerMP) player).getCoordsTeleportedFromZ());
+			return new Vector3(((GCEntityPlayerMP) player).getPlayerStats().coordsTeleportedFromX, 250.0, ((GCEntityPlayerMP) player).getPlayerStats().coordsTeleportedFromZ);
 		}
 
 		return null;

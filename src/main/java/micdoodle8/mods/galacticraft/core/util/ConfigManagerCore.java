@@ -12,15 +12,8 @@ import net.minecraftforge.common.config.Configuration;
 
 import com.google.common.primitives.Ints;
 
-/**
- * ConfigManagerCore.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class ConfigManagerCore
 {
 	public static boolean loaded;
@@ -35,17 +28,6 @@ public class ConfigManagerCore
 	public static int idSchematicRocketT1;
 	public static int idSchematicMoonBuggy;
 	public static int idSchematicAddSchematic;
-
-	// GUI
-	public static int idGuiRocketCraftingBench;
-	public static int idGuiBuggyCraftingBench;
-	public static int idGuiGalaxyMap;
-	public static int idGuiSpaceshipInventory;
-	public static int idGuiAddSchematic;
-	public static int idGuiKnowledgeBook;
-	public static int idGuiExtendedInventory;
-	public static int idGuiNewSpaceRace;
-	public static int idGuiJoinSpaceRace;
 
 	// ACHIEVEMENTS
 	public static int idAchievBase;
@@ -80,6 +62,7 @@ public class ConfigManagerCore
 	public static double oilGenFactor;
 	public static boolean disableLeafDecay;
 	public static boolean spaceStationsRequirePermission;
+	public static boolean disableSpaceStationCreation;
 	public static boolean overrideCapes;
 	public static double spaceStationEnergyScalar;
 	public static boolean disableLander;
@@ -118,16 +101,6 @@ public class ConfigManagerCore
 			ConfigManagerCore.idDimensionOverworldOrbitStatic = ConfigManagerCore.configuration.get("DIMENSIONS", "idDimensionOverworldOrbitStatic", -26, "Static Space Station ID").getInt(-26);
 			ConfigManagerCore.staticLoadDimensions = ConfigManagerCore.configuration.get("DIMENSIONS", "Static Loaded Dimensions", ConfigManagerCore.staticLoadDimensions, "IDs to load at startup, and keep loaded until server stops. Can be added via /gckeeploaded").getIntList();
 			
-			ConfigManagerCore.idGuiRocketCraftingBench = ConfigManagerCore.configuration.get("GUI", "idGuiRocketCraftingBench", 130).getInt(130);
-			ConfigManagerCore.idGuiBuggyCraftingBench = ConfigManagerCore.configuration.get("GUI", "idGuiBuggyCraftingBench", 131).getInt(131);
-			ConfigManagerCore.idGuiGalaxyMap = ConfigManagerCore.configuration.get("GUI", "idGuiGalaxyMap", 132).getInt(132);
-			ConfigManagerCore.idGuiSpaceshipInventory = ConfigManagerCore.configuration.get("GUI", "idGuiSpaceshipInventory", 133).getInt(133);
-			ConfigManagerCore.idGuiAddSchematic = ConfigManagerCore.configuration.get("GUI", "idGuiAddSchematic", 138).getInt(138);
-			ConfigManagerCore.idGuiKnowledgeBook = ConfigManagerCore.configuration.get("GUI", "idGuiKnowledgeBook", 140).getInt(140);
-			ConfigManagerCore.idGuiExtendedInventory = ConfigManagerCore.configuration.get("GUI", "idGuiExtendedInventory", 145).getInt(145);
-			ConfigManagerCore.idGuiNewSpaceRace = ConfigManagerCore.configuration.get("GUI", "idGuiNewSpaceRace", 146).getInt(146);
-			ConfigManagerCore.idGuiJoinSpaceRace = ConfigManagerCore.configuration.get("GUI", "idGuiJoinSpaceRace", 147).getInt(147);
-
 			ConfigManagerCore.idSchematicRocketT1 = ConfigManagerCore.configuration.get("Schematic", "idSchematicRocketT1", 0).getInt(0);
 			ConfigManagerCore.idSchematicMoonBuggy = ConfigManagerCore.configuration.get("Schematic", "idSchematicMoonBuggy", 1).getInt(1);
 			ConfigManagerCore.idSchematicAddSchematic = ConfigManagerCore.configuration.get("Schematic", "idSchematicAddSchematic", Integer.MAX_VALUE).getInt(Integer.MAX_VALUE);
@@ -161,6 +134,7 @@ public class ConfigManagerCore
 			ConfigManagerCore.oxygenIndicatorBottom = ConfigManagerCore.configuration.get(Configuration.CATEGORY_GENERAL, "Minimap Bottom", false, "If true, this will move the Oxygen Indicator to the bottom. You can combine this with \"Minimap Left\"").getBoolean(false);
 			ConfigManagerCore.disableLeafDecay = ConfigManagerCore.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Oxygen Collector Leaf Decay", false, "If set to true, Oxygen Collectors will not consume leaf blocks.").getBoolean(false);
 			ConfigManagerCore.spaceStationsRequirePermission = ConfigManagerCore.configuration.get(Configuration.CATEGORY_GENERAL, "Space Stations Require Permission", true, "While true, space stations require you to invite other players using /ssinvite <playername>").getBoolean(true);
+			ConfigManagerCore.disableSpaceStationCreation = ConfigManagerCore.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Space Station creation", false, "If set to true on a server, players will be completely unable to create space stations.").getBoolean(false);
 			ConfigManagerCore.overrideCapes = ConfigManagerCore.configuration.get(Configuration.CATEGORY_GENERAL, "Override Capes", true, "By default, Galacticraft will override capes with the mod's donor cape. Set to false to disable.").getBoolean(true);
 			ConfigManagerCore.spaceStationEnergyScalar = ConfigManagerCore.configuration.get(Configuration.CATEGORY_GENERAL, "Space Station Solar Energy Multiplier", 2.0, "If Mekanism is installed, solar panels will work (default 2x) more effective on space stations.").getDouble(2.0);
 			ConfigManagerCore.sealableIDs = ConfigManagerCore.configuration.get(Configuration.CATEGORY_GENERAL, "External Sealable IDs", new String[] { String.valueOf(Block.getIdFromBlock(Blocks.glass_pane) + ":0") }, "List IDs of non-opaque blocks from other mods (for example, special types of glass) that the Oxygen Sealer should recognize as solid seals. Format is ID:METADATA").getStringList();

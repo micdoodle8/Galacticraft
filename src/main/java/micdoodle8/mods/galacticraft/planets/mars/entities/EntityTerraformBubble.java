@@ -1,9 +1,11 @@
 package micdoodle8.mods.galacticraft.planets.mars.entities;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.entities.EntityAdvanced;
 import micdoodle8.mods.galacticraft.core.entities.IBubble;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityTerraformer;
-import net.minecraft.entity.Entity;
+import micdoodle8.mods.miccore.Annotations.NetworkedField;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -12,18 +14,12 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-/**
- * EntityTerraformBubble.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
-public class EntityTerraformBubble extends Entity implements IBubble
+
+
+public class EntityTerraformBubble extends EntityAdvanced implements IBubble
 {
-	protected long ticks = 0;
+	@NetworkedField(targetSide = Side.CLIENT)
+	public boolean shouldRender = true;
 
 	public TileEntityTerraformer terraformer;
 
@@ -80,13 +76,6 @@ public class EntityTerraformBubble extends Entity implements IBubble
 	@Override
 	public void onUpdate()
 	{
-		if (this.ticks >= Long.MAX_VALUE)
-		{
-			this.ticks = 1;
-		}
-
-		this.ticks++;
-
 		if (this.terraformer != null)
 		{
 			final Vector3 vec = new Vector3(this.terraformer);
@@ -162,18 +151,55 @@ public class EntityTerraformBubble extends Entity implements IBubble
 	}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound nbttagcompound)
+	protected void readEntityFromNBT(NBTTagCompound nbt)
 	{
+		this.setShouldRender(nbt.getBoolean("ShouldRender"));
 	}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound nbttagcompound)
+	protected void writeEntityToNBT(NBTTagCompound nbt)
 	{
+		nbt.setBoolean("ShouldRender", this.shouldRender);
 	}
 
 	@Override
 	public boolean shouldRender()
 	{
+		return this.shouldRender;
+	}
+	
+	public void setShouldRender(boolean shouldRender)
+	{
+		this.shouldRender = shouldRender;
+	}
+
+	@Override
+	public boolean isNetworkedEntity()
+	{
 		return true;
+	}
+
+	@Override
+	public int getPacketCooldown(Side side)
+	{
+		return 3;
+	}
+
+	@Override
+	public void onPacketClient(EntityPlayer player)
+	{
+		;
+	}
+
+	@Override
+	public void onPacketServer(EntityPlayer player)
+	{
+		;
+	}
+
+	@Override
+	public double getPacketRange()
+	{
+		return 64.0D;
 	}
 }

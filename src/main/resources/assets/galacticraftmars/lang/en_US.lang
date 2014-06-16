@@ -72,15 +72,18 @@ gui.desc.reinforcedPlateT2.name=Tier 2
 itemGroup.GalacticraftMars=Galacticraft Mars
 
 dimension.Mars.name=Mars
+planet.mars=Mars
 
 # Schematics
 schematic.rocketT3.name=Tier 3 Rocket
 schematic.cargoRocket.name=Automatic Cargo Rocket
 
-# Entity
+# Entities
 entity.Sludgeling.name=Sludgeling
 entity.Slimeling.name=Slimeling
 entity.CreeperBoss.name=Evolved Creeper Boss
+entity.SpaceshipT2.name=Tier 2 Rocket
+entity.CargoRocket.name=Cargo Rocket
 
 # Container
 container.launchcontroller.name=Launch Controller

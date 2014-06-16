@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.planets.asteroids;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.planets.IPlanetsModuleClient;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.block.BlockRendererWalkway;
@@ -13,9 +12,12 @@ import micdoodle8.mods.galacticraft.planets.asteroids.client.render.entity.Rende
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.item.ItemRendererBeamReceiver;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.item.ItemRendererBeamReflector;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.item.ItemRendererGrappleHook;
+import micdoodle8.mods.galacticraft.planets.asteroids.client.render.item.ItemRendererShortRangeTelepad;
+import micdoodle8.mods.galacticraft.planets.asteroids.client.render.item.ItemRendererThermalArmor;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.item.ItemRendererTier3Rocket;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.tile.TileEntityBeamReceiverRenderer;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.tile.TileEntityBeamReflectorRenderer;
+import micdoodle8.mods.galacticraft.planets.asteroids.client.render.tile.TileEntityShortRangeTelepadRenderer;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityGrapple;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntitySmallAsteroid;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityTier3Rocket;
@@ -23,6 +25,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.event.AsteroidsEventHandle
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReceiver;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReflector;
+import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityShortRangeTelepad;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -72,8 +75,11 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AsteroidBlocks.beamReceiver), new ItemRendererBeamReceiver());
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AsteroidBlocks.beamReflector), new ItemRendererBeamReflector());
 		MinecraftForgeClient.registerItemRenderer(AsteroidsItems.itemTier3Rocket, new ItemRendererTier3Rocket(rocketModel));
+		MinecraftForgeClient.registerItemRenderer(AsteroidsItems.itemThermalPadding, new ItemRendererThermalArmor());
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AsteroidBlocks.shortRangeTelepad), new ItemRendererShortRangeTelepad());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBeamReflector.class, new TileEntityBeamReflectorRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBeamReceiver.class, new TileEntityBeamReceiverRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityShortRangeTelepad.class, new TileEntityShortRangeTelepadRenderer());
 	}
 
 	@Override

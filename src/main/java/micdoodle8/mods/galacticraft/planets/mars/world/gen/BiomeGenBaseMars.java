@@ -2,18 +2,10 @@ package micdoodle8.mods.galacticraft.planets.mars.world.gen;
 
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
-import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.world.biome.BiomeGenBase;
 
-/**
- * GCMarsBiomeGenBase.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class BiomeGenBaseMars extends BiomeGenBase
 {
 	public static final BiomeGenBase marsFlat = new BiomeGenFlagMars(103).setBiomeName("marsFlat");

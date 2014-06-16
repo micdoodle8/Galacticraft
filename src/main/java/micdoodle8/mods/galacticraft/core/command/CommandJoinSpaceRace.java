@@ -11,15 +11,8 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 
-/**
- * CommandJoinSpaceRace.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class CommandJoinSpaceRace extends CommandBase
 {
 	@Override
@@ -45,10 +38,10 @@ public class CommandJoinSpaceRace extends CommandBase
 			{
 				if (playerBase != null)
 				{
-					if (playerBase.spaceRaceInviteTeamID > 0)
+					if (playerBase.getPlayerStats().spaceRaceInviteTeamID > 0)
 					{
-						SpaceRaceManager.sendSpaceRaceData(playerBase, SpaceRaceManager.getSpaceRaceFromID(playerBase.spaceRaceInviteTeamID));
-						GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_JOIN_RACE_GUI, new Object[] { playerBase.spaceRaceInviteTeamID }), playerBase);
+						SpaceRaceManager.sendSpaceRaceData(playerBase, SpaceRaceManager.getSpaceRaceFromID(playerBase.getPlayerStats().spaceRaceInviteTeamID));
+						GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_JOIN_RACE_GUI, new Object[] { playerBase.getPlayerStats().spaceRaceInviteTeamID }), playerBase);
 					}
 					else
 					{

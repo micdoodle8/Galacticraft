@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
@@ -52,6 +53,7 @@ import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererThruster
 import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererTier1Rocket;
 import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererUnlitTorch;
 import micdoodle8.mods.galacticraft.core.client.render.tile.TileEntityAluminumWireRenderer;
+import micdoodle8.mods.galacticraft.core.client.render.tile.TileEntityArclampRenderer;
 import micdoodle8.mods.galacticraft.core.client.render.tile.TileEntityNasaWorkbenchRenderer;
 import micdoodle8.mods.galacticraft.core.client.render.tile.TileEntityParachestRenderer;
 import micdoodle8.mods.galacticraft.core.client.render.tile.TileEntitySolarPanelRenderer;
@@ -79,6 +81,7 @@ import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAluminumWire;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityArclamp;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityNasaWorkbench;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityParaChest;
 import micdoodle8.mods.galacticraft.core.tile.TileEntitySolar;
@@ -89,6 +92,7 @@ import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundPoolEntry;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.entity.Entity;
@@ -96,10 +100,14 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
+import net.minecraft.network.INetHandler;
+import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldProvider;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.IFluidBlock;
@@ -123,16 +131,10 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.Event;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
-/**
- * ClientProxyCore.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class ClientProxyCore extends CommonProxyCore
 {
 	private static int renderIdTreasureChest;
@@ -183,6 +185,7 @@ public class ClientProxyCore extends CommonProxyCore
     private static float globalRadius;
 	public static float terrainHeight = Float.MAX_VALUE;
 	public static int lastY = -1;
+	private static boolean smallMoonActive = false;
 	
 	//private static int playerList;
 	
@@ -250,6 +253,10 @@ public class ClientProxyCore extends CommonProxyCore
 	{
 		FMLCommonHandler.instance().bus().register(new TickHandlerClient());
 		FMLCommonHandler.instance().bus().register(new KeyHandlerClient());
+		ClientRegistry.registerKeyBinding(KeyHandlerClient.galaxyMap);
+		ClientRegistry.registerKeyBinding(KeyHandlerClient.openFuelGui);
+		ClientRegistry.registerKeyBinding(KeyHandlerClient.toggleAdvGoggles);
+		MinecraftForge.EVENT_BUS.register(new ClientProxyCore());
 	}
 
 	public static void registerTileEntityRenderers()
@@ -260,6 +267,7 @@ public class ClientProxyCore extends CommonProxyCore
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityNasaWorkbench.class, new TileEntityNasaWorkbenchRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySolar.class, new TileEntitySolarPanelRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityThruster.class, new TileEntityThrusterRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityArclamp.class, new TileEntityArclampRenderer());
 	}
 
 	public static void registerBlockHandlers()
@@ -512,6 +520,87 @@ public class ClientProxyCore extends CommonProxyCore
 		return null;
 	}
 	
+	@SubscribeEvent
+	public void onRenderPlayerPre(RenderPlayerEvent.Pre event)
+	{
+		GL11.glPushMatrix();
+		
+		final Minecraft minecraft = FMLClientHandler.instance().getClient();
+		final EntityPlayer player = event.entityPlayer;
+		final WorldProvider provider = minecraft.theWorld.provider;
+
+		if (player.ridingEntity instanceof EntityAutoRocket)
+		{
+			EntityAutoRocket entity = (EntityAutoRocket) player.ridingEntity;
+			float anglePitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * event.partialRenderTick;
+			float angleYaw = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * event.partialRenderTick;
+			GL11.glRotatef(-angleYaw, 0.0F, 1.0F, 0.0F);
+			GL11.glRotatef(anglePitch, 0.0F, 0.0F, 1.0F);
+		}
+
+		//Gravity - freefall - jetpack changes in player model orientation can go here
+	}
+		
+	@SubscribeEvent
+	public void onRenderPlayerPost(RenderPlayerEvent.Post event)
+	{
+		GL11.glPopMatrix();
+	}
+
+	public static void adjustRenderPos(Entity entity, double offsetX, double offsetY, double offsetZ)
+	{
+		GL11.glPushMatrix();
+		//Skip mobs in mobspawners
+		//Note: can also look for (entity.posY!=0.0D || entity.posX!=0.0D || entity.posZ!=0.0) which filters hand-held entities and the player in an inventory GUI
+		if (ClientProxyCore.smallMoonActive && (offsetX!=0.0D || offsetY!=0.0D || offsetZ!=0.0D))
+		{
+			final Minecraft minecraft = FMLClientHandler.instance().getClient();
+			final EntityPlayerSP player = minecraft.thePlayer;
+			final WorldProvider provider = minecraft.theWorld.provider;
+			if (provider instanceof WorldProviderMoon)
+			{
+	    		ClientProxyCore.globalRadius = 300F;
+	    		ClientProxyCore.terrainHeight = 64F;
+		    	if (player.posY > ClientProxyCore.terrainHeight + 8F && player.ridingEntity != entity && player != entity)
+		    	{
+		    		double globalArc = ClientProxyCore.globalRadius / 57.2957795D;
+		    		float globeRadius = ClientProxyCore.globalRadius - ClientProxyCore.terrainHeight;
+		            
+		        	int pX = MathHelper.floor_double(player.posX / 16D) << 4;
+		        	int pZ = MathHelper.floor_double(player.posZ / 16D) << 4;
+	
+		        	int eX = MathHelper.floor_double((entity.posX) / 16D) << 4;
+		        	int eZ = MathHelper.floor_double((entity.posZ) / 16D) << 4;
+	
+		        	double DX = player.posX - pX;
+		        	double DZ = player.posZ - pZ;
+	
+		        	double intDX = (eX - pX - DX)/2;  //(int) event.x;//
+		        	double intDZ = (eZ - pZ - DZ)/2;  //(int) event.z;//
+		
+		        	float theta = (float) MathHelper.wrapAngleTo180_double(intDX / globalArc);
+		        	float phi = (float) MathHelper.wrapAngleTo180_double(intDZ / globalArc);
+		        	if (theta < 0) theta += 360F;
+		        	if (phi < 0) phi += 360F;
+		        	GL11.glTranslatef(-(float)intDX, -(float)(entity.posY)-globeRadius, -(float)intDZ);
+		        	if (theta>0) GL11.glRotatef(theta,0,0,-1);
+		        	if (phi>0) GL11.glRotatef(phi,1,0,0);
+		        	GL11.glTranslatef(0, (float)(entity.posY)+globeRadius, 0);
+	/*
+		        	float theta2 = (float) MathHelper.wrapAngleTo180_double((8 - DX)/ globalArc);
+			    	float phi2 = (float) MathHelper.wrapAngleTo180_double((8 - DZ)/ globalArc);
+			    	if (theta2 < 0) theta2 += 360F;
+			    	if (phi2 < 0) phi2 += 360F;
+		        	GL11.glTranslatef(0, ClientProxyCore.terrainHeight-(float)player.posY, 0);
+			    	if (theta2>0) GL11.glRotatef(theta,0,0,-1);
+			    	if (phi2>0) GL11.glRotatef(phi,1,0,0);
+		        	GL11.glTranslatef(0, (float)player.posY-ClientProxyCore.terrainHeight, 0);
+	*/
+		    	}
+			}
+		}
+	}
+	
 	public static void orientCamera(float partialTicks)
 	{
 		((GCEntityClientPlayerMP) FMLClientHandler.instance().getClient().thePlayer).reOrientCamera(partialTicks);
@@ -520,34 +609,6 @@ public class ClientProxyCore extends CommonProxyCore
 	public static void adjustRenderCamera()
 	{
 		GL11.glPushMatrix();
-		GCEntityClientPlayerMP p = (GCEntityClientPlayerMP) FMLClientHandler.instance().getClient().thePlayer;
-		
-    	if (p.worldObj.provider instanceof WorldProviderMoon)
-    	{
-    		//See what a small moon looks like, for demo purposes
-    		ClientProxyCore.globalRadius = 300F;
-    		ClientProxyCore.terrainHeight = 64F;
-    	}
-    	else
-    		ClientProxyCore.terrainHeight = Float.MAX_VALUE;
-    	
-    	if (p.posY > ClientProxyCore.terrainHeight + 8F)
-    	{
-    		double globalArc = ClientProxyCore.globalRadius / 57.2957795D;
-            
-        	int pX = MathHelper.floor_double(p.posX / 16D) << 4;
-        	int pZ = MathHelper.floor_double(p.posZ / 16D) << 4;
-        	double DX = p.posX - pX;
-        	double DZ = p.posZ - pZ;
-        	float theta = (float) MathHelper.wrapAngleTo180_double((8 - DX)/ globalArc);
-	    	float phi = (float) MathHelper.wrapAngleTo180_double((8 - DZ)/ globalArc);
-	    	if (theta < 0) theta += 360F;
-	    	if (phi < 0) phi += 360F;
-        	GL11.glTranslatef(0, ClientProxyCore.terrainHeight-(float)p.posY, 0);
-	    	if (theta>0) GL11.glRotatef(theta,0,0,-1);
-	    	if (phi>0) GL11.glRotatef(phi,1,0,0);
-        	GL11.glTranslatef(0, (float)p.posY-ClientProxyCore.terrainHeight, 0);
-        }
     }
 
     public static void setPositionList(WorldRenderer rend, int glRenderList)
@@ -570,36 +631,64 @@ public class ClientProxyCore extends CommonProxyCore
 	    	
 	    	if (entitylivingbase.posY > ClientProxyCore.terrainHeight + 8F)
 	    	{
+	    		ClientProxyCore.smallMoonActive = true;
 	    		double globalArc = ClientProxyCore.globalRadius / 57.2957795D;
 	    		float globeRadius = ClientProxyCore.globalRadius - ClientProxyCore.terrainHeight;
 	            
-	        	int pX = MathHelper.floor_double(entitylivingbase.posX / 16D);
-	        	int pZ = MathHelper.floor_double(entitylivingbase.posZ / 16D);
+	        	int pX = MathHelper.floor_double(entitylivingbase.posX / 16D) << 4;
+	        	int pZ = MathHelper.floor_double(entitylivingbase.posZ / 16D) << 4;
 	        	
-	        	int intDX = rend.posX - (pX << 4);
-	        	int intDZ = rend.posZ - (pZ << 4);
+	        	float dX = rend.posX - pX;
+	        	float dZ = rend.posZ - pZ;
 	        	
-	        	int intClipX = rend.posXClip - intDX;
-	        	int intClipZ = rend.posZClip - intDZ;
-	
-	        	float theta = (float) MathHelper.wrapAngleTo180_double(intDX / globalArc);
-	        	float phi = (float) MathHelper.wrapAngleTo180_double(intDZ / globalArc);
+	        	if (dX > 0)
+	        	{
+	        		dX -= 16F;
+	        		if (dX > 0) dX -= entitylivingbase.posX - pX;
+	        	}
+	        	else if (dX < 0)
+	        	{
+	        		dX += 16F;
+	        		if (dX < 0) dX += 16F-(entitylivingbase.posX - pX);
+	        	}
+	        	
+	        	if (dZ > 0)
+	        	{
+	        		dZ -= 16F;
+	        		if (dZ > 0) dZ -= entitylivingbase.posZ - pZ;
+	        	}
+	        	else if (dZ < 0)
+	        	{
+	        		dZ += 16F;
+	        		if (dZ < 0) dZ += 16F-(entitylivingbase.posZ - pZ);
+	        	}
+	        	
+	        	float origClipX = rend.posXClip;
+	        	float origClipY = rend.posYClip;
+	        	float origClipZ = rend.posZClip;
+	        	
+	        	float theta = (float) MathHelper.wrapAngleTo180_double(dX / globalArc);
+	        	float phi = (float) MathHelper.wrapAngleTo180_double(dZ / globalArc);
 	        	if (theta < 0) theta += 360F;
 	        	if (phi < 0) phi += 360F;
-	        	GL11.glTranslatef(intClipX+8, -globeRadius, intClipZ+8);
-	        	if (theta>0) GL11.glRotatef(theta,0,0,-1);
-	        	if (phi>0) GL11.glRotatef(phi,1,0,0);
-	        	GL11.glTranslatef(-8, (float)rend.posYClip+globeRadius, -8);
-	        	float scale = (rend.posY + 15 + globeRadius) / ClientProxyCore.globalRadius;
-	        	ClientProxyCore.scaleup.rewind();
-	        	ClientProxyCore.scaleup.put(scale);
-	        	ClientProxyCore.scaleup.position(10);
-	        	ClientProxyCore.scaleup.put(scale);
-	        	ClientProxyCore.scaleup.rewind();
-	        	GL11.glMultMatrix(ClientProxyCore.scaleup);
-	        	GL11.glTranslatef(-8F * (scale - 1F), 0, -8F * (scale - 1F));
-	            GL11.glTranslatef(-(float)rend.posXClip, -(float)rend.posYClip, -(float)rend.posZClip);
+	        	GL11.glTranslatef(origClipX - dX + 8F, -globeRadius + 8F, origClipZ - dZ + 8F);
+	        	if (theta > 0) GL11.glRotatef(theta,0,0,-1F);
+	        	if (phi > 0) GL11.glRotatef(phi,1F,0,0);
+	        	GL11.glTranslatef(-8F, origClipY + globeRadius - 8F, -8F);
+	        	if (dX != 0 && dZ != 0)
+	        	{
+		        	float scale = (rend.posY + 21F + globeRadius) / ClientProxyCore.globalRadius;
+		        	ClientProxyCore.scaleup.rewind();
+		        	ClientProxyCore.scaleup.put(scale);
+		        	ClientProxyCore.scaleup.position(10);
+		        	ClientProxyCore.scaleup.put(scale);
+		        	ClientProxyCore.scaleup.rewind();
+		        	GL11.glMultMatrix(ClientProxyCore.scaleup);
+		        	GL11.glTranslatef(-8F * (scale - 1F), 0, -8F * (scale - 1F));
+	        	}
+	            GL11.glTranslatef(-origClipX, -origClipY, -origClipZ);
 	        }
+	    	else ClientProxyCore.smallMoonActive = false;
 	    }
         GL11.glEndList();
     }
@@ -630,4 +719,17 @@ public class ClientProxyCore extends CommonProxyCore
 	    	ClientProxyCore.lastY = y;
     	}
     }
+	
+    @Override
+	public EntityPlayer getPlayerFromNetHandler(INetHandler handler) 
+	{
+		if (handler instanceof NetHandlerPlayServer)
+		{
+			return ((NetHandlerPlayServer) handler).playerEntity;
+		} 
+		else 
+		{
+			return FMLClientHandler.instance().getClientPlayerEntity();
+		}
+	}
 }

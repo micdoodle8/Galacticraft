@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,15 +23,8 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-/**
- * GCCoreItemBuggy.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class ItemBuggy extends Item implements IHoldableItem
 {
 	public ItemBuggy(String assetName)
@@ -158,7 +152,7 @@ public class ItemBuggy extends Item implements IHoldableItem
 	{
 		if (par1ItemStack.getItemDamage() != 0)
 		{
-			par2List.add("Storage Space: " + par1ItemStack.getItemDamage() * 18);
+			par2List.add(GCCoreUtil.translate("gui.buggy.storageSpace") + ": " + par1ItemStack.getItemDamage() * 18);
 		}
 	}
 

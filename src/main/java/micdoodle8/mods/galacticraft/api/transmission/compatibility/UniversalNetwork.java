@@ -1,8 +1,6 @@
 package micdoodle8.mods.galacticraft.api.transmission.compatibility;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -16,17 +14,14 @@ import java.util.Set;
 //import buildcraft.api.power.PowerHandler.Type;
 //import cofh.api.energy.IEnergyHandler;
 //import mekanism.api.energy.IStrictEnergyAcceptor;
-import micdoodle8.mods.galacticraft.api.power.IEnergyHandlerGC;
 import micdoodle8.mods.galacticraft.api.transmission.ElectricalEvent.ElectricityProductionEvent;
 import micdoodle8.mods.galacticraft.api.transmission.ElectricalEvent.ElectricityRequestEvent;
-import micdoodle8.mods.galacticraft.api.transmission.ElectricityPack;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.core.grid.ElectricityNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.core.grid.IElectricityNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.core.path.Pathfinder;
 import micdoodle8.mods.galacticraft.api.transmission.core.path.PathfinderChecker;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
-import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkConnection;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
@@ -87,7 +82,7 @@ public class UniversalNetwork extends ElectricityNetwork
 	private final static float ENERGYSTORAGELEVEL = 0.6F;
 	
 	@Override
-	public ElectricityPack getRequest(TileEntity... ignoreTiles)
+	public float getRequest(TileEntity... ignoreTiles)
 	{
 		if (UniversalNetwork.tickCount!=this.tickDone)
 		{	
@@ -116,15 +111,13 @@ public class UniversalNetwork extends ElectricityNetwork
 				}
 			}*/
 		}
-		return ElectricityPack.getFromWatts(this.totalRequested - this.totalEnergy - this.totalSent, 120F);
+		return this.totalRequested - this.totalEnergy - this.totalSent;
 	}
 	
 	@Override
-	public float produce(ElectricityPack electricity, boolean doReceive, TileEntity... ignoreTiles)
+	public float produce(float electricity, boolean doReceive, TileEntity... ignoreTiles)
 	{
-		float energyToProduce = electricity.getWatts();
-
-		if (energyToProduce > 0F)
+		if (electricity > 0F)
 		{
 			ElectricityProductionEvent evt = new ElectricityProductionEvent(this, electricity, ignoreTiles);
 			MinecraftForge.EVENT_BUS.post(evt);
@@ -161,14 +154,14 @@ public class UniversalNetwork extends ElectricityNetwork
 				
 				//Add the energy for distribution by this grid later this tick
 				//Note: totalEnergy cannot exceed totalRequested
-				if (doReceive) this.totalEnergy += Math.min(energyToProduce, this.totalRequested - totalEnergyLast);
+				if (doReceive) this.totalEnergy += Math.min(electricity, this.totalRequested - totalEnergyLast);
 				
-				if (this.totalRequested >= totalEnergyLast + energyToProduce) return 0F; //All the electricity will be used
-				if (totalEnergyLast >= this.totalRequested) return energyToProduce; //None of the electricity will be used
-				return totalEnergyLast + energyToProduce - this.totalRequested; //Some of the electricity will be used
+				if (this.totalRequested >= totalEnergyLast + electricity) return 0F; //All the electricity will be used
+				if (totalEnergyLast >= this.totalRequested) return electricity; //None of the electricity will be used
+				return totalEnergyLast + electricity - this.totalRequested; //Some of the electricity will be used
 			}
 		}
-		return energyToProduce;
+		return electricity;
 	}
 
 	public void tickEnd()
@@ -263,10 +256,9 @@ public class UniversalNetwork extends ElectricityNetwork
 		}
 			
 		//Finally, allow a Forge event to change the total requested
-		ElectricityPack mergedPack = new ElectricityPack(this.totalRequested, 1);
-		ElectricityRequestEvent evt = new ElectricityRequestEvent(this, mergedPack, ignoreTiles);
+		ElectricityRequestEvent evt = new ElectricityRequestEvent(this, this.totalRequested, ignoreTiles);
 		MinecraftForge.EVENT_BUS.post(evt);
-		this.totalRequested = mergedPack.getWatts();
+		this.totalRequested = evt.energy;
 	}
 
 	private float doProduce()
@@ -329,8 +321,7 @@ public class UniversalNetwork extends ElectricityNetwork
 
 				if (tileEntity instanceof IElectrical)
 				{
-					ElectricityPack electricityToSend = ElectricityPack.getFromWatts(currentSending, 120F);
-					sentToAcceptor = ((IElectrical) tileEntity).receiveElectricity(sideFrom, electricityToSend, true);
+					sentToAcceptor = ((IElectrical) tileEntity).receiveElectricity(sideFrom, currentSending, true);
 				}
 				/*else if (isMekLoaded && tileEntity instanceof IStrictEnergyAcceptor)
 				{

@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars.inventory;
 
 import micdoodle8.mods.galacticraft.core.inventory.SlotRocketBenchResult;
-import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.planets.mars.util.RecipeUtilMars;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -14,15 +13,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-/**
- * GCMarsContainerRocketBenchT2.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class ContainerSchematicTier2Rocket extends Container
 {
 	public InventorySchematicTier2Rocket craftMatrix = new InventorySchematicTier2Rocket(this);

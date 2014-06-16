@@ -8,11 +8,13 @@ public class AsteroidsItems
 {
 	public static Item itemGrapple;
 	public static Item itemTier3Rocket;
+	public static Item itemThermalPadding;
 	
 	public static void initItems()
 	{
 		AsteroidsItems.itemGrapple = new ItemGrappleHook("grapple");
 		AsteroidsItems.itemTier3Rocket = new ItemTier3Rocket("itemTier3Rocket");
+		AsteroidsItems.itemThermalPadding = new ItemThermalPadding("thermalPadding");
 		
 		AsteroidsItems.registerItems();
 	}
@@ -21,5 +23,6 @@ public class AsteroidsItems
 	{
 		GameRegistry.registerItem(AsteroidsItems.itemGrapple, AsteroidsItems.itemGrapple.getUnlocalizedName(), GalacticraftPlanets.MODID);
 		GameRegistry.registerItem(AsteroidsItems.itemTier3Rocket, AsteroidsItems.itemTier3Rocket.getUnlocalizedName(), GalacticraftPlanets.MODID);
+		GameRegistry.registerItem(AsteroidsItems.itemThermalPadding, AsteroidsItems.itemThermalPadding.getUnlocalizedName(), GalacticraftPlanets.MODID);
 	}
 }

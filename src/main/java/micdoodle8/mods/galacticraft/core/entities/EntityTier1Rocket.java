@@ -9,8 +9,6 @@ import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
-import micdoodle8.mods.galacticraft.core.network.PacketSimple;
-import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
@@ -25,15 +23,8 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 
-/**
- * EntityTier1Rocket.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class EntityTier1Rocket extends EntityTieredRocket
 {
 	public IUpdatePlayerListBox rocketSoundUpdater;
@@ -124,6 +115,11 @@ public class EntityTier1Rocket extends EntityTieredRocket
 			if (this.timeSinceLaunch % MathHelper.floor_double(3 * (1 / multiplier)) == 0)
 			{
 				this.removeFuel(1);
+				/*TO: fix soundupdater (see below)
+				if (!this.hasValidFuel() && this.rocketSoundUpdater instanceof GCCoreSoundUpdaterSpaceship)
+				{
+					((GCCoreSoundUpdaterSpaceship) this.rocketSoundUpdater).stopRocketSound();
+				}*/
 			}
 		}
 		else if (!this.hasValidFuel() && this.getLaunched() && !this.worldObj.isRemote)
@@ -156,16 +152,21 @@ public class EntityTier1Rocket extends EntityTieredRocket
 		{
 			if (this.cargoItems == null || this.cargoItems.length == 0)
 			{
-				playerBase.setRocketStacks(new ItemStack[9]);
+				playerBase.getPlayerStats().rocketStacks = new ItemStack[2];
 			}
 			else
 			{
-				playerBase.setRocketStacks(this.cargoItems);
+				playerBase.getPlayerStats().rocketStacks = this.cargoItems;
+				if ((cargoItems.length-2)%18!=0)
+				{
+					System.out.println("Strange rocket inventory size "+cargoItems.length);
+					int fail = 1/0;
+				}
 			}
 
-			playerBase.setRocketType(this.rocketType.getIndex());
-			playerBase.setRocketItem(GCItems.rocketTier1);
-			playerBase.setFuelLevel(this.fuelTank.getFluidAmount());
+			playerBase.getPlayerStats().rocketType = this.rocketType.getIndex();
+			playerBase.getPlayerStats().rocketItem = GCItems.rocketTier1;
+			playerBase.getPlayerStats().fuelLevel = this.fuelTank.getFluidAmount();
 		}
 	}
 

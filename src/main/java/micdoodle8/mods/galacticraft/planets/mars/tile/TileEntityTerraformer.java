@@ -9,7 +9,10 @@ import micdoodle8.mods.galacticraft.api.block.ITerraformableBlock;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.entities.IBubble;
+import micdoodle8.mods.galacticraft.core.entities.IBubbleProvider;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricBlock;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntityTerraformBubble;
 import micdoodle8.mods.galacticraft.planets.mars.world.gen.WorldGenTerraformTree;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
@@ -23,7 +26,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -31,16 +33,9 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import cpw.mods.fml.relauncher.Side;
 
-/**
- * GCMarsTileEntityTerraformer.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
-public class TileEntityTerraformer extends TileEntityElectricBlock implements IInventory, ISidedInventory, IDisableableMachine
+
+
+public class TileEntityTerraformer extends TileEntityElectricBlock implements IInventory, ISidedInventory, IDisableableMachine, IBubbleProvider
 {
 	private final int tankCapacity = 2000;
 	@NetworkedField(targetSide = Side.CLIENT)
@@ -503,7 +498,7 @@ public class TileEntityTerraformer extends TileEntityElectricBlock implements II
 	@Override
 	public String getInventoryName()
 	{
-		return StatCollector.translateToLocal("container.oxygendistributor.name");
+		return GCCoreUtil.translate("container.oxygendistributor.name");
 	}
 
 	@Override
@@ -659,5 +654,22 @@ public class TileEntityTerraformer extends TileEntityElectricBlock implements II
 		}
 
 		return false;
+	}
+
+	@Override
+	public IBubble getBubble()
+	{
+		return this.terraformBubble;
+	}
+
+	@Override
+	public void setBubbleVisible(boolean shouldRender)
+	{
+		if (this.terraformBubble == null)
+		{
+			return;
+		}
+		
+		this.terraformBubble.setShouldRender(shouldRender);
 	}
 }

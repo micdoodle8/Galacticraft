@@ -3,15 +3,8 @@ package micdoodle8.mods.galacticraft.core.client.model.block;
 import net.minecraft.client.model.ModelChest;
 import net.minecraft.client.model.ModelRenderer;
 
-/**
- * GCCoreModelParachestTile.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class ModelParaChestTile extends ModelChest
 {
 	public ModelRenderer keyParts[] = new ModelRenderer[3];

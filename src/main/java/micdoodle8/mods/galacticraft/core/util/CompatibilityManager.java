@@ -2,15 +2,8 @@ package micdoodle8.mods.galacticraft.core.util;
 
 import cpw.mods.fml.common.Loader;
 
-/**
- * GCCoreCompatibilityManager.java
- * 
- * This file is part of the Galacticraft project
- * 
- * @author micdoodle8
- * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
- */
+
+
 public class CompatibilityManager
 {
 	private static boolean modIc2Loaded;
