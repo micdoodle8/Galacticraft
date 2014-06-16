@@ -273,7 +273,7 @@ public class EntityTier3Rocket extends EntityTieredRocket
 	@Override
 	public int getRocketTier()
 	{
-		return 2;
+		return 3;
 	}
 
 	@Override
