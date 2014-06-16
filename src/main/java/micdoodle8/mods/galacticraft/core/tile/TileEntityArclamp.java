@@ -178,7 +178,6 @@ public class TileEntityArclamp extends TileEntity
 			}
 		}
 		BlockVec3 inFront = new BlockVec3(this);
-		System.out.println("Arclamp: facing = "+facingSide+" other = "+(sideskip1 ^ 1));
 		for (int i = 0; i< 5; i++)
 		{
 			inFront = inFront.newVecSide(this.facingSide).newVecSide(sideskip1 ^ 1);
