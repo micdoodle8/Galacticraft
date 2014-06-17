@@ -19,6 +19,7 @@ import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.BlockPistonBase;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.BlockSponge;
+import net.minecraft.block.BlockStainedGlass;
 import net.minecraft.block.material.Material;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -110,7 +111,7 @@ public class OxygenPressureProtocol
 			return false;
 		}
 		
-		if (block instanceof BlockGlass)
+		if (block instanceof BlockGlass || block instanceof BlockStainedGlass)
 		{
 			return false;
 		}
