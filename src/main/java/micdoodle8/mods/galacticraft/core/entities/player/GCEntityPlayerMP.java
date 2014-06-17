@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import micdoodle8.mods.galacticraft.api.event.oxygen.GCCoreOxygenSuffocationEvent;
+import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -14,6 +15,7 @@ import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
+import micdoodle8.mods.galacticraft.core.entities.EntityLander;
 import micdoodle8.mods.galacticraft.core.entities.EntityMeteor;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP.ThermalArmorEvent.ArmorAddResult;
 import micdoodle8.mods.galacticraft.core.event.EventWakePlayer;
@@ -530,7 +532,7 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 
 		final int drainSpacing = OxygenUtil.getDrainSpacing(tankInSlot, tankInSlot2);
 
-		if (this.worldObj.provider instanceof IGalacticraftWorldProvider && !((IGalacticraftWorldProvider) this.worldObj.provider).hasBreathableAtmosphere() && !this.capabilities.isCreativeMode)
+		if (this.worldObj.provider instanceof IGalacticraftWorldProvider && !((IGalacticraftWorldProvider) this.worldObj.provider).hasBreathableAtmosphere() && !this.capabilities.isCreativeMode && !(this.ridingEntity instanceof EntityLander)&& !(this.ridingEntity instanceof EntityAutoRocket))
 		{
 			if (tankInSlot == null)
 			{
