@@ -211,7 +211,8 @@ public class GCCoreTickHandlerServer implements ITickHandler
 		{
 			final WorldServer world = (WorldServer) tickData[0];
 
-			List<BlockVec3> edgesList = GCCoreTickHandlerServer.edgeChecks.get(world.provider.dimensionId);
+			List<BlockVec3> edgesList = new ArrayList();
+			edgesList.addAll(GCCoreTickHandlerServer.edgeChecks.get(world.provider.dimensionId));
 			final HashSet<BlockVec3> checkedThisTick = new HashSet();
 			
 			if (edgesList != null && !edgesList.isEmpty())
