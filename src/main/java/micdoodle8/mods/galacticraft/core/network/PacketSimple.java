@@ -130,7 +130,8 @@ public class PacketSimple extends Packet implements IPacket
 		C_UPDATE_FOOTPRINT_LIST(Side.CLIENT, Footprint[].class),
 		C_UPDATE_STATION_SPIN(Side.CLIENT, Float.class, Boolean.class),
 		C_UPDATE_STATION_DATA(Side.CLIENT, Double.class, Double.class),
-		C_UPDATE_STATION_BOX(Side.CLIENT, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class);
+		C_UPDATE_STATION_BOX(Side.CLIENT, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class),
+		C_UPDATE_THERMAL_LEVEL(Side.CLIENT, Integer.class);
 
 		private Side targetSide;
 		private Class<?>[] decodeAs;
@@ -286,8 +287,10 @@ public class PacketSimple extends Packet implements IPacket
 			{
 				gearData = new PlayerGearData(player);
 			}
+			
+			EnumModelPacket type = EnumModelPacket.values()[(Integer) this.data.get(1)];
 
-			switch (EnumModelPacket.values()[(Integer) this.data.get(1)])
+			switch (type)
 			{
 			case ADDMASK:
 				gearData.setMask(0);
@@ -342,6 +345,22 @@ public class PacketSimple extends Packet implements IPacket
 				break;
 			case REMOVE_FREQUENCY_MODULE:
 				gearData.setFrequencyModule(-1);
+				break;
+			case ADD_THERMAL_HELMET:
+				break;
+			case ADD_THERMAL_CHESTPLATE:
+				break;
+			case ADD_THERMAL_LEGGINGS:
+				break;
+			case ADD_THERMAL_BOOTS:
+				break;
+			case REMOVE_THERMAL_HELMET:
+				break;
+			case REMOVE_THERMAL_CHESTPLATE:
+				break;
+			case REMOVE_THERMAL_LEGGINGS:
+				break;
+			case REMOVE_THERMAL_BOOTS:
 				break;
 			default:
 				break;
@@ -591,6 +610,9 @@ public class PacketSimple extends Packet implements IPacket
 			{
 				((WorldProviderOrbit)playerBaseClient.worldObj.provider).setSpinBox((Integer)this.data.get(0),(Integer)this.data.get(1),(Integer)this.data.get(2),(Integer)this.data.get(3),(Integer)this.data.get(4),(Integer)this.data.get(5));
 			}
+			break;
+		case C_UPDATE_THERMAL_LEVEL:
+			playerBaseClient.thermalLevel = (Integer) this.data.get(0);
 			break;
 		default:
 			break;

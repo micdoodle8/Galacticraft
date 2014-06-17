@@ -1161,5 +1161,11 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 		GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_STATION_BOX, objList), player);
 	}
 
+	@Override
+	public int getThermalLevelModifier()
+	{
+		return 0;
+	}
+
 	//TODO Occasional call to checkSS to update centre of mass etc (in case the player has been building)
 }

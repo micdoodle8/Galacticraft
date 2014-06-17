@@ -180,6 +180,7 @@ public class GCPlayerHandler
 		if (tick % 30 == 0 && player.worldObj.provider instanceof IGalacticraftWorldProvider)
 		{
 			player.sendAirRemainingPacket();
+			player.sendThermalLevelPacket();
 		}
 
 		player.checkGear();
@@ -211,6 +212,7 @@ public class GCPlayerHandler
 			GCPlayer.launchAttempts = 0;
 		}
 
+		player.checkThermalStatus();
 		player.checkOxygen();
 
 		if (player.worldObj.provider instanceof IGalacticraftWorldProvider && (GCPlayer.oxygenSetupValid != GCPlayer.lastOxygenSetupValid || tick % 100 == 0))

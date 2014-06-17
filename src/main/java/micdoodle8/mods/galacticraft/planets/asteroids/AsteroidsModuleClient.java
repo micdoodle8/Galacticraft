@@ -59,8 +59,9 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
 	{
 		AsteroidsModuleClient.walkwayRenderID = RenderingRegistry.getNextAvailableRenderId();
 		RenderingRegistry.registerBlockHandler(new BlockRendererWalkway(AsteroidsModuleClient.walkwayRenderID));
-		FMLCommonHandler.instance().bus().register(new AsteroidsEventHandlerClient());
-		MinecraftForge.EVENT_BUS.register(new AsteroidsEventHandlerClient());
+		AsteroidsEventHandlerClient clientEventHandler = new AsteroidsEventHandlerClient();
+		FMLCommonHandler.instance().bus().register(clientEventHandler);
+		MinecraftForge.EVENT_BUS.register(clientEventHandler);
 	}
 
 	@Override

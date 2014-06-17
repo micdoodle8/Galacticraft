@@ -27,6 +27,8 @@ public class GCPlayerStats implements IExtendedEntityProperties
 
 	public int airRemaining;
 	public int airRemaining2;
+	
+	public int thermalLevel;
 
 	public int damageCounter;
 
@@ -57,6 +59,18 @@ public class GCPlayerStats implements IExtendedEntityProperties
 
 	public ItemStack tankInSlot2;
 	public ItemStack lastTankInSlot2;
+	
+	public ItemStack thermalHelmetInSlot;
+	public ItemStack lastThermalHelmetInSlot;
+	
+	public ItemStack thermalChestplateInSlot;
+	public ItemStack lastThermalChestplateInSlot;
+	
+	public ItemStack thermalLeggingsInSlot;
+	public ItemStack lastThermalLeggingsInSlot;
+	
+	public ItemStack thermalBootsInSlot;
+	public ItemStack lastThermalBootsInSlot;
 
 	public int launchAttempts = 0;
     
@@ -113,6 +127,7 @@ public class GCPlayerStats implements IExtendedEntityProperties
 		nbt.setDouble("coordsTeleportedFromX", this.coordsTeleportedFromX);
 		nbt.setDouble("coordsTeleportedFromZ", this.coordsTeleportedFromZ);
 		nbt.setInteger("spaceStationDimensionID", this.spaceStationDimensionID);
+		nbt.setInteger("thermalLevel", this.thermalLevel);
 
 		Collections.sort(this.unlockedSchematics);
 
@@ -163,6 +178,7 @@ public class GCPlayerStats implements IExtendedEntityProperties
 		this.airRemaining = nbt.getInteger("playerAirRemaining");
 		this.damageCounter = nbt.getInteger("damageCounter");
 		this.oxygenSetupValid = this.lastOxygenSetupValid = nbt.getBoolean("OxygenSetupValid");
+		this.thermalLevel = nbt.getInteger("thermalLevel");
 
 		// Backwards compatibility
 		NBTTagList nbttaglist = nbt.getTagList("Inventory", 10);

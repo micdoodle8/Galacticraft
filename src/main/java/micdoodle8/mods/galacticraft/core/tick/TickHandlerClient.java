@@ -232,7 +232,8 @@ public class TickHandlerClient
 					var7 = 90;
 				}
 
-				OverlayOxygenTanks.renderOxygenTankIndicator(var6, var7, !ConfigManagerCore.oxygenIndicatorLeft, !ConfigManagerCore.oxygenIndicatorBottom);
+				int thermalLevel = ((GCEntityClientPlayerMP) FMLClientHandler.instance().getClientPlayerEntity()).thermalLevel + 22;
+				OverlayOxygenTanks.renderOxygenTankIndicator(thermalLevel, var6, var7, !ConfigManagerCore.oxygenIndicatorLeft, !ConfigManagerCore.oxygenIndicatorBottom, Math.abs(thermalLevel - 22) >= 10);
 			}
 
 			if (playerBaseClient != null && player.worldObj.provider instanceof IGalacticraftWorldProvider && !playerBaseClient.oxygenSetupValid && minecraft.currentScreen == null && !playerBaseClient.capabilities.isCreativeMode)

@@ -53,6 +53,7 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 	private boolean usingParachute;
 	private boolean lastUsingParachute;
 	public boolean usingAdvancedGoggles;
+	public int thermalLevel;
 	private int thirdPersonView = 0;
 	public long tick;
 	public boolean oxygenSetupValid = true;

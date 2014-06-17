@@ -231,4 +231,10 @@ public class WorldProviderAsteroids extends WorldProviderSpace
 	{
 		return false;
 	}
+
+	@Override
+	public int getThermalLevelModifier() 
+	{
+		return -2;
+	}
 }

@@ -65,4 +65,11 @@ public interface IGalacticraftWorldProvider
 	 * @return True if players can breathe here, False if not.
 	 */
 	public boolean hasBreathableAtmosphere();
+	
+	/**
+	 * This value will affect player's thermal level, damaging them if it reaches too high or too low.
+	 * 
+	 * @return Positive integer for hot celestial bodies, negative for cold. Zero for neutral
+	 */
+	public int getThermalLevelModifier();
 }

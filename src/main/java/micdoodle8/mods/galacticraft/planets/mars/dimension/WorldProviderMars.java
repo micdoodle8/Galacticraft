@@ -243,4 +243,10 @@ public class WorldProviderMars extends WorldProviderSpace implements IGalacticra
 	{
 		return false;
 	}
+
+	@Override
+	public int getThermalLevelModifier() 
+	{
+		return -1;
+	}
 }
