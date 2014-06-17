@@ -45,6 +45,7 @@ import micdoodle8.mods.galacticraft.core.client.render.entities.RenderMeteorChun
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderParaChest;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderTier1Rocket;
+import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererArclamp;
 import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererBuggy;
 import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererFlag;
 import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererKey;
@@ -247,6 +248,7 @@ public class ClientProxyCore extends CommonProxyCore
 		MinecraftForgeClient.registerItemRenderer(GCItems.key, new ItemRendererKey(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/treasure.png")));
 		MinecraftForgeClient.registerItemRenderer(GCItems.meteorChunk, new ItemRendererMeteorChunk());
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(GCBlocks.spinThruster), new ItemRendererThruster());
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(GCBlocks.brightLamp), new ItemRendererArclamp());
 	}
 
 	public static void registerHandlers()
@@ -364,7 +366,7 @@ public class ClientProxyCore extends CommonProxyCore
 		{
 			return ClientProxyCore.renderIdTreasureChest;
 		}
-		else if (blockID == GCBlocks.breatheableAir)
+		else if (blockID == GCBlocks.breatheableAir || blockID == GCBlocks.brightBreatheableAir)
 		{
 			return ClientProxyCore.renderIdBreathableAir;
 		}
