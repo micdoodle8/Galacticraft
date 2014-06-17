@@ -2,11 +2,15 @@ package micdoodle8.mods.galacticraft.core.client.render.tile;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityArclamp;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
+import net.minecraftforge.client.model.obj.WavefrontObject;
 
 import org.lwjgl.opengl.GL11;
 
@@ -20,7 +24,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class TileEntityArclampRenderer extends TileEntitySpecialRenderer
 {
 	public static final ResourceLocation lampTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/misc/underoil.png");
-	public static final ResourceLocation lightTexture = new ResourceLocation("minecraft", "textures/blocks/snow.png");
+	public static final ResourceLocation lightTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/misc/light.png");
 	public static final IModelCustom lampMetal = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "models/arclampMetal.obj"));
 	public static final IModelCustom lampLight = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "models/arclampLight.obj"));
 	public static final IModelCustom lampBase = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "models/arclampBase.obj"));
@@ -86,7 +90,7 @@ public class TileEntityArclampRenderer extends TileEntitySpecialRenderer
 			break;
 		}
 
-		GL11.glTranslatef(0, -0.225F, 0);
+		GL11.glTranslatef(0, -0.175F, 0);
 		switch (metaFacing)
 		{
 		case 0:
@@ -105,11 +109,19 @@ public class TileEntityArclampRenderer extends TileEntitySpecialRenderer
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TileEntityArclampRenderer.lampTexture);
 		lampBase.renderAll();
 		GL11.glRotatef(45F, -1F, 0, 0);
-		GL11.glScalef(0.05F, 0.05F, 0.05F);
+		GL11.glScalef(0.048F, 0.048F, 0.048F);
 		
 		lampMetal.renderAll();
-		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TileEntityArclampRenderer.lightTexture);		
-		lampLight.renderAll();
+		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
+		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TileEntityArclampRenderer.lightTexture);
+        Tessellator tessellator = Tessellator.instance;
+        tessellator.startDrawing(GL11.GL_QUADS);
+		tessellator.setColorRGBA(255, 255, 255, 255);
+		RenderHelper.enableStandardItemLighting();
+		GL11.glEnable(GL11.GL_LIGHTING);
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        ((WavefrontObject) lampLight).tessellateAll(tessellator);
+        tessellator.draw();
 
 		GL11.glPopMatrix();
 	}
