@@ -17,6 +17,7 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenSealer;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.wrappers.ScheduledBlockChange;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockEnchantmentTable;
 import net.minecraft.block.BlockFarmland;
 import net.minecraft.block.BlockGlass;
@@ -49,6 +50,8 @@ public class ThreadFindSeal
 	private List<BlockVec3> currentLayer;
 	private List<BlockVec3> airToReplace;
 	private List<BlockVec3> breatheableToReplace;
+	private List<BlockVec3> airToReplaceBright;
+	private List<BlockVec3> breatheableToReplaceBright;
 	private List<TileEntityOxygenSealer> otherSealers;
 	private List<BlockVec3> torchesToUpdate;
 
@@ -81,7 +84,7 @@ public class ThreadFindSeal
 			if (checkCount>0)
 			{	
 				Block headBlock = head.getBlockID(this.world);
-				if (headBlock!=null && headBlock!=Blocks.air && headBlock!=GCBlocks.breatheableAir)
+				if (headBlock!=null && !(headBlock instanceof BlockAir))
 				{
 					this.canBlockPassAirCheck(headBlock, this.head, 1);
 					//reset the checkCount as canBlockPassAirCheck might have changed it
@@ -136,6 +139,7 @@ public class ThreadFindSeal
 		this.checked.add(this.head.clone());
 		this.currentLayer = new LinkedList<BlockVec3>();
 		this.airToReplace = new LinkedList<BlockVec3>();
+		this.airToReplaceBright = new LinkedList<BlockVec3>();
 		this.torchesToUpdate = new LinkedList<BlockVec3>();
 		if (this.checkCount > 0)
 		{
@@ -143,11 +147,13 @@ public class ThreadFindSeal
 			if (this.head.x < -29990000 || this.head.z < -29990000 || this.head.x >= 29990000 || this.head.z >= 29990000)
 			{
 				if (head.getBlockID_noChunkLoad(world) == Blocks.air) this.airToReplace.add(this.head.clone());
+				if (head.getBlockID_noChunkLoad(world) == GCBlocks.brightAir) this.airToReplaceBright.add(this.head.clone());
 				this.doLayerNearMapEdge();
 			}
 			else
 			{
 				if (head.getBlockIDsafe_noChunkLoad(world) == Blocks.air) this.airToReplace.add(this.head.clone());
+				if (head.getBlockIDsafe_noChunkLoad(world) == GCBlocks.brightAir) this.airToReplaceBright.add(this.head.clone());
 				this.doLayer();
 			}
 		}
@@ -163,7 +169,7 @@ public class ThreadFindSeal
 		
 		if (this.sealed)
 		{
-			if (!this.airToReplace.isEmpty())
+			if (!this.airToReplace.isEmpty() || !this.airToReplaceBright.isEmpty())
 			{
 				List<ScheduledBlockChange> changeList = new LinkedList<ScheduledBlockChange>();
 				// Note: it is faster to use a LinkedList than an ArrayList
@@ -175,12 +181,15 @@ public class ThreadFindSeal
 					//No block update for performance reasons; deal with unlit torches separately
 					changeList.add(new ScheduledBlockChange(checkedVec.clone(), breatheableAirID, 0));
 				}
-				TickHandlerServer.scheduleNewBlockChange(this.world.provider.dimensionId, changeList);
-
-				if (!this.torchesToUpdate.isEmpty())
+				for (BlockVec3 checkedVec : this.airToReplaceBright)
 				{
-					TickHandlerServer.scheduleNewTorchUpdate(this.world.provider.dimensionId, this.torchesToUpdate);
+					changeList.add(new ScheduledBlockChange(checkedVec.clone(), GCBlocks.brightBreatheableAir, 0));
 				}
+				TickHandlerServer.scheduleNewBlockChange(this.world.provider.dimensionId, changeList);
+			}
+			if (!this.torchesToUpdate.isEmpty())
+			{
+				TickHandlerServer.scheduleNewTorchUpdate(this.world.provider.dimensionId, this.torchesToUpdate);
 			}
 		}
 		else
@@ -188,6 +197,7 @@ public class ThreadFindSeal
 			HashSet checkedSave = this.checked;
 			this.checked = new HashSet<BlockVec3>();
 			this.breatheableToReplace = new LinkedList<BlockVec3>();
+			this.breatheableToReplaceBright = new LinkedList<BlockVec3>();
 			this.otherSealers = new LinkedList<TileEntityOxygenSealer>();
 			// loopThroughD will mark breatheableAir blocks for change as it
 			// finds them, also searches for unchecked sealers
@@ -227,6 +237,7 @@ public class ThreadFindSeal
 						this.checked.add(newhead);
 						this.currentLayer.clear();
 						this.airToReplace.clear();
+						this.airToReplaceBright.clear();
 						this.torchesToUpdate = new LinkedList<BlockVec3>();
 						this.currentLayer.add(newhead.clone());
 						if (newhead.x < -29990000 || newhead.z < -29990000 || newhead.x >= 29990000 || newhead.z >= 29990000)
@@ -278,7 +289,7 @@ public class ThreadFindSeal
 				else
 				{
 					//If the second search sealed the area, there may also be air or torches to update
-					if (!this.airToReplace.isEmpty())
+					if (!this.airToReplace.isEmpty() || !this.airToReplaceBright.isEmpty())
 					{
 						List<ScheduledBlockChange> changeList = new LinkedList<ScheduledBlockChange>();
 						
@@ -287,12 +298,16 @@ public class ThreadFindSeal
 						{
 							changeList.add(new ScheduledBlockChange(airVec.clone(), breatheableAirID, 0));
 						}
+						for (BlockVec3 airVec : this.airToReplaceBright)
+						{
+							changeList.add(new ScheduledBlockChange(airVec.clone(), GCBlocks.brightBreatheableAir, 0));
+						}
 						TickHandlerServer.scheduleNewBlockChange(this.world.provider.dimensionId, changeList);
 
-						if (!this.torchesToUpdate.isEmpty())
-						{
-							TickHandlerServer.scheduleNewTorchUpdate(this.world.provider.dimensionId, this.torchesToUpdate);
-						}
+					}
+					if (!this.torchesToUpdate.isEmpty())
+					{
+						TickHandlerServer.scheduleNewTorchUpdate(this.world.provider.dimensionId, this.torchesToUpdate);
 					}
 				}
 			}
@@ -301,19 +316,23 @@ public class ThreadFindSeal
 			if (!this.sealed)
 			{
 				if (head.getBlockID(world) == GCBlocks.breatheableAir) this.breatheableToReplace.add(head);
-				if(!this.breatheableToReplace.isEmpty())
+				if (head.getBlockID(world) == GCBlocks.brightBreatheableAir) this.breatheableToReplaceBright.add(head);
+				if(!this.breatheableToReplace.isEmpty() || !this.breatheableToReplaceBright.isEmpty() )
 				{
 					List<ScheduledBlockChange> changeList = new LinkedList<ScheduledBlockChange>();
 					for (BlockVec3 checkedVec : this.breatheableToReplace)
 					{
 						changeList.add(new ScheduledBlockChange(checkedVec.clone(), Blocks.air, 0));
 					}
-					TickHandlerServer.scheduleNewBlockChange(this.world.provider.dimensionId, changeList);
-
-					if (!this.torchesToUpdate.isEmpty())
+					for (BlockVec3 checkedVec : this.breatheableToReplaceBright)
 					{
-						TickHandlerServer.scheduleNewTorchUpdate(this.world.provider.dimensionId, this.torchesToUpdate);
+						changeList.add(new ScheduledBlockChange(checkedVec.clone(), GCBlocks.brightAir, 0));
 					}
+					TickHandlerServer.scheduleNewBlockChange(this.world.provider.dimensionId, changeList);
+				}
+				if (!this.torchesToUpdate.isEmpty())
+				{
+					TickHandlerServer.scheduleNewTorchUpdate(this.world.provider.dimensionId, this.torchesToUpdate);
 				}
 			}
 		}
@@ -362,6 +381,7 @@ public class ThreadFindSeal
 	{
 		//Local variables are fractionally faster than statics 
 		Block breatheableAirID = GCBlocks.breatheableAir;
+		Block breatheableAirIDBright = GCBlocks.brightBreatheableAir;
 		Block oxygenSealerID = GCBlocks.oxygenSealer;
 		HashSet<BlockVec3> checkedLocal = this.checked;
 		LinkedList nextLayer = new LinkedList<BlockVec3>();
@@ -389,6 +409,14 @@ public class ThreadFindSeal
 								nextLayer.add(sideVec);
 								checkedLocal.add(sideVec);
 							}
+							else if (id == breatheableAirIDBright)
+							{
+								this.breatheableToReplaceBright.add(sideVec);
+								// Only follow paths with adjacent breatheableAir
+								// blocks - this now can't jump through walls etc
+								nextLayer.add(sideVec);
+								checkedLocal.add(sideVec);
+							}
 							else if (id == oxygenSealerID)
 							{
 								TileEntityOxygenSealer sealer = this.sealersAround.get(sideVec);
@@ -408,7 +436,7 @@ public class ThreadFindSeal
 							else
 							{
 								checkedLocal.add(sideVec);
-								if (id != null && id != Blocks.air && this.canBlockPassAirCheck(id, sideVec, side))
+								if (id != null && id != Blocks.air && id != GCBlocks.brightAir && this.canBlockPassAirCheck(id, sideVec, side))
 								{
 									//Look outbound through partially sealable blocks in case there is breatheableAir to clear beyond
 									nextLayer.add(sideVec);
@@ -430,6 +458,7 @@ public class ThreadFindSeal
 	{
 		//Local variables are fractionally faster than statics 
 		Block breatheableAirID = GCBlocks.breatheableAir;
+		Block breatheableAirIDBright = GCBlocks.brightBreatheableAir;
 		Block oxygenSealerID = GCBlocks.oxygenSealer;
 		HashSet<BlockVec3> checkedLocal = this.checked;
 		LinkedList nextLayer = new LinkedList<BlockVec3>();
@@ -455,6 +484,14 @@ public class ThreadFindSeal
 							nextLayer.add(sideVec);
 							checkedLocal.add(sideVec);
 						}
+						else if (id == breatheableAirIDBright)
+						{
+							this.breatheableToReplaceBright.add(sideVec);
+							// Only follow paths with adjacent breatheableAir
+							// blocks - this now can't jump through walls etc
+							nextLayer.add(sideVec);
+							checkedLocal.add(sideVec);
+						}
 						else if (id == oxygenSealerID)
 						{
 							TileEntityOxygenSealer sealer = this.sealersAround.get(sideVec);
@@ -474,7 +511,7 @@ public class ThreadFindSeal
 						else
 						{
 							checkedLocal.add(sideVec);
-							if (id != null && id != Blocks.air && this.canBlockPassAirCheck(id, sideVec, side))
+							if (id != null && id != Blocks.air && id != GCBlocks.brightAir && this.canBlockPassAirCheck(id, sideVec, side))
 							{
 								//Look outbound through partially sealable blocks in case there is breatheableAir to clear beyond
 								nextLayer.add(sideVec);
@@ -495,6 +532,8 @@ public class ThreadFindSeal
 		//Local variables are fractionally faster than statics 
 		Block breatheableAirID = GCBlocks.breatheableAir;
 		Block airID = Blocks.air;
+		Block breatheableAirIDBright = GCBlocks.brightBreatheableAir;
+		Block airIDBright = GCBlocks.brightAir;
 		Block oxygenSealerID = GCBlocks.oxygenSealer;
 		HashSet<BlockVec3> checkedLocal = this.checked;
 		LinkedList nextLayer = new LinkedList<BlockVec3>();
@@ -534,6 +573,15 @@ public class ThreadFindSeal
 									nextLayer.add(sideVec);
 									this.airToReplace.add(sideVec);								
 								}
+								else if (id == breatheableAirIDBright)
+								{
+									nextLayer.add(sideVec);
+								}	
+								else if (id == airIDBright)
+								{
+									nextLayer.add(sideVec);
+									this.airToReplaceBright.add(sideVec);								
+								}
 								else if (id == null)
 								{
 									// Broken through to the void or the
@@ -572,7 +620,7 @@ public class ThreadFindSeal
 								Block id = sideVec.getBlockIDsafe_noChunkLoad(this.world);
 								// id == null means the void or height y>255, both
 								// of which are unsealed obviously
-								if (id == null || id == airID || id == breatheableAirID || this.canBlockPassAirCheck(id, sideVec, side))
+								if (id == null || id == airID || id == breatheableAirID || id == airIDBright || id == breatheableAirIDBright || this.canBlockPassAirCheck(id, sideVec, side))
 								{
 									this.sealed = false;
 									return;
@@ -595,6 +643,8 @@ public class ThreadFindSeal
 		//Local variables are fractionally faster than statics 
 		Block breatheableAirID = GCBlocks.breatheableAir;
 		Block airID = Blocks.air;
+		Block breatheableAirIDBright = GCBlocks.brightBreatheableAir;
+		Block airIDBright = GCBlocks.brightAir;
 		Block oxygenSealerID = GCBlocks.oxygenSealer;
 		HashSet<BlockVec3> checkedLocal = this.checked;
 		LinkedList nextLayer = new LinkedList<BlockVec3>();
@@ -634,6 +684,15 @@ public class ThreadFindSeal
 									nextLayer.add(sideVec);
 									this.airToReplace.add(sideVec);								
 								}
+								else if (id == breatheableAirIDBright)
+								{
+									nextLayer.add(sideVec);
+								}	
+								else if (id == airIDBright)
+								{
+									nextLayer.add(sideVec);
+									this.airToReplaceBright.add(sideVec);								
+								}
 								else if (id == null)
 								{
 									// Broken through to the void or the
@@ -672,7 +731,7 @@ public class ThreadFindSeal
 								Block id = sideVec.getBlockID_noChunkLoad(this.world);
 								// id == null means the void or height y>255, both
 								// of which are unsealed obviously
-								if (id == null || id == airID || id == breatheableAirID || this.canBlockPassAirCheck(id, sideVec, side))
+								if (id == null || id == airID || id == breatheableAirID || id == airIDBright || id == breatheableAirIDBright || this.canBlockPassAirCheck(id, sideVec, side))
 								{
 									this.sealed = false;
 									return;

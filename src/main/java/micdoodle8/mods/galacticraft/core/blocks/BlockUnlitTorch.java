@@ -261,7 +261,7 @@ public class BlockUnlitTorch extends Block implements IOxygenReliantBlock
 			{
 				Block blockID = new Vector3(x, y, z).modifyPositionFromSide(direction).getBlock(world);
 
-				if (blockID == GCBlocks.breatheableAir)
+				if (blockID == GCBlocks.breatheableAir || blockID == GCBlocks.brightBreatheableAir)
 				{
 					hasOxygen = true;
 					break;

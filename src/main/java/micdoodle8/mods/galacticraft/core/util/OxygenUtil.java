@@ -105,7 +105,7 @@ public class OxygenUtil
 					{
 						Block j2 = world.getBlock(k1, l1, i2);
 
-						if (j2 == GCBlocks.breatheableAir)
+						if (j2 == GCBlocks.breatheableAir || j2 == GCBlocks.brightBreatheableAir)
 						{
 							return true;
 						}

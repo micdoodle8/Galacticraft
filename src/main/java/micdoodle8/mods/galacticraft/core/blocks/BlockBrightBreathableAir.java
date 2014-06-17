@@ -15,15 +15,16 @@ import net.minecraft.world.World;
 
 
 
-public class BlockBreathableAir extends BlockAir
+public class BlockBrightBreathableAir extends BlockAir
 {
-	public BlockBreathableAir(String assetName)
+	public BlockBrightBreathableAir(String assetName)
 	{
 		this.setResistance(1000.0F);
 		this.setHardness(0.0F);
 		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
 		this.setBlockName(assetName);
 		this.setStepSound(new SoundType("sand", 0.0F, 1.0F));
+		this.setLightLevel(1.0F);
 	}
 
 	@Override
@@ -37,7 +38,6 @@ public class BlockBreathableAir extends BlockAir
 	{
 		return true;
 	}
-
 
 	@Override
 	public int getRenderBlockPass()
@@ -61,7 +61,7 @@ public class BlockBreathableAir extends BlockAir
 	public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
 	{
 		final Block block = par1IBlockAccess.getBlock(par2, par3, par4);
-		if (block == this || block == GCBlocks.brightBreatheableAir)
+		if (block == this || block == GCBlocks.breatheableAir)
 		{
 			return false;
 		}

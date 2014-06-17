@@ -34,7 +34,9 @@ public class BlockBrightLamp extends BlockAdvanced
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int x, int y, int z)
 	{
-		return null;
+		double boundsMin = 0.2D;
+		double boundsMax = 0.8D;
+		return AxisAlignedBB.getAABBPool().getAABB(x + boundsMin, y + boundsMin, z + boundsMin, x + boundsMax, y + boundsMax, z + boundsMax);
 	}
 
 	@Override

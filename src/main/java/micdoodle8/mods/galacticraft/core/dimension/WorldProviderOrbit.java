@@ -11,7 +11,6 @@ import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockSpinThruster;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.client.SkyProviderOrbit;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
@@ -19,6 +18,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.world.gen.ChunkProviderOrbit;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -889,7 +889,7 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 					{
 						this.checked.add(sideVec);
 						Block b = sideVec.getBlockID(this.worldObj);
-						if (b != Blocks.air && b != GCBlocks.breatheableAir && b != null)
+						if (!(b instanceof BlockAir) && b != null)
 						{
 							nextLayer.add(sideVec);
 							if (bStart == Blocks.air)
@@ -1019,8 +1019,8 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 			
 			for(BlockVec3 thruster : thrustersPlus)
 			{
-				float xx = (float)thruster.x - this.massCentreX;
-				float zz = (float)thruster.z - this.massCentreZ;
+				float xx = thruster.x - this.massCentreX;
+				float zz = thruster.z - this.massCentreZ;
 				netTorque+= MathHelper.sqrt_float(xx*xx+zz*zz);
 				countThrusters++;
 			}

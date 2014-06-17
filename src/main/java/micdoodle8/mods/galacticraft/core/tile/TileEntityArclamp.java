@@ -142,13 +142,7 @@ public class TileEntityArclamp extends TileEntity
 	{
 		if (!this.worldObj.isRemote)
 		{
-			Block brightAir = GCBlocks.brightAir;
-			for (BlockVec3 vec : this.airToRestore)
-			{
-				if (vec.getBlock(this.worldObj) == brightAir)
-					vec.setBlock(this.worldObj, Blocks.air);
-			}
-			this.airToRestore.clear();
+			this.revertAir();
 		}
 		this.isActive = false;
 	}
@@ -158,6 +152,7 @@ public class TileEntityArclamp extends TileEntity
 		Block air = Blocks.air;
 		Block breatheableAirID = GCBlocks.breatheableAir;
 		Block brightAir = GCBlocks.brightAir;
+		Block brightBreatheableAir = GCBlocks.brightBreatheableAir;
 		HashSet<BlockVec3> checked = new HashSet();
 		LinkedList<BlockVec3> currentLayer = new LinkedList();
 		LinkedList<BlockVec3> nextLayer = new LinkedList();
@@ -227,9 +222,16 @@ public class TileEntityArclamp extends TileEntity
 					Block id = vec.getBlockIDsafe_noChunkLoad(world);
 					if (id instanceof BlockAir)
 					{
-						//if (id == breatheableAirID)  TODO
-						world.setBlock(vec.x, vec.y, vec.z, brightAir, 0, 2);
-						this.airToRestore.add(vec);
+						if (id == Blocks.air)
+						{
+							world.setBlock(vec.x, vec.y, vec.z, brightAir, 0, 2);
+							this.airToRestore.add(vec);
+						}
+						else if (id == breatheableAirID)
+						{
+							world.setBlock(vec.x, vec.y, vec.z, brightBreatheableAir, 0, 2);
+							this.airToRestore.add(vec);
+						}
 					}
 				}
 			}
@@ -288,13 +290,23 @@ public class TileEntityArclamp extends TileEntity
 		if (!this.worldObj.isRemote)
 		{
 			this.thisAABB = null;
-			Block brightAir = GCBlocks.brightAir;
-			for (BlockVec3 vec : this.airToRestore)
-			{
-				if (vec.getBlock(this.worldObj) == brightAir)
-					vec.setBlock(this.worldObj, Blocks.air);
-			}
-			this.airToRestore.clear();
+			this.revertAir();
 		}
+	}
+
+	private void revertAir()
+	{
+		Block brightAir = GCBlocks.brightAir;
+		Block brightBreatheableAir = GCBlocks.brightBreatheableAir;
+		for (BlockVec3 vec : this.airToRestore)
+		{
+			Block b = vec.getBlock(this.worldObj); 
+			if (b == brightAir)
+				this.worldObj.setBlock(vec.x, vec.y, vec.z, Blocks.air, 0, 2);
+			else if (b == brightBreatheableAir)
+				this.worldObj.setBlock(vec.x, vec.y, vec.z, GCBlocks.breatheableAir, 0, 2);
+			//No block update - not necessary for changing air to air, also must not trigger a sealer edge check
+		}
+		this.airToRestore.clear();
 	}
 }
