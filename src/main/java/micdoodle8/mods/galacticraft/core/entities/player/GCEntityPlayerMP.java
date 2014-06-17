@@ -44,9 +44,7 @@ import net.minecraftforge.common.MinecraftForge;
 import com.mojang.authlib.GameProfile;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.eventhandler.Event;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.relauncher.Side;
 
@@ -405,7 +403,7 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 		}
 	}
 	
-	public static class ThermalArmorEvent extends Event
+	public static class ThermalArmorEvent extends cpw.mods.fml.common.eventhandler.Event
 	{
 		private ArmorAddResult armorResult = ArmorAddResult.NOTHING;
 		public final int armorIndex;

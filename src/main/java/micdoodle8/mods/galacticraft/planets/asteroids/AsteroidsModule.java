@@ -60,7 +60,7 @@ public class AsteroidsModule implements IPlanetsModule
 		AsteroidsModule.asteroidsTab = new CreativeTabGC(CreativeTabs.getNextID(), "GalacticraftAsteroids", AsteroidsItems.itemTier3Rocket, 0);
 		this.registerEntities();
 
-		AsteroidsModule.planetAsteroids = (Planet) new Planet("asteroids").setParentGalaxy(GalacticraftCore.galaxyBlockyWay);
+		AsteroidsModule.planetAsteroids = new Planet("asteroids").setParentGalaxy(GalacticraftCore.galaxyBlockyWay);
 		AsteroidsModule.planetAsteroids.setDimensionInfo(ConfigManagerAsteroids.dimensionIDAsteroids, WorldProviderAsteroids.class);
 		
 		GalaxyRegistry.registerPlanet(AsteroidsModule.planetAsteroids);
