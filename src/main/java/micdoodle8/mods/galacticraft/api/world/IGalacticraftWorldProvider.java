@@ -71,5 +71,5 @@ public interface IGalacticraftWorldProvider
 	 * 
 	 * @return Positive integer for hot celestial bodies, negative for cold. Zero for neutral
 	 */
-	public int getThermalLevelModifier();
+	public float getThermalLevelModifier();
 }

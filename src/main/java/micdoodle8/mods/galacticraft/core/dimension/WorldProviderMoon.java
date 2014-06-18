@@ -279,7 +279,7 @@ public class WorldProviderMoon extends WorldProviderSpace implements IGalacticra
 	}
 
 	@Override
-	public int getThermalLevelModifier()
+	public float getThermalLevelModifier()
 	{
 		return 0;
 	}

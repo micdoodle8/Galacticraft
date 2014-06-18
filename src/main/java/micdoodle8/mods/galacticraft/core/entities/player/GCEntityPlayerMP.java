@@ -441,7 +441,7 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 		if (this.worldObj.provider instanceof IGalacticraftWorldProvider && !this.capabilities.isCreativeMode)
 		{
 			IGalacticraftWorldProvider provider = (IGalacticraftWorldProvider) this.worldObj.provider;
-			int thermalLevelMod = provider.getThermalLevelModifier();
+			float thermalLevelMod = provider.getThermalLevelModifier();
 			
 			if (thermalLevelMod != 0)
 			{
@@ -496,9 +496,7 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 				if ((this.ticksExisted - 1) % thermalLevelTickCooldown == 0)
 				{
 					int last = this.getPlayerStats().thermalLevel;
-					this.getPlayerStats().thermalLevel += thermalLevelMod;
-					this.getPlayerStats().thermalLevel = Math.min(this.getPlayerStats().thermalLevel, 22);
-					this.getPlayerStats().thermalLevel = Math.max(this.getPlayerStats().thermalLevel, -22);
+					this.getPlayerStats().thermalLevel = (int) Math.min(Math.max(this.getPlayerStats().thermalLevel + thermalLevelMod, -22), 22);
 					
 					if (this.getPlayerStats().thermalLevel != last)
 					{

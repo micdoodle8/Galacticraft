@@ -233,8 +233,8 @@ public class WorldProviderAsteroids extends WorldProviderSpace
 	}
 
 	@Override
-	public int getThermalLevelModifier() 
+	public float getThermalLevelModifier() 
 	{
-		return -2;
+		return -1.5F;
 	}
 }

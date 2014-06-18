@@ -1162,7 +1162,7 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 	}
 
 	@Override
-	public int getThermalLevelModifier()
+	public float getThermalLevelModifier()
 	{
 		return 0;
 	}
