@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.UUID;
 
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -120,6 +121,7 @@ import org.w3c.dom.Document;
 import tconstruct.client.tabs.InventoryTabVanilla;
 import tconstruct.client.tabs.TabRegistry;
 
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
 import cpw.mods.fml.client.FMLClientHandler;
@@ -157,7 +159,7 @@ public class ClientProxyCore extends CommonProxyCore
 	public static Set<Vector3> valueableBlocks = Sets.newHashSet();
 	public static HashSet<BlockMetaList> detectableBlocks = Sets.newHashSet();
 
-	public static Set<PlayerGearData> playerItemData = Sets.newHashSet();
+	public static Map<UUID, PlayerGearData> playerItemData = Maps.newHashMap();
 
 	public static double playerPosX;
 	public static double playerPosY;

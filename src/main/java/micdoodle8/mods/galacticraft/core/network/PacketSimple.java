@@ -271,111 +271,117 @@ public class PacketSimple extends Packet implements IPacket
 			}
 			break;
 		case C_UPDATE_GEAR_SLOT:
-			PlayerGearData gearData = null;
 			int subtype = (Integer) this.data.get(2);
-
-			for (PlayerGearData gearData2 : ClientProxyCore.playerItemData)
+			EntityPlayer gearDataPlayer = null;
+			MinecraftServer server = MinecraftServer.getServer();
+			
+			if (server != null)
 			{
-				if (gearData2.getPlayer().getGameProfile().getName().equals(this.data.get(0)))
+				gearDataPlayer = server.getConfigurationManager().getPlayerForUsername((String) this.data.get(0));
+			}
+			else
+			{
+				gearDataPlayer = player.worldObj.getPlayerEntityByName((String) this.data.get(0));
+			}
+
+			if (gearDataPlayer != null)
+			{
+				PlayerGearData gearData = ClientProxyCore.playerItemData.get(gearDataPlayer.getPersistentID());
+				
+				if (gearData == null)
 				{
-					gearData = gearData2;
+					gearData = new PlayerGearData(player);
+				}
+				
+				EnumModelPacket type = EnumModelPacket.values()[(Integer) this.data.get(1)];
+
+				switch (type)
+				{
+				case ADDMASK:
+					gearData.setMask(0);
+					break;
+				case REMOVEMASK:
+					gearData.setMask(-1);
+					break;
+				case ADDGEAR:
+					gearData.setGear(0);
+					break;
+				case REMOVEGEAR:
+					gearData.setGear(-1);
+					break;
+				case ADDLEFTGREENTANK:
+					gearData.setLeftTank(0);
+					break;
+				case ADDLEFTORANGETANK:
+					gearData.setLeftTank(1);
+					break;
+				case ADDLEFTREDTANK:
+					gearData.setLeftTank(2);
+					break;
+				case ADDRIGHTGREENTANK:
+					gearData.setRightTank(0);
+					break;
+				case ADDRIGHTORANGETANK:
+					gearData.setRightTank(1);
+					break;
+				case ADDRIGHTREDTANK:
+					gearData.setRightTank(2);
+					break;
+				case REMOVE_LEFT_TANK:
+					gearData.setLeftTank(-1);
+					break;
+				case REMOVE_RIGHT_TANK:
+					gearData.setRightTank(-1);
+					break;
+				case ADD_PARACHUTE:
+					String name = "";
+
+					if (subtype != -1)
+					{
+						name = ItemParaChute.names[subtype];
+						gearData.setParachute(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/parachute/" + name + ".png"));
+					}
+					break;
+				case REMOVE_PARACHUTE:
+					gearData.setParachute(null);
+					break;
+				case ADD_FREQUENCY_MODULE:
+					gearData.setFrequencyModule(0);
+					break;
+				case REMOVE_FREQUENCY_MODULE:
+					gearData.setFrequencyModule(-1);
+					break;
+				case ADD_THERMAL_HELMET:
+					gearData.setThermalPadding(0, 0);
+					break;
+				case ADD_THERMAL_CHESTPLATE:
+					gearData.setThermalPadding(1, 0);
+					break;
+				case ADD_THERMAL_LEGGINGS:
+					gearData.setThermalPadding(2, 0);
+					break;
+				case ADD_THERMAL_BOOTS:
+					gearData.setThermalPadding(3, 0);
+					break;
+				case REMOVE_THERMAL_HELMET:
+					gearData.setThermalPadding(0, -1);
+					break;
+				case REMOVE_THERMAL_CHESTPLATE:
+					gearData.setThermalPadding(1, -1);
+					break;
+				case REMOVE_THERMAL_LEGGINGS:
+					gearData.setThermalPadding(2, -1);
+					break;
+				case REMOVE_THERMAL_BOOTS:
+					gearData.setThermalPadding(3, -1);
+					break;
+				default:
 					break;
 				}
-			}
 
-			if (gearData == null)
-			{
-				gearData = new PlayerGearData(player);
+				ClientProxyCore.playerItemData.put(playerBaseClient.getPersistentID(), gearData);
 			}
 			
-			EnumModelPacket type = EnumModelPacket.values()[(Integer) this.data.get(1)];
-
-			switch (type)
-			{
-			case ADDMASK:
-				gearData.setMask(0);
-				break;
-			case REMOVEMASK:
-				gearData.setMask(-1);
-				break;
-			case ADDGEAR:
-				gearData.setGear(0);
-				break;
-			case REMOVEGEAR:
-				gearData.setGear(-1);
-				break;
-			case ADDLEFTGREENTANK:
-				gearData.setLeftTank(0);
-				break;
-			case ADDLEFTORANGETANK:
-				gearData.setLeftTank(1);
-				break;
-			case ADDLEFTREDTANK:
-				gearData.setLeftTank(2);
-				break;
-			case ADDRIGHTGREENTANK:
-				gearData.setRightTank(0);
-				break;
-			case ADDRIGHTORANGETANK:
-				gearData.setRightTank(1);
-				break;
-			case ADDRIGHTREDTANK:
-				gearData.setRightTank(2);
-				break;
-			case REMOVE_LEFT_TANK:
-				gearData.setLeftTank(-1);
-				break;
-			case REMOVE_RIGHT_TANK:
-				gearData.setRightTank(-1);
-				break;
-			case ADD_PARACHUTE:
-				String name = "";
-
-				if (subtype != -1)
-				{
-					name = ItemParaChute.names[subtype];
-					gearData.setParachute(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/parachute/" + name + ".png"));
-				}
-				break;
-			case REMOVE_PARACHUTE:
-				gearData.setParachute(null);
-				break;
-			case ADD_FREQUENCY_MODULE:
-				gearData.setFrequencyModule(0);
-				break;
-			case REMOVE_FREQUENCY_MODULE:
-				gearData.setFrequencyModule(-1);
-				break;
-			case ADD_THERMAL_HELMET:
-				gearData.setThermalPadding(0, 0);
-				break;
-			case ADD_THERMAL_CHESTPLATE:
-				gearData.setThermalPadding(1, 0);
-				break;
-			case ADD_THERMAL_LEGGINGS:
-				gearData.setThermalPadding(2, 0);
-				break;
-			case ADD_THERMAL_BOOTS:
-				gearData.setThermalPadding(3, 0);
-				break;
-			case REMOVE_THERMAL_HELMET:
-				gearData.setThermalPadding(0, -1);
-				break;
-			case REMOVE_THERMAL_CHESTPLATE:
-				gearData.setThermalPadding(1, -1);
-				break;
-			case REMOVE_THERMAL_LEGGINGS:
-				gearData.setThermalPadding(2, -1);
-				break;
-			case REMOVE_THERMAL_BOOTS:
-				gearData.setThermalPadding(3, -1);
-				break;
-			default:
-				break;
-			}
-
-			ClientProxyCore.playerItemData.add(gearData);
-
 			break;
 		case C_CLOSE_GUI:
 			FMLClientHandler.instance().getClient().displayGuiScreen(null);

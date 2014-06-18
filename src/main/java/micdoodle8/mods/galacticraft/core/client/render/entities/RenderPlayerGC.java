@@ -57,16 +57,7 @@ public class RenderPlayerGC extends RenderPlayer
     	
     	if (thermalPaddingTexture0 != null)
     	{
-    		PlayerGearData gearData = null;
-
-    		for (PlayerGearData gearData2 : ClientProxyCore.playerItemData)
-    		{
-    			if (gearData2.getPlayer().getGameProfile().getName().equals(((AbstractClientPlayer)par1EntityLivingBase).getGameProfile().getName()))
-    			{
-    				gearData = gearData2;
-    				break;
-    			}
-    		}
+    		PlayerGearData gearData = ClientProxyCore.playerItemData.get(((AbstractClientPlayer)par1EntityLivingBase).getPersistentID());
 
     		if (gearData != null)
     		{
