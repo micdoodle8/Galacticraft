@@ -12,15 +12,16 @@ public class PlayerGearData
 	private int gear;
 	private int leftTank;
 	private int rightTank;
+	private int[] thermalPadding;
 	private ResourceLocation parachute;
 	private int frequencyModule;
 
 	public PlayerGearData(EntityPlayer player)
 	{
-		this(player, -1, -1, -1, -1, null, -1);
+		this(player, -1, -1, -1, -1, null, -1, new int[] { -1, -1, -1, -1 });
 	}
 
-	public PlayerGearData(EntityPlayer player, int mask, int gear, int leftTank, int rightTank, ResourceLocation parachute, int frequencyModule)
+	public PlayerGearData(EntityPlayer player, int mask, int gear, int leftTank, int rightTank, ResourceLocation parachute, int frequencyModule, int[] thermalPadding)
 	{
 		this.player = player;
 		this.mask = mask;
@@ -29,6 +30,7 @@ public class PlayerGearData
 		this.rightTank = rightTank;
 		this.parachute = parachute;
 		this.frequencyModule = frequencyModule;
+		this.thermalPadding = thermalPadding;
 	}
 
 	public int getMask()
@@ -94,6 +96,24 @@ public class PlayerGearData
 	public void setFrequencyModule(int frequencyModule)
 	{
 		this.frequencyModule = frequencyModule;
+	}
+	
+	public int getThermalPadding(int slot)
+	{
+		if (slot >= 0 && slot < thermalPadding.length)
+		{
+			return thermalPadding[slot];
+		}
+		
+		return -1;
+	}
+	
+	public void setThermalPadding(int slot, int thermalPadding)
+	{
+		if (slot >= 0 && slot < this.thermalPadding.length)
+		{
+			this.thermalPadding[slot] = thermalPadding;
+		}
 	}
 
 	@Override

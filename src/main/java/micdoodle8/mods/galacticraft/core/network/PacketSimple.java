@@ -347,20 +347,28 @@ public class PacketSimple extends Packet implements IPacket
 				gearData.setFrequencyModule(-1);
 				break;
 			case ADD_THERMAL_HELMET:
+				gearData.setThermalPadding(0, 0);
 				break;
 			case ADD_THERMAL_CHESTPLATE:
+				gearData.setThermalPadding(1, 0);
 				break;
 			case ADD_THERMAL_LEGGINGS:
+				gearData.setThermalPadding(2, 0);
 				break;
 			case ADD_THERMAL_BOOTS:
+				gearData.setThermalPadding(3, 0);
 				break;
 			case REMOVE_THERMAL_HELMET:
+				gearData.setThermalPadding(0, -1);
 				break;
 			case REMOVE_THERMAL_CHESTPLATE:
+				gearData.setThermalPadding(1, -1);
 				break;
 			case REMOVE_THERMAL_LEGGINGS:
+				gearData.setThermalPadding(2, -1);
 				break;
 			case REMOVE_THERMAL_BOOTS:
+				gearData.setThermalPadding(3, -1);
 				break;
 			default:
 				break;
