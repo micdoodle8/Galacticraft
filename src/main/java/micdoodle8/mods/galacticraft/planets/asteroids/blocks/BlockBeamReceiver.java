@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.core.tile.EnergyStorageTile;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReceiver;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -38,6 +39,20 @@ public class BlockBeamReceiver extends BlockTileGC
 		return AsteroidsModule.asteroidsTab;
 	}
 
+	@Override
+    public void onNeighborBlockChange(World world, int x, int y, int z, Block block) 
+    {
+		int oldMeta = world.getBlockMetadata(x, y, z);
+		int meta = this.getMetadataFromAngle(world, x, y, z, ForgeDirection.getOrientation(oldMeta).getOpposite().ordinal());
+		
+		if (meta == -1)
+		{
+			world.func_147480_a(x, y, z, true);
+		}
+		
+    	super.onNeighborBlockChange(world, x, y, z, block);
+    }
+    
 	@Override
 	public void onBlockAdded(World world, int x, int y, int z)
 	{

@@ -28,6 +28,11 @@ public class NetworkRenderer
 			}
 		}
 		
+		if (nodes.isEmpty())
+		{
+			return;
+		}
+		
 		Tessellator tess = Tessellator.instance;
 		EntityClientPlayerMP player = FMLClientHandler.instance().getClient().thePlayer;
         double interpPosX = player.lastTickPosX + (player.posX - player.lastTickPosX) * (double)partialTicks;
@@ -77,7 +82,6 @@ public class NetworkRenderer
 	        GL11.glPopMatrix();
 		}
 		
-//        GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glEnable(GL11.GL_CULL_FACE);
 		
