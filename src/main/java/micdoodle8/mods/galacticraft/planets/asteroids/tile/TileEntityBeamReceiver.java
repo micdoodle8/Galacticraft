@@ -271,7 +271,17 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 	@Override
 	public boolean canConnectTo(ILaserNode laserNode) 
 	{
-		return this.modeReceive != ReceiverMode.UNDEFINED.ordinal() && this.color.equals(laserNode.getColor());
+		if (this.modeReceive != ReceiverMode.UNDEFINED.ordinal() && this.color.equals(laserNode.getColor()))
+		{
+			if (laserNode instanceof TileEntityBeamReceiver)
+			{
+				return ((TileEntityBeamReceiver) laserNode).modeReceive != this.modeReceive;
+			}
+			
+			return true;
+		}
+		
+		return false;
 	}
 
 	@Override
