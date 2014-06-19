@@ -9,10 +9,13 @@ import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReceiver;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.client.FMLClientHandler;
@@ -40,6 +43,49 @@ public class BlockBeamReceiver extends BlockTileGC
 	{
     	TileEntityBeamReceiver thisTile = (TileEntityBeamReceiver)world.getTileEntity(x, y, z);
     	thisTile.setFacing(ForgeDirection.getOrientation(world.getBlockMetadata(x, y, z)));
+	}
+
+	@Override
+	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
+	{
+		int meta = world.getBlockMetadata(x, y, z);
+		
+		if (meta != -1)
+		{
+			ForgeDirection dir = ForgeDirection.getOrientation(meta);
+			
+			switch (dir)
+			{
+			case UP:
+				this.setBlockBounds(0.3F, 0.3F, 0.3F, 0.7F, 1.0F, 0.7F);
+				break;
+			case DOWN:
+				this.setBlockBounds(0.2F, 0.0F, 0.2F, 0.8F, 0.42F, 0.8F);
+				break;
+			case EAST:
+				this.setBlockBounds(0.58F, 0.2F, 0.2F, 1.0F, 0.8F, 0.8F);
+				break;
+			case WEST:
+				this.setBlockBounds(0.0F, 0.2F, 0.2F, 0.42F, 0.8F, 0.8F);
+				break;
+			case NORTH:
+				this.setBlockBounds(0.2F, 0.2F, 0.0F, 0.8F, 0.8F, 0.42F);
+				break;
+			case SOUTH:
+				this.setBlockBounds(0.2F, 0.2F, 0.58F, 0.8F, 0.8F, 1.0F);
+				break;
+			default:
+				break;
+			}
+		}
+	}
+
+	@SuppressWarnings("rawtypes")
+	@Override
+	public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB axisalignedbb, List list, Entity entity)
+	{
+		this.setBlockBoundsBasedOnState(world, x, y, z);
+		super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, list, entity);
 	}
 	
 	private int getMetadataFromAngle(World world, int x, int y, int z, int side)
