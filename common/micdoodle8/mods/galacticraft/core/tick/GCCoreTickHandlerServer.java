@@ -211,12 +211,13 @@ public class GCCoreTickHandlerServer implements ITickHandler
 		{
 			final WorldServer world = (WorldServer) tickData[0];
 
-			List<BlockVec3> edgesList = new ArrayList();
-			edgesList.addAll(GCCoreTickHandlerServer.edgeChecks.get(world.provider.dimensionId));
-			final HashSet<BlockVec3> checkedThisTick = new HashSet();
-			
-			if (edgesList != null && !edgesList.isEmpty())
+			List<BlockVec3> edgesListOrig = GCCoreTickHandlerServer.edgeChecks.get(world.provider.dimensionId);
+			if (edgesListOrig != null && !edgesListOrig.isEmpty())
 			{
+				List<BlockVec3> edgesList = new ArrayList();
+				edgesList.addAll(edgesListOrig);
+				final HashSet<BlockVec3> checkedThisTick = new HashSet();
+
 				for (BlockVec3 edgeBlock : edgesList)
 				{
 					if (edgeBlock != null && !checkedThisTick.contains(edgeBlock)) 
@@ -228,7 +229,7 @@ public class GCCoreTickHandlerServer implements ITickHandler
 					}
 				}
 	
-				edgesList.clear();
+				edgesListOrig.clear();
 				GCCoreTickHandlerServer.edgeChecks.remove(world.provider.dimensionId);
 			}
 		}
