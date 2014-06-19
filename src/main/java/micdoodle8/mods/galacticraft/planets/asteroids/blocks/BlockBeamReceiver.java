@@ -50,6 +50,18 @@ public class BlockBeamReceiver extends BlockTileGC
 			world.func_147480_a(x, y, z, true);
 		}
 		
+		if (meta != oldMeta)
+		{
+			world.setBlockMetadataWithNotify(x, y, z, meta, 3);
+	    	TileEntityBeamReceiver thisTile = (TileEntityBeamReceiver)world.getTileEntity(x, y, z);
+	    	if (thisTile != null)
+	    	{
+		    	thisTile.setFacing(ForgeDirection.getOrientation(meta));
+		    	thisTile.invalidateReflector();
+		    	thisTile.initiateReflector();
+	    	}
+		}
+		
     	super.onNeighborBlockChange(world, x, y, z, block);
     }
     
