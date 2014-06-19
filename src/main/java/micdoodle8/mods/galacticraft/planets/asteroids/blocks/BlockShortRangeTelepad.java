@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityShortRangeTelepad;
@@ -35,7 +36,7 @@ public class BlockShortRangeTelepad extends BlockContainer
 	@Override
 	public CreativeTabs getCreativeTabToDisplayOn()
 	{
-		return AsteroidsModule.asteroidsTab;
+		return GalacticraftCore.galacticraftBlocksTab;
 	}
 
 	@Override

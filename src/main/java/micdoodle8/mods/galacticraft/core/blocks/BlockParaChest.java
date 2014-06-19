@@ -45,7 +45,7 @@ public class BlockParaChest extends BlockContainer implements ITileEntityProvide
 	@Override
 	public CreativeTabs getCreativeTabToDisplayOn()
 	{
-		return GalacticraftCore.galacticraftTab;
+		return GalacticraftCore.galacticraftBlocksTab;
 	}
 
 	@Override

@@ -2,6 +2,8 @@ package micdoodle8.mods.galacticraft.planets.mars.blocks;
 
 import java.util.List;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
@@ -79,10 +81,11 @@ public class BlockMachineMars extends BlockTileGC
 		super.breakBlock(var1, var2, var3, var4, var5, var6);
 	}
 
+	@SideOnly(Side.CLIENT)
 	@Override
 	public CreativeTabs getCreativeTabToDisplayOn()
 	{
-		return MarsModule.galacticraftMarsTab;
+		return GalacticraftCore.galacticraftBlocksTab;
 	}
 
 	@Override

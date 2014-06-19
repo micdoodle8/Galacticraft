@@ -369,6 +369,6 @@ public class BlockSpinThruster extends BlockAdvanced
 	@Override
 	public CreativeTabs getCreativeTabToDisplayOn()
 	{
-		return GalacticraftCore.galacticraftTab;
+		return GalacticraftCore.galacticraftBlocksTab;
 	}
 }

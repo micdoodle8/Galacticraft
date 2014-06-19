@@ -39,7 +39,7 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
 	@Override
 	public CreativeTabs getCreativeTabToDisplayOn()
 	{
-		return GalacticraftCore.galacticraftTab;
+		return GalacticraftCore.galacticraftBlocksTab;
 	}
 
 	@Override

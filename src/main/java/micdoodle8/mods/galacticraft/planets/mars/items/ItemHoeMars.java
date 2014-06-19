@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars.items;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -26,10 +27,11 @@ public class ItemHoeMars extends ItemHoe
 		return ClientProxyCore.galacticraftItem;
 	}
 
+    @SideOnly(Side.CLIENT)
 	@Override
 	public CreativeTabs getCreativeTab()
 	{
-		return MarsModule.galacticraftMarsTab;
+		return GalacticraftCore.galacticraftItemsTab;
 	}
 
 	@Override

@@ -65,8 +65,6 @@ public class MarsModule implements IPlanetsModule
 {
 	public static final String LANGUAGE_PATH = "/assets/galacticraftmars/lang/";
 
-	public static CreativeTabGC galacticraftMarsTab;
-
 	public static final String TEXTURE_DOMAIN = "galacticraftmars";
 	public static final String TEXTURE_PREFIX = MarsModule.TEXTURE_DOMAIN + ":";
 
@@ -102,8 +100,6 @@ public class MarsModule implements IPlanetsModule
 		SchematicRegistry.registerSchematicRecipe(new SchematicCargoRocket());
 
 		GalacticraftCore.packetPipeline.addDiscriminator(6, PacketSimpleMars.class);
-		
-		MarsModule.galacticraftMarsTab = new CreativeTabGC(CreativeTabs.getNextID(), "GalacticraftMars", MarsItems.spaceship, 5);
 		
 		this.registerTileEntities();
 		this.registerCreatures();

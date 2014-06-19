@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars.blocks;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import net.minecraft.block.BlockDragonEgg;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -35,10 +36,11 @@ public class BlockCreeperEgg extends BlockDragonEgg
 		return false;
 	}
 
+	@SideOnly(Side.CLIENT)
 	@Override
 	public CreativeTabs getCreativeTabToDisplayOn()
 	{
-		return MarsModule.galacticraftMarsTab;
+		return GalacticraftCore.galacticraftBlocksTab;
 	}
 
 	@Override

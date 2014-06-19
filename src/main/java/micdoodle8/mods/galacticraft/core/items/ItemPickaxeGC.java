@@ -23,7 +23,7 @@ public class ItemPickaxeGC extends ItemPickaxe
 	@Override
 	public CreativeTabs getCreativeTab()
 	{
-		return GalacticraftCore.galacticraftTab;
+		return GalacticraftCore.galacticraftItemsTab;
 	}
 
 	@Override

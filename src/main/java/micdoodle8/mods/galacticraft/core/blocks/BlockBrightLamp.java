@@ -151,6 +151,6 @@ public class BlockBrightLamp extends BlockAdvanced
 	@Override
 	public CreativeTabs getCreativeTabToDisplayOn()
 	{
-		return GalacticraftCore.galacticraftTab;
+		return GalacticraftCore.galacticraftBlocksTab;
 	}
 }

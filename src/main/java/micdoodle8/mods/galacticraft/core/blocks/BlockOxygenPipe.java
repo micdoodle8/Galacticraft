@@ -68,7 +68,7 @@ public class BlockOxygenPipe extends BlockTransmitter implements ITileEntityProv
 	@Override
 	public CreativeTabs getCreativeTabToDisplayOn()
 	{
-		return GalacticraftCore.galacticraftTab;
+		return GalacticraftCore.galacticraftBlocksTab;
 	}
 
 	@Override

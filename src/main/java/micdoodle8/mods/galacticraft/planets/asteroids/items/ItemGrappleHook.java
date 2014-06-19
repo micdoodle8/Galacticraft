@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.items;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityGrapple;
@@ -23,10 +24,11 @@ public class ItemGrappleHook extends ItemBow
 		this.setTextureName("arrow");
 	}
 
+    @SideOnly(Side.CLIENT)
 	@Override
 	public CreativeTabs getCreativeTab()
 	{
-		return AsteroidsModule.asteroidsTab;
+		return GalacticraftCore.galacticraftItemsTab;
 	}
 
 	@Override

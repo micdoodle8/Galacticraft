@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.planets.mars.items;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicItem;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.ItemSchematic;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -29,10 +30,11 @@ public class ItemSchematicTier2 extends ItemSchematic implements ISchematicItem
 		super("schematic");
 	}
 
+    @SideOnly(Side.CLIENT)
 	@Override
 	public CreativeTabs getCreativeTab()
 	{
-		return MarsModule.galacticraftMarsTab;
+		return GalacticraftCore.galacticraftItemsTab;
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })

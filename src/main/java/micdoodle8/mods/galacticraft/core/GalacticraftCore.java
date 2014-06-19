@@ -102,6 +102,7 @@ import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
 import micdoodle8.mods.galacticraft.core.world.gen.OverworldGenerator;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldProvider;
@@ -153,7 +154,8 @@ public class GalacticraftCore
 	
 	private static ThreadRequirementMissing missingRequirementThread;
 
-	public static CreativeTabs galacticraftTab;
+	public static CreativeTabs galacticraftBlocksTab;
+	public static CreativeTabs galacticraftItemsTab;
 
 	public static Galaxy galaxyBlockyWay;
 	public static Planet planetOverworld;
@@ -234,7 +236,8 @@ public class GalacticraftCore
 	@EventHandler
 	public void init(FMLInitializationEvent event)
 	{
-		GalacticraftCore.galacticraftTab = new CreativeTabGC(CreativeTabs.getNextID(), GalacticraftCore.MODID, GCItems.rocketTier1, 0);
+		GalacticraftCore.galacticraftBlocksTab = new CreativeTabGC(CreativeTabs.getNextID(), "GalacticraftBlocks", Item.getItemFromBlock(GCBlocks.spinThruster), 0);
+		GalacticraftCore.galacticraftItemsTab = new CreativeTabGC(CreativeTabs.getNextID(), "GalacticraftItems", GCItems.rocketTier1, 0);
 		GalacticraftCore.proxy.init(event);
 
 		GalacticraftCore.packetPipeline = GalacticraftChannelHandler.init();

@@ -37,7 +37,7 @@ public class BlockFallenMeteor extends Block implements ITileEntityProvider
 	@Override
 	public CreativeTabs getCreativeTabToDisplayOn()
 	{
-		return GalacticraftCore.galacticraftTab;
+		return GalacticraftCore.galacticraftBlocksTab;
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.planets.asteroids.items;
 
 import java.util.List;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -55,10 +56,11 @@ public class ItemThermalPadding extends Item
 		return ClientProxyCore.galacticraftItem;
 	}
 
+    @SideOnly(Side.CLIENT)
 	@Override
 	public CreativeTabs getCreativeTab()
 	{
-		return AsteroidsModule.asteroidsTab;
+		return GalacticraftCore.galacticraftItemsTab;
 	}
 
 	@Override

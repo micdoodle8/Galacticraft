@@ -36,8 +36,6 @@ import cpw.mods.fml.relauncher.Side;
 public class AsteroidsModule implements IPlanetsModule
 {
 	public static Planet planetAsteroids;
-	
-	public static CreativeTabGC asteroidsTab;
 
 	public static final String ASSET_PREFIX = "galacticraftasteroids";
 	public static final String TEXTURE_DOMAIN = AsteroidsModule.ASSET_PREFIX + ":";
@@ -57,7 +55,6 @@ public class AsteroidsModule implements IPlanetsModule
 	@Override
 	public void init(FMLInitializationEvent event)
 	{
-		AsteroidsModule.asteroidsTab = new CreativeTabGC(CreativeTabs.getNextID(), "GalacticraftAsteroids", AsteroidsItems.itemTier3Rocket, 0);
 		this.registerEntities();
 
 		AsteroidsModule.planetAsteroids = new Planet("asteroids").setParentGalaxy(GalacticraftCore.galaxyBlockyWay);

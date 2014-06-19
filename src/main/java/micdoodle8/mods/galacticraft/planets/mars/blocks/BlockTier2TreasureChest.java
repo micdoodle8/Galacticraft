@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.planets.mars.blocks;
 import java.util.Iterator;
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
@@ -52,10 +53,11 @@ public class BlockTier2TreasureChest extends BlockContainer implements ITileEnti
 		return -1.0F;
 	}
 
+	@SideOnly(Side.CLIENT)
 	@Override
 	public CreativeTabs getCreativeTabToDisplayOn()
 	{
-		return MarsModule.galacticraftMarsTab;
+		return GalacticraftCore.galacticraftBlocksTab;
 	}
 
 	@Override

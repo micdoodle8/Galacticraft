@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.planets.mars.blocks;
 import java.util.ArrayList;
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import net.minecraft.block.Block;
@@ -117,10 +118,11 @@ public class BlockCavernousVine extends Block implements IShearable
 		return super.getIcon(side, meta);
 	}
 
+	@SideOnly(Side.CLIENT)
 	@Override
 	public CreativeTabs getCreativeTabToDisplayOn()
 	{
-		return MarsModule.galacticraftMarsTab;
+		return GalacticraftCore.galacticraftBlocksTab;
 	}
 
 	@Override

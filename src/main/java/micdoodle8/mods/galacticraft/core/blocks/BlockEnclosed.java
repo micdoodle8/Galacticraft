@@ -163,7 +163,7 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
 	@Override
 	public CreativeTabs getCreativeTabToDisplayOn()
 	{
-		return GalacticraftCore.galacticraftTab;
+		return GalacticraftCore.galacticraftBlocksTab;
 	}
 
 	@Override

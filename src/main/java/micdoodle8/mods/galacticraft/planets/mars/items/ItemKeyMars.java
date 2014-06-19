@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.planets.mars.items;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.api.item.IKeyItem;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -29,10 +30,11 @@ public class ItemKeyMars extends Item implements IKeyItem
 		this.setHasSubtypes(true);
 	}
 
+    @SideOnly(Side.CLIENT)
 	@Override
 	public CreativeTabs getCreativeTab()
 	{
-		return MarsModule.galacticraftMarsTab;
+		return GalacticraftCore.galacticraftItemsTab;
 	}
 
 	@Override

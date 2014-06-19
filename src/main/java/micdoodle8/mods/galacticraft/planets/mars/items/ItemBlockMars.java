@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars.items;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import net.minecraft.block.Block;
@@ -96,12 +97,6 @@ public class ItemBlockMars extends ItemBlock
 		}
 
 		return this.field_150939_a.getUnlocalizedName() + "." + name;
-	}
-
-	@Override
-	public CreativeTabs getCreativeTab()
-	{
-		return MarsModule.galacticraftMarsTab;
 	}
 
 	@Override

@@ -113,10 +113,11 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
 		this.marsBlockIcons[10] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "blank");
 	}
 
+	@SideOnly(Side.CLIENT)
 	@Override
 	public CreativeTabs getCreativeTabToDisplayOn()
 	{
-		return MarsModule.galacticraftMarsTab;
+		return GalacticraftCore.galacticraftBlocksTab;
 	}
 
 	@Override

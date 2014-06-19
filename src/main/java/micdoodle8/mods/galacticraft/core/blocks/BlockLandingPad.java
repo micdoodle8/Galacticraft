@@ -39,7 +39,7 @@ public class BlockLandingPad extends BlockAdvancedTile implements IPartialSealab
 	@Override
 	public CreativeTabs getCreativeTabToDisplayOn()
 	{
-		return GalacticraftCore.galacticraftTab;
+		return GalacticraftCore.galacticraftBlocksTab;
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })

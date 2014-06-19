@@ -44,10 +44,11 @@ public class ItemTier3Rocket extends Item implements IHoldableItem
 		return ClientProxyCore.galacticraftItem;
 	}
 
+    @SideOnly(Side.CLIENT)
 	@Override
 	public CreativeTabs getCreativeTab()
 	{
-		return AsteroidsModule.asteroidsTab;
+		return GalacticraftCore.galacticraftItemsTab;
 	}
 
 	@Override

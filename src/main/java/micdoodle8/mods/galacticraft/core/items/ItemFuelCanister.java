@@ -44,7 +44,7 @@ public class ItemFuelCanister extends Item
 	@Override
 	public CreativeTabs getCreativeTab()
 	{
-		return GalacticraftCore.galacticraftTab;
+		return GalacticraftCore.galacticraftItemsTab;
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })

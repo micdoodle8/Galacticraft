@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 import java.util.List;
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -41,7 +42,7 @@ public class BlockMachineFrame extends Block
 	@Override
 	public CreativeTabs getCreativeTabToDisplayOn()
 	{
-		return AsteroidsModule.asteroidsTab;
+		return GalacticraftCore.galacticraftBlocksTab;
 	}
 
 	@SideOnly(Side.CLIENT)

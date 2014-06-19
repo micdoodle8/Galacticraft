@@ -80,7 +80,7 @@ public class GCItems
 		GCItems.steelPickaxe = new ItemPickaxeGC("steel_pickaxe");
 		GCItems.steelAxe = new ItemAxeGC("steel_axe");
 		GCItems.steelHoe = new ItemHoeGC("steel_hoe");
-		GCItems.steelSpade = new ItemSpaceGC("steel_shovel");
+		GCItems.steelSpade = new ItemSpadeGC("steel_shovel");
 		GCItems.steelSword = new ItemSwordGC("steel_sword");
 		GCItems.steelHelmet = new ItemArmorGC(0, "helmet");
 		GCItems.steelChestplate = new ItemArmorGC(1, "chestplate");

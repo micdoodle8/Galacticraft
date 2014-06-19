@@ -43,7 +43,7 @@ public class BlockOxygenCollector extends BlockAdvancedTile
 	@Override
 	public CreativeTabs getCreativeTabToDisplayOn()
 	{
-		return GalacticraftCore.galacticraftTab;
+		return GalacticraftCore.galacticraftBlocksTab;
 	}
 
 	@Override

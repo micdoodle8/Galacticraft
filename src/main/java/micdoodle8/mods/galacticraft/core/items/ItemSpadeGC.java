@@ -11,9 +11,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 
 
-public class ItemSpaceGC extends ItemSpade
+public class ItemSpadeGC extends ItemSpade
 {
-	public ItemSpaceGC(String assetName)
+	public ItemSpadeGC(String assetName)
 	{
 		super(GCItems.TOOL_STEEL);
 		this.setUnlocalizedName(assetName);
@@ -23,7 +23,7 @@ public class ItemSpaceGC extends ItemSpade
 	@Override
 	public CreativeTabs getCreativeTab()
 	{
-		return GalacticraftCore.galacticraftTab;
+		return GalacticraftCore.galacticraftItemsTab;
 	}
 
 	@Override
