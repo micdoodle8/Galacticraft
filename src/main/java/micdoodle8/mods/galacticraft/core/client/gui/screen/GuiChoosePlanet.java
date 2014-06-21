@@ -66,7 +66,7 @@ public class GuiChoosePlanet extends GuiScreen
 	public boolean isTextFocused = false;
 
 	private static final ResourceLocation backgroundTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/stars.png");
-	private static final ResourceLocation blackTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/black.png");
+	static final ResourceLocation blackTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/black.png");
 
 	public GuiChoosePlanet(EntityPlayer player, String[] listOfDestinations)
 	{
