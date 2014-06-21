@@ -516,7 +516,7 @@ public class ClientProxyCore extends CommonProxyCore
 	{
 		World world = FMLClientHandler.instance().getClient().theWorld;
 		
-		if (world.provider.dimensionId == dimensionID)
+		if (world != null && world.provider.dimensionId == dimensionID)
 		{
 			return world;
 		}
