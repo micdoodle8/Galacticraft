@@ -94,6 +94,8 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 	
 	private static final int RANDOM_BLOCK_FADE_SIZE = 32;
 	private static final int FADE_BLOCK_CHANCE = 5; //1 / n chance of a block being in the fade zone
+	
+	private static final int NOISE_OFFSET_SIZE = 256;
 
 	public ChunkProviderAsteroids(World par1World, long par2, boolean par4)
 	{
@@ -178,7 +180,7 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 		}
 	}
 	
-	private void generateAsteroid(Random rand, int asteroidX, int asteroidY, int asteroidZ, int chunkX, int chunkZ, int size, Block[] idArray, byte[] metaArray) {
+	private void generateAsteroid(Random rand, int asteroidX, int asteroidY, int asteroidZ, int chunkX, int chunkZ, int size, Block[] idArray, byte[] metaArray) {		
 		SpecialAsteroidBlock core = null;
 		SpecialAsteroidBlock shell = null;
 		if(rand.nextInt(this.ASTEROID_CORE_CHANCE) == 0) {
@@ -188,6 +190,9 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 			shell = this.shellHandler.getBlock(rand);
 		}
 		
+		final double noiseOffsetX = this.randFromPoint(asteroidX, asteroidY, asteroidZ) * this.NOISE_OFFSET_SIZE;
+		final double noiseOffsetY = this.randFromPoint(asteroidX * 7, asteroidY * 11, asteroidZ * 13) * this.NOISE_OFFSET_SIZE;
+		final double noiseOffsetZ = this.randFromPoint(asteroidX * 17, asteroidY * 23, asteroidZ * 29) * this.NOISE_OFFSET_SIZE;
 		final int xMin = this.clamp(Math.max(chunkX, asteroidX - size - this.MAX_ASTEROID_SKEW - 2) - chunkX, 0, 16);
 		final int zMin = this.clamp(Math.max(chunkZ, asteroidZ - size - this.MAX_ASTEROID_SKEW - 2) - chunkZ, 0, 16);
 		final int yMin = asteroidY - size - this.MAX_ASTEROID_SKEW - 2;
@@ -206,19 +211,19 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 		
 		for(int y = 0; y < ySize; y++) {
 			for(int z = 0; z < zSize; z++) {
-				sizeXArray[y * zSize + z] = this.asteroidSkewX.getNoise(y, z + chunkZ);
+				sizeXArray[y * zSize + z] = this.asteroidSkewX.getNoise(y + noiseOffsetY, z + chunkZ + noiseOffsetZ);
 			}
 		}
 		
 		for(int x = 0; x < xSize; x++) {
 			for(int z = 0; z < zSize; z++) {
-				sizeYArray[x * zSize + z] = this.asteroidSkewY.getNoise(x + chunkX, z + chunkZ);
+				sizeYArray[x * zSize + z] = this.asteroidSkewY.getNoise(x + chunkX + noiseOffsetX, z + chunkZ + noiseOffsetZ);
 			}
 		}
 		
 		for(int x = 0; x < xSize; x++) {
 			for(int y = 0; y < ySize; y++) {
-				sizeZArray[x * ySize + y] = this.asteroidSkewZ.getNoise(x + chunkX, y);
+				sizeZArray[x * ySize + y] = this.asteroidSkewZ.getNoise(x + chunkX + noiseOffsetX, y + noiseOffsetY);
 			}
 		}
 		
