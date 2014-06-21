@@ -21,7 +21,7 @@ public class Planet extends CelestialBody
 	}
 
 	@Override
-	protected String getUnlocalizedNamePrefix()
+	public String getUnlocalizedNamePrefix()
 	{
 		return "planet";
 	}

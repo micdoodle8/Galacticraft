@@ -37,7 +37,7 @@ public abstract class CelestialBody
 
 	public abstract int getID();
 
-	protected abstract String getUnlocalizedNamePrefix();
+	public abstract String getUnlocalizedNamePrefix();
 
 	public String getName()
 	{

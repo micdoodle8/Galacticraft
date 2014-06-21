@@ -268,6 +268,13 @@ gui.message.addnewsch.name=Add New Schematic
 gui.message.generating.name=Generating
 gui.message.environment.name=Environmental Boost
 gui.message.oil.name=Oil
+gui.message.catalog.name=Catalog
+gui.message.exit.name=Exit
+gui.message.daynightcycle.name=Day-night Cycle
+gui.message.surfacegravity.name=Surface Gravity
+gui.message.surfacecomposition.name=Surface Composition
+gui.message.atmosphere.name=Atmosphere
+gui.message.meansurfacetemp.name=Mean Surface Temp
 
 gui.status.active.name=Active
 gui.status.missingleaves.name=Not Enough Leaf Blocks
@@ -438,6 +445,28 @@ dimension.Moon.name=Moon
 dimension.Sun.name=Sun
 planet.overworld=Overworld
 moon.moon=Moon
+
+gui.message.moon.daynightcycle.0.name=29.5 Earth Days
+gui.message.moon.daynightcycle.1.name=
+gui.message.moon.surfacegravity.0.name=0.1654g
+gui.message.moon.surfacegravity.1.name=(18% of Earth)
+gui.message.moon.surfacecomposition.0.name=Basaltic Rock and
+gui.message.moon.surfacecomposition.1.name=Traces of Cheese
+gui.message.moon.atmosphere.0.name=None
+gui.message.moon.atmosphere.1.name=
+gui.message.moon.meansurfacetemp.0.name=(Light Side) 253C
+gui.message.moon.meansurfacetemp.1.name=(Dark Side) -153C
+
+gui.message.overworld.daynightcycle.0.name=1 Earth Day
+gui.message.overworld.daynightcycle.1.name=
+gui.message.overworld.surfacegravity.0.name=1.0g
+gui.message.overworld.surfacegravity.1.name=(100% of Earth)
+gui.message.overworld.surfacecomposition.0.name=Stone, dirt, and
+gui.message.overworld.surfacecomposition.1.name=gravel
+gui.message.overworld.atmosphere.0.name=Nitrogen and Oxygen
+gui.message.overworld.atmosphere.1.name=Supports life
+gui.message.overworld.meansurfacetemp.0.name=14C
+gui.message.overworld.meansurfacetemp.1.name=
 
 # COMMANDS
 commands.dimensionteleport=%s was sent into the atmosphere%s
