@@ -53,7 +53,7 @@ public class GalaxyRegistry
 	{
 		for (Planet planet : planets.values())
 		{
-			if (planet.getUnlocalizedName() == unlocalizedName)
+			if (planet.getUnlocalizedName().equals(unlocalizedName))
 			{
 				return planet;
 			}
@@ -61,7 +61,7 @@ public class GalaxyRegistry
 		
 		for (Moon moon : moons.values())
 		{
-			if (moon.getUnlocalizedName() == unlocalizedName)
+			if (moon.getUnlocalizedName().equals(unlocalizedName))
 			{
 				return moon;
 			}
