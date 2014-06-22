@@ -248,12 +248,6 @@ public class GCMarsEntityRocketT2 extends EntityTieredRocket
 	}
 
 	@Override
-	public boolean isDockValid(IFuelDock dock)
-	{
-		return dock instanceof GCCoreTileEntityLandingPad;
-	}
-
-	@Override
 	public int getRocketTier()
 	{
 		return 2;
