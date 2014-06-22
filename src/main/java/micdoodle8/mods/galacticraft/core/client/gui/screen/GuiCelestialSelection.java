@@ -1,5 +1,8 @@
 package micdoodle8.mods.galacticraft.core.client.gui.screen;
 
+import java.nio.FloatBuffer;
+import java.util.HashMap;
+
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.Planet;
@@ -12,9 +15,14 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ResourceLocation;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
+
+import com.google.common.collect.Maps;
 
 public class GuiCelestialSelection extends GuiScreen
 {
@@ -47,22 +55,90 @@ public class GuiCelestialSelection extends GuiScreen
 	@Override
 	public void drawScreen(int mousePosX, int mousePosY, float partialTicks)
 	{
+		GL11.glPushMatrix();
 		ScaledResolution scaledRes = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
 		int scaledW = scaledRes.getScaledWidth();
 		int scaledH = scaledRes.getScaledHeight();
+		
+		Matrix4f camMatrix = new Matrix4f();
+		Matrix4f.translate(new Vector3f(0.0F, 0.0F, -2000.0F), camMatrix, camMatrix); // See EntityRenderer.java:setupOverlayRendering
+		Matrix4f viewMatrix = new Matrix4f();
+		viewMatrix.m00 = 2.0F / (float)scaledRes.getScaledWidth_double();
+		viewMatrix.m11 = 2.0F / (float)-scaledRes.getScaledHeight_double();
+		viewMatrix.m22 = -2.0F / 2000.0F; 
+		viewMatrix.m33 = 1.0F;
+		viewMatrix.m30 = -1.0F;
+		viewMatrix.m31 = 1.0F;
+		viewMatrix.m32 = -2.0F;
+		
+        GL11.glMatrixMode(GL11.GL_PROJECTION);
+        GL11.glLoadIdentity();
+        FloatBuffer fb = BufferUtils.createFloatBuffer(16 * Float.SIZE);
+        fb.rewind();
+        viewMatrix.store(fb);
+        fb.flip();
+        fb.clear();
+        GL11.glMultMatrix(fb);
+        GL11.glMatrixMode(GL11.GL_MODELVIEW);
+        GL11.glLoadIdentity();
+        fb.rewind();
+        camMatrix.store(fb);
+        fb.flip();
+        fb.clear();
+        GL11.glMultMatrix(fb);
 
 		this.setBlackBackground(scaledW, scaledH);
 				
 		GL11.glPushMatrix();
-		this.setIsometric();
+		Matrix4f worldMatrix = this.setIsometric();
 		this.drawGrid(scaledH / 3, (scaledH / 3) / 3.5F);
 		this.drawCircles();
 		GL11.glPopMatrix();
+
+		HashMap<Planet, Matrix4f> matrixMap = this.drawCelestialBodies(scaledW, scaledH, worldMatrix);
 
 		int borderWidth = width / 65;
 		int edgeWidth = borderWidth / 4;
 		this.drawButtons(scaledW, scaledH, borderWidth, edgeWidth);
 		this.drawBorder(scaledW, scaledH, borderWidth, edgeWidth);	
+		GL11.glPopMatrix();
+	}
+	
+	public HashMap<Planet, Matrix4f> drawCelestialBodies(int width, int height, Matrix4f worldMatrix)
+	{
+		GL11.glColor3f(1, 1, 1);
+        FloatBuffer fb = BufferUtils.createFloatBuffer(16 * Float.SIZE);
+        HashMap<Planet, Matrix4f> matrixMap = Maps.newHashMap();
+        
+		for (Planet planet : GalaxyRegistry.getRegisteredPlanets().values())
+		{
+			if (planet.getPlanetIcon() != null)
+			{
+				GL11.glPushMatrix();
+				Matrix4f worldMatrix0 = new Matrix4f(worldMatrix);
+				Matrix4f.translate(new Vector3f((float)Math.sin(ticks / 200.0F * planet.getRelativeOrbitTime() + planet.getPhaseShift()) * planet.getRelativeDistanceFromCenter() * 25.0F, (float)Math.cos(ticks / 200.0F * planet.getRelativeOrbitTime() + planet.getPhaseShift()) * planet.getRelativeDistanceFromCenter() * 25.0F, 0), worldMatrix0, worldMatrix0);
+				
+				Matrix4f worldMatrix1 = new Matrix4f();
+				Matrix4f.rotate((float)Math.toRadians(45), new Vector3f(0, 0, 1), worldMatrix1, worldMatrix1);
+				Matrix4f.rotate((float)Math.toRadians(-55), new Vector3f(1, 0, 0), worldMatrix1, worldMatrix1);
+				worldMatrix1 = worldMatrix1.mul(worldMatrix0, worldMatrix1, worldMatrix1);
+				
+				fb.rewind();
+				worldMatrix1.store(fb);
+				fb.flip();
+				GL11.glMultMatrix(fb);
+				
+				mc.renderEngine.bindTexture(planet.getPlanetIcon());
+				this.drawTexturedModalRect(-2, -2, 4, 4, 0, 0, 256, 256, false, 256);
+		        
+				fb.clear();
+				GL11.glPopMatrix();
+				
+				matrixMap.put(planet, worldMatrix1);
+			}
+		}
+		
+		return matrixMap;
 	}
 	
 	public void drawBorder(int width, int height, int borderWidth, int edgeWidth)
@@ -96,7 +172,6 @@ public class GuiCelestialSelection extends GuiScreen
 		mc.renderEngine.bindTexture(guiMain);
     	GL11.glColor4f(0.0F, 0.6F, 1.0F, 1);
 		int menuTopLeft = borderWidth + edgeWidth - 115 + height / 2;
-//		int posX = (int) ((Math.sin(ticks / 10.0F) * 0.5F + 0.5F) * 133) - 133;
 		int posX = borderWidth + edgeWidth;
 		int fontPosY = menuTopLeft + edgeWidth + fontRendererObj.FONT_HEIGHT / 2 - 2;
 		this.drawTexturedModalRect(posX, menuTopLeft, 133, 209, 0, 0, 266, 418, false);
@@ -141,11 +216,16 @@ public class GuiCelestialSelection extends GuiScreen
 
     public void drawTexturedModalRect(int x, int y, int width, int height, int u, int v, int uWidth, int vHeight, boolean invert)
     {
+    	this.drawTexturedModalRect(x, y, width, height, u, v, uWidth, vHeight, invert, 512);
+    }
+
+    public void drawTexturedModalRect(int x, int y, int width, int height, int u, int v, int uWidth, int vHeight, boolean invert, int texSize)
+    {
         GL11.glShadeModel(GL11.GL_FLAT);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
-        float texMod = 1 / 512.0F;
+        float texMod = 1 / (float)texSize;
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
         int height0 = invert ? 0 : vHeight;
@@ -179,20 +259,27 @@ public class GuiCelestialSelection extends GuiScreen
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 	}
 	
-	public void setIsometric()
+	public Matrix4f setIsometric()
 	{
 		ScaledResolution scaledRes = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
 		int scaledW = scaledRes.getScaledWidth();
 		int scaledH = scaledRes.getScaledHeight();
-		GL11.glTranslatef(scaledW / 2.0F, scaledH / 3 + 43, 0.0F);
-		GL11.glRotatef(55.0F, 1, 0, 0);
-		GL11.glRotatef(-45.0F, 0, 0, 1);
-		GL11.glScalef(1.1F + zoom, 1.1F + zoom, 1.1F + zoom);
+		Matrix4f mat0 = new Matrix4f();
+		Matrix4f.translate(new Vector3f(scaledW / 2.0F, scaledH / 2, 0), mat0, mat0);
+		Matrix4f.rotate((float) Math.toRadians(55), new Vector3f(1, 0, 0), mat0, mat0);
+		Matrix4f.rotate((float) Math.toRadians(-45), new Vector3f(0, 0, 1), mat0, mat0);
+		Matrix4f.scale(new Vector3f(1.1f + zoom, 1.1F + zoom, 1.1F + zoom), mat0, mat0);
+		FloatBuffer fb = BufferUtils.createFloatBuffer(16);
+		fb.rewind();
+		mat0.store(fb);
+        fb.flip();
+		GL11.glMultMatrix(fb);
+		return mat0;
 	}
 	
 	public void drawGrid(float gridSize, float gridScale)
 	{		
-		GL11.glColor4f(0.0F, 0.2F, 0.5F, 0.25F);
+		GL11.glColor4f(0.0F, 0.2F, 0.5F, 0.55F);
 		
 		GL11.glBegin(GL11.GL_LINES);
 
