@@ -104,6 +104,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -135,7 +136,6 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.Event;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-
 
 
 public class ClientProxyCore extends CommonProxyCore
@@ -185,9 +185,9 @@ public class ClientProxyCore extends CommonProxyCore
 
 	private static float numbers[] = {1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1};
 	private static FloatBuffer scaleup = BufferUtils.createFloatBuffer(16 * Float.SIZE);
-    private static float globalRadius;
+    public static float globalRadius = Float.MAX_VALUE;
+    public static double offsetY = 0D;
 	public static float terrainHeight = Float.MAX_VALUE;
-	public static int lastY = -1;
 	private static boolean smallMoonActive = false;
 	
 	//private static int playerList;
@@ -560,46 +560,117 @@ public class ClientProxyCore extends CommonProxyCore
 		{
 			final Minecraft minecraft = FMLClientHandler.instance().getClient();
 			final EntityPlayerSP player = minecraft.thePlayer;
+	    	if (player.posY > ClientProxyCore.terrainHeight + 8F && player.ridingEntity != entity && player != entity)
+	    	{
+	    		double globalArc = ClientProxyCore.globalRadius / 57.2957795D;
+	            
+	        	int pX = MathHelper.floor_double(player.posX / 16D) << 4;
+	        	int pZ = MathHelper.floor_double(player.posZ / 16D) << 4;
+
+	        	int eX = MathHelper.floor_double((entity.posX) / 16D) << 4;
+	        	int eY = MathHelper.floor_double((entity.posY) / 16D) << 4;
+	        	int eZ = MathHelper.floor_double((entity.posZ) / 16D) << 4;
+
+	        	float dX = eX - pX;
+	        	float dZ = eZ - pZ;
+
+	        	float floatPX = (float) player.posX;
+	        	float floatPZ = (float) player.posZ;
+	        	
+	        	if (dX > 0)
+	        	{
+	        		dX -= 16F;
+	        		if (dX > 0) dX -= floatPX - pX;
+	        	}
+	        	else if (dX < 0)
+	        	{
+	        		dX += 16F;
+	        		if (dX < 0) dX += 16F - floatPX + pX;
+	        	}
+	        	
+	        	if (dZ > 0)
+	        	{
+	        		dZ -= 16F;
+	        		if (dZ > 0) dZ -= floatPZ - pZ;
+	        	}
+	        	else if (dZ < 0)
+	        	{
+	        		dZ += 16F;
+	        		if (dZ < 0) dZ += 16F - floatPZ + pZ;
+	        	}
+
+	        	float theta = (float) MathHelper.wrapAngleTo180_double(dX / globalArc);
+	        	float phi = (float) MathHelper.wrapAngleTo180_double(dZ / globalArc);
+	        	if (theta < 0) theta += 360F;
+	        	if (phi < 0) phi += 360F;
+	        	float ytranslate = ClientProxyCore.globalRadius + (float)(player.posY - entity.posY) + eY - ClientProxyCore.terrainHeight;
+	        	GL11.glTranslatef(-dX+eX-floatPX+8F, -ytranslate, -dZ+eZ-floatPZ+8F);
+	        	if (theta>0) GL11.glRotatef(theta,0,0,-1);
+	        	if (phi>0) GL11.glRotatef(phi,1,0,0);
+	        	GL11.glTranslatef(floatPX - eX - 8F, ytranslate, floatPZ - eZ - 8F);
+	    	}
+		}
+	}
+	
+	public static void adjustTileRenderPos(TileEntity tile, double offsetX, double offsetY, double offsetZ)
+	{
+		GL11.glPushMatrix();
+		//Skip tiles in inventory or in player's hand etc
+		if (ClientProxyCore.smallMoonActive && (offsetX!=0.0D || offsetY!=0.0D || offsetZ!=0.0D))
+		{
+			final Minecraft minecraft = FMLClientHandler.instance().getClient();
+			final EntityPlayerSP player = minecraft.thePlayer;
 			final WorldProvider provider = minecraft.theWorld.provider;
 			if (provider instanceof WorldProviderMoon)
 			{
-	    		ClientProxyCore.globalRadius = 300F;
-	    		ClientProxyCore.terrainHeight = 64F;
-		    	if (player.posY > ClientProxyCore.terrainHeight + 8F && player.ridingEntity != entity && player != entity)
+		    	if (player.posY > ClientProxyCore.terrainHeight + 8F)
 		    	{
 		    		double globalArc = ClientProxyCore.globalRadius / 57.2957795D;
-		    		float globeRadius = ClientProxyCore.globalRadius - ClientProxyCore.terrainHeight;
 		            
 		        	int pX = MathHelper.floor_double(player.posX / 16D) << 4;
 		        	int pZ = MathHelper.floor_double(player.posZ / 16D) << 4;
 	
-		        	int eX = MathHelper.floor_double((entity.posX) / 16D) << 4;
-		        	int eZ = MathHelper.floor_double((entity.posZ) / 16D) << 4;
-	
-		        	double DX = player.posX - pX;
-		        	double DZ = player.posZ - pZ;
-	
-		        	double intDX = (eX - pX - DX)/2;  //(int) event.x;//
-		        	double intDZ = (eZ - pZ - DZ)/2;  //(int) event.z;//
-		
-		        	float theta = (float) MathHelper.wrapAngleTo180_double(intDX / globalArc);
-		        	float phi = (float) MathHelper.wrapAngleTo180_double(intDZ / globalArc);
+		        	int eX = (tile.xCoord / 16) << 4;
+		        	int eY = (tile.yCoord / 16) << 4;
+		        	int eZ = (tile.zCoord / 16) << 4;
+
+		        	float dX = eX - pX;
+		        	float dZ = eZ - pZ;
+
+		        	float floatPX = (float) player.posX;
+		        	float floatPZ = (float) player.posZ;
+		        	
+		        	if (dX > 0)
+		        	{
+		        		dX -= 16F;
+		        		if (dX > 0) dX -= floatPX - pX;
+		        	}
+		        	else if (dX < 0)
+		        	{
+		        		dX += 16F;
+		        		if (dX < 0) dX += 16F - floatPX + pX;
+		        	}
+		        	
+		        	if (dZ > 0)
+		        	{
+		        		dZ -= 16F;
+		        		if (dZ > 0) dZ -= floatPZ - pZ;
+		        	}
+		        	else if (dZ < 0)
+		        	{
+		        		dZ += 16F;
+		        		if (dZ < 0) dZ += 16F - floatPZ + pZ;
+		        	}
+
+		        	float theta = (float) MathHelper.wrapAngleTo180_double(dX / globalArc);
+		        	float phi = (float) MathHelper.wrapAngleTo180_double(dZ / globalArc);
 		        	if (theta < 0) theta += 360F;
 		        	if (phi < 0) phi += 360F;
-		        	GL11.glTranslatef(-(float)intDX, -(float)(entity.posY)-globeRadius, -(float)intDZ);
+		        	float ytranslate = ClientProxyCore.globalRadius + (float)(player.posY) - tile.yCoord + eY - ClientProxyCore.terrainHeight;
+		        	GL11.glTranslatef(-dX-floatPX+eX+8F, -ytranslate, -dZ-floatPZ+eZ+8F);
 		        	if (theta>0) GL11.glRotatef(theta,0,0,-1);
 		        	if (phi>0) GL11.glRotatef(phi,1,0,0);
-		        	GL11.glTranslatef(0, (float)(entity.posY)+globeRadius, 0);
-	/*
-		        	float theta2 = (float) MathHelper.wrapAngleTo180_double((8 - DX)/ globalArc);
-			    	float phi2 = (float) MathHelper.wrapAngleTo180_double((8 - DZ)/ globalArc);
-			    	if (theta2 < 0) theta2 += 360F;
-			    	if (phi2 < 0) phi2 += 360F;
-		        	GL11.glTranslatef(0, ClientProxyCore.terrainHeight-(float)player.posY, 0);
-			    	if (theta2>0) GL11.glRotatef(theta,0,0,-1);
-			    	if (phi2>0) GL11.glRotatef(phi,1,0,0);
-		        	GL11.glTranslatef(0, (float)player.posY-ClientProxyCore.terrainHeight, 0);
-	*/
+		        	GL11.glTranslatef(floatPX -eX - 8F, ytranslate, floatPZ -eZ - 8F);
 		    	}
 			}
 		}
@@ -629,101 +700,107 @@ public class ClientProxyCore extends CommonProxyCore
 	    		//Note: terrainHeight must never be less than globalRadius
 	    		ClientProxyCore.globalRadius = 300F;
 	    		ClientProxyCore.terrainHeight = 64F;
+
+	    		if (entitylivingbase.posY > ClientProxyCore.terrainHeight + 8F)
+		    	{
+		    		ClientProxyCore.smallMoonActive = true;
+		    		double globalArc = ClientProxyCore.globalRadius / 57.2957795D;
+		    		float globeRadius = ClientProxyCore.globalRadius - ClientProxyCore.terrainHeight;
+		            
+		        	int pX = MathHelper.floor_double(entitylivingbase.posX / 16D) << 4;
+		        	int pZ = MathHelper.floor_double(entitylivingbase.posZ / 16D) << 4;
+		        	
+		        	float dX = rend.posX - pX;
+		        	float dZ = rend.posZ - pZ;
+		        	float scalerX = 0;
+		        	float scalerZ = 0;
+		        	
+		        	if (dX > 0)
+		        	{
+		        		dX -= 16F;
+		        		if (dX > 0)
+		        		{	
+		        			dX -= entitylivingbase.posX - pX;
+			        		if (dX < 16F) scalerX = 16F - ((float)entitylivingbase.posX - pX);
+			        		else scalerX = 16F;
+			        	}
+   		        	}
+		        	else if (dX < 0)
+		        	{
+		        		dX += 16F;
+		        		if (dX < 0)
+	        			{
+		        			dX += 16F-(entitylivingbase.posX - pX);
+		        			if (dX > -16F) scalerX = (float)entitylivingbase.posX - pX;
+			        		else scalerX = 16F;
+		        		}
+		        	}
+		        	
+		        	if (dZ > 0)
+		        	{
+		        		dZ -= 16F;
+		        		if (dZ > 0)
+		        		{
+		        			dZ -= entitylivingbase.posZ - pZ;
+		        			if (dZ < 16F) scalerZ = 16F-((float)entitylivingbase.posZ - pZ);
+			        		else scalerZ = 16F;
+		        		}
+		        	}
+		        	else if (dZ < 0)
+		        	{
+		        		dZ += 16F;
+		        		if (dZ < 0)
+	        			{	
+		        			dZ += 16F-(entitylivingbase.posZ - pZ);
+		        			if (dZ > -16F) scalerZ = (float)entitylivingbase.posZ - pZ;
+			        		else scalerZ = 16F;
+	        			}
+		        	}
+		        	
+		        	float origClipX = rend.posXClip;
+		        	float origClipY = rend.posYClip;
+		        	float origClipZ = rend.posZClip;
+		        	
+		        	float theta = (float) MathHelper.wrapAngleTo180_double(dX / globalArc);
+		        	float phi = (float) MathHelper.wrapAngleTo180_double(dZ / globalArc);
+		        	if (theta < 0) theta += 360F;
+		        	if (phi < 0) phi += 360F;
+		        	GL11.glTranslatef(origClipX - dX + 8F, -globeRadius + 8F, origClipZ - dZ + 8F);
+		        	if (theta > 0) GL11.glRotatef(theta,0,0,-1F);
+		        	if (phi > 0) GL11.glRotatef(phi,1F,0,0);
+		        	GL11.glTranslatef(-8F, origClipY + globeRadius - 8F, -8F);
+		        	if (dX != 0 || dZ != 0)
+		        	{
+			        	float scalex = (ClientProxyCore.globalRadius * 2F + scalerX) / ClientProxyCore.globalRadius / 2F;
+			        	float scalez = (ClientProxyCore.globalRadius * 2F + scalerZ) / ClientProxyCore.globalRadius / 2F;
+			        	ClientProxyCore.scaleup.rewind();
+			        	ClientProxyCore.scaleup.put(scalex);
+			        	ClientProxyCore.scaleup.position(10);
+			        	ClientProxyCore.scaleup.put(scalez);
+			        	ClientProxyCore.scaleup.rewind();
+			        	GL11.glMultMatrix(ClientProxyCore.scaleup);
+			        	GL11.glTranslatef(-8F * (scalex - 1F), 0, -8F * (scalez - 1F));
+		        	}
+		            GL11.glTranslatef(-origClipX, -origClipY, -origClipZ);
+		            ClientProxyCore.offsetY = rend.posY - ClientProxyCore.terrainHeight;
+		        }
+		    	else
+		    	{	
+		    		ClientProxyCore.smallMoonActive = false;
+		    		ClientProxyCore.offsetY = 0;
+		    	}
 	    	}
 	    	else
-	    		ClientProxyCore.terrainHeight = Float.MAX_VALUE;
-	    	
-	    	if (entitylivingbase.posY > ClientProxyCore.terrainHeight + 8F)
 	    	{
-	    		ClientProxyCore.smallMoonActive = true;
-	    		double globalArc = ClientProxyCore.globalRadius / 57.2957795D;
-	    		float globeRadius = ClientProxyCore.globalRadius - ClientProxyCore.terrainHeight;
-	            
-	        	int pX = MathHelper.floor_double(entitylivingbase.posX / 16D) << 4;
-	        	int pZ = MathHelper.floor_double(entitylivingbase.posZ / 16D) << 4;
-	        	
-	        	float dX = rend.posX - pX;
-	        	float dZ = rend.posZ - pZ;
-	        	
-	        	if (dX > 0)
-	        	{
-	        		dX -= 16F;
-	        		if (dX > 0) dX -= entitylivingbase.posX - pX;
-	        	}
-	        	else if (dX < 0)
-	        	{
-	        		dX += 16F;
-	        		if (dX < 0) dX += 16F-(entitylivingbase.posX - pX);
-	        	}
-	        	
-	        	if (dZ > 0)
-	        	{
-	        		dZ -= 16F;
-	        		if (dZ > 0) dZ -= entitylivingbase.posZ - pZ;
-	        	}
-	        	else if (dZ < 0)
-	        	{
-	        		dZ += 16F;
-	        		if (dZ < 0) dZ += 16F-(entitylivingbase.posZ - pZ);
-	        	}
-	        	
-	        	float origClipX = rend.posXClip;
-	        	float origClipY = rend.posYClip;
-	        	float origClipZ = rend.posZClip;
-	        	
-	        	float theta = (float) MathHelper.wrapAngleTo180_double(dX / globalArc);
-	        	float phi = (float) MathHelper.wrapAngleTo180_double(dZ / globalArc);
-	        	if (theta < 0) theta += 360F;
-	        	if (phi < 0) phi += 360F;
-	        	GL11.glTranslatef(origClipX - dX + 8F, -globeRadius + 8F, origClipZ - dZ + 8F);
-	        	if (theta > 0) GL11.glRotatef(theta,0,0,-1F);
-	        	if (phi > 0) GL11.glRotatef(phi,1F,0,0);
-	        	GL11.glTranslatef(-8F, origClipY + globeRadius - 8F, -8F);
-	        	if (dX != 0 && dZ != 0)
-	        	{
-		        	float scale = (rend.posY + 21F + globeRadius) / ClientProxyCore.globalRadius;
-		        	ClientProxyCore.scaleup.rewind();
-		        	ClientProxyCore.scaleup.put(scale);
-		        	ClientProxyCore.scaleup.position(10);
-		        	ClientProxyCore.scaleup.put(scale);
-		        	ClientProxyCore.scaleup.rewind();
-		        	GL11.glMultMatrix(ClientProxyCore.scaleup);
-		        	GL11.glTranslatef(-8F * (scale - 1F), 0, -8F * (scale - 1F));
-	        	}
-	            GL11.glTranslatef(-origClipX, -origClipY, -origClipZ);
-	        }
-	    	else ClientProxyCore.smallMoonActive = false;
+	    		ClientProxyCore.terrainHeight = Float.MAX_VALUE;
+	    		ClientProxyCore.globalRadius = Float.MAX_VALUE;
+	    		ClientProxyCore.smallMoonActive = false;
+	    		ClientProxyCore.offsetY = 0;
+	    	}
 	    }
         GL11.glEndList();
     }
     
-    public static void scaleBlock(int y)
-    {
-    	//Disable this for now
-    	if (ClientProxyCore.terrainHeight > 0F) return;
-    	int yFloor = MathHelper.floor_float(ClientProxyCore.terrainHeight / 16) >> 4;
-    	if (y < yFloor) return;
-    	
-    	//This scales the blocks in a 16x16x16 by an amount depending on the highest y value
-    	//This will be called for each y value which has non-air blocks
-    	//but the blocks will only actually be drawn after the last call 
-    	y %= 16;
-    	if (ClientProxyCore.lastY > y) ClientProxyCore.lastY = -1;
-    	if (y != ClientProxyCore.lastY)
-    	{
-    		float scale = (y - ClientProxyCore.lastY + ClientProxyCore.globalRadius) / ClientProxyCore.globalRadius;
-    		if (ClientProxyCore.lastY == -1) scale *= 1.0001F; //Slight overall scaleup to avoid cracks
-	      	ClientProxyCore.scaleup.rewind();
-	    	ClientProxyCore.scaleup.put(scale);
-	    	ClientProxyCore.scaleup.position(10);
-	    	ClientProxyCore.scaleup.put(scale);
-	    	ClientProxyCore.scaleup.rewind();
-	    	GL11.glMultMatrix(ClientProxyCore.scaleup);
-	    	GL11.glTranslatef(-8F * (scale - 1F), 0, -8F * (scale - 1F));
-	    	ClientProxyCore.lastY = y;
-    	}
-    }
-	
     @Override
 	public EntityPlayer getPlayerFromNetHandler(INetHandler handler) 
 	{
@@ -736,4 +813,12 @@ public class ClientProxyCore extends CommonProxyCore
 			return FMLClientHandler.instance().getClientPlayerEntity();
 		}
 	}
+    
+    //For testing purposes only
+    public void addVertex(double x, double y, double z)
+	 {
+  		double var7 = 1 + (y+offsetY) / globalRadius;
+ 		x += ((x % 16 - 8) * var7 ) + 8;
+  		z += ((z % 16 - 8) * var7 ) + 8;
+	 }
 }
