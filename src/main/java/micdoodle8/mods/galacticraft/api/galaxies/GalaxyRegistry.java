@@ -1,12 +1,15 @@
 package micdoodle8.mods.galacticraft.api.galaxies;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.minecraftforge.common.MinecraftForge;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 
@@ -27,6 +30,7 @@ public class GalaxyRegistry
 	static BiMap<String, Integer> planetIDs = HashBiMap.create();
 	static HashMap<String, Moon> moons = Maps.newHashMap();
 	static BiMap<String, Integer> moonIDs = HashBiMap.create();
+	static HashMap<Planet, List<Moon>> moonList = Maps.newHashMap();
 	
 	public static CelestialBody getCelestialBodyFromDimensionID(int dimensionID)
 	{
@@ -47,6 +51,35 @@ public class GalaxyRegistry
 		}
 		
 		return null;
+	}
+	
+	public static void refreshGalaxies()
+	{
+		moonList.clear();
+		
+		for (Moon moon : getRegisteredMoons().values())
+		{
+			Planet planet = moon.getParentPlanet();
+			List<Moon> listOfMoons = moonList.get(planet);
+			if (listOfMoons == null)
+			{
+				listOfMoons = new ArrayList<Moon>();
+			}
+			listOfMoons.add(moon);
+			moonList.put(planet, listOfMoons);
+		}
+	}
+	
+	public static List<Moon> getMoonsForPlanet(Planet planet)
+	{
+		List<Moon> moonListLocal = moonList.get(planet);
+		
+		if (moonListLocal == null)
+		{
+			return new ArrayList();
+		}
+		
+		return ImmutableList.copyOf(moonListLocal);
 	}
 	
 	public static CelestialBody getCelestialBodyFromUnlocalizedName(String unlocalizedName)

@@ -333,6 +333,7 @@ public class GalacticraftCore
 		NetworkRegistry.INSTANCE.registerGuiHandler(GalacticraftCore.instance, new GuiHandler());
 		FMLCommonHandler.instance().bus().register(new TickHandlerServer());
 		ProcessGraphic.go();
+		GalaxyRegistry.refreshGalaxies();
 	}
 
 	@EventHandler
