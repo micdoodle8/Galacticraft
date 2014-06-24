@@ -55,33 +55,33 @@ public class WorldProviderMars extends WorldProviderSpace implements IGalacticra
 	@Override
 	public Vec3 getFogColor(float var1, float var2)
 	{
-		return this.worldObj.getWorldVec3Pool().getVecFromPool((double) 0F / 255F, (double) 0F / 255F, (double) 0F / 255F);
+		return this.worldObj.getWorldVec3Pool().getVecFromPool((double) 210F / 255F, (double) 120F / 255F, (double) 59F / 255F);
 	}
 
 	@Override
 	public Vec3 getSkyColor(Entity cameraEntity, float partialTicks)
 	{
-		return this.worldObj.getWorldVec3Pool().getVecFromPool(0, 0, 0);
+		return this.worldObj.getWorldVec3Pool().getVecFromPool(154 / 255.0F, 114 / 255.0F, 66 / 255.0F);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public float getStarBrightness(float par1)
 	{
-		final float var2 = this.worldObj.getCelestialAngle(par1);
-		float var3 = 1.0F - (MathHelper.cos(var2 * (float) Math.PI * 2.0F) * 2.0F + 0.25F);
+        float f1 = this.worldObj.getCelestialAngle(par1);
+        float f2 = 1.0F - (MathHelper.cos(f1 * (float)Math.PI * 2.0F) * 2.0F + 0.25F);
 
-		if (var3 < 0.0F)
-		{
-			var3 = 0.0F;
-		}
+        if (f2 < 0.0F)
+        {
+            f2 = 0.0F;
+        }
 
-		if (var3 > 1.0F)
-		{
-			var3 = 1.0F;
-		}
+        if (f2 > 1.0F)
+        {
+            f2 = 1.0F;
+        }
 
-		return var3 * var3 * 0.5F + 0.3F;
+        return f2 * f2 * 0.75F;
 	}
 
 	@Override
