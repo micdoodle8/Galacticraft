@@ -28,7 +28,6 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore.SleepCancelledEvent;
 import micdoodle8.mods.galacticraft.core.blocks.GCCoreBlocks;
 import micdoodle8.mods.galacticraft.core.client.ClientProxyCore;
-import micdoodle8.mods.galacticraft.core.entities.GCCoreEntityZombie;
 import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerSP;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerServer.EnumPacketServer;
@@ -43,7 +42,6 @@ import net.minecraft.client.audio.SoundPool;
 import net.minecraft.client.audio.SoundPoolEntry;
 import net.minecraft.client.audio.SoundPoolProtocolHandler;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFlintAndSteel;
@@ -62,7 +60,6 @@ import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
-import net.minecraftforge.event.entity.living.ZombieEvent.SummonAidEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
@@ -532,23 +529,23 @@ public class GCCoreEvents
 		}
 	}
 	
-	@ForgeSubscribe
-	public void onZombieSummonAid(SummonAidEvent event)
-	{
-		if (event.entity instanceof GCCoreEntityZombie)
-		{
-			event.customSummonedAid = new GCCoreEntityZombie(event.world);
-			
-			if ((double)((EntityLivingBase) event.entity).getRNG().nextFloat() < ((GCCoreEntityZombie) event.entity).getEntityAttribute(((GCCoreEntityZombie) event.entity).getReinforcementsAttribute()).getAttributeValue())
-			{
-				event.setResult(Result.ALLOW);
-			}
-			else
-			{
-				event.setResult(Result.DENY);
-			}
-		}
-	}
+//	@ForgeSubscribe
+//	public void onZombieSummonAid(SummonAidEvent event)
+//	{
+//		if (event.entity instanceof GCCoreEntityZombie)
+//		{
+//			event.customSummonedAid = new GCCoreEntityZombie(event.world);
+//			
+//			if ((double)((EntityLivingBase) event.entity).getRNG().nextFloat() < ((GCCoreEntityZombie) event.entity).getEntityAttribute(((GCCoreEntityZombie) event.entity).getReinforcementsAttribute()).getAttributeValue())
+//			{
+//				event.setResult(Result.ALLOW);
+//			}
+//			else
+//			{
+//				event.setResult(Result.DENY);
+//			}
+//		}
+//	}
 
 	private List<SoundPlayEntry> soundPlayList = new ArrayList<SoundPlayEntry>();
 
