@@ -84,6 +84,7 @@ public class ConfigManagerCore
 	public static boolean enableSealerMultithreading;
 	public static boolean enableSealerEdgeChecks;
 	public static boolean alternateCanisterRecipe;
+	public static boolean enableSmallMoons;
 
 	public static void setDefaultValues(File file)
 	{
@@ -156,6 +157,7 @@ public class ConfigManagerCore
 			ConfigManagerCore.disableCopperMoon = ConfigManagerCore.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Copper Ore Gen on Moon", false).getBoolean(false);
 			ConfigManagerCore.disableMoonVillageGen = ConfigManagerCore.configuration.get(Configuration.CATEGORY_GENERAL, "Disable Moon Village Gen", false).getBoolean(false);
 			ConfigManagerCore.alternateCanisterRecipe = ConfigManagerCore.configuration.get(Configuration.CATEGORY_GENERAL, "Alternate recipe for canisters", false, "Enable this if the standard canister recipe causes a conflict.").getBoolean(false);
+			ConfigManagerCore.enableSmallMoons = ConfigManagerCore.configuration.get(Configuration.CATEGORY_GENERAL, "Enable Small Moons", true, "This will cause some dimensions to appear round, disable if render transformations cause a conflict.").getBoolean(true);
 		}
 		catch (final Exception e)
 		{
