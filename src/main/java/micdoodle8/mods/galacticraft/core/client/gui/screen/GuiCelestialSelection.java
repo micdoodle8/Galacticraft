@@ -8,6 +8,8 @@ import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.Moon;
 import micdoodle8.mods.galacticraft.api.galaxies.Planet;
+import micdoodle8.mods.galacticraft.api.galaxies.SolarSystem;
+import micdoodle8.mods.galacticraft.api.galaxies.Star;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
@@ -296,7 +298,7 @@ public class GuiCelestialSelection extends GuiScreen
 			scaleVec.m11 = matrix0.m11;
 			scaleVec.m22 = matrix0.m22;
 			Vector4f newVec = Matrix4f.transform(scaleVec, new Vector4f(2, -2, 0, 0), null);
-			int iconSize = (int) (newVec.y * (Minecraft.getMinecraft().displayHeight / 2.0F));
+			int iconSize = (int) (newVec.y * (Minecraft.getMinecraft().displayHeight / 2.0F)) * (e.getKey() instanceof Star ? 2 : 1);
 			
 			this.planetPosMap.put(e.getKey(), new Vector3f(vec.x, vec.y, iconSize)); // Store size on-screen in Z-value for ease
 		}
@@ -333,6 +335,11 @@ public class GuiCelestialSelection extends GuiScreen
 	
 	private Vector3f getCelestialBodyPosition(CelestialBody cBody)
 	{
+		if (cBody instanceof Star)
+		{
+			return new Vector3f();
+		}
+		
 		int cBodyTicks = this.celestialBodyTicks.get(cBody);
 		float distanceScale = (cBody instanceof Planet ? 25.0F : (1.0F / 8.0F));
 		float timeScale = (cBody instanceof Planet ? 200.0F : 2.0F);
@@ -353,9 +360,52 @@ public class GuiCelestialSelection extends GuiScreen
         FloatBuffer fb = BufferUtils.createFloatBuffer(16 * Float.SIZE);
         HashMap<CelestialBody, Matrix4f> matrixMap = Maps.newHashMap();
         
+        for (SolarSystem solarSystem : GalaxyRegistry.getRegisteredSolarSystems().values())
+        {
+        	Star star = solarSystem.getMainStar();
+        	
+        	if (star != null && star.getBodyIcon() != null)
+        	{
+				GL11.glPushMatrix();
+				Matrix4f worldMatrix0 = new Matrix4f(worldMatrix);
+				
+				Matrix4f.translate(this.getCelestialBodyPosition(star), worldMatrix0, worldMatrix0);
+				
+				Matrix4f worldMatrix1 = new Matrix4f();
+				Matrix4f.rotate((float)Math.toRadians(45), new Vector3f(0, 0, 1), worldMatrix1, worldMatrix1);
+				Matrix4f.rotate((float)Math.toRadians(-55), new Vector3f(1, 0, 0), worldMatrix1, worldMatrix1);
+				worldMatrix1 = worldMatrix1.mul(worldMatrix0, worldMatrix1, worldMatrix1);
+				
+				fb.rewind();
+				worldMatrix1.store(fb);
+				fb.flip();
+				GL11.glMultMatrix(fb);
+				
+				float alpha = 1.0F;
+				
+				if (this.selectedBody != null && this.selectedBody != star)
+				{
+					alpha = 1.0F - Math.min(this.ticksSinceSelection / 25.0F, 1.0F);
+				}
+				
+				if (alpha != 0)
+				{
+					GL11.glColor4f(1, 1, 1, alpha);
+					
+					mc.renderEngine.bindTexture(star.getBodyIcon());
+					this.drawTexturedModalRect(-4, -4, 8, 8, 0, 0, 8, 8, false, 8);
+			        
+					fb.clear();
+					matrixMap.put(star, worldMatrix1);
+				}
+				
+				GL11.glPopMatrix();
+        	}
+        }
+        
 		for (Planet planet : GalaxyRegistry.getRegisteredPlanets().values())
 		{
-			if (planet.getPlanetIcon() != null)
+			if (planet.getBodyIcon() != null)
 			{
 				GL11.glPushMatrix();
 				Matrix4f worldMatrix0 = new Matrix4f(worldMatrix);
@@ -395,7 +445,7 @@ public class GuiCelestialSelection extends GuiScreen
 				{
 					GL11.glColor4f(1, 1, 1, alpha);
 					
-					mc.renderEngine.bindTexture(planet.getPlanetIcon());
+					mc.renderEngine.bindTexture(planet.getBodyIcon());
 					this.drawTexturedModalRect(-2, -2, 4, 4, 0, 0, 256, 256, false, 256);
 			        
 					fb.clear();
@@ -403,7 +453,6 @@ public class GuiCelestialSelection extends GuiScreen
 				}
 				
 				GL11.glPopMatrix();
-				
 			}
 		}
 
@@ -432,7 +481,7 @@ public class GuiCelestialSelection extends GuiScreen
 					
 					GL11.glColor4f(1, 1, 1, 1);
 					
-					mc.renderEngine.bindTexture(moon.getPlanetIcon());
+					mc.renderEngine.bindTexture(moon.getBodyIcon());
 					this.drawTexturedModalRect(-2, -2, 4, 4, 0, 0, 8, 8, false, 8);
 			        
 					fb.clear();
