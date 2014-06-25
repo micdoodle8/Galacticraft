@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.gui.overlay;
 
+import org.lwjgl.input.Keyboard;
+
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
@@ -41,8 +43,8 @@ public class OverlayDockingRocket extends Overlay
 				String dYStr = String.valueOf(dY);
 				String dZStr = String.valueOf(dZ);
 
-				String warning = GCCoreUtil.translateWithFormat("gui.dockingRocket.warning.name.0", minecraft.gameSettings.keyBindJump.getKeyDescription());
-				String warning2 = GCCoreUtil.translateWithFormat("gui.dockingRocket.warning.name.1", minecraft.gameSettings.keyBindSneak.getKeyDescription());
+				String warning = GCCoreUtil.translateWithFormat("gui.dockingRocket.warning.name.0", Keyboard.getKeyName(minecraft.gameSettings.keyBindJump.getKeyCode()));
+				String warning2 = GCCoreUtil.translateWithFormat("gui.dockingRocket.warning.name.1", Keyboard.getKeyName(minecraft.gameSettings.keyBindSneak.getKeyCode()));
 
 				double targetMotionY = Math.round(Math.max((rocket.posY - rocket.targetVec.y) / -100.0D, -0.9D) * 100.0D) / 100.0D;
 				double currentMotionY = Math.round(rocket.motionY * 100.0D) / 100.0D;

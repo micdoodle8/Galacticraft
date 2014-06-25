@@ -52,7 +52,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 	private IFuelDock landingPad;
 	public boolean landing;
 	public EnumAutoLaunch autoLaunchSetting;
-	private static boolean marsLoaded = Loader.isModLoaded("GalacticraftPlanets");
+	private static boolean marsLoaded = Loader.isModLoaded("GalacticraftMars");
 
 	public int autoLaunchCountdown;
 	public String statusMessage;
@@ -153,7 +153,6 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 								}
 
 								launchController = (TileEntity) connectedTile;
-
 								if (launchController != null)
 								{
 									TileEntity tile2 = launchController.getWorldObj().getTileEntity(launchController.xCoord, launchController.yCoord, launchController.zCoord);
@@ -438,22 +437,20 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
 	public boolean igniteWithResult()
 	{
-		if (this.isPlayerRocket())
+		if (this.setFrequency())
 		{
 			super.ignite();
 			return true;
 		}
 		else
 		{
-			if (this.setFrequency())
+			if (this.isPlayerRocket())
 			{
 				super.ignite();
 				return true;
 			}
-			else
-			{
-				return false;
-			}
+
+			return false;
 		}
 	}
 
@@ -500,7 +497,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
 		try
 		{
-			Class<?> controllerClass = Class.forName("micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityLaunchController");
+			Class<?> controllerClass = Class.forName("micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityLaunchController");
 
 			for (ILandingPadAttachable connectedTile : connectedTiles)
 			{
