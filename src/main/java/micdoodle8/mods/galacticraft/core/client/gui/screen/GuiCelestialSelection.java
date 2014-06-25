@@ -629,7 +629,7 @@ public class GuiCelestialSelection extends GuiScreen
 		{
 			for (Planet planet : GalaxyRegistry.getRegisteredPlanets().values())
 			{
-				if (planet.getParentGalaxy() != null)
+				if (planet.getParentSolarSystem() != null)
 				{
 					final float theta = (float) (2 * Math.PI / 500);
 					final float c = (float) Math.cos(theta);

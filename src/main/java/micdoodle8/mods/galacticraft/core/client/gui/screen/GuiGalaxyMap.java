@@ -310,10 +310,10 @@ public class GuiGalaxyMap extends GuiStarBackground
 		
 		for (Planet planet : GalaxyRegistry.getRegisteredPlanets().values())
 		{
-			if (planet.getParentGalaxy() != null)
+			if (planet.getParentSolarSystem() != null)
 			{
-				final int galaxyCenterX = (int) (-var4 + planet.getParentGalaxy().getMapPosition().x * 10000);
-				final int galaxyCenterY = (int) (-var5 + planet.getParentGalaxy().getMapPosition().y * 10000);
+				final int galaxyCenterX = (int) (-var4 + planet.getParentSolarSystem().getMapPosition().x * 10000);
+				final int galaxyCenterY = (int) (-var5 + planet.getParentSolarSystem().getMapPosition().y * 10000);
 
 				this.drawCircles(planet, galaxyCenterX + galaxyCenterX, galaxyCenterY + galaxyCenterY);
 

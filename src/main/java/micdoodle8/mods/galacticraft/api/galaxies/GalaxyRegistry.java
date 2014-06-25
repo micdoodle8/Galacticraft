@@ -21,11 +21,11 @@ import cpw.mods.fml.common.eventhandler.Event;
  */
 public class GalaxyRegistry
 {
-	static int maxGalaxyID = 0;
+	static int maxSolarSystemID = 0;
 	static int maxPlanetID = 0;
 	static int maxMoonID = 0;
-	static HashMap<String, Galaxy> galaxies = Maps.newHashMap();
-	static BiMap<String, Integer> galaxyIDs = HashBiMap.create();
+	static HashMap<String, SolarSystem> solarSystems = Maps.newHashMap();
+	static BiMap<String, Integer> solarSystemIDs = HashBiMap.create();
 	static HashMap<String, Planet> planets = Maps.newHashMap();
 	static BiMap<String, Integer> planetIDs = HashBiMap.create();
 	static HashMap<String, Moon> moons = Maps.newHashMap();
@@ -103,17 +103,17 @@ public class GalaxyRegistry
 		return null;
 	}
 
-	public static boolean registerGalaxy(Galaxy galaxy)
+	public static boolean registerSolarSystem(SolarSystem solarSystem)
 	{
-		if (GalaxyRegistry.galaxyIDs.containsKey(galaxy.getName()))
+		if (GalaxyRegistry.solarSystemIDs.containsKey(solarSystem.getName()))
 		{
 			return false;
 		}
 
-		GalaxyRegistry.galaxies.put(galaxy.getName(), galaxy);
-		GalaxyRegistry.galaxyIDs.put(galaxy.getName(), ++GalaxyRegistry.maxGalaxyID);
+		GalaxyRegistry.solarSystems.put(solarSystem.getName(), solarSystem);
+		GalaxyRegistry.solarSystemIDs.put(solarSystem.getName(), ++GalaxyRegistry.maxSolarSystemID);
 
-		MinecraftForge.EVENT_BUS.post(new GalaxyRegisterEvent(galaxy.getName(), GalaxyRegistry.maxGalaxyID));
+		MinecraftForge.EVENT_BUS.post(new SolarSystemRegisterEvent(solarSystem.getName(), GalaxyRegistry.maxSolarSystemID));
 		return true;
 	}
 
@@ -146,20 +146,20 @@ public class GalaxyRegistry
 	}
 
 	/**
-	 * Returns a read-only map containing Galaxy Names and their associated
-	 * Galaxies.
+	 * Returns a read-only map containing Solar System Names and their associated
+	 * Solar Systems.
 	 */
-	public static Map<String, Galaxy> getRegisteredGalaxies()
+	public static Map<String, SolarSystem> getRegisteredSolarSystems()
 	{
-		return ImmutableMap.copyOf(GalaxyRegistry.galaxies);
+		return ImmutableMap.copyOf(GalaxyRegistry.solarSystems);
 	}
 
 	/**
-	 * Returns a read-only map containing Galaxy Names and their associated IDs.
+	 * Returns a read-only map containing Solar System Names and their associated IDs.
 	 */
-	public static Map<String, Integer> getRegisteredGalaxyIDs()
+	public static Map<String, Integer> getRegisteredSolarSystemIDs()
 	{
-		return ImmutableMap.copyOf(GalaxyRegistry.galaxyIDs);
+		return ImmutableMap.copyOf(GalaxyRegistry.solarSystemIDs);
 	}
 
 	/**
@@ -195,9 +195,9 @@ public class GalaxyRegistry
 		return ImmutableMap.copyOf(GalaxyRegistry.moonIDs);
 	}
 
-	public static int getGalaxyID(String galaxyName)
+	public static int getSolarSystemID(String solarSystemName)
 	{
-		return GalaxyRegistry.galaxyIDs.get(galaxyName);
+		return GalaxyRegistry.solarSystemIDs.get(solarSystemName);
 	}
 
 	public static int getPlanetID(String planetName)
@@ -210,15 +210,15 @@ public class GalaxyRegistry
 		return GalaxyRegistry.moonIDs.get(moonName);
 	}
 
-	public static class GalaxyRegisterEvent extends Event
+	public static class SolarSystemRegisterEvent extends Event
 	{
-		public final String galaxyName;
-		public final int galaxyID;
+		public final String solarSystemName;
+		public final int solarSystemID;
 
-		public GalaxyRegisterEvent(String galaxyName, int galaxyID)
+		public SolarSystemRegisterEvent(String solarSystemName, int solarSystemID)
 		{
-			this.galaxyName = galaxyName;
-			this.galaxyID = galaxyID;
+			this.solarSystemName = solarSystemName;
+			this.solarSystemID = solarSystemID;
 		}
 	}
 

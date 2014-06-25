@@ -2,16 +2,16 @@ package micdoodle8.mods.galacticraft.api.galaxies;
 
 public class Planet extends CelestialBody
 {
-	protected Galaxy parentGalaxy = null;
+	protected SolarSystem parentSolarSystem = null;
 
 	public Planet(String planetName)
 	{
 		super(planetName);
 	}
 
-	public Galaxy getParentGalaxy()
+	public SolarSystem getParentSolarSystem()
 	{
-		return this.parentGalaxy;
+		return this.parentSolarSystem;
 	}
 
 	@Override
@@ -26,9 +26,9 @@ public class Planet extends CelestialBody
 		return "planet";
 	}
 
-	public Planet setParentGalaxy(Galaxy galaxy)
+	public Planet setParentSolarSystem(SolarSystem galaxy)
 	{
-		this.parentGalaxy = galaxy;
+		this.parentSolarSystem = galaxy;
 		return this;
 	}
 }

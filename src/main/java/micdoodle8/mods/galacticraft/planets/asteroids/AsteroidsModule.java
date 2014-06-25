@@ -57,7 +57,7 @@ public class AsteroidsModule implements IPlanetsModule
 	{
 		this.registerEntities();
 
-		AsteroidsModule.planetAsteroids = new Planet("asteroids").setParentGalaxy(GalacticraftCore.galaxyBlockyWay);
+		AsteroidsModule.planetAsteroids = new Planet("asteroids").setParentSolarSystem(GalacticraftCore.solarSystemSol);
 		AsteroidsModule.planetAsteroids.setDimensionInfo(ConfigManagerAsteroids.dimensionIDAsteroids, WorldProviderAsteroids.class);
 		
 		GalaxyRegistry.registerPlanet(AsteroidsModule.planetAsteroids);

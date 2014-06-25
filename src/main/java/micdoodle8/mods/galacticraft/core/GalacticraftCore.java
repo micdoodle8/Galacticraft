@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
-import micdoodle8.mods.galacticraft.api.galaxies.Galaxy;
+import micdoodle8.mods.galacticraft.api.galaxies.SolarSystem;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.Moon;
 import micdoodle8.mods.galacticraft.api.galaxies.Planet;
@@ -157,7 +157,7 @@ public class GalacticraftCore
 	public static CreativeTabs galacticraftBlocksTab;
 	public static CreativeTabs galacticraftItemsTab;
 
-	public static Galaxy galaxyBlockyWay;
+	public static SolarSystem solarSystemSol;
 	public static Planet planetOverworld;
 	public static Moon moonMoon;
 
@@ -242,8 +242,8 @@ public class GalacticraftCore
 
 		GalacticraftCore.packetPipeline = GalacticraftChannelHandler.init();
 		
-		GalacticraftCore.galaxyBlockyWay = new Galaxy("blockyWay").setMapPosition(new Vector3(0.0F, 0.0F));
-		GalacticraftCore.planetOverworld = (Planet) new Planet("overworld").setParentGalaxy(GalacticraftCore.galaxyBlockyWay).setRingColorRGB(0.1F, 0.9F, 0.6F).setPhaseShift(0.75F);
+		GalacticraftCore.solarSystemSol = new SolarSystem("sol").setMapPosition(new Vector3(0.0F, 0.0F));
+		GalacticraftCore.planetOverworld = (Planet) new Planet("overworld").setParentSolarSystem(GalacticraftCore.solarSystemSol).setRingColorRGB(0.1F, 0.9F, 0.6F).setPhaseShift(0.75F);
 		GalacticraftCore.planetOverworld.setPlanetIcon(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/planets/overworld.png"));
 		GalacticraftCore.planetOverworld.setDimensionInfo(0, WorldProvider.class, false, true);
 		GalacticraftCore.moonMoon = (Moon) new Moon("moon").setParentPlanet(GalacticraftCore.planetOverworld).setRelativeSize(0.2667F).setRelativeDistanceFromCenter(40F).setRelativeOrbitTime(0.01F);
@@ -273,7 +273,7 @@ public class GalacticraftCore
 		this.registerOtherEntities();
 		this.registerTileEntities();
 
-		GalaxyRegistry.registerGalaxy(GalacticraftCore.galaxyBlockyWay);
+		GalaxyRegistry.registerSolarSystem(GalacticraftCore.solarSystemSol);
 		GalaxyRegistry.registerPlanet(GalacticraftCore.planetOverworld);
 		GalaxyRegistry.registerMoon(GalacticraftCore.moonMoon);
 		DimensionManager.registerProviderType(ConfigManagerCore.idDimensionOverworldOrbit, WorldProviderOrbit.class, false);

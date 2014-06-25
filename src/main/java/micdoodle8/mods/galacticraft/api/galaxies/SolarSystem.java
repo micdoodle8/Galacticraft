@@ -5,26 +5,26 @@ import java.util.Locale;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import net.minecraft.util.StatCollector;
 
-public class Galaxy
+public class SolarSystem
 {
-	protected final String galaxyName;
+	protected final String systemName;
 	protected String unlocalizedName;
 	protected Vector3 mapPosition = null;
 
-	public Galaxy(String galaxyName)
+	public SolarSystem(String solarSystem)
 	{
-		this.galaxyName = galaxyName.toLowerCase(Locale.ENGLISH);
-		this.unlocalizedName = galaxyName;
+		this.systemName = solarSystem.toLowerCase(Locale.ENGLISH);
+		this.unlocalizedName = solarSystem;
 	}
 
 	public String getName()
 	{
-		return this.galaxyName;
+		return this.systemName;
 	}
 
 	public final int getID()
 	{
-		return GalaxyRegistry.getGalaxyID(this.galaxyName);
+		return GalaxyRegistry.getSolarSystemID(this.systemName);
 	}
 
 	public String getLocalizedName()
@@ -35,7 +35,7 @@ public class Galaxy
 
 	public String getUnlocalizedName()
 	{
-		return "galaxy." + this.unlocalizedName;
+		return "solarsystem." + this.unlocalizedName;
 	}
 
 	public Vector3 getMapPosition()
@@ -43,7 +43,7 @@ public class Galaxy
 		return this.mapPosition;
 	}
 
-	public Galaxy setMapPosition(Vector3 mapPosition)
+	public SolarSystem setMapPosition(Vector3 mapPosition)
 	{
 		this.mapPosition = mapPosition;
 		return this;
