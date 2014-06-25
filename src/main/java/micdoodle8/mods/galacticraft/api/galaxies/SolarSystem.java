@@ -10,6 +10,7 @@ public class SolarSystem
 	protected final String systemName;
 	protected String unlocalizedName;
 	protected Vector3 mapPosition = null;
+	protected Star mainStar = null;
 
 	public SolarSystem(String solarSystem)
 	{
@@ -46,6 +47,17 @@ public class SolarSystem
 	public SolarSystem setMapPosition(Vector3 mapPosition)
 	{
 		this.mapPosition = mapPosition;
+		return this;
+	}
+	
+	public Star getMainStar()
+	{
+		return this.mainStar;
+	}
+	
+	public SolarSystem setMainStar(Star star)
+	{
+		this.mainStar = star;
 		return this;
 	}
 }

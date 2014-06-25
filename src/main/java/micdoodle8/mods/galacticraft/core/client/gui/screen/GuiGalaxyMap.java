@@ -407,9 +407,9 @@ public class GuiGalaxyMap extends GuiStarBackground
 
 			this.checkSelection(cBody, centerX + var42b, centerY + var41b);
 
-			if (cBody.getPlanetIcon() != null)
+			if (cBody.getBodyIcon() != null)
 			{
-				this.mc.renderEngine.bindTexture(cBody.getPlanetIcon());
+				this.mc.renderEngine.bindTexture(cBody.getBodyIcon());
 
 				GL11.glDisable(GL11.GL_BLEND);
 				GL11.glEnable(GL11.GL_DEPTH_TEST);

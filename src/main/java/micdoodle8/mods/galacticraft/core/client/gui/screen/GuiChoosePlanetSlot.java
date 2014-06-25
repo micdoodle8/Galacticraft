@@ -117,9 +117,9 @@ public class GuiChoosePlanetSlot extends GuiSlot
 
 					if (celestialBody.getName().equalsIgnoreCase(str))
 					{
-						if (celestialBody.getPlanetIcon() != null)
+						if (celestialBody.getBodyIcon() != null)
 						{
-							FMLClientHandler.instance().getClient().renderEngine.bindTexture(celestialBody.getPlanetIcon());
+							FMLClientHandler.instance().getClient().renderEngine.bindTexture(celestialBody.getBodyIcon());
 							GuiGalaxyMap.renderPlanet(var1, var2 - 18, var3 + 9, var4 + 3, var5);
 						}
 						else System.out.println("No celestial body icon found for "+str);

@@ -23,7 +23,7 @@ public abstract class CelestialBody
 	protected boolean isReachable = false;
 	protected boolean forceStaticLoad = true;
 
-	protected ResourceLocation planetIcon;
+	protected ResourceLocation celestialBodyIcon;
 
 	protected float ringColorR = 1.0F;
 	protected float ringColorG = 1.0F;
@@ -193,14 +193,14 @@ public abstract class CelestialBody
 		return this.ringColorB;
 	}
 
-	public ResourceLocation getPlanetIcon()
+	public ResourceLocation getBodyIcon()
 	{
-		return this.planetIcon;
+		return this.celestialBodyIcon;
 	}
 
-	public CelestialBody setPlanetIcon(ResourceLocation planetIcon)
+	public CelestialBody setBodyIcon(ResourceLocation planetIcon)
 	{
-		this.planetIcon = planetIcon;
+		this.celestialBodyIcon = planetIcon;
 		return this;
 	}
 	
