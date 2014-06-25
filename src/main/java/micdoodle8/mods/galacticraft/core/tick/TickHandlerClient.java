@@ -474,12 +474,12 @@ public class TickHandlerClient
 				world.setRainStrength(0.0F);
 			}
 
-			if (!minecraft.gameSettings.keyBindJump.getIsKeyPressed())
+			if (!KeyHandlerClient.spaceKey.getIsKeyPressed())
 			{
 				ClientProxyCore.lastSpacebarDown = false;
 			}
 
-			if (player != null && player.ridingEntity != null && minecraft.gameSettings.keyBindJump.getIsKeyPressed() && !ClientProxyCore.lastSpacebarDown)
+			if (player != null && player.ridingEntity != null && KeyHandlerClient.spaceKey.getIsKeyPressed() && !ClientProxyCore.lastSpacebarDown)
 			{
 				GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_IGNITE_ROCKET, new Object[] { }));
 				ClientProxyCore.lastSpacebarDown = true;
