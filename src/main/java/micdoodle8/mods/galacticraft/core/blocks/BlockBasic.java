@@ -18,8 +18,20 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+/** Metadata:	
+*				3 = Tin Decoration Block 1
+*				4 = Tin Decoration Block 2
+*				5 = Copper Ore
+*				6 = Tin Ore
+*				7 = Aluminium Ore
+*				8 = Silicon Ore
+*				9 = Copper Decoration Block [unused]
+*				10 = Tin Decoration Block [unused]
+*				11 = Aluminium Decoration Block [unused]
+*/
 public class BlockBasic extends Block implements IDetectableResource
 {
+	
 	IIcon[] iconBuffer;
 
 	protected BlockBasic(String assetName)
