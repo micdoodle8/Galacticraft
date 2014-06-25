@@ -680,6 +680,8 @@ public class PacketSimple extends Packet implements IPacket
 			{
 				final EntityTieredRocket ship = (EntityTieredRocket) player.ridingEntity;
 
+				if (!ship.landing)
+				{
 				if (ship.hasValidFuel())
 				{
 					ItemStack stack2 = playerBase.getPlayerStats().extendedInventory.getStackInSlot(4);
@@ -691,15 +693,16 @@ public class PacketSimple extends Packet implements IPacket
 					}
 					else if (playerBase.getPlayerStats().chatCooldown == 0 && playerBase.getPlayerStats().launchAttempts == 0)
 					{
-						player.addChatMessage(new ChatComponentText("I don't have a parachute! If I press launch again, there's no going back!"));
+						player.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.rocket.warning.noparachute")));
 						playerBase.getPlayerStats().chatCooldown = 250;
 						playerBase.getPlayerStats().launchAttempts = 1;
 					}
 				}
 				else if (playerBase.getPlayerStats().chatCooldown == 0)
 				{
-					player.addChatMessage(new ChatComponentText("I'll need to load in some rocket fuel first!"));
+					player.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.rocket.warning.nofuel")));
 					playerBase.getPlayerStats().chatCooldown = 250;
+				}
 				}
 			}
 			break;
@@ -805,7 +808,7 @@ public class PacketSimple extends Packet implements IPacket
 		case S_ON_FAILED_CHEST_UNLOCK:
 			if (playerBase.getPlayerStats().chatCooldown == 0)
 			{
-				player.addChatMessage(new ChatComponentText("I'll probably need a Tier " + this.data.get(0) + " Dungeon key to unlock this!"));
+				player.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("gui.chest.warning.wrongkey", this.data.get(0))));
 				playerBase.getPlayerStats().chatCooldown = 100;
 			}
 			break;

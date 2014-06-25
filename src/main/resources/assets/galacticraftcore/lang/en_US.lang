@@ -216,6 +216,7 @@ schematic.rocketT2.name=Tier 2 Rocket
 # DEATH MESSAGES
 death.attack.spaceshipExplosion=%1$s's rocket malfunctioned!
 death.attack.spaceshipExplosionB=%1$s died in an unfortunate spaceship accident!
+death.attack.spaceshipCrash=%1$s's rocket smashed itself into the ground. Oops.
 death.attack.oxygenSuffocation=%1$s ran out of oxygen!
 
 # GALAXIES
@@ -365,10 +366,30 @@ gui.buggy.accel.name=Accelerate
 gui.buggy.decel.name=Decelerate
 gui.buggy.inv.name=Inventory / Fuel
 
+gui.rocket.launch.name=Launch
+gui.rocket.turn.name=Turn left-right
+gui.rocket.updown.name=Turn up-down
+gui.rocket.inv.name=Inventory / Fuel
+
+gui.rocket.warning.noparachute=I don't have a parachute! If I press launch again, there's no going back!
+gui.rocket.warning.nofuel=I'll need to load in some rocket fuel first!
+gui.chest.warning.wrongkey=I'll probably need a Tier %s Dungeon key to unlock this!
+gui.frequencymodule.warning0=I'll probably need a
+gui.frequencymodule.warning1=if I want to hear properly here.
+
 gui.rocketType.0=Storage Space: 18
 gui.rocketType.1=Storage Space: 36
 gui.rocketType.2=Storage Space: 56
 gui.rocketType.3=Pre-fueled
+
+gui.spacestation.typeCommand=Type
+gui.spacestation.playername=<playername>
+gui.spacestation.toAllowEntry=to allow another player to enter this space station!
+
+gui.skeletonBoss.message=Boss despawned, don't leave the boss room while fighting! Re-enter room to respawn boss.
+gui.warning.noroom=Not enough room!
+gui.flag.alreadyPlaced=Flag already placed here!
+gui.receiver.cannotAttach=Cannot attach receiver here!
 
 gui.tank.oxygenRemaining=Oxygen Remaining
 gui.buggy.storageSpace=Storage Space

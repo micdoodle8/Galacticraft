@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ChatComponentText;
@@ -45,7 +46,7 @@ public class TeleportTypeSpaceStation implements ITeleportType
 	{
 		if (ConfigManagerCore.spaceStationsRequirePermission && !newWorld.isRemote)
 		{
-			player.addChatMessage(new ChatComponentText(EnumColor.YELLOW + "Type " + EnumColor.AQUA + "/ssinvite <playername> " + EnumColor.YELLOW + "to allow another player to enter this space station!"));
+			player.addChatMessage(new ChatComponentText(EnumColor.YELLOW + GCCoreUtil.translate("gui.spacestation.typeCommand") + " " + EnumColor.AQUA + "/ssinvite " + GCCoreUtil.translate("gui.spacestation.playername") + " " + EnumColor.YELLOW + GCCoreUtil.translate("gui.spacestation.toAllowEntry")));
 		}
 	}
 }

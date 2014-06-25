@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityNasaWorkbench;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
@@ -161,7 +162,7 @@ public class BlockNasaWorkbench extends BlockContainer implements ITileEntityPro
 			
 			if (!world.isRemote && entity instanceof EntityPlayer)
 			{
-				((EntityPlayer) entity).addChatMessage(new ChatComponentText(EnumColor.RED + "Not enough room!"));
+				((EntityPlayer) entity).addChatMessage(new ChatComponentText(EnumColor.RED + GCCoreUtil.translate("gui.warning.noroom")));
 			}
 			
 			return;

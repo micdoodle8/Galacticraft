@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.world.IChunkLoader;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
@@ -190,7 +191,7 @@ public class BlockMachineMars extends BlockTileGC
 				{
 					if (!world.isRemote)
 					{
-						((EntityPlayer) entityLiving).addChatMessage(new ChatComponentText(EnumColor.RED + "Not enough room!"));
+						((EntityPlayer) entityLiving).addChatMessage(new ChatComponentText(EnumColor.RED + GCCoreUtil.translate("gui.warning.noroom")));
 					}
 					
 					world.setBlockToAir(x, y, z);

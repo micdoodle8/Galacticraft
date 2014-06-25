@@ -14,6 +14,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -337,7 +338,7 @@ public class EntityCreeperBoss extends EntityMob implements IEntityBreathable, I
 
 				for (EntityPlayer p : entitiesWithin2)
 				{
-					p.addChatMessage(new ChatComponentText("Boss despawned, don't leave the boss room while fighting! Re-enter room to respawn boss."));
+					p.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.skeletonBoss.message")));
 				}
 
 				this.setDead();
