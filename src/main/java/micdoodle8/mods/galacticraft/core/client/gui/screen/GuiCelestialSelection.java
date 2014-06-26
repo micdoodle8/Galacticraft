@@ -17,6 +17,7 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ResourceLocation;
 
@@ -218,6 +219,11 @@ public class GuiCelestialSelection extends GuiScreen
 		
 		for (Map.Entry<CelestialBody, Vector3f> e : planetPosMap.entrySet())
 		{
+			if (this.selectedBody == null && e.getKey() instanceof Moon)
+			{
+				continue;
+			}
+			
 			int iconSize = (int) e.getValue().z; // Z value holds size on-screen
 			
 			if (mouseX >= e.getValue().x - iconSize && mouseX <= e.getValue().x + iconSize &&
@@ -515,7 +521,6 @@ public class GuiCelestialSelection extends GuiScreen
 		String str = GCCoreUtil.translate("gui.message.catalog.name").toUpperCase();
 		this.fontRendererObj.drawString(str, width / 2 - this.fontRendererObj.getStringWidth(str) / 2, this.BORDER_WIDTH + this.BORDER_EDGE_WIDTH + fontRendererObj.FONT_HEIGHT / 2, GCCoreUtil.to32BitColor(255, 255, 255, 255));
 
-		
 		if (this.selectedBody != null)
 		{
 			mc.renderEngine.bindTexture(guiMain);
@@ -536,7 +541,8 @@ public class GuiCelestialSelection extends GuiScreen
 			mc.renderEngine.bindTexture(guiMain);
 	    	GL11.glColor4f(0.0F, 0.6F, 1.0F, 1);
 			int menuTopLeft = this.BORDER_WIDTH + this.BORDER_EDGE_WIDTH - 115 + height / 2;
-			int posX = this.BORDER_WIDTH + this.BORDER_EDGE_WIDTH + Math.min(ticksSinceSelection * 10, 133) - 133;
+			int posX = this.BORDER_WIDTH + this.BORDER_EDGE_WIDTH + Math.min(ticksSinceSelection * 10, 133) - 134;
+			int posX2 = (int) (this.BORDER_WIDTH + this.BORDER_EDGE_WIDTH + Math.min(ticksSinceSelection * 1.25F, 15) - 15);
 			int fontPosY = menuTopLeft + this.BORDER_EDGE_WIDTH + fontRendererObj.FONT_HEIGHT / 2 - 2;
 			this.drawTexturedModalRect(posX, menuTopLeft, 133, 209, 0, 0, 266, 418, false);
 			
@@ -577,8 +583,50 @@ public class GuiCelestialSelection extends GuiScreen
 			this.fontRendererObj.drawString(str, posX + 10, fontPosY + 176, GCCoreUtil.to32BitColor(255, 255, 255, 255));
 			str = GCCoreUtil.translate("gui.message." + this.selectedBody.getName() + ".meansurfacetemp.1.name");
 			if (!str.isEmpty()) this.fontRendererObj.drawString(str, posX + 10, fontPosY + 187, GCCoreUtil.to32BitColor(255, 255, 255, 255));
+
+			mc.renderEngine.bindTexture(guiMain);
+	    	GL11.glColor4f(0.0F, 0.6F, 1.0F, 1);
+			this.drawTexturedModalRect(posX2, menuTopLeft, 17, 199, 439, 0, 32, 399, false);
+			this.drawRectD(posX2 + 16.5, menuTopLeft + 13, posX + 131, menuTopLeft + 14, GCCoreUtil.to32BitColor(120, 0, (int) (0.6F * 255), 255));
 		}
 	}
+	
+    public void drawRectD(double par0, double par1, double par2, double par3, int par4)
+    {
+    	double j1;
+
+        if (par0 < par2)
+        {
+            j1 = par0;
+            par0 = par2;
+            par2 = j1;
+        }
+
+        if (par1 < par3)
+        {
+            j1 = par1;
+            par1 = par3;
+            par3 = j1;
+        }
+
+        float f3 = (float)(par4 >> 24 & 255) / 255.0F;
+        float f = (float)(par4 >> 16 & 255) / 255.0F;
+        float f1 = (float)(par4 >> 8 & 255) / 255.0F;
+        float f2 = (float)(par4 & 255) / 255.0F;
+        Tessellator tessellator = Tessellator.instance;
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        OpenGlHelper.glBlendFunc(770, 771, 1, 0);
+        GL11.glColor4f(f, f1, f2, f3);
+        tessellator.startDrawingQuads();
+        tessellator.addVertex((double)par0, (double)par3, 0.0D);
+        tessellator.addVertex((double)par2, (double)par3, 0.0D);
+        tessellator.addVertex((double)par2, (double)par1, 0.0D);
+        tessellator.addVertex((double)par0, (double)par1, 0.0D);
+        tessellator.draw();
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glDisable(GL11.GL_BLEND);
+    }
 
     public void drawTexturedModalRect(int x, int y, int width, int height, int u, int v, int uWidth, int vHeight, boolean invert)
     {
