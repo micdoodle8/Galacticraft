@@ -2,8 +2,6 @@ package micdoodle8.mods.galacticraft.core.util;
 
 import cpw.mods.fml.common.Loader;
 
-
-
 public class CompatibilityManager
 {
 	private static boolean modIc2Loaded;

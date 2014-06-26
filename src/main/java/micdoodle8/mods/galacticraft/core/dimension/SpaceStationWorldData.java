@@ -10,8 +10,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 import net.minecraftforge.common.DimensionManager;
 
-
-
 public class SpaceStationWorldData extends WorldSavedData
 {
 	private String spaceStationName = "NoName";
@@ -64,7 +62,7 @@ public class SpaceStationWorldData extends WorldSavedData
 
 		for (int var3 = 0; var3 < var2.tagCount(); ++var3)
 		{
-			final NBTTagCompound var4 = (NBTTagCompound) var2.getCompoundTagAt(var3);
+			final NBTTagCompound var4 = var2.getCompoundTagAt(var3);
 			final String var5 = var4.getString("allowedPlayer");
 
 			if (!this.allowedPlayers.contains(var5.toLowerCase()))

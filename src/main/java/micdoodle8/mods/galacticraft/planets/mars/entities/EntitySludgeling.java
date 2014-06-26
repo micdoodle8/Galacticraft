@@ -18,8 +18,6 @@ import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
-
-
 public class EntitySludgeling extends EntityMob implements IEntityBreathable
 {
 	public EntitySludgeling(World par1World)
@@ -111,13 +109,13 @@ public class EntitySludgeling extends EntityMob implements IEntityBreathable
 	}
 
 	@Override
-    protected void func_145780_a(int x, int y, int z, Block block)
+	protected void func_145780_a(int x, int y, int z, Block block)
 	{
 		this.worldObj.playSoundAtEntity(this, "mob.silverfish.step", 1.0F, 1.0F);
 	}
 
 	@Override
-    protected Item getDropItem()
+	protected Item getDropItem()
 	{
 		return Item.getItemFromBlock(Blocks.air);
 	}

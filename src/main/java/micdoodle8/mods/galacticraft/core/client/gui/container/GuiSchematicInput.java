@@ -17,8 +17,6 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-
-
 public class GuiSchematicInput extends GuiContainerGC implements ISchematicResultPage
 {
 	private static final ResourceLocation schematicInputTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/schematicpage.png");
@@ -62,7 +60,7 @@ public class GuiSchematicInput extends GuiContainerGC implements ISchematicResul
 				SchematicRegistry.flipToNextPage(this.pageIndex);
 				break;
 			case 2:
-				GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UNLOCK_NEW_SCHEMATIC, new Object[] { }));
+				GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UNLOCK_NEW_SCHEMATIC, new Object[] {}));
 				break;
 			}
 		}

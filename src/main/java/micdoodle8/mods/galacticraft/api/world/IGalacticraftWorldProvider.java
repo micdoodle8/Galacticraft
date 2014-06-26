@@ -58,18 +58,21 @@ public interface IGalacticraftWorldProvider
 	 *         careful with the values you choose!
 	 */
 	public float getSoundVolReductionAmount();
-	
+
 	/**
-	 * Whether or not the atmopshere of this dimension is valid for players to breathe
+	 * Whether or not the atmopshere of this dimension is valid for players to
+	 * breathe
 	 * 
 	 * @return True if players can breathe here, False if not.
 	 */
 	public boolean hasBreathableAtmosphere();
-	
+
 	/**
-	 * This value will affect player's thermal level, damaging them if it reaches too high or too low.
+	 * This value will affect player's thermal level, damaging them if it
+	 * reaches too high or too low.
 	 * 
-	 * @return Positive integer for hot celestial bodies, negative for cold. Zero for neutral
+	 * @return Positive integer for hot celestial bodies, negative for cold.
+	 *         Zero for neutral
 	 */
 	public float getThermalLevelModifier();
 }

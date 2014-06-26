@@ -16,50 +16,52 @@ public abstract class EnergyStorageTile extends TileEntityAdvanced implements IE
 	public EnergyStorage storage = new EnergyStorage(50, 1000000);
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(NBTTagCompound nbt)
+	{
 
 		super.readFromNBT(nbt);
-		storage.readFromNBT(nbt);
+		this.storage.readFromNBT(nbt);
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public void writeToNBT(NBTTagCompound nbt)
+	{
 
 		super.writeToNBT(nbt);
-		storage.writeToNBT(nbt);
+		this.storage.writeToNBT(nbt);
 	}
-	
+
 	public abstract ReceiverMode getModeFromDirection(ForgeDirection direction);
 
 	@Override
-	public float receiveEnergyGC(EnergySource from, float amount, boolean simulate) 
+	public float receiveEnergyGC(EnergySource from, float amount, boolean simulate)
 	{
-		return storage.receiveEnergyGC(amount, simulate);
+		return this.storage.receiveEnergyGC(amount, simulate);
 	}
 
 	@Override
-	public float extractEnergyGC(EnergySource from, float amount, boolean simulate) 
+	public float extractEnergyGC(EnergySource from, float amount, boolean simulate)
 	{
-		return storage.extractEnergyGC(amount, simulate);
+		return this.storage.extractEnergyGC(amount, simulate);
 	}
 
 	@Override
-	public boolean nodeAvailable(EnergySource from) 
+	public boolean nodeAvailable(EnergySource from)
 	{
 		if (!(from instanceof EnergySourceAdjacent))
 		{
 			return false;
 		}
-		
+
 		return this.getModeFromDirection(((EnergySourceAdjacent) from).direction) != ReceiverMode.UNDEFINED;
 	}
 
 	@Override
-	public float getEnergyStoredGC(EnergySource from) 
+	public float getEnergyStoredGC(EnergySource from)
 	{
-		return storage.getEnergyStoredGC();
+		return this.storage.getEnergyStoredGC();
 	}
-	
+
 	public float getEnergyStoredGC()
 	{
 		return this.getEnergyStoredGC(null);
@@ -68,16 +70,17 @@ public abstract class EnergyStorageTile extends TileEntityAdvanced implements IE
 	@Override
 	public float getMaxEnergyStoredGC(EnergySource from)
 	{
-		return storage.getCapacityGC();
+		return this.storage.getCapacityGC();
 	}
-	
+
 	public float getMaxEnergyStoredGC()
 	{
 		return this.getMaxEnergyStoredGC(null);
 	}
 
 	@Override
-	public boolean canConnect(ForgeDirection direction, NetworkType type) {
+	public boolean canConnect(ForgeDirection direction, NetworkType type)
+	{
 		return false;
 	}
 
@@ -85,19 +88,19 @@ public abstract class EnergyStorageTile extends TileEntityAdvanced implements IE
 	@Override
 	public float receiveElectricity(ForgeDirection from, float receive, boolean doReceive)
 	{
-		return storage.receiveEnergyGC(receive, !doReceive);
+		return this.storage.receiveEnergyGC(receive, !doReceive);
 	}
 
 	@Override
 	public float provideElectricity(ForgeDirection from, float request, boolean doProvide)
 	{
-		return storage.extractEnergyGC(request, !doProvide);
+		return this.storage.extractEnergyGC(request, !doProvide);
 	}
 
 	@Override
 	public float getRequest(ForgeDirection direction)
 	{
-		return getMaxEnergyStoredGC() - getEnergyStoredGC();
+		return this.getMaxEnergyStoredGC() - this.getEnergyStoredGC();
 	}
 
 	@Override
@@ -107,7 +110,8 @@ public abstract class EnergyStorageTile extends TileEntityAdvanced implements IE
 	}
 
 	@Override
-	public float getVoltage() {
+	public float getVoltage()
+	{
 		return 120F;
 	}
 }

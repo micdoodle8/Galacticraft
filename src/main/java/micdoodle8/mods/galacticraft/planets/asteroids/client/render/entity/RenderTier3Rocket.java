@@ -16,8 +16,6 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 @SideOnly(Side.CLIENT)
 public class RenderTier3Rocket extends Render
 {
@@ -89,8 +87,8 @@ public class RenderTier3Rocket extends Render
 			Vector3 teamColor = ClientUtil.updateTeamColor(FMLClientHandler.instance().getClient().thePlayer.getCommandSenderName(), true);
 			GL11.glColor3f(teamColor.floatX(), teamColor.floatY(), teamColor.floatZ());
 			this.modelSpaceshipObj.renderPart("NoseCone");
-			
-			if (((FMLClientHandler.instance().getClient().thePlayer.ticksExisted / 10) % 2) < 1)
+
+			if (FMLClientHandler.instance().getClient().thePlayer.ticksExisted / 10 % 2 < 1)
 			{
 				GL11.glColor3f(1, 0, 0);
 			}
@@ -98,13 +96,13 @@ public class RenderTier3Rocket extends Render
 			{
 				GL11.glColor3f(0, 1, 0);
 			}
-			
+
 			GL11.glDisable(GL11.GL_TEXTURE_2D);
 			GL11.glDisable(GL11.GL_LIGHTING);
 			this.modelSpaceshipObj.renderPart("Cube");
 			GL11.glEnable(GL11.GL_TEXTURE_2D);
 			GL11.glEnable(GL11.GL_LIGHTING);
-			
+
 			GL11.glColor3f(1, 1, 1);
 		}
 		else

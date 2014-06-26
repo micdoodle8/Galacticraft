@@ -20,8 +20,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fluids.FluidStack;
 import cpw.mods.fml.client.FMLClientHandler;
 
-
-
 public class TileEntityBuggyFueler extends TileEntityMulti implements IMultiBlock, IFuelable, IFuelDock, ICargoEntity
 {
 	protected long ticks = 0;

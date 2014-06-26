@@ -82,16 +82,16 @@ public class PacketDynamic implements IPacket
 		this.type = buffer.readInt();
 		this.dimID = buffer.readInt();
 
-		World world = GalacticraftCore.proxy.getWorldForID(dimID);
-		
+		World world = GalacticraftCore.proxy.getWorldForID(this.dimID);
+
 		if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER)
 		{
-			world = MinecraftServer.getServer().worldServerForDimension(dimID);
+			world = MinecraftServer.getServer().worldServerForDimension(this.dimID);
 		}
-		
+
 		if (world == null)
 		{
-			FMLLog.severe("Failed to get world for dimension ID: " + dimID);
+			FMLLog.severe("Failed to get world for dimension ID: " + this.dimID);
 		}
 
 		switch (this.type)
@@ -115,7 +115,7 @@ public class PacketDynamic implements IPacket
 			this.data[2] = buffer.readInt();
 
 			TileEntity tile = world.getTileEntity((Integer) this.data[0], (Integer) this.data[1], (Integer) this.data[2]);
-			
+
 			if (tile instanceof IPacketReceiver)
 			{
 				((IPacketReceiver) tile).decodePacketdata(buffer);

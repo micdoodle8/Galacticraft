@@ -24,8 +24,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class BlockSlimelingEgg extends Block implements ITileEntityProvider
 {
 	private IIcon[] icons;
@@ -98,7 +96,7 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider
 
 		if (currentStack != null && currentStack.getItem() instanceof ItemPickaxe)
 		{
-			par2EntityPlayer.addStat(StatList.mineBlockStatArray[getIdFromBlock(this)], 1);
+			par2EntityPlayer.addStat(StatList.mineBlockStatArray[Block.getIdFromBlock(this)], 1);
 			par2EntityPlayer.addExhaustion(0.025F);
 			this.dropBlockAsItem(world, x, y, z, par6 % 3, 0);
 		}

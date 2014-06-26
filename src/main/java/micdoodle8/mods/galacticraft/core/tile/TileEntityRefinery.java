@@ -23,8 +23,6 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import cpw.mods.fml.relauncher.Side;
 
-
-
 public class TileEntityRefinery extends TileEntityElectricBlock implements IInventory, ISidedInventory, IFluidHandler
 {
 	private final int tankCapacity = 24000;
@@ -196,7 +194,7 @@ public class TileEntityRefinery extends TileEntityElectricBlock implements IInve
 
 		for (int var3 = 0; var3 < var2.tagCount(); ++var3)
 		{
-			final NBTTagCompound var4 = (NBTTagCompound) var2.getCompoundTagAt(var3);
+			final NBTTagCompound var4 = var2.getCompoundTagAt(var3);
 			final byte var5 = var4.getByte("Slot");
 
 			if (var5 >= 0 && var5 < this.containingItems.length)
@@ -331,7 +329,7 @@ public class TileEntityRefinery extends TileEntityElectricBlock implements IInve
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer entityplayer)
 	{
-		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && entityplayer.getDistanceSq(this.xCoord+0.5D, this.yCoord+0.5D, this.zCoord+0.5D) <= 64.0D;
+		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && entityplayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
 	}
 
 	@Override

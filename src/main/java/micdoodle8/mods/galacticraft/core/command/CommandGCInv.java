@@ -129,13 +129,13 @@ public class CommandGCInv extends CommandBase
 						{
 							System.out.println("[GCInv] Restore command for offline player " + astring[1] + ", setting to restore GCInv on next login.");
 							CommandGCInv.dontload.remove(astring[1].toLowerCase()); // Now
-																							// it
-																							// can
-																							// autoload
-																							// on
-																							// next
-																							// player
-																							// logon
+																					// it
+																					// can
+																					// autoload
+																					// on
+																					// next
+																					// player
+																					// logon
 							return;
 						}
 					}
@@ -167,11 +167,11 @@ public class CommandGCInv extends CommandBase
 	{
 		String theName = thePlayer.getGameProfile().getName().toLowerCase();
 		if (!CommandGCInv.dontload.contains(theName)) // This is a simple
-															// flag: if the
-															// playername is in
-															// dontload then no
-															// restore command
-															// has yet been run.
+														// flag: if the
+														// playername is in
+														// dontload then no
+														// restore command
+														// has yet been run.
 		// Dontload resets to nothing on server restart so that all will
 		// auto-restore on a server restart.
 		{

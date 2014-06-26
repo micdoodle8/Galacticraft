@@ -44,8 +44,6 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class EventHandlerMars
 {
 	@SubscribeEvent
@@ -169,7 +167,7 @@ public class EventHandlerMars
 			int y = MathHelper.floor_double(entity.posY);
 			int z = MathHelper.floor_double(entity.posZ);
 			TileEntity tile = Minecraft.getMinecraft().theWorld.getTileEntity(x, y - 1, z);
-			
+
 			if (tile != null && tile.getClass().equals(TileEntityMulti.class))
 			{
 				tile = ((TileEntityMulti) tile).mainBlockPosition.getTileEntity(FMLClientHandler.instance().getClient().theWorld);

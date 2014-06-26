@@ -1,4 +1,5 @@
 package micdoodle8.mods.galacticraft.core.client.sounds;
+
 //package micdoodle8.mods.galacticraft.core.client.sounds;
 //
 //import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;

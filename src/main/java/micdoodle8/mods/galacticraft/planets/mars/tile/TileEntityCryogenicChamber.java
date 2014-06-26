@@ -24,8 +24,6 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class TileEntityCryogenicChamber extends TileEntityMulti implements IMultiBlock
 {
 	public boolean isOccupied;
@@ -50,8 +48,8 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
 		switch (enumstatus)
 		{
 		case OK:
-            ((GCEntityPlayerMP) entityPlayer).playerNetServerHandler.setPlayerLocation(entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ, entityPlayer.rotationYaw, entityPlayer.rotationPitch);
-            GalacticraftCore.packetPipeline.sendTo(new PacketSimpleMars(EnumSimplePacketMars.C_BEGIN_CRYOGENIC_SLEEP, new Object[] { this.xCoord, this.yCoord, this.zCoord }), ((GCEntityPlayerMP) entityPlayer));
+			((GCEntityPlayerMP) entityPlayer).playerNetServerHandler.setPlayerLocation(entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ, entityPlayer.rotationYaw, entityPlayer.rotationPitch);
+			GalacticraftCore.packetPipeline.sendTo(new PacketSimpleMars(EnumSimplePacketMars.C_BEGIN_CRYOGENIC_SLEEP, new Object[] { this.xCoord, this.yCoord, this.zCoord }), (GCEntityPlayerMP) entityPlayer);
 			return true;
 		case NOT_POSSIBLE_NOW:
 			entityPlayer.addChatMessage(new ChatComponentTranslation("I can't use this for another " + ((GCEntityPlayerMP) entityPlayer).getPlayerStats().cryogenicChamberCooldown / 20 + " seconds"));
@@ -178,7 +176,7 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
 					{
 						continue;
 					}
-					
+
 					if (this.worldObj.getBlock(thisBlock.x + x, thisBlock.y + y, thisBlock.z + z) == GCBlocks.fakeBlock)
 					{
 						fakeBlockCount++;
@@ -186,7 +184,7 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
 				}
 			}
 		}
-		
+
 		if (fakeBlockCount == 0)
 		{
 			return;

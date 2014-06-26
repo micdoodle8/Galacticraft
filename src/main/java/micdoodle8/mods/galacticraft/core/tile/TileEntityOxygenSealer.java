@@ -19,8 +19,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 
-
-
 public class TileEntityOxygenSealer extends TileEntityOxygen implements IInventory, ISidedInventory
 {
 	@NetworkedField(targetSide = Side.CLIENT)

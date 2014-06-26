@@ -2,8 +2,6 @@ package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 
 import java.util.List;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -22,6 +20,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockWalkway extends BlockTransmitter implements ITileEntityProvider
 {
@@ -32,8 +32,8 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
 		this.setBlockTextureName(AsteroidsModule.TEXTURE_DOMAIN + "walkway");
 		this.setBlockName(assetName);
 		this.isBlockContainer = true;
-		minVector = new Vector3(0.0, 0.32, 0.0);
-		maxVector = new Vector3(1.0, 1.0, 1.0);
+		this.minVector = new Vector3(0.0, 0.32, 0.0);
+		this.maxVector = new Vector3(1.0, 1.0, 1.0);
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -60,46 +60,48 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
 	{
 		return false;
 	}
-	
-    public int onBlockPlaced(World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int meta)
-    {
-        return getWalkwayOrientation(world, x, y, z);
-    }
-    
-    public void onNeighborBlockChange(World world, int x, int y, int z, Block blockChanged) 
-    {
-    	world.setBlock(x, y, z, this, this.getWalkwayOrientation(world, x, y, z), 3);
-    	
-    	if (this.getNetworkType() != null)
-    	{
-    		super.onNeighborBlockChange(world, x, y, z, blockChanged);
-    	}
-    }
-    
-    public int getWalkwayOrientation(World world, int x, int y, int z)
-    {
-    	int connectedNorth = world.getBlock(x, y, z - 1).isBlockNormalCube() || world.getBlock(x, y, z - 1) instanceof BlockWalkway ? 1 : 0;
-    	int connectedEast = world.getBlock(x + 1, y, z).isBlockNormalCube() || world.getBlock(x + 1, y, z) instanceof BlockWalkway ? 2 : 0;
-    	int connectedSouth = world.getBlock(x, y, z + 1).isBlockNormalCube() || world.getBlock(x, y, z + 1) instanceof BlockWalkway ? 4 : 0;
-    	int connectedWest = world.getBlock(x - 1, y, z).isBlockNormalCube() || world.getBlock(x - 1, y, z) instanceof BlockWalkway ? 8 : 0;
-    	
-    	return connectedNorth | connectedEast | connectedSouth | connectedWest;
-    }
+
+	@Override
+	public int onBlockPlaced(World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int meta)
+	{
+		return this.getWalkwayOrientation(world, x, y, z);
+	}
+
+	@Override
+	public void onNeighborBlockChange(World world, int x, int y, int z, Block blockChanged)
+	{
+		world.setBlock(x, y, z, this, this.getWalkwayOrientation(world, x, y, z), 3);
+
+		if (this.getNetworkType() != null)
+		{
+			super.onNeighborBlockChange(world, x, y, z, blockChanged);
+		}
+	}
+
+	public int getWalkwayOrientation(World world, int x, int y, int z)
+	{
+		int connectedNorth = world.getBlock(x, y, z - 1).isBlockNormalCube() || world.getBlock(x, y, z - 1) instanceof BlockWalkway ? 1 : 0;
+		int connectedEast = world.getBlock(x + 1, y, z).isBlockNormalCube() || world.getBlock(x + 1, y, z) instanceof BlockWalkway ? 2 : 0;
+		int connectedSouth = world.getBlock(x, y, z + 1).isBlockNormalCube() || world.getBlock(x, y, z + 1) instanceof BlockWalkway ? 4 : 0;
+		int connectedWest = world.getBlock(x - 1, y, z).isBlockNormalCube() || world.getBlock(x - 1, y, z) instanceof BlockWalkway ? 8 : 0;
+
+		return connectedNorth | connectedEast | connectedSouth | connectedWest;
+	}
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int metadata)
 	{
-    	if (this == AsteroidBlocks.blockWalkwayOxygenPipe)
-    	{
-    		return new TileEntityOxygenPipe();
-    	}
-    	
-    	if (this == AsteroidBlocks.blockWalkwayWire)
-    	{
-    		return new TileEntityAluminumWire();
-    	}
-    	
-    	return null;
+		if (this == AsteroidBlocks.blockWalkwayOxygenPipe)
+		{
+			return new TileEntityOxygenPipe();
+		}
+
+		if (this == AsteroidBlocks.blockWalkwayWire)
+		{
+			return new TileEntityAluminumWire();
+		}
+
+		return null;
 	}
 
 	@Override
@@ -109,15 +111,15 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
 		{
 			return NetworkType.OXYGEN;
 		}
-		
+
 		if (this == AsteroidBlocks.blockWalkwayWire)
 		{
 			return NetworkType.POWER;
 		}
-		
+
 		return null;
 	}
-	
+
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
 	{
@@ -153,15 +155,15 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
 			this.setBlockBounds(minX, minY, minZ, maxX, maxY, maxZ);
 		}
 	}
-	
+
 	private void addCollisionBox(World world, int x, int y, int z, AxisAlignedBB aabb, List list)
 	{
-        AxisAlignedBB axisalignedbb1 = this.getCollisionBoundingBoxFromPool(world, x, y, z);
+		AxisAlignedBB axisalignedbb1 = this.getCollisionBoundingBoxFromPool(world, x, y, z);
 
-        if (axisalignedbb1 != null && aabb.intersectsWith(axisalignedbb1))
-        {
-        	list.add(axisalignedbb1);
-        }
+		if (axisalignedbb1 != null && aabb.intersectsWith(axisalignedbb1))
+		{
+			list.add(axisalignedbb1);
+		}
 	}
 
 	@SuppressWarnings("rawtypes")

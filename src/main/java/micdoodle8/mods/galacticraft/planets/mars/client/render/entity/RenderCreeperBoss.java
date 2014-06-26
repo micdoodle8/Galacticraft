@@ -15,8 +15,6 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-
-
 public class RenderCreeperBoss extends RenderLiving
 {
 	private static final ResourceLocation creeperTexture = new ResourceLocation(MarsModule.TEXTURE_DOMAIN, "textures/model/creeper.png");

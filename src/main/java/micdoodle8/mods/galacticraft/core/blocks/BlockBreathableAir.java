@@ -13,8 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-
-
 public class BlockBreathableAir extends BlockAir
 {
 	public BlockBreathableAir(String assetName)
@@ -27,7 +25,7 @@ public class BlockBreathableAir extends BlockAir
 	}
 
 	@Override
-    public boolean canReplace(World world, int x, int y, int z, int side, ItemStack stack)
+	public boolean canReplace(World world, int x, int y, int z, int side, ItemStack stack)
 	{
 		return true;
 	}
@@ -37,7 +35,6 @@ public class BlockBreathableAir extends BlockAir
 	{
 		return true;
 	}
-
 
 	@Override
 	public int getRenderBlockPass()
@@ -67,7 +64,7 @@ public class BlockBreathableAir extends BlockAir
 		}
 		else
 		{
-			return (block instanceof BlockAir && par5>= 0 && par5 <= 5);
+			return block instanceof BlockAir && par5 >= 0 && par5 <= 5;
 		}
 	}
 

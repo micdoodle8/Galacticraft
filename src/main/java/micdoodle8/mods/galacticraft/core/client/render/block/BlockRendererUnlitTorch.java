@@ -12,8 +12,6 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
-
-
 public class BlockRendererUnlitTorch implements ISimpleBlockRenderingHandler
 {
 	final int renderID;

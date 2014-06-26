@@ -18,8 +18,6 @@ import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars.EnumSi
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 
-
-
 public class MarsUtil
 {
 	public static void addRocketBenchT2Recipe(ItemStack result, HashMap<Integer, ItemStack> input)

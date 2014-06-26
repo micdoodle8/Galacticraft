@@ -9,15 +9,13 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-
-
 public class ContainerOxygenDecompressor extends Container
 {
 	private TileEntityElectricBlock tileEntity;
 
 	public ContainerOxygenDecompressor(InventoryPlayer par1InventoryPlayer, TileEntityOxygenDecompressor compressor)
 	{
-		tileEntity = compressor;
+		this.tileEntity = compressor;
 		this.addSlotToContainer(new Slot(compressor, 0, 133, 71));
 		this.addSlotToContainer(new SlotSpecific(compressor, 1, 32, 27, IItemElectric.class));
 

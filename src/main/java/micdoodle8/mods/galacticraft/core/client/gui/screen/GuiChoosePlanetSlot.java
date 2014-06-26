@@ -18,8 +18,6 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 @SideOnly(Side.CLIENT)
 public class GuiChoosePlanetSlot extends GuiSlot
 {
@@ -87,7 +85,7 @@ public class GuiChoosePlanetSlot extends GuiSlot
 		ArrayList<CelestialBody> cBodyList = new ArrayList<CelestialBody>();
 		cBodyList.addAll(GalaxyRegistry.getRegisteredPlanets().values());
 		cBodyList.addAll(GalaxyRegistry.getRegisteredMoons().values());
-		
+
 		if (this.isSelected(var1))
 		{
 			for (CelestialBody celestialBody : cBodyList)
@@ -122,7 +120,10 @@ public class GuiChoosePlanetSlot extends GuiSlot
 							FMLClientHandler.instance().getClient().renderEngine.bindTexture(celestialBody.getBodyIcon());
 							GuiGalaxyMap.renderPlanet(var1, var2 - 18, var3 + 9, var4 + 3, var5);
 						}
-						else System.out.println("No celestial body icon found for "+str);
+						else
+						{
+							System.out.println("No celestial body icon found for " + str);
+						}
 					}
 				}
 			}

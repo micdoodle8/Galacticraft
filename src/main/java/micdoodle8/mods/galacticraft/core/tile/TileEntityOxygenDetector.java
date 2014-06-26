@@ -4,8 +4,6 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenDetector;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 
-
-
 public class TileEntityOxygenDetector extends TileEntityAdvanced
 {
 	@Override

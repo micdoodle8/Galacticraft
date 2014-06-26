@@ -9,8 +9,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-
-
 public class MapGenCavesMoon extends GCCoreMapGenBaseMeta
 {
 	public static final int BREAK_THROUGH_CHANCE = 25; // 1 in n chance

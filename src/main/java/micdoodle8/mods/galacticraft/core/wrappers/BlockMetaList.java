@@ -5,8 +5,6 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 
-
-
 public class BlockMetaList
 {
 	private Block block;
@@ -54,7 +52,7 @@ public class BlockMetaList
 	{
 		if (obj instanceof BlockMetaList)
 		{
-			return ((BlockMetaList) obj) == this;
+			return (BlockMetaList) obj == this;
 		}
 
 		return false;

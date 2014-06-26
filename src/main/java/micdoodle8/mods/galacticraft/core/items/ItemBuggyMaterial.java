@@ -13,8 +13,6 @@ import net.minecraft.util.IIcon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class ItemBuggyMaterial extends Item
 {
 	public static final String[] names = { "wheel", // 0

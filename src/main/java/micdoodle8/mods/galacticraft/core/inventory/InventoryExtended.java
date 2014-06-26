@@ -6,8 +6,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
-
-
 public class InventoryExtended implements IInventory
 {
 	public ItemStack[] inventoryStacks = new ItemStack[10];
@@ -142,7 +140,7 @@ public class InventoryExtended implements IInventory
 
 		for (int i = 0; i < par1NBTTagList.tagCount(); ++i)
 		{
-			final NBTTagCompound nbttagcompound = (NBTTagCompound) par1NBTTagList.getCompoundTagAt(i);
+			final NBTTagCompound nbttagcompound = par1NBTTagList.getCompoundTagAt(i);
 			final int j = nbttagcompound.getByte("Slot") & 255;
 			final ItemStack itemstack = ItemStack.loadItemStackFromNBT(nbttagcompound);
 
@@ -162,7 +160,7 @@ public class InventoryExtended implements IInventory
 
 		for (int i = 0; i < tagList.tagCount(); ++i)
 		{
-			final NBTTagCompound nbttagcompound = (NBTTagCompound) tagList.getCompoundTagAt(i);
+			final NBTTagCompound nbttagcompound = tagList.getCompoundTagAt(i);
 			final int j = nbttagcompound.getByte("Slot") & 255;
 			final ItemStack itemstack = ItemStack.loadItemStackFromNBT(nbttagcompound);
 

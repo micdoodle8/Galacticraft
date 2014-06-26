@@ -16,8 +16,6 @@ import net.minecraft.world.chunk.IChunkProvider;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class WorldProviderMars extends WorldProviderSpace implements IGalacticraftWorldProvider
 {
 	@Override
@@ -68,20 +66,20 @@ public class WorldProviderMars extends WorldProviderSpace implements IGalacticra
 	@SideOnly(Side.CLIENT)
 	public float getStarBrightness(float par1)
 	{
-        float f1 = this.worldObj.getCelestialAngle(par1);
-        float f2 = 1.0F - (MathHelper.cos(f1 * (float)Math.PI * 2.0F) * 2.0F + 0.25F);
+		float f1 = this.worldObj.getCelestialAngle(par1);
+		float f2 = 1.0F - (MathHelper.cos(f1 * (float) Math.PI * 2.0F) * 2.0F + 0.25F);
 
-        if (f2 < 0.0F)
-        {
-            f2 = 0.0F;
-        }
+		if (f2 < 0.0F)
+		{
+			f2 = 0.0F;
+		}
 
-        if (f2 > 1.0F)
-        {
-            f2 = 1.0F;
-        }
+		if (f2 > 1.0F)
+		{
+			f2 = 1.0F;
+		}
 
-        return f2 * f2 * 0.75F;
+		return f2 * f2 * 0.75F;
 	}
 
 	@Override
@@ -166,11 +164,11 @@ public class WorldProviderMars extends WorldProviderSpace implements IGalacticra
 		return "Mars";
 	}
 
-//	@Override
-//	public boolean canSnowAt(int x, int y, int z)
-//	{
-//		return false;
-//	}
+	//	@Override
+	//	public boolean canSnowAt(int x, int y, int z)
+	//	{
+	//		return false;
+	//	}
 
 	@Override
 	public boolean canBlockFreeze(int x, int y, int z, boolean byWater)
@@ -245,7 +243,7 @@ public class WorldProviderMars extends WorldProviderSpace implements IGalacticra
 	}
 
 	@Override
-	public float getThermalLevelModifier() 
+	public float getThermalLevelModifier()
 	{
 		return -1;
 	}

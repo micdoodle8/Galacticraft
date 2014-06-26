@@ -5,8 +5,6 @@ import java.util.Random;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 
-
-
 public class MapGenBaseGC
 {
 	/** The number of Chunks to gen-check in any given direction. */

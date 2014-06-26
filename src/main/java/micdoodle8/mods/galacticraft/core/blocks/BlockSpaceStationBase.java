@@ -17,8 +17,6 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class BlockSpaceStationBase extends BlockContainer implements ITileEntityProvider
 {
 	private IIcon[] spaceStationIcons;
@@ -48,8 +46,8 @@ public class BlockSpaceStationBase extends BlockContainer implements ITileEntity
 	}
 
 	@Override
-    public IIcon getIcon(int par1, int par2)
-    {
+	public IIcon getIcon(int par1, int par2)
+	{
 		switch (par1)
 		{
 		case 1:
@@ -57,7 +55,7 @@ public class BlockSpaceStationBase extends BlockContainer implements ITileEntity
 		default:
 			return this.spaceStationIcons[1];
 		}
-    }
+	}
 
 	@Override
 	public void breakBlock(World var1, int var2, int var3, int var4, Block var5, int var6)

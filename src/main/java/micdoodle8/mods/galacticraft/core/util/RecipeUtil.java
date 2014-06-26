@@ -12,8 +12,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
-
-
 public class RecipeUtil
 {
 	public static ItemStack findMatchingBuggy(InventoryBuggyBench benchStacks)

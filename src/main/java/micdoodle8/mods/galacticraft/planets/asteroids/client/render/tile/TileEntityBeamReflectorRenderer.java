@@ -15,8 +15,6 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 @SideOnly(Side.CLIENT)
 public class TileEntityBeamReflectorRenderer extends TileEntitySpecialRenderer
 {
@@ -25,35 +23,35 @@ public class TileEntityBeamReflectorRenderer extends TileEntitySpecialRenderer
 
 	public TileEntityBeamReflectorRenderer()
 	{
-		this.reflectorModel = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "models/redirector.obj"));
+		TileEntityBeamReflectorRenderer.reflectorModel = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "models/redirector.obj"));
 	}
 
 	public void renderModelAt(TileEntityBeamReflector tileEntity, double d, double d1, double d2, float f)
 	{
 		// Texture file
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TileEntityBeamReflectorRenderer.reflectorTexture);
-		
+
 		Tessellator tess = Tessellator.instance;
-		
+
 		GL11.glPushMatrix();
-		
-		GL11.glTranslatef((float) d + 0.5F, (float) d1, (float) d2 + 0.5F);		
+
+		GL11.glTranslatef((float) d + 0.5F, (float) d1, (float) d2 + 0.5F);
 		GL11.glScalef(0.5F, 0.5F, 0.5F);
-		
-		reflectorModel.renderPart("Base");
+
+		TileEntityBeamReflectorRenderer.reflectorModel.renderPart("Base");
 		GL11.glRotatef(tileEntity.yaw, 0, 1, 0);
-		reflectorModel.renderPart("Axle");
+		TileEntityBeamReflectorRenderer.reflectorModel.renderPart("Axle");
 		float dX = 0.0F;
 		float dY = 1.13228F;
 		float dZ = 0.0F;
 		GL11.glTranslatef(dX, dY, dZ);
 		GL11.glRotatef(tileEntity.pitch, 1, 0, 0);
 		GL11.glTranslatef(-dX, -dY, -dZ);
-		reflectorModel.renderPart("EnergyBlaster");
+		TileEntityBeamReflectorRenderer.reflectorModel.renderPart("EnergyBlaster");
 		GL11.glTranslatef(dX, dY, dZ);
-		GL11.glRotatef(((TileEntityBeamReflector) tileEntity).ticks * 500, 0, 0, 1);
+		GL11.glRotatef(tileEntity.ticks * 500, 0, 0, 1);
 		GL11.glTranslatef(-dX, -dY, -dZ);
-		reflectorModel.renderPart("Ring");
+		TileEntityBeamReflectorRenderer.reflectorModel.renderPart("Ring");
 
 		GL11.glPopMatrix();
 	}

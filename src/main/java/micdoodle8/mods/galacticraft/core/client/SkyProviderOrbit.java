@@ -18,8 +18,6 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
 
-
-
 public class SkyProviderOrbit extends IRenderHandler
 {
 	private static final ResourceLocation moonTexture = new ResourceLocation("textures/environment/moon_phases.png");
@@ -192,9 +190,15 @@ public class SkyProviderOrbit extends IRenderHandler
 		long curTick = this.minecraft.theWorld.getTotalWorldTime();
 		int tickDiff = (int) (curTick - this.prevTick);
 		this.prevTick = curTick;
-		if (tickDiff > 0 && tickDiff < 20) deltaTick += (float)tickDiff;
+		if (tickDiff > 0 && tickDiff < 20)
+		{
+			deltaTick += tickDiff;
+		}
 		this.spinAngle = this.spinAngle - this.spinDeltaPerTick * deltaTick;
-		while (this.spinAngle < -180F) this.spinAngle+=360F;
+		while (this.spinAngle < -180F)
+		{
+			this.spinAngle += 360F;
+		}
 		GL11.glRotatef(this.spinAngle, 0.0F, 1.0F, 0.0F);
 
 		//Stars first
@@ -238,7 +242,7 @@ public class SkyProviderOrbit extends IRenderHandler
 			var23.addVertexWithUV(-var12, -100.0D, -var12, var18, var17);
 			var23.draw();
 		}
-		
+
 		GL11.glPopMatrix();
 		GL11.glDisable(GL11.GL_BLEND);
 
@@ -268,7 +272,7 @@ public class SkyProviderOrbit extends IRenderHandler
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 
 		GL11.glPopMatrix();
-		
+
 		GL11.glEnable(GL11.GL_ALPHA_TEST);
 
 		GL11.glColor3f(0.0F, 0.0F, 0.0F);

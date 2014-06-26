@@ -27,11 +27,11 @@ public class GCInvSaveData extends WorldSavedData
 					for (int j = 0; j < entry.tagCount(); j++)
 					{
 						NBTTagCompound obj1 = entry.getCompoundTagAt(j);
-						
+
 						if (obj1 instanceof NBTTagCompound)
 						{
-							NBTTagCompound dat = (NBTTagCompound) obj1;
-							int i = (dat.getByte("Slot")) & 7;
+							NBTTagCompound dat = obj1;
+							int i = dat.getByte("Slot") & 7;
 							if (i >= 6)
 							{
 								System.out.println("GCInv error retrieving savefile: slot was outside range 0-5");

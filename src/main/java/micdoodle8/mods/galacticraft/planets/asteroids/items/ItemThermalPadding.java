@@ -18,7 +18,7 @@ public class ItemThermalPadding extends Item
 {
 	public static String[] names = { "thermalHelm", "thermalChestplate", "thermalLeggings", "thermalBoots", "thermalHelm0", "thermalChestplate0", "thermalLeggings0", "thermalBoots0" };
 	protected IIcon[] icons = new IIcon[ItemThermalPadding.names.length];
-	
+
 	public ItemThermalPadding(String assetName)
 	{
 		super();
@@ -27,11 +27,11 @@ public class ItemThermalPadding extends Item
 		this.setMaxStackSize(1);
 		this.setUnlocalizedName(assetName);
 	}
-	
+
 	@Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIconFromDamageForRenderPass(int damage, int pass)
-    {
+	@SideOnly(Side.CLIENT)
+	public IIcon getIconFromDamageForRenderPass(int damage, int pass)
+	{
 		if (pass == 1)
 		{
 			if (this.icons.length > damage + 4)
@@ -39,15 +39,16 @@ public class ItemThermalPadding extends Item
 				return this.icons[damage + 4];
 			}
 		}
-		
-		return this.getIconFromDamage(damage);
-    }
 
-    @SideOnly(Side.CLIENT)
-    public boolean requiresMultipleRenderPasses()
-    {
-        return true;
-    }
+		return this.getIconFromDamage(damage);
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean requiresMultipleRenderPasses()
+	{
+		return true;
+	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -56,7 +57,7 @@ public class ItemThermalPadding extends Item
 		return ClientProxyCore.galacticraftItem;
 	}
 
-    @SideOnly(Side.CLIENT)
+	@SideOnly(Side.CLIENT)
 	@Override
 	public CreativeTabs getCreativeTab()
 	{

@@ -9,8 +9,6 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
-
-
 public class BlockRendererEgg implements ISimpleBlockRenderingHandler
 {
 	final int renderID;

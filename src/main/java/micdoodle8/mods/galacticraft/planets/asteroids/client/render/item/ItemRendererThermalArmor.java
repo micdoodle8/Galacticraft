@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client.render.item;
 
+import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -12,8 +12,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import cpw.mods.fml.client.FMLClientHandler;
-
-
 
 public class ItemRendererThermalArmor implements IItemRenderer
 {
@@ -25,48 +23,48 @@ public class ItemRendererThermalArmor implements IItemRenderer
 		for (int i = 0; i < 2; i++)
 		{
 			GL11.glPushMatrix();
-			
+
 			if (i == 1)
 			{
 				float time = FMLClientHandler.instance().getClientPlayerEntity().ticksExisted / 15.0F;
-				float r = (float)Math.max(Math.cos(time), 0.0F);
-				float b = (float)Math.max(Math.cos(time) * -1, 0.0F);
-				
+				float r = (float) Math.max(Math.cos(time), 0.0F);
+				float b = (float) Math.max(Math.cos(time) * -1, 0.0F);
+
 				if (r <= 0.6 && b <= 0.6)
 				{
 					r = 0.0F;
 					b = 0.0F;
 				}
-				
+
 				GL11.glColor4f(r, b / 2.0F, b, r + b / 1.5F);
 			}
-			
-	        IIcon iicon = FMLClientHandler.instance().getClientPlayerEntity().getItemIcon(item, i);
 
-	        if (iicon == null)
-	        {
-	            GL11.glPopMatrix();
-	            return;
-	        }
+			IIcon iicon = FMLClientHandler.instance().getClientPlayerEntity().getItemIcon(item, i);
 
-	        FMLClientHandler.instance().getClient().getTextureManager().bindTexture(FMLClientHandler.instance().getClient().getTextureManager().getResourceLocation(item.getItemSpriteNumber()));
-	        TextureUtil.func_147950_a(false, false);
-	        Tessellator tessellator = Tessellator.instance;
-	        float f = iicon.getMinU();
-	        float f1 = iicon.getMaxU();
-	        float f2 = iicon.getMinV();
-	        float f3 = iicon.getMaxV();
-	        float f4 = 0.0F;
-	        float f5 = 1.0F;
-	        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-	        GL11.glScalef(1.0F, -1.0F, 1.0F);
-	        float f6 = 16.0F;
-	        GL11.glScalef(f6, f6, f6);
-	        GL11.glTranslatef(-f4, -f5, 0.0F);
-	        RenderManager.instance.itemRenderer.renderItemIn2D(tessellator, f1, f2, f, f3, iicon.getIconWidth(), iicon.getIconHeight(), 0.0625F);
-	        GL11.glPopMatrix();
+			if (iicon == null)
+			{
+				GL11.glPopMatrix();
+				return;
+			}
+
+			FMLClientHandler.instance().getClient().getTextureManager().bindTexture(FMLClientHandler.instance().getClient().getTextureManager().getResourceLocation(item.getItemSpriteNumber()));
+			TextureUtil.func_147950_a(false, false);
+			Tessellator tessellator = Tessellator.instance;
+			float f = iicon.getMinU();
+			float f1 = iicon.getMaxU();
+			float f2 = iicon.getMinV();
+			float f3 = iicon.getMaxV();
+			float f4 = 0.0F;
+			float f5 = 1.0F;
+			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+			GL11.glScalef(1.0F, -1.0F, 1.0F);
+			float f6 = 16.0F;
+			GL11.glScalef(f6, f6, f6);
+			GL11.glTranslatef(-f4, -f5, 0.0F);
+			ItemRenderer.renderItemIn2D(tessellator, f1, f2, f, f3, iicon.getIconWidth(), iicon.getIconHeight(), 0.0625F);
+			GL11.glPopMatrix();
 		}
-        
+
 		GL11.glPopMatrix();
 	}
 

@@ -5,8 +5,6 @@ import net.minecraft.entity.player.EntityPlayer.EnumStatus;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import cpw.mods.fml.common.eventhandler.Cancelable;
 
-
-
 @Cancelable
 public class EventWakePlayer extends PlayerEvent
 {

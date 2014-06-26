@@ -7,7 +7,6 @@ import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.Planet;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.util.CreativeTabGC;
 import micdoodle8.mods.galacticraft.planets.IPlanetsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.TeleportTypeAsteroids;
@@ -21,7 +20,6 @@ import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReceive
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReflector;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityShortRangeTelepad;
 import micdoodle8.mods.galacticraft.planets.asteroids.util.AsteroidsUtil;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -39,9 +37,9 @@ public class AsteroidsModule implements IPlanetsModule
 
 	public static final String ASSET_PREFIX = "galacticraftasteroids";
 	public static final String TEXTURE_DOMAIN = AsteroidsModule.ASSET_PREFIX + ":";
-	
+
 	@Override
-	public void preInit(FMLPreInitializationEvent event) 
+	public void preInit(FMLPreInitializationEvent event)
 	{
 		new ConfigManagerAsteroids(new File(event.getModConfigurationDirectory(), "Galacticraft/asteroids.conf"));
 		AsteroidsPlayerHandler playerHandler = new AsteroidsPlayerHandler();
@@ -59,7 +57,7 @@ public class AsteroidsModule implements IPlanetsModule
 
 		AsteroidsModule.planetAsteroids = new Planet("asteroids").setParentSolarSystem(GalacticraftCore.solarSystemSol);
 		AsteroidsModule.planetAsteroids.setDimensionInfo(ConfigManagerAsteroids.dimensionIDAsteroids, WorldProviderAsteroids.class);
-		
+
 		GalaxyRegistry.registerPlanet(AsteroidsModule.planetAsteroids);
 		GalacticraftRegistry.registerTeleportType(WorldProviderAsteroids.class, new TeleportTypeAsteroids());
 	}
@@ -67,46 +65,46 @@ public class AsteroidsModule implements IPlanetsModule
 	@Override
 	public void postInit(FMLPostInitializationEvent event)
 	{
-		
+
 	}
 
 	@Override
 	public void serverStarting(FMLServerStartingEvent event)
 	{
-		
+
 	}
 
 	@Override
-	public void getGuiIDs(List<Integer> idList) 
+	public void getGuiIDs(List<Integer> idList)
 	{
-		
+
 	}
 
 	@Override
-	public Object getGuiElement(Side side, int ID, EntityPlayer player, World world, int x, int y, int z) 
+	public Object getGuiElement(Side side, int ID, EntityPlayer player, World world, int x, int y, int z)
 	{
 		return null;
 	}
-	
+
 	private void registerEntities()
 	{
 		this.registerCreatures();
 		this.registerNonMobEntities();
 		this.registerTileEntities();
 	}
-	
+
 	private void registerCreatures()
 	{
-		
+
 	}
-	
+
 	private void registerNonMobEntities()
 	{
 		AsteroidsUtil.registerAsteroidsNonMobEntity(EntitySmallAsteroid.class, "SmallAsteroidGC", ConfigManagerAsteroids.idEntitySmallAsteroid, 150, 1, true);
 		AsteroidsUtil.registerAsteroidsNonMobEntity(EntityGrapple.class, "GrappleHookGC", ConfigManagerAsteroids.idEntityGrappleHook, 150, 1, true);
 		AsteroidsUtil.registerAsteroidsNonMobEntity(EntityTier3Rocket.class, "Tier3RocketGC", ConfigManagerAsteroids.idEntityTier3Rocket, 150, 1, false);
 	}
-	
+
 	private void registerTileEntities()
 	{
 		GameRegistry.registerTileEntity(TileEntityBeamReflector.class, "Beam Reflector");

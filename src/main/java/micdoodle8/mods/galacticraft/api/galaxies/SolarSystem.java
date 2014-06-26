@@ -49,12 +49,12 @@ public class SolarSystem
 		this.mapPosition = mapPosition;
 		return this;
 	}
-	
+
 	public Star getMainStar()
 	{
 		return this.mainStar;
 	}
-	
+
 	public SolarSystem setMainStar(Star star)
 	{
 		this.mainStar = star;

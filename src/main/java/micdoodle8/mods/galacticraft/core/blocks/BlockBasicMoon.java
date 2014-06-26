@@ -48,9 +48,9 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
 	{
 		if (world.getBlockMetadata(x, y, z) == 15)
 		{
-	        return AxisAlignedBB.getAABBPool().getAABB(x, y, z, x, y, z);
+			return AxisAlignedBB.getAABBPool().getAABB(x, y, z, x, y, z);
 		}
-		
+
 		return super.getCollisionBoundingBoxFromPool(world, x, y, z);
 	}
 
@@ -59,15 +59,15 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
 	{
 		if (world.getBlockMetadata(x, y, z) == 15)
 		{
-	        return AxisAlignedBB.getAABBPool().getAABB(x, y, z, x, y, z);
+			return AxisAlignedBB.getAABBPool().getAABB(x, y, z, x, y, z);
 		}
-		
+
 		return super.getSelectedBoundingBoxFromPool(world, x, y, z);
 	}
 
 	@Override
-    public boolean isNormalCube(IBlockAccess world, int x, int y, int z)
-    {
+	public boolean isNormalCube(IBlockAccess world, int x, int y, int z)
+	{
 		if (world.getBlockMetadata(x, y, z) == 15)
 		{
 			return false;
@@ -76,7 +76,7 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
 		{
 			return super.isNormalCube(world, x, y, z);
 		}
-    }
+	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -140,8 +140,11 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
 			return 5.0F;
 		}
 
-		if (meta == 2) return 3.0F;
-		
+		if (meta == 2)
+		{
+			return 3.0F;
+		}
+
 		return this.blockHardness;
 	}
 
@@ -310,7 +313,7 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
 	}
 
 	@Override
-    public boolean canSustainPlant(IBlockAccess world, int x, int y, int z, ForgeDirection direction, IPlantable plantable)
+	public boolean canSustainPlant(IBlockAccess world, int x, int y, int z, ForgeDirection direction, IPlantable plantable)
 	{
 		final int metadata = world.getBlockMetadata(x, y, z);
 
@@ -358,14 +361,20 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
 
 		return false;
 	}
-	
+
 	@Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
-    {
-		int metadata = world.getBlockMetadata(x,  y,  z);
-		if (metadata == 2) return new ItemStack(Item.getItemFromBlock(this), 1, metadata);
-		if (metadata == 15) return null;
-		
+	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
+	{
+		int metadata = world.getBlockMetadata(x, y, z);
+		if (metadata == 2)
+		{
+			return new ItemStack(Item.getItemFromBlock(this), 1, metadata);
+		}
+		if (metadata == 15)
+		{
+			return null;
+		}
+
 		return super.getPickBlock(target, world, x, y, z);
-    }
+	}
 }

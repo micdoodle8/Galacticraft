@@ -22,15 +22,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 
-
-
 public class TileEntityCoalGenerator extends TileEntityUniversalElectrical implements IInventory, ISidedInventory, IPacketReceiver, IConnector
 {
 	public static final int MAX_GENERATE_WATTS = 500;
 	public static final int MIN_GENERATE_WATTS = 100;
 
 	private static final float BASE_ACCELERATION = 0.3f;
-	
+
 	public float prevGenerateWatts = 0;
 
 	@NetworkedField(targetSide = Side.CLIENT)
@@ -47,11 +45,11 @@ public class TileEntityCoalGenerator extends TileEntityUniversalElectrical imple
 	 * box
 	 */
 	private ItemStack[] containingItems = new ItemStack[1];
-	
+
 	public TileEntityCoalGenerator()
 	{
 		this.storage.setCapacity(50000);
-		this.storage.setMaxTransfer(MAX_GENERATE_WATTS);
+		this.storage.setMaxTransfer(TileEntityCoalGenerator.MAX_GENERATE_WATTS);
 	}
 
 	@Override
@@ -120,7 +118,7 @@ public class TileEntityCoalGenerator extends TileEntityUniversalElectrical imple
 
 		for (int var3 = 0; var3 < var2.tagCount(); ++var3)
 		{
-			NBTTagCompound var4 = (NBTTagCompound) var2.getCompoundTagAt(var3);
+			NBTTagCompound var4 = var2.getCompoundTagAt(var3);
 			byte var5 = var4.getByte("Slot");
 
 			if (var5 >= 0 && var5 < this.containingItems.length)
@@ -292,11 +290,13 @@ public class TileEntityCoalGenerator extends TileEntityUniversalElectrical imple
 			BlockVec3 vec = new BlockVec3(this).modifyPositionFromSide(ForgeDirection.getOrientation(this.getBlockMetadata() - BlockMachine.STORAGE_MODULE_METADATA + 2), 1);
 			TileEntity tile = vec.getTileEntity(this.worldObj);
 			if (tile instanceof IConductor)
+			{
 				//No power provide to IC2 mod if it's a Galacticraft wire on the output.  Galacticraft network will provide the power.
 				return 0.0F;
+			}
 		}
 
-		return this.generateWatts < MIN_GENERATE_WATTS ? 0F : this.generateWatts;
+		return this.generateWatts < TileEntityCoalGenerator.MIN_GENERATE_WATTS ? 0F : this.generateWatts;
 	}
 
 	@Override
@@ -310,8 +310,8 @@ public class TileEntityCoalGenerator extends TileEntityUniversalElectrical imple
 	{
 		return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() + 2));
 	}
-	
-	
+
+	@Override
 	public boolean canConnect(ForgeDirection direction, NetworkType type)
 	{
 		if (direction == null || direction.equals(ForgeDirection.UNKNOWN) || type != NetworkType.POWER)

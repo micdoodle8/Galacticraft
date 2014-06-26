@@ -13,8 +13,6 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class TileEntityNasaWorkbench extends TileEntityMulti implements IMultiBlock
 {
 	@Override

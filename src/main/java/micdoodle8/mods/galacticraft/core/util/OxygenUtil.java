@@ -22,8 +22,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import cpw.mods.fml.client.FMLClientHandler;
 
-
-
 public class OxygenUtil
 {
 	public static boolean shouldDisplayTankGui(GuiScreen gui)

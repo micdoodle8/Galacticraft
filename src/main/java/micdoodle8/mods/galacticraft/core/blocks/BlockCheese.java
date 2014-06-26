@@ -18,8 +18,6 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class BlockCheese extends Block
 {
 	IIcon[] cheeseIcons;
@@ -221,8 +219,8 @@ public class BlockCheese extends Block
 
 	@Override
 	@SideOnly(Side.CLIENT)
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
-    {
+	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
+	{
 		return new ItemStack(Items.cake);
 	}
 }

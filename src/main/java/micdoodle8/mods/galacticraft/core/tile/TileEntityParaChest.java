@@ -23,8 +23,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import cpw.mods.fml.relauncher.Side;
 
-
-
 public class TileEntityParaChest extends TileEntityAdvanced implements IInventorySettable, IPacketReceiver, IScaleableFuelLevel
 {
 	private final int tankCapacity = 5000;
@@ -70,8 +68,10 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
 	@Override
 	public void setSizeInventory(int size)
 	{
-		if ((size-3)%18!=0)
-			System.out.println("Strange TileEntityParachest inventory size received from server "+size);
+		if ((size - 3) % 18 != 0)
+		{
+			System.out.println("Strange TileEntityParachest inventory size received from server " + size);
+		}
 		this.chestContents = new ItemStack[size];
 	}
 

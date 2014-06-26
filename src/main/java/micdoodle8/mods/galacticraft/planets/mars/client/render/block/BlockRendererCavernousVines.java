@@ -7,8 +7,6 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.IBlockAccess;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
-
-
 public class BlockRendererCavernousVines implements ISimpleBlockRenderingHandler
 {
 	final int renderID;

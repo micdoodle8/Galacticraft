@@ -39,8 +39,6 @@ import org.lwjgl.util.glu.GLU;
 
 import cpw.mods.fml.client.FMLClientHandler;
 
-
-
 public class GuiChoosePlanet extends GuiScreen
 {
 	private long spaceTimer = 0;
@@ -653,7 +651,6 @@ public class GuiChoosePlanet extends GuiScreen
 						for (int x = 0; x < this.playerToSend.inventory.getSizeInventory(); x++)
 						{
 							final ItemStack slot = this.playerToSend.inventory.getStackInSlot(x);
-							
 
 							if (slot != null)
 							{

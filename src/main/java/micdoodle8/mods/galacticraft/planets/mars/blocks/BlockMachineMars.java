@@ -2,8 +2,6 @@ package micdoodle8.mods.galacticraft.planets.mars.blocks;
 
 import java.util.List;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
@@ -36,8 +34,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Type;
 import net.minecraftforge.common.util.ForgeDirection;
-
-
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockMachineMars extends BlockTileGC
 {
@@ -193,9 +191,9 @@ public class BlockMachineMars extends BlockTileGC
 					{
 						((EntityPlayer) entityLiving).addChatMessage(new ChatComponentText(EnumColor.RED + GCCoreUtil.translate("gui.warning.noroom")));
 					}
-					
+
 					world.setBlockToAir(x, y, z);
-					((EntityPlayer) entityLiving).inventory.addItemStackToInventory(new ItemStack(Item.getItemFromBlock(MarsBlocks.machine), 1, CRYOGENIC_CHAMBER_METADATA));
+					((EntityPlayer) entityLiving).inventory.addItemStackToInventory(new ItemStack(Item.getItemFromBlock(MarsBlocks.machine), 1, BlockMachineMars.CRYOGENIC_CHAMBER_METADATA));
 					return;
 				}
 			}
@@ -216,7 +214,7 @@ public class BlockMachineMars extends BlockTileGC
 					change = 0;
 					break;
 				}
-				
+
 				world.setBlockMetadataWithNotify(x, y, z, BlockMachineMars.CRYOGENIC_CHAMBER_METADATA + change, 3);
 			}
 		}
@@ -401,13 +399,13 @@ public class BlockMachineMars extends BlockTileGC
 		par3List.add(this.getChamber());
 		par3List.add(this.getLaunchController());
 	}
-	
+
 	private boolean canPlaceChamberAt(World world, int x0, int y0, int z0, EntityLivingBase player)
 	{
 		int angle = MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
 
 		int meta = 0;
-		
+
 		switch (angle)
 		{
 		case 0:
@@ -423,7 +421,7 @@ public class BlockMachineMars extends BlockTileGC
 			meta = 0;
 			break;
 		}
-		
+
 		int x1 = 0;
 		int x2 = 0;
 		int z1 = 0;
@@ -465,8 +463,8 @@ public class BlockMachineMars extends BlockTileGC
 				{
 					Block blockAt = world.getBlock(x0 + x, y0 + y, z0 + z);
 					int metaAt = world.getBlockMetadata(x0 + x, y0 + y, z0 + z);
-					
-					if (x == 0 && y == 0 && z == 0 && blockAt == MarsBlocks.machine && metaAt >= CRYOGENIC_CHAMBER_METADATA && metaAt < LAUNCH_CONTROLLER_METADATA)
+
+					if (x == 0 && y == 0 && z == 0 && blockAt == MarsBlocks.machine && metaAt >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA && metaAt < BlockMachineMars.LAUNCH_CONTROLLER_METADATA)
 					{
 						continue;
 					}
@@ -478,7 +476,7 @@ public class BlockMachineMars extends BlockTileGC
 				}
 			}
 		}
-		
+
 		return true;
 	}
 
@@ -506,19 +504,19 @@ public class BlockMachineMars extends BlockTileGC
 	}
 
 	@Override
-    public boolean isBed(IBlockAccess world, int x, int y, int z, EntityLivingBase player)
+	public boolean isBed(IBlockAccess world, int x, int y, int z, EntityLivingBase player)
 	{
 		return world.getBlockMetadata(x, y, z) >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA;
 	}
 
 	@Override
-    public ChunkCoordinates getBedSpawnPosition(IBlockAccess world, int x, int y, int z, EntityPlayer player)
+	public ChunkCoordinates getBedSpawnPosition(IBlockAccess world, int x, int y, int z, EntityPlayer player)
 	{
 		return new ChunkCoordinates(x, y + 1, z);
 	}
 
 	@Override
-    public void setBedOccupied(IBlockAccess world, int x, int y, int z, EntityPlayer player, boolean occupied)
+	public void setBedOccupied(IBlockAccess world, int x, int y, int z, EntityPlayer player, boolean occupied)
 	{
 		TileEntity tile = world.getTileEntity(x, y, z);
 
@@ -556,9 +554,10 @@ public class BlockMachineMars extends BlockTileGC
 
 		return null;
 	}
-	
-    public int getBedDirection(IBlockAccess world, int x, int y, int z)
-    {
+
+	@Override
+	public int getBedDirection(IBlockAccess world, int x, int y, int z)
+	{
 		return 0;
-    }
+	}
 }

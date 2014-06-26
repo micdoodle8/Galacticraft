@@ -13,8 +13,6 @@ import net.minecraft.util.IIcon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class ItemRocketEngineGC extends Item
 {
 	public static final String[] names = { "tier1engine", // 0

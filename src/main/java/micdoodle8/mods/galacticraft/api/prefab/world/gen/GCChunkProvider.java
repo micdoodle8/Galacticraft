@@ -8,7 +8,7 @@ import micdoodle8.mods.galacticraft.api.prefab.core.BlockMetaPair;
 import micdoodle8.mods.galacticraft.core.perlin.generator.Gradient;
 import micdoodle8.mods.galacticraft.core.world.gen.EnumCraterSize;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockSand;
+import net.minecraft.block.BlockFalling;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.IProgressUpdate;
@@ -154,6 +154,7 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
 		return x;
 	}
 
+	@Override
 	public void replaceBlocksForBiome(int par1, int par2, Block[] arrayOfIDs, byte[] arrayOfMeta, BiomeGenBase[] par4ArrayOfBiomeGenBase)
 	{
 		final int var5 = 20;
@@ -351,7 +352,7 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
 	@Override
 	public void populate(IChunkProvider par1IChunkProvider, int par2, int par3)
 	{
-		BlockSand.fallInstantly = true;
+		BlockFalling.fallInstantly = true;
 		int var4 = par2 * 16;
 		int var5 = par3 * 16;
 		this.worldObj.getBiomeGenForCoords(var4 + 16, var5 + 16);
@@ -363,7 +364,7 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
 		var4 += 8;
 		var5 += 8;
 
-		BlockSand.fallInstantly = false;
+		BlockFalling.fallInstantly = false;
 	}
 
 	@Override

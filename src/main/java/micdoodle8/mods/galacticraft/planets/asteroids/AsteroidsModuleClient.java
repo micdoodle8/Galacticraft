@@ -47,15 +47,15 @@ import cpw.mods.fml.relauncher.Side;
 public class AsteroidsModuleClient implements IPlanetsModuleClient
 {
 	private static int walkwayRenderID;
-	
+
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		
+
 	}
 
 	@Override
-	public void init(FMLInitializationEvent event) 
+	public void init(FMLInitializationEvent event)
 	{
 		AsteroidsModuleClient.walkwayRenderID = RenderingRegistry.getNextAvailableRenderId();
 		RenderingRegistry.registerBlockHandler(new BlockRendererWalkway(AsteroidsModuleClient.walkwayRenderID));
@@ -65,7 +65,7 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
 	}
 
 	@Override
-	public void postInit(FMLPostInitializationEvent event) 
+	public void postInit(FMLPostInitializationEvent event)
 	{
 		RenderingRegistry.registerEntityRenderingHandler(EntitySmallAsteroid.class, new RenderSmallAsteroid());
 		RenderingRegistry.registerEntityRenderingHandler(EntityGrapple.class, new RenderGrapple());
@@ -86,13 +86,13 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
 	@Override
 	public void serverStarting(FMLServerStartingEvent event)
 	{
-		
+
 	}
 
 	@Override
 	public void getGuiIDs(List<Integer> idList)
 	{
-		
+
 	}
 
 	@Override
@@ -106,15 +106,15 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
 	{
 		if (block == AsteroidBlocks.blockWalkway || block == AsteroidBlocks.blockWalkwayWire || block == AsteroidBlocks.blockWalkwayOxygenPipe)
 		{
-			return walkwayRenderID;
+			return AsteroidsModuleClient.walkwayRenderID;
 		}
-		
+
 		return 0;
 	}
 
 	@Override
-	public void spawnParticle(String particleID, Vector3 position, Vector3 color) 
+	public void spawnParticle(String particleID, Vector3 position, Vector3 color)
 	{
-		
+
 	}
 }

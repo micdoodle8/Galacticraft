@@ -10,8 +10,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-
-
 public class ContainerBuggyBench extends Container
 {
 	public InventoryBuggyBench craftMatrix = new InventoryBuggyBench(this);

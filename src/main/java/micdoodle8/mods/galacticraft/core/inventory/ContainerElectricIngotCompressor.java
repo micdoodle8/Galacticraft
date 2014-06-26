@@ -10,8 +10,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotFurnace;
 import net.minecraft.item.ItemStack;
 
-
-
 public class ContainerElectricIngotCompressor extends Container
 {
 	private TileEntityElectricIngotCompressor tileEntity;

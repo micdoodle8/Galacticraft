@@ -19,8 +19,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class BlockLandingPad extends BlockAdvancedTile implements IPartialSealableBlock
 {
 	private IIcon[] icons = new IIcon[3];
@@ -148,7 +146,7 @@ public class BlockLandingPad extends BlockAdvancedTile implements IPartialSealab
 	{
 		return direction == ForgeDirection.UP;
 	}
-	
+
 	@Override
 	public int damageDropped(int meta)
 	{

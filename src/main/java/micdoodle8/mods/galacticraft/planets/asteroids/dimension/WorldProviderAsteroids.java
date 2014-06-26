@@ -15,8 +15,6 @@ import net.minecraft.world.chunk.IChunkProvider;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class WorldProviderAsteroids extends WorldProviderSpace
 {
 	@Override
@@ -102,8 +100,8 @@ public class WorldProviderAsteroids extends WorldProviderSpace
 		this.worldObj.getWorldInfo().setRaining(false);
 		this.worldObj.getWorldInfo().setThunderTime(0);
 		this.worldObj.getWorldInfo().setThundering(false);
-    	this.worldObj.rainingStrength = 0.0F;
-    	this.worldObj.thunderingStrength = 0.0F;
+		this.worldObj.rainingStrength = 0.0F;
+		this.worldObj.thunderingStrength = 0.0F;
 	}
 
 	@Override
@@ -233,7 +231,7 @@ public class WorldProviderAsteroids extends WorldProviderSpace
 	}
 
 	@Override
-	public float getThermalLevelModifier() 
+	public float getThermalLevelModifier()
 	{
 		return -1.5F;
 	}

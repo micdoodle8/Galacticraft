@@ -20,7 +20,7 @@ public class BlockBrightLamp extends BlockAdvanced
 	public static IIcon icon;
 
 	//Metadata: bits 0-2 are the side of the base plate using standard side convention (0-5)
-	
+
 	protected BlockBrightLamp(String assetName)
 	{
 		super(Material.glass);
@@ -30,7 +30,7 @@ public class BlockBrightLamp extends BlockAdvanced
 		this.setBlockName(assetName);
 		this.setLightLevel(1.0F);
 	}
-	
+
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int x, int y, int z)
 	{
@@ -63,7 +63,10 @@ public class BlockBrightLamp extends BlockAdvanced
 		BlockVec3 thisvec = new BlockVec3(x, y, z);
 		for (int i = 0; i < 6; i++)
 		{
-			if (thisvec.blockOnSideHasSolidFace(par1World, i)) return true;
+			if (thisvec.blockOnSideHasSolidFace(par1World, i))
+			{
+				return true;
+			}
 		}
 		return false;
 	}
@@ -72,10 +75,12 @@ public class BlockBrightLamp extends BlockAdvanced
 	public int onBlockPlaced(World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metaOld)
 	{
 		BlockVec3 thisvec = new BlockVec3(x, y, z);
-		
+
 		if (thisvec.blockOnSideHasSolidFace(world, side ^ 1))
+		{
 			return side ^ 1;
-	
+		}
+
 		return metaOld;
 	}
 
@@ -90,10 +95,12 @@ public class BlockBrightLamp extends BlockAdvanced
 		final int side = par1World.getBlockMetadata(x, y, z);
 
 		BlockVec3 thisvec = new BlockVec3(x, y, z);
-		
+
 		if (thisvec.blockOnSideHasSolidFace(par1World, side))
+		{
 			return;
-	
+		}
+
 		this.dropBlockAsItem(par1World, x, y, z, 0, 0);
 		par1World.setBlock(x, y, z, Blocks.air);
 	}
@@ -124,12 +131,14 @@ public class BlockBrightLamp extends BlockAdvanced
 		{
 			this.setBlockBounds(0.5F - var8, 0.2F, 1.0F - var8 * 2.0F, 0.5F + var8, 0.8F, 1.0F);
 		}
-		else  if (var7 == 0)
+		else if (var7 == 0)
 		{
 			this.setBlockBounds(0.5F - var8, 0.0F, 0.5F - var8, 0.5F + var8, 0.6F, 0.5F + var8);
 		}
 		else
+		{
 			this.setBlockBounds(0.5F - var8, 0.4F, 0.5F - var8, 0.5F + var8, 1.0F, 0.5F + var8);
+		}
 
 		return super.collisionRayTrace(par1World, x, y, z, par5Vec3, par6Vec3);
 	}
@@ -138,16 +147,19 @@ public class BlockBrightLamp extends BlockAdvanced
 	public boolean onUseWrench(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ)
 	{
 		TileEntity tile = world.getTileEntity(x, y, z);
-		if (tile instanceof TileEntityArclamp) ((TileEntityArclamp)tile).facingChanged();
+		if (tile instanceof TileEntityArclamp)
+		{
+			((TileEntityArclamp) tile).facingChanged();
+		}
 		return true;
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) 
+	public TileEntity createNewTileEntity(World world, int meta)
 	{
 		return new TileEntityArclamp();
 	}
-	
+
 	@Override
 	public CreativeTabs getCreativeTabToDisplayOn()
 	{

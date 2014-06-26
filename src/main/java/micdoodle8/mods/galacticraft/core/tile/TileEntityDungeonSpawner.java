@@ -19,8 +19,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 
-
-
 public class TileEntityDungeonSpawner extends TileEntityAdvanced
 {
 	public Class<? extends IBoss> bossClass;
@@ -48,7 +46,7 @@ public class TileEntityDungeonSpawner extends TileEntityAdvanced
 	public void updateEntity()
 	{
 		super.updateEntity();
-		
+
 		if (this.roomCoords == null)
 		{
 			return;

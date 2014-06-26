@@ -23,8 +23,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-
-
 public class BlockMachine2 extends BlockTileGC
 {
 	public static final int ELECTRIC_COMPRESSOR_METADATA = 0;

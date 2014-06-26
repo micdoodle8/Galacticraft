@@ -9,8 +9,6 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
 
-
-
 public class ItemRendererThruster implements IItemRenderer
 {
 	private void renderThruster(ItemRenderType type, RenderBlocks render, ItemStack item, float translateX, float translateY, float translateZ)
@@ -18,7 +16,7 @@ public class ItemRendererThruster implements IItemRenderer
 		GL11.glPushMatrix();
 
 		FMLClientHandler.instance().getClient().getTextureManager().bindTexture(TileEntityThrusterRenderer.thrusterTexture);
-		
+
 		switch (type)
 		{
 		case INVENTORY:
@@ -33,7 +31,7 @@ public class ItemRendererThruster implements IItemRenderer
 		default:
 			break;
 		}
-		
+
 		TileEntityThrusterRenderer.thrusterModel.renderAll();
 
 		GL11.glPopMatrix();

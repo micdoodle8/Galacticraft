@@ -31,75 +31,75 @@ public class GalaxyRegistry
 	static HashMap<String, Moon> moons = Maps.newHashMap();
 	static BiMap<String, Integer> moonIDs = HashBiMap.create();
 	static HashMap<Planet, List<Moon>> moonList = Maps.newHashMap();
-	
+
 	public static CelestialBody getCelestialBodyFromDimensionID(int dimensionID)
 	{
-		for (Planet planet : planets.values())
+		for (Planet planet : GalaxyRegistry.planets.values())
 		{
 			if (planet.getDimensionID() == dimensionID)
 			{
 				return planet;
 			}
 		}
-		
-		for (Moon moon : moons.values())
+
+		for (Moon moon : GalaxyRegistry.moons.values())
 		{
 			if (moon.getDimensionID() == dimensionID)
 			{
 				return moon;
 			}
 		}
-		
+
 		return null;
 	}
-	
+
 	public static void refreshGalaxies()
 	{
-		moonList.clear();
-		
-		for (Moon moon : getRegisteredMoons().values())
+		GalaxyRegistry.moonList.clear();
+
+		for (Moon moon : GalaxyRegistry.getRegisteredMoons().values())
 		{
 			Planet planet = moon.getParentPlanet();
-			List<Moon> listOfMoons = moonList.get(planet);
+			List<Moon> listOfMoons = GalaxyRegistry.moonList.get(planet);
 			if (listOfMoons == null)
 			{
 				listOfMoons = new ArrayList<Moon>();
 			}
 			listOfMoons.add(moon);
-			moonList.put(planet, listOfMoons);
+			GalaxyRegistry.moonList.put(planet, listOfMoons);
 		}
 	}
-	
+
 	public static List<Moon> getMoonsForPlanet(Planet planet)
 	{
-		List<Moon> moonListLocal = moonList.get(planet);
-		
+		List<Moon> moonListLocal = GalaxyRegistry.moonList.get(planet);
+
 		if (moonListLocal == null)
 		{
 			return new ArrayList();
 		}
-		
+
 		return ImmutableList.copyOf(moonListLocal);
 	}
-	
+
 	public static CelestialBody getCelestialBodyFromUnlocalizedName(String unlocalizedName)
 	{
-		for (Planet planet : planets.values())
+		for (Planet planet : GalaxyRegistry.planets.values())
 		{
 			if (planet.getUnlocalizedName().equals(unlocalizedName))
 			{
 				return planet;
 			}
 		}
-		
-		for (Moon moon : moons.values())
+
+		for (Moon moon : GalaxyRegistry.moons.values())
 		{
 			if (moon.getUnlocalizedName().equals(unlocalizedName))
 			{
 				return moon;
 			}
 		}
-		
+
 		return null;
 	}
 
@@ -146,8 +146,8 @@ public class GalaxyRegistry
 	}
 
 	/**
-	 * Returns a read-only map containing Solar System Names and their associated
-	 * Solar Systems.
+	 * Returns a read-only map containing Solar System Names and their
+	 * associated Solar Systems.
 	 */
 	public static Map<String, SolarSystem> getRegisteredSolarSystems()
 	{
@@ -155,7 +155,8 @@ public class GalaxyRegistry
 	}
 
 	/**
-	 * Returns a read-only map containing Solar System Names and their associated IDs.
+	 * Returns a read-only map containing Solar System Names and their
+	 * associated IDs.
 	 */
 	public static Map<String, Integer> getRegisteredSolarSystemIDs()
 	{

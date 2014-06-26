@@ -9,15 +9,13 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-
-
 public class ContainerCargoLoader extends Container
 {
 	private TileEntityElectricBlock tileEntity;
 
 	public ContainerCargoLoader(InventoryPlayer par1InventoryPlayer, IInventory cargoLoader)
 	{
-		tileEntity = (TileEntityElectricBlock) cargoLoader;
+		this.tileEntity = (TileEntityElectricBlock) cargoLoader;
 		this.addSlotToContainer(new SlotSpecific(cargoLoader, 0, 10, 27, IItemElectric.class));
 
 		int var6;
@@ -50,7 +48,7 @@ public class ContainerCargoLoader extends Container
 	@Override
 	public boolean canInteractWith(EntityPlayer var1)
 	{
-		return tileEntity.isUseableByPlayer(var1);
+		return this.tileEntity.isUseableByPlayer(var1);
 	}
 
 	@Override

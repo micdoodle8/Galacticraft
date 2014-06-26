@@ -23,8 +23,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class BlockSolar extends BlockTileGC
 {
 	public static final int BASIC_METADATA = 0;

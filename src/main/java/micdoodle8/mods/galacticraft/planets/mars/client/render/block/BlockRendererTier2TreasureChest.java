@@ -12,8 +12,6 @@ import org.lwjgl.opengl.GL12;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
-
-
 public class BlockRendererTier2TreasureChest implements ISimpleBlockRenderingHandler
 {
 	final int renderID;

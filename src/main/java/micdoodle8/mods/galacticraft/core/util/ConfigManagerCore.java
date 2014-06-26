@@ -12,8 +12,6 @@ import net.minecraftforge.common.config.Configuration;
 
 import com.google.common.primitives.Ints;
 
-
-
 public class ConfigManagerCore
 {
 	public static boolean loaded;
@@ -101,7 +99,7 @@ public class ConfigManagerCore
 			ConfigManagerCore.idDimensionOverworldOrbit = ConfigManagerCore.configuration.get("DIMENSIONS", "idDimensionOverworldOrbit", -27).getInt(-27);
 			ConfigManagerCore.idDimensionOverworldOrbitStatic = ConfigManagerCore.configuration.get("DIMENSIONS", "idDimensionOverworldOrbitStatic", -26, "Static Space Station ID").getInt(-26);
 			ConfigManagerCore.staticLoadDimensions = ConfigManagerCore.configuration.get("DIMENSIONS", "Static Loaded Dimensions", ConfigManagerCore.staticLoadDimensions, "IDs to load at startup, and keep loaded until server stops. Can be added via /gckeeploaded").getIntList();
-			
+
 			ConfigManagerCore.idSchematicRocketT1 = ConfigManagerCore.configuration.get("Schematic", "idSchematicRocketT1", 0).getInt(0);
 			ConfigManagerCore.idSchematicMoonBuggy = ConfigManagerCore.configuration.get("Schematic", "idSchematicMoonBuggy", 1).getInt(1);
 			ConfigManagerCore.idSchematicAddSchematic = ConfigManagerCore.configuration.get("Schematic", "idSchematicAddSchematic", Integer.MAX_VALUE).getInt(Integer.MAX_VALUE);
@@ -212,7 +210,7 @@ public class ConfigManagerCore
 
 		return !found;
 	}
-	
+
 	public static boolean setUnloaded(int idToRemove)
 	{
 		int foundCount = 0;
@@ -228,7 +226,7 @@ public class ConfigManagerCore
 		if (foundCount > 0)
 		{
 			List<Integer> idArray = new ArrayList<Integer>(Ints.asList(ConfigManagerCore.staticLoadDimensions));
-			idArray.removeAll(Collections.singleton((Integer)idToRemove));
+			idArray.removeAll(Collections.singleton(idToRemove));
 
 			ConfigManagerCore.staticLoadDimensions = new int[idArray.size()];
 

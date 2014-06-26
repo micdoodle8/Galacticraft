@@ -15,8 +15,6 @@ import net.minecraft.util.IIcon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class BlockMachineFrame extends Block
 {
 	@SideOnly(Side.CLIENT)
@@ -53,7 +51,7 @@ public class BlockMachineFrame extends Block
 		{
 			return this.blockIcon;
 		}
-		
+
 		return this.blockIcons[meta];
 	}
 
@@ -84,10 +82,10 @@ public class BlockMachineFrame extends Block
 	}
 
 	@Override
-    public boolean isOpaqueCube()
-    {
-        return false;
-    }
+	public boolean isOpaqueCube()
+	{
+		return false;
+	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@SideOnly(Side.CLIENT)

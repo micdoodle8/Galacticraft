@@ -4,8 +4,6 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 
-
-
 public interface IChunkLoader
 {
 	public void onTicketLoaded(Ticket ticket, boolean placed);

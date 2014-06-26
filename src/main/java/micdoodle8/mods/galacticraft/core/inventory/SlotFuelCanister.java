@@ -5,8 +5,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-
-
 public class SlotFuelCanister extends Slot
 {
 	public SlotFuelCanister(IInventory par1iInventory, int par2, int par3, int par4)

@@ -16,8 +16,6 @@ import net.minecraft.util.IIcon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class ItemBasicMars extends Item
 {
 	public static String[] names = { "rawDesh", "deshStick", "ingotDesh", "reinforcedPlateT2", "slimelingCargo", "compressedDesh" };
@@ -30,7 +28,7 @@ public class ItemBasicMars extends Item
 		this.setHasSubtypes(true);
 	}
 
-    @SideOnly(Side.CLIENT)
+	@SideOnly(Side.CLIENT)
 	@Override
 	public CreativeTabs getCreativeTab()
 	{

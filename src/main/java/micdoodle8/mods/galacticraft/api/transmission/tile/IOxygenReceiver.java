@@ -10,10 +10,11 @@ import net.minecraftforge.common.util.ForgeDirection;
 public interface IOxygenReceiver extends IConnector
 {
 	public abstract boolean shouldPullOxygen();
-	
+
 	/**
-	 * Adds oxygen reception to a tile entity. Returns the quantity of oxygen that
-	 * was accepted. This should always return 0 if the block cannot receive oxygen.
+	 * Adds oxygen reception to a tile entity. Returns the quantity of oxygen
+	 * that was accepted. This should always return 0 if the block cannot
+	 * receive oxygen.
 	 * 
 	 * @param from
 	 *            Orientation the oxygen is sent in from.
@@ -26,8 +27,9 @@ public interface IOxygenReceiver extends IConnector
 	public float receiveOxygen(ForgeDirection from, float receive, boolean doReceive);
 
 	/**
-	 * Adds oxygen provision to a block. Returns the quantity of oxygen provided.
-	 * This should always return 0 if the tile entity cannot provide oxygen.
+	 * Adds oxygen provision to a block. Returns the quantity of oxygen
+	 * provided. This should always return 0 if the tile entity cannot provide
+	 * oxygen.
 	 * 
 	 * @param from
 	 *            Orientation the oxygen is requested from.

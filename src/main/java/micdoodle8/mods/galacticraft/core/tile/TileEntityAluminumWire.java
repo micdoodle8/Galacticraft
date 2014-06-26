@@ -2,8 +2,6 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import net.minecraft.nbt.NBTTagCompound;
 
-
-
 public class TileEntityAluminumWire extends TileEntityUniversalConductor
 {
 	public float resistance;

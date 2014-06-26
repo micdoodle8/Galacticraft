@@ -22,8 +22,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class BlockOxygenCompressor extends BlockAdvancedTile
 {
 	public static final int OXYGEN_COMPRESSOR_METADATA = 0;

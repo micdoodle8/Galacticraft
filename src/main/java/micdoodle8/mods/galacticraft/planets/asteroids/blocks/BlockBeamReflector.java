@@ -4,7 +4,6 @@ import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
-import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReflector;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -16,7 +15,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -92,12 +90,12 @@ public class BlockBeamReflector extends BlockTileGC
 	public boolean onMachineActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ)
 	{
 		TileEntity tile = world.getTileEntity(x, y, z);
-		
+
 		if (tile instanceof TileEntityBeamReflector)
 		{
 			return ((TileEntityBeamReflector) tile).onMachineActivated(world, x, y, z, entityPlayer, side, hitX, hitY, hitZ);
 		}
-		
+
 		return false;
 	}
 }

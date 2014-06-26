@@ -9,8 +9,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.common.MinecraftForge;
 
-
-
 public class BiomeDecoratorMars
 {
 	protected World currentWorld;

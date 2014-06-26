@@ -14,8 +14,6 @@ import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
 
-
-
 public class WorldChunkManagerAsteroids extends WorldChunkManager
 {
 	private GenLayer genBiomes;

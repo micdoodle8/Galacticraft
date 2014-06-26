@@ -20,8 +20,6 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
 
-
-
 public class SkyProviderAsteroids extends IRenderHandler
 {
 	private static final ResourceLocation overworldTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/planets/overworld.png");
@@ -109,7 +107,7 @@ public class SkyProviderAsteroids extends IRenderHandler
 		RenderHelper.disableStandardItemLighting();
 
 		float var20 = 0.55F;
-		
+
 		if (var20 > 0.0F)
 		{
 			GL11.glDisable(GL11.GL_TEXTURE_2D);
@@ -141,7 +139,7 @@ public class SkyProviderAsteroids extends IRenderHandler
 		GL11.glRotatef(world.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
 		var12 = 5.0F;
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(SkyProviderAsteroids.sunTexture);
-		
+
 		// Draw it a few times...
 		for (int i = 0; i < 4; i++)
 		{
@@ -183,46 +181,46 @@ public class SkyProviderAsteroids extends IRenderHandler
 		GL11.glColor3f(0.0F, 0.0F, 0.0F);
 		final double var25 = mc.thePlayer.getPosition(partialTicks).yCoord - world.getHorizon();
 
-//		if (var25 < 0.0D)
-//		{
-//			GL11.glPushMatrix();
-//			GL11.glTranslatef(0.0F, 12.0F, 0.0F);
-//			GL11.glCallList(this.glSkyList2);
-//			GL11.glPopMatrix();
-//			var10 = 1.0F;
-//			var11 = -((float) (var25 + 65.0D));
-//			var12 = -var10;
-//			var23.startDrawingQuads();
-//			var23.setColorRGBA_I(0, 255);
-//			var23.addVertex(-var10, var11, var10);
-//			var23.addVertex(var10, var11, var10);
-//			var23.addVertex(var10, var12, var10);
-//			var23.addVertex(-var10, var12, var10);
-//			var23.addVertex(-var10, var12, -var10);
-//			var23.addVertex(var10, var12, -var10);
-//			var23.addVertex(var10, var11, -var10);
-//			var23.addVertex(-var10, var11, -var10);
-//			var23.addVertex(var10, var12, -var10);
-//			var23.addVertex(var10, var12, var10);
-//			var23.addVertex(var10, var11, var10);
-//			var23.addVertex(var10, var11, -var10);
-//			var23.addVertex(-var10, var11, -var10);
-//			var23.addVertex(-var10, var11, var10);
-//			var23.addVertex(-var10, var12, var10);
-//			var23.addVertex(-var10, var12, -var10);
-//			var23.addVertex(-var10, var12, -var10);
-//			var23.addVertex(-var10, var12, var10);
-//			var23.addVertex(var10, var12, var10);
-//			var23.addVertex(var10, var12, -var10);
-//			var23.draw();
-//		}
+		//		if (var25 < 0.0D)
+		//		{
+		//			GL11.glPushMatrix();
+		//			GL11.glTranslatef(0.0F, 12.0F, 0.0F);
+		//			GL11.glCallList(this.glSkyList2);
+		//			GL11.glPopMatrix();
+		//			var10 = 1.0F;
+		//			var11 = -((float) (var25 + 65.0D));
+		//			var12 = -var10;
+		//			var23.startDrawingQuads();
+		//			var23.setColorRGBA_I(0, 255);
+		//			var23.addVertex(-var10, var11, var10);
+		//			var23.addVertex(var10, var11, var10);
+		//			var23.addVertex(var10, var12, var10);
+		//			var23.addVertex(-var10, var12, var10);
+		//			var23.addVertex(-var10, var12, -var10);
+		//			var23.addVertex(var10, var12, -var10);
+		//			var23.addVertex(var10, var11, -var10);
+		//			var23.addVertex(-var10, var11, -var10);
+		//			var23.addVertex(var10, var12, -var10);
+		//			var23.addVertex(var10, var12, var10);
+		//			var23.addVertex(var10, var11, var10);
+		//			var23.addVertex(var10, var11, -var10);
+		//			var23.addVertex(-var10, var11, -var10);
+		//			var23.addVertex(-var10, var11, var10);
+		//			var23.addVertex(-var10, var12, var10);
+		//			var23.addVertex(-var10, var12, -var10);
+		//			var23.addVertex(-var10, var12, -var10);
+		//			var23.addVertex(-var10, var12, var10);
+		//			var23.addVertex(var10, var12, var10);
+		//			var23.addVertex(var10, var12, -var10);
+		//			var23.draw();
+		//		}
 
 		GL11.glColor3f(70F / 256F, 70F / 256F, 70F / 256F);
 
-//		GL11.glPushMatrix();
-//		GL11.glTranslatef(0.0F, -((float) (var25 - 16.0D)), 0.0F);
-//		GL11.glCallList(this.glSkyList2);
-//		GL11.glPopMatrix();
+		//		GL11.glPushMatrix();
+		//		GL11.glTranslatef(0.0F, -((float) (var25 - 16.0D)), 0.0F);
+		//		GL11.glCallList(this.glSkyList2);
+		//		GL11.glPopMatrix();
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL11.glDepthMask(true);
 	}

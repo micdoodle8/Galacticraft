@@ -9,8 +9,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 
-
-
 public class TileEntityMulti extends TileEntityAdvanced implements IPacketReceiver
 {
 	// The the position of the main block

@@ -152,7 +152,7 @@ public class GalacticraftCore
 	public static GalacticraftCore instance;
 
 	public static GalacticraftChannelHandler packetPipeline;
-	
+
 	private static ThreadRequirementMissing missingRequirementThread;
 
 	public static CreativeTabs galacticraftBlocksTab;
@@ -242,9 +242,9 @@ public class GalacticraftCore
 		GalacticraftCore.proxy.init(event);
 
 		GalacticraftCore.packetPipeline = GalacticraftChannelHandler.init();
-		
+
 		GalacticraftCore.solarSystemSol = new SolarSystem("sol").setMapPosition(new Vector3(0.0F, 0.0F));
-		Star starSol = (Star) new Star("sol").setParentSolarSystem(GalacticraftCore.solarSystemSol);
+		Star starSol = new Star("sol").setParentSolarSystem(GalacticraftCore.solarSystemSol);
 		starSol.setBodyIcon(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/planets/sun.png"));
 		GalacticraftCore.solarSystemSol.setMainStar(starSol);
 		GalacticraftCore.planetOverworld = (Planet) new Planet("overworld").setParentSolarSystem(GalacticraftCore.solarSystemSol).setRingColorRGB(0.1F, 0.9F, 0.6F).setPhaseShift(0.75F);
@@ -310,7 +310,7 @@ public class GalacticraftCore
 		{
 			GameRegistry.registerWorldGenerator(new OverworldGenerator(GCBlocks.basicBlock, 8, 3, 0, 25, 7), 4);
 		}
-		
+
 		FMLInterModComms.sendMessage("OpenBlocks", "donateUrl", "http://www.patreon.com/micdoodle8");
 	}
 
@@ -318,11 +318,11 @@ public class GalacticraftCore
 	public void postInit(FMLPostInitializationEvent event)
 	{
 		GalacticraftCore.proxy.postInit(event);
-		
+
 		ArrayList<CelestialBody> cBodyList = new ArrayList<CelestialBody>();
 		cBodyList.addAll(GalaxyRegistry.getRegisteredPlanets().values());
 		cBodyList.addAll(GalaxyRegistry.getRegisteredMoons().values());
-		
+
 		for (CelestialBody body : cBodyList)
 		{
 			if (body.shouldAutoRegister())
@@ -369,7 +369,7 @@ public class GalacticraftCore
 		ArrayList<CelestialBody> cBodyList = new ArrayList<CelestialBody>();
 		cBodyList.addAll(GalaxyRegistry.getRegisteredPlanets().values());
 		cBodyList.addAll(GalaxyRegistry.getRegisteredMoons().values());
-		
+
 		for (CelestialBody body : cBodyList)
 		{
 			if (body.shouldAutoRegister())

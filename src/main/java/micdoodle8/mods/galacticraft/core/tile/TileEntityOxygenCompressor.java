@@ -13,8 +13,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.ForgeDirection;
 
-
-
 public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInventory, ISidedInventory
 {
 	private ItemStack[] containingItems = new ItemStack[2];
@@ -65,7 +63,7 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
 
 		for (int var3 = 0; var3 < var2.tagCount(); ++var3)
 		{
-			final NBTTagCompound var4 = (NBTTagCompound) var2.getCompoundTagAt(var3);
+			final NBTTagCompound var4 = var2.getCompoundTagAt(var3);
 			final byte var5 = var4.getByte("Slot");
 
 			if (var5 >= 0 && var5 < this.containingItems.length)

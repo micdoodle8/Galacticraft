@@ -36,8 +36,6 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class EntityLander extends InventoryEntity implements IInventorySettable, IScaleableFuelLevel, IControllableEntity, IPacketReceiver, ICameraZoomEntity
 {
 	private final int tankCapacity = 5000;
@@ -654,13 +652,13 @@ public class EntityLander extends InventoryEntity implements IInventorySettable,
 	}
 
 	@Override
-	public float getCameraZoom() 
+	public float getCameraZoom()
 	{
 		return 15.0F;
 	}
 
 	@Override
-	public boolean defaultThirdPerson() 
+	public boolean defaultThirdPerson()
 	{
 		return true;
 	}

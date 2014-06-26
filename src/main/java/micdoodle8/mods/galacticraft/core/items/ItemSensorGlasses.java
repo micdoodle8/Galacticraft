@@ -13,8 +13,6 @@ import net.minecraft.item.ItemStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class ItemSensorGlasses extends ItemArmor
 {
 	public ItemSensorGlasses(String assetName)

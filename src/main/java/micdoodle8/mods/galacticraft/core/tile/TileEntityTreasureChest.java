@@ -23,8 +23,6 @@ import net.minecraft.util.AxisAlignedBB;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 
-
-
 public class TileEntityTreasureChest extends TileEntityAdvanced implements IInventory, IKeyable, IPacketReceiver
 {
 	private ItemStack[] chestContents = new ItemStack[36];
@@ -177,7 +175,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements IInve
 
 		for (int i = 0; i < nbttaglist.tagCount(); ++i)
 		{
-			final NBTTagCompound nbttagcompound1 = (NBTTagCompound) nbttaglist.getCompoundTagAt(i);
+			final NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
 			final int j = nbttagcompound1.getByte("Slot") & 255;
 
 			if (j >= 0 && j < this.chestContents.length)

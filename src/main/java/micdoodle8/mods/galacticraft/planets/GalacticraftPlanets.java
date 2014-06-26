@@ -30,62 +30,62 @@ public class GalacticraftPlanets
 
 	public static Map<String, IPlanetsModule> commonModules = new HashMap<String, IPlanetsModule>();
 	public static Map<String, IPlanetsModuleClient> clientModules = new HashMap<String, IPlanetsModuleClient>();
-	
+
 	public static final String MODULE_KEY_MARS = "MarsModule";
 	public static final String MODULE_KEY_ASTEROIDS = "AsteroidsModule";
 
 	@SidedProxy(clientSide = "micdoodle8.mods.galacticraft.planets.PlanetsProxyClient", serverSide = "micdoodle8.mods.galacticraft.planets.PlanetsProxy")
 	public static PlanetsProxy proxy;
-	
+
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		commonModules.put(MODULE_KEY_MARS, new MarsModule());
-		commonModules.put(MODULE_KEY_ASTEROIDS, new AsteroidsModule());
-		proxy.preInit(event);
+		GalacticraftPlanets.commonModules.put(GalacticraftPlanets.MODULE_KEY_MARS, new MarsModule());
+		GalacticraftPlanets.commonModules.put(GalacticraftPlanets.MODULE_KEY_ASTEROIDS, new AsteroidsModule());
+		GalacticraftPlanets.proxy.preInit(event);
 	}
 
 	@EventHandler
 	public void init(FMLInitializationEvent event)
 	{
-		proxy.init(event);
+		GalacticraftPlanets.proxy.init(event);
 		NetworkRegistry.INSTANCE.registerGuiHandler(GalacticraftPlanets.instance, GalacticraftPlanets.proxy);
 	}
 
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event)
 	{
-		proxy.postInit(event);
+		GalacticraftPlanets.proxy.postInit(event);
 	}
 
 	@EventHandler
 	public void serverStarting(FMLServerStartingEvent event)
 	{
-		proxy.serverStarting(event);
+		GalacticraftPlanets.proxy.serverStarting(event);
 	}
-	
+
 	public static int getBlockRenderID(Block block)
 	{
 		for (IPlanetsModuleClient module : GalacticraftPlanets.clientModules.values())
 		{
 			int id = module.getBlockRenderID(block);
-			
+
 			if (id > 1)
 			{
 				return id;
 			}
 		}
-		
+
 		return 1;
 	}
-	
+
 	public static int spawnParticle(String particleID, Vector3 position, Vector3 color)
 	{
 		for (IPlanetsModuleClient module : GalacticraftPlanets.clientModules.values())
 		{
 			module.spawnParticle(particleID, position, color);
 		}
-		
+
 		return 1;
 	}
 }

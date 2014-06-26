@@ -528,7 +528,7 @@ public class Vector3 implements Cloneable
 	 */
 	public boolean isZero()
 	{
-		return (this.x == 0) && (this.y == 0) && (this.z == 0);
+		return this.x == 0 && this.y == 0 && this.z == 0;
 	}
 
 	/**
@@ -552,15 +552,15 @@ public class Vector3 implements Cloneable
 		float cos = (float) Math.cos(angle);
 		float ocos = 1.0F - cos;
 		float sin = (float) Math.sin(angle);
-		matrix[0] = (x * x * ocos + cos);
-		matrix[1] = (y * x * ocos + z * sin);
-		matrix[2] = (x * z * ocos - y * sin);
-		matrix[4] = (x * y * ocos - z * sin);
-		matrix[5] = (y * y * ocos + cos);
-		matrix[6] = (y * z * ocos + x * sin);
-		matrix[8] = (x * z * ocos + y * sin);
-		matrix[9] = (y * z * ocos - x * sin);
-		matrix[10] = (z * z * ocos + cos);
+		matrix[0] = x * x * ocos + cos;
+		matrix[1] = y * x * ocos + z * sin;
+		matrix[2] = x * z * ocos - y * sin;
+		matrix[4] = x * y * ocos - z * sin;
+		matrix[5] = y * y * ocos + cos;
+		matrix[6] = y * z * ocos + x * sin;
+		matrix[8] = x * z * ocos + y * sin;
+		matrix[9] = y * z * ocos - x * sin;
+		matrix[10] = z * z * ocos + cos;
 		matrix[15] = 1.0F;
 		return matrix;
 	}

@@ -18,8 +18,6 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 
-
-
 public class GCCoreUtil
 {
 	public static int to32BitColor(int a, int r, int g, int b)
@@ -108,12 +106,12 @@ public class GCCoreUtil
 	{
 		GalacticraftCore.blocksList.put(key, stack);
 	}
-	
+
 	public static String translate(String key)
 	{
 		return StatCollector.translateToLocal(key);
 	}
-	
+
 	public static String translateWithFormat(String key, Object... values)
 	{
 		return StatCollector.translateToLocalFormatted(key, values);

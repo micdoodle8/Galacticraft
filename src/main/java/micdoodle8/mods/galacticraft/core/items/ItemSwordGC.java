@@ -9,8 +9,6 @@ import net.minecraft.item.ItemSword;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class ItemSwordGC extends ItemSword
 {
 	public ItemSwordGC(String assetName)

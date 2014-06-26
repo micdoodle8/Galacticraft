@@ -14,8 +14,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import cpw.mods.fml.relauncher.Side;
 
-
-
 public class TileEntityAirLockController extends TileEntityAirLock
 {
 	@NetworkedField(targetSide = Side.CLIENT)

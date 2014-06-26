@@ -20,8 +20,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-
-
 public class BlockFallenMeteor extends Block implements ITileEntityProvider
 {
 	public BlockFallenMeteor(String assetName)
@@ -199,7 +197,7 @@ public class BlockFallenMeteor extends Block implements ITileEntityProvider
 	{
 		return new TileEntityFallenMeteor();
 	}
-	
+
 	@Override
 	public boolean canSilkHarvest()
 	{

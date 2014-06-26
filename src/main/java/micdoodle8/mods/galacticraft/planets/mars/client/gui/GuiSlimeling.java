@@ -21,8 +21,6 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-
-
 public class GuiSlimeling extends GuiScreen
 {
 	private final int xSize;

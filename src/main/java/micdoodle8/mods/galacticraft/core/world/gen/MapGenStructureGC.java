@@ -10,8 +10,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureStart;
 
-
-
 public abstract class MapGenStructureGC extends MapGenBaseGC
 {
 	protected Map<Long, StructureStart> structureMap = new HashMap<Long, StructureStart>();

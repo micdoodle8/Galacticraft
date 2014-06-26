@@ -8,8 +8,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-
-
 public class SlotRefinery extends Slot
 {
 	public SlotRefinery(IInventory par1iInventory, int par2, int par3, int par4)

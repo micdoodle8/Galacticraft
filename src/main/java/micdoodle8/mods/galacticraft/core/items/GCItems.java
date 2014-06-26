@@ -13,8 +13,6 @@ import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-
-
 public class GCItems
 {
 	public static Item oxTankLight;
@@ -238,64 +236,64 @@ public class GCItems
 
 		OreDictionary.registerOre("plateMeteoricIron", new ItemStack(GCItems.meteoricIronIngot, 1, 1));
 		OreDictionary.registerOre("ingotMeteoricIron", new ItemStack(GCItems.meteoricIronIngot, 1, 0));
-		
-		registerItems();
+
+		GCItems.registerItems();
 	}
 
 	public static void registerHarvestLevels()
 	{
-//		MinecraftForge.setToolClass(GCCoreItems.steelPickaxe, "pickaxe", 4);
-//		MinecraftForge.setToolClass(GCCoreItems.steelAxe, "axe", 4);
-//		MinecraftForge.setToolClass(GCCoreItems.steelSpade, "shovel", 4); TODO Set harvest levels
+		//		MinecraftForge.setToolClass(GCCoreItems.steelPickaxe, "pickaxe", 4);
+		//		MinecraftForge.setToolClass(GCCoreItems.steelAxe, "axe", 4);
+		//		MinecraftForge.setToolClass(GCCoreItems.steelSpade, "shovel", 4); TODO Set harvest levels
 	}
 
 	public static void registerItems()
 	{
-		registerItem(GCItems.rocketTier1);
-		registerItem(GCItems.oxMask);
-		registerItem(GCItems.oxygenGear);
-		registerItem(GCItems.oxTankLight);
-		registerItem(GCItems.oxTankMedium);
-		registerItem(GCItems.oxTankHeavy);
-		registerItem(GCItems.sensorLens);
-		registerItem(GCItems.sensorGlasses);
-		registerItem(GCItems.steelPickaxe);
-		registerItem(GCItems.steelAxe);
-		registerItem(GCItems.steelHoe);
-		registerItem(GCItems.steelSpade);
-		registerItem(GCItems.steelSword);
-		registerItem(GCItems.steelHelmet);
-		registerItem(GCItems.steelChestplate);
-		registerItem(GCItems.steelLeggings);
-		registerItem(GCItems.steelBoots);
-		registerItem(GCItems.canister);
-		registerItem(GCItems.oxygenVent);
-		registerItem(GCItems.oxygenFan);
-		registerItem(GCItems.oxygenConcentrator);
-		registerItem(GCItems.rocketEngine);
-		registerItem(GCItems.heavyPlatingTier1);
-		registerItem(GCItems.partNoseCone);
-		registerItem(GCItems.partFins);
-		registerItem(GCItems.flagPole);
-		registerItem(GCItems.canvas);
-		registerItem(GCItems.oilCanister);
-		registerItem(GCItems.fuelCanister);
-		registerItem(GCItems.oilExtractor);
-		registerItem(GCItems.schematic);
-		registerItem(GCItems.key);
-		registerItem(GCItems.partBuggy);
-		registerItem(GCItems.buggy);
-		registerItem(GCItems.basicItem);
-		registerItem(GCItems.battery);
-		registerItem(GCItems.infiniteBatery);
-		registerItem(GCItems.meteorChunk);
-		registerItem(GCItems.wrench);
-		registerItem(GCItems.cheeseCurd);
-		registerItem(GCItems.meteoricIronRaw);
-		registerItem(GCItems.meteoricIronIngot);
-		registerItem(GCItems.cheeseBlock);
-		registerItem(GCItems.flag);
-		registerItem(GCItems.parachute);
+		GCItems.registerItem(GCItems.rocketTier1);
+		GCItems.registerItem(GCItems.oxMask);
+		GCItems.registerItem(GCItems.oxygenGear);
+		GCItems.registerItem(GCItems.oxTankLight);
+		GCItems.registerItem(GCItems.oxTankMedium);
+		GCItems.registerItem(GCItems.oxTankHeavy);
+		GCItems.registerItem(GCItems.sensorLens);
+		GCItems.registerItem(GCItems.sensorGlasses);
+		GCItems.registerItem(GCItems.steelPickaxe);
+		GCItems.registerItem(GCItems.steelAxe);
+		GCItems.registerItem(GCItems.steelHoe);
+		GCItems.registerItem(GCItems.steelSpade);
+		GCItems.registerItem(GCItems.steelSword);
+		GCItems.registerItem(GCItems.steelHelmet);
+		GCItems.registerItem(GCItems.steelChestplate);
+		GCItems.registerItem(GCItems.steelLeggings);
+		GCItems.registerItem(GCItems.steelBoots);
+		GCItems.registerItem(GCItems.canister);
+		GCItems.registerItem(GCItems.oxygenVent);
+		GCItems.registerItem(GCItems.oxygenFan);
+		GCItems.registerItem(GCItems.oxygenConcentrator);
+		GCItems.registerItem(GCItems.rocketEngine);
+		GCItems.registerItem(GCItems.heavyPlatingTier1);
+		GCItems.registerItem(GCItems.partNoseCone);
+		GCItems.registerItem(GCItems.partFins);
+		GCItems.registerItem(GCItems.flagPole);
+		GCItems.registerItem(GCItems.canvas);
+		GCItems.registerItem(GCItems.oilCanister);
+		GCItems.registerItem(GCItems.fuelCanister);
+		GCItems.registerItem(GCItems.oilExtractor);
+		GCItems.registerItem(GCItems.schematic);
+		GCItems.registerItem(GCItems.key);
+		GCItems.registerItem(GCItems.partBuggy);
+		GCItems.registerItem(GCItems.buggy);
+		GCItems.registerItem(GCItems.basicItem);
+		GCItems.registerItem(GCItems.battery);
+		GCItems.registerItem(GCItems.infiniteBatery);
+		GCItems.registerItem(GCItems.meteorChunk);
+		GCItems.registerItem(GCItems.wrench);
+		GCItems.registerItem(GCItems.cheeseCurd);
+		GCItems.registerItem(GCItems.meteoricIronRaw);
+		GCItems.registerItem(GCItems.meteoricIronIngot);
+		GCItems.registerItem(GCItems.cheeseBlock);
+		GCItems.registerItem(GCItems.flag);
+		GCItems.registerItem(GCItems.parachute);
 	}
 
 	private static void registerItem(Item item)

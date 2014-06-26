@@ -9,8 +9,6 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
 
-
-
 public class ItemRendererArclamp implements IItemRenderer
 {
 	private void renderArclamp(ItemRenderType type, RenderBlocks render, ItemStack item, float translateX, float translateY, float translateZ)
@@ -30,7 +28,7 @@ public class ItemRendererArclamp implements IItemRenderer
 		default:
 			break;
 		}
-		
+
 		GL11.glScalef(0.07F, 0.07F, 0.07F);
 		GL11.glRotatef(90, 0, 0, -1);
 		FMLClientHandler.instance().getClient().getTextureManager().bindTexture(TileEntityArclampRenderer.lampTexture);

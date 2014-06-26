@@ -16,8 +16,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class TileEntityOxygenPipe extends TileEntityOxygenTransmitter implements IColorable, IPacketReceiver
 {
 	@NetworkedField(targetSide = Side.CLIENT)
@@ -63,7 +61,7 @@ public class TileEntityOxygenPipe extends TileEntityOxygenTransmitter implements
 		{
 			return true;
 		}
-		
+
 		return false;
 	}
 
@@ -71,11 +69,11 @@ public class TileEntityOxygenPipe extends TileEntityOxygenTransmitter implements
 	public void updateEntity()
 	{
 		super.updateEntity();
-		
+
 		if (!this.worldObj.isRemote && this.ticks % 60 == 0 && this.lastPipeColor != this.getColor())
 		{
 			GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), this.worldObj.provider.dimensionId);
-			lastPipeColor = this.getColor();
+			this.lastPipeColor = this.getColor();
 		}
 	}
 
@@ -164,12 +162,13 @@ public class TileEntityOxygenPipe extends TileEntityOxygenTransmitter implements
 
 		par1NBTTagCompound.setByte("pipeColor", this.getColor());
 	}
-	
+
+	@Override
 	public void decodePacketdata(ByteBuf buffer)
 	{
 		byte colorBefore = this.pipeColor;
 		super.decodePacketdata(buffer);
-		
+
 		if (this.pipeColor != colorBefore && this.worldObj instanceof WorldClient)
 		{
 			this.worldObj.func_147479_m(this.xCoord, this.yCoord, this.zCoord);

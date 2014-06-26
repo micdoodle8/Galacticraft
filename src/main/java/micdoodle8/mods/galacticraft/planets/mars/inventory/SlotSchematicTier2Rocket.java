@@ -11,8 +11,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-
-
 public class SlotSchematicTier2Rocket extends Slot
 {
 	private final int index;

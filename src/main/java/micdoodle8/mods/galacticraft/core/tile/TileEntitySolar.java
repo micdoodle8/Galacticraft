@@ -31,8 +31,6 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class TileEntitySolar extends TileEntityUniversalElectrical implements IMultiBlock, IPacketReceiver, IDisableableMachine, IInventory, ISidedInventory, IConnector
 {
 	public HashSet<TileEntity> connectedTiles = new HashSet<TileEntity>();
@@ -59,7 +57,7 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 	{
 		this.capacityDynamic = maxEnergy;
 		this.storage.setMaxExtract(1300);
-		this.storage.setMaxReceive(MAX_GENERATE_WATTS);
+		this.storage.setMaxReceive(TileEntitySolar.MAX_GENERATE_WATTS);
 	}
 
 	@Override
@@ -67,9 +65,9 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 	{
 		if (this.storage.getCapacityGC() == 0)
 		{
-			this.storage.setCapacity(capacityDynamic);
+			this.storage.setCapacity(this.capacityDynamic);
 		}
-		
+
 		this.receiveEnergyGC(null, this.generateWatts, false);
 
 		super.updateEntity();
@@ -152,7 +150,7 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 		float celestialAngle = (this.worldObj.getCelestialAngle(1.0F) + angle) * 360.0F;
 
 		celestialAngle %= 360;
-		
+
 		if (this.isAdvancedSolar())
 		{
 			if (!this.worldObj.isDaytime() || this.worldObj.isRaining() || this.worldObj.isThundering())
@@ -194,7 +192,7 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 		{
 			if (this.getGenerate() > 0.0F)
 			{
-				this.generateWatts = (int) (Math.min(Math.max(this.getGenerate(), 0), TileEntitySolar.MAX_GENERATE_WATTS));
+				this.generateWatts = Math.min(Math.max(this.getGenerate(), 0), TileEntitySolar.MAX_GENERATE_WATTS);
 			}
 			else
 			{
@@ -298,7 +296,7 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 
 		for (int var3 = 0; var3 < var2.tagCount(); ++var3)
 		{
-			final NBTTagCompound var4 = (NBTTagCompound) var2.getCompoundTagAt(var3);
+			final NBTTagCompound var4 = var2.getCompoundTagAt(var3);
 			final byte var5 = var4.getByte("Slot");
 
 			if (var5 >= 0 && var5 < this.containingItems.length)
@@ -312,7 +310,7 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 	public void writeToNBT(NBTTagCompound nbt)
 	{
 		super.writeToNBT(nbt);
-		nbt.setInteger("capacityDynamic", capacityDynamic);
+		nbt.setInteger("capacityDynamic", this.capacityDynamic);
 		nbt.setFloat("maxEnergy", this.getMaxEnergyStoredGC());
 		nbt.setFloat("currentAngle", this.currentAngle);
 		nbt.setFloat("targetAngle", this.targetAngle);
@@ -531,12 +529,13 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 	{
 		return slotID == 0 ? itemstack.getItem() instanceof IItemElectric : false;
 	}
-	
+
 	public boolean isAdvancedSolar()
 	{
 		return this.getBlockMetadata() < BlockSolar.ADVANCED_METADATA;
 	}
-	
+
+	@Override
 	public boolean canConnect(ForgeDirection direction, NetworkType type)
 	{
 		if (direction == null || direction.equals(ForgeDirection.UNKNOWN) || type != NetworkType.POWER)

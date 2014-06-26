@@ -7,8 +7,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 
-
-
 public class WorldGenMinableMeta extends WorldGenMinable
 {
 	private final Block minableBlockId;

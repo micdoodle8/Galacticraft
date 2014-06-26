@@ -4,8 +4,6 @@ import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
 import net.minecraft.world.biome.BiomeGenBase;
 
-
-
 public class BiomeGenBaseMars extends BiomeGenBase
 {
 	public static final BiomeGenBase marsFlat = new BiomeGenBaseMars(103).setBiomeName("marsFlat").setColor(16711680).setHeight(new Height(2.5F, 0.4F));

@@ -13,8 +13,6 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
 
-
-
 public class ItemRendererBuggy implements IItemRenderer
 {
 	private static final ResourceLocation buggyTextureBody = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/buggyMain.png");

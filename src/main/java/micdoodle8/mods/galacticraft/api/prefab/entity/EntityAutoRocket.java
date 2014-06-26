@@ -249,7 +249,8 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 						{
 							boolean targetSet = false;
 
-							blockLoop: for (int x = -2; x <= 2; x++)
+							blockLoop:
+							for (int x = -2; x <= 2; x++)
 							{
 								for (int z = -2; z <= 2; z++)
 								{
@@ -484,13 +485,13 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 						this.updateControllerSettings(dock);
 					}
 				}
-				
+
 				this.onRocketLand(x, y, z);
 				return;
 			}
 		}
 	}
-	
+
 	private void updateControllerSettings(IFuelDock dock)
 	{
 		HashSet<ILandingPadAttachable> connectedTiles = dock.getConnectedTiles();
@@ -519,9 +520,11 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 					if (autoLaunchEnabled)
 					{
 						this.autoLaunchSetting = EnumAutoLaunch.values()[controllerClass.getField("launchDropdownSelection").getInt(updatedTile)];
-					}	
+					}
 					else
+					{
 						this.autoLaunchSetting = null;
+					}
 
 					if (this.autoLaunchSetting != null)
 					{
@@ -718,8 +721,10 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
 			//Set the player's launchpad item for return on landing - or null if launchpads not removed
 			if (this.riddenByEntity != null && this.riddenByEntity instanceof GCEntityPlayerMP)
-				((GCEntityPlayerMP) this.riddenByEntity).getPlayerStats().launchpadStack = (amountRemoved == 9) ? new ItemStack(GCBlocks.landingPad, 9, 0) : null;
-			
+			{
+				((GCEntityPlayerMP) this.riddenByEntity).getPlayerStats().launchpadStack = amountRemoved == 9 ? new ItemStack(GCBlocks.landingPad, 9, 0) : null;
+			}
+
 			this.playSound("random.pop", 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
 		}
 	}
@@ -861,7 +866,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 					this.updateControllerSettings(dock);
 				}
 			}
-			
+
 			return true;
 		}
 		return false;
@@ -887,6 +892,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 			ItemStack stackAt = this.cargoItems[count];
 
 			if (stackAt != null && stackAt.getItem() == stack.getItem() && stackAt.getItemDamage() == stack.getItemDamage() && stackAt.stackSize < stackAt.getMaxStackSize())
+			{
 				if (stackAt.stackSize + stack.stackSize <= stackAt.getMaxStackSize())
 				{
 					if (doAdd)
@@ -894,9 +900,10 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 						this.cargoItems[count].stackSize += stack.stackSize;
 						this.markDirty();
 					}
-	
+
 					return EnumCargoLoadingState.SUCCESS;
-				} else
+				}
+				else
 				{
 					//Part of the stack can fill this slot but there will be some left over
 					int origSize = stackAt.stackSize;
@@ -907,18 +914,21 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 						this.cargoItems[count].stackSize = stackAt.getMaxStackSize();
 						this.markDirty();
 					}
-					
+
 					stack.stackSize = surplus;
 					if (this.addCargo(stack, doAdd) == EnumCargoLoadingState.SUCCESS)
+					{
 						return EnumCargoLoadingState.SUCCESS;
-					
+					}
+
 					this.cargoItems[count].stackSize = origSize;
 					if (this.autoLaunchSetting == EnumAutoLaunch.CARGO_IS_FULL)
 					{
 						this.autoLaunch();
 					}
-					return EnumCargoLoadingState.FULL;			
+					return EnumCargoLoadingState.FULL;
 				}
+			}
 		}
 
 		for (count = 0; count < this.cargoItems.length - 2; count++)
@@ -959,7 +969,10 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 					this.cargoItems[i] = null;
 				}
 
-				if (doRemove) this.markDirty();
+				if (doRemove)
+				{
+					this.markDirty();
+				}
 				return new RemovalResult(EnumCargoLoadingState.SUCCESS, new ItemStack(stackAt.getItem(), 1, stackAt.getItemDamage()));
 			}
 		}
@@ -1120,14 +1133,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
 	public static enum EnumAutoLaunch
 	{
-		CARGO_IS_UNLOADED(0, "Cargo is Unloaded"),
-		CARGO_IS_FULL(1, "Cargo is Full"),
-		ROCKET_IS_FUELED(2, "Fully Fueled"),
-		INSTANT(3, "Instantly"),
-		TIME_10_SECONDS(4, "10 Seconds"),
-		TIME_30_SECONDS(5, "30 Seconds"),
-		TIME_1_MINUTE(6, "1 Minute"),
-		REDSTONE_SIGNAL(7, "Redstone Signal");
+		CARGO_IS_UNLOADED(0, "Cargo is Unloaded"), CARGO_IS_FULL(1, "Cargo is Full"), ROCKET_IS_FUELED(2, "Fully Fueled"), INSTANT(3, "Instantly"), TIME_10_SECONDS(4, "10 Seconds"), TIME_30_SECONDS(5, "30 Seconds"), TIME_1_MINUTE(6, "1 Minute"), REDSTONE_SIGNAL(7, "Redstone Signal");
 
 		private final int index;
 		private String title;

@@ -19,8 +19,6 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 @SideOnly(Side.CLIENT)
 public class RenderEvolvedZombie extends RenderBiped
 {
@@ -35,11 +33,11 @@ public class RenderEvolvedZombie extends RenderBiped
 	}
 
 	@Override
-    protected void func_82421_b()
-    {
-        this.field_82423_g = new ModelZombie(1.0F, true);
-        this.field_82425_h = new ModelZombie(0.5F, true);
-    }
+	protected void func_82421_b()
+	{
+		this.field_82423_g = new ModelZombie(1.0F, true);
+		this.field_82425_h = new ModelZombie(0.5F, true);
+	}
 
 	@Override
 	protected ResourceLocation getEntityTexture(Entity par1Entity)

@@ -8,8 +8,6 @@ import net.minecraft.item.ItemStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class ItemBlockGC extends ItemBlock
 {
 	public ItemBlockGC(Block block)

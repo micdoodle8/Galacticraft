@@ -17,8 +17,6 @@ import net.minecraft.util.IIcon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class ItemSchematicTier2 extends ItemSchematic implements ISchematicItem
 {
 	protected IIcon[] icons = new IIcon[1];
@@ -30,7 +28,7 @@ public class ItemSchematicTier2 extends ItemSchematic implements ISchematicItem
 		super("schematic");
 	}
 
-    @SideOnly(Side.CLIENT)
+	@SideOnly(Side.CLIENT)
 	@Override
 	public CreativeTabs getCreativeTab()
 	{

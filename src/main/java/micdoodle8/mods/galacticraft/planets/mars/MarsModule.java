@@ -10,7 +10,6 @@ import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
-import micdoodle8.mods.galacticraft.core.util.CreativeTabGC;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
@@ -40,7 +39,6 @@ import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityLaunchController
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntitySlimelingEgg;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityTerraformer;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityTreasureChestMars;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
@@ -58,8 +56,6 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
-
-
 
 public class MarsModule implements IPlanetsModule
 {
@@ -87,7 +83,7 @@ public class MarsModule implements IPlanetsModule
 		MarsBlocks.initBlocks();
 		MarsBlocks.registerBlocks();
 		MarsBlocks.setHarvestLevels();
-		
+
 		MarsModule.SLUDGE.setBlock(MarsBlocks.blockSludge);
 
 		MarsItems.initItems();
@@ -100,7 +96,7 @@ public class MarsModule implements IPlanetsModule
 		SchematicRegistry.registerSchematicRecipe(new SchematicCargoRocket());
 
 		GalacticraftCore.packetPipeline.addDiscriminator(6, PacketSimpleMars.class);
-		
+
 		this.registerTileEntities();
 		this.registerCreatures();
 		this.registerOtherEntities();
@@ -169,13 +165,13 @@ public class MarsModule implements IPlanetsModule
 	}
 
 	@Override
-	public void getGuiIDs(List<Integer> idList) 
+	public void getGuiIDs(List<Integer> idList)
 	{
 		idList.add(GuiIdsPlanets.MACHINE_MARS);
 	}
 
 	@Override
-	public Object getGuiElement(Side side, int ID, EntityPlayer player, World world, int x, int y, int z) 
+	public Object getGuiElement(Side side, int ID, EntityPlayer player, World world, int x, int y, int z)
 	{
 		if (side == Side.SERVER)
 		{
@@ -193,7 +189,7 @@ public class MarsModule implements IPlanetsModule
 				}
 			}
 		}
-		
+
 		return null;
 	}
 }

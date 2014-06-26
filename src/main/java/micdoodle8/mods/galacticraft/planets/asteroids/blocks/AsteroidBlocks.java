@@ -16,17 +16,17 @@ public class AsteroidBlocks
 	public static Block beamReflector;
 	public static Block beamReceiver;
 	public static Block shortRangeTelepad;
-	
+
 	public static void initBlocks()
 	{
-		blockWalkway = new BlockWalkway("walkway");
-		blockWalkwayWire = new BlockWalkway("walkwayWire");
-		blockWalkwayOxygenPipe = new BlockWalkway("walkwayOxygenPipe");
-		blockBasic = new BlockBasicAsteroids("asteroidsBlock");
-		machineFrame = new BlockMachineFrame("machineFrameOld");
-		beamReflector = new BlockBeamReflector("beamReflector");
-		beamReceiver = new BlockBeamReceiver("beamReceiver");
-		shortRangeTelepad = new BlockShortRangeTelepad("telepadShort");
+		AsteroidBlocks.blockWalkway = new BlockWalkway("walkway");
+		AsteroidBlocks.blockWalkwayWire = new BlockWalkway("walkwayWire");
+		AsteroidBlocks.blockWalkwayOxygenPipe = new BlockWalkway("walkwayOxygenPipe");
+		AsteroidBlocks.blockBasic = new BlockBasicAsteroids("asteroidsBlock");
+		AsteroidBlocks.machineFrame = new BlockMachineFrame("machineFrameOld");
+		AsteroidBlocks.beamReflector = new BlockBeamReflector("beamReflector");
+		AsteroidBlocks.beamReceiver = new BlockBeamReceiver("beamReceiver");
+		AsteroidBlocks.shortRangeTelepad = new BlockShortRangeTelepad("telepadShort");
 	}
 
 	public static void registerBlocks()

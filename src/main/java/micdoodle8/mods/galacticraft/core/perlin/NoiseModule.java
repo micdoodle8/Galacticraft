@@ -12,8 +12,9 @@ public abstract class NoiseModule
 	public abstract double getNoise(double i, double j);
 
 	public abstract double getNoise(double i, double j, double k);
-	
-	public void setFrequency(double frequency) {
+
+	public void setFrequency(double frequency)
+	{
 		this.frequencyX = frequency;
 		this.frequencyY = frequency;
 		this.frequencyZ = frequency;

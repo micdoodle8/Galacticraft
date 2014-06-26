@@ -18,8 +18,6 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
 
-
-
 public class ItemRendererTier2Rocket extends ItemRendererTier1Rocket
 {
 	private static final ResourceLocation cargoRocketTexture = new ResourceLocation(MarsModule.TEXTURE_DOMAIN, "textures/model/cargoRocket.png");

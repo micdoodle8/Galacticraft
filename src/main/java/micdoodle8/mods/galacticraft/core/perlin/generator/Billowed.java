@@ -31,7 +31,8 @@ public class Billowed extends NoiseModule
 		i *= this.frequencyX;
 		double val = 0;
 		double curAmplitude = this.amplitude;
-		for(int n = 0; n < this.numOctaves; n++) {
+		for (int n = 0; n < this.numOctaves; n++)
+		{
 			val += Math.abs(this.noiseGen.noise2d(i + this.offsetX, this.offsetY) * curAmplitude);
 			i *= 2;
 			curAmplitude *= this.persistance;

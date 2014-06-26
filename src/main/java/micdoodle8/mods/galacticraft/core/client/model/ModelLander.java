@@ -3,8 +3,6 @@ package micdoodle8.mods.galacticraft.core.client.model;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.entity.Entity;
 
-
-
 public class ModelLander extends ModelBase
 {
 	ModelRendererGC BodyMain1;

@@ -8,8 +8,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-
-
 public class NasaWorkbenchRecipe implements INasaWorkbenchRecipe
 {
 	private ItemStack output;

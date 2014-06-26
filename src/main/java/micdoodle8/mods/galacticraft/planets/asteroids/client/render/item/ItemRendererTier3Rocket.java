@@ -17,8 +17,6 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
 
-
-
 public class ItemRendererTier3Rocket implements IItemRenderer
 {
 	protected static final ResourceLocation chestTexture = new ResourceLocation("textures/entity/chest/normal.png");
@@ -131,7 +129,7 @@ public class ItemRendererTier3Rocket implements IItemRenderer
 			GL11.glTranslatef(0, -0.6F, 0);
 			GL11.glRotatef(Sys.getTime() / 30F % 360F + 45, 0F, 1F, 0F);
 		}
-		
+
 		GL11.glRotatef(180, 0, 0, 1);
 	}
 

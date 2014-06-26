@@ -7,8 +7,6 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class ThreadRequirementMissing extends Thread
 {
 	private static Side threadSide;

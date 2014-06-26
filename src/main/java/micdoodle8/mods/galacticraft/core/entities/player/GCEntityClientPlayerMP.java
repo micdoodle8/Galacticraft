@@ -44,8 +44,6 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 {
 	private final Random rand = new Random();
@@ -70,18 +68,18 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 	public boolean lastRidingCameraZoomEntity;
 
 	public Gravity gdir = Gravity.down;
-    public float gravityTurnRate;
-    public float gravityTurnRatePrev;
-    public float gravityTurnVecX;
-    public float gravityTurnVecY;
-    public float gravityTurnVecZ;
-    public float gravityTurnYaw;
-    
-    public int spaceRaceInviteTeamID;
+	public float gravityTurnRate;
+	public float gravityTurnRatePrev;
+	public float gravityTurnVecX;
+	public float gravityTurnVecY;
+	public float gravityTurnVecZ;
+	public float gravityTurnYaw;
+
+	public int spaceRaceInviteTeamID;
 
 	public ArrayList<ISchematicPage> unlockedSchematics = new ArrayList<ISchematicPage>();
 
-    public GCEntityClientPlayerMP(Minecraft minecraft, World world, Session session, NetHandlerPlayClient netHandler, StatFileWriter statFileWriter)
+	public GCEntityClientPlayerMP(Minecraft minecraft, World world, Session session, NetHandlerPlayClient netHandler, StatFileWriter statFileWriter)
 	{
 		super(minecraft, world, session, netHandler, statFileWriter);
 	}
@@ -179,7 +177,7 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 		{
 			((WorldProviderOrbit) this.worldObj.provider).spinUpdate(this);
 		}
-		
+
 		if (this.boundingBox != null && this.boundingBoxBefore == null)
 		{
 			this.boundingBoxBefore = this.boundingBox;
@@ -192,17 +190,18 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 
 		super.onLivingUpdate();
 		if (this.inFreefall)
-		{	this.limbSwing -= this.limbSwingAmount;
+		{
+			this.limbSwing -= this.limbSwingAmount;
 			this.limbSwingAmount = this.prevLimbSwingAmount;
 		}
 
-		boolean ridingThirdPersonEntity = (this.ridingEntity instanceof ICameraZoomEntity && ((ICameraZoomEntity) this.ridingEntity).defaultThirdPerson());
-		
+		boolean ridingThirdPersonEntity = this.ridingEntity instanceof ICameraZoomEntity && ((ICameraZoomEntity) this.ridingEntity).defaultThirdPerson();
+
 		if (ridingThirdPersonEntity && !this.lastRidingCameraZoomEntity)
 		{
 			FMLClientHandler.instance().getClient().gameSettings.thirdPersonView = 1;
 		}
-		
+
 		if (this.ridingEntity != null && this.ridingEntity instanceof ICameraZoomEntity)
 		{
 			TickHandlerClient.zoom(((ICameraZoomEntity) this.ridingEntity).getCameraZoom());
@@ -211,9 +210,9 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 		{
 			TickHandlerClient.zoom(4.0F);
 		}
-		
+
 		this.lastRidingCameraZoomEntity = ridingThirdPersonEntity;
-		
+
 		if (!this.onGround && this.lastOnGround)
 		{
 			this.touchedGround = true;
@@ -250,28 +249,31 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 		ItemStack gs = this.inventory.getStackInSlot(0);
 		if (gs != null && gs.getItem() instanceof ItemBlockLandingPad && this.worldObj.provider instanceof WorldProviderOrbit)
 		{
-			if (gs.stackSize <=6) setGravity(Gravity.GDirections[gs.stackSize - 1]);
+			if (gs.stackSize <= 6)
+			{
+				this.setGravity(Gravity.GDirections[gs.stackSize - 1]);
+			}
 		}
-}
+	}
 
 	@Override
-    public void moveEntity(double par1, double par3, double par5)
-    {
-    	super.moveEntity(par1, par3, par5);
-    	this.updateFeet(par1, par5);
-    }
+	public void moveEntity(double par1, double par3, double par5)
+	{
+		super.moveEntity(par1, par3, par5);
+		this.updateFeet(par1, par5);
+	}
 
 	private void updateFeet(double motionX, double motionZ)
 	{
-		double motionSqrd = (motionX * motionX + motionZ * motionZ);
-		
+		double motionSqrd = motionX * motionX + motionZ * motionZ;
+
 		// If the player is on the moon, not airbourne and not riding anything
 		if (motionSqrd > 0.001 && this.worldObj != null && this.worldObj.provider instanceof WorldProviderMoon && this.ridingEntity == null)
 		{
-			int iPosX = (int)Math.floor(this.posX);
-			int iPosY = (int)Math.floor(this.posY - 2);
-			int iPosZ = (int)Math.floor(this.posZ);
-			
+			int iPosX = (int) Math.floor(this.posX);
+			int iPosY = (int) Math.floor(this.posY - 2);
+			int iPosZ = (int) Math.floor(this.posZ);
+
 			// If the block below is the moon block
 			if (this.worldObj.getBlock(iPosX, iPosY, iPosZ) == GCBlocks.blockMoon)
 			{
@@ -284,7 +286,7 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 						Vector3 pos = new Vector3(this);
 						// Set the footprint position to the block below and add random number to stop z-fighting
 						pos.y = MathHelper.floor_double(this.posY - 1) + this.rand.nextFloat() / 100.0F;
-						
+
 						// Adjust footprint to left or right depending on step count
 						switch (this.lastStep)
 						{
@@ -295,9 +297,9 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 							pos.translate(new Vector3(Math.sin(Math.toRadians(-this.rotationYaw - 90)) * 0.25, 0, Math.cos(Math.toRadians(-this.rotationYaw - 90)) * 0.25));
 							break;
 						}
-						
-						ClientProxyCore.footprintRenderer.addFootprint(pos, this.rotationYaw); 
-						
+
+						ClientProxyCore.footprintRenderer.addFootprint(pos, this.rotationYaw);
+
 						// Increment and cap step counter at 1
 						this.lastStep++;
 						this.lastStep %= 2;
@@ -328,39 +330,39 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 	}
 
 	@Override
-    @SideOnly(Side.CLIENT)
-    public float getBedOrientationInDegrees()
-    {
-        if (this.playerLocation != null)
-        {
-            int x = playerLocation.posX;
-            int y = playerLocation.posY;
-            int z = playerLocation.posZ;
-            
-            if (worldObj.getTileEntity(x, y, z) instanceof TileEntityAdvanced)
-            {
-                int j = worldObj.getBlock(x, y, z).getBedDirection(worldObj, x, y, z);
+	@SideOnly(Side.CLIENT)
+	public float getBedOrientationInDegrees()
+	{
+		if (this.playerLocation != null)
+		{
+			int x = this.playerLocation.posX;
+			int y = this.playerLocation.posY;
+			int z = this.playerLocation.posZ;
 
-                switch (worldObj.getBlockMetadata(x, y, z) - 4)
-                {
-                    case 0:
-                        return 90.0F;
-                    case 1:
-                        return 270.0F;
-                    case 2:
-                        return 180.0F;
-                    case 3:
-                        return 0.0F;
-                }
-            }
-            else
-            {
-            	return super.getBedOrientationInDegrees();
-            }
-        }
+			if (this.worldObj.getTileEntity(x, y, z) instanceof TileEntityAdvanced)
+			{
+				int j = this.worldObj.getBlock(x, y, z).getBedDirection(this.worldObj, x, y, z);
 
-        return super.getBedOrientationInDegrees();
-    }
+				switch (this.worldObj.getBlockMetadata(x, y, z) - 4)
+				{
+				case 0:
+					return 90.0F;
+				case 1:
+					return 270.0F;
+				case 2:
+					return 180.0F;
+				case 3:
+					return 0.0F;
+				}
+			}
+			else
+			{
+				return super.getBedOrientationInDegrees();
+			}
+		}
+
+		return super.getBedOrientationInDegrees();
+	}
 
 	public void setUsingGoggles(boolean b)
 	{
@@ -408,18 +410,22 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 	{
 		return this.thirdPersonView;
 	}
-	
+
 	public void setGravity(Gravity newGravity)
 	{
-		if (this.gdir == newGravity) return;
-		this.gravityTurnRatePrev = (this.gravityTurnRate = 0.0F);
+		if (this.gdir == newGravity)
+		{
+			return;
+		}
+		this.gravityTurnRatePrev = this.gravityTurnRate = 0.0F;
 		float turnSpeed = 0.05F;
 		this.gravityTurnVecX = 0.0F;
 		this.gravityTurnVecY = 0.0F;
 		this.gravityTurnVecZ = 0.0F;
 		this.gravityTurnYaw = 0.0F;
 
-		switch (this.gdir.intValue) {
+		switch (this.gdir.intValue)
+		{
 		case 1:
 			switch (newGravity.intValue)
 			{
@@ -445,7 +451,8 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 
 			break;
 		case 2:
-			switch (newGravity.intValue) {
+			switch (newGravity.intValue)
+			{
 			case 1:
 				this.gravityTurnVecX = -2.0F;
 				break;
@@ -468,7 +475,8 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 
 			break;
 		case 3:
-			switch (newGravity.intValue) {
+			switch (newGravity.intValue)
+			{
 			case 1:
 				this.gravityTurnVecY = 1.0F;
 				this.gravityTurnYaw = 90.0F;
@@ -492,7 +500,8 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 
 			break;
 		case 4:
-			switch (newGravity.intValue) {
+			switch (newGravity.intValue)
+			{
 			case 1:
 				this.gravityTurnVecY = -1.0F;
 				this.gravityTurnYaw = -90.0F;
@@ -516,7 +525,8 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 
 			break;
 		case 5:
-			switch (newGravity.intValue) {
+			switch (newGravity.intValue)
+			{
 			case 1:
 				this.gravityTurnVecX = -1.0F;
 				break;
@@ -539,7 +549,8 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 
 			break;
 		case 6:
-			switch (newGravity.intValue) {
+			switch (newGravity.intValue)
+			{
 			case 1:
 				this.gravityTurnVecX = 1.0F;
 				break;
@@ -554,7 +565,9 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 				break;
 			case 5:
 				this.gravityTurnVecX = -2.0F;
-			case 6: } break;
+			case 6:
+			}
+			break;
 		}
 
 		this.gdir = newGravity;
@@ -562,13 +575,8 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 
 	public static enum Gravity
 	{
-		down(0, 1.0F, 0.0F, 0.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F),
-		up(1, 1.0F, 0.0F, 0.0F, -1.0F, 0.0F, -1.0F, 0.0F, 0.0F, -1.0F, 0.0F, 0.0F, 1.0F, 0.0F), 
-		west(2, 0.0F, -1.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.5F, 1.0F, 0.0F, 0.0F, -1.0F, 1.0F, 0.0F),
-		east(3, 0.0F, 1.0F, -1.0F, 0.0F, 0.0F, 0.0F, -0.5F, -1.0F, 0.0F, 0.0F, 1.0F, 1.0F, 0.0F), 
-		south(4, 1.0F, 0.0F, 0.0F, 0.0F, -1.0F, 0.5F, 0.0F, 0.0F, 0.0F, -1.0F, 0.0F, 1.0F, 1.0F),
-		north(5, 1.0F, 0.0F, 0.0F, 0.0F, 1.0F, -0.5F, 0.0F, 0.0F, 0.0F, 1.0F, 0.0F, 1.0F, -1.0F); 
- 
+		down(0, 1.0F, 0.0F, 0.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F), up(1, 1.0F, 0.0F, 0.0F, -1.0F, 0.0F, -1.0F, 0.0F, 0.0F, -1.0F, 0.0F, 0.0F, 1.0F, 0.0F), west(2, 0.0F, -1.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.5F, 1.0F, 0.0F, 0.0F, -1.0F, 1.0F, 0.0F), east(3, 0.0F, 1.0F, -1.0F, 0.0F, 0.0F, 0.0F, -0.5F, -1.0F, 0.0F, 0.0F, 1.0F, 1.0F, 0.0F), south(4, 1.0F, 0.0F, 0.0F, 0.0F, -1.0F, 0.5F, 0.0F, 0.0F, 0.0F, -1.0F, 0.0F, 1.0F, 1.0F), north(5, 1.0F, 0.0F, 0.0F, 0.0F, 1.0F, -0.5F, 0.0F, 0.0F, 0.0F, 1.0F, 0.0F, 1.0F, -1.0F);
+
 		public int intValue;
 		public float pitchGravityX;
 		public float pitchGravityY;
@@ -611,32 +619,34 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 		float pitch = entityLivingBase.prevRotationPitch + (entityLivingBase.rotationPitch - entityLivingBase.prevRotationPitch) * par1;
 		float yaw = entityLivingBase.prevRotationYaw + (entityLivingBase.rotationYaw - entityLivingBase.prevRotationYaw) * par1 + 180.0F;
 		float eyeHeightChange = entityLivingBase.yOffset - entityLivingBase.width / 2.0F;
-		
-        GL11.glTranslatef(0.0F, -f1, 0.0F);
-        GL11.glRotatef(-yaw, 0.0F, 1.0F, 0.0F);
-        GL11.glRotatef(-pitch, 1.0F, 0.0F, 0.0F);
-        GL11.glTranslatef(0.0F, 0.0F, 0.1F);
-		        
-		GL11.glRotatef(180.0F * gdir.thetaX, 1.0F, 0.0F, 0.0F);
-		GL11.glRotatef(180.0F * gdir.thetaZ, 0.0F, 0.0F, 1.0F);
-		GL11.glRotatef(pitch * gdir.pitchGravityX, 1.0F, 0.0F, 0.0F);
-		GL11.glRotatef(pitch * gdir.pitchGravityY, 0.0F, 1.0F, 0.0F);
-		GL11.glRotatef(yaw * gdir.yawGravityX, 1.0F, 0.0F, 0.0F);
-		GL11.glRotatef(yaw * gdir.yawGravityY, 0.0F, 1.0F, 0.0F);
-		GL11.glRotatef(yaw * gdir.yawGravityZ, 0.0F, 0.0F, 1.0F);
 
-		GL11.glTranslatef(entityLivingBase.ySize * gdir.sneakVecX, entityLivingBase.ySize * gdir.sneakVecY, entityLivingBase.ySize * gdir.sneakVecZ);
+		GL11.glTranslatef(0.0F, -f1, 0.0F);
+		GL11.glRotatef(-yaw, 0.0F, 1.0F, 0.0F);
+		GL11.glRotatef(-pitch, 1.0F, 0.0F, 0.0F);
+		GL11.glTranslatef(0.0F, 0.0F, 0.1F);
 
-		GL11.glTranslatef(eyeHeightChange * gdir.eyeVecX, eyeHeightChange * gdir.eyeVecY, eyeHeightChange * gdir.eyeVecZ);
+		GL11.glRotatef(180.0F * this.gdir.thetaX, 1.0F, 0.0F, 0.0F);
+		GL11.glRotatef(180.0F * this.gdir.thetaZ, 0.0F, 0.0F, 1.0F);
+		GL11.glRotatef(pitch * this.gdir.pitchGravityX, 1.0F, 0.0F, 0.0F);
+		GL11.glRotatef(pitch * this.gdir.pitchGravityY, 0.0F, 1.0F, 0.0F);
+		GL11.glRotatef(yaw * this.gdir.yawGravityX, 1.0F, 0.0F, 0.0F);
+		GL11.glRotatef(yaw * this.gdir.yawGravityY, 0.0F, 1.0F, 0.0F);
+		GL11.glRotatef(yaw * this.gdir.yawGravityZ, 0.0F, 0.0F, 1.0F);
 
-		if (gravityTurnRate < 1.0F)
-			GL11.glRotatef(90.0F * (gravityTurnRatePrev + (gravityTurnRate - gravityTurnRatePrev) * par1), gravityTurnVecX, gravityTurnVecY, gravityTurnVecZ);
-		
+		GL11.glTranslatef(entityLivingBase.ySize * this.gdir.sneakVecX, entityLivingBase.ySize * this.gdir.sneakVecY, entityLivingBase.ySize * this.gdir.sneakVecZ);
+
+		GL11.glTranslatef(eyeHeightChange * this.gdir.eyeVecX, eyeHeightChange * this.gdir.eyeVecY, eyeHeightChange * this.gdir.eyeVecZ);
+
+		if (this.gravityTurnRate < 1.0F)
+		{
+			GL11.glRotatef(90.0F * (this.gravityTurnRatePrev + (this.gravityTurnRate - this.gravityTurnRatePrev) * par1), this.gravityTurnVecX, this.gravityTurnVecY, this.gravityTurnVecZ);
+		}
+
 		//omit this for interesting 3P views
-        //GL11.glTranslatef(0.0F, 0.0F, -0.1F);
-        //GL11.glRotatef(pitch, 1.0F, 0.0F, 0.0F);
-        //GL11.glRotatef(yaw, 0.0F, 1.0F, 0.0F);
-        //GL11.glTranslatef(0.0F, f1, 0.0F);
+		//GL11.glTranslatef(0.0F, 0.0F, -0.1F);
+		//GL11.glRotatef(pitch, 1.0F, 0.0F, 0.0F);
+		//GL11.glRotatef(yaw, 0.0F, 1.0F, 0.0F);
+		//GL11.glTranslatef(0.0F, f1, 0.0F);
 
 	}
 }

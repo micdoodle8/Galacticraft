@@ -4,8 +4,6 @@ import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.World;
 
-
-
 public class EntityFXSparks extends EntityFX
 {
 	float smokeParticleScale;

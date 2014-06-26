@@ -12,12 +12,12 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class ClientUtil 
+public class ClientUtil
 {
 	public static FlagData updateFlagData(String playerName, boolean sendPacket)
 	{
-		SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(playerName); 
-		
+		SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(playerName);
+
 		if (race != null)
 		{
 			return race.getFlagData();
@@ -27,14 +27,14 @@ public class ClientUtil
 			GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_FLAG_DATA, new Object[] { playerName }));
 			ClientProxyCore.flagRequestsSent.add(playerName);
 		}
-		
+
 		return null;
 	}
-	
+
 	public static Vector3 updateTeamColor(String playerName, boolean sendPacket)
 	{
-		SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(playerName); 
-		
+		SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(playerName);
+
 		if (race != null)
 		{
 			return race.getTeamColor();
@@ -44,7 +44,7 @@ public class ClientUtil
 			GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_FLAG_DATA, new Object[] { playerName }));
 			ClientProxyCore.flagRequestsSent.add(playerName);
 		}
-		
+
 		return null;
 	}
 }

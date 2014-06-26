@@ -18,8 +18,6 @@ import net.minecraftforge.fluids.BlockFluidClassic;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class BlockSludge extends BlockFluidClassic
 {
 	@SideOnly(Side.CLIENT)

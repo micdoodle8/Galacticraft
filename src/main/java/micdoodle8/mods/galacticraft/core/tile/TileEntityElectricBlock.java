@@ -15,12 +15,10 @@ import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 
-
-
 public abstract class TileEntityElectricBlock extends TileEntityUniversalElectrical implements IPacketReceiver, IDisableableMachine, IConnector
 {
-//	public int energyPerTick = 200;
-//	private final float ueMaxEnergy;
+	//	public int energyPerTick = 200;
+	//	private final float ueMaxEnergy;
 
 	@NetworkedField(targetSide = Side.CLIENT)
 	public boolean disabled = true;
@@ -39,51 +37,51 @@ public abstract class TileEntityElectricBlock extends TileEntityUniversalElectri
 
 	public abstract ItemStack getBatteryInSlot();
 
-//	public TileEntityElectricBlock()
-//	{
-//		this.storage.setMaxReceive(ueWattsPerTick);
-//		this.storage.setMaxExtract(0);
-//		this.storage.setCapacity(maxEnergy);
-////		this.ueMaxEnergy = maxEnergy;
-////		this.ueWattsPerTick = ueWattsPerTick;
-//
-//		/*
-//		 * if (PowerFramework.currentFramework != null) { this.bcPowerProvider =
-//		 * new GCCoreLinkedPowerProvider(this);
-//		 * this.bcPowerProvider.configure(20, 1, 10, 10, 1000); }
-//		 */
-//	}
+	//	public TileEntityElectricBlock()
+	//	{
+	//		this.storage.setMaxReceive(ueWattsPerTick);
+	//		this.storage.setMaxExtract(0);
+	//		this.storage.setCapacity(maxEnergy);
+	////		this.ueMaxEnergy = maxEnergy;
+	////		this.ueWattsPerTick = ueWattsPerTick;
+	//
+	//		/*
+	//		 * if (PowerFramework.currentFramework != null) { this.bcPowerProvider =
+	//		 * new GCCoreLinkedPowerProvider(this);
+	//		 * this.bcPowerProvider.configure(20, 1, 10, 10, 1000); }
+	//		 */
+	//	}
 
-//	@Override
-//	public float getMaxEnergyStored()
-//	{
-//		return this.ueMaxEnergy;
-//	}
+	//	@Override
+	//	public float getMaxEnergyStored()
+	//	{
+	//		return this.ueMaxEnergy;
+	//	}
 
 	public int getScaledElecticalLevel(int i)
 	{
 		return (int) Math.floor(this.getEnergyStoredGC(null) * i / this.getMaxEnergyStoredGC(null));
-			//- this.ueWattsPerTick;
+		//- this.ueWattsPerTick;
 	}
 
-//	@Override
-//	public float getRequest(ForgeDirection direction)
-//	{
-//		if (this.shouldPullEnergy())
-//		{
-//			return this.ueWattsPerTick * 2;
-//		}
-//		else
-//		{
-//			return 0;
-//		}
-//	}
-//
-//	@Override
-//	public float getProvide(ForgeDirection direction)
-//	{
-//		return 0;
-//	}
+	//	@Override
+	//	public float getRequest(ForgeDirection direction)
+	//	{
+	//		if (this.shouldPullEnergy())
+	//		{
+	//			return this.ueWattsPerTick * 2;
+	//		}
+	//		else
+	//		{
+	//			return 0;
+	//		}
+	//	}
+	//
+	//	@Override
+	//	public float getProvide(ForgeDirection direction)
+	//	{
+	//		return 0;
+	//	}
 
 	@Override
 	public void updateEntity()
@@ -98,12 +96,19 @@ public abstract class TileEntityElectricBlock extends TileEntityUniversalElectri
 				// this.getRequest(ForgeDirection.UNKNOWN)), this.getVoltage()),
 				// true);
 			}
-	
+
 			if (this.getEnergyStoredGC(null) > this.storage.getMaxExtract())
 			{
 				this.hasEnoughEnergyToRun = true;
-				if (this.shouldUseEnergy()) this.storage.extractEnergyGC(this.storage.getMaxExtract(), false);
-			} else this.hasEnoughEnergyToRun = false;
+				if (this.shouldUseEnergy())
+				{
+					this.storage.extractEnergyGC(this.storage.getMaxExtract(), false);
+				}
+			}
+			else
+			{
+				this.hasEnoughEnergyToRun = false;
+			}
 		}
 
 		super.updateEntity();
@@ -195,12 +200,13 @@ public abstract class TileEntityElectricBlock extends TileEntityUniversalElectri
 
 		return EnumSet.of(this.getElectricInputDirection());
 	}
-	
+
 	public boolean isUseableByPlayer(EntityPlayer entityplayer)
 	{
-		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && entityplayer.getDistanceSq(this.xCoord+0.5D, this.yCoord+0.5D, this.zCoord+0.5D) <= 64.0D;
+		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && entityplayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
 	}
-	
+
+	@Override
 	public boolean canConnect(ForgeDirection direction, NetworkType type)
 	{
 		if (direction == null || direction.equals(ForgeDirection.UNKNOWN) || type != NetworkType.POWER)
@@ -208,6 +214,6 @@ public abstract class TileEntityElectricBlock extends TileEntityUniversalElectri
 			return false;
 		}
 
-		return direction == getElectricInputDirection();
+		return direction == this.getElectricInputDirection();
 	}
 }

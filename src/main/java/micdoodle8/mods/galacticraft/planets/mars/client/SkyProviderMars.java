@@ -19,8 +19,6 @@ import net.minecraftforge.client.IRenderHandler;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * SkyProviderMars.java
@@ -47,14 +45,14 @@ public class SkyProviderMars extends IRenderHandler
 		this.starList = displayLists;
 		this.glSkyList = displayLists + 1;
 		this.glSkyList2 = displayLists + 2;
-		
+
 		// Bind stars to display list
 		GL11.glPushMatrix();
 		GL11.glNewList(this.starList, GL11.GL_COMPILE);
 		this.renderStars();
 		GL11.glEndList();
 		GL11.glPopMatrix();
-		
+
 		final Tessellator tessellator = Tessellator.instance;
 		GL11.glNewList(this.glSkyList, GL11.GL_COMPILE);
 		final byte byte2 = 64;
@@ -97,135 +95,135 @@ public class SkyProviderMars extends IRenderHandler
 	@Override
 	public void render(float partialTicks, WorldClient world, Minecraft mc)
 	{
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        Vec3 vec3 = world.getSkyColor(mc.renderViewEntity, partialTicks);
-        float f1 = (float)vec3.xCoord;
-        float f2 = (float)vec3.yCoord;
-        float f3 = (float)vec3.zCoord;
-        float f6;
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		Vec3 vec3 = world.getSkyColor(mc.renderViewEntity, partialTicks);
+		float f1 = (float) vec3.xCoord;
+		float f2 = (float) vec3.yCoord;
+		float f3 = (float) vec3.zCoord;
+		float f6;
 
-        if (mc.gameSettings.anaglyph)
-        {
-            float f4 = (f1 * 30.0F + f2 * 59.0F + f3 * 11.0F) / 100.0F;
-            float f5 = (f1 * 30.0F + f2 * 70.0F) / 100.0F;
-            f6 = (f1 * 30.0F + f3 * 70.0F) / 100.0F;
-            f1 = f4;
-            f2 = f5;
-            f3 = f6;
-        }
+		if (mc.gameSettings.anaglyph)
+		{
+			float f4 = (f1 * 30.0F + f2 * 59.0F + f3 * 11.0F) / 100.0F;
+			float f5 = (f1 * 30.0F + f2 * 70.0F) / 100.0F;
+			f6 = (f1 * 30.0F + f3 * 70.0F) / 100.0F;
+			f1 = f4;
+			f2 = f5;
+			f3 = f6;
+		}
 
-        GL11.glColor3f(f1, f2, f3);
-        Tessellator tessellator1 = Tessellator.instance;
-        GL11.glDepthMask(false);
-        GL11.glEnable(GL11.GL_FOG);
-        GL11.glColor3f(f1, f2, f3);
-        GL11.glCallList(this.glSkyList);
-        GL11.glDisable(GL11.GL_FOG);
-        GL11.glDisable(GL11.GL_ALPHA_TEST);
-        GL11.glEnable(GL11.GL_BLEND);
-        OpenGlHelper.glBlendFunc(770, 771, 1, 0);
-        RenderHelper.disableStandardItemLighting();
-        float[] afloat = world.provider.calcSunriseSunsetColors(world.getCelestialAngle(partialTicks), partialTicks);
-        float f7;
-        float f8;
-        float f9;
-        float f10;
+		GL11.glColor3f(f1, f2, f3);
+		Tessellator tessellator1 = Tessellator.instance;
+		GL11.glDepthMask(false);
+		GL11.glEnable(GL11.GL_FOG);
+		GL11.glColor3f(f1, f2, f3);
+		GL11.glCallList(this.glSkyList);
+		GL11.glDisable(GL11.GL_FOG);
+		GL11.glDisable(GL11.GL_ALPHA_TEST);
+		GL11.glEnable(GL11.GL_BLEND);
+		OpenGlHelper.glBlendFunc(770, 771, 1, 0);
+		RenderHelper.disableStandardItemLighting();
+		float[] afloat = world.provider.calcSunriseSunsetColors(world.getCelestialAngle(partialTicks), partialTicks);
+		float f7;
+		float f8;
+		float f9;
+		float f10;
 
-        float f18 = world.getStarBrightness(partialTicks);
+		float f18 = world.getStarBrightness(partialTicks);
 
-        if (f18 > 0.0F)
-        {
-            GL11.glColor4f(f18, f18, f18, f18);
-            GL11.glCallList(this.starList);
-        }
+		if (f18 > 0.0F)
+		{
+			GL11.glColor4f(f18, f18, f18, f18);
+			GL11.glCallList(this.starList);
+		}
 
-        afloat = new float[4];
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glShadeModel(GL11.GL_SMOOTH);
-        GL11.glPushMatrix();
-        GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
-        GL11.glRotatef(world.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
-        afloat[0] = 255 / 255.0F;
-        afloat[1] = 194 / 255.0F;
-        afloat[2] = 180 / 255.0F;
-        afloat[3] = 0.3F;
-        f6 = afloat[0];
-        f7 = afloat[1];
-        f8 = afloat[2];
-        float f11;
+		afloat = new float[4];
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		GL11.glShadeModel(GL11.GL_SMOOTH);
+		GL11.glPushMatrix();
+		GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
+		GL11.glRotatef(world.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
+		afloat[0] = 255 / 255.0F;
+		afloat[1] = 194 / 255.0F;
+		afloat[2] = 180 / 255.0F;
+		afloat[3] = 0.3F;
+		f6 = afloat[0];
+		f7 = afloat[1];
+		f8 = afloat[2];
+		float f11;
 
-        if (mc.gameSettings.anaglyph)
-        {
-            f9 = (f6 * 30.0F + f7 * 59.0F + f8 * 11.0F) / 100.0F;
-            f10 = (f6 * 30.0F + f7 * 70.0F) / 100.0F;
-            f11 = (f6 * 30.0F + f8 * 70.0F) / 100.0F;
-            f6 = f9;
-            f7 = f10;
-            f8 = f11;
-        }
+		if (mc.gameSettings.anaglyph)
+		{
+			f9 = (f6 * 30.0F + f7 * 59.0F + f8 * 11.0F) / 100.0F;
+			f10 = (f6 * 30.0F + f7 * 70.0F) / 100.0F;
+			f11 = (f6 * 30.0F + f8 * 70.0F) / 100.0F;
+			f6 = f9;
+			f7 = f10;
+			f8 = f11;
+		}
 
-        tessellator1.startDrawing(GL11.GL_TRIANGLE_FAN);
-        tessellator1.setColorRGBA_F(f6, f7, f8, afloat[3] * 2);
-        tessellator1.addVertex(0.0D, 100.0D, 0.0D);
-        byte b0 = 16;
-        tessellator1.setColorRGBA_F(afloat[0], afloat[1], afloat[2], 0.0F);
+		tessellator1.startDrawing(GL11.GL_TRIANGLE_FAN);
+		tessellator1.setColorRGBA_F(f6, f7, f8, afloat[3] * 2);
+		tessellator1.addVertex(0.0D, 100.0D, 0.0D);
+		byte b0 = 16;
+		tessellator1.setColorRGBA_F(afloat[0], afloat[1], afloat[2], 0.0F);
 
-        // Render sun aura
-        f10 = 20.0F;
-        tessellator1.addVertex((double)-f10, 100.0D, (double)-f10);
-        tessellator1.addVertex((double)0, 100.0D, (double)-f10 * 1.5F);
-        tessellator1.addVertex((double)f10, 100.0D, (double)-f10);
-        tessellator1.addVertex((double)f10 * 1.5F, 100.0D, (double)0);
-        tessellator1.addVertex((double)f10, 100.0D, (double)f10);
-        tessellator1.addVertex((double)0, 100.0D, (double)f10 * 1.5F);
-        tessellator1.addVertex((double)-f10, 100.0D, (double)f10);
-        tessellator1.addVertex((double)-f10 * 1.5F, 100.0D, (double)0);
-        tessellator1.addVertex((double)-f10, 100.0D, (double)-f10);
+		// Render sun aura
+		f10 = 20.0F;
+		tessellator1.addVertex(-f10, 100.0D, -f10);
+		tessellator1.addVertex(0, 100.0D, (double) -f10 * 1.5F);
+		tessellator1.addVertex(f10, 100.0D, -f10);
+		tessellator1.addVertex((double) f10 * 1.5F, 100.0D, 0);
+		tessellator1.addVertex(f10, 100.0D, f10);
+		tessellator1.addVertex(0, 100.0D, (double) f10 * 1.5F);
+		tessellator1.addVertex(-f10, 100.0D, f10);
+		tessellator1.addVertex((double) -f10 * 1.5F, 100.0D, 0);
+		tessellator1.addVertex(-f10, 100.0D, -f10);
 
-        tessellator1.draw();
-        tessellator1.startDrawing(GL11.GL_TRIANGLE_FAN);
-        tessellator1.setColorRGBA_F(f6, f7, f8, afloat[3]);
-        tessellator1.addVertex(0.0D, 100.0D, 0.0D);
-        tessellator1.setColorRGBA_F(afloat[0], afloat[1], afloat[2], 0.0F);
+		tessellator1.draw();
+		tessellator1.startDrawing(GL11.GL_TRIANGLE_FAN);
+		tessellator1.setColorRGBA_F(f6, f7, f8, afloat[3]);
+		tessellator1.addVertex(0.0D, 100.0D, 0.0D);
+		tessellator1.setColorRGBA_F(afloat[0], afloat[1], afloat[2], 0.0F);
 
-        // Render larger sun aura
-        f10 = 40.0F;
-        tessellator1.addVertex((double)-f10, 100.0D, (double)-f10);
-        tessellator1.addVertex((double)0, 100.0D, (double)-f10 * 1.5F);
-        tessellator1.addVertex((double)f10, 100.0D, (double)-f10);
-        tessellator1.addVertex((double)f10 * 1.5F, 100.0D, (double)0);
-        tessellator1.addVertex((double)f10, 100.0D, (double)f10);
-        tessellator1.addVertex((double)0, 100.0D, (double)f10 * 1.5F);
-        tessellator1.addVertex((double)-f10, 100.0D, (double)f10);
-        tessellator1.addVertex((double)-f10 * 1.5F, 100.0D, (double)0);
-        tessellator1.addVertex((double)-f10, 100.0D, (double)-f10);
+		// Render larger sun aura
+		f10 = 40.0F;
+		tessellator1.addVertex(-f10, 100.0D, -f10);
+		tessellator1.addVertex(0, 100.0D, (double) -f10 * 1.5F);
+		tessellator1.addVertex(f10, 100.0D, -f10);
+		tessellator1.addVertex((double) f10 * 1.5F, 100.0D, 0);
+		tessellator1.addVertex(f10, 100.0D, f10);
+		tessellator1.addVertex(0, 100.0D, (double) f10 * 1.5F);
+		tessellator1.addVertex(-f10, 100.0D, f10);
+		tessellator1.addVertex((double) -f10 * 1.5F, 100.0D, 0);
+		tessellator1.addVertex(-f10, 100.0D, -f10);
 
-        tessellator1.draw();
-        GL11.glPopMatrix();
-        GL11.glShadeModel(GL11.GL_FLAT);
+		tessellator1.draw();
+		GL11.glPopMatrix();
+		GL11.glShadeModel(GL11.GL_FLAT);
 
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        OpenGlHelper.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ONE, GL11.GL_ZERO);
-        GL11.glPushMatrix();
-        f7 = 0.0F;
-        f8 = 0.0F;
-        f9 = 0.0F;
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GL11.glTranslatef(f7, f8, f9);
-        GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
-        GL11.glRotatef(world.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
-        // Render sun
-        f10 = 14.0F;
-        mc.renderEngine.bindTexture(sunTexture);
-        tessellator1.startDrawingQuads();
-        tessellator1.addVertexWithUV((double)(-f10), 100.0D, (double)(-f10), 0.0D, 0.0D);
-        tessellator1.addVertexWithUV((double)f10, 100.0D, (double)(-f10), 1.0D, 0.0D);
-        tessellator1.addVertexWithUV((double)f10, 100.0D, (double)f10, 1.0D, 1.0D);
-        tessellator1.addVertexWithUV((double)(-f10), 100.0D, (double)f10, 0.0D, 1.0D);
-        tessellator1.draw();
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		OpenGlHelper.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ONE, GL11.GL_ZERO);
+		GL11.glPushMatrix();
+		f7 = 0.0F;
+		f8 = 0.0F;
+		f9 = 0.0F;
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GL11.glTranslatef(f7, f8, f9);
+		GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
+		GL11.glRotatef(world.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
+		// Render sun
+		f10 = 14.0F;
+		mc.renderEngine.bindTexture(SkyProviderMars.sunTexture);
+		tessellator1.startDrawingQuads();
+		tessellator1.addVertexWithUV(-f10, 100.0D, -f10, 0.0D, 0.0D);
+		tessellator1.addVertexWithUV(f10, 100.0D, -f10, 1.0D, 0.0D);
+		tessellator1.addVertexWithUV(f10, 100.0D, f10, 1.0D, 1.0D);
+		tessellator1.addVertexWithUV(-f10, 100.0D, f10, 0.0D, 1.0D);
+		tessellator1.draw();
 
-        // Render earth
-        f10 = 0.5F;
+		// Render earth
+		f10 = 0.5F;
 		GL11.glScalef(0.6F, 0.6F, 0.6F);
 		GL11.glRotatef(40.0F, 0.0F, 0.0F, 1.0F);
 		GL11.glRotatef(200F, 1.0F, 0.0F, 0.0F);
@@ -237,67 +235,67 @@ public class SkyProviderMars extends IRenderHandler
 		tessellator1.addVertexWithUV(f10, -100.0D, -f10, 1, 0);
 		tessellator1.addVertexWithUV(-f10, -100.0D, -f10, 0, 0);
 		tessellator1.draw();
-		
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
 
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glEnable(GL11.GL_ALPHA_TEST);
-        GL11.glEnable(GL11.GL_FOG);
-        GL11.glPopMatrix();
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glColor3f(0.0F, 0.0F, 0.0F);
-        double d0 = mc.thePlayer.getPosition(partialTicks).yCoord - world.getHorizon();
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
 
-        if (d0 < 0.0D)
-        {
-            GL11.glPushMatrix();
-            GL11.glTranslatef(0.0F, 12.0F, 0.0F);
-            GL11.glCallList(this.glSkyList2);
-            GL11.glPopMatrix();
-            f8 = 1.0F;
-            f9 = -((float)(d0 + 65.0D));
-            f10 = -f8;
-            tessellator1.startDrawingQuads();
-            tessellator1.setColorRGBA_I(0, 255);
-            tessellator1.addVertex((double)(-f8), (double)f9, (double)f8);
-            tessellator1.addVertex((double)f8, (double)f9, (double)f8);
-            tessellator1.addVertex((double)f8, (double)f10, (double)f8);
-            tessellator1.addVertex((double)(-f8), (double)f10, (double)f8);
-            tessellator1.addVertex((double)(-f8), (double)f10, (double)(-f8));
-            tessellator1.addVertex((double)f8, (double)f10, (double)(-f8));
-            tessellator1.addVertex((double)f8, (double)f9, (double)(-f8));
-            tessellator1.addVertex((double)(-f8), (double)f9, (double)(-f8));
-            tessellator1.addVertex((double)f8, (double)f10, (double)(-f8));
-            tessellator1.addVertex((double)f8, (double)f10, (double)f8);
-            tessellator1.addVertex((double)f8, (double)f9, (double)f8);
-            tessellator1.addVertex((double)f8, (double)f9, (double)(-f8));
-            tessellator1.addVertex((double)(-f8), (double)f9, (double)(-f8));
-            tessellator1.addVertex((double)(-f8), (double)f9, (double)f8);
-            tessellator1.addVertex((double)(-f8), (double)f10, (double)f8);
-            tessellator1.addVertex((double)(-f8), (double)f10, (double)(-f8));
-            tessellator1.addVertex((double)(-f8), (double)f10, (double)(-f8));
-            tessellator1.addVertex((double)(-f8), (double)f10, (double)f8);
-            tessellator1.addVertex((double)f8, (double)f10, (double)f8);
-            tessellator1.addVertex((double)f8, (double)f10, (double)(-f8));
-            tessellator1.draw();
-        }
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GL11.glDisable(GL11.GL_BLEND);
+		GL11.glEnable(GL11.GL_ALPHA_TEST);
+		GL11.glEnable(GL11.GL_FOG);
+		GL11.glPopMatrix();
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		GL11.glColor3f(0.0F, 0.0F, 0.0F);
+		double d0 = mc.thePlayer.getPosition(partialTicks).yCoord - world.getHorizon();
 
-        if (world.provider.isSkyColored())
-        {
-            GL11.glColor3f(f1 * 0.2F + 0.04F, f2 * 0.2F + 0.04F, f3 * 0.6F + 0.1F);
-        }
-        else
-        {
-            GL11.glColor3f(f1, f2, f3);
-        }
+		if (d0 < 0.0D)
+		{
+			GL11.glPushMatrix();
+			GL11.glTranslatef(0.0F, 12.0F, 0.0F);
+			GL11.glCallList(this.glSkyList2);
+			GL11.glPopMatrix();
+			f8 = 1.0F;
+			f9 = -((float) (d0 + 65.0D));
+			f10 = -f8;
+			tessellator1.startDrawingQuads();
+			tessellator1.setColorRGBA_I(0, 255);
+			tessellator1.addVertex(-f8, f9, f8);
+			tessellator1.addVertex(f8, f9, f8);
+			tessellator1.addVertex(f8, f10, f8);
+			tessellator1.addVertex(-f8, f10, f8);
+			tessellator1.addVertex(-f8, f10, -f8);
+			tessellator1.addVertex(f8, f10, -f8);
+			tessellator1.addVertex(f8, f9, -f8);
+			tessellator1.addVertex(-f8, f9, -f8);
+			tessellator1.addVertex(f8, f10, -f8);
+			tessellator1.addVertex(f8, f10, f8);
+			tessellator1.addVertex(f8, f9, f8);
+			tessellator1.addVertex(f8, f9, -f8);
+			tessellator1.addVertex(-f8, f9, -f8);
+			tessellator1.addVertex(-f8, f9, f8);
+			tessellator1.addVertex(-f8, f10, f8);
+			tessellator1.addVertex(-f8, f10, -f8);
+			tessellator1.addVertex(-f8, f10, -f8);
+			tessellator1.addVertex(-f8, f10, f8);
+			tessellator1.addVertex(f8, f10, f8);
+			tessellator1.addVertex(f8, f10, -f8);
+			tessellator1.draw();
+		}
 
-        GL11.glPushMatrix();
-        GL11.glTranslatef(0.0F, -((float)(d0 - 16.0D)), 0.0F);
-        GL11.glCallList(this.glSkyList2);
-        GL11.glPopMatrix();
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glDepthMask(true);
+		if (world.provider.isSkyColored())
+		{
+			GL11.glColor3f(f1 * 0.2F + 0.04F, f2 * 0.2F + 0.04F, f3 * 0.6F + 0.1F);
+		}
+		else
+		{
+			GL11.glColor3f(f1, f2, f3);
+		}
+
+		GL11.glPushMatrix();
+		GL11.glTranslatef(0.0F, -((float) (d0 - 16.0D)), 0.0F);
+		GL11.glCallList(this.glSkyList2);
+		GL11.glPopMatrix();
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		GL11.glDepthMask(true);
 	}
 
 	private void renderStars()

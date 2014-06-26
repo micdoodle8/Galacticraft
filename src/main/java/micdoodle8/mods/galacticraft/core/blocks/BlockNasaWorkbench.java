@@ -30,8 +30,6 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class BlockNasaWorkbench extends BlockContainer implements ITileEntityProvider
 {
 	IIcon[] iconBuffer;
@@ -121,9 +119,9 @@ public class BlockNasaWorkbench extends BlockContainer implements ITileEntityPro
 	public void onBlockPlacedBy(World world, int x0, int y0, int z0, EntityLivingBase entity, ItemStack var6)
 	{
 		final TileEntity var8 = world.getTileEntity(x0, y0, z0);
-		
+
 		boolean validSpot = true;
-	
+
 		for (int x = -1; x < 2; x++)
 		{
 			for (int y = 0; y < 4; y++)
@@ -135,7 +133,7 @@ public class BlockNasaWorkbench extends BlockContainer implements ITileEntityPro
 						if (Math.abs(x) != 1 || Math.abs(z) != 1)
 						{
 							Block blockAt = world.getBlock(x0 + x, y0 + y, z0 + z);
-							
+
 							if ((y == 0 || y == 3) && x == 0 && z == 0)
 							{
 								if (!blockAt.getMaterial().isReplaceable())
@@ -155,34 +153,34 @@ public class BlockNasaWorkbench extends BlockContainer implements ITileEntityPro
 				}
 			}
 		}
-		
+
 		if (!validSpot)
 		{
 			world.setBlockToAir(x0, y0, z0);
-			
+
 			if (!world.isRemote && entity instanceof EntityPlayer)
 			{
 				((EntityPlayer) entity).addChatMessage(new ChatComponentText(EnumColor.RED + GCCoreUtil.translate("gui.warning.noroom")));
 			}
-			
+
 			return;
 		}
-	
+
 		if (var8 instanceof IMultiBlock)
 		{
 			((IMultiBlock) var8).onCreate(new BlockVec3(x0, y0, z0));
 		}
-	
+
 		super.onBlockPlacedBy(world, x0, y0, z0, entity, var6);
 	}
-	
+
 	@Override
 	public void breakBlock(World world, int x0, int y0, int z0, Block var5, int var6)
 	{
 		final TileEntity var9 = world.getTileEntity(x0, y0, z0);
-		
+
 		int fakeBlockCount = 0;
-	
+
 		for (int x = -1; x < 2; x++)
 		{
 			for (int y = 0; y < 4; y++)
@@ -212,12 +210,12 @@ public class BlockNasaWorkbench extends BlockContainer implements ITileEntityPro
 				}
 			}
 		}
-	
+
 		if (fakeBlockCount > 0 && var9 instanceof IMultiBlock)
 		{
 			((IMultiBlock) var9).onDestroy(var9);
 		}
-	
+
 		super.breakBlock(world, x0, y0, z0, var5, var6);
 	}
 

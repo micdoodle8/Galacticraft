@@ -2,10 +2,7 @@ package micdoodle8.mods.galacticraft.core.world.gen;
 
 public enum EnumCraterSize
 {
-	SMALL(8, 12, 14),
-	MEDIUM(13, 17, 8),
-	LARGE(18, 25, 2),
-	EXTREME(26, 30, 1);
+	SMALL(8, 12, 14), MEDIUM(13, 17, 8), LARGE(18, 25, 2), EXTREME(26, 30, 1);
 
 	public final int MIN_SIZE;
 	public final int MAX_SIZE;

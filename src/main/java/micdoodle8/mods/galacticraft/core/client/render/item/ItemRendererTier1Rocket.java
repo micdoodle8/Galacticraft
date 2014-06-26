@@ -17,8 +17,6 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
 
-
-
 public class ItemRendererTier1Rocket implements IItemRenderer
 {
 	protected static final ResourceLocation chestTexture = new ResourceLocation("textures/entity/chest/normal.png");

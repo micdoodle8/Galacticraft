@@ -15,47 +15,53 @@ import codechicken.nei.guihook.GuiContainerManager;
 
 public class GCMarsNEIHighlightHandler implements IHighlightHandler
 {
-    @Override
-    public List<String> handleTextData(ItemStack stack, World world, EntityPlayer player, MovingObjectPosition mop, List<String> currenttip, ItemInfo.Layout layout)
-    {
-        String name = null;
-        try
-        {
-            String s = GuiContainerManager.itemDisplayNameShort(stack);
-            if(s != null && !s.endsWith("Unnamed"))
-                name = s;
+	@Override
+	public List<String> handleTextData(ItemStack stack, World world, EntityPlayer player, MovingObjectPosition mop, List<String> currenttip, ItemInfo.Layout layout)
+	{
+		String name = null;
+		try
+		{
+			String s = GuiContainerManager.itemDisplayNameShort(stack);
+			if (s != null && !s.endsWith("Unnamed"))
+			{
+				name = s;
+			}
 
-            if(name != null)
-                currenttip.add(name);
-        }
-        catch(Exception e)
-        {
-        }
+			if (name != null)
+			{
+				currenttip.add(name);
+			}
+		}
+		catch (Exception e)
+		{
+		}
 
-        if(stack.getItem() == Items.redstone)
-        {
-            int md = world.getBlockMetadata(mop.blockX, mop.blockY, mop.blockZ);
-            String s = ""+md;
-            if(s.length() < 2)
-                s=" "+s;
-            currenttip.set(currenttip.size()-1, name+" "+s);
-        }
-        
-        return currenttip;
-    }
+		if (stack.getItem() == Items.redstone)
+		{
+			int md = world.getBlockMetadata(mop.blockX, mop.blockY, mop.blockZ);
+			String s = "" + md;
+			if (s.length() < 2)
+			{
+				s = " " + s;
+			}
+			currenttip.set(currenttip.size() - 1, name + " " + s);
+		}
 
-    @Override
-    public ItemStack identifyHighlight(World world, EntityPlayer player, MovingObjectPosition mop)
-    {
-        int x = mop.blockX;
-        int y = mop.blockY;
-        int z = mop.blockZ;
-        Block b = world.getBlock(x, y, z);
-        int meta = world.getBlockMetadata(x, y, z);
-        if (meta == 2 && b == MarsBlocks.marsBlock)
-        {
-        	return new ItemStack(MarsBlocks.marsBlock, 1, 2);
-        }  
-    	return null;
-    }
+		return currenttip;
+	}
+
+	@Override
+	public ItemStack identifyHighlight(World world, EntityPlayer player, MovingObjectPosition mop)
+	{
+		int x = mop.blockX;
+		int y = mop.blockY;
+		int z = mop.blockZ;
+		Block b = world.getBlock(x, y, z);
+		int meta = world.getBlockMetadata(x, y, z);
+		if (meta == 2 && b == MarsBlocks.marsBlock)
+		{
+			return new ItemStack(MarsBlocks.marsBlock, 1, 2);
+		}
+		return null;
+	}
 }

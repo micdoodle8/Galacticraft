@@ -9,8 +9,6 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.common.MinecraftForge;
 
-
-
 public class BiomeDecoratorMoon
 {
 	protected World worldObj;

@@ -25,8 +25,6 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
-
-
 public class RecipeManagerGC
 {
 	public static void loadRecipes()
@@ -383,7 +381,7 @@ public class RecipeManagerGC
 		CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(new ItemStack(GCItems.basicItem, 1, 18), new Object[] { new ItemStack(GCItems.canister, 1, 0), Items.potato, Items.potato }));
 
 		CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(new ItemStack(GCItems.meteorChunk, 3), new Object[] { GCItems.meteoricIronRaw }));
-		
+
 		for (int i = 3; i < 8; i++)
 		{
 			if (ItemBasic.names[i].contains("ingot"))

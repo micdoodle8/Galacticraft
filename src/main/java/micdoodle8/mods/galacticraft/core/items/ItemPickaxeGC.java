@@ -9,8 +9,6 @@ import net.minecraft.item.ItemStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class ItemPickaxeGC extends ItemPickaxe
 {
 	public ItemPickaxeGC(String assetName)

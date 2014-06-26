@@ -22,8 +22,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class BlockBasicAsteroids extends Block implements IDetectableResource, IPlantableBlock, ITerraformableBlock
 {
 	@SideOnly(Side.CLIENT)
@@ -64,7 +62,7 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
 		{
 			return this.blockIcon;
 		}
-		
+
 		return this.blockIcons[meta];
 	}
 
@@ -118,7 +116,7 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
 	}
 
 	@Override
-    public boolean canSustainPlant(IBlockAccess world, int x, int y, int z, ForgeDirection direction, IPlantable plantable)
+	public boolean canSustainPlant(IBlockAccess world, int x, int y, int z, ForgeDirection direction, IPlantable plantable)
 	{
 		return false;
 	}

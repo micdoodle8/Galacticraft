@@ -19,8 +19,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 
-
-
 public class TileEntityCircuitFabricator extends TileEntityElectricBlock implements IInventory, ISidedInventory, IPacketReceiver
 {
 	public static final int PROCESS_TIME_REQUIRED = 300;
@@ -168,7 +166,7 @@ public class TileEntityCircuitFabricator extends TileEntityElectricBlock impleme
 
 		for (int var3 = 0; var3 < var2.tagCount(); ++var3)
 		{
-			NBTTagCompound var4 = (NBTTagCompound) var2.getCompoundTagAt(var3);
+			NBTTagCompound var4 = var2.getCompoundTagAt(var3);
 			byte var5 = var4.getByte("Slot");
 
 			if (var5 >= 0 && var5 < this.containingItems.length)
@@ -283,7 +281,7 @@ public class TileEntityCircuitFabricator extends TileEntityElectricBlock impleme
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer entityplayer)
 	{
-		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && entityplayer.getDistanceSq(this.xCoord+0.5D, this.yCoord+0.5D, this.zCoord+0.5D) <= 64.0D;
+		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && entityplayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
 	}
 
 	@Override
@@ -295,7 +293,7 @@ public class TileEntityCircuitFabricator extends TileEntityElectricBlock impleme
 	@Override
 	public boolean isItemValidForSlot(int slotID, ItemStack itemStack)
 	{
-		return slotID == 1 ? (itemStack != null && FurnaceRecipes.smelting().getSmeltingResult(itemStack) != null) : slotID == 0 ? itemStack.getItem() instanceof IItemElectric : false;
+		return slotID == 1 ? itemStack != null && FurnaceRecipes.smelting().getSmeltingResult(itemStack) != null : slotID == 0 ? itemStack.getItem() instanceof IItemElectric : false;
 	}
 
 	@Override

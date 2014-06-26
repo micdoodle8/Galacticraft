@@ -203,24 +203,24 @@ public abstract class CelestialBody
 		this.celestialBodyIcon = planetIcon;
 		return this;
 	}
-	
+
 	public boolean getForceStaticLoad()
 	{
 		return this.forceStaticLoad;
 	}
-	
+
 	public CelestialBody setForceStaticLoad(boolean force)
 	{
 		this.forceStaticLoad = force;
 		return this;
 	}
-	
+
 	@Override
 	public int hashCode()
 	{
 		return this.getUnlocalizedName().hashCode();
 	}
-	
+
 	@Override
 	public boolean equals(Object other)
 	{
@@ -228,7 +228,7 @@ public abstract class CelestialBody
 		{
 			return new EqualsBuilder().append(this.getUnlocalizedName(), ((CelestialBody) other).getUnlocalizedName()).isEquals();
 		}
-		
+
 		return false;
 	}
 }

@@ -6,8 +6,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-
-
 public class ContainerParaChest extends Container
 {
 	private IInventory parachestInventory;

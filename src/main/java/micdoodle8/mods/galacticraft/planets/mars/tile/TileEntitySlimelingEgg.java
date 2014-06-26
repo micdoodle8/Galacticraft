@@ -6,8 +6,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.tileentity.TileEntity;
 
-
-
 public class TileEntitySlimelingEgg extends TileEntity
 {
 	public int timeToHatch = -1;

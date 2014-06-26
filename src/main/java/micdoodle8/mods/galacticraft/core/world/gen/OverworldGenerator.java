@@ -10,8 +10,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import cpw.mods.fml.common.IWorldGenerator;
 
-
-
 public class OverworldGenerator implements IWorldGenerator
 {
 	private final int amountPerChunk;

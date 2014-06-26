@@ -15,8 +15,6 @@ import net.minecraft.util.IIcon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class ItemKeyMars extends Item implements IKeyItem
 {
 	public static String[] keyTypes = new String[] { "T2" };
@@ -30,7 +28,7 @@ public class ItemKeyMars extends Item implements IKeyItem
 		this.setHasSubtypes(true);
 	}
 
-    @SideOnly(Side.CLIENT)
+	@SideOnly(Side.CLIENT)
 	@Override
 	public CreativeTabs getCreativeTab()
 	{

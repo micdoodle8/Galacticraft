@@ -9,8 +9,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 
-
-
 public class MapGenCavernMars
 {
 	protected int range = 8;

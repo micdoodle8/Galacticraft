@@ -29,8 +29,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class BlockCavernousVine extends Block implements IShearable
 {
 	@SideOnly(Side.CLIENT)
@@ -50,7 +48,7 @@ public class BlockCavernousVine extends Block implements IShearable
 	}
 
 	@Override
-    public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z)
+	public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z)
 	{
 		if (world.setBlockToAir(x, y, z))
 		{
@@ -239,13 +237,13 @@ public class BlockCavernousVine extends Block implements IShearable
 	}
 
 	@Override
-    public boolean isShearable(ItemStack item, IBlockAccess world, int x, int y, int z)
+	public boolean isShearable(ItemStack item, IBlockAccess world, int x, int y, int z)
 	{
 		return true;
 	}
 
 	@Override
-    public ArrayList<ItemStack> onSheared(ItemStack item, IBlockAccess world, int x, int y, int z, int fortune)
+	public ArrayList<ItemStack> onSheared(ItemStack item, IBlockAccess world, int x, int y, int z, int fortune)
 	{
 		ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
 		ret.add(new ItemStack(this, 1, 0));
@@ -253,7 +251,7 @@ public class BlockCavernousVine extends Block implements IShearable
 	}
 
 	@Override
-    public boolean isLadder(IBlockAccess world, int x, int y, int z, EntityLivingBase entity)
+	public boolean isLadder(IBlockAccess world, int x, int y, int z, EntityLivingBase entity)
 	{
 		return true;
 	}

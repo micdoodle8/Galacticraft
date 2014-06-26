@@ -11,8 +11,6 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.gen.layer.IntCache;
 
-
-
 public class WorldChunkManagerMoon extends WorldChunkManager
 {
 	private final BiomeCache biomeCache;

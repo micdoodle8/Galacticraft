@@ -10,8 +10,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
-
-
 public class BlockRendererTintedGlassPane implements ISimpleBlockRenderingHandler
 {
 	final int renderID;

@@ -18,8 +18,6 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 @SideOnly(Side.CLIENT)
 public class TileEntityArclampRenderer extends TileEntitySpecialRenderer
 {
@@ -28,7 +26,7 @@ public class TileEntityArclampRenderer extends TileEntitySpecialRenderer
 	public static final IModelCustom lampMetal = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "models/arclampMetal.obj"));
 	public static final IModelCustom lampLight = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "models/arclampLight.obj"));
 	public static final IModelCustom lampBase = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "models/arclampBase.obj"));
-	
+
 	public void renderModelAt(TileEntityArclamp tileEntity, double d, double d1, double d2, float f)
 	{
 		int side = tileEntity.getBlockMetadata();
@@ -58,18 +56,21 @@ public class TileEntityArclampRenderer extends TileEntitySpecialRenderer
 			break;
 		default:
 			return;						
-		}*/		
-		
+		}*/
+
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) d + 0.5F, (float) d1 + 0.5F, (float) d2 + 0.5F);
-		
+
 		switch (side)
 		{
 		case 0:
 			break;
 		case 1:
 			GL11.glRotatef(180F, 1F, 0, 0);
-			if (metaFacing < 2) metaFacing ^= 1; 
+			if (metaFacing < 2)
+			{
+				metaFacing ^= 1;
+			}
 			break;
 		case 2:
 			GL11.glRotatef(90F, 1F, 0, 0);
@@ -81,12 +82,18 @@ public class TileEntityArclampRenderer extends TileEntitySpecialRenderer
 		case 4:
 			GL11.glRotatef(90F, 0, 0, -1F);
 			metaFacing -= 2;
-			if (metaFacing < 0) metaFacing = 1 - metaFacing;
+			if (metaFacing < 0)
+			{
+				metaFacing = 1 - metaFacing;
+			}
 			break;
 		case 5:
 			GL11.glRotatef(90F, 0, 0, 1F);
 			metaFacing += 2;
-			if (metaFacing > 3) metaFacing = 5 - metaFacing;
+			if (metaFacing > 3)
+			{
+				metaFacing = 5 - metaFacing;
+			}
 			break;
 		}
 
@@ -107,21 +114,21 @@ public class TileEntityArclampRenderer extends TileEntitySpecialRenderer
 		}
 
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TileEntityArclampRenderer.lampTexture);
-		lampBase.renderAll();
+		TileEntityArclampRenderer.lampBase.renderAll();
 		GL11.glRotatef(45F, -1F, 0, 0);
 		GL11.glScalef(0.048F, 0.048F, 0.048F);
-		
-		lampMetal.renderAll();
+
+		TileEntityArclampRenderer.lampMetal.renderAll();
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TileEntityArclampRenderer.lightTexture);
-        Tessellator tessellator = Tessellator.instance;
-        tessellator.startDrawing(GL11.GL_QUADS);
+		Tessellator tessellator = Tessellator.instance;
+		tessellator.startDrawing(GL11.GL_QUADS);
 		tessellator.setColorRGBA(255, 255, 255, 255);
 		RenderHelper.enableStandardItemLighting();
 		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        ((WavefrontObject) lampLight).tessellateAll(tessellator);
-        tessellator.draw();
+		((WavefrontObject) TileEntityArclampRenderer.lampLight).tessellateAll(tessellator);
+		tessellator.draw();
 
 		GL11.glPopMatrix();
 	}

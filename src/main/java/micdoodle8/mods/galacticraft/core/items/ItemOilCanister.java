@@ -15,8 +15,6 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class ItemOilCanister extends Item
 {
 	protected IIcon[] icons = new IIcon[7];

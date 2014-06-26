@@ -16,8 +16,6 @@ import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
-
-
 public class EntityEvolvedCreeper extends EntityCreeper implements IEntityBreathable
 {
 	int timeSinceIgnited2;

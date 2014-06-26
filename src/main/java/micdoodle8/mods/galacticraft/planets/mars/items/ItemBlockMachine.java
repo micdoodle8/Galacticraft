@@ -11,8 +11,6 @@ import net.minecraft.item.ItemStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class ItemBlockMachine extends ItemBlock implements IHoldableItem
 {
 	public ItemBlockMachine(Block block)
@@ -62,7 +60,7 @@ public class ItemBlockMachine extends ItemBlock implements IHoldableItem
 	public boolean shouldHoldLeftHandUp(EntityPlayer player)
 	{
 		ItemStack currentStack = player.getCurrentEquippedItem();
-		
+
 		if (currentStack != null && currentStack.getItemDamage() >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA && currentStack.getItemDamage() < BlockMachineMars.LAUNCH_CONTROLLER_METADATA)
 		{
 			return true;

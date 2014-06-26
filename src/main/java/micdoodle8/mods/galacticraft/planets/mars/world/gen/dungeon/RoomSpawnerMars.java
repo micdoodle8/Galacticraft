@@ -12,8 +12,6 @@ import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraftforge.common.util.ForgeDirection;
 
-
-
 public class RoomSpawnerMars extends DungeonRoom
 {
 	int sizeX;

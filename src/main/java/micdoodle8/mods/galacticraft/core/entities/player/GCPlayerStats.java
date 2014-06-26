@@ -20,14 +20,14 @@ import net.minecraftforge.common.IExtendedEntityProperties;
 public class GCPlayerStats implements IExtendedEntityProperties
 {
 	public static final String GC_PLAYER_PROP = "GCPlayerStats";
-	
+
 	public WeakReference<GCEntityPlayerMP> player;
-	
+
 	public InventoryExtended extendedInventory = new InventoryExtended();
 
 	public int airRemaining;
 	public int airRemaining2;
-	
+
 	public int thermalLevel;
 
 	public int damageCounter;
@@ -59,22 +59,22 @@ public class GCPlayerStats implements IExtendedEntityProperties
 
 	public ItemStack tankInSlot2;
 	public ItemStack lastTankInSlot2;
-	
+
 	public ItemStack thermalHelmetInSlot;
 	public ItemStack lastThermalHelmetInSlot;
-	
+
 	public ItemStack thermalChestplateInSlot;
 	public ItemStack lastThermalChestplateInSlot;
-	
+
 	public ItemStack thermalLeggingsInSlot;
 	public ItemStack lastThermalLeggingsInSlot;
-	
+
 	public ItemStack thermalBootsInSlot;
 	public ItemStack lastThermalBootsInSlot;
 
 	public int launchAttempts = 0;
-    
-    public int spaceRaceInviteTeamID;
+
+	public int spaceRaceInviteTeamID;
 
 	public boolean usingPlanetSelectionGui;
 
@@ -108,7 +108,7 @@ public class GCPlayerStats implements IExtendedEntityProperties
 	public int cryogenicChamberCooldown;
 
 	public boolean receivedSoundWarning;
-	
+
 	public GCPlayerStats(GCEntityPlayerMP player)
 	{
 		this.player = new WeakReference<GCEntityPlayerMP>(player);
@@ -164,9 +164,13 @@ public class GCPlayerStats implements IExtendedEntityProperties
 		nbt.setTag("RocketItems", var2);
 		final NBTTagCompound var4 = new NBTTagCompound();
 		if (this.launchpadStack != null)
+		{
 			nbt.setTag("LaunchpadStack", this.launchpadStack.writeToNBT(var4));
-		else 
-			nbt.setTag("LaunchpadStack", var4); 
+		}
+		else
+		{
+			nbt.setTag("LaunchpadStack", var4);
+		}
 
 		nbt.setInteger("CryogenicChamberCooldown", this.cryogenicChamberCooldown);
 		nbt.setBoolean("ReceivedSoundWarning", this.receivedSoundWarning);
@@ -276,11 +280,16 @@ public class GCPlayerStats implements IExtendedEntityProperties
 		if (nbt.hasKey("LaunchpadStack"))
 		{
 			this.launchpadStack = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("LaunchpadStack"));
-			if (this.launchpadStack != null && this.launchpadStack.stackSize == 0) this.launchpadStack = null;
+			if (this.launchpadStack != null && this.launchpadStack.stackSize == 0)
+			{
+				this.launchpadStack = null;
+			}
 		}
 		else
+		{
 			// for backwards compatibility with saves which don't have this tag - players can't lose launchpads
 			this.launchpadStack = new ItemStack(GCBlocks.landingPad, 9, 0);
+		}
 
 	}
 
@@ -288,15 +297,15 @@ public class GCPlayerStats implements IExtendedEntityProperties
 	public void init(Entity entity, World world)
 	{
 	}
-	
+
 	public static final void register(GCEntityPlayerMP player)
 	{
-		player.registerExtendedProperties(GC_PLAYER_PROP, new GCPlayerStats(player));
+		player.registerExtendedProperties(GCPlayerStats.GC_PLAYER_PROP, new GCPlayerStats(player));
 	}
-	
+
 	public static final GCPlayerStats get(GCEntityPlayerMP player)
 	{
-		return (GCPlayerStats) player.getExtendedProperties(GC_PLAYER_PROP);
+		return (GCPlayerStats) player.getExtendedProperties(GCPlayerStats.GC_PLAYER_PROP);
 	}
 
 	public void copyFrom(GCPlayerStats oldData, boolean keepInv)

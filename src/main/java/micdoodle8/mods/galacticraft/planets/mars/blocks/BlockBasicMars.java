@@ -33,24 +33,22 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class BlockBasicMars extends Block implements IDetectableResource, IPlantableBlock, ITileEntityProvider, ITerraformableBlock
 {
-/*Metadata:
-  	0 = "coppermars"
-	1 = "tinmars"
-	2 = "deshmars"
-	3 = "ironmars"
-	4 = "marscobblestone"
-	5 = "marsgrass"
-	6 = "marsdirt"
-	7 = "marsdungeon";  (brick)
-	8 = "marsdeco"  (desh decoration block)
-	9 = "marsstone"
-	10 = mars dungeon spawner
-*/
-	
+	/*Metadata:
+	  	0 = "coppermars"
+		1 = "tinmars"
+		2 = "deshmars"
+		3 = "ironmars"
+		4 = "marscobblestone"
+		5 = "marsgrass"
+		6 = "marsdirt"
+		7 = "marsdungeon";  (brick)
+		8 = "marsdeco"  (desh decoration block)
+		9 = "marsstone"
+		10 = mars dungeon spawner
+	*/
+
 	@SideOnly(Side.CLIENT)
 	private IIcon[] marsBlockIcons;
 
@@ -271,7 +269,7 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
 	}
 
 	@Override
-    public boolean canSustainPlant(IBlockAccess world, int x, int y, int z, ForgeDirection direction, IPlantable plantable)
+	public boolean canSustainPlant(IBlockAccess world, int x, int y, int z, ForgeDirection direction, IPlantable plantable)
 	{
 		return false;
 	}
@@ -298,7 +296,7 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
 			if (metadata == 7)
 			{
 				GalacticraftPlanets.spawnParticle("sludgeDrip", new Vector3(x + rand.nextDouble(), y, z + rand.nextDouble()), new Vector3(0, 0, 0));
-				
+
 				if (rand.nextInt(100) == 0)
 				{
 					world.playSound(x, y, z, GalacticraftCore.ASSET_PREFIX + "ambience.singledrip", 1, 0.8F + rand.nextFloat() / 5.0F, false);
@@ -312,22 +310,30 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
 	{
 		return world.getBlockMetadata(x, y, z) == 5 && world.getBlock(x, y + 1, z) == Blocks.air;
 	}
-	
-	
+
 	@Override
-    public boolean canSilkHarvest(World world, EntityPlayer player, int x, int y, int z, int metadata)
-    {
-        if (metadata < 10) return true;
-        return false;
-    }
-	
+	public boolean canSilkHarvest(World world, EntityPlayer player, int x, int y, int z, int metadata)
+	{
+		if (metadata < 10)
+		{
+			return true;
+		}
+		return false;
+	}
+
 	@Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
-    {
-		int metadata = world.getBlockMetadata(x,  y,  z);
-		if (metadata == 2) return new ItemStack(Item.getItemFromBlock(this), 1, metadata);
-		if (metadata == 10) return null;
-		
+	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
+	{
+		int metadata = world.getBlockMetadata(x, y, z);
+		if (metadata == 2)
+		{
+			return new ItemStack(Item.getItemFromBlock(this), 1, metadata);
+		}
+		if (metadata == 10)
+		{
+			return null;
+		}
+
 		return super.getPickBlock(target, world, x, y, z);
-    }
+	}
 }

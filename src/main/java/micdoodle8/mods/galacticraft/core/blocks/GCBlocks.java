@@ -25,8 +25,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-
-
 public class GCBlocks
 {
 	public static Block breatheableAir;
@@ -159,7 +157,7 @@ public class GCBlocks
 		GCCoreUtil.registerGalacticraftBlock("wireAluminumHeavy", GCBlocks.aluminumWire, 1);
 		GCCoreUtil.registerGalacticraftBlock("spinThruster", GCBlocks.spinThruster);
 		GCCoreUtil.registerGalacticraftBlock("arclamp", GCBlocks.brightLamp);
-		
+
 		// Hide certain items from NEI
 		GCBlocks.hiddenBlocks.add(GCBlocks.airLockSeal);
 		GCBlocks.hiddenBlocks.add(GCBlocks.breatheableAir);
@@ -188,16 +186,16 @@ public class GCBlocks
 
 	public static void setHarvestLevels()
 	{
-		GCBlocks.basicBlock.setHarvestLevel("pickaxe", 2, 5);  //Copper ore
-		GCBlocks.basicBlock.setHarvestLevel("pickaxe", 2, 6);  //Tin ore
-		GCBlocks.basicBlock.setHarvestLevel("pickaxe", 2, 7);  //Aluminium ore
-		GCBlocks.basicBlock.setHarvestLevel("pickaxe", 1, 8);  //Silicon ore
+		GCBlocks.basicBlock.setHarvestLevel("pickaxe", 2, 5); //Copper ore
+		GCBlocks.basicBlock.setHarvestLevel("pickaxe", 2, 6); //Tin ore
+		GCBlocks.basicBlock.setHarvestLevel("pickaxe", 2, 7); //Aluminium ore
+		GCBlocks.basicBlock.setHarvestLevel("pickaxe", 1, 8); //Silicon ore
 		GCBlocks.fallenMeteor.setHarvestLevel("pickaxe", 3);
-		GCBlocks.blockMoon.setHarvestLevel("pickaxe", 2, 0);  //Copper ore
-		GCBlocks.blockMoon.setHarvestLevel("pickaxe", 2, 1);  //Tin ore
-		GCBlocks.blockMoon.setHarvestLevel("pickaxe", 1, 2);  //Cheese ore
-		GCBlocks.blockMoon.setHarvestLevel("shovel", 0, 3);   //Moon dirt
-		GCBlocks.blockMoon.setHarvestLevel("pickaxe", 1, 4);  //Moon rock
+		GCBlocks.blockMoon.setHarvestLevel("pickaxe", 2, 0); //Copper ore
+		GCBlocks.blockMoon.setHarvestLevel("pickaxe", 2, 1); //Tin ore
+		GCBlocks.blockMoon.setHarvestLevel("pickaxe", 1, 2); //Cheese ore
+		GCBlocks.blockMoon.setHarvestLevel("shovel", 0, 3); //Moon dirt
+		GCBlocks.blockMoon.setHarvestLevel("pickaxe", 1, 4); //Moon rock
 
 		for (int num = 5; num < 14; num++)
 		{
@@ -205,7 +203,7 @@ public class GCBlocks
 			GCBlocks.blockMoon.setHarvestLevel("shovel", 0, num);
 		}
 
-		GCBlocks.blockMoon.setHarvestLevel("pickaxe", 3, 14);  //Moon dungeon brick (actually unharvestable)
+		GCBlocks.blockMoon.setHarvestLevel("pickaxe", 3, 14); //Moon dungeon brick (actually unharvestable)
 	}
 
 	public static void registerBlocks()
@@ -244,5 +242,6 @@ public class GCBlocks
 		GameRegistry.registerBlock(GCBlocks.blockMoon, ItemBlockMoon.class, GCBlocks.blockMoon.getUnlocalizedName());
 		GameRegistry.registerBlock(GCBlocks.cheeseBlock, ItemBlock.class, GCBlocks.cheeseBlock.getUnlocalizedName());
 		GameRegistry.registerBlock(GCBlocks.spinThruster, ItemBlockThruster.class, GCBlocks.spinThruster.getUnlocalizedName());
-		GameRegistry.registerBlock(GCBlocks.brightLamp, ItemBlockArclamp.class, GCBlocks.brightLamp.getUnlocalizedName()); }
+		GameRegistry.registerBlock(GCBlocks.brightLamp, ItemBlockArclamp.class, GCBlocks.brightLamp.getUnlocalizedName());
+	}
 }

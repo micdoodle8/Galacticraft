@@ -19,8 +19,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class BlockTintedGlassPane extends BlockPane implements IPartialSealableBlock
 {
 	@SideOnly(Side.CLIENT)

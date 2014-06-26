@@ -43,8 +43,6 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 
-
-
 public class EntitySlimeling extends EntityTameable implements IEntityBreathable
 {
 	public InventorySlimeling slimelingInventory = new InventorySlimeling(this);
@@ -415,7 +413,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
 					MarsModuleClient.openSlimelingGui(this, 0);
 				}
 			}
-			
+
 			return true;
 		}
 		else if (itemstack != null && itemstack.getItem() == Items.slime_ball)

@@ -43,16 +43,16 @@ public class GCEntityOtherPlayerMP extends EntityOtherPlayerMP
 
 	private static ThreadDownloadImageData getDownloadImage(ResourceLocation par0ResourceLocation, String par1Str, ResourceLocation par2ResourceLocation, IImageBuffer par3IImageBuffer)
 	{
-        TextureManager texturemanager = Minecraft.getMinecraft().getTextureManager();
-        Object object = texturemanager.getTexture(par0ResourceLocation);
+		TextureManager texturemanager = Minecraft.getMinecraft().getTextureManager();
+		Object object = texturemanager.getTexture(par0ResourceLocation);
 
-        if (object == null)
-        {
-            object = new ThreadDownloadImageData(par1Str, par2ResourceLocation, par3IImageBuffer);
-            texturemanager.loadTexture(par0ResourceLocation, (ITextureObject)object);
-        }
+		if (object == null)
+		{
+			object = new ThreadDownloadImageData(par1Str, par2ResourceLocation, par3IImageBuffer);
+			texturemanager.loadTexture(par0ResourceLocation, (ITextureObject) object);
+		}
 
-        return (ThreadDownloadImageData)object;
+		return (ThreadDownloadImageData) object;
 	}
 
 	public static String getCapeURL(String par0Str)

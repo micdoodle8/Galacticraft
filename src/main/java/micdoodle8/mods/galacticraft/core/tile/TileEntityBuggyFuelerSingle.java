@@ -7,8 +7,6 @@ import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 
-
-
 public class TileEntityBuggyFuelerSingle extends TileEntity
 {
 	@Override

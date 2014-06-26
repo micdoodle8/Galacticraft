@@ -17,8 +17,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-
-
 public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBreathable
 {
 	private static final ItemStack defaultHeldItem = new ItemStack(Items.bow, 1);

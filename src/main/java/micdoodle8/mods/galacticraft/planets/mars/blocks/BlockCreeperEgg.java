@@ -14,8 +14,6 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class BlockCreeperEgg extends BlockDragonEgg
 {
 	public BlockCreeperEgg()
@@ -69,8 +67,8 @@ public class BlockCreeperEgg extends BlockDragonEgg
 
 	@Override
 	@SideOnly(Side.CLIENT)
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
-    {
+	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
+	{
 		return null;
 	}
 

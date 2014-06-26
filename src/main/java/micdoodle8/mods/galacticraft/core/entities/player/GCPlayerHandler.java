@@ -25,77 +25,77 @@ import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
 public class GCPlayerHandler
 {
 	private ConcurrentHashMap<UUID, GCPlayerStats> playerStatsMap = new ConcurrentHashMap<UUID, GCPlayerStats>();
-	
+
 	public ConcurrentHashMap<UUID, GCPlayerStats> getServerStatList()
 	{
-		return playerStatsMap;
+		return this.playerStatsMap;
 	}
-	
+
 	@SubscribeEvent
 	public void onPlayerLogin(PlayerLoggedInEvent event)
 	{
-    	if (event.player instanceof GCEntityPlayerMP)
-    	{
-    		onPlayerLogin((GCEntityPlayerMP) event.player);
-    	}
+		if (event.player instanceof GCEntityPlayerMP)
+		{
+			this.onPlayerLogin((GCEntityPlayerMP) event.player);
+		}
 	}
-	
+
 	@SubscribeEvent
 	public void onPlayerLogout(PlayerLoggedOutEvent event)
 	{
-    	if (event.player instanceof GCEntityPlayerMP)
-    	{
-    		onPlayerLogout((GCEntityPlayerMP) event.player);
-    	}
+		if (event.player instanceof GCEntityPlayerMP)
+		{
+			this.onPlayerLogout((GCEntityPlayerMP) event.player);
+		}
 	}
 
-    @SubscribeEvent
-    public void onPlayerRespawn(PlayerRespawnEvent event)
-    {
-    	if (event.player instanceof GCEntityPlayerMP)
-    	{
-            onPlayerRespawn((GCEntityPlayerMP) event.player);
-    	}
-    }
+	@SubscribeEvent
+	public void onPlayerRespawn(PlayerRespawnEvent event)
+	{
+		if (event.player instanceof GCEntityPlayerMP)
+		{
+			this.onPlayerRespawn((GCEntityPlayerMP) event.player);
+		}
+	}
 
-    @SubscribeEvent
-    public void onEntityConstructing(EntityEvent.EntityConstructing event)
-    {
-        if (event.entity instanceof GCEntityPlayerMP && GCPlayerStats.get((GCEntityPlayerMP) event.entity) == null)
-        {
-            GCPlayerStats.register((GCEntityPlayerMP) event.entity);
-        }
-    }
-	
+	@SubscribeEvent
+	public void onEntityConstructing(EntityEvent.EntityConstructing event)
+	{
+		if (event.entity instanceof GCEntityPlayerMP && GCPlayerStats.get((GCEntityPlayerMP) event.entity) == null)
+		{
+			GCPlayerStats.register((GCEntityPlayerMP) event.entity);
+		}
+	}
+
 	private void onPlayerLogin(GCEntityPlayerMP player)
 	{
-		GCPlayerStats oldData = playerStatsMap.remove(player.getPersistentID());
+		GCPlayerStats oldData = this.playerStatsMap.remove(player.getPersistentID());
 		if (oldData != null)
 		{
 			oldData.saveNBTData(player.getEntityData());
 		}
-		
+
 		GCPlayerStats stats = GCPlayerStats.get(player);
 	}
-	
+
 	private void onPlayerLogout(GCEntityPlayerMP player)
 	{
-		
+
 	}
-	
+
 	private void onPlayerRespawn(GCEntityPlayerMP player)
 	{
-		GCPlayerStats oldData = playerStatsMap.remove(player.getPersistentID());
+		GCPlayerStats oldData = this.playerStatsMap.remove(player.getPersistentID());
 		GCPlayerStats stats = GCPlayerStats.get(player);
-		
+
 		if (oldData != null)
 		{
 			stats.copyFrom(oldData, false);
 		}
-		
+
 		stats.player = new WeakReference<GCEntityPlayerMP>(player);
 	}
-	
+
 	@SubscribeEvent
 	public void onLivingUpdate(LivingUpdateEvent event)
 	{
@@ -104,7 +104,7 @@ public class GCPlayerHandler
 			this.onPlayerUpdate((GCEntityPlayerMP) event.entityLiving);
 		}
 	}
-	
+
 	private void onPlayerUpdate(GCEntityPlayerMP player)
 	{
 		int tick = player.ticksExisted - 1;
@@ -113,13 +113,13 @@ public class GCPlayerHandler
 		{
 			if (SpaceRaceManager.getSpaceRaceFromPlayer(player.getGameProfile().getName()) == null)
 			{
-				GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_SPACE_RACE_GUI, new Object[] { }), player);
+				GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_SPACE_RACE_GUI, new Object[] {}), player);
 			}
 		}
 
 		//This will speed things up a little
 		final GCPlayerStats GCPlayer = player.getPlayerStats();
-		
+
 		if (GCPlayer.cryogenicChamberCooldown > 0)
 		{
 			GCPlayer.cryogenicChamberCooldown--;
@@ -154,7 +154,10 @@ public class GCPlayerHandler
 
 		if (GCPlayer.usingParachute)
 		{
-			if (GCPlayer.lastParachuteInSlot != null) player.fallDistance = 0.0F;
+			if (GCPlayer.lastParachuteInSlot != null)
+			{
+				player.fallDistance = 0.0F;
+			}
 			if (player.onGround)
 			{
 				player.setUsingParachute(false);
@@ -168,11 +171,11 @@ public class GCPlayerHandler
 			player.sendPlanetList();
 		}
 
-/*		if (player.worldObj.provider instanceof IGalacticraftWorldProvider || player.usingPlanetSelectionGui)
-		{
-			player.playerNetServerHandler.ticksForFloatKick = 0;
-		}	
-*/		
+		/*		if (player.worldObj.provider instanceof IGalacticraftWorldProvider || player.usingPlanetSelectionGui)
+				{
+					player.playerNetServerHandler.ticksForFloatKick = 0;
+				}	
+		*/
 		if (GCPlayer.damageCounter > 0)
 		{
 			GCPlayer.damageCounter--;

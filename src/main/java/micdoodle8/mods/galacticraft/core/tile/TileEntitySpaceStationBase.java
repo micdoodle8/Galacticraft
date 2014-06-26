@@ -7,8 +7,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
-
-
 public class TileEntitySpaceStationBase extends TileEntityMulti implements IMultiBlock
 {
 	public String ownerUsername = "bobby";

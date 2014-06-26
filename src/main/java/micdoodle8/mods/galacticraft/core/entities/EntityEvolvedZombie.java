@@ -18,8 +18,6 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
-
-
 public class EntityEvolvedZombie extends EntityZombie implements IEntityBreathable
 {
 	private int conversionTime = 0;
@@ -58,9 +56,9 @@ public class EntityEvolvedZombie extends EntityZombie implements IEntityBreathab
 	{
 		return true;
 	}
-	
+
 	public IAttribute getReinforcementsAttribute()
 	{
-		return field_110186_bp;
+		return EntityZombie.field_110186_bp;
 	}
 }

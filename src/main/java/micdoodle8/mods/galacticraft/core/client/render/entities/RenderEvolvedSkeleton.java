@@ -20,8 +20,6 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 @SideOnly(Side.CLIENT)
 public class RenderEvolvedSkeleton extends RenderBiped
 {
@@ -68,12 +66,14 @@ public class RenderEvolvedSkeleton extends RenderBiped
 	@Override
 	protected void renderEquippedItems(EntityLivingBase par1EntityLiving, float par2)
 	{
-		if (isBG2Loaded > 0)
+		if (RenderEvolvedSkeleton.isBG2Loaded > 0)
 		{
 			if (par1EntityLiving.getDataWatcher().getWatchedObject(RenderEvolvedSkeleton.isBG2Loaded) == null)
-				par1EntityLiving.getDataWatcher().addObject(RenderEvolvedSkeleton.isBG2Loaded, Byte.valueOf((byte)-1));
+			{
+				par1EntityLiving.getDataWatcher().addObject(RenderEvolvedSkeleton.isBG2Loaded, Byte.valueOf((byte) -1));
+			}
 		}
-		
+
 		GL11.glPushMatrix();
 		GL11.glTranslatef(-0.3F, -0.3F, -0.6F);
 		GL11.glTranslatef(0.1F, 0.0F, 0.0F);
@@ -93,20 +93,20 @@ public class RenderEvolvedSkeleton extends RenderBiped
 		GL11.glScalef(0.5F, 0.5F, 0.5F);
 		this.renderManager.itemRenderer.renderItem(par1EntityLiving, new ItemStack(Items.bow), 0);
 		GL11.glPopMatrix();
-	
+
 		super.renderEquippedItems(par1EntityLiving, par2);
 	}
 
 	@Override
-    public void doRender(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9)
-    {
-        super.doRender(par1EntityLiving, par2, par4, par6, par8, par9);
-        this.field_82423_g.aimedBow = this.field_82425_h.aimedBow = this.modelBipedMain.aimedBow = true;
-    }
+	public void doRender(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9)
+	{
+		super.doRender(par1EntityLiving, par2, par4, par6, par8, par9);
+		this.field_82423_g.aimedBow = this.field_82425_h.aimedBow = this.modelBipedMain.aimedBow = true;
+	}
 
 	@Override
 	protected int shouldRenderPass(EntityLivingBase par1EntityLiving, int par2, float par3)
-	{		
+	{
 		final Minecraft minecraft = FMLClientHandler.instance().getClient();
 
 		final EntityPlayerSP player = minecraft.thePlayer;

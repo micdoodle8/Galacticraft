@@ -9,8 +9,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 
-
-
 public abstract class StructureComponentGC extends StructureComponent
 {
 	public StructureComponentGC(int var1)

@@ -14,8 +14,6 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 @SideOnly(Side.CLIENT)
 public class GuiCircuitFabricator extends GuiContainer
 {
@@ -56,9 +54,9 @@ public class GuiCircuitFabricator extends GuiContainer
 		this.fontRendererObj.drawString(str, 115 - this.fontRendererObj.getStringWidth(str) / 2, 80, 4210752);
 		this.fontRendererObj.drawString(displayText, 115 - this.fontRendererObj.getStringWidth(displayText) / 2, 90, 4210752);
 		this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 93, 4210752);
-		str = "" + tileEntity.storage.getMaxExtract();
+		str = "" + this.tileEntity.storage.getMaxExtract();
 		this.fontRendererObj.drawString(str, 5, 42, 4210752);
-//		str = ElectricityDisplay.getDisplay(this.tileEntity.getVoltage(), ElectricUnit.VOLTAGE);
+		//		str = ElectricityDisplay.getDisplay(this.tileEntity.getVoltage(), ElectricUnit.VOLTAGE);
 		this.fontRendererObj.drawString(str, 5, 52, 4210752);
 	}
 

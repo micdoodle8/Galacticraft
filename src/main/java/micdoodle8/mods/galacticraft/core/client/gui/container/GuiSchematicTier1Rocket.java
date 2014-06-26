@@ -11,8 +11,6 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-
-
 public class GuiSchematicTier1Rocket extends GuiContainerGC implements ISchematicResultPage
 {
 	private static final ResourceLocation rocketBenchTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/rocketbench.png");

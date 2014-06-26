@@ -73,8 +73,6 @@ import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.common.gameevent.TickEvent.RenderTickEvent;
 import cpw.mods.fml.relauncher.Side;
 
-
-
 public class TickHandlerClient
 {
 	public static int airRemaining;
@@ -125,38 +123,38 @@ public class TickHandlerClient
 		{
 			if (minecraft.currentScreen instanceof GuiIngameMenu)
 			{
-		        int i = Mouse.getEventX() * minecraft.currentScreen.width / minecraft.displayWidth;
-		        int j = minecraft.currentScreen.height - Mouse.getEventY() * minecraft.currentScreen.height / minecraft.displayHeight - 1;
-		        
-		        int k = Mouse.getEventButton();
+				int i = Mouse.getEventX() * minecraft.currentScreen.width / minecraft.displayWidth;
+				int j = minecraft.currentScreen.height - Mouse.getEventY() * minecraft.currentScreen.height / minecraft.displayHeight - 1;
 
-		        if (Minecraft.isRunningOnMac && k == 0 && (Keyboard.isKeyDown(29) || Keyboard.isKeyDown(157)))
-		        {
-		            k = 1;
-		        }
-		        
-		        int deltaColor = 0;		        
-		        
-		        if (i > minecraft.currentScreen.width - 100 && j > minecraft.currentScreen.height - 35)
-		        {
-		        	deltaColor = 20;
-		        	
-		        	if (k == 0)
-		        	{
-		                if (Mouse.getEventButtonState())
-		                {
-		                	minecraft.displayGuiScreen(new GuiNewSpaceRace(playerBaseClient));
-		                }
-		        	}
-		        }
-		        
+				int k = Mouse.getEventButton();
+
+				if (Minecraft.isRunningOnMac && k == 0 && (Keyboard.isKeyDown(29) || Keyboard.isKeyDown(157)))
+				{
+					k = 1;
+				}
+
+				int deltaColor = 0;
+
+				if (i > minecraft.currentScreen.width - 100 && j > minecraft.currentScreen.height - 35)
+				{
+					deltaColor = 20;
+
+					if (k == 0)
+					{
+						if (Mouse.getEventButtonState())
+						{
+							minecraft.displayGuiScreen(new GuiNewSpaceRace(playerBaseClient));
+						}
+					}
+				}
+
 				this.drawGradientRect(minecraft.currentScreen.width - 100, minecraft.currentScreen.height - 35, minecraft.currentScreen.width, minecraft.currentScreen.height, GCCoreUtil.to32BitColor(150, 10 + deltaColor, 10 + deltaColor, 10 + deltaColor), GCCoreUtil.to32BitColor(250, 10 + deltaColor, 10 + deltaColor, 10 + deltaColor));
 				minecraft.fontRenderer.drawString("Space Race", minecraft.currentScreen.width - 50 - minecraft.fontRenderer.getStringWidth("Space Race") / 2, minecraft.currentScreen.height - 26, GCCoreUtil.to32BitColor(255, 240, 240, 240));
 				minecraft.fontRenderer.drawString("Manager", minecraft.currentScreen.width - 50 - minecraft.fontRenderer.getStringWidth("Manager") / 2, minecraft.currentScreen.height - 16, GCCoreUtil.to32BitColor(255, 240, 240, 240));
-		        Gui.drawRect(minecraft.currentScreen.width - 100, minecraft.currentScreen.height - 35, minecraft.currentScreen.width - 99, minecraft.currentScreen.height, GCCoreUtil.to32BitColor(255, 0, 0, 0));
-		        Gui.drawRect(minecraft.currentScreen.width - 100, minecraft.currentScreen.height - 35, minecraft.currentScreen.width, minecraft.currentScreen.height - 34, GCCoreUtil.to32BitColor(255, 0, 0, 0));
+				Gui.drawRect(minecraft.currentScreen.width - 100, minecraft.currentScreen.height - 35, minecraft.currentScreen.width - 99, minecraft.currentScreen.height, GCCoreUtil.to32BitColor(255, 0, 0, 0));
+				Gui.drawRect(minecraft.currentScreen.width - 100, minecraft.currentScreen.height - 35, minecraft.currentScreen.width, minecraft.currentScreen.height - 34, GCCoreUtil.to32BitColor(255, 0, 0, 0));
 			}
-			
+
 			if (player != null)
 			{
 				ClientProxyCore.playerPosX = player.prevPosX + (player.posX - player.prevPosX) * event.renderTickTime;
@@ -249,9 +247,9 @@ public class TickHandlerClient
 		final Minecraft minecraft = FMLClientHandler.instance().getClient();
 		final WorldClient world = minecraft.theWorld;
 		final EntityClientPlayerMP player = minecraft.thePlayer;
-		
+
 		if (event.phase == Phase.START)
-		{			
+		{
 			if (TickHandlerClient.tickCount >= Long.MAX_VALUE)
 			{
 				TickHandlerClient.tickCount = 0;
@@ -347,10 +345,10 @@ public class TickHandlerClient
 				}
 			}
 
-			if (world != null && spaceRaceGuiScheduled && minecraft.currentScreen == null)
+			if (world != null && TickHandlerClient.spaceRaceGuiScheduled && minecraft.currentScreen == null)
 			{
-				player.openGui(GalacticraftCore.instance, GuiIdsCore.SPACE_RACE_START, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
-				spaceRaceGuiScheduled = false;
+				player.openGui(GalacticraftCore.instance, GuiIdsCore.SPACE_RACE_START, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
+				TickHandlerClient.spaceRaceGuiScheduled = false;
 			}
 
 			if (world != null && TickHandlerClient.checkedVersion)
@@ -382,10 +380,10 @@ public class TickHandlerClient
 					if (world.provider.getSkyRenderer() == null)
 					{
 						world.provider.setSkyRenderer(new SkyProviderOrbit(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/planets/overworld.png"), true, true));
-						((SkyProviderOrbit)world.provider.getSkyRenderer()).spinDeltaPerTick = ((WorldProviderOrbit)world.provider).getSpinRate();
-						((GCEntityClientPlayerMP)player).inFreefallFirstCheck = false;
+						((SkyProviderOrbit) world.provider.getSkyRenderer()).spinDeltaPerTick = ((WorldProviderOrbit) world.provider).getSpinRate();
+						((GCEntityClientPlayerMP) player).inFreefallFirstCheck = false;
 					}
-	
+
 					if (world.provider.getCloudRenderer() == null)
 					{
 						world.provider.setCloudRenderer(new CloudRenderer());
@@ -397,7 +395,7 @@ public class TickHandlerClient
 					{
 						world.provider.setSkyRenderer(new SkyProviderMoon());
 					}
-	
+
 					if (world.provider.getCloudRenderer() == null)
 					{
 						world.provider.setCloudRenderer(new CloudRenderer());
@@ -451,16 +449,16 @@ public class TickHandlerClient
 				List entityList = world.loadedEntityList;
 				for (int i = entityList.size() - 1; i >= 0; i--)
 				{
-						if (entityList.get(i) instanceof EntityTier1Rocket)
-						{
-							final EntityTier1Rocket eship = (EntityTier1Rocket) entityList.get(i);
+					if (entityList.get(i) instanceof EntityTier1Rocket)
+					{
+						final EntityTier1Rocket eship = (EntityTier1Rocket) entityList.get(i);
 
-							if (eship.rocketSoundUpdater == null)
-							{
-								// TODO
-//								eship.rocketSoundUpdater = new GCCoreSoundUpdaterSpaceship(FMLClientHandler.instance().getClient().sndManager, eship, FMLClientHandler.instance().getClient().thePlayer);
-							}
+						if (eship.rocketSoundUpdater == null)
+						{
+							// TODO
+							//								eship.rocketSoundUpdater = new GCCoreSoundUpdaterSpaceship(FMLClientHandler.instance().getClient().sndManager, eship, FMLClientHandler.instance().getClient().thePlayer);
 						}
+					}
 				}
 			}
 
@@ -481,7 +479,7 @@ public class TickHandlerClient
 
 			if (player != null && player.ridingEntity != null && KeyHandlerClient.spaceKey.getIsKeyPressed() && !ClientProxyCore.lastSpacebarDown)
 			{
-				GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_IGNITE_ROCKET, new Object[] { }));
+				GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_IGNITE_ROCKET, new Object[] {}));
 				ClientProxyCore.lastSpacebarDown = true;
 			}
 		}
@@ -495,7 +493,7 @@ public class TickHandlerClient
 			}
 
 			TickHandlerClient.lastInvKeyPressed = invKeyPressed;
-		}		
+		}
 	}
 
 	private boolean alreadyContainsBlock(int x1, int y1, int z1)
@@ -524,34 +522,34 @@ public class TickHandlerClient
 			TabRegistry.addTabsToInventory(gui);
 		}
 	}
-	
-    private void drawGradientRect(int par1, int par2, int par3, int par4, int par5, int par6)
-    {
-        float f = (float)(par5 >> 24 & 255) / 255.0F;
-        float f1 = (float)(par5 >> 16 & 255) / 255.0F;
-        float f2 = (float)(par5 >> 8 & 255) / 255.0F;
-        float f3 = (float)(par5 & 255) / 255.0F;
-        float f4 = (float)(par6 >> 24 & 255) / 255.0F;
-        float f5 = (float)(par6 >> 16 & 255) / 255.0F;
-        float f6 = (float)(par6 >> 8 & 255) / 255.0F;
-        float f7 = (float)(par6 & 255) / 255.0F;
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glDisable(GL11.GL_ALPHA_TEST);
-        OpenGlHelper.glBlendFunc(770, 771, 1, 0);
-        GL11.glShadeModel(GL11.GL_SMOOTH);
-        Tessellator tessellator = Tessellator.instance;
-        tessellator.startDrawingQuads();
-        tessellator.setColorRGBA_F(f1, f2, f3, f);
-        tessellator.addVertex((double)par3, (double)par2, 0.0D);
-        tessellator.addVertex((double)par1, (double)par2, 0.0D);
-        tessellator.setColorRGBA_F(f5, f6, f7, f4);
-        tessellator.addVertex((double)par1, (double)par4, 0.0D);
-        tessellator.addVertex((double)par3, (double)par4, 0.0D);
-        tessellator.draw();
-        GL11.glShadeModel(GL11.GL_FLAT);
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glEnable(GL11.GL_ALPHA_TEST);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-    }
+
+	private void drawGradientRect(int par1, int par2, int par3, int par4, int par5, int par6)
+	{
+		float f = (par5 >> 24 & 255) / 255.0F;
+		float f1 = (par5 >> 16 & 255) / 255.0F;
+		float f2 = (par5 >> 8 & 255) / 255.0F;
+		float f3 = (par5 & 255) / 255.0F;
+		float f4 = (par6 >> 24 & 255) / 255.0F;
+		float f5 = (par6 >> 16 & 255) / 255.0F;
+		float f6 = (par6 >> 8 & 255) / 255.0F;
+		float f7 = (par6 & 255) / 255.0F;
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glDisable(GL11.GL_ALPHA_TEST);
+		OpenGlHelper.glBlendFunc(770, 771, 1, 0);
+		GL11.glShadeModel(GL11.GL_SMOOTH);
+		Tessellator tessellator = Tessellator.instance;
+		tessellator.startDrawingQuads();
+		tessellator.setColorRGBA_F(f1, f2, f3, f);
+		tessellator.addVertex(par3, par2, 0.0D);
+		tessellator.addVertex(par1, par2, 0.0D);
+		tessellator.setColorRGBA_F(f5, f6, f7, f4);
+		tessellator.addVertex(par1, par4, 0.0D);
+		tessellator.addVertex(par3, par4, 0.0D);
+		tessellator.draw();
+		GL11.glShadeModel(GL11.GL_FLAT);
+		GL11.glDisable(GL11.GL_BLEND);
+		GL11.glEnable(GL11.GL_ALPHA_TEST);
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+	}
 }

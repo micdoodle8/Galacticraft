@@ -31,24 +31,27 @@ public class RidgedMulti extends NoiseModule
 		double weight = 1.0;
 		final double offset = 1.0;
 		final double gain = 2.0;
-		for(int n = 0; n < this.numOctaves; n++) {
+		for (int n = 0; n < this.numOctaves; n++)
+		{
 			double noise = this.absolute(this.noiseGen.noise2d(i + this.offsetX, this.offsetY));
 			noise = offset - noise;
 			noise *= noise;
 			noise *= weight;
-			
+
 			weight = noise * gain;
-			
-			if(weight > 1D) {
+
+			if (weight > 1D)
+			{
 				weight = 1D;
 			}
-			
-			if(weight < 0D) {
+
+			if (weight < 0D)
+			{
 				weight = 0D;
 			}
-			
+
 			val += noise;
-			
+
 			i *= 2;
 		}
 		return val;

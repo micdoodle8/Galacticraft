@@ -19,8 +19,8 @@ public interface IPlanetsModule
 	public void postInit(FMLPostInitializationEvent event);
 
 	public void serverStarting(FMLServerStartingEvent event);
-	
+
 	public void getGuiIDs(List<Integer> idList);
-	
+
 	public Object getGuiElement(Side side, int ID, EntityPlayer player, World world, int x, int y, int z);
 }

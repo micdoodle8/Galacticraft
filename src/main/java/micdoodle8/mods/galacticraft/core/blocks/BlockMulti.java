@@ -8,8 +8,8 @@ import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockBed;
 import net.minecraft.block.BlockContainer;
+import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -29,8 +29,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
-
 
 public class BlockMulti extends BlockContainer implements IPartialSealableBlock, ITileEntityProvider
 {
@@ -263,31 +261,32 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
 
 		return null;
 	}
-	
-    public int getBedDirection(IBlockAccess world, int x, int y, int z)
-    {
+
+	@Override
+	public int getBedDirection(IBlockAccess world, int x, int y, int z)
+	{
 		TileEntity tileEntity = world.getTileEntity(x, y, z);
 		BlockVec3 mainBlockPosition = ((TileEntityMulti) tileEntity).mainBlockPosition;
-		
+
 		if (mainBlockPosition != null)
 		{
 			return mainBlockPosition.getBlock(world).getBedDirection(world, mainBlockPosition.x, mainBlockPosition.y, mainBlockPosition.z);
 		}
-		
-        return BlockBed.getDirection(world.getBlockMetadata(x,  y, z));
-    }
+
+		return BlockDirectional.getDirection(world.getBlockMetadata(x, y, z));
+	}
 
 	@Override
 	public boolean isBed(IBlockAccess world, int x, int y, int z, EntityLivingBase player)
 	{
 		TileEntity tileEntity = world.getTileEntity(x, y, z);
 		BlockVec3 mainBlockPosition = ((TileEntityMulti) tileEntity).mainBlockPosition;
-		
+
 		if (mainBlockPosition != null)
 		{
 			return mainBlockPosition.getBlock(world).isBed(world, mainBlockPosition.x, mainBlockPosition.y, mainBlockPosition.z, player);
 		}
-		
+
 		return super.isBed(world, x, y, z, player);
 	}
 
@@ -296,7 +295,7 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
 	{
 		TileEntity tileEntity = world.getTileEntity(x, y, z);
 		BlockVec3 mainBlockPosition = ((TileEntityMulti) tileEntity).mainBlockPosition;
-		
+
 		if (mainBlockPosition != null)
 		{
 			mainBlockPosition.getBlock(world).setBedOccupied(world, mainBlockPosition.x, mainBlockPosition.y, mainBlockPosition.z, player, occupied);
@@ -308,38 +307,38 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
 	}
 
 	@Override
-    @SideOnly(Side.CLIENT)
-    public boolean addHitEffects(World worldObj, MovingObjectPosition target, EffectRenderer effectRenderer)
-    {
-    	if (worldObj.getBlockMetadata(target.blockX, target.blockY, target.blockZ) == 6)
-    	{
-    		return true;
-    	}
+	@SideOnly(Side.CLIENT)
+	public boolean addHitEffects(World worldObj, MovingObjectPosition target, EffectRenderer effectRenderer)
+	{
+		if (worldObj.getBlockMetadata(target.blockX, target.blockY, target.blockZ) == 6)
+		{
+			return true;
+		}
 
 		TileEntity tileEntity = worldObj.getTileEntity(target.blockX, target.blockY, target.blockZ);
 
 		if (tileEntity instanceof TileEntityMulti)
 		{
 			BlockVec3 mainBlockPosition = ((TileEntityMulti) tileEntity).mainBlockPosition;
-			
+
 			if (mainBlockPosition != null)
 			{
 				effectRenderer.addBlockHitEffects(mainBlockPosition.x, mainBlockPosition.y, mainBlockPosition.z, target);
 			}
 		}
-    	
-        return super.addHitEffects(worldObj, target, effectRenderer);
-    }
+
+		return super.addHitEffects(worldObj, target, effectRenderer);
+	}
 
 	@Override
-    @SideOnly(Side.CLIENT)
-    public boolean addDestroyEffects(World world, int x, int y, int z, int meta, EffectRenderer effectRenderer)
-    {
-    	if (world.getBlockMetadata(x, y, z) == 6)
-    	{
-    		return true;
-    	}
-    	
-        return super.addDestroyEffects(world, x, y, z, meta, effectRenderer);
-    }
+	@SideOnly(Side.CLIENT)
+	public boolean addDestroyEffects(World world, int x, int y, int z, int meta, EffectRenderer effectRenderer)
+	{
+		if (world.getBlockMetadata(x, y, z) == 6)
+		{
+			return true;
+		}
+
+		return super.addDestroyEffects(world, x, y, z, meta, effectRenderer);
+	}
 }

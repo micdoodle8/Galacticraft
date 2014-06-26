@@ -13,8 +13,6 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
 
-
-
 public class ItemRendererKey implements IItemRenderer
 {
 	private final ResourceLocation treasureChestTexture;

@@ -12,8 +12,6 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-
-
 public class GuiSchematicTier2Rocket extends GuiContainer implements ISchematicResultPage
 {
 	private static final ResourceLocation tier2SchematicTexture = new ResourceLocation(MarsModule.TEXTURE_DOMAIN, "textures/gui/schematic_rocket_T2.png");

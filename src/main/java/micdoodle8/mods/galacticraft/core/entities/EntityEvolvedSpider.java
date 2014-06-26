@@ -5,8 +5,6 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.world.World;
 
-
-
 public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathable
 {
 	public EntityEvolvedSpider(World par1World)
@@ -28,10 +26,10 @@ public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathab
 	{
 		return true;
 	}
-	
+
 	@Override
-    protected boolean isAIEnabled()
-    {
-        return true;
-    }
+	protected boolean isAIEnabled()
+	{
+		return true;
+	}
 }

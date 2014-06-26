@@ -6,6 +6,6 @@ import net.minecraft.block.Block;
 public interface IPlanetsModuleClient extends IPlanetsModule
 {
 	public int getBlockRenderID(Block block);
-	
+
 	public void spawnParticle(String particleID, Vector3 position, Vector3 color);
 }

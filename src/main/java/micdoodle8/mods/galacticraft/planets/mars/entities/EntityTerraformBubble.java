@@ -14,8 +14,6 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class EntityTerraformBubble extends EntityAdvanced implements IBubble
 {
 	@NetworkedField(targetSide = Side.CLIENT)
@@ -41,11 +39,11 @@ public class EntityTerraformBubble extends EntityAdvanced implements IBubble
 		this.renderDistanceWeight = 5.0D;
 	}
 
-//	@Override
-//	protected boolean pushOutOfBlocks(double par1, double par3, double par5)
-//	{
-//		return false;
-//	} TODO Find out if this is still necessary
+	//	@Override
+	//	protected boolean pushOutOfBlocks(double par1, double par3, double par5)
+	//	{
+	//		return false;
+	//	} TODO Find out if this is still necessary
 
 	@Override
 	public AxisAlignedBB getBoundingBox()
@@ -167,7 +165,7 @@ public class EntityTerraformBubble extends EntityAdvanced implements IBubble
 	{
 		return this.shouldRender;
 	}
-	
+
 	public void setShouldRender(boolean shouldRender)
 	{
 		this.shouldRender = shouldRender;

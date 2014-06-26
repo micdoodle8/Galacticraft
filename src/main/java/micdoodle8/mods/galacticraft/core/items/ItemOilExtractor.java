@@ -22,8 +22,6 @@ import net.minecraftforge.fluids.IFluidBlock;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class ItemOilExtractor extends Item
 {
 	protected IIcon[] icons = new IIcon[5];

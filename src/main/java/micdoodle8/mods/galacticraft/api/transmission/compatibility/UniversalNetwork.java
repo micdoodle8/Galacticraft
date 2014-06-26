@@ -56,7 +56,7 @@ public class UniversalNetwork extends ElectricityNetwork
 	private float totalSent = 0F;
 	private boolean doneScheduled = false;
 	private boolean spamstop = false;
-	
+
 	/*
 	 * connectedAcceptors is all the acceptors connected to this network
 	 * connectedDirections is the directions of those connections (from the point of view of the acceptor tile)
@@ -65,7 +65,7 @@ public class UniversalNetwork extends ElectricityNetwork
 	 */
 	private List<TileEntity> connectedAcceptors = new LinkedList<TileEntity>();
 	private List<ForgeDirection> connectedDirections = new LinkedList<ForgeDirection>();
-	
+
 	/*
 	 *  availableAcceptors is the acceptors which can receive energy (this tick)
 	 *  availableconnectedDirections is a map of those acceptors and the directions they will receive from (from the point of view of the acceptor tile)
@@ -74,46 +74,46 @@ public class UniversalNetwork extends ElectricityNetwork
 	 */
 	private Set<TileEntity> availableAcceptors = new HashSet<TileEntity>();
 	private Map<TileEntity, ForgeDirection> availableconnectedDirections = new HashMap<TileEntity, ForgeDirection>();
-	
-	private Map<TileEntity,Float> energyRequests = new HashMap<TileEntity,Float>();
+
+	private Map<TileEntity, Float> energyRequests = new HashMap<TileEntity, Float>();
 	private List<TileEntity> ignoreAcceptors = new LinkedList<TileEntity>();
-	
+
 	//This is the energy per tick corresponding to 12kW 
 	private final static float ENERGYSTORAGELEVEL = 0.6F;
-	
+
 	@Override
 	public float getRequest(TileEntity... ignoreTiles)
 	{
-		if (UniversalNetwork.tickCount!=this.tickDone)
-		{	
+		if (UniversalNetwork.tickCount != this.tickDone)
+		{
 			this.tickDone = UniversalNetwork.tickCount;
 			//Start the new tick - initialise everything
-			doTickStartCalc(ignoreTiles);
-			
-/*			if (NetworkConfigHandler.isBuildcraftLoaded())
-			{
-				try
-				{
-					Class<?> clazz = Class.forName("micdoodle8.mods.galacticraft.core.tile.TileEntityUniversalConductor");
+			this.doTickStartCalc(ignoreTiles);
 
-					for (IConductor wire : this.getTransmitters())
-					{
-						if (clazz.isInstance(wire))
+			/*			if (NetworkConfigHandler.isBuildcraftLoaded())
 						{
-							//This will call getRequest() but that's no problem, on the second call it will just return the totalRequested
-							clazz.getMethod("reconfigureBC").invoke(wire);
-						}
-					}
-				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-				}
-			}*/
+							try
+							{
+								Class<?> clazz = Class.forName("micdoodle8.mods.galacticraft.core.tile.TileEntityUniversalConductor");
+
+								for (IConductor wire : this.getTransmitters())
+								{
+									if (clazz.isInstance(wire))
+									{
+										//This will call getRequest() but that's no problem, on the second call it will just return the totalRequested
+										clazz.getMethod("reconfigureBC").invoke(wire);
+									}
+								}
+							}
+							catch (Exception e)
+							{
+								e.printStackTrace();
+							}
+						}*/
 		}
 		return this.totalRequested - this.totalEnergy - this.totalSent;
 	}
-	
+
 	@Override
 	public float produce(float electricity, boolean doReceive, TileEntity... ignoreTiles)
 	{
@@ -121,43 +121,52 @@ public class UniversalNetwork extends ElectricityNetwork
 		{
 			ElectricityProductionEvent evt = new ElectricityProductionEvent(this, electricity, ignoreTiles);
 			MinecraftForge.EVENT_BUS.post(evt);
-			
+
 			if (!evt.isCanceled())
 			{
-				if (UniversalNetwork.tickCount!=this.tickDone)
-				{	
+				if (UniversalNetwork.tickCount != this.tickDone)
+				{
 					this.tickDone = UniversalNetwork.tickCount;
 					//Start the new tick - initialise everything
-					doTickStartCalc(ignoreTiles);
+					this.doTickStartCalc(ignoreTiles);
 				}
-		
+
 				if (!this.doneScheduled && this.totalRequested > 0.0F)
 				{
 					try
 					{
 						Class<?> clazz = Class.forName("micdoodle8.mods.galacticraft.core.tick.TickHandlerServer");
-						clazz.getMethod("scheduleNetworkTick", getClass()).invoke(null, this);
+						clazz.getMethod("scheduleNetworkTick", this.getClass()).invoke(null, this);
 					}
 					catch (Exception e)
 					{
 						e.printStackTrace();
 					}
-					
+
 					this.doneScheduled = true;
 				}
-		
+
 				this.ignoreAcceptors.addAll(Arrays.asList(ignoreTiles));
-				
+
 				//On a regular mid-tick produce(), just figure out how much is totalEnergy this tick and return the used amount
 				//This will return 0 if totalRequested is 0 - for example a network with no acceptors
 				float totalEnergyLast = this.totalEnergy;
-				
+
 				//Add the energy for distribution by this grid later this tick
 				//Note: totalEnergy cannot exceed totalRequested
-				if (doReceive) this.totalEnergy += Math.min(electricity, this.totalRequested - totalEnergyLast);
-				
-				if (this.totalRequested >= totalEnergyLast + electricity) return 0F; //All the electricity will be used
-				if (totalEnergyLast >= this.totalRequested) return electricity; //None of the electricity will be used
+				if (doReceive)
+				{
+					this.totalEnergy += Math.min(electricity, this.totalRequested - totalEnergyLast);
+				}
+
+				if (this.totalRequested >= totalEnergyLast + electricity)
+				{
+					return 0F; //All the electricity will be used
+				}
+				if (totalEnergyLast >= this.totalRequested)
+				{
+					return electricity; //None of the electricity will be used
+				}
 				return totalEnergyLast + electricity - this.totalRequested; //Some of the electricity will be used
 			}
 		}
@@ -167,60 +176,71 @@ public class UniversalNetwork extends ElectricityNetwork
 	public void tickEnd()
 	{
 		this.doneScheduled = false;
-		
+
 		//Finish the last tick if there was some to send and something to receive it
 		if (this.totalEnergy > 0F)
 		{
 			//Call doTickStartCalc a second time in case anything has updated meanwhile
-			TileEntity[] ignoretiles = new TileEntity[ignoreAcceptors.size()];
-			this.doTickStartCalc(ignoreAcceptors.toArray(ignoretiles));
-			
+			TileEntity[] ignoretiles = new TileEntity[this.ignoreAcceptors.size()];
+			this.doTickStartCalc(this.ignoreAcceptors.toArray(ignoretiles));
+
 			if (this.totalRequested > 0F)
 			{
-				this.totalSent = doProduce();
+				this.totalSent = this.doProduce();
 				if (this.totalSent < this.totalEnergy)
+				{
 					//Any spare energy left is retained for the next tick
 					this.totalEnergy -= this.totalSent;
-				else totalEnergy = 0F;
+				}
+				else
+				{
+					this.totalEnergy = 0F;
+				}
 			}
 		}
-		else totalEnergy = 0F;	
+		else
+		{
+			this.totalEnergy = 0F;
+		}
 	}
 
 	private void doTickStartCalc(TileEntity... ignoreTiles)
 	{
 		this.totalSent = 0F;
-		refreshAcceptors();
-		 
-		if (this.getTransmitters().size() == 0) return;
-		
+		this.refreshAcceptors();
+
+		if (this.getTransmitters().size() == 0)
+		{
+			return;
+		}
+
 		this.availableAcceptors.clear();
 		this.availableconnectedDirections.clear();
 		this.energyRequests.clear();
 		this.totalRequested = 0.0F;
 		this.totalStorageExcess = 0F;
 		this.ignoreAcceptors.clear();
-		
+
 		List<TileEntity> ignored = Arrays.asList(ignoreTiles);
-		
+
 		//boolean isTELoaded = NetworkConfigHandler.isThermalExpansionLoaded();
 		//boolean isIC2Loaded = NetworkConfigHandler.isIndustrialCraft2Loaded();
 		//boolean isBCLoaded = NetworkConfigHandler.isBuildcraftLoaded();
 		//boolean isMekLoaded = NetworkConfigHandler.isMekanismLoaded();
 
-		if(!this.connectedAcceptors.isEmpty())
+		if (!this.connectedAcceptors.isEmpty())
 		{
 			float e;
 			final Iterator<ForgeDirection> acceptorDirection = this.connectedDirections.iterator();
-			for(TileEntity acceptor : this.connectedAcceptors)
+			for (TileEntity acceptor : this.connectedAcceptors)
 			{
 				//This tries all sides of the acceptor which are connected (see refreshAcceptors())
 				ForgeDirection sideFrom = acceptorDirection.next();
-				
+
 				//But the grid will only put energy into the acceptor from one side - once it's in availableAcceptors
-				if(!ignored.contains(acceptor) && !this.availableAcceptors.contains(acceptor))
+				if (!ignored.contains(acceptor) && !this.availableAcceptors.contains(acceptor))
 				{
-					e = 0.0F;					
+					e = 0.0F;
 
 					if (acceptor instanceof IElectrical)
 					{
@@ -242,19 +262,22 @@ public class UniversalNetwork extends ElectricityNetwork
 					{
 						e = ((IPowerReceptor) acceptor).getPowerReceiver(sideFrom).powerRequest() * NetworkConfigHandler.BC3_RATIO;
 					}*/
-					
+
 					if (e > 0.0F)
 					{
 						this.availableAcceptors.add(acceptor);
-						this.availableconnectedDirections.put(acceptor,sideFrom);
-						this.energyRequests.put(acceptor,Float.valueOf(e));
+						this.availableconnectedDirections.put(acceptor, sideFrom);
+						this.energyRequests.put(acceptor, Float.valueOf(e));
 						this.totalRequested += e;
-						if (e > ENERGYSTORAGELEVEL) this.totalStorageExcess += (e - ENERGYSTORAGELEVEL);
+						if (e > UniversalNetwork.ENERGYSTORAGELEVEL)
+						{
+							this.totalStorageExcess += e - UniversalNetwork.ENERGYSTORAGELEVEL;
+						}
 					}
 				}
 			}
 		}
-			
+
 		//Finally, allow a Forge event to change the total requested
 		ElectricityRequestEvent evt = new ElectricityRequestEvent(this, this.totalRequested, ignoreTiles);
 		MinecraftForge.EVENT_BUS.post(evt);
@@ -271,109 +294,96 @@ public class UniversalNetwork extends ElectricityNetwork
 			//boolean isIC2Loaded = NetworkConfigHandler.isIndustrialCraft2Loaded();
 			//boolean isBCLoaded = NetworkConfigHandler.isBuildcraftLoaded();
 			//boolean isMekLoaded = NetworkConfigHandler.isMekanismLoaded();
-			
+
 			float energyNeeded = this.totalRequested;
 			float energyAvailable = this.totalEnergy;
 			float reducor = 1.0F;
 			float energyStorageReducor = 1.0F;
-			 
+
 			if (energyNeeded > energyAvailable)
-			{	
+			{
 				//If not enough energy, try reducing what goes into energy storage (if any)
 				energyNeeded -= this.totalStorageExcess;
 				//If there's still not enough, put the minimum into energy storage (if any) and, anyhow, reduce everything proportionately
 				if (energyNeeded > energyAvailable)
-				{	
+				{
 					energyStorageReducor = 0F;
 					reducor = energyAvailable / energyNeeded;
 				}
 				else
 				{
 					//Energyavailable exceeds the total needed but only if storage does not fill all in one go - this is a common situation
-					energyStorageReducor = (energyAvailable - energyNeeded)/this.totalStorageExcess;
+					energyStorageReducor = (energyAvailable - energyNeeded) / this.totalStorageExcess;
 				}
 			}
-			
+
 			float currentSending;
 			float sentToAcceptor;
 
-			for (TileEntity tileEntity : availableAcceptors)
+			for (TileEntity tileEntity : this.availableAcceptors)
 			{
 				//Exit the loop if there is no energy left at all (should normally not happen, should be some even for the last acceptor)
-				if (sent >= energyAvailable) break;
+				if (sent >= energyAvailable)
+				{
+					break;
+				}
 
 				//The base case is to give each acceptor what it is requesting
 				currentSending = this.energyRequests.get(tileEntity);
-				
+
 				//If it's an energy store, we may need to damp it down if energyStorageReducor is less than 1
-				if (currentSending > this.ENERGYSTORAGELEVEL)
+				if (currentSending > UniversalNetwork.ENERGYSTORAGELEVEL)
 				{
-					currentSending = this.ENERGYSTORAGELEVEL + (currentSending - this.ENERGYSTORAGELEVEL) * energyStorageReducor;
+					currentSending = UniversalNetwork.ENERGYSTORAGELEVEL + (currentSending - UniversalNetwork.ENERGYSTORAGELEVEL) * energyStorageReducor;
 				}
 
 				//Reduce everything proportionately if there is not enough energy for all needs
 				currentSending *= reducor;
-				
+
 				if (currentSending > energyAvailable - sent)
+				{
 					currentSending = energyAvailable - sent;
-				
+				}
+
 				ForgeDirection sideFrom = this.availableconnectedDirections.get(tileEntity);
 
 				if (tileEntity instanceof IElectrical)
 				{
 					sentToAcceptor = ((IElectrical) tileEntity).receiveElectricity(sideFrom, currentSending, true);
 				}
-				/*else if (isMekLoaded && tileEntity instanceof IStrictEnergyAcceptor)
+				else
 				{
-					IStrictEnergyAcceptor receiver = (IStrictEnergyAcceptor) tileEntity;
-					double mekToSend = currentSending * NetworkConfigHandler.TO_MEKANISM_RATIO;
-					sentToAcceptor = (float) receiver.transferEnergyToAcceptor(sideFrom, mekToSend);
+					sentToAcceptor = 0F;
 				}
-				else if (isTELoaded && tileEntity instanceof IEnergyHandler)
-				{
-					IEnergyHandler handler = (IEnergyHandler) tileEntity;
-					int currentSendinginRF = (currentSending >= Integer.MAX_VALUE / NetworkConfigHandler.TO_TE_RATIO) ? Integer.MAX_VALUE : (int) (currentSending * NetworkConfigHandler.TO_TE_RATIO);
-					sentToAcceptor = handler.receiveEnergy(sideFrom, currentSendinginRF, false) * NetworkConfigHandler.TE_RATIO;
-				}
-				else if (isIC2Loaded && tileEntity instanceof IEnergySink)
-				{
-					IEnergySink electricalTile = (IEnergySink) tileEntity;
-					double toSendIC2 = Math.min(currentSending * NetworkConfigHandler.TO_IC2_RATIO, electricalTile.getMaxSafeInput());
-					toSendIC2 = Math.min(toSendIC2, electricalTile.demandedEnergyUnits());
-					sentToAcceptor = (float) (toSendIC2 - electricalTile.injectEnergyUnits(sideFrom, toSendIC2)) * NetworkConfigHandler.IC2_RATIO;
-				}
-				else if (isBCLoaded && tileEntity instanceof IPowerReceptor)
-				{
-					PowerReceiver receiver = ((IPowerReceptor) tileEntity).getPowerReceiver(sideFrom);
-
-					if (receiver != null)
-					{
-						float req = receiver.powerRequest();
-						float bcToSend = currentSending * NetworkConfigHandler.TO_BC_RATIO;
-						sentToAcceptor = receiver.receiveEnergy(Type.PIPE, Math.min(req, bcToSend), sideFrom) * NetworkConfigHandler.BC3_RATIO;
-					} else sentToAcceptor = 0F;
-				}*/
-				else sentToAcceptor = 0F;
 
 				if (sentToAcceptor / currentSending > 1.002F && sentToAcceptor > 0.001F)
-				{	
+				{
 					if (!this.spamstop)
 					{
-						FMLLog.info("Energy network: acceptor took too much energy, offered "+currentSending+", took "+sentToAcceptor+". "+tileEntity.toString());
+						FMLLog.info("Energy network: acceptor took too much energy, offered " + currentSending + ", took " + sentToAcceptor + ". " + tileEntity.toString());
 						this.spamstop = true;
 					}
 					sentToAcceptor = currentSending;
 				}
-				
+
 				sent += sentToAcceptor;
 			}
 		}
 
-		if (this.tickCount % 200 == 0) this.spamstop = false;
-		
+		if (UniversalNetwork.tickCount % 200 == 0)
+		{
+			this.spamstop = false;
+		}
+
 		float returnvalue = sent;
-		if (returnvalue > this.totalEnergy) returnvalue = this.totalEnergy;
-		if (returnvalue < 0F) returnvalue = 0F;
+		if (returnvalue > this.totalEnergy)
+		{
+			returnvalue = this.totalEnergy;
+		}
+		if (returnvalue < 0F)
+		{
+			returnvalue = 0F;
+		}
 		return returnvalue;
 	}
 
@@ -381,7 +391,7 @@ public class UniversalNetwork extends ElectricityNetwork
 	public void refresh()
 	{
 		Iterator<IConductor> it = this.getTransmitters().iterator();
-		while(it.hasNext())
+		while (it.hasNext())
 		{
 			IConductor conductor = it.next();
 
@@ -391,7 +401,7 @@ public class UniversalNetwork extends ElectricityNetwork
 				continue;
 			}
 
-			TileEntity tile = (TileEntity) conductor; 
+			TileEntity tile = (TileEntity) conductor;
 			World world = tile.getWorldObj();
 			//Remove any conductors in unloaded chunks
 			if (tile.isInvalid() || world == null || !world.blockExists(tile.xCoord, tile.yCoord, tile.zCoord))
@@ -399,7 +409,7 @@ public class UniversalNetwork extends ElectricityNetwork
 				it.remove();
 				continue;
 			}
-			
+
 			if (conductor != world.getTileEntity(tile.xCoord, tile.yCoord, tile.zCoord))
 			{
 				it.remove();
@@ -432,9 +442,9 @@ public class UniversalNetwork extends ElectricityNetwork
 			conductors.addAll(this.getTransmitters());
 			//This prevents concurrent modifications if something in the loop causes chunk loading
 			//(Chunk loading can change the network if new conductors are found)
-			for(IConductor conductor : conductors)
-			{	
-				TileEntity[] adjacentConnections = conductor.getAdjacentConnections(); 
+			for (IConductor conductor : conductors)
+			{
+				TileEntity[] adjacentConnections = conductor.getAdjacentConnections();
 				for (int i = 0; i < adjacentConnections.length; i++)
 				{
 					TileEntity acceptor = adjacentConnections[i];
@@ -443,7 +453,7 @@ public class UniversalNetwork extends ElectricityNetwork
 					{
 						// The direction 'sideFrom' is from the perspective of the acceptor, that's more useful than the conductor's perspective
 						ForgeDirection sideFrom = ForgeDirection.getOrientation(i).getOpposite();
-						
+
 						if (acceptor instanceof IElectrical)
 						{
 							if (((IElectrical) acceptor).canConnect(sideFrom, NetworkType.POWER))
@@ -506,7 +516,10 @@ public class UniversalNetwork extends ElectricityNetwork
 			{
 				thisNetwork.addAll(thatNetwork);
 				this.refresh();
-				if (network instanceof UniversalNetwork) ((UniversalNetwork) network).destroy();
+				if (network instanceof UniversalNetwork)
+				{
+					((UniversalNetwork) network).destroy();
+				}
 				return this;
 			}
 			else
@@ -531,7 +544,7 @@ public class UniversalNetwork extends ElectricityNetwork
 		try
 		{
 			Class<?> clazz = Class.forName("micdoodle8.mods.galacticraft.core.tick.TickHandlerServer");
-			clazz.getMethod("removeNetworkTick", getClass()).invoke(null, this);
+			clazz.getMethod("removeNetworkTick", this.getClass()).invoke(null, this);
 		}
 		catch (Exception e)
 		{
@@ -539,7 +552,7 @@ public class UniversalNetwork extends ElectricityNetwork
 		}
 
 	}
-	
+
 	@Override
 	public void split(IConductor splitPoint)
 	{

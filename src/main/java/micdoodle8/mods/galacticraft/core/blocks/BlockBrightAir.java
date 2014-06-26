@@ -10,8 +10,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-
-
 public class BlockBrightAir extends BlockAir
 {
 	public BlockBrightAir(String assetName)
@@ -25,7 +23,7 @@ public class BlockBrightAir extends BlockAir
 	}
 
 	@Override
-    public boolean canReplace(World world, int x, int y, int z, int side, ItemStack stack)
+	public boolean canReplace(World world, int x, int y, int z, int side, ItemStack stack)
 	{
 		return true;
 	}
@@ -35,7 +33,6 @@ public class BlockBrightAir extends BlockAir
 	{
 		return true;
 	}
-
 
 	@Override
 	public int getRenderBlockPass()

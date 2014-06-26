@@ -64,8 +64,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 //import mekanism.api.gas.ITubeConnection;
 //import mekanism.api.transmitters.TransmissionType;
 
-
-
 public class WorldUtil
 {
 	public static List<Integer> registeredSpaceStations;
@@ -133,29 +131,29 @@ public class WorldUtil
 	{
 		return new Vector3(1, 1, 1);
 	}
-	
+
 	@SideOnly(Side.CLIENT)
 	public static float getWorldBrightness(WorldClient world)
 	{
 		if (world.provider instanceof WorldProviderMoon)
 		{
-	        float f1 = world.getCelestialAngle(1.0F);
-	        float f2 = 1.0F - (MathHelper.cos(f1 * (float)Math.PI * 2.0F) * 2.0F + 0.2F);
+			float f1 = world.getCelestialAngle(1.0F);
+			float f2 = 1.0F - (MathHelper.cos(f1 * (float) Math.PI * 2.0F) * 2.0F + 0.2F);
 
-	        if (f2 < 0.0F)
-	        {
-	            f2 = 0.0F;
-	        }
+			if (f2 < 0.0F)
+			{
+				f2 = 0.0F;
+			}
 
-	        if (f2 > 1.0F)
-	        {
-	            f2 = 1.0F;
-	        }
+			if (f2 > 1.0F)
+			{
+				f2 = 1.0F;
+			}
 
-	        f2 = 1.0F - f2;
-	        return f2 * 0.8F;
+			f2 = 1.0F - f2;
+			return f2 * 0.8F;
 		}
-		
+
 		return world.getSunBrightness(1.0F);
 	}
 
@@ -552,7 +550,7 @@ public class WorldUtil
 
 				if (worldNew.provider instanceof WorldProviderOrbit)
 				{
-					((WorldProviderOrbit)worldNew.provider).sendPacketsToClient(player);
+					((WorldProviderOrbit) worldNew.provider).sendPacketsToClient(player);
 					if (WorldUtil.registeredSpaceStations.contains(dimID))
 					//TODO This has never been effective before due to the earlier bug - what does it actually do?
 					{
@@ -705,7 +703,7 @@ public class WorldUtil
 				player.playerNetServerHandler.sendPacket(new S1DPacketEntityEffect(player.getEntityId(), var10));
 			}
 
-//			player.playerNetServerHandler.sendPacketToPlayer(new Packet43Experience(player.experience, player.experienceTotal, player.experienceLevel));
+			//			player.playerNetServerHandler.sendPacketToPlayer(new Packet43Experience(player.experience, player.experienceTotal, player.experienceLevel));
 		}
 
 		if (entity instanceof GCEntityPlayerMP)
@@ -835,7 +833,7 @@ public class WorldUtil
 		TileEntity[] adjacentConnections = new TileEntity[ForgeDirection.VALID_DIRECTIONS.length];
 
 		//boolean isMekLoaded = NetworkConfigHandler.isMekanismLoaded();
-		
+
 		BlockVec3 thisVec = new BlockVec3(tile);
 		for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
 		{
@@ -862,7 +860,7 @@ public class WorldUtil
 
 		return adjacentConnections;
 	}
-	
+
 	public static TileEntity[] getAdjacentPowerConnections(TileEntity tile)
 	{
 		TileEntity[] adjacentConnections = new TileEntity[6];

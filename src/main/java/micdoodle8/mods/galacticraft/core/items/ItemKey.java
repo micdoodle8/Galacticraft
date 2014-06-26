@@ -12,8 +12,6 @@ import net.minecraft.item.ItemStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class ItemKey extends Item implements IKeyItem
 {
 	public static String[] keyTypes = new String[] { "T1" };

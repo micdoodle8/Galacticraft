@@ -12,8 +12,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 
-
-
 public class ContainerSlimeling extends Container
 {
 	private final InventorySlimeling slimelingInventory;

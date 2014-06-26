@@ -11,8 +11,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 
-
-
 public class TeleportTypeAsteroids implements ITeleportType
 {
 	@Override
@@ -47,26 +45,26 @@ public class TeleportTypeAsteroids implements ITeleportType
 	@Override
 	public void onSpaceDimensionChanged(World newWorld, EntityPlayerMP player, boolean ridingAutoRocket)
 	{
-//		if (!ridingAutoRocket && player instanceof GCEntityPlayerMP && ((GCEntityPlayerMP) player).getTeleportCooldown() <= 0)
-//		{
-//			final GCEntityPlayerMP gcPlayer = (GCEntityPlayerMP) player;
-//
-//			if (gcPlayer.capabilities.isFlying)
-//			{
-//				gcPlayer.capabilities.isFlying = false;
-//			}
-//
-//			EntityLandingBalloons lander = new EntityLandingBalloons(gcPlayer);
-//			lander.setPositionAndRotation(player.posX, player.posY, player.posZ, 0, 0);
-//
-//			if (!newWorld.isRemote)
-//			{
-//				newWorld.spawnEntityInWorld(lander);
-//			}
-//
-//			GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, new Object[] { 1 }));
-//
-//			gcPlayer.setTeleportCooldown(10);
-//		}
+		//		if (!ridingAutoRocket && player instanceof GCEntityPlayerMP && ((GCEntityPlayerMP) player).getTeleportCooldown() <= 0)
+		//		{
+		//			final GCEntityPlayerMP gcPlayer = (GCEntityPlayerMP) player;
+		//
+		//			if (gcPlayer.capabilities.isFlying)
+		//			{
+		//				gcPlayer.capabilities.isFlying = false;
+		//			}
+		//
+		//			EntityLandingBalloons lander = new EntityLandingBalloons(gcPlayer);
+		//			lander.setPositionAndRotation(player.posX, player.posY, player.posZ, 0, 0);
+		//
+		//			if (!newWorld.isRemote)
+		//			{
+		//				newWorld.spawnEntityInWorld(lander);
+		//			}
+		//
+		//			GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.C_ZOOM_CAMERA, new Object[] { 1 }));
+		//
+		//			gcPlayer.setTeleportCooldown(10);
+		//		}
 	}
 }

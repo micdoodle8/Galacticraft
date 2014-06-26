@@ -20,8 +20,6 @@ import net.minecraftforge.fluids.FluidStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class ItemTier1Rocket extends Item implements IHoldableItem
 {
 	public ItemTier1Rocket(String assetName)

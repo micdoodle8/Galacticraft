@@ -5,8 +5,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-
-
 public class SlotRocketBenchResult extends Slot
 {
 	private final IInventory craftMatrix;

@@ -20,36 +20,36 @@ public class TileEntityShortRangeTelepad extends TileEntityMulti implements IMul
 	@NetworkedField(targetSide = Side.CLIENT)
 	public int targetAddress = -1;
 
-    @Override
-    public void updateEntity() 
-    {
-    	super.updateEntity();
-    }
-
-    @Override
-    public void readFromNBT(NBTTagCompound nbt)
-    {
-    	super.readFromNBT(nbt);
-    	this.address = nbt.getInteger("Address");
-    	this.targetAddress = nbt.getInteger("TargetAddress");
-    }
-
-    @Override
-    public void writeToNBT(NBTTagCompound nbt)
-    {
-    	super.writeToNBT(nbt);
-    	nbt.setInteger("TargetAddress", this.targetAddress);
-    	nbt.setInteger("Address", this.address);
-    }
-    
 	@Override
-	public double getPacketRange() 
+	public void updateEntity()
+	{
+		super.updateEntity();
+	}
+
+	@Override
+	public void readFromNBT(NBTTagCompound nbt)
+	{
+		super.readFromNBT(nbt);
+		this.address = nbt.getInteger("Address");
+		this.targetAddress = nbt.getInteger("TargetAddress");
+	}
+
+	@Override
+	public void writeToNBT(NBTTagCompound nbt)
+	{
+		super.writeToNBT(nbt);
+		nbt.setInteger("TargetAddress", this.targetAddress);
+		nbt.setInteger("Address", this.address);
+	}
+
+	@Override
+	public double getPacketRange()
 	{
 		return 24.0D;
 	}
 
 	@Override
-	public int getPacketCooldown() 
+	public int getPacketCooldown()
 	{
 		return 3;
 	}
@@ -61,7 +61,7 @@ public class TileEntityShortRangeTelepad extends TileEntityMulti implements IMul
 	}
 
 	@Override
-	public boolean onActivated(EntityPlayer entityPlayer) 
+	public boolean onActivated(EntityPlayer entityPlayer)
 	{
 		return false;
 	}
@@ -90,9 +90,9 @@ public class TileEntityShortRangeTelepad extends TileEntityMulti implements IMul
 	}
 
 	@Override
-    @SideOnly(Side.CLIENT)
-    public AxisAlignedBB getRenderBoundingBox()
-    {
-		return INFINITE_EXTENT_AABB;
-    }
+	@SideOnly(Side.CLIENT)
+	public AxisAlignedBB getRenderBoundingBox()
+	{
+		return TileEntity.INFINITE_EXTENT_AABB;
+	}
 }

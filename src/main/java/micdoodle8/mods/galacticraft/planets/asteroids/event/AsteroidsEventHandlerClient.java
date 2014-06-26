@@ -39,7 +39,7 @@ public class AsteroidsEventHandlerClient
 					world.provider.setCloudRenderer(new CloudRenderer());
 				}
 			}
-		}			
+		}
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -48,7 +48,7 @@ public class AsteroidsEventHandlerClient
 	{
 		NetworkRenderer.renderNetworks(FMLClientHandler.instance().getClient().theWorld, event.partialTicks);
 	}
-	
+
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onThermalArmorEvent(ThermalArmorEvent event)
@@ -64,7 +64,7 @@ public class AsteroidsEventHandlerClient
 			event.setArmorAddResult(ArmorAddResult.ADD);
 			return;
 		}
-		
+
 		event.setArmorAddResult(ArmorAddResult.NOTHING);
 	}
 }

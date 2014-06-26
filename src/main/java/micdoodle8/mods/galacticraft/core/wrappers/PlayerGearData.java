@@ -3,8 +3,6 @@ package micdoodle8.mods.galacticraft.core.wrappers;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 
-
-
 public class PlayerGearData
 {
 	private final EntityPlayer player;
@@ -97,17 +95,17 @@ public class PlayerGearData
 	{
 		this.frequencyModule = frequencyModule;
 	}
-	
+
 	public int getThermalPadding(int slot)
 	{
-		if (slot >= 0 && slot < thermalPadding.length)
+		if (slot >= 0 && slot < this.thermalPadding.length)
 		{
-			return thermalPadding[slot];
+			return this.thermalPadding[slot];
 		}
-		
+
 		return -1;
 	}
-	
+
 	public void setThermalPadding(int slot, int thermalPadding)
 	{
 		if (slot >= 0 && slot < this.thermalPadding.length)

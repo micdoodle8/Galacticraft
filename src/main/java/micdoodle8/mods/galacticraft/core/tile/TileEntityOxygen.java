@@ -15,8 +15,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 
-
-
 public abstract class TileEntityOxygen extends TileEntityElectricBlock implements IOxygenReceiver, IOxygenStorage
 {
 	public float maxOxygen;
@@ -34,7 +32,7 @@ public abstract class TileEntityOxygen extends TileEntityElectricBlock implement
 
 	public int getScaledOxygenLevel(int scale)
 	{
-		return (int) Math.floor((this.getOxygenStored() * scale) / (this.getMaxOxygenStored() - this.oxygenPerTick));
+		return (int) Math.floor(this.getOxygenStored() * scale / (this.getMaxOxygenStored() - this.oxygenPerTick));
 	}
 
 	public abstract boolean shouldUseOxygen();
@@ -128,7 +126,7 @@ public abstract class TileEntityOxygen extends TileEntityElectricBlock implement
 		case OXYGEN:
 			return this.getOxygenInputDirections().contains(direction) || this.getOxygenOutputDirections().contains(direction);
 		case POWER:
-//			return this.nodeAvailable(new EnergySourceAdjacent(direction));
+			//			return this.nodeAvailable(new EnergySourceAdjacent(direction));
 			return super.canConnect(direction, type);
 		}
 
@@ -248,28 +246,28 @@ public abstract class TileEntityOxygen extends TileEntityElectricBlock implement
 			}
 			else if (NetworkConfigHandler.isMekanismLoaded())
 			{
-//				GasStack toSend = new GasStack((Gas) NetworkConfigHandler.gasOxygen, (int) Math.floor(Math.min(this.getOxygenStored(), provide)));
-//				int acceptedOxygen = GasTransmission.emitGasToNetwork(toSend, this, outputDirection);
-//				this.provideOxygen(acceptedOxygen, true);
-//
-//				if (NetworkConfigHandler.isMekanismV6Loaded())
-//				{
-//					if (outputTile instanceof IGasHandler && ((IGasHandler) outputTile).canReceiveGas(outputDirection.getOpposite(), (Gas) NetworkConfigHandler.gasOxygen))
-//					{
-//						acceptedOxygen = ((IGasHandler) outputTile).receiveGas(outputDirection.getOpposite(), toSend);
-//						this.provideOxygen(acceptedOxygen, true);
-//						return true;
-//					}
-//				}
-//				else if (outputTile instanceof IGasAcceptor)
-//				{
-//					if (((IGasAcceptor) outputTile).canReceiveGas(outputDirection.getOpposite(), (Gas) NetworkConfigHandler.gasOxygen))
-//					{
-//						acceptedOxygen = toSend.amount - ((IGasAcceptor) outputTile).receiveGas(toSend);
-//						this.provideOxygen(acceptedOxygen, true);
-//						return true;
-//					}
-//				}
+				//				GasStack toSend = new GasStack((Gas) NetworkConfigHandler.gasOxygen, (int) Math.floor(Math.min(this.getOxygenStored(), provide)));
+				//				int acceptedOxygen = GasTransmission.emitGasToNetwork(toSend, this, outputDirection);
+				//				this.provideOxygen(acceptedOxygen, true);
+				//
+				//				if (NetworkConfigHandler.isMekanismV6Loaded())
+				//				{
+				//					if (outputTile instanceof IGasHandler && ((IGasHandler) outputTile).canReceiveGas(outputDirection.getOpposite(), (Gas) NetworkConfigHandler.gasOxygen))
+				//					{
+				//						acceptedOxygen = ((IGasHandler) outputTile).receiveGas(outputDirection.getOpposite(), toSend);
+				//						this.provideOxygen(acceptedOxygen, true);
+				//						return true;
+				//					}
+				//				}
+				//				else if (outputTile instanceof IGasAcceptor)
+				//				{
+				//					if (((IGasAcceptor) outputTile).canReceiveGas(outputDirection.getOpposite(), (Gas) NetworkConfigHandler.gasOxygen))
+				//					{
+				//						acceptedOxygen = toSend.amount - ((IGasAcceptor) outputTile).receiveGas(toSend);
+				//						this.provideOxygen(acceptedOxygen, true);
+				//						return true;
+				//					}
+				//				}
 			}
 		}
 
@@ -295,57 +293,57 @@ public abstract class TileEntityOxygen extends TileEntityElectricBlock implement
 		return 0;
 	}
 
-//	@RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-//	public int receiveGas(ForgeDirection side, GasStack stack)
-//	{
-//		return (int) Math.floor(this.receiveOxygen(stack.amount, true));
-//	}
-//
-//	@RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-//	public GasStack drawGas(ForgeDirection side, int amount)
-//	{
-//		return new GasStack((Gas) NetworkConfigHandler.gasOxygen, (int) Math.floor(this.provideOxygen(amount, true)));
-//	}
-//
-//	@RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-//	public boolean canDrawGas(ForgeDirection side, Gas type)
-//	{
-//		return type.getName().equals("oxygen") && this.getOxygenOutputDirections().contains(side);
-//	}
-//
-//	@RuntimeInterface(clazz = "mekanism.api.gas.IGasAcceptor", modID = "Mekanism")
-//	public int receiveGas(GasStack stack)
-//	{
-//		return (int) (stack.amount - Math.floor(this.receiveOxygen(stack.amount, true)));
-//	}
-//
-//	@RuntimeInterface(clazz = "mekanism.api.gas.IGasAcceptor", altClasses = { "mekanism.api.gas.IGasHandler" }, modID = "Mekanism")
-//	public boolean canReceiveGas(ForgeDirection side, Gas type)
-//	{
-//		return type.getName().equals("oxygen") && this.getOxygenInputDirections().contains(side);
-//	}
-//
-//	@RuntimeInterface(clazz = "mekanism.api.gas.ITubeConnection", modID = "Mekanism")
-//	public boolean canTubeConnect(ForgeDirection side)
-//	{
-//		return this.canConnect(side, NetworkType.OXYGEN);
-//	}
-//
-//	@RuntimeInterface(clazz = "mekanism.api.gas.IGasStorage", modID = "Mekanism")
-//	public GasStack getGas(Object... data)
-//	{
-//		return new GasStack((Gas) NetworkConfigHandler.gasOxygen, (int) Math.floor(this.getOxygenStored()));
-//	}
-//
-//	@RuntimeInterface(clazz = "mekanism.api.gas.IGasStorage", modID = "Mekanism")
-//	public void setGas(GasStack stack, Object... data)
-//	{
-//		this.setOxygenStored(stack.amount);
-//	}
-//
-//	@RuntimeInterface(clazz = "mekanism.api.gas.IGasStorage", modID = "Mekanism")
-//	public int getMaxGas(Object... data)
-//	{
-//		return (int) Math.floor(this.getMaxOxygenStored());
-//	}
+	//	@RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+	//	public int receiveGas(ForgeDirection side, GasStack stack)
+	//	{
+	//		return (int) Math.floor(this.receiveOxygen(stack.amount, true));
+	//	}
+	//
+	//	@RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+	//	public GasStack drawGas(ForgeDirection side, int amount)
+	//	{
+	//		return new GasStack((Gas) NetworkConfigHandler.gasOxygen, (int) Math.floor(this.provideOxygen(amount, true)));
+	//	}
+	//
+	//	@RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+	//	public boolean canDrawGas(ForgeDirection side, Gas type)
+	//	{
+	//		return type.getName().equals("oxygen") && this.getOxygenOutputDirections().contains(side);
+	//	}
+	//
+	//	@RuntimeInterface(clazz = "mekanism.api.gas.IGasAcceptor", modID = "Mekanism")
+	//	public int receiveGas(GasStack stack)
+	//	{
+	//		return (int) (stack.amount - Math.floor(this.receiveOxygen(stack.amount, true)));
+	//	}
+	//
+	//	@RuntimeInterface(clazz = "mekanism.api.gas.IGasAcceptor", altClasses = { "mekanism.api.gas.IGasHandler" }, modID = "Mekanism")
+	//	public boolean canReceiveGas(ForgeDirection side, Gas type)
+	//	{
+	//		return type.getName().equals("oxygen") && this.getOxygenInputDirections().contains(side);
+	//	}
+	//
+	//	@RuntimeInterface(clazz = "mekanism.api.gas.ITubeConnection", modID = "Mekanism")
+	//	public boolean canTubeConnect(ForgeDirection side)
+	//	{
+	//		return this.canConnect(side, NetworkType.OXYGEN);
+	//	}
+	//
+	//	@RuntimeInterface(clazz = "mekanism.api.gas.IGasStorage", modID = "Mekanism")
+	//	public GasStack getGas(Object... data)
+	//	{
+	//		return new GasStack((Gas) NetworkConfigHandler.gasOxygen, (int) Math.floor(this.getOxygenStored()));
+	//	}
+	//
+	//	@RuntimeInterface(clazz = "mekanism.api.gas.IGasStorage", modID = "Mekanism")
+	//	public void setGas(GasStack stack, Object... data)
+	//	{
+	//		this.setOxygenStored(stack.amount);
+	//	}
+	//
+	//	@RuntimeInterface(clazz = "mekanism.api.gas.IGasStorage", modID = "Mekanism")
+	//	public int getMaxGas(Object... data)
+	//	{
+	//		return (int) Math.floor(this.getMaxOxygenStored());
+	//	}
 }

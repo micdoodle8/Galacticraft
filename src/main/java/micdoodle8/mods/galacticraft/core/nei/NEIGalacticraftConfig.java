@@ -20,8 +20,6 @@ import codechicken.nei.PositionedStack;
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 
-
-
 public class NEIGalacticraftConfig implements IConfigureNEI
 {
 	private static HashMap<HashMap<Integer, PositionedStack>, PositionedStack> rocketBenchRecipes = new HashMap<HashMap<Integer, PositionedStack>, PositionedStack>();
@@ -34,17 +32,17 @@ public class NEIGalacticraftConfig implements IConfigureNEI
 	public void loadConfig()
 	{
 		this.registerRecipes();
-		
+
 		for (Item item : GCItems.hiddenItems)
 		{
 			API.hideItem(new ItemStack(item, 1, 0));
 		}
-		
+
 		for (Block block : GCBlocks.hiddenBlocks)
 		{
 			API.hideItem(new ItemStack(block, 1, 0));
 		}
-		
+
 		API.registerRecipeHandler(new RocketT1RecipeHandler());
 		API.registerUsageHandler(new RocketT1RecipeHandler());
 		API.registerRecipeHandler(new BuggyRecipeHandler());

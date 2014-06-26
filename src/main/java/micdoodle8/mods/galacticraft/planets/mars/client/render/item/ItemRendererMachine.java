@@ -13,8 +13,6 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
 
-
-
 public class ItemRendererMachine implements IItemRenderer
 {
 	private static final ResourceLocation chamberTexture0 = new ResourceLocation(MarsModule.TEXTURE_DOMAIN, "textures/model/chamber_dark.png");
@@ -35,14 +33,14 @@ public class ItemRendererMachine implements IItemRenderer
 
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(ItemRendererMachine.chamberTexture0);
 		this.model.renderPart("Main_Cylinder");
-		
+
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GL11.glColor4f(0.1F, 0.6F, 0.5F, 0.4F);
-		
+
 		this.model.renderPart("Shield_Torus");
-		
+
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL11.glPopMatrix();
 	}

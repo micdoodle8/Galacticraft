@@ -30,37 +30,37 @@ import com.google.common.collect.Sets;
 public class SpaceRaceManager
 {
 	private static final Set<SpaceRace> spaceRaces = Sets.newHashSet();
-	
+
 	public static SpaceRace addSpaceRace(SpaceRace spaceRace)
 	{
-		spaceRaces.remove(spaceRace);
-		spaceRaces.add(spaceRace);
+		SpaceRaceManager.spaceRaces.remove(spaceRace);
+		SpaceRaceManager.spaceRaces.add(spaceRace);
 		return spaceRace;
 	}
-	
+
 	public static void removeSpaceRace(SpaceRace race)
 	{
-		spaceRaces.remove(race);
+		SpaceRaceManager.spaceRaces.remove(race);
 	}
-	
+
 	public static void tick()
 	{
-		for (SpaceRace race : spaceRaces)
+		for (SpaceRace race : SpaceRaceManager.spaceRaces)
 		{
 			boolean playerOnline = false;
-			
+
 			for (int j = 0; j < MinecraftServer.getServer().getConfigurationManager().playerEntityList.size(); j++)
 			{
 				Object o = MinecraftServer.getServer().getConfigurationManager().playerEntityList.get(j);
-				
+
 				if (o instanceof EntityPlayer)
 				{
-					EntityPlayer player = (EntityPlayer)o;
-					
+					EntityPlayer player = (EntityPlayer) o;
+
 					if (race.getPlayerNames().contains(player.getGameProfile().getName()))
 					{
 						CelestialBody body = GalaxyRegistry.getCelestialBodyFromDimensionID(player.worldObj.provider.dimensionId);
-						
+
 						if (body != null)
 						{
 							if (!race.getCelestialBodyStatusList().containsKey(body))
@@ -68,37 +68,37 @@ public class SpaceRaceManager
 								race.setCelestialBodyReached(body);
 							}
 						}
-						
+
 						playerOnline = true;
 					}
 				}
 			}
-			
+
 			if (playerOnline)
 			{
 				race.tick();
-			}			
+			}
 		}
 	}
-	
+
 	public static void loadSpaceRaces(NBTTagCompound nbt)
 	{
 		NBTTagList tagList = nbt.getTagList("SpaceRaceList", 10);
-		
+
 		for (int i = 0; i < tagList.tagCount(); i++)
 		{
 			NBTTagCompound nbt2 = tagList.getCompoundTagAt(i);
 			SpaceRace race = new SpaceRace();
 			race.loadFromNBT(nbt2);
-			spaceRaces.add(race);
+			SpaceRaceManager.spaceRaces.add(race);
 		}
 	}
-	
+
 	public static void saveSpaceRaces(NBTTagCompound nbt)
 	{
 		NBTTagList tagList = new NBTTagList();
-		
-		for (SpaceRace race : spaceRaces)
+
+		for (SpaceRace race : SpaceRaceManager.spaceRaces)
 		{
 			NBTTagCompound nbt2 = new NBTTagCompound();
 			race.saveToNBT(nbt2);
@@ -107,33 +107,33 @@ public class SpaceRaceManager
 
 		nbt.setTag("SpaceRaceList", tagList);
 	}
-	
+
 	public static SpaceRace getSpaceRaceFromPlayer(String username)
 	{
-		for (SpaceRace race : spaceRaces)
+		for (SpaceRace race : SpaceRaceManager.spaceRaces)
 		{
 			if (race.getPlayerNames().contains(username))
 			{
 				return race;
 			}
 		}
-		
+
 		return null;
 	}
-	
+
 	public static SpaceRace getSpaceRaceFromID(int teamID)
 	{
-		for (SpaceRace race : spaceRaces)
+		for (SpaceRace race : SpaceRaceManager.spaceRaces)
 		{
 			if (race.getSpaceRaceID() == teamID)
 			{
 				return race;
 			}
 		}
-		
+
 		return null;
 	}
-	
+
 	public static void sendSpaceRaceData(EntityPlayerMP toPlayer, SpaceRace spaceRace)
 	{
 		if (spaceRace != null)
@@ -144,13 +144,13 @@ public class SpaceRaceManager
 			objList.add(spaceRace.getFlagData());
 			objList.add(spaceRace.getTeamColor());
 			objList.add(spaceRace.getPlayerNames().toArray(new String[spaceRace.getPlayerNames().size()]));
-			
+
 			for (Object o : objList)
 			{
-				
+
 				if (o instanceof String[])
 				{
-					for (String s : (String[])o)
+					for (String s : (String[]) o)
 					{
 						System.out.println(s);
 					}
@@ -160,7 +160,7 @@ public class SpaceRaceManager
 					System.out.println(o);
 				}
 			}
-			
+
 			if (toPlayer != null)
 			{
 				GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACE_RACE_DATA, objList), toPlayer);
@@ -171,29 +171,29 @@ public class SpaceRaceManager
 			}
 		}
 	}
-	
+
 	public static ImmutableSet<SpaceRace> getSpaceRaces()
 	{
-		return ImmutableSet.copyOf(new HashSet<SpaceRace>(spaceRaces));
+		return ImmutableSet.copyOf(new HashSet<SpaceRace>(SpaceRaceManager.spaceRaces));
 	}
-	
+
 	public static void onPlayerRemoval(String player, SpaceRace race)
 	{
 		for (String member : race.getPlayerNames())
 		{
 			EntityPlayerMP memberObj = MinecraftServer.getServer().getConfigurationManager().getPlayerForUsername(member);
-			
+
 			if (memberObj != null)
 			{
 				memberObj.addChatMessage(new ChatComponentText(EnumColor.RED + player + EnumColor.DARK_AQUA + " has been removed from the Space Race.").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.DARK_AQUA)));
 			}
 		}
-		
+
 		List<String> playerList = new ArrayList<String>();
 		playerList.add(player);
 		SpaceRace newRace = SpaceRaceManager.addSpaceRace(new SpaceRace(playerList, "Unnamed Team", new FlagData(48, 32), new Vector3(1, 1, 1)));
 		GCEntityPlayerMP playerToRemove = PlayerUtil.getPlayerBaseServerFromPlayerUsername(player, true);
-		
+
 		if (playerToRemove != null)
 		{
 			SpaceRaceManager.sendSpaceRaceData(playerToRemove, newRace);

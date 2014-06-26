@@ -60,7 +60,7 @@ public abstract class ItemElectric extends Item implements IItemElectric
 	@Override
 	public float recharge(ItemStack itemStack, float energy, boolean doReceive)
 	{
-		float rejectedElectricity = Math.max((this.getElectricityStored(itemStack) + energy) - this.getMaxElectricityStored(itemStack), 0);
+		float rejectedElectricity = Math.max(this.getElectricityStored(itemStack) + energy - this.getMaxElectricityStored(itemStack), 0);
 		float energyToReceive = energy - rejectedElectricity;
 
 		if (doReceive)
@@ -103,7 +103,7 @@ public abstract class ItemElectric extends Item implements IItemElectric
 		itemStack.getTagCompound().setFloat("electricity", electricityStored);
 
 		/** Sets the damage as a percentage to render the bar properly. */
-		itemStack.setItemDamage((int) (100 - (electricityStored / this.getMaxElectricityStored(itemStack)) * 100));
+		itemStack.setItemDamage((int) (100 - electricityStored / this.getMaxElectricityStored(itemStack) * 100));
 	}
 
 	@Override
@@ -126,7 +126,7 @@ public abstract class ItemElectric extends Item implements IItemElectric
 			NBTBase obj = itemStack.getTagCompound().getTag("electricity");
 			if (obj instanceof NBTTagDouble)
 			{
-				energyStored = (float) ((NBTTagDouble) obj).func_150288_h();
+				energyStored = ((NBTTagDouble) obj).func_150288_h();
 			}
 			else if (obj instanceof NBTTagFloat)
 			{
@@ -135,7 +135,7 @@ public abstract class ItemElectric extends Item implements IItemElectric
 		}
 
 		/** Sets the damage as a percentage to render the bar properly. */
-		itemStack.setItemDamage((int) (100 - (energyStored / this.getMaxElectricityStored(itemStack)) * 100));
+		itemStack.setItemDamage((int) (100 - energyStored / this.getMaxElectricityStored(itemStack) * 100));
 		return energyStored;
 	}
 

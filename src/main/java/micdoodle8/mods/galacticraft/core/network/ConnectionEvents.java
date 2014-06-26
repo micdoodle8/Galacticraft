@@ -16,60 +16,60 @@ import cpw.mods.fml.common.network.FMLNetworkEvent.ClientConnectedToServerEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent.ClientDisconnectionFromServerEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent.ServerConnectionFromClientEvent;
 
-public class ConnectionEvents 
+public class ConnectionEvents
 {
 	private static boolean clientConnected = false;
-	
+
 	static
 	{
 		EnumConnectionState.field_150761_f.put(PacketSimple.class, EnumConnectionState.PLAY);
 		EnumConnectionState.PLAY.field_150770_i.put(2515, PacketSimple.class);
 	}
-	
+
 	@SubscribeEvent
 	public void onPlayerLogout(PlayerLoggedOutEvent event)
 	{
 		ChunkLoadingCallback.onPlayerLogout(event.player);
 	}
-	
+
 	@SubscribeEvent
 	public void onPlayerLogin(PlayerLoggedInEvent event)
 	{
 		ChunkLoadingCallback.onPlayerLogin(event.player);
-		
+
 		if (event.player instanceof GCEntityPlayerMP)
 		{
 			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_CLIENT_ID, new Object[] { ((GCEntityPlayerMP) event.player).getPlayerStats().spaceStationDimensionID }), (EntityPlayerMP) event.player);
 		}
-		
+
 		if (event.player.worldObj.provider instanceof WorldProviderOrbit && event.player instanceof EntityPlayerMP)
 		{
-			((WorldProviderOrbit)event.player.worldObj.provider).sendPacketsToClient((EntityPlayerMP) event.player);
+			((WorldProviderOrbit) event.player.worldObj.provider).sendPacketsToClient((EntityPlayerMP) event.player);
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void onConnectionReceived(ServerConnectionFromClientEvent event)
 	{
 		((NetHandlerPlayServer) event.handler).sendPacket(new PacketSimple(EnumSimplePacket.C_UPDATE_PLANETS_LIST, WorldUtil.getPlanetList()));
 		((NetHandlerPlayServer) event.handler).sendPacket(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_LIST, WorldUtil.getSpaceStationList()));
 	}
-	
+
 	@SubscribeEvent
 	public void onConnectionOpened(ClientConnectedToServerEvent event)
 	{
 		if (!event.isLocal)
 		{
-			clientConnected = true;
+			ConnectionEvents.clientConnected = true;
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void onConnectionClosed(ClientDisconnectionFromServerEvent event)
 	{
-		if (clientConnected)
+		if (ConnectionEvents.clientConnected)
 		{
-			clientConnected = false;
+			ConnectionEvents.clientConnected = false;
 			WorldUtil.unregisterPlanets();
 			WorldUtil.unregisterSpaceStations();
 		}

@@ -8,8 +8,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
-
-
 public class InventorySlimeling implements IInventory
 {
 	private ItemStack[] stackList = new ItemStack[27 + 3];
@@ -140,7 +138,7 @@ public class InventorySlimeling implements IInventory
 
 		for (int i = 0; i < tagList.tagCount(); ++i)
 		{
-			final NBTTagCompound nbttagcompound = (NBTTagCompound) tagList.getCompoundTagAt(i);
+			final NBTTagCompound nbttagcompound = tagList.getCompoundTagAt(i);
 			final int j = nbttagcompound.getByte("Slot") & 255;
 			final ItemStack itemstack = ItemStack.loadItemStackFromNBT(nbttagcompound);
 

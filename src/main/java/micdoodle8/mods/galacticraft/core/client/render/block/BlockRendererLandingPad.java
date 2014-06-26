@@ -15,8 +15,6 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
-
-
 public class BlockRendererLandingPad implements ISimpleBlockRenderingHandler
 {
 	final int renderID;

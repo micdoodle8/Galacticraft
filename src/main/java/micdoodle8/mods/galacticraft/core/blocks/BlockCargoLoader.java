@@ -21,8 +21,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class BlockCargoLoader extends BlockAdvancedTile
 {
 	private IIcon iconMachineSide;

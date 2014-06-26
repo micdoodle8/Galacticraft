@@ -31,9 +31,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 {
 	public static enum EnumLaunchPhase
 	{
-		UNIGNITED,
-		IGNITED,
-		LAUNCHED;
+		UNIGNITED, IGNITED, LAUNCHED;
 	}
 
 	public int launchPhase;
@@ -320,7 +318,9 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 	public void getNetworkedData(ArrayList<Object> list)
 	{
 		if (FMLCommonHandler.instance().getEffectiveSide() != Side.SERVER)
-		new Exception().printStackTrace();
+		{
+			new Exception().printStackTrace();
+		}
 		list.add(this.launchPhase);
 		list.add(this.timeSinceLaunch);
 		list.add(this.timeUntilLaunch);
@@ -458,7 +458,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 	{
 		return GalacticraftRegistry.getResouceLocationForDimension(this.worldObj.provider.getClass());
 	}
-	
+
 	public void setLaunchPhase(EnumLaunchPhase phase)
 	{
 		this.launchPhase = phase.ordinal();

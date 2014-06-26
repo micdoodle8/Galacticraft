@@ -5,8 +5,6 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
-
-
 public class InventoryBuggyBench implements IInventory
 {
 	private final ItemStack[] stackList;

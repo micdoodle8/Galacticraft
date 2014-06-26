@@ -8,8 +8,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureStart;
 
-
-
 public class StructureVillageStartMoon extends StructureStart
 {
 	public StructureVillageStartMoon()

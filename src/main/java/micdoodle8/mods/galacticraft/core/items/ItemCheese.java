@@ -10,8 +10,6 @@ import net.minecraft.item.ItemStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class ItemCheese extends ItemFood
 {
 	public ItemCheese(int par1, float par2, boolean par3)

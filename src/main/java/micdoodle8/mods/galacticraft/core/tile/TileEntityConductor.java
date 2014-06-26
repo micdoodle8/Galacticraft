@@ -84,7 +84,7 @@ public abstract class TileEntityConductor extends TileEntityAdvanced implements 
 					}
 				}
 			}
-			
+
 			//if (NetworkConfigHandler.isBuildcraftLoaded())
 			//{
 			//	if (this instanceof TileEntityUniversalConductor) ((TileEntityUniversalConductor) this).reconfigureBC();

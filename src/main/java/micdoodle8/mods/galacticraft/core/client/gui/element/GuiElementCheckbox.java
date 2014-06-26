@@ -9,8 +9,6 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-
-
 public class GuiElementCheckbox extends GuiButton
 {
 	protected static final ResourceLocation texture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/gui.png");
@@ -63,25 +61,25 @@ public class GuiElementCheckbox extends GuiButton
 			par1Minecraft.getTextureManager().bindTexture(GuiElementCheckbox.texture);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			this.field_146123_n = par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height;
-			this.drawTexturedModalRect(this.xPosition, this.yPosition, this.isSelected ? this.texX + this.texWidth : this.texX, this.field_146123_n ? (this.shiftOnHover ? this.texY + this.texHeight : this.texY) : this.texY, this.width, this.height);
+			this.drawTexturedModalRect(this.xPosition, this.yPosition, this.isSelected ? this.texX + this.texWidth : this.texX, this.field_146123_n ? this.shiftOnHover ? this.texY + this.texHeight : this.texY : this.texY, this.width, this.height);
 			this.mouseDragged(par1Minecraft, par2, par3);
 			par1Minecraft.fontRenderer.drawString(this.displayString, this.xPosition + this.width + 3, this.yPosition + (this.height - 6) / 2, this.textColor, false);
 		}
 	}
 
 	@Override
-    public void drawTexturedModalRect(int par1, int par2, int par3, int par4, int par5, int par6)
-    {
-        float f = 0.00390625F;
-        float f1 = 0.00390625F;
-        Tessellator tessellator = Tessellator.instance;
-        tessellator.startDrawingQuads();
-        tessellator.addVertexWithUV((double)(par1 + 0), (double)(par2 + par6), (double)this.zLevel, (double)((float)(par3 + 0) * f), (double)((float)(par4 + this.texHeight) * f1));
-        tessellator.addVertexWithUV((double)(par1 + par5), (double)(par2 + par6), (double)this.zLevel, (double)((float)(par3 + this.texWidth) * f), (double)((float)(par4 + this.texHeight) * f1));
-        tessellator.addVertexWithUV((double)(par1 + par5), (double)(par2 + 0), (double)this.zLevel, (double)((float)(par3 + this.texWidth) * f), (double)((float)(par4 + 0) * f1));
-        tessellator.addVertexWithUV((double)(par1 + 0), (double)(par2 + 0), (double)this.zLevel, (double)((float)(par3 + 0) * f), (double)((float)(par4 + 0) * f1));
-        tessellator.draw();
-    }
+	public void drawTexturedModalRect(int par1, int par2, int par3, int par4, int par5, int par6)
+	{
+		float f = 0.00390625F;
+		float f1 = 0.00390625F;
+		Tessellator tessellator = Tessellator.instance;
+		tessellator.startDrawingQuads();
+		tessellator.addVertexWithUV(par1 + 0, par2 + par6, this.zLevel, (par3 + 0) * f, (par4 + this.texHeight) * f1);
+		tessellator.addVertexWithUV(par1 + par5, par2 + par6, this.zLevel, (par3 + this.texWidth) * f, (par4 + this.texHeight) * f1);
+		tessellator.addVertexWithUV(par1 + par5, par2 + 0, this.zLevel, (par3 + this.texWidth) * f, (par4 + 0) * f1);
+		tessellator.addVertexWithUV(par1 + 0, par2 + 0, this.zLevel, (par3 + 0) * f, (par4 + 0) * f1);
+		tessellator.draw();
+	}
 
 	@Override
 	public boolean mousePressed(Minecraft par1Minecraft, int par2, int par3)

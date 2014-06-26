@@ -7,8 +7,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 
-
-
 public abstract class InventoryEntity extends NetworkedEntity implements IInventory
 {
 	public ItemStack[] containedItems;

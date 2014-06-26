@@ -29,8 +29,6 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class EntityAlienVillager extends EntityAgeable implements IEntityBreathable
 {
 	private int randomTickDivider;

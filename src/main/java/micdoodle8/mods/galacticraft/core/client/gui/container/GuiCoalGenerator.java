@@ -15,8 +15,6 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 @SideOnly(Side.CLIENT)
 public class GuiCoalGenerator extends GuiContainer
 {
@@ -50,7 +48,7 @@ public class GuiCoalGenerator extends GuiContainer
 		}
 		else if (this.tileEntity.generateWatts < TileEntityCoalGenerator.MIN_GENERATE_WATTS)
 		{
-			displayText = GCCoreUtil.translate("gui.status.hullHeat.name") + ": " + (int) (this.tileEntity.generateWatts / TileEntityCoalGenerator.MIN_GENERATE_WATTS * 100) + "%";
+			displayText = GCCoreUtil.translate("gui.status.hullHeat.name") + ": " + this.tileEntity.generateWatts / TileEntityCoalGenerator.MIN_GENERATE_WATTS * 100 + "%";
 		}
 		else
 		{
@@ -58,8 +56,8 @@ public class GuiCoalGenerator extends GuiContainer
 		}
 
 		this.fontRendererObj.drawString(displayText, 122 - this.fontRendererObj.getStringWidth(displayText) / 2, 45, 4210752);
-//		displayText = "Voltage: " + (int) (this.tileEntity.getVoltage() * 1000.0F);
-//		this.fontRendererObj.drawString(displayText, 122 - this.fontRendererObj.getStringWidth(displayText) / 2, 60, 4210752);
+		//		displayText = "Voltage: " + (int) (this.tileEntity.getVoltage() * 1000.0F);
+		//		this.fontRendererObj.drawString(displayText, 122 - this.fontRendererObj.getStringWidth(displayText) / 2, 60, 4210752);
 		this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 

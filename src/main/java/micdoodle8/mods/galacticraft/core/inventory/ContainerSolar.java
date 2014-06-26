@@ -8,12 +8,10 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-
-
 public class ContainerSolar extends Container
 {
 	private TileEntitySolar tileEntity;
-	
+
 	public ContainerSolar(InventoryPlayer par1InventoryPlayer, TileEntitySolar solarGen)
 	{
 		this.tileEntity = solarGen;

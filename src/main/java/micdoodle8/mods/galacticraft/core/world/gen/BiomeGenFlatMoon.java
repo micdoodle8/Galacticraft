@@ -1,8 +1,5 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
-
-
-
 public class BiomeGenFlatMoon extends BiomeGenBaseMoon
 {
 	public BiomeGenFlatMoon(int par1)

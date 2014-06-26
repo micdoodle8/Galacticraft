@@ -16,8 +16,6 @@ import net.minecraft.world.chunk.IChunkProvider;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class WorldProviderMoon extends WorldProviderSpace implements IGalacticraftWorldProvider, ISolarLevel
 {
 	@Override
@@ -133,7 +131,6 @@ public class WorldProviderMoon extends WorldProviderSpace implements IGalacticra
 		this.worldObj.thunderingStrength = 0.0F;
 	}
 
-
 	@Override
 	public boolean isSkyColored()
 	{
@@ -194,11 +191,11 @@ public class WorldProviderMoon extends WorldProviderSpace implements IGalacticra
 		return "Moon";
 	}
 
-//	@Override
-//	public boolean canSnowAt(int x, int y, int z)
-//	{
-//		return false;
-//	}
+	//	@Override
+	//	public boolean canSnowAt(int x, int y, int z)
+	//	{
+	//		return false;
+	//	}
 
 	@Override
 	public boolean canBlockFreeze(int x, int y, int z, boolean byWater)
@@ -267,7 +264,7 @@ public class WorldProviderMoon extends WorldProviderSpace implements IGalacticra
 	}
 
 	@Override
-	public CelestialBody getCelestialBody() 
+	public CelestialBody getCelestialBody()
 	{
 		return GalacticraftCore.moonMoon;
 	}

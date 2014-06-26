@@ -37,8 +37,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 
-
-
 public class TileEntityLaunchController extends TileEntityElectricBlock implements IChunkLoader, IInventory, ISidedInventory, ILandingPadAttachable
 {
 	public static final int WATTS_PER_TICK = 1;
@@ -219,7 +217,7 @@ public class TileEntityLaunchController extends TileEntityElectricBlock implemen
 
 		for (int var3 = 0; var3 < var2.tagCount(); ++var3)
 		{
-			NBTTagCompound var4 = (NBTTagCompound) var2.getCompoundTagAt(var3);
+			NBTTagCompound var4 = var2.getCompoundTagAt(var3);
 			byte var5 = var4.getByte("Slot");
 
 			if (var5 >= 0 && var5 < this.containingItems.length)

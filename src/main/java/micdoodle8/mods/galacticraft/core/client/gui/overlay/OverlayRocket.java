@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.client.gui.overlay;
 
-import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.gui.ScaledResolution;
@@ -16,8 +15,6 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
-
 
 @SideOnly(Side.CLIENT)
 public class OverlayRocket extends Overlay
@@ -90,7 +87,7 @@ public class OverlayRocket extends Overlay
 
 		try
 		{
-			spaceshipRender.doRender((EntitySpaceshipBase) OverlayRocket.minecraft.thePlayer.ridingEntity.getClass().getConstructor(World.class).newInstance(OverlayRocket.minecraft.thePlayer.worldObj), 0, 0, 0, 0, 0);
+			spaceshipRender.doRender(OverlayRocket.minecraft.thePlayer.ridingEntity.getClass().getConstructor(World.class).newInstance(OverlayRocket.minecraft.thePlayer.worldObj), 0, 0, 0, 0, 0);
 		}
 		catch (Exception e)
 		{

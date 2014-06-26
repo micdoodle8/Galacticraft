@@ -16,8 +16,6 @@ import org.lwjgl.opengl.GL12;
 
 import cpw.mods.fml.client.FMLClientHandler;
 
-
-
 public class ItemRendererGrappleHook implements IItemRenderer
 {
 	public static final ResourceLocation grappleTexture = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/model/grapple.png");
@@ -26,7 +24,7 @@ public class ItemRendererGrappleHook implements IItemRenderer
 
 	public ItemRendererGrappleHook(IModelCustom modelGrapple)
 	{
-		this.modelGrapple = modelGrapple;
+		ItemRendererGrappleHook.modelGrapple = modelGrapple;
 	}
 
 	private void renderGrappleGun(ItemRenderType type, RenderBlocks render, ItemStack item, float translateX, float translateY, float translateZ)
@@ -38,16 +36,16 @@ public class ItemRendererGrappleHook implements IItemRenderer
 			GL11.glTranslatef(0.5F, -0.2F, -0.5F);
 			GL11.glDisable(GL11.GL_LIGHTING);
 			RenderManager.instance.itemRenderer.renderItem(FMLClientHandler.instance().getClientPlayerEntity(), new ItemStack(Items.string, 1), 0, ItemRenderType.INVENTORY);
-	        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 			GL11.glEnable(GL11.GL_LIGHTING);
 			GL11.glPopMatrix();
 		}
-		
+
 		GL11.glPushMatrix();
 		this.transform(type);
-		
+
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(ItemRendererGrappleHook.grappleTexture);
-		this.modelGrapple.renderAll();
+		ItemRendererGrappleHook.modelGrapple.renderAll();
 		GL11.glPopMatrix();
 	}
 
