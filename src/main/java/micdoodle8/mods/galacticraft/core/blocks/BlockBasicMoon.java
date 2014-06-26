@@ -39,7 +39,7 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
 	public BlockBasicMoon()
 	{
 		super(Material.rock);
-		this.blockHardness = 3.0F;
+		this.blockHardness = 1.5F;
 		this.setBlockName("moonBlock");
 	}
 
@@ -127,14 +127,21 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
 
 		if (meta == 3 || meta >= 5 && meta <= 13)
 		{
-			return 0.1F;
+			return 0.5F;
 		}
 
-		if (meta == 14 || meta == 15)
+		if (meta > 13)
 		{
 			return -1F;
 		}
 
+		if (meta < 2)
+		{
+			return 5.0F;
+		}
+
+		if (meta == 2) return 3.0F;
+		
 		return this.blockHardness;
 	}
 
@@ -224,7 +231,7 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
 		case 15:
 			return Item.getItemFromBlock(Blocks.air);
 		default:
-			return null;
+			return Item.getItemFromBlock(this);
 		}
 	}
 

@@ -144,7 +144,29 @@ public class BlockBasic extends Block implements IDetectableResource
 			return this.quantityDropped(random);
 		}
 	}
+	@Override
+	public float getBlockHardness(World par1World, int par2, int par3, int par4)
+	{
+		final int meta = par1World.getBlockMetadata(par2, par3, par4);
 
+		if (meta == 5 || meta == 6)
+		{
+			return 5.0F;
+		}
+
+		if (meta == 7)
+		{
+			return 6.0F;
+		}
+
+		if (meta == 8)
+		{
+			return 3.0F;
+		}
+
+		return this.blockHardness;
+	}
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@SideOnly(Side.CLIENT)
 	@Override
