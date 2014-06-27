@@ -52,3 +52,4 @@ SportsFan10:capeBlue
 TheDestroyer4000:capeRainbow
 Kingdom_Hearts12:capeRainbow
 alfiethomas102:capeLime
+Atmatm6:capeRed
