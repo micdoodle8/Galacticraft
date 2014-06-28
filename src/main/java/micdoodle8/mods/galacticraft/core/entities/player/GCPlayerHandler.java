@@ -4,6 +4,7 @@ import java.lang.ref.WeakReference;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import cpw.mods.fml.common.FMLLog;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
@@ -168,7 +169,7 @@ public class GCPlayerHandler
 
 		if (GCPlayer.usingPlanetSelectionGui)
 		{
-			player.sendPlanetList();
+//			player.sendPlanetList();
 		}
 
 		/*		if (player.worldObj.provider instanceof IGalacticraftWorldProvider || player.usingPlanetSelectionGui)

@@ -198,10 +198,10 @@ public class PacketSimple extends Packet implements IPacket
 				{
 					FMLClientHandler.instance().getClient().displayGuiScreen(new GuiCelestialSelection());//new GuiChoosePlanet(FMLClientHandler.instance().getClient().thePlayer, destinations));
 				}
-				else if (FMLClientHandler.instance().getClient().currentScreen instanceof GuiChoosePlanet)
-				{
-					((GuiChoosePlanet) FMLClientHandler.instance().getClient().currentScreen).updateDimensionList(destinations);
-				}
+//				else if (FMLClientHandler.instance().getClient().currentScreen instanceof GuiCelestialSelection)
+//				{
+//					((GuiChoosePlanet) FMLClientHandler.instance().getClient().currentScreen).updateDimensionList(destinations);
+//				}
 			}
 			break;
 		case C_SPAWN_SPARK_PARTICLES:
