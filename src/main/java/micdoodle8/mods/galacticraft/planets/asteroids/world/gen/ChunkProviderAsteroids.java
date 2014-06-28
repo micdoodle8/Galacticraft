@@ -18,7 +18,6 @@ import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.IProgressUpdate;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.BiomeGenBase.SpawnListEntry;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -64,8 +63,6 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 	//		this.dungeonGenerator.treasureRooms.add(new RoomTreasureMars(null, 0, 0, 0, ForgeDirection.UNKNOWN));
 	//	} TODO Asteroid dungeons?
 
-	private BiomeGenBase[] biomesForGeneration = { BiomeGenBaseMars.marsFlat };
-
 	// DO NOT CHANGE
 	private static final int CHUNK_SIZE_X = 16;
 	private static final int CHUNK_SIZE_Y = 256;
@@ -82,7 +79,7 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 	private static final int MIN_ASTEROID_Y = 48;
 	private static final int MAX_ASTEROID_Y = ChunkProviderAsteroids.CHUNK_SIZE_Y - 48;
 
-	private static final int ASTEROID_CHANCE = 1000; //About 1 / n chance per XZ pair
+	private static final int ASTEROID_CHANCE = 800; //About 1 / n chance per XZ pair
 
 	private static final int ASTEROID_CORE_CHANCE = 2; //1 / n chance per asteroid
 	private static final int ASTEROID_SHELL_CHANCE = 2; //1 / n chance per asteroid
@@ -131,39 +128,44 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 
 	public void generateTerrain(int chunkX, int chunkZ, Block[] idArray, byte[] metaArray)
 	{
+		long time1 = System.nanoTime();
 		final Random random = new Random();
 
-		double distanceFromCenter = 0;
+		double distanceFromCenter = 4.0D;
 
 		if (chunkZ != 0)
 		{
-			distanceFromCenter = 4 / (double) Math.abs(chunkZ);
-		}
-		else
-		{
-			distanceFromCenter = 4;
+			distanceFromCenter = 4.0 / Math.abs(chunkZ);
 		}
 
+		//If there is an asteroid centre nearby, it might need to generate some asteroid parts in this chunk
 		for (int i = chunkX - 3; i < chunkX + 3; i++)
 		{
+			int xx = i * 16;
 			for (int k = chunkZ - 3; k < chunkZ + 3; k++)
-			{
-				for (int x = 0; x < ChunkProviderAsteroids.CHUNK_SIZE_X; x++)
+			{	
+				int zz = k * 16;
+				
+				for (int x = xx; x < xx + ChunkProviderAsteroids.CHUNK_SIZE_X; x+=2)
 				{
-					for (int z = 0; z < ChunkProviderAsteroids.CHUNK_SIZE_Z; z++)
+					for (int z = zz; z < zz + ChunkProviderAsteroids.CHUNK_SIZE_Z; z+=2)
 					{
-						if (Math.abs(this.randFromPoint(x + i * 16, z + k * 16)) < (this.asteroidDensity.getNoise(x + i * 16, z + k * 16) + .4) / ChunkProviderAsteroids.ASTEROID_CHANCE)
+						if (Math.abs(this.randFromPoint(x, z)) < (this.asteroidDensity.getNoise(x, z) + .4) / ChunkProviderAsteroids.ASTEROID_CHANCE)
 						{
-							random.setSeed(i * 16 + x + (k * 16 + z) * 3067);
+							random.setSeed(x + z * 3067);
 							int y = random.nextInt(ChunkProviderAsteroids.MAX_ASTEROID_Y - ChunkProviderAsteroids.MIN_ASTEROID_Y) + ChunkProviderAsteroids.MIN_ASTEROID_Y;
 							int size = random.nextInt(ChunkProviderAsteroids.MAX_ASTEROID_RADIUS - ChunkProviderAsteroids.MIN_ASTEROID_RADIUS) + ChunkProviderAsteroids.MIN_ASTEROID_RADIUS;
-							this.generateAsteroid(random, x + i * 16, y, z + k * 16, chunkX * 16, chunkZ * 16, size, idArray, metaArray);
+
+							//Generate the parts of the asteroid which are in this chunk
+							this.generateAsteroid(random, x, y, z, chunkX * 16, chunkZ * 16, size, idArray, metaArray);
 						}
 					}
 				}
 			}
 		}
 
+		long time2 = System.nanoTime();
+		
 		if (distanceFromCenter >= 1)
 		{
 			double density = this.asteroidDensity.getNoise(chunkX * 16, chunkZ * 16) * +.4;
@@ -183,6 +185,10 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 				metaArray[this.getIndex(x, y, z)] = this.ASTEROID_STONE_META_1;
 			}
 		}
+		long time3 = System.nanoTime();
+		//System.out.println("   Time taken big asteroids: " + (time2 - time1) / 1000000.0D + "ms");
+		//System.out.println("   Time taken small asteroids: " + (time3 - time2) / 1000000.0D + "ms");
+		//System.out.println("   Total Time taken: " + (time2 - time1) / 1000000.0D + "ms");
 	}
 
 	private void generateAsteroid(Random rand, int asteroidX, int asteroidY, int asteroidZ, int chunkX, int chunkZ, int size, Block[] idArray, byte[] metaArray)
@@ -210,6 +216,9 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 		final int xSize = xMax - xMin;
 		final int ySize = yMax - yMin;
 		final int zSize = zMax - zMin;
+		
+		if (xSize <= 0 || ySize <= 0 || zSize <=0)
+			return;
 
 		this.setOtherAxisFrequency(1F / (size * 2F / 2F));
 
@@ -241,38 +250,52 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 			}
 		}
 
+		double shellThickness = 0;
+		if (shell != null) shellThickness = 1.0 - shell.thickness;
 		for (int x = xMin; x < xMax; x++)
 		{
+			int indexXY = (x - xMin) * ySize - yMin;
+			int indexXZ = (x - xMin) * zSize - zMin;
+			int distanceX = asteroidX - (x + chunkX);
+			distanceX *= distanceX;
+			
 			for (int z = zMin; z < zMax; z++)
 			{
+				double sizeY = size + sizeYArray[indexXZ + z];
+				sizeY *= sizeY;
+				int distanceZ = asteroidZ - (z + chunkZ);
+				distanceZ *= distanceZ;
+				int indexBase = x * ChunkProviderAsteroids.CHUNK_SIZE_Y * 16 | z * ChunkProviderAsteroids.CHUNK_SIZE_Y;
+
 				for (int y = yMin; y < yMax; y++)
 				{
 					double sizeX = size + sizeXArray[(y - yMin) * zSize + z - zMin];
-					double sizeY = size + sizeYArray[(x - xMin) * zSize + z - zMin];
-					double sizeZ = size + sizeZArray[(x - xMin) * ySize + y - yMin];
+					double sizeZ = size + sizeZArray[indexXY + y];
 					sizeX *= sizeX;
-					sizeY *= sizeY;
 					sizeZ *= sizeZ;
-					double distance = (asteroidX - (x + chunkX)) * (asteroidX - (x + chunkX)) / sizeX + (asteroidY - y) * (asteroidY - y) / sizeY + (asteroidZ - (z + chunkZ)) * (asteroidZ - (z + chunkZ)) / sizeZ;
+					int distanceY = asteroidY - y;
+					distanceY *= distanceY;
+					double distance = distanceX / sizeX + distanceY / sizeY + distanceZ / sizeZ;
 
 					distance += this.asteroidTurbulance.getNoise(x + chunkX, y, z + chunkZ);
 
 					if (distance <= 1)
 					{
+						int index = indexBase | y;
 						if (core != null && distance <= core.thickness)
 						{
-							idArray[this.getIndex(x, y, z)] = core.block;
-							metaArray[this.getIndex(x, y, z)] = core.meta;
+							idArray[index] = core.block;
+							metaArray[index] = core.meta;
 						}
-						else if (shell != null && distance >= 1 - shell.thickness)
+						else if (shell != null && distance >= shellThickness)
 						{
-							idArray[this.getIndex(x, y, z)] = shell.block;
-							metaArray[this.getIndex(x, y, z)] = shell.meta;
+							idArray[index] = shell.block;
+							metaArray[index] = shell.meta;
 						}
 						else
 						{
-							idArray[this.getIndex(x, y, z)] = this.ASTEROID_STONE;
-							metaArray[this.getIndex(x, y, z)] = this.ASTEROID_STONE_META_1;
+							idArray[index] = this.ASTEROID_STONE;
+							metaArray[index] = this.ASTEROID_STONE_META_1;
 						}
 					}
 				}
@@ -321,21 +344,29 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 	@Override
 	public Chunk provideChunk(int par1, int par2)
 	{
+		//long time1 = System.nanoTime();
 		this.rand.setSeed(par1 * 341873128712L + par2 * 132897987541L);
 		final Block[] ids = new Block[32768 * 2];
 		final byte[] meta = new byte[32768 * 2];
 		this.generateTerrain(par1, par2, ids, meta);
-		this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, par1 * 16, par2 * 16, 16, 16);
+		//this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, par1 * 16, par2 * 16, 16, 16);
 
+		//long time2 = System.nanoTime();
 		final Chunk var4 = new Chunk(this.worldObj, ids, meta, par1, par2);
 		final byte[] var5 = var4.getBiomeArray();
 
 		for (int var6 = 0; var6 < var5.length; ++var6)
 		{
-			var5[var6] = (byte) this.biomesForGeneration[var6].biomeID;
+			var5[var6] = (byte) BiomeGenBaseAsteroids.asteroid.biomeID;
 		}
 
+		//long time3 = System.nanoTime();
 		var4.generateSkylightMap();
+		//long time4 = System.nanoTime();
+		//System.out.println("  Chunk gen terrain: " + (time2 - time1) / 1000000.0D + "ms");
+		//System.out.println("  Chunk gen biomes: " + (time3 - time2) / 1000000.0D + "ms");
+		//System.out.println("  Chunk gen lighting: " + (time4 - time3) / 1000000.0D + "ms");
+		//System.out.println("Chunk gen total: " + (time4 - time1) / 1000000.0D + "ms");
 		return var4;
 	}
 
@@ -346,25 +377,26 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 
 	private double randFromPoint(int x, int y, int z)
 	{
-		int n;
-		n = x + z * 57 + y * 571;
+		int n = x + z * 57 + y * 571;
 		n = n << 13 ^ n;
-		return 1.0 - (n * (n * n * 15731 + 789221) + 1376312589 & 0x7fffffff) / 1073741824.0;
+		n = n * (n * n * 15731 + 789221) + 1376312589 & 0x7fffffff;
+		return 1.0 - n / 1073741824.0;
 	}
 
 	private double randFromPoint(int x, int z)
 	{
-		int n;
-		n = x + z * 57;
+		int n = x + z * 57;
 		n = n << 13 ^ n;
-		return 1.0 - (n * (n * n * 15731 + 789221) + 1376312589 & 0x7fffffff) / 1073741824.0;
+		n = n * (n * n * 15731 + 789221) + 1376312589 & 0x7fffffff;
+		return 1.0 - n / 1073741824.0;
 	}
 
 	private double randFromPoint(int x)
 	{
 		int n = x;
 		n = n << 13 ^ n;
-		return 1.0 - (n * (n * n * 15731 + 789221) + 1376312589 & 0x7fffffff) / 1073741824.0;
+		n = n * (n * n * 15731 + 789221) + 1376312589 & 0x7fffffff;
+		return 1.0 - n / 1073741824.0;
 	}
 
 	@Override

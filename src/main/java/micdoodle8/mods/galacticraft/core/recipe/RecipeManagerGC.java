@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import cpw.mods.fml.common.Loader;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.recipe.CircuitFabricatorRecipes;
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
@@ -358,7 +359,10 @@ public class RecipeManagerGC
 
 		RecipeUtil.addRecipe(new ItemStack(GCItems.wrench), new Object[] { "  Y", " X ", "X  ", 'X', "compressedBronze", 'Y', "compressedSteel" });
 
-		RecipeUtil.addRecipe(new ItemStack(GCBlocks.brightLamp), new Object[] { "XYX", "YZY", "XYX", 'X', "ingotDesh", 'Y', Items.glowstone_dust, 'Z', new ItemStack(GCItems.battery, 1, 0)});
+		if (Loader.isModLoaded("GalacticraftMars"))
+			RecipeUtil.addRecipe(new ItemStack(GCBlocks.brightLamp), new Object[] { "XYX", "YZY", "XYX", 'X', "ingotDesh", 'Y', Items.glowstone_dust, 'Z', new ItemStack(GCItems.battery, 1, 0)});
+		else
+			RecipeUtil.addRecipe(new ItemStack(GCBlocks.brightLamp), new Object[] { "XYX", "YZY", "XYX", 'X', GCItems.heavyPlatingTier1, 'Y', Items.glowstone_dust, 'Z', new ItemStack(GCItems.battery, 1, 0)});
 		
 		RecipeUtil.addRecipe(new ItemStack(GCBlocks.spinThruster), new Object[] { "   ", "YWZ", "PXP", 'W', "waferAdvanced", 'X', new ItemStack(GCItems.meteoricIronIngot, 1, 0), 'Y', new ItemStack(GCItems.fuelCanister, 1, 1), 'Z', new ItemStack(GCItems.rocketEngine, 1, 0), 'P', "compressedSteel" });	
 		

@@ -485,7 +485,7 @@ public class TickHandlerClient
 		}
 		else
 		{
-			boolean invKeyPressed = Keyboard.isKeyDown(minecraft.gameSettings.keyBindInventory.getKeyCode());
+			boolean invKeyPressed = minecraft.gameSettings.isKeyDown(minecraft.gameSettings.keyBindInventory);
 
 			if (!TickHandlerClient.lastInvKeyPressed && invKeyPressed && minecraft.currentScreen != null && minecraft.currentScreen.getClass() == GuiInventory.class)
 			{

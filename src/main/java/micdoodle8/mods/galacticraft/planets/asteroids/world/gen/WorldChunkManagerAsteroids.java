@@ -25,7 +25,7 @@ public class WorldChunkManagerAsteroids extends WorldChunkManager
 	{
 		this.biomeCache = new BiomeCache(this);
 		this.biomesToSpawnIn = new ArrayList<BiomeGenBase>();
-		this.biomesToSpawnIn.add(BiomeGenBaseMars.marsFlat);
+		this.biomesToSpawnIn.add(BiomeGenBaseAsteroids.asteroid);
 	}
 
 	public WorldChunkManagerAsteroids(long par1, WorldType par3WorldType)
@@ -50,7 +50,7 @@ public class WorldChunkManagerAsteroids extends WorldChunkManager
 	@Override
 	public BiomeGenBase getBiomeGenAt(int par1, int par2)
 	{
-		return BiomeGenBaseMars.marsFlat;
+		return BiomeGenBaseAsteroids.asteroid;
 	}
 
 	@Override

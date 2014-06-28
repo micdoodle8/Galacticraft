@@ -4,12 +4,12 @@ import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
 import net.minecraft.world.biome.BiomeGenBase;
 
-public class BiomeGenBaseMars extends BiomeGenBase
+public class BiomeGenBaseAsteroids extends BiomeGenBase
 {
-	public static final BiomeGenBase marsFlat = new BiomeGenBaseMars(103).setBiomeName("marsFlat").setColor(16711680).setHeight(new Height(2.5F, 0.4F));
+	public static final BiomeGenBase asteroid = new BiomeGenBaseAsteroids(104).setBiomeName("asteroids");
 
 	@SuppressWarnings("unchecked")
-	public BiomeGenBaseMars(int var1)
+	public BiomeGenBaseAsteroids(int var1)
 	{
 		super(var1);
 		this.spawnableMonsterList.clear();
@@ -21,9 +21,9 @@ public class BiomeGenBaseMars extends BiomeGenBase
 	}
 
 	@Override
-	public BiomeGenBaseMars setColor(int var1)
+	public BiomeGenBaseAsteroids setColor(int var1)
 	{
-		return (BiomeGenBaseMars) super.setColor(var1);
+		return (BiomeGenBaseAsteroids) super.setColor(var1);
 	}
 
 	@Override
