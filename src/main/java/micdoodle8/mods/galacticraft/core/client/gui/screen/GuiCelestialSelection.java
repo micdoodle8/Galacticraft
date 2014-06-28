@@ -11,7 +11,10 @@ import micdoodle8.mods.galacticraft.api.galaxies.Planet;
 import micdoodle8.mods.galacticraft.api.galaxies.SolarSystem;
 import micdoodle8.mods.galacticraft.api.galaxies.Star;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.planets.asteroids.ConfigManagerAsteroids;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
@@ -20,6 +23,7 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.WorldProvider;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Mouse;
@@ -31,6 +35,8 @@ import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
 import com.google.common.collect.Maps;
+
+import cpw.mods.fml.common.Loader;
 
 public class GuiCelestialSelection extends GuiScreen
 {
@@ -140,6 +146,34 @@ public class GuiCelestialSelection extends GuiScreen
 			{
 				this.unselectCelestialBody();
 			}
+		}
+
+		// Temporarily allow teleport by pressing 'Enter'
+		if (keyID == 42 && this.selectedBody != null)
+		{
+			final String dimension = WorldProvider.getProviderForDimension(this.selectedBody.getDimensionID()).getDimensionName();
+			if (dimension.contains("$"))
+			{
+				this.mc.gameSettings.thirdPersonView = 0;
+			}
+			GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_TELEPORT_ENTITY, new Object[] { dimension }));
+            this.mc.displayGuiScreen((GuiScreen)null);
+            this.mc.setIngameFocus();
+			return;
+		}
+		
+		// Temporarily allow to get to Asteroids by pressing 'X'
+		if (keyID == 45 && Loader.isModLoaded("GalacticraftMars"))
+		{
+			final String dimension = WorldProvider.getProviderForDimension(ConfigManagerAsteroids.dimensionIDAsteroids).getDimensionName();
+			if (dimension.contains("$"))
+			{
+				this.mc.gameSettings.thirdPersonView = 0;
+			}
+			GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_TELEPORT_ENTITY, new Object[] { dimension }));
+            this.mc.displayGuiScreen((GuiScreen)null);
+            this.mc.setIngameFocus();
+			return;
 		}
 	}
 
