@@ -220,42 +220,24 @@ public class GCPlayerStats implements IExtendedEntityProperties
 			this.openPlanetSelectionGuiCooldown = 20;
 		}
 
-		final NBTTagList var23 = nbt.getTagList("RocketItems", 10);
-		int length = nbt.getInteger("rocketStacksLength");
-		boolean oldInventory = false;
+        if (nbt.hasKey("RocketItems") && nbt.hasKey("rocketStacksLength"))
+        {
+            final NBTTagList var23 = nbt.getTagList("RocketItems", 10);
+            int length = nbt.getInteger("rocketStacksLength");
 
-		// Backwards Compatibility:
-		if (length % 9 == 3)
-		{
-			oldInventory = true;
-			length -= 1;
-		}
+            this.rocketStacks = new ItemStack[length];
 
-		this.rocketStacks = new ItemStack[length];
+            for (int var3 = 0; var3 < var23.tagCount(); ++var3)
+            {
+                final NBTTagCompound var4 = var23.getCompoundTagAt(var3);
+                final int var5 = var4.getByte("Slot") & 255;
 
-		for (int var3 = 0; var3 < var23.tagCount(); ++var3)
-		{
-			final NBTTagCompound var4 = var23.getCompoundTagAt(var3);
-			final int var5 = var4.getByte("Slot") & 255;
-
-			if (var5 >= 0 && var5 < this.rocketStacks.length)
-			{
-				this.rocketStacks[var5] = ItemStack.loadItemStackFromNBT(var4);
-			}
-
-			if (oldInventory)
-			{
-				if (var5 == this.rocketStacks.length - 1)
-				{
-					this.rocketStacks[var5] = null;
-				}
-
-				if (var5 == this.rocketStacks.length)
-				{
-					this.rocketStacks[var5 - 1] = ItemStack.loadItemStackFromNBT(var4);
-				}
-			}
-		}
+                if (var5 >= 0 && var5 < this.rocketStacks.length)
+                {
+                    this.rocketStacks[var5] = ItemStack.loadItemStackFromNBT(var4);
+                }
+            }
+        }
 
 		this.unlockedSchematics = new ArrayList<ISchematicPage>();
 

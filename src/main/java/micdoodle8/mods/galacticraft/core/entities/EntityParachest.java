@@ -30,8 +30,7 @@ public class EntityParachest extends Entity
 		this.fuelLevel = fuelLevel;
 		if ((cargo.length - 2) % 18 != 0)
 		{
-			System.out.println("Strange EntityParachest inventory size " + cargo.length);
-			this.fuelLevel = 1 / 0;
+            throw new RuntimeException("Strange EntityParachest inventory size " + cargo.length);
 		}
 	}
 
