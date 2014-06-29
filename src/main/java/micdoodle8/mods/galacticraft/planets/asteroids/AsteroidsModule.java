@@ -21,6 +21,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReflect
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityShortRangeTelepad;
 import micdoodle8.mods.galacticraft.planets.asteroids.util.AsteroidsUtil;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -57,6 +58,8 @@ public class AsteroidsModule implements IPlanetsModule
 
 		AsteroidsModule.planetAsteroids = new Planet("asteroids").setParentSolarSystem(GalacticraftCore.solarSystemSol);
 		AsteroidsModule.planetAsteroids.setDimensionInfo(ConfigManagerAsteroids.dimensionIDAsteroids, WorldProviderAsteroids.class);
+        AsteroidsModule.planetAsteroids.setRelativeDistanceFromCenter(2.5F).setRelativeOrbitTime(0.001F).setPhaseShift(0.6667F);
+        AsteroidsModule.planetAsteroids.setBodyIcon(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/celestialbodies/asteroid.png"));
 
 		GalaxyRegistry.registerPlanet(AsteroidsModule.planetAsteroids);
 		GalacticraftRegistry.registerTeleportType(WorldProviderAsteroids.class, new TeleportTypeAsteroids());

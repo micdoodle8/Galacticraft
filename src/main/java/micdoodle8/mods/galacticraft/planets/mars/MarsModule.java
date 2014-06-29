@@ -102,7 +102,7 @@ public class MarsModule implements IPlanetsModule
 		this.registerOtherEntities();
 
 		MarsModule.planetMars = (Planet) new Planet("mars").setParentSolarSystem(GalacticraftCore.solarSystemSol).setRingColorRGB(0.67F, 0.1F, 0.1F).setPhaseShift(0.1667F).setRelativeSize(0.5319F).setRelativeDistanceFromCenter(1.52F).setRelativeOrbitTime(1.88F);
-		MarsModule.planetMars.setBodyIcon(new ResourceLocation(MarsModule.TEXTURE_DOMAIN, "textures/gui/planets/mars.png"));
+		MarsModule.planetMars.setBodyIcon(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/celestialbodies/mars.png"));
 		MarsModule.planetMars.setDimensionInfo(ConfigManagerMars.dimensionIDMars, WorldProviderMars.class);
 
 		GalaxyRegistry.registerPlanet(MarsModule.planetMars);

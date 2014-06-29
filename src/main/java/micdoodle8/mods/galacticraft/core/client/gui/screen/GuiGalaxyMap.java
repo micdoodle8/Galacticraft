@@ -65,17 +65,9 @@ public class GuiGalaxyMap extends GuiStarBackground
 
 	private CelestialBody selectedPlanet = null;
 
-	private String[] listOfDimensions;
-
 	public GuiGalaxyMap(EntityPlayer player)
 	{
 		this.player = player;
-	}
-
-	public GuiGalaxyMap(EntityPlayer player, String[] listOfDimensions)
-	{
-		this.player = player;
-		this.listOfDimensions = listOfDimensions;
 	}
 
 	@Override
@@ -94,24 +86,8 @@ public class GuiGalaxyMap extends GuiStarBackground
 			this.mc.displayGuiScreen((GuiScreen) null);
 			this.mc.setIngameFocus();
 		}
-		else if (par2 == Keyboard.KEY_ESCAPE)
-		{
-			if (this.listOfDimensions != null)
-			{
-				FMLClientHandler.instance().getClient().currentScreen = null;
-				FMLClientHandler.instance().getClient().displayGuiScreen(new GuiChoosePlanet(this.player, this.listOfDimensions));
-				this.mc.inGameHasFocus = true;
-				this.mc.mouseHelper.ungrabMouseCursor();
-			}
-			else
-			{
-				super.keyTyped(par1, par2);
-			}
-		}
-		else
-		{
-			super.keyTyped(par1, par2);
-		}
+
+        super.keyTyped(par1, par2);
 	}
 
 	@Override
