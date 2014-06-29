@@ -95,25 +95,25 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 		this.worldObj = par1World;
 		this.rand = new Random(par2);
 
-		this.asteroidDensity = new Billowed(this.rand.nextLong(), 2, .25);
-		this.asteroidDensity.setFrequency(.009);
-		this.asteroidDensity.amplitude = .6;
+		this.asteroidDensity = new Billowed(this.rand.nextLong(), 2, .25F);
+		this.asteroidDensity.setFrequency(.009F);
+		this.asteroidDensity.amplitude = .6F;
 
-		this.asteroidTurbulance = new Gradient(this.rand.nextLong(), 1, .2);
-		this.asteroidTurbulance.setFrequency(.08);
-		this.asteroidTurbulance.amplitude = .5;
+		this.asteroidTurbulance = new Gradient(this.rand.nextLong(), 1, .2F);
+		this.asteroidTurbulance.setFrequency(.08F);
+		this.asteroidTurbulance.amplitude = .5F;
 
 		this.asteroidSkewX = new Gradient(this.rand.nextLong(), 1, 1);
 		this.asteroidSkewX.amplitude = ChunkProviderAsteroids.MAX_ASTEROID_SKEW;
-		this.asteroidSkewX.frequencyX = 0.005;
+		this.asteroidSkewX.frequencyX = 0.005F;
 
 		this.asteroidSkewY = new Gradient(this.rand.nextLong(), 1, 1);
 		this.asteroidSkewY.amplitude = ChunkProviderAsteroids.MAX_ASTEROID_SKEW;
-		this.asteroidSkewY.frequencyY = 0.005;
+		this.asteroidSkewY.frequencyY = 0.005F;
 
 		this.asteroidSkewZ = new Gradient(this.rand.nextLong(), 1, 1);
 		this.asteroidSkewZ.amplitude = ChunkProviderAsteroids.MAX_ASTEROID_SKEW;
-		this.asteroidSkewZ.frequencyZ = 0.005;
+		this.asteroidSkewZ.frequencyZ = 0.005F;
 
 		this.coreHandler = new SpecialAsteroidBlockHandler();
 		this.coreHandler.addBlock(new SpecialAsteroidBlock(this.ASTEROID_STONE, this.ASTEROID_STONE_META_2, 1, .3));
@@ -190,9 +190,9 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 			shell = this.shellHandler.getBlock(rand);
 		}
 
-		final double noiseOffsetX = this.randFromPoint(asteroidX, asteroidY, asteroidZ) * ChunkProviderAsteroids.NOISE_OFFSET_SIZE;
-		final double noiseOffsetY = this.randFromPoint(asteroidX * 7, asteroidY * 11, asteroidZ * 13) * ChunkProviderAsteroids.NOISE_OFFSET_SIZE;
-		final double noiseOffsetZ = this.randFromPoint(asteroidX * 17, asteroidY * 23, asteroidZ * 29) * ChunkProviderAsteroids.NOISE_OFFSET_SIZE;
+		final float noiseOffsetX = this.randFromPoint(asteroidX, asteroidY, asteroidZ) * ChunkProviderAsteroids.NOISE_OFFSET_SIZE;
+		final float noiseOffsetY = this.randFromPoint(asteroidX * 7, asteroidY * 11, asteroidZ * 13) * ChunkProviderAsteroids.NOISE_OFFSET_SIZE;
+		final float noiseOffsetZ = this.randFromPoint(asteroidX * 17, asteroidY * 23, asteroidZ * 29) * ChunkProviderAsteroids.NOISE_OFFSET_SIZE;
 		final int xMin = this.clamp(Math.max(chunkX, asteroidX - size - ChunkProviderAsteroids.MAX_ASTEROID_SKEW - 2) - chunkX, 0, 16);
 		final int zMin = this.clamp(Math.max(chunkZ, asteroidZ - size - ChunkProviderAsteroids.MAX_ASTEROID_SKEW - 2) - chunkZ, 0, 16);
 		final int yMin = asteroidY - size - ChunkProviderAsteroids.MAX_ASTEROID_SKEW - 2;
@@ -208,9 +208,9 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 
 		this.setOtherAxisFrequency(1F / (size * 2F / 2F));
 
-		double[] sizeXArray = new double[ySize * zSize];
-		double[] sizeYArray = new double[xSize * zSize];
-		double[] sizeZArray = new double[xSize * ySize];
+		float[] sizeXArray = new float[ySize * zSize];
+        float[] sizeYArray = new float[xSize * zSize];
+        float[] sizeZArray = new float[xSize * ySize];
 
 		for (int y = 0; y < ySize; y++)
 		{
@@ -289,7 +289,7 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 		}
 	}
 
-	private void setOtherAxisFrequency(double frequency)
+	private void setOtherAxisFrequency(float frequency)
 	{
 		this.asteroidSkewX.frequencyY = frequency;
 		this.asteroidSkewX.frequencyZ = frequency;
@@ -361,20 +361,20 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 		return x * ChunkProviderAsteroids.CHUNK_SIZE_Y * 16 | z * ChunkProviderAsteroids.CHUNK_SIZE_Y | y;
 	}
 
-	private double randFromPoint(int x, int y, int z)
+	private float randFromPoint(int x, int y, int z)
 	{
 		int n = x + z * 57 + y * 571;
 		n = n << 13 ^ n;
 		n = n * (n * n * 15731 + 789221) + 1376312589 & 0x7fffffff;
-		return 1.0 - n / 1073741824.0;
+		return 1.0F - n / 1073741824.0F;
 	}
 
-	private double randFromPoint(int x, int z)
+	private float randFromPoint(int x, int z)
 	{
 		int n = x + z * 57;
 		n = n << 13 ^ n;
 		n = n * (n * n * 15731 + 789221) + 1376312589 & 0x7fffffff;
-		return 1.0 - n / 1073741824.0;
+		return 1.0F - n / 1073741824.0F;
 	}
 
 	@Override

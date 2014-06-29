@@ -89,18 +89,18 @@ public class ChunkProviderMoon extends ChunkProviderGenerate
 		super(par1World, par2, par4);
 		this.worldObj = par1World;
 		this.rand = new Random(par2);
-		this.noiseGen1 = new Gradient(this.rand.nextLong(), 4, 0.25);
-		this.noiseGen2 = new Gradient(this.rand.nextLong(), 4, 0.25);
-		this.noiseGen3 = new Gradient(this.rand.nextLong(), 1, 0.25);
-		this.noiseGen4 = new Gradient(this.rand.nextLong(), 1, 0.25);
+		this.noiseGen1 = new Gradient(this.rand.nextLong(), 4, 0.25F);
+		this.noiseGen2 = new Gradient(this.rand.nextLong(), 4, 0.25F);
+		this.noiseGen3 = new Gradient(this.rand.nextLong(), 1, 0.25F);
+		this.noiseGen4 = new Gradient(this.rand.nextLong(), 1, 0.25F);
 	}
 
 	public void generateTerrain(int chunkX, int chunkZ, Block[] idArray, byte[] metaArray)
 	{
-		this.noiseGen1.setFrequency(0.0125);
-		this.noiseGen2.setFrequency(0.015);
-		this.noiseGen3.setFrequency(0.01);
-		this.noiseGen4.setFrequency(0.02);
+		this.noiseGen1.setFrequency(0.0125F);
+		this.noiseGen2.setFrequency(0.015F);
+		this.noiseGen3.setFrequency(0.01F);
+		this.noiseGen4.setFrequency(0.02F);
 
 		for (int x = 0; x < ChunkProviderMoon.CHUNK_SIZE_X; x++)
 		{

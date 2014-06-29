@@ -2,18 +2,18 @@ package micdoodle8.mods.galacticraft.core.perlin;
 
 public abstract class NoiseModule
 {
-	public double frequencyX = 1;
-	public double frequencyY = 1;
-	public double frequencyZ = 1;
-	public double amplitude = 1;
+	public float frequencyX = 1;
+	public float frequencyY = 1;
+	public float frequencyZ = 1;
+	public float amplitude = 1;
 
-	public abstract double getNoise(double i);
+	public abstract float getNoise(float i);
 
-	public abstract double getNoise(double i, double j);
+	public abstract float getNoise(float i, float j);
 
-	public abstract double getNoise(double i, double j, double k);
+	public abstract float getNoise(float i, float j, float k);
 
-	public void setFrequency(double frequency)
+	public void setFrequency(float frequency)
 	{
 		this.frequencyX = frequency;
 		this.frequencyY = frequency;
