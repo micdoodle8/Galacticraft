@@ -20,7 +20,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlayLaunchCountdo
 import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlayOxygenTanks;
 import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlayOxygenWarning;
 import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlayRocket;
-import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiChoosePlanet;
+import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiNewSpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
@@ -462,7 +462,7 @@ public class TickHandlerClient
 				}
 			}
 
-			if (FMLClientHandler.instance().getClient().currentScreen instanceof GuiChoosePlanet)
+			if (FMLClientHandler.instance().getClient().currentScreen instanceof GuiCelestialSelection)
 			{
 				player.motionY = 0;
 			}
