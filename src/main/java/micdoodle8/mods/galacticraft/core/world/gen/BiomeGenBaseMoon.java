@@ -6,7 +6,7 @@ public class BiomeGenBaseMoon extends BiomeGenBase
 {
 	public static final BiomeGenBase moonFlat = new BiomeGenFlatMoon(102).setBiomeName("moon");
 
-	public BiomeGenBaseMoon(int var1)
+	BiomeGenBaseMoon(int var1)
 	{
 		super(var1);
 		this.spawnableMonsterList.clear();

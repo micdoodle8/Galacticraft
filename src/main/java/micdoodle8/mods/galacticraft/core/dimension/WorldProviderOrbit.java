@@ -57,9 +57,7 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 	private double spinCentreZ;
 	private float momentOfInertia;
 	private float massCentreX;
-	private float massCentreY;
 	private float massCentreZ;
-	private float mass;
 	private int ssBoundsMaxX;
 	private int ssBoundsMinX;
 	private int ssBoundsMaxY;
@@ -971,7 +969,7 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 		// Find contiguous blocks using an algorithm like the oxygen sealer one
 		List<BlockVec3> currentLayer = new LinkedList<BlockVec3>();
 		List<BlockVec3> nextLayer = new LinkedList<BlockVec3>();
-		final List<BlockVec3> foundThrusters = new LinkedList<BlockVec3>();;
+		final List<BlockVec3> foundThrusters = new LinkedList<BlockVec3>();
 
 		this.checked.clear();
 		currentLayer.add(this.oneSSBlock.clone());
@@ -1126,10 +1124,10 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 		}
 
 		// Calculate centre of mass
-		this.mass = thismass;
+		float mass = thismass;
 
 		this.massCentreX = thismassCentreX / thismass + 0.5F;
-		this.massCentreY = thismassCentreY / thismass + 0.5F;
+		float massCentreY = thismassCentreY / thismass + 0.5F;
 		this.massCentreZ = thismassCentreZ / thismass + 0.5F;
 		//System.out.println("(X,Z) = "+this.massCentreX+","+this.massCentreZ);
 
@@ -1144,8 +1142,8 @@ public class WorldProviderOrbit extends WorldProvider implements IOrbitDimension
 		this.ssBoundsMinZ = thisssBoundsMinZ;
 
 		// Calculate momentOfInertia
-		thismoment -= this.massCentreX * this.massCentreX * this.mass;
-		thismoment -= this.massCentreZ * this.massCentreZ * this.mass;
+		thismoment -= this.massCentreX * this.massCentreX * mass;
+		thismoment -= this.massCentreZ * this.massCentreZ * mass;
 		this.momentOfInertia = thismoment;
 
 		//TODO

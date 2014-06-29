@@ -19,38 +19,21 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class RenderTier3Rocket extends Render
 {
-	private ResourceLocation spaceshipTexture;
+	private ResourceLocation rocketTexture;
 
-	protected ModelBase modelSpaceship;
-	protected IModelCustom modelSpaceshipObj;
-
-	public RenderTier3Rocket(ModelBase spaceshipModel, String textureDomain, String texture)
-	{
-		this(new ResourceLocation(textureDomain, "textures/model/" + texture + ".png"));
-		this.modelSpaceship = spaceshipModel;
-	}
+	protected IModelCustom rocketModelObj;
 
 	public RenderTier3Rocket(IModelCustom spaceshipModel, String textureDomain, String texture)
 	{
-		this(new ResourceLocation(textureDomain, "textures/model/" + texture + ".png"));
-		this.modelSpaceshipObj = spaceshipModel;
-	}
-
-	private RenderTier3Rocket(ResourceLocation texture)
-	{
-		this.spaceshipTexture = texture;
-		this.shadowSize = 2F;
-	}
-
-	protected ResourceLocation func_110779_a(Entity par1EntityArrow)
-	{
-		return this.spaceshipTexture;
+		this.rocketModelObj = spaceshipModel;
+        this.rocketTexture = new ResourceLocation(textureDomain, "textures/model/" + texture + ".png");
+        this.shadowSize = 2F;
 	}
 
 	@Override
 	protected ResourceLocation getEntityTexture(Entity par1Entity)
 	{
-		return this.func_110779_a(par1Entity);
+        return this.rocketTexture;
 	}
 
 	public void renderSpaceship(EntitySpaceshipBase entity, double par2, double par4, double par6, float par8, float par9)
@@ -81,34 +64,27 @@ public class RenderTier3Rocket extends Render
 		GL11.glScalef(-1.0F, -1.0F, 1.0F);
 		GL11.glScalef(0.9F, 0.9F, 0.9F);
 
-		if (this.modelSpaceshipObj != null)
-		{
-			this.modelSpaceshipObj.renderOnly("Boosters", "Rocket");
-			Vector3 teamColor = ClientUtil.updateTeamColor(FMLClientHandler.instance().getClient().thePlayer.getCommandSenderName(), true);
-			GL11.glColor3f(teamColor.floatX(), teamColor.floatY(), teamColor.floatZ());
-			this.modelSpaceshipObj.renderPart("NoseCone");
+        this.rocketModelObj.renderOnly("Boosters", "Rocket");
+        Vector3 teamColor = ClientUtil.updateTeamColor(FMLClientHandler.instance().getClient().thePlayer.getCommandSenderName(), true);
+        GL11.glColor3f(teamColor.floatX(), teamColor.floatY(), teamColor.floatZ());
+        this.rocketModelObj.renderPart("NoseCone");
 
-			if (FMLClientHandler.instance().getClient().thePlayer.ticksExisted / 10 % 2 < 1)
-			{
-				GL11.glColor3f(1, 0, 0);
-			}
-			else
-			{
-				GL11.glColor3f(0, 1, 0);
-			}
+        if (FMLClientHandler.instance().getClient().thePlayer.ticksExisted / 10 % 2 < 1)
+        {
+            GL11.glColor3f(1, 0, 0);
+        }
+        else
+        {
+            GL11.glColor3f(0, 1, 0);
+        }
 
-			GL11.glDisable(GL11.GL_TEXTURE_2D);
-			GL11.glDisable(GL11.GL_LIGHTING);
-			this.modelSpaceshipObj.renderPart("Cube");
-			GL11.glEnable(GL11.GL_TEXTURE_2D);
-			GL11.glEnable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glDisable(GL11.GL_LIGHTING);
+        this.rocketModelObj.renderPart("Cube");
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glEnable(GL11.GL_LIGHTING);
 
-			GL11.glColor3f(1, 1, 1);
-		}
-		else
-		{
-			this.modelSpaceship.render(entity, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
-		}
+        GL11.glColor3f(1, 1, 1);
 
 		GL11.glPopMatrix();
 	}

@@ -88,7 +88,7 @@ public class VectorD3
 	}
 
 	@Override
-	public VectorD3 clone()
+	public final VectorD3 clone()
 	{
 		return new VectorD3(this);
 	}

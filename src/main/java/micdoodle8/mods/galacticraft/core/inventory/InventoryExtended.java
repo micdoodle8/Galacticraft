@@ -103,13 +103,13 @@ public class InventoryExtended implements IInventory
 	@Override
 	public void openInventory()
 	{
-		;
+
 	}
 
 	@Override
 	public void closeInventory()
 	{
-		;
+
 	}
 
 	@Override

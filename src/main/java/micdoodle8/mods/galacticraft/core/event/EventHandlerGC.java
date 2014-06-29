@@ -221,21 +221,15 @@ public class EventHandlerGC
 				{
 					if (f.getName().equals("oilMoving"))
 					{
-						final Block block = (Block) f.get(null);
-
-						bcOilID1 = block;
+                        bcOilID1 = (Block) f.get(null);
 					}
 					else if (f.getName().equals("oilStill"))
 					{
-						final Block block = (Block) f.get(null);
-
-						bcOilID2 = block;
+						bcOilID2 = (Block) f.get(null);
 					}
 					else if (f.getName().equals("bucketOil"))
 					{
-						final Item item = (Item) f.get(null);
-
-						bcOilBucket = item;
+						bcOilBucket = (Item) f.get(null);
 					}
 				}
 			}
@@ -301,7 +295,7 @@ public class EventHandlerGC
 
 		if (flag1 || flag2)
 		{
-			final int cx = x, cy = 20 + rand.nextInt(11), cz = z;
+            int cy = 20 + rand.nextInt(11);
 
 			final int r = 2 + rand.nextInt(2);
 
@@ -317,7 +311,7 @@ public class EventHandlerGC
 
 						if (d2 <= r2)
 						{
-							world.setBlock(bx + cx, by + cy, bz + cz, GCBlocks.crudeOilStill, 0, 2);
+							world.setBlock(bx + x, by + cy, bz + z, GCBlocks.crudeOilStill, 0, 2);
 						}
 					}
 				}

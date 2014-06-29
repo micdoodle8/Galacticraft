@@ -270,7 +270,7 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
 	}
 
 	@Override
-	public void onReachAtmoshpere()
+	public void onReachAtmosphere()
 	{
 		if (this.worldObj.isRemote)
 		{

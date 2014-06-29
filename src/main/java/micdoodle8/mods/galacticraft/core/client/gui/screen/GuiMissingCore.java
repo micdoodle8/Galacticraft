@@ -14,7 +14,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GuiMissingCore extends GuiScreen
 {
-	private String url = "http://micdoodle8.com/mods/galacticraft/downloads";
 	private int urlX;
 	private int urlY;
 	private int urlWidth;
@@ -71,7 +70,7 @@ public class GuiMissingCore extends GuiScreen
 			{
 				Class<?> oclass = Class.forName("java.awt.Desktop");
 				Object object = oclass.getMethod("getDesktop", new Class[0]).invoke((Object) null, new Object[0]);
-				oclass.getMethod("browse", new Class[] { URI.class }).invoke(object, new Object[] { new URI(this.url) });
+				oclass.getMethod("browse", new Class[] { URI.class }).invoke(object, new Object[] { new URI("http://micdoodle8.com/mods/galacticraft/downloads") });
 			}
 			catch (Throwable throwable)
 			{

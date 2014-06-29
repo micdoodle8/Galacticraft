@@ -129,7 +129,7 @@ public class TileEntityDungeonSpawner extends TileEntityAdvanced
 
 	public void playSpawnSound(Entity entity)
 	{
-		;
+
 	}
 
 	public List<Class<? extends EntityLiving>> getDisabledCreatures()

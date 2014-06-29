@@ -22,9 +22,6 @@ public class GuiCoalGenerator extends GuiContainer
 
 	private TileEntityCoalGenerator tileEntity;
 
-	private int containerWidth;
-	private int containerHeight;
-
 	public GuiCoalGenerator(InventoryPlayer par1InventoryPlayer, TileEntityCoalGenerator tileEntity)
 	{
 		super(new ContainerCoalGenerator(par1InventoryPlayer, tileEntity));
@@ -71,8 +68,8 @@ public class GuiCoalGenerator extends GuiContainer
 		this.mc.renderEngine.bindTexture(GuiCoalGenerator.coalGeneratorTexture);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-		this.containerWidth = (this.width - this.xSize) / 2;
-		this.containerHeight = (this.height - this.ySize) / 2;
-		this.drawTexturedModalRect(this.containerWidth, this.containerHeight, 0, 0, this.xSize, this.ySize);
+		int containerWidth = (this.width - this.xSize) / 2;
+        int containerHeight = (this.height - this.ySize) / 2;
+		this.drawTexturedModalRect(containerWidth, containerHeight, 0, 0, this.xSize, this.ySize);
 	}
 }

@@ -60,7 +60,6 @@ public class EntityBubble extends EntityAdvanced implements IPacketReceiver, IBu
 	@Override
 	public void moveEntity(double par1, double par3, double par5)
 	{
-		;
 	}
 
 	@Override
@@ -210,13 +209,11 @@ public class EntityBubble extends EntityAdvanced implements IPacketReceiver, IBu
 	@Override
 	public void onPacketClient(EntityPlayer player)
 	{
-		;
 	}
 
 	@Override
 	public void onPacketServer(EntityPlayer player)
 	{
-		;
 	}
 
 	@Override

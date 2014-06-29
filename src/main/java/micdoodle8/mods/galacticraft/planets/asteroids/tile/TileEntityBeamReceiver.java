@@ -153,8 +153,6 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 			return 0;
 		}
 
-		float received = this.storage.receiveEnergyGC(amount, simulate);
-
 		//		if (received < amount)
 		//		{
 		//			if (tile instanceof EnergyStorageTile)
@@ -163,7 +161,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 		//			}
 		//		}
 
-		return received;
+		return this.storage.receiveEnergyGC(amount, simulate);
 	}
 
 	@Override
@@ -225,13 +223,9 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 	{
 		TileEntity tile = this.getAttachedTile();
 
-		if (this.facing == ForgeDirection.UNKNOWN.ordinal())
-		{
-			return false;
-		}
+        return this.facing != ForgeDirection.UNKNOWN.ordinal();
 
-		return true;
-	}
+    }
 
 	public void setFacing(ForgeDirection newDirection)
 	{

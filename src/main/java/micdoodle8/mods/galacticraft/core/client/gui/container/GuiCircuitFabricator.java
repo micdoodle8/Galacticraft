@@ -21,9 +21,6 @@ public class GuiCircuitFabricator extends GuiContainer
 
 	private TileEntityCircuitFabricator tileEntity;
 
-	private int containerWidth;
-	private int containerHeight;
-
 	public GuiCircuitFabricator(InventoryPlayer par1InventoryPlayer, TileEntityCircuitFabricator tileEntity)
 	{
 		super(new ContainerCircuitFabricator(par1InventoryPlayer, tileEntity));
@@ -70,23 +67,23 @@ public class GuiCircuitFabricator extends GuiContainer
 		this.mc.renderEngine.bindTexture(GuiCircuitFabricator.circuitFabricatorTexture);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-		this.containerWidth = (this.width - this.xSize) / 2;
-		this.containerHeight = (this.height - this.ySize) / 2;
-		this.drawTexturedModalRect(this.containerWidth, this.containerHeight, 0, 0, this.xSize, this.ySize);
+        int containerWidth = (this.width - this.xSize) / 2;
+		int containerHeight = (this.height - this.ySize) / 2;
+		this.drawTexturedModalRect(containerWidth, containerHeight, 0, 0, this.xSize, this.ySize);
 
 		int scale;
 
 		if (this.tileEntity.processTicks > 0)
 		{
 			scale = (int) ((double) this.tileEntity.processTicks / (double) TileEntityCircuitFabricator.PROCESS_TIME_REQUIRED * 51);
-			this.drawTexturedModalRect(this.containerWidth + 88, this.containerHeight + 20, 176, 17 + this.tileEntity.processTicks % 9 / 3 * 10, scale, 10);
+			this.drawTexturedModalRect(containerWidth + 88, containerHeight + 20, 176, 17 + this.tileEntity.processTicks % 9 / 3 * 10, scale, 10);
 		}
 
 		if (this.tileEntity.getEnergyStoredGC() > 0)
 		{
 			scale = this.tileEntity.getScaledElecticalLevel(54);
-			this.drawTexturedModalRect(this.containerWidth + 116 - 98, this.containerHeight + 89, 176, 0, scale, 7);
-			this.drawTexturedModalRect(this.containerWidth + 4, this.containerHeight + 88, 176, 7, 11, 10);
+			this.drawTexturedModalRect(containerWidth + 116 - 98, containerHeight + 89, 176, 0, scale, 7);
+			this.drawTexturedModalRect(containerWidth + 4, containerHeight + 88, 176, 7, 11, 10);
 		}
 	}
 }

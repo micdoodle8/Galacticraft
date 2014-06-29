@@ -128,7 +128,6 @@ public class EntityCreeperBoss extends EntityMob implements IEntityBreathable, I
 	@Override
 	public void knockBack(Entity par1Entity, float par2, double par3, double par5)
 	{
-		;
 	}
 
 	@Override

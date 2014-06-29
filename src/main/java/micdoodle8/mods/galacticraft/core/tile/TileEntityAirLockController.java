@@ -56,14 +56,7 @@ public class TileEntityAirLockController extends TileEntityAirLock
 			{
 				optionHandled = true;
 
-				if (this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord))
-				{
-					this.active = true;
-				}
-				else
-				{
-					this.active = false;
-				}
+                this.active = this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord);
 			}
 
 			if (this.playerDistanceActivation)
@@ -133,7 +126,7 @@ public class TileEntityAirLockController extends TileEntityAirLock
 
 			if (this.protocol == null)
 			{
-				this.protocol = this.lastProtocol = new AirLockProtocol(this, 40);
+				this.protocol = this.lastProtocol = new AirLockProtocol(this);
 			}
 
 			if (this.ticks % 10 == 0)

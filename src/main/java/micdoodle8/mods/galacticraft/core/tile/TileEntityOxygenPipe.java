@@ -31,14 +31,7 @@ public class TileEntityOxygenPipe extends TileEntityOxygenTransmitter implements
 		{
 			if (adjacentTile instanceof IColorable)
 			{
-				if (this.getColor() == ((IColorable) adjacentTile).getColor())
-				{
-					return true;
-				}
-				else
-				{
-					return false;
-				}
+                return this.getColor() == ((IColorable) adjacentTile).getColor();
 			}
 
 			return true;
@@ -57,13 +50,9 @@ public class TileEntityOxygenPipe extends TileEntityOxygenTransmitter implements
 	@Override
 	public boolean canUpdate()
 	{
-		if (this.worldObj == null || !this.worldObj.isRemote)
-		{
-			return true;
-		}
+        return this.worldObj == null || !this.worldObj.isRemote;
 
-		return false;
-	}
+    }
 
 	@Override
 	public void updateEntity()

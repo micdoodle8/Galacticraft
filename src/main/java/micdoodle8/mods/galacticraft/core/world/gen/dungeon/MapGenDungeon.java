@@ -205,10 +205,6 @@ public class MapGenDungeon
 							}
 							break;
 						}
-						else
-						{
-							continue tryLoop;
-						}
 					}
 					else
 					// Two Hallways
@@ -300,14 +296,12 @@ public class MapGenDungeon
 						}
 						else
 						{
-							continue tryLoop;
-						}
+                        }
 					}
 				}
 				else
 				{
-					continue tryLoop;
-				}
+                }
 			}
 		}
 	}
@@ -460,13 +454,9 @@ public class MapGenDungeon
 		randX += rand.nextInt(numChunks - offsetChunks);
 		randZ += rand.nextInt(numChunks - offsetChunks);
 
-		if (oldi == randX && oldj == randZ)
-		{
-			return true;
-		}
+        return oldi == randX && oldj == randZ;
 
-		return false;
-	}
+    }
 
 	public void generateEntranceCrater(Block[] blocks, byte[] meta, int x, int y, int z, int cx, int cz)
 	{

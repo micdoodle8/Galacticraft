@@ -60,7 +60,6 @@ public class EntityTerraformBubble extends EntityAdvanced implements IBubble
 	@Override
 	public void moveEntity(double par1, double par3, double par5)
 	{
-		;
 	}
 
 	@Override
@@ -186,13 +185,11 @@ public class EntityTerraformBubble extends EntityAdvanced implements IBubble
 	@Override
 	public void onPacketClient(EntityPlayer player)
 	{
-		;
 	}
 
 	@Override
 	public void onPacketServer(EntityPlayer player)
 	{
-		;
 	}
 
 	@Override

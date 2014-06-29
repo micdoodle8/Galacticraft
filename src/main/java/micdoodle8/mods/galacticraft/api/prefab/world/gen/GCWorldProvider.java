@@ -108,8 +108,7 @@ public abstract class GCWorldProvider extends WorldProviderSpace implements IGal
 		{
 			Class<? extends GCChunkProvider> chunkProviderClass = this.getChunkProviderClass();
 			Constructor<? extends GCChunkProvider> c = chunkProviderClass.getConstructor(World.class, Long.class, Boolean.class);
-			GCChunkProvider o = c.newInstance(this.worldObj, this.worldObj.getSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled());
-			return o;
+			return c.newInstance(this.worldObj, this.worldObj.getSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled());
 		}
 		catch (Exception e)
 		{

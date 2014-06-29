@@ -810,13 +810,9 @@ public class ThreadFindSeal
 		if (block.isOpaqueCube())
 		{
 			//Gravel, wool and sponge are porous
-			if (block instanceof BlockGravel || block.getMaterial() == Material.cloth || block instanceof BlockSponge)
-			{
-				return true;
-			}
+            return block instanceof BlockGravel || block.getMaterial() == Material.cloth || block instanceof BlockSponge;
 
-			return false;
-		}
+        }
 
 		if (block instanceof BlockGlass || block instanceof BlockStainedGlass)
 		{

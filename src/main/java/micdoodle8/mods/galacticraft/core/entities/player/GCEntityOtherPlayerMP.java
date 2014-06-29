@@ -32,7 +32,7 @@ public class GCEntityOtherPlayerMP extends EntityOtherPlayerMP
 		if (ClientProxyCore.capeMap.containsKey(this.getGameProfile().getName()))
 		{
 			this.galacticraftCape = GCEntityOtherPlayerMP.getLocationCape2(this.getGameProfile().getName());
-			this.galacticraftCapeImageData = GCEntityOtherPlayerMP.getDownloadImage(this.galacticraftCape, GCEntityClientPlayerMP.getCapeURL(this.getGameProfile().getName()), null, null);
+			this.galacticraftCapeImageData = GCEntityOtherPlayerMP.getDownloadImage(this.galacticraftCape, GCEntityClientPlayerMP.getCapeURL(this.getGameProfile().getName()));
 		}
 	}
 
@@ -41,14 +41,14 @@ public class GCEntityOtherPlayerMP extends EntityOtherPlayerMP
 		return new ResourceLocation("cloaksGC/" + StringUtils.stripControlCodes(par0Str));
 	}
 
-	private static ThreadDownloadImageData getDownloadImage(ResourceLocation par0ResourceLocation, String par1Str, ResourceLocation par2ResourceLocation, IImageBuffer par3IImageBuffer)
+	private static ThreadDownloadImageData getDownloadImage(ResourceLocation par0ResourceLocation, String par1Str)
 	{
 		TextureManager texturemanager = Minecraft.getMinecraft().getTextureManager();
 		Object object = texturemanager.getTexture(par0ResourceLocation);
 
 		if (object == null)
 		{
-			object = new ThreadDownloadImageData(par1Str, par2ResourceLocation, par3IImageBuffer);
+			object = new ThreadDownloadImageData(par1Str, null, null);
 			texturemanager.loadTexture(par0ResourceLocation, (ITextureObject) object);
 		}
 

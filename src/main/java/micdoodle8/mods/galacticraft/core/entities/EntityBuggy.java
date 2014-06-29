@@ -460,7 +460,6 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
 	@Override
 	public void handlePacketData(Side side, EntityPlayer player)
 	{
-		;
 	}
 
 	@Override
@@ -598,7 +597,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer var1)
 	{
-		return this.isDead ? false : var1.getDistanceSqToEntity(this) <= 64.0D;
+		return !this.isDead && var1.getDistanceSqToEntity(this) <= 64.0D;
 	}
 
 	@Override

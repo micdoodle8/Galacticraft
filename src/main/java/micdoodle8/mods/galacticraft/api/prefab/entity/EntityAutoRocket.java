@@ -195,7 +195,6 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 						}
 						catch (ClassCastException e)
 						{
-							;
 						}
 						catch (Exception e)
 						{
@@ -242,7 +241,6 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 							continue;
 						}
 
-						TileEntity launchController = tile;
 						int controllerFrequency = controllerClass.getField("frequency").getInt(tile);
 
 						if (destFreq == controllerFrequency)
@@ -254,13 +252,13 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 							{
 								for (int z = -2; z <= 2; z++)
 								{
-									Block block = world.getBlock(launchController.xCoord + x, launchController.yCoord, launchController.zCoord + z);
+									Block block = world.getBlock(tile.xCoord + x, tile.yCoord, tile.zCoord + z);
 
 									if (block instanceof BlockLandingPadFull)
 									{
 										if (doSet)
 										{
-											this.targetVec = new Vector3(launchController.xCoord + x, launchController.yCoord, launchController.zCoord + z);
+											this.targetVec = new Vector3(tile.xCoord + x, tile.yCoord, tile.zCoord + z);
 										}
 
 										targetSet = true;
@@ -271,7 +269,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
 							if (doSet)
 							{
-								this.targetDimension = launchController.getWorldObj().provider.dimensionId;
+								this.targetDimension = tile.getWorldObj().provider.dimensionId;
 							}
 
 							if (!targetSet)
@@ -487,8 +485,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 				}
 
 				this.onRocketLand(x, y, z);
-				return;
-			}
+            }
 		}
 	}
 
@@ -1079,7 +1076,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer entityplayer)
 	{
-		return this.isDead ? false : entityplayer.getDistanceSqToEntity(this) <= 64.0D;
+		return !this.isDead && entityplayer.getDistanceSqToEntity(this) <= 64.0D;
 	}
 
 	@Override
@@ -1091,7 +1088,6 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 	@Override
 	public void markDirty()
 	{
-		;
 	}
 
 	@Override

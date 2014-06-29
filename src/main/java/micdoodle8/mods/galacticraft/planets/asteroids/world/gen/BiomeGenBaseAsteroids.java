@@ -9,7 +9,7 @@ public class BiomeGenBaseAsteroids extends BiomeGenBase
 	public static final BiomeGenBase asteroid = new BiomeGenBaseAsteroids(104).setBiomeName("asteroids");
 
 	@SuppressWarnings("unchecked")
-	public BiomeGenBaseAsteroids(int var1)
+	private BiomeGenBaseAsteroids(int var1)
 	{
 		super(var1);
 		this.spawnableMonsterList.clear();

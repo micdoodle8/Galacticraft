@@ -79,7 +79,7 @@ public class OxygenPressureProtocol
 		}
 		catch (IllegalThreadStateException e)
 		{
-			;
+
 		}
 	}
 
@@ -103,13 +103,9 @@ public class OxygenPressureProtocol
 
 		if (block.isOpaqueCube())
 		{
-			if (block instanceof BlockGravel || block.getMaterial() == Material.cloth || block instanceof BlockSponge)
-			{
-				return true;
-			}
+            return block instanceof BlockGravel || block.getMaterial() == Material.cloth || block instanceof BlockSponge;
 
-			return false;
-		}
+        }
 
 		if (block instanceof BlockGlass || block instanceof BlockStainedGlass)
 		{

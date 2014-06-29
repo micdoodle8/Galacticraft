@@ -63,7 +63,7 @@ public class BlockVec3 implements Cloneable
 	 * Makes a new copy of this Vector. Prevents variable referencing problems.
 	 */
 	@Override
-	public BlockVec3 clone()
+	public final BlockVec3 clone()
 	{
 		return new BlockVec3(this.x, this.y, this.z);
 	}

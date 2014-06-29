@@ -18,7 +18,6 @@ import com.google.common.collect.Lists;
 public class SpaceRace
 {
 	private static int lastSpaceRaceID = 0;
-	private String owner;
 	private int spaceRaceID;
 	private List<String> playerNames = Lists.newArrayList();
 	private String teamName;
@@ -33,7 +32,6 @@ public class SpaceRace
 
 	public SpaceRace(List<String> playerNames, String teamName, FlagData flagData, Vector3 teamColor)
 	{
-		this.owner = playerNames.get(0);
 		this.playerNames = playerNames;
 		this.teamName = teamName;
 		this.ticksSpent = 0;

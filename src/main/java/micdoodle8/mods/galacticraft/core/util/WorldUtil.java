@@ -487,8 +487,7 @@ public class WorldUtil
 		}
 
 		GalacticraftCore.packetPipeline.sendToAll(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_LIST, WorldUtil.getSpaceStationList()));
-		final SpaceStationWorldData var3 = SpaceStationWorldData.getStationData(world, dimID, player);
-		return var3;
+		return SpaceStationWorldData.getStationData(world, dimID, player);
 	}
 
 	public static Entity transferEntityToDimension(Entity entity, int dimensionID, WorldServer world)

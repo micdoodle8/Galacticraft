@@ -8,23 +8,23 @@ public class EntityFXSparks extends EntityFX
 {
 	float smokeParticleScale;
 
-	public EntityFXSparks(World par1World, double par2, double par4, double par6, double par8, double par10, double par12, float par14)
+	public EntityFXSparks(World par1World, double par2, double par4, double par6, double par8, double par12)
 	{
 		super(par1World, par2, par4, par6, 0.0D, 0.0D, 0.0D);
 		this.motionX *= 0.10000000149011612D;
 		this.motionY *= 0.10000000149011612D;
 		this.motionZ *= 0.10000000149011612D;
 		this.motionX += par8;
-		this.motionY += par10;
+		this.motionY += 0.06;
 		this.motionZ += par12;
 		this.particleRed = 255F / 255F;
 		this.particleGreen = 255F / 255F;
 		this.particleBlue = 0F / 255F + this.rand.nextFloat() / 6;
 		this.particleScale *= 0.15F;
-		this.particleScale *= par14 * 3;
+		this.particleScale *= 1.0F * 3;
 		this.smokeParticleScale = this.particleScale;
 		this.particleMaxAge = (int) 50.0D;
-		this.particleMaxAge = (int) (this.particleMaxAge * par14);
+		this.particleMaxAge = (int) (this.particleMaxAge * 1.0F);
 		this.noClip = false;
 	}
 

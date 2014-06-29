@@ -72,7 +72,6 @@ public class EntityLander extends InventoryEntity implements IInventorySettable,
 	@Override
 	protected void entityInit()
 	{
-		;
 	}
 
 	@Override

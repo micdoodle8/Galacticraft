@@ -127,7 +127,6 @@ public class EntitySkeletonBoss extends EntityMob implements IEntityBreathable, 
 	@Override
 	public void knockBack(Entity par1Entity, float par2, double par3, double par5)
 	{
-		;
 	}
 
 	@Override

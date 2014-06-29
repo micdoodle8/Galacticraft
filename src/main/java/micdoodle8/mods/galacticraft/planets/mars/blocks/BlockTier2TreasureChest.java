@@ -300,7 +300,7 @@ public class BlockTier2TreasureChest extends BlockContainer implements ITileEnti
 			++var5;
 		}
 
-		return var5 > 1 ? false : this.isThereANeighborChest(par1World, par2 - 1, par3, par4) ? false : this.isThereANeighborChest(par1World, par2 + 1, par3, par4) ? false : this.isThereANeighborChest(par1World, par2, par3, par4 - 1) ? false : !this.isThereANeighborChest(par1World, par2, par3, par4 + 1);
+		return var5 <= 1 && (this.isThereANeighborChest(par1World, par2 - 1, par3, par4) ? false : !this.isThereANeighborChest(par1World, par2 + 1, par3, par4) && !this.isThereANeighborChest(par1World, par2, par3, par4 - 1) && !this.isThereANeighborChest(par1World, par2, par3, par4 + 1));
 	}
 
 	/**
@@ -309,7 +309,7 @@ public class BlockTier2TreasureChest extends BlockContainer implements ITileEnti
 	 */
 	private boolean isThereANeighborChest(World par1World, int par2, int par3, int par4)
 	{
-		return par1World.getBlock(par2, par3, par4) != this ? false : par1World.getBlock(par2 - 1, par3, par4) == this ? true : par1World.getBlock(par2 + 1, par3, par4) == this ? true : par1World.getBlock(par2, par3, par4 - 1) == this ? true : par1World.getBlock(par2, par3, par4 + 1) == this;
+		return par1World.getBlock(par2, par3, par4) == this && (par1World.getBlock(par2 - 1, par3, par4) == this ? true : par1World.getBlock(par2 + 1, par3, par4) == this ? true : par1World.getBlock(par2, par3, par4 - 1) == this ? true : par1World.getBlock(par2, par3, par4 + 1) == this);
 	}
 
 	@Override

@@ -280,12 +280,12 @@ public class GCPlayerStats implements IExtendedEntityProperties
 	{
 	}
 
-	public static final void register(GCEntityPlayerMP player)
+	public static void register(GCEntityPlayerMP player)
 	{
 		player.registerExtendedProperties(GCPlayerStats.GC_PLAYER_PROP, new GCPlayerStats(player));
 	}
 
-	public static final GCPlayerStats get(GCEntityPlayerMP player)
+	public static GCPlayerStats get(GCEntityPlayerMP player)
 	{
 		return (GCPlayerStats) player.getExtendedProperties(GCPlayerStats.GC_PLAYER_PROP);
 	}

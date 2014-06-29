@@ -163,6 +163,6 @@ public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCal
 	@Override
 	public void onIntruderInteraction()
 	{
-		;
+
 	}
 }

@@ -324,13 +324,9 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
 
 		plantable.getPlant(world, x, y + 1, z);
 
-		if (plantable instanceof BlockFlower)
-		{
-			return true;
-		}
+        return plantable instanceof BlockFlower;
 
-		return false;
-	}
+    }
 
 	@Override
 	public int requiredLiquidBlocksNearby()
@@ -341,13 +337,9 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
 	@Override
 	public boolean isPlantable(int metadata)
 	{
-		if (metadata >= 5 && metadata <= 13)
-		{
-			return true;
-		}
+        return metadata >= 5 && metadata <= 13;
 
-		return false;
-	}
+    }
 
 	@Override
 	public boolean isTerraformable(World world, int x, int y, int z)

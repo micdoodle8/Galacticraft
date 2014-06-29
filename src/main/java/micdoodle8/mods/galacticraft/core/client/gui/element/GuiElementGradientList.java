@@ -35,7 +35,6 @@ public class GuiElementGradientList extends Gui
 	private int lastMousePosY;
 	private boolean sliderGrabbed;
 	private boolean sliderEnabled;
-	private int scrollOffset;
 	private int selectedIndex = -1;
 
 	public GuiElementGradientList(int xPos, int yPos, int width, int height)
@@ -125,8 +124,7 @@ public class GuiElementGradientList extends Gui
 		Gui.drawRect(this.xPosition + this.width - 9, this.sliderPos, this.xPosition + this.width - 1, this.sliderPos + 1, sliderColor);
 		Gui.drawRect(this.xPosition + this.width - 9, this.sliderPos + 15, this.xPosition + this.width - 1, this.sliderPos + 14, sliderColor);
 
-		this.scrollOffset = this.yPosition + 1 - (int) Math.floor((this.listContents.size() * GuiElementGradientList.BUTTON_HEIGHT - this.height) * this.getSliderPercentage());
-		int currentDrawHeight = this.scrollOffset;
+		int currentDrawHeight = this.yPosition + 1 - (int) Math.floor((this.listContents.size() * GuiElementGradientList.BUTTON_HEIGHT - this.height) * this.getSliderPercentage());
 		FontRenderer fontRenderer = FMLClientHandler.instance().getClient().fontRenderer;
 
 		for (int i = 0; i < this.listContents.size(); i++)

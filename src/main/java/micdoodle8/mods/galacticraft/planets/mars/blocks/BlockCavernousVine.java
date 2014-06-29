@@ -100,9 +100,7 @@ public class BlockCavernousVine extends Block implements IShearable
 	@Override
 	public int getLightValue(IBlockAccess world, int x, int y, int z)
 	{
-		int length = this.getVineLight(world, x, y, z);
-
-		return length;
+		return this.getVineLight(world, x, y, z);
 	}
 
 	@Override

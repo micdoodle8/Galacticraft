@@ -32,7 +32,6 @@ public class EntityGrapple extends Entity implements IProjectile
 	public int shootingEntityID;
 	private int ticksInGround;
 	private int ticksInAir;
-	private int knockbackStrength;
 	public float rotationRoll;
 	public float prevRotationRoll;
 	public boolean pullingPlayer;
@@ -306,8 +305,7 @@ public class EntityGrapple extends Entity implements IProjectile
 				if (movingobjectposition.entityHit == null)
 				{
 					this.hitVec = new BlockVec3(movingobjectposition.blockX, movingobjectposition.blockY, movingobjectposition.blockZ);
-					Block block = this.worldObj.getBlock(this.hitVec.x, this.hitVec.y, this.hitVec.z);
-					this.hitBlock = block;
+					this.hitBlock = this.worldObj.getBlock(this.hitVec.x, this.hitVec.y, this.hitVec.z);
 					this.inData = this.worldObj.getBlockMetadata(this.hitVec.x, this.hitVec.y, this.hitVec.z);
 					this.motionX = (float) (movingobjectposition.hitVec.xCoord - this.posX);
 					this.motionY = (float) (movingobjectposition.hitVec.yCoord - this.posY);
@@ -332,11 +330,12 @@ public class EntityGrapple extends Entity implements IProjectile
 			this.posZ += this.motionZ;
 			motion = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
 			this.rotationYaw = (float) (Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
+            this.rotationPitch = (float) (Math.atan2(this.motionY, motion) * 180.0D / Math.PI);
 
-			for (this.rotationPitch = (float) (Math.atan2(this.motionY, motion) * 180.0D / Math.PI); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F)
-			{
-				;
-			}
+            while (this.rotationPitch - this.prevRotationPitch < -180.0F)
+            {
+                this.prevRotationPitch -= 360.0F;
+            }
 
 			while (this.rotationPitch - this.prevRotationPitch >= 180.0F)
 			{
@@ -449,11 +448,6 @@ public class EntityGrapple extends Entity implements IProjectile
 	public float getShadowSize()
 	{
 		return 0.0F;
-	}
-
-	public void setKnockbackStrength(int par1)
-	{
-		this.knockbackStrength = par1;
 	}
 
 	@Override

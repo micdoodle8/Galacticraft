@@ -114,7 +114,7 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 		if (ClientProxyCore.capeMap.containsKey(this.getGameProfile().getName()))
 		{
 			this.galacticraftCape = GCEntityClientPlayerMP.getLocationCape2(this.getGameProfile().getName());
-			this.galacticraftCapeImageData = GCEntityClientPlayerMP.getDownloadImage(this.galacticraftCape, GCEntityClientPlayerMP.getCapeURL(this.getGameProfile().getName()), null, null);
+			this.galacticraftCapeImageData = GCEntityClientPlayerMP.getDownloadImage(this.galacticraftCape, GCEntityClientPlayerMP.getCapeURL(this.getGameProfile().getName()));
 		}
 	}
 
@@ -123,14 +123,14 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 		return new ResourceLocation("cloaksGC/" + StringUtils.stripControlCodes(par0Str));
 	}
 
-	private static ThreadDownloadImageData getDownloadImage(ResourceLocation par0ResourceLocation, String par1Str, ResourceLocation par2ResourceLocation, IImageBuffer par3IImageBuffer)
+	private static ThreadDownloadImageData getDownloadImage(ResourceLocation par0ResourceLocation, String par1Str)
 	{
 		TextureManager texturemanager = Minecraft.getMinecraft().getTextureManager();
 		Object object = texturemanager.getTexture(par0ResourceLocation);
 
 		if (object == null)
 		{
-			object = new ThreadDownloadImageData(par1Str, par2ResourceLocation, par3IImageBuffer);
+			object = new ThreadDownloadImageData(par1Str, null, null);
 			texturemanager.loadTexture(par0ResourceLocation, (ITextureObject) object);
 		}
 
@@ -376,14 +376,7 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 
 	public void toggleGoggles()
 	{
-		if (this.usingAdvancedGoggles)
-		{
-			this.usingAdvancedGoggles = false;
-		}
-		else
-		{
-			this.usingAdvancedGoggles = true;
-		}
+        this.usingAdvancedGoggles = !this.usingAdvancedGoggles;
 	}
 
 	public void setParachute(boolean tf)

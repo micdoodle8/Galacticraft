@@ -419,8 +419,7 @@ public class EntityLandingBalloons extends EntityAdvancedMotion implements IInve
 	@Override
 	public Map<Vector3, Vector3> getParticleMap()
 	{
-		final Map<Vector3, Vector3> particleMap = new HashMap<Vector3, Vector3>();
-		return particleMap;
+		return new HashMap<Vector3, Vector3>();
 	}
 
 	@SideOnly(Side.CLIENT)

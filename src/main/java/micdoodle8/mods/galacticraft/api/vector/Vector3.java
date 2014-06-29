@@ -141,7 +141,7 @@ public class Vector3 implements Cloneable
 	 * Makes a new copy of this Vector. Prevents variable referencing problems.
 	 */
 	@Override
-	public Vector3 clone()
+	public final Vector3 clone()
 	{
 		return new Vector3(this);
 	}

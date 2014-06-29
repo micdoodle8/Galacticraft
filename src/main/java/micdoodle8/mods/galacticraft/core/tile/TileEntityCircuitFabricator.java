@@ -293,7 +293,7 @@ public class TileEntityCircuitFabricator extends TileEntityElectricBlock impleme
 	@Override
 	public boolean isItemValidForSlot(int slotID, ItemStack itemStack)
 	{
-		return slotID == 1 ? itemStack != null && FurnaceRecipes.smelting().getSmeltingResult(itemStack) != null : slotID == 0 ? itemStack.getItem() instanceof IItemElectric : false;
+		return slotID == 1 ? itemStack != null && FurnaceRecipes.smelting().getSmeltingResult(itemStack) != null : slotID == 0 && itemStack.getItem() instanceof IItemElectric;
 	}
 
 	@Override

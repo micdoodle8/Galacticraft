@@ -110,14 +110,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 
 		if (!this.worldObj.isRemote)
 		{
-			if (this.oxygenBubble.getSize() >= 1 && this.hasEnoughEnergyToRun)
-			{
-				this.active = true;
-			}
-			else
-			{
-				this.active = false;
-			}
+            this.active = this.oxygenBubble.getSize() >= 1 && this.hasEnoughEnergyToRun;
 		}
 
 		if (!this.worldObj.isRemote && (this.active != this.lastActive || this.ticks % 20 == 0))
@@ -279,7 +272,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
 	{
-		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
+		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
 	}
 
 	// ISidedInventory Implementation:
@@ -311,7 +304,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 	@Override
 	public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
 	{
-		return slotID == 0 ? itemstack.getItem() instanceof IItemElectric : false;
+		return slotID == 0 && itemstack.getItem() instanceof IItemElectric;
 	}
 
 	@Override

@@ -130,14 +130,7 @@ public class TileEntityTerraformer extends TileEntityElectricBlock implements II
 				}
 			}
 
-			if (this.terraformBubble.getSize() == this.MAX_SIZE && this.hasEnoughEnergyToRun && this.getFirstBonemealStack() != null && this.waterTank.getFluid() != null && this.waterTank.getFluid().amount > 0)
-			{
-				this.active = true;
-			}
-			else
-			{
-				this.active = false;
-			}
+            this.active = this.terraformBubble.getSize() == this.MAX_SIZE && this.hasEnoughEnergyToRun && this.getFirstBonemealStack() != null && this.waterTank.getFluid() != null && this.waterTank.getFluid().amount > 0;
 		}
 
 		if (!this.worldObj.isRemote && (this.active != this.lastActive || this.ticks % 20 == 0))
@@ -540,7 +533,7 @@ public class TileEntityTerraformer extends TileEntityElectricBlock implements II
 	@Override
 	public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
 	{
-		return slotID == 1 ? itemstack.getItem() instanceof IItemElectric : false;
+		return slotID == 1 && itemstack.getItem() instanceof IItemElectric;
 	}
 
 	@Override

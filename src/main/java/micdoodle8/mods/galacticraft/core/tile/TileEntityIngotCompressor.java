@@ -36,7 +36,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
 
 	private ItemStack producingStack = null;
 	private ItemStack[] containingItems = new ItemStack[2];
-	public PersistantInventoryCrafting compressingCraftMatrix = new PersistantInventoryCrafting(3, 3);
+	public PersistantInventoryCrafting compressingCraftMatrix = new PersistantInventoryCrafting();
 	public final Set<EntityPlayer> playersUsing = new HashSet<EntityPlayer>();
 
 	@Override
@@ -387,7 +387,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
 	{
-		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
+		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
 	}
 
 	@Override

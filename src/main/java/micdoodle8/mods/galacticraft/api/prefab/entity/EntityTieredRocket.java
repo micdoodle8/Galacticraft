@@ -225,7 +225,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 	}
 
 	@Override
-	public void onReachAtmoshpere()
+	public void onReachAtmosphere()
 	{
 		if (this.destinationFrequency != -1)
 		{
@@ -308,7 +308,6 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 
 	public void onTeleport(EntityPlayerMP player)
 	{
-		;
 	}
 
 	@Override

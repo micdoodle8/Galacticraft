@@ -15,17 +15,14 @@ public class CommonProxyCore
 {
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		;
 	}
 
 	public void init(FMLInitializationEvent event)
 	{
-		;
 	}
 
 	public void postInit(FMLPostInitializationEvent event)
 	{
-		;
 	}
 
 	public int getBlockRender(Block blockID)
@@ -50,12 +47,10 @@ public class CommonProxyCore
 
 	public void spawnParticle(String particleID, Vector3 position, Vector3 motion)
 	{
-		;
 	}
 
 	public void spawnParticle(String particleID, Vector3 position, Vector3 motion, Vector3 color)
 	{
-		;
 	}
 
 	public World getWorldForID(int dimensionID)

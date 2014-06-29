@@ -125,7 +125,7 @@ public abstract class InventoryEntity extends NetworkedEntity implements IInvent
 	@Override
 	public void markDirty()
 	{
-		;
+
 	}
 
 	@Override
@@ -137,12 +137,12 @@ public abstract class InventoryEntity extends NetworkedEntity implements IInvent
 	@Override
 	public void openInventory()
 	{
-		;
+
 	}
 
 	@Override
 	public void closeInventory()
 	{
-		;
+
 	}
 }

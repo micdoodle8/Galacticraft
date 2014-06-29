@@ -188,6 +188,6 @@ public class GuiTerraformer extends GuiContainer implements ICheckBoxCallback
 	@Override
 	public void onIntruderInteraction()
 	{
-		;
+
 	}
 }

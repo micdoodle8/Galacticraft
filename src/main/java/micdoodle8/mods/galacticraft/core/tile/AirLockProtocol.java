@@ -6,17 +6,17 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-public class AirLockProtocol
+class AirLockProtocol
 {
-	ArrayList<TileEntityAirLock> adjacentAirLocks;
+	private ArrayList<TileEntityAirLock> adjacentAirLocks;
 	private final World worldObj;
 	private final TileEntity head;
 	private final int maxLoops;
 
-	public int airLocksVerticalMin = 0;
-	public int airLocksVerticalMax = 0;
-	public int airLocksHorizontalMin = 0;
-	public int airLocksHorizontalMax = 0;
+	private int airLocksVerticalMin = 0;
+	private int airLocksVerticalMax = 0;
+	private int airLocksHorizontalMin = 0;
+	private int airLocksHorizontalMax = 0;
 	private boolean horizontal;
 
 	public int minX = 6000000;
@@ -26,12 +26,12 @@ public class AirLockProtocol
 	public int minZ = 6000000;
 	public int maxZ = -6000000;
 
-	public AirLockProtocol(TileEntity head, int maxLoops)
+	public AirLockProtocol(TileEntity head)
 	{
 		this.adjacentAirLocks = new ArrayList<TileEntityAirLock>();
 		this.worldObj = head.getWorldObj();
 		this.head = head;
-		this.maxLoops = maxLoops;
+		this.maxLoops = 40;
 	}
 
 	public void loopThrough(TileEntity tile2, int loops)

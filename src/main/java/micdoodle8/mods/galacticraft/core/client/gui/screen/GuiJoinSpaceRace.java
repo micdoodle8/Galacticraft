@@ -37,22 +37,9 @@ public class GuiJoinSpaceRace extends GuiScreen implements ICheckBoxCallback, IT
 	private EntityPlayer thePlayer;
 	private boolean initialized;
 
-	private int buttonFlag_width;
 	private int buttonFlag_height;
 	private int buttonFlag_xPosition;
 	private int buttonFlag_yPosition;
-	private boolean buttonFlag_hover;
-
-	private Vector2 flagDesignerScale = new Vector2();
-	private float flagDesignerMinX;
-	private float flagDesignerMinY;
-	private float flagDesignerWidth;
-	private float flagDesignerHeight;
-
-	private int selectionMinX;
-	private int selectionMaxX;
-	private int selectionMinY;
-	private int selectionMaxY;
 
 	private EntityFlag dummyFlag = new EntityFlag(FMLClientHandler.instance().getClient().theWorld);
 	private ModelFlag dummyModel = new ModelFlag();
@@ -89,9 +76,9 @@ public class GuiJoinSpaceRace extends GuiScreen implements ICheckBoxCallback, IT
 			final int var5 = (this.width - this.width / 4) / 2;
 			final int var6 = (this.height - this.height / 4) / 2;
 
-			this.buttonFlag_width = 81;
+			int buttonFlag_width = 81;
 			this.buttonFlag_height = 58;
-			this.buttonFlag_xPosition = this.width / 2 - this.buttonFlag_width / 2;
+			this.buttonFlag_xPosition = this.width / 2 - buttonFlag_width / 2;
 			this.buttonFlag_yPosition = this.height / 2 - this.height / 3 + 10;
 
 			this.buttonList.add(new GuiElementGradientButton(0, this.width / 2 - this.width / 3 + 15, this.height / 2 - this.height / 4 - 15, 50, 15, "Close"));
@@ -131,8 +118,7 @@ public class GuiJoinSpaceRace extends GuiScreen implements ICheckBoxCallback, IT
 
 		if (!this.initialized)
 		{
-			return;
-		}
+        }
 	}
 
 	@Override
@@ -215,7 +201,6 @@ public class GuiJoinSpaceRace extends GuiScreen implements ICheckBoxCallback, IT
 	@Override
 	public void onIntruderInteraction()
 	{
-		;
 	}
 
 	@Override

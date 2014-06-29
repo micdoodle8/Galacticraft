@@ -41,11 +41,11 @@ public class EffectHandler
 			}
 			else if (particleID.equals("launchFlameIdle"))
 			{
-				particle = new EntityFXLaunchFlame(mc.theWorld, position, motion, 1F, false);
+				particle = new EntityFXLaunchFlame(mc.theWorld, position, motion, false);
 			}
 			else if (particleID.equals("launchFlameLaunched"))
 			{
-				particle = new EntityFXLaunchFlame(mc.theWorld, position, motion, 1F, true);
+				particle = new EntityFXLaunchFlame(mc.theWorld, position, motion, true);
 			}
 			else if (particleID.equals("distanceSmoke") && dX * dX + dY * dY + dZ * dZ < viewDistance * viewDistance * 1.7)
 			{

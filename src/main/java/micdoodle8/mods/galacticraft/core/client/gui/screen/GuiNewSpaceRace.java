@@ -405,14 +405,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
 
 			if (this.buttonList.size() >= 2)
 			{
-				if (this.gradientListAddPlayers.getSelectedElement() != null)
-				{
-					((GuiElementGradientButton) this.buttonList.get(1)).enabled = true;
-				}
-				else
-				{
-					((GuiElementGradientButton) this.buttonList.get(1)).enabled = false;
-				}
+                ((GuiElementGradientButton) this.buttonList.get(1)).enabled = this.gradientListAddPlayers.getSelectedElement() != null;
 			}
 		}
 
@@ -429,14 +422,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
 
 			if (this.buttonList.size() >= 2)
 			{
-				if (this.gradientListRemovePlayers.getSelectedElement() != null)
-				{
-					((GuiElementGradientButton) this.buttonList.get(1)).enabled = true;
-				}
-				else
-				{
-					((GuiElementGradientButton) this.buttonList.get(1)).enabled = false;
-				}
+                ((GuiElementGradientButton) this.buttonList.get(1)).enabled = this.gradientListRemovePlayers.getSelectedElement() != null;
 			}
 		}
 
@@ -976,18 +962,14 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
 	@Override
 	public boolean getInitiallySelected(GuiElementCheckbox checkbox)
 	{
-		if (checkbox.equals(this.checkboxPaintbrush))
-		{
-			return true;
-		}
+        return checkbox.equals(this.checkboxPaintbrush);
 
-		return false;
-	}
+    }
 
 	@Override
 	public void onIntruderInteraction()
 	{
-		;
+
 	}
 
 	@Override

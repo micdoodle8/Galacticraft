@@ -10,21 +10,19 @@ public class ContainerBuggy extends Container
 {
 	private final IInventory lowerChestInventory;
 	private final IInventory spaceshipInv;
-	private final int type;
 
 	public ContainerBuggy(IInventory par1IInventory, IInventory par2IInventory, int type)
 	{
 		this.lowerChestInventory = par1IInventory;
 		this.spaceshipInv = par2IInventory;
-		this.type = type;
 		par2IInventory.openInventory();
 
 		int var4;
 		int var5;
 
-		if (this.type != 0)
+		if (type != 0)
 		{
-			for (var4 = 0; var4 < this.type * 2; ++var4)
+			for (var4 = 0; var4 < type * 2; ++var4)
 			{
 				for (var5 = 0; var5 < 9; ++var5)
 				{
@@ -37,13 +35,13 @@ public class ContainerBuggy extends Container
 		{
 			for (var5 = 0; var5 < 9; ++var5)
 			{
-				this.addSlotToContainer(new Slot(this.lowerChestInventory, var5 + var4 * 9 + 9, 8 + var5 * 18, 49 + var4 * 18 + 14 + this.type * 36));
+				this.addSlotToContainer(new Slot(this.lowerChestInventory, var5 + var4 * 9 + 9, 8 + var5 * 18, 49 + var4 * 18 + 14 + type * 36));
 			}
 		}
 
 		for (var4 = 0; var4 < 9; ++var4)
 		{
-			this.addSlotToContainer(new Slot(this.lowerChestInventory, var4, 8 + var4 * 18, 107 + 14 + this.type * 36));
+			this.addSlotToContainer(new Slot(this.lowerChestInventory, var4, 8 + var4 * 18, 107 + 14 + type * 36));
 		}
 	}
 

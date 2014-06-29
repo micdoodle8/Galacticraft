@@ -34,10 +34,10 @@ public class MarsItems
 		MarsItems.deshHoe = new ItemHoeMars(MarsItems.TOOLDESH).setUnlocalizedName("deshHoe");
 		MarsItems.deshSpade = new ItemSpadeMars(MarsItems.TOOLDESH).setUnlocalizedName("deshSpade");
 		MarsItems.deshSword = new ItemSwordMars(MarsItems.TOOLDESH).setUnlocalizedName("deshSword");
-		MarsItems.deshHelmet = new ItemArmorMars(MarsItems.ARMORDESH, 7, 0, false).setUnlocalizedName("deshHelmet");
-		MarsItems.deshChestplate = new ItemArmorMars(MarsItems.ARMORDESH, 7, 1, false).setUnlocalizedName("deshChestplate");
-		MarsItems.deshLeggings = new ItemArmorMars(MarsItems.ARMORDESH, 7, 2, false).setUnlocalizedName("deshLeggings");
-		MarsItems.deshBoots = new ItemArmorMars(MarsItems.ARMORDESH, 7, 3, false).setUnlocalizedName("deshBoots");
+		MarsItems.deshHelmet = new ItemArmorMars(MarsItems.ARMORDESH, 7, 0).setUnlocalizedName("deshHelmet");
+		MarsItems.deshChestplate = new ItemArmorMars(MarsItems.ARMORDESH, 7, 1).setUnlocalizedName("deshChestplate");
+		MarsItems.deshLeggings = new ItemArmorMars(MarsItems.ARMORDESH, 7, 2).setUnlocalizedName("deshLeggings");
+		MarsItems.deshBoots = new ItemArmorMars(MarsItems.ARMORDESH, 7, 3).setUnlocalizedName("deshBoots");
 		MarsItems.spaceship = new ItemTier2Rocket().setUnlocalizedName("spaceshipTier2");
 		MarsItems.key = new ItemKeyMars().setUnlocalizedName("key");
 		MarsItems.schematic = new ItemSchematicTier2().setUnlocalizedName("schematic");

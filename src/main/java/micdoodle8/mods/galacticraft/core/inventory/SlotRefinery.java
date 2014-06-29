@@ -42,11 +42,7 @@ public class SlotRefinery extends Slot
 		{
 		}
 
-		if (par1ItemStack.getItem() instanceof ItemOilCanister && par1ItemStack.getItemDamage() > 0)
-		{
-			return true;
-		}
+        return par1ItemStack.getItem() instanceof ItemOilCanister && par1ItemStack.getItemDamage() > 0;
 
-		return false;
-	}
+    }
 }

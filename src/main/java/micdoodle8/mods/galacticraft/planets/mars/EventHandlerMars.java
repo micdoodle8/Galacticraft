@@ -89,7 +89,7 @@ public class EventHandlerMars
 
 		if (blockID == MarsBlocks.machine && metadata >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA)
 		{
-			if (event.flag1 == false && event.flag2 == true && event.flag3 == true)
+			if (!event.flag1 && event.flag2 && event.flag3)
 			{
 				event.result = EnumStatus.NOT_POSSIBLE_HERE;
 
@@ -98,7 +98,7 @@ public class EventHandlerMars
 					GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_WAKE_PLAYER, new Object[] {}));
 				}
 			}
-			else if (event.flag1 == false && event.flag2 == false && event.flag3 == true)
+			else if (!event.flag1 && !event.flag2 && event.flag3)
 			{
 				if (!event.entityPlayer.worldObj.isRemote)
 				{

@@ -51,9 +51,7 @@ public class LittleEndianInputStream extends java.io.DataInputStream
 			throw new EOFException();
 		}
 
-		short ret = (short) ((b2 << 8) + (b1 << 0));
-
-		return ret;
+		return (short) ((b2 << 8) + b1);
 	}
 
 	/**
@@ -75,9 +73,7 @@ public class LittleEndianInputStream extends java.io.DataInputStream
 			throw new EOFException();
 		}
 
-		int ret = (b4 << 24) + (b3 << 16) + (b2 << 8) + (b1 << 0);
-
-		return ret;
+		return (b4 << 24) + (b3 << 16) + (b2 << 8) + b1;
 	}
 
 	/**
@@ -91,9 +87,7 @@ public class LittleEndianInputStream extends java.io.DataInputStream
 	{
 		int i = this.readIntLE();
 
-		float ret = Float.intBitsToFloat(i);
-
-		return ret;
+		return Float.intBitsToFloat(i);
 	}
 
 	/**
@@ -109,9 +103,7 @@ public class LittleEndianInputStream extends java.io.DataInputStream
 		int i1 = this.readIntLE();
 		int i2 = this.readIntLE();
 
-		long ret = ((long) i1 << 32) + (i2 & 0xFFFFFFFFL);
-
-		return ret;
+		return ((long) i1 << 32) + (i2 & 0xFFFFFFFFL);
 	}
 
 	/**
@@ -126,9 +118,7 @@ public class LittleEndianInputStream extends java.io.DataInputStream
 
 		long l = this.readLongLE();
 
-		double ret = Double.longBitsToDouble(l);
-
-		return ret;
+		return Double.longBitsToDouble(l);
 	}
 
 	/**
@@ -141,9 +131,7 @@ public class LittleEndianInputStream extends java.io.DataInputStream
 		long i3 = this.readUnsignedByte();
 		long i4 = this.readUnsignedByte();
 
-		long ret = i1 << 24 | i2 << 16 | i3 << 8 | i4;
-
-		return ret;
+		return i1 << 24 | i2 << 16 | i3 << 8 | i4;
 	}
 
 	/**
@@ -156,8 +144,6 @@ public class LittleEndianInputStream extends java.io.DataInputStream
 		long i3 = this.readUnsignedByte();
 		long i4 = this.readUnsignedByte();
 
-		long ret = i4 << 24 | i3 << 16 | i2 << 8 | i1;
-
-		return ret;
+		return i4 << 24 | i3 << 16 | i2 << 8 | i1;
 	}
 }

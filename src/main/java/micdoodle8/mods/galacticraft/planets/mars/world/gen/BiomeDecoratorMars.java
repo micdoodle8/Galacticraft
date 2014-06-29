@@ -11,17 +11,17 @@ import net.minecraftforge.common.MinecraftForge;
 
 public class BiomeDecoratorMars
 {
-	protected World currentWorld;
-	protected Random rand;
+	private World currentWorld;
+	private Random rand;
 
-	protected int chunkX;
-	protected int chunkZ;
+	private int chunkX;
+	private int chunkZ;
 
-	protected WorldGenerator dirtGen;
-	protected WorldGenerator deshGen;
-	protected WorldGenerator tinGen;
-	protected WorldGenerator copperGen;
-	protected WorldGenerator ironGen;
+	private WorldGenerator dirtGen;
+	private WorldGenerator deshGen;
+	private WorldGenerator tinGen;
+	private WorldGenerator copperGen;
+	private WorldGenerator ironGen;
 
 	public BiomeDecoratorMars()
 	{
@@ -50,7 +50,7 @@ public class BiomeDecoratorMars
 		}
 	}
 
-	protected void generateOre(int amountPerChunk, WorldGenerator worldGenerator, int minY, int maxY)
+	void generateOre(int amountPerChunk, WorldGenerator worldGenerator, int minY, int maxY)
 	{
 		for (int var5 = 0; var5 < amountPerChunk; ++var5)
 		{
@@ -61,7 +61,7 @@ public class BiomeDecoratorMars
 		}
 	}
 
-	protected void generateMars()
+	void generateMars()
 	{
 		MinecraftForge.EVENT_BUS.post(new GCCoreEventPopulate.Pre(this.currentWorld, this.rand, this.chunkX, this.chunkZ));
 		this.generateOre(20, this.dirtGen, 0, 200);

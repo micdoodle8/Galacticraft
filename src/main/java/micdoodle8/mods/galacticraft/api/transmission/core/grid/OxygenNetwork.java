@@ -152,8 +152,7 @@ public class OxygenNetwork implements IOxygenNetwork
 							if (((IOxygenReceiver) tileEntity).canConnect(direction, NetworkType.OXYGEN) && this.pipes.contains(tile))
 							{
 								requests.add(((IOxygenReceiver) tileEntity).getOxygenRequest(direction));
-								continue;
-							}
+                            }
 						}
 					}
 				}

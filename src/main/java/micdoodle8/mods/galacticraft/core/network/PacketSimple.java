@@ -212,7 +212,7 @@ public class PacketSimple extends Packet implements IPacket
 			{
 				if (mc != null && mc.renderViewEntity != null && mc.effectRenderer != null && mc.theWorld != null)
 				{
-					final EntityFX fx = new EntityFXSparks(mc.theWorld, x - 0.15 + 0.5, y + 1.2, z + 0.15 + 0.5, mc.theWorld.rand.nextDouble() / 20 - mc.theWorld.rand.nextDouble() / 20, 0.06, mc.theWorld.rand.nextDouble() / 20 - mc.theWorld.rand.nextDouble() / 20, 1.0F);
+					final EntityFX fx = new EntityFXSparks(mc.theWorld, x - 0.15 + 0.5, y + 1.2, z + 0.15 + 0.5, mc.theWorld.rand.nextDouble() / 20 - mc.theWorld.rand.nextDouble() / 20, mc.theWorld.rand.nextDouble() / 20 - mc.theWorld.rand.nextDouble() / 20);
 
 					if (fx != null)
 					{

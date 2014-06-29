@@ -20,7 +20,7 @@ public abstract class StructureComponentVillage extends StructureComponent
 		}
 		catch (Throwable e)
 		{
-			;
+
 		}
 	}
 

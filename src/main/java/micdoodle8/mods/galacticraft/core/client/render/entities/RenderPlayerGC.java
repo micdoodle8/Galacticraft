@@ -352,7 +352,7 @@ public class RenderPlayerGC extends RenderPlayer
 			RotatePlayerEvent event = new RotatePlayerEvent(par1AbstractClientPlayer);
 			MinecraftForge.EVENT_BUS.post(event);
 
-			if (event.shouldRotate == null || event.shouldRotate == true)
+			if (event.shouldRotate == null || event.shouldRotate)
 			{
 				GL11.glRotatef(par1AbstractClientPlayer.getBedOrientationInDegrees(), 0.0F, 1.0F, 0.0F);
 			}

@@ -200,8 +200,7 @@ public class BlockParaChest extends BlockContainer implements ITileEntityProvide
 				return false;
 			}
 
-			EntityOcelot entityocelot1 = (EntityOcelot) iterator.next();
-			entityocelot = entityocelot1;
+			entityocelot = (EntityOcelot) iterator.next();
 		}
 		while (!entityocelot.isSitting());
 

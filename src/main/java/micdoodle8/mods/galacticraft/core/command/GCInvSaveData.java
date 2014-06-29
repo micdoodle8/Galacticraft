@@ -7,9 +7,11 @@ import net.minecraft.world.WorldSavedData;
 
 public class GCInvSaveData extends WorldSavedData
 {
-	public GCInvSaveData(String par1Str)
+    public static final String SAVE_ID = "GCInv_savefile";
+
+	public GCInvSaveData()
 	{
-		super(par1Str);
+		super(SAVE_ID);
 	}
 
 	@Override
@@ -30,14 +32,13 @@ public class GCInvSaveData extends WorldSavedData
 
 						if (obj1 instanceof NBTTagCompound)
 						{
-							NBTTagCompound dat = obj1;
-							int i = dat.getByte("Slot") & 7;
+							int i = obj1.getByte("Slot") & 7;
 							if (i >= 6)
 							{
 								System.out.println("GCInv error retrieving savefile: slot was outside range 0-5");
 								return;
 							}
-							saveinv[i] = ItemStack.loadItemStackFromNBT(dat);
+							saveinv[i] = ItemStack.loadItemStackFromNBT(obj1);
 						}
 					}
 				}

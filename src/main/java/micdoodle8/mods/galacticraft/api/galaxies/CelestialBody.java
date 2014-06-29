@@ -141,12 +141,12 @@ public abstract class CelestialBody
 		return this.setDimensionInfo(dimID, providerClass, true, true);
 	}
 
-	public CelestialBody setDimensionInfo(int dimID, Class<? extends WorldProvider> providerClass, boolean autoRegister, boolean isReachable)
+	public CelestialBody setDimensionInfo(int dimID, Class<? extends WorldProvider> providerClass, boolean autoRegister)
 	{
 		this.dimensionID = dimID;
 		this.providerClass = providerClass;
 		this.autoRegisterDimension = autoRegister;
-		this.isReachable = isReachable;
+		this.isReachable = true;
 		return this;
 	}
 

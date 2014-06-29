@@ -21,7 +21,6 @@ public class GuiSchematicInput extends GuiContainerGC implements ISchematicResul
 {
 	private static final ResourceLocation schematicInputTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/schematicpage.png");
 
-	private GuiButton nextButton;
 	private int pageIndex;
 
 	public GuiSchematicInput(InventoryPlayer par1InventoryPlayer, int x, int y, int z)
@@ -35,15 +34,16 @@ public class GuiSchematicInput extends GuiContainerGC implements ISchematicResul
 	{
 		super.initGui();
 		List<String> schematicSlotDesc = new ArrayList<String>();
+        GuiButton nextButton;
 		schematicSlotDesc.add(GCCoreUtil.translate("gui.newSchematic.slot.desc.0"));
 		schematicSlotDesc.add(GCCoreUtil.translate("gui.newSchematic.slot.desc.1"));
 		schematicSlotDesc.add(GCCoreUtil.translate("gui.newSchematic.slot.desc.2"));
 		schematicSlotDesc.add(GCCoreUtil.translate("gui.newSchematic.slot.desc.3"));
 		this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 79, (this.height - this.ySize) / 2, 18, 18, schematicSlotDesc, this.width, this.height));
 		this.buttonList.add(new GuiButton(0, this.width / 2 - 130, this.height / 2 - 30 + 27 - 12, 40, 20, GCCoreUtil.translate("gui.button.back.name")));
-		this.buttonList.add(this.nextButton = new GuiButton(1, this.width / 2 - 130, this.height / 2 - 30 + 27 + 12, 40, 20, GCCoreUtil.translate("gui.button.next.name")));
+		this.buttonList.add(nextButton = new GuiButton(1, this.width / 2 - 130, this.height / 2 - 30 + 27 + 12, 40, 20, GCCoreUtil.translate("gui.button.next.name")));
 		this.buttonList.add(new GuiButton(2, this.width / 2 - 92 / 2, this.height / 2 - 52, 92, 20, GCCoreUtil.translate("gui.button.unlockschematic.name")));
-		this.nextButton.enabled = false;
+		nextButton.enabled = false;
 	}
 
 	@Override

@@ -26,7 +26,7 @@ public class TileEntityElectricIngotCompressor extends TileEntityElectricBlock i
 	private long ticks;
 
 	private ItemStack[] containingItems = new ItemStack[3];
-	public PersistantInventoryCrafting compressingCraftMatrix = new PersistantInventoryCrafting(3, 3);
+	public PersistantInventoryCrafting compressingCraftMatrix = new PersistantInventoryCrafting();
 
 	public TileEntityElectricIngotCompressor()
 	{

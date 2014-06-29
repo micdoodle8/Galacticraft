@@ -169,7 +169,7 @@ public abstract class TileEntityElectricBlock extends TileEntityUniversalElectri
 	@RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = "IC2")
 	public void setFacing(short facing)
 	{
-		;
+
 	}
 
 	@RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = "IC2")

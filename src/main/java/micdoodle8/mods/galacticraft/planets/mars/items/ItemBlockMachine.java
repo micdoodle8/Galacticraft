@@ -61,26 +61,18 @@ public class ItemBlockMachine extends ItemBlock implements IHoldableItem
 	{
 		ItemStack currentStack = player.getCurrentEquippedItem();
 
-		if (currentStack != null && currentStack.getItemDamage() >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA && currentStack.getItemDamage() < BlockMachineMars.LAUNCH_CONTROLLER_METADATA)
-		{
-			return true;
-		}
+        return currentStack != null && currentStack.getItemDamage() >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA && currentStack.getItemDamage() < BlockMachineMars.LAUNCH_CONTROLLER_METADATA;
 
-		return false;
-	}
+    }
 
 	@Override
 	public boolean shouldHoldRightHandUp(EntityPlayer player)
 	{
 		ItemStack currentStack = player.getCurrentEquippedItem();
 
-		if (currentStack != null && currentStack.getItemDamage() >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA && currentStack.getItemDamage() < BlockMachineMars.LAUNCH_CONTROLLER_METADATA)
-		{
-			return true;
-		}
+        return currentStack != null && currentStack.getItemDamage() >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA && currentStack.getItemDamage() < BlockMachineMars.LAUNCH_CONTROLLER_METADATA;
 
-		return false;
-	}
+    }
 
 	@Override
 	public boolean shouldCrouch(EntityPlayer player)

@@ -270,7 +270,7 @@ public class GuiGalaxyMap extends GuiStarBackground
 		int var26;
 
 		this.drawBlackBackground();
-		this.renderSkybox(1);
+		this.renderSkybox();
 
 		this.zoom(this.zoom);
 
@@ -603,8 +603,7 @@ public class GuiGalaxyMap extends GuiStarBackground
 			GL11.glTranslatef(coord1 - mX / (200F / this.zoom), coord2 - mY / (200F / this.zoom), coord3 + 0.5F);
 			final float i2 = MathHelper.clamp_float(7 * (this.zoom / 1.1F), 3F, 9F);
 			GL11.glScalef(i2 / 3F, i2 / 3F, i2 / 3F);
-			return;
-		}
+        }
 	}
 
 	// public float getLargestOrbit(IGalaxy galaxy)

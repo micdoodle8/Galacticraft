@@ -16,8 +16,6 @@ import net.minecraft.world.gen.layer.GenLayer;
  */
 public abstract class GCWorldChunkManager extends WorldChunkManager
 {
-	private GenLayer genBiomes;
-	private GenLayer biomeIndexLayer;
 	private final BiomeCache biomeCache;
 	private final List<BiomeGenBase> biomesToSpawnIn;
 
@@ -32,8 +30,6 @@ public abstract class GCWorldChunkManager extends WorldChunkManager
 	{
 		this();
 		final GenLayer[] var4 = GenLayer.initializeAllBiomeGenerators(par1, par3WorldType);
-		this.genBiomes = var4[0];
-		this.biomeIndexLayer = var4[1];
 	}
 
 	public GCWorldChunkManager(World par1World, float par2)

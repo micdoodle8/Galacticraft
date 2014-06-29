@@ -24,7 +24,7 @@ public class MapGenVillageMoon extends MapGenStructure
 		}
 		catch (Throwable e)
 		{
-			;
+
 		}
 	}
 
@@ -77,13 +77,9 @@ public class MapGenVillageMoon extends MapGenStructure
 		randX += var7.nextInt(numChunks - offsetChunks);
 		randZ += var7.nextInt(numChunks - offsetChunks);
 
-		if (oldi == randX && oldj == randZ)
-		{
-			return true;
-		}
+        return oldi == randX && oldj == randZ;
 
-		return false;
-	}
+    }
 
 	@Override
 	protected StructureStart getStructureStart(int par1, int par2)

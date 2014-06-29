@@ -14,14 +14,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemArmorMars extends ItemArmor
 {
-	public boolean attachedMask;
 	private final ArmorMaterial material;
 
-	public ItemArmorMars(ArmorMaterial par2EnumArmorMaterial, int par3, int par4, boolean breathable)
+	public ItemArmorMars(ArmorMaterial par2EnumArmorMaterial, int par3, int par4)
 	{
 		super(par2EnumArmorMaterial, par3, par4);
 		this.material = par2EnumArmorMaterial;
-		this.attachedMask = breathable;
 	}
 
 	@Override

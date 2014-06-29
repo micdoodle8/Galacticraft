@@ -338,8 +338,7 @@ public class EntityAlienVillager extends EntityAgeable implements IEntityBreatha
 
 	public EntityAlienVillager func_90012_b(EntityAgeable par1EntityAgeable)
 	{
-		final EntityAlienVillager entityvillager = new EntityAlienVillager(this.worldObj);
-		return entityvillager;
+		return new EntityAlienVillager(this.worldObj);
 	}
 
 	@Override

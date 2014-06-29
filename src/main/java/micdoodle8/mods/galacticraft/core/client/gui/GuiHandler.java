@@ -185,9 +185,7 @@ public class GuiHandler implements IGuiHandler
 		{
 			if (ID == page.getGuiID())
 			{
-				final Container container = page.getResultContainer(playerBase, x, y, z);
-
-				return container;
+				return page.getResultContainer(playerBase, x, y, z);
 			}
 		}
 

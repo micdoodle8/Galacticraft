@@ -29,9 +29,6 @@ public class GuiRefinery extends GuiContainerGC
 
 	private GuiButton buttonDisable;
 
-	private int containerWidth;
-	private int containerHeight;
-
 	private GuiElementInfoRegion fuelTankRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 153, (this.height - this.ySize) / 2 + 28, 16, 38, new ArrayList<String>(), this.width, this.height);
 	private GuiElementInfoRegion oilTankRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 7, (this.height - this.ySize) / 2 + 28, 16, 38, new ArrayList<String>(), this.width, this.height);
 	private GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 62, (this.height - this.ySize) / 2 + 16, 56, 9, new ArrayList<String>(), this.width, this.height);
@@ -141,9 +138,9 @@ public class GuiRefinery extends GuiContainerGC
 		this.mc.renderEngine.bindTexture(GuiRefinery.refineryTexture);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-		this.containerWidth = (this.width - this.xSize) / 2;
-		this.containerHeight = (this.height - this.ySize) / 2;
-		this.drawTexturedModalRect(this.containerWidth, this.containerHeight, 0, 0, this.xSize, this.ySize);
+		int containerWidth = (this.width - this.xSize) / 2;
+		int containerHeight = (this.height - this.ySize) / 2;
+		this.drawTexturedModalRect(containerWidth, containerHeight, 0, 0, this.xSize, this.ySize);
 
 		int displayInt = this.tileEntity.getScaledOilLevel(38);
 		this.drawTexturedModalRect((this.width - this.xSize) / 2 + 7, (this.height - this.ySize) / 2 + 17 + 49 - displayInt, 176, 38 - displayInt, 16, displayInt);
@@ -173,9 +170,9 @@ public class GuiRefinery extends GuiContainerGC
 
 		if (this.tileEntity.getEnergyStoredGC() > 0)
 		{
-			this.drawTexturedModalRect(this.containerWidth + 49, this.containerHeight + 16, 208, 0, 11, 10);
+			this.drawTexturedModalRect(containerWidth + 49, containerHeight + 16, 208, 0, 11, 10);
 		}
 
-		this.drawTexturedModalRect(this.containerWidth + 63, this.containerHeight + 17, 176, 38, Math.min(this.tileEntity.getScaledElecticalLevel(54), 54), 7);
+		this.drawTexturedModalRect(containerWidth + 63, containerHeight + 17, 176, 38, Math.min(this.tileEntity.getScaledElecticalLevel(54), 54), 7);
 	}
 }

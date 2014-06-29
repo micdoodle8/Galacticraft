@@ -15,11 +15,7 @@ public class SlotFuelCanister extends Slot
 	@Override
 	public boolean isItemValid(ItemStack par1ItemStack)
 	{
-		if (par1ItemStack.getItem() instanceof ItemFuelCanister && par1ItemStack.getItemDamage() > 0)
-		{
-			return true;
-		}
+        return par1ItemStack.getItem() instanceof ItemFuelCanister && par1ItemStack.getItemDamage() > 0;
 
-		return false;
-	}
+    }
 }

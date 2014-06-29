@@ -406,7 +406,6 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IP
 	@Override
 	public void handlePacketData(Side side, EntityPlayer player)
 	{
-		;
 	}
 
 	@SideOnly(Side.CLIENT)

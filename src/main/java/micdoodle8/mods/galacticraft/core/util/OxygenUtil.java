@@ -41,13 +41,9 @@ public class OxygenUtil
 			return false;
 		}
 
-		if (gui instanceof GuiChat)
-		{
-			return true;
-		}
+        return gui instanceof GuiChat;
 
-		return false;
-	}
+    }
 
 	public static boolean isAABBInBreathableAirBlock(Entity entity)
 	{
@@ -117,8 +113,8 @@ public class OxygenUtil
 
 	public static int getDrainSpacing(ItemStack tank, ItemStack tank2)
 	{
-		boolean tank1Valid = tank != null ? tank.getItem() instanceof ItemOxygenTank && tank.getMaxDamage() - tank.getItemDamage() > 0 : false;
-		boolean tank2Valid = tank2 != null ? tank2.getItem() instanceof ItemOxygenTank && tank2.getMaxDamage() - tank2.getItemDamage() > 0 : false;
+		boolean tank1Valid = tank != null && tank.getItem() instanceof ItemOxygenTank && tank.getMaxDamage() - tank.getItemDamage() > 0;
+		boolean tank2Valid = tank2 != null && tank2.getItem() instanceof ItemOxygenTank && tank2.getMaxDamage() - tank2.getItemDamage() > 0;
 
 		if (!tank1Valid && !tank2Valid)
 		{

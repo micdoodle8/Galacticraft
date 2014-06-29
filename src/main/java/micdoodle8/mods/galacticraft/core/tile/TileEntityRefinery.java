@@ -162,13 +162,9 @@ public class TileEntityRefinery extends TileEntityElectricBlock implements IInve
 			return false;
 		}
 
-		if (this.getDisabled(0))
-		{
-			return false;
-		}
+        return !this.getDisabled(0);
 
-		return true;
-	}
+    }
 
 	public void smeltItem()
 	{

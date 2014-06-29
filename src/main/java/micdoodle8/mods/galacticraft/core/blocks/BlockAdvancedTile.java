@@ -44,7 +44,7 @@ public abstract class BlockAdvancedTile extends BlockAdvanced implements ITileEn
 	{
 		super.onBlockEventReceived(par1World, par2, par3, par4, par5, par6);
 		TileEntity tileentity = par1World.getTileEntity(par2, par3, par4);
-		return tileentity != null ? tileentity.receiveClientEvent(par5, par6) : false;
+		return tileentity != null && tileentity.receiveClientEvent(par5, par6);
 	}
 
 	public void dropEntireInventory(World world, int x, int y, int z, Block par5, int par6)

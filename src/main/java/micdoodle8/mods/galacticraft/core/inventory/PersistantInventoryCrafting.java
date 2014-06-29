@@ -19,11 +19,11 @@ public class PersistantInventoryCrafting implements IInventory
 	 */
 	public Container eventHandler;
 
-	public PersistantInventoryCrafting(int par2, int par3)
+	public PersistantInventoryCrafting()
 	{
-		int k = par2 * par3;
+		int k = 9;
 		this.stackList = new ItemStack[k];
-		this.inventoryWidth = par2;
+		this.inventoryWidth = 3;
 	}
 
 	/**

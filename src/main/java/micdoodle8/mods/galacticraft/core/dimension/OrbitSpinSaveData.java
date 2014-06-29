@@ -11,9 +11,9 @@ public class OrbitSpinSaveData extends WorldSavedData
 	private NBTTagCompound alldata;
 	private int dim = 0;
 
-	public OrbitSpinSaveData(String id)
+	public OrbitSpinSaveData()
 	{
-		super(id);
+		super(OrbitSpinSaveData.saveDataID);
 		this.datacompound = new NBTTagCompound();
 	}
 
@@ -39,7 +39,7 @@ public class OrbitSpinSaveData extends WorldSavedData
 
 		if (worldData == null)
 		{
-			worldData = new OrbitSpinSaveData(OrbitSpinSaveData.saveDataID);
+			worldData = new OrbitSpinSaveData();
 			world.setItemData(OrbitSpinSaveData.saveDataID, worldData);
 			if (world.provider instanceof WorldProviderOrbit)
 			{

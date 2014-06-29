@@ -500,7 +500,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
 		else
 		{
 			EntitySlimeling slimeling = (EntitySlimeling) par1EntityAnimal;
-			return !slimeling.isTamed() ? false : slimeling.isSitting() ? false : this.isInLove() && slimeling.isInLove();
+			return slimeling.isTamed() && !slimeling.isSitting() && this.isInLove() && slimeling.isInLove();
 		}
 	}
 
@@ -519,7 +519,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
 				}
 			}
 
-			return par1EntityLivingBase instanceof EntityPlayer && par2EntityLivingBase instanceof EntityPlayer && !((EntityPlayer) par2EntityLivingBase).canAttackPlayer((EntityPlayer) par1EntityLivingBase) ? false : !(par1EntityLivingBase instanceof EntityHorse) || !((EntityHorse) par1EntityLivingBase).isTame();
+			return !(par1EntityLivingBase instanceof EntityPlayer && par2EntityLivingBase instanceof EntityPlayer && !((EntityPlayer) par2EntityLivingBase).canAttackPlayer((EntityPlayer) par1EntityLivingBase)) && (!(par1EntityLivingBase instanceof EntityHorse) || !((EntityHorse) par1EntityLivingBase).isTame());
 		}
 		else
 		{

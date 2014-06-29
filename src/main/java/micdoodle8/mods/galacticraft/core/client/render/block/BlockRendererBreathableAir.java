@@ -86,11 +86,7 @@ public class BlockRendererBreathableAir implements ISimpleBlockRenderingHandler
 		final boolean var11 = par1Block.shouldSideBeRendered(var1, par2, par3 - 1, par4, 0);
 		final boolean[] var12 = new boolean[] { par1Block.shouldSideBeRendered(var1, par2, par3, par4 - 1, 2), par1Block.shouldSideBeRendered(var1, par2, par3, par4 + 1, 3), par1Block.shouldSideBeRendered(var1, par2 - 1, par3, par4, 4), par1Block.shouldSideBeRendered(var1, par2 + 1, par3, par4, 5) };
 
-		if (!var10 && !var11 && !var12[0] && !var12[1] && !var12[2] && !var12[3])
-		{
-			return;
-		}
-		else
+		if (var10 || var11 || var12[0] || var12[1] || var12[2] || var12[3])
 		{
 			final float var14 = 0.5F;
 			final float var15 = 1.0F;
@@ -138,11 +134,6 @@ public class BlockRendererBreathableAir implements ISimpleBlockRenderingHandler
 					++var64;
 				}
 
-				// final int var66 = par1Block.getIcon(var34 + 2, var23);
-				final int var66 = 0;
-				final int var39 = (var66 & 15) << 4;
-				final int var67 = var66 & 240;
-
 				if (renderBlocks.renderAllFaces || var12[var34])
 				{
 					double var43;
@@ -189,11 +180,11 @@ public class BlockRendererBreathableAir implements ISimpleBlockRenderingHandler
 						var51 = par4 + 1;
 					}
 
-					final double var53 = (var39 + 0) / 256.0F;
-					final double var55 = (var39 + 16 - 0.01D) / 256.0D;
-					final double var57 = (var67 + (1.0D - var41) * 16.0D) / 256.0D;
-					final double var59 = (var67 + (1.0D - var43) * 16.0D) / 256.0D;
-					final double var61 = (var67 + 16 - 0.01D) / 256.0D;
+					final double var53 = 0 / 256.0F;
+					final double var55 = (16 - 0.01D) / 256.0D;
+					final double var57 = (0 + (1.0D - var41) * 16.0D) / 256.0D;
+					final double var59 = (0 + (1.0D - var43) * 16.0D) / 256.0D;
+					final double var61 = (16 - 0.01D) / 256.0D;
 					var5.setBrightness(par1Block.getMixedBrightnessForBlock(var1, var64, par3, var37));
 					float var63 = 1.0F;
 
@@ -209,8 +200,8 @@ public class BlockRendererBreathableAir implements ISimpleBlockRenderingHandler
 					var5.setColorOpaque_F(var15 * var63 * var7, var15 * var63 * var8, var15 * var63 * var9);
 					var5.addVertexWithUV(var45, par3 + var41, var47, var53, var57);
 					var5.addVertexWithUV(var49, par3 + var43, var51, var55, var59);
-					var5.addVertexWithUV(var49, par3 + 0, var51, var55, var61);
-					var5.addVertexWithUV(var45, par3 + 0, var47, var53, var61);
+					var5.addVertexWithUV(var49, par3, var51, var55, var61);
+					var5.addVertexWithUV(var45, par3, var47, var53, var61);
 				}
 			}
 		}

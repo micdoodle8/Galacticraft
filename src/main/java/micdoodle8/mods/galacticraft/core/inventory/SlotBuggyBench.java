@@ -58,43 +58,43 @@ public class SlotBuggyBench extends Slot
 		switch (this.index)
 		{
 		case 1:
-			return par1ItemStack.getItem() == GCItems.heavyPlatingTier1 ? true : false;
+			return par1ItemStack.getItem() == GCItems.heavyPlatingTier1;
 		case 2:
-			return par1ItemStack.getItem() == GCItems.heavyPlatingTier1 ? true : false;
+			return par1ItemStack.getItem() == GCItems.heavyPlatingTier1;
 		case 3:
-			return par1ItemStack.getItem() == GCItems.heavyPlatingTier1 ? true : false;
+			return par1ItemStack.getItem() == GCItems.heavyPlatingTier1;
 		case 4:
-			return par1ItemStack.getItem() == GCItems.heavyPlatingTier1 ? true : false;
+			return par1ItemStack.getItem() == GCItems.heavyPlatingTier1;
 		case 5:
-			return par1ItemStack.getItem() == GCItems.heavyPlatingTier1 ? true : false;
+			return par1ItemStack.getItem() == GCItems.heavyPlatingTier1;
 		case 6:
-			return par1ItemStack.getItem() == GCItems.partBuggy && par1ItemStack.getItemDamage() == 1 ? true : false;
+			return par1ItemStack.getItem() == GCItems.partBuggy && par1ItemStack.getItemDamage() == 1;
 		case 7:
-			return par1ItemStack.getItem() == GCItems.heavyPlatingTier1 ? true : false;
+			return par1ItemStack.getItem() == GCItems.heavyPlatingTier1;
 		case 8:
-			return par1ItemStack.getItem() == GCItems.heavyPlatingTier1 ? true : false;
+			return par1ItemStack.getItem() == GCItems.heavyPlatingTier1;
 		case 9:
-			return par1ItemStack.getItem() == GCItems.heavyPlatingTier1 ? true : false;
+			return par1ItemStack.getItem() == GCItems.heavyPlatingTier1;
 		case 10:
-			return par1ItemStack.getItem() == GCItems.heavyPlatingTier1 ? true : false;
+			return par1ItemStack.getItem() == GCItems.heavyPlatingTier1;
 		case 11:
-			return par1ItemStack.getItem() == GCItems.heavyPlatingTier1 ? true : false;
+			return par1ItemStack.getItem() == GCItems.heavyPlatingTier1;
 		case 12:
-			return par1ItemStack.getItem() == GCItems.heavyPlatingTier1 ? true : false;
+			return par1ItemStack.getItem() == GCItems.heavyPlatingTier1;
 		case 13:
-			return par1ItemStack.getItem() == GCItems.partBuggy && par1ItemStack.getItemDamage() == 0 ? true : false;
+			return par1ItemStack.getItem() == GCItems.partBuggy && par1ItemStack.getItemDamage() == 0;
 		case 14:
-			return par1ItemStack.getItem() == GCItems.partBuggy && par1ItemStack.getItemDamage() == 0 ? true : false;
+			return par1ItemStack.getItem() == GCItems.partBuggy && par1ItemStack.getItemDamage() == 0;
 		case 15:
-			return par1ItemStack.getItem() == GCItems.partBuggy && par1ItemStack.getItemDamage() == 0 ? true : false;
+			return par1ItemStack.getItem() == GCItems.partBuggy && par1ItemStack.getItemDamage() == 0;
 		case 16:
-			return par1ItemStack.getItem() == GCItems.partBuggy && par1ItemStack.getItemDamage() == 0 ? true : false;
+			return par1ItemStack.getItem() == GCItems.partBuggy && par1ItemStack.getItemDamage() == 0;
 		case 17:
-			return par1ItemStack.getItem() == GCItems.partBuggy && par1ItemStack.getItemDamage() == 2 ? true : false;
+			return par1ItemStack.getItem() == GCItems.partBuggy && par1ItemStack.getItemDamage() == 2;
 		case 18:
-			return par1ItemStack.getItem() == GCItems.partBuggy && par1ItemStack.getItemDamage() == 2 ? true : false;
+			return par1ItemStack.getItem() == GCItems.partBuggy && par1ItemStack.getItemDamage() == 2;
 		case 19:
-			return par1ItemStack.getItem() == GCItems.partBuggy && par1ItemStack.getItemDamage() == 2 ? true : false;
+			return par1ItemStack.getItem() == GCItems.partBuggy && par1ItemStack.getItemDamage() == 2;
 		}
 
 		return false;

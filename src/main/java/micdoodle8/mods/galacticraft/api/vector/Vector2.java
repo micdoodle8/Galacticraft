@@ -41,7 +41,7 @@ public class Vector2 implements Cloneable
 	 * Makes a new copy of this Vector. Prevents variable referencing problems.
 	 */
 	@Override
-	public Vector2 clone()
+	public final Vector2 clone()
 	{
 		return new Vector2(this.x, this.y);
 	}

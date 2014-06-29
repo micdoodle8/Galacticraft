@@ -81,11 +81,7 @@ public class StructureComponentVillageField extends StructureComponentVillage
 		{
 			for (int i = 1; i < 12; i++)
 			{
-				if (i % 3 == 0)
-				{
-					;
-				}
-				else
+				if (i % 3 != 0)
 				{
 					if (par2Random.nextInt(3) == 0)
 					{

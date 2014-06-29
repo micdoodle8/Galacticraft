@@ -96,20 +96,13 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
 				TileEntityOxygenSealer.sealerCheckedThisTick = false;
 			}
 
-			if (this.storedOxygen >= 1 && this.hasEnoughEnergyToRun && !this.disabled)
-			{
-				this.active = true;
-			}
-			else
-			{
-				this.active = false;
-			}
+            this.active = this.storedOxygen >= 1 && this.hasEnoughEnergyToRun && !this.disabled;
 
 			if (this.stopSealThreadCooldown > 0)
 			{
 				this.stopSealThreadCooldown--;
 			}
-			else if (TileEntityOxygenSealer.sealerCheckedThisTick == false)
+			else if (!TileEntityOxygenSealer.sealerCheckedThisTick)
 			{
 				// This puts any Sealer which is updated to the back of the queue for updates
 				this.threadCooldownTotal = this.stopSealThreadCooldown = 75 + TileEntityOxygenSealer.countEntities;
@@ -253,7 +246,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
 	{
-		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
+		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
 	}
 
 	@Override
@@ -295,7 +288,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
 	@Override
 	public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
 	{
-		return slotID == 0 ? itemstack.getItem() instanceof IItemElectric : false;
+		return slotID == 0 && itemstack.getItem() instanceof IItemElectric;
 	}
 
 	@Override

@@ -314,12 +314,8 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
 	@Override
 	public boolean canSilkHarvest(World world, EntityPlayer player, int x, int y, int z, int metadata)
 	{
-		if (metadata < 10)
-		{
-			return true;
-		}
-		return false;
-	}
+        return metadata < 10;
+    }
 
 	@Override
 	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)

@@ -16,17 +16,16 @@ public class PlayerGearData
 
 	public PlayerGearData(EntityPlayer player)
 	{
-		this(player, -1, -1, -1, -1, null, -1, new int[] { -1, -1, -1, -1 });
+		this(player, -1, -1, -1, -1, -1, new int[] { -1, -1, -1, -1 });
 	}
 
-	public PlayerGearData(EntityPlayer player, int mask, int gear, int leftTank, int rightTank, ResourceLocation parachute, int frequencyModule, int[] thermalPadding)
+	public PlayerGearData(EntityPlayer player, int mask, int gear, int leftTank, int rightTank, int frequencyModule, int[] thermalPadding)
 	{
 		this.player = player;
 		this.mask = mask;
 		this.gear = gear;
 		this.leftTank = leftTank;
 		this.rightTank = rightTank;
-		this.parachute = parachute;
 		this.frequencyModule = frequencyModule;
 		this.thermalPadding = thermalPadding;
 	}

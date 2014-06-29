@@ -73,9 +73,6 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 
 	private static final int MAX_ASTEROID_SKEW = 8;
 
-	private static final double SKEW_OTHER_AXIS = .06;
-	private static final double SKEW_SAME_AXIS = .005;
-
 	private static final int MIN_ASTEROID_Y = 48;
 	private static final int MAX_ASTEROID_Y = ChunkProviderAsteroids.CHUNK_SIZE_Y - 48;
 
@@ -128,15 +125,7 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 
 	public void generateTerrain(int chunkX, int chunkZ, Block[] idArray, byte[] metaArray)
 	{
-		long time1 = System.nanoTime();
 		final Random random = new Random();
-
-		double distanceFromCenter = 4.0D;
-
-		if (chunkZ != 0)
-		{
-			distanceFromCenter = 4.0 / Math.abs(chunkZ);
-		}
 
 		//If there is an asteroid centre nearby, it might need to generate some asteroid parts in this chunk
 		for (int i = chunkX - 3; i < chunkX + 3; i++)
@@ -163,15 +152,13 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 				}
 			}
 		}
-
-		long time2 = System.nanoTime();
 		
-		if (distanceFromCenter >= 1)
+//		if (distanceFromCenter >= 1)
 		{
-			double density = this.asteroidDensity.getNoise(chunkX * 16, chunkZ * 16) * +.4;
-			density *= distanceFromCenter;
+//			double density = this.asteroidDensity.getNoise(chunkX * 16, chunkZ * 16) * +.4;
+//			density *= distanceFromCenter;
 			double numOfBlocks = this.clamp(this.randFromPoint(chunkX, chunkZ), .4, 1) * (ChunkProviderAsteroids.MAX_BLOCKS_PER_CHUNK - ChunkProviderAsteroids.MAX_BLOCKS_PER_CHUNK) + ChunkProviderAsteroids.MIN_BLOCKS_PER_CHUNK;
-			numOfBlocks *= density;
+//			numOfBlocks *= density;
 			for (int i = 0; i < numOfBlocks; i++)
 			{
 				int x = this.rand.nextInt(ChunkProviderAsteroids.CHUNK_SIZE_X);
@@ -185,7 +172,6 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 				metaArray[this.getIndex(x, y, z)] = this.ASTEROID_STONE_META_1;
 			}
 		}
-		long time3 = System.nanoTime();
 		//System.out.println("   Time taken big asteroids: " + (time2 - time1) / 1000000.0D + "ms");
 		//System.out.println("   Time taken small asteroids: " + (time3 - time2) / 1000000.0D + "ms");
 		//System.out.println("   Total Time taken: " + (time2 - time1) / 1000000.0D + "ms");
@@ -386,14 +372,6 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 	private double randFromPoint(int x, int z)
 	{
 		int n = x + z * 57;
-		n = n << 13 ^ n;
-		n = n * (n * n * 15731 + 789221) + 1376312589 & 0x7fffffff;
-		return 1.0 - n / 1073741824.0;
-	}
-
-	private double randFromPoint(int x)
-	{
-		int n = x;
 		n = n << 13 ^ n;
 		n = n * (n * n * 15731 + 789221) + 1376312589 & 0x7fffffff;
 		return 1.0 - n / 1073741824.0;

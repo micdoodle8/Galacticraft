@@ -53,7 +53,7 @@ public abstract class BlockTileGC extends BlockAdvanced implements ITileEntityPr
 	{
 		super.onBlockEventReceived(par1World, par2, par3, par4, par5, par6);
 		TileEntity tileentity = par1World.getTileEntity(par2, par3, par4);
-		return tileentity != null ? tileentity.receiveClientEvent(par5, par6) : false;
+		return tileentity != null && tileentity.receiveClientEvent(par5, par6);
 	}
 
 	/**
