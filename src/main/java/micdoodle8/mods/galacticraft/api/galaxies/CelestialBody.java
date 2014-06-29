@@ -138,7 +138,7 @@ public abstract class CelestialBody
 
 	public CelestialBody setDimensionInfo(int dimID, Class<? extends WorldProvider> providerClass)
 	{
-		return this.setDimensionInfo(dimID, providerClass, true, true);
+		return this.setDimensionInfo(dimID, providerClass, true);
 	}
 
 	public CelestialBody setDimensionInfo(int dimID, Class<? extends WorldProvider> providerClass, boolean autoRegister)

@@ -294,7 +294,7 @@ public class SmallFontRenderer implements IResourceManagerReloadListener
 			int j = this.glyphWidth[par1] >>> 4;
 			int k = this.glyphWidth[par1] & 15;
 			float f1 = k + 1;
-			float f2 = par1 % 16 * 16 + f;
+			float f2 = par1 % 16 * 16 + j;
 			float f3 = (par1 & 255) / 16 * 16;
 			float f4 = f1 - j - 0.02F;
 			float f5 = par2 ? 1.0F : 0.0F;
