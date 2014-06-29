@@ -84,7 +84,7 @@ public class WorldProviderAsteroids extends WorldProviderSpace
 	@Override
 	public float calculateCelestialAngle(long par1, float par3)
 	{
-		return 0.6F;
+		return 0.1F;
 	}
 
 	@Override
