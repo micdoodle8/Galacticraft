@@ -157,7 +157,8 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 		{
 //			double density = this.asteroidDensity.getNoise(chunkX * 16, chunkZ * 16) * +.4;
 //			density *= distanceFromCenter;
-			double numOfBlocks = this.clamp(this.randFromPoint(chunkX, chunkZ), .4, 1) * (ChunkProviderAsteroids.MAX_BLOCKS_PER_CHUNK - ChunkProviderAsteroids.MAX_BLOCKS_PER_CHUNK) + ChunkProviderAsteroids.MIN_BLOCKS_PER_CHUNK;
+            double numOfBlocks = this.clamp(this.randFromPoint(chunkX, chunkZ), .4, 1) * ChunkProviderAsteroids.MAX_BLOCKS_PER_CHUNK + ChunkProviderAsteroids.MIN_BLOCKS_PER_CHUNK;
+            numOfBlocks /= 50.0D;
 //			numOfBlocks *= density;
 			for (int i = 0; i < numOfBlocks; i++)
 			{
