@@ -157,7 +157,7 @@ public class GCCoreEvents
 			{
 				if (!event.entity.worldObj.isRemote && event.action.equals(PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK))
 				{
-					if (idClicked != Block.tnt.blockID && !OxygenUtil.isAABBInBreathableAirBlock(event.entityLiving.worldObj, new Vector3(event.x, event.y, event.z), new Vector3(event.x + 1, event.y + 1, event.z + 1)))
+					if (idClicked != Block.tnt.blockID && !OxygenUtil.isAABBInBreathableAirBlock(event.entityLiving.worldObj, new Vector3(event.x, event.y, event.z), new Vector3(event.x + 1, event.y + 2, event.z + 1)))
 					{
 						event.setCanceled(true);
 					}
