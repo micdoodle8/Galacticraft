@@ -6,12 +6,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
-import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
-import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
-import micdoodle8.mods.galacticraft.api.galaxies.Moon;
-import micdoodle8.mods.galacticraft.api.galaxies.Planet;
-import micdoodle8.mods.galacticraft.api.galaxies.SolarSystem;
-import micdoodle8.mods.galacticraft.api.galaxies.Star;
+import micdoodle8.mods.galacticraft.api.galaxies.*;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
 import micdoodle8.mods.galacticraft.api.transmission.core.grid.ChunkPowerHandler;
@@ -161,6 +156,7 @@ public class GalacticraftCore
 	public static SolarSystem solarSystemSol;
 	public static Planet planetOverworld;
 	public static Moon moonMoon;
+    public static Satellite satelliteSpaceStation;
 
 	public static final String FILE_PATH = "/micdoodle8/mods/galacticraft/core/";
 	public static final String CLIENT_PATH = "client/";
@@ -253,6 +249,8 @@ public class GalacticraftCore
 		GalacticraftCore.moonMoon = (Moon) new Moon("moon").setParentPlanet(GalacticraftCore.planetOverworld).setRelativeSize(0.2667F).setRelativeDistanceFromCenter(40F).setRelativeOrbitTime(0.01F);
 		GalacticraftCore.moonMoon.setDimensionInfo(ConfigManagerCore.idDimensionMoon, WorldProviderMoon.class);
 		GalacticraftCore.moonMoon.setBodyIcon(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/celestialbodies/moon.png"));
+        GalacticraftCore.satelliteSpaceStation = new Satellite("spaceStation.overworld").setParentBody(GalacticraftCore.planetOverworld);
+        GalacticraftCore.satelliteSpaceStation.setDimensionInfo(ConfigManagerCore.idDimensionOverworldOrbit, WorldProviderOrbit.class, false);
 
 		ForgeChunkManager.setForcedChunkLoadingCallback(GalacticraftCore.instance, new ChunkLoadingCallback());
 		FMLCommonHandler.instance().bus().register(new ConnectionEvents());
@@ -280,6 +278,7 @@ public class GalacticraftCore
 		GalaxyRegistry.registerSolarSystem(GalacticraftCore.solarSystemSol);
 		GalaxyRegistry.registerPlanet(GalacticraftCore.planetOverworld);
 		GalaxyRegistry.registerMoon(GalacticraftCore.moonMoon);
+        GalaxyRegistry.registerSatellite(GalacticraftCore.satelliteSpaceStation);
 		DimensionManager.registerProviderType(ConfigManagerCore.idDimensionOverworldOrbit, WorldProviderOrbit.class, false);
 		DimensionManager.registerProviderType(ConfigManagerCore.idDimensionOverworldOrbitStatic, WorldProviderOrbit.class, true);
 		GalacticraftRegistry.registerTeleportType(WorldProviderSurface.class, new TeleportTypeOverworld());
