@@ -152,30 +152,27 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 				}
 			}
 		}
-		
-//		if (distanceFromCenter >= 1)
-		{
-//			double density = this.asteroidDensity.getNoise(chunkX * 16, chunkZ * 16) * +.4;
-//			density *= distanceFromCenter;
-            double numOfBlocks = this.clamp(this.randFromPoint(chunkX, chunkZ), .4, 1) * ChunkProviderAsteroids.MAX_BLOCKS_PER_CHUNK + ChunkProviderAsteroids.MIN_BLOCKS_PER_CHUNK;
-            numOfBlocks /= 50.0D;
-//			numOfBlocks *= density;
-			for (int i = 0; i < numOfBlocks; i++)
-			{
-				int x = this.rand.nextInt(ChunkProviderAsteroids.CHUNK_SIZE_X);
-				int y = this.rand.nextInt(ChunkProviderAsteroids.CHUNK_SIZE_Y - ChunkProviderAsteroids.RANDOM_BLOCK_FADE_SIZE * 2) + ChunkProviderAsteroids.RANDOM_BLOCK_FADE_SIZE;
-				if (this.rand.nextInt(ChunkProviderAsteroids.FADE_BLOCK_CHANCE) == 0)
-				{
-					y = this.rand.nextInt(ChunkProviderAsteroids.CHUNK_SIZE_Y);
-				}
-				int z = this.rand.nextInt(ChunkProviderAsteroids.CHUNK_SIZE_Z);
-				idArray[this.getIndex(x, y, z)] = this.ASTEROID_STONE;
-				metaArray[this.getIndex(x, y, z)] = this.ASTEROID_STONE_META_1;
-			}
-		}
-		//System.out.println("   Time taken big asteroids: " + (time2 - time1) / 1000000.0D + "ms");
-		//System.out.println("   Time taken small asteroids: " + (time3 - time2) / 1000000.0D + "ms");
-		//System.out.println("   Total Time taken: " + (time2 - time1) / 1000000.0D + "ms");
+
+        double density = this.asteroidDensity.getNoise(chunkX * 16, chunkZ * 16) * 0.54;
+        double numOfBlocks = this.clamp(this.randFromPoint(chunkX, chunkZ), .4, 1) * ChunkProviderAsteroids.MAX_BLOCKS_PER_CHUNK * density + ChunkProviderAsteroids.MIN_BLOCKS_PER_CHUNK;
+
+        int y0 = this.rand.nextInt(2);
+
+        if (this.rand.nextBoolean())
+        {
+            for (int i = 0; i < numOfBlocks; i++)
+            {
+                int y = this.rand.nextInt(ChunkProviderAsteroids.MAX_ASTEROID_Y - ChunkProviderAsteroids.MIN_ASTEROID_Y) + ChunkProviderAsteroids.MIN_ASTEROID_Y;
+
+                if (y0 == (y / 16) % 2)
+                {
+                    int x = this.rand.nextInt(ChunkProviderAsteroids.CHUNK_SIZE_X);
+                    int z = this.rand.nextInt(ChunkProviderAsteroids.CHUNK_SIZE_Z);
+                    idArray[this.getIndex(x, y, z)] = this.ASTEROID_STONE;
+                    metaArray[this.getIndex(x, y, z)] = this.ASTEROID_STONE_META_1;
+                }
+            }
+        }
 	}
 
 	private void generateAsteroid(Random rand, int asteroidX, int asteroidY, int asteroidZ, int chunkX, int chunkZ, int size, Block[] idArray, byte[] metaArray)
