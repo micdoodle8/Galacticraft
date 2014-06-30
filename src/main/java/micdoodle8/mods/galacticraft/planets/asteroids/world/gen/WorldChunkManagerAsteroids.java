@@ -36,7 +36,7 @@ public class WorldChunkManagerAsteroids extends WorldChunkManager
 		this.biomeIndexLayer = var4[1];
 	}
 
-	public WorldChunkManagerAsteroids(World par1World, float par2)
+	public WorldChunkManagerAsteroids(World par1World)
 	{
 		this(par1World.getSeed(), par1World.getWorldInfo().getTerrainType());
 	}

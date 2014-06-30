@@ -1,101 +1,97 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.dimension;
 
-import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
-import micdoodle8.mods.galacticraft.api.world.WorldProviderSpace;
-import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
-import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
-import micdoodle8.mods.galacticraft.planets.asteroids.ConfigManagerAsteroids;
-import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.ChunkProviderAsteroids;
-import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.WorldChunkManagerAsteroids;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.IChunkProvider;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
+import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.ChunkProviderAsteroids;
+import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.WorldChunkManagerAsteroids;
+import net.minecraft.world.biome.WorldChunkManager;
+import net.minecraft.world.chunk.IChunkProvider;
 
 public class WorldProviderAsteroids extends WorldProviderSpace
 {
-	@Override
-	public void setDimension(int var1)
-	{
-		this.dimensionId = var1;
-		super.setDimension(var1);
-	}
+//	@Override
+//	public void registerWorldChunkManager()
+//	{
+//		this.worldChunkMgr = new WorldChunkManagerAsteroids(this.worldObj, 0F);
+//	}
 
-	@Override
-	protected void generateLightBrightnessTable()
-	{
-		final float var1 = 0.0F;
+    @Override
+    public CelestialBody getCelestialBody()
+    {
+        return AsteroidsModule.planetAsteroids;
+    }
 
-		for (int var2 = 0; var2 <= 15; ++var2)
-		{
-			final float var3 = 1.0F - var2 / 15.0F;
-			this.lightBrightnessTable[var2] = (1.0F - var3) / (var3 * 3.0F + 1.0F) * (1.0F - var1) + var1;
-		}
-	}
+    @Override
+    public Vector3 getFogColor()
+    {
+        return new Vector3(0, 0, 0);
+    }
 
-	@Override
-	public float[] calcSunriseSunsetColors(float var1, float var2)
-	{
-		return null;
-	}
+    @Override
+    public Vector3 getSkyColor()
+    {
+        return new Vector3(0, 0, 0);
+    }
 
-	@Override
-	public void registerWorldChunkManager()
-	{
-		this.worldChunkMgr = new WorldChunkManagerAsteroids(this.worldObj, 0F);
-	}
+    @Override
+    public boolean canRainOrSnow()
+    {
+        return false;
+    }
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public Vec3 getFogColor(float var1, float var2)
-	{
-		return this.worldObj.getWorldVec3Pool().getVecFromPool((double) 0F / 255F, (double) 0F / 255F, (double) 0F / 255F);
-	}
+    @Override
+    public boolean hasSunset()
+    {
+        return false;
+    }
 
-	@Override
-	public Vec3 getSkyColor(Entity cameraEntity, float partialTicks)
-	{
-		return this.worldObj.getWorldVec3Pool().getVecFromPool(0, 0, 0);
-	}
+    @Override
+    public long getDayLength()
+    {
+        return 0;
+    }
 
-	@Override
+    @Override
+    public Class<? extends IChunkProvider> getChunkProviderClass()
+    {
+        return ChunkProviderAsteroids.class;
+    }
+
+    @Override
+    public Class<? extends WorldChunkManager> getWorldChunkManagerClass()
+    {
+        return WorldChunkManagerAsteroids.class;
+    }
+
+    @Override
+    public boolean shouldForceRespawn()
+    {
+        return !ConfigManagerCore.forceOverworldRespawn;
+    }
+
+    @Override
+    public float calculateCelestialAngle(long par1, float par3)
+    {
+        return 0.25F;
+    }
+
+    @Override
 	@SideOnly(Side.CLIENT)
 	public float getStarBrightness(float par1)
 	{
 		return 1.0F;
 	}
 
-	@Override
-	public float calculateCelestialAngle(long par1, float par3)
-	{
-		return 0.25F;
-	}
-
-	@Override
-	public IChunkProvider createChunkGenerator()
-	{
-		return new ChunkProviderAsteroids(this.worldObj, this.worldObj.getSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled());
-	}
-
-	@Override
-	public void updateWeather()
-	{
-		this.worldObj.getWorldInfo().setRainTime(0);
-		this.worldObj.getWorldInfo().setRaining(false);
-		this.worldObj.getWorldInfo().setThunderTime(0);
-		this.worldObj.getWorldInfo().setThundering(false);
-		this.worldObj.rainingStrength = 0.0F;
-		this.worldObj.thunderingStrength = 0.0F;
-	}
-
-	@Override
-	public boolean isSkyColored()
-	{
-		return true;
-	}
+//	@Override
+//	public IChunkProvider createChunkGenerator()
+//	{
+//		return new ChunkProviderAsteroids(this.worldObj, this.worldObj.getSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled());
+//	}
 
 	@Override
 	public double getHorizon()
@@ -110,60 +106,12 @@ public class WorldProviderAsteroids extends WorldProviderSpace
 	}
 
 	@Override
-	public boolean isSurfaceWorld()
-	{
-		return true;
-	}
-
-	@Override
 	public boolean canCoordinateBeSpawn(int var1, int var2)
 	{
 		return true;
 	}
 
-	@Override
-	public boolean canRespawnHere()
-	{
-		return !ConfigManagerCore.forceOverworldRespawn;
-	}
-
-	@Override
-	public String getSaveFolder()
-	{
-		return "DIM" + ConfigManagerAsteroids.dimensionIDAsteroids;
-	}
-
-	@Override
-	public String getWelcomeMessage()
-	{
-		return "Entering Asteroids";
-	}
-
-	@Override
-	public String getDepartMessage()
-	{
-		return "Leaving Asteroids";
-	}
-
-	@Override
-	public boolean canBlockFreeze(int x, int y, int z, boolean byWater)
-	{
-		return false;
-	}
-
-	@Override
-	public boolean canDoLightning(Chunk chunk)
-	{
-		return false;
-	}
-
-	@Override
-	public boolean canDoRainSnowIce(Chunk chunk)
-	{
-		return false;
-	}
-
-	@Override
+    @Override
 	public float getGravity()
 	{
 		return 0.072F;
@@ -203,12 +151,6 @@ public class WorldProviderAsteroids extends WorldProviderSpace
 	public float getSoundVolReductionAmount()
 	{
 		return 10.0F;
-	}
-
-	@Override
-	public CelestialBody getCelestialBody()
-	{
-		return AsteroidsModule.planetAsteroids;
 	}
 
 	@Override

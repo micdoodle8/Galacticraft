@@ -1,22 +1,23 @@
 package micdoodle8.mods.galacticraft.planets.mars.world.gen;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-
 import net.minecraft.world.ChunkPosition;
+import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeCache;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.gen.layer.IntCache;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 public class WorldChunkManagerMars extends WorldChunkManager
 {
 	private final BiomeCache biomeCache;
 	private final List<BiomeGenBase> biomesToSpawnIn;
 
-	public WorldChunkManagerMars()
+	public WorldChunkManagerMars(World world)
 	{
 		this.biomeCache = new BiomeCache(this);
 		this.biomesToSpawnIn = new ArrayList<BiomeGenBase>();
