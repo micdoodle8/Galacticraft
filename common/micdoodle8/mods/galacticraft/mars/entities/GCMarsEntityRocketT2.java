@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.mars.entities;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
@@ -10,6 +11,7 @@ import micdoodle8.mods.galacticraft.core.GCCoreConfigManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCCoreSoundUpdaterSpaceship;
 import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
+import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketHandlerClient.EnumPacketClient;
 import micdoodle8.mods.galacticraft.core.network.GCCorePacketManager;
 import micdoodle8.mods.galacticraft.core.tile.GCCoreTileEntityLandingPad;
@@ -263,5 +265,13 @@ public class GCMarsEntityRocketT2 extends EntityTieredRocket
 	public int getPreLaunchWait()
 	{
 		return 400;
+	}
+	
+	@Override
+	public List<ItemStack> getItemsDropped(List<ItemStack> droppedItems)
+	{
+		super.getItemsDropped(droppedItems);
+		droppedItems.add(new ItemStack(GCMarsItems.spaceship, 1, this.rocketType.getIndex()));
+		return droppedItems;
 	}
 }
