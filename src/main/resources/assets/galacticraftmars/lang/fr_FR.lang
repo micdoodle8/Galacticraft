@@ -1,0 +1,86 @@
+# Galacticraft Mars Language File = FRENCH by Linyor
+
+# GENERAL ITEMS
+item.rawDesh.name=Silicium brut
+item.deshStick.name=Bâton de silicium
+item.ingotDesh.name=Lingot de silicium
+item.spaceshipTier2.t2Rocket.name=Fusée niveau 2
+item.reinforcedPlateT2.name=plaque renforcée
+item.tier2.desc=Niveau 2
+item.slimelingCargo.name=Sac à vase
+item.key.T2.name=Clé de Donjon Niveau 2
+item.compressedDesh.name=Silicium comprimé
+item.spaceshipTier2.cargoRocket.name=Cargaison de fusée
+
+# TOOLS
+item.deshPick.name=Pioche en silicium
+item.deshAxe.name=Hache en silicium
+item.deshHoe.name=Houe en silicium
+item.deshSpade.name=Pelle en silicium
+item.deshSword.name=Épée en silicium
+
+# ARMOR
+item.deshHelmet.name=Casque en silicium
+item.deshChestplate.name=Plastron en silicium
+item.deshLeggings.name=Jambières en silicium
+item.deshBoots.name=Bottes en silicium
+
+# BLOCKS
+tile.mars.deshmars.name=Minerai de silicium
+tile.mars.coppermars.name=Minerai de cuivre
+tile.mars.tinmars.name=Minerai d'étain
+tile.mars.ironmars.name=Minerai de fer
+tile.mars.marscobblestone.name=Pierre
+tile.mars.marsstone.name=Roche Martienne
+tile.mars.marsdirt.name=Roche Martienne souterraine
+tile.mars.marsgrass.name=Roche Martienne de surface
+tile.mars.marsdeco.name=Bloc de silicium
+tile.mars.marsdungeon.name=Mur de Donjon
+tile.treasureT2.name=Coffre au trésor Niveau 2
+tile.slimelingEgg.redEgg.name=œuf de vase rouge
+tile.slimelingEgg.blueEgg.name=œuf de vase bleu
+tile.slimelingEgg.yellowEgg.name=œuf de vase jaune
+tile.marsMachine.0.name=Terraformer
+tile.marsMachine.1.name=Chambre cryogénique
+tile.marsMachine.2.name=Contrôleur de lancement
+tile.sludge.name=Boues bactérienne
+tile.creeperEgg.name=œuf de Creeper
+tile.cavernVines.name=Vignes caverneux
+tile.tintedGlassPane.white.name=Vitre teintées blanche
+tile.tintedGlassPane.orange.name=Vitre teintées orange
+tile.tintedGlassPane.magenta.name=Vitre teintées magenta
+tile.tintedGlassPane.light_blue.name=Vitre teintées bleu clair
+tile.tintedGlassPane.yellow.name=Vitre teintées jaune
+tile.tintedGlassPane.lime.name=Vitre teintées vert citron
+tile.tintedGlassPane.pink.name=Vitre teintées rose
+tile.tintedGlassPane.gray.name=Vitre teintées grise
+tile.tintedGlassPane.silver.name=Vitre teintées argenté
+tile.tintedGlassPane.cyan.name=Vitre teintées cyan
+tile.tintedGlassPane.purple.name=Vitre teintées violette
+tile.tintedGlassPane.blue.name=Vitre teintées bleu
+tile.tintedGlassPane.brown.name=Vitre teintées marron
+tile.tintedGlassPane.green.name=Vitre teintées verte
+tile.tintedGlassPane.red.name=Vitre teintées rouge
+tile.tintedGlassPane.black.name=Vitre teintées noir
+
+# GUI
+gui.choosePlanet.desc.mars=Habitable#Pas d'oxygène#Gravité: 38%
+item.deshPickSlime.description.name=Peut récolter les œufs de vase
+
+gui.desc.reinforcedPlateT2.name=Niveau 2
+
+itemGroup.GalacticraftMars=Galacticraft Mars
+
+dimension.Mars.name=Mars
+
+# Schematics
+schematic.rocketT3.name=Fusée Niveau 3
+schematic.cargoRocket.name=Cargaison automatique de fusée
+
+# Entity
+entity.Sludgeling.name=Boueux
+entity.Slimeling.name=Vaseux
+entity.CreeperBoss.name=Boss Creeper évolué
+
+# Container
+container.launchcontroller.name=Contrôleur de lancement
