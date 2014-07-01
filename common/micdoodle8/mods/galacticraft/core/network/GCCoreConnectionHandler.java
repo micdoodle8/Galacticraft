@@ -63,8 +63,8 @@ public class GCCoreConnectionHandler implements IConnectionHandler
 		if (GCCoreConnectionHandler.clientConnected)
 		{
 			GCCoreConnectionHandler.clientConnected = false;
-			//WorldUtil.unregisterPlanets();
-			//WorldUtil.unregisterSpaceStations();
+			WorldUtil.unregisterPlanets();
+			WorldUtil.unregisterSpaceStations();
 		}
 	}
 
