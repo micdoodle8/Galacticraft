@@ -189,6 +189,8 @@ tile.gcBlockCore.aluminumBlock.name=Hliníkový block
 tile.fuel.name=Palivo
 tile.oxygenCompressor.0.name=Kyslíkový kompresor
 tile.oxygenCompressor.1.name=Kyslíkový dekompresor
+tile.arclamp.name=Oblouková lampa
+tile.spinThruster.name=Manévrovací tryska
 
 # ENTITIES
 entity.GalacticraftCore.EvolvedSpider.name=Vyvinutý pavouk
@@ -214,6 +216,7 @@ schematic.rocketT2.name=Raketa typ 2
 # DEATH MESSAGES
 death.attack.spaceshipExplosion=%1$s zemřel/a při závadě rakety.
 death.attack.spaceshipExplosionB=%1$s zemřel/a při nehodě ve vesmíru.
+death.attack.spaceshipCrash=%1$s zemřel/a při pádu rakety. Sakra.
 death.attack.oxygenSuffocation=%1$s zemřel/a na hypoxii.
 
 # GALAXIES
@@ -265,6 +268,14 @@ gui.message.page.name=Strana
 gui.message.addnewsch.name=Nové schéma
 gui.message.generating.name=Generuje
 gui.message.environment.name=Akcelerátor prostředí
+gui.message.oil.name=Ropa
+gui.message.catalog.name=Katalog
+gui.message.back.name=Zpět
+gui.message.daynightcycle.name=Délka dne
+gui.message.surfacegravity.name=Gravitace na povrchu
+gui.message.surfacecomposition.name=Složení povrchu
+gui.message.atmosphere.name=Atmosféra
+gui.message.meansurfacetemp.name=Střední teplota na povrchu
 
 gui.status.active.name=Aktivní
 gui.status.missingleaves.name=Nedostatek rostlin
@@ -292,6 +303,19 @@ gui.status.blockedpartial.name=Slunce částečně vyditelné
 gui.status.blockedfully.name=Slunce není vidět
 gui.status.collectingenergy.name=Sbírám energii
 gui.status.sealerblocked.name=Uzavřen výstupní ventil!
+gui.status.checkingSeal.name=Kontrola uzávěru
+gui.status.checkStarting.name=Kontrola zahájena
+gui.status.checkPending.name=Probíhá kontrola
+gui.status.airLockClosed.name=Vzduchový uzávěr zavřen
+gui.status.airLockOpen.name=Vzduchový uzávěr otevřen
+gui.status.running.name=V provozu
+gui.status.generating.name=Vyrábí
+gui.status.notGenerating.name=Nevyrábí
+gui.status.hullHeat.name=Teplota pláště
+gui.status.compressing.name=Lisuje
+gui.status.collecting.name=Sbírá
+gui.status.tankEmpty.name=Prázný zásobník kyslíku
+gui.status.sunVisible.name=Slunce vyditelné
 
 gui.button.enableseal.name=Spustit uzávěr
 gui.button.disableseal.name=Vypnout uzávěr
@@ -325,21 +349,145 @@ gui.chooseplanet.cannotcreate1.name=Zde nelze vytvořit
 gui.chooseplanet.cannotcreate2.name=vesmírnou stanici!
 gui.chooseplanet.alreadycreated1.name=Vesmírná stanice
 gui.chooseplanet.alreadycreated2.name=je již vytvořena!
+gui.dockingRocket.warning.name.0=Pro zpomalení stiskni %s
+gui.dockingRocket.warning.name.1=Pro zrychlení stiskni %s
+gui.dockingRocket.targetVel.name=Rychlost cíle
+gui.dockingRocket.currentVel.name=Aktualní rychlost
+gui.dockingRocket.distanceFrom.name=Vzdálenost od cíle
 
 gui.galaxymap.movemap.name=ASWD - Pohyb mapy
 gui.galaxymap.zoom.name=Mouse Wheel - Zoom
 gui.galaxymap.select.name=Myš 1 - Výběr planety
 gui.galaxymap.exit.name=Esc - Opuštění mapy
+gui.galaxymap.moonOf.name=Měsíc %s
 
 gui.buggy.turn.name=Zatáčení vlevo-vpravo
 gui.buggy.accel.name=Zrychlení
 gui.buggy.decel.name=Zpomelení
 gui.buggy.inv.name=Inventář / Palivo
 
+gui.rocket.launch.name=Start
+gui.rocket.turn.name=Zatáčení vlevo-vpravo
+gui.rocket.updown.name=Zatáčení nahoru-dolu
+gui.rocket.inv.name=Inventář / Palivo
+
+gui.rocket.warning.noparachute=Nemám padák! Pokud stisknu znovu start, tak není cesta zpět!
+gui.rocket.warning.nofuel=Nejdříve potřebuji nějaké palivo!
+gui.chest.warning.wrongkey=Budu potřebovat klíč typu %s abych to odemknul!
+gui.frequencymodule.warning0=Nejspíš budu potřebovat
+gui.frequencymodule.warning1=pokud tady budu chtít něco slyšet.
+
+gui.rocketType.0=Nákladní prostor: 18
+gui.rocketType.1=Nákladní prostor: 36
+gui.rocketType.2=Nákladní prostor: 56
+gui.rocketType.3=Natankovaná
+
+gui.spacestation.typeCommand=Napište
+gui.spacestation.playername=<jmeno_hrace>
+gui.spacestation.toAllowEntry=aby jste mu umožnil/a vstup na stanici!
+
+gui.skeletonBoss.message=Boss zmizel, neopouštějte místnost během boje! Vstupem do místnosti se boss znovu objeví.
+gui.warning.noroom=Nedostatek místa!
+gui.flag.alreadyPlaced=FVlajka již umístěna!
+gui.receiver.cannotAttach=Nemohu sem umístit přijímač!
+
+gui.tank.oxygenRemaining=Zásoba kyslíku
+gui.buggy.storageSpace=Nákladový prostor
+gui.frequencyModule.desc.0=Umožńuje slyšet vzdálené
+gui.frequencyModule.desc.1=zvuky a signály
+gui.cheeseBlock.desc=Umístitelné
+gui.creativeOnly.desc=Pouze v kreativním módu
+gui.requiresController.desc=Vyžaduje Launch Controller
+gui.fuelTank.desc.0=Palivová nádrž. Vyžaduje
+gui.fuelTank.desc.1=palivové čerpadlo.
+gui.fuelTank.desc.2=Ale může být také naplněna
+gui.fuelTank.desc.3=pomocí plechovek.
+gui.fuelTank.desc.4=Palivová nádrž
+gui.oilTank.desc.0=Nádrž na roku, může být naplněna
+gui.oilTank.desc.1=pomocí plechovek.
+gui.infiniteBattery.desc=Nevyčerpatelná
+gui.batterySlot.desc.0=Slot na baterii, vložte ji
+gui.batterySlot.desc.1=nebo připojte zdroj.
+gui.oxygenStorage.desc.0=Zásobárna kyslíku
+gui.oxygenStorage.desc.1=Kyslík
+gui.energyStorage.desc.0=Zásobárna energie
+gui.energyStorage.desc.1=Energie
+gui.oxygenUse.desc=Využití kyslíku
+gui.checkbox.redstoneSignal.name=Otevře při přivedení napětí
+gui.checkbox.playerWithin.name=Hráč v okruhu
+gui.checkbox.playerName.name=Jméno hráče je
+gui.checkbox.invert.name=Opačné chování
+gui.checkbox.horizontal.name=Horizontální režim
+gui.dropbox.playerDistance.name.0=1 metr
+gui.dropbox.playerDistance.name.1=2 metry
+gui.dropbox.playerDistance.name.2=5 metrů
+gui.dropbox.playerDistance.name.3=10 metrů
+gui.title.airLock.name=%sův kontroler přechodové komory
+gui.fuelOutput.desc.0=Vložte prázdnou plechovku
+gui.fuelOutput.desc.1=do tohoto slotu pro jejich
+gui.fuelOutput.desc.2=naplnění z nádrže
+gui.newSchematic.slot.desc.0=Slot pro nová schémata.
+gui.newSchematic.slot.desc.1=Můžete je nalézt
+gui.newSchematic.slot.desc.2=v dungeonech na planetách
+gui.newSchematic.slot.desc.3=a měsících
+gui.missingCore.name.0=MicdoodleCore nenalezeno ve složce módů.
+gui.missingCore.name.1=Chyba při načítání Galacticraftu
+gui.missingCore.name.2=Ukončete Minecraft a nainstalujte MicdoodleCore
+gui.missingCore.name.3=Klikněte zde pro stažení
+
+gui.spaceRace.create.close.name=Zavřít
+gui.spaceRace.create.back.name=Zpět
+gui.spaceRace.create.rename.name=Přejmenovat tým
+gui.spaceRace.create.brushRadius.name=Poloměr štětce
+gui.spaceRace.create.eraserRadius.name=Poloměr gumy
+gui.spaceRace.create.brushSize.name=Velikost štětce
+gui.spaceRace.create.eraserSize.name=Velikost gumy
+gui.spaceRace.create.title.name=Vesmírný závod
+gui.spaceRace.create.invitePlayer.name=Pozvat hráče
+gui.spaceRace.create.playerRadius.name=Poznámka: Hráči musí být v okruhu 25 bloků!
+gui.spaceRace.create.removePlayer.name=Odstraň hráče
+gui.spaceRace.create.customize.name=Změň vlajku
+gui.spaceRace.create.changeColor.name.0=Změň
+gui.spaceRace.create.changeColor.name.1=Tým
+gui.spaceRace.create.changeColor.name.2=Barvu
+gui.spaceRace.create.serverStats.name=Zobrazit statistiku serveru
+gui.spaceRace.create.globalStats.name=Zobrazit globální statistiky
+gui.spaceRace.create.addPlayers.name=Přidat hráče
+gui.spaceRace.create.remPlayers.name=Odstranit hráče
+gui.spaceRace.create.sendInvite.name=Poslat pozvánku
+gui.spaceRace.create.remove.name=Odebrat
+gui.spaceRace.join.title.name=Přidat se do závodu
+gui.spaceRace.join.owner.name=Vlastník
+gui.spaceRace.join.memberCount.name=%d členů
+
 # DIMENSIONS
 dimension.Overworld.name=Zemský povrh
 dimension.Moon.name=Měsic
 dimension.Sun.name=Slunce
+planet.overworld=Zemský povrh
+moon.moon=Měsic
+ 
+gui.message.moon.daynightcycle.0.name=29,5 Pozemského dne
+gui.message.moon.daynightcycle.1.name=
+gui.message.moon.surfacegravity.0.name=0,1654g
+gui.message.moon.surfacegravity.1.name=(18% Pozemské)
+gui.message.moon.surfacecomposition.0.name=Basaltic Rock and
+gui.message.moon.surfacecomposition.1.name=Traces of Cheese
+gui.message.moon.atmosphere.0.name=Žádná
+gui.message.moon.atmosphere.1.name=
+gui.message.moon.meansurfacetemp.0.name=(Den) 253 °C
+gui.message.moon.meansurfacetemp.1.name=(Noc) -153 °C
+
+gui.message.overworld.daynightcycle.0.name=1 Pozemský den
+gui.message.overworld.daynightcycle.1.name=
+gui.message.overworld.surfacegravity.0.name=1,0g
+gui.message.overworld.surfacegravity.1.name=(100% Pozemské)
+gui.message.overworld.surfacecomposition.0.name=Kámen, hlína
+gui.message.overworld.surfacecomposition.1.name=a štěrk
+gui.message.overworld.atmosphere.0.name=Dusík 78 % a Kyslík 21 %
+gui.message.overworld.atmosphere.1.name=Obyvatelná
+gui.message.overworld.meansurfacetemp.0.name=14 °C
+gui.message.overworld.meansurfacetemp.1.name=
 
 # COMMANDS
 commands.dimensionteleport=%s byl/a odeslán do atmosféry%s
