@@ -1,0 +1,28 @@
+# Galacticraft Asteroids Language File = CZECH REPUBLIC CZECH
+
+# GENERAL ITEMS
+item.itemTier3Rocket.t3Rocket.name=Raketa typ 3
+
+# TOOLS
+
+# ARMOR
+
+# BLOCKS
+tile.asteroidsBlock.asteroids1.name=Kámen z asteroidu
+tile.beamReflector.name=Zdroj paprsku
+tile.beamReceiver.name=Příjmač paprsku
+tile.telepadShort.name=Telepad krátkého dosahu
+
+# GUI
+planet.asteroids=Asteroidy
+
+itemGroup.GalacticraftAsteroids=Galacticraft Asteroidy
+
+# Schematics
+
+# Entity
+entity.SmallAsteroidGC.name=Malý asteroid
+entity.GrappleHookGC.name=Hák
+entity.Tier3RocketGC.name=Raketa typ 3
+
+# Container
