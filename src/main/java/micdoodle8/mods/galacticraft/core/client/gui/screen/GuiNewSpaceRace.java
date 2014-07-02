@@ -1,22 +1,13 @@
 package micdoodle8.mods.galacticraft.core.client.gui.screen;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
+import com.google.common.io.Files;
+import cpw.mods.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.api.vector.Vector2;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementCheckbox;
+import micdoodle8.mods.galacticraft.core.client.gui.element.*;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementCheckbox.ICheckBoxCallback;
-import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementGradientButton;
-import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementGradientList;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementGradientList.ListElement;
-import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementSlider;
-import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementTextBox;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementTextBox.ITextBoxCallback;
 import micdoodle8.mods.galacticraft.core.client.model.ModelFlag;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
@@ -33,11 +24,14 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.client.FMLClientHandler;
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
+import java.util.Map.Entry;
 
 public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITextBoxCallback
 {
@@ -1023,4 +1017,11 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
 	{
 		return GCCoreUtil.to32BitColor(255, 255, 255, 255);
 	}
+
+    private File writeFlagToFile() throws IOException
+    {
+        File tempFile = File.createTempFile("flagData-" + UUID.randomUUID(), ".jpg");
+        ImageIO.write(this.spaceRaceData.getFlagData().toBufferedImage(), "jpg", tempFile);
+        return tempFile;
+    }
 }
