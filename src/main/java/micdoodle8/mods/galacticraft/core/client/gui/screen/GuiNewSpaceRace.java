@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.client.gui.screen;
 
-import com.google.common.io.Files;
 import cpw.mods.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.api.vector.Vector2;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -17,6 +16,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -276,6 +276,11 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
 
 			if (close)
 			{
+                if (this.canEdit)
+                {
+                    this.writeFlagToFile();
+                }
+
 				this.thePlayer.closeScreen();
 			}
 		}
@@ -1018,10 +1023,20 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
 		return GCCoreUtil.to32BitColor(255, 255, 255, 255);
 	}
 
-    private File writeFlagToFile() throws IOException
+    private File writeFlagToFile()
     {
-        File tempFile = File.createTempFile("flagData-" + UUID.randomUUID(), ".jpg");
-        ImageIO.write(this.spaceRaceData.getFlagData().toBufferedImage(), "jpg", tempFile);
-        return tempFile;
+        try
+        {
+            String dirName = Minecraft.getMinecraft().mcDataDir.getAbsolutePath();
+            File file = new File(dirName, this.spaceRaceData.getTeamName() + "-" + System.currentTimeMillis() + ".png");
+            ImageIO.write(this.spaceRaceData.getFlagData().toBufferedImage(), "png", file);
+            return file;
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }
