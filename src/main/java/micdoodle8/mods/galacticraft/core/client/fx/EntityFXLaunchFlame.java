@@ -18,15 +18,13 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 @SideOnly(Side.CLIENT)
 public class EntityFXLaunchFlame extends EntityFX
 {
 	float smokeParticleScale;
 	boolean spawnSmokeShort;
 
-	public EntityFXLaunchFlame(World par1World, Vector3 position, Vector3 motion, float size, boolean launched)
+	public EntityFXLaunchFlame(World par1World, Vector3 position, Vector3 motion, boolean launched)
 	{
 		super(par1World, position.x, position.y, position.z, 0.0D, 0.0D, 0.0D);
 		this.motionX *= 0.10000000149011612D;
@@ -39,9 +37,9 @@ public class EntityFXLaunchFlame extends EntityFX
 		this.particleGreen = 120F / 255F + this.rand.nextFloat() / 3;
 		this.particleBlue = 55F / 255F;
 		this.particleScale *= 2F;
-		this.particleScale *= size * 2;
+		this.particleScale *= 1F * 2;
 		this.smokeParticleScale = this.particleScale;
-		this.particleMaxAge = (int) (this.particleMaxAge * size);
+		this.particleMaxAge = (int) (this.particleMaxAge * 1F);
 		this.noClip = false;
 		this.spawnSmokeShort = launched;
 	}

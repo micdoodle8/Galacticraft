@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import cpw.mods.fml.common.Loader;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.recipe.CircuitFabricatorRecipes;
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
@@ -24,8 +25,6 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
-
-
 
 public class RecipeManagerGC
 {
@@ -360,6 +359,13 @@ public class RecipeManagerGC
 
 		RecipeUtil.addRecipe(new ItemStack(GCItems.wrench), new Object[] { "  Y", " X ", "X  ", 'X', "compressedBronze", 'Y', "compressedSteel" });
 
+		if (Loader.isModLoaded("GalacticraftMars"))
+			RecipeUtil.addRecipe(new ItemStack(GCBlocks.brightLamp), new Object[] { "XYX", "YZY", "XYX", 'X', "ingotDesh", 'Y', Items.glowstone_dust, 'Z', new ItemStack(GCItems.battery, 1, 0)});
+		else
+			RecipeUtil.addRecipe(new ItemStack(GCBlocks.brightLamp), new Object[] { "XYX", "YZY", "XYX", 'X', GCItems.heavyPlatingTier1, 'Y', Items.glowstone_dust, 'Z', new ItemStack(GCItems.battery, 1, 0)});
+		
+		RecipeUtil.addRecipe(new ItemStack(GCBlocks.spinThruster), new Object[] { "   ", "YWZ", "PXP", 'W', "waferAdvanced", 'X', new ItemStack(GCItems.meteoricIronIngot, 1, 0), 'Y', new ItemStack(GCItems.fuelCanister, 1, 1), 'Z', new ItemStack(GCItems.rocketEngine, 1, 0), 'P', "compressedSteel" });	
+		
 		RecipeUtil.addRecipe(new ItemStack(GCBlocks.basicBlock, 1, 9), new Object[] { "XXX", "XXX", "XXX", 'X', "ingotCopper" });
 
 		RecipeUtil.addRecipe(new ItemStack(GCBlocks.basicBlock, 1, 10), new Object[] { "XXX", "XXX", "XXX", 'X', "ingotTin" });
@@ -383,7 +389,7 @@ public class RecipeManagerGC
 		CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(new ItemStack(GCItems.basicItem, 1, 18), new Object[] { new ItemStack(GCItems.canister, 1, 0), Items.potato, Items.potato }));
 
 		CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(new ItemStack(GCItems.meteorChunk, 3), new Object[] { GCItems.meteoricIronRaw }));
-		
+
 		for (int i = 3; i < 8; i++)
 		{
 			if (ItemBasic.names[i].contains("ingot"))

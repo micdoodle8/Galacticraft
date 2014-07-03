@@ -1,4 +1,5 @@
 
+def mcVersion = "1.7.2"
 def versionMajor = 3
 def versionMinor = 0
 def versionRev = 0
@@ -35,7 +36,7 @@ def versionBuild = 0
 if (System.getenv("BUILD_NUMBER") != null)
     versionBuild = System.getenv("BUILD_NUMBER")
 	
-version = "${versionMajor}.${versionMinor}.${versionRev}.${versionBuild}" // Set the version number
+version = "${mcVersion}-${versionMajor}.${versionMinor}.${versionRev}.${versionBuild}" // Set the version number
 group= "micdoodle8.mods.galacticraft"
 archivesBaseName = "GalacticraftCoreAll"
 	

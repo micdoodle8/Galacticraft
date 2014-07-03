@@ -14,8 +14,6 @@ import net.minecraftforge.fluids.Fluid;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class BlockFluidGC extends BlockFluidClassic
 {
 	private IIcon stillIcon;
@@ -39,7 +37,7 @@ public class BlockFluidGC extends BlockFluidClassic
 	@Override
 	public CreativeTabs getCreativeTabToDisplayOn()
 	{
-		return GalacticraftCore.galacticraftTab;
+		return GalacticraftCore.galacticraftBlocksTab;
 	}
 
 	@Override

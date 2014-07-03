@@ -3,8 +3,6 @@ package micdoodle8.mods.galacticraft.core.client.model.block;
 import net.minecraft.client.model.ModelLargeChest;
 import net.minecraft.client.model.ModelRenderer;
 
-
-
 public class ModelTreasureChestLarge extends ModelLargeChest
 {
 	public ModelRenderer keyParts[] = new ModelRenderer[6];

@@ -13,8 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-
-
 public class BlockBreathableAir extends BlockAir
 {
 	public BlockBreathableAir(String assetName)
@@ -27,7 +25,7 @@ public class BlockBreathableAir extends BlockAir
 	}
 
 	@Override
-    public boolean canReplace(World world, int x, int y, int z, int side, ItemStack stack)
+	public boolean canReplace(World world, int x, int y, int z, int side, ItemStack stack)
 	{
 		return true;
 	}
@@ -37,7 +35,6 @@ public class BlockBreathableAir extends BlockAir
 	{
 		return true;
 	}
-
 
 	@Override
 	public int getRenderBlockPass()
@@ -60,52 +57,21 @@ public class BlockBreathableAir extends BlockAir
 	@Override
 	public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
 	{
-		if (par1IBlockAccess.getBlock(par2, par3, par4) == this)
+		final Block block = par1IBlockAccess.getBlock(par2, par3, par4);
+		if (block == this || block == GCBlocks.brightBreatheableAir)
 		{
 			return false;
 		}
 		else
 		{
-			final Block block = par1IBlockAccess.getBlock(par2, par3, par4);
-			boolean var6 = block.isOpaqueCube();
-
-			final boolean var7 = block == Blocks.air;
-
-			if ((var6 || var7) && par5 == 3 && !var6)
-			{
-				return true;
-			}
-			else if ((var6 || var7) && par5 == 4 && !var6)
-			{
-				return true;
-			}
-			else if ((var6 || var7) && par5 == 5 && !var6)
-			{
-				return true;
-			}
-			else if ((var6 || var7) && par5 == 2 && !var6)
-			{
-				return true;
-			}
-			else if ((var6 || var7) && par5 == 0 && !var6)
-			{
-				return true;
-			}
-			else if ((var6 || var7) && par5 == 1 && !var6)
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
+			return block instanceof BlockAir && par5 >= 0 && par5 <= 5;
 		}
 	}
 
 	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, Block idBroken)
 	{
-		if (idBroken != Blocks.air)
+		if (idBroken != Blocks.air && idBroken != GCBlocks.brightAir)
 		//Do nothing if an air neighbour was replaced (probably because replacing with breatheableAir)
 		//but do a check if replacing breatheableAir as that could be dividing a sealed space
 		{

@@ -23,8 +23,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import cpw.mods.fml.relauncher.Side;
 
-
-
 public class TileEntityParaChest extends TileEntityAdvanced implements IInventorySettable, IPacketReceiver, IScaleableFuelLevel
 {
 	private final int tankCapacity = 5000;
@@ -70,8 +68,10 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
 	@Override
 	public void setSizeInventory(int size)
 	{
-		if ((size-3)%18!=0)
-			System.out.println("Strange TileEntityParachest inventory size received from server "+size);
+		if ((size - 3) % 18 != 0)
+		{
+			System.out.println("Strange TileEntityParachest inventory size received from server " + size);
+		}
 		this.chestContents = new ItemStack[size];
 	}
 
@@ -216,7 +216,7 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
 	{
-		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
+		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
 	}
 
 	@Override

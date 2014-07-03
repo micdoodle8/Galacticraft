@@ -27,8 +27,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class BlockParaChest extends BlockContainer implements ITileEntityProvider
 {
 	private final Random random = new Random();
@@ -45,7 +43,7 @@ public class BlockParaChest extends BlockContainer implements ITileEntityProvide
 	@Override
 	public CreativeTabs getCreativeTabToDisplayOn()
 	{
-		return GalacticraftCore.galacticraftTab;
+		return GalacticraftCore.galacticraftBlocksTab;
 	}
 
 	@Override
@@ -202,8 +200,7 @@ public class BlockParaChest extends BlockContainer implements ITileEntityProvide
 				return false;
 			}
 
-			EntityOcelot entityocelot1 = (EntityOcelot) iterator.next();
-			entityocelot = entityocelot1;
+			entityocelot = (EntityOcelot) iterator.next();
 		}
 		while (!entityocelot.isSitting());
 

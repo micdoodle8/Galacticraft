@@ -26,8 +26,6 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-
-
 public class GuiLaunchController extends GuiContainer implements IDropboxCallback, ITextBoxCallback, ICheckBoxCallback
 {
 	private static final ResourceLocation launchControllerGui = new ResourceLocation(MarsModule.TEXTURE_DOMAIN, "textures/gui/launchController.png");
@@ -172,10 +170,10 @@ public class GuiLaunchController extends GuiContainer implements IDropboxCallbac
 		this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, 115, 4210752);
 		displayString = this.getStatus();
 		this.fontRendererObj.drawSplitString(displayString, 60 - this.fontRendererObj.getStringWidth(displayString) / 2, 94, 60, 4210752);
-//		displayString = ElectricityDisplay.getDisplay(this.launchController.ueWattsPerTick * 20, ElectricUnit.WATT);
-//		this.fontRendererObj.drawString(displayString, this.xSize - 26 - this.fontRendererObj.getStringWidth(displayString), 94, 4210752);
-//		displayString = ElectricityDisplay.getDisplay(this.launchController.getVoltage(), ElectricUnit.VOLTAGE);
-//		this.fontRendererObj.drawString(displayString, this.xSize - 26 - this.fontRendererObj.getStringWidth(displayString), 104, 4210752);
+		//		displayString = ElectricityDisplay.getDisplay(this.launchController.ueWattsPerTick * 20, ElectricUnit.WATT);
+		//		this.fontRendererObj.drawString(displayString, this.xSize - 26 - this.fontRendererObj.getStringWidth(displayString), 94, 4210752);
+		//		displayString = ElectricityDisplay.getDisplay(this.launchController.getVoltage(), ElectricUnit.VOLTAGE);
+		//		this.fontRendererObj.drawString(displayString, this.xSize - 26 - this.fontRendererObj.getStringWidth(displayString), 104, 4210752);
 		this.fontRendererObj.drawString("Frequency:", 7, 22, 4210752);
 		this.fontRendererObj.drawString("Destination Frequency:", 7, 44, 4210752);
 

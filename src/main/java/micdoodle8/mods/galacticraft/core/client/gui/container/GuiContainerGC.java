@@ -8,8 +8,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Container;
 
-
-
 public abstract class GuiContainerGC extends GuiContainer
 {
 	public List<GuiElementInfoRegion> infoRegions = new ArrayList<GuiElementInfoRegion>();

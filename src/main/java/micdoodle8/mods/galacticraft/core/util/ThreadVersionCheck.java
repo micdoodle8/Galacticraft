@@ -11,8 +11,6 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 
-
-
 public class ThreadVersionCheck extends Thread
 {
 	public static ThreadVersionCheck instance = new ThreadVersionCheck();

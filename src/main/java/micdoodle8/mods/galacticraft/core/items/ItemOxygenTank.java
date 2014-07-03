@@ -13,8 +13,6 @@ import net.minecraft.item.ItemStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class ItemOxygenTank extends Item
 {
 	public ItemOxygenTank(int tier, String assetName)
@@ -38,7 +36,7 @@ public class ItemOxygenTank extends Item
 	@Override
 	public CreativeTabs getCreativeTab()
 	{
-		return GalacticraftCore.galacticraftTab;
+		return GalacticraftCore.galacticraftItemsTab;
 	}
 
 	@Override

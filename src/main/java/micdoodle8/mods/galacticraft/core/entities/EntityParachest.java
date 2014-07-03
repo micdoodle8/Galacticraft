@@ -14,8 +14,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
 
-
-
 public class EntityParachest extends Entity
 {
 	public ItemStack[] cargo;
@@ -30,10 +28,9 @@ public class EntityParachest extends Entity
 		this.cargo = cargo.clone();
 		this.placedChest = false;
 		this.fuelLevel = fuelLevel;
-		if ((cargo.length-2)%18!=0)
+		if ((cargo.length - 2) % 18 != 0)
 		{
-			System.out.println("Strange EntityParachest inventory size "+cargo.length);
-			this.fuelLevel = 1/0;
+            throw new RuntimeException("Strange EntityParachest inventory size " + cargo.length);
 		}
 	}
 

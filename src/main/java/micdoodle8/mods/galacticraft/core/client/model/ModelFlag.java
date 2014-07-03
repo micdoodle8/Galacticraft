@@ -9,8 +9,6 @@ import net.minecraft.entity.Entity;
 
 import org.lwjgl.opengl.GL11;
 
-
-
 public class ModelFlag extends ModelBase
 {
 	ModelRenderer base;
@@ -46,7 +44,7 @@ public class ModelFlag extends ModelBase
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
 		super.render(entity, f, f1, f2, f3, f4, f5);
-		
+
 		if (entity instanceof EntityFlag)
 		{
 			EntityFlag flag = (EntityFlag) entity;
@@ -54,45 +52,45 @@ public class ModelFlag extends ModelBase
 			this.renderFlag(flag, f5, flag.ticksExisted);
 		}
 	}
-	
+
 	public void renderPole(Entity entity, float f5)
 	{
 		this.base.render(f5);
 		this.pole.render(f5);
 	}
-	
+
 	public void renderFlag(EntityFlag entity, float f5, float ticks)
 	{
-		if (entity.flagData != null && (flagMain == null || flagMain.length != entity.flagData.getWidth() * entity.flagData.getHeight()))
+		if (entity.flagData != null && (this.flagMain == null || this.flagMain.length != entity.flagData.getWidth() * entity.flagData.getHeight()))
 		{
-			flagMain = new ModelRenderer[entity.flagData.getWidth() * entity.flagData.getHeight()];
+			this.flagMain = new ModelRenderer[entity.flagData.getWidth() * entity.flagData.getHeight()];
 
 			for (int i = 0; i < entity.flagData.getWidth(); i++)
 			{
 				for (int j = 0; j < entity.flagData.getHeight(); j++)
 				{
-					flagMain[j * entity.flagData.getWidth() + i] = new ModelRenderer(this, 86, 0);
-					flagMain[j * entity.flagData.getWidth() + i].addBox(i, j, 0.0F, 1, 1, 1);
-					flagMain[j * entity.flagData.getWidth() + i].setRotationPoint(0.5F, -16F, -0.5F);
-					flagMain[j * entity.flagData.getWidth() + i].setTextureSize(128, 64);
-					flagMain[j * entity.flagData.getWidth() + i].mirror = true;
-					this.setRotation(flagMain[j * entity.flagData.getWidth() + i], 0F, 0F, 0F);
+					this.flagMain[j * entity.flagData.getWidth() + i] = new ModelRenderer(this, 86, 0);
+					this.flagMain[j * entity.flagData.getWidth() + i].addBox(i, j, 0.0F, 1, 1, 1);
+					this.flagMain[j * entity.flagData.getWidth() + i].setRotationPoint(0.5F, -16F, -0.5F);
+					this.flagMain[j * entity.flagData.getWidth() + i].setTextureSize(128, 64);
+					this.flagMain[j * entity.flagData.getWidth() + i].mirror = true;
+					this.setRotation(this.flagMain[j * entity.flagData.getWidth() + i], 0F, 0F, 0F);
 				}
 			}
 		}
-		
-		if (flagMain != null && entity.flagData != null)
+
+		if (this.flagMain != null && entity.flagData != null)
 		{
 			GL11.glPushMatrix();
-			
+
 			GL11.glScalef(0.5F, 0.5F, 0.5F);
 			GL11.glTranslatef(0.0F, -1.1F, 0.0F);
-			
+
 			for (int i = 0; i < this.flagMain.length; i++)
 			{
 				int xPos = i % entity.flagData.getWidth();
 				GL11.glPushMatrix();
-				float offset = (float)(Math.sin(ticks / 2.0F + xPos * 50 + 3) / 25.0F) * xPos / (entity.worldObj.provider instanceof IGalacticraftWorldProvider ? 100.0F : 30.0F);
+				float offset = (float) (Math.sin(ticks / 2.0F + xPos * 50 + 3) / 25.0F) * xPos / (entity.worldObj.provider instanceof IGalacticraftWorldProvider ? 100.0F : 30.0F);
 				GL11.glTranslatef(0, offset, offset);
 				GL11.glDisable(GL11.GL_TEXTURE_2D);
 				Vector3 col = entity.flagData.getColorAt(i % entity.flagData.getWidth(), i / entity.flagData.getWidth());
@@ -102,7 +100,7 @@ public class ModelFlag extends ModelBase
 				GL11.glColor3f(1, 1, 1);
 				GL11.glPopMatrix();
 			}
-			
+
 			GL11.glPopMatrix();
 		}
 	}

@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.EntityFlag;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
@@ -18,8 +19,6 @@ import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
-
 
 public class ItemFlag extends Item implements IHoldableItem
 {
@@ -37,7 +36,7 @@ public class ItemFlag extends Item implements IHoldableItem
 	@Override
 	public CreativeTabs getCreativeTab()
 	{
-		return GalacticraftCore.galacticraftTab;
+		return GalacticraftCore.galacticraftItemsTab;
 	}
 
 	@Override
@@ -76,7 +75,7 @@ public class ItemFlag extends Item implements IHoldableItem
 				}
 				else
 				{
-					par3EntityPlayer.addChatMessage(new ChatComponentText("Flag already placed here!"));
+					par3EntityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.flag.alreadyPlaced")));
 				}
 			}
 

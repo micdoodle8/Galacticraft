@@ -18,8 +18,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.ForgeDirection;
 
-
-
 public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical implements IPacketReceiver, ISidedInventory, IConnector
 {
 	private ItemStack[] containingItems = new ItemStack[2];
@@ -27,7 +25,7 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 	public final Set<EntityPlayer> playersUsing = new HashSet<EntityPlayer>();
 	public int scaledEnergyLevel;
 	public int lastScaledEnergyLevel;
-	
+
 	public TileEntityEnergyStorageModule()
 	{
 		this.storage.setCapacity(500000);
@@ -83,7 +81,7 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 
 		for (int var3 = 0; var3 < var2.tagCount(); ++var3)
 		{
-			NBTTagCompound var4 = (NBTTagCompound) var2.getCompoundTagAt(var3);
+			NBTTagCompound var4 = var2.getCompoundTagAt(var3);
 			byte var5 = var4.getByte("Slot");
 
 			if (var5 >= 0 && var5 < this.containingItems.length)
@@ -200,7 +198,7 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
 	{
-		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
+		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
 	}
 
 	@Override
@@ -292,6 +290,7 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 		return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() - BlockMachine.STORAGE_MODULE_METADATA + 2), ForgeDirection.UNKNOWN);
 	}
 
+	@Override
 	public boolean canConnect(ForgeDirection direction, NetworkType type)
 	{
 		if (direction == null || direction.equals(ForgeDirection.UNKNOWN) || type != NetworkType.POWER)
@@ -304,10 +303,10 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 		return direction == ForgeDirection.getOrientation(metadata + 2);
 	}
 
-//	@Override
-//	public float getMaxEnergyStored()
-//	{
-//		return 2500F;
-//	}
-	
+	//	@Override
+	//	public float getMaxEnergyStored()
+	//	{
+	//		return 2500F;
+	//	}
+
 }

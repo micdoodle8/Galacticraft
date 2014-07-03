@@ -49,7 +49,7 @@ public class OxygenNetwork implements IOxygenNetwork
 
 			if (totalOxygenRequest > 0)
 			{
-				List <TileEntity> ignoreTilesList = Arrays.asList(ignoreTiles); 
+				List<TileEntity> ignoreTilesList = Arrays.asList(ignoreTiles);
 				for (TileEntity tileEntity : new HashSet<TileEntity>(this.oxygenTiles.keySet()))
 				{
 					if (!ignoreTilesList.contains(tileEntity))
@@ -62,12 +62,12 @@ public class OxygenNetwork implements IOxygenNetwork
 							{
 								for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
 								{
-									TileEntity tile = new BlockVec3(tileEntity).modifyPositionFromSide(direction,1).getTileEntity(tileEntity.getWorldObj());
-	
+									TileEntity tile = new BlockVec3(tileEntity).modifyPositionFromSide(direction, 1).getTileEntity(tileEntity.getWorldObj());
+
 									if (oxygenTile.canConnect(direction, NetworkType.OXYGEN) && this.pipes.contains(tile))
 									{
-										float oxygenToSend = Math.max(totalOxygen,totalOxygen * (oxygenTile.getOxygenRequest(direction) / totalOxygenRequest));
-	
+										float oxygenToSend = Math.max(totalOxygen, totalOxygen * (oxygenTile.getOxygenRequest(direction) / totalOxygenRequest));
+
 										if (oxygenToSend > 0)
 										{
 											remainingUsableOxygen -= oxygenTile.receiveOxygen(direction, oxygenToSend, true);
@@ -76,44 +76,44 @@ public class OxygenNetwork implements IOxygenNetwork
 								}
 							}
 						}
-//						else if (NetworkConfigHandler.isMekanismV6Loaded() && tileEntity instanceof IGasHandler)
-//						{
-//							IGasHandler gasHandler = (IGasHandler) tileEntity;
-//
-//							for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
-//							{
-//								TileEntity tile = new Vector3(tileEntity).modifyPositionFromSide(direction).getTileEntity(tileEntity.worldObj);
-//
-//								if (gasHandler.canReceiveGas(direction, (Gas) NetworkConfigHandler.gasOxygen) && this.getTransmitters().contains(tile))
-//								{
-//									int oxygenToSend = (int) Math.floor(totalOxygen / this.oxygenTiles.size());
-//
-//									if (oxygenToSend > 0)
-//									{
-//										remainingUsableOxygen -= gasHandler.receiveGas(direction, (new GasStack((Gas) NetworkConfigHandler.gasOxygen, oxygenToSend)));
-//									}
-//								}
-//							}
-//						}
-//						else if (NetworkConfigHandler.isMekanismLoaded() && tileEntity instanceof IGasAcceptor)
-//						{
-//							IGasAcceptor gasAcceptor = (IGasAcceptor) tileEntity;
-//
-//							for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
-//							{
-//								TileEntity tile = new Vector3(tileEntity).modifyPositionFromSide(direction).getTileEntity(tileEntity.worldObj);
-//
-//								if (gasAcceptor.canReceiveGas(direction, (Gas) NetworkConfigHandler.gasOxygen) && this.getTransmitters().contains(tile))
-//								{
-//									int oxygenToSend = (int) Math.floor(totalOxygen / this.oxygenTiles.size());
-//
-//									if (oxygenToSend > 0)
-//									{
-//										remainingUsableOxygen -= gasAcceptor.receiveGas(new GasStack((Gas) NetworkConfigHandler.gasOxygen, oxygenToSend));
-//									}
-//								}
-//							}
-//						}
+						//						else if (NetworkConfigHandler.isMekanismV6Loaded() && tileEntity instanceof IGasHandler)
+						//						{
+						//							IGasHandler gasHandler = (IGasHandler) tileEntity;
+						//
+						//							for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+						//							{
+						//								TileEntity tile = new Vector3(tileEntity).modifyPositionFromSide(direction).getTileEntity(tileEntity.worldObj);
+						//
+						//								if (gasHandler.canReceiveGas(direction, (Gas) NetworkConfigHandler.gasOxygen) && this.getTransmitters().contains(tile))
+						//								{
+						//									int oxygenToSend = (int) Math.floor(totalOxygen / this.oxygenTiles.size());
+						//
+						//									if (oxygenToSend > 0)
+						//									{
+						//										remainingUsableOxygen -= gasHandler.receiveGas(direction, (new GasStack((Gas) NetworkConfigHandler.gasOxygen, oxygenToSend)));
+						//									}
+						//								}
+						//							}
+						//						}
+						//						else if (NetworkConfigHandler.isMekanismLoaded() && tileEntity instanceof IGasAcceptor)
+						//						{
+						//							IGasAcceptor gasAcceptor = (IGasAcceptor) tileEntity;
+						//
+						//							for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+						//							{
+						//								TileEntity tile = new Vector3(tileEntity).modifyPositionFromSide(direction).getTileEntity(tileEntity.worldObj);
+						//
+						//								if (gasAcceptor.canReceiveGas(direction, (Gas) NetworkConfigHandler.gasOxygen) && this.getTransmitters().contains(tile))
+						//								{
+						//									int oxygenToSend = (int) Math.floor(totalOxygen / this.oxygenTiles.size());
+						//
+						//									if (oxygenToSend > 0)
+						//									{
+						//										remainingUsableOxygen -= gasAcceptor.receiveGas(new GasStack((Gas) NetworkConfigHandler.gasOxygen, oxygenToSend));
+						//									}
+						//								}
+						//							}
+						//						}
 					}
 				}
 			}
@@ -130,7 +130,7 @@ public class OxygenNetwork implements IOxygenNetwork
 	{
 		List<Float> requests = new ArrayList<Float>();
 
-		List <TileEntity> ignoreTilesList = Arrays.asList(ignoreTiles);
+		List<TileEntity> ignoreTilesList = Arrays.asList(ignoreTiles);
 		for (TileEntity tileEntity : new HashSet<TileEntity>(this.oxygenTiles.keySet()))
 		{
 			if (ignoreTilesList.contains(tileEntity))
@@ -138,7 +138,7 @@ public class OxygenNetwork implements IOxygenNetwork
 				continue;
 			}
 
-			if (tileEntity instanceof IOxygenReceiver && ((IOxygenReceiver)tileEntity).shouldPullOxygen())
+			if (tileEntity instanceof IOxygenReceiver && ((IOxygenReceiver) tileEntity).shouldPullOxygen())
 			{
 				if (!tileEntity.isInvalid())
 				{
@@ -147,13 +147,12 @@ public class OxygenNetwork implements IOxygenNetwork
 						for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
 						{
 							BlockVec3 tileVec = new BlockVec3(tileEntity);
-							TileEntity tile = tileVec.modifyPositionFromSide(direction,1).getTileEntity(tileEntity.getWorldObj());
+							TileEntity tile = tileVec.modifyPositionFromSide(direction, 1).getTileEntity(tileEntity.getWorldObj());
 
 							if (((IOxygenReceiver) tileEntity).canConnect(direction, NetworkType.OXYGEN) && this.pipes.contains(tile))
 							{
 								requests.add(((IOxygenReceiver) tileEntity).getOxygenRequest(direction));
-								continue;
-							}
+                            }
 						}
 					}
 				}

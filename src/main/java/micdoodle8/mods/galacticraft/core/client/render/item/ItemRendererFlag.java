@@ -15,8 +15,6 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
 
-
-
 public class ItemRendererFlag implements IItemRenderer
 {
 	private EntityFlag entityFlagDummy = new EntityFlag(FMLClientHandler.instance().getClient().theWorld);
@@ -34,15 +32,15 @@ public class ItemRendererFlag implements IItemRenderer
 		this.entityFlagDummy.worldObj = FMLClientHandler.instance().getClient().theWorld;
 		this.entityFlagDummy.ticksExisted = (int) FMLClientHandler.instance().getWorldClient().getTotalWorldTime();
 		this.entityFlagDummy.setType(item.getItemDamage());
-		
+
 		if (type == ItemRenderType.EQUIPPED)
 		{
 			EntityLivingBase entityHolding = (EntityLivingBase) data[1];
-			
+
 			if (entityHolding instanceof EntityPlayer)
 			{
 				String playerName = ((EntityPlayer) entityHolding).getGameProfile().getName();
-				
+
 				if (!playerName.equals(this.entityFlagDummy.getOwner()))
 				{
 					this.entityFlagDummy.setOwner(playerName);
@@ -53,7 +51,7 @@ public class ItemRendererFlag implements IItemRenderer
 		else
 		{
 			String playerName = FMLClientHandler.instance().getClient().thePlayer.getGameProfile().getName();
-			
+
 			if (!playerName.equals(this.entityFlagDummy.getOwner()) || this.entityFlagDummy.ticksExisted % 100 == 0)
 			{
 				this.entityFlagDummy.setOwner(playerName);

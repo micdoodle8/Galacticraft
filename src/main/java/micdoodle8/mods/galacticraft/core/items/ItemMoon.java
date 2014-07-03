@@ -13,8 +13,6 @@ import net.minecraft.util.IIcon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class ItemMoon extends Item
 {
 	public static String[] names = { "meteoricIronIngot", "compressedMeteoricIron" };
@@ -81,7 +79,7 @@ public class ItemMoon extends Item
 	@Override
 	public CreativeTabs getCreativeTab()
 	{
-		return GalacticraftCore.galacticraftTab;
+		return GalacticraftCore.galacticraftItemsTab;
 	}
 
 	@Override

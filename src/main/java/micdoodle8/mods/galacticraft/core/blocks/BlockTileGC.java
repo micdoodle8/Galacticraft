@@ -53,7 +53,7 @@ public abstract class BlockTileGC extends BlockAdvanced implements ITileEntityPr
 	{
 		super.onBlockEventReceived(par1World, par2, par3, par4, par5, par6);
 		TileEntity tileentity = par1World.getTileEntity(par2, par3, par4);
-		return tileentity != null ? tileentity.receiveClientEvent(par5, par6) : false;
+		return tileentity != null && tileentity.receiveClientEvent(par5, par6);
 	}
 
 	/**
@@ -91,7 +91,7 @@ public abstract class BlockTileGC extends BlockAdvanced implements ITileEntityPr
 							}
 
 							var7.stackSize -= var11;
-							EntityItem var12 = new EntityItem(world, (x + var8), (y + var9), (z + var10), new ItemStack(var7.getItem(), var11, var7.getItemDamage()));
+							EntityItem var12 = new EntityItem(world, x + var8, y + var9, z + var10, new ItemStack(var7.getItem(), var11, var7.getItemDamage()));
 
 							if (var7.hasTagCompound())
 							{
@@ -99,9 +99,9 @@ public abstract class BlockTileGC extends BlockAdvanced implements ITileEntityPr
 							}
 
 							float var13 = 0.05F;
-							var12.motionX = ((float) random.nextGaussian() * var13);
-							var12.motionY = ((float) random.nextGaussian() * var13 + 0.2F);
-							var12.motionZ = ((float) random.nextGaussian() * var13);
+							var12.motionX = (float) random.nextGaussian() * var13;
+							var12.motionY = (float) random.nextGaussian() * var13 + 0.2F;
+							var12.motionZ = (float) random.nextGaussian() * var13;
 							world.spawnEntityInWorld(var12);
 						}
 					}

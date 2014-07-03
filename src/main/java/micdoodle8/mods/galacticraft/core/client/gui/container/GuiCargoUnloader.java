@@ -17,8 +17,6 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-
-
 public class GuiCargoUnloader extends GuiContainerGC
 {
 	private static final ResourceLocation unloaderTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/cargo_loader.png");
@@ -77,7 +75,7 @@ public class GuiCargoUnloader extends GuiContainerGC
 		this.buttonLoadItems.displayString = !this.cargoUnloader.getDisabled(0) ? GCCoreUtil.translate("gui.button.stopunloading.name") : GCCoreUtil.translate("gui.button.unloaditems.name");
 		this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.status.name") + ": " + this.getStatus(), 28 + offsetX, 45 + 23 - 46 + offsetY, 4210752);
 		this.fontRendererObj.drawString("" + this.cargoUnloader.storage.getMaxExtract(), 28 + offsetX, 56 + 23 - 46 + offsetY, 4210752);
-//		this.fontRendererObj.drawString(ElectricityDisplay.getDisplay(this.cargoUnloader.getVoltage(), ElectricUnit.VOLTAGE), 28 + offsetX, 68 + 23 - 46 + offsetY, 4210752);
+		//		this.fontRendererObj.drawString(ElectricityDisplay.getDisplay(this.cargoUnloader.getVoltage(), ElectricUnit.VOLTAGE), 28 + offsetX, 68 + 23 - 46 + offsetY, 4210752);
 		this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 90, 4210752);
 	}
 

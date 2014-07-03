@@ -15,8 +15,6 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class BlockOxygenDetector extends BlockContainer implements ITileEntityProvider
 {
 	private IIcon iconSide;
@@ -61,7 +59,7 @@ public class BlockOxygenDetector extends BlockContainer implements ITileEntityPr
 	@Override
 	public CreativeTabs getCreativeTabToDisplayOn()
 	{
-		return GalacticraftCore.galacticraftTab;
+		return GalacticraftCore.galacticraftBlocksTab;
 	}
 
 	@Override

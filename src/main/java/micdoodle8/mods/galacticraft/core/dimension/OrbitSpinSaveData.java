@@ -10,45 +10,48 @@ public class OrbitSpinSaveData extends WorldSavedData
 	public NBTTagCompound datacompound;
 	private NBTTagCompound alldata;
 	private int dim = 0;
-	
-	public OrbitSpinSaveData(String id)
+
+	public OrbitSpinSaveData()
 	{
-		super(id);
-		datacompound = new NBTTagCompound();
+		super(OrbitSpinSaveData.saveDataID);
+		this.datacompound = new NBTTagCompound();
 	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbt)
 	{
-		alldata = nbt;
+		this.alldata = nbt;
 		//world.loadItemData calls this but can't extract from alldata until we know the dimension ID
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbt)
 	{
-		if (dim!=0) nbt.setTag(""+dim, this.datacompound);
+		if (this.dim != 0)
+		{
+			nbt.setTag("" + this.dim, this.datacompound);
+		}
 	}
-	
+
 	public static OrbitSpinSaveData initWorldData(World world)
 	{
-		OrbitSpinSaveData worldData = (OrbitSpinSaveData) world.loadItemData(OrbitSpinSaveData.class, saveDataID);
+		OrbitSpinSaveData worldData = (OrbitSpinSaveData) world.loadItemData(OrbitSpinSaveData.class, OrbitSpinSaveData.saveDataID);
 
 		if (worldData == null)
 		{
-			worldData = new OrbitSpinSaveData(saveDataID);
-			world.setItemData(saveDataID, worldData);
+			worldData = new OrbitSpinSaveData();
+			world.setItemData(OrbitSpinSaveData.saveDataID, worldData);
 			if (world.provider instanceof WorldProviderOrbit)
 			{
 				worldData.dim = world.provider.dimensionId;
-				((WorldProviderOrbit)world.provider).writeToNBT(worldData.datacompound);
+				((WorldProviderOrbit) world.provider).writeToNBT(worldData.datacompound);
 			}
 			worldData.markDirty();
-		} else
-		if (world.provider instanceof WorldProviderOrbit)
+		}
+		else if (world.provider instanceof WorldProviderOrbit)
 		{
 			worldData.dim = world.provider.dimensionId;
-			worldData.datacompound = worldData.alldata.getCompoundTag(""+worldData.dim);
+			worldData.datacompound = worldData.alldata.getCompoundTag("" + worldData.dim);
 		}
 
 		return worldData;

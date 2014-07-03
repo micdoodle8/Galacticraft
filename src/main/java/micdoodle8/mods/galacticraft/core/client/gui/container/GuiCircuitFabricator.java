@@ -14,17 +14,12 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 @SideOnly(Side.CLIENT)
 public class GuiCircuitFabricator extends GuiContainer
 {
 	private static final ResourceLocation circuitFabricatorTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/circuitFabricator.png");
 
 	private TileEntityCircuitFabricator tileEntity;
-
-	private int containerWidth;
-	private int containerHeight;
 
 	public GuiCircuitFabricator(InventoryPlayer par1InventoryPlayer, TileEntityCircuitFabricator tileEntity)
 	{
@@ -56,9 +51,9 @@ public class GuiCircuitFabricator extends GuiContainer
 		this.fontRendererObj.drawString(str, 115 - this.fontRendererObj.getStringWidth(str) / 2, 80, 4210752);
 		this.fontRendererObj.drawString(displayText, 115 - this.fontRendererObj.getStringWidth(displayText) / 2, 90, 4210752);
 		this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 93, 4210752);
-		str = "" + tileEntity.storage.getMaxExtract();
+		str = "" + this.tileEntity.storage.getMaxExtract();
 		this.fontRendererObj.drawString(str, 5, 42, 4210752);
-//		str = ElectricityDisplay.getDisplay(this.tileEntity.getVoltage(), ElectricUnit.VOLTAGE);
+		//		str = ElectricityDisplay.getDisplay(this.tileEntity.getVoltage(), ElectricUnit.VOLTAGE);
 		this.fontRendererObj.drawString(str, 5, 52, 4210752);
 	}
 
@@ -72,23 +67,23 @@ public class GuiCircuitFabricator extends GuiContainer
 		this.mc.renderEngine.bindTexture(GuiCircuitFabricator.circuitFabricatorTexture);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-		this.containerWidth = (this.width - this.xSize) / 2;
-		this.containerHeight = (this.height - this.ySize) / 2;
-		this.drawTexturedModalRect(this.containerWidth, this.containerHeight, 0, 0, this.xSize, this.ySize);
+        int containerWidth = (this.width - this.xSize) / 2;
+		int containerHeight = (this.height - this.ySize) / 2;
+		this.drawTexturedModalRect(containerWidth, containerHeight, 0, 0, this.xSize, this.ySize);
 
 		int scale;
 
 		if (this.tileEntity.processTicks > 0)
 		{
 			scale = (int) ((double) this.tileEntity.processTicks / (double) TileEntityCircuitFabricator.PROCESS_TIME_REQUIRED * 51);
-			this.drawTexturedModalRect(this.containerWidth + 88, this.containerHeight + 20, 176, 17 + this.tileEntity.processTicks % 9 / 3 * 10, scale, 10);
+			this.drawTexturedModalRect(containerWidth + 88, containerHeight + 20, 176, 17 + this.tileEntity.processTicks % 9 / 3 * 10, scale, 10);
 		}
 
 		if (this.tileEntity.getEnergyStoredGC() > 0)
 		{
 			scale = this.tileEntity.getScaledElecticalLevel(54);
-			this.drawTexturedModalRect(this.containerWidth + 116 - 98, this.containerHeight + 89, 176, 0, scale, 7);
-			this.drawTexturedModalRect(this.containerWidth + 4, this.containerHeight + 88, 176, 7, 11, 10);
+			this.drawTexturedModalRect(containerWidth + 116 - 98, containerHeight + 89, 176, 0, scale, 7);
+			this.drawTexturedModalRect(containerWidth + 4, containerHeight + 88, 176, 7, 11, 10);
 		}
 	}
 }

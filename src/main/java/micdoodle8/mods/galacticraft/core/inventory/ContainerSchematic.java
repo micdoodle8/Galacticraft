@@ -10,8 +10,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-
-
 public class ContainerSchematic extends Container
 {
 	public InventorySchematic craftMatrix = new InventorySchematic(this);

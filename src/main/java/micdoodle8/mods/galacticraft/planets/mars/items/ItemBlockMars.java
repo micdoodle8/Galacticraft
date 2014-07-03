@@ -1,16 +1,12 @@
 package micdoodle8.mods.galacticraft.planets.mars.items;
 
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
-import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import net.minecraft.block.Block;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
-
 
 public class ItemBlockMars extends ItemBlock
 {
@@ -96,12 +92,6 @@ public class ItemBlockMars extends ItemBlock
 		}
 
 		return this.field_150939_a.getUnlocalizedName() + "." + name;
-	}
-
-	@Override
-	public CreativeTabs getCreativeTab()
-	{
-		return MarsModule.galacticraftMarsTab;
 	}
 
 	@Override

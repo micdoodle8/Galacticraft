@@ -12,8 +12,6 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 @SideOnly(Side.CLIENT)
 public class RenderFlag extends Render
 {
@@ -30,7 +28,7 @@ public class RenderFlag extends Render
 	@Override
 	protected ResourceLocation getEntityTexture(Entity entity)
 	{
-		return flagTexture;
+		return RenderFlag.flagTexture;
 	}
 
 	public void renderFlag(EntityFlag entity, double par2, double par4, double par6, float par8, float par9)

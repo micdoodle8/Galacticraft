@@ -17,52 +17,52 @@ public class AsteroidsPlayerHandler
 	@SubscribeEvent
 	public void onPlayerLogin(PlayerLoggedInEvent event)
 	{
-    	if (event.player instanceof GCEntityPlayerMP)
-    	{
-    		onPlayerLogin((GCEntityPlayerMP) event.player);
-    	}
+		if (event.player instanceof GCEntityPlayerMP)
+		{
+			this.onPlayerLogin((GCEntityPlayerMP) event.player);
+		}
 	}
-	
+
 	@SubscribeEvent
 	public void onPlayerLogout(PlayerLoggedOutEvent event)
 	{
-    	if (event.player instanceof GCEntityPlayerMP)
-    	{
-    		onPlayerLogout((GCEntityPlayerMP) event.player);
-    	}
+		if (event.player instanceof GCEntityPlayerMP)
+		{
+			this.onPlayerLogout((GCEntityPlayerMP) event.player);
+		}
 	}
 
-    @SubscribeEvent
-    public void onPlayerRespawn(PlayerRespawnEvent event)
-    {
-    	if (event.player instanceof GCEntityPlayerMP)
-    	{
-            onPlayerRespawn((GCEntityPlayerMP) event.player);
-    	}
-    }
+	@SubscribeEvent
+	public void onPlayerRespawn(PlayerRespawnEvent event)
+	{
+		if (event.player instanceof GCEntityPlayerMP)
+		{
+			this.onPlayerRespawn((GCEntityPlayerMP) event.player);
+		}
+	}
 
-    @SubscribeEvent
-    public void onEntityConstructing(EntityEvent.EntityConstructing event)
-    {
-        if (event.entity instanceof GCEntityPlayerMP && GCPlayerStats.get((GCEntityPlayerMP) event.entity) == null)
-        {
-            GCPlayerStats.register((GCEntityPlayerMP) event.entity);
-        }
-    }
-	
+	@SubscribeEvent
+	public void onEntityConstructing(EntityEvent.EntityConstructing event)
+	{
+		if (event.entity instanceof GCEntityPlayerMP && GCPlayerStats.get((GCEntityPlayerMP) event.entity) == null)
+		{
+			GCPlayerStats.register((GCEntityPlayerMP) event.entity);
+		}
+	}
+
 	private void onPlayerLogin(GCEntityPlayerMP player)
 	{
 	}
-	
+
 	private void onPlayerLogout(GCEntityPlayerMP player)
 	{
-		
+
 	}
-	
+
 	private void onPlayerRespawn(GCEntityPlayerMP player)
 	{
 	}
-	
+
 	@SubscribeEvent
 	public void onLivingUpdate(LivingUpdateEvent event)
 	{
@@ -71,7 +71,7 @@ public class AsteroidsPlayerHandler
 			this.onPlayerUpdate((GCEntityPlayerMP) event.entityLiving);
 		}
 	}
-	
+
 	private void onPlayerUpdate(GCEntityPlayerMP player)
 	{
 		int tick = player.ticksExisted - 1;
@@ -88,14 +88,14 @@ public class AsteroidsPlayerHandler
 				{
 					double x, y, z;
 					double motX, motY, motZ;
-					double r = ((Math.PI * 2.0) * player.worldObj.rand.nextDouble());
+					double r = Math.PI * 2.0 * player.worldObj.rand.nextDouble();
 					x = player.posX + Math.cos(r) * 100;
-					y = player.posY + (player.worldObj.rand.nextInt(5));
+					y = player.posY + player.worldObj.rand.nextInt(5);
 					z = player.posZ + Math.sin(r) * 100;
 					motX = (player.posX + (player.worldObj.rand.nextDouble() - 0.5) * 50 - x) / 800.0F;
 					motY = (player.worldObj.rand.nextDouble() - 0.5) * 0.4;
 					motZ = (player.posZ + (player.worldObj.rand.nextDouble() - 0.5) * 50 - z) / 800.0F;
-					
+
 					final EntitySmallAsteroid smallAsteroid = new EntitySmallAsteroid(player.worldObj);
 					smallAsteroid.setPosition(x, y, z);
 					smallAsteroid.setVelocity(motX, motY, motZ);

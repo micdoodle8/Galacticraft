@@ -19,8 +19,6 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-
-
 public class GuiSlimelingInventory extends GuiContainer
 {
 	private final int xSize;

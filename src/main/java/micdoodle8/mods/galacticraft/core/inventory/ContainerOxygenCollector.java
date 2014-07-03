@@ -9,15 +9,13 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-
-
 public class ContainerOxygenCollector extends Container
 {
 	private TileEntityElectricBlock tileEntity;
-	
+
 	public ContainerOxygenCollector(InventoryPlayer par1InventoryPlayer, TileEntityOxygenCollector distributor)
 	{
-		tileEntity = distributor;
+		this.tileEntity = distributor;
 		this.addSlotToContainer(new SlotSpecific(distributor, 0, 32, 27, IItemElectric.class));
 
 		int var6;

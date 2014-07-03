@@ -7,8 +7,6 @@ import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraftforge.common.util.EnumHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-
-
 public class MarsItems
 {
 	public static Item marsItemBasic;
@@ -36,41 +34,41 @@ public class MarsItems
 		MarsItems.deshHoe = new ItemHoeMars(MarsItems.TOOLDESH).setUnlocalizedName("deshHoe");
 		MarsItems.deshSpade = new ItemSpadeMars(MarsItems.TOOLDESH).setUnlocalizedName("deshSpade");
 		MarsItems.deshSword = new ItemSwordMars(MarsItems.TOOLDESH).setUnlocalizedName("deshSword");
-		MarsItems.deshHelmet = new ItemArmorMars(MarsItems.ARMORDESH, 7, 0, false).setUnlocalizedName("deshHelmet");
-		MarsItems.deshChestplate = new ItemArmorMars(MarsItems.ARMORDESH, 7, 1, false).setUnlocalizedName("deshChestplate");
-		MarsItems.deshLeggings = new ItemArmorMars(MarsItems.ARMORDESH, 7, 2, false).setUnlocalizedName("deshLeggings");
-		MarsItems.deshBoots = new ItemArmorMars(MarsItems.ARMORDESH, 7, 3, false).setUnlocalizedName("deshBoots");
+		MarsItems.deshHelmet = new ItemArmorMars(MarsItems.ARMORDESH, 7, 0).setUnlocalizedName("deshHelmet");
+		MarsItems.deshChestplate = new ItemArmorMars(MarsItems.ARMORDESH, 7, 1).setUnlocalizedName("deshChestplate");
+		MarsItems.deshLeggings = new ItemArmorMars(MarsItems.ARMORDESH, 7, 2).setUnlocalizedName("deshLeggings");
+		MarsItems.deshBoots = new ItemArmorMars(MarsItems.ARMORDESH, 7, 3).setUnlocalizedName("deshBoots");
 		MarsItems.spaceship = new ItemTier2Rocket().setUnlocalizedName("spaceshipTier2");
 		MarsItems.key = new ItemKeyMars().setUnlocalizedName("key");
 		MarsItems.schematic = new ItemSchematicTier2().setUnlocalizedName("schematic");
-		
-		registerItems();
+
+		MarsItems.registerItems();
 	}
 
 	public static void registerHarvestLevels()
 	{
-//		MinecraftForge.setToolClass(GCMarsItems.deshPickaxe, "pickaxe", 4);
-//		MinecraftForge.setToolClass(GCMarsItems.deshAxe, "axe", 4);
-//		MinecraftForge.setToolClass(GCMarsItems.deshSpade, "shovel", 4); TODO Fix harvest levels
+		//		MinecraftForge.setToolClass(GCMarsItems.deshPickaxe, "pickaxe", 4);
+		//		MinecraftForge.setToolClass(GCMarsItems.deshAxe, "axe", 4);
+		//		MinecraftForge.setToolClass(GCMarsItems.deshSpade, "shovel", 4); TODO Fix harvest levels
 	}
-	
+
 	private static void registerItems()
 	{
-		registerItem(marsItemBasic);
-		registerItem(deshPickaxe);
-		registerItem(deshAxe);
-		registerItem(deshHoe);
-		registerItem(deshSpade);
-		registerItem(deshSword);
-		registerItem(deshHelmet);
-		registerItem(deshChestplate);
-		registerItem(deshLeggings);
-		registerItem(deshBoots);
-		registerItem(spaceship);
-		registerItem(key);
-		registerItem(schematic);
+		MarsItems.registerItem(MarsItems.marsItemBasic);
+		MarsItems.registerItem(MarsItems.deshPickaxe);
+		MarsItems.registerItem(MarsItems.deshAxe);
+		MarsItems.registerItem(MarsItems.deshHoe);
+		MarsItems.registerItem(MarsItems.deshSpade);
+		MarsItems.registerItem(MarsItems.deshSword);
+		MarsItems.registerItem(MarsItems.deshHelmet);
+		MarsItems.registerItem(MarsItems.deshChestplate);
+		MarsItems.registerItem(MarsItems.deshLeggings);
+		MarsItems.registerItem(MarsItems.deshBoots);
+		MarsItems.registerItem(MarsItems.spaceship);
+		MarsItems.registerItem(MarsItems.key);
+		MarsItems.registerItem(MarsItems.schematic);
 	}
-	
+
 	private static void registerItem(Item item)
 	{
 		GameRegistry.registerItem(item, item.getUnlocalizedName(), GalacticraftPlanets.MODID);

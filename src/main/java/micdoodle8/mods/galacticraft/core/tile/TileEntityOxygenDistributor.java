@@ -21,8 +21,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 
-
-
 public class TileEntityOxygenDistributor extends TileEntityOxygen implements IInventory, ISidedInventory, IBubbleProvider
 {
 	public boolean active;
@@ -56,7 +54,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 					for (int z = (int) Math.floor(this.zCoord - this.oxygenBubble.getSize()); z < Math.ceil(this.zCoord + this.oxygenBubble.getSize()); z++)
 					{
 						Block block = this.worldObj.getBlock(x, y, z);
-	
+
 						if (block instanceof IOxygenReliantBlock)
 						{
 							((IOxygenReliantBlock) block).onOxygenRemoved(this.worldObj, x, y, z);
@@ -81,30 +79,30 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 	public void updateEntity()
 	{
 		super.updateEntity();
-		
+
 		if (this.oxygenBubble == null || this.ticks < 25)
 		{
 			if (this.oxygenBubbleEntityID != -1 && (this.oxygenBubble == null || this.oxygenBubbleEntityID != this.oxygenBubble.getEntityId()))
 			{
-				Entity entity = worldObj.getEntityByID(oxygenBubbleEntityID);
-				
+				Entity entity = this.worldObj.getEntityByID(this.oxygenBubbleEntityID);
+
 				if (entity instanceof EntityBubble)
 				{
 					this.oxygenBubble = (EntityBubble) entity;
 				}
 			}
-			
+
 			if (this.oxygenBubble == null)
 			{
 				this.oxygenBubble = new EntityBubble(this.worldObj, new Vector3(this), this);
-				
+
 				if (!this.worldObj.isRemote)
 				{
 					this.worldObj.spawnEntityInWorld(this.oxygenBubble);
 				}
 			}
 		}
-		
+
 		if (!this.worldObj.isRemote)
 		{
 			this.oxygenBubbleEntityID = this.oxygenBubble.getEntityId();
@@ -112,14 +110,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 
 		if (!this.worldObj.isRemote)
 		{
-			if (this.oxygenBubble.getSize() >= 1 && this.hasEnoughEnergyToRun)
-			{
-				this.active = true;
-			}
-			else
-			{
-				this.active = false;
-			}
+            this.active = this.oxygenBubble.getSize() >= 1 && this.hasEnoughEnergyToRun;
 		}
 
 		if (!this.worldObj.isRemote && (this.active != this.lastActive || this.ticks % 20 == 0))
@@ -164,7 +155,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 
 		for (int var3 = 0; var3 < var2.tagCount(); ++var3)
 		{
-			final NBTTagCompound var4 = (NBTTagCompound) var2.getCompoundTagAt(var3);
+			final NBTTagCompound var4 = var2.getCompoundTagAt(var3);
 			final byte var5 = var4.getByte("Slot");
 
 			if (var5 >= 0 && var5 < this.containingItems.length)
@@ -178,7 +169,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 	public void writeToNBT(NBTTagCompound nbt)
 	{
 		super.writeToNBT(nbt);
-		
+
 		nbt.setInteger("BubbleEntityID", this.oxygenBubble == null ? -1 : this.oxygenBubble.getEntityId());
 
 		final NBTTagList list = new NBTTagList();
@@ -281,7 +272,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
 	{
-		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
+		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
 	}
 
 	// ISidedInventory Implementation:
@@ -313,7 +304,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 	@Override
 	public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
 	{
-		return slotID == 0 ? itemstack.getItem() instanceof IItemElectric : false;
+		return slotID == 0 && itemstack.getItem() instanceof IItemElectric;
 	}
 
 	@Override
@@ -383,7 +374,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 		{
 			return;
 		}
-		
+
 		this.oxygenBubble.setShouldRender(shouldRender);
 	}
 }

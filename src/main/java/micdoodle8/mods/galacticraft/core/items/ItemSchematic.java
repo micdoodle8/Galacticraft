@@ -18,8 +18,6 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class ItemSchematic extends Item implements ISchematicItem
 {
 	public static final String[] names = { "buggy", "rocketT2" }; // 15
@@ -39,7 +37,7 @@ public class ItemSchematic extends Item implements ISchematicItem
 	@Override
 	public CreativeTabs getCreativeTab()
 	{
-		return GalacticraftCore.galacticraftTab;
+		return GalacticraftCore.galacticraftItemsTab;
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })

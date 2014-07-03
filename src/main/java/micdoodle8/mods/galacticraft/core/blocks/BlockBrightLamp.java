@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import java.util.Random;
-
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityArclamp;
@@ -22,9 +20,7 @@ public class BlockBrightLamp extends BlockAdvanced
 	public static IIcon icon;
 
 	//Metadata: bits 0-2 are the side of the base plate using standard side convention (0-5)
-	//			bits 4-5 are the orientation (which will be relative to that side)
-	//			      default orientation 0 = facing down  (if side > 1)
-	
+
 	protected BlockBrightLamp(String assetName)
 	{
 		super(Material.glass);
@@ -34,11 +30,13 @@ public class BlockBrightLamp extends BlockAdvanced
 		this.setBlockName(assetName);
 		this.setLightLevel(1.0F);
 	}
-	
+
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int x, int y, int z)
 	{
-		return null;
+		double boundsMin = 0.2D;
+		double boundsMax = 0.8D;
+		return AxisAlignedBB.getAABBPool().getAABB(x + boundsMin, y + boundsMin, z + boundsMin, x + boundsMax, y + boundsMax, z + boundsMax);
 	}
 
 	@Override
@@ -65,7 +63,10 @@ public class BlockBrightLamp extends BlockAdvanced
 		BlockVec3 thisvec = new BlockVec3(x, y, z);
 		for (int i = 0; i < 6; i++)
 		{
-			if (thisvec.blockOnSideHasSolidFace(par1World, i)) return true;
+			if (thisvec.blockOnSideHasSolidFace(par1World, i))
+			{
+				return true;
+			}
 		}
 		return false;
 	}
@@ -74,27 +75,13 @@ public class BlockBrightLamp extends BlockAdvanced
 	public int onBlockPlaced(World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metaOld)
 	{
 		BlockVec3 thisvec = new BlockVec3(x, y, z);
-		
+
 		if (thisvec.blockOnSideHasSolidFace(world, side ^ 1))
-			return side ^ 1;
-	
-		return metaOld;
-	}
-
-	@Override
-	public void updateTick(World par1World, int x, int y, int z, Random par5Random)
-	{
-		super.updateTick(par1World, x, y, z, par5Random);
-
-		if (par1World.getBlockMetadata(x, y, z) == 0)
 		{
-			this.onBlockAdded(par1World, x, y, z);
+			return side ^ 1;
 		}
-	}
 
-	@Override
-	public void onBlockAdded(World par1World, int x, int y, int z)
-	{
+		return metaOld;
 	}
 
 	/**
@@ -105,13 +92,15 @@ public class BlockBrightLamp extends BlockAdvanced
 	@Override
 	public void onNeighborBlockChange(World par1World, int x, int y, int z, Block par5)
 	{
-		final int side = par1World.getBlockMetadata(x, y, z) & 15;
+		final int side = par1World.getBlockMetadata(x, y, z);
 
 		BlockVec3 thisvec = new BlockVec3(x, y, z);
-		
+
 		if (thisvec.blockOnSideHasSolidFace(par1World, side))
+		{
 			return;
-	
+		}
+
 		this.dropBlockAsItem(par1World, x, y, z, 0, 0);
 		par1World.setBlock(x, y, z, Blocks.air);
 	}
@@ -123,29 +112,32 @@ public class BlockBrightLamp extends BlockAdvanced
 	@Override
 	public MovingObjectPosition collisionRayTrace(World par1World, int x, int y, int z, Vec3 par5Vec3, Vec3 par6Vec3)
 	{
-		final int var7 = par1World.getBlockMetadata(x, y, z) & 7;
+		final int var7 = par1World.getBlockMetadata(x, y, z);
 		float var8 = 0.3F;
 
-		if (var7 == 1)
+		if (var7 == 4)
 		{
 			this.setBlockBounds(0.0F, 0.2F, 0.5F - var8, var8 * 2.0F, 0.8F, 0.5F + var8);
 		}
-		else if (var7 == 2)
+		else if (var7 == 5)
 		{
 			this.setBlockBounds(1.0F - var8 * 2.0F, 0.2F, 0.5F - var8, 1.0F, 0.8F, 0.5F + var8);
 		}
-		else if (var7 == 3)
+		else if (var7 == 2)
 		{
 			this.setBlockBounds(0.5F - var8, 0.2F, 0.0F, 0.5F + var8, 0.8F, var8 * 2.0F);
 		}
-		else if (var7 == 4)
+		else if (var7 == 3)
 		{
 			this.setBlockBounds(0.5F - var8, 0.2F, 1.0F - var8 * 2.0F, 0.5F + var8, 0.8F, 1.0F);
 		}
+		else if (var7 == 0)
+		{
+			this.setBlockBounds(0.5F - var8, 0.0F, 0.5F - var8, 0.5F + var8, 0.6F, 0.5F + var8);
+		}
 		else
 		{
-			var8 = 0.1F;
-			this.setBlockBounds(0.5F - var8, 0.0F, 0.5F - var8, 0.5F + var8, 0.6F, 0.5F + var8);
+			this.setBlockBounds(0.5F - var8, 0.4F, 0.5F - var8, 0.5F + var8, 1.0F, 0.5F + var8);
 		}
 
 		return super.collisionRayTrace(par1World, x, y, z, par5Vec3, par6Vec3);
@@ -154,37 +146,23 @@ public class BlockBrightLamp extends BlockAdvanced
 	@Override
 	public boolean onUseWrench(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ)
 	{
-		final int metadata = world.getBlockMetadata(x, y, z);
-		final int metaside = metadata & 15;
-		int facing = (metadata >> 4) - 2;
-		if (facing < 0) facing = 1 - facing;
-		if (facing > 3) facing = 0;
-		//facing sequence: 0 - 3 - 1 - 2
-
-		world.setBlockMetadataWithNotify(x, y, z, metaside + (facing << 4), 3);
 		TileEntity tile = world.getTileEntity(x, y, z);
-		if (tile instanceof TileEntityArclamp) ((TileEntityArclamp)tile).facingChanged();
+		if (tile instanceof TileEntityArclamp)
+		{
+			((TileEntityArclamp) tile).facingChanged();
+		}
 		return true;
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) 
+	public TileEntity createNewTileEntity(World world, int meta)
 	{
 		return new TileEntityArclamp();
-	}
-	
-	@Override
-	public void onBlockPreDestroy(World world, int x, int y, int z, int metadata)
-	{
-		if (!world.isRemote)
-		{
-			final int facing = metadata & 8;
-		}
 	}
 
 	@Override
 	public CreativeTabs getCreativeTabToDisplayOn()
 	{
-		return GalacticraftCore.galacticraftTab;
+		return GalacticraftCore.galacticraftBlocksTab;
 	}
 }

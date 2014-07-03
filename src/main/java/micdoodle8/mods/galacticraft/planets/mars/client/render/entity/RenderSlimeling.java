@@ -19,8 +19,6 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 @SideOnly(Side.CLIENT)
 public class RenderSlimeling extends RenderLiving
 {
@@ -102,11 +100,11 @@ public class RenderSlimeling extends RenderLiving
 			}
 			else if (difference < 0.66666)
 			{
-				this.renderLivingLabelWithColor(par1EntityLivingBase, "" + (int) Math.ceil(health-0.5D) + " / " + (int) Math.ceil(maxHealth), par2, par4, par6, 64, 1, 1, 0);
+				this.renderLivingLabelWithColor(par1EntityLivingBase, "" + (int) Math.ceil(health - 0.5D) + " / " + (int) Math.ceil(maxHealth), par2, par4, par6, 64, 1, 1, 0);
 			}
 			else
 			{
-				this.renderLivingLabelWithColor(par1EntityLivingBase, "" + (int) Math.ceil(health-0.5D) + " / " + (int) Math.ceil(maxHealth), par2, par4, par6, 64, 0, 1, 0);
+				this.renderLivingLabelWithColor(par1EntityLivingBase, "" + (int) Math.ceil(health - 0.5D) + " / " + (int) Math.ceil(maxHealth), par2, par4, par6, 64, 0, 1, 0);
 			}
 		}
 

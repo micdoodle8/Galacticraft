@@ -7,8 +7,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class BlockOreGC extends Block
 {
 	public BlockOreGC(String name)
@@ -23,6 +21,6 @@ public class BlockOreGC extends Block
 	@SideOnly(Side.CLIENT)
 	public CreativeTabs getCreativeTabToDisplayOn()
 	{
-		return GalacticraftCore.galacticraftTab;
+		return GalacticraftCore.galacticraftBlocksTab;
 	}
 }

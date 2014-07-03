@@ -167,37 +167,37 @@ public abstract class BlockTransmitter extends BlockContainer
 			default:
 				connectable = new TileEntity[6];
 			}
-	
+
 			if (connectable[4] != null)
 			{
 				this.setBlockBounds(0, (float) this.minVector.y, (float) this.minVector.z, (float) this.maxVector.x, (float) this.maxVector.y, (float) this.maxVector.z);
 				super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, list, entity);
 			}
-	
+
 			if (connectable[5] != null)
 			{
 				this.setBlockBounds((float) this.minVector.x, (float) this.minVector.y, (float) this.minVector.z, 1, (float) this.maxVector.y, (float) this.maxVector.z);
 				super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, list, entity);
 			}
-	
+
 			if (connectable[0] != null)
 			{
 				this.setBlockBounds((float) this.minVector.x, 0, (float) this.minVector.z, (float) this.maxVector.x, (float) this.maxVector.y, (float) this.maxVector.z);
 				super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, list, entity);
 			}
-	
+
 			if (connectable[1] != null)
 			{
 				this.setBlockBounds((float) this.minVector.x, (float) this.minVector.y, (float) this.minVector.z, (float) this.maxVector.x, 1, (float) this.maxVector.z);
 				super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, list, entity);
 			}
-	
+
 			if (connectable[2] != null)
 			{
 				this.setBlockBounds((float) this.minVector.x, (float) this.minVector.y, 0, (float) this.maxVector.x, (float) this.maxVector.y, (float) this.maxVector.z);
 				super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, list, entity);
 			}
-	
+
 			if (connectable[3] != null)
 			{
 				this.setBlockBounds((float) this.minVector.x, (float) this.minVector.y, (float) this.minVector.z, (float) this.maxVector.x, (float) this.maxVector.y, 1);

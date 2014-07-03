@@ -18,8 +18,6 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 
-
-
 public class EntityFlag extends Entity
 {
 	public EntityLiving entityPlacedBy;
@@ -174,12 +172,12 @@ public class EntityFlag extends Entity
 	public void onUpdate()
 	{
 		super.onUpdate();
-		
+
 		if ((this.ticksExisted - 1) % 20 == 0 && this.worldObj.isRemote && FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
 		{
-			this.flagData = ClientUtil.updateFlagData(getOwner(), Minecraft.getMinecraft().thePlayer.getDistanceToEntity(this) < 50.0D);
+			this.flagData = ClientUtil.updateFlagData(this.getOwner(), Minecraft.getMinecraft().thePlayer.getDistanceToEntity(this) < 50.0D);
 		}
-		
+
 		Vector3 vec = new Vector3(this.posX, this.posY, this.posZ);
 		vec = vec.translate(new Vector3(0, -1, 0));
 		final Block blockAt = vec.getBlock(this.worldObj);
@@ -198,7 +196,7 @@ public class EntityFlag extends Entity
 
 		this.moveEntity(this.motionX, this.motionY, this.motionZ);
 	}
-	
+
 	@Override
 	public boolean interactFirst(EntityPlayer par1EntityPlayer)
 	{

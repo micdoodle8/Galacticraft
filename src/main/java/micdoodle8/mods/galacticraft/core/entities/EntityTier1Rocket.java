@@ -23,8 +23,6 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 
-
-
 public class EntityTier1Rocket extends EntityTieredRocket
 {
 	public IUpdatePlayerListBox rocketSoundUpdater;
@@ -157,10 +155,10 @@ public class EntityTier1Rocket extends EntityTieredRocket
 			else
 			{
 				playerBase.getPlayerStats().rocketStacks = this.cargoItems;
-				if ((cargoItems.length-2)%18!=0)
+				if ((this.cargoItems.length - 2) % 18 != 0)
 				{
-					System.out.println("Strange rocket inventory size "+cargoItems.length);
-					int fail = 1/0;
+					System.out.println("Strange rocket inventory size " + this.cargoItems.length);
+					int fail = 1 / 0;
 				}
 			}
 
@@ -195,7 +193,7 @@ public class EntityTier1Rocket extends EntityTieredRocket
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
 	{
-		return this.isDead ? false : par1EntityPlayer.getDistanceSqToEntity(this) <= 64.0D;
+		return !this.isDead && par1EntityPlayer.getDistanceSqToEntity(this) <= 64.0D;
 	}
 
 	@Override
@@ -301,13 +299,13 @@ public class EntityTier1Rocket extends EntityTieredRocket
 	}
 
 	@Override
-	public float getCameraZoom() 
+	public float getCameraZoom()
 	{
 		return 15.0F;
 	}
 
 	@Override
-	public boolean defaultThirdPerson() 
+	public boolean defaultThirdPerson()
 	{
 		return true;
 	}

@@ -15,8 +15,6 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class ItemOilCanister extends Item
 {
 	protected IIcon[] icons = new IIcon[7];
@@ -42,7 +40,7 @@ public class ItemOilCanister extends Item
 	@Override
 	public CreativeTabs getCreativeTab()
 	{
-		return GalacticraftCore.galacticraftTab;
+		return GalacticraftCore.galacticraftItemsTab;
 	}
 
 	@Override

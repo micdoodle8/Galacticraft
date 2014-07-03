@@ -19,8 +19,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 
-
-
 public class TileEntityCargoUnloader extends TileEntityElectricBlock implements IInventory, ISidedInventory, ILandingPadAttachable
 {
 	private ItemStack[] containingItems = new ItemStack[15];
@@ -92,7 +90,7 @@ public class TileEntityCargoUnloader extends TileEntityElectricBlock implements 
 			if (dir != ForgeDirection.UNKNOWN)
 			{
 				final TileEntity pad = new BlockVec3(this).getTileEntityOnSide(this.worldObj, dir);
-				
+
 				if (pad != null && pad instanceof TileEntityMulti)
 				{
 					final TileEntity mainTile = ((TileEntityMulti) pad).mainBlockPosition.getTileEntity(this.worldObj);
@@ -189,7 +187,7 @@ public class TileEntityCargoUnloader extends TileEntityElectricBlock implements 
 		{
 			par2ItemStack.stackSize = this.getInventoryStackLimit();
 		}
-		
+
 		this.markDirty();
 	}
 
@@ -203,7 +201,7 @@ public class TileEntityCargoUnloader extends TileEntityElectricBlock implements 
 
 		for (int var3 = 0; var3 < var2.tagCount(); ++var3)
 		{
-			final NBTTagCompound var4 = (NBTTagCompound) var2.getCompoundTagAt(var3);
+			final NBTTagCompound var4 = var2.getCompoundTagAt(var3);
 			final byte var5 = var4.getByte("Slot");
 
 			if (var5 >= 0 && var5 < this.containingItems.length)
@@ -249,7 +247,7 @@ public class TileEntityCargoUnloader extends TileEntityElectricBlock implements 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
 	{
-		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
+		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
 	}
 
 	@Override
@@ -340,6 +338,7 @@ public class TileEntityCargoUnloader extends TileEntityElectricBlock implements 
 			ItemStack stackAt = this.containingItems[count];
 
 			if (stackAt != null && stackAt.getItem() == stack.getItem() && stackAt.getItemDamage() == stack.getItemDamage() && stackAt.stackSize < stackAt.getMaxStackSize())
+			{
 				if (stackAt.stackSize + stack.stackSize <= stackAt.getMaxStackSize())
 				{
 					if (doAdd)
@@ -347,9 +346,10 @@ public class TileEntityCargoUnloader extends TileEntityElectricBlock implements 
 						this.containingItems[count].stackSize += stack.stackSize;
 						this.markDirty();
 					}
-	
+
 					return EnumCargoLoadingState.SUCCESS;
-				} else
+				}
+				else
 				{
 					//Part of the stack can fill this slot but there will be some left over
 					int origSize = stackAt.stackSize;
@@ -360,14 +360,17 @@ public class TileEntityCargoUnloader extends TileEntityElectricBlock implements 
 						this.containingItems[count].stackSize = stackAt.getMaxStackSize();
 						this.markDirty();
 					}
-					
+
 					stack.stackSize = surplus;
 					if (this.addCargo(stack, doAdd) == EnumCargoLoadingState.SUCCESS)
+					{
 						return EnumCargoLoadingState.SUCCESS;
-					
+					}
+
 					this.containingItems[count].stackSize = origSize;
-					return EnumCargoLoadingState.FULL;			
+					return EnumCargoLoadingState.FULL;
 				}
+			}
 		}
 
 		for (count = 1; count < this.containingItems.length; count++)
@@ -402,7 +405,10 @@ public class TileEntityCargoUnloader extends TileEntityElectricBlock implements 
 					this.containingItems[i] = null;
 				}
 
-				if (doRemove) this.markDirty();
+				if (doRemove)
+				{
+					this.markDirty();
+				}
 				return new RemovalResult(EnumCargoLoadingState.SUCCESS, new ItemStack(stackAt.getItem(), 1, stackAt.getItemDamage()));
 			}
 		}

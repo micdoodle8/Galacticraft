@@ -13,8 +13,6 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class EntityBubble extends EntityAdvanced implements IPacketReceiver, IBubble
 {
 	@NetworkedField(targetSide = Side.CLIENT)
@@ -62,7 +60,6 @@ public class EntityBubble extends EntityAdvanced implements IPacketReceiver, IBu
 	@Override
 	public void moveEntity(double par1, double par3, double par5)
 	{
-		;
 	}
 
 	@Override
@@ -131,10 +128,10 @@ public class EntityBubble extends EntityAdvanced implements IPacketReceiver, IBu
 			this.posZ = vec.z + 0.5D;
 		}
 
-//		if (!this.worldObj.isRemote && this.ticks % 5 == 0)
-//		{
-//			GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 50.0D));
-//		}
+		//		if (!this.worldObj.isRemote && this.ticks % 5 == 0)
+		//		{
+		//			GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 50.0D));
+		//		}
 	}
 
 	@Override
@@ -175,7 +172,7 @@ public class EntityBubble extends EntityAdvanced implements IPacketReceiver, IBu
 		{
 			this.size = nbt.getFloat("bubbleSizeF");
 		}
-		
+
 		this.setShouldRender(nbt.getBoolean("ShouldRender"));
 	}
 
@@ -191,7 +188,7 @@ public class EntityBubble extends EntityAdvanced implements IPacketReceiver, IBu
 	{
 		return this.shouldRender;
 	}
-	
+
 	public void setShouldRender(boolean shouldRender)
 	{
 		this.shouldRender = shouldRender;
@@ -212,13 +209,11 @@ public class EntityBubble extends EntityAdvanced implements IPacketReceiver, IBu
 	@Override
 	public void onPacketClient(EntityPlayer player)
 	{
-		;
 	}
 
 	@Override
 	public void onPacketServer(EntityPlayer player)
 	{
-		;
 	}
 
 	@Override

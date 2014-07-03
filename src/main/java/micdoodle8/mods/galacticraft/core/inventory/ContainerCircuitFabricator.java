@@ -11,8 +11,6 @@ import net.minecraft.inventory.SlotFurnace;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 
-
-
 public class ContainerCircuitFabricator extends Container
 {
 	private TileEntityCircuitFabricator tileEntity;

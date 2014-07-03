@@ -6,6 +6,7 @@ import java.util.Random;
 import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
 import micdoodle8.mods.galacticraft.api.block.IPlantableBlock;
 import micdoodle8.mods.galacticraft.api.block.ITerraformableBlock;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -20,8 +21,6 @@ import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
-
 
 public class BlockBasicAsteroids extends Block implements IDetectableResource, IPlantableBlock, ITerraformableBlock
 {
@@ -39,10 +38,12 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
-		this.blockIcons = new IIcon[3];
+		this.blockIcons = new IIcon[5];
 		this.blockIcons[0] = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_DOMAIN + "asteroid0");
 		this.blockIcons[1] = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_DOMAIN + "asteroid1");
 		this.blockIcons[2] = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_DOMAIN + "asteroid2");
+		this.blockIcons[3] = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_DOMAIN + "oreQuandrium");
+		this.blockIcons[4] = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_DOMAIN + "oreElementium");
 		this.blockIcon = this.blockIcons[0];
 	}
 
@@ -50,7 +51,7 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
 	@Override
 	public CreativeTabs getCreativeTabToDisplayOn()
 	{
-		return AsteroidsModule.asteroidsTab;
+		return GalacticraftCore.galacticraftBlocksTab;
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -61,7 +62,7 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
 		{
 			return this.blockIcon;
 		}
-		
+
 		return this.blockIcons[meta];
 	}
 
@@ -71,7 +72,7 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
 		switch (meta)
 		{
 		default:
-			return null;
+			return super.getItemDropped(meta, random, par3);
 		}
 	}
 
@@ -115,7 +116,7 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
 	}
 
 	@Override
-    public boolean canSustainPlant(IBlockAccess world, int x, int y, int z, ForgeDirection direction, IPlantable plantable)
+	public boolean canSustainPlant(IBlockAccess world, int x, int y, int z, ForgeDirection direction, IPlantable plantable)
 	{
 		return false;
 	}

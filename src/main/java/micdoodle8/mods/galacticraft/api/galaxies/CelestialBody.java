@@ -23,7 +23,7 @@ public abstract class CelestialBody
 	protected boolean isReachable = false;
 	protected boolean forceStaticLoad = true;
 
-	protected ResourceLocation planetIcon;
+	protected ResourceLocation celestialBodyIcon;
 
 	protected float ringColorR = 1.0F;
 	protected float ringColorG = 1.0F;
@@ -37,7 +37,7 @@ public abstract class CelestialBody
 
 	public abstract int getID();
 
-	protected abstract String getUnlocalizedNamePrefix();
+	public abstract String getUnlocalizedNamePrefix();
 
 	public String getName()
 	{
@@ -138,15 +138,15 @@ public abstract class CelestialBody
 
 	public CelestialBody setDimensionInfo(int dimID, Class<? extends WorldProvider> providerClass)
 	{
-		return this.setDimensionInfo(dimID, providerClass, true, true);
+		return this.setDimensionInfo(dimID, providerClass, true);
 	}
 
-	public CelestialBody setDimensionInfo(int dimID, Class<? extends WorldProvider> providerClass, boolean autoRegister, boolean isReachable)
+	public CelestialBody setDimensionInfo(int dimID, Class<? extends WorldProvider> providerClass, boolean autoRegister)
 	{
 		this.dimensionID = dimID;
 		this.providerClass = providerClass;
 		this.autoRegisterDimension = autoRegister;
-		this.isReachable = isReachable;
+		this.isReachable = true;
 		return this;
 	}
 
@@ -193,34 +193,34 @@ public abstract class CelestialBody
 		return this.ringColorB;
 	}
 
-	public ResourceLocation getPlanetIcon()
+	public ResourceLocation getBodyIcon()
 	{
-		return this.planetIcon;
+		return this.celestialBodyIcon;
 	}
 
-	public CelestialBody setPlanetIcon(ResourceLocation planetIcon)
+	public CelestialBody setBodyIcon(ResourceLocation planetIcon)
 	{
-		this.planetIcon = planetIcon;
+		this.celestialBodyIcon = planetIcon;
 		return this;
 	}
-	
+
 	public boolean getForceStaticLoad()
 	{
 		return this.forceStaticLoad;
 	}
-	
+
 	public CelestialBody setForceStaticLoad(boolean force)
 	{
 		this.forceStaticLoad = force;
 		return this;
 	}
-	
+
 	@Override
 	public int hashCode()
 	{
 		return this.getUnlocalizedName().hashCode();
 	}
-	
+
 	@Override
 	public boolean equals(Object other)
 	{
@@ -228,7 +228,7 @@ public abstract class CelestialBody
 		{
 			return new EqualsBuilder().append(this.getUnlocalizedName(), ((CelestialBody) other).getUnlocalizedName()).isEquals();
 		}
-		
+
 		return false;
 	}
 }

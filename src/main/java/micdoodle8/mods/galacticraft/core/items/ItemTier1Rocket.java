@@ -20,8 +20,6 @@ import net.minecraftforge.fluids.FluidStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class ItemTier1Rocket extends Item implements IHoldableItem
 {
 	public ItemTier1Rocket(String assetName)
@@ -37,7 +35,7 @@ public class ItemTier1Rocket extends Item implements IHoldableItem
 	@Override
 	public CreativeTabs getCreativeTab()
 	{
-		return GalacticraftCore.galacticraftTab;
+		return GalacticraftCore.galacticraftItemsTab;
 	}
 
 	@Override

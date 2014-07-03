@@ -17,8 +17,6 @@ import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 
-
-
 public class RocketT1RecipeHandler extends TemplateRecipeHandler
 {
 	private static final ResourceLocation rocketGuiTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/rocketbench.png");

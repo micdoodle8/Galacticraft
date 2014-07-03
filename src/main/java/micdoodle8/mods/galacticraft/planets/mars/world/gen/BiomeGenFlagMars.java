@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.mars.world.gen;
 
-
-
 public class BiomeGenFlagMars extends BiomeGenBaseMars
 {
 	public BiomeGenFlagMars(int par1)

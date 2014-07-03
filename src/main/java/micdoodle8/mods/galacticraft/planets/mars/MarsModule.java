@@ -10,7 +10,6 @@ import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
-import micdoodle8.mods.galacticraft.core.util.CreativeTabGC;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
@@ -40,7 +39,6 @@ import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityLaunchController
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntitySlimelingEgg;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityTerraformer;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityTreasureChestMars;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
@@ -59,13 +57,9 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 
-
-
 public class MarsModule implements IPlanetsModule
 {
 	public static final String LANGUAGE_PATH = "/assets/galacticraftmars/lang/";
-
-	public static CreativeTabGC galacticraftMarsTab;
 
 	public static final String TEXTURE_DOMAIN = "galacticraftmars";
 	public static final String TEXTURE_PREFIX = MarsModule.TEXTURE_DOMAIN + ":";
@@ -89,7 +83,7 @@ public class MarsModule implements IPlanetsModule
 		MarsBlocks.initBlocks();
 		MarsBlocks.registerBlocks();
 		MarsBlocks.setHarvestLevels();
-		
+
 		MarsModule.SLUDGE.setBlock(MarsBlocks.blockSludge);
 
 		MarsItems.initItems();
@@ -102,15 +96,13 @@ public class MarsModule implements IPlanetsModule
 		SchematicRegistry.registerSchematicRecipe(new SchematicCargoRocket());
 
 		GalacticraftCore.packetPipeline.addDiscriminator(6, PacketSimpleMars.class);
-		
-		MarsModule.galacticraftMarsTab = new CreativeTabGC(CreativeTabs.getNextID(), "GalacticraftMars", MarsItems.spaceship, 5);
-		
+
 		this.registerTileEntities();
 		this.registerCreatures();
 		this.registerOtherEntities();
 
-		MarsModule.planetMars = (Planet) new Planet("mars").setParentGalaxy(GalacticraftCore.galaxyBlockyWay).setRingColorRGB(0.67F, 0.1F, 0.1F).setPhaseShift(0.1667F).setRelativeSize(0.5319F).setRelativeDistanceFromCenter(1.52F).setRelativeOrbitTime(1.88F);
-		MarsModule.planetMars.setPlanetIcon(new ResourceLocation(MarsModule.TEXTURE_DOMAIN, "textures/gui/planets/mars.png"));
+		MarsModule.planetMars = (Planet) new Planet("mars").setParentSolarSystem(GalacticraftCore.solarSystemSol).setRingColorRGB(0.67F, 0.1F, 0.1F).setPhaseShift(0.1667F).setRelativeSize(0.5319F).setRelativeDistanceFromCenter(1.52F).setRelativeOrbitTime(1.88F);
+		MarsModule.planetMars.setBodyIcon(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/celestialbodies/mars.png"));
 		MarsModule.planetMars.setDimensionInfo(ConfigManagerMars.dimensionIDMars, WorldProviderMars.class);
 
 		GalaxyRegistry.registerPlanet(MarsModule.planetMars);
@@ -173,13 +165,13 @@ public class MarsModule implements IPlanetsModule
 	}
 
 	@Override
-	public void getGuiIDs(List<Integer> idList) 
+	public void getGuiIDs(List<Integer> idList)
 	{
 		idList.add(GuiIdsPlanets.MACHINE_MARS);
 	}
 
 	@Override
-	public Object getGuiElement(Side side, int ID, EntityPlayer player, World world, int x, int y, int z) 
+	public Object getGuiElement(Side side, int ID, EntityPlayer player, World world, int x, int y, int z)
 	{
 		if (side == Side.SERVER)
 		{
@@ -197,7 +189,7 @@ public class MarsModule implements IPlanetsModule
 				}
 			}
 		}
-		
+
 		return null;
 	}
 }

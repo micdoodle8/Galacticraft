@@ -14,8 +14,6 @@ import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.util.ForgeDirection;
 
-
-
 public class RoomChestsMars extends DungeonRoom
 {
 	int sizeX;

@@ -11,13 +11,10 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-
-
 public class GuiSchematicTier1Rocket extends GuiContainerGC implements ISchematicResultPage
 {
 	private static final ResourceLocation rocketBenchTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/rocketbench.png");
 
-	private GuiButton backButton;
 	private int pageIndex;
 
 	public GuiSchematicTier1Rocket(InventoryPlayer par1InventoryPlayer, int x, int y, int z)
@@ -31,9 +28,10 @@ public class GuiSchematicTier1Rocket extends GuiContainerGC implements ISchemati
 	public void initGui()
 	{
 		super.initGui();
-		this.buttonList.add(this.backButton = new GuiButton(0, this.width / 2 - 130, this.height / 2 - 30 + 27 - 12, 40, 20, GCCoreUtil.translate("gui.button.back.name")));
+        GuiButton backButton;
+		this.buttonList.add(backButton = new GuiButton(0, this.width / 2 - 130, this.height / 2 - 30 + 27 - 12, 40, 20, GCCoreUtil.translate("gui.button.back.name")));
 		this.buttonList.add(new GuiButton(1, this.width / 2 - 130, this.height / 2 - 30 + 27 + 12, 40, 20, GCCoreUtil.translate("gui.button.next.name")));
-		this.backButton.enabled = false;
+		backButton.enabled = false;
 	}
 
 	@Override

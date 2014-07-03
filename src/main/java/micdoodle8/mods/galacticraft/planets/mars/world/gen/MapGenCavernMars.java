@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.planets.mars.world.gen;
 
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.api.prefab.world.gen.MapGenBaseMeta;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -9,9 +10,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 
-
-
-public class MapGenCavernMars
+public class MapGenCavernMars extends MapGenBaseMeta
 {
 	protected int range = 8;
 
@@ -19,6 +18,7 @@ public class MapGenCavernMars
 
 	protected World worldObj;
 
+    @Override
 	public void generate(IChunkProvider par1IChunkProvider, World par2World, int par3, int par4, Block[] arrayOfIDs, byte[] arrayOfMeta)
 	{
 		final int var6 = this.range;
@@ -39,6 +39,7 @@ public class MapGenCavernMars
 		}
 	}
 
+    @Override
 	protected void recursiveGenerate(World par1World, int xChunkCoord, int zChunkCoord, int origXChunkCoord, int origZChunkCoord, Block[] arrayOfIDs, byte[] arrayOfMeta)
 	{
 		if (this.rand.nextInt(100) == 0)

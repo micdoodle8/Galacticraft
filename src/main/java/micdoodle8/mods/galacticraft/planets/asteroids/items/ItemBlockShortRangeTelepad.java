@@ -10,18 +10,16 @@ import net.minecraft.item.ItemStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class ItemBlockShortRangeTelepad extends ItemBlockGC
 {
 	public ItemBlockShortRangeTelepad(Block block)
 	{
 		super(block);
 	}
-	
+
 	@Override
-    @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) 
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
 	{
 		par3List.add(EnumColor.DARK_GREY + "*Prototype*");
 	}

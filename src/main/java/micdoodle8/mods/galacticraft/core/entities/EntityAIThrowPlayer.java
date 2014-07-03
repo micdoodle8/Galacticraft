@@ -3,8 +3,6 @@ package micdoodle8.mods.galacticraft.core.entities;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.player.EntityPlayer;
 
-
-
 public class EntityAIThrowPlayer extends EntityAIBase
 {
 	EntitySkeletonBoss skeletonBoss;

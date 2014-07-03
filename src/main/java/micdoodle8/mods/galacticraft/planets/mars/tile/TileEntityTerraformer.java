@@ -33,8 +33,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import cpw.mods.fml.relauncher.Side;
 
-
-
 public class TileEntityTerraformer extends TileEntityElectricBlock implements IInventory, ISidedInventory, IDisableableMachine, IBubbleProvider
 {
 	private final int tankCapacity = 2000;
@@ -132,14 +130,7 @@ public class TileEntityTerraformer extends TileEntityElectricBlock implements II
 				}
 			}
 
-			if (this.terraformBubble.getSize() == this.MAX_SIZE && this.hasEnoughEnergyToRun && this.getFirstBonemealStack() != null && this.waterTank.getFluid() != null && this.waterTank.getFluid().amount > 0)
-			{
-				this.active = true;
-			}
-			else
-			{
-				this.active = false;
-			}
+            this.active = this.terraformBubble.getSize() == this.MAX_SIZE && this.hasEnoughEnergyToRun && this.getFirstBonemealStack() != null && this.waterTank.getFluid() != null && this.waterTank.getFluid().amount > 0;
 		}
 
 		if (!this.worldObj.isRemote && (this.active != this.lastActive || this.ticks % 20 == 0))
@@ -375,7 +366,7 @@ public class TileEntityTerraformer extends TileEntityElectricBlock implements II
 
 		for (int var3 = 0; var3 < var2.tagCount(); ++var3)
 		{
-			final NBTTagCompound var4 = (NBTTagCompound) var2.getCompoundTagAt(var3);
+			final NBTTagCompound var4 = var2.getCompoundTagAt(var3);
 			final byte var5 = var4.getByte("Slot");
 
 			if (var5 >= 0 && var5 < this.containingItems.length)
@@ -530,7 +521,7 @@ public class TileEntityTerraformer extends TileEntityElectricBlock implements II
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer entityplayer)
 	{
-		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && entityplayer.getDistanceSq(this.xCoord+0.5D, this.yCoord+0.5D, this.zCoord+0.5D) <= 64.0D;
+		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && entityplayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
 	}
 
 	@Override
@@ -542,7 +533,7 @@ public class TileEntityTerraformer extends TileEntityElectricBlock implements II
 	@Override
 	public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
 	{
-		return slotID == 1 ? itemstack.getItem() instanceof IItemElectric : false;
+		return slotID == 1 && itemstack.getItem() instanceof IItemElectric;
 	}
 
 	@Override
@@ -669,7 +660,7 @@ public class TileEntityTerraformer extends TileEntityElectricBlock implements II
 		{
 			return;
 		}
-		
+
 		this.terraformBubble.setShouldRender(shouldRender);
 	}
 }

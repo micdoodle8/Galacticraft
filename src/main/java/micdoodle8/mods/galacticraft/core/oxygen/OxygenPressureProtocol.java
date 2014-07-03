@@ -19,11 +19,10 @@ import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.BlockPistonBase;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.BlockSponge;
+import net.minecraft.block.BlockStainedGlass;
 import net.minecraft.block.material.Material;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-
-
 
 public class OxygenPressureProtocol
 {
@@ -67,7 +66,7 @@ public class OxygenPressureProtocol
 			}
 			catch (final Exception e)
 			{
-				System.err.println("Galacticraft config External Sealable IDs: error parsing '"+s+"'  Must be in the form ID#:Metadata");
+				System.err.println("Galacticraft config External Sealable IDs: error parsing '" + s + "'  Must be in the form ID#:Metadata");
 			}
 		}
 	}
@@ -80,14 +79,16 @@ public class OxygenPressureProtocol
 		}
 		catch (IllegalThreadStateException e)
 		{
-			;
+
 		}
 	}
 
 	public static void onEdgeBlockUpdated(World world, BlockVec3 vec)
 	{
 		if (ConfigManagerCore.enableSealerEdgeChecks)
+		{
 			TickHandlerServer.scheduleNewEdgeCheck(world.provider.dimensionId, vec);
+		}
 	}
 
 	// Note this will NPE if id==0, so don't call this with id==0
@@ -99,32 +100,28 @@ public class OxygenPressureProtocol
 		{
 			return true;
 		}
-		
+
 		if (block.isOpaqueCube())
 		{
-			if (block instanceof BlockGravel || block.getMaterial() == Material.cloth || block instanceof BlockSponge)
-			{
-				return true;
-			}
-			
-			return false;
-		}
-		
-		if (block instanceof BlockGlass)
+            return block instanceof BlockGravel || block.getMaterial() == Material.cloth || block instanceof BlockSponge;
+
+        }
+
+		if (block instanceof BlockGlass || block instanceof BlockStainedGlass)
 		{
 			return false;
 		}
 
 		if (block instanceof IPartialSealableBlock)
 		{
-			return !(((IPartialSealableBlock) block).isSealed(world, vec.x, vec.y, vec.z, ForgeDirection.getOrientation(side)));
+			return !((IPartialSealableBlock) block).isSealed(world, vec.x, vec.y, vec.z, ForgeDirection.getOrientation(side));
 		}
 
 		//Solid but non-opaque blocks, for example special glass
 		if (OxygenPressureProtocol.nonPermeableBlocks.containsKey(block))
 		{
 			ArrayList<Integer> metaList = OxygenPressureProtocol.nonPermeableBlocks.get(block);
-			if (metaList.contains(Integer.valueOf(-1)) ||  metaList.contains(vec.getBlockMetadata(world)))
+			if (metaList.contains(Integer.valueOf(-1)) || metaList.contains(vec.getBlockMetadata(world)))
 			{
 				return false;
 			}
@@ -132,24 +129,24 @@ public class OxygenPressureProtocol
 
 		//Half slab seals on the top side or the bottom side according to its metadata
 		if (block instanceof BlockSlab)
-        {
-            return !((side == 0 && (vec.getBlockMetadata(world) & 8) == 8) || (side == 1 && (vec.getBlockMetadata(world) & 8) == 0));
-        }
-        
+		{
+			return !(side == 0 && (vec.getBlockMetadata(world) & 8) == 8 || side == 1 && (vec.getBlockMetadata(world) & 8) == 0);
+		}
+
 		//Farmland etc only seals on the solid underside
 		if (block instanceof BlockFarmland || block instanceof BlockEnchantmentTable || block instanceof BlockLiquid)
-        {
-            return side!=1;
-        }
-		
+		{
+			return side != 1;
+		}
+
 		if (block instanceof BlockPistonBase)
 		{
-			BlockPistonBase piston = (BlockPistonBase)block;
+			BlockPistonBase piston = (BlockPistonBase) block;
 			int meta = vec.getBlockMetadata(world);
-			if (piston.isExtended(meta))
+			if (BlockPistonBase.isExtended(meta))
 			{
-				int facing = piston.getPistonOrientation(meta);
-				return (side!=facing);
+				int facing = BlockPistonBase.getPistonOrientation(meta);
+				return side != facing;
 			}
 			return false;
 		}

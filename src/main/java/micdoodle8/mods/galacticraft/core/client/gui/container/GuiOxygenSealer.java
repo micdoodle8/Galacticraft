@@ -5,7 +5,6 @@ import java.util.List;
 
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenSealer;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
@@ -15,14 +14,12 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenSealer;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockAir;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
-
-
 
 public class GuiOxygenSealer extends GuiContainerGC
 {
@@ -94,10 +91,10 @@ public class GuiOxygenSealer extends GuiContainerGC
 		this.fontRendererObj.drawString(status, this.xSize / 2 - this.fontRendererObj.getStringWidth(status) / 2, 50, 4210752);
 		status = GCCoreUtil.translate("gui.oxygenUse.desc") + ": " + this.sealer.oxygenPerTick * 20 + "/s";
 		this.fontRendererObj.drawString(status, this.xSize / 2 - this.fontRendererObj.getStringWidth(status) / 2, 60, 4210752);
-//		status = ElectricityDisplay.getDisplay(this.sealer.ueWattsPerTick * 20, ElectricUnit.WATT);
-//		this.fontRendererObj.drawString(status, this.xSize / 2 - this.fontRendererObj.getStringWidth(status) / 2, 70, 4210752);
-//		status = ElectricityDisplay.getDisplay(this.sealer.getVoltage(), ElectricUnit.VOLTAGE);
-//		this.fontRendererObj.drawString(status, this.xSize / 2 - this.fontRendererObj.getStringWidth(status) / 2, 80, 4210752);
+		//		status = ElectricityDisplay.getDisplay(this.sealer.ueWattsPerTick * 20, ElectricUnit.WATT);
+		//		this.fontRendererObj.drawString(status, this.xSize / 2 - this.fontRendererObj.getStringWidth(status) / 2, 70, 4210752);
+		//		status = ElectricityDisplay.getDisplay(this.sealer.getVoltage(), ElectricUnit.VOLTAGE);
+		//		this.fontRendererObj.drawString(status, this.xSize / 2 - this.fontRendererObj.getStringWidth(status) / 2, 80, 4210752);
 		this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 90 + 3, 4210752);
 	}
 
@@ -105,7 +102,7 @@ public class GuiOxygenSealer extends GuiContainerGC
 	{
 		Block blockAbove = this.sealer.getWorldObj().getBlock(this.sealer.xCoord, this.sealer.yCoord + 1, this.sealer.zCoord);
 
-		if (blockAbove != Blocks.air && blockAbove != GCBlocks.breatheableAir && !OxygenPressureProtocol.canBlockPassAir(this.sealer.getWorldObj(), blockAbove, new BlockVec3(this.sealer.xCoord, this.sealer.yCoord + 1, this.sealer.zCoord), 1))
+		if (!(blockAbove instanceof BlockAir) && !OxygenPressureProtocol.canBlockPassAir(this.sealer.getWorldObj(), blockAbove, new BlockVec3(this.sealer.xCoord, this.sealer.yCoord + 1, this.sealer.zCoord), 1))
 		{
 			return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.sealerblocked.name");
 		}

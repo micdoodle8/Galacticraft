@@ -10,8 +10,6 @@ import net.minecraft.util.IIcon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class ItemOxygenGear extends Item
 {
 	public ItemOxygenGear(String assetName)
@@ -24,7 +22,7 @@ public class ItemOxygenGear extends Item
 	@Override
 	public CreativeTabs getCreativeTab()
 	{
-		return GalacticraftCore.galacticraftTab;
+		return GalacticraftCore.galacticraftItemsTab;
 	}
 
 	@Override

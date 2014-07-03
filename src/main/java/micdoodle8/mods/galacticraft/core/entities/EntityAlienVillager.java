@@ -29,8 +29,6 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class EntityAlienVillager extends EntityAgeable implements IEntityBreathable
 {
 	private int randomTickDivider;
@@ -340,8 +338,7 @@ public class EntityAlienVillager extends EntityAgeable implements IEntityBreatha
 
 	public EntityAlienVillager func_90012_b(EntityAgeable par1EntityAgeable)
 	{
-		final EntityAlienVillager entityvillager = new EntityAlienVillager(this.worldObj);
-		return entityvillager;
+		return new EntityAlienVillager(this.worldObj);
 	}
 
 	@Override

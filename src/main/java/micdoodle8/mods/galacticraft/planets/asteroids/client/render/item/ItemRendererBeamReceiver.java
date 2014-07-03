@@ -11,29 +11,27 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
 
-
-
 public class ItemRendererBeamReceiver implements IItemRenderer
 {
 	private void renderBeamReceiver(ItemRenderType type, RenderBlocks render, ItemStack item, float translateX, float translateY, float translateZ)
 	{
 		GL11.glPushMatrix();
 		this.transform(type);
-		
+
 		GL11.glColor3f(1.0F, 1.0F, 1.0F);
-		
+
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TileEntityBeamReceiverRenderer.receiverTexture);
 		TileEntityBeamReceiverRenderer.receiverModel.renderPart("Main");
 		TileEntityBeamReceiverRenderer.receiverModel.renderPart("Ring");
 
 		GL11.glColor3f(0.6F, 0.3F, 0.0F);
-		
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL11.GL_CULL_FACE);
-        TileEntityBeamReceiverRenderer.receiverModel.renderPart("Receiver");
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glEnable(GL11.GL_CULL_FACE);
-		
+
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		GL11.glDisable(GL11.GL_CULL_FACE);
+		TileEntityBeamReceiverRenderer.receiverModel.renderPart("Receiver");
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		GL11.glEnable(GL11.GL_CULL_FACE);
+
 		GL11.glPopMatrix();
 	}
 
@@ -76,9 +74,9 @@ public class ItemRendererBeamReceiver implements IItemRenderer
 			GL11.glScalef(1.3F, 1.3F, 1.3F);
 		}
 
-//		GL11.glRotatef(30, 1, 0, 0);
-//		GL11.glScalef(-1F, -1F, 1);
-//		GL11.glTranslatef(-0.4F, 0.0F, 0.0F);
+		//		GL11.glRotatef(30, 1, 0, 0);
+		//		GL11.glScalef(-1F, -1F, 1);
+		//		GL11.glTranslatef(-0.4F, 0.0F, 0.0F);
 	}
 
 	/** IItemRenderer implementation **/

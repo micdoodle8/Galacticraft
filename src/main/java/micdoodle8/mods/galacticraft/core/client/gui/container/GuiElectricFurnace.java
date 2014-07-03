@@ -13,17 +13,12 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 @SideOnly(Side.CLIENT)
 public class GuiElectricFurnace extends GuiContainer
 {
 	private static final ResourceLocation electricFurnaceTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/electric_furnace.png");
 
 	private TileEntityElectricFurnace tileEntity;
-
-	private int containerWidth;
-	private int containerHeight;
 
 	public GuiElectricFurnace(InventoryPlayer par1InventoryPlayer, TileEntityElectricFurnace tileEntity)
 	{
@@ -51,8 +46,8 @@ public class GuiElectricFurnace extends GuiContainer
 		}
 
 		this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.status.name") + ": " + displayText, 97, 45, 4210752);
-		this.fontRendererObj.drawString("" + tileEntity.storage.getMaxExtract(), 97, 56, 4210752);
-//		this.fontRendererObj.drawString("Voltage: " + (int) (this.tileEntity.getVoltage() * 1000.0F), 97, 68, 4210752);
+		this.fontRendererObj.drawString("" + this.tileEntity.storage.getMaxExtract(), 97, 56, 4210752);
+		//		this.fontRendererObj.drawString("Voltage: " + (int) (this.tileEntity.getVoltage() * 1000.0F), 97, 68, 4210752);
 		this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 
@@ -66,22 +61,22 @@ public class GuiElectricFurnace extends GuiContainer
 		this.mc.renderEngine.bindTexture(GuiElectricFurnace.electricFurnaceTexture);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-		this.containerWidth = (this.width - this.xSize) / 2;
-		this.containerHeight = (this.height - this.ySize) / 2;
-		this.drawTexturedModalRect(this.containerWidth, this.containerHeight, 0, 0, this.xSize, this.ySize);
+		int containerWidth = (this.width - this.xSize) / 2;
+        int containerHeight = (this.height - this.ySize) / 2;
+		this.drawTexturedModalRect(containerWidth, containerHeight, 0, 0, this.xSize, this.ySize);
 		int scale;
 
 		if (this.tileEntity.processTicks > 0)
 		{
 			scale = (int) ((double) this.tileEntity.processTicks / (double) TileEntityElectricFurnace.PROCESS_TIME_REQUIRED * 23);
-			this.drawTexturedModalRect(this.containerWidth + 78, this.containerHeight + 24, 176, 0, 23 - scale, 15);
+			this.drawTexturedModalRect(containerWidth + 78, containerHeight + 24, 176, 0, 23 - scale, 15);
 		}
 
 		if (this.tileEntity.getEnergyStoredGC() > 0)
 		{
 			scale = this.tileEntity.getScaledElecticalLevel(54);
-			this.drawTexturedModalRect(this.containerWidth + 40, this.containerHeight + 53, 176, 15, scale, 7);
-			this.drawTexturedModalRect(this.containerWidth + 26, this.containerHeight + 52, 176, 22, 11, 10);
+			this.drawTexturedModalRect(containerWidth + 40, containerHeight + 53, 176, 15, scale, 7);
+			this.drawTexturedModalRect(containerWidth + 26, containerHeight + 52, 176, 22, 11, 10);
 		}
 	}
 }

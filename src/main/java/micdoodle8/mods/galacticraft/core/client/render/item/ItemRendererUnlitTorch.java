@@ -5,8 +5,6 @@ import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
-
-
 public class ItemRendererUnlitTorch implements IItemRenderer
 {
 	@Override

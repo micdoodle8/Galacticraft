@@ -12,8 +12,6 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
 
-
-
 public class ItemRendererMeteorChunk implements IItemRenderer
 {
 	private static final ResourceLocation meteorChunkTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/meteorChunk.png");

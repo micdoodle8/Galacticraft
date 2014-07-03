@@ -13,14 +13,7 @@ public class ElectricityDisplay
 	 */
 	public static enum ElectricUnit
 	{
-		AMPERE("Amp", "I"),
-		AMP_HOUR("Amp Hour", "Ah"),
-		VOLTAGE("Volt", "V"),
-		WATT("Watt", "W"),
-		WATT_HOUR("Watt Hour", "Wh"),
-		RESISTANCE("Ohm", "R"),
-		CONDUCTANCE("Siemen", "S"),
-		JOULES("Joule", "J");
+		AMPERE("Amp", "I"), AMP_HOUR("Amp Hour", "Ah"), VOLTAGE("Volt", "V"), WATT("Watt", "W"), WATT_HOUR("Watt Hour", "Wh"), RESISTANCE("Ohm", "R"), CONDUCTANCE("Siemen", "S"), JOULES("Joule", "J");
 
 		public String name;
 		public String symbol;
@@ -40,17 +33,7 @@ public class ElectricityDisplay
 	/** Metric system of measurement. */
 	public static enum MeasurementUnit
 	{
-		MICRO("Micro", "u", 0.000001f),
-		MILLI("Milli", "m", 0.001f),
-		BASE("", "", 1),
-		KILO("Kilo", "k", 1000f),
-		MEGA("Mega", "M", 1000000f),
-		GIGA("Giga", "G", 1000000000f),
-		TERA("Tera", "T", 1000000000000f),
-		PETA("Peta", "P", 1000000000000000f),
-		EXA("Exa", "E", 1000000000000000000f),
-		ZETTA("Zetta", "Z", 1000000000000000000000f),
-		YOTTA("Yotta", "Y", 1000000000000000000000000f);
+		MICRO("Micro", "u", 0.000001f), MILLI("Milli", "m", 0.001f), BASE("", "", 1), KILO("Kilo", "k", 1000f), MEGA("Mega", "M", 1000000f), GIGA("Giga", "G", 1000000000f), TERA("Tera", "T", 1000000000000f), PETA("Peta", "P", 1000000000000000f), EXA("Exa", "E", 1000000000000000000f), ZETTA("Zetta", "Z", 1000000000000000000000f), YOTTA("Yotta", "Y", 1000000000000000000000000f);
 
 		/** long name for the unit */
 		public String name;
@@ -149,7 +132,7 @@ public class ElectricityDisplay
 					return prefix + ElectricityDisplay.roundDecimals(lowerMeasure.process(value), decimalPlaces) + " " + lowerMeasure.getName(isShort) + unitName;
 				}
 				MeasurementUnit upperMeasure = MeasurementUnit.values()[i + 1];
-				if ((lowerMeasure.isAbove(value) && upperMeasure.isBellow(value)) || lowerMeasure.value == value)
+				if (lowerMeasure.isAbove(value) && upperMeasure.isBellow(value) || lowerMeasure.value == value)
 				{
 					return prefix + ElectricityDisplay.roundDecimals(lowerMeasure.process(value), decimalPlaces) + " " + lowerMeasure.getName(isShort) + unitName;
 				}

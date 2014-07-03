@@ -24,8 +24,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class BlockOxygenPipe extends BlockTransmitter implements ITileEntityProvider
 {
 	private IIcon[] pipeIcons = new IIcon[16];
@@ -68,7 +66,7 @@ public class BlockOxygenPipe extends BlockTransmitter implements ITileEntityProv
 	@Override
 	public CreativeTabs getCreativeTabToDisplayOn()
 	{
-		return GalacticraftCore.galacticraftTab;
+		return GalacticraftCore.galacticraftBlocksTab;
 	}
 
 	@Override
@@ -123,7 +121,7 @@ public class BlockOxygenPipe extends BlockTransmitter implements ITileEntityProv
 						par1World.spawnEntityInWorld(entityitem);
 					}
 
-//					GCCorePacketManager.sendPacketToClients(GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, tileEntity, tileEntity.getColor(), (byte) -1)); TODO Fix pipe color
+					//					GCCorePacketManager.sendPacketToClients(GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, tileEntity, tileEntity.getColor(), (byte) -1)); TODO Fix pipe color
 
 					BlockVec3 tileVec = new BlockVec3(tileEntity);
 					for (final ForgeDirection dir : ForgeDirection.values())

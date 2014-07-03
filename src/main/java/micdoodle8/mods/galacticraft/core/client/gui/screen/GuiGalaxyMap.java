@@ -32,14 +32,12 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 @SideOnly(Side.CLIENT)
 public class GuiGalaxyMap extends GuiStarBackground
 {
 	private static final ResourceLocation guiTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/gui.png");
-    private static final ResourceLocation vanillaSun = new ResourceLocation("textures/environment/sun.png");
-	
+	private static final ResourceLocation vanillaSun = new ResourceLocation("textures/environment/sun.png");
+
 	private static int guiMapMinX;
 
 	private static int guiMapMinY;
@@ -67,17 +65,9 @@ public class GuiGalaxyMap extends GuiStarBackground
 
 	private CelestialBody selectedPlanet = null;
 
-	private String[] listOfDimensions;
-
 	public GuiGalaxyMap(EntityPlayer player)
 	{
 		this.player = player;
-	}
-
-	public GuiGalaxyMap(EntityPlayer player, String[] listOfDimensions)
-	{
-		this.player = player;
-		this.listOfDimensions = listOfDimensions;
 	}
 
 	@Override
@@ -96,24 +86,8 @@ public class GuiGalaxyMap extends GuiStarBackground
 			this.mc.displayGuiScreen((GuiScreen) null);
 			this.mc.setIngameFocus();
 		}
-		else if (par2 == Keyboard.KEY_ESCAPE)
-		{
-			if (this.listOfDimensions != null)
-			{
-				FMLClientHandler.instance().getClient().currentScreen = null;
-				FMLClientHandler.instance().getClient().displayGuiScreen(new GuiChoosePlanet(this.player, this.listOfDimensions));
-				this.mc.inGameHasFocus = true;
-				this.mc.mouseHelper.ungrabMouseCursor();
-			}
-			else
-			{
-				super.keyTyped(par1, par2);
-			}
-		}
-		else
-		{
-			super.keyTyped(par1, par2);
-		}
+
+        super.keyTyped(par1, par2);
 	}
 
 	@Override
@@ -296,7 +270,7 @@ public class GuiGalaxyMap extends GuiStarBackground
 		int var26;
 
 		this.drawBlackBackground();
-		this.renderSkybox(1);
+		this.renderSkybox();
 
 		this.zoom(this.zoom);
 
@@ -305,15 +279,15 @@ public class GuiGalaxyMap extends GuiStarBackground
 		int var41;
 
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		
-		this.renderSun(488-var4-var4, -488-var5-var5);
-		
+
+		this.renderSun(488 - var4 - var4, -488 - var5 - var5);
+
 		for (Planet planet : GalaxyRegistry.getRegisteredPlanets().values())
 		{
-			if (planet.getParentGalaxy() != null)
+			if (planet.getParentSolarSystem() != null)
 			{
-				final int galaxyCenterX = (int) (-var4 + planet.getParentGalaxy().getMapPosition().x * 10000);
-				final int galaxyCenterY = (int) (-var5 + planet.getParentGalaxy().getMapPosition().y * 10000);
+				final int galaxyCenterX = (int) (-var4 + planet.getParentSolarSystem().getMapPosition().x * 10000);
+				final int galaxyCenterY = (int) (-var5 + planet.getParentSolarSystem().getMapPosition().y * 10000);
 
 				this.drawCircles(planet, galaxyCenterX + galaxyCenterX, galaxyCenterY + galaxyCenterY);
 
@@ -407,9 +381,9 @@ public class GuiGalaxyMap extends GuiStarBackground
 
 			this.checkSelection(cBody, centerX + var42b, centerY + var41b);
 
-			if (cBody.getPlanetIcon() != null)
+			if (cBody.getBodyIcon() != null)
 			{
-				this.mc.renderEngine.bindTexture(cBody.getPlanetIcon());
+				this.mc.renderEngine.bindTexture(cBody.getBodyIcon());
 
 				GL11.glDisable(GL11.GL_BLEND);
 				GL11.glEnable(GL11.GL_DEPTH_TEST);
@@ -453,7 +427,7 @@ public class GuiGalaxyMap extends GuiStarBackground
 
 	public void renderSun(int x, int y)
 	{
-		this.mc.renderEngine.bindTexture(vanillaSun);
+		this.mc.renderEngine.bindTexture(GuiGalaxyMap.vanillaSun);
 
 		GL11.glDisable(GL11.GL_BLEND);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
@@ -463,7 +437,7 @@ public class GuiGalaxyMap extends GuiStarBackground
 
 		GuiGalaxyMap.renderPlanet(0, x, y, (float) (1000.0F + 1 / Math.pow(this.zoom, -2)), Tessellator.instance);
 	}
-	
+
 	public static void renderPlanet(int index, int x, int y, float slotHeight, Tessellator tessellator)
 	{
 		tessellator.startDrawingQuads();
@@ -629,8 +603,7 @@ public class GuiGalaxyMap extends GuiStarBackground
 			GL11.glTranslatef(coord1 - mX / (200F / this.zoom), coord2 - mY / (200F / this.zoom), coord3 + 0.5F);
 			final float i2 = MathHelper.clamp_float(7 * (this.zoom / 1.1F), 3F, 9F);
 			GL11.glScalef(i2 / 3F, i2 / 3F, i2 / 3F);
-			return;
-		}
+        }
 	}
 
 	// public float getLargestOrbit(IGalaxy galaxy)

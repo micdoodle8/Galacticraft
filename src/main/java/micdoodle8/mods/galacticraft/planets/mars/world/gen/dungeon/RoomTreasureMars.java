@@ -13,8 +13,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraftforge.common.util.ForgeDirection;
 
-
-
 public class RoomTreasureMars extends DungeonRoom
 {
 	int sizeX;

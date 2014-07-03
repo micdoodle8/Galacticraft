@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.planets.mars.blocks;
 import java.util.List;
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntitySlimelingEgg;
@@ -22,8 +23,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
-
 
 public class BlockSlimelingEgg extends Block implements ITileEntityProvider
 {
@@ -97,7 +96,7 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider
 
 		if (currentStack != null && currentStack.getItem() instanceof ItemPickaxe)
 		{
-			par2EntityPlayer.addStat(StatList.mineBlockStatArray[getIdFromBlock(this)], 1);
+			par2EntityPlayer.addStat(StatList.mineBlockStatArray[Block.getIdFromBlock(this)], 1);
 			par2EntityPlayer.addExhaustion(0.025F);
 			this.dropBlockAsItem(world, x, y, z, par6 % 3, 0);
 		}
@@ -116,10 +115,11 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider
 		return GalacticraftPlanets.getBlockRenderID(this);
 	}
 
+	@SideOnly(Side.CLIENT)
 	@Override
 	public CreativeTabs getCreativeTabToDisplayOn()
 	{
-		return MarsModule.galacticraftMarsTab;
+		return GalacticraftCore.galacticraftBlocksTab;
 	}
 
 	@Override

@@ -18,8 +18,6 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-
-
 public class GuiTerraformer extends GuiContainer implements ICheckBoxCallback
 {
 	private static final ResourceLocation terraformerGui = new ResourceLocation(MarsModule.TEXTURE_DOMAIN, "textures/gui/terraformer.png");
@@ -97,8 +95,8 @@ public class GuiTerraformer extends GuiContainer implements ICheckBoxCallback
 		this.fontRendererObj.drawString(displayString, this.xSize / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, 5, 4210752);
 		this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, 144, 4210752);
 		this.fontRendererObj.drawSplitString(this.getStatus(), 105, 24, this.xSize - 105, 4210752);
-//		this.fontRendererObj.drawString(ElectricityDisplay.getDisplay(this.terraformer.ueWattsPerTick * 20, ElectricUnit.WATT), 105, 56, 4210752);
-//		this.fontRendererObj.drawString(ElectricityDisplay.getDisplay(this.terraformer.getVoltage(), ElectricUnit.VOLTAGE), 105, 68, 4210752);
+		//		this.fontRendererObj.drawString(ElectricityDisplay.getDisplay(this.terraformer.ueWattsPerTick * 20, ElectricUnit.WATT), 105, 56, 4210752);
+		//		this.fontRendererObj.drawString(ElectricityDisplay.getDisplay(this.terraformer.getVoltage(), ElectricUnit.VOLTAGE), 105, 68, 4210752);
 	}
 
 	private String getStatus()
@@ -190,6 +188,6 @@ public class GuiTerraformer extends GuiContainer implements ICheckBoxCallback
 	@Override
 	public void onIntruderInteraction()
 	{
-		;
+
 	}
 }

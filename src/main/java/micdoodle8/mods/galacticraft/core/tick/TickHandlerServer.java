@@ -32,8 +32,6 @@ import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.WorldTickEvent;
 
-
-
 public class TickHandlerServer
 {
 	private static Map<Integer, CopyOnWriteArrayList<ScheduledBlockChange>> scheduledBlockChanges = new ConcurrentHashMap<Integer, CopyOnWriteArrayList<ScheduledBlockChange>>();
@@ -43,7 +41,7 @@ public class TickHandlerServer
 	private static Map<Integer, List<Footprint>> footprintList = new HashMap<Integer, List<Footprint>>();
 	public static WorldDataSpaceRaces spaceRaceData = null;
 	private static long tickCount;
-	
+
 	public static void restart()
 	{
 		TickHandlerServer.scheduledBlockChanges.clear();
@@ -54,7 +52,7 @@ public class TickHandlerServer
 		TickHandlerServer.spaceRaceData = null;
 		TickHandlerServer.tickCount = 0L;
 	}
-	
+
 	public static void addFootprint(Footprint print, int dimID)
 	{
 		List<Footprint> footprints = TickHandlerServer.footprintList.get(dimID);
@@ -65,9 +63,9 @@ public class TickHandlerServer
 		}
 
 		footprints.add(print);
-		footprintList.put(dimID, footprints);
+		TickHandlerServer.footprintList.put(dimID, footprints);
 	}
-	
+
 	public static void scheduleNewBlockChange(int dimID, ScheduledBlockChange change)
 	{
 		CopyOnWriteArrayList<ScheduledBlockChange> changeList = TickHandlerServer.scheduledBlockChanges.get(dimID);
@@ -93,7 +91,7 @@ public class TickHandlerServer
 		changeList.addAll(changeAdd);
 		TickHandlerServer.scheduledBlockChanges.put(dimID, changeList);
 	}
-	
+
 	public static void scheduleNewTorchUpdate(int dimID, List<BlockVec3> torches)
 	{
 		CopyOnWriteArrayList<BlockVec3> updateList = TickHandlerServer.scheduledTorchUpdates.get(dimID);
@@ -128,7 +126,10 @@ public class TickHandlerServer
 		{
 			for (ScheduledBlockChange change : changeList)
 			{
-				if (test.equals(change.getChangePosition())) return true;
+				if (test.equals(change.getChangePosition()))
+				{
+					return true;
+				}
 			}
 		}
 		return false;
@@ -138,7 +139,7 @@ public class TickHandlerServer
 	{
 		TickHandlerServer.networkTicks.add(grid);
 	}
-	
+
 	public static void removeNetworkTick(UniversalNetwork grid)
 	{
 		TickHandlerServer.networkTicks.remove(grid);
@@ -149,27 +150,27 @@ public class TickHandlerServer
 	{
 		if (event.phase == Phase.START)
 		{
-			if (spaceRaceData == null)
+			if (TickHandlerServer.spaceRaceData == null)
 			{
 				World world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(0);
-				spaceRaceData = (WorldDataSpaceRaces) world.mapStorage.loadData(WorldDataSpaceRaces.class, WorldDataSpaceRaces.saveDataID);
+				TickHandlerServer.spaceRaceData = (WorldDataSpaceRaces) world.mapStorage.loadData(WorldDataSpaceRaces.class, WorldDataSpaceRaces.saveDataID);
 
-		        if (spaceRaceData == null)
-		        {
-		        	spaceRaceData = new WorldDataSpaceRaces(WorldDataSpaceRaces.saveDataID);
-		            world.mapStorage.setData(WorldDataSpaceRaces.saveDataID, this.spaceRaceData);
-		        }
+				if (TickHandlerServer.spaceRaceData == null)
+				{
+					TickHandlerServer.spaceRaceData = new WorldDataSpaceRaces(WorldDataSpaceRaces.saveDataID);
+					world.mapStorage.setData(WorldDataSpaceRaces.saveDataID, TickHandlerServer.spaceRaceData);
+				}
 			}
 
 			SpaceRaceManager.tick();
 
-			if (tickCount % 100 == 0)
+			if (TickHandlerServer.tickCount % 100 == 0)
 			{
 				WorldServer[] worlds = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers;
 
 				for (int i = 0; i < worlds.length; i++)
 				{
-					List<Footprint> footprints = footprintList.get(worlds[i].provider.dimensionId);
+					List<Footprint> footprints = TickHandlerServer.footprintList.get(worlds[i].provider.dimensionId);
 
 					if (footprints != null)
 					{
@@ -186,20 +187,20 @@ public class TickHandlerServer
 						}
 
 						footprints.removeAll(toRemove);
-						footprintList.put(worlds[i].provider.dimensionId, footprints);	
+						TickHandlerServer.footprintList.put(worlds[i].provider.dimensionId, footprints);
 
 						GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_FOOTPRINT_LIST, new Object[] { footprints.toArray(new Footprint[footprints.size()]) }), worlds[i].provider.dimensionId);
 					}
 				}
 			}
 
-			tickCount++;
+			TickHandlerServer.tickCount++;
 
-			if (tickCount >= Long.MAX_VALUE)
+			if (TickHandlerServer.tickCount >= Long.MAX_VALUE)
 			{
-				tickCount = 0;
+				TickHandlerServer.tickCount = 0;
 			}
-			
+
 			UniversalNetwork.tickCount++;
 		}
 		else if (event.phase == Phase.END)
@@ -209,13 +210,16 @@ public class TickHandlerServer
 			{
 				LinkedList<UniversalNetwork> pass = new LinkedList();
 				pass.addAll(TickHandlerServer.networkTicks);
-				TickHandlerServer.networkTicks.clear();		
+				TickHandlerServer.networkTicks.clear();
 				for (UniversalNetwork grid : pass)
 				{
 					grid.tickEnd();
 				}
 
-				if (--maxPasses<=0) break;
+				if (--maxPasses <= 0)
+				{
+					break;
+				}
 			}
 		}
 	}
@@ -248,7 +252,7 @@ public class TickHandlerServer
 			}
 
 			CopyOnWriteArrayList<BlockVec3> torchList = TickHandlerServer.scheduledTorchUpdates.get(world.provider.dimensionId);
-			
+
 			if (torchList != null && !torchList.isEmpty())
 			{
 				for (BlockVec3 torch : torchList)
@@ -256,9 +260,13 @@ public class TickHandlerServer
 					if (torch != null)
 					{
 						if (world.getBlock(torch.x, torch.y, torch.z) == GCBlocks.unlitTorch)
+						{
 							world.scheduleBlockUpdateWithPriority(torch.x, torch.y, torch.z, GCBlocks.unlitTorch, 2 + world.rand.nextInt(30), 0);
+						}
 						else if (world.getBlock(torch.x, torch.y, torch.z) == GCBlocks.unlitTorchLit)
+						{
 							world.scheduleBlockUpdateWithPriority(torch.x, torch.y, torch.z, GCBlocks.unlitTorchLit, 2 + world.rand.nextInt(30), 0);
+						}
 					}
 				}
 
@@ -297,20 +305,23 @@ public class TickHandlerServer
 
 			List<BlockVec3> edgesList = TickHandlerServer.edgeChecks.get(world.provider.dimensionId);
 			final HashSet<BlockVec3> checkedThisTick = new HashSet();
-			
+
 			if (edgesList != null && !edgesList.isEmpty())
 			{
 				for (BlockVec3 edgeBlock : edgesList)
 				{
-					if (edgeBlock != null && !checkedThisTick.contains(edgeBlock)) 
+					if (edgeBlock != null && !checkedThisTick.contains(edgeBlock))
 					{
-						if (TickHandlerServer.scheduledForChange(world.provider.dimensionId, edgeBlock)) continue;
+						if (TickHandlerServer.scheduledForChange(world.provider.dimensionId, edgeBlock))
+						{
+							continue;
+						}
 
 						ThreadFindSeal done = new ThreadFindSeal(world, edgeBlock, 2000, new ArrayList<TileEntityOxygenSealer>());
 						checkedThisTick.addAll(done.checked);
 					}
 				}
-	
+
 				edgesList.clear();
 				TickHandlerServer.edgeChecks.remove(world.provider.dimensionId);
 			}

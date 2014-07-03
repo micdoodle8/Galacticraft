@@ -7,8 +7,6 @@ import net.minecraft.util.MathHelper;
 
 import org.lwjgl.opengl.GL11;
 
-
-
 public class ModelEvolvedZombie extends ModelBiped
 {
 	ModelRenderer leftOxygenTank;
@@ -189,74 +187,74 @@ public class ModelEvolvedZombie extends ModelBiped
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
-//		super.render(entity, f, f1, f2, f3, f4, f5);
+		//		super.render(entity, f, f1, f2, f3, f4, f5);
 		this.setRotationAngles(f, f1, f2, f3, f4, f5);
-		
-        if (this.isChild)
-        {
-            float f6 = 2.0F;
-            GL11.glPushMatrix();
-            GL11.glScalef(1.5F / f6, 1.5F / f6, 1.5F / f6);
-            GL11.glTranslatef(0.0F, 16.0F * f5, 0.0F);
-            this.bipedHead.render(f5);
-    		this.oxygenMask.render(f5);
-            GL11.glPopMatrix();
-            GL11.glPushMatrix();
-            GL11.glScalef(1.0F / f6, 1.0F / f6, 1.0F / f6);
-            GL11.glTranslatef(0.0F, 24.0F * f5, 0.0F);
-    		this.leftOxygenTank.render(f5);
-    		this.rightOxygenTank.render(f5);
-    		this.tubeRight2.render(f5);
-    		this.tubeLeft1.render(f5);
-    		this.tubeRight3.render(f5);
-    		this.tubeRight4.render(f5);
-    		this.tubeRight5.render(f5);
-    		this.tubeLeft6.render(f5);
-    		this.tubeRight7.render(f5);
-    		this.tubeRight1.render(f5);
-    		this.tubeLeft2.render(f5);
-    		this.tubeLeft3.render(f5);
-    		this.tubeLeft4.render(f5);
-    		this.tubeLeft5.render(f5);
-    		this.tubeLeft7.render(f5);
-    		this.tubeRight6.render(f5);
-    		this.tubeLeft8.render(f5);
-            this.bipedBody.render(f5);
-            this.bipedRightArm.render(f5);
-            this.bipedLeftArm.render(f5);
-            this.bipedRightLeg.render(f5);
-            this.bipedLeftLeg.render(f5);
-            this.bipedHeadwear.render(f5);
-            GL11.glPopMatrix();
-        }
-        else
-        {
-    		this.leftOxygenTank.render(f5);
-    		this.rightOxygenTank.render(f5);
-    		this.tubeRight2.render(f5);
-    		this.tubeLeft1.render(f5);
-    		this.tubeRight3.render(f5);
-    		this.tubeRight4.render(f5);
-    		this.tubeRight5.render(f5);
-    		this.tubeLeft6.render(f5);
-    		this.tubeRight7.render(f5);
-    		this.tubeRight1.render(f5);
-    		this.tubeLeft2.render(f5);
-    		this.tubeLeft3.render(f5);
-    		this.tubeLeft4.render(f5);
-    		this.tubeLeft5.render(f5);
-    		this.tubeLeft7.render(f5);
-    		this.tubeRight6.render(f5);
-    		this.tubeLeft8.render(f5);
-    		this.oxygenMask.render(f5);
-    		this.bipedHead.render(f5);
-    		this.bipedBody.render(f5);
-    		this.bipedRightArm.render(f5);
-    		this.bipedLeftArm.render(f5);
-    		this.bipedRightLeg.render(f5);
-    		this.bipedLeftLeg.render(f5);
-    		this.bipedHeadwear.render(f5);
-        }
+
+		if (this.isChild)
+		{
+			float f6 = 2.0F;
+			GL11.glPushMatrix();
+			GL11.glScalef(1.5F / f6, 1.5F / f6, 1.5F / f6);
+			GL11.glTranslatef(0.0F, 16.0F * f5, 0.0F);
+			this.bipedHead.render(f5);
+			this.oxygenMask.render(f5);
+			GL11.glPopMatrix();
+			GL11.glPushMatrix();
+			GL11.glScalef(1.0F / f6, 1.0F / f6, 1.0F / f6);
+			GL11.glTranslatef(0.0F, 24.0F * f5, 0.0F);
+			this.leftOxygenTank.render(f5);
+			this.rightOxygenTank.render(f5);
+			this.tubeRight2.render(f5);
+			this.tubeLeft1.render(f5);
+			this.tubeRight3.render(f5);
+			this.tubeRight4.render(f5);
+			this.tubeRight5.render(f5);
+			this.tubeLeft6.render(f5);
+			this.tubeRight7.render(f5);
+			this.tubeRight1.render(f5);
+			this.tubeLeft2.render(f5);
+			this.tubeLeft3.render(f5);
+			this.tubeLeft4.render(f5);
+			this.tubeLeft5.render(f5);
+			this.tubeLeft7.render(f5);
+			this.tubeRight6.render(f5);
+			this.tubeLeft8.render(f5);
+			this.bipedBody.render(f5);
+			this.bipedRightArm.render(f5);
+			this.bipedLeftArm.render(f5);
+			this.bipedRightLeg.render(f5);
+			this.bipedLeftLeg.render(f5);
+			this.bipedHeadwear.render(f5);
+			GL11.glPopMatrix();
+		}
+		else
+		{
+			this.leftOxygenTank.render(f5);
+			this.rightOxygenTank.render(f5);
+			this.tubeRight2.render(f5);
+			this.tubeLeft1.render(f5);
+			this.tubeRight3.render(f5);
+			this.tubeRight4.render(f5);
+			this.tubeRight5.render(f5);
+			this.tubeLeft6.render(f5);
+			this.tubeRight7.render(f5);
+			this.tubeRight1.render(f5);
+			this.tubeLeft2.render(f5);
+			this.tubeLeft3.render(f5);
+			this.tubeLeft4.render(f5);
+			this.tubeLeft5.render(f5);
+			this.tubeLeft7.render(f5);
+			this.tubeRight6.render(f5);
+			this.tubeLeft8.render(f5);
+			this.oxygenMask.render(f5);
+			this.bipedHead.render(f5);
+			this.bipedBody.render(f5);
+			this.bipedRightArm.render(f5);
+			this.bipedLeftArm.render(f5);
+			this.bipedRightLeg.render(f5);
+			this.bipedLeftLeg.render(f5);
+			this.bipedHeadwear.render(f5);
+		}
 	}
 
 	private void setRotation(ModelRenderer model, float x, float y, float z)

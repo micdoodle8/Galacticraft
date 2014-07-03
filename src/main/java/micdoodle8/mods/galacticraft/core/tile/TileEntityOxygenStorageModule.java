@@ -11,8 +11,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
-
-
 public class TileEntityOxygenStorageModule extends TileEntityOxygen implements IPacketReceiver
 {
 	public final Set<EntityPlayer> playersUsing = new HashSet<EntityPlayer>();

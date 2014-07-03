@@ -28,7 +28,7 @@ public class ItemBatteryInfinite extends Item implements IItemElectric
 	@Override
 	public CreativeTabs getCreativeTab()
 	{
-		return GalacticraftCore.galacticraftTab;
+		return GalacticraftCore.galacticraftItemsTab;
 	}
 
 	@Override

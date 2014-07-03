@@ -82,19 +82,19 @@ public class NetworkConfigHandler
 
 	public static void initGas()
 	{
-//		if (NetworkConfigHandler.isMekanismLoaded())
-//		{
-//			Gas oxygen = GasRegistry.getGas("oxygen");
-//
-//			if (oxygen == null)
-//			{
-//				NetworkConfigHandler.gasOxygen = GasRegistry.register(new Gas("oxygen")).registerFluid();
-//			}
-//			else
-//			{
-//				NetworkConfigHandler.gasOxygen = oxygen;
-//			}
-//		} TODO
+		//		if (NetworkConfigHandler.isMekanismLoaded())
+		//		{
+		//			Gas oxygen = GasRegistry.getGas("oxygen");
+		//
+		//			if (oxygen == null)
+		//			{
+		//				NetworkConfigHandler.gasOxygen = GasRegistry.register(new Gas("oxygen")).registerFluid();
+		//			}
+		//			else
+		//			{
+		//				NetworkConfigHandler.gasOxygen = oxygen;
+		//			}
+		//		} TODO
 	}
 
 	/** Checks using the FML loader too see if IC2 is loaded */

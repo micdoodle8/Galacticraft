@@ -20,13 +20,15 @@ import net.minecraftforge.common.IExtendedEntityProperties;
 public class GCPlayerStats implements IExtendedEntityProperties
 {
 	public static final String GC_PLAYER_PROP = "GCPlayerStats";
-	
+
 	public WeakReference<GCEntityPlayerMP> player;
-	
+
 	public InventoryExtended extendedInventory = new InventoryExtended();
 
 	public int airRemaining;
 	public int airRemaining2;
+
+	public int thermalLevel;
 
 	public int damageCounter;
 
@@ -58,9 +60,21 @@ public class GCPlayerStats implements IExtendedEntityProperties
 	public ItemStack tankInSlot2;
 	public ItemStack lastTankInSlot2;
 
+	public ItemStack thermalHelmetInSlot;
+	public ItemStack lastThermalHelmetInSlot;
+
+	public ItemStack thermalChestplateInSlot;
+	public ItemStack lastThermalChestplateInSlot;
+
+	public ItemStack thermalLeggingsInSlot;
+	public ItemStack lastThermalLeggingsInSlot;
+
+	public ItemStack thermalBootsInSlot;
+	public ItemStack lastThermalBootsInSlot;
+
 	public int launchAttempts = 0;
-    
-    public int spaceRaceInviteTeamID;
+
+	public int spaceRaceInviteTeamID;
 
 	public boolean usingPlanetSelectionGui;
 
@@ -94,7 +108,7 @@ public class GCPlayerStats implements IExtendedEntityProperties
 	public int cryogenicChamberCooldown;
 
 	public boolean receivedSoundWarning;
-	
+
 	public GCPlayerStats(GCEntityPlayerMP player)
 	{
 		this.player = new WeakReference<GCEntityPlayerMP>(player);
@@ -113,6 +127,7 @@ public class GCPlayerStats implements IExtendedEntityProperties
 		nbt.setDouble("coordsTeleportedFromX", this.coordsTeleportedFromX);
 		nbt.setDouble("coordsTeleportedFromZ", this.coordsTeleportedFromZ);
 		nbt.setInteger("spaceStationDimensionID", this.spaceStationDimensionID);
+		nbt.setInteger("thermalLevel", this.thermalLevel);
 
 		Collections.sort(this.unlockedSchematics);
 
@@ -149,9 +164,13 @@ public class GCPlayerStats implements IExtendedEntityProperties
 		nbt.setTag("RocketItems", var2);
 		final NBTTagCompound var4 = new NBTTagCompound();
 		if (this.launchpadStack != null)
+		{
 			nbt.setTag("LaunchpadStack", this.launchpadStack.writeToNBT(var4));
-		else 
-			nbt.setTag("LaunchpadStack", var4); 
+		}
+		else
+		{
+			nbt.setTag("LaunchpadStack", var4);
+		}
 
 		nbt.setInteger("CryogenicChamberCooldown", this.cryogenicChamberCooldown);
 		nbt.setBoolean("ReceivedSoundWarning", this.receivedSoundWarning);
@@ -163,6 +182,7 @@ public class GCPlayerStats implements IExtendedEntityProperties
 		this.airRemaining = nbt.getInteger("playerAirRemaining");
 		this.damageCounter = nbt.getInteger("damageCounter");
 		this.oxygenSetupValid = this.lastOxygenSetupValid = nbt.getBoolean("OxygenSetupValid");
+		this.thermalLevel = nbt.getInteger("thermalLevel");
 
 		// Backwards compatibility
 		NBTTagList nbttaglist = nbt.getTagList("Inventory", 10);
@@ -200,42 +220,24 @@ public class GCPlayerStats implements IExtendedEntityProperties
 			this.openPlanetSelectionGuiCooldown = 20;
 		}
 
-		final NBTTagList var23 = nbt.getTagList("RocketItems", 10);
-		int length = nbt.getInteger("rocketStacksLength");
-		boolean oldInventory = false;
+        if (nbt.hasKey("RocketItems") && nbt.hasKey("rocketStacksLength"))
+        {
+            final NBTTagList var23 = nbt.getTagList("RocketItems", 10);
+            int length = nbt.getInteger("rocketStacksLength");
 
-		// Backwards Compatibility:
-		if (length % 9 == 3)
-		{
-			oldInventory = true;
-			length -= 1;
-		}
+            this.rocketStacks = new ItemStack[length];
 
-		this.rocketStacks = new ItemStack[length];
+            for (int var3 = 0; var3 < var23.tagCount(); ++var3)
+            {
+                final NBTTagCompound var4 = var23.getCompoundTagAt(var3);
+                final int var5 = var4.getByte("Slot") & 255;
 
-		for (int var3 = 0; var3 < var23.tagCount(); ++var3)
-		{
-			final NBTTagCompound var4 = var23.getCompoundTagAt(var3);
-			final int var5 = var4.getByte("Slot") & 255;
-
-			if (var5 >= 0 && var5 < this.rocketStacks.length)
-			{
-				this.rocketStacks[var5] = ItemStack.loadItemStackFromNBT(var4);
-			}
-
-			if (oldInventory)
-			{
-				if (var5 == this.rocketStacks.length - 1)
-				{
-					this.rocketStacks[var5] = null;
-				}
-
-				if (var5 == this.rocketStacks.length)
-				{
-					this.rocketStacks[var5 - 1] = ItemStack.loadItemStackFromNBT(var4);
-				}
-			}
-		}
+                if (var5 >= 0 && var5 < this.rocketStacks.length)
+                {
+                    this.rocketStacks[var5] = ItemStack.loadItemStackFromNBT(var4);
+                }
+            }
+        }
 
 		this.unlockedSchematics = new ArrayList<ISchematicPage>();
 
@@ -260,11 +262,16 @@ public class GCPlayerStats implements IExtendedEntityProperties
 		if (nbt.hasKey("LaunchpadStack"))
 		{
 			this.launchpadStack = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("LaunchpadStack"));
-			if (this.launchpadStack != null && this.launchpadStack.stackSize == 0) this.launchpadStack = null;
+			if (this.launchpadStack != null && this.launchpadStack.stackSize == 0)
+			{
+				this.launchpadStack = null;
+			}
 		}
 		else
+		{
 			// for backwards compatibility with saves which don't have this tag - players can't lose launchpads
 			this.launchpadStack = new ItemStack(GCBlocks.landingPad, 9, 0);
+		}
 
 	}
 
@@ -272,15 +279,15 @@ public class GCPlayerStats implements IExtendedEntityProperties
 	public void init(Entity entity, World world)
 	{
 	}
-	
-	public static final void register(GCEntityPlayerMP player)
+
+	public static void register(GCEntityPlayerMP player)
 	{
-		player.registerExtendedProperties(GC_PLAYER_PROP, new GCPlayerStats(player));
+		player.registerExtendedProperties(GCPlayerStats.GC_PLAYER_PROP, new GCPlayerStats(player));
 	}
-	
-	public static final GCPlayerStats get(GCEntityPlayerMP player)
+
+	public static GCPlayerStats get(GCEntityPlayerMP player)
 	{
-		return (GCPlayerStats) player.getExtendedProperties(GC_PLAYER_PROP);
+		return (GCPlayerStats) player.getExtendedProperties(GCPlayerStats.GC_PLAYER_PROP);
 	}
 
 	public void copyFrom(GCPlayerStats oldData, boolean keepInv)

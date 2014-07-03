@@ -16,8 +16,6 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 @SideOnly(Side.CLIENT)
 public class TileEntityShortRangeTelepadRenderer extends TileEntitySpecialRenderer
 {
@@ -26,21 +24,21 @@ public class TileEntityShortRangeTelepadRenderer extends TileEntitySpecialRender
 
 	public TileEntityShortRangeTelepadRenderer()
 	{
-		this.telepadModel = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/teleporter.obj"));
+		TileEntityShortRangeTelepadRenderer.telepadModel = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/teleporter.obj"));
 	}
 
 	public void renderModelAt(TileEntityShortRangeTelepad tileEntity, double d, double d1, double d2, float f)
 	{
 		// Texture file
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TileEntityShortRangeTelepadRenderer.telepadTexture);
-		
+
 		Tessellator tess = Tessellator.instance;
-		
+
 		GL11.glPushMatrix();
-		
-		GL11.glTranslatef((float) d + 0.5F, (float) d1, (float) d2 + 0.5F);		
+
+		GL11.glTranslatef((float) d + 0.5F, (float) d1, (float) d2 + 0.5F);
 		GL11.glScalef(1.0F, 1.01F, 1.0F);
-		telepadModel.renderAll();
+		TileEntityShortRangeTelepadRenderer.telepadModel.renderAll();
 
 		GL11.glPopMatrix();
 	}

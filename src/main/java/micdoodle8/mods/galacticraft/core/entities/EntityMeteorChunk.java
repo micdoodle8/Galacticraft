@@ -25,8 +25,6 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class EntityMeteorChunk extends Entity implements IProjectile
 {
 	private int xTile = -1;
@@ -34,7 +32,6 @@ public class EntityMeteorChunk extends Entity implements IProjectile
 	private int zTile = -1;
 	private Block inTile;
 	private int inData;
-	private double damage = 1.6D;
 
 	public int canBePickedUp;
 	public Entity shootingEntity;
@@ -283,13 +280,14 @@ public class EntityMeteorChunk extends Entity implements IProjectile
 
 			float f2;
 			float f3;
+            double damage = 1.6D;
 
 			if (movingobjectposition != null)
 			{
 				if (movingobjectposition.entityHit != null)
 				{
 					f2 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
-					int i1 = MathHelper.ceiling_double_int(f2 * this.damage);
+					int i1 = MathHelper.ceiling_double_int(f2 * damage);
 
 					DamageSource damagesource = null;
 

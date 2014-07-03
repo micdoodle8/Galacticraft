@@ -14,6 +14,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -48,8 +49,6 @@ import net.minecraftforge.common.ChestGenHooks;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
-
 
 public class EntitySkeletonBoss extends EntityMob implements IEntityBreathable, IBossDisplayData, IRangedAttackMob, IBoss
 {
@@ -128,7 +127,6 @@ public class EntitySkeletonBoss extends EntityMob implements IEntityBreathable, 
 	@Override
 	public void knockBack(Entity par1Entity, float par2, double par3, double par5)
 	{
-		;
 	}
 
 	@Override
@@ -381,7 +379,7 @@ public class EntitySkeletonBoss extends EntityMob implements IEntityBreathable, 
 
 				for (EntityPlayer p : entitiesWithin2)
 				{
-					p.addChatMessage(new ChatComponentText("Boss despawned, don't leave the boss room while fighting! Re-enter room to respawn boss."));
+					p.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.skeletonBoss.message")));
 				}
 
 				this.setDead();

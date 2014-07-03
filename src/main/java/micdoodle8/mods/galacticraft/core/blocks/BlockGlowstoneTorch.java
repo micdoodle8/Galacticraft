@@ -17,8 +17,6 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-
-
 public class BlockGlowstoneTorch extends Block
 {
 	protected BlockGlowstoneTorch(String assetName)
@@ -29,7 +27,7 @@ public class BlockGlowstoneTorch extends Block
 		this.setBlockName(assetName);
 		this.setLightLevel(0.85F);
 	}
-	
+
 	private static boolean isBlockSolidOnSide(World world, int x, int y, int z, ForgeDirection direction, boolean nope)
 	{
 		return world.getBlock(x, y, z).isSideSolid(world, x, y, z, direction);
@@ -38,7 +36,7 @@ public class BlockGlowstoneTorch extends Block
 	@Override
 	public CreativeTabs getCreativeTabToDisplayOn()
 	{
-		return GalacticraftCore.galacticraftTab;
+		return GalacticraftCore.galacticraftBlocksTab;
 	}
 
 	@Override
@@ -81,11 +79,7 @@ public class BlockGlowstoneTorch extends Block
 	@Override
 	public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4)
 	{
-		return isBlockSolidOnSide(par1World, par2 - 1, par3, par4, EAST, true) 
-				|| isBlockSolidOnSide(par1World, par2 + 1, par3, par4, WEST, true) 
-				|| isBlockSolidOnSide(par1World, par2, par3, par4 - 1, SOUTH, true) 
-				|| isBlockSolidOnSide(par1World, par2, par3, par4 + 1, NORTH, true) 
-				|| this.canPlaceTorchOn(par1World, par2, par3 - 1, par4);
+		return BlockGlowstoneTorch.isBlockSolidOnSide(par1World, par2 - 1, par3, par4, EAST, true) || BlockGlowstoneTorch.isBlockSolidOnSide(par1World, par2 + 1, par3, par4, WEST, true) || BlockGlowstoneTorch.isBlockSolidOnSide(par1World, par2, par3, par4 - 1, SOUTH, true) || BlockGlowstoneTorch.isBlockSolidOnSide(par1World, par2, par3, par4 + 1, NORTH, true) || this.canPlaceTorchOn(par1World, par2, par3 - 1, par4);
 	}
 
 	@Override
@@ -98,22 +92,22 @@ public class BlockGlowstoneTorch extends Block
 			j1 = 5;
 		}
 
-		if (par5 == 2 && isBlockSolidOnSide(par1World, par2, par3, par4 + 1, NORTH, true))
+		if (par5 == 2 && BlockGlowstoneTorch.isBlockSolidOnSide(par1World, par2, par3, par4 + 1, NORTH, true))
 		{
 			j1 = 4;
 		}
 
-		if (par5 == 3 && isBlockSolidOnSide(par1World, par2, par3, par4 - 1, SOUTH, true))
+		if (par5 == 3 && BlockGlowstoneTorch.isBlockSolidOnSide(par1World, par2, par3, par4 - 1, SOUTH, true))
 		{
 			j1 = 3;
 		}
 
-		if (par5 == 4 && isBlockSolidOnSide(par1World, par2 + 1, par3, par4, WEST, true))
+		if (par5 == 4 && BlockGlowstoneTorch.isBlockSolidOnSide(par1World, par2 + 1, par3, par4, WEST, true))
 		{
 			j1 = 2;
 		}
 
-		if (par5 == 5 && isBlockSolidOnSide(par1World, par2 - 1, par3, par4, EAST, true))
+		if (par5 == 5 && BlockGlowstoneTorch.isBlockSolidOnSide(par1World, par2 - 1, par3, par4, EAST, true))
 		{
 			j1 = 1;
 		}
@@ -137,19 +131,19 @@ public class BlockGlowstoneTorch extends Block
 	{
 		if (par1World.getBlockMetadata(par2, par3, par4) == 0)
 		{
-			if (isBlockSolidOnSide(par1World, par2 - 1, par3, par4, EAST, true))
+			if (BlockGlowstoneTorch.isBlockSolidOnSide(par1World, par2 - 1, par3, par4, EAST, true))
 			{
 				par1World.setBlockMetadataWithNotify(par2, par3, par4, 1, 2);
 			}
-			else if (isBlockSolidOnSide(par1World, par2 + 1, par3, par4, WEST, true))
+			else if (BlockGlowstoneTorch.isBlockSolidOnSide(par1World, par2 + 1, par3, par4, WEST, true))
 			{
 				par1World.setBlockMetadataWithNotify(par2, par3, par4, 2, 2);
 			}
-			else if (isBlockSolidOnSide(par1World, par2, par3, par4 - 1, SOUTH, true))
+			else if (BlockGlowstoneTorch.isBlockSolidOnSide(par1World, par2, par3, par4 - 1, SOUTH, true))
 			{
 				par1World.setBlockMetadataWithNotify(par2, par3, par4, 3, 2);
 			}
-			else if (isBlockSolidOnSide(par1World, par2, par3, par4 + 1, NORTH, true))
+			else if (BlockGlowstoneTorch.isBlockSolidOnSide(par1World, par2, par3, par4 + 1, NORTH, true))
 			{
 				par1World.setBlockMetadataWithNotify(par2, par3, par4, 4, 2);
 			}
@@ -170,22 +164,22 @@ public class BlockGlowstoneTorch extends Block
 			int i1 = par1World.getBlockMetadata(par2, par3, par4);
 			boolean flag = false;
 
-			if (!isBlockSolidOnSide(par1World, par2 - 1, par3, par4, EAST, true) && i1 == 1)
+			if (!BlockGlowstoneTorch.isBlockSolidOnSide(par1World, par2 - 1, par3, par4, EAST, true) && i1 == 1)
 			{
 				flag = true;
 			}
 
-			if (!isBlockSolidOnSide(par1World, par2 + 1, par3, par4, WEST, true) && i1 == 2)
+			if (!BlockGlowstoneTorch.isBlockSolidOnSide(par1World, par2 + 1, par3, par4, WEST, true) && i1 == 2)
 			{
 				flag = true;
 			}
 
-			if (!isBlockSolidOnSide(par1World, par2, par3, par4 - 1, SOUTH, true) && i1 == 3)
+			if (!BlockGlowstoneTorch.isBlockSolidOnSide(par1World, par2, par3, par4 - 1, SOUTH, true) && i1 == 3)
 			{
 				flag = true;
 			}
 
-			if (!isBlockSolidOnSide(par1World, par2, par3, par4 + 1, NORTH, true) && i1 == 4)
+			if (!BlockGlowstoneTorch.isBlockSolidOnSide(par1World, par2, par3, par4 + 1, NORTH, true) && i1 == 4)
 			{
 				flag = true;
 			}

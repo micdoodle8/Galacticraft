@@ -8,12 +8,12 @@ public class Footprint
 	public float rotation;
 	public Vector3 position;
 	public short age;
-	
+
 	public Footprint(Vector3 position, float rotation)
 	{
 		this(position, rotation, (short) 0);
 	}
-	
+
 	public Footprint(Vector3 position, float rotation, short age)
 	{
 		this.position = position;

@@ -10,8 +10,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 
-
-
 public class StructureComponentVillageField extends StructureComponentVillage
 {
 	private int averageGroundLevel = -1;
@@ -83,11 +81,7 @@ public class StructureComponentVillageField extends StructureComponentVillage
 		{
 			for (int i = 1; i < 12; i++)
 			{
-				if (i % 3 == 0)
-				{
-					;
-				}
-				else
+				if (i % 3 != 0)
 				{
 					if (par2Random.nextInt(3) == 0)
 					{

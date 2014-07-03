@@ -5,8 +5,6 @@ import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.nbt.NBTTagCompound;
 import cpw.mods.fml.relauncher.Side;
 
-
-
 public class TileEntityFallenMeteor extends TileEntityAdvanced implements IPacketReceiver
 {
 	public static final int MAX_HEAT_LEVEL = 5000;

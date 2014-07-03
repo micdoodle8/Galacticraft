@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.gui.overlay;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
@@ -12,8 +13,6 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 @SideOnly(Side.CLIENT)
 public class OverlayOxygenTanks extends Overlay
 {
@@ -24,7 +23,7 @@ public class OverlayOxygenTanks extends Overlay
 	/**
 	 * Render the GUI that displays oxygen level in tanks
 	 */
-	public static void renderOxygenTankIndicator(int oxygenInTank1, int oxygenInTank2, boolean right, boolean top)
+	public static void renderOxygenTankIndicator(int heatLevel, int oxygenInTank1, int oxygenInTank2, boolean right, boolean top, boolean invalid)
 	{
 		final ScaledResolution scaledresolution = new ScaledResolution(OverlayOxygenTanks.minecraft.gameSettings, OverlayOxygenTanks.minecraft.displayWidth, OverlayOxygenTanks.minecraft.displayHeight);
 		final int i = scaledresolution.getScaledWidth();
@@ -52,10 +51,10 @@ public class OverlayOxygenTanks extends Overlay
 
 		if (right)
 		{
-			minLeftX = i - 49;
-			maxLeftX = i - 30;
-			minRightX = i - 29;
-			maxRightX = i - 10;
+			minLeftX = i - 59;
+			maxLeftX = i - 40;
+			minRightX = i - 39;
+			maxRightX = i - 20;
 		}
 		else
 		{
@@ -76,17 +75,53 @@ public class OverlayOxygenTanks extends Overlay
 
 		bottomY = topY + 46.5;
 
+		float texMod = 0.00390625F;
 		tessellator.startDrawingQuads();
-		tessellator.addVertexWithUV(minRightX, bottomY, zLevel, 85 * 0.00390625F, 47 * 0.00390625F);
-		tessellator.addVertexWithUV(maxRightX, bottomY, zLevel, (85 + 19) * 0.00390625F, 47 * 0.00390625F);
-		tessellator.addVertexWithUV(maxRightX, topY, zLevel, (85 + 19) * 0.00390625F, 0 * 0.00390625F);
-		tessellator.addVertexWithUV(minRightX, topY, zLevel, 85 * 0.00390625F, 0 * 0.00390625F);
+		tessellator.addVertexWithUV(minLeftX, bottomY, zLevel, 66 * texMod, 47 * texMod);
+		tessellator.addVertexWithUV(minLeftX + 9, bottomY, zLevel, (66 + 9) * texMod, 47 * texMod);
+		tessellator.addVertexWithUV(minLeftX + 9, topY, zLevel, (66 + 9) * texMod, 47 * 2 * texMod);
+		tessellator.addVertexWithUV(minLeftX, topY, zLevel, 66 * texMod, 47 * 2 * texMod);
+		tessellator.draw();
+
+		int heatLevelScaled = Math.min(Math.max(heatLevel, 1), 45);
+		int heatLeveLScaledMax = Math.min(heatLevelScaled + 2, 45);
+		int heatLevelScaledMin = Math.max(heatLeveLScaledMax - 2, 0);
+
+		tessellator.startDrawingQuads();
+		tessellator.addVertexWithUV(minLeftX + 1, bottomY - heatLevelScaledMin, zLevel, 76 * texMod, (48 + 45 - heatLevelScaled) * texMod);
+		tessellator.addVertexWithUV(minLeftX + 8, bottomY - heatLevelScaledMin, zLevel, (76 + 7) * texMod, (48 + 45 - heatLevelScaled) * texMod);
+		tessellator.addVertexWithUV(minLeftX + 8, bottomY - heatLeveLScaledMax, zLevel, (76 + 7) * texMod, (48 + 45 - heatLevelScaled) * texMod);
+		tessellator.addVertexWithUV(minLeftX + 1, bottomY - heatLeveLScaledMax, zLevel, 76 * texMod, (48 + 45 - heatLevelScaled) * texMod);
+		tessellator.draw();
+
+		if (invalid)
+		{
+			GL11.glColor3f(1, 0, 0);
+			tessellator.startDrawingQuads();
+			tessellator.addVertexWithUV(minLeftX - 5, bottomY - heatLevelScaledMin + 3, zLevel, 84 * texMod, 47 * texMod);
+			tessellator.addVertexWithUV(minLeftX - 1, bottomY - heatLevelScaledMin + 3, zLevel, (84 + 5) * texMod, 47 * texMod);
+			tessellator.addVertexWithUV(minLeftX - 1, bottomY - heatLeveLScaledMax - 3, zLevel, (84 + 5) * texMod, (47 + 9) * texMod);
+			tessellator.addVertexWithUV(minLeftX - 5, bottomY - heatLeveLScaledMax - 3, zLevel, 84 * texMod, (47 + 9) * texMod);
+			tessellator.draw();
+			GL11.glColor3f(1, 1, 1);
+		}
+
+		minLeftX += 10;
+		maxLeftX += 10;
+		minRightX += 10;
+		maxRightX += 10;
+
+		tessellator.startDrawingQuads();
+		tessellator.addVertexWithUV(minRightX, bottomY, zLevel, 85 * texMod, 47 * texMod);
+		tessellator.addVertexWithUV(maxRightX, bottomY, zLevel, (85 + 19) * texMod, 47 * texMod);
+		tessellator.addVertexWithUV(maxRightX, topY, zLevel, (85 + 19) * texMod, 0 * texMod);
+		tessellator.addVertexWithUV(minRightX, topY, zLevel, 85 * texMod, 0 * texMod);
 		tessellator.draw();
 		tessellator.startDrawingQuads();
-		tessellator.addVertexWithUV(minLeftX, bottomY, zLevel, 85 * 0.00390625F, 47 * 0.00390625F);
-		tessellator.addVertexWithUV(maxLeftX, bottomY, zLevel, (85 + 19) * 0.00390625F, 47 * 0.00390625F);
-		tessellator.addVertexWithUV(maxLeftX, topY, zLevel, (85 + 19) * 0.00390625F, 0 * 0.00390625F);
-		tessellator.addVertexWithUV(minLeftX, topY, zLevel, 85 * 0.00390625F, 0 * 0.00390625F);
+		tessellator.addVertexWithUV(minLeftX, bottomY, zLevel, 85 * texMod, 47 * texMod);
+		tessellator.addVertexWithUV(maxLeftX, bottomY, zLevel, (85 + 19) * texMod, 47 * texMod);
+		tessellator.addVertexWithUV(maxLeftX, topY, zLevel, (85 + 19) * texMod, 0 * texMod);
+		tessellator.addVertexWithUV(minLeftX, topY, zLevel, 85 * texMod, 0 * texMod);
 		tessellator.draw();
 		GL11.glDepthMask(true);
 
@@ -123,9 +158,15 @@ public class OverlayOxygenTanks extends Overlay
 			tessellator2.startDrawingQuads();
 			tessellator.addVertexWithUV(minRightX, topY + 1 + oxygenInTank2 / 2, 0, 66 * 0.00390625F, oxygenInTank2 / 2 * 0.00390625F);
 			tessellator.addVertexWithUV(maxRightX - 1, topY + 1 + oxygenInTank2 / 2, 0, (66 + 17) * 0.00390625F, oxygenInTank2 / 2 * 0.00390625F);
-			tessellator.addVertexWithUV(maxRightX - 1, topY + 1 + oxygenInTank2 / 2 - 1, 0, (66 + 17) * 0.00390625F, (oxygenInTank2 / 2) * 0.00390625F);
-			tessellator.addVertexWithUV(minRightX, topY + 1 + oxygenInTank2 / 2 - 1, 0, 66 * 0.00390625F, (oxygenInTank2 / 2) * 0.00390625F);
+			tessellator.addVertexWithUV(maxRightX - 1, topY + 1 + oxygenInTank2 / 2 - 1, 0, (66 + 17) * 0.00390625F, oxygenInTank2 / 2 * 0.00390625F);
+			tessellator.addVertexWithUV(minRightX, topY + 1 + oxygenInTank2 / 2 - 1, 0, 66 * 0.00390625F, oxygenInTank2 / 2 * 0.00390625F);
 			tessellator2.draw();
+		}
+
+		if (invalid)
+		{
+			String value = "Invalid Thermal Protection!";
+			OverlayOxygenTanks.minecraft.fontRenderer.drawString(value, minLeftX - 18 - OverlayOxygenTanks.minecraft.fontRenderer.getStringWidth(value), (int) bottomY - heatLevelScaled - OverlayOxygenTanks.minecraft.fontRenderer.FONT_HEIGHT / 2 - 1, GCCoreUtil.to32BitColor(255, 255, 10, 10));
 		}
 	}
 }

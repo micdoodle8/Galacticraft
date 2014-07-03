@@ -10,8 +10,6 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class EntityProjectileTNT extends EntityFireball
 {
 	public EntityProjectileTNT(World par1World)

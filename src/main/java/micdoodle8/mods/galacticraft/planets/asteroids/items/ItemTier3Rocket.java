@@ -10,7 +10,6 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
-import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityTier3Rocket;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
@@ -22,8 +21,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
-
 
 public class ItemTier3Rocket extends Item implements IHoldableItem
 {
@@ -44,10 +41,11 @@ public class ItemTier3Rocket extends Item implements IHoldableItem
 		return ClientProxyCore.galacticraftItem;
 	}
 
+	@SideOnly(Side.CLIENT)
 	@Override
 	public CreativeTabs getCreativeTab()
 	{
-		return AsteroidsModule.asteroidsTab;
+		return GalacticraftCore.galacticraftItemsTab;
 	}
 
 	@Override

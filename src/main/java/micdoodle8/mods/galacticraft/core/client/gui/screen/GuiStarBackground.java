@@ -11,8 +11,6 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
-
-
 public abstract class GuiStarBackground extends GuiScreen
 {
 	private static final ResourceLocation backgroundTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/stars.png");
@@ -264,13 +262,13 @@ public abstract class GuiStarBackground extends GuiScreen
 		GL11.glColorMask(true, true, true, true);
 	}
 
-	public void renderSkybox(float par1)
+	public void renderSkybox()
 	{
 		GL11.glViewport(0, 0, this.mc.displayWidth, this.mc.displayHeight);
 		GL11.glPushMatrix();
 		GL11.glScalef(1.0F, 0.0F, 1.0F);
-		this.drawPanorama(par1);
-		this.drawPanorama2(par1);
+		this.drawPanorama(1);
+		this.drawPanorama2(1);
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		this.rotateAndBlurSkybox();

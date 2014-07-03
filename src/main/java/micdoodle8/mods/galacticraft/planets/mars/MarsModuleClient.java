@@ -72,22 +72,22 @@ import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class MarsModuleClient implements IPlanetsModuleClient 
+public class MarsModuleClient implements IPlanetsModuleClient
 {
 	private static int vineRenderID;
 	private static int eggRenderID;
 	private static int treasureRenderID;
 	private static int machineRenderID;
 	private static int tintedGlassRenderID;
-	
+
 	@Override
-	public void preInit(FMLPreInitializationEvent event) 
+	public void preInit(FMLPreInitializationEvent event)
 	{
-		
+
 	}
 
 	@Override
-	public void init(FMLInitializationEvent event) 
+	public void init(FMLInitializationEvent event)
 	{
 		FMLCommonHandler.instance().bus().register(new TickHandlerClient());
 		MarsModuleClient.vineRenderID = RenderingRegistry.getNextAvailableRenderId();
@@ -103,15 +103,15 @@ public class MarsModuleClient implements IPlanetsModuleClient
 	}
 
 	@Override
-	public void postInit(FMLPostInitializationEvent event) 
+	public void postInit(FMLPostInitializationEvent event)
 	{
 		IModelCustom chamberModel = AdvancedModelLoader.loadModel(new ResourceLocation(MarsModule.TEXTURE_DOMAIN, "models/chamber.obj"));
 		IModelCustom cargoRocketModel = AdvancedModelLoader.loadModel(new ResourceLocation(MarsModule.TEXTURE_DOMAIN, "models/cargoRocket.obj"));
-		
+
 		// Tile Entity Renderers
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTreasureChestMars.class, new TileEntityTreasureChestRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCryogenicChamber.class, new TileEntityCryogenicChamberRenderer(chamberModel));
-		
+
 		// Entities
 		RenderingRegistry.registerEntityRenderingHandler(EntitySludgeling.class, new RenderSludgeling());
 		RenderingRegistry.registerEntityRenderingHandler(EntitySlimeling.class, new RenderSlimeling());
@@ -122,10 +122,10 @@ public class MarsModuleClient implements IPlanetsModuleClient
 		RenderingRegistry.registerEntityRenderingHandler(EntityLandingBalloons.class, new RenderLandingBalloons());
 		RenderingRegistry.registerEntityRenderingHandler(EntityLandingBalloons.class, new RenderLandingBalloons());
 		RenderingRegistry.registerEntityRenderingHandler(EntityCargoRocket.class, new RenderCargoRocket(cargoRocketModel));
-		
+
 		// Add Armor Renderer Prefix
 		RenderingRegistry.addNewArmourRendererPrefix("desh");
-		
+
 		// Item Renderers
 		MinecraftForgeClient.registerItemRenderer(MarsItems.spaceship, new ItemRendererTier2Rocket(cargoRocketModel));
 		MinecraftForgeClient.registerItemRenderer(MarsItems.key, new ItemRendererKey(new ResourceLocation(MarsModule.TEXTURE_DOMAIN, "textures/model/treasure.png")));
@@ -135,17 +135,17 @@ public class MarsModuleClient implements IPlanetsModuleClient
 	@Override
 	public void serverStarting(FMLServerStartingEvent event)
 	{
-		
+
 	}
 
 	@Override
-	public void getGuiIDs(List<Integer> idList) 
+	public void getGuiIDs(List<Integer> idList)
 	{
 		idList.add(GuiIdsPlanets.MACHINE_MARS);
 	}
 
 	@Override
-	public Object getGuiElement(Side side, int ID, EntityPlayer player, World world, int x, int y, int z) 
+	public Object getGuiElement(Side side, int ID, EntityPlayer player, World world, int x, int y, int z)
 	{
 		if (side == Side.CLIENT)
 		{
@@ -168,34 +168,34 @@ public class MarsModuleClient implements IPlanetsModuleClient
 	}
 
 	@Override
-	public int getBlockRenderID(Block block) 
+	public int getBlockRenderID(Block block)
 	{
 		if (block == MarsBlocks.vine)
 		{
-			return vineRenderID;
+			return MarsModuleClient.vineRenderID;
 		}
 		else if (block == MarsBlocks.rock)
 		{
-			return eggRenderID;
+			return MarsModuleClient.eggRenderID;
 		}
 		else if (block == MarsBlocks.machine)
 		{
-			return machineRenderID;
+			return MarsModuleClient.machineRenderID;
 		}
 		else if (block == MarsBlocks.tintedGlassPane)
 		{
-			return tintedGlassRenderID;
+			return MarsModuleClient.tintedGlassRenderID;
 		}
 		else if (block == MarsBlocks.tier2TreasureChest)
 		{
-			return treasureRenderID;
+			return MarsModuleClient.treasureRenderID;
 		}
-		
+
 		return -1;
 	}
 
 	@Override
-	public void spawnParticle(String particleID, Vector3 position, Vector3 color) 
+	public void spawnParticle(String particleID, Vector3 position, Vector3 color)
 	{
 		Minecraft mc = FMLClientHandler.instance().getClient();
 
@@ -263,32 +263,32 @@ public class MarsModuleClient implements IPlanetsModuleClient
 					}
 				}
 
-//				for (int i = 0; i < world.loadedEntityList.size(); i++)
-//				{
-//					final Entity e = (Entity) world.loadedEntityList.get(i);
-//
-//					if (e != null)
-//					{
-//						if (e instanceof EntityRocketT2)
-//						{
-//							EntityRocketT2 eship = (EntityRocketT2) e;
-//
-//							if (eship.rocketSoundUpdater == null)
-//							{
-//								eship.rocketSoundUpdater = new GCCoreSoundUpdaterSpaceship(FMLClientHandler.instance().getClient().sndManager, eship, FMLClientHandler.instance().getClient().thePlayer);
-//							}
-//						}
-//						else if (e instanceof EntityCargoRocket)
-//						{
-//							EntityCargoRocket eship = (EntityCargoRocket) e;
-//
-//							if (eship.rocketSoundUpdater == null)
-//							{
-//								eship.rocketSoundUpdater = new GCCoreSoundUpdaterSpaceship(FMLClientHandler.instance().getClient().sndManager, eship, FMLClientHandler.instance().getClient().thePlayer);
-//							}
-//						}
-//					}
-//				}
+				//				for (int i = 0; i < world.loadedEntityList.size(); i++)
+				//				{
+				//					final Entity e = (Entity) world.loadedEntityList.get(i);
+				//
+				//					if (e != null)
+				//					{
+				//						if (e instanceof EntityRocketT2)
+				//						{
+				//							EntityRocketT2 eship = (EntityRocketT2) e;
+				//
+				//							if (eship.rocketSoundUpdater == null)
+				//							{
+				//								eship.rocketSoundUpdater = new GCCoreSoundUpdaterSpaceship(FMLClientHandler.instance().getClient().sndManager, eship, FMLClientHandler.instance().getClient().thePlayer);
+				//							}
+				//						}
+				//						else if (e instanceof EntityCargoRocket)
+				//						{
+				//							EntityCargoRocket eship = (EntityCargoRocket) e;
+				//
+				//							if (eship.rocketSoundUpdater == null)
+				//							{
+				//								eship.rocketSoundUpdater = new GCCoreSoundUpdaterSpaceship(FMLClientHandler.instance().getClient().sndManager, eship, FMLClientHandler.instance().getClient().thePlayer);
+				//							}
+				//						}
+				//					}
+				//				}
 			}
 		}
 	}

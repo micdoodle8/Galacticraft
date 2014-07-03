@@ -119,8 +119,11 @@ public class PacketDynamicInventory implements IPacket
 	@Override
 	public void handleClientSide(EntityPlayer player)
 	{
-		if (player.worldObj == null) return;
-		
+		if (player.worldObj == null)
+		{
+			return;
+		}
+
 		switch (this.type)
 		{
 		case 0:

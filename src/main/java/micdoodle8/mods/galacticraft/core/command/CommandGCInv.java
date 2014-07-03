@@ -21,7 +21,6 @@ public class CommandGCInv extends CommandBase
 	protected static final Map<String, ItemStack[]> savedata = new HashMap<String, ItemStack[]>();
 	private static final Set<String> dontload = new HashSet<String>();
 	private static boolean firstuse = true;
-	private static World world0;
 	private static GCInvSaveData savefile;
 
 	@Override
@@ -129,13 +128,13 @@ public class CommandGCInv extends CommandBase
 						{
 							System.out.println("[GCInv] Restore command for offline player " + astring[1] + ", setting to restore GCInv on next login.");
 							CommandGCInv.dontload.remove(astring[1].toLowerCase()); // Now
-																							// it
-																							// can
-																							// autoload
-																							// on
-																							// next
-																							// player
-																							// logon
+																					// it
+																					// can
+																					// autoload
+																					// on
+																					// next
+																					// player
+																					// logon
 							return;
 						}
 					}
@@ -167,11 +166,11 @@ public class CommandGCInv extends CommandBase
 	{
 		String theName = thePlayer.getGameProfile().getName().toLowerCase();
 		if (!CommandGCInv.dontload.contains(theName)) // This is a simple
-															// flag: if the
-															// playername is in
-															// dontload then no
-															// restore command
-															// has yet been run.
+														// flag: if the
+														// playername is in
+														// dontload then no
+														// restore command
+														// has yet been run.
 		// Dontload resets to nothing on server restart so that all will
 		// auto-restore on a server restart.
 		{
@@ -200,12 +199,12 @@ public class CommandGCInv extends CommandBase
 
 	private static void initialise()
 	{
-		CommandGCInv.world0 = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(0);
-		CommandGCInv.savefile = (GCInvSaveData) CommandGCInv.world0.loadItemData(GCInvSaveData.class, "GCInv_savefile");
+		World world0 = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(0);
+		CommandGCInv.savefile = (GCInvSaveData) world0.loadItemData(GCInvSaveData.class, GCInvSaveData.SAVE_ID);
 		if (CommandGCInv.savefile == null)
 		{
-			CommandGCInv.savefile = new GCInvSaveData("GCInv_savefile");
-			CommandGCInv.world0.setItemData("GCInv_savefile", CommandGCInv.savefile);
+			CommandGCInv.savefile = new GCInvSaveData();
+			world0.setItemData(GCInvSaveData.SAVE_ID, CommandGCInv.savefile);
 		}
 	}
 

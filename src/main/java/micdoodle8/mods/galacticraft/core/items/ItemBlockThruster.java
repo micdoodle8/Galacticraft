@@ -4,7 +4,7 @@ import net.minecraft.block.Block;
 
 public class ItemBlockThruster extends ItemBlockGC
 {
-	public ItemBlockThruster(Block block) 
+	public ItemBlockThruster(Block block)
 	{
 		super(block);
 	}

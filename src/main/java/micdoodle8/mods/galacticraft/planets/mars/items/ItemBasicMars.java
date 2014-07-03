@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.planets.mars.items;
 
 import java.util.List;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
@@ -15,8 +16,6 @@ import net.minecraft.util.IIcon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class ItemBasicMars extends Item
 {
 	public static String[] names = { "rawDesh", "deshStick", "ingotDesh", "reinforcedPlateT2", "slimelingCargo", "compressedDesh" };
@@ -29,10 +28,11 @@ public class ItemBasicMars extends Item
 		this.setHasSubtypes(true);
 	}
 
+	@SideOnly(Side.CLIENT)
 	@Override
 	public CreativeTabs getCreativeTab()
 	{
-		return MarsModule.galacticraftMarsTab;
+		return GalacticraftCore.galacticraftItemsTab;
 	}
 
 	@Override

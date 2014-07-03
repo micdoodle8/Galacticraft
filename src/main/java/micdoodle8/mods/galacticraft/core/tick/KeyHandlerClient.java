@@ -20,8 +20,6 @@ import org.lwjgl.input.Keyboard;
 
 import cpw.mods.fml.common.gameevent.TickEvent.Type;
 
-
-
 public class KeyHandlerClient extends KeyHandler
 {
 	public static KeyBinding galaxyMap = new KeyBinding(GCCoreUtil.translate("keybind.map.name"), Keyboard.KEY_M, "Galacticraft");
@@ -33,7 +31,6 @@ public class KeyHandlerClient extends KeyHandler
 	public static KeyBinding rightKey;
 	public static KeyBinding spaceKey;
 	public static KeyBinding leftShiftKey;
-	private static KeyBinding invKey;
 	private static Minecraft mc = Minecraft.getMinecraft();
 
 	public KeyHandlerClient()
@@ -43,14 +40,14 @@ public class KeyHandlerClient extends KeyHandler
 
 	private static KeyBinding[] getVanillaKeyBindings()
 	{
-		KeyHandlerClient.invKey = KeyHandlerClient.mc.gameSettings.keyBindInventory;
+        KeyBinding invKey = KeyHandlerClient.mc.gameSettings.keyBindInventory;
 		KeyHandlerClient.accelerateKey = KeyHandlerClient.mc.gameSettings.keyBindForward;
 		KeyHandlerClient.decelerateKey = KeyHandlerClient.mc.gameSettings.keyBindBack;
 		KeyHandlerClient.leftKey = KeyHandlerClient.mc.gameSettings.keyBindLeft;
 		KeyHandlerClient.rightKey = KeyHandlerClient.mc.gameSettings.keyBindRight;
 		KeyHandlerClient.spaceKey = KeyHandlerClient.mc.gameSettings.keyBindJump;
 		KeyHandlerClient.leftShiftKey = KeyHandlerClient.mc.gameSettings.keyBindSneak;
-		return new KeyBinding[] { KeyHandlerClient.invKey, KeyHandlerClient.accelerateKey, KeyHandlerClient.decelerateKey, KeyHandlerClient.leftKey, KeyHandlerClient.rightKey, KeyHandlerClient.spaceKey, KeyHandlerClient.leftShiftKey };
+		return new KeyBinding[] { invKey, KeyHandlerClient.accelerateKey, KeyHandlerClient.decelerateKey, KeyHandlerClient.leftKey, KeyHandlerClient.rightKey, KeyHandlerClient.spaceKey, KeyHandlerClient.leftShiftKey };
 	}
 
 	@Override
@@ -86,7 +83,7 @@ public class KeyHandlerClient extends KeyHandler
 		if (KeyHandlerClient.mc.thePlayer != null)
 		{
 			int keyNum = -1;
-	
+
 			if (kb == KeyHandlerClient.accelerateKey)
 			{
 				keyNum = 0;
@@ -111,23 +108,23 @@ public class KeyHandlerClient extends KeyHandler
 			{
 				keyNum = 5;
 			}
-	
+
 			Entity entityTest = KeyHandlerClient.mc.thePlayer.ridingEntity;
 			if (entityTest != null && entityTest instanceof IControllableEntity && keyNum != -1)
 			{
 				IControllableEntity entity = (IControllableEntity) entityTest;
-	
+
 				if (kb.getKeyCode() == KeyHandlerClient.mc.gameSettings.keyBindInventory.getKeyCode())
 				{
 					KeyBinding.setKeyBindState(KeyHandlerClient.mc.gameSettings.keyBindInventory.getKeyCode(), false);
 				}
-	
+
 				entity.pressKey(keyNum);
 			}
 			else if (entityTest != null && entityTest instanceof EntityAutoRocket)
 			{
 				EntityAutoRocket autoRocket = (EntityAutoRocket) entityTest;
-	
+
 				if (autoRocket.landing)
 				{
 					if (kb == KeyHandlerClient.leftShiftKey)
@@ -135,7 +132,7 @@ public class KeyHandlerClient extends KeyHandler
 						autoRocket.motionY -= 0.02D;
 						GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_SHIP_MOTION_Y, new Object[] { autoRocket.getEntityId(), false }));
 					}
-	
+
 					if (kb == KeyHandlerClient.spaceKey)
 					{
 						autoRocket.motionY += 0.02D;

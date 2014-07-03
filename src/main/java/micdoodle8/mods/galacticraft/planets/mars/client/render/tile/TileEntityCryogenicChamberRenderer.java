@@ -13,8 +13,6 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 @SideOnly(Side.CLIENT)
 public class TileEntityCryogenicChamberRenderer extends TileEntitySpecialRenderer
 {
@@ -51,21 +49,21 @@ public class TileEntityCryogenicChamberRenderer extends TileEntitySpecialRendere
 			rotation = 90.0F;
 			break;
 		}
-		
+
 		GL11.glScalef(0.5F, 0.6F, 0.5F);
 		GL11.glRotatef(rotation, 0, 1, 0);
 		GL11.glTranslatef(-0.5F, 0.0F, 0.0F);
 
 		this.bindTexture(TileEntityCryogenicChamberRenderer.chamberTexture0);
 		this.model.renderPart("Main_Cylinder");
-		
+
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GL11.glColor4f(0.1F, 0.6F, 0.5F, 0.4F);
-		
+
 		this.model.renderPart("Shield_Torus");
-		
+
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 
 		GL11.glPopMatrix();

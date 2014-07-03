@@ -5,8 +5,6 @@ import net.minecraft.item.Item;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class CreativeTabGC extends CreativeTabs
 {
 	private final Item itemForTab;
@@ -19,15 +17,17 @@ public class CreativeTabGC extends CreativeTabs
 		this.metaForTab = metaForTab;
 	}
 
-    @SideOnly(Side.CLIENT)
-    public Item getTabIconItem()
-    {
-    	return this.itemForTab;
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public Item getTabIconItem()
+	{
+		return this.itemForTab;
+	}
 
-    @SideOnly(Side.CLIENT)
-    public int func_151243_f()
-    {
-        return this.metaForTab;
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public int func_151243_f()
+	{
+		return this.metaForTab;
+	}
 }

@@ -251,7 +251,7 @@ public class GCItems
 		return null;
 	}
 
-	private static final String getItemListClass()
+	private static String getItemListClass()
 	{
 		return "micdoodle8.mods.galacticraft.core.GalacticraftCore";
 	}

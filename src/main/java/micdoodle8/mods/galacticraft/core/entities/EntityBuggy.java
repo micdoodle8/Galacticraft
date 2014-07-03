@@ -42,8 +42,6 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.relauncher.Side;
 
-
-
 public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, IDockable, IControllableEntity, IEntityFullSync
 {
 	private final int tankCapacity = 1000;
@@ -462,7 +460,6 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
 	@Override
 	public void handlePacketData(Side side, EntityPlayer player)
 	{
-		;
 	}
 
 	@Override
@@ -600,7 +597,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer var1)
 	{
-		return this.isDead ? false : var1.getDistanceSqToEntity(this) <= 64.0D;
+		return !this.isDead && var1.getDistanceSqToEntity(this) <= 64.0D;
 	}
 
 	@Override
@@ -721,6 +718,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
 			ItemStack stackAt = this.cargoItems[count];
 
 			if (stackAt != null && stackAt.getItem() == stack.getItem() && stackAt.getItemDamage() == stack.getItemDamage() && stackAt.stackSize < stackAt.getMaxStackSize())
+			{
 				if (stackAt.stackSize + stack.stackSize <= stackAt.getMaxStackSize())
 				{
 					if (doAdd)
@@ -728,9 +726,10 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
 						this.cargoItems[count].stackSize += stack.stackSize;
 						this.markDirty();
 					}
-	
+
 					return EnumCargoLoadingState.SUCCESS;
-				} else
+				}
+				else
 				{
 					//Part of the stack can fill this slot but there will be some left over
 					int origSize = stackAt.stackSize;
@@ -741,14 +740,17 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
 						this.cargoItems[count].stackSize = stackAt.getMaxStackSize();
 						this.markDirty();
 					}
-					
+
 					stack.stackSize = surplus;
 					if (this.addCargo(stack, doAdd) == EnumCargoLoadingState.SUCCESS)
+					{
 						return EnumCargoLoadingState.SUCCESS;
-					
+					}
+
 					this.cargoItems[count].stackSize = origSize;
-					return EnumCargoLoadingState.FULL;			
+					return EnumCargoLoadingState.FULL;
 				}
+			}
 		}
 
 		for (count = 0; count < this.cargoItems.length; count++)
@@ -784,7 +786,10 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
 					this.cargoItems[i] = null;
 				}
 
-				if (doRemove) this.markDirty();
+				if (doRemove)
+				{
+					this.markDirty();
+				}
 				return new RemovalResult(EnumCargoLoadingState.SUCCESS, new ItemStack(stackAt.getItem(), 1, stackAt.getItemDamage()));
 			}
 		}

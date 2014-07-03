@@ -12,8 +12,6 @@ import micdoodle8.mods.galacticraft.planets.mars.entities.EntityCreeperBoss;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 
-
-
 public class TileEntityDungeonSpawnerMars extends TileEntityDungeonSpawner
 {
 	public TileEntityDungeonSpawnerMars()

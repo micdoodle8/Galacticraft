@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 import java.util.List;
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -13,8 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
-
 
 public class BlockMachineFrame extends Block
 {
@@ -41,7 +40,7 @@ public class BlockMachineFrame extends Block
 	@Override
 	public CreativeTabs getCreativeTabToDisplayOn()
 	{
-		return AsteroidsModule.asteroidsTab;
+		return GalacticraftCore.galacticraftBlocksTab;
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -52,7 +51,7 @@ public class BlockMachineFrame extends Block
 		{
 			return this.blockIcon;
 		}
-		
+
 		return this.blockIcons[meta];
 	}
 
@@ -83,10 +82,10 @@ public class BlockMachineFrame extends Block
 	}
 
 	@Override
-    public boolean isOpaqueCube()
-    {
-        return false;
-    }
+	public boolean isOpaqueCube()
+	{
+		return false;
+	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@SideOnly(Side.CLIENT)

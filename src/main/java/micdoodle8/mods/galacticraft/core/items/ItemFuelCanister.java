@@ -17,8 +17,6 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class ItemFuelCanister extends Item
 {
 	protected IIcon[] icons = new IIcon[7];
@@ -44,7 +42,7 @@ public class ItemFuelCanister extends Item
 	@Override
 	public CreativeTabs getCreativeTab()
 	{
-		return GalacticraftCore.galacticraftTab;
+		return GalacticraftCore.galacticraftItemsTab;
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -115,7 +113,7 @@ public class ItemFuelCanister extends Item
 	}
 
 	@Override
-    public ItemStack getContainerItem(ItemStack itemStack)
+	public ItemStack getContainerItem(ItemStack itemStack)
 	{
 		if (itemStack != null && itemStack.getItem() == this.getContainerItem() && itemStack.getItemDamage() == itemStack.getMaxDamage())
 		{

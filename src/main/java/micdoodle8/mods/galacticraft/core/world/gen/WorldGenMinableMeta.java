@@ -7,8 +7,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 
-
-
 public class WorldGenMinableMeta extends WorldGenMinable
 {
 	private final Block minableBlockId;
@@ -76,11 +74,11 @@ public class WorldGenMinableMeta extends WorldGenMinable
 							{
 								final double var45 = (var44 + 0.5D - var24) / (var28 / 2.0D);
 
-								if (var39 * var39 + var42 * var42 + var45 * var45 < 1.0D && par1World.getBlock(var38, var41, var44) == this.fillerID && par1World.getBlockMetadata(var38, var41, var44) == this.fillerMetadata && this.usingMetadata == false)
+								if (var39 * var39 + var42 * var42 + var45 * var45 < 1.0D && par1World.getBlock(var38, var41, var44) == this.fillerID && par1World.getBlockMetadata(var38, var41, var44) == this.fillerMetadata && !this.usingMetadata)
 								{
 									par1World.setBlock(var38, var41, var44, this.minableBlockId, 0, 3);
 								}
-								else if (var39 * var39 + var42 * var42 + var45 * var45 < 1.0D && par1World.getBlock(var38, var41, var44) == this.fillerID && par1World.getBlockMetadata(var38, var41, var44) == this.fillerMetadata && this.usingMetadata == true)
+								else if (var39 * var39 + var42 * var42 + var45 * var45 < 1.0D && par1World.getBlock(var38, var41, var44) == this.fillerID && par1World.getBlockMetadata(var38, var41, var44) == this.fillerMetadata && this.usingMetadata)
 								{
 									par1World.setBlock(var38, var41, var44, this.minableBlockId, this.metadata, 3);
 								}

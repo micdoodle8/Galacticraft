@@ -116,7 +116,7 @@ public class SmallFontRenderer implements IResourceManagerReloadListener
 			int j = (i >> 3 & 1) * 85;
 			int k = (i >> 2 & 1) * 170 + j;
 			int l = (i >> 1 & 1) * 170 + j;
-			int i1 = (i >> 0 & 1) * 170 + j;
+			int i1 = (i & 1) * 170 + j;
 
 			if (i == 6)
 			{
@@ -293,11 +293,10 @@ public class SmallFontRenderer implements IResourceManagerReloadListener
 			this.loadGlyphTexture(i);
 			int j = this.glyphWidth[par1] >>> 4;
 			int k = this.glyphWidth[par1] & 15;
-			float f = j;
 			float f1 = k + 1;
-			float f2 = par1 % 16 * 16 + f;
+			float f2 = par1 % 16 * 16 + j;
 			float f3 = (par1 & 255) / 16 * 16;
-			float f4 = f1 - f - 0.02F;
+			float f4 = f1 - j - 0.02F;
 			float f5 = par2 ? 1.0F : 0.0F;
 			GL11.glBegin(GL11.GL_TRIANGLE_STRIP);
 			GL11.glTexCoord2f(f2 / 256.0F, f3 / 256.0F);
@@ -309,7 +308,7 @@ public class SmallFontRenderer implements IResourceManagerReloadListener
 			GL11.glTexCoord2f((f2 + f4) / 256.0F, (f3 + 15.98F) / 256.0F);
 			GL11.glVertex3f(this.posX + f4 / 2.0F - f5, this.posY + 7.99F, 0.0F);
 			GL11.glEnd();
-			return (f1 - f) / 2.0F + 1.0F;
+			return (f1 - j) / 2.0F + 1.0F;
 		}
 	}
 

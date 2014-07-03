@@ -9,20 +9,18 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.common.MinecraftForge;
 
-
-
 public class BiomeDecoratorMoon
 {
-	protected World worldObj;
-	protected Random randomGenerator;
+	private World worldObj;
+	private Random randomGenerator;
 
-	protected int chunkX;
-	protected int chunkZ;
+	private int chunkX;
+	private int chunkZ;
 
-	protected WorldGenerator dirtGen;
-	protected WorldGenerator cheeseGen;
-	protected WorldGenerator copperGen;
-	protected WorldGenerator tinGen;
+	private WorldGenerator dirtGen;
+	private WorldGenerator cheeseGen;
+	private WorldGenerator copperGen;
+	private WorldGenerator tinGen;
 
 	public BiomeDecoratorMoon(BiomeGenBase par1BiomeGenBase)
 	{
@@ -50,7 +48,7 @@ public class BiomeDecoratorMoon
 		}
 	}
 
-	protected void genStandardOre1(int amountPerChunk, WorldGenerator worldGenerator, int minY, int maxY)
+	void genStandardOre1(int amountPerChunk, WorldGenerator worldGenerator, int minY, int maxY)
 	{
 		for (int var5 = 0; var5 < amountPerChunk; ++var5)
 		{
@@ -61,7 +59,7 @@ public class BiomeDecoratorMoon
 		}
 	}
 
-	protected void generateMoon()
+	void generateMoon()
 	{
 		MinecraftForge.EVENT_BUS.post(new GCCoreEventPopulate.Pre(this.worldObj, this.randomGenerator, this.chunkX, this.chunkZ));
 		this.genStandardOre1(20, this.dirtGen, 0, 200);

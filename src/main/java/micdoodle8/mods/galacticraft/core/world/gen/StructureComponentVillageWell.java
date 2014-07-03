@@ -11,8 +11,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 
-
-
 public class StructureComponentVillageWell extends StructureComponentVillage
 {
 	private int averageGroundLevel = -1;

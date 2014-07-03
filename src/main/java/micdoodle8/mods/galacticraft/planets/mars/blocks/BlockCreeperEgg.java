@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars.blocks;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import net.minecraft.block.BlockDragonEgg;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -12,8 +13,6 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
-
 
 public class BlockCreeperEgg extends BlockDragonEgg
 {
@@ -35,10 +34,11 @@ public class BlockCreeperEgg extends BlockDragonEgg
 		return false;
 	}
 
+	@SideOnly(Side.CLIENT)
 	@Override
 	public CreativeTabs getCreativeTabToDisplayOn()
 	{
-		return MarsModule.galacticraftMarsTab;
+		return GalacticraftCore.galacticraftBlocksTab;
 	}
 
 	@Override
@@ -67,8 +67,8 @@ public class BlockCreeperEgg extends BlockDragonEgg
 
 	@Override
 	@SideOnly(Side.CLIENT)
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
-    {
+	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
+	{
 		return null;
 	}
 

@@ -10,8 +10,6 @@ import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraft.world.gen.structure.StructureStart;
 import cpw.mods.fml.common.FMLLog;
 
-
-
 public class MapGenVillageMoon extends MapGenStructure
 {
 	public static List<BiomeGenBase> villageSpawnBiomes = Arrays.asList(new BiomeGenBase[] { BiomeGenBaseMoon.moonFlat });
@@ -26,7 +24,7 @@ public class MapGenVillageMoon extends MapGenStructure
 		}
 		catch (Throwable e)
 		{
-			;
+
 		}
 	}
 
@@ -79,13 +77,9 @@ public class MapGenVillageMoon extends MapGenStructure
 		randX += var7.nextInt(numChunks - offsetChunks);
 		randZ += var7.nextInt(numChunks - offsetChunks);
 
-		if (oldi == randX && oldj == randZ)
-		{
-			return true;
-		}
+        return oldi == randX && oldj == randZ;
 
-		return false;
-	}
+    }
 
 	@Override
 	protected StructureStart getStructureStart(int par1, int par2)

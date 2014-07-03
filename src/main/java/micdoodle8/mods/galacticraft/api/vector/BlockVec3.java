@@ -25,7 +25,7 @@ public class BlockVec3 implements Cloneable
 	public int x;
 	public int y;
 	public int z;
-	public boolean[] sideDone = {false,false,false,false,false,false};
+	public boolean[] sideDone = { false, false, false, false, false, false };
 	private static Chunk chunkCached;
 	public static int chunkCacheDim = Integer.MAX_VALUE;
 	private static int chunkCacheX = 1876000; // outside the world edge
@@ -63,16 +63,18 @@ public class BlockVec3 implements Cloneable
 	 * Makes a new copy of this Vector. Prevents variable referencing problems.
 	 */
 	@Override
-	public BlockVec3 clone()
+	public final BlockVec3 clone()
 	{
 		return new BlockVec3(this.x, this.y, this.z);
 	}
 
 	/**
-	 * Get block ID at the BlockVec3 coordinates, with a forced chunk load if the coordinates are unloaded.
+	 * Get block ID at the BlockVec3 coordinates, with a forced chunk load if
+	 * the coordinates are unloaded.
 	 * 
 	 * @param world
-	 * @return the block ID, or null if the y-coordinate is less than 0 or greater than 256 or the x or z is outside the Minecraft worldmap. 
+	 * @return the block ID, or null if the y-coordinate is less than 0 or
+	 *         greater than 256 or the x or z is outside the Minecraft worldmap.
 	 * 
 	 */
 	public Block getBlockID(World world)
@@ -116,8 +118,10 @@ public class BlockVec3 implements Cloneable
 	 * Get block ID at the BlockVec3 coordinates without forcing a chunk load.
 	 * 
 	 * @param world
-	 * @return the block ID, or null if the y-coordinate is less than 0 or greater than 256 or the x or z is outside the Minecraft worldmap. 
-	 * Returns Blocks.bedrock if the coordinates being checked are in an unloaded chunk
+	 * @return the block ID, or null if the y-coordinate is less than 0 or
+	 *         greater than 256 or the x or z is outside the Minecraft worldmap.
+	 *         Returns Blocks.bedrock if the coordinates being checked are in an
+	 *         unloaded chunk
 	 */
 	public Block getBlockID_noChunkLoad(World world)
 	{
@@ -130,11 +134,11 @@ public class BlockVec3 implements Cloneable
 		int chunkz = this.z >> 4;
 		try
 		{
-			if (world.getChunkProvider().chunkExists(chunkx,chunkz))
+			if (world.getChunkProvider().chunkExists(chunkx, chunkz))
 			{
 				// In a typical inner loop, 80% of the time consecutive calls to
 				// this will be within the same chunk
-				if (BlockVec3.chunkCacheX == chunkx && BlockVec3.chunkCacheZ == chunkz && BlockVec3.chunkCacheDim == world.provider.dimensionId  && BlockVec3.chunkCached.isChunkLoaded)
+				if (BlockVec3.chunkCacheX == chunkx && BlockVec3.chunkCacheZ == chunkz && BlockVec3.chunkCacheDim == world.provider.dimensionId && BlockVec3.chunkCached.isChunkLoaded)
 				{
 					return BlockVec3.chunkCached.getBlock(this.x & 15, this.y, this.z & 15);
 				}
@@ -161,18 +165,20 @@ public class BlockVec3 implements Cloneable
 		}
 	}
 
-
 	public Block getBlock(IBlockAccess par1iBlockAccess)
 	{
 		return par1iBlockAccess.getBlock(this.x, this.y, this.z);
 	}
-	
+
 	/**
 	 * Get block ID at the BlockVec3 coordinates without forcing a chunk load.
-	 * Only call this 'safe' version if x and z coordinates are within the Minecraft world map (-30m to +30m)
+	 * Only call this 'safe' version if x and z coordinates are within the
+	 * Minecraft world map (-30m to +30m)
+	 * 
 	 * @param world
-	 * @return the block ID, or null if the y-coordinate is less than 0 or greater than 256. 
-	 * Returns Blocks.bedrock if the coordinates being checked are in an unloaded chunk
+	 * @return the block ID, or null if the y-coordinate is less than 0 or
+	 *         greater than 256. Returns Blocks.bedrock if the coordinates being
+	 *         checked are in an unloaded chunk
 	 */
 	public Block getBlockIDsafe_noChunkLoad(World world)
 	{
@@ -185,11 +191,11 @@ public class BlockVec3 implements Cloneable
 		int chunkz = this.z >> 4;
 		try
 		{
-			if (world.getChunkProvider().chunkExists(chunkx,chunkz))
+			if (world.getChunkProvider().chunkExists(chunkx, chunkz))
 			{
 				// In a typical inner loop, 80% of the time consecutive calls to
 				// this will be within the same chunk
-				if (BlockVec3.chunkCacheX == chunkx && BlockVec3.chunkCacheZ == chunkz && BlockVec3.chunkCacheDim == world.provider.dimensionId  && BlockVec3.chunkCached.isChunkLoaded)
+				if (BlockVec3.chunkCacheX == chunkx && BlockVec3.chunkCacheZ == chunkz && BlockVec3.chunkCacheDim == world.provider.dimensionId && BlockVec3.chunkCached.isChunkLoaded)
 				{
 					return BlockVec3.chunkCached.getBlock(this.x & 15, this.y, this.z & 15);
 				}
@@ -283,7 +289,7 @@ public class BlockVec3 implements Cloneable
 	public BlockVec3 newVecSide(int side)
 	{
 		BlockVec3 vec = new BlockVec3(this.x, this.y, this.z);
-		vec.sideDone[side ^ 1]=true;
+		vec.sideDone[side ^ 1] = true;
 		switch (side)
 		{
 		case 0:
@@ -379,9 +385,13 @@ public class BlockVec3 implements Cloneable
 			return null;
 		}
 		if (world.blockExists(x, y, z))
+		{
 			return world.getTileEntity(x, y, z);
+		}
 		else
+		{
 			return null;
+		}
 	}
 
 	/**
@@ -416,9 +426,13 @@ public class BlockVec3 implements Cloneable
 			return null;
 		}
 		if (world.blockExists(x, y, z))
+		{
 			return world.getTileEntity(x, y, z);
+		}
 		else
+		{
 			return null;
+		}
 	}
 
 	/**
@@ -487,9 +501,13 @@ public class BlockVec3 implements Cloneable
 			return null;
 		}
 		if (world.blockExists(x, y, z))
+		{
 			return world.getBlock(x, y, z);
+		}
 		else
+		{
 			return null;
+		}
 	}
 
 	public int getBlockMetadata(IBlockAccess world)
@@ -548,7 +566,7 @@ public class BlockVec3 implements Cloneable
 	{
 		return world.blockExists(this.x, this.y, this.z);
 	}
-	
+
 	public int intX()
 	{
 		return this.x;
@@ -563,9 +581,9 @@ public class BlockVec3 implements Cloneable
 	{
 		return this.z;
 	}
-	
+
 	public void setSideDone(int side)
 	{
-		sideDone[side]=true;
+		this.sideDone[side] = true;
 	}
 }

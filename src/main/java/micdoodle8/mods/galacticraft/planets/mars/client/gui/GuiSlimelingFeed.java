@@ -11,8 +11,6 @@ import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.util.ResourceLocation;
 import cpw.mods.fml.client.FMLClientHandler;
 
-
-
 public class GuiSlimelingFeed extends GuiScreen
 {
 	private final int xSize;
@@ -77,7 +75,7 @@ public class GuiSlimelingFeed extends GuiScreen
 				{
 					this.slimeling.func_146082_f(this.mc.thePlayer);
 				}
-				
+
 				GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_SLIMELING_DATA, new Object[] { this.slimeling.getEntityId(), 3, "" }));
 				break;
 			case 2:

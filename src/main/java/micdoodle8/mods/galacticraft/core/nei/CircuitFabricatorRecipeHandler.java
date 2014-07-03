@@ -17,8 +17,6 @@ import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 
-
-
 public class CircuitFabricatorRecipeHandler extends TemplateRecipeHandler
 {
 	private static final ResourceLocation circuitFabricatorTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/circuitFabricator.png");

@@ -6,8 +6,6 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
 import cpw.mods.fml.client.FMLClientHandler;
 
-
-
 public class ModelParaChest extends ModelChest
 {
 	private static final ResourceLocation grayParachuteTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/parachute/gray.png");

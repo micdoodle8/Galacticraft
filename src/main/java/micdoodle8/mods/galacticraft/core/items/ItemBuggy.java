@@ -23,8 +23,6 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class ItemBuggy extends Item implements IHoldableItem
 {
 	public ItemBuggy(String assetName)
@@ -37,7 +35,7 @@ public class ItemBuggy extends Item implements IHoldableItem
 	@Override
 	public CreativeTabs getCreativeTab()
 	{
-		return GalacticraftCore.galacticraftTab;
+		return GalacticraftCore.galacticraftItemsTab;
 	}
 
 	@Override

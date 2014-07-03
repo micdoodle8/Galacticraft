@@ -81,8 +81,6 @@ import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class GuiHandler implements IGuiHandler
 {
 	@Override
@@ -187,9 +185,7 @@ public class GuiHandler implements IGuiHandler
 		{
 			if (ID == page.getGuiID())
 			{
-				final Container container = page.getResultContainer(playerBase, x, y, z);
-
-				return container;
+				return page.getResultContainer(playerBase, x, y, z);
 			}
 		}
 
@@ -211,7 +207,7 @@ public class GuiHandler implements IGuiHandler
 	private Object getClientGuiElement(int ID, EntityPlayer player, World world, Vector3 position)
 	{
 		GCEntityClientPlayerMP playerClient = PlayerUtil.getPlayerBaseClientFromPlayer(player, false);
-		
+
 		if (ID == GuiIdsCore.GALAXY_MAP)
 		{
 			return new GuiGalaxyMap(player);

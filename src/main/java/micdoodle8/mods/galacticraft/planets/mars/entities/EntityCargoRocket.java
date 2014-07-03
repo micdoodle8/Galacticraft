@@ -29,8 +29,6 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 
-
-
 public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, IInventory, IWorldTransferCallback
 {
 	public EnumRocketType rocketType;
@@ -212,11 +210,11 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
 		}
 		else
 		{
-//			if (this.rocketSoundUpdater instanceof GCCoreSoundUpdaterSpaceship)
-//			{
-//				((GCCoreSoundUpdaterSpaceship) this.rocketSoundUpdater).stopRocketSound();
-//				this.rocketSoundUpdater.update();
-//			} TODO Fix sound updater
+			//			if (this.rocketSoundUpdater instanceof GCCoreSoundUpdaterSpaceship)
+			//			{
+			//				((GCCoreSoundUpdaterSpaceship) this.rocketSoundUpdater).stopRocketSound();
+			//				this.rocketSoundUpdater.update();
+			//			} TODO Fix sound updater
 		}
 	}
 
@@ -272,7 +270,7 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
 	}
 
 	@Override
-	public void onReachAtmoshpere()
+	public void onReachAtmosphere()
 	{
 		if (this.worldObj.isRemote)
 		{
@@ -316,10 +314,10 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
 	{
 		super.onRocketLand(x, y, z);
 
-//		if (this.rocketSoundUpdater instanceof GCCoreSoundUpdaterSpaceship)
-//		{
-//			((GCCoreSoundUpdaterSpaceship) this.rocketSoundUpdater).stopRocketSound();
-//		} TODO Fix sound updater
+		//		if (this.rocketSoundUpdater instanceof GCCoreSoundUpdaterSpaceship)
+		//		{
+		//			((GCCoreSoundUpdaterSpaceship) this.rocketSoundUpdater).stopRocketSound();
+		//		} TODO Fix sound updater
 	}
 
 	@Override
@@ -405,35 +403,35 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
 		return droppedItemList;
 	}
 
-//	@RuntimeInterface(clazz = "icbm.api.IMissileLockable", modID = "ICBM|Explosion")
-//	public boolean canLock(IMissile missile)
-//	{
-//		return true;
-//	}
-//
-//	@RuntimeInterface(clazz = "icbm.api.IMissileLockable", modID = "ICBM|Explosion")
-//	public Vector3 getPredictedPosition(int ticks)
-//	{
-//		return new Vector3(this);
-//	}
-//
-//	@RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID = "ICBM|Explosion")
-//	public void destroyCraft()
-//	{
-//		this.setDead();
-//	}
-//
-//	@RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID = "ICBM|Explosion")
-//	public int doDamage(int damage)
-//	{
-//		return (int) (this.shipDamage += damage);
-//	}
-//
-//	@RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID = "ICBM|Explosion")
-//	public boolean canBeTargeted(Object entity)
-//	{
-//		return this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase() && this.timeSinceLaunch > 50;
-//	} TODO Fix ICBM integration
+	//	@RuntimeInterface(clazz = "icbm.api.IMissileLockable", modID = "ICBM|Explosion")
+	//	public boolean canLock(IMissile missile)
+	//	{
+	//		return true;
+	//	}
+	//
+	//	@RuntimeInterface(clazz = "icbm.api.IMissileLockable", modID = "ICBM|Explosion")
+	//	public Vector3 getPredictedPosition(int ticks)
+	//	{
+	//		return new Vector3(this);
+	//	}
+	//
+	//	@RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID = "ICBM|Explosion")
+	//	public void destroyCraft()
+	//	{
+	//		this.setDead();
+	//	}
+	//
+	//	@RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID = "ICBM|Explosion")
+	//	public int doDamage(int damage)
+	//	{
+	//		return (int) (this.shipDamage += damage);
+	//	}
+	//
+	//	@RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID = "ICBM|Explosion")
+	//	public boolean canBeTargeted(Object entity)
+	//	{
+	//		return this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase() && this.timeSinceLaunch > 50;
+	//	} TODO Fix ICBM integration
 
 	@Override
 	public boolean isPlayerRocket()

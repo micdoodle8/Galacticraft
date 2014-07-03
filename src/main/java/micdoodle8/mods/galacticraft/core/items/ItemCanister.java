@@ -13,8 +13,6 @@ import net.minecraft.util.IIcon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class ItemCanister extends Item
 {
 	public static final String[] names = { "tin", // 0
@@ -34,7 +32,7 @@ public class ItemCanister extends Item
 	@Override
 	public CreativeTabs getCreativeTab()
 	{
-		return GalacticraftCore.galacticraftTab;
+		return GalacticraftCore.galacticraftItemsTab;
 	}
 
 	@Override

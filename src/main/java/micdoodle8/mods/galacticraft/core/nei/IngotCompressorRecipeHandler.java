@@ -25,8 +25,6 @@ import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.FurnaceRecipeHandler.FuelPair;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 
-
-
 public class IngotCompressorRecipeHandler extends TemplateRecipeHandler
 {
 	private static final ResourceLocation ingotCompressorTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/ingotCompressor.png");

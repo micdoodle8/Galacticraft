@@ -16,8 +16,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 
-
-
 public class ContainerTerraformer extends Container
 {
 	private final TileEntityTerraformer tileEntity;

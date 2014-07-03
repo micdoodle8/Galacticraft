@@ -2,16 +2,14 @@ package micdoodle8.mods.galacticraft.planets.mars.world.gen;
 
 import java.util.Random;
 
-import micdoodle8.mods.galacticraft.api.prefab.world.gen.GCCoreMapGenBaseMeta;
+import micdoodle8.mods.galacticraft.api.prefab.world.gen.MapGenBaseMeta;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-
-
-public class MapGenCaveMars extends GCCoreMapGenBaseMeta
+public class MapGenCaveMars extends MapGenBaseMeta
 {
 
 	public static final int BREAK_THROUGH_CHANCE = 25; // 1 in n chance
@@ -131,11 +129,11 @@ public class MapGenCaveMars extends GCCoreMapGenBaseMeta
 
 					final boolean flag2 = false;
 					int j3;
-					for (j3 = l1; !flag2 && j3 < i2; ++j3)
+					for (j3 = l1; j3 < i2; ++j3)
 					{
-						for (int l3 = l2; !flag2 && l3 < i3; ++l3)
+						for (int l3 = l2; l3 < i3; ++l3)
 						{
-							for (int i4 = k2 + 1; !flag2 && i4 >= j2 - 1; --i4)
+							for (int i4 = k2 + 1; i4 >= j2 - 1; --i4)
 							{
 								if (i4 >= 0 && i4 < 128)
 								{
@@ -148,7 +146,7 @@ public class MapGenCaveMars extends GCCoreMapGenBaseMeta
 						}
 					}
 
-					if (!flag2)
+					if (true)
 					{
 
 						for (int localY = j2; localY < k2; localY++)

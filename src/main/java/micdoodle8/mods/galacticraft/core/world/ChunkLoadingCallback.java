@@ -25,8 +25,6 @@ import net.minecraftforge.common.ForgeChunkManager.LoadingCallback;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.config.Configuration;
 
-
-
 public class ChunkLoadingCallback implements LoadingCallback
 {
 	private static boolean loaded;

@@ -34,13 +34,9 @@ public class PacketSimpleMars implements IPacket
 	public static enum EnumSimplePacketMars
 	{
 		// SERVER
-		S_UPDATE_SLIMELING_DATA(Side.SERVER, Integer.class, Integer.class, String.class),
-		S_WAKE_PLAYER(Side.SERVER),
-		S_UPDATE_ADVANCED_GUI(Side.SERVER, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class),
-		S_UPDATE_CARGO_ROCKET_STATUS(Side.SERVER, Integer.class, Integer.class),
+		S_UPDATE_SLIMELING_DATA(Side.SERVER, Integer.class, Integer.class, String.class), S_WAKE_PLAYER(Side.SERVER), S_UPDATE_ADVANCED_GUI(Side.SERVER, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class), S_UPDATE_CARGO_ROCKET_STATUS(Side.SERVER, Integer.class, Integer.class),
 		// CLIENT
-		C_OPEN_CUSTOM_GUI(Side.CLIENT, Integer.class, Integer.class, Integer.class),
-		C_BEGIN_CRYOGENIC_SLEEP(Side.CLIENT, Integer.class, Integer.class, Integer.class);
+		C_OPEN_CUSTOM_GUI(Side.CLIENT, Integer.class, Integer.class, Integer.class), C_BEGIN_CRYOGENIC_SLEEP(Side.CLIENT, Integer.class, Integer.class, Integer.class);
 
 		private Side targetSide;
 		private Class<?>[] decodeAs;
@@ -155,11 +151,11 @@ public class PacketSimpleMars implements IPacket
 				break;
 			}
 		case C_BEGIN_CRYOGENIC_SLEEP:
-			TileEntity tile = player.worldObj.getTileEntity((Integer)this.data.get(0), (Integer)this.data.get(1), (Integer)this.data.get(2));
-			
+			TileEntity tile = player.worldObj.getTileEntity((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2));
+
 			if (tile instanceof TileEntityCryogenicChamber)
 			{
-				((TileEntityCryogenicChamber) tile).sleepInBedAt(player, (Integer)this.data.get(0), (Integer)this.data.get(1), (Integer)this.data.get(2));
+				((TileEntityCryogenicChamber) tile).sleepInBedAt(player, (Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2));
 			}
 		default:
 			break;
@@ -266,14 +262,14 @@ public class PacketSimpleMars implements IPacket
 				if (tile instanceof TileEntityLaunchController)
 				{
 					TileEntityLaunchController launchController = (TileEntityLaunchController) tile;
-					launchController.launchPadRemovalDisabled = (Integer) this.data.get(4) == 1 ? true : false;
+					launchController.launchPadRemovalDisabled = (Integer) this.data.get(4) == 1;
 				}
 				break;
 			case 4:
 				if (tile instanceof TileEntityLaunchController)
 				{
 					TileEntityLaunchController launchController = (TileEntityLaunchController) tile;
-					launchController.launchSchedulingEnabled = (Integer) this.data.get(4) == 1 ? true : false;
+					launchController.launchSchedulingEnabled = (Integer) this.data.get(4) == 1;
 				}
 				break;
 			case 5:

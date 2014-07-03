@@ -6,8 +6,6 @@ import net.minecraftforge.client.IRenderHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class CloudRenderer extends IRenderHandler
 {
 	@Override

@@ -8,8 +8,6 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-
-
 public class MarsBlocks
 {
 	public static Block marsBlock;
@@ -35,8 +33,17 @@ public class MarsBlocks
 
 	public static void setHarvestLevels()
 	{
-//		MinecraftForge.setBlockHarvestLevel(GCMarsBlocks.marsBlock, "pickaxe", 1);
-//		MinecraftForge.setBlockHarvestLevel(GCMarsBlocks.rock, "pickaxe", 3); TODO Harvest levels
+		MarsBlocks.marsBlock.setHarvestLevel("pickaxe", 2, 0); //Copper ore
+		MarsBlocks.marsBlock.setHarvestLevel("pickaxe", 2, 1); //Tin ore
+		MarsBlocks.marsBlock.setHarvestLevel("pickaxe", 3, 2); //Desh ore
+		MarsBlocks.marsBlock.setHarvestLevel("pickaxe", 1, 3); //Iron ore
+		MarsBlocks.marsBlock.setHarvestLevel("pickaxe", 0, 4); //Cobblestone
+		MarsBlocks.marsBlock.setHarvestLevel("pickaxe", 3, 7); //Dungeon brick
+		MarsBlocks.marsBlock.setHarvestLevel("pickaxe", 0, 8); //Decoration block
+		MarsBlocks.marsBlock.setHarvestLevel("pickaxe", 1, 9); //Stone
+		MarsBlocks.marsBlock.setHarvestLevel("shovel", 0, 5); //Top dirt
+		MarsBlocks.marsBlock.setHarvestLevel("shovel", 0, 6); //Dirt
+		MarsBlocks.rock.setHarvestLevel("pickaxe", 3);
 	}
 
 	public static void registerBlocks()

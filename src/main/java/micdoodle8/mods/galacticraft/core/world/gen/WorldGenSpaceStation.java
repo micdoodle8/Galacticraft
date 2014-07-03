@@ -7,8 +7,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
-
-
 public class WorldGenSpaceStation extends WorldGenerator
 {
 	@Override

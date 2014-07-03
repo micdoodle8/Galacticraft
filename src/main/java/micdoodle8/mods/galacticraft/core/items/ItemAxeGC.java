@@ -9,8 +9,6 @@ import net.minecraft.item.ItemStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class ItemAxeGC extends ItemAxe
 {
 	public ItemAxeGC(String assetName)
@@ -23,7 +21,7 @@ public class ItemAxeGC extends ItemAxe
 	@Override
 	public CreativeTabs getCreativeTab()
 	{
-		return GalacticraftCore.galacticraftTab;
+		return GalacticraftCore.galacticraftItemsTab;
 	}
 
 	@Override

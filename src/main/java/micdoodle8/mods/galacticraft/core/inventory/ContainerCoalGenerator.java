@@ -8,8 +8,6 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-
-
 public class ContainerCoalGenerator extends Container
 {
 	private TileEntityCoalGenerator tileEntity;

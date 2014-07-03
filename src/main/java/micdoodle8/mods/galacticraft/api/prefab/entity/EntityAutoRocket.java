@@ -52,7 +52,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 	private IFuelDock landingPad;
 	public boolean landing;
 	public EnumAutoLaunch autoLaunchSetting;
-	private static boolean marsLoaded = Loader.isModLoaded("GalacticraftPlanets");
+	private static boolean marsLoaded = Loader.isModLoaded("GalacticraftMars");
 
 	public int autoLaunchCountdown;
 	public String statusMessage;
@@ -153,7 +153,6 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 								}
 
 								launchController = (TileEntity) connectedTile;
-
 								if (launchController != null)
 								{
 									TileEntity tile2 = launchController.getWorldObj().getTileEntity(launchController.xCoord, launchController.yCoord, launchController.zCoord);
@@ -196,7 +195,6 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 						}
 						catch (ClassCastException e)
 						{
-							;
 						}
 						catch (Exception e)
 						{
@@ -243,24 +241,24 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 							continue;
 						}
 
-						TileEntity launchController = tile;
 						int controllerFrequency = controllerClass.getField("frequency").getInt(tile);
 
 						if (destFreq == controllerFrequency)
 						{
 							boolean targetSet = false;
 
-							blockLoop: for (int x = -2; x <= 2; x++)
+							blockLoop:
+							for (int x = -2; x <= 2; x++)
 							{
 								for (int z = -2; z <= 2; z++)
 								{
-									Block block = world.getBlock(launchController.xCoord + x, launchController.yCoord, launchController.zCoord + z);
+									Block block = world.getBlock(tile.xCoord + x, tile.yCoord, tile.zCoord + z);
 
 									if (block instanceof BlockLandingPadFull)
 									{
 										if (doSet)
 										{
-											this.targetVec = new Vector3(launchController.xCoord + x, launchController.yCoord, launchController.zCoord + z);
+											this.targetVec = new Vector3(tile.xCoord + x, tile.yCoord, tile.zCoord + z);
 										}
 
 										targetSet = true;
@@ -271,7 +269,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
 							if (doSet)
 							{
-								this.targetDimension = launchController.getWorldObj().provider.dimensionId;
+								this.targetDimension = tile.getWorldObj().provider.dimensionId;
 							}
 
 							if (!targetSet)
@@ -438,22 +436,20 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
 	public boolean igniteWithResult()
 	{
-		if (this.isPlayerRocket())
+		if (this.setFrequency())
 		{
 			super.ignite();
 			return true;
 		}
 		else
 		{
-			if (this.setFrequency())
+			if (this.isPlayerRocket())
 			{
 				super.ignite();
 				return true;
 			}
-			else
-			{
-				return false;
-			}
+
+			return false;
 		}
 	}
 
@@ -487,20 +483,19 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 						this.updateControllerSettings(dock);
 					}
 				}
-				
+
 				this.onRocketLand(x, y, z);
-				return;
-			}
+            }
 		}
 	}
-	
+
 	private void updateControllerSettings(IFuelDock dock)
 	{
 		HashSet<ILandingPadAttachable> connectedTiles = dock.getConnectedTiles();
 
 		try
 		{
-			Class<?> controllerClass = Class.forName("micdoodle8.mods.galacticraft.mars.tile.GCMarsTileEntityLaunchController");
+			Class<?> controllerClass = Class.forName("micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityLaunchController");
 
 			for (ILandingPadAttachable connectedTile : connectedTiles)
 			{
@@ -522,9 +517,11 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 					if (autoLaunchEnabled)
 					{
 						this.autoLaunchSetting = EnumAutoLaunch.values()[controllerClass.getField("launchDropdownSelection").getInt(updatedTile)];
-					}	
+					}
 					else
+					{
 						this.autoLaunchSetting = null;
+					}
 
 					if (this.autoLaunchSetting != null)
 					{
@@ -721,8 +718,10 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
 			//Set the player's launchpad item for return on landing - or null if launchpads not removed
 			if (this.riddenByEntity != null && this.riddenByEntity instanceof GCEntityPlayerMP)
-				((GCEntityPlayerMP) this.riddenByEntity).getPlayerStats().launchpadStack = (amountRemoved == 9) ? new ItemStack(GCBlocks.landingPad, 9, 0) : null;
-			
+			{
+				((GCEntityPlayerMP) this.riddenByEntity).getPlayerStats().launchpadStack = amountRemoved == 9 ? new ItemStack(GCBlocks.landingPad, 9, 0) : null;
+			}
+
 			this.playSound("random.pop", 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
 		}
 	}
@@ -864,7 +863,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 					this.updateControllerSettings(dock);
 				}
 			}
-			
+
 			return true;
 		}
 		return false;
@@ -890,6 +889,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 			ItemStack stackAt = this.cargoItems[count];
 
 			if (stackAt != null && stackAt.getItem() == stack.getItem() && stackAt.getItemDamage() == stack.getItemDamage() && stackAt.stackSize < stackAt.getMaxStackSize())
+			{
 				if (stackAt.stackSize + stack.stackSize <= stackAt.getMaxStackSize())
 				{
 					if (doAdd)
@@ -897,9 +897,10 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 						this.cargoItems[count].stackSize += stack.stackSize;
 						this.markDirty();
 					}
-	
+
 					return EnumCargoLoadingState.SUCCESS;
-				} else
+				}
+				else
 				{
 					//Part of the stack can fill this slot but there will be some left over
 					int origSize = stackAt.stackSize;
@@ -910,18 +911,21 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 						this.cargoItems[count].stackSize = stackAt.getMaxStackSize();
 						this.markDirty();
 					}
-					
+
 					stack.stackSize = surplus;
 					if (this.addCargo(stack, doAdd) == EnumCargoLoadingState.SUCCESS)
+					{
 						return EnumCargoLoadingState.SUCCESS;
-					
+					}
+
 					this.cargoItems[count].stackSize = origSize;
 					if (this.autoLaunchSetting == EnumAutoLaunch.CARGO_IS_FULL)
 					{
 						this.autoLaunch();
 					}
-					return EnumCargoLoadingState.FULL;			
+					return EnumCargoLoadingState.FULL;
 				}
+			}
 		}
 
 		for (count = 0; count < this.cargoItems.length - 2; count++)
@@ -962,7 +966,10 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 					this.cargoItems[i] = null;
 				}
 
-				if (doRemove) this.markDirty();
+				if (doRemove)
+				{
+					this.markDirty();
+				}
 				return new RemovalResult(EnumCargoLoadingState.SUCCESS, new ItemStack(stackAt.getItem(), 1, stackAt.getItemDamage()));
 			}
 		}
@@ -1069,7 +1076,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer entityplayer)
 	{
-		return this.isDead ? false : entityplayer.getDistanceSqToEntity(this) <= 64.0D;
+		return !this.isDead && entityplayer.getDistanceSqToEntity(this) <= 64.0D;
 	}
 
 	@Override
@@ -1081,7 +1088,6 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 	@Override
 	public void markDirty()
 	{
-		;
 	}
 
 	@Override
@@ -1123,14 +1129,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
 	public static enum EnumAutoLaunch
 	{
-		CARGO_IS_UNLOADED(0, "Cargo is Unloaded"),
-		CARGO_IS_FULL(1, "Cargo is Full"),
-		ROCKET_IS_FUELED(2, "Fully Fueled"),
-		INSTANT(3, "Instantly"),
-		TIME_10_SECONDS(4, "10 Seconds"),
-		TIME_30_SECONDS(5, "30 Seconds"),
-		TIME_1_MINUTE(6, "1 Minute"),
-		REDSTONE_SIGNAL(7, "Redstone Signal");
+		CARGO_IS_UNLOADED(0, "Cargo is Unloaded"), CARGO_IS_FULL(1, "Cargo is Full"), ROCKET_IS_FUELED(2, "Fully Fueled"), INSTANT(3, "Instantly"), TIME_10_SECONDS(4, "10 Seconds"), TIME_30_SECONDS(5, "30 Seconds"), TIME_1_MINUTE(6, "1 Minute"), REDSTONE_SIGNAL(7, "Redstone Signal");
 
 		private final int index;
 		private String title;

@@ -9,8 +9,6 @@ import net.minecraft.util.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
-
-
 public class WorldGenTerraformTree extends WorldGenerator
 {
 	private final int minTreeHeight;

@@ -30,8 +30,6 @@ import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public abstract class EntityAdvancedMotion extends InventoryEntity implements IPacketReceiver, IControllableEntity, IEntityFullSync
 {
 	protected long ticks = 0;
@@ -408,7 +406,6 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IP
 	@Override
 	public void handlePacketData(Side side, EntityPlayer player)
 	{
-		;
 	}
 
 	@SideOnly(Side.CLIENT)

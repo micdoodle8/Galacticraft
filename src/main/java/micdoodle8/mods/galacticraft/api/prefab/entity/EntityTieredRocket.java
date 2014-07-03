@@ -17,6 +17,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFuelLoader;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -224,7 +225,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 	}
 
 	@Override
-	public void onReachAtmoshpere()
+	public void onReachAtmosphere()
 	{
 		if (this.destinationFrequency != -1)
 		{
@@ -252,6 +253,10 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 				else
 				{
 					this.setPosition(this.targetVec.x + 0.5F, this.targetVec.y + 800, this.targetVec.z + 0.5F);
+					if (this.riddenByEntity != null)
+					{
+						this.setWaitForPlayer(true);
+					}
 					this.landing = true;
 				}
 			}
@@ -303,7 +308,6 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 
 	public void onTeleport(EntityPlayerMP player)
 	{
-		;
 	}
 
 	@Override
@@ -349,10 +353,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 		{
 			if (!this.worldObj.isRemote)
 			{
-				par1EntityPlayer.addChatMessage(new ChatComponentText("SPACE - Launch"));
-				par1EntityPlayer.addChatMessage(new ChatComponentText("A / D  - Turn left-right"));
-				par1EntityPlayer.addChatMessage(new ChatComponentText("W / S  - Turn up-down"));
-				par1EntityPlayer.addChatMessage(new ChatComponentText(Keyboard.getKeyName(KeyHandlerClient.openFuelGui.getKeyCode()) + "       - Inventory / Fuel"));
+                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_DISPLAY_ROCKET_CONTROLS, new Object[] {}), (GCEntityPlayerMP)par1EntityPlayer);
 				((GCEntityPlayerMP) par1EntityPlayer).getPlayerStats().chatCooldown = 0;
 				par1EntityPlayer.mountEntity(this);
 			}

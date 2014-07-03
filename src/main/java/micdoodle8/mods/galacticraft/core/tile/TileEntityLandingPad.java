@@ -22,8 +22,6 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock, IFuelable, IFuelDock, ICargoEntity
 {
 	protected long ticks = 0;
@@ -54,7 +52,7 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
 
 						this.dockedEntity.setPad(this);
 					}
-					
+
 					break;
 				}
 			}

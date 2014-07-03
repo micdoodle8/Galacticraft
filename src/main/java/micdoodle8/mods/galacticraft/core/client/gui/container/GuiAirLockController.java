@@ -16,8 +16,6 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 
-
-
 public class GuiAirLockController extends GuiScreen implements ICheckBoxCallback, IDropboxCallback, ITextBoxCallback
 {
 	private final int xSize;
@@ -50,10 +48,7 @@ public class GuiAirLockController extends GuiScreen implements ICheckBoxCallback
 		final int var6 = (this.height - this.ySize) / 2;
 		this.checkboxRedstoneSignal = new GuiElementCheckbox(0, this, this.width / 2 - 78, var6 + 18, GCCoreUtil.translate("gui.checkbox.redstoneSignal.name"));
 		this.checkboxPlayerDistance = new GuiElementCheckbox(1, this, this.width / 2 - 78, var6 + 33, GCCoreUtil.translate("gui.checkbox.playerWithin.name") + ": ");
-		String[] dropboxStrings = { GCCoreUtil.translate("gui.dropbox.playerDistance.name.0"),
-									GCCoreUtil.translate("gui.dropbox.playerDistance.name.1"),
-									GCCoreUtil.translate("gui.dropbox.playerDistance.name.2"),
-									GCCoreUtil.translate("gui.dropbox.playerDistance.name.3") };
+		String[] dropboxStrings = { GCCoreUtil.translate("gui.dropbox.playerDistance.name.0"), GCCoreUtil.translate("gui.dropbox.playerDistance.name.1"), GCCoreUtil.translate("gui.dropbox.playerDistance.name.2"), GCCoreUtil.translate("gui.dropbox.playerDistance.name.3") };
 		this.dropdownPlayerDistance = new GuiElementDropdown(2, this, var5 + 105, var6 + 34, dropboxStrings);
 		this.checkboxOpenForPlayer = new GuiElementCheckbox(3, this, this.width / 2 - 62, var6 + 49, GCCoreUtil.translate("gui.checkbox.playerName.name") + ": ");
 		this.textBoxPlayerToOpenFor = new GuiElementTextBox(4, this, this.width / 2 - 55, var6 + 64, 110, 15, "", false, 16, false);

@@ -18,7 +18,6 @@ import com.google.common.collect.Lists;
 public class SpaceRace
 {
 	private static int lastSpaceRaceID = 0;
-	private String owner;
 	private int spaceRaceID;
 	private List<String> playerNames = Lists.newArrayList();
 	private String teamName;
@@ -26,19 +25,20 @@ public class SpaceRace
 	private Vector3 teamColor;
 	private int ticksSpent;
 	private Map<CelestialBody, Integer> celestialBodyStatusList = new HashMap<CelestialBody, Integer>();
-	
-	public SpaceRace() {}
-	
+
+	public SpaceRace()
+	{
+	}
+
 	public SpaceRace(List<String> playerNames, String teamName, FlagData flagData, Vector3 teamColor)
 	{
-		this.owner = playerNames.get(0);
 		this.playerNames = playerNames;
 		this.teamName = teamName;
 		this.ticksSpent = 0;
 		this.flagData = flagData;
 		this.teamColor = teamColor;
-		this.spaceRaceID = ++lastSpaceRaceID;
-		
+		this.spaceRaceID = ++SpaceRace.lastSpaceRaceID;
+
 		for (int i = 0; i < flagData.getWidth(); i++)
 		{
 			for (int j = 0; j < flagData.getHeight(); j++)
@@ -47,7 +47,7 @@ public class SpaceRace
 			}
 		}
 	}
-	
+
 	public void loadFromNBT(NBTTagCompound nbt)
 	{
 		this.teamName = nbt.getString("TeamName");
@@ -55,28 +55,28 @@ public class SpaceRace
 		this.ticksSpent = nbt.getInteger("TicksSpent");
 		this.flagData = FlagData.readFlagData(nbt);
 		this.teamColor = new Vector3(nbt.getDouble("teamColorR"), nbt.getDouble("teamColorG"), nbt.getDouble("teamColorB"));
-		
+
 		NBTTagList tagList = nbt.getTagList("PlayerList", 10);
 		for (int i = 0; i < tagList.tagCount(); i++)
 		{
 			NBTTagCompound tagAt = tagList.getCompoundTagAt(i);
 			this.playerNames.add(tagAt.getString("PlayerName"));
 		}
-		
+
 		tagList = nbt.getTagList("CelestialBodyList", 10);
 		for (int i = 0; i < tagList.tagCount(); i++)
 		{
 			NBTTagCompound tagAt = tagList.getCompoundTagAt(i);
-			
+
 			CelestialBody body = GalaxyRegistry.getCelestialBodyFromUnlocalizedName(tagAt.getString("CelestialBodyName"));
-			
+
 			if (body != null)
 			{
-				celestialBodyStatusList.put(body, tagAt.getInteger("TimeTaken"));
+				this.celestialBodyStatusList.put(body, tagAt.getInteger("TimeTaken"));
 			}
 		}
 	}
-	
+
 	public void saveToNBT(NBTTagCompound nbt)
 	{
 		nbt.setString("TeamName", this.teamName);
@@ -86,7 +86,7 @@ public class SpaceRace
 		nbt.setDouble("teamColorR", this.teamColor.x);
 		nbt.setDouble("teamColorG", this.teamColor.y);
 		nbt.setDouble("teamColorB", this.teamColor.z);
-		
+
 		NBTTagList tagList = new NBTTagList();
 		for (String player : this.playerNames)
 		{
@@ -96,9 +96,9 @@ public class SpaceRace
 		}
 
 		nbt.setTag("PlayerList", tagList);
-		
+
 		tagList = new NBTTagList();
-		for (Entry<CelestialBody, Integer> celestialBody : celestialBodyStatusList.entrySet())
+		for (Entry<CelestialBody, Integer> celestialBody : this.celestialBodyStatusList.entrySet())
 		{
 			NBTTagCompound tagComp = new NBTTagCompound();
 			tagComp.setString("CelestialBodyName", celestialBody.getKey().getUnlocalizedName());
@@ -108,17 +108,17 @@ public class SpaceRace
 
 		nbt.setTag("CelestialBodyList", tagList);
 	}
-	
+
 	public void tick()
 	{
 		this.ticksSpent++;
 	}
-	
+
 	public String getTeamName()
 	{
 		return this.teamName;
 	}
-	
+
 	public List<String> getPlayerNames()
 	{
 		return this.playerNames;
@@ -126,72 +126,73 @@ public class SpaceRace
 
 	public FlagData getFlagData()
 	{
-		return flagData;
+		return this.flagData;
 	}
 
 	public void setFlagData(FlagData flagData)
 	{
 		this.flagData = flagData;
 	}
-	
+
 	public Vector3 getTeamColor()
 	{
-		return teamColor;
+		return this.teamColor;
 	}
-	
+
 	public void setTeamColor(Vector3 teamColor)
 	{
 		this.teamColor = teamColor;
 	}
-	
+
 	public void setTeamName(String teamName)
 	{
 		this.teamName = teamName;
 	}
-	
+
 	public void setPlayerNames(List<String> playerNames)
 	{
 		this.playerNames = playerNames;
 	}
-	
+
 	public void setSpaceRaceID(int raceID)
 	{
 		this.spaceRaceID = raceID;
 	}
-	
+
 	public int getSpaceRaceID()
 	{
 		return this.spaceRaceID;
 	}
-	
+
 	public Map<CelestialBody, Integer> getCelestialBodyStatusList()
 	{
-		return ImmutableMap.copyOf(celestialBodyStatusList);
+		return ImmutableMap.copyOf(this.celestialBodyStatusList);
 	}
-	
+
 	public void setCelestialBodyReached(CelestialBody body)
 	{
-		celestialBodyStatusList.put(body, this.ticksSpent);
+		this.celestialBodyStatusList.put(body, this.ticksSpent);
 	}
-	
+
 	public int getTicksSpent()
 	{
-		return ticksSpent;
+		return this.ticksSpent;
 	}
-	
+
 	@Override
 	public int hashCode()
 	{
-		return spaceRaceID;
+		return this.spaceRaceID;
 	}
-	
+
+	@Override
 	public boolean equals(Object other)
 	{
 		if (other instanceof SpaceRace)
 		{
 			return ((SpaceRace) other).getSpaceRaceID() == this.getSpaceRaceID();
 		}
-		
+
 		return false;
 	}
 }

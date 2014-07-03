@@ -29,8 +29,6 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.Loader;
 
-
-
 public class ModelPlayerGC extends ModelBiped
 {
 	private static final ResourceLocation oxygenMaskTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/oxygen.png");
@@ -215,19 +213,10 @@ public class ModelPlayerGC extends ModelBiped
 		this.wearingRightTankOrange = false;
 		this.wearingRightTankRed = false;
 		this.wearingFrequencyModule = false;
-		
-		final EntityPlayer player = (EntityPlayer) var1;
-		PlayerGearData gearData = null;
 
-		for (PlayerGearData gearData2 : ClientProxyCore.playerItemData)
-		{
-			if (gearData2.getPlayer().getGameProfile().getName().equals(player.getGameProfile().getName()))
-			{
-				gearData = gearData2;
-				break;
-			}
-		}
-		
+		final EntityPlayer player = (EntityPlayer) var1;
+		PlayerGearData gearData = ClientProxyCore.playerItemData.get(player.getUniqueID());
+
 		if (gearData != null)
 		{
 			this.usingParachute = gearData.getParachute() != null;

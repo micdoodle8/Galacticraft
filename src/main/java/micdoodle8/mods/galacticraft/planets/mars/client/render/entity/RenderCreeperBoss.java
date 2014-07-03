@@ -15,8 +15,6 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-
-
 public class RenderCreeperBoss extends RenderLiving
 {
 	private static final ResourceLocation creeperTexture = new ResourceLocation(MarsModule.TEXTURE_DOMAIN, "textures/model/creeper.png");
@@ -26,11 +24,6 @@ public class RenderCreeperBoss extends RenderLiving
 	public RenderCreeperBoss()
 	{
 		super(new ModelCreeperBoss(), 1.0F);
-	}
-
-	protected void scaleMob(float f)
-	{
-		GL11.glScalef(f, f, f);
 	}
 
 	@Override
@@ -86,7 +79,7 @@ public class RenderCreeperBoss extends RenderLiving
 	@Override
 	protected void preRenderCallback(EntityLivingBase par1EntityLiving, float par2)
 	{
-		this.scaleMob(4.0F);
+		GL11.glScalef(4.0F, 4.0F, 4.0F);
 	}
 
 	@Override

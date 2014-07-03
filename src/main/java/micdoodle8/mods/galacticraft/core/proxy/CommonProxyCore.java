@@ -11,23 +11,18 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
-
-
 public class CommonProxyCore
 {
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		;
 	}
 
 	public void init(FMLInitializationEvent event)
 	{
-		;
 	}
 
 	public void postInit(FMLPostInitializationEvent event)
 	{
-		;
 	}
 
 	public int getBlockRender(Block blockID)
@@ -52,26 +47,24 @@ public class CommonProxyCore
 
 	public void spawnParticle(String particleID, Vector3 position, Vector3 motion)
 	{
-		;
 	}
 
 	public void spawnParticle(String particleID, Vector3 position, Vector3 motion, Vector3 color)
 	{
-		;
 	}
-	
+
 	public World getWorldForID(int dimensionID)
 	{
 		return FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(dimensionID);
 	}
-	
-	public EntityPlayer getPlayerFromNetHandler(INetHandler handler) 
+
+	public EntityPlayer getPlayerFromNetHandler(INetHandler handler)
 	{
 		if (handler instanceof NetHandlerPlayServer)
 		{
 			return ((NetHandlerPlayServer) handler).playerEntity;
-		} 
-		else 
+		}
+		else
 		{
 			return null;
 		}

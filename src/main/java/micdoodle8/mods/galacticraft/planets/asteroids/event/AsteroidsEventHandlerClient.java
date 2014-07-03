@@ -1,17 +1,20 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.event;
 
-import micdoodle8.mods.galacticraft.core.client.CloudRenderer;
-import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore.EventSpecialRender;
-import micdoodle8.mods.galacticraft.planets.asteroids.client.SkyProviderAsteroids;
-import micdoodle8.mods.galacticraft.planets.asteroids.client.render.NetworkRenderer;
-import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.WorldClient;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.core.client.CloudRenderer;
+import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP.ThermalArmorEvent;
+import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP.ThermalArmorEvent.ArmorAddResult;
+import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore.EventSpecialRender;
+import micdoodle8.mods.galacticraft.planets.asteroids.client.SkyProviderAsteroids;
+import micdoodle8.mods.galacticraft.planets.asteroids.client.render.NetworkRenderer;
+import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
+import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.WorldClient;
 
 public class AsteroidsEventHandlerClient
 {
@@ -36,7 +39,7 @@ public class AsteroidsEventHandlerClient
 					world.provider.setCloudRenderer(new CloudRenderer());
 				}
 			}
-		}			
+		}
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -44,5 +47,24 @@ public class AsteroidsEventHandlerClient
 	public void onSpecialRender(EventSpecialRender event)
 	{
 		NetworkRenderer.renderNetworks(FMLClientHandler.instance().getClient().theWorld, event.partialTicks);
+	}
+
+	@SideOnly(Side.CLIENT)
+	@SubscribeEvent
+	public void onThermalArmorEvent(ThermalArmorEvent event)
+	{
+		if (event.armorStack == null)
+		{
+			event.setArmorAddResult(ArmorAddResult.REMOVE);
+			return;
+		}
+
+		if (event.armorStack.getItem() == AsteroidsItems.thermalPadding && event.armorStack.getItemDamage() == event.armorIndex)
+		{
+			event.setArmorAddResult(ArmorAddResult.ADD);
+			return;
+		}
+
+		event.setArmorAddResult(ArmorAddResult.NOTHING);
 	}
 }

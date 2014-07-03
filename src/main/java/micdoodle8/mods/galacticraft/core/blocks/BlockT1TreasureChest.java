@@ -27,8 +27,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
+@SuppressWarnings("SimplifiableConditionalExpression")
 public class BlockT1TreasureChest extends BlockContainer implements ITileEntityProvider
 {
 	private final Random random = new Random();
@@ -58,7 +57,7 @@ public class BlockT1TreasureChest extends BlockContainer implements ITileEntityP
 	@Override
 	public CreativeTabs getCreativeTabToDisplayOn()
 	{
-		return GalacticraftCore.galacticraftTab;
+		return GalacticraftCore.galacticraftBlocksTab;
 	}
 
 	@Override
@@ -455,8 +454,7 @@ public class BlockT1TreasureChest extends BlockContainer implements ITileEntityP
 				return false;
 			}
 
-			final EntityOcelot var5 = (EntityOcelot) var4.next();
-			var6 = var5;
+			var6 = (EntityOcelot) var4.next();
 		}
 		while (!var6.isSitting());
 

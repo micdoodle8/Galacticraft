@@ -19,8 +19,6 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-
-
 public class GuiSolar extends GuiContainerGC
 {
 	private static final ResourceLocation solarGuiTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/solar.png");
@@ -89,8 +87,8 @@ public class GuiSolar extends GuiContainerGC
 		float boost = Math.round((this.solarPanel.getSolarBoost() - 1) * 1000) / 10.0F;
 		displayString = GCCoreUtil.translate("gui.message.environment.name") + ": " + boost + "%";
 		this.fontRendererObj.drawString(displayString, this.xSize / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, 56 + 23 - 46 + offsetY, 4210752);
-//		displayString = ElectricityDisplay.getDisplay(this.solarPanel.getVoltage(), ElectricUnit.VOLTAGE);
-//		this.fontRendererObj.drawString(displayString, this.xSize / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, 68 + 23 - 46 + offsetY, 4210752);
+		//		displayString = ElectricityDisplay.getDisplay(this.solarPanel.getVoltage(), ElectricUnit.VOLTAGE);
+		//		this.fontRendererObj.drawString(displayString, this.xSize / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, 68 + 23 - 46 + offsetY, 4210752);
 		this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 90, 4210752);
 	}
 

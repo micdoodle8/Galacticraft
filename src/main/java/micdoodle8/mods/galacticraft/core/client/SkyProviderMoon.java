@@ -19,8 +19,6 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
 
-
-
 public class SkyProviderMoon extends IRenderHandler
 {
 	private static final ResourceLocation overworldTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/planets/overworld.png");

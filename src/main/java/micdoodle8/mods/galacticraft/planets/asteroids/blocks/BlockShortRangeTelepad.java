@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
-import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityShortRangeTelepad;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -23,7 +23,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockShortRangeTelepad extends BlockContainer
 {
-	protected BlockShortRangeTelepad(String assetName) 
+	protected BlockShortRangeTelepad(String assetName)
 	{
 		super(Material.iron);
 		this.blockHardness = 3.0F;
@@ -35,23 +35,23 @@ public class BlockShortRangeTelepad extends BlockContainer
 	@Override
 	public CreativeTabs getCreativeTabToDisplayOn()
 	{
-		return AsteroidsModule.asteroidsTab;
+		return GalacticraftCore.galacticraftBlocksTab;
 	}
 
 	@Override
-    public int getRenderType()
-    {
-        return -1;
-    }
-    
-	@Override
-    public boolean isOpaqueCube()
-    {
-        return false;
-    }
+	public int getRenderType()
+	{
+		return -1;
+	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) 
+	public boolean isOpaqueCube()
+	{
+		return false;
+	}
+
+	@Override
+	public TileEntity createNewTileEntity(World world, int meta)
 	{
 		return new TileEntityShortRangeTelepad();
 	}
@@ -97,20 +97,20 @@ public class BlockShortRangeTelepad extends BlockContainer
 	}
 
 	@Override
-    @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(World world, int x, int y, int z, Random rand) 
-    {
+	@SideOnly(Side.CLIENT)
+	public void randomDisplayTick(World world, int x, int y, int z, Random rand)
+	{
 		for (int i = 0; i < 6; i++)
 		{
 			for (int j = 0; j < 4; j++)
 			{
-		    	world.spawnParticle("portal", x + 0.2 + rand.nextDouble() * 0.6, y + 0.1, z + 0.2 + rand.nextDouble() * 0.6, 0.0, 1.75, 0.0);
+				world.spawnParticle("portal", x + 0.2 + rand.nextDouble() * 0.6, y + 0.1, z + 0.2 + rand.nextDouble() * 0.6, 0.0, 1.75, 0.0);
 			}
-			
-	    	world.spawnParticle("portal", x + 0.0 + rand.nextDouble() * 0.2, y + 2.9, z + rand.nextDouble(), 0.0, -2.95, 0.0);
-	    	world.spawnParticle("portal", x + 0.8 + rand.nextDouble() * 0.2, y + 2.9, z + rand.nextDouble(), 0.0, -2.95, 0.0);
-	    	world.spawnParticle("portal", x + rand.nextDouble(), y + 2.9, z + 0.2 + rand.nextDouble() * 0.2, 0.0, -2.95, 0.0);
-	    	world.spawnParticle("portal", x + rand.nextDouble(), y + 2.9, z + 0.8 + rand.nextDouble() * 0.2, 0.0, -2.95, 0.0);
+
+			world.spawnParticle("portal", x + 0.0 + rand.nextDouble() * 0.2, y + 2.9, z + rand.nextDouble(), 0.0, -2.95, 0.0);
+			world.spawnParticle("portal", x + 0.8 + rand.nextDouble() * 0.2, y + 2.9, z + rand.nextDouble(), 0.0, -2.95, 0.0);
+			world.spawnParticle("portal", x + rand.nextDouble(), y + 2.9, z + 0.2 + rand.nextDouble() * 0.2, 0.0, -2.95, 0.0);
+			world.spawnParticle("portal", x + rand.nextDouble(), y + 2.9, z + 0.8 + rand.nextDouble() * 0.2, 0.0, -2.95, 0.0);
 		}
-    }
+	}
 }

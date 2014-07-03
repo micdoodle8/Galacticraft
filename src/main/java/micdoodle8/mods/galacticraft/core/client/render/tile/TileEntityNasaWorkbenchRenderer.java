@@ -9,8 +9,6 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-
-
 public class TileEntityNasaWorkbenchRenderer extends TileEntitySpecialRenderer
 {
 	private static final ResourceLocation assemblyTableTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/assembly.png");

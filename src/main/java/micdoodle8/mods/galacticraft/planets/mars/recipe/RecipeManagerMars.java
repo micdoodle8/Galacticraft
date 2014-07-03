@@ -16,8 +16,6 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.oredict.OreDictionary;
 
-
-
 public class RecipeManagerMars
 {
 	public static void loadRecipes()

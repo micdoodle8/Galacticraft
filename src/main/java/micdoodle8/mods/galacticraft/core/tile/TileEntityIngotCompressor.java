@@ -23,8 +23,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntityFurnace;
 import cpw.mods.fml.relauncher.Side;
 
-
-
 public class TileEntityIngotCompressor extends TileEntityAdvanced implements IInventory, ISidedInventory, IPacketReceiver
 {
 	public static final int PROCESS_TIME_REQUIRED = 200;
@@ -38,7 +36,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
 
 	private ItemStack producingStack = null;
 	private ItemStack[] containingItems = new ItemStack[2];
-	public PersistantInventoryCrafting compressingCraftMatrix = new PersistantInventoryCrafting(3, 3);
+	public PersistantInventoryCrafting compressingCraftMatrix = new PersistantInventoryCrafting();
 	public final Set<EntityPlayer> playersUsing = new HashSet<EntityPlayer>();
 
 	@Override
@@ -234,7 +232,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
 
 		for (int var3 = 0; var3 < var2.tagCount(); ++var3)
 		{
-			NBTTagCompound var4 = (NBTTagCompound) var2.getCompoundTagAt(var3);
+			NBTTagCompound var4 = var2.getCompoundTagAt(var3);
 			byte var5 = var4.getByte("Slot");
 
 			if (var5 >= 0 && var5 < this.containingItems.length)
@@ -389,7 +387,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
 	{
-		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
+		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
 	}
 
 	@Override

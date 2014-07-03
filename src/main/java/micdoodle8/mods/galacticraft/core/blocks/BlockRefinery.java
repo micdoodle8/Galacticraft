@@ -21,8 +21,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class BlockRefinery extends BlockAdvancedTile
 {
 	private final Random refineryRand = new Random();
@@ -46,7 +44,7 @@ public class BlockRefinery extends BlockAdvancedTile
 	@Override
 	public CreativeTabs getCreativeTabToDisplayOn()
 	{
-		return GalacticraftCore.galacticraftTab;
+		return GalacticraftCore.galacticraftBlocksTab;
 	}
 
 	@Override
@@ -108,13 +106,10 @@ public class BlockRefinery extends BlockAdvancedTile
 	@Override
 	public boolean onUseWrench(World par1World, int x, int y, int z, EntityPlayer par5EntityPlayer, int side, float hitX, float hitY, float hitZ)
 	{
-		final int metadata = par1World.getBlockMetadata(x, y, z);
-		final int original = metadata;
-
 		int change = 0;
 
 		// Re-orient the block
-		switch (original)
+		switch (par1World.getBlockMetadata(x, y, z))
 		{
 		case 0:
 			change = 3;

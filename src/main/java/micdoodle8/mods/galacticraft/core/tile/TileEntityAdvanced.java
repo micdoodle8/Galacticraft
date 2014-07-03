@@ -18,8 +18,6 @@ import net.minecraft.tileentity.TileEntity;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.relauncher.Side;
 
-
-
 public abstract class TileEntityAdvanced extends TileEntity implements IPacketReceiver
 {
 	public long ticks = 0;
@@ -113,7 +111,7 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
 	public void getNetworkedData(ArrayList<Object> sendData)
 	{
 		Set<Field> fieldList = null;
-		
+
 		if (this.fieldCacheClient == null || this.fieldCacheServer == null)
 		{
 			try

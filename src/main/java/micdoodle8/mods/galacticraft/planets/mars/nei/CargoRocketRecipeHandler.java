@@ -1,4 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.mars.nei;
+
 //package micdoodle8.mods.galacticraft.mars.nei;
 //
 //import java.util.ArrayList;

@@ -7,8 +7,6 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-
-
 public class GuiElementTexturedButton extends GuiButton
 {
 	private final ResourceLocation texture;

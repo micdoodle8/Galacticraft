@@ -17,8 +17,6 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 @SideOnly(Side.CLIENT)
 public class TileEntityBeamReceiverRenderer extends TileEntitySpecialRenderer
 {
@@ -27,21 +25,21 @@ public class TileEntityBeamReceiverRenderer extends TileEntitySpecialRenderer
 
 	public TileEntityBeamReceiverRenderer()
 	{
-		receiverModel = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "models/receiver.obj"));
+		TileEntityBeamReceiverRenderer.receiverModel = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "models/receiver.obj"));
 	}
 
 	public void renderModelAt(TileEntityBeamReceiver tileEntity, double d, double d1, double d2, float f)
 	{
 		// Texture file
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TileEntityBeamReceiverRenderer.receiverTexture);
-		
+
 		Tessellator tess = Tessellator.instance;
-		
+
 		GL11.glPushMatrix();
 
 		GL11.glTranslatef((float) d + 0.5F, (float) d1, (float) d2 + 0.5F);
 		GL11.glScalef(0.85F, 0.85F, 0.85F);
-		
+
 		switch (ForgeDirection.getOrientation(tileEntity.facing))
 		{
 		case DOWN:
@@ -72,10 +70,10 @@ public class TileEntityBeamReceiverRenderer extends TileEntitySpecialRenderer
 			GL11.glPopMatrix();
 			return;
 		}
-		
+
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		receiverModel.renderPart("Main");
-		
+		TileEntityBeamReceiverRenderer.receiverModel.renderPart("Main");
+
 		if (tileEntity.modeReceive == ReceiverMode.RECEIVE.ordinal())
 		{
 			GL11.glColor3f(0.0F, 0.8F, 0.0F);
@@ -88,12 +86,12 @@ public class TileEntityBeamReceiverRenderer extends TileEntitySpecialRenderer
 		{
 			GL11.glColor3f(0.1F, 0.1F, 0.1F);
 		}
-		
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL11.GL_CULL_FACE);
-		receiverModel.renderPart("Receiver");
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glEnable(GL11.GL_CULL_FACE);
+
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		GL11.glDisable(GL11.GL_CULL_FACE);
+		TileEntityBeamReceiverRenderer.receiverModel.renderPart("Receiver");
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		GL11.glEnable(GL11.GL_CULL_FACE);
 		float dX = 0.34772F;
 		float dY = 0.75097F;
 		float dZ = 0.0F;
@@ -104,7 +102,7 @@ public class TileEntityBeamReceiverRenderer extends TileEntitySpecialRenderer
 		}
 		GL11.glTranslatef(-dX, -dY, -dZ);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		receiverModel.renderPart("Ring");
+		TileEntityBeamReceiverRenderer.receiverModel.renderPart("Ring");
 
 		GL11.glPopMatrix();
 	}

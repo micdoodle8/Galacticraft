@@ -13,8 +13,6 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
-
-
 public class BlockRendererOxygenPipe implements ISimpleBlockRenderingHandler
 {
 	final int renderID;

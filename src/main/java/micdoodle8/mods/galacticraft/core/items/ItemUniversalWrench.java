@@ -15,8 +15,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class ItemUniversalWrench extends Item
 {
 	public ItemUniversalWrench(String assetName)
@@ -31,7 +29,7 @@ public class ItemUniversalWrench extends Item
 	@Override
 	public CreativeTabs getCreativeTab()
 	{
-		return GalacticraftCore.galacticraftTab;
+		return GalacticraftCore.galacticraftItemsTab;
 	}
 
 	@Override
@@ -75,7 +73,7 @@ public class ItemUniversalWrench extends Item
 	}
 
 	@Override
-    public boolean doesSneakBypassUse(World world, int x, int y, int z, EntityPlayer player)
+	public boolean doesSneakBypassUse(World world, int x, int y, int z, EntityPlayer player)
 	{
 		return true;
 	}

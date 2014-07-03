@@ -18,8 +18,15 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+/**
+ * Metadata: 3 = Tin Decoration Block 1 4 = Tin Decoration Block 2 5 = Copper
+ * Ore 6 = Tin Ore 7 = Aluminium Ore 8 = Silicon Ore 9 = Copper Decoration Block
+ * [unused] 10 = Tin Decoration Block [unused] 11 = Aluminium Decoration Block
+ * [unused]
+ */
 public class BlockBasic extends Block implements IDetectableResource
 {
+
 	IIcon[] iconBuffer;
 
 	protected BlockBasic(String assetName)
@@ -33,7 +40,7 @@ public class BlockBasic extends Block implements IDetectableResource
 	@Override
 	public CreativeTabs getCreativeTabToDisplayOn()
 	{
-		return GalacticraftCore.galacticraftTab;
+		return GalacticraftCore.galacticraftBlocksTab;
 	}
 
 	@Override
@@ -133,6 +140,29 @@ public class BlockBasic extends Block implements IDetectableResource
 		}
 	}
 
+	@Override
+	public float getBlockHardness(World par1World, int par2, int par3, int par4)
+	{
+		final int meta = par1World.getBlockMetadata(par2, par3, par4);
+
+		if (meta == 5 || meta == 6)
+		{
+			return 5.0F;
+		}
+
+		if (meta == 7)
+		{
+			return 6.0F;
+		}
+
+		if (meta == 8)
+		{
+			return 3.0F;
+		}
+
+		return this.blockHardness;
+	}
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@SideOnly(Side.CLIENT)
 	@Override
@@ -149,13 +179,16 @@ public class BlockBasic extends Block implements IDetectableResource
 	{
 		return metadata >= 5 && metadata <= 8;
 	}
-	
+
 	@Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
-    {
-		int metadata = world.getBlockMetadata(x,  y,  z);
-		if (metadata == 8) return new ItemStack(Item.getItemFromBlock(this), 1, metadata);
-		
+	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
+	{
+		int metadata = world.getBlockMetadata(x, y, z);
+		if (metadata == 8)
+		{
+			return new ItemStack(Item.getItemFromBlock(this), 1, metadata);
+		}
+
 		return super.getPickBlock(target, world, x, y, z);
-    }
+	}
 }

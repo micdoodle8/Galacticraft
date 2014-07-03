@@ -93,10 +93,10 @@ item.infiniteBattery.name=Infinite Battery
 item.meteorChunk.name=Throwable Meteor Chunk
 item.meteorChunkHot.name=Throwable Meteor Chunk
 item.hotDescription.name=Hot
-item.basicItem.dehydratedApple.name=Dehydrated Apple
-item.basicItem.dehydratedCarrot.name=Dehydrated Carrot
-item.basicItem.dehydratedMelon.name=Dehydrated Melon
-item.basicItem.dehydratedPotato.name=Dehydrated Potato
+item.basicItem.dehydratedApple.name=Dehydrated Apples
+item.basicItem.dehydratedCarrot.name=Dehydrated Carrots
+item.basicItem.dehydratedMelon.name=Dehydrated Melons
+item.basicItem.dehydratedPotato.name=Dehydrated Potatoes
 item.basicItem.cannedFood.name=Can of Food
 item.basicItem.frequencyModule.name=Frequency Module
 item.standardWrench.name=Standard Wrench
@@ -151,7 +151,7 @@ tile.landingPad.cargoPad.name=Cargo Rocket Pad
 tile.enclosed.copperCable.name=Sealable Copper Cable
 tile.enclosed.goldCable.name=Sealable Gold Cable
 tile.enclosed.hvCable.name=Sealable HV Cable
-tile.enclosed.glassFibreCable.name=Sealable Glass Fibre Cable
+tile.enclosed.glassFibreCable.name=Sealable Glass Fiber Cable
 tile.enclosed.lvCable.name=Sealable Ultra-Low-Current Cable
 tile.enclosed.PipeItemsCobblestone.name=Sealable Cobblestone Transport Pipe
 tile.enclosed.PipeItemsStone.name=Sealable Stone Transport Pipe
@@ -189,6 +189,8 @@ tile.gcBlockCore.aluminumBlock.name=Aluminum Block
 tile.fuel.name=Fuel
 tile.oxygenCompressor.0.name=Oxygen Compressor
 tile.oxygenCompressor.1.name=Oxygen Decompressor
+tile.arclamp.name=Arc Lamp
+tile.spinThruster.name=Spin Thruster
 
 # ENTITIES
 entity.GalacticraftCore.EvolvedSpider.name=Evolved Spider
@@ -214,6 +216,7 @@ schematic.rocketT2.name=Tier 2 Rocket
 # DEATH MESSAGES
 death.attack.spaceshipExplosion=%1$s's rocket malfunctioned!
 death.attack.spaceshipExplosionB=%1$s died in an unfortunate spaceship accident!
+death.attack.spaceshipCrash=%1$s's rocket smashed itself into the ground. Oops.
 death.attack.oxygenSuffocation=%1$s ran out of oxygen!
 
 # GALAXIES
@@ -266,6 +269,13 @@ gui.message.addnewsch.name=Add New Schematic
 gui.message.generating.name=Generating
 gui.message.environment.name=Environmental Boost
 gui.message.oil.name=Oil
+gui.message.catalog.name=Catalog
+gui.message.back.name=Back
+gui.message.daynightcycle.name=Day-night Cycle
+gui.message.surfacegravity.name=Surface Gravity
+gui.message.surfacecomposition.name=Surface Composition
+gui.message.atmosphere.name=Atmosphere
+gui.message.meansurfacetemp.name=Mean Surface Temp
 
 gui.status.active.name=Active
 gui.status.missingleaves.name=Not Enough Leaf Blocks
@@ -356,10 +366,30 @@ gui.buggy.accel.name=Accelerate
 gui.buggy.decel.name=Decelerate
 gui.buggy.inv.name=Inventory / Fuel
 
+gui.rocket.launch.name=Launch
+gui.rocket.turn.name=Turn left-right
+gui.rocket.updown.name=Turn up-down
+gui.rocket.inv.name=Inventory / Fuel
+
+gui.rocket.warning.noparachute=I don't have a parachute! If I press launch again, there's no going back!
+gui.rocket.warning.nofuel=I'll need to load in some rocket fuel first!
+gui.chest.warning.wrongkey=I'll probably need a Tier %s Dungeon key to unlock this!
+gui.frequencymodule.warning0=I'll probably need a
+gui.frequencymodule.warning1=if I want to hear properly here.
+
 gui.rocketType.0=Storage Space: 18
 gui.rocketType.1=Storage Space: 36
 gui.rocketType.2=Storage Space: 56
 gui.rocketType.3=Pre-fueled
+
+gui.spacestation.typeCommand=Type
+gui.spacestation.playername=<playername>
+gui.spacestation.toAllowEntry=to allow another player to enter this space station!
+
+gui.skeletonBoss.message=Boss despawned, don't leave the boss room while fighting! Re-enter room to respawn boss.
+gui.warning.noroom=Not enough room!
+gui.flag.alreadyPlaced=Flag already placed here!
+gui.receiver.cannotAttach=Cannot attach receiver here!
 
 gui.tank.oxygenRemaining=Oxygen Remaining
 gui.buggy.storageSpace=Storage Space
@@ -436,6 +466,28 @@ dimension.Moon.name=Moon
 dimension.Sun.name=Sun
 planet.overworld=Overworld
 moon.moon=Moon
+
+gui.message.moon.daynightcycle.0.name=29.5 Earth Days
+gui.message.moon.daynightcycle.1.name=
+gui.message.moon.surfacegravity.0.name=0.1654g
+gui.message.moon.surfacegravity.1.name=(18% of Earth)
+gui.message.moon.surfacecomposition.0.name=Basaltic Rock and
+gui.message.moon.surfacecomposition.1.name=Traces of Cheese
+gui.message.moon.atmosphere.0.name=None
+gui.message.moon.atmosphere.1.name=
+gui.message.moon.meansurfacetemp.0.name=(Light Side) 253C
+gui.message.moon.meansurfacetemp.1.name=(Dark Side) -153C
+
+gui.message.overworld.daynightcycle.0.name=1 Earth Day
+gui.message.overworld.daynightcycle.1.name=
+gui.message.overworld.surfacegravity.0.name=1.0g
+gui.message.overworld.surfacegravity.1.name=(100% of Earth)
+gui.message.overworld.surfacecomposition.0.name=Stone, dirt, and
+gui.message.overworld.surfacecomposition.1.name=gravel
+gui.message.overworld.atmosphere.0.name=Nitrogen and Oxygen
+gui.message.overworld.atmosphere.1.name=Supports life
+gui.message.overworld.meansurfacetemp.0.name=14C
+gui.message.overworld.meansurfacetemp.1.name=
 
 # COMMANDS
 commands.dimensionteleport=%s was sent into the atmosphere%s

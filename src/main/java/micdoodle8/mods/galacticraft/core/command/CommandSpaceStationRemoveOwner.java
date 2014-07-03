@@ -9,8 +9,6 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.util.ChatComponentText;
 
-
-
 public class CommandSpaceStationRemoveOwner extends CommandBase
 {
 	@Override

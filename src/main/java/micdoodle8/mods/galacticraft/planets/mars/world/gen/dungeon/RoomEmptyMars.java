@@ -9,8 +9,6 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.common.util.ForgeDirection;
 
-
-
 public class RoomEmptyMars extends DungeonRoom
 {
 	int sizeX;

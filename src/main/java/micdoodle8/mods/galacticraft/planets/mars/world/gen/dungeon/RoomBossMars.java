@@ -15,8 +15,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraftforge.common.util.ForgeDirection;
 
-
-
 public class RoomBossMars extends DungeonRoom
 {
 	public int sizeX;

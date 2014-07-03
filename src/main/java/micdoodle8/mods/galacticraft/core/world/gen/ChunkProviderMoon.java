@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import micdoodle8.mods.galacticraft.api.prefab.world.gen.GCCoreMapGenBaseMeta;
+import micdoodle8.mods.galacticraft.api.prefab.world.gen.MapGenBaseMeta;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedCreeper;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSkeleton;
@@ -21,7 +21,7 @@ import micdoodle8.mods.galacticraft.core.world.gen.dungeon.RoomEmptyMoon;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.RoomSpawnerMoon;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.RoomTreasureMoon;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockSand;
+import net.minecraft.block.BlockFalling;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.IProgressUpdate;
@@ -32,8 +32,6 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderGenerate;
 import net.minecraftforge.common.util.ForgeDirection;
-
-
 
 public class ChunkProviderMoon extends ChunkProviderGenerate
 {
@@ -76,7 +74,7 @@ public class ChunkProviderMoon extends ChunkProviderGenerate
 
 	private BiomeGenBase[] biomesForGeneration = { BiomeGenBaseMoon.moonFlat };
 
-	private final GCCoreMapGenBaseMeta caveGenerator = new MapGenCavesMoon();
+	private final MapGenBaseMeta caveGenerator = new MapGenCavesMoon();
 
 	private static final int CRATER_PROB = 300;
 
@@ -91,18 +89,18 @@ public class ChunkProviderMoon extends ChunkProviderGenerate
 		super(par1World, par2, par4);
 		this.worldObj = par1World;
 		this.rand = new Random(par2);
-		this.noiseGen1 = new Gradient(this.rand.nextLong(), 4, 0.25);
-		this.noiseGen2 = new Gradient(this.rand.nextLong(), 4, 0.25);
-		this.noiseGen3 = new Gradient(this.rand.nextLong(), 1, 0.25);
-		this.noiseGen4 = new Gradient(this.rand.nextLong(), 1, 0.25);
+		this.noiseGen1 = new Gradient(this.rand.nextLong(), 4, 0.25F);
+		this.noiseGen2 = new Gradient(this.rand.nextLong(), 4, 0.25F);
+		this.noiseGen3 = new Gradient(this.rand.nextLong(), 1, 0.25F);
+		this.noiseGen4 = new Gradient(this.rand.nextLong(), 1, 0.25F);
 	}
 
 	public void generateTerrain(int chunkX, int chunkZ, Block[] idArray, byte[] metaArray)
 	{
-		this.noiseGen1.setFrequency(0.0125);
-		this.noiseGen2.setFrequency(0.015);
-		this.noiseGen3.setFrequency(0.01);
-		this.noiseGen4.setFrequency(0.02);
+		this.noiseGen1.setFrequency(0.0125F);
+		this.noiseGen2.setFrequency(0.015F);
+		this.noiseGen3.setFrequency(0.01F);
+		this.noiseGen4.setFrequency(0.02F);
 
 		for (int x = 0; x < ChunkProviderMoon.CHUNK_SIZE_X; x++)
 		{
@@ -140,6 +138,7 @@ public class ChunkProviderMoon extends ChunkProviderGenerate
 		}
 	}
 
+	@Override
 	public void replaceBlocksForBiome(int par1, int par2, Block[] arrayOfIDs, byte[] arrayOfMeta, BiomeGenBase[] par4ArrayOfBiomeGenBase)
 	{
 		final int var5 = 20;
@@ -320,7 +319,7 @@ public class ChunkProviderMoon extends ChunkProviderGenerate
 
 	private int getIndex(int x, int y, int z)
 	{
-        return (x * 16 + z) * 256 + y;
+		return (x * 16 + z) * 256 + y;
 	}
 
 	private double randFromPoint(int x, int z)
@@ -339,7 +338,7 @@ public class ChunkProviderMoon extends ChunkProviderGenerate
 	@Override
 	public void populate(IChunkProvider par1IChunkProvider, int par2, int par3)
 	{
-		BlockSand.fallInstantly = true;
+		BlockFalling.fallInstantly = true;
 		final int var4 = par2 * 16;
 		final int var5 = par3 * 16;
 		this.worldObj.getBiomeGenForCoords(var4 + 16, var5 + 16);
@@ -356,7 +355,7 @@ public class ChunkProviderMoon extends ChunkProviderGenerate
 		}
 
 		this.decoratePlanet(this.worldObj, this.rand, var4, var5);
-		BlockSand.fallInstantly = false;
+		BlockFalling.fallInstantly = false;
 	}
 
 	@Override

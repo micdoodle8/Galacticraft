@@ -103,7 +103,7 @@ public class NetworkUtil
 			{
 				buffer.writeInt(((FlagData) dataValue).getWidth());
 				buffer.writeInt(((FlagData) dataValue).getHeight());
-				
+
 				for (int i = 0; i < ((FlagData) dataValue).getWidth(); i++)
 				{
 					for (int j = 0; j < ((FlagData) dataValue).getHeight(); j++)
@@ -145,8 +145,8 @@ public class NetworkUtil
 					buffer.writeFloat((float) array[i].position.x);
 					buffer.writeFloat((float) array[i].position.y + 1);
 					buffer.writeFloat((float) array[i].position.z);
-					buffer.writeFloat((float) array[i].rotation);
-					buffer.writeShort((short) array[i].age);
+					buffer.writeFloat(array[i].rotation);
+					buffer.writeShort(array[i].age);
 				}
 			}
 			else
@@ -224,7 +224,7 @@ public class NetworkUtil
 				int width = buffer.readInt();
 				int height = buffer.readInt();
 				FlagData flagData = new FlagData(width, height);
-				
+
 				for (int i = 0; i < width; i++)
 				{
 					for (int j = 0; j < height; j++)
@@ -232,7 +232,7 @@ public class NetworkUtil
 						flagData.setColorAt(i, j, new Vector3(buffer.readByte() + 128, buffer.readByte() + 128, buffer.readByte() + 128));
 					}
 				}
-				
+
 				objList.add(flagData);
 			}
 			else if (clazz.equals(Integer[].class))

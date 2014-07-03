@@ -39,7 +39,7 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
 	public BlockBasicMoon()
 	{
 		super(Material.rock);
-		this.blockHardness = 3.0F;
+		this.blockHardness = 1.5F;
 		this.setBlockName("moonBlock");
 	}
 
@@ -48,9 +48,9 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
 	{
 		if (world.getBlockMetadata(x, y, z) == 15)
 		{
-	        return AxisAlignedBB.getAABBPool().getAABB(x, y, z, x, y, z);
+			return AxisAlignedBB.getAABBPool().getAABB(x, y, z, x, y, z);
 		}
-		
+
 		return super.getCollisionBoundingBoxFromPool(world, x, y, z);
 	}
 
@@ -59,15 +59,15 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
 	{
 		if (world.getBlockMetadata(x, y, z) == 15)
 		{
-	        return AxisAlignedBB.getAABBPool().getAABB(x, y, z, x, y, z);
+			return AxisAlignedBB.getAABBPool().getAABB(x, y, z, x, y, z);
 		}
-		
+
 		return super.getSelectedBoundingBoxFromPool(world, x, y, z);
 	}
 
 	@Override
-    public boolean isNormalCube(IBlockAccess world, int x, int y, int z)
-    {
+	public boolean isNormalCube(IBlockAccess world, int x, int y, int z)
+	{
 		if (world.getBlockMetadata(x, y, z) == 15)
 		{
 			return false;
@@ -76,7 +76,7 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
 		{
 			return super.isNormalCube(world, x, y, z);
 		}
-    }
+	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -106,7 +106,7 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
 	@Override
 	public CreativeTabs getCreativeTabToDisplayOn()
 	{
-		return GalacticraftCore.galacticraftTab;
+		return GalacticraftCore.galacticraftBlocksTab;
 	}
 
 	@Override
@@ -127,12 +127,22 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
 
 		if (meta == 3 || meta >= 5 && meta <= 13)
 		{
-			return 0.1F;
+			return 0.5F;
 		}
 
-		if (meta == 14 || meta == 15)
+		if (meta > 13)
 		{
 			return -1F;
+		}
+
+		if (meta < 2)
+		{
+			return 5.0F;
+		}
+
+		if (meta == 2)
+		{
+			return 3.0F;
 		}
 
 		return this.blockHardness;
@@ -224,7 +234,7 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
 		case 15:
 			return Item.getItemFromBlock(Blocks.air);
 		default:
-			return null;
+			return Item.getItemFromBlock(this);
 		}
 	}
 
@@ -303,7 +313,7 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
 	}
 
 	@Override
-    public boolean canSustainPlant(IBlockAccess world, int x, int y, int z, ForgeDirection direction, IPlantable plantable)
+	public boolean canSustainPlant(IBlockAccess world, int x, int y, int z, ForgeDirection direction, IPlantable plantable)
 	{
 		final int metadata = world.getBlockMetadata(x, y, z);
 
@@ -314,13 +324,9 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
 
 		plantable.getPlant(world, x, y + 1, z);
 
-		if (plantable instanceof BlockFlower)
-		{
-			return true;
-		}
+        return plantable instanceof BlockFlower;
 
-		return false;
-	}
+    }
 
 	@Override
 	public int requiredLiquidBlocksNearby()
@@ -331,13 +337,9 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
 	@Override
 	public boolean isPlantable(int metadata)
 	{
-		if (metadata >= 5 && metadata <= 13)
-		{
-			return true;
-		}
+        return metadata >= 5 && metadata <= 13;
 
-		return false;
-	}
+    }
 
 	@Override
 	public boolean isTerraformable(World world, int x, int y, int z)
@@ -351,14 +353,20 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
 
 		return false;
 	}
-	
+
 	@Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
-    {
-		int metadata = world.getBlockMetadata(x,  y,  z);
-		if (metadata == 2) return new ItemStack(Item.getItemFromBlock(this), 1, metadata);
-		if (metadata == 15) return null;
-		
+	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
+	{
+		int metadata = world.getBlockMetadata(x, y, z);
+		if (metadata == 2)
+		{
+			return new ItemStack(Item.getItemFromBlock(this), 1, metadata);
+		}
+		if (metadata == 15)
+		{
+			return null;
+		}
+
 		return super.getPickBlock(target, world, x, y, z);
-    }
+	}
 }

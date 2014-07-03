@@ -7,8 +7,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 
-
-
 public abstract class NetworkedEntity extends Entity implements IPacketReceiver
 {
 	public NetworkedEntity(World par1World)

@@ -18,8 +18,6 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
 
-
-
 public class SkyProviderOverworld extends IRenderHandler
 {
 	private static final ResourceLocation moonTexture = new ResourceLocation("textures/environment/moon_phases.png");

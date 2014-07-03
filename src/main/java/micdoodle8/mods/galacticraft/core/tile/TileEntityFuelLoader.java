@@ -28,8 +28,6 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import cpw.mods.fml.relauncher.Side;
 
-
-
 public class TileEntityFuelLoader extends TileEntityElectricBlock implements IInventory, ISidedInventory, IFluidHandler, ILandingPadAttachable
 {
 	private final int tankCapacity = 12000;
@@ -213,7 +211,7 @@ public class TileEntityFuelLoader extends TileEntityElectricBlock implements IIn
 
 		for (int var3 = 0; var3 < var2.tagCount(); ++var3)
 		{
-			final NBTTagCompound var4 = (NBTTagCompound) var2.getCompoundTagAt(var3);
+			final NBTTagCompound var4 = var2.getCompoundTagAt(var3);
 			final byte var5 = var4.getByte("Slot");
 
 			if (var5 >= 0 && var5 < this.containingItems.length)
@@ -269,7 +267,7 @@ public class TileEntityFuelLoader extends TileEntityElectricBlock implements IIn
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
 	{
-		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
+		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
 	}
 
 	@Override
@@ -311,7 +309,7 @@ public class TileEntityFuelLoader extends TileEntityElectricBlock implements IIn
 	@Override
 	public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
 	{
-		return slotID == 1 ? true : slotID == 0 ? itemstack.getItem() instanceof IItemElectric : false;
+		return slotID == 1 || (slotID == 0 ? itemstack.getItem() instanceof IItemElectric : false);
 	}
 
 	@Override

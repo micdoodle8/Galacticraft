@@ -4,8 +4,6 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.model.ModelVillager;
 import net.minecraft.entity.Entity;
 
-
-
 public class ModelAlienVillager extends ModelVillager
 {
 	public ModelRenderer brain;

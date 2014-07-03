@@ -13,8 +13,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-
-
 public class ContainerSchematicTier1Rocket extends Container
 {
 	public InventoryRocketBench craftMatrix = new InventoryRocketBench(this);

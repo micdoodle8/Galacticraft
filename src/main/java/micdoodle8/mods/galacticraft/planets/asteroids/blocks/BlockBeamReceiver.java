@@ -2,17 +2,22 @@ package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 
 import java.util.List;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
 import micdoodle8.mods.galacticraft.core.tile.EnergyStorageTile;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
-import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReceiver;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.client.FMLClientHandler;
@@ -29,26 +34,96 @@ public class BlockBeamReceiver extends BlockTileGC
 		this.setBlockTextureName("stone");
 	}
 
+	@SideOnly(Side.CLIENT)
 	@Override
 	public CreativeTabs getCreativeTabToDisplayOn()
 	{
-		return AsteroidsModule.asteroidsTab;
+		return GalacticraftCore.galacticraftBlocksTab;
+	}
+
+	@Override
+	public void onNeighborBlockChange(World world, int x, int y, int z, Block block)
+	{
+		int oldMeta = world.getBlockMetadata(x, y, z);
+		int meta = this.getMetadataFromAngle(world, x, y, z, ForgeDirection.getOrientation(oldMeta).getOpposite().ordinal());
+
+		if (meta == -1)
+		{
+			world.func_147480_a(x, y, z, true);
+		}
+
+		if (meta != oldMeta)
+		{
+			world.setBlockMetadataWithNotify(x, y, z, meta, 3);
+			TileEntityBeamReceiver thisTile = (TileEntityBeamReceiver) world.getTileEntity(x, y, z);
+			if (thisTile != null)
+			{
+				thisTile.setFacing(ForgeDirection.getOrientation(meta));
+				thisTile.invalidateReflector();
+				thisTile.initiateReflector();
+			}
+		}
+
+		super.onNeighborBlockChange(world, x, y, z, block);
 	}
 
 	@Override
 	public void onBlockAdded(World world, int x, int y, int z)
 	{
-    	TileEntityBeamReceiver thisTile = (TileEntityBeamReceiver)world.getTileEntity(x, y, z);
-    	thisTile.setFacing(ForgeDirection.getOrientation(world.getBlockMetadata(x, y, z)));
+		TileEntityBeamReceiver thisTile = (TileEntityBeamReceiver) world.getTileEntity(x, y, z);
+		thisTile.setFacing(ForgeDirection.getOrientation(world.getBlockMetadata(x, y, z)));
 	}
-	
+
+	@Override
+	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
+	{
+		int meta = world.getBlockMetadata(x, y, z);
+
+		if (meta != -1)
+		{
+			ForgeDirection dir = ForgeDirection.getOrientation(meta);
+
+			switch (dir)
+			{
+			case UP:
+				this.setBlockBounds(0.3F, 0.3F, 0.3F, 0.7F, 1.0F, 0.7F);
+				break;
+			case DOWN:
+				this.setBlockBounds(0.2F, 0.0F, 0.2F, 0.8F, 0.42F, 0.8F);
+				break;
+			case EAST:
+				this.setBlockBounds(0.58F, 0.2F, 0.2F, 1.0F, 0.8F, 0.8F);
+				break;
+			case WEST:
+				this.setBlockBounds(0.0F, 0.2F, 0.2F, 0.42F, 0.8F, 0.8F);
+				break;
+			case NORTH:
+				this.setBlockBounds(0.2F, 0.2F, 0.0F, 0.8F, 0.8F, 0.42F);
+				break;
+			case SOUTH:
+				this.setBlockBounds(0.2F, 0.2F, 0.58F, 0.8F, 0.8F, 1.0F);
+				break;
+			default:
+				break;
+			}
+		}
+	}
+
+	@SuppressWarnings("rawtypes")
+	@Override
+	public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB axisalignedbb, List list, Entity entity)
+	{
+		this.setBlockBoundsBasedOnState(world, x, y, z);
+		super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, list, entity);
+	}
+
 	private int getMetadataFromAngle(World world, int x, int y, int z, int side)
 	{
-		TileEntityBeamReceiver thisTile = (TileEntityBeamReceiver)world.getTileEntity(x, y, z);
+		TileEntityBeamReceiver thisTile = (TileEntityBeamReceiver) world.getTileEntity(x, y, z);
 		ForgeDirection direction = ForgeDirection.getOrientation(side).getOpposite();
 
 		TileEntity tileAt = world.getTileEntity(x + direction.offsetX, y + direction.offsetY, z + direction.offsetZ);
-		
+
 		if (tileAt != null && tileAt instanceof EnergyStorageTile)
 		{
 			if (((EnergyStorageTile) tileAt).getModeFromDirection(direction.getOpposite()) != null)
@@ -60,7 +135,7 @@ public class BlockBeamReceiver extends BlockTileGC
 				return -1;
 			}
 		}
-		
+
 		for (ForgeDirection adjacentDir : ForgeDirection.VALID_DIRECTIONS)
 		{
 			tileAt = world.getTileEntity(x + adjacentDir.offsetX, y + adjacentDir.offsetY, z + adjacentDir.offsetZ);
@@ -70,35 +145,36 @@ public class BlockBeamReceiver extends BlockTileGC
 				return adjacentDir.ordinal();
 			}
 		}
-		
+
 		return -1;
 	}
 
-    public int onBlockPlaced(World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int meta)
-    {
-    	return getMetadataFromAngle(world, x, y, z, side);
-    }
-    
 	@Override
-    public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int side)
-    {
-		if (getMetadataFromAngle(world, x, y, z, side) != -1)
+	public int onBlockPlaced(World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int meta)
+	{
+		return this.getMetadataFromAngle(world, x, y, z, side);
+	}
+
+	@Override
+	public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int side)
+	{
+		if (this.getMetadataFromAngle(world, x, y, z, side) != -1)
 		{
 			return true;
 		}
-		
+
 		if (world.isRemote && FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
 		{
 			this.sendIncorrectSideMessage();
 		}
-		
-    	return false;
-    }
-	
+
+		return false;
+	}
+
 	@SideOnly(Side.CLIENT)
 	private void sendIncorrectSideMessage()
 	{
-		FMLClientHandler.instance().getClient().thePlayer.addChatMessage(new ChatComponentText(EnumColor.RED + "Cannot attach receiver here!"));
+		FMLClientHandler.instance().getClient().thePlayer.addChatMessage(new ChatComponentText(EnumColor.RED + GCCoreUtil.translate("gui.receiver.cannotAttach")));
 	}
 
 	@Override

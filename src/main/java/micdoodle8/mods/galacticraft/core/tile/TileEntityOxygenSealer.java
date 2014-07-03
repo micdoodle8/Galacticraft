@@ -4,14 +4,13 @@ import java.util.EnumSet;
 
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol;
 import micdoodle8.mods.galacticraft.core.oxygen.ThreadFindSeal;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockAir;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -19,8 +18,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
-
-
 
 public class TileEntityOxygenSealer extends TileEntityOxygen implements IInventory, ISidedInventory
 {
@@ -69,7 +66,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
 			return 0;
 		}
 		Block blockAbove = this.worldObj.getBlock(this.xCoord, this.yCoord + 1, this.zCoord);
-		if (blockAbove != Blocks.air && blockAbove != GCBlocks.breatheableAir && !OxygenPressureProtocol.canBlockPassAir(this.worldObj, blockAbove, new BlockVec3(this.xCoord, this.yCoord + 1, this.zCoord), 1))
+		if (!(blockAbove instanceof BlockAir) && !OxygenPressureProtocol.canBlockPassAir(this.worldObj, blockAbove, new BlockVec3(this.xCoord, this.yCoord + 1, this.zCoord), 1))
 		{
 			// The vent is blocked
 			return 0;
@@ -99,20 +96,13 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
 				TileEntityOxygenSealer.sealerCheckedThisTick = false;
 			}
 
-			if (this.storedOxygen >= 1 && this.hasEnoughEnergyToRun && !this.disabled)
-			{
-				this.active = true;
-			}
-			else
-			{
-				this.active = false;
-			}
+            this.active = this.storedOxygen >= 1 && this.hasEnoughEnergyToRun && !this.disabled;
 
 			if (this.stopSealThreadCooldown > 0)
 			{
 				this.stopSealThreadCooldown--;
 			}
-			else if (TileEntityOxygenSealer.sealerCheckedThisTick == false)
+			else if (!TileEntityOxygenSealer.sealerCheckedThisTick)
 			{
 				// This puts any Sealer which is updated to the back of the queue for updates
 				this.threadCooldownTotal = this.stopSealThreadCooldown = 75 + TileEntityOxygenSealer.countEntities;
@@ -141,7 +131,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
 
 		for (int var3 = 0; var3 < var2.tagCount(); ++var3)
 		{
-			final NBTTagCompound var4 = (NBTTagCompound) var2.getCompoundTagAt(var3);
+			final NBTTagCompound var4 = var2.getCompoundTagAt(var3);
 			final byte var5 = var4.getByte("Slot");
 
 			if (var5 >= 0 && var5 < this.containingItems.length)
@@ -256,7 +246,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
 	{
-		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
+		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
 	}
 
 	@Override
@@ -298,7 +288,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
 	@Override
 	public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
 	{
-		return slotID == 0 ? itemstack.getItem() instanceof IItemElectric : false;
+		return slotID == 0 && itemstack.getItem() instanceof IItemElectric;
 	}
 
 	@Override

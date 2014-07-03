@@ -1,0 +1,27 @@
+# Galacticraft Asteroids Language File = FRANCE FRENCH by Linyor
+
+# GENERAL ITEMS
+item.itemTier3Rocket.t3Rocket.name=Fusée Niveau 3
+
+# TOOLS
+
+# ARMOR
+
+# BLOCKS
+tile.asteroidsBlock.asteroids1.name=Roche d'astéroïde
+tile.beamReflector.name=Réflecteur de faisceau
+tile.beamReceiver.name=Récepteur de faisceau
+tile.telepadShort.name=Système de téléportation à courte portée
+
+# GUI
+planet.asteroids=Astéroïdes
+
+itemGroup.GalacticraftAsteroids=Galacticraft Astéroïdes
+# Schematics
+
+# Entity
+entity.SmallAsteroidGC.name=Petit astéroïde
+entity.GrappleHookGC.name=Grappin crochet
+entity.Tier3RocketGC.name=Fusée Niveau 3
+
+# Container

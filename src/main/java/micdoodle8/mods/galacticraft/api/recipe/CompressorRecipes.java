@@ -95,12 +95,11 @@ public class CompressorRecipes
 	public static void addShapelessRecipe(ItemStack par1ItemStack, Object... par2ArrayOfObj)
 	{
 		ArrayList<ItemStack> arraylist = new ArrayList<ItemStack>();
-		Object[] aobject = par2ArrayOfObj;
 		int i = par2ArrayOfObj.length;
 
 		for (int j = 0; j < i; ++j)
 		{
-			Object object1 = aobject[j];
+			Object object1 = par2ArrayOfObj[j];
 
 			if (object1 instanceof ItemStack)
 			{

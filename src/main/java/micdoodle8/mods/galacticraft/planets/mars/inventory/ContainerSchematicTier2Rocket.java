@@ -13,8 +13,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-
-
 public class ContainerSchematicTier2Rocket extends Container
 {
 	public InventorySchematicTier2Rocket craftMatrix = new InventorySchematicTier2Rocket(this);
@@ -137,10 +135,10 @@ public class ContainerSchematicTier2Rocket extends Container
 			{
 				for (int i = 1; i < 19; i++)
 				{
-					Slot testSlot = (Slot) this.inventorySlots.get(i); 
+					Slot testSlot = (Slot) this.inventorySlots.get(i);
 					if (!testSlot.getHasStack() && testSlot.isItemValid(var2))
 					{
-						if (!this.mergeItemStack(var4, i, i+1, false))
+						if (!this.mergeItemStack(var4, i, i + 1, false))
 						{
 							return null;
 						}
@@ -148,7 +146,7 @@ public class ContainerSchematicTier2Rocket extends Container
 						break;
 					}
 				}
-				
+
 				if (!done)
 				{
 					if (var2.getItem() == Item.getItemFromBlock(Blocks.chest) && !((Slot) this.inventorySlots.get(19)).getHasStack())

@@ -16,32 +16,32 @@ import cpw.mods.fml.relauncher.Side;
 public class GalacticraftChannelHandler extends FMLIndexedMessageToMessageCodec<IPacket>
 {
 	private EnumMap<Side, FMLEmbeddedChannel> channels;
-	
+
 	private GalacticraftChannelHandler()
 	{
-		addDiscriminator(0, PacketSimple.class);
-		addDiscriminator(1, PacketRotateRocket.class);
-		addDiscriminator(2, PacketDynamic.class);
-		addDiscriminator(3, PacketControllableEntity.class);
-		addDiscriminator(4, PacketEntityUpdate.class);
-		addDiscriminator(5, PacketDynamicInventory.class);
+		this.addDiscriminator(0, PacketSimple.class);
+		this.addDiscriminator(1, PacketRotateRocket.class);
+		this.addDiscriminator(2, PacketDynamic.class);
+		this.addDiscriminator(3, PacketControllableEntity.class);
+		this.addDiscriminator(4, PacketEntityUpdate.class);
+		this.addDiscriminator(5, PacketDynamicInventory.class);
 	}
-	
+
 	public static GalacticraftChannelHandler init()
 	{
 		GalacticraftChannelHandler channelHandler = new GalacticraftChannelHandler();
 		channelHandler.channels = NetworkRegistry.INSTANCE.newChannel(GalacticraftCore.MODID, channelHandler, new GalacticraftPacketHandler());
 		return channelHandler;
 	}
-	
+
 	@Override
-	public void encodeInto(ChannelHandlerContext ctx, IPacket msg, ByteBuf target) throws Exception 
+	public void encodeInto(ChannelHandlerContext ctx, IPacket msg, ByteBuf target) throws Exception
 	{
 		msg.encodeInto(ctx, target);
 	}
 
 	@Override
-	public void decodeInto(ChannelHandlerContext ctx, ByteBuf source, IPacket msg) 
+	public void decodeInto(ChannelHandlerContext ctx, ByteBuf source, IPacket msg)
 	{
 		msg.decodeInto(ctx, source);
 	}

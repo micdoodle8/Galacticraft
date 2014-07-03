@@ -7,8 +7,6 @@ import net.minecraftforge.client.event.sound.PlayBackgroundMusicEvent;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
-
-
 public class SoundHandler
 {
 	@SubscribeEvent

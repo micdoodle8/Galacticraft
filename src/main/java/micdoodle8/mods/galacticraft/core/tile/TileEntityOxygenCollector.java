@@ -4,12 +4,11 @@ import java.util.EnumSet;
 
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockAir;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -20,8 +19,6 @@ import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
-
-
 
 public class TileEntityOxygenCollector extends TileEntityOxygen implements IInventory, ISidedInventory
 {
@@ -94,7 +91,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
 			//Approximately once every 40 ticks, search out oxygen producing blocks
 			if (this.worldObj.rand.nextInt(10) == 0)
 			{
-				if (this.hasEnoughEnergyToRun) 
+				if (this.hasEnoughEnergyToRun)
 				{
 					// The later calculations are more efficient if power is a float, so
 					// there are fewer casts
@@ -118,7 +115,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
 							{
 								maxy = this.worldObj.getHeight() - 1;
 							}
-	
+
 							// Loop the x and the z first, so the y loop will be at
 							// fixed (x,z) coordinates meaning fixed chunk
 							// coordinates
@@ -128,11 +125,11 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
 								int intrachunkx = x & 15;
 								// Preload the first chunk for the z loop - there
 								// can be a maximum of 2 chunks in the z loop
-								int chunkz = (this.zCoord - 5) >> 4;
+								int chunkz = this.zCoord - 5 >> 4;
 								Chunk chunk = this.worldObj.getChunkFromChunkCoords(chunkx, chunkz);
 								for (int z = this.zCoord - 5; z <= this.zCoord + 5; z++)
 								{
-									if ((z >> 4) != chunkz)
+									if (z >> 4 != chunkz)
 									{
 										// moved across z chunk boundary into a new
 										// chunk, so load the new chunk
@@ -148,7 +145,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
 										// Test for the two most common blocks (air
 										// and breatheable air) without looking up
 										// in the blocksList
-										if (block != Blocks.air && block != GCBlocks.breatheableAir)
+										if (!(block instanceof BlockAir))
 										{
 											if (block.isLeaves(this.worldObj, x, y, z) || block instanceof IPlantable && ((IPlantable) block).getPlantType(this.worldObj, x, y, z) == EnumPlantType.Crop)
 											{
@@ -164,11 +161,11 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
 					{
 						power = 9.3F * 10F;
 					}
-	
+
 					power = (float) Math.floor(power);
-	
+
 					this.lastOxygenCollected = power / 10F;
-	
+
 					this.storedOxygen = (int) Math.max(Math.min(this.storedOxygen + power, this.maxOxygen), 0);
 				}
 				else
@@ -189,7 +186,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
 
 		for (int var3 = 0; var3 < var2.tagCount(); ++var3)
 		{
-			final NBTTagCompound var4 = (NBTTagCompound) var2.getCompoundTagAt(var3);
+			final NBTTagCompound var4 = var2.getCompoundTagAt(var3);
 			final byte var5 = var4.getByte("Slot");
 
 			if (var5 >= 0 && var5 < this.containingItems.length)
@@ -304,7 +301,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
 	{
-		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
+		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
 	}
 
 	@Override
@@ -348,7 +345,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
 	@Override
 	public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
 	{
-		return slotID == 0 ? itemstack.getItem() instanceof IItemElectric : false;
+		return slotID == 0 && itemstack.getItem() instanceof IItemElectric;
 	}
 
 	@Override

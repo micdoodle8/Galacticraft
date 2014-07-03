@@ -6,8 +6,6 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
 
-
-
 public class ModelEvolvedSkeletonBoss extends ModelBase
 {
 	ModelRenderer UpperHead;

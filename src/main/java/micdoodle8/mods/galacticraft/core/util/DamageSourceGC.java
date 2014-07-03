@@ -2,8 +2,6 @@ package micdoodle8.mods.galacticraft.core.util;
 
 import net.minecraft.util.DamageSource;
 
-
-
 public class DamageSourceGC extends DamageSource
 {
 	public static final DamageSourceGC spaceshipCrash = (DamageSourceGC) new DamageSourceGC("spaceshipCrash").setDamageBypassesArmor();

@@ -15,8 +15,6 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 @SideOnly(Side.CLIENT)
 public class TileEntityThrusterRenderer extends TileEntitySpecialRenderer
 {
@@ -27,12 +25,12 @@ public class TileEntityThrusterRenderer extends TileEntitySpecialRenderer
 	{
 		// Texture file
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TileEntityThrusterRenderer.thrusterTexture);
-		
+
 		Tessellator tess = Tessellator.instance;
-		
+
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) d + 0.5F, (float) d1 + 0.5F, (float) d2 + 0.5F);
-		
+
 		if (tileEntity.getBlockMetadata() >= 1)
 		{
 			switch (tileEntity.getBlockMetadata())
@@ -60,8 +58,8 @@ public class TileEntityThrusterRenderer extends TileEntitySpecialRenderer
 			default:
 				break;
 			}
-			
-			thrusterModel.renderAll();
+
+			TileEntityThrusterRenderer.thrusterModel.renderAll();
 		}
 
 		GL11.glPopMatrix();

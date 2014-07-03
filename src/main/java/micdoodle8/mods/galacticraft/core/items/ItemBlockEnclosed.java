@@ -13,8 +13,6 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class ItemBlockEnclosed extends ItemBlock
 {
 	public ItemBlockEnclosed(Block block)
@@ -138,67 +136,67 @@ public class ItemBlockEnclosed extends ItemBlock
 			{
 				try
 				{
-//					String name = Character.toLowerCase(type.getPipeClass().charAt(0)) + type.getPipeClass().substring(1);
-//
-//					Class<?> clazz = Class.forName("buildcraft.BuildCraftCore");
-//					Class<?> clazzConfig = Class.forName("net.minecraftforge.common.Configuration");
-//					Class<?> clazzBlockPipe = Class.forName("buildcraft.transport.BlockGenericPipe");
-//
-//					Object mainConfiguration = clazz.getField("mainConfiguration").get(null);
-//
-//					Method getItem = null;
-//
-//					for (Method m : clazzConfig.getDeclaredMethods())
-//					{
-//						if (m.getName().equals("getItem") && m.getParameterTypes().length == 2)
-//						{
-//							getItem = m;
-//						}
-//					}
-//
-//					// -1 is safe since they will have already been set
-//					Property prop = (Property) getItems.invoke(mainConfiguration, name + ".id", -1);
-//
-//					int pipeID = prop.getInt(-1);
-//
-//					Method createPipe = null;
-//
-//					for (Method m : clazzBlockPipe.getDeclaredMethods())
-//					{
-//						if (m.getName().equals("createPipe") && m.getParameterTypes().length == 1)
-//						{
-//							createPipe = m;
-//						}
-//					}
-//
-//					Object pipe = createPipe.invoke(null, pipeID + 256);
-//
-//					if (pipe == null)
-//					{
-//						FMLLog.severe("Pipe failed to create during placement at " + i + "," + j + "," + k);
-//						return true;
-//					}
-//
-//					Method placePipe = null;
-//
-//					for (Method m : clazzBlockPipe.getDeclaredMethods())
-//					{
-//						if (m.getName().equals("placePipe") && m.getParameterTypes().length == 7)
-//						{
-//							placePipe = m;
-//						}
-//					}
-//
-//					Boolean b = (Boolean) placePipe.invoke(null, pipe, world, i, j, k, blockID, type.getMetadata());
-//
-//					if (b)
-//					{
-//						Block.getBlockById(blockID).onBlockPlacedBy(world, i, j, k, entityplayer, itemstack);
-//						world.playSoundEffect(i + 0.5F, j + 0.5F, k + 0.5F, block.stepSound.getPlaceSound(), (block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);
-//						itemstack.stackSize--;
-//					}
-//
-//					return true; TODO Fix BC enclosed pipes
+					//					String name = Character.toLowerCase(type.getPipeClass().charAt(0)) + type.getPipeClass().substring(1);
+					//
+					//					Class<?> clazz = Class.forName("buildcraft.BuildCraftCore");
+					//					Class<?> clazzConfig = Class.forName("net.minecraftforge.common.Configuration");
+					//					Class<?> clazzBlockPipe = Class.forName("buildcraft.transport.BlockGenericPipe");
+					//
+					//					Object mainConfiguration = clazz.getField("mainConfiguration").get(null);
+					//
+					//					Method getItem = null;
+					//
+					//					for (Method m : clazzConfig.getDeclaredMethods())
+					//					{
+					//						if (m.getName().equals("getItem") && m.getParameterTypes().length == 2)
+					//						{
+					//							getItem = m;
+					//						}
+					//					}
+					//
+					//					// -1 is safe since they will have already been set
+					//					Property prop = (Property) getItems.invoke(mainConfiguration, name + ".id", -1);
+					//
+					//					int pipeID = prop.getInt(-1);
+					//
+					//					Method createPipe = null;
+					//
+					//					for (Method m : clazzBlockPipe.getDeclaredMethods())
+					//					{
+					//						if (m.getName().equals("createPipe") && m.getParameterTypes().length == 1)
+					//						{
+					//							createPipe = m;
+					//						}
+					//					}
+					//
+					//					Object pipe = createPipe.invoke(null, pipeID + 256);
+					//
+					//					if (pipe == null)
+					//					{
+					//						FMLLog.severe("Pipe failed to create during placement at " + i + "," + j + "," + k);
+					//						return true;
+					//					}
+					//
+					//					Method placePipe = null;
+					//
+					//					for (Method m : clazzBlockPipe.getDeclaredMethods())
+					//					{
+					//						if (m.getName().equals("placePipe") && m.getParameterTypes().length == 7)
+					//						{
+					//							placePipe = m;
+					//						}
+					//					}
+					//
+					//					Boolean b = (Boolean) placePipe.invoke(null, pipe, world, i, j, k, blockID, type.getMetadata());
+					//
+					//					if (b)
+					//					{
+					//						Block.getBlockById(blockID).onBlockPlacedBy(world, i, j, k, entityplayer, itemstack);
+					//						world.playSoundEffect(i + 0.5F, j + 0.5F, k + 0.5F, block.stepSound.getPlaceSound(), (block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);
+					//						itemstack.stackSize--;
+					//					}
+					//
+					//					return true; TODO Fix BC enclosed pipes
 				}
 				catch (Exception e)
 				{

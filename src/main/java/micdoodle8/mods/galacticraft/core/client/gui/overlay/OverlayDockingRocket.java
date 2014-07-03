@@ -1,14 +1,16 @@
 package micdoodle8.mods.galacticraft.core.client.gui.overlay;
 
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
+import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
+
+import org.lwjgl.input.Keyboard;
+
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
-
 
 @SideOnly(Side.CLIENT)
 public class OverlayDockingRocket extends Overlay
@@ -41,8 +43,8 @@ public class OverlayDockingRocket extends Overlay
 				String dYStr = String.valueOf(dY);
 				String dZStr = String.valueOf(dZ);
 
-				String warning = GCCoreUtil.translateWithFormat("gui.dockingRocket.warning.name.0", minecraft.gameSettings.keyBindJump.getKeyDescription());
-				String warning2 = GCCoreUtil.translateWithFormat("gui.dockingRocket.warning.name.1", minecraft.gameSettings.keyBindSneak.getKeyDescription());
+				String warning = GCCoreUtil.translateWithFormat("gui.dockingRocket.warning.name.0", Keyboard.getKeyName(KeyHandlerClient.spaceKey.getKeyCode()));
+				String warning2 = GCCoreUtil.translateWithFormat("gui.dockingRocket.warning.name.1", Keyboard.getKeyName(KeyHandlerClient.leftShiftKey.getKeyCode()));
 
 				double targetMotionY = Math.round(Math.max((rocket.posY - rocket.targetVec.y) / -100.0D, -0.9D) * 100.0D) / 100.0D;
 				double currentMotionY = Math.round(rocket.motionY * 100.0D) / 100.0D;

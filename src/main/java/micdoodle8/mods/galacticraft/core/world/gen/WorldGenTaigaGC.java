@@ -10,8 +10,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
-
-
 public class WorldGenTaigaGC extends WorldGenerator
 {
 	public WorldGenTaigaGC(boolean par1)
@@ -84,8 +82,7 @@ public class WorldGenTaigaGC extends WorldGenerator
 				{
 					for (int j = -4; j < 5; j++)
 					{
-						if (par1World.getBlock(par3 + i, par4 - 1, par5 + j) == Blocks.flowing_water 
-								|| par1World.getBlock(par3 + i, par4 - 1, par5 + j) == Blocks.water)
+						if (par1World.getBlock(par3 + i, par4 - 1, par5 + j) == Blocks.flowing_water || par1World.getBlock(par3 + i, par4 - 1, par5 + j) == Blocks.water)
 						{
 							waterBlocksNearby++;
 						}

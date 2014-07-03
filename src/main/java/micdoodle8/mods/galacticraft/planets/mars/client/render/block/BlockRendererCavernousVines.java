@@ -7,8 +7,6 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.IBlockAccess;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
-
-
 public class BlockRendererCavernousVines implements ISimpleBlockRenderingHandler
 {
 	final int renderID;
@@ -40,7 +38,6 @@ public class BlockRendererCavernousVines implements ISimpleBlockRenderingHandler
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer)
 	{
-		;
 	}
 
 	public void renderBlockMeteor(RenderBlocks renderBlocks, Block par1Block, IBlockAccess var1, int par2, int par3, int par4)
@@ -64,10 +61,7 @@ public class BlockRendererCavernousVines implements ISimpleBlockRenderingHandler
 		}
 
 		tessellator.setColorOpaque_F(f * f1, f * f2, f * f3);
-		double d0 = par2;
-		double d1 = par3;
-		double d2 = par4;
 
-		renderBlocks.drawCrossedSquares(par1Block.getIcon(0, var1.getBlockMetadata(par2, par3, par4)), d0, d1, d2, 1.0F);
+		renderBlocks.drawCrossedSquares(par1Block.getIcon(0, var1.getBlockMetadata(par2, par3, par4)), par2, par3, par4, 1.0F);
 	}
 }

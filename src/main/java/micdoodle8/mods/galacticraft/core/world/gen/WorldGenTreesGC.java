@@ -11,8 +11,6 @@ import net.minecraft.util.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
-
-
 public class WorldGenTreesGC extends WorldGenerator
 {
 	/** The minimum height of a generated tree. */

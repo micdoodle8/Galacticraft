@@ -15,8 +15,6 @@ import net.minecraft.item.ItemStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class ItemBlockCheese extends ItemReed
 {
 	public ItemBlockCheese(Block par2Block, String assetName)
@@ -36,7 +34,7 @@ public class ItemBlockCheese extends ItemReed
 	@Override
 	public CreativeTabs getCreativeTab()
 	{
-		return GalacticraftCore.galacticraftTab;
+		return GalacticraftCore.galacticraftBlocksTab;
 	}
 
 	@Override

@@ -12,8 +12,6 @@ import org.lwjgl.input.Keyboard;
 
 import cpw.mods.fml.client.FMLClientHandler;
 
-
-
 public class GuiElementTextBox extends GuiButton
 {
 	public String text;
@@ -172,12 +170,12 @@ public class GuiElementTextBox extends GuiButton
 			}
 
 			int xPos = this.xPosition + 4;
-			
+
 			if (this.centered)
 			{
-				xPos = this.xPosition + this.width / 2 - this.mc.fontRenderer.getStringWidth(text) / 2;
- 			}
-			
+				xPos = this.xPosition + this.width / 2 - this.mc.fontRenderer.getStringWidth(this.text) / 2;
+			}
+
 			this.drawString(this.mc.fontRenderer, this.text + (this.cursorPulse / 24 % 2 == 0 && this.isTextFocused ? "_" : ""), xPos, this.yPosition + this.height / 2 - 4, this.incorrectUseTimer > 0 ? GCCoreUtil.to32BitColor(255, 255, 20, 20) : this.parentGui.getTextColor(this));
 		}
 	}

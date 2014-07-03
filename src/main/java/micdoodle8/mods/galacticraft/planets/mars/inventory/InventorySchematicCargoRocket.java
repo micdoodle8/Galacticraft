@@ -5,8 +5,6 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
-
-
 public class InventorySchematicCargoRocket implements IInventory
 {
 	private final ItemStack[] stackList;
@@ -37,7 +35,10 @@ public class InventorySchematicCargoRocket implements IInventory
 		if (par1 >= 0 && par1 < this.inventoryWidth)
 		{
 			final int var3 = par1 + par2 * this.inventoryWidth;
-			if (var3 >= 17) return null;
+			if (var3 >= 17)
+			{
+				return null;
+			}
 			return this.getStackInSlot(var3);
 		}
 		else

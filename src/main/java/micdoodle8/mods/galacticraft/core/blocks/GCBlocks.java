@@ -25,12 +25,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-
-
 public class GCBlocks
 {
 	public static Block breatheableAir;
 	public static Block brightAir;
+	public static Block brightBreatheableAir;
 	public static Block brightLamp;
 	public static Block treasureChestTier1;
 	public static Block landingPad;
@@ -74,6 +73,7 @@ public class GCBlocks
 	{
 		GCBlocks.breatheableAir = new BlockBreathableAir("breatheableAir");
 		GCBlocks.brightAir = new BlockBrightAir("brightAir");
+		GCBlocks.brightBreatheableAir = new BlockBrightBreathableAir("brightBreathableAir");
 		GCBlocks.brightLamp = new BlockBrightLamp("arclamp");
 		GCBlocks.treasureChestTier1 = new BlockT1TreasureChest("treasureChest");
 		GCBlocks.landingPad = new BlockLandingPad("landingPad");
@@ -157,10 +157,11 @@ public class GCBlocks
 		GCCoreUtil.registerGalacticraftBlock("wireAluminumHeavy", GCBlocks.aluminumWire, 1);
 		GCCoreUtil.registerGalacticraftBlock("spinThruster", GCBlocks.spinThruster);
 		GCCoreUtil.registerGalacticraftBlock("arclamp", GCBlocks.brightLamp);
-		
+
 		// Hide certain items from NEI
 		GCBlocks.hiddenBlocks.add(GCBlocks.airLockSeal);
 		GCBlocks.hiddenBlocks.add(GCBlocks.breatheableAir);
+		GCBlocks.hiddenBlocks.add(GCBlocks.brightBreatheableAir);
 		GCBlocks.hiddenBlocks.add(GCBlocks.brightAir);
 		GCBlocks.hiddenBlocks.add(GCBlocks.unlitTorch);
 		GCBlocks.hiddenBlocks.add(GCBlocks.unlitTorchLit);
@@ -185,26 +186,24 @@ public class GCBlocks
 
 	public static void setHarvestLevels()
 	{
-//		MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.basicBlock, 0, "pickaxe", 1);
-//		MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.basicBlock, 1, "pickaxe", 2);
-//		MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.basicBlock, 2, "pickaxe", 3);
-//		MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.fallenMeteor, "pickaxe", 3);
-//		MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.basicBlock, 5, "pickaxe", 1);
-//		MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.basicBlock, 6, "pickaxe", 1);
-//		MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.basicBlock, 7, "pickaxe", 2);
-//		MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.basicBlock, 8, "pickaxe", 2);
-//		MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.blockMoon, 0, "pickaxe", 3);
-//		MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.blockMoon, 1, "pickaxe", 3);
-//		MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.blockMoon, 2, "pickaxe", 3);
-//		MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.blockMoon, 3, "shovel", 0);
-//		MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.blockMoon, 4, "pickaxe", 2);
-//
-//		for (int num = 5; num < 14; num++)
-//		{
-//			MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.blockMoon, num, "shovel", 0);
-//		}
-//
-//		MinecraftForge.setBlockHarvestLevel(GCCoreBlocks.blockMoon, 14, "pickaxe", 2); TODO Harvest levels
+		GCBlocks.basicBlock.setHarvestLevel("pickaxe", 2, 5); //Copper ore
+		GCBlocks.basicBlock.setHarvestLevel("pickaxe", 2, 6); //Tin ore
+		GCBlocks.basicBlock.setHarvestLevel("pickaxe", 2, 7); //Aluminium ore
+		GCBlocks.basicBlock.setHarvestLevel("pickaxe", 1, 8); //Silicon ore
+		GCBlocks.fallenMeteor.setHarvestLevel("pickaxe", 3);
+		GCBlocks.blockMoon.setHarvestLevel("pickaxe", 2, 0); //Copper ore
+		GCBlocks.blockMoon.setHarvestLevel("pickaxe", 2, 1); //Tin ore
+		GCBlocks.blockMoon.setHarvestLevel("pickaxe", 1, 2); //Cheese ore
+		GCBlocks.blockMoon.setHarvestLevel("shovel", 0, 3); //Moon dirt
+		GCBlocks.blockMoon.setHarvestLevel("pickaxe", 1, 4); //Moon rock
+
+		for (int num = 5; num < 14; num++)
+		{
+			//Various types of Moon top dirt
+			GCBlocks.blockMoon.setHarvestLevel("shovel", 0, num);
+		}
+
+		GCBlocks.blockMoon.setHarvestLevel("pickaxe", 3, 14); //Moon dungeon brick (actually unharvestable)
 	}
 
 	public static void registerBlocks()
@@ -216,6 +215,7 @@ public class GCBlocks
 		GameRegistry.registerBlock(GCBlocks.unlitTorchLit, ItemBlockGC.class, GCBlocks.unlitTorchLit.getUnlocalizedName());
 		GameRegistry.registerBlock(GCBlocks.breatheableAir, ItemBlockGC.class, GCBlocks.breatheableAir.getUnlocalizedName());
 		GameRegistry.registerBlock(GCBlocks.brightAir, ItemBlockGC.class, GCBlocks.brightAir.getUnlocalizedName());
+		GameRegistry.registerBlock(GCBlocks.brightBreatheableAir, ItemBlockGC.class, GCBlocks.brightBreatheableAir.getUnlocalizedName());
 		GameRegistry.registerBlock(GCBlocks.oxygenDistributor, ItemBlockGC.class, GCBlocks.oxygenDistributor.getUnlocalizedName());
 		GameRegistry.registerBlock(GCBlocks.oxygenPipe, ItemBlockGC.class, GCBlocks.oxygenPipe.getUnlocalizedName());
 		GameRegistry.registerBlock(GCBlocks.oxygenCollector, ItemBlockGC.class, GCBlocks.oxygenCollector.getUnlocalizedName());
@@ -242,5 +242,6 @@ public class GCBlocks
 		GameRegistry.registerBlock(GCBlocks.blockMoon, ItemBlockMoon.class, GCBlocks.blockMoon.getUnlocalizedName());
 		GameRegistry.registerBlock(GCBlocks.cheeseBlock, ItemBlock.class, GCBlocks.cheeseBlock.getUnlocalizedName());
 		GameRegistry.registerBlock(GCBlocks.spinThruster, ItemBlockThruster.class, GCBlocks.spinThruster.getUnlocalizedName());
-		GameRegistry.registerBlock(GCBlocks.brightLamp, ItemBlockArclamp.class, GCBlocks.brightLamp.getUnlocalizedName()); }
+		GameRegistry.registerBlock(GCBlocks.brightLamp, ItemBlockArclamp.class, GCBlocks.brightLamp.getUnlocalizedName());
+	}
 }

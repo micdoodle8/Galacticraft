@@ -15,17 +15,12 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 @SideOnly(Side.CLIENT)
 public class GuiCoalGenerator extends GuiContainer
 {
 	private static final ResourceLocation coalGeneratorTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/coal_generator.png");
 
 	private TileEntityCoalGenerator tileEntity;
-
-	private int containerWidth;
-	private int containerHeight;
 
 	public GuiCoalGenerator(InventoryPlayer par1InventoryPlayer, TileEntityCoalGenerator tileEntity)
 	{
@@ -50,7 +45,7 @@ public class GuiCoalGenerator extends GuiContainer
 		}
 		else if (this.tileEntity.generateWatts < TileEntityCoalGenerator.MIN_GENERATE_WATTS)
 		{
-			displayText = GCCoreUtil.translate("gui.status.hullHeat.name") + ": " + (int) (this.tileEntity.generateWatts / TileEntityCoalGenerator.MIN_GENERATE_WATTS * 100) + "%";
+			displayText = GCCoreUtil.translate("gui.status.hullHeat.name") + ": " + this.tileEntity.generateWatts / TileEntityCoalGenerator.MIN_GENERATE_WATTS * 100 + "%";
 		}
 		else
 		{
@@ -58,8 +53,8 @@ public class GuiCoalGenerator extends GuiContainer
 		}
 
 		this.fontRendererObj.drawString(displayText, 122 - this.fontRendererObj.getStringWidth(displayText) / 2, 45, 4210752);
-//		displayText = "Voltage: " + (int) (this.tileEntity.getVoltage() * 1000.0F);
-//		this.fontRendererObj.drawString(displayText, 122 - this.fontRendererObj.getStringWidth(displayText) / 2, 60, 4210752);
+		//		displayText = "Voltage: " + (int) (this.tileEntity.getVoltage() * 1000.0F);
+		//		this.fontRendererObj.drawString(displayText, 122 - this.fontRendererObj.getStringWidth(displayText) / 2, 60, 4210752);
 		this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 
@@ -73,8 +68,8 @@ public class GuiCoalGenerator extends GuiContainer
 		this.mc.renderEngine.bindTexture(GuiCoalGenerator.coalGeneratorTexture);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-		this.containerWidth = (this.width - this.xSize) / 2;
-		this.containerHeight = (this.height - this.ySize) / 2;
-		this.drawTexturedModalRect(this.containerWidth, this.containerHeight, 0, 0, this.xSize, this.ySize);
+		int containerWidth = (this.width - this.xSize) / 2;
+        int containerHeight = (this.height - this.ySize) / 2;
+		this.drawTexturedModalRect(containerWidth, containerHeight, 0, 0, this.xSize, this.ySize);
 	}
 }

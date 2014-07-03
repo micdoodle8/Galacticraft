@@ -5,8 +5,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-
-
 public class SlotFuelCanister extends Slot
 {
 	public SlotFuelCanister(IInventory par1iInventory, int par2, int par3, int par4)
@@ -17,11 +15,7 @@ public class SlotFuelCanister extends Slot
 	@Override
 	public boolean isItemValid(ItemStack par1ItemStack)
 	{
-		if (par1ItemStack.getItem() instanceof ItemFuelCanister && par1ItemStack.getItemDamage() > 0)
-		{
-			return true;
-		}
+        return par1ItemStack.getItem() instanceof ItemFuelCanister && par1ItemStack.getItemDamage() > 0;
 
-		return false;
-	}
+    }
 }

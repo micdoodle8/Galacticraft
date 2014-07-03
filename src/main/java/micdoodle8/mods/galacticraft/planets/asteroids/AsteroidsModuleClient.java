@@ -47,35 +47,36 @@ import cpw.mods.fml.relauncher.Side;
 public class AsteroidsModuleClient implements IPlanetsModuleClient
 {
 	private static int walkwayRenderID;
-	
+
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		
+
 	}
 
 	@Override
-	public void init(FMLInitializationEvent event) 
+	public void init(FMLInitializationEvent event)
 	{
 		AsteroidsModuleClient.walkwayRenderID = RenderingRegistry.getNextAvailableRenderId();
 		RenderingRegistry.registerBlockHandler(new BlockRendererWalkway(AsteroidsModuleClient.walkwayRenderID));
-		FMLCommonHandler.instance().bus().register(new AsteroidsEventHandlerClient());
-		MinecraftForge.EVENT_BUS.register(new AsteroidsEventHandlerClient());
+		AsteroidsEventHandlerClient clientEventHandler = new AsteroidsEventHandlerClient();
+		FMLCommonHandler.instance().bus().register(clientEventHandler);
+		MinecraftForge.EVENT_BUS.register(clientEventHandler);
 	}
 
 	@Override
-	public void postInit(FMLPostInitializationEvent event) 
+	public void postInit(FMLPostInitializationEvent event)
 	{
 		RenderingRegistry.registerEntityRenderingHandler(EntitySmallAsteroid.class, new RenderSmallAsteroid());
 		RenderingRegistry.registerEntityRenderingHandler(EntityGrapple.class, new RenderGrapple());
 		IModelCustom rocketModel = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/tier3rocket.obj"));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTier3Rocket.class, new RenderTier3Rocket(rocketModel, AsteroidsModule.ASSET_PREFIX, "tier3rocket"));
 		IModelCustom grappleModel = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/grapple.obj"));
-		MinecraftForgeClient.registerItemRenderer(AsteroidsItems.itemGrapple, new ItemRendererGrappleHook(grappleModel));
+		MinecraftForgeClient.registerItemRenderer(AsteroidsItems.grapple, new ItemRendererGrappleHook(grappleModel));
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AsteroidBlocks.beamReceiver), new ItemRendererBeamReceiver());
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AsteroidBlocks.beamReflector), new ItemRendererBeamReflector());
-		MinecraftForgeClient.registerItemRenderer(AsteroidsItems.itemTier3Rocket, new ItemRendererTier3Rocket(rocketModel));
-		MinecraftForgeClient.registerItemRenderer(AsteroidsItems.itemThermalPadding, new ItemRendererThermalArmor());
+		MinecraftForgeClient.registerItemRenderer(AsteroidsItems.tier3Rocket, new ItemRendererTier3Rocket(rocketModel));
+		MinecraftForgeClient.registerItemRenderer(AsteroidsItems.thermalPadding, new ItemRendererThermalArmor());
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AsteroidBlocks.shortRangeTelepad), new ItemRendererShortRangeTelepad());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBeamReflector.class, new TileEntityBeamReflectorRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBeamReceiver.class, new TileEntityBeamReceiverRenderer());
@@ -85,13 +86,13 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
 	@Override
 	public void serverStarting(FMLServerStartingEvent event)
 	{
-		
+
 	}
 
 	@Override
 	public void getGuiIDs(List<Integer> idList)
 	{
-		
+
 	}
 
 	@Override
@@ -105,15 +106,15 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
 	{
 		if (block == AsteroidBlocks.blockWalkway || block == AsteroidBlocks.blockWalkwayWire || block == AsteroidBlocks.blockWalkwayOxygenPipe)
 		{
-			return walkwayRenderID;
+			return AsteroidsModuleClient.walkwayRenderID;
 		}
-		
+
 		return 0;
 	}
 
 	@Override
-	public void spawnParticle(String particleID, Vector3 position, Vector3 color) 
+	public void spawnParticle(String particleID, Vector3 position, Vector3 color)
 	{
-		
+
 	}
 }

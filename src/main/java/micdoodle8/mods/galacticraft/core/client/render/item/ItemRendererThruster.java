@@ -9,16 +9,14 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
 
-
-
 public class ItemRendererThruster implements IItemRenderer
 {
-	private void renderMeteorChunk(ItemRenderType type, RenderBlocks render, ItemStack item, float translateX, float translateY, float translateZ)
+	private void renderThruster(ItemRenderType type, RenderBlocks render, ItemStack item, float translateX, float translateY, float translateZ)
 	{
 		GL11.glPushMatrix();
 
 		FMLClientHandler.instance().getClient().getTextureManager().bindTexture(TileEntityThrusterRenderer.thrusterTexture);
-		
+
 		switch (type)
 		{
 		case INVENTORY:
@@ -33,7 +31,7 @@ public class ItemRendererThruster implements IItemRenderer
 		default:
 			break;
 		}
-		
+
 		TileEntityThrusterRenderer.thrusterModel.renderAll();
 
 		GL11.glPopMatrix();
@@ -71,16 +69,16 @@ public class ItemRendererThruster implements IItemRenderer
 		switch (type)
 		{
 		case EQUIPPED:
-			this.renderMeteorChunk(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
+			this.renderThruster(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
 			break;
 		case EQUIPPED_FIRST_PERSON:
-			this.renderMeteorChunk(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
+			this.renderThruster(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
 			break;
 		case INVENTORY:
-			this.renderMeteorChunk(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
+			this.renderThruster(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
 			break;
 		case ENTITY:
-			this.renderMeteorChunk(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
+			this.renderThruster(type, (RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
 			break;
 		default:
 		}

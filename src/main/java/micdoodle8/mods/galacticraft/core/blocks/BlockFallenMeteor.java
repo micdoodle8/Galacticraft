@@ -20,8 +20,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-
-
 public class BlockFallenMeteor extends Block implements ITileEntityProvider
 {
 	public BlockFallenMeteor(String assetName)
@@ -37,7 +35,7 @@ public class BlockFallenMeteor extends Block implements ITileEntityProvider
 	@Override
 	public CreativeTabs getCreativeTabToDisplayOn()
 	{
-		return GalacticraftCore.galacticraftTab;
+		return GalacticraftCore.galacticraftBlocksTab;
 	}
 
 	@Override
@@ -169,7 +167,7 @@ public class BlockFallenMeteor extends Block implements ITileEntityProvider
 		else
 		{
 			final Material var5 = var4.getMaterial();
-			return var5 == Material.water ? true : var5 == Material.lava;
+			return var5 == Material.water || var5 == Material.lava;
 		}
 	}
 
@@ -199,7 +197,7 @@ public class BlockFallenMeteor extends Block implements ITileEntityProvider
 	{
 		return new TileEntityFallenMeteor();
 	}
-	
+
 	@Override
 	public boolean canSilkHarvest()
 	{

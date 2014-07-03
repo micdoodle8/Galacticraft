@@ -11,8 +11,6 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 
-
-
 public class CommandJoinSpaceRace extends CommandBase
 {
 	@Override

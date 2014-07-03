@@ -6,8 +6,6 @@ import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.util.MathHelper;
 
-
-
 public class EntityAIArrowAttack extends EntityAIBase
 {
 	private final EntityLiving entityHost;

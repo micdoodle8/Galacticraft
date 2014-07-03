@@ -12,8 +12,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 
-
-
 public class TeleportTypeMars implements ITeleportType
 {
 	@Override

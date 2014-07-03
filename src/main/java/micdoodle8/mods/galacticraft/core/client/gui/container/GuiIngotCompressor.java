@@ -13,17 +13,12 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 @SideOnly(Side.CLIENT)
 public class GuiIngotCompressor extends GuiContainer
 {
 	private static final ResourceLocation electricFurnaceTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/ingotCompressor.png");
 
 	private TileEntityIngotCompressor tileEntity;
-
-	private int containerWidth;
-	private int containerHeight;
 
 	public GuiIngotCompressor(InventoryPlayer par1InventoryPlayer, TileEntityIngotCompressor tileEntity)
 	{
@@ -69,25 +64,25 @@ public class GuiIngotCompressor extends GuiContainer
 		this.mc.renderEngine.bindTexture(GuiIngotCompressor.electricFurnaceTexture);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-		this.containerWidth = (this.width - this.xSize) / 2;
-		this.containerHeight = (this.height - this.ySize) / 2;
-		this.drawTexturedModalRect(this.containerWidth, this.containerHeight, 0, 0, this.xSize, this.ySize);
+	    int containerWidth = (this.width - this.xSize) / 2;
+		int containerHeight = (this.height - this.ySize) / 2;
+		this.drawTexturedModalRect(containerWidth, containerHeight, 0, 0, this.xSize, this.ySize);
 
 		if (this.tileEntity.processTicks > 0)
 		{
 			int scale = (int) ((double) this.tileEntity.processTicks / (double) TileEntityIngotCompressor.PROCESS_TIME_REQUIRED * 54);
-			this.drawTexturedModalRect(this.containerWidth + 77, this.containerHeight + 36, 176, 13, scale, 17);
+			this.drawTexturedModalRect(containerWidth + 77, containerHeight + 36, 176, 13, scale, 17);
 		}
 
 		if (this.tileEntity.furnaceBurnTime > 0)
 		{
 			int scale = (int) ((double) this.tileEntity.furnaceBurnTime / (double) this.tileEntity.currentItemBurnTime * 14);
-			this.drawTexturedModalRect(this.containerWidth + 81, this.containerHeight + 27 + 14 - scale, 176, 30 + 14 - scale, 14, scale);
+			this.drawTexturedModalRect(containerWidth + 81, containerHeight + 27 + 14 - scale, 176, 30 + 14 - scale, 14, scale);
 		}
 
 		if (this.tileEntity.processTicks > TileEntityIngotCompressor.PROCESS_TIME_REQUIRED / 2)
 		{
-			this.drawTexturedModalRect(this.containerWidth + 101, this.containerHeight + 28, 176, 0, 15, 13);
+			this.drawTexturedModalRect(containerWidth + 101, containerHeight + 28, 176, 0, 15, 13);
 		}
 	}
 }

@@ -50,7 +50,8 @@ public abstract class EntityAdvanced extends Entity implements IPacketReceiver
 	/**
 	 * Add any additional data to the stream
 	 * 
-	 * @param networkedList List of additional data
+	 * @param networkedList
+	 *            List of additional data
 	 */
 	public void addExtraNetworkedData(List<Object> networkedList)
 	{

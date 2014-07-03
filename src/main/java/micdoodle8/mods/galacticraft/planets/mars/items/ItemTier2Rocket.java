@@ -12,7 +12,6 @@ import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntityCargoRocket;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntityTier2Rocket;
 import net.minecraft.block.Block;
@@ -26,8 +25,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
-
 
 public class ItemTier2Rocket extends Item implements IHoldableItem
 {
@@ -46,10 +43,11 @@ public class ItemTier2Rocket extends Item implements IHoldableItem
 		return ClientProxyCore.galacticraftItem;
 	}
 
+	@SideOnly(Side.CLIENT)
 	@Override
 	public CreativeTabs getCreativeTab()
 	{
-		return MarsModule.galacticraftMarsTab;
+		return GalacticraftCore.galacticraftItemsTab;
 	}
 
 	@Override

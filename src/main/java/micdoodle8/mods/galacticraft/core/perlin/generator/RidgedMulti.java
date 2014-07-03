@@ -8,78 +8,81 @@ import micdoodle8.mods.galacticraft.core.perlin.NoiseModule;
 public class RidgedMulti extends NoiseModule
 {
 	private final FishyNoise noiseGen;
-	private final double offsetX;
-	private final double offsetY;
-	private final double offsetZ;
+	private final float offsetX;
+	private final float offsetY;
+	private final float offsetZ;
 	private final int numOctaves;
 
 	public RidgedMulti(long seed, int nOctaves)
 	{
 		this.numOctaves = nOctaves;
 		final Random rand = new Random(seed);
-		this.offsetX = rand.nextDouble() / 2 + 0.01D;
-		this.offsetY = rand.nextDouble() / 2 + 0.01D;
-		this.offsetZ = rand.nextDouble() / 2 + 0.01D;
+		this.offsetX = rand.nextFloat() / 2 + 0.01F;
+		this.offsetY = rand.nextFloat() / 2 + 0.01F;
+		this.offsetZ = rand.nextFloat() / 2 + 0.01F;
 		this.noiseGen = new FishyNoise(seed);
 	}
 
 	@Override
-	public double getNoise(double i)
+	public float getNoise(float i)
 	{
 		i *= this.frequencyX;
-		double val = 0;
-		double weight = 1.0;
-		final double offset = 1.0;
-		final double gain = 2.0;
-		for(int n = 0; n < this.numOctaves; n++) {
-			double noise = this.absolute(this.noiseGen.noise2d(i + this.offsetX, this.offsetY));
+		float val = 0;
+		float weight = 1.0F;
+		final float offset = 1.0F;
+		final float gain = 2.0F;
+		for (int n = 0; n < this.numOctaves; n++)
+		{
+			float noise = this.absolute(this.noiseGen.noise2d(i + this.offsetX, this.offsetY));
 			noise = offset - noise;
 			noise *= noise;
 			noise *= weight;
-			
+
 			weight = noise * gain;
-			
-			if(weight > 1D) {
-				weight = 1D;
+
+			if (weight > 1F)
+			{
+				weight = 1F;
 			}
-			
-			if(weight < 0D) {
-				weight = 0D;
+
+			if (weight < 0F)
+			{
+				weight = 0F;
 			}
-			
+
 			val += noise;
-			
+
 			i *= 2;
 		}
 		return val;
 	}
 
 	@Override
-	public double getNoise(double i, double j)
+	public float getNoise(float i, float j)
 	{
 		i *= this.frequencyX;
 		j *= this.frequencyY;
-		double val = 0;
-		double weight = 1.0;
-		final double offset = 1.0;
-		final double gain = 2.0;
+		float val = 0;
+		float weight = 1.0F;
+		final float offset = 1.0F;
+		final float gain = 2.0F;
 		for (int n = 0; n < this.numOctaves; n++)
 		{
-			double noise = this.absolute(this.noiseGen.noise2d(i + this.offsetX, j + this.offsetY));
+			float noise = this.absolute(this.noiseGen.noise2d(i + this.offsetX, j + this.offsetY));
 			noise = offset - noise;
 			noise *= noise;
 			noise *= weight;
 
 			weight = noise * gain;
 
-			if (weight > 1D)
+			if (weight > 1F)
 			{
-				weight = 1D;
+				weight = 1F;
 			}
 
-			if (weight < 0D)
+			if (weight < 0F)
 			{
-				weight = 0D;
+				weight = 0F;
 			}
 
 			val += noise;
@@ -91,32 +94,32 @@ public class RidgedMulti extends NoiseModule
 	}
 
 	@Override
-	public double getNoise(double i, double j, double k)
+	public float getNoise(float i, float j, float k)
 	{
 		i *= this.frequencyX;
 		j *= this.frequencyY;
 		k *= this.frequencyZ;
-		double val = 0;
-		double weight = 1.0;
-		final double offset = 1.0;
-		final double gain = 2.0;
+		float val = 0F;
+		float weight = 1.0F;
+		final float offset = 1.0F;
+		final float gain = 2.0F;
 		for (int n = 0; n < this.numOctaves; n++)
 		{
-			double noise = this.absolute(this.noiseGen.noise3d(i + this.offsetX, j + this.offsetY, k + this.offsetZ));
+			float noise = this.absolute(this.noiseGen.noise3d(i + this.offsetX, j + this.offsetY, k + this.offsetZ));
 			noise = offset - noise;
 			noise *= noise;
 			noise *= weight;
 
 			weight = noise * gain;
 
-			if (weight > 1D)
+			if (weight > 1F)
 			{
-				weight = 1D;
+				weight = 1F;
 			}
 
-			if (weight < 0D)
+			if (weight < 0F)
 			{
-				weight = 0D;
+				weight = 0F;
 			}
 
 			val += noise;
@@ -128,7 +131,7 @@ public class RidgedMulti extends NoiseModule
 		return val;
 	}
 
-	private double absolute(double d)
+	private float absolute(float d)
 	{
 		if (d < 0)
 		{

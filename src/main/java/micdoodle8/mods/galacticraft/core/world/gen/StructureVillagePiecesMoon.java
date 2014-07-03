@@ -9,8 +9,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 
-
-
 public class StructureVillagePiecesMoon
 {
 	public static ArrayList<StructureVillagePieceWeightMoon> getStructureVillageWeightedPieceList(Random par0Random, int par1)
