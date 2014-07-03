@@ -10,6 +10,7 @@ public class AsteroidsItems
 	public static Item tier3Rocket;
 	public static Item thermalPadding;
     public static Item basicItem;
+    public static ItemHeavyNoseCone heavyNoseCone;
 
 	public static void initItems()
 	{
@@ -17,6 +18,7 @@ public class AsteroidsItems
 		AsteroidsItems.tier3Rocket = new ItemTier3Rocket("itemTier3Rocket");
 		AsteroidsItems.thermalPadding = new ItemThermalPadding("thermalPadding");
         AsteroidsItems.basicItem = new ItemBasicAsteroids();
+        AsteroidsItems.heavyNoseCone = new ItemHeavyNoseCone("heavyNoseCone");
 
 		AsteroidsItems.registerItems();
 	}
@@ -27,5 +29,6 @@ public class AsteroidsItems
 		GameRegistry.registerItem(AsteroidsItems.tier3Rocket, AsteroidsItems.tier3Rocket.getUnlocalizedName(), GalacticraftPlanets.MODID);
 		GameRegistry.registerItem(AsteroidsItems.thermalPadding, AsteroidsItems.thermalPadding.getUnlocalizedName(), GalacticraftPlanets.MODID);
         GameRegistry.registerItem(AsteroidsItems.basicItem, AsteroidsItems.basicItem.getUnlocalizedName(), GalacticraftPlanets.MODID);
+        GameRegistry.registerItem(AsteroidsItems.heavyNoseCone, AsteroidsItems.heavyNoseCone.getUnlocalizedName(), GalacticraftPlanets.MODID);
 	}
 }
