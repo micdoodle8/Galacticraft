@@ -34,6 +34,7 @@ public class GCCoreBlockGlowstoneTorch extends Block
 		this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
 		this.setUnlocalizedName(assetName);
 		this.setLightValue(0.85F);
+		this.setStepSound(soundWoodFootstep);
 	}
 
 	@Override
