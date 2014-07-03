@@ -461,6 +461,31 @@ public class MapGenDungeon
 	public void generateEntranceCrater(Block[] blocks, byte[] meta, int x, int y, int z, int cx, int cz)
 	{
 		final int range = 18;
+        int maxLevel = 0;
+
+        for (int i = -range; i <= range; i++)
+        {
+            for (int k = -range; k <= range; k++)
+            {
+
+                int j = 200;
+
+                while (j > 0)
+                {
+                    j--;
+
+                    Block block = this.getBlock(blocks, x + i, j, z + k, cx + i / 16, cz + k / 16);
+
+                    if (block != Blocks.air && block != null)
+                    {
+                        break;
+                    }
+                }
+
+                maxLevel = Math.max(maxLevel, j);
+            }
+        }
+
 		for (int i = x - range; i < x + range; i++)
 		{
 			for (int k = z - range; k < z + range; k++)
@@ -468,9 +493,9 @@ public class MapGenDungeon
 				final double xDev = (i - x) / 10D;
 				final double zDev = (k - z) / 10D;
 				final double distance = xDev * xDev + zDev * zDev;
-				final int depth = (int) Math.abs(2 / (distance + .00001D));
+				final int depth = (int) Math.abs(1 / (distance + .00001D));
 				int helper = 0;
-				for (int j = 127; j > 0; j--)
+				for (int j = maxLevel + 3; j > 0; j--)
 				{
 					if ((this.getBlock(blocks, i, j - 1, k, cx, cz) != Blocks.air || this.getBlock(blocks, i, j, k, cx, cz) == this.DUNGEON_WALL_ID) && helper <= depth)
 					{
