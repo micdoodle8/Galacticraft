@@ -84,4 +84,21 @@ public class GCCoreCommandPlanetTeleport extends CommandBase
 			throw new WrongUsageException("Not enough command arguments! Usage: " + this.getCommandUsage(icommandsender), new Object[0]);
 		}
 	}
+	
+		@Override
+    public List addTabCompletionOptions(ICommandSender par1ICommandSender, String[] par2ArrayOfStr)
+    {
+        return par2ArrayOfStr.length == 1 ? getListOfStringsMatchingLastWord(par2ArrayOfStr, this.getPlayers()) : null;
+    }
+	
+    protected String[] getPlayers()
+    {
+        return MinecraftServer.getServer().getAllUsernames();
+    }
+    
+	@Override
+    public boolean isUsernameIndex(String[] par1ArrayOfStr, int par2)
+    {
+        return par2 == 0;
+    }
 }
