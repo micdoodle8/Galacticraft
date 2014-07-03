@@ -219,4 +219,21 @@ public class GCCoreCommandGCInv extends CommandBase
 
 		return GCCoreCommandGCInv.savedata.get(p);
 	}
+	
+		@Override
+    public List addTabCompletionOptions(ICommandSender par1ICommandSender, String[] par2ArrayOfStr)
+    {
+        return par2ArrayOfStr.length == 1 ? getListOfStringsMatchingLastWord(par2ArrayOfStr, new String[] {"save", "restore", "drop", "clear"}) : (par2ArrayOfStr.length == 2 ? getListOfStringsMatchingLastWord(par2ArrayOfStr, this.getPlayers()): null);
+    }
+    
+    protected String[] getPlayers()
+    {
+        return MinecraftServer.getServer().getAllUsernames();
+    }
+    
+	@Override
+    public boolean isUsernameIndex(String[] par1ArrayOfStr, int par2)
+    {
+        return par2 == 0;
+    }
 }
