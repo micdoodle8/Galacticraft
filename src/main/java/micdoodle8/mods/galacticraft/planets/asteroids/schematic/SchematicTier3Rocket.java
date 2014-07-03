@@ -1,50 +1,50 @@
-package micdoodle8.mods.galacticraft.planets.mars.schematic;
+package micdoodle8.mods.galacticraft.planets.asteroids.schematic;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
-import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
-import micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars;
-import micdoodle8.mods.galacticraft.planets.mars.client.gui.GuiSchematicTier2Rocket;
-import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerSchematicTier2Rocket;
+import micdoodle8.mods.galacticraft.planets.asteroids.ConfigManagerAsteroids;
+import micdoodle8.mods.galacticraft.planets.asteroids.client.gui.GuiSchematicTier3Rocket;
+import micdoodle8.mods.galacticraft.planets.asteroids.inventory.ContainerSchematicTier3Rocket;
+import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 
-public class SchematicTier2Rocket implements ISchematicPage
+public class SchematicTier3Rocket implements ISchematicPage
 {
 	@Override
 	public int getPageID()
 	{
-		return ConfigManagerMars.idSchematicRocketT2;
+		return ConfigManagerAsteroids.idSchematicRocketT3;
 	}
 
 	@Override
 	public int getGuiID()
 	{
-		return GuiIdsPlanets.NASA_WORKBENCH_TIER_2_ROCKET + GalacticraftPlanets.MODID.hashCode();
+		return GuiIdsPlanets.NASA_WORKBENCH_TIER_3_ROCKET + GalacticraftPlanets.MODID.hashCode();
 	}
 
 	@Override
 	public ItemStack getRequiredItem()
 	{
-		return new ItemStack(GCItems.schematic, 1, 1);
+		return new ItemStack(MarsItems.schematic, 1, 0);
 	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
 	public GuiScreen getResultScreen(EntityPlayer player, int x, int y, int z)
 	{
-		return new GuiSchematicTier2Rocket(player.inventory, x, y, z);
+		return new GuiSchematicTier3Rocket(player.inventory, x, y, z);
 	}
 
 	@Override
 	public Container getResultContainer(EntityPlayer player, int x, int y, int z)
 	{
-		return new ContainerSchematicTier2Rocket(player.inventory, x, y, z);
+		return new ContainerSchematicTier3Rocket(player.inventory, x, y, z);
 	}
 
 	@Override

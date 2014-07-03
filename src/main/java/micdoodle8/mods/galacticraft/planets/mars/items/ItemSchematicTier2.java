@@ -80,7 +80,6 @@ public class ItemSchematicTier2 extends ItemSchematic implements ISchematicItem
 			{
 			case 0:
 				par3List.add(GCCoreUtil.translate("schematic.rocketT3.name"));
-				par3List.add(EnumColor.DARK_AQUA + "COMING SOON");
 				break;
 			case 1:
 				par3List.add(GCCoreUtil.translate("schematic.cargoRocket.name"));

@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.planets.mars.util;
 
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
+import micdoodle8.mods.galacticraft.planets.asteroids.inventory.InventorySchematicTier3Rocket;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.InventorySchematicCargoRocket;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.InventorySchematicTier2Rocket;
 import net.minecraft.item.ItemStack;
@@ -33,4 +34,17 @@ public class RecipeUtilMars
 
 		return null;
 	}
+
+    public static ItemStack findMatchingSpaceshipT3Recipe(InventorySchematicTier3Rocket inventoryRocketBench)
+    {
+        for (INasaWorkbenchRecipe recipe : GalacticraftRegistry.getRocketT3Recipes())
+        {
+            if (recipe.matches(inventoryRocketBench))
+            {
+                return recipe.getRecipeOutput();
+            }
+        }
+
+        return null;
+    }
 }

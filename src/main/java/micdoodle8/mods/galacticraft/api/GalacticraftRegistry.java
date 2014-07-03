@@ -24,6 +24,7 @@ public class GalacticraftRegistry
 	private static List<INasaWorkbenchRecipe> buggyBenchRecipes = new ArrayList<INasaWorkbenchRecipe>();
 	private static List<INasaWorkbenchRecipe> rocketBenchT2Recipes = new ArrayList<INasaWorkbenchRecipe>();
 	private static List<INasaWorkbenchRecipe> cargoRocketRecipes = new ArrayList<INasaWorkbenchRecipe>();
+    private static List<INasaWorkbenchRecipe> rocketBenchT3Recipes = new ArrayList<INasaWorkbenchRecipe>();
 	private static Map<Class<? extends WorldProvider>, ResourceLocation> rocketGuiMap = new HashMap<Class<? extends WorldProvider>, ResourceLocation>();
 	private static Map<Integer, List<ItemStack>> dungeonLootMap = new HashMap<Integer, List<ItemStack>>();
 
@@ -100,6 +101,11 @@ public class GalacticraftRegistry
 		GalacticraftRegistry.rocketBenchT2Recipes.add(recipe);
 	}
 
+    public static void addT3RocketRecipe(INasaWorkbenchRecipe recipe)
+    {
+        GalacticraftRegistry.rocketBenchT3Recipes.add(recipe);
+    }
+
 	public static void addCargoRocketRecipe(INasaWorkbenchRecipe recipe)
 	{
 		GalacticraftRegistry.cargoRocketRecipes.add(recipe);
@@ -143,6 +149,11 @@ public class GalacticraftRegistry
 	{
 		return GalacticraftRegistry.rocketBenchT2Recipes;
 	}
+
+    public static List<INasaWorkbenchRecipe> getRocketT3Recipes()
+    {
+        return GalacticraftRegistry.rocketBenchT3Recipes;
+    }
 
 	public static List<INasaWorkbenchRecipe> getCargoRocketRecipes()
 	{

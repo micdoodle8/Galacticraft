@@ -9,4 +9,5 @@ public class GuiIdsPlanets
 
 	// ASTEROIDS
 	public static final int MACHINE_ASTEROIDS = 3;
+    public static final int NASA_WORKBENCH_TIER_3_ROCKET = 4;
 }
