@@ -353,10 +353,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 		{
 			if (!this.worldObj.isRemote)
 			{
-				par1EntityPlayer.addChatMessage(new ChatComponentText(Keyboard.getKeyName(KeyHandlerClient.spaceKey.getKeyCode()) + "  - " + GCCoreUtil.translate("gui.rocket.launch.name")));
-				par1EntityPlayer.addChatMessage(new ChatComponentText(Keyboard.getKeyName(KeyHandlerClient.leftKey.getKeyCode()) + " / " + Keyboard.getKeyName(KeyHandlerClient.rightKey.getKeyCode()) + "  - " + GCCoreUtil.translate("gui.rocket.turn.name")));
-				par1EntityPlayer.addChatMessage(new ChatComponentText(Keyboard.getKeyName(KeyHandlerClient.accelerateKey.getKeyCode()) + " / " + Keyboard.getKeyName(KeyHandlerClient.decelerateKey.getKeyCode()) + "  - " + GCCoreUtil.translate("gui.rocket.updown.name")));
-				par1EntityPlayer.addChatMessage(new ChatComponentText(Keyboard.getKeyName(KeyHandlerClient.openFuelGui.getKeyCode()) + "       - " + GCCoreUtil.translate("gui.rocket.inv.name")));
+                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_DISPLAY_ROCKET_CONTROLS, new Object[] {}), (GCEntityPlayerMP)par1EntityPlayer);
 				((GCEntityPlayerMP) par1EntityPlayer).getPlayerStats().chatCooldown = 0;
 				par1EntityPlayer.mountEntity(this);
 			}

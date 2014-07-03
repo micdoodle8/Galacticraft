@@ -37,6 +37,7 @@ import micdoodle8.mods.galacticraft.core.inventory.ContainerSchematic;
 import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
 import micdoodle8.mods.galacticraft.core.items.ItemParaChute;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAirLockController;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityConductor;
@@ -75,6 +76,7 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import org.lwjgl.input.Keyboard;
 
 public class PacketSimple extends Packet implements IPacket
 {
@@ -83,7 +85,7 @@ public class PacketSimple extends Packet implements IPacket
 		// SERVER
 		S_RESPAWN_PLAYER(Side.SERVER, String.class), S_TELEPORT_ENTITY(Side.SERVER, String.class), S_IGNITE_ROCKET(Side.SERVER), S_OPEN_SCHEMATIC_PAGE(Side.SERVER, Integer.class), S_OPEN_FUEL_GUI(Side.SERVER, Integer.class), S_UPDATE_SHIP_YAW(Side.SERVER, Float.class), S_UPDATE_SHIP_PITCH(Side.SERVER, Float.class), S_SET_ENTITY_FIRE(Side.SERVER, Integer.class), S_OPEN_REFINERY_GUI(Side.SERVER, Integer.class, Integer.class, Integer.class), S_BIND_SPACE_STATION_ID(Side.SERVER, Integer.class), S_UNLOCK_NEW_SCHEMATIC(Side.SERVER), S_UPDATE_DISABLEABLE_BUTTON(Side.SERVER, Integer.class, Integer.class, Integer.class, Integer.class), S_ON_FAILED_CHEST_UNLOCK(Side.SERVER, Integer.class), S_RENAME_SPACE_STATION(Side.SERVER, String.class, Integer.class), S_OPEN_EXTENDED_INVENTORY(Side.SERVER), S_ON_ADVANCED_GUI_CLICKED_INT(Side.SERVER, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class), S_ON_ADVANCED_GUI_CLICKED_STRING(Side.SERVER, Integer.class, Integer.class, Integer.class, Integer.class, String.class), S_UPDATE_SHIP_MOTION_Y(Side.SERVER, Integer.class, Boolean.class), S_START_NEW_SPACE_RACE(Side.SERVER, Integer.class, String.class, FlagData.class, Vector3.class, String[].class), S_REQUEST_FLAG_DATA(Side.SERVER, String.class), S_INVITE_RACE_PLAYER(Side.SERVER, String.class, Integer.class), S_REMOVE_RACE_PLAYER(Side.SERVER, String.class, Integer.class), S_ADD_RACE_PLAYER(Side.SERVER, String.class, Integer.class),
 		// CLIENT
-		C_AIR_REMAINING(Side.CLIENT, Integer.class, Integer.class, String.class), C_UPDATE_DIMENSION_LIST(Side.CLIENT, String.class, String.class), C_SPAWN_SPARK_PARTICLES(Side.CLIENT, Integer.class, Integer.class, Integer.class), C_UPDATE_GEAR_SLOT(Side.CLIENT, String.class, Integer.class, Integer.class), C_CLOSE_GUI(Side.CLIENT), C_RESET_THIRD_PERSON(Side.CLIENT, String.class), C_UPDATE_SPACESTATION_LIST(Side.CLIENT, Integer[].class), C_UPDATE_SPACESTATION_DATA(Side.CLIENT, Integer.class, NBTTagCompound.class), C_UPDATE_SPACESTATION_CLIENT_ID(Side.CLIENT, Integer.class), C_UPDATE_PLANETS_LIST(Side.CLIENT, Integer[].class), C_ADD_NEW_SCHEMATIC(Side.CLIENT, Integer.class), C_UPDATE_SCHEMATIC_LIST(Side.CLIENT, Integer[].class), C_PLAY_SOUND_BOSS_DEATH(Side.CLIENT), C_PLAY_SOUND_EXPLODE(Side.CLIENT), C_PLAY_SOUND_BOSS_LAUGH(Side.CLIENT), C_PLAY_SOUND_BOW(Side.CLIENT), C_UPDATE_OXYGEN_VALIDITY(Side.CLIENT, Boolean.class), C_OPEN_PARACHEST_GUI(Side.CLIENT, Integer.class, Integer.class, Integer.class), C_UPDATE_WIRE_BOUNDS(Side.CLIENT, Integer.class, Integer.class, Integer.class), C_OPEN_SPACE_RACE_GUI(Side.CLIENT), C_UPDATE_SPACE_RACE_DATA(Side.CLIENT, Integer.class, String.class, FlagData.class, Vector3.class, String[].class), C_OPEN_JOIN_RACE_GUI(Side.CLIENT, Integer.class), C_UPDATE_FOOTPRINT_LIST(Side.CLIENT, Footprint[].class), C_UPDATE_STATION_SPIN(Side.CLIENT, Float.class, Boolean.class), C_UPDATE_STATION_DATA(Side.CLIENT, Double.class, Double.class), C_UPDATE_STATION_BOX(Side.CLIENT, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class), C_UPDATE_THERMAL_LEVEL(Side.CLIENT, Integer.class);
+		C_AIR_REMAINING(Side.CLIENT, Integer.class, Integer.class, String.class), C_UPDATE_DIMENSION_LIST(Side.CLIENT, String.class, String.class), C_SPAWN_SPARK_PARTICLES(Side.CLIENT, Integer.class, Integer.class, Integer.class), C_UPDATE_GEAR_SLOT(Side.CLIENT, String.class, Integer.class, Integer.class), C_CLOSE_GUI(Side.CLIENT), C_RESET_THIRD_PERSON(Side.CLIENT, String.class), C_UPDATE_SPACESTATION_LIST(Side.CLIENT, Integer[].class), C_UPDATE_SPACESTATION_DATA(Side.CLIENT, Integer.class, NBTTagCompound.class), C_UPDATE_SPACESTATION_CLIENT_ID(Side.CLIENT, Integer.class), C_UPDATE_PLANETS_LIST(Side.CLIENT, Integer[].class), C_ADD_NEW_SCHEMATIC(Side.CLIENT, Integer.class), C_UPDATE_SCHEMATIC_LIST(Side.CLIENT, Integer[].class), C_PLAY_SOUND_BOSS_DEATH(Side.CLIENT), C_PLAY_SOUND_EXPLODE(Side.CLIENT), C_PLAY_SOUND_BOSS_LAUGH(Side.CLIENT), C_PLAY_SOUND_BOW(Side.CLIENT), C_UPDATE_OXYGEN_VALIDITY(Side.CLIENT, Boolean.class), C_OPEN_PARACHEST_GUI(Side.CLIENT, Integer.class, Integer.class, Integer.class), C_UPDATE_WIRE_BOUNDS(Side.CLIENT, Integer.class, Integer.class, Integer.class), C_OPEN_SPACE_RACE_GUI(Side.CLIENT), C_UPDATE_SPACE_RACE_DATA(Side.CLIENT, Integer.class, String.class, FlagData.class, Vector3.class, String[].class), C_OPEN_JOIN_RACE_GUI(Side.CLIENT, Integer.class), C_UPDATE_FOOTPRINT_LIST(Side.CLIENT, Footprint[].class), C_UPDATE_STATION_SPIN(Side.CLIENT, Float.class, Boolean.class), C_UPDATE_STATION_DATA(Side.CLIENT, Double.class, Double.class), C_UPDATE_STATION_BOX(Side.CLIENT, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class), C_UPDATE_THERMAL_LEVEL(Side.CLIENT, Integer.class), C_DISPLAY_ROCKET_CONTROLS(Side.CLIENT);
 
 		private Side targetSide;
 		private Class<?>[] decodeAs;
@@ -587,6 +589,12 @@ public class PacketSimple extends Packet implements IPacket
 		case C_UPDATE_THERMAL_LEVEL:
 			playerBaseClient.thermalLevel = (Integer) this.data.get(0);
 			break;
+        case C_DISPLAY_ROCKET_CONTROLS:
+            player.addChatMessage(new ChatComponentText(Keyboard.getKeyName(KeyHandlerClient.spaceKey.getKeyCode()) + "  - " + GCCoreUtil.translate("gui.rocket.launch.name")));
+            player.addChatMessage(new ChatComponentText(Keyboard.getKeyName(KeyHandlerClient.leftKey.getKeyCode()) + " / " + Keyboard.getKeyName(KeyHandlerClient.rightKey.getKeyCode()) + "  - " + GCCoreUtil.translate("gui.rocket.turn.name")));
+            player.addChatMessage(new ChatComponentText(Keyboard.getKeyName(KeyHandlerClient.accelerateKey.getKeyCode()) + " / " + Keyboard.getKeyName(KeyHandlerClient.decelerateKey.getKeyCode()) + "  - " + GCCoreUtil.translate("gui.rocket.updown.name")));
+            player.addChatMessage(new ChatComponentText(Keyboard.getKeyName(KeyHandlerClient.openFuelGui.getKeyCode()) + "       - " + GCCoreUtil.translate("gui.rocket.inv.name")));
+            break;
 		default:
 			break;
 		}
