@@ -10,7 +10,7 @@ import net.minecraftforge.common.MinecraftForge;
 /**
  * Do not include this prefab class in your released mod download.
  */
-public abstract class GCBiomeDecoratorBase
+public abstract class BiomeDecoratorSpace
 {
 	protected World currentWorld;
 	protected Random rand;

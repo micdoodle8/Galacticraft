@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import micdoodle8.mods.galacticraft.api.prefab.world.gen.GCCoreMapGenBaseMeta;
+import micdoodle8.mods.galacticraft.api.prefab.world.gen.MapGenBaseMeta;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedCreeper;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSkeleton;
@@ -74,7 +74,7 @@ public class ChunkProviderMoon extends ChunkProviderGenerate
 
 	private BiomeGenBase[] biomesForGeneration = { BiomeGenBaseMoon.moonFlat };
 
-	private final GCCoreMapGenBaseMeta caveGenerator = new MapGenCavesMoon();
+	private final MapGenBaseMeta caveGenerator = new MapGenCavesMoon();
 
 	private static final int CRATER_PROB = 300;
 

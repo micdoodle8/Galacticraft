@@ -2,14 +2,14 @@ package micdoodle8.mods.galacticraft.core.world.gen;
 
 import java.util.Random;
 
-import micdoodle8.mods.galacticraft.api.prefab.world.gen.GCCoreMapGenBaseMeta;
+import micdoodle8.mods.galacticraft.api.prefab.world.gen.MapGenBaseMeta;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public class MapGenCavesMoon extends GCCoreMapGenBaseMeta
+public class MapGenCavesMoon extends MapGenBaseMeta
 {
 	public static final int BREAK_THROUGH_CHANCE = 25; // 1 in n chance
 

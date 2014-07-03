@@ -22,9 +22,9 @@ import net.minecraft.world.gen.ChunkProviderGenerate;
 /**
  * Do not include this prefab class in your released mod download.
  */
-public abstract class GCChunkProvider extends ChunkProviderGenerate
+public abstract class ChunkProviderSpace extends ChunkProviderGenerate
 {
-	private final Random rand;
+    protected final Random rand;
 
 	private final Gradient noiseGen1;
 	private final Gradient noiseGen2;
@@ -33,20 +33,10 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
 	private final Gradient noiseGen5;
 	private final Gradient noiseGen6;
 	private final Gradient noiseGen7;
-	public GCBiomeDecoratorBase biomeDecoratorPlanet = this.getBiomeGenerator();
 
-	private final World worldObj;
+	protected final World worldObj;
 
 	private BiomeGenBase[] biomesForGeneration = this.getBiomesForGeneration();
-
-	double[] noise1;
-	double[] noise2;
-	double[] noise3;
-	double[] noise4;
-	double[] noise5;
-	double[] noise6;
-	float[] field_35388_l;
-	int[][] field_914_i = new int[32][32];
 
 	private final double TERRAIN_HEIGHT_MOD = this.getHeightModifier();
 	private final double SMALL_FEATURE_HEIGHT_MOD = this.getSmallFeatureHeightModifier();
@@ -63,9 +53,9 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
 	private static final double LARGE_FEATURE_FILTER_MOD = 8;
 	private static final double SMALL_FEATURE_FILTER_MOD = 8;
 
-	private List<GCCoreMapGenBaseMeta> worldGenerators;
+	private List<MapGenBaseMeta> worldGenerators;
 
-	public GCChunkProvider(World par1World, long seed, boolean mapFeaturesEnabled)
+	public ChunkProviderSpace(World par1World, long seed, boolean mapFeaturesEnabled)
 	{
 		super(par1World, seed, mapFeaturesEnabled);
 		this.worldObj = par1World;
@@ -90,17 +80,17 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
 		this.noiseGen6.setFrequency(0.001F);
 		this.noiseGen7.setFrequency(0.005F);
 
-		for (int x = 0; x < GCChunkProvider.CHUNK_SIZE_X; x++)
+		for (int x = 0; x < ChunkProviderSpace.CHUNK_SIZE_X; x++)
 		{
-			for (int z = 0; z < GCChunkProvider.CHUNK_SIZE_Z; z++)
+			for (int z = 0; z < ChunkProviderSpace.CHUNK_SIZE_Z; z++)
 			{
 				final double baseHeight = this.noiseGen1.getNoise(chunkX * 16 + x, chunkZ * 16 + z) * this.TERRAIN_HEIGHT_MOD;
 				final double smallHillHeight = this.noiseGen2.getNoise(chunkX * 16 + x, chunkZ * 16 + z) * this.SMALL_FEATURE_HEIGHT_MOD;
 				double mountainHeight = Math.abs(this.noiseGen3.getNoise(chunkX * 16 + x, chunkZ * 16 + z));
 				double valleyHeight = Math.abs(this.noiseGen4.getNoise(chunkX * 16 + x, chunkZ * 16 + z));
-				final double featureFilter = this.noiseGen5.getNoise(chunkX * 16 + x, chunkZ * 16 + z) * GCChunkProvider.MAIN_FEATURE_FILTER_MOD;
-				final double largeFilter = this.noiseGen6.getNoise(chunkX * 16 + x, chunkZ * 16 + z) * GCChunkProvider.LARGE_FEATURE_FILTER_MOD;
-				final double smallFilter = this.noiseGen7.getNoise(chunkX * 16 + x, chunkZ * 16 + z) * GCChunkProvider.SMALL_FEATURE_FILTER_MOD - 0.5;
+				final double featureFilter = this.noiseGen5.getNoise(chunkX * 16 + x, chunkZ * 16 + z) * ChunkProviderSpace.MAIN_FEATURE_FILTER_MOD;
+				final double largeFilter = this.noiseGen6.getNoise(chunkX * 16 + x, chunkZ * 16 + z) * ChunkProviderSpace.LARGE_FEATURE_FILTER_MOD;
+				final double smallFilter = this.noiseGen7.getNoise(chunkX * 16 + x, chunkZ * 16 + z) * ChunkProviderSpace.SMALL_FEATURE_FILTER_MOD - 0.5;
 				mountainHeight = this.lerp(smallHillHeight, mountainHeight * this.MOUNTAIN_HEIGHT_MOD, this.fade(this.clamp(mountainHeight * 2, 0, 1)));
 				valleyHeight = this.lerp(smallHillHeight, valleyHeight * this.VALLEY_HEIGHT_MOD - this.VALLEY_HEIGHT_MOD + 9, this.fade(this.clamp((valleyHeight + 2) * 4, 0, 1)));
 
@@ -108,7 +98,7 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
 				yDev = this.lerp(smallHillHeight, yDev, smallFilter);
 				yDev = this.lerp(baseHeight, yDev, featureFilter);
 
-				for (int y = 0; y < GCChunkProvider.CHUNK_SIZE_Y; y++)
+				for (int y = 0; y < ChunkProviderSpace.CHUNK_SIZE_Y; y++)
 				{
 					if (y < this.MID_HEIGHT + yDev)
 					{
@@ -171,7 +161,7 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
 				Block var15 = this.getDirtBlock().getBlock();
 				byte var15m = this.getDirtBlock().getMetadata();
 
-				for (int var16 = GCChunkProvider.CHUNK_SIZE_Y - 1; var16 >= 0; --var16)
+				for (int var16 = ChunkProviderSpace.CHUNK_SIZE_Y - 1; var16 >= 0; --var16)
 				{
 					final int index = this.getIndex(var8, var16, var9);
 
@@ -250,10 +240,12 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
 			this.worldGenerators = this.getWorldGenerators();
 		}
 
-		for (GCCoreMapGenBaseMeta generator : this.worldGenerators)
+		for (MapGenBaseMeta generator : this.worldGenerators)
 		{
 			generator.generate(this, this.worldObj, par1, par2, ids, meta);
 		}
+
+        this.onChunkProvide(par1, par2, ids, meta);
 
 		final Chunk var4 = new Chunk(this.worldObj, ids, meta, par1, par2);
 		final byte[] var5 = var4.getBiomeArray();
@@ -274,9 +266,9 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
 		{
 			for (int cz = chunkZ - 2; cz <= chunkZ + 2; cz++)
 			{
-				for (int x = 0; x < GCChunkProvider.CHUNK_SIZE_X; x++)
+				for (int x = 0; x < ChunkProviderSpace.CHUNK_SIZE_X; x++)
 				{
-					for (int z = 0; z < GCChunkProvider.CHUNK_SIZE_Z; z++)
+					for (int z = 0; z < ChunkProviderSpace.CHUNK_SIZE_Z; z++)
 					{
 						if (Math.abs(this.randFromPoint(cx * 16 + x, (cz * 16 + z) * 1000)) < this.noiseGen5.getNoise(cx * 16 + x, cz * 16 + z) / this.CRATER_PROB)
 						{
@@ -293,9 +285,9 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
 
 	public void makeCrater(int craterX, int craterZ, int chunkX, int chunkZ, int size, Block[] chunkArray, byte[] metaArray)
 	{
-		for (int x = 0; x < GCChunkProvider.CHUNK_SIZE_X; x++)
+		for (int x = 0; x < ChunkProviderSpace.CHUNK_SIZE_X; x++)
 		{
-			for (int z = 0; z < GCChunkProvider.CHUNK_SIZE_Z; z++)
+			for (int z = 0; z < ChunkProviderSpace.CHUNK_SIZE_Z; z++)
 			{
 				double xDev = craterX - (chunkX + x);
 				double zDev = craterZ - (chunkZ + z);
@@ -346,7 +338,7 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
 
 	public void decoratePlanet(World par1World, Random par2Random, int par3, int par4)
 	{
-		this.biomeDecoratorPlanet.decorate(par1World, par2Random, par3, par4);
+		this.getBiomeGenerator().decorate(par1World, par2Random, par3, par4);
 	}
 
 	@Override
@@ -361,8 +353,7 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
 		final long var9 = this.rand.nextLong() / 2L * 2L + 1L;
 		this.rand.setSeed(par2 * var7 + par3 * var9 ^ this.worldObj.getSeed());
 		this.decoratePlanet(this.worldObj, this.rand, var4, var5);
-		var4 += 8;
-		var5 += 8;
+        this.onPopulate(par1IChunkProvider, par2, par3);
 
 		BlockFalling.fallInstantly = false;
 	}
@@ -423,7 +414,7 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
 	 * @return The biome generator for this world, handles ore, flower, etc
 	 *         generation. See GCBiomeDecoratorBase.
 	 */
-	protected abstract GCBiomeDecoratorBase getBiomeGenerator();
+	protected abstract BiomeDecoratorSpace getBiomeGenerator();
 
 	/**
 	 * Do not return null, have at least one biome for generation
@@ -444,7 +435,7 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
 	 * 
 	 * @return
 	 */
-	protected abstract List<GCCoreMapGenBaseMeta> getWorldGenerators();
+	protected abstract List<MapGenBaseMeta> getWorldGenerators();
 
 	/**
 	 * @return List of spawn list entries for monsters
@@ -503,4 +494,8 @@ public abstract class GCChunkProvider extends ChunkProviderGenerate
 	 * @return Probability that craters will be generated
 	 */
 	public abstract int getCraterProbability();
+
+    public abstract void onChunkProvide(int cX, int cZ, Block[] blocks, byte[] metadata);
+
+    public abstract void onPopulate(IChunkProvider provider, int cX, int cZ);
 }
