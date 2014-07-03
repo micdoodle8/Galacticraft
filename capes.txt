@@ -43,7 +43,7 @@ Puggy04:capeLime
 scriptoffate14:capeRainbow
 Ohrm:capeRainbow
 SirFuzzhead:capeRainbow
-alexljn5:capeYellow
+alexljn5:capeRed
 Tatertot2222:capeRainbow
 atomicpichu:capeRainbow
 Pig_Rider273:capeMagenta
