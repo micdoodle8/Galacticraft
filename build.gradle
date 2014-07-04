@@ -53,7 +53,7 @@ processResources
 
     // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
+        include '**/*.info'
                 
         // replace version and mcversion
         expand 'version':project.version, 'mcversion':project.minecraft.version
@@ -61,7 +61,7 @@ processResources
         
     // copy everything else, thats not the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
+        exclude '**/*.info'
     }
 }
 
@@ -94,12 +94,23 @@ jar
 {
 	// Add necessary files, remove unnecessary ones.
 	includes.addAll(project.ext.coreFiles)
+	includes.addAll('**/*.info')
 	includes.addAll(project.ext.dependencies)
 	includes.addAll(project.ext.planetsFiles)
 	includes.addAll(project.ext.micdoodleCoreFiles)
 }
 
-task packCoreJar(type: Jar, dependsOn: "reobf") {
+task moveCoreMcmodInfo(type: Copy, dependsOn: "reobf") {
+	from 'src/main/resources/assets/galacticraftcore/mcmod.info'
+	into 'src/main/resources'
+}
+
+task movePlanetsMcmodInfo(type: Copy, dependsOn: "reobf") {
+	from 'src/main/resources/assets/galacticraftmars/mcmod.info'
+	into 'src/main/resources'
+}
+
+task packCoreJar(type: Jar, dependsOn: "moveCoreMcmodInfo") {
 	// Jar will always be updated
 	outputs.upToDateWhen {false}
 	// Set the jar's base name
@@ -108,13 +119,15 @@ task packCoreJar(type: Jar, dependsOn: "reobf") {
 	from(zipTree(project.ext.coreJar)) {
 		// Add necessary files, remove unnecessary ones.
 		includes.addAll(project.ext.coreFiles)
+		includes.addAll('**/*.info')
 		excludes.addAll(project.ext.planetsFiles)
 		excludes.addAll(project.ext.dependencies)
 		excludes.addAll(project.ext.micdoodleCoreFiles)
+		excludes.addAll('assets/galacticraftcore/mcmod.info')
 	}
 }
 
-task packPlanetsJar(type: Jar, dependsOn: "reobf") {
+task packPlanetsJar(type: Jar, dependsOn: "movePlanetsMcmodInfo") {
 	// Jar will always be updated
 	outputs.upToDateWhen {false}
 	// Set the jar's base name
@@ -123,9 +136,11 @@ task packPlanetsJar(type: Jar, dependsOn: "reobf") {
 	from(zipTree(project.ext.coreJar)) {
 		// Add necessary files, remove unnecessary ones.
 		includes.addAll(project.ext.planetsFiles)
+		includes.addAll('**/*.info')
 		excludes.addAll(project.ext.coreFiles)
 		excludes.addAll(project.ext.dependencies)
 		excludes.addAll(project.ext.micdoodleCoreFiles)
+		excludes.addAll('assets/galacticraftmars/mcmod.info')
 	}
 }
 
@@ -141,6 +156,7 @@ task packMicCoreJar(type: Jar, dependsOn: "reobf") {
 		excludes.addAll(project.ext.planetsFiles)
 		excludes.addAll(project.ext.coreFiles)
 		excludes.addAll(project.ext.dependencies)
+		excludes.addAll('**/*.info')
 	}
 	
 	// Configure manifest attributes
