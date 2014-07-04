@@ -45,26 +45,6 @@ minecraft {
     assetDir = "eclipse/assets" // This is where forge will download Minecraft assets
 }
 
-processResources
-{
-    // this will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
-
-    // replace stuff in mcmod.info, nothing else
-    from(sourceSets.main.resources.srcDirs) {
-        include '**/*.info'
-                
-        // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version
-    }
-        
-    // copy everything else, thats not the mcmod.info
-    from(sourceSets.main.resources.srcDirs) {
-        exclude '**/*.info'
-    }
-}
-
 // Keep a list of dependencies files/directories for easy jar packing
 ext.dependencies = ['codechicken/**',
 					'**/nei_at.cfg']
@@ -94,7 +74,7 @@ jar
 {
 	// Add necessary files, remove unnecessary ones.
 	includes.addAll(project.ext.coreFiles)
-	includes.addAll('**/*.info')
+	includes.addAll('mcmod.info')
 	includes.addAll(project.ext.dependencies)
 	includes.addAll(project.ext.planetsFiles)
 	includes.addAll(project.ext.micdoodleCoreFiles)
@@ -102,15 +82,24 @@ jar
 
 task moveCoreMcmodInfo(type: Copy, dependsOn: "reobf") {
 	from 'src/main/resources/assets/galacticraftcore/mcmod.info'
-	into 'src/main/resources'
+	from(zipTree(project.ext.coreJar))
+	into 'temporary'
 }
 
 task movePlanetsMcmodInfo(type: Copy, dependsOn: "reobf") {
 	from 'src/main/resources/assets/galacticraftmars/mcmod.info'
-	into 'src/main/resources'
+	into 'temporary'
 }
 
-task packCoreJar(type: Jar, dependsOn: "moveCoreMcmodInfo") {
+task rePackAllJarCore(type: Jar, dependsOn: "moveCoreMcmodInfo") {
+	from 'temporary'
+}
+
+task rePackAllJarPlanets(type: Jar, dependsOn: "movePlanetsMcmodInfo") {
+	from 'temporary'
+}
+
+task packCoreJar(type: Jar, dependsOn: "rePackAllJarCore") {
 	// Jar will always be updated
 	outputs.upToDateWhen {false}
 	// Set the jar's base name
@@ -119,15 +108,14 @@ task packCoreJar(type: Jar, dependsOn: "moveCoreMcmodInfo") {
 	from(zipTree(project.ext.coreJar)) {
 		// Add necessary files, remove unnecessary ones.
 		includes.addAll(project.ext.coreFiles)
-		includes.addAll('**/*.info')
+		includes.addAll('mcmod.info')
 		excludes.addAll(project.ext.planetsFiles)
 		excludes.addAll(project.ext.dependencies)
 		excludes.addAll(project.ext.micdoodleCoreFiles)
-		excludes.addAll('assets/galacticraftcore/mcmod.info')
 	}
 }
 
-task packPlanetsJar(type: Jar, dependsOn: "movePlanetsMcmodInfo") {
+task packPlanetsJar(type: Jar, dependsOn: "rePackAllJarPlanets") {
 	// Jar will always be updated
 	outputs.upToDateWhen {false}
 	// Set the jar's base name
@@ -136,11 +124,10 @@ task packPlanetsJar(type: Jar, dependsOn: "movePlanetsMcmodInfo") {
 	from(zipTree(project.ext.coreJar)) {
 		// Add necessary files, remove unnecessary ones.
 		includes.addAll(project.ext.planetsFiles)
-		includes.addAll('**/*.info')
+		includes.addAll('mcmod.info')
 		excludes.addAll(project.ext.coreFiles)
 		excludes.addAll(project.ext.dependencies)
 		excludes.addAll(project.ext.micdoodleCoreFiles)
-		excludes.addAll('assets/galacticraftmars/mcmod.info')
 	}
 }
 
@@ -169,5 +156,5 @@ task packMicCoreJar(type: Jar, dependsOn: "reobf") {
 }
 
 task cleanOldJar(type: Delete, dependsOn: "packMicCoreJar") {
-	delete project.ext.coreJar
+	delete 'temporary', project.ext.coreJar
 }
