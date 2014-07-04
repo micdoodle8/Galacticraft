@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.inventory;
 
-import cpw.mods.fml.common.FMLLog;
 import micdoodle8.mods.galacticraft.core.inventory.SlotRocketBenchResult;
 import micdoodle8.mods.galacticraft.planets.mars.util.RecipeUtilMars;
 import net.minecraft.entity.player.EntityPlayer;

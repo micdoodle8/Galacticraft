@@ -1,9 +1,8 @@
 package micdoodle8.mods.galacticraft.core.nei;
 
-import java.util.HashMap;
-import java.util.Map.Entry;
-import java.util.Set;
-
+import codechicken.nei.PositionedStack;
+import codechicken.nei.api.API;
+import codechicken.nei.api.IConfigureNEI;
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
@@ -16,9 +15,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.item.crafting.ShapelessRecipes;
-import codechicken.nei.PositionedStack;
-import codechicken.nei.api.API;
-import codechicken.nei.api.IConfigureNEI;
+
+import java.util.HashMap;
+import java.util.Map.Entry;
+import java.util.Set;
 
 public class NEIGalacticraftConfig implements IConfigureNEI
 {

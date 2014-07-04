@@ -1,9 +1,5 @@
 package micdoodle8.mods.galacticraft.api.prefab.world.gen;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 import micdoodle8.mods.galacticraft.api.prefab.core.BlockMetaPair;
 import micdoodle8.mods.galacticraft.core.perlin.generator.Gradient;
 import micdoodle8.mods.galacticraft.core.world.gen.EnumCraterSize;
@@ -18,6 +14,10 @@ import net.minecraft.world.biome.BiomeGenBase.SpawnListEntry;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderGenerate;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 /**
  * Do not include this prefab class in your released mod download.

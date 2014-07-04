@@ -1,8 +1,5 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
@@ -18,8 +15,10 @@ import net.minecraft.block.BlockAir;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.opengl.GL11;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GuiOxygenSealer extends GuiContainerGC
 {

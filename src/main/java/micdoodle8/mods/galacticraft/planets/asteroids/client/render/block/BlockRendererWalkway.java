@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client.render.block;
 
-import java.util.Arrays;
-
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
@@ -10,10 +9,9 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
-
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import java.util.Arrays;
 
 public class BlockRendererWalkway implements ISimpleBlockRenderingHandler
 {

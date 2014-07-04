@@ -1,26 +1,15 @@
 package micdoodle8.mods.galacticraft.api.transmission.core.grid;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import cpw.mods.fml.common.FMLLog;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.core.path.Pathfinder;
 import micdoodle8.mods.galacticraft.api.transmission.core.path.PathfinderChecker;
-import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
-import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkConnection;
-import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
-import micdoodle8.mods.galacticraft.api.transmission.tile.IOxygenReceiver;
-import micdoodle8.mods.galacticraft.api.transmission.tile.ITransmitter;
+import micdoodle8.mods.galacticraft.api.transmission.tile.*;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.common.FMLLog;
+
+import java.util.*;
 
 /**
  * An Oxygen Network specifies a wire connection. Each wire connection line will

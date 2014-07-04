@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import java.util.EnumSet;
-
+import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
@@ -13,7 +12,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.relauncher.Side;
+
+import java.util.EnumSet;
 
 public abstract class TileEntityElectricBlock extends TileEntityUniversalElectrical implements IPacketReceiver, IDisableableMachine, IConnector
 {

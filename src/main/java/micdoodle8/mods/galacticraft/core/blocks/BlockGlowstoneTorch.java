@@ -1,12 +1,5 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import static net.minecraftforge.common.util.ForgeDirection.EAST;
-import static net.minecraftforge.common.util.ForgeDirection.NORTH;
-import static net.minecraftforge.common.util.ForgeDirection.SOUTH;
-import static net.minecraftforge.common.util.ForgeDirection.WEST;
-
-import java.util.Random;
-
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -16,6 +9,10 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import java.util.Random;
+
+import static net.minecraftforge.common.util.ForgeDirection.*;
 
 public class BlockGlowstoneTorch extends Block
 {

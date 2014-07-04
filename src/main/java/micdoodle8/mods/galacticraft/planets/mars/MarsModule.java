@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.mars;
 
-import cpw.mods.fml.client.config.IConfigElement;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -40,13 +39,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MarsModule implements IPlanetsModule

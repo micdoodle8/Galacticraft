@@ -1,13 +1,13 @@
 package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 
-import java.util.ArrayList;
-import java.util.Random;
-
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 public class RoomSpawnerMoon extends DungeonRoom
 {

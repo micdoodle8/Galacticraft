@@ -1,8 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import java.lang.reflect.Constructor;
-import java.util.EnumSet;
-
+import cpw.mods.fml.common.eventhandler.Event;
 import micdoodle8.mods.galacticraft.api.power.EnergySource.EnergySourceAdjacent;
 import micdoodle8.mods.galacticraft.api.power.IEnergyHandlerGC;
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
@@ -16,7 +14,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.common.eventhandler.Event;
+
+import java.lang.reflect.Constructor;
+import java.util.EnumSet;
 
 public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //implements IElectrical, IElectricalStorage
 {

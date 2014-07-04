@@ -1,8 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.blocks;
 
-import java.util.Iterator;
-import java.util.Random;
-
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
@@ -26,8 +25,9 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
+import java.util.Iterator;
+import java.util.Random;
 
 public class BlockTier2TreasureChest extends BlockContainer implements ITileEntityProvider
 {

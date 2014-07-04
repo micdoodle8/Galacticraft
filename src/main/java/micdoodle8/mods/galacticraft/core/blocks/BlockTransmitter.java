@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import java.util.List;
-
+import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkConnection;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -17,7 +16,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
+
+import java.util.List;
 
 public abstract class BlockTransmitter extends BlockContainer
 {

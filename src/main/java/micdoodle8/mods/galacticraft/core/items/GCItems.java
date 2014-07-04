@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import java.util.ArrayList;
-
+import cpw.mods.fml.common.registry.GameRegistry;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -11,7 +10,8 @@ import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.oredict.OreDictionary;
-import cpw.mods.fml.common.registry.GameRegistry;
+
+import java.util.ArrayList;
 
 public class GCItems
 {

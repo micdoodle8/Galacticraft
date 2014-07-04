@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.util;
 
+import cpw.mods.fml.common.registry.EntityRegistry;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
-import cpw.mods.fml.common.registry.EntityRegistry;
 
 public class AsteroidsUtil
 {

@@ -1,15 +1,15 @@
 package micdoodle8.mods.galacticraft.api.recipe;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-
+import cpw.mods.fml.common.FMLLog;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
-import cpw.mods.fml.common.FMLLog;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 
 public class SpaceStationRecipe
 {

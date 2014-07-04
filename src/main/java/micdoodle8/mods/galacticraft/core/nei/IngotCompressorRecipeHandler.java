@@ -1,13 +1,11 @@
 package micdoodle8.mods.galacticraft.core.nei;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.TreeSet;
-
+import codechicken.lib.gui.GuiDraw;
+import codechicken.nei.ItemList;
+import codechicken.nei.NEIServerUtils;
+import codechicken.nei.PositionedStack;
+import codechicken.nei.recipe.FurnaceRecipeHandler.FuelPair;
+import codechicken.nei.recipe.TemplateRecipeHandler;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -15,15 +13,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.opengl.GL11;
 
-import codechicken.lib.gui.GuiDraw;
-import codechicken.nei.ItemList;
-import codechicken.nei.NEIServerUtils;
-import codechicken.nei.PositionedStack;
-import codechicken.nei.recipe.FurnaceRecipeHandler.FuelPair;
-import codechicken.nei.recipe.TemplateRecipeHandler;
+import java.util.*;
+import java.util.Map.Entry;
 
 public class IngotCompressorRecipeHandler extends TemplateRecipeHandler
 {

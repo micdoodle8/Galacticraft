@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import java.util.EnumSet;
-
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
 import micdoodle8.mods.galacticraft.core.items.ItemOxygenTank;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -12,6 +10,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import java.util.EnumSet;
 
 public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInventory, ISidedInventory
 {

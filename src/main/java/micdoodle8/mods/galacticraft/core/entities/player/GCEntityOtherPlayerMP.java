@@ -1,18 +1,16 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
+import com.mojang.authlib.GameProfile;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
-import net.minecraft.client.renderer.IImageBuffer;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
 import net.minecraft.client.renderer.texture.ITextureObject;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringUtils;
 import net.minecraft.world.World;
-
-import com.mojang.authlib.GameProfile;
 
 public class GCEntityOtherPlayerMP extends EntityOtherPlayerMP
 {

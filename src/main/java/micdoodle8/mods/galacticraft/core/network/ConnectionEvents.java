@@ -1,5 +1,11 @@
 package micdoodle8.mods.galacticraft.core.network;
 
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
+import cpw.mods.fml.common.network.FMLNetworkEvent.ClientConnectedToServerEvent;
+import cpw.mods.fml.common.network.FMLNetworkEvent.ClientDisconnectionFromServerEvent;
+import cpw.mods.fml.common.network.FMLNetworkEvent.ServerConnectionFromClientEvent;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
@@ -9,12 +15,6 @@ import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.EnumConnectionState;
 import net.minecraft.network.NetHandlerPlayServer;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
-import cpw.mods.fml.common.network.FMLNetworkEvent.ClientConnectedToServerEvent;
-import cpw.mods.fml.common.network.FMLNetworkEvent.ClientDisconnectionFromServerEvent;
-import cpw.mods.fml.common.network.FMLNetworkEvent.ServerConnectionFromClientEvent;
 
 public class ConnectionEvents
 {

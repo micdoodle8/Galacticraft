@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import java.util.EnumSet;
-
+import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.block.IOxygenReliantBlock;
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -19,7 +18,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.relauncher.Side;
+
+import java.util.EnumSet;
 
 public class TileEntityOxygenDistributor extends TileEntityOxygen implements IInventory, ISidedInventory, IBubbleProvider
 {

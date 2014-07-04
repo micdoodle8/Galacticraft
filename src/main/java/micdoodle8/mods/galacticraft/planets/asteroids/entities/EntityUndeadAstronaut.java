@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.entities;
 
-import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.world.World;
 

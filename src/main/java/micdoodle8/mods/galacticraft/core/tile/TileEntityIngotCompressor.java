@@ -1,10 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
+import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.core.inventory.PersistantInventoryCrafting;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
@@ -21,7 +17,11 @@ import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntityFurnace;
-import cpw.mods.fml.relauncher.Side;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 public class TileEntityIngotCompressor extends TileEntityAdvanced implements IInventory, ISidedInventory, IPacketReceiver
 {

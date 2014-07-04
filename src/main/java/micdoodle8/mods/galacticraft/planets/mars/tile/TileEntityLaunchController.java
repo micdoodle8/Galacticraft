@@ -1,9 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.tile;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
-
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -34,8 +32,10 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
+
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
 
 public class TileEntityLaunchController extends TileEntityElectricBlock implements IChunkLoader, IInventory, ISidedInventory, ILandingPadAttachable
 {

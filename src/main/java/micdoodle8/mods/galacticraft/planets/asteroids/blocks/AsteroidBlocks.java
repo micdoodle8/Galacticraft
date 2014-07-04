@@ -1,10 +1,10 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockGC;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemBlockAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemBlockShortRangeTelepad;
 import net.minecraft.block.Block;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class AsteroidBlocks
 {

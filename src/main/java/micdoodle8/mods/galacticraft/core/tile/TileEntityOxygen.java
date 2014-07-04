@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import java.util.EnumSet;
-
+import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkHelper;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
@@ -13,7 +12,8 @@ import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.relauncher.Side;
+
+import java.util.EnumSet;
 
 public abstract class TileEntityOxygen extends TileEntityElectricBlock implements IOxygenReceiver, IOxygenStorage
 {

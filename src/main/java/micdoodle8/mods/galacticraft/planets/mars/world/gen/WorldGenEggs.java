@@ -1,10 +1,10 @@
 package micdoodle8.mods.galacticraft.planets.mars.world.gen;
 
-import java.util.Random;
-
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
+
+import java.util.Random;
 
 public class WorldGenEggs extends WorldGenerator
 {

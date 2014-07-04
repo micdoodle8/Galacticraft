@@ -12,8 +12,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
-import java.util.List;
-
 public class ItemHeavyNoseCone extends Item
 {
 	public IIcon[] icons;

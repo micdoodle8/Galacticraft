@@ -7,15 +7,17 @@ package micdoodle8.mods.galacticraft.planets.mars.nei;
 //import java.util.Map.Entry;
 //import java.util.Set;
 //
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-//import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
-import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
+
 import codechicken.nei.api.API;
+import codechicken.nei.api.IConfigureNEI;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
+
+//import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 //import net.minecraft.block.Block;
 //import net.minecraft.item.ItemStack;
 //import codechicken.nei.PositionedStack;
 //import codechicken.nei.api.API;
-import codechicken.nei.api.IConfigureNEI;
 //
 ///**
 

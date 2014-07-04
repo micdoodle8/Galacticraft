@@ -1,11 +1,6 @@
 package micdoodle8.mods.galacticraft.core.util;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
+import com.google.common.primitives.Ints;
 import cpw.mods.fml.client.config.IConfigElement;
 import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.block.Block;
@@ -13,7 +8,11 @@ import net.minecraft.init.Blocks;
 import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.Configuration;
 
-import com.google.common.primitives.Ints;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class ConfigManagerCore
 {

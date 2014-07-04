@@ -1,12 +1,12 @@
 package micdoodle8.mods.galacticraft.planets.mars.blocks;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import micdoodle8.mods.galacticraft.planets.mars.items.ItemBlockEgg;
 import micdoodle8.mods.galacticraft.planets.mars.items.ItemBlockMachine;
 import micdoodle8.mods.galacticraft.planets.mars.items.ItemBlockMars;
 import micdoodle8.mods.galacticraft.planets.mars.items.ItemBlockTintedGlassPane;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class MarsBlocks
 {

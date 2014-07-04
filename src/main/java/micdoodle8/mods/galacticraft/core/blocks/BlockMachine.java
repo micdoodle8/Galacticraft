@@ -1,8 +1,5 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import java.util.List;
-import java.util.Random;
-
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCoalGenerator;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricFurnace;
@@ -22,6 +19,9 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import java.util.List;
+import java.util.Random;
 
 public class BlockMachine extends BlockTileGC
 {

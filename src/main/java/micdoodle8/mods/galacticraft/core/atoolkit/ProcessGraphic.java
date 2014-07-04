@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.atoolkit;
 
-import java.awt.Graphics2D;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;

@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.api.transmission.core.item;
 
-import java.util.List;
-
 import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay;
 import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay.ElectricUnit;
 import net.minecraft.creativetab.CreativeTabs;
@@ -13,6 +11,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagDouble;
 import net.minecraft.nbt.NBTTagFloat;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 public abstract class ItemElectric extends Item implements IItemElectric
 {

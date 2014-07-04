@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.api.transmission.core.grid;
 
-import java.util.Set;
-
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import java.util.Set;
 
 /**
  * Implement this in your network class/interface if you plan to have your own

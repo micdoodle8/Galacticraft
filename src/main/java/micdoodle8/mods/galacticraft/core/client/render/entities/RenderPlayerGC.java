@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
+import cpw.mods.fml.common.Loader;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
@@ -11,10 +12,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-
 import org.lwjgl.opengl.GL11;
-
-import cpw.mods.fml.common.Loader;
 
 public class RenderPlayerGC extends RenderPlayer
 {

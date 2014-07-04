@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.api.recipe;
 
-import net.minecraft.entity.player.EntityPlayerMP;
 import cpw.mods.fml.common.eventhandler.Event;
+import net.minecraft.entity.player.EntityPlayerMP;
 
 /**
  * These events are used internally to perform actions when Galacticraft is

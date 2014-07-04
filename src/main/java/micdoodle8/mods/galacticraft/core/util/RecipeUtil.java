@@ -1,8 +1,5 @@
 package micdoodle8.mods.galacticraft.core.util;
 
-import java.util.Arrays;
-import java.util.HashMap;
-
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryBuggyBench;
@@ -11,6 +8,9 @@ import micdoodle8.mods.galacticraft.core.recipe.NasaWorkbenchRecipe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+
+import java.util.Arrays;
+import java.util.HashMap;
 
 public class RecipeUtil
 {

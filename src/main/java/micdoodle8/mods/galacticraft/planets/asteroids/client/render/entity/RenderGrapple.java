@@ -8,7 +8,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
-
 import org.lwjgl.opengl.GL11;
 
 public class RenderGrapple extends Render

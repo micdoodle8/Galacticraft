@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client.render.item;
 
+import cpw.mods.fml.client.FMLClientHandler;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -7,11 +8,8 @@ import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
-
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-
-import cpw.mods.fml.client.FMLClientHandler;
 
 public class ItemRendererThermalArmor implements IItemRenderer
 {

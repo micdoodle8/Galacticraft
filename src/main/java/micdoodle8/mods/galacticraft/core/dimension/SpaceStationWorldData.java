@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.dimension;
 
-import java.util.ArrayList;
-
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -9,6 +7,8 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 import net.minecraftforge.common.DimensionManager;
+
+import java.util.ArrayList;
 
 public class SpaceStationWorldData extends WorldSavedData
 {

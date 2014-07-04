@@ -1,11 +1,11 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.render.block;
 
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.IBlockAccess;
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 public class BlockRendererCavernousVines implements ISimpleBlockRenderingHandler
 {

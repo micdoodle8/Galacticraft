@@ -1,12 +1,12 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Container;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class GuiContainerGC extends GuiContainer
 {

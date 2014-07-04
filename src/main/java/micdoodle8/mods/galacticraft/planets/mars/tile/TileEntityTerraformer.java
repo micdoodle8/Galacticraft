@@ -1,10 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.tile;
 
+import cpw.mods.fml.relauncher.Side;
 import io.netty.buffer.ByteBuf;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import micdoodle8.mods.galacticraft.api.block.ITerraformableBlock;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
@@ -31,7 +28,9 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
-import cpw.mods.fml.relauncher.Side;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TileEntityTerraformer extends TileEntityElectricBlock implements IInventory, ISidedInventory, IDisableableMachine, IBubbleProvider
 {

@@ -1,19 +1,6 @@
 package micdoodle8.mods.galacticraft.api.transmission.compatibility;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-//import buildcraft.api.power.IPowerReceptor;
-//import buildcraft.api.power.PowerHandler.PowerReceiver;
-//import buildcraft.api.power.PowerHandler.Type;
-//import cofh.api.energy.IEnergyHandler;
-//import mekanism.api.energy.IStrictEnergyAcceptor;
+import cpw.mods.fml.common.FMLLog;
 import micdoodle8.mods.galacticraft.api.transmission.ElectricalEvent.ElectricityProductionEvent;
 import micdoodle8.mods.galacticraft.api.transmission.ElectricalEvent.ElectricityRequestEvent;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
@@ -30,7 +17,14 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.common.FMLLog;
+
+import java.util.*;
+
+//import buildcraft.api.power.IPowerReceptor;
+//import buildcraft.api.power.PowerHandler.PowerReceiver;
+//import buildcraft.api.power.PowerHandler.Type;
+//import cofh.api.energy.IEnergyHandler;
+//import mekanism.api.energy.IStrictEnergyAcceptor;
 
 /**
  * A universal network that words with multiple energy systems.

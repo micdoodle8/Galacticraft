@@ -1,9 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.world.gen;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedCreeper;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSkeleton;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider;
@@ -22,6 +18,10 @@ import net.minecraft.world.biome.BiomeGenBase.SpawnListEntry;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderGenerate;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class ChunkProviderAsteroids extends ChunkProviderGenerate
 {
