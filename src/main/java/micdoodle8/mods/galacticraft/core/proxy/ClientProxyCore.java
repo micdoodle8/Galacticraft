@@ -25,7 +25,6 @@ import micdoodle8.mods.galacticraft.core.client.render.block.*;
 import micdoodle8.mods.galacticraft.core.client.render.entities.*;
 import micdoodle8.mods.galacticraft.core.client.render.item.*;
 import micdoodle8.mods.galacticraft.core.client.render.tile.*;
-import micdoodle8.mods.galacticraft.core.client.sounds.SoundHandler;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.entities.*;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
@@ -38,6 +37,7 @@ import micdoodle8.mods.galacticraft.core.wrappers.BlockMetaList;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.MusicTicker;
 import net.minecraft.client.audio.SoundPoolEntry;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.Tessellator;
@@ -57,6 +57,7 @@ import net.minecraft.world.WorldProvider;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.IFluidBlock;
 import org.lwjgl.BufferUtils;
@@ -107,7 +108,11 @@ public class ClientProxyCore extends CommonProxyCore
 
 	public static int clientSpaceStationID = 0;
 
-	public static ArrayList<SoundPoolEntry> newMusic = new ArrayList<SoundPoolEntry>();
+    public static final MusicTicker.MusicType MUSTIC_TYPE_MARS = EnumHelper.addEnum(MusicTicker.MusicType.class, "MARS_JC", new ResourceLocation(GalacticraftCore.ASSET_PREFIX + "music/mars_JC.ogg"), 6000, 24000);
+    public static final MusicTicker.MusicType MUSTIC_TYPE_MIMAS = EnumHelper.addEnum(MusicTicker.MusicType.class, "MIMAS_JC", new ResourceLocation(GalacticraftCore.ASSET_PREFIX + "music/mimas_JC.ogg"), 6000, 24000);
+    public static final MusicTicker.MusicType MUSTIC_TYPE_ORBIT = EnumHelper.addEnum(MusicTicker.MusicType.class, "ORBIT_JC", new ResourceLocation(GalacticraftCore.ASSET_PREFIX + "music/orbit_JC.ogg"), 6000, 24000);
+    public static final MusicTicker.MusicType MUSTIC_TYPE_SCARY = EnumHelper.addEnum(MusicTicker.MusicType.class, "SCARY_AMBIENCE", new ResourceLocation(GalacticraftCore.ASSET_PREFIX + "music/scary_ambience.ogg"), 6000, 24000);
+    public static final MusicTicker.MusicType MUSTIC_TYPE_SPACE_RACE = EnumHelper.addEnum(MusicTicker.MusicType.class, "SPACE_RACE_JC", new ResourceLocation(GalacticraftCore.ASSET_PREFIX + "music/spacerace_JC.ogg"), 6000, 24000);
 
 	public static EnumRarity galacticraftItem = EnumRarity.common;//EnumHelperClient.addRarity("GCRarity", 9, "Space");
 
@@ -132,8 +137,6 @@ public class ClientProxyCore extends CommonProxyCore
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		ClientProxyCore.scaleup.put(ClientProxyCore.numbers, 0, 16);
-
-		MinecraftForge.EVENT_BUS.register(new SoundHandler());
 
 		ClientProxyCore.renderIndexSensorGlasses = RenderingRegistry.addNewArmourRendererPrefix("sensor");
 		ClientProxyCore.renderIndexHeavyArmor = RenderingRegistry.addNewArmourRendererPrefix("titanium");
