@@ -10,6 +10,7 @@ import java.util.Random;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import cpw.mods.fml.client.event.ConfigChangedEvent;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.api.event.oxygen.GCCoreOxygenSuffocationEvent;
 import micdoodle8.mods.galacticraft.api.item.IKeyItem;
@@ -67,6 +68,15 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class EventHandlerGC
 {
+    @SubscribeEvent
+    public void onConfigChanged(ConfigChangedEvent event)
+    {
+        if (event.modID.equals(GalacticraftCore.MODID))
+        {
+            ConfigManagerCore.syncConfig();
+        }
+    }
+
 	@SubscribeEvent
 	public void onWorldSave(Save event)
 	{

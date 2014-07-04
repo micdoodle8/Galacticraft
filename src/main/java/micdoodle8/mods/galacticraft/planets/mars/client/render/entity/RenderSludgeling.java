@@ -14,7 +14,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class RenderSludgeling extends RenderLiving
 {
-	private static final ResourceLocation sludgelingTexture = new ResourceLocation(MarsModule.TEXTURE_DOMAIN, "textures/model/sludgeling.png");
+	private static final ResourceLocation sludgelingTexture = new ResourceLocation(MarsModule.ASSET_DOMAIN, "textures/model/sludgeling.png");
 
 	public RenderSludgeling()
 	{

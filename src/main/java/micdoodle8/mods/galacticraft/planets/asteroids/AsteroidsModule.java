@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids;
 
+import com.sun.webpane.platform.ConfigManager;
+import cpw.mods.fml.client.config.IConfigElement;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -34,8 +36,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.ConfigElement;
+import net.minecraftforge.common.config.Configuration;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -189,4 +194,16 @@ public class AsteroidsModule implements IPlanetsModule
 		GameRegistry.registerTileEntity(TileEntityBeamReceiver.class, "Beam Receiver");
 		GameRegistry.registerTileEntity(TileEntityShortRangeTelepad.class, "Short Range Telepad");
 	}
+
+    @Override
+    public Configuration getConfiguration()
+    {
+        return ConfigManagerAsteroids.configuration;
+    }
+
+    @Override
+    public void syncConfig()
+    {
+        ConfigManagerAsteroids.syncConfig();
+    }
 }

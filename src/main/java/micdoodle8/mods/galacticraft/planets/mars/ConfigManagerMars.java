@@ -1,12 +1,12 @@
 package micdoodle8.mods.galacticraft.planets.mars;
 
-import java.io.File;
-
+import cpw.mods.fml.common.FMLLog;
+import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraftforge.common.config.Configuration;
-
+import net.minecraftforge.common.config.Property;
 import org.apache.logging.log4j.Level;
 
-import cpw.mods.fml.common.FMLLog;
+import java.io.File;
 
 public class ConfigManagerMars
 {
@@ -46,35 +46,40 @@ public class ConfigManagerMars
 
 	private void setDefaultValues()
 	{
-		try
-		{
-			ConfigManagerMars.configuration.load();
-
-			ConfigManagerMars.dimensionIDMars = ConfigManagerMars.configuration.get("Dimensions", "Mars Dimension ID", -29).getInt(-29);
-
-			ConfigManagerMars.idEntityCreeperBoss = ConfigManagerMars.configuration.get("Entities", "idEntityCreeperBoss", 171).getInt(171);
-			ConfigManagerMars.idEntityProjectileTNT = ConfigManagerMars.configuration.get("Entities", "idEntityProjectileTNT", 172).getInt(172);
-			ConfigManagerMars.idEntitySpaceshipTier2 = ConfigManagerMars.configuration.get("Entities", "idEntitySpaceshipTier2", 173).getInt(173);
-			ConfigManagerMars.idEntitySludgeling = ConfigManagerMars.configuration.get("Entities", "idEntitySludgeling", 174).getInt(174);
-			ConfigManagerMars.idEntitySlimeling = ConfigManagerMars.configuration.get("Entities", "idEntitySlimeling", 175).getInt(175);
-			ConfigManagerMars.idEntityTerraformBubble = ConfigManagerMars.configuration.get("Entities", "idEntityTerraformBubble", 176).getInt(176);
-			ConfigManagerMars.idEntityLandingBalloons = ConfigManagerMars.configuration.get("Entities", "idEntityLandingBalloons", 177).getInt(177);
-			ConfigManagerMars.idEntityCargoRocket = ConfigManagerMars.configuration.get("Entities", "idEntityCargoRocket", 178).getInt(178);
-
-			ConfigManagerMars.idSchematicRocketT2 = ConfigManagerMars.configuration.get("Schematic", "idSchematicRocketT2", 2).getInt(2);
-			ConfigManagerMars.idSchematicCargoRocket = ConfigManagerMars.configuration.get("Schematic", "idSchematicCargoRocket", 3).getInt(3);
-
-			ConfigManagerMars.generateOtherMods = ConfigManagerMars.configuration.get(Configuration.CATEGORY_GENERAL, "Generate other mod's features on Mars", false).getBoolean(false);
-			ConfigManagerMars.launchControllerChunkLoad = ConfigManagerMars.configuration.get(Configuration.CATEGORY_GENERAL, "Whether launch controller keeps chunks loaded. This will cause issues if disabled.", true).getBoolean(true);
-		}
-		catch (final Exception e)
-		{
-			FMLLog.log(Level.ERROR, e, "Galacticraft Mars has a problem loading it's configuration");
-		}
-		finally
-		{
-			ConfigManagerMars.configuration.save();
-			ConfigManagerMars.loaded = true;
-		}
+        ConfigManagerMars.configuration.load();
+        ConfigManagerMars.syncConfig();
 	}
+
+    public static void syncConfig()
+    {
+        try
+        {
+            ConfigManagerMars.dimensionIDMars = ConfigManagerMars.configuration.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "Mars Dimension ID", -29).getInt(-29);
+
+            ConfigManagerMars.idEntityCreeperBoss = ConfigManagerMars.configuration.get(Constants.CONFIG_CATEGORY_ENTITIES, "idEntityCreeperBoss", 171).getInt(171);
+            ConfigManagerMars.idEntityProjectileTNT = ConfigManagerMars.configuration.get(Constants.CONFIG_CATEGORY_ENTITIES, "idEntityProjectileTNT", 172).getInt(172);
+            ConfigManagerMars.idEntitySpaceshipTier2 = ConfigManagerMars.configuration.get(Constants.CONFIG_CATEGORY_ENTITIES, "idEntitySpaceshipTier2", 173).getInt(173);
+            ConfigManagerMars.idEntitySludgeling = ConfigManagerMars.configuration.get(Constants.CONFIG_CATEGORY_ENTITIES, "idEntitySludgeling", 174).getInt(174);
+            ConfigManagerMars.idEntitySlimeling = ConfigManagerMars.configuration.get(Constants.CONFIG_CATEGORY_ENTITIES, "idEntitySlimeling", 175).getInt(175);
+            ConfigManagerMars.idEntityTerraformBubble = ConfigManagerMars.configuration.get(Constants.CONFIG_CATEGORY_ENTITIES, "idEntityTerraformBubble", 176).getInt(176);
+            ConfigManagerMars.idEntityLandingBalloons = ConfigManagerMars.configuration.get(Constants.CONFIG_CATEGORY_ENTITIES, "idEntityLandingBalloons", 177).getInt(177);
+            ConfigManagerMars.idEntityCargoRocket = ConfigManagerMars.configuration.get(Constants.CONFIG_CATEGORY_ENTITIES, "idEntityCargoRocket", 178).getInt(178);
+
+            ConfigManagerMars.idSchematicRocketT2 = ConfigManagerMars.configuration.get(Constants.CONFIG_CATEGORY_SCHEMATIC, "idSchematicRocketT2", 2).getInt(2);
+            ConfigManagerMars.idSchematicCargoRocket = ConfigManagerMars.configuration.get(Constants.CONFIG_CATEGORY_SCHEMATIC, "idSchematicCargoRocket", 3).getInt(3);
+
+            ConfigManagerMars.generateOtherMods = ConfigManagerMars.configuration.get(Constants.CONFIG_CATEGORY_GENERAL, "Generate other mod's features on Mars", false).getBoolean(false);
+            ConfigManagerMars.launchControllerChunkLoad = ConfigManagerMars.configuration.get(Constants.CONFIG_CATEGORY_GENERAL, "Launch Controller acts as chunkloader", true, "Will cause issues if disabled!").getBoolean();
+        }
+        catch (final Exception e)
+        {
+            FMLLog.log(Level.ERROR, e, "Galacticraft Mars (Planets) has a problem loading it's configuration");
+        }
+        finally
+        {
+            if (ConfigManagerMars.configuration.hasChanged())
+                ConfigManagerMars.configuration.save();
+            ConfigManagerMars.loaded = true;
+        }
+    }
 }

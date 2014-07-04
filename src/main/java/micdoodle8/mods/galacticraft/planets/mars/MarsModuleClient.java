@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.mars;
 
-import java.util.List;
-
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.client.CloudRenderer;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderBubble;
@@ -66,11 +64,12 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+
+import java.util.List;
 
 public class MarsModuleClient implements IPlanetsModuleClient
 {
@@ -105,8 +104,8 @@ public class MarsModuleClient implements IPlanetsModuleClient
 	@Override
 	public void postInit(FMLPostInitializationEvent event)
 	{
-		IModelCustom chamberModel = AdvancedModelLoader.loadModel(new ResourceLocation(MarsModule.TEXTURE_DOMAIN, "models/chamber.obj"));
-		IModelCustom cargoRocketModel = AdvancedModelLoader.loadModel(new ResourceLocation(MarsModule.TEXTURE_DOMAIN, "models/cargoRocket.obj"));
+		IModelCustom chamberModel = AdvancedModelLoader.loadModel(new ResourceLocation(MarsModule.ASSET_DOMAIN, "models/chamber.obj"));
+		IModelCustom cargoRocketModel = AdvancedModelLoader.loadModel(new ResourceLocation(MarsModule.ASSET_DOMAIN, "models/cargoRocket.obj"));
 
 		// Tile Entity Renderers
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTreasureChestMars.class, new TileEntityTreasureChestRenderer());
@@ -116,7 +115,7 @@ public class MarsModuleClient implements IPlanetsModuleClient
 		RenderingRegistry.registerEntityRenderingHandler(EntitySludgeling.class, new RenderSludgeling());
 		RenderingRegistry.registerEntityRenderingHandler(EntitySlimeling.class, new RenderSlimeling());
 		RenderingRegistry.registerEntityRenderingHandler(EntityCreeperBoss.class, new RenderCreeperBoss());
-		RenderingRegistry.registerEntityRenderingHandler(EntityTier2Rocket.class, new RenderTier1Rocket(new ModelTier2Rocket(), MarsModule.TEXTURE_DOMAIN, "rocketT2"));
+		RenderingRegistry.registerEntityRenderingHandler(EntityTier2Rocket.class, new RenderTier1Rocket(new ModelTier2Rocket(), MarsModule.ASSET_DOMAIN, "rocketT2"));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTerraformBubble.class, new RenderBubble(0.25F, 1.0F, 0.25F));
 		RenderingRegistry.registerEntityRenderingHandler(EntityProjectileTNT.class, new RenderProjectileTNT());
 		RenderingRegistry.registerEntityRenderingHandler(EntityLandingBalloons.class, new RenderLandingBalloons());
@@ -128,20 +127,8 @@ public class MarsModuleClient implements IPlanetsModuleClient
 
 		// Item Renderers
 		MinecraftForgeClient.registerItemRenderer(MarsItems.spaceship, new ItemRendererTier2Rocket(cargoRocketModel));
-		MinecraftForgeClient.registerItemRenderer(MarsItems.key, new ItemRendererKey(new ResourceLocation(MarsModule.TEXTURE_DOMAIN, "textures/model/treasure.png")));
+		MinecraftForgeClient.registerItemRenderer(MarsItems.key, new ItemRendererKey(new ResourceLocation(MarsModule.ASSET_DOMAIN, "textures/model/treasure.png")));
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(MarsBlocks.machine), new ItemRendererMachine(chamberModel));
-	}
-
-	@Override
-	public void serverStarting(FMLServerStartingEvent event)
-	{
-
-	}
-
-	@Override
-	public void getGuiIDs(List<Integer> idList)
-	{
-		idList.add(GuiIdsPlanets.MACHINE_MARS);
 	}
 
 	@Override
@@ -224,6 +211,12 @@ public class MarsModuleClient implements IPlanetsModuleClient
 			}
 		}
 	}
+
+    @Override
+    public void getGuiIDs(List<Integer> idList)
+    {
+        idList.add(GuiIdsPlanets.MACHINE_MARS);
+    }
 
 	public static void openSlimelingGui(EntitySlimeling slimeling, int gui)
 	{

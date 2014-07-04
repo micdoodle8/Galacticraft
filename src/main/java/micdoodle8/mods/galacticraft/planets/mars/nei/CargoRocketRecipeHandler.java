@@ -24,7 +24,7 @@ package micdoodle8.mods.galacticraft.planets.mars.nei;
 // */
 //public class CargoRocketRecipeHandler extends TemplateRecipeHandler
 //{
-//	private static final ResourceLocation cargoRocketTexture = new ResourceLocation(GalacticraftMars.TEXTURE_DOMAIN, "textures/gui/schematic_rocket_cargo.png");
+//	private static final ResourceLocation cargoRocketTexture = new ResourceLocation(GalacticraftMars.ASSET_DOMAIN, "textures/gui/schematic_rocket_cargo.png");
 //
 //	public String getRecipeId()
 //	{

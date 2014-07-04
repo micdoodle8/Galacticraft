@@ -22,7 +22,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class RenderSlimeling extends RenderLiving
 {
-	private static final ResourceLocation landerTexture = new ResourceLocation(MarsModule.TEXTURE_DOMAIN, "textures/model/slimeling/green.png");
+	private static final ResourceLocation landerTexture = new ResourceLocation(MarsModule.ASSET_DOMAIN, "textures/model/slimeling/green.png");
 
 	public RenderSlimeling()
 	{

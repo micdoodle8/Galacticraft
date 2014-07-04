@@ -1,10 +1,18 @@
 package micdoodle8.mods.galacticraft.planets;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import cpw.mods.fml.client.config.IConfigElement;
+import cpw.mods.fml.client.event.ConfigChangedEvent;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import net.minecraft.block.Block;
@@ -17,8 +25,10 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import net.minecraftforge.common.config.ConfigElement;
+import net.minecraftforge.common.config.Configuration;
 
-@Mod(name = GalacticraftPlanets.NAME, version = GalacticraftCore.LOCALMAJVERSION + "." + GalacticraftCore.LOCALMINVERSION + "." + GalacticraftCore.LOCALBUILDVERSION, useMetadata = true, modid = GalacticraftPlanets.MODID, dependencies = "required-after:" + GalacticraftCore.MODID + ";")
+@Mod(name = GalacticraftPlanets.NAME, version = GalacticraftCore.LOCALMAJVERSION + "." + GalacticraftCore.LOCALMINVERSION + "." + GalacticraftCore.LOCALBUILDVERSION, useMetadata = true, modid = GalacticraftPlanets.MODID, dependencies = "required-after:" + GalacticraftCore.MODID + ";", guiFactory = "micdoodle8.mods.galacticraft.planets.ConfigGuiFactoryPlanets")
 public class GalacticraftPlanets
 {
 	public static final String NAME = "Galacticraft Planets";
@@ -40,6 +50,7 @@ public class GalacticraftPlanets
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
+        FMLCommonHandler.instance().bus().register(this);
 		GalacticraftPlanets.commonModules.put(GalacticraftPlanets.MODULE_KEY_MARS, new MarsModule());
 		GalacticraftPlanets.commonModules.put(GalacticraftPlanets.MODULE_KEY_ASTEROIDS, new AsteroidsModule());
 		GalacticraftPlanets.proxy.preInit(event);
@@ -88,4 +99,48 @@ public class GalacticraftPlanets
 
 		return 1;
 	}
+
+    public static List<IConfigElement> getConfigElements()
+    {
+        List<IConfigElement> list = new ArrayList<IConfigElement>();
+
+        for (IPlanetsModule module : GalacticraftPlanets.commonModules.values())
+        {
+            list.addAll(new ConfigElement(module.getConfiguration().getCategory(Constants.CONFIG_CATEGORY_DIMENSIONS)).getChildElements());
+        }
+
+        for (IPlanetsModule module : GalacticraftPlanets.commonModules.values())
+        {
+            list.addAll(new ConfigElement(module.getConfiguration().getCategory(Constants.CONFIG_CATEGORY_ENTITIES)).getChildElements());
+        }
+
+        for (IPlanetsModule module : GalacticraftPlanets.commonModules.values())
+        {
+            list.addAll(new ConfigElement(module.getConfiguration().getCategory(Constants.CONFIG_CATEGORY_ACHIEVEMENTS)).getChildElements());
+        }
+
+        for (IPlanetsModule module : GalacticraftPlanets.commonModules.values())
+        {
+            list.addAll(new ConfigElement(module.getConfiguration().getCategory(Constants.CONFIG_CATEGORY_ENTITIES)).getChildElements());
+        }
+
+        for (IPlanetsModule module : GalacticraftPlanets.commonModules.values())
+        {
+            list.addAll(new ConfigElement(module.getConfiguration().getCategory(Constants.CONFIG_CATEGORY_GENERAL)).getChildElements());
+        }
+
+        return list;
+    }
+
+    @SubscribeEvent
+    public void onConfigChanged(ConfigChangedEvent event)
+    {
+        if (event.modID.equals(MODID))
+        {
+            for (IPlanetsModule module : GalacticraftPlanets.commonModules.values())
+            {
+                module.syncConfig();
+            }
+        }
+    }
 }

@@ -32,7 +32,7 @@ import cpw.mods.fml.client.FMLClientHandler;
 public class SkyProviderMars extends IRenderHandler
 {
 	private static final ResourceLocation overworldTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/planets/overworld.png");
-	private static final ResourceLocation galaxyTexture = new ResourceLocation(MarsModule.TEXTURE_DOMAIN, "textures/gui/planets/galaxy.png");
+	private static final ResourceLocation galaxyTexture = new ResourceLocation(MarsModule.ASSET_DOMAIN, "textures/gui/planets/galaxy.png");
 	private static final ResourceLocation sunTexture = new ResourceLocation("textures/environment/sun.png");
 
 	public int starList;

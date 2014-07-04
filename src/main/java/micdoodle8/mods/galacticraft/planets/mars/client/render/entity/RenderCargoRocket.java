@@ -15,7 +15,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class RenderCargoRocket extends Render
 {
-	private static final ResourceLocation cargoRocketTexture = new ResourceLocation(MarsModule.TEXTURE_DOMAIN, "textures/model/cargoRocket.png");
+	private static final ResourceLocation cargoRocketTexture = new ResourceLocation(MarsModule.ASSET_DOMAIN, "textures/model/cargoRocket.png");
 
 	protected IModelCustom rocketModel;
 

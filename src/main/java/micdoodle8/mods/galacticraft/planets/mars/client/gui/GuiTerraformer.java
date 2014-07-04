@@ -20,7 +20,7 @@ import org.lwjgl.opengl.GL11;
 
 public class GuiTerraformer extends GuiContainer implements ICheckBoxCallback
 {
-	private static final ResourceLocation terraformerGui = new ResourceLocation(MarsModule.TEXTURE_DOMAIN, "textures/gui/terraformer.png");
+	private static final ResourceLocation terraformerGui = new ResourceLocation(MarsModule.ASSET_DOMAIN, "textures/gui/terraformer.png");
 
 	private TileEntityTerraformer terraformer;
 

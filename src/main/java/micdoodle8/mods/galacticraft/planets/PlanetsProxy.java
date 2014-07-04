@@ -65,7 +65,7 @@ public class PlanetsProxy implements IGuiHandler
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
 	{
-		for (IPlanetsModule module : GalacticraftPlanets.clientModules.values())
+		for (IPlanetsModuleClient module : GalacticraftPlanets.clientModules.values())
 		{
 			List<Integer> guiIDs = new ArrayList<Integer>();
 			module.getGuiIDs(guiIDs);
