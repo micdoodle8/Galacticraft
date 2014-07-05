@@ -15,6 +15,7 @@ import cpw.mods.fml.common.eventhandler.Event;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.client.FootprintRenderer;
@@ -38,17 +39,19 @@ import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MusicTicker;
-import net.minecraft.client.audio.SoundPoolEntry;
+import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
+import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
@@ -108,11 +111,7 @@ public class ClientProxyCore extends CommonProxyCore
 
 	public static int clientSpaceStationID = 0;
 
-    public static final MusicTicker.MusicType MUSTIC_TYPE_MARS = EnumHelper.addEnum(MusicTicker.MusicType.class, "MARS_JC", new ResourceLocation(GalacticraftCore.ASSET_PREFIX + "music/mars_JC.ogg"), 6000, 24000);
-    public static final MusicTicker.MusicType MUSTIC_TYPE_MIMAS = EnumHelper.addEnum(MusicTicker.MusicType.class, "MIMAS_JC", new ResourceLocation(GalacticraftCore.ASSET_PREFIX + "music/mimas_JC.ogg"), 6000, 24000);
-    public static final MusicTicker.MusicType MUSTIC_TYPE_ORBIT = EnumHelper.addEnum(MusicTicker.MusicType.class, "ORBIT_JC", new ResourceLocation(GalacticraftCore.ASSET_PREFIX + "music/orbit_JC.ogg"), 6000, 24000);
-    public static final MusicTicker.MusicType MUSTIC_TYPE_SCARY = EnumHelper.addEnum(MusicTicker.MusicType.class, "SCARY_AMBIENCE", new ResourceLocation(GalacticraftCore.ASSET_PREFIX + "music/scary_ambience.ogg"), 6000, 24000);
-    public static final MusicTicker.MusicType MUSTIC_TYPE_SPACE_RACE = EnumHelper.addEnum(MusicTicker.MusicType.class, "SPACE_RACE_JC", new ResourceLocation(GalacticraftCore.ASSET_PREFIX + "music/spacerace_JC.ogg"), 6000, 24000);
+    public static MusicTicker.MusicType MUSIC_TYPE_MARS;
 
 	public static EnumRarity galacticraftItem = EnumRarity.common;//EnumHelperClient.addRarity("GCRarity", 9, "Space");
 
@@ -145,6 +144,11 @@ public class ClientProxyCore extends CommonProxyCore
 	@Override
 	public void init(FMLInitializationEvent event)
 	{
+        Class[][] commonTypes =
+        {
+                {MusicTicker.MusicType.class, ResourceLocation.class, int.class, int.class},
+        };
+        MUSIC_TYPE_MARS = EnumHelper.addEnum(commonTypes, MusicTicker.MusicType.class, "MARS_JC", new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "galacticraft.musicSpace"), 12000, 24000);
 		ClientProxyCore.registerHandlers();
 		ClientProxyCore.registerTileEntityRenderers();
 		ClientProxyCore.registerBlockHandlers();
@@ -160,6 +164,64 @@ public class ClientProxyCore extends CommonProxyCore
 
 		//ClientProxyCore.playerList = GLAllocation.generateDisplayLists(1);
 	}
+
+    public static class MusicTickerGC extends MusicTicker
+    {
+        public MusicTickerGC(Minecraft mc)
+        {
+            super(mc);
+        }
+
+        public void update()
+        {
+            if (FMLClientHandler.instance().getClient().theWorld != null)
+            {
+                if (FMLClientHandler.instance().getClient().theWorld.provider instanceof IGalacticraftWorldProvider)
+                {
+                    int randIndex = this.field_147679_a.nextInt(2);
+
+                    if (randIndex == 0)
+                    {
+                        MusicTicker.MusicType typeChosen = MUSIC_TYPE_MARS;
+
+                        if (this.field_147678_c != null)
+                        {
+                            if (!typeChosen.getMusicTickerLocation().equals(this.field_147678_c.getPositionedSoundLocation()))
+                            {
+                                this.field_147677_b.getSoundHandler().stopSound(this.field_147678_c);
+                                this.field_147676_d = MathHelper.getRandomIntegerInRange(this.field_147679_a, 0, typeChosen.func_148634_b() / 2);
+                            }
+
+                            if (!this.field_147677_b.getSoundHandler().isSoundPlaying(this.field_147678_c))
+                            {
+                                this.field_147678_c = null;
+                                this.field_147676_d = Math.min(MathHelper.getRandomIntegerInRange(this.field_147679_a, typeChosen.func_148634_b(), typeChosen.func_148633_c()), this.field_147676_d);
+                            }
+                        }
+
+                        if (this.field_147678_c == null && this.field_147676_d-- <= 0)
+                        {
+                            this.field_147678_c = PositionedSoundRecord.func_147673_a(typeChosen.getMusicTickerLocation());
+                            this.field_147677_b.getSoundHandler().playSound(this.field_147678_c);
+                            this.field_147676_d = Integer.MAX_VALUE;
+                        }
+                    }
+                    else
+                    {
+                        super.update();
+                    }
+                }
+                else
+                {
+                    super.update();
+                }
+            }
+            else
+            {
+                super.update();
+            }
+        }
+    }
 
 	public static void registerEntityRenderers()
 	{

@@ -1,0 +1,27 @@
+{
+  "galacticraft.musicSpace": {
+    "category": "music",
+    "sounds": [
+      {
+        "name": "music/mars_JC",
+        "stream": true
+      },
+      {
+        "name": "music/mimas_JC",
+        "stream": true
+      },
+      {
+        "name": "music/orbit_JC",
+        "stream": true
+      },
+      {
+        "name": "music/scary_ambience",
+        "stream": true
+      },
+      {
+        "name": "music/spacerace_JC",
+        "stream": true
+      }
+    ]
+  }
+}
