@@ -74,7 +74,6 @@ public class MapGenDungeon
 
 		for (int i = 0; i <= length; i++)
 		{
-			tryLoop:
 			for (int j = 0; j < 8; j++)
 			{
 				int offsetX = 0;

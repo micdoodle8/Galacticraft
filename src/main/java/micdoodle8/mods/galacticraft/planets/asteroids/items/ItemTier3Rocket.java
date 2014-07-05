@@ -97,7 +97,7 @@ public class ItemTier3Rocket extends Item implements IHoldableItem
 					}
 				}
 
-				if (rocket instanceof IRocketType && ((IRocketType) rocket).getType().getPreFueled())
+				if (((IRocketType) rocket).getType().getPreFueled())
 				{
 					((EntityTieredRocket) rocket).fuelTank.fill(new FluidStack(GalacticraftCore.fluidFuel, rocket.getMaxFuel()), true);
 				}

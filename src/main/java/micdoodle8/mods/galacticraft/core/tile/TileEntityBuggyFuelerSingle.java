@@ -40,9 +40,9 @@ public class TileEntityBuggyFuelerSingle extends TileEntity
 			this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, GCBlocks.landingPadFull, 1, 3);
 			final TileEntityBuggyFueler tile = (TileEntityBuggyFueler) this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord);
 
-			if (tile instanceof IMultiBlock)
+			if (tile != null)
 			{
-				((IMultiBlock) tile).onCreate(new BlockVec3(this.xCoord, this.yCoord, this.zCoord));
+				tile.onCreate(new BlockVec3(this.xCoord, this.yCoord, this.zCoord));
 			}
 		}
 	}

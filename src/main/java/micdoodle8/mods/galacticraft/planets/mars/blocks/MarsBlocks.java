@@ -6,7 +6,6 @@ import micdoodle8.mods.galacticraft.planets.mars.items.ItemBlockMachine;
 import micdoodle8.mods.galacticraft.planets.mars.items.ItemBlockMars;
 import micdoodle8.mods.galacticraft.planets.mars.items.ItemBlockTintedGlassPane;
 import net.minecraft.block.Block;
-import net.minecraft.item.ItemBlock;
 
 public class MarsBlocks
 {
