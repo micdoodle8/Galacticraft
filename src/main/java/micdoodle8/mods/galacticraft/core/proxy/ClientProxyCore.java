@@ -348,11 +348,7 @@ public class ClientProxyCore extends CommonProxyCore
 	@Override
 	public int getBlockRender(Block blockID)
 	{
-		if (blockID == GCBlocks.treasureChestTier1)
-		{
-			return ClientProxyCore.renderIdTreasureChest;
-		}
-		else if (blockID == GCBlocks.breatheableAir || blockID == GCBlocks.brightBreatheableAir)
+		if (blockID == GCBlocks.breatheableAir || blockID == GCBlocks.brightBreatheableAir)
 		{
 			return ClientProxyCore.renderIdBreathableAir;
 		}
@@ -380,6 +376,14 @@ public class ClientProxyCore extends CommonProxyCore
 		{
 			return ClientProxyCore.renderIdMachine;
 		}
+		else if (blockID == GCBlocks.treasureChestTier1)
+		{
+			return ClientProxyCore.renderIdTreasureChest;
+		}
+		else if (blockID == GCBlocks.parachest)
+		{
+			return ClientProxyCore.renderIdParachest;
+		} 
 
 		return -1;
 	}
