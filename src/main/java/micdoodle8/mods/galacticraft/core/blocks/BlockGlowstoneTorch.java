@@ -23,6 +23,7 @@ public class BlockGlowstoneTorch extends Block
 		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
 		this.setBlockName(assetName);
 		this.setLightLevel(0.85F);
+		this.setStepSound(Block.soundTypeWood);
 	}
 
 	private static boolean isBlockSolidOnSide(World world, int x, int y, int z, ForgeDirection direction, boolean nope)

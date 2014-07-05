@@ -68,7 +68,7 @@ public class ConfigManagerMars
             ConfigManagerMars.idSchematicCargoRocket = ConfigManagerMars.configuration.get(Constants.CONFIG_CATEGORY_SCHEMATIC, "idSchematicCargoRocket", 3).getInt(3);
 
             ConfigManagerMars.generateOtherMods = ConfigManagerMars.configuration.get(Constants.CONFIG_CATEGORY_GENERAL, "Generate other mod's features on Mars", false).getBoolean(false);
-            ConfigManagerMars.launchControllerChunkLoad = ConfigManagerMars.configuration.get(Constants.CONFIG_CATEGORY_GENERAL, "Launch Controller acts as chunkloader", true, "Will cause issues if disabled!").getBoolean();
+            ConfigManagerMars.launchControllerChunkLoad = ConfigManagerMars.configuration.get(Constants.CONFIG_CATEGORY_GENERAL, "Launch Controller acts as chunkloader", true, "Will cause issues if disabled!").getBoolean(true);
         }
         catch (final Exception e)
         {
