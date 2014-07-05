@@ -81,6 +81,7 @@ import java.util.Map.Entry;
 public class ClientProxyCore extends CommonProxyCore
 {
 	private static int renderIdTreasureChest;
+	private static int renderIdParachest;
 	private static int renderIdTorchUnlit;
 	private static int renderIdBreathableAir;
 	private static int renderIdOxygenPipe;
@@ -267,7 +268,9 @@ public class ClientProxyCore extends CommonProxyCore
 		ClientProxyCore.renderIdCraftingTable = RenderingRegistry.getNextAvailableRenderId();
 		ClientProxyCore.renderIdLandingPad = RenderingRegistry.getNextAvailableRenderId();
 		ClientProxyCore.renderIdMachine = RenderingRegistry.getNextAvailableRenderId();
+		ClientProxyCore.renderIdParachest = RenderingRegistry.getNextAvailableRenderId();
 		RenderingRegistry.registerBlockHandler(new BlockRendererTreasureChest(ClientProxyCore.renderIdTreasureChest));
+		RenderingRegistry.registerBlockHandler(new BlockRendererParachest(ClientProxyCore.renderIdParachest));
 		RenderingRegistry.registerBlockHandler(new BlockRendererUnlitTorch(ClientProxyCore.renderIdTorchUnlit));
 		RenderingRegistry.registerBlockHandler(new BlockRendererBreathableAir(ClientProxyCore.renderIdBreathableAir));
 		RenderingRegistry.registerBlockHandler(new BlockRendererOxygenPipe(ClientProxyCore.renderIdOxygenPipe));

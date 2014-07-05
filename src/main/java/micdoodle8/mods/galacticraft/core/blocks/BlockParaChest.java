@@ -61,7 +61,7 @@ public class BlockParaChest extends BlockContainer implements ITileEntityProvide
 	@Override
 	public int getRenderType()
 	{
-		return 22;
+		return GalacticraftCore.proxy.getBlockRender(this);
 	}
 
 	@Override
