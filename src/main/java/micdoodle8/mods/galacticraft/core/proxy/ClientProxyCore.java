@@ -174,51 +174,33 @@ public class ClientProxyCore extends CommonProxyCore
 
         public void update()
         {
-            if (FMLClientHandler.instance().getClient().theWorld != null)
+            MusicTicker.MusicType musictype = this.field_147677_b.func_147109_W();
+
+            if (FMLClientHandler.instance().getWorldClient() != null && FMLClientHandler.instance().getWorldClient().provider instanceof IGalacticraftWorldProvider)
             {
-                if (FMLClientHandler.instance().getClient().theWorld.provider instanceof IGalacticraftWorldProvider)
+                musictype = MUSIC_TYPE_MARS;
+            }
+
+            if (this.field_147678_c != null)
+            {
+                if (!musictype.getMusicTickerLocation().equals(this.field_147678_c.getPositionedSoundLocation()))
                 {
-                    int randIndex = this.field_147679_a.nextInt(2);
-
-                    if (randIndex == 0)
-                    {
-                        MusicTicker.MusicType typeChosen = MUSIC_TYPE_MARS;
-
-                        if (this.field_147678_c != null)
-                        {
-                            if (!typeChosen.getMusicTickerLocation().equals(this.field_147678_c.getPositionedSoundLocation()))
-                            {
-                                this.field_147677_b.getSoundHandler().stopSound(this.field_147678_c);
-                                this.field_147676_d = MathHelper.getRandomIntegerInRange(this.field_147679_a, 0, typeChosen.func_148634_b() / 2);
-                            }
-
-                            if (!this.field_147677_b.getSoundHandler().isSoundPlaying(this.field_147678_c))
-                            {
-                                this.field_147678_c = null;
-                                this.field_147676_d = Math.min(MathHelper.getRandomIntegerInRange(this.field_147679_a, typeChosen.func_148634_b(), typeChosen.func_148633_c()), this.field_147676_d);
-                            }
-                        }
-
-                        if (this.field_147678_c == null && this.field_147676_d-- <= 0)
-                        {
-                            this.field_147678_c = PositionedSoundRecord.func_147673_a(typeChosen.getMusicTickerLocation());
-                            this.field_147677_b.getSoundHandler().playSound(this.field_147678_c);
-                            this.field_147676_d = Integer.MAX_VALUE;
-                        }
-                    }
-                    else
-                    {
-                        super.update();
-                    }
+                    this.field_147677_b.getSoundHandler().stopSound(this.field_147678_c);
+                    this.field_147676_d = MathHelper.getRandomIntegerInRange(this.field_147679_a, 0, musictype.func_148634_b() / 2);
                 }
-                else
+
+                if (!this.field_147677_b.getSoundHandler().isSoundPlaying(this.field_147678_c))
                 {
-                    super.update();
+                    this.field_147678_c = null;
+                    this.field_147676_d = Math.min(MathHelper.getRandomIntegerInRange(this.field_147679_a, musictype.func_148634_b(), musictype.func_148633_c()), this.field_147676_d);
                 }
             }
-            else
+
+            if (this.field_147678_c == null && this.field_147676_d-- <= 0)
             {
-                super.update();
+                this.field_147678_c = PositionedSoundRecord.func_147673_a(musictype.getMusicTickerLocation());
+                this.field_147677_b.getSoundHandler().playSound(this.field_147678_c);
+                this.field_147676_d = Integer.MAX_VALUE;
             }
         }
     }
