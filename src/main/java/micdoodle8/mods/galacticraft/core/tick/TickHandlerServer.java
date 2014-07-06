@@ -298,13 +298,14 @@ public class TickHandlerServer
 		{
 			final WorldServer world = (WorldServer) event.world;
 
-			List<BlockVec3> edgesList = new ArrayList();
-			edgesList.addAll(TickHandlerServer.edgeChecks.get(world.provider.dimensionId));
+			List<BlockVec3> edgesList = TickHandlerServer.edgeChecks.get(world.provider.dimensionId);
 			final HashSet<BlockVec3> checkedThisTick = new HashSet();
 
 			if (edgesList != null && !edgesList.isEmpty())
 			{
-				for (BlockVec3 edgeBlock : edgesList)
+				List<BlockVec3> edgesListCopy = new ArrayList();
+				edgesListCopy.addAll(edgesList);
+				for (BlockVec3 edgeBlock : edgesListCopy)
 				{
 					if (edgeBlock != null && !checkedThisTick.contains(edgeBlock))
 					{
@@ -318,7 +319,6 @@ public class TickHandlerServer
 					}
 				}
 
-				edgesList.clear();
 				TickHandlerServer.edgeChecks.remove(world.provider.dimensionId);
 			}
 		}
