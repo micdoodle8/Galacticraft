@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars.tile;
 
 import cpw.mods.fml.relauncher.Side;
-import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.block.ITerraformableBlock;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
@@ -19,7 +18,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -30,7 +28,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class TileEntityTerraformer extends TileEntityElectricBlock implements IInventory, ISidedInventory, IDisableableMachine, IBubbleProvider
 {
@@ -551,48 +548,6 @@ public class TileEntityTerraformer extends TileEntityElectricBlock implements II
 	public boolean shouldUseEnergy()
 	{
 		return !this.grassDisabled || !this.treesDisabled;
-	}
-
-	@Override
-	public void addExtraNetworkedData(List<Object> networkedList)
-	{
-		ItemStack stack1 = this.getFirstBonemealStack();
-		ItemStack stack2 = this.getFirstSaplingStack();
-		ItemStack stack3 = this.getFirstSeedStack();
-		networkedList.add(stack1 == null ? -1 : this.getSelectiveStack(2, 6));
-		networkedList.add(stack1 == null ? -1 : Item.getIdFromItem(stack1.getItem()));
-		networkedList.add(stack1 == null ? -1 : stack1.stackSize);
-		networkedList.add(stack1 == null ? -1 : stack1.getItemDamage());
-		networkedList.add(stack2 == null ? -1 : this.getSelectiveStack(6, 4));
-		networkedList.add(stack2 == null ? -1 : Item.getIdFromItem(stack2.getItem()));
-		networkedList.add(stack2 == null ? -1 : stack2.stackSize);
-		networkedList.add(stack2 == null ? -1 : stack2.getItemDamage());
-		networkedList.add(stack3 == null ? -1 : this.getSelectiveStack(10, 14));
-		networkedList.add(stack3 == null ? -1 : Item.getIdFromItem(stack3.getItem()));
-		networkedList.add(stack3 == null ? -1 : stack3.stackSize);
-		networkedList.add(stack3 == null ? -1 : stack3.getItemDamage());
-	}
-
-	@Override
-	public void readExtraNetworkedData(ByteBuf buffer)
-	{
-		int firstStack = -1;
-		Item itemID = null;
-		int stackSize = -1;
-		int stackMetadata = -1;
-
-		for (int i = 0; i < 3; i++)
-		{
-			firstStack = buffer.readInt();
-			itemID = Item.getItemById(buffer.readInt());
-			stackSize = buffer.readInt();
-			stackMetadata = buffer.readInt();
-
-			if (firstStack != -1)
-			{
-				this.containingItems[firstStack] = new ItemStack(itemID, stackSize, stackMetadata);
-			}
-		}
 	}
 
 	@Override

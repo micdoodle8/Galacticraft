@@ -55,7 +55,7 @@ public class CircuitFabricatorRecipes
 			{
 				ItemStack recipeStack = recipe.getKey()[i];
 				ItemStack inputStack = inputList[i];
-
+				
 				if (recipeStack == null || inputStack == null)
 				{
 					if (recipeStack != null || inputStack != null)
@@ -64,7 +64,7 @@ public class CircuitFabricatorRecipes
 						break;
 					}
 				}
-				else if (recipeStack != inputStack || recipeStack.getItemDamage() != inputStack.getItemDamage())
+				else if (recipeStack.getItem() != inputStack.getItem() || recipeStack.getItemDamage() != inputStack.getItemDamage())
 				{
 					found = false;
 					break;
