@@ -129,7 +129,7 @@ public class ContainerSchematicTier2Rocket extends Container
 					return null;
 				}
 
-				var3.onSlotChange(var4, var2);
+				if (par1 == 0) var3.onSlotChange(var4, var2);
 			}
 			else
 			{
@@ -138,7 +138,7 @@ public class ContainerSchematicTier2Rocket extends Container
 					Slot testSlot = (Slot) this.inventorySlots.get(i);
 					if (!testSlot.getHasStack() && testSlot.isItemValid(var2))
 					{
-						if (!this.mergeItemStack(var4, i, i + 1, false))
+						if (!this.mergeOneItem(var4, i, i + 1, false))
 						{
 							return null;
 						}
@@ -151,21 +151,21 @@ public class ContainerSchematicTier2Rocket extends Container
 				{
 					if (var2.getItem() == Item.getItemFromBlock(Blocks.chest) && !((Slot) this.inventorySlots.get(19)).getHasStack())
 					{
-						if (!this.mergeItemStack(var4, 19, 20, false))
+						if (!this.mergeOneItem(var4, 19, 20, false))
 						{
 							return null;
 						}
 					}
 					else if (var2.getItem() == Item.getItemFromBlock(Blocks.chest) && !((Slot) this.inventorySlots.get(20)).getHasStack())
 					{
-						if (!this.mergeItemStack(var4, 20, 21, false))
+						if (!this.mergeOneItem(var4, 20, 21, false))
 						{
 							return null;
 						}
 					}
 					else if (var2.getItem() == Item.getItemFromBlock(Blocks.chest) && !((Slot) this.inventorySlots.get(21)).getHasStack())
 					{
-						if (!this.mergeItemStack(var4, 21, 22, false))
+						if (!this.mergeOneItem(var4, 21, 22, false))
 						{
 							return null;
 						}
@@ -210,4 +210,33 @@ public class ContainerSchematicTier2Rocket extends Container
 
 		return var2;
 	}
+
+    protected boolean mergeOneItem(ItemStack par1ItemStack, int par2, int par3, boolean par4)
+    {
+        boolean flag1 = false;
+        if (par1ItemStack.stackSize > 0)
+        {
+            Slot slot;
+            ItemStack slotStack;
+
+            for (int k = par2; k < par3; k++)
+            {
+                slot = (Slot)this.inventorySlots.get(k);
+                slotStack = slot.getStack();
+
+                if (slotStack == null)
+                {
+                    ItemStack stackOneItem = par1ItemStack.copy();
+                    stackOneItem.stackSize = 1;
+                    par1ItemStack.stackSize--;
+                	slot.putStack(stackOneItem);
+                    slot.onSlotChanged();
+                    flag1 = true;
+                    break;
+                }
+            }
+        }
+
+        return flag1;
+    }
 }

@@ -130,7 +130,7 @@ public class GuiTerraformer extends GuiContainer implements ICheckBoxCallback
 			return EnumColor.RED + "Not Enough Saplings";
 		}
 
-		if (this.terraformer.terraformBubble.getSize() < this.terraformer.MAX_SIZE)
+		if (this.terraformer.terraformBubble.getSize() < this.terraformer.MAX_SIZE - 0.5)
 		{
 			return EnumColor.YELLOW + "Bubble Expanding";
 		}

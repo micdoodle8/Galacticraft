@@ -298,7 +298,8 @@ public class TickHandlerServer
 		{
 			final WorldServer world = (WorldServer) event.world;
 
-			List<BlockVec3> edgesList = TickHandlerServer.edgeChecks.get(world.provider.dimensionId);
+			List<BlockVec3> edgesList = new ArrayList();
+			edgesList.addAll(TickHandlerServer.edgeChecks.get(world.provider.dimensionId));
 			final HashSet<BlockVec3> checkedThisTick = new HashSet();
 
 			if (edgesList != null && !edgesList.isEmpty())

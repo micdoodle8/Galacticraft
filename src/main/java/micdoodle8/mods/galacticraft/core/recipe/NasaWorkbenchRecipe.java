@@ -53,7 +53,7 @@ public class NasaWorkbenchRecipe implements INasaWorkbenchRecipe
 	@Override
 	public ItemStack getRecipeOutput()
 	{
-		return this.output;
+		return this.output.copy();
 	}
 
 	@Override

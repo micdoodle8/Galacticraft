@@ -8,6 +8,9 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 public class ContainerFuelLoader extends Container
 {
@@ -48,33 +51,68 @@ public class ContainerFuelLoader extends Container
 	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
 	{
 		ItemStack var3 = null;
-		final Slot var4 = (Slot) this.inventorySlots.get(par2);
+		final Slot slot = (Slot) this.inventorySlots.get(par2);
 
-		if (var4 != null && var4.getHasStack())
+		if (slot != null && slot.getHasStack())
 		{
-			final ItemStack var5 = var4.getStack();
+			final ItemStack var5 = slot.getStack();
 			var3 = var5.copy();
 
-			if (par2 < 27)
+			if (par2 < 2)
 			{
-				if (!this.mergeItemStack(var5, 27, this.inventorySlots.size(), true))
+				if (!this.mergeItemStack(var5, 2, 38, true))
 				{
 					return null;
 				}
 			}
-			else if (!this.mergeItemStack(var5, 0, 27, false))
+			else
 			{
-				return null;
+				if (var5.getItem() instanceof IItemElectric)
+				{
+					if (!this.mergeItemStack(var5, 0, 1, false))
+					{
+						return null;
+					}
+				}
+				else
+				{
+					FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(var5);
+					if (liquid != null && FluidRegistry.getFluidName(liquid).equalsIgnoreCase("Fuel"))
+					{
+						if (!this.mergeItemStack(var5, 1, 2, false))
+						{
+							return null;
+						}
+					}
+					else if (par2 < 29)
+					{
+						if (!this.mergeItemStack(var5, 29, 38, false))
+						{
+							return null;
+						}
+					}
+					else if (!this.mergeItemStack(var5, 2, 29, false))
+					{
+						return null;
+					}
+				}
 			}
 
 			if (var5.stackSize == 0)
 			{
-				var4.putStack((ItemStack) null);
+				slot.putStack((ItemStack) null);
 			}
 			else
 			{
-				var4.onSlotChanged();
+				slot.onSlotChanged();
 			}
+			
+            if (var5.stackSize == var3.stackSize)
+            {
+                return null;
+            }
+
+            slot.onPickupFromSlot(par1EntityPlayer, var5);
 		}
 
 		return var3;

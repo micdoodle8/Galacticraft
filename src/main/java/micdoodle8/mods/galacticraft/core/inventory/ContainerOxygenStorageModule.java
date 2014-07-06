@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
-import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenStorageModule;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -52,47 +51,30 @@ public class ContainerOxygenStorageModule extends Container
 	 * clicking.
 	 */
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotID)
+	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
 	{
-		ItemStack returnStack = null;
-		Slot slot = (Slot) this.inventorySlots.get(slotID);
+		ItemStack var2 = null;
+		final Slot slot = (Slot) this.inventorySlots.get(par1);
+		final int b = this.inventorySlots.size();
 
 		if (slot != null && slot.getHasStack())
 		{
-			ItemStack itemStack = slot.getStack();
-			returnStack = itemStack.copy();
+			final ItemStack stack = slot.getStack();
+			var2 = stack.copy();
 
-			if (slotID != 0 && slotID != 1)
+			if (par1 < b - 9)
 			{
-				if (this.getSlot(0).isItemValid(itemStack))
-				{
-					if (((IItemElectric) itemStack.getItem()).getElectricityStored(itemStack) > 0)
-					{
-						if (!this.mergeItemStack(itemStack, 1, 2, false))
-						{
-							return null;
-						}
-					}
-					else
-					{
-						if (!this.mergeItemStack(itemStack, 0, 1, false))
-						{
-							return null;
-						}
-					}
-				}
-
-				else if (slotID >= 30 && slotID < 38 && !this.mergeItemStack(itemStack, 3, 30, false))
+				if (!this.mergeItemStack(stack, b - 9, b, false))
 				{
 					return null;
 				}
 			}
-			else if (!this.mergeItemStack(itemStack, 3, 38, false))
+			else if (!this.mergeItemStack(stack, b - 36, b - 9, false))
 			{
 				return null;
 			}
 
-			if (itemStack.stackSize == 0)
+			if (stack.stackSize == 0)
 			{
 				slot.putStack((ItemStack) null);
 			}
@@ -101,14 +83,14 @@ public class ContainerOxygenStorageModule extends Container
 				slot.onSlotChanged();
 			}
 
-			if (itemStack.stackSize == returnStack.stackSize)
+			if (stack.stackSize == var2.stackSize)
 			{
 				return null;
 			}
 
-			slot.onPickupFromSlot(par1EntityPlayer, itemStack);
+			slot.onPickupFromSlot(par1EntityPlayer, stack);
 		}
 
-		return returnStack;
+		return var2;
 	}
 }

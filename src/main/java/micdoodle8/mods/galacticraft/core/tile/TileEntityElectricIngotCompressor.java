@@ -168,6 +168,8 @@ public class TileEntityElectricIngotCompressor extends TileEntityElectricBlock i
 			{
 				this.compressingCraftMatrix.decrStackSize(i, 1);
 			}
+			
+			this.updateInput();
 		}
 	}
 
@@ -252,7 +254,9 @@ public class TileEntityElectricIngotCompressor extends TileEntityElectricBlock i
 	{
 		if (par1 >= this.containingItems.length)
 		{
-			return this.compressingCraftMatrix.decrStackSize(par1 - this.containingItems.length, par2);
+			ItemStack result = this.compressingCraftMatrix.decrStackSize(par1 - this.containingItems.length, par2);
+			if (result != null) this.updateInput();
+			return result;
 		}
 
 		if (this.containingItems[par1] != null)
@@ -309,6 +313,7 @@ public class TileEntityElectricIngotCompressor extends TileEntityElectricBlock i
 		if (par1 >= this.containingItems.length)
 		{
 			this.compressingCraftMatrix.setInventorySlotContents(par1 - this.containingItems.length, par2ItemStack);
+			this.updateInput();
 		}
 		else
 		{

@@ -9,6 +9,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 public class ContainerRefinery extends Container
 {
@@ -65,23 +66,23 @@ public class ContainerRefinery extends Container
 	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
 	{
 		ItemStack var2 = null;
-		final Slot var3 = (Slot) this.inventorySlots.get(par1);
+		final Slot slot = (Slot) this.inventorySlots.get(par1);
 
-		if (var3 != null && var3.getHasStack())
+		if (slot != null && slot.getHasStack())
 		{
-			final ItemStack var4 = var3.getStack();
+			final ItemStack var4 = slot.getStack();
 			var2 = var4.copy();
 
-			if (par1 == 2)
+			if (par1 < 3)
 			{
 				if (!this.mergeItemStack(var4, 3, 39, true))
 				{
 					return null;
 				}
 
-				var3.onSlotChange(var4, var2);
+				if (par1 == 2) slot.onSlotChange(var4, var2);
 			}
-			else if (par1 != 1 && par1 != 0)
+			else
 			{
 				if (var4.getItem() instanceof IItemElectric)
 				{
@@ -90,37 +91,44 @@ public class ContainerRefinery extends Container
 						return null;
 					}
 				}
-				else if (FluidContainerRegistry.isContainer(var4) || FluidContainerRegistry.containsFluid(var4, FluidRegistry.getFluidStack("fuel", 1)))
+				else
 				{
-					if (!this.mergeItemStack(var4, 1, 2, false))
+					FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(var4);
+					if (liquid != null && FluidRegistry.getFluidName(liquid).equalsIgnoreCase("Oil"))
+					{
+						if (!this.mergeItemStack(var4, 1, 2, false))
+						{
+							return null;
+						}
+					}
+					else if (FluidContainerRegistry.isEmptyContainer(var4))
+					{
+						if (!this.mergeItemStack(var4, 2, 3, false))
+						{
+							return null;
+						}				
+					}
+					else if (par1 < 30)
+					{
+						if (!this.mergeItemStack(var4, 30, 39, false))
+						{
+							return null;
+						}
+					}
+					else if (!this.mergeItemStack(var4, 3, 30, false))
 					{
 						return null;
 					}
 				}
-				else if (par1 >= 3 && par1 < 30)
-				{
-					if (!this.mergeItemStack(var4, 30, 39, false))
-					{
-						return null;
-					}
-				}
-				else if (par1 >= 30 && par1 < 39 && !this.mergeItemStack(var4, 3, 30, false))
-				{
-					return null;
-				}
-			}
-			else if (!this.mergeItemStack(var4, 3, 39, false))
-			{
-				return null;
 			}
 
 			if (var4.stackSize == 0)
 			{
-				var3.putStack((ItemStack) null);
+				slot.putStack((ItemStack) null);
 			}
 			else
 			{
-				var3.onSlotChanged();
+				slot.onSlotChanged();
 			}
 
 			if (var4.stackSize == var2.stackSize)
@@ -128,7 +136,7 @@ public class ContainerRefinery extends Container
 				return null;
 			}
 
-			var3.onPickupFromSlot(par1EntityPlayer, var4);
+			slot.onPickupFromSlot(par1EntityPlayer, var4);
 		}
 
 		return var2;

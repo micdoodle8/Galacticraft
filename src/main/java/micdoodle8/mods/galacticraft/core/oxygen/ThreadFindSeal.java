@@ -53,6 +53,7 @@ public class ThreadFindSeal
 		this.checkCount = checkCount;
 		this.sealers = sealers;
 		this.checked = new HashSet<BlockVec3>();
+		this.torchesToUpdate = new LinkedList<BlockVec3>();
 
 		this.sealersAround = new HashMap<BlockVec3, TileEntityOxygenSealer>();
 		for (TileEntity tile : new ArrayList<TileEntity>(world.loadedTileEntityList))
@@ -130,7 +131,7 @@ public class ThreadFindSeal
 		this.currentLayer = new LinkedList<BlockVec3>();
 		this.airToReplace = new LinkedList<BlockVec3>();
 		this.airToReplaceBright = new LinkedList<BlockVec3>();
-		this.torchesToUpdate = new LinkedList<BlockVec3>();
+
 		if (this.checkCount > 0)
 		{
 			this.currentLayer.add(this.head);

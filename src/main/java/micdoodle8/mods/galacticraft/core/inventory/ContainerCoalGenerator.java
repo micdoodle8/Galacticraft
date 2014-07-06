@@ -15,7 +15,7 @@ public class ContainerCoalGenerator extends Container
 	public ContainerCoalGenerator(InventoryPlayer par1InventoryPlayer, TileEntityCoalGenerator tileEntity)
 	{
 		this.tileEntity = tileEntity;
-		this.addSlotToContainer(new Slot(tileEntity, 0, 33, 34));
+		this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 33, 34, Items.coal.getClass()));
 		int var3;
 
 		for (var3 = 0; var3 < 3; ++var3)
@@ -68,12 +68,14 @@ public class ContainerCoalGenerator extends Container
 						return null;
 					}
 				}
-				else if (par1 >= 30 && par1 < 37 && !this.mergeItemStack(var4, 3, 30, false))
+				else if (par1 >= 28)
 				{
-					return null;
+					if (!this.mergeItemStack(var4, 1, 28, false)) return null;
 				}
+				else if (!this.mergeItemStack(var4, 28, 37, false)) return null;
+				
 			}
-			else if (!this.mergeItemStack(var4, 3, 37, false))
+			else if (!this.mergeItemStack(var4, 1, 37, false))
 			{
 				return null;
 			}
