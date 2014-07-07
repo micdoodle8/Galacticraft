@@ -2,11 +2,11 @@ package micdoodle8.mods.galacticraft.moon.blocks;
 
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.core.items.GCCoreItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
@@ -226,6 +226,6 @@ public class GCMoonBlockCheese extends Block
 	 */
 	public int idPicked(World par1World, int par2, int par3, int par4)
 	{
-		return Item.cake.itemID;
+		return GCCoreItems.cheeseBlock.itemID;
 	}
 }
