@@ -60,11 +60,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-@Mod(name = GalacticraftCore.NAME, version = GalacticraftCore.LOCALMAJVERSION + "." + GalacticraftCore.LOCALMINVERSION + "." + GalacticraftCore.LOCALBUILDVERSION, useMetadata = true, modid = GalacticraftCore.MODID, dependencies = "required-after:Forge@[7.0,); required-after:FML@[5.0.5,); after:ICBM|Explosion; after:IC2; after:BuildCraft|Core; after:BuildCraft|Energy; after:IC2", guiFactory = "micdoodle8.mods.galacticraft.core.client.gui.screen.ConfigGuiFactoryCore")
+@Mod(name = GalacticraftCore.NAME, version = GalacticraftCore.LOCALMAJVERSION + "." + GalacticraftCore.LOCALMINVERSION + "." + GalacticraftCore.LOCALBUILDVERSION, useMetadata = true, modid = Constants.MOD_ID_CORE, dependencies = "required-after:Forge@[7.0,); required-after:FML@[5.0.5,); after:ICBM|Explosion; after:IC2; after:BuildCraft|Core; after:BuildCraft|Energy; after:IC2", guiFactory = "micdoodle8.mods.galacticraft.core.client.gui.screen.ConfigGuiFactoryCore")
 public class GalacticraftCore
 {
 	public static final String NAME = "Galacticraft Core";
-	public static final String MODID = "GalacticraftCore";
 
 	public static final int LOCALMAJVERSION = 3;
 	public static final int LOCALMINVERSION = 0;
@@ -76,7 +75,7 @@ public class GalacticraftCore
 	@SidedProxy(clientSide = "micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore", serverSide = "micdoodle8.mods.galacticraft.core.proxy.CommonProxyCore")
 	public static CommonProxyCore proxy;
 
-	@Instance(GalacticraftCore.MODID)
+	@Instance(Constants.MOD_ID_CORE)
 	public static GalacticraftCore instance;
 
 	public static GalacticraftChannelHandler packetPipeline;

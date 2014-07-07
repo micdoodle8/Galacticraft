@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.items;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -298,6 +299,6 @@ public class GCItems
 
 	private static void registerItem(Item item)
 	{
-		GameRegistry.registerItem(item, item.getUnlocalizedName(), GalacticraftCore.MODID);
+		GameRegistry.registerItem(item, item.getUnlocalizedName(), Constants.MOD_ID_CORE);
 	}
 }

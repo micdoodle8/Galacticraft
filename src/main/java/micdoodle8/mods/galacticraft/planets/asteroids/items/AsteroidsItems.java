@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.items;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import net.minecraft.item.Item;
 
@@ -25,10 +26,15 @@ public class AsteroidsItems
 
 	private static void registerItems()
 	{
-		GameRegistry.registerItem(AsteroidsItems.grapple, AsteroidsItems.grapple.getUnlocalizedName(), GalacticraftPlanets.MODID);
-		GameRegistry.registerItem(AsteroidsItems.tier3Rocket, AsteroidsItems.tier3Rocket.getUnlocalizedName(), GalacticraftPlanets.MODID);
-		GameRegistry.registerItem(AsteroidsItems.thermalPadding, AsteroidsItems.thermalPadding.getUnlocalizedName(), GalacticraftPlanets.MODID);
-        GameRegistry.registerItem(AsteroidsItems.basicItem, AsteroidsItems.basicItem.getUnlocalizedName(), GalacticraftPlanets.MODID);
-        GameRegistry.registerItem(AsteroidsItems.heavyNoseCone, AsteroidsItems.heavyNoseCone.getUnlocalizedName(), GalacticraftPlanets.MODID);
+        registerItem(AsteroidsItems.grapple);
+        registerItem(AsteroidsItems.tier3Rocket);
+        registerItem(AsteroidsItems.thermalPadding);
+        registerItem(AsteroidsItems.basicItem);
+        registerItem(AsteroidsItems.heavyNoseCone);
 	}
+
+    private static void registerItem(Item item)
+    {
+        GameRegistry.registerItem(item, item.getUnlocalizedName(), Constants.MOD_ID_PLANETS);
+    }
 }

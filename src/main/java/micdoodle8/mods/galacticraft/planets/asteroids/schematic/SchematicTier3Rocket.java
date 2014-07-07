@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.planets.asteroids.schematic;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.ConfigManagerAsteroids;
@@ -25,7 +26,7 @@ public class SchematicTier3Rocket implements ISchematicPage
 	@Override
 	public int getGuiID()
 	{
-		return GuiIdsPlanets.NASA_WORKBENCH_TIER_3_ROCKET + GalacticraftPlanets.MODID.hashCode();
+		return GuiIdsPlanets.NASA_WORKBENCH_TIER_3_ROCKET + Constants.MOD_ID_PLANETS.hashCode();
 	}
 
 	@Override

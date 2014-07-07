@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
 import cpw.mods.fml.common.Loader;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemOxygenMask;
 import micdoodle8.mods.galacticraft.core.items.ItemOxygenTank;
@@ -54,7 +55,7 @@ public class SlotExtendedInventory extends Slot
 
 	public boolean thermalArmorSlotValid(ItemStack stack, int slotIndex)
 	{
-		if (Loader.isModLoaded("GalacticraftMars"))
+		if (Loader.isModLoaded(Constants.MOD_ID_PLANETS))
 		{
 			try
 			{

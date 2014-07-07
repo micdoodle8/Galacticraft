@@ -26,14 +26,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Mod(name = GalacticraftPlanets.NAME, version = GalacticraftCore.LOCALMAJVERSION + "." + GalacticraftCore.LOCALMINVERSION + "." + GalacticraftCore.LOCALBUILDVERSION, useMetadata = true, modid = GalacticraftPlanets.MODID, dependencies = "required-after:" + GalacticraftCore.MODID + ";", guiFactory = "micdoodle8.mods.galacticraft.planets.ConfigGuiFactoryPlanets")
+@Mod(name = GalacticraftPlanets.NAME, version = GalacticraftCore.LOCALMAJVERSION + "." + GalacticraftCore.LOCALMINVERSION + "." + GalacticraftCore.LOCALBUILDVERSION, useMetadata = true, modid = Constants.MOD_ID_PLANETS, dependencies = "required-after:" + Constants.MOD_ID_CORE + ";", guiFactory = "micdoodle8.mods.galacticraft.planets.ConfigGuiFactoryPlanets")
 public class GalacticraftPlanets
 {
 	public static final String NAME = "Galacticraft Planets";
-	// Sadly, this has to stay as GalacticraftMars for backwards compatibility
-	public static final String MODID = "GalacticraftMars";
 
-	@Instance(GalacticraftPlanets.MODID)
+	@Instance(Constants.MOD_ID_PLANETS)
 	public static GalacticraftPlanets instance;
 
 	public static Map<String, IPlanetsModule> commonModules = new HashMap<String, IPlanetsModule>();
@@ -133,7 +131,7 @@ public class GalacticraftPlanets
     @SubscribeEvent
     public void onConfigChanged(ConfigChangedEvent event)
     {
-        if (event.modID.equals(MODID))
+        if (event.modID.equals(Constants.MOD_ID_PLANETS))
         {
             for (IPlanetsModule module : GalacticraftPlanets.commonModules.values())
             {

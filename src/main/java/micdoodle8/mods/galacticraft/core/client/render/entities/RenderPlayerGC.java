@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.client.render.entities;
 
 import cpw.mods.fml.common.Loader;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
@@ -29,7 +30,7 @@ public class RenderPlayerGC extends RenderPlayer
 		this.modelArmor = new ModelPlayerGC(0.5F);
 		this.modelThermalPadding = new ModelPlayerGC(0.25F);
 
-		if (Loader.isModLoaded("GalacticraftMars"))
+		if (Loader.isModLoaded(Constants.MOD_ID_PLANETS))
 		{
 			RenderPlayerGC.thermalPaddingTexture0 = new ResourceLocation("galacticraftasteroids", "textures/misc/thermalPadding_0.png");
 			RenderPlayerGC.thermalPaddingTexture1 = new ResourceLocation("galacticraftasteroids", "textures/misc/thermalPadding_1.png");

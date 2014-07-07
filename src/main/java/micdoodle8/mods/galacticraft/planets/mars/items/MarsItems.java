@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.items;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
@@ -71,6 +72,6 @@ public class MarsItems
 
 	private static void registerItem(Item item)
 	{
-		GameRegistry.registerItem(item, item.getUnlocalizedName(), GalacticraftPlanets.MODID);
+		GameRegistry.registerItem(item, item.getUnlocalizedName(), Constants.MOD_ID_PLANETS);
 	}
 }
