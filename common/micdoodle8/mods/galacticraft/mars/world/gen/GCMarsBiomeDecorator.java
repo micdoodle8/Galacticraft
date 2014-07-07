@@ -36,7 +36,7 @@ public class GCMarsBiomeDecorator
 	{
 		this.copperGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.marsBlock.blockID, 4, 0, true, GCMarsBlocks.marsBlock.blockID, 9);
 		this.tinGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.marsBlock.blockID, 4, 1, true, GCMarsBlocks.marsBlock.blockID, 9);
-		this.deshGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.marsBlock.blockID, 4, 2, true, GCMarsBlocks.marsBlock.blockID, 9);
+		this.deshGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.marsBlock.blockID, 6, 2, true, GCMarsBlocks.marsBlock.blockID, 9);
 		this.ironGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.marsBlock.blockID, 8, 3, true, GCMarsBlocks.marsBlock.blockID, 9);
 		this.dirtGen = new GCCoreWorldGenMinableMeta(GCMarsBlocks.marsBlock.blockID, 32, 6, true, GCMarsBlocks.marsBlock.blockID, 9);
 	}
@@ -74,7 +74,7 @@ public class GCMarsBiomeDecorator
 	{
 		MinecraftForge.EVENT_BUS.post(new GCCoreEventPopulate.Pre(this.currentWorld, this.rand, this.chunkX, this.chunkZ));
 		this.generateOre(20, this.dirtGen, 0, 200);
-		this.generateOre(15, this.deshGen, 0, 128);
+		this.generateOre(15, this.deshGen, 20, 64);
 		this.generateOre(26, this.copperGen, 0, 60);
 		this.generateOre(23, this.tinGen, 0, 60);
 		this.generateOre(20, this.ironGen, 0, 64);
