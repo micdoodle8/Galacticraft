@@ -11,6 +11,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.planets.IPlanetsModuleClient;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.block.BlockRendererWalkway;
+import micdoodle8.mods.galacticraft.planets.asteroids.client.render.entity.RenderEntryPod;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.entity.RenderGrapple;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.entity.RenderSmallAsteroid;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.entity.RenderTier3Rocket;
@@ -18,6 +19,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.client.render.item.*;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.tile.TileEntityBeamReceiverRenderer;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.tile.TileEntityBeamReflectorRenderer;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.tile.TileEntityShortRangeTelepadRenderer;
+import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityEntryPod;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityGrapple;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntitySmallAsteroid;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityTier3Rocket;
@@ -63,6 +65,8 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
 	{
 		RenderingRegistry.registerEntityRenderingHandler(EntitySmallAsteroid.class, new RenderSmallAsteroid());
 		RenderingRegistry.registerEntityRenderingHandler(EntityGrapple.class, new RenderGrapple());
+        IModelCustom podModel = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/pod.obj"));
+        RenderingRegistry.registerEntityRenderingHandler(EntityEntryPod.class, new RenderEntryPod(podModel));
 		IModelCustom rocketModel = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/tier3rocket.obj"));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTier3Rocket.class, new RenderTier3Rocket(rocketModel, AsteroidsModule.ASSET_PREFIX, "tier3rocket"));
 		IModelCustom grappleModel = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/grapple.obj"));

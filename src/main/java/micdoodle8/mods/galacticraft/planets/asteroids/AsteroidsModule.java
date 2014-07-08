@@ -18,6 +18,7 @@ import micdoodle8.mods.galacticraft.planets.IPlanetsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.TeleportTypeAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
+import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityEntryPod;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityGrapple;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntitySmallAsteroid;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityTier3Rocket;
@@ -182,6 +183,7 @@ public class AsteroidsModule implements IPlanetsModule
 		AsteroidsUtil.registerAsteroidsNonMobEntity(EntitySmallAsteroid.class, "SmallAsteroidGC", ConfigManagerAsteroids.idEntitySmallAsteroid, 150, 1, true);
 		AsteroidsUtil.registerAsteroidsNonMobEntity(EntityGrapple.class, "GrappleHookGC", ConfigManagerAsteroids.idEntityGrappleHook, 150, 1, true);
 		AsteroidsUtil.registerAsteroidsNonMobEntity(EntityTier3Rocket.class, "Tier3RocketGC", ConfigManagerAsteroids.idEntityTier3Rocket, 150, 1, false);
+        AsteroidsUtil.registerAsteroidsNonMobEntity(EntityEntryPod.class, "EntryPodAsteroids", ConfigManagerAsteroids.idEntityEntryPod, 150, 1, true);
 	}
 
 	private void registerTileEntities()

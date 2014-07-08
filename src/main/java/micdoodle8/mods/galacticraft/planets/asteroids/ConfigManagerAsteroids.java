@@ -29,6 +29,7 @@ public class ConfigManagerAsteroids
 	public static int idEntitySmallAsteroid;
 	public static int idEntityGrappleHook;
 	public static int idEntityTier3Rocket;
+    public static int idEntityEntryPod;
 
 	// GUI
 
@@ -47,12 +48,12 @@ public class ConfigManagerAsteroids
     {
         try
         {
-
             ConfigManagerAsteroids.dimensionIDAsteroids = ConfigManagerAsteroids.configuration.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "Asteroids Dimension ID", -30).getInt(-30);
 
             ConfigManagerAsteroids.idEntitySmallAsteroid = ConfigManagerAsteroids.configuration.get(Constants.CONFIG_CATEGORY_ENTITIES, "idEntitySmallAsteroid", 180).getInt(180);
             ConfigManagerAsteroids.idEntityGrappleHook = ConfigManagerAsteroids.configuration.get(Constants.CONFIG_CATEGORY_ENTITIES, "idEntityGrappleHook", 181).getInt(181);
             ConfigManagerAsteroids.idEntityTier3Rocket = ConfigManagerAsteroids.configuration.get(Constants.CONFIG_CATEGORY_ENTITIES, "idEntityTier3Rocket", 182).getInt(182);
+            ConfigManagerAsteroids.idEntityEntryPod = ConfigManagerAsteroids.configuration.get(Constants.CONFIG_CATEGORY_ENTITIES, "idEntityEntryPod", 183).getInt(183);
 
             ConfigManagerAsteroids.idSchematicRocketT3 = ConfigManagerAsteroids.configuration.get(Constants.CONFIG_CATEGORY_SCHEMATIC, "idSchematicRocketT3", 4).getInt(4);
         }
