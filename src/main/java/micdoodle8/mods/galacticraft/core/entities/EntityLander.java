@@ -35,7 +35,7 @@ import net.minecraftforge.fluids.FluidTank;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EntityLander extends InventoryEntity implements IInventorySettable, IScaleableFuelLevel, IControllableEntity, IPacketReceiver, ICameraZoomEntity
+public class EntityLander extends InventoryEntity implements IInventorySettable, IScaleableFuelLevel, IControllableEntity, ICameraZoomEntity
 {
 	private final int tankCapacity = 5000;
 	public FluidTank fuelTank = new FluidTank(this.tankCapacity);
