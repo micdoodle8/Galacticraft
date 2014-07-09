@@ -29,7 +29,7 @@ import java.util.*;
 /**
  * A universal network that words with multiple energy systems.
  * 
- * @author micdoodle8, Calclavia, Aidancbrady, radfast
+ * @author radfast, micdoodle8, Calclavia, Aidancbrady
  * 
  */
 public class UniversalNetwork extends ElectricityNetwork
@@ -73,8 +73,14 @@ public class UniversalNetwork extends ElectricityNetwork
 	private List<TileEntity> ignoreAcceptors = new LinkedList<TileEntity>();
 
 	//This is the energy per tick corresponding to 12kW 
-	private final static float ENERGYSTORAGELEVEL = 0.6F;
+	private final static float ENERGY_STORAGE_LEVEL = 0.6F;
 
+    /**
+     * Get the total energy request in this network
+     *
+     * @param ignoreTiles Tiles to ignore in the request calculations (NOTE: only used in initial (internal) check.
+     * @return Amount of energy requested in this network
+     */
 	@Override
 	public float getRequest(TileEntity... ignoreTiles)
 	{
@@ -108,12 +114,20 @@ public class UniversalNetwork extends ElectricityNetwork
 		return this.totalRequested - this.totalEnergy - this.totalSent;
 	}
 
+    /**
+     * Produce energy into the network
+     *
+     * @param energy Amount of energy to send into the network
+     * @param doReceive Whether to put energy into the network (true) or just simulate (false)
+     * @param ignoreTiles TileEntities to ignore for energy transfers.
+     * @return Amount of energy REMAINING from the passed energy parameter
+     */
 	@Override
-	public float produce(float electricity, boolean doReceive, TileEntity... ignoreTiles)
+	public float produce(float energy, boolean doReceive, TileEntity... ignoreTiles)
 	{
-		if (electricity > 0F)
+		if (energy > 0F)
 		{
-			ElectricityProductionEvent evt = new ElectricityProductionEvent(this, electricity, ignoreTiles);
+			ElectricityProductionEvent evt = new ElectricityProductionEvent(this, energy, ignoreTiles);
 			MinecraftForge.EVENT_BUS.post(evt);
 
 			if (!evt.isCanceled())
@@ -150,23 +164,26 @@ public class UniversalNetwork extends ElectricityNetwork
 				//Note: totalEnergy cannot exceed totalRequested
 				if (doReceive)
 				{
-					this.totalEnergy += Math.min(electricity, this.totalRequested - totalEnergyLast);
+					this.totalEnergy += Math.min(energy, this.totalRequested - totalEnergyLast);
 				}
 
-				if (this.totalRequested >= totalEnergyLast + electricity)
+				if (this.totalRequested >= totalEnergyLast + energy)
 				{
 					return 0F; //All the electricity will be used
 				}
 				if (totalEnergyLast >= this.totalRequested)
 				{
-					return electricity; //None of the electricity will be used
+					return energy; //None of the electricity will be used
 				}
-				return totalEnergyLast + electricity - this.totalRequested; //Some of the electricity will be used
+				return totalEnergyLast + energy - this.totalRequested; //Some of the electricity will be used
 			}
 		}
-		return electricity;
+		return energy;
 	}
 
+    /**
+     * Called on server tick end, from the Galacticraft Core tick handler.
+     */
 	public void tickEnd()
 	{
 		this.doneScheduled = false;
@@ -198,6 +215,11 @@ public class UniversalNetwork extends ElectricityNetwork
 		}
 	}
 
+    /**
+     * Refreshes all tiles in network, and updates requested energy
+     *
+     * @param ignoreTiles TileEntities to ignore for energy calculations.
+     */
 	private void doTickStartCalc(TileEntity... ignoreTiles)
 	{
 		this.totalSent = 0F;
@@ -263,9 +285,9 @@ public class UniversalNetwork extends ElectricityNetwork
 						this.availableconnectedDirections.put(acceptor, sideFrom);
 						this.energyRequests.put(acceptor, Float.valueOf(e));
 						this.totalRequested += e;
-						if (e > UniversalNetwork.ENERGYSTORAGELEVEL)
+						if (e > UniversalNetwork.ENERGY_STORAGE_LEVEL)
 						{
-							this.totalStorageExcess += e - UniversalNetwork.ENERGYSTORAGELEVEL;
+							this.totalStorageExcess += e - UniversalNetwork.ENERGY_STORAGE_LEVEL;
 						}
 					}
 				}
@@ -278,6 +300,11 @@ public class UniversalNetwork extends ElectricityNetwork
 		this.totalRequested = evt.energy;
 	}
 
+    /**
+     * Complete the energy transfer. Called internally on server tick end.
+     *
+     * @return Amount of energy SENT to all acceptors
+     */
 	private float doProduce()
 	{
 		float sent = 0.0F;
@@ -326,9 +353,9 @@ public class UniversalNetwork extends ElectricityNetwork
 				currentSending = this.energyRequests.get(tileEntity);
 
 				//If it's an energy store, we may need to damp it down if energyStorageReducor is less than 1
-				if (currentSending > UniversalNetwork.ENERGYSTORAGELEVEL)
+				if (currentSending > UniversalNetwork.ENERGY_STORAGE_LEVEL)
 				{
-					currentSending = UniversalNetwork.ENERGYSTORAGELEVEL + (currentSending - UniversalNetwork.ENERGYSTORAGELEVEL) * energyStorageReducor;
+					currentSending = UniversalNetwork.ENERGY_STORAGE_LEVEL + (currentSending - UniversalNetwork.ENERGY_STORAGE_LEVEL) * energyStorageReducor;
 				}
 
 				//Reduce everything proportionately if there is not enough energy for all needs
@@ -381,6 +408,9 @@ public class UniversalNetwork extends ElectricityNetwork
 		return returnvalue;
 	}
 
+    /**
+     * Refresh validity of each conductor in the network
+     */
 	@Override
 	public void refresh()
 	{
@@ -418,6 +448,9 @@ public class UniversalNetwork extends ElectricityNetwork
 		}
 	}
 
+    /**
+     * Refresh all energy acceptors in the network
+     */
 	private void refreshAcceptors()
 	{
 		this.connectedAcceptors.clear();
@@ -499,6 +532,12 @@ public class UniversalNetwork extends ElectricityNetwork
 		}
 	}
 
+    /**
+     * Combine this network with another electricitynetwork
+     *
+     * @param network Network to merge with
+     * @return The final, joined network
+     */
 	@Override
 	public IElectricityNetwork merge(IElectricityNetwork network)
 	{
@@ -547,6 +586,15 @@ public class UniversalNetwork extends ElectricityNetwork
 
 	}
 
+    /**
+     * Split the network into two separate networks at a specific tile.
+     *
+     * A new network will be created for one side of the broken network, and the current one will update for the rest.
+     *
+     * If the block is broken, but the network is still connected without that tile, no new network will be created.
+     *
+     * @param splitPoint
+     */
 	@Override
 	public void split(IConductor splitPoint)
 	{
