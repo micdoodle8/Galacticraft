@@ -56,12 +56,12 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 		return EnumSet.noneOf(ForgeDirection.class);
 	}
 
-	public int produce()
+	public float produce()
 	{
-		return this.produce(false);
+		return this.extractEnergyGC(null, this.produce(false), false);
 	}
 
-	public int produce(boolean simulate)
+	public float produce(boolean simulate)
 	{
 		int amountProduced = 0;
 
@@ -82,8 +82,8 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 						IElectricityNetwork network = (IElectricityNetwork) ((IConductor) tileAdj).getNetwork();
 						if (network != null)
 						{
-							//TODO: Get rid of electricityPack, yuck
-							amountProduced += network.produce(this.getEnergyStoredGC() - amountProduced, true, this);
+                            float toSend = this.getEnergyStoredGC() - amountProduced;
+							amountProduced += (toSend - network.produce(toSend, true, this));
 						}
 					}
 					else if (tileAdj instanceof IEnergyHandlerGC)
