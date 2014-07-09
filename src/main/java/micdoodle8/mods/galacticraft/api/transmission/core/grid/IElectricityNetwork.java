@@ -11,31 +11,21 @@ import net.minecraft.tileentity.TileEntity;
  */
 public interface IElectricityNetwork extends IGridNetwork<IElectricityNetwork, IConductor, TileEntity>
 {
-	/**
-	 * Produces electricity in this electrical network.
-	 * 
-	 * @return Rejected energy in Joules.
-	 */
+    /**
+     * Produce energy into the network
+     *
+     * @param energy Amount of energy to send into the network
+     * @param doReceive Whether to put energy into the network (true) or just simulate (false)
+     * @param ignoreTiles TileEntities to ignore for energy transfers.
+     * @return Amount of energy REMAINING from the passed energy parameter
+     */
 	public float produce(float energy, boolean doReceive, TileEntity... ignoreTiles);
 
-	/**
-	 * Gets the total amount of electricity requested/needed in the electricity
-	 * network.
-	 * 
-	 * @param ignoreTiles
-	 *            The TileEntities to ignore during this calculation (optional).
-	 */
+    /**
+     * Get the total energy request in this network
+     *
+     * @param ignoreTiles Tiles to ignore in the request calculations (NOTE: only used in initial (internal) check.
+     * @return Amount of energy requested in this network
+     */
 	public float getRequest(TileEntity... ignoreTiles);
-
-	/**
-	 * @return The total amount of resistance of this electrical network. In
-	 *         Ohms.
-	 */
-	public float getTotalResistance();
-
-	/**
-	 * @return The lowest amount of current (amperage) that this electrical
-	 *         network can tolerate.
-	 */
-	public float getLowestCurrentCapacity();
 }

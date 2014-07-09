@@ -36,25 +36,6 @@ public interface IGridNetwork<N, C, A>
 	public Set<C> getTransmitters();
 
 	/**
-	 * Gets the Set of AVAILABLE acceptors in this network. Make sure this
-	 * doesn't include any stray acceptors which cannot accept resources.
-	 * 
-	 * @return available acceptor set
-	 */
-	public Set<A> getAcceptors();
-
-	/**
-	 * Gets the list of possible connection directions for the provided
-	 * TileEntity. Tile must be in this network.
-	 * 
-	 * @param tile
-	 *            The tile to get connections for
-	 * @return The list of directions that can be connected to for the provided
-	 *         tile
-	 */
-	public ForgeDirection getPossibleDirections(TileEntity tile);
-
-	/**
 	 * Creates a new network that makes up the current network and the network
 	 * defined in the parameters. Be sure to refresh the new network inside this
 	 * method.

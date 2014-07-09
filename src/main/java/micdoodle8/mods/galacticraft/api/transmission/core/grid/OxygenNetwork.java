@@ -159,27 +159,6 @@ public class OxygenNetwork implements IOxygenNetwork
 	}
 
 	/**
-	 * @return Returns all producers in this oxygen network.
-	 */
-	@Override
-	public Set<TileEntity> getAcceptors()
-	{
-		return this.oxygenTiles.keySet();
-	}
-
-	/**
-	 * @param tile
-	 *            The tile to get connections for
-	 * @return The list of directions that can be connected to for the provided
-	 *         tile
-	 */
-	@Override
-	public ForgeDirection getPossibleDirections(TileEntity tile)
-	{
-		return this.oxygenTiles.containsKey(tile) ? this.oxygenTiles.get(tile) : null;
-	}
-
-	/**
 	 * This function is called to refresh all conductors in this network
 	 */
 	@Override

@@ -4,7 +4,6 @@ import cpw.mods.fml.common.FMLLog;
 import micdoodle8.mods.galacticraft.api.transmission.ElectricalEvent.ElectricityProductionEvent;
 import micdoodle8.mods.galacticraft.api.transmission.ElectricalEvent.ElectricityRequestEvent;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
-import micdoodle8.mods.galacticraft.api.transmission.core.grid.ElectricityNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.core.grid.IElectricityNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.core.path.Pathfinder;
 import micdoodle8.mods.galacticraft.api.transmission.core.path.PathfinderChecker;
@@ -32,7 +31,7 @@ import java.util.*;
  * @author radfast, micdoodle8, Calclavia, Aidancbrady
  * 
  */
-public class UniversalNetwork extends ElectricityNetwork
+public class UniversalNetwork implements IElectricityNetwork
 {
 	/* Re-written by radfast for better performance
 	 * 
@@ -72,8 +71,16 @@ public class UniversalNetwork extends ElectricityNetwork
 	private Map<TileEntity, Float> energyRequests = new HashMap<TileEntity, Float>();
 	private List<TileEntity> ignoreAcceptors = new LinkedList<TileEntity>();
 
+    private final Set<IConductor> conductors = new HashSet<IConductor>();
+
 	//This is the energy per tick corresponding to 12kW 
 	private final static float ENERGY_STORAGE_LEVEL = 0.6F;
+
+    @Override
+    public Set<IConductor> getTransmitters()
+    {
+        return this.conductors;
+    }
 
     /**
      * Get the total energy request in this network
