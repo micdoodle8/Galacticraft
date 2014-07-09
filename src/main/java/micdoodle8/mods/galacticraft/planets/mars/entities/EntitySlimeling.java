@@ -83,6 +83,12 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
 		this.setRandomFavFood();
 	}
 
+    @Override
+    public boolean canBreatheUnderwater()
+    {
+        return true;
+    }
+
 	public float getSlimelingSize()
 	{
 		return this.getScale() * 2.0F;
