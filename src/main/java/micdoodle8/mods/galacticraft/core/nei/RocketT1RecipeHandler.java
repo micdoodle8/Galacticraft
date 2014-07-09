@@ -156,6 +156,6 @@ public class RocketT1RecipeHandler extends TemplateRecipeHandler
 	@Override
 	public String getGuiTexture()
 	{
-		return "/mods/galacticraftcore/textures/gui/rocketbench.png";
+		return GalacticraftCore.ASSET_PREFIX + "textures/gui/rocketbench.png";
 	}
 }

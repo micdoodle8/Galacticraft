@@ -245,7 +245,7 @@ public class IngotCompressorRecipeHandler extends TemplateRecipeHandler
 	@Override
 	public String getGuiTexture()
 	{
-		return "/assets/galacticraftcore/textures/gui/ingotCompressor.png";
+        return GalacticraftCore.ASSET_PREFIX + "textures/gui/ingotCompressor.png";
 	}
 
 	static

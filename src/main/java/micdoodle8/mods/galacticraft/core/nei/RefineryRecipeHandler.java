@@ -173,6 +173,6 @@ public class RefineryRecipeHandler extends TemplateRecipeHandler
 	@Override
 	public String getGuiTexture()
 	{
-		return "/mods/galacticraftcore/textures/gui/refinery.png";
+		return GalacticraftCore.ASSET_PREFIX + "textures/gui/refinery.png";
 	}
 }

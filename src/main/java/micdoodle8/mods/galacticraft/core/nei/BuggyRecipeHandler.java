@@ -151,6 +151,6 @@ public class BuggyRecipeHandler extends TemplateRecipeHandler
 	@Override
 	public String getGuiTexture()
 	{
-		return "/mods/galacticraftcore/textures/gui/buggybench.png";
+        return GalacticraftCore.ASSET_PREFIX + "textures/gui/buggybench.png";
 	}
 }

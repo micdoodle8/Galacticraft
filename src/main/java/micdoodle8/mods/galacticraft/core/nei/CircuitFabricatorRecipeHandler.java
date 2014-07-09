@@ -172,6 +172,6 @@ public class CircuitFabricatorRecipeHandler extends TemplateRecipeHandler
 	@Override
 	public String getGuiTexture()
 	{
-		return "/mods/galacticraftcore/textures/gui/circuitFabricator.png";
+        return GalacticraftCore.ASSET_PREFIX + "textures/gui/circuitFabricator.png";
 	}
 }

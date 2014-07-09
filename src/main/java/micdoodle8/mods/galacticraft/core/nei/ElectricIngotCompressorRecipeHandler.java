@@ -201,6 +201,6 @@ public class ElectricIngotCompressorRecipeHandler extends TemplateRecipeHandler
 	@Override
 	public String getGuiTexture()
 	{
-		return "/assets/galacticraftcore/textures/gui/electric_IngotCompressor.png";
+        return GalacticraftCore.ASSET_PREFIX + "textures/gui/electric_IngotCompressor.png";
 	}
 }
