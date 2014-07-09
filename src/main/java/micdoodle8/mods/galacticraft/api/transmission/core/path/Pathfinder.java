@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.api.transmission.core.path;
 
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+
 import java.util.HashSet;
 import java.util.Set;
-
-import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 
 /**
  * A class that allows flexible pathfinding for different positions. Compared to

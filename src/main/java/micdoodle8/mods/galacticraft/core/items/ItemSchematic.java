@@ -1,8 +1,10 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import java.util.List;
-
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicItem;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
@@ -14,9 +16,8 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
+import java.util.List;
 
 public class ItemSchematic extends Item implements ISchematicItem
 {
@@ -98,7 +99,8 @@ public class ItemSchematic extends Item implements ISchematicItem
 				break;
 			case 1:
 				par3List.add(GCCoreUtil.translate("schematic.rocketT2.name"));
-				if (!Loader.isModLoaded("GalacticraftMars"))
+
+				if (!Loader.isModLoaded(Constants.MOD_ID_PLANETS))
 				{
 					par3List.add(EnumColor.DARK_AQUA + "\"Galacticraft: Planets\" Not Installed!");
 				}

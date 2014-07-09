@@ -86,12 +86,12 @@ public class ContainerElectricIngotCompressor extends Container
 
 			if (par1 <= 11)
 			{
-				if (!this.mergeItemStack(var4, 12, 39, true))
+				if (!this.mergeItemStack(var4, 12, 48, true))
 				{
 					return null;
 				}
 
-				var3.onSlotChange(var4, var2);
+				if (par1 == 1 || par1 == 2) var3.onSlotChange(var4, var2);
 			}
 			else
 			{
@@ -109,7 +109,7 @@ public class ContainerElectricIngotCompressor extends Container
 						return null;
 					}
 				}
-				else if (par1 >= 39 && par1 < 48 && !this.mergeItemStack(var4, 12, 39, false))
+				else if (!this.mergeItemStack(var4, 0, 9, false) && !this.mergeItemStack(var4, 12, 39, false))
 				{
 					return null;
 				}

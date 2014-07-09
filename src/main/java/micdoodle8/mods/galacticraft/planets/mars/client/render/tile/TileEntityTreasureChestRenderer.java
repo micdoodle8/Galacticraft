@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.render.tile;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.client.model.block.ModelTreasureChest;
 import micdoodle8.mods.galacticraft.core.client.model.block.ModelTreasureChestLarge;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
@@ -9,18 +11,14 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class TileEntityTreasureChestRenderer extends TileEntitySpecialRenderer
 {
-	private static final ResourceLocation treasureChestTexture = new ResourceLocation(MarsModule.TEXTURE_DOMAIN, "textures/model/treasure.png");
-	private static final ResourceLocation treasureLargeChestTexture = new ResourceLocation(MarsModule.TEXTURE_DOMAIN, "textures/model/treasurelarge.png");
+	private static final ResourceLocation treasureChestTexture = new ResourceLocation(MarsModule.ASSET_DOMAIN, "textures/model/treasure.png");
+	private static final ResourceLocation treasureLargeChestTexture = new ResourceLocation(MarsModule.ASSET_DOMAIN, "textures/model/treasurelarge.png");
 
 	private final ModelTreasureChest chestModel = new ModelTreasureChest();
 	private final ModelTreasureChestLarge largeChestModel = new ModelTreasureChestLarge();

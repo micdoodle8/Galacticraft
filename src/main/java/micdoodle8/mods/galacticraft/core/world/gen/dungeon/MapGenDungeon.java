@@ -1,15 +1,15 @@
 package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class MapGenDungeon
 {
@@ -74,7 +74,6 @@ public class MapGenDungeon
 
 		for (int i = 0; i <= length; i++)
 		{
-			tryLoop:
 			for (int j = 0; j < 8; j++)
 			{
 				int offsetX = 0;

@@ -1,8 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.mars.inventory;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
 import micdoodle8.mods.galacticraft.core.inventory.SlotSpecific;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityTerraformer;
@@ -13,8 +10,9 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ContainerTerraformer extends Container
 {
@@ -33,8 +31,6 @@ public class ContainerTerraformer extends Container
 
 		for (var6 = 0; var6 < 3; ++var6)
 		{
-			for (var7 = 0; var7 < 4; ++var7)
-			{
 				List<ItemStack> stacks = new ArrayList<ItemStack>();
 
 				if (var6 == 0)
@@ -52,6 +48,8 @@ public class ContainerTerraformer extends Container
 				{
 					stacks.add(new ItemStack(Items.wheat_seeds));
 				}
+				for (var7 = 0; var7 < 4; ++var7)
+				{
 
 				this.addSlotToContainer(new SlotSpecific(tileEntity, var7 + var6 * 4 + 2, 25 + var7 * 18, 63 + var6 * 24, stacks.toArray(new ItemStack[stacks.size()])));
 			}
@@ -90,62 +88,66 @@ public class ContainerTerraformer extends Container
 	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
 	{
 		ItemStack var2 = null;
-		final Slot var3 = (Slot) this.inventorySlots.get(par1);
+		final Slot slot = (Slot) this.inventorySlots.get(par1);
+		final int b = this.inventorySlots.size();
 
-		if (var3 != null && var3.getHasStack())
+		if (slot != null && slot.getHasStack())
 		{
-			final ItemStack var4 = var3.getStack();
+			final ItemStack var4 = slot.getStack();
 			var2 = var4.copy();
 
-			if (par1 == 2)
+			if (par1 < b - 36)
 			{
-				if (!this.mergeItemStack(var4, 3, 39, true))
+				if (!this.mergeItemStack(var4, b - 36, b, true))
 				{
 					return null;
 				}
-
-				var3.onSlotChange(var4, var2);
 			}
-			else if (par1 != 1 && par1 != 0)
+			else
 			{
 				if (var4.getItem() instanceof IItemElectric)
 				{
-					if (!this.mergeItemStack(var4, 0, 1, false))
-					{
-						return null;
-					}
-				}
-				else if (FluidContainerRegistry.isContainer(var4) || FluidContainerRegistry.containsFluid(var4, FluidRegistry.getFluidStack("fuel", 1)))
-				{
 					if (!this.mergeItemStack(var4, 1, 2, false))
-					{
 						return null;
-					}
 				}
-				else if (par1 >= 3 && par1 < 30)
+				else if (var4.getItem() == Items.water_bucket)
 				{
-					if (!this.mergeItemStack(var4, 30, 39, false))
-					{
+					if (!this.mergeItemStack(var4, 0, 1, false))
 						return null;
-					}
 				}
-				else if (par1 >= 30 && par1 < 39 && !this.mergeItemStack(var4, 3, 30, false))
+				else if (var4.getItem() == Items.dye && var4.getItemDamage() == 15)
+				{
+					if (!this.mergeItemStack(var4, 2, 6, false))
+						return null;
+				}
+				else if (var4.getItem() == new ItemStack(Blocks.sapling, 1, 0).getItem())
+				{
+					if (!this.mergeItemStack(var4, 6, 10, false))
+						return null;
+				}
+				else if (var4.getItem() == Items.wheat_seeds)
+				{
+					if (!this.mergeItemStack(var4, 10, 14, false))
+						return null;
+				}
+				else if (par1 < b - 9)
+				{
+					if (!this.mergeItemStack(var4, b - 9, b, false))
+						return null;
+				}
+				else if (!this.mergeItemStack(var4, b - 36, b - 9, false))
 				{
 					return null;
 				}
-			}
-			else if (!this.mergeItemStack(var4, 3, 39, false))
-			{
-				return null;
 			}
 
 			if (var4.stackSize == 0)
 			{
-				var3.putStack((ItemStack) null);
+				slot.putStack((ItemStack) null);
 			}
 			else
 			{
-				var3.onSlotChanged();
+				slot.onSlotChanged();
 			}
 
 			if (var4.stackSize == var2.stackSize)
@@ -153,7 +155,7 @@ public class ContainerTerraformer extends Container
 				return null;
 			}
 
-			var3.onPickupFromSlot(par1EntityPlayer, var4);
+			slot.onPickupFromSlot(par1EntityPlayer, var4);
 		}
 
 		return var2;

@@ -1,10 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
+import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.core.inventory.PersistantInventoryCrafting;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
@@ -21,7 +17,11 @@ import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntityFurnace;
-import cpw.mods.fml.relauncher.Side;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 public class TileEntityIngotCompressor extends TileEntityAdvanced implements IInventory, ISidedInventory, IPacketReceiver
 {
@@ -56,19 +56,20 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
 
 			if (this.furnaceBurnTime == 0 && this.canSmelt())
 			{
-				this.currentItemBurnTime = this.furnaceBurnTime = TileEntityFurnace.getItemBurnTime(this.containingItems[0]);
+				ItemStack fuel = this.containingItems[0];
+				this.currentItemBurnTime = this.furnaceBurnTime = TileEntityFurnace.getItemBurnTime(fuel);
 
 				if (this.furnaceBurnTime > 0)
 				{
 					updateInv = true;
 
-					if (this.containingItems[0] != null)
+					if (fuel != null)
 					{
-						--this.containingItems[0].stackSize;
+						--fuel.stackSize;
 
-						if (this.containingItems[0].stackSize == 0)
+						if (fuel.stackSize == 0)
 						{
-							this.containingItems[0] = this.containingItems[0].getItem().getContainerItem(this.containingItems[0]);
+							this.containingItems[0] = fuel.getItem().getContainerItem(fuel);
 						}
 					}
 				}
@@ -219,6 +220,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
 			{
 				this.compressingCraftMatrix.decrStackSize(i, 1);
 			}
+			this.updateInput();
 		}
 	}
 
@@ -303,7 +305,9 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
 	{
 		if (par1 >= this.containingItems.length)
 		{
-			return this.compressingCraftMatrix.decrStackSize(par1 - this.containingItems.length, par2);
+			ItemStack result = this.compressingCraftMatrix.decrStackSize(par1 - this.containingItems.length, par2);
+			if (result != null) this.updateInput();
+			return result;
 		}
 
 		if (this.containingItems[par1] != null)
@@ -360,6 +364,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
 		if (par1 >= this.containingItems.length)
 		{
 			this.compressingCraftMatrix.setInventorySlotContents(par1 - this.containingItems.length, par2ItemStack);
+			this.updateInput();
 		}
 		else
 		{

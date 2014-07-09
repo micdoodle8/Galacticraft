@@ -1,5 +1,9 @@
 package micdoodle8.mods.galacticraft.planets.mars.entities;
 
+import java.util.List;
+
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -17,8 +21,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
 
 public class EntityTier2Rocket extends EntityTieredRocket
 {
@@ -290,5 +292,13 @@ public class EntityTier2Rocket extends EntityTieredRocket
 	public boolean defaultThirdPerson()
 	{
 		return true;
+	}
+	
+	@Override
+	public List<ItemStack> getItemsDropped(List<ItemStack> droppedItems)
+	{
+		super.getItemsDropped(droppedItems);
+		droppedItems.add(new ItemStack(MarsItems.spaceship, 1, this.rocketType.getIndex()));
+		return droppedItems;
 	}
 }

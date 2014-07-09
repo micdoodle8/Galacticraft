@@ -1,11 +1,10 @@
 package micdoodle8.mods.galacticraft.core.network;
 
+import cpw.mods.fml.relauncher.Side;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.ArrayList;
-
-import net.minecraft.entity.player.EntityPlayer;
-import cpw.mods.fml.relauncher.Side;
 
 public interface IPacketReceiver
 {

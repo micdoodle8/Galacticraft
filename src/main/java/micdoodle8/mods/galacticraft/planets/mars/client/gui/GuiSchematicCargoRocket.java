@@ -9,12 +9,11 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.opengl.GL11;
 
 public class GuiSchematicCargoRocket extends GuiContainer implements ISchematicResultPage
 {
-	private static final ResourceLocation cargoRocketTexture = new ResourceLocation(MarsModule.TEXTURE_DOMAIN, "textures/gui/schematic_rocket_cargo.png");
+	private static final ResourceLocation cargoRocketTexture = new ResourceLocation(MarsModule.ASSET_DOMAIN, "textures/gui/schematic_rocket_cargo.png");
 
 	private int pageIndex;
 

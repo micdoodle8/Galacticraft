@@ -1,13 +1,13 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import java.lang.reflect.Method;
-
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
+import java.lang.reflect.Method;
 
 /**
  * An advanced block class that is to be extended for wrenching capabilities.

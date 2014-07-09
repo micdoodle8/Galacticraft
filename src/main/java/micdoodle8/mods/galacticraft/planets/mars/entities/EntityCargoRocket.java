@@ -1,10 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.mars.entities;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
 import io.netty.buffer.ByteBuf;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import micdoodle8.mods.galacticraft.api.entity.IRocketType;
 import micdoodle8.mods.galacticraft.api.entity.IWorldTransferCallback;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
@@ -25,9 +23,9 @@ import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.relauncher.Side;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, IInventory, IWorldTransferCallback
 {
@@ -69,39 +67,9 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
 	}
 
 	@Override
-	protected void entityInit()
-	{
-		super.entityInit();
-
-		if (Loader.isModLoaded("ICBM|Explosion"))
-		{
-			try
-			{
-				Class.forName("calclavia.api.icbm.RadarRegistry").getMethod("register", Entity.class).invoke(null, this);
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
-		}
-	}
-
-	@Override
 	public void setDead()
 	{
 		super.setDead();
-
-		if (Loader.isModLoaded("ICBM|Explosion"))
-		{
-			try
-			{
-				Class.forName("calclavia.api.icbm.RadarRegistry").getMethod("unregister", Entity.class).invoke(null, this);
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
-		}
 
 		if (this.rocketSoundUpdater != null)
 		{

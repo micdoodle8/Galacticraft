@@ -138,8 +138,8 @@ public class GuiCelestialSelection extends GuiScreen
 			}
 		}
 
-		// Temporarily allow teleport by pressing 'Enter'
-		if (keyID == 42 && this.selectedBody != null)
+		// Keyboard shortcut - teleport to dimension by pressing 'Enter'
+		if (keyID == 28 && this.selectedBody != null)
 		{
 			final String dimension = WorldProvider.getProviderForDimension(this.selectedBody.getDimensionID()).getDimensionName();
 			if (dimension.contains("$"))
@@ -152,10 +152,10 @@ public class GuiCelestialSelection extends GuiScreen
 			return;
 		}
 		
-		// Temporarily allow to get to Asteroids by pressing 'X'
-		if (keyID == 45 && Loader.isModLoaded("GalacticraftMars"))
+		// Temporarily allow to get to Space Station by pressing 'X'
+		if (keyID == 45)
 		{
-			final String dimension = WorldProvider.getProviderForDimension(ConfigManagerAsteroids.dimensionIDAsteroids).getDimensionName();
+			final String dimension = WorldProvider.getProviderForDimension(2).getDimensionName();
 			if (dimension.contains("$"))
 			{
 				this.mc.gameSettings.thirdPersonView = 0;

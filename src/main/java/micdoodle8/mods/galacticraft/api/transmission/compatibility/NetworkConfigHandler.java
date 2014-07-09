@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.api.transmission.compatibility;
 
-import java.io.File;
-
-import net.minecraftforge.common.config.Configuration;
 import cpw.mods.fml.common.Loader;
+import net.minecraftforge.common.config.Configuration;
+
+import java.io.File;
 
 /**
  * The Universal Electricity compatibility module allows your mod to be

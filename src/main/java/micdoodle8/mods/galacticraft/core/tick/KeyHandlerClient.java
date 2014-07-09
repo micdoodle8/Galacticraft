@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tick;
 
+import cpw.mods.fml.common.gameevent.TickEvent.Type;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -15,10 +16,7 @@ import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
-
 import org.lwjgl.input.Keyboard;
-
-import cpw.mods.fml.common.gameevent.TickEvent.Type;
 
 public class KeyHandlerClient extends KeyHandler
 {

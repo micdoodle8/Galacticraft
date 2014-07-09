@@ -33,9 +33,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.biome.WorldChunkManager;
-import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.client.IRenderHandler;
 
@@ -756,12 +754,20 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 				double dx = p.motionX - this.pPrevMotionX;
 				double dy = p.motionY - this.pPrevMotionY;
 				double dz = p.motionZ - this.pPrevMotionZ;
-				p.motionX -= dx * 0.94D;
-				p.motionZ -= dz * 0.94D;
+				double dyaw = p.rotationYaw - p.prevRotationYaw;
+				p.rotationYaw -= dyaw * 0.8D;
 
 				//if (p.capabilities.isFlying)
 				///Undo whatever vanilla tried to do to our y motion
 				p.motionY -= dy;
+				p.motionX -= dx;
+				p.motionZ -= dz;
+
+				if (p.movementInput.moveForward != 0)
+				{
+					p.motionX -= p.movementInput.moveForward * MathHelper.sin(p.rotationYaw / 57.29578F) / 400F;
+					p.motionZ += p.movementInput.moveForward * MathHelper.cos(p.rotationYaw / 57.29578F) / 400F;
+				}
 
 				if (p.movementInput.sneak)
 				{

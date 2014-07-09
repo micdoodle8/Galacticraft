@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine2;
@@ -15,7 +16,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.relauncher.Side;
 
 public class TileEntityElectricIngotCompressor extends TileEntityElectricBlock implements IInventory, ISidedInventory, IPacketReceiver
 {
@@ -168,6 +168,8 @@ public class TileEntityElectricIngotCompressor extends TileEntityElectricBlock i
 			{
 				this.compressingCraftMatrix.decrStackSize(i, 1);
 			}
+			
+			this.updateInput();
 		}
 	}
 
@@ -252,7 +254,9 @@ public class TileEntityElectricIngotCompressor extends TileEntityElectricBlock i
 	{
 		if (par1 >= this.containingItems.length)
 		{
-			return this.compressingCraftMatrix.decrStackSize(par1 - this.containingItems.length, par2);
+			ItemStack result = this.compressingCraftMatrix.decrStackSize(par1 - this.containingItems.length, par2);
+			if (result != null) this.updateInput();
+			return result;
 		}
 
 		if (this.containingItems[par1] != null)
@@ -309,6 +313,7 @@ public class TileEntityElectricIngotCompressor extends TileEntityElectricBlock i
 		if (par1 >= this.containingItems.length)
 		{
 			this.compressingCraftMatrix.setInventorySlotContents(par1 - this.containingItems.length, par2ItemStack);
+			this.updateInput();
 		}
 		else
 		{

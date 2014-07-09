@@ -1,14 +1,14 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-
+import cpw.mods.fml.common.FMLLog;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.structure.MapGenStructure;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraft.world.gen.structure.StructureStart;
-import cpw.mods.fml.common.FMLLog;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 public class MapGenVillageMoon extends MapGenStructure
 {

@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
@@ -147,7 +148,7 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
     public float calculateCelestialAngle(long par1, float par3)
     {
         int j = (int)(par1 % this.getDayLength());
-        float f1 = ((float)j + par3) / this.getDayLength() - 0.25F;
+        float f1 = (j + par3) / this.getDayLength() - 0.25F;
 
         if (f1 < 0.0F)
         {
@@ -160,9 +161,8 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
         }
 
         float f2 = f1;
-        f1 = 1.0F - (float)((Math.cos((double)f1 * Math.PI) + 1.0D) / 2.0D);
-        f1 = f2 + (f1 - f2) / 3.0F;
-        return f1;
+        f1 = 0.5F - MathHelper.cos(f1 * 3.1415927F) / 2.0F;
+        return f2 + (f1 - f2) / 3.0F;
     }
 
     @SideOnly(Side.CLIENT)

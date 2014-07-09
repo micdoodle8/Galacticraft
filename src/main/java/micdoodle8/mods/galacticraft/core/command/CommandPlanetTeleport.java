@@ -1,8 +1,5 @@
 package micdoodle8.mods.galacticraft.core.command;
 
-import java.util.HashMap;
-import java.util.Map.Entry;
-
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
@@ -14,6 +11,9 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
+
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 public class CommandPlanetTeleport extends CommandBase
 {

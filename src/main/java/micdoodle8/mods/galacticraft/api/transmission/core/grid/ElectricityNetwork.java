@@ -1,13 +1,13 @@
 package micdoodle8.mods.galacticraft.api.transmission.core.grid;
 
+import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
-import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * An Electrical Network specifies a wire connection. Each wire connection line

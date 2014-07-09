@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.api.transmission.core.path;
 
-import java.util.Set;
-
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+
+import java.util.Set;
 
 public interface IPathCallBack
 {

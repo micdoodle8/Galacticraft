@@ -1,21 +1,19 @@
 package micdoodle8.mods.galacticraft.core.nei;
 
+import codechicken.lib.gui.GuiDraw;
+import codechicken.nei.NEIServerUtils;
+import codechicken.nei.PositionedStack;
+import codechicken.nei.recipe.TemplateRecipeHandler;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-
-import org.lwjgl.opengl.GL11;
-
-import codechicken.lib.gui.GuiDraw;
-import codechicken.nei.NEIServerUtils;
-import codechicken.nei.PositionedStack;
-import codechicken.nei.recipe.TemplateRecipeHandler;
 
 public class ElectricIngotCompressorRecipeHandler extends TemplateRecipeHandler
 {
@@ -203,6 +201,6 @@ public class ElectricIngotCompressorRecipeHandler extends TemplateRecipeHandler
 	@Override
 	public String getGuiTexture()
 	{
-		return "/assets/galacticraftcore/textures/gui/electric_IngotCompressor.png";
+        return GalacticraftCore.ASSET_PREFIX + "textures/gui/electric_IngotCompressor.png";
 	}
 }

@@ -18,7 +18,7 @@ import java.util.List;
 
 public class ItemBasicAsteroids extends Item
 {
-	public static String[] names = { "reinforcedPlateT3" };
+	public static String[] names = { "reinforcedPlateT3", "engineT2", "rocketFinsT2" };
 	protected IIcon[] icons = new IIcon[ItemBasicAsteroids.names.length];
 
 	public ItemBasicAsteroids()
@@ -51,7 +51,7 @@ public class ItemBasicAsteroids extends Item
 
 		for (String name : ItemBasicAsteroids.names)
 		{
-			this.icons[i++] = iconRegister.registerIcon(AsteroidsModule.ASSET_PREFIX + name);
+			this.icons[i++] = iconRegister.registerIcon(AsteroidsModule.TEXTURE_DOMAIN + name);
 		}
 	}
 

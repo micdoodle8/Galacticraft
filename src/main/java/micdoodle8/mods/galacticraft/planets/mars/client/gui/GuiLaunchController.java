@@ -23,12 +23,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.opengl.GL11;
 
 public class GuiLaunchController extends GuiContainer implements IDropboxCallback, ITextBoxCallback, ICheckBoxCallback
 {
-	private static final ResourceLocation launchControllerGui = new ResourceLocation(MarsModule.TEXTURE_DOMAIN, "textures/gui/launchController.png");
+	private static final ResourceLocation launchControllerGui = new ResourceLocation(MarsModule.ASSET_DOMAIN, "textures/gui/launchController.png");
 
 	private TileEntityLaunchController launchController;
 

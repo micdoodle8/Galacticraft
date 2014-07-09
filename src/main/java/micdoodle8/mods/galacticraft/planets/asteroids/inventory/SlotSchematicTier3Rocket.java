@@ -5,7 +5,6 @@ import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
-import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
@@ -58,7 +57,7 @@ public class SlotSchematicTier3Rocket extends Slot
 		switch (this.index)
 		{
 		case 1:
-			return par1ItemStack.getItem() == GCItems.partNoseCone;
+			return par1ItemStack.getItem() == AsteroidsItems.heavyNoseCone;
 		case 2:
 			return par1ItemStack.getItem() == AsteroidsItems.basicItem && par1ItemStack.getItemDamage() == 0;
 		case 3:
@@ -82,17 +81,17 @@ public class SlotSchematicTier3Rocket extends Slot
 		case 12:
 			return par1ItemStack.getItem() == GCItems.rocketEngine && par1ItemStack.getItemDamage() == 1;
 		case 13:
-			return par1ItemStack.getItem() == GCItems.partFins;
+			return par1ItemStack.getItem() == AsteroidsItems.basicItem && par1ItemStack.getItemDamage() == 2;
 		case 14:
-			return par1ItemStack.getItem() == GCItems.partFins;
+			return par1ItemStack.getItem() == AsteroidsItems.basicItem && par1ItemStack.getItemDamage() == 2;
 		case 15:
-			return par1ItemStack.getItem() == GCItems.rocketEngine && par1ItemStack.getItemDamage() == 0;
+			return par1ItemStack.getItem() == AsteroidsItems.basicItem && par1ItemStack.getItemDamage() == 1;
 		case 16:
 			return par1ItemStack.getItem() == GCItems.rocketEngine && par1ItemStack.getItemDamage() == 1;
 		case 17:
-			return par1ItemStack.getItem() == GCItems.partFins;
+			return par1ItemStack.getItem() == AsteroidsItems.basicItem && par1ItemStack.getItemDamage() == 2;
 		case 18:
-			return par1ItemStack.getItem() == GCItems.partFins;
+			return par1ItemStack.getItem() == AsteroidsItems.basicItem && par1ItemStack.getItemDamage() == 2;
 		case 19:
 			return true;
 		case 20:

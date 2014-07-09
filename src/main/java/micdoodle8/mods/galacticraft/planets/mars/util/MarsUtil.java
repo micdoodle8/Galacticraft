@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.mars.util;
 
-import java.util.HashMap;
-
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerParaChest;
@@ -17,6 +15,8 @@ import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars.EnumSimplePacketMars;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+
+import java.util.HashMap;
 
 public class MarsUtil
 {

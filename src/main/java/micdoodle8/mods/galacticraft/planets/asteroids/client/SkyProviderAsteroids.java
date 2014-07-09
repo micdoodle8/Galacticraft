@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client;
 
-import java.util.Random;
-
+import cpw.mods.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
@@ -15,15 +14,14 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.IRenderHandler;
-
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.client.FMLClientHandler;
+import java.util.Random;
 
 public class SkyProviderAsteroids extends IRenderHandler
 {
 	private static final ResourceLocation overworldTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/planets/overworld.png");
-	private static final ResourceLocation galaxyTexture = new ResourceLocation(MarsModule.TEXTURE_DOMAIN, "textures/gui/planets/galaxy.png");
+	private static final ResourceLocation galaxyTexture = new ResourceLocation(MarsModule.ASSET_DOMAIN, "textures/gui/planets/galaxy.png");
 	private static final ResourceLocation sunTexture = new ResourceLocation("textures/environment/sun.png");
 
 	public int starGLCallList = GLAllocation.generateDisplayLists(3);

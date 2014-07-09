@@ -1,12 +1,12 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import java.lang.reflect.Constructor;
-
+import cpw.mods.fml.common.eventhandler.Event;
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
-import cpw.mods.fml.common.eventhandler.Event;
+
+import java.lang.reflect.Constructor;
 
 public abstract class TileEntityUniversalConductor extends TileEntityConductor
 {

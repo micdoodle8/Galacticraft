@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.api.event.wgen;
 
-import java.util.Random;
-
-import net.minecraft.world.World;
 import cpw.mods.fml.common.eventhandler.Event;
+import net.minecraft.world.World;
+
+import java.util.Random;
 
 /**
  * Event is thrown when a chunk is populated on planets.

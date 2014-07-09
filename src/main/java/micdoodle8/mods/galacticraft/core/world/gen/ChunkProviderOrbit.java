@@ -1,9 +1,5 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
@@ -17,6 +13,10 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderGenerate;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 public class ChunkProviderOrbit extends ChunkProviderGenerate
 {
@@ -64,6 +64,13 @@ public class ChunkProviderOrbit extends ChunkProviderGenerate
 		final byte[] meta = new byte[32768];
 
 		final Chunk var4 = new Chunk(this.worldObj, ids, meta, par1, par2);
+
+		final byte[] biomesArray = var4.getBiomeArray();
+		for (int i = 0; i < biomesArray.length; ++i)
+		{
+			biomesArray[i] = (byte) BiomeGenBaseOrbit.space.biomeID;
+		}
+
 
 		var4.generateSkylightMap();
 		return var4;

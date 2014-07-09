@@ -12,12 +12,11 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.BossStatus;
 import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.opengl.GL11;
 
 public class RenderCreeperBoss extends RenderLiving
 {
-	private static final ResourceLocation creeperTexture = new ResourceLocation(MarsModule.TEXTURE_DOMAIN, "textures/model/creeper.png");
+	private static final ResourceLocation creeperTexture = new ResourceLocation(MarsModule.ASSET_DOMAIN, "textures/model/creeper.png");
 	private static final ResourceLocation powerTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/power.png");
 	private final ModelBase creeperModel = new ModelCreeperBoss(2.0F);
 

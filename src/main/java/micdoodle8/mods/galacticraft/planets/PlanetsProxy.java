@@ -1,16 +1,16 @@
 package micdoodle8.mods.galacticraft.planets;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.world.World;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.relauncher.Side;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.World;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PlanetsProxy implements IGuiHandler
 {
@@ -65,7 +65,7 @@ public class PlanetsProxy implements IGuiHandler
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
 	{
-		for (IPlanetsModule module : GalacticraftPlanets.clientModules.values())
+		for (IPlanetsModuleClient module : GalacticraftPlanets.clientModules.values())
 		{
 			List<Integer> guiIDs = new ArrayList<Integer>();
 			module.getGuiIDs(guiIDs);

@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.render.entity;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.client.model.ModelBalloonParachute;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntityLandingBalloons;
@@ -8,16 +10,12 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
-
 import org.lwjgl.opengl.GL11;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class RenderLandingBalloons extends Render
 {
-	private static final ResourceLocation landerTexture = new ResourceLocation(MarsModule.TEXTURE_DOMAIN, "textures/model/landingBalloon.png");
+	private static final ResourceLocation landerTexture = new ResourceLocation(MarsModule.ASSET_DOMAIN, "textures/model/landingBalloon.png");
 
 	protected IModelCustom landerModel;
 	protected ModelBalloonParachute parachuteModel = new ModelBalloonParachute();
@@ -25,7 +23,7 @@ public class RenderLandingBalloons extends Render
 	public RenderLandingBalloons()
 	{
 		this.shadowSize = 2F;
-		this.landerModel = AdvancedModelLoader.loadModel(new ResourceLocation(MarsModule.TEXTURE_DOMAIN, "models/landingBalloon.obj"));
+		this.landerModel = AdvancedModelLoader.loadModel(new ResourceLocation(MarsModule.ASSET_DOMAIN, "models/landingBalloon.obj"));
 	}
 
 	protected ResourceLocation func_110779_a(EntityLandingBalloons par1EntityArrow)

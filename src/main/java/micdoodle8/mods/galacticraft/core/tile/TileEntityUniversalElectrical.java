@@ -1,8 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import java.lang.reflect.Constructor;
-import java.util.EnumSet;
-
+import cpw.mods.fml.common.eventhandler.Event;
 import micdoodle8.mods.galacticraft.api.power.EnergySource.EnergySourceAdjacent;
 import micdoodle8.mods.galacticraft.api.power.IEnergyHandlerGC;
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
@@ -16,7 +14,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.common.eventhandler.Event;
+
+import java.lang.reflect.Constructor;
+import java.util.EnumSet;
 
 public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //implements IElectrical, IElectricalStorage
 {
@@ -56,12 +56,12 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 		return EnumSet.noneOf(ForgeDirection.class);
 	}
 
-	public int produce()
+	public float produce()
 	{
-		return this.produce(false);
+		return this.extractEnergyGC(null, this.produce(false), false);
 	}
 
-	public int produce(boolean simulate)
+	public float produce(boolean simulate)
 	{
 		int amountProduced = 0;
 
@@ -82,8 +82,8 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 						IElectricityNetwork network = (IElectricityNetwork) ((IConductor) tileAdj).getNetwork();
 						if (network != null)
 						{
-							//TODO: Get rid of electricityPack, yuck
-							amountProduced += network.produce(this.getEnergyStoredGC() - amountProduced, true, this);
+                            float toSend = this.getEnergyStoredGC() - amountProduced;
+							amountProduced += (toSend - network.produce(toSend, true, this));
 						}
 					}
 					else if (tileAdj instanceof IEnergyHandlerGC)

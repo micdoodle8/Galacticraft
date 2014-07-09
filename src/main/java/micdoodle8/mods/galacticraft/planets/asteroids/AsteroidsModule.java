@@ -18,6 +18,7 @@ import micdoodle8.mods.galacticraft.planets.IPlanetsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.TeleportTypeAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
+import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityEntryPod;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityGrapple;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntitySmallAsteroid;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityTier3Rocket;
@@ -34,6 +35,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Configuration;
 
 import java.io.File;
 import java.util.HashMap;
@@ -74,7 +76,7 @@ public class AsteroidsModule implements IPlanetsModule
 		GalacticraftRegistry.registerTeleportType(WorldProviderAsteroids.class, new TeleportTypeAsteroids());
 
         HashMap<Integer, ItemStack> input = new HashMap<Integer, ItemStack>();
-        input.put(1, new ItemStack(GCItems.partNoseCone));
+        input.put(1, new ItemStack(AsteroidsItems.heavyNoseCone));
         input.put(2, new ItemStack(AsteroidsItems.basicItem, 1, 0));
         input.put(3, new ItemStack(AsteroidsItems.basicItem, 1, 0));
         input.put(4, new ItemStack(AsteroidsItems.basicItem, 1, 0));
@@ -86,12 +88,12 @@ public class AsteroidsModule implements IPlanetsModule
         input.put(10, new ItemStack(AsteroidsItems.basicItem, 1, 0));
         input.put(11, new ItemStack(AsteroidsItems.basicItem, 1, 0));
         input.put(12, new ItemStack(GCItems.rocketEngine, 1, 1));
-        input.put(13, new ItemStack(GCItems.partFins));
-        input.put(14, new ItemStack(GCItems.partFins));
-        input.put(15, new ItemStack(GCItems.rocketEngine));
+        input.put(13, new ItemStack(AsteroidsItems.basicItem, 1, 2));
+        input.put(14, new ItemStack(AsteroidsItems.basicItem, 1, 2));
+        input.put(15, new ItemStack(AsteroidsItems.basicItem, 1, 1));
         input.put(16, new ItemStack(GCItems.rocketEngine, 1, 1));
-        input.put(17, new ItemStack(GCItems.partFins));
-        input.put(18, new ItemStack(GCItems.partFins));
+        input.put(17, new ItemStack(AsteroidsItems.basicItem, 1, 2));
+        input.put(18, new ItemStack(AsteroidsItems.basicItem, 1, 2));
         input.put(19, null);
         input.put(20, null);
         input.put(21, null);
@@ -181,6 +183,7 @@ public class AsteroidsModule implements IPlanetsModule
 		AsteroidsUtil.registerAsteroidsNonMobEntity(EntitySmallAsteroid.class, "SmallAsteroidGC", ConfigManagerAsteroids.idEntitySmallAsteroid, 150, 1, true);
 		AsteroidsUtil.registerAsteroidsNonMobEntity(EntityGrapple.class, "GrappleHookGC", ConfigManagerAsteroids.idEntityGrappleHook, 150, 1, true);
 		AsteroidsUtil.registerAsteroidsNonMobEntity(EntityTier3Rocket.class, "Tier3RocketGC", ConfigManagerAsteroids.idEntityTier3Rocket, 150, 1, false);
+        AsteroidsUtil.registerAsteroidsNonMobEntity(EntityEntryPod.class, "EntryPodAsteroids", ConfigManagerAsteroids.idEntityEntryPod, 150, 1, true);
 	}
 
 	private void registerTileEntities()
@@ -189,4 +192,16 @@ public class AsteroidsModule implements IPlanetsModule
 		GameRegistry.registerTileEntity(TileEntityBeamReceiver.class, "Beam Receiver");
 		GameRegistry.registerTileEntity(TileEntityShortRangeTelepad.class, "Short Range Telepad");
 	}
+
+    @Override
+    public Configuration getConfiguration()
+    {
+        return ConfigManagerAsteroids.configuration;
+    }
+
+    @Override
+    public void syncConfig()
+    {
+        ConfigManagerAsteroids.syncConfig();
+    }
 }

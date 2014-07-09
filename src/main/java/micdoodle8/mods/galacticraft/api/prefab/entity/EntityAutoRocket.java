@@ -1,16 +1,16 @@
 package micdoodle8.mods.galacticraft.api.prefab.entity;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.network.ByteBufUtils;
+import cpw.mods.fml.relauncher.Side;
 import io.netty.buffer.ByteBuf;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-
 import micdoodle8.mods.galacticraft.api.entity.IDockable;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockLandingPadFull;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
@@ -34,10 +34,10 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.network.ByteBufUtils;
-import cpw.mods.fml.relauncher.Side;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * Do not include this prefab class in your released mod download.
@@ -52,7 +52,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 	private IFuelDock landingPad;
 	public boolean landing;
 	public EnumAutoLaunch autoLaunchSetting;
-	private static boolean marsLoaded = Loader.isModLoaded("GalacticraftMars");
+	private static boolean marsLoaded = Loader.isModLoaded(Constants.MOD_ID_PLANETS);
 
 	public int autoLaunchCountdown;
 	public String statusMessage;

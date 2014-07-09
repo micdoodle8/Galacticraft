@@ -1,5 +1,8 @@
 package micdoodle8.mods.galacticraft.core.client.render.tile;
 
+import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityArclamp;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -11,12 +14,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 import net.minecraftforge.client.model.obj.WavefrontObject;
-
 import org.lwjgl.opengl.GL11;
-
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class TileEntityArclampRenderer extends TileEntitySpecialRenderer
@@ -117,16 +115,14 @@ public class TileEntityArclampRenderer extends TileEntitySpecialRenderer
 		TileEntityArclampRenderer.lampBase.renderAll();
 		GL11.glRotatef(45F, -1F, 0, 0);
 		GL11.glScalef(0.048F, 0.048F, 0.048F);
-
 		TileEntityArclampRenderer.lampMetal.renderAll();
+
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TileEntityArclampRenderer.lightTexture);
 		Tessellator tessellator = Tessellator.instance;
 		tessellator.startDrawing(GL11.GL_QUADS);
 		tessellator.setColorRGBA(255, 255, 255, 255);
 		RenderHelper.enableStandardItemLighting();
-		GL11.glEnable(GL11.GL_LIGHTING);
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		((WavefrontObject) TileEntityArclampRenderer.lampLight).tessellateAll(tessellator);
 		tessellator.draw();
 

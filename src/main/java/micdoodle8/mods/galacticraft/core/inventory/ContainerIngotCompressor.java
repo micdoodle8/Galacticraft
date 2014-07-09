@@ -78,21 +78,21 @@ public class ContainerIngotCompressor extends Container
 	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
 	{
 		ItemStack var2 = null;
-		Slot var3 = (Slot) this.inventorySlots.get(par1);
+		Slot slot = (Slot) this.inventorySlots.get(par1);
 
-		if (var3 != null && var3.getHasStack())
+		if (slot != null && slot.getHasStack())
 		{
-			ItemStack var4 = var3.getStack();
+			ItemStack var4 = slot.getStack();
 			var2 = var4.copy();
 
 			if (par1 <= 10)
 			{
-				if (!this.mergeItemStack(var4, 11, 38, true))
+				if (!this.mergeItemStack(var4, 11, 47, true))
 				{
 					return null;
 				}
 
-				var3.onSlotChange(var4, var2);
+				if (par1 == 1) slot.onSlotChange(var4, var2);
 			}
 			else
 			{
@@ -110,7 +110,7 @@ public class ContainerIngotCompressor extends Container
 						return null;
 					}
 				}
-				else if (par1 >= 38 && par1 < 47 && !this.mergeItemStack(var4, 11, 38, false))
+				else if (!this.mergeItemStack(var4, 0, 9, false) && !this.mergeItemStack(var4, 11, 38, false))
 				{
 					return null;
 				}
@@ -118,11 +118,11 @@ public class ContainerIngotCompressor extends Container
 
 			if (var4.stackSize == 0)
 			{
-				var3.putStack((ItemStack) null);
+				slot.putStack((ItemStack) null);
 			}
 			else
 			{
-				var3.onSlotChanged();
+				slot.onSlotChanged();
 			}
 
 			if (var4.stackSize == var2.stackSize)
@@ -130,9 +130,17 @@ public class ContainerIngotCompressor extends Container
 				return null;
 			}
 
-			var3.onPickupFromSlot(par1EntityPlayer, var4);
+			slot.onPickupFromSlot(par1EntityPlayer, var4);
 		}
 
 		return var2;
 	}
+
+	//Can only split-drag into the crafting table slots
+	@Override
+	public boolean canDragIntoSlot(Slot par1Slot)
+    {
+        return par1Slot.slotNumber < 9;
+    }
+
 }

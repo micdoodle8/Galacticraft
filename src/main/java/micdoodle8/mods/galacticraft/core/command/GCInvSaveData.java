@@ -30,7 +30,7 @@ public class GCInvSaveData extends WorldSavedData
 					{
 						NBTTagCompound obj1 = entry.getCompoundTagAt(j);
 
-						if (obj1 instanceof NBTTagCompound)
+						if (obj1 != null)
 						{
 							int i = obj1.getByte("Slot") & 7;
 							if (i >= 6)

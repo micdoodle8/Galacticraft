@@ -15,12 +15,11 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.opengl.GL11;
 
 public class GuiTerraformer extends GuiContainer implements ICheckBoxCallback
 {
-	private static final ResourceLocation terraformerGui = new ResourceLocation(MarsModule.TEXTURE_DOMAIN, "textures/gui/terraformer.png");
+	private static final ResourceLocation terraformerGui = new ResourceLocation(MarsModule.ASSET_DOMAIN, "textures/gui/terraformer.png");
 
 	private TileEntityTerraformer terraformer;
 
@@ -131,7 +130,7 @@ public class GuiTerraformer extends GuiContainer implements ICheckBoxCallback
 			return EnumColor.RED + "Not Enough Saplings";
 		}
 
-		if (this.terraformer.terraformBubble.getSize() < this.terraformer.MAX_SIZE)
+		if (this.terraformer.terraformBubble.getSize() < this.terraformer.MAX_SIZE - 0.5)
 		{
 			return EnumColor.YELLOW + "Bubble Expanding";
 		}

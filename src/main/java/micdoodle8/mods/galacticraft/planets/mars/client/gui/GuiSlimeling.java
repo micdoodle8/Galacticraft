@@ -16,7 +16,6 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -25,7 +24,7 @@ public class GuiSlimeling extends GuiScreen
 {
 	private final int xSize;
 	private final int ySize;
-	private static final ResourceLocation slimelingPanelGui = new ResourceLocation(MarsModule.TEXTURE_DOMAIN, "textures/gui/slimelingPanel0.png");
+	private static final ResourceLocation slimelingPanelGui = new ResourceLocation(MarsModule.ASSET_DOMAIN, "textures/gui/slimelingPanel0.png");
 	private final EntitySlimeling slimeling;
 
 	public static RenderItem drawItems = new RenderItem();

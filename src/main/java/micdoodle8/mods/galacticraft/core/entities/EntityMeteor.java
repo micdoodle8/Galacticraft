@@ -1,8 +1,5 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
-import java.util.Iterator;
-import java.util.List;
-
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
@@ -11,20 +8,16 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityDamageSourceIndirect;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.StatCollector;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.Loader;
+
+import java.util.Iterator;
+import java.util.List;
 
 public class EntityMeteor extends Entity
 {
 	public EntityLiving shootingEntity;
 	public int size;
-	public boolean radarSet;
 
 	public EntityMeteor(World world)
 	{
@@ -45,24 +38,6 @@ public class EntityMeteor extends Entity
 	}
 
 	@Override
-	public void setDead()
-	{
-		super.setDead();
-
-		if (this.radarSet && Loader.isModLoaded("ICBM|Explosion"))
-		{
-			try
-			{
-				Class.forName("calclavia.api.icbm.RadarRegistry").getMethod("unregister", Entity.class).invoke(null, this);
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
-		}
-	}
-
-	@Override
 	public void onUpdate()
 	{
 		this.setRotation(this.rotationYaw + 2F, this.rotationPitch + 2F);
@@ -71,19 +46,6 @@ public class EntityMeteor extends Entity
 		this.prevPosZ = this.posZ;
 		this.motionY -= 0.03999999910593033D;
 		this.moveEntity(this.motionX, this.motionY, this.motionZ);
-
-		if (!this.radarSet && this.posY <= 100 && Loader.isModLoaded("ICBM|Explosion"))
-		{
-			try
-			{
-				Class.forName("calclavia.api.icbm.RadarRegistry").getMethod("register", Entity.class).invoke(null, this);
-				this.radarSet = true;
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
-		}
 
 		if (this.worldObj.isRemote)
 		{

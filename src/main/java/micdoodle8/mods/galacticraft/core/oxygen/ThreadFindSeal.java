@@ -1,13 +1,6 @@
 package micdoodle8.mods.galacticraft.core.oxygen;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-
+import cpw.mods.fml.common.FMLLog;
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.blocks.BlockUnlitTorch;
@@ -16,24 +9,15 @@ import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenSealer;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.wrappers.ScheduledBlockChange;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockAir;
-import net.minecraft.block.BlockEnchantmentTable;
-import net.minecraft.block.BlockFarmland;
-import net.minecraft.block.BlockGlass;
-import net.minecraft.block.BlockGravel;
-import net.minecraft.block.BlockLeavesBase;
-import net.minecraft.block.BlockLiquid;
-import net.minecraft.block.BlockPistonBase;
-import net.minecraft.block.BlockSlab;
-import net.minecraft.block.BlockSponge;
-import net.minecraft.block.BlockStainedGlass;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.common.FMLLog;
+
+import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ThreadFindSeal
 {
@@ -69,6 +53,7 @@ public class ThreadFindSeal
 		this.checkCount = checkCount;
 		this.sealers = sealers;
 		this.checked = new HashSet<BlockVec3>();
+		this.torchesToUpdate = new LinkedList<BlockVec3>();
 
 		this.sealersAround = new HashMap<BlockVec3, TileEntityOxygenSealer>();
 		for (TileEntity tile : new ArrayList<TileEntity>(world.loadedTileEntityList))
@@ -146,7 +131,7 @@ public class ThreadFindSeal
 		this.currentLayer = new LinkedList<BlockVec3>();
 		this.airToReplace = new LinkedList<BlockVec3>();
 		this.airToReplaceBright = new LinkedList<BlockVec3>();
-		this.torchesToUpdate = new LinkedList<BlockVec3>();
+
 		if (this.checkCount > 0)
 		{
 			this.currentLayer.add(this.head);
