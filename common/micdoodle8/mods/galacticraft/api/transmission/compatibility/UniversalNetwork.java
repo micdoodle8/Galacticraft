@@ -244,7 +244,7 @@ public class UniversalNetwork extends ElectricityNetwork
 					}
 					else if (isIC2Loaded && acceptor instanceof IEnergySink)
 					{
-						e = (float) Math.min(((IEnergySink) acceptor).demandedEnergyUnits(), ((IEnergySink)acceptor).getMaxSafeInput()) * NetworkConfigHandler.IC2_RATIO;
+						e = NetworkConfigHandler.IC2_RATIO * (float) ((IEnergySink) acceptor).demandedEnergyUnits(); //Math.min( , ((IEnergySink)acceptor).getMaxSafeInput());
 					}
 					else if (isBCLoaded && acceptor instanceof IPowerReceptor)
 					{
@@ -348,7 +348,7 @@ public class UniversalNetwork extends ElectricityNetwork
 				else if (isIC2Loaded && tileEntity instanceof IEnergySink)
 				{
 					IEnergySink electricalTile = (IEnergySink) tileEntity;
-					double toSendIC2 = Math.min(currentSending * NetworkConfigHandler.TO_IC2_RATIO, electricalTile.getMaxSafeInput());
+					double toSendIC2 = currentSending * NetworkConfigHandler.TO_IC2_RATIO; //Math.min( , electricalTile.getMaxSafeInput());
 					toSendIC2 = Math.min(toSendIC2, electricalTile.demandedEnergyUnits());
 					sentToAcceptor = (float) (toSendIC2 - electricalTile.injectEnergyUnits(sideFrom, toSendIC2)) * NetworkConfigHandler.IC2_RATIO;
 				}
