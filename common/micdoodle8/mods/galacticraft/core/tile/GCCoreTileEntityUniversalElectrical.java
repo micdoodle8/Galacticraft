@@ -355,14 +355,13 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 			{
 				PowerHandler handler = (PowerHandler) this.bcPowerHandler;
 
-				if (handler.getEnergyStored() > 0)
+				float energyBC = handler.getEnergyStored();
+				if (energyBC > 0)
 				{
-					/**
-					 * Cheat BuildCraft powerHandler and always empty energy
-					 * inside of it.
-					 */
-					this.receiveElectricity(handler.getEnergyStored() * NetworkConfigHandler.BC3_RATIO, true);
-					handler.setEnergy(0);
+					float usedBC = this.receiveElectricity(energyBC * NetworkConfigHandler.BC3_RATIO, true) * NetworkConfigHandler.TO_BC_RATIO;
+					energyBC -= usedBC;
+					if (energyBC < 0) energyBC = 0;
+					handler.setEnergy(energyBC);
 				}
 			}
 		}
@@ -397,7 +396,8 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 
 						if (receiver != null)
 						{
-							if (receiver.powerRequest() > 0)
+							float pr = receiver.powerRequest(); 
+							if (pr > 0)
 							{
 								float bc3Provide = provide * NetworkConfigHandler.TO_BC_RATIO;
 								float energyUsed = Math.min(receiver.receiveEnergy(Type.MACHINE, bc3Provide, outputDirection.getOpposite()), bc3Provide);
@@ -570,7 +570,8 @@ public abstract class GCCoreTileEntityUniversalElectrical extends GCCoreTileEnti
 			this.bcPowerHandler = new PowerHandler((IPowerReceptor) this, Type.MACHINE);
 		}
 
-		((PowerHandler) this.bcPowerHandler).configure(0, this.maxInputEnergy, 0, (int) Math.ceil(this.getMaxEnergyStored() * NetworkConfigHandler.BC3_RATIO));
+		((PowerHandler) this.bcPowerHandler).configure(0, this.maxInputEnergy, 0, (int) Math.ceil(this.getMaxEnergyStored() * NetworkConfigHandler.TO_BC_RATIO));
+		((PowerHandler) this.bcPowerHandler).configurePowerPerdition(1, 10);
 	}
 
 	@RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "BuildCraft|Energy")
