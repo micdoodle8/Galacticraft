@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
+import micdoodle8.mods.galacticraft.api.transmission.EnergyHelper;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementCheckbox;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementCheckbox.ICheckBoxCallback;
@@ -133,7 +134,8 @@ public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCal
 
 			List<String> electricityDesc = new ArrayList<String>();
 			electricityDesc.add(GCCoreUtil.translate("gui.energyStorage.desc.0"));
-			electricityDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.energyStorage.desc.1") + ((int) Math.floor(this.distributor.getEnergyStoredGC()) + " / " + (int) Math.floor(this.distributor.getMaxEnergyStoredGC())));
+            EnergyHelper.getEnergyDisplayTooltip(this.distributor.getEnergyStoredGC(), this.distributor.getMaxEnergyStoredGC(), electricityDesc);
+//			electricityDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.energyStorage.desc.1") + ((int) Math.floor(this.distributor.getEnergyStoredGC()) + " / " + (int) Math.floor(this.distributor.getMaxEnergyStoredGC())));
 			this.electricInfoRegion.tooltipStrings = electricityDesc;
 
 			this.checkboxRenderBubble.isSelected = this.distributor.oxygenBubble.shouldRender();

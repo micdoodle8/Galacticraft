@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
-import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay;
-import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay.ElectricUnit;
+import micdoodle8.mods.galacticraft.api.transmission.EnergyHelper;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerSolar;
@@ -81,7 +80,7 @@ public class GuiSolar extends GuiContainerGC
 		this.fontRendererObj.drawString(displayString, this.xSize / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, 7, 4210752);
 		displayString = GCCoreUtil.translate("gui.message.status.name") + ": " + this.getStatus();
 		this.fontRendererObj.drawString(displayString, this.xSize / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, 45 + 23 - 46 + offsetY, 4210752);
-		displayString = GCCoreUtil.translate("gui.message.generating.name") + ": " + (this.solarPanel.generateWatts > 0 ? ElectricityDisplay.getDisplay(this.solarPanel.generateWatts * 20.0F, ElectricUnit.WATT) : "Not Generating");
+		displayString = GCCoreUtil.translate("gui.message.generating.name") + ": " + (this.solarPanel.generateWatts > 0 ? EnergyHelper.getEnergyDisplayS(this.solarPanel.generateWatts) + "gJ/t" : "Not Generating");
 		this.fontRendererObj.drawString(displayString, this.xSize / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, 34 + 23 - 46 + offsetY, 4210752);
 		float boost = Math.round((this.solarPanel.getSolarBoost() - 1) * 1000) / 10.0F;
 		displayString = GCCoreUtil.translate("gui.message.environment.name") + ": " + boost + "%";

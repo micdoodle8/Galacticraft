@@ -28,15 +28,15 @@ public class GuiElementInfoRegion extends Gui
 	public int parentWidth;
 	public int parentHeight;
 
-	public GuiElementInfoRegion(int par2, int par3, int par4, int par5, List<String> tooltipStrings, int parentWidth, int parentHeight)
+	public GuiElementInfoRegion(int xPos, int yPos, int width, int height, List<String> tooltipStrings, int parentWidth, int parentHeight)
 	{
 		this.width = 200;
 		this.height = 20;
 		this.enabled = true;
-		this.xPosition = par2;
-		this.yPosition = par3;
-		this.width = par4;
-		this.height = par5;
+		this.xPosition = xPos;
+		this.yPosition = yPos;
+		this.width = width;
+		this.height = height;
 		this.tooltipStrings = tooltipStrings;
 		this.parentWidth = parentWidth;
 		this.parentHeight = parentHeight;
@@ -60,6 +60,11 @@ public class GuiElementInfoRegion extends Gui
 
 	public void drawRegion(int par2, int par3)
 	{
+        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+        RenderHelper.disableStandardItemLighting();
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
+
 		this.withinRegion = par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height;
 
 		if (this.drawRegion)
@@ -71,10 +76,6 @@ public class GuiElementInfoRegion extends Gui
 
 		if (this.tooltipStrings != null && !this.tooltipStrings.isEmpty() && this.withinRegion)
 		{
-			GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-			RenderHelper.disableStandardItemLighting();
-			GL11.glDisable(GL11.GL_LIGHTING);
-			GL11.glDisable(GL11.GL_DEPTH_TEST);
 			int k = 0;
 			Iterator<String> iterator = this.tooltipStrings.iterator();
 
@@ -133,10 +134,11 @@ public class GuiElementInfoRegion extends Gui
 
 			this.zLevel = 0.0F;
 			GuiElementInfoRegion.itemRenderer.zLevel = 0.0F;
-			GL11.glEnable(GL11.GL_LIGHTING);
-			GL11.glEnable(GL11.GL_DEPTH_TEST);
-			RenderHelper.enableStandardItemLighting();
-			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		}
+
+        GL11.glEnable(GL11.GL_LIGHTING);
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        RenderHelper.enableStandardItemLighting();
+        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 	}
 }

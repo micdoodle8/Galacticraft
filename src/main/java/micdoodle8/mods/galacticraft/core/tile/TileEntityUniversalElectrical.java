@@ -82,8 +82,12 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 						IElectricityNetwork network = (IElectricityNetwork) ((IConductor) tileAdj).getNetwork();
 						if (network != null)
 						{
-                            float toSend = this.getEnergyStoredGC() - amountProduced;
-							amountProduced += (toSend - network.produce(toSend, true, this));
+                            float toSend = this.extractEnergyGC(null, this.getEnergyStoredGC() - amountProduced, true);
+
+                            if (toSend > 0)
+                            {
+                                amountProduced += (toSend - network.produce(toSend, true, this));
+                            }
 						}
 					}
 					else if (tileAdj instanceof IEnergyHandlerGC)

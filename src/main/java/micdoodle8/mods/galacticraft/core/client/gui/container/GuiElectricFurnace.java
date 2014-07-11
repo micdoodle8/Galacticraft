@@ -2,19 +2,25 @@ package micdoodle8.mods.galacticraft.core.client.gui.container;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.api.transmission.EnergyHelper;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerElectricFurnace;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricFurnace;
+import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @SideOnly(Side.CLIENT)
-public class GuiElectricFurnace extends GuiContainer
+public class GuiElectricFurnace extends GuiContainerGC
 {
 	private static final ResourceLocation electricFurnaceTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/electric_furnace.png");
+    private GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion(0, 0, 56, 9, null, 0, 0);
 
 	private TileEntityElectricFurnace tileEntity;
 
@@ -24,7 +30,29 @@ public class GuiElectricFurnace extends GuiContainer
 		this.tileEntity = tileEntity;
 	}
 
-	/**
+    @Override
+    public void initGui()
+    {
+        super.initGui();
+        this.electricInfoRegion.tooltipStrings = new ArrayList<String>();
+        this.electricInfoRegion.xPosition = (this.width - this.xSize) / 2 + 39;
+        this.electricInfoRegion.yPosition = (this.height - this.ySize) / 2 + 52;
+        this.electricInfoRegion.parentWidth = this.width;
+        this.electricInfoRegion.parentHeight = this.height;
+        this.infoRegions.add(this.electricInfoRegion);
+        List<String> batterySlotDesc = new ArrayList<String>();
+        batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.0"));
+        batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.1"));
+        this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 7, (this.height - this.ySize) / 2 + 48, 18, 18, batterySlotDesc, this.width, this.height));
+        batterySlotDesc = new ArrayList<String>();
+        batterySlotDesc.add(GCCoreUtil.translate("gui.electricFurnace.desc.0"));
+        this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 55, (this.height - this.ySize) / 2 + 24, 18, 18, batterySlotDesc, this.width, this.height));
+        batterySlotDesc = new ArrayList<String>();
+        batterySlotDesc.add(GCCoreUtil.translate("gui.electricFurnace.desc.1"));
+        this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 108, (this.height - this.ySize) / 2 + 24, 18, 18, batterySlotDesc, this.width, this.height));
+    }
+
+    /**
 	 * Draw the foreground layer for the GuiContainer (everything in front of
 	 * the items)
 	 */
@@ -43,9 +71,9 @@ public class GuiElectricFurnace extends GuiContainer
 			displayText = GCCoreUtil.translate("gui.status.idle.name");
 		}
 
-		this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.status.name") + ": " + displayText, 97, 45, 4210752);
-		this.fontRendererObj.drawString("" + this.tileEntity.storage.getMaxExtract(), 97, 56, 4210752);
-		//		this.fontRendererObj.drawString("Voltage: " + (int) (this.tileEntity.getVoltage() * 1000.0F), 97, 68, 4210752);
+		this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.status.name") + ": " + displayText, 100, 52, 4210752);
+//		this.fontRendererObj.drawString("" + this.tileEntity.storage.getMaxExtract(), 97, 56, 4210752);
+//		this.fontRendererObj.drawString("Voltage: " + (int) (this.tileEntity.getVoltage() * 1000.0F), 97, 68, 4210752);
 		this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 
@@ -63,6 +91,11 @@ public class GuiElectricFurnace extends GuiContainer
         int containerHeight = (this.height - this.ySize) / 2;
 		this.drawTexturedModalRect(containerWidth, containerHeight, 0, 0, this.xSize, this.ySize);
 		int scale;
+
+        List<String> electricityDesc = new ArrayList<String>();
+        electricityDesc.add(GCCoreUtil.translate("gui.energyStorage.desc.0"));
+        EnergyHelper.getEnergyDisplayTooltip(this.tileEntity.getEnergyStoredGC(), this.tileEntity.getMaxEnergyStoredGC(), electricityDesc);
+        this.electricInfoRegion.tooltipStrings = electricityDesc;
 
 		if (this.tileEntity.processTicks > 0)
 		{

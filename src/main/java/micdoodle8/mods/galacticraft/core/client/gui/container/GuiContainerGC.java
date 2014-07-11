@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Container;
+import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ public abstract class GuiContainerGC extends GuiContainer
 	{
 		super.drawScreen(par1, par2, par3);
 
-		for (int k = 0; k < this.infoRegions.size(); ++k)
+        for (int k = 0; k < this.infoRegions.size(); ++k)
 		{
 			GuiElementInfoRegion guibutton = this.infoRegions.get(k);
 			guibutton.drawRegion(par1, par2);

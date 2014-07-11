@@ -1,11 +1,14 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.gui;
 
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket.EnumAutoLaunch;
+import micdoodle8.mods.galacticraft.api.transmission.EnergyHelper;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.gui.container.GuiContainerGC;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementCheckbox;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementCheckbox.ICheckBoxCallback;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementDropdown;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementDropdown.IDropboxCallback;
+import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementTextBox;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementTextBox.ITextBoxCallback;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
@@ -18,14 +21,19 @@ import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars.EnumSimplePacketMars;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityLaunchController;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.GuiLabel;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
-public class GuiLaunchController extends GuiContainer implements IDropboxCallback, ITextBoxCallback, ICheckBoxCallback
+import java.util.ArrayList;
+import java.util.List;
+
+public class GuiLaunchController extends GuiContainerGC implements IDropboxCallback, ITextBoxCallback, ICheckBoxCallback
 {
 	private static final ResourceLocation launchControllerGui = new ResourceLocation(MarsModule.ASSET_DOMAIN, "textures/gui/launchController.png");
 
@@ -37,6 +45,8 @@ public class GuiLaunchController extends GuiContainer implements IDropboxCallbac
 	private GuiElementDropdown dropdownTest;
 	private GuiElementTextBox frequency;
 	private GuiElementTextBox destinationFrequency;
+    private GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion(0, 0, 52, 9, null, 0, 0);
+    private GuiElementInfoRegion waterTankInfoRegion = new GuiElementInfoRegion(0, 0, 41, 28, null, 0, 0);
 
 	private int cannotEditTimer;
 
@@ -62,12 +72,45 @@ public class GuiLaunchController extends GuiContainer implements IDropboxCallbac
 		}
 
 		this.enableControllerButton.displayString = this.launchController.getDisabled(0) ? "Enable" : "Disable";
+        // Hacky way of rendering buttons properly, possibly bugs here:
+        List buttonList = new ArrayList(this.buttonList);
+        List labelList = new ArrayList(this.labelList);
+        List<GuiElementInfoRegion> infoRegions = new ArrayList(this.infoRegions);
+        this.buttonList.clear();
+        this.labelList.clear();
+        this.infoRegions.clear();
 		super.drawScreen(par1, par2, par3);
 
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GL11.glColor3f(1, 1, 1);
-		this.dropdownTest.drawButton(this.mc, par1, par2);
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+        RenderHelper.disableStandardItemLighting();
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
+
+        int k;
+        for (k = 0; k < buttonList.size(); ++k)
+        {
+            ((GuiButton)buttonList.get(k)).drawButton(this.mc, par1, par2);
+        }
+
+        for (k = 0; k < labelList.size(); ++k)
+        {
+            ((GuiLabel)labelList.get(k)).func_146159_a(this.mc, par1, par2);
+        }
+
+        for (k = 0; k < infoRegions.size(); ++k)
+        {
+            infoRegions.get(k).drawRegion(par1, par2);
+        }
+
+        this.buttonList = buttonList;
+        this.labelList = labelList;
+        this.infoRegions = infoRegions;
+
+//		GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glEnable(GL11.GL_LIGHTING);
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        RenderHelper.enableStandardItemLighting();
 	}
 
 	@Override
@@ -126,6 +169,28 @@ public class GuiLaunchController extends GuiContainer implements IDropboxCallbac
 		this.buttonList.add(this.dropdownTest);
 		this.buttonList.add(this.frequency);
 		this.buttonList.add(this.destinationFrequency);
+        this.electricInfoRegion.tooltipStrings = new ArrayList<String>();
+        this.electricInfoRegion.xPosition = (this.width - this.xSize) / 2 + 98;
+        this.electricInfoRegion.yPosition = (this.height - this.ySize) / 2 + 113;
+        this.electricInfoRegion.parentWidth = this.width;
+        this.electricInfoRegion.parentHeight = this.height;
+        this.infoRegions.add(this.electricInfoRegion);
+        List<String> batterySlotDesc = new ArrayList<String>();
+        batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.0"));
+        batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.1"));
+        this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 151, (this.height - this.ySize) / 2 + 104, 18, 18, batterySlotDesc, this.width, this.height));
+        batterySlotDesc = new ArrayList<String>();
+        batterySlotDesc.add(GCCoreUtil.translate("gui.launchController.desc.0"));
+        this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 5, (this.height - this.ySize) / 2 + 20, 59, 13, batterySlotDesc, this.width, this.height));
+        batterySlotDesc = new ArrayList<String>();
+        batterySlotDesc.add(GCCoreUtil.translate("gui.launchController.desc.1"));
+        this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 5, (this.height - this.ySize) / 2 + 42, 117, 13, batterySlotDesc, this.width, this.height));
+        batterySlotDesc = new ArrayList<String>();
+        batterySlotDesc.add(GCCoreUtil.translate("gui.launchController.desc.2"));
+        this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 10, (this.height - this.ySize) / 2 + 59, 78, 13, batterySlotDesc, this.width, this.height));
+        batterySlotDesc = new ArrayList<String>();
+        batterySlotDesc.add(GCCoreUtil.translate("gui.launchController.desc.3"));
+        this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 10, (this.height - this.ySize) / 2 + 77, 82, 13, batterySlotDesc, this.width, this.height));
 	}
 
 	@Override
@@ -207,6 +272,11 @@ public class GuiLaunchController extends GuiContainer implements IDropboxCallbac
 		final int var5 = (this.width - this.xSize) / 2;
 		final int var6 = (this.height - this.ySize) / 2;
 		this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);
+
+        List<String> electricityDesc = new ArrayList<String>();
+        electricityDesc.add(GCCoreUtil.translate("gui.energyStorage.desc.0"));
+        EnergyHelper.getEnergyDisplayTooltip(this.launchController.getEnergyStoredGC(), this.launchController.getMaxEnergyStoredGC(), electricityDesc);
+        this.electricInfoRegion.tooltipStrings = electricityDesc;
 
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 

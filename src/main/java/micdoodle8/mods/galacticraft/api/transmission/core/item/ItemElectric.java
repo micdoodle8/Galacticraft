@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.api.transmission.core.item;
 
-import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay;
-import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay.ElectricUnit;
+import micdoodle8.mods.galacticraft.api.transmission.EnergyHelper;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -44,7 +43,7 @@ public abstract class ItemElectric extends Item implements IItemElectric
 			color = "\u00a76";
 		}
 
-		list.add(color + ElectricityDisplay.getDisplayShort(joules, ElectricUnit.JOULES) + "/" + ElectricityDisplay.getDisplayShort(this.getMaxElectricityStored(itemStack), ElectricUnit.JOULES));
+		list.add(color + EnergyHelper.getEnergyDisplayS(joules) + "/" + EnergyHelper.getEnergyDisplayS(this.getMaxElectricityStored(itemStack)));
 	}
 
 	/**

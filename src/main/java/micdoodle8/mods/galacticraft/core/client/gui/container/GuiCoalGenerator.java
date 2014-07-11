@@ -2,8 +2,7 @@ package micdoodle8.mods.galacticraft.core.client.gui.container;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay;
-import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay.ElectricUnit;
+import micdoodle8.mods.galacticraft.api.transmission.EnergyHelper;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerCoalGenerator;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCoalGenerator;
@@ -47,7 +46,7 @@ public class GuiCoalGenerator extends GuiContainer
 		}
 		else
 		{
-			displayText = ElectricityDisplay.getDisplay(this.tileEntity.generateWatts * 20, ElectricUnit.WATT);
+			displayText = EnergyHelper.getEnergyDisplayS(this.tileEntity.generateWatts) + "gJ/t";
 		}
 
 		this.fontRendererObj.drawString(displayText, 122 - this.fontRendererObj.getStringWidth(displayText) / 2, 45, 4210752);

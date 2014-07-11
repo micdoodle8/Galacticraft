@@ -1,8 +1,11 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.gui;
 
+import micdoodle8.mods.galacticraft.api.transmission.EnergyHelper;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.gui.container.GuiContainerGC;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementCheckbox;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementCheckbox.ICheckBoxCallback;
+import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
@@ -11,21 +14,23 @@ import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerTerraformer;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityTerraformer;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
-public class GuiTerraformer extends GuiContainer implements ICheckBoxCallback
+import java.util.ArrayList;
+import java.util.List;
+
+public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
 {
 	private static final ResourceLocation terraformerGui = new ResourceLocation(MarsModule.ASSET_DOMAIN, "textures/gui/terraformer.png");
-
 	private TileEntityTerraformer terraformer;
-
 	private GuiButton enableTreesButton;
 	private GuiButton enableGrassButton;
 	private GuiElementCheckbox checkboxRenderBubble;
+    private GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion(0, 0, 52, 9, null, 0, 0);
+    private GuiElementInfoRegion waterTankInfoRegion = new GuiElementInfoRegion(0, 0, 41, 28, null, 0, 0);
 
 	public GuiTerraformer(InventoryPlayer par1InventoryPlayer, TileEntityTerraformer terraformer)
 	{
@@ -59,6 +64,25 @@ public class GuiTerraformer extends GuiContainer implements ICheckBoxCallback
 	public void initGui()
 	{
 		super.initGui();
+        this.electricInfoRegion.tooltipStrings = new ArrayList<String>();
+        this.electricInfoRegion.xPosition = (this.width - this.xSize) / 2 + 44;
+        this.electricInfoRegion.yPosition = (this.height - this.ySize) / 2 + 47;
+        this.electricInfoRegion.parentWidth = this.width;
+        this.electricInfoRegion.parentHeight = this.height;
+        this.infoRegions.add(this.electricInfoRegion);
+        List<String> batterySlotDesc = new ArrayList<String>();
+        batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.0"));
+        batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.1"));
+        this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 24, (this.height - this.ySize) / 2 + 38, 18, 18, batterySlotDesc, this.width, this.height));
+        batterySlotDesc = new ArrayList<String>();
+        batterySlotDesc.add(GCCoreUtil.translate("gui.showBubble.desc.0"));
+        this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 85, (this.height - this.ySize) / 2 + 132, 85, 13, batterySlotDesc, this.width, this.height));
+        this.waterTankInfoRegion.tooltipStrings = new ArrayList<String>();
+        this.waterTankInfoRegion.xPosition = (this.width - this.xSize) / 2 + 55;
+        this.waterTankInfoRegion.yPosition = (this.height - this.ySize) / 2 + 17;
+        this.waterTankInfoRegion.parentWidth = this.width;
+        this.waterTankInfoRegion.parentHeight = this.height;
+        this.infoRegions.add(this.waterTankInfoRegion);
 		this.buttonList.clear();
 		final int var5 = (this.width - this.xSize) / 2;
 		final int var6 = (this.height - this.ySize) / 2;
@@ -66,7 +90,7 @@ public class GuiTerraformer extends GuiContainer implements ICheckBoxCallback
 		this.enableGrassButton = new GuiButton(1, var5 + 98, var6 + 109, 72, 20, "Enable Grass");
 		this.buttonList.add(this.enableTreesButton);
 		this.buttonList.add(this.enableGrassButton);
-		this.checkboxRenderBubble = new GuiElementCheckbox(0, this, var5 + 85, var6 + 132, "Bubble Visible");
+		this.checkboxRenderBubble = new GuiElementCheckbox(0 /* TODO Fix ID (should be 2) in a separate commit */, this, var5 + 85, var6 + 132, "Bubble Visible");
 		this.buttonList.add(this.checkboxRenderBubble);
 	}
 
@@ -83,6 +107,8 @@ public class GuiTerraformer extends GuiContainer implements ICheckBoxCallback
 			case 1:
 				GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, new Object[] { this.terraformer.xCoord, this.terraformer.yCoord, this.terraformer.zCoord, 1 }));
 				break;
+            case 2:
+                break;
 			}
 		}
 	}
@@ -160,8 +186,19 @@ public class GuiTerraformer extends GuiContainer implements ICheckBoxCallback
 		int scale = this.terraformer.getScaledElecticalLevel(54);
 		this.drawTexturedModalRect(var5 + 45, var6 + 48, 176, 26, Math.min(scale, 54), 7);
 
-		int fuelLevel = this.terraformer.getScaledWaterLevel(26);
-		this.drawTexturedModalRect((this.width - this.xSize) / 2 + 56, (this.height - this.ySize) / 2 + 17 + 27 - fuelLevel, 176, 26 - fuelLevel, 39, fuelLevel);
+        List<String> electricityDesc = new ArrayList<String>();
+        electricityDesc.add(GCCoreUtil.translate("gui.energyStorage.desc.0"));
+        EnergyHelper.getEnergyDisplayTooltip(this.terraformer.getEnergyStoredGC(), this.terraformer.getMaxEnergyStoredGC(), electricityDesc);
+        this.electricInfoRegion.tooltipStrings = electricityDesc;
+
+		int waterLevel = this.terraformer.getScaledWaterLevel(100);
+        List<String> processDesc = new ArrayList<String>();
+        processDesc.clear();
+        processDesc.add(GCCoreUtil.translate("gui.terraformer.desc.0") + ": " + waterLevel + "%");
+        this.waterTankInfoRegion.tooltipStrings = processDesc;
+
+        waterLevel = this.terraformer.getScaledWaterLevel(26);
+		this.drawTexturedModalRect((this.width - this.xSize) / 2 + 56, (this.height - this.ySize) / 2 + 17 + 27 - waterLevel, 176, 26 - waterLevel, 39, waterLevel);
 		this.checkboxRenderBubble.isSelected = this.terraformer.getBubble().shouldRender();
 	}
 
