@@ -18,45 +18,44 @@ public class NetworkConfigHandler
 	private static Configuration config;
 
 	/**
-	 * Ratio of Build craft(MJ) power to UE power(Kw). Multiply BC3 power by
-	 * this to convert to UE
+	 * Ratio of Build craft(MJ) energy to Galacticraft energy(kJ).
+	 * Multiply BC3 energy by this to convert to kJ.
 	 */
 	public static float BC3_RATIO = 0.39F;
 
 	/**
-	 * Ratio of Redstone Flux power to UE power(Kw). Multiply TE power by this
-	 * to convert to UE
+	 * Ratio of RF energy to Galacticraft energy(kJ).
+	 * Multiply TE energy by this to convert to kJ.
 	 */
-	public static float TE_RATIO = NetworkConfigHandler.BC3_RATIO;
+	public static float TE_RATIO = NetworkConfigHandler.BC3_RATIO / 10F;
 
 	/**
-	 * Ratio of Industrial craft(EU) power to UE power(Kw). Multiply IC2 power
-	 * by this to convert to UE
+	 * Ratio of IC2 energy (EU) to Galacticraft energy(kJ).
+	 * Multiply IC2 power by this to convert to kJ.
 	 */
 	public static float IC2_RATIO = 0.16F;
 
 	public static float MEKANISM_RATIO = 0.0016F;
 
 	/**
-	 * Ratio of UE power(Kw) to Build craft(MJ) power. Multiply UE power by this
-	 * to convert it to BC3 power
+	 * Convert kJ back to Buildcraft MJ
 	 */
 	public static float TO_BC_RATIO = 1 / NetworkConfigHandler.BC3_RATIO;
 
 	/**
-	 * Ratio of UE power(Kw) to Redstone Flux power. Multiply UE power by this
-	 * to convert it to TE power
+	 * Convert kJ back to TE3 RF
 	 */
 	public static float TO_TE_RATIO = 1 / NetworkConfigHandler.TE_RATIO;
 
 	/**
-	 * Ratio of UE power(KW) to Industrial craft(EU) power. Multiply UE power by
-	 * this to convert it to IC2 power
+	 * Convert kJ back to IC2 EU
 	 */
 	public static float TO_IC2_RATIO = 1 / NetworkConfigHandler.IC2_RATIO;
 
 	public static float TO_MEKANISM_RATIO = 1 / NetworkConfigHandler.MEKANISM_RATIO;
 
+	public static boolean ALLOW_UNSAFE_IC2 = false;
+	
 	/**
 	 * Oxygen gas used when Mekanism is loaded. Always null otherwise.
 	 */
@@ -75,6 +74,7 @@ public class NetworkConfigHandler
 		NetworkConfigHandler.TE_RATIO = (float) NetworkConfigHandler.config.get("Compatiblity", "Thermal Expansion Conversion Ratio", NetworkConfigHandler.TE_RATIO).getDouble(NetworkConfigHandler.TE_RATIO);
 		NetworkConfigHandler.BC3_RATIO = (float) NetworkConfigHandler.config.get("Compatiblity", "BuildCraft Conversion Ratio", NetworkConfigHandler.BC3_RATIO).getDouble(NetworkConfigHandler.BC3_RATIO);
 		NetworkConfigHandler.MEKANISM_RATIO = (float) NetworkConfigHandler.config.get("Compatiblity", "Mekanism Conversion Ratio", NetworkConfigHandler.MEKANISM_RATIO).getDouble(NetworkConfigHandler.MEKANISM_RATIO);
+		NetworkConfigHandler.ALLOW_UNSAFE_IC2 = NetworkConfigHandler.config.get("Compatiblity", "IC2 machines can be given more than a safe amount of energy from aluminium wire? [caution: if true, they may explode]", false).getBoolean(false);
 		NetworkConfigHandler.TO_IC2_RATIO = 1 / NetworkConfigHandler.IC2_RATIO;
 		NetworkConfigHandler.TO_BC_RATIO = 1 / NetworkConfigHandler.BC3_RATIO;
 		NetworkConfigHandler.TO_TE_RATIO = 1 / NetworkConfigHandler.TE_RATIO;
