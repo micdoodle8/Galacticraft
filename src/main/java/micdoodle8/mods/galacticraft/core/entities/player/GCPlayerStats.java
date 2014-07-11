@@ -298,5 +298,8 @@ public class GCPlayerStats implements IExtendedEntityProperties
 		}
 
 		this.spaceStationDimensionID = oldData.spaceStationDimensionID;
+		this.unlockedSchematics = oldData.unlockedSchematics;
+		this.receivedSoundWarning = oldData.receivedSoundWarning;
+		this.spaceRaceInviteTeamID = oldData.spaceRaceInviteTeamID;
 	}
 }
