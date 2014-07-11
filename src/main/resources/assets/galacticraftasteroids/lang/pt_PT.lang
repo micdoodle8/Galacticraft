@@ -1,0 +1,28 @@
+# Galacticraft Asteroids Language File = PORTUGAL PORTUGUESE
+
+# GENERAL ITEMS
+item.itemTier3Rocket.t3Rocket.name=Foguetão - Nível 3
+
+# TOOLS
+
+# ARMOR
+
+# BLOCKS
+tile.asteroidsBlock.asteroids1.name=Rocha de Asteroide
+tile.beamReflector.name=Refletor de Feixe
+tile.beamReceiver.name=Receptor de Feixe
+tile.telepadShort.name=Telepad de Curto Alcance
+
+# GUI
+planet.asteroids=Asteróides
+
+itemGroup.GalacticraftAsteroids=Galacticraft - Asteroides
+
+# Schematics
+
+# Entity
+entity.SmallAsteroidGC.name=Asteroides Menores
+entity.GrappleHookGC.name=Gancho de Ancoragem
+entity.Tier3RocketGC.name=Foguetão - Nível 3
+
+# Container
