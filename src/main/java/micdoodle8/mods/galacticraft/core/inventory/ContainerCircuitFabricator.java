@@ -1,6 +1,9 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
+import java.util.ArrayList;
+
 import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.api.recipe.CircuitFabricatorRecipes;
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCircuitFabricator;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,22 +25,26 @@ public class ContainerCircuitFabricator extends Container
 	{
 		this.tileEntity = tileEntity;
 
-		// Coal slot
+		// Energy slot
 		this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 6, 69, IItemElectric.class));
 
 		// Diamond
-		this.addSlotToContainer(new SlotSpecific(tileEntity, 1, 15, 17, new ItemStack(Items.diamond, 1, 0)));
+		ArrayList<ItemStack> slotContentsList = CircuitFabricatorRecipes.slotValidItems.get(0);
+		this.addSlotToContainer(new SlotSpecific(tileEntity, 1, 15, 17, slotContentsList.toArray(new ItemStack[slotContentsList.size()])));
 
 		// Silicon
-		this.addSlotToContainer(new SlotSpecific(tileEntity, 2, 74, 46, new ItemStack(GCItems.basicItem, 1, 2)));
-		this.addSlotToContainer(new SlotSpecific(tileEntity, 3, 74, 64, new ItemStack(GCItems.basicItem, 1, 2)));
+		slotContentsList = CircuitFabricatorRecipes.slotValidItems.get(1);
+		this.addSlotToContainer(new SlotSpecific(tileEntity, 2, 74, 46, slotContentsList.toArray(new ItemStack[slotContentsList.size()])));
+		slotContentsList = CircuitFabricatorRecipes.slotValidItems.get(2);
+		this.addSlotToContainer(new SlotSpecific(tileEntity, 3, 74, 64, slotContentsList.toArray(new ItemStack[slotContentsList.size()])));
 
 		// Redstone
-		this.addSlotToContainer(new SlotSpecific(tileEntity, 4, 122, 46, new ItemStack(Items.redstone, 1, 0)));
+		slotContentsList = CircuitFabricatorRecipes.slotValidItems.get(3);
+		this.addSlotToContainer(new SlotSpecific(tileEntity, 4, 122, 46, slotContentsList.toArray(new ItemStack[slotContentsList.size()])));
 
 		// Optional
-		ItemStack stacks[] = {new ItemStack(Items.dye, 1, 4),  new ItemStack(Items.repeater, 1, 0), new ItemStack(Blocks.redstone_torch)};
-		this.addSlotToContainer(new SlotSpecific(tileEntity, 5, 145, 20, stacks));
+		slotContentsList = CircuitFabricatorRecipes.slotValidItems.get(4);
+		this.addSlotToContainer(new SlotSpecific(tileEntity, 5, 145, 20, slotContentsList.toArray(new ItemStack[slotContentsList.size()])));
 
 		// Smelting result
 		this.addSlotToContainer(new SlotFurnace(playerInv.player, tileEntity, 6, 152, 86));
