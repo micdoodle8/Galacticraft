@@ -90,7 +90,7 @@ public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
 		this.enableGrassButton = new GuiButton(1, var5 + 98, var6 + 109, 72, 20, "Enable Grass");
 		this.buttonList.add(this.enableTreesButton);
 		this.buttonList.add(this.enableGrassButton);
-		this.checkboxRenderBubble = new GuiElementCheckbox(0 /* TODO Fix ID (should be 2) in a separate commit */, this, var5 + 85, var6 + 132, "Bubble Visible");
+		this.checkboxRenderBubble = new GuiElementCheckbox(2, this, var5 + 85, var6 + 132, "Bubble Visible");
 		this.buttonList.add(this.checkboxRenderBubble);
 	}
 
@@ -108,6 +108,8 @@ public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
 				GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, new Object[] { this.terraformer.xCoord, this.terraformer.yCoord, this.terraformer.zCoord, 1 }));
 				break;
             case 2:
+                break;
+            default:
                 break;
 			}
 		}
