@@ -5,6 +5,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.relauncher.Side;
+import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.api.event.oxygen.GCCoreOxygenSuffocationEvent;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
@@ -28,6 +29,7 @@ import micdoodle8.mods.galacticraft.core.util.DamageSourceGC;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -51,6 +53,8 @@ import java.util.Map.Entry;
 
 public class GCEntityPlayerMP extends EntityPlayerMP
 {
+    private boolean updatingRidden = false;
+
 	public GCEntityPlayerMP(MinecraftServer server, WorldServer world, GameProfile profile, ItemInWorldManager itemInWorldManager)
 	{
 		super(server, world, profile, itemInWorldManager);
@@ -66,6 +70,25 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 			this.getPlayerStats().copyFrom(((GCEntityPlayerMP) oldPlayer).getPlayerStats(), keepInv || this.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory"));
 		}
 	}
+
+    @Override
+    public void updateRidden()
+    {
+        updatingRidden = true;
+        super.updateRidden();
+        updatingRidden = false;
+    }
+
+    @Override
+    public void mountEntity(Entity par1Entity)
+    {
+        if (updatingRidden && this.ridingEntity instanceof IIgnoreShift && ((IIgnoreShift) this.ridingEntity).shouldIgnoreShiftExit())
+        {
+            return;
+        }
+
+        super.mountEntity(par1Entity);
+    }
 
 	@Override
 	public void moveEntity(double par1, double par3, double par5)

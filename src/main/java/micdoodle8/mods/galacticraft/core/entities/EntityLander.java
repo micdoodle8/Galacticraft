@@ -6,6 +6,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
+import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.fx.EntityFXLanderFlame;
@@ -35,7 +36,7 @@ import net.minecraftforge.fluids.FluidTank;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EntityLander extends InventoryEntity implements IInventorySettable, IScaleableFuelLevel, IControllableEntity, ICameraZoomEntity
+public class EntityLander extends InventoryEntity implements IInventorySettable, IScaleableFuelLevel, IControllableEntity, ICameraZoomEntity, IIgnoreShift
 {
 	private final int tankCapacity = 5000;
 	public FluidTank fuelTank = new FluidTank(this.tankCapacity);
@@ -660,4 +661,10 @@ public class EntityLander extends InventoryEntity implements IInventorySettable,
 	{
 		return true;
 	}
+
+    @Override
+    public boolean shouldIgnoreShiftExit()
+    {
+        return true;
+    }
 }

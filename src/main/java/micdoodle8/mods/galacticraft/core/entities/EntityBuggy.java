@@ -53,8 +53,6 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
 	float turnFactor = 3.0F;
 	public String texture;
 	ItemStack[] cargoItems = new ItemStack[60];
-	public float turnProgress = 0;
-	public float rotationYawBuggy;
 	public double boatX;
 	public double boatY;
 	public double boatZ;
