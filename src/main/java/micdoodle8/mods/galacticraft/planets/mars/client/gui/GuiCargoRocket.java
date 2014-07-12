@@ -79,7 +79,7 @@ public class GuiCargoRocket extends GuiContainerGC
 		List<String> oxygenDesc = new ArrayList<String>();
 		oxygenDesc.add("Rocket fuel tank. Requires");
 		oxygenDesc.add("fuel loader to fill");
-		this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + (this.rocket.rocketType.getInventorySpace() == 2 ? 70 : 71), (this.height - this.ySize) / 2 + 6, 36, 40, oxygenDesc, this.width, this.height));
+		this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + (this.rocket.rocketType.getInventorySpace() == 2 ? 70 : 71), (this.height - this.ySize) / 2 + 6, 36, 40, oxygenDesc, this.width, this.height, this));
 	}
 
 	@Override

@@ -47,7 +47,7 @@ public class GuiBuggy extends GuiContainerGC
 		List<String> oxygenDesc = new ArrayList<String>();
 		oxygenDesc.add(GCCoreUtil.translate("gui.fuelTank.desc.0"));
 		oxygenDesc.add(GCCoreUtil.translate("gui.fuelTank.desc.1"));
-		this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 71, (this.height - this.ySize) / 2 + 6, 36, 40, oxygenDesc, this.width, this.height));
+		this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 71, (this.height - this.ySize) / 2 + 6, 36, 40, oxygenDesc, this.width, this.height, this));
 	}
 
 	@Override

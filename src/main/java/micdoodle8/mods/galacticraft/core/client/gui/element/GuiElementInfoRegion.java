@@ -1,12 +1,17 @@
 package micdoodle8.mods.galacticraft.core.client.gui.element;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.core.client.gui.container.GuiContainerGC;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -27,8 +32,9 @@ public class GuiElementInfoRegion extends Gui
 	protected static RenderItem itemRenderer = new RenderItem();
 	public int parentWidth;
 	public int parentHeight;
+    public GuiContainerGC parentGui;
 
-	public GuiElementInfoRegion(int xPos, int yPos, int width, int height, List<String> tooltipStrings, int parentWidth, int parentHeight)
+	public GuiElementInfoRegion(int xPos, int yPos, int width, int height, List<String> tooltipStrings, int parentWidth, int parentHeight, GuiContainerGC parentGui)
 	{
 		this.width = 200;
 		this.height = 20;
@@ -40,6 +46,7 @@ public class GuiElementInfoRegion extends Gui
 		this.tooltipStrings = tooltipStrings;
 		this.parentWidth = parentWidth;
 		this.parentHeight = parentHeight;
+        this.parentGui = parentGui;
 	}
 
 	protected int getHoverState(boolean par1)
@@ -108,6 +115,8 @@ public class GuiElementInfoRegion extends Gui
 			{
 				j1 = this.parentHeight - k1 - 6;
 			}
+
+            j1 += this.parentGui.getTooltipOffset(par2, par3);
 
 			this.zLevel = 300.0F;
 			GuiElementInfoRegion.itemRenderer.zLevel = 300.0F;
