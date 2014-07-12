@@ -144,7 +144,7 @@ public abstract class TileEntityElectricBlock extends TileEntityUniversalElectri
 		if (this.disableCooldown == 0)
 		{
 			this.disabled = disabled;
-			this.disableCooldown = 20;
+			this.disableCooldown = 10;
 		}
 	}
 

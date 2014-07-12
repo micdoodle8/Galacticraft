@@ -871,44 +871,44 @@ public class PacketSimple extends Packet implements IPacket
 			case 0:
 				if (tile1 instanceof TileEntityAirLockController)
 				{
-					TileEntityAirLockController launchController = (TileEntityAirLockController) tile1;
-					launchController.redstoneActivation = (Integer) this.data.get(4) == 1;
+					TileEntityAirLockController airlockController = (TileEntityAirLockController) tile1;
+					airlockController.redstoneActivation = (Integer) this.data.get(4) == 1;
 				}
 				break;
 			case 1:
 				if (tile1 instanceof TileEntityAirLockController)
 				{
-					TileEntityAirLockController launchController = (TileEntityAirLockController) tile1;
-					launchController.playerDistanceActivation = (Integer) this.data.get(4) == 1;
+					TileEntityAirLockController airlockController = (TileEntityAirLockController) tile1;
+					airlockController.playerDistanceActivation = (Integer) this.data.get(4) == 1;
 				}
 				break;
 			case 2:
 				if (tile1 instanceof TileEntityAirLockController)
 				{
-					TileEntityAirLockController launchController = (TileEntityAirLockController) tile1;
-					launchController.playerDistanceSelection = (Integer) this.data.get(4);
+					TileEntityAirLockController airlockController = (TileEntityAirLockController) tile1;
+					airlockController.playerDistanceSelection = (Integer) this.data.get(4);
 				}
 				break;
 			case 3:
 				if (tile1 instanceof TileEntityAirLockController)
 				{
-					TileEntityAirLockController launchController = (TileEntityAirLockController) tile1;
-					launchController.playerNameMatches = (Integer) this.data.get(4) == 1;
+					TileEntityAirLockController airlockController = (TileEntityAirLockController) tile1;
+					airlockController.playerNameMatches = (Integer) this.data.get(4) == 1;
 				}
 				break;
 			case 4:
 				if (tile1 instanceof TileEntityAirLockController)
 				{
-					TileEntityAirLockController launchController = (TileEntityAirLockController) tile1;
-					launchController.invertSelection = (Integer) this.data.get(4) == 1;
+					TileEntityAirLockController airlockController = (TileEntityAirLockController) tile1;
+					airlockController.invertSelection = (Integer) this.data.get(4) == 1;
 				}
 				break;
 			case 5:
 				if (tile1 instanceof TileEntityAirLockController)
 				{
-					TileEntityAirLockController launchController = (TileEntityAirLockController) tile1;
-					launchController.lastHorizontalModeEnabled = launchController.horizontalModeEnabled;
-					launchController.horizontalModeEnabled = (Integer) this.data.get(4) == 1;
+					TileEntityAirLockController airlockController = (TileEntityAirLockController) tile1;
+					airlockController.lastHorizontalModeEnabled = airlockController.horizontalModeEnabled;
+					airlockController.horizontalModeEnabled = (Integer) this.data.get(4) == 1;
 				}
 				break;
 			case 6:
@@ -930,8 +930,8 @@ public class PacketSimple extends Packet implements IPacket
 			case 0:
 				if (tile2 instanceof TileEntityAirLockController)
 				{
-					TileEntityAirLockController launchController = (TileEntityAirLockController) tile2;
-					launchController.playerToOpenFor = (String) this.data.get(4);
+					TileEntityAirLockController airlockController = (TileEntityAirLockController) tile2;
+					airlockController.playerToOpenFor = (String) this.data.get(4);
 				}
 				break;
 			default:
