@@ -485,7 +485,7 @@ public class TileEntityTerraformer extends TileEntityElectricBlock implements II
 	@Override
 	public String getInventoryName()
 	{
-		return GCCoreUtil.translate("container.oxygendistributor.name");
+		return GCCoreUtil.translate("container.tileTerraformer.name");
 	}
 
 	@Override
