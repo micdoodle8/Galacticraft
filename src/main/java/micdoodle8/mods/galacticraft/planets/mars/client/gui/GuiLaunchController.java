@@ -27,6 +27,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.ResourceLocation;
+
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -116,16 +118,19 @@ public class GuiLaunchController extends GuiContainerGC implements IDropboxCallb
 	@Override
 	protected void keyTyped(char keyChar, int keyID)
 	{
-		if (this.frequency.keyTyped(keyChar, keyID))
+		if (keyID != Keyboard.KEY_ESCAPE && keyID != this.mc.gameSettings.keyBindInventory.getKeyCode())
 		{
-			return;
+			if (this.frequency.keyTyped(keyChar, keyID))
+			{
+				return;
+			}
+	
+			if (this.destinationFrequency.keyTyped(keyChar, keyID))
+			{
+				return;
+			}
 		}
-
-		if (this.destinationFrequency.keyTyped(keyChar, keyID))
-		{
-			return;
-		}
-
+		
 		super.keyTyped(keyChar, keyID);
 	}
 
@@ -209,11 +214,7 @@ public class GuiLaunchController extends GuiContainerGC implements IDropboxCallb
 			case 0:
 				GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, new Object[] { this.launchController.xCoord, this.launchController.yCoord, this.launchController.zCoord, 0 }));
 				break;
-			case 1:
-				GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, new Object[] { this.launchController.xCoord, this.launchController.yCoord, this.launchController.zCoord, 1 }));
-				break;
 			default:
-				GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, new Object[] { this.launchController.xCoord, this.launchController.yCoord, this.launchController.zCoord, 1 }));
 				break;
 			}
 		}

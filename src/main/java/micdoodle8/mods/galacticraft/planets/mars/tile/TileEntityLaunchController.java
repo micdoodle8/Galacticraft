@@ -411,13 +411,12 @@ public class TileEntityLaunchController extends TileEntityElectricBlock implemen
 			{
 			case 0:
 				this.disabled = disabled;
+				this.disableCooldown = 10;
 				break;
 			case 1:
 				this.launchSchedulingEnabled = disabled;
 				break;
-			}
-
-			this.disableCooldown = 20;
+			}		
 		}
 	}
 

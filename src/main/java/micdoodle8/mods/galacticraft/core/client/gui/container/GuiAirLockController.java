@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
+import org.lwjgl.input.Keyboard;
+
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementCheckbox;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementCheckbox.ICheckBoxCallback;
@@ -66,9 +68,10 @@ public class GuiAirLockController extends GuiScreen implements ICheckBoxCallback
 	@Override
 	protected void keyTyped(char keyChar, int keyID)
 	{
-		if (this.textBoxPlayerToOpenFor.keyTyped(keyChar, keyID))
+		if (keyID != Keyboard.KEY_ESCAPE && keyID != this.mc.gameSettings.keyBindInventory.getKeyCode())
 		{
-			return;
+			if (this.textBoxPlayerToOpenFor.keyTyped(keyChar, keyID))
+				return;
 		}
 
 		super.keyTyped(keyChar, keyID);
