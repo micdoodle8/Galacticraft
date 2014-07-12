@@ -7,6 +7,7 @@ import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
+import micdoodle8.mods.galacticraft.core.entities.EntityLander;
 import micdoodle8.mods.galacticraft.core.entities.EntityParachest;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
@@ -14,8 +15,9 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.MathHelper;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 
@@ -122,6 +124,7 @@ public class GCPlayerHandler
 
 		//This will speed things up a little
 		final GCPlayerStats GCPlayer = player.getPlayerStats();
+		final boolean isInGCDimension = player.worldObj.provider instanceof IGalacticraftWorldProvider;
 
 		if (GCPlayer.cryogenicChamberCooldown > 0)
 		{
@@ -174,7 +177,7 @@ public class GCPlayerHandler
 //			player.sendPlanetList();
 		}
 
-		/*		if (player.worldObj.provider instanceof IGalacticraftWorldProvider || player.usingPlanetSelectionGui)
+		/*		if (isInGCDimension || player.usingPlanetSelectionGui)
 				{
 					player.playerNetServerHandler.ticksForFloatKick = 0;
 				}	
@@ -184,10 +187,38 @@ public class GCPlayerHandler
 			GCPlayer.damageCounter--;
 		}
 
-		if (tick % 30 == 0 && player.worldObj.provider instanceof IGalacticraftWorldProvider)
+		if (isInGCDimension)
 		{
-			player.sendAirRemainingPacket();
-			player.sendThermalLevelPacket();
+			if (tick % 30 == 0)
+			{
+				player.sendAirRemainingPacket();
+				player.sendThermalLevelPacket();		
+			}
+			
+			if (player.ridingEntity instanceof EntityLander)
+			{
+				GCPlayer.inLander = true;
+				GCPlayer.justLanded = false;
+			}
+			else
+			{
+				if (GCPlayer.inLander) GCPlayer.justLanded = true;
+				GCPlayer.inLander = false;
+			}
+			
+			if (player.onGround && GCPlayer.justLanded)
+			{
+				GCPlayer.justLanded = false;
+				
+				//Set spawn point here if just descended from a lander for the first time
+				if (player.getBedLocation(player.worldObj.provider.dimensionId) == null)
+				{
+					ChunkCoordinates coords = new ChunkCoordinates(MathHelper.floor_double(player.posX + 0.5D), MathHelper.floor_double(player.posY + 0.5D), MathHelper.floor_double(player.posZ + 0.5D));
+					player.setSpawnChunk(coords, true, player.worldObj.provider.dimensionId);
+				}
+				
+				GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, new Object[] {}), player);
+			}
 		}
 
 		player.checkGear();
@@ -222,7 +253,7 @@ public class GCPlayerHandler
 		player.checkThermalStatus();
 		player.checkOxygen();
 
-		if (player.worldObj.provider instanceof IGalacticraftWorldProvider && (GCPlayer.oxygenSetupValid != GCPlayer.lastOxygenSetupValid || tick % 100 == 0))
+		if (isInGCDimension && (GCPlayer.oxygenSetupValid != GCPlayer.lastOxygenSetupValid || tick % 100 == 0))
 		{
 			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_OXYGEN_VALIDITY, new Object[] { GCPlayer.oxygenSetupValid }), player);
 		}
@@ -231,7 +262,7 @@ public class GCPlayerHandler
 
 		player.updateSchematics();
 
-		if (tick % 250 == 0 && GCPlayer.frequencyModuleInSlot == null && !GCPlayer.receivedSoundWarning && player.worldObj.provider instanceof IGalacticraftWorldProvider && player.onGround && tick > 0)
+		if (tick % 250 == 0 && GCPlayer.frequencyModuleInSlot == null && !GCPlayer.receivedSoundWarning && isInGCDimension && player.onGround && tick > 0)
 		{
 			player.addChatMessage(new ChatComponentText(EnumColor.YELLOW + GCCoreUtil.translate("gui.frequencymodule.warning0") + " " + EnumColor.AQUA + GCItems.basicItem.getItemStackDisplayName(new ItemStack(GCItems.basicItem, 1, 19)) + EnumColor.YELLOW + " " + GCCoreUtil.translate("gui.frequencymodule.warning1")));
 			GCPlayer.receivedSoundWarning = true;
@@ -239,7 +270,6 @@ public class GCPlayerHandler
 
 		GCPlayer.lastOxygenSetupValid = GCPlayer.oxygenSetupValid;
 		GCPlayer.lastUnlockedSchematics = GCPlayer.unlockedSchematics;
-
 		GCPlayer.lastOnGround = player.onGround;
 	}
 }

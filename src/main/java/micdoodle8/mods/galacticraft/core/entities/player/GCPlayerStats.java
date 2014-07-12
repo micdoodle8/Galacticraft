@@ -101,6 +101,8 @@ public class GCPlayerStats implements IExtendedEntityProperties
 
 	public boolean touchedGround;
 	public boolean lastOnGround;
+	public boolean inLander;
+	public boolean justLanded;
 
 	public ArrayList<ISchematicPage> unlockedSchematics = new ArrayList<ISchematicPage>();
 	public ArrayList<ISchematicPage> lastUnlockedSchematics = new ArrayList<ISchematicPage>();
