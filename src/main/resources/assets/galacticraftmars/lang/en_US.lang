@@ -66,6 +66,34 @@ tile.tintedGlassPane.black.name=Black Tinted Glass Pane
 # GUI
 gui.choosePlanet.desc.mars=Habitable#No Oxygen#Gravity: 38%
 item.deshPickSlime.description.name=Can harvest Slimeling eggs
+gui.message.noEnergy.name=Not Enough Energy
+gui.message.noWater.name=Not Enough Water
+gui.message.noBonemeal.name=Not Enough Bonemeal
+gui.message.noSeeds.name=Not Enough Seeds
+gui.message.noSaplings.name=Not Enough Saplings
+gui.message.bubbleExp.name=BubbleExpanding
+gui.message.noValidBlocks.name=No Valid Blocks in Bubble
+gui.message.terraforming.name=Terraforming
+gui.message.enableTrees.name=Enable Trees
+gui.message.enableGrass.name=Enable Grass
+gui.message.trees.name=Trees
+gui.message.grass.name=Grass
+gui.message.invalidFreq.name=Invalid Frequency
+gui.message.frequency.name=Frequency
+gui.message.destFrequency.name=Destination Frequency
+gui.message.removePad.name=Remove Pad
+gui.message.launchWhen.name=Launch When
+gui.message.cargoUnloaded.name=Cargo is Unloaded
+gui.message.cargoFull.name=Cargo is Full
+gui.message.fullyFueled.name=Fully Fueled
+gui.message.instant.name=Instantly
+gui.message.tenSec.name=10 Seconds
+gui.message.thirtySec.name=30 Seconds
+gui.message.oneMin.name=1 Minute
+gui.message.redstoneSig.name=Redstone Signal
+gui.message.notSet.name=Not Set
+gui.message.notEnough.name=Not Enough
+gui.message.success.name=Success
 
 gui.desc.reinforcedPlateT2.name=Tier 2
 
@@ -87,3 +115,4 @@ entity.CargoRocket.name=Cargo Rocket
 
 # Container
 container.launchcontroller.name=Launch Controller
+container.tileTerraformer.name=Terraformer

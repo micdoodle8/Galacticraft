@@ -53,8 +53,8 @@ public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
 			this.enableGrassButton.enabled = true;
 		}
 
-		this.enableTreesButton.displayString = (this.terraformer.treesDisabled ? "Enable" : "Disable") + " Trees";
-		this.enableGrassButton.displayString = (this.terraformer.grassDisabled ? "Enable" : "Disable") + " Grass";
+		this.enableTreesButton.displayString = GCCoreUtil.translate(this.terraformer.treesDisabled ? "gui.button.enable.name" : "gui.button.disable.name") + " " + GCCoreUtil.translate("gui.message.trees.name");
+		this.enableGrassButton.displayString = GCCoreUtil.translate(this.terraformer.grassDisabled ? "gui.button.enable.name" : "gui.button.disable.name") + " " + GCCoreUtil.translate("gui.message.grass.name");
 
 		super.drawScreen(par1, par2, par3);
 	}
@@ -86,11 +86,11 @@ public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
 		this.buttonList.clear();
 		final int var5 = (this.width - this.xSize) / 2;
 		final int var6 = (this.height - this.ySize) / 2;
-		this.enableTreesButton = new GuiButton(0, var5 + 98, var6 + 85, 72, 20, "Enable Trees");
-		this.enableGrassButton = new GuiButton(1, var5 + 98, var6 + 109, 72, 20, "Enable Grass");
+		this.enableTreesButton = new GuiButton(0, var5 + 98, var6 + 85, 72, 20, GCCoreUtil.translate("gui.message.enableTrees.name"));
+		this.enableGrassButton = new GuiButton(1, var5 + 98, var6 + 109, 72, 20, GCCoreUtil.translate("gui.message.enableGrass.name"));
 		this.buttonList.add(this.enableTreesButton);
 		this.buttonList.add(this.enableGrassButton);
-		this.checkboxRenderBubble = new GuiElementCheckbox(2, this, var5 + 85, var6 + 132, "Bubble Visible");
+		this.checkboxRenderBubble = new GuiElementCheckbox(2, this, var5 + 85, var6 + 132, GCCoreUtil.translate("gui.message.bubbleVisible.name"));
 		this.buttonList.add(this.checkboxRenderBubble);
 	}
 
@@ -130,49 +130,49 @@ public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
 	{
 		if (this.terraformer.getEnergyStoredGC() <= 0.0F)
 		{
-			return EnumColor.RED + "Not Enough Energy";
+			return EnumColor.RED + GCCoreUtil.translate("gui.message.noEnergy.name");
 		}
 
 		if (this.terraformer.grassDisabled && this.terraformer.treesDisabled)
 		{
-			return EnumColor.ORANGE + "Disabled";
+			return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.disabled.name");
 		}
 
 		if (this.terraformer.waterTank.getFluid() == null || this.terraformer.waterTank.getFluid().amount <= 0)
 		{
-			return EnumColor.RED + "Not Enough Water";
+			return EnumColor.RED + GCCoreUtil.translate("gui.message.noWater.name");
 		}
 
 		if (this.terraformer.getFirstBonemealStack() == null)
 		{
-			return EnumColor.RED + "Not Enough Bonemeal";
+			return EnumColor.RED + GCCoreUtil.translate("gui.message.noBonemeal.name");
 		}
 
 		if (!this.terraformer.grassDisabled && this.terraformer.getFirstSeedStack() == null)
 		{
-			return EnumColor.RED + "Not Enough Seeds";
+			return EnumColor.RED + GCCoreUtil.translate("gui.message.noSeeds.name");
 		}
 
 		if (!this.terraformer.treesDisabled && this.terraformer.getFirstSaplingStack() == null)
 		{
-			return EnumColor.RED + "Not Enough Saplings";
+			return EnumColor.RED + GCCoreUtil.translate("gui.message.noSaplings.name");
 		}
 
 		if (this.terraformer.terraformBubble.getSize() < this.terraformer.MAX_SIZE - 0.5)
 		{
-			return EnumColor.YELLOW + "Bubble Expanding";
+			return EnumColor.YELLOW + GCCoreUtil.translate("gui.message.bubbleExpanding.name");
 		}
 
 		if (!this.terraformer.treesDisabled && this.terraformer.grassBlocksListSize <= 0)
 		{
-			return EnumColor.RED + "No Valid Blocks in Bubble";
+			return EnumColor.RED + GCCoreUtil.translate("gui.message.noValidBlocks.name");
 		}
 		else if (!this.terraformer.grassDisabled && this.terraformer.terraformableBlocksListSize <= 0)
 		{
-			return EnumColor.RED + "No Valid Blocks in Bubble";
+			return EnumColor.RED + GCCoreUtil.translate("gui.message.noValidBlocks.name");
 		}
 
-		return EnumColor.BRIGHT_GREEN + "Terraforming";
+		return EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.message.terraforming.name");
 	}
 
 	@Override

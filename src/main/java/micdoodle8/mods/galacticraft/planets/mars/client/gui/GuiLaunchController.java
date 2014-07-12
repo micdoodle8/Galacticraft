@@ -162,9 +162,9 @@ public class GuiLaunchController extends GuiContainerGC implements IDropboxCallb
 		this.buttonList.clear();
 		final int var5 = (this.width - this.xSize) / 2;
 		final int var6 = (this.height - this.ySize) / 2;
-		this.enableControllerButton = new GuiButton(0, var5 + 70 + 124 - 72, var6 + 16, 48, 20, "Enable");
-		this.enablePadRemovalButton = new GuiElementCheckbox(1, this, this.width / 2 - 78, var6 + 59, "Remove Pad");
-		this.launchWhenCheckbox = new GuiElementCheckbox(2, this, this.width / 2 - 78, var6 + 77, "Launch when: ");
+		this.enableControllerButton = new GuiButton(0, var5 + 70 + 124 - 72, var6 + 16, 48, 20, GCCoreUtil.translate("gui.button.enable.name"));
+		this.enablePadRemovalButton = new GuiElementCheckbox(1, this, this.width / 2 - 78, var6 + 59, GCCoreUtil.translate("gui.message.removePad.name"));
+		this.launchWhenCheckbox = new GuiElementCheckbox(2, this, this.width / 2 - 78, var6 + 77, GCCoreUtil.translate("gui.message.launchWhen.name") + ": ");
 		this.dropdownTest = new GuiElementDropdown(3, this, var5 + 95, var6 + 77, EnumAutoLaunch.CARGO_IS_UNLOADED.getTitle(), EnumAutoLaunch.CARGO_IS_FULL.getTitle(), EnumAutoLaunch.ROCKET_IS_FUELED.getTitle(), EnumAutoLaunch.INSTANT.getTitle(), EnumAutoLaunch.TIME_10_SECONDS.getTitle(), EnumAutoLaunch.TIME_30_SECONDS.getTitle(), EnumAutoLaunch.TIME_1_MINUTE.getTitle(), EnumAutoLaunch.REDSTONE_SIGNAL.getTitle());
 		this.frequency = new GuiElementTextBox(4, this, var5 + 66, var6 + 16, 48, 20, "", true, 6, false);
 		this.destinationFrequency = new GuiElementTextBox(5, this, var5 + 122, var6 + 16 + 22, 48, 20, "", true, 6, false);
@@ -239,8 +239,8 @@ public class GuiLaunchController extends GuiContainerGC implements IDropboxCallb
 		//		this.fontRendererObj.drawString(displayString, this.xSize - 26 - this.fontRendererObj.getStringWidth(displayString), 94, 4210752);
 		//		displayString = ElectricityDisplay.getDisplay(this.launchController.getVoltage(), ElectricUnit.VOLTAGE);
 		//		this.fontRendererObj.drawString(displayString, this.xSize - 26 - this.fontRendererObj.getStringWidth(displayString), 104, 4210752);
-		this.fontRendererObj.drawString("Frequency:", 7, 22, 4210752);
-		this.fontRendererObj.drawString("Destination Frequency:", 7, 44, 4210752);
+		this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.frequency.name") + ":", 7, 22, 4210752);
+		this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.destFrequency.name") + ":", 7, 44, 4210752);
 
 	}
 
@@ -248,20 +248,20 @@ public class GuiLaunchController extends GuiContainerGC implements IDropboxCallb
 	{
 		if (!this.launchController.frequencyValid)
 		{
-			return EnumColor.RED + "Invalid Frequency";
+			return EnumColor.RED + GCCoreUtil.translate("gui.message.invalidFreq.name");
 		}
 
 		if (this.launchController.getEnergyStoredGC() <= 0.0F)
 		{
-			return EnumColor.RED + "Not Enough Energy";
+			return EnumColor.RED + GCCoreUtil.translate("gui.message.noEnergy.name");
 		}
 
 		if (this.launchController.getDisabled(0))
 		{
-			return EnumColor.ORANGE + "Disabled";
+			return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.disabled.name");
 		}
 
-		return EnumColor.BRIGHT_GREEN + "Active";
+		return EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.active.name");
 	}
 
 	@Override

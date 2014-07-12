@@ -65,7 +65,7 @@ public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCal
 		this.electricInfoRegion.parentWidth = this.width;
 		this.electricInfoRegion.parentHeight = this.height;
 		this.infoRegions.add(this.electricInfoRegion);
-		this.checkboxRenderBubble = new GuiElementCheckbox(0, this, var5 + 85, var6 + 87, "Bubble Visible");
+		this.checkboxRenderBubble = new GuiElementCheckbox(0, this, var5 + 85, var6 + 87, GCCoreUtil.translate("gui.message.bubbleVisible.name"));
 		this.buttonList.add(this.checkboxRenderBubble);
 	}
 
