@@ -1,6 +1,8 @@
 # Galacticraft Moon Language File = Polski
 # GENERAL ITEMS
 item.meteoricIronRaw.name=Surowe Meteorytowe ¯elazo
+item.meteoric_iron_ingot.name=Meteoric Iron Ingot ##NEEDS TRANSLATE##
+item.compressedMeteoricIron.name=Compressed Meteoric Iron ##NEEDS TRANSLATE##
 item.meteoricIronIngot.name=Sztabka Meteorytowego ¯elaza
 
 # FOOD

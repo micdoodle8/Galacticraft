@@ -2,6 +2,8 @@
 
 # GENERAL ITEMS
 item.meteoricIronRaw.name=Meteorito de hierro quemado
+item.meteoric_iron_ingot.name=Meteoric Iron Ingot ##NEEDS TRANSLATE##
+item.compressedMeteoricIron.name=Compressed Meteoric Iron ##NEEDS TRANSLATE##
 item.meteoricIronIngot.name=Lingote de hierro meteorico
 
 # FOOD

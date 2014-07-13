@@ -10,7 +10,7 @@ item.itemTier3Rocket.t3Rocket.name=Raketa typ 3
 # BLOCKS
 tile.asteroidsBlock.asteroids1.name=Kámen z asteroidu
 tile.beamReflector.name=Zdroj paprsku
-tile.beamReceiver.name=Příjmač paprsku
+tile.beamReceiver.name=Příjma�? paprsku
 tile.telepadShort.name=Telepad krátkého dosahu
 
 # GUI

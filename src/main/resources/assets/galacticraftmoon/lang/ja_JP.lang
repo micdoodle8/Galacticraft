@@ -1,12 +1,14 @@
 # Galacticraft Moon Language File = JAPANESE
 
 # GENERAL ITEMS
-item.meteoricIronRaw.name=流れ星の鉄鋼
-item.meteoricIronIngot.name=流れ星の鉄インゴット
+item.meteoricIronRaw.name=�?れ星�?�鉄鋼
+item.meteoric_iron_ingot.name=Meteoric Iron Ingot ##NEEDS TRANSLATE##
+item.compressedMeteoricIron.name=Compressed Meteoric Iron ##NEEDS TRANSLATE##
+item.meteoricIronIngot.name=�?れ星�?�鉄インゴット
 
 # FOOD
-item.cheeseCurd.name=チーズカード
-item.cheeseBlock.name=チーズブロック
+item.cheeseCurd.name=�?ーズカード
+item.cheeseBlock.name=�?ーズブロック
 
 # TOOLS
 
@@ -15,14 +17,15 @@ item.cheeseBlock.name=チーズブロック
 # BLOCKS
 tile.moonBlock.moonstone.name=石
 tile.moonBlock.moondirt.name=土
-tile.moonBlock.moongrass.name=月の草
-tile.moonBlock.tinmoon.name=すず鉱石
+tile.moonBlock.moongrass.name=月�?��?�
+tile.moonBlock.tinmoon.name=�?��?�鉱石
 tile.moonBlock.coppermoon.name=銅鉱石
-tile.moonBlock.cheesestone.name=チーズ鉱石
+tile.moonBlock.cheesestone.name=�?ーズ鉱石
 tile.moonBlock.bricks.name=レンガ
-tile.cheeseBlock.name=チーズブロック
+tile.cheeseBlock.name=�?ーズブロック
 
 # GUI
-gui.choosePlanet.desc.moon=Habitable#No Oxygen#重力: 18%
+gui.choosePlanet.desc.moon=Habitable#No Oxygen#�?力: 18%
+dimension.Moon.name=Moon ##NEEDS TRANSLATE##
 
 itemGroup.GalacticraftMoon=Galacticraft 月

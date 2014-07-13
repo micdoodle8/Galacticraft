@@ -2,6 +2,8 @@
 
 # GENERAL ITEMS
 item.meteoricIronRaw.name=Raw Meteoric Iron
+item.meteoric_iron_ingot.name=Meteoric Iron Ingot ##NEEDS TRANSLATE##
+item.compressedMeteoricIron.name=Compressed Meteoric Iron ##NEEDS TRANSLATE##
 item.meteoricIronIngot.name=Meteoric Iron Ingot
 
 # FOOD
