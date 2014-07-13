@@ -28,10 +28,14 @@ public class TileEntityThrusterRenderer extends TileEntitySpecialRenderer
 
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) d + 0.5F, (float) d1 + 0.5F, (float) d2 + 0.5F);
+		
+		int meta = tileEntity.getBlockMetadata();
+		boolean reverseThruster = (meta >= 8);
+		meta &= 7;
 
-		if (tileEntity.getBlockMetadata() >= 1)
+		if (meta >= 1)
 		{
-			switch (tileEntity.getBlockMetadata())
+			switch (meta)
 			{
 			case 1:
 				GL11.glTranslatef(-0.475F, 0.0F, 0.0F);
@@ -57,6 +61,8 @@ public class TileEntityThrusterRenderer extends TileEntitySpecialRenderer
 				break;
 			}
 
+			if (reverseThruster)
+				GL11.glRotatef(180, 0, 1, 0);
 			TileEntityThrusterRenderer.thrusterModel.renderAll();
 		}
 

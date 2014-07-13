@@ -101,7 +101,7 @@ public class EntityTier2Rocket extends EntityTieredRocket
 
 				if (d != 0.0)
 				{
-					this.motionY = -d * 1.5D * Math.cos((this.rotationPitch - 180) * Math.PI / 180.0D);
+					this.motionY = -d * 2.0D * Math.cos((this.rotationPitch - 180) * Math.PI / 180.0D);
 				}
 			}
 			else
