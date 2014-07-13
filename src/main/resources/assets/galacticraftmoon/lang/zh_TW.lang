@@ -2,6 +2,7 @@
 
 # GENERAL ITEMS
 item.meteoricIronRaw.name=生隕鐵錠
+item.meteoric_iron_ingot.name=Meteoric Iron Ingot ##NEEDS TRANSLATE##
 item.meteoricIronIngot.name=隕鐵錠
 item.compressedMeteoricIron.name=緻密隕鐵
 
@@ -25,5 +26,6 @@ tile.cheeseBlock.name=奶酪塊
 
 # GUI
 gui.choosePlanet.desc.moon=宜居#無氧氣#重力: 18%
+dimension.Moon.name=Moon ##NEEDS TRANSLATE##
 
 itemGroup.GalacticraftMoon=Galacticraft|月球

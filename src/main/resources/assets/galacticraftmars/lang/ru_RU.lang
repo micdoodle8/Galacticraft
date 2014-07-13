@@ -4,6 +4,7 @@
 item.rawDesh.name=Необработанная деш
 item.deshStick.name=Палка из деш
 item.ingotDesh.name=Слиток деш
+item.spaceshipTier2.t2Rocket.name=Tier 2 Rocket ##NEEDS TRANSLATE##
 item.spaceshipTier2.name=Ракета 2-ого уровня
 item.reinforcedPlateT2.name=Сверхпрочное покрытие
 item.tier2.desc=Tier 2
@@ -66,12 +67,41 @@ tile.tintedGlassPane.black.name=Чёрная окрашенная стеклян
 # GUI
 gui.choosePlanet.desc.mars=Обитаем#Кислород отсутствует#Гравитация: 38%
 item.deshPickSlime.description.name=Может собирать слизь с яиц слаймлинга
+gui.message.noEnergy.name=Not Enough Energy ##NEEDS TRANSLATE##
+gui.message.noWater.name=Not Enough Water ##NEEDS TRANSLATE##
+gui.message.noBonemeal.name=Not Enough Bonemeal ##NEEDS TRANSLATE##
+gui.message.noSeeds.name=Not Enough Seeds ##NEEDS TRANSLATE##
+gui.message.noSaplings.name=Not Enough Saplings ##NEEDS TRANSLATE##
+gui.message.bubbleExp.name=BubbleExpanding ##NEEDS TRANSLATE##
+gui.message.noValidBlocks.name=No Valid Blocks in Bubble ##NEEDS TRANSLATE##
+gui.message.terraforming.name=Terraforming ##NEEDS TRANSLATE##
+gui.message.enableTrees.name=Enable Trees ##NEEDS TRANSLATE##
+gui.message.enableGrass.name=Enable Grass ##NEEDS TRANSLATE##
+gui.message.trees.name=Trees ##NEEDS TRANSLATE##
+gui.message.grass.name=Grass ##NEEDS TRANSLATE##
+gui.message.invalidFreq.name=Invalid Frequency ##NEEDS TRANSLATE##
+gui.message.frequency.name=Frequency ##NEEDS TRANSLATE##
+gui.message.destFrequency.name=Destination Frequency ##NEEDS TRANSLATE##
+gui.message.removePad.name=Remove Pad ##NEEDS TRANSLATE##
+gui.message.launchWhen.name=Launch When ##NEEDS TRANSLATE##
+gui.message.cargoUnloaded.name=Cargo is Unloaded ##NEEDS TRANSLATE##
+gui.message.cargoFull.name=Cargo is Full ##NEEDS TRANSLATE##
+gui.message.fullyFueled.name=Fully Fueled ##NEEDS TRANSLATE##
+gui.message.instant.name=Instantly ##NEEDS TRANSLATE##
+gui.message.tenSec.name=10 Seconds ##NEEDS TRANSLATE##
+gui.message.thirtySec.name=30 Seconds ##NEEDS TRANSLATE##
+gui.message.oneMin.name=1 Minute ##NEEDS TRANSLATE##
+gui.message.redstoneSig.name=Redstone Signal ##NEEDS TRANSLATE##
+gui.message.notSet.name=Not Set ##NEEDS TRANSLATE##
+gui.message.notEnough.name=Not Enough ##NEEDS TRANSLATE##
+gui.message.success.name=Success ##NEEDS TRANSLATE##
 
 gui.desc.reinforcedPlateT2.name=2 уровень
 
 itemGroup.GalacticraftMars=Galacticraft: Марс
 
 dimension.Mars.name=Марс
+planet.mars=Mars ##NEEDS TRANSLATE##
 
 # Schematics
 schematic.rocketT3.name=Ракета 3-его уровня
@@ -86,3 +116,4 @@ entity.CargoRocket.name=Грузовая ракета
 
 # Container
 container.launchcontroller.name=Контроллер запуска
+container.tileTerraformer.name=Terraformer ##NEEDS TRANSLATE##

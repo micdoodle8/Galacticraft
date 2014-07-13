@@ -276,6 +276,9 @@ gui.message.surfacegravity.name=Gravitace na povrchu
 gui.message.surfacecomposition.name=Složení povrchu
 gui.message.atmosphere.name=Atmosféra
 gui.message.meansurfacetemp.name=Střední teplota na povrchu
+gui.message.energy=Energy ##NEEDS TRANSLATE##
+gui.message.maxEnergy=Max Energy ##NEEDS TRANSLATE##
+gui.message.bubbleVisible.name=Bubble Visible ##NEEDS TRANSLATE##
 
 gui.status.active.name=Aktivní
 gui.status.missingleaves.name=Nedostatek rostlin
