@@ -1,14 +1,13 @@
 # Galacticraft Moon Language File = SIMPLIFIED CHINESE
 
 # GENERAL ITEMS
-item.meteoricIronRaw.name=生陨�?锭
-item.meteoric_iron_ingot.name=Meteoric Iron Ingot ##NEEDS TRANSLATE##
-item.meteoricIronIngot.name=陨�?锭
-item.compressedMeteoricIron.name=致密陨�?
+item.meteoricIronRaw.name=生陨铁锭
+item.meteoricIronIngot.name=陨铁锭
+item.compressedMeteoricIron.name=致密陨铁
 
 # FOOD
-item.cheeseCurd.name=奶酪�?乳
-item.cheeseBlock.name=奶酪�?�
+item.cheeseCurd.name=奶酪凝乳
+item.cheeseBlock.name=奶酪块
 
 # TOOLS
 
@@ -17,15 +16,14 @@ item.cheeseBlock.name=奶酪�?�
 # BLOCKS
 tile.moonBlock.moonstone.name=石头
 tile.moonBlock.moondirt.name=泥土
-tile.moonBlock.moongrass.name=月�?��?�皮
+tile.moonBlock.moongrass.name=月面草皮
 tile.moonBlock.tinmoon.name=锡矿石
 tile.moonBlock.coppermoon.name=铜矿石
 tile.moonBlock.cheesestone.name=奶酪矿石
-tile.moonBlock.bricks.name=砖�?�
-tile.cheeseBlock.name=奶酪�?�
+tile.moonBlock.bricks.name=砖块
+tile.cheeseBlock.name=奶酪块
 
 # GUI
-gui.choosePlanet.desc.moon=宜居#无氧气#�?力: 18%
-dimension.Moon.name=Moon ##NEEDS TRANSLATE##
+gui.choosePlanet.desc.moon=宜居#无氧气#重力: 18%
 
-itemGroup.GalacticraftMoon=Galacticraft|月�?�
+itemGroup.GalacticraftMoon=Galacticraft|月球

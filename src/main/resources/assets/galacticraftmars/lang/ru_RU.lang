@@ -1,17 +1,16 @@
 # Galacticraft Mars Language File = Russia Russian
 
 # GENERAL ITEMS
-item.rawDesh.name=�?еобработанна�? деш
+item.rawDesh.name=Необработанная деш
 item.deshStick.name=Палка из деш
 item.ingotDesh.name=Слиток деш
-item.spaceshipTier2.t2Rocket.name=Tier 2 Rocket ##NEEDS TRANSLATE##
-item.spaceshipTier2.name=Ракета 2-ого уровн�?
+item.spaceshipTier2.name=Ракета 2-ого уровня
 item.reinforcedPlateT2.name=Сверхпрочное покрытие
 item.tier2.desc=Tier 2
-item.slimelingCargo.name=Сумка �?лаймлинга
-item.key.T2.name=Ключ от подземель�? 2-ого уровн�?
-item.compressedDesh.name=Сжата�? деш
-item.spaceshipTier2.cargoRocket.name=Грузова�? ракета
+item.slimelingCargo.name=Сумка слаймлинга
+item.key.T2.name=Ключ от подземелья 2-ого уровня
+item.compressedDesh.name=Сжатая деш
+item.spaceshipTier2.cargoRocket.name=Грузовая ракета
 
 # TOOLS
 item.deshPick.name=Кирка из деш
@@ -22,98 +21,68 @@ item.deshSword.name=Меч из деш
 
 # ARMOR
 item.deshHelmet.name=Шлем из деш
-item.deshChestplate.name=Кира�?а из деш
+item.deshChestplate.name=Кираса из деш
 item.deshLeggings.name=Поножи из деш
 item.deshBoots.name=Ботинки из деш
 
 # BLOCKS
 tile.mars.deshmars.name=Руда деш
-tile.mars.coppermars.name=Медна�? руда
-tile.mars.tinmars.name=Олов�?нна�? руда
-tile.mars.ironmars.name=Железна�? руда
-tile.mars.marscobblestone.name=Мар�?иан�?кий булыжник
-tile.mars.marsstone.name=Мар�?иан�?кий камень
-tile.mars.marsdirt.name=Мар�?иан�?кий грунт
-tile.mars.marsgrass.name=Мар�?иан�?кий дёрн
+tile.mars.coppermars.name=Медная руда
+tile.mars.tinmars.name=Оловянная руда
+tile.mars.ironmars.name=Железная руда
+tile.mars.marscobblestone.name=Марсианский булыжник
+tile.mars.marsstone.name=Марсианский камень
+tile.mars.marsdirt.name=Марсианский грунт
+tile.mars.marsgrass.name=Марсианский дёрн
 tile.mars.marsdeco.name=Декоративный блок деш
-tile.mars.marsdungeon.name=Стена подземель�?
-tile.treasureT2.name=Сундук �? �?окровищами 2-ого уровн�?
-tile.slimelingEgg.redEgg.name=Кра�?ное �?йцо �?лаймлинга
-tile.slimelingEgg.blueEgg.name=Синее �?йцо �?лаймлинга
-tile.slimelingEgg.yellowEgg.name=Жёлтое �?йцо �?лаймлинга
+tile.mars.marsdungeon.name=Стена подземелья
+tile.treasureT2.name=Сундук с сокровищами 2-ого уровня
+tile.slimelingEgg.redEgg.name=Красное яйцо слаймлинга
+tile.slimelingEgg.blueEgg.name=Синее яйцо слаймлинга
+tile.slimelingEgg.yellowEgg.name=Жёлтое яйцо слаймлинга
 tile.marsMachine.0.name=Терраформер
-tile.marsMachine.1.name=Криогенна�? камера
-tile.marsMachine.2.name=Контроллер запу�?ка
-tile.sludge.name=Бактериальный о�?адкок
+tile.marsMachine.1.name=Криогенная камера
+tile.marsMachine.2.name=Контроллер запуска
+tile.sludge.name=Бактериальный осадкок
 tile.creeperEgg.name=Яйцо крипера
 tile.cavernVines.name=Пещерные лианы
-tile.tintedGlassPane.white.name=Бела�? окрашенна�? �?текл�?нна�? панель
-tile.tintedGlassPane.orange.name=Оранжева�? окрашенна�? �?текл�?нна�? панель
-tile.tintedGlassPane.magenta.name=Сиренева�? окрашенна�? �?текл�?нна�? панель
-tile.tintedGlassPane.light_blue.name=Светло-�?ин�?�? окрашенна�? �?текл�?нна�? панель
-tile.tintedGlassPane.yellow.name=Жёлта�? окрашенна�? �?текл�?нна�? панель
-tile.tintedGlassPane.lime.name=Лаймова�? окрашенна�? �?текл�?нна�? панель
-tile.tintedGlassPane.pink.name=Розова�? окрашенна�? �?текл�?нна�? панель
-tile.tintedGlassPane.gray.name=Сера�? окрашенна�? �?текл�?нна�? панель
-tile.tintedGlassPane.silver.name=Светло-�?ера�? окрашенна�? �?текл�?нна�? панель
-tile.tintedGlassPane.cyan.name=Бирюзова�? окрашенна�? �?текл�?нна�? панель
-tile.tintedGlassPane.purple.name=Фиолетова�? окрашенна�? �?текл�?нна�? панель
-tile.tintedGlassPane.blue.name=Син�?�? окрашенна�? �?текл�?нна�? панель
-tile.tintedGlassPane.brown.name=Коричнева�? окрашенна�? �?текл�?нна�? панель
-tile.tintedGlassPane.green.name=Зелёна�? окрашенна�? �?текл�?нна�? панель
-tile.tintedGlassPane.red.name=Кра�?на�? окрашенна�? �?текл�?нна�? панель
-tile.tintedGlassPane.black.name=Чёрна�? окрашенна�? �?текл�?нна�? панель
+tile.tintedGlassPane.white.name=Белая окрашенная стеклянная панель
+tile.tintedGlassPane.orange.name=Оранжевая окрашенная стеклянная панель
+tile.tintedGlassPane.magenta.name=Сиреневая окрашенная стеклянная панель
+tile.tintedGlassPane.light_blue.name=Светло-синяя окрашенная стеклянная панель
+tile.tintedGlassPane.yellow.name=Жёлтая окрашенная стеклянная панель
+tile.tintedGlassPane.lime.name=Лаймовая окрашенная стеклянная панель
+tile.tintedGlassPane.pink.name=Розовая окрашенная стеклянная панель
+tile.tintedGlassPane.gray.name=Серая окрашенная стеклянная панель
+tile.tintedGlassPane.silver.name=Светло-серая окрашенная стеклянная панель
+tile.tintedGlassPane.cyan.name=Бирюзовая окрашенная стеклянная панель
+tile.tintedGlassPane.purple.name=Фиолетовая окрашенная стеклянная панель
+tile.tintedGlassPane.blue.name=Синяя окрашенная стеклянная панель
+tile.tintedGlassPane.brown.name=Коричневая окрашенная стеклянная панель
+tile.tintedGlassPane.green.name=Зелёная окрашенная стеклянная панель
+tile.tintedGlassPane.red.name=Красная окрашенная стеклянная панель
+tile.tintedGlassPane.black.name=Чёрная окрашенная стеклянная панель
 
 # GUI
-gui.choosePlanet.desc.mars=Обитаем#Ки�?лород от�?ут�?твует#Гравитаци�?: 38%
-item.deshPickSlime.description.name=Может �?обирать �?лизь �? �?иц �?лаймлинга
-gui.message.noEnergy.name=Not Enough Energy ##NEEDS TRANSLATE##
-gui.message.noWater.name=Not Enough Water ##NEEDS TRANSLATE##
-gui.message.noBonemeal.name=Not Enough Bonemeal ##NEEDS TRANSLATE##
-gui.message.noSeeds.name=Not Enough Seeds ##NEEDS TRANSLATE##
-gui.message.noSaplings.name=Not Enough Saplings ##NEEDS TRANSLATE##
-gui.message.bubbleExp.name=BubbleExpanding ##NEEDS TRANSLATE##
-gui.message.noValidBlocks.name=No Valid Blocks in Bubble ##NEEDS TRANSLATE##
-gui.message.terraforming.name=Terraforming ##NEEDS TRANSLATE##
-gui.message.enableTrees.name=Enable Trees ##NEEDS TRANSLATE##
-gui.message.enableGrass.name=Enable Grass ##NEEDS TRANSLATE##
-gui.message.trees.name=Trees ##NEEDS TRANSLATE##
-gui.message.grass.name=Grass ##NEEDS TRANSLATE##
-gui.message.invalidFreq.name=Invalid Frequency ##NEEDS TRANSLATE##
-gui.message.frequency.name=Frequency ##NEEDS TRANSLATE##
-gui.message.destFrequency.name=Destination Frequency ##NEEDS TRANSLATE##
-gui.message.removePad.name=Remove Pad ##NEEDS TRANSLATE##
-gui.message.launchWhen.name=Launch When ##NEEDS TRANSLATE##
-gui.message.cargoUnloaded.name=Cargo is Unloaded ##NEEDS TRANSLATE##
-gui.message.cargoFull.name=Cargo is Full ##NEEDS TRANSLATE##
-gui.message.fullyFueled.name=Fully Fueled ##NEEDS TRANSLATE##
-gui.message.instant.name=Instantly ##NEEDS TRANSLATE##
-gui.message.tenSec.name=10 Seconds ##NEEDS TRANSLATE##
-gui.message.thirtySec.name=30 Seconds ##NEEDS TRANSLATE##
-gui.message.oneMin.name=1 Minute ##NEEDS TRANSLATE##
-gui.message.redstoneSig.name=Redstone Signal ##NEEDS TRANSLATE##
-gui.message.notSet.name=Not Set ##NEEDS TRANSLATE##
-gui.message.notEnough.name=Not Enough ##NEEDS TRANSLATE##
-gui.message.success.name=Success ##NEEDS TRANSLATE##
+gui.choosePlanet.desc.mars=Обитаем#Кислород отсутствует#Гравитация: 38%
+item.deshPickSlime.description.name=Может собирать слизь с яиц слаймлинга
 
 gui.desc.reinforcedPlateT2.name=2 уровень
 
-itemGroup.GalacticraftMars=Galacticraft: Мар�?
+itemGroup.GalacticraftMars=Galacticraft: Марс
 
-dimension.Mars.name=Мар�?
-planet.mars=Mars ##NEEDS TRANSLATE##
+dimension.Mars.name=Марс
 
 # Schematics
-schematic.rocketT3.name=Ракета 3-его уровн�?
-schematic.cargoRocket.name=�?втоматиче�?ка�? грузова�? ракета
+schematic.rocketT3.name=Ракета 3-его уровня
+schematic.cargoRocket.name=Автоматическая грузовая ракета
 
 # Entities
 entity.Sludgeling.name=Сладжлинг
 entity.Slimeling.name=Слаймлинг
-entity.CreeperBoss.name=Эволюционировавший крипер-бо�?�?
-entity.SpaceshipT2.name=Ракета 2-ого уровн�?
-entity.CargoRocket.name=Грузова�? ракета
+entity.CreeperBoss.name=Эволюционировавший крипер-босс
+entity.SpaceshipT2.name=Ракета 2-ого уровня
+entity.CargoRocket.name=Грузовая ракета
 
 # Container
-container.launchcontroller.name=Контроллер запу�?ка
-container.tileTerraformer.name=Terraformer ##NEEDS TRANSLATE##
+container.launchcontroller.name=Контроллер запуска

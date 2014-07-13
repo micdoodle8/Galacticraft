@@ -3,7 +3,7 @@
 # GENERAL ITEMS
 item.meteoricIronRaw.name=Nezpracované meteorické železo
 item.meteoric_iron_ingot.name=Ingot meteorického železa
-item.compressedMeteoricIron.name=Stla�?ené meteorické železo
+item.compressedMeteoricIron.name=Stlačené meteorické železo
 
 # FOOD
 item.cheeseCurd.name=Kousek sýra
@@ -16,7 +16,7 @@ item.cheeseBlock.name=Sýr
 # BLOCKS
 tile.moonBlock.moonstone.name=Kámen
 tile.moonBlock.moondirt.name=Hlína
-tile.moonBlock.moongrass.name=Měsí�?ní povrh
+tile.moonBlock.moongrass.name=Měsíční povrh
 tile.moonBlock.tinmoon.name=Cínová ruda
 tile.moonBlock.coppermoon.name=Měděná ruda
 tile.moonBlock.cheesestone.name=Sýrová ruda
