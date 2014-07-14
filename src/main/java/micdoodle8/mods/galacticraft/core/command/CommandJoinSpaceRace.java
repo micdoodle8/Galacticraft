@@ -13,6 +13,12 @@ import net.minecraft.command.WrongUsageException;
 
 public class CommandJoinSpaceRace extends CommandBase
 {
+    @Override
+    public int getRequiredPermissionLevel()
+    {
+        return 0;
+    }
+
 	@Override
 	public String getCommandUsage(ICommandSender var1)
 	{
