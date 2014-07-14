@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.mars.entities;
 
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;

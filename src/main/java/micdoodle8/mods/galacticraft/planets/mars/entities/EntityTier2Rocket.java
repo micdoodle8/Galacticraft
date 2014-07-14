@@ -302,7 +302,7 @@ public class EntityTier2Rocket extends EntityTieredRocket
 	@Override
 	public int getPreLaunchWait()
 	{
-		return 400;
+		return 200;
 	}
 
 	@Override

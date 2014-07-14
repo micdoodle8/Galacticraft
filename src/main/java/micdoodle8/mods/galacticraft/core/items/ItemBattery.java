@@ -36,10 +36,4 @@ public class ItemBattery extends ItemElectric
 	{
 		return 50000;
 	}
-
-	@Override
-	public float getVoltage(ItemStack itemStack)
-	{
-		return 120;
-	}
 }

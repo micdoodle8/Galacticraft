@@ -59,7 +59,7 @@ public interface IItemElectric
 	public float getTransfer(ItemStack itemStack);
 
 	/**
-	 * @return The voltage in which this item runs on.
+	 * @return The voltage tier this item runs on.
 	 */
-	public float getVoltage(ItemStack itemStack);
+	public int getTier(ItemStack itemStack);
 }

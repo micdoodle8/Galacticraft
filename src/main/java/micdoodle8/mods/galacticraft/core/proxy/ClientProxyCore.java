@@ -526,10 +526,12 @@ public class ClientProxyCore extends CommonProxyCore
 		if (player.ridingEntity instanceof EntityAutoRocket)
 		{
 			EntityAutoRocket entity = (EntityAutoRocket) player.ridingEntity;
+			GL11.glTranslatef(0, - (float) entity.getMountedYOffset() - 1F, 0);
 			float anglePitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * event.partialRenderTick;
 			float angleYaw = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * event.partialRenderTick;
 			GL11.glRotatef(-angleYaw, 0.0F, 1.0F, 0.0F);
 			GL11.glRotatef(anglePitch, 0.0F, 0.0F, 1.0F);
+			GL11.glTranslatef(0, (float) entity.getMountedYOffset() + 1F, 0);
 		}
 
 		//Gravity - freefall - jetpack changes in player model orientation can go here
