@@ -44,15 +44,15 @@ public class BlockFluidGC extends BlockFluidClassic
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int par1, int par2)
 	{
-		return par1 == 0 ? this.stillIcon : this.flowingIcon;
+		return par1 != 0 && par1 != 1 ? this.stillIcon : this.flowingIcon;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
-		this.stillIcon = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + this.fluidName + "_still");
-		this.flowingIcon = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + this.fluidName + "_flow");
+		this.stillIcon = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + this.fluidName + "_flow");
+		this.flowingIcon = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + this.fluidName + "_still");
 		this.fluid.setStillIcon(this.stillIcon);
 		this.fluid.setFlowingIcon(this.flowingIcon);
 	}
