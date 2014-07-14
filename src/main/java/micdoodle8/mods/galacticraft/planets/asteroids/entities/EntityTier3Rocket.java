@@ -192,11 +192,6 @@ public class EntityTier3Rocket extends EntityTieredRocket
 			makeFlame(x2 + d2.x, y2 + d2.y, z2 + d2.z, mv2, this.getLaunched());
 			makeFlame(x2 + d3.x, y2 + d3.y, z2 + d3.z, mv3, this.getLaunched());
 			makeFlame(x2 + d4.x, y2 + d4.y, z2 + d4.z, mv4, this.getLaunched());
-
-			GalacticraftCore.proxy.spawnParticle("blueflame", new Vector3(this.posX + x1 - 0.8, y2, this.posZ + z1), motionVec);
-			GalacticraftCore.proxy.spawnParticle("blueflame", new Vector3(this.posX + x1 + 0.8, y2, this.posZ + z1), motionVec);
-			GalacticraftCore.proxy.spawnParticle("blueflame", new Vector3(this.posX + x1, y2, this.posZ + z1 - 0.8), motionVec);
-			GalacticraftCore.proxy.spawnParticle("blueflame", new Vector3(this.posX + x1, y2, this.posZ + z1 + 0.8), motionVec);
 		}
 	}
 
@@ -320,7 +315,7 @@ public class EntityTier3Rocket extends EntityTieredRocket
 	@Override
 	public int getPreLaunchWait()
 	{
-		return 400;
+		return 200;
 	}
 
 	@Override

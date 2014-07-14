@@ -63,7 +63,7 @@ public class RenderTier3Rocket extends Render
 
         this.rocketModelObj.renderOnly("Boosters", "Rocket");
         Vector3 teamColor = ClientUtil.updateTeamColor(FMLClientHandler.instance().getClient().thePlayer.getCommandSenderName(), true);
-        GL11.glColor3f(teamColor.floatX(), teamColor.floatY(), teamColor.floatZ());
+        if (teamColor != null) GL11.glColor3f(teamColor.floatX(), teamColor.floatY(), teamColor.floatZ());
         this.rocketModelObj.renderPart("NoseCone");
 
         if (FMLClientHandler.instance().getClient().thePlayer.ticksExisted / 10 % 2 < 1)
