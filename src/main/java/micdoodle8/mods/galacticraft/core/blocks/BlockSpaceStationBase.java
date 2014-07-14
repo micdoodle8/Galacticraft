@@ -24,7 +24,7 @@ public class BlockSpaceStationBase extends BlockContainer implements ITileEntity
 	public BlockSpaceStationBase(String assetName)
 	{
 		super(Material.rock);
-		this.setHardness(10000.0F);
+		this.setHardness(-1);
 		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
 		this.setBlockName(assetName);
 	}
