@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityCoalGenerator;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricFurnace;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityEnergyStorageModule;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityIngotCompressor;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityUniversalElectrical;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -315,13 +316,20 @@ public class BlockMachine extends BlockTileGC
 		{
 			change += BlockMachine.COMPRESSOR_METADATA;
 		}
-		else if (metadata >= BlockMachine.ELECTRIC_FURNACE_METADATA)
+		else
 		{
-			change += BlockMachine.ELECTRIC_FURNACE_METADATA;
-		}
-		else if (metadata >= BlockMachine.STORAGE_MODULE_METADATA)
-		{
-			change += BlockMachine.STORAGE_MODULE_METADATA;
+			if (metadata >= BlockMachine.ELECTRIC_FURNACE_METADATA)
+			{
+				change += BlockMachine.ELECTRIC_FURNACE_METADATA;
+			}
+			else if (metadata >= BlockMachine.STORAGE_MODULE_METADATA)
+			{
+				change += BlockMachine.STORAGE_MODULE_METADATA;
+			}
+			
+			TileEntity te = par1World.getTileEntity(x,  y,  z);
+			if (te instanceof TileEntityUniversalElectrical)
+				((TileEntityUniversalElectrical) te).updateFacing();
 		}
 
 		par1World.setBlockMetadataWithNotify(x, y, z, change, 3);

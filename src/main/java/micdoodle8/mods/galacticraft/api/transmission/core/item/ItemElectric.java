@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.api.transmission.core.item;
 
 import micdoodle8.mods.galacticraft.api.transmission.EnergyHelper;
+import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -144,5 +145,17 @@ public abstract class ItemElectric extends Item implements IItemElectric
 	{
 		par3List.add(ElectricItemHelper.getUncharged(new ItemStack(this)));
 		par3List.add(ElectricItemHelper.getWithCharge(new ItemStack(this), this.getMaxElectricityStored(new ItemStack(this))));
+	}
+
+	public static boolean isElectricItem(Item item)
+	{
+		if (item instanceof ItemElectric) return true;
+		
+		if (NetworkConfigHandler.isIndustrialCraft2Loaded())
+		{
+			if (item instanceof ic2.api.item.ISpecialElectricItem) return true;
+		}
+		
+		return false;
 	}
 }

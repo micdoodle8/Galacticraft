@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.planets.mars.tile;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
-import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
+import micdoodle8.mods.galacticraft.api.transmission.core.item.ItemElectric;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockLandingPadFull;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
@@ -357,7 +357,7 @@ public class TileEntityLaunchController extends TileEntityElectricBlock implemen
 	@Override
 	public boolean isItemValidForSlot(int slotID, ItemStack itemStack)
 	{
-		return slotID == 0 && itemStack.getItem() instanceof IItemElectric;
+		return slotID == 0 && ItemElectric.isElectricItem(itemStack.getItem());
 	}
 
 	@Override

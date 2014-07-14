@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import cpw.mods.fml.relauncher.Side;
-import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
+import micdoodle8.mods.galacticraft.api.transmission.core.item.ItemElectric;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemOilCanister;
@@ -344,7 +344,7 @@ public class TileEntityRefinery extends TileEntityElectricBlock implements IInve
 			switch (slotID)
 			{
 			case 0:
-				return ((IItemElectric) itemstack.getItem()).getElectricityStored(itemstack) > 0;
+				return itemstack.getItem() instanceof ItemElectric && ((ItemElectric) itemstack.getItem()).getElectricityStored(itemstack) > 0;
 			case 1:
 				FluidStack stack = FluidContainerRegistry.getFluidForFilledItem(itemstack);
 				return stack != null && stack.getFluid() != null && stack.getFluid().getName().equalsIgnoreCase("oil");
@@ -365,7 +365,7 @@ public class TileEntityRefinery extends TileEntityElectricBlock implements IInve
 			switch (slotID)
 			{
 			case 0:
-				return ((IItemElectric) itemstack.getItem()).getElectricityStored(itemstack) <= 0 || !this.shouldPullEnergy();
+				return itemstack.getItem() instanceof ItemElectric && ((ItemElectric) itemstack.getItem()).getElectricityStored(itemstack) <= 0 || !this.shouldPullEnergy();
 			case 1:
 				return FluidContainerRegistry.isEmptyContainer(itemstack);
 			case 2:
@@ -384,7 +384,7 @@ public class TileEntityRefinery extends TileEntityElectricBlock implements IInve
 		switch (slotID)
 		{
 		case 0:
-			return itemstack.getItem() instanceof IItemElectric;
+			return ItemElectric.isElectricItem(itemstack.getItem());
 		case 1:
 			FluidStack stack = FluidContainerRegistry.getFluidForFilledItem(itemstack);
 			return stack != null && stack.getFluid() != null && stack.getFluid().getName().equalsIgnoreCase("oil") || FluidContainerRegistry.isContainer(itemstack);

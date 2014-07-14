@@ -762,4 +762,18 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 
 		return null;
 	}
+
+	/*
+	 * Compatibility: call this if the facing metadata is updated
+	 */
+	public void updateFacing()
+	{
+		if (NetworkConfigHandler.isIndustrialCraft2Loaded())
+		{
+			//This is the only method I can find to tell IC2 the connection sides have changed
+			//(Maybe there is an internal refresh connections method but it's not in the API) 
+			this.unloadTileIC2();
+			this.initIC();
+		}
+	}
 }

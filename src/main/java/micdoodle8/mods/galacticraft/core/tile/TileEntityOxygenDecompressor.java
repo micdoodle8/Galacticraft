@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
+import micdoodle8.mods.galacticraft.api.transmission.core.item.ItemElectric;
 import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenCompressor;
 import micdoodle8.mods.galacticraft.core.items.ItemOxygenTank;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -207,7 +207,7 @@ public class TileEntityOxygenDecompressor extends TileEntityOxygen implements II
 			case 0:
 				return itemstack.getItemDamage() < itemstack.getMaxDamage();
 			case 1:
-				return ((IItemElectric) itemstack.getItem()).getElectricityStored(itemstack) > 0;
+				return itemstack.getItem() instanceof ItemElectric && ((ItemElectric) itemstack.getItem()).getElectricityStored(itemstack) > 0;
 			default:
 				return false;
 			}
@@ -225,7 +225,7 @@ public class TileEntityOxygenDecompressor extends TileEntityOxygen implements II
 			case 0:
 				return itemstack.getItemDamage() == itemstack.getMaxDamage();
 			case 1:
-				return ((IItemElectric) itemstack.getItem()).getElectricityStored(itemstack) <= 0;
+				return itemstack.getItem() instanceof ItemElectric && ((ItemElectric) itemstack.getItem()).getElectricityStored(itemstack) <= 0;
 			default:
 				return false;
 			}
@@ -241,7 +241,7 @@ public class TileEntityOxygenDecompressor extends TileEntityOxygen implements II
 		case 0:
 			return itemstack.getItem() instanceof ItemOxygenTank;
 		case 1:
-			return itemstack.getItem() instanceof IItemElectric;
+			return ItemElectric.isElectricItem(itemstack.getItem());
 		}
 
 		return false;

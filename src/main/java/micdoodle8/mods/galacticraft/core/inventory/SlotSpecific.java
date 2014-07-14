@@ -1,5 +1,10 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
+import micdoodle8.mods.galacticraft.api.transmission.core.item.ItemElectric;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -32,6 +37,19 @@ public class SlotSpecific extends Slot
 	public SlotSpecific(IInventory par2IInventory, int par3, int par4, int par5, Class... validClasses)
 	{
 		super(par2IInventory, par3, par4, par5);
+		if (validClasses != null && Arrays.asList(validClasses).contains(ItemElectric.class))
+		{
+			if (NetworkConfigHandler.isIndustrialCraft2Loaded())
+			{
+				System.out.println("Adding IC2 item to slot validity.");
+				try {
+					Class<?> itemElectricIC2 = Class.forName("ic2.api.item.ISpecialElectricItem");
+					ArrayList<Class> existing = new ArrayList(Arrays.asList(validClasses));
+					existing.add(itemElectricIC2);
+					validClasses = existing.toArray(new Class[existing.size()]);
+				} catch (Exception e) { e.printStackTrace(); }
+			}
+		}
 		this.setClasses(validClasses);
 	}
 

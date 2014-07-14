@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.api.recipe.CircuitFabricatorRecipes;
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
+import micdoodle8.mods.galacticraft.api.transmission.core.item.ItemElectric;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCircuitFabricator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -26,7 +27,7 @@ public class ContainerCircuitFabricator extends Container
 		this.tileEntity = tileEntity;
 
 		// Energy slot
-		this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 6, 69, IItemElectric.class));
+		this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 6, 69, ItemElectric.class));
 
 		// Diamond
 		ArrayList<ItemStack> slotContentsList = CircuitFabricatorRecipes.slotValidItems.get(0);
