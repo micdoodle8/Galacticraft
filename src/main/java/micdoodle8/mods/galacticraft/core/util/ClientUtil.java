@@ -45,6 +45,6 @@ public class ClientUtil
 			ClientProxyCore.flagRequestsSent.add(playerName);
 		}
 
-		return null;
+		return new Vector3(1, 1, 1);
 	}
 }
