@@ -1,12 +1,28 @@
 # Galacticraft Asteroids Language File = GERMANY GERMAN
 
-item.itemTier3Rocket.t3Rocket.name=Tier 3 Rocket ##NEEDS TRANSLATE##
-tile.asteroidsBlock.asteroids1.name=Asteroid Rock ##NEEDS TRANSLATE##
-tile.beamReflector.name=Beam Reflector ##NEEDS TRANSLATE##
-tile.beamReceiver.name=Beam Receiver ##NEEDS TRANSLATE##
-tile.telepadShort.name=Short Range Telepad ##NEEDS TRANSLATE##
-planet.asteroids=Asteroids ##NEEDS TRANSLATE##
-itemGroup.GalacticraftAsteroids=Galacticraft Asteroids ##NEEDS TRANSLATE##
-entity.SmallAsteroidGC.name=Small Asteroid ##NEEDS TRANSLATE##
-entity.GrappleHookGC.name=Grapple Hook ##NEEDS TRANSLATE##
-entity.Tier3RocketGC.name=Tier 3 Rocket ##NEEDS TRANSLATE##
+# GENERAL ITEMS
+item.itemTier3Rocket.t3Rocket.name=Rakete (Stufe 3)
+
+# TOOLS
+
+# ARMOR
+
+# BLOCKS
+tile.asteroidsBlock.asteroids1.name=Asteroidgestein
+tile.beamReflector.name=Strahlenreflektor
+tile.beamReceiver.name=Strahlenempfänger
+tile.telepadShort.name=Kurzreichweiten-Telepad
+
+# GUI
+planet.asteroids=Asteroiden
+
+itemGroup.GalacticraftAsteroids=Galacticraft: Asteroiden
+
+# Schematics
+
+# Entity
+entity.SmallAsteroidGC.name=Kleiner Asteroid
+entity.GrappleHookGC.name=Fanghaken
+entity.Tier3RocketGC.name=Rakete (Stufe 3)
+
+# Container
