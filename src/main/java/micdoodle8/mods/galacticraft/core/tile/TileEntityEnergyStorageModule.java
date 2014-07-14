@@ -301,7 +301,7 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 
 		int metadata = this.getBlockMetadata() - BlockMachine.STORAGE_MODULE_METADATA;
 
-		return direction == ForgeDirection.getOrientation(metadata + 2);
+		return direction == ForgeDirection.getOrientation(metadata + 2) || direction == ForgeDirection.getOrientation((metadata + 2) ^ 1);
 	}
 
 	//	@Override
