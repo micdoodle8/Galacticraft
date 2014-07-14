@@ -71,7 +71,10 @@ import net.minecraftforge.common.DimensionManager;
 import org.lwjgl.input.Keyboard;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class PacketSimple extends Packet implements IPacket
 {
@@ -107,7 +110,8 @@ public class PacketSimple extends Packet implements IPacket
         C_UPDATE_DIMENSION_LIST(Side.CLIENT, String.class, String.class),
         C_SPAWN_SPARK_PARTICLES(Side.CLIENT, Integer.class, Integer.class, Integer.class),
         C_UPDATE_GEAR_SLOT(Side.CLIENT, String.class, Integer.class, Integer.class),
-        C_CLOSE_GUI(Side.CLIENT), C_RESET_THIRD_PERSON(Side.CLIENT, String.class),
+        C_CLOSE_GUI(Side.CLIENT),
+        C_RESET_THIRD_PERSON(Side.CLIENT),
         C_UPDATE_SPACESTATION_LIST(Side.CLIENT, Integer[].class),
         C_UPDATE_SPACESTATION_DATA(Side.CLIENT, Integer.class, NBTTagCompound.class),
         C_UPDATE_SPACESTATION_CLIENT_ID(Side.CLIENT, Integer.class),
