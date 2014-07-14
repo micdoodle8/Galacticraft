@@ -4,11 +4,11 @@
 item.rawDesh.name=Unraffiniertes Desh
 item.deshStick.name=Desh-Stock
 item.ingotDesh.name=Desh-Barren
-item.spaceshipTier2.t2Rocket.name=Stufe-2-Rakete
+item.spaceshipTier2.t2Rocket.name=Rakete (Stufe 2)
 item.reinforcedPlateT2.name=Robuste Platte
 item.tier2.desc=Stufe 2
 item.slimelingCargo.name=Schleimling-Inventarbeutel
-item.key.T2.name=Stufe 2 Dungeonschlüssel
+item.key.T2.name=Dungeonschlüssel (Stufe 2)
 item.compressedDesh.name=Gepresstes Desh
 item.spaceshipTier2.cargoRocket.name=Güterrakete
 
@@ -31,12 +31,12 @@ tile.mars.coppermars.name=Kupfererz
 tile.mars.tinmars.name=Zinnerz
 tile.mars.ironmars.name=Eisenerz
 tile.mars.marscobblestone.name=Pflasterstein
-tile.mars.marsstone.name=Stein
-tile.mars.marsdirt.name=Erde
-tile.mars.marsgrass.name=Gras
+tile.mars.marsstone.name=Marsgestein
+tile.mars.marsdirt.name=Marsniederoberflächengestein
+tile.mars.marsgrass.name=Marsoberflächengestein
 tile.mars.marsdeco.name=Desh-Dekorationsblock
 tile.mars.marsdungeon.name=Dungeonwand
-tile.treasureT2.name=Stufe-2-Schatzkiste
+tile.treasureT2.name=Schatztruhe (Stufe 2)
 tile.slimelingEgg.redEgg.name=Rotes Schleimling-Ei
 tile.slimelingEgg.blueEgg.name=Blaues Schleimling-Ei
 tile.slimelingEgg.yellowEgg.name=Gelbes Schleimling-Ei
@@ -66,47 +66,47 @@ tile.tintedGlassPane.black.name=Schwarz getönte Glasscheibe
 # GUI
 gui.choosePlanet.desc.mars=Bewohnbar#Kein SauerstoffSchwerkraft: 38%
 item.deshPickSlime.description.name=Kann Schleimling-Eier ernten
-gui.message.noEnergy.name=Not Enough Energy ##NEEDS TRANSLATE##
-gui.message.noWater.name=Not Enough Water ##NEEDS TRANSLATE##
-gui.message.noBonemeal.name=Not Enough Bonemeal ##NEEDS TRANSLATE##
-gui.message.noSeeds.name=Not Enough Seeds ##NEEDS TRANSLATE##
-gui.message.noSaplings.name=Not Enough Saplings ##NEEDS TRANSLATE##
-gui.message.bubbleExp.name=BubbleExpanding ##NEEDS TRANSLATE##
-gui.message.noValidBlocks.name=No Valid Blocks in Bubble ##NEEDS TRANSLATE##
-gui.message.terraforming.name=Terraforming ##NEEDS TRANSLATE##
-gui.message.enableTrees.name=Enable Trees ##NEEDS TRANSLATE##
-gui.message.enableGrass.name=Enable Grass ##NEEDS TRANSLATE##
-gui.message.trees.name=Trees ##NEEDS TRANSLATE##
-gui.message.grass.name=Grass ##NEEDS TRANSLATE##
-gui.message.invalidFreq.name=Invalid Frequency ##NEEDS TRANSLATE##
-gui.message.frequency.name=Frequency ##NEEDS TRANSLATE##
-gui.message.destFrequency.name=Destination Frequency ##NEEDS TRANSLATE##
-gui.message.removePad.name=Remove Pad ##NEEDS TRANSLATE##
-gui.message.launchWhen.name=Launch When ##NEEDS TRANSLATE##
-gui.message.cargoUnloaded.name=Cargo is Unloaded ##NEEDS TRANSLATE##
-gui.message.cargoFull.name=Cargo is Full ##NEEDS TRANSLATE##
-gui.message.fullyFueled.name=Fully Fueled ##NEEDS TRANSLATE##
-gui.message.instant.name=Instantly ##NEEDS TRANSLATE##
-gui.message.tenSec.name=10 Seconds ##NEEDS TRANSLATE##
-gui.message.thirtySec.name=30 Seconds ##NEEDS TRANSLATE##
-gui.message.oneMin.name=1 Minute ##NEEDS TRANSLATE##
-gui.message.redstoneSig.name=Redstone Signal ##NEEDS TRANSLATE##
-gui.message.notSet.name=Not Set ##NEEDS TRANSLATE##
-gui.message.notEnough.name=Not Enough ##NEEDS TRANSLATE##
-gui.message.success.name=Success ##NEEDS TRANSLATE##
+gui.message.noEnergy.name=Nicht genügend Energie
+gui.message.noWater.name=Nicht genügend Wasser
+gui.message.noBonemeal.name=Nicht genügend Knochenmehl
+gui.message.noSeeds.name=Nicht genügend Samen
+gui.message.noSaplings.name=Nicht genügend Setzlinge
+gui.message.bubbleExp.name=Blasenexpansion
+gui.message.noValidBlocks.name=Keine gültigen Blöcke in Blase
+gui.message.terraforming.name=Terraforming
+gui.message.enableTrees.name=Aktiviere Bäume
+gui.message.enableGrass.name=Aktiviere Gras
+gui.message.trees.name=Bäume
+gui.message.grass.name=Gras
+gui.message.invalidFreq.name=Ungültige Frequenz
+gui.message.frequency.name=Frequenz
+gui.message.destFrequency.name=Zielfrequenz
+gui.message.removePad.name=Rampe entfernen
+gui.message.launchWhen.name=Starte
+gui.message.cargoUnloaded.name=wenn Fracht entladen wurde
+gui.message.cargoFull.name=wenn Frachtraum voll ist
+gui.message.fullyFueled.name=wenn vollgetankt wurde
+gui.message.instant.name=sofort
+gui.message.tenSec.name=10 Sekunden
+gui.message.thirtySec.name=30 Sekunden
+gui.message.oneMin.name=1 Minute
+gui.message.redstoneSig.name=Redstone-Signal
+gui.message.notSet.name=Nicht eingestellt
+gui.message.notEnough.name=Nicht genug
+gui.message.success.name=Erfolg
 
 gui.desc.reinforcedPlateT2.name=Stufe 2
 
 itemGroup.GalacticraftMars=Galacticraft Mars
 
 dimension.Mars.name=Mars
-planet.mars=Mars ##NEEDS TRANSLATE##
+planet.mars=Mars
 
 # Schematics
-schematic.rocketT3.name=Stufe-3-Rakete
+schematic.rocketT3.name=Rakete (Stufe 3)
 schematic.cargoRocket.name=Automatische Güterrakete
 
-# Entity
+# Entities
 entity.Sludgeling.name=Schlammling
 entity.Slimeling.name=Schleimling
 entity.CreeperBoss.name=Entwickelter Creeper-Boss
