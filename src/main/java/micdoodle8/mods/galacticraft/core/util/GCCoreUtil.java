@@ -5,7 +5,7 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.EntityLander;
+import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerBuggy;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerParaChest;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
@@ -45,7 +45,7 @@ public class GCCoreUtil
 		player.openContainer.addCraftingToCrafters(player);
 	}
 
-	public static void openParachestInv(EntityPlayerMP player, EntityLander landerInv)
+	public static void openParachestInv(EntityPlayerMP player, EntityLanderBase landerInv)
 	{
 		player.getNextWindowId();
 		player.closeContainer();

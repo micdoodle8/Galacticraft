@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
 import com.mojang.authlib.GameProfile;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
@@ -16,7 +17,7 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
-import micdoodle8.mods.galacticraft.core.entities.EntityLander;
+import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.core.entities.EntityMeteor;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP.ThermalArmorEvent.ArmorAddResult;
 import micdoodle8.mods.galacticraft.core.event.EventWakePlayer;
@@ -568,7 +569,7 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 
 		final int drainSpacing = OxygenUtil.getDrainSpacing(tankInSlot, tankInSlot2);
 
-		if (this.worldObj.provider instanceof IGalacticraftWorldProvider && !((IGalacticraftWorldProvider) this.worldObj.provider).hasBreathableAtmosphere() && !this.capabilities.isCreativeMode && !(this.ridingEntity instanceof EntityLander) && !(this.ridingEntity instanceof EntityAutoRocket))
+		if (this.worldObj.provider instanceof IGalacticraftWorldProvider && !((IGalacticraftWorldProvider) this.worldObj.provider).hasBreathableAtmosphere() && !this.capabilities.isCreativeMode && !(this.ridingEntity instanceof EntityLanderBase) && !(this.ridingEntity instanceof EntityAutoRocket))
 		{
 			if (tankInSlot == null)
 			{
