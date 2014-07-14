@@ -16,6 +16,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
+import ic2.api.energy.tile.IEnergyAcceptor;
+import ic2.api.energy.tile.IEnergySink;
 
 import java.util.*;
 
@@ -247,7 +249,7 @@ public class UniversalNetwork implements IElectricityNetwork
 		List<TileEntity> ignored = Arrays.asList(ignoreTiles);
 
 		//boolean isTELoaded = NetworkConfigHandler.isThermalExpansionLoaded();
-		//boolean isIC2Loaded = NetworkConfigHandler.isIndustrialCraft2Loaded();
+		boolean isIC2Loaded = NetworkConfigHandler.isIndustrialCraft2Loaded();
 		//boolean isBCLoaded = NetworkConfigHandler.isBuildcraftLoaded();
 		//boolean isMekLoaded = NetworkConfigHandler.isMekanismLoaded();
 
@@ -276,12 +278,13 @@ public class UniversalNetwork implements IElectricityNetwork
 					else if (isTELoaded && acceptor instanceof IEnergyHandler)
 					{
 						e = ((IEnergyHandler) acceptor).receiveEnergy(sideFrom, Integer.MAX_VALUE, true) * NetworkConfigHandler.TE_RATIO;
-					}
+					}*/
 					else if (isIC2Loaded && acceptor instanceof IEnergySink)
 					{
-						e = (float) Math.min(((IEnergySink) acceptor).demandedEnergyUnits(), ((IEnergySink)acceptor).getMaxSafeInput()) * NetworkConfigHandler.IC2_RATIO;
+						//For 1.7.10 - e = ((float) ((IEnergySink) acceptor).getDemandedEnergy()) * NetworkConfigHandler.IC2_RATIO;
+						e = ((float) ((IEnergySink) acceptor).demandedEnergyUnits()) * NetworkConfigHandler.IC2_RATIO;
 					}
-					else if (isBCLoaded && acceptor instanceof IPowerReceptor)
+					/*else if (isBCLoaded && acceptor instanceof IPowerReceptor)
 					{
 						e = ((IPowerReceptor) acceptor).getPowerReceiver(sideFrom).powerRequest() * NetworkConfigHandler.BC3_RATIO;
 					}*/
@@ -319,7 +322,7 @@ public class UniversalNetwork implements IElectricityNetwork
 		if (!this.availableAcceptors.isEmpty())
 		{
 			//boolean isTELoaded = NetworkConfigHandler.isThermalExpansionLoaded();
-			//boolean isIC2Loaded = NetworkConfigHandler.isIndustrialCraft2Loaded();
+			boolean isIC2Loaded = NetworkConfigHandler.isIndustrialCraft2Loaded();
 			//boolean isBCLoaded = NetworkConfigHandler.isBuildcraftLoaded();
 			//boolean isMekLoaded = NetworkConfigHandler.isMekanismLoaded();
 
@@ -378,6 +381,12 @@ public class UniversalNetwork implements IElectricityNetwork
 				if (tileEntity instanceof IElectrical)
 				{
 					sentToAcceptor = ((IElectrical) tileEntity).receiveElectricity(sideFrom, currentSending, true);
+				}
+				else if (isIC2Loaded && tileEntity instanceof IEnergySink)
+				{
+					//For 1.7.10 - sentToAcceptor = currentSending - ((float) ((IEnergySink) tileEntity).injectEnergy(sideFrom, currentSending * NetworkConfigHandler.TO_IC2_RATIO, 120)) * NetworkConfigHandler.IC2_RATIO;
+					sentToAcceptor = currentSending - ((float) ((IEnergySink) tileEntity).injectEnergyUnits(sideFrom, currentSending * NetworkConfigHandler.TO_IC2_RATIO)) * NetworkConfigHandler.IC2_RATIO;
+					if (sentToAcceptor < 0F) sentToAcceptor = 0F;
 				}
 				else
 				{
@@ -468,7 +477,7 @@ public class UniversalNetwork implements IElectricityNetwork
 		try
 		{
 			//boolean isTELoaded = NetworkConfigHandler.isThermalExpansionLoaded();
-			//boolean isIC2Loaded = NetworkConfigHandler.isIndustrialCraft2Loaded();
+			boolean isIC2Loaded = NetworkConfigHandler.isIndustrialCraft2Loaded();
 			//boolean isBCLoaded = NetworkConfigHandler.isBuildcraftLoaded();
 			//boolean isMekLoaded = NetworkConfigHandler.isMekanismLoaded();
 
@@ -511,7 +520,7 @@ public class UniversalNetwork implements IElectricityNetwork
 								this.connectedAcceptors.add(acceptor);
 								this.connectedDirections.add(sideFrom);
 							}
-						}
+						}*/
 						else if (isIC2Loaded && acceptor instanceof IEnergyAcceptor)
 						{
 							if(((IEnergyAcceptor)acceptor).acceptsEnergyFrom((TileEntity) conductor, sideFrom))
@@ -520,7 +529,7 @@ public class UniversalNetwork implements IElectricityNetwork
 								this.connectedDirections.add(sideFrom);
 							}
 						}
-						else if (isBCLoaded && acceptor instanceof IPowerReceptor)
+						/*else if (isBCLoaded && acceptor instanceof IPowerReceptor)
 						{
 							if (((IPowerReceptor) acceptor).getPowerReceiver(sideFrom) != null)
 							{

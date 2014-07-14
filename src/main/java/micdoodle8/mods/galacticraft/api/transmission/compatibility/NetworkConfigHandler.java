@@ -59,6 +59,9 @@ public class NetworkConfigHandler
 	 * Oxygen gas used when Mekanism is loaded. Always null otherwise.
 	 */
 	public static Object gasOxygen = null;
+	
+	private static boolean cachedIC2Loaded = false;
+	private static boolean cachedIC2LoadedValue = false;
 
 	/** You must call this function to enable the Universal Network module. */
 	public static void setDefaultValues(File file)
@@ -100,7 +103,13 @@ public class NetworkConfigHandler
 	/** Checks using the FML loader too see if IC2 is loaded */
 	public static boolean isIndustrialCraft2Loaded()
 	{
-		return Loader.isModLoaded("IC2");
+		if (!cachedIC2Loaded)
+		{
+			cachedIC2Loaded = true;
+			cachedIC2LoadedValue = Loader.isModLoaded("IC2");
+		}
+	
+		return cachedIC2LoadedValue;		
 	}
 
 	/** Checks using the FML loader too see if BC3 is loaded */

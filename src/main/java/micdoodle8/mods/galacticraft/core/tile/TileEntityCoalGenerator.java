@@ -2,11 +2,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
-import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
-import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
-import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.core.blocks.BlockMachine;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
@@ -17,7 +13,6 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.EnumSet;
@@ -276,6 +271,7 @@ public class TileEntityCoalGenerator extends TileEntityUniversalElectrical imple
 		return 0;
 	}
 
+	/*
 	@Override
 	public float getRequest(ForgeDirection direction)
 	{
@@ -298,6 +294,7 @@ public class TileEntityCoalGenerator extends TileEntityUniversalElectrical imple
 
 		return this.generateWatts < TileEntityCoalGenerator.MIN_GENERATE_WATTS ? 0F : this.generateWatts;
 	}
+	*/
 
 	@Override
 	public EnumSet<ForgeDirection> getElectricalInputDirections()
