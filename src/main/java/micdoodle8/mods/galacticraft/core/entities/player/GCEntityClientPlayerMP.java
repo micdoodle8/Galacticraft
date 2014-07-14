@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
+import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.core.event.EventWakePlayer;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockLandingPad;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
@@ -154,6 +155,13 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 
 		return super.getTextureCape();
 	}
+
+    @Override
+    public boolean isEntityInsideOpaqueBlock()
+    {
+
+        return !(this.ridingEntity instanceof EntityLanderBase) && super.isEntityInsideOpaqueBlock();
+    }
 
 	@Override
 	public void onDeath(DamageSource var1)

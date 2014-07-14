@@ -34,6 +34,7 @@ import org.lwjgl.input.Keyboard;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, IDockable, IControllableEntity, IEntityFullSync
 {
@@ -817,4 +818,15 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
 	{
 		return true;
 	}
+
+    @Override
+    public UUID getOwnerUUID()
+    {
+        if (this.riddenByEntity != null && !(this.riddenByEntity instanceof EntityPlayer))
+        {
+            return null;
+        }
+
+        return this.riddenByEntity != null ? ((EntityPlayer) this.riddenByEntity).getPersistentID() : null;
+    }
 }

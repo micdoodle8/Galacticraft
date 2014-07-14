@@ -7,7 +7,7 @@ import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
-import micdoodle8.mods.galacticraft.core.entities.EntityLander;
+import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.core.entities.EntityParachest;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
@@ -195,7 +195,7 @@ public class GCPlayerHandler
 				player.sendThermalLevelPacket();		
 			}
 			
-			if (player.ridingEntity instanceof EntityLander)
+			if (player.ridingEntity instanceof EntityLanderBase)
 			{
 				GCPlayer.inLander = true;
 				GCPlayer.justLanded = false;

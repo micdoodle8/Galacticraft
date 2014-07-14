@@ -1,7 +1,8 @@
-package micdoodle8.mods.galacticraft.planets.mars.entities;
+package micdoodle8.mods.galacticraft.core.entities;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -46,19 +47,18 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IP
 
 	protected boolean lastOnGround;
 
-	public EntityAdvancedMotion(World world, double initialSpeed, float yOffset)
+	public EntityAdvancedMotion(World world, float yOffset)
 	{
 		super(world);
 		this.preventEntitySpawning = true;
 		this.ignoreFrustumCheck = true;
 		this.isImmuneToFire = true;
-		this.motionY = initialSpeed;
 		this.yOffset = yOffset;
 	}
 
-	public EntityAdvancedMotion(World world, double initialSpeed, float yOffset, double var2, double var4, double var6)
+	public EntityAdvancedMotion(World world, float yOffset, double var2, double var4, double var6)
 	{
-		this(world, initialSpeed, yOffset);
+		this(world, yOffset);
 		this.yOffset = yOffset;
 		this.setPosition(var2, var4 + this.yOffset, var6);
 	}
@@ -105,7 +105,7 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IP
 		{
 			final double var1 = Math.cos(this.rotationYaw * Math.PI / 180.0D + 114.8) * -0.5D;
 			final double var3 = Math.sin(this.rotationYaw * Math.PI / 180.0D + 114.8) * -0.5D;
-			this.riddenByEntity.setPosition(this.posX + var1, this.posY + this.riddenByEntity.getYOffset(), this.posZ + var3);
+			this.riddenByEntity.setPosition(this.posX + var1, this.posY + this.getMountedYOffset() + this.riddenByEntity.getYOffset(), this.posZ + var3);
 		}
 	}
 
@@ -181,11 +181,6 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IP
 
 				if (!this.worldObj.isRemote)
 				{
-					if (this.riddenByEntity != null)
-					{
-						this.riddenByEntity.mountEntity(this);
-					}
-
 					this.dropItems();
 
 					this.setDead();
@@ -319,16 +314,16 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IP
 				z = this.posZ + this.motionZ;
 				this.setPosition(x, y, z);
 
-				if (this.onGround)
-				{
-					this.motionX *= 0.5D;
-					this.motionY *= 0.5D;
-					this.motionZ *= 0.5D;
-				}
-
-				this.motionX *= 0.9900000095367432D;
-				this.motionY *= 0.949999988079071D;
-				this.motionZ *= 0.9900000095367432D;
+//				if (this.onGround)
+//				{
+//					this.motionX *= 0.5D;
+//					this.motionY *= 0.5D;
+//					this.motionZ *= 0.5D;
+//				}
+//
+//				this.motionX *= 0.9900000095367432D;
+//				this.motionY *= 0.949999988079071D;
+//				this.motionZ *= 0.9900000095367432D;
 			}
 		}
 
@@ -358,9 +353,10 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IP
 
 		if (this.worldObj.isRemote)
 		{
-			this.motionX = this.getMotionVec().x;
-			this.motionY = this.getMotionVec().y;
-			this.motionZ = this.getMotionVec().z;
+            Vector3 mot = this.getMotionVec();
+			this.motionX = mot.x;
+			this.motionY = mot.y;
+			this.motionZ = mot.z;
 			this.moveEntity(this.motionX, this.motionY, this.motionZ);
 		}
 
@@ -383,6 +379,11 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IP
 		{
 			GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 50.0D));
 		}
+
+        if (this.worldObj.isRemote && this.ticks % 5 == 0)
+        {
+            GalacticraftCore.packetPipeline.sendToServer(new PacketDynamic(this));
+        }
 
 		this.prevPosX = this.posX;
 		this.prevPosY = this.posY;

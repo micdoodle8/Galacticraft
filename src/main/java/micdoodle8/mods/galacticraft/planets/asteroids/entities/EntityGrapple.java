@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.entities;
 
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
@@ -150,7 +149,6 @@ public class EntityGrapple extends Entity implements IProjectile
 					double deltaPositionZ = shootingEntity.posZ - shootingEntity.lastTickPosZ;
 					double deltaPositionSqrd = deltaPositionX * deltaPositionX + deltaPositionY * deltaPositionY + deltaPositionZ * deltaPositionZ;
 
-					FMLLog.info("" + deltaPositionSqrd);
 					if (deltaPositionSqrd < 0.01 && this.pullingPlayer)
 					{
 						this.updatePullingEntity(false);
@@ -159,7 +157,6 @@ public class EntityGrapple extends Entity implements IProjectile
 
 					this.pullingPlayer = true;
 				}
-
 			}
 		}
 
