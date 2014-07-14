@@ -62,6 +62,7 @@ public class UniversalNetwork extends ElectricityNetwork
 	private float totalSent = 0F;
 	private boolean doneScheduled = false;
 	private boolean spamstop = false;
+	private boolean loopPrevention = false;
 	
 	/*
 	 * connectedAcceptors is all the acceptors connected to this network
@@ -94,7 +95,9 @@ public class UniversalNetwork extends ElectricityNetwork
 		{	
 			this.tickDone = UniversalNetwork.tickCount;
 			//Start the new tick - initialise everything
-			doTickStartCalc(ignoreTiles);
+			this.ignoreAcceptors.clear();
+			this.ignoreAcceptors.addAll(Arrays.asList(ignoreTiles));
+			doTickStartCalc();
 			
 			if (NetworkConfigHandler.isBuildcraftLoaded())
 			{
@@ -124,6 +127,8 @@ public class UniversalNetwork extends ElectricityNetwork
 	public float produce(ElectricityPack electricity, boolean doReceive, TileEntity... ignoreTiles)
 	{
 		float energyToProduce = electricity.getWatts();
+		
+		if (this.loopPrevention) return energyToProduce;
 
 		if (energyToProduce > 0F)
 		{
@@ -136,8 +141,12 @@ public class UniversalNetwork extends ElectricityNetwork
 				{	
 					this.tickDone = UniversalNetwork.tickCount;
 					//Start the new tick - initialise everything
-					doTickStartCalc(ignoreTiles);
+					this.ignoreAcceptors.clear();
+					this.ignoreAcceptors.addAll(Arrays.asList(ignoreTiles));
+					doTickStartCalc();
 				}
+				else
+					this.ignoreAcceptors.addAll(Arrays.asList(ignoreTiles));
 		
 				if (!this.doneScheduled && this.totalRequested > 0.0F)
 				{
@@ -153,8 +162,6 @@ public class UniversalNetwork extends ElectricityNetwork
 					
 					this.doneScheduled = true;
 				}
-		
-				this.ignoreAcceptors.addAll(Arrays.asList(ignoreTiles));
 				
 				//On a regular mid-tick produce(), just figure out how much is totalEnergy this tick and return the used amount
 				//This will return 0 if totalRequested is 0 - for example a network with no acceptors
@@ -175,13 +182,13 @@ public class UniversalNetwork extends ElectricityNetwork
 	public void tickEnd()
 	{
 		this.doneScheduled = false;
+		this.loopPrevention = true;
 		
 		//Finish the last tick if there was some to send and something to receive it
 		if (this.totalEnergy > 0F)
 		{
 			//Call doTickStartCalc a second time in case anything has updated meanwhile
-			TileEntity[] ignoretiles = new TileEntity[ignoreAcceptors.size()];
-			this.doTickStartCalc(ignoreAcceptors.toArray(ignoretiles));
+			this.doTickStartCalc();
 			
 			if (this.totalRequested > 0F)
 			{
@@ -192,25 +199,26 @@ public class UniversalNetwork extends ElectricityNetwork
 				else totalEnergy = 0F;
 			}
 		}
-		else totalEnergy = 0F;	
+		else totalEnergy = 0F;
+
+		this.loopPrevention = false;
 	}
 
-	private void doTickStartCalc(TileEntity... ignoreTiles)
+	private void doTickStartCalc()
 	{
 		this.totalSent = 0F;
 		refreshAcceptors();
 		 
 		if (this.getTransmitters().size() == 0) return;
+	
+		this.loopPrevention = true;
 		
 		this.availableAcceptors.clear();
 		this.availableconnectedDirections.clear();
 		this.energyRequests.clear();
 		this.totalRequested = 0.0F;
 		this.totalStorageExcess = 0F;
-		this.ignoreAcceptors.clear();
-		
-		List<TileEntity> ignored = Arrays.asList(ignoreTiles);
-		
+			
 		boolean isTELoaded = NetworkConfigHandler.isThermalExpansionLoaded();
 		boolean isIC2Loaded = NetworkConfigHandler.isIndustrialCraft2Loaded();
 		boolean isBCLoaded = NetworkConfigHandler.isBuildcraftLoaded();
@@ -226,7 +234,7 @@ public class UniversalNetwork extends ElectricityNetwork
 				ForgeDirection sideFrom = acceptorDirection.next();
 				
 				//But the grid will only put energy into the acceptor from one side - once it's in availableAcceptors
-				if(!ignored.contains(acceptor) && !this.availableAcceptors.contains(acceptor))
+				if(!this.ignoreAcceptors.contains(acceptor) && !this.availableAcceptors.contains(acceptor))
 				{
 					e = 0.0F;					
 
@@ -265,9 +273,12 @@ public class UniversalNetwork extends ElectricityNetwork
 			
 		//Finally, allow a Forge event to change the total requested
 		ElectricityPack mergedPack = new ElectricityPack(this.totalRequested, 1);
-		ElectricityRequestEvent evt = new ElectricityRequestEvent(this, mergedPack, ignoreTiles);
+		TileEntity[] ignoretiles = new TileEntity[this.ignoreAcceptors.size()];
+		ElectricityRequestEvent evt = new ElectricityRequestEvent(this, mergedPack, this.ignoreAcceptors.toArray(ignoretiles));
 		MinecraftForge.EVENT_BUS.post(evt);
 		this.totalRequested = mergedPack.getWatts();
+		
+		this.loopPrevention = false;
 	}
 
 	private float doProduce()
