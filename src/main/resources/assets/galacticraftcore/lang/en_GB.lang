@@ -276,6 +276,9 @@ gui.message.surfacegravity.name=Surface Gravity
 gui.message.surfacecomposition.name=Surface Composition
 gui.message.atmosphere.name=Atmosphere
 gui.message.meansurfacetemp.name=Mean Surface Temp
+gui.message.energy=Energy
+gui.message.maxEnergy=Max Energy
+gui.message.bubbleVisible.name=Bubble Visible
 
 gui.status.active.name=Active
 gui.status.missingleaves.name=Not Enough Leaf Blocks

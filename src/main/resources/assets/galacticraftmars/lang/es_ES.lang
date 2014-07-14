@@ -1,17 +1,8 @@
-# Galacticraft Mars Language File = FINLAND FINNISH
+# Galacticraft Mars Language File = SPAIN SPANISH
 
-
-# GENERAL ITEMS
-item.reinfocedBucket.name=Vahvistettu ämpäri
-item.reinfocedBucketMilk.name=Vahvistettu maitoämpäri
-item.reinfocedBucketWater.name=Vahvistettu vesiämpäri
-item.reinfocedBucketLava.name=Vahvistettu laavaämpäri
-item.reinfocedBucketSludge.name=Vahvistettu bakteeriliejuämpäri
-item.rawDesh.name=Puhdistamaton desh
-item.deshStick.name=Desh-tikku
-item.heavyBoots.name=Painavat kengät
-item.ingotQuandrium.name=Quandrium-harkko
-item.ingotDesh.name=Desh-harkko
+item.rawDesh.name=Unrefined Desh ##NEEDS TRANSLATE##
+item.deshStick.name=Desh Stick ##NEEDS TRANSLATE##
+item.ingotDesh.name=Desh Ingot ##NEEDS TRANSLATE##
 item.spaceshipTier2.t2Rocket.name=Tier 2 Rocket ##NEEDS TRANSLATE##
 item.reinforcedPlateT2.name=Heavy-Duty Plate ##NEEDS TRANSLATE##
 item.tier2.desc=Tier 2 ##NEEDS TRANSLATE##
@@ -19,51 +10,25 @@ item.slimelingCargo.name=Slimeling Inventory Bag ##NEEDS TRANSLATE##
 item.key.T2.name=Tier 2 Dungeon Key ##NEEDS TRANSLATE##
 item.compressedDesh.name=Compressed Desh ##NEEDS TRANSLATE##
 item.spaceshipTier2.cargoRocket.name=Cargo Rocket ##NEEDS TRANSLATE##
-item.jetpack.name=Rakettireppu
-
-
-# TOOLS
-item.deshPick.name=Desh-hakku
-item.deshAxe.name=Desh-kirves
-item.deshHoe.name=Desh-kuokka
-item.deshSpade.name=Desh-lapio
-item.deshSword.name=Desh-miekka
-item.planetStonePick.name=Kivihakku
-item.planetStoneAxe.name=Kivikirves
-item.planetStoneHoe.name=Kivikuokka
-item.planetStoneSpade.name=Kivilapio
-item.planetStoneSword.name=Kivimiekka
-item.quandriumPick.name=Quandrium-hakku
-item.quandriumAxe.name=Quandrium-kirves
-item.quandriumHoe.name=Quandrium-kuokka
-item.quandriumSpade.name=Quandrium-lapio
-item.quandriumSword.name=Quandrium-miekka
-
-
-# ARMOR
-item.deshHelmet.name=Desh-kypärä
-item.deshChestplate.name=Desh-haarniska
-item.deshLeggings.name=Desh-housut
-item.deshBoots.name=Desh-kengät
-item.deshHelmetBreathable.name=Desh-kypärä happinaamarilla
-item.quandriumHelmet.name=Quandrium-kypärä
-item.quandriumChestplate.name=Quandrium-haarniska
-item.quandriumLeggings.name=Quandrium-housut
-item.quandriumBoots.name=Quandrium-kengät
-item.quandriumHelmetBreathable.name=Quandrium-kypärä happinaamarilla
-
-
-# BLOCKS
-tile.mars.deshmars.name=Desh-malmi
-tile.mars.coppermars.name=Kuparimalmi
-tile.mars.tinmars.name=Tinamalmi
+item.deshPick.name=Desh Pickaxe ##NEEDS TRANSLATE##
+item.deshAxe.name=Desh Axe ##NEEDS TRANSLATE##
+item.deshHoe.name=Desh Hoe ##NEEDS TRANSLATE##
+item.deshSpade.name=Desh Shovel ##NEEDS TRANSLATE##
+item.deshSword.name=Desh Sword ##NEEDS TRANSLATE##
+item.deshHelmet.name=Desh Helmet ##NEEDS TRANSLATE##
+item.deshChestplate.name=Desh Chestplate ##NEEDS TRANSLATE##
+item.deshLeggings.name=Desh Leggings ##NEEDS TRANSLATE##
+item.deshBoots.name=Desh Boots ##NEEDS TRANSLATE##
+tile.mars.deshmars.name=Desh Ore ##NEEDS TRANSLATE##
+tile.mars.coppermars.name=Copper Ore ##NEEDS TRANSLATE##
+tile.mars.tinmars.name=Tin Ore ##NEEDS TRANSLATE##
 tile.mars.ironmars.name=Iron Ore ##NEEDS TRANSLATE##
-tile.mars.marscobblestone.name=Mukulakivi
-tile.mars.marsstone.name=Kivi
-tile.mars.marsdirt.name=Multa
-tile.mars.marsgrass.name=Ruoho
-tile.mars.marsdeco.name=Sisustuskuutio
-tile.mars.marsdungeon.name=Vankityrmän seinä
+tile.mars.marscobblestone.name=Cobblestone ##NEEDS TRANSLATE##
+tile.mars.marsstone.name=Mars Stone ##NEEDS TRANSLATE##
+tile.mars.marsdirt.name=Mars Sub-Surface Rock ##NEEDS TRANSLATE##
+tile.mars.marsgrass.name=Mars Surface Rock ##NEEDS TRANSLATE##
+tile.mars.marsdeco.name=Block of Desh ##NEEDS TRANSLATE##
+tile.mars.marsdungeon.name=Dungeon Wall ##NEEDS TRANSLATE##
 tile.treasureT2.name=Tier 2 Treasure Chest ##NEEDS TRANSLATE##
 tile.slimelingEgg.redEgg.name=Red Slimeling Egg ##NEEDS TRANSLATE##
 tile.slimelingEgg.blueEgg.name=Blue Slimeling Egg ##NEEDS TRANSLATE##
@@ -90,10 +55,7 @@ tile.tintedGlassPane.brown.name=Brown Tinted Glass Pane ##NEEDS TRANSLATE##
 tile.tintedGlassPane.green.name=Green Tinted Glass Pane ##NEEDS TRANSLATE##
 tile.tintedGlassPane.red.name=Red Tinted Glass Pane ##NEEDS TRANSLATE##
 tile.tintedGlassPane.black.name=Black Tinted Glass Pane ##NEEDS TRANSLATE##
-
-
-# GUI
-gui.choosePlanet.desc.mars=Asuttava#Ei happea#Painovoima: 38%
+gui.choosePlanet.desc.mars=Habitable#No Oxygen#Gravity: 38% ##NEEDS TRANSLATE##
 item.deshPickSlime.description.name=Can harvest Slimeling eggs ##NEEDS TRANSLATE##
 gui.message.noEnergy.name=Not Enough Energy ##NEEDS TRANSLATE##
 gui.message.noWater.name=Not Enough Water ##NEEDS TRANSLATE##
@@ -136,4 +98,3 @@ entity.SpaceshipT2.name=Tier 2 Rocket ##NEEDS TRANSLATE##
 entity.CargoRocket.name=Cargo Rocket ##NEEDS TRANSLATE##
 container.launchcontroller.name=Launch Controller ##NEEDS TRANSLATE##
 container.tileTerraformer.name=Terraformer ##NEEDS TRANSLATE##
-

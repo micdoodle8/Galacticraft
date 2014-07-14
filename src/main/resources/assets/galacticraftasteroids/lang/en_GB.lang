@@ -1,0 +1,28 @@
+# Galacticraft Asteroids Language File = BRITISH ENGLISH
+
+# GENERAL ITEMS
+item.itemTier3Rocket.t3Rocket.name=Tier 3 Rocket
+
+# TOOLS
+
+# ARMOUR
+
+# BLOCKS
+tile.asteroidsBlock.asteroids1.name=Asteroid Rock
+tile.beamReflector.name=Beam Reflector
+tile.beamReceiver.name=Beam Receiver
+tile.telepadShort.name=Short Range Telepad
+
+# GUI
+planet.asteroids=Asteroids
+
+itemGroup.GalacticraftAsteroids=Galacticraft Asteroids
+
+# Schematics
+
+# Entity
+entity.SmallAsteroidGC.name=Small Asteroid
+entity.GrappleHookGC.name=Grapple Hook
+entity.Tier3RocketGC.name=Tier 3 Rocket
+
+# Container

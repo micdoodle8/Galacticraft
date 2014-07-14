@@ -2,6 +2,8 @@
 
 # GENERAL ITEMS
 item.meteoricIronRaw.name=流れ星の鉄鋼
+item.meteoric_iron_ingot.name=Meteoric Iron Ingot ##NEEDS TRANSLATE##
+item.compressedMeteoricIron.name=Compressed Meteoric Iron ##NEEDS TRANSLATE##
 item.meteoricIronIngot.name=流れ星の鉄インゴット
 
 # FOOD
@@ -24,5 +26,6 @@ tile.cheeseBlock.name=チーズブロック
 
 # GUI
 gui.choosePlanet.desc.moon=Habitable#No Oxygen#重力: 18%
+dimension.Moon.name=Moon ##NEEDS TRANSLATE##
 
 itemGroup.GalacticraftMoon=Galacticraft 月

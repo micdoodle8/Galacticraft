@@ -54,3 +54,4 @@ Kingdom_Hearts12:capeRainbow
 alfiethomas102:capeLime
 MattRockSolid:capeBlue
 kelvinxj:capeRainbow
+BCQX:capeCyan

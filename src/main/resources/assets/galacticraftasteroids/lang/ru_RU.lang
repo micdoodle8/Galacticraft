@@ -1,0 +1,28 @@
+# Galacticraft Asteroids Language File = RUSSIA RUSSIAN
+
+# GENERAL ITEMS
+item.itemTier3Rocket.t3Rocket.name=Ракета 3-его уровня
+
+# TOOLS
+
+# ARMOR
+
+# BLOCKS
+tile.asteroidsBlock.asteroids1.name=Камень астероида
+tile.beamReflector.name=Отражатель луча
+tile.beamReceiver.name=Получатель луча
+tile.telepadShort.name=Телепорт на короткую дистанцию
+
+# GUI
+planet.asteroids=Астероиды
+
+itemGroup.GalacticraftAsteroids=Galacticraft: Астероиды
+
+# Schematics
+
+# Entity
+entity.SmallAsteroidGC.name=Маленький астероид
+entity.GrappleHookGC.name=Абордажная кошка
+entity.Tier3RocketGC.name=Ракета 3-его уровня
+
+# Container

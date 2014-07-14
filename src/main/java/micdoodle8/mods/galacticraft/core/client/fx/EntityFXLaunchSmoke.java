@@ -31,11 +31,14 @@ public class EntityFXLaunchSmoke extends EntityFX
 
 		if (launched)
 		{
-			this.particleMaxAge = (int) (this.particleMaxAge * size);
+			this.particleMaxAge = (int) (this.particleMaxAge * size) + 10;
 		}
 		else
 		{
-			this.particleMaxAge = 1;
+			this.motionX += par1World.rand.nextDouble() / 2 - 0.25;
+			this.motionY += par1World.rand.nextDouble() / 20;
+			this.motionZ += par1World.rand.nextDouble() / 2 - 0.25;
+			this.particleMaxAge = 30 + this.particleMaxAge;
 		}
 
 		this.noClip = false;
@@ -102,7 +105,7 @@ public class EntityFXLaunchSmoke extends EntityFX
 		}
 
 		this.setParticleTextureIndex(7 - this.particleAge * 8 / this.particleMaxAge);
-		this.motionY += 0.001D;
+		this.motionY -= 0.002D;
 		this.moveEntity(this.motionX, this.motionY, this.motionZ);
 
 		if (this.posY == this.prevPosY)
@@ -111,17 +114,7 @@ public class EntityFXLaunchSmoke extends EntityFX
 			this.motionZ *= 1.1D;
 		}
 
-		this.motionX *= 0.9599999785423279D;
-		this.motionY *= 0.9599999785423279D;
-		this.motionZ *= 0.9599999785423279D;
-
-		if (this.onGround)
-		{
-			this.motionX = (this.rand.nextFloat() * 2.0F * this.rand.nextInt(2) * 2 - 1) / 4.0;
-			this.motionZ = (this.rand.nextFloat() * 2.0F * this.rand.nextInt(2) * 2 - 1) / 4.0;
-
-			this.motionX *= 0.699999988079071D;
-			this.motionZ *= 0.699999988079071D;
-		}
+		this.motionX *= 0.99D;
+		this.motionZ *= 0.99D;
 	}
 }

@@ -1,4 +1,4 @@
-# Galacticraft Moon Language File = Russia Russian
+# Galacticraft Moon Language File = RUSSIA RUSSIAN
 
 # GENERAL ITEMS
 item.meteoricIronRaw.name=Необработанное метеоритное железо
@@ -14,9 +14,9 @@ item.cheeseBlock.name=Блок сыра
 # ARMOR
 
 # BLOCKS
-tile.moonBlock.moonstone.name=Лунный камень
-tile.moonBlock.moondirt.name=Лунный грунт
-tile.moonBlock.moongrass.name=Лунный дерн
+tile.moonBlock.moonstone.name=Камень
+tile.moonBlock.moondirt.name=Земля
+tile.moonBlock.moongrass.name=Лунный дёрн
 tile.moonBlock.tinmoon.name=Оловянная руда
 tile.moonBlock.coppermoon.name=Медная руда
 tile.moonBlock.cheesestone.name=Сырная руда
@@ -28,4 +28,4 @@ gui.choosePlanet.desc.moon=Обитаема#Кислород отсутству�
 
 dimension.Moon.name=Луна
 
-itemGroup.GalacticraftMoon=Galacticraft Луна
+itemGroup.GalacticraftMoon=Galacticraft: Луна

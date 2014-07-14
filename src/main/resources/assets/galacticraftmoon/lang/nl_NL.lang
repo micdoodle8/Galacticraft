@@ -2,6 +2,8 @@
 
 # GENERAL ITEMS
 item.meteoricIronRaw.name=Ruwe meteoriet staaf
+item.meteoric_iron_ingot.name=Meteoric Iron Ingot ##NEEDS TRANSLATE##
+item.compressedMeteoricIron.name=Compressed Meteoric Iron ##NEEDS TRANSLATE##
 item.meteoricIronIngot.name=Meteoriet ijzer staaf
 
 # FOOD
