@@ -1,8 +1,5 @@
 package micdoodle8.mods.galacticraft.api.transmission.core.grid;
 
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
-
 import java.util.Set;
 
 /**

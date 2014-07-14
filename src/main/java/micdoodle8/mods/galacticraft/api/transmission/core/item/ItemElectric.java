@@ -84,9 +84,9 @@ public abstract class ItemElectric extends Item implements IItemElectric
 	}
 
 	@Override
-	public float getVoltage(ItemStack itemStack)
+	public int getTier(ItemStack itemStack)
 	{
-		return 0.120f;
+		return 1;
 	}
 
 	@Override

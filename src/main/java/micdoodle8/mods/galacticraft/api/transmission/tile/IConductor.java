@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.api.transmission.tile;
 
+import micdoodle8.mods.galacticraft.api.transmission.core.grid.IElectricityNetwork;
+
 public interface IConductor extends ITransmitter
 {
 	/**
@@ -8,11 +10,20 @@ public interface IConductor extends ITransmitter
 	 * 
 	 * @return The amount of resistance in Ohms.
 	 */
+	@Deprecated
 	public float getResistance();
 
 	/**
 	 * @return The maximum amount of amps this conductor can handle before
 	 *         melting down.
+	 * 
 	 */
+	@Deprecated
 	public float getCurrentCapacity();
+
+	/**
+	 * @return This conductor's electricity network.
+	 */
+	@Override
+	public IElectricityNetwork getNetwork();
 }

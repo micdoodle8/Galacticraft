@@ -4,6 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.UniversalNetwork;
+import micdoodle8.mods.galacticraft.api.transmission.core.grid.IElectricityNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.core.grid.IGridNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
@@ -44,7 +45,7 @@ public abstract class TileEntityConductor extends TileEntityAdvanced implements 
 	}
 
 	@Override
-	public IGridNetwork getNetwork()
+	public IElectricityNetwork getNetwork()
 	{
 		if (this.network == null)
 		{
@@ -53,7 +54,7 @@ public abstract class TileEntityConductor extends TileEntityAdvanced implements 
 			this.setNetwork(network);
 		}
 
-		return this.network;
+		return (IElectricityNetwork) this.network;
 	}
 
 	@Override
