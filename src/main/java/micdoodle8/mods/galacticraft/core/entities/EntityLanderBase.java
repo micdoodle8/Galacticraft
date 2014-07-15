@@ -373,11 +373,20 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
             return null;
         }
 
-        UUID id = this.riddenByEntity != null ? ((EntityPlayer) this.riddenByEntity).getPersistentID() : null;
+        UUID id;
 
-        if (id != null)
+        if (riddenByEntity != null)
         {
-            this.persistantRiderUUID = id;
+            id = ((EntityPlayer) this.riddenByEntity).getPersistentID();
+
+            if (id != null)
+            {
+                this.persistantRiderUUID = id;
+            }
+        }
+        else
+        {
+            id = this.persistantRiderUUID;
         }
 
         return id;
