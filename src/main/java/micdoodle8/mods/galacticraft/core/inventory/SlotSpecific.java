@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
-import micdoodle8.mods.galacticraft.api.transmission.core.item.ItemElectric;
+import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;

@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.api.transmission.tile;
 
-import micdoodle8.mods.galacticraft.api.transmission.core.grid.IElectricityNetwork;
+import micdoodle8.mods.galacticraft.api.transmission.grid.IElectricityNetwork;
 
 public interface IConductor extends ITransmitter
 {

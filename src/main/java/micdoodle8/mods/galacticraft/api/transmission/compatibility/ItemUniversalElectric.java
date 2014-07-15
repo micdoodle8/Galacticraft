@@ -1,7 +1,7 @@
 //package micdoodle8.mods.galacticraft.api.transmission.compatibility;
 //
-//import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
-//import micdoodle8.mods.galacticraft.api.transmission.core.item.ItemElectric;
+//import micdoodle8.mods.galacticraft.api.transmission.item.IItemElectric;
+//import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
 //import net.minecraft.entity.EntityLivingBase;
 //import net.minecraft.item.ItemStack;
 //

@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.api.transmission;
 
 import cpw.mods.fml.common.eventhandler.Cancelable;
 import cpw.mods.fml.common.eventhandler.Event;
-import micdoodle8.mods.galacticraft.api.transmission.core.grid.IElectricityNetwork;
+import micdoodle8.mods.galacticraft.api.transmission.grid.IElectricityNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;

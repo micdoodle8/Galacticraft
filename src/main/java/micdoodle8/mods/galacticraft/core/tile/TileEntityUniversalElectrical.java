@@ -2,8 +2,8 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import cpw.mods.fml.common.eventhandler.Event;
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
-import micdoodle8.mods.galacticraft.api.transmission.core.item.ElectricItemHelper;
-import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
+import micdoodle8.mods.galacticraft.api.transmission.item.ElectricItemHelper;
+import micdoodle8.mods.galacticraft.api.transmission.item.IItemElectric;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
 import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
