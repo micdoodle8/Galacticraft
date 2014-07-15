@@ -384,16 +384,21 @@ public class UniversalNetwork implements IElectricityNetwork
 				}
 				else if (isIC2Loaded && tileEntity instanceof IEnergySink)
 				{
-					//For 1.7.10 - sentToAcceptor = currentSending - ((float) ((IEnergySink) tileEntity).injectEnergy(sideFrom, currentSending * NetworkConfigHandler.TO_IC2_RATIO, 120)) * NetworkConfigHandler.IC2_RATIO;
-					sentToAcceptor = currentSending - ((float) ((IEnergySink) tileEntity).injectEnergyUnits(sideFrom, currentSending * NetworkConfigHandler.TO_IC2_RATIO)) * NetworkConfigHandler.IC2_RATIO;
-					if (sentToAcceptor < 0F) sentToAcceptor = 0F;
+					double energySendingIC2 = currentSending * NetworkConfigHandler.TO_IC2_RATIO;
+					if (energySendingIC2 >= 1D)
+					{
+						//For 1.7.10 - sentToAcceptor = currentSending - ((float) ((IEnergySink) tileEntity).injectEnergy(sideFrom, energySendingIC2, 120)) * NetworkConfigHandler.IC2_RATIO;
+						sentToAcceptor = currentSending - ((float) ((IEnergySink) tileEntity).injectEnergyUnits(sideFrom, energySendingIC2)) * NetworkConfigHandler.IC2_RATIO;
+						if (sentToAcceptor < 0F) sentToAcceptor = 0F;
+					} else
+						sentToAcceptor = 0F;
 				}
 				else
 				{
 					sentToAcceptor = 0F;
 				}
 
-				if (sentToAcceptor / currentSending > 1.002F && sentToAcceptor > 0.001F)
+				if (sentToAcceptor / currentSending > 1.002F && sentToAcceptor > 0.01F)
 				{
 					if (!this.spamstop)
 					{

@@ -27,7 +27,7 @@ public class EnergyHelper
             }
         }
 
-        return newVal + "gJ";
+        return newVal + " gJ";
     }
 
     public static int getEnergyDisplayI(float energyVal)

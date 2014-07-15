@@ -33,14 +33,12 @@ public class GuiEnergyStorageModule extends GuiContainer
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
 	{
 		this.fontRendererObj.drawString(this.tileEntity.getInventoryName(), this.xSize / 2 - this.fontRendererObj.getStringWidth(this.tileEntity.getInventoryName()) / 2, 6, 4210752);
-		String displayStr = EnergyHelper.getEnergyDisplayS(this.tileEntity.getEnergyStoredGC()) + "gJ";
+		String displayStr = EnergyHelper.getEnergyDisplayS(this.tileEntity.getEnergyStoredGC());
 		this.fontRendererObj.drawString(displayStr, 122 - this.fontRendererObj.getStringWidth(displayStr) / 2, 25, 4210752);
-        displayStr = "of " + EnergyHelper.getEnergyDisplayS(this.tileEntity.getMaxEnergyStoredGC()) + "gJ";
+        displayStr = "of " + EnergyHelper.getEnergyDisplayS(this.tileEntity.getMaxEnergyStoredGC());
         this.fontRendererObj.drawString(displayStr, 122 - this.fontRendererObj.getStringWidth(displayStr) / 2, 34, 4210752);
-        displayStr = "Max output:";
-		this.fontRendererObj.drawString(displayStr, 122 - this.fontRendererObj.getStringWidth(displayStr) / 2, 60, 4210752);
-        displayStr = "75,000gJ";
-        this.fontRendererObj.drawString(displayStr, 122 - this.fontRendererObj.getStringWidth(displayStr) / 2, 69, 4210752);
+        displayStr = "Output: 15,000 gJ/s";
+		this.fontRendererObj.drawString(displayStr, 122 - this.fontRendererObj.getStringWidth(displayStr) / 2, 64, 4210752);
 		this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 
