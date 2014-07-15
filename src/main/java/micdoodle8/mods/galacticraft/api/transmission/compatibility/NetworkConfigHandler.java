@@ -51,8 +51,6 @@ public class NetworkConfigHandler
 	public static float TO_IC2_RATIO = 1 / NetworkConfigHandler.IC2_RATIO;
 
 	public static float TO_MEKANISM_RATIO = 1 / NetworkConfigHandler.MEKANISM_RATIO;
-
-	public static boolean ALLOW_UNSAFE_IC2 = false;
 	
 	/**
 	 * Oxygen gas used when Mekanism is loaded. Always null otherwise.
@@ -75,7 +73,6 @@ public class NetworkConfigHandler
 		NetworkConfigHandler.TE_RATIO = (float) NetworkConfigHandler.config.get("Compatiblity", "Thermal Expansion Conversion Ratio", NetworkConfigHandler.TE_RATIO).getDouble(NetworkConfigHandler.TE_RATIO);
 		NetworkConfigHandler.BC3_RATIO = (float) NetworkConfigHandler.config.get("Compatiblity", "BuildCraft Conversion Ratio", NetworkConfigHandler.BC3_RATIO).getDouble(NetworkConfigHandler.BC3_RATIO);
 		NetworkConfigHandler.MEKANISM_RATIO = (float) NetworkConfigHandler.config.get("Compatiblity", "Mekanism Conversion Ratio", NetworkConfigHandler.MEKANISM_RATIO).getDouble(NetworkConfigHandler.MEKANISM_RATIO);
-		NetworkConfigHandler.ALLOW_UNSAFE_IC2 = NetworkConfigHandler.config.get("Compatiblity", "IC2 machines can be given more than a safe amount of energy from aluminium wire? [caution: if true, they may explode]", false).getBoolean(false);
 		NetworkConfigHandler.TO_IC2_RATIO = 1 / NetworkConfigHandler.IC2_RATIO;
 		NetworkConfigHandler.TO_BC_RATIO = 1 / NetworkConfigHandler.BC3_RATIO;
 		NetworkConfigHandler.TO_TE_RATIO = 1 / NetworkConfigHandler.TE_RATIO;
