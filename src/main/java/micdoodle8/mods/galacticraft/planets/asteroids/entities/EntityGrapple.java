@@ -49,7 +49,7 @@ public class EntityGrapple extends Entity implements IProjectile
 		this.renderDistanceWeight = 10.0D;
 		this.shootingEntity = shootingEntity;
 
-		if (shootingEntity instanceof EntityPlayer)
+		if (shootingEntity != null)
 		{
 			this.canBePickedUp = 1;
 		}
@@ -289,7 +289,7 @@ public class EntityGrapple extends Entity implements IProjectile
 			{
 				EntityPlayer entityplayer = (EntityPlayer) movingobjectposition.entityHit;
 
-				if (entityplayer.capabilities.disableDamage || this.shootingEntity instanceof EntityPlayer && !this.shootingEntity.canAttackPlayer(entityplayer))
+				if (entityplayer.capabilities.disableDamage || this.shootingEntity != null && !this.shootingEntity.canAttackPlayer(entityplayer))
 				{
 					movingobjectposition = null;
 				}

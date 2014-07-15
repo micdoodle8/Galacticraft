@@ -299,8 +299,8 @@ public class GuiCelestialSelection extends GuiScreen
 		Matrix4f camMatrix = new Matrix4f();
 		Matrix4f.translate(new Vector3f(0.0F, 0.0F, -2000.0F), camMatrix, camMatrix); // See EntityRenderer.java:setupOverlayRendering
 		Matrix4f viewMatrix = new Matrix4f();
-		viewMatrix.m00 = 2.0F / (float) width;
-		viewMatrix.m11 = 2.0F / (float) -height;
+		viewMatrix.m00 = 2.0F / width;
+		viewMatrix.m11 = 2.0F / -height;
 		viewMatrix.m22 = -2.0F / 2000.0F;
 		viewMatrix.m30 = -1.0F;
 		viewMatrix.m31 = 1.0F;

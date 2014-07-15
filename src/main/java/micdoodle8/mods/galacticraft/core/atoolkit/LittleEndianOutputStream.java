@@ -22,7 +22,7 @@ public class LittleEndianOutputStream extends DataOutputStream
 {
 
 	/**
-	 * Creates a new INSTANCE of <tt>LittleEndianOutputStream</tt>, which will
+	 * Creates a new instance of <tt>LittleEndianOutputStream</tt>, which will
 	 * write to the specified target.
 	 * 
 	 * @param out

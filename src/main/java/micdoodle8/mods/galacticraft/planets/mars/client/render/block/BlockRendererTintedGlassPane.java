@@ -469,7 +469,7 @@ public class BlockRendererTintedGlassPane implements ISimpleBlockRenderingHandle
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer)
 	{
-		// Tessellator tessellator = Tessellator.INSTANCE;
+		// Tessellator tessellator = Tessellator.instance;
 		// block.setBlockBoundsForItemRender();
 		// renderer.setRenderBoundsFromBlock(block);
 		// GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);

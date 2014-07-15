@@ -33,7 +33,7 @@ public class GuiHandler implements IGuiHandler
 
 		if (playerBase == null)
 		{
-			player.addChatMessage(new ChatComponentText("Galacticraft player INSTANCE null server-side. This is a bug."));
+			player.addChatMessage(new ChatComponentText("Galacticraft player instance null server-side. This is a bug."));
 			return null;
 		}
 

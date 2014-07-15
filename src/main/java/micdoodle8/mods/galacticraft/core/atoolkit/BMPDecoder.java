@@ -23,7 +23,7 @@ public class BMPDecoder
 	private BMPInfoHeader infoHeader;
 
 	/**
-	 * Creates a new INSTANCE of BMPDecoder and reads the BMP data from the
+	 * Creates a new instance of BMPDecoder and reads the BMP data from the
 	 * source.
 	 * 
 	 * @param in
