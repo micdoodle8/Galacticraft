@@ -39,11 +39,11 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
 	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
 		this.blockIcons = new IIcon[5];
-		this.blockIcons[0] = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_DOMAIN + "asteroid0");
-		this.blockIcons[1] = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_DOMAIN + "asteroid1");
-		this.blockIcons[2] = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_DOMAIN + "asteroid2");
-		this.blockIcons[3] = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_DOMAIN + "oreQuandrium");
-		this.blockIcons[4] = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_DOMAIN + "oreElementium");
+		this.blockIcons[0] = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_PREFIX + "asteroid0");
+		this.blockIcons[1] = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_PREFIX + "asteroid1");
+		this.blockIcons[2] = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_PREFIX + "asteroid2");
+		this.blockIcons[3] = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_PREFIX + "oreQuandrium");
+		this.blockIcons[4] = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_PREFIX + "oreElementium");
 		this.blockIcon = this.blockIcons[0];
 	}
 

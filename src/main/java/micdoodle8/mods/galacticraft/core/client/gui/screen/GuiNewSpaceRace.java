@@ -35,7 +35,7 @@ import java.util.Map.Entry;
 
 public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITextBoxCallback
 {
-	protected static final ResourceLocation texture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/gui.png");
+	protected static final ResourceLocation texture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/gui.png");
 
 	public static enum EnumSpaceRaceGui
 	{

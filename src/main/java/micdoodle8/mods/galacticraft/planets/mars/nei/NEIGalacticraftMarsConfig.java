@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.planets.mars.nei;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
@@ -40,7 +40,7 @@ public class NEIGalacticraftMarsConfig implements IConfigureNEI
 	@Override
 	public String getVersion()
 	{
-		return GalacticraftCore.LOCALMAJVERSION + "." + GalacticraftCore.LOCALMINVERSION + "." + GalacticraftCore.LOCALBUILDVERSION;
+		return Constants.LOCALMAJVERSION + "." + Constants.LOCALMINVERSION + "." + Constants.LOCALBUILDVERSION;
 	}
 
     public void registerRocketBenchRecipe(ArrayList<PositionedStack> input, PositionedStack output)

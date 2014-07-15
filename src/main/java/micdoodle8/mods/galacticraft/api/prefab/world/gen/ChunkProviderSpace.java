@@ -419,7 +419,7 @@ public abstract class ChunkProviderSpace extends ChunkProviderGenerate
 	/**
 	 * Do not return null, have at least one biome for generation
 	 * 
-	 * @return Biome instance for generation
+	 * @return Biome INSTANCE for generation
 	 */
 	protected abstract BiomeGenBase[] getBiomesForGeneration();
 
@@ -450,7 +450,7 @@ public abstract class ChunkProviderSpace extends ChunkProviderGenerate
 	/**
 	 * The grass block to be generated. Doesn't have to be grass of course.
 	 * 
-	 * @return BlockMetaPair instance containing ID and metadata for grass
+	 * @return BlockMetaPair INSTANCE containing ID and metadata for grass
 	 *         block.
 	 */
 	protected abstract BlockMetaPair getGrassBlock();
@@ -458,14 +458,14 @@ public abstract class ChunkProviderSpace extends ChunkProviderGenerate
 	/**
 	 * The dirt block to be generated. Doesn't have to be dirt of course.
 	 * 
-	 * @return BlockMetaPair instance containing ID and metadata for dirt block.
+	 * @return BlockMetaPair INSTANCE containing ID and metadata for dirt block.
 	 */
 	protected abstract BlockMetaPair getDirtBlock();
 
 	/**
 	 * The stone block to be generated. Doesn't have to be stone of course.
 	 * 
-	 * @return BlockMetaPair instance containing ID and metadata for stone
+	 * @return BlockMetaPair INSTANCE containing ID and metadata for stone
 	 *         block.
 	 */
 	protected abstract BlockMetaPair getStoneBlock();

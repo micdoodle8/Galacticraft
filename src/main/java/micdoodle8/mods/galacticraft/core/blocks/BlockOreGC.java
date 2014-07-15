@@ -13,7 +13,7 @@ public class BlockOreGC extends Block
 	{
 		super(Material.rock);
 		this.setBlockName(name);
-		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + name);
+		this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + name);
 		this.setHardness(2.0F);
 	}
 

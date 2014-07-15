@@ -35,7 +35,7 @@ public class BlockAirLockFrame extends BlockAdvancedTile
 		super(Material.rock);
 		this.setHardness(1.0F);
 		this.setStepSound(Block.soundTypeMetal);
-		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
 		this.setBlockName(assetName);
 	}
 
@@ -78,14 +78,14 @@ public class BlockAirLockFrame extends BlockAdvancedTile
 	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
 		this.airLockIcons = new IIcon[8];
-		this.airLockIcons[0] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "airlock_off");
-		this.airLockIcons[1] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "airlock_on_1");
-		this.airLockIcons[2] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "airlock_on_2");
-		this.airLockIcons[3] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "airlock_on_3");
-		this.airLockIcons[4] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "airlock_on_4");
-		this.airLockIcons[5] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "airlock_on_5");
-		this.airLockIcons[6] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "airlock_control_on");
-		this.airLockIcons[7] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "airlock_control_off");
+		this.airLockIcons[0] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "airlock_off");
+		this.airLockIcons[1] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "airlock_on_1");
+		this.airLockIcons[2] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "airlock_on_2");
+		this.airLockIcons[3] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "airlock_on_3");
+		this.airLockIcons[4] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "airlock_on_4");
+		this.airLockIcons[5] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "airlock_on_5");
+		this.airLockIcons[6] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "airlock_control_on");
+		this.airLockIcons[7] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "airlock_control_off");
 	}
 
 	@Override

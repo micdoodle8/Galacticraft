@@ -108,7 +108,7 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
 		this.marsBlockIcons[7] = par1IconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "tin");
 		this.marsBlockIcons[8] = par1IconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "bottom");
 		this.marsBlockIcons[9] = par1IconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "iron");
-		this.marsBlockIcons[10] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "blank");
+		this.marsBlockIcons[10] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "blank");
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -299,7 +299,7 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
 
 				if (rand.nextInt(100) == 0)
 				{
-					world.playSound(x, y, z, GalacticraftCore.ASSET_PREFIX + "ambience.singledrip", 1, 0.8F + rand.nextFloat() / 5.0F, false);
+					world.playSound(x, y, z, GalacticraftCore.TEXTURE_PREFIX + "ambience.singledrip", 1, 0.8F + rand.nextFloat() / 5.0F, false);
 				}
 			}
 		}

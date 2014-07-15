@@ -51,8 +51,8 @@ public class BlockFluidGC extends BlockFluidClassic
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
-		this.stillIcon = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + this.fluidName + "_still");
-		this.flowingIcon = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + this.fluidName + "_flow");
+		this.stillIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + this.fluidName + "_still");
+		this.flowingIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + this.fluidName + "_flow");
 		this.fluid.setStillIcon(this.stillIcon);
 		this.fluid.setFlowingIcon(this.flowingIcon);
 	}

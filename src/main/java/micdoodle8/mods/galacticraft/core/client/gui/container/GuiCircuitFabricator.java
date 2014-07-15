@@ -20,7 +20,7 @@ import java.util.List;
 @SideOnly(Side.CLIENT)
 public class GuiCircuitFabricator extends GuiContainerGC
 {
-	private static final ResourceLocation circuitFabricatorTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/circuitFabricator.png");
+	private static final ResourceLocation circuitFabricatorTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/circuitFabricator.png");
 	private TileEntityCircuitFabricator tileEntity;
     private GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion(0, 0, 56, 9, null, 0, 0, this);
     private GuiElementInfoRegion processInfoRegion = new GuiElementInfoRegion(0, 0, 53, 12, null, 0, 0, this);

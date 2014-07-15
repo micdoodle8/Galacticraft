@@ -1,10 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import java.lang.reflect.Method;
-import java.util.EnumSet;
-
-import micdoodle8.mods.galacticraft.api.power.IEnergyHandlerGC;
 import micdoodle8.mods.galacticraft.api.power.EnergySource.EnergySourceAdjacent;
+import micdoodle8.mods.galacticraft.api.power.IEnergyHandlerGC;
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IElectricityNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.item.ElectricItemHelper;
@@ -17,6 +14,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import java.lang.reflect.Method;
+import java.util.EnumSet;
 
 public class TileEntityUniversalElectricalSource extends TileEntityUniversalElectrical
 {

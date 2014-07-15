@@ -16,8 +16,8 @@ import org.lwjgl.opengl.GL11;
 
 public class RenderCreeperBoss extends RenderLiving
 {
-	private static final ResourceLocation creeperTexture = new ResourceLocation(MarsModule.ASSET_DOMAIN, "textures/model/creeper.png");
-	private static final ResourceLocation powerTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/power.png");
+	private static final ResourceLocation creeperTexture = new ResourceLocation(MarsModule.ASSET_PREFIX, "textures/model/creeper.png");
+	private static final ResourceLocation powerTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/power.png");
 	private final ModelBase creeperModel = new ModelCreeperBoss(2.0F);
 
 	public RenderCreeperBoss()

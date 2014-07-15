@@ -27,7 +27,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -37,7 +36,7 @@ import java.util.List;
 
 public class GuiLaunchController extends GuiContainerGC implements IDropboxCallback, ITextBoxCallback, ICheckBoxCallback
 {
-	private static final ResourceLocation launchControllerGui = new ResourceLocation(MarsModule.ASSET_DOMAIN, "textures/gui/launchController.png");
+	private static final ResourceLocation launchControllerGui = new ResourceLocation(MarsModule.ASSET_PREFIX, "textures/gui/launchController.png");
 
 	private TileEntityLaunchController launchController;
 

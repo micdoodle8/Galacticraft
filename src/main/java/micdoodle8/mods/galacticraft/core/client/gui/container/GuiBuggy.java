@@ -24,7 +24,7 @@ public class GuiBuggy extends GuiContainerGC
 	{
 		for (int i = 0; i < 4; i++)
 		{
-			GuiBuggy.sealerTexture[i] = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/buggy_" + i * 18 + ".png");
+			GuiBuggy.sealerTexture[i] = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/buggy_" + i * 18 + ".png");
 		}
 	}
 

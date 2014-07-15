@@ -35,7 +35,7 @@ public class BlockOxygenCollector extends BlockAdvancedTile
 		super(Material.rock);
 		this.setHardness(1.0F);
 		this.setStepSound(Block.soundTypeStone);
-		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
 		this.setBlockName(assetName);
 	}
 
@@ -55,9 +55,9 @@ public class BlockOxygenCollector extends BlockAdvancedTile
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
-		this.iconMachineSide = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_collector_fan");
-		this.iconInput = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_oxygen_output");
-		this.iconOutput = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_input");
+		this.iconMachineSide = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_collector_fan");
+		this.iconInput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_oxygen_output");
+		this.iconOutput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_input");
 	}
 
 	@Override

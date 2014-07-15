@@ -18,7 +18,7 @@ import java.util.List;
 
 public class GuiSchematicInput extends GuiContainerGC implements ISchematicResultPage
 {
-	private static final ResourceLocation schematicInputTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/schematicpage.png");
+	private static final ResourceLocation schematicInputTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/schematicpage.png");
 
 	private int pageIndex;
 

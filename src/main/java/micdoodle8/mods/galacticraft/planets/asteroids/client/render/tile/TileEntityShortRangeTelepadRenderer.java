@@ -17,7 +17,7 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class TileEntityShortRangeTelepadRenderer extends TileEntitySpecialRenderer
 {
-	public static final ResourceLocation telepadTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/misc/underoil.png");
+	public static final ResourceLocation telepadTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/misc/underoil.png");
 	public static IModelCustom telepadModel;
 
 	public TileEntityShortRangeTelepadRenderer()

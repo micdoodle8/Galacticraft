@@ -22,7 +22,7 @@ import java.io.IOException;
 public class BMPEncoder
 {
 
-	/** Creates a new instance of BMPEncoder */
+	/** Creates a new INSTANCE of BMPEncoder */
 	private BMPEncoder()
 	{
 	}

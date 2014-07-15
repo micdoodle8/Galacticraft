@@ -19,7 +19,7 @@ import java.util.List;
 
 public class GuiFuelLoader extends GuiContainerGC
 {
-	private static final ResourceLocation fuelLoaderTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/fuel_loader.png");
+	private static final ResourceLocation fuelLoaderTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/fuel_loader.png");
 
 	private final TileEntityFuelLoader fuelLoader;
 

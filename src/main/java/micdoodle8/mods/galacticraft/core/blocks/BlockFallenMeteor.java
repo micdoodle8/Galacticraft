@@ -28,7 +28,7 @@ public class BlockFallenMeteor extends Block implements ITileEntityProvider
 		this.setBlockBounds(0.2F, 0.2F, 0.2F, 0.8F, 0.8F, 0.8F);
 		this.setHardness(50.0F);
 		this.setStepSound(Block.soundTypeStone);
-		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
 		this.setBlockName(assetName);
 	}
 
@@ -41,7 +41,7 @@ public class BlockFallenMeteor extends Block implements ITileEntityProvider
 	@Override
 	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
-		this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "fallen_meteor");
+		this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "fallen_meteor");
 	}
 
 	@Override

@@ -25,7 +25,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
-
 import org.lwjgl.opengl.GL11;
 
 import java.lang.reflect.Method;
@@ -33,9 +32,9 @@ import java.util.List;
 
 public class ModelPlayerGC extends ModelBiped
 {
-	private static final ResourceLocation oxygenMaskTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/oxygen.png");
-	private static final ResourceLocation playerTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/player.png");
-	private static final ResourceLocation frequencyModuleTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/frequencyModule.png");
+	private static final ResourceLocation oxygenMaskTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/oxygen.png");
+	private static final ResourceLocation playerTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/player.png");
+	private static final ResourceLocation frequencyModuleTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/frequencyModule.png");
 
 	public ModelRenderer[] parachute = new ModelRenderer[3];
 	public ModelRenderer[] parachuteStrings = new ModelRenderer[4];
@@ -195,7 +194,7 @@ public class ModelPlayerGC extends ModelBiped
 		this.redOxygenTanks[1].setRotationPoint(-2F, 2F, 3.8F);
 		this.redOxygenTanks[1].mirror = true;
 
-		this.frequencyModule = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "models/frequencyModule.obj"));
+		this.frequencyModule = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/frequencyModule.obj"));
 	}
 
 	@Override

@@ -21,7 +21,7 @@ public class ItemFuel extends Item
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister par1IconRegister)
 	{
-		this.itemIcon = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "fuel_flow");
+		this.itemIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "fuel_flow");
 	}
 
 	@Override

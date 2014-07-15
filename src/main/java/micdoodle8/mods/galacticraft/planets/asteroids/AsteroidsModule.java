@@ -46,7 +46,7 @@ public class AsteroidsModule implements IPlanetsModule
 	public static Planet planetAsteroids;
 
 	public static final String ASSET_PREFIX = "galacticraftasteroids";
-	public static final String TEXTURE_DOMAIN = AsteroidsModule.ASSET_PREFIX + ":";
+	public static final String TEXTURE_PREFIX = AsteroidsModule.ASSET_PREFIX + ":";
 
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
@@ -70,7 +70,7 @@ public class AsteroidsModule implements IPlanetsModule
 		AsteroidsModule.planetAsteroids = new Planet("asteroids").setParentSolarSystem(GalacticraftCore.solarSystemSol);
 		AsteroidsModule.planetAsteroids.setDimensionInfo(ConfigManagerAsteroids.dimensionIDAsteroids, WorldProviderAsteroids.class);
         AsteroidsModule.planetAsteroids.setRelativeDistanceFromCenter(2.5F).setRelativeOrbitTime(0.001F).setPhaseShift(0.6667F);
-        AsteroidsModule.planetAsteroids.setBodyIcon(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/celestialbodies/asteroid.png"));
+        AsteroidsModule.planetAsteroids.setBodyIcon(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/asteroid.png"));
 
 		GalaxyRegistry.registerPlanet(AsteroidsModule.planetAsteroids);
 		GalacticraftRegistry.registerTeleportType(WorldProviderAsteroids.class, new TeleportTypeAsteroids());

@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.entities;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;

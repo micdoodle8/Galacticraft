@@ -8,7 +8,6 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.*;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
@@ -60,17 +59,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-@Mod(name = GalacticraftCore.NAME, version = GalacticraftCore.LOCALMAJVERSION + "." + GalacticraftCore.LOCALMINVERSION + "." + GalacticraftCore.LOCALBUILDVERSION, useMetadata = true, modid = Constants.MOD_ID_CORE, dependencies = "required-after:Forge@[10.12.2.1147,); required-after:FML@[7.2.217.1147,); after:IC2; after:BuildCraft|Core; after:BuildCraft|Energy; after:IC2", guiFactory = "micdoodle8.mods.galacticraft.core.client.gui.screen.ConfigGuiFactoryCore")
+@Mod(name = GalacticraftCore.NAME, version = Constants.LOCALMAJVERSION + "." + Constants.LOCALMINVERSION + "." + Constants.LOCALBUILDVERSION, useMetadata = true, modid = Constants.MOD_ID_CORE, dependencies = "required-after:Forge@[10.12.2.1147,); required-after:FML@[7.2.217.1147,); after:IC2; after:BuildCraft|Core; after:BuildCraft|Energy; after:IC2", guiFactory = "micdoodle8.mods.galacticraft.core.client.gui.screen.ConfigGuiFactoryCore")
 public class GalacticraftCore
 {
 	public static final String NAME = "Galacticraft Core";
-
-	public static final int LOCALMAJVERSION = 3;
-	public static final int LOCALMINVERSION = 0;
-	public static final int LOCALBUILDVERSION = 0;
-	public static int remoteMajVer;
-	public static int remoteMinVer;
-	public static int remoteBuildVer;
 
 	@SidedProxy(clientSide = "micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore", serverSide = "micdoodle8.mods.galacticraft.core.proxy.CommonProxyCore")
 	public static CommonProxyCore proxy;
@@ -80,8 +72,6 @@ public class GalacticraftCore
 
 	public static GalacticraftChannelHandler packetPipeline;
 
-	private static ThreadRequirementMissing missingRequirementThread;
-
 	public static CreativeTabs galacticraftBlocksTab;
 	public static CreativeTabs galacticraftItemsTab;
 
@@ -90,19 +80,12 @@ public class GalacticraftCore
 	public static Moon moonMoon;
     public static Satellite satelliteSpaceStation;
 
-	public static final String FILE_PATH = "/micdoodle8/mods/galacticraft/core/";
-	public static final String CLIENT_PATH = "client/";
-	public static final String LANGUAGE_PATH = "/assets/galacticraftcore/lang/";
-	public static final String BLOCK_TEXTURE_FILE = GalacticraftCore.FILE_PATH + GalacticraftCore.CLIENT_PATH + "blocks/core.png";
-	public static final String ITEM_TEXTURE_FILE = GalacticraftCore.FILE_PATH + GalacticraftCore.CLIENT_PATH + "items/core.png";
 	public static final String CONFIG_FILE = "Galacticraft/core.conf";
 	public static final String POWER_CONFIG_FILE = "Galacticraft/power.conf";
 	public static final String CHUNKLOADER_CONFIG_FILE = "Galacticraft/chunkloading.conf";
 
-	public static String ASSET_DOMAIN = "galacticraftcore";
-	public static String ASSET_PREFIX = GalacticraftCore.ASSET_DOMAIN + ":";
-
-	public static boolean setSpaceStationRecipe = false;
+	public static String ASSET_PREFIX = "galacticraftcore";
+	public static String TEXTURE_PREFIX = GalacticraftCore.ASSET_PREFIX + ":";
 
 	public static Fluid gcFluidOil;
 	public static Fluid gcFluidFuel;
@@ -174,14 +157,14 @@ public class GalacticraftCore
 
 		GalacticraftCore.solarSystemSol = new SolarSystem("sol").setMapPosition(new Vector3(0.0F, 0.0F));
 		Star starSol = new Star("sol").setParentSolarSystem(GalacticraftCore.solarSystemSol);
-		starSol.setBodyIcon(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/celestialbodies/sun.png"));
+		starSol.setBodyIcon(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/sun.png"));
 		GalacticraftCore.solarSystemSol.setMainStar(starSol);
 		GalacticraftCore.planetOverworld = (Planet) new Planet("overworld").setParentSolarSystem(GalacticraftCore.solarSystemSol).setRingColorRGB(0.1F, 0.9F, 0.6F).setPhaseShift(0.75F);
-		GalacticraftCore.planetOverworld.setBodyIcon(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/celestialbodies/earth.png"));
+		GalacticraftCore.planetOverworld.setBodyIcon(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/earth.png"));
 		GalacticraftCore.planetOverworld.setDimensionInfo(0, WorldProvider.class, false);
 		GalacticraftCore.moonMoon = (Moon) new Moon("moon").setParentPlanet(GalacticraftCore.planetOverworld).setRelativeSize(0.2667F).setRelativeDistanceFromCenter(40F).setRelativeOrbitTime(0.01F);
 		GalacticraftCore.moonMoon.setDimensionInfo(ConfigManagerCore.idDimensionMoon, WorldProviderMoon.class);
-		GalacticraftCore.moonMoon.setBodyIcon(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/celestialbodies/moon.png"));
+		GalacticraftCore.moonMoon.setBodyIcon(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/moon.png"));
         GalacticraftCore.satelliteSpaceStation = new Satellite("spaceStation.overworld").setParentBody(GalacticraftCore.planetOverworld);
         GalacticraftCore.satelliteSpaceStation.setDimensionInfo(ConfigManagerCore.idDimensionOverworldOrbit, WorldProviderOrbit.class, false);
 
@@ -217,9 +200,9 @@ public class GalacticraftCore
 		GalacticraftRegistry.registerTeleportType(WorldProviderSurface.class, new TeleportTypeOverworld());
 		GalacticraftRegistry.registerTeleportType(WorldProviderOrbit.class, new TeleportTypeOrbit());
 		GalacticraftRegistry.registerTeleportType(WorldProviderMoon.class, new TeleportTypeMoon());
-		GalacticraftRegistry.registerRocketGui(WorldProviderOrbit.class, new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/overworldRocketGui.png"));
-		GalacticraftRegistry.registerRocketGui(WorldProviderSurface.class, new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/overworldRocketGui.png"));
-		GalacticraftRegistry.registerRocketGui(WorldProviderMoon.class, new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/moonRocketGui.png"));
+		GalacticraftRegistry.registerRocketGui(WorldProviderOrbit.class, new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/overworldRocketGui.png"));
+		GalacticraftRegistry.registerRocketGui(WorldProviderSurface.class, new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/overworldRocketGui.png"));
+		GalacticraftRegistry.registerRocketGui(WorldProviderMoon.class, new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/moonRocketGui.png"));
 		GalacticraftRegistry.addDungeonLoot(1, new ItemStack(GCItems.schematic, 1, 0));
 		GalacticraftRegistry.addDungeonLoot(1, new ItemStack(GCItems.schematic, 1, 1));
 
@@ -275,13 +258,12 @@ public class GalacticraftCore
 	@EventHandler
 	public void serverInit(FMLServerStartedEvent event)
 	{
-		if (GalacticraftCore.missingRequirementThread == null)
+		if (ThreadRequirementMissing.INSTANCE == null)
 		{
-			GalacticraftCore.missingRequirementThread = new ThreadRequirementMissing(FMLCommonHandler.instance().getEffectiveSide());
-			GalacticraftCore.missingRequirementThread.start();
+            ThreadRequirementMissing.beginCheck(FMLCommonHandler.instance().getEffectiveSide());
 		}
 
-		GCCoreUtil.checkVersion(Side.SERVER);
+        ThreadVersionCheck.startCheck();
 		TickHandlerServer.restart();
 		BlockVec3.chunkCacheDim = Integer.MAX_VALUE;
 	}

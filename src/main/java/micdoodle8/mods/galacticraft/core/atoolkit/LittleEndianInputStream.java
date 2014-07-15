@@ -22,7 +22,7 @@ public class LittleEndianInputStream extends java.io.DataInputStream
 {
 
 	/**
-	 * Creates a new instance of <tt>LittleEndianInputStream</tt>, which will
+	 * Creates a new INSTANCE of <tt>LittleEndianInputStream</tt>, which will
 	 * read from the specified source.
 	 * 
 	 * @param in

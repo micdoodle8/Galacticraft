@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
 import com.mojang.authlib.GameProfile;
-
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;

@@ -26,7 +26,7 @@ public class GuiRocketInventory extends GuiContainerGC
 	{
 		for (int i = 0; i < 4; i++)
 		{
-			GuiRocketInventory.rocketTextures[i] = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/rocket_" + i * 18 + ".png");
+			GuiRocketInventory.rocketTextures[i] = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/rocket_" + i * 18 + ".png");
 		}
 	}
 

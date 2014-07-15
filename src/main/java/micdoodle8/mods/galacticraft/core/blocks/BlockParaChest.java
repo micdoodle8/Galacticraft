@@ -36,7 +36,7 @@ public class BlockParaChest extends BlockContainer implements ITileEntityProvide
 		super(Material.wood);
 		this.setHardness(3.0F);
 		this.setStepSound(Block.soundTypeWood);
-		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
 		this.setBlockName(assetName);
 	}
 

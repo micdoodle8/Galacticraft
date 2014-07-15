@@ -9,7 +9,6 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.model.obj.WavefrontObject;
-
 import org.lwjgl.opengl.GL11;
 
 public class ItemRendererArclamp implements IItemRenderer

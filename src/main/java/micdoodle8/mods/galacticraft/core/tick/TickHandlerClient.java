@@ -8,7 +8,6 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.common.gameevent.TickEvent.RenderTickEvent;
-import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
@@ -364,7 +363,7 @@ public class TickHandlerClient
 
 			if (world != null && TickHandlerClient.checkedVersion)
 			{
-				GCCoreUtil.checkVersion(Side.CLIENT);
+                ThreadVersionCheck.startCheck();
 				TickHandlerClient.checkedVersion = false;
 			}
 
@@ -390,7 +389,7 @@ public class TickHandlerClient
 				{
 					if (world.provider.getSkyRenderer() == null)
 					{
-						world.provider.setSkyRenderer(new SkyProviderOrbit(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/planets/overworld.png"), true, true));
+						world.provider.setSkyRenderer(new SkyProviderOrbit(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/planets/overworld.png"), true, true));
 						((SkyProviderOrbit) world.provider.getSkyRenderer()).spinDeltaPerTick = ((WorldProviderOrbit) world.provider).getSpinRate();
 						((GCEntityClientPlayerMP) player).inFreefallFirstCheck = false;
 					}
@@ -467,7 +466,7 @@ public class TickHandlerClient
 						if (eship.rocketSoundUpdater == null)
 						{
 							// TODO
-							//								eship.rocketSoundUpdater = new GCCoreSoundUpdaterSpaceship(FMLClientHandler.instance().getClient().sndManager, eship, FMLClientHandler.instance().getClient().thePlayer);
+							//								eship.rocketSoundUpdater = new GCCoreSoundUpdaterSpaceship(FMLClientHandler.INSTANCE().getClient().sndManager, eship, FMLClientHandler.INSTANCE().getClient().thePlayer);
 						}
 					}
 				}

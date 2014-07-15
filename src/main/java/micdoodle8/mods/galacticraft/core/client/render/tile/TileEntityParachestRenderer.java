@@ -15,7 +15,7 @@ import org.lwjgl.opengl.GL12;
 @SideOnly(Side.CLIENT)
 public class TileEntityParachestRenderer extends TileEntitySpecialRenderer
 {
-	private static final ResourceLocation parachestTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/parachest.png");
+	private static final ResourceLocation parachestTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/parachest.png");
 
 	private final ModelParaChestTile chestModel = new ModelParaChestTile();
 

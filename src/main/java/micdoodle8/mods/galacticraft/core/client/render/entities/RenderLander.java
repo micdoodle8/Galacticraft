@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class RenderLander extends Render
 {
-	private static final ResourceLocation landerTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/lander.png");
+	private static final ResourceLocation landerTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/lander.png");
 
 	protected ModelLander landerModel;
 

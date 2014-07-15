@@ -59,10 +59,10 @@ public class BlockMachineMars extends BlockTileGC
 	@Override
 	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
-		this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_blank");
-		this.iconInput = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_input");
+		this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_blank");
+		this.iconInput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_input");
 
-		this.iconMachineSide = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_blank");
+		this.iconMachineSide = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_blank");
 		this.iconTerraformer = par1IconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "terraformer_0");
 		this.iconLaunchController = par1IconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "launchController");
 		this.iconCryochamber = par1IconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "cryoDummy");

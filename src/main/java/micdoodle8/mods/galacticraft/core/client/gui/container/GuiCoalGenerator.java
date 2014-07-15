@@ -15,7 +15,7 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class GuiCoalGenerator extends GuiContainer
 {
-	private static final ResourceLocation coalGeneratorTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/coal_generator.png");
+	private static final ResourceLocation coalGeneratorTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/coal_generator.png");
 
 	private TileEntityCoalGenerator tileEntity;
 

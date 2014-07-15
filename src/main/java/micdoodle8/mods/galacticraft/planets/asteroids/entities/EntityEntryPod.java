@@ -1,30 +1,18 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.entities;
 
-import cpw.mods.fml.relauncher.Side;
-import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.core.entities.IScaleableFuelLevel;
-import micdoodle8.mods.galacticraft.core.entities.InventoryEntity;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
-import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
-import micdoodle8.mods.galacticraft.core.network.PacketDynamicInventory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
 
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
 

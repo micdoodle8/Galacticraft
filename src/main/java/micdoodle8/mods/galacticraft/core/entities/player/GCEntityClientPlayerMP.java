@@ -239,7 +239,7 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 
 		if (!this.lastUsingParachute && this.usingParachute)
 		{
-			FMLClientHandler.instance().getClient().getSoundHandler().playSound(new PositionedSoundRecord(new ResourceLocation(GalacticraftCore.ASSET_PREFIX + "player.parachute"), (float) this.posX, (float) this.posY, (float) this.posZ, 0.95F + this.rand.nextFloat() * 0.1F, 1.0F));
+			FMLClientHandler.instance().getClient().getSoundHandler().playSound(new PositionedSoundRecord(new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "player.parachute"), (float) this.posX, (float) this.posY, (float) this.posZ, 0.95F + this.rand.nextFloat() * 0.1F, 1.0F));
 		}
 
 		this.lastUsingParachute = this.usingParachute;

@@ -23,7 +23,7 @@ import java.util.List;
 
 public class GuiOxygenSealer extends GuiContainerGC
 {
-	private static final ResourceLocation sealerTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/oxygen_large.png");
+	private static final ResourceLocation sealerTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/oxygen_large.png");
 
 	private final TileEntityOxygenSealer sealer;
 	private GuiButton buttonDisable;

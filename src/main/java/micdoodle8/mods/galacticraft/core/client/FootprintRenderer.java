@@ -16,7 +16,7 @@ import java.util.List;
 public class FootprintRenderer
 {
 	public List<Footprint> footprints = new ArrayList<Footprint>();
-	private static final ResourceLocation footprintTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/misc/footprint.png");
+	private static final ResourceLocation footprintTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/misc/footprint.png");
 
 	public void renderFootprints(EntityPlayer player, float partialTicks)
 	{

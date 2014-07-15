@@ -16,7 +16,7 @@ import java.util.List;
 
 public class GuiOxygenCollector extends GuiContainerGC
 {
-	private static final ResourceLocation collectorTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/oxygen.png");
+	private static final ResourceLocation collectorTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/oxygen.png");
 
 	private final TileEntityOxygenCollector collector;
 

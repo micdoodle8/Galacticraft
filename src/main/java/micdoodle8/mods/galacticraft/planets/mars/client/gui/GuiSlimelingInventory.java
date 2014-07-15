@@ -22,7 +22,7 @@ public class GuiSlimelingInventory extends GuiContainer
 {
 	private final int xSize;
 	private final int ySize;
-	private static final ResourceLocation slimelingPanelGui = new ResourceLocation(MarsModule.ASSET_DOMAIN, "textures/gui/slimelingPanel2.png");
+	private static final ResourceLocation slimelingPanelGui = new ResourceLocation(MarsModule.ASSET_PREFIX, "textures/gui/slimelingPanel2.png");
 	private final EntitySlimeling slimeling;
 
 	public static RenderItem drawItems = new RenderItem();

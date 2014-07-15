@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.api.transmission.item;
 
+import ic2.api.item.IElectricItemManager;
 import micdoodle8.mods.galacticraft.api.transmission.EnergyHelper;
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.ElectricItemManagerIC2;
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
@@ -13,7 +14,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagDouble;
 import net.minecraft.nbt.NBTTagFloat;
 import net.minecraft.world.World;
-import ic2.api.item.IElectricItemManager;
 
 import java.util.List;
 

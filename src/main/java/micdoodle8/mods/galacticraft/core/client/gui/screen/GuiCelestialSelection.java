@@ -33,7 +33,7 @@ public class GuiCelestialSelection extends GuiScreen
 	private float planetZoom = 0.0F;
 	private boolean doneZooming = false;
 	private float preSelectZoom = 0.0F;
-	public static ResourceLocation guiMain = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/celestialselection.png");
+	public static ResourceLocation guiMain = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialselection.png");
 	private int ticksSinceSelection = 0;
 	private int ticksSinceUnselection = -1;
 	private Vector2f position = new Vector2f(0, 0);

@@ -24,7 +24,7 @@ public class SkyProviderOverworld extends IRenderHandler
 	public int starGLCallList = GLAllocation.generateDisplayLists(3);
 	public int glSkyList;
 	public int glSkyList2;
-	private final ResourceLocation planetToRender = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/planets/overworld.png");
+	private final ResourceLocation planetToRender = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/planets/overworld.png");
 
 	public SkyProviderOverworld()
 	{

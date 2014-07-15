@@ -33,7 +33,7 @@ public class BlockBasic extends Block implements IDetectableResource
 	{
 		super(Material.rock);
 		this.setHardness(1.0F);
-		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
 		this.setBlockName(assetName);
 	}
 
@@ -47,17 +47,17 @@ public class BlockBasic extends Block implements IDetectableResource
 	public void registerBlockIcons(IIconRegister iconRegister)
 	{
 		this.iconBuffer = new IIcon[11];
-		this.iconBuffer[0] = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "deco_aluminium_2");
-		this.iconBuffer[1] = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "deco_aluminium_4");
-		this.iconBuffer[2] = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "deco_aluminium_1");
-		this.iconBuffer[3] = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "deco_aluminium_4");
-		this.iconBuffer[4] = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "oreCopper");
-		this.iconBuffer[5] = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "oreTin");
-		this.iconBuffer[6] = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "oreAluminum");
-		this.iconBuffer[7] = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "oreSilicon");
-		this.iconBuffer[8] = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "deco_copper_block");
-		this.iconBuffer[9] = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "deco_tin_block");
-		this.iconBuffer[10] = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "deco_aluminium_block");
+		this.iconBuffer[0] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "deco_aluminium_2");
+		this.iconBuffer[1] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "deco_aluminium_4");
+		this.iconBuffer[2] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "deco_aluminium_1");
+		this.iconBuffer[3] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "deco_aluminium_4");
+		this.iconBuffer[4] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "oreCopper");
+		this.iconBuffer[5] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "oreTin");
+		this.iconBuffer[6] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "oreAluminum");
+		this.iconBuffer[7] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "oreSilicon");
+		this.iconBuffer[8] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "deco_copper_block");
+		this.iconBuffer[9] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "deco_tin_block");
+		this.iconBuffer[10] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "deco_aluminium_block");
 	}
 
 	@Override

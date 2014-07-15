@@ -341,7 +341,7 @@ public class PacketSimple extends Packet implements IPacket
 					if (subtype != -1)
 					{
 						name = ItemParaChute.names[subtype];
-						gearData.setParachute(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/parachute/" + name + ".png"));
+						gearData.setParachute(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/parachute/" + name + ".png"));
 					}
 					break;
 				case REMOVE_PARACHUTE:
@@ -530,13 +530,13 @@ public class PacketSimple extends Packet implements IPacket
 			}
 			break;
 		case C_PLAY_SOUND_BOSS_DEATH:
-			player.playSound(GalacticraftCore.ASSET_PREFIX + "entity.bossdeath", 10.0F, 0.8F);
+			player.playSound(GalacticraftCore.TEXTURE_PREFIX + "entity.bossdeath", 10.0F, 0.8F);
 			break;
 		case C_PLAY_SOUND_EXPLODE:
 			player.playSound("random.explode", 10.0F, 0.7F);
 			break;
 		case C_PLAY_SOUND_BOSS_LAUGH:
-			player.playSound(GalacticraftCore.ASSET_PREFIX + "entity.bosslaugh", 10.0F, 0.2F);
+			player.playSound(GalacticraftCore.TEXTURE_PREFIX + "entity.bosslaugh", 10.0F, 0.2F);
 			break;
 		case C_PLAY_SOUND_BOW:
 			player.playSound("random.bow", 10.0F, 0.2F);

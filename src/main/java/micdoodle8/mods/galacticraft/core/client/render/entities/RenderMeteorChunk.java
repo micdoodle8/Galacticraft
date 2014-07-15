@@ -11,10 +11,10 @@ import org.lwjgl.opengl.GL11;
 
 public class RenderMeteorChunk extends Render
 {
-	private static final ResourceLocation meteorChunkTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/meteorChunk.png");
-	private static final ResourceLocation meteorChunkHotTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/meteorChunkHot.png");
+	private static final ResourceLocation meteorChunkTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/meteorChunk.png");
+	private static final ResourceLocation meteorChunkHotTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/meteorChunkHot.png");
 
-	private final IModelCustom meteorChunkModel = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "models/meteorChunk.obj"));
+	private final IModelCustom meteorChunkModel = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/meteorChunk.obj"));
 
 	public RenderMeteorChunk()
 	{

@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiMissingCore;
 public class ThreadRequirementMissing extends Thread
 {
 	private static Side threadSide;
+    public static ThreadRequirementMissing INSTANCE;
 
 	public ThreadRequirementMissing(Side threadSide)
 	{
@@ -17,6 +18,12 @@ public class ThreadRequirementMissing extends Thread
 		this.setDaemon(true);
 		ThreadRequirementMissing.threadSide = threadSide;
 	}
+
+    public static void beginCheck(Side threadSide)
+    {
+        INSTANCE = new ThreadRequirementMissing(threadSide);
+        INSTANCE.start();
+    }
 
 	@Override
 	public void run()

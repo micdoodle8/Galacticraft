@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class RenderFlag extends Render
 {
-	public static ResourceLocation flagTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/flag.png");
+	public static ResourceLocation flagTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/flag.png");
 
 	protected ModelFlag modelFlag;
 

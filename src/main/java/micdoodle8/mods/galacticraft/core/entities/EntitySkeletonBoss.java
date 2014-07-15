@@ -154,7 +154,7 @@ public class EntitySkeletonBoss extends EntityMob implements IEntityBreathable, 
 	@Override
 	protected String getHurtSound()
 	{
-		this.playSound(GalacticraftCore.ASSET_PREFIX + "entity.bossliving", this.getSoundVolume(), this.getSoundPitch() + 6.0F);
+		this.playSound(GalacticraftCore.TEXTURE_PREFIX + "entity.bossliving", this.getSoundVolume(), this.getSoundPitch() + 6.0F);
 		return "";
 	}
 

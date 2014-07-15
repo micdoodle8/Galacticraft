@@ -22,7 +22,7 @@ import java.util.List;
 @SideOnly(Side.CLIENT)
 public class GuiRefinery extends GuiContainerGC
 {
-	private static final ResourceLocation refineryTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/refinery.png");
+	private static final ResourceLocation refineryTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/refinery.png");
 
 	private final TileEntityRefinery tileEntity;
 

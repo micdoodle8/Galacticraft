@@ -48,8 +48,8 @@ import java.util.List;
 
 public class MarsModule implements IPlanetsModule
 {
-	public static final String ASSET_DOMAIN = "galacticraftmars";
-	public static final String TEXTURE_PREFIX = MarsModule.ASSET_DOMAIN + ":";
+	public static final String ASSET_PREFIX = "galacticraftmars";
+	public static final String TEXTURE_PREFIX = MarsModule.ASSET_PREFIX + ":";
 
 	public static Fluid SLUDGE;
 
@@ -89,12 +89,12 @@ public class MarsModule implements IPlanetsModule
 		this.registerOtherEntities();
 
 		MarsModule.planetMars = (Planet) new Planet("mars").setParentSolarSystem(GalacticraftCore.solarSystemSol).setRingColorRGB(0.67F, 0.1F, 0.1F).setPhaseShift(0.1667F).setRelativeSize(0.5319F).setRelativeDistanceFromCenter(1.52F).setRelativeOrbitTime(1.88F);
-		MarsModule.planetMars.setBodyIcon(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/celestialbodies/mars.png"));
+		MarsModule.planetMars.setBodyIcon(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/mars.png"));
 		MarsModule.planetMars.setDimensionInfo(ConfigManagerMars.dimensionIDMars, WorldProviderMars.class);
 
 		GalaxyRegistry.registerPlanet(MarsModule.planetMars);
 		GalacticraftRegistry.registerTeleportType(WorldProviderMars.class, new TeleportTypeMars());
-		GalacticraftRegistry.registerRocketGui(WorldProviderMars.class, new ResourceLocation(MarsModule.ASSET_DOMAIN, "textures/gui/marsRocketGui.png"));
+		GalacticraftRegistry.registerRocketGui(WorldProviderMars.class, new ResourceLocation(MarsModule.ASSET_PREFIX, "textures/gui/marsRocketGui.png"));
 		GalacticraftRegistry.addDungeonLoot(2, new ItemStack(MarsItems.schematic, 1, 0));
 		GalacticraftRegistry.addDungeonLoot(2, new ItemStack(MarsItems.schematic, 1, 1));
 

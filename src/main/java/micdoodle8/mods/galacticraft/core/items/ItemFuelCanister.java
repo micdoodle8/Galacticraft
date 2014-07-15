@@ -29,7 +29,7 @@ public class ItemFuelCanister extends Item
 		this.setNoRepair();
 		this.setUnlocalizedName(assetName);
 		this.setContainerItem(GCItems.oilCanister);
-		this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
 	}
 
 	@Override

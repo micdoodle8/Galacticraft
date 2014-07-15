@@ -16,7 +16,7 @@ public class BlockBrightAir extends BlockAir
 	{
 		this.setResistance(1000.0F);
 		this.setHardness(0.0F);
-		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
 		this.setBlockName(assetName);
 		this.setStepSound(new SoundType("sand", 0.0F, 1.0F));
 		this.setLightLevel(1.0F);

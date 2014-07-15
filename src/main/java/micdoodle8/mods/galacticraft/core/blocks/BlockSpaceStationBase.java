@@ -25,7 +25,7 @@ public class BlockSpaceStationBase extends BlockContainer implements ITileEntity
 	{
 		super(Material.rock);
 		this.setHardness(-1);
-		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
 		this.setBlockName(assetName);
 	}
 
@@ -40,8 +40,8 @@ public class BlockSpaceStationBase extends BlockContainer implements ITileEntity
 	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
 		this.spaceStationIcons = new IIcon[2];
-		this.spaceStationIcons[0] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "space_station_top");
-		this.spaceStationIcons[1] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "space_station_side");
+		this.spaceStationIcons[0] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "space_station_top");
+		this.spaceStationIcons[1] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "space_station_side");
 		this.blockIcon = this.spaceStationIcons[0];
 	}
 

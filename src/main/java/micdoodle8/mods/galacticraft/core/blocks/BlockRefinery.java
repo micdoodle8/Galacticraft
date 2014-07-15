@@ -38,7 +38,7 @@ public class BlockRefinery extends BlockAdvancedTile
 		super(Material.rock);
 		this.setHardness(1.0F);
 		this.setStepSound(Block.soundTypeMetal);
-		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
 		this.setBlockName(assetName);
 	}
 
@@ -58,12 +58,12 @@ public class BlockRefinery extends BlockAdvancedTile
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
-		this.iconMachineSide = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_blank");
-		this.iconFuelOutput = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_fuel_input");
-		this.iconOilInput = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_oil_input");
-		this.iconFront = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "refinery_front");
-		this.iconBack = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "refinery_side");
-		this.iconTop = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_input");
+		this.iconMachineSide = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_blank");
+		this.iconFuelOutput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_fuel_input");
+		this.iconOilInput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_oil_input");
+		this.iconFront = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "refinery_front");
+		this.iconBack = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "refinery_side");
+		this.iconTop = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_input");
 	}
 
 	@Override

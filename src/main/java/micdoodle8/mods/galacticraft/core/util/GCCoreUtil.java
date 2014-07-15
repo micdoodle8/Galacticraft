@@ -29,11 +29,6 @@ public class GCCoreUtil
 		return a | r | g | b;
 	}
 
-	public static void checkVersion(Side side)
-	{
-		ThreadVersionCheck.startCheck(side);
-	}
-
 	public static void openBuggyInv(EntityPlayerMP player, IInventory buggyInv, int type)
 	{
 		player.getNextWindowId();

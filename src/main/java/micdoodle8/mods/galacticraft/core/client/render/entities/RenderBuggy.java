@@ -14,13 +14,13 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class RenderBuggy extends Render
 {
-	private static final ResourceLocation buggyTextureBody = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/buggyMain.png");
-	private static final ResourceLocation buggyTextureWheel = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/buggyWheels.png");
-	private static final ResourceLocation buggyTextureStorage = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/buggyStorage.png");
+	private static final ResourceLocation buggyTextureBody = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/buggyMain.png");
+	private static final ResourceLocation buggyTextureWheel = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/buggyWheels.png");
+	private static final ResourceLocation buggyTextureStorage = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/buggyStorage.png");
 
-	private final IModelCustom modelBuggy = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "models/buggy.obj"));
-	private final IModelCustom modelBuggyWheelRight = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "models/buggyWheelRight.obj"));
-	private final IModelCustom modelBuggyWheelLeft = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "models/buggyWheelLeft.obj"));
+	private final IModelCustom modelBuggy = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/buggy.obj"));
+	private final IModelCustom modelBuggyWheelRight = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/buggyWheelRight.obj"));
+	private final IModelCustom modelBuggyWheelLeft = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/buggyWheelLeft.obj"));
 
 	public RenderBuggy()
 	{

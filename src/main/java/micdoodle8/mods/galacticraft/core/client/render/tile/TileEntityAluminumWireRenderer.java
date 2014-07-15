@@ -16,15 +16,15 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class TileEntityAluminumWireRenderer extends TileEntitySpecialRenderer
 {
-	private static final ResourceLocation aluminumWireTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/aluminumWire.png");
+	private static final ResourceLocation aluminumWireTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/aluminumWire.png");
 
 	public final IModelCustom model;
 	public final IModelCustom model2;
 
 	public TileEntityAluminumWireRenderer()
 	{
-		this.model = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "models/aluminumWire.obj"));
-		this.model2 = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "models/aluminumWireHeavy.obj"));
+		this.model = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/aluminumWire.obj"));
+		this.model2 = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/aluminumWireHeavy.obj"));
 	}
 
 	public void renderModelAt(TileEntityAluminumWire tileEntity, double d, double d1, double d2, float f)

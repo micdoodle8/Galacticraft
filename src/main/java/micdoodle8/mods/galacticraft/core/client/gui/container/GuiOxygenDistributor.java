@@ -21,7 +21,7 @@ import java.util.List;
 
 public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCallback
 {
-	private static final ResourceLocation distributorTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/oxygen.png");
+	private static final ResourceLocation distributorTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/oxygen.png");
 
 	private final TileEntityOxygenDistributor distributor;
 

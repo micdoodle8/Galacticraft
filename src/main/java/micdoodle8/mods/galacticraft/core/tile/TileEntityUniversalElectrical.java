@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import cpw.mods.fml.common.eventhandler.Event;
+import ic2.api.item.IElectricItem;
+import ic2.api.item.ISpecialElectricItem;
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
 import micdoodle8.mods.galacticraft.api.transmission.item.ElectricItemHelper;
 import micdoodle8.mods.galacticraft.api.transmission.item.IItemElectric;
@@ -13,8 +15,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
-import ic2.api.item.IElectricItem;
-import ic2.api.item.ISpecialElectricItem;
 
 import java.lang.reflect.Constructor;
 import java.util.EnumSet;

@@ -19,7 +19,7 @@ import java.util.List;
 
 public class GuiCargoLoader extends GuiContainerGC
 {
-	private static final ResourceLocation loaderTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/cargo_loader.png");
+	private static final ResourceLocation loaderTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/cargo_loader.png");
 
 	private final TileEntityCargoLoader cargoLoader;
 

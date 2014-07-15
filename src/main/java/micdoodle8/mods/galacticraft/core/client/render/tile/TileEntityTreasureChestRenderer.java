@@ -17,8 +17,8 @@ import org.lwjgl.opengl.GL12;
 @SideOnly(Side.CLIENT)
 public class TileEntityTreasureChestRenderer extends TileEntitySpecialRenderer
 {
-	private static final ResourceLocation treasureChestTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/treasure.png");
-	private static final ResourceLocation treasureLargeChestTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/treasurelarge.png");
+	private static final ResourceLocation treasureChestTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/treasure.png");
+	private static final ResourceLocation treasureLargeChestTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/treasurelarge.png");
 
 	/** The normal small chest model. */
 	private final ModelTreasureChest chestModel = new ModelTreasureChest();

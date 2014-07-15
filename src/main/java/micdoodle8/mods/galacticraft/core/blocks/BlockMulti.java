@@ -39,7 +39,7 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
 	{
 		super(GCBlocks.machine);
 		this.setStepSound(Block.soundTypeMetal);
-		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
 		this.setBlockName(assetName);
 		this.setResistance(1000000000000000.0F);
 	}
@@ -49,9 +49,9 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
 	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
 		this.fakeIcons = new IIcon[4];
-		this.fakeIcons[0] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "launch_pad");
-		this.fakeIcons[1] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "workbench_nasa_top");
-		this.fakeIcons[2] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "solar_basic_0");
+		this.fakeIcons[0] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "launch_pad");
+		this.fakeIcons[1] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "workbench_nasa_top");
+		this.fakeIcons[2] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "solar_basic_0");
 
 		if (Loader.isModLoaded(Constants.MOD_ID_PLANETS))
 		{

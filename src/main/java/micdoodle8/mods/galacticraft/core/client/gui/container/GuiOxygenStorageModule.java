@@ -14,7 +14,7 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class GuiOxygenStorageModule extends GuiContainer
 {
-	private static final ResourceLocation batteryBoxTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/oxygenStorageModule.png");
+	private static final ResourceLocation batteryBoxTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/oxygenStorageModule.png");
 
 	private TileEntityOxygenStorageModule tileEntity;
 

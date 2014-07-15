@@ -20,8 +20,8 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class RenderEvolvedSpider extends RenderLiving
 {
-	private static final ResourceLocation spiderTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/spider.png");
-	private static final ResourceLocation powerTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/power.png");
+	private static final ResourceLocation spiderTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/spider.png");
+	private static final ResourceLocation powerTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/power.png");
 
 	private final ModelBase model = new ModelEvolvedSpider(0.2F);
 

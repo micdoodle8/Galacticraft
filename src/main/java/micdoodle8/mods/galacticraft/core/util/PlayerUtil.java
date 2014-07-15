@@ -42,7 +42,7 @@ public class PlayerUtil
 			}
 		}
 
-		GCLog.severe("Warning: Could not find player base server instance for player " + username);
+		GCLog.severe("Warning: Could not find player base server INSTANCE for player " + username);
 
 		return null;
 	}
@@ -69,7 +69,7 @@ public class PlayerUtil
 
 		if (clientPlayer == null && player != null)
 		{
-			GCLog.severe("Warning: Could not find player base client instance for player " + player.getGameProfile().getName());
+			GCLog.severe("Warning: Could not find player base client INSTANCE for player " + player.getGameProfile().getName());
 		}
 
 		return clientPlayer;

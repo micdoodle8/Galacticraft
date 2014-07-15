@@ -38,7 +38,7 @@ public class BlockSolar extends BlockTileGC
 		super(Material.iron);
 		this.setHardness(1.0F);
 		this.setStepSound(Block.soundTypeMetal);
-		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
 		this.setBlockName(assetName);
 	}
 
@@ -54,12 +54,12 @@ public class BlockSolar extends BlockTileGC
 	@Override
 	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
-		this.icons[0] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "solar_basic_0");
-		this.icons[1] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "solar_basic_1");
-		this.icons[2] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "solar_advanced_0");
-		this.icons[3] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "solar_advanced_1");
-		this.icons[4] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_blank");
-		this.icons[5] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_output");
+		this.icons[0] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "solar_basic_0");
+		this.icons[1] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "solar_basic_1");
+		this.icons[2] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "solar_advanced_0");
+		this.icons[3] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "solar_advanced_1");
+		this.icons[4] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_blank");
+		this.icons[5] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_output");
 		this.blockIcon = this.icons[0];
 	}
 

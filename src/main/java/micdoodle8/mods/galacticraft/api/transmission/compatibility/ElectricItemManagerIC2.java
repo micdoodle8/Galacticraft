@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.api.transmission.compatibility;
 
+import ic2.api.item.IElectricItemManager;
 import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
-import ic2.api.item.IElectricItemManager;
 
 /*
  * Interface between Galacticraft electric items (batteries) and IC2.

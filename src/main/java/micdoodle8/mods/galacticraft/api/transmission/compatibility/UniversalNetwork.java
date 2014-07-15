@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.api.transmission.compatibility;
 
 import cpw.mods.fml.common.FMLLog;
+import ic2.api.energy.tile.IEnergyAcceptor;
+import ic2.api.energy.tile.IEnergySink;
 import micdoodle8.mods.galacticraft.api.transmission.ElectricalEvent.ElectricityProductionEvent;
 import micdoodle8.mods.galacticraft.api.transmission.ElectricalEvent.ElectricityRequestEvent;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
@@ -16,8 +18,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
-import ic2.api.energy.tile.IEnergyAcceptor;
-import ic2.api.energy.tile.IEnergySink;
 
 import java.util.*;
 

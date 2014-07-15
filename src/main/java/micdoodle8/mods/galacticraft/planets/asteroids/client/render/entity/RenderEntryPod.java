@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client.render.entity;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;

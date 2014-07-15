@@ -72,7 +72,7 @@ public class ItemThermalPadding extends Item
 
 		for (String name : ItemThermalPadding.names)
 		{
-			this.icons[i++] = iconRegister.registerIcon(AsteroidsModule.TEXTURE_DOMAIN + name);
+			this.icons[i++] = iconRegister.registerIcon(AsteroidsModule.TEXTURE_PREFIX + name);
 		}
 	}
 

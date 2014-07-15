@@ -24,7 +24,7 @@ import java.util.List;
 
 public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
 {
-	private static final ResourceLocation terraformerGui = new ResourceLocation(MarsModule.ASSET_DOMAIN, "textures/gui/terraformer.png");
+	private static final ResourceLocation terraformerGui = new ResourceLocation(MarsModule.ASSET_PREFIX, "textures/gui/terraformer.png");
 	private TileEntityTerraformer terraformer;
 	private GuiButton enableTreesButton;
 	private GuiButton enableGrassButton;

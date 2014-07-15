@@ -23,7 +23,7 @@ public class ItemUniversalWrench extends Item
 		this.setUnlocalizedName(assetName);
 		this.setMaxStackSize(1);
 		this.setMaxDamage(256);
-		this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
 	}
 
 	@Override

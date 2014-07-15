@@ -19,7 +19,7 @@ import java.util.List;
 
 public class GuiSolar extends GuiContainerGC
 {
-	private static final ResourceLocation solarGuiTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/solar.png");
+	private static final ResourceLocation solarGuiTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/solar.png");
 
 	private final TileEntitySolar solarPanel;
 

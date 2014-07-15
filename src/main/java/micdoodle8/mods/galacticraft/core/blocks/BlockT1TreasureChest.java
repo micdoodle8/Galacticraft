@@ -38,7 +38,7 @@ public class BlockT1TreasureChest extends BlockContainer implements ITileEntityP
 		super(Material.rock);
 		this.setResistance(10.0F);
 		this.setStepSound(Block.soundTypeStone);
-		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
 		this.setBlockName(assetName);
 	}
 
@@ -46,7 +46,7 @@ public class BlockT1TreasureChest extends BlockContainer implements ITileEntityP
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
-		this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "treasureChest");
+		this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "treasureChest");
 	}
 
 	@Override

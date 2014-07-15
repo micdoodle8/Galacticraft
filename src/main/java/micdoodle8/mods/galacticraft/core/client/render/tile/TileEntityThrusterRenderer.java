@@ -16,8 +16,8 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class TileEntityThrusterRenderer extends TileEntitySpecialRenderer
 {
-	public static final ResourceLocation thrusterTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/misc/underoil.png");
-	public static final IModelCustom thrusterModel = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "models/thruster.obj"));
+	public static final ResourceLocation thrusterTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/misc/underoil.png");
+	public static final IModelCustom thrusterModel = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/thruster.obj"));
 
 	public void renderModelAt(TileEntityThruster tileEntity, double d, double d1, double d2, float f)
 	{

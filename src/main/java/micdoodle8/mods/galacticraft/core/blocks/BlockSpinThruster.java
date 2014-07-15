@@ -57,7 +57,7 @@ public class BlockSpinThruster extends BlockAdvanced
 	//	@SideOnly(Side.CLIENT)
 	//	public void registerBlockIcons(IIconRegister par1IconRegister)
 	//	{
-	//		BlockSpinThruster.thrusterIcon = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "spinThruster");
+	//		BlockSpinThruster.thrusterIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "spinThruster");
 	//	}
 
 	@Override

@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL11;
 
 public class GuiSchematicCargoRocket extends GuiContainer implements ISchematicResultPage
 {
-	private static final ResourceLocation cargoRocketTexture = new ResourceLocation(MarsModule.ASSET_DOMAIN, "textures/gui/schematic_rocket_cargo.png");
+	private static final ResourceLocation cargoRocketTexture = new ResourceLocation(MarsModule.ASSET_PREFIX, "textures/gui/schematic_rocket_cargo.png");
 
 	private int pageIndex;
 

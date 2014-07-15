@@ -29,7 +29,7 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
 	{
 		super(Material.iron);
 		this.setHardness(1.0F);
-		this.setBlockTextureName(AsteroidsModule.TEXTURE_DOMAIN + "walkway");
+		this.setBlockTextureName(AsteroidsModule.TEXTURE_PREFIX + "walkway");
 		this.setBlockName(assetName);
 		this.isBlockContainer = true;
 		this.minVector = new Vector3(0.0, 0.32, 0.0);

@@ -19,11 +19,11 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class TileEntityArclampRenderer extends TileEntitySpecialRenderer
 {
-	public static final ResourceLocation lampTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/misc/underoil.png");
-	public static final ResourceLocation lightTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/misc/light.png");
-	public static final IModelCustom lampMetal = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "models/arclampMetal.obj"));
-	public static final IModelCustom lampLight = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "models/arclampLight.obj"));
-	public static final IModelCustom lampBase = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "models/arclampBase.obj"));
+	public static final ResourceLocation lampTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/misc/underoil.png");
+	public static final ResourceLocation lightTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/misc/light.png");
+	public static final IModelCustom lampMetal = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/arclampMetal.obj"));
+	public static final IModelCustom lampLight = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/arclampLight.obj"));
+	public static final IModelCustom lampBase = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/arclampBase.obj"));
 
 	public void renderModelAt(TileEntityArclamp tileEntity, double d, double d1, double d2, float f)
 	{

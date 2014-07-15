@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class RenderCargoRocket extends Render
 {
-	private static final ResourceLocation cargoRocketTexture = new ResourceLocation(MarsModule.ASSET_DOMAIN, "textures/model/cargoRocket.png");
+	private static final ResourceLocation cargoRocketTexture = new ResourceLocation(MarsModule.ASSET_PREFIX, "textures/model/cargoRocket.png");
 
 	protected IModelCustom rocketModel;
 

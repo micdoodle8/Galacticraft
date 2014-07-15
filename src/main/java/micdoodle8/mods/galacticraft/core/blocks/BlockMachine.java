@@ -1,11 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityCoalGenerator;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricFurnace;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityEnergyStorageModule;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityIngotCompressor;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityUniversalElectrical;
+import micdoodle8.mods.galacticraft.core.tile.*;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -46,7 +42,7 @@ public class BlockMachine extends BlockTileGC
 		this.setBlockName("basicMachine");
 		this.setHardness(1.0F);
 		this.setStepSound(Block.soundTypeMetal);
-		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
 		this.setBlockName(assetName);
 	}
 
@@ -65,21 +61,21 @@ public class BlockMachine extends BlockTileGC
 	@Override
 	public void registerBlockIcons(IIconRegister iconRegister)
 	{
-		this.blockIcon = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine");
-		this.iconInput = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_input");
-		this.iconOutput = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_output");
+		this.blockIcon = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine");
+		this.iconInput = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_input");
+		this.iconOutput = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_output");
 
-		this.iconMachineSide = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_side");
-		this.iconCoalGenerator = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "coalGenerator");
+		this.iconMachineSide = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_side");
+		this.iconCoalGenerator = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "coalGenerator");
 		this.iconEnergyStorageModule = new IIcon[17];
 
 		for (int i = 0; i < this.iconEnergyStorageModule.length; i++)
 		{
-			this.iconEnergyStorageModule[i] = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "energyStorageModule_" + i);
+			this.iconEnergyStorageModule[i] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "energyStorageModule_" + i);
 		}
 
-		this.iconElectricFurnace = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "electricFurnace");
-		this.iconCompressor = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "compressor");
+		this.iconElectricFurnace = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "electricFurnace");
+		this.iconCompressor = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "compressor");
 	}
 
 	@Override

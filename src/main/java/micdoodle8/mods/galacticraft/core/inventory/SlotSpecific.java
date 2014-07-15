@@ -1,13 +1,13 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
 import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Creates a slot with a specific amount of items that matches the slot's

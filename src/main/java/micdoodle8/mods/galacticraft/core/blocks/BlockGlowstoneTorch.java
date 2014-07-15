@@ -20,7 +20,7 @@ public class BlockGlowstoneTorch extends Block
 	{
 		super(Material.circuits);
 		this.setTickRandomly(true);
-		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
 		this.setBlockName(assetName);
 		this.setLightLevel(0.85F);
 		this.setStepSound(Block.soundTypeWood);

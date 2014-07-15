@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class RenderParaChest extends Render
 {
-	private static final ResourceLocation parachestTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/parachest.png");
+	private static final ResourceLocation parachestTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/parachest.png");
 
 	private final ModelParaChest chestModel;
 
