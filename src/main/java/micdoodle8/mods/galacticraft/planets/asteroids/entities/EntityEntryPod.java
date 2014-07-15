@@ -3,244 +3,186 @@ package micdoodle8.mods.galacticraft.planets.asteroids.entities;
 import cpw.mods.fml.relauncher.Side;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.core.entities.IScaleableFuelLevel;
 import micdoodle8.mods.galacticraft.core.entities.InventoryEntity;
+import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamicInventory;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Random;
 
-public class EntityEntryPod extends InventoryEntity implements IInventorySettable, IScaleableFuelLevel, ICameraZoomEntity
+public class EntityEntryPod extends EntityLanderBase implements IScaleableFuelLevel, ICameraZoomEntity
 {
-    private final int tankCapacity = 5000;
-    public FluidTank fuelTank = new FluidTank(this.tankCapacity);
-    public boolean waitForPlayer;
-    private boolean lastWaitForPlayer;
-    public boolean lastOnGround;
-    private double lastMotionY;
+    public EntityEntryPod(World var1) {
+        super(var1, 0.0F);
+        this.setSize(1.5F, 3.0F);
+    }
 
-    public EntityEntryPod(World world)
-    {
-        super(world);
+    public EntityEntryPod(GCEntityPlayerMP player) {
+        super(player, 0.0F);
+        this.setSize(1.5F, 3.0F);
     }
 
     @Override
-    protected void entityInit()
-    {
-
+    public double getInitialMotionY() {
+        return -0.5F;
     }
 
     @Override
     public double getMountedYOffset()
     {
-        return super.getMountedYOffset() - 0.5;
+        return this.height - 2.0D;
     }
 
     @Override
-    public void onUpdate()
-    {
-        if (this.waitForPlayer)
-        {
-            if (this.riddenByEntity != null)
-            {
-                if (this.ticksExisted >= 40)
-                {
-                    if (!this.worldObj.isRemote)
-                    {
-                        Entity e = this.riddenByEntity;
-                        this.riddenByEntity.ridingEntity = null;
-                        this.riddenByEntity = null;
-                        e.mountEntity(this);
-                    }
+    public boolean shouldSpawnParticles() {
+        return false;
+    }
 
-                    this.waitForPlayer = false;
-                }
-                else
-                {
-                    this.motionX = this.motionY = this.motionZ = 0.0D;
-                    this.riddenByEntity.motionX = this.riddenByEntity.motionY = this.riddenByEntity.motionZ = 0;
-                }
-            }
-            else
-            {
-                this.motionX = this.motionY = this.motionZ = 0.0D;
+    @Override
+    public Map<Vector3, Vector3> getParticleMap() {
+        return null;
+    }
+
+    @Override
+    public EntityFX getParticle(Random rand, double x, double y, double z, double motX, double motY, double motZ) {
+        return null;
+    }
+
+    @Override
+    public void tickOnGround() {
+
+    }
+
+    @Override
+    public void tickInAir() {
+        super.tickInAir();
+
+        if (this.worldObj.isRemote) {
+            if (!this.onGround) {
+                this.motionY -= 0.008D;
             }
         }
+    }
 
-        if (!this.waitForPlayer && this.lastWaitForPlayer)
-        {
-            this.motionY = -0.5D;
-        }
+    @Override
+    public void onGroundHit() {
 
-        super.onUpdate();
+    }
 
+    @Override
+    public Vector3 getMotionVec() {
         if (this.onGround)
         {
-            this.motionX = this.motionY = this.motionZ = 0.0D;
-        }
-        else
-        {
-            this.moveEntity(this.motionX, this.motionY, this.motionZ);
+            return new Vector3(0, 0, 0);
         }
 
-        this.lastWaitForPlayer = this.waitForPlayer;
-        this.lastOnGround = this.onGround;
-        this.lastMotionY = this.motionY;
+        if (this.ticks >= 40 && this.ticks < 45)
+        {
+            this.motionY = this.getInitialMotionY();
+        }
+
+        return new Vector3(this.motionX, this.motionY, this.motionZ);
     }
 
     @Override
-    public double getPacketRange()
-    {
-        return 0;
-    }
-
-    @Override
-    protected void readEntityFromNBT(NBTTagCompound nbt)
-    {
-        NBTTagList itemList = nbt.getTagList("Items", 10);
-        this.containedItems = new ItemStack[nbt.getInteger("RocketStacksLength")];
-
-        for (int i = 0; i < itemList.tagCount(); ++i)
-        {
-            NBTTagCompound itemTag = itemList.getCompoundTagAt(i);
-            int slotID = itemTag.getByte("Slot") & 255;
-
-            if (slotID >= 0 && slotID < this.containedItems.length)
-            {
-                this.containedItems[slotID] = ItemStack.loadItemStackFromNBT(itemTag);
-            }
-        }
-
-        if (nbt.hasKey("FuelTank"))
-        {
-            this.fuelTank.readFromNBT(nbt.getCompoundTag("FuelTank"));
-        }
-
-        this.waitForPlayer = nbt.getBoolean("WaitingForPlayer");
-
-        this.lastOnGround = this.onGround;
-        this.lastMotionY = this.motionY;
-    }
-
-    @Override
-    protected void writeEntityToNBT(NBTTagCompound nbt)
-    {
-        NBTTagList itemList = new NBTTagList();
-
-        nbt.setInteger("RocketStacksLength", this.containedItems.length);
-
-        for (int i = 0; i < this.containedItems.length; ++i)
-        {
-            if (this.containedItems[i] != null)
-            {
-                NBTTagCompound itemTag = new NBTTagCompound();
-                itemTag.setByte("Slot", (byte) i);
-                this.containedItems[i].writeToNBT(itemTag);
-                itemList.appendTag(itemTag);
-            }
-        }
-
-        nbt.setTag("Items", itemList);
-
-        if (this.fuelTank.getFluid() != null)
-        {
-            nbt.setTag("FuelTank", this.fuelTank.writeToNBT(new NBTTagCompound()));
-        }
-
-        nbt.setBoolean("WaitingForPlayer", this.waitForPlayer);
-    }
-
-    @Override
-    public float getCameraZoom()
-    {
+    public float getCameraZoom() {
         return 15.0F;
     }
 
     @Override
-    public boolean defaultThirdPerson()
-    {
+    public boolean defaultThirdPerson() {
         return true;
     }
 
     @Override
-    public void setSizeInventory(int size)
-    {
-        this.containedItems = new ItemStack[size];
+    public boolean pressKey(int key) {
+        return false;
     }
 
     @Override
-    public int getSizeInventory()
-    {
-        return this.containedItems.length;
+    public String getInventoryName() {
+        return "EntryPodAsteroids";
     }
 
     @Override
-    public String getInventoryName()
-    {
-        return "Asteroids Pod";
-    }
-
-    @Override
-    public boolean hasCustomInventoryName()
-    {
+    public boolean hasCustomInventoryName() {
         return true;
     }
 
     @Override
-    public boolean isItemValidForSlot(int var1, ItemStack var2)
+    protected boolean canTriggerWalking()
     {
         return false;
     }
 
     @Override
-    public void getNetworkedData(ArrayList<Object> list)
+    public AxisAlignedBB getBoundingBox()
     {
-        if (!this.worldObj.isRemote)
-        {
-            list.add(this.containedItems != null ? this.containedItems.length : 0);
-            list.add(this.fuelTank.getFluidAmount());
-
-            list.add(this.waitForPlayer);
-        }
+        return null;
     }
 
     @Override
-    public void decodePacketdata(ByteBuf buffer)
+    public AxisAlignedBB getCollisionBox(Entity par1Entity)
+    {
+        return null;
+    }
+
+    @Override
+    public boolean canBePushed()
+    {
+        return false;
+    }
+
+    @Override
+    public boolean canBeCollidedWith()
+    {
+        return !this.isDead;
+    }
+
+    @Override
+    public boolean interactFirst(EntityPlayer var1)
     {
         if (this.worldObj.isRemote)
         {
-            int cargoLength = buffer.readInt();
-
-            if (this.containedItems == null || this.containedItems.length == 0)
+            if (this.riddenByEntity != null)
             {
-                this.containedItems = new ItemStack[cargoLength];
-                GalacticraftCore.packetPipeline.sendToServer(new PacketDynamicInventory(this));
+                this.riddenByEntity.mountEntity(this);
             }
 
-            this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, buffer.readInt()));
-
-            this.waitForPlayer = buffer.readBoolean();
+            return true;
         }
-    }
 
-    @Override
-    public void handlePacketData(Side side, EntityPlayer player)
-    {
-
-    }
-
-    @Override
-    public int getScaledFuelLevel(int scale)
-    {
-        return (int) ((double) this.fuelTank.getFluidAmount() / (double) this.tankCapacity * scale);
+        if (this.riddenByEntity == null && var1 instanceof EntityPlayerMP)
+        {
+            GCCoreUtil.openParachestInv((EntityPlayerMP) var1, this);
+            return true;
+        }
+        else if (var1 instanceof EntityPlayerMP)
+        {
+            var1.mountEntity(null);
+            return true;
+        }
+        else
+        {
+            return true;
+        }
     }
 }
