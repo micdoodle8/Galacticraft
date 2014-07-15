@@ -33,54 +33,61 @@ public class WorldGenMinableMeta extends WorldGenMinable
 	}
 
 	@Override
-	public boolean generate(World par1World, Random par2Random, int par3, int par4, int par5)
+	public boolean generate(World par1World, Random par2Random, int px, int py, int pz)
 	{
-		final float var6 = par2Random.nextFloat() * (float) Math.PI;
-		final double var7 = par3 + 8 + MathHelper.sin(var6) * this.numberOfBlocks / 8.0F;
-		final double var9 = par3 + 8 - MathHelper.sin(var6) * this.numberOfBlocks / 8.0F;
-		final double var11 = par5 + 8 + MathHelper.cos(var6) * this.numberOfBlocks / 8.0F;
-		final double var13 = par5 + 8 - MathHelper.cos(var6) * this.numberOfBlocks / 8.0F;
-		final double var15 = par4 + par2Random.nextInt(3) - 2;
-		final double var17 = par4 + par2Random.nextInt(3) - 2;
+		final float f = par2Random.nextFloat() * (float) Math.PI;
+		final float sinf = MathHelper.sin(f) * this.numberOfBlocks / 8.0F;
+		final float cosf = MathHelper.cos(f) * this.numberOfBlocks / 8.0F;
+		final float x1 = px + 8 + sinf;
+		final float x2 = - 2F * sinf;
+		final float z1 = pz + 8 + cosf;
+		final float z2 = - 2F * cosf;
+		final float y1 = py + par2Random.nextInt(3) - 2;
+		final float y2 = py + par2Random.nextInt(3) - 2 - y1;
 
-		for (int var19 = 0; var19 <= this.numberOfBlocks; ++var19)
+		for (int l = 0; l <= this.numberOfBlocks; ++l)
 		{
-			final double var20 = var7 + (var9 - var7) * var19 / this.numberOfBlocks;
-			final double var22 = var15 + (var17 - var15) * var19 / this.numberOfBlocks;
-			final double var24 = var11 + (var13 - var11) * var19 / this.numberOfBlocks;
-			final double var26 = par2Random.nextDouble() * this.numberOfBlocks / 16.0D;
-			final double var28 = (MathHelper.sin(var19 * (float) Math.PI / this.numberOfBlocks) + 1.0F) * var26 + 1.0D;
-			final double var30 = (MathHelper.sin(var19 * (float) Math.PI / this.numberOfBlocks) + 1.0F) * var26 + 1.0D;
-			final int var32 = MathHelper.floor_double(var20 - var28 / 2.0D);
-			final int var33 = MathHelper.floor_double(var22 - var30 / 2.0D);
-			final int var34 = MathHelper.floor_double(var24 - var28 / 2.0D);
-			final int var35 = MathHelper.floor_double(var20 + var28 / 2.0D);
-			final int var36 = MathHelper.floor_double(var22 + var30 / 2.0D);
-			final int var37 = MathHelper.floor_double(var24 + var28 / 2.0D);
+			final float progress = (float) l / this.numberOfBlocks;
+			final float cx = x1 + x2 * progress;
+			final float cy = y1 + y2 * progress;
+			final float cz = z1 + z2 * progress;
+			final float size = ((MathHelper.sin((float) Math.PI * progress) + 1.0F) * par2Random.nextFloat() * this.numberOfBlocks / 16.0F + 1.0F) / 2.0F;
+			final int xMin = MathHelper.floor_float(cx - size);
+			final int yMin = MathHelper.floor_float(cy - size);
+			final int zMin = MathHelper.floor_float(cz - size);
+			final int xMax = MathHelper.floor_float(cx + size);
+			final int yMax = MathHelper.floor_float(cy + size);
+			final int zMax = MathHelper.floor_float(cz + size);
 
-			for (int var38 = var32; var38 <= var35; ++var38)
+			for (int ix = xMin; ix <= xMax; ++ix)
 			{
-				final double var39 = (var38 + 0.5D - var20) / (var28 / 2.0D);
+				float dx = (ix + 0.5F - cx) / size;
+				dx *= dx;
 
-				if (var39 * var39 < 1.0D)
+				if (dx < 1.0F)
 				{
-					for (int var41 = var33; var41 <= var36; ++var41)
+					for (int iy = yMin; iy <= yMax; ++iy)
 					{
-						final double var42 = (var41 + 0.5D - var22) / (var30 / 2.0D);
+						float dy = (iy + 0.5F - cy) / size;
+						dy *= dy;
 
-						if (var39 * var39 + var42 * var42 < 1.0D)
+						if (dx + dy < 1.0F)
 						{
-							for (int var44 = var34; var44 <= var37; ++var44)
+							for (int iz = zMin; iz <= zMax; ++iz)
 							{
-								final double var45 = (var44 + 0.5D - var24) / (var28 / 2.0D);
+								float dz = (iz + 0.5F - cz) / size;
+								dz *= dz;
 
-								if (var39 * var39 + var42 * var42 + var45 * var45 < 1.0D && par1World.getBlock(var38, var41, var44) == this.fillerID && par1World.getBlockMetadata(var38, var41, var44) == this.fillerMetadata && !this.usingMetadata)
+								if (dx + dy + dz < 1.0F && par1World.getBlock(ix, iy, iz) == this.fillerID && par1World.getBlockMetadata(ix, iy, iz) == this.fillerMetadata)
 								{
-									par1World.setBlock(var38, var41, var44, this.minableBlockId, 0, 3);
-								}
-								else if (var39 * var39 + var42 * var42 + var45 * var45 < 1.0D && par1World.getBlock(var38, var41, var44) == this.fillerID && par1World.getBlockMetadata(var38, var41, var44) == this.fillerMetadata && this.usingMetadata)
-								{
-									par1World.setBlock(var38, var41, var44, this.minableBlockId, this.metadata, 3);
+									if (!this.usingMetadata) 
+									{
+										par1World.setBlock(ix, iy, iz, this.minableBlockId, 0, 3);
+									}
+									else
+									{
+										par1World.setBlock(ix, iy, iz, this.minableBlockId, this.metadata, 3);
+									}
 								}
 							}
 						}
