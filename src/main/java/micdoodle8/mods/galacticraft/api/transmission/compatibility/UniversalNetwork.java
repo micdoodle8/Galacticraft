@@ -51,6 +51,7 @@ public class UniversalNetwork implements IElectricityNetwork
 	private float totalSent = 0F;
 	private boolean doneScheduled = false;
 	private boolean spamstop = false;
+	private boolean loopPrevention = false;
 
 	/*
 	 * connectedAcceptors is all the acceptors connected to this network
@@ -97,8 +98,10 @@ public class UniversalNetwork implements IElectricityNetwork
 		{
 			this.tickDone = UniversalNetwork.tickCount;
 			//Start the new tick - initialise everything
-			this.doTickStartCalc(ignoreTiles);
-
+			this.ignoreAcceptors.clear();
+			this.ignoreAcceptors.addAll(Arrays.asList(ignoreTiles));
+			this.doTickStartCalc();
+			
 			/*			if (NetworkConfigHandler.isBuildcraftLoaded())
 						{
 							try
@@ -134,6 +137,8 @@ public class UniversalNetwork implements IElectricityNetwork
 	@Override
 	public float produce(float energy, boolean doReceive, TileEntity... ignoreTiles)
 	{
+		if (this.loopPrevention) return energy;
+
 		if (energy > 0F)
 		{
 			ElectricityProductionEvent evt = new ElectricityProductionEvent(this, energy, ignoreTiles);
@@ -145,9 +150,13 @@ public class UniversalNetwork implements IElectricityNetwork
 				{
 					this.tickDone = UniversalNetwork.tickCount;
 					//Start the new tick - initialise everything
-					this.doTickStartCalc(ignoreTiles);
+					this.ignoreAcceptors.clear();
+					this.ignoreAcceptors.addAll(Arrays.asList(ignoreTiles));
+					this.doTickStartCalc();
 				}
-
+				else
+					this.ignoreAcceptors.addAll(Arrays.asList(ignoreTiles));
+		
 				if (!this.doneScheduled && this.totalRequested > 0.0F)
 				{
 					try
@@ -162,8 +171,6 @@ public class UniversalNetwork implements IElectricityNetwork
 
 					this.doneScheduled = true;
 				}
-
-				this.ignoreAcceptors.addAll(Arrays.asList(ignoreTiles));
 
 				//On a regular mid-tick produce(), just figure out how much is totalEnergy this tick and return the used amount
 				//This will return 0 if totalRequested is 0 - for example a network with no acceptors
@@ -196,14 +203,14 @@ public class UniversalNetwork implements IElectricityNetwork
 	public void tickEnd()
 	{
 		this.doneScheduled = false;
-
+		this.loopPrevention = true;
+		
 		//Finish the last tick if there was some to send and something to receive it
 		if (this.totalEnergy > 0F)
 		{
 			//Call doTickStartCalc a second time in case anything has updated meanwhile
-			TileEntity[] ignoretiles = new TileEntity[this.ignoreAcceptors.size()];
-			this.doTickStartCalc(this.ignoreAcceptors.toArray(ignoretiles));
-
+			this.doTickStartCalc();
+			
 			if (this.totalRequested > 0F)
 			{
 				this.totalSent = this.doProduce();
@@ -222,6 +229,8 @@ public class UniversalNetwork implements IElectricityNetwork
 		{
 			this.totalEnergy = 0F;
 		}
+		
+		this.loopPrevention = false;
 	}
 
     /**
@@ -229,7 +238,7 @@ public class UniversalNetwork implements IElectricityNetwork
      *
      * @param ignoreTiles TileEntities to ignore for energy calculations.
      */
-	private void doTickStartCalc(TileEntity... ignoreTiles)
+	private void doTickStartCalc()
 	{
 		this.totalSent = 0F;
 		this.refreshAcceptors();
@@ -239,14 +248,13 @@ public class UniversalNetwork implements IElectricityNetwork
 			return;
 		}
 
+		this.loopPrevention = true;
+		
 		this.availableAcceptors.clear();
 		this.availableconnectedDirections.clear();
 		this.energyRequests.clear();
 		this.totalRequested = 0.0F;
 		this.totalStorageExcess = 0F;
-		this.ignoreAcceptors.clear();
-
-		List<TileEntity> ignored = Arrays.asList(ignoreTiles);
 
 		//boolean isTELoaded = NetworkConfigHandler.isThermalExpansionLoaded();
 		boolean isIC2Loaded = NetworkConfigHandler.isIndustrialCraft2Loaded();
@@ -263,7 +271,7 @@ public class UniversalNetwork implements IElectricityNetwork
 				ForgeDirection sideFrom = acceptorDirection.next();
 
 				//But the grid will only put energy into the acceptor from one side - once it's in availableAcceptors
-				if (!ignored.contains(acceptor) && !this.availableAcceptors.contains(acceptor))
+				if (!this.ignoreAcceptors.contains(acceptor) && !this.availableAcceptors.contains(acceptor))
 				{
 					e = 0.0F;
 
@@ -305,9 +313,12 @@ public class UniversalNetwork implements IElectricityNetwork
 		}
 
 		//Finally, allow a Forge event to change the total requested
-		ElectricityRequestEvent evt = new ElectricityRequestEvent(this, this.totalRequested, ignoreTiles);
+		TileEntity[] ignoretiles = new TileEntity[this.ignoreAcceptors.size()];
+		ElectricityRequestEvent evt = new ElectricityRequestEvent(this, this.totalRequested, this.ignoreAcceptors.toArray(ignoretiles));
 		MinecraftForge.EVENT_BUS.post(evt);
 		this.totalRequested = evt.energy;
+		
+		this.loopPrevention = false;
 	}
 
     /**

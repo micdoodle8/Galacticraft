@@ -208,23 +208,22 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 
 			/*if (this.bcPowerHandler == null)
 			{
-				this.initBuildCraft();
-			}*/
+			this.initBuildCraft();
+			}
 
-			//			if (NetworkConfigHandler.isBuildcraftLoaded())
-			//			{
-			//				PowerHandler handler = (PowerHandler) this.bcPowerHandler;
-			//
-			//				if (handler.getEnergyStored() > 0)
-			//				{
-			//					/**
-			//					 * Cheat BuildCraft powerHandler and always empty energy
-			//					 * inside of it.
-			//					 */
-			//					this.receiveElectricity(handler.getEnergyStored() * NetworkConfigHandler.BC3_RATIO, true);
-			//					handler.setEnergy(0);
-			//				}
-			//			}
+			if (NetworkConfigHandler.isBuildcraftLoaded())
+			{
+				PowerHandler handler = (PowerHandler) this.bcPowerHandler;
+	
+				float energyBC = handler.getEnergyStored();
+				if (energyBC > 0)
+				{
+					float usedBC = this.receiveElectricity(energyBC * NetworkConfigHandler.BC3_RATIO, true) * NetworkConfigHandler.TO_BC_RATIO;
+					energyBC -= usedBC;
+					if (energyBC < 0) energyBC = 0;
+					handler.setEnergy(energyBC);
+				}
+			}*/
 		}
 	}
 
@@ -378,17 +377,18 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 	 */
 	public void initBuildCraft()
 	{
-		//		if (!NetworkConfigHandler.isBuildcraftLoaded())
-		//		{
-		//			return;
-		//		}
-		//
-		//		if (this.bcPowerHandler == null)
-		//		{
-		//			this.bcPowerHandler = new PowerHandler((IPowerReceptor) this, Type.MACHINE);
-		//		}
-		//
-		//		((PowerHandler) this.bcPowerHandler).configure(0, this.maxInputEnergy, 0, (int) Math.ceil(this.getMaxEnergyStored() * NetworkConfigHandler.BC3_RATIO));
+	//		if (!NetworkConfigHandler.isBuildcraftLoaded())
+	//		{
+	//		return;
+	//		}
+	//
+	//		if (this.bcPowerHandler == null)
+	//		{
+	//		this.bcPowerHandler = new PowerHandler((IPowerReceptor) this, Type.MACHINE);
+	//		}
+	//
+	//		((PowerHandler) this.bcPowerHandler).configure(0, this.maxInputEnergy, 0, (int) Math.ceil(this.getMaxEnergyStored() * NetworkConfigHandler.TO_BC_RATIO));
+	//		((PowerHandler) this.bcPowerHandler).configurePowerPerdition(1, 10);
 	}
 
 	//	@RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "BuildCraft|Energy")
@@ -409,7 +409,7 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 	//	{
 	//		return this.getWorldObj();
 	//	}
-	//
+
 	//	@RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "ThermalExpansion")
 	//	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate)
 	//	{
