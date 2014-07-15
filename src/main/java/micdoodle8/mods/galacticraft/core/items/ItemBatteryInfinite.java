@@ -24,6 +24,12 @@ public class ItemBatteryInfinite extends ItemElectric
 	}
 
 	@Override
+	protected void setMaxTransfer()
+	{
+		this.transferMax = 400;
+	}
+
+	@Override
 	public CreativeTabs getCreativeTab()
 	{
 		return GalacticraftCore.galacticraftItemsTab;

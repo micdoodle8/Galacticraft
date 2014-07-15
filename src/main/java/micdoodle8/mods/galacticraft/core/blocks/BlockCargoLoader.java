@@ -5,6 +5,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCargoLoader;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCargoUnloader;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityUniversalElectrical;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -198,6 +199,10 @@ public class BlockCargoLoader extends BlockAdvancedTile
 			change = 0;
 			break;
 		}
+		
+		TileEntity te = world.getTileEntity(x,  y,  z);
+		if (te instanceof TileEntityUniversalElectrical)
+			((TileEntityUniversalElectrical) te).updateFacing();
 
 		return world.setBlockMetadataWithNotify(x, y, z, baseMeta + change, 3);
 	}

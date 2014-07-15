@@ -19,7 +19,7 @@ public class NetworkConfigHandler
 	 * Ratio of Build craft(MJ) power to UE power(Kw). Multiply BC3 power by
 	 * this to convert to UE
 	 */
-	public static float BC3_RATIO = 0.04F;
+	public static float BC3_RATIO = 0.39F;
 
 	/**
 	 * Ratio of Redstone Flux power to UE power(Kw). Multiply TE power by this
@@ -31,7 +31,7 @@ public class NetworkConfigHandler
 	 * Ratio of Industrial craft(EU) power to UE power(Kw). Multiply IC2 power
 	 * by this to convert to UE
 	 */
-	public static float IC2_RATIO = 0.11256f;
+	public static float IC2_RATIO = 0.16f;
 
 	public static float MEKANISM_RATIO = 0.0016F;
 
@@ -59,6 +59,9 @@ public class NetworkConfigHandler
 	 * Oxygen gas used when Mekanism is loaded. Always null otherwise.
 	 */
 	public static Object gasOxygen = null;
+	
+	private static boolean cachedIC2Loaded = false;
+	private static boolean cachedIC2LoadedValue = false;
 
 	/** You must call this function to enable the Universal Network module. */
 	public static void setDefaultValues(File file)
@@ -100,7 +103,13 @@ public class NetworkConfigHandler
 	/** Checks using the FML loader too see if IC2 is loaded */
 	public static boolean isIndustrialCraft2Loaded()
 	{
-		return Loader.isModLoaded("IC2");
+		if (!cachedIC2Loaded)
+		{
+			cachedIC2Loaded = true;
+			cachedIC2LoadedValue = Loader.isModLoaded("IC2");
+		}
+	
+		return cachedIC2LoadedValue;		
 	}
 
 	/** Checks using the FML loader too see if BC3 is loaded */

@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityCircuitFabricator;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCoalGenerator;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricIngotCompressor;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenStorageModule;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityUniversalElectrical;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -275,6 +276,10 @@ public class BlockMachine2 extends BlockTileGC
 		else if (metadata >= BlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
 		{
 			original -= BlockMachine2.ELECTRIC_COMPRESSOR_METADATA;
+			
+			TileEntity te = par1World.getTileEntity(x,  y,  z);
+			if (te instanceof TileEntityUniversalElectrical)
+				((TileEntityUniversalElectrical) te).updateFacing();
 		}
 
 		// Re-orient the block

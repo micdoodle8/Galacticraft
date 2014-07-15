@@ -13,6 +13,7 @@ import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
+import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -47,6 +48,9 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.*;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.ForgeDirection;
+import ic2.api.energy.tile.IEnergyAcceptor;
+import ic2.api.energy.tile.IEnergyEmitter;
+import ic2.api.energy.tile.IEnergyTile;
 
 import java.io.File;
 import java.util.*;
@@ -857,7 +861,7 @@ public class WorldUtil
 
 		//boolean isMekLoaded = NetworkConfigHandler.isMekanismLoaded();
 		//boolean isTELoaded = NetworkConfigHandler.isThermalExpansionLoaded();
-		//boolean isIC2Loaded = NetworkConfigHandler.isIndustrialCraft2Loaded();
+		boolean isIC2Loaded = NetworkConfigHandler.isIndustrialCraft2Loaded();
 		//boolean isBCLoaded = NetworkConfigHandler.isBuildcraftLoaded();
 
 		BlockVec3 thisVec = new BlockVec3(tile);
@@ -871,6 +875,7 @@ public class WorldUtil
 				{
 					adjacentConnections[direction.ordinal()] = tileEntity;
 				}
+				continue;
 			}
 			/*else if (isMekLoaded && tileEntity instanceof IStrictEnergyAcceptor)
 			{
@@ -885,7 +890,7 @@ public class WorldUtil
 				{
 					adjacentConnections[direction.ordinal()] = tileEntity;
 				}
-			}
+			}*/
 			else if (isIC2Loaded && tileEntity instanceof IEnergyTile)
 			{
 				if (tileEntity instanceof IEnergyAcceptor)
@@ -896,8 +901,16 @@ public class WorldUtil
 						continue;
 					}
 				}
+				if (tileEntity instanceof IEnergyEmitter)
+				{
+					if (((IEnergyEmitter) tileEntity).emitsEnergyTo(tile, direction.getOpposite()))
+					{
+						adjacentConnections[direction.ordinal()] = tileEntity;
+						continue;
+					}
+				}
 			}
-			else if (isBCLoaded && tileEntity instanceof IPowerReceptor)
+			/*else if (isBCLoaded && tileEntity instanceof IPowerReceptor)
 			{
 				if (((IPowerReceptor) tileEntity).getPowerReceiver(direction.getOpposite()) != null)
 				{

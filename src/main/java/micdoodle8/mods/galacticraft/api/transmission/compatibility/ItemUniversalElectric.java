@@ -92,7 +92,7 @@
 //
 //		private IItemElectric getElectricItem(ItemStack itemStack)
 //		{
-//			if (itemStack.getItem() instanceof IItemElectric)
+//			if (ItemElectric.isElectricItem(itemStack.getItem()))
 //			{
 //				return ((IItemElectric) itemStack.getItem());
 //			}

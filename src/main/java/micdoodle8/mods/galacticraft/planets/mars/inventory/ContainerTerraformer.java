@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.inventory;
 
 import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
+import micdoodle8.mods.galacticraft.api.transmission.core.item.ItemElectric;
 import micdoodle8.mods.galacticraft.core.inventory.SlotSpecific;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityTerraformer;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,7 +25,7 @@ public class ContainerTerraformer extends Container
 
 		this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 25, 19, new ItemStack(Items.bucket)));
 
-		this.addSlotToContainer(new SlotSpecific(tileEntity, 1, 25, 39, IItemElectric.class));
+		this.addSlotToContainer(new SlotSpecific(tileEntity, 1, 25, 39, ItemElectric.class));
 
 		int var6;
 		int var7;

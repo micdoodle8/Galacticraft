@@ -2,11 +2,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
-import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
-import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
-import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.core.blocks.BlockMachine;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
@@ -17,12 +13,11 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.EnumSet;
 
-public class TileEntityCoalGenerator extends TileEntityUniversalElectrical implements IInventory, ISidedInventory, IPacketReceiver, IConnector
+public class TileEntityCoalGenerator extends TileEntityUniversalElectricalSource implements IInventory, ISidedInventory, IPacketReceiver, IConnector
 {
 	public static final int MAX_GENERATE_WATTS = 500;
 	public static final int MIN_GENERATE_WATTS = 100;
@@ -276,29 +271,14 @@ public class TileEntityCoalGenerator extends TileEntityUniversalElectrical imple
 		return 0;
 	}
 
+	/*
 	@Override
 	public float getRequest(ForgeDirection direction)
 	{
 		return 0;
 	}
-
-	@Override
-	public float getProvide(ForgeDirection direction)
-	{
-		if (direction == ForgeDirection.UNKNOWN && NetworkConfigHandler.isIndustrialCraft2Loaded())
-		{
-			BlockVec3 vec = new BlockVec3(this).modifyPositionFromSide(ForgeDirection.getOrientation(this.getBlockMetadata() - BlockMachine.STORAGE_MODULE_METADATA + 2), 1);
-			TileEntity tile = vec.getTileEntity(this.worldObj);
-			if (tile instanceof IConductor)
-			{
-				//No power provide to IC2 mod if it's a Galacticraft wire on the output.  Galacticraft network will provide the power.
-				return 0.0F;
-			}
-		}
-
-		return this.generateWatts < TileEntityCoalGenerator.MIN_GENERATE_WATTS ? 0F : this.generateWatts;
-	}
-
+	*/
+	
 	@Override
 	public EnumSet<ForgeDirection> getElectricalInputDirections()
 	{
@@ -312,6 +292,12 @@ public class TileEntityCoalGenerator extends TileEntityUniversalElectrical imple
 	}
 
 	@Override
+	public ForgeDirection getElectricalOutputDirectionMain()
+	{
+		return ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
+	}
+
+	@Override
 	public boolean canConnect(ForgeDirection direction, NetworkType type)
 	{
 		if (direction == null || direction.equals(ForgeDirection.UNKNOWN) || type != NetworkType.POWER)
@@ -319,6 +305,6 @@ public class TileEntityCoalGenerator extends TileEntityUniversalElectrical imple
 			return false;
 		}
 
-		return direction == ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
+		return direction == this.getElectricalOutputDirectionMain();
 	}
 }
