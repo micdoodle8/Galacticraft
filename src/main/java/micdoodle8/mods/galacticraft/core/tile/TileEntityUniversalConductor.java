@@ -2,6 +2,8 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import cpw.mods.fml.common.eventhandler.Event;
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
+import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
+import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
@@ -182,7 +184,7 @@ public abstract class TileEntityUniversalConductor extends TileEntityConductor
 	/*@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
 	public int getSinkTier()
 	{
-		return 4;
+		return 3;
 	}*/
 	
 	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
@@ -194,12 +196,38 @@ public abstract class TileEntityUniversalConductor extends TileEntityConductor
 	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergyAcceptor", modID = "IC2")
 	public boolean acceptsEnergyFrom(TileEntity emitter, ForgeDirection direction)
 	{
+		//Don't add connection to IC2 grid if it's a Galacticraft tile
+		if (emitter instanceof IElectrical || emitter instanceof IConductor)
+			return false;
+
+		//Don't make connection with IC2 wires [don't want risk of multiple connections + there is a graphical glitch in IC2]
+		try {
+			Class<?> conductorIC2 = Class.forName("ic2.api.energy.tile.IEnergyConductor");
+			if (conductorIC2.isInstance(emitter)) return false; 
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
 		return true;
 	}
 
 	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergyEmitter", modID = "IC2")
 	public boolean emitsEnergyTo(TileEntity receiver, ForgeDirection direction)
 	{
+		//Don't add connection to IC2 grid if it's a Galacticraft tile
+		if (receiver instanceof IElectrical || receiver instanceof IConductor)
+			return false;
+
+		//Don't make connection with IC2 wires [don't want risk of multiple connections + there is a graphical glitch in IC2]
+		try {
+			Class<?> conductorIC2 = Class.forName("ic2.api.energy.tile.IEnergyConductor");
+			if (conductorIC2.isInstance(receiver)) return false; 
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
 		return true;
 	}
 
