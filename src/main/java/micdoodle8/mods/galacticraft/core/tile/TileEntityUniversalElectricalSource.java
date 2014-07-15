@@ -97,7 +97,7 @@ public class TileEntityUniversalElectricalSource extends TileEntityUniversalElec
 						double result = (Double) methodCharge.invoke(IC2manager, itemStack, (int) (energyToCharge * NetworkConfigHandler.TO_IC2_RATIO), 4, false, false);
 						//float energy = (float) ((ISpecialElectricItem)item).getManager(itemStack).charge(itemStack, energyToCharge * NetworkConfigHandler.TO_IC2_RATIO, 4, false, false) * NetworkConfigHandler.IC2_RATIO;
 						float energy = (float) result * NetworkConfigHandler.IC2_RATIO;
-						this.storage.extractEnergyGC(energy, true);
+						this.storage.extractEnergyGC(energy, false);
 					}
 					else if (itemElectricIC2B.isInstance(item))
 					{
@@ -109,7 +109,7 @@ public class TileEntityUniversalElectricalSource extends TileEntityUniversalElec
 						double result = (Double) methodCharge.invoke(IC2manager, itemStack, (int) (energyToCharge * NetworkConfigHandler.TO_IC2_RATIO), 4, false, false);
 						//float energy = (float) ((ISpecialElectricItem)item).getManager(itemStack).charge(itemStack, energyToCharge * NetworkConfigHandler.TO_IC2_RATIO, 4, false, false) * NetworkConfigHandler.IC2_RATIO;
 						float energy = (float) result * NetworkConfigHandler.IC2_RATIO;
-						this.storage.extractEnergyGC(energy, true);				
+						this.storage.extractEnergyGC(energy, false);				
 					}
 				} catch (Exception e)
 				{
