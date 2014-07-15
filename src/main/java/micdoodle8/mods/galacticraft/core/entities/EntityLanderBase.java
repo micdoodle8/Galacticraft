@@ -40,6 +40,15 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
     }
 
     @Override
+    public void updateRiderPosition()
+    {
+        if (this.riddenByEntity != null)
+        {
+            this.riddenByEntity.setPosition(this.posX, this.posY + this.getMountedYOffset() + this.riddenByEntity.getYOffset(), this.posZ);
+        }
+    }
+
+    @Override
     public int getScaledFuelLevel(int i)
     {
         final double fuelLevel = this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluid().amount;

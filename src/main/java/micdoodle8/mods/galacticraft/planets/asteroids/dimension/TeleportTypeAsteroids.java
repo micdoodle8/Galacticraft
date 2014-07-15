@@ -105,19 +105,7 @@ public class TeleportTypeAsteroids implements ITeleportType
                 gcPlayer.capabilities.isFlying = false;
             }
 
-            EntityEntryPod entryPod = new EntityEntryPod(newWorld);
-            entryPod.setPositionAndRotation(player.posX, player.posY, player.posZ, 0, 0);
-            entryPod.waitForPlayer = true;
-            entryPod.riddenByEntity = player;
-            player.ridingEntity = entryPod;
-
-            entryPod.containedItems = new ItemStack[gcPlayer.getPlayerStats().rocketStacks.length + 1];
-            entryPod.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, gcPlayer.getPlayerStats().fuelLevel));
-
-            for (int i = 0; i < gcPlayer.getPlayerStats().rocketStacks.length; i++)
-            {
-                entryPod.containedItems[i] = gcPlayer.getPlayerStats().rocketStacks[i];
-            }
+            EntityEntryPod entryPod = new EntityEntryPod(gcPlayer);
 
             if (!newWorld.isRemote)
             {
