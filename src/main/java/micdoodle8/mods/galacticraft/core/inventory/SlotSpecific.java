@@ -41,11 +41,12 @@ public class SlotSpecific extends Slot
 		{
 			if (NetworkConfigHandler.isIndustrialCraft2Loaded())
 			{
-				System.out.println("Adding IC2 item to slot validity.");
 				try {
-					Class<?> itemElectricIC2 = Class.forName("ic2.api.item.ISpecialElectricItem");
+					Class<?> itemElectricIC2a = Class.forName("ic2.api.item.IElectricItem");
+					Class<?> itemElectricIC2b = Class.forName("ic2.api.item.ISpecialElectricItem");
 					ArrayList<Class> existing = new ArrayList(Arrays.asList(validClasses));
-					existing.add(itemElectricIC2);
+					existing.add(itemElectricIC2a);
+					existing.add(itemElectricIC2b);
 					validClasses = existing.toArray(new Class[existing.size()]);
 				} catch (Exception e) { e.printStackTrace(); }
 			}
@@ -101,7 +102,7 @@ public class SlotSpecific extends Slot
 		{
 			for (Class clazz : this.validClasses)
 			{
-				if (clazz.equals(compareStack.getItem().getClass()) || clazz.isInstance(compareStack.getItem()))
+				if (clazz.isInstance(compareStack.getItem()))
 				{
 					returnValue = true;
 					break;

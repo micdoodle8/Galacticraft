@@ -203,24 +203,7 @@ public abstract class TileEntityUniversalConductor extends TileEntityConductor
 		return true;
 	}
 
-/*	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySource", modID = "IC2")
-	public void drawEnergy(double energy)
-	{
-		return;
-	}
-	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySource", modID = "IC2")
-	public double getOfferedEnergy()
-	{
-		return this.getNetwork().totalAvailable;
-	}
-
-	
-	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySource", modID = "IC2")
-	public int getSourceTier()
-	{
-		return 1;
-	}
-*/	//	/**
+	//	/**
 	//	 * BuildCraft functions
 	//	 */
 	//	@RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "BuildCraft|Energy")

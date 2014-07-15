@@ -16,12 +16,20 @@ import java.util.List;
 
 public abstract class ItemElectric extends Item implements IItemElectric
 {
+	public float transferMax;
+	
 	public ItemElectric()
 	{
 		super();
 		this.setMaxStackSize(1);
 		this.setMaxDamage(100);
 		this.setNoRepair();
+		this.setMaxTransfer();
+	}
+
+	protected void setMaxTransfer()
+	{
+		this.transferMax = 200;
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -62,6 +70,11 @@ public abstract class ItemElectric extends Item implements IItemElectric
 	{
 		float rejectedElectricity = Math.max(this.getElectricityStored(itemStack) + energy - this.getMaxElectricityStored(itemStack), 0);
 		float energyToReceive = energy - rejectedElectricity;
+		if (energyToReceive > this.transferMax)
+		{
+			rejectedElectricity += energyToReceive - this.transferMax;
+			energyToReceive = this.transferMax;
+		}
 
 		if (doReceive)
 		{
@@ -74,7 +87,7 @@ public abstract class ItemElectric extends Item implements IItemElectric
 	@Override
 	public float discharge(ItemStack itemStack, float energy, boolean doTransfer)
 	{
-		float energyToTransfer = Math.min(this.getElectricityStored(itemStack), energy);
+		float energyToTransfer = Math.min(Math.min(this.getElectricityStored(itemStack), energy), this.transferMax);
 
 		if (doTransfer)
 		{
@@ -109,7 +122,7 @@ public abstract class ItemElectric extends Item implements IItemElectric
 	@Override
 	public float getTransfer(ItemStack itemStack)
 	{
-		return this.getMaxElectricityStored(itemStack) - this.getElectricityStored(itemStack);
+		return Math.min(this.transferMax, this.getMaxElectricityStored(itemStack) - this.getElectricityStored(itemStack));
 	}
 
 	/** Gets the energy stored in the item. Energy is stored using item NBT */
@@ -153,7 +166,10 @@ public abstract class ItemElectric extends Item implements IItemElectric
 		
 		if (NetworkConfigHandler.isIndustrialCraft2Loaded())
 		{
-			if (item instanceof ic2.api.item.ISpecialElectricItem) return true;
+			if (item instanceof ic2.api.item.ISpecialElectricItem)
+			{	
+				return true;
+			}
 		}
 		
 		return false;

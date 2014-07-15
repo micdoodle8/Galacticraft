@@ -17,7 +17,7 @@ import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
-public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical implements IPacketReceiver, ISidedInventory, IConnector
+public class TileEntityEnergyStorageModule extends TileEntityUniversalElectricalSource implements IPacketReceiver, ISidedInventory, IConnector
 {
 	private ItemStack[] containingItems = new ItemStack[2];
 
@@ -28,7 +28,7 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 	public TileEntityEnergyStorageModule()
 	{
 		this.storage.setCapacity(500000);
-		this.storage.setMaxTransfer(200);
+		this.storage.setMaxTransfer(1500);
 	}
 
 	@Override
@@ -259,23 +259,7 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 	{
 		return this.getElectricalInputDirections().contains(direction) ? this.getMaxEnergyStored() - this.getEnergyStored() : 0;
 	}
-
-	@Override
-	public float getProvide(ForgeDirection direction)
-	{
-		if (direction == ForgeDirection.UNKNOWN && NetworkConfigHandler.isIndustrialCraft2Loaded())
-		{
-			BlockVec3 vec = new BlockVec3(this).modifyPositionFromSide(ForgeDirection.getOrientation(this.getBlockMetadata() - GCCoreBlockMachine.STORAGE_MODULE_METADATA + 2), 1);
-			TileEntity tile = vec.getTileEntity(this.worldObj);
-			if (tile instanceof IConductor)
-				//No power provide to IC2 mod if it's a Galacticraft wire on the output.  Galacticraft network will provide the power.
-				return 0.0F;
-			else
-				return Math.min(3.75F, this.getEnergyStored());
-		}
-		//3.75kJ per tick = 75kW
-		return this.getElectricalOutputDirections().contains(direction) ? Math.min(3.75F, this.getEnergyStored()) : 0.0F;
-	}*/
+	*/
 
 	@Override
 	public EnumSet<ForgeDirection> getElectricalInputDirections()
@@ -287,6 +271,12 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 	public EnumSet<ForgeDirection> getElectricalOutputDirections()
 	{
 		return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() - BlockMachine.STORAGE_MODULE_METADATA + 2), ForgeDirection.UNKNOWN);
+	}
+
+	@Override
+	public ForgeDirection getElectricalOutputDirectionMain()
+	{
+		return ForgeDirection.getOrientation(this.getBlockMetadata() - BlockMachine.STORAGE_MODULE_METADATA + 2);
 	}
 
 	@Override
