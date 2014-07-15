@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.world.gen;
 
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedCreeper;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSkeleton;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider;
@@ -432,4 +433,66 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 			return null;
 		}
 	}
+
+    /**
+     * Whether a large asteroid is located the provided coordinates
+     *
+     * @param x0 X-Coordinate to check, in Block Coords
+     * @param z0 Z-Coordinate to check, in Block Coords
+     * @return True if large asteroid is located here, False if not
+     */
+    public BlockVec3 isLargeAsteroidAt(int x0, int z0)
+    {
+        int xToCheck;
+        int zToCheck;
+        for (int i0 = 0; i0 <= 32; i0++)
+        {
+            for (int i1 = -i0; i1 <= i0; i1++)
+            {
+                xToCheck = (x0 >> 4) + i0;
+                zToCheck = (z0 >> 4) + i1;
+
+                if (isLargeAsteroidAt0(xToCheck * 16, zToCheck * 16)) {
+                    return new BlockVec3(xToCheck * 16, 0, zToCheck * 16);
+                }
+
+                xToCheck = (x0 >> 4) + i0;
+                zToCheck = (z0 >> 4) - i1;
+
+                if (isLargeAsteroidAt0(xToCheck * 16, zToCheck * 16)) {
+                    return new BlockVec3(xToCheck * 16, 0, zToCheck * 16);
+                }
+
+                xToCheck = (x0 >> 4) - i0;
+                zToCheck = (z0 >> 4) + i1;
+
+                if (isLargeAsteroidAt0(xToCheck * 16, zToCheck * 16)) {
+                    return new BlockVec3(xToCheck * 16, 0, zToCheck * 16);
+                }
+
+                xToCheck = (x0 >> 4) - i0;
+                zToCheck = (z0 >> 4) - i1;
+
+                if (isLargeAsteroidAt0(xToCheck * 16, zToCheck * 16)) {
+                    return new BlockVec3(xToCheck * 16, 0, zToCheck * 16);
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private boolean isLargeAsteroidAt0(int x0, int z0)
+    {
+        for (int x = x0; x < x0 + ChunkProviderAsteroids.CHUNK_SIZE_X; x += 2) {
+            for (int z = z0; z < z0 + ChunkProviderAsteroids.CHUNK_SIZE_Z; z += 2) {
+                if ((Math.abs(this.randFromPoint(x, z)) < (this.asteroidDensity.getNoise(x, z) + .4) / ChunkProviderAsteroids.ASTEROID_CHANCE))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
 }

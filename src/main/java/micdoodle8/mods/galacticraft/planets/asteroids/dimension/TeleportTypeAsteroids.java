@@ -1,16 +1,22 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.dimension;
 
+import cpw.mods.fml.common.FMLLog;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityEntryPod;
+import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.ChunkProviderAsteroids;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraft.world.gen.ChunkProviderServer;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.Random;
@@ -28,7 +34,48 @@ public class TeleportTypeAsteroids implements ITeleportType
 	{
 		if (player instanceof GCEntityPlayerMP)
 		{
-			return new Vector3(((GCEntityPlayerMP) player).getPlayerStats().coordsTeleportedFromX, 310, ((GCEntityPlayerMP) player).getPlayerStats().coordsTeleportedFromZ);
+            int x = (int)Math.floor(((GCEntityPlayerMP) player).getPlayerStats().coordsTeleportedFromX);
+            int z = (int)Math.floor(((GCEntityPlayerMP) player).getPlayerStats().coordsTeleportedFromZ);
+
+            if (world.getChunkProvider() instanceof ChunkProviderServer)
+            {
+                ChunkProviderServer chunkProviderServer = (ChunkProviderServer) world.getChunkProvider();
+                if (chunkProviderServer.currentChunkProvider instanceof ChunkProviderAsteroids)
+                {
+                    ChunkProviderAsteroids chunkProvider = (ChunkProviderAsteroids) chunkProviderServer.currentChunkProvider;
+                    BlockVec3 bv3 = chunkProvider.isLargeAsteroidAt(x, z);
+                    int numTries = 0;
+
+                    // Try a few more times just in case (shouldn't happen):
+                    while (bv3 == null && numTries < 4)
+                    {
+                        ForgeDirection direction = ForgeDirection.getOrientation(numTries + 2);
+                        bv3 = chunkProvider.isLargeAsteroidAt(x + direction.offsetX * 128, z + direction.offsetZ * 128);
+                        numTries++;
+                    }
+
+                    if (bv3 != null)
+                    {
+                        world.theChunkProviderServer.loadChunk(bv3.x >> 4, bv3.z >> 4);
+
+                        int k = 208;
+
+                        while (k > 48)
+                        {
+                            if (!world.isAirBlock(bv3.x, k, bv3.z))
+                            {
+                                FMLLog.info("Found asteroid at x" + (bv3.x) + " z" + (bv3.z));
+                                return new Vector3(bv3.x + 0.5, 310, bv3.z + 0.5);
+                            }
+
+                            k--;
+                        }
+                    }
+
+                    player.addChatComponentMessage(new ChatComponentText("Failed to find valid asteroid landing spot! Please report this as a bug"));
+                    return new Vector3(bv3.x, 310, bv3.z);
+                }
+            }
 		}
 
 		return null;
