@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.client.model;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.Loader;
 import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
+import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC;
@@ -22,6 +23,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
+
 import org.lwjgl.opengl.GL11;
 
 import java.lang.reflect.Method;
@@ -455,7 +457,7 @@ public class ModelPlayerGC extends ModelBiped
 			this.bipedLeftArm.rotateAngleX -= MathHelper.sin(par3 * 0.067F) * 0.05F;
 		}
 
-		if (!((EntityPlayer) par7Entity).onGround && ((EntityPlayer) par7Entity).worldObj.provider instanceof IGalacticraftWorldProvider && !(((EntityPlayer) par7Entity).inventory.getCurrentItem() != null && ((EntityPlayer) par7Entity).inventory.getCurrentItem().getItem() instanceof IHoldableItem))
+		if (!par7Entity.onGround && par7Entity.worldObj.provider instanceof IGalacticraftWorldProvider && !(((EntityPlayer) par7Entity).inventory.getCurrentItem() != null && ((EntityPlayer) par7Entity).inventory.getCurrentItem().getItem() instanceof IHoldableItem) && !(par7Entity.ridingEntity instanceof EntityAutoRocket))
 		{
 			this.bipedHead.rotateAngleY = par4 / (180F / (float) Math.PI);
 			this.bipedHead.rotateAngleX = par5 / (180F / (float) Math.PI);

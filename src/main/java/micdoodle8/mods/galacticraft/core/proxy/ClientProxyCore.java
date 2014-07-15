@@ -543,6 +543,17 @@ public class ClientProxyCore extends CommonProxyCore
 		GL11.glPopMatrix();
 	}
 
+	@SubscribeEvent
+	public void onRenderPlayerEquipped(RenderPlayerEvent.Specials.Pre event)
+	{
+		final EntityPlayer player = event.entityPlayer;
+		if (player.ridingEntity instanceof EntityAutoRocket)
+		{
+			event.setCanceled(true);
+		}		
+	}
+
+	
 	public static void adjustRenderPos(Entity entity, double offsetX, double offsetY, double offsetZ)
 	{
 		GL11.glPushMatrix();

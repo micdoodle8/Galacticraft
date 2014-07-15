@@ -135,7 +135,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
     @Override
     public boolean shouldRiderSit() {
-        return false;
+    	return false;
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
@@ -356,7 +356,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
     @Override
     public double getMountedYOffset() {
-        return -1.0D;
+        return -0.9D;
     }
 
     public void onLaunch() {
