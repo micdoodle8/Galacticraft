@@ -1,7 +1,9 @@
 package micdoodle8.mods.galacticraft.api.transmission.item;
 
 import micdoodle8.mods.galacticraft.api.transmission.EnergyHelper;
+import micdoodle8.mods.galacticraft.api.transmission.compatibility.ElectricItemManagerIC2;
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
+import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -11,11 +13,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagDouble;
 import net.minecraft.nbt.NBTTagFloat;
 import net.minecraft.world.World;
+import ic2.api.item.IElectricItemManager;
 
 import java.util.List;
 
 public abstract class ItemElectric extends Item implements IItemElectric
 {
+	private static IElectricItemManager itemManagerIC2 = new ElectricItemManagerIC2();
 	public float transferMax;
 	
 	public ItemElectric()
@@ -98,7 +102,7 @@ public abstract class ItemElectric extends Item implements IItemElectric
 	}
 
 	@Override
-	public int getTier(ItemStack itemStack)
+	public int getTierGC(ItemStack itemStack)
 	{
 		return 1;
 	}
@@ -173,5 +177,51 @@ public abstract class ItemElectric extends Item implements IItemElectric
 		}
 		
 		return false;
+	}
+
+	//All the following methods are for IC2 compatibility
+	
+	@RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
+	public IElectricItemManager getManager(ItemStack itemstack)
+	{
+		return ItemElectric.itemManagerIC2;
+	}
+
+	@RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
+	public boolean canProvideEnergy(ItemStack itemStack)
+	{
+		return true;
+	}
+
+	@RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
+	public Item getChargedItem(ItemStack itemStack)
+	{
+		return itemStack.getItem();
+	}
+
+	@RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
+	public Item getEmptyItem(ItemStack itemStack)
+	{
+		return itemStack.getItem();	
+	}
+
+	@RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
+	public int getMaxCharge(ItemStack itemStack)
+	{
+		return (int) (this.getMaxElectricityStored(itemStack) * NetworkConfigHandler.TO_IC2_RATIO);
+	}
+
+	@RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
+	public int getTier(ItemStack itemStack)
+	{
+		//Infinite battery is Tier 4
+		//Regular GC battery is Tier 2
+		return this.getTierGC(itemStack) == 2 ? 4 : 2;
+	}
+	
+	@RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
+	public int getTransferLimit(ItemStack itemStack)
+	{
+		return (int) (this.transferMax * NetworkConfigHandler.TO_IC2_RATIO);
 	}
 }
