@@ -546,8 +546,8 @@ public class ClientProxyCore extends CommonProxyCore
 	@SubscribeEvent
 	public void onRenderPlayerEquipped(RenderPlayerEvent.Specials.Pre event)
 	{
-		final EntityPlayer player = event.entityPlayer;
-		if (player.ridingEntity instanceof EntityAutoRocket)
+		final Entity ridden = event.entityPlayer.ridingEntity;
+		if (ridden instanceof EntityAutoRocket || ridden instanceof EntityLander)
 		{
 			event.setCanceled(true);
 		}		
