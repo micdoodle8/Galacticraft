@@ -457,7 +457,7 @@ public class ModelPlayerGC extends ModelBiped
 			this.bipedLeftArm.rotateAngleX -= MathHelper.sin(par3 * 0.067F) * 0.05F;
 		}
 
-		if (!par7Entity.onGround && par7Entity.worldObj.provider instanceof IGalacticraftWorldProvider && !(((EntityPlayer) par7Entity).inventory.getCurrentItem() != null && ((EntityPlayer) par7Entity).inventory.getCurrentItem().getItem() instanceof IHoldableItem) && !(par7Entity.ridingEntity instanceof EntityAutoRocket))
+		if (!par7Entity.onGround && par7Entity.worldObj.provider instanceof IGalacticraftWorldProvider && !(((EntityPlayer) par7Entity).inventory.getCurrentItem() != null && ((EntityPlayer) par7Entity).inventory.getCurrentItem().getItem() instanceof IHoldableItem))
 		{
 			this.bipedHead.rotateAngleY = par4 / (180F / (float) Math.PI);
 			this.bipedHead.rotateAngleX = par5 / (180F / (float) Math.PI);
@@ -634,7 +634,7 @@ public class ModelPlayerGC extends ModelBiped
 		{
 			final EntityPlayer player = (EntityPlayer) par7Entity;
 
-			if (player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() instanceof IHoldableItem)
+			if (player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() instanceof IHoldableItem && !(par7Entity.ridingEntity instanceof EntityAutoRocket))
 			{
 				IHoldableItem holdableItem = (IHoldableItem) player.inventory.getCurrentItem().getItem();
 
