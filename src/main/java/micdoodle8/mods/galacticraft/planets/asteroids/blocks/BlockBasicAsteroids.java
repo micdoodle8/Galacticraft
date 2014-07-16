@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.api.block.IPlantableBlock;
 import micdoodle8.mods.galacticraft.api.block.ITerraformableBlock;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
+import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -19,6 +20,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -76,6 +78,26 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
 			return super.getItemDropped(meta, random, par3);
 		}
 	}
+
+    @Override
+    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune)
+    {
+        switch (metadata)
+        {
+        case 4:
+            ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
+
+            int count = quantityDropped(metadata, fortune, world.rand);
+            for(int i = 0; i < count; i++)
+            {
+                ret.add(new ItemStack(AsteroidsItems.basicItem, 1, 3));
+                ret.add(new ItemStack(AsteroidsItems.basicItem, 1, 4));
+            }
+            return ret;
+        default:
+            return super.getDrops(world, x, y, z, metadata, fortune);
+        }
+    }
 
 	@Override
 	public int damageDropped(int meta)
