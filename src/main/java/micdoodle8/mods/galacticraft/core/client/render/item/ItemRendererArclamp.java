@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.model.obj.WavefrontObject;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 public class ItemRendererArclamp implements IItemRenderer
 {
@@ -41,11 +42,12 @@ public class ItemRendererArclamp implements IItemRenderer
 		Tessellator tessellator = Tessellator.instance;
 		tessellator.startDrawing(GL11.GL_QUADS);
 		tessellator.setColorRGBA(255, 255, 255, 255);
-		RenderHelper.enableStandardItemLighting();
+        GL11.glDisable(GL11.GL_LIGHTING);
 		((WavefrontObject) TileEntityArclampRenderer.lampLight).tessellateAll(tessellator);
 		tessellator.draw();
 
 		GL11.glPopMatrix();
+        GL11.glEnable(GL11.GL_LIGHTING);
 	}
 
 	/** IItemRenderer implementation **/
