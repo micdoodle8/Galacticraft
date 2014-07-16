@@ -71,22 +71,36 @@ public class TileEntityShortRangeTelepad extends TileEntityMulti implements IMul
 	{
 		this.mainBlockPosition = placedPosition;
 
-		for (int y = 2; y < 3; y++)
-		{
-			final BlockVec3 vecToAdd = new BlockVec3(placedPosition.x, placedPosition.y + y, placedPosition.z);
+        for (int y = 0; y < 3; y += 2)
+        {
+            for (int x = -1; x <= 1; x++)
+            {
+                for (int z = -1; z <= 1; z++)
+                {
+                    final BlockVec3 vecToAdd = new BlockVec3(placedPosition.x + x, placedPosition.y + y, placedPosition.z + z);
 
-			if (!vecToAdd.equals(placedPosition))
-			{
-				((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 6);
-			}
-		}
+                    if (!vecToAdd.equals(placedPosition))
+                    {
+                        ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, y == 0 ? 7 : 6);
+                    }
+                }
+            }
+        }
 	}
 
 	@Override
 	public void onDestroy(TileEntity callingBlock)
 	{
-		this.worldObj.func_147480_a(this.xCoord, this.yCoord, this.zCoord, false);
-		this.worldObj.func_147480_a(this.xCoord, this.yCoord + 2, this.zCoord, false);
+        for (int y = 0; y < 3; y += 2)
+        {
+            for (int x = -1; x <= 1; x++)
+            {
+                for (int z = -1; z <= 1; z++)
+                {
+                    this.worldObj.func_147480_a(this.xCoord + x, this.yCoord + y, this.zCoord + z, false);
+                }
+            }
+        }
 	}
 
 	@Override
