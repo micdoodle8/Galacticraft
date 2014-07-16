@@ -85,15 +85,18 @@ public class GalacticraftPlanets
 		return 1;
 	}
 
-	public static int spawnParticle(String particleID, Vector3 position, Vector3 color)
+	public static void spawnParticle(String particleID, Vector3 position, Vector3 motion)
 	{
-		for (IPlanetsModuleClient module : GalacticraftPlanets.clientModules.values())
-		{
-			module.spawnParticle(particleID, position, color);
-		}
-
-		return 1;
+        spawnParticle(particleID, position, motion, null);
 	}
+
+    public static void spawnParticle(String particleID, Vector3 position, Vector3 motion, Vector3 color)
+    {
+        for (IPlanetsModuleClient module : GalacticraftPlanets.clientModules.values())
+        {
+            module.spawnParticle(particleID, position, motion, color);
+        }
+    }
 
     public static List<IConfigElement> getConfigElements()
     {

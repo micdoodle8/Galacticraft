@@ -110,7 +110,7 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
 	}
 
 	@Override
-	public void spawnParticle(String particleID, Vector3 position, Vector3 motion)
+	public void spawnParticle(String particleID, Vector3 position, Vector3 motion, Vector3 color)
 	{
         Minecraft mc = FMLClientHandler.instance().getClient();
 
@@ -126,7 +126,7 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
             {
                 if (particleID.equals("portalBlue"))
                 {
-                    particle = new EntityFXTeleport(mc.theWorld, position.x, position.y, position.z, motion.x, motion.y, motion.z);
+                    particle = new EntityFXTeleport(mc.theWorld, position, motion, color);
                 }
             }
 

@@ -15,10 +15,14 @@ import net.minecraft.util.AxisAlignedBB;
 
 public class TileEntityShortRangeTelepad extends TileEntityMulti implements IMultiBlock
 {
+    public static final int MAX_TELEPORT_TIME = 50;
+
 	@NetworkedField(targetSide = Side.CLIENT)
 	public int address = -1;
 	@NetworkedField(targetSide = Side.CLIENT)
 	public int targetAddress = -1;
+    @NetworkedField(targetSide = Side.CLIENT)
+    public int teleportTime = 0;
 
 	@Override
 	public void updateEntity()

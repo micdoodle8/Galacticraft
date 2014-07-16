@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.planets.asteroids.client.fx;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.World;
@@ -14,20 +15,19 @@ public class EntityFXTeleport extends EntityFX
     private double portalPosY;
     private double portalPosZ;
 
-    public EntityFXTeleport(World par1World, double posX, double posY, double posZ, double motX, double motY, double motZ)
+    public EntityFXTeleport(World par1World, Vector3 position, Vector3 motion, Vector3 color)
     {
-        super(par1World, posX, posY, posZ, motX, motY, motZ);
-        this.motionX = motX;
-        this.motionY = motY;
-        this.motionZ = motZ;
-        this.portalPosX = this.posX = posX;
-        this.portalPosY = this.posY = posY;
-        this.portalPosZ = this.posZ = posZ;
-        float f = this.rand.nextFloat() * 0.6F + 0.4F;
+        super(par1World, position.x, position.y, position.z, motion.x, motion.y, motion.z);
+        this.motionX = motion.x;
+        this.motionY = motion.y;
+        this.motionZ = motion.z;
+        this.portalPosX = this.posX = position.x;
+        this.portalPosY = this.posY = position.y;
+        this.portalPosZ = this.posZ = position.z;
         this.portalParticleScale = this.particleScale = this.rand.nextFloat() * 0.2F + 0.5F;
-        this.particleRed = this.particleGreen = this.particleBlue = 1.0F * f;
-        this.particleGreen *= 0.3F;
-        this.particleRed *= 0.3F;
+        this.particleRed = color.floatX();
+        this.particleGreen = color.floatY();
+        this.particleBlue = color.floatZ();
         this.particleMaxAge = (int)(Math.random() * 10.0D) + 40;
         this.noClip = true;
         this.setParticleTextureIndex((int)(Math.random() * 8.0D));

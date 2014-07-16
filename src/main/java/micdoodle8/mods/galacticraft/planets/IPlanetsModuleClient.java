@@ -25,5 +25,5 @@ public interface IPlanetsModuleClient
 
 	public int getBlockRenderID(Block block);
 
-	public void spawnParticle(String particleID, Vector3 position, Vector3 motion);
+	public void spawnParticle(String particleID, Vector3 position, Vector3 motion, Vector3 color);
 }

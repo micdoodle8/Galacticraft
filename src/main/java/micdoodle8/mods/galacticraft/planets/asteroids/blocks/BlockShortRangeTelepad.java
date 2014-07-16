@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
@@ -162,17 +163,38 @@ public class BlockShortRangeTelepad extends BlockContainer
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(World world, int x, int y, int z, Random rand)
 	{
-		for (int i = 0; i < 6; i++)
-		{
-			for (int j = 0; j < 4; j++)
-			{
-                GalacticraftPlanets.spawnParticle("portalBlue", new Vector3(x + 0.2 + rand.nextDouble() * 0.6, y + 0.1, z + 0.2 + rand.nextDouble() * 0.6), new Vector3(0.0, 1.75, 0.0));
-			}
+        final TileEntity tileAt = world.getTileEntity(x, y, z);
 
-            GalacticraftPlanets.spawnParticle("portalBlue", new Vector3(x + 0.0 + rand.nextDouble() * 0.2, y + 2.9, z + rand.nextDouble()), new Vector3(0.0, -2.95, 0.0));
-            GalacticraftPlanets.spawnParticle("portalBlue", new Vector3(x + 0.8 + rand.nextDouble() * 0.2, y + 2.9, z + rand.nextDouble()), new Vector3(0.0, -2.95, 0.0));
-            GalacticraftPlanets.spawnParticle("portalBlue", new Vector3(x + rand.nextDouble(), y + 2.9, z + 0.2 + rand.nextDouble() * 0.2), new Vector3(0.0, -2.95, 0.0));
-            GalacticraftPlanets.spawnParticle("portalBlue", new Vector3(x + rand.nextDouble(), y + 2.9, z + 0.8 + rand.nextDouble() * 0.2), new Vector3(0.0, -2.95, 0.0));
-		}
+        if (tileAt instanceof TileEntityShortRangeTelepad)
+        {
+            TileEntityShortRangeTelepad telepad = (TileEntityShortRangeTelepad) tileAt;
+            float teleportTimeScaled = Math.min(1.0F, telepad.teleportTime / (float)TileEntityShortRangeTelepad.MAX_TELEPORT_TIME);
+            float f;
+            float r;
+            float g;
+            float b;
+
+            for (int i = 0; i < 6; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    FMLLog.info("" + teleportTimeScaled);
+                    f = rand.nextFloat() * 0.6F + 0.4F;
+                    r = f * 0.3F;
+                    g = f * (0.3F + (teleportTimeScaled * 0.7F));
+                    b = f * (1.0F - (teleportTimeScaled * 0.7F));
+                    GalacticraftPlanets.spawnParticle("portalBlue", new Vector3(x + 0.2 + rand.nextDouble() * 0.6, y + 0.1, z + 0.2 + rand.nextDouble() * 0.6), new Vector3(0.0, 1.75, 0.0), new Vector3(r, g, b));
+                }
+
+                f = rand.nextFloat() * 0.6F + 0.4F;
+                r = f * 0.3F;
+                g = f * (0.3F + (teleportTimeScaled * 0.7F));
+                b = f * (1.0F - (teleportTimeScaled * 0.7F));
+                GalacticraftPlanets.spawnParticle("portalBlue", new Vector3(x + 0.0 + rand.nextDouble() * 0.2, y + 2.9, z + rand.nextDouble()), new Vector3(0.0, -2.95, 0.0), new Vector3(r, g, b));
+                GalacticraftPlanets.spawnParticle("portalBlue", new Vector3(x + 0.8 + rand.nextDouble() * 0.2, y + 2.9, z + rand.nextDouble()), new Vector3(0.0, -2.95, 0.0), new Vector3(r, g, b));
+                GalacticraftPlanets.spawnParticle("portalBlue", new Vector3(x + rand.nextDouble(), y + 2.9, z + 0.2 + rand.nextDouble() * 0.2), new Vector3(0.0, -2.95, 0.0), new Vector3(r, g, b));
+                GalacticraftPlanets.spawnParticle("portalBlue", new Vector3(x + rand.nextDouble(), y + 2.9, z + 0.8 + rand.nextDouble() * 0.2), new Vector3(0.0, -2.95, 0.0), new Vector3(r, g, b));
+            }
+        }
 	}
 }
