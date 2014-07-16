@@ -1,5 +1,8 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import buildcraft.api.power.IPowerReceptor;
+import buildcraft.api.power.PowerHandler;
+import buildcraft.api.power.PowerHandler.PowerReceiver;
 import cpw.mods.fml.common.eventhandler.Event;
 import ic2.api.item.IElectricItem;
 import ic2.api.item.ISpecialElectricItem;
@@ -13,6 +16,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -22,9 +26,9 @@ import java.util.EnumSet;
 public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //implements IElectrical, IElectricalStorage
 {
 	protected boolean isAddedToEnergyNet;
-	public Object bcPowerHandler;
+	protected Object powerHandlerBC;
 
-	//	public float maxInputEnergy = 100;
+	protected double maxInputEnergyBC = 100;
 	//	@NetworkedField(targetSide = Side.CLIENT)
 	//	public float energyStored = 0;
 	private float IC2surplus = 0F;
@@ -190,7 +194,7 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 	public void initiate()
 	{
 		super.initiate();
-		this.initBuildCraft();
+		if (NetworkConfigHandler.isBuildcraftLoaded()) this.initBuildCraft();
 	}
 
 	@Override
@@ -206,24 +210,24 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 				this.initIC();
 			}
 
-			/*if (this.bcPowerHandler == null)
-			{
-			this.initBuildCraft();
-			}
-
 			if (NetworkConfigHandler.isBuildcraftLoaded())
 			{
-				PowerHandler handler = (PowerHandler) this.bcPowerHandler;
-	
-				float energyBC = handler.getEnergyStored();
-				if (energyBC > 0)
+				if (this.powerHandlerBC == null)
 				{
-					float usedBC = this.receiveElectricity(energyBC * NetworkConfigHandler.BC3_RATIO, true) * NetworkConfigHandler.TO_BC_RATIO;
+					this.initBuildCraft();
+				}
+
+				PowerHandler handler = (PowerHandler) this.powerHandlerBC;
+	
+				double energyBC = handler.getEnergyStored();
+				if (energyBC > 0D)
+				{
+					float usedBC = this.storage.receiveEnergyGC((float) energyBC * NetworkConfigHandler.BC3_RATIO, false) * NetworkConfigHandler.TO_BC_RATIO;
 					energyBC -= usedBC;
-					if (energyBC < 0) energyBC = 0;
+					if (energyBC < 0D) energyBC = 0D;
 					handler.setEnergy(energyBC);
 				}
-			}*/
+			}
 		}
 	}
 
@@ -377,38 +381,38 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 	 */
 	public void initBuildCraft()
 	{
-	//		if (!NetworkConfigHandler.isBuildcraftLoaded())
-	//		{
-	//		return;
-	//		}
-	//
-	//		if (this.bcPowerHandler == null)
-	//		{
-	//		this.bcPowerHandler = new PowerHandler((IPowerReceptor) this, Type.MACHINE);
-	//		}
-	//
-	//		((PowerHandler) this.bcPowerHandler).configure(0, this.maxInputEnergy, 0, (int) Math.ceil(this.getMaxEnergyStored() * NetworkConfigHandler.TO_BC_RATIO));
-	//		((PowerHandler) this.bcPowerHandler).configurePowerPerdition(1, 10);
+		if (this.powerHandlerBC == null)
+		{
+			this.powerHandlerBC = new PowerHandler((IPowerReceptor) this, buildcraft.api.power.PowerHandler.Type.MACHINE);
+		}
+
+		((PowerHandler) this.powerHandlerBC).configure(0D, this.maxInputEnergyBC, 0, (int) Math.ceil(this.getMaxEnergyStoredGC() * NetworkConfigHandler.TO_BC_RATIO));
+		((PowerHandler) this.powerHandlerBC).configurePowerPerdition(1, 10);
 	}
 
-	//	@RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "BuildCraft|Energy")
-	//	public PowerReceiver getPowerReceiver(ForgeDirection side)
-	//	{
-	//		this.initBuildCraft();
-	//		return ((PowerHandler) this.bcPowerHandler).getPowerReceiver();
-	//	}
-	//
-	//	@RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "BuildCraft|Energy")
-	//	public void doWork(PowerHandler workProvider)
-	//	{
-	//
-	//	}
-	//
-	//	@RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "BuildCraft|Energy")
-	//	public World getWorld()
-	//	{
-	//		return this.getWorldObj();
-	//	}
+	@RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "BuildCraft|Energy")
+	public PowerReceiver getPowerReceiver(ForgeDirection side)
+	{
+		if (this.getElectricalInputDirections().contains(side))
+		{
+			this.initBuildCraft();
+			return ((PowerHandler) this.powerHandlerBC).getPowerReceiver();
+		}
+		
+		return null;
+	}
+
+	@RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "BuildCraft|Energy")
+	public void doWork(PowerHandler workProvider)
+	{
+
+	}
+
+	@RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "BuildCraft|Energy")
+	public World getWorld()
+	{
+		return this.getWorldObj();
+	}
 
 	//	@RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "ThermalExpansion")
 	//	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate)

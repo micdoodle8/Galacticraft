@@ -32,7 +32,12 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
 
 	public enum EnumEnclosedBlock
 	{
-		TE_CONDUIT(0, 2, null, "enclosed_te_conduit"), OXYGEN_PIPE(1, -1, null, "enclosed_oxygen_pipe"), IC2_COPPER_CABLE(2, 0, null, "enclosed_copper_cable"), IC2_GOLD_CABLE(3, 3, null, "enclosed_gold_cable"), IC2_HV_CABLE(4, 6, null, "enclosed_hv_cable"), IC2_GLASS_FIBRE_CABLE(5, 9, null, "enclosed_glassfibre_cable"), IC2_LV_CABLE(6, 10, null, "enclosed_lv_cable"), BC_ITEM_STONEPIPE(7, -1, "PipeItemsStone", "enclosed_itempipe_stone"), BC_ITEM_COBBLESTONEPIPE(8, -1, "PipeItemsCobblestone", "enclosed_itempipe_cobblestone"), BC_FLUIDS_STONEPIPE(9, -1, "PipeFluidsStone", "enclosed_liquidpipe_stone"), BC_FLUIDS_COBBLESTONEPIPE(10, -1, "PipeFluidsCobblestone", "enclosed_liquidpipe_cobblestone"), BC_POWER_STONEPIPE(11, -1, "PipePowerStone", "enclosed_powerpipe_stone"), BC_POWER_GOLDPIPE(12, -1, "PipePowerGold", "enclosed_powerpipe_gold"), ME_CABLE(13, -1, null, "enclosed_me_cable"), ALUMINUM_WIRE(14, -1, null, "enclosed_aluminum_wire"), ALUMINUM_WIRE_HEAVY(15, -1, null, "enclosed_heavy_aluminum_wire");
+		TE_CONDUIT(0, 2, null, "enclosed_te_conduit"),
+		OXYGEN_PIPE(1, -1, null, "enclosed_oxygen_pipe"),
+		IC2_COPPER_CABLE(2, 0, null, "enclosed_copper_cable"), IC2_GOLD_CABLE(3, 3, null, "enclosed_gold_cable"), IC2_HV_CABLE(4, 6, null, "enclosed_hv_cable"), IC2_GLASS_FIBRE_CABLE(5, 9, null, "enclosed_glassfibre_cable"), IC2_LV_CABLE(6, 10, null, "enclosed_lv_cable"),
+		BC_ITEM_STONEPIPE(7, -1, "PipeItemsStone", "enclosed_itempipe_stone"), BC_ITEM_COBBLESTONEPIPE(8, -1, "PipeItemsCobblestone", "enclosed_itempipe_cobblestone"), BC_FLUIDS_STONEPIPE(9, -1, "PipeFluidsStone", "enclosed_liquidpipe_stone"), BC_FLUIDS_COBBLESTONEPIPE(10, -1, "PipeFluidsCobblestone", "enclosed_liquidpipe_cobblestone"), BC_POWER_STONEPIPE(11, -1, "PipePowerStone", "enclosed_powerpipe_stone"), BC_POWER_GOLDPIPE(12, -1, "PipePowerGold", "enclosed_powerpipe_gold"),
+		ME_CABLE(13, -1, null, "enclosed_me_cable"),
+		ALUMINUM_WIRE(14, -1, null, "enclosed_aluminum_wire"), ALUMINUM_WIRE_HEAVY(15, -1, null, "enclosed_heavy_aluminum_wire");
 
 		int metadata;
 		int subMeta;
@@ -287,17 +292,7 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
 					Class<?> clazzPipeTile = Class.forName("buildcraft.transport.TileGenericPipe");
 					Class<?> clazzPipeBlock = Class.forName("buildcraft.transport.BlockGenericPipe");
 
-					Method getPipe = null;
-
-					for (Method m : clazzPipeBlock.getDeclaredMethods())
-					{
-						if (m.getName().equals("getPipe"))
-						{
-							getPipe = m;
-						}
-					}
-
-					Object pipe = getPipe.invoke(null, world, x, y, z);
+					Object pipe = CompatibilityManager.methodBCBlockPipe_getPipe.invoke(null, world, x, y, z);
 					Method isValid = clazzPipeBlock.getMethod("isValid", clazzPipe);
 					Boolean valid = (Boolean) isValid.invoke(null, pipe);
 
@@ -384,8 +379,8 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
 			{
 				try
 				{
-					Class<?> clazz = Class.forName("buildcraft.transport.TileGenericPipe");
-					Constructor<?>[] constructors = clazz.getDeclaredConstructors();
+					Class<?> clazzTilePipe = Class.forName("buildcraft.transport.TileGenericPipe");
+					Constructor<?>[] constructors = clazzTilePipe.getDeclaredConstructors();
 					Constructor<?> constructor = null;
 
 					for (Constructor<?> constructor2 : constructors)
@@ -400,7 +395,40 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
 
 					constructor.setAccessible(true);
 
-					return (TileEntity) constructor.newInstance();
+					TileEntity tilePipe = (TileEntity) constructor.newInstance();
+
+					//Now needs these three calls to initialise the TileEntity: 
+					//	Pipe pipe = BlockGenericPipe.createPipe(Item);
+					//  tilePipe.initialize(pipe);
+					//	tilePipe.sendUpdateToClient();
+					
+					String pipeName = EnumEnclosedBlock.values()[metadata].getPipeClass();
+					pipeName = pipeName.substring(0,1).toLowerCase()+pipeName.substring(1);
+					Class<?> clazzBC = Class.forName("buildcraft.BuildCraftTransport");
+					Item pipeItem = (Item) clazzBC.getField(pipeName).get(null);
+					Class<?> clazzBlockPipe = Class.forName("buildcraft.transport.BlockGenericPipe");
+					Method createPipe = null;
+					for (Method m : clazzBlockPipe.getDeclaredMethods())
+					{
+						if (m.getName().equals("createPipe") && m.getParameterTypes().length == 1)
+						{
+							createPipe = m;
+							break;
+						}
+					}
+					Object pipe = createPipe.invoke(null, pipeItem);
+					Method initializePipe = null;
+					for (Method m : clazzTilePipe.getDeclaredMethods())
+					{
+						if (m.getName().equals("initialize") && m.getParameterTypes().length == 1)
+						{
+							initializePipe = m;
+							break;
+						}
+					}
+					initializePipe.invoke(tilePipe, pipe);
+					clazzTilePipe.getMethod("sendUpdateToClient").invoke(tilePipe);
+					return tilePipe;
 				}
 				catch (Exception e)
 				{

@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
+import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.UniversalNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IElectricityNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IGridNetwork;
@@ -86,10 +87,10 @@ public abstract class TileEntityConductor extends TileEntityAdvanced implements 
 				}
 			}
 
-			//if (NetworkConfigHandler.isBuildcraftLoaded())
-			//{
-			//	if (this instanceof TileEntityUniversalConductor) ((TileEntityUniversalConductor) this).reconfigureBC();
-			//}
+			if (NetworkConfigHandler.isBuildcraftLoaded())
+			{
+				if (this instanceof TileEntityUniversalConductor) ((TileEntityUniversalConductor) this).reconfigureBC();
+			}
 		}
 	}
 
