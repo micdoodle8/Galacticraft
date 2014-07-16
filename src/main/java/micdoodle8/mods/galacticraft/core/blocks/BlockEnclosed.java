@@ -396,38 +396,7 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
 					constructor.setAccessible(true);
 
 					TileEntity tilePipe = (TileEntity) constructor.newInstance();
-
-					//Now needs these three calls to initialise the TileEntity: 
-					//	Pipe pipe = BlockGenericPipe.createPipe(Item);
-					//  tilePipe.initialize(pipe);
-					//	tilePipe.sendUpdateToClient();
 					
-					String pipeName = EnumEnclosedBlock.values()[metadata].getPipeClass();
-					pipeName = pipeName.substring(0,1).toLowerCase()+pipeName.substring(1);
-					Class<?> clazzBC = Class.forName("buildcraft.BuildCraftTransport");
-					Item pipeItem = (Item) clazzBC.getField(pipeName).get(null);
-					Class<?> clazzBlockPipe = Class.forName("buildcraft.transport.BlockGenericPipe");
-					Method createPipe = null;
-					for (Method m : clazzBlockPipe.getDeclaredMethods())
-					{
-						if (m.getName().equals("createPipe") && m.getParameterTypes().length == 1)
-						{
-							createPipe = m;
-							break;
-						}
-					}
-					Object pipe = createPipe.invoke(null, pipeItem);
-					Method initializePipe = null;
-					for (Method m : clazzTilePipe.getDeclaredMethods())
-					{
-						if (m.getName().equals("initialize") && m.getParameterTypes().length == 1)
-						{
-							initializePipe = m;
-							break;
-						}
-					}
-					initializePipe.invoke(tilePipe, pipe);
-					clazzTilePipe.getMethod("sendUpdateToClient").invoke(tilePipe);
 					return tilePipe;
 				}
 				catch (Exception e)
