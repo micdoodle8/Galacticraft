@@ -19,7 +19,7 @@ import java.util.List;
 
 public abstract class ItemElectric extends Item implements IItemElectric
 {
-	private static IElectricItemManager itemManagerIC2 = new ElectricItemManagerIC2();
+	private static Object itemManagerIC2;
 	public float transferMax;
 	
 	public ItemElectric()
@@ -29,6 +29,11 @@ public abstract class ItemElectric extends Item implements IItemElectric
 		this.setMaxDamage(100);
 		this.setNoRepair();
 		this.setMaxTransfer();
+		
+		if (NetworkConfigHandler.isIndustrialCraft2Loaded())
+		{
+			itemManagerIC2 = new ElectricItemManagerIC2();
+		}
 	}
 
 	protected void setMaxTransfer()
@@ -184,7 +189,7 @@ public abstract class ItemElectric extends Item implements IItemElectric
 	@RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
 	public IElectricItemManager getManager(ItemStack itemstack)
 	{
-		return ItemElectric.itemManagerIC2;
+		return (IElectricItemManager) ItemElectric.itemManagerIC2;
 	}
 
 	@RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")

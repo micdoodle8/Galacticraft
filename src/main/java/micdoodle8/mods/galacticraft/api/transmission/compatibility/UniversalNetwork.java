@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.api.transmission.compatibility;
 
+import buildcraft.api.power.IPowerReceptor;
+import buildcraft.api.power.PowerHandler.PowerReceiver;
 import cpw.mods.fml.common.FMLLog;
 import ic2.api.energy.tile.IEnergyAcceptor;
 import ic2.api.energy.tile.IEnergySink;
@@ -21,8 +23,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.*;
 
-//import buildcraft.api.power.IPowerReceptor;
-//import buildcraft.api.power.PowerHandler.PowerReceiver;
 //import buildcraft.api.power.PowerHandler.Type;
 //import cofh.api.energy.IEnergyHandler;
 //import mekanism.api.energy.IStrictEnergyAcceptor;
@@ -101,27 +101,27 @@ public class UniversalNetwork implements IElectricityNetwork
 			this.ignoreAcceptors.clear();
 			this.ignoreAcceptors.addAll(Arrays.asList(ignoreTiles));
 			this.doTickStartCalc();
-			
-			/*			if (NetworkConfigHandler.isBuildcraftLoaded())
-						{
-							try
-							{
-								Class<?> clazz = Class.forName("micdoodle8.mods.galacticraft.core.tile.TileEntityUniversalConductor");
 
-								for (IConductor wire : this.getTransmitters())
-								{
-									if (clazz.isInstance(wire))
-									{
-										//This will call getRequest() but that's no problem, on the second call it will just return the totalRequested
-										clazz.getMethod("reconfigureBC").invoke(wire);
-									}
-								}
-							}
-							catch (Exception e)
-							{
-								e.printStackTrace();
-							}
-						}*/
+			if (NetworkConfigHandler.isBuildcraftLoaded())
+			{
+				try
+				{
+					Class<?> clazz = Class.forName("micdoodle8.mods.galacticraft.core.tile.TileEntityUniversalConductor");
+
+					for (IConductor wire : this.getTransmitters())
+					{
+						if (clazz.isInstance(wire))
+						{
+							//This will call getRequest() but that's no problem, on the second call it will just return the totalRequested
+							clazz.getMethod("reconfigureBC").invoke(wire);
+						}
+					}
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+				}
+			}
 		}
 		return this.totalRequested - this.totalEnergy - this.totalSent;
 	}
@@ -258,7 +258,7 @@ public class UniversalNetwork implements IElectricityNetwork
 
 		//boolean isTELoaded = NetworkConfigHandler.isThermalExpansionLoaded();
 		boolean isIC2Loaded = NetworkConfigHandler.isIndustrialCraft2Loaded();
-		//boolean isBCLoaded = NetworkConfigHandler.isBuildcraftLoaded();
+		boolean isBCLoaded = NetworkConfigHandler.isBuildcraftLoaded();
 		//boolean isMekLoaded = NetworkConfigHandler.isMekanismLoaded();
 
 		if (!this.connectedAcceptors.isEmpty())
@@ -290,12 +290,12 @@ public class UniversalNetwork implements IElectricityNetwork
 					else if (isIC2Loaded && acceptor instanceof IEnergySink)
 					{
 						//For 1.7.10 - e = ((float) ((IEnergySink) acceptor).getDemandedEnergy()) * NetworkConfigHandler.IC2_RATIO;
-						e = ((float) ((IEnergySink) acceptor).demandedEnergyUnits()) * NetworkConfigHandler.IC2_RATIO;
+						e = (float) ((IEnergySink) acceptor).demandedEnergyUnits() * NetworkConfigHandler.IC2_RATIO;
 					}
-					/*else if (isBCLoaded && acceptor instanceof IPowerReceptor)
+					else if (isBCLoaded && acceptor instanceof IPowerReceptor)
 					{
-						e = ((IPowerReceptor) acceptor).getPowerReceiver(sideFrom).powerRequest() * NetworkConfigHandler.BC3_RATIO;
-					}*/
+						e = (float) ((IPowerReceptor) acceptor).getPowerReceiver(sideFrom).powerRequest() * NetworkConfigHandler.BC3_RATIO;
+					}
 
 					if (e > 0.0F)
 					{
@@ -334,7 +334,7 @@ public class UniversalNetwork implements IElectricityNetwork
 		{
 			//boolean isTELoaded = NetworkConfigHandler.isThermalExpansionLoaded();
 			boolean isIC2Loaded = NetworkConfigHandler.isIndustrialCraft2Loaded();
-			//boolean isBCLoaded = NetworkConfigHandler.isBuildcraftLoaded();
+			boolean isBCLoaded = NetworkConfigHandler.isBuildcraftLoaded();
 			//boolean isMekLoaded = NetworkConfigHandler.isMekanismLoaded();
 
 			float energyNeeded = this.totalRequested;
@@ -393,16 +393,32 @@ public class UniversalNetwork implements IElectricityNetwork
 				{
 					sentToAcceptor = ((IElectrical) tileEntity).receiveElectricity(sideFrom, currentSending, true);
 				}
+//				else if (isTELoaded && tileEntity instanceof IEnergyHandler)
+//				{
+//				IEnergyHandler handler = (IEnergyHandler) tileEntity;
+//				int currentSendinginRF = (currentSending >= Integer.MAX_VALUE / NetworkConfigHandler.TO_TE_RATIO) ? Integer.MAX_VALUE : (int) (currentSending * NetworkConfigHandler.TO_TE_RATIO);
+//				sentToAcceptor = handler.receiveEnergy(sideFrom, currentSendinginRF, false) * NetworkConfigHandler.TE_RATIO;
+//				}
 				else if (isIC2Loaded && tileEntity instanceof IEnergySink)
 				{
 					double energySendingIC2 = currentSending * NetworkConfigHandler.TO_IC2_RATIO;
 					if (energySendingIC2 >= 1D)
 					{
 						//For 1.7.10 - sentToAcceptor = currentSending - ((float) ((IEnergySink) tileEntity).injectEnergy(sideFrom, energySendingIC2, 120)) * NetworkConfigHandler.IC2_RATIO;
-						sentToAcceptor = currentSending - ((float) ((IEnergySink) tileEntity).injectEnergyUnits(sideFrom, energySendingIC2)) * NetworkConfigHandler.IC2_RATIO;
+						sentToAcceptor = currentSending - (float) ((IEnergySink) tileEntity).injectEnergyUnits(sideFrom, energySendingIC2) * NetworkConfigHandler.IC2_RATIO;
 						if (sentToAcceptor < 0F) sentToAcceptor = 0F;
 					} else
 						sentToAcceptor = 0F;
+				}
+				else if (isBCLoaded && tileEntity instanceof IPowerReceptor)
+				{
+					PowerReceiver receiver = ((IPowerReceptor) tileEntity).getPowerReceiver(sideFrom);
+
+					if (receiver != null)
+					{
+						double toSendBC = Math.min(currentSending * NetworkConfigHandler.TO_BC_RATIO, receiver.powerRequest());
+						sentToAcceptor = (float) receiver.receiveEnergy(buildcraft.api.power.PowerHandler.Type.PIPE, toSendBC, sideFrom) * NetworkConfigHandler.BC3_RATIO;
+					} else sentToAcceptor = 0F;
 				}
 				else
 				{
@@ -494,7 +510,7 @@ public class UniversalNetwork implements IElectricityNetwork
 		{
 			//boolean isTELoaded = NetworkConfigHandler.isThermalExpansionLoaded();
 			boolean isIC2Loaded = NetworkConfigHandler.isIndustrialCraft2Loaded();
-			//boolean isBCLoaded = NetworkConfigHandler.isBuildcraftLoaded();
+			boolean isBCLoaded = NetworkConfigHandler.isBuildcraftLoaded();
 			//boolean isMekLoaded = NetworkConfigHandler.isMekanismLoaded();
 
 			LinkedList<IConductor> conductors = new LinkedList();
@@ -545,14 +561,14 @@ public class UniversalNetwork implements IElectricityNetwork
 								this.connectedDirections.add(sideFrom);
 							}
 						}
-						/*else if (isBCLoaded && acceptor instanceof IPowerReceptor)
+						else if (isBCLoaded && acceptor instanceof IPowerReceptor)
 						{
 							if (((IPowerReceptor) acceptor).getPowerReceiver(sideFrom) != null)
 							{
 								this.connectedAcceptors.add(acceptor);
 								this.connectedDirections.add(sideFrom);
 							}
-						}*/
+						}
 					}
 				}
 			}

@@ -19,7 +19,7 @@ public class NetworkConfigHandler
 	 * Ratio of Build craft(MJ) energy to Galacticraft energy(kJ).
 	 * Multiply BC3 energy by this to convert to kJ.
 	 */
-	public static float BC3_RATIO = 1.95F;
+	public static float BC3_RATIO = 19.5F;
 
 	/**
 	 * Ratio of RF energy to Galacticraft energy(kJ).
@@ -59,6 +59,8 @@ public class NetworkConfigHandler
 	
 	private static boolean cachedIC2Loaded = false;
 	private static boolean cachedIC2LoadedValue = false;
+	private static boolean cachedBCLoaded = false;
+	private static boolean cachedBCLoadedValue = false;
 
 	/** You must call this function to enable the Universal Network module. */
 	public static void setDefaultValues(File file)
@@ -112,7 +114,13 @@ public class NetworkConfigHandler
 	/** Checks using the FML loader too see if BC3 is loaded */
 	public static boolean isBuildcraftLoaded()
 	{
-		return Loader.isModLoaded("BuildCraft|Energy");
+		if (!cachedBCLoaded)
+		{
+			cachedBCLoaded = true;
+			cachedBCLoadedValue = Loader.isModLoaded("BuildCraft|Energy");
+		}
+	
+		return cachedBCLoadedValue;
 	}
 
 	public static boolean isThermalExpansionLoaded()
