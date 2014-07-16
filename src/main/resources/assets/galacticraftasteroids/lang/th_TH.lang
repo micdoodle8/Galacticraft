@@ -22,7 +22,7 @@ itemGroup.GalacticraftAsteroids=กาแลคติคคราฟ ดาว�
 
 # Entity
 entity.SmallAsteroidGC.name=ดาวเคราะห์น้อยขนาดเล็ก
-entity.GrappleHookGC.name=ตะขอ
+entity.GrappleHookGC.name=ตะขอเกี่ยว
 entity.Tier3RocketGC.name=จรวด เทียร์ 3
 
 # Container
