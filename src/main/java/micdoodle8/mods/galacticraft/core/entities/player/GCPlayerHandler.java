@@ -6,6 +6,7 @@ import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.core.entities.EntityParachest;
@@ -114,12 +115,19 @@ public class GCPlayerHandler
 	{
 		int tick = player.ticksExisted - 1;
 
-		if (tick == 10)
+		if (tick == 15)
 		{
-			if (SpaceRaceManager.getSpaceRaceFromPlayer(player.getGameProfile().getName()) == null)
-			{
-				GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_SPACE_RACE_GUI, new Object[] {}), player);
-			}
+            if (!player.openedSpaceRaceManager)
+            {
+                SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(player.getGameProfile().getName());
+
+                if (race == null || race.getTeamName().equals(SpaceRace.DEFAULT_NAME))
+                {
+                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_SPACE_RACE_GUI, new Object[] {}), player);
+                }
+
+                player.openedSpaceRaceManager = true;
+            }
 		}
 
 		//This will speed things up a little

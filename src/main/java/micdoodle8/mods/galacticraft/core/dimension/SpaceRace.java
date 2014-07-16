@@ -16,6 +16,7 @@ import java.util.Map.Entry;
 
 public class SpaceRace
 {
+    public static final String DEFAULT_NAME = "Unnamed Team";
 	private static int lastSpaceRaceID = 0;
 	private int spaceRaceID;
 	private List<String> playerNames = Lists.newArrayList();

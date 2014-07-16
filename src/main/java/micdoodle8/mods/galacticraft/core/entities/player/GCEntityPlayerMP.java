@@ -54,6 +54,7 @@ import java.util.Map.Entry;
 public class GCEntityPlayerMP extends EntityPlayerMP
 {
     private boolean updatingRidden = false;
+    public boolean openedSpaceRaceManager = false;
 
 	public GCEntityPlayerMP(MinecraftServer server, WorldServer world, GameProfile profile, ItemInWorldManager itemInWorldManager)
 	{
@@ -67,6 +68,7 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 
 		if (oldPlayer instanceof GCEntityPlayerMP)
 		{
+            this.openedSpaceRaceManager = ((GCEntityPlayerMP) oldPlayer).openedSpaceRaceManager;
 			this.getPlayerStats().copyFrom(((GCEntityPlayerMP) oldPlayer).getPlayerStats(), keepInv || this.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory"));
 		}
 	}
