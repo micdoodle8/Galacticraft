@@ -917,11 +917,17 @@ public class WorldUtil
 			}
 			else if (isBCLoaded && tileEntity instanceof IPowerReceptor)
 			{
+				//Do not connect GC wires to BC wooden power pipes
 				try
 				{
-					Class<?> clazzPipe = Class.forName("buildcraft.transport.pipes.PipePowerWood");
-					if (clazzPipe.isInstance(tileEntity))
-						continue;
+					Class<?> clazzPipeTile = Class.forName("buildcraft.transport.TileGenericPipe");
+					Class<?> clazzPipeWood = Class.forName("buildcraft.transport.pipes.PipePowerWood");
+					if (clazzPipeTile.isInstance(tileEntity))
+					{				
+						Object pipe = clazzPipeTile.getField("pipe").get(tileEntity);
+						if (clazzPipeWood.isInstance(pipe))
+							continue;
+					}
 				}
 				catch (Exception e)
 				{
