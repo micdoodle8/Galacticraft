@@ -166,7 +166,7 @@ public class MarsModuleClient implements IPlanetsModuleClient
 	}
 
 	@Override
-	public void spawnParticle(String particleID, Vector3 position, Vector3 color)
+	public void spawnParticle(String particleID, Vector3 position, Vector3 motion)
 	{
 		Minecraft mc = FMLClientHandler.instance().getClient();
 

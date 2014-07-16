@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids;
 
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -10,6 +11,7 @@ import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.planets.IPlanetsModuleClient;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
+import micdoodle8.mods.galacticraft.planets.asteroids.client.fx.EntityFXTeleport;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.block.BlockRendererWalkway;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.entity.RenderEntryPod;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.entity.RenderGrapple;
@@ -29,6 +31,8 @@ import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReceive
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReflector;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityShortRangeTelepad;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -106,8 +110,33 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
 	}
 
 	@Override
-	public void spawnParticle(String particleID, Vector3 position, Vector3 color)
+	public void spawnParticle(String particleID, Vector3 position, Vector3 motion)
 	{
+        Minecraft mc = FMLClientHandler.instance().getClient();
 
+        if (mc != null && mc.renderViewEntity != null && mc.effectRenderer != null)
+        {
+            double dX = mc.renderViewEntity.posX - position.x;
+            double dY = mc.renderViewEntity.posY - position.y;
+            double dZ = mc.renderViewEntity.posZ - position.z;
+            EntityFX particle = null;
+            double viewDistance = 64.0D;
+
+            if (dX * dX + dY * dY + dZ * dZ < viewDistance * viewDistance)
+            {
+                if (particleID.equals("portalBlue"))
+                {
+                    particle = new EntityFXTeleport(mc.theWorld, position.x, position.y, position.z, motion.x, motion.y, motion.z);
+                }
+            }
+
+            if (particle != null)
+            {
+                particle.prevPosX = particle.posX;
+                particle.prevPosY = particle.posY;
+                particle.prevPosZ = particle.posZ;
+                mc.effectRenderer.addEffect(particle);
+            }
+        }
 	}
 }
