@@ -1,0 +1,118 @@
+# Galacticraft Mars Language File = THAILAND
+
+# GENERAL ITEMS
+item.rawDesh.name=เดรชหยาบ
+item.deshStick.name=แท่งเดรช
+item.ingotDesh.name=ก้อนเดรช
+item.spaceshipTier2.t2Rocket.name=จรวด เทียร์ 2
+item.reinforcedPlateT2.name=แผ่นโลหะทนทาน
+item.tier2.desc=เทียร์ 2
+item.slimelingCargo.name=กระเป๋าเก็บของสไลม์ลิ่ง
+item.key.T2.name=กุญแจดันเจี้ยน เทียร์ 2
+item.compressedDesh.name=แผ่นเดรช
+item.spaceshipTier2.cargoRocket.name=จรวดขนส่ง
+
+# TOOLS
+item.deshPick.name=อีเต้อเดรช
+item.deshAxe.name=ขวานเดรช
+item.deshHoe.name=จอบเดรช
+item.deshSpade.name=พลั่วเดรช
+item.deshSword.name=ดาบเดรช
+
+# ARMOR
+item.deshHelmet.name=หมวกเดรช
+item.deshChestplate.name=เสื้อเกราะเดรช
+item.deshLeggings.name=กางเกงเดรช
+item.deshBoots.name=รองเท้าเดรช
+
+# BLOCKS
+tile.mars.deshmars.name=แร่เดรช
+tile.mars.coppermars.name=แร่ทองแดง
+tile.mars.tinmars.name=แร่ดีบุก
+tile.mars.ironmars.name=แร่เหล็ก
+tile.mars.marscobblestone.name=หินหยาบดาวอังคาร
+tile.mars.marsstone.name=หินดาวอังคาร
+tile.mars.marsdirt.name=หินดาวอังคารชั้นล่าง
+tile.mars.marsgrass.name=หินดาวอังคารชั้นบน
+tile.mars.marsdeco.name=บล็อกเดรช
+tile.mars.marsdungeon.name=กำแพงดันเจี้ยน
+tile.treasureT2.name=กล่องสมบัติ เทียร์ 2
+tile.slimelingEgg.redEgg.name=ไข่สไลม์ลิ่งสีแดง
+tile.slimelingEgg.blueEgg.name=ไข่สไลม์ลิ่งสีน้ำเงิน
+tile.slimelingEgg.yellowEgg.name=ไข่สไลม์ลิ่งสีเหลือง
+tile.marsMachine.0.name=เทอราฟอร์มเมอร์
+tile.marsMachine.1.name=ตู้ไคโยเจนนิค
+tile.marsMachine.2.name=เครื่องควบคุมการปล่อยจรวด
+tile.sludge.name=ตะกอนแบคทีเรีย
+tile.creeperEgg.name=ไข่คริปเปอร์
+tile.cavernVines.name=เถาวัลย์ถ้ำ
+tile.tintedGlassPane.white.name=แผ่นกระจกย้อมสีขาว
+tile.tintedGlassPane.orange.name=แผ่นกระจกย้อมสีส้ม
+tile.tintedGlassPane.magenta.name=แผ่นกระจกย้อมสีม่วงแดง
+tile.tintedGlassPane.light_blue.name=แผ่นกระจกย้อมสีฟ้า
+tile.tintedGlassPane.yellow.name=แผ่นกระจกย้อมสีเหลือง
+tile.tintedGlassPane.lime.name=แผ่นกระจกย้อมสีมะนาว
+tile.tintedGlassPane.pink.name=แผ่นกระจกย้อมสีชมพู
+tile.tintedGlassPane.gray.name=แผ่นกระจกย้อมสีเทา
+tile.tintedGlassPane.silver.name=แผ่นกระจกย้อมสีอ่อน
+tile.tintedGlassPane.cyan.name=แผ่นกระจกย้อมสีฟ้าคราม
+tile.tintedGlassPane.purple.name=แผ่นกระจกย้อมสีม่วง
+tile.tintedGlassPane.blue.name=แผ่นกระจกย้อมสีน้ำเงิน
+tile.tintedGlassPane.brown.name=แผ่นกระจกย้อมสีน้ำตาล
+tile.tintedGlassPane.green.name=แผ่นกระจกย้อมสีเขียว
+tile.tintedGlassPane.red.name=แผ่นกระจกย้อมสีแดง
+tile.tintedGlassPane.black.name=แผ่นกระจกย้อมสีดำ
+
+# GUI
+gui.choosePlanet.desc.mars=อาศัยอยู่ได้#ไม่มีออกซิเจน#แรงโน้มถ่วง: 38%
+item.deshPickSlime.description.name=ไม่สามารถขุดไข่สไลม์ลิ่งได้
+gui.message.noEnergy.name=พลังงานไฟฟ้าไม่พอ
+gui.message.noWater.name=น้ำไม่พอ
+gui.message.noBonemeal.name=ผงกระดูกไม่พอ
+gui.message.noSeeds.name=เมล็ดไม่พอ
+gui.message.noSaplings.name=ต้นกล้าไม่พอ
+gui.message.bubbleExp.name=ขยายฟองอากาศ
+gui.message.noValidBlocks.name=ไม่มีบล็อกที่ตรงกันในฟองอากาศ
+gui.message.terraforming.name=กำลังสร้างธรรมชาติ
+gui.message.enableTrees.name=เปิดใช้งานต้นไม้
+gui.message.enableGrass.name=เปิดใช้งานหญ้า
+gui.message.trees.name=ต้นไม้
+gui.message.grass.name=หญ้า
+gui.message.invalidFreq.name=ความถี่ไม่ถูกต้อง
+gui.message.frequency.name=ความถี่
+gui.message.destFrequency.name=เป้าหมายความถี่
+gui.message.removePad.name=Remove Pad #To do for translate this -.-
+gui.message.launchWhen.name=ปล่อยเมื่อ
+gui.message.cargoUnloaded.name=จรวดขนส่งถ่ายสินค้า
+gui.message.cargoFull.name=จรวดขนส่งเต็ม
+gui.message.fullyFueled.name=เชื้อเพลิงเต็ม
+gui.message.instant.name=โดยตรง
+gui.message.tenSec.name=10 วินาที
+gui.message.thirtySec.name=30 วินาที
+gui.message.oneMin.name=1 นาที
+gui.message.redstoneSig.name=สัญญาณเรดสโตน
+gui.message.notSet.name=ไมได้ตั้งไว้
+gui.message.notEnough.name=ไม่พอ
+gui.message.success.name=เสร็จสิ้น
+
+gui.desc.reinforcedPlateT2.name=เทียร์ 2
+
+itemGroup.GalacticraftMars=กาแลคติคคราฟ ดาวอังคาร
+
+dimension.Mars.name=ดาวอังคาร
+planet.mars=ดาวอังคาร
+
+# Schematics
+schematic.rocketT3.name=จรวด เทียร์ 3
+schematic.cargoRocket.name=จรวดขนส่งอัตโนมัติ
+
+# Entities
+entity.Sludgeling.name=หนอนแบคทีเรีย
+entity.Slimeling.name=สไลม์ลิ่ง
+entity.CreeperBoss.name=คริปเปอร์บอสกลายพันธุ์
+entity.SpaceshipT2.name=จรวด เทียร์ 2
+entity.CargoRocket.name=จรวดขนส่ง
+
+# Container
+container.launchcontroller.name=เครื่องควบคุมการปล่อยจรวด
+container.tileTerraformer.name=เทอราฟอร์มเมอร์
