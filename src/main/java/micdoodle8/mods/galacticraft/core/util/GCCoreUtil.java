@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.util;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -114,7 +113,6 @@ public class GCCoreUtil
     public static List<String> translateWithSplit(String key)
     {
         String translated = translate(key);
-        FMLLog.info("" + translated.contains("$"));
         return Arrays.asList(translated.split("\\$"));
     }
 
