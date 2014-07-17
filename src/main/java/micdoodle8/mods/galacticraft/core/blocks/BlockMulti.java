@@ -178,11 +178,15 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
 	public float getBlockHardness(World par1World, int par2, int par3, int par4)
 	{
         TileEntity tileEntity = par1World.getTileEntity(par2, par3, par4);
-        BlockVec3 mainBlockPosition = ((TileEntityMulti) tileEntity).mainBlockPosition;
 
-        if (mainBlockPosition != null)
+        if (tileEntity != null)
         {
-            return mainBlockPosition.getBlock(par1World).getBlockHardness(par1World, par2, par3, par4);
+            BlockVec3 mainBlockPosition = ((TileEntityMulti) tileEntity).mainBlockPosition;
+
+            if (mainBlockPosition != null)
+            {
+                return mainBlockPosition.getBlock(par1World).getBlockHardness(par1World, par2, par3, par4);
+            }
         }
 
 		return this.blockHardness;
