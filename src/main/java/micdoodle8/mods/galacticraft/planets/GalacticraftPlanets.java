@@ -85,16 +85,11 @@ public class GalacticraftPlanets
 		return 1;
 	}
 
-	public static void spawnParticle(String particleID, Vector3 position, Vector3 motion)
-	{
-        spawnParticle(particleID, position, motion, null);
-	}
-
-    public static void spawnParticle(String particleID, Vector3 position, Vector3 motion, Vector3 color)
+    public static void spawnParticle(String particleID, Vector3 position, Vector3 motion, Object... extraData)
     {
         for (IPlanetsModuleClient module : GalacticraftPlanets.clientModules.values())
         {
-            module.spawnParticle(particleID, position, motion, color);
+            module.spawnParticle(particleID, position, motion, extraData);
         }
     }
 

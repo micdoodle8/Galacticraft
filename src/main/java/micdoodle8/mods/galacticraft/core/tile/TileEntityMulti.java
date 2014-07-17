@@ -34,11 +34,7 @@ public class TileEntityMulti extends TileEntityAdvanced implements IPacketReceiv
 			if (tileEntity != null && tileEntity instanceof IMultiBlock)
 			{
 				IMultiBlock mainBlock = (IMultiBlock) tileEntity;
-
-				if (mainBlock != null)
-				{
-					mainBlock.onDestroy(this);
-				}
+                mainBlock.onDestroy(this);
 			}
 		}
 	}

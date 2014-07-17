@@ -9,9 +9,11 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
 import micdoodle8.mods.galacticraft.planets.IPlanetsModuleClient;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.fx.EntityFXTeleport;
+import micdoodle8.mods.galacticraft.planets.asteroids.client.gui.GuiShortRangeTelepad;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.block.BlockRendererWalkway;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.entity.RenderEntryPod;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.entity.RenderGrapple;
@@ -26,6 +28,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityGrapple;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntitySmallAsteroid;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityTier3Rocket;
 import micdoodle8.mods.galacticraft.planets.asteroids.event.AsteroidsEventHandlerClient;
+import micdoodle8.mods.galacticraft.planets.asteroids.inventory.ContainerShortRangeTelepad;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReceiver;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReflector;
@@ -35,6 +38,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
@@ -89,13 +93,27 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
 	@Override
 	public void getGuiIDs(List<Integer> idList)
 	{
-
+        idList.add(GuiIdsPlanets.MACHINE_ASTEROIDS);
 	}
 
 	@Override
 	public Object getGuiElement(Side side, int ID, EntityPlayer player, World world, int x, int y, int z)
 	{
-		return null;
+        TileEntity tile = world.getTileEntity(x, y, z);
+
+        switch (ID)
+        {
+            case GuiIdsPlanets.MACHINE_ASTEROIDS:
+
+                if (tile instanceof TileEntityShortRangeTelepad)
+                {
+                    return new GuiShortRangeTelepad(player.inventory, ((TileEntityShortRangeTelepad) tile));
+                }
+
+                break;
+        }
+
+        return null;
 	}
 
 	@Override
@@ -110,7 +128,7 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
 	}
 
 	@Override
-	public void spawnParticle(String particleID, Vector3 position, Vector3 motion, Vector3 color)
+	public void spawnParticle(String particleID, Vector3 position, Vector3 motion, Object... extraData)
 	{
         Minecraft mc = FMLClientHandler.instance().getClient();
 
@@ -126,7 +144,7 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
             {
                 if (particleID.equals("portalBlue"))
                 {
-                    particle = new EntityFXTeleport(mc.theWorld, position, motion, color);
+                    particle = new EntityFXTeleport(mc.theWorld, position, motion, (TileEntityShortRangeTelepad)extraData[0], (Boolean)extraData[1]);
                 }
             }
 

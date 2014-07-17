@@ -102,7 +102,13 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
 	@Override
 	public int damageDropped(int meta)
 	{
-		return meta;
+        switch (meta)
+        {
+        case 4:
+            return 0;
+        default:
+            return meta;
+        }
 	}
 
 	@Override

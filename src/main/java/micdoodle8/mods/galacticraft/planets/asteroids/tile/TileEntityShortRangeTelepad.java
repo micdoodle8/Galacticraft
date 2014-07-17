@@ -1,50 +1,185 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import io.netty.buffer.ByteBuf;
+import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricBlock;
+import micdoodle8.mods.galacticraft.core.util.EnumColor;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
+import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
+import micdoodle8.mods.galacticraft.planets.asteroids.dimension.ShortRangeTelepadHandler;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityShortRangeTelepad extends TileEntityMulti implements IMultiBlock
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Random;
+
+public class TileEntityShortRangeTelepad extends TileEntityElectricBlock implements IMultiBlock, IInventory, ISidedInventory
 {
-    public static final int MAX_TELEPORT_TIME = 50;
+    public static enum EnumTelepadSearchResult
+    {
+        VALID,
+        NOT_FOUND,
+        TOO_FAR,
+        WRONG_DIM
+    }
+
+    public static final int MAX_TELEPORT_TIME = 150;
+    public static final int TELEPORTER_RANGE = 256;
 
 	@NetworkedField(targetSide = Side.CLIENT)
 	public int address = -1;
+    @NetworkedField(targetSide = Side.CLIENT)
+    public boolean addressValid = false;
 	@NetworkedField(targetSide = Side.CLIENT)
 	public int targetAddress = -1;
+    public EnumTelepadSearchResult targetAddressResult = EnumTelepadSearchResult.NOT_FOUND;
     @NetworkedField(targetSide = Side.CLIENT)
     public int teleportTime = 0;
+    @NetworkedField(targetSide = Side.CLIENT)
+    public String owner = "";
+    private ItemStack[] containingItems = new ItemStack[1];
+    @NetworkedField(targetSide = Side.CLIENT)
+    public boolean teleporting;
 
-	@Override
+    private ShortRangeTelepadHandler.TelepadEntry queuedTargetCheck;
+
+    @Override
 	public void updateEntity()
 	{
 		super.updateEntity();
+
+        if (this.ticks % 40 == 0)
+        {
+            this.setAddress(this.address);
+            this.setTargetAddress(this.targetAddress);
+        }
+
+        if (!this.worldObj.isRemote && this.targetAddressResult == EnumTelepadSearchResult.VALID && (this.ticks % 5 == 0 || teleporting))
+        {
+            List<EntityLivingBase> containedEntities = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 2, this.zCoord + 1));
+
+            if (containedEntities.size() > 0)
+            {
+                ShortRangeTelepadHandler.TelepadEntry entry = ShortRangeTelepadHandler.getLocationFromAddress(this.targetAddress);
+
+                if (entry != null)
+                {
+                    teleporting = true;
+                }
+            }
+            else
+            {
+                teleporting = false;
+            }
+        }
+
+        if (this.teleporting)
+        {
+            this.teleportTime++;
+
+            if (teleportTime >= MAX_TELEPORT_TIME)
+            {
+                ShortRangeTelepadHandler.TelepadEntry entry = ShortRangeTelepadHandler.getLocationFromAddress(this.targetAddress);
+                List<EntityLivingBase> containedEntities = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 2, this.zCoord + 1));
+
+                for (EntityLivingBase e : containedEntities)
+                {
+                    e.setPosition(entry.position.x + 0.5F, entry.position.y + 2.2F, entry.position.z + 0.5F);
+                }
+
+                this.teleportTime = 0;
+                this.teleporting = false;
+            }
+        }
+        else
+        {
+            this.teleportTime = Math.max(--this.teleportTime, 0);
+        }
 	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbt)
 	{
-		super.readFromNBT(nbt);
-		this.address = nbt.getInteger("Address");
+        super.readFromNBT(nbt);
+        NBTTagList var2 = nbt.getTagList("Items", 10);
+        this.containingItems = new ItemStack[this.getSizeInventory()];
+
+        for (int var3 = 0; var3 < var2.tagCount(); ++var3)
+        {
+            NBTTagCompound var4 = var2.getCompoundTagAt(var3);
+            byte var5 = var4.getByte("Slot");
+
+            if (var5 >= 0 && var5 < this.containingItems.length)
+            {
+                this.containingItems[var5] = ItemStack.loadItemStackFromNBT(var4);
+            }
+        }
+
+		this.setAddress(nbt.getInteger("Address"));
 		this.targetAddress = nbt.getInteger("TargetAddress");
+        this.owner  = nbt.getString("Owner");
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbt)
 	{
 		super.writeToNBT(nbt);
+        NBTTagList var2 = new NBTTagList();
+
+        for (int var3 = 0; var3 < this.containingItems.length; ++var3)
+        {
+            if (this.containingItems[var3] != null)
+            {
+                NBTTagCompound var4 = new NBTTagCompound();
+                var4.setByte("Slot", (byte) var3);
+                this.containingItems[var3].writeToNBT(var4);
+                var2.appendTag(var4);
+            }
+        }
+
+        nbt.setTag("Items", var2);
+
 		nbt.setInteger("TargetAddress", this.targetAddress);
 		nbt.setInteger("Address", this.address);
-	}
+        nbt.setString("Owner", this.owner);
+    }
+
+    @Override
+    public void addExtraNetworkedData(List<Object> networkedList)
+    {
+        super.addExtraNetworkedData(networkedList);
+        networkedList.add(targetAddressResult.ordinal());
+    }
+
+    @Override
+    public void readExtraNetworkedData(ByteBuf dataStream)
+    {
+        super.readExtraNetworkedData(dataStream);
+        targetAddressResult = EnumTelepadSearchResult.values()[dataStream.readInt()];
+    }
 
 	@Override
 	public double getPacketRange()
@@ -53,28 +188,15 @@ public class TileEntityShortRangeTelepad extends TileEntityMulti implements IMul
 	}
 
 	@Override
-	public int getPacketCooldown()
-	{
-		return 3;
-	}
-
-	@Override
-	public boolean isNetworkedTile()
-	{
-		return true;
-	}
-
-	@Override
 	public boolean onActivated(EntityPlayer entityPlayer)
 	{
-		return false;
+        entityPlayer.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_ASTEROIDS, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+		return true;
 	}
 
 	@Override
 	public void onCreate(BlockVec3 placedPosition)
 	{
-		this.mainBlockPosition = placedPosition;
-
         for (int y = 0; y < 3; y += 2)
         {
             for (int x = -1; x <= 1; x++)
@@ -113,4 +235,396 @@ public class TileEntityShortRangeTelepad extends TileEntityMulti implements IMul
 	{
 		return TileEntity.INFINITE_EXTENT_AABB;
 	}
+
+    public boolean onBlockActivated(World par1World, int x, int y, int z, EntityPlayer par5EntityPlayer)
+    {
+        return this.onActivated(par5EntityPlayer);
+    }
+
+    @Override
+    public String getInventoryName() {
+        return GCCoreUtil.translate("container.shortRangeTelepad.name");
+    }
+
+    @Override
+    public int getInventoryStackLimit()
+    {
+        return 64;
+    }
+
+    @Override
+    public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
+    {
+        return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
+    }
+
+    @Override
+    public boolean hasCustomInventoryName()
+    {
+        return true;
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int slotID, ItemStack itemStack)
+    {
+        return slotID == 0 && ItemElectric.isElectricItem(itemStack.getItem());
+    }
+
+    @Override
+    public int[] getAccessibleSlotsFromSide(int side)
+    {
+        return new int[] { 0 };
+    }
+
+    @Override
+    public boolean canInsertItem(int slotID, ItemStack par2ItemStack, int par3)
+    {
+        return this.isItemValidForSlot(slotID, par2ItemStack);
+    }
+
+    @Override
+    public boolean canExtractItem(int slotID, ItemStack par2ItemStack, int par3)
+    {
+        return slotID == 0;
+    }
+
+    @Override
+    public EnumSet<ForgeDirection> getElectricalOutputDirections()
+    {
+        return EnumSet.noneOf(ForgeDirection.class);
+    }
+
+    @Override
+    public boolean shouldUseEnergy()
+    {
+        return !this.getDisabled(0);
+    }
+
+    @Override
+    public ForgeDirection getElectricInputDirection()
+    {
+        return ForgeDirection.getOrientation(this.getBlockMetadata() - BlockMachineMars.LAUNCH_CONTROLLER_METADATA + 2);
+    }
+
+    @Override
+    public ItemStack getBatteryInSlot()
+    {
+        return this.getStackInSlot(0);
+    }
+
+    @Override
+    public void setDisabled(int index, boolean disabled)
+    {
+        if (this.disableCooldown == 0)
+        {
+            switch (index)
+            {
+                case 0:
+                    this.disabled = disabled;
+                    this.disableCooldown = 10;
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    @Override
+    public boolean getDisabled(int index)
+    {
+        switch (index)
+        {
+            case 0:
+                return this.disabled;
+            default:
+                break;
+        }
+
+        return true;
+    }
+
+    public void setAddress(int address)
+    {
+        if (address != this.address)
+        {
+            ShortRangeTelepadHandler.removeShortRangeTeleporter(this);
+        }
+
+        this.address = address;
+
+        if (this.address >= 0)
+        {
+            ShortRangeTelepadHandler.TelepadEntry entry = ShortRangeTelepadHandler.getLocationFromAddress(this.address);
+
+            if (entry == null)
+            {
+                this.addressValid = true;
+            }
+            else
+            {
+                if (this.worldObj != null)
+                {
+                    this.addressValid = (entry.dimensionID == this.worldObj.provider.dimensionId && entry.position.x == this.xCoord && entry.position.y == this.yCoord && entry.position.z == this.zCoord);
+                }
+                else
+                {
+                    this.addressValid = false;
+                }
+            }
+        }
+        else
+        {
+            this.addressValid = false;
+        }
+
+        if (worldObj != null)
+        {
+            ShortRangeTelepadHandler.addShortRangeTelepad(this);
+        }
+    }
+
+    public TileEntityShortRangeTelepad updateTarget()
+    {
+        if (this.targetAddress >= 0)
+        {
+            this.targetAddressResult = EnumTelepadSearchResult.NOT_FOUND;
+
+            ShortRangeTelepadHandler.TelepadEntry addressResult = ShortRangeTelepadHandler.getLocationFromAddress(this.targetAddress);
+            TileEntityShortRangeTelepad foundTelepad = null;
+
+            if (addressResult != null)
+            {
+                WorldServer world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(addressResult.dimensionID);
+
+                TileEntity tile2 = addressResult.position.getTileEntity(world);
+
+                if (tile2 == null)
+                {
+                    FMLLog.severe("Bad TileEntity in Telepad Handler: address(" + this.targetAddress + ") x" + addressResult.position.x + " y" + addressResult.position.y + " z" + addressResult.position.z);
+                }
+                else
+                {
+                    if (this != tile2) {
+                        if (tile2 instanceof TileEntityShortRangeTelepad) {
+                            TileEntityShortRangeTelepad launchController2 = (TileEntityShortRangeTelepad) tile2;
+
+                            if (launchController2.address == this.targetAddress && launchController2.addressValid) {
+                                foundTelepad = launchController2;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (foundTelepad != null)
+            {
+                if (this.worldObj.provider.dimensionId == foundTelepad.worldObj.provider.dimensionId)
+                {
+                    double distance = this.getDistanceFrom(foundTelepad.xCoord + 0.5F, foundTelepad.yCoord + 0.5F, foundTelepad.zCoord + 0.5F);
+
+                    if (distance < TELEPORTER_RANGE * TELEPORTER_RANGE)
+                    {
+                        this.targetAddressResult = EnumTelepadSearchResult.VALID;
+                        return foundTelepad;
+                    }
+                    else
+                    {
+                        this.targetAddressResult = EnumTelepadSearchResult.TOO_FAR;
+                        return null;
+                    }
+                }
+                else
+                {
+                    this.targetAddressResult = EnumTelepadSearchResult.WRONG_DIM;
+                    return null;
+                }
+            }
+            else
+            {
+                this.targetAddressResult = EnumTelepadSearchResult.NOT_FOUND;
+                return null;
+            }
+        }
+        else
+        {
+            this.targetAddressResult = EnumTelepadSearchResult.NOT_FOUND;
+            return null;
+        }
+    }
+
+    public void setTargetAddress(int address)
+    {
+        this.targetAddress = address;
+        this.updateTarget();
+    }
+
+    @Override
+    public void openInventory() {
+
+    }
+
+    @Override
+    public void closeInventory() {
+
+    }
+
+    @Override
+    public int getSizeInventory()
+    {
+        return this.containingItems.length;
+    }
+
+    @Override
+    public ItemStack getStackInSlot(int par1)
+    {
+        return this.containingItems[par1];
+    }
+
+    @Override
+    public ItemStack decrStackSize(int par1, int par2)
+    {
+        if (this.containingItems[par1] != null)
+        {
+            ItemStack var3;
+
+            if (this.containingItems[par1].stackSize <= par2)
+            {
+                var3 = this.containingItems[par1];
+                this.containingItems[par1] = null;
+                return var3;
+            }
+            else
+            {
+                var3 = this.containingItems[par1].splitStack(par2);
+
+                if (this.containingItems[par1].stackSize == 0)
+                {
+                    this.containingItems[par1] = null;
+                }
+
+                return var3;
+            }
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    @Override
+    public ItemStack getStackInSlotOnClosing(int par1)
+    {
+        if (this.containingItems[par1] != null)
+        {
+            ItemStack var2 = this.containingItems[par1];
+            this.containingItems[par1] = null;
+            return var2;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    @Override
+    public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
+    {
+        this.containingItems[par1] = par2ItemStack;
+
+        if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())
+        {
+            par2ItemStack.stackSize = this.getInventoryStackLimit();
+        }
+    }
+
+    public void setOwner(String owner)
+    {
+        this.owner = owner;
+    }
+
+    public String getOwner()
+    {
+        return this.owner;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public String getReceivingStatus()
+    {
+        if (!this.addressValid)
+        {
+            return EnumColor.RED + GCCoreUtil.translate("gui.message.invalidAddress.name");
+        }
+
+        if (this.getEnergyStoredGC() <= 0.0F)
+        {
+            return EnumColor.RED + GCCoreUtil.translate("gui.message.noEnergy.name");
+        }
+
+        if (this.getDisabled(0))
+        {
+            return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.disabled.name");
+        }
+
+        return EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.receivingActive.name");
+    }
+
+    @SideOnly(Side.CLIENT)
+    public String getSendingStatus()
+    {
+        if (!this.addressValid)
+        {
+            return EnumColor.RED + GCCoreUtil.translate("gui.message.invalidTargetAddress.name");
+        }
+
+        if (this.targetAddressResult == TileEntityShortRangeTelepad.EnumTelepadSearchResult.TOO_FAR)
+        {
+            return EnumColor.RED + GCCoreUtil.translate("gui.message.telepadTooFar.name");
+        }
+
+        if (this.targetAddressResult == TileEntityShortRangeTelepad.EnumTelepadSearchResult.WRONG_DIM)
+        {
+            return EnumColor.RED + GCCoreUtil.translate("gui.message.telepadWrongDim.name");
+        }
+
+        if (this.targetAddressResult == TileEntityShortRangeTelepad.EnumTelepadSearchResult.NOT_FOUND)
+        {
+            return EnumColor.RED + GCCoreUtil.translate("gui.message.telepadNotFound.name");
+        }
+
+        if (this.getEnergyStoredGC() <= 0.0F)
+        {
+            return EnumColor.RED + GCCoreUtil.translate("gui.message.noEnergy.name");
+        }
+
+        if (this.getDisabled(0))
+        {
+            return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.disabled.name");
+        }
+
+        return EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.sendingActive.name");
+    }
+
+    @SideOnly(Side.CLIENT)
+    public Vector3 getParticleColor(Random rand, boolean sending)
+    {
+        float teleportTimeScaled = Math.min(1.0F, this.teleportTime / (float)TileEntityShortRangeTelepad.MAX_TELEPORT_TIME);
+        float f;
+        f = rand.nextFloat() * 0.6F + 0.4F;
+
+        if (sending && this.targetAddressResult != EnumTelepadSearchResult.VALID)
+        {
+            return new Vector3(f, f * 0.3F, f * 0.3F);
+        }
+
+        if (!sending && !this.addressValid)
+        {
+            return new Vector3(f, f * 0.3F, f * 0.3F);
+        }
+
+        float r = f * 0.3F;
+        float g = f * (0.3F + (teleportTimeScaled * 0.7F));
+        float b = f * (1.0F - (teleportTimeScaled * 0.7F));
+
+        return new Vector3(r, g, b);
+    }
 }

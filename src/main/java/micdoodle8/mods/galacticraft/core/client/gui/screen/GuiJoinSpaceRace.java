@@ -200,6 +200,11 @@ public class GuiJoinSpaceRace extends GuiScreen implements ICheckBoxCallback, IT
 	{
 	}
 
+    @Override
+    public void onIntruderInteraction(GuiElementTextBox textBox)
+    {
+    }
+
 	@Override
 	public boolean canPlayerEdit(GuiElementTextBox textBox, EntityPlayer player)
 	{

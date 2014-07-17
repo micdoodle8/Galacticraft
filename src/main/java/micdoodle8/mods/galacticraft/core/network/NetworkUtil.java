@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.UUID;
 
 public class NetworkUtil
 {
@@ -94,6 +95,11 @@ public class NetworkUtil
 				buffer.writeInt(((BlockVec3) dataValue).y);
 				buffer.writeInt(((BlockVec3) dataValue).z);
 			}
+            else if (dataValue instanceof UUID)
+            {
+                buffer.writeLong(((UUID) dataValue).getLeastSignificantBits());
+                buffer.writeLong(((UUID) dataValue).getMostSignificantBits());
+            }
 			else if (dataValue instanceof Collection)
 			{
 				NetworkUtil.encodeData(buffer, (Collection<Object>) dataValue);
@@ -214,6 +220,10 @@ public class NetworkUtil
 			{
 				objList.add(new BlockVec3(buffer.readInt(), buffer.readInt(), buffer.readInt()));
 			}
+            else if (clazz.equals(UUID.class))
+            {
+                objList.add(new UUID(buffer.readLong(), buffer.readLong()));
+            }
 			else if (clazz.equals(Vector3.class))
 			{
 				objList.add(new Vector3(buffer.readDouble(), buffer.readDouble(), buffer.readDouble()));
@@ -318,6 +328,10 @@ public class NetworkUtil
 		{
 			return new BlockVec3(buffer.readInt(), buffer.readInt(), buffer.readInt());
 		}
+        else if (dataValue.equals(UUID.class))
+        {
+            return new UUID(buffer.readLong(), buffer.readLong());
+        }
 		else if (dataValue.equals(EnergyStorage.class))
 		{
 			float capacity = buffer.readFloat();

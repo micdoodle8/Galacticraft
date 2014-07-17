@@ -278,4 +278,10 @@ public class GuiAirLockController extends GuiScreen implements ICheckBoxCallback
 	{
 		this.cannotEditTimer = 50;
 	}
+
+    @Override
+    public void onIntruderInteraction(GuiElementTextBox textBox)
+    {
+        this.cannotEditTimer = 50;
+    }
 }

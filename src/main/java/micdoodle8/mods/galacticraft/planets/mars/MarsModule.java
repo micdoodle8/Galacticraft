@@ -1,9 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars;
 
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -112,6 +109,12 @@ public class MarsModule implements IPlanetsModule
 	public void serverStarting(FMLServerStartingEvent event)
 	{
 	}
+
+    @Override
+    public void serverInit(FMLServerStartedEvent event)
+    {
+
+    }
 
 	public void registerTileEntities()
 	{

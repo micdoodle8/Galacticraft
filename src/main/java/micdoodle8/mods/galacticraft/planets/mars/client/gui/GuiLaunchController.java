@@ -72,7 +72,7 @@ public class GuiLaunchController extends GuiContainerGC implements IDropboxCallb
 			this.enablePadRemovalButton.enabled = true;
 		}
 
-		this.enableControllerButton.displayString = this.launchController.getDisabled(0) ? "Enable" : "Disable";
+		this.enableControllerButton.displayString = this.launchController.getDisabled(0) ? GCCoreUtil.translate("gui.button.enable.name") : GCCoreUtil.translate("gui.button.disable.name");
         // Hacky way of rendering buttons properly, possibly bugs here:
         List buttonList = new ArrayList(this.buttonList);
         List labelList = new ArrayList(this.labelList);
@@ -413,4 +413,10 @@ public class GuiLaunchController extends GuiContainerGC implements IDropboxCallb
 	{
 		this.cannotEditTimer = 50;
 	}
+
+    @Override
+    public void onIntruderInteraction(GuiElementTextBox textBox)
+    {
+        this.cannotEditTimer = 50;
+    }
 }

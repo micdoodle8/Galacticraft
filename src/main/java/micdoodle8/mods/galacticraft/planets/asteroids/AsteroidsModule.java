@@ -1,10 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
@@ -14,6 +11,7 @@ import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.recipe.NasaWorkbenchRecipe;
+import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
 import micdoodle8.mods.galacticraft.planets.IPlanetsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.TeleportTypeAsteroids;
@@ -23,15 +21,19 @@ import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityGrapple;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntitySmallAsteroid;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityTier3Rocket;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.player.AsteroidsPlayerHandler;
+import micdoodle8.mods.galacticraft.planets.asteroids.inventory.ContainerShortRangeTelepad;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
+import micdoodle8.mods.galacticraft.planets.asteroids.network.PacketSimpleAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.schematic.SchematicTier3Rocket;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReceiver;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReflector;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityShortRangeTelepad;
+import micdoodle8.mods.galacticraft.planets.asteroids.tick.AsteroidsTickHandlerServer;
 import micdoodle8.mods.galacticraft.planets.asteroids.util.AsteroidsUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -64,6 +66,12 @@ public class AsteroidsModule implements IPlanetsModule
 	public void init(FMLInitializationEvent event)
 	{
         SchematicRegistry.registerSchematicRecipe(new SchematicTier3Rocket());
+
+        GalacticraftCore.packetPipeline.addDiscriminator(7, PacketSimpleAsteroids.class);
+
+        AsteroidsTickHandlerServer eventHandler = new AsteroidsTickHandlerServer();
+        FMLCommonHandler.instance().bus().register(eventHandler);
+        MinecraftForge.EVENT_BUS.register(eventHandler);
 
 		this.registerEntities();
 
@@ -154,15 +162,35 @@ public class AsteroidsModule implements IPlanetsModule
 
 	}
 
-	@Override
+    @Override
+    public void serverInit(FMLServerStartedEvent event)
+    {
+        AsteroidsTickHandlerServer.restart();
+    }
+
+    @Override
 	public void getGuiIDs(List<Integer> idList)
 	{
-
+        idList.add(GuiIdsPlanets.MACHINE_ASTEROIDS);
 	}
 
 	@Override
 	public Object getGuiElement(Side side, int ID, EntityPlayer player, World world, int x, int y, int z)
 	{
+        TileEntity tile = world.getTileEntity(x, y, z);
+
+        switch (ID)
+        {
+            case GuiIdsPlanets.MACHINE_ASTEROIDS:
+
+                if (tile instanceof TileEntityShortRangeTelepad)
+                {
+                    return new ContainerShortRangeTelepad(player.inventory, ((TileEntityShortRangeTelepad) tile));
+                }
+
+                break;
+        }
+
 		return null;
 	}
 

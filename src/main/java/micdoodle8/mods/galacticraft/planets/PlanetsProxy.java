@@ -1,9 +1,6 @@
 package micdoodle8.mods.galacticraft.planets;
 
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.relauncher.Side;
 import net.minecraft.entity.player.EntityPlayer;
@@ -45,6 +42,14 @@ public class PlanetsProxy implements IGuiHandler
 			module.serverStarting(event);
 		}
 	}
+
+    public void serverInit(FMLServerStartedEvent event)
+    {
+        for (IPlanetsModule module : GalacticraftPlanets.commonModules.values())
+        {
+            module.serverInit(event);
+        }
+    }
 
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
