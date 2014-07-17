@@ -37,6 +37,7 @@ public class TeleportTypeAsteroids implements ITeleportType
             if (world.getChunkProvider() instanceof ChunkProviderServer)
             {
                 ChunkProviderServer chunkProviderServer = (ChunkProviderServer) world.getChunkProvider();
+                FMLLog.info("Current Provider: " + chunkProviderServer.currentChunkProvider);
                 if (chunkProviderServer.currentChunkProvider instanceof ChunkProviderAsteroids)
                 {
                     ChunkProviderAsteroids chunkProvider = (ChunkProviderAsteroids) chunkProviderServer.currentChunkProvider;
@@ -74,15 +75,15 @@ public class TeleportTypeAsteroids implements ITeleportType
                 }
 
                 FMLLog.severe("Failed to cast world chunk provider's current provider to ChunkProviderAsteroids!");
-                return null;
+                return new Vector3(player.posX, 310,  player.posZ);
             }
 
             FMLLog.severe("Failed to cast world chunk provider to ChunkProviderServer!");
-            return null;
+            return new Vector3(player.posX, 310,  player.posZ);
 		}
 
         FMLLog.severe("Failed to cast player to GCEntityPlayerMP!");
-		return null;
+        return new Vector3(player.posX, 310,  player.posZ);
 	}
 
 	@Override
