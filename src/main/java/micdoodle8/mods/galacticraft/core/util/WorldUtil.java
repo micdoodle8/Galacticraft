@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.util;
 
+import buildcraft.api.mj.MjAPI;
 import buildcraft.api.power.IPowerReceptor;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -915,7 +916,7 @@ public class WorldUtil
 					}
 				}
 			}
-			else if (isBCLoaded && tileEntity instanceof IPowerReceptor)
+			else if (isBCLoaded)
 			{
 				//Do not connect GC wires to BC wooden power pipes
 				try
@@ -933,11 +934,16 @@ public class WorldUtil
 				{
 					e.printStackTrace();
 				}
+
+				//New BC API
+				if (MjAPI.getMjBattery(tileEntity, MjAPI.DEFAULT_POWER_FRAMEWORK, direction.getOpposite()) != null)
+					adjacentConnections[direction.ordinal()] = tileEntity;
 				
-				if (((IPowerReceptor) tileEntity).getPowerReceiver(direction.getOpposite()) != null)
+				//Legacy BC API
+				if (tileEntity instanceof IPowerReceptor && ((IPowerReceptor) tileEntity).getPowerReceiver(direction.getOpposite()) != null)
 				{
 					adjacentConnections[direction.ordinal()] = tileEntity;
-				}
+				}			
 			}
 		}
 

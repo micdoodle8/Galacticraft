@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.api.transmission.compatibility;
 
+import buildcraft.api.mj.MjAPI;
 import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import cpw.mods.fml.common.FMLLog;
@@ -292,9 +293,17 @@ public class UniversalNetwork implements IElectricityNetwork
 						//For 1.7.10 - e = ((float) ((IEnergySink) acceptor).getDemandedEnergy()) * NetworkConfigHandler.IC2_RATIO;
 						e = (float) ((IEnergySink) acceptor).demandedEnergyUnits() * NetworkConfigHandler.IC2_RATIO;
 					}
-					else if (isBCLoaded && acceptor instanceof IPowerReceptor)
+					else if (isBCLoaded && MjAPI.getMjBattery(acceptor, MjAPI.DEFAULT_POWER_FRAMEWORK, sideFrom) != null)
+					//New BC API
 					{
-						e = (float) ((IPowerReceptor) acceptor).getPowerReceiver(sideFrom).powerRequest() * NetworkConfigHandler.BC3_RATIO;
+						e = (float) MjAPI.getMjBattery(acceptor, MjAPI.DEFAULT_POWER_FRAMEWORK, sideFrom).getEnergyRequested() * NetworkConfigHandler.BC3_RATIO;
+					}
+					else if (isBCLoaded && acceptor instanceof IPowerReceptor)
+					//Legacy BC API
+					{
+						PowerReceiver BCreceiver = ((IPowerReceptor) acceptor).getPowerReceiver(sideFrom);
+						if (BCreceiver != null)
+							e = (float) BCreceiver.powerRequest() * NetworkConfigHandler.BC3_RATIO;
 					}
 
 					if (e > 0.0F)
@@ -410,7 +419,13 @@ public class UniversalNetwork implements IElectricityNetwork
 					} else
 						sentToAcceptor = 0F;
 				}
+				else if (isBCLoaded && MjAPI.getMjBattery(tileEntity, MjAPI.DEFAULT_POWER_FRAMEWORK, sideFrom) != null)
+				//New BC API
+				{
+					sentToAcceptor = (float) MjAPI.getMjBattery(tileEntity, MjAPI.DEFAULT_POWER_FRAMEWORK, sideFrom).addEnergy(currentSending * NetworkConfigHandler.TO_BC_RATIO) * NetworkConfigHandler.BC3_RATIO;
+				}
 				else if (isBCLoaded && tileEntity instanceof IPowerReceptor)
+				//Legacy BC API
 				{
 					PowerReceiver receiver = ((IPowerReceptor) tileEntity).getPowerReceiver(sideFrom);
 
@@ -418,7 +433,8 @@ public class UniversalNetwork implements IElectricityNetwork
 					{
 						double toSendBC = Math.min(currentSending * NetworkConfigHandler.TO_BC_RATIO, receiver.powerRequest());
 						sentToAcceptor = (float) receiver.receiveEnergy(buildcraft.api.power.PowerHandler.Type.PIPE, toSendBC, sideFrom) * NetworkConfigHandler.BC3_RATIO;
-					} else sentToAcceptor = 0F;
+					} else
+						sentToAcceptor = 0F;
 				}
 				else
 				{
@@ -560,6 +576,11 @@ public class UniversalNetwork implements IElectricityNetwork
 								this.connectedAcceptors.add(acceptor);
 								this.connectedDirections.add(sideFrom);
 							}
+						}
+						else if (isBCLoaded && MjAPI.getMjBattery(acceptor, MjAPI.DEFAULT_POWER_FRAMEWORK, sideFrom) != null)
+						{
+							this.connectedAcceptors.add(acceptor);
+							this.connectedDirections.add(sideFrom);						
 						}
 						else if (isBCLoaded && acceptor instanceof IPowerReceptor)
 						{
