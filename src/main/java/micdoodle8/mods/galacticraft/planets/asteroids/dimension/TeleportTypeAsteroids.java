@@ -72,9 +72,16 @@ public class TeleportTypeAsteroids implements ITeleportType
                     player.addChatComponentMessage(new ChatComponentText("Failed to find valid asteroid landing spot! Please report this as a bug"));
                     return new Vector3(bv3.x, 310, bv3.z);
                 }
+
+                FMLLog.severe("Failed to cast world chunk provider's current provider to ChunkProviderAsteroids!");
+                return null;
             }
+
+            FMLLog.severe("Failed to cast world chunk provider to ChunkProviderServer!");
+            return null;
 		}
 
+        FMLLog.severe("Failed to cast player to GCEntityPlayerMP!");
 		return null;
 	}
 
