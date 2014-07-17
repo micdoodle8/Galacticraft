@@ -63,6 +63,10 @@ public class TileEntityShortRangeTelepad extends TileEntityElectricBlock impleme
     private ItemStack[] containingItems = new ItemStack[1];
     @NetworkedField(targetSide = Side.CLIENT)
     public boolean teleporting;
+    /**
+     * Sent from server to client for teleportation
+     */
+    private BlockVec3 targetPosition;
 
     private ShortRangeTelepadHandler.TelepadEntry queuedTargetCheck;
 
@@ -71,7 +75,7 @@ public class TileEntityShortRangeTelepad extends TileEntityElectricBlock impleme
 	{
 		super.updateEntity();
 
-        if (this.ticks % 40 == 0)
+        if (this.ticks % 40 == 0 && !worldObj.isRemote)
         {
             this.setAddress(this.address);
             this.setTargetAddress(this.targetAddress);
@@ -88,6 +92,7 @@ public class TileEntityShortRangeTelepad extends TileEntityElectricBlock impleme
                 if (entry != null)
                 {
                     teleporting = true;
+                    this.targetPosition = entry.position;
                 }
             }
             else
@@ -102,16 +107,34 @@ public class TileEntityShortRangeTelepad extends TileEntityElectricBlock impleme
 
             if (teleportTime >= MAX_TELEPORT_TIME)
             {
-                ShortRangeTelepadHandler.TelepadEntry entry = ShortRangeTelepadHandler.getLocationFromAddress(this.targetAddress);
-                List<EntityLivingBase> containedEntities = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 2, this.zCoord + 1));
+                BlockVec3 finalPos = null;
 
-                for (EntityLivingBase e : containedEntities)
+                if (this.worldObj.isRemote)
                 {
-                    e.setPosition(entry.position.x + 0.5F, entry.position.y + 2.2F, entry.position.z + 0.5F);
+                    finalPos = this.targetPosition;
+                }
+                else
+                {
+                    ShortRangeTelepadHandler.TelepadEntry entry = ShortRangeTelepadHandler.getLocationFromAddress(this.targetAddress);
+                    if (entry != null)
+                    {
+                        finalPos = entry.position;
+                    }
+                }
+
+                if (finalPos != null)
+                {
+                    List<EntityLivingBase> containedEntities = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 2, this.zCoord + 1));
+
+                    for (EntityLivingBase e : containedEntities)
+                    {
+                        e.setPosition(finalPos.x + 0.5F, finalPos.y + 2.2F, finalPos.z + 0.5F);
+                    }
                 }
 
                 this.teleportTime = 0;
                 this.teleporting = false;
+                this.targetPosition = null;
             }
         }
         else
@@ -172,6 +195,13 @@ public class TileEntityShortRangeTelepad extends TileEntityElectricBlock impleme
     {
         super.addExtraNetworkedData(networkedList);
         networkedList.add(targetAddressResult.ordinal());
+        networkedList.add(this.targetPosition != null);
+        if (this.targetPosition != null)
+        {
+            networkedList.add(targetPosition.x);
+            networkedList.add(targetPosition.y);
+            networkedList.add(targetPosition.z);
+        }
     }
 
     @Override
@@ -179,6 +209,14 @@ public class TileEntityShortRangeTelepad extends TileEntityElectricBlock impleme
     {
         super.readExtraNetworkedData(dataStream);
         targetAddressResult = EnumTelepadSearchResult.values()[dataStream.readInt()];
+        if (dataStream.readBoolean())
+        {
+            this.targetPosition = new BlockVec3(dataStream.readInt(), dataStream.readInt(), dataStream.readInt());
+        }
+        else
+        {
+            this.targetPosition = null;
+        }
     }
 
 	@Override
@@ -345,7 +383,7 @@ public class TileEntityShortRangeTelepad extends TileEntityElectricBlock impleme
 
     public void setAddress(int address)
     {
-        if (address != this.address)
+        if (this.worldObj != null && address != this.address)
         {
             ShortRangeTelepadHandler.removeShortRangeTeleporter(this);
         }
@@ -377,7 +415,7 @@ public class TileEntityShortRangeTelepad extends TileEntityElectricBlock impleme
             this.addressValid = false;
         }
 
-        if (worldObj != null)
+        if (worldObj != null && !worldObj.isRemote)
         {
             ShortRangeTelepadHandler.addShortRangeTelepad(this);
         }

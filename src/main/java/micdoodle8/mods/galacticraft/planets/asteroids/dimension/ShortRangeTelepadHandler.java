@@ -89,24 +89,30 @@ public class ShortRangeTelepadHandler extends WorldSavedData
 
     public static void addShortRangeTelepad(TileEntityShortRangeTelepad telepad)
     {
-        if (telepad.addressValid)
+        if (!telepad.getWorld().isRemote)
         {
-            TelepadEntry newEntry = new TelepadEntry(telepad.getWorldObj().provider.dimensionId, new BlockVec3(telepad));
-            TelepadEntry previous = tileMap.put(telepad.address, newEntry);
-
-            if (previous == null || !previous.equals(newEntry))
+            if (telepad.addressValid)
             {
-                AsteroidsTickHandlerServer.spaceRaceData.setDirty(true);
+                TelepadEntry newEntry = new TelepadEntry(telepad.getWorldObj().provider.dimensionId, new BlockVec3(telepad));
+                TelepadEntry previous = tileMap.put(telepad.address, newEntry);
+
+                if (previous == null || !previous.equals(newEntry))
+                {
+                    AsteroidsTickHandlerServer.spaceRaceData.setDirty(true);
+                }
             }
         }
     }
 
     public static void removeShortRangeTeleporter(TileEntityShortRangeTelepad telepad)
     {
-        if (telepad.addressValid)
+        if (!telepad.getWorld().isRemote)
         {
-            tileMap.remove(telepad.address);
-            AsteroidsTickHandlerServer.spaceRaceData.setDirty(true);
+            if (telepad.addressValid)
+            {
+                tileMap.remove(telepad.address);
+                AsteroidsTickHandlerServer.spaceRaceData.setDirty(true);
+            }
         }
     }
 
