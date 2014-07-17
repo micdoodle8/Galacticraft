@@ -2,21 +2,55 @@
 
 # GENERAL ITEMS
 item.itemTier3Rocket.t3Rocket.name=Tier 3 Rocket
+item.heavyNoseCone.name=Heavy Nose Cone
+item.compressedTitanium.name=Compressed Titanium
+item.ingotTitanium.name=Titanium Ingot
+item.shardTitanium.name=Titanium Shard
+item.shardIron.name=Iron Shard
+item.rocketFinsT2.name=Heavy Rocket Fins
+item.engineT2.name=Heavy Rocket Engine
+item.reinforcedPlateT3.name=Heavy-Duty Plate
+item.grapple.name=Grapple
+item.thermalHelm.name=Themal Padding Helm
+item.thermalChestplate.name=Thermal Padding Chestpiece
+item.thermalLeggings.name=Thermal Padding Leggings
+item.thermalBoots.name=Thermal Padding Boots
+item.tier3.desc=Tier 3
 
 # TOOLS
 
 # ARMOR
 
 # BLOCKS
-tile.asteroidsBlock.asteroids1.name=Asteroid Rock
-tile.beamReflector.name=Beam Reflector
-tile.beamReceiver.name=Beam Receiver
+tile.asteroidsBlock.asteroid0.name=Asteroid Rock
+tile.asteroidsBlock.asteroid1.name=Asteroid Rock
+tile.asteroidsBlock.asteroid2.name=Asteroid Rock
+tile.asteroidsBlock.oreIron.name=Iron Ore
+tile.asteroidsBlock.oreIlmenite.name=Ilmenite Ore
+tile.asteroidsBlock.oreAluminum.name=Aluminum Ore
+tile.beamReflector.name=Energy Beam Reflector
+tile.beamReceiver.name=Energy Beam Receiver
 tile.telepadShort.name=Short Range Telepad
+tile.walkway.name=Walkway
+tile.walkwayWire.name=Walkway
+tile.walkwayOxygenPipe.name=Walkway
 
 # GUI
 planet.asteroids=Asteroids
 
-itemGroup.GalacticraftAsteroids=Galacticraft Asteroids
+	# Dollar sign ($) will split text onto a new line
+gui.telepad.desc.0=This is the Telepad's$unique address
+gui.telepad.desc.1=Address of another Telepad.$Entities will be sent there.
+container.shortRangeTelepad.name=Short Range Telepad
+gui.message.address.name=Address
+gui.message.destAddress.name=Target Address
+gui.message.invalidAddress.name=Invalid Unique Address
+gui.message.invalidTargetAddress.name=Invalid Target Address
+gui.message.receivingActive.name=Receiving Active
+gui.message.telepadTooFar.name=Target too far! (Max %d)
+gui.message.telepadWrongDim.name=Target is in wrong dimension!
+gui.message.telepadNotFound.name=Telepad Not Found!
+gui.message.sendingActive.name=Sending Active
 
 # Schematics
 

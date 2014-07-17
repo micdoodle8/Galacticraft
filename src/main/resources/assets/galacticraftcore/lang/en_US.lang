@@ -22,23 +22,7 @@ item.rocketFins.name=Rocket Fins
 item.noseCone.name=Nose Cone
 item.sensorLens.name=Sensor Lens
 item.oxygenGear.name=Oxygen Gear
-item.flag.american.name=American Flag
-item.flag.black.name=Black Flag
-item.flag.blue.name=Light Blue Flag
-item.flag.green.name=Lime Flag
-item.flag.brown.name=Brown Flag
-item.flag.darkblue.name=Blue Flag
-item.flag.darkgray.name=Gray Flag
-item.flag.darkgreen.name=Green Flag
-item.flag.gray.name=Light Gray Flag
-item.flag.magenta.name=Magenta Flag
-item.flag.orange.name=Orange Flag
-item.flag.pink.name=Pink Flag
-item.flag.purple.name=Purple Flag
-item.flag.red.name=Red Flag
-item.flag.teal.name=Cyan Flag
-item.flag.yellow.name=Yellow Flag
-item.flag.white.name=Flag
+item.flag.name=Flag
 item.parachute_plain.name=Parachute
 item.parachute_black.name=Black Parachute
 item.parachute_blue.name=Light Blue Parachute
@@ -207,6 +191,8 @@ entity.GalacticraftCore.Flag.name=Flag
 entity.GalacticraftCore.ParaChest.name=Parachest
 entity.GalacticraftCore.OxygenBubble.name=Oxygen Bubble
 entity.GalacticraftCore.Lander.name=Space Lander
+entity.GalacticraftCore.GCFlag.name=Flag
+entity.GalacticraftCore.MeteorChunk.name=Meteor Chunk
 
 # Schematics
 schematic.moonbuggy.name=Moon Buggy
@@ -238,7 +224,8 @@ keybind.vehicleup.name=[GC] Vehicle Up Key
 keybind.vehicledown.name=[GC] Vehicle Down Key
 
 # CREATIVE TABS
-itemGroup.GalacticraftCore=Galacticraft
+itemGroup.GalacticraftBlocks=Galacticraft Blocks
+itemGroup.GalacticraftItems=Galacticraft Items
 
 # GUI
 container.cargoloader.name=Cargo Loader
@@ -437,6 +424,9 @@ gui.missingCore.name.0=MicdoodleCore not found in mods folder
 gui.missingCore.name.1=Galacticraft failed to load
 gui.missingCore.name.2=Close Minecraft and install MicdoodleCore
 gui.missingCore.name.3=Click here to open download page
+gui.electricFurnace.desc.0=gui.electricFurnace.desc.0
+gui.electricFurnace.desc.1=gui.electricFurnace.desc.1
+gui.showBubble.desc.0=Show Bubble
 
 gui.spaceRace.create.close.name=Close
 gui.spaceRace.create.back.name=Back

@@ -565,7 +565,7 @@ public class TileEntityShortRangeTelepad extends TileEntityElectricBlock impleme
             return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.disabled.name");
         }
 
-        return EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.receivingActive.name");
+        return EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.message.receivingActive.name");
     }
 
     @SideOnly(Side.CLIENT)
@@ -578,7 +578,7 @@ public class TileEntityShortRangeTelepad extends TileEntityElectricBlock impleme
 
         if (this.targetAddressResult == TileEntityShortRangeTelepad.EnumTelepadSearchResult.TOO_FAR)
         {
-            return EnumColor.RED + GCCoreUtil.translate("gui.message.telepadTooFar.name");
+            return EnumColor.RED + GCCoreUtil.translateWithFormat("gui.message.telepadTooFar.name", TELEPORTER_RANGE);
         }
 
         if (this.targetAddressResult == TileEntityShortRangeTelepad.EnumTelepadSearchResult.WRONG_DIM)
@@ -601,7 +601,7 @@ public class TileEntityShortRangeTelepad extends TileEntityElectricBlock impleme
             return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.disabled.name");
         }
 
-        return EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.sendingActive.name");
+        return EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.message.sendingActive.name");
     }
 
     @SideOnly(Side.CLIENT)

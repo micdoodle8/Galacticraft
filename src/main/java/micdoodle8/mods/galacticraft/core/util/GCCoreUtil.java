@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.util;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -17,6 +18,9 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class GCCoreUtil
 {
@@ -106,6 +110,13 @@ public class GCCoreUtil
 	{
 		return StatCollector.translateToLocal(key);
 	}
+
+    public static List<String> translateWithSplit(String key)
+    {
+        String translated = translate(key);
+        FMLLog.info("" + translated.contains("$"));
+        return Arrays.asList(translated.split("\\$"));
+    }
 
 	public static String translateWithFormat(String key, Object... values)
 	{

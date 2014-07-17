@@ -118,7 +118,7 @@ public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
 	{
-		String displayString = GCCoreUtil.translate(terraformer.getInventoryName());
+		String displayString = terraformer.getInventoryName();
 		this.fontRendererObj.drawString(displayString, this.xSize / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, 5, 4210752);
 		this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, 144, 4210752);
 		this.fontRendererObj.drawSplitString(this.getStatus(), 105, 24, this.xSize - 105, 4210752);
@@ -201,7 +201,10 @@ public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
 
         waterLevel = this.terraformer.getScaledWaterLevel(26);
 		this.drawTexturedModalRect((this.width - this.xSize) / 2 + 56, (this.height - this.ySize) / 2 + 17 + 27 - waterLevel, 176, 26 - waterLevel, 39, waterLevel);
-		this.checkboxRenderBubble.isSelected = this.terraformer.getBubble().shouldRender();
+        if (this.terraformer.getBubble() != null)
+        {
+            this.checkboxRenderBubble.isSelected = this.terraformer.getBubble().shouldRender();
+        }
 	}
 
 	@Override
