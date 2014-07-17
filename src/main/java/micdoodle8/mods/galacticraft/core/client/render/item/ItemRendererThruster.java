@@ -19,7 +19,7 @@ public class ItemRendererThruster implements IItemRenderer
 		{
 		case INVENTORY:
 			GL11.glTranslatef(-0.4F, -0.1F, 0.0F);
-			GL11.glScalef(0.8F, 0.8F, 0.8F);
+			GL11.glScalef(0.65F, 0.65F, 0.65F);
 			break;
 		case EQUIPPED_FIRST_PERSON:
 			GL11.glTranslatef(-0.2F, 0.9F, 0.0F);
