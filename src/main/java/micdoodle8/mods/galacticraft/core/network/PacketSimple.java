@@ -161,7 +161,6 @@ public class PacketSimple extends Packet implements IPacket
 
 	public PacketSimple()
 	{
-
 	}
 
 	public PacketSimple(EnumSimplePacket packetType, Object[] data)
@@ -215,7 +214,7 @@ public class PacketSimple extends Packet implements IPacket
 		}
 	}
 
-	@SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
 	@Override
 	public void handleClientSide(EntityPlayer player)
 	{
@@ -227,7 +226,10 @@ public class PacketSimple extends Packet implements IPacket
 		}
 		else
 		{
-			return;
+            if (type != EnumSimplePacket.C_UPDATE_SPACESTATION_LIST && type != EnumSimplePacket.C_UPDATE_PLANETS_LIST)
+            {
+                return;
+            }
 		}
 
 		switch (this.type)
