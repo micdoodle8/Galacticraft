@@ -19,7 +19,7 @@ public class NetworkConfigHandler
 	 * Ratio of Build craft(MJ) energy to Galacticraft energy(kJ).
 	 * Multiply BC3 energy by this to convert to kJ.
 	 */
-	public static float BC3_RATIO = 19.5F;
+	public static float BC3_RATIO = 1.95F;
 
 	/**
 	 * Ratio of RF energy to Galacticraft energy(kJ).

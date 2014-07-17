@@ -18,6 +18,10 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.lang.reflect.Method;
 import java.util.EnumSet;
 
+import buildcraft.api.mj.MjAPI;
+import buildcraft.api.power.IPowerReceptor;
+import buildcraft.api.power.PowerHandler.PowerReceiver;
+
 public class TileEntityUniversalElectricalSource extends TileEntityUniversalElectrical
 {
 	public float produce()
@@ -41,23 +45,43 @@ public class TileEntityUniversalElectricalSource extends TileEntityUniversalElec
 
 				if (tileAdj != null)
 				{
+                    float toSend = this.extractEnergyGC(null, this.getEnergyStoredGC() - amountProduced, true);
+                    if (toSend <= 0) continue;
+                    
 					if (tileAdj instanceof TileEntityConductor)
 					{
 						IElectricityNetwork network = ((IConductor) tileAdj).getNetwork();
 						if (network != null)
 						{
-                            float toSend = this.extractEnergyGC(null, this.getEnergyStoredGC() - amountProduced, true);
-
-                            if (toSend > 0)
-                            {
-                                amountProduced += (toSend - network.produce(toSend, true, this));
-                            }
+                            amountProduced += (toSend - network.produce(toSend, true, this));
 						}
 					}
 					else if (tileAdj instanceof IEnergyHandlerGC)
 					{
 						EnergySourceAdjacent source = new EnergySourceAdjacent(direction.getOpposite());
-						amountProduced += ((IEnergyHandlerGC) tileAdj).receiveEnergyGC(source, (this.getEnergyStoredGC() - amountProduced) / outputDirections.size(), simulate);
+						amountProduced += ((IEnergyHandlerGC) tileAdj).receiveEnergyGC(source, toSend / outputDirections.size(), simulate);
+					}
+					else if (NetworkConfigHandler.isBuildcraftLoaded() && MjAPI.getMjBattery(tileAdj, MjAPI.DEFAULT_POWER_FRAMEWORK, direction.getOpposite()) != null)
+					//New BC API
+					{
+						double toSendBC = Math.min(toSend * NetworkConfigHandler.TO_BC_RATIO, MjAPI.getMjBattery(tileAdj, MjAPI.DEFAULT_POWER_FRAMEWORK, direction.getOpposite()).getEnergyRequested());
+						if (simulate)
+							amountProduced += toSendBC * NetworkConfigHandler.BC3_RATIO;
+						else
+							amountProduced += (float) MjAPI.getMjBattery(tileAdj, MjAPI.DEFAULT_POWER_FRAMEWORK, direction.getOpposite()).addEnergy(toSendBC) * NetworkConfigHandler.BC3_RATIO;
+					}
+					else if (NetworkConfigHandler.isBuildcraftLoaded() && tileAdj instanceof IPowerReceptor)
+					//Legacy BC API
+					{
+						PowerReceiver receiver = ((IPowerReceptor) tileAdj).getPowerReceiver(direction.getOpposite());
+						if (receiver != null)
+						{
+							double toSendBC = Math.min(toSend * NetworkConfigHandler.TO_BC_RATIO, receiver.powerRequest());
+							if (simulate)
+								amountProduced += toSendBC * NetworkConfigHandler.BC3_RATIO;
+							else
+								amountProduced += (float) receiver.receiveEnergy(buildcraft.api.power.PowerHandler.Type.PIPE, toSendBC, direction.getOpposite()) * NetworkConfigHandler.BC3_RATIO;
+						}
 					}
 				}
 			}

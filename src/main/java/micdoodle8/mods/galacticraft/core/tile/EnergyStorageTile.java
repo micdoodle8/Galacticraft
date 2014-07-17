@@ -64,7 +64,7 @@ public abstract class EnergyStorageTile extends TileEntityAdvanced implements IE
 
 	public float getEnergyStoredGC()
 	{
-		return this.getEnergyStoredGC(null);
+		return this.storage.getEnergyStoredGC();
 	}
 
 	@Override
@@ -75,7 +75,7 @@ public abstract class EnergyStorageTile extends TileEntityAdvanced implements IE
 
 	public float getMaxEnergyStoredGC()
 	{
-		return this.getMaxEnergyStoredGC(null);
+		return this.storage.getCapacityGC();
 	}
 
 	@Override
