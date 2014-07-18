@@ -95,9 +95,14 @@ gui.message.notSet.name=не указано
 gui.message.notEnough.name=Недостаточно
 gui.message.success.name=Успех
 
-gui.desc.reinforcedPlateT2.name=2 уровень
+	# Dollar sign ($) will split text onto a new line
+gui.launchController.desc.0=Это уникальная частота$контроллера запуска
+gui.launchController.desc.1=Частота для запуска ракет по направлению
+gui.launchController.desc.2=Взлётная площадка должна быть$удалена при запуске
+gui.launchController.desc.3=Когда это условие выполняется,$ракета запускается
+gui.terraformer.desc.0=Водный резервуар
 
-itemGroup.GalacticraftMars=Galacticraft: Марс
+gui.desc.reinforcedPlateT2.name=2 уровень
 
 dimension.Mars.name=Марс
 planet.mars=Марс

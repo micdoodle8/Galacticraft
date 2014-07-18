@@ -22,23 +22,7 @@ item.rocketFins.name=Ракетный стабилизатор
 item.noseCone.name=Головной обтекатель
 item.sensorLens.name=Сенсорные линзы
 item.oxygenGear.name=Кислородное оборудование
-item.flag.american.name=Американский флаг
-item.flag.black.name=Чёрный флаг
-item.flag.blue.name=Светло-синий флаг
-item.flag.green.name=Лаймовый флаг
-item.flag.brown.name=Коричневый флаг
-item.flag.darkblue.name=Синий флаг
-item.flag.darkgray.name=Серый флаг
-item.flag.darkgreen.name=Зелёный флаг
-item.flag.gray.name=Светло-серый флаг
-item.flag.magenta.name=Сиреневый флаг
-item.flag.orange.name=Оранжевый флаг
-item.flag.pink.name=Розовый флаг
-item.flag.purple.name=Фиолетовый флаг
-item.flag.red.name=Красный флаг
-item.flag.teal.name=Бирюзовый флаг
-item.flag.yellow.name=Жёлтый флаг
-item.flag.white.name=Флаг
+item.flag.name=Флаг
 item.parachute_plain.name=Парашют
 item.parachute_black.name=Чёрный парашют
 item.parachute_blue.name=Светло-синий парашют
@@ -190,7 +174,7 @@ tile.fuel.name=Топливо
 tile.oxygenCompressor.0.name=Кислородный компрессор
 tile.oxygenCompressor.1.name=Кислородный декомпрессор
 tile.arclamp.name=Дуговая лампа
-tile.spinThruster.name=Spin Thruster ##NEEDS TRANSLATE##
+tile.spinThruster.name=Вращающий двигатель
 
 # ENTITIES
 entity.GalacticraftCore.EvolvedSpider.name=Эволюционировавший паук
@@ -207,6 +191,8 @@ entity.GalacticraftCore.Flag.name=Флаг
 entity.GalacticraftCore.ParaChest.name=Сундук с парашютом
 entity.GalacticraftCore.OxygenBubble.name=Кислородный пузырь
 entity.GalacticraftCore.Lander.name=Посадочный модуль
+entity.GalacticraftCore.GCFlag.name=Флаг
+entity.GalacticraftCore.MeteorChunk.name=Кусок метеорита
 
 # Schematics
 schematic.moonbuggy.name=Лунный багги
@@ -238,7 +224,8 @@ keybind.vehicleup.name=[GC] "Вверх" для техники
 keybind.vehicledown.name=[GC] "Вниз" для техники
 
 # CREATIVE TABS
-itemGroup.GalacticraftCore=Galacticraft
+itemGroup.GalacticraftBlocks=Galacticraft: Блоки
+itemGroup.GalacticraftItems=Galacticraft: Предметы
 
 # GUI
 container.cargoloader.name=Загрузчик
@@ -313,8 +300,8 @@ gui.status.airLockClosed.name=Воздушный шлюз закрыт
 gui.status.airLockOpen.name=Воздушный шлюз открыт
 gui.status.running.name=Работа
 gui.status.generating.name=Создание
-gui.status.notGenerating.name=Not Generating ##NEEDS TRANSLATE##
-gui.status.hullHeat.name=Hull Heat ##NEEDS TRANSLATE##
+gui.status.notGenerating.name=Не создаётся
+gui.status.hullHeat.name=Нагрев корпуса
 gui.status.compressing.name=Сжатие
 gui.status.collecting.name=Сбор
 gui.status.tankEmpty.name=Кислородный баллон пуст
@@ -425,7 +412,7 @@ gui.dropbox.playerDistance.name.0=1 метр
 gui.dropbox.playerDistance.name.1=2 метра
 gui.dropbox.playerDistance.name.2=5 метров
 gui.dropbox.playerDistance.name.3=10 метров
-gui.title.airLock.name=%s's Air Lock Controller ##NEEDS TRANSLATE##
+gui.title.airLock.name=Контроллер воздушного шлюза игрока %s
 gui.fuelOutput.desc.0=Положите пустые жидкостные канистры в
 gui.fuelOutput.desc.1=этот слот, чтобы заполнить их из
 gui.fuelOutput.desc.2=топливного резервуара
@@ -437,6 +424,9 @@ gui.missingCore.name.0=MicdoodleCore не найден в папке модиф�
 gui.missingCore.name.1=Galacticraft не загрузился
 gui.missingCore.name.2=Закройте Minecraft и установите MicdoodleCore
 gui.missingCore.name.3=Нажмите здесь, чтобы открыть страницу загрузки
+gui.electricFurnace.desc.0=gui.electricFurnace.desc.0
+gui.electricFurnace.desc.1=gui.electricFurnace.desc.1
+gui.showBubble.desc.0=Показать пузырь
 
 gui.spaceRace.create.close.name=Закрыть
 gui.spaceRace.create.back.name=Назад
