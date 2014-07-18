@@ -101,7 +101,7 @@ public abstract class EnergyStorageTile extends TileEntityAdvanced implements IE
 	@Override
 	public float getRequest(ForgeDirection direction)
 	{
-		return this.getMaxEnergyStoredGC() - this.getEnergyStoredGC();
+		return Math.min(this.storage.getCapacityGC() - this.storage.getEnergyStoredGC(), this.storage.getMaxReceive());
 	}
 
 	@Override
