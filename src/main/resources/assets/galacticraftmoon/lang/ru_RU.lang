@@ -2,8 +2,8 @@
 
 # GENERAL ITEMS
 item.meteoricIronRaw.name=Необработанное метеоритное железо
-item.meteoric_iron_ingot.name=Слиток метеоритного железа
 item.compressedMeteoricIron.name=Сжатое метеоритное железо
+item.meteoricIronIngot.name=Слиток метеоритного железа
 
 # FOOD
 item.cheeseCurd.name=Сырок
@@ -27,5 +27,3 @@ tile.cheeseBlock.name=Блок сыра
 gui.choosePlanet.desc.moon=Обитаема#Кислород отсутствует#Гравитация: 18%
 
 dimension.Moon.name=Луна
-
-itemGroup.GalacticraftMoon=Galacticraft: Луна
