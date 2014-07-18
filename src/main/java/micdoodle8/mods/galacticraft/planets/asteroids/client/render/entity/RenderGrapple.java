@@ -16,7 +16,7 @@ public class RenderGrapple extends Render
 	{
 		GL11.glPushMatrix();
 
-		Vec3 vec3 = grapple.worldObj.getWorldVec3Pool().getVecFromPool(0.0D, -0.2D, 0.0D);
+		Vec3 vec3 = Vec3.createVectorHelper(0.0D, -0.2D, 0.0D);
 		EntityPlayer shootingEntity = grapple.getShootingEntity();
 
 		if (shootingEntity != null)
