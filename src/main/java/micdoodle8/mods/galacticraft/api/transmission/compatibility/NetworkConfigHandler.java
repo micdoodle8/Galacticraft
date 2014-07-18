@@ -72,10 +72,14 @@ public class NetworkConfigHandler
 	 */
 	public static Object gasOxygen = null;
 	
+	public static boolean displayEnergyUnitsBC = false;
+	public static boolean displayEnergyUnitsIC2 = false;
+	
 	private static boolean cachedIC2Loaded = false;
 	private static boolean cachedIC2LoadedValue = false;
 	private static boolean cachedBCLoaded = false;
 	private static boolean cachedBCLoadedValue = false;
+
 
 	/** You must call this function to enable the Universal Network module. */
 	public static void setDefaultValues(File file)
@@ -94,6 +98,13 @@ public class NetworkConfigHandler
 		NetworkConfigHandler.TO_BC_RATIO = 1 / NetworkConfigHandler.BC3_RATIO;
 		NetworkConfigHandler.TO_TE_RATIO = 1 / NetworkConfigHandler.TE_RATIO;
 		NetworkConfigHandler.TO_MEKANISM_RATIO = 1 / NetworkConfigHandler.MEKANISM_RATIO;
+
+		NetworkConfigHandler.displayEnergyUnitsBC = NetworkConfigHandler.config.get("Compatiblity", "If BuildCraft is loaded, show Galacticraft machines energy as MJ instead of gJ?", false).getBoolean(false);
+		NetworkConfigHandler.displayEnergyUnitsIC2 = NetworkConfigHandler.config.get("Compatiblity", "If IndustrialCraft2 is loaded, show Galacticraft machines energy as EU instead of gJ?", false).getBoolean(false);
+		if (!NetworkConfigHandler.isBuildcraftLoaded()) NetworkConfigHandler.displayEnergyUnitsBC = false;
+		if (!NetworkConfigHandler.isIndustrialCraft2Loaded()) NetworkConfigHandler.displayEnergyUnitsIC2 = false;
+		if (NetworkConfigHandler.isIndustrialCraft2Loaded()) NetworkConfigHandler.displayEnergyUnitsBC = false;
+		
 		NetworkConfigHandler.config.save();
 	}
 

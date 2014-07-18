@@ -276,6 +276,10 @@ public class GalacticraftCore
 		event.registerServerCommand(new CommandPlanetTeleport());
 		event.registerServerCommand(new CommandKeepDim());
 		event.registerServerCommand(new CommandGCInv());
+		if (NetworkConfigHandler.isBuildcraftLoaded() || NetworkConfigHandler.isIndustrialCraft2Loaded())
+			{
+				event.registerServerCommand(new CommandGCEnergyUnits());
+			}
 		event.registerServerCommand(new CommandJoinSpaceRace());
 
 		WorldUtil.registerSpaceStations(event.getServer().worldServerForDimension(0).getSaveHandler().getMapFileFromName("dummy").getParentFile());
